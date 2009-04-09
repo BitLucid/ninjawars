@@ -1,0 +1,7 @@
+*~
+.svn
+dev/*
+webgame/resources.php
+gitLog
+webgame/gitLog
+.gitignore

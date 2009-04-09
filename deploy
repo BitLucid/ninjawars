@@ -1,0 +1,115 @@
+#!/bin/bash
+
+#todo - Add vhost generation
+#todo - Add interactive questions to make the script "wizard"-like
+#todo - Add batch option to use defaults and avoid interactivity
+#todo - integrate database scripts to run by an option
+
+usage()
+{
+   cat <<EOF
+Usage: deploy -d=true [OPTIONS]
+Options:
+	h= The directory to deploy from.
+		e.g. /home/tchalvak/public_html/ninjawars/trunk
+	t= The directory to deploy into.
+		e.g. /home/ninjawars/game/live
+	d=true (will make use of the default paths)
+	[-r=/foo/bar/resources.SAMPLE.php]
+EOF
+       exit $1
+}
+
+if test $# -eq 0; then
+       usage 1 1>&2
+fi
+
+resources_template='/home/tchalvak/public_html/ninjawars/trunk/webgame/resources/resources.LIVE.php'
+# /home/tchalvak/public_html/ninjawars/trunk/webgame/resources/resources.LIVE.php
+database_name='ninjawarsLive'
+# ninjawarsLive
+
+# I haven't found out how to use these defaults when necessary quite yet.
+default_home='/home/tchalvak/public_html/ninjawars/trunk'
+default_target='/home/ninjawars/game/live'
+
+while test $# -gt 0; do
+       case "$1" in
+       -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+       *) optarg= ;;
+       esac
+
+       case $1 in
+               -d=*)
+               use_defaults=$optarg
+               ;;
+               -t=*)
+               DEPLOYMENT_TARGET=$optarg
+               ;;
+               -h=*)
+               HTTP_ROOT=$optarg
+               ;;
+               -r=*)
+               resources_template=$optarg
+               ;;
+       esac
+       shift
+done
+
+if [[ ! $DEPLOYMENT_TARGET ]]
+then
+	DEPLOYMENT_TARGET='/home/ninjawars/game/live'
+	echo "Using default target '/home/ninjawars/game/live'."
+fi
+
+if [[ ! $HTTP_ROOT ]]
+then
+	HTTP_ROOT='/home/tchalvak/public_html/ninjawars/trunk'
+	echo "Using default home '/home/tchalvak/public_html/ninjawars/trunk'."
+fi
+
+if [ ! -e $resources_template ]
+then
+       echo "Resources file template $resources_template not found! Aborting."
+       exit
+fi
+
+if [ ! -d $DEPLOYMENT_TARGET ]
+then
+	echo -n "The target directory $DEPLOYMENT_TARGET does not exist. Shall I create it? [Y/n]: "
+	read answer
+	if [[ $answer == "y" || $answer == "Y" || $answer == "" ]]
+	then
+		mkdir -p $DEPLOYMENT_TARGET
+	else
+		echo "User aborted deployment script. No changes have been made."
+		exit
+	fi
+fi
+
+if [ ! -d $DEPLOYMENT_TARGET/webgame ]
+then
+       mkdir $DEPLOYMENT_TARGET/webgame/
+fi
+
+if [ ! -d $DEPLOYMENT_TARGET/backupWebgame ]
+then
+	mkdir $DEPLOYMENT_TARGET/backupWebgame/
+fi
+
+rm -rf $DEPLOYMENT_TARGET/backupWebgameOlder/
+
+mv -f $DEPLOYMENT_TARGET/backupWebgame $DEPLOYMENT_TARGET/backupWebgameOlder
+echo "Current $DEPLOYMENT_TARGET/backupWebgame moved to backupWebgameOlder."
+
+#Moves the current code to the backup folder.
+mv -f $DEPLOYMENT_TARGET/webgame $DEPLOYMENT_TARGET/backupWebgame
+echo "Current $DEPLOYMENT_TARGET/webgame moved to backupWebgame."
+
+cp -rf $HTTP_ROOT/webgame $DEPLOYMENT_TARGET/webgame
+echo "$HTTP_ROOT/webgame copied to $DEPLOYMENT_TARGET/webgame"
+
+cp $resources_template $DEPLOYMENT_TARGET/webgame/resources/resources.php
+echo "The resources template $resources_template was copied to $DEPLOYMENT_TARGET/webgame/resources/resources.php"
+
+echo "Deployment complete."

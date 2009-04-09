@@ -1,0 +1,615 @@
+body {
+	/*font-family: <ideal>, <alternative>, <common>, <generic>;*/
+	/*font-family: Arial, Helvetica, sans-serif;*/
+	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	/*font-family: Verdana, Arial, Helvetica, sans-serif;*/
+	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
+	/*font-family: "Franklin Gothic", Futura, Verdana, Arial, Helvetica, sans-serif;*/
+	/*font family: Tahoma, Arial, sans-serif;*/
+	/*font-size: 12px;*/
+	font-size: 80%;
+	color: DarkKhaki;
+	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
+	/*opacity: .9;*/
+}
+
+h1, h2, h3, h4, h5, h6, .subtitle{
+	/*font-family: "Palatino Linotype", “Book Antiqua”, Palatino, “Times New Roman”, Times, serif;*/
+	/*font-family: Georgia, Tahoma, Garamond, Palatino, serif;Mine*/
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-style:/*oblique*/;
+	text-align:center;
+	font-weight:bold;
+	font-size:1.2em;
+}
+h1, h2, .title, .player-info .player-name{
+	color:black;
+	background-color:DarkKhaki;
+	/*background-color:DarkRed;*/
+	text-align:center;
+	font-weight:bold;
+	font-size:1.5em;
+}
+.clan-members .subtitle{
+    background-color:DarkKhaki;
+    color:black;
+}
+#ninjawars-title{
+	font-size:larger;
+	color:maroon;
+	padding: 3px;
+}
+
+img {
+      border: 0;
+      }
+
+select { 
+	font-family:Verdana, Arial, sans-serif;
+	font-size: 9px;
+}
+
+a {
+	text-decoration: none;
+	font-weight: bold;
+	font-family: verdana, arial, helvetica, sans-serif;
+	color: SteelBlue;
+	/*font-family: Arial Black, Impact, Tahoma Bold, sans-serif;*/
+	/*CadetBlue/YellowGreen/Turquoise/Tomatoe/SteelBlue/SlateBlue/Sienna/Brown/Chartreuse/Crimson*/
+}
+a:hover {
+	color: white;
+	text-decoration: underline;
+}
+a:link {} a:visited {} a:active {}
+
+#menu a { /*Menu actions are a lighter blue to pop better on the red */
+	color: CornflowerBlue;
+	/*seaGreen/Teal*/
+}
+
+.extLink, a.extLink, .extLink a, #menu.extLink, #menu.extLink a, #menu a.extLink {
+	color: SlateBlue; 
+}
+
+/*
+a:visited.extLink, .extLink a:visited, #menu.extLink a:visited, #menu a.extLink:visited  {
+	color: SlateBlue;
+}*/
+
+ol.aboutUpper { 
+	list-style-type: upper-roman;
+	margin-left: 0;
+	}
+ol.aboutLower { 
+	list-style-type: lower-alpha;
+	margin-left: 0;
+	}
+
+input.shopButton {
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 9px;
+	width: 100px;
+	letter-spacing: 1px;
+}
+input.formButton { 
+	font-family:Verdana,Arial,sans-serif;
+	font-size: 9px;
+	letter-spacing: 1px;
+}
+input.textField { 
+	font-family:Verdana, Arial, sans-serif;
+	font-size:xx-small;
+}
+div.description { 
+	text-align: center;
+	border: thin solid #ccb094;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+/*TABLES, general and specific */
+
+table{
+	border-collapse:collapse;
+}
+.outer-table{
+   	border-top: 1px solid DarkKhaki;
+	border-left: 1px solid DarkKhaki;
+
+}
+th {
+	text-align: center; 
+	font-weight: bold;
+	vertical-align: baseline;
+}
+td {
+     font-family: arial, helvetica, sans-serif;
+     font-size: 12px;
+     /*color: #ffffff;*/
+     line-height: 0.8;
+     padding-left: 8px;
+     padding-right: 8px;
+     padding-top: 0;
+     padding-bottom:1px;
+}
+tr {
+	background-color:#333333;
+	vertical-align: center;
+}
+.odd{
+	background-color:#3D3D3D;
+}
+table.playerTable {
+	width: 100%;
+	background-color: #ccb094;
+}
+table.playerTable .classCell div{
+	height:100%;
+	width: 60%;
+}
+table.playerTable .classCell img{
+	vertical-align:middle;
+}
+
+/* Profile and Player list Class Colors */
+table.playerTable .Red, .player-info .Red { /* Class Colors */
+	color:red;
+	background-color:black;
+}
+table.playerTable .White, .player-info .White {
+	color:white;
+	background-color:black;
+}
+table.playerTable .Blue, .player-info .Blue {
+	color:blue;
+	background-color:white;
+}
+table.playerTable .Black, .player-info .Black {
+	color:black;
+	background-color:white;
+}
+
+.playerTable th{ 
+	text-align: left;
+	background-color: #333333;
+	padding-left: 8px;
+}
+td.playerTable {
+    text-align: left;
+    background-color: #333333;
+}
+.playerTable .levelCell{
+	padding:0;
+	line-height:1.5;
+}
+.playerTable .levelCell div{
+	height:100%;
+	width:60%;
+}
+.playerTable .novice, .player-info .novice{ /* Level categories */
+	color:black;
+	background-color:LightGrey;
+}
+.playerTable .acolyte, .player-info .acolyte{
+	color:black;
+	background-color:DarkGrey;
+}
+.playerTable .ninja, .player-info .ninja{
+	color:maroon;
+	background-color:black;
+}
+.playerTable .elder-ninja, .player-info .elder-ninja{
+	color:DarkKhaki;
+	background-color:DarkRed;
+}
+.playerTable .master-ninja, .player-info .master-ninja{
+	color:white;
+	background-color:maroon;
+}
+.playerTable .shadow-master, .player-info .shadow-master{
+	color:black;
+	background-color:red;
+}
+.DeadRow td, .DeadRow td div, .DeadRow td span {
+    background-color: black !important;
+    color:grey !important;
+}
+.DeadRow .classCell {
+	color:black !important;
+	background-color:black !important;
+}
+.DeadRow .levelCell {
+	color:grey !important;
+	background-color:black !important;
+}
+
+
+.DeadRow a {
+	color: DarkBlue; /*Darken links to dead players */
+}
+
+
+
+/*#flashParts{
+	width:100%;
+	float:none;
+	display:block"
+}*/
+#flashBanner {
+	width:90%;
+	text-align:center;
+	float:none;
+	margin-left:5px;
+}
+
+/* COLUMNS */
+#leftColumn {
+	 width:9%;
+	 float:left;
+	 /*padding-left:10px;*/
+}
+#centerColumn {
+	 width:69%;float:left;
+	 min-height:600px;
+	 height:100%;
+}
+#rightColumn {
+	 width:20%;
+	 float:left;
+}
+
+#logo {
+	 /*width:10%;*/
+	 text-align:center;
+	 display:block;
+	 margin-top:10px;
+	 margin-bottom:10px;
+}
+#logo img{
+	width:50px;
+	height:42px;
+}
+
+#content {
+	float:none;
+	margin:0;
+	padding:0;
+}
+
+.main-body { /* For the index page's background image only. */
+	margin:0;
+	background:url("../images/Koi_1_by_Alegion_stock.jpg");
+	background-color:black;
+	background-repeat: no-repeat;
+	background-position:center;
+	background-attachment:fixed;
+}
+
+.brownTitle { /*deprecated*/
+    color: #ff9900;/*ccb094;*/
+    font-weight: bold;
+    text-align: center;
+}
+.brownHeading {/*deprecated*/ 
+    color: #D26600/*ff3300FEDB32*/;
+    font-weight: bold;
+}
+
+
+#menu {
+	line-height: 30px;
+	font-size:10px;
+	padding:0;
+	list-style-type:none;
+	width:100%;
+	height:30px;
+	float:left;
+	text-align:center;
+	display:inline;
+	margin-bottom:5px;
+	padding:0;
+	border-bottom:maroon thin solid;
+	background:url("../images/bg_top_maroon.jpg");
+	background-repeat:repeat-x;
+}
+#menu ul {
+	float:left;
+	display:inline;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+}
+#menu li {
+	float:left;
+	padding-right: 15px;
+}
+#menu-start {
+	width:8%;
+	height:1em;
+	float:left;
+	text-align:left;
+}
+#menu-start ul {
+	padding:0;
+	margin-left: 10px;
+}
+.play-button {
+	margin:0;
+	padding:0;
+	width:12px;
+	height:10px;
+	display:inline;
+}
+#menu-info {
+	width:70%;
+	height:1em;
+	float:left;
+	text-align:center;
+}
+#menu-info ul {
+	margin-left: 30%;
+}
+#menu-end {
+	width:22%;
+	height:1em;
+	float:left;
+	text-align:right;
+}
+
+.centered {
+	text-align: center;
+}
+
+.created-by { /*currently unused */
+	display:none; 
+	margin-top:10px;
+	margin-bottom: 30px;
+	text-align: center;
+	color:darkGrey;
+	font-family: Tahoma,Arial,Helvetica,sans-serif;
+	font-size: 10px;
+}
+
+.box-title, .box-title a{
+	padding-top:3px;
+	color: CadetBlue;
+	font-weight: bold;
+	text-decoration: none;
+}
+.active .box-title, .active .box-title a{
+	color: CadetBlue;
+}
+.passive .box-title, .passive .box-title a{
+	color: CadetBlue;
+}
+.boxes {
+	margin-top:.5em;
+	padding-top:3px;
+	padding-left: .5em;
+	padding-bottom:.5em;
+	background:transparent url(../images/bg_top_bar_teal.png) no-repeat scroll 0 0;
+}
+.boxes ul {
+	padding-left:10px;padding-right: 0;margin-left:0;margin-right:0;
+	margin-top:0;margin-bottom:0;
+	list-style-image:none;
+	list-style-type:none;
+}
+.boxes ul ul {
+	list-style-type:circle;
+	padding-top:0;
+	margin-top:0;
+	padding-bottom:0;
+	margin-bottom:0;
+	padding-left:15px;
+}
+
+#leftColumn .box-title {
+	text-align:center;
+}
+#rightColumn .box-title {
+	text-align:center;
+}
+
+#three-columns { /* contains all the columns */
+}
+.column { /* class for repeated columns */
+	overflow:auto;
+}
+.column .active {
+	background:transparent url(../images/bg_top_bar_maroon.png) no-repeat scroll 0 0;
+}
+.column .passive {
+	background:transparent url(../images/bg_top_bar_grey.png) no-repeat scroll 0 0;
+}
+.column .special {
+	background:none;
+	text-align:center;
+}
+
+/* IFRAMES */
+
+#mini_chat { /* iframe itself */
+	width:100%;
+	height:100%;
+}
+#mini-chat-frame-container { /* div */
+	height:880px;
+	width:100%;
+}
+#quickstats {
+	width: 100%;height: 7em;
+}
+.main-iframe { /* class for the main iframe */
+	 min-height:600px;
+	 height:100%;
+	 width:100%;
+	 width:100%;
+	 border:0;
+}
+
+/* End of IFRAMES */
+
+#music-player {
+	width:70px;
+	height:24px;
+}
+
+
+.textField{
+	background-color:black;
+	color:white;
+}
+
+.formbutton, .formButton{
+	/*cursor:pointer;
+	border:outset 1px #ccc;*/
+	background:black;
+	color:SteelBlue;
+	font-weight:bold;
+	font-variant:small-caps;
+}
+
+/* Login menu and login-bar config */
+.login-menu {
+	font-family: arial,helvetica,Verdana,sans-serif;
+}
+.login-menu #menu-start{
+	width:50%;
+	font-size:15px;
+}
+.login-menu #menu-info{
+	width:40%;
+}
+.login-menu #menu-end{
+	width:10%;
+}
+
+#login-bar {
+	margin:-2px 17px 0;
+}
+#login-bar .itext{
+	width: 100px;
+	height: 15px;
+	background:maroon;
+	color:lightGrey;
+	/*border: 0;*/
+}
+#login-bar label{
+	font-weight:bold;
+}
+#login-bar form {
+	margin:0;
+}
+#login-bar div.text {
+	/*color:#707E77;*/
+	/*color:lightGreen;*/
+	font-size:15px;
+	line-height:30px;
+	vertical-align:middle;
+}
+#login-bar div.text a, #login-bar div.text span, #login-bar div.text label {
+	font-size:11px;
+}
+
+/* Errors and Notices and the Like */
+.ninja-error{
+	color:Red;
+	background-color:YellowGreen;
+	font-family: Comic Sans Ms, inherit;
+	font-weight:bold;
+	font-variant:small-caps;
+	font-size:130%;
+	padding: 3px;
+}
+.ninja-notice{
+	color:Brown;
+	background-color:DarkKhaki;
+	font-family: Comic Sans Ms, inherit;
+	text-align:center;
+	font-weight:bold;
+	padding: 3px;
+}
+.error {
+	text-align:center;
+	color:Red;
+	background-color:Gold;
+	font-family: Times, inherit;
+	font-weight:bold;
+	/*font-variant:small-caps;*/
+	font-size:150%;
+	padding: 3px;
+}
+
+.notice, .informational{
+	color:Black;
+	background-color:DarkKhaki;
+	font-family: Times, inherit;
+	text-align:center;
+	font-weight:bold;
+	font-size:130%;
+	padding: 3px;
+}
+
+.notice a, .informational a{
+	color:Blue;
+	font-family: Times, inherit;
+}
+
+/*Quickstats styles*/
+.quickstats td{
+	background-color:black;
+}
+
+table .player-stats{
+	border:thin solid blue;
+}
+
+table .inventory{
+	border:thick solid red;
+}
+
+/*List all players and player profile styles*/
+.active-players ul, .clan-members ul{
+    margin:0;
+    padding:0;
+    border:thin tan solid;
+    overflow:hidden;
+}
+.active-players li, .clan-members li{
+    display: inline;
+    list-style-type: none;
+    padding-right: 5px;
+}
+.player-list-nav .current-page{
+    color:darkgreen;
+    border:thin darkgreen solid;
+}
+.player-list-nav form{
+    margin:0;
+    padding:0;
+    text-align:center;
+}
+.player-info .clan-members{
+    text-align:center;
+}
+#player-profile-table{
+    width:100%;
+    text-align:center;
+}
+#player-profile-attack{
+    width:100%;
+    text-align:center;
+    margin:0;
+    padding:0;
+}
+.player-info .Dead{
+	background-color:maroon;
+	color:red;
+}
+.player-info .Stealthed{
+	background-color:gray;
+	color:maroon;
+}
+/* End of style.css */

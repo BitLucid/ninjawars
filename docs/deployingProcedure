@@ -1,0 +1,5 @@
+
+checkout or update the directory to the latest, working revision, then run the following below to remove svn files.
+
+
+find ./ -name .svn -exec rm -rf {} ';'
