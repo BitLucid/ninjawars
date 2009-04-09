@@ -1,0 +1,2 @@
+SELECT players.uname, players_flagged.flag_ID, players_flagged.originating_page FROM players_flagged INNER JOIN players ON players_flagged.player_ID = players.player_ID
+

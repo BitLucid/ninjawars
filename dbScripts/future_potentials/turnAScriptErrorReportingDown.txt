@@ -1,0 +1,3 @@
+SET client_min_messages = error;
+
+SET client_min_messages = fatal;

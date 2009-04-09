@@ -1,0 +1,1 @@
+INSERT INTO enemy_ally_list (player_ID, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9, enemy0, total_enemies) VALUES ("6","1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "1") 
