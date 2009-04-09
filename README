@@ -1,7 +1,21 @@
-Ninjawars repository
+------------Ninjawars repository-------------
 
-Check through the files in doc for git related documentation.
+For licensing information read ./trunk/webgame/staff.php (Creative Commons License)
 
-Make web commits on github.com, just search for ninjawars
+Make web commits on github.com, just search github for "ninjawars".  To contribute on github:
+For simple contribution/collaboration:
+-Find the file or code that you want to suggest a fix for, and make a comment with the fixed code, or just the ggeneral process to acheive the fix.
 
-For licensing information read ./trunk/webgame/staff.php
+For more in-depth contribution/collaboration:
+-Make an account on github & log in.
+-Click the button on the ninjawars repository to create your own "fork" of the ninjawars code.
+-Find any files you want to change and click the "edit" link to edit your version directly.
+-When you're ready, send me a message or hit the "pull request" button on this ninjawars repository to request that your changes get pulled back in to the main ninjawars code.
+
+For non-web-based contribution:
+Download the ninjawars source code, change files, and send the changed text to me, I'll try to incorporate the changes appropriately.
+
+
+Learning how to use the git app on your local machine is highly recommended for any programmer or webdesigner, though there's a high initial learning curve.
+To get a sense of it, read git_developer_tools_urls.txt in the /docs/ folder, which will point the way towards git tools to download on windows and mac, as git is native to linux.
+
