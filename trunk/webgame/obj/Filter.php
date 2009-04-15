@@ -50,8 +50,8 @@ class Filter
 		return preg_replace("/[^\w\d\s_\-\.\@\:\/]/", "", (string) $dirty);
 	}
 	
-	/** Barest filtering for passwords going into sql, so legacy passwords
-	 * aren't effected, validate_password should limit the possibilities further.
+	/** Extensive filtering for passwords going into sql, legacy passwords
+	 * shouldn't be effected, validate_password should limit the possibilities further.
 	**/
 	function toPassword($dirty){
 	    // should strip out all sql-problematic characters, ' # ` ; and "

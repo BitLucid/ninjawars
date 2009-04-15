@@ -8,7 +8,7 @@ include_once("interface/header.php");
 require_once(LIB_ROOT."func/lib_status_output_list.php");
 
 // *** Turning the header variables into variables for this page.
-$command  = (isset($_GET['command']) ? $_GET['command'] : NULL);
+$command  = in('command');
 $health   = $players_health;
 $strength = $players_strength;
 $gold     = $players_gold;

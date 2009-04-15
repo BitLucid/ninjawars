@@ -17,7 +17,7 @@ $headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 /* additional headers */
 $headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n";
 
-$lost_email   = $_POST['email'];
+$lost_email   = in('email');
 
 $data = $sql->QueryRow("SELECT confirm,uname FROM players WHERE email = '$lost_email'");
 

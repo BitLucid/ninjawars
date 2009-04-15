@@ -15,7 +15,7 @@ include "interface/header.php";
 <br /><br />
 
 <?php
-$mail_list_length = (isset($_GET['mail_list_length']) ? $_GET['mail_list_length'] : 20);
+$mail_list_length = in('mail_list_length', 20);
 
 $sql->Query("SELECT id, send_to, send_from, message FROM mail WHERE send_to = '$username' ORDER BY id DESC LIMIT $mail_list_length");
 

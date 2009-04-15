@@ -12,7 +12,10 @@ include "interface/header.php";
 <br /><br />
 
 <?php
-$id = (isset($_GET['id']) ? $_GET['id'] : (isset($_POST['id']) ? $_POST['id'] : ''));
+$id = in('id', '');
+$delete_all = in('DeleteAll');
+$delete_selected = in('DeleteSelected');
+$mail_id = in('mailID');
 
 if ($id != "")
 {
@@ -22,8 +25,7 @@ if ($id != "")
   $affected_rows = $sql->a_rows;
 }
 
-if (isset($_POST["DeleteAll"]) && $_POST["DeleteAll"] === "Delete All")
-{
+if ($delete_all === "Delete All"){
   $sql->Delete("DELETE FROM mail WHERE send_to='".$_SESSION['username']."'");
   $affected_rows = $sql->a_rows;
   
@@ -31,15 +33,12 @@ if (isset($_POST["DeleteAll"]) && $_POST["DeleteAll"] === "Delete All")
 
 }
 
-if (isset($_POST["DeleteSelected"]) && $_POST["DeleteSelected"] === "Delete Selected")
-{
-  if (isset($_POST["mailID"]) && sizeof($_POST["mailID"]) > 0)
-    {
+if ($delete_selected === "Delete Selected"){
+  if (sizeof($mail_id) > 0){
       $query = "DELETE FROM mail WHERE send_to='".$_SESSION['username']."' AND id IN (";
 
       $commaBit = false;
-      foreach ($_POST["mailID"] AS $key => $value)
-	{
+      foreach ($mail_id AS $key => $value){
 	  if ($commaBit)
 	    $query .= ",";
 	  else

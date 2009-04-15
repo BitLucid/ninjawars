@@ -13,8 +13,8 @@ include "interface/header.php";
 
 <?php
 $turn_cost = 1;
-$attacked  = $_GET["attacked"];
-$victim    = $_GET["victim"];
+$attacked  = in('attacked');
+$victim    = in('victim');
 
 if(getTurns($username) > 0)
 {

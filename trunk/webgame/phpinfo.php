@@ -1,5 +1,5 @@
 <?
-if ($_GET['go']==1)
+if (in('go')==1)
 {
 	phpinfo();
 }

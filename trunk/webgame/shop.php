@@ -7,12 +7,13 @@ $page_title = "Shop";
 include "interface/header.php";
 
 $description = "";
+$in_purchase = in('purchase');
+$in_quantity = in('quantity');
+$item = in('item');
 
-if (isset($_POST['purchase']) &&  $_POST['purchase'] == 1)
+if ($in_purchase == 1)
 {
   $gold = getGold($username);
-
-  $item = $_POST['item'];
 
   if ($item == "Fire Scroll")    { $current_item_cost = 175;}
   if ($item == "Ice Scroll")     { $current_item_cost = 125;}
@@ -21,7 +22,7 @@ if (isset($_POST['purchase']) &&  $_POST['purchase'] == 1)
   if ($item == "Stealth Scroll") { $current_item_cost = 150;}
   if ($item == "Dim Mak")        { $current_item_cost = 10000;}
   
-  $quantity = intval($_POST['quantity']);
+  $quantity = intval($in_quantity);
   
   $grammar="";
 

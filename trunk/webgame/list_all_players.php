@@ -148,15 +148,15 @@ $rank = ($rank > 0 ? $rank : $totalrows+1);
 if ($searched > 0){
   $page = ceil($searched/$record_limit);
 } else if ($page == "searched") {
-  $page = (!isset($_GET['page']) || $_GET['page'] == "" ? 1 : $_GET['page']);
+  $page = in('page', 1);
 } else {
   if (!$rank_spot) {
 	  $rank_spot = $rank;
 	} else {
 		$rank_spot = ($rank_spot > 0 ? $rank_spot : $totalrows+1);
 	}
-  $page       = (!isset($_GET['page']) || $_GET['page'] == "" ? ceil(($rank_spot-$dead_count)/$record_limit) : $_GET['page']);
-  if (!isset($_GET['page']) || $_GET['page'] == ""){
+  $page = in('page', ceil(($rank_spot-$dead_count)/$record_limit));
+  if ($page == ""){
       $page       = ($dead_count > $rank_spot ? 1 : $page);
     }
 }

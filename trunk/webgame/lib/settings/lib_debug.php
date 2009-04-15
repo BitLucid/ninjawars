@@ -14,9 +14,10 @@ check_for_debug();
  
  
 function check_for_debug(){
-	if (isset($_GET['debug']) && $_GET['debug'] == 'on'){
+    $dbg = in('debug');
+	if ($dbg == 'on'){
 		$_COOKIE['debug'] == true;
-	} else if (isset($_GET['debug']) && $_GET['debug'] == 'off'){
+	} elseif ($dbg == 'off'){
 		$_COOKIE['debug'] == false;
 	}
 }

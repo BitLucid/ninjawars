@@ -1,9 +1,10 @@
 <?php
-$nextlevel = $_REQUEST['nextlevel'];
-$attacker_level = $_REQUEST['attacker_level'];
-$starting_attackee_health = $_REQUEST['starting_attackee_health'];
-$killpoints = $_REQUEST['killpoints'];
-$duel = $_REQUEST['duel'];
+if(!DEBUG) {die();}
+$nextlevel = in('nextlevel');
+$attacker_level = in('attacker_level');
+$starting_attackee_health = in('starting_attackee_health');
+$killpoints = in('killpoints');
+$duel = in('duel');
 
 
 echo "<a href=\"chart.php\">Upgrade Chart</a><hr />\n";

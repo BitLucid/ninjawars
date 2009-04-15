@@ -12,10 +12,10 @@ include "interface/header.php";
 <hr  />
 
 <?php
-$confirm     = $_GET['confirm'];
-$clan_name   = $_GET['clan_name'];
-$clan_joiner = $_GET['clan_joiner'];
-$passw       = $_POST['passw'];
+$confirm     = in('confirm');
+$clan_name   = in('clan_name');
+$clan_joiner = in('clan_joiner');
+$passw       = in('passw');
 $random = rand(1001, 9990);
 
 echo "$clan_joiner has requested to join your clan, $clan_name.<br />\n";

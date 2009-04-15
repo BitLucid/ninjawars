@@ -12,18 +12,14 @@ include "interface/header.php";
 <br /><br />
 
 <?php
-$to = $_GET['to'];
-if ($_GET['to'] == "") {$to = $_POST['to'];}
-
+$to = in('to');
+$messenger = in('messenger');
+$message   = in('message', null, 'toMessage'); // Special filtering to a message.
 
 if ($to == "") { die("This message has no recipient.\n");}
-$messenger = htmlentities(strip_tags($_GET['messenger']));
-$message   = (isset($_REQUEST['message'])? $filter->forMail($_REQUEST['message']) : NULL);
-
 if ($message == "") {die("Your message was blank.\n");}
 
-if ($messenger == 1)
-{
+if ($messenger == 1){
   if ($to == "SysMsg") {die("SysMsg is a bot, do not email SysMsg.\n");}
 
 	if ($to == "clansend")

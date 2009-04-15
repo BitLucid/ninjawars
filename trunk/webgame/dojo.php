@@ -13,12 +13,8 @@ $classChangeCost = 20; // *** Kills
 $classChangeLevelReq = 6;
 $class_array = array('Black'=>'Red','Red'=>'White','White'=>'Blue','Blue'=>'Black');
 
-
-$dimmak_sequence = (isset($_GET['dimmak_sequence']) ? $_GET['dimmak_sequence'] :  (isset($_POST['dimmak_sequence']) ? $_POST['dimmak_sequence'] : ''));
-$classChangeSequence = (isset($_GET['classChangeSequence']) ? $_GET['classChangeSequence'] : (isset($_POST['classChangeSequence']) ? $_POST['classChangeSequence'] : ''));
-
-//$sql->Update("UPDATE players SET kills=900,level=21 WHERE uname='tchalvak'");            //Temporary
-//$sql->Update("UPDATE players SET kills=900,level=21 WHERE uname='testtest'");            //Temporary
+$dimmak_sequence = in('dimmak_sequence', '');
+$classChangeSequence = in('classChangeSequence');
 ?>
   
 <div class="brownTitle">Dojo</div>
@@ -109,8 +105,8 @@ echo "<a href=\"chart.php\">Upgrade Chart</a><hr />\n";
 $MAX_LEVEL = 250;
 
 $nextlevel = getLevel($username) + 1;
-
-if (isset($_POST['upgrade']) && $_POST['upgrade'] == 1)  // *** If they requested an upgrade ***
+$in_upgrade = in('upgrade');
+if ($in_upgrade && $in_upgrade == 1)  // *** If they requested an upgrade ***
 {
   if ($nextlevel>$MAX_LEVEL)
     {

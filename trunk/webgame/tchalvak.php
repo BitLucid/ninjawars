@@ -1,4 +1,5 @@
 <?php
+if(!DEBUG) { die(); } // Development side only.
 $alive      = false;
 $private    = false;
 $quickstat  = false;
@@ -12,9 +13,9 @@ include "interface/header.php";
 <hr  />
 
 <?php
-$command = $_POST['command'];
-$message = $_POST['message'];
-$player_to_confirm = $_GET['player_name'];
+$command = in('command');
+$message = in('message');
+$player_to_confirm = in('player_name');
 
 echo "BOTH WEBGAME AND NWTEST:<br />";
 

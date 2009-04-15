@@ -30,7 +30,7 @@ $description1 = "<div class=\"description\">\n".
 
 $description = $description1;
 
-$worked = (isset($_POST['worked']) ? intval($_POST['worked']) : 0);
+$worked = intval(in('worked'));
 if ($worked > 0)
 {
   $turns = getTurns($username);

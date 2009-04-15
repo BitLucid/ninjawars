@@ -15,7 +15,8 @@ Shop: Prices subject to change.<br /><br />
 <?php
 $gold = getGold($username);
 
-$item = $_POST['item'];
+$item = in('item');
+$quantity = intval(in('quantity'));
 
 if ($item == "Fire Scroll")    { $current_item_cost = 200;}
 if ($item == "Ice Scroll")     { $current_item_cost = 125;}
@@ -24,15 +25,10 @@ if ($item == "Speed Scroll")   { $current_item_cost = 250;}
 if ($item == "Stealth Scroll") { $current_item_cost = 300;}
 if ($item == "Dim Mak")        { $current_item_cost = 10000;}
 
-$quantity = intval($_POST['quantity']);
-
-if (!$quantity || $quantity == 1)
-{
+if (!$quantity || $quantity == 1){
   $quantity = 1;
   $grammar = " has";
-}
-else
-{
+} else {
   $grammar = "s have";
 }
 

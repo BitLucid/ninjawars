@@ -6,10 +6,17 @@ $quickstat  = "viewinv";
 
 include "interface/header.php";
 
-$deleteAccount = (isset($_POST['deleteaccount']) && $_POST['deleteaccount']==1? 1 : null); // *** To verify that the delete request was made.
-$changePass = (isset($_POST['changepass']) && $_POST['changepass'] == 1? 1 : null);
-$newPass = (isset($_POST['newpass'])? $_POST['newpass'] : NULL);
-$passW = (isset($_POST['passw'])? $_POST['passw'] : NULL); // *** To verify whether there's a password put in.
+// *** To verify that the delete request was made.
+$in_delete_account = in('deleteaccount');
+$deleteAccount = ($in_delete_account && $in_delete_account==1? 1 : null);
+
+$in_changePass = in('changepass');
+$changePass = ($in_changePass && $in_changePass == 1? 1 : null);
+
+$newPass = in('newpass', null, 'toPassword');
+$passW = in('passw', null, 'toPassword'); // *** To verify whether there's a password put in.
+$changeprofile = in('changeprofile');
+$newprofile = in('newprofile');
 
 echo "<span class=\"brownHeading\">Your Stats</span>\n";
 
@@ -44,11 +51,8 @@ else if  ($deleteAccount)
       echo "</form>\n";
     }
 }
-else if (isset($_POST['changeprofile']) && $_POST['changeprofile'] == 1)
-{
-  $newprofile = $_POST['newprofile'];
-  if ($newprofile != "")
-    {
+else if ($changeprofile == 1){
+  if ($newprofile != ""){
       $sql->Update("UPDATE players SET messages = '".pg_escape_string($newprofile)."' WHERE uname = '$username'");
       $affected_rows = $sql->a_rows;
       

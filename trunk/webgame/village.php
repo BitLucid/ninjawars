@@ -12,10 +12,10 @@ include "interface/header.php";
 echo "<a href=\"village.php?chatlength=50\">Refresh</a>\n";
 echo "<br />\n";
 
-$command = (isset($_POST['command'])? $_POST['command'] : NULL);
-$message = (isset($_POST['message'])? $filter->forChat($_POST['message']) : NULL);
+$command = in('command');
+$message = in('message', null, 'forChat');
 // *** If a message does get posted, it becomes sanitized.
-$chatlength = (isset($_GET['chatlength']) && is_numeric($_GET['chatlength']) ? $_GET['chatlength'] : 100);
+$chatlength = in('chatlength', 100, 'toInt'); // Default to 100.
 ?>
 
 <script type="text/javascript">
@@ -27,7 +27,7 @@ setInterval("refreshpage()",300*1000);
 </script>
 
 <?
-if (isset($_SESSION['username']))
+if (get_username();)
 {
 	echo "<form id=\"post_msg\" action=\"village.php\" method=\"post\" name=\"post_msg\">\n";
 	echo "Message: <input id=\"message\" type=\"text\" size=\"40\" maxlength=\"1000\" name=\"message\" class=\"textField\" />\n";

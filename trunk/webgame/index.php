@@ -13,7 +13,7 @@ if($logout){ // When a logout action is requested
 } elseif ($is_logged_in){ // When user is already logged in.
 	$logged_in['success'] = $is_logged_in;
 } elseif($login) { // Only login if not currently logging out.
-	$pass = in('pass', null, 'no filter'); // Specially escaped password input.
+	$pass = in('pass', null, 'toPassword'); // Specially escaped password input.
 	$logged_in = login_user(in('user'), $pass);
 	$is_logged_in = $logged_in['success'];
 }
@@ -36,6 +36,7 @@ if($is_logged_in){
     $main_src = 'list_all_players.php';
 }
 
+// TODO: Use output buffering via ob_start(), ob_flush_clean() and the like.
 // TODO: Abstract the display or don't display toggles to just be booleans or integers.
 // TODO: Change which items get toggled expanded when login occurs with the javascript.
 

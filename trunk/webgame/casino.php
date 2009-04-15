@@ -20,7 +20,7 @@ You walk towards the only table with an attendant. He shows you a shiny coin wit
 <hr />
 
 <?php
-$bet = (isset($_POST['bet']) ? intval($_POST['bet']) : 0);
+$bet = intval(in('bet'));
 
 echo "Welcome to the Casino, $username!<br />\n";
 

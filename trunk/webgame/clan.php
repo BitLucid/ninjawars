@@ -15,11 +15,11 @@ include "interface/header.php";
 <?php
 $command       = in('command');
 $process       = in('process');
-$clan_name     = (isset($_GET['clan_name']) ? $_GET['clan_name'] : '');
-$new_clan_name = (isset($_GET['new_clan_name']) ? $_GET['new_clan_name'] : '');
-$sure          = (isset($_GET['sure']) ? $_GET['sure'] : '');
-$kicked        = (isset($_GET['kicked']) ? $_GET['kicked'] : '');
-$person_invited= (isset($_GET['person_invited']) ? $_GET['person_invited'] : '');
+$clan_name     = in('clan_name', '');
+$new_clan_name = in('new_clan_name', '');
+$sure          = in('sure', '');
+$kicked        = in('kicked', '');
+$person_invited= in('person_invited', '');
 $clan          = getClan($username);
 $viewer_level  = getLevel($username);
 $clan_creation_level_requirement = 15;

@@ -12,17 +12,17 @@ include "interface/header.php";
 <hr />
 
 <?php
-$healed      = (isset($_POST['healed']) ? $_POST['healed'] : null);
-$poisoned    = (isset($_POST['poisoned']) ? $_POST['poisoned'] : null);
-$restore     = (isset($_REQUEST['restore']) ? $_REQUEST['restore'] : null);
-$max_heal    = (isset($_REQUEST['max_heal']) ? $_REQUEST['max_heal'] : null);
+$healed      = in('healed');
+$poisoned    = in('poisoned');
+$restore     = in('restore');
+$max_heal    = in('max_heal');
 $userLevel    =getLevel($username);
 $startingHealth  =getHealth($username);
 $startingGold  =getGold($username);
 $startingKills  = getKills($username);
 $startingTurns  = getTurns($username);
 $level  = getLevel($username);
-$heal_points = (isset($_POST['heal_points']) ? intval($_POST['heal_points']) : null);  // The pointwise healing method.
+$heal_points = (in('heal_points') ? intval(in('heal_points') : null);  // The pointwise healing method.
 
 // *** 
 $freeResLevelLimit = 6;

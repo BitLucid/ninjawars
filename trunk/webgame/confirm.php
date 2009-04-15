@@ -13,12 +13,13 @@ include "interface/header.php";
 
 <?php
 
-$admin_override_pass = 'WeAllowIt'; // Just a weak passphrase for confirming players.
-$admin_override_request = (isset($_REQUEST['admin_override'])? $_REQUEST['admin_override'] : null );
+$admin_override_pass = 'WeAllowIt'; // Just a weak passphrase for simply confirming players.
+$admin_override_request = in('admin_override');
 $acceptable_admin_override = ($admin_override_pass === $admin_override_request ? true : false);
+$confirm   = in('confirm');
+$user_to_confirm = in('username');
 
-$confirm   = $_GET['confirm'];
-$user_to_confirm = (isset($_GET['username'])? $_GET['username'] : null);
+
 $sql->QueryRow("SELECT player_id, uname, health, strength, gold, messages, kills, turns, confirm, confirmed, email, class, level, status, member, days, ip, bounty, clan, clan_long_name, created_date FROM players WHERE uname = '".$user_to_confirm."'");
 $check     = $sql->data['confirm'];
 //var_dump($check);
