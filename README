@@ -1,8 +1,13 @@
 ------------Ninjawars repository-------------
+The source code repository for the ninjawars.net web game.
+
 
 For licensing information read ./trunk/webgame/staff.php (Creative Commons License)
 
-Make web commits on github.com, just search github for "ninjawars".  To contribute on github:
+
+
+--Contributing--
+You can make web commits on github.com, just search github for "ninjawars".  To contribute on github:
 For simple contribution/collaboration:
 -Find the file or code that you want to suggest a fix for, and make a comment with the fixed code, or just the ggeneral process to acheive the fix.
 
