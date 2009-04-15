@@ -54,9 +54,9 @@ class Filter
 	 * aren't effected, validate_password should limit the possibilities further.
 	**/
 	function toPassword($dirty){
-	    // TODO: should strip out all Only strip out sql-problematic characters, ' # ` and "
-	    // currently only actually strips apostrophes.
-	    return preg_replace("/[\']/", "", (string) $dirty);
+	    // should strip out all sql-problematic characters, ' # ` ; and "
+	    $dirty = preg_replace("/[^\w\d_\+\.\&\s\!\?\,\=\*\%\(\)\:\@\/]/", "", (string) $dirty);
+	    return $dirty;
 	}
 	
 	function forSql($dirty){
@@ -94,7 +94,7 @@ class Filter
 		$dirty = substr(htmlentities($dirty), 0, ($limit? $limit : $default_message_limit));
 		// Custom replacement of the apostrophe.
 		$dirty = preg_replace("/[\']/", "&apos;", (string) $dirty);
-		// Replace everything else that isn't in the character groups listed.
+		// Whitelist replace everything else that isn't in the character groups listed.
 		$dirty = preg_replace("/[^\w\d_\-\+\.\&\;\s\!\?\,\=\*\%\(\)\:\@\/]/", "", (string) $dirty);
 		// Replace urls with anchor hrefs.
 		$dirty = $this->replace_urls($dirty);
@@ -127,13 +127,13 @@ class Filter
 		return $this->toMessage($dirty);
 	}
 	
-	// Replaces occurances of http:// with links.
+	// Replaces occurances of http://whatever with links (in blank tab).
 	function replace_urls($string){
 	    $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
 	    $port = "(:\d{1,})?";
 	    $path = "(\/[^?<>\#\"\s]+)?";
 	    $query = "(\?[^<>\#\"\s]+)?";
-	    return preg_replace("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "<a href='$1'>$1</a>", $string);
+	    return preg_replace("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "<a target='_blank' href='$1'>$1</a>", $string);
 	}
 	
 	
