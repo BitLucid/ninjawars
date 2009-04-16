@@ -19,9 +19,9 @@ $starting_referral = in('referrer');
 $enteredName = in('send_name', '');
 $enteredEmail = in('send_email', '');
 $enteredClass = in('send_class', '');
-$enteredReferral = (isset($_REQUEST['referred_by']) ? htmlentities($_REQUEST['referred_by']) : $starting_referral);
+$enteredReferral = in('referred_by', $starting_referral);
 $enteredPass = in('key', null);
-$submitted = (isset($_REQUEST['submit']) ? $_REQUEST['submit'] : null);
+$submitted = in('submit');
 
 include "interface/header.php";
 
@@ -58,7 +58,6 @@ function get_whitelisted_emails(){
 // Return 1 if the email is a blacklisted email, 0 otherwise.
 function preconfirm_some_emails($email){
 	// Made the default be to auto-confirm players.
-	// TODO: Put player-led multi-checking into play.
 	$res = 1;
 	$blacklisted_by = get_blacklisted_emails();
 	$whitelisted_by = get_whitelisted_emails();
