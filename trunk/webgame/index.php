@@ -36,13 +36,14 @@ if($is_logged_in){
     $main_src = 'list_all_players.php';
 }
 
-// TODO: Use output buffering via ob_start(), ob_flush_clean() and the like.
 // TODO: Abstract the display or don't display toggles to just be booleans or integers.
 // TODO: Change which items get toggled expanded when login occurs with the javascript.
 // TODO: Make sure that all the password modifying changes are secure.
-// TODO: Delete beyond a certain limit of entries in levelling_log and dueling_log 
 // TODO: insert the player values into the players_backup table nightly.
+// TODO: Delete beyond a certain limit of entries in levelling_log dueling_log, and players_backup (5*players count?)
 // TODO: Make the logout not header redirect.
+// TODO: Make default filtering be toWord, and change item-related in()s to deal with their double word.
+// TODO: Put player-led multi-checking into play.
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
@@ -129,7 +130,10 @@ if($is_logged_in){
 
 <?php if($login_error){ ?>
 <div class="error">
-	That password/username combination was incorrect.  Remember that usernames are case sensitive.
+	That password/username combination was incorrect.  Be aware that usernames are case sensitive.  
+	Or request help with 
+	<a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&action=display&thread=1051'>login issues</a>
+	on the forum.
 </div>
 <?php } ?>
 

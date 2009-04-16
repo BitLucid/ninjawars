@@ -41,6 +41,12 @@ class Filter
 		return preg_replace("[^A-Za-z0-9_\-]", "", (string) $dirty);
 	}
 	
+	// Can be used as the default solution for the in() function.
+	function toDefault($dirty)
+	{
+	    return toText($dirty);
+	}
+	
 	// This is the default non-user-message filtering.
 	// Only needs to cover fewer eventualities: spaces, emails and usernames, digits,
 	// and standard urls.
@@ -55,7 +61,7 @@ class Filter
 	**/
 	function toPassword($dirty){
 	    // should strip out all sql-problematic characters, ' # ` ; and "
-	    $dirty = preg_replace("/[^\w\d_\+\.\&\s\!\?\,\=\*\%\(\)\:\@\/]/", "", (string) $dirty);
+	    $dirty = preg_replace("/[^\w\d_\+\.\&\s\!\?\,\=\*\(\)\:\@\/]/", "", (string) $dirty);
 	    return $dirty;
 	}
 	
