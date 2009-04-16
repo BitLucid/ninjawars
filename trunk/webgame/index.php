@@ -1,6 +1,7 @@
 <?php
 require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 // Licensed under the creative commons license.  See the staff.php page for more detail.
+ob_start();
 
 $login = (in('action') == 'login'? true : false); // Request to login.
 $logout = in('logout');
@@ -9,7 +10,6 @@ $login_error = false;
 
 if($logout){ // When a logout action is requested
 	logout(); // essentially just kill the session.
-	// TODO: Make the logout not header redirect?
 } elseif ($is_logged_in){ // When user is already logged in.
 	$logged_in['success'] = $is_logged_in;
 } elseif($login) { // Only login if not currently logging out.
@@ -39,7 +39,10 @@ if($is_logged_in){
 // TODO: Use output buffering via ob_start(), ob_flush_clean() and the like.
 // TODO: Abstract the display or don't display toggles to just be booleans or integers.
 // TODO: Change which items get toggled expanded when login occurs with the javascript.
-
+// TODO: Make sure that all the password modifying changes are secure.
+// TODO: Delete beyond a certain limit of entries in levelling_log and dueling_log 
+// TODO: insert the player values into the players_backup table nightly.
+// TODO: Make the logout not header redirect.
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
