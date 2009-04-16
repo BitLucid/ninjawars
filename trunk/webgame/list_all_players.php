@@ -108,8 +108,6 @@ display_search_form($hide, $page, $searched, $dead_count);
 if($hide != 'dead'){
     $dead_count = 0; // Set the count of dead rows to zero for later listing.
 }
-
-
 // Display the clear search and create the sql search params.
 $where_clause = "";
 if ($searched != ""){ // *** Search section
@@ -135,9 +133,7 @@ if ($searched != ""){ // *** Search section
     $where_clause .= " AND alive = true";
   }
 }
-
 echo "<p>\n";
-
 // Run the players with or without a search requirement.
 $record_limit = 20; // *** The number of players that gets shown per page.
 $query_count  = "SELECT count(player_id) FROM rankings ".$where_clause;
@@ -160,6 +156,9 @@ if ($searched > 0){
       $page       = ($dead_count > $rank_spot ? 1 : $page);
     }
 }
+
+
+
 
 
 

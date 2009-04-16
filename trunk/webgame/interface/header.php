@@ -1,6 +1,6 @@
 <?php
 require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php"); // *** Absolute path include of everything.
-ob_start();
+ob_start(null, 1); // File buffer output in chunks.
 // General utility objects.
 $filter = new Filter(); // *** Creates the filters for later use.
 $sql = new DBAccess();

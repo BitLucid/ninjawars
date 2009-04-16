@@ -110,7 +110,7 @@ function test_input(){
 	assert($res == $with_gtlt_encoded);
 	
 	$start = "I like emails like tchalvakspam@gmail.com and urls like http://ninjawars.net in my messages.";
-	$with_urls = "I like emails like tchalvakspam@gmail.com and urls like <a href='http://ninjawars.net'>http://ninjawars.net</a> in my messages.";
+	$with_urls = "I like emails like tchalvakspam@gmail.com and urls like <a target='_blank' href='http://ninjawars.net'>http://ninjawars.net</a> in my messages.";
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='toMessage', $TEST);
 	assert($res == $with_urls);
