@@ -39,7 +39,7 @@ if($is_logged_in){
 // TODO: Abstract the display or don't display toggles to just be booleans or integers.
 // TODO: Change which items get toggled expanded when login occurs with the javascript.
 // TODO: Make sure that all the password modifying changes are secure.
-// TODO: insert the player values into the players_backup table nightly.
+// TODO: create lib_deity backup players function, copy players table or as insert.
 // TODO: Delete beyond a certain limit of entries in levelling_log dueling_log, and players_backup (5*players count?)
 // TODO: Make the logout not header redirect.
 // TODO: Make default filtering be toWord, and change item-related in()s to deal with their double word.
