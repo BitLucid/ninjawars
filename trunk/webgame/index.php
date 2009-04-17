@@ -44,6 +44,7 @@ if($is_logged_in){
 // TODO: Make the logout not header redirect.
 // TODO: Make default filtering be toWord, and change item-related in()s to deal with their double word.
 // TODO: Put player-led multi-checking into play.
+// TODO: Limit quickstats js refresh by last-occurred.
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
