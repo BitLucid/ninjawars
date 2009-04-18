@@ -1,7 +1,14 @@
 <?php
+require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 // lib_auth.php
 
+/**
+ * Login the user and delegate the setup if login is valid.
+**/
 function login_user($user, $pass){
+    $filter = new Filter();
+    $user = $filter->toUsername($user);
+    $pass = $filter->toPassword($pass);
 	$success = false;
 	$error = 'That password/username combination was incorrect.';
 	if($user != '' && $pass != ''){
@@ -22,6 +29,28 @@ function login_user($user, $pass){
 	}
 	// Redirect if the login doesn't work.
 	return array('success' => $success, 'login_error' => $error);
+}
+
+/**
+ * Just do a check whether the input username and password is valid
+ * @return boolean
+**/
+function is_authentic($user, $pass){
+    $filter = new Filter();
+    $user = $filter->toUsername($user);
+    $pass = $filter->toPassword($pass);
+	$res = false;
+	if($user != '' && $pass != ''){
+		$sql = new DBAccess();
+		$q = "select uname, player_id from players where lower(uname) = 
+			lower('".$user."') and pname = '".$pass."' and confirmed = 1 limit 1";
+		$results = $sql->QueryAssoc($q);
+		$rows = $sql->getRowCount();
+		if(1 == $rows){
+			$res = true;
+		}
+	}
+	return $res;    
 }
 
 /**
@@ -94,15 +123,18 @@ function setup_logged_in($player_id, $username){
 
 function validate_password($send_pass){
 	$error = null;
-	if ($send_pass != htmlentities($send_pass)){  //  Throws error if password has html elements.
+	$filter = new Filter();
+	if ($send_pass != htmlentities($send_pass) 
+	    || $send_pass != $filter->toPassword($send_pass)){  //  Throws error if password has html elements.
 		$error = "Phase 2 Incomplete: Passwords can only have spaces, underscores, numbers, and letters.<hr />\n";
-	}	
+	}
 	return $error;
 }
 
 
 function validate_username($send_name){
 	$error = null;
+	$filter = new Filter();
 	if (substr($send_name,0,1)!=0 || substr($send_name,0,1)=="0"){  // Case the first char isn't a letter???
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a number.\n";
 	} else if (strlen($send_name) >= 21){   // Case string is greater or equal to 21.
@@ -111,8 +143,8 @@ function validate_username($send_name){
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a space.";
 	} else if ($send_name != htmlentities($send_name) 
 			|| str_replace(" ","%20",$send_name) != urlencode($send_name) 
-			|| !eregi('^[a-zA-Z0-9_-]*$', $send_name)){
-		//Checks whether the name is different from the html stripped version, or from url-style version, or regex search.
+			|| $send_name != $filter->toUsername($send_name)){
+		//Checks whether the name is different from the html stripped version, or from url-style version, or matches the filter.
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." should only contain letters, numbers, and underscores.";
 	}
 	return $error;

@@ -9,7 +9,7 @@ $is_logged_in = is_logged_in();
 $login_error = false;
 
 if($logout){ // When a logout action is requested
-	logout(); // essentially just kill the session.
+	logout(); // essentially just kill the session, and don't redirect.
 } elseif ($is_logged_in){ // When user is already logged in.
 	$logged_in['success'] = $is_logged_in;
 } elseif($login) { // Only login if not currently logging out.
@@ -41,7 +41,6 @@ if($is_logged_in){
 // TODO: Make sure that all the password modifying changes are secure.
 // TODO: create lib_deity backup players function, copy players table or as insert.
 // TODO: Delete beyond a certain limit of entries in levelling_log dueling_log, and players_backup (5*players count?)
-// TODO: Make the logout not header redirect.
 // TODO: Make default filtering be toWord, and change item-related in()s to deal with their double word.
 // TODO: Put player-led multi-checking into play.
 // TODO: Limit quickstats js refresh by last-occurred.

@@ -16,11 +16,11 @@ $private    = false;
 $quickstat  = false;
 $page_title = "Sign Up";
 $starting_referral = in('referrer');
-$enteredName = in('send_name', '');
+$enteredName = in('send_name', '', 'no filter');
 $enteredEmail = in('send_email', '');
 $enteredClass = in('send_class', '');
 $enteredReferral = in('referred_by', $starting_referral);
-$enteredPass = in('key', null);
+$enteredPass = in('key', null, 'no filter');
 $submitted = in('submit');
 
 include "interface/header.php";
@@ -44,6 +44,7 @@ if ($submitted) {
 if (!$submit_successful) { 
 	display_signup_form($enteredName, $enteredEmail, $enteredClass, $enteredReferral); 
 } // *** Displays form.
+
 
 // Gives the blacklisted emails, should eventually be from a table.
 function get_blacklisted_emails(){

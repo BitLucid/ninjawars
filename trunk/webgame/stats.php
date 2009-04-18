@@ -16,33 +16,28 @@ $changePass = ($in_changePass && $in_changePass == 1? 1 : null);
 $newPass = in('newpass', null, 'toPassword');
 $passW = in('passw', null, 'toPassword'); // *** To verify whether there's a password put in.
 $changeprofile = in('changeprofile');
-$newprofile = in('newprofile');
+$newprofile = in('newprofile', null, 'toMessage');
+$username = get_username();
 
 echo "<span class=\"brownHeading\">Your Stats</span>\n";
 
 echo "<p>\n";
 
-if  ($changePass)
-{
-  if (trim($newPass) != "") // *** To enforce non-blank passwords.
-  {
+/*if  ($changePass){
+  if (trim($newPass) != "") { // *** To enforce non-blank passwords.
     $sql->Update("UPDATE players SET pname = '$newPass' WHERE uname = '$username'");
     echo "Password has been changed.\n";
-  }
-  else
-  {
+  } else {
     echo "Can not enter a blank password.\n";
   }
-}
-else if  ($deleteAccount)
-{
-  $verify = $sql->QueryItem("SELECT count(player_id) FROM players WHERE uname = '$username' AND pname = '$passW'");
-  if ($verify == 1) // *** To check that there's only 1 match for that username and password.
-    {
+} else 
+*/
+if  ($deleteAccount) {
+  $verify = false;
+  $verify = is_authentic($username, $passW);
+  if ($verify == true) {// *** To check that there's only 1 match for that username and password.
       pauseAccount($username);
-    }
-  else
-    {
+    } else {
       echo "Please provide your password to confirm.<br />\n";
       echo "<form method=\"POST\" action=\"stats.php\">\n";
       echo "<input id=\"passw\" type=\"password\" maxlength=\"50\" name=\"passw\" class=\"textField\" />\n";
@@ -50,16 +45,12 @@ else if  ($deleteAccount)
       echo "<input type=\"submit\" value=\"Confirm Delete\" class=\"formButton\" />\n";
       echo "</form>\n";
     }
-}
-else if ($changeprofile == 1){
+} else if ($changeprofile == 1){
   if ($newprofile != ""){
       $sql->Update("UPDATE players SET messages = '".pg_escape_string($newprofile)."' WHERE uname = '$username'");
       $affected_rows = $sql->a_rows;
-      
       echo "Profile has been changed.\n";
-    }
-  else
-    {
+    } else {
       echo "Can not enter a blank profile.\n";
     }
 }
@@ -68,15 +59,19 @@ $msg      = $sql->QueryItem("SELECT messages FROM players WHERE uname = '$userna
 $email    = $sql->QueryItem("SELECT email FROM players WHERE uname = '$username'");
 $member   = $sql->QueryItem("SELECT member FROM players WHERE uname = '$username'");
 
+/*
+// Change password option removed as unnecessary, at this point.
 echo "<form action=\"stats.php\" method=\"post\">\n";
 echo "<input type=\"hidden\" name=\"changepass\" value=\"1\" /><br />\n";
-echo "Account Info: $username<br />\n";
-echo "Password: <input type=\"text\" name=\"newpass\" class=\"textField\" /><input type=\"submit\" value=\"<== Change Password\" class=\"formButton\" />\n";
+//echo "Password: <input type=\"password\" name=\"newpass\" class=\"textField\" />
+//    <input type=\"submit\" value=\"<== Change Password\" class=\"formButton\" />\n";
 echo "</form><br />\n";
+*/
 
 echo "<form action=\"stats.php\" method=\"post\">\n";
 echo "<input type=\"hidden\" name=\"changeprofile\" value=\"1\" />\n";
 
+echo "Account Info: $username<br />\n";
 echo "Health: ".getHealth($username)."<br />\n";
 echo "Strength: ".getStrength($username)."<br />\n";
 echo "Gold: ".getGold($username)."<br />\n";
@@ -95,17 +90,13 @@ $status_output = array();
 if ($status['Stealth']) {$status_output[count($status_output)]="Stealthed";}
 if ($status['Poison'])  {$status_output[count($status_output)]="Poisoned";}
 if ($status['Frozen'])  {$status_output[count($status_output)]="Frozen";}
-if (!isset($status_output[0]))
-{
+if (!isset($status_output[0])) {
   if (getHealth($username) == 0) {echo "Dead<br />\n";}
   else if (getHealth($username) < 75) {echo "Injured<br />\n";}
   else {echo "Healthy<br />\n";}
-}
-else
-{
+} else { // Display the statuses.
   $i=0;
-  for ($i=0;$i<count($status_output)-1;$i++)
-    {
+  for ($i=0;$i<count($status_output)-1;$i++){
       echo $status_output[$i].", ";
     }
   echo  $status_output[$i]."<br />\n";

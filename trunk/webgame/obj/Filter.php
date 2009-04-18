@@ -66,6 +66,14 @@ class Filter
 	}
 	
 	/**
+	 * Relatively permissive username filter used during login procedure.
+	 * Must allow: ^[A-Za-z0-9_-]+ alphanumerics, digits, underscores, and dashes.
+	**/
+	function toUsername($dirty){
+	    return preg_replace("/[^\w\d\s_\-]/", "", (string) $dirty);
+	}
+	
+	/**
 	 * Filters an array of ids each to the id filter
 	**/
 	function toIds($dirty){
