@@ -27,7 +27,7 @@ setInterval("refreshpage()",300*1000);
 </script>
 
 <?
-if (get_username();)
+if (get_username())
 {
 	echo "<form id=\"post_msg\" action=\"village.php\" method=\"post\" name=\"post_msg\">\n";
 	echo "Message: <input id=\"message\" type=\"text\" size=\"40\" maxlength=\"1000\" name=\"message\" class=\"textField\" />\n";

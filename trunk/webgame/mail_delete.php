@@ -17,6 +17,7 @@ $delete_all = in('DeleteAll');
 $delete_selected = in('DeleteSelected');
 $mail_id = in('mailID');
 
+
 if ($id != "")
 {
   echo "Message Deleted\n";

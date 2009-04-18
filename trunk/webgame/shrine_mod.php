@@ -22,7 +22,7 @@ $startingGold  =getGold($username);
 $startingKills  = getKills($username);
 $startingTurns  = getTurns($username);
 $level  = getLevel($username);
-$heal_points = (in('heal_points') ? intval(in('heal_points') : null);  // The pointwise healing method.
+$heal_points = (in('heal_points') ? intval(in('heal_points')) : null);  // The pointwise healing method.
 
 // *** 
 $freeResLevelLimit = 6;
