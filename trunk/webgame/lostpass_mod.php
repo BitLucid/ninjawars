@@ -1,4 +1,5 @@
 <?php
+require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 $page_title = "Sending Password";
 $quickstat  = false;
 $private    = false;
@@ -18,7 +19,7 @@ $headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 /* additional headers */
 $headers .= "From: SysMsg <SysMsg@NinjaWars.net>\r\n";
 
-$lost_email = in('email', 'toEmail'); // The default filter allows standard emails.
+$lost_email = in('email', null, 'toEmail'); // The default filter allows standard emails.
 
 $data = $sql->QueryRow("SELECT pname,uname FROM players WHERE lower(email) = lower('$lost_email')");
 $lost_uname = $data[1];
@@ -26,17 +27,16 @@ $lost_pname = $data[0];
 if(!$lost_email){
     echo "<p>Invalid email.</p>";
 } else { // Email was validated.
-    if($lost_uname){
+    /*if($lost_uname){
         echo "Retriving password for: $lost_uname.<br />\n";
-    }
+    }*/
 
-    if ($lost_pname)
-    {
-      echo "Your password will be sent to your email.\n";
-      mail("$lost_email", "NinjaWars Lost Password", "You have requested your password for the account: $lost_uname.<br />\n<br />\n<b>Account Info</b><br />\nUsername: $lost_uname<br />\nPassword: $lost_pname<br />\n<br />\nIf you require any further help, email: Admin@NinjaWars.net","$headers");
-    }
-    else
-    {
+    if (!!$lost_pname && !!$lost_uname){
+      echo "Account information will be sent to your email.\n";
+      mail("$lost_email", "NinjaWars Lost Password", "You have requested your password for the account:
+           $lost_uname.<br />\n<br />\n<b>Account Info</b><br />\nUsername: $lost_uname<br />\nPassword:
+             $lost_pname<br />\n<br />\nIf you require any further help, email: ".ADMIN_EMAIL,"$headers");
+    } else {
       echo "No user with that email exists. Please <a href=\"signup.php\">sign up</a> for an account.<br />\n";
     }
 }
