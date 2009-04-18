@@ -16,12 +16,13 @@ $private    = false;
 $quickstat  = false;
 $page_title = "Sign Up";
 $starting_referral = in('referrer');
-$enteredName = in('send_name', '', 'no filter');
-$enteredEmail = in('send_email', '');
+$enteredName = in('send_name', '', 'toText');
+$enteredEmail = in('send_email', '', 'toText');
 $enteredClass = in('send_class', '');
 $enteredReferral = in('referred_by', $starting_referral);
-$enteredPass = in('key', null, 'no filter');
+$enteredPass = in('key', null, 'toText');
 $submitted = in('submit');
+
 
 include "interface/header.php";
 
@@ -179,12 +180,10 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 		$check_name  = $sql->getRowCount();
 		$sql->QueryItem("SELECT email FROM players WHERE email = '$send_email'");
 		$check_email = $sql->getRowCount();
-		//var_dump($check_name);
-		//var_dump($check_email);
 		
-		// TODO: Make a name validating function.
-		// TODO: Make a password validating function.
 		
+		
+        // Validate the username!		
 		$username_error = validate_username($send_name);
 		
 		if($username_error){
@@ -193,14 +192,18 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 		else  //when all the name requirement errors didn't trigger.
 		{
 			$send_name = trim($send_name);  // Just cuts off any white space at the end.
+			$filter = new Filter();
+			$send_name = $filter->toUsername($send_name); // Filter any un-whitelisted characters.
 	      		echo "Phase 1 Complete: Name passes requirements.<hr />\n";
 	      		
+	      		// Validate the password!
 	      		$password_error = validate_password($send_pass);
 	      		
 	      		if($password_error){
 	      			echo $password_error;
 				} else {	
 					$send_pass = trim($send_pass); // *** Trims any extra space off of the password.
+					$send_pass = $filter->toPassword($send_pass); // Filter any un-whitelisted characters.
 					echo "Phase 2 Complete: Password passes requirements.<hr />\n";
 
 					if (FALSE/* CURRENTLY NO BLOCKED EMAIL SERVICES strstr($send_email, "@") == "@aol.com" || strstr($send_email, "@") == "@netscape.com" || strstr($send_email, "@") == "@aim.com"*/) //Throws error if email from blocked domain.
