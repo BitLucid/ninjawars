@@ -17,7 +17,8 @@ $headers  = "MIME-Version: 1.0\r\n";
 $headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 
 /* additional headers */
-$headers .= "From: SysMsg <SysMsg@NinjaWars.net>\r\n";
+$headers .= "From: NinjawarsNoreply <".SYSTEM_MESSENGER_EMAIL.">\r\n".
+        'Reply-To: '.ADMIN_EMAIL."\r\n";
 
 $lost_email = in('email', null, 'toEmail'); // The default filter allows standard emails.
 
@@ -27,13 +28,10 @@ $lost_pname = $data[0];
 if(!$lost_email){
     echo "<p>Invalid email.</p>";
 } else { // Email was validated.
-    /*if($lost_uname){
-        echo "Retriving password for: $lost_uname.<br />\n";
-    }*/
 
     if (!!$lost_pname && !!$lost_uname){
       echo "Account information will be sent to your email.\n";
-      mail("$lost_email", "NinjaWars Lost Password", "You have requested your password for the account:
+      mail("$lost_email", "NinjaWars Lost Password Request", "You have requested your password for the account:
            $lost_uname.<br />\n<br />\n<b>Account Info</b><br />\nUsername: $lost_uname<br />\nPassword:
              $lost_pname<br />\n<br />\nIf you require any further help, email: ".ADMIN_EMAIL,"$headers");
     } else {
