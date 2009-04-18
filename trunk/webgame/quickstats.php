@@ -19,6 +19,12 @@ $class    = $players_class;
 $bounty   = $players_bounty;
 $status   = $players_status;  //The status variable is an array, of course.
 
+$low_health_css = '';
+if($health<80){
+    // Make health display red if it goes below 80.
+    $low_health_css = " style='color:red;font-weight:bold;'";
+}
+
 
 //$member   = $sql->QueryItem("SELECT member FROM players WHERE uname = '$username'");  //UNUSED IN PAGE
 //$clan   = $players_clan;    //UNUSED IN PAGE
@@ -31,13 +37,7 @@ if ($command != "viewinv") {
   echo "  </td>\n";
   
   echo "  <td>\n";
-  if ($health<80) {  // Makes your health red if you go below 80 hitpoints.
-	echo "<span style=\"color:red;font-weight:bold;\">\n";  
-  }
-  echo    $health."\n";
-  if ($health<80) {
-	echo "</span>\n";  
-  }    
+  echo    "<span ".$low_health_css.">".$health."</span>\n";
 
   echo "  </td>\n";
   echo "</tr>\n";
@@ -83,6 +83,7 @@ if ($command != "viewinv") {
   echo "  </td>\n";
   echo "</tr>\n";
 
+  /*Comment out mail to speed up quickstats.
   $count = $sql->QueryItem("SELECT count(send_to) FROM mail WHERE send_to = '".$_SESSION['username']."' ");
   echo "<tr>\n";
   echo "  <td>\n";
@@ -92,6 +93,7 @@ if ($command != "viewinv") {
   echo    $count."<br />\n";
   echo "  </td>\n";
   echo "</tr>\n";
+  */
 
   echo "</table>\n";
 }
