@@ -1,4 +1,5 @@
 <?php
+// Provides backend system for mail sending based on input sent in.
 $alive      = false;
 $private    = true;
 $quickstat  = false;
@@ -28,12 +29,11 @@ if ($messenger == 1){
       $clan = getClan($_SESSION['username']);
       $sql->Query("SELECT uname FROM players WHERE clan = '$clan'");
 	  $resultSet = $sql->fetchAll(); // *** Store the result set.
-	  foreach($resultSet as $loopClanMember)
-	  {
-			$name = $loopClanMember['uname'];
-			echo "Sending mail to: $name<br />\n";
-			sendMessage($username,$name,$message,$filter=true);
-		}
+	  foreach($resultSet as $loopClanMember) {
+        	$name = $loopClanMember['uname'];
+        	echo "Sending mail to: $name<br />\n";
+        	sendMessage($username,$name,$message,$filter=true);
+        }
 
 		die("<br /><a href=\"mail_read.php\">Go to Your Mail</a><br /><br /><a href=\"clan.php\">Return to Clan Options</a>\n");
 	}

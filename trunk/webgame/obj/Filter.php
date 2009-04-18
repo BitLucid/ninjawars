@@ -65,6 +65,18 @@ class Filter
 	    return $dirty;
 	}
 	
+	/**
+	 * Filters an array of ids each to the id filter
+	**/
+	function toIds($dirty){
+	    if(is_array($dirty)){
+	        foreach($dirty as $key => $dirty_val){
+	            $dirty[$key] = $this->toID($dirty_val);
+	        }
+	    }
+	    return $dirty;
+	}
+	
 	function forSql($dirty){
 	    return $this->sanitize_sql_string($dirty);
 	}

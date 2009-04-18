@@ -14,12 +14,12 @@ include "interface/header.php";
 if (getClan($username) != "")
 {
   echo "<div style=\"border: thin solid white;padding-top: 3;padding-left: 5;padding-bottom: 3;width: 250px;\">\n";
-  echo "Clan Mail\n";
+  echo "<div class='subtitle'>Clan Mail</div>\n";
   echo "<form id=\"clan_msg\" action=\"mail_send.php\" method=\"get\" name=\"clan_msg\">\n";
-  echo "<textarea id=\"message\" cols=\"25\" rows=\"5\" name=\"message\" class=\"textField\" /></textarea>\n";
-  echo "<input id=\"to\" type=\"hidden\" value=\"clansend\" name=\"to\" />\n";
-  echo "<input id=\"messenger\" type=\"hidden\" value=\"1\" name=\"messenger\" />\n";
-  echo "<input type=\"submit\" value=\"Send\" class=\"formButton\" />\n";
+  echo "  <textarea id=\"message\" cols=\"25\" rows=\"5\" name=\"message\" class=\"textField\" /></textarea>\n";
+  echo "  <input id=\"to\" type=\"hidden\" value=\"clansend\" name=\"to\" />\n";
+  echo "  <input id=\"messenger\" type=\"hidden\" value=\"1\" name=\"messenger\" />\n";
+  echo "  <input type=\"submit\" value=\"Send\" class=\"formButton\" />\n";
   echo "</form>\n";
   echo "</div><br /><br />\n";
 }
