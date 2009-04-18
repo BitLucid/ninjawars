@@ -26,7 +26,7 @@ if($delete_all === "Delete All"){
     $deleted = delete_mail($mail_ids);
 }
 
-if($deleted){
+if($deleted){ // Display message with the number deleted.
     echo "<div id='mail_deleted' class='notice'>".$deleted." mail entries deleted.</div>";
 }
 

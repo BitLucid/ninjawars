@@ -1,4 +1,5 @@
 <?php
+require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 $alive      = false;
 $private    = false;
 $quickstat  = false;
@@ -13,51 +14,51 @@ include "interface/header.php";
 
 <?php
 $confirm     = in('confirm');
-$clan_name   = in('clan_name');
+$username = get_username();
+$clan_name   = getClan($username);
+$clan_l_name = getClanLongName($username);
 $clan_joiner = in('clan_joiner');
-$passw       = in('passw');
+$agree       = in('agree');
 $random = rand(1001, 9990);
 
-echo "$clan_joiner has requested to join your clan, $clan_name.<br />\n";
-
-if ($passw == "")
-{
-  echo "<form action=\"clan_confirm.php?clan_name=$clan_name&clan_joiner=$clan_joiner&confirm=$confirm\" method=\"post\">\n";
-  echo "Your Password: <input id=\"passw\" type=\"password\" name=\"passw\" class=\"textField\" /><input type=\"submit\" value=\"Accept Request\" /><br />\n";
-}
-else 
-{
-$l_result= $sql->Query("SELECT pname FROM players WHERE uname='$clan_name' AND pname='$passw'");
-$login = $sql->rows;
- $check = $sql->QueryItem("SELECT confirm FROM players WHERE uname = '$clan_joiner'");
- $current_clan = $sql->QueryItem("SELECT clan FROM players WHERE uname = '$clan_joiner'");
-
- echo "<div style=\"border:1 solid #000000;font-weight: bold;\">\n";
-
- if ($current_clan != "")
- {
-  echo "This member is already part of a clan.\n";
-  echo "<br /><br />\n";
-  echo "<a href=\"/webgame/\">Return to Main</a>\n";
- }
- else if ($confirm == $check && $login > 0)
- {
-  echo "Request Accepted.<br />\n";
-  $clan_l_name = getClanLongName($clan_name);
-  if (!$clan_l_name)
-    {
-      $clan_l_name = $clan_name."'s Clan";
+if (!$clan_name){
+    echo "You have no clan.";
+} elseif(!$clan_joiner){
+    echo "There is no potential ninja specified, so the induction cannot occur."; 
+} else {
+    if (!$clan_l_name) {
+        $clan_l_name = $clan_name."'s Clan";
     }
-  $sql->Update("UPDATE players SET clan = '$clan_name',clan_long_name = '$clan_l_name',confirm = '$random' WHERE uname = '$clan_joiner'");
+    echo "$clan_joiner has requested to join your clan, $clan_l_name.<br />\n";
 
-  echo "<br />$clan_joiner is now a member of your clan.<hr />\n";
-  sendMessage($clan_name,$clan_joiner,"CLAN: You have been accepted into $clan_l_name");
- }
-else
- {
-   echo "This clan membership change can not be verified.\n";
- }
-}
+    if (!$agree) {
+      echo "<form action=\"clan_confirm.php?clan_name=$clan_name&clan_joiner=$clan_joiner&confirm=$confirm\" method=\"post\">\n";
+      echo "<input id=\"agree\" type=\"hidden\" name=\"agree\" value='1'/><input type=\"submit\" value=\"Accept Request\" /><br />\n";
+      echo "</form>";
+    } else {
+        $check = $sql->QueryItem("SELECT confirm FROM players WHERE uname = '$clan_joiner'");
+        $current_clan = $sql->QueryItem("SELECT clan FROM players WHERE uname = '$clan_joiner'");
+
+        echo "<div style=\"border:1 solid #000000;font-weight: bold;\">\n";
+
+        if ($current_clan != "") {
+            echo "This member is already part of a clan.\n";
+            echo "<br /><br />\n";
+            echo "<a href=\"/webgame/\">Return to Main</a>\n";
+        } else if (!$check){
+            echo "<p>No such ninja.</p>";
+            echo "<p><a href=\"/webgame/\">Return to Main</a></p>\n";
+        } elseif ($confirm == $check && $agree > 0) {
+            echo "Request Accepted.<br />\n";
+            $sql->Update("UPDATE players SET clan = '$clan_name', clan_long_name = '$clan_l_name', 
+                confirm = '$random' WHERE uname = '$clan_joiner'");
+            echo "<br />$clan_joiner is now a member of your clan.<hr />\n";
+            sendMessage($clan_name,$clan_joiner,"CLAN: You have been accepted into $clan_l_name");
+        } else {
+            echo "This clan membership change can not be verified, please ask the ninja to request joining again.\n";
+        }
+    }
+} // End of else (when clan_name is available).
 
 ?>
 <br /><br />
