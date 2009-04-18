@@ -54,7 +54,12 @@ Alegion - Koi photograph Background - <a href='http://alegion.deviantart.com/'>a
 
 <hr />
 <p>
-Want to join the Ninjawars team? Email <a href="mailto:ninjawarsTchalvak@gmail.com">ninjawarsTchalvak@gmail.com</a>
+Want to join the Ninjawars team? Email <a href="mailto:ninjawarsTchalvak@gmail.com">ninjawarsTchalvak@gmail.com</a>,
+or you can contribute to the source code directly at: 
+<a target='_blank' href="http://github.com/tchalvak/ninjawars/tree/master">http://github.com/tchalvak/ninjawars/tree/master</a> .
+</p>
+<p>
+
 </p>
 <p>
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">
