@@ -5,7 +5,7 @@ $quickstat  = false;
 $page_title = "Quickstats";
 
 include_once("interface/header.php");
-require_once(LIB_ROOT."func/lib_status_output_list.php");
+require_once(LIB_ROOT."specific/lib_status.php");
 
 // *** Turning the header variables into variables for this page.
 $command  = in('command');

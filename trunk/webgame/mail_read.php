@@ -7,13 +7,9 @@ include "interface/header.php";
 require_once(LIB_ROOT."specific/lib_mail.php");
 ?>
 
-<span class="brownHeading">Mail</span>
+<div><span class="brownHeading">Mail</span></div>
 
-<br /><br />
-
-<a href="mail.php">Send Mail</a>
-
-<br /><br />
+<div><a href="mail.php">Send Mail</a></div>
 
 <?php
 $mail_list_length = in('mail_list_length', 20);
@@ -44,6 +40,7 @@ echo "Viewing Messages: 1-".$sql->rows."<br />\n";
 echo "<input id=\"DeleteSelected\" type=\"submit\" value=\"Delete Selected\" name=\"DeleteSelected\" class=\"formButton\" />\n";
 echo "<input id=\"DeleteAll\" type=\"submit\" value=\"Delete All\" name=\"DeleteAll\" class=\"formButton\" />\n";
 echo "<hr />\n";
+echo "<div>";
 
 
 if ($sql->rows == 0){
@@ -89,6 +86,7 @@ if ($sql->rows == 0){
   echo "</table>\n";
 }
 
+echo "</div>"; // Contains the loop.
 echo "</form>\n";
 
 if ($mail_list_length < 200 && $sql->rows != 0 && $i == 20) {

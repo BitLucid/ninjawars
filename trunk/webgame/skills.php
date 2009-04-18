@@ -5,7 +5,7 @@ $quickstat  = "player";
 $page_title = "Your Skills";
 
 include "interface/header.php";
-require_once(LIB_ROOT."func/lib_status_output_list.php"); // statuses for quickstats
+require_once(LIB_ROOT."specific/lib_status.php"); // statuses for quickstats
 ?>
   
 <span class="brownHeading">Skills</span>
