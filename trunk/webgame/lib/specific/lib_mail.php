@@ -4,7 +4,7 @@
 /**
  * Delete an array of ids or all mail for a certain user.
 **/
-function delete_mail(array $ids, $all=false){
+function delete_mail($ids, $all=false){
     $sql = new DBAccess();
     $deleted = 0;
     $username = get_username();
