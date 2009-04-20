@@ -40,13 +40,21 @@ $sql->Update
 );
 
 // ****************************** RESURRECTION CHECK, DEPENDENT UPON RESURRECTION_TIME ****************************
+/* OLD System
 $minimum = 2;
 $by_percent = true;
 $maximum = 4;
+
 $resurrect_info = revive_appropriate_players($minimum, $maximum, $by_percent, $just_testing=false);
 assert($resurrect_info['revived']<$resurrect_info['target_number']);
-$out_display['Players Resurrected'] = $resurrect_info['revived'];
-$out_display['Player Number Targeted for Resurrection'] = $resurrect_info['target_number'];
+*/
+// New system, potentially move to the halfhour, and then half the major_revive_percent?
+$resurrected = revive_players();
+/* @params array('full_max'=>80, 'minor_revive_to'=>100, 'major_revive_percent'=>5,
+ *      'just_testing'=>false)
+*/
+$out_display['Players Resurrected'] = reset($resurrected);
+$out_display['Total Dead'] = end($resurrected);
 
 // Ranking gets done in the 5 minute one now, so no need for it here.
 // ***********************
