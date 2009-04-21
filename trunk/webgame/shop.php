@@ -34,7 +34,7 @@ if ($in_purchase == 1)
     {
       $grammar = "s";
     }
-  
+  $current_item_cost = 0;
   $current_item_cost*=$quantity;
   
   if ($current_item_cost > $gold)

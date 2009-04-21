@@ -28,7 +28,7 @@ $sql->Update("UPDATE players SET turns = turns+2 where turns < ".$maximum_turn_r
 
 // Database connection information here
 $sql->Query("DELETE FROM ppl_online WHERE activity < (now() - interval '".$maxtime."')");
-$out_display['Inactive Browsers Deactivated'] = $sql->a_rows;
+//Skip error logging this for now. $out_display['Inactive Browsers Deactivated'] = $sql->a_rows;
 
 // *** HALF-HOURLY HEAL ***
 $sql->Update
@@ -49,7 +49,8 @@ $resurrect_info = revive_appropriate_players($minimum, $maximum, $by_percent, $j
 assert($resurrect_info['revived']<$resurrect_info['target_number']);
 */
 // New system, potentially move to the halfhour, and then half the major_revive_percent?
-$resurrected = revive_players();
+$params = array('full_max'=>50, 'minor_revive_to'=>200, 'major_revive_percent'=>1);
+$resurrected = revive_players($params);
 /* @params array('full_max'=>80, 'minor_revive_to'=>100, 'major_revive_percent'=>5,
  *      'just_testing'=>false)
 */
@@ -72,7 +73,7 @@ $sql->Update("UPDATE players SET status = status-".STEALTH."  WHERE cast(status&
 // Visual output:
 foreach ($out_display AS $loopKey => $loopRowResult)
 {
-    $res = "<br>Result type: ".$loopKey." yeilded result number: ".$loopRowResult;
+    $res = "<br>Result type: ".$loopKey." yielded result: ".$loopRowResult;
     error_log('DEITY_HOURLY: '.$res);
     echo $res;
 }
