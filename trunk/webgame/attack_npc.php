@@ -40,7 +40,7 @@ if(getTurns($username) > 0) {
 	      echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.\n";
 	    } else {
 	        $just_villager = rand(0,20);
-	      $villager_gold = rand(0,15);    // *** Vilager Gold    ***
+	      $villager_gold = rand(0,20);    // *** Vilager Gold    ***
 	      addGold($username,$villager_gold);
 
 	      echo "The villager is no match for you!<br />\n";
@@ -123,7 +123,7 @@ if(getTurns($username) > 0) {
 	      echo "The Merchant has slain you!<br />\n";
 	      echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br />\n";
 	    } else { // Ninja won the fight.
-	      $merchant_gold   = rand(20,35);  // *** Merchant Gold   ***
+	      $merchant_gold   = rand(20,70);  // *** Merchant Gold   ***
 	      addGold($username,$merchant_gold);
 	      
 	      echo "The merchant is defeated.<br />\n";
@@ -152,7 +152,7 @@ if(getTurns($username) > 0) {
 	      echo "The Guard has slain you!<br />\n";
 	      echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br />\n";
 	    } else {
-	      $guard_gold   = rand(1,$attacker_str+30);           // *** Guard Gold   ***
+	      $guard_gold   = rand(1,$attacker_str+40);           // *** Guard Gold   ***
 	      addGold($username,$guard_gold);
 	      
 	      echo "The guard is defeated!<br />\n";
@@ -179,10 +179,8 @@ if(getTurns($username) > 0) {
 	    {
 	      echo "Thief has slain you!<br />\n";
 	      echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br />\n";
-	    }
-	  else
-	    {
-	      $thief_gold    = rand(0,35);  // *** Thief Gold ***
+	    } else {
+	      $thief_gold    = rand(0,40);  // *** Thief Gold ***
 	      
 	      if ($thief_attack > 30)
 		{
