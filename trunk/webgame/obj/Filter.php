@@ -61,7 +61,7 @@ class Filter
 	**/
 	function toPassword($dirty){
 	    // should strip out all sql-problematic characters, ' # ` ; and "
-	    $dirty = preg_replace("/[^\w\d_\+\.\&\s\!\?\,\=\*\(\)\:\@\/]/", "", (string) $dirty);
+	    $dirty = preg_replace("/[^\w\d_\+\-\.\&\s\!\?\,\=\*\(\)\:\@\/]/", "", (string) $dirty);
 	    return $dirty;
 	}
 	
