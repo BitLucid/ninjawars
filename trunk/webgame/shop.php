@@ -10,55 +10,44 @@ $description = "";
 $in_purchase = in('purchase');
 $in_quantity = in('quantity');
 $item = in('item');
+$grammar ="";
+$username = get_username();
+$gold = either(getGold($username), 0);
+$current_item_cost = 0;
+$quantity = intval($in_quantity);
+if(!$quantity || $quantity < 1){
+    $quantity = 1;
+} else if ($quantity > 1 && $item != "Shuriken"){
+    $grammar = "s";
+}
+$item_costs = array(
+    /*"Dim Mak"=>10000,*/
+    "Speed Scroll"=>225,
+    "Fire Scroll"=>175,
+    "Stealth Scroll"=>150,
+    "Ice Scroll"=>125,
+    "Shuriken"=>50,
+);
 
-if ($in_purchase == 1)
-{
-  $gold = getGold($username);
 
-  if ($item == "Fire Scroll")    { $current_item_cost = 175;}
-  if ($item == "Ice Scroll")     { $current_item_cost = 125;}
-  if ($item == "Shuriken")       { $current_item_cost = 50;}
-  if ($item == "Speed Scroll")   { $current_item_cost = 225;}
-  if ($item == "Stealth Scroll") { $current_item_cost = 150;}
-  if ($item == "Dim Mak")        { $current_item_cost = 10000;}
+if ($in_purchase == 1){
+    $current_item_cost = either($item_costs[$item], 0);
+    $current_item_cost*=$quantity;
   
-  $quantity = intval($in_quantity);
-  
-  $grammar="";
-
-  if (!$quantity || $quantity < 1)
-    {
-      $quantity = 1;
-    }
-  else if ($quantity > 1 && $item != "Shuriken")
-    {
-      $grammar = "s";
-    }
-  $current_item_cost = 0;
-  $current_item_cost*=$quantity;
-  
-  if ($current_item_cost > $gold)
-    {
-      $description.="\"The total comes to $current_item_cost gold,\" the shopkeeper tells you.\n";
-      $description.="<br /><br />\n";
-      $description.="Unfortunately, you do not have that much gold.\n";
-    }
-  else
-    {
+  if ($current_item_cost > $gold){ // Not enough gold.
+      $description.="<p>\"The total comes to $current_item_cost gold,\" the shopkeeper tells you.</p>";
+      $description.="<p>Unfortunately, you do not have that much gold.</p>";
+    } else { // Has enough gold.
       addItem($username,$item,$quantity);
       
-      $description.="The shopkeeper hands over $quantity ".$item.$grammar.".\n";
-      $description.="<br /><br />\n";
-      $description.="\"Will you be needing anything else today?\" he asks you as he puts your gold in a safe.\n";
+      $description.="<p>The shopkeeper hands over $quantity ".$item.$grammar.".</p>";
+      $description.="<p>\"Will you be needing anything else today?\" he asks you as he puts your gold in a safe.</p>";
       
       subtractGold($username,$current_item_cost);
     }
-}
-else
-{
-  $description.="You enter the village shop and the shopkeeper greets you with a watchful eye.\n";
-  $description.="<br /><br />\n";
-  $description.="As you browse his wares he reminds you, \"All prices are subject to change.\"\n";
+} else { // Default, before anything has been bought.
+  $description.="<p>You enter the village shop and the shopkeeper greets you with a watchful eye.</p>";
+  $description.="<p>As you browse his wares he says, \"Don't try anythin' you'd regret.\" and grins.</p>";
 }
 echo "<div class=\"brownTitle\">Shop</div>\n";
 
