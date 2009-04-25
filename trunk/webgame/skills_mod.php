@@ -32,6 +32,9 @@ $ignores_stealth = $skillListObj->getIgnoreStealth($command);
 $self_use = $skillListObj->getSelfUse($command);
 $use_on_target = $skillListObj->getUsableOnTarget($command);
 
+// Check whether the user actually has the needed skill.
+$has_skill = $skillListObj->hasSkill($command);
+
 $starting_turn_cost = $turn_cost;
 assert($turn_cost>=0);
 $turns_to_take = null;  // *** Even on failure take at least one turn.
@@ -72,14 +75,13 @@ $attack_error = $AttackLegal->getError();
 
 if($attack_error){ // Use AttackLegal if not attacking self.
 	echo "<div class='ninja-notice'>$attack_error</div>"; // Display the reason for the attack failure.
-} elseif ( $class == "" || $command == "") {
-	echo "Your class did not match the requested skill.\n";
+} elseif (!$has_skill || $class == "" || $command == "") {
+	echo "You do not have the requested skill.\n";
 } else {
 	// Initial attack conditions are alright.
 	  echo "Preparing to use skill...<br />\n";
 	  $result = "";
 	  
-	  if ($class == "White") {
 	      if ($command == "Sight"){
 		  $covert    = true;
 		  
@@ -125,7 +127,6 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 		      echo "You do not have enough turns to cast $command.\n";
 		    }
 		}
-	    } else if ($class == "Black") {
 			if  ($command == "Steal") {
 			  $covert = true;
 			  
@@ -196,7 +197,6 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 			      echo "You do not have enough turns to cast $command.\n";
 			    }
 			} 
-	    } else if ($class == "Red") {
 	      if ($command == "Fire Bolt") {
 		  
 		  if ($starting_turns >= $turn_cost) {
@@ -215,7 +215,6 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 		      echo "You do not have enough turns to cast $command.\n";
 		    }
 		}
-	    } else if ($class == "Blue") {
 	      if ($command == "Ice Bolt"){
 		  
 		  if ($starting_turns >= $turn_cost) {
@@ -265,7 +264,6 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 		      echo "You do not have enough turns to cast $command.\n";
 		    }
 		}
-	    }
 	  
 	  echo $result;
 

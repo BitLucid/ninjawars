@@ -27,7 +27,7 @@ if ($class != "") {
 	$status_output_list = status_output_list($status_array, $username);
 	echo "Your status is: ".$status_output_list."<br /><br />";
 
-  if ($class == "Black") {
+  if ($skillsListObj->hasSkill('Stealth')) {
   	  echo "By selecting Stealth you will go into a mode where enemies can not directly attack you for a short time. ";
   	  echo "<a href=\"about.php#skills\">(help)</a>\n";
       echo "<form action=\"skills_mod.php\" method=\"post\">\n";

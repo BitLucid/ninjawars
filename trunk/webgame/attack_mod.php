@@ -74,6 +74,7 @@ $skillListObj = new Skill();
 $ignores_stealth = $skillListObj->getIgnoreStealth($attack_type);
 $required_turns = $skillListObj->getTurnCost($attack_type);
 
+
 // Attack Legal section
 $attacker = $username;
 $params = array('required_turns'=>$required_turns, 'ignores_stealth'=>$ignores_stealth);

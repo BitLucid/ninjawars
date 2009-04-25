@@ -18,6 +18,7 @@ $page_title = "Player Detail";
 include "interface/header.php";
 
 $skillListObj = new Skill();
+$skillsListObj = $skillListObj;
 $target = $player = in('player');
 $target_id = in('target_id');
 $score = get_score_formula();
@@ -78,10 +79,11 @@ if ($player_info) {
 	    echo "<form id=\"attack_player\" action=\"attack_mod.php\" method=\"post\" name=\"attack_player.php\">\n";
 	    echo "<span style=\"border: thin solid clear;padding-top: 1;padding-bottom: 1;padding-left: 1;padding-right: 1;\">
 	    	<label><a href=\"#\">Duel</a> <input id=\"duel\" type=\"checkbox\" name=\"duel\" /></label></span>\n";
-	    if ($class == "Red") {
+	    if ($skillsListObj->hasSkill('Blaze')) {
 		  echo "<span style=\"border: thin solid clear;padding-top: 1;padding-bottom: 1;padding-left: 1;padding-right: 1;\">
 		  	<label><a href=\"#\">Blaze</a><input id=\"blaze\" type=\"checkbox\" name=\"blaze\" /></label></span>\n";
-		} else if ($class == "White") {
+		}
+		if ($skillsListObj->hasSkill('Deflect')) {
 		  echo "<span style=\"border: thin solid clear;padding-top: 1;padding-bottom: 1;padding-left: 1;padding-right: 1;\">
 		  	<label><a href=\"#\">Deflect</a><input id=\"deflect\" type=\"checkbox\" name=\"deflect\" /></label></span>\n";
 		}
@@ -110,36 +112,42 @@ if ($player_info) {
 	    	padding-top: 5;padding-bottom: 5;text-align: center;\">\n";
 
     		// Class skills.
-    	if ($class == "Red") {
+	if ($skillsListObj->hasSkill('Fire Bolt')) {
     	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
     	  echo "<input id=\"command\" type=\"submit\" value=\"Fire Bolt\" name=\"command\" class=\"formButton\" />\n";
     	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
     	  echo "(".$skillListObj->getTurnCost('Fire Bolt')." Turns)\n";
     	  echo "</form>\n";
-    	} else if ($class == "Black") {
+	}
+	if ($skillsListObj->hasSkill('Poison Touch')) {
     	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
     	  echo "<input id=\"command\" type=\"submit\" value=\"Poison Touch\" name=\"command\" class=\"formButton\" />\n";
     	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
     	  echo "(".$skillListObj->getTurnCost('Poison Touch')." Turns)\n";
     	  echo "</form>\n";
-
+	}
+	if ($skillsListObj->hasSkill('Steal')) {
     	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
     	  echo "<input id=\"command\" type=\"submit\" value=\"Steal\" name=\"command\" class=\"formButton\" />\n";
     	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" />\n";
     	  echo "(".$skillListObj->getTurnCost('Steal')." Turns)\n";
     	  echo "</form>\n";
-    	} else if ($class == "Blue") {
+	}
+	if ($skillsListObj->hasSkill('Ice Bolt')) {
     	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
     	  echo "<input id=\"command\" type=\"submit\" value=\"Ice Bolt\" name=\"command\" class=\"formButton\" />\n";
     	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
     	  echo "(".$skillListObj->getTurnCost('Ice Bolt')." Turns)\n";
     	  echo "</form>\n";
+	}
+	if ($skillsListObj->hasSkill('Cold Steal')) {
     	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
     	  echo "<input id=\"command\" type=\"submit\" value=\"Cold Steal\" name=\"command\" class=\"formButton\" />\n";
     	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
     	  echo "(".$skillListObj->getTurnCost('Cold Steal')." Turns)<br />\n";
     	  echo "</form>";
-    	} else if ($class == "White") {
+	}
+	if ($skillsListObj->hasSkill('Sight')) {
     	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
     	  echo "<input id=\"command\" type=\"submit\" value=\"Sight\" name=\"command\" class=\"formButton\" />\n";
     	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
