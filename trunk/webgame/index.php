@@ -45,6 +45,8 @@ if($is_logged_in){
 // TODO: Put player-led multi-checking into play.
 // TODO: Limit quickstats js refresh by last-occurred.
 // TODO: Switch to using template-like systems/functions.
+// TODO: Give the "No such ninja" message (e.g. when linking from the ---- chat) a link back to a sane part of the list.
+// TODO: make clans links in the player list.
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">

@@ -26,6 +26,7 @@ $target_player_obj = new Player(either($target_id, $target));
 
 if(!$target_player_obj || !$target_player_obj->player_id){
 	echo "<div class='error'>No such ninja.</div>";
+	echo render_list_link();
 	include "interface/footer.php";
 	die();
 }
@@ -159,6 +160,15 @@ function display_ranking_link($player_info, $linkbackpage, $sql){
 	echo "      <a href='list_all_players.php?rank_spot=$rank_spot&hide=dead&page=$linkbackpage'>&lt; Go to rank $rank_spot in the ninja list</a>\n";
 	echo "    </div>";
 }
+
+
+function render_list_link(){
+    $res = "<div class='player-list-link'>
+                <a href='list_all_players.php'>Go back to the ninja list</a>
+            </div>";
+    return $res;
+}
+
 
 /**
  * Create the item options for the inventory dropdown.
@@ -406,7 +416,3 @@ function display_communication($target){
 
 include "interface/footer.php";
 ?>
-
-
-
-

@@ -27,3 +27,6 @@ Download the ninjawars source code, change files, and send the changed text to m
 Learning how to use the git app on your local machine is highly recommended for any programmer or webdesigner, though there's a high initial learning curve.  My recommendation in that area is to try setting up git-tortoise as a really simple solution to starting to harness git's power.
 To get a sense of it, read git_developer_tools_urls.txt in the /docs/ folder, which will point the way towards git tools to download on windows and mac, as git is native to linux.
 
+A guide to using git on windows:
+http://nathanj.github.com/gitguide/
+
