@@ -1,7 +1,7 @@
 <?php
 require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 // Licensed under the creative commons license.  See the staff.php page for more detail.
-ob_start(null, 1); // File buffer output in chunks.
+ob_start(null, 1); // Buffer and output it in chunks.
 
 $login = (in('action') == 'login'? true : false); // Request to login.
 $logout = in('logout');
