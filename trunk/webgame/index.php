@@ -47,34 +47,12 @@ if($is_logged_in){
 // TODO: Switch to using template-like systems/functions.
 // TODO: Give the "No such ninja" message (e.g. when linking from the ---- chat) a link back to a sane part of the list.
 // TODO: make clans links in the player list.
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<meta name="keywords" content="ninjawars, ninja wars, ninja, samurai, free online game, 
-	free games, this here is not your mommas naruto game">
-	<meta name="description" content="Ninjawars: battle other ninja for survival.">
-    <title>Ninja Wars: Live By the Sword.</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">		
-	<!--[if lte IE 6]>
-    <link rel="stylesheet" type="text/css" href="css/ie.css">
-	<![endif]-->
-	<style type="text/css">
-	<!-- Temporary location for NEW CSS -->
 
-	</style>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/lib_refresh.js"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/showHide.js"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/body_init.js"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/expand_chat.js"></script>
-	<?php if(DEBUG) { ?>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/var_dump.js"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/print_r.js"></script>
-	<?php } ?>
-</head>
-<body class="main-body trial-font">
+
+
+// Writes out the html,head,meta,title,css,js.
+write_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
+?>
 
 <div id="content">
 

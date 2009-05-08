@@ -57,23 +57,42 @@ function render_error_if_dead($alive_required, $players_health, $status_array){
 
 
 /**
- * Writes out the header for within-iframe pages.
- * TODO: Make this a common function for the index and iframe pages
+ * Writes out the header for all the pages.
+ * Will need a "don't write header" option for jQuery iframes.
 **/
-function write_html_for_header(){ 
+function write_html_for_header($title=null, $body_classes=''){ 
+    $title_html = '';
+    if($title){$title_html = "<title>$title</title>";}
 	?>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <html>
-	<head>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<meta name="keywords" content="ninjawars, ninja wars, ninja, samurai, free online game, 
+	free games, this here is not your mommas naruto game">
+	<meta name="description" content="Ninjawars: battle other ninja for survival.">
+	<?=$title_html?>
+    <link rel="stylesheet" type="text/css" href="<?=WEB_ROOT?>css/style.css">		
 	<!--[if lte IE 6]>
-    <link rel="stylesheet" type="text/css" href="css/ie.css">
+    <link rel="stylesheet" type="text/css" href="<?=WEB_ROOT?>css/ie-6.css">
 	<![endif]-->
-	<meta name="keywords" content="ninjawars, ninja, samurai, free online game, free games, this here is not your mommas naruto game" />
-	<meta name="description" content="Ninjawars: battle other ninja for survival." />
-	<script type='text/javascript' src="<?=WEB_ROOT?>js/lib_refresh.js"></script>
+	<!-- [if gte IE 7]>
+	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT?>css/ie.css">
+	<![endif]-->
+	<style type="text/css">
+	<!-- Temporary location for NEW CSS -->
+	</style>
+	<script type="text/javascript" src="<?=WEB_ROOT?>js/lib_refresh.js"></script>
+	<script type="text/javascript" src="<?=WEB_ROOT?>js/showHide.js"></script>
+	<script type="text/javascript" src="<?=WEB_ROOT?>js/body_init.js"></script>
+	<script type="text/javascript" src="<?=WEB_ROOT?>js/expand_chat.js"></script>
+	<?php if(DEBUG) { ?>
+	<script type="text/javascript" src="<?=WEB_ROOT?>js/var_dump.js"></script>
+	<script type="text/javascript" src="<?=WEB_ROOT?>js/print_r.js"></script>
+	<?php } ?>
 </head>
-<body>
+<body class='<?=$body_classes?>'>
 	<?php
 }
 
