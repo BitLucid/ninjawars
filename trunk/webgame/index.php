@@ -47,6 +47,8 @@ if($is_logged_in){
 // TODO: Switch to using template-like systems/functions.
 // TODO: Give the "No such ninja" message (e.g. when linking from the ---- chat) a link back to a sane part of the list.
 // TODO: make clans links in the player list.
+// TODO: Fix the white backgrounds in the iframes in IE.
+// TODO: Fix the &apos; things with the chat.
 
 
 
@@ -185,7 +187,7 @@ $players_online = $stats['players_online'];
 
 <div id='vicious-killer' class='boxes'>
 	<div class='box-title'>
-		<a href='#' class='show-hide-link' onclick=\"toggle_visibility('vicious-killer-menu');\">
+		<a href='#' class='show-hide-link' onclick="toggle_visibility('vicious-killer-menu');">
 			Fastest Killer: <img class='show-hide-icon' src='images/show_and_hide.png' alt='+/-'>
 		</a>
 	</div>
@@ -193,7 +195,7 @@ $players_online = $stats['players_online'];
 	</div><!-- End of vicious killer div -->
 	<div id='ninja-count' class='boxes passive'>
 		<div class='box-title'>
-			<a href='#' class='show-hide-link' onclick=\"toggle_visibility('ninja-count-menu');\">
+			<a href='#' class='show-hide-link' onclick="toggle_visibility('ninja-count-menu');">
 				Ninjas: <img class='show-hide-icon' src='images/show_and_hide.png' alt='+/-'>
 			</a>
 		</div>
