@@ -83,6 +83,7 @@ function write_html_for_header($title=null, $body_classes=''){
 	<style type="text/css">
 	<!-- Temporary location for NEW CSS -->
 	</style>
+	<script type="text/javascript" src="<?=WEB_ROOT?>js/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/lib_refresh.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/showHide.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/body_init.js"></script>
