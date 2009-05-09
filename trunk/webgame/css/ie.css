@@ -1,6 +1,3 @@
-body {
-	background-color:black;
-}
-html {
-    background-color:black;
+.body-default {
+    background-color: black; /*Transparent if inherited, otherwise black*/
 }

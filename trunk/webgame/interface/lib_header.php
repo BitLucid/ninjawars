@@ -60,7 +60,7 @@ function render_error_if_dead($alive_required, $players_health, $status_array){
  * Writes out the header for all the pages.
  * Will need a "don't write header" option for jQuery iframes.
 **/
-function write_html_for_header($title=null, $body_classes=''){ 
+function write_html_for_header($title=null, $body_classes='body-default'){
     $title_html = '';
     if($title){$title_html = "<title>$title</title>";}
 	?>

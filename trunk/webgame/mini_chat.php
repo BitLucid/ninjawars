@@ -26,6 +26,7 @@ if ($username) {
 	}
 }
 
+// Output section.
 
 echo render_chat_refresh(); // Write out the js to refresh.
 
