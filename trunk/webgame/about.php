@@ -8,16 +8,32 @@ include "interface/header.php";
 ?>
   
 <span class="brownHeading">Ninja Wars Topics</span>
-<br />
-For Frequently Asked Questions see: <a href="tutorial.php">the FAQ Page</a>
-<br /><br />
+<p>The game is mainly one of fighting against other ninja.
+Once you are a ninja, you can:</p>
+<p>
+<ul>
+    <li>Kill townsfolk (click on the combat link, and then click the link for a thief, villager, or merchant, the easiest targets).
+    </li>
+    <li>Kill other ninja! (click on the "ninjas" link and go the last page, click a ninja, and then click "attack" to attack them)
+        <div>use your skills or items to make more effective attacks.</div>
+    </li>
+    <li>If you die, just drag your ghost to the shrine and the monks will bring you back! (click on the "resurrect" link)
+    </li>
+</ul>
+</p>
+<p>
+You can buy items to help your attack at the shop, but you'll need to work in the fields to get gold to buy stuff with.
+</p>
+<p>
+Once you get enough kills, you can level up at the dojo.
+</p>
 
 Topics
 <br />
 <ol class="aboutUpper">
   <li><a href="#overview">What is Ninja Wars ?</a>
     <ol class="aboutLower">
-      <li><a href="#gameplay">How does the game play</a></li>
+      <li><a href="#gameplay">How do I play?</a></li>
       <li><a href="#turns">Turns</a></li>
       <li><a href="#work">Work</a></li>
     </ol>
@@ -71,6 +87,10 @@ Topics
   </li>
 </ol>
 
+<p>
+For Frequently Asked Questions see: <a href="tutorial.php">the FAQ Page</a>
+</p>
+
 <hr />
 
 <a name="overview" class="brownHeading">What is Ninja Wars ?</a>
@@ -86,7 +106,8 @@ Topics
 <a name="gameplay" class="brownHeading">How does the game play ?</a>
 
 <p style="text-align: justify;">
-To play the game, you create an account and then log in. Once logged in you will be able to perform a variety of tasks suitable to a ninja; attacking using different weapons, training for strength, and more.
+To play the game, you create an account and then log in. Once logged in you will be able to do a number of things by clicking links:
+attack other ninja (from the "ninjas" list, you click on their name and then click "attack"), attack npcs (click "combat" and then click "Theif" to attack a theif, for example), gamble your money away at the casino, or come back from the dead at the monk's shrine.
 </p>
 
 <a href="about.php">Return to Contents</a>
