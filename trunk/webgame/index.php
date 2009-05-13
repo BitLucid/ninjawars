@@ -308,14 +308,13 @@ $players_online = $stats['players_online'];
 				<a href="mini_chat.php?chat_length=20" target="mini_chat">Refresh</a>
 			</div>
 			<!-- TODO: move chat submit box out here. -->
-			<div id="mini-chat-frame-container">
+			<div id="mini-chat-frame-container" class='chat-collapsed'>
 				<iframe id="mini_chat" name="mini_chat" src="mini_chat.php" frameborder="0">
 					Mini Chat Iframe Display Section (Iframes not supported by this browser)
 				</iframe>
 			</div>
 			<div id="expand-chat">
-				<a href="mini_chat.php?chatlength=360" target="mini_chat" 
-					onClick="expand_collapse_mini_chat();toggle_visibility('expand-chat');">
+				<a href="mini_chat.php?chatlength=360" target="mini_chat">
 					View more chat messages
 					<img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
 				</a>

@@ -87,7 +87,6 @@ function write_html_for_header($title=null, $body_classes='body-default'){
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/lib_refresh.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/showHide.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/body_init.js"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/expand_chat.js"></script>
 	<?php if(DEBUG) { ?>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/var_dump.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/print_r.js"></script>

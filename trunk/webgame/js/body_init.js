@@ -1,32 +1,24 @@
-function init_at_end() {
-	if(document.getElementById && document.createTextNode) {
-		/* Compatibility check */
-
-		/* Scripts to run when the page loads */
-		/* Collapse the following parts of the index. */
-	    toggle_visibility('links-menu');
-	    
-	    /* Collapse mini-chat to tolerable height via js */
-	    expand_collapse_mini_chat();
+$(document).ready(function() {
+   
+   /* Collapse the following parts of the index */
+    $("#links-menu").toggle();
     
-	    /* Add in unobtrusive javascript onclick creation to the appropriate element ids. */
-
-/* Unobtrusive js example
-window.onload = function(){ //Wait for the page to load.
-    var inputs = document.getElementsByTagName('input'), input;
-    for(var i=0,l=inputs.length;i<l;i++){ 
-        input = inputs[i];
-        if(input.name && input.name=='date'){ 
-            input.onchange = function(){ 
-                validateDate();
-            }
-        }
+    /* Expand the chat when it's clicked. */
+    $("#expand-chat").click(function () {
+        $("#mini-chat-frame-container").removeClass('chat-collapsed').addClass('chat-expanded');/*.height(780);*/
+        $(this).hide();  // Hide the clicked section after expansion.
+    });
+    
+    
+    //$("a[target]").hide(); /* Hide all links using target */
+    
+    /*
+    function addClickHandlers() {
+        $("a.remote", this).click(function() {
+            $("#target").load(this.href, addClickHandlers);
+        });
     }
-};
-*/
-
-
-	}/* End compatibility check */
-}
-
-window.onload = init_at_end;
+    $(document).ready(addClickHandlers);
+    */
+   
+ });

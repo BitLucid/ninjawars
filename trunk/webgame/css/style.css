@@ -435,8 +435,13 @@ td.playerTable {
 	height:100%;
 }
 #mini-chat-frame-container { /* div */
-	height:880px;
 	width:100%;
+}
+.chat-collapsed {
+    height: 400px;
+}
+.chat-expanded {
+    height: 880px;
 }
 #quickstats {
 	width: 100%;height: 7em;
@@ -611,5 +616,12 @@ table .inventory{
 .player-info .Stealthed{
 	background-color:gray;
 	color:maroon;
+}
+.red {
+    color: crimson;
+    background-color:red;
+}
+.hidden {
+    display:none;
 }
 /* End of style.css */
