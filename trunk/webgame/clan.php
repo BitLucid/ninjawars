@@ -6,7 +6,7 @@ $page_title = "Clan Panel";
 
 include "interface/header.php";
 ?>
-<script type="text/javascript" src="<?=WEB_ROOT?>js/confirmLeavingClan.js"></script>
+<script type="text/javascript" src="<?=WEB_ROOT?>js/clan.js"></script>
 
 <span class="brownHeading">Clan Panel</span>
 
