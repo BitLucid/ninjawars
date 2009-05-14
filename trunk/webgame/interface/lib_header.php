@@ -83,14 +83,15 @@ function write_html_for_header($title=null, $body_classes='body-default'){
 	<style type="text/css">
 	<!-- Temporary location for NEW CSS -->
 	</style>
+	<?php if(false/*DEBUG*/) { ?>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/jquery-1.3.2.min.js"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/lib_refresh.js"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/showHide.js"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/body_init.js"></script>
-	<?php if(DEBUG) { ?>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/var_dump.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/print_r.js"></script>
-	<?php } ?>
+	<?php } else { ?>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <?php } ?>
+    <!-- All the global ninjawars javascript -->
+	<script type="text/javascript" src="<?=WEB_ROOT?>js/nw_js_lib.js"></script>
 </head>
 <body class='<?=$body_classes?>'>
 	<?php
