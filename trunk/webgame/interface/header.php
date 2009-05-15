@@ -19,7 +19,7 @@ update_activity_info(); // *** Updates the activity of the page viewer in the da
 
 if(!is_logged_in()){
 	if ($private) {
-		$error = "<span class='notice'>You must log in to access this page.</span>";
+		$error = "<span class='notice'>You must log in to view this section.</span>";
 		// Error triggers a die at the end of the header.
     }
 } else { 
