@@ -74,7 +74,7 @@ $sql->Update("UPDATE players SET status = status-".STEALTH."  WHERE cast(status&
 foreach ($out_display AS $loopKey => $loopRowResult)
 {
     $res = "<br>Result type: ".$loopKey." yielded result: ".$loopRowResult;
-    error_log('DEITY_HOURLY: '.$res);
+    // error_log('DEITY_HOURLY: '.$res); // Skip the error log now that it has stabilized.
     echo $res;
 }
 
