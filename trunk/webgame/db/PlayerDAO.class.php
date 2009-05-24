@@ -15,7 +15,8 @@ class PlayerDAO {
 		'player_id', 'uname', 'pname', 'health', 'strength', 'gold',
 	  	'messages', 'kills', 'turns', 'confirm', 'confirmed', 'email',
 	  	'class', 'level', 'status', 'member', 'days', 'ip', 'bounty', 'clan',
-	  	'clan_long_name', 'created_date', 'last_started_attack', 'energy'
+	  	'clan_long_name', 'created_date', 'last_started_attack', 'energy',
+	  	'avatar_type'
 		);
 		
 	var $_id_field = 'player_id';

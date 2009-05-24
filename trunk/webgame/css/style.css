@@ -63,6 +63,10 @@ a:hover {
 }
 a:link {} a:visited {} a:active {}
 
+#avatar {
+    text-align:center;
+}
+
 #menu a { /*Menu actions are a lighter blue to pop better on the red */
 	color: CornflowerBlue;
 	/*seaGreen/Teal*/
