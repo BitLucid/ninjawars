@@ -15,6 +15,7 @@ function render_avatar($player, $size=null){
         return '';
     } else { // Otherwise, user the player info for creating a gravatar.
         $def = 'identicon'; // Default image or image class.
+        // other options: wavatar , monsterid
         $email = $player->vo->email;
         $avatar_type = $player->vo->avatar_type;
         $base = "http://www.gravatar.com/avatar/";
