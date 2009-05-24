@@ -1,4 +1,6 @@
 <?php
+require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
+require_once(LIB_ROOT."specific/lib_inventory.php");
 /*
  * Submission page from inventory.php to process results of item use.
  * 
@@ -65,30 +67,6 @@ $near_level_power_increase = nearLevelPowerIncrease($level_difference, $max_powe
 
 $turns_to_take = null;   // *** Take at least one turn away even on failure.
 
-// FUNCTIONS
-
-// Benefits for near-equivalent levels.
-function nearLevelPowerIncrease($level_difference, $max_increase) {
-	$res = 0;
-	$coeff = abs($level_difference);
-	if ($coeff<$max_increase) {
-		$res = $max_increase-$coeff;
-	}
-	return $res;
-}
-
-
-// Give the item and return a message to show the user.
-function render_give_item($username, $target, $item){
-    addItem($target,$item,1);
-    $give_msg = "You have been given a $item by $username.";
-    sendMessage($username,$target,$give_msg);
-    return "$target will receive your $item.<br />\n";
-}
-
-
-
-// END OF FUNCTIONS
 
 
 if ($give == "on" || $give == "Give") {
@@ -144,16 +122,12 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 			    } else if ($item == "Ice Scroll") {  
 			        //Turn Altering
 			      $article = "an";
-			      if ($targets_turns>50) {
-			      	$turns_decrease = rand(1,11)+$near_level_power_increase; // *** 1-11 + 0-10
-			      } elseif ($targets_turns>10) {
-			      	$turns_decrease = rand(1, 5)+$near_level_power_increase;
-			      } elseif ($targets_turns>2) {
-			      	$turns_decrease = rand(1, 2)+($near_level_power_increase? 1 : 0);
-			      } else { // *** Players are always left with 1 or two turns.
-					echo 'You fail to take any turns from '.$target.'.';
-			      	$turns_decrease = '0';
-			      } // End of turn checks.
+
+			      $turns_decrease = ice_scroll_turns($targets_turns, $near_level_power_increase);
+			      
+			      if ($turns_decrease == 0){
+			        echo 'You fail to take any turns from '.$target.'.';
+			      }
 			      
 			      $result         = "lose ".$turns_decrease." turns";
 			      subtractTurns($target,$turns_decrease);
@@ -182,7 +156,7 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 		      if ($result) {
 			  // *** Message to display based on item type ***
 			  if ($target_damage) {
-			      echo "$target's HP reduced by $target_damage.<br /><br />\n";
+			      echo "$target takes $target_damage damage from your attack!<br /><br />\n";
 			    } else if ($turns_decrease) {
 			      echo "$target's turns reduced by $turns_decrease.<br />\n";
 				  if (getTurns($target)<=0) { //Message when a target has no more turns to ice scroll away.
@@ -193,13 +167,14 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 			    } else if ($item=="Dim Mak") {
 			      echo "The life force drains from $target and they drop dead before your eyes!.<br />\n";
 			    }
+
 			  
 			  if (!$victim_alive) { // Target was killed by the item.
-			      if (getStatus($username) && ($target != $username) ) {   // *** SUCCESSFUL ATTACK ***
+                    if (getStatus($username) && ($target != $username) ) {   // *** SUCCESSFUL KILL ***
     				  $attacker_id = ($status_array['Stealth'] ? "A Stealthed Ninja" : $username);
     				  if (!$gold_mod) {
     					  $gold_mod = 0.15;
-    					}
+    				  }
     				  $loot     = round($gold_mod*getGold($target));
     				  subtractGold($target,$loot);
     				  addGold($username,$loot);
@@ -207,16 +182,13 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
     				  echo "You have killed $target with $article $item!<br />\n";
     				  echo "You receive $loot gold from $target.<br />\n";
     				  runBountyExchange($username, $target);  //Rewards or increases bounty.
-    				} else {
-    				  $loot = 0;
-    				  echo "You have comitted suicide!<br />\n";
-    				}
+                    } else {
+                      $loot = 0;
+                      echo "You have comitted suicide!<br />\n";
+                    }
+    				
+    				send_kill_mails($username, $target, $attacker_id, $article, $item, $today, $loot);
     			      
-    			      $target_email_msg   = "You have been killed by $attacker_id with $article $item at $today and lost $loot gold.";
-    			      sendMessage($attacker_id,$target,$target_email_msg);
-    			      
-    			      $user_email_msg     = "You have killed $target with $article $item at $today and received $loot gold.";
-    			      sendMessage($target,$username,$user_email_msg);
     			    } else {
     			      $attacker_id = $username;
     			    }
