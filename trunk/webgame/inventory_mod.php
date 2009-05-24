@@ -65,6 +65,8 @@ $near_level_power_increase = nearLevelPowerIncrease($level_difference, $max_powe
 
 $turns_to_take = null;   // *** Take at least one turn away even on failure.
 
+// FUNCTIONS
+
 // Benefits for near-equivalent levels.
 function nearLevelPowerIncrease($level_difference, $max_increase) {
 	$res = 0;
@@ -75,6 +77,20 @@ function nearLevelPowerIncrease($level_difference, $max_increase) {
 	return $res;
 }
 
+
+// Give the item and return a message to show the user.
+function render_give_item($username, $target, $item){
+    addItem($target,$item,1);
+    $give_msg = "You have been given a $item by $username.";
+    sendMessage($username,$target,$give_msg);
+    return "$target will receive your $item.<br />\n";
+}
+
+
+
+// END OF FUNCTIONS
+
+
 if ($give == "on" || $give == "Give") {
   $turn_cost = 0;
   $using_item = false;
@@ -83,8 +99,6 @@ if ($give == "on" || $give == "Give") {
 // Sets the page to link back to.
 if ($target && $link_back == "") {$link_back = "<a href=\"player.php?player=$target\">Player Detail</a>"; }
 else { $link_back = "<a href=\"inventory.php\">Inventory</a>"; }
-
-
 
 $ignores_stealth = false;
 if ($item  == "Dim Mak") { $ignores_stealth == true; }
@@ -97,7 +111,6 @@ assert($attacker != $target);
 $AttackLegal = new AttackLegal($attacker, $target, $params);
 $attack_allowed = $AttackLegal->check();
 $attack_error = $AttackLegal->getError();
-
 
 
 // *** Any ERRORS prevent attacks happen here  ***
@@ -114,10 +127,8 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
             /**** MAIN SUCCESSFUL USE ****/
 		      echo "Preparing to use item - <br />\n";
 		      if ($give == "on" || $give == "Give") {
-    			  addItem($target,$item,1);
-    			  $give_msg = "You have been given a $item by $username.";
-    			  sendMessage($username,$target,$give_msg);
-    			  echo "$target will receive your $item.<br />\n";	 
+                  echo render_give_item($username, $target, $item);
+                   
     			} else {
     			  $article = "a";
     			  
@@ -183,7 +194,7 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 			      echo "The life force drains from $target and they drop dead before your eyes!.<br />\n";
 			    }
 			  
-			  if (!$victim_alive) {
+			  if (!$victim_alive) { // Target was killed by the item.
 			      if (getStatus($username) && ($target != $username) ) {   // *** SUCCESSFUL ATTACK ***
     				  $attacker_id = ($status_array['Stealth'] ? "A Stealthed Ninja" : $username);
     				  if (!$gold_mod) {
