@@ -65,11 +65,11 @@ $near_level_power_increase = nearLevelPowerIncrease($level_difference, $max_powe
 
 $turns_to_take = null;   // *** Take at least one turn away even on failure.
 
+// Benefits for near-equivalent levels.
 function nearLevelPowerIncrease($level_difference, $max_increase) {
 	$res = 0;
 	$coeff = abs($level_difference);
-	if ($coeff<$max_increase)
-	{
+	if ($coeff<$max_increase) {
 		$res = $max_increase-$coeff;
 	}
 	return $res;
@@ -81,98 +81,85 @@ if ($give == "on" || $give == "Give") {
 }
 
 // Sets the page to link back to.
-if ($target && $link_back == "") {$link_back = "<a href=\"player.php?player=$target\">Player Detail</a>";}
-else {$link_back = "<a href=\"inventory.php\">Inventory</a>";}  //Results from using an item on yourself.
+if ($target && $link_back == "") {$link_back = "<a href=\"player.php?player=$target\">Player Detail</a>"; }
+else { $link_back = "<a href=\"inventory.php\">Inventory</a>"; }
 
-if (($_SESSION['ip'] != '127.0.0.1' && $_SESSION['ip'] == $target_ip) && $username!='Tchalvak' && $target!=$username)
-{
-	echo "You can not attack or give items to a ninja from the same domain.<br />\n";
-	echo "Start your combat <a href=\"list_all_players.php\">here.</a>\n";
-}
-else if ($target_status && $target_status['Stealth'] && $item!="Dim Mak" && $target!=$username)
-{
-	echo "You are unable to attack $target because they are hidden in the darkness.";
-}
-else if ($username_turns >= $turn_cost)
-{
-  if ($item != "" || $target != "")  {   
-   if ($target_hp > 0)	{
+
+
+$ignores_stealth = false;
+if ($item  == "Dim Mak") { $ignores_stealth == true; }
+
+
+// Attack Legal section
+$attacker = $username;
+$params = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$ignores_stealth, 'self_use'=>$selfTarget);
+assert($attacker != $target);
+$AttackLegal = new AttackLegal($attacker, $target, $params);
+$attack_allowed = $AttackLegal->check();
+$attack_error = $AttackLegal->getError();
+
+
+
+// *** Any ERRORS prevent attacks happen here  ***
+if(!$attack_allowed){ //Checks for error conditions before starting.
+	echo "<div class='ninja-error centered'>$attack_error</div>"; // Display the reason the attack failed.
+} else {
+    if ($item == "" || $target == "")  {
+        echo "You didn't choose an item/victim.\n";
+    } else {   
 	  $row = $sql->data;
-	  
-	  if ($item_count > 0)
-	    {
+	  if ($item_count < 1) {
+	    echo "You do not have".($item? " a ".$item : ' that item').".\n";
+	  } else {
+            /**** MAIN SUCCESSFUL USE ****/
 		      echo "Preparing to use item - <br />\n";
-		      
-		      if ($give == "on" || $give == "Give")
-			{
-			  addItem($target,$item,1);
-
-			  $give_msg = "You have been given a $item by $username.";
-			  sendMessage($username,$target,$give_msg);
-			  
-			  echo "$target will receive your $item.<br />\n";	 
-			}
-		      else
-			{
-			  $article = "a";
-			  
-			  // *** HP Altering ***
-			  
-			  if ($item == "Fire Scroll")
-			    {
+		      if ($give == "on" || $give == "Give") {
+    			  addItem($target,$item,1);
+    			  $give_msg = "You have been given a $item by $username.";
+    			  sendMessage($username,$target,$give_msg);
+    			  echo "$target will receive your $item.<br />\n";	 
+    			} else {
+    			  $article = "a";
+    			  
+    			  // *** HP Altering ***
+			  if ($item == "Fire Scroll") {
 			      $target_damage = rand(20,getStrength($username)+20)+$near_level_power_increase;
 			      $result        = "lose ".$target_damage." HP";
 			      $victim_alive  = subtractHealth($target,$target_damage);
-			    }
-			  else if ($item == "Shuriken")
-			    {
+			    } else if ($item == "Shuriken") {
 			      $target_damage = rand(1,getStrength($username))+$near_level_power_increase;
 			      $result        = "lose ".$target_damage." HP";
 			      $victim_alive  = subtractHealth($target,$target_damage);
-			    } 			  //Turn Altering
-			  else if ($item == "Ice Scroll")
-			    {
+			    } else if ($item == "Ice Scroll") {  
+			        //Turn Altering
 			      $article = "an";
-			      if ($targets_turns>50)
-			      {
+			      if ($targets_turns>50) {
 			      	$turns_decrease = rand(1,11)+$near_level_power_increase; // *** 1-11 + 0-10
-			      }
-			      elseif ($targets_turns>10)
-			      {
+			      } elseif ($targets_turns>10) {
 			      	$turns_decrease = rand(1, 5)+$near_level_power_increase;
-			      }
-			      elseif ($targets_turns>2)
-			      {
+			      } elseif ($targets_turns>2) {
 			      	$turns_decrease = rand(1, 2)+($near_level_power_increase? 1 : 0);
-			      }
-			      else // *** Players are always left with 1 or two turns.
-			      {
+			      } else { // *** Players are always left with 1 or two turns.
 					echo 'You fail to take any turns from '.$target.'.';
 			      	$turns_decrease = '0';
-			      }
+			      } // End of turn checks.
 			      
 			      $result         = "lose ".$turns_decrease." turns";
 			      subtractTurns($target,$turns_decrease);
 			      $victim_alive = true;
-			    }
-			  else if ($item == "Speed Scroll")
-			    {
+			    } else if ($item == "Speed Scroll") {
 			      $turns_increase = 6;
 			      $result         = "gain $turns_increase turns";
 			      changeTurns($target,$turns_increase);
 			      $covert         = true;
 			      $victim_alive = true;
-			    }
-			  else if ($item == "Stealth Scroll")
-			    {
+			    } else if ($item == "Stealth Scroll") {
 			      addStatus($target,STEALTH);
 			      echo "<br />$target is now Stealthed.<br />\n";
 			      $result = false;
 			      $covert =  true;
 			      $victim_alive = true;
-			    }
-			  else if ($item == "Dim Mak")  
-			    {
+			    } else if ($item == "Dim Mak") {
 			      setHealth($target,0);
 			      $covert = true;          //The Dim Mak is a covert weapon, allowing it to be used from Stealth.
 			      $victim_alive = false;
@@ -181,71 +168,53 @@ else if ($username_turns >= $turn_cost)
 			    }
 			}
 		      
-		      if ($result)
-			{
+		      if ($result) {
 			  // *** Message to display based on item type ***
-			  if ($target_damage)
-			    {
+			  if ($target_damage) {
 			      echo "$target's HP reduced by $target_damage.<br /><br />\n";
-			    }
-			  else if ($turns_decrease)
-			    {
+			    } else if ($turns_decrease) {
 			      echo "$target's turns reduced by $turns_decrease.<br />\n";
-				  if (getTurns($target)<=0)  //Message when a target has no more turns to ice scroll away.
-					{
+				  if (getTurns($target)<=0) { //Message when a target has no more turns to ice scroll away.
 					  echo "$target no longer has any turns.<br />\n";
-					}
-			    }
-			  else if ($turns_increase)
-			    {
+				    }
+			    } else if ($turns_increase) {
 			      echo "$target's turns increased by $turns_increase.<br />\n";
-			    }
-			  else if ($item=="Dim Mak")
-			    {
+			    } else if ($item=="Dim Mak") {
 			      echo "The life force drains from $target and they drop dead before your eyes!.<br />\n";
 			    }
 			  
-			  if (!$victim_alive)
-			    {
-			      if (getStatus($username) && ($target != $username) )   // *** SUCCESSFUL ATTACK ***
-				{
-				  $attacker_id = ($status_array['Stealth'] ? "A Stealthed Ninja" : $username);
-
-				  if (!$gold_mod)
-					{
-					  $gold_mod = 0.15;
-					}
-				  $loot     = round($gold_mod*getGold($target));
-				  subtractGold($target,$loot);
-				  addGold($username,$loot);
-				  addKills($username,1);
-				  echo "You have killed $target with $article $item!<br />\n";
-				  echo "You receive $loot gold from $target.<br />\n";
-				  runBountyExchange($username, $target);  //Rewards or increases bounty.
-				}
-			      else
-				{
-				  $loot = 0;
-				  echo "You have comitted suicide!<br />\n";
-				}
-			      
-			      $target_email_msg   = "You have been killed by $attacker_id with $article $item at $today and lost $loot gold.";
-			      sendMessage($attacker_id,$target,$target_email_msg);
-			      
-			      $user_email_msg     = "You have killed $target with $article $item at $today and received $loot gold.";
-			      sendMessage($target,$username,$user_email_msg);
-			    }
-			  else
-			    {
-			      $attacker_id = $username;
-			    }
+			  if (!$victim_alive) {
+			      if (getStatus($username) && ($target != $username) ) {   // *** SUCCESSFUL ATTACK ***
+    				  $attacker_id = ($status_array['Stealth'] ? "A Stealthed Ninja" : $username);
+    				  if (!$gold_mod) {
+    					  $gold_mod = 0.15;
+    					}
+    				  $loot     = round($gold_mod*getGold($target));
+    				  subtractGold($target,$loot);
+    				  addGold($username,$loot);
+    				  addKills($username,1);
+    				  echo "You have killed $target with $article $item!<br />\n";
+    				  echo "You receive $loot gold from $target.<br />\n";
+    				  runBountyExchange($username, $target);  //Rewards or increases bounty.
+    				} else {
+    				  $loot = 0;
+    				  echo "You have comitted suicide!<br />\n";
+    				}
+    			      
+    			      $target_email_msg   = "You have been killed by $attacker_id with $article $item at $today and lost $loot gold.";
+    			      sendMessage($attacker_id,$target,$target_email_msg);
+    			      
+    			      $user_email_msg     = "You have killed $target with $article $item at $today and received $loot gold.";
+    			      sendMessage($target,$username,$user_email_msg);
+    			    } else {
+    			      $attacker_id = $username;
+    			    }
 			  
-			  if ($target != $username)
-			    {
-			      $target_email_msg   = "$attacker_id has used $article $item on you at $today and caused you to $result.";
-			      sendMessage($attacker_id,$target,$target_email_msg);
-			    }
-			}
+                    if ($target != $username) {
+                        $target_email_msg   = "$attacker_id has used $article $item on you at $today and caused you to $result.";
+                        sendMessage($attacker_id,$target,$target_email_msg);
+                    }
+    			}
 		      
 		      $turns_to_take = 1;
 		      
@@ -253,38 +222,21 @@ else if ($username_turns >= $turn_cost)
 		      
 		      echo "<br />Removing $item from your inventory.<br />\n";
 		      
-		      $sql->Update("UPDATE inventory set amount = amount-1 WHERE owner = '".$username."' AND item ='$item' AND amount>0"); // *** Decreases the amount by 1.
+		      $sql->Update("UPDATE inventory set amount = amount-1 WHERE owner = '".$username."' AND item ='$item' AND amount>0"); 
+		      // *** Decreases the item amount by 1.
 		      
 		      // Unstealth
-		      if (!isset($covert) && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) //non-covert acts
-			{
-			  subtractStatus($username,STEALTH);
-			  echo "Your actions have revealed you. You are no longer stealthed.<br />\n";
-			}
-			if ($victim_alive == true && $using_item == true)
-				{
+            if (!isset($covert) && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
+                subtractStatus($username,STEALTH);
+                echo "Your actions have revealed you. You are no longer stealthed.<br />\n";
+            }
+			if ($victim_alive == true && $using_item == true) {
 				echo "<br /><a href=\"inventory_mod.php?item=$item&target=$target\">Use $item again?</a><br />\n";  //Repeat Usage
-				}
+			}
 	    }
-	  else
-	    {
-	      echo "You do not have".($item? " a ".$item : ' that item').".\n";
-	    }
-	}
-      else
-	{
-	  echo "$target is among the deceased.\n";
-	}
-    }
-  else
-    {
-	  echo "You didn't choose an item/victim.\n";
     }
 }
-else
-{
-  echo "You have no turns. You must wait for your turns to replenish.\n";
-}
+
 
 // *** Take away at least one turn even on attacks that fail. ***
 if ($turns_to_take<1) {

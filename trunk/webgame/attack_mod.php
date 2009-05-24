@@ -90,7 +90,6 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 	echo "<div class='ninja-error centered'>$attack_error</div>"; // Display the reason the attack failed.
 } else {
 	// *** ATTACKING + STEALTHED SECTION  ***
-	update_last_attack_time($player_id, $sql); // updates the timestamp of the last_attacked column to slow excessive attacks.
 	if (!$duel && $attacker_status['Stealth']){  //Not dueling, and attacking from stealth
 		echo "You are striking from the shadows, you quickly strike your victim!<br />\n";
 		subtractStatus($username,STEALTH);

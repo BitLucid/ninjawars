@@ -117,17 +117,22 @@ class AttackLegal
     	}
     	$target_status = $target->getStatus();
 
-		$second_interval_limiter_on_attacks = '.20';
+		$second_interval_limiter_on_attacks = '.25'; // Originally .2
 		$sel_last_started_attack = "select player_id from players 
 			where player_id = '".intval($this->attacker->player_id)."' 
 			and ((now() - interval '".$second_interval_limiter_on_attacks." second') >= last_started_attack) limit 1";
 		$attack_later_than_limit = $sql->QueryItem($sel_last_started_attack);
 		// Returns a player id if the enough time has passed, or else or false/null.
+		
+		
+		if($attack_later_than_limit) // If not too soon, update the attack limit. 
+		    update_last_attack_time($attacker->vo->player_id, $sql); 
+		// updates the timestamp of the last_attacked column to slow excessive attacks.
 
 		switch(true) {
 		    //  *** START OF ILLEGAL ATTACK ERROR LIST  ***
 		    case (!$attack_later_than_limit): 
-				$this->error = "Even the fastest ninja cannot attack more than five times in a second.";
+				$this->error = "Even the fastest ninja cannot attack more than four times a second.";
 				return false;
 				break;
 		    case ($target->vo->uname == ""):

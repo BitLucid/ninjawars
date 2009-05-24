@@ -57,6 +57,7 @@ $ending_turns = null;
 
 $level_check  = $level - getLevel($target);
 
+
 if ($username_status && $status_array['Stealth']) {
   $attacker_id = "A Stealthed Ninja";
 }
