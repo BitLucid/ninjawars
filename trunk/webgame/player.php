@@ -89,9 +89,10 @@ if ($player_info) {
 		}
 		assert($player == $target);
 	    echo "    <input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" />\n
-	        <br /><label><a>Attack</a>
+	        <br /><label>
 	        <input type='image' value='Attack' name='attack-player-shuriken' 
 	        src='".IMAGE_ROOT."50pxShuriken.png' alt='Attack' title='Attack'>
+	        <a>Attack</a>
 	        </label>";
 	    echo "    </form>\n";
 	    echo "    </td>\n";
