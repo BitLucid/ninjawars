@@ -35,7 +35,7 @@ class Skill
     **/
     function skills($username){
         if(!$username) { $username = get_username(); }
-        if(DEBUG && $username == 'glassbox'){
+        if(false && DEBUG && $username == 'glassbox'){
             $skills = $this->skill_map['Blue'] +
                 $this->skill_map['White'] +
                 $this->skill_map['Red'] +

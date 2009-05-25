@@ -6,6 +6,56 @@ require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base
 define('GRAVATAR', 1);
 
 
+function render_skills($target, $skillListObj, $skillsListObj){
+    ob_start();    		
+    if ($skillsListObj->hasSkill('Fire Bolt')) {
+      echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Fire Bolt\" name=\"command\" class=\"formButton\" />\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "(".$skillListObj->getTurnCost('Fire Bolt')." Turns)\n";
+      echo "</form>\n";
+    }
+    if ($skillsListObj->hasSkill('Poison Touch')) {
+      echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Poison Touch\" name=\"command\" class=\"formButton\" />\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "(".$skillListObj->getTurnCost('Poison Touch')." Turns)\n";
+      echo "</form>\n";
+    }
+    if ($skillsListObj->hasSkill('Steal')) {
+      echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Steal\" name=\"command\" class=\"formButton\" />\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "(".$skillListObj->getTurnCost('Steal')." Turns)\n";
+      echo "</form>\n";
+    }
+    if ($skillsListObj->hasSkill('Ice Bolt')) {
+      echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Ice Bolt\" name=\"command\" class=\"formButton\" />\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "(".$skillListObj->getTurnCost('Ice Bolt')." Turns)\n";
+      echo "</form>\n";
+    }
+    if ($skillsListObj->hasSkill('Cold Steal')) {
+      echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Cold Steal\" name=\"command\" class=\"formButton\" />\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "(".$skillListObj->getTurnCost('Cold Steal')." Turns)<br />\n";
+      echo "</form>";
+    }
+    if ($skillsListObj->hasSkill('Sight')) {
+      echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Sight\" name=\"command\" class=\"formButton\" />\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "(".$skillListObj->getTurnCost('Sight')." Turns)\n";
+      echo "</form>\n";
+    }
+    $res = ob_get_contents();
+    ob_end_clean();
+    return $res;
+}
+
+
 /**
  * Pull out the url for the player's avatar
 **/

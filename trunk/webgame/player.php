@@ -110,50 +110,9 @@ if ($player_info) {
 	      <tr>\n
 	        <td style=\"border: thin solid clear;padding-left: 5;padding-right: 5;
 	    	padding-top: 5;padding-bottom: 5;text-align: center;\">\n";
-
-    		// Class skills.
-	if ($skillsListObj->hasSkill('Fire Bolt')) {
-    	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-    	  echo "<input id=\"command\" type=\"submit\" value=\"Fire Bolt\" name=\"command\" class=\"formButton\" />\n";
-    	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
-    	  echo "(".$skillListObj->getTurnCost('Fire Bolt')." Turns)\n";
-    	  echo "</form>\n";
-	}
-	if ($skillsListObj->hasSkill('Poison Touch')) {
-    	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-    	  echo "<input id=\"command\" type=\"submit\" value=\"Poison Touch\" name=\"command\" class=\"formButton\" />\n";
-    	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
-    	  echo "(".$skillListObj->getTurnCost('Poison Touch')." Turns)\n";
-    	  echo "</form>\n";
-	}
-	if ($skillsListObj->hasSkill('Steal')) {
-    	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-    	  echo "<input id=\"command\" type=\"submit\" value=\"Steal\" name=\"command\" class=\"formButton\" />\n";
-    	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" />\n";
-    	  echo "(".$skillListObj->getTurnCost('Steal')." Turns)\n";
-    	  echo "</form>\n";
-	}
-	if ($skillsListObj->hasSkill('Ice Bolt')) {
-    	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-    	  echo "<input id=\"command\" type=\"submit\" value=\"Ice Bolt\" name=\"command\" class=\"formButton\" />\n";
-    	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
-    	  echo "(".$skillListObj->getTurnCost('Ice Bolt')." Turns)\n";
-    	  echo "</form>\n";
-	}
-	if ($skillsListObj->hasSkill('Cold Steal')) {
-    	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-    	  echo "<input id=\"command\" type=\"submit\" value=\"Cold Steal\" name=\"command\" class=\"formButton\" />\n";
-    	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
-    	  echo "(".$skillListObj->getTurnCost('Cold Steal')." Turns)<br />\n";
-    	  echo "</form>";
-	}
-	if ($skillsListObj->hasSkill('Sight')) {
-    	  echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-    	  echo "<input id=\"command\" type=\"submit\" value=\"Sight\" name=\"command\" class=\"formButton\" />\n";
-    	  echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
-    	  echo "(".$skillListObj->getTurnCost('Sight')." Turns)\n";
-    	  echo "</form>\n";
-    	}
+	    	
+	    echo render_skills($target, $skillListObj, $skillsListObj);
+	
 	    echo "    </td>\n";
 	} // End of the "viewing someone else's profile" section.	    
 	    echo "  </tr>\n";
