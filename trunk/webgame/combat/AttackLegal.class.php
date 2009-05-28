@@ -132,7 +132,7 @@ class AttackLegal
 		switch(true) {
 		    //  *** START OF ILLEGAL ATTACK ERROR LIST  ***
 		    case (!$attack_later_than_limit): 
-				$this->error = "Even the fastest ninja cannot attack more than four times a second.";
+				$this->error = "Even the fastest ninja cannot act more than four times a second.";
 				return false;
 				break;
 		    case ($target->vo->uname == ""):
@@ -144,7 +144,7 @@ class AttackLegal
 				return false;
 			    break;
 		    case ($attacker->vo->turns < $required_turns):
-			    $this->error = "You do not have enough turns to attack in this way.";
+			    $this->error = "You do not have enough turns to perform this action in this way.";
 				return false;
 			    break;
 		    case (isset($_SESSION) && $target->vo->ip == $_SESSION['ip'] && $_SESSION['ip'] != '127.0.0.1' && !$self_use):
@@ -161,7 +161,7 @@ class AttackLegal
 			    break;
 		    case ($target_status['Stealth'] && !$ignores_stealth):
 		    	// Attacks that ignore stealth will skip this.
-			    $this->error = "Your target is stealthed. You can only hit this ninja using certain skills.";
+			    $this->error = "Your target is stealthed. You can only hit this ninja using certain techniques.";
 				return false;
 			    break;    
 		    case ($clan_forbidden && ($target->vo->clan == $attacker->vo->clan && $attacker->vo->clan !="" && !$self_use)):

@@ -81,7 +81,7 @@ function write_html_for_header($title=null, $body_classes='body-default'){
 	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT?>css/ie.css">
 	<![endif]-->
 	<style type="text/css">
-	<!-- Temporary location for NEW CSS -->
+	/* Temporary location for NEW CSS */
 	</style>
 	<?php if(false/*DEBUG*/) { ?>
 	<script type="text/javascript" src="<?=WEB_ROOT?>js/jquery-1.3.2.min.js"></script>

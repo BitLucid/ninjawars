@@ -9,9 +9,13 @@ function render_footer($quickstat=null){
 	}
 	if(isset($q) || isset($quickstat))
 	{
-	  echo "<script type='text/javascript'>
-	  	parent.quickstats.location='quickstats.php?command=$quickstat';
-	  	</script>\n";
+	  ?>
+	  <script type='text/javascript'>
+	    if(window.frames["quickstats"]){
+            window.frames["quickstats"].location = 'quickstats.php?command=<?=$quickstat?>';
+        }
+	  	</script>
+	  <?php
 	}
 	?>
 	</body>
