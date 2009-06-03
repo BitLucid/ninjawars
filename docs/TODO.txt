@@ -1,0 +1,3 @@
+Explain the avatars on the stats page
+Make search assume show_dead
+Turn classes from colors to elements, void fire water earth air
