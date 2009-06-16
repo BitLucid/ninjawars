@@ -34,7 +34,7 @@ if ($sql->rows == 0) {
   if ($items['Speed Scroll'] > 0) {
       echo "<tr>\n";
       echo "  <td>\n";
-      echo "  <a href=\"inventory_mod.php?item=Speed%20Scroll&target=$username&link_back=inventory\">Speed Scrolls</a>: \n";
+      echo "  <a href=\"inventory_mod.php?item=Speed%20Scroll&selfTarget=1&target=$username&link_back=inventory\">Speed Scrolls</a>: \n";
       echo "  </td>\n";
       
       echo "  <td>\n";
@@ -45,7 +45,7 @@ if ($sql->rows == 0) {
   if ($items['Stealth Scroll'] > 0) {
       echo "<tr>\n";
       echo "  <td>\n";
-      echo "  <a href=\"inventory_mod.php?item=Stealth%20Scroll&target=$username&link_back=inventory\">Stealth Scrolls</a>: \n";
+      echo "  <a href=\"inventory_mod.php?item=Stealth%20Scroll&selfTarget=1&target=$username&link_back=inventory\">Stealth Scrolls</a>: \n";
       echo "  </td>\n";
       
       echo "  <td>\n";

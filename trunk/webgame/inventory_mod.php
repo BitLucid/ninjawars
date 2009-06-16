@@ -85,7 +85,7 @@ if ($item  == "Dim Mak"  || $item == "Speed Scroll") { $ignores_stealth == true;
 // Attack Legal section
 $attacker = $username;
 $params = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$ignores_stealth, 'self_use'=>$selfTarget);
-assert($attacker != $target);
+assert(!!$selfTarget || $attacker != $target);
 $AttackLegal = new AttackLegal($attacker, $target, $params);
 $attack_allowed = $AttackLegal->check();
 $attack_error = $AttackLegal->getError();
@@ -214,7 +214,8 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
                 echo "Your actions have revealed you. You are no longer stealthed.<br />\n";
             }
 			if ($victim_alive == true && $using_item == true) {
-				echo "<br /><a href=\"inventory_mod.php?item=$item&target=$target\">Use $item again?</a><br />\n";  //Repeat Usage
+			    $self_targetting = $selfTarget? '&selfTarget=1' : '';
+				echo "<br /><a href=\"inventory_mod.php?item=$item&target=$target{$self_targetting}\">Use $item again?</a><br />\n";  //Repeat Usage
 			}
 	    }
     }
