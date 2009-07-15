@@ -7,7 +7,8 @@ $quickstat  = false;
 $page_title = "Ninja List";
 
 include "interface/header.php";
-
+// The script for the accordian opening.
+//echo "<script type='text/javascript' src='js/player_accordian.js'></script>";
 // INIT
 
 $username = get_username();
@@ -155,6 +156,8 @@ if ($searched > 0){
   if ($page == ""){
       $page       = ($dead_count > $rank_spot ? 1 : $page);
     }
+    
+  $page = $page<1?1 : $page; // Prevent the page number from going negative.
 }
 
 
@@ -258,6 +261,8 @@ if(!$searched){ // Will not display active ninja on a search page.
       echo "  <td class=\"playerCell aliveCell\">\n";
       echo    $alive."\n";
       echo "  </td>\n";
+      
+      echo "  <td class='profile' style='display:none'></td>";
 
       echo "</tr>\n";
     }
