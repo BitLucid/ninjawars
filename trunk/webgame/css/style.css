@@ -9,6 +9,7 @@ body {
 	/*font-size: 12px;*/
 	font-size: 80%;
 	color: DarkKhaki;
+	background-color: black; /* Required to deal with the ie bug. */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
 }
