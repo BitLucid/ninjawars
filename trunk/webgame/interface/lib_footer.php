@@ -11,9 +11,10 @@ function render_footer($quickstat=null){
 	{
 	  ?>
 	  <script type='text/javascript'>
-	    if(window.frames["quickstats"]){
-            window.frames["quickstats"].location = 'quickstats.php?command=<?=$quickstat?>';
-        }
+	    refreshQuickstats('<?=$quickstat?>');
+	    /*if(window.frames["quickstats"]){
+            refreshQuickstats('<?=$quickstat?>');
+        }*/
 	  	</script>
 	  <?php
 	}
