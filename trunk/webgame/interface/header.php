@@ -4,12 +4,13 @@ ob_start(null, 1); // File buffer output in chunks.
 // General utility objects.
 $filter = new Filter(); // *** Creates the filters for later use.
 $sql = new DBAccess();
+$section_only = in('section_only'); // Check whether it's an ajax section.
 
 // ******************** Declared variables *****************************
 $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
 
 // Page viewing settings usually set before the header.
-$private 	= (isset($private)? $private : NULL); 
+$private 	= (isset($private)? $private : NULL);
 $quickstat 	= (isset($quickstat)? $quickstat : NULL);
 $alive 		= (isset($alive)? $alive : NULL);
 $page_title = (isset($page_title)? $page_title : "NinjaWars");
@@ -63,7 +64,9 @@ if(!is_logged_in()){
 	// From lib_header.
 }
 
-write_html_for_header(); // ***** Display the html header
+if(!$section_only){
+    write_html_for_header(); // ***** Display the html header
+}
 
 if($error){
 	echo $error;

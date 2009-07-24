@@ -15,7 +15,7 @@ function render_footer($quickstat=null, $skip_quickstat=null){
     	  ?>
     	  <script type='text/javascript'>
     	    refreshQuickstats('<?=$quickstat?>');
-    	  	</script>
+    	  </script>
     	  <?php
     	}
     }

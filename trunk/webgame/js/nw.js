@@ -25,23 +25,41 @@ $(document).ready(function() {
     });
     
     
-    //$("a[target]").hide(); /* Hide all links using target */
+    quickstatsLinks = $("a[target='quickstats']");
+    quickstatsLinks.css({'font-style':'italic'}); // Hide all links using target as a test.
+    quickDiv =  $('div#quickstats-frame-container');
+    //quickDiv.load('quickstats.php');
+    // Add the click handlers for loading the quickstats frame.
+    frameClickHandlers(quickstatsLinks, quickDiv);
     
     /*
-    function addClickHandlers() {
-        $("a.remote", this).click(function() {
-            $("#target").load(this.href, addClickHandlers);
-        });
-    }
-    $(document).ready(addClickHandlers);
+    miniChatLinks = $("a[target='mini_chat']");
+    miniChatLinks.css({'font-style':'italic'}); // Hide all links using target as a test.
+    chatDiv = $('div#mini-chat-frame-container');
+    
+    frameClickHandlers(miniChatLinks, chatDiv);
+    
+    mainLinks = $("a[target='main']");
+    mainLinks.css({'font-style':'italic'}); // Hide all links using target as a test.
+    mainDiv = $('div#main-frame-container');
+    mainDiv.hide();
+    // The mainDiv handler would want to refresh quickstats when it loads if it's
+    // footer gets excluded.
     */
     
-    //updateHealthBar(70);
    
  });
  
 
 // GLOBAL FUNCTIONS
+
+// When clicking frame links, load a section instead of the iframe.
+function frameClickHandlers(links, div){
+    links.click(function(){
+        div.load(this.href, 'section_only=1');
+        return false;
+    });
+}
 
 function toggle_visibility(id) {
     var tog = $("#"+id);

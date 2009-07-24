@@ -5,9 +5,10 @@ $quickstat  = false;
 $page_title = "Quickstats";
 
 include_once("interface/header.php");
-require_once(LIB_ROOT."specific/lib_status.php");
+require_once(LIB_ROOT."specific/lib_status.php"); // Status alterations.
 
 // *** Turning the header variables into variables for this page.
+$section_only = in('section_only'); // Check whether it's an ajax section.
 $command  = in('command');
 $health   = $players_health;
 $strength = $players_strength;
@@ -125,10 +126,10 @@ else if ($command == "viewinv") {
 echo "<script language='javascript' type='text/javascript'>
         updateHealthBar('$players_health');
       </script>";
-?>
-</body>
-</html>
 
-
-
-
+if(!$section_only){
+    ?>
+    </body>
+    </html>
+    <?php
+}
