@@ -26,8 +26,7 @@ if($health<80){
 }
 
 
-//$member   = $sql->QueryItem("SELECT member FROM players WHERE uname = '$username'");  //UNUSED IN PAGE
-//$clan   = $players_clan;    //UNUSED IN PAGE
+
 
 if ($command != "viewinv") {
   echo "<table style=\"border: 0;\" class='quickstats player-stats'>\n";
@@ -122,6 +121,10 @@ else if ($command == "viewinv") {
   echo "</table>\n";
 }
 
+// Write out a function call to update the login-bar's health display.
+//echo "<script language='javascript' type='text/javascript'>
+//        updateHealthBar('$players_health');
+//      </script>";
 ?>
 </body>
 </html>

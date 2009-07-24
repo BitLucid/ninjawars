@@ -40,6 +40,6 @@ echo render_chat_messages($sql, $chatlength);
 
 echo "</div>"; // End of mini_chat div.
 
-include "interface/footer.php";
+echo render_footer($quickstat=null, $skip_quickstat=true);
 
 ?>

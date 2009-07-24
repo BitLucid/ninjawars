@@ -1,7 +1,18 @@
 /* Load all the js scripts here, essentially */
 
+if(!$){
+    var $ = jQuery;
+}
+
+if(!firstLoad){
+    // Counter starts at 1 to indicate a newly refreshed page,
+    // As opposed to subsequent loads of 
+    var firstLoad = 1;
+}
 // INIT
 $(document).ready(function() {
+
+    // TODO: I need to specify whether this occurs in iframe windows. vs just outer window.
    
    /* Collapse the following parts of the index */
     $("#links-menu").toggle();
@@ -40,12 +51,26 @@ function refreshMinichat(){
 }
 
 
+// Keep in mind the need to use the window.parent syntax since it's used in iframe.
+/*function updateHealthBar(health){
+    alert(this.location+this.parent.location);
+    var $ = jQuery;
+    $(window.parent).find('span').css({'background-color':'purple'});
+    $(window.parent).find('body').css('background-color', 'red').end().css('background-color', 'blue');
+    $(window.parent).find('#logged-in-bar-health').text = '| health '+health;
+}*/
+
+// For refreshing quickstats from inside main.
 function refreshQuickstats(quickView){
-	if (!quickView){
-		parent.quickstats.location="quickstats.php";
-	} else {
-		parent.quickstats.location='quickstats.php?command='+quickView;
-	}
+    // Use parent to indicate the parent global variable.
+    if(parent.firstLoad > 1){
+    	if (quickView){
+    	    parent.quickstats.location='quickstats.php?command='+quickView;
+    	} else {
+    		parent.quickstats.location="quickstats.php";
+    	}
+    }
+    parent.firstLoad++;
 }
 
 /* Need to parse the 'this' php file/page so that refreshing to login auto-passes the appropriate page after */
