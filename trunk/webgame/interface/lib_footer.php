@@ -1,5 +1,6 @@
 <?php
 
+// Returns the rendered footer.
 function render_footer($quickstat=null, $skip_quickstat=null){
     ob_start();
     if(!$skip_quickstat){
@@ -14,9 +15,6 @@ function render_footer($quickstat=null, $skip_quickstat=null){
     	  ?>
     	  <script type='text/javascript'>
     	    refreshQuickstats('<?=$quickstat?>');
-    	    /*if(window.frames["quickstats"]){
-                refreshQuickstats('<?=$quickstat?>');
-            }*/
     	  	</script>
     	  <?php
     	}

@@ -122,9 +122,9 @@ else if ($command == "viewinv") {
 }
 
 // Write out a function call to update the login-bar's health display.
-//echo "<script language='javascript' type='text/javascript'>
-//        updateHealthBar('$players_health');
-//      </script>";
+echo "<script language='javascript' type='text/javascript'>
+        updateHealthBar('$players_health');
+      </script>";
 ?>
 </body>
 </html>

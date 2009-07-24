@@ -9,6 +9,7 @@ if(!firstLoad){
     // As opposed to subsequent loads of 
     var firstLoad = 1;
 }
+
 // INIT
 $(document).ready(function() {
 
@@ -34,6 +35,8 @@ $(document).ready(function() {
     }
     $(document).ready(addClickHandlers);
     */
+    
+    //updateHealthBar(70);
    
  });
  
@@ -51,26 +54,30 @@ function refreshMinichat(){
 }
 
 
-// Keep in mind the need to use the window.parent syntax since it's used in iframe.
-/*function updateHealthBar(health){
-    alert(this.location+this.parent.location);
-    var $ = jQuery;
-    $(window.parent).find('span').css({'background-color':'purple'});
-    $(window.parent).find('body').css('background-color', 'red').end().css('background-color', 'blue');
-    $(window.parent).find('#logged-in-bar-health').text = '| health '+health;
-}*/
+// Keep in mind the need to use window.parent when in iframe.
+function updateHealthBar(health){
+    // Should only update when a change occurs.
+    mess = '| '+health+' health';
+    span = $('#logged-in-bar-health', top.document);
+    span.text(mess);
+    if(health<100){
+        span.css({'color' : 'red'});
+    } else {
+        span.css({'color' : ''});
+    }
+}
 
 // For refreshing quickstats from inside main.
 function refreshQuickstats(quickView){
     // Use parent to indicate the parent global variable.
-    if(parent.firstLoad > 1){
+    if(top.firstLoad > 1){
     	if (quickView){
     	    parent.quickstats.location='quickstats.php?command='+quickView;
     	} else {
     		parent.quickstats.location="quickstats.php";
     	}
     }
-    parent.firstLoad++;
+    top.firstLoad++;
 }
 
 /* Need to parse the 'this' php file/page so that refreshing to login auto-passes the appropriate page after */

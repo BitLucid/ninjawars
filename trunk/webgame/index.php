@@ -83,6 +83,7 @@ write_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
 		<div class="logged-in-bar">
 	        	<?='<a target="main" href="player.php?player='.$username.'">'.$username.'</a>';?>
 	        	 | <?='<a target="main" href="mail_read.php">mailbox</a>';?>
+	        	 <span id='logged-in-bar-health'> </span>
 	    </div>
 		<?php } /* End of login/out conditional display.*/ ?>
 	    
