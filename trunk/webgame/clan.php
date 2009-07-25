@@ -1,6 +1,6 @@
 <?php
 require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
-require_once(LIB_ROOT."specific/clan_tags_lib.php");
+require_once(LIB_ROOT."specific/tags_lib.php");
 $alive      = false;
 $private    = true;
 $quickstat  = false;
