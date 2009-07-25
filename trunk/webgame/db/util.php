@@ -92,8 +92,11 @@ class DBAccess {
 
     
     /* Wrapper function for the PDO full result set function fetchAll using only the default values */
-	function fetchAll()
+	function fetchAll($query=null)
 	{
+	    if($query){
+	        $this->Query($query);
+	    }
 	    $res = null;
 	    if (is_object($this->result)){
 	        $res = $this->result->fetchAll();

@@ -630,4 +630,45 @@ table .inventory{
 .hidden {
     display:none;
 }
-/* End of style.css */
+
+/*  Clan tags section */
+#clan-tags{
+    width: 70%;
+}
+.clan-tag{
+    color: blue;
+    background-color:maroon;
+    float:left;
+    margin: 5px 5px 5px 5px;
+}
+.size10{
+    font-size: 5.5em;
+}
+.size9{
+    font-size: 5em;
+}
+.size8{
+    font-size: 4.5em;
+}
+.size7{
+    font-size: 4em;
+}
+.size6{
+    font-size: 3.5em;
+}
+.size5{
+    font-size: 3em;
+}
+.size4{
+    font-size: 2.5em;
+}
+.size3{
+    font-size: 2em;
+}
+.size2{
+    font-size: 1.5em;
+}
+.size1{
+    font-size: 1em;
+}
+
