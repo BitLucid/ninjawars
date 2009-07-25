@@ -31,6 +31,7 @@ $(document).ready(function() {
     //quickDiv.load('quickstats.php');
     // Add the click handlers for loading the quickstats frame.
     frameClickHandlers(quickstatsLinks, quickDiv);
+    // MAKE THIS SPECIFY AJAX SECTIONS STYLE RELOAD, NOW.
     
     /*
     miniChatLinks = $("a[target='mini_chat']");
@@ -87,6 +88,7 @@ function updateHealthBar(health){
 
 // For refreshing quickstats from inside main.
 function refreshQuickstats(quickView){
+    // TODO: THIS NEEDS TO ACCOUNT FOR THE NEW AJAX SECTIONS, NOW.
     // Use parent to indicate the parent global variable.
     if(top.firstLoad > 1){
     	if (quickView){
