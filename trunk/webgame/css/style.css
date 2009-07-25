@@ -641,6 +641,15 @@ table .inventory{
     float:left;
     margin: 5px 5px 5px 5px;
 }
+#clan-tags .size10{ /* Reverse the biggest tag color */
+    color: red;
+    background-color: blue;
+    font-family:tahoma, sans;
+}
+#clan-tags .size10 a{
+    color: red;
+    font-family:tahoma, sans;
+}
 .size10{
     font-size: 5.5em;
 }
@@ -671,4 +680,3 @@ table .inventory{
 .size1{
     font-size: 1em;
 }
-

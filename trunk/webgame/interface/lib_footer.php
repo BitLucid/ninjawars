@@ -10,7 +10,7 @@ function render_footer($quickstat=null, $skip_quickstat=null){
     		global $quickstat;
     		$q = $quickstat;
     	}
-    	if(isset($q) || isset($quickstat))
+    	if(isset($q))
     	{
     	  ?>
     	  <script type='text/javascript'>

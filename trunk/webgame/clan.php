@@ -27,8 +27,6 @@ $clan          = getClan($username);
 $viewer_level  = getLevel($username);
 $clan_creation_level_requirement = 15;
 
-
-
 if ($command == "new")                               //Clan Creation Action
   {
   	if ($viewer_level>$clan_creation_level_requirement)

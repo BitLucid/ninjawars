@@ -10,6 +10,11 @@ if(!firstLoad){
     var firstLoad = 1;
 }
 
+var NW;
+if(!NW){
+    NW = {}; // Ninjawars namespace object.
+}
+
 // INIT
 $(document).ready(function() {
 
@@ -31,7 +36,7 @@ $(document).ready(function() {
     //quickDiv.load('quickstats.php');
     // Add the click handlers for loading the quickstats frame.
     frameClickHandlers(quickstatsLinks, quickDiv);
-    // MAKE THIS SPECIFY AJAX SECTIONS STYLE RELOAD, NOW.
+    NW.quickDiv = quickDiv;
     
     /*
     miniChatLinks = $("a[target='mini_chat']");
@@ -88,14 +93,15 @@ function updateHealthBar(health){
 
 // For refreshing quickstats from inside main.
 function refreshQuickstats(quickView){
-    // TODO: THIS NEEDS TO ACCOUNT FOR THE NEW AJAX SECTIONS, NOW.
-    // Use parent to indicate the parent global variable.
+    // Accounts for ajax section.
+    var url = 'quickstats.php?command='+quickView;
     if(top.firstLoad > 1){
-    	if (quickView){
-    	    parent.quickstats.location='quickstats.php?command='+quickView;
-    	} else {
-    		parent.quickstats.location="quickstats.php";
-    	}
+        if(top.window.NW.quickDiv){
+            top.window.NW.quickDiv.load(url, 'section_only=1');
+        } else {
+            // Use parent to indicate the parent global variable.
+    	    parent.quickstats.location=url;
+        }
     }
     top.firstLoad++;
 }
