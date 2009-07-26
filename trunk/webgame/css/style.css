@@ -77,11 +77,6 @@ a:link {} a:visited {} a:active {}
 	color: SlateBlue; 
 }
 
-/*
-a:visited.extLink, .extLink a:visited, #menu.extLink a:visited, #menu a.extLink:visited  {
-	color: SlateBlue;
-}*/
-
 ol.aboutUpper { 
 	list-style-type: upper-roman;
 	margin-left: 0;
@@ -236,11 +231,6 @@ td.playerTable {
 
 
 
-/*#flashParts{
-	width:100%;
-	float:none;
-	display:block"
-}*/
 #flashBanner {
 	width:90%;
 	text-align:center;
@@ -462,10 +452,20 @@ td.playerTable {
 
 /* End of IFRAMES */
 
+
+/* Index page specific stuff */
+
 #music-player {
 	width:70px;
 	height:24px;
 }
+
+#heal-link {
+    font-size: 1.5em;
+    font-style: italic;
+}
+
+/* End of Index page stuff */
 
 
 .textField{
@@ -474,8 +474,6 @@ td.playerTable {
 }
 
 .formbutton, .formButton{
-	/*cursor:pointer;
-	border:outset 1px #ccc;*/
 	background:black;
 	color:SteelBlue;
 	font-weight:bold;
@@ -631,16 +629,95 @@ table .inventory{
     display:none;
 }
 
+
+
 /*  Clan tags section */
 #clan-tags{
-    width: 70%;
+    clear: both;
+    padding-top: 3px;
 }
 .clan-tag{
     color: blue;
     background-color:maroon;
     float:left;
     margin: 5px 5px 5px 5px;
+    list-style-type: none;
 }
+
+/* Clan member tags styles */
+#clan-members {
+    clear: both;
+    margin-top: 3px;
+}
+
+#clan-members ul {
+    list-style-type: none;
+}
+
+#clan-members-title {
+    margin-bottom: 3px;
+}
+
+#clan-members-count {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+#clan-members .member{
+    float:left;
+    color:orange;
+    background-color:green;
+    margin: 5px 5px 5px 5px;
+}
+
+#clan-members .member a{
+    color:orange;
+    background-color:green;
+}
+
+#clan-page-title {
+    text-align: center;
+}
+
+
+#leader-panel {
+    width: 40%;
+    float:left;
+    text-align: center;
+    border: thin solid white;
+    padding-bottom: 5px;
+}
+
+#leader-panel ul{
+    list-style-type: none;
+    margin: 3px;
+    height: 2.3em;
+}
+
+#leader-panel li {
+    width: 49%;
+    float: left;
+}
+
+
+#leader-options{
+    padding: 5px 5px 5px 5px;
+    width: 100%;
+}
+
+#leader-panel-title {
+    font-weight: bold;
+    text-align: center;
+}
+
+#clan-options {
+    width: 50%;
+    float: right;
+    list-style-type: none;
+}
+
+/*  End of Clan Tags section */
+
 #clan-tags .size10{ /* Reverse the biggest tag color */
     color: red;
     background-color: blue;
@@ -648,6 +725,7 @@ table .inventory{
 }
 #clan-tags .size10 a{
     color: red;
+    background-color: blue;
     font-family:tahoma, sans;
 }
 .size10{
@@ -680,3 +758,4 @@ table .inventory{
 .size1{
     font-size: 1em;
 }
+

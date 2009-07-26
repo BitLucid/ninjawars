@@ -166,8 +166,8 @@ write_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
 	  		<li><a href="shrine.php" target="main">Shrine <img src="images/shrine.png" alt=""></a><br />
 	  		<li>
 	  			<ul class="submenu">
-	  				<li><a href="shrine_mod.php?restore=1" target="main">Resurrect</a><br /></li>
-	  				<li><a href="shrine_mod.php?max_heal=1" target="main">Heal</a><br /></li>
+	  				<li id='resurrect-link'><a href="shrine_mod.php?restore=1" target="main">Resurrect</a></li>
+	  				<li id='heal-link'><a href="shrine_mod.php?max_heal=1" target="main">Heal</a></li>
 	  			</ul>
 	  		</li>
 	  	</ul>
