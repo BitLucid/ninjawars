@@ -1,4 +1,4 @@
-DROP TABLE messages;
+DROP TABLE IF EXISTS messages;
 CREATE TABLE messages (
     message_id serial NOT NULL,
     send_to character varying(255) not null default ''::character varying,

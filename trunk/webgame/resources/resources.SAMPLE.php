@@ -28,6 +28,7 @@ define('CSS_ROOT', WEB_ROOT.'css/');
 define('JS_ROOT', WEB_ROOT.'js/');
 
 define('IMAGE_ROOT', WEB_ROOT.'images/');
+define('SERVER_IMAGE_ROOT', SERVER_ROOT.'images/');
 
 // *** Add in specific object folders as they get developed.
 define('LIB_ROOT', SERVER_ROOT.'lib/');
