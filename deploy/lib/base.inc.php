@@ -8,7 +8,7 @@
 
 // Cut down on the global includes, use specific includes instead.
 
-require_once(substr(__FILE__, 0, (strpos(__FILE__, 'www/')))."www/resources/resources.php");
+require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/')))."resources.php");
 // *** Included first from the index, so has to be on the same level as index.
 // Standalone utilities
 require_once(LIB_ROOT."func/either.php");

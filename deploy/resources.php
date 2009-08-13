@@ -2,27 +2,27 @@
 /*
 * resources.php template. Copy this from the sample to resources.php and change the necessary constants
 */
-define('DATABASE_HOST', 'localhost'); // *** localhost on live
-define('DATABASE_USER', 'tchalvak'); // *** knownUsername on live
-define('DATABASE_NAME', 'ninjawars'); // *** ninjawarsLive on live
+define('DATABASE_HOST', DB_HOST); // *** localhost on live
+define('DATABASE_USER', DB_USER); // *** knownUsername on live
+define('DATABASE_NAME', DB_NAME); // *** ninjawarsLive on live
 
 define('CONNECTION_STRING', 'pgsql:dbname='.DATABASE_NAME.';user='.DATABASE_USER); // *** Mostly static
 
-define('DEBUG', true); // *** Shorter debugging constant name, set as false on live.
-define('DEBUG_ALL_ERRORS', true); // *** Only will turn on if debug is also on.
+define('DEBUG', DEBUG); // *** Shorter debugging constant name, set as false on live.
+define('DEBUG_ALL_ERRORS', DEBUG_ALL); // *** Only will turn on if debug is also on.
 
-define('SERVER_ROOT', '/var/www/ninjawars/trunk/webgame/'); // *** Server root is the webgame folder, not the true root.
+define('SERVER_ROOT', SERVER_ROOT); // *** Server root is the webgame folder, not the true root.
 // *** known web dir on live.
-define('WEB_ROOT', 'http://localhost/ninjawars/trunk/webgame/'); // *** The web root is also the webgame folder, not the true root.
+define('WEB_ROOT', WWW_ROOT); // *** The web root is also the webgame folder, not the true root.
 // *** known web dir on live.
 
-define('ADMIN_EMAIL', 'ninjawarsTchalvak@gmail.com'); // *** For logs/emailed errors.
+define('ADMIN_EMAIL', ADMIN_EMAIL); // *** For logs/emailed errors.
 
-define('SUPPORT_EMAIL', 'ninjawarsTchalvak@gmail.com'); // *** For public questions.
-define('SUPPORT_EMAIL_FORMAL_NAME', 'Ninjawars Tchalvak');
+define('SUPPORT_EMAIL', SUPPORT_EMAIL); // *** For public questions.
+define('SUPPORT_EMAIL_FORMAL_NAME', SUPPORT_EMAIL_NAME);
 
-define('SYSTEM_MESSENGER_EMAIL', 'noreply@ninjawars.net');
-define('SYSTEM_MESSENGER_NAME', 'Ninjawars Automated Messenger');
+define('SYSTEM_MESSENGER_EMAIL', SYSTEM_EMAIL);
+define('SYSTEM_MESSENGER_NAME', SYSTEM_EMAIL_NAME);
 
 define('CSS_ROOT', WEB_ROOT.'css/');
 define('JS_ROOT', WEB_ROOT.'js/');
