@@ -41,6 +41,10 @@ h1, h2, .title, .player-info .player-name{
 	padding: 3px;
 }
 
+ul {
+	list-style-type: none;
+}
+
 img {
       border: 0;
       }
@@ -757,5 +761,10 @@ table .inventory{
 }
 .size1{
     font-size: 1em;
+}
+
+/*   Attack player page css */
+#attack-player-page li{
+	margin-bottom: 2em;
 }
 

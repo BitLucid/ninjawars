@@ -15,9 +15,10 @@ include "interface/header.php";
 $turn_cost = 1;
 $attacked  = in('attacked');
 $victim    = in('victim');
+$random_encounter = in('random_encounter');
 
 if(getTurns($username) > 0) {
-  if ($attacked == 1) { // Invisible bit to expect that it comes from the form.
+  if ($attacked == 1) { // Bit to check that it comes from the form.
       echo "Commencing Attack<br /><br />\n";
       
       if (getStatus($username) && $status_array['Stealth']) {
@@ -28,13 +29,31 @@ if(getTurns($username) > 0) {
       $attacker_health = getHealth($username);
       $attacker_gold   = getGold($username);
       
-    if ($victim == "") {
+    if ($random_encounter == true) { // ONI, Mothafucka!
+    	$victim = "Oni";
+		// Oni attack!  Yay!
+		// They take turns and a kill and do a little damage.
+		$oni_turn_loss = 10;
+		$oni_health_loss = rand(1, 20);
+		$oni_kill_loss = 1;
+		$player_turns = subtractTurns($username, $oni_turn_loss);
+		$attacker_health = subtractHealth($username, $oni_health_loss);
+		$attacker_kills = subtractKills($username, $oni_kill_loss);
+		$oni_killed = false;
+		if ($player_turns>50 && $attacker_health>0){
+			// If the turns are high/you are energetic, and you survive, you can kill them.
+			$oni_killed = true;
+			addItem($username,"Dim Mak",1);
+		}
+		echo "<div class='ninja-error'>An Oni attacks you as you wander!</div>
+			<img src='images/Oni_pelted_by_beans.jpg' style='width:450px'/>
+			<p>The Oni saps some of your soul before "
+			.($oni_killed? "you kill it." : "it escapes into the wilderness.")."<p>";
+	} else if ($victim == "" ) {
 	    echo "You attack the air.\n";
-	} else if ($victim == "villager") {
+	} else if ($victim == "villager") { // VILLAGER
 	  echo "The villager sees you and prepares to defend!<br /><br />\n";
-	  
 	  $villager_attack = rand(0,10); // *** Villager Damage ***
-	  
 	  if (!subtractHealth($username,$villager_attack)) {
 	      echo "The villager has slain you!<br />\n";
 	      echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.\n";
@@ -42,7 +61,6 @@ if(getTurns($username) > 0) {
 	        $just_villager = rand(0,20);
 	      $villager_gold = rand(0,20);    // *** Vilager Gold    ***
 	      addGold($username,$villager_gold);
-
 	      echo "The villager is no match for you!<br />\n";
 	      echo "Villager does $villager_attack points of damage.<br />\n";
 	      echo "You have gained $villager_gold gold.<br />\n";
@@ -209,8 +227,10 @@ if(getTurns($username) > 0) {
       subtractTurns($username,$turn_cost);
       
       echo "<hr />\n";
-      echo "<a href=\"attack_npc.php?attacked=1&victim=$victim\">Attack $victim again</a>\n";
-      echo "<br />\n";
+      if($victim && !$random_encounter){
+	      echo "<a href=\"attack_npc.php?attacked=1&victim=$victim\">Attack $victim again</a>\n";
+	      echo "<br />\n";
+      }
       echo "<a href=\"attack_player.php\">Return to Combat</a>\n";
     }
 }
