@@ -15,7 +15,7 @@ include "interface/header.php";
 $turn_cost = 1;
 $attacked  = in('attacked');
 $victim    = in('victim');
-$random_encounter = in('random_encounter');
+$random_encounter = rand(1, 200) == 200;
 
 if(getTurns($username) > 0) {
   if ($attacked == 1) { // Bit to check that it comes from the form.

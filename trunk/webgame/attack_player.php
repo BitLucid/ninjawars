@@ -4,12 +4,6 @@ $alive      = false;
 $page_title = "Combat";
 $quickstat  = "player";
 
-$rand = rand(1, 200);
-if($rand == 200){ // Slight chance of random encounter.
-	header("Location: attack_npc.php?attacked=1&random_encounter=1");
-	exit();
-}
-
 
 include "interface/header.php";
 ?>
