@@ -6,7 +6,7 @@
  * @subpackage deity_lib
  */
 
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php"); // *** Absolute path include of everything.
+require_once(substr(__FILE__,0,(strpos(__FILE__, 'lib/')))."lib/base.inc.php"); // *** Absolute path include of everything.
 
 // Name the chat time will send under.
 define('CHAT_TIME_NAME', '----');

@@ -1,5 +1,5 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php"); // *** Absolute path include of everything.
+require_once(substr(__FILE__,0,(strpos(__FILE__, 'www/')))."lib/base.inc.php"); // *** Absolute path include of everything.
 require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
 /* Player behavior object.

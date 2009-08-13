@@ -253,8 +253,8 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 								This message is from SysMsg, the AUTOMATED email system for NinjaWars. <br>
 								Any emails you receive from the game will come from this address. 
 								Please click on the link below to confirm your account.<br><br>
-								<a href=\"http://www.ninjawars.net/webgame/confirm.php?username=".urlencode($send_name)."&confirm=$confirm\">Confirm Account</a><br>
-								Or paste this link:<br>http://www.ninjawars.net/webgame/confirm.php?username=".urlencode($send_name)."&confirm=$confirm <br> 
+								<a href=\"http://www.ninjawars.net/confirm.php?username=".urlencode($send_name)."&confirm=$confirm\">Confirm Account</a><br>
+								Or paste this link:<br>http://www.ninjawars.net/confirm.php?username=".urlencode($send_name)."&confirm=$confirm <br> 
 								into your browser.<br><br>
 								If you require help use the forums at http://www.ninjawars.net/forum/<br> 
 								or email: ".SUPPORT_EMAIL."<br><br><b>

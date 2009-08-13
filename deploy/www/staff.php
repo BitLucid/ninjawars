@@ -78,7 +78,7 @@ Ninjawars is open source, with the source code downloadable and able to be openl
   is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">
   Creative Commons Attribution-Share Alike 3.0 United States License</a>.<br>
   Permissions beyond the scope of this license may be available at 
-  <a xmlns:cc="http://creativecommons.org/ns#" href="http://ninjawars.net/webgame/staff.php" rel="cc:morePermissions">http://ninjawars.net/webgame/staff.php</a>.
+  <a xmlns:cc="http://creativecommons.org/ns#" href="http://ninjawars.net/staff.php" rel="cc:morePermissions">http://ninjawars.net/staff.php</a>.
 
 </p>
 </div>

@@ -6,7 +6,7 @@
  * @subpackage input
  */
  
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
+require_once(substr(__FILE__,0,(strpos(__FILE__, 'lib/')))."lib/base.inc.php");
 
 if(DEBUG){
 	require_once(dirname(__FILE__)."/lib_tests.php");

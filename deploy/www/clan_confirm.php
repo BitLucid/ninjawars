@@ -43,10 +43,10 @@ if (!$clan_name){
         if ($current_clan != "") {
             echo "This member is already part of a clan.\n";
             echo "<br><br>\n";
-            echo "<a href=\"/webgame/\">Return to Main</a>\n";
+            echo "<a href=\"/\">Return to Main</a>\n";
         } else if (!$check){
             echo "<p>No such ninja.</p>";
-            echo "<p><a href=\"/webgame/\">Return to Main</a></p>\n";
+            echo "<p><a href=\"/\">Return to Main</a></p>\n";
         } elseif ($confirm == $check && $agree > 0) {
             echo "Request Accepted.<br>\n";
             $sql->Update("UPDATE players SET clan = '$clan_name', clan_long_name = '$clan_l_name', 

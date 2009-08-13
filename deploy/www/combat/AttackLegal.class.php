@@ -1,5 +1,5 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
+require_once(substr(__FILE__,0,(strpos(__FILE__, 'www/')))."lib/base.inc.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
 require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(CHAR_ROOT . "Player.class.php");
@@ -12,7 +12,7 @@ require_once(CHAR_ROOT . "Player.class.php");
  * @package     Attacks
  * @author      Roy Ronalds <roy.ronalds@gmail.com>
  * @author      
- * @link        http://ninjawars.net/webgame/attack_mod.php/ 
+ * @link        http://ninjawars.net/attack_mod.php
 */
 
 /* Requires and require_onces.
