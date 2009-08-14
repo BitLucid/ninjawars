@@ -6,7 +6,7 @@ $page_title = "Game Confirmation";
 
 include SERVER_ROOT."interface/header.php";
 ?>
-  
+
 <span class="brownHeading">Game Confirmation</span>
 
 <hr>

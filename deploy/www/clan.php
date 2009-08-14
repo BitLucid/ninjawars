@@ -136,11 +136,11 @@ if ($clan  != "") {
 	  echo "<p>You have left your clan.</p>";
 	  die();
 	}
-      
+
       echo "<p>You are currently a member of the $clan Clan.</p>";
       echo "<p><a href=\"clan.php?command=leave\" onclick='leave_clan(); return false;'>Leave Current Clan</a></p>";
     }
-  
+
   if ($command == "msgclan") {                          //Clan Member Input for Messaging their Entire Clan
       echo "<form id=\"msg_clan\" action=\"mail_send.php\" method=\"get\" name=\"msg_clan\">
           Message: <input id=\"message\" type=\"text\" size=\"50\" maxlength=\"1000\" name=\"message\" class=\"textField\"><br>
@@ -185,11 +185,11 @@ if ($command == "list") {                                //Lists the clans that 
   echo "  <td style=\"font-weight: bold;\">\n";
   echo "  Clan\n";
   echo "  </td>\n";
-  
+
   echo "  <td style=\"font-weight: bold;\">\n";
   echo "  Leader\n";
   echo "  </td>\n";
-  
+
   echo "  <td style=\"font-weight: bold;\">\n";
   echo "  View\n";
   echo "  </td>\n";
@@ -202,13 +202,13 @@ if ($command == "list") {                                //Lists the clans that 
       echo "  <td>\n";
       echo "  $clan_l_name\n";
       echo "  </td>\n";
-      
+
       echo "  <td>\n";
       echo "  $clan\n";
       echo "  </td>\n";
-      
+
       echo "  <td>\n";
-      echo "  <a href=\"clan.php?command=view&clan_name=$clan\">View Clan</a>\n";
+      echo "  <a href=\"clan.php?command=view&amp;clan_name=$clan\">View Clan</a>\n";
       echo "  </td>\n";
       echo "</tr>\n";
     }
@@ -225,4 +225,4 @@ if ($command == "view"){
 echo render_clan_tags(); // Display the clan tags section.
 
 include SERVER_ROOT."interface/footer.php";
-?> 
+?>

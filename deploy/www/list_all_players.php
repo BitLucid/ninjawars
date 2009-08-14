@@ -42,7 +42,7 @@ function display_active($limit=5, $alive_only=true){
                             ".$ninja['uname']."
                         </a>
                       </li>";
-            } ?> 
+            } ?>
         </ul>
     </div>
     <?php
@@ -52,19 +52,19 @@ function display_active($limit=5, $alive_only=true){
 function display_search_form($hide, $page, $searched, $dead_count){
     echo "<div class='list-all-players-search centered'>";
     echo "  <form action=\"list_all_players.php\" method=\"get\">";
-    echo "      <input type=\"textbox\" name=\"searched\" 
+    echo "      <input type=\"textbox\" name=\"searched\"
         class='textField' style=\"font-family:Verdana, Arial;font-size:xx-small;\">\n";
     echo "      <input type=\"hidden\" name=\"hide\" value=\"$hide\">\n";
     echo "      <input type=\"submit\" class=\"formButton\" value=\"Search for Ninja\">\n";
     if ($hide == "dead"){
-        echo "<a href=\"list_all_players.php?page=$page&hide=none&searched=$searched\">(Show $dead_count dead ninja)</a>\n";
+        echo "<a href=\"list_all_players.php?page=$page&amp;hide=none&amp;searched=$searched\">(Show $dead_count dead ninja)</a>\n";
     } else {
-        echo "<a href=\"list_all_players.php?page=$page&hide=dead&searched=$searched\">(Hide $dead_count dead ninja)</a>\n";
+        echo "<a href=\"list_all_players.php?page=$page&amp;hide=dead&amp;searched=$searched\">(Hide $dead_count dead ninja)</a>\n";
     }
     echo "  </form>\n";
     echo "</div>";
 
-} 
+}
 
 
 // Display first/previous/page/next/last
@@ -73,8 +73,8 @@ function player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $nu
   echo "<form action=\"list_all_players.php\" method=\"get\">\n";
   if($page != 1) {
       $pageprev = $page-1;
-      echo "<a href=\"list_all_players.php?hide=$hide&page=1&searched=$searched\">&lt;First</a> | ";
-      echo("<a href=\"list_all_players.php?page=$pageprev&searched=$searched&hide=$hide\">&lt;&lt;Previous $record_limit</a>&nbsp;| ");
+      echo "<a href=\"list_all_players.php?hide=$hide&amp;page=1&amp;searched=$searched\">&lt;First</a> | ";
+      echo("<a href=\"list_all_players.php?page=$pageprev&amp;searched=$searched&amp;hide=$hide\">&lt;&lt;Previous $record_limit</a>&nbsp;| ");
     } else {
       echo "&lt;First | &lt;&lt;Previous $record_limit&nbsp; | ";
     }
@@ -85,11 +85,11 @@ function player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $nu
   echo "<input type=\"textbox\" name=\"page\" value=\"$page\" style=\"font-family:Verdana, Arial;font-size:xx-small;\" size=3/>";
   echo "/$numofpages ";
   echo "</span>";
-  
+
   if(($totalrows - ($record_limit * $page)) > 0){
       $pagenext   = $page+1;
-      echo(" | <a href=\"list_all_players.php?page=$pagenext&searched=$searched&hide=$hide\">Next $record_limit&gt;</a>");
-      echo " | <a href=\"list_all_players.php?page=$numofpages&hide=$hide&searched=$searched\">Last&gt;&gt;</a>\n";
+      echo(" | <a href=\"list_all_players.php?page=$pagenext&amp;searched=$searched&amp;hide=$hide\">Next $record_limit&gt;</a>");
+      echo " | <a href=\"list_all_players.php?page=$numofpages&amp;hide=$hide&amp;searched=$searched\">Last&gt;&gt;</a>\n";
     } else {
       echo(" | Next $record_limit&gt;");
       echo " | Last&gt;&gt;\n";
@@ -155,7 +155,7 @@ if ($searched > 0){
   if ($page == ""){
       $page       = ($dead_count > $rank_spot ? 1 : $page);
     }
-    
+
   $page = $page<1?1 : $page; // Prevent the page number from going negative.
 }
 
@@ -170,8 +170,8 @@ if ($searched > 0){
 $numofpages = ceil($totalrows/$record_limit);
 $limitvalue   = ($page*$record_limit) - $record_limit;
 // Get the ninja information.
-$sql->Query("SELECT rank_id, uname, class, level, alive, days, clan, player_id 
-	FROM rankings ".$where_clause."  ORDER BY rank_id ASC, player_id ASC 
+$sql->Query("SELECT rank_id, uname, class, level, alive, days, clan, player_id
+	FROM rankings ".$where_clause."  ORDER BY rank_id ASC, player_id ASC
 	LIMIT $record_limit OFFSET $limitvalue");
 $row = $sql->data;
 $ninja_count = $sql->rows;
@@ -180,22 +180,22 @@ $ninja_count = $sql->rows;
 if ($ninja_count == 0) { // Search found nothing display.
   echo "<p class='notice'>No ninja to display.</p>";
   echo "<p><a href=\"list_all_players.php?hide=$hide\">Back to Ninja List</a></p>";
-} else { 
+} else {
   if ($searched > 0) {
       $searched = "";
     }
-    
+
   // Display the nav
   player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages);
-  
+
 if(!$searched){ // Will not display active ninja on a search page.
     display_active(5, $alive_only); // Display the currently active ninjas
 }
-  
+
   // Table headers.
   echo "<table class=\"playerTable outer-table\">\n";
   echo "<tr class='playerTableHead'>\n";
-  
+
   echo "  <th>\n";
   echo "  Rank\n";
   echo "  </th>\n";
@@ -216,7 +216,7 @@ if(!$searched){ // Will not display active ninja on a search page.
   echo "  </th>\n";
 
   echo "</tr>\n";
-  
+
   // Loop over and display each of the Display each of the player table entries.
   $i=0;
   $players_to_loop = $sql->FetchAll();
@@ -232,22 +232,22 @@ if(!$searched){ // Will not display active ninja on a search page.
       $days = $playerRow['days']; // days
       $clan = htmlentities($playerRow['clan']);        // clan
       $player_id = $playerRow['player_id'];
-	// *** Changes the color of the row if dead.      
+	// *** Changes the color of the row if dead.
       echo "<tr class=\"playerRow ".($isAlive? "AliveRow" : "DeadRow")." ".($i%2? "odd" : "even")."\">\n";
       echo "  <td class=\"playerCell rankCell\">\n";
       echo "  $rank\n";
       echo "  </td>\n";
 
       echo "  <td class=\"playerCell nameCell\">\n";
-      echo "  <a href=\"player.php?player=$name&linkbackpage=$page\">$name</a>\n";
+      echo "  <a href=\"player.php?player=$name&amp;linkbackpage=$page\">$name</a>\n";
       echo "  </td>\n";
-      
+
       // TODO: make level category a static resource instead of always recalculated.
       $level_cat = level_category($level);
       echo "  <td class=\"playerCell levelCell \">\n";
       echo "<div class='{$level_cat['css']}'>".$level_cat['display']." [".$level."]</div> \n";
       echo "  </td>\n";
-      
+
       echo "  <td class=\"playerCell classCell\">\n";
       echo "<div class='$class'><img src='".WEB_ROOT."images/small".$class."Shuriken.gif' alt=''>\n"; // *** Display an image of the right colored shuriken.
       echo    $class."</div>\n";
@@ -256,18 +256,18 @@ if(!$searched){ // Will not display active ninja on a search page.
       echo "  <td class=\"playerCell clanCell\">\n";
 	  echo    $clan."\n";
       echo "  </td>\n";
-      
+
       echo "  <td class=\"playerCell aliveCell\">\n";
       echo    $alive."\n";
       echo "  </td>\n";
-      
+
       echo "  <td class='profile' style='display:none'></td>";
 
       echo "</tr>\n";
     }
-    
-    
-  // End the player table  
+
+
+  // End the player table
   echo "</table>\n";
 
   if ($searched > 0){
@@ -282,7 +282,3 @@ echo "</p>\n";
 
 include SERVER_ROOT."interface/footer.php";
 ?>
-
-
-
-

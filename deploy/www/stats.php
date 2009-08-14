@@ -30,7 +30,7 @@ echo "<p>\n";
   } else {
     echo "Can not enter a blank password.\n";
   }
-} else 
+} else
 */
 if  ($deleteAccount) {
   $verify = false;
@@ -85,7 +85,7 @@ echo "Clan: ".getClan($username)."<br>\n";
 
 $status   = getStatus($username);
 echo "Status: ";
-  
+
 $status_output = array();
 if ($status['Stealth']) {$status_output[count($status_output)]="Stealthed";}
 if ($status['Poison'])  {$status_output[count($status_output)]="Poisoned";}

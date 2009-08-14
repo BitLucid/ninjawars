@@ -6,11 +6,11 @@ $alive      = false;
 
 include SERVER_ROOT."interface/header.php";
 ?>
- 
+
 <span class="brownHeading">Lost Password</span>
 
 <p>
-Please add <strong><?php echo SYSTEM_MESSENGER_EMAIL; ?></strong> 
+Please add <strong><?php echo SYSTEM_MESSENGER_EMAIL; ?></strong>
 to the safe email senders list of your email account before signing up, so you can receive your account email.
 <form action="lostpass_mod.php" method="post">
 Please submit your email and your account information will be sent to you:<br>
@@ -25,4 +25,3 @@ Please submit your email and your account information will be sent to you:<br>
 <?php
 include SERVER_ROOT."interface/footer.php";
 ?>
-

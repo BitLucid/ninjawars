@@ -33,16 +33,16 @@ $item_costs = array(
 if ($in_purchase == 1){
     $current_item_cost = either($item_costs[$item], 0);
     $current_item_cost*=$quantity;
-  
+
   if ($current_item_cost > $gold){ // Not enough gold.
       $description.="<p>\"The total comes to $current_item_cost gold,\" the shopkeeper tells you.</p>";
       $description.="<p>Unfortunately, you do not have that much gold.</p>";
     } else { // Has enough gold.
       addItem($username,$item,$quantity);
-      
+
       $description.="<p>The shopkeeper hands over $quantity ".$item.$grammar.".</p>";
       $description.="<p>\"Will you be needing anything else today?\" he asks you as he puts your gold in a safe.</p>";
-      
+
       subtractGold($username,$current_item_cost);
     }
 } else { // Default, before anything has been bought.
@@ -88,7 +88,7 @@ echo "</div>\n";
   <td>
   $175
   </td>
-  
+
   <td>
   <img src="images/scroll.png">
 </td>
@@ -173,5 +173,3 @@ echo "</div>\n";
 
 include SERVER_ROOT."interface/footer.php";
 ?>
-
-

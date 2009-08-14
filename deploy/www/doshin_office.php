@@ -30,16 +30,16 @@ if ($command == "Offer Bounty")
 	  if ($target_bounty+$amount > 5000)
 	    {
 	      $amount = 5000 - $target_bounty;
-	      
+
 	      echo "The doshin will only accept $amount gold towards $target's bounty.<br>\n";
 	    }
-	  
+
 	  if (getGold($username) >= $amount)
 	    {
 	      addBounty($target,$amount);
 	      subtractGold($username,$amount);
 	      sendMessage($username,$target,"$username has offered $amount gold in reward for your head!");
-	      
+
 	      echo "You have offered $amount towards bringing $target to justice.<br>\n";
 	      $quickstat = "player";
 	    }
@@ -116,34 +116,34 @@ $row = $sql->data;
 if ($sql->rows)
 {
   echo "Click on a Name to view a Ninja's profile. (You can place a bounty on them from their profile)<br><br>\n";
-  
+
   echo "Total Wanted Ninja: ".$sql->rows."\n";
-  
+
   echo "<hr>\n";
-  
+
   echo "<table cellpadding=\"2\" cellspacing=\"1\" class=\"playerTable\">\n";
   echo "<tr>\n";
   echo "  <th class=\"playerTable\">\n";
   echo "  Name\n";
   echo "  </th>\n";
-  
+
   echo "  <th class=\"playerTable\">\n";
   echo "  Bounty\n";
   echo "  </th>\n";
-  
+
   echo "  <th class=\"playerTable\">\n";
   echo "  Level\n";
   echo "  </th>\n";
-  
+
   echo "  <th class=\"playerTable\">\n";
   echo "  Class\n";
   echo "  </th>\n";
-  
+
   echo "  <th class=\"playerTable\">\n";
   echo "  Clan\n";
   echo "  </th>\n";
   echo "</tr>\n";
-  
+
   for ($i = 0; $i < $sql->rows; $i++)
     {
       $sql->Fetch($i);
@@ -155,32 +155,32 @@ if ($sql->rows)
       $clan_l_name = $sql->data[5]; // clan long name
 
       $class = ($class == "" ? "(none)" : $class);
-      $clan_link = ($clan == "" ? "-" : "<a href=\"clan.php?command=view&clan_name=$clan\">".$clan);
-      $clan_l_name  = ($clan_l_name == "" ? $clan_link : "<a href=\"clan.php?command=view&clan_name=$clan\">".$clan_l_name);
-      
+      $clan_link = ($clan == "" ? "-" : "<a href=\"clan.php?command=view&amp;clan_name=$clan\">".$clan);
+      $clan_l_name  = ($clan_l_name == "" ? $clan_link : "<a href=\"clan.php?command=view&amp;clan_name=$clan\">".$clan_l_name);
+
       echo "<tr>\n";
       echo "  <td class=\"playerTable\">\n";
       echo "  <a href=\"player.php?player=$name\">$name</a>\n";
       echo "  </td>\n";
-      
+
       echo "  <td class=\"playerTable\">\n";
       echo    $bounty."\n";
       echo "  </td>\n";
-      
+
       echo "  <td class=\"playerTable\">\n";
       echo    $level."\n";
       echo "  </td>\n";
-      
+
       echo "  <td class=\"playerTable\">\n";
       echo    $class."\n";
       echo "  </td>\n";
-      
+
       echo "  <td class=\"playerTable\">\n";
       echo    $clan_l_name."\n";
       echo "  </td>\n";
       echo "</tr>\n";
     }
-  
+
   echo "</table>\n";
 }
 else
@@ -191,4 +191,3 @@ else
 
 include SERVER_ROOT."interface/footer.php";
 ?>
-

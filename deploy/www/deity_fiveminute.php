@@ -20,7 +20,3 @@ foreach ($out_display AS $loopKey => $loopRowResult)
 //error_log('DEITY_FIVEMINUTE: End.');
 //include SERVER_ROOT."interface/footer.php";
 ?>
-
-
-
-

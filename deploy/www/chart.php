@@ -50,20 +50,20 @@ for ($i=1 ; $i<=$MAX_LEVEL ; $i++)
     echo "  <td>\n";
     echo    $level_chart."\n";
     echo "  </td>\n";
-    
+
     echo "  <td>\n";
     echo    $kills_chart."\n";
     echo "  </td>\n";
-    
+
     echo "  <td>\n";
     echo    $str_chart."\n";
     echo "  </td>\n";
-    
+
     echo "  <td>\n";
     echo    $hp_chart."\n";
     echo "  </td>\n";
     echo "</tr>\n";
-    
+
     $level_chart = $level_chart + 1;
     $kills_chart = $kills_chart + 5;
     $str_chart = $str_chart + 5;

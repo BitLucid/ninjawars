@@ -1,11 +1,11 @@
 <?php
 require_once(OBJ_ROOT."Skill.php");
-require_once(LIB_ROOT."specific/lib_player.php"); // 
+require_once(LIB_ROOT."specific/lib_player.php"); //
 
 
 /**
  * Displays a players' available skills and allows their use.
- * 
+ *
  * @package combat
  * @subpackage skill
 **/
@@ -57,7 +57,7 @@ if ($player_info) {
 
 	echo "<table id='player-profile-table' align='center'>\n";
 	echo "<tr>\n";
-	
+
 	if($attack_error){ // They're dead or otherwise unattackable.
 		echo "<div class='ninja-error centered'>Cannot Attack: ".$attack_error."</div>";
 	} else {
@@ -89,32 +89,32 @@ if ($player_info) {
 		assert($player == $target);
 	    echo "    <input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\">\n
 	        <br><label>
-	        <input type='image' value='Attack' name='attack-player-shuriken' 
+	        <input type='image' value='Attack' name='attack-player-shuriken'
 	        src='".IMAGE_ROOT."50pxShuriken.png' alt='Attack' title='Attack'>
 	        <a>Attack</a>
 	        </label>";
 	    echo "    </form>\n";
 	    echo "    </td>\n";
-	    
-	    
+
+
 	    // Inventory Items
-	    echo "    <td style=\"border: thin solid clear;padding-left: 5;padding-right: 
+	    echo "    <td style=\"border: thin solid clear;padding-left: 5;padding-right:
 	    	    5;padding-top: 5;padding-bottom: 5;text-align: center;\">\n";
-	    	    
+
 	    echo render_item_use_on_another($target, $sql);
-	    
-	        
-	        
+
+
+
 	    echo "    </td>\n
 	      </tr>\n
 	      <tr>\n
 	        <td style=\"border: thin solid clear;padding-left: 5;padding-right: 5;
 	    	padding-top: 5;padding-bottom: 5;text-align: center;\">\n";
-	    	
+
 	    echo render_skills($target, $skillListObj, $skillsListObj);
-	
+
 	    echo "    </td>\n";
-	} // End of the "viewing someone else's profile" section.	    
+	} // End of the "viewing someone else's profile" section.
 	    echo "  </tr>\n";
 
 	    echo "  </table>\n";
@@ -127,29 +127,29 @@ if ($player_info) {
 	// Alive or dead
 	display_player_activity($player_info);
 
-	if($player_info['uname'] != get_username()){    	
+	if($player_info['uname'] != get_username()){
     	// Allows the viewer to set bounty on a player.
         display_set_bounty($player_info); // TODO: Move this functionality to the doshin.
-    	
+
     	// Send 'em mail
     	display_communication($player_info['uname']);
 	}
-	
+
 	if($player_info['uname'] != get_username()){
         // Clan leader options on players in their clan.
     	display_clan_options($player_info, $viewing_player_obj);
-    }	
+    }
 	// Player clan and clan members
-	
+
 	display_player_clan($player_info, $viewers_clan);
-	
+
 	// Player profile message
 
 	display_player_profile($player_info);
-	
+
 	echo render_avatar_section($target_player_obj);
-	
-	
+
+
 	echo "</div><!-- End player-info -->";
 }
 

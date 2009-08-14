@@ -9,7 +9,7 @@ $sql = new DBAccess();
 $poisonHealthDecrease = 50; // *** The amount that poison decreases health each half-hour.
 $maximum_heal = 150;
 // *** Turn # beyond which you will drop back down to, though normal turn increase stops earlier.
-$maximum_turns = 300; 
+$maximum_turns = 300;
 $maxtime = '6 hours'; // *** Max time a person is kept online without being active.
 $maximum_turn_regen = 100;
 
@@ -79,8 +79,3 @@ foreach ($out_display AS $loopKey => $loopRowResult)
 
 //include SERVER_ROOT."interface/footer.php";
 ?>
-
-
-
-
-

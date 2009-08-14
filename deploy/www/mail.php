@@ -36,4 +36,3 @@ Search for a Ninja to send them a message from their profile:
 <?php
 include SERVER_ROOT."interface/footer.php";
 ?>
-

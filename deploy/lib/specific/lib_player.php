@@ -163,7 +163,7 @@ function display_player_clan($player_info, $viewers_clan=null){
             <p class='ninja-notice'><?=$same_clan;?> is part of your clan.</p>
             <?php } ?>
 			<p class='clan-link centered'>
-			    <span class='subtitle'>Clan:</span> <a href='clan.php?command=view&clan_name=<?php echo $clan."'>".$clan_link; ?></a></p>
+			    <span class='subtitle'>Clan:</span> <a href='clan.php?command=view&amp;clan_name=<?php echo $clan."'>".$clan_link; ?></a></p>
 			<p class='clan-members centered'>
 			    <?php display_clan_members($player_info['clan']); ?>
 			</p>
@@ -212,7 +212,7 @@ function display_player_profile($player_info){
 function display_ranking_link($player_info, $linkbackpage, $sql){
 	$rank_spot = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".$player_info['uname']."'");
 	echo "    <div class='player-ranking-linkback'>";
-	echo "      <a href='list_all_players.php?rank_spot=$rank_spot&hide=dead&page=$linkbackpage'>&lt; Go to rank $rank_spot in the ninja list</a>\n";
+	echo "      <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=dead&amp;page=$linkbackpage'>&lt; Go to rank $rank_spot in the ninja list</a>\n";
 	echo "    </div>";
 }
 

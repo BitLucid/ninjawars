@@ -1,7 +1,7 @@
 <?php
 /*
  * Deals with the skill based attacks, and status effects.
- * 
+ *
  * @package combat
  * @subpackage skill
  */
@@ -81,19 +81,19 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 	// Initial attack conditions are alright.
 	  echo "Preparing to use skill...<br>\n";
 	  $result = "";
-	  
+
 	      if ($command == "Sight"){
 		  $covert    = true;
-		  
+
 		  if ($starting_turns >= $turn_cost){
 		      $msg = "You have had sight cast on you by $attacker_id at $today";
 		      sendMessage($attacker_id,$target,$msg);
 		      $username_status = subtractStatus($target, STEALTH);
-		      
+
 		      $sql->Query("SELECT uname,class,health,strength,gold,kills,turns,level FROM players WHERE uname='$target'");
-		      
+
 		      $data = $sql->FetchAssociative();
-	      
+
 		      echo "<table>\n";
 		      echo "<tr>\n";
 		      echo "  <th>Name</th>\n";
@@ -110,7 +110,7 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 		      //var_dump($target);
 		      //var_dump('DEBUG: ');
 		      //print_r($sql->data);
-		      
+
 		     foreach($data AS $loopPart){
 			     echo "<td>".$loopPart."</td>\n";
 		     }
@@ -129,17 +129,17 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 		}
 			if  ($command == "Steal") {
 			  $covert = true;
-			  
+
 			  if ($starting_turns >= $turn_cost) {
                     $gold_decrease = rand(1, 50);
                     $target_gold = getGold($target);
                     $gold_decrease = ($target_gold<$gold_decrease? $target_gold : $gold_decrease);
                     changeGold($username,$gold_decrease); // *** This one actually adds the value.
 			        subtractGold($target,$gold_decrease); // *** Subtracts whatever positive value is put in.
-			      
+
 			      $msg = "You have had pick pocket cast on you for $gold_decrease by $attacker_id at $today";
 			      sendMessage($attacker_id,$target,$msg);
-			      
+
 			      $result = "You have stolen $gold_decrease gold from $target!<br>\n";
 			    } else {
 			      $turn_cost = 0;
@@ -180,25 +180,25 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 			    }
 			} else if ($command == "Poison Touch") {
 			  $covert = true;
-			  
+
 			  if($starting_turns >= $turn_cost) {
 			      addStatus($target,POISON);
-			      
+
 			      $target_damage = rand($poisonMinimum,$poisonMaximum);
-			      
+
 			      $victim_alive = subtractHealth($target,$target_damage);
 			      echo "$target has beeen poisoned!<br>\n";
 			      echo "$target's HP reduced by $target_damage!<br>\n";
-			      
+
 			      $msg = "You have been poisoned by $attacker_id at $today";
 			      sendMessage($attacker_id,$target,$msg);
 			    } else {
 			      $turn_cost = 0;
 			      echo "You do not have enough turns to cast $command.\n";
 			    }
-			} 
+			}
 	      if ($command == "Fire Bolt") {
-		  
+
 		  if ($starting_turns >= $turn_cost) {
 				$target_damage = (5*(ceil($level/3))+rand(1,getStrength($username)));
 
@@ -216,16 +216,16 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 		    }
 		}
 	      if ($command == "Ice Bolt"){
-		  
+
 		  if ($starting_turns >= $turn_cost) {
 		      $turns_decrease = rand(1,5);
 		      subtractTurns($target,$turns_decrease);
 		      // Changed ice bolt to kill stealth.
 		      $username_status = subtractStatus($target, STEALTH);
-		      
+
 		      $msg = "Ice bolt cast on you by $attacker_id at $today, your turns have been reduced by $turns_decrease.";
 		      sendMessage($attacker_id,$target,$msg);
-		      
+
 		      $result = "$target's turns reduced by $turns_decrease!<br>\n";
 		    } else {
 		      $turn_cost = 0;
@@ -238,13 +238,13 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 		      if ($critical_failure > 7) {// *** If the critical failure rate wasn't hit.
 			  	if($target_turns >= 5){
 			      $turns_decrease = rand(2,6);
-			      
+
 			      subtractTurns($target,$turns_decrease);
 			      addTurns($username,$turns_decrease);
-			      
+
 			      $msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id at $today";
 			      sendMessage($attacker_id,$target,$msg);
-			      
+
 			      $result = "You cast Cold Steal on $target and take $turns_decrease of his turns.<br>\n";
 			    } else {
 			      $turn_cost = 0;
@@ -254,7 +254,7 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 			  addStatus($username,FROZEN);
 
 			  $unfreeze_time = date("F j, Y, g:i a",mktime(date("G")+1,0,0,date("m"),date("d"),date("Y")));
-			  
+
 			  $failure_msg = "You have experienced a critical failure while using Cold Steal on $today. You will be unfrozen on $unfreeze_time";
 			  sendMessage("SysMsg",$username,$failure_msg);
 			  $result = "Cold Steal has backfired! You have lost 3 turns and are now frozen until $unfreeze_time!<br>\n";
@@ -264,36 +264,36 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 		      echo "You do not have enough turns to cast $command.\n";
 		    }
 		}
-	  
+
 	  echo $result;
 
 	  if (!$victim_alive) {
 	    if ($target != $username) {
 		  $gold_mod = 0.15;
 		  $loot     = round($gold_mod*getGold($target));
-	  
+
 		  subtractGold($target,$loot);
 		  addGold($username,$loot);
-		  
+
 		  addKills($username,1);
-		  
+
 		  echo "You have killed $target with $command!<br>\n";
 		  echo "You receive $loot gold from $target.<br>\n";
 
 		  $added_bounty = floor($level_check/5);
-		  
+
 		  if ($added_bounty>0) {
 		      addBounty($username,($added_bounty*25));
 		      echo "Your victim was much weaker than you. The townsfolk are angered. A bounty of ".($added_bounty*25)." gold has been placed on your head!<br>\n";
 		    } else {
 		      if($bounty = rewardBounty($username, $target)) {
 				  echo "You have received the $bounty gold bounty on $target's head for your deeds!<br>\n";
-				  
+
 				  $bounty_msg = "You have valiantly slain the wanted criminal, $target! For your efforts, you have been awarded $bounty gold!";
 				  sendMessage("Village Doshin",$username,$bounty_msg);
 				}
 		    }
-		  
+
 		  $target_message = "$attacker_id has killed you with $command on $today and taken $loot gold.";
 		  sendMessage($attacker_id,$target,$target_message);
 
@@ -304,7 +304,7 @@ if($attack_error){ // Use AttackLegal if not attacking self.
 		  echo "You have comitted suicide!<br>\n";
 		}
 	  }
-	    
+
 	$turns_to_take = $turns_to_take - $turn_cost;
 
 	if (!$covert && getStatus($username) && $status_array['Stealth']) {
@@ -329,4 +329,3 @@ $ending_turns = changeTurns($username, $turns_to_take);
 <?php
 include SERVER_ROOT."interface/footer.php";
 ?>
-

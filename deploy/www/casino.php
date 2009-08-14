@@ -30,7 +30,7 @@ echo "<form id=\"coin_flip\" action=\"casino.php\" method=\"post\" name=\"coin_f
 if ($bet >= 5 && $bet <= 1000) {
     if ($bet <= getGold($username)) {
         $answer = rand (1, 2);
-            
+
         if ($answer == 1){
             echo "<div class='ninja-notice'>You win!</div>\n";
             addGold($username,$bet);
@@ -40,8 +40,8 @@ if ($bet >= 5 && $bet <= 1000) {
         } else if ($answer == 2) {
             echo "<div class='ninja-notice'>You lose!</div>\n";
             subtractGold($username,$bet);
-        }  
-            
+        }
+
         echo "<br><a href=\"casino.php\">Try Again?</a><br>\n";
     } else {
         echo "You do not have that much gold.<br>\n";

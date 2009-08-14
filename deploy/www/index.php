@@ -19,7 +19,7 @@ if($logout){ // When a logout action is requested
 
 if($login && !$is_logged_in){
     // Login was attempted, but failed, so show an error.
-	$login_error = true; 
+	$login_error = true;
 }
 
 $display_when_logged_in = display_when('logged_in');
@@ -85,7 +85,7 @@ write_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
 	        	 <span id='logged-in-bar-health'> </span>
 	    </div>
 		<?php } /* End of login/out conditional display.*/ ?>
-	    
+
 	</div>
 	<div id="menu-info">
 	    <span class="signup-link" <?=$display_when_logged_out;?>>
@@ -96,7 +96,7 @@ write_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
 		<span <?=$display_when_logged_out;?>>
 			<a href="<?=WEB_ROOT?>lostpass.php" target="main" class="blend side">&nbsp;Lost&nbsp;Password?</a> |
 		</span>
-		<a href="rules.php" target="main">Rules</a> | 
+		<a href="rules.php" target="main">Rules</a> |
         <a href="tutorial.php" target="main">Intro</a> |
 		<a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki <img class="extLink" src="images/externalLinkGraphic.gif" alt=""></a> |
 		<a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum </a><img class="extLink"  src="images/externalLinkGraphic.gif" alt=""> |
@@ -114,9 +114,9 @@ write_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
 
 <?php if($login_error){ ?>
 <div class="error">
-	That password/username combination was incorrect.  Be aware that usernames are case sensitive.  
-	Or request help with 
-	<a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&action=display&thread=1051'>login issues</a>
+	That password/username combination was incorrect.  Be aware that usernames are case sensitive.
+	Or request help with
+	<a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&amp;action=display&amp;thread=1051'>login issues</a>
 	on the forum.
 </div>
 <?php } ?>
@@ -221,10 +221,10 @@ $players_online = $stats['players_online'];
 		    <a href="music/samsho.mid">Play <img class="play-button" src="images/bullet_triangle_green.png" alt="&gt;"></a>
 		</object>
 	</div>
-	
+
 	<div id="links" class="boxes passive">
 		<div class="box-title">
-			<a href="#" class="show-hide-link" onclick="toggle_visibility('links-menu');">Links 
+			<a href="#" class="show-hide-link" onclick="toggle_visibility('links-menu');">Links
 				<img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
 			</a>
 		</div>
@@ -243,7 +243,7 @@ $players_online = $stats['players_online'];
 
 
 
-	
+
 <!-- Substitute image and "catchphrases" here -->
 
 <div id="centerColumn" class="column"><!-- top menu starts here -->
@@ -255,7 +255,7 @@ $players_online = $stats['players_online'];
 	    </iframe>
 	</div><!-- End of mainFrame div -->
 
-<!-- LOCATION FOR CONTENT UNDER THE MAIN DISPLAY SECTION -->	
+<!-- LOCATION FOR CONTENT UNDER THE MAIN DISPLAY SECTION -->
 <!--
 <div class="created-by">
 	catchphrase games
@@ -305,7 +305,7 @@ $players_online = $stats['players_online'];
 		</div>
 		<div id="chat-and-switch">
 			<div class="chat-switch centered">
-				<a href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a> 
+				<a href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
 				<a href="mini_chat.php?chat_length=20" target="mini_chat">Refresh</a>
 			</div>
 			<!-- TODO: move chat submit box out here. -->

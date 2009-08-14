@@ -7,13 +7,13 @@ $page_title = "Your Skills";
 include SERVER_ROOT."interface/header.php";
 require_once(LIB_ROOT."specific/lib_status.php"); // statuses for quickstats
 ?>
-  
+
 <span class="brownHeading">Skills</span>
 
 <p>
 <?php
 // TODO: Consider more skills along the lines of: disguise, escape, concealment, archery, medicine, explosives, and poisons.
-// TODO: Also consider "packageable" classes. 
+// TODO: Also consider "packageable" classes.
 include(OBJ_ROOT."Skill.php");
 $skillsListObj = new Skill();
 
@@ -66,6 +66,6 @@ else
 
 </p>
 
-</php
+<?php
 include SERVER_ROOT."interface/footer.php";
 ?>

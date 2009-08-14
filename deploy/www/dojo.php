@@ -16,7 +16,7 @@ $class_array = array('Black'=>'Red','Red'=>'White','White'=>'Blue','Blue'=>'Blac
 $dimmak_sequence = in('dimmak_sequence', '');
 $classChangeSequence = in('classChangeSequence');
 ?>
-  
+
 <div class="brownTitle">Dojo</div>
 
 <div class="description">
@@ -149,7 +149,3 @@ echo $msg;
 
 include SERVER_ROOT."interface/footer.php";
 ?>
-
-
-
-

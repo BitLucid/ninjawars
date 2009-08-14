@@ -37,8 +37,8 @@ if ($messenger == 1){
 
 		die("<br><a href=\"mail_read.php\">Go to Your Mail</a><br><br><a href=\"clan.php\">Return to Clan Options</a>\n");
 	}
-  
-  if ($to != "clansend") 
+
+  if ($to != "clansend")
 	  {
 	  $message_with_identifier = "MESSAGE: ".$message;
 	  sendMessage($_SESSION['username'],$to,$message_with_identifier,$filter=true);
@@ -54,4 +54,3 @@ else
 
 include SERVER_ROOT."interface/footer.php";
 ?>
-

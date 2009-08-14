@@ -6,7 +6,7 @@ $page_title = "NPC Battle Status";
 
 include SERVER_ROOT."interface/header.php";
 ?>
-  
+
 <span class="brownHeading">Battle Status</span>
 
 <hr>
@@ -20,15 +20,15 @@ $random_encounter = rand(1, 200) == 200;
 if(getTurns($username) > 0) {
   if ($attacked == 1) { // Bit to expect that it comes from the form.
       echo "Commencing Attack<br><br>\n";
-      
+
       if (getStatus($username) && $status_array['Stealth']) {
     	  subtractStatus($username,STEALTH);
 	  }
-      
+
       $attacker_str    = getStrength($username);
       $attacker_health = getHealth($username);
       $attacker_gold   = getGold($username);
-      
+
     if ($random_encounter == true) { // ONI, Mothafucka!
     	$victim = "Oni";
 		// Oni attack!  Yay!
@@ -46,14 +46,16 @@ if(getTurns($username) > 0) {
 			addItem($username,"Dim Mak",1);
 		}
 		echo "<div class='ninja-error'>An Oni attacks you as you wander!</div>
-			<img src='images/Oni_pelted_by_beans.jpg' style='width:450px'/>
+			<img src='images/Oni_pelted_by_beans.jpg' style='width:450px'>
 			<p>The Oni saps some of your soul before "
-			.($oni_killed? "you kill it." : "it escapes into the wilderness.")."<p>";
+			.($oni_killed? "you kill it." : "it escapes into the wilderness.")."</p>";
 	} else if ($victim == "" ) {
 	    echo "You attack the air.\n";
 	} else if ($victim == "villager") { // VILLAGER
 	  echo "The villager sees you and prepares to defend!<br><br>\n";
+
 	  $villager_attack = rand(0,10); // *** Villager Damage ***
+
 	  if (!subtractHealth($username,$villager_attack)) {
 	      echo "The villager has slain you!<br>\n";
 	      echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.\n";
@@ -78,7 +80,7 @@ if(getTurns($username) > 0) {
     		} // End of if > 5
             if(!$just_villager){ // Something beyond just a villager, drop a shuriken.
                 addItem($username,'Shuriken',$quantity=1);
-            	echo "The villager dropped a Shuriken.\n"; 
+            	echo "The villager dropped a Shuriken.\n";
             }
 	    }
 	} else if ($victim == "samurai") {
@@ -122,7 +124,7 @@ if(getTurns($username) > 0) {
 			addKills($username,1);
 			if ($samurai_damage_array[3] > 100){ // If samurai damage was over 100, but the ninja lived, give a speed scroll.
     			addItem($username,'Speed Scroll',$quantity=1);
-    			echo "The Samurai had a speed scroll on him. You have a new Speed Scroll in your inventory.\n"; 
+    			echo "The Samurai had a speed scroll on him. You have a new Speed Scroll in your inventory.\n";
     		}
 			if ($samurai_damage_array[3]==$ninja_str*3) {                   //If the final damage was the exact max damage...
 				addItem($username,"Dim Mak",1);
@@ -136,23 +138,23 @@ if(getTurns($username) > 0) {
 	} else if ($victim == "merchant") {
 	  echo "Merchant sees you and prepares to defend!<br><br>\n";
 	  echo "<img src=\"images/merchant.png\" border=\"0\">";
-	  
+
 	  $merchant_attack = rand(15,35);  // *** Merchant Damage ***
-	  
+
 	  if (!subtractHealth($username,$merchant_attack)) {
 	      echo "The Merchant has slain you!<br>\n";
 	      echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";
 	    } else { // Ninja won the fight.
 	      $merchant_gold   = rand(20,70);  // *** Merchant Gold   ***
 	      addGold($username,$merchant_gold);
-	      
+
 	      echo "The merchant is defeated.<br>\n";
 	      echo "The Merchant did $merchant_attack points of damage.<br>\n";
 	      echo "You have gained $merchant_gold gold.<br>\n";
-	      
+
 	      if ($merchant_attack > 34) {
 			addItem($username,'Fire Scroll',$quantity=1);
-			echo "The Merchant has dropped a Fire Scroll. You have a new Fire Scroll in your inventory.\n"; 
+			echo "The Merchant has dropped a Fire Scroll. You have a new Fire Scroll in your inventory.\n";
     	  }
 
 	      if (getLevel($username) > 10) {
@@ -165,16 +167,16 @@ if(getTurns($username) > 0) {
 	} else if ($victim == "guard") {
 	  echo "The Guard sees you and prepares to defend!<br><br>\n";
 	  echo "<img src=\"images/fighter.png\" border=\"0\">\n";
-	  
+
 	  $guard_attack = rand(1,$attacker_str+10);  // *** Guard Damage ***
-	  
+
 	  if (!subtractHealth($username,$guard_attack)){
 	      echo "The Guard has slain you!<br>\n";
 	      echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";
 	    } else {
 	      $guard_gold   = rand(1,$attacker_str+40);           // *** Guard Gold   ***
 	      addGold($username,$guard_gold);
-	      
+
 	      echo "The guard is defeated!<br>\n";
 	      echo "Guard does $guard_attack points of damage.<br>\n";
 	      echo "You have gained $guard_gold gold.<br>\n";
@@ -192,16 +194,16 @@ if(getTurns($username) > 0) {
 	{
 	  echo "Thief sees you and prepares to defend!<br><br>\n";
 	  echo "<img src=\"images/thief.png\" border=\"0\">\n";
-	  
+
 	  $thief_attack = rand(0,35);  // *** Thief Damage  ***
-	  
+
 	  if (!subtractHealth($username,$thief_attack))
 	    {
 	      echo "Thief has slain you!<br>\n";
 	      echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";
 	    } else {
 	      $thief_gold    = rand(0,40);  // *** Thief Gold ***
-	      
+
 	      if ($thief_attack > 30)
 		{
 		  echo "Thief escaped and stole $thief_gold pieces of your gold!\n";
@@ -213,21 +215,21 @@ if(getTurns($username) > 0) {
 		  echo "Thief does $thief_attack points of damage!<br>\n";
 		  echo "You have gained $thief_gold gold.<br> You have found a Shuriken on the thief!\n";
 		  addGold($username,$thief_gold);
-		  
+
 		  addItem($username,'Shuriken',$quantity=1);
 		}
 	      echo "<br>\n";
 	      echo "Beware the Ninja Thieves, they have entered this world to steal from all!<br>\n";
 	    }
-	  
+
 	  if (!getHealth($username) || getHealth($username) <= 0)
 	    {
 	      sendMessage("SysMsg",$username,"DEATH: You have been killed by a non-player character at $today");
 	    }
 	}
-	  
+
       subtractTurns($username,$turn_cost);
-      
+
       if($victim && !$random_encounter){
 	      echo "<a href=\"attack_npc.php?attacked=1&victim=$victim\">Attack $victim again</a>\n";
 	      echo "<br>\n";

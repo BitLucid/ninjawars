@@ -6,7 +6,7 @@ $page_title = "Lost Confirmation";
 
 include SERVER_ROOT."interface/header.php";
 ?>
-  
+
 <span class="brownHeading">Lost Confirm</span>
 
 <p>
@@ -24,4 +24,3 @@ Please submit your email address and we will resend a confirmation.
 <?php
 include SERVER_ROOT."interface/footer.php";
 ?>
-

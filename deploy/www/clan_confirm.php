@@ -6,7 +6,7 @@ $page_title = "Accept a New Clan Member";
 
 include SERVER_ROOT."interface/header.php";
 ?>
- 
+
 <span class="brownHeading">Accept A New Clan Member</span>
 
 <hr>
@@ -23,7 +23,7 @@ $random = rand(1001, 9990);
 if (!$clan_name){
     echo "You have no clan.";
 } elseif(!$clan_joiner){
-    echo "There is no potential ninja specified, so the induction cannot occur."; 
+    echo "There is no potential ninja specified, so the induction cannot occur.";
 } else {
     if (!$clan_l_name) {
         $clan_l_name = $clan_name."'s Clan";
@@ -31,8 +31,8 @@ if (!$clan_name){
     echo "$clan_joiner has requested to join your clan, $clan_l_name.<br>\n";
 
     if (!$agree) {
-      echo "<form action=\"clan_confirm.php?clan_name=$clan_name&clan_joiner=$clan_joiner&confirm=$confirm\" method=\"post\">\n";
-      echo "<input id=\"agree\" type=\"hidden\" name=\"agree\" value='1'/><input type=\"submit\" value=\"Accept Request\"><br>\n";
+      echo "<form action=\"clan_confirm.php?clan_name=$clan_name&amp;clan_joiner=$clan_joiner&amp;confirm=$confirm\" method=\"post\">\n";
+      echo "<input id=\"agree\" type=\"hidden\" name=\"agree\" value=\"1\"><input type=\"submit\" value=\"Accept Request\"><br>\n";
       echo "</form>";
     } else {
         $check = $sql->QueryItem("SELECT confirm FROM players WHERE uname = '$clan_joiner'");
@@ -49,7 +49,7 @@ if (!$clan_name){
             echo "<p><a href=\"/\">Return to Main</a></p>\n";
         } elseif ($confirm == $check && $agree > 0) {
             echo "Request Accepted.<br>\n";
-            $sql->Update("UPDATE players SET clan = '$clan_name', clan_long_name = '$clan_l_name', 
+            $sql->Update("UPDATE players SET clan = '$clan_name', clan_long_name = '$clan_l_name',
                 confirm = '$random' WHERE uname = '$clan_joiner'");
             echo "<br>$clan_joiner is now a member of your clan.<hr>\n";
             sendMessage($clan_name,$clan_joiner,"CLAN: You have been accepted into $clan_l_name");

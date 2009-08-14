@@ -35,7 +35,7 @@ if ($worked > 0)
 {
   $turns = getTurns($username);
   $gold  = getGold($username);
- 
+
   if ($worked > $turns)
     {
       $description .= "You have chosen to do more work than turns you have.<br>\n";
@@ -47,7 +47,7 @@ if ($worked > 0)
       $gold  = addGold($username,$new_gold);
       $turns = subtractTurns($username,$worked);
 
-     
+
       $description = $description2.
 	"You have worked for $worked turns and earned $new_gold gold.<br><br>\n";
     }

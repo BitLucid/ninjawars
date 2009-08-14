@@ -34,9 +34,9 @@ if ($sql->rows == 0) {
   if ($items['Speed Scroll'] > 0) {
       echo "<tr>\n";
       echo "  <td>\n";
-      echo "  <a href=\"inventory_mod.php?item=Speed%20Scroll&selfTarget=1&target=$username&link_back=inventory\">Speed Scrolls</a>: \n";
+      echo "  <a href=\"inventory_mod.php?item=Speed%20Scroll&amp;selfTarget=1&amp;target=$username&amp;link_back=inventory\">Speed Scrolls</a>: \n";
       echo "  </td>\n";
-      
+
       echo "  <td>\n";
       echo    $items['Speed Scroll']."\n";
       echo "  </td>\n";
@@ -45,9 +45,9 @@ if ($sql->rows == 0) {
   if ($items['Stealth Scroll'] > 0) {
       echo "<tr>\n";
       echo "  <td>\n";
-      echo "  <a href=\"inventory_mod.php?item=Stealth%20Scroll&selfTarget=1&target=$username&link_back=inventory\">Stealth Scrolls</a>: \n";
+      echo "  <a href=\"inventory_mod.php?item=Stealth%20Scroll&amp;selfTarget=1&amp;target=$username&amp;link_back=inventory\">Stealth Scrolls</a>: \n";
       echo "  </td>\n";
-      
+
       echo "  <td>\n";
       echo    $items['Stealth Scroll']."\n";
       echo "  </td>\n";
@@ -58,7 +58,7 @@ if ($sql->rows == 0) {
       echo "  <td>\n";
       echo "  Shuriken: \n";
       echo "  </td>\n";
-      
+
       echo "  <td>\n";
       echo    $items['Shuriken']."\n";
       echo "  </td>\n";
@@ -69,7 +69,7 @@ if ($sql->rows == 0) {
       echo "  <td>\n";
       echo "  Fire Scrolls: \n";
       echo "  </td>\n";
-      
+
       echo "  <td>\n";
       echo    $items['Fire Scroll']."\n";
       echo "  </td>\n";
@@ -80,7 +80,7 @@ if ($sql->rows == 0) {
       echo "  <td>\n";
       echo "  Ice Scrolls: \n";
       echo "  </td>\n";
-      
+
       echo "  <td>\n";
       echo    $items['Ice Scroll']."\n";
       echo "  </td>\n";
@@ -91,7 +91,7 @@ if ($sql->rows == 0) {
       echo "  <td>\n";
       echo "  Dim Mak: \n";
       echo "  </td>\n";
-      
+
       echo "  <td>\n";
       echo    $items['Dim Mak']."\n";
       echo "  </td>\n";

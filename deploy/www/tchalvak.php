@@ -7,7 +7,7 @@ $page_title = "Tchalvak";
 
 include SERVER_ROOT."interface/header.php";
 ?>
- 
+
 <span class="brownHeading">Tchalvak Test Page</span>
 
 <hr >
@@ -31,8 +31,8 @@ echo "<pre>\n";
 echo "</pre>\n";
 echo "<br>END TEMP SECTION<br>\n";
 
-$nwtest_kills = $sql->QueryItem("SELECT kills FROM players WHERE uname = 'tchalvak'"); 
-if ($nwtest_kills) 
+$nwtest_kills = $sql->QueryItem("SELECT kills FROM players WHERE uname = 'tchalvak'");
+if ($nwtest_kills)
 {
 echo "CURRENTLY ON NWTEST:<br>\n";                          //Location Check.
 
@@ -51,7 +51,7 @@ if ($webgame_kills)
 {
       echo "CURRENTLY ON WEBGAME:<br>\n";   //Location Check.
 
-	  
+
       $dead_ninja=$sql->QueryItem("SELECT count(*) FROM players WHERE health<1 AND confirmed=1");
 	  echo "Dead Ninja: $dead_ninja<br>";
 	  $players_resurrected=$sql->Query("SELECT uname FROM players WHERE health < 1 AND confirmed=1 AND ( days<21 OR (days % FLOOR(days / 10)=0) ) LIMIT 100");
@@ -67,7 +67,7 @@ if ($webgame_kills)
 			{
 			echo "$value will be resurrected.<br>";
 			}
-	}	  
+	}
 	if (!is_array($players_resurrected))
 	{
 		  echo "players resurrected Not an array.<br>";
@@ -99,11 +99,11 @@ if ($webgame_kills)
       echo "</form>\n";
       if ($command == "postnow" && $message != "")
       {
-        sendMessage(Tchalvak,ChatMsg,$message);    
+        sendMessage(Tchalvak,ChatMsg,$message);
         echo "Your post has been added.<br> <a href=\"village.php\">Go to the Chat Board?</a>";
       }
 
-} 
+}
 
 
 

@@ -10,4 +10,3 @@ logout_user($echo=true, $redirect=false); // From lib_auth (for authenticate)
 
 include SERVER_ROOT."interface/footer.php";
 ?>
-

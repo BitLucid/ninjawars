@@ -2,7 +2,7 @@
 require_once(LIB_ROOT."specific/lib_inventory.php");
 /*
  * Submission page from inventory.php to process results of item use.
- * 
+ *
  * @package combat
  * @subpackage skill
  */
@@ -96,7 +96,7 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 } else {
     if ($item == "" || $target == "")  {
         echo "You didn't choose an item/victim.\n";
-    } else {   
+    } else {
 	  $row = $sql->data;
 	  if ($item_count < 1) {
 	    echo "You do not have".($item? " a ".$item : ' that item').".\n";
@@ -105,10 +105,10 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 		      echo "Preparing to use item - <br>\n";
 		      if ($give == "on" || $give == "Give") {
                   echo render_give_item($username, $target, $item);
-                   
+
     			} else {
     			  $article = "a";
-    			  
+
     			  // *** HP Altering ***
 			  if ($item == "Fire Scroll") {
 			      $target_damage = rand(20,getStrength($username)+20)+$near_level_power_increase;
@@ -118,16 +118,16 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 			      $target_damage = rand(1,getStrength($username))+$near_level_power_increase;
 			      $result        = "lose ".$target_damage." HP";
 			      $victim_alive  = subtractHealth($target,$target_damage);
-			    } else if ($item == "Ice Scroll") {  
+			    } else if ($item == "Ice Scroll") {
 			        //Turn Altering
 			      $article = "an";
 
 			      $turns_decrease = ice_scroll_turns($targets_turns, $near_level_power_increase);
-			      
+
 			      if ($turns_decrease == 0){
 			        echo 'You fail to take any turns from '.$target.'.';
 			      }
-			      
+
 			      $result         = "lose ".$turns_decrease." turns";
 			      subtractTurns($target,$turns_decrease);
 			      $victim_alive = true;
@@ -151,7 +151,7 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 				  $gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 			    }
 			}
-		      
+
 		      if ($result) {
 			  // *** Message to display based on item type ***
 			  if ($target_damage) {
@@ -167,7 +167,7 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 			      echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 			    }
 
-			  
+
 			  if (!$victim_alive) { // Target was killed by the item.
                     if (getStatus($username) && ($target != $username) ) {   // *** SUCCESSFUL KILL ***
     				  $attacker_id = ($status_array['Stealth'] ? "A Stealthed Ninja" : $username);
@@ -185,36 +185,36 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
                       $loot = 0;
                       echo "You have comitted suicide!<br>\n";
                     }
-    				
+
     				send_kill_mails($username, $target, $attacker_id, $article, $item, $today, $loot);
-    			      
+
     			    } else {
     			      $attacker_id = $username;
     			    }
-			  
+
                     if ($target != $username) {
                         $target_email_msg   = "$attacker_id has used $article $item on you at $today and caused you to $result.";
                         sendMessage($attacker_id,$target,$target_email_msg);
                     }
     			}
-		      
+
 		      $turns_to_take = 1;
-		      
+
 		      // *** remove Item ***
-		      
+
 		      echo "<br>Removing $item from your inventory.<br>\n";
-		      
-		      $sql->Update("UPDATE inventory set amount = amount-1 WHERE owner = '".$username."' AND item ='$item' AND amount>0"); 
+
+		      $sql->Update("UPDATE inventory set amount = amount-1 WHERE owner = '".$username."' AND item ='$item' AND amount>0");
 		      // *** Decreases the item amount by 1.
-		      
+
 		      // Unstealth
             if (!isset($covert) && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
                 subtractStatus($username,STEALTH);
                 echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
             }
 			if ($victim_alive == true && $using_item == true) {
-			    $self_targetting = $selfTarget? '&selfTarget=1' : '';
-				echo "<br><a href=\"inventory_mod.php?item=$item&target=$target{$self_targetting}\">Use $item again?</a><br>\n";  //Repeat Usage
+			    $self_targetting = $selfTarget? '&amp;selfTarget=1' : '';
+				echo "<br><a href=\"inventory_mod.php?item=$item&amp;target=$target{$self_targetting}\">Use $item again?</a><br>\n";  //Repeat Usage
 			}
 	    }
     }

@@ -35,7 +35,7 @@ if ($command != "viewinv") {
   echo "  <td>\n";
   echo "  Health: \n";
   echo "  </td>\n";
-  
+
   echo "  <td>\n";
   echo    "<span ".$low_health_css.">".$health."</span>\n";
 
@@ -45,14 +45,14 @@ if ($command != "viewinv") {
   echo "  <td>\n";
   echo "  Status: \n";
   echo "  </td>\n";
-  
+
   echo "  <td>\n";
-  
+
 	$status_output_list = status_output_list($status_array, $username);
 	echo $status_output_list;
-   
 
-  
+
+
   echo "  </td>\n";
   echo "</tr>\n";
   echo "<tr>\n";
@@ -133,3 +133,4 @@ if(!$section_only){
     </html>
     <?php
 }
+?>

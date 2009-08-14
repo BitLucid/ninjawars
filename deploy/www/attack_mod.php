@@ -7,7 +7,7 @@ require_once(LIB_ROOT."common/lib_attack.php");
 require_once(OBJ_ROOT."Skill.php");
 /*
  * Deals with the non-skill based attacks and stealthed attacks.
- * 
+ *
  * @package combat
  * @subpackage attack
  */
@@ -93,7 +93,7 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 	if (!$duel && $attacker_status['Stealth']){ //Not dueling, and attacking from stealth
 		echo "You are striking from the shadows, you quickly strike your victim!<br>\n";
 		subtractStatus($username,STEALTH);
-		$turns_to_take = 1;    
+		$turns_to_take = 1;
 		echo "Your attack has revealed you from the shadows! You are no longer stealthed.<br>\n";
 		if (!subtractHealth($attackee, $stealthAttackDamage)){ //if Stealth attack of whatever damage kills target.
 			echo "<div class='ninja-notice'>You have slain $attackee with a dastardly attack!</div>\n";
@@ -104,24 +104,24 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 			$loot = round($gold_mod*getGold($attackee));
 			addGold($username,$loot);
 			subtractGold($attackee,$loot);
-	     
+
 			$attackee_msg = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold on $today!";
 			sendMessage("A Stealthed Ninja",$attackee,$attackee_msg);
-	  
+
 			$attacker_msg = "You have killed $attackee in combat and taken $loot gold on $today.";
 			sendMessage($attackee,$username,$attacker_msg);
 
 			runBountyExchange($username, $attackee); // Determines the bounty for normal attacking.
-        
+
 			echo "<hr>\n";
 		}else{ // if damage from stealth only hurts the target.
 			echo "$attackee has lost ".$stealthAttackDamage." HP.<br>\n";
-	  
+
 			sendMessage($username,$attackee,"$username has attacked you from the shadows for ".$stealthAttackDamage." damage.");
 		}
 	}else { // If the attacker is purely dueling or attacking, even if stealthed, though stealth is broken by dueling.
        // *** MAIN DUELING SECTION ***
-        
+
         if ($attacker_status['Stealth']){ // *** Remove their stealth if they duel instead of preventing dueling.
             subtractStatus($username, STEALTH);
             echo "You have lost your stealth.";
@@ -133,34 +133,34 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 		if ($deflect){
 			echo "You center your body and soul before battle!\n";
 		}
-          
+
 		// *** PRE-BATTLE STATS ***
-		preBattleStats();//Displays the starting state of the attacker and defender. 
-      
+		preBattleStats();//Displays the starting state of the attacker and defender.
+
 		// *** BEGINNING OF MAIN BATTLE ALGORITHM ***
-      
+
 		$turns_counter         = $attack_turns;
 		$total_attackee_damage = 0;
 		$total_attacker_damage = 0;
 		$attackee_damage       = 0;
 		$attacker_damage       = 0;
-      
+
 		// *** Combat Calculations ***
 		$round = 1;
 		$rounds = 0;
 		while ($turns_counter > 0 && $total_attackee_damage < $attacker_health && $total_attacker_damage < $attackee_health) {
 			$turns_counter -= (!$duel? 1 : 0);// *** SWITCH BETWEEN DUELING LOOP AND SINGLE ATTACK ***
-	     
+
 			$attackee_damage = rand (1, $attackee_str);
 			$attacker_damage = rand (1, $attacker_str);
-	      
+
 			if ($blaze){//Blaze does double damage.
 				$attacker_damage = $attacker_damage*2;
 			}
 			else if ($deflect){
 				$attackee_damage = round($attackee_damage/2);
 			}
-	       
+
 			$total_attackee_damage += $attackee_damage;
 			$total_attacker_damage += $attacker_damage;
 			$rounds++;//Increases the number of rounds that has occured and restarts the while loop.
@@ -174,15 +174,15 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 
 		//  *** END OF MAIN BATTLE ALGORITHM ***
 		echo "Total Rounds: $rounds<br>\n";
-          
+
 		finalResults();//Displays the final damage of the combat.
-	  
+
 		// *** RESULTING PLAYER MODIFICATION ***
-      
+
 		$gold_mod = 0.20;
-		
+
 		$turns_to_take = $required_turns;
-	  
+
 		if ($duel){
 			echo "<br>You spent an extra turn dueling.<br>\n";//Reminds of Dueling turn cost.
 			$gold_mod = 0.25;
@@ -195,15 +195,15 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 		if ($deflect){
 			echo "You spent two extra turns in order to deflect your enemy's blows.<br>\n"; //Deflect turn cost.
 		}
-      
+
 		//  *** Let the victim know who hit them ***
 		$attack_type = ($duel? 'dueled' : 'attacked');
 		$email_msg   = "You have been $attack_type by $username at $today for $total_attacker_damage!";
 		sendMessage($username,$attackee,$email_msg);
-      
+
 		$defenderHealthRemaining = subtractHealth($attackee, $total_attacker_damage);
 		$attackerHealthRemaining = subtractHealth($username, $total_attackee_damage);
-      
+
 		if ($defenderHealthRemaining<1){ //***  ATTACKER KILLS DEFENDER! ***
 			$simultaneousKill = ($attackerHealthRemaining<1); //If both died at the same time.
 
@@ -218,19 +218,19 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 
 			addKills($username,$killpoints); // Attacker gains their killpoints.
 			subtractStatus($attackee, STEALTH+POISON+FROZEN+CLASS_STATE);
-	     
+
 			if (!$simultaneousKill)	{
 				$loot = round($gold_mod*getGold($attackee));
 				addGold($username, $loot);
 				subtractGold($attackee, $loot);
 			}
-	     
+
 			$attackee_msg = "DEATH: You have been killed by $username in combat and lost $loot gold on $today!";
 			sendMessage($username,$attackee,$attackee_msg);
-	  
+
 			$attacker_msg = "You have killed $attackee in combat and taken $loot gold on $today.";
 			sendMessage($attackee,$username,$attacker_msg);
-	  
+
 			echo "$username has killed $attackee!<br>\n";
 			echo "<div class='ninja-notice'>
 				$attackee is dead, you have proven your might";
@@ -246,10 +246,10 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 			if (!$simultaneousKill){
 				echo "You have taken $loot gold from $attackee.<br>\n";
 			}
-	  
+
 			runBountyExchange($username, $attackee);//Determines bounty for dueling.
 		}
-	  
+
 		if ($attackerHealthRemaining<1){ //*** DEFENDER KILLS ATTACKER!  ***
 			$defenderKillpoints=1;
 			if ($duel){ //if they were dueling when they died
@@ -259,21 +259,21 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 			}
 			addKills($attackee,$defenderKillpoints);//Adds a kill for the defender.
 			subtractStatus($username,STEALTH+POISON+FROZEN+CLASS_STATE);
-	      
+
 			if (!$simultaneousKill){
 				$loot = round($gold_mod*getGold($username));//Loot for defender if he lives.
 				addGold($attackee,$loot);
 				subtractGold($username,$loot);
 			}
-	     
+
 			$attackee_msg = "<div class='ninja-notice'>
 				You have killed $username in combat and taken $loot gold on $today.
 				</div>";
 			sendMessage($username,$attackee,$attackee_msg);
-	     
+
 			$attacker_msg = "DEATH: You have been killed by $attackee in combat and lost $loot gold on $today!";
 			sendMessage($attackee,$username,$attacker_msg);
- 	      
+
 			echo "<div class='ninja-error'>$attackee has killed you!</div>\n";
 			echo "<div class='ninja-notice'>
 				You have been slain!  Go to the <a href=\"shrine.php\">Shrine</a> to return to the living.<br>
@@ -287,7 +287,7 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 	}
 
 	if (!$duel && getHealth($username) > 0 && getHealth($attackee) > 0){ //After any partial attack.
-		echo "<a href=\"attack_mod.php?attacked=1&attackee=$attackee\">Attack Again?</a><br>\n";
+		echo "<a href=\"attack_mod.php?attacked=1&amp;attackee=$attackee\">Attack Again?</a><br>\n";
 	}
 }
 
@@ -297,7 +297,7 @@ if ($turns_to_take<1) {
 }
 $ending_turns = subtractTurns($username, $turns_to_take);
 assert($ending_turns<$starting_turns || $starting_turns == 0);
-	
+
 
 
 //  ***  START ACTION OVER AGAIN SECTION ***

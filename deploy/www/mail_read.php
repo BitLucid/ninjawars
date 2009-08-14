@@ -30,7 +30,7 @@ if($deleted){ // Display message with the number deleted.
     echo "<div id='mail_deleted' class='notice'>".$deleted." mail entries deleted.</div>";
 }
 
-$sql->Query("SELECT id, send_to, send_from, message FROM mail 
+$sql->Query("SELECT id, send_to, send_from, message FROM mail
     WHERE send_to = '$username' ORDER BY id DESC LIMIT $mail_list_length");
 
 
@@ -52,37 +52,37 @@ if ($sql->rows == 0){
   echo "  <th>\n";
   echo "  Delete\n";
   echo "  </th>\n";
-  
+
   echo "  <th>\n";
   echo "  From\n";
   echo "  </th>\n";
-  
+
   echo "  <th>\n";
   echo "  Message\n";
   echo "  </th>\n";
   echo "</tr>\n";
-  $i = 0; 
+  $i = 0;
   foreach($sql->FetchAll() AS $loopMessage) {
       $id      = $loopMessage['id'];
       $from    = $loopMessage['send_from'];
       //$to      = $loopMessage['send_to']; // *** Unneeded 'cause redundant.
       $message = $loopMessage['message'];
-      
+
       echo "<tr>\n";
       echo "  <td valign=\"top\" style=\"text-align: center;\">\n";
       echo "  <input type=\"checkbox\" name=\"mailID[".$i++."]\" value=\"$id\">\n";
       echo "  </td>\n";
-      
+
       echo "  <td valign=\"top\">\n";
       echo "  <a href=\"player.php?player=$from\">$from</a>\n";
       echo "  </td>\n";
-	  
+
       echo "  <td>\n";
       echo    $message."\n";
       echo "  </td>\n";
       echo "</tr>\n";
     }
-  
+
   echo "</table>\n";
 }
 
@@ -95,4 +95,3 @@ if ($mail_list_length < 200 && $sql->rows != 0 && $i == 20) {
 
 include SERVER_ROOT."interface/footer.php";
 ?>
-

@@ -6,7 +6,7 @@ $quickstat  = "player";
 
 include SERVER_ROOT."interface/header.php";
 ?>
-  
+
 <span class="brownHeading">Shrine Effects</span>
 
 <hr>
@@ -24,7 +24,7 @@ $startingTurns  = getTurns($username);
 $level  = getLevel($username);
 $heal_points = (in('heal_points') ? intval(in('heal_points')) : null);  // The pointwise healing method.
 
-// *** 
+// ***
 $freeResLevelLimit = 6;
 $freeResKillLimit = 25;
 $lostTurns=10; // *** Default turns lost when the player has no kills.
@@ -34,13 +34,13 @@ $freeResurrection = ($userLevel<$freeResLevelLimit && $startingKills<$freeResKil
 echo "<br>\n";
 
 //  *** RESURRECTION SECTION ***
-if ($restore == 1) 
+if ($restore == 1)
 {
   if ($startingHealth>0)
   {
 	 echo "You are not dead.<br><br>\n";
-  }  
-   // If you're dead, and a newbie, or dead and have kills.  
+  }
+   // If you're dead, and a newbie, or dead and have kills.
   else if ($startingKills>1 || $freeResurrection)
     {
       echo "What once was dead shall rise again.<br>\n";
@@ -85,7 +85,7 @@ else if ($healed == 1 || $max_heal==1)  //If the user tried to heal themselves.
 {
   $max_health = (150+(($userLevel-1)*25));
   if ($max_heal==1) {$heal_points=$startingGold;}  // Sets the heal_points when the heal-all button was hit.
-  
+
   if ($startingHealth > 0)  //Requires the user to be resurrected first.
     {
       if ($heal_points && $heal_points>0)  // Requires a heal number, and a positive one.
@@ -93,13 +93,13 @@ else if ($healed == 1 || $max_heal==1)  //If the user tried to heal themselves.
 	  if ($heal_points <= $startingGold)   //If there's enough money for the amount that they want to heal.
 	    {
 		    if (($startingHealth+$heal_points)>$max_health)  // Allows numeric healing to "round off" at the max.
-		    { 
+		    {
 		 	   $heal_points = ($max_health-$startingHealth);  //Rounds off.
-			}  
+			}
 			subtractGold($username,$heal_points);
 			addHealth($username,$heal_points);
-			$finalHealth=getHealth($username);  
-			echo "A monk tends to your wounds and you are ".(($max_health==$finalHealth)?"fully healed":"healed to $finalHealth hitpoints").".<br><br>\n";  
+			$finalHealth=getHealth($username);
+			echo "A monk tends to your wounds and you are ".(($max_health==$finalHealth)?"fully healed":"healed to $finalHealth hitpoints").".<br><br>\n";
 	    }
 	    else
 	    {
@@ -123,7 +123,7 @@ else if ($poisoned == 1)
     if (getHealth($username) > 0)
     {
       $cost = 50;  //  the cost of curing poison is set here.
-      if ($startingGold >= $cost) 
+      if ($startingGold >= $cost)
 	  {
 	    if (getStatus($username) && $status_array['Poison'])
 	    {
@@ -154,8 +154,3 @@ else if ($poisoned == 1)
 <?php
 include SERVER_ROOT."interface/footer.php";
 ?>
-
-
-
-
-

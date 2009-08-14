@@ -1,7 +1,7 @@
 <?php
 /*
  * Functions for use in the deities.
- * 
+ *
  * @package deity
  * @subpackage deity_lib
  */
@@ -42,7 +42,7 @@ error_log('DEITY_NIGHTLY: Players unconfirmed: ('.$unconfirmed.').  30 is the cu
 $affected_rows['Players Unconfirmed'] = ($unconfirmed === false? 'Under the Minimum number of players' : $unconfirmed);
 
 function delete_old_mail($sql, $limit = 50000){
-	$sql->Update("DELETE FROM mail 
+	$sql->Update("DELETE FROM mail
 		where (extract(month from CURRENT_TIMESTAMP) - extract(month from date))>2");  //Deletes mail older than 2 months.
 	return $sql->a_rows;
 }
@@ -60,4 +60,3 @@ foreach ($affected_rows AS $loopKey => $loopRowResult)
 /*include SERVER_ROOT."interface/footer.php";*/
 // */
 ?>
-

@@ -45,10 +45,10 @@ if (!$players_health)
 	echo '</p>';
 	echo '</form>';
 	echo '<hr>';
-}	
+}
 elseif ($players_health >= (150+(($players_level-1)*25))) // *** If at or above the maximum, no healin'.
 {
-	echo 'You are at full health.';	
+	echo 'You are at full health.';
 }
 else
 {
@@ -81,5 +81,3 @@ if (getStatus($username) && isset($status_array['Poisoned']) && $status_array['P
 <?php
 include SERVER_ROOT."interface/footer.php";
 ?>
-
-

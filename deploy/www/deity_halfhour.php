@@ -27,7 +27,7 @@ $out_display['Inactive Browsers Deactivated'] = $sql->a_rows;
 
 
 $sql->Update("UPDATE players SET health=
-		 CASE WHEN health+8 <= $maximum_heal THEN health+8 ELSE $maximum_heal END 
+		 CASE WHEN health+8 <= $maximum_heal THEN health+8 ELSE $maximum_heal END
 	     WHERE health >= 1 AND health < $maximum_heal AND NOT cast(status&".POISON." AS bool)");
 
 

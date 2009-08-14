@@ -48,4 +48,3 @@ if(!$lost_email){
 <?php
 include SERVER_ROOT."interface/footer.php";
 ?>
-

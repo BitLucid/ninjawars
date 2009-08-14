@@ -1,11 +1,11 @@
 <?php
 /*
  * This file is used for players signing up to ninjawars.
- * 
+ *
  * @package account
  * @subpackage signup
  */
- 
+
 // Emailing of confirmation email is still not stable...
 // Consider removing all email confirmation requirements...
 // And creating a one-button ninja creation system.
@@ -33,16 +33,16 @@ $sql->Delete("delete from players where uname = 'Bobosa'");
    $enteredEmail="jimmy@bob.com";
     $enteredClass="Red";
      $enteredPass="james";
-      $enteredReferral="Sometimes I wonder whether it's productive to even try any more."; 
+      $enteredReferral="Sometimes I wonder whether it's productive to even try any more.";
 } // *** DEBUG THE VALIDATION.
 */
 
 if ($submitted) {
-	$submit_successful = validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredReferral, $enteredPass); 
+	$submit_successful = validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredReferral, $enteredPass);
 } // *** Validates submission.
 
-if (!$submit_successful) { 
-	display_signup_form($enteredName, $enteredEmail, $enteredClass, $enteredReferral); 
+if (!$submit_successful) {
+	display_signup_form($enteredName, $enteredEmail, $enteredClass, $enteredReferral);
 } // *** Displays form.
 
 
@@ -65,7 +65,7 @@ function preconfirm_some_emails($email){
 	foreach($blacklisted_by AS $loop_domain){
 		if(strpos(strtolower($email), $loop_domain)){
 			return 1;
-		} 	
+		}
 	}
 	foreach($whitelisted_by AS $loop_domain){
 		if(strpos(strtolower($email), $loop_domain)){
@@ -92,9 +92,9 @@ function display_class_select($current)  {
 function display_signup_form($enteredName, $enteredEmail, $enteredClass, $enteredReferral) {
 	// ************************* START OF SIGNUP FORM ********************************
 	?>
-	  
+
 	<span class="brownHeading">Sign Up</span>
-	<br/><br/>	
+	<br/><br/>
 	Please add <strong><?php echo SYSTEM_MESSENGER_EMAIL; ?></strong> to the safe email senders list of your email account before signing up, so you can receive your confirmation email.
 	<br/><br/>
 	<form action="signup.php" method="post">
@@ -121,7 +121,7 @@ function display_signup_form($enteredName, $enteredEmail, $enteredClass, $entere
 	    Email Address:  <input id="send_email" type="text" name="send_email" class="textField" value='<?php echo $enteredEmail; ?>'>
 	</div>
 	<div class="FormField">
-	  <span style="font-style:italic">Optional:</span> &nbsp Website that linked you to Ninjawars:
+	  <span style="font-style:italic">Optional:</span> &nbsp; Website that linked you to Ninjawars:
 	      <input id="referred_by" type="text" name="referred_by" class="textField" value='<?php echo $enteredReferral; ?>'>
 	</div>
 	<div class="submit" style="padding-top:2em">
@@ -164,9 +164,9 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 	$headers .= "Reply-To: ".SUPPORT_EMAIL_FORMAL_NAME." <".SUPPORT_EMAIL.">\r\n";
 
 	echo "Your responses:<br> Name - $send_name,<br>
-		 Password - ".(isset($send_pass)? "***yourpassword***" : "NO PASSWORD").",<br> 
-		 Class - $send_class,<br> 
-		 Email - $send_email,<br> 
+		 Password - ".(isset($send_pass)? "***yourpassword***" : "NO PASSWORD").",<br>
+		 Class - $send_class,<br>
+		 Email - $send_email,<br>
 		 Site Referred By - $referred_by<br><br>\n";
 
 	//  *** Requirement checking Section  ***
@@ -179,12 +179,12 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 		$check_name  = $sql->getRowCount();
 		$sql->QueryItem("SELECT email FROM players WHERE email = '$send_email'");
 		$check_email = $sql->getRowCount();
-		
-		
-		
-        // Validate the username!		
+
+
+
+        // Validate the username!
 		$username_error = validate_username($send_name);
-		
+
 		if($username_error){
 			echo $username_error;
 		}
@@ -194,13 +194,13 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 			$filter = new Filter();
 			$send_name = $filter->toUsername($send_name); // Filter any un-whitelisted characters.
 	      		echo "Phase 1 Complete: Name passes requirements.<hr>\n";
-	      		
+
 	      		// Validate the password!
 	      		$password_error = validate_password($send_pass);
-	      		
+
 	      		if($password_error){
 	      			echo $password_error;
-				} else {	
+				} else {
 					$send_pass = trim($send_pass); // *** Trims any extra space off of the password.
 					$send_pass = $filter->toPassword($send_pass); // Filter any un-whitelisted characters.
 					echo "Phase 2 Complete: Password passes requirements.<hr>\n";
@@ -226,13 +226,13 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 							// *** Signup is successful at this point  ***
 							$preconfirm = 0;
 							$preconfirm = preconfirm_some_emails($send_email);
-							
+
 							if(!$preconfirm){ /* not blacklisted by, so require a normal email confirmation */
 			  					echo "Phase 5: When you receive an email from SysMsg, it will describe how to activate your account.<br><br>\n";
 			  				}
 			  				// The preconfirmation message occurs later.
 							$confirm = rand(1000,9999); //generate confirmation code
-							
+
 							//  ***  Query is split up into two column groups of ten  ***
 							$playerCreationQuery= "INSERT INTO players".
 							" (uname, pname, health, strength, gold, messages, kills, turns, confirm,".
@@ -243,20 +243,20 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 							//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 							$sql->Insert($playerCreationQuery);
 							$successful = TRUE; // *** SET THE FUNCTION AS A SUCCESS HERE ***
-							
+
 							assert($send_email && $headers && $send_name && $confirm && $send_pass && $send_class && $headers);
 							//  ***  Sends out the confirmation email to the chosen email address.  ***
 							$_to = "$send_email";
 							$_subject = "NinjaWars Account Sign Up";
-							$_body = 
+							$_body =
 								"Thank you for signing up for Ninja Wars.<br>
 								This message is from SysMsg, the AUTOMATED email system for NinjaWars. <br>
-								Any emails you receive from the game will come from this address. 
+								Any emails you receive from the game will come from this address.
 								Please click on the link below to confirm your account.<br><br>
 								<a href=\"http://www.ninjawars.net/confirm.php?username=".urlencode($send_name)."&confirm=$confirm\">Confirm Account</a><br>
-								Or paste this link:<br>http://www.ninjawars.net/confirm.php?username=".urlencode($send_name)."&confirm=$confirm <br> 
+								Or paste this link:<br>http://www.ninjawars.net/confirm.php?username=".urlencode($send_name)."&confirm=$confirm <br>
 								into your browser.<br><br>
-								If you require help use the forums at http://www.ninjawars.net/forum/<br> 
+								If you require help use the forums at http://www.ninjawars.net/forum/<br>
 								or email: ".SUPPORT_EMAIL."<br><br><b>
 								Account Info</b><br>
 								Username: $send_name<br>
@@ -268,7 +268,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 							$Message = new Nmail($_to, $_subject, $_body, $_from);
 							$sent = false;
 							$sent = $Message->send();
-									
+
 							//  *** Add the signup to the "New User List"  ***
 			  				sendMessage($send_name,'NewUserList',"Username: $send_name , Email: $send_email , Class: $send_class , Date: ".date('r')." Referred by: $referred_by");
 			  				if ($sent && !$preconfirm) {
@@ -286,10 +286,10 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 				  			echo "If you require help use the forums at <a href='http://www.ninjawars.net/forum/'>http://www.ninjawars.net/forum/</a> or email: ".SUPPORT_EMAIL."\n";
 				  		}// *** End of class checking.
 					}
-	      				else   // Default, displays when the username or email are not unique. 
+	      				else   // Default, displays when the username or email are not unique.
 					{
 		  			$what = ($check_email != 0 ? "Email" : "Username");
-		  
+
 			  		echo "Phase 3 Incomplete: That $what is already in use. Please choose a different one.\n";
 				}
 			}
@@ -305,7 +305,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 	echo "<br><br>";
 	/*if (!isset($confirm))
 	{
-		echo "Return to <a href='signup.php?enteredEmail=$send_email&enteredName=$send_name&enteredClass=$send_class&enteredReferral=$referred_by'>Sign Up page.</a>";
+		echo "Return to <a href='signup.php?enteredEmail=$send_email&amp;enteredName=$send_name&amp;enteredClass=$send_class&amp;enteredReferral=$referred_by'>Sign Up page.</a>";
 	}*/
 	return $successful;
 } // *** End of validate_signup() function.
