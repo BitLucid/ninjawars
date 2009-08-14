@@ -15,12 +15,12 @@ class Clan
 	//removeRequest method.
 	//recruit method. Using ids.
 
-	public __constructor($clanID=NULL)
+	public function __constructor($clanID=NULL)
 	{
 		// *** Should use the clanID to create the clan, or else use something else to create the clan.
 	}
 
-	public getID()
+	public function getID()
 	{
 		$res = NULL;
 		if (is_int($id))
@@ -30,29 +30,28 @@ class Clan
 		return $res;
 	}
 
-	public getClanName()
+	public function getClanName()
 	{
 		return $this->clanName;
 	}
 
-	public getLeaderName()
+	public function getLeaderName()
 	{
 		return $this->leaderName();
 	}
 
-	public getLeaderID()
+	public function getLeaderID()
 	{
 		return $this->leaderID;
 		// *** This should get that player object and then set the leaderID and leaderName from that.
 	}
 
-	public messageMembers()
+	public function messageMembers()
 	{
 	}
 
-	public messageLeaders()
+	public function messageLeaders()
 	{
 	}
 }
-
 ?>
