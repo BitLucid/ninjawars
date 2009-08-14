@@ -90,7 +90,7 @@ echo "</div>\n";
   </td>
 
   <td>
-  <img src="images/scroll.png">
+  <img src="images/scroll.png" alt="Scroll">
 </td>
 </tr>
 <tr>
@@ -107,7 +107,7 @@ echo "</div>\n";
   </td>
 
   <td>
-  <img src="images/scroll.png">
+  <img src="images/scroll.png" alt="Scroll">
   </td>
 </tr>
 <tr>
@@ -124,7 +124,7 @@ echo "</div>\n";
   </td>
 
   <td>
-  <img src="images/scroll.png">
+  <img src="images/scroll.png" alt="Scroll">
   </td>
 </tr>
 <tr>
@@ -141,7 +141,7 @@ echo "</div>\n";
   </td>
 
   <td>
-  <img src="images/scroll.png">
+  <img src="images/scroll.png" alt="Scroll">
   </td>
 </tr>
 <tr>
@@ -158,7 +158,7 @@ echo "</div>\n";
   </td>
 
   <td>
-  <img src="images/mini_star.png">
+  <img src="images/mini_star.png" alt="Shuriken">
   </td>
 </tr>
 <tr>

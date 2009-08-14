@@ -47,7 +47,6 @@ if($is_logged_in){
 // TODO: Give the "No such ninja" message (e.g. when linking from the ---- chat) a link back to a sane part of the list.
 // TODO: make clans links in the player list.
 // TODO: Fix the white backgrounds in the iframes in IE.
-// TODO: Fix the &apos; things with the chat.
 // TODO: Limit unnecessary includes via lib_header.
 
 

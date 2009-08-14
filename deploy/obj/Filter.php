@@ -117,7 +117,7 @@ class Filter
 		// Encode single quotes.
 		$dirty = substr(htmlentities($dirty), 0, ($limit? $limit : $default_message_limit));
 		// Custom replacement of the apostrophe.
-		$dirty = preg_replace("/[\']/", "&apos;", (string) $dirty);
+//		$dirty = preg_replace("/[\']/", "&apos;", (string) $dirty); // &apos is not an HTML entity, only in XML, and even then, not required
 		// Whitelist replace everything else that isn't in the character groups listed.
 		$dirty = preg_replace("/[^\w\d_\-\+\.\&\;\s\!\?\,\=\*\%\(\)\:\@\/]/", "", (string) $dirty);
 		// Replace urls with anchor hrefs.

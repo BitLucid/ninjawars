@@ -10,7 +10,7 @@ include SERVER_ROOT."interface/header.php";
 <div class="brownHeading">Combat</div>
 
 <p>
-To attack a ninja, use the <a href="list_all_players.php?hide=dead">player list</a> or search for a ninja below.</a>
+To attack a ninja, use the <a href="list_all_players.php?hide=dead">player list</a> or search for a ninja below.
 </p>
 
 <form id="player_search" action="list_all_players.php" method="get" name="player_search">

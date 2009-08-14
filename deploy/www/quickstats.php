@@ -97,29 +97,33 @@ if ($command != "viewinv") {
 
   echo "</table>\n";
 }
-else if ($command == "viewinv") {
-  $sql->Query("SELECT item, amount FROM inventory WHERE owner = '".$_SESSION['username']."' ORDER BY item");
-  foreach($sql->FetchAll() AS $loopItem) {
-      echo "<table style=\"border: 0;\" class='quickstats inventory'>\n";
-      echo "<tr>\n";
-      echo "  <td>\n";
-      echo "  ".$loopItem['item'].": \n";
-      echo "  </td>\n";
-      echo "  <td>\n";
-      echo    $loopItem['amount']."<br>\n";
-      echo "  </td>\n";
-      echo "</tr>\n";
-  }
+else if ($command == "viewinv")
+{
+	$sql->Query("SELECT item, amount FROM inventory WHERE owner = '".$_SESSION['username']."' ORDER BY item");
 
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "Gold: \n";
-  echo "  </td>\n";
-  echo "  <td>\n";
-  echo    $players_gold." <br>\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-  echo "</table>\n";
+	echo "    <table style=\"border: 0;\" class='quickstats inventory'>\n";
+
+	foreach($sql->FetchAll() AS $loopItem)
+	{
+		echo "      <tr>\n";
+		echo "        <td>\n";
+		echo "          ".$loopItem['item'].": \n";
+		echo "        </td>\n";
+		echo "        <td>\n";
+		echo "          ".$loopItem['amount']."<br>\n";
+		echo "        </td>\n";
+		echo "      </tr>\n";
+	}
+
+	echo "      <tr>\n";
+	echo "        <td>\n";
+	echo "          Gold: \n";
+	echo "        </td>\n";
+	echo "        <td>\n";
+	echo "          $players_gold<br>\n";
+	echo "        </td>\n";
+	echo "      </tr>\n";
+	echo "    </table>\n";
 }
 
 // Write out a function call to update the login-bar's health display.

@@ -85,7 +85,7 @@ if(getTurns($username) > 0) {
 	    }
 	} else if ($victim == "samurai") {
 		  $turn_cost = 1;
-		  echo "<img src=\"images/samurai.png\" border=\"0\">\n";
+		  echo "<img src=\"images/samurai.png\" alt=\"Samurai\">\n";
 		  if (getLevel($username)<6) {
 			  echo "You are too weak to take on the Samurai.<br>\n";
 			  $turn_cost=0;
@@ -137,7 +137,7 @@ if(getTurns($username) > 0) {
 		} // End valid turns and kills for the attack.
 	} else if ($victim == "merchant") {
 	  echo "Merchant sees you and prepares to defend!<br><br>\n";
-	  echo "<img src=\"images/merchant.png\" border=\"0\">";
+	  echo "<img src=\"images/merchant.png\" alt=\"Merchant\">";
 
 	  $merchant_attack = rand(15,35);  // *** Merchant Damage ***
 
@@ -166,7 +166,7 @@ if(getTurns($username) > 0) {
 	    } // End of if ninja won.
 	} else if ($victim == "guard") {
 	  echo "The Guard sees you and prepares to defend!<br><br>\n";
-	  echo "<img src=\"images/fighter.png\" border=\"0\">\n";
+	  echo "<img src=\"images/fighter.png\" alt=\"Fighter\">\n";
 
 	  $guard_attack = rand(1,$attacker_str+10);  // *** Guard Damage ***
 
@@ -193,7 +193,7 @@ if(getTurns($username) > 0) {
       else if ($victim == "thief")
 	{
 	  echo "Thief sees you and prepares to defend!<br><br>\n";
-	  echo "<img src=\"images/thief.png\" border=\"0\">\n";
+	  echo "<img src=\"images/thief.png\" alt=\"Thief\">\n";
 
 	  $thief_attack = rand(0,35);  // *** Thief Damage  ***
 
