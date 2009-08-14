@@ -5,8 +5,6 @@
  * @package db
  * @subpackage db
  */
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'www/')))."lib/base.inc.php"); // *** Absolute path include of everything.
-
 class DBAccess {
     var $pdo, $result, $rows, $data, $a_rows;
     

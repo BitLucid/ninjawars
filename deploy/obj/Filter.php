@@ -5,9 +5,7 @@
  * @package input
  * @subpackage filter
  */
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'www/')))."lib/base.inc.php");
 require_once(OBJ_ROOT."Sanitize.php"); // *** Mainly a replacement for the Filter methods.
-
 
 class Filter
 {
