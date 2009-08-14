@@ -4,7 +4,7 @@ $private    = true;
 $quickstat  = "player";
 $page_title = "NPC Battle Status";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
   
 <span class="brownHeading">Battle Status</span>
@@ -241,5 +241,5 @@ else
   echo "You have no turns left today. Buy a speed scroll or wait for your turns to replenish.\n";
 }
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

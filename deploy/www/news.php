@@ -4,7 +4,7 @@ $alive      = false;
 $quickstat  = false;
 $page_title = "News";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <span class="brownHeading">New Changes to NW</span>
@@ -34,5 +34,5 @@ include "interface/header.php";
 </div>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

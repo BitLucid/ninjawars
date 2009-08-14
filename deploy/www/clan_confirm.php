@@ -4,7 +4,7 @@ $private    = false;
 $quickstat  = false;
 $page_title = "Accept a New Clan Member";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
  
 <span class="brownHeading">Accept A New Clan Member</span>
@@ -66,5 +66,5 @@ if (!$clan_name){
 </div>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

@@ -4,7 +4,7 @@ $alive      = false;
 $page_title = "In-Game Chat";
 $quickstat  = false;
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 <span class="brownHeading">Chat Board</span> -
 
@@ -61,5 +61,5 @@ if ($chatlength != 360)
 {
 	echo "<br><a href=\"village.php?chatlength=360\">View the Rest of the Messages</a><br>\n";
 }
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

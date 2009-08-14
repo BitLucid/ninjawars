@@ -4,7 +4,7 @@ $private    = true;
 $alive      = false;
 $quickstat  = "viewinv";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 
 // *** To verify that the delete request was made.
 $in_delete_account = in('deleteaccount');
@@ -119,5 +119,5 @@ echo "</form>\n";
 
 echo "</p>";
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

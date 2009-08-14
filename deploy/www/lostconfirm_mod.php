@@ -4,7 +4,7 @@ $alive      = false;
 $private    = false;
 $quickstat  = false;
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <span class="brownHeading">Retriving Confirm Code</span>
@@ -42,6 +42,6 @@ else
 </p>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

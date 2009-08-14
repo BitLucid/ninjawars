@@ -4,7 +4,7 @@ $alive      = false;
 $page_title = "Staff";
 $quickstat  = false;
     
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 // TODO: Add in mention of Kultcher, RobertoSuave, Chris (not sure what his pseudonym is).
 ?>
 
@@ -83,6 +83,6 @@ Ninjawars is open source, with the source code downloadable and able to be openl
 </p>
 </div>
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

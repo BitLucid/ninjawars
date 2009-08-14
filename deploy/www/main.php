@@ -4,7 +4,7 @@ $private    = false;
 $quickstat  = false;
 $page_title = "Main";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <!-- Replace this with our banner image -->
@@ -37,7 +37,7 @@ Find out what has changed about NW in the announcements section of the
 </p>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 
 

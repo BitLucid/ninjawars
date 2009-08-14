@@ -14,7 +14,7 @@ $private    = true;
 $quickstat  = "player";
 $page_title = "Player Detail";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 
 $skillListObj = new Skill();
 $skillsListObj = $skillListObj;
@@ -31,7 +31,7 @@ $target_player_obj = new Player(either($target_id, $target));
 if(!$target_player_obj || !$target_player_obj->player_id){
 	echo "<div class='error'>No such ninja.</div>";
 	echo render_list_link();
-	include "interface/footer.php";
+	include SERVER_ROOT."interface/footer.php";
 	die();
 }
 $player_info = $target_player_obj->as_array(); // Pull the info out of the object.
@@ -153,5 +153,5 @@ if ($player_info) {
 	echo "</div><!-- End player-info -->";
 }
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

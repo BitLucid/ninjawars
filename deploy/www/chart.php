@@ -4,7 +4,7 @@ $private    = true;
 $quickstat  = false;
 $page_title = "Advancement Chart";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <div class="brownTitle">Dojo Chart</div>
@@ -72,6 +72,6 @@ for ($i=1 ; $i<=$MAX_LEVEL ; $i++)
 
 echo "</table>\n";
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

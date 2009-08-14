@@ -4,7 +4,7 @@ $alive      = false;
 $quickstat  = false;
 $page_title = "Duel Log";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <span class="brownHeading">Past Duels: Reset Nightly</span>
@@ -51,5 +51,5 @@ echo "</table>\n";
 echo "</form>\n";
 
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

@@ -4,7 +4,7 @@ $alive      = false;
 $quickstat  = "viewinv";
 $page_title = "Your Inventory";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <span class="brownHeading">Your Inventory</span>
@@ -115,5 +115,5 @@ Current gold: <?echo getGold($username);?>
 </p>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

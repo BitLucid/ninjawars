@@ -4,8 +4,7 @@ $alive      = false;
 $page_title = "Combat";
 $quickstat  = "player";
 
-
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 <div id='attack-player-page'>
 <div class="brownHeading">Combat</div>
@@ -45,5 +44,5 @@ To attack a ninja, use the <a href="list_all_players.php?hide=dead">player list<
 </div><!-- End of attack-player page container div -->
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

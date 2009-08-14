@@ -1,6 +1,6 @@
 <?php
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
-//include "interface/header.php";
+//include SERVER_ROOT."interface/header.php";
 
 $sql = new DBAccess();
 $sql->Query("truncate player_rank");
@@ -18,7 +18,7 @@ foreach ($out_display AS $loopKey => $loopRowResult)
     echo $res;
 }
 //error_log('DEITY_FIVEMINUTE: End.');
-//include "interface/footer.php";
+//include SERVER_ROOT."interface/footer.php";
 ?>
 
 

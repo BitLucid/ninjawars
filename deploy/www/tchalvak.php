@@ -5,7 +5,7 @@ $private    = false;
 $quickstat  = false;
 $page_title = "Tchalvak";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
  
 <span class="brownHeading">Tchalvak Test Page</span>
@@ -131,5 +131,5 @@ if ($player_to_confirm)
 </div>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

@@ -4,7 +4,7 @@ $private    = false;
 $quickstat  = false;
 $page_title = "Rules";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 <span class="brownHeading">Fair Play Rules</span>
 <ul>
@@ -28,5 +28,5 @@ Spamming is excessive use of any of the communication method; chat, mail, forums
 </ul>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

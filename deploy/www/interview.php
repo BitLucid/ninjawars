@@ -4,7 +4,7 @@ $alive      = false;
 $quickstat  = false;
 $page_title = "Interview";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 
@@ -118,5 +118,5 @@ John: As of today I am still solo, but i've been contact in a few artists, marke
 </div>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

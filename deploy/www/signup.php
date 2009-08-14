@@ -23,7 +23,7 @@ $enteredPass = in('key', null, 'toText');
 $submitted = in('submit');
 
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 
 $submit_successful = false; // *** Default.
 /*if (DEBUG) {
@@ -311,5 +311,5 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 } // *** End of validate_signup() function.
 
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

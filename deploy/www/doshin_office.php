@@ -4,7 +4,7 @@ $private    = true;
 $quickstat  = false;
 $page_title = "Doshin Office";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 
 $location    = "Doshin Office";
 
@@ -189,6 +189,6 @@ else
 }
 
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

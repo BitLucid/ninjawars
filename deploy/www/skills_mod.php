@@ -10,7 +10,7 @@ $alive      = true;
 $quickstat  = "player";
 $page_title = "Using Skills";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 include(OBJ_ROOT."Skill.php");
 ?>
 
@@ -327,6 +327,6 @@ $ending_turns = changeTurns($username, $turns_to_take);
 </p>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

@@ -4,7 +4,7 @@ $alive      = false;
 $quickstat  = false;
 $page_title = "Send A Message";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <span class="brownHeading">Mail: Compose Message</span>
@@ -34,6 +34,6 @@ Search for a Ninja to send them a message from their profile:
 </p>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

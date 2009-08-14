@@ -20,7 +20,7 @@ $private    = true;
 $alive      = true;
 $page_title = "Item Usage";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <span class="brownHeading">Item Use</span>
@@ -236,5 +236,5 @@ assert($item == "Speed Scroll" || $ending_turns<$starting_turns || $starting_tur
 Return to <?echo $link_back;?>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

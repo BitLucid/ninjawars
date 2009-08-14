@@ -4,7 +4,7 @@ $private    = false;
 $quickstat  = false;
 $page_title = "Lost Confirmation";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
   
 <span class="brownHeading">Lost Confirm</span>
@@ -22,6 +22,6 @@ Please submit your email address and we will resend a confirmation.
 <hr>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

@@ -4,7 +4,7 @@ $alive      = true;
 $quickstat  = "player";
 $page_title = "Working in the Village";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <div class="brownTitle">Working in the Village</div>
@@ -65,5 +65,5 @@ echo "<input id=\"workButton\" type=\"submit\" value=\"Turns\" name=\"workButton
 echo "</form>\n";
 echo "</p>";
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

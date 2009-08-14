@@ -6,7 +6,7 @@ $alive      = false;
 $page_title = "Mini Chat";
 $quickstat  = false;
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 
 
 $default_limit = 22;
@@ -40,5 +40,4 @@ echo render_chat_messages($sql, $chatlength);
 echo "</div>"; // End of mini_chat div.
 
 echo render_footer($quickstat=null, $skip_quickstat=true);
-
 ?>

@@ -4,7 +4,7 @@ $alive      = true;
 $quickstat  = "player";
 $page_title = "Casino";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <div class="brownTitle">Casino</div>
@@ -56,5 +56,5 @@ echo "&nbsp;&nbsp;<input type=\"submit\" value=\"Place bet\" class=\"formButton\
 
 echo "Current Gold: ".getGold($username)."<br>\n";
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

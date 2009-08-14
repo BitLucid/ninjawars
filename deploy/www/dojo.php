@@ -4,7 +4,7 @@ $private    = true;
 $alive      = false;
 $page_title = "Dojo";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 $msg = '';
 $dimMakCost = 40;
 $dimMakLevelReq = 10;
@@ -147,7 +147,7 @@ echo "Your current level is ".getLevel($username).".  <br>Your current kills are
 echo "Level ".(getLevel($username)+1)." requires ".(getLevel($username)*5)." kills.<br><br>\n";
 echo $msg;
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 
 

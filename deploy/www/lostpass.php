@@ -4,7 +4,7 @@ $quickstat  = false;
 $private    = false;
 $alive      = false;
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
  
 <span class="brownHeading">Lost Password</span>
@@ -23,6 +23,6 @@ Please submit your email and your account information will be sent to you:<br>
 </p>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

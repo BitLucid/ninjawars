@@ -4,7 +4,7 @@ $private    = true;
 $quickstat  = false;
 $page_title = "Quickstats";
 
-include_once("interface/header.php");
+include_once(SERVER_ROOT."interface/header.php");
 require_once(LIB_ROOT."specific/lib_status.php"); // Status alterations.
 
 // *** Turning the header variables into variables for this page.

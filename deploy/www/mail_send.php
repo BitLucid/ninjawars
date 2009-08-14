@@ -5,7 +5,7 @@ $private    = true;
 $quickstat  = false;
 $page_title = "Send Mail";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <span class="brownHeading">Mail</span>
@@ -52,6 +52,6 @@ else
   "You need to give your message to a <a href=\"mail.php\">messenger</a> for delivery.";
 }
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

@@ -16,7 +16,7 @@ $alive      = true;
 $page_title = "Battle Status";
 $quickstat  = "player";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <span class="brownHeading">Battle Status</span>
@@ -308,7 +308,7 @@ if (isset($attackee)){
 echo "Start your combat <a href=\"list_all_players.php\"> from the player list.</a>\n<br>\n";
 echo "<hr><br>\n";
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 
 
 ?>

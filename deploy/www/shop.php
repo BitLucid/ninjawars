@@ -4,7 +4,7 @@ $private    = true;
 $quickstat  = "viewinv";
 $page_title = "Shop";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 
 $description = "";
 $in_purchase = in('purchase');
@@ -171,7 +171,7 @@ echo "</div>\n";
 
 <?php
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 
 

@@ -5,7 +5,7 @@ $private    = false;
 $quickstat  = false;
 $page_title = "Ninja List";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 // The script for the accordian opening.
 //echo "<script type='text/javascript' src='js/player_accordian.js'></script>";
 // INIT
@@ -280,7 +280,7 @@ if(!$searched){ // Will not display active ninja on a search page.
 
 echo "</p>\n";
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 
 

@@ -4,7 +4,7 @@ $private    = false;
 $quickstat  = false;
 $page_title = "FAQ";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <span class="brownHeading">Frequently Asked Questions</span><p>
@@ -64,5 +64,5 @@ You can send mail to specific players using the Mail link on the left side of sc
 For more detail see: <a href="about.php">the "About" page</a> or <a href="http://ninjawars.pbwiki.com">the Wiki</a>.
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

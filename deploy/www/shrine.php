@@ -4,7 +4,7 @@ $alive      = false;
 $private    = true;
 $quickstat  = "player";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <div class="brownTitle">Shrine</div>
@@ -79,7 +79,7 @@ if (getStatus($username) && isset($status_array['Poisoned']) && $status_array['P
 ?>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 
 

@@ -4,7 +4,7 @@ $alive      = false;
 $private    = true;
 $quickstat  = "player";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
   
 <span class="brownHeading">Shrine Effects</span>
@@ -152,7 +152,7 @@ else if ($poisoned == 1)
 <a href="shrine.php">Heal Again ?</a>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 
 

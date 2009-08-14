@@ -1,6 +1,6 @@
 <?php
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
-//include("interface/header.php");
+//include(SERVER_ROOT."interface/header.php");
 $score = get_score_formula();
 
 /// @ TODO - This script should be secured.
@@ -77,7 +77,7 @@ foreach ($out_display AS $loopKey => $loopRowResult)
     echo $res;
 }
 
-//include "interface/footer.php";
+//include SERVER_ROOT."interface/footer.php";
 ?>
 
 

@@ -3,7 +3,7 @@ $private    = true;
 $alive      = false;
 $quickstat  = false;
 $page_title = "Mail";
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 require_once(LIB_ROOT."specific/lib_mail.php");
 ?>
 
@@ -93,6 +93,6 @@ if ($mail_list_length < 200 && $sql->rows != 0 && $i == 20) {
 	echo "<a href=\"mail_read.php?mail_list_length=200\">View Older Mail</a><br>\n";
 }
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

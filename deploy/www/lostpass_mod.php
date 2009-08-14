@@ -4,7 +4,7 @@ $quickstat  = false;
 $private    = false;
 $alive      = false;
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 
 <span class="brownHeading">Retriving Password</span>
@@ -46,6 +46,6 @@ if(!$lost_email){
 </p>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>
 

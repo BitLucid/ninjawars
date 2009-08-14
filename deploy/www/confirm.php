@@ -4,7 +4,7 @@ $private    = false;
 $quickstat  = false;
 $page_title = "Game Confirmation";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
   
 <span class="brownHeading">Game Confirmation</span>
@@ -52,5 +52,5 @@ else
 </div>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

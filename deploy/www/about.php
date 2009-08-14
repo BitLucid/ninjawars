@@ -4,7 +4,7 @@ $private    = false;
 $quickstat  = false;
 $page_title = "About NinjaWars";
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
   
 <span class="brownHeading">Ninja Wars Topics</span>
@@ -374,5 +374,5 @@ Secondary Skill: Mind Control -  Possess a player to fight another.
 </p>
 
 <?php
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?>

@@ -9,7 +9,7 @@ $page_title = "Clan Panel";
 
 // What a horrible set of code this is.
 
-include "interface/header.php";
+include SERVER_ROOT."interface/header.php";
 ?>
 <script type="text/javascript" src="<?=WEB_ROOT?>js/clan.js"></script>
 
@@ -224,5 +224,5 @@ if ($command == "view"){
 
 echo render_clan_tags(); // Display the clan tags section.
 
-include "interface/footer.php";
+include SERVER_ROOT."interface/footer.php";
 ?> 

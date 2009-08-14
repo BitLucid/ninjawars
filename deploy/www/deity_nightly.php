@@ -5,7 +5,7 @@
  * @package deity
  * @subpackage deity_lib
  */
-/*include "interface/header.php";*/
+/*include SERVER_ROOT."interface/header.php";*/
 require_once(LIB_ROOT.'specific/lib_deity.php');
 //
 
@@ -57,7 +57,7 @@ foreach ($affected_rows AS $loopKey => $loopRowResult)
     echo "<br>Result type: ".$loopKey." yeilded result number: ".$loopRowResult;
 }
 
-/*include "interface/footer.php";*/
+/*include SERVER_ROOT."interface/footer.php";*/
 // */
 ?>
 

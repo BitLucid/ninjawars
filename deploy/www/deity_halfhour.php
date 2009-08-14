@@ -1,6 +1,6 @@
 <?php
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
-//include "interface/header.php";
+//include SERVER_ROOT."interface/header.php";
 
 $maximum_turn_regen = 100;
 $maximum_turns = 300;
@@ -40,5 +40,5 @@ foreach ($out_display AS $loopKey => $loopRowResult)
     echo $res;
 }
 
-//include "interface/footer.php";
+//include SERVER_ROOT."interface/footer.php";
 ?>
