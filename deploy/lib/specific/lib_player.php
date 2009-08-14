@@ -58,46 +58,52 @@ function render_skills($target, $skillListObj, $skillsListObj){
 /**
  * Pull out the url for the player's avatar
 **/
-function render_avatar($player, $size=null){
-    // If the avatar_type is 0, return '';
-    if(!$player->vo || !$player->vo->avatar_type || !$player->vo->email){
+function render_avatar($player, $size=null)
+{
+	// If the avatar_type is 0, return '';
+    if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email)
+	{
         return '';
-    } else { // Otherwise, user the player info for creating a gravatar.
-        $def = 'identicon'; // Default image or image class.
-        // other options: wavatar , monsterid
-        $email = $player->vo->email;
-        $avatar_type = $player->vo->avatar_type;
-        $base = "http://www.gravatar.com/avatar/";
-        $hash = md5(trim(strtolower($email)));
-        $no_gravatar = "d=".urlencode($def);
-        $size = either($size, 80);
-        $rating = "r=x";
-        $res = $base.$hash."?".implode("&", array($no_gravatar, $size, $rating));
-        return $res;
     }
+	else
+	{	// Otherwise, user the player info for creating a gravatar.
+		$def = 'identicon'; // Default image or image class.
+		// other options: wavatar , monsterid
+		$email = $player->vo->email;
+		$avatar_type = $player->vo->avatar_type;
+		$base = "http://www.gravatar.com/avatar/";
+		$hash = md5(trim(strtolower($email)));
+		$no_gravatar = "d=".urlencode($def);
+		$size = either($size, 80);
+		$rating = "r=x";
+		$res = $base.$hash."?".implode("&amp;", array($no_gravatar, $size, $rating));
+		return $res;
+	}
 }
 
 // Display the div for the avatar to live within.
-function render_avatar_section($player, $img_size=null){
-    $img_url = render_avatar($player, $img_size);
-    //$img_url = IMAGE_ROOT."50pxShuriken.png";
-    if(!$img_url){
-        return '';
-    } else {
-        ob_start();
-        ?>
+function render_avatar_section($player, $img_size=null)
+{
+	$img_url = render_avatar($player, $img_size);
+	//$img_url = IMAGE_ROOT."50pxShuriken.png";
+
+	if (!$img_url)
+	{
+		return '';
+	}
+	else
+	{
+		ob_start();
+		?>
         <div id='avatar'>
             <img alt='No Avatar' src='<?php echo $img_url; ?>'>
         </div>
         <?php
-        $res = ob_get_contents();
-        ob_end_clean();
-        return $res;
-    }
+		$res = ob_get_contents();
+		ob_end_clean();
+		return $res;
+	}
 }
-
-
-
 
 // The player's stats
 function display_player_stats($player_info){
