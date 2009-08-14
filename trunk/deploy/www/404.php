@@ -15,6 +15,6 @@
       Perhaps you have lost your way.
     </p>
 
-    Return to <a href="/webgame/index.php">Main</a>.
+    Return to <a href="/index.php">Main</a>.
   </body>
 </html>

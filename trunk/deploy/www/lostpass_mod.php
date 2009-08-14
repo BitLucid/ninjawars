@@ -1,5 +1,4 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 $page_title = "Sending Password";
 $quickstat  = false;
 $private    = false;
@@ -32,15 +31,15 @@ if(!$lost_email){
     if (!!$lost_pname && !!$lost_uname){
       echo "Account information will be sent to your email.\n";
       mail("$lost_email", "NinjaWars Lost Password Request", "You have requested your password for the account:
-           $lost_uname.<br />\n<br />\n<b>Account Info</b><br />\nUsername: $lost_uname<br />\nPassword:
-             $lost_pname<br />\n<br />\nIf you require any further help, email: ".ADMIN_EMAIL,"$headers");
+           $lost_uname.<br>\n<br>\n<b>Account Info</b><br>\nUsername: $lost_uname<br>\nPassword:
+             $lost_pname<br>\n<br>\nIf you require any further help, email: ".ADMIN_EMAIL,"$headers");
     } else {
-      echo "No user with that email exists. Please <a href=\"signup.php\">sign up</a> for an account.<br />\n";
+      echo "No user with that email exists. Please <a href=\"signup.php\">sign up</a> for an account.<br>\n";
     }
 }
 ?>
 
-<hr />
+<hr>
 
 <a href="main.php">Return to Game</a>
 

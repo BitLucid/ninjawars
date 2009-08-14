@@ -9,13 +9,13 @@ include "interface/header.php";
 
 <div class="brownTitle">Dojo Chart</div>
 <div class="description">
-<br />
+<br>
 Hanging on the wall of the dojo is a scroll outlining the training requirements for all ninjas.
-<br /><br />
+<br><br>
 </div>
 
 <?php
-echo "<a href=\"dojo.php\">Return to Dojo</a><hr />\n";
+echo "<a href=\"dojo.php\">Return to Dojo</a><hr>\n";
 ?>
 Shows how many kills you need to progress and how your stats will change:
 <table style="border: 0;\">

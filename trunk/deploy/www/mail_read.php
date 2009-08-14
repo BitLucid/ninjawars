@@ -36,17 +36,17 @@ $sql->Query("SELECT id, send_to, send_from, message FROM mail
 
 echo "<span style=\"font-weight: bold\">Inbox</span>\n";
 echo "<form id=\"mail_delete\" action=\"mail_read.php\" method=\"POST\" name=\"mail_delete\">\n";
-echo "Viewing Messages: 1-".$sql->rows."<br />\n";
-echo "<input id=\"DeleteSelected\" type=\"submit\" value=\"Delete Selected\" name=\"DeleteSelected\" class=\"formButton\" />\n";
-echo "<input id=\"DeleteAll\" type=\"submit\" value=\"Delete All\" name=\"DeleteAll\" class=\"formButton\" />\n";
-echo "<hr />\n";
+echo "Viewing Messages: 1-".$sql->rows."<br>\n";
+echo "<input id=\"DeleteSelected\" type=\"submit\" value=\"Delete Selected\" name=\"DeleteSelected\" class=\"formButton\">\n";
+echo "<input id=\"DeleteAll\" type=\"submit\" value=\"Delete All\" name=\"DeleteAll\" class=\"formButton\">\n";
+echo "<hr>\n";
 echo "<div>";
 
 
 if ($sql->rows == 0){
   echo "You have no messages.\n";
 } else {
-  echo "(Click on a Ninja's name to Send a Reply Msg.)<br />\n";
+  echo "(Click on a Ninja's name to Send a Reply Msg.)<br>\n";
   echo "<table style=\"border:1 solid #000000;\">\n";
   echo "<tr>\n";
   echo "  <th>\n";
@@ -70,7 +70,7 @@ if ($sql->rows == 0){
       
       echo "<tr>\n";
       echo "  <td valign=\"top\" style=\"text-align: center;\">\n";
-      echo "  <input type=\"checkbox\" name=\"mailID[".$i++."]\" value=\"$id\" />\n";
+      echo "  <input type=\"checkbox\" name=\"mailID[".$i++."]\" value=\"$id\">\n";
       echo "  </td>\n";
       
       echo "  <td valign=\"top\">\n";
@@ -90,7 +90,7 @@ echo "</div>"; // Contains the loop.
 echo "</form>\n";
 
 if ($mail_list_length < 200 && $sql->rows != 0 && $i == 20) {
-	echo "<a href=\"mail_read.php?mail_list_length=200\">View Older Mail</a><br />\n";
+	echo "<a href=\"mail_read.php?mail_list_length=200\">View Older Mail</a><br>\n";
 }
 
 include "interface/footer.php";

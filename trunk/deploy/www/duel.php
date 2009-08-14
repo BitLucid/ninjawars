@@ -9,7 +9,7 @@ include "interface/header.php";
 
 <span class="brownHeading">Past Duels: Reset Nightly</span>
 
-<br /><br />
+<br><br>
 
 <?php
 

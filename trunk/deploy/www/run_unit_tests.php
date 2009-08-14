@@ -1,5 +1,4 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php"); // *** Absolute path include of everything.
 
 require_once(DB_ROOT .'lib_db_tests.php'); // DB included in base.
 require_once(CHAR_ROOT.'lib_char_tests.php'); // Player included in base.

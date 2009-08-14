@@ -10,7 +10,7 @@ include "interface/header.php";
 
 <?php
 echo "<a href=\"village.php?chatlength=50\">Refresh</a>\n";
-echo "<br />\n";
+echo "<br>\n";
 
 $command = in('command');
 $message = in('message', null, 'forChat');
@@ -30,15 +30,15 @@ setInterval("refreshpage()",300*1000);
 if (get_username())
 {
 	echo "<form id=\"post_msg\" action=\"village.php\" method=\"post\" name=\"post_msg\">\n";
-	echo "Message: <input id=\"message\" type=\"text\" size=\"40\" maxlength=\"1000\" name=\"message\" class=\"textField\" />\n";
-	echo "<input id=\"command\" type=\"hidden\" value=\"postnow\" name=\"command\" />";
-	echo "<input type=\"submit\" value=\"Send\" class=\"formButton\" />\n";
+	echo "Message: <input id=\"message\" type=\"text\" size=\"40\" maxlength=\"1000\" name=\"message\" class=\"textField\">\n";
+	echo "<input id=\"command\" type=\"hidden\" value=\"postnow\" name=\"command\">";
+	echo "<input type=\"submit\" value=\"Send\" class=\"formButton\">\n";
 	echo "</form>\n";
 
 	if ($command == "postnow" && $message != "")
 	{
 	  sendChat($username,'ChatMsg',$message,$filter=true); // *** Message gets filtered when taken in from the request.
-	  echo "Your post has been added.</br />\n";
+	  echo "Your post has been added.</br>\n";
 	  $command = "";
 	  $message = "";
 	  $chatlength = 30; // *** This one is short to decrease the load time.
@@ -55,11 +55,11 @@ $sql->Query("SELECT id, send_from, message FROM chat ORDER BY id DESC LIMIT $cha
 foreach($sql->fetchAll() /*CHAT MESSAGES */ as $messageLine)
 {
 	$from = $messageLine['send_from'];
-	echo "[<a href=\"player.php?player=$from\" target=\"main\">$from</a>]: ".$messageLine['message']."<br />\n";
+	echo "[<a href=\"player.php?player=$from\" target=\"main\">$from</a>]: ".$messageLine['message']."<br>\n";
 }
 if ($chatlength != 360)
 {
-	echo "<br /><a href=\"village.php?chatlength=360\">View the Rest of the Messages</a><br />\n";
+	echo "<br><a href=\"village.php?chatlength=360\">View the Rest of the Messages</a><br>\n";
 }
 include "interface/footer.php";
 ?>

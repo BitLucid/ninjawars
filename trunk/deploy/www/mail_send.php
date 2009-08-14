@@ -10,7 +10,7 @@ include "interface/header.php";
 
 <span class="brownHeading">Mail</span>
 
-<br /><br />
+<br><br>
 
 <?php
 $to = in('to');
@@ -31,11 +31,11 @@ if ($messenger == 1){
 	  $resultSet = $sql->fetchAll(); // *** Store the result set.
 	  foreach($resultSet as $loopClanMember) {
         	$name = $loopClanMember['uname'];
-        	echo "Sending mail to: $name<br />\n";
+        	echo "Sending mail to: $name<br>\n";
         	sendMessage($username,$name,$message,$filter=true);
         }
 
-		die("<br /><a href=\"mail_read.php\">Go to Your Mail</a><br /><br /><a href=\"clan.php\">Return to Clan Options</a>\n");
+		die("<br><a href=\"mail_read.php\">Go to Your Mail</a><br><br><a href=\"clan.php\">Return to Clan Options</a>\n");
 	}
   
   if ($to != "clansend") 
@@ -44,7 +44,7 @@ if ($messenger == 1){
 	  sendMessage($_SESSION['username'],$to,$message_with_identifier,$filter=true);
 	  }
 
-  echo "A messenger takes your message and will deliver your mail <br />From: ".$_SESSION['username']." <br />TO: $to <br />Message: $message<br /><br />\n";
+  echo "A messenger takes your message and will deliver your mail <br>From: ".$_SESSION['username']." <br>TO: $to <br>Message: $message<br><br>\n";
   echo "<a href=\"player.php?player=$to\">Return to Player Detail</a>";
 }
 else

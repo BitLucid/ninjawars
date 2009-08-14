@@ -90,7 +90,7 @@ if ($command != "viewinv") {
   echo "  Mail: \n";
   echo "  </td>\n";
   echo "  <td>\n";
-  echo    $count."<br />\n";
+  echo    $count."<br>\n";
   echo "  </td>\n";
   echo "</tr>\n";
   */
@@ -106,7 +106,7 @@ else if ($command == "viewinv") {
       echo "  ".$loopItem['item'].": \n";
       echo "  </td>\n";
       echo "  <td>\n";
-      echo    $loopItem['amount']."<br />\n";
+      echo    $loopItem['amount']."<br>\n";
       echo "  </td>\n";
       echo "</tr>\n";
   }
@@ -116,7 +116,7 @@ else if ($command == "viewinv") {
   echo "Gold: \n";
   echo "  </td>\n";
   echo "  <td>\n";
-  echo    $players_gold." <br />\n";
+  echo    $players_gold." <br>\n";
   echo "  </td>\n";
   echo "</tr>\n";
   echo "</table>\n";

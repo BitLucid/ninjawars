@@ -1,5 +1,4 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 /*
  * This file is used for players signing up to ninjawars.
  * 
@@ -106,7 +105,7 @@ function display_signup_form($enteredName, $enteredEmail, $enteredClass, $entere
 	    </div>
 	</div>
 	<div class="FormField">
-	  Password:  <input id="key" type="password" maxlength="50" name="key" class="textField" />
+	  Password:  <input id="key" type="password" maxlength="50" name="key" class="textField">
 	    <div class="description">
 			Your password can only contain letters, numbers, underscores, and interior spaces.  Spaces at the beginning or end will be removed.
 		</div>
@@ -119,24 +118,24 @@ function display_signup_form($enteredName, $enteredEmail, $enteredClass, $entere
 	  </div>
 	</div>
 	<div class="FormField" style="padding-bottom:2em">
-	    Email Address:  <input id="send_email" type="text" name="send_email" class="textField" value='<?php echo $enteredEmail; ?>' />
+	    Email Address:  <input id="send_email" type="text" name="send_email" class="textField" value='<?php echo $enteredEmail; ?>'>
 	</div>
 	<div class="FormField">
 	  <span style="font-style:italic">Optional:</span> &nbsp Website that linked you to Ninjawars:
-	      <input id="referred_by" type="text" name="referred_by" class="textField" value='<?php echo $enteredReferral; ?>' />
+	      <input id="referred_by" type="text" name="referred_by" class="textField" value='<?php echo $enteredReferral; ?>'>
 	</div>
 	<div class="submit" style="padding-top:2em">
-	    <input type="submit" name="submit" value="Create New Account" class="formButton" />
+	    <input type="submit" name="submit" value="Create New Account" class="formButton">
 	</div>
 	</form>
-	<hr />
-	A valid email address is required for this game, confirmation will be sent to the address you provide.<br /><br />
-	Lost Your Password ? <a href="lostpass.php">Retrieve Password</a><br /><br />
+	<hr>
+	A valid email address is required for this game, confirmation will be sent to the address you provide.<br><br>
+	Lost Your Password ? <a href="lostpass.php">Retrieve Password</a><br><br>
 	Didn't get your confirmation code ? <a href="lostconfirm.php">Activate Account</a>
 
 	More information can be found on <a href="http://ninjawars.pbwiki.com/" target="_blank">the Wiki</a><img src="images/externalLinkGraphic.gif" alt="">.
 
-	<hr />
+	<hr>
 
 	<?php
 } // *** End of function display_signup_form().
@@ -164,11 +163,11 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 	$headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n";
 	$headers .= "Reply-To: ".SUPPORT_EMAIL_FORMAL_NAME." <".SUPPORT_EMAIL.">\r\n";
 
-	echo "Your responses:<br /> Name - $send_name,<br />
-		 Password - ".(isset($send_pass)? "***yourpassword***" : "NO PASSWORD").",<br /> 
-		 Class - $send_class,<br /> 
-		 Email - $send_email,<br /> 
-		 Site Referred By - $referred_by<br /><br />\n";
+	echo "Your responses:<br> Name - $send_name,<br>
+		 Password - ".(isset($send_pass)? "***yourpassword***" : "NO PASSWORD").",<br> 
+		 Class - $send_class,<br> 
+		 Email - $send_email,<br> 
+		 Site Referred By - $referred_by<br><br>\n";
 
 	//  *** Requirement checking Section  ***
 
@@ -194,7 +193,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 			$send_name = trim($send_name);  // Just cuts off any white space at the end.
 			$filter = new Filter();
 			$send_name = $filter->toUsername($send_name); // Filter any un-whitelisted characters.
-	      		echo "Phase 1 Complete: Name passes requirements.<hr />\n";
+	      		echo "Phase 1 Complete: Name passes requirements.<hr>\n";
 	      		
 	      		// Validate the password!
 	      		$password_error = validate_password($send_pass);
@@ -204,7 +203,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 				} else {	
 					$send_pass = trim($send_pass); // *** Trims any extra space off of the password.
 					$send_pass = $filter->toPassword($send_pass); // Filter any un-whitelisted characters.
-					echo "Phase 2 Complete: Password passes requirements.<hr />\n";
+					echo "Phase 2 Complete: Password passes requirements.<hr>\n";
 
 					if (FALSE/* CURRENTLY NO BLOCKED EMAIL SERVICES strstr($send_email, "@") == "@aol.com" || strstr($send_email, "@") == "@netscape.com" || strstr($send_email, "@") == "@aim.com"*/) //Throws error if email from blocked domain.
 					{
@@ -216,20 +215,20 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 					}
 	      			else if ($check_name == 0 && $check_email == 0 && $send_name != "SysMsg" && $send_name != "NewUserList")  //Uses previous query to make sure name and email aren't duplicates.
 					{
-						echo "Phase 3 Complete: Username and Email are unique.<br /><hr />\n";
+						echo "Phase 3 Complete: Username and Email are unique.<br><hr>\n";
 						if ($send_class != 'Red' && $send_class != 'Blue' && $send_class != 'White' && $send_class != 'Black')
 						{
-							echo "Phase 4 Incomplete: No proper class was specified.<br />";
+							echo "Phase 4 Incomplete: No proper class was specified.<br>";
 						}
 						else
 						{
-							echo "Phase 4 Complete: Class was specified.<br /><hr />";
+							echo "Phase 4 Complete: Class was specified.<br><hr>";
 							// *** Signup is successful at this point  ***
 							$preconfirm = 0;
 							$preconfirm = preconfirm_some_emails($send_email);
 							
 							if(!$preconfirm){ /* not blacklisted by, so require a normal email confirmation */
-			  					echo "Phase 5: When you receive an email from SysMsg, it will describe how to activate your account.<br /><br />\n";
+			  					echo "Phase 5: When you receive an email from SysMsg, it will describe how to activate your account.<br><br>\n";
 			  				}
 			  				// The preconfirmation message occurs later.
 							$confirm = rand(1000,9999); //generate confirmation code
@@ -250,19 +249,19 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 							$_to = "$send_email";
 							$_subject = "NinjaWars Account Sign Up";
 							$_body = 
-								"Thank you for signing up for Ninja Wars.<br />
-								This message is from SysMsg, the AUTOMATED email system for NinjaWars. <br />
+								"Thank you for signing up for Ninja Wars.<br>
+								This message is from SysMsg, the AUTOMATED email system for NinjaWars. <br>
 								Any emails you receive from the game will come from this address. 
-								Please click on the link below to confirm your account.<br /><br />
-								<a href=\"http://www.ninjawars.net/webgame/confirm.php?username=".urlencode($send_name)."&confirm=$confirm\">Confirm Account</a><br />
-								Or paste this link:<br />http://www.ninjawars.net/webgame/confirm.php?username=".urlencode($send_name)."&confirm=$confirm <br /> 
-								into your browser.<br /><br />
-								If you require help use the forums at http://www.ninjawars.net/forum/<br /> 
-								or email: ".SUPPORT_EMAIL."<br /><br /><b>
-								Account Info</b><br />
-								Username: $send_name<br />
-								Level: 1<br />
-								Password: $send_pass<br />
+								Please click on the link below to confirm your account.<br><br>
+								<a href=\"http://www.ninjawars.net/webgame/confirm.php?username=".urlencode($send_name)."&confirm=$confirm\">Confirm Account</a><br>
+								Or paste this link:<br>http://www.ninjawars.net/webgame/confirm.php?username=".urlencode($send_name)."&confirm=$confirm <br> 
+								into your browser.<br><br>
+								If you require help use the forums at http://www.ninjawars.net/forum/<br> 
+								or email: ".SUPPORT_EMAIL."<br><br><b>
+								Account Info</b><br>
+								Username: $send_name<br>
+								Level: 1<br>
+								Password: $send_pass<br>
 								Class: $send_class Ninja";
 							$_from = "$headers";
 							// *** Create message object.
@@ -274,7 +273,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 			  				sendMessage($send_name,'NewUserList',"Username: $send_name , Email: $send_email , Class: $send_class , Date: ".date('r')." Referred by: $referred_by");
 			  				if ($sent && !$preconfirm) {
 				  				//  *** Continues the page display ***
-				  				echo "Confirmation email has been sent to <b>".$send_email."</b>.  <br />
+				  				echo "Confirmation email has been sent to <b>".$send_email."</b>.  <br>
 				  					Be sure to also check for the email in any \"Junk Mail\" or \"Spam\" folders.
 				  					Delivery typically takes less than 15 minutes.";
 				  			} else {
@@ -283,7 +282,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 				  				$sql->Update($up);
 				  				echo "Account with the login name \"".$send_name."\" is now confirmed!  Please <a href='#' onClick='refreshToLogin()'>login on the login bar</a> of the index page.";
 				  			}
-				  			echo "<br /><br />Only one account per person is allowed.<br />\n";
+				  			echo "<br><br>Only one account per person is allowed.<br>\n";
 				  			echo "If you require help use the forums at <a href='http://www.ninjawars.net/forum/'>http://www.ninjawars.net/forum/</a> or email: ".SUPPORT_EMAIL."\n";
 				  		}// *** End of class checking.
 					}
@@ -303,7 +302,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 
 	   //This is the final signup return section, which only shows if a successful insert and confirmation number has -not- been acheived.
 
-	echo "<br /><br />";
+	echo "<br><br>";
 	/*if (!isset($confirm))
 	{
 		echo "Return to <a href='signup.php?enteredEmail=$send_email&enteredName=$send_name&enteredClass=$send_class&enteredReferral=$referred_by'>Sign Up page.</a>";

@@ -1,5 +1,4 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php"); // *** Absolute path include of everything.
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
 //include "interface/header.php";
 

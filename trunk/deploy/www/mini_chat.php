@@ -1,5 +1,4 @@
 <?php
-require_once(substr(__FILE__, 0, (strpos(__FILE__, 'webgame/')))."webgame/resources/resources.php");
 require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper and rendering functions.
 
 $private    = false;

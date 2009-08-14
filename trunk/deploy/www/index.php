@@ -1,5 +1,4 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 // Licensed under the creative commons license.  See the staff.php page for more detail.
 ob_start(null, 1); // Buffer and output it in chunks.
 
@@ -142,8 +141,8 @@ write_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
 	  		<li><a href="inventory.php" target="main">Inventory</a></li>
 	  		<li>
 	  			<ul class="submenu">
-	  				<li><a href="inventory_mod.php?item=Speed%20Scroll&amp;selfTarget=1&amp;link_back=inventory" target="main">Speed</a><br /></li>
-	  				<li><a href="inventory_mod.php?item=Stealth%20Scroll&amp;selfTarget=1&amp;link_back=inventory" target="main">Stealth</a><br /></li>
+	  				<li><a href="inventory_mod.php?item=Speed%20Scroll&amp;selfTarget=1&amp;link_back=inventory" target="main">Speed</a><br></li>
+	  				<li><a href="inventory_mod.php?item=Stealth%20Scroll&amp;selfTarget=1&amp;link_back=inventory" target="main">Stealth</a><br></li>
 	  			</ul>
 	  		</li>
 	  		<li><a href="skills.php" target="main">Skills</a></li>
@@ -158,12 +157,12 @@ write_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
 			</a>
 		</div>
 	  	<ul id="places-menu">
-	  		<li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt=""></a><br />
-	  		<li><a href="dojo.php" target="main">Dojo</a><br />
-	  		<li><a href="casino.php" target="main">Casino</a><br />
-	  		<li><a href="work.php" target="main">Work</a><br />
-	  		<li><a href="shop.php" target="main">Shop</a><br />
-	  		<li><a href="shrine.php" target="main">Shrine <img src="images/shrine.png" alt=""></a><br />
+	  		<li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt=""></a><br>
+	  		<li><a href="dojo.php" target="main">Dojo</a><br>
+	  		<li><a href="casino.php" target="main">Casino</a><br>
+	  		<li><a href="work.php" target="main">Work</a><br>
+	  		<li><a href="shop.php" target="main">Shop</a><br>
+	  		<li><a href="shrine.php" target="main">Shrine <img src="images/shrine.png" alt=""></a><br>
 	  		<li>
 	  			<ul class="submenu">
 	  				<li id='resurrect-link'><a href="shrine_mod.php?restore=1" target="main">Resurrect</a></li>
@@ -215,11 +214,11 @@ $players_online = $stats['players_online'];
 			</a>
 		</div>
 
-		<object type="audio/x-midi" data="samsho.mid" id="music-player">
-		  <param name="src" value="samsho.mid">
+		<object type="audio/x-midi" data="music/samsho.mid" id="music-player">
+		  <param name="src" value="music/samsho.mid">
 		  <param name="autoplay" value="true">
 		  <param name="autoStart" value="0">
-		    <a href="samsho.mid">Play <img class="play-button" src="images/bullet_triangle_green.png" alt="&gt;"></a>
+		    <a href="music/samsho.mid">Play <img class="play-button" src="images/bullet_triangle_green.png" alt="&gt;"></a>
 		</object>
 	</div>
 	
@@ -233,11 +232,11 @@ $players_online = $stats['players_online'];
      		<li><a href="about.php" target="main">Tutorial</a></li>
 			<li><a href="staff.php" target="main">Staff</a></li>
 			<li><a href="duel.php" target="main">Duels</a></li>
-				<!--  <a href="vote.php" target="main">Vote For NW </a><br />  -->
-				<!--  <a href="http://www.cafeshops.com/ninjawars" target="_blank">Online Shop</a><br /> -->
+				<!--  <a href="vote.php" target="main">Vote For NW </a><br>  -->
+				<!--  <a href="http://www.cafeshops.com/ninjawars" target="_blank">Online Shop</a><br> -->
 			<li><a href="http://ninjawars.proboards19.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar <img class="extLink" src="images/externalLinkGraphic.gif" alt=""></a></li>
-			<!--   <a href="donate.php" target="main">Donate</a><br /> -->
-			<!-- <a href="members.php" target="main">Members</a><br /> -->
+			<!--   <a href="donate.php" target="main">Donate</a><br> -->
+			<!-- <a href="members.php" target="main">Members</a><br> -->
 		</ul>
 	</div>
 </div><!-- End of left Column div-->
@@ -274,9 +273,9 @@ $players_online = $stats['players_online'];
   	<div id="ninja-search" class="boxes active">
   		<div class="box-title centered">Ninja Search</div>
   		<form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">Ninja:
-			<input id="searched" type="text" maxlength="50" name="searched" class="textField" />
-			<input id="hide" type="hidden" name="hide" value="dead" />
-			<input type="submit" value="find" class="formButton" />
+			<input id="searched" type="text" maxlength="50" name="searched" class="textField">
+			<input id="hide" type="hidden" name="hide" value="dead">
+			<input type="submit" value="find" class="formButton">
 		</form>
   	</div>
   	<?php if($is_logged_in){ ?>

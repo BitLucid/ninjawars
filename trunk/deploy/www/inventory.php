@@ -28,7 +28,7 @@ if ($sql->rows == 0) {
       $items[$data['item']] = $data['c'];
     }
 
-  echo "Click a linked item to use it on yourself.<br /><br />\n";
+  echo "Click a linked item to use it on yourself.<br><br>\n";
 
   echo "<table style=\"width: 150;\">\n";
   if ($items['Speed Scroll'] > 0) {
@@ -100,17 +100,17 @@ if ($sql->rows == 0) {
   echo "</table>\n";
 }
 ?>
-<br /><br />
+<br><br>
 <a href="list_all_players.php?hide=dead">Use an Item on a ninja?</a>
 <form id=\"player_search\" action="list_all_players.php" method="get" name=\"player_search\">
-<input id="searched" type="text" maxlength="50" name="searched" class="textField" />
-<input id="hide" type="hidden" name="hide" value="dead" />
-<input type="submit" value="Search for Ninja" class="formButton" />
+<input id="searched" type="text" maxlength="50" name="searched" class="textField">
+<input id="hide" type="hidden" name="hide" value="dead">
+<input type="submit" value="Search for Ninja" class="formButton">
 </form>
 
-<br />
+<br>
 Current gold: <?echo getGold($username);?>
-<hr />
+<hr>
 
 </p>
 

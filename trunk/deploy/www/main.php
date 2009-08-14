@@ -16,10 +16,10 @@ include "interface/header.php";
      <a href="about.php">(read more)</a></h3>
 <p><a href="signup.php">Create a Ninja</a> or log in above!<p>
 <p>
-Visit the <a href="about.php">FAQ</a> to learn more about Ninjawars.<br />
+Visit the <a href="about.php">FAQ</a> to learn more about Ninjawars.<br>
 Post messages to other players on the <a href="village.php">Chat Board</a> 
 or the <a href="<?php echo WEB_ROOT;?>forum/" target="_blank" class="extLink">
-    Forum <img src="images/externalLinkGraphic.gif"></a><br />
+    Forum <img src="images/externalLinkGraphic.gif"></a><br>
 Find out what has changed about NW in the announcements section of the 
     <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">Forum 
         <img src="images/externalLinkGraphic.gif"></a>.
@@ -30,9 +30,9 @@ Find out what has changed about NW in the announcements section of the
 	To attack a ninja, use the <a href="list_all_players.php?hide=dead">player list</a> or search for a ninja below.</a>
 	<form id="player_search" action="list_all_players.php" method="get" name="player_search">
     	Search by Ninja Name
-    	<input id="searched" type="text" maxlength="50" name="searched" class="textField" />
-    	<input id="hide" type="hidden" name="hide" value="dead" />
-    	<input type="submit" value="Search for Ninja" class="formButton" />
+    	<input id="searched" type="text" maxlength="50" name="searched" class="textField">
+    	<input id="hide" type="hidden" name="hide" value="dead">
+    	<input type="submit" value="Search for Ninja" class="formButton">
 	</form>
 </p>
 

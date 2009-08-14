@@ -57,7 +57,7 @@ echo "</div>\n";
 ?>
 
 <form id="shop_form" action="shop.php" method="post" name="shop_form">
-<input id="purchase" type="hidden" value="1" name="purchase" />
+<input id="purchase" type="hidden" value="1" name="purchase">
 <table border="0">
 <tr>
   <td>
@@ -78,7 +78,7 @@ echo "</div>\n";
 </tr>
 <tr>
   <td>
-  <input name="item" type="submit" value="Fire Scroll" class="shopButton" />
+  <input name="item" type="submit" value="Fire Scroll" class="shopButton">
   </td>
 
   <td>
@@ -90,12 +90,12 @@ echo "</div>\n";
   </td>
   
   <td>
-  <img src="images/scroll.png" />
+  <img src="images/scroll.png">
 </td>
 </tr>
 <tr>
   <td>
-  <input name="item" type="submit" value="Ice Scroll" class="shopButton" />
+  <input name="item" type="submit" value="Ice Scroll" class="shopButton">
   </td>
 
   <td>
@@ -107,12 +107,12 @@ echo "</div>\n";
   </td>
 
   <td>
-  <img src="images/scroll.png" />
+  <img src="images/scroll.png">
   </td>
 </tr>
 <tr>
   <td>
-  <input name="item" type="submit" value="Speed Scroll" class="shopButton" />
+  <input name="item" type="submit" value="Speed Scroll" class="shopButton">
   </td>
 
   <td>
@@ -124,12 +124,12 @@ echo "</div>\n";
   </td>
 
   <td>
-  <img src="images/scroll.png" />
+  <img src="images/scroll.png">
   </td>
 </tr>
 <tr>
   <td>
-  <input name="item" type="submit" value="Stealth Scroll" class="shopButton" />
+  <input name="item" type="submit" value="Stealth Scroll" class="shopButton">
   </td>
 
   <td>
@@ -141,12 +141,12 @@ echo "</div>\n";
   </td>
 
   <td>
-  <img src="images/scroll.png" />
+  <img src="images/scroll.png">
   </td>
 </tr>
 <tr>
   <td>
-  <input name="item" type="submit" value="Shuriken" class="shopButton" />
+  <input name="item" type="submit" value="Shuriken" class="shopButton">
   </td>
 
   <td>
@@ -158,12 +158,12 @@ echo "</div>\n";
   </td>
 
   <td>
-  <img src="images/mini_star.png" />
+  <img src="images/mini_star.png">
   </td>
 </tr>
 <tr>
   <td colspan="3">
-  How Many? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" />
+  How Many? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField">
   </td>
 </tr>
 </table>

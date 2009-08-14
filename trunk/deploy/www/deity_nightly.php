@@ -5,7 +5,6 @@
  * @package deity
  * @subpackage deity_lib
  */
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php"); // *** Absolute path include of everything.
 /*include "interface/header.php";*/
 require_once(LIB_ROOT.'specific/lib_deity.php');
 //

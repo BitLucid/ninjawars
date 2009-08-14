@@ -30,7 +30,7 @@ include "interface/header.php";
     </ul>
   </li>
 </ul>
-<hr />
+<hr>
 </div>
 
 <?php

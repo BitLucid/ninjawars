@@ -29,7 +29,7 @@ Once you get enough kills, you can level up at the dojo.
 </p>
 
 Topics
-<br />
+<br>
 <ol class="aboutUpper">
   <li><a href="#overview">What is Ninja Wars ?</a>
     <ol class="aboutLower">
@@ -91,7 +91,7 @@ Topics
 For Frequently Asked Questions see: <a href="tutorial.php">the FAQ Page</a>
 </p>
 
-<hr />
+<hr>
 
 <a name="overview" class="brownHeading">What is Ninja Wars ?</a>
 
@@ -101,7 +101,7 @@ For Frequently Asked Questions see: <a href="tutorial.php">the FAQ Page</a>
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="gameplay" class="brownHeading">How does the game play ?</a>
 
@@ -112,7 +112,7 @@ attack other ninja (from the "ninjas" list, you click on their name and then cli
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="turns" class="brownHeading">Turns</a>
 
@@ -122,7 +122,7 @@ Turns are the life force of this game, you need turns to perform certain actions
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="work" class="brownHeading">Work</a>
 
@@ -132,7 +132,7 @@ Working allows your Ninja to have a day job. This allows you to trade Turns for 
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="combat" class="brownHeading">Combat Overview</a>
 
@@ -142,7 +142,7 @@ Combat plays the largest role in Ninja Wars, as most of your time will be spent 
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="players" class="brownHeading">Fighting other players</a>
 
@@ -152,7 +152,7 @@ To attack another player, click on combat from the menu, then choose your intend
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="quests" class="brownHeading">Quests</a>
 
@@ -162,7 +162,7 @@ Quests will be a part of Ninja Wars 2, allowing you to battle in more hostile en
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="npc" class="brownHeading">Fighting NPCs</a>
 
@@ -172,7 +172,7 @@ To attack an NPC, click on combat from the menu, then choose your intended victi
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="duels" class="brownHeading">Duels</a>
 
@@ -182,19 +182,19 @@ By selecting to duel attack, at least one person in the attack must die, as the 
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="inv" class="brownHeading">Inventory</a>
 
 <p style="text-align: justify;">
 To use an item, click on Inventory from the menu, then click on an item to use it on yourself.  You can attack with items by clicking on the item name when viewing an opponents page directly.
-<br /><br />
+<br><br>
 For example, to use a Shuriken on Ninjalord, you would click the Ninjalord's name on the "player list" to view his page then click on the "shuriken" link.  This will cause a shuriken from your inventory to be used on 'ninjalord', which will reduce his hp.  You can also find a ninja's page by putting their name into the search box.
 </p>
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="shop" class="brownHeading">Shop</a>
 
@@ -204,7 +204,7 @@ To purchase an item, click on 'Shop'. Once in the shop you can buy any item that
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="casino" class="brownHeading">Casino</a>
 
@@ -214,7 +214,7 @@ Use the Casino to place a bet, and try your luck at scoring free money!
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="shrine" class="brownHeading">Shrine</a>
 
@@ -224,7 +224,7 @@ When you are weakened from battle you will need to heal yourself. You can do thi
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="res" class="brownHeading">Resurrection</a>
 
@@ -234,7 +234,7 @@ If you have died, you must come back to life to continue the game. You must visi
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="poi" class="brownHeading">Poison</a>
 
@@ -244,7 +244,7 @@ Poison skill(black ninja):  Reduces a target's health every hour.  You can cure 
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="mail" class="brownHeading">Mail</a>
 
@@ -254,7 +254,7 @@ If you ever wish to send a message to another player you may do so from the send
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="char" class="brownHeading">Player Stats</a>
 
@@ -264,7 +264,7 @@ Clicking on stats shows you information like your strength (damage that you'll d
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="pass" class="brownHeading">Changing Password</a>
 
@@ -274,7 +274,7 @@ If you wish to change your password, type your new password in the change passwo
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="dojo" class="brownHeading">Dojo</a>
 
@@ -284,7 +284,7 @@ At the Dojo you can train your Ninja. Doing so will increase your damage and the
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="bounty" class="brownHeading">Bounty</a>
 
@@ -294,7 +294,7 @@ When you defeat a Ninja with a bounty, you will receive part of the slain Ninja'
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="clans" class="brownHeading">Clans</a>
 
@@ -304,7 +304,7 @@ From the clan page you will be able to join and leave clans or send messages to 
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="types" class="brownHeading">Ninja Types</a>
 
@@ -314,62 +314,62 @@ Each new Ninja in the game will be given the opportunity to choose a ninja class
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
 <a name="magic" class="brownHeading">Ninja Skills</a>
 
 <p style="text-align: justify;">
-<hr />
+<hr>
 
-White Ninja<br />
-Primary Skill: Sight - View a Ninja's Stats<br />
+White Ninja<br>
+Primary Skill: Sight - View a Ninja's Stats<br>
 Aux Skill: Moonlight Heal -  Raise HP to 150 at midnight if life less than this amount. *
 
-<hr />
+<hr>
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
-Red Ninja<br />
-Primary Skill: Fire Bolt - Inflicts Damage based on Ninja Level<br />
+Red Ninja<br>
+Primary Skill: Fire Bolt - Inflicts Damage based on Ninja Level<br>
 Aux Skill: Blaze -  Adds extra 10 damage during attacks using extra turns.
 
-<hr />
+<hr>
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
-Blue Ninja<br />
-Primary Skill: Ice Bolt - Decreases Turns based on Ninja Level. Modifications comming soon.<br />
+Blue Ninja<br>
+Primary Skill: Ice Bolt - Decreases Turns based on Ninja Level. Modifications comming soon.<br>
 Aux Skill:  Cold Steal: Steals turns from victim.
 
-<hr />
+<hr>
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 
-Black Ninja<br />
-Primary Skill: Poison Touch<br />
+Black Ninja<br>
+Primary Skill: Poison Touch<br>
 Aux Skill: Stealth - You are immune to normal combat until you fight, in that first fight, you will strike and take no damage.  This effect wears off after you fight or when you get your next turn.
 
-<hr />
+<hr>
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 <!--
-Thief Ninja: Special Character<br />
-Primary Skill: Pick Pocket - Steals Gold<br />
+Thief Ninja: Special Character<br>
+Primary Skill: Pick Pocket - Steals Gold<br>
 Secondary Skill: Mind Control -  Possess a player to fight another.
 
-<hr />
+<hr>
 
 <a href="about.php">Return to Contents</a>
 
-<hr />
+<hr>
 -->
 </p>
 

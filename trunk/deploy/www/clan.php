@@ -15,7 +15,6 @@ include "interface/header.php";
 
 <div id='clan-page-title' class="brownHeading">Clan Panel</div>
 
-
 <?php
 $command       = in('command');
 $process       = in('process');
@@ -58,9 +57,9 @@ if ($clan  != "") {
                  echo "<p>(Clan names cannot contain special characters other than a single dash.)</p>";
               }
     	      echo "<form id=\"clan_rename\" action=\"clan.php\" name=\"clan_rename\">
-    	            <input id=\"command\" type=\"hidden\" value=\"rename\" name=\"command\" />
-    	            <input id=\"new_clan_name\" type=\"text\" name=\"new_clan_name\" class=\"textField\" />
-    	            <input type=\"submit\" class=\"formButton\" value=\"Rename Clan\" />
+    	            <input id=\"command\" type=\"hidden\" value=\"rename\" name=\"command\">
+    	            <input id=\"new_clan_name\" type=\"text\" name=\"new_clan_name\" class=\"textField\">
+    	            <input type=\"submit\" class=\"formButton\" value=\"Rename Clan\">
     	            </form>";
     	    }
 	} else if ($command == "kick") {              //Clan Leader Action Kick a chosen member
@@ -80,8 +79,8 @@ if ($clan  != "") {
             }
 
 	      echo "</select>\n";
-	      echo "<input id=\"command\" type=\"hidden\" value=\"kick\" name=\"command\" />\n";
-	      echo "<input type=\"submit\" value=\"Kick\" class=\"formButton\" />\n";
+	      echo "<input id=\"command\" type=\"hidden\" value=\"kick\" name=\"command\">\n";
+	      echo "<input type=\"submit\" value=\"Kick\" class=\"formButton\">\n";
 	      echo "</form>\n";
 	    } else {
             // An actual successful kick of a member.
@@ -92,9 +91,9 @@ if ($clan  != "") {
 	  if (!$sure) {
 	      echo "Are you sure you want to continue? This will remove all members from your clan.<br />\n";
 	      echo "<form id=\"disband\" method=\"get\" action=\"clan.php\" name=\"disband\">\n";
-	      echo "<input type=\"submit\" value=\"Disband\" class=\"formButton\" />\n";
-	      echo "<input id=\"command\" type=\"hidden\" value=\"disband\" name=\"command\" />\n";
-	      echo "<input id=\"sure\" type=\"hidden\" value=\"yes\" name=\"sure\" />\n";
+	      echo "<input type=\"submit\" value=\"Disband\" class=\"formButton\">\n";
+	      echo "<input id=\"command\" type=\"hidden\" value=\"disband\" name=\"command\">\n";
+	      echo "<input id=\"sure\" type=\"hidden\" value=\"yes\" name=\"sure\">\n";
 	      echo "</form>\n";
 	    } else if ($sure == "yes") {  //Clan Leader Action Disbanding of the Clan
 	      disbandClan($username);
@@ -102,13 +101,13 @@ if ($clan  != "") {
 	    }
 	} else if ($command == "invite") {                        //Clan Leader Invite Input
 		if (!$person_invited) {
-			  echo "Name of potential clan member:<br />\n";
+			  echo "Name of potential clan member:<br>\n";
 	          echo "<form id=\"clan_invite\" action=\"clan.php\" name=\"clan_rename\">\n";
-	          echo "<input id=\"command\" type=\"hidden\" value=\"invite\" name=\"command\" />\n";
-    	      echo "<input id=\"person_invited\" type=\"text\" name=\"person_invited\" class=\"textField\" />".
-		      "<input type=\"submit\" class=\"formButton\" value=\"Invite\" />\n";
+	          echo "<input id=\"command\" type=\"hidden\" value=\"invite\" name=\"command\">\n";
+    	      echo "<input id=\"person_invited\" type=\"text\" name=\"person_invited\" class=\"textField\">".
+		      "<input type=\"submit\" class=\"formButton\" value=\"Invite\">\n";
 	          echo "</form>\n";
-	          echo "<hr />\n";
+	          echo "<hr>\n";
 			} else {
     			$failure_message = invitePlayer($person_invited,$username);          //Clan leader Invite Action
     			if ($failure_message == "None.") {
@@ -118,6 +117,7 @@ if ($clan  != "") {
     			}
 			}
 		}
+
 	  echo "<div id='leader-panel'>
       <div id='leader-panel-title'>Leader Panel</div>
         <ul id='leader-options'>
@@ -132,6 +132,7 @@ if ($clan  != "") {
       if ($command == "leave"){                                   //Clan Member Action to Leave their Clan
 	  setClan($username,"");
 	  setClanLongName($username,"");
+
 	  echo "<p>You have left your clan.</p>";
 	  die();
 	}
@@ -142,19 +143,17 @@ if ($clan  != "") {
   
   if ($command == "msgclan") {                          //Clan Member Input for Messaging their Entire Clan
       echo "<form id=\"msg_clan\" action=\"mail_send.php\" method=\"get\" name=\"msg_clan\">
-          Message: <input id=\"message\" type=\"text\" size=\"50\" maxlength=\"1000\" name=\"message\" class=\"textField\" /><br />
-          <input id=\"to\" type=\"hidden\" value=\"clansend\" name=\"to\" />
-          <input id=\"messenger\" type=\"hidden\" value=\"1\" name=\"messenger\" />
-          <input type=\"submit\" value=\"Send This Message\" class=\"formButton\" />
+          Message: <input id=\"message\" type=\"text\" size=\"50\" maxlength=\"1000\" name=\"message\" class=\"textField\"><br>
+          <input id=\"to\" type=\"hidden\" value=\"clansend\" name=\"to\">
+          <input id=\"messenger\" type=\"hidden\" value=\"1\" name=\"messenger\">
+          <input type=\"submit\" value=\"Send This Message\" class=\"formButton\">
           </form>\n";
     }
-  
+ 
   echo "<ul id='clan-options'>
             <li><a href=\"clan.php?command=msgclan\">Message Clan Members</a></li>
             <li><a href=\"clan.php?command=view&clan_name=$clan\">View Your Clan</a></li>
         </ul>";
-
-  
 } else {
     if ($command == "join") {                       //Clan Joining Action
         echo render_clan_join($process, $username, $clan_name);
@@ -169,7 +168,6 @@ if ($clan  != "") {
         echo "<div>You can start your own clan when you reach level $clan_creation_level_requirement.</div>";
     }
 }
-
 
 /*
 echo "<div id='clan-list'><a href=\"clan.php?command=list\">List Clans</a></div>\n";
@@ -223,7 +221,6 @@ if ($command == "view"){
     //A view of the member list of any clan
     echo render_clan_view($clan, $clan_name, $clan_long_searched, $sql);
 }
-
 
 echo render_clan_tags(); // Display the clan tags section.
 

@@ -9,7 +9,7 @@ include "interface/header.php";
   
 <span class="brownHeading">Game Confirmation</span>
 
-<hr />
+<hr>
 
 <?php
 
@@ -31,14 +31,14 @@ echo "<div style=\"border: 1 solid #000000;font-weight: bold;\">\n";
 if ($confirmed == 1) {
     // Confirmation state from the database is already confirmed.
 	echo "That player username (".$username.") is already confirmed in our system.";
-	echo "<br /><br /><a href=\"".WEB_ROOT."\">Please log in</a> or contact <a href='staff.php'>the game administrators</a> if you have further issues.\n";
+	echo "<br><br><a href=\"".WEB_ROOT."\">Please log in</a> or contact <a href='staff.php'>the game administrators</a> if you have further issues.\n";
 }
 elseif (($confirm == $check  && $check != "" && $confirm != "") || $acceptable_admin_override){
     // Confirmation number matches whats in the dabase and neither is null, or the admin override was met.
   echo "Confirmation Confirmed\n";
   $sql->Update("UPDATE players SET confirmed = 1  WHERE uname = '".$username."'");
   $affected_rows = $sql->a_rows;
-  echo "<br /><br /><a href=\"".WEB_ROOT."\">You may now login.</a>\n";
+  echo "<br><br><a href=\"".WEB_ROOT."\">You may now login.</a>\n";
 }
 else
 {
@@ -46,7 +46,7 @@ else
 }
 ?>
 
-<br /><br />
+<br><br>
 
 <a href="<?php echo WEB_ROOT; ?>">Return to Main ?</a>
 </div>

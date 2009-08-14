@@ -1,5 +1,4 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 require_once(OBJ_ROOT."Skill.php");
 require_once(LIB_ROOT."specific/lib_player.php"); // 
 
@@ -78,18 +77,18 @@ if ($player_info) {
 	    	// Attack.
 	    echo "<form id=\"attack_player\" action=\"attack_mod.php\" method=\"post\" name=\"attack_player.php\">\n";
 	    echo "<span style=\"border: thin solid clear;padding-top: 1;padding-bottom: 1;padding-left: 1;padding-right: 1;\">
-	    	<label><a href=\"#\">Duel</a> <input id=\"duel\" type=\"checkbox\" name=\"duel\" /></label></span>\n";
+	    	<label><a href=\"#\">Duel</a> <input id=\"duel\" type=\"checkbox\" name=\"duel\"></label></span>\n";
 	    if ($skillsListObj->hasSkill('Blaze')) {
 		  echo "<span style=\"border: thin solid clear;padding-top: 1;padding-bottom: 1;padding-left: 1;padding-right: 1;\">
-		  	<label><a href=\"#\">Blaze</a><input id=\"blaze\" type=\"checkbox\" name=\"blaze\" /></label></span>\n";
+		  	<label><a href=\"#\">Blaze</a><input id=\"blaze\" type=\"checkbox\" name=\"blaze\"></label></span>\n";
 		}
 		if ($skillsListObj->hasSkill('Deflect')) {
 		  echo "<span style=\"border: thin solid clear;padding-top: 1;padding-bottom: 1;padding-left: 1;padding-right: 1;\">
-		  	<label><a href=\"#\">Deflect</a><input id=\"deflect\" type=\"checkbox\" name=\"deflect\" /></label></span>\n";
+		  	<label><a href=\"#\">Deflect</a><input id=\"deflect\" type=\"checkbox\" name=\"deflect\"></label></span>\n";
 		}
 		assert($player == $target);
-	    echo "    <input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" />\n
-	        <br /><label>
+	    echo "    <input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\">\n
+	        <br><label>
 	        <input type='image' value='Attack' name='attack-player-shuriken' 
 	        src='".IMAGE_ROOT."50pxShuriken.png' alt='Attack' title='Attack'>
 	        <a>Attack</a>

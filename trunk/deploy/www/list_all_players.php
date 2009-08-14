@@ -1,5 +1,4 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php"); // *** Absolute path include of everything.
 
 $alive      = false;
 $private    = false;
@@ -54,9 +53,9 @@ function display_search_form($hide, $page, $searched, $dead_count){
     echo "<div class='list-all-players-search centered'>";
     echo "  <form action=\"list_all_players.php\" method=\"get\">";
     echo "      <input type=\"textbox\" name=\"searched\" 
-        class='textField' style=\"font-family:Verdana, Arial;font-size:xx-small;\" />\n";
-    echo "      <input type=\"hidden\" name=\"hide\" value=\"$hide\" />\n";
-    echo "      <input type=\"submit\" class=\"formButton\" value=\"Search for Ninja\" />\n";
+        class='textField' style=\"font-family:Verdana, Arial;font-size:xx-small;\">\n";
+    echo "      <input type=\"hidden\" name=\"hide\" value=\"$hide\">\n";
+    echo "      <input type=\"submit\" class=\"formButton\" value=\"Search for Ninja\">\n";
     if ($hide == "dead"){
         echo "<a href=\"list_all_players.php?page=$page&hide=none&searched=$searched\">(Show $dead_count dead ninja)</a>\n";
     } else {
@@ -80,9 +79,9 @@ function player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $nu
       echo "&lt;First | &lt;&lt;Previous $record_limit&nbsp; | ";
     }
   echo "<span class='current-page'>";
-  echo "<input type=\"hidden\" name=\"hide\" value=\"$hide\" />";
-  echo "<input type=\"submit\" class=\"formButton\" value=\"Page\" />";
-  echo "<input type=\"hidden\" name=\"searched\" value=\"$searched\" />";
+  echo "<input type=\"hidden\" name=\"hide\" value=\"$hide\">";
+  echo "<input type=\"submit\" class=\"formButton\" value=\"Page\">";
+  echo "<input type=\"hidden\" name=\"searched\" value=\"$searched\">";
   echo "<input type=\"textbox\" name=\"page\" value=\"$page\" style=\"font-family:Verdana, Arial;font-size:xx-small;\" size=3/>";
   echo "/$numofpages ";
   echo "</span>";

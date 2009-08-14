@@ -114,7 +114,7 @@ John: As of today I am still solo, but i've been contact in a few artists, marke
 
 
 </ul>
-<hr />
+<hr>
 </div>
 
 <?php

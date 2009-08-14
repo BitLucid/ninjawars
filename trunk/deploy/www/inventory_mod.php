@@ -1,5 +1,4 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 require_once(LIB_ROOT."specific/lib_inventory.php");
 /*
  * Submission page from inventory.php to process results of item use.
@@ -26,7 +25,7 @@ include "interface/header.php";
 
 <span class="brownHeading">Item Use</span>
 
-<br /><br />
+<br><br>
 
 <?php
 $link_back = in('link_back');
@@ -103,7 +102,7 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 	    echo "You do not have".($item? " a ".$item : ' that item').".\n";
 	  } else {
             /**** MAIN SUCCESSFUL USE ****/
-		      echo "Preparing to use item - <br />\n";
+		      echo "Preparing to use item - <br>\n";
 		      if ($give == "on" || $give == "Give") {
                   echo render_give_item($username, $target, $item);
                    
@@ -140,7 +139,7 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 			      $victim_alive = true;
 			    } else if ($item == "Stealth Scroll") {
 			      addStatus($target,STEALTH);
-			      echo "<br />$target is now Stealthed.<br />\n";
+			      echo "<br>$target is now Stealthed.<br>\n";
 			      $result = false;
 			      $covert =  true;
 			      $victim_alive = true;
@@ -156,16 +155,16 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 		      if ($result) {
 			  // *** Message to display based on item type ***
 			  if ($target_damage) {
-			      echo "$target takes $target_damage damage from your attack!<br /><br />\n";
+			      echo "$target takes $target_damage damage from your attack!<br><br>\n";
 			    } else if ($turns_decrease) {
-			      echo "$target's turns reduced by $turns_decrease.<br />\n";
+			      echo "$target's turns reduced by $turns_decrease.<br>\n";
 				  if (getTurns($target)<=0) { //Message when a target has no more turns to ice scroll away.
-					  echo "$target no longer has any turns.<br />\n";
+					  echo "$target no longer has any turns.<br>\n";
 				    }
 			    } else if ($turns_increase) {
-			      echo "$target's turns increased by $turns_increase.<br />\n";
+			      echo "$target's turns increased by $turns_increase.<br>\n";
 			    } else if ($item=="Dim Mak") {
-			      echo "The life force drains from $target and they drop dead before your eyes!.<br />\n";
+			      echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 			    }
 
 			  
@@ -179,12 +178,12 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
     				  subtractGold($target,$loot);
     				  addGold($username,$loot);
     				  addKills($username,1);
-    				  echo "You have killed $target with $article $item!<br />\n";
-    				  echo "You receive $loot gold from $target.<br />\n";
+    				  echo "You have killed $target with $article $item!<br>\n";
+    				  echo "You receive $loot gold from $target.<br>\n";
     				  runBountyExchange($username, $target);  //Rewards or increases bounty.
                     } else {
                       $loot = 0;
-                      echo "You have comitted suicide!<br />\n";
+                      echo "You have comitted suicide!<br>\n";
                     }
     				
     				send_kill_mails($username, $target, $attacker_id, $article, $item, $today, $loot);
@@ -203,7 +202,7 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 		      
 		      // *** remove Item ***
 		      
-		      echo "<br />Removing $item from your inventory.<br />\n";
+		      echo "<br>Removing $item from your inventory.<br>\n";
 		      
 		      $sql->Update("UPDATE inventory set amount = amount-1 WHERE owner = '".$username."' AND item ='$item' AND amount>0"); 
 		      // *** Decreases the item amount by 1.
@@ -211,11 +210,11 @@ if(!$attack_allowed){ //Checks for error conditions before starting.
 		      // Unstealth
             if (!isset($covert) && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
                 subtractStatus($username,STEALTH);
-                echo "Your actions have revealed you. You are no longer stealthed.<br />\n";
+                echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
             }
 			if ($victim_alive == true && $using_item == true) {
 			    $self_targetting = $selfTarget? '&selfTarget=1' : '';
-				echo "<br /><a href=\"inventory_mod.php?item=$item&target=$target{$self_targetting}\">Use $item again?</a><br />\n";  //Repeat Usage
+				echo "<br><a href=\"inventory_mod.php?item=$item&target=$target{$self_targetting}\">Use $item again?</a><br>\n";  //Repeat Usage
 			}
 	    }
     }
@@ -232,7 +231,7 @@ assert($item == "Speed Scroll" || $ending_turns<$starting_turns || $starting_tur
 
 ?>
 
-<br /><br />
+<br><br>
 
 Return to <?echo $link_back;?>
 
