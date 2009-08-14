@@ -50,8 +50,7 @@ else
   echo "You do not possess a class, you must have signed up before classes where implemented.<br><br> Please inform <a href=\"mailto:Admin@NinjaWars.net?subject=Change My Ninja Class\">Admin</a> of which class(currently Red,White,Blue,Black) you want to be or it will be choosen later on.\n";
 }
 ?>
-
-<br><br>
+</p>
 
 <a href="list_all_players.php?hide=dead">Use a Skill on a ninja?</a>
 <form action="list_all_players.php" method="get">
@@ -63,8 +62,6 @@ else
 <hr>
 
 <a href="about.php#magic">Magic and Skills Information</a>
-
-</p>
 
 <?php
 include SERVER_ROOT."interface/footer.php";
