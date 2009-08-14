@@ -169,10 +169,10 @@ function display_player_clan($player_info, $viewers_clan=null){
             <p class='ninja-notice'><?=$same_clan;?> is part of your clan.</p>
             <?php } ?>
 			<p class='clan-link centered'>
-			    <span class='subtitle'>Clan:</span> <a href='clan.php?command=view&amp;clan_name=<?php echo $clan."'>".$clan_link; ?></a></p>
-			<p class='clan-members centered'>
+			    <span class='subtitle'>Clan:</span> <a href='clan.php?command=view&amp;clan_name=<?php echo $clan;?>'><?php echo$clan_link;?></a></p>
+			<div class='clan-members centered'>
 			    <?php display_clan_members($player_info['clan']); ?>
-			</p>
+			</div>
 		</div>
 		<?php
 	}
