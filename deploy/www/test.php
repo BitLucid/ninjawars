@@ -19,7 +19,6 @@ echo '<p>Refresh the page or click <a href="', $_SERVER['PHP_SELF']."?".SID,
     '">here</a>.';
 */
 /*
-require_once("./lib/base.inc.php");
 require_once(DB_ROOT."PlayerVO.php");
 require_once(DB_ROOT."PlayerDAO.php");
 $p_id = 72941;

@@ -1,6 +1,4 @@
 <?php
-require_once('lib/base.inc.php');
-
 // *** Run the resurrection sql.
 function check_for_resurrection($echo=FALSE)
 {
