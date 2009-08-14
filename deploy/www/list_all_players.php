@@ -52,7 +52,7 @@ function display_active($limit=5, $alive_only=true){
 function display_search_form($hide, $page, $searched, $dead_count){
     echo "<div class='list-all-players-search centered'>";
     echo "  <form action=\"list_all_players.php\" method=\"get\">";
-    echo "      <input type=\"textbox\" name=\"searched\"
+    echo "      <input type=\"text\" name=\"searched\"
         class='textField' style=\"font-family:Verdana, Arial;font-size:xx-small;\">\n";
     echo "      <input type=\"hidden\" name=\"hide\" value=\"$hide\">\n";
     echo "      <input type=\"submit\" class=\"formButton\" value=\"Search for Ninja\">\n";
@@ -82,7 +82,7 @@ function player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $nu
   echo "<input type=\"hidden\" name=\"hide\" value=\"$hide\">";
   echo "<input type=\"submit\" class=\"formButton\" value=\"Page\">";
   echo "<input type=\"hidden\" name=\"searched\" value=\"$searched\">";
-  echo "<input type=\"textbox\" name=\"page\" value=\"$page\" style=\"font-family:Verdana, Arial;font-size:xx-small;\" size=3/>";
+  echo "<input type=\"text\" name=\"page\" value=\"$page\" style=\"font-family:Verdana, Arial;font-size:xx-small;\" size=\"3\">";
   echo "/$numofpages ";
   echo "</span>";
 

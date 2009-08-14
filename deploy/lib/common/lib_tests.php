@@ -248,7 +248,7 @@ function test_filters(){
 
 	/* check if an integer is valid */
 	$valid_int = filter_var($int, FILTER_VALIDATE_INT);
-	echo "<pre><b>FILTER_VALIDATE_INT</b><br />";
+	echo "<pre><b>FILTER_VALIDATE_INT</b><br>";
 	if ($valid_int !== false)
 	{
 		echo "Valid integer.</pre>";
@@ -259,7 +259,7 @@ function test_filters(){
 
 	/* check if a boolean is valid */
 	$valid_bool = filter_var($bool, FILTER_VALIDATE_BOOLEAN);
-	echo "<pre><b>FILTER_VALIDATE_BOOL</b><br />";
+	echo "<pre><b>FILTER_VALIDATE_BOOL</b><br>";
 	if ($valid_bool !== false)
 	{
 		echo "Valid boolean.</pre>";
@@ -270,7 +270,7 @@ function test_filters(){
 
 	/* check if a float (int) is valid */
 	$valid_float = filter_var($float, FILTER_VALIDATE_FLOAT);
-	echo "<pre><b>FILTER_VALIDATE_FLOAT</b><br />";
+	echo "<pre><b>FILTER_VALIDATE_FLOAT</b><br>";
 	if ($valid_float !== false)
 	{
 		echo "Valid float.</pre>";
@@ -283,7 +283,7 @@ function test_filters(){
 	 * suppressed (bug?) in case regex not available
 	 */
 	$valid_reg = @filter_var($reg, FILTER_VALIDATE_REGEXP);
-	echo "<pre><b>FILTER_VALIDATE_REGEXP</b><br />";
+	echo "<pre><b>FILTER_VALIDATE_REGEXP</b><br>";
 	if ($valid_reg !== false)
 	{
 		echo "Valid regular expression.</pre>";
@@ -294,7 +294,7 @@ function test_filters(){
 
 	/* check if a URL is valid */
 	$valid_url = filter_var($url, FILTER_VALIDATE_URL);
-	echo "<pre><b>FILTER_VALIDATE_URL</b><br />";
+	echo "<pre><b>FILTER_VALIDATE_URL</b><br>";
 	if ($valid_url !== false)
 	{
 		echo "Valid URL.</pre>";
@@ -305,7 +305,7 @@ function test_filters(){
 
 	/* check if an e-mail address is valid */
 	$valid_email = filter_var($email, FILTER_VALIDATE_EMAIL);
-	echo "<pre><b>FILTER_VALIDATE_EMAIL</b><br />";
+	echo "<pre><b>FILTER_VALIDATE_EMAIL</b><br>";
 	if ($valid_email !== false)
 	{
 		echo "Valid e-mail address.</pre>";
@@ -316,7 +316,7 @@ function test_filters(){
 
 	/* check if an IP address is valid */
 	$valid_ip = filter_var($ipaddr, FILTER_VALIDATE_IP);
-	echo "<pre><b>FILTER_VALIDATE_IP</b><br />";
+	echo "<pre><b>FILTER_VALIDATE_IP</b><br>";
 	if ($valid_ip !== false)
 	{
 		echo "Valid IP address.</pre>";
@@ -332,42 +332,42 @@ function test_filters(){
 	/* check if filter unsafe raw is unsafe. protip: YES */
 	$raw = $string;
 	$valid_raw = filter_var($raw, FILTER_UNSAFE_RAW);
-	echo "<pre><b>FILTER_UNSAFE_RAW</b><br />".$valid_raw."</pre>";
+	echo "<pre><b>FILTER_UNSAFE_RAW</b><br>".$valid_raw."</pre>";
 
 
 	/* sanitize string */
 	$san_string = filter_var($string, FILTER_SANITIZE_STRING);
-	echo "<pre><b>FILTER_SANITIZE_STRING</b><br />".$san_string."</pre>";
+	echo "<pre><b>FILTER_SANITIZE_STRING</b><br>".$san_string."</pre>";
 
 
 	/* sanitize stripped */
 	$san_stripped = filter_var($string, FILTER_SANITIZE_STRIPPED);
-	echo "<pre><b>FILTER_SANITIZE_STRIPPED</b><br />".$san_stripped."</pre>";
+	echo "<pre><b>FILTER_SANITIZE_STRIPPED</b><br>".$san_stripped."</pre>";
 
 
 	/* sanitize encoded */
 	$san_enc = filter_var($string, FILTER_SANITIZE_ENCODED);
-	echo "<pre><b>FILTER_SANITIZE_ENCODED</b><br />".$san_enc."</pre>";
+	echo "<pre><b>FILTER_SANITIZE_ENCODED</b><br>".$san_enc."</pre>";
 
 
 	/* sanitize special chars */
 	$san_spc = filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS);
-	echo "<pre><b>FILTER_SANITIZE_SPECIAL_CHARS</b><br />".$san_spc."</pre>";
+	echo "<pre><b>FILTER_SANITIZE_SPECIAL_CHARS</b><br>".$san_spc."</pre>";
 
 
 	/* sanitize email */
 	$san_email = filter_var($string, FILTER_SANITIZE_EMAIL);
-	echo "<pre><b>FILTER_SANITIZE_EMAIL</b><br />".$san_email."</pre>";
+	echo "<pre><b>FILTER_SANITIZE_EMAIL</b><br>".$san_email."</pre>";
 
 
 	/* sanitize url */
 	$san_url = filter_var($string, FILTER_SANITIZE_URL);
-	echo "<pre><b>FILTER_SANITIZE_URL</b><br />".$san_url."</pre>";
+	echo "<pre><b>FILTER_SANITIZE_URL</b><br>".$san_url."</pre>";
 
 
 	/* sanitize int */
 	$san_int = filter_var($string, FILTER_SANITIZE_NUMBER_INT);
-	echo "<pre><b>FILTER_SANITIZE_NUMBER_INT</b><br />".$san_int."</pre>";
+	echo "<pre><b>FILTER_SANITIZE_NUMBER_INT</b><br>".$san_int."</pre>";
 
 	echo "<h2>FILTER_FLAG_*</h2>";
 
@@ -376,27 +376,27 @@ function test_filters(){
 
 	/* strip low - strips ascii < 32 */
 	$strip_low = filter_var($string, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
-	echo "<pre><b>FILTER_FLAG_STRIP_LOW</b><br />".$strip_low."</pre>";
+	echo "<pre><b>FILTER_FLAG_STRIP_LOW</b><br>".$strip_low."</pre>";
 
 
 	/* strip high - strips ascii > 127 */
 	$strip_high = filter_var($string, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-	echo "<pre><b>FILTER_FLAG_STRIP_HIGH</b><br />".$strip_high."</pre>";
+	echo "<pre><b>FILTER_FLAG_STRIP_HIGH</b><br>".$strip_high."</pre>";
 
 
 	/* encode low - encodes ascii < 32 */
 	$enc_low = filter_var($string, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
-	echo "<pre><b>FILTER_FLAG_ENCODE_LOW</b><br />".$enc_low."</pre>";
+	echo "<pre><b>FILTER_FLAG_ENCODE_LOW</b><br>".$enc_low."</pre>";
 
 
 	/* encode high - encodes ascii > 127 */
 	$enc_high = filter_var($string, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_HIGH);
-	echo "<pre><b>FILTER_FLAG_ENCODE_HIGH</b><br />".$enc_high."</pre>";
+	echo "<pre><b>FILTER_FLAG_ENCODE_HIGH</b><br>".$enc_high."</pre>";
 
 
 	/* don't encode ' or " */
 	$deq = filter_var($string, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	echo "<pre><b>FILTER_FLAG_NO_ENCODE_QUOTES</b><br />".$deq."</pre>";
+	echo "<pre><b>FILTER_FLAG_NO_ENCODE_QUOTES</b><br>".$deq."</pre>";
 
 	var_dump('ORIGINAL STRING: ', $string);
 	var_dump('ORIGINAL INT: ', $int);

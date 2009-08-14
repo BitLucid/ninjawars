@@ -20,7 +20,7 @@ function render_give_item($username, $target, $item){
     addItem($target,$item,1);
     $give_msg = "You have been given a $item by $username.";
     sendMessage($username,$target,$give_msg);
-    return "$target will receive your $item.<br />\n";
+    return "$target will receive your $item.<br>\n";
 }
 
 

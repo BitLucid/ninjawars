@@ -35,11 +35,11 @@ function render_chat_messages($sql, $chatlength, $show_elipsis=null){
     foreach($chats AS $messageData) {
 	// *** PROBABLY ALSO A SPEED PROBLEM AREA.
 	$message_rows .= "[<a href='player.php?player={$messageData['send_from']}'
-	     target='main'>{$messageData['send_from']}</a>]: {$messageData['message']}<br />\n";
+	     target='main'>{$messageData['send_from']}</a>]: {$messageData['message']}<br>\n";
     }
     $res .= $message_rows;
     if ($show_elipsis){ // to indicate there are more chats available
-	$res .= ".<br />.<br />.<br />";
+	$res .= ".<br>.<br>.<br>";
     }
     $res .= "</div>";
     return $res;
@@ -69,9 +69,9 @@ function render_chat_refresh(){
 function render_chat_input(){
     return
     "<form id=\"post_msg\" action=\"mini_chat.php\" method=\"post\" name=\"post_msg\" style=\"margin-top:0em;margin-bottom:0.5em\">\n
-    <input id=\"message\" type=\"text\" size=\"20\" maxlength=\"490\" name=\"message\" class=\"textField\" />\n
-    <input id=\"command\" type=\"hidden\" value=\"postnow\" name=\"command\" />
-    <input type=\"submit\" value=\"Send\" class=\"formButton\" />\n
+    <input id=\"message\" type=\"text\" size=\"20\" maxlength=\"490\" name=\"message\" class=\"textField\">\n
+    <input id=\"command\" type=\"hidden\" value=\"postnow\" name=\"command\">
+    <input type=\"submit\" value=\"Send\" class=\"formButton\">\n
     </form>\n";
 }
 

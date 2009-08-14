@@ -64,17 +64,17 @@ write_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
 		<div id="login-bar">
 			<form id="login-form" action="<?=WEB_ROOT?>index.php#" method="post">
 		        <span class="text">
-		            <input type="hidden" name="ref" value="<?php echo $referrer; ?>"/>
+		            <input type="hidden" name="ref" value="<?php echo $referrer; ?>">
 		            <label>
 		                Username:
-		                <input name="user" type="text" class="itext"/>
+		                <input name="user" type="text" class="itext">
 		            </label>
 		            &nbsp;
 		            <label>
 		                Password:
-		                <input name="pass" type="password" class="itext"/>
+		                <input name="pass" type="password" class="itext">
 		            </label>
-		            <input name="action" type="submit" value="login" class="ibutton formButton"/>
+		            <input name="action" type="submit" value="login" class="ibutton formButton">
 		        </span>
 		    </form>
 		</div>

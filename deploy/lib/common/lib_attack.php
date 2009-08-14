@@ -48,31 +48,31 @@ function attack_legal()  //  Checks for errors in the initial stage of combat.
         return false;
       break;
       case ($attackee == ""):
-        echo "Your victim does not exist.<br />\n";
+        echo "Your victim does not exist.<br>\n";
 		return false;
       break;
       case ($attackee == $username):
-        echo "Commiting suicide is a tactic reserved for samurai.<br />\n";
+        echo "Commiting suicide is a tactic reserved for samurai.<br>\n";
 		return false;
       break;
       case ($user_turns < $required_turns):
-        echo "You do not have enough turns to execute the attack you chose.<br />\n";
+        echo "You do not have enough turns to execute the attack you chose.<br>\n";
 		return false;
       break;
       case ($attackee_ip == $_SESSION['ip'] && $_SESSION['ip'] != '127.0.0.1'):
-        echo "You can not attack a ninja from the same domain.<br />\n";
+        echo "You can not attack a ninja from the same domain.<br>\n";
 		return false;
       break;
       case ($attackee_confirmed == 0):
-        echo "You can not attack an inactive ninja.<br />\n";
+        echo "You can not attack an inactive ninja.<br>\n";
 		return false;
       break;
       case ($attackee_health<1):
-        echo "You can not attack a corpse.<br />\n";
+        echo "You can not attack a corpse.<br>\n";
 		return false;
       break;
       case ($attackee_status['Stealth']):
-        echo "Your victim is stealthed. You cannot attack this ninja by normal means.<br />\n";
+        echo "Your victim is stealthed. You cannot attack this ninja by normal means.<br>\n";
 		return false;
       break;    
       case (getClan($attackee) == getClan($username) && getClan($username) !=""):
@@ -83,7 +83,7 @@ function attack_legal()  //  Checks for errors in the initial stage of combat.
         return true;  //  ***  ATTACK IS LEGAL ***
       break;
       default:  //  *** CATCHALL ERROR MESSAGE ***
-        echo "There was a problem with your attack.<br />\n";
+        echo "There was a problem with your attack.<br>\n";
         return false;
       break;
   }
@@ -186,7 +186,7 @@ function preBattleStats()
   
   echo "</table>\n";
   
-  echo "<hr />\n";
+  echo "<hr>\n";
 }
 
 
@@ -254,7 +254,7 @@ function finalResults()
   echo "</tr>\n";
   echo "</table>";
   
-  echo "<hr />\n";
+  echo "<hr>\n";
 }
 
 ?>

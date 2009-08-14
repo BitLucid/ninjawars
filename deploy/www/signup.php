@@ -94,12 +94,12 @@ function display_signup_form($enteredName, $enteredEmail, $enteredClass, $entere
 	?>
 
 	<span class="brownHeading">Sign Up</span>
-	<br/><br/>
+	<br><br>
 	Please add <strong><?php echo SYSTEM_MESSENGER_EMAIL; ?></strong> to the safe email senders list of your email account before signing up, so you can receive your confirmation email.
-	<br/><br/>
+	<br><br>
 	<form action="signup.php" method="post">
 	<div class="FormField">
-	 Username:  <input id="send_name" type="text" name="send_name" maxlength="50" class="textField" value='<?php echo $enteredName;?>'/>
+	 Username:  <input id="send_name" type="text" name="send_name" maxlength="50" class="textField" value='<?php echo $enteredName;?>'>
 	   <div class="description">
 	         Your ninja name can only contain letters, numbers and underscores.
 	    </div>

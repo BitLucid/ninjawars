@@ -9,43 +9,43 @@ function render_skills($target, $skillListObj, $skillsListObj){
     ob_start();    		
     if ($skillsListObj->hasSkill('Fire Bolt')) {
       echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-      echo "<input id=\"command\" type=\"submit\" value=\"Fire Bolt\" name=\"command\" class=\"formButton\" />\n";
-      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Fire Bolt\" name=\"command\" class=\"formButton\">\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\"><br>\n";
       echo "(".$skillListObj->getTurnCost('Fire Bolt')." Turns)\n";
       echo "</form>\n";
     }
     if ($skillsListObj->hasSkill('Poison Touch')) {
       echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-      echo "<input id=\"command\" type=\"submit\" value=\"Poison Touch\" name=\"command\" class=\"formButton\" />\n";
-      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Poison Touch\" name=\"command\" class=\"formButton\">\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\"><br>\n";
       echo "(".$skillListObj->getTurnCost('Poison Touch')." Turns)\n";
       echo "</form>\n";
     }
     if ($skillsListObj->hasSkill('Steal')) {
       echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-      echo "<input id=\"command\" type=\"submit\" value=\"Steal\" name=\"command\" class=\"formButton\" />\n";
-      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Steal\" name=\"command\" class=\"formButton\">\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\"><br>\n";
       echo "(".$skillListObj->getTurnCost('Steal')." Turns)\n";
       echo "</form>\n";
     }
     if ($skillsListObj->hasSkill('Ice Bolt')) {
       echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-      echo "<input id=\"command\" type=\"submit\" value=\"Ice Bolt\" name=\"command\" class=\"formButton\" />\n";
-      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Ice Bolt\" name=\"command\" class=\"formButton\">\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\"><br>\n";
       echo "(".$skillListObj->getTurnCost('Ice Bolt')." Turns)\n";
       echo "</form>\n";
     }
     if ($skillsListObj->hasSkill('Cold Steal')) {
       echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-      echo "<input id=\"command\" type=\"submit\" value=\"Cold Steal\" name=\"command\" class=\"formButton\" />\n";
-      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
-      echo "(".$skillListObj->getTurnCost('Cold Steal')." Turns)<br />\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Cold Steal\" name=\"command\" class=\"formButton\">\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\"><br>\n";
+      echo "(".$skillListObj->getTurnCost('Cold Steal')." Turns)<br>\n";
       echo "</form>";
     }
     if ($skillsListObj->hasSkill('Sight')) {
       echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-      echo "<input id=\"command\" type=\"submit\" value=\"Sight\" name=\"command\" class=\"formButton\" />\n";
-      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\" /><br />\n";
+      echo "<input id=\"command\" type=\"submit\" value=\"Sight\" name=\"command\" class=\"formButton\">\n";
+      echo "<input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\"><br>\n";
       echo "(".$skillListObj->getTurnCost('Sight')." Turns)\n";
       echo "</form>\n";
     }
@@ -264,12 +264,12 @@ function render_inventory_options($username, $sql){
 function render_item_use_on_another($target, $sql){
     $username = get_username();
     $res = "<form id=\"inventory_form\" action=\"inventory_mod.php\" method=\"post\" name=\"inventory_form\">\n
-    <input id=\"target\" type=\"hidden\" name=\"target\" value=\"$target\" />
-    <input type=\"submit\" value=\"Use\" class=\"formButton\" />\n
+    <input id=\"target\" type=\"hidden\" name=\"target\" value=\"$target\">
+    <input type=\"submit\" value=\"Use\" class=\"formButton\">\n
     <select id=\"item\" name=\"item\">\n";
     $res .= render_inventory_options($username, $sql);
     $res .= "      </select>\n
-        <input id=\"give\" type=\"submit\" value=\"Give\" name=\"give\" class=\"formButton\" />\n
+        <input id=\"give\" type=\"submit\" value=\"Give\" name=\"give\" class=\"formButton\">\n
     </form>\n";
     return $res;
 }
@@ -290,9 +290,9 @@ function display_clan_options($player_info, $viewing_player_obj){
         && is_clan_leader($viewing_player_obj)){
         echo "<div class='clan-leader-options centered'>";
         echo "<form id=\"kick_form\" action=\"clan.php\" method=\"get\" name=\"kick_form\">\n";
-        echo "<input id=\"kicked\" type=\"hidden\" value=\"{$player_info['uname']}\" name=\"kicked\" />\n";
-        echo "<input id=\"command\" type=\"hidden\" value=\"kick\" name=\"command\" />\n";
-        echo "<input type=\"submit\" value=\"Kick This Ninja From Your Clan\" class=\"formButton\" />\n";
+        echo "<input id=\"kicked\" type=\"hidden\" value=\"{$player_info['uname']}\" name=\"kicked\">\n";
+        echo "<input id=\"command\" type=\"hidden\" value=\"kick\" name=\"command\">\n";
+        echo "<input type=\"submit\" value=\"Kick This Ninja From Your Clan\" class=\"formButton\">\n";
         echo "</form>\n";
         echo "</div>";
     } else {
@@ -314,9 +314,9 @@ function is_clan_leader($player){
 function display_set_bounty($player_info){
     echo "  <div class='set-bounty centered'>";
     echo "    <form id=\"set_bounty\" action=\"doshin_office.php\" method=\"post\" name=\"set_bounty\">\n";
-    echo "    <input id=\"amount\" type=\"text\" size=\"4\" maxlength=\"5\" name=\"amount\" class=\"textField\" />\n";
-    echo "    <input id=\"command\" type=\"submit\" value=\"Offer Bounty\" name=\"command\" class=\"formButton\" />\n";
-    echo "    <input id=\"target\" type=\"hidden\" value=\"{$player_info['uname']}\" name=\"target\" />\n";
+    echo "    <input id=\"amount\" type=\"text\" size=\"4\" maxlength=\"5\" name=\"amount\" class=\"textField\">\n";
+    echo "    <input id=\"command\" type=\"submit\" value=\"Offer Bounty\" name=\"command\" class=\"formButton\">\n";
+    echo "    <input id=\"target\" type=\"hidden\" value=\"{$player_info['uname']}\" name=\"target\">\n";
     echo "    </form>\n";
     echo "  </div>";
 }
@@ -325,9 +325,9 @@ function display_set_bounty($player_info){
 function display_communication($target){
     echo "  <div class='player-communications centered'>";
     echo "    <form id=\"send_mail\" action=\"mail_send.php\" method=\"get\" name=\"send_mail\">\n";
-    echo "    <input id=\"to\" type=\"hidden\" name=\"to\" value=\"$target\" />\n";
-    echo "    <input type=\"submit\" value=\"Send Mail\" class=\"formButton\" />\n";
-    echo "    <input id=\"messenger\" type=\"hidden\" value=\"1\" name=\"messenger\" /><br >\n";
+    echo "    <input id=\"to\" type=\"hidden\" name=\"to\" value=\"$target\">\n";
+    echo "    <input type=\"submit\" value=\"Send Mail\" class=\"formButton\">\n";
+    echo "    <input id=\"messenger\" type=\"hidden\" value=\"1\" name=\"messenger\"><br >\n";
     echo "    <textarea name=\"message\" cols=\"20\" rows=\"2\"></textarea>\n";
     echo "    </form>\n";
     echo "  </div>";

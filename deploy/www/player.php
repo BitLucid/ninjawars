@@ -56,71 +56,78 @@ if ($player_info) {
 	display_player_stats($player_info);
 
 	echo "<table id='player-profile-table' align='center'>\n";
-	echo "<tr>\n";
+    echo "  <tr>\n";
 
-	if($attack_error){ // They're dead or otherwise unattackable.
-		echo "<div class='ninja-error centered'>Cannot Attack: ".$attack_error."</div>";
-	} else {
+	if ($attack_error)
+	{	// They're dead or otherwise unattackable.
+		echo "<td><div class='ninja-error centered'>Cannot Attack: ".$attack_error."</div></td>";
+	}
+	else
+	{
 	    $class = getClass($username);
 
-    $is_own_profile = ($username == $player_info['uname']? true : false);
-    if($is_own_profile){
-        echo "<div class='ninja-notice'>This is you.</div>";
-    } else {
-		// Attack or Duel
-	    echo "<tr>\n";
-	    echo "  <td colspan=\"2\">\n";
-	    echo "  <table id='player-profile-attack' align=\"left\">\n";
-	    echo "  <tr>\n";
-	    echo "    <td style=\"border: thin solid clear;padding-left: 5;
-	    	padding-right: 5;padding-top: 5;padding-bottom: 5;text-align: center;\">\n";
-	    	// Attack.
-	    echo "<form id=\"attack_player\" action=\"attack_mod.php\" method=\"post\" name=\"attack_player.php\">\n";
-	    echo "<span style=\"border: thin solid clear;padding-top: 1;padding-bottom: 1;padding-left: 1;padding-right: 1;\">
-	    	<label><a href=\"#\">Duel</a> <input id=\"duel\" type=\"checkbox\" name=\"duel\"></label></span>\n";
-	    if ($skillsListObj->hasSkill('Blaze')) {
-		  echo "<span style=\"border: thin solid clear;padding-top: 1;padding-bottom: 1;padding-left: 1;padding-right: 1;\">
-		  	<label><a href=\"#\">Blaze</a><input id=\"blaze\" type=\"checkbox\" name=\"blaze\"></label></span>\n";
+		$is_own_profile = ($username == $player_info['uname']? true : false);
+		if ($is_own_profile)
+		{
+			echo "<td><div class='ninja-notice'>This is you.</div></td>";
 		}
-		if ($skillsListObj->hasSkill('Deflect')) {
-		  echo "<span style=\"border: thin solid clear;padding-top: 1;padding-bottom: 1;padding-left: 1;padding-right: 1;\">
-		  	<label><a href=\"#\">Deflect</a><input id=\"deflect\" type=\"checkbox\" name=\"deflect\"></label></span>\n";
-		}
-		assert($player == $target);
-	    echo "    <input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\">\n
-	        <br><label>
-	        <input type='image' value='Attack' name='attack-player-shuriken'
-	        src='".IMAGE_ROOT."50pxShuriken.png' alt='Attack' title='Attack'>
-	        <a>Attack</a>
-	        </label>";
-	    echo "    </form>\n";
-	    echo "    </td>\n";
+		else
+		{
+			// Attack or Duel
+		    echo "<td colspan=\"2\">\n";
+		    echo "  <table id='player-profile-attack' align=\"left\">\n";
+		    echo "    <tr>\n";
+		    echo "      <td style=\"border: thin solid clear;padding-left: 5; padding-right: 5;padding-top: 5;padding-bottom: 5;text-align: center;\">\n";
+			// Attack.
+			echo "        <form id=\"attack_player\" action=\"attack_mod.php\" method=\"post\" name=\"attack_player.php\">\n";
+			echo "          <span style=\"border: thin solid clear;padding: 1px;\">
+                              <label><a href=\"#\">Duel</a> <input id=\"duel\" type=\"checkbox\" name=\"duel\"></label>
+                            </span>\n";
 
+			if ($skillsListObj->hasSkill('Blaze'))
+			{
+				echo "      <span style=\"border: thin solid clear;padding: 1px;\">
+                              <label><a href=\"#\">Blaze</a><input id=\"blaze\" type=\"checkbox\" name=\"blaze\"></label>
+                            </span>\n";
+			}
 
-	    // Inventory Items
-	    echo "    <td style=\"border: thin solid clear;padding-left: 5;padding-right:
-	    	    5;padding-top: 5;padding-bottom: 5;text-align: center;\">\n";
+			if ($skillsListObj->hasSkill('Deflect'))
+			{
+				echo "      <span style=\"border: thin solid clear;padding: 1px;\">
+                              <label><a href=\"#\">Deflect</a><input id=\"deflect\" type=\"checkbox\" name=\"deflect\"></label>
+                            </span>\n";
+			}
 
-	    echo render_item_use_on_another($target, $sql);
+			assert($player == $target);
 
+			echo "          <input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\"><br>\n
+                            <label>
+                              <input type='image' value='Attack' name='attack-player-shuriken' src='".IMAGE_ROOT."50pxShuriken.png' alt='Attack' title='Attack'>
+                              <a>Attack</a>
+                            </label>";
+			echo "        </form>\n";
+			echo "      </td>\n";
 
+			// Inventory Items
+			echo "      <td style=\"border: thin solid clear;padding: 5px;text-align: center;\">\n";
 
-	    echo "    </td>\n
-	      </tr>\n
-	      <tr>\n
-	        <td style=\"border: thin solid clear;padding-left: 5;padding-right: 5;
-	    	padding-top: 5;padding-bottom: 5;text-align: center;\">\n";
+			echo render_item_use_on_another($target, $sql);
 
-	    echo render_skills($target, $skillListObj, $skillsListObj);
+			echo "      </td>\n
+                      </tr>\n
+                      <tr>\n
+                        <td style=\"border: thin solid clear;padding: 5px;text-align: center;\">\n";
 
-	    echo "    </td>\n";
-	} // End of the "viewing someone else's profile" section.
-	    echo "  </tr>\n";
+			echo render_skills($target, $skillListObj, $skillsListObj);
 
-	    echo "  </table>\n";
-	    echo "  </td>\n";
-	    echo "</tr>\n";
+			echo "      </td>\n";
+			echo "    </tr>\n";
+		    echo "  </table>\n";
+		    echo "</td>\n";
+		} // End of the "viewing someone else's profile" section.
 	}
+
+	echo "  </tr>\n";
 
 	echo "</table>\n";
 

@@ -335,7 +335,7 @@ function getKillPointsAmount($attacker,$defender)
 
 function kill($killer,$victim,$how,$what)  //This is a kill replacement function that may not yet be in use.
 {
-  echo "$killer has killed $victim!<br />\n";
+  echo "$killer has killed $victim!<br>\n";
 
   global $sql,$today;
 
@@ -494,13 +494,13 @@ function setStatus($who,$what)
 	if ($who == $_SESSION['username'])   {
 	    $_SESSION['status'] = $what;
 	    if ($what == 0)	{
-			echo "<br />You have returned to normal.<br />\n";
+			echo "<br>You have returned to normal.<br>\n";
 		} 
 		else if ($what == 1) {
-			echo "<br />You have been poisoned.<br />\n";
+			echo "<br>You have been poisoned.<br>\n";
 		}
 	    else if ($what == 2) {
-			echo "<br />You are now stealthed.<br />\n";
+			echo "<br>You are now stealthed.<br>\n";
 		}
 	}
 	return $what;
@@ -719,14 +719,14 @@ function runBountyExchange ($username, $defender)  //  *** BOUNTY EQUATION ***
 	 $bountyForAttacker = rewardBounty($username,$defender); //returns a value if bounty rewarded.
 	  if($bountyForAttacker)  //Reward bounty whenever available.
 		 {
-		  echo "You have received the $bountyForAttacker gold bounty on $defender's head for your deeds!<br />\n";
+		  echo "You have received the $bountyForAttacker gold bounty on $defender's head for your deeds!<br>\n";
 		  $bounty_msg = "You have valiantly slain the wanted criminal, $defender! For your efforts, you have been awarded $bountyForAttacker gold!";
 		  sendMessage("Village Doshin",$username,$bounty_msg);
 		 }
 	  else if ($bountyIncrease>0)  // If Defender has no bounty and there was a level difference.
 	    {
 	      addBounty($username,$bountyIncrease);
-	      echo "Your victim was much weaker than you. The townsfolk are angered. A bounty of ".$bountyIncrease." gold has been placed on your head!<br />\n";
+	      echo "Your victim was much weaker than you. The townsfolk are angered. A bounty of ".$bountyIncrease." gold has been placed on your head!<br>\n";
 	    }
 }
 
@@ -1021,9 +1021,9 @@ function pauseAccount($who) {
 	session_destroy();
 
 	echo "Your account has been removed from Ninja Wars. 
-	If you wish to sign back up you may do so, though your previous ninja name will be unavailable. <br />
-	If you don't plan on creating another account, we would be glad to receive an email telling us why you choose to leave the game,<br />
-	Thank you.<br /><br />".ADMIN_EMAIL."\n";
+	If you wish to sign back up you may do so, though your previous ninja name will be unavailable. <br>
+	If you don't plan on creating another account, we would be glad to receive an email telling us why you choose to leave the game,<br>
+	Thank you.<br><br>".ADMIN_EMAIL."\n";
 }
 
 function deleteAccount($who) {
@@ -1039,7 +1039,7 @@ function deleteAccount($who) {
 	$_SESSION['username'] = false;
 	session_destroy();
 
-	echo "Your account has been removed from Ninja Wars. If you wish to sign back up you may do so. <br />If not, we would be glad to receive an email telling us why you choose to leave the game,<br />Thank you.<br /><br />Admin@NinjaWars.net\n";
+	echo "Your account has been removed from Ninja Wars. If you wish to sign back up you may do so. <br>If not, we would be glad to receive an email telling us why you choose to leave the game,<br>Thank you.<br><br>Admin@NinjaWars.net\n";
 }
 
 // *** NEED CLAN FUNCTIONS (invite,msg,view) ***
@@ -1064,7 +1064,7 @@ function takeGold($from,$to,$mod)
   addGold($to,$gold_change);
   subtractGold($from,$gold_change);
 
-  echo "$to has acquired $gold_change gold from $from.<br />\n";
+  echo "$to has acquired $gold_change gold from $from.<br>\n";
 
   return $gold_change;
 }
