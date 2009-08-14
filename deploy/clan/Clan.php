@@ -1,7 +1,5 @@
 <?php
 
-include_once("../resources.php");
-
 class Clan
 {
 	private $id;
