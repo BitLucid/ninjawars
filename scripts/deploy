@@ -8,108 +8,225 @@
 usage()
 {
    cat <<EOF
-Usage: deploy -d=true [OPTIONS]
+Usage: deploy -c=/foo/bar/foobar.conf [OPTIONS] /foo/bar/deploy.tar
+Arguments:
+	/foo/bar/ninjawars/deploy.tar
+		The source tarball or directory to deploy from (supports .tar, .tar.gz, .tgz, .tar.bz, .tbz, and directory).
 Options:
-	h= The directory to deploy from.
-		e.g. /home/tchalvak/public_html/ninjawars/trunk
-	t= The directory to deploy into.
-		e.g. /home/ninjawars/game/live
-	d=true (will make use of the default paths)
-	[-r=/foo/bar/resources.SAMPLE.php]
+	-c=/foo/bar/nw/test.conf
+		The configuration file which contains name/value pairs of all deployment constants.
 EOF
        exit $1
 }
 
-if test $# -eq 0; then
+if test $# -lt 2; then
        usage 1 1>&2
 fi
 
-resources_template='/home/tchalvak/public_html/ninjawars/trunk/webgame/resources/resources.LIVE.php'
-# /home/tchalvak/public_html/ninjawars/trunk/webgame/resources/resources.LIVE.php
-database_name='ninjawarsLive'
-# ninjawarsLive
+#DEFAULT VALUES
+DB_HOST=''
+DB_USER=''
+DB_NAME=''
+DEBUG=''
+DEBUG_ALL=''
+SERVER_ROOT=''
+WWW_ROOT=''
+ADMIN_EMAIL=''
+SUPPORT_EMAIL=''
+SUPPORT_EMAIL_NAME=''
+SYSTEM_EMAIL=''
+SYSTEM_EMAIL_NAME=''
+TEMPLATE_CACHING=false
 
-# I haven't found out how to use these defaults when necessary quite yet.
-default_home='/home/tchalvak/public_html/ninjawars/trunk'
-default_target='/home/ninjawars/game/live'
+source_files=''
+configuration_file=''
+resource_file=''
 
 while test $# -gt 0; do
-       case "$1" in
-       -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
-       *) optarg= ;;
-       esac
+	case "$1" in
+		-*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'`
+		;;
+		*) source_files=$1
+		;;
+	esac
 
-       case $1 in
-               -d=*)
-               use_defaults=$optarg
-               ;;
-               -t=*)
-               DEPLOYMENT_TARGET=$optarg
-               ;;
-               -h=*)
-               HTTP_ROOT=$optarg
-               ;;
-               -r=*)
-               resources_template=$optarg
-               ;;
-       esac
-       shift
+	case $1 in
+		-c=*)
+		configuration_file=$optarg
+		;;
+	esac
+	shift
 done
 
-if [[ ! $DEPLOYMENT_TARGET ]]
+if [ ! -d $source_files ]
 then
-	DEPLOYMENT_TARGET='/home/ninjawars/game/live'
-	echo "Using default target '/home/ninjawars/game/live'."
+	tmp_dir=`mktemp -d /tmp/nw.XXXXXXXXXX`
+	case "$source_files" in
+		*.tar.gz)
+		tar -C "$tmp_dir" -xzf "$source_files"
+		;;
+		*.tgz)
+		tar -C "$tmp_dir" -xzf "$source_files"
+		;;
+		*.tar.bz)
+		tar -C "$tmp_dir" -xjf "$source_files"
+		;;
+		*.bz)
+		tar -C "$tmp_dir" -xjf "$source_files"
+		;;
+		*.tar)
+		tar -C "$tmp_dir" -xf "$source_files"
+		;;
+	esac
+
+	source_files=$tmp_dir
 fi
 
-if [[ ! $HTTP_ROOT ]]
-then
-	HTTP_ROOT='/home/tchalvak/public_html/ninjawars/trunk'
-	echo "Using default home '/home/tchalvak/public_html/ninjawars/trunk'."
-fi
+echo $configuration_file
+# READ IN CONFIGURATION FILE
+while read curline; do
+	optarg=${curline##*=}
+	case ${curline%%=*} in
+		DB_HOST)
+		DB_HOST=$optarg
+		;;
+		DB_NAME)
+		DB_NAME=$optarg
+		;;
+		DB_USER)
+		DB_USER=$optarg
+		;;
+		DB_PASSWORD)
+		DB_PASSWORD=$optarg
+		;;
+		WWW_ROOT)
+		WWW_ROOT=$optarg
+		;;
+		SERVER_ROOT)
+		SERVER_ROOT=$optarg
+		;;
+		TEMPLATE_CACHING)
+		TEMPLATE_CACHING=$optarg
+		;;
+		DEBUG)
+		DEBUG=$optarg
+		;;
+		DEBUG_ALL)
+		DEBUG_ALL=$optarg
+		;;
+		ADMIN_EMAIL)
+		ADMIN_EMAIL=$optarg
+		;;
+		SUPPORT_EMAIL)
+		SUPPORT_EMAIL=$optarg
+		;;
+		SUPPORT_EMAIL_NAME)
+		SUPPORT_EMAIL_NAME=$optarg
+		;;
+		SYSTEM_EMAIL)
+		SYSTEM_EMAIL=$optarg
+		;;
+		SYSTEM_EMAIL_NAME)
+		SYSTEM_EMAIL_NAME=$optarg
+		;;
+	esac
+done < $configuration_file
 
-if [ ! -e $resources_template ]
+if [ ! -e $configuration_file ] && [[ ! $resource_file || ! -e $resource_file ]]
 then
-       echo "Resources file template $resources_template not found! Aborting."
+       echo "No configuration found! Please provide a completed resource file or a configuration file. Aborting."
        exit
 fi
 
-if [ ! -d $DEPLOYMENT_TARGET ]
+if [ ! -d $SERVER_ROOT ]
 then
-	echo -n "The target directory $DEPLOYMENT_TARGET does not exist. Shall I create it? [Y/n]: "
+	echo -n "The target directory $SERVER_ROOT does not exist. Shall I create it? [Y/n]: "
 	read answer
 	if [[ $answer == "y" || $answer == "Y" || $answer == "" ]]
 	then
-		mkdir -p $DEPLOYMENT_TARGET
+		mkdir -p $SERVER_ROOT
 	else
 		echo "User aborted deployment script. No changes have been made."
 		exit
 	fi
 fi
 
-if [ ! -d $DEPLOYMENT_TARGET/webgame ]
+## CD TO DESTINATION
+cd $SERVER_ROOT
+
+# WIPE EXISTING SITE - PROTECT resources/ FOR NOW
+rm -rf `find -P ./ -maxdepth 1|grep -v "./$"|grep -v resources`
+
+cp -rf $source_files/* $SERVER_ROOT
+echo "source files copied to $SERVER_ROOT"
+
+if [[ $resources_file && -e $resources_file ]]
 then
-       mkdir $DEPLOYMENT_TARGET/webgame/
+	cp $resources_file $SERVER_ROOT
+else
+	resources_file=`find ./ -name resources.php`
+fi
+echo $resources_file
+# CONFIGURATION FILE STRING REPLACEMENTS
+sed -i -e {s/__SERVER_ROOT__/"'"${SERVER_ROOT//\//\\/}"'"/}                $resources_file
+sed -i -e {s/__WWW_ROOT__/"'"${WWW_ROOT//\//\\/}"'"/}                      $resources_file
+sed -i -e {s/__DB_NAME__/"'"${DB_NAME//\//\\/}"'"/}                        $resources_file
+sed -i -e {s/__DB_HOST__/"'"${DB_HOST//\//\\/}"'"/}                        $resources_file
+sed -i -e {s/__SERVER_ROOT__/"'"${SERVER_ROOT//\//\\/}"'"/}                $resources_file
+sed -i -e {s/__DB_USER__/"'"${DB_USER//\//\\/}"'"/}                        $resources_file
+sed -i -e {s/__DB_PASSWORD__/"'"${DB_PASSWORD//\//\\/}"'"/}                $resources_file
+sed -i -e {s/__ADMIN_EMAIL__/"'"${ADMIN_EMAIL//\//\\/}"'"/}                $resources_file
+sed -i -e {s/__SUPPORT_EMAIL__/"'"${SUPPORT_EMAIL//\//\\/}"'"/}            $resources_file
+sed -i -e {s/__SUPPORT_EMAIL_NAME__/"'"${SUPPORT_EMAIL_NAME//\//\\/}"'"/}  $resources_file
+sed -i -e {s/__SYSTEM_EMAIL__/"'"${SYSTEM_EMAIL//\//\\/}"'"/}              $resources_file
+sed -i -e {s/__SYSTEM_EMAIL_NAME__/"'"${SYSTEM_EMAIL_NAME//\//\\/}"'"/}    $resources_file
+
+if [[ $DEBUG ]]
+then
+    sed -i -e {s/__DEBUG__/"true"/}  $resources_file
+else
+    sed -i -e {s/__DEBUG__/"false"/} $resources_file
 fi
 
-if [ ! -d $DEPLOYMENT_TARGET/backupWebgame ]
+if [[ $DEBUG_ALL ]]
 then
-	mkdir $DEPLOYMENT_TARGET/backupWebgame/
+    sed -i -e {s/__DEBUG_ALL__/"true"/}  $resources_file
+else
+    sed -i -e {s/__DEBUG_ALL__/"false"/} $resources_file
 fi
 
-rm -rf $DEPLOYMENT_TARGET/backupWebgameOlder/
+## If we decide to squelch emails on a per config basis, this will be useful, don't delete for a bit please ##
+#if [[ $SEND_EMAILS ]]
+#then
+#    sed -i -e {s/__SEND_EMAILS__/"true"/}  $resources_file
+#else
+#    sed -i -e {s/__SEND_EMAILS__/"false"/} $resources_file
+#fi
 
-mv -f $DEPLOYMENT_TARGET/backupWebgame $DEPLOYMENT_TARGET/backupWebgameOlder
-echo "Current $DEPLOYMENT_TARGET/backupWebgame moved to backupWebgameOlder."
+## If we move to templating, this will be used, don't delete please ##
 
-#Moves the current code to the backup folder.
-mv -f $DEPLOYMENT_TARGET/webgame $DEPLOYMENT_TARGET/backupWebgame
-echo "Current $DEPLOYMENT_TARGET/webgame moved to backupWebgame."
+#if [ -d $SERVER_ROOT/templates]
+#then
+#	rm -rf $SERVER_ROOT/templates/*
+#else
+#	mkdir $SERVER_ROOT/templates/
+#fi
 
-cp -rf $HTTP_ROOT/webgame $DEPLOYMENT_TARGET/webgame
-echo "$HTTP_ROOT/webgame copied to $DEPLOYMENT_TARGET/webgame"
+#if [ ! -d $SERVER_ROOT/templates_c]
+#then
+#	mkdir $SERVER_ROOT/templates_c/
+#fi
 
-cp $resources_template $DEPLOYMENT_TARGET/webgame/resources/resources.php
-echo "The resources template $resources_template was copied to $DEPLOYMENT_TARGET/webgame/resources/resources.php"
+#if [[ $TEMPLATE_CACHING ]]
+#then
+#    sed -i -e {s/__TEMPLATE_CACHING__/"true"/}  $resources_file
+#else
+#    sed -i -e {s/__TEMPLATE_CACHING__/"false"/} $resources_file
+#fi
+
+if [ -d $tmp_dir ]
+then
+	rm -rf $tmp_dir
+fi
 
 echo "Deployment complete."

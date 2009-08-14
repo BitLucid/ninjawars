@@ -2,27 +2,27 @@
 /*
 * resources.php template. Copy this from the sample to resources.php and change the necessary constants
 */
-define('DATABASE_HOST', DB_HOST); // *** localhost on live
-define('DATABASE_USER', DB_USER); // *** knownUsername on live
-define('DATABASE_NAME', DB_NAME); // *** ninjawarsLive on live
+define('DATABASE_HOST', __DB_HOST__); // *** localhost on live
+define('DATABASE_USER', __DB_USER__); // *** knownUsername on live
+define('DATABASE_NAME', __DB_NAME__); // *** ninjawarsLive on live
 
 define('CONNECTION_STRING', 'pgsql:dbname='.DATABASE_NAME.';user='.DATABASE_USER); // *** Mostly static
 
-define('DEBUG', DEBUG); // *** Shorter debugging constant name, set as false on live.
-define('DEBUG_ALL_ERRORS', DEBUG_ALL); // *** Only will turn on if debug is also on.
+define('DEBUG', __DEBUG__); // *** Shorter debugging constant name, set as false on live.
+define('DEBUG_ALL_ERRORS', __DEBUG_ALL__); // *** Only will turn on if debug is also on.
 
-define('SERVER_ROOT', SERVER_ROOT); // *** Server root is the webgame folder, not the true root.
+define('SERVER_ROOT', __SERVER_ROOT__); // *** Server root is the webgame folder, not the true root.
 // *** known web dir on live.
-define('WEB_ROOT', WWW_ROOT); // *** The web root is also the webgame folder, not the true root.
+define('WEB_ROOT', __WWW_ROOT__); // *** The web root is also the webgame folder, not the true root.
 // *** known web dir on live.
 
-define('ADMIN_EMAIL', ADMIN_EMAIL); // *** For logs/emailed errors.
+define('ADMIN_EMAIL', __ADMIN_EMAIL__); // *** For logs/emailed errors.
 
-define('SUPPORT_EMAIL', SUPPORT_EMAIL); // *** For public questions.
-define('SUPPORT_EMAIL_FORMAL_NAME', SUPPORT_EMAIL_NAME);
+define('SUPPORT_EMAIL', __SUPPORT_EMAIL__); // *** For public questions.
+define('SUPPORT_EMAIL_FORMAL_NAME', __SUPPORT_EMAIL_NAME__);
 
-define('SYSTEM_MESSENGER_EMAIL', SYSTEM_EMAIL);
-define('SYSTEM_MESSENGER_NAME', SYSTEM_EMAIL_NAME);
+define('SYSTEM_MESSENGER_EMAIL', __SYSTEM_EMAIL__);
+define('SYSTEM_MESSENGER_NAME', __SYSTEM_EMAIL_NAME__);
 
 define('CSS_ROOT', WEB_ROOT.'css/');
 define('JS_ROOT', WEB_ROOT.'js/');
