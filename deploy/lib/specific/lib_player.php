@@ -207,7 +207,7 @@ function display_player_profile($player_info){
     if($player_info['messages']){
 	?>
 	<div class='player-profile'>
-		<p class='subtitle'>Message:<p>
+		<p class='subtitle'>Message:</p>
 		<p class='centered'><?php out($player_info['messages'], 'toMessage'); ?></p>
 	</div>
 	<?php
