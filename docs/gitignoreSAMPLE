@@ -3,3 +3,4 @@ dev/*
 trunk/webgame/resources/resources.php
 gitLog
 webgame/gitLog
+/deploy/www/scripts/master_archive.tar
