@@ -21,10 +21,10 @@ For other issues, including confirmation problems, email us at: <a href="mailto:
 <div class='subtitle'>Developers</div>
 
 <div style="border:thin red dashed">
-<a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a> - Programmer and Maintainer
+<a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Flynn</a> - Programmer and Maintainer
 <span style="color:#cc3333;font-weight:bold">
+- <!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" title="Roy Flynn" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Flynn</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" title="Make your own badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Create Your Badge</a><br/><a href="http://www.facebook.com/tchalvak" title="Roy Flynn" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Flynn" style="border: 0px;" /></a><!-- Facebook Badge END -->
 - <a href="http://www.myspace.com/toastersquid">on Myspace</a>
-- <a href="http://www.facebook.com/s.php?q=Roy+Ronalds&amp;init=q">on Facebook</a>
 - on AIM: Tchalvak
 </span>
 <p>Hailing from the icy steppes of upstate New York, Roy got his first computer at the ripe old age of 14, and has been addicted to computers ever since.  He's worked in IT fixing computers, and eventually decided that the web is the future, got in on the action, and hasn't looked back.  Since 2003, he's been working in php and webdesign, which he got started on from working on ninjawars.net. </p>
