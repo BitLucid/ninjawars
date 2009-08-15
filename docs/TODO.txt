@@ -1,3 +1,8 @@
+get a template library!
 Explain the avatars on the stats page
 Make search assume show_dead
 Turn classes from colors to elements, void fire water earth air
+Make skills independent of classes.
+Integrate the energy stat into the game.
+Create the ability for players to set up "ambush" from their profile when viewers wander in to view it.
+Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now.

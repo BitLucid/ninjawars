@@ -24,6 +24,7 @@ $sure                            = in('sure', '');
 $kicked                          = in('kicked', '');
 $person_invited                  = in('person_invited', '');
 $clan                            = getClan($username);
+$player_clan_long_name           = getClanLongName($username);
 $viewer_level                    = getLevel($username);
 $clan_creation_level_requirement = 15;
 
@@ -126,7 +127,7 @@ if ($clan  != "") {
 		}
 
 		echo "<div id='leader-panel'>
-      <div id='leader-panel-title'>Leader Panel</div>
+      <div id='leader-panel-title'>$player_clan_long_name Clan Leader Panel</div>
         <ul id='leader-options'>
             <li><a href=\"clan.php?command=invite\">Recruit for your Clan</a></li>
             <li><a href=\"clan.php?command=rename\">Rename Clan</a></li>
