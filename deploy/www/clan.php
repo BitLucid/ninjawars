@@ -1,5 +1,4 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 require_once(LIB_ROOT."specific/tags_lib.php");
 require_once(LIB_ROOT."specific/lib_clan.php");
 $alive      = false;
@@ -25,11 +24,12 @@ $sure          = in('sure', '');
 $kicked        = in('kicked', '');
 $person_invited= in('person_invited', '');
 $clan          = getClan($username);
+$player_clan_long_name = getClanLongName($username);
 $viewer_level  = getLevel($username);
 $clan_creation_level_requirement = 15;
 
 if ($command == "new") { //Clan Creation Action
-  	if ($viewer_level>$clan_creation_level_requirement) {
+  	if ($viewer_level>=$clan_creation_level_requirement) {
 	    setClan($username, $username);
 		$default_clan_name = "Clan_".$username;
 		renameClan($username,$default_clan_name);
@@ -119,7 +119,7 @@ if ($clan  != "") {
 		}
 
 	  echo "<div id='leader-panel'>
-      <div id='leader-panel-title'>Leader Panel</div>
+      <div id='leader-panel-title'>$player_clan_long_name Clan Leader Panel</div>
         <ul id='leader-options'>
             <li><a href=\"clan.php?command=invite\">Recruit for your Clan</a></li>
             <li><a href=\"clan.php?command=rename\">Rename Clan</a></li>

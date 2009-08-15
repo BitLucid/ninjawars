@@ -1,8 +1,8 @@
 <?php
-require_once(substr(__FILE__,0,(strpos(__FILE__, 'webgame/')))."webgame/lib/base.inc.php");
 
 // Show the form for the clan joining, or perform the join.
 function render_clan_join($process=null, $username, $clan_name){
+   	$sql = new DBAccess();
     if ($process == 1) {
         $confirm = $sql->QueryItem("SELECT confirm FROM players WHERE uname = '$username'");
         $join_request_message = "CLAN JOIN REQUEST: $username has sent you a clan request.
