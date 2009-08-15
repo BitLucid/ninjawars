@@ -28,6 +28,7 @@ DB_HOST=''
 DB_USER=''
 DB_NAME=''
 DEBUG=''
+OFFLINE=''
 DEBUG_ALL=''
 SERVER_ROOT=''
 WWW_ROOT=''
@@ -108,6 +109,9 @@ while read curline; do
 		TEMPLATE_CACHING)
 		TEMPLATE_CACHING=$optarg
 		;;
+		OFFLINE)
+		OFFLINE=$optarg
+		;;
 		DEBUG)
 		DEBUG=$optarg
 		;;
@@ -160,6 +164,7 @@ cd $SERVER_ROOT
 rm -rf `find -P ./ -maxdepth 1|grep -v "./$"|grep -v resources`
 
 cp -rf $source_files/* $SERVER_ROOT
+cp -rf $source_files/.* $SERVER_ROOT
 echo "source files copied to $SERVER_ROOT"
 
 if [[ $resources_file && -e $resources_file ]]
@@ -182,6 +187,13 @@ sed -i -e {s/__SUPPORT_EMAIL__/"'"${SUPPORT_EMAIL//\//\\/}"'"/}            $reso
 sed -i -e {s/__SUPPORT_EMAIL_NAME__/"'"${SUPPORT_EMAIL_NAME//\//\\/}"'"/}  $resources_file
 sed -i -e {s/__SYSTEM_EMAIL__/"'"${SYSTEM_EMAIL//\//\\/}"'"/}              $resources_file
 sed -i -e {s/__SYSTEM_EMAIL_NAME__/"'"${SYSTEM_EMAIL_NAME//\//\\/}"'"/}    $resources_file
+
+if [[ $OFFLINE ]]
+then
+    sed -i -e {s/__OFFLINE__/"true"/}  $resources_file
+else
+    sed -i -e {s/__OFFLINE__/"false"/} $resources_file
+fi
 
 if [[ $DEBUG ]]
 then

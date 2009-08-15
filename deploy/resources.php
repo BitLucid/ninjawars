@@ -1,29 +1,28 @@
 <?php
 /*
-* resources.php template. Copy this from the sample to resources.php and change the necessary constan
+* resources.php template. This file must be included whenever a script is run. It defines constants used throughout the application
 */
-define('DATABASE_HOST', __DB_HOST__); // *** localhost on live
-define('DATABASE_USER', __DB_USER__); // *** knownUsername on live
-define('DATABASE_NAME', __DB_NAME__); // *** ninjawarsLive on live
-
-define('CONNECTION_STRING', 'pgsql:dbname='.DATABASE_NAME.';user='.DATABASE_USER); // *** Mostly static
-
-define('DEBUG', __DEBUG__); // *** Shorter debugging constant name, set as false on live.
-define('DEBUG_ALL_ERRORS', __DEBUG_ALL__); // *** Only will turn on if debug is also on.
-
-define('SERVER_ROOT', __SERVER_ROOT__); // *** Server root is the webgame folder, not the true root.
-// *** known web dir on live.
-define('WEB_ROOT', __WWW_ROOT__); // *** The web root is also the webgame folder, not the true root.
-// *** known web dir on live.
-
-define('ADMIN_EMAIL', __ADMIN_EMAIL__); // *** For logs/emailed errors.
-
-define('SUPPORT_EMAIL', __SUPPORT_EMAIL__); // *** For public questions.
+define('DATABASE_HOST', __DB_HOST__);		// *** The host to connect to for the database
+define('DATABASE_USER', __DB_USER__);		// *** The user that should connect to the database
+define('DATABASE_NAME', __DB_NAME__);		// *** The name of the database to connect to
+define('OFFLINE', __OFFLINE__);				// *** Controls if remote or local resources are used
+define('DEBUG', __DEBUG__);					// *** Shorter debugging constant name, set as false on live.
+define('DEBUG_ALL_ERRORS', __DEBUG_ALL__);	// *** Only will turn on if debug is also on.
+define('SERVER_ROOT', __SERVER_ROOT__);		// *** The root deployment directory of the game
+define('WEB_ROOT', __WWW_ROOT__);			// *** The base URL used to access the game
+define('ADMIN_EMAIL', __ADMIN_EMAIL__);		// *** For logs/emailed errors.
+define('SUPPORT_EMAIL', __SUPPORT_EMAIL__);	// *** For public questions.
 define('SUPPORT_EMAIL_FORMAL_NAME', __SUPPORT_EMAIL_NAME__);
-
 define('SYSTEM_MESSENGER_EMAIL', __SYSTEM_EMAIL__);
 define('SYSTEM_MESSENGER_NAME', __SYSTEM_EMAIL_NAME__);
 
+
+// *************************************************
+// *** CONSTANTS BELOW ARE DERIVED. DO NOT ALTER ***
+// *** \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ ***
+// *************************************************
+
+define('CONNECTION_STRING', 'pgsql:dbname='.DATABASE_NAME.';user='.DATABASE_USER);
 define('CSS_ROOT', WEB_ROOT.'css/');
 define('JS_ROOT', WEB_ROOT.'js/');
 

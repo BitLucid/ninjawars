@@ -291,6 +291,7 @@ td.playerTable {
     font-weight: bold;
     text-align: center;
 }
+
 .brownHeading {/*deprecated*/
     color: #D26600/*ff3300FEDB32*/;
     font-weight: bold;
@@ -768,3 +769,16 @@ table .inventory{
 	margin-bottom: 2em;
 }
 
+#page-404 {
+	background-color: black;
+	color: white;
+}
+
+.q-and-a .question {
+    color: #D26600;
+    font-weight: bold;
+}
+
+.q-and-a .answer {
+	text-align: justify;
+}
