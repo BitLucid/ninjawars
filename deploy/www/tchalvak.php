@@ -127,7 +127,7 @@ if ($player_to_confirm)
 
 ?>
 <br><br>
-<a href="http://www.ninjawars.net">Return to Main ?</a>
+<a href="<?php echo WEB_ROOT;?>">Return to Main ?</a>
 </div>
 
 <?php

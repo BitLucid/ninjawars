@@ -156,7 +156,6 @@ if ($player_info) {
 
 	echo render_avatar_section($target_player_obj);
 
-
 	echo "</div><!-- End player-info -->";
 }
 

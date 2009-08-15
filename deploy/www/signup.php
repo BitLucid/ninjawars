@@ -10,18 +10,17 @@
 // Consider removing all email confirmation requirements...
 // And creating a one-button ninja creation system.
 
-$alive      = false;
-$private    = false;
-$quickstat  = false;
-$page_title = "Sign Up";
+$alive             = false;
+$private           = false;
+$quickstat         = false;
+$page_title        = "Sign Up";
 $starting_referral = in('referrer');
-$enteredName = in('send_name', '', 'toText');
-$enteredEmail = in('send_email', '', 'toText');
-$enteredClass = in('send_class', '');
-$enteredReferral = in('referred_by', $starting_referral);
-$enteredPass = in('key', null, 'toText');
-$submitted = in('submit');
-
+$enteredName       = in('send_name', '', 'toText');
+$enteredEmail      = in('send_email', '', 'toText');
+$enteredClass      = in('send_class', '');
+$enteredReferral   = in('referred_by', $starting_referral);
+$enteredPass       = in('key', null, 'toText');
+$submitted         = in('submit');
 
 include SERVER_ROOT."interface/header.php";
 
@@ -52,33 +51,34 @@ function get_blacklisted_emails(){
 }
 
 // Gives whitelisted emails, make a table eventually.
-function get_whitelisted_emails(){
+function get_whitelisted_emails() {
 	return array('@gmail.com');
 }
 
 // Return 1 if the email is a blacklisted email, 0 otherwise.
-function preconfirm_some_emails($email){
+function preconfirm_some_emails($email) {
 	// Made the default be to auto-confirm players.
 	$res = 1;
 	$blacklisted_by = get_blacklisted_emails();
 	$whitelisted_by = get_whitelisted_emails();
-	foreach($blacklisted_by AS $loop_domain){
-		if(strpos(strtolower($email), $loop_domain)){
+
+	foreach ($blacklisted_by AS $loop_domain) {
+		if (strpos(strtolower($email), $loop_domain)) {
 			return 1;
 		}
 	}
-	foreach($whitelisted_by AS $loop_domain){
-		if(strpos(strtolower($email), $loop_domain)){
+
+	foreach ($whitelisted_by AS $loop_domain) {
+		if (strpos(strtolower($email), $loop_domain)) {
 			return 0;
 		}
 	}
+
 	return $res;
 }
 
-
-
-function display_class_select($current)  {
-	?>
+function display_class_select($current) {
+?>
 	  <select id="send_class" name="send_class">
 	    <option value="">Pick Ninja Color</option>
 	    <option value="Red" <?php if($current=='Red') { echo 'selected="selected"'; } ?>>Red</option>
@@ -91,7 +91,7 @@ function display_class_select($current)  {
 
 function display_signup_form($enteredName, $enteredEmail, $enteredClass, $enteredReferral) {
 	// ************************* START OF SIGNUP FORM ********************************
-	?>
+?>
 
 	<span class="brownHeading">Sign Up</span>
 	<br><br>
@@ -147,7 +147,6 @@ function create_player_account() { // *** TODO:  Seperate out the creation of th
 function email_account_confirmation() { // *** TODO:
 }
 
-
 function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredReferral, $enteredPass) {
 	$successful = false;
 	$sql = $GLOBALS['sql'];
@@ -180,12 +179,10 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 		$sql->QueryItem("SELECT email FROM players WHERE email = '$send_email'");
 		$check_email = $sql->getRowCount();
 
-
-
         // Validate the username!
 		$username_error = validate_username($send_name);
 
-		if($username_error){
+		if ($username_error) {
 			echo $username_error;
 		}
 		else  //when all the name requirement errors didn't trigger.
@@ -193,104 +190,105 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 			$send_name = trim($send_name);  // Just cuts off any white space at the end.
 			$filter = new Filter();
 			$send_name = $filter->toUsername($send_name); // Filter any un-whitelisted characters.
-	      		echo "Phase 1 Complete: Name passes requirements.<hr>\n";
+			echo "Phase 1 Complete: Name passes requirements.<hr>\n";
 
-	      		// Validate the password!
-	      		$password_error = validate_password($send_pass);
+			// Validate the password!
+			$password_error = validate_password($send_pass);
 
-	      		if($password_error){
-	      			echo $password_error;
-				} else {
-					$send_pass = trim($send_pass); // *** Trims any extra space off of the password.
-					$send_pass = $filter->toPassword($send_pass); // Filter any un-whitelisted characters.
-					echo "Phase 2 Complete: Password passes requirements.<hr>\n";
+			if ($password_error) {
+				echo $password_error;
+			} else {
+				$send_pass = trim($send_pass); // *** Trims any extra space off of the password.
+				$send_pass = $filter->toPassword($send_pass); // Filter any un-whitelisted characters.
+				echo "Phase 2 Complete: Password passes requirements.<hr>\n";
 
-					if (FALSE/* CURRENTLY NO BLOCKED EMAIL SERVICES strstr($send_email, "@") == "@aol.com" || strstr($send_email, "@") == "@netscape.com" || strstr($send_email, "@") == "@aim.com"*/) //Throws error if email from blocked domain.
+				if (FALSE/* CURRENTLY NO BLOCKED EMAIL SERVICES strstr($send_email, "@") == "@aol.com" || strstr($send_email, "@") == "@netscape.com" || strstr($send_email, "@") == "@aim.com"*/) //Throws error if email from blocked domain.
+				{
+					echo "Phase 3 Incomplete: We cannot currently accept @aol.com, @netscape.com, or @aim.com email addresses.";
+				}
+				elseif (!eregi("^[[:alnum:]][a-z0-9_.-]*@[a-z0-9.-]+\.[a-z]{2,4}$", trim($send_email)))
+				{
+					echo "Phase 3 Incomplete: The email address (".htmlentities($send_email).") must contain an @ symbol and a domain name to be valid.";
+				}
+				else if ($check_name == 0 && $check_email == 0 && $send_name != "SysMsg" && $send_name != "NewUserList")  //Uses previous query to make sure name and email aren't duplicates.
+				{
+					echo "Phase 3 Complete: Username and Email are unique.<br><hr>\n";
+					if ($send_class != 'Red' && $send_class != 'Blue' && $send_class != 'White' && $send_class != 'Black')
 					{
-				  		echo "Phase 3 Incomplete: We cannot currently accept @aol.com, @netscape.com, or @aim.com email addresses.";
+						echo "Phase 4 Incomplete: No proper class was specified.<br>";
 					}
-					elseif (!eregi("^[[:alnum:]][a-z0-9_.-]*@[a-z0-9.-]+\.[a-z]{2,4}$", trim($send_email)))
+					else
 					{
-						echo "Phase 3 Incomplete: The email address (".htmlentities($send_email).") must contain an @ symbol and a domain name to be valid.";
-					}
-	      			else if ($check_name == 0 && $check_email == 0 && $send_name != "SysMsg" && $send_name != "NewUserList")  //Uses previous query to make sure name and email aren't duplicates.
-					{
-						echo "Phase 3 Complete: Username and Email are unique.<br><hr>\n";
-						if ($send_class != 'Red' && $send_class != 'Blue' && $send_class != 'White' && $send_class != 'Black')
-						{
-							echo "Phase 4 Incomplete: No proper class was specified.<br>";
+						echo "Phase 4 Complete: Class was specified.<br><hr>";
+						// *** Signup is successful at this point  ***
+						$preconfirm = 0;
+						$preconfirm = preconfirm_some_emails($send_email);
+
+						if (!$preconfirm) { /* not blacklisted by, so require a normal email confirmation */
+							echo "Phase 5: When you receive an email from SysMsg, it will describe how to activate your account.<br><br>\n";
 						}
-						else
-						{
-							echo "Phase 4 Complete: Class was specified.<br><hr>";
-							// *** Signup is successful at this point  ***
-							$preconfirm = 0;
-							$preconfirm = preconfirm_some_emails($send_email);
+						// The preconfirmation message occurs later.
+						$confirm = rand(1000,9999); //generate confirmation code
 
-							if(!$preconfirm){ /* not blacklisted by, so require a normal email confirmation */
-			  					echo "Phase 5: When you receive an email from SysMsg, it will describe how to activate your account.<br><br>\n";
-			  				}
-			  				// The preconfirmation message occurs later.
-							$confirm = rand(1000,9999); //generate confirmation code
-
-							//  ***  Query is split up into two column groups of ten  ***
-							$playerCreationQuery= "INSERT INTO players".
+						//  ***  Query is split up into two column groups of ten  ***
+						$playerCreationQuery= "INSERT INTO players".
 							" (uname, pname, health, strength, gold, messages, kills, turns, confirm,".
 							" confirmed, email, class, level,  status, member, days, ip, bounty, clan, clan_long_name, created_date)".
 							" VALUES".
 							" ('$send_name','$send_pass','150','5','100','','0','80','$confirm','$preconfirm',".
 							" '$send_email','$send_class','1','1','0','0','','0','','', now())";
-							//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
-							$sql->Insert($playerCreationQuery);
-							$successful = TRUE; // *** SET THE FUNCTION AS A SUCCESS HERE ***
+						//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
+						$sql->Insert($playerCreationQuery);
+						$successful = TRUE; // *** SET THE FUNCTION AS A SUCCESS HERE ***
 
-							assert($send_email && $headers && $send_name && $confirm && $send_pass && $send_class && $headers);
-							//  ***  Sends out the confirmation email to the chosen email address.  ***
-							$_to = "$send_email";
-							$_subject = "NinjaWars Account Sign Up";
-							$_body =
+						assert($send_email && $headers && $send_name && $confirm && $send_pass && $send_class && $headers);
+						//  ***  Sends out the confirmation email to the chosen email address.  ***
+						$_to = "$send_email";
+						$_subject = "NinjaWars Account Sign Up";
+						$_body =
 								"Thank you for signing up for Ninja Wars.<br>
 								This message is from SysMsg, the AUTOMATED email system for NinjaWars. <br>
 								Any emails you receive from the game will come from this address.
 								Please click on the link below to confirm your account.<br><br>
-								<a href=\"http://www.ninjawars.net/confirm.php?username=".urlencode($send_name)."&confirm=$confirm\">Confirm Account</a><br>
-								Or paste this link:<br>http://www.ninjawars.net/confirm.php?username=".urlencode($send_name)."&confirm=$confirm <br>
+								<a href=\"".WEB_ROOT."confirm.php?username=".urlencode($send_name)."&confirm=$confirm\">Confirm Account</a><br>
+								Or paste this link:<br>".WEB_ROOT."confirm.php?username=".urlencode($send_name)."&confirm=$confirm <br>
 								into your browser.<br><br>
-								If you require help use the forums at http://www.ninjawars.net/forum/<br>
+								If you require help use the forums at ".WEB_ROOT."forum/<br>
 								or email: ".SUPPORT_EMAIL."<br><br><b>
 								Account Info</b><br>
 								Username: $send_name<br>
 								Level: 1<br>
 								Password: $send_pass<br>
 								Class: $send_class Ninja";
-							$_from = "$headers";
-							// *** Create message object.
-							$Message = new Nmail($_to, $_subject, $_body, $_from);
-							$sent = false;
-							$sent = $Message->send();
+						$_from = "$headers";
+						// *** Create message object.
+						$Message = new Nmail($_to, $_subject, $_body, $_from);
+						$sent = false;
+						$sent = $Message->send();
 
-							//  *** Add the signup to the "New User List"  ***
-			  				sendMessage($send_name,'NewUserList',"Username: $send_name , Email: $send_email , Class: $send_class , Date: ".date('r')." Referred by: $referred_by");
-			  				if ($sent && !$preconfirm) {
-				  				//  *** Continues the page display ***
-				  				echo "Confirmation email has been sent to <b>".$send_email."</b>.  <br>
+						//  *** Add the signup to the "New User List"  ***
+						sendMessage($send_name,'NewUserList',"Username: $send_name , Email: $send_email , Class: $send_class , Date: ".date('r')." Referred by: $referred_by");
+						if ($sent && !$preconfirm) {
+							//  *** Continues the page display ***
+							echo "Confirmation email has been sent to <b>".$send_email."</b>.  <br>
 				  					Be sure to also check for the email in any \"Junk Mail\" or \"Spam\" folders.
 				  					Delivery typically takes less than 15 minutes.";
-				  			} else {
-				  				// Preconfirmed or the email didn't send, so automatically confirm the player.
-				  				$up = "update players set confirmed = 1, confirm='55555' where uname = '".$send_name."'";
-				  				$sql->Update($up);
-				  				echo "Account with the login name \"".$send_name."\" is now confirmed!  Please <a href='#' onClick='refreshToLogin()'>login on the login bar</a> of the index page.";
-				  			}
-				  			echo "<br><br>Only one account per person is allowed.<br>\n";
-				  			echo "If you require help use the forums at <a href='http://www.ninjawars.net/forum/'>http://www.ninjawars.net/forum/</a> or email: ".SUPPORT_EMAIL."\n";
-				  		}// *** End of class checking.
-					}
-	      				else   // Default, displays when the username or email are not unique.
-					{
-		  			$what = ($check_email != 0 ? "Email" : "Username");
+						} else {
+							// Preconfirmed or the email didn't send, so automatically confirm the player.
+							$up = "update players set confirmed = 1, confirm='55555' where uname = '".$send_name."'";
+							$sql->Update($up);
+							echo "Account with the login name \"".$send_name."\" is now confirmed!  Please <a href='#' onclick='refreshToLogin()'>login on the login bar</a> of the index page.";
+						}
 
-			  		echo "Phase 3 Incomplete: That $what is already in use. Please choose a different one.\n";
+						echo "<br><br>Only one account per person is allowed.<br>\n";
+						echo "If you require help use the forums at <a href='".WEB_ROOT."forum/'>".WEB_ROOT."forum/</a> or email: ".SUPPORT_EMAIL."\n";
+					}	// *** End of class checking.
+				}
+				else	// Default, displays when the username or email are not unique.
+				{
+					$what = ($check_email != 0 ? "Email" : "Username");
+
+					echo "Phase 3 Incomplete: That $what is already in use. Please choose a different one.\n";
 				}
 			}
 		}
@@ -300,16 +298,16 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 		echo "Phase 1 Incomplete: You did not correctly fill out all the necessary information.\n";
 	}
 
-	   //This is the final signup return section, which only shows if a successful insert and confirmation number has -not- been acheived.
+	//This is the final signup return section, which only shows if a successful insert and confirmation number has -not- been acheived.
 
 	echo "<br><br>";
-	/*if (!isset($confirm))
+	/*
+	if (!isset($confirm))
 	{
 		echo "Return to <a href='signup.php?enteredEmail=$send_email&amp;enteredName=$send_name&amp;enteredClass=$send_class&amp;enteredReferral=$referred_by'>Sign Up page.</a>";
 	}*/
 	return $successful;
 } // *** End of validate_signup() function.
-
 
 include SERVER_ROOT."interface/footer.php";
 ?>

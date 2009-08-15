@@ -30,7 +30,7 @@ if ($lost_uname != "")
 {
   echo "Confirm code sending for account: $lost_uname ...\n";
   mail("$lost_email", "NinjaWars Confirm Code",
-  	"You have requested your confirm code for the account: $lost_uname.<br>\n<br>\nUse this link to activate your account<br>\n<br>\n<b>Account Info</b><br>\nUsername: $lost_uname<br>\n<br>\n<a href=\"http://www.ninjawars.net/confirm.php?username=$lost_uname&confirm=$lost_confirm\">Activate Account</a><br>\n<br>\nOr, paste this URL into your browser.<br>\n<br>\nhttp://www.ninjawars.net/confirm.php?username=$lost_uname&confirm=$lost_confirm<br>\n<br>\nIf you require any further help, email: ".SUPPORT_EMAIL, "$headers");
+  	"You have requested your confirm code for the account: $lost_uname.<br>\n<br>\nUse this link to activate your account<br>\n<br>\n<b>Account Info</b><br>\nUsername: $lost_uname<br>\n<br>\n<a href=\"".WEB_ROOT."confirm.php?username=$lost_uname&amp;confirm=$lost_confirm\">Activate Account</a><br>\n<br>\nOr, paste this URL into your browser.<br>\n<br>\n".WEB_ROOT."confirm.php?username=$lost_uname&amp;confirm=$lost_confirm<br>\n<br>\nIf you require any further help, email: ".SUPPORT_EMAIL, "$headers");
 }
 else
 {

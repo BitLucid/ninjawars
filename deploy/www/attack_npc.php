@@ -247,7 +247,7 @@ if (getTurns($username) > 0) {
 		subtractTurns($username, $turn_cost);
 
 		if ($victim && !$random_encounter) {
-			echo "<a href=\"attack_npc.php?attacked=1&victim=$victim\">Attack $victim again</a>\n";
+			echo "<a href=\"attack_npc.php?attacked=1&amp;victim=$victim\">Attack $victim again</a>\n";
 			echo "<br>\n";
 		}
 

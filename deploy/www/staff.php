@@ -27,7 +27,7 @@ For other issues, including confirmation problems, email us at: <a href="mailto:
 - <a href="http://www.myspace.com/toastersquid">on Myspace</a>
 - on AIM: Tchalvak
 </span>
-<p>Hailing from the icy steppes of upstate New York, Roy got his first computer at the ripe old age of 14, and has been addicted to computers ever since.  He's worked in IT fixing computers, and eventually decided that the web is the future, got in on the action, and hasn't looked back.  Since 2003, he's been working in php and webdesign, which he got started on from working on ninjawars.net. </p>
+<p>Hailing from the icy steppes of upstate New York, Roy got his first computer at the ripe old age of 14, and has been addicted to computers ever since.  He's worked in IT fixing computers, and eventually decided that the web is the future, got in on the action, and hasn't looked back.  Since 2003, he's been working in php and webdesign, which he got started on from working on NinjaWars. </p>
 <p>Roy is almost done with a BS degree in Biochemistry from SUNY Geneseo.  He says it was an accident.  Luckily he also took programming classes along the way, and liked them.</p>
 <p>When he's able to overcome his attachment to instantaneous communication and exchange of ideas (i.e. the internet), he truly enjoys swimming and walking dogs, even if they are someone else's dogs.</p>
 <img src="images/tchalvak.jpg">
@@ -74,11 +74,11 @@ Ninjawars is open source, with the source code downloadable and able to be openl
 <img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png">
 </a><br>
 <span xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dc:title" rel="dc:type">ninjawars</span>
- by <a xmlns:cc="http://creativecommons.org/ns#" href="http://ninjawars.net" property="cc:attributionName" rel="cc:attributionURL">ninjawars.net</a>
+ by <a xmlns:cc="http://creativecommons.org/ns#" href="<?php echo WEB_ROOT;?>" property="cc:attributionName" rel="cc:attributionURL">ninjawars.net</a>
   is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">
   Creative Commons Attribution-Share Alike 3.0 United States License</a>.<br>
   Permissions beyond the scope of this license may be available at
-  <a xmlns:cc="http://creativecommons.org/ns#" href="http://ninjawars.net/staff.php" rel="cc:morePermissions">http://ninjawars.net/staff.php</a>.
+  <a xmlns:cc="http://creativecommons.org/ns#" href="<?php echo WEB_ROOT;?>staff.php" rel="cc:morePermissions"><?php echo WEB_ROOT;?>staff.php</a>.
 
 </p>
 </div>

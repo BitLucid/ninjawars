@@ -84,7 +84,7 @@ function render_avatar($player, $size=null)
 // Display the div for the avatar to live within.
 function render_avatar_section($player, $img_size=null)
 {
-	$img_url = render_avatar($player, $img_size);
+	$img_url = (OFFLINE ? '' : render_avatar($player, $img_size));
 	//$img_url = IMAGE_ROOT."50pxShuriken.png";
 
 	if (!$img_url)
