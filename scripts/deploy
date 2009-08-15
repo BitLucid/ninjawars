@@ -163,8 +163,8 @@ cd $SERVER_ROOT
 # WIPE EXISTING SITE - PROTECT resources/ FOR NOW
 rm -rf `find -P ./ -maxdepth 1|grep -v "./$"|grep -v resources`
 
-cp -rf $source_files/* $SERVER_ROOT
-cp -rf $source_files/.* $SERVER_ROOT
+cp -r $source_files/* $SERVER_ROOT
+cp $source_files/.* $SERVER_ROOT
 echo "source files copied to $SERVER_ROOT"
 
 if [[ $resources_file && -e $resources_file ]]
