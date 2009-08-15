@@ -1,6 +1,6 @@
 <?php
 /*
-* resources.php template. Copy this from the sample to resources.php and change the necessary constants
+* resources.php template. Copy this from the sample to resources.php and change the necessary constan
 */
 define('DATABASE_HOST', __DB_HOST__); // *** localhost on live
 define('DATABASE_USER', __DB_USER__); // *** knownUsername on live
@@ -33,7 +33,7 @@ define('SERVER_IMAGE_ROOT', SERVER_ROOT.'images/');
 // *** Add in specific object folders as they get developed.
 define('LIB_ROOT', SERVER_ROOT.'lib/');
 define('FUNC_ROOT', LIB_ROOT.'func/');
-define('DB_ROOT', SERVER_ROOT.'db/'); 
+define('DB_ROOT', SERVER_ROOT.'db/');
 define('OBJ_ROOT', SERVER_ROOT.'obj/'); // *** For generic business objects.
 
 // *** Specific in-game concepts categorized into their folders.
@@ -45,5 +45,5 @@ define('NPC_ROOT', SERVER_ROOT.'npc/'); // *** For all the in-game npc objects.
 define('CLAN_ROOT', SERVER_ROOT.'clan/');  // *** For all the in-game clan objects.
 define('COMBAT_ROOT', SERVER_ROOT.'combat/');  // *** For all the in-game combat objects.
 define('SKILL_ROOT', SERVER_ROOT.'skill/');  // *** For all the in-game skill objects.
-define('ITEM_ROOT', SERVER_ROOT.'item/');  // *** For all the in-game item/inventory objects.   
+define('ITEM_ROOT', SERVER_ROOT.'item/');  // *** For all the in-game item/inventory objects.
 ?>

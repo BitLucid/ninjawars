@@ -1,13 +1,13 @@
 <?php
 /*
  * Utility routines for the database.
- * 
+ *
  * @package db
  * @subpackage db
  */
 class DBAccess {
     var $pdo, $result, $rows, $data, $a_rows;
-    
+
     function __construct()
     {
     	$this->Create(); // Makes the constructor call for the creation of the pdo connection.
@@ -16,7 +16,7 @@ class DBAccess {
     function Create ($deprec=NULL) // *** first argument is no longer required, since it runs off resources file.
 	{
         $this->pdo = new PDO(CONNECTION_STRING);
-        
+
         // *** This could just use a function to call the database connection
         // with a static variable as PDO, or else instantiate it as static.
 	}
@@ -26,7 +26,7 @@ class DBAccess {
     function Query ($query) {
 		if ($this->result = $this->pdo->query($query)) // *** Runs the query through pdo and sets it as result.
 		{
-	            $this->rows = $this->result->rowCount(); 
+	            $this->rows = $this->result->rowCount();
 	            // *** Sets both row counts, should probably be zero.
 	            $this->a_rows = $this->rows;
 		}
@@ -39,10 +39,10 @@ class DBAccess {
 			}
 		}
     }
-    
+
     /**
      * Create a prepared, protected query.
-    **/    
+    **/
     function prepared($query, $binding_and_val){
     	$prepped = $this->pdo->prepare($query);
     	// bind the keys to the dummy strings...
@@ -75,12 +75,12 @@ class DBAccess {
         }
         return $this->data;
     }
-    
+
     // Associative version of one row only.
     function QueryRowAssoc($query){
     	return $this->QueryRow($query, $type=PDO::FETCH_ASSOC);
     }
-    
+
     // Should get multiple rows, only associative array.
     function QueryAssoc($query){
     	$this->Query($query); // Run the query
@@ -88,7 +88,7 @@ class DBAccess {
     	return $res; // Fetch the results.
     }
 
-    
+
     /* Wrapper function for the PDO full result set function fetchAll using only the default values */
 	function fetchAll($query=null)
 	{
@@ -151,12 +151,12 @@ class DBAccess {
 		$this->Query($query);
 		return $this->a_rows;
     }
-    
+
     function getRowCount()
     {
     	return $this->a_rows;
     }
-    
+
     /*
     * Alias of getRowcount().
     */
@@ -164,13 +164,13 @@ class DBAccess {
     {
     	return $this->getRowCount();
     }
-    
-    
+
+
     function getData()
     {
     	return $this->data;
     }
-	
+
 
 
 
@@ -184,9 +184,9 @@ class DBAccess {
 	function nextSequenceValue($id_field, $table, $full=null)
 	{
 		$sel = "SELECT nextval('".$table."_".$id_field."_seq')";
-		return $this->QueryItem($sel);	
+		return $this->QueryItem($sel);
 	}
-	
+
 	function lastInsertId()
 	{
 		if($id = $this->last_insert_id){
@@ -198,8 +198,8 @@ class DBAccess {
 	}
 
 	/*
-	* Could use a method to utilize the pdo->fetchAll(PDO::FETCH_COLUMN, someColumnNum) to fetch column by column. 
+	* Could use a method to utilize the pdo->fetchAll(PDO::FETCH_COLUMN, someColumnNum) to fetch column by column.
 	*/
-    
+
 }
 ?>

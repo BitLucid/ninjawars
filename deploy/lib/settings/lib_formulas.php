@@ -30,7 +30,7 @@ function level_category($level){
 			$res= 'Shadow Master';
 			break;
 	}
-	return array('display' => $res, 
+	return array('display' => $res,
 		'css' => strtolower(str_replace(" ", "-", $res)));
 }
 

@@ -49,7 +49,7 @@ img {
       border: 0;
       }
 
-select { 
+select {
 	font-family:Verdana, Arial, sans-serif;
 	font-size: 9px;
 }
@@ -78,14 +78,14 @@ a:link {} a:visited {} a:active {}
 }
 
 .extLink, a.extLink, .extLink a, #menu.extLink, #menu.extLink a, #menu a.extLink {
-	color: SlateBlue; 
+	color: SlateBlue;
 }
 
-ol.aboutUpper { 
+ol.aboutUpper {
 	list-style-type: upper-roman;
 	margin-left: 0;
 	}
-ol.aboutLower { 
+ol.aboutLower {
 	list-style-type: lower-alpha;
 	margin-left: 0;
 	}
@@ -96,16 +96,16 @@ input.shopButton {
 	width: 100px;
 	letter-spacing: 1px;
 }
-input.formButton { 
+input.formButton {
 	font-family:Verdana,Arial,sans-serif;
 	font-size: 9px;
 	letter-spacing: 1px;
 }
-input.textField { 
+input.textField {
 	font-family:Verdana, Arial, sans-serif;
 	font-size:xx-small;
 }
-div.description { 
+div.description {
 	text-align: center;
 	border: thin solid #ccb094;
 	margin-top: 10px;
@@ -123,7 +123,7 @@ table{
 
 }
 th {
-	text-align: center; 
+	text-align: center;
 	font-weight: bold;
 	vertical-align: baseline;
 }
@@ -174,7 +174,7 @@ table.playerTable .Black, .player-info .Black {
 	background-color:white;
 }
 
-.playerTable th{ 
+.playerTable th{
 	text-align: left;
 	background-color: #333333;
 	padding-left: 8px;
@@ -291,7 +291,7 @@ td.playerTable {
     font-weight: bold;
     text-align: center;
 }
-.brownHeading {/*deprecated*/ 
+.brownHeading {/*deprecated*/
     color: #D26600/*ff3300FEDB32*/;
     font-weight: bold;
 }
@@ -362,7 +362,7 @@ td.playerTable {
 }
 
 .created-by { /*currently unused */
-	display:none; 
+	display:none;
 	margin-top:10px;
 	margin-bottom: 30px;
 	text-align: center;

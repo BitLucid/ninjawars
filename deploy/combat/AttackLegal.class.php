@@ -4,13 +4,13 @@ require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(CHAR_ROOT . "Player.class.php");
 
 /* PHP Attack Legal Check
- * 
+ *
  * NAMING SCHEME: _ before private variables/functions, and not public.
- * 
+ *
  * @category    Combat
  * @package     Attacks
  * @author      Roy Ronalds <roy.ronalds@gmail.com>
- * @author      
+ * @author
  * @link        http://ninjawars.net/attack_mod.php
 */
 
@@ -32,7 +32,7 @@ require_once(CHAR_ROOT . "Player.class.php");
  * </code>
  *
  * @category    Combat
- * @package     Attack   
+ * @package     Attack
  * @author      Roy Ronalds <roy.ronalds@gmail.com>
  */
 
@@ -46,12 +46,12 @@ class AttackLegal
     * @var string
     */
     var $_error;
-    
+
     var $attacker;
     var $target;
-    
-    
-    
+
+
+
    /**#@-*/
 
 
@@ -69,26 +69,26 @@ class AttackLegal
     	$this->target = null;
     	$this->params = $params;
     	$this->error = null;
-    	
+
     	if ($attacker_name_or_id){
     		$this->attacker = new Player($attacker_name_or_id);
     	} elseif ($username = get_username()) {
     		$this->attacker = new Player($username);
     	}
-    	
+
     	if ($target_name_or_id){
     		$this->target = new Player($target_name_or_id);
     	}
     }
-    
+
     // Run this after the check.
     function getError(){
     	return $this->error;
     }
-	
+
 	/**
 	 * Checks whether an attack is legal or not.
-	 * 
+	 *
 	 * @return boolean
 	**/
 	function check()  //  Checks for errors before the start of combat.
@@ -96,14 +96,14 @@ class AttackLegal
 		$sql = new DBAccess();
 		$attacker = $this->attacker;
 		$target = $this->target;
-		
+
 		$possible = array('required_turns', 'ignores_stealth', 'self_use',
 		    'clan_forbidden');
 		//Initializes all the possible param indexes.
 		foreach( $possible as $loop_index){
 			$$loop_index = isset($this->params[$loop_index])? $this->params[$loop_index] : NULL;
 		}
-		
+
 		if (!is_object($this->attacker)){
 			$this->error = 'Invalid attacker.';
     		return FALSE;
@@ -117,20 +117,20 @@ class AttackLegal
     	$target_status = $target->getStatus();
 
 		$second_interval_limiter_on_attacks = '.25'; // Originally .2
-		$sel_last_started_attack = "select player_id from players 
-			where player_id = '".intval($this->attacker->player_id)."' 
+		$sel_last_started_attack = "select player_id from players
+			where player_id = '".intval($this->attacker->player_id)."'
 			and ((now() - interval '".$second_interval_limiter_on_attacks." second') >= last_started_attack) limit 1";
 		$attack_later_than_limit = $sql->QueryItem($sel_last_started_attack);
 		// Returns a player id if the enough time has passed, or else or false/null.
-		
-		
-		if($attack_later_than_limit) // If not too soon, update the attack limit. 
-		    update_last_attack_time($attacker->vo->player_id, $sql); 
+
+
+		if($attack_later_than_limit) // If not too soon, update the attack limit.
+		    update_last_attack_time($attacker->vo->player_id, $sql);
 		// updates the timestamp of the last_attacked column to slow excessive attacks.
 
 		switch(true) {
 		    //  *** START OF ILLEGAL ATTACK ERROR LIST  ***
-		    case (!$attack_later_than_limit): 
+		    case (!$attack_later_than_limit):
 				$this->error = "Even the fastest ninja cannot act more than four times a second.";
 				return false;
 				break;
@@ -162,11 +162,11 @@ class AttackLegal
 		    	// Attacks that ignore stealth will skip this.
 			    $this->error = "Your target is stealthed. You can only hit this ninja using certain techniques.";
 				return false;
-			    break;    
+			    break;
 		    case ($clan_forbidden && ($target->vo->clan == $attacker->vo->clan && $attacker->vo->clan !="" && !$self_use)):
 			    $this->error = "Your clan would outcast you if you attacked one of your own.";
 				return false;
-				break;  
+				break;
 		    case ($target->vo->health > 0):
 			    return true;  //  ***  ATTACK IS LEGAL ***
 			    break;
@@ -176,7 +176,7 @@ class AttackLegal
 			    return false;
 			    break;
 		}
-	}  
+	}
 } // End Class AttackLegal
 
 

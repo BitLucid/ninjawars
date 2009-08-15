@@ -17,7 +17,7 @@ function status_output_list($statuses=null, $target=null) {
 		$statuses = getStatus($target);
 	}
 	$health = getHealth($target);
-	
+
 	if ($health == 0) { $states[] = "Dead"; }
 	else { // *** Other statuses only display if not dead.
 		if ($health < 80) { $states[] = "Injured"; }
@@ -32,5 +32,5 @@ function status_output_list($statuses=null, $target=null) {
 	assert($target != '' && $result != '');
 	return $result;
 }
-	
+
 ?>

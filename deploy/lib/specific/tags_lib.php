@@ -86,7 +86,7 @@ function natsort2d($arrIn, $index = null) {
         $arrOut[$key] = $arrIn[$key];
     }
     $arrIn = $arrOut;
-    return $arrIn;  
+    return $arrIn;
 }*/
 
 ?>

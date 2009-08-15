@@ -24,7 +24,7 @@ function render_give_item($username, $target, $item){
 }
 
 
-// Determine the turns for ice scroll.    
+// Determine the turns for ice scroll.
 function ice_scroll_turns($targets_turns, $near_level_power_increase){
     if ($targets_turns>50) {
     	$turns_decrease = rand(1,11)+$near_level_power_increase; // *** 1-11 + 0-10
@@ -38,8 +38,8 @@ function ice_scroll_turns($targets_turns, $near_level_power_increase){
     return $turns_decrease;
 }
 
-			  
-// Send out the killed messages. 
+
+// Send out the killed messages.
 function send_kill_mails($username, $target, $attacker_id, $article, $item, $today, $loot){
     $target_email_msg   = "You have been killed by $attacker_id with $article $item at $today and lost $loot gold.";
     sendMessage($attacker_id,$target,$target_email_msg);

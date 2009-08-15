@@ -12,7 +12,7 @@ function login_user($user, $pass){
 	$error = 'That password/username combination was incorrect.';
 	if($user != '' && $pass != ''){
 		$sql = new DBAccess();
-		$q = "select uname, player_id from players where lower(uname) = 
+		$q = "select uname, player_id from players where lower(uname) =
 			lower('".$user."') and pname = '".$pass."' and confirmed = 1 limit 1";
 		$results = $sql->QueryAssoc($q);
 		//$q = "select uname, player_id from players where uname = ':user' and pname = ':pass' limit 1";
@@ -41,7 +41,7 @@ function is_authentic($user, $pass){
 	$res = false;
 	if($user != '' && $pass != ''){
 		$sql = new DBAccess();
-		$q = "select uname, player_id from players where lower(uname) = 
+		$q = "select uname, player_id from players where lower(uname) =
 			lower('".$user."') and pname = '".$pass."' and confirmed = 1 limit 1";
 		$results = $sql->QueryAssoc($q);
 		$rows = $sql->getRowCount();
@@ -49,7 +49,7 @@ function is_authentic($user, $pass){
 			$res = true;
 		}
 	}
-	return $res;    
+	return $res;
 }
 
 /**
@@ -89,10 +89,10 @@ function setup_logged_in($player_id, $username){
 	$_COOKIE['username'] = $username;
 	SESSION::set('player_id', $player_id);
 	SESSION::set('username', $username);
-	
+
 	update_activity_log($username);
 	// Block by ip list here, if necessary.
-	
+
 	$player_data = get_player_info();
 	/*
 	$players_id = $player_data['player_id'];
@@ -116,14 +116,14 @@ function setup_logged_in($player_id, $username){
 	// Also migrate the rank_id to a true player object.
 	$players_status   = getStatus($username);*/
 	put_player_info_in_session($player_data);
-	
+
 }
 
 
 function validate_password($send_pass){
 	$error = null;
 	$filter = new Filter();
-	if ($send_pass != htmlentities($send_pass) 
+	if ($send_pass != htmlentities($send_pass)
 	    || $send_pass != $filter->toPassword($send_pass)){  //  Throws error if password has html elements.
 		$error = "Phase 2 Incomplete: Passwords can only have spaces, underscores, numbers, and letters.<hr>\n";
 	}
@@ -140,8 +140,8 @@ function validate_username($send_name){
 	  	$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not exceed 20 characters.";
   	} else if ($send_name[0] == " "){  //Checks for a white space at the beginning of the name
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a space.";
-	} else if ($send_name != htmlentities($send_name) 
-			|| str_replace(" ","%20",$send_name) != urlencode($send_name) 
+	} else if ($send_name != htmlentities($send_name)
+			|| str_replace(" ","%20",$send_name) != urlencode($send_name)
 			|| $send_name != $filter->toUsername($send_name)){
 		//Checks whether the name is different from the html stripped version, or from url-style version, or matches the filter.
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." should only contain letters, numbers, and underscores.";
@@ -208,7 +208,7 @@ function display_when($state){
 				error_log('improper display_when() argument');
 			}
 			return $off;
-		break;  
+		break;
 	}
 }
 
@@ -220,7 +220,7 @@ function nw_session_destroy(){
 
 // Remove this.
 function nw_session_set_username($logged_in_username){
-	// Indicates successful login. 
+	// Indicates successful login.
 	SESSION::set('username', $logged_in_username);
 }
 
@@ -275,7 +275,7 @@ function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure
     	assert("(false) && ('Headers were sent before the cookie was reached, which should not happen.')");
         return false;
     }
-    
+
 
     if ( !empty($domain) )
     {
@@ -310,12 +310,12 @@ function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure
  * Stats on recent activity and other aggregate counts/information.
  */
 function membership_and_combat_stats($sql, $update_past_stats=false){
-	$todaysViciousKiller = $sql->QueryItem('SELECT uname FROM levelling_log 
-		WHERE killsdate = now() 
-		group by uname, killpoints 
+	$todaysViciousKiller = $sql->QueryItem('SELECT uname FROM levelling_log
+		WHERE killsdate = now()
+		group by uname, killpoints
 		order by killpoints DESC LIMIT 1'); // *** Gets uname with the most kills today.
-	/* $todaysViciousKiller = $sql->QueryItem('SELECT uname FROM levelling_log 
-	WHERE killsdate = current_date group by uname order by sum(killpoints) 
+	/* $todaysViciousKiller = $sql->QueryItem('SELECT uname FROM levelling_log
+	WHERE killsdate = current_date group by uname order by sum(killpoints)
 	DESC LIMIT 1'); // *** Gets uname with the most kills today.
 	*/
 	if($todaysViciousKiller == ''){

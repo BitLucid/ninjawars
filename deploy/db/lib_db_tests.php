@@ -12,7 +12,7 @@ function test_PlayerDAO(){
 	assert(isset($player_vo));
 	assert(isset($player_vo->uname));
 	assert(isset($player_vo->player_id));
-	
+
 	// in: player_id, out: vo with same id.
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();
@@ -20,7 +20,7 @@ function test_PlayerDAO(){
 	$dao = new PlayerDAO($db);
 	$player_vo2 = $dao->get($player_id);
 	assert($player_vo2->player_id == $player_id);
-	
+
 	// in: player_id, out: vo with same username.
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();
@@ -28,20 +28,20 @@ function test_PlayerDAO(){
 	$dao = new PlayerDAO($db);
 	$player_vo2 = $dao->get($player_id);
 	assert($player_vo2->uname == 'glassbox');
-	
+
 	// in: player_id that doesn't exist, out: null
 	$player_id = 999999;
 	$dao = new PlayerDAO($db);
 	$player_vo2 = $dao->get($player_id);
 	assert($player_vo2 === null);
-	
+
 	// in: non-numeric player_id, out: false
 	$player_id = 'not-a-player-id';
 	$dao = new PlayerDAO($db);
 	$player_vo2 = $dao->get($player_id);
 	assert($player_vo2 === false);
-	
-	
+
+
 	// in: player_vo, change the energy, save it. out: get that player, compare energy
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();
@@ -54,8 +54,8 @@ function test_PlayerDAO(){
 	$dao->save($player_vo_original);
 	$player_vo_after = $dao->get($player_vo_original->player_id);
 	assert($orig_energy == ($player_vo_after->energy -2));
-	
-	
+
+
 	// in: player_vo, change the energy, save it. out: get that player, compare energy
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();
@@ -70,7 +70,7 @@ function test_PlayerDAO(){
 	$changed_vo->clan_long_name = $starting_clan;
 	$dao->save($changed_vo);
 	assert('TestClanChange' == $changed_clan);
-	
+
 	// in: a player_vo to change and save then delete, out: successful deletion
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();
@@ -95,7 +95,7 @@ function test_PlayerDAO(){
 	$player_id_sel = "select player_id from players where uname = 'TestUserName2'";
 	$deleted_id = $db->QueryItem($player_id_sel);
 	assert($deleted_id == null);
-	
+
 	// in: a new player_vo to save n delete, out: no such new vo.
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();

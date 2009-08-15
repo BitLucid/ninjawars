@@ -1,7 +1,7 @@
 <?php
 /*
  * Allows the filtering of different types.
- * 
+ *
  * @package input
  * @subpackage filter
  */
@@ -10,7 +10,7 @@ require_once(OBJ_ROOT."Sanitize.php"); // *** Mainly a replacement for the Filte
 class Filter
 {
 	// TODO: Username and password validation functions are in lib_auth.
-	
+
 	function toNumeric($dirty)
 	{
 		$result = NULL;
@@ -19,12 +19,12 @@ class Filter
 		}
 		return $result;
 	}
-	
+
 	function toID($dirty)
 	{
 		return filter_var($dirty, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1) ) );
 	}
-	
+
 	function toInt($dirty, $max=NULL, $min=NULL)
 	{
 		$options = NULL;
@@ -33,18 +33,18 @@ class Filter
 		}
 		return filter_var($dirty, FILTER_VALIDATE_INT, $options);
 	}
-	
+
 	function toWord($dirty)
 	{ // Essentially allows numbers, words, and usernames, no spaces.
 		return preg_replace("[^A-Za-z0-9_\-]", "", (string) $dirty);
 	}
-	
+
 	// Can be used as the default solution for the in() function.
 	function toDefault($dirty)
 	{
 	    return toText($dirty);
 	}
-	
+
 	// This is the default non-user-message filtering.
 	// Only needs to cover fewer eventualities: spaces, emails and usernames, digits,
 	// and standard urls.
@@ -53,7 +53,7 @@ class Filter
 	    // Allows words, digits, spaces, _, -, ., @, :, and slash for urls /
 		return preg_replace("/[^\w\d\s_\-\.\@\:\/]/", "", (string) $dirty);
 	}
-	
+
 	/** Extensive filtering for passwords going into sql, legacy passwords
 	 * shouldn't be effected, validate_password should limit the possibilities further.
 	**/
@@ -62,7 +62,7 @@ class Filter
 	    $dirty = preg_replace("/[^\w\d_\+\-\.\&\s\!\?\,\=\*\(\)\:\@\/]/", "", (string) $dirty);
 	    return $dirty;
 	}
-	
+
 	/**
 	 * Relatively permissive username filter used during login procedure.
 	 * Must allow: ^[A-Za-z0-9_-]+ alphanumerics, digits, underscores, and dashes.
@@ -70,7 +70,7 @@ class Filter
 	function toUsername($dirty){
 	    return preg_replace("/[^\w\d\s_\-]/", "", (string) $dirty);
 	}
-	
+
 	/**
 	 * Filters an array of ids each to the id filter
 	**/
@@ -82,11 +82,11 @@ class Filter
 	    }
 	    return $dirty;
 	}
-	
+
 	function forSql($dirty){
 	    return $this->sanitize_sql_string($dirty);
 	}
-	
+
 	// sanitize a string for SQL input (simple slash out quotes and slashes)
     function sanitize_sql_string($string, $min='', $max='')
     {
@@ -103,12 +103,12 @@ class Filter
       return preg_replace($pattern, $replacement, $string);
     }
 
-	
+
 	function toUrl($dirty)
 	{
 		return preg_replace("/[^\w\d_\-\.\&\+\?\,\%\:\/]/", "", (string) $dirty);
 	}
-	
+
 	// User messages should have a special exception made of them.
 	function toMessage($dirty, $limit=null)
 	{
@@ -124,33 +124,33 @@ class Filter
 		$dirty = $this->replace_urls($dirty);
 		return $dirty;
 	}
-	
+
 	function toEmail($dirty)
 	{
 		$result = NULL;
 		$result = filter_var($dirty, FILTER_VALIDATE_EMAIL);
 		return $result;
 	}
-	
+
 	// Filter flags: http://phpro.org/tutorials/Filtering-Data-with-PHP.html#10
 
 	function toHtml($dirty)
 	{
 		return htmlentities($dirty);
 	}
-	
+
 	// Wraps toMessage method.
 	function forChat($dirty)
 	{
 		return $this->toMessage($dirty);
 	}
-	
+
 	// *** Wrapper function for user-originating mail.
 	function forMail($dirty)
 	{
 		return $this->toMessage($dirty);
 	}
-	
+
 	// Replaces occurances of http://whatever with links (in blank tab).
 	function replace_urls($string){
 	    $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
@@ -159,10 +159,10 @@ class Filter
 	    $query = "(\?[^<>\#\"\s]+)?";
 	    return preg_replace("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "<a target='_blank' href='$1'>$1</a>", $string);
 	}
-	
-	
+
+
 	/* EVENTUAL POTENTIAL FILTERS*/
-	
+
 	/*
 	function cleanTags($source, $tags = null)
 	{
@@ -176,17 +176,17 @@ class Filter
 	          $clean = stripslashes($matched[0]);
 	          $clean = preg_replace($stripAttrib, '', $clean);
 	          return $clean;
-	    }      
- 
+	    }
+
 	    $allowedTags='<a><br><b><i><br><li><ol><p><strong><u><ul>';
 	    $clean = strip_tags($source, $allowedTags);
 	    $clean = preg_replace_callback('#<(.*?)>#', "clean", $source);
 	    return $source;
 	}
 	*/
-	
+
 	//IF NEEDED: function toIP
-	
+
 }
 
 ?>

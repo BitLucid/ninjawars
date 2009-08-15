@@ -1,7 +1,7 @@
 <?php
 /*
  * Functions for use in the deities.
- * 
+ *
  * @package deity
  * @subpackage deity_lib
  */
@@ -50,13 +50,13 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 		$unconfirm_days_over = $minimum_days;
 	}
 	// Unconfirm at a maximum of 20 players at a time.
-	$unconfirm_within_limits = "update players 
+	$unconfirm_within_limits = "update players
 		set confirmed = ".$change_confirm_to."
-		where players.player_id 
-		IN ( 
-			select player_id from players 
-			where confirmed = 1 
-			and days > ".intval($unconfirm_days_over)." 
+		where players.player_id
+		IN (
+			select player_id from players
+			where confirmed = 1
+			and days > ".intval($unconfirm_days_over)."
 			order by player_id DESC	limit ".$max_to_unconfirm."
 			)";
 	$db->Update($unconfirm_within_limits);
@@ -68,29 +68,29 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 function test_unconfirm_older_players_over_minimums(){
 	if (DEBUG) {
 		$original_error_reporting = error_reporting();
-		error_reporting(E_ALL | E_STRICT); //error_reporting(E_ALL); 
+		error_reporting(E_ALL | E_STRICT); //error_reporting(E_ALL);
 		// Turns on strict standards and notices.
 	}
-	
+
 	// These run dummy unconfirmations.
-	
+
 	$unconfirmed = unconfirm_older_players_over_minimums(2300, 90);
 	assert($unconfirmed < 21);
 	// IN: Default limits, out: nothing more than the max unconfirmed.
-	
+
 	$unconfirmed = unconfirm_older_players_over_minimums(1, 1);
 	assert($unconfirmed < 30);
 	// in: when attempting to unconfirm everyone... out: a failsafe max of 30 are affected
-	
+
 	$unconfirmed = unconfirm_older_players_over_minimums(1, 500);
 	assert($unconfirmed == 0);
 	// in: something that should match no-one, out: 0 unconfirmed
-	
+
 	$unconfirmed = unconfirm_older_players_over_minimums(10000, 1);
 	assert($unconfirmed == 0);
 	// in: something that should match no-one, out: 0 unconfirmed
-	
-	
+
+
 	if (DEBUG) {
 		error_reporting($original_error_reporting);
 	}
@@ -114,7 +114,7 @@ function revive_players($params=array()){
     $just_testing = isset($params['just_testing'])? 'true' : 'false';
     $major_hour = 3; // Hour for the major revive.
     $revive_amount = 0; // Initial.
-        
+
     /* New schedule should be:
     1: revive to 100
     2: revive to 100 (probably 0)
@@ -124,7 +124,7 @@ function revive_players($params=array()){
     6: revive 150, (400 total) to a max of 80% of total, ~2500
     7: ...etc.
     */
-    
+
     // SQL pulls.
     $db = new DBAccess();
     // Determine the total dead (& confirmed).
@@ -149,7 +149,7 @@ function revive_players($params=array()){
 	}
     // If minor, and total_alive is more than minor_revive_to-1, return 0/total.
     if(!$major){ // minor
-        if($total_alive>($minor_revive_to-1)){ // minor_revive_to already met. 
+        if($total_alive>($minor_revive_to-1)){ // minor_revive_to already met.
             return array(0, $dead_count);
         } else {  // else revive minor_revive_to - total_alive.
             $revive_amount = floor($minor_revive_to - $total_alive);
@@ -174,17 +174,17 @@ function revive_players($params=array()){
     // Actually perform the revive on those integers.
     // Use the order by clause to determine who revives, by time, days and then by level, using the limit set previously.
 	//select uname, player_id, level,floor(($major_revive_percent/100)*$total_active) days, resurrection_time from players where confirmed = 1 AND health < 1 ORDER BY abs(8 - resurrection_time) asc, level desc, days asc
-	$select = "select player_id from players where confirmed = 1 AND health < 1 ORDER BY abs(".intval($current_time)." 
+	$select = "select player_id from players where confirmed = 1 AND health < 1 ORDER BY abs(".intval($current_time)."
         	- resurrection_time) asc, level desc, days asc limit ".$revive_amount;
-	$up_revive_players= "UPDATE players 
-                    SET status = 0, 
-                    health = 
-                    	CASE WHEN ".$just_testing." 
-                    	THEN health 
-                    	ELSE 
+	$up_revive_players= "UPDATE players
+                    SET status = 0,
+                    health =
+                    	CASE WHEN ".$just_testing."
+                    	THEN health
+                    	ELSE
                     		(
-                    		CASE WHEN class='White' 
-                    		THEN (150+(level*3)) 
+                    		CASE WHEN class='White'
+                    		THEN (150+(level*3))
                     		ELSE (100+(level*3)) END
                     		)
                     	END
@@ -208,7 +208,7 @@ function revive_appropriate_players($min=null, $max=null, $by_percent=false, $ju
 		$max=100;
 	}
 	$just_testing = ($just_testing? 'true' : 'false'); // Makes the just testing sql compatible.
-	
+
 	$db = new dbAccess();
 	$sel_revive_targets = 'select count(*) from players where health<1 and confirmed=1';
 	// get number of potential targets.
@@ -219,7 +219,7 @@ function revive_appropriate_players($min=null, $max=null, $by_percent=false, $ju
 	$info['revived']=$revived;
 	if ($max == 0 || $target_number == 0){
 		return $info;
-	}	
+	}
 	$sel_total_active = 'select count(*) from players where confirmed=1';
 	$total_active = $db->QueryItem($sel_total_active);
 	$info['total_active'] = $total_active;
@@ -235,25 +235,25 @@ function revive_appropriate_players($min=null, $max=null, $by_percent=false, $ju
 
 	$info['max']=$max;
 	$info['min']=$min;
-	
+
 	$sel_current_time = "SELECT amount from time where time_label='hours'";
 	$current_time = $db->QueryItem($sel_current_time);
 	assert(is_numeric($current_time));
-	
+
 	// Use the order by clause to determine who revives, by time, days and then by level, using the limit set previously.
 	//select uname, player_id, level, days, resurrection_time from players where confirmed = 1 AND health < 1 ORDER BY abs(8 - resurrection_time) asc, level desc, days asc
-	$select = "select player_id from players where confirmed = 1 
-	        AND health < 1 ORDER BY abs(".intval($current_time)." - resurrection_time) asc, level desc, days asc 
+	$select = "select player_id from players where confirmed = 1
+	        AND health < 1 ORDER BY abs(".intval($current_time)." - resurrection_time) asc, level desc, days asc
 	        limit ".$limit;
-	$up_revive_players= "UPDATE players 
-                    SET status = 0, 
-                    health = 
-                    	CASE WHEN ".$just_testing." 
+	$up_revive_players= "UPDATE players
+                    SET status = 0,
+                    health =
+                    	CASE WHEN ".$just_testing."
                     	THEN health
-                    	ELSE 
+                    	ELSE
                     		(
-                    		CASE WHEN class='White' 
-                    		THEN (150+(level*3)) 
+                    		CASE WHEN class='White'
+                    		THEN (150+(level*3))
                     		ELSE (100+(level*3)) END
                     		)
                     	END
@@ -276,65 +276,65 @@ function revive_appropriate_players($min=null, $max=null, $by_percent=false, $ju
 function test_revive_appropriate_players(){
 	if (DEBUG) {
 		$original_error_reporting = error_reporting();
-		error_reporting(E_ALL | E_STRICT); //error_reporting(E_ALL); 
+		error_reporting(E_ALL | E_STRICT); //error_reporting(E_ALL);
 		// Turns on strict standards and notices.
 	}
-	
+
 	/*$minimum = 0;
 	$by_percent = false;
 	$maximum = 0;
 	$info = revive_appropriate_players($minimum, $maximum, $by_percent, $just_testing=true);
 	assert($info['revived'] == false);
-	
+
 	$minimum = 10;
 	$by_percent = false;
 	$maximum = 1;
 	$info = revive_appropriate_players($minimum, $maximum, $by_percent, $just_testing=true);
 	assert($info['revived'] == 10);
-	
+
 	$minimum = 10;
 	$by_percent = false;
 	$maximum = 10;
 	$revived = revive_appropriate_players($minimum, $maximum, $by_percent, $just_testing=true);
 	assert($info['revived'] == 10);
-	
+
 	$minimum = 2;
 	$by_percent = false;
 	$maximum = 4;
 	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
 	assert($info['revived'] > 1 && $info['revived'] < 5);
-	
+
 	$minimum = 4;
 	$by_percent = false;
 	$maximum = null;
 	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
 	assert($info['revived'] > 3);
-	
+
 	$minimum = 3;
 	$by_percent = true;
 	$maximum = 10;
 	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
 	assert($info['revived']<$info['target_number']);
-	
+
 	$minimum = 100;
 	$by_percent = true;
 	$maximum = 100;
 	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
 	assert($info['revived']==$info['target_number']);
-	
+
 	$minimum = 0;
 	$by_percent = true;
 	$maximum = 100;
 	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
 	assert($info['revived'] == $info['target_number']);
-	
+
 	$minimum = 3;
 	$by_percent = true;
 	$maximum = 10;
 	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
 	assert($info['revived']<$info['target_number']);
 	*/
-	
+
 	if (DEBUG) {
 		error_reporting($original_error_reporting);
 	}

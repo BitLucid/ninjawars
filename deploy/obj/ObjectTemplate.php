@@ -1,14 +1,14 @@
 <?php
 
 /* PHP OBJECT TEMPLATE
- * 
+ *
  * NAMING SCHEME: _ before private variables/functions, and not public.
- * 
+ *
  * @category    Template
  * @package     
  * @author      Roy Ronalds <roy.ronalds@gmail.com>
  * @author      
- * @link        http://someLinkToExampleUsage.com/ 
+ * @link        http://someLinkToExampleUsage.com/
 */
 
 /* Requires and require_onces.
@@ -41,7 +41,7 @@ class ObjectTemplate
     */
     var $_privVar;
    /**#@-*/
-   
+
     /**
     * Constructor
     *
@@ -100,13 +100,13 @@ class ObjectTemplate
             $this->setURL($url);
         }
     }
-    
-    
-    
+
+
+
     /* SPECIFIC SETS, IF ANY NEEDED BEYOND CONSTRUCTOR
     */
-    
-    
+
+
     /**
     * Generates a Host header for HTTP/1.1 requests
     *
@@ -115,12 +115,12 @@ class ObjectTemplate
     */
     function _generateHostHeader()
     {
-        
-        
-        
+
+
+
     }
-    
-    
+
+
    /**
     * Returns the current request URL  
     *
@@ -131,7 +131,7 @@ class ObjectTemplate
     {
         return empty($this->_url)? '': $this->_url->getUrl();
     }
-    
+
 } // End Class ObjectTemplate
 
 

@@ -9,20 +9,20 @@
 // Many thanks to those on the webappsec list for helping me improve these functions
 ///////////////////////////////////////
 // Function list:
-// sanitize_paranoid_string($string) -- input string, returns string stripped of all non 
+// sanitize_paranoid_string($string) -- input string, returns string stripped of all non
 //           alphanumeric
 // sanitize_system_string($string) -- input string, returns string stripped of special
 //           characters
 // sanitize_sql_string($string) -- input string, returns string with slashed out quotes
 // sanitize_html_string($string) -- input string, returns string with html replacements
 //           for special characters
-// sanitize_int($integer) -- input integer, returns ONLY the integer (no extraneous 
+// sanitize_int($integer) -- input integer, returns ONLY the integer (no extraneous
 //           characters
-// sanitize_float($float) -- input float, returns ONLY the float (no extraneous 
+// sanitize_float($float) -- input float, returns ONLY the float (no extraneous
 //           characters)
-// sanitize($input, $flags) -- input any variable, performs sanitization 
-//           functions specified in flags. flags can be bitwise 
-//           combination of PARANOID, SQL, SYSTEM, HTML, INT, FLOAT, LDAP, 
+// sanitize($input, $flags) -- input any variable, performs sanitization
+//           functions specified in flags. flags can be bitwise
+//           combination of PARANOID, SQL, SYSTEM, HTML, INT, FLOAT, LDAP,
 //           UTF8
 ///////////////////////////////////////
 
@@ -52,7 +52,7 @@ function sanitize_paranoid_string($string, $min='', $max='')
 function sanitize_system_string($string, $min='', $max='')
 {
   $pattern = '/(;|\||`|>|<|&|^|"|'."\n|\r|'".'|{|}|[|]|\)|\()/i'; // no piping, passing possible environment variables ($),
-                           // seperate commands, nested execution, file redirection, 
+                           // seperate commands, nested execution, file redirection,
                            // background processing, special commands (backspace, etc.), quotes
                            // newlines, or some other special characters
   $string = preg_replace($pattern, '', $string);

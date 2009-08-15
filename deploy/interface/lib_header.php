@@ -40,12 +40,12 @@ function render_error_if_dead($alive_required, $players_health, $status_array){
 	if ($alive_required) { // *** That page requires the player to be alive to view it.
 		if (!$players_health) {
 			return "<span class='ninja-notice'>You are a ghost.
-				  You must resurrect before you may act again. 
-				  Go to the <a href='shrine.php'>shrine</a> 
+				  You must resurrect before you may act again.
+				  Go to the <a href='shrine.php'>shrine</a>
 				  for the monks to bring you back to life.</span>";
 		} else {
 			if ($status_array['Frozen']) {
-				return "<span class='ninja-notice'>You are currently 
+				return "<span class='ninja-notice'>You are currently
 					<span style='skyBlue'>frozen</span>.
 					 You must wait to thaw before you may continue.</span>";
 	    	}
@@ -69,11 +69,11 @@ function write_html_for_header($title=null, $body_classes='body-default'){
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<meta name="keywords" content="ninjawars, ninja wars, ninja, samurai, free online game, 
+	<meta name="keywords" content="ninjawars, ninja wars, ninja, samurai, free online game,
 	free games, this here is not your mommas naruto game">
 	<meta name="description" content="Ninjawars: battle other ninja for survival.">
 	<?=$title_html?>
-    <link rel="stylesheet" type="text/css" href="<?=WEB_ROOT?>css/style.css">		
+    <link rel="stylesheet" type="text/css" href="<?=WEB_ROOT?>css/style.css">
 	<!--[if lte IE 6]>
     <link rel="stylesheet" type="text/css" href="<?=WEB_ROOT?>css/ie-6.css">
 	<![endif]-->

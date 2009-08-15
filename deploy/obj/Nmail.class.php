@@ -1,12 +1,12 @@
 <?php
 /**
- * Wrapper class around the mail function, allows dumping/debugging of mail, 
+ * Wrapper class around the mail function, allows dumping/debugging of mail,
  * should eventually just wrap PEAR's Mail class.
- * 
+ *
  * @category Mail
  * @package obj
  * @subpackage mail
- * @link  http://ninjawars.net/signup.php/ 
+ * @link  http://ninjawars.net/signup.php/
  */
 class Nmail {
 
@@ -14,9 +14,9 @@ class Nmail {
     * @access public
     */
 	public $to;
-	
+
 	public $subject;
-	
+
 	public $body;
 
     /**
@@ -30,13 +30,13 @@ class Nmail {
     * @var string
     */
 	public $cc_bcc_etc_headers;
-	
+
 	/**
     * Boolean result of whether the mail() function accepted the send input.
     * @var boolean
     */
 	public $success;
-	
+
 	/**
 	 * During debugging, can be turned on to dump the mail contents instead of
 	 * trying to send them,
@@ -44,19 +44,19 @@ class Nmail {
 	 * @var boolean
 	 */
 	public $dump = false;
-	
+
 	/**
 	 * During debugging, can be turned on to die and stop after the mail dump.
 	 * @var boolean
 	 */
 	public $die_after_dump = false;
-	
+
 	/**
 	 * During debugging, can be turned to false to not try to send the email.
 	 * @var boolean
 	 */
 	public $try_to_send = true;
-	
+
    /**#@-*/
 
 	/**
@@ -74,7 +74,7 @@ class Nmail {
 		$this->from = $from;
 		$this->cc_bcc_etc_headers = $cc_bcc_etc_headers;
 	}
-	
+
 	/**
 	 * Replace the mail settings with completely new ones, reusing the constructor.
 	 * @return void
@@ -83,7 +83,7 @@ class Nmail {
 		$this->Zmail($to, $subject, $body, $from, $cc_bcc_etc_headers);
 		// *** Just re-call the constructor.
 	}
-	
+
 	/**
 	 * Run checks to make sure that the mail is ready to be sent out.
 	 * @return boolean
@@ -96,14 +96,14 @@ class Nmail {
 			return true;
 		}
 	}
-	
+
 	// *** TODO: Add a addToAddresses() function that takes in an array
 	// *** of addresses and Names to create formal emails.
-	
+
 	// *** TODO: get functions to get the email parts.
-	
-	
-	
+
+
+
 	/**
 	 * Sends the mail out using the php mail() function.
 	 * @return boolean whether the mail function accepted the inputs.

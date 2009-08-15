@@ -21,7 +21,7 @@ class SESSION
 		self :: commence();
 		$_SESSION[$field] = $val;
    }
-   
+
    // Set a session id if it doesn't exist yet.
    public static function set_if_not_set($field, $val)
    {
@@ -31,13 +31,13 @@ class SESSION
 		}
 		return false;
    }
-   
-   public static function un_set($field) 
+
+   public static function un_set($field)
    {
 		self :: commence ();
 		unset($_SESSION[$field]);
    }
-   
+
    public static function destroy()
    {
 		self :: commence();
@@ -45,19 +45,19 @@ class SESSION
 		session_destroy();
 		return true;
    }
-   
+
    public static function get($field)
    {
 		self :: commence();
 		return $_SESSION[$field];
    }
-   
+
    public static function has_values(){
 		self :: commence();
 		return (count($_SESSION)>0? true : false);
    }
-   
-   public static function is_set($field) 
+
+   public static function is_set($field)
    {
 		self :: commence();
 		return isset($_SESSION[$field]);

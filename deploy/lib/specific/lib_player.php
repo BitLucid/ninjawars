@@ -6,7 +6,7 @@ define('GRAVATAR', 1);
 
 
 function render_skills($target, $skillListObj, $skillsListObj){
-    ob_start();    		
+    ob_start();
     if ($skillsListObj->hasSkill('Fire Bolt')) {
       echo "<form id=\"skill_use\" action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
       echo "<input id=\"command\" type=\"submit\" value=\"Fire Bolt\" name=\"command\" class=\"formButton\">\n";
@@ -163,7 +163,7 @@ function display_player_clan($player_info, $viewers_clan=null){
 			$clan_link = $player_info['clan']."'s Clan";
 		}
 		?>
-		
+
 		<div class='player-clan'>
             <?php if($same_clan){?>
             <p class='ninja-notice'><?=$same_clan;?> is part of your clan.</p>
@@ -196,7 +196,7 @@ function display_clan_members($clan=null, $limit=30){
                                 ".$ninja['uname']."
                             </a>
                           </li>";
-                } ?> 
+                } ?>
             </ul>
         </div>
         <?php
@@ -238,13 +238,13 @@ function render_inventory_options($username, $sql){
     $res = '';
     $selected = "selected='selected'";// Mark first option as selected.
     $loop_items = $sql->QueryAssoc(
-        "SELECT owner, item, item_id, amount 
-        FROM inventory WHERE owner = '$username' 
+        "SELECT owner, item, item_id, amount
+        FROM inventory WHERE owner = '$username'
         AND amount>0 order by item");
     if (empty($loop_items)){
         $res = "          <option value=\"\" selected=\"selected\">No Items</option>\n";
     } else { // Some items available.
-        // Set shuriken at highest precedence. 
+        // Set shuriken at highest precedence.
         $items_indexed = array();
         foreach($loop_items as $litem){
             $items_indexed[$litem['item']] = $litem; // indexed by item name.
@@ -283,13 +283,13 @@ function render_item_use_on_another($target, $sql){
 
 function display_attack_options(){
 	// Attack Duel deflect or blaze
-	// Use [Item List] Give (only if in same clan) 
-	// Extra skills (sight, pickpocket) 
+	// Use [Item List] Give (only if in same clan)
+	// Extra skills (sight, pickpocket)
 	// Make Attacks central, secondary options up against left and right sides.
 }
 
 
-// Display the in-clan options for clan leaders.	
+// Display the in-clan options for clan leaders.
 function display_clan_options($player_info, $viewing_player_obj){
     if ($player_info['clan'] && $viewing_player_obj->vo->clan
         && $player_info['clan'] == $viewing_player_obj->vo->clan
@@ -313,9 +313,9 @@ function is_clan_leader($player){
     } else {
         return false;
     }
-    
+
 }
-	
+
 // display the form to set bounty on a player.
 function display_set_bounty($player_info){
     echo "  <div class='set-bounty centered'>";
@@ -326,7 +326,7 @@ function display_set_bounty($player_info){
     echo "    </form>\n";
     echo "  </div>";
 }
-	
+
 // Display the form to send mail to an individual.
 function display_communication($target){
     echo "  <div class='player-communications centered'>";

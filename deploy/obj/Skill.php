@@ -70,7 +70,7 @@ class Skill
 		 }
 		return $res; // *** Throws back the turns cost.
 	}
-	
+
 	function getSelfUse($type)
 	{
 		$skillsTypeToSelf = array('stealth' => true, 'unstealth' => true);
@@ -80,7 +80,7 @@ class Skill
 		}
 		return $res;
 	}
-	
+
 	// Whether the skill is usable on someone other than self.
 	function getUsableOnTarget($type)
 	{
@@ -91,7 +91,7 @@ class Skill
 		}
 		return $res;
 	}
-	
+
 	function getIgnoreStealth($type)
 	{
 		$skillsThatIgnoreStealth = array('sight' => true,

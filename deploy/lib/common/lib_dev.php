@@ -11,7 +11,7 @@
 **/
 function var_dump_locals($defined=array()){
 	if(DEBUG){
-		echo "<table cellspacing='0' cellpadding='0' dir='ltr' class='xdebug-local-vars' 
+		echo "<table cellspacing='0' cellpadding='0' dir='ltr' class='xdebug-local-vars'
 		style='background-color:lavender;clear:both;border:thin solid grey;width:800px;padding:0;margin:0;'>
 			<tbody>
 			<tr style='background-color:orange;color:Black'>
@@ -25,7 +25,7 @@ function var_dump_locals($defined=array()){
 				echo "<tr class='table-row-2-column' style='border:thin solid grey;padding:1px;'>
 					<td style='background-color:#e9b96e;color:black;font-weight:bold;border:thin solid grey;'>
 					&#36$name =
-					</td>		
+					</td>
 				 	<td style='border:thin solid grey;'>";
 				var_dump($contents);
 				echo "</td>

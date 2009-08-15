@@ -11,7 +11,7 @@ function delete_mail($ids, $all=false){
     if($all){ // Delete all a user's mail.
         $del = "DELETE from mail where send_to='".$username."'";
     } else { // Delete an id list.
-        $del = "DELETE from mail where send_to='".$username."' 
+        $del = "DELETE from mail where send_to='".$username."'
             AND id in ('".implode("', '", $ids)."')";
     }
     $sql->Delete($del);

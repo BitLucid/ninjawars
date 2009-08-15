@@ -7,7 +7,7 @@ require_once(DB_ROOT . "PlayerVO.class.php");
  */
 class PlayerDAO {
 	var $_sql; // *** DBAccess object.
-	
+
 	var $_vo_obj_name = 'PlayerVO';
 	var $_vo_fields = array(
 		'player_id', 'uname', 'pname', 'health', 'strength', 'gold',
@@ -16,19 +16,19 @@ class PlayerDAO {
 	  	'clan_long_name', 'created_date', 'last_started_attack', 'energy',
 	  	'avatar_type'
 		);
-		
+
 	var $_id_field = 'player_id';
 	var $_table = 'players';
 	var $_last_saved_or_updated = '';
-	
+
 	/*
 	 * Assigns and holds the connection to the db.
 	 */
 	function __construct(DBAccess &$sql) {
 	    $this->_sql = $sql;// *** Not sure whether this should be by reference or not.
 	}
-	
-	
+
+
 	/*
 	 * Save the changes made to the Player data to the database.
 	 */
@@ -97,7 +97,7 @@ class PlayerDAO {
 	    }
 	    $up = substr($up, 0, -1); // *** Remove that final comma.
 	    $up .= " where ".$this->_id_field." = '".intval($vo->{$this->_id_field})."'";
-	    
+
 	    $this->_sql->Update($up);
 	}
 
@@ -118,7 +118,7 @@ class PlayerDAO {
 
 	    $in = substr($in, 0, -1); // *** Remove that final comma.
 	    $in .= ")"; // *** Final closing of the parentheses.
-	    
+
 	    #insert record into db
 	    $this->_sql->Insert($in);
 	    // The new id is set at the beginning of the function.

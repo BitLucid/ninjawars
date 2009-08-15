@@ -44,8 +44,8 @@ if ($command == "new") { //Clan Creation Action
 if ($clan  != "") {
   if ($clan == $username) {
       if ($command == "rename" ) {     //Clan Leader Action Rename
-    	  if ($new_clan_name != "" && strlen($new_clan_name) <= 20 
-    	    and ( str_replace(array('/','\'','*','--', '<', '>'), '', $new_clan_name) ==$new_clan_name)) { 
+    	  if ($new_clan_name != "" && strlen($new_clan_name) <= 20
+    	    and ( str_replace(array('/','\'','*','--', '<', '>'), '', $new_clan_name) ==$new_clan_name)) {
     	    // *** The clan doesn't contain any special characters, including apostrophes, asterixes, slashes, and html code.
     	      echo "<p>Your new clan name is <span style=\"font-weight: bold;\">".renameClan($username,$new_clan_name).".</span></p>\n";
     	    } else {
@@ -127,7 +127,7 @@ if ($clan  != "") {
             <li><a href=\"clan.php?command=kick\">Kick a Clan Member</a></li>
         </ul>
       </div>";
-      
+
     } else {
       if ($command == "leave"){                                   //Clan Member Action to Leave their Clan
 	  setClan($username,"");
@@ -149,7 +149,7 @@ if ($clan  != "") {
           <input type=\"submit\" value=\"Send This Message\" class=\"formButton\">
           </form>\n";
     }
- 
+
   echo "<ul id='clan-options'>
             <li><a href=\"clan.php?command=msgclan\">Message Clan Members</a></li>
             <li><a href=\"clan.php?command=view&clan_name=$clan\">View Your Clan</a></li>
@@ -161,7 +161,7 @@ if ($clan  != "") {
 
     echo "<div>You are not a member of any clan.</div>\n";
     echo "<div><a href=\"clan.php?command=join\">Join a Clan</a></div>\n";
-    if ($viewer_level >= $clan_creation_level_requirement) { 
+    if ($viewer_level >= $clan_creation_level_requirement) {
         //Prevents characters under the level req from seeing clan creation option.
         echo "<div><a href=\"clan.php?command=new\">Start a New Clan</a></div>";
     } else {
@@ -194,7 +194,7 @@ if ($command == "list") {                                //Lists the clans that 
   echo "  View\n";
   echo "  </td>\n";
   echo "</tr>\n";
-  
+
   while ($data = $sql->Fetch()) {
       $clan = $data[1];
       $clan_l_name = $data[2];
@@ -217,7 +217,7 @@ if ($command == "list") {                                //Lists the clans that 
 } else
 */
 
-if ($command == "view"){                                     
+if ($command == "view"){
     //A view of the member list of any clan
     echo render_clan_view($clan, $clan_name, $clan_long_searched, $sql);
 }

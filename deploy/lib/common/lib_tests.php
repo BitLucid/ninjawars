@@ -11,27 +11,27 @@ function test_input(){
 	assert($res != $start);
 	var_dump('RESULT:');
 	var_dump($res);
-	
+
 	$start = "Unallowed \'SQL\"''##--';";
 	$TEST['test'] = $start;
 	$res = sanitize_sql_string($start);
 	assert($res != $start);
 	var_dump('RESULT:');
 	var_dump($res);*/
-	
+
 	// Example login username regex: $validLogin = ereg($postvar, '[[:alnum:] _-]{6,40}');
-	
+
 	// This may require running on the web url.
 	$start = 'word';
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
 	assert($res == $start);
-	
+
 	$start = 'Sentence full of stuff, ya know?.';
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='toMessage', $TEST);
 	assert($res == $start);
-	
+
 	$start = 'Unallowed Characters><>""';
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
@@ -41,12 +41,12 @@ function test_input(){
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
 	assert($res == 'Unallowed Characters');
-	
+
 	$start = "Unallowed HTML<a></a>";
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
 	assert($res == 'Unallowed HTMLa/a');
-	
+
 	$start = "Unallowed \'SQL\"''##--';";
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
@@ -56,17 +56,17 @@ function test_input(){
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
 	assert($res != $start);
-	
+
 	$start = 'Unallowed Characters>&<>""';
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='no filter', $TEST);
 	assert($res == $start);
-	
+
 	$start = 'Unallowed Characters.>&<>""\'';
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
 	assert($res == 'Unallowed Characters.');
-	
+
 	$start = 'Unallowed <a>Characters.>&<>""\'';
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
@@ -76,17 +76,17 @@ function test_input(){
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
 	assert($res == 'Unallowed aCharacters.');
-	
+
 	$start = 'All_allowed_characters?!.,  ';
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='toMessage', $TEST);
 	assert($res == $start);
-	
+
 	$start = 'Non-messageWith Nonstandard_Characters should fail?!.,  ';
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
 	assert($res != $start);
-	
+
 	$start = urlencode('http://www.ninjawars.net?val=5&pie=true');
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='toUrl', $TEST);
@@ -97,30 +97,30 @@ function test_input(){
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='toMessage', $TEST);
 	assert($res == $with_apostrophes_encoded);
-*/	
+*/
 	$start = NULL;
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='toMessage', $TEST);
 	assert($res == $start);
-	
+
 	$start = "Greater Than > and less than < encoded.";
 	$with_gtlt_encoded = "Greater Than &gt; and less than &lt; encoded.";
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='toMessage', $TEST);
 	assert($res == $with_gtlt_encoded);
-	
+
 	$start = "I like emails like tchalvakspam@gmail.com and urls like http://ninjawars.net in my messages.";
 	$with_urls = "I like emails like tchalvakspam@gmail.com and urls like <a target='_blank' href='http://ninjawars.net'>http://ninjawars.net</a> in my messages.";
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='toMessage', $TEST);
 	assert($res == $with_urls);
 	// Messages regex replace urls.
-	
+
 	$start = '7';
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='toInt', $TEST);
 	assert($res == 7);
-	
+
 	$start = 7;
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method='toInt', $TEST);
@@ -130,22 +130,22 @@ function test_input(){
 	$TEST['test'] = $start;
 	$res = in('index_that_is_not_set', $default_val='default', $filter_method='toInt', $TEST);
 	assert($res == 'default');
-	
+
 	$start = 'alpha56';
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=NULL, $filter_method='toID', $TEST);
 	assert($res == false); // ??
-	
+
 	$start = -10;
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=NULL, $filter_method='toID', $TEST);
 	assert($res == false);
-	
+
 	$start = 0;
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=NULL, $filter_method='toID', $TEST);
 	assert($res == false);
-	
+
 	$start = 10;
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=NULL, $filter_method='toID', $TEST);
@@ -155,40 +155,40 @@ function test_input(){
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=NULL, $filter_method='toID', $TEST);
 	assert($res == $start);
-	
+
 	$start = array('var', 'var2');
 	$TEST = array('var'=>10, 'var2'=>20);
 	$res = in($start, $default_val=NULL, $filter_method='toID', $TEST);
 	assert($res == $TEST);
-	
+
 	$start = array('var', 'var2');
 	$TEST = array('var'=>10, 'var2'=>20);
 	$res = in($start, $default_val=NULL, $filter_method='toText', $TEST);
 	assert($res == $TEST);
-	
+
 	$start = array('var', 'var2');
 	$TEST = array('var'=>10, 'var2'=>20);
 	$res = in($start, $default_val=NULL, $filter_method='toText', $TEST);
 	assert($res == $TEST);
-	
+
 	$start = array('var', 'var2');
 	$TEST = array('var'=>10, 'var2'=>20);
 	$EXPECTED = array('var'=>10, 'var2'=>20);
 	$res = in($start, $default_val=NULL, $filter_method='toText', $TEST);
 	assert($res == $EXPECTED);
-	
+
 	$start = array('var', 'var2', 'var3');
 	$TEST = array('var'=>10, 'var2'=>20);
 	$EXPECTED = array('var'=>10, 'var2'=>20, 'var3'=>NULL);
 	$res = in($start, $default_val=NULL, $filter_method='toText', $TEST);
 	assert($res == $EXPECTED);
-	
+
 	$start = array('var', 'var2');
 	$TEST = array('var'=>10, 'var2'=>20, 'var3'=>'bad');
 	$EXPECTED = array('var'=>10, 'var2'=>20);
 	$res = in($start, $default_val=NULL, $filter_method='toText', $TEST);
 	assert($res == $EXPECTED);
-	
+
 	$start = array('var', 'var2', 'var3');
 	$TEST = array('var'=>10, 'var2'=>20, 'var3'=>'bad');
 	$EXPECTED = array('var'=>10, 'var2'=>20, 'var3'=>NULL);
@@ -197,7 +197,7 @@ function test_input(){
 }
 
 function test_filter_methods(){
-	
+
 }
 
 
@@ -279,7 +279,7 @@ function test_filters(){
 	}
 
 
-	/* check if a regular expression is valid 
+	/* check if a regular expression is valid
 	 * suppressed (bug?) in case regex not available
 	 */
 	$valid_reg = @filter_var($reg, FILTER_VALIDATE_REGEXP);

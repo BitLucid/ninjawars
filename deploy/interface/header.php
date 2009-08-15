@@ -22,12 +22,12 @@ if(!is_logged_in()){
 		$error = "<span class='notice'>You must log in to view this section.</span>";
 		// Error triggers a die at the end of the header.
     }
-} else { 
+} else {
 	// **************** Player information settings. *******************
 	$username         = SESSION::get('username');
-	
+
 	$player = new Player($username); // Defaults to current session user.
-		
+
 	$players_id = $player->player_id;
 	$player_id = $players_id; // Just two aliases for the player id.
 	$players_email = $player->vo->email;

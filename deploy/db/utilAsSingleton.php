@@ -9,8 +9,8 @@ class DBAccess {
 	static private $pdo;             /// < ID - The pdo object used to connect to the database in safe ways.
 	static private $instance;        /// < DBAccess - This is the "Singleton", which keeps only 1 db instance.
 	static private $results, $rows, $data, $a_rows;
-	
-    
+
+
     function __construct()
     {
     	$this->Create(); // Makes the constructor call for the creation of the pdo connection.
@@ -23,7 +23,7 @@ class DBAccess {
 		self::$data = null;
 		self::$rows = null;
 		self::$a_rows = null;
-		
+
 		// *** DataLayer is a singleton, so if already instantiated just return that ***
 		if (self::$instance === null)
 		{	// *** DataLayer hasn't been instantiated yet, save the pointer, and return this ***
@@ -45,8 +45,8 @@ class DBAccess {
 			return self::$instance;
 		}
 	}
-	
-	
+
+
 	public function __destruct()
 	{
 		self::$instance = null;
@@ -57,7 +57,7 @@ class DBAccess {
     function Query ($query) {
 		if (self::result = self::pdo->query($query)) // *** Runs the query through pdo and sets it as result.
 		{
-	            self::rows = self::result->rowCount(); 
+	            self::rows = self::result->rowCount();
 	            // *** Sets both row counts, should probably be zero.
 	            self::a_rows = self::rows;
 		}
@@ -92,8 +92,8 @@ class DBAccess {
         }
         return self::data;
     }
-    
-    
+
+
     function Insert ($query) {
 		self::Query($query);
     }
@@ -134,7 +134,7 @@ class DBAccess {
     	}
 		return self::data;
     }
-    
+
     function getRowCount()
     {
     	return self::a_rows;
@@ -146,19 +146,19 @@ class DBAccess {
     {
     	return self::getRowCount();
     }
-    
-    
+
+
     function getData()
     {
     	return self::data;
     }
-	
+
 	/* Wrapper function for the PDO full result set function fetchAll using only the default values */
 	function fetchAll()
 	{
 		return self::result->fetchAll(); // *** Gets the fetchall from the pdo object.
 	}
-	
+
 	/**
 	*   @brief A function to get the next sequence value after being given a table name and a id field name
 	*   @param $id_field is a the primary key of the table.
@@ -169,7 +169,7 @@ class DBAccess {
 	function nextSequenceValue($id_field, $table, $full=null)
 	{
 		$sel = "SELECT nextval('".$table."_".$id_field."_seq')";
-		return self::QueryItem($sel);	
+		return self::QueryItem($sel);
 	}
 
 
@@ -177,6 +177,6 @@ class DBAccess {
 	* Could use a method to utilize the pdo->fetchAll(PDO::FETCH_COLUMN, someColumnNum) to fetch column by column.
 	* ...for when the display is occuring column-by-column.
 	*/
-    
+
 }
 ?>

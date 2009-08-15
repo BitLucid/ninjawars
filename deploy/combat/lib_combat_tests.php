@@ -11,7 +11,7 @@ function test_attack_legal_object(){
 	$attack_checked = $AttackLegal->check();
 	$attack_error = $AttackLegal->getError();
 	assert($attack_checked == false);
-	
+
 	// in: two different characters, out: legal
 	$attacker = 'glassbox';
 	$target = 'test';
@@ -21,7 +21,7 @@ function test_attack_legal_object(){
 	$attack_error = $AttackLegal->getError();
 	assert($attack_checked == true); // Sometimes hits the time limit when unit testing.
 	echo($attack_error);
-	
+
 	// In: excessive required turns, out: failure
 	$attacker = 'glassbox';
 	$target = 'test';
@@ -30,7 +30,7 @@ function test_attack_legal_object(){
 	$attack_checked = $AttackLegal->check();
 	$attack_error = $AttackLegal->getError();
 	assert($attack_checked == false);
-		
+
 	// In: different name and attacker_id, out: legal
 	$attacker = 10;
 	$target = 'test';
