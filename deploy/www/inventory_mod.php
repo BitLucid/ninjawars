@@ -78,8 +78,7 @@ if ($target && $link_back == "") {$link_back = "<a href=\"player.php?player=$tar
 else { $link_back = "<a href=\"inventory.php\">Inventory</a>"; }
 
 $ignores_stealth = false;
-if ($item  == "Dim Mak"  || $item == "Speed Scroll") { $ignores_stealth == true; } // TODO: Check this for problems.
-
+if ($item  == "Dim Mak"  || $item == "Speed Scroll") { $ignores_stealth = true; } // TODO: Check this for problems.
 
 // Attack Legal section
 $attacker = $username;
