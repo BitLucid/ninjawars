@@ -46,6 +46,11 @@ function delete_old_mail($sql, $limit = 50000){
 	return $sql->a_rows;
 }
 
+// Delete from inventory where owner is unconfirmed or non-existent.
+$sql->QueryRow("Delete from inventory where owner in (SELECT owner FROM inventory LEFT JOIN players ON owner = uname WHERE confirmed = 0 OR uname is null GROUP BY owner)");
+$affected_rows['deleted items'] = $sql->a_rows;
+//error_log("DEITY_NIGHTLY: Items: ".$affected_rows['deleted items']);
+
 $affected_rows['Old Mail Deletion'] =  delete_old_mail($sql);
 //error_log('DEITY_NIGHTLY: Mail deleted: ('.$affected_rows['Old Mail Deletion'].')');
 

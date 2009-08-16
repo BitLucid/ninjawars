@@ -1,5 +1,5 @@
 <?php
-require_once(LIB_ROOT."specific/tags_lib.php");
+require_once(LIB_ROOT."specific/lib_tags.php");
 require_once(LIB_ROOT."specific/lib_clan.php");
 $alive      = false;
 $private    = true;

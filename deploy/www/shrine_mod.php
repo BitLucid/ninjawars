@@ -7,31 +7,43 @@ $quickstat  = "player";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Shrine Effects</span>
+<div class="brownHeading">Shrine Effects</div>
 
 <hr>
 
-<?php
-$healed      = in('healed');
-$poisoned    = in('poisoned');
-$restore     = in('restore');
-$max_heal    = in('max_heal');
-$userLevel    =getLevel($username);
-$startingHealth  =getHealth($username);
-$startingGold  =getGold($username);
-$startingKills  = getKills($username);
-$startingTurns  = getTurns($username);
-$level  = getLevel($username);
-$heal_points = (in('heal_points') ? intval(in('heal_points')) : null);  // The pointwise healing method.
+<br>
 
-// ***
-$freeResLevelLimit = 6;
-$freeResKillLimit  = 25;
-$lostTurns         = 10; // *** Default turns lost when the player has no kills.
+<div id='heal-result'>
+
+<?php
+$healed             = in('healed');
+$poisoned           = in('poisoned');
+$restore            = in('restore');
+$max_heal           = in('max_heal');
+$heal_and_resurrect = in('heal_and_resurrect');
+$userLevel          = getLevel($username);
+$startingHealth     = getHealth($username);
+$startingGold       = getGold($username);
+$startingKills      = getKills($username);
+$startingTurns      = getTurns($username);
+$level              = getLevel($username);
+$heal_points        = (in('heal_points') ? intval(in('heal_points')) : null);  // The pointwise healing method.
+$freeResLevelLimit  = 6;
+$freeResKillLimit   = 25;
+$lostTurns          = 10; // *** Default turns lost when the player has no kills.
 
 // *** A True or False as to whether resurrection will be free.
 $freeResurrection = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
-echo "<br>\n";
+
+if ($heal_and_resurrect) {
+	// Set resurrect if needed.
+	if ($startingHealth < 1) {
+		$restore = 1;
+	}
+
+	// Set heal always.
+	$max_heal = 1;
+}
 
 if ($restore == 1)
 {	//  *** RESURRECTION SECTION ***
@@ -84,7 +96,8 @@ if ($restore == 1)
 		echo "Current Turns: ".$startingTurns."<br>\n";
 	}
 } // *** end of resurrection ***
-else if ($healed == 1 || $max_heal == 1)  //If the user tried to heal themselves.
+
+if ($healed == 1 || $max_heal == 1)  //If the user tried to heal themselves.
 {	//  ***  HEALING SECTION  ***
 	$max_health = (150 + (($userLevel - 1) * 25));
 
@@ -151,6 +164,7 @@ else if ($poisoned == 1)
 	}
 }
 ?>
+</div> <!-- End of heal-result div -->
 
 <a href="shrine.php">Heal Again ?</a>
 
