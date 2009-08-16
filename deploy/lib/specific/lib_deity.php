@@ -32,7 +32,6 @@ function chat_timer(){
     }
 }
 
-
 function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30, $just_testing=true){
 	$change_confirm_to = ($just_testing? '1' : '0'); // Only unconfirm players when not testing.
 	$minimum_days = 30;
@@ -89,7 +88,6 @@ function test_unconfirm_older_players_over_minimums(){
 	$unconfirmed = unconfirm_older_players_over_minimums(10000, 1);
 	assert($unconfirmed == 0);
 	// in: something that should match no-one, out: 0 unconfirmed
-
 
 	if (DEBUG) {
 		error_reporting($original_error_reporting);
@@ -344,6 +342,4 @@ if (DEBUG) {
 	test_unconfirm_older_players_over_minimums();
 	test_revive_appropriate_players();
 }
-
-
 ?>
