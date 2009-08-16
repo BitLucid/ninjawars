@@ -1,5 +1,5 @@
 <?php
-require_once('resources.php');
+require_once('../lib/base.inc.php');
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
 
 $sql = new DBAccess();
@@ -9,15 +9,21 @@ $sql->Query("insert into player_rank (_player_id, score) select player_id, ((lev
 
 #   Running from a cron script, we don't want any output unless we have an error
 
-//$out_display['Ranked Players'] = $sql->a_rows;
+$out_display['Ranked Players'] = $sql->a_rows;
 
-// **************
-// Visual output:
-//foreach ($out_display AS $loopKey => $loopRowResult)
-//{
-//	$res = "<br>Result type: ".$loopKey." yeilded result number: ".$loopRowResult;
-//    error_log('DEITY_FIVEMINUTE: '.$res);
-//    echo $res;
-//}
-//error_log('DEITY_FIVEMINUTE: End.');
+// ***********
+// Log output:
+
+$logMessage = "DEITY_FIVEMINUTE STARTING: ".date(DATE_RFC1036)."\n";
+
+foreach ($out_display AS $loopKey => $loopRowResult)
+{
+	$logMessage .= "DEITY_FIVEMINUTE: Result type: $loopKey yeilded result number: $loopRowResult \n";
+}
+
+$logMessage .= "DEITY_FIVEMINUTE ENDING: ".date(DATE_RFC1036)."\n";
+
+$log = fopen(LOGS.'deity.log', 'a');
+fwrite($log, $logMessage);
+fclose($log);
 ?>

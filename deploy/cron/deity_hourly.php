@@ -1,5 +1,5 @@
 <?php
-require_once('resources.php');
+require_once('../lib/base.inc.php');
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
 
 $score = get_score_formula();
@@ -34,7 +34,7 @@ $sql->Query("DELETE FROM ppl_online WHERE activity < (now() - interval '".$maxti
 $sql->Update
 (
 	"UPDATE players SET health=numeric_smaller(health+8, $maximum_heal) ".
-	     "WHERE health BETWEEN 1 $maximum_heal AND NOT ".
+	     "WHERE health BETWEEN 1 AND $maximum_heal AND NOT ".
 		 "cast(status&".POISON." AS boolean)"
 );
 
@@ -68,11 +68,20 @@ $sql->Update("UPDATE players SET turns = ".$maximum_turns." WHERE turns > ".$max
 $sql->Update("UPDATE players SET status = status-".FROZEN." WHERE cast(status&".FROZEN." AS bool)"); // Cold Steal Crit Fail Unfreeze
 $sql->Update("UPDATE players SET status = status-".STEALTH."  WHERE cast(status&".STEALTH." AS bool)"); //stealth lasts 1 hr
 
+
+$logMessage = "DEITY_HOULRY STARTING: ".date(DATE_RFC1036)."\n";
+
+// **************
 // Visual output:
-//foreach ($out_display AS $loopKey => $loopRowResult)
-//{
-//    $res = "<br>Result type: ".$loopKey." yielded result: ".$loopRowResult;
-//    // error_log('DEITY_HOURLY: '.$res); // Skip the error log now that it has stabilized.
-//    echo $res;
-//}
+
+foreach ($out_display AS $loopKey => $loopRowResult)
+{
+    $logMessage .= "DEITY_HOULRY: Result type: $loopKey yeilded result: $loopRowResult\n";
+}
+
+$logMessage .= "DEITY_HOULRY ENDING: ".date(DATE_RFC1036)."\n";
+
+$log = fopen(LOGS.'deity.log', 'a');
+fwrite($log, $logMessage);
+fclose($log);
 ?>

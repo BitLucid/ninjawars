@@ -163,6 +163,16 @@ cd $SERVER_ROOT
 # WIPE EXISTING SITE - PROTECT resources/ FOR NOW
 rm -rf `find -P ./ -maxdepth 1|grep -v "./$"|grep -v resources`
 
+if [ ! -d "$SERVER_ROOT/resources/" ]
+then
+	mkdir "$SERVER_ROOT/resources/"
+fi
+
+if [ ! -d "$SERVER_ROOT/resources/logs/" ]
+then
+	mkdir "$SERVER_ROOT/resources/logs/"
+fi
+
 cp -r $source_files/* $SERVER_ROOT
 cp $source_files/.* $SERVER_ROOT
 echo "source files copied to $SERVER_ROOT"
@@ -171,9 +181,9 @@ if [[ $resources_file && -e $resources_file ]]
 then
 	cp $resources_file $SERVER_ROOT
 else
-	resources_file=`find ./ -name resources.php`
+	resources_file=`find ./ -name resources.template.php`
 fi
-echo $resources_file
+
 # CONFIGURATION FILE STRING REPLACEMENTS
 sed -i -e {s/__SERVER_ROOT__/"'"${SERVER_ROOT//\//\\/}"'"/}                $resources_file
 sed -i -e {s/__WWW_ROOT__/"'"${WWW_ROOT//\//\\/}"'"/}                      $resources_file
@@ -242,5 +252,7 @@ if [ -d $tmp_dir ]
 then
 	rm -rf $tmp_dir
 fi
+
+mv $resources_file "$SERVER_ROOT/resources.php"
 
 echo "Deployment complete."
