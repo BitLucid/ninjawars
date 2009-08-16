@@ -21,7 +21,6 @@ $affected_rows['Increase Days Of Players'] = update_days($sql);
 //$sql->Update("UPDATE players SET status = 0");  // Should just get rid of all status effects.
 //$affected_rows[2] = $sql->a_rows;
 
-
 $deleted = shorten_chat($sql); // run the shortening of the chat.
 $affected_rows['deleted chats']=$deleted;
 sendChat(CHAT_TIME_NAME,"ChatMsg","----".date("F j, Y")."----"); // Display the date change.
@@ -49,6 +48,10 @@ function delete_old_mail($sql, $limit = 50000){
 $affected_rows['Old Mail Deletion'] =  delete_old_mail($sql);
 error_log('DEITY_NIGHTLY: Mail deleted: ('.$affected_rows['Old Mail Deletion'].')');
 
+// Delete from inventory where owner is unconfirmed or non-existent.
+$sql->QueryRow("Delete from inventory where owner in (SELECT owner FROM inventory LEFT JOIN players ON owner = uname WHERE confirmed = 0 OR uname is null GROUP BY owner)");
+$affected_rows['deleted items'] = $sql->a_rows;
+error_log("DEITY_NIGHTLY: Items: ".$affected_rows['deleted items']);
 
 // VISUAL OUTPUT
 ?> <span style="font-weight: bold;color: red;">Deity Nightly</span> <?php
