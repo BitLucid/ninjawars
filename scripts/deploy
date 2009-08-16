@@ -144,6 +144,16 @@ then
        exit
 fi
 
+if [ ${SERVER_ROOT: -1} != '/' ]
+then
+    SERVER_ROOT=${SERVER_ROOT}/
+fi
+
+if [ ${WWW_ROOT: -1} != '/' ]
+then
+    WWW_ROOT=${WWW_ROOT}/
+fi
+
 if [ ! -d $SERVER_ROOT ]
 then
 	echo -n "The target directory $SERVER_ROOT does not exist. Shall I create it? [Y/n]: "
@@ -163,14 +173,14 @@ cd $SERVER_ROOT
 # WIPE EXISTING SITE - PROTECT resources/ FOR NOW
 rm -rf `find -P ./ -maxdepth 1|grep -v "./$"|grep -v resources`
 
-if [ ! -d "$SERVER_ROOT/resources/" ]
+if [ ! -d "${SERVER_ROOT}resources/" ]
 then
-	mkdir "$SERVER_ROOT/resources/"
+	mkdir "${SERVER_ROOT}resources/"
 fi
 
-if [ ! -d "$SERVER_ROOT/resources/logs/" ]
+if [ ! -d "${SERVER_ROOT}resources/logs/" ]
 then
-	mkdir "$SERVER_ROOT/resources/logs/"
+	mkdir "${SERVER_ROOT}resources/logs/"
 fi
 
 cp -r $source_files/* $SERVER_ROOT
@@ -253,6 +263,10 @@ then
 	rm -rf $tmp_dir
 fi
 
-mv $resources_file "$SERVER_ROOT/resources.php"
+mv -f $resources_file "${SERVER_ROOT}resources.php"
+
+chmod -R g+w ./*
+
+cd -
 
 echo "Deployment complete."
