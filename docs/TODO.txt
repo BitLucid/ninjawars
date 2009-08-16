@@ -6,3 +6,5 @@ Make skills independent of classes.
 Integrate the energy stat into the game.
 Create the ability for players to set up "ambush" from their profile when viewers wander in to view it.
 Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now.
+Make the main page and list_all_players page search forms default to showing dead ninja results.
+Fix the annoying buggy fastest killer line not updating.
