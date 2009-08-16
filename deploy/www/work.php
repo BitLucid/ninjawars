@@ -33,24 +33,22 @@ $description = $description1;
 $worked = intval(in('worked'));
 if ($worked > 0)
 {
-  $turns = getTurns($username);
-  $gold  = getGold($username);
+	$turns = getTurns($username);
+	$gold  = getGold($username);
 
-  if ($worked > $turns)
-    {
-      $description .= "You have chosen to do more work than turns you have.<br>\n";
-    }
-  else
-    {
-      $new_gold  = $worked * $work_multiplier;   // *** calc amount worked ***
+	if ($worked > $turns)
+	{
+		$description .= "You have chosen to do more work than turns you have.<br>\n";
+	}
+	else
+	{
+		$new_gold  = $worked * $work_multiplier;   // *** calc amount worked ***
 
-      $gold  = addGold($username,$new_gold);
-      $turns = subtractTurns($username,$worked);
+		$gold  = addGold($username, $new_gold);
+		$turns = subtractTurns($username, $worked);
 
-
-      $description = $description2.
-	"You have worked for $worked turns and earned $new_gold gold.<br><br>\n";
-    }
+		$description = $description2."You have worked for $worked turns and earned $new_gold gold.<br><br>\n";
+	}
 }
 
 echo $description;
@@ -60,8 +58,10 @@ echo "Village work will exchange turns for gold.<br>\n";
 echo "The current work exchange rate: 1 Turn = ".$work_multiplier." Gold.<br>\n";
 echo "Work in the Village?<br>\n";
 echo "<form id=\"work\" action=\"work.php\" method=\"post\" name=\"work\">\n";
+echo "<div>\n";
 echo "<input id=\"worked\" type=\"text\" size=\"3\" maxlength=\"3\" name=\"worked\" class=\"textField\">\n";
 echo "<input id=\"workButton\" type=\"submit\" value=\"Turns\" name=\"workButton\" class=\"formButton\">\n";
+echo "</div>\n";
 echo "</form>\n";
 echo "</p>";
 

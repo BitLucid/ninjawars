@@ -86,7 +86,7 @@ function display_class_select($current) {
 	    <option value="White" <?php if($current=='White') { echo 'selected="selected"'; } ?>>White</option>
 	    <option value="Black" <?php if($current=='Black') { echo 'selected="selected"'; } ?>>Black</option>
 	  </select>
-	<?php
+<?php
 }
 
 function display_signup_form($enteredName, $enteredEmail, $enteredClass, $enteredReferral) {
@@ -137,7 +137,7 @@ function display_signup_form($enteredName, $enteredEmail, $enteredClass, $entere
 
 	<hr>
 
-	<?php
+<?php
 } // *** End of function display_signup_form().
 
 
