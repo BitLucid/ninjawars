@@ -81,6 +81,8 @@ then
 	esac
 
 	source_files=$tmp_dir
+else
+	source_files="`pwd`/$source_files"
 fi
 
 echo $configuration_file
@@ -154,8 +156,6 @@ then
 		exit
 	fi
 fi
-
-source_files="`pwd`/$source_files"
 
 ## CD TO DESTINATION
 cd $SERVER_ROOT
