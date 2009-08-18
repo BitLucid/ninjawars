@@ -1,5 +1,5 @@
 <?php
-require_once('../lib/base.inc.php');
+require_once('../lib/base.inc.php'); // Currently this forces crons locally to be called from the cron folder.
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
 
 $score = get_score_formula();
@@ -60,11 +60,14 @@ $resurrected = revive_players($params);
 // ***********************
 
 // previously: CASE WHEN health-10 < 0 THEN health*(-1) ELSE 10 END
+assert(POISON != 'POISON');
 $sql->Update("UPDATE players SET health = numeric_larger(0, health-$poisonHealthDecrease) WHERE health>0 AND CAST((status&".POISON.") AS bool)"); // *** poisoned takes away life ***
 
 $sql->Update("UPDATE players SET health = 0 WHERE health < 0"); // *** zeros negative health totals.
 $sql->Update("UPDATE players SET turns = ".$maximum_turns." WHERE turns > ".$maximum_turns); // max turn limiter gets run from the constants section.
 
+assert(FROZEN != 'FROZEN'); // These constants should be numeric.
+assert(STEALTH != 'STEALTH');
 $sql->Update("UPDATE players SET status = status-".FROZEN." WHERE cast(status&".FROZEN." AS bool)"); // Cold Steal Crit Fail Unfreeze
 $sql->Update("UPDATE players SET status = status-".STEALTH."  WHERE cast(status&".STEALTH." AS bool)"); //stealth lasts 1 hr
 

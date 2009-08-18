@@ -78,7 +78,7 @@ function test_unconfirm_older_players_over_minimums(){
 	// IN: Default limits, out: nothing more than the max unconfirmed.
 
 	$unconfirmed = unconfirm_older_players_over_minimums(1, 1);
-	assert($unconfirmed < 30);
+	assert($unconfirmed < 31);
 	// in: when attempting to unconfirm everyone... out: a failsafe max of 30 are affected
 
 	$unconfirmed = unconfirm_older_players_over_minimums(1, 500);
