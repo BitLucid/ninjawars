@@ -168,7 +168,7 @@ then
 fi
 
 ## CD TO DESTINATION
-cd $SERVER_ROOT
+cd $SERVER_ROOT || exit
 
 # WIPE EXISTING SITE - PROTECT resources/ FOR NOW
 rm -rf `find -P ./ -maxdepth 1|grep -v "./$"|grep -v resources`
@@ -181,6 +181,7 @@ fi
 if [ ! -d "${SERVER_ROOT}resources/logs/" ]
 then
 	mkdir "${SERVER_ROOT}resources/logs/"
+	chmod 777 "${SERVER_ROOT}resources/logs/"
 fi
 
 cp -r $source_files/* $SERVER_ROOT
