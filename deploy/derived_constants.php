@@ -1,7 +1,6 @@
 <?php
-// These are the derived resource constants, which can and generally should be tracked.
+// These are the derived resource constants, which can be tracked.
 
-define('CONNECTION_STRING', 'pgsql:dbname='.DATABASE_NAME.';user='.DATABASE_USER);
 define('CSS_ROOT', WEB_ROOT.'css/');
 define('JS_ROOT', WEB_ROOT.'js/');
 
@@ -24,6 +23,5 @@ define('CLAN_ROOT', SERVER_ROOT.'clan/');  // *** For all the in-game clan objec
 define('COMBAT_ROOT', SERVER_ROOT.'combat/');  // *** For all the in-game combat objects.
 define('SKILL_ROOT', SERVER_ROOT.'skill/');  // *** For all the in-game skill objects.
 define('ITEM_ROOT', SERVER_ROOT.'item/');  // *** For all the in-game item/inventory objects.
-define('LOGS', SERVER_ROOT.'resources/logs/'); // *** For all custom logging
 
 ?>

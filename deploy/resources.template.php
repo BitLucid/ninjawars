@@ -16,6 +16,9 @@ define('SUPPORT_EMAIL_FORMAL_NAME', __SUPPORT_EMAIL_NAME__);
 define('SYSTEM_MESSENGER_EMAIL', __SYSTEM_EMAIL__);
 define('SYSTEM_MESSENGER_NAME', __SYSTEM_EMAIL_NAME__);
 
+// For not-in-the-repository constants.
+define('LOGS', SERVER_ROOT.'resources/logs/'); // *** For all custom logging
+define('CONNECTION_STRING', 'pgsql:dbname='.DATABASE_NAME.';user='.DATABASE_USER);
 
 // Seperate, tracked file for derived constants, that changes as they change.
 require(SERVER_ROOT."derived_constants.php");
