@@ -9,6 +9,9 @@ require_once('../lib/base.inc.php'); // Currently this forces crons locally to b
 require_once(LIB_ROOT.'specific/lib_deity.php');
 
 // TODO: Profile the slowdown point(s) of this script.
+// TODO: Need a levelling log deletion.
+// TODO: When the message table is created, delete from mail more stringently.
+// TODO: Set up a backup of the players table.
 
 $keep_players_until_over_the_number                   = 2600;
 $days_players_have_to_be_older_than_to_be_unconfirmed = 60;
@@ -20,7 +23,7 @@ $sql = new DBAccess();
 $affected_rows['Increase Days Of Players'] = update_days($sql);
 
 //$sql->Update("UPDATE players SET status = status-".POISON." WHERE status&".POISON);  // Black Poison Fix
-$sql->Update("UPDATE players SET status = 0");  // Hmmm, gets rid of all status effects INCLUDING STEALTH
+$sql->Update("UPDATE players SET status = 0");  // Hmmm, gets rid of all status effects, we may want to make that not have that limit, some day.
 $affected_rows['Statuses Removed'] = $sql->a_rows;
 
 $deleted = shorten_chat($sql); // run the shortening of the chat.
@@ -37,18 +40,22 @@ assert($unconfirmed < 21);
 
 $affected_rows['Players Unconfirmed'] = ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
 
-function delete_old_mail($sql, $limit = 50000){
-	$sql->Update("DELETE FROM mail
-		where (extract(month from CURRENT_TIMESTAMP) - extract(month from date))>2");  //Deletes mail older than 2 months.
-	return $sql->a_rows;
-}
-
 // Delete from inventory where owner is unconfirmed or non-existent.
 $sql->QueryRow("Delete from inventory where owner in (SELECT owner FROM inventory LEFT JOIN players ON owner = uname WHERE confirmed = 0 OR uname is null GROUP BY owner)");
 $affected_rows['deleted items'] = $sql->a_rows;
 
-$deleted_mail = delete_old_mail($sql);
+$deleted_mail = delete_old_mail($sql); // As per the mail function in lib_deity.
 $affected_rows['Old Mail Deletion'] =  $deleted_mail;
+
+$sql->Delete("delete from levelling_log where killsdate < now()- interval '3 months'");
+$affected_rows['levelling log deletion'] = $sql->a_rows; // This should eventually be date based, but needs a deletion for now.
+
+$sql->Delete("delete from dueling_log where date != cast(now() AS date) AND date != cast(now() AS date)-1"); // Keep only the last two days of duels.
+$affected_rows['dueling log deletion'] = $sql->a_rows;
+
+$sql->Delete("delete from players where days>90 and level = 1"); // Delete old level 1's.
+$affected_rows['old level 1 players deletion'] = $sql->a_rows; 
+
 
 $logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
 $logMessage .= "DEITY_NIGHTLY: Deity reset occurred at server date/time: ".date('l jS \of F Y h:i:s A').".\n";

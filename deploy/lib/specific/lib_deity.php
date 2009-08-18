@@ -9,6 +9,14 @@
 // Name the chat time will send under.
 define('CHAT_TIME_NAME', '----');
 
+function delete_old_mail($sql, $limit = null){
+	$interval_to_keep = '2 months';
+	$sql->Delete("delete from mail where date < now()- interval '$interval_to_keep'");
+	//$sql->Update("DELETE FROM mail
+	//	where send_to in (select uname from players where confirmed = 0)");  //Deletes mail for unconfirmed/deconfirmed players.
+	return $sql->a_rows;
+}
+
 function update_days($sql){
 	$sql->Update("UPDATE players SET days = days+1");
 	$players = $sql->a_rows;
@@ -195,151 +203,8 @@ function revive_players($params=array()){
     return array($truly_revived, $dead_count);
 }
 
-/*
-// Revive the appropriate amount of players
-function revive_appropriate_players($min=null, $max=null, $by_percent=false, $just_testing=true){
-	$info = array('min'=>null, 'max'=>null, 'total_active'=>null, 'target_number'=>null, 'revived'=>null);
-	if ($min==null){
-		$min=0;
-	}
-	if ($max===null){
-		$max=100;
-	}
-	$just_testing = ($just_testing? 'true' : 'false'); // Makes the just testing sql compatible.
-
-	$db = new dbAccess();
-	$sel_revive_targets = 'select count(*) from players where health<1 and confirmed=1';
-	// get number of potential targets.
-	$target_number = $db->QueryItem($sel_revive_targets);
-	$info['target_number'] = $target_number;
-	// Test whether the max is zero or there are no targets.
-	$revived = false;
-	$info['revived']=$revived;
-	if ($max == 0 || $target_number == 0){
-		return $info;
-	}
-	$sel_total_active = 'select count(*) from players where confirmed=1';
-	$total_active = $db->QueryItem($sel_total_active);
-	$info['total_active'] = $total_active;
-	// Get the precise number via percentage or else just the number.
-	$limit = $total_active;
-	if ($by_percent){ // Turn the min and max percentages into whole player numbers.
-		$max = ceil($total_active * ($max/100));
-		$min = floor($total_active * ($min/100));
-	}
-	$limit = ($limit>$max?$max : $limit);
-	$limit = ($limit<$min?$min : $limit);
-	assert($limit>=$min && ($limit<=$max || $max<$min));
-
-	$info['max']=$max;
-	$info['min']=$min;
-
-	$sel_current_time = "SELECT amount from time where time_label='hours'";
-	$current_time = $db->QueryItem($sel_current_time);
-	assert(is_numeric($current_time));
-
-	// Use the order by clause to determine who revives, by time, days and then by level, using the limit set previously.
-	//select uname, player_id, level, days, resurrection_time from players where confirmed = 1 AND health < 1 ORDER BY abs(8 - resurrection_time) asc, level desc, days asc
-	$select = "select player_id from players where confirmed = 1
-	        AND health < 1 ORDER BY abs(".intval($current_time)." - resurrection_time) asc, level desc, days asc
-	        limit ".$limit;
-	$up_revive_players= "UPDATE players
-                    SET status = 0,
-                    health =
-                    	CASE WHEN ".$just_testing."
-                    	THEN health
-                    	ELSE
-                    		(
-                    		CASE WHEN class='White'
-                    		THEN (150+(level*3))
-                    		ELSE (100+(level*3)) END
-                    		)
-                    	END
-                    WHERE
-                    player_id IN (".$select.")
-                  ";
-	$db->Update($up_revive_players);
-	$info['revived'] = $db->getAffectedRows();
-	if (DEBUG) {
-		//var_dump('REVIVED', $select, $info);
-		//print_r($up_revive_players);
-	}
-	// Return the number revived.
-	return $info;
-	// TODO: This should stop reviving players when enough are revived?  Eh, meaningless, I suppose.
-}
-*/
-
-// Test the player revival system
-function test_revive_appropriate_players(){
-	if (DEBUG) {
-		$original_error_reporting = error_reporting();
-		error_reporting(E_ALL | E_STRICT); //error_reporting(E_ALL);
-		// Turns on strict standards and notices.
-	}
-
-	/*$minimum = 0;
-	$by_percent = false;
-	$maximum = 0;
-	$info = revive_appropriate_players($minimum, $maximum, $by_percent, $just_testing=true);
-	assert($info['revived'] == false);
-
-	$minimum = 10;
-	$by_percent = false;
-	$maximum = 1;
-	$info = revive_appropriate_players($minimum, $maximum, $by_percent, $just_testing=true);
-	assert($info['revived'] == 10);
-
-	$minimum = 10;
-	$by_percent = false;
-	$maximum = 10;
-	$revived = revive_appropriate_players($minimum, $maximum, $by_percent, $just_testing=true);
-	assert($info['revived'] == 10);
-
-	$minimum = 2;
-	$by_percent = false;
-	$maximum = 4;
-	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
-	assert($info['revived'] > 1 && $info['revived'] < 5);
-
-	$minimum = 4;
-	$by_percent = false;
-	$maximum = null;
-	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
-	assert($info['revived'] > 3);
-
-	$minimum = 3;
-	$by_percent = true;
-	$maximum = 10;
-	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
-	assert($info['revived']<$info['target_number']);
-
-	$minimum = 100;
-	$by_percent = true;
-	$maximum = 100;
-	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
-	assert($info['revived']==$info['target_number']);
-
-	$minimum = 0;
-	$by_percent = true;
-	$maximum = 100;
-	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
-	assert($info['revived'] == $info['target_number']);
-
-	$minimum = 3;
-	$by_percent = true;
-	$maximum = 10;
-	$info = revive_appropriate_players($minimum, $maximum, $by_percent);
-	assert($info['revived']<$info['target_number']);
-	*/
-
-	if (DEBUG) {
-		error_reporting($original_error_reporting);
-	}
-}
 
 if (DEBUG) {
 	test_unconfirm_older_players_over_minimums();
-	test_revive_appropriate_players();
 }
 ?>
