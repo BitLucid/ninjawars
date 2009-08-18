@@ -310,10 +310,9 @@ function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure
  * Stats on recent activity and other aggregate counts/information.
  */
 function membership_and_combat_stats($sql, $update_past_stats=false){
-	$todaysViciousKiller = $sql->QueryItem('SELECT uname FROM levelling_log
-		WHERE killsdate = now()
-		group by uname, killpoints
-		order by killpoints DESC LIMIT 1'); // *** Gets uname with the most kills today.
+	$todaysViciousKiller = $sql->QueryItem(
+		'SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) group by uname, killpoints order by killpoints DESC LIMIT 1'); 
+	// *** Gets uname with the most kills today.
 	/* $todaysViciousKiller = $sql->QueryItem('SELECT uname FROM levelling_log
 	WHERE killsdate = current_date group by uname order by sum(killpoints)
 	DESC LIMIT 1'); // *** Gets uname with the most kills today.
