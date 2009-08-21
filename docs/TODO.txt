@@ -11,3 +11,7 @@ Fix the annoying buggy fastest killer line not updating.
 
 
 Need a much much much much better "affect" system.
+
+Make customizations/benefits for levelling > make killpoints gaining more realistic.
+
+Make the highest level confer the title of "emperor" on that player.
