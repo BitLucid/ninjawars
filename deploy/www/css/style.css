@@ -618,6 +618,7 @@ table .inventory{
     margin:0;
     padding:0;
 }
+
 .player-info .Dead{
 	background-color:maroon;
 	color:red;
@@ -632,6 +633,13 @@ table .inventory{
 }
 .hidden {
     display:none;
+}
+.skill_use {
+	margin-top: .5em;
+}
+.attack-player-trigger {
+	display:block;
+	margin-top: 1em;
 }
 
 
@@ -781,4 +789,15 @@ table .inventory{
 
 .q-and-a .answer {
 	text-align: justify;
+}
+
+/* Staff Page */
+
+.developer{
+	border:thin darkred solid;
+	margin-top: 1em;
+}
+
+.developer .social-networks {
+	color:#cc3333;font-weight:bold;
 }
