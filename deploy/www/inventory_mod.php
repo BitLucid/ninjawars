@@ -14,7 +14,6 @@ require_once(LIB_ROOT."specific/lib_inventory.php");
               to process results of item use
  ***********************************************/
 
-
 $quickstat  = "viewinv";
 $private    = true;
 $alive      = true;
@@ -34,7 +33,6 @@ $selfTarget = in('selfTarget');
 $item       = in('item');
 $give       = in('give');
 
-$turn_cost      = 1;
 $victim_alive   = true;
 $using_item     = true;
 $starting_turns = getTurns($username);
@@ -53,11 +51,6 @@ $target_hp     = $sql->QueryItem("SELECT health FROM players WHERE uname = '$tar
 $target_status = getStatus($target);
 $target_ip     = $sql->QueryItem("SELECT ip FROM players WHERE uname = '$target'");
 
-$target_damage  = false;
-$turns_decrease = false;
-$turns_increase = false;
-
-$covert			= NULL;
 $gold_mod		= NULL;
 $result			= NULL;
 
@@ -74,15 +67,122 @@ if ($give == "on" || $give == "Give") {
 }
 
 // Sets the page to link back to.
-if ($target && $link_back == "") { $link_back = "<a href=\"player.php?player=$target\">Player Detail</a>"; }
+if ($target && $link_back == "") { $link_back = "<a href=\"player.php?player=".urlencode($target)."\">Player Detail</a>"; }
 else { $link_back = "<a href=\"inventory.php\">Inventory</a>"; }
 
-$ignores_stealth = false;
-if ($item  == "Dim Mak"  || $item == "Speed Scroll") { $ignores_stealth = true; } // TODO: Check this for problems.
+class Item
+{
+	protected $m_name;
+	protected $m_ignoresStealth;
+	protected $m_targetDamage;
+	protected $m_turnCost;
+	protected $m_turnChange;
+	protected $m_covert;
+
+	public function __construct($p_name)
+	{
+		$this->m_ignoresStealth = false;
+		$this->m_name = trim($p_name);
+		$this->m_turnCost = 1;
+	}
+
+	public function getName()
+	{
+		return $this->m_name;
+	}
+
+	public function setIgnoresStealth($p_ignore)
+	{
+		$this->m_ignoresStealth = (boolean)$p_ignore;
+	}
+
+	public function ignoresStealth()
+	{
+		return $this->m_ignoresStealth;
+	}
+
+	public function setTargetDamage($p_damage)
+	{
+		$this->m_targetDamage = (float)$p_damage;
+	}
+
+	public function getTargetDamage()
+	{
+		return $this->m_targetDamage;
+	}
+
+	public function getTurnCost()
+	{
+		return $this->m_turnCost;
+	}
+
+	public function setTurnChange($p_turns)
+	{
+		$this->m_turnChange = (float)$p_turns;
+	}
+
+	public function getTurnChange()
+	{
+		return $this->m_turnChange;
+	}
+
+	public function setCovert($p_covert)
+	{
+		$this->m_covert = (boolean)$p_covert;
+	}
+
+	public function isCovert()
+	{
+		return $this->m_covert;
+	}
+}
+
+$dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = null;
+
+if ($item == 'Dim Mak')
+{
+	$item = $dimMak = new Item('Dim Mak');
+	$dimMak->setIgnoresStealth(true);
+	$dimMak->setCovert(true);
+}
+else if ($item == 'Speed Scroll')
+{
+	$item = $speedScroll = new Item('Speed Scroll');
+	$speedScroll->setIgnoresStealth(true);
+	$speedScroll->setTurnChange(6);
+	$speedScroll->setCovert(true);
+}
+else if ($item == 'Fire Scroll')
+{
+	$item = $fireScroll = new Item('Fire Scroll');
+	$fireScroll->setTargetDamage(rand(20, getStrength($username) + 20) + $near_level_power_increase);
+}
+else if ($item == 'Shuriken')
+{
+	$item = $shuriken = new Item('Shuriken');
+	$shuriken->setTargetDamage(rand(1, getStrength($username)) + $near_level_power_increase);
+}
+else if ($item == 'Ice Scroll')
+{
+	$item = $iceScroll = new Item('Ice Scroll');
+	$iceScroll->setTurnChange(-1*ice_scroll_turns($targets_turns, $near_level_power_increase));
+}
+else if ($item == 'Stealth Scroll')
+{
+	$item = $stealthScroll = new Item('Stealth Scroll');
+	$stealthScroll->setCovert(true);
+}
+
+$article = get_indefinite_article($item->getName());
+
+if ($using_item)
+{
+	$turn_cost = $item->getTurnCost();
+}
 
 // Attack Legal section
 $attacker = $username;
-$params   = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$ignores_stealth, 'self_use'=>$selfTarget);
+$params   = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$item->ignoresStealth(), 'self_use'=>$selfTarget);
 assert(!!$selfTarget || $attacker != $target);
 
 $AttackLegal    = new AttackLegal($attacker, $target, $params);
@@ -93,58 +193,47 @@ $attack_error   = $AttackLegal->getError();
 if (!$attack_allowed) { //Checks for error conditions before starting.
 	echo "<div class='ninja-error centered'>$attack_error</div>"; // Display the reason the attack failed.
 } else {
-	if ($item == "" || $target == "")  {
+	if (is_string($item) || $target == "")  {
 		echo "You didn't choose an item/victim.\n";
 	} else {
 		$row = $sql->data;
 		if ($item_count < 1) {
-			echo "You do not have".($item ? " a ".$item : ' that item').".\n";
+			echo "You do not have".($item ? " $article ".$item->getName() : ' that item').".\n";
 		} else {
 			/**** MAIN SUCCESSFUL USE ****/
 			echo "Preparing to use item - <br>\n";
 
 			if ($give == "on" || $give == "Give") {
-				echo render_give_item($username, $target, $item);
+				echo render_give_item($username, $target, $item->getName());
 			} else {
-				$article = "a";
 
 				// *** HP Altering ***
-				if ($item == "Fire Scroll") {
-					$target_damage = rand(20, getStrength($username) + 20) + $near_level_power_increase;
-					$result        = "lose ".$target_damage." HP";
-					$victim_alive  = subtractHealth($target, $target_damage);
-				} else if ($item == "Shuriken") {
-					$target_damage = rand(1, getStrength($username)) + $near_level_power_increase;
-					$result        = "lose ".$target_damage." HP";
-					$victim_alive  = subtractHealth($target, $target_damage);
-				} else if ($item == "Ice Scroll") {
-					//Turn Altering
-					$article = "an";
+				if ($item->getTargetDamage() > 0) {
+					$result        = "lose ".$item->getTargetDamage()." HP";
+					$victim_alive  = subtractHealth($target, $item->getTargetDamage());
+				} else if ($item->getTurnChange() <= 0) {
 
-					$turns_decrease = ice_scroll_turns($targets_turns, $near_level_power_increase);
+					$turns_change = $item->getTurnChange();
 
-					if ($turns_decrease == 0){
+					if ($turns_change == 0) {
 				        echo 'You fail to take any turns from '.$target.'.';
 					}
 
-					$result         = "lose ".$turns_decrease." turns";
-					subtractTurns($target,$turns_decrease);
+					$result         = "lose ".(-1*$turns_change)." turns";
+					subtractTurns($target, $turns_change);
 					$victim_alive = true;
-				} else if ($item == "Speed Scroll") {
-					$turns_increase = 6;
-					$result         = "gain $turns_increase turns";
-					changeTurns($target,$turns_increase);
-					$covert         = true;
+				} else if ($item->getTurnChange > 0) {
+					$turns_change = $item->getTurnChange();
+					$result         = "gain $turns_change turns";
+					changeTurns($target, $turns_change);
 					$victim_alive = true;
-				} else if ($item == "Stealth Scroll") {
-					addStatus($target,STEALTH);
+				} else if ($item === $stealthScroll) {
+					addStatus($target, STEALTH);
 					echo "<br>$target is now Stealthed.<br>\n";
 					$result = false;
-					$covert =  true;
 					$victim_alive = true;
-				} else if ($item == "Dim Mak") {
+				} else if ($item === $dimMak) {
 					setHealth($target,0);
-					$covert = true;          //The Dim Mak is a covert weapon, allowing it to be used from Stealth.
 					$victim_alive = false;
 					$result = "be drained of your life-force and die!";
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
@@ -153,16 +242,16 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 			if ($result) {
 				// *** Message to display based on item type ***
-				if ($target_damage) {
-					echo "$target takes $target_damage damage from your attack!<br><br>\n";
-				} else if ($turns_decrease) {
-					echo "$target's turns reduced by $turns_decrease.<br>\n";
+				if ($item->getTargetDamage() > 0) {
+					echo "$target takes {$item->getTargetDamage()} damage from your attack!<br><br>\n";
+				} else if ($turns_change <= 0) {
+					echo "$target's turns reduced by $turns_change.<br>\n";
 					if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
 						echo "$target no longer has any turns.<br>\n";
 					}
-				} else if ($turns_increase) {
-					echo "$target's turns increased by $turns_increase.<br>\n";
-				} else if ($item=="Dim Mak") {
+				} else if ($turns_change > 0) {
+					echo "$target's turns increased by $turns_change.<br>\n";
+				} else if ($item === $dimMak) {
 					echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 				}
 
@@ -178,7 +267,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						subtractGold($target,$loot);
 						addGold($username,$loot);
 						addKills($username,1);
-						echo "You have killed $target with $article $item!<br>\n";
+						echo "You have killed $target with $article {$item->getName()}!<br>\n";
 						echo "You receive $loot gold from $target.<br>\n";
 						runBountyExchange($username, $target);  //Rewards or increases bounty.
 					} else {
@@ -186,15 +275,15 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						echo "You have comitted suicide!<br>\n";
 					}
 
-					send_kill_mails($username, $target, $attacker_id, $article, $item, $today, $loot);
+					send_kill_mails($username, $target, $attacker_id, $article, $item->getName(), $today, $loot);
 
 				} else {
 					$attacker_id = $username;
 				}
 
 				if ($target != $username) {
-					$target_email_msg   = "$attacker_id has used $article $item on you at $today and caused you to $result.";
-					sendMessage($attacker_id,$target,$target_email_msg);
+					$target_email_msg   = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
+					sendMessage($attacker_id, $target, $target_email_msg);
 				}
 			}
 
@@ -202,20 +291,20 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 			// *** remove Item ***
 
-			echo "<br>Removing $item from your inventory.<br>\n";
+			echo "<br>Removing {$item->getName()} from your inventory.<br>\n";
 
-			$sql->Update("UPDATE inventory set amount = amount-1 WHERE owner = '".$username."' AND item ='$item' AND amount>0");
+			$sql->Update("UPDATE inventory set amount = amount-1 WHERE owner = '".$username."' AND item ='{$item->getName()}' AND amount>0");
 			// *** Decreases the item amount by 1.
 
 			// Unstealth
-			if (!isset($covert) && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
+			if ($item->isCovert() && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
 				subtractStatus($username,STEALTH);
 				echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
 			}
 
 			if ($victim_alive == true && $using_item == true) {
 				$self_targetting = $selfTarget? '&amp;selfTarget=1' : '';
-				echo "<br><a href=\"inventory_mod.php?item=$item&amp;target=$target{$self_targetting}\">Use $item again?</a><br>\n";  //Repeat Usage
+				echo "<br><a href=\"inventory_mod.php?item=".urlencode($item->getName())."&amp;target=$target{$self_targetting}\">Use {$item->getName()} again?</a><br>\n";  //Repeat Usage
 			}
 		}
 	}
@@ -227,7 +316,7 @@ if ($turns_to_take<1) {
 }
 
 $ending_turns = subtractTurns($username, $turns_to_take);
-assert($item == "Speed Scroll" || $ending_turns<$starting_turns || $starting_turns == 0);
+assert($item === $speedScroll || $ending_turns < $starting_turns || $starting_turns == 0);
 ?>
 
 <br><br>

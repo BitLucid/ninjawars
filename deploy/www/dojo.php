@@ -31,6 +31,7 @@ if (getLevel($username) >= $dimMakLevelReq && getKills($username) >= $dimMakCost
 	if ($dimmak_sequence != 2)
 	{
 		echo "A black-robed monk stands near the entrance to the dojo.";
+
 		if ($dimmak_sequence != 1)	// *** Link to start the Dim Mak sequence ***
 		{
 			echo "  The black monk approaches you and offers to give you <a href=\"dojo.php?dimmak_sequence=1\">power over life and death,</a> at the cost of some of your memories.\n";

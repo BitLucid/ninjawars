@@ -23,6 +23,7 @@ require_once(OBJ_ROOT."Session.class.php");
 
 // *** Include all common function includes here.
 require_once(LIB_ROOT."common/lib_input.php");
+require_once(LIB_ROOT."common/lib_output.php");
 
 // Development includes, for live also.
 require_once(LIB_ROOT."common/lib_dev.php");
