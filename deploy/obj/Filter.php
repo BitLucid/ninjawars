@@ -112,6 +112,7 @@ class Filter
 	// User messages should have a special exception made of them.
 	function toMessage($dirty, $limit=null)
 	{
+/*	We are no longer filtering messages INTO the database, only OUT OF
 		// Encode the quotes.
 		$default_message_limit = 2000;
 		// Encode single quotes.
@@ -122,6 +123,7 @@ class Filter
 		$dirty = preg_replace("/[^\w\d_\-\+\.\&\;\s\!\?\,\=\*\%\(\)\:\@\/]/", "", (string) $dirty);
 		// Replace urls with anchor hrefs.
 		$dirty = $this->replace_urls($dirty);
+*/
 		return $dirty;
 	}
 

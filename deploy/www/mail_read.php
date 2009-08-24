@@ -76,7 +76,7 @@ if ($sql->rows == 0) {
 		echo "  </td>\n";
 
 		echo "  <td>\n";
-		echo    $message."\n";
+		echo    htmlentities($message)."\n";
 		echo "  </td>\n";
 		echo "</tr>\n";
 	}

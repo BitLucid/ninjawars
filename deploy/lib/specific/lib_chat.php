@@ -35,7 +35,7 @@ function render_chat_messages($sql, $chatlength, $show_elipsis=null){
     foreach($chats AS $messageData) {
 	// *** PROBABLY ALSO A SPEED PROBLEM AREA.
 	$message_rows .= "[<a href='player.php?player={$messageData['send_from']}'
-	     target='main'>{$messageData['send_from']}</a>]: {$messageData['message']}<br>\n";
+	     target='main'>{$messageData['send_from']}</a>]: ".htmlentities($messageData['message'])."<br>\n";
     }
     $res .= $message_rows;
     if ($show_elipsis){ // to indicate there are more chats available

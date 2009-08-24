@@ -16,12 +16,12 @@ $command = in('command');
 $sentMessage = in('message');
 $sent = false;
 $username = get_username();
-$input_form = ($username? render_chat_input() : '');
+$input_form = ($username ? render_chat_input() : '');
 
 // Take in a chat and record it to the database.
 if ($username) {
 	if ($command == "postnow" && $filteredMessage) {
-		sendChat($username,'ChatMsg',$filteredMessage); // ChatMsg is deprecated.
+		sendChat($username, 'ChatMsg', $filteredMessage); // ChatMsg is deprecated.
 	}
 }
 

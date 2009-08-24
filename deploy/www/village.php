@@ -56,7 +56,7 @@ $sql->Query("SELECT id, send_from, message FROM chat ORDER BY id DESC LIMIT $cha
 foreach($sql->fetchAll() /*CHAT MESSAGES */ as $messageLine)
 {
 	$from = $messageLine['send_from'];
-	echo "[<a href=\"player.php?player=$from\" target=\"main\">$from</a>]: ".$messageLine['message']."<br>\n";
+	echo "[<a href=\"player.php?player=$from\" target=\"main\">$from</a>]: ".htmlentities($messageLine['message'])."<br>\n";
 }
 
 if ($chatlength != 360)
