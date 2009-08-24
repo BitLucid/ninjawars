@@ -5,4 +5,4 @@ gitLog
 .htaccess
 deploy/resources.php
 youcanSymlinkToThisFilewithADotgitignoresymlink
-cron/deity.log
+deploy/cron/deity.log
