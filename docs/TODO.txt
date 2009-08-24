@@ -8,10 +8,7 @@ Create the ability for players to set up "ambush" from their profile when viewer
 Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now.
 Make the main page and list_all_players page search forms default to showing dead ninja results.
 Fix the annoying buggy fastest killer line not updating.
-
-
 Need a much much much much better "affect" system.
-
 Make customizations/benefits for levelling > make killpoints gaining more realistic.
-
 Make the highest level confer the title of "emperor" on that player.
+Auto-levelling checks instead of kills banking.
