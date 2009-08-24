@@ -9,9 +9,14 @@ Turn classes from colors to elements, void fire water earth air
 Need a much much much much better "affect" system.
 Make skills independent of classes.
 Integrate the energy stat into the game.
+Badges marking accomplishments.
+Karma for a silly social rating, and possibly for some simple non-combat benefit usages.
 
 Actions:
 Create the ability for players to set up "ambush" from their profile when viewers wander in to view it.
+Kappa random encounter as a money source? Tengu random encounter useful for ???
+And random encounter generator to javascript and internal php that cause random encounters when the two systems match up?
+Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general.
 
 UI:
 Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now.
