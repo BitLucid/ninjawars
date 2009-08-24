@@ -1,0 +1,13 @@
+Local Testing installations:
+
+Dependencies:
+sudo apt-get install liblingua-en-inflect-perl
+
+Copy a live database (probably the easiest) or run any outstanding migrations off of a skeleton database.
+
+Symlink or copy files:
+SAMPLEhtaccess > deploy/www/.htaccess
+sampleTchalvakResources.php > resources.php
+docs/gitignoreSAMPLE > .gitignore
+docs/robots.txt > deploy/www/robots.txt
+

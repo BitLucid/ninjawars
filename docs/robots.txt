@@ -5,12 +5,9 @@
 User-agent: LinkLint-checkonly/2.3.5
 Disallow:
 #User-agent: *
-#Disallow: /webgameOld/
-#Disallow: /_lib/
-#Disallow: /webgame/interface/
-#Disallow: /webgame/db/
-#Disallow: /webgame/admin/
-#Disallow: /webgame/_lib/
+#Disallow: /interface/
+#Disallow: /db/
+#Disallow: /admin/
 #Disallow: /~tchalvak/
 
 User-agent: LinkLint-checkonly/2.3.5

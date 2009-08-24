@@ -1,5 +1,15 @@
+How to deploy (in this example, to test.ninjawars.net):
 
-checkout or update the directory to the latest, working revision, then run the following below to remove svn files.
+Create a git archive of a commit:
+git archive HEAD:deploy/ > nw-mD-i.tar
+Copy the archive up to the live:
+scp nw-mD.i.tar tchalvak@ninjawars.net:/home/tchalvak/
+Connect to live:
+ssh ninjawars.net
+Move to the home directory:
+cd /home/ninjawars/
+Call the deploy script on the archive in the user home directory:
+./deploy -c=test.conf ~/nw-mD-i.tar
 
-
-find ./ -name .svn -exec rm -rf {} ';'
+Then browse to:
+http://trunk.ninjawars.net/

@@ -1,3 +1,0 @@
-# Don't show .git or .svn folders publicly
-RedirectMatch 404 /\\.svn(/|$)
-RedirectMatch 404 /\\.git(/|$)
