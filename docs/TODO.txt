@@ -22,6 +22,7 @@ UI:
 Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now.
 Make the main page and list_all_players page search forms default to showing dead ninja results.
 Make search assume show_dead
+Make a "embeddable" thing that can show your ninja's current rank and avatar and title.
 
 Levelling:
 Auto-levelling checks instead of kills banking.

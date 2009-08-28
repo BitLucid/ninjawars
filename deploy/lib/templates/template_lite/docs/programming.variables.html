@@ -1,0 +1,138 @@
+<html>
+<head>
+	<title>Variables :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Variables</h1>
+<hr>
+
+<h2><a name="template_dir">$template_dir</a></h2>
+<p>
+This is a string that tells Template Lite what directory to look for the templates in. You can refer to subdirectories of this folder, too, but this is the base folder for templates.<br><br>
+The default is the <code>templates</code> subdirectory of the template_lite folder.
+</p>
+<hr>
+
+<h2><a name="config_dir">$config_dir</a></h2>
+<p>
+This is a string that tells Template Lite what directory to look for config files in.<br><br>
+The default is the <code>templates</code> subdirectory of the template_lite folder.
+</p>
+<hr>
+
+<h2><a name="compile_dir">$compile_dir</a></h2>
+<p>
+This is a string that tells Template Lite what directory compiled files will be saved to. Whatever directory this is must have write permissions available for the webserver or else compiled files cannot be saved.<br><br>
+The default is the <code>compiled</code> subdirectory of the template_lite folder.
+</p>
+<hr>
+
+<h2><a name="cache_dir">$cache_dir</a></h2>
+<p>
+This is a string that tells Template Lite what directory cached files will be saved to. Whatever directory this is must have write permissions available for the webserver or else cached files cannot be saved.<br><br>
+The default is the <code>cached</code> subdirectory of the template_lite folder.
+</p>
+<hr>
+
+<h2><a name="plugins_dir">$plugins_dir</a></h2>
+<p>
+This is an array that tells Template Lite what directories plugin files will be loaded from. There can  be more than one plugin directory. <br>
+<br>
+The default is the <code>plugins</code> subdirectory of the template_lite folder.
+<h4>Example</h4>
+	<pre>
+	PHP
+	=============================
+	$tpl->plugins_dir = array("plugins", "myplugins", "/home/www/mysite/templateplugins");
+	</pre>
+You	must have a plugins element in your plugins_dir array and it should always be the first element in the array.  In the above example Template Lite will seach for a plugin in each of the above directories one after the other.  If the plugin cannot be found an error is generated.
+</p>
+<hr>
+
+<h2><a name="left_delimiter">$left_delimiter</a></h2>
+<p>
+This is the left delimiter used by the template engine. The default is "{".
+</p>
+<hr>
+
+<h2><a name="right_delimiter">$right_delimiter</a></h2>
+<p>
+This is the right delimiter used by the template engine. The default is "}".
+</p>
+<hr>
+
+<h2><a name="cache">$cache</a></h2>
+<p>
+Tells Template Lite whether or not to cache the output of the templates. By default this is set to <code>false</code> or disabled. If your templates generate content that rarely changes, or you are looking to increase the speed at which your templates are generated, it is advisable to turn on caching, as your templates will load significantly faster. You can have multiple caches for the same page, but this is described in the <a href="appendix.caching.html">caching appendix</a>. It is important to reset the <a href="#cache_lifetime"><code>$cache_lifetime</code></a> variable when beginning to work with a page that is being cached or else the page will not be cached. Before any cached file is loaded, it will be checked to see if the original template has changed, or if the cache is out of date. Also, if <a href="#force_compile"><code>$force_compile</code></a> is enabled, then the cache will be regenerated each time the page is loaded.
+</p>
+<hr>
+
+<h2><a name="cache_lifetime">$cache_lifetime</a></h2>
+<p>
+This is the length of time in seconds that a template cache is valid. Once this time has expired, the cache will be regenerated. <a href="#cache"><code>$cache</code></a> must be set to <code>true</code> for <code>$cache_lifetime</code> to have any valid meaning. A value of 0, the default, will always regenerate the cache, which is good for testing purposes only. To disable caching, you should always set <a href="#cache"><code>$cache</code></a> to <code>false</code>. If <a href="#force_compile"><code>$force_compile</code></a> is set to true, then the cache files will be regenerated every time the page is loaded, also effectively disabling caching. You can clear all cached files by calling <a href="programming.methods.html#clear_cached"><code>clear_cached()</code></a>.
+</p>
+<hr>
+
+<h2><a name="force_compile">$force_compile</a></h2>
+<p>
+If this is set to <code>true</code> then each page will be recompiled upon every viewing. This is horribly inefficient and highly discouraged, but is useful for testing your templates.
+</p>
+<hr>
+
+<h2><a name="config_overwrite">$config_overwrite</a></h2>
+<p>
+When loading config files either from your PHP script or from your templates themselves, this variable can change the behavior of the loading process. When set to <code>true</code>, config variables with the same name will overwrite each other. If set to <code>false</code>, config variables of the same name will be pushed into a numerically indexed array. The default is to not overwrite. This is for storing arrays in config files, simply by listing the same config file multiple times.
+</p>
+<hr>
+
+<h2><a name="config_booleanize">$config_booleanize</a></h2>
+<p>
+When this is set to <code>true</code>, a config value of <code>true</code> or <code>yes</code> or <code>on</code> or <code>1</code> will be translated to mean "true". At the same time, a config value of <code>false</code> or <code>no</code> or <code>off</code> or <code>0</code> will be translated to "false". This is <code>true</code> by default.
+</p>
+<hr>
+
+<h2><a name="config_fix_new_lines">$config_fix_new_lines</a></h2>
+<p>
+If set to true, Mac and DOS newlines, \r and \r\n, respectively, in config files are converted to \n when they are parsed. This is <code>true</code> by default.
+</p>
+<hr>
+
+<h2><a name="config_read_hidden">$config_read_hidden</a></h2>
+<p>
+If set to true, hidden sections, those are sections that begin with a period, such as [.secret], can be and are read from config files into templates. Hidden sections are usually meant to store things such as database passwords and thus, this is typically false. The default is set to true.
+</p>
+<hr>
+
+<h2><a name="default_modifiers">$default_modifiers</a></h2>
+<p>
+This is an array of modifiers to apply to every variable in a template. For example, to HTML-escape every variable by default, use array('escape:&quot;htmlall&quot;'); To make a variable exempt from default modifiers, pass the special &quot;templatelite&quot; modifier with a parameter value of &quot;nodefaults&quot; modifier to it, such as {$var|templatelite:nodefaults}.</p>
+<hr>
+
+<h2><a name="debugging">$debugging</a></h2>
+<p> This enabled very minimal debugging through the tracking of the templates compiled and the compile time into the $templatelite_object-&gt;_templatelite_debug_info array. If you have any applications that use the $smarty-&gt;_smarty_debug_info variable you will need to edit the variable name either in your application or in the class.template.php program to match. Support for the Debug Console is  supported using a debug.tpl file located in the internal directory. Support for changing the location of the debug.tpl file through the $templatelite_object-&gt;<code>debug_tpl</code> variable is not supported. If you wish to use a different debug console you need to change the debug.tpl file in the internal directory. The Debug Console is not displayed if you are using the <code>fetch</code> function.  </p>
+<hr>
+
+<h1><a name="constants">Constants</a></h1>
+<hr>
+
+<h2><a name="TEMPLATE_LITE_DIR">TEMPLATE_LITE_DIR</a></h2>
+<p>
+This is the full system path to the location of the Template Lite class files. If path is not set, then Template Lite will determine the appropriate path automatically. If you manually set the path you MUST end the path with a forward slash. <br>
+<h4>Example</h4>
+	<pre>
+	EXAMPLE PHP
+	=============================
+	// linux path
+	define('TEMPLATE_LITE_DIR', '/usr/local/lib/php/template_lite/src/');
+
+
+	// windows path
+	define('TEMPLATE_LITE_DIR', 'c:/webroot/libs/template_lite/src/');
+	</pre>
+	</p>
+<hr>
+
+<a href="index.html">Home</a>
+</body>
+</html>

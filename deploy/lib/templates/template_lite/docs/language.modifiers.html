@@ -1,0 +1,552 @@
+<html>
+<head>
+	<title>Modifiers :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Modifiers</h1>
+<hr>
+<p>
+	Again, much like Smarty, Template Lite supports variable modifiers. At present, Template Lite comes with a few modifiers, namely those listed below. Additionally, modifiers are extremely easy to create. Here are some examples of using them in various situations and how to create one.
+	<pre>
+	{* uppercase the title *}
+	&lt;h2&gt;{ $title|upper }&lt;/h2&gt;
+
+	{* truncate the topic to 40 characters and use '...' at the end *}
+	Topic: { $topic|truncate:40:"..." }
+
+	{* uppercase and truncate the topic *}
+	Topic: { $topic|truncate:40:"..."|upper }
+	</pre>
+	Modifiers can be referenced in two ways. You can create a random function in your program somewhere, following the function format of <code>$string, $arg1, $arg2, etc.</code> and then dynamically register it (which is faster), or you can put your modifier in a file and put it in the plugins directory in the format <code>modifier.<i>modifiername</i>.php</code>. The advantage of putting it in the plugins directory is that it only gets included if it is used and once it is included, subsequent calls on the same page are faster.
+	<b>NOTE:</b> Modifiers are applied left to right. That means that the first modifier in the list is applied first, the second is applied second, etc. In the above example, $topic would first be truncated, then uppercased.<br><br>
+	Here is an example of how to create a modifier:
+	<pre>
+	function tpl_modifier_upper($string) {
+		return strtoupper($string);
+	}
+	</pre>
+	Template Lite comes with a whole bunch of modifiers in the plugin directory. Here is a brief description and usage of each one.
+</p>
+<hr>
+
+
+<h2><a name="bbcode2html"><code>bbcode2html</code></a></h2>
+<p>
+	<h4>Description</h4>
+	<code>bbcode2html</code> will convert UBB-style tags into HTML. The following tags are converted:
+	<ul>
+		<li><code>[b][/b]</code></li>
+		<li><code>[u][/u]</code></li>
+		<li><code>[i][/i]</code></li>
+		<li><code>[email]email@address.com[/email]</code> or <code>[email=email@address.com][/email]</code></li>
+		<li><code>[url]http://www.paullockaby.com/[/url]</code> or <code>[url=http://www.paullockaby.com][/url]</code></li>
+		<li><code>[img]urltoimage.jpg[/img]</code></li>
+		<li><code>[code][/code]</code></li>
+		<li><code>[pre][/pre]</code></li>
+		<li><code>[list][/list]</code>
+			<ul>
+				<li>and <code>[*]</code> (a list bullet)</li>
+			</ul>
+		</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "This will be [b]bold[/b]. My website is 
+	[url=http://www.paullockaby.com/]paullockaby.com[/url]."|bbcode2html }
+
+	OUTPUT
+	=============================
+	This will be &lt;B&gt;bold&lt;/B&gt;. My website is 
+	&lt;a href="http://www.paullockaby.com"&gt;paullockaby.com&lt;/a&gt;.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="capitalize"><code>capitalize</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is a wrapper for <code><a href="http://www.php.net/strtoupper">strtoupper</a></code>. It will capitalize the variable it modifies.
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "This is some text."|capitalize }
+
+	OUTPUT
+	=============================
+	THIS IS SOME TEXT.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="cat"><code>cat</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This concatenates two items into one.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>cat</b><br>This value concatenates to the given variable.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "This Is Some TEXT"|cat:" for you." }
+
+	OUTPUT
+	=============================
+	This Is Some Text for you.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="count_characters"><code>count_characters</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is used to count the number of characters in a variable.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>include_spaces</b> (optional)<br>This determines whether or not to include whitespace characters in the count. The default is false.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "This Is Some TEXT"|count_characters }
+	{ "This Is Some TEXT"|count_characters:true }
+
+	OUTPUT
+	=============================
+	14
+	17
+	</pre>
+</p>
+<hr>
+
+<h2><a name="count_paragraphs"><code>count_paragraphs</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is used to count the number of paragraphs in a variable.
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "Hi there everyone.\nThis is for you."|count_paragraphs }
+
+	OUTPUT
+	=============================
+	2
+	</pre>
+</p>
+<hr>
+
+<h2><a name="count_sentences"><code>count_sentences</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is used to count the number of sentences in a variable.
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "Hi there everyone. This is for you."|count_sentences }
+
+	OUTPUT
+	=============================
+	2
+	</pre>
+</p>
+<hr>
+
+<h2><a name="count_words"><code>count_words</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is used to count the number of words in a variable.
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "Hi there everyone"|count_words }
+
+	OUTPUT
+	=============================
+	3
+	</pre>
+</p>
+<hr>
+
+<h2><a name="count"><code>count</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is a wrapper for <code><a href="http://www.php.net/count">count</a></code>. It will return the number of elements in the variable it modifies if that variable is an array. In order to effectively use this modifier, you should prepend it with an '@' in order to apply it to the entire array, instead of each individual element of the array.
+
+	<h4>Example</h4>
+	<pre>
+	PHP
+	=============================
+	$tpl->assign("var", array("value1", "value2", "value3"));
+
+	TEMPLATE
+	=============================
+	{ $var|@count }
+
+	OUTPUT
+	=============================
+	3
+	</pre>
+</p>
+<hr>
+
+<h2><a name="date"><code>date</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is a wrapper for <code><a href="http://www.php.net/date">date</a></code>. This will format a given Unix timestamp to <code>format</code>. If the date given empty, this will return the current date and time, or use the given date and time in <code>default_date</code>.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>format (optional)</b><br>The format that we want the date to conform to. The default is "r".</li>
+		<li><b>default date (optional)</b><br>A default date to use if no date was provided in the variable we are modifying.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ $templatelite[NOW]|date:"n/j/Y g:ia" }
+	{ $templatelite[NOW]|date:"l, F j, Y" }
+
+	OUTPUT
+	=============================
+	7/27/2003 5:54pm
+	Sunday, June 27, 2003
+	</pre>
+</p>
+<hr>
+
+<h2><a name="date_format"><code>date</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is a wrapper for <code><a href="http://www.php.net/strftime">date_format</a></code>. This will format a given Unix timestamp to <code>format</code>. If the date given empty, this will return the current date and time, or use the given date and time in <code>default_date</code>.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>format (optional)</b><br>The format that we want the date to conform to. The default is "r".</li>
+		<li><b>default date (optional)</b><br>A default date to use if no date was provided in the variable we are modifying.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ $templatelite[NOW]|date_format:" %I:%M %p" }
+	{ $templatelite[NOW]|date_format: "%A, %B %e, %Y" }
+
+	OUTPUT
+	=============================
+	02 :33 pm
+	Monday , February 5, 2001
+	</pre>
+</p>
+<hr>
+
+<h2><a name="default"><code>default</code></a></h2>
+<p>
+	<h4>Description</h4>
+	If a variable does not contain a value, this will put a default value in its place. Note that zero (0) is not considered as empty and will not trigger a default value.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>default</b><br>The value we want to replace the modified variable with if the modified variable doesn't have a value.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	PHP
+	=============================
+	$tpl->assign("variable","");
+	$tpl->assign("value","here i am");
+
+	TEMPLATE
+	=============================
+	{ $variable|default:"nothing" }
+	{ $value|default:"something" }
+
+	OUTPUT
+	=============================
+	nothing
+	here i am
+	</pre>
+</p>
+<hr>
+
+<h2><a name="escape"><code>escape</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is used to html escape, url escape, escape single quotes on a variable not already escaped, hex escape, hexentity or javascript escape. By default, the variable is html escaped.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>esc_type (optional)</b><br>This is the escape format to use. The default is html.</li>
+		<li><b>char_set (optional)</b><br>The character set encoding passed to htmlentities(). The default is a ISO-8859-1.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "'This Is Some TEXT'"|escape }
+	{ "'This Is Some TEXT'"|escape:"url" }
+
+	OUTPUT
+	=============================
+	&#039;This Is Some TEXT&#039;
+	%27This+Is+Some+TEXT%27
+	</pre>
+</p>
+<hr>
+
+<h2><a name="indent"><code>indent</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is a wrapper for <code>indent</code>. This will indent the text.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>chars (optional)</b><br>This determines how many characters to indent to. The default is 4.</li>
+		<li><b>char (optional)</b><br>This is the character used to indent with. The default is a space.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "This Is Some TEXT"|indent:10 }
+	{ "This Is Some TEXT"|indent:1:"\t" }
+
+	OUTPUT
+	=============================
+	          this is some text
+	    this is some text
+	</pre>
+</p>
+<hr>
+
+<h2><a name="lower"><code>lower</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is a wrapper for <code><a href="http://www.php.net/strtolower">strtolower</a></code>. This will make the variable it modifies all lower-case.
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "This Is Some TEXT"|lower }
+
+	OUTPUT
+	=============================
+	this is some text
+	</pre>
+</p>
+<hr>
+
+<h2><a name="regex_replace"><code>regex_replace</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is a wrapper for <code><a href="http://www.php.net/preg_replace">preg_replace</a></code>.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>search</b><br>This is what you are searching to replace.</li>
+		<li><b>replace</b><br>This is what you are replacing into the variable.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "Infertility unlikely to\nbe passed on, experts say."|regex_replace:" /[\r\t\n]/":" " }
+
+	OUTPUT
+	=============================
+	Infertility unlikely to be passed on, experts say.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="replace"><code>replace</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is a wrapper for <code><a href="http://www.php.net/str_replace">str_replace</a></code>, except that the argument order is different. The first argument is the search string, the second is the replacement string.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>search</b><br>This is what you are searching to replace.</li>
+		<li><b>replace</b><br>This is what you are replacing into the variable.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "I hate beans."|replace:"hate":"like" }
+
+	OUTPUT
+	=============================
+	I like beans.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="spacify"><code>spacify</code></a></h2>
+<p>
+	<h4>Description</h4>
+	Spacify can insert a space between every character of a variable. You can optionally pass a different character (or string) to insert.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>spacify_char (optional)</b><br>This is an optional character to insert between each character.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ $articleTitle|spacify}
+	{ $articleTitle|spacify:"^^"}
+
+	OUTPUT
+	=============================
+	S o m e t h i n g .
+	S^^o^^m^^e^^t^^h^^i^^n^^g^^.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="string_format"><code>string_format</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is a wrapper for <code><a href="http://www.php.net/printf">printf</a></code>. (Though technically it is a wrapper for <code>vsprintf</code>, but <code>printf</code> is more accurate in its function.)
+
+	<h4>Arguments</h4>
+	This function has an unlimited number of arguments. Each argument is another replacement to be made on the string.<br>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "Number %d is a %s."|string_format:"45":"pitcher" }
+
+	OUTPUT
+	=============================
+	Number 45 is a pitcher.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="strip"><code>strip</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This modifier will remove all repeated spaces, new lines, and tabs with a single instance.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>replace (optional)</b><br>This is an optional character to replace all spaces, new lines, and tabs with. The default is a single space.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "Grandmother of\neight makes\t    hole in one." }
+	{ "Grandmother of\neight makes\t    hole in one."|strip }
+	{ "Grandmother of\neight makes\t    hole in one."|strip:"&nbsp;" }
+
+	OUTPUT
+	=============================
+	Grandmother of
+	eight makes        hole in one.
+	Grandmother of eight makes hole in one.
+	Grandmother&nbsp;of&nbsp;eight&nbsp;makes&nbsp;hole&nbsp;in&nbsp;one.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="truncate"><code>truncate</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This modifier will trim a variable to a specific length. The first argument is the cut off length, with a default of 80. The second argument is the extender (see example). The last argument is a boolean indicating if you wish to break at words or at spaces only.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>length (optional)</b><br>This is how long you want to truncate the string to. The default length is 80.</li>
+		<li><b>trail (optional)</b><br>This is what you want to append to the end of the truncated string, indicating that it has been truncated. The default is "..."</li>
+		<li><b>break words (optional)</b><br>This is a boolean asking you weather you want to break words apart or not. If set to true then a word such as "indicate" can be broken into "indi" and "cate". If set to false, the default, the word will be truncated on a space in the variable, if possible.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	&lt% "Might we make this sentence a little shorter, not a long run-on?"|truncate }
+	&lt% "Might we make this sentence a little shorter, not a long run-on?"|truncate:50:"..." }
+	&lt% "Might we make this sentence a little shorter, not a long run-on?"|truncate:50:"...":true }
+
+	OUTPUT
+	=============================
+	Might we make this sentence a little shorter, not a long run-on?
+	Might we make this sentence a little shorter,...
+	Might we make this sentence a little shorter, n...
+	</pre>
+</p>
+<hr>
+
+<h2><a name="upper"><code>upper</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is a wrapper for <code><a href="http://www.php.net/strtoupper">strtoupper</a></code>. This will capitalize the variable or phrase it modifies.
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "This is some text."|upper }
+
+	OUTPUT
+	=============================
+	THIS IS SOME TEXT.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="urlencode"><code>urlencode</code></a></h2>
+<p>
+	<h4>Description</h4>
+	This is used to convert a text into URL encoded text.
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ "my stuff"|urlencode }
+
+	OUTPUT
+	=============================
+	my%20stuff
+	</pre>
+</p>
+<hr>
+
+<a href="index.html">Home</a>
+</body>
+</html>

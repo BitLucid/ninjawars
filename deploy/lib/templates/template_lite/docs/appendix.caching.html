@@ -1,0 +1,63 @@
+<html>
+<head>
+	<title>How to use caching :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>How to use caching</h1>
+<hr>
+<p>
+	By setting <a href="programming.variables.html#cache"><code>$cache = true</code></a>, Template Lite will save a cached copy of your template in the directory specified in <a href="programming.variables.html#cache_dir"><code>$cache_dir</code></a>. Once a cached page has been created and saved, further requests to that page will be returned the cached page, thus bypassing the compilation and execution steps of page creation and offering significant speed enhancements.<br><br>
+	To use caching, however, you must specify a <a href="programming.variables.html#cache_lifetime">cache lifetime</a>. The default cache lifetime is zero seconds, which means that the cached page will be regenerated on each page request, effectively disabling caching, but also slowing down each page request. If you do not wish to use caching, always disable it by setting <code>$cache</code> to false.<br><br>
+	Here is an example for setting up a cache.<br>
+<pre>
+	PHP
+	=============================
+	require('class.template.php');
+	$tpl = new Template_Lite;
+	$tpl->cache = true; // turn caching on
+	$tpl->cache_lifetime = 3600; // set the cache lifetime for one hour
+	$tpl->cache_dir = "/path/to/cached"; // the cached files have to be saved somewhere
+
+	$tpl->display('index.tpl');
+	</pre>
+	The above example will compile and execute <code>index.tpl</code> and save a compiled copy and a cached copy. Each request for the next hour will be handled by the cached file, meaning that the template will not be opened or compiled or executed again. Instead, the saved, or cached, version will be returned to the user.<br><br>
+	When loading a dynamic page, there is obviously more that is slowing execution down than compilation and template execution. Sometimes there are expensive database calls, and those are more important to cache than the page. So you need to know if the page has been cached in order to forego the expensive database calls. To alleviate that problem, there is a function called <a href="programming.methods.html#is_cached"><code>is_cached</code></a>. By passing the name of the template and the appropriate <a href="appendix.groups.html">cache group</a>, this function will return true if the page has been cached and false otherwise. Here is an example of its use.<br>
+	<pre>
+	PHP
+	=============================
+	require('class.template.php');
+	$tpl = new Template_Lite;
+	$tpl->cache = true; // turn caching on
+	$tpl->cache_lifetime = 3600; // set the cache lifetime for one hour
+	$tpl->cache_dir = "/path/to/cached"; // the cached files have to be saved somewhere
+
+	if (!$tpl->is_cached('index.tpl')) {
+		// put expensive database calls and assignments in here
+	}
+
+	$tpl->display('index.tpl');
+	</pre>
+
+	Occasionally you will want to explicitly clear the cache for a specific page, or all pages. For instance, if you make an update to a page and you want the update to go through immediately, you would clear the cache for that page, such that on the next viewing of that page, the new information would be fetched. There is a function that does just that: <a href="programming.methods.html#clear_cache"><code>clear_cache</code></a>.
+	<pre>
+	PHP
+	=============================
+	require('class.template.php');
+	$tpl = new Template_Lite;
+
+	// clear the cache for index.tpl
+	$tpl->clear_cache('index.tpl');
+
+	// clear the cache group for 'index'
+	$tpl->clear_cache(null, 'index');
+
+	// clear all cached files
+	$tpl->clear_cache();
+	</pre>
+
+	Finally, if you want to cache a page but need to have some piece of dynamic content, for example a banner advertisement or a weather bug, then you can use <a href="language.functions.html#insert">inserts</a>.<br>
+</p>
+<a href="index.html">Home</a>
+</body>
+</html>

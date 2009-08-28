@@ -1,0 +1,682 @@
+<html>
+<head>
+	<title>Methods :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Methods</h1>
+<hr>
+
+<h2><a name="append"><code>append</code></a></h2>
+<code>void <b>append</b>(mixed $key)</code><br>
+<code>void <b>append</b>(string $key, mixed $value[, bool merge])</code><br>
+<p>
+<h4>Description</h4>
+	This is used to append values to template variables. You can pass a key/value pair, or an associative array of key/value pairs.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>merge</b><br>The merge parameter respects array keys. If you merge two numerically indexed arrays, they may overwrite each other or result in non-sequential keys.  Default = false</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// passing key/value pairs
+	$tpl->append("Name", "Fred");
+	$tpl->append("Address", $address);
+
+	// passing an associative array
+	$tpl->append(array("Name" => "Fred", "Address" => $address));
+	</pre>
+</p>
+<hr>
+
+<h2><a name="append_by_ref"><code>append_by_ref</code></a></h2>
+<code>void <b>append_by_ref</b>(mixed $key)</code><br>
+<code>void <b>append_by_ref</b>(string $key, mixed $value[, bool merge])</code><br>
+<p>
+<h4>Description</h4>
+	This is used to append values by reference to template variables. You can pass a key/value pair, or an associative array of key/value pairs.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>merge</b><br>The merge parameter respects array keys. If you merge two numerically indexed arrays, they may overwrite each other or result in non-sequential keys.  Default = false</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// passing key/value pairs
+	$tpl->append_by_ref("Name", "Fred");
+	$tpl->append_by_ref("Address", $address);
+
+	// passing an associative array
+	$myarray = array("Name" => "Fred", "Address" => $address)
+	$tpl->append_by_ref($myarray);
+	</pre>
+</p>
+<hr>
+
+<h2><a name="assign"><code>assign</code></a></h2>
+<code>void <b>assign</b>(mixed $key)</code><br>
+<code>void <b>assign</b>(string $key, mixed $value)</code><br>
+<p>
+<h4>Description</h4>
+	This is used to assign values to the templates. You can pass a key/value pair, or an associative array of key/value pairs.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// passing key/value pairs
+	$tpl->assign("Name", "Fred");
+	$tpl->assign("Address", $address);
+
+	// passing an associative array
+	$tpl->assign(array("Name" => "Fred", "Address" => $address));
+	</pre>
+</p>
+<hr>
+
+<h2><a name="assign_by_ref"><code>assign_by_ref</code></a></h2>
+<code>void <b>assign_by_ref</b>(mixed $key)</code><br>
+<code>void <b>assign_by_ref</b>(string $key, mixed $value)</code><br>
+<p>
+<h4>Description</h4>
+	This is used to assign values by reference to the templates. You can pass a key/value pair, or an associative array of key/value pairs.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// passing key/value pairs
+	$tpl->assign_by_ref("Name", "Fred");
+	$tpl->assign_by_ref("Address", $address);
+
+	// passing an associative array
+	$myarray = array("Name" => "Fred", "Address" => $address)
+	$tpl->assign_by_ref($myarray);
+	</pre>
+</p>
+<hr>
+
+<h2><a name="assign_config"><code>assign_config</code></a></h2>
+<code>void <b>assign_config</b>(string $key)</code><br>
+<code>void <b>assign_config</b>(string $key, mixed $value)</code><br>
+<p>
+<h4>Description</h4>
+	This is used to assign a constant or "config" value. These constant values are referenced in the same way as values loaded from <a href="language.config.html">config files</a>. Usage is the same as with <a href="#assign"><code>assign</code></a>.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// passing key/value pairs
+	$tpl->assign("Name", "Fred");
+	$tpl->assign("Address, $address);
+
+	// passing an associative array
+	$tpl->assign(array("Name" => "Fred", "Address" => $address));
+	</pre>
+</p>
+<hr>
+
+<h2><a name="clear_assign"><code>clear_assign</code></a></h2>
+<code>void <b>clear_assign</b>([string $key])</code><br>
+<code>void <b>clear_assign</b>([array $key])</code><br>
+<p>
+<h4>Description</h4>
+	This will effectively erase an assigned variable.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// clear a single variable
+	$tpl->clear_assign("Name");
+
+	// clear a multiple variables
+	$tpl->clear_assign(array("Name", "Address));
+
+	// clear all variables
+	$tpl->clear_assign();
+	</pre>
+</p>
+<hr>
+
+<h2><a name="clear_all_assign"><code>clear_all_assign</code></a></h2>
+<code>void <b>clear_all_assign</b>()</code><br>
+<p>
+<h4>Description</h4>
+	This will effectively erase all assigned variables.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// clear a single variable
+	$tpl->clear_all_assign();
+	</pre>
+</p>
+<hr>
+
+<h2><a name="clear_config"><code>clear_config</code></a></h2>
+<code>void <b>clear_config</b>([string $key])</code><br>
+<p>
+<h4>Description</h4>
+	This will effectively erase a config value, whether assigned manually or loaded from a config file.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// clear a single variable
+	$tpl->clear_config("Name");
+
+	// clear a multiple variables
+	$tpl->clear_config(array("Name", "Address));
+
+	// clear all variables
+	$tpl->clear_config();
+	</pre>
+</p>
+<hr>
+
+<h2><a name="get_template_vars"><code>get_template_vars</code></a></h2>
+<code>mixed <b>get_template_vars</b>([string $key])</code><br>
+<p>
+<h4>Description</h4>
+	Will return all variables in an associative array, or a single variable named <code>$key</code>. This will not return variables assigned inside the template, unless the template has already been processed.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// get the template variable called 'foo'
+	$foo = $tpl->get_template_vars('foo');
+
+	// get all assigned template variables
+	$tpl_vars = $tpl->get_template_vars();
+	</pre>
+</p>
+<hr>
+
+<h2><a name="get_vars_config"><code>get_vars_config</code></a></h2>
+<code>mixed <b>get_vars_config</b>([string $key])</code><br>
+<p>
+<h4>Description</h4>
+	Will return all config values in an associative array, or a single config value named <code>$key</code>. This will not return values loaded by <code>config_load</code> calls embedded in a template, unless the template has already been processed.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// get the template variable called 'foo'
+	$foo = $tpl->get_vars_config('foo');
+
+	// get all assigned template variables
+	$tpl_vars = $tpl->get_vars_config();
+	</pre>
+</p>
+<hr>
+
+<h2><a name="clear_compiled_tpl"><code>clear_compiled_tpl</code></a></h2>
+<code>void <b>clear_compiled_tpl</b>([string $file])</code><br>
+<p>
+<h4>Description</h4>
+	This will clear out the compiled template folder, or if a file is supplied, it will clear that specific template. If no file is specified, all compiled files will be deleted.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// clear all compiled files
+	$tpl->clear_compiled_tpl();
+
+	// clear the compiled file for the file called "index.tpl"
+	$tpl->clear_compiled_tpl("index.tpl");
+	</pre>
+    </p>
+<hr>
+
+<h2><a name="clear_cache"><code>clear_cache</code></a></h2>
+<code>void <b>clear_cache</b>([string $file [, string $cache_id]])</code><br>
+<p>
+<h4>Description</h4>
+	This will clear out the cache, or if a file and/or a cache id is supplied, it will clear that specific template. If you have utilized <a href="appendix.groups.html">cache groups</a>, then it is possible to delete a specific group by specifying a cache id. If no file or cache id is specified, all cached files will be deleted.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// clear the whole cache
+	$tpl->clear_cache();
+
+	// clear all files in the "gallery" group, such as "gallery|view" and "gallery|thumbnail"
+	$tpl->clear_cache(null, "gallery");
+
+	// clear only the gallery thumbnails
+	$tpl->clear_cache(null, "gallery|thumbnail");
+
+	// clear the cache for the file called "index.tpl"
+	$tpl->clear_cache("index.tpl");
+	// clear the cache for the file called "index.tpl" with the cache id of "homepage"
+	$tpl->clear_cache("index.tpl", "homepage");
+	</pre>
+</p>
+<hr>
+
+<h2><a name="clear_all_cache"><code>clear_all_cache</code></a></h2>
+<code>void <b>clear_all_cache</b>()</code><br>
+<p>
+<h4>Description</h4>
+	This will clear out the entire cache.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// clear the whole cache
+	$tpl->clear_all_cache();
+	</pre>
+</p>
+<hr>
+
+<h2><a name="is_cached"><code>is_cached</code></a></h2>
+<code>bool <b>is_cached</b>(string $file [, string $cache_id])</code><br>
+<p>
+<h4>Description</h4>
+	Returns true if there is a valid cache for this template. This only works if <a href="appendix.caching.html">caching</a> is to true.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	$tpl->caching = true;
+
+	if (!$tpl->is_cached("index.tpl", "homepage")) {
+		// do expensive database calls here
+	}
+
+	$tpl->display("index.tpl", "homepage");
+	</pre>
+</p>
+<hr>
+
+<h2><a name="register_modifier"><code>register_modifier</code></a></h2>
+<code>void <b>register_modifier</b>(string $modifier, callback $implementation)</code><br>
+<p>
+<h4>Description</h4>
+	Use this to dynamically register a modifiery plugin. Pass the template modifier name, followed by the PHP function that implements it.<br><br>
+	The php-function callback <code>$implementation</code> can either be a string containing the function name, or an array of the form <code>array(&$object, $method)</code> with <code>&$object</code> being a reference to an object and <code>$method</code> being a string that contains the method name, or an array of the form <code>array(&$class, $method)</code> with <code>&$class</code> being a reference to a class and <code>$method</code> being a method of that class.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// map PHP's stripslashes function to a Template Lite modifier
+	// can be referenced like this: { $var|sslash } to strip slashes from variables
+	$tpl->register_modifier("sslash", "stripslashes");
+
+	// map to a custom function
+	$tpl->register_modifier("fix_string", "fix_string");
+
+	EXAMPLE MODIFIER
+	=============================
+	function fix_string($string) {
+		// strip slashes and then make the resulting string all lowercase
+		// and then capitalize all the first letters of every word
+		return ucword(strtolower(stripslashes($string)));
+	}
+	</pre>
+</p>
+<hr>
+
+<h2><a name="unregister_modifier"><code>unregister_modifier</code></a></h2>
+<code>void <b>unregister_modifier</b>(string $modifier)</code><br>
+<p>
+<h4>Description</h4>
+	Use this to dynamically unregister a modifier. Pass in the template modifier name.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// don't want template designers to strip tags from elements
+	$tpl->unregister_modifier("strip_tags");
+	</pre>
+</p>
+<hr>
+
+<h2><a name="register_function"><code>register_function</code></a></h2>
+<code>void <b>register_function</b>(string $function, callback $implementation)</code><br>
+<p>
+<h4>Description</h4>
+	Use this dynamically register a template function. Pass in the template function name, followed by the PHP function name that implements it.<br><br>
+	The php-function callback <code>$implementation</code> can either be a string containing the function name, or an array of the form <code>array(&$object, $method)</code> with <code>&$object</code> being a reference to an object and <code>$method</code> being a string that contains the method name, or an array of the form <code>array(&$class, $method)</code> with <code>&$class</code> being a reference to a class and <code>$method</code> being a method of that class.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// register the function "print_current_date" as the template function "date_now"
+	// can now be used like this: { date_now } or { date_now format="l, F j, Y" }
+	$tpl->register_function("date_now", "print_current_date");
+
+	EXAMPLE FUNCTION
+	=============================
+	function print_current_date($params, &$tpl) {
+		if(empty($params['format']))
+			$format = "m/d/Y"
+		return date($format, time());
+	}
+	</pre>
+</p>
+<hr>
+
+<h2><a name="unregister_function"><code>unregister_function</code></a></h2>
+<code>void <b>unregister_function</b>(string $function)</code><br>
+<p>
+<h4>Description</h4>
+	Use this to dynamically unregister a template function. Pass in the template function name.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	$tpl->unregister_function("fetch");
+	</pre>
+</p>
+<hr>
+
+<h2><a name="register_block"><code>register_block</code></a></h2>
+<code>void <b>register_block</b>(string $function, $string implementation)</code><br>
+<p>
+<h4>Description</h4>
+	Use this to dynamically register a block function. Pass in the block function name, followed by the PHP function that implements it.
+	The php-function callback <code>$implementation</code> can either be a string containing the function name, or an array of the form <code>array(&$object, $method)</code> with <code>&$object</code> being a reference to an object and <code>$method</code> being a string that contains the method name, or an array of the form <code>array(&$class, $method)</code> with <code>&$class</code> being a reference to a class and <code>$method</code> being a method of that class.<br><br>
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	$tpl->register_block("translate", "do_translation");
+
+	EXAMPLE FUNCTION
+	=============================
+	function do_translation($params, $content, &$tpl) {
+		if (isset($content)) {
+			$lang = $params['lang'];
+			// do something with $content
+			return $translation;
+		}
+	}
+
+	EXAMPLE PHP
+	=============================
+	{ translate lang=br }
+		Hello, world!
+	{ /translate }
+	</pre>
+</p>
+<hr>
+
+<h2><a name="unregister_block"><code>unregister_block</code></a></h2>
+<code>void <b>unregister_block</b>(string $function)</code><br>
+<p>
+<h4>Description</h4>
+	Use this to dynamically unregister a template block function. Pass in the template function name.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	$tpl->unregister_block("translate");
+	</pre>
+</p>
+<hr>
+
+<h2><a name="register_compiler_function"><code>register_compiler_function</code></a></h2>
+<code>void <b>register_compiler_function</b>(string $function, callback $implementation)</code><br>
+<p>
+<h4>Description</h4>
+	<p>Use this dynamically register a compiler function. Pass in the compiler function name, followed by the PHP function name that implements it.<br>
+	  <br>
+	The php-function callback <code>$implementation</code> can either be a string containing the function name, or an array of the form <code>array(&$object, $method)</code> with <code>&$object</code> being a reference to an object and <code>$method</code> being a string that contains the method name, or an array of the form <code>array(&$class, $method)</code> with <code>&$class</code> being a reference to a class and <code>$method</code> being a method of that class.	</p>
+	<p>Compiler functions are called only during compilation of the template. They are used for injecting PHP code or other content into the template.</p>
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+
+	$tpl->register_compiler_function("show_tplheader", "compiler_show_tplheader");
+
+	EXAMPLE FUNCTION
+	=============================
+	function compiler_show_tplheader($arguments, &amp;$tpl)<br>	{<br>		return &quot;\necho '&quot; . $tpl-&gt;_file . &quot; compiled at &quot; . date('Y-m-d H:M'). &quot;';&quot;;<br>	}<br>
+
+	EXAMPLE INSERTED INTO COMPILED TEMPLATE
+	=============================
+	&lt;?php<br>	echo 'index.tpl compiled at 2006-04-12 15:34';<br>	?&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="unregister_compiler_function"><code>unregister_compiler_function</code></a></h2>
+<code>void <b>unregister_compiler_function</b>(string $function)</code><br>
+<p>
+<h4>Description</h4>
+	Use this to dynamically unregister a compiler function. Pass in the compiler function name.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	$tpl->unregister_compiler_function("show_tplheader");
+	</pre>
+</p>
+<hr>
+
+<h2><a name="register_resource"><code>register_resource</code></a></h2>
+<code>void <b>register_resource</b>(string $function, array resource_funcs)</code><br>
+<p>
+<h4>Description</h4>
+	<p>Use this dynamically to register a template resource. Pass in the resource name, followed by the array of PHP functions implementing it.<br>
+	  <br>
+	  The required resource_funcs elements are the function-callbacks for the respective source, timestamp, secure and trusted functions of the resource.
+	  <br>
+	  Template Lite currently doesn't support the use of class names for resources.  Do not use the 5 element resource runction array.
+	  <br>
+	  Resources are not supported by template caching at this time.
+	</p>
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	$tpl->register_resource("db", array("db_get_template",
+				"db_get_timestamp",
+				"db_get_secure",
+				"db_get_trusted"));
+	
+	$tpl->display("db:index.tpl");
+
+
+	EXAMPLE FUNCTION
+	=============================
+	function db_get_template ($tpl_name, &$tpl_source, &$object)
+	{
+		global $db;
+
+		$result = $db->execute("select tpl_source from my_table where tpl_name='$tpl_name'");
+		$tpl_source = $result->fields['tpl_source'];
+		return true;
+	}
+
+	function db_get_timestamp($tpl_name, &$tpl_timestamp, &$object)
+	{
+		global $db;
+		$result = $db->execute("select tpl_timestamp from my_table where tpl_name='$tpl_name'");
+		$tpl_timestamp = strtotime($result->fields['tpl_timestamp']);
+		return true;
+	}
+
+	function db_get_secure($tpl_name, &$object)
+	{
+		return true;
+	}
+
+	function db_get_trusted($tpl_name, &$object)
+	{
+		// not used for templates
+	}
+	</pre>
+</p>
+<hr>
+
+<h2><a name="unregister_resource"><code>unregister_resource</code></a></h2>
+<code>void <b>unregister_resource</b>(string $function)</code><br>
+<p>
+<h4>Description</h4>
+	Use this to dynamically unregister a resource. Pass in the resource name.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	$tpl->unregister_resource("db");
+	</pre>
+</p>
+<hr>
+
+<h2><a name="template_exists"><code>template_exists</code></a></h2>
+<code>bool <b>template_exists</b>(string $file)</code><br>
+<p>
+<h4>Description</h4>
+	This function checks whether the specified template exists.
+</p>
+<hr>
+
+<h2><a name="display"><code>display</code></a></h2>
+<code>void <b>display</b>(string $file [, string $cache_id]])</code><br>
+<p>
+<h4>Description</h4>
+	This function will display a template. Supply a valid template file, with an optional cache id. See the <a href="appendix.caching.html">caching section</a> for more information on caching.<br><br>
+	It is highly recommended that you set a cache id for all templates that you are caching.  You can also use an absolute path name to include template files outside the defined template directory path.  If you use an absolute path it is recommended you preface the path with 'file:'.  IE: 'file:/my/path/template.tpl'
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	include("class.template.php");
+	$tpl = new template;
+	$tpl->display("index.tpl", "homepage");
+
+	EXAMPLE (absolute path)
+	=============================
+	include("class.template.php");
+	$tpl = new template;
+	$tpl->display("/my/path/index.tpl", "homepage");
+
+	EXAMPLE (absolute path fiel file:)
+	=============================
+	include("class.template.php");
+	$tpl = new template;
+	$tpl->display("file:/my/path/index.tpl", "homepage");
+	</pre>
+</p>
+<hr>
+
+<h2><a name="fetch"><code>fetch</code></a></h2>
+<code>string <b>fetch</b>(string $file, [, string $cache_id]])</code><br>
+<p>
+<h4>Description</h4>
+	This function will return a string containing a template. Supply a valid template file, with an optional compile id and cache id. See the <a href="appendix.caching.html">caching section</a> for more information on caching.<br><br>
+	It is highly recommended that you set a cache id for all templates that you are caching.  You can also use an absolute path name to include template files outside the defined template directory path.  If you use an absolute path it is recommended you preface the path with 'file:'.  IE: 'file:/my/path/template.tpl'
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	include("class.template.php");
+	$tpl = new template;
+	$output = $tpl->fetch("index.tpl", "homepage");
+	echo $output;
+
+	EXAMPLE (absolute path)
+	=============================
+	include("class.template.php");
+	$tpl = new template;
+	$output = $tpl->fetch("/my/path/index.tpl", "homepage");
+	echo $output;
+
+	EXAMPLE (absolute path fiel file:)
+	=============================
+	include("class.template.php");
+	$tpl = new template;
+	$output = $tpl->fetch("file:/my/path/index.tpl", "homepage");
+	echo $output;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="config_load"><code>config_load</code></a></h2>
+<code>bool <b>config_load</b>(string $file [, string $section_name [, string $var_name]])</code><br>
+<p>
+<h4>Description</h4>
+	This function will load the specified config file into the template. You can specify a specific section or even a specific key to load, but otherwise, all config vars from the specified template will be loaded. Will return <code>true</code> if the config file was successfullyl loaded and <code>false</code> otherwise.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// load all config values
+	$tpl->config_load("config.ini");
+
+	// load all config values from the [layout] section
+	$tpl->config_load("config.ini", "layout");
+
+	// load the "font_color" key
+	$tpl->config_load("config.ini", "layout", "font_color");
+	</pre>
+</p>
+<hr>
+
+<h2><a name="load_filter"><code>load_filter</code></a></h2>
+<code>bool <b>load_filter</b>(string $filtertype , string $filter_name)</code><br>
+<p>
+<h4>Description</h4>
+	This function will load the specified filter type and filter.  The current filter types supported are <tt>output</tt> filters.  These filters process the html created by the template engine before being sent to a browser using the display function or before it is stored in a variable using the fetch function.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	// load gzip output filter
+	$tpl->load_filter("output", "gzip");
+	</pre>
+</p>
+<hr>
+
+<h2><a name="trigger_error"><code>trigger_error</code></a></h2>
+<code>bool <b>trigger_error</b>(string error_msg [, int level])</code><br>
+<p>
+<h4>Description</h4>
+	This function can be used to output an error message using Template Lite.
+	The <tt>level</tt> parameter can be one of the values used for the PHP <a href="http://php.net/trigger_error">trigger_error()</a> function.  Default = 
+	E_USER_WARNING
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+
+	$tpl->trigger_error("Couldn't find your file.", E_USER_WARNING);
+	</pre>
+</p>
+<hr>
+
+<a href="index.html">Home</a>
+</body>
+</html>

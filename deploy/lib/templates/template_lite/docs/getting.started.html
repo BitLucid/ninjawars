@@ -1,0 +1,101 @@
+<html>
+<head>
+	<title>Getting Started :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Installation</h1>
+<hr>
+<p>
+	<h4>Requirements</h4>
+	Template Lite requires a web server running PHP 4.1.0 or greater. Note that it hasn't been tested on anything less than 4.3, but it should, in theory, work on anything greater than 4.1.0.<br><br>
+
+	<h4>Basic Installation</h4>
+	The files needed to run Template Lite are located in the <code>/src/</code> directory of the distribution. These are simply PHP files and contain source code. Feel free to play with it and make any changes you want to. Just remember that changes made to Template Lite are not supported. (If you <i>do</i> decide that you made a cool change, submit it to the maintainers and it might be included in a future release!)<br><br>
+	So to install Template Lite copy over the files:<br>
+
+	<pre>
+	class.template.php
+	class.compiler.php
+	class.config.php
+	/plugins/*.php
+	</pre>
+
+	You don't necessarily need all the files. The plugins are optional, but extremely useful (and also their usage is detailed in these documents) and the configuration loader is not needed if you don't plan on using <a href="language.config.html">config files</a>.<br><br>
+	After you've copied the above files somewhere into your program, probably a subfolder of your <code>includes</code> folder entitled something such as <code>template_lite</code>, you need to include them in your script. Here is an example of how to do that:<br>
+
+	<pre>
+	require('/path/to/class.template.php');
+	$tpl = new Template_Lite;
+	</pre>
+
+	You should replace <code>/path/to/</code> with some relative or absolute path to template_lite.<br><br>
+	Once the files are successfully included, you can begin setting some basic variables. There are two variables that you need to set after loading Template Lite: <code>$template_dir</code> and <code>$compile_dir</code>.<br>
+
+	<pre>
+	require('/path/to/class.template.php');
+	$tpl = new Template_Lite;
+	$tpl->compile_dir = "compiled/";
+	$tpl->template_dir = "templates/";
+	</pre>
+
+	One caveat is important to note. Template Lite needs write access to the server. Usually the webserver will run as "nobody". There are two ways to handle this. The first way is more secure, but requires you to have root or administrator access to your server. It involves changing the ownership of the compile directory (and optionally the cache directory if you opt to do caching). Here is how you do that:<br>
+
+	<pre>
+	chown nobody:nobody /path/tocompiled/
+	chmod 700 /path/to/compiled/
+
+	# you only need to do this if you are using caching
+	chown nobody:nobody /path/to/cached/
+	chmod 700 /path/to/cached/
+	</pre>
+
+	The other way involves giving your compile and cache directories world write access. This is fairly insecure, but probably the only option if you do not have root or administrator access to the server. Here is how to do that:<br>
+	<pre>
+	chmod 777 /path/to/compiled/
+
+	# you only need to do this if you are using caching
+	chmod 777 /path/to/compiled/
+	</pre>
+
+	So now that you have it all set up, here is a sample template that you can write to see that it all works.<br>
+
+	<pre>
+	test.php
+	=============================
+	require('class.template.php');
+	$tpl = new Template_Lite;
+	$tpl->compile_dir = "compiled/";
+	$tpl->template_dir = "templates/";
+
+	$tpl->assign("foo","bar");
+	$tpl->display("test.tpl");
+
+	test.tpl
+	=============================
+	&lt;html&gt;
+	&lt;head&gt;
+	&lt;title&gt;Document Title&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+	{* this is a comment *}
+	{ $foo }
+	&lt;/body&gt;
+	&lt;/html&gt;
+
+	output
+	=============================
+	&lt;html&gt;
+	&lt;head&gt;
+	&lt;title&gt;Document Title&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+	bar
+	&lt;/body&gt;
+	&lt;/html&gt;
+	</pre>
+</p>
+<hr>
+<a href="index.html">Home</a>
+</body>
+</html>

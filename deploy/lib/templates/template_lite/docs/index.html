@@ -1,0 +1,242 @@
+<html>
+<head>
+	<title>Template Lite - the faster compiling PHP template engine</title>
+</head>
+<body>
+<h1>Template Lite - the faster compiling PHP template engine</h1>
+Paul Lockaby &lt;paul @ paullockaby.com&gt;<br>
+&copy; Copyright 2003, 2004 by Paul Lockaby<br>
+<br>
+Updates and Additions<br>
+&copy; Copyright 2005-2007 by Mark Dickenson<br>
+<hr>
+<b>Table of Contents</b>
+<ul>
+	<li>What is Template Lite?
+		<ul>
+			<li><a href="what.is.html#why">Why Use Template Lite?</a></li>
+			<li><a href="what.is.html#credits">Credits</a></li>
+			<li><a href="what.is.html#bugs">Bugs</a></li>
+			<li><a href="what.is.html#customdifferences">Differences in creating Custom blocks, functions, modifiers, filters and extending the template object.</a></li>
+			<li><a href="what.is.html#notsupported">Smarty features currently unsupported.</a></li>
+			<li><a href="what.is.html#todo">To Do</a></li>
+			<li><a href="what.is.html#history">History</a></li>
+		</ul>
+	</li>
+</ul>
+<ul>
+	<li><a href="getting.started.html">Installation and Basic Usage</a></li>
+</ul>
+<ul>
+	<li>Using Template Lite In Templates
+		<ul>
+			<li><a href="language.variables.html">Variables</a>
+				<ul>
+					<li><a href="language.variables.html#assigned">Variables assigned from PHP</a>
+						<ul>
+							<li><a href="language.variables.html#basic">Basic variables</a></li>
+							<li><a href="language.variables.html#arrays">Arrays</a></li>
+							<li><a href="language.variables.html#associative">Associative Arrays</a></li>
+							<li><a href="language.variables.html#sectionarray">Section Arrays</a></li>
+						</ul>
+					</li>
+					<li><a href="language.variables.html#config">Variables loaded from config files</a></li>
+					<li><a href="language.variables.html#embedding">Embedding variables in quotes</a></li>
+					<li><a href="language.variables.html#concatenation">Variable concatenation</a></li>
+					<li><a href="language.variables.html#templatelite">$templatelite reserved variable</a></li>
+						<ul>
+							<li><a href="language.variables.html#capture">capture</a></li>
+							<li><a href="language.variables.html#config">config</a></li>
+							<li><a href="language.variables.html#const">const</a></li>
+							<li><a href="language.variables.html#cookie">cookie</a></li>
+							<li><a href="language.variables.html#env">env</a></li>
+							<li><a href="language.variables.html#get">get</a></li>
+							<li><a href="language.variables.html#ldelim">ldelim</a></li>
+							<li><a href="language.variables.html#now">now</a></li>
+							<li><a href="language.variables.html#post">post</a></li>
+							<li><a href="language.variables.html#rdelim">rdelim</a></li>
+							<li><a href="language.variables.html#section">section</a></li>
+							<li><a href="language.variables.html#server">server</a></li>
+							<li><a href="language.variables.html#session">session</a></li>
+							<li><a href="language.variables.html#template">template</a></li>
+							<li><a href="language.variables.html#version">version</a></li>
+						</ul>
+				</ul>
+			</li>
+			<li><a href="language.modifiers.html">Variables Modifiers</a>
+				<ul>
+					<li><a href="language.modifiers.html#bbcode2html"><code>bbcode2html</code></a></li>
+					<li><a href="language.modifiers.html#capitalize"><code>capitalize</code></a></li>
+					<li><a href="language.modifiers.html#cat"><code>cat</code></a></li>
+					<li><a href="language.modifiers.html#count_characters"><code>count_characters</code></a></li>
+					<li><a href="language.modifiers.html#count_paragraphs"><code>count_paragraphs</code></a></li>
+					<li><a href="language.modifiers.html#count_sentences"><code>count_sentences</code></a></li>
+					<li><a href="language.modifiers.html#count_words"><code>count_words</code></a></li>
+					<li><a href="language.modifiers.html#date"><code>date</code></a></li>
+					<li><a href="language.modifiers.html#date_format"><code>date_format</code></a></li>
+					<li><a href="language.modifiers.html#default"><code>default</code></a></li>
+					<li><a href="language.modifiers.html#escape"><code>escape</code></a></li>
+					<li><a href="language.modifiers.html#indent"><code>indent</code></a></li>
+					<li><a href="language.modifiers.html#lower"><code>lower</code></a></li>
+					<li><a href="language.modifiers.html#regex_replace"><code>regex_replace</code></a></li>
+					<li><a href="language.modifiers.html#replace"><code>replace</code></a></li>
+					<li><a href="language.modifiers.html#spacify"><code>spacify</code></a></li>
+					<li><a href="language.modifiers.html#string_format"><code>string_format</code></a></li>
+					<li><a href="language.modifiers.html#strip"><code>strip</code></a></li>
+					<li><a href="language.modifiers.html#truncate"><code>truncate</code></a></li>
+					<li><a href="language.modifiers.html#upper"><code>upper</code></a></li>
+					<li><a href="language.modifiers.html#urlencode"><code>urlencode</code></a></li>
+				</ul>
+			</li>
+			<li><a href="language.modifiers.combining.html">Combining Modifiers</a></li>
+			<li><a href="language.functions.html">Functions</a>
+				<ul>
+					<li><a href="language.functions.html#assign"><code>{assign}</code></a></li>
+					<li><a href="language.functions.html#config_load"><code>{config_load}</code></a></li>
+					<li><a href="language.functions.html#for"><code>{for}</code></a></li>
+					<li><a href="language.functions.html#foreach"><code>{foreach}/{foreachelse}</code></a></li>
+					<li><a href="language.functions.html#if"><code>{if}/{elseif}/{else}</code></a></li>
+					<li><a href="language.functions.html#include"><code>{include}</code></a></li>
+					<li><a href="language.functions.html#insert"><code>{insert}</code></a></li>
+					<li><a href="language.functions.html#delim"><code>{ldelim}/{rdelim}</code></a></li>
+					<li><a href="language.functions.html#literal"><code>{literal}</code></a></li>
+					<li><a href="language.functions.html#php"><code>{php}</code></a></li>
+					<li><a href="language.functions.html#section"><code>{section}/{sectionelse}</code></a></li>
+					<li><a href="language.functions.html#switch"><code>{switch}/{case}</code></a></li>
+					<li><a href="language.functions.html#while"><code>{while}</code></a></li>
+				</ul>
+			</li>
+			<li><a href="language.functions.custom.html">Custom Functions</a>
+				<ul>
+					<li><a href="language.functions.custom.html#capture"><code>{capture}</code></a></li>
+					<li><a href="language.functions.custom.html#counter"><code>{counter}</code></a></li>
+					<li><a href="language.functions.custom.html#cycle"><code>{cycle}</code></a></li>
+					<li><a href="language.functions.custom.html#db_function_call"><code>{db_function_call}</code></a></li>
+					<li><a href="language.functions.custom.html#db_result_call"><code>{db_result_call}</code></a></li>
+					<li><a href="language.functions.custom.html#debug"><code>{debug}</code></a></li>
+					<li><a href="language.functions.custom.html#html_checkboxes"><code>{html_checkboxes}</code></a></li>
+					<li><a href="language.functions.custom.html#html_hidden"><code>{html_hidden}</code></a></li>
+					<li><a href="language.functions.custom.html#html_image"><code>{html_image}</code></a></li>
+					<li><a href="language.functions.custom.html#html_input"><code>{html_input}</code></a></li>
+					<li><a href="language.functions.custom.html#html_options"><code>{html_options}</code></a></li>
+					<li><a href="language.functions.custom.html#html_radios"><code>{html_radios}</code></a></li>
+					<li><a href="language.functions.custom.html#html_select_date"><code>{html_select_date}</code></a></li>
+					<li><a href="language.functions.custom.html#html_select_time"><code>{html_select_time}</code></a></li>
+					<li><a href="language.functions.custom.html#html_table"><code>{html_table}</code></a></li>
+					<li><a href="language.functions.custom.html#html_textbox"><code>{html_textbox}</code></a></li>
+					<li><a href="language.functions.custom.html#html_table"><code>{html_table}</code></a></li>
+					<li><a href="language.functions.custom.html#in_array"><code>{in_array}</code></a></li>
+					<li><a href="language.functions.custom.html#mailto"><code>{mailto}</code></a></li>
+					<li><a href="language.functions.custom.html#math"><code>{math}</code></a></li>
+					<li><a href="language.functions.custom.html#popup"><code>{popup}</code></a></li>
+					<li><a href="language.functions.custom.html#popup_init"><code>{popup_init}</code></a></li>
+					<li><a href="language.functions.custom.html#resize_image"><code>{resize_image}</code></a></li>
+					<li><a href="language.functions.custom.html#strip"><code>{strip}</code></a></li>
+					<li><a href="language.functions.custom.html#textformat"><code>{textformat}</code></a></li>
+				</ul>
+			</li>
+			<li><a href="language.compiler.functions.html">Custom Compiler Functions</a>
+				<ul>
+					<li><a href="language.compiler.functions.html#debug"><code>debug</code></a></li>
+					<li><a href="language.compiler.functions.html#tplheader"><code>tplheader</code></a></li>
+				</ul>
+			</li>
+			<li><a href="language.config.html">Config Files</a></li>
+		</ul>
+	</li>
+</ul>
+<ul>
+	<li>Programming with Template Lite
+		<ul>
+			<li><a href="programming.variables.html">Variables</a>
+				<ul>
+					<li><a href="programming.variables.html#template_dir">$template_dir</a></li>
+					<li><a href="programming.variables.html#config_dir">$config_dir</a></li>
+					<li><a href="programming.variables.html#compile_dir">$compile_dir</a></li>
+					<li><a href="programming.variables.html#cache_dir">$cache_dir</a></li>
+					<li><a href="programming.variables.html#plugins_dir">$plugins_dir</a></li>
+					<li><a href="programming.variables.html#left_delimiter">$left_delimiter</a></li>
+					<li><a href="programming.variables.html#right_delimiter">$right_delimiter</a></li>
+					<li><a href="programming.variables.html#cache">$cache</a></li>
+					<li><a href="programming.variables.html#cache_lifetime">$cache_lifetime</a></li>
+					<li><a href="programming.variables.html#force_compile">$force_compile</a></li>
+					<li><a href="programming.variables.html#config_overwrite">$config_overwrite</a></li>
+					<li><a href="programming.variables.html#config_booleanize">$config_booleanize</a></li>
+					<li><a href="programming.variables.html#config_fix_new_lines">$config_fix_new_lines</a></li>
+					<li><a href="programming.variables.html#config_read_hidden">$config_read_hidden</a></li>
+					<li><a href="programming.variables.html#default_modifiers">$default_modifiers</a></li>
+					<li><a href="programming.variables.html#debugging">$debugging</a></li>
+				</ul>
+			</li>
+			<li><a href="programming.variables.html#constants">Constants</a>
+				<ul>
+					<li><a href="programming.variables.html#TEMPLATE_LITE_DIR">TEMPLATE_LITE_DIR</a></li>
+				</ul>
+			</li>
+			<li><a href="programming.debug.console.html">Debug Console</a></li>
+			<li><a href="programming.methods.html">Methods</a>
+				<ul>
+					<li><a href="programming.methods.html#append"><code>append</code></a></li>
+					<li><a href="programming.methods.html#append_by_ref"><code>append_by_ref</code></a></li>
+					<li><a href="programming.methods.html#assign"><code>assign</code></a></li>
+					<li><a href="programming.methods.html#assign_by_ref"><code>assign_by_ref</code></a></li>
+					<li><a href="programming.methods.html#assign_config"><code>assign_config</code></a></li>
+					<li><a href="programming.methods.html#clear_assign"><code>clear_assign</code></a></li>
+					<li><a href="programming.methods.html#clear_all_assign"><code>clear_all_assign</code></a></li>
+					<li><a href="programming.methods.html#clear_config"><code>clear_config</code></a></li>
+					<li><a href="programming.methods.html#get_template_vars"><code>get_template_vars</code></a></li>
+					<li><a href="programming.methods.html#get_config_vars"><code>get_config_vars</code></a></li>
+					<li><a href="programming.methods.html#clear_compiled_tpl"><code>clear_compiled_tpl</code></a></li>
+					<li><a href="programming.methods.html#clear_cache"><code>clear_cache</code></a></li>
+					<li><a href="programming.methods.html#clear_all_cache"><code>clear_all_cache</code></a></li>
+					<li><a href="programming.methods.html#is_cached"><code>is_cached</code></a></li>
+					<li><a href="programming.methods.html#register_modifier"><code>register_modifier</code></a></li>
+					<li><a href="programming.methods.html#unregister_modifier"><code>unregister_modifier</code></a></li>
+					<li><a href="programming.methods.html#register_function"><code>register_function</code></a></li>
+					<li><a href="programming.methods.html#unregister_function"><code>unregister_function</code></a></li>
+					<li><a href="programming.methods.html#register_block"><code>register_block</code></a></li>
+					<li><a href="programming.methods.html#unregister_block"><code>unregister_block</code></a></li>
+					<li><a href="programming.methods.html#register_compiler_function"><code>register_compiler_function</code></a></li>
+					<li><a href="programming.methods.html#unregister_compiler_function"><code>unregister_compiler_function</code></a></li>
+					<li><a href="programming.methods.html#register_resource"><code>register_resource</code></a></li>
+					<li><a href="programming.methods.html#unregister_resource"><code>unregister_resource</code></a></li>
+					<li><a href="programming.methods.html#template_exists"><code>template_exists</code></a></li>
+					<li><a href="programming.methods.html#display"><code>display</code></a></li>
+					<li><a href="programming.methods.html#fetch"><code>fetch</code></a></li>
+					<li><a href="programming.methods.html#config_load"><code>config_load</code></a></li>
+					<li><a href="programming.methods.html#load_filter"><code>load_filter</code></a></li>
+					<li><a href="programming.methods.html#trigger_error"><code>trigger_error</code></a></li>
+				</ul>
+			</li>
+			<li><a href="language.filters.output.html">Custom Output Filters</a>
+				<ul>
+					<li><a href="language.filters.output.html#gzip"><code>gzip</code></a></li>
+					<li><a href="language.filters.output.html#trimwhitespace"><code>trimwhitespace</code></a></li>
+				</ul>
+			</li>
+			<li><a href="language.filters.output.html">Custom Pre Filters</a>
+				<ul>
+					<li><a href="language.filters.pre.html#jstrip"><code>jstrip</code></a></li>
+					<li><a href="language.filters.pre.html#showinfoheader"><code>showinfoheader</code></a></li>
+				</ul>
+			</li>
+			<li><a href="language.filters.output.html">Custom Post Filters</a>
+				<ul>
+					<li><a href="language.filters.post.html#showtemplatevars"><code>showtemplatevars</code></a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>
+<ul>
+	<li>Appendixes
+		<ul>
+			<li><a href="appendix.caching.html">How to use caching</a></li>
+			<li><a href="appendix.groups.html">How to use cache and compile groups</a></li>
+		</ul>
+	</li>
+</ul>
+<hr>
+<a href="index.html">Home</a>
+</body>
+</html>

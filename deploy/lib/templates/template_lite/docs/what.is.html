@@ -1,0 +1,592 @@
+<html>
+<head>
+	<title>What is Template Lite? :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite  - the faster compiling PHP template engine</h4>
+<h1>What is Template Lite?</h1>
+<hr>
+<h2><a name="why">Why use Template Lite</a></h2>
+<p>
+	Template Lite has many advantages over other template engines, as well as a few disadvantages.
+<ul>
+		<li>Template Lite is a stripped down version of Smarty and thus is extremely fast, yet very similar to Smarty.</li>
+		<li>Template Lite uses most of the same basic syntax as Smarty template engine, making it relatively easy to port template files from Smarty and for previous users of Smarty to quickly learn how to use it.</li>
+		<li>Template Lite variable syntax, specifically variables in double quotes and concatentation, is designed to imitate PHP's, making variable usage intuitive for beginners who are used to programming in PHP.</li>
+		<li>Template Lite introduces the new <code>switch</code> and <code>for</code> tags, which have identical functionality to PHP's <code>switch</code> and <code>for</code> functions, respectively.</li>
+		<li>Template Lite compiles all template files for speed, making script start-up faster. All compiled files are saved for faster loading on the next load.</li>
+		<li>Template Lite will also optionally save a cached version of templates, thus bypassing any compiling or execution, as it will load static pages precompiled and assembled, offering significant speed increases.</li>
+		<li>Template Lite supports config files and variables and will compile config files for speed, too!</li>
+</ul>
+Template Lite was designed from the ground up to be fast. It has acheived that goal.
+    </p>
+    <hr>
+<h2><a name="credits">Credits</a></h2>
+<p>
+What you see here is the work of <a href="http://www.paullockaby.com">Paul Lockaby.</a> However, while more than 75% of the code in this template engine has been rewritten, a bunch of that other 25% and a lot of organization has been directly derived from <a href="http://smarty.php.net">Smarty - the compiling PHP template engine for PHP</a>. Smarty template engine was originally programmed and is still maintained at the aforementioned website by Monte Ohrt and Andrei Zmievski.
+</p>
+<p>
+All updates, fixes and changes beginning February 1, 2006 are by Mark Dickenson when the project was taken over after being abandoned by Paul Lockaby due to a trademarking issue with the creators of Smarty.
+</p>
+<hr>
+<h2><a name="bugs">Bugs</a></h2>
+<p>
+At the moment I know of no bugs. Usually when I find one, I squash it as soon as possible. Let me know if you find one and I'll fix it, too.
+</p>
+<hr>
+<h2><a name="customdifferences">Differences in creating Custom blocks, functions, modifiers, filters and extending the template object.</a></h2>
+<p>
+When creating Custom blocks, functions, modifiers and filters there is only one change you need to make to files.  The function name needs to be changed slightly.
+<ul>
+	<li>function smarty_modifier_cat() { // Smarty</li>
+</ul>
+Should be changed to
+<ul>
+	<li>function tpl_modifier_cat() { // Template Lite</li>
+</ul>
+The name smarty in the function name needs to be changed to tpl.<br>
+<br>
+When extending the template class you will need to use a different class name.
+<ul>
+	<li>class {your class name} extends Smarty { // Smarty</li>
+</ul>
+Should be changed to
+<ul>
+	<li>class {your class name} extends Template_Lite { // Template Lite</li>
+</ul>
+The name Smarty in the class name needs to be changed to Template_Lite.<br>
+<br>
+When extending the template compiler class you will need to use a different class name.
+<ul>
+	<li>class {your class name} extends Smarty_Compiler { // Smarty</li>
+</ul>
+Should be changed to
+<ul>
+	<li>class {your class name} extends Template_Lite_Compiler { // Template Lite</li>
+</ul>
+The name Smarty_Compiler in the class name needs to be changed to Template_Lite_Compiler.<br>
+<br>
+The reason for these changes is because of Trademarking issues with Smarty.  The authors of Smarty have trademarked the name and it can no longer be used in variable, function and class names in this package.
+</p>
+<hr>
+<h2><a name="notsupported">Smarty features currently unsupported.</a></h2>
+<p>
+Template Lite offers most of the features of Smarty but there are a number of features that are currently not supported. Some of these features will eventually be supported in later releases. This isn't a comprehensive list of unsupported features.
+<ul>
+	
+	<li>Template Lite does not support the <code>include_php</code> tag, security features, and error handling.</li>
+	<li>The following reserved variables are not supported: <code>foreach</code>. Example: {$templatelite.foreach.[something]}</li>
+        <li>Template Class Variables:  <code>$debug_tpl</code>, <code>$debugging_ctrl</code>, <code>$autoload_filters</code>, <code>$compile_check</code>, <code>$cache_handler_func</code>,
+        <code>$cache_modified_check</code>, <code>$security</code>, 
+        <code>$secure_dir</code>, 
+        <code>$security_settings</code>, 
+        <code>$trusted_dir</code>, <code>$compiler_class</code>, 
+        <code>$request_vars_order</code>, 
+        <code>$request_use_auto_globals</code>, 
+        <code>$error_reporting</code>, 
+        <code>$compile_id</code>, 
+        <code>$use_sub_dirs</code>, 
+        <code>$default_resource_type</code></li>
+        <li>Template Class Functions:    <code>get_registered_object</code>,   <code>register_object</code> and <code>unregister_object</code></li>
+</ul>
+</p>
+<hr>
+<h2><a name="todo">To Do</a></h2>
+<p>
+These are things that I should have done before I released it, but that I put off to do until after I released the code.
+<ul>
+	<li>Comments inside of comments do not get parsed properly. (ex: <code>{* a comment {* another comment *} *}</code> will be displayed as <code>*}</code>)</li>
+</ul>
+</p>
+<hr>
+<h2><a name="history">History</a></h2>
+<p>
+<ul>
+	<li><a name="history210">January 4, 2007 - Version 2.10</a>
+		<ul>
+			<li>Moved the template core functions _build_dir, _destroy_dir and _rmdir from within the template class to the internal directory.  The program code will only be loaded if a template requires them.</li>
+			<li>Added <tt>register_resource</tt> and <tt>unregister_resource</tt> support. Different resources are supported by everything except for cached template output.</li>
+			<li>Added <tt>_get_resource</tt> internal function for processing file: and absolute tag resources.</li>
+			<li>Added <tt>resize_image</tt> plugin.</li>
+			<li>Fixed support for absolute paths to template files.  Absolute pathing wasn't functioning properly and only halfway worked in the {include} tag.  Absolute pathing should work with the {include} tag, fetch method and display method.  The optional use of the file: designator was added.</li>
+			<li>Fixed <tt>Undefined variable:</tt> notices in function.mailto.php.</li>
+			<li>Fixed <tt>return by reference error</tt> in class.template.php when using the <tt>get_template_vars</tt> and <tt>get_config_vars methods</tt>.</li>
+			<li>Fixed <tt>append</tt> method at line 199 in class.template.php. If the merge flag was set arrays would not be merged properly because of the wrong variable element name.</li>
+			<li>Changed <tt>compiled page HTML comment</tt> to a PHP comment to prevent UTF-8 failures from occuring.</li>
+			<li>Re-added <tt>showheaderinfo</tt> prefilter plugin.</li>
+		</ul>
+	</li>
+	<li><a name="history200">December 17, 2006 - Version 2.00</a>
+		<ul>
+			<li>Removed the following variable modifier plugins (<tt>array_reverse, count, nl2br, number_format, strip_tags, ucfirst, ucwords, urlencode and wordwrap</tt>) the template engine will use the PHP functions instead of using a plugin file.</li>
+			<li>Removed <tt>showheaderinfo</tt> prefilter plugin and included it into the main compiler.</li>
+			<li>Added <tt>jstrip</tt> prefilter.</li>
+			<li>Added support absolute paths to template files.</li>
+			<li>Added version date checking for compiled template files.  When a new version of Template Lite is installed the compiled date is compared to the version date of Template Lite and if the compiled date is OLDER than the Template Lite version date the template will be recompiled.  This will prevent incompatible compiled template files from showing possible errors when Template Lite is upgraded.</li>
+			<li>Added support for the usage of PHP functions as variable modifiers</li>
+			<li>Added <tt>IS expression</tt> to the IF tag. It supports all of the normal IS expressions from Smarty.</li>
+			<li>Changed <tt>php</tt> function. If the PHP tag is use with the php_extract_vars enabled the _vars array will be extracted to non-array variables for EACH PHP tag block.  If the template is compiled on PHP 4.3.0 or higher the variables will be extracted by reference.  Any changes in the extracted variables will be reflected in the array variables they were extracted from.</li>
+			<li>Moved the compiler core functions _compile_config, _compile_custom_block and _compile_custom_function from within the compiler to the internal directory.  The program code will only be loaded if a template requires them.</li>
+			<li>Fixed <tt>function.html_options.php</tt> changed $_value to $_val in line 40.  Thanks to Michael Klein michael_633@users.sourceforge.net for the fix.</li>
+			<li>Fixed <tt>undefined offset error</tt> at line 667 in class.compiler.php when in strict error reporting mode.</li>
+		</ul>
+	</li>
+	<li><a name="history190">September 1, 2006 - Version 1.90</a>
+		<ul>
+			<li>Added <tt>while</tt> function. This function is almost idential to the PHP while function. </li>
+			<li>Added <tt>db_function_call</tt> will allow execution of an ADOdb Lite function from within a template.</li>
+			<li>Added <tt>db_result_call</tt> will allow execution of an ADOdb Lite result set function within a template.</li>
+			<li>Added <tt>in_array</tt> will test data in an array and return a set value if a match is found.</li>
+			<li>Fixed <tt>Notice Use of undefined constant</tt> error in function_exists statement in compiler class at include and section_start tags.</li>
+			<li>Fixed <tt>Notice: Undefined offset: 0</tt> error in fetch_compile_include template function.</li>
+			<li>Fixed <tt>Notice: Use of undefined constant</tt> error in compile.section_start.php file.</li>
+			<li>Fixed <tt>array_shift(): The argument should be an array</tt> error in class.compiler.php file when trying to reference CONST variables.</li>
+			<li>Fixed <tt>IF</tt> floating point number parsing error in class.compiler.php file when an IF like {if $test == 1.5} is processed in a template.  The 1.5 would be returned as 1 .5 causing the if to fail.</li>
+		</ul>
+	</li>
+	<li><a name="history180">April 23, 2006 - Version 1.80</a>
+		<ul>
+			<li>Moved <tt>gzip variables</tt> from global status to public object variables.</li>
+			<li>Added <tt>const</tt> reserved variable {$templatelite.const.[something]}.</li>
+			<li>Added <tt>TEMPLATE_LITE_DIR</tt> constant variable for referencing directory path to class files.</li>
+			<li>Added <tt>variable list</tt> support in {include} function.</li>
+			<li>Added <tt>debug</tt> support for templates included with the {include} function.</li>
+			<li>Fixed <tt>%section%</tt> variable usage in {if} and {math} functions.</li>
+			<li>Fixed <tt>backticks</tt> around variables inside double quotes in a template file not being removed when the variable was being processed.</li>
+			<li>Fixed <tt>debug console</tt> was not displaying include files and indenting.</li>
+			<li>Fixed <tt>some variables inside quotes</tt> not being processed as variables if they are the FIRST item right beside the quote.  Example: "$variable" not processed  but " $variable" is processed</li>
+		</ul>
+	</li>
+	<li><a name="history170">April 15, 2006 - Version 1.70</a>
+		<ul>
+			<li>Added <tt>html_hidden</tt> function.</li>
+			<li>Added <tt>debug</tt> compiler function.  This is the same as the debug function in Smarty only it is a compiler function in Template Lite.</li>
+			<li>Added <tt>debug console</tt> output when debugging enabled.</li>
+			<li>Added <tt>$debugging</tt> programming variable.</li>
+			<li>Added support for section property syntax <tt>{%sectionname.varname%}</tt> used before Smarty 1.5.0. </li>
+			<li>Added <tt>$default_modifiers</tt> programming variable.</li>
+			<li>Added <tt>register_compiler_function</tt> function.</li>
+			<li>Added <tt>unregister_compiler_function</tt> function.</li>
+			<li>Added support for custom <tt>compiler</tt> functions.</li>
+		    <li>Changed <tt>plugin_dir</tt> variable name to <tt>plugins_dir</tt> to maintain compatibility with Smarty.</li>
+			<li>Added support for multiple plugin directories.</li>
+			<li>Moved all <tt>count()</tt> functions outside all for loops in the compiler and template engine to improve speed.</li>
+			<li>Moved all <tt>_escape_chars()</tt> from class.template.php to a shared plugin (shared.escape_chars.php) because it is only used by other custom plugins.		</li>
+		</ul>
+	</li>
+	<li><a name="history1601">April 12, 2006 - Version 1.60.1</a>
+		<ul>
+			<li>Fixed <tt>section</tt> function error "Fatal error: Using $this when not in object context in compile.section_start.php on line 11"</li>
+		</ul>
+	</li>
+	<li><a name="history160">April 11, 2006 - Version 1.60</a>
+		<ul>
+			<li>Added <tt>template</tt> reserved variable {$templatelite.template}.</li>
+			<li>Added <tt>section</tt> reserved variable {$templatelite.section.[something]}.</li>
+			<li>Added <tt>config</tt> reserved variable {$templatelite.config.[something]}.</li>
+			<li>Added <tt>version</tt> reserved variable {$templatelite.version}.</li>
+			<li>Added <tt>rdelim</tt> reserved variable {$templatelite.rdelim}.</li>
+			<li>Added <tt>ldelim</tt> reserved variable {$templatelite.ldelim}.</li>
+			<li>Added <tt>section</tt>/<tt>sectionelse</tt> function.</li>
+			<li>Added <tt>clear_all_cache</tt> method.</li>
+			<li>Added <tt>append</tt> method.</li>
+			<li>Added <tt>append_by_ref</tt> method.</li>
+			<li>Moved <tt>config_load</tt> code to a dynamically loaded internal program module called template.config_load.php in the internal directory.</li>
+		    <li>Changed <tt>html_checkbox</tt> custom function name to <tt>html_checkboxes</tt> to maintain compatibility with Smarty.</li>
+		    <li>Changed <tt>html_radio</tt> custom function name to <tt>html_radios</tt> to maintain compatibility with Smarty.</li>
+		    <li>Changed <tt>left_tag</tt> variable name to <tt>left_delimiter</tt> to maintain compatibility with Smarty.</li>
+		    <li>Changed <tt>right_tag</tt> variable name to <tt>right_delimiter</tt> to maintain compatibility with Smarty.</li>
+		    <li>Changed <tt>clear_compiled</tt> method name to <tt>clear_compiled_tpl</tt> to maintain compatibility with Smarty.</li>
+		    <li>Changed <tt>get_vars</tt> method name to <tt>get_template_vars</tt> to maintain compatibility with Smarty.</li>
+		    <li>Changed <tt>clear_cached</tt> method name to <tt>clear_cache</tt> to maintain compatibility with Smarty.</li>
+		</ul>
+	</li>
+	<li><a name="history150">April 8, 2006 - Version 1.50</a>
+		<ul>
+			<li>Added <tt>array_reverse</tt> modifier.</li>
+			<li>Added <tt>reserved_template_varname</tt> configuration variable.  This variable can be changed from templatelite to smarty.  This will allow any of your templates that use the $smarty reserved template variable to work without editing.</li>
+			<li>Added name argument to <tt>capture</tt> block.</li>
+			<li>Changed <tt>$_TPL</tt> reserved variable to <tt>$templatelite</tt>.  This variable is used in the same manner as the $smarty reserved variable.</li>
+			<li>Fixed <tt>date</tt> modifier</li>
+			<li>Fixed <tt>date_format</tt> modifier</li>
+			<li>Fixed <tt>html_select_time</tt> function</li>
+			<li>Fixed <tt>html_select_date</tt> function</li>
+			<li>Fixed <tt>make_timestamp</tt> shared function</li>
+		</ul>
+	</li>
+	<li><a name="history140">April 6, 2006 - Version 1.40</a>
+		<ul>
+			<li>Added <tt>clear_all_assign</tt> class method.</li>
+			<li>Added <tt>assign_by_ref</tt> class method.</li>
+			<li>Renamed <tt>clear</tt> class method to <tt>clear_assign</tt> for compatibility.</li>
+			<li>Changed <tt>variable array</tt> usage inside template files to use periods (.) between the array elements in addition to the normal brackets. Example: { $foo[0] } and { $foo.2 } both work.</li>
+			<li>Changed <tt>assign</tt> function <tt>name</tt> argument to <tt>var</tt> for compatibility.</li>
+			<li>Fixed <tt>Call-time pass-by reference</tt> errors.</li>
+			<li>Fixed <tt>prefilter.showinfoheader.php</tt> error with &lt;?php tag.</li>
+			<li>Fixed <tt>postfilter.showtemplatevars.php</tt> error with &lt;?php tag.</li>
+			<li>Fixed <tt>pre/post</tt> load_filter functions</li>
+			<li>Fixed <tt>pre/post</tt> register functions</li>
+		</ul>
+	</li>
+	<li><a name="history130">April 2, 2006 - Version 1.30</a>
+		<ul>
+			<li>Added <tt>textformat</tt> block.</li>
+			<li>Added <tt>html_select_date</tt> function.</li>
+			<li>Added <tt>html_select_time</tt> function.</li>
+			<li>Added <tt>html_table</tt> function.</li>
+			<li>Added <tt>mailto</tt> function.</li>
+			<li>Added <tt>math</tt> function.</li>
+			<li>Added <tt>popup</tt> function.</li>
+			<li>Added <tt>popup_init</tt> function.</li>
+			<li>Added <tt>make_timestamp</tt> shared function.</li>
+			<li>Updated and expanded documentation files.</li>
+		</ul>
+	</li>
+	<li><a name="history120">March 28, 2006 - Version 1.20</a>
+		<ul>
+			<li>Fixed: Plugin array elements were not predefined and were giving NOTICE errors when accessed.</li>
+			<li>Fixed: <tt>gzip</tt> output filter was referencing the wrong variable for detecting caching.</li>
+			<li>Added <tt>date_format</tt> modifier.</li>
+			<li>Added <tt>spacify</tt> modifier.</li>
+			<li>Added <tt>regex_replace</tt> modifier.</li>
+			<li>Added <tt>indent</tt> modifier.</li>
+			<li>Added <tt>escape</tt> modifier.</li>
+			<li>Added <tt>cat</tt> modifier.</li>
+			<li>Added <tt>count_words</tt> modifier.</li>
+			<li>Added <tt>count_sentences</tt> modifier.</li>
+			<li>Added <tt>count_paragraphs</tt> modifier.</li>
+			<li>Added <tt>count_characters</tt> modifier.</li>
+		</ul>
+	</li>
+	<li><a name="history110">March 26, 2006 - Version 1.10</a>
+		<ul>
+			<li>Added <tt>pre</tt> and <tt>post</tt> filters to <tt>load_filter</tt> function to allow loading of pre/post filters similar to Smarty pre/post filters.</li>
+			<li>Added auto loading function to compiler for pre and post filters.</li>
+			<li>Added <tt>register_prefilter</tt> function to allow registering pre filters.</li>
+			<li>Added <tt>unregister_prefilter</tt> function to allow removing registered pre filters.</li>
+			<li>Added <tt>register_postfilter</tt> function to allow registering post filters.</li>
+			<li>Added <tt>unregister_postfilter</tt> function to allow removing registered post filters.</li>
+			<li>Added <tt>register_outputfilter</tt> function to allow registering output filters.</li>
+			<li>Added <tt>unregister_outputfilter</tt> function to allow removing registered output filters.</li>
+			<li>Added showtemplatevars post filter.</li>
+			<li>Added showinfoheader pre filter.</li>
+		</ul>
+	</li>
+	<li><a name="history100">February 1, 2006 - Version 1.00</a>
+		<ul>
+			<li>Forked from Smarty-Lite and changed version number and name.</li>
+			<li>Fixed a bug in <tt>clear</tt> that prevented it from clearing properly.</li>
+			<li>Changed the <tt>PHP</tt> tag to automatically import all template variables into the PHP workspace if $tpl->php_extract_vars is set to true.</li>
+			<li>Added flag ($tpl->encode_file_name) to allow disabling of encoding the template output filename.  If disabled the template filename will be the full path to the template file and the template filename.</li>
+			<li>Added <tt>load_filter</tt> function to allow loading of output filters similar to Smarty output filters.</li>
+			<li>Added gzip output filter.</li>
+		</ul>
+	</li>
+	<li>October 10, 2005 - Version 2.2.11
+		<ul>
+			<li>Updated all of the plugins to follow a more standard code base and to properly escape strings before being passed to the template. (Thanks to Ara Anjargolian and Michael Klein.)</li>
+			<li>Fixed a bug in <tt>_rm_dir</tt> that prevented it from removing non-cache groups and compiled pages correctly.</li>
+			<li>Fixed a bug in <tt>_get_plugin_dir</tt> that referred to a hardcoded directory separator. (Thanks to Michael Klein.)</li>
+			<li>Fixed a warning in <tt>_build_dir</tt>. (Thanks to Michael Klein.)</li>
+			<li>Fixed a bug where error level reporting was being returned to normal prematurely. (Thanks to Axel.)</li>
+			<li>Changed the required stack from a numerical array to an associative array to avoid using <tt>array_unique</tt> in order to remove duplicate plugins from the list. (Thanks to Axel.)</li>
+			<li>Fixed a typo in <tt>_parse_function</tt> that would throw errors in some situations.</li>
+		</ul>
+	</li>
+	<li>August 7th, 2005 - Version 2.2.10
+		<ul>
+			<li>Updated documentation to fix errors in the documentation for <tt>count</tt>. (Thanks to Georg Gretz.)</li>
+			<li>Fixed a bug in <tt>_is_cached</tt> that would result in an error if cache groups were to be used. (Thanks to Hahl Laszlo and Michael Klein.)</li>
+			<li>Removed the 777 umask from the cache group builder. Folders created in the cache directory to represent cache groups will now use the same permissions as the parent directory.</li>
+			<li>Added the <tt>php</tt> tag to the compiler to allow for putting PHP directly into the template. To get to the variables assigned to the template, you can use the <tt>get_vars</tt> function to get variables from the PHP code. (Thanks to "Panama Jack".)
+		</ul>
+	</li>
+	<li>June 29, 2005 - Version 2.2.9
+		<ul>
+			<li>Fixed a bug in <tt>class.compile.php</tt> where <tt>assign</tt> didn't work. (Thanks to Georg Gretz.)</li>
+			<li>Updated documentation to actually refer to the <tt>count</tt> modifier.</li>
+			<li>Changed <tt>bbcode2html</tt> so that it uses &lt;pre&gt; to surround blocks of code.</li>
+		</ul>
+	</li>
+	<li>February 26, 2005 - Version 2.2.8
+		<ul>
+			<li>Changed the newline in each file back from \r\n to just \n, thus saving a few bytes and making it more "Unix"-like.</li>
+			<li>Fixed a bug where modifiers that didn't exist but began with a number ended up being concatenated to the end of the variable they were modifying.</li>
+			<li>Fixed bug in <tt>if-then</tt> statements where variables with a number in them were parsed incorrectly.</li>
+			<li>Fixed any known variable problems involving numbers in the variable name.</li>
+		</ul>
+	</li>
+	<li>February 14, 2005 - Version 2.2.7
+		<ul>
+			<li>Fixed a bug that fell into the place somewhere along the line that caused modifiers with digits in them to be parsed incorrectly.</li>
+			<li>Added <tt>html_hidden</tt> plugin.</li>
+		</ul>
+	</li>
+	<li>December 11, 2004 - Version 2.2.6
+		<ul>
+			<li>Fixed a bug where variables of 1 character were being misinterpreted as function calls and thus throwing errors when the function was not found. (Thanks to Ara Anjargolian.)</li>
+			<li>Added more special cases to <tt>if-then</tt> statements to accomodate for errors introduced in 2.2.5 and 2.2.4 with the template function changes. Specifically, the changes were adding the case-insensitive values "true", "false" and "null". (Thanks to Ara Anjargolian.)</li>
+		</ul>
+	</li>
+	<li>October 30, 2004 - Version 2.2.5
+		<ul>
+			<li>Fixed a typo in the <tt>for</tt> function that resulted in the <tt>stop</tt> condition being changed if the <tt>step</tt> condition was not present.</li>
+			<li>Fixed a typo in the <tt>switch</tt> function that resulted in it not working at all. (Thanks to user ximian on the Yellow Duck forums.)</li>
+			<li>Template functions will not work in if-then statements. Almost all PHP functions will. Those that pass the <tt>function_exists</tt> test will, as well as <tt>empty</tt>, <tt>isset</tt>, and <tt>unset</tt>.</li>
+		</ul>
+	</li>
+	<li>October 15, 2004 - Version 2.2.4
+		<ul>
+			<li>Modifiers can now be placed on variables in if-then statements, but functions in if-then statements will now throw an error as they should not be used in this context. (Thanks to Jacquot Frederic.)</li>
+			<li>Added the values/output variables to <tt>html_options</tt>, as per the Smarty implementation of the same plugin. (Thanks to Ara Anjargolian.)</li>
+			<li>Fixed a bug in <tt>for</tt> that prevented the use of variables when assigning a starting and stopping point. (Thanks to Tim Green.)</li>
+			<li>Updated the template code to use the more compatible &lt;?php instead of &lt?. (Thanks to Pieter Claerhout.)</li>
+		</ul>
+	</li>
+	<li>September 16, 2004 - Version 2.2.3
+		<ul>
+			<li>Fixed an bug in the <tt>_is_cached</tt> function that would result in incorrect cache usage.</li>
+			<li>Added the <tt>urlencode</tt> modifier to the standard distribution.</li>
+		</ul>
+	</li>
+	<li>August 3, 2004 - Version 2.2.2
+		<ul>
+			<li><font color="red">IT IS VERY IMPORTANT THAT YOU CLEAN OUT YOUR COMPILE AND CACHE DIRECTORIES AFTER THIS UPGRADE!</font></li>
+			<li>Another error in _is_cached() is now resolved. (Thanks to Ara Anjargolian.)</li>
+			<li>Compiled and cached template MD5s are now stored with the full template directory path in them to allow for storing templates in different template directories. (Thanks to Pieter Claerhout.)</li>
+			<li>Compiled files are now prefixed with a 'c_' when saved to allow compiled and cached files to be stored in the same directory. (Thanks to Pieter Claerhout.)</li>
+		</ul>
+	</li>
+	<li>July 31, 2004 - Version 2.2.1
+		<ul>
+			<li><font color="red">IT IS VERY IMPORTANT THAT YOU CLEAN OUT YOUR COMPILE AND CACHE DIRECTORIES AFTER THIS UPGRADE!</font></li>
+			<li>My attempt at making cache files check included files for changes failed previously. Now it works.</li>
+		</ul>
+	</li>
+	<li>July 31, 2004 - Version 2.2.0
+		<ul>
+			<li><font color="red">IT IS VERY IMPORTANT THAT YOU CLEAN OUT YOUR COMPILE AND CACHE DIRECTORIES AFTER THIS UPGRADE!</font></li>
+			<li>If a file was cached and had <code>includes</code> and the includes changed, the cached file wouldn't change. Now if an included file changes the cache will be regenerated.</li>
+			<li><font color="red">IMPORTANT!</FONT> Removed support for compile_ids. This is a big one as it changes the syntax of all calls to <code>display</code> and <code>fetch</code> and requires regeneration of all existing template files. (Thanks to Ara Anjargolian.)</li>
+			<li>Fixed a bug where in some cases, not having a trailing slash on your template directory name would result in an error when calling <code>is_cached</code>. (Thanks to Pieter Claerhout.)</li>
+			<li>Empty templates no longer generate an error.</li>
+			<li>PHP tags are now escaped so that you can create XML templates.</li>
+			<li><code>_get_dir</code> now correctly checks for a trailing slash using DIRECTORY_SEPARATOR instead of '/'. (Thanks to Pieter Claerhout.)</li>
+		</ul>
+	</li>
+	<li>July 18, 2004 - Version 2.1.2
+		<ul>
+			<li>Fixed custom function parsing, which has apparently always been broken.</li>
+			<li>Paths now work in Windows. Didn't work because of a quoting bug. Now use single quotes instead of double quotes.</li>
+			<li>Can now pass an object method as a custom function/block/modifier.</li>
+			<li>Removed "compiler functions" because I think they're a pain to maintain.</li>
+		</ul>
+	</li>
+	<li>July 14, 2004 - Version 2.1.1
+		<ul>
+			<li>Fixed concatenation problems.</li>
+			<li>Implemented a new 'count' modifier that when used with the '@' will return the number of elements in the array it modifies.</li>
+			<li>Fixed plugin modifier routines to correctly map to arrays.</li>
+		</ul>
+	</li>
+	<li>February 7, 2004 - Version 2.1.0
+		<ul>
+			<li>Really fixed the <code>in_array</code> bug in <code>get_config_vars</code> this time. Honestly.</li>
+			<li>Fixed a bug where if a modifier was missing it would not give the name of the modifier missing but instead give some crap. Thanks to Ryan Johnson for catching this one.</li>
+			<li>Added the legacy option 'item' to <code>foreach</code> to make it more backwards compatible with Smarty.</li>
+			<li>Fixed the broken functionality of <code>$force_compile</code> as a result of the 2.0.0 release. :(</li>
+			<li>Fixed a bug in <code>class.config.php</code> that kept it from creating arrays if <code>$config_overwrite</code> was enabled and made appropriate changes to <code>class.template.php</code> to accomodate this change in the compilation step. This new fix requires PHP 4.2.0, however.</li>
+			<li>Made it such that if you have an array of config variables you can actually refer to them in your template using a similar syntax to an array of variables. They syntax looks like this: <code>#foo[$bar]#</code>.</li>
+			<li>Variables can no longer begin with an integer.</li>
+			<li>The following syntaxes actually work. <code>$foo[$bar]</code>, <code>$foo[#bar#]</code>, <code>#foo[0]#</code>, <code>#foo[$bar]#</code>, <code>#foo[#bar#]#</code>. Note that you cannot have <code>$foo[#bar[0]#]</code> or anything like that (i.e. an array in an array) because I don't think it can be done ad inifinitum. Anyone who thinks differently can submit some code.</li>
+		</ul>
+	</li>
+	<li>January 20, 2004 - Version 2.0.1
+		<ul>
+			<li>Fixed a bug with <code>for</code> that would cause it to not work at all.</li>
+			<li>Fixed a bug with <code>for</code> that required the <code>step</code> option. Now <code>step</code> defaults to '1'.</li>
+			<li>Changed <code>in_array</code> in <code>get_vars</code> and <code>get_config_vars</code> to <code>isset</code> because the former didn't seem to work, and I just noticed that.</li>
+		</ul>
+	</li>
+	<li>January 15, 2004 - Version 2.0.0
+		<ul>
+			<li>Fixed major bug with <code>clear_compiled</code> that would cause the script to not remove all compiled templates.</li>
+			<li>Added the following variables to be set by the user:
+				<ul>
+					<li><code>$cache</code> - if set to 'true', pages will be cached for speed.</li>
+					<li><code>$cache_dir</code> - where the cached files will be stored on the filesystem.</li>
+					<li><code>$cache_lifetime</code> - how old the cache can be before it gets flushed.</li>
+				</ul>
+			</li>
+			<li>Added the following functions for use by the user:
+				<ul>
+					<li><code>is_cached($file, $compile_id = null, $cache_id = null)</code> - will see if the specified file has a cached copy available.</li>
+					<li><code>clear_cached($file = null, $cache_id = null)</code> - will clear the cache for the specified file and cache id, or if neither are specified, the entire cache.</li>
+				</ul>
+			</li>
+			<li>Modified the following functions for use by the user:
+				<ul>
+					<li><code>display($file, $compile_id = null, $cache_id = null)</code> - now has the optional <code>$cache_id</code> parameter.</li>
+					<li><code>fetch($file, $compile_id = null, $cache_id = null)</cocde> - now has the optional <code>$cache_id</code> parameter.</li>
+				</ul>
+			</li>
+			<li>Caching was added for templates. Cache lifetimes are specified by the user for each template. Cache lifetimes are also inherited from the calling template, so if you use an <code>include</code>, the included file will have the same cache lifetime as the calling template. The default cache lifetime is zero seconds, which is the same as not having a cache.</li>
+			<li>Cache groups are handled in the same fashion as compile groups.</li>
+			<li>Inserts are not be cached and are fetched with each invocation of a cached template. Required a change to the compiler that would check to see if the the page was being cached and then store the insert data different. So basically, to copy the template_lite people, I took an MD5 hash of 'template_lite' (or was it 'template_lite'... I can't remember) and surrounded the insert information in that and then replaced it using a built-in post-filter.</li>
+			<li>Rewrote <code>_rm_dir</code> and <code>_destroy_dir</code> and <code>clear_compiled</code> code to be a little cleaner and better (and in some cases actually work).</li>
+			<li>Removed "support" for running the installation without compilation. Support was spotty and I can't figure out why anyone would use it that way anyway.</li>
+			<li>Rewrote <code>fetch</code> code to handle caching, added a <code>_fetch_compiled</code> function, thus making it so that <code>fetch</code> only receives the completely compiled code, not each individual template. Also required a change in the compiler to implement this change.</code>
+			<li>Added a new <code>for</code> function that will loop through a block of code from <code>start</code> to <code>stop</code>, and skipping <code>step</code> integers each time. Identical in functionality to PHP's <code><a href="http://www.php.net/manual/en/control-structures.for.php">for</a></code> loops in PHP. An optional <code>value</code> argument will assign the current position of the foor loop to the variable specified (by way of <code>value=var</code>).</li>
+			<li>Fixed bug in compiler where a value of "0" was the same as an empty value.</li>
+			<li>Fixed a bug in <code>foreach</code> error checking.</li>
+			<li>Heavily modified the way <code>inserts</code> work in order to allow them to be non-cacheable.</li>
+			<li>Fixed the <code>plugin_dir</code> retrieval so that it will work via relative or absolute paths. For instance, if your plugin directory is a sub-directory of your bin directory then it will recognize that, but if it is somewhere else, it will also recognize that.</li>
+			<li>Fixed <code>config_load</code> compiling problems :\ where no quotes were put around strings and such.</li>
+			<li>Fixed a spacing bug that would insert stupid newlines all over the place, where they didn't belong.</li>
+			<li>Miscellaneous fixes and speed-ups here and there.</li>
+			<li>Reorganized and wrote some new documentation, though a lot of it was gleaned from documentation for Smarty.</li>
+			<li>Removed the <code>$display</code> parameter for <code>fetch</code> and instead just made <code>display</code> function echo the fetch return.</li>
+		</ul>
+	</li>
+	<li>December 14, 2003 - Version 1.1.16
+		<ul>
+			<li>Added a boolean option into <code>html_checkbox</code> so that if you pass "true" or "yes" or "on" as the <code>checked</code> value, it will be checked. Additionally, it will still be checked if <code>value</code> is equal to <code>checked</code>.</li>
+			<li>Fixed a bug with <code>class.config.php</code> that would read commented variables in.</li>
+			<li>Changed the method with which files are read in to use <code>file_get_contents</code> which is supposedly faster than using <code>fread</code>.</li>
+		</ul>
+	</li>
+	<li>July 27, 2003 - Version 1.1.15
+		<ul>
+			<li>Removed the <code>spacify</code> modifier from the distribution.</li>
+			<li>Updated the docs some more. They are basically done now, but I may make changes later to update them.</li>
+			<li>Included the docs with the distribution.</li>
+			<li>Modified a bunch of the <code>html_*</code> functions to be more standards complian (i.e. quotes around attribute values).</li>
+			<li>Modified <code>html_options</code> and removed the values and output attributes.</li>
+		</ul>
+	</li>
+	<li>July 25, 2003 - Version 1.1.14
+		<ul>
+			<li>Made <code>html_textbox</code> be HTML 4.01 Strict compatible</li>
+			<li>Fixed a bug in <code>class.config.php</code> that would mess up a config value if it contained a # (pound).</li>
+		</ul>
+	</li>
+	<li>July 17, 2003 - Version 1.1.13
+		<ul>
+			<li>Fixed a bug with <code>elseif</code>.</li>
+			<li>Fixed a bug with assigning variables using the <code>assign</code> operator.</li>
+		</ul>
+	</li>
+	<li>July 15, 2003 - Version 1.1.12
+		<ul>
+			<li>Added <code>html_options</code> to plugins folder.</li>
+		</ul>
+	</li>
+	<li>July 14, 2003 - Version 1.1.11
+		<ul>
+			<li>Fixed incredibly stupid and embarrasing bug in <code>_run_insert</code> that prevented inserts from working at all. Way to go me for not testing them...</li>
+		</ul>
+	</li>
+	<li>July 13, 2003 - Version 1.1.10
+		<ul>
+			<li>Fixed bug where compilation would crash if the the template file was empty.</li>
+			<li>Made it so that E_NOTICE errors will not come up during template execution.</li>
+		</ul>
+	</li>
+	<li>July 4, 2003 - Version 1.1.9
+		<ul>
+			<li>Added functions <code>assign_config</code> and <code>clear_config</code> to facilitate assigning configuration variables. I know that this defeats the purpose of configuration variables, but for my needs, I want it like this.</li>
+			<li>Fixed stupid bug in the assigning of an array of values, also added check to not allow for numeric variable names.</li>
+			<li>Fixed \$ bug in <code>foreach</code> compilation.</li>
+		</ul>
+	</li>
+	<li>July 3, 2003 - Version 1.1.8
+		<ul>
+			<li>Modified <code>class.template.php</code> and <code>class.compiler.php</code> to store the compile_id as a class variable.</li>
+			<li>Forced compiled included templates to be saved in the same compile id folder as the template that included them.</li>
+			<li>Fixed bug in <code>class.config.php</code> where it would read the first section in the file twice, once as the section name and once as the "globals" section. Fixed this by inserting a space at the beginning of the file after it is read into memory.</li>
+			<li>This time I actually put all of the necessary files into the zip file to be released. I don't know what was up with that!</li>
+		</ul>
+	</li>
+	<li>July 2, 2003 - Version 1.1.7
+		<ul>
+			<li>Fixed bug where an error come up on E_ALL because a variable wasn't initiated.</li>
+		</ul>
+	</li>
+	<li>June 22, 2003 - Version 1.1.6
+		<ul>
+			<li>Changed the special _TPL vars from referencing $GLOBALS to referencing the $_ super-globals.</li>
+			<li>Fixed <code>include</code> so that it stored the included files inside of the same subdirectory as the original file in the compile directory.</li>
+			<li>Fixed the <code>_build_dir</code> code to not create any directories if <code>compile = false</code>.</li>
+			<li>Forced <code>clear_compiled</code> to exit without doing anything if <code>compile = false</code>.</li>
+			<li>Removed a debugging <code>echo</code> statement from <code>_rm_dir</code>.</li>
+			<li>Fixed bug in compilation and the compilation path of <code>config_load</code>.</li>
+			<li>Finished some more plugins, <code>capture</code>, <code>cycle</code>, <code>counter</code>, and <code>html_radio</code>.</li>
+		</ul>
+	</li>
+	<li>June 22, 2003 - Version 1.1.5
+		<ul>
+			<li>Removed support in config files for single quotes around values. Can still use double quotes and keywords like true/false, yes/no, and on/off</li>
+			<li>Changed modifiers back to the <code>tpl_</code> syntax so as to avoid confusion regarding any support for Smarty modifiers.</li>
+			<li>Moved _syntax_error *back* to <code>class.template.php</code> and renamed it to 'trigger_error'</li>
+			<li>Wrote a bunch of new and copied a bunch existing Smarty plugins to be included with the Template Lite distribution.</li>
+			<li>Fixed multiple bugs with the modifier usage and plugin inclusion.</li>
+			<li>Updated documentation to include a tiny bit more information on config files, functions, and modifiers. Documentation is still sparse.</li>
+			<li>Took <code>config_load</code> and put it into <code>class.compiler.php</code> instead of in the plugins folder.</li>
+			<li>Wrote in three new functions to allow for compile groups to be made. Also will allow for cache groups to be made when the time comes.</li>
+			<li>Moved the compile object into a class-variable instead of a function variable, to execution speed on multiple display/fetch calls.</li>
+		</ul>
+	</li>
+	<li>June 20, 2003 - Version 1.1.4
+		<ul>
+			<li>Included a bunch of plugins with the distribution.</li>
+			<li>Retracted claim of full support for Smarty plugins.</li>
+			<li>Added support for config files, config vars and included the config_load function in <code>class.template.php</code></li>
+		</ul>
+	</li>
+ 	<li>June 18, 2003 - Version 1.1.3
+		<ul>
+			<li>Changed plugin nomenclature to be entirely compatible with Smarty. This means that modifier, function, block, and compiler plugins written for Smarty can be used with Template Lite.</li>
+			<li>Fixed a bug in _run_modifier and _parse_modifier.</li>
+			<li>Added a _require_stack variable into the compiler so that files that need to be included will be included dynamically and automatically. This also puts more of the error-checking into class.compiler.php, that is when I begin writing error-checking routines.</li>
+			<li>Added a regular expression into the compiler that will remove all unncessary opening and closing PHP tags.</li>
+			<li>Fixed a bug in _compile_arguments</li>
+			<li>Added 'force_compile' option (mostly for my testing :)</li>
+		</ul>
+	</li>
+	<li>June 17, 2003 - Version 1.1.2
+		<ul>
+			<li>Fixed some embarrassing bugs in the template compiler regarding modifiers and missing functions.
+				<ul>
+					<li>Made class compiler extend class template.</li>
+					<li>Removed modifier specific references to the _plugin_exists function.</li>
+				</ul>
+			</li>
+			<li>Updated documentation to include some comments on variable modifiers.</li>
+			<li>Allowed functions inside of IF-THEN statements.</li>
+			<li>Added to the TODO list, perhaps someday I'll begin taking off of it, who knows.</li>
+		</ul>
+	</li>
+	<li>June 16, 2003 - Version 1.1.1
+		<ul>
+			<li>Removed _syntax_error and _fatal_error from class.compiler.php</li>
+			<li>When the script doesn't find the specified template file, it will just die and say the name of the file it couldn't find.</li>
+			<li>Forced the compiler to check for the existence of plugins instead of the displayer (thus allowing me to remove _syntax_error from class.compiler.php).</li>
+		</ul>
+	</li>
+	<li>June 15, 2003 - Version 1.1.0
+		<ul>
+			<li>Seperated the compiler from the displayer.</li>
+			<li>Add option to save compiled files. This coupled with the compiler seperation gives me a two to three times speed increase.</li>
+		</ul>
+	</li>
+	<li>June 12, 2003 - Version 1.0.0
+		<ul>
+			<li>Initial release.</li>
+		</ul>
+	</li>
+</ul>
+</p>
+<hr>
+<a href="index.html">Home</a>
+</body>
+</html>

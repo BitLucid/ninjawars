@@ -1,0 +1,26 @@
+<html>
+<head>
+	<title>How to use groups :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>How to use groups</h1>
+<hr>
+<p>
+	When you cache a template, it is important to specify a "cache id". A "cache id" is an identifier that is specific to a specific page. It makes it easy to associate templates in order to keep track of where they are in the filesystem for caching.
+	For instance, you can put all pages for your gallery under the "gallery" group. Then when you need to clear all the pages for the gallery, you can simply call <code>$tpl->clear_cache("gallery")</code>. Or to clear the cache for all gallery pictures, you can call <code>$tpl->clear_cache("gallery|pictures")</code>.<br><br>
+	Cache ids are specified like this:<br>
+	<pre>
+	PHP
+	=============================
+	$tpl->display("page.tpl", "compileid");
+	$tpl->display("page.tpl", "cacheid");
+	$tpl->display("page.tpl", "cacheid|subgroup");
+	</pre>
+
+	This allows you to load up <code>page.tpl</code> and assign it different names. One time you might load it and refer to it as "page1" and the next time call it "page2".<br><br>
+	Each group is offset by the pipe, |. In the above example, the base group for the cache id was "cacheid" and then under page you had a cache id of "subgroup". The real power of cache ids comes when you want to clear templates to be recached. For instance, you can clear the "page" group and it will remove all cached templates with the base group "page". or you can clear the "page|one" group and remove all templates under the group "page|one", instead of just removing all templates. This means that pages that don't need their cache to be regenerated aren't affected, thus increasing overall speed.
+</p>
+<a href="index.html">Home</a>
+</body>
+</html>

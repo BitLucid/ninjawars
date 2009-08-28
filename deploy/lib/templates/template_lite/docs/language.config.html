@@ -1,0 +1,50 @@
+<html>
+<head>
+	<title>Config Files :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Config Files</h1>
+<hr>
+<p>
+	Config files are handy for template designers to specify site-wide variables. Values for config files must be either in single or double quotes, but can span multiple lines with no problems. Comments in config files are indicated by beginning a line with a pound sign (#). When the parser encounters a pound sign outside of quotes, the rest of the line is regarded as a comment. Config variables are referred to in templates using a special syntax and are considered "constants" in that the value of a config variable cannot be changed in the template, but they are otherwise treated the same as normal variables. A config variable looks like this: <code>#variable#</code>. In the following, there are three sections, two public and one private.
+	<pre>
+	siteURL			= "http://www.paullockaby.com/"
+	siteName		= "paullockaby.com :: the distilled thoughts of paul lockaby"
+
+	[.private]
+	# what timezone are we in?
+	siteUTCOffSet		= "-5"
+	# database information
+	db_username		= "username"
+	db_password		= "password"
+	db_host			= "localhost"
+	db_database		= "test_database"
+
+	[display]
+	blue			= "#0000ff"	# this is the color blue
+	longline		= "This is a value that spans more
+					than one line. you don't have to do
+					anything special to make it display."
+
+	[login]
+	title			= "Welcome to the website"
+	button1			= "login"
+	button2			= "register"
+	</pre>
+
+	All values must be contained inside of quotes. Comments can be on a line by themselves or at the end of a line and are indicated by a prepended pound or hash (#).<br><br>
+	The words separated into brackets, such as [.private] and [display], are called "sections". You can load all variables in a file, all variables in a section, or all variables, or just a single variable.<br><br>
+	You can hide sections by prepending them with a period, such as the "private" section in the above config file example. A "private" or hidden section will not be loaded if <a href="programming.variables.html#config_read_hidden"><code>config_read_hidden</code></a> is set to false. If set to true, it can be referred to just as a normal section, as if the period were never there. (In fact, in order to refer to it, you must not include the period prefix.)<br><br>
+	There are a few options you can change to alter the behavior or config files. Here they are:
+	<ul>
+		<li><a href="programming.variables.html#config_dir"><code>config_dir</code></a><br>This is the directory where config files are stored.</li>
+		<li><a href="programming.variables.html#config_overwrite"><code>config_overwrite</code></a><br>If this is set to true, config variables with the same name as others will overwrite other config variables. The last value appearing in the file will be the one used. If set to false, an array will be created of all entries having the same name.</li>
+		<li><a href="programming.variables.html#config_booleanize"><code>config_booleanize</code></a><br>If this is set to true, 'yes', 'true', and 'on' will be set to true and 'no', 'false', and 'off' will be set to false.</li>
+		<li><a href="programming.variables.html#config_fix_new_lines"><code>config_fix_new_lines</code></a><br>If this is set to true, \r\n will be converted to \n.</li>
+		<li><a href="programming.variables.html#config_read_hidden"><code>config_read_hidden</code></a><br>If set to true (the default), hidden sections and variables will be read in.</li>
+	</ul>
+<hr>
+<a href="index.html">Home</a>
+</body>
+</html>

@@ -1,0 +1,979 @@
+<html>
+<head>
+	<title>Custom Functions :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Custom Functions</h1>
+<hr>
+
+<h2><a name="capture"><code>capture</code></a></h2>
+<p>
+<h4>Description</h4>
+	This block function will collect the output it encases and store it in a variable instead of displaying it. The variable can then be modified and manipulated.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>name</b><br>This is The name of the captured block.</li>
+		<li><b>assign</b><br>This is the name of the variable that the captured block will be assigned into.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	{ capture assign=variable }
+	  Now is the time to test things out.
+	{/capture}
+	{ $variable|upper }
+
+	{capture name=testcapture}
+	  Now is the time to test things out.
+	{/capture}
+	</pre>
+</p>
+<hr>
+
+<h2><a name="strip"><code>strip</code></a></h2>
+<p>
+<h4>Description</h4>
+	This function will remove all repeated spaces, new lines, and tabs with a single instance.
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{* the following will be all run into one line upon output *}
+	{ strip}
+		&lt;A HREF="{ $url }"&gt;
+			&lt;font color="red"&gt;This is a test&lt;/font&gt;
+		&lt;/A&gt;
+	{ /strip }
+
+	OUTPUT
+	=============================
+	&lt;A HREF="http://my.domain.com"&gt;&lt;font color="red"&gt;This is a test&lt;/font&gt;&lt;/A&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="textformat"><code>textformat</code></a></h2>
+<p>
+<h4>Description</h4>
+	This block function is used to clean up spaces,  special characters and formats paragraphs by wrapping at a boundary and indenting lines.
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>assign</b>(optional)<br>
+	    The template variable the output will be assigned to.</li>
+		<li><b>indent</b>(optional)<br>
+	    The number of chars to indent every line. Default value = 0 </li>
+		<li><b>indent_first</b>(optional)<br>
+	    The number of chars to indent the first line. Default value = 0</li>
+		<li><b>indent_char</b>(optional)<br>
+	    The character (or string of chars) to indent with. Default value = single space </li>
+		<li><b>style</b>(optional)<br>
+	    Preset style of <tt>email</tt> set to 72 characters.</li>
+		<li><b>wrap</b>(optional)<br>
+	    How many characters to wrap each line to. Default value = 80</li>
+		<li><b>wrap_char</b>(optional)<br>
+	    The character (or string of chars) to break each line with. Default value = \n </li>
+		<li><b>wrap_cut</b>(optional)<br>
+	    If true, wrap will break the line at the exact character instead of at a word boundary. Default value = false </li>
+		<li><b>assign</b>(optional)<br>
+	    The template variable the output will be assigned to.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	{ textformat wrap=20 }
+		This is a special test of the 20 wrap.
+	{ /textformat }
+
+
+	OUTPUT
+	=============================
+	This is a special te
+	st of the 20 wrap.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="counter"><code>counter</code></a></h2>
+<p>
+<h4>Description</h4>
+	This function is an incremental counter that will increase by the specified amount each time it is called, or not, depending on how it is called.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>name</b> (optional)<br>The name of the counter.</li>
+		<li><b>start</b> (optional)<br>The number to start counting from. Default is 1.</li>
+		<li><b>skip</b> (optional)<br>The interval to count by. Default is 1.</li>
+		<li><b>direction</b> (optional)<br>The direction to count in. Either <code>up</code> or <code>down</code>.</li>
+		<li><b>print</b> (optional)<br>Whether or not to print the value. Default is true.</li>
+		<li><b>assign</b> (optional)<br>The template variable that the value will be assigned to.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{* initialize the count *}
+	{counter start=0 skip=2 print=false}
+
+	{counter}&lt;br&gt;
+	{counter}&lt;br&gt;
+	{counter}&lt;br&gt;
+	{counter}&lt;br&gt;
+
+	OUTPUT
+	=============================
+	2&lt;br&gt;
+	4&lt;br&gt;
+	6&lt;br&gt;
+	8&lt;br&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="cycle"><code>cycle</code></a></h2>
+<p>
+<h4>Description</h4>
+	Cycle will alternate between multiple values on each recurring call.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>name</b> (optional)<br>The name of the cycle.</li>
+		<li><b>values</b><br>The values to cycle through. This can be either a comma separated list or an array of values.</li>
+		<li><b>print</b> (optional)<br>Whether to print the value or not. The default is to print the value.</li>
+		<li><b>advance</b> (optional)<br>Whether to advance to the next value or not. The default is to advance the value.</li>
+		<li><b>delimiter</b> (optional)<br>The delimiter to use in separating the values in the <code>values</code> argument. The default is a comma.</li>
+		<li><b>assign</b> (optional)<br>The template variable that the value will be assigned to.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	{ foreach value=value from=$data }
+	&lt;tr bgcolor="{ cycle values="#eeeeee,#d0d0d0" }"&gt;
+		&lt;td&gt;{ $value[rows] }&lt;/td&gt;
+	&lt;/tr&gt;
+	{ /foreach }
+
+	OUTPUT
+	=============================
+	&lt;tr bgcolor="#eeeeee"&gt;
+		&lt;td&gt;1&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr bgcolor="#d0d0d0"&gt;
+		&lt;td&gt;2&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr bgcolor="#eeeeee"&gt;
+		&lt;td&gt;3&lt;/td&gt;
+	&lt;/tr&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="db_function_call"><code>db_function_call</code></a></h2>
+<p>
+<h4>Description</h4>
+	This function call will allow you to interface with ADOdb Lite and execute any database functions.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>db_object</b><br>
+		  This is the database connection object.  ($db = ADONewConnection($dsn);	// The $db object variable would be passed to the template and used by db_object)	</li>
+		<li><b>db_function</b><br>
+		  This is the ADOdb Lite database function to call. Example: Execute (this will execute a database query) </li>
+		<li><b>db_query</b> (optional)<br>
+		  This is an optional SQL statement that is used by functions like Execute
+		  .</li>
+		<li><b>db_assign</b><br>
+		  This is the template variable to assign the result data or result object .</li>
+		<li><b>db_errornumber_assign</b> (optional)<br>
+		  This is the template variable to assign the error result number that is generated by the database function call. If the function call executed properly the returned value will be 0.</li>
+		<li><b>db_error_assign</b> (optional)<br>
+		  The template variable to assign the error result message that is generated by the database function call. If the function call executed properly the returned value will be empty.</li>
+		<li><b>db_EOF_assign</b> (optional)<br>
+		  The template variable to assign the End of File flag. This flag is used to determine if the LAST element of a result set has been reached. If the returned value is 0 then there are more elements to retrieve. </li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ db_function_call db_object=$db_object db_function="Execute" db_query=$query db_assign="result_object"}
+
+	</pre>
+    </p>
+<hr>
+
+<h2><a name="db_result_call"><code>db_result_call</code></a></h2>
+<p>
+<h4>Description</h4>
+	This function call will allow you to interface with ADOdb Lite and execute any database result set functions.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>db_object</b><br>
+		  This is the database connection object.  ($db = ADONewConnection($dsn);	// The $db object variable would be passed to the template and used by db_object)	</li>
+		<li><b>db_function</b><br>
+		  This is the ADOdb Lite database function to call. Example: Execute (this will execute a database query) </li>
+		<li><b>db_result_object</b><br>
+		  This is the result object that would have been generated by the 
+	      <code>db_function_call</code>.</li>
+		<li><b>db_assign</b><br>
+		  This is the template variable to assign the result data.</li>
+		<li><b>db_errornumber_assign</b> (optional)<br>
+		  This is the template variable to assign the error result number that is generated by the database function call. If the function call executed properly the returned value will be 0.</li>
+		<li><b>db_error_assign</b> (optional)<br>
+		  The template variable to assign the error result message that is generated by the database function call. If the function call executed properly the returned value will be empty.</li>
+		<li><b>db_EOF_assign</b> (optional)<br>
+		  The template variable to assign the End of File flag. This flag is used to determine if the LAST element of a result set has been reached. If the returned value is 0 then there are more elements to retrieve. </li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ db_function_call db_object=$db_object db_function="Execute" db_query=$query db_assign="result_object" db_EOF_assign="eof"}
+
+	{while $eof == 0}
+		{ db_result_call db_object=$db_object db_function="fields" db_result_object=$result_object db_assign="result" db_EOF_assign="eof"}
+		Name: {$result.name}&lt;br&gt;
+		{ db_result_call db_object=$db_object db_function="MoveNext" db_result_object=$result_object db_assign="result" db_EOF_assign="eof"}
+	{/while}
+
+	OUTPUT
+	=============================
+	George
+	Mitchel
+	Jenny
+	</pre>
+    </p>
+<hr>
+
+<h2><a name="debug"><code>debug</code></a></h2>
+<p>
+<h4>Description</h4>
+	<p>Debug is now a compiler function and operates in the same manner. For more information view the <a href="language.compiler.functions.html#debug">Debug Compiler Function</a>.
+</p>
+</p>
+	<p>&nbsp;    </p>
+	<hr>
+
+<h2><a name="html_checkboxes"><code>html_checkboxes</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will insert a checkbox into the template.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>name</b><br>The name of the checkbox.</li>
+		<li><b>value</b> (optional)<br>The value for the checkbox.</li>
+		<li><b>checked</b> (optional)<br>Whether or not the checkbox is checked. Must equal <code>value</code> to be considered true.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ html_checkboxes name="test" }
+
+	OUTPUT
+	=============================
+	&lt;INPUT TYPE="CHECKBOX" NAME="test"&gt;
+	</pre>
+    </p>
+<hr>
+
+<h2><a name="html_hidden"><code>html_hidden</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will insert a checkbox into the template.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>name</b><br>
+		The name of the hidden variable.</li>
+		<li><b>value</b> (optional)<br>
+		The value for the hidden variable.</li>
+		<li><b>id</b> (optional)<br>
+	    This attribute assigns a document-wide name to a specific instance of an element. Values for id must be unique within a document. Furthermore, this attribute shares the same name space as the name attribute.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ html_hidden name="test" value=&quot;stuff&quot; }
+
+	OUTPUT
+	=============================
+	&lt;INPUT TYPE="HIDDEN" NAME="test" VALUE=&quot;stuff&quot;&gt; 
+	</pre>
+    </p>
+<hr>
+
+<h2><a name="html_image"><code>html_image</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will insert an image (optionally resized) into the template.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>url</b><br>The URL of the image.</li>
+		<li><b>width</b> (optional)<br>The desired width of the image.</li>
+		<li><b>height</b> (optional)<br>The desired height of the image.</li>
+		<li><b>border</b> (optional)<br>The desired border width of the image.</li>
+		<li><b>alt</b> (optional)<br>Alternate text for the image.</li>
+		<li><b>limit</b> (optional)<br>If set to true, this will cause the image to be resized to the above height and width if the above height and width are smaller than the real height and width.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ html_image url="http://www.yoursite.com/image.jpg" }
+	{ html_image url="images/me.gif" alt="A picture of me!" }
+	{ html_image url="picture.gif" width=500 height=400 }
+
+	OUTPUT
+	=============================
+	&lt;IMG SRC="http://www.yoursite.com/image.jpg" BORDER="0" ALT="http://www.yoursite.com/image.jpg" WIDTH="174" HEIGHT="350"&gt;
+	&lt;IMG SRC="images.me.gif" BORDER="0" ALT="A picture of me!" WIDTH="200" HEIGHT="400"&gt;
+	&lt;IMG SRC="picture.gif" BORDER="0" ALT="picture.gif" WIDTH="500" HEIGHT="400"&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="html_input"><code>html_input</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will insert a text box (or optionally a password box) into the template.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>name</b><br>The name of the input box.</li>
+		<li><b>value</b> (optional)<br>The value of the input box.</li>
+		<li><b>size</b> (optional)<br>The visible size of the input box.</li>
+		<li><b>length</b> (optional)<br>The maximum length of the input box.</li>
+		<li><b>password</b> (optional)<br>Whether or not to be a password input box.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ html_input name="test" }
+
+	OUTPUT
+	=============================
+	&lt;INPUT TYPE="TEXT" VALUE="" NAME="test"&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="html_options"><code>html_options</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will create a list of options for a <code>select</code> in the HTML template.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>options</b><br>The array of values used to generate the options from.</li>
+		<li><b>selected</b> (optional)<br>The default value to be selected.</li>
+		<li><b>name</b> (optional)<br>The name of the select. If present, the plugin will create the <code>select</code> in the template as well as the <code>options</code>.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	PHP
+	=============================
+	$tpl->assign('cust_options', array(
+			1001 => 'Joe Schmoe',
+			1002 => 'Jack Smith',
+			1003 => 'Jane Johnson',
+		1004 => 'Charlie Brown'));
+	$tpl->assign('customer_id', 1001);
+
+	TEMPLATE
+	=============================
+	&lt;select name=customer_id&gt;
+		{ html_options options=$cust_options selected=$customer_id }
+	&lt;/select&gt;
+
+	OUTPUT
+	=============================
+	&lt;select name=customer_id&gt;
+		&lt;option value="1000"&gt;Joe Schmoe&lt;/option&gt;
+		&lt;option value="1001" selected="selected"&gt;Jack Smith&lt;/option&gt;
+		&lt;option value="1002"&gt;Jane Johnson&lt;/option&gt;
+		&lt;option value="1003"&gt;Charlie Brown&lt;/option&gt;
+	&lt;/select&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="html_radios"><code>html_radios</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will insert a radio button into the template.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>name</b><br>The name of the radio button.</li>
+		<li><b>value</b> (optional)<br>The value of the radio button.</li>
+		<li><b>checked</b> (optional)<br>Whether the box is checked or not. Must equal <code>value</code> to be considered true.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ html_radios name="test" }
+
+	OUTPUT
+	=============================
+	&lt;INPUT TYPE="RADIO" NAME="test"&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="html_select_date"><code>html_select_date</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will create date dropdowns for you. It can insert any or all of year, month, and day into the template.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>prefix</b>(optional)<br>
+	    Prefix for the var name. Default = Date_</li>
+		<li><b>time</b>(optional)<br>
+	    The date/time to use. Default = current time in unix timestamp or YYYY-MM-DD format</li>
+		<li><b>start_year</b>(optional)<br>
+	    The first year in the dropdown, either year number, or relative to current year (+/- N). Default = current year</li>
+		<li><b>end_year</b>(optional)<br>
+	    The last year in the dropdown, either year number, or relative to current year (+/- N). Default = same as start_year</li>
+		<li><b>display_days</b>(optional)<br>
+	    Should days be displayed. Default = true</li>
+		<li><b>display_months</b>(optional)<br>
+	    Should months be displayed. Default = true </li>
+		<li><b>display_years</b>(optional)<br>
+	    Should years be displayed. Default = true </li>
+		<li><b>month_format</b>(optional)<br>
+	    The format the month should be in (strftime). Default = %B</li>
+		<li><b>day_format</b>(optional)<br>
+	    The format the day output should be in (sprintf). Default = %02d</li>
+		<li><b>day_value_format</b>(optional)<br>
+	    The format the day value should be in (sprintf). Default = %d</li>
+		<li><b>year_as_text</b>(optional)<br>
+	    Should the year be displayed as text. Default = false</li>
+		<li><b>reverse_years</b>(optional)<br>
+	    Display the years in reverse order. Default = false</li>
+		<li><b>field_array</b>(optional)<br>
+	    If a name is given, the select boxes will be drawn such that the results will be returned to PHP in the form of name[Day], name[Year], name[Month]. Default = null</li>
+		<li><b>day_size</b>(optional)<br>
+       Size attribute for select tag if given. Default = null</li>
+		<li><b>month_size</b>(optional)<br>
+	    Size attribute for select tag if given. Default = null</li>
+		<li><b>year_size</b>(optional)<br>
+	    Size attribute for select tag if given. Default = null</li>
+		<li><b>all_extra</b>(optional)<br>
+	    Adds extra attributes to all select/input tags if given. Default = null </li>
+		<li><b>day_extra</b>(optional)<br>
+	    Adds extra attributes to select/input tags if given. Default = null</li>
+		<li><b>month_extra</b>(optional)<br>
+	    Adds extra attributes to select/input tags if given. Default = null</li>
+		<li><b>year_extra</b>(optional)<br>
+	    Adds extra attributes to select/input tags if given. Default = null</li>
+		<li><b>field_order</b>(optional)<br>
+	    The order in which to display the fields. Default = MDY</li>
+		<li><b>field_separator</b>(optional)<br>
+	    The string printed between the different fields. Default = \n</li>
+		<li><b>month_value_format</b>(optional)<br>
+	    The strftime format of the month values. Default = %m</li>
+		<li><b>year_empty</b>(optional)<br>
+	    If supplied then the first element of the year's select-box has this value as it's label and &quot;&quot; as it's value. This is useful to make the select-box read &quot;Please select a year&quot; for example. Note that you can use values like &quot;-MM-DD&quot; as time-attribute to indicate an unselected year. Default = null </li>
+		<li><b>month_empty</b>(optional)<br>
+	    If supplied then the first element of the month's select-box has this value as it's label and &quot;&quot; as it's value. . Note that you can use values like &quot;YYYY--DD&quot; as time-attribute to indicate an unselected month. Default = null</li>
+		<li><b>day_empty</b>(optional)<br>
+	    If supplied then the first element of the day's select-box has this value as it's label and &quot;&quot; as it's value. Note that you can use values like &quot;YYYY-MM-&quot; as time-attribute to indicate an unselected day. Default = null</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ html_select_date }
+
+
+	OUTPUT
+	=============================
+	&lt;select name=&quot;Date_Month&quot;&gt;
+	&lt;option value=&quot;1&quot;&gt;January&lt;/option&gt;
+	&lt;option value=&quot;2&quot;&gt;February&lt;/option&gt;
+	&lt;option value=&quot;3&gt;March&lt;/option&gt;	
+	&lt;option value=&quot;4&quot; selected=&quot;selected&quot;&gt;April&lt;/option&gt;
+	..... cut .....
+	&lt;option value=&quot;11&quot;&gt;November&lt;/option&gt;
+	&lt;option value=&quot;12&quot;&gt;December&lt;/option&gt;
+	&lt;/select&gt;
+	&lt;select name=&quot;Date_Day&quot;&gt;
+	&lt;option value=&quot;1&quot;&gt;01&lt;/option&gt;
+	&lt;option value=&quot;2&quot; selected=&quot;selected&gt;02&lt;/option&gt;
+	..... cut .....
+	&lt;option value=&quot;31&quot;&gt;31&lt;/option&gt;
+	&lt;/select&gt;
+	&lt;select name=&quot;Date_Year&quot;&gt;
+	&lt;option value=&quot;2006&quot; selected=&quot;selected&quot;&gt;2006&lt;/option&gt;
+	&lt;/select&gt;	</pre>
+</p>
+<hr>
+
+<h2><a name="html_select_time"><code>html_select_time</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will create  time dropdowns for you. It can insert any or all of hour, minute, second and meridian into the template.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>prefix</b>(optional)<br>
+	    Prefix for the var name. Default = Time_</li>
+		<li><b>time</b>(optional)<br>
+	    The date/time to use. Default = current time in unix timestamp or YYYY-MM-DD format</li>
+		<li><b>display_hours</b>(optional)<br>
+	    Should hours be displayed. Default = true</li>
+		<li><b>display_minutes</b>(optional)<br>
+	    Should minutes be displayed. Default = true </li>
+		<li><b>display_seconds</b>(optional)<br>
+	    Should seconds be displayed. Default = true </li>
+		<li><b>display_meridian</b>(optional)<br>
+	    Should meridian be displayed (am/pm). Default = true </li>
+		<li><b>use_24_hours</b>(optional)<br>
+	    Display as 24 hour clock. Default = true </li>
+		<li><b>minute_interval</b>(optional)<br>
+	    The number interval in minute dropdown. Default = 1 </li>
+		<li><b>second_interval</b>(optional)<br>
+	    The number interval in second dropdown. Default = 1 </li>
+		<li><b>field_array</b>(optional)<br>
+	    If a name is given, the output values are stored in an array of this name. Default = n/a</li>
+		<li><b>all_extra</b>(optional)<br>
+	    Adds extra attributes to all select/input tags if given. Default = null </li>
+		<li><b>hour_extra</b>(optional)<br>
+	    Adds extra attributes to select/input tags if given. Default = null</li>
+		<li><b>minute_extra</b>(optional)<br>
+	    Adds extra attributes to select/input tags if given. Default = null</li>
+		<li><b>second_extra</b>(optional)<br>
+	    Adds extra attributes to select/input tags if given. Default = null</li>
+		<li><b>meridian_extra</b>(optional)<br>
+	    Adds extra attributes to select/input tags if given. Default = null</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ html_select_time use_24_hours=true }
+
+
+	OUTPUT
+	=============================
+	&lt;select name=&quot;Time_Hour&quot;&gt;
+	&lt;option value=&quot;00&quot;&gt;00&lt;/option&gt;
+	&lt;option value=&quot;01&quot; selected&gt;01&lt;/option&gt;
+	..... cut .....
+	&lt;option value=&quot;22&quot;&gt;22&lt;/option&gt;
+	&lt;option value=&quot;23&quot;&gt;23&lt;/option&gt;
+	&lt;/select&gt;
+	&lt;select name=&quot;Time_Minute&quot;&gt;
+	&lt;option value=&quot;00&quot; selected&gt;00&lt;/option&gt;
+	&lt;option value=&quot;01&quot;&gt;01&lt;/option&gt;
+	..... cut .....
+	&lt;option value=&quot;58&quot;&gt;58&lt;/option&gt;
+	&lt;option value=&quot;59&quot;&gt;59&lt;/option&gt;
+	&lt;/select&gt;
+	&lt;select name=&quot;Time_Second&quot;&gt;
+	&lt;option value=&quot;00&quot; selected&gt;00&lt;/option&gt;
+	&lt;option value=&quot;01&quot;&gt;01&lt;/option&gt;
+	..... cut .....
+	&lt;option value=&quot;58&quot;&gt;58&lt;/option&gt;
+	&lt;option value=&quot;59&quot;&gt;59&lt;/option&gt;
+	&lt;/select&gt;
+	&lt;select name=&quot;Time_Meridian&quot;&gt;
+	&lt;option value=&quot;am&quot; selected&gt;AM&lt;/option&gt;
+	&lt;option value=&quot;pm&quot;&gt;PM&lt;/option&gt;
+	&lt;/select&gt;
+		</pre>
+</p>
+<hr>
+
+<h2><a name="html_table"><code>html_table</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will  dump an array of data into an HTML table. The cols attribute determines how many columns will be in the table. The table_attr, tr_attr and td_attr values determine the attributes given to the table, tr and td tags. If tr_attr or td_attr are arrays, they will be cycled through. trailpad is the value put into the trailing cells on the last table row if there are any present..
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>loop</b><br>
+	    The array of data to loop through.</li>
+		<li><b>cols</b>(optional)<br>
+	    The number of columns in the table. if the cols-attribute is empty, but rows are given, then the number of cols is computed by the number of rows and the number of elements to display to be just enough cols to display all elements. If both, rows and cols, are omitted cols defaults to 3. Default = 3 </li>
+		<li><b>rows</b>(optional)<br>
+	    The number of rows in the table. if the rows-attribute is empty, but cols are given, then the number of rows is computed by the number of cols and the number of elements to display to be just enough rows to display all elements.</li>
+		<li><b>inner</b>(optional)<br>
+	    The direction of consecutive elements in the loop-array to be rendered. cols means elements are displayed col-by-col. rows means elements are displayed row-by-row. Default = cols </li>
+		<li><b>table_attr</b>(optional)<br>
+	    The attributes for table tag. Default = border=&quot;1&quot; </li>
+		<li><b>tr_attr</b>(optional)<br>
+	    The attributes for tr tag (arrays are cycled).</li>
+		<li><b>td_attr</b>(optional)<br>
+	    The attributes for td tag (arrays are cycled).</li>
+		<li><b>trailpad</b>(optional)<br>
+	    The value to pad the trailing cells on last row with (if any). Default = &amp;nbsp; </li>
+		<li><b>hdir</b>(optional)<br>
+	    The direction of each row to be rendered. possible values: right (left-to-right), and left (right-to-left). Default = right </li>
+		<li><b>vdir</b>(optional)<br>
+	    The direction of each column to be rendered. possible values: down (top-to-bottom), up (bottom-to-top). Default = down </li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>	PHP <br>	=============================<br>	&lt;?php<br>	require('class.template.php');<br>	$template_object = new Template_Lite;<br>	$template_object-&gt;assign('data',array(1,2,3,4,5,6,7,8,9));<br>	$template_object-&gt;assign('tr',array('bgcolor=&quot;#eeeeee&quot;','bgcolor=&quot;#dddddd&quot;'));<br>	$template_object-&gt;display('index.tpl');<br>	?&gt;
+
+	TEMPLATE
+	=============================
+	{ html_table loop=$data }<br>	{ html_table loop=$data cols=4 table_attr='border=&quot;0&quot;' }<br>	{ html_table loop=$data cols=4 tr_attr=$tr }
+
+	OUTPUT
+	=============================
+	&lt;table border=&quot;1&quot;&gt;
+	&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt;
+	&lt;tr&gt;&lt;td&gt;4&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;td&gt;6&lt;/td&gt;&lt;/tr&gt;
+	&lt;tr&gt;&lt;td&gt;7&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;td&gt;9&lt;/td&gt;&lt;/tr&gt;
+	&lt;/table&gt;
+	&lt;table border=&quot;0&quot;&gt;
+	&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;4&lt;/td&gt;&lt;/tr&gt;
+	&lt;tr&gt;&lt;td&gt;5&lt;/td&gt;&lt;td&gt;6&lt;/td&gt;&lt;td&gt;7&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;/tr&gt;
+	&lt;tr&gt;&lt;td&gt;9&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+	&lt;/table&gt;
+	&lt;table border=&quot;1&quot;&gt;
+	&lt;tr bgcolor=&quot;#eeeeee&quot;&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;4&lt;/td&gt;&lt;/tr&gt;
+	&lt;tr bgcolor=&quot;#dddddd&quot;&gt;&lt;td&gt;5&lt;/td&gt;&lt;td&gt;6&lt;/td&gt;&lt;td&gt;7&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;/tr&gt;
+	&lt;tr bgcolor=&quot;#eeeeee&quot;&gt;&lt;td&gt;9&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+	&lt;/table&gt;
+		</pre>
+</p>
+<hr>
+
+<h2><a name="html_textbox"><code>html_textbox</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will insert a textbox into the template.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>name</b><br>The name of the textbox.</li>
+		<li><b>rows</b> (optional)<br>The number of rows in the textbox.</li>
+		<li><b>columns</b> (optional)<br>The number of columns in the textbox.</li>
+		<li><b>value</b> (optional)<br>The value of the textbox.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ html_textbox name="test" rows="4" columns="60" }
+
+	OUTPUT
+	=============================
+	&lt;TEXTAREA NAME="test" ROWS="4" COLS="60"&gt;&lt;/TEXTAREA&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="in_array"><code>in_array</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will search an array for a matching value and return the set returnvalue if a match is found.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>array</b><br>The array to search for the match.</li>
+		<li><b>match</b><br>The value to match inside the array</li>
+		<li><b>returnvalue</b><br>This is the value to be returned if a match is found.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	&lt;input type="checkbox" name="test" value="1" { in_array array=$atribname[$i] match=$atrib returnvalue="CHECKED" }&gt;
+
+	OUTPUT
+	=============================
+	&lt;input type="checkbox" name="test" value="1" CHECKED&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="mailto"><code>mailto</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will insert a   mailto: link and optionally encodes them into the template. Encoding e-mails makes it more difficult for web spiders to lift e-mail addresses off of your site.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>address</b><br>
+	    The e-mail address.</li>
+		<li><b>text</b> (optional)<br>
+	    The text to display, default is the e-mail address.</li>
+		<li><b>encode</b> (optional)<br>
+		  How to encode the e-mail. Can be none, hex, javascript or javascript_charcode. Default = none </li>
+		<li><b>cc</b> (optional)<br>
+	    The e-mail addresses to carbon copy. Separate entries by a comma.</li>
+		<li><b>bcc</b> (optional)<br>
+	    The e-mail addresses to blind carbon copy. Separate entries by a comma.</li>
+		<li><b>subject</b> (optional)<br>
+	    The e-mail subject.</li>
+		<li><b>newsgroups</b> (optional)<br>
+	    The newsgroups to send post. Separate entries by a comma.</li>
+		<li><b>followupto</b> (optional)<br>
+	    The addresses to follow up to. Separate entries by a comma.</li>
+		<li><b>extra</b> (optional)<br>
+	    Any extra information you want passed to the link, such as style sheet classes.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ mailto address=&quot;me@example.com&quot; }
+	{ mailto address=&quot;me@example.com&quot; text=&quot;send me some mail&quot; }
+
+	OUTPUT
+	=============================
+	&lt;a href=&quot;mailto:me@example.com&quot; &gt;me@example.com&lt;/a&gt;
+	&lt;a href=&quot;mailto:me@example.com&quot; &gt;send me some mail&lt;/a&gt;</pre>
+</p>
+<hr>
+
+<h2><a name="math"><code>math</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will allow the template designer to do math equations in the template. Any numeric template variables may be used in the equations, and the result is printed in place of the tag. The variables used in the equation are passed as parameters, which can be template variables or static values. +, -, /, *, abs, ceil, cos, exp, floor, log, log10, max, min, pi, pow, rand, round, sin, sqrt, srans and tan are all valid operators. Check the PHP documentation for further information on these math functions. 
+	<p>If you supply the special &quot;assign&quot; attribute, the output of the math function will be assigned to this template variable instead of being output to the template.</p>
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>equation</b><br>
+	    The equation to execute.</li>
+		<li><b>format</b> (optional)<br>
+	    The format of the result (sprintf).</li>
+		<li><b>var</b><br>
+		  The equation variable value.</li>
+		<li><b>assign</b> (optional)<br>
+	    The template variable the output will be assigned.</li>
+		<li><b>[var ...]</b><br>
+	    The equation variable value.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ math equation=&quot;(( x + y ) / z )&quot; x=2 y=10 z=2 }
+	{ math equation=&quot;x + y&quot; x=4.4444 y=5.0000 format=&quot;%.2f&quot; }
+
+	OUTPUT
+	=============================
+	6
+	9.44</pre>
+</p>
+<hr>
+
+<h2><a name="popup_init"><code>popup_init</code></a></h2>
+<p>
+<h4>Description</h4>
+	<p>{popup_init} must be called once at the top of any page you plan on using the {popup} function. {popup} is an integration of <a href="http://www.bosrup.com/web/overlib/">overLib</a>, a library used for popup windows. These are used for context sensitive information, such as help windows or tooltips.</p>
+	<p><a href="http://www.bosrup.com/web/overlib/">overLib</a> was written by Erik Bosrup, and the homepage/download is located at <a href="http://www.bosrup.com/web/overlib/">http://www.bosrup.com/web/overlib/</a>.</p>
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	&lt;head&gt;<br>	{* popup_init must be called once at the top of the page *}<br>	{popup_init src=&quot;javascripts/overlib.js&quot;}<br>	&lt;/head&gt;</pre>
+</p>
+<hr>
+
+<h2><a name="popup"><code>popup</code></a></h2>
+<p>
+<h4>Description</h4>
+	Will allow the template designer to create javascript popup windows. {popup_init} MUST be called first for this to work.
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>text</b><br>
+	    The text/html to display in the popup window.</li>
+		<li><b>trigger</b> (optional)<br>
+	    What is used to trigger the popup window. Can be one of onMouseOver or onClick. Default = onMouseOver</li>
+		<li><b>sticky</b> (optional)<br>
+	    Makes the popup stick around until closed. Default = false </li>
+		<li><b>caption</b> (optional)<br>
+	    Sets the caption to title.</li>
+		<li><b>fgcolor</b> (optional)<br>
+	    The color of the inside of the popup box.</li>
+		<li><b>bgcolor</b> (optional)<br>
+	    The color of the border of the popup box.</li>
+		<li><b>textcolor</b> (optional)<br>
+	    The color of the text inside the box.</li>
+		<li><b>capcolor</b> (optional)<br>
+	    The color of the box's caption.</li>
+		<li><b>closecolor</b> (optional)<br>
+	    The color of the close text. </li>
+		<li><b>textfont</b> (optional)<br>
+	    The font to be used by the main text.</li>
+		<li><b>captionfont</b> (optional)<br>
+	    The font of the caption.</li>
+		<li><b>closefont</b> (optional)<br>
+	    The font for the &quot;Close&quot; text.</li>
+		<li><b>textsize</b> (optional)<br>
+	    The size of the main text's font.</li>
+		<li><b>captionsize</b> (optional)<br>
+	    The size of the caption's font.</li>
+		<li><b>closesize</b> (optional)<br>
+	    The size of the &quot;Close&quot; text's font.</li>
+		<li><b>width</b> (optional)<br>
+	    The width of the box.</li>
+		<li><b>height</b> (optional)<br>
+	    The height of the box.</li>
+		<li><b>left</b> (optional)<br>
+	    Makes the popups go to the left of the mouse. Default = false </li>
+		<li><b>right</b> (optional)<br>
+	    Makes the popups go to the right of the mouse. Default = false</li>
+		<li><b>center</b> (optional)<br>
+	    Makes the popups go to the center of the mouse. Default = false</li>
+		<li><b>above</b> (optional)<br>
+	    Makes the popups go above the mouse. NOTE: only possible when height has been set. Default = false</li>
+		<li><b>below</b> (optional)<br>
+	    Makes the popups go below the mouse. Default = false</li>
+		<li><b>border</b> (optional)<br>
+	    Makes the border of the popups thicker or thinner.</li>
+		<li><b>offsetx</b> (optional)<br>
+	    How far away from the pointer the popup will show up, horizontally.</li>
+		<li><b>offsety</b> (optional)<br>
+	    How far away from the pointer the popup will show up, vertically.</li>
+		<li><b>fgbackground</b> (optional)<br>
+	    Defines a picture to use instead of color for the inside of the popup. Use the URL to the image. </li>
+		<li><b>bgbackground</b> (optional)<br>
+	    Defines a picture to use instead of color for the border of the popup. NOTE: You will want to set bgcolor to &quot;&quot; or the color will show as well. NOTE: When having a Close link, Netscape will re-render the table cells, making things look incorrect. Use the URL to the image.</li>
+		<li><b>closetext</b> (optional)<br>
+	    Changes the &quot;Close&quot; text to something different.</li>
+		<li><b>noclose</b> (optional)<br>
+	    Does not display the &quot;Close&quot; text on stickies with a caption.</li>
+		<li><b>status</b> (optional)<br>
+	    Sets the text in the browsers status bar.</li>
+		<li><b>autostatus</b> (optional)<br>
+	    Sets the status bar's text to the popup's text. NOTE: overrides status setting.</li>
+		<li><b>autostatuscap</b> (optional)<br>
+	    Sets the status bar's text to the caption's text. NOTE: overrides status and autostatus settings.</li>
+		<li><b>inarray</b> (optional)<br>
+	    Sets overLib to read text from this index in the ol_text array, located in overlib.js. This parameter can be used instead of text.</li>
+		<li><b>caparray</b> (optional)<br>
+	    Sets overLib to read the caption from this index in the ol_caps array.</li>
+		<li><b>capicon</b> (optional)<br>
+	    Displays the image given before the popup caption. Use a URL to the image. </li>
+		<li><b>snapx</b> (optional)<br>
+	    Snaps the popup to an even position in a horizontal grid.</li>
+		<li><b>snapy</b> (optional)<br>
+	    Snaps the popup to an even position in a vertical grid.</li>
+		<li><b>fixx</b> (optional)<br>
+	    Locks the popups horizontal position Note: overrides all other horizontal placement.</li>
+		<li><b>fixy</b> (optional)<br>
+	    Locks the popups vertical position Note: overrides all other vertical placement.</li>
+		<li><b>background</b> (optional)<br>
+	    Sets image to be used instead of table box background. Use a URL to the image. </li>
+		<li><b>padx</b> (optional)<br>
+	    Pads the background image with horizontal whitespace for text placement. Note: this is a two parameter command.</li>
+		<li><b>pady</b> (optional)<br>
+	    Pads the background image with vertical whitespace for text placement. Note: this is a two parameter command.</li>
+		<li><b>fullhtml</b> (optional)<br>
+	    Allows you to control the html over a background picture completely. The html code is expected in the &quot;text&quot; attribute.</li>
+		<li><b>frame</b> (optional)<br>
+	    Controls popups in a different frame. See the overlib page for more info on this function.</li>
+		<li><b>timeout</b> (optional)<br>
+	    Calls the specified javascript function and takes the return value as the text that should be displayed in the popup window.</li>
+		<li><b>delay</b> (optional)<br>
+	    Makes that popup behave like a tooltip. It will popup only after this delay in milliseconds.</li>
+		<li><b>hauto</b> (optional)<br>
+	    Automatically determine if the popup should be to the left or right of the mouse.</li>
+		<li><b>vauto</b> (optional)<br>
+	    Automatically determine if the popup should be above or below the mouse.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{* popup_init must be called once at the top of the page *}
+		{popup_init src=&quot;/javascripts/overlib.js&quot;}
+	{* create a link with a popup window when you move your mouse over *}
+		&lt;a href=&quot;mypage.html&quot; {popup text=&quot;This link takes you to my page!&quot;}&gt;mypage&lt;/a&gt;
+	{* you can use html, links, etc in your popup text *}
+		&lt;a href=&quot;mypage.html&quot; {popup sticky=true caption=&quot;mypage contents&quot; 
+		text=&quot;&lt;ul&gt;&lt;li&gt;links&lt;/li&gt;&lt;li&gt;pages&lt;/li&gt;&lt;li&gt;images&lt;/li&gt;&lt;/ul&gt;&quot; 
+		snapx=10 snapy=10}&gt;mypage&lt;/a&gt;
+    </pre>
+    </p>
+<hr>
+
+<h2><a name="resize_image"><code>resize_image</code></a></h2>
+<p>
+<h4>Description</h4>
+	This plugin can create actual thumbnail images from images on the server or through a URL.  A completed image tag referencing the thumbnail image will be created.  The thumbnails are date stamped and will be automatically recreated after 5 days have passed or the number of days specified by the daystokeep argument.
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>img_src</b><br>
+	    tag path</li>
+		<li><b>directory</b><br>
+	    full directory path where images are located</li>
+		<li><b>thumbdir</b> (optional)<br>
+		Optional directory path to store thumbnail images.  directory will be used if not supplied.</li>
+		<li><b>filename</b><br>
+	    Name of the file</li>
+		<li><b>xscale</b> (optional)<br>
+	    Image max width size default 2000 px</li>
+		<li><b>yscale</b> (optional)<br>
+	    Image max height size default 2000 px</li>
+		<li><b>thumbname</b><br>
+	    prefix name for new image, the thumb name is not needed if you are using a return type of 1</li>
+		<li><b>returntype</b> (optional)<br>
+	    1 - return image tag with full size image name and path but with height and width attributes adjusted<br>
+		0 - resize image and store thumbnail in directory and return that thumbnail img tag.  Default setting</li>
+		<li><b>url</b> (optional)<br>
+	    Optional URL to download image from for resizing if the image doesn't exist in the image directory (CURL must be installed to use this feature)</li>
+		<li><b>binpath</b> (optional)<br>
+	    Optional path to the ImageMagick mogrify command.  If missing slower GD code will be used.</li>
+		<li><b>alt</b> (optional)<br>
+	    Optional alt attribute for the img tag Default is "image"</li>
+		<li><b>border</b> (optional)<br>
+	    Optional border attribute for img tag Default is 0</li>
+		<li><b>class</b> (optional)<br>
+	    Optional class attribute for img tag</li>
+		<li><b>daystokeep</b> (optional)<br>
+	    Optional number of days to cache the thumbnail image.  Default is 5 days</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{resize_image img_src="/thumbnails/" directory="/html/mysite/ad_images/" thumbdir="/html/mysite/thumbnails/" filename="Myfile.jpg" xscale="150" yscale="200" thumbname="thumb_"}
+
+	OUTPUT
+	=============================
+	<img src="/thumbnails/thumb_Myfile.jpg" width="150" height="200" alt="image" border="0">
+	</pre>
+</p>
+<hr>
+
+<a href="index.html">Home</a>
+</body>
+</html>

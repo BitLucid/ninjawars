@@ -1,0 +1,51 @@
+<html>
+<head>
+	<title>Combining Modifiers :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Debug Console</h1>
+<p>The Debug Console displays all of the included templates, assigned variables and config file variables for the current template. The &quot;debug.tpl&quot; template is included for displaying the console information. Set $debugging to true ($template_object-&gt;debugging - true;) if you would like to enable the console. When you load the page a javascript console window should pop up and give you the names of all the included templates and assigned variables for the current page. To see the available variables for a particular templates use the {debug} compiler function. To disable the debugging console, set $debugging to false.
+ The debugging console only works with the  display() programming method.
+<pre>
+	EXAMPLE
+	=============================
+</pre>
+<table border=0 width=100%>
+	<tr bgcolor=#cccccc><th colspan=2>Template Lite Debug Console</th></tr>
+	<tr bgcolor=#cccccc><td colspan=2><b>Included templates & config files (load time in seconds):</b></td></tr>
+			<tr bgcolor=#fafafa>
+		<td colspan=2><tt>&nbsp;&nbsp;&nbsp;		<font color=brown>
+		default_paged/header.tpl</font> 
+		<font size=-1><i>(0.0115289497375 seconds) (total)		</i></font></tt></td>
+			</tr>
+		<tr bgcolor=#cccccc><td colspan=2><b>Assigned template variables:</b></td></tr>
+			<tr bgcolor=#fafafa>
+		<td valign=top><tt><font color=blue>{$Title}</font></tt></td>
+		<td nowrap><tt><font color=green>PJ's Test Game - 0.30</font></tt></td></tr>
+			<tr bgcolor=#eeeeee>
+		<td valign=top><tt><font color=blue>{$banner_top}</font></tt></td>
+		<td nowrap><tt><font color=green><i>empty</i></font></tt></td></tr>
+			<tr bgcolor=#fafafa>
+		<td valign=top><tt><font color=blue>{$gameroot}</font></tt></td>
+		<td nowrap><tt><font color=green>F:/aatrade/aatrade/</font></tt></td></tr>
+			<tr bgcolor=#eeeeee>
+		<td valign=top><tt><font color=blue>{$no_body}</font></tt></td>
+		<td nowrap><tt><font color=green>1</font></tt></td></tr>
+			<tr bgcolor=#fafafa>
+		<td valign=top><tt><font color=blue>{$spiral_arm}</font></tt></td>
+		<td nowrap><tt><font color=green><i>empty</i></font></tt></td></tr>
+			<tr bgcolor=#eeeeee>
+		<td valign=top><tt><font color=blue>{$style_sheet_file}</font></tt></td>
+		<td nowrap><tt><font color=green>templates/default_paged/style.css</font></tt></td></tr>
+			<tr bgcolor=#fafafa>
+		<td valign=top><tt><font color=blue>{$templatename}</font></tt></td>
+		<td nowrap><tt><font color=green>default_paged/</font></tt></td></tr>
+		<tr bgcolor=#cccccc><td colspan=2><b>Assigned config file variables (outer template scope):</b></td></tr>
+			<tr bgcolor=#eeeeee><td colspan=2><tt><i>No config vars assigned</i></tt></td></tr>	
+</table>
+</p>
+<hr>
+<a href="index.html">Home</a>
+</body>
+</html>

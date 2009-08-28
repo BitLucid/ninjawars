@@ -1,0 +1,42 @@
+<html>
+<head>
+	<title>Custom Filters :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Custom Output Filters</h1>
+<hr>
+
+<h2><a name="gzip"><code>gzip</code></a></h2>
+<p>
+<h4>Description</h4>
+	This will use gzip compression on all template output.
+
+	<h4>Special Variable Flags</h4>
+	
+<p>These flags are set through the template object.</p>
+	<ul>
+		<li>$template_object->send_now = 0 will cache the output and not send the data</li>
+		<li>$template_object->send_now = 1 will output any cached template data and current template data.  This is the default setting.</li>
+<br>
+		<li>$template_object->force_compression = 1 will cause all output to be compressed and ignore what the browser or server indicates for gzip support</li>
+		<li>$template_object->force_compression = 0 will cause the filter output to be compressed using gzip if the browser indicated it supports gzip and the server offers gzip support.  This is the default setting.</li>
+        <br>
+		<li>$template_object->compression_level = {0 - 9} is the amount of compression to use on the output 0 is the least and 9 is maximum.  The default setting is 9.</li>
+        <br>
+		<li>$template_object->enable_gzip = 0 output compression is diabled </li>
+		<li>$template_object->enable_gzip = 1 output compression is enabled Default Setting</li>
+	</ul>
+        </p>
+    <hr>
+
+<h2><a name="trimwhitespace"><code>trimwhitespace</code></a></h2>
+<p>
+<h4>Description</h4>
+	Trim leading white space and blank lines from template source after it gets interpreted, cleaning up code and saving bandwidth. Does not affect &lt;PRE&gt;&lt;/PRE&gt; and &lt;SCRIPT&gt;&lt;/SCRIPT&gt; blocks.
+</p>
+<hr>
+
+<a href="index.html">Home</a>
+</body>
+</html>

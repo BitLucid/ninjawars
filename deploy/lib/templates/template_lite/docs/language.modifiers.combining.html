@@ -1,0 +1,27 @@
+<html>
+<head>
+	<title>Combining Modifiers :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Combining Modifiers</h1>
+<p>
+	Multiple modifiers can be applied to the same variable in order to alter a variable in multiple ways. They will be applied in the order that they are combined, left to right and must be separated with a pipe (|).<br>
+<pre>
+	TEMPLATE
+	=============================
+	{ "Might we make this sentence a little shorter, not a long run-on?" }
+	{ "Might we make this sentence a little shorter, not a long run-on?"|upper|truncate:50:"..." }
+	{ "Might we make this sentence a little shorter, not a long run-on?"|lower|replace:"shorter":"longer"|truncate:50 }
+
+	OUTPUT
+	==============================
+	Might we make this sentence a little shorter, not a long run-on?
+	MIGHT WE MAKE THIS SENTENCE A LITTLE SHORTER,...
+	might we make this sentence a little longer,...
+	</pre>
+</p>
+<hr>
+<a href="index.html">Home</a>
+</body>
+</html>

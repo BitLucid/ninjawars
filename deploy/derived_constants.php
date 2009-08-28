@@ -24,4 +24,7 @@ define('COMBAT_ROOT', SERVER_ROOT.'combat/');  // *** For all the in-game combat
 define('SKILL_ROOT', SERVER_ROOT.'skill/');  // *** For all the in-game skill objects.
 define('ITEM_ROOT', SERVER_ROOT.'item/');  // *** For all the in-game item/inventory objects.
 define('LIB_PERL', LIB_ROOT.'perl/'); // *** For perl scripts
+
+define('TEMPLATE_PATH', SERVER_ROOT.'templates/'); // ** For templates.
+// COMPILED_TEMPLATE_PATH is kept in resources since it requires write permissions.
 ?>

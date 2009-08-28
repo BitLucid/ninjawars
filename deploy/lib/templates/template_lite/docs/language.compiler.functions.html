@@ -1,0 +1,54 @@
+<html>
+<head>
+	<title>Custom Functions :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Custom Compiler Functions</h1>
+<hr>
+
+<h2><a name="debug"><code>debug</code></a></h2>
+<p>
+<h4>Description</h4>
+The <code>debug</code> function displays the <a href="programming.debug.console.html">debug console</a> either to a popup window through javascript or appends the console to the end of the template file being displayed. This works regardless of the debugging setting. Since this gets executed at runtime it will only display the assigned variables for the template file being processed.
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>output</b> (optional)<br>
+		Display as either html or javascript popup window. Default = javascript </li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	{* Display Debug Console as javascript popup window *}
+	{ debug }
+
+
+	{* Append Debug Console to the end of the displayed page as HTML *}
+	{debug output=html}
+	</pre>
+</p>
+<hr>
+
+<h2><a name="tplheader"><code>tplheader</code></a></h2>
+<p>
+<h4>Description</h4>
+	Inserts PHP code into the compiled template to display the name of the template file and the date it was compiled. 
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE PHP CODE INSERTED
+	=============================
+	echo '&quot; . $tpl-&gt;_file . &quot; compiled at &quot; . date('Y-m-d H:M'). &quot;';
+	
+	EXAMPLE DISPLAY
+	=============================
+	mytemplate.tpl compiled at 2006-04-14 10:34	
+</pre>
+</p>
+<hr>
+
+<a href="index.html">Home</a>
+</body>
+</html>

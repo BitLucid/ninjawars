@@ -1,0 +1,454 @@
+<html>
+<head>
+	<title>Functions :: Template Lite</title>
+</head>
+<body>
+<h4>Template Lite - the faster compiling PHP template engine</h4>
+<h1>Functions</h1>
+<hr>
+<h2><a name="assign"><code>assign</code></a></h2>
+<p>
+<h4>Description</h4>
+	This function will create a new variable from the template and assign a value to it.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>name</b><br>The name of the variable that you are assigning a value to.</li>
+		<li><b>value</b><br>The value of the variable. This can be a string literal, or another variable, modified perhaps. It can also be a concatenated variable.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ assign var="test" value="this is a test variable"|upper }
+	The value of $test is { $test }.
+
+	OUTPUT
+	=============================
+	The value of $test is THIS IS A TEST VARIABLE.
+	</pre>
+</p>
+<hr>
+
+<h2><a name="config_load"><code>config_load</code></a></h2>
+<p>
+<h4>Description</h4>
+	This function will load a config file into a template.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>file</b><br>The name of the config file to load.</li>
+		<li><b>section</b> (optional)<br>The section to load.</li>
+		<li><b>var</b> (optional)<br>The variable to load.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	{ config_load file="config.conf" }
+	{ #variable# }
+	</pre>
+</p>
+<hr>
+
+<h2><a name="foreach"><code>foreach/foreachelse</code></a></h2>
+<p>
+<h4>Description</h4>
+	Much as the name describes, this function behaves exactly like <code><a href="http://www.php.net/foreach">foreach</a></code>. It will loop through an array and return the output.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>from</b><br>The array we are going to loop through.</li>
+		<li><b>value</b><br>The name of the variable that will hold the current variable value.</li>
+		<li><b>key</b> (optional)<br>The name of the variable that will hold the current key.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	PHP
+	=============================
+	$tpl->assign("contacts", array(
+		array("phone" => "1", "fax" => "2", "cell" => "3"),
+		array("phone" => "555-4444", "fax" => "555-3333", "cell" => "760-1234")
+	));
+
+	TEMPLATE
+	=============================
+	{ foreach value=contact from=$contacts }
+		{ foreach key=key value=item from=$contact }
+			{ $key }: { $item }&lt;br&gt;
+		{ /foreach }
+	{ /foreach }
+
+	OUTPUT
+	=============================
+	phone: 1&lt;br&gt;
+	fax: 2&lt;br&gt;
+	cell: 3&lt;br&gt;
+	phone: 555-4444&lt;br&gt;
+	fax: 555-3333&lt;br&gt;
+	cell: 760-1234&lt;br&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="for"><code>for</code></a></h2>
+<p>
+<h4>Description</h4>
+	This function will loop through a block the specific number of times. It is very similar to PHP's <a href="http://www.php.net/manual/en/control-structures.for.php"><code>for</code></a>. You can specify a starting integer, an ending integer, and a step value.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>start</b><br>An integer indicating the starting point of our loop.</li>
+		<li><b>stop</b><br>An integer indicating the ending point of our loop.</li>
+		<li><b>step</b><br>A value indicating how much we are going to jump with each interation.</li>
+		<li><b>value</b> (optional)<br>What local variable we want to store the current position in, if anyway.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	{ for start=0 stop=10 step=2 value=current }
+	We are on number { $current }
+	{ /for }
+
+	{ for start=0 stop=1 step=0.2 value=current }
+	We are on number { $current }
+	{ /for }
+
+	OUTPUT
+	=============================
+	We are on number 0
+	We are on number 2
+	We are on number 4
+	We are on number 6
+	We are on number 8
+
+	We are on number 0
+	We are on number 0.2
+	We are on number 0.4
+	We are on number 0.6
+	We are on number 0.8
+	</pre>
+</p>
+<hr>
+
+<h2><a name="include"><code>include</code></a></h2>
+<p>
+<h4>Description</h4>
+	This function will process another template and include the results in the original template. Alternatively, it will process another template and store the results in a variable for use in the template that called the <code>include</code> to begin with. Included files are also compiled and optionally saved for faster execution.  You can also use an absolute path name to include template files outside the defined template directory path.
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>file</b><br>The file we are going to include.  If you are using an absolute path it is recommended you place file: before the path.</li>
+		<li><b>assign</b> (optional)<br>This will optionally assign the included file to a variable instead of outputting it into the current template body.</li>
+		<li><b>[var ...]</b> (optional)<br>
+	    You can also pass variables to included templates as attributes. Any variables explicitly passed to an included template as attributes are only available within the scope of the included file. Attribute variables override current template variables, in the case they are named alike.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	{ include file="template.tpl" }
+	{ include file=$page }
+	{ include file="/usr/local/include/templates/header.tpl" }
+	{ include file="file:/usr/local/include/templates/header.tpl" }
+	</pre>
+</p>
+<hr>
+<h2><a name="insert"><code>insert</code></a></h2>
+<p>
+<h4>Description</h4>
+	This function will insert text into a template. The text is generated by calling a matching function created by the programmer in PHP that will create necessary text, such as returning compiled template information, or other information for inclusion in the calling template. The output of an insert is not cached and thus an insert is called everytime a template is loaded.
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>name</b><br>This is the name of the insert. Used to define what function to call. Read more in the example.</li>
+		<li><b>additional args</b> (optional)<br>This function will take an abitrary number of arguments and pass them along to the user-defined function.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	PHP
+	=============================
+	function insert_stuffandjunk($params, &$tpl) {
+		return $tpl->fetch('template.tpl','sidebar|template');
+	}
+
+	function insert_othercrap($params, &$tpl) {
+		return "random text: " . $params["var"];
+	}
+
+	TEMPLATE
+	=============================
+	{ insert name="stuffandjunk" }
+	{ insert name="othercrap" var="hi" }
+
+	OUTPUT
+	=============================
+	This is the contents of <code>template.tpl</code>
+	random text: hi
+	</pre>
+</p>
+<hr>
+
+<h2><a name="if"><code>if/elseif/else</code></a></h2>
+<p>
+<h4>Description</h4>
+	<p>Much as the name describes, this is the equivalent to PHP's <code>if</code> statement. In fact, it offers exactly the same flexibility, if not more. Every <code>if</code>, though, must be paired with an <code>/if</code>. Additionally, <code>else</code> and <code>elseif</code> are permitted. The comparison tokens allowed are <code>!</code>, <code>%</code>, <code>!==</code>, <code>==</code>, <code>===</code>, <code>&gt;</code>, <code>&lt;</code>, <code>!=</code>, <code>&lt;&gt;</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>,<code>&amp;&amp;</code>, <code>||</code>, <code>^</code>, <code>&amp;</code>, <code>~</code>, <code>(</code>, <code>)</code>, <code>,</code>, <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>@</code>, <code>eq</code>, <code>ne</code>, <code>neq</code>, <code>lt</code>, <code>le</code>, <code>lte</code>, <code>gt</code>, <code>ge</code>, <code>gte</code>, <code>and</code>, <code>or</code>, <code>not</code>, <code>mod</code>. It is important to note that the comparison operators must be separated from the variables by at least one space.	</p>
+	<p>NEW! The <code>is</code> token is now supported. The following expressions can be used. Expressions in brackets [] are optional.</p>
+	<p>is [not] div by<br>
+	  is [not] even [by]<br>
+is [not] odd [by]</p>
+	<h4>Example</h4>
+	<pre>
+	EXAMPLES
+	=============================
+	{if $name eq "Fred"}
+		Welcome Sir.
+	{elseif $name eq "Wilma"}
+		Welcome Ma'am.
+	{else}
+		Welcome, whatever you are.
+	{/if}
+
+	{* an example with "or" logic *}
+	{if $name eq "Fred" or $name eq "Wilma"}
+		...
+	{/if}
+
+	{* same as above *}
+	{if $name == "Fred" || $name == "Wilma"}
+		...
+	{/if}
+
+	{* the following syntax will NOT work, conditional qualifiers
+	   must be separated from surrounding elements by spaces *}
+	{if $name=="Fred" || $name=="Wilma"}
+		...
+	{/if}
+
+	{* parenthesis are allowed *}
+	{if ( $amount < 0 or $amount > 1000 ) and $volume >= #minVolAmt#}
+		...
+	{/if}
+
+	{* you can also embed php function calls *}
+	{if count($var) gt 0}
+		...
+	{/if}
+
+	{ assign var="var" value=2 }
+	{if $var is even}
+		Yes it's even.
+	{/if}
+
+	{ assign var="var" value=3 }
+	{if $var is odd}
+		Yes it's odd.
+	{/if}
+
+	{ assign var="var" value=2 }
+	{if $var is not odd}
+		No not odd.
+	{/if}
+
+	{ assign var="var" value=8 }
+	{if $var is div by 4}
+		Yes it is divisible by 4.
+	{/if}
+
+	{ assign var="var" value=8 }
+	{if $var is even by 2}
+		Yes it is even by 2.
+	{/if}
+
+	{ assign var="var" value=6 }
+	{if $var is even by 3}
+	 Yes it is even by 3.
+	{/if}
+
+	</pre>
+</p>
+<hr>
+
+<h2><a name="delim"><code>ldelim/rdelim</code></a></h2>
+<p>
+<h4>Description</h4>
+	These will insert the user-defined left delimiter and right delimiter into the template.
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	Here is an example: { ldelim } config_load file="config.conf" { rdelim }
+
+	OUTPUT
+	=============================
+	Here is an example: { config_load file="config.conf" }
+	</pre>
+</p>
+<hr>
+
+<h2><a name="literal"><code>literal</code></a></h2>
+<p>
+<h4>Description</h4>
+	This block function will take everything inside it and interpret it literally. This means that you can put template code inside of this function and it will not be parsed.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	{ literal }
+		Here is an example: { config_load file="config.conf" }
+	{ /literal }
+	</pre>
+</p>
+<hr>
+
+<h2><a name="php"><code>php</code></a></h2>
+<p>
+<h4>Description</h4>
+	This block function will take everything inside it and execute it as pure PHP code. Everything in this block gets sent directly to the PHP compiler. To access variables from the template engine from inside a <tt>php</tt> block, use <tt>$this->get_vars(varname)</tt>.
+
+	<h4>Example</h4>
+	<pre>
+	EXAMPLE
+	=============================
+	{ php }
+		echo "Hello to " . $this-&gt;get_vars('username') . "&lt;BR&gt;";
+	{ /php }
+	</pre>
+</p>
+<hr>
+
+<h2><a name="section"><code>section/sectionelse</code></a></h2>
+<p>
+<h4>Description</h4>
+	This function will loop through a block a specific number of times similar to the foreach function. All {section} tags must be paired with {/section} tags. Required parameters are name and loop.  A {sectionelse} is executed when there are no values in the loop variable.
+	<h4>Arguments for <code>section</code></h4>
+	<ul>
+		<li><b>name</b><br>Section name.</li>
+		<li><b>loop</b><br>An array of data used to determin the number of loops.</li>
+		<li><b>start</b> (optional)<br>The index position that the section will begin looping. If the value is negative, the start position is calculated from the end of the array. For example, if there are seven values in the loop array and start is -2, the start index is 5. Invalid values (values outside of the length of the loop array) are automatically truncated to the closest valid value.  Default = 0</li>
+		<li><b>step</b> (optional)<br>The step value that will be used to traverse the loop array. For example, step=2 will loop on index 0,2,4, etc. If step is negative, it will step through the array backwards.  Default = 1</li>
+		<li><b>max</b> (optional)<br>Sets the maximum number of times the section will loop.</li>
+		<li><b>show</b> (optional)<br>This determines whether or not to show this section. Default = true</li>
+	</ul>
+
+	<h4>Properties for <code>section</code></h4>
+	<ul>
+		<li><b>index</b><br>Display the current loop index.<br>Example: {$templatelite.section.customer.index}</li>
+		<li><b>index_prev</b><br>Display the previous loop index.<br>Example: {$templatelite.section.customer.index_prev}</li>
+		<li><b>index_next</b><br>Display the next loop index.<br>Example: {$templatelite.section.customer.index_next}</li>
+		<li><b>iteration</b><br>Display the current loop iteration.<br>Example: {$templatelite.section.customer.iteration}</li>
+		<li><b>first</b><br>True if first iteration, false for anything else.<br>Example: {$templatelite.section.customer.first}</li>
+		<li><b>last</b><br>True if lasy iteration, false for anything else.<br>Example: {$templatelite.section.customer.last}</li>
+		<li><b>rownum</b><br>Same as iteration property.<br>Example: {$templatelite.section.customer.rownum}</li>
+		<li><b>loop</b><br>Display the last index number that this section looped.<br>Example: {$templatelite.section.customer.loop}</li>
+		<li><b>show</b><br>Set to true or false based upon the show argument in the section tag.<br>Example: {$templatelite.section.customer.show}</li>
+		<li><b>total</b><br>Display the number of iterations that this section will loop.<br>Example: {$templatelite.section.customer.total}</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	PHP
+	=============================
+	$player_id = array(1,2,3);
+	$tpl->assign('player_id',$player_id);
+
+	$player_name = array('Panama Jack','Tarnus Harten','Goober');
+	$tpl->assign('player_name',$player_name);
+
+	TEMPLATE
+	=============================
+	{section name=player_number loop=$player_id}
+	&lt;p&gt;
+	  Player ID: {$player_id[player_number]}&lt;br /&gt;
+	  Player Name: {$player_name[player_number]}
+	&lt;/p&gt;
+	{/section}
+
+	OUTPUT
+	=============================
+	&lt;p&gt;
+	  Player ID: 1&lt;br /&gt;
+	  Player Name: Panama Jack
+	&lt;/p&gt;
+	&lt;p&gt;
+	  Player ID: 2&lt;br /&gt;
+	  Player Name: Tarnus Harten
+	&lt;/p&gt;
+	&lt;p&gt;
+	  Player ID: 3&lt;br /&gt;
+	  Player Name: Goober
+	&lt;/p&gt;
+	</pre>
+</p>
+<hr>
+
+<h2><a name="switch"><code>switch/case</code></a></h2>
+<p>
+<h4>Description</h4>
+	Much like the name indicates, this function behaves very similar to PHP's <code><a href="http://www.php.net/switch">switch</a></code> function. It will execute a different block of code depending on the given value.
+
+	<h4>Arguments for <code>switch</code></h4>
+	<ul>
+		<li><b>from</b><br>This is the variable that we will switch on. It is what will be compared.</li>
+	</ul>
+
+	<h4>Arguments for <code>case</code></h4>
+	<ul>
+		<li><b>value</b><br>This is the value that we will compare to the original variable. If value isn't provided, this will be the default case. There can only be one default case per switch.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{ switch from=$variable }
+		{ case value="case1" }
+			This is case number one.
+		{ case value="case2" }
+			This is case number 2
+		{ case }
+			This is the default. Nothing matched above.
+	{ /switch }
+	</pre>
+</p>
+<hr>
+
+<h2><a name="while"><code>while</code></a></h2>
+<p>
+<h4>Description</h4>
+	<p>Much like the name indicates, this function behaves very similar to PHP's <code><a href="http://www.php.net/while">while</a></code> function. It will execute the nested statement(s) repeatedly, as long as the while expression evaluates to TRUE.	</p>
+	<p>The while function operates similar to the  <code>if</code> statement. It offers exactly the same flexibility while looping through the nested statements(s). Every <code>while</code> must be paired with an <code>/while</code>.  The comparison tokens allowed are <code>!</code>, <code>%</code>, <code>!==</code>, <code>==</code>, <code>===</code>, <code>&gt;</code>, <code>&lt;</code>, <code>!=</code>, <code>&lt;&gt;</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>,<code>&amp;&amp;</code>, <code>||</code>, <code>^</code>, <code>&amp;</code>, <code>~</code>, <code>(</code>, <code>)</code>, <code>,</code>, <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>@</code>, <code>eq</code>, <code>ne</code>, <code>neq</code>, <code>lt</code>, <code>le</code>, <code>lte</code>, <code>gt</code>, <code>ge</code>, <code>gte</code>, <code>and</code>, <code>or</code>, <code>not</code>, <code>mod</code>. It is important to note that the comparison operators must be separated from the variables by at least one space. </p>
+
+	<h4>Arguments</h4>
+	<ul>
+		<li><b>expression</b><br>The expression to be evaluated.</li>
+	</ul>
+
+	<h4>Example</h4>
+	<pre>
+	TEMPLATE
+	=============================
+	{assign var="counter" value="0"}
+	{while $counter < 10}
+		[{$counter}] <br>		{ math equation="x + 1" x=$counter assign="counter" }
+	{/while}
+
+
+	OUTPUT
+	=============================
+	[0] [1] [2] [3] [4] [5] [6] [7] [8] [9]
+	</pre>
+    </p>
+<hr>
+
+<a href="index.html">Home</a>
+</body>
+</html>
