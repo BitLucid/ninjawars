@@ -214,10 +214,12 @@ if (getTurns($username) > 0) {
 			$counter = $counter + 1;
 			SESSION::set('counter', $counter); // Save the current state of the counter.
 			
-			if ($counter>20 && rand(1, 3) == 3) { // Only after many attacks do you have the chance to be attacked by the group of theives.
-				// TODO: Find a "group of theives" image to go with this.
+			if ($counter>20 && rand(1, 3) == 3) { 
+				// Only after many attacks do you have the chance to be attacked back by the group of theives.
 				SESSION::set('counter', 0); // Reset the counter to zero.
-				echo "<p>A group of thieves is waiting for you. They seem to be angered by your attacks on their theiving brethren.</p>";
+				echo "<img src='images/KunitsunaTrainingWithTengu.jpg' style='width:1000px'>";
+
+				echo "<p>A group of tengu thieves is waiting for you. They seem to be angered by your attacks on their brethren.</p>";
 				$group_attack= rand(50, 150);
 
 				if (!subtractHealth($username, $group_attack)) { // If the den of theives killed the attacker.
