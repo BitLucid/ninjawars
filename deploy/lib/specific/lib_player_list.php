@@ -2,24 +2,24 @@
 
 
 // Display the recently active players
-function display_active($limit=5, $alive_only=true) {
+function render_active($limit=5, $alive_only=true) {
 	$where_cond = ($alive_only? 'and health>0' : '');
 	$sel = "select uname, player_id from players where confirmed=1 $where_cond order by last_started_attack desc limit $limit";
 	$sql = new DBAccess();
 	$res = $sql->QueryAssoc($sel);
-	//var_dump($sel, $res);
-?>
+	$out = "
     <div class='active-players'>
       <ul>
         <li><span>Lurking ninja: </span></li>
-		<?php
-			foreach ($res as $ninja) {
-		echo "        <li class='active-ninja'><a href='player.php?target_id=".$ninja['player_id']."'>".$ninja['uname']."</a></li>";
-			}
-		?>
+	";
+	foreach ($res as $ninja) {
+		$out .= "        <li class='active-ninja'><a href='player.php?target_id=".$ninja['player_id']."'>".$ninja['uname']."</a></li>";
+	}
+	$out .= "
       </ul>
     </div>
-<?php
+    ";
+    return $out;
 }
 
 // Displays the search section of the page.
