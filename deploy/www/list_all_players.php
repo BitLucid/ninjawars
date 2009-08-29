@@ -20,7 +20,8 @@ include SERVER_ROOT."interface/header.php";
 
 $username    = get_username();
 $searched    = in('searched');
-$hide        = ($searched? 'none' : in('hide', 'dead')); // Defaults to hiding dead ninja unless searching.
+$previously_hiding = (SESSION::is_set('hide_dead')? SESSION::get('hide_dead') : 'dead'); // Defaults to hiding dead via session.
+$hide        = ($searched? 'none' : in('hide', $previously_hiding)); // search override > get setting > session setting
 $alive_only  = ($hide == 'dead'? true : false);
 $current_rank   = in('rank_spot', 0);
 $rank_spot   = (is_numeric($current_rank) ? $current_rank : 0);
@@ -33,7 +34,7 @@ $view_type = in('view_type');
 	$dead_count = 0; // Set the count of dead rows to zero for later listing.
 }*/
 $page 		 = in('page', ceil(($rank_spot - $dead_count) / $record_limit));
-
+if(!$searched) { SESSION::set('hide_dead', $hide); }
 
 
 // Display the clear search and create the sql search params.

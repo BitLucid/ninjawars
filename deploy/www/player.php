@@ -19,7 +19,7 @@ include SERVER_ROOT."interface/header.php";
 $skillListObj = new Skill();
 $skillsListObj = $skillListObj;
 $target = $player = in('player');
-$target_id = in('target_id');
+$target_id = either(in('target_id'), in('player_id'));
 $score = get_score_formula();
 
 $linkbackpage = in('linkbackpage');
