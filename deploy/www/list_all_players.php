@@ -11,67 +11,71 @@ include SERVER_ROOT."interface/header.php";
 //echo "<script type='text/javascript' src='js/player_accordian.js'></script>";
 // INIT
 
+
+// TODO: Bring back the "show/hide dead" toggle, store in session, and make dead things able to be shown again.
+// TODO: Make the player.php player profile page accept player_id as a substitute for a string in the url.
+
+
+
+
 $username    = get_username();
 $searched    = in('searched');
-$hide        = in('hide', 'dead'); // Defaults to not showing dead ninja.
+$hide        = ($searched? 'none' : in('hide', 'dead')); // Defaults to hiding dead ninja unless searching.
 $alive_only  = ($hide == 'dead'? true : false);
-$rank_spot   = in('rank_spot');
+$current_rank   = in('rank_spot', 0);
+$rank_spot   = (is_numeric($current_rank) ? $current_rank : 0);
 $page        = in('page', 1); // Page will get changed down below.
 $dead_count  = $sql->QueryItem("SELECT count(player_id) FROM rankings WHERE alive = false");
 $alive_count = 0;
-
-// TODO: Make the list default to displaying the first page, for logged-out viewing.
-
-
-
-// START OF PAGE
-echo "<div class='title centered'>Ninja List</div>";
-
-display_search_form($hide, $page, $searched, $dead_count);
-
-if ($hide != 'dead') {
+$record_limit = 20; // *** The number of players that gets shown per page.
+$view_type = in('view_type');
+/*if ($hide != 'dead') {
 	$dead_count = 0; // Set the count of dead rows to zero for later listing.
-}
+}*/
+$page 		 = in('page', ceil(($rank_spot - $dead_count) / $record_limit));
+
+
 
 // Display the clear search and create the sql search params.
 $where_clause = "";
-if ($searched != "") { // *** Search section
-	$page = "searched";
+// If a search was made, specify letter or word-based search.
+// If unless showing dead, check that health is > 0, or alive = true from the ranking.
+// Otherwise, no searching was done, so the score
 
-	if ($searched == 0) {
-		echo "<p>Searching for: ".stripslashes($searched)." <a href=\"list_all_players.php\">(Clear Search)</a><p>\n";
 
-		if (strlen($searched) == 1) {
-			$where_clause = "WHERE (uname ILIKE '".strtoupper($searched)."%')";
-		} else {
-			$where_clause = "WHERE (uname ~* '$searched')";
-		}
 
-		if ($hide == "dead") {
-			$where_clause.=" AND alive = true";
-		}
+
+
+
+// Select some players from the ranking.
+if ($searched){
+	$view_type = 'searched';
+	if(strlen($searched) == 1){
+		$where_clause = "WHERE (uname ilike '$searched%')";
 	} else {
-		if ($hide == "dead") {
-			$where_clause = "WHERE alive = true";
-		}
+		$where_clause = "WHERE (uname ~* '$searched')";
 	}
-} else { // *** Normal display section.
-	$where_clause = 'WHERE score >= '.(is_numeric($rank_spot) ? $rank_spot : 0);
-
-	if ($hide == "dead") {
-		$where_clause .= " AND alive = true";
-	}
+} else {
+	$where_clause = "WHERE score >= $rank_spot ";
 }
 
-echo "<p>\n";
-// Run the players with or without a search requirement.
-$record_limit = 20; // *** The number of players that gets shown per page.
+if($hide == 'dead'){
+	$where_clause .= "AND alive = true";
+}
 $query_count  = "SELECT count(player_id) FROM rankings ".$where_clause;
 $totalrows    = $sql->QueryItem($query_count);
 $rank         = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".$username."'");
-$rank         = ($rank > 0 ? $rank : $totalrows+1);
+$rank         = ($rank > 0 ? $rank : 1); // Make rank 
+
+
 
 // Determine the current page spot navigated to.
+// If searching, use the page between 
+// If no specific rank was requested, use the viewer's rank
+// If a certain rank was requested, use that rank spot.
+// Determine the page, if the dead count is more than the rank spot, default to 1, otherwise use the input page.
+// Number of pages = ceil($totalrows / $record_limit);
+// limit value = ($page * $record_limit) - $record_limit;
 if ($searched > 0) {
 	$page = ceil($searched / $record_limit);
 } else if ($page == "searched") {
@@ -82,19 +86,13 @@ if ($searched > 0) {
 	} else {
 		$rank_spot = ($rank_spot > 0 ? $rank_spot : $totalrows + 1);
 	}
-
-	$page = in('page', ceil(($rank_spot - $dead_count) / $record_limit));
-
 	if ($page == "") {
 		$page       = ($dead_count > $rank_spot ? 1 : $page);
 	}
-
 	$page = ($page < 1 ? 1 : $page); // Prevent the page number from going negative.
 }
-
 $numofpages = ceil($totalrows / $record_limit);
 $limitvalue = ($page * $record_limit) - $record_limit;
-
 // Get the ninja information.
 $sel = "SELECT rank_id, uname, class, level, alive, days, clan, player_id
 	FROM rankings ".$where_clause."  ORDER BY rank_id ASC, player_id ASC
@@ -103,111 +101,66 @@ $sql->Query($sel);
 $row = $sql->data;
 $ninja_count = $sql->rows;
 
-// Start of the displaying all the player entries.
-// TODO: need to git bisect this bug.
-if ($ninja_count == 0) { // Search found nothing display.
-	echo "<p class='notice'>No ninja to display.</p>";
-	echo "<p><a href=\"list_all_players.php?hide=$hide\">Back to Ninja List</a></p>";
-} else {
-	if ($searched > 0) {
-		$searched = "";
-	}
+
+	ob_start();
+	display_search_form($hide, $page, $searched, $dead_count);
+	$search_form = ob_get_contents();
+	ob_end_clean();
 
 	// Display the nav
+	ob_start();
 	player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages);
+	$player_list_nav = ob_get_contents();
+	ob_end_clean();
 
 	if (!$searched) { // Will not display active ninja on a search page.
+		ob_start();
 		display_active(5, $alive_only); // Display the currently active ninjas
+		$active_ninja = ob_get_contents();
+		ob_end_clean();
+	} else {
+		$active_ninja = '';
 	}
 
-	// Table headers.
-	echo "<table class=\"playerTable outer-table\">\n";
-	echo "<tr class='playerTableHead'>\n";
-
-	echo "  <th>\n";
-	echo "  Rank\n";
-	echo "  </th>\n";
-	echo "  <th>\n";
-	echo "  Name\n";
-	echo "  </th>\n";
-	echo "  <th>\n";
-	echo "  Level\n";
-	echo "  </th>\n";
-	echo "  <th>\n";
-	echo "  Class\n";
-	echo "  </th>\n";
-	echo "  <th>\n";
-	echo "  Clan\n";
-	echo "  </th>\n";
-	echo "  <th>\n";
-	echo "  Alive\n";
-	echo "  </th>\n";
-
-	echo "</tr>\n";
-
-	// Loop over and display each of the Display each of the player table entries.
+	$players = $sql->FetchAll();
+	
+	// Render each of the player rows.
 	$i = 0;
-	$players_to_loop = $sql->FetchAll();
-
-	foreach ($players_to_loop AS $playerRow)
-	{
+	$player_rows = '';
+	foreach($players as $a_player){
 		$i++;
-		$rank      = $playerRow['rank_id'];
-		$name      = htmlentities($playerRow['uname']); // username
-		$class     = $playerRow['class']; // class
-		$level     = $playerRow['level']; // level
-		$isAlive   = ($playerRow['alive'] == 1);
-		$alive     = ($isAlive? "&nbsp;" : "Dead"); // alive/dead display
-		$days      = $playerRow['days']; // days
-		$clan      = htmlentities($playerRow['clan']);        // clan
-		$player_id = $playerRow['player_id'];
-
-		// *** Changes the color of the row if dead.
-		echo "<tr class=\"playerRow ".($isAlive ? "AliveRow" : "DeadRow")." ".($i % 2 ? "odd" : "even")."\">\n";
-		echo "  <td class=\"playerCell rankCell\">\n";
-		echo "  $rank\n";
-		echo "  </td>\n";
-
-		echo "  <td class=\"playerCell nameCell\">\n";
-		echo "  <a href=\"player.php?player=$name&amp;linkbackpage=$page\">$name</a>\n";
-		echo "  </td>\n";
-
-		// TODO: make level category a static resource instead of always recalculated.
-		$level_cat = level_category($level);
-		echo "  <td class=\"playerCell levelCell \">\n";
-		echo "    <div class='{$level_cat['css']}'>".$level_cat['display']." [".$level."]</div> \n";
-		echo "  </td>\n";
-
-		echo "  <td class=\"playerCell classCell\">\n";
-		echo "<div class='$class'><img src='".WEB_ROOT."images/small".$class."Shuriken.gif' alt=''>\n"; // *** Display an image of the right colored shuriken.
-		echo    $class."</div>\n";
-		echo "  </td>\n";
-
-		echo "  <td class=\"playerCell clanCell\">\n";
-		echo    $clan."\n";
-		echo "  </td>\n";
-
-		echo "  <td class=\"playerCell aliveCell\">\n";
-		echo    $alive."\n";
-		echo "  </td>\n";
-
-		echo "  <td class='profile' style='display:none'></td>";
-
-		echo "</tr>\n";
+		$level_cat = level_category($a_player['level']);
+		$parts = array(
+			'alive_class' => ($a_player['alive'] == 1? "AliveRow" : "DeadRow"),
+			'odd_or_even' => ($i % 2 ? "odd" : "even"),
+			'player_rank' => $a_player['rank_id'],
+			'player_id' => $a_player['player_id'],
+			'page' => $page,
+			'uname' => $a_player['uname'],
+			'level_cat_css' => $level_cat['css'],
+			'level_cat' => $level_cat['display'],
+			'level' => $a_player['level'],
+			'class' => $a_player['class'],
+			'WEB_ROOT' => WEB_ROOT,
+			'clan' => $a_player['clan'],
+			'alive' => ($a_player['alive']? "&nbsp;" : "Dead"), // alive/dead display
+		);
+		$player_rows .= render_template('player_list_row.tpl', $parts);
+		// Add all the player rows on to a big list of 'em.
 	}
 
-	// End the player table
-	echo "</table>\n";
-
-	if ($searched > 0) {
-		$searched = ""; // Reset the searched string to blank.
-	}
-
-	// Display the nav
-	player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages);
-}
-
-echo "</p>\n";
+// Main display section.
+$parts = array(
+	'searched' => $searched,
+	'ninja_count' => $ninja_count,
+	'search_form' => $search_form,
+	'player_list_nav' => $player_list_nav,
+	'active_ninja' => $active_ninja,
+	'player_rows' => $player_rows, // Display the concatenated player rows.
+	'hide' => $hide,
+	'WEB_ROOT' => WEB_ROOT,
+);
+echo render_template('player_list.tpl', $parts);
 
 include SERVER_ROOT."interface/footer.php";
 ?>

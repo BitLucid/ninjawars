@@ -12,11 +12,11 @@ function display_active($limit=5, $alive_only=true) {
     <div class='active-players'>
       <ul>
         <li><span>Lurking ninja: </span></li>
-<?php
-	foreach ($res as $ninja) {
-echo "        <li class='active-ninja'><a href='player.php?target_id=".$ninja['player_id']."'>".$ninja['uname']."</a></li>";
-	}
-?>
+		<?php
+			foreach ($res as $ninja) {
+		echo "        <li class='active-ninja'><a href='player.php?target_id=".$ninja['player_id']."'>".$ninja['uname']."</a></li>";
+			}
+		?>
       </ul>
     </div>
 <?php
