@@ -34,69 +34,24 @@ function update_activity_info(){
 
 
 /**
- * Checks for the requirements on pages where you have to be alive to view/act within them.
-**/
-function render_error_if_dead($alive_required, $players_health, $status_array){
-	if ($alive_required) { // *** That page requires the player to be alive to view it.
-		if (!$players_health) {
-			return "<span class='ninja-notice'>You are a ghost.
-				  You must resurrect before you may act again.
-				  Go to the <a href='shrine.php'>shrine</a>
-				  for the monks to bring you back to life.</span>";
-		} else {
-			if ($status_array['Frozen']) {
-				return "<span class='ninja-notice'>You are currently
-					<span style='skyBlue'>frozen</span>.
-					 You must wait to thaw before you may continue.</span>";
-	    	}
-		}
-    }
-    return null; // When there isn't any error.
-}
-
-
-
-/**
  * Writes out the header for all the pages.
  * Will need a "don't write header" option for jQuery iframes.
 **/
-function write_html_for_header($title=null, $body_classes='body-default'){
-    $title_html = '';
-    $title_html = '<title>'.($title ? htmlentities($title) : '').'</title>';
-	?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<meta name="keywords" content="ninjawars, ninja wars, ninja, samurai, free online game,
-	free games, this here is not your mommas naruto game">
-	<meta name="description" content="Ninjawars: battle other ninja for survival.">
-	<?=$title_html?>
-    <link rel="stylesheet" type="text/css" href="<?=WEB_ROOT?>css/style.css">
-	<!--[if lte IE 6]>
-    <link rel="stylesheet" type="text/css" href="<?=WEB_ROOT?>css/ie-6.css">
-	<![endif]-->
-	<!-- [if gte IE 7]>
-	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT?>css/ie.css">
-	<![endif]-->
-	<style type="text/css">
-	/* Temporary location for NEW CSS */
-	</style>
-	<?php if (OFFLINE || DEBUG) { ?>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/jquery-1.3.2.min.js"></script>
-	<?php 	if(DEBUG) { ?>
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/debug.js"></script>
-    <?php 	} ?>
-	<?php } else { ?>
-	<!-- Google jquery lib -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-    <?php } ?>
-    <!-- All the global ninjawars javascript -->
-	<script type="text/javascript" src="<?=WEB_ROOT?>js/nw.js"></script>
-</head>
-<body class='<?=$body_classes?>'>
-	<?php
+function render_html_for_header($title=null, $body_classes='body-default'){
+	$parts = array(
+		'title' => ($title? htmlentities($title) : ''),
+		'body_classes'=>$body_classes,
+		'WEB_ROOT'=>WEB_ROOT,
+		'local_js'=>(OFFLINE || DEBUG? true : false),
+		'DEBUG'=>DEBUG
+	);
+	return render_template('header.tpl', $parts);
+}
+
+
+// Renders the error message when a section isn't viewable.
+function render_viewable_error($error){
+	return render_template("error.tpl", array('error'=>$error));
 }
 
 

@@ -7,7 +7,6 @@ $section_only = in('section_only'); // Check whether it's an ajax section.
 
 // ******************** Declared variables *****************************
 $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
-
 // Page viewing settings usually set before the header.
 $private 	= (isset($private)? $private : NULL);
 $quickstat 	= (isset($quickstat)? $quickstat : NULL);
@@ -19,8 +18,8 @@ update_activity_info(); // *** Updates the activity of the page viewer in the da
 
 if(!is_logged_in()){
 	if ($private) {
-		$error = "<span class='notice'>You must log in to view this section.</span>";
-		// Error triggers a die at the end of the header.
+		$error = render_viewable_error('log_in');
+		// Content being in the error triggers a die at the end of the header.
     }
 } else {
 	// **************** Player information settings. *******************
@@ -54,22 +53,27 @@ if(!is_logged_in()){
 
 	$players_status   = $player->getStatus();
 
-	assert('isset($players_id) && isset($players_email) && isset($players_turns) && isset($players_health)
-	&& isset($players_bounty) && isset($players_gold) && isset($players_level) && isset($players_class)
-	&& isset($players_strength) && isset($players_kills) && isset($players_days) && isset($players_created_date)
-	&& isset($players_last_started_attack) && isset($players_clan) && isset($players_status)');
+	assert('isset($players_id)');
 
-	$error = render_error_if_dead($alive, $players_health, $players_status);
-	// From lib_header.
+	if ($alive) { // *** That page requires the player to be alive to view it.
+		if (!$players_health) {
+			$error = render_viewable_error('dead');
+		} else {
+			if ($status_array['Frozen']) {
+				$error = render_viewable_error('frozen');
+	    	}
+		}
+    }
 }
+
 
 if(!$section_only){
-    write_html_for_header(); // ***** Display the html header
+    echo render_html_for_header(); // ***** Display the html header
 }
 
-if ($error)
-{
+if ($error){ // If there's an error, display that then end.
 	echo $error;
-	die();
+	echo render_footer($quickstat); // Display the bottom of the page.
+	die(); // Skip displaying anything more.
 }
 ?>

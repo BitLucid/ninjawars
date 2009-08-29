@@ -50,7 +50,7 @@ if ($is_logged_in) {
 // TODO: Limit unnecessary includes via lib_header.
 
 // Writes out the html,head,meta,title,css,js.
-write_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
+echo render_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
 ?>
 
   <div id="content">

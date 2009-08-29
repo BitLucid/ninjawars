@@ -1,31 +1,14 @@
 <?php
 
-// Returns the rendered footer.
-function render_footer($quickstat=null, $skip_quickstat=null){
-    ob_start();
-    if(!$skip_quickstat){
-    	$q = $quickstat;
-    	if(!$q){ // If the quickstat doesn't come in from the args...
-    		// Pull it from the global scope.
-    		global $quickstat;
-    		$q = $quickstat;
-    	}
-    	if(isset($q))
-    	{
-    	  ?>
-    	  <script type='text/javascript'>
-    	    refreshQuickstats('<?=$quickstat?>');
-    	  </script>
-    	  <?php
-    	}
-    }
-    ?>
-	</body>
-	</html>
-	<?php
-	$res = ob_get_contents();
-	ob_end_clean();
-	return $res;
+// Returns the rendered footer template.
+function render_footer($specific_quickstat=null, $skip_quickstat=null){
+	global $global_quickstat; // Pull in global quickstat if any.
+	$quickstat = null;
+	if(!$skip_quickstat){
+		$quickstat = (isset($specific_quickstat)? $specific_quickstat : $global_quickstat);
+	}
+
+	return render_template('footer.tpl', array("quickstat"=>$quickstat));
 }
 
 ?>

@@ -8,5 +8,5 @@ include SERVER_ROOT."interface/header.php";
 
 echo render_template('about.tpl');
 
-include SERVER_ROOT."interface/footer.php";
+echo render_footer();
 ?>
