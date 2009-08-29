@@ -204,46 +204,71 @@ if (getTurns($username) > 0) {
 					addBounty($username, ($added_bounty*10));
 				}
 			}
-		}
-		else if ($victim == "thief")
-		{
-			echo "Thief sees you and prepares to defend!<br><br>\n";
-			echo "<img src=\"images/thief.png\" alt=\"Thief\">\n";
-
-			$thief_attack = rand(0, 35);  // *** Thief Damage  ***
-
-			if (!subtractHealth($username, $thief_attack))
-			{
-				echo "Thief has slain you!<br>\n";
-				echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";
+		} else if ($victim == "thief") {
+			// Check the counter to see whether they've attacked a thief multiple times in a row.
+			if(SESSION::get('counter')){
+			  $counter = SESSION::get('counter');
 			} else {
-				$thief_gold = rand(0, 40);  // *** Thief Gold ***
-
-				if ($thief_attack > 30)
-				{
-					echo "Thief escaped and stole $thief_gold pieces of your gold!\n";
-					subtractGold($username, $thief_gold);
-				}
-				else if ($thief_attack < 30)
-				{
-					echo "The Thief is injured!<br>\n";
-					echo "Thief does $thief_attack points of damage!<br>\n";
-					echo "You have gained $thief_gold gold.<br> You have found a Shuriken on the thief!\n";
-
-					addGold($username, $thief_gold);
-					addItem($username, 'Shuriken', $quantity = 1);
-				}
-
-				echo "<br>\n";
-				echo "Beware the Ninja Thieves, they have entered this world to steal from all!<br>\n";
+			  $counter = 1;
 			}
+			$counter = $counter + 1;
+			SESSION::set('counter', $counter); // Save the current state of the counter.
+			
+			if ($counter>20 && rand(1, 3) == 3) { // Only after many attacks do you have the chance to be attacked by the group of theives.
+				// TODO: Find a "group of theives" image to go with this.
+				SESSION::set('counter', 0); // Reset the counter to zero.
+				echo "<p>A group of thieves is waiting for you. They seem to be angered by your attacks on their theiving brethren.</p>";
+				$group_attack= rand(50, 150);
 
-			if (!getHealth($username) || getHealth($username) <= 0)
-			{
-				sendMessage("SysMsg", $username, "DEATH: You have been killed by a non-player character at $today");
+				if (!subtractHealth($username, $group_attack)) { // If the den of theives killed the attacker.
+					echo "<p>The group of theives does $group_attack damage to you!</p>";
+					echo "<p>The group of thieves have avenged their brotherhood and beaten you to a bloody pulp.</p>";
+		            echo "<p>Go to the <a href=\"shrine.php\">shrine</a> to resurrect.</p>";
+				} else { // The den of thieves didn't accomplish their goal
+				    $group_gold = rand(100, 300);
+					if ($group_attack > 120) { // Powerful attack gives an additional disadvantage
+						echo "<p>You overpowered the swine, but the blow to the head they gave you before they ran made you lose some of your memories!</p>";
+						subtractKills($username, 1);
+					}
+					echo "<p>The group of theives does $group_attack damage to you, but you rout them in the end!</p>";
+					echo "<p>You have gained $group_gold gold.</p> <p>You have found a firescroll on the body of one of the thieves!</p>";
+					addGold($username, $group_gold);
+					addItem($username, 'Fire Scroll', $quantity = 1);
+				}
+			} else { // Normal attack on a single thief.
+				echo "Thief sees you and prepares to defend!<br><br>\n";
+				echo "<img src=\"images/thief.png\" alt=\"Thief\">\n";
+
+				$thief_attack = rand(0, 35);  // *** Thief Damage  ***
+
+				if (!subtractHealth($username, $thief_attack)) {
+					echo "Thief has slain you!<br>\n";
+					echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";
+				} else {
+					$thief_gold = rand(0, 40);  // *** Thief Gold ***
+
+					if ($thief_attack > 30) {
+						echo "Thief escaped and stole $thief_gold pieces of your gold!\n";
+						subtractGold($username, $thief_gold);
+					}else if ($thief_attack < 30){
+						echo "The Thief is injured!<br>\n";
+						echo "Thief does $thief_attack points of damage!<br>\n";
+						echo "You have gained $thief_gold gold.<br> You have found a Shuriken on the thief!\n";
+
+						addGold($username, $thief_gold);
+						addItem($username, 'Shuriken', $quantity = 1);
+					}
+
+					echo "<br>\n";
+					echo "Beware the Ninja Thieves, they have entered this world to steal from all!<br>\n";
+				}
 			}
 		}
 
+		if (getHealth($username) <= 0){
+			sendMessage("SysMsg", $username, "DEATH: You have been killed by a non-player character at $today");
+            echo "<p>Go to the <a href=\"shrine.php\">shrine</a> to resurrect.</p>";
+		}
 		subtractTurns($username, $turn_cost);
 
 		if ($victim && !$random_encounter) {
