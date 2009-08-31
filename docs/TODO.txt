@@ -22,8 +22,12 @@ Make the main page and list_all_players page search forms default to showing dea
 Make search assume show_dead
 Make a "embeddable" thing that can show your ninja's current rank and avatar and title.
 Cleanup the main page for speed.
+Health displayed as a bar percentage...
 
 Levelling:
 Auto-levelling checks instead of kills banking.
 Make customizations/benefits for levelling then make killpoints gaining more realistic.
 Make the highest level confer the title of "emperor" on that player.
+
+Backup:
+Made a simple crontab -e pg_dump backup script.
