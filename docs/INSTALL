@@ -7,7 +7,14 @@ Copy a live database (probably the easiest) or run any outstanding migrations of
 
 Symlink or copy files:
 SAMPLEhtaccess > deploy/www/.htaccess
-sampleTchalvakResources.php > resources.php
+../docs/tchalvakSAMPLEresources.php > resources.php (if symlinking, symlink from within /deploy/)
 docs/gitignoreSAMPLE > .gitignore
 docs/robots.txt > deploy/www/robots.txt
+
+Add a /compiled/ directory to match the path to compiled specified in the resources, and make it web writable.
+(e.g. mkdir templates/compiled, chmod 777 templates/compiled )
+
+Make sure that, for the .htaccess file to work:
+#The AllowOverride directive in /etc/apache2/sites-available/default
+#cannot equal None, as that will prevent the .htaccess from working.
 
