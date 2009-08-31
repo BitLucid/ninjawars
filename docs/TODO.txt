@@ -1,13 +1,10 @@
-Libraries:
-get a template library!
-
 Documentation
 Explain the avatars on the stats page
 
 Attributes:
 Turn classes from colors to elements, void fire water earth air
 Need a much much much much better "affect" system.
-Make skills independent of classes.
+Make skills independent of classes and based on levelling up instead, preferrably choice-based.
 Integrate the energy stat into the game.
 Badges marking accomplishments.
 Karma for a silly social rating, and possibly for some simple non-combat benefit usages.
@@ -16,13 +13,15 @@ Actions:
 Create the ability for players to set up "ambush" from their profile when viewers wander in to view it.
 Kappa random encounter as a money source? Tengu random encounter useful for ???
 And random encounter generator to javascript and internal php that cause random encounters when the two systems match up?
-Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general.
+Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general, using a quests database.
 
 UI:
-Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now.
+Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now,
+and make sure that the content is coming out correctly, like that apostrophes are working in chats.
 Make the main page and list_all_players page search forms default to showing dead ninja results.
 Make search assume show_dead
 Make a "embeddable" thing that can show your ninja's current rank and avatar and title.
+Cleanup the main page for speed.
 
 Levelling:
 Auto-levelling checks instead of kills banking.
