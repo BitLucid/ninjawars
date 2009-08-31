@@ -445,8 +445,15 @@ td.playerTable {
     height: 880px;
 }
 #quickstats {
-	width: 100%;height: 7em;
+	width: 100%;
+	height: 7em;
 }
+
+body .Quickstats {
+    margin-top:0;
+    margin-bottom:0;
+}
+
 .main-iframe { /* class for the main iframe */
 	 min-height:600px;
 	 height:100%;
@@ -466,8 +473,11 @@ td.playerTable {
 }
 
 #heal-link {
-    font-size: 1.5em;
-    font-style: italic;
+    font-size: 1.2em;
+}
+
+#combat-link {
+    font-size: 1.2em;
 }
 
 /* End of Index page stuff */

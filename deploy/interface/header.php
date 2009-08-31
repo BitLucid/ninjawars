@@ -68,7 +68,9 @@ if(!is_logged_in()){
 
 
 if(!$section_only){
-    echo render_html_for_header(); // ***** Display the html header
+    // make a dash separated css class from the page titles.
+    $css_body_class = preg_replace('/\s/', '-', $page_title);
+    echo render_html_for_header($page_title, $css_body_class); // ***** Display the html header
 }
 
 if ($error){ // If there's an error, display that then end.

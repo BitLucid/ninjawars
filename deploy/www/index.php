@@ -50,7 +50,7 @@ if ($is_logged_in) {
 // TODO: Limit unnecessary includes via lib_header.
 
 // Writes out the html,head,meta,title,css,js.
-echo render_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-font');
+echo render_html_for_header('Ninja Wars: Live By the Sword', 'main-body');
 ?>
 
   <div id="content">
@@ -128,7 +128,7 @@ echo render_html_for_header('Ninja Wars: Live By the Sword', 'main-body trial-fo
               <a href="#" class="show-hide-link" onclick="toggle_visibility('actions-menu');">Actions <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> </a>
             </div>
             <ul class="basemenu" id="actions-menu">
-              <li><a href="attack_player.php" target="main">Combat</a></li>
+              <li id='combat-link'><a href="attack_player.php" target="main">Combat</a></li>
               <li><a href="clan.php" target="main">Clan</a></li>
               <li><a href="inventory.php" target="main">Inventory</a></li>
               <li>

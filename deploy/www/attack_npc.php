@@ -206,7 +206,7 @@ if (getTurns($username) > 0) {
 			}
 		} else if ($victim == "thief") {
 			// Check the counter to see whether they've attacked a thief multiple times in a row.
-			if(SESSION::get('counter')){
+			if(SESSION::is_set('counter')){
 			  $counter = SESSION::get('counter');
 			} else {
 			  $counter = 1;
