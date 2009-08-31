@@ -23,16 +23,10 @@
 	<script type="text/javascript" src="{$WEB_ROOT}js/debug.js"></script>
 	{else}
 	<!-- Google jquery lib -->
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-707264-2");
-pageTracker._trackPageview();
-} catch(err) {}</script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+	<!-- Google Analytics -->
+	<script type="text/javascript" src=http://www.google-analytics.com/ga.js'></script>
+	<!-- The google-analytics code that gets run is in nw.js -->
     {/if}
     <!-- All the global ninjawars javascript -->
 	<script type="text/javascript" src="{$WEB_ROOT}js/nw.js"></script>
