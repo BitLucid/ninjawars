@@ -815,3 +815,10 @@ table .inventory{
 #page-404{
     font-size: 1.5em;
 }
+#page-404 p{
+    margin-bottom: .5em;
+}
+
+#page-404 #support-email{
+    font-size: .8em;
+}

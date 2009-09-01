@@ -16,12 +16,13 @@
     <p>
       it seems you are lost?
     </p>
-    <!-- Haiku-ish?  Not exact, but some kind of format like that, just for fun. -->
+    <!-- Haiku-ish?  The english syllable-centric version that misses the point, but close enough, just for fun -->
 <!--
     <p>
       We are in the middle of an update. We should be done by 2:30pm EST. Please try back at that time.
     </p>
 -->
-    <div>Return to <a href="<?php echo WEB_ROOT; ?>index.php">Ninjawars</a>.</div>
+    <div>Return to <a href="<?php echo WEB_ROOT; ?>index.php">Ninjawars</a></div>
+    <div id='support-email'>email <a href="mailto:<?= SUPPORT_EMAIL ?>"><?= SUPPORT_EMAIL ?></a></div>
   </body>
 </html>

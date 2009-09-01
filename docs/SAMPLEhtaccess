@@ -1,4 +1,5 @@
 # Don't show .git folders publicly
+ErrorDocument 404 /ninjawars/deploy/www/404.php
 RedirectMatch 404 /\\.git(/|$)
 <FilesMatch "\.(php)$">
 php_value auto_prepend_file "/home/tchalvak/ninjawars/deploy/lib/base.inc.php"
