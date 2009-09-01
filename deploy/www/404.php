@@ -4,24 +4,24 @@
     <title>
       404 Error Page Not Found
     </title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="<?php echo WEB_ROOT; ?>css/style.css">
   </head>
   <body id="page-404">
+    <p>
+      Pool of still water;
+    </p>
+    <p>
+      within are 404 coins;
+    </p>
+    <p>
+      it seems you are lost?
+    </p>
+    <!-- Haiku-ish?  Not exact, but some kind of format like that, just for fun. -->
 <!--
     <p>
       We are in the middle of an update. We should be done by 2:30pm EST. Please try back at that time.
     </p>
 -->
-    <p>
-      You find a still pool with floating coins. You count them.
-    </p>
-    <p>
-      You count all of the coins. There 404 of them.
-    </p>
-    <p>
-      Perhaps you have lost your way.
-    </p>
-
-    Return to <a href="/index.php">Main</a>.
+    <div>Return to <a href="<?php echo WEB_ROOT; ?>index.php">Ninjawars</a>.</div>
   </body>
 </html>
