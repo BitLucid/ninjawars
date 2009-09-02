@@ -32,7 +32,7 @@ $(document).ready(function() {
   <div class='developer'>
     <a class='expand-link'>[Expand] - </a><a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Flynn</a> - Programmer and Maintainer
     <span id='social-networks'>
-      - <a target='_blank' href="http://www.facebook.com/s.php?q=Roy+Ronalds&amp;init=q">on Facebook</a>
+      - <a target='_blank' href="http://www.facebook.com/tchalvak">on Facebook</a>
       - <a target='_blank' href="http://www.myspace.com/toastersquid">on Myspace</a>
       - on AIM: Tchalvak
     </span>
