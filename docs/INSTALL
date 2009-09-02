@@ -1,20 +1,39 @@
-Local Testing installations:
+Dependencies
+-------------
+PHP5, Postgresql8, Perl>=5, Apache2, Perl::Lingua::En::Inflect
 
-Dependencies:
-sudo apt-get install liblingua-en-inflect-perl
+sudo apt-get install apache2 php5 postgresql perl liblingua-en-inflect-perl
 
-Copy a live database (probably the easiest) or run any outstanding migrations off of a skeleton database.
+All Deployments
+---------------
+1. Copy a live database (probably the easiest) or run any outstanding migrations off of a skeleton database.
+2. Set permissions in pg_hba for the database, host, and user to match your configuration
 
-Symlink or copy files:
-SAMPLEhtaccess > deploy/www/.htaccess
-../docs/tchalvakSAMPLEresources.php > resources.php (if symlinking, symlink from within /deploy/)
-docs/gitignoreSAMPLE > .gitignore
-docs/robots.txt > deploy/www/robots.txt
+Using /scripts/deploy
+---------------------
+1. Create a uniquely named configuration file for your deployment from the template in /master.conf
+2. Run `scripts/deploy -c=yourfile.conf deploy`
+3. If you have not already done so, create an apache virtualhost for your deployment with the first 2 lines outputted regarding apache
+4. If your apache config is not writable, create a file in your deployment at www/.htaccess with the contents echoed to the terminal
+5. If your cron.d config is not writable, add the cron lines echoed to the terminal to your crontab with `crontab -e`
 
-Add a /compiled/ directory to match the path to compiled specified in the resources, and make it web writable.
-(e.g. mkdir templates/compiled, chmod 777 templates/compiled )
+Using your working copy
+-----------------------
+1. ln -s docs/SAMPLEhtaccess deploy/www/.htaccess
+2. ln -s docs/gitignoreSAMPLE .gitignore
+3. ln -s docs/tchalvakSAMPLEresources.php deploy/resources.php
+4. mkdir -p deploy/resources/logs
+5. configure a virtualhost in apache
 
-Make sure that, for the .htaccess file to work:
-#The AllowOverride directive in /etc/apache2/sites-available/default
-#cannot equal None, as that will prevent the .htaccess from working.
 
+!!! IMPORTANT NOTES !!!
+------------------------
+
+
+If you are using a .htaccess file
+---------------------------------
+The AllowOverride directive in /etc/apache2/sites-available/default cannot equal None, as that will prevent the .htaccess from working.
+
+If you are changing apache directives
+-------------------------------------
+If you are making changes to the apache config, outside of the .htaccess you will need to restart apache `sudo /etc/init.d/apache2 restart`

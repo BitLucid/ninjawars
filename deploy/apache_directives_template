@@ -1,0 +1,19 @@
+# VHOST DIRECTIVES
+
+DocumentRoot __SERVER_ROOT__www/
+ServerName __SERVER_NAME__
+#~ServerAlias *.__SHORT_SERVER_NAME__
+#~ServerAlias	__SHORT_SERVER_NAME__
+
+# -------------------------
+
+# VHOST OR HTACESS DIRECTIVES
+
+#~RewriteCond %{HTTP_HOST} ^__SHORT_SERVER_NAME__ [NC]
+#~RewriteRule ^(.*)$ __WWW_ROOT__$1 [L,R=301]
+
+ErrorDocument 404 __SERVER_ROOT__www/404.php
+
+<FilesMatch "\.(php)$">
+	php_value auto_prepend_file "__SERVER_ROOT__lib/base.inc.php"
+</FilesMatch>

@@ -42,6 +42,7 @@ TEMPLATE_CACHING=false
 source_files=''
 configuration_file=''
 resource_file=''
+host_alias=''
 
 while test $# -gt 0; do
 	case "$1" in
@@ -62,6 +63,13 @@ done
 if [ ! -d $source_files ]
 then
 	tmp_dir=`mktemp -d /tmp/nw.XXXXXXXXXX`
+
+	if ! touch "$tmp_dir"
+	then
+		echo "ERROR: Can't make temporary directory for source extraction";
+		exit;
+	fi
+
 	case "$source_files" in
 		*.tar.gz)
 		tar -C "$tmp_dir" -xzf "$source_files"
@@ -85,7 +93,12 @@ else
 	source_files="`pwd`/$source_files"
 fi
 
-echo $configuration_file
+if ! touch "$source_files"
+then
+	echo "ERROR: Source directory unreadble.";
+	exit;
+fi
+
 # READ IN CONFIGURATION FILE
 while read curline; do
 	optarg=${curline##*=}
@@ -135,10 +148,13 @@ while read curline; do
 		SYSTEM_EMAIL_NAME)
 		SYSTEM_EMAIL_NAME=$optarg
 		;;
+		HOST_ALIAS)
+		host_alias=$optarg
+		;;
 	esac
 done < $configuration_file
 
-if [ ! -e $configuration_file ] && [[ ! $resource_file || ! -e $resource_file ]]
+if [ ! -f $configuration_file ] && [[ ! $resource_file || ! -f $resource_file ]]
 then
        echo "No configuration found! Please provide a completed resource file or a configuration file. Aborting."
        exit
@@ -167,6 +183,12 @@ then
 	fi
 fi
 
+if ! touch "$SERVER_ROOT"
+then
+	echo "ERROR: Target deployment directory unreadble.";
+	exit;
+fi
+
 ## CD TO DESTINATION
 cd $SERVER_ROOT || exit
 
@@ -188,7 +210,13 @@ cp -r $source_files/* $SERVER_ROOT
 cp $source_files/.* $SERVER_ROOT
 echo "source files copied to $SERVER_ROOT"
 
-if [[ $resources_file && -e $resources_file ]]
+mkdir templates/compiled/
+chmod 777 templates/compiled/
+
+#########################
+### RESOURCES SECTION ###
+
+if [[ $resources_file && -f $resources_file ]]
 then
 	cp $resources_file $SERVER_ROOT
 else
@@ -209,21 +237,21 @@ sed -i -e {s/__SUPPORT_EMAIL_NAME__/"'"${SUPPORT_EMAIL_NAME//\//\\/}"'"/}  $reso
 sed -i -e {s/__SYSTEM_EMAIL__/"'"${SYSTEM_EMAIL//\//\\/}"'"/}              $resources_file
 sed -i -e {s/__SYSTEM_EMAIL_NAME__/"'"${SYSTEM_EMAIL_NAME//\//\\/}"'"/}    $resources_file
 
-if [[ $OFFLINE ]]
+if [[ $OFFLINE == "true" ]]
 then
     sed -i -e {s/__OFFLINE__/"true"/}  $resources_file
 else
     sed -i -e {s/__OFFLINE__/"false"/} $resources_file
 fi
 
-if [[ $DEBUG ]]
+if [[ $DEBUG == "true" ]]
 then
     sed -i -e {s/__DEBUG__/"true"/}  $resources_file
 else
     sed -i -e {s/__DEBUG__/"false"/} $resources_file
 fi
 
-if [[ $DEBUG_ALL ]]
+if [[ $DEBUG_ALL == "true" ]]
 then
     sed -i -e {s/__DEBUG_ALL__/"true"/}  $resources_file
 else
@@ -231,7 +259,7 @@ else
 fi
 
 ## If we decide to squelch emails on a per config basis, this will be useful, don't delete for a bit please ##
-#if [[ $SEND_EMAILS ]]
+#if [[ $SEND_EMAILS eq "true" ]]
 #then
 #    sed -i -e {s/__SEND_EMAILS__/"true"/}  $resources_file
 #else
@@ -266,8 +294,94 @@ fi
 
 mv -f $resources_file "${SERVER_ROOT}resources.php"
 
+### /RESOURCES SECTION ###
+##########################
+
 chmod -R g+w ./*
 
-cd -
+###################
+## CRON SECTION ###
 
-echo "Deployment complete."
+sed -i -e {s/__SERVER_ROOT__/${SERVER_ROOT//\//\\/}/}                "${SERVER_ROOT}cron/nw-heartbeat"
+
+cron_file="/etc/cron.d/nw-${DB_NAME//\//_/}-heartbeat"
+
+if [ -w $cron_file ]
+then
+	if cat "${SERVER_ROOT}cron/nw-heartbeat" > $cron_file
+	then
+		rm "${SERVER_ROOT}cron/nw-heartbeat"
+		echo "Crontab set."
+	else
+		echo "Warning: Access to $cron_file denied! You must make sure the following is included in a crontab:"
+		cat "${SERVER_ROOT}cron/nw-heartbeat"
+	fi
+elif touch $cron_file
+then
+	if cat "${SERVER_ROOT}cron/nw-heartbeat" > $cron_file
+	then
+		rm "${SERVER_ROOT}cron/nw-heartbeat"
+		echo "Crontab set."
+	else
+		echo "Warning: Access to $cron_file denied! You must make sure the following is included in a crontab:"
+		cat "${SERVER_ROOT}cron/nw-heartbeat"
+	fi
+else
+	echo "Warning: Access to $cron_file denied! You must make sure the following is included in a crontab:"
+	cat "${SERVER_ROOT}cron/nw-heartbeat"
+fi
+
+### /CRON SECTION ###
+#####################
+
+######################
+### APACHE SECTION ###
+
+SERVER_NAME=${WWW_ROOT#h*//}
+SHORT_SERVER_NAME=${SERVER_NAME#*.}
+SERVER_NAME=${SERVER_NAME%/}
+SHORT_SERVER_NAME=${SHORT_SERVER_NAME%/}
+
+sed -i -e {s/__SERVER_ROOT__/${SERVER_ROOT//\//\\/}/}                "${SERVER_ROOT}apache_directives_template"
+sed -i -e {s/__WWW_ROOT__/${WWW_ROOT//\//\\/}/}                      "${SERVER_ROOT}apache_directives_template"
+sed -i -e {s/__SERVER_NAME__/${SERVER_NAME//\//\\/}/}                "${SERVER_ROOT}apache_directives_template"
+sed -i -e {s/__SHORT_SERVER_NAME__/${SHORT_SERVER_NAME//\//\\/}/}    "${SERVER_ROOT}apache_directives_template"
+
+if [[ $host_alias == "true" ]]
+then
+	sed -i -e {s/"#~"//}    "${SERVER_ROOT}apache_directives_template"
+fi
+
+apache_config="/etc/apache2/sites-available/ninjawars-$SERVER_NAME"
+
+if [ -w $apache_config ]
+then
+	if echo "<VirtualHost *>" > $apache_config && cat "${SERVER_ROOT}apache_directives_template" >> $apache_config && echo "</VirtualHost>" >> $apache_config
+	then
+		rm "${SERVER_ROOT}apache_directives_template"
+		echo "Apache config set."
+	else
+		echo "Warning: Access to $apache_config denied! You must make sure the following is included in an apache configuration:"
+		cat "${SERVER_ROOT}apache_directives_template"
+	fi
+elif touch $cron_file
+then
+	if echo "<VirtualHost *>" > $apache_config && cat "${SERVER_ROOT}apache_directives_template" >> $apache_config && echo "</VirtualHost>" >> $apache_config
+	then
+		rm "${SERVER_ROOT}apache_directives_template"
+		echo "Apache config set."
+	else
+		echo "Warning: Access to $apache_config denied! You must make sure the following is included in an apache configuration:"
+		cat "${SERVER_ROOT}apache_directives_template"
+	fi
+else
+	echo "Warning: Access to $apache_config denied! You must make sure the following is included in an apache configuration:"
+	cat "${SERVER_ROOT}apache_directives_template"
+fi
+
+### /APACHE SECTION ###
+#######################
+
+cd - > /dev/null
+
+echo "SUCCESS! Deployment complete."

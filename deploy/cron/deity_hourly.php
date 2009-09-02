@@ -1,5 +1,5 @@
 <?php
-require_once('../lib/base.inc.php'); // Currently this forces crons locally to be called from the cron folder.
+require_once(dirname(__FILE__).'/../lib/base.inc.php'); // Currently this forces crons locally to be called from the cron folder.
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
 
 $score = get_score_formula();
