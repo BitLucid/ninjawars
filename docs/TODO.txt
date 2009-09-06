@@ -23,6 +23,7 @@ Make search assume show_dead
 Make a "embeddable" thing that can show your ninja's current rank and avatar and title.
 Cleanup the main page for speed.
 Health displayed as a bar percentage...
+Stop showing clans that don't have at least one member.
 
 Levelling:
 Auto-levelling checks instead of kills banking.
