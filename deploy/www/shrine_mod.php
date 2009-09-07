@@ -5,6 +5,8 @@ $private    = true;
 $quickstat  = "player";
 
 include SERVER_ROOT."interface/header.php";
+include(OBJ_ROOT."Skill.php");
+$skillsListObj = new Skill();
 ?>
 
 <div class="brownHeading">Shrine Effects</div>
@@ -31,6 +33,7 @@ $heal_points        = (in('heal_points') ? intval(in('heal_points')) : null);  /
 $freeResLevelLimit  = 6;
 $freeResKillLimit   = 25;
 $lostTurns          = 10; // *** Default turns lost when the player has no kills.
+$has_chi = $skillsListObj->hasSkill('Chi'); // Extra healing benefits from chi, by level.
 
 // *** A True or False as to whether resurrection will be free.
 $freeResurrection = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
@@ -97,47 +100,38 @@ if ($restore == 1)
 	}
 } // *** end of resurrection ***
 
-if ($healed == 1 || $max_heal == 1)  //If the user tried to heal themselves.
-{	//  ***  HEALING SECTION  ***
+if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
+    //  ***  HEALING SECTION  ***
 	$max_health = (150 + (($userLevel - 1) * 25));
 
-	if ($max_heal == 1) {$heal_points = $startingGold;}  // Sets the heal_points when the heal-all button was hit.
+	if ($max_heal == 1) {
+	    // Sets the heal_points when the heal-all button was hit.
+	    $heal_points = $startingGold;
+	}  
 
-	if ($startingHealth > 0)  //Requires the user to be resurrected first.
-	{
-		if ($heal_points && $heal_points > 0)  // Requires a heal number, and a positive one.
-		{
-			if ($heal_points <= $startingGold)   //If there's enough money for the amount that they want to heal.
-			{
-				if (($startingHealth + $heal_points) > $max_health)  // Allows numeric healing to "round off" at the max.
-				{
+	if ($startingHealth > 0) {  //Requires the user to be resurrected first.
+		if ($heal_points && $heal_points > 0) {  // Requires a heal number, and a positive one.
+			if ($heal_points <= $startingGold) {   //If there's enough money for the amount that they want to heal.
+				if (($startingHealth + $heal_points) > $max_health){  // Allows numeric healing to "round off" at the max.
 					$heal_points = ($max_health-$startingHealth);  //Rounds off.
 				}
 
 				subtractGold($username,$heal_points);
-				addHealth($username,$heal_points);
+				// Having chi increases the amount healed in all cases.
+				addHealth($username,($has_chi? round($heal_points*1.5) : $heal_points));
 				$finalHealth = getHealth($username);
-				echo "A monk tends to your wounds and you are ".(($max_health == $finalHealth) ? "fully healed" : "healed to $finalHealth hitpoints").".<br><br>\n";
-			}
-			else
-			{
+				echo "<p>A monk tends to your wounds and you are ".(($max_health <= $finalHealth) ? "fully healed" : "healed to $finalHealth hitpoints").".</p>\n";
+			} else {
 				echo "You do not have enough gold for this amount of healing.<br>\n";
 			}
-		}
-		else
-		{
+		} else {
 			echo "Please enter a valid number of hit points to heal.<br>\n";
 		}
-	}
-	else
-	{
+	} else {
 		echo "You must resurrect before you can heal.<br>\n";
 	}
-}
-else if ($poisoned == 1)
-{	//  *** POISON SECTION ***
-	if (getHealth($username) > 0)
-    {
+} else if ($poisoned == 1) {	//  *** POISON SECTION ***
+	if (getHealth($username) > 0) {
 		$cost = 50;  //  the cost of curing poison is set here.
 
 		if ($startingGold >= $cost)

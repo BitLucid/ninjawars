@@ -9,7 +9,7 @@ class Skill
     **/
     public $skills = array(
         'cold steal', 'ice bolt',
-        'sight', 'deflect',
+        'sight', 'deflect', 'chi',
         'blaze', 'fire bolt',
         'poison touch', 'stealth', 'unstealth', 'steal',
         'duel', 'attack',
@@ -18,7 +18,7 @@ class Skill
 	// Temporarily trying a to move the skills out of the classes, to see how players make use of it.
     public $skill_map = array(
         'Blue' => array('ice bolt'=>1),
-        'White' => array('deflect'=>1),
+        'White' => array('deflect'=>1, 'chi'=>1),
         'Red' => array('fire bolt'=>1),
         'Black' => array('poison touch'=>1),
         'All' => array('attack'=>1, 'duel'=>1, 'sight'=>1, 'blaze'=>1, 'stealth'=>1, 'unstealth'=>1, 'steal'=>1, 'cold steal'=>1),

@@ -22,13 +22,16 @@ $class = getClass($username);
 $status_array = getStatus($username);
 
 $row = $sql->data;
-echo "You are a level $level, $class Ninja.<br>\n";
+echo "<p>You are a level $level, $class Ninja.</p>\n";
 $status_output_list = status_output_list($status_array, $username);
-echo "Your status is: ".$status_output_list."<br><br>";
+echo "<p>Your status is: ".$status_output_list."</p>";
+echo "<div id='skills-list'>";
+$no_skills = true;
 
 if ($skillsListObj->hasSkill('Stealth')) {
-	echo "By selecting Stealth you will go into a mode where enemies can not directly attack you for a short time. ";
-	echo "<a href=\"about.php#skills\">(help)</a>\n";
+	echo "<div id='stealth-skills'>";
+	echo "<p>By selecting Stealth you will go into a mode where enemies can not directly attack you for a short time.";
+	echo "<a href=\"about.php#skills\">(help)</a></p>";
 	echo "<form action=\"skills_mod.php\" method=\"post\">\n";
 	echo "<div>\n";
 	echo "<input type=\"submit\" name=\"command\" value=\"Stealth\" class=\"formButton\">\n";
@@ -41,15 +44,21 @@ if ($skillsListObj->hasSkill('Stealth')) {
 	echo "<input type=\"submit\" name=\"command\" value=\"Unstealth\" class=\"formButton\">\n";
 	echo "Turn Cost: ".$skillsListObj->getTurnCost('Unstealth')." to Unstealth.\n ";
 	echo "</div>\n";
-	echo "</form><br>\n";
+	echo "</form>";
+	echo "</div>";
+	$no_skills = false;
 }
-else
-{
-	echo "You do not have any skills you can use on yourself.\n";
+
+if ($skillsListObj->hasSkill('Chi')) {
+    echo "<p id='chi-skill'>Your Chi skill increases the benefits of healing at the shrine.</p>";
+}
+
+if($no_skills){
+	echo "<p id='no-skills'>You do not have any skills you can use on yourself.</p>\n";
 }
 ?>
-</p>
-
+</div>
+<div id='search-for-ninja'>
 <a href="list_all_players.php?hide=dead">Use a Skill on a ninja?</a>
 <form action="list_all_players.php" method="get">
   <div>
@@ -58,6 +67,7 @@ else
     <input type="submit" value="Search for Ninja" class="formButton">
   </div>
 </form>
+</div>
 
 <hr>
 
