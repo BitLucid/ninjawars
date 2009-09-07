@@ -63,17 +63,4 @@ function input_assign($var_name, &$IN, &$default_val, &$filter, &$filter_method)
 	return $result;
 }
 
-
-
-// For filtering user text/messages for output.
-function out($dirty, $filter_method='toText', $echo=true){
-	$filter = new Filter();
-	$ret = $filter->$filter_method($dirty);
-	if($echo){ echo $ret; } else { return $ret; }
-}
-
-function sql($dirty){
-	// wrapper function for filtering to sql, to encode or not to encode.
-}
-
 ?>

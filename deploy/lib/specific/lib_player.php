@@ -4,7 +4,7 @@
 // Defines for avatar options.
 define('GRAVATAR', 1);
 
-
+// TODO: This is also begging for a template.
 function render_skills($target, $skillListObj, $skillsListObj){
     ob_start();
     if ($skillsListObj->hasSkill('Fire Bolt')) {
@@ -106,6 +106,7 @@ function render_avatar_section($player, $img_size=null)
 }
 
 // The player's stats
+// TODO: Ye gods this is begging for being cleaned up via a template.
 function display_player_stats($player_info){
 	$status = null;
 	if (!$player_info['health']) {
@@ -125,7 +126,9 @@ function display_player_stats($player_info){
 			<span class='player-level-category <?php echo $level_and_cat['css']; ?>'>
 				<?php echo $level_and_cat['display']." [".$level."]"; ?>
 			</span>
-			<?php if($status){?><p class='player-status ninja-notice <?php echo $status;?>'><?php echo $status;?></p><?php }?>
+			<?php if($status){?>
+			<p class='player-status ninja-notice <?php echo $status;?>'><?php echo $status;?></p>
+			<?php }?>
 		</div>
 	<?php
 }
@@ -169,7 +172,9 @@ function display_player_clan($player_info, $viewers_clan=null){
             <p class='ninja-notice'><?=$same_clan;?> is part of your clan.</p>
             <?php } ?>
 			<p class='clan-link centered'>
-			    <span class='subtitle'>Clan:</span> <a href='clan.php?command=view&amp;clan_name=<?php echo $clan;?>'><?php echo$clan_link;?></a></p>
+			    <span class='subtitle'>Clan:</span> 
+			    <a href='clan.php?command=view&amp;clan_name=<?php echo $clan;?>'><?php echo$clan_link;?></a>
+			</p>
 			<div class='clan-members centered'>
 			    <?php display_clan_members($player_info['clan']); ?>
 			</div>
@@ -208,7 +213,7 @@ function display_player_profile($player_info){
 	?>
 	<div class='player-profile'>
 		<p class='subtitle'>Message:</p>
-		<p class='centered'><?php out($player_info['messages'], 'toMessage'); ?></p>
+		<p class='centered'><?php echo out($player_info['messages']); ?></p>
 	</div>
 	<?php
 	}
@@ -216,7 +221,7 @@ function display_player_profile($player_info){
 
 
 function display_ranking_link($player_info, $linkbackpage, $sql){
-	$rank_spot = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".$player_info['uname']."'");
+	$rank_spot = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".sql($player_info['uname'])."'");
 	echo "    <div class='player-ranking-linkback'>";
 	echo "      <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=dead&amp;page=$linkbackpage'>&lt; Go to rank $rank_spot in the ninja list</a>\n";
 	echo "    </div>";

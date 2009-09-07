@@ -30,7 +30,7 @@ if ($deleted) { // Display message with the number deleted.
 	echo "<div id='mail_deleted' class='notice'>".$deleted." mail entries deleted.</div>";
 }
 
-$sql->Query("SELECT id, send_to, send_from, message FROM mail WHERE send_to = '$username' ORDER BY id DESC LIMIT $mail_list_length");
+$sql->Query("SELECT id, send_to, send_from, message FROM mail WHERE send_to = '".sql($username)."' ORDER BY id DESC LIMIT ".sql($mail_list_length));
 
 echo "<span style=\"font-weight: bold\">Inbox</span>\n";
 echo "<form id=\"mail_delete\" action=\"mail_read.php\" method=\"POST\" name=\"mail_delete\">\n";
@@ -72,11 +72,11 @@ if ($sql->rows == 0) {
 		echo "  </td>\n";
 
 		echo "  <td valign=\"top\">\n";
-		echo "  <a href=\"player.php?player=$from\">$from</a>\n";
+		echo "  <a href=\"player.php?player=".urlencode($from)."\">".out($from)."</a>\n";
 		echo "  </td>\n";
 
 		echo "  <td>\n";
-		echo    htmlentities($message)."\n";
+		echo    out($message)."\n";
 		echo "  </td>\n";
 		echo "</tr>\n";
 	}

@@ -26,7 +26,7 @@
           </div>
 {else} <!-- Displayed when logged in -->
           <div class="logged-in-bar">
-            <a target="main" href="player.php?player='.$username.'">{$username}</a>
+            <a target="main" href="player.php?player={$username}">{$username}</a>
             | <a target="main" href="mail_read.php">mailbox</a>
             <span id='logged-in-bar-health'> </span>
           </div>

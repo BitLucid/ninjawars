@@ -977,12 +977,19 @@ function flagPlayer($player, $flag, $note, $originatingPage)
 // ******** MESSAGE FUNCTIONS *********
 // ************************************
 
+// 
 function sendMessage($from,$to,$msg,$filter=false) {
   global $sql;
   if ($filter){
   	$msg = strip_tags($msg);
   }
-  $sql->Insert("INSERT INTO mail VALUES (default,'$from','$to','".pg_escape_string($msg)."',now())");
+  $sql->Insert("INSERT INTO mail VALUES (default,'$from','$to','".sql($msg)."',now())");
+}
+
+// For true user-to-user or user-to-clan messages as opposed to events.
+function sendUserMessage($from_id,$to_id,$msg) {
+  global $sql;
+  $sql->Insert("INSERT INTO messages VALUES (default,".sql($from_id).",".sql($to_id).",'".sql($msg)."',now())");
 }
 
 
@@ -992,7 +999,7 @@ function sendMessage($from,$to,$msg,$filter=false) {
 
 function sendChat($from,$to,$msg) {
   global $sql;
-  $sql->Insert("INSERT INTO chat (id, send_from, send_to, message, time) VALUES (default,'$from','$to','".pg_escape_string($msg)."',now())");
+  $sql->Insert("INSERT INTO chat (id, send_from, send_to, message, time) VALUES (default,'$from','$to','".sql($msg)."',now())");
 }
 
 

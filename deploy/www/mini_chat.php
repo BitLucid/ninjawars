@@ -11,7 +11,7 @@ include SERVER_ROOT."interface/header.php";
 
 $default_limit = 22;
 $chatlength = in('chatlength', $default_limit, 'toInt');
-$filteredMessage = in('message', null, 'forChat'); // *** Sanitize any message
+$message = in('message', null, 'forChat'); // Essentially no filtering.
 $command = in('command');
 $sentMessage = in('message');
 $sent = false;
@@ -20,8 +20,8 @@ $input_form = ($username ? render_chat_input() : '');
 
 // Take in a chat and record it to the database.
 if ($username) {
-	if ($command == "postnow" && $filteredMessage) {
-		sendChat($username, 'ChatMsg', $filteredMessage); // ChatMsg is deprecated.
+	if ($command == "postnow" && $message) {
+		sendChat($username, 'ChatMsg', $message); // ChatMsg is deprecated.
 	}
 }
 

@@ -51,7 +51,7 @@ if ($deleteAccount) {
 	}
 } else if ($changeprofile == 1) {
 	if ($newprofile != "") {
-		$sql->Update("UPDATE players SET messages = '".pg_escape_string($newprofile)."' WHERE uname = '$username'");
+		$sql->Update("UPDATE players SET messages = '".sql($newprofile)."' WHERE uname = '$username'");
 		$affected_rows = $sql->a_rows;
 		echo "Profile has been changed.\n";
 	} else {

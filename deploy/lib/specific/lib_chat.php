@@ -10,7 +10,8 @@
 
 // Just return a div with an active member count.
 function render_active_members($sql){
-    $members = $sql->QueryItem("select count(*) from ppl_online where member = true AND activity > (now() - CAST('30 minutes' AS interval))");
+    $members = $sql->QueryItem(
+        "select count(*) from ppl_online where member = true AND activity > (now() - CAST('30 minutes' AS interval))");
     $membersTotal = $sql->QueryItem("select count(*) from ppl_online where member = true");
     return
         "<div class='active-members-count'>
@@ -31,11 +32,11 @@ function render_chat_messages($sql, $chatlength, $show_elipsis=null){
     if (!isset($show_elipsis) && $messageCount>$chatlength){
 	$show_elipsis = true;
     }
-    $res = "<div id='chatMessages' style='float:;margin-top:0em'>";
+    $res = "<div class='chatMessages'>";
     foreach($chats AS $messageData) {
 	// *** PROBABLY ALSO A SPEED PROBLEM AREA.
 	$message_rows .= "[<a href='player.php?player={$messageData['send_from']}'
-	     target='main'>{$messageData['send_from']}</a>]: ".htmlentities($messageData['message'])."<br>\n";
+	     target='main'>{$messageData['send_from']}</a>]: ".out($messageData['message'])."<br>\n";
     }
     $res .= $message_rows;
     if ($show_elipsis){ // to indicate there are more chats available
@@ -46,16 +47,21 @@ function render_chat_messages($sql, $chatlength, $show_elipsis=null){
 }
 
 // Render the "refresh chat periodically" js.
-function render_chat_refresh(){
+function render_chat_refresh($not_mini=null){
+    $location = "mini_chat.php";
+    $frame = 'mini_chat';
+    if($not_mini){
+        $location = "village.php";
+        $frame = 'main';
+    }
     ob_start();
     ?>
 
     <script type="text/javascript">
-    function refreshpage()
-    {
-      parent.mini_chat.location="mini_chat.php";
+    function refreshpage<?php echo $frame; ?>(){
+      parent.<?php echo $frame; ?>.location="<?php echo $location; ?>";
     }
-    setInterval("refreshpage()",300*1000);
+    setInterval("refreshpage<?php echo $frame; ?>()",300*1000);
     </script>
     <?php
     $res = ob_get_contents();
@@ -66,10 +72,10 @@ function render_chat_refresh(){
 /**
  * Display the chat input form.
 **/
-function render_chat_input(){
+function render_chat_input($target='mini_chat.php', $field_size=20){
     return
-    "<form id=\"post_msg\" action=\"mini_chat.php\" method=\"post\" name=\"post_msg\" style=\"margin-top:0em;margin-bottom:0.5em\">\n
-    <input id=\"message\" type=\"text\" size=\"20\" maxlength=\"490\" name=\"message\" class=\"textField\">\n
+    "<form id=\"post_msg\" action=\"$target\" method=\"post\" name=\"post_msg\">\n
+    <input id=\"message\" type=\"text\" size=\"$field_size\" maxlength=\"490\" name=\"message\" class=\"textField\">\n
     <input id=\"command\" type=\"hidden\" value=\"postnow\" name=\"command\">
     <input type=\"submit\" value=\"Send\" class=\"formButton\">\n
     </form>\n";

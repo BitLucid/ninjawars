@@ -1,68 +1,48 @@
 <?php
+require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper and rendering functions.
+
 $private    = false;
 $alive      = false;
 $page_title = "In-Game Chat";
 $quickstat  = false;
 
 include SERVER_ROOT."interface/header.php";
-?>
-<span class="brownHeading">Chat Board</span> -
 
-<?php
-echo "<a href=\"village.php?chatlength=50\">Refresh</a>\n";
+echo "<span class='brownHeading'>Chat Board</span> -";
+echo "<a href=\"".$_SERVER['PHP_SELF']."?chatlength=50\">Refresh</a>\n";
 echo "<br>\n";
+echo "Message: ";
 
+$default_limit = 360;
+$chatlength = in('chatlength', $default_limit, 'toInt');
+$message = in('message', null, 'forChat'); // Essentially no filtering.
 $command = in('command');
-$message = in('message', null, 'forChat');
-// *** If a message does get posted, it becomes sanitized.
-$chatlength = in('chatlength', 100, 'toInt'); // Default to 100.
-?>
+$sentMessage = in('message');
+$sent = false;
+$username = get_username();
+$input_form = ($username ? render_chat_input($_SERVER['PHP_SELF'], $field_size=40) : '');
+$channel = 1;
 
-<script type="text/javascript">
-function refreshpage()
-{
-	parent.main.location="village.php?chatlength=30";
-}
-setInterval("refreshpage()",300*1000);
-</script>
-
-<?php
-if (get_username())
-{
-	echo "<form id=\"post_msg\" action=\"village.php\" method=\"post\" name=\"post_msg\">\n";
-	echo "<div>\n";
-	echo "Message: <input id=\"message\" type=\"text\" size=\"40\" maxlength=\"1000\" name=\"message\" class=\"textField\">\n";
-	echo "<input id=\"command\" type=\"hidden\" value=\"postnow\" name=\"command\">";
-	echo "<input type=\"submit\" value=\"Send\" class=\"formButton\">\n";
-	echo "</div>\n";
-	echo "</form>\n";
-
-	if ($command == "postnow" && $message != "")
-	{
-		sendChat($username, 'ChatMsg', $message, $filter=true); // *** Message gets filtered when taken in from the request.
-		echo "Your post has been added.</br>\n";
-		$command = "";
-		$message = "";
-		$chatlength = 30; // *** This one is short to decrease the load time.
+// Take in a chat and record it to the database.
+if ($username) {
+	if ($command == "postnow" && $message) {
+		sendChat($username, $channel, $message);
 	}
 }
-else // *** Not logged in.
-{
-	echo "<p style=\"color: maroon;\">Not currently logged in to chat.</p>";
-}
 
-$sql->Query("SELECT id, send_from, message FROM chat ORDER BY id DESC LIMIT $chatlength");
+// Output section.
 
-foreach($sql->fetchAll() /*CHAT MESSAGES */ as $messageLine)
-{
-	$from = $messageLine['send_from'];
-	echo "[<a href=\"player.php?player=$from\" target=\"main\">$from</a>]: ".htmlentities($messageLine['message'])."<br>\n";
-}
+echo render_chat_refresh($not_mini=true); // Write out the js to refresh to refresh page to full chat.
 
-if ($chatlength != 360)
-{
-	echo "<br><a href=\"village.php?chatlength=360\">View the Rest of the Messages</a><br>\n";
-}
+echo "<div id='full-chat'>";
 
-include SERVER_ROOT."interface/footer.php";
+echo $input_form;
+
+echo render_active_members($sql);
+
+echo render_chat_messages($sql, $chatlength);
+
+echo "</div>"; // End of full_chat div.
+
+echo render_footer(); // Don't skip the quickstat.
 ?>

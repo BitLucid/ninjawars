@@ -6,6 +6,7 @@
  * @subpackage filter
  */
 require_once(OBJ_ROOT."Sanitize.php"); // *** Mainly a replacement for the Filter methods.
+require_once(LIB_ROOT."common/lib_output.php"); // For the replace_urls master function.
 
 class Filter
 {
@@ -155,11 +156,7 @@ class Filter
 
 	// Replaces occurances of http://whatever with links (in blank tab).
 	function replace_urls($string){
-	    $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
-	    $port = "(:\d{1,})?";
-	    $path = "(\/[^?<>\#\"\s]+)?";
-	    $query = "(\?[^<>\#\"\s]+)?";
-	    return preg_replace("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "<a target='_blank' href='$1'>$1</a>", $string);
+	    return replace_urls($string); // Use the lib_output.php function.
 	}
 
 
