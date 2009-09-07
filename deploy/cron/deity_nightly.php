@@ -8,6 +8,8 @@
 require_once(dirname(__FILE__).'/../lib/base.inc.php'); // Currently this forces crons locally to be called from the cron folder.
 require_once(LIB_ROOT.'specific/lib_deity.php');
 
+$logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
+
 // TODO: Profile the slowdown point(s) of this script.
 // TODO: Need a levelling log deletion.
 // TODO: When the message table is created, delete from mail more stringently.
@@ -48,7 +50,7 @@ $deleted_mail = delete_old_mail($sql); // As per the mail function in lib_deity.
 $affected_rows['Old Mail Deletion'] =  $deleted_mail;
 
 $sql->Delete("delete from levelling_log where killsdate < now()- interval '3 months'");
-$affected_rows['levelling log deletion'] = $sql->a_rows; // This should eventually be date based, but needs a deletion for now.
+$affected_rows['levelling log deletion'] = $sql->a_rows; // Keep only the last 3 months of logs.
 
 $sql->Delete("delete from dueling_log where date != cast(now() AS date) AND date != cast(now() AS date)-1"); // Keep only the last two days of duels.
 $affected_rows['dueling log deletion'] = $sql->a_rows;
@@ -57,7 +59,6 @@ $sql->Delete("delete from players where days>90 and level = 1"); // Delete old l
 $affected_rows['old level 1 players deletion'] = $sql->a_rows; 
 
 
-$logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
 $logMessage .= "DEITY_NIGHTLY: Deity reset occurred at server date/time: ".date('l jS \of F Y h:i:s A').".\n";
 $logMessage .= 'DEITY_NIGHTLY: Mail deleted: ('.$affected_rows['Old Mail Deletion'].")\n";
 $logMessage .= "DEITY_NIGHTLY: Items: ".$affected_rows['deleted items']."\n";

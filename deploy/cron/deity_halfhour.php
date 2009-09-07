@@ -2,6 +2,8 @@
 require_once(dirname(__FILE__).'/../lib/base.inc.php'); // Currently this forces crons locally to be called from the cron folder.
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
 
+$logMessage = "DEITY_HALFHOUR STARTING: ".date(DATE_RFC1036)."\n";
+
 $regen_rate           = 1;
 $turn_regen_threshold = 100;
 $maximum_heal         = 150;
@@ -26,8 +28,6 @@ $out_display['Inactive Browsers Deactivated'] = $sql->a_rows;
 $sql->Update("UPDATE players SET health = numeric_smaller(health+8+cast(floor(level/10) AS int), $maximum_heal)
 	     WHERE health BETWEEN 1 AND $maximum_heal AND NOT cast(status&".POISON." AS bool)");
 // Higher levels now heal faster.
-
-$logMessage = "DEITY_HALFHOUR STARTING: ".date(DATE_RFC1036)."\n";
 
 // **************
 // Visual output:

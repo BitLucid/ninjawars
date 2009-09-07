@@ -2,6 +2,8 @@
 require_once(dirname(__FILE__).'/../lib/base.inc.php'); // Currently this forces crons locally to be called from the cron folder.
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
 
+$logMessage = "DEITY_HOURLY STARTING: ".date(DATE_RFC1036)."\n";
+
 $score = get_score_formula();
 
 /// @ TODO - This script should be secured.
@@ -72,17 +74,16 @@ $sql->Update("UPDATE players SET status = status-".FROZEN." WHERE cast(status&".
 $sql->Update("UPDATE players SET status = status-".STEALTH."  WHERE cast(status&".STEALTH." AS bool)"); //stealth lasts 1 hr
 
 
-$logMessage = "DEITY_HOULRY STARTING: ".date(DATE_RFC1036)."\n";
 
 // **************
 // Visual output:
 
 foreach ($out_display AS $loopKey => $loopRowResult)
 {
-    $logMessage .= "DEITY_HOULRY: Result type: $loopKey yeilded result: $loopRowResult\n";
+    $logMessage .= "DEITY_HOURLY: Result type: $loopKey yeilded result: $loopRowResult\n";
 }
 
-$logMessage .= "DEITY_HOULRY ENDING: ".date(DATE_RFC1036)."\n";
+$logMessage .= "DEITY_HOURLY ENDING: ".date(DATE_RFC1036)."\n";
 
 $log = fopen(LOGS.'deity.log', 'a');
 fwrite($log, $logMessage);

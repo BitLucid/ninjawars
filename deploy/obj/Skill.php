@@ -8,19 +8,19 @@ class Skill
      * for now, the ids are just the array indexes.
     **/
     public $skills = array(
-        'cold steal', 'ice bolt',
-        'sight', 'deflect', 'chi',
+        'cold steal', 'ice bolt', 'speed',
+        'sight', 'deflect', 'chi', 'midnight heal',
         'blaze', 'fire bolt',
-        'poison touch', 'stealth', 'unstealth', 'steal',
+        'poison touch', 'stealth', 'unstealth', 'steal', 'hidden resurrect',
         'duel', 'attack',
-        );
+        ); // Midnight heal currently doesn't work.
 
 	// Temporarily trying a to move the skills out of the classes, to see how players make use of it.
     public $skill_map = array(
-        'Blue' => array('ice bolt'=>1),
-        'White' => array('deflect'=>1, 'chi'=>1),
+        'Blue' => array('ice bolt'=>1, 'speed'=>1),
+        'White' => array('deflect'=>1, 'chi'=>1, 'midnight heal'=>1),
         'Red' => array('fire bolt'=>1),
-        'Black' => array('poison touch'=>1),
+        'Black' => array('poison touch'=>1, 'hidden resurrect'=>1),
         'All' => array('attack'=>1, 'duel'=>1, 'sight'=>1, 'blaze'=>1, 'stealth'=>1, 'unstealth'=>1, 'steal'=>1, 'cold steal'=>1),
         );
 
