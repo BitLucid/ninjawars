@@ -43,6 +43,7 @@ source_files=''
 configuration_file=''
 resource_file=''
 host_alias=''
+CRON_USER=''
 
 while test $# -gt 0; do
 	case "$1" in
@@ -150,6 +151,9 @@ while read curline; do
 		;;
 		HOST_ALIAS)
 		host_alias=$optarg
+		;;
+		CRON_USER)
+		CRON_USER=$optarg
 		;;
 	esac
 done < $configuration_file
@@ -303,6 +307,20 @@ chmod -R g+w ./*
 ## CRON SECTION ###
 
 sed -i -e {s/__SERVER_ROOT__/${SERVER_ROOT//\//\\/}/}                "${SERVER_ROOT}cron/nw-heartbeat"
+
+if [ ! $CRON_USER ]
+then
+	whoami=`whoami`
+	echo "Which user will run the cron scripts? [$whoami]: "
+	read CRON_USER
+
+	if [ ! $CRON_USER ]
+	then
+		CRON_USER=$whoami
+	fi
+fi
+
+sed -i -e {s/__CRON_USER__/${CRON_USER//\//\\/}/}                "${SERVER_ROOT}cron/nw-heartbeat"
 
 cron_file="/etc/cron.d/nw-${DB_NAME//\//_/}-heartbeat"
 
