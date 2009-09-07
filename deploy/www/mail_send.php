@@ -15,7 +15,7 @@ include SERVER_ROOT."interface/header.php";
 <?php
 $to = in('to');
 $messenger = in('messenger'); // naive spam detection attempt
-$message   = in('message', null); // Special filtering to a message.
+$message   = in('message', null, 'toMessage'); // Special filtering to a message.
 $username = get_username();
 
 if ($to == "") { die("This message has no recipient.\n");}
@@ -25,7 +25,7 @@ if ($messenger == 1){
   if ($to == "SysMsg") {die("SysMsg is a bot, do not email SysMsg.\n");}
 
 	if ($to == "clansend") {
-	  $message = "CLAN: ".out($message);
+	  $message = "CLAN: $message"; // Don't filter because it needs to be saved first.
       $clan = getClan($username);
       $sql->Query("SELECT uname FROM players WHERE clan = '$clan'");
 	  $resultSet = $sql->fetchAll(); // *** Store the result set.
@@ -37,10 +37,10 @@ if ($messenger == 1){
 		die("<br><a href=\"mail_read.php\">Go to Your Mail</a><br><br><a href=\"clan.php\">Return to Clan Options</a>\n");
 	}
 
-  if ($to != "clansend") {
-	  $message_with_identifier = "MESSAGE: ".$message;
-	  sendMessage($username,$to,$message_with_identifier);
-	  }
+    if ($to != "clansend") {
+        $message_with_identifier = "MESSAGE: ".$message;
+        sendMessage($username,$to,$message_with_identifier);
+    }
 
   echo "A messenger takes your message and will deliver your mail <br>
     From: ".out($username)." <br>TO: ".out($to)." <br>Message: ".out($message)."<br><br>\n";
