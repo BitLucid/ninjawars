@@ -1,4 +1,6 @@
     {$header}
+    
+    <!-- Version {$version} -->
 
   <div id="content">
 
@@ -132,11 +134,11 @@
               <a href="#" class="show-hide-link music" onclick="toggle_visibility('music-player');">Music <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> </a>
             </div>
 
-            <object type="audio/x-midi" data="music/samsho.mid" id="music-player">
-              <param name="src" value="music/samsho.mid">
+            <object type="audio/x-midi" data="{$WEB_ROOT}music/samsho.mid" id="music-player">
+              <param name="src" value="{$WEB_ROOT}music/samsho.mid">
               <param name="autoplay" value="true">
               <param name="autoStart" value="0">
-              <a href="music/samsho.mid">Play <img class="play-button" src="images/bullet_triangle_green.png" alt="&gt;"></a>
+              <a href="{$WEB_ROOT}music/samsho.mid">Play <img class="play-button" src="images/bullet_triangle_green.png" alt="&gt;"></a>
             </object>
           </div>
 
@@ -234,5 +236,8 @@
     </div><!-- End of bodyContent div -->
 
 <!-- Validated as of Feb, 2009 with notices about self-closing br tags. -->
+
+    <!-- Version: {$version} -->
+
   </body>
 </html>

@@ -1,15 +1,18 @@
 How to deploy (in this example, to test.ninjawars.net):
 
 Create a git archive of a commit:
-git archive HEAD:deploy/ > nw-mD-i.tar
+git archive --format=tar HEAD:deploy/ > nwDATEHERE.tar
 Copy the archive up to the live:
 scp nw-mD.i.tar tchalvak@ninjawars.net:/home/tchalvak/
 Connect to live:
 ssh ninjawars.net
 Move to the home directory:
 cd /home/ninjawars/
+
+(or skip all of the above by using the server git repo)
+
 Call the deploy script on the archive in the user home directory:
 ./deploy -c=test.conf ~/nw-mD-i.tar
 
 Then browse to:
-http://trunk.ninjawars.net/
+http://test.ninjawars.net/

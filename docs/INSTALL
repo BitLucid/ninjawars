@@ -19,11 +19,13 @@ Using /scripts/deploy
 
 Using your working copy
 -----------------------
-1. ln -s docs/SAMPLEhtaccess deploy/www/.htaccess
+1. ln -s docs/harkSAMPLEhtaccess deploy/www/.htaccess
 2. ln -s docs/gitignoreSAMPLE .gitignore
 3. ln -s docs/tchalvakSAMPLEresources.php deploy/resources.php
 4. mkdir -p deploy/resources/logs
 5. configure a virtualhost in apache
+6. mkdir deploy/templates/compiled
+7. chmod 777 deploy/templates/compiled
 
 
 !!! IMPORTANT NOTES !!!

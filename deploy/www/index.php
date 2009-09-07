@@ -57,6 +57,8 @@ $players_online = $stats['players_online'];
 $header = render_html_for_header('Ninja Wars: Live By the Sword', 'main-body');
 // render_html_for_header Writes out the html,head,meta,title,css,js.
 
+$version = 'NW Version 1.6.0 2009.09.06';
+
 $parts = array(
     'display_when_logged_in' => $display_when_logged_in,
     'display_when_logged_out' => $display_when_logged_out,
@@ -73,6 +75,7 @@ $parts = array(
     'main_src' => $main_src,
     'is_logged_in' => $is_logged_in,
     'header' => $header,
+    'version' => $version,
 );
 echo render_template('index.tpl', $parts);
 // Username still exists here.
