@@ -41,6 +41,16 @@ h1, h2, .title, .player-info .player-name{
 	padding: 3px;
 }
 
+#nin1{
+    color:brown;
+}
+#nin2{
+    color:red;
+}
+#nin3{
+    color:orange;
+}
+
 ul {
 	list-style-type: none;
 }
@@ -503,11 +513,20 @@ body .Quickstats {
 	width:50%;
 	font-size:15px;
 }
+.login-menu #menu-start .logged-in-bar{
+    padding-left: .5em;
+}
+
 .login-menu #menu-info{
 	width:40%;
 }
+
 .login-menu #menu-end{
 	width:10%;
+}
+
+.login-menu #menu-end span{
+    padding-right: .5em;
 }
 
 #login-bar {

@@ -30,37 +30,48 @@
             | <a target="main" href="mail_read.php">mailbox</a>
             <span id='logged-in-bar-health'> </span>
           </div>
-{/if} <!-- End of login/out conditional display. -->
+{/if} <!-- End of login/logged in bar. -->
         </div>
         <div id="menu-info">
-          <span class="signup-link" {$display_when_logged_out}>
+{if $is_not_logged_in}
+          <span class="signup-link">
             <a target="main" href="{$WEB_ROOT}signup.php?referrer={$referrer}">Create a Ninja!</a> |
           </span>
-          <span {$display_when_logged_out}>
+          <span>
             <a href="{$WEB_ROOT}lostpass.php" target="main" class="blend side">&nbsp;Lost&nbsp;Password?</a> |
           </span>
+{/if}
           <a href="rules.php" target="main">Rules</a> |
           <a href="tutorial.php" target="main">Intro</a> |
-          <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki <img class="extLink" src="images/externalLinkGraphic.gif" alt=""></a> |
-          <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum </a><img class="extLink"  src="images/externalLinkGraphic.gif" alt=""> |
-          <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a><img class="extLink" src="images/externalLinkGraphic.gif" alt="">
+          <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki 
+            <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""></a> 
+          | <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum </a>
+            <img class="extLink"  src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
+          | <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a>
+             <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
         </div>
+        
         <div id="menu-end">
-          <span {$display_when_logged_in}>
-            <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="images/stop_square.png" alt="[]"></a>
+{if $is_logged_in}
+          <span>
+            <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="{$IMAGE_ROOT}stop_square.png" alt="[]"></a>
           </span>
-          <span {$display_when_logout_occurs}>
-            You are now logged out.
+{/if}
+{if $just_logged_out}
+          <span>
+            You logged out.
           </span>
+{/if}
         </div>
       </div>
 
 {if $login_error}
       <div class="error">
-        That password/username combination was incorrect.  Be aware that usernames are case sensitive.
+        That password/username combination was incorrect.  
+        Be aware that usernames are case sensitive.
         Or request help with
-        <a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&amp;action=display&amp;thread=1051'>login issues</a>
-        on the forum.
+        <a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&amp;action=display&amp;thread=1051'>
+        login issues</a> on the forum.
       </div>
 {/if}
 
@@ -74,7 +85,9 @@
 {if $is_logged_in}
           <div id="actions" class="boxes active">
             <div class="box-title">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('actions-menu');">Actions <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> </a>
+              <a href="#" class="show-hide-link" onclick="toggle_visibility('actions-menu');">
+                Actions <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
+              </a>
             </div>
             <ul class="basemenu" id="actions-menu">
               <li id='combat-link'><a href="attack_player.php" target="main">Combat</a></li>
@@ -82,8 +95,14 @@
               <li><a href="inventory.php" target="main">Inventory</a></li>
               <li>
                 <ul class="submenu">
-                  <li><a href="inventory_mod.php?item=Speed%20Scroll&amp;selfTarget=1&amp;link_back=inventory" target="main">Speed</a><br></li>
-                  <li><a href="inventory_mod.php?item=Stealth%20Scroll&amp;selfTarget=1&amp;link_back=inventory" target="main">Stealth</a><br></li>
+                  <li>
+                    <a href="inventory_mod.php?item=Speed%20Scroll&amp;selfTarget=1&amp;link_back=inventory" 
+                    target="main">Speed</a>
+                  </li>
+                  <li>
+                    <a href="inventory_mod.php?item=Stealth%20Scroll&amp;selfTarget=1&amp;link_back=inventory"
+                     target="main">Stealth</a>
+                  </li>
                 </ul>
               </li>
               <li><a href="skills.php" target="main">Skills</a></li>
@@ -93,15 +112,17 @@
           </div>
           <div id="places" class="boxes active">
             <div class="box-title">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('places-menu');">Places <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> </a>
+              <a href="#" class="show-hide-link" onclick="toggle_visibility('places-menu');">
+                Places <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
+              </a>
             </div>
             <ul id="places-menu">
-              <li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt=""></a><br>
-              <li><a href="dojo.php" target="main">Dojo</a><br>
-              <li><a href="casino.php" target="main">Casino</a><br>
-              <li><a href="work.php" target="main">Work</a><br>
-              <li><a href="shop.php" target="main">Shop</a><br>
-              <li><a href="shrine.php" target="main">Shrine <img src="images/shrine.png" alt=""></a><br>
+              <li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt=""></a></li>
+              <li><a href="dojo.php" target="main">Dojo</a></li>
+              <li><a href="casino.php" target="main">Casino</a></li>
+              <li><a href="work.php" target="main">Work</a></li>
+              <li><a href="shop.php" target="main">Shop</a></li>
+              <li><a href="shrine.php" target="main">Shrine <img src="images/shrine.png" alt=""></a></li>
               <li>
                 <ul class="submenu">
                   <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main">Heal</a></li>
@@ -112,54 +133,60 @@
           <!-- End of content displayed when logged in -->
 {/if}
 
-
-
           <div id='vicious-killer' class='boxes'>
             <div class='box-title'>
-              <a href='#' class='show-hide-link' onclick="toggle_visibility('vicious-killer-menu');"> Fastest Killer: <img class='show-hide-icon' src='images/show_and_hide.png' alt='+/-'> </a>
+              <a href='#' class='show-hide-link' onclick="toggle_visibility('vicious-killer-menu');">
+                Fast Killer:<img class='show-hide-icon' src='{$IMAGE_ROOT}show_and_hide.png' alt='+/-'>
+              </a>
             </div>
             <a id='vicious-killer-menu' href='player.php?player={$vicious_killer}' target='main'>{$vicious_killer}</a>
           </div><!-- End of vicious killer div -->
-          <div id='ninja-count' class='boxes passive'>
+          <div id='ninja-count-menu' class='boxes passive'>
             <div class='box-title'>
-              <a href='#' class='show-hide-link' onclick="toggle_visibility('ninja-count-menu');"> Ninjas: <img class='show-hide-icon' src='images/show_and_hide.png' alt='+/-'> </a>
+              <a href='#' class='show-hide-link ninja-count' onclick="toggle_visibility('ninja-count');">
+                Ninjas: <img class='show-hide-icon' src='{$IMAGE_ROOT}show_and_hide.png' alt='+/-'>
+              </a>
             </div>
-            <p id='ninja-count-menu'><p>{$players_online} Online </p><p> {$player_count} Total</p></p>
+            <span id='ninja-count'><p>{$players_online} Online </p><p> {$player_count} Total</p></span>
           </div>
-
-<!-- End of stats Section -->
 
           <div id="music" class="boxes passive">
             <div class="box-title">
-              <a href="#" class="show-hide-link music" onclick="toggle_visibility('music-player');">Music <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> </a>
+              <a href="#" class="show-hide-link music" onclick="toggle_visibility('music-player');">
+                Music <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
+              </a>
             </div>
 
             <object type="audio/x-midi" data="{$WEB_ROOT}music/samsho.mid" id="music-player">
               <param name="src" value="{$WEB_ROOT}music/samsho.mid">
               <param name="autoplay" value="true">
               <param name="autoStart" value="0">
-              <a href="{$WEB_ROOT}music/samsho.mid">Play <img class="play-button" src="images/bullet_triangle_green.png" alt="&gt;"></a>
+              <a href="{$WEB_ROOT}music/samsho.mid">
+                Play <img class="play-button" src="{$IMAGE_ROOT}bullet_triangle_green.png" alt="&gt;">
+              </a>
             </object>
           </div>
 
           <div id="links" class="boxes passive">
             <div class="box-title">
-              <a href="#" class="show-hide-link links-menu" onclick="toggle_visibility('links-menu');">Links <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> </a>
+              <a href="#" class="show-hide-link links-menu" onclick="toggle_visibility('links-menu');">
+                Links <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
+              </a>
             </div>
             <ul id="links-menu">
               <li><a href="about.php" target="main">Tutorial</a></li>
               <li><a href="staff.php" target="main">Staff</a></li>
               <li><a href="duel.php" target="main">Duels</a></li>
-              <!--  <a href="vote.php" target="main">Vote For NW </a><br>  -->
-              <!--  <a href="http://www.cafeshops.com/ninjawars" target="_blank">Online Shop</a><br> -->
-              <li><a href="http://ninjawars.proboards19.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar <img class="extLink" src="images/externalLinkGraphic.gif" alt=""></a></li>
-              <!--   <a href="donate.php" target="main">Donate</a><br> -->
-              <!-- <a href="members.php" target="main">Members</a><br> -->
+              <!--  <a href="vote.php" target="main">Vote For NW </a>  -->
+              <li>
+                <a href="http://ninjawars.proboards19.com/index.cgi?action=calendar" target="_blank" class="extLink">
+                  Calendar <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""></a>
+              </li>
             </ul>
           </div>
         </div><!-- End of left Column div-->
 
-<!-- Substitute image and "catchphrases" here -->
+<!-- Substitute image and "catchphrases" here eventually -->
 
         <div id="centerColumn" class="column"><!-- top menu starts here -->
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
@@ -178,7 +205,10 @@
 
         <div id="rightColumn" class="column"><!-- RIGHT COLUMN -->
           <div id="player-list" class="boxes special centered">
-            <a href="list_all_players.php" target="main"><span style="color:brown;">Ni</span><span style="color:red">nj</span><span style="color:orange;">as</span> <img src="images/smallArrows.png" alt="&gt;&gt;&gt;"></a>
+            <a href="list_all_players.php" target="main">
+              <span id='nin1'>Ni</span><span id='nin2'>nj</span><span id='nin3'>as</span> 
+              <img src="images/smallArrows.png" alt="&gt;&gt;&gt;">
+            </a>
           </div>
           <div id="ninja-search" class="boxes active">
             <div class="box-title centered">Ninja Search</div>
@@ -194,11 +224,14 @@
 {if $is_logged_in}
           <div id="quick-stats" class="boxes">
             <div class="box-title centered">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('quickstats-and-switch-stats');">Quick Stats <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> </a>
+              <a href="#" class="show-hide-link" onclick="toggle_visibility('quickstats-and-switch-stats');">
+                Quick Stats <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+              </a>
             </div>
             <div id="quickstats-and-switch-stats">
               <div class="centered">
-                <a href="quickstats.php" target="quickstats">Player</a> | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
+                <a href="quickstats.php" target="quickstats">Player</a> 
+                | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
               </div>
               <div id="quickstats-frame-container">
                 <iframe id="quickstats" src="quickstats.php" frameborder="0" name="quickstats">
@@ -211,7 +244,9 @@
 {/if}
           <div id="village-chat" class="boxes active">
             <div class="box-title centered">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('chat-and-switch');">Chat <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> </a>
+              <a href="#" class="show-hide-link" onclick="toggle_visibility('chat-and-switch');">
+                Chat <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+              </a>
             </div>
             <div id="chat-and-switch">
               <div class="chat-switch centered">
@@ -225,7 +260,9 @@
                 </iframe>
               </div>
               <div id="expand-chat">
-                <a href="mini_chat.php?chatlength=360" target="mini_chat"> View more chat messages <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> </a>
+                <a href="mini_chat.php?chatlength=360" target="mini_chat">
+                  View more messages <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+                </a>
               </div>
             </div>
           </div>

@@ -6,14 +6,14 @@ $login        = (in('action') == 'login' ? true : false); // Request to login.
 $logout       = in('logout');
 $is_logged_in = is_logged_in();
 $login_error  = false;
-$logout_occurred = false;
+$just_logged_out = false;
 
 // Logout/already logged in/login
 
 if ($logout) { 
     // When a logout action is requested
 	logout(); // essentially just kill the session, and don't redirect.
-	$logout_occurred = true;
+	$just_logged_out = true;
 } elseif ($is_logged_in) { 
     // When user is already logged in.
 	$logged_in['success'] = $is_logged_in;
@@ -26,11 +26,6 @@ if ($logout) {
     	$login_error = true;
 	}
 }
-
-
-$display_when_logged_in     = display_when('logged_in');
-$display_when_logged_out    = display_when('logged_out');
-$display_when_logout_occurs = display_when('logout_occurs');
 
 $username = get_username();
 
@@ -60,11 +55,10 @@ $header = render_html_for_header('Ninja Wars: Live By the Sword', 'main-body');
 $version = 'NW Version 1.6.0 2009.09.06';
 
 $parts = array(
-    'display_when_logged_in' => $display_when_logged_in,
-    'display_when_logged_out' => $display_when_logged_out,
-    'display_when_logout_occurs' => $display_when_logout_occurs,
+    'header' => $header,
     'is_logged_in' => $is_logged_in,
     'is_not_logged_in' => !$is_logged_in,
+    'just_logged_out' => $just_logged_out,
     'username' => $username,
     'WEB_ROOT' => WEB_ROOT,
     'IMAGE_ROOT' => IMAGE_ROOT,
@@ -73,8 +67,6 @@ $parts = array(
     'player_count' => $player_count,
     'players_online' => $players_online,
     'main_src' => $main_src,
-    'is_logged_in' => $is_logged_in,
-    'header' => $header,
     'version' => $version,
 );
 echo render_template('index.tpl', $parts);
