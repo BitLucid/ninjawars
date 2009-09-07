@@ -992,8 +992,7 @@ function sendMessage($from,$to,$msg,$filter=false) {
 
 function sendChat($from,$to,$msg) {
   global $sql;
-  $msg=strip_tags($msg);  //Strips html from the message.
-  $sql->Insert("INSERT INTO chat (id, send_from, send_to, message, time) VALUES (default,'$from','$to','$msg',now())");
+  $sql->Insert("INSERT INTO chat (id, send_from, send_to, message, time) VALUES (default,'$from','$to','".pg_escape_string($msg)."',now())");
 }
 
 
