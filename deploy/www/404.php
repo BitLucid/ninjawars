@@ -23,6 +23,6 @@
     </p>
 -->
     <div>Return to <a href="<?php echo WEB_ROOT; ?>index.php">Ninjawars</a></div>
-    <div id='support-email'>email <a href="mailto:<?= SUPPORT_EMAIL ?>"><?= SUPPORT_EMAIL ?></a></div>
+    <div id='support-email'>or email <a href="mailto:<?= SUPPORT_EMAIL ?>"><?= SUPPORT_EMAIL ?></a></div>
   </body>
 </html>
