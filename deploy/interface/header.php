@@ -1,4 +1,5 @@
 <?php
+// TODO: Make this into a render function.
 ob_start(null, 1); // File buffer output in chunks.
 // General utility objects.
 $filter = new Filter(); // *** Creates the filters for later use.
