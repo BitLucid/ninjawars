@@ -13,7 +13,9 @@ Actions:
 Create the ability for players to set up "ambush" from their profile when viewers wander in to view it.
 Kappa random encounter as a money source? Tengu random encounter useful for ???
 And random encounter generator to javascript and internal php that cause random encounters when the two systems match up?
+Make quest table for holding quest statuses.
 Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general, using a quests database.
+// TODO: Put player-led multi-checking into play.
 
 UI:
 Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now,
@@ -24,6 +26,10 @@ Make a "embeddable" thing that can show your ninja's current rank and avatar and
 Cleanup the main page for speed.
 Health displayed as a bar percentage...
 Stop showing clans that don't have at least one member.
+// TODO: Fix the white backgrounds in the iframes in IE. (probably fixed)
+// TODO: make clans links in the player list.
+// TODO: Limit quickstats js refresh by last-occurred.
+// TODO: Give the "No such ninja" message (e.g. when linking from the ---- chat) a link back to a sane part of the list.
 
 Levelling:
 Auto-levelling checks instead of kills banking.
@@ -31,4 +37,16 @@ Make customizations/benefits for levelling then make killpoints gaining more rea
 Make the highest level confer the title of "emperor" on that player.
 
 Backup:
-Made a simple crontab -e pg_dump backup script.
+Made a simple crontab -e pg_dump backup script.  
+Schedule a periodic email to perform the manual copydown or copyover of the backup script contents.
+// TODO: create lib_deity backup players function, copy players table or as insert.
+
+Database:
+Message table.
+Make sure that the other databases are pared down to allow ease of backup.  
+// TODO: Delete beyond a certain limit of entries in levelling_log dueling_log, and players_backup (5*players count?)
+
+
+Security:
+// TODO: Make default filtering be toWord, and change item-related in()s to deal with their multi word inputs.
+

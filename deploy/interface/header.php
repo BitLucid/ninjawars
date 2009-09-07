@@ -14,6 +14,7 @@ $alive 		= (isset($alive)? $alive : NULL);
 $page_title = (isset($page_title)? $page_title : "NinjaWars");
 $error = null; // Logged in or alive error.
 
+
 update_activity_info(); // *** Updates the activity of the page viewer in the database.
 
 if(!is_logged_in()){
@@ -69,7 +70,7 @@ if(!is_logged_in()){
 
 if(!$section_only){
     // make a dash separated css class from the page titles.
-    $css_body_class = preg_replace('/\s/', '-', $page_title);
+    $css_body_class = strtolower(preg_replace('/\s/', '-', $page_title));
     echo render_html_for_header($page_title, $css_body_class); // ***** Display the html header
 }
 
