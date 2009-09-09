@@ -38,7 +38,7 @@ if ($messenger == 1){
 	}
 
     if ($to != "clansend") {
-        $message_with_identifier = "MESSAGE: ".$message;
+        $message_with_identifier = "MESSAGE: ".$message; // Don't filter when sending.
         sendMessage($username,$to,$message_with_identifier);
     }
 

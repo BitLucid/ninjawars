@@ -9,7 +9,13 @@
  * @subpackage status
  */
 
-function status_output_list($statuses=null, $target=null) {
+function render_status_list($statuses=null, $target=null) {
+    $states = get_status_list($statuses, $target);
+	$result = implode(", ", $states);
+	return $result;
+}
+
+function get_status_list($statuses=null, $target=null){
 	$states = array();
 	$result = '';
 	$target = isset($target)? $target : (isset($SESSION['username']) ? $SESSION['username'] : null);
@@ -28,9 +34,7 @@ function status_output_list($statuses=null, $target=null) {
 		if ($statuses['Poison']) { $states[] = "Poisoned"; }
 		if ($statuses['Frozen']) { $states[] = "Frozen"; }
 	}
-	$result = implode(", ", $states);
-	assert($target != '' && $result != '');
-	return $result;
+	return $states;
 }
 
 ?>

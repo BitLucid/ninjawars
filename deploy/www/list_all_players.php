@@ -2,6 +2,7 @@
 $microtimes = array();
 $microtimes[1] = microtime();
 require_once(LIB_ROOT."specific/lib_player_list.php");
+require_once(LIB_ROOT."specific/lib_player.php");
 
 $alive      = false;
 $private    = false;
@@ -70,8 +71,8 @@ if($hide == 'dead'){
 }
 $query_count  = "SELECT count(player_id) FROM rankings ".$where_clause;
 $totalrows    = $sql->QueryItem($query_count);
-$rank         = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".$username."'");
-$rank         = ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
+$rank = get_rank($username, $sql);
+
 
 
 $microtimes[4] = microtime();

@@ -48,7 +48,7 @@ if ($command != "viewinv") {
 
   echo "  <td>\n";
 
-	$status_output_list = status_output_list($status_array, $username);
+	$status_output_list = render_status_list($status_array, $username);
 	echo $status_output_list;
 
 

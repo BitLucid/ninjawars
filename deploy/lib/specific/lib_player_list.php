@@ -1,5 +1,6 @@
 <?php
 
+// TODO: Oh god, these functions need templates.
 
 // Display the recently active players
 function render_active($limit=5, $alive_only=true) {

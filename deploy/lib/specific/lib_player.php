@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT."specific/lib_status.php");
 // lib_player.php
 
 // Defines for avatar options.
@@ -58,15 +59,11 @@ function render_skills($target, $skillListObj, $skillsListObj){
 /**
  * Pull out the url for the player's avatar
 **/
-function render_avatar($player, $size=null)
-{
+function render_avatar($player, $size=null){
 	// If the avatar_type is 0, return '';
-    if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email)
-	{
+    if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email){
         return '';
-    }
-	else
-	{	// Otherwise, user the player info for creating a gravatar.
+    } else {	// Otherwise, user the player info for creating a gravatar.
 		$def = 'identicon'; // Default image or image class.
 		// other options: wavatar , monsterid
 		$email = $player->vo->email;
@@ -82,56 +79,64 @@ function render_avatar($player, $size=null)
 }
 
 // Display the div for the avatar to live within.
-function render_avatar_section($player, $img_size=null)
-{
+function render_avatar_section($player, $img_size=null){
+    if(!is_object($player)){
+        $player = new Player($player);    
+    }
 	$img_url = (OFFLINE ? '' : render_avatar($player, $img_size));
-	//$img_url = IMAGE_ROOT."50pxShuriken.png";
 
-	if (!$img_url)
-	{
+	if (!$img_url){
 		return '';
 	}
-	else
-	{
-		ob_start();
-		?>
-        <div id='avatar'>
-            <img alt='No Avatar' src='<?php echo $img_url; ?>'>
-        </div>
-        <?php
-		$res = ob_get_contents();
-		ob_end_clean();
-		return $res;
-	}
+    return "
+    <div id='avatar'>
+        <img alt='No Avatar' src='$img_url'>
+    </div>";
 }
+
+function render_class_section($class){
+    $IMAGE_ROOT = IMAGE_ROOT;
+    return "<span class='player-class $class'>
+        <img src='{$IMAGE_ROOT}small{$class}Shuriken.gif' alt=''>
+        $class
+    </span>";
+}
+
+function render_status_section(){
+    $res = '';
+	$statuses = get_status_list();
+	if(!empty($statuses)){
+	    $res .= "<p class='player-status ninja-notice ".implode(" ", $statuses)."'>".implode(", ", $statuses)."</p>";
+	}
+	return $res;
+}
+
+function render_level_and_category($level){
+    $res = '';
+    $level_and_cat = level_category($level);
+    $res .= "<span class='player-level-category {$level_and_cat['css']}'>
+		{$level_and_cat['display']} [{$level}]
+	</span>";
+	return $res;
+}
+
 
 // The player's stats
 // TODO: Ye gods this is begging for being cleaned up via a template.
 function display_player_stats($player_info){
-	$status = null;
-	if (!$player_info['health']) {
-	    $status = "Dead";
-	} elseif($player_info['status'] == STEALTH) {
-	    $status = "Stealthed";
-	}
-	$level = $player_info['level'];
-	$level_and_cat = level_category($level);
+    $status = render_status_section($player_info);
+	$level_and_cat = render_level_and_category($player_info['level']);
+	$class_section = render_class_section($player_info['class']);
 	?>
 		<div class='player-name'><?php echo $player_info['uname']; ?></div>
 		<div class='player-titles centered'>
-			<span class='player-class <?php echo $player_info['class']; ?>'>
-				<img src='<?php echo WEB_ROOT;?>images/small<?php echo $player_info['class'];?>Shuriken.gif' alt=''>
-				<?php echo $player_info['class']; ?>
-			</span>
-			<span class='player-level-category <?php echo $level_and_cat['css']; ?>'>
-				<?php echo $level_and_cat['display']." [".$level."]"; ?>
-			</span>
-			<?php if($status){?>
-			<p class='player-status ninja-notice <?php echo $status;?>'><?php echo $status;?></p>
-			<?php }?>
+            <?php echo $class_section; ?>
+			<?php echo $level_and_cat; ?>
+			<?php echo $status; ?>
 		</div>
 	<?php
 }
+
 
 // Player activity and events information.
 function display_player_activity($player_info){
@@ -344,6 +349,15 @@ function display_communication($target){
     echo "  </div>";
 }
 
+
+function get_rank($username, $sql=null){
+    if(!$sql){
+        $sql = new DBAccess();
+    }
+    $rank         = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".$username."'");
+    $rank         = ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
+    return $rank;
+}
 
 
 ?>
