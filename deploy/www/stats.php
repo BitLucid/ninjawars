@@ -11,7 +11,8 @@ include SERVER_ROOT."interface/header.php"; // Not sure whether this has to come
 
 // *** To verify that the delete request was made.
 $in_delete_account = in('deleteaccount');
-$deleteAccount     = ($in_delete_account && $in_delete_account == 1 ? 1 : null);
+$deleteAccount     = ($in_delete_account == 1 ? 1 :
+    ($in_delete_account == 2 ? 2 : null)); // Stage of delete process.
 
 $in_changePass = in('changepass');
 $changePass    = ($in_changePass && $in_changePass == 1 ? 1 : null);
@@ -28,13 +29,21 @@ $player = get_player_info();
 $confirm_delete = false;
 $profile_changed = false;
 
+$delete_attempts = (SESSION::is_set('delete_attempts')?SESSION::get('delete_attempts') : null);
+
 if ($deleteAccount) {
 	$verify = false;
 	$verify = is_authentic($username, $passW);
-	if ($verify == true) {// *** To check that there's only 1 match for that username and password.
+	if ($verify == true && !$delete_attempts) {
+	    // *** Username&password matched, on the first attempt.
 		pauseAccount($username); // This may redirect and stuff?
 	} else {
-	    $confirm_delete = true;
+	    if($deleteAccount == 2){
+	        SESSION::set('delete_attempts', 1);
+	        $error = 'Deleting of account failed, please email '.SUPPORT_EMAIL;
+	    } else {
+    	    $confirm_delete = true;
+    	}
 	}
 } else if ($changeprofile == 1) {
 	if ($newprofile != "") {
@@ -46,7 +55,7 @@ if ($deleteAccount) {
 	}
 }
 
-
+$level_and_cat = render_level_and_category($player['level']);
 $status_list = render_status_section();
 $avatar_display = render_avatar_section($player['player_id']);// include and render from player.php
 $rank_display = get_rank($username, $sql); // rank display.
@@ -54,6 +63,7 @@ $rank_display = get_rank($username, $sql); // rank display.
 $profile_editable = $player['messages'];
 $profile_display = out($profile_editable);
 
+//var_dump($profile_editable);die();
 
 $parts = array(
     'player' => $player,
@@ -66,6 +76,8 @@ $parts = array(
     'avatar_display' => $avatar_display,
     'profile_editable' => $profile_editable, // Unescaped.
     'profile_display' => $profile_display, // use out()
+    'level_and_cat' => $level_and_cat,
+    'delete_attempts' => $delete_attempts,
     'SUPPORT_EMAIL' => SUPPORT_EMAIL,
     'WEB_ROOT' => WEB_ROOT,
 );

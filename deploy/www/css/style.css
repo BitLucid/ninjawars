@@ -184,6 +184,11 @@ table.playerTable .Black, .player-info .Black {
 	background-color:white;
 }
 
+.your-stats #player-profile{
+    margin: 10px 0 10px 0;
+    text-align: center;
+}
+
 .playerTable th{
 	text-align: left;
 	background-color: #333333;

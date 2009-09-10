@@ -179,54 +179,6 @@ if ($clan  != "") {
 	}
 }
 
-/*
-echo "<div id='clan-list'><a href=\"clan.php?command=list\">List Clans</a></div>\n";
-
-if ($command == "list") {                                //Lists the clans that exist and their leaders.
-
-  echo "<div id='clan-list'>";
-  $sql->Query("SELECT count(uname) as c, clan, clan_long_name ".
-		"FROM players WHERE clan <> '' ".
-                "AND confirmed = 1 ".
-		"GROUP BY clan, clan_long_name ORDER BY c DESC");
-  echo "<div>Clans List: </div>\n";
-  echo "<table>\n";
-  echo "<tr>\n";
-  echo "  <td style=\"font-weight: bold;\">\n";
-  echo "  Clan\n";
-  echo "  </td>\n";
-
-  echo "  <td style=\"font-weight: bold;\">\n";
-  echo "  Leader\n";
-  echo "  </td>\n";
-
-  echo "  <td style=\"font-weight: bold;\">\n";
-  echo "  View\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-
-  while ($data = $sql->Fetch()) {
-      $clan = $data[1];
-      $clan_l_name = $data[2];
-      echo "<tr>\n";
-      echo "  <td>\n";
-      echo "  $clan_l_name\n";
-      echo "  </td>\n";
-
-      echo "  <td>\n";
-      echo "  $clan\n";
-      echo "  </td>\n";
-
-      echo "  <td>\n";
-      echo "  <a href=\"clan.php?command=view&amp;clan_name=$clan\">View Clan</a>\n";
-      echo "  </td>\n";
-      echo "</tr>\n";
-    }
-  echo "</table>\n";
-  echo "</div>";
-} else
-*/
-
 if ($command == "view") {	// *** A view of the member list of any clan ***
 	echo render_clan_view($clan, $clan_name, $clan_long_searched, $sql);
 }
