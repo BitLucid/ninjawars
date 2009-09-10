@@ -69,10 +69,12 @@ class DBAccess {
     function QueryRow ($query, $type=PDO::FETCH_BOTH) {
 		$this->Query($query);
 		$this->data = null;
-		if (isset($this->result))
+
+		if ($this->result)
 		{
 			$this->data = $this->result->fetch($type);
         }
+
         return $this->data;
     }
 
@@ -87,7 +89,6 @@ class DBAccess {
     	$res = $this->fetchAll();
     	return $res; // Fetch the results.
     }
-
 
     /* Wrapper function for the PDO full result set function fetchAll using only the default values */
 	function fetchAll($query=null)

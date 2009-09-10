@@ -23,30 +23,28 @@ $new_clan_name                   = in('new_clan_name', '');
 $sure                            = in('sure', '');
 $kicked                          = in('kicked', '');
 $person_invited                  = in('person_invited', '');
-$clan                            = getClan($username);
-$player_clan_long_name           = getClanLongName($username);
+$clan                            = getClan($player_id);
+$player_clan_long_name           = getClanLongName($player_id);
 $viewer_level                    = getLevel($username);
 $clan_creation_level_requirement = 15;
 
 if ($command == "new") { // *** Clan Creation Action ***
 	if ($viewer_level > $clan_creation_level_requirement) {
-		setClan($username, $username);
 		$default_clan_name = "Clan_".$username;
-		renameClan($username,$default_clan_name);
+		$clan = createClan($playerID, $default_clan_name);
 		$command = "rename"; // *** Shortcut to rename after. ***
-		$clan = getClan($username);
 		echo "<div class='notice'>You have created a new clan!</div><p>Name your clan: </p>\n";
 	} else { // *** Level req wasn't met. ***
 		echo "<div class='notice'>You do not have enough renown to create a clan.</div>";
 	}
 }
 
-if ($clan  != "") {
-	if ($clan == $username) {
+if ($clan != "") {
+	if (getClanLeader($clan) == $player_id) {
 		if ($command == "rename" ) {     //Clan Leader Action Rename
-			if ($new_clan_name != "" && strlen($new_clan_name) <= 20 and ( str_replace(array('/','\'','*','--', '<', '>'), '', $new_clan_name) ==$new_clan_name)) {
+			if ($new_clan_name != "" && strlen($new_clan_name) <= 20 && (str_replace(array('/','\'','*','--', '<', '>'), '', $new_clan_name) == $new_clan_name)) {
     	    // *** The clan doesn't contain any special characters, including apostrophes, asterixes, slashes, and html code.
-				echo "<p>Your new clan name is <span style=\"font-weight: bold;\">".renameClan($username,$new_clan_name).".</span></p>\n";
+				echo "<p>Your new clan name is <span style=\"font-weight: bold;\">".renameClan($clan, $new_clan_name).".</span></p>\n";
 			} else {
 				if (strlen($new_clan_name) >= 21) {
 					echo "<div style=\"color:red;\">Your clan name cannot be blank or greater than 20 characters.</div>";
@@ -66,7 +64,7 @@ if ($clan  != "") {
 			}
 		} else if ($command == "kick") {              //Clan Leader Action Kick a chosen member
 			if ($kicked == "") {
-				$sql->Query("SELECT uname FROM players WHERE clan = '$clan' and uname <> '$username' and confirmed = 1");
+				$sql->Query("SELECT player_id, uname FROM players JOIN clan_player ON _player_id = player_id AND _clan_id = $clan WHERE uname <> '$username' and confirmed = 1");
 				$members =  $sql->data;
 
 				echo "<form id=\"kick_form\" action=\"clan.php\" method=\"get\" name=\"kick_form\">\n";
@@ -77,8 +75,9 @@ if ($clan  != "") {
 
 				for ($i = 0; $i < $sql->rows; $i++) {
 					$sql->Fetch($i);
-					$name = $sql->data[0];
-					echo "<option value=\"$name\">$name</option>\n";
+					$pid = $sql->data[0];
+					$name = $sql->data[1];
+					echo "<option value=\"$pid\">$name</option>\n";
 				}
 
 				echo "</select>\n";
@@ -88,7 +87,7 @@ if ($clan  != "") {
 				echo "</form>\n";
 			} else {	// *** An actual successful kick of a member. ***
 				kick($kicked);
-				echo "<p>You have removed $kicked from your clan.</p>";
+				echo "<p>You have removed ".getPlayerName($kicked)." from your clan.</p>";
 			}
 		} else if ($command == "disband") {	// *** Clan Leader Confirmation of Disbanding of the Clan ***
 			if (!$sure) {
@@ -101,7 +100,7 @@ if ($clan  != "") {
 				echo "</div>\n";
 				echo "</form>\n";
 			} else if ($sure == "yes") {	// **** Clan Leader Action Disbanding of the Clan ***
-				disbandClan($username);
+				disbandClan($clan);
 				die("<div class='notice'>Your clan has been disbanded.</div>\n");
 			}
 		} else if ($command == "invite") {	// *** Clan Leader Invite Input ***
@@ -116,7 +115,7 @@ if ($clan  != "") {
 				echo "</form>\n";
 				echo "<hr>\n";
 			} else {
-				$failure_message = invitePlayer($person_invited, $username);	// *** Clan leader Invite Action ***
+				$failure_message = invitePlayer($person_invited, $clan);	// *** Clan leader Invite Action ***
 
 				if ($failure_message == "None.") {
 					echo "<p>You have invited $person_invited to join your clan.</p>";
@@ -138,8 +137,7 @@ if ($clan  != "") {
 
 	} else {
 		if ($command == "leave") {	// *** Clan Member Action to Leave their Clan ***
-			setClan($username,"");
-			setClanLongName($username,"");
+			$sql->Delete("DELETE FROM clan_player WHERE _player_id = $player_id");
 
 			echo "<p>You have left your clan.</p>";
 			die();
@@ -228,7 +226,7 @@ if ($command == "list") {                                //Lists the clans that 
 */
 
 if ($command == "view") {	// *** A view of the member list of any clan ***
-	echo render_clan_view($clan, $clan_name, $clan_long_searched, $sql);
+	echo render_clan_view(getPlayerName(getClanLeader($clan)), $clan_name, $clan_long_searched, $sql);
 }
 
 echo render_clan_tags(); // *** Display the clan tags section. ***
