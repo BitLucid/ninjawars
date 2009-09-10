@@ -26,8 +26,8 @@ if ($messenger == 1){
 
 	if ($to == "clansend") {
 	  $message = "CLAN: $message"; // Don't filter because it needs to be saved first.
-      $clan = getClan($username);
-      $sql->Query("SELECT uname FROM players WHERE clan = '$clan'");
+      $clan = getClan($player_id);
+      $sql->Query("SELECT uname FROM clan_player JOIN players ON player_id = _player_id WHERE _clan_id = $clan");
 	  $resultSet = $sql->fetchAll(); // *** Store the result set.
 	  foreach($resultSet as $loopClanMember) {
         	$clan_member = $loopClanMember['uname'];

@@ -233,10 +233,10 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 						//  ***  Query is split up into two column groups of ten  ***
 						$playerCreationQuery= "INSERT INTO players".
 							" (uname, pname, health, strength, gold, messages, kills, turns, confirm,".
-							" confirmed, email, class, level,  status, member, days, ip, bounty, clan, clan_long_name, created_date)".
+							" confirmed, email, class, level,  status, member, days, ip, bounty, created_date)".
 							" VALUES".
 							" ('$send_name','$send_pass','150','5','100','','0','80','$confirm','$preconfirm',".
-							" '$send_email','$send_class','1','1','0','0','','0','','', now())";
+							" '$send_email','$send_class','1','1','0','0','','0', now())";
 						//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 						$sql->Insert($playerCreationQuery);
 						$successful = TRUE; // *** SET THE FUNCTION AS A SUCCESS HERE ***
