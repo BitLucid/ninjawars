@@ -8,6 +8,9 @@ $is_logged_in = is_logged_in();
 $login_error  = false;
 $just_logged_out = false;
 
+$rand = rand(1, 100);
+$random_background = $rand<5? $rand : null; 
+
 // Logout/already logged in/login
 
 if ($logout) { 
@@ -49,7 +52,12 @@ $vicious_killer = $stats['vicious_killer'];
 $player_count   = $stats['player_count'];
 $players_online = $stats['players_online'];
 
-$header = render_html_for_header('Ninja Wars: Live By the Sword', 'main-body');
+$added_body_classes = '';
+if(DEBUG){$random_background = 1;}
+if($random_background){ // Add a chance of random index backgrounds!
+    $added_body_classes = " random-background-$random_background"; // e.g. random-background 3
+}
+$header = render_html_for_header('Ninja Wars: Live By the Sword', 'main-body'.$added_body_classes);
 // render_html_for_header Writes out the html,head,meta,title,css,js.
 
 $version = 'NW Version 1.6.0 2009.09.06';
