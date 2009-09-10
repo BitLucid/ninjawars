@@ -42,7 +42,7 @@ function render_clan_view($clan, $clan_name=null, $clan_long_searched=null, $sql
     if(!$clan_name && !$clan_long_searched){
         return ''; // No viewing criteria available.
     }
-    $search = "clan = '$clan_name'";
+    $search = "clan = '".sql($clan_name)."'";
     if($clan_long_searched){
         $search = "clan_long_name = '".sql($clan_long_searched)."'";
     }
