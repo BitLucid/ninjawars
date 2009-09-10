@@ -53,7 +53,7 @@ function input_assign($var_name, &$IN, &$default_val, &$filter, &$filter_method)
 	if (!isset($IN[$var_name])){
 		$result = $default_val; // Usually null default.
 	} else {
-		if ($filter_method == 'no filter'){
+		if ($filter_method == 'no filter' || $filter_method=='none'){
 			$result = $IN[$var_name];
 		} else {
 			// Filter the result.

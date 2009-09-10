@@ -18,7 +18,7 @@ include SERVER_ROOT."interface/header.php";
 $command                         = in('command');
 $process                         = in('process');
 $clan_name                       = in('clan_name', ''); // View that clan name.
-$clan_long_searched              = in('clan_long_name'); // View that clan long name.
+$clan_long_searched              = in('clan_long_name', null, 'none'); // View that clan long name.
 $new_clan_name                   = in('new_clan_name', '');
 $sure                            = in('sure', '');
 $kicked                          = in('kicked', '');
