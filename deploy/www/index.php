@@ -65,6 +65,7 @@ $version = 'NW Version 1.6.0 2009.09.06';
 $parts = array(
     'header' => $header,
     'is_logged_in' => $is_logged_in,
+    'login_error' => $login_error,
     'is_not_logged_in' => !$is_logged_in,
     'just_logged_out' => $just_logged_out,
     'username' => $username,
