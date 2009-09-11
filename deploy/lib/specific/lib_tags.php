@@ -49,7 +49,7 @@ function render_clan_view($clan, $clan_name=null, $clan_long_searched=null, $sql
     $members = $sql->FetchAll(
         "SELECT uname, clan, clan_long_name, level, days 
             FROM players 
-            WHERE $search AND days<60 AND confirmed = 1 order by level desc");
+            WHERE $search AND confirmed = 1 order by level desc");
     $max_list = $sql->FetchAll(
         "SELECT max(level) as max 
         FROM players WHERE $search AND confirmed = 1");
