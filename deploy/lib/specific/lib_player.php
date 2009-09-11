@@ -284,9 +284,14 @@ function render_item_use_on_another($target, $sql){
     <input type=\"submit\" value=\"Use\" class=\"formButton\">\n
     <select id=\"item\" name=\"item\">\n";
     $res .= render_inventory_options($username, $sql);
-    $res .= "      </select>\n
-        <input id=\"give\" type=\"submit\" value=\"Give\" name=\"give\" class=\"formButton\">\n
-    </form>\n";
+    $res .= "</select>";
+    $targets_clan = getClan($target);
+    if($targets_clan && $targets_clan == getClan($username)){
+        // Only allow giving items within the same clan.
+        $res .= "
+            <input id=\"give\" type=\"submit\" value=\"Give\" name=\"give\" class=\"formButton\">\n";
+    }
+    $res .= "</form>\n";
     return $res;
 }
 
