@@ -297,7 +297,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			// *** Decreases the item amount by 1.
 
 			// Unstealth
-			if ($item->isCovert() && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
+			if (!$item->isCovert() && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
 				subtractStatus($username,STEALTH);
 				echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
 			}
