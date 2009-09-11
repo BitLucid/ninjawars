@@ -15,6 +15,7 @@ Kappa random encounter as a money source? Tengu random encounter useful for ???
 And random encounter generator to javascript and internal php that cause random encounters when the two systems match up?
 Make quest table for holding quest statuses.
 Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general, using a quests database.
+Make giving items clan (done) and to newbies (based on existing play time and level).
 // TODO: Put player-led multi-checking into play.
 
 UI:

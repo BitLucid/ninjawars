@@ -46,7 +46,8 @@
         </a></li>{/if}
 </ul>
 
-
+<!-- Scripts with actual content are hated with smarty-like templates -->
+<script type='text/javascript' src='{$JS_ROOT}textAreaLimits.js'></script>
 
 <form id="profile-edit" action="stats.php" method="post">
     <div>
@@ -55,7 +56,7 @@
     {$profile_editable}
     </textarea>
     </div>
-    <input type='submit' value='Change Profile' class='formButton'> (400 Character limit)
+    <input type='submit' value='Change Profile' class='formButton'> (<span id='characters-left'>{$profile_max_length} Character Limit</span>)
     </div>
 </form>
 

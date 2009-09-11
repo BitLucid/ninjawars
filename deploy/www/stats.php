@@ -28,6 +28,7 @@ $username = get_username();
 $player = get_player_info();
 $confirm_delete = false;
 $profile_changed = false;
+$profile_max_length = 500; // Should match the limit in limitStatChars.js
 
 $delete_attempts = (SESSION::is_set('delete_attempts')?SESSION::get('delete_attempts') : null);
 
@@ -46,6 +47,7 @@ if ($deleteAccount) {
     	}
 	}
 } else if ($changeprofile == 1) {
+    // Limit the profile length.
 	if ($newprofile != "") {
 		$sql->Update("UPDATE players SET messages = '".sql($newprofile)."' WHERE uname = '".sql($username)."'");
 		$affected_rows = $sql->a_rows;
@@ -78,8 +80,10 @@ $parts = array(
     'profile_display' => $profile_display, // use out()
     'level_and_cat' => $level_and_cat,
     'delete_attempts' => $delete_attempts,
+    'profile_max_length' => $profile_max_length,
     'SUPPORT_EMAIL' => SUPPORT_EMAIL,
     'WEB_ROOT' => WEB_ROOT,
+    'JS_ROOT' => JS_ROOT
 );
 echo render_template("stats.tpl", $parts);
 
