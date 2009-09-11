@@ -231,7 +231,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 			if ($critical_failure > 7) {// *** If the critical failure rate wasn't hit.
 				if ($target_turns >= 5) {
-					$turns_decrease = rand(2, 6);
+					$turns_decrease = rand(2, 5);
 
 					subtractTurns($target, $turns_decrease);
 					addTurns($username, $turns_decrease);
