@@ -6,6 +6,7 @@ $page_title = "Your Skills";
 
 include SERVER_ROOT."interface/header.php";
 require_once(LIB_ROOT."specific/lib_status.php"); // statuses for quickstats
+require_once(LIB_ROOT."specific/lib_player.php"); // Player info display pieces.
 ?>
 
 <span class="brownHeading">Skills</span>
@@ -23,7 +24,7 @@ $status_array = getStatus($username);
 
 $row = $sql->data;
 echo "<p>You are a level $level, $class Ninja.</p>\n";
-$status_output_list = render_status_list($status_array, $username);
+$status_output_list = render_status_section();
 echo "<p>Your status is: ".$status_output_list."</p>";
 echo "<div id='skills-list'>";
 $no_skills = true;
