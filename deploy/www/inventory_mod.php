@@ -222,7 +222,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$result         = "lose ".(-1*$turns_change)." turns";
 					subtractTurns($target, $turns_change);
 					$victim_alive = true;
-				} else if ($item->getTurnChange > 0) {
+				} else if ($item->getTurnChange() > 0) {
 					$turns_change = $item->getTurnChange();
 					$result         = "gain $turns_change turns";
 					changeTurns($target, $turns_change);
