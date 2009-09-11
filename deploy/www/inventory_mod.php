@@ -211,6 +211,16 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				if ($item->getTargetDamage() > 0) {
 					$result        = "lose ".$item->getTargetDamage()." HP";
 					$victim_alive  = subtractHealth($target, $item->getTargetDamage());
+				} else if ($item === $stealthScroll) {
+					addStatus($target, STEALTH);
+					echo "<br>$target is now Stealthed.<br>\n";
+					$result = false;
+					$victim_alive = true;
+				} else if ($item === $dimMak) {
+					setHealth($target,0);
+					$victim_alive = false;
+					$result = "be drained of your life-force and die!";
+					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 				} else if ($item->getTurnChange() <= 0) {
 
 					$turns_change = $item->getTurnChange();
@@ -227,16 +237,6 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$result         = "gain $turns_change turns";
 					changeTurns($target, $turns_change);
 					$victim_alive = true;
-				} else if ($item === $stealthScroll) {
-					addStatus($target, STEALTH);
-					echo "<br>$target is now Stealthed.<br>\n";
-					$result = false;
-					$victim_alive = true;
-				} else if ($item === $dimMak) {
-					setHealth($target,0);
-					$victim_alive = false;
-					$result = "be drained of your life-force and die!";
-					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 				}
 			}
 
@@ -244,6 +244,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				// *** Message to display based on item type ***
 				if ($item->getTargetDamage() > 0) {
 					echo "$target takes {$item->getTargetDamage()} damage from your attack!<br><br>\n";
+				} else if ($item === $dimMak) {
+					echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 				} else if ($turns_change <= 0) {
 					echo "$target's turns reduced by $turns_change.<br>\n";
 					if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
@@ -251,8 +253,6 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					}
 				} else if ($turns_change > 0) {
 					echo "$target's turns increased by $turns_change.<br>\n";
-				} else if ($item === $dimMak) {
-					echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 				}
 
 				if (!$victim_alive) { // Target was killed by the item.
