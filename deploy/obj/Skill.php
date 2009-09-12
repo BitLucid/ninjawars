@@ -62,7 +62,7 @@ class Skill
 
 	function getTurnCost($type)
 	{
-		$skillsTypeToTurns = array('cold steal' => 2, 'ice bolt' => 3, 'sight' => 2,
+		$skillsTypeToTurns = array('cold steal' => 2, 'ice bolt' => 3, 'sight' => 1,
 		 'deflect' => 4, 'blaze' => 4, 'duel' => 2, 'attack' => 1, 'fire bolt' => 3,
 		  'poison touch' => 1, 'stealth' => 2, 'unstealth' => 0, 'steal' => 1);
 		 $res = 1; // default
