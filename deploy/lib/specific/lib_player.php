@@ -102,14 +102,6 @@ function render_class_section($class){
     </span>";
 }
 
-function render_status_section(){
-    $res = '';
-	$statuses = get_status_list();
-	if(!empty($statuses)){
-	    $res .= "<p class='player-status ninja-notice ".implode(" ", $statuses)."'>".implode(", ", $statuses)."</p>";
-	}
-	return $res;
-}
 
 function render_level_and_category($level){
     $res = '';
@@ -124,7 +116,7 @@ function render_level_and_category($level){
 // The player's stats
 // TODO: Ye gods this is begging for being cleaned up via a template.
 function display_player_stats($player_info){
-    $status = render_status_section($player_info);
+    $status = render_status_section($player_info['uname']);
 	$level_and_cat = render_level_and_category($player_info['level']);
 	$class_section = render_class_section($player_info['class']);
 	?>
