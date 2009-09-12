@@ -66,27 +66,10 @@ $health_section = render_health_section($player['health']);
 $profile_editable = $player['messages'];
 $profile_display = out($profile_editable);
 
-//var_dump($profile_editable);die();
 
-$parts = array(
-    'player' => $player,
-    'error' => $error,
-    'confirm_delete' => $confirm_delete,
-    'profile_changed' => $profile_changed,
-    'username' => $username,
-    'status_list' => $status_list,
-    'health_section' => $health_section,
-    'rank_display' => $rank_display,
-    'avatar_display' => $avatar_display,
-    'profile_editable' => $profile_editable, // Unescaped.
-    'profile_display' => $profile_display, // use out()
-    'level_and_cat' => $level_and_cat,
-    'delete_attempts' => $delete_attempts,
-    'profile_max_length' => $profile_max_length,
-    'SUPPORT_EMAIL' => SUPPORT_EMAIL,
-    'WEB_ROOT' => WEB_ROOT,
-    'JS_ROOT' => JS_ROOT
-);
+
+$parts = get_certain_vars(get_defined_vars(), array('player'));
+
 echo render_template("stats.tpl", $parts);
 
 include SERVER_ROOT."interface/footer.php";
