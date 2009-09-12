@@ -494,12 +494,6 @@ td.playerTable {
 	height: 7em;
 }
 
-.injured {
-    font-weight:bold;
-    color:red;
-    background-color:yellow;
-}
-
 body .Quickstats {
     margin-top:0;
     margin-bottom:0;
@@ -615,6 +609,19 @@ body .Quickstats {
 	font-weight:bold;
 	padding: 3px;
 }
+
+.injured, .Injured {
+    font-weight:bold;
+    color:red;
+    background-color:yellow;
+}
+
+.Frozen {
+    background-color:skyblue;
+    font-weight:italic;
+    color: red;
+}
+
 .error {
 	text-align:center;
 	color:Red;
