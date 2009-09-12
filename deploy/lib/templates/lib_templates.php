@@ -21,4 +21,31 @@ function render_template($template_name, $assign_vars=array()){
 
 	return $rendered;
 }
+
+
+
+
+/*
+ * Pulls out standard vars except arrays and objects.
+ * $var_list is get_defined_vars()
+ * $whitelist is an array with string names of arrays/objects to allow.
+ */
+function get_certain_vars($var_list, $whitelist=array())
+{
+    $non_arrays = array();
+    foreach($var_list as $loop_var_name => $loop_variable){
+        if( 
+            (!is_array($loop_variable) && !is_object($loop_variable)) 
+            || in_array($loop_var_name, $whitelist)){
+            $non_arrays[$loop_var_name] = $loop_variable;
+        }
+    }
+    $constants = get_defined_constants(true);
+    $non_arrays = $non_arrays + $constants['user'];
+    // Add in the user defined constants too.
+    return $non_arrays;
+}
+
+
+
 ?>

@@ -62,22 +62,11 @@ $header = render_html_for_header('Ninja Wars: Live By the Sword', 'main-body'.$a
 
 $version = 'NW Version 1.6.0 2009.09.06';
 
-$parts = array(
-    'header' => $header,
-    'is_logged_in' => $is_logged_in,
-    'login_error' => $login_error,
-    'is_not_logged_in' => !$is_logged_in,
-    'just_logged_out' => $just_logged_out,
-    'username' => $username,
-    'WEB_ROOT' => WEB_ROOT,
-    'IMAGE_ROOT' => IMAGE_ROOT,
-    'referrer' => $referrer,
-    'vicious_killer' => $vicious_killer,
-    'player_count' => $player_count,
-    'players_online' => $players_online,
-    'main_src' => $main_src,
-    'version' => $version,
-);
+$is_not_logged_in = !$is_logged_in;
+
+
+$parts = get_certain_vars(get_defined_vars(), array('vicious_killer'));
+
 echo render_template('index.tpl', $parts);
 // Username still exists here.
 
