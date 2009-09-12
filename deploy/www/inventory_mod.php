@@ -6,13 +6,6 @@ require_once(LIB_ROOT."specific/lib_inventory.php");
  * @package combat
  * @subpackage skill
  */
-/***********************************************
- File: inventory_mod.php
- Author: John K. Facey (NinjaLord)
- Date: Unknown
- Description: Submission page from inventory.php
-              to process results of item use
- ***********************************************/
 
 $quickstat  = "viewinv";
 $private    = true;
@@ -22,9 +15,7 @@ $page_title = "Item Usage";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Item Use</span>
-
-<br><br>
+<h1 class="brownHeading">Item Use</h1>
 
 <?php
 $link_back  = in('link_back');
@@ -70,6 +61,7 @@ if ($give == "on" || $give == "Give") {
 if ($target && $link_back == "") { $link_back = "<a href=\"player.php?player=".urlencode($target)."\">Player Detail</a>"; }
 else { $link_back = "<a href=\"inventory.php\">Inventory</a>"; }
 
+// This could probably be moved to some lib file for use in different places.
 class Item
 {
 	protected $m_name;
@@ -136,9 +128,12 @@ class Item
 		return $this->m_covert;
 	}
 }
+// Default could be an error later.
+
 
 $dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = null;
 
+// These different settings should just become an array of non-defaults somewhere else.
 if ($item == 'Dim Mak')
 {
 	$item = $dimMak = new Item('Dim Mak');
