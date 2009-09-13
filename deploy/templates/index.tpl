@@ -147,7 +147,7 @@
                 Ninjas: <img class='show-hide-icon' src='{$IMAGE_ROOT}show_and_hide.png' alt='+/-'>
               </a>
             </div>
-            <span id='ninja-count'><p>{$players_online} Online </p><p> {$player_count} Total</p></span>
+            <div id='ninja-count'><p>{$players_online} Online </p><p> {$player_count} Total</p></div>
           </div>
 
           <div id="music" class="boxes passive">
@@ -229,7 +229,7 @@
               </a>
             </div>
             <div id="quickstats-and-switch-stats">
-              <div class="centered">
+              <div class="centered quickstats-container">
                 <a href="quickstats.php" target="quickstats">Player</a> 
                 | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
               </div>

@@ -1,3 +1,10 @@
+/* Someday I should probably just put the blueprint css into play. */
+
+
+html {
+    margin:0;
+    padding:0;
+}
 body {
 	/*font-family: <ideal>, <alternative>, <common>, <generic>;*/
 	/*font-family: Arial, Helvetica, sans-serif;*/
@@ -12,6 +19,8 @@ body {
 	background-color: black; /* Required to deal with the ie bug. */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
+	margin:0;
+	padding:0;
 }
 
 body .random-background-1{
@@ -275,18 +284,18 @@ td.playerTable {
 
 /* COLUMNS */
 #leftColumn {
-	 width:9%;
+	 width:10%;
 	 float:left;
 	 /*padding-left:10px;*/
 }
 #centerColumn {
-	 width:69%;
+	 width:65%;
 	 float:left;
 	 min-height:600px;
 	 height:100%;
 }
 #rightColumn {
-	 width:20%;
+	 width:25%;
 	 float:left;
 }
 
@@ -489,14 +498,27 @@ td.playerTable {
     margin-bottom:0.5em;
 }
 
-#quickstats {
-	width: 100%;
-	height: 7em;
+.quickstats{
+    margin: 0;
 }
 
-body .Quickstats {
-    margin-top:0;
-    margin-bottom:0;
+#quickstats {
+	width: 100%;
+	height: 6em;
+}
+
+#quickstats-and-switch-stats .centered{
+    margin-bottom:10px;
+}
+
+table .quickstats{
+    margin-top:8px;
+    margin-bottom:8px;
+}
+
+/*Quickstats styles*/
+.quickstats td{
+	background-color:black;
 }
 
 .main-iframe { /* class for the main iframe */
@@ -523,6 +545,10 @@ body .Quickstats {
 
 #combat-link {
     font-size: 1.2em;
+}
+
+#ninja-count p{
+    margin:0;
 }
 
 /* End of Index page stuff */
@@ -646,19 +672,6 @@ body .Quickstats {
 .notice a, .informational a{
 	color:Blue;
 	font-family: Times, inherit;
-}
-
-/*Quickstats styles*/
-.quickstats td{
-	background-color:black;
-}
-
-table .player-stats{
-	border:thin solid blue;
-}
-
-table .inventory{
-	border:thick solid red;
 }
 
 /*List all players and player profile styles*/
