@@ -19,112 +19,27 @@ $level    = $players_level;
 $class    = $players_class;
 $bounty   = $players_bounty;
 $status   = $players_status;  //The status variable is an array, of course.
+$username = get_username();
 
 $status_output_list = render_status_list();
 
 $health_section = render_health_section($health);
 
+$viewinv = $command == 'viewinv'? true : false;
 
-if ($command != "viewinv") {
-  echo "<table style=\"border: 0;\" class='quickstats player-stats'>\n";
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Health: \n";
-  echo "  </td>\n";
+$sql->Query("SELECT item, amount FROM inventory WHERE owner = '".sql($username)."' ORDER BY item");
 
-  echo "  <td>\n";
-  echo    $health_section;
+$items_section = '';
 
-  echo "  </td>\n";
-  echo "</tr>\n";
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Status: \n";
-  echo "  </td>\n";
-
-  echo "  <td>\n";
-
-	echo $status_output_list;
-
-
-
-  echo "  </td>\n";
-  echo "</tr>\n";
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Turns: \n";
-  echo "  </td>\n";
-
-  echo "  <td>\n";
-  echo    $turns."\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Gold: \n";
-  echo "  </td>\n";
-
-  echo "  <td>\n";
-  echo    $gold."\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Bounty: \n";
-  echo "  </td>\n";
-
-  echo "  <td>\n";
-  echo    $bounty."\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-
-  /*Comment out mail to speed up quickstats.
-  $count = $sql->QueryItem("SELECT count(send_to) FROM mail WHERE send_to = '".$_SESSION['username']."' ");
-  echo "<tr>\n";
-  echo "  <td>\n";
-  echo "  Mail: \n";
-  echo "  </td>\n";
-  echo "  <td>\n";
-  echo    $count."<br>\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
-  */
-
-  echo "</table>\n";
-}
-else if ($command == "viewinv")
-{
-	$sql->Query("SELECT item, amount FROM inventory WHERE owner = '".$_SESSION['username']."' ORDER BY item");
-
-	echo "    <table style=\"border: 0;\" class='quickstats inventory'>\n";
-
-	foreach($sql->FetchAll() AS $loopItem)
-	{
-		echo "      <tr>\n";
-		echo "        <td>\n";
-		echo "          ".$loopItem['item'].": \n";
-		echo "        </td>\n";
-		echo "        <td>\n";
-		echo "          ".$loopItem['amount']."<br>\n";
-		echo "        </td>\n";
-		echo "      </tr>\n";
-	}
-
-	echo "      <tr>\n";
-	echo "        <td>\n";
-	echo "          Gold: \n";
-	echo "        </td>\n";
-	echo "        <td>\n";
-	echo "          $players_gold<br>\n";
-	echo "        </td>\n";
-	echo "      </tr>\n";
-	echo "    </table>\n";
+foreach($sql->FetchAll() AS $loopItem){
+    $items_section .= "
+	          <tr><td> {$loopItem['item']}: </td>
+	          <td> {$loopItem['amount']}</td></tr>\n";
 }
 
-// Write out a function call to update the login-bar's health display.
-echo "<script language='javascript' type='text/javascript'>
-        updateHealthBar('$players_health');
-      </script>";
+$parts = get_certain_vars(get_defined_vars()); // Pull current flat vars into the template.
+
+echo render_template('quickstats.tpl', $parts);
 
 if(!$section_only){
     ?>
