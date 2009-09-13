@@ -17,6 +17,7 @@ Make quest table for holding quest statuses.
 Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general, using a quests database.
 Make giving items clan (done) and to newbies (based on existing play time and level).
 // TODO: Put player-led multi-checking into play.
+// TODO: Put periodic but constitutive captcha checks into play.
 
 UI:
 Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now,

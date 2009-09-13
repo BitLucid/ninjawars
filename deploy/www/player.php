@@ -52,8 +52,9 @@ $attack_error = $AttackLegal->getError();
 if ($player_info) {
 	echo "<div class='player-info'>";
 
-	display_ranking_link($player_info, $linkbackpage, $sql);
-	display_player_stats($player_info);
+    echo render_ranking_link($player_info, $linkbackpage, $sql);
+	echo render_player_stats($player_info);
+	echo render_avatar_section($target_player_obj);
 
 	echo "<table id='player-profile-table' align='center'>\n";
     echo "  <tr>\n";
@@ -129,7 +130,7 @@ if ($player_info) {
 	echo "</table>\n";
 
 	// Alive or dead
-	display_player_activity($player_info);
+	echo render_player_activity($player_info);
 
 	if($player_info['uname'] != get_username()){
     	// Allows the viewer to set bounty on a player.
@@ -145,13 +146,11 @@ if ($player_info) {
     }
 	// Player clan and clan members
 
-	display_player_clan($player_info, $viewers_clan);
+	echo render_player_clan($player_info, $viewers_clan);
 
 	// Player profile message
 
 	display_player_profile($player_info);
-
-	echo render_avatar_section($target_player_obj);
 
 	echo "</div><!-- End player-info -->";
 }

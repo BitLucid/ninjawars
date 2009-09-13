@@ -638,8 +638,21 @@ table .quickstats{
 
 .injured, .Injured {
     font-weight:bold;
-    color:red;
-    background-color:yellow;
+    color:black;
+    background-color:#c75600;
+}
+
+.clan-members .injured{
+    background-color:maroon;
+    color:black;
+}
+
+.clan-members .injured a:link{
+    color: black;
+}
+
+.clan-members .injured a:visited{
+    color: black;
 }
 
 .Frozen {

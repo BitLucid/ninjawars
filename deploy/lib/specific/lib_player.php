@@ -114,40 +114,39 @@ function render_level_and_category($level){
 
 
 // The player's stats
-// TODO: Ye gods this is begging for being cleaned up via a template.
-function display_player_stats($player_info){
-    $status = render_status_section($player_info['uname']);
-	$level_and_cat = render_level_and_category($player_info['level']);
-	$class_section = render_class_section($player_info['class']);
-	?>
-		<div class='player-name'><?php echo $player_info['uname']; ?></div>
-		<div class='player-titles centered'>
-            <?php echo $class_section; ?>
-			<?php echo $level_and_cat; ?>
-			<?php echo $status; ?>
-		</div>
-	<?php
+function render_player_stats($player_info){
+	$res = "
+		<div class='player-name'>{$player_info['uname']}</div>
+		<div class='player-titles centered'>";
+	$res .= render_class_section($player_info['class']);
+	$res .= render_level_and_category($player_info['level']);
+	$res .= render_status_section($player_info['uname']);
+	$res .= "</div>";
+	return $res;
 }
 
 
 // Player activity and events information.
-function display_player_activity($player_info){
+function render_player_activity($player_info){
 	$days = "Today";
 	if($player_info['days']){
 	    $days = $player_info['days']." days ago";
 	}
 	$bounty = $player_info['bounty'];
-	?>
+	$bounty_section = $bounty? " - <span class='player-bounty'>$bounty bounty</span>" : '';
+	$res = <<<HEREDOC
 		<div class='player-stats centered'>
 			<!-- Will display as floats horizontally -->
-			<span class='player-last-active'>Last logged in <?php echo $days;?></span>
-			<?php if($bounty){ ?> - <span class='player-bounty'><?php echo $bounty; ?> bounty</span><?php } ?>
+			<span class='player-last-active'>Last logged in $days</span>
+			$bounty_section
 		</div>
-	<?php
+HEREDOC;
+	return $res;
 }
 
 // Display the clan name and members.
-function display_player_clan($player_info, $viewers_clan=null){
+function render_player_clan($player_info, $viewers_clan=null){
+    ob_start();
 	// Display a message if they're the same clan.
 	$same_clan = false;
 	if ( $player_info['uname'] != get_username()
@@ -173,27 +172,35 @@ function display_player_clan($player_info, $viewers_clan=null){
 			    <a href='clan.php?command=view&amp;clan_name=<?php echo $clan;?>'><?php echo$clan_link;?></a>
 			</p>
 			<div class='clan-members centered'>
-			    <?php display_clan_members($player_info['clan']); ?>
+			    <?php echo render_clan_members($player_info['clan']); ?>
 			</div>
 		</div>
 		<?php
 	}
+	$res = ob_get_contents();
+	ob_end_clean();
+	return $res;
 }
 
 // Straight list of clan members
-function display_clan_members($clan=null, $limit=30){
+function render_clan_members($clan=null, $limit=30){
+    ob_start();
     if($clan){
-        $where = "where clan = '$clan' and health>0 and confirmed=1";
-        $sel = "select uname, player_id from players $where order by level desc limit $limit";
+        $where = "where clan = '$clan' and confirmed=1";
+        $sel = "select uname, player_id, health from players $where order by level desc limit $limit";
         $sql = new DBAccess();
-        $res = $sql->QueryAssoc($sel);
+        $ninjas = $sql->QueryAssoc($sel);
         ?>
         <div class='clan-members'>
             <div class='subtitle'>Clan members</div>
             <ul>
                 <?php
-                foreach($res as $ninja){
-                    echo "<li class='clan-member'>
+                foreach($ninjas as $ninja){
+                    $added_class = '';
+                    if($ninja['health']<1){
+                        $added_class = ' injured';
+                    }
+                    echo "<li class='clan-member$added_class'>
                             <a href='player.php?target_id=".$ninja['player_id']."'>
                                 ".$ninja['uname']."
                             </a>
@@ -203,6 +210,9 @@ function display_clan_members($clan=null, $limit=30){
         </div>
         <?php
     }
+    $res = ob_get_contents();
+    ob_end_clean();
+    return $res;
 }
 
 function display_player_profile($player_info){
@@ -217,11 +227,12 @@ function display_player_profile($player_info){
 }
 
 
-function display_ranking_link($player_info, $linkbackpage, $sql){
+function render_ranking_link($player_info, $linkbackpage, $sql){
 	$rank_spot = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".sql($player_info['uname'])."'");
-	echo "    <div class='player-ranking-linkback'>";
-	echo "      <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=dead&amp;page=$linkbackpage'>&lt; Go to rank $rank_spot in the ninja list</a>\n";
-	echo "    </div>";
+	$res = "    <div class='player-ranking-linkback'>
+              <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=dead&amp;page=$linkbackpage'>&lt; Go to rank $rank_spot in the ninja list</a>
+        </div>";
+    return $res;
 }
 
 
