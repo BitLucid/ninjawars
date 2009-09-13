@@ -25,7 +25,7 @@
 	<!-- Google jquery lib -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 	<!-- Google Analytics -->
-	<script type="text/javascript" src=http://www.google-analytics.com/ga.js'></script>
+	<script type="text/javascript" src='http://www.google-analytics.com/ga.js'></script>
 	<!-- The google-analytics code that gets run is in nw.js -->
     {/if}
     <!-- All the global ninjawars javascript -->
