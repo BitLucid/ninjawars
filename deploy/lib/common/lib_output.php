@@ -10,20 +10,35 @@ function get_indefinite_article($p_noun) {
 
 // For filtering user text/messages for output.
 function out($dirty, $filter_method='toHtml', $echo=false, $links=true){
-    if($filter_method=='toHtml'){
+    if ($filter_method=='toHtml') {
         $res = htmlentities($dirty);
     } else {
     	$filter = new Filter();
     	$res = $filter->$filter_method($dirty);
     }
-    if($links){ // Render http:// sections as links.
+
+    if ($links){ // Render http:// sections as links.
         $res = replace_urls($res);
     }
-    if(!$echo){
+
+	$res = markdown($res);
+
+    if (!$echo) {
         return $res;
     }
-    // else
+
     echo $res;
+}
+
+function markdownCallback($p_matches)
+{
+	return '<a href="'.$p_matches[1].'">'.$p_matches[2].'</a>';	// *** was going to htmlentities here, then realized we do so in out(). Be aware of this ***
+}
+
+function markdown($p_input)
+{
+	$pattern = "/\[href:([^\[\]]+)\|([^\[\]]+)\]/";
+	return preg_replace_callback($pattern, "markdownCallback", $p_input);
 }
 
 // Change this to default to toHtml.
@@ -35,7 +50,7 @@ function sql($dirty){
 
 // Replaces occurances of http://whatever with links (in blank tab).
 function replace_urls($string, $image=true){
-    $image = ($image? " <img class='extLink' alt='' src='".IMAGE_ROOT."externalLinkGraphic.gif'/>" : '');
+    $image = ($image ? " <img class='extLink' alt='' src='".IMAGE_ROOT."externalLinkGraphic.gif'/>" : '');
     $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
     $port = "(:\d{1,})?";
     $path = "(\/[^?<>\#\"\s]+)?";

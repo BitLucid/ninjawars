@@ -837,20 +837,20 @@ function renameClan($clan,$new_name) {
   return $new_name;
 }
 
-function invitePlayer($who,$clan) {
-	global $sql,$status_array;
+function invitePlayer($who, $clan) {
+	global $sql, $status_array;
 
-  $current_clan = $sql->QueryItem("SELECT clan FROM players WHERE uname = '$who'");
-  $player_is_confirmed = $sql->QueryItem("SELECT confirmed FROM players WHERE uname = '$who'");
+	$current_clan = $sql->QueryItem("SELECT clan FROM players WHERE uname = '$who'");
+	$player_is_confirmed = $sql->QueryItem("SELECT confirmed FROM players WHERE uname = '$who'");
 
 	if ($current_clan == "" && $player_is_confirmed == 1 && !$status_array['Invited']) {
-		$invite_msg = "$clan has invited you into their clan.  To accept, choose their clan <b>".getClanLongName($clan)."</b> on the <a href=\"clan.php?command=join\">clan joining page.</a>";
+		$invite_msg = "$clan has invited you into their clan.  To accept, choose their clan ".getClanLongName($clan)." on the [href:clan.php?command=join|clan joining page.]";
 		sendMessage($clan,$who,$invite_msg);
 		addStatus($who,INVITED);
 		$failure_reason = "None.";
 		return $failure_reason;
 	}
-    else if ($player_is_confirmed != 1)
+	else if ($player_is_confirmed != 1)
 	{
 		$failure_reason = "That player name does not exist.";
 		return $failure_reason;
@@ -862,8 +862,8 @@ function invitePlayer($who,$clan) {
 	}
 	else if ($status_array['Invited'])
 	{
-	  $failure_reason = "That player has already been Invited into a Clan.";
-	  return $failure_reason;
+		$failure_reason = "That player has already been Invited into a Clan.";
+		return $failure_reason;
 	}
 	else
 	{
