@@ -67,12 +67,9 @@ if ($player_info) {
 	    $class = getClass($username);
 
 		$is_own_profile = ($username == $player_info['uname']? true : false);
-		if ($is_own_profile)
-		{
+		if ($is_own_profile){
 			echo "<td><div class='ninja-notice'>This is you.</div></td>";
-		}
-		else
-		{
+		} else {
 			// Attack or Duel
 		    echo "<td colspan=\"2\">\n";
 		    echo "  <table id='player-profile-attack' align=\"left\">\n";

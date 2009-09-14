@@ -20,13 +20,9 @@ $class    = $players_class;
 $bounty   = $players_bounty;
 $status   = $players_status;  //The status variable is an array, of course.
 
-$low_health_css = '';
-if($health<80){
-    // Make health display red if it goes below 80.
-    $low_health_css = " style='color:red;font-weight:bold;'";
-}
+$status_output_list = render_status_list();
 
-
+$health_section = render_health_section($health);
 
 
 if ($command != "viewinv") {
@@ -37,7 +33,7 @@ if ($command != "viewinv") {
   echo "  </td>\n";
 
   echo "  <td>\n";
-  echo    "<span ".$low_health_css.">".$health."</span>\n";
+  echo    $health_section;
 
   echo "  </td>\n";
   echo "</tr>\n";
@@ -48,7 +44,6 @@ if ($command != "viewinv") {
 
   echo "  <td>\n";
 
-	$status_output_list = render_status_list($status_array, $username);
 	echo $status_output_list;
 
 

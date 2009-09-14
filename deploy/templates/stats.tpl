@@ -31,7 +31,7 @@
 <div>Avatar: {if $avatar_display}{$avatar_display}{else} (get one for your email at <a href='http://gravatar.com'>gravatar.com</a>){/if}</div>
 {$status_list}
 <ul id='player-info' class='player-info'>
-    <li>Health: {$player.health}</li>
+    <li>Health: {$health_section}</li>
     <li>Level: {$level_and_cat}</li>
     <li>Class: {$player.class}</li>
     <li>Strength: {$player.strength}</li>

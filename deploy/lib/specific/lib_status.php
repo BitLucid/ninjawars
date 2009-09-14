@@ -9,25 +9,20 @@
  * @subpackage status
  */
 
-function render_status_list($statuses=null, $target=null) {
-    $states = get_status_list($statuses, $target);
-	$result = implode(", ", $states);
-	return $result;
-}
-
-function get_status_list($statuses=null, $target=null){
+function get_status_list($target=null){
 	$states = array();
 	$result = '';
-	$target = isset($target)? $target : (isset($SESSION['username']) ? $SESSION['username'] : null);
-	if (!$statuses) {
-		$statuses = getStatus($target);
-	}
+	$target = isset($target)? $target : get_username(); 
+	// Default to showing own status.
+	$statuses = getStatus($target);
 	$health = getHealth($target);
 
-	if ($health == 0) { $states[] = "Dead"; }
-	else { // *** Other statuses only display if not dead.
-		if ($health < 80) { $states[] = "Injured"; }
-		else {
+	if ($health < 1) {
+	    $states[] = "Dead"; 
+	} else { // *** Other statuses only display if not dead.
+		if ($health < 80) {
+		    $states[] = "Injured"; 
+		} else {
 			$states[] = "Healthy";
 		}
 		if ($statuses['Stealth']) { $states[] = "Stealthed"; }
@@ -36,5 +31,27 @@ function get_status_list($statuses=null, $target=null){
 	}
 	return $states;
 }
+
+
+function render_status_list($target=null) {
+    $states = get_status_list($target);
+	$result = implode(", ", $states);
+	return $result;
+}
+
+function render_status_section($target=null){
+    $res = '';
+	$statuses = get_status_list($target);
+	if(!empty($statuses)){
+	    $res .= "<p class='player-status ninja-notice ".implode(" ", $statuses)."'>".implode(", ", $statuses)."</p>";
+	}
+	return $res;
+}
+
+
+function render_health_section($health){
+    return "<span ".($health<80? "class='injured'":'')."> $health </span>";
+}
+
 
 ?>

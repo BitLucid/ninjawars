@@ -25,7 +25,7 @@ $stealth = in('stealth');
 $skillListObj = new Skill();
 $poisonMaximum   = 100; // *** Before level-based addition.
 $poisonMinimum   = 1;
-$poisonTurnCost  = $skillListObj->getTurnCost('poison touch');
+$poisonTurnCost  = $skillListObj->getTurnCost('poison touch'); // wut
 $turn_cost       = $skillListObj->getTurnCost(strtolower($command));
 $ignores_stealth = $skillListObj->getIgnoreStealth($command);
 $self_use        = $skillListObj->getSelfUse($command);
@@ -84,9 +84,10 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		$covert    = true;
 
 		if ($starting_turns >= $turn_cost) {
-			$msg = "You have had sight cast on you by $attacker_id at $today";
-			sendMessage($attacker_id, $target, $msg);
-			$username_status = subtractStatus($target, STEALTH);
+			//$msg = "You have had sight cast on you by $attacker_id at $today";
+			//sendMessage($attacker_id, $target, $msg);
+			//$username_status = subtractStatus($target, STEALTH);
+			// Sight will no longer break stealth.
 
 			$sql->Query("SELECT uname, class, health, strength, gold, kills, turns, level FROM players WHERE uname='$target'");
 
@@ -123,6 +124,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		} else {
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
+			// Ye gods this repeated code needs to be made into a single check.
 		}
 	} elseif  ($command == "Steal") {
 		$covert = true;

@@ -125,7 +125,7 @@ if (getTurns($username) > 0) {
 
 					if ($ninja_health < 1) {
 						echo "<br>The Samurai has slain you!<br>\n";
-						echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";
+						/*echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";*/
 					}
 				}
 
