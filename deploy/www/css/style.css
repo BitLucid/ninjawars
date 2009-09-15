@@ -896,13 +896,28 @@ table .quickstats{
 
 /* Staff Page */
 
+body.ninjawars-staff{
+    margin: 10px 30px 10px 30px;
+}
+
 .developer{
-	border:thin darkred solid;
-	margin-top: 1em;
+	border-left:thin darkred solid;
+	border-top:thin darkred solid;
+	margin: .5em 0 .5em 0;
+	padding: .3em 0 .5em .2em;
 }
 
 .developer .social-networks {
 	color:#cc3333;font-weight:bold;
+}
+
+.developer .developer-image{
+    float:right;
+    text-align: bottom;
+}
+
+.other-credits ul{
+    list-style-type:square;
 }
 
 #latest-commit-section{
@@ -910,7 +925,10 @@ table .quickstats{
 }
 
 #latest-commit{
-    color:green;
+    border-left: thin green dashed;
+    border-bottom: thin green dashed;
+    padding-left: .5em;
+    color: greenYellow;
 }
 
 #page-404{
@@ -929,4 +947,6 @@ table .quickstats{
 #create-a-ninja{
     font-size:2em;
 }
+
+
 
