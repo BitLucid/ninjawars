@@ -7,7 +7,7 @@
 <h3><span id="ninjawars-subtitle">Ninja Wars</span>
      is an online game where you battle players all over the world.
      <a href="about.php">(read more)</a></h3>
-<p><a href="signup.php">Create a Ninja</a> or log in above!<p>
+<p id='create-a-ninja'><a href="signup.php">Create a Ninja</a> or log in above!<p>
 <p>
 Visit the <a href="about.php">FAQ</a> to learn more about Ninjawars.<br>
 Post messages to other players on the <a href="village.php">Chat Board</a>

@@ -32,6 +32,7 @@ Stop showing clans that don't have at least one member.
 // TODO: make clans links in the player list.
 // TODO: Limit quickstats js refresh by last-occurred.
 // TODO: Give the "No such ninja" message (e.g. when linking from the ---- chat) a link back to a sane part of the list.
+Add newbie landing page.
 
 Levelling:
 Auto-levelling checks instead of kills banking.
