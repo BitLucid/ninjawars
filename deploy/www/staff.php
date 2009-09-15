@@ -7,14 +7,9 @@ $quickstat  = false;
 include SERVER_ROOT."interface/header.php";
 // TODO: Add a switching system so that it displays further information in an expandable way.
 ?>
+<script type='text/javascript' src='<?php echo JS_ROOT; ?>staffPage.js'>
 <script type='text/javascript'>
-$(document).ready(function() {
-	$('.developer-info').hide();
-	$('.expand-link').click(function () {
-		$('.developer-info').slideDown();
-		$('.expand-link').hide();
-	});
-});
+
 </script>
 
 <p class="title">Staff</p>
@@ -83,6 +78,11 @@ $(document).ready(function() {
 
   <p>
     <a target='_blank' href="http://github.com/tchalvak/ninjawars/tree/master">http://github.com/tchalvak/ninjawars/tree/master</a>
+    <p id='latest-commit-section'>
+    <span id='latest-commit-title'>Latest Commit:</span>
+    <span id='latest-commit'>
+    </span>
+    </p>
   </p>
 
   <p>Want to get involved?  You can hack away at the code on github and suggest changes or ask any questions on the forum.</p>

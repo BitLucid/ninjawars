@@ -905,6 +905,14 @@ table .quickstats{
 	color:#cc3333;font-weight:bold;
 }
 
+#latest-commit-section{
+    font-size:1.5em;
+}
+
+#latest-commit{
+    color:green;
+}
+
 #page-404{
     font-size: 1.5em;
 }
@@ -915,4 +923,3 @@ table .quickstats{
 #page-404 #support-email{
     font-size: .8em;
 }
-
