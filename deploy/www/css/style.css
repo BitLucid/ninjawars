@@ -925,7 +925,6 @@ body.ninjawars-staff{
 }
 
 #latest-commit{
-    border-left: thin green dashed;
     border-bottom: thin green dashed;
     padding-left: .5em;
     color: greenYellow;
