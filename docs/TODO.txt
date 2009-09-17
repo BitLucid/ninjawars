@@ -55,3 +55,10 @@ Make sure that the other databases are pared down to allow ease of backup.
 Security:
 // TODO: Make default filtering be toWord, and change item-related in()s to deal with their multi word inputs.
 
+
+Incorporate "Your world of text":
+http://ianab.com/yourworld/
+http://www.chromeexperiments.com/detail/your-world-of-text/
+
+Bugs:
+See errors.txt
