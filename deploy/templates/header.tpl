@@ -1,13 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<meta name="keywords" content="ninjawars, ninja wars, ninja, samurai, free online game,
-	free games, this here is not your mommas naruto game">
-	<meta name="description" content="Ninjawars: battle other ninja for survival.">
+	<meta name="keywords" content="ninjawars, ninja wars, ninjas, samurai, free online games, {$title}">
+	<meta name="author" content="ninjawars.net">
+	<meta name="description" content="Ninjawars: Battle other ninja for your survival.  Create a ninja and use skills or magic to kill samurai, the emperor's guards, or other ninja from rival clans.">
 
-	<title>{$title}</title>
+	<title>Ninjawars: {$title}</title>
 
     <link rel="stylesheet" type="text/css" href="{$WEB_ROOT}css/style.css">
 	<!--[if lte IE 6]>
