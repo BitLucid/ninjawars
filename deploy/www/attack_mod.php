@@ -109,7 +109,7 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 			sendMessage($attackee,$username,$attacker_msg);
 			runBountyExchange($username, $attackee); // *** Determines the bounty for normal attacking. ***
 
-			echo "<div class='ninja-notice'>You have slain $attackee with a dastardly attack!</div>\n";
+			echo "You have slain $attackee with a dastardly attack!\n";
 			echo "You do not receive recognition for this kill.<br>\n";
 			echo "<hr>\n";
 		} else {	// *** if damage from stealth only hurts the target. ***
