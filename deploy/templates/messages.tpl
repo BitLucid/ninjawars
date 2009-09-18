@@ -2,21 +2,25 @@
 
 <!-- Clan send box here -->
 
-{if $clan_send}
 
 
-
+{if $has_clan}
  <div id='clan-mail-section'>
-  <form id='clan_msg' action='mail_send.php' method='get' name='clan_msg'>
+  <form id='clan_msg' action='messages.php' method='get' name='clan_msg'>
     <textarea id='message' name='message' class='textField'></textarea>
-    <input id='to' type='hidden' value='clansend' name='to'>
-    <input id='messenger' type='hidden' value='1' name='messenger'>
+    <input type='hidden' value='toclan' name='toclan'>
+    <input type='hidden' value='1' name='messenger'>
     <input type='submit' value='Mail Clan' class='formButton'>
   </form>
   </div>
   
   
 {/if}
+
+{if $message_sent_to}
+    <div id='message-sent-to'>Message sent to {$message_sent_to}.</div>
+{/if}
+
 
 <div id='ninja-search'>
     Find a ninja to message:
@@ -26,7 +30,7 @@
     </form>
 </div>
 
-<!-- Individual ninja search here -->
+
 
 <ul id='message-list'>
 {$message_list}

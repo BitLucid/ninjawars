@@ -967,7 +967,6 @@ body.ninjawars-staff{
 }
 
 #clan-mail-section{
-    padding: 10px;
     width: 50%;
     margin-left:auto;
     margin-right:auto;
@@ -991,3 +990,8 @@ body.ninjawars-staff{
     width:50%;
     height:3em;
 }
+
+.player-communications .FormButton{
+    display:block;
+}
+

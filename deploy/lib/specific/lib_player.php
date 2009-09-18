@@ -350,9 +350,9 @@ function display_communication($target){
     echo "  <div class='player-communications centered'>";
     echo "    <form id=\"send_mail\" action=\"mail_send.php\" method=\"get\" name=\"send_mail\">\n";
     echo "    <input id=\"to\" type=\"hidden\" name=\"to\" value=\"$target\">\n";
-    echo "    <input type=\"submit\" value=\"Send Mail\" class=\"formButton\">\n";
     echo "    <input id=\"messenger\" type=\"hidden\" value=\"1\" name=\"messenger\"><br >\n";
     echo "    <textarea name=\"message\" cols=\"20\" rows=\"2\"></textarea>\n";
+    echo "    <input type=\"submit\" value=\"Send Mail\" class=\"formButton\">\n";
     echo "    </form>\n";
     echo "  </div>";
 }

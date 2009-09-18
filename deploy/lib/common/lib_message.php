@@ -1,6 +1,6 @@
 <?php
 // For true user-to-user or user-to-clan messages as opposed to events.
-function send_user_message($from_id,$to_id,$msg) {
+function send_message($from_id,$to_id,$msg) {
   global $sql;
   $sql->Insert("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default,".sql($from_id).",".sql($to_id).",'".sql($msg)."',now())");
 }
@@ -16,12 +16,23 @@ function read_messages($to_id){
     $sql->Update("UPDATE messages set unread = 0 where send_to = '".sql($to_id)."'");
 }
 
-/* TODO: Create send to clan function 
+
 function message_to_clan($message){
     global $sql;
+    $error = null;
     $user_id = get_user_id();
-    $sql->Query("SELECT uname, player_id from players where 
-    
-}*/
+    $username = get_username();
+    $clan = getClan($username);
+    $sql->Query("SELECT player_id, uname from players where clan = '".sql($clan)."'");
+    $clan_members = $sql->fetchAll();
+    $messaged_to = '';
+    $comma = '';
+    foreach($clan_members as $loop_member){
+        send_message($user_id, $loop_member['player_id'], $message);
+        $messaged_to .= $comma.$loop_member['uname'];
+        $comma = ', ';
+    }
+    return $messaged_to;
+}
 
 ?>

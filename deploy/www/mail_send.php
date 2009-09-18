@@ -33,7 +33,7 @@ if ($messenger == 1){
 	  $resultSet = $sql->fetchAll(); // *** Store the result set.
 	  foreach($resultSet as $loopClanMember) {
         	$clan_member = $loopClanMember['uname'];
-        	send_user_message($user_id,$loopClanMember['player_id'],$message);
+        	send_message($user_id,$loopClanMember['player_id'],$message);
         	echo "Sending mail to: ".out($clan_member)."<br>\n";
         }
 		die("<br><a href=\"mail_read.php\">Go to Your Mail</a><br><br><a href=\"clan.php\">Return to Clan Options</a>\n");
@@ -41,7 +41,7 @@ if ($messenger == 1){
 
     if ($to != "clansend") {
         $message_with_identifier = $message; // Don't filter when sending.
-        send_user_message($user_id,$target_id,$message_with_identifier);
+        send_message($user_id,$target_id,$message_with_identifier);
     }
 
   echo "A messenger takes your message and will deliver your mail <br>

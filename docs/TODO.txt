@@ -35,6 +35,7 @@ Stop showing clans that don't have at least one member.
 // TODO: Limit quickstats js refresh by last-occurred.
 // TODO: Give the "No such ninja" message (e.g. when linking from the ---- chat) a link back to a sane part of the list.
 Make title display Ninjawars: <title> as opposed to just <title>
+Expand-collapse the "messages" messaging section with jQuery.
 
 Levelling:
 Auto-levelling checks instead of kills banking.
