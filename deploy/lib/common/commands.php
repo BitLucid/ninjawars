@@ -986,11 +986,7 @@ function sendMessage($from,$to,$msg,$filter=false) {
   $sql->Insert("INSERT INTO mail VALUES (default,'$from','$to','".sql($msg)."',now())");
 }
 
-// For true user-to-user or user-to-clan messages as opposed to events.
-function sendUserMessage($from_id,$to_id,$msg) {
-  global $sql;
-  $sql->Insert("INSERT INTO messages VALUES (default,".sql($from_id).",".sql($to_id).",'".sql($msg)."',now())");
-}
+// user message functions are in lib_message now.
 
 
 // ************************************

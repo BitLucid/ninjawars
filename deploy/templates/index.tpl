@@ -27,7 +27,7 @@
 {else} <!-- Displayed when logged in -->
           <div class="logged-in-bar">
             <a target="main" href="player.php?player={$username}">{$username}</a>
-            | <a target="main" href="mail_read.php">mailbox</a>
+            | <a target="main" href="messages.php">mailbox</a>
             <span id='logged-in-bar-health'> </span>
           </div>
 {/if} <!-- End of login/logged in bar. -->
@@ -107,7 +107,8 @@
               </li>
               <li><a href="skills.php" target="main">Skills</a></li>
               <li><a href="stats.php" target="main">Stats</a></li>
-              <li><a href="mail_read.php" target="main">Mail</a></li>
+              <li><a href="mail_read.php" target="main">Events</a></li>
+              <li><a href="messages.php" target="main">Mail</a></li>
             </ul>
           </div>
           <div id="places" class="boxes active">

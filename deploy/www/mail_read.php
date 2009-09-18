@@ -12,6 +12,7 @@ require_once(LIB_ROOT."specific/lib_mail.php");
 <div><a href="mail.php">Send Mail</a></div>
 
 <?php
+$user_id = get_user_id();
 $mail_list_length = in('mail_list_length', 20);
 
 // Mail deleting input.

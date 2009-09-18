@@ -17,6 +17,7 @@ $to = in('to');
 $messenger = in('messenger'); // naive spam detection attempt
 $message   = in('message', null, 'toMessage'); // Special filtering to a message.
 $username = get_username();
+$user_id = get_user_id();
 
 if ($to == "") { die("This message has no recipient.\n");}
 if ($message == "") {die("Your message was blank.\n");}
