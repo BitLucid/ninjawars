@@ -959,8 +959,35 @@ body.ninjawars-staff{
 
 
 /* User Messages Page */
+
 .message-unread{
     font-weight:bold;
     background-color:DarkSlateBlue;
     color:white;
+}
+
+#clan-mail-section{
+    padding: 10px;
+    width: 50%;
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+}
+
+.messages #ninja-search{
+    margin: 10px;
+    width:50%;
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+}
+
+#clan-mail-section form{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#clan-mail-section textarea{
+    width:50%;
+    height:3em;
 }
