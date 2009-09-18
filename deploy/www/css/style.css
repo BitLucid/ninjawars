@@ -958,4 +958,9 @@ body.ninjawars-staff{
 }
 
 
-
+/* User Messages Page */
+.message-unread{
+    font-weight:bold;
+    background-color:DarkSlateBlue;
+    color:white;
+}

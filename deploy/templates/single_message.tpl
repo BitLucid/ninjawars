@@ -1,4 +1,4 @@
 <li>
-<a href='player.php?player_id={$message.from_id}'>{$message.from}</a> 
-<span id='user-message{if !$message.read} message-read{/if}'>{$message.message}</span>
+    <a target='main' href='player.php?player_id={$message.send_from}'>{$message.from|escape}</a> 
+    <span class='user-message{if $message.unread} message-unread{/if}'>{$message.message|escape}</span>
 </li>

@@ -8,14 +8,15 @@ require_once(LIB_ROOT."specific/lib_mail.php");
 
 $user_id = get_user_id();
 
-read_messages($user_id); // mark messages as read.
-
 $messages = get_messages($user_id);
-// Handle "read" and "deletion".
+
+read_messages($user_id); // mark messages as read for next viewing.
+
+// TODO: Handle "send" and "deletion";
 $message_list = '';
 if(!empty($messages)){
-    foreach($messages as $message){
-        $message_list .= render_template('single_message.tpl', $messages);
+    foreach($messages as $loop_message){
+        $message_list .= render_template('single_message.tpl', array('message' => $loop_message));
     }
 }
 

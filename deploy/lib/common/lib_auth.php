@@ -238,7 +238,7 @@ function player_name_from_id($player_id){
 // Return the id that corresponds with a player name, if no other source is available.
 function get_user_id($name=null){
     global $sql;
-    if(!$name){
+    if($name === null){
         $name = get_username();
     }
     return $sql->QueryItem("select player_id from players where uname = '".sql($name)."'");
