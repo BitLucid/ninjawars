@@ -60,7 +60,7 @@ function replace_urls($string, $image=true){
     $port = "(:\d{1,})?";
     $path = "(\/[^?<>\#\"\s]+)?";
     $query = "(\?[^<>\#\"\s]+)?";
-    return preg_replace("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "<a target='_blank' href='$1'>$1</a>$image", $string);
+    return preg_replace("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "<a target='_blank' rel='nofollow' href='$1'>$1</a>$image", $string);
 }
 
 
