@@ -17,10 +17,7 @@
 		    </span>
 		  </td>
 		  <td class="playerCell clanCell">
-		    {$clan|escape}
-		  </td>
-		  <td class="playerCell aliveCell">
-		    {$alive}
+		    {if $clan ne "-"}<a href='clan.php?command=view&clan_long_name={$clan|escape:"url"}'>{/if}{$clan|escape}{if $clan}</a>{/if}
 		  </td>
 		  <td class='profile' style='display:none'></td>
 		</tr>

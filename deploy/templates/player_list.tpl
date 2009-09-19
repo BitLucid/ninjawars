@@ -23,7 +23,7 @@
 	<!-- Table header -->
 	<table class="playerTable outer-table">
 	  <tr class='playerTableHead'>
-		<th>Rank</th><th>Name</th><th>Level</th><th>Class</th><th>Clan</th><th>Alive</th>
+		<th>Rank</th><th>Name</th><th>Level</th><th>Class</th><th>Clan</th>
 	  </tr>
 	  <!--  Loop over and display each of the players in a table row format -->
 	  {$player_rows}
