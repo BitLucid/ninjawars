@@ -312,27 +312,27 @@ td.playerTable {
 
 
 .random-background-1{
-    background-image: url('/images/Koi_1_by_Alegion_stock.png');
+    background-image: url('/images/backgrounds/Koi_1_by_Alegion_stock.png');
     background-color: transparent;
     background-repeat: repeat-x;
 }
 .random-background-2{
-    background-image: url('/images/japanHills.jpg');
+    background-image: url('/images/backgrounds/fuji_bleu.jpg');
     background-color: transparent;
     background-repeat: repeat-x;
 }
 .random-background-3{
-    background-image: url('/images/Hokusai-fuji7.png');
+    background-image: url('/images/backgrounds/Hokusai-fuji7.png');
     background-color: transparent;
     background-repeat: repeat-x;
 }
 .random-background-4{
-    background-image: url('/images/Hokusai_wave.jpg');
+    background-image: url('/images/backgrounds/Hokusai_wave.jpg');
     background-color: transparent;
     background-repeat: repeat-x;
 }
 .random-background-5{
-    background-image: url('/images/Hokusai_fuji8.jpg');
+    background-image: url('/images/backgrounds/Hokusai_fuji8.jpg');
     background-color: transparent;
     background-repeat: repeat-x;
 }
