@@ -16,7 +16,8 @@ body {
 	/*font-size: 12px;*/
 	font-size: 80%;
 	color: DarkKhaki;
-	background-color: black; /* Required to deal with the ie bug. */
+	/*background-color: black; */
+	/* Required for the ie bug */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
 	margin:0;
@@ -311,7 +312,7 @@ td.playerTable {
 
 
 .random-background-1{
-    background-image: url('/images/Hokusai_TamaRiver.jpg');
+    background-image: url('/images/Koi_1_by_Alegion_stock.png');
     background-color: transparent;
     background-repeat: repeat-x;
 }

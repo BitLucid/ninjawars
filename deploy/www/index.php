@@ -53,7 +53,7 @@ $player_count   = $stats['player_count'];
 $players_online = $stats['players_online'];
 
 $added_body_classes = '';
-if(DEBUG){$random_background = 2;}
+if(DEBUG){$random_background = rand(1,5);}
 if($random_background){ // Add a chance of random index backgrounds!
     $added_body_classes = " random-background-$random_background"; // e.g. random-background 3
 }
