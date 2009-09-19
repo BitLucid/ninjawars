@@ -107,7 +107,7 @@
               </li>
               <li><a href="skills.php" target="main">Skills</a></li>
               <li><a href="stats.php" target="main">Stats</a></li>
-              <li><a href="mail_read.php" target="main">Events</a></li>
+              <li><a href="events.php" target="main">Events</a></li>
               <li><a href="messages.php" target="main">Mail</a></li>
             </ul>
           </div>

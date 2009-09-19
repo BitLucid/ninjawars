@@ -1,8 +1,5 @@
 <h2>Messages</h2>
 
-<!-- Clan send box here -->
-
-
 
 {if $has_clan}
  <div id='clan-mail-section'>

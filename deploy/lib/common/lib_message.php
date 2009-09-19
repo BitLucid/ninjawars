@@ -2,7 +2,7 @@
 // For true user-to-user or user-to-clan messages as opposed to events.
 function send_message($from_id,$to_id,$msg) {
   global $sql;
-  $sql->Insert("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default,".sql($from_id).",".sql($to_id).",'".sql($msg)."',now())");
+  $sql->Insert("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default,'".sql($from_id)."','".sql($to_id)."','".sql($msg)."',now())");
 }
 
 function get_messages($to_id){

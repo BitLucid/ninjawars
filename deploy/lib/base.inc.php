@@ -37,6 +37,8 @@ require_once(LIB_ROOT."settings/lib_formulas.php");
 // Include all the commands, which eventually should be broken up.
 require_once(LIB_ROOT."common/commands.php");
 require_once(LIB_ROOT."common/lib_message.php");
+require_once(LIB_ROOT."common/lib_events.php");
+require_once(LIB_ROOT."common/lib_mail.php");
 require_once(LIB_ROOT."common/lib_auth.php"); // Authentication and activity.
 
 

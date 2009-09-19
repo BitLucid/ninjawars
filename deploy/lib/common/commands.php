@@ -939,7 +939,8 @@ function removeItem($who,$item,$quantity=1)
 {
   global $sql;
 
-  $sql->Update("Update inventory set amount = amount - ".$quantity." WHERE owner = '$who' AND lower(item) =lower('$item') AND amount>1");
+  $sql->Update("Update inventory set amount = amount - ".$quantity." 
+    WHERE owner = '$who' AND lower(item) =lower('$item') AND amount>1");
 }
 
 
@@ -951,7 +952,9 @@ function removeItem($who,$item,$quantity=1)
 function sendLogOfDuel($attacker,$defender,$won,$killpoints)
 {
   global $sql;
-  $sql->Insert("INSERT INTO dueling_log values (default,'$attacker', '$defender', '$won', '$killpoints', now())");                            //Log of Dueling information.
+  $sql->Insert("INSERT INTO dueling_log values 
+        (default,'$attacker', '$defender', '$won', '$killpoints', now())");
+        //Log of Dueling information.
 }
 
 
@@ -968,7 +971,9 @@ function flagPlayer($player, $flag, $note, $originatingPage)
   $playerDetectionQuery = "SELECT player_ID FROM players WHERE uname='".$player."'";
   $playerResult=$sql->Query($playerDetectionQuery);
   $playerArray=$sql->Fetch();
-  $addToPlayersFlagged = "INSERT IGNORE INTO players_flagged (flag_ID, player_ID, extra_notes, originating_page, timestamp) VALUES ('$flagIDArray[0]', '$playerArray[0]', '$note', '$originatingPage', now())";
+  $addToPlayersFlagged = "INSERT IGNORE INTO players_flagged 
+        (flag_ID, player_ID, extra_notes, originating_page, timestamp) 
+        VALUES ('$flagIDArray[0]', '$playerArray[0]', '$note', '$originatingPage', now())";
   $result=$sql->Query($addToPlayersFlagged);
 }
 
@@ -977,14 +982,7 @@ function flagPlayer($player, $flag, $note, $originatingPage)
 // ******** MESSAGE FUNCTIONS *********
 // ************************************
 
-// 
-function sendMessage($from,$to,$msg,$filter=false) {
-  global $sql;
-  if ($filter){
-  	$msg = strip_tags($msg);
-  }
-  $sql->Insert("INSERT INTO mail VALUES (default,'$from','$to','".sql($msg)."',now())");
-}
+// event/message functions are in lib_events.
 
 // user message functions are in lib_message now.
 
@@ -995,7 +993,8 @@ function sendMessage($from,$to,$msg,$filter=false) {
 
 function sendChat($from,$to,$msg) {
   global $sql;
-  $sql->Insert("INSERT INTO chat (id, send_from, send_to, message, time) VALUES (default,'$from','$to','".sql($msg)."',now())");
+  $sql->Insert("INSERT INTO chat (id, send_from, send_to, message, time) 
+        VALUES (default,'$from','$to','".sql($msg)."',now())");
 }
 
 
