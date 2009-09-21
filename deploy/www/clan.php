@@ -9,6 +9,7 @@ $page_title = "Clan Panel";
 // What a horrible set of code this is.
 
 include SERVER_ROOT."interface/header.php";
+
 ?>
 <script type="text/javascript" src="<?=WEB_ROOT?>js/clan.js"></script>
 
@@ -27,6 +28,12 @@ $clan                            = getClan($username);
 $player_clan_long_name           = getClanLongName($username);
 $viewer_level                    = getLevel($username);
 $clan_creation_level_requirement = 15;
+
+$message = in('message');
+if($message){
+    message_to_clan($message);
+    echo "<div id='message-sent' class='ninja-notice'>Message sent.</div>";
+}
 
 if ($command == "new") { // *** Clan Creation Action ***
 	if ($viewer_level > $clan_creation_level_requirement) {
@@ -150,11 +157,9 @@ if ($clan  != "") {
 	}
 
 	if ($command == "msgclan") {	// *** Clan Member Input for Messaging their Entire Clan ***
-		echo "<form id=\"msg_clan\" action=\"mail_send.php\" method=\"get\" name=\"msg_clan\">
+		echo "<form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
           <div>
-          Message: <input id=\"message\" type=\"text\" size=\"50\" maxlength=\"1000\" name=\"message\" class=\"textField\"><br>
-          <input id=\"to\" type=\"hidden\" value=\"clansend\" name=\"to\">
-          <input id=\"messenger\" type=\"hidden\" value=\"1\" name=\"messenger\">
+          Message: <input id=\"message\" type=\"text\" size=\"50\" maxlength=\"1000\" name=\"message\" class=\"textField\">
           <input type=\"submit\" value=\"Send This Message\" class=\"formButton\">
           </div>
           </form>\n";
