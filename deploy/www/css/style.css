@@ -971,7 +971,7 @@ body.ninjawars-staff{
     width: 50%;
     margin-left:auto;
     margin-right:auto;
-    display:block;
+    float: left;
 }
 
 .messages #ninja-search{
@@ -979,7 +979,20 @@ body.ninjawars-staff{
     width:50%;
     margin-left:auto;
     margin-right:auto;
-    display:block;
+}
+
+.messages ul{
+    padding-left:5px;
+}
+
+.messages h2{
+    margin: 0 0 5px 0;
+}
+
+.messages #clan-and-search{
+    margin: 0;
+    padding: 0;
+    clear: both;
 }
 
 #clan-mail-section form{
@@ -990,12 +1003,13 @@ body.ninjawars-staff{
 #clan-mail-section textarea{
     width:50%;
     height:3em;
+    margin-left:1em;
 }
 
 .player-communications .FormButton{
     display:block;
 }
+
 .events #event-list{
     padding:0 0 0 1em;
 }
-

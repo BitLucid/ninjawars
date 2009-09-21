@@ -4,7 +4,6 @@ $alive      = false;
 $quickstat  = false;
 $page_title = "Messages";
 include SERVER_ROOT."interface/header.php";
-require_once(LIB_ROOT."specific/lib_mail.php");
 
 // TODO: Check up on message limits.
 // TODO: Turn clan mail into a self postback instead of going to mail_send.
@@ -18,6 +17,9 @@ $user_id = get_user_id();
 $username = get_username();
 $clan = getClan($username);
 $has_clan = $clan? true : false;
+$page = in('page', 1, 'toInt');
+$limit = 25;
+$offset = ($page-1)*$limit;
 
 $message_sent_to = null;
 
@@ -31,7 +33,11 @@ if($message && $messenger){
     }
 }
 
-$messages = get_messages($user_id);
+$messages = get_messages($user_id, $limit, $offset);
+$message_count = message_count();
+$pages = ceil($message_count/$limit);  // Total pages.
+//$current_page = floor(($message_count/$limit) - $limit); // 
+$nav = render_message_nav($page, $pages, $limit);
 
 read_messages($user_id); // mark messages as read for next viewing.
 
@@ -48,7 +54,5 @@ $parts = get_certain_vars(get_defined_vars());
 
 echo render_template('messages.tpl', $parts);
 
-
 include SERVER_ROOT."interface/footer.php";
-
 ?>

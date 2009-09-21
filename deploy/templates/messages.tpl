@@ -1,5 +1,6 @@
 <h2>Messages</h2>
 
+<div id='clan-and-search'>
 
 {if $has_clan}
  <div id='clan-mail-section'>
@@ -18,6 +19,7 @@
     <div id='message-sent-to'>Message sent to {$message_sent_to}.</div>
 {/if}
 
+</div>
 
 <div id='ninja-search'>
     Find a ninja to message:
@@ -27,8 +29,14 @@
     </form>
 </div>
 
-
+{if $nav}
+        {$nav}
+{/if}
 
 <ul id='message-list'>
-{$message_list}
+    {$message_list}
 </ul>
+
+{if $nav}
+        {$nav}
+{/if}
