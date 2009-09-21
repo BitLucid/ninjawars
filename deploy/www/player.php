@@ -19,8 +19,16 @@ include SERVER_ROOT."interface/header.php";
 $skillListObj = new Skill();
 $skillsListObj = $skillListObj;
 $target = $player = in('player');
-$target_id = either(in('target_id'), in('player_id'));
+$target_id = either(in('target_id'), either(in('player_id'), get_user_id($target)));
+$user_id = get_user_id();
 $score = get_score_formula();
+
+$message = in('message');
+if($message){
+    send_message($user_id, $target_id, $message);
+    echo "<div id='message-sent' class='ninja-notice'>Message sent</div>";
+}
+
 
 $linkbackpage = in('linkbackpage');
 $viewing_player_obj = new Player(get_username());
@@ -136,8 +144,8 @@ if ($player_info) {
     	// Allows the viewer to set bounty on a player.
         display_set_bounty($player_info); // TODO: Move this functionality to the doshin.
 
-    	// Send 'em mail
-    	display_communication($player_info['uname']);
+    	// Display mail section
+    	echo render_communication($player_info['uname']);
 	}
 
 	if($player_info['uname'] != get_username()){

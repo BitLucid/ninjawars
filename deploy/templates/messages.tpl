@@ -15,12 +15,6 @@
   
 {/if}
 
-{if $message_sent_to}
-    <div id='message-sent-to'>Message sent to {$message_sent_to}.</div>
-{/if}
-
-</div>
-
 <div id='ninja-search'>
     Find a ninja to message:
     <form id='player_search' action='list_all_players.php' method='get' name='player_search'>
@@ -28,6 +22,12 @@
         <input type='submit' value='Find' class='formButton'>
     </form>
 </div>
+
+</div>
+
+{if $message_sent_to}
+    <div id='message-sent-to'>Message sent to {$message_sent_to}.</div>
+{/if}
 
 {if $nav}
         {$nav}
