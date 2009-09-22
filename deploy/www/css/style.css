@@ -1005,6 +1005,10 @@ body.ninjawars-staff{
     width:20%;
 }
 
+.messages #message-list{
+    clear:both;
+}
+
 .message-nav{
     margin-top:1em;
 }
