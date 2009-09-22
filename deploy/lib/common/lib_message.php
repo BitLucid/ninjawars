@@ -22,6 +22,12 @@ function read_messages($to_id){
     $sql->Update("UPDATE messages set unread = 0 where send_to = '".sql($to_id)."'");
 }
 
+function delete_messages(){
+    global $sql;
+    $user_id = get_user_id();
+    $sql->Delete("DELETE from messages where send_to = '".sql($user_id)."'");
+}
+
 function message_count(){
     $user_id = get_user_id();
     global $sql;

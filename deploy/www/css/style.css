@@ -13,10 +13,9 @@ body {
 	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
 	/*font-family: "Franklin Gothic", Futura, Verdana, Arial, Helvetica, sans-serif;*/
 	/*font family: Tahoma, Arial, sans-serif;*/
-	/*font-size: 12px;*/
 	font-size: 80%;
 	color: DarkKhaki;
-	/*background-color: black; */
+	background-color: black;
 	/* Required for the ie bug */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
@@ -320,7 +319,12 @@ td.playerTable {
     background-image: url('/images/backgrounds/fuji_bleu.jpg');
     background-color: transparent;
     background-repeat: repeat-x;
+    color: black;
 }
+.random-background-2 a{
+    color: blue;
+}
+
 .random-background-3{
     background-image: url('/images/backgrounds/Hokusai-fuji7.png');
     background-color: transparent;
@@ -976,7 +980,8 @@ body.ninjawars-staff{
 
 .messages #ninja-search{
     margin: 10px;
-    width:50%;
+    width:30%;
+    float:left;
     margin-left:auto;
     margin-right:auto;
 }
@@ -995,6 +1000,11 @@ body.ninjawars-staff{
     clear: both;
 }
 
+.messages #delete-messages{
+    float:left;
+    width:20%;
+}
+
 .message-nav{
     margin-top:1em;
 }
@@ -1010,10 +1020,14 @@ body.ninjawars-staff{
     margin-left:1em;
 }
 
+#message-sent-to{
+    clear:both;
+}
+
 .player-communications .FormButton{
     display:block;
 }
 
-.events #event-list{
     padding:0 0 0 1em;
+.events #event-list{
 }

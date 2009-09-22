@@ -1,5 +1,8 @@
 <h2>Messages</h2>
 
+<script type='text/javascript' src='{$JS_ROOT}messageDeleteConfirm.js'>
+</script>
+
 <div id='clan-and-search'>
 
 {if $has_clan}
@@ -21,6 +24,10 @@
         <input id='searched' type='text' maxlength='50' name='searched' class='textField'>
         <input type='submit' value='Find' class='formButton'>
     </form>
+</div>
+
+<div id='delete-messages'>
+    <a href="messages.php?delete=1">Delete Messages</a>
 </div>
 
 </div>

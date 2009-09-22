@@ -20,7 +20,7 @@ $has_clan = $clan? true : false;
 $page = in('page', 1, 'toInt');
 $limit = 25;
 $offset = ($page-1)*$limit;
-
+$delete = in('delete');
 $message_sent_to = null;
 
 // Sending mail section.
@@ -32,6 +32,11 @@ if($message && $messenger){
         $message_sent_to = $to; // (
     }
 }
+
+if($delete){
+    delete_messages();
+}
+
 
 $messages = get_messages($user_id, $limit, $offset);
 $message_count = message_count();
