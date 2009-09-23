@@ -12,7 +12,7 @@ function render_clan_join($process=null, $username, $clan_name){
             If you wish to allow this ninja into your clan click the following link:
             $url";
             
-        sendMessage($username,$clan_name,$join_request_message);
+        send_message(get_user_id($username),get_user_id($clan_name),$join_request_message);
         echo "<div>***Your request to join this clan has been sent to $clan_name***</div>\n";
     } else {                                            //Clan Join list of available Clans
         $clan_leaders = $sql->FetchAll("SELECT uname,level,clan,clan_long_name FROM players
