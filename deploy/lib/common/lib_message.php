@@ -66,7 +66,7 @@ function message_to_clan($message){
     $messaged_to = '';
     $comma = '';
     foreach($clan_members as $loop_member){
-        send_message($user_id, $loop_member['player_id'], $message);
+        send_message($user_id, $loop_member['player_id'], "CLAN: ".$message);
         $messaged_to .= $comma.$loop_member['uname'];
         $comma = ', ';
     }
