@@ -39,6 +39,7 @@ require_once(LIB_ROOT."common/commands.php");
 require_once(LIB_ROOT."common/lib_message.php");
 require_once(LIB_ROOT."common/lib_events.php");
 require_once(LIB_ROOT."common/lib_auth.php"); // Authentication and activity.
+require_once(LIB_ROOT."common/lib_settings.php");
 
 
 // Game objects
