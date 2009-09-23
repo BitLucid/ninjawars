@@ -10,6 +10,8 @@ $events = get_events($user_id);
 
 read_events($user_id); // mark events as viewed.
 
+
+
 $event_list = '';
 if(!empty($events)){
     foreach($events as $loop_event){

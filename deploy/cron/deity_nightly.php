@@ -46,8 +46,8 @@ $affected_rows['Players Unconfirmed'] = ($unconfirmed === false ? 'Under the Min
 $sql->QueryRow("Delete from inventory where owner in (SELECT owner FROM inventory LEFT JOIN players ON owner = uname WHERE confirmed = 0 OR uname is null GROUP BY owner)");
 $affected_rows['deleted items'] = $sql->a_rows;
 
-$deleted_mail = delete_old_mail($sql); // As per the mail function in lib_deity.
-$affected_rows['Old Mail Deletion'] =  $deleted_mail;
+$deleted_mail = delete_old_messages($sql); // As per the mail function in lib_deity.
+$affected_rows['Old Messages Deletion'] =  $deleted_mail;
 
 $sql->Delete("delete from levelling_log where killsdate < now()- interval '3 months'");
 $affected_rows['levelling log deletion'] = $sql->a_rows; // Keep only the last 3 months of logs.
@@ -60,7 +60,7 @@ $affected_rows['old level 1 players deletion'] = $sql->a_rows;
 
 
 $logMessage .= "DEITY_NIGHTLY: Deity reset occurred at server date/time: ".date('l jS \of F Y h:i:s A').".\n";
-$logMessage .= 'DEITY_NIGHTLY: Mail deleted: ('.$affected_rows['Old Mail Deletion'].")\n";
+$logMessage .= 'DEITY_NIGHTLY: Mail deleted: ('.$affected_rows['Old Messages Deletion'].")\n";
 $logMessage .= "DEITY_NIGHTLY: Items: ".$affected_rows['deleted items']."\n";
 $logMessage .= 'DEITY_NIGHTLY: Players unconfirmed: ('.$unconfirmed.").  30 is the current default maximum.\n";
 $logMessage .= "DEITY_NIGHTLY: Vicious killer at reset was: (".$stats['vicious_killer'].")\n";
