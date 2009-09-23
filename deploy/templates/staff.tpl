@@ -16,6 +16,7 @@
     <span id='social-networks'>
       - <a target='_blank' href="http://www.facebook.com/tchalvak">on Facebook</a>
       - <a target='_blank' href="http://www.myspace.com/toastersquid">on Myspace</a>
+      - <a target='_blank' hret="http://twitter.com/tchalvak">on Twitter</a>
       - on AIM: Tchalvak
     </span>
     <div><a class='expand-link'>Expand <img alt=">>>" src="images/smallArrows.png"/></a></div>
