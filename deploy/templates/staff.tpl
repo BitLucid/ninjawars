@@ -14,9 +14,9 @@
   <div class='developer'>
     <a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Flynn</a>  - Programmer and Maintainer 
     <span id='social-networks'>
-      - <a target='_blank' href="http://www.facebook.com/tchalvak">on Facebook</a>
-      - <a target='_blank' href="http://www.myspace.com/toastersquid">on Myspace</a>
-      - <a target='_blank' hret="http://twitter.com/tchalvak">on Twitter</a>
+      - <a target='_blank' href="http://www.facebook.com/tchalvak"><img src='{$IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a>
+      - <a target='_blank' href="http://www.myspace.com/toastersquid"><img src='{$IMAGE_ROOT}icons/fasticons/MySpace_24x24.png'> on Myspace</a>
+      - <a target='_blank' hret="http://twitter.com/tchalvak"><img src='{$IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a>
       - on AIM: Tchalvak
     </span>
     <div><a class='expand-link'>Expand <img alt=">>>" src="images/smallArrows.png"/></a></div>
@@ -55,7 +55,8 @@
   <li> Certain NPCs and other code contributions: DeathDepiction  </li>
   <li> Evolym Fragile/Davinel - the Flash Banner </li>
   <li> Magatsu - the Shop Graphics </li>
-  <li> Alegion - the Koi photograph Background - <a href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a> </li>
+  <li> Alegion - the original for the Koi photograph Background - <a href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a> </li>
+  <li> Social networking icons by: <a href='http://www.fasticon.com'>FastIcon.com</a></li>
   </ul>
 </div>
 
