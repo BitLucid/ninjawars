@@ -1,6 +1,6 @@
 <?php
 // Require the template engine.
-require_once(LIB_ROOT.'templates/template_lite/src/class.template.php');
+require_once(LIB_ROOT.'template_library/template_lite/src/class.template.php');
 // See: http://templatelite.sourceforge.net/docs/index.html for the docs, it's a smarty-like syntax.
 
 // Will return the rendered content of the template.
