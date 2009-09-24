@@ -21,6 +21,9 @@ Make giving items clan (done) and to newbies (based on existing play time and le
 // TODO: Put periodic but then constitutive captcha checks into play.
 Possibility of double or half turns, double or half health at the casino.
 
+Environment:
+Create a map system.
+
 
 UI:
 Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now,
@@ -57,6 +60,9 @@ Make sure that the other databases are pared down to allow ease of backup.
 
 Security:
 // TODO: Make default filtering be toWord, and change item-related in()s to deal with their multi word inputs.
+// Add a blocked referral list, starting with hidemyass.com
+Create accounts.
+
 
 
 Incorporate "Your world of text":
