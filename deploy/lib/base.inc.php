@@ -30,9 +30,9 @@ require_once(LIB_ROOT."template_library/lib_templates.php");
 require_once(LIB_ROOT."common/lib_dev.php");
 
 // Includes that actually actively modify settings.
-require_once(LIB_ROOT."settings/lib_assert.php");
-require_once(LIB_ROOT."settings/lib_error_reporting.php");
-require_once(LIB_ROOT."settings/lib_formulas.php");
+require_once(LIB_ROOT."server/lib_assert.php");
+require_once(LIB_ROOT."server/lib_error_reporting.php");
+require_once(LIB_ROOT."server/lib_formulas.php");
 
 // Include all the commands, which eventually should be broken up.
 require_once(LIB_ROOT."common/commands.php");
