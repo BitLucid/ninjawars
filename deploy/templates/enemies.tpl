@@ -3,8 +3,8 @@
 <div id='ninja-enemy'>
     Mark a ninja as an enemy:
     <form id='enemy-add' action='enemies.php' method='get' name='enemy_add'>
-        <input type='text' maxlength='50' name='enemy_to_match' class='textField'>
-        <input type='submit' value='Add Enemy' class='formButton'>
+        <input type='text' maxlength='50' name='enemy_match' class='textField'>
+        <input type='submit' value='Find Enemies' class='formButton'>
     </form>    
 </div>
 
