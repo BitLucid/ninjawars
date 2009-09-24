@@ -9,10 +9,10 @@ include SERVER_ROOT."interface/header.php";
 function render_enemy_matches($match_string){
     global $sql;
     $user_id = get_user_id();
-    $enemy_rows = $sql->FetchAll("SELECT player_id, uname from players where uname ~* '".sql($match_string)."' and confirmed = 1 and player_id != '".sql($user_id)."' limit 11");
+    $enemy_rows = $sql->FetchAll("SELECT player_id, uname from players where uname ~* '".sql($match_string)."' and confirmed = 1 and player_id != '".sql($user_id)."' order by level limit 11");
     $res = null;
     foreach($enemy_rows as $loop_enemy){
-        $res .= "<li><a href='enemies.php?add_enemy={$loop_enemy['player_id']}'><img src='".IMAGE_ROOT."icons/add.png' alt='Add enemy:'> {$loop_enemy['uname']}</a></li>";
+        $res .= "<li><a href='enemies.php?add_enemy={$loop_enemy['player_id']}'><img src='".IMAGE_ROOT."icons/add.png' alt='Add enemy:'> Add {$loop_enemy['uname']}</a></li>";
     }
     if(!empty($enemy_rows) && count($enemy_rows)>10){
         $res .= "<li>...with more matches...</li>";
@@ -46,26 +46,23 @@ function render_current_enemies($enemy_list){
         return $enemy_section;
     }
     foreach($enemy_list as $loop_enemy_id){
-        $enemies['player_id'] = $loop_enemy_id;
-        $enemies['player_name'] = player_name_from_id($loop_enemy_id);
-        $enemy_section .= "<li><a href='enemies.php?remove_enemy=$loop_enemy_id'><img src='".IMAGE_ROOT."icons/delete.png' alt='remove'></a> <a href='player.php?player_id=$loop_enemy_id'>".out($enemies['player_name'])."</a></li>";
+        $player_name = player_name_from_id($loop_enemy_id);
+        $health = getHealth($player_name);
+        $action = $health>0? 'Attack' : 'View';
+        $status_class = ($health>0? '' : 'enemy-dead');
+        $enemy_section .= "<li class='$status_class'><a href='enemies.php?remove_enemy=$loop_enemy_id'><img src='".IMAGE_ROOT."icons/delete.png' alt='remove'></a> $action <a href='player.php?player_id=$loop_enemy_id'>".out($player_name)."</a></li>";
         // TODO: Turn this into a template render.
     }
     return $enemy_section;
 }
 
-
-// function remove_enemy($enemy_id, $settings)
-//$settings = save_settings(array());
-//set_setting('bob', 5);
-//set_setting('bam', 'piehole');
-
 $match_string = in('enemy_match', null, 'no filter');
 $add_enemy = in('add_enemy', null, 'toInt');
 $remove_enemy = in('remove_enemy', null, 'toInt');
+$enemy_limit = 20;
+$max_enemies = false;
 
 $enemy_list = get_setting('enemy_list');
-
 
 if($match_string){
     $found_enemies = render_enemy_matches($match_string);
@@ -83,6 +80,9 @@ if(is_numeric($add_enemy)){
 
 $enemy_section = render_current_enemies($enemy_list);
 
+if(count($enemy_list)>($enemy_limit-1)){
+    $max_enemies = true;
+}
 
 $parts = get_certain_vars(get_defined_vars());
 

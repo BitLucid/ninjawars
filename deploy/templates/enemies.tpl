@@ -1,5 +1,6 @@
 <h2>Enemies</h2>
 
+{if $max_enemies neq true}
 <div id='ninja-enemy'>
     Mark a ninja as an enemy:
     <form id='enemy-add' action='enemies.php' method='get' name='enemy_add'>
@@ -7,6 +8,7 @@
         <input type='submit' value='Find Enemies' class='formButton'>
     </form>    
 </div>
+{/if}
 
 {if $found_enemies}
 <ul>

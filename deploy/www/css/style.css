@@ -252,7 +252,7 @@ td.playerTable {
 }
 
 
-.DeadRow a {
+.DeadRow a{
 	color: DarkBlue; /*Darken links to dead players */
 }
 
@@ -741,6 +741,12 @@ table .quickstats{
 	background-color:maroon;
 	color:red;
 }
+
+.enemy-list .enemy-dead{
+    background-color:#202020;
+    color:maroon;
+}
+
 .player-info .Stealthed{
 	background-color:gray;
 	color:maroon;

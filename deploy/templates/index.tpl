@@ -91,6 +91,7 @@
             </div>
             <ul class="basemenu" id="actions-menu">
               <li id='combat-link'><a href="attack_player.php" target="main">Combat</a></li>
+              <li><a href="enemies.php" target="main">Enemies</a></li>
               <li><a href="clan.php" target="main">Clan</a></li>
               <li><a href="inventory.php" target="main">Inventory</a></li>
               <li>
