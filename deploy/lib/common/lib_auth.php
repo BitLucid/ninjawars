@@ -232,6 +232,9 @@ function get_username(){
 
 function player_name_from_id($player_id){
     global $sql;
+    if(!$player_id){
+        throw new Exception('Blank player ID to find the username of requested.');
+    }
     return $sql->QueryItem("select uname from players where player_id ='".sql($player_id)."'");
 }
 
