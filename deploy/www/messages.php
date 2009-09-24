@@ -5,9 +5,6 @@ $quickstat  = false;
 $page_title = "Messages";
 include SERVER_ROOT."interface/header.php";
 
-// TODO: Check up on message limits.
-// TODO: Turn clan mail into a self postback instead of going to mail_send.
-
 $to = in('to'); // The target of the message, if any were specified.
 $to_clan = in('toclan');
 $messenger = in('messenger'); // naive spam detection attempt
