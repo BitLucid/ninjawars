@@ -7,3 +7,7 @@ deploy/resources.php
 youcanSymlinkToThisFilewithADotgitignoresymlink
 deploy/cron/deity.log
 deploy/templates/compiled/
+image_dump
+test.php
+.app_tools
+.testing

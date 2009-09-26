@@ -2,6 +2,15 @@
 // Get and set/save a changable array of a player's settings.
 
 
+
+
+
+
+
+
+
+// TODO: Change this into a simple object.
+
 function get_settings($refresh=null){
     static $settings;
     if($refresh){

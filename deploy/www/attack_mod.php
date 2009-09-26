@@ -17,6 +17,30 @@ $page_title = "Battle Status";
 $quickstat  = "player";
 
 include SERVER_ROOT."interface/header.php";
+
+
+$recent_attack = null;
+$start_of_attack = microtime(true);
+$attack_spacing = 0.2; // fraction of a second
+if(SESSION::is_set('recent_attack')){
+    $recent_attack = SESSION::get('recent_attack');
+}
+
+if($recent_attack && $recent_attack>($start_of_attack-$attack_spacing)){
+    echo "<p>Even the best of ninjas cannot attack that quickly.</p>";
+    if(DEBUG){
+        echo "<ul><li>Recent attack: ".$recent_attack."
+        <li> current time: ".microtime(true)."
+        <li> current - 3 ".(microtime(true)-0.3)."
+        <li> recent < current -3 ".($recent_attack<(microtime(true)-$attack_spacing))."</ul>";
+    }
+    echo "<a href='attack_player.php'>Return to combat</a>";
+    SESSION::set('recent_attack', $start_of_attack);
+    die();
+} else {
+    SESSION::set('recent_attack', $start_of_attack);
+}
+
 ?>
 
 <span class="brownHeading">Battle Status</span>
