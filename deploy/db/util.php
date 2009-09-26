@@ -69,8 +69,7 @@ class DBAccess {
     function QueryRow ($query, $type=PDO::FETCH_BOTH) {
 		$this->Query($query);
 		$this->data = null;
-		if (isset($this->result))
-		{
+		if (is_object($this->result)){
 			$this->data = $this->result->fetch($type);
         }
         return $this->data;
