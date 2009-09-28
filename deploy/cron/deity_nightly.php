@@ -55,7 +55,7 @@ $affected_rows['levelling log deletion'] = $sql->a_rows; // Keep only the last 3
 $sql->Delete("delete from dueling_log where date != cast(now() AS date) AND date != cast(now() AS date)-1"); // Keep only the last two days of duels.
 $affected_rows['dueling log deletion'] = $sql->a_rows;
 
-$sql->Delete("delete from players where days>90 and level = 1"); // Delete old level 1's.
+$sql->Delete("delete from players where confirmed = 0 and level = 1"); // Delete old level 1's.
 $affected_rows['old level 1 players deletion'] = $sql->a_rows; 
 
 
