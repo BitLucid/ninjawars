@@ -277,7 +277,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 							// Preconfirmed or the email didn't send, so automatically confirm the player.
 							$up = "update players set confirmed = 1, confirm='55555' where uname = '".$send_name."'";
 							$sql->Update($up);
-							echo "Account with the login name \"".$send_name."\" is now confirmed!  Please <a href='#' onclick='refreshToLogin()'>login on the login bar</a> of the index page.";
+							echo "Account with the login name \"".$send_name."\" is now confirmed!  Please login on the login bar of the ninjawars.net page.";
 						}
 
 						echo "<br><br>Only one account per person is allowed.<br>\n";

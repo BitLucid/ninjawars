@@ -74,7 +74,7 @@ function toggle_visibility(id) {
 }
 
 function refreshMinichat(){
-  parent.mini_chat.location="mini_chat.php";
+        parent.mini_chat.location="mini_chat.php";
 }
 
 
@@ -104,19 +104,6 @@ function refreshQuickstats(quickView){
         }
     }
     top.firstLoad++;
-}
-
-/* Need to parse the 'this' php file/page so that refreshing to login auto-passes the appropriate page after */
-function refreshToLogin(failed){
-	if (top.location!= self.location) {
-		top.location = 'index.php'
-	}
-	if(!failed){
-		parent.location.href=parent.location.href;
-	} else {
-		parent.main.location="index.php?action=login";
-	}
-	return false;
 }
 
 // GOOGLE ANALYTICS
