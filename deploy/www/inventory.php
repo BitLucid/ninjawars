@@ -96,7 +96,6 @@ if ($sql->rows == 0) {
 
   <br>
   Current gold: <?php echo getGold($username);?>
-  <hr>
 
 </p>
 

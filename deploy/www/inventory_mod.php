@@ -161,6 +161,7 @@ else if ($item == 'Ice Scroll')
 {
 	$item = $iceScroll = new Item('Ice Scroll');
 	$iceScroll->setTurnChange(-1*ice_scroll_turns($targets_turns, $near_level_power_increase));
+	// ice scroll turns comes out negative already, apparently.
 }
 else if ($item == 'Stealth Scroll')
 {
@@ -225,7 +226,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					}
 
 					$result         = "lose ".(-1*$turns_change)." turns";
-					subtractTurns($target, $turns_change);
+					changeTurns($target, $turns_change);
 					$victim_alive = true;
 				} else if ($item->getTurnChange() > 0) {
 					$turns_change = $item->getTurnChange();
@@ -242,7 +243,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				} else if ($item === $dimMak) {
 					echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 				} else if ($turns_change <= 0) {
-					echo "$target's turns reduced by $turns_change.<br>\n";
+					echo "$target's turns reduced by ".(0-$turns_change).".<br>\n";
 					if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
 						echo "$target no longer has any turns.<br>\n";
 					}
