@@ -27,7 +27,7 @@ function render_clan_tags(){
             <ul>";
     foreach($clans as $clan => $size){
         $res .= "<li class='clan-tag size$size'>
-                <a href='?command=view&clan_long_name=".urlencode($clan)."'>$clan</a>
+                <a href='?command=view&amp;clan_long_name=".urlencode($clan)."'>$clan</a>
             </li>";
     }
     $res .= "</ul>

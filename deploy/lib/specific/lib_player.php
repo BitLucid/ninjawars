@@ -193,8 +193,13 @@ function render_clan_members($clan=null, $limit=30){
         ?>
         <div class='clan-members'>
             <div class='subtitle'>Clan members</div>
-            <ul>
                 <?php
+                if(!empty($ninjas)){
+                    $display_ul = true;
+                }
+                if($display_ul){
+                    echo "<ul>";
+                }
                 foreach($ninjas as $ninja){
                     $added_class = '';
                     if($ninja['health']<1){
@@ -205,8 +210,10 @@ function render_clan_members($clan=null, $limit=30){
                                 ".$ninja['uname']."
                             </a>
                           </li>";
+                    if($display_ul){
+                        echo "</ul>";
+                    }
                 } ?>
-            </ul>
         </div>
         <?php
     }
