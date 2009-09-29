@@ -192,7 +192,7 @@
 
         <div id="centerColumn" class="column"><!-- top menu starts here -->
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe id="main" name="main" class="main-iframe" src="{$main_src}" frameborder="0">
+            <iframe id="main" name="main" class="main-iframe" src="{$main_src}">
               Main Content Display Section (Frames Not Supported)
             </iframe>
           </div><!-- End of mainFrame div -->
@@ -236,7 +236,7 @@
                 | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
               </div>
               <div id="quickstats-frame-container">
-                <iframe id="quickstats" src="quickstats.php" frameborder="0" name="quickstats">
+                <iframe id="quickstats" src="quickstats.php" name="quickstats">
                   Quick Stats Iframe Display section (Iframes Not supported by this browser)
                 </iframe>
               </div>
@@ -257,7 +257,7 @@
               </div>
 <!-- TODO: move chat submit box out here. -->
               <div id="mini-chat-frame-container" class='chat-collapsed'>
-                <iframe id="mini_chat" name="mini_chat" src="mini_chat.php" frameborder="0">
+                <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
                   Mini Chat Iframe Display Section (Iframes not supported by this browser)
                 </iframe>
               </div>

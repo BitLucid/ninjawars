@@ -489,6 +489,7 @@ td.playerTable {
 #mini_chat { /* iframe itself */
 	width:100%;
 	height:100%;
+	border: 0;
 }
 #mini-chat-frame-container { /* div */
 	width:100%;
