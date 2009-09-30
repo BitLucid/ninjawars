@@ -210,10 +210,11 @@ function render_clan_members($clan=null, $limit=30){
                                 ".$ninja['uname']."
                             </a>
                           </li>";
-                    if($display_ul){
-                        echo "</ul>";
-                    }
-                } ?>
+                }
+                if($display_ul){
+                    echo "</ul>";
+                }
+                 ?>
         </div>
         <?php
     }

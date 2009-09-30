@@ -64,7 +64,7 @@ if ($player_info) {
 	echo render_player_stats($player_info);
 	echo render_avatar_section($target_player_obj);
 
-	echo "<table id='player-profile-table' align='center'>\n";
+	echo "<table id='player-profile-table'>\n";
     echo "  <tr>\n";
 
 	if ($attack_error)

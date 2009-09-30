@@ -17,10 +17,9 @@
 		    </span>
 		  </td>
 		  <td class="playerCell clanCell">
-		    {if $clan ne "-"}<a href='clan.php?command=view&clan_long_name={$clan|escape:"url"}'>{/if}{$clan|escape}{if $clan}</a>{/if}
+		    {if $clan ne "-"}<a href='clan.php?command=view&amp;clan_long_name={$clan|escape:"url"}'>{/if}{$clan|escape}{if $clan ne "-"}</a>{/if}
 		  </td>
 		</tr>
-        <tr class='profile' style='display:none'></tr>
 		<!-- Location to display the player profile content
 		<tr class='profile' style='display:none'>
 		</tr>
