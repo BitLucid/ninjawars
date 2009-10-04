@@ -25,6 +25,13 @@
     background-color:maroon;
     color: white;
 }
+#logged-in-bar{
+    width:100%;
+    /*background: transparent url(/images/bg_top_maroon.jpg) repeat-x scroll 0 0;*/
+    color:white;
+    /*border-bottom: 1px solid maroon;*/
+}
+
 #reactive-panel{
     height:100%;
     background-color:black;
@@ -33,19 +40,13 @@
 
 #ninja-stats{
 }
-
-/* reactive-panel subparts */
-.logged-in-bar{
-    width:100%;
-    background: transparent url(/images/bg_top_maroon.jpg) repeat-x scroll 0 0;
-    color:white;
-    border-bottom: 1px solid maroon;
-}
 #logout{
     width:100%;
     text-align:right;
     float:right;
 }
+
+/* reactive-panel subparts */
 #category-bar{
     height:80%;
     width: 100%;
@@ -129,16 +130,16 @@
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
-            <div class="logged-in-bar">
-                <p>
+            <div id='logged-in-bar'>
+                <div>
                   <a target="main" href="player.php?player={$user_id}">{$username}</a>
-                </p>
-                <p>
+                </div>
+                <div>
                   <a target="main" href="messages.php">mailbox</a>
-                </p>
-                <p>
+                </div>
+                <div>
                   <span id='logged-in-bar-health'> </span>
-                </p>
+                </div>
 
             </div>
         </div>      
