@@ -10,24 +10,20 @@ $just_logged_out = false;
 
 // Logout/already logged in/login
 
-if ($logout) { 
-    // When a logout action is requested
-	logout(); // essentially just kill the session, and don't redirect.
+if ($logout) { // on logout, kill the session and don't redirect. 
+	logout(); 
 	$just_logged_out = true;
-} elseif ($is_logged_in) { 
-    // When user is already logged in.
-	$logged_in['success'] = $is_logged_in;
-} elseif ($login) { 
-	// Specially escaped password input, put into login.
+} elseif ($is_logged_in) {     // When user is already logged in.
+	$logged_in['success'] = $is_logged_in; 
+} elseif ($login) { 	// Specially escaped password input, put into login.
 	$logged_in    = login_user(in('user'), in('pass', null, 'toPassword'));
 	$is_logged_in = $logged_in['success'];
-	if(!$is_logged_in){
-    	// Login was attempted, but failed, so show an error.
+	if(!$is_logged_in){ // Login was attempted, but failed, so display an error.
     	$login_error = true;
 	}
 }
-
 $username = get_username();
+
 
 $referrer = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 

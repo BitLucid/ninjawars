@@ -16,7 +16,7 @@
 }
 .header-section{
     height:7em;
-    border-bottom: thin solid blue;
+    border-bottom: thin solid teal;
     color:white;
 }
 #menu-bar {
@@ -36,17 +36,18 @@
 
 /* reactive-panel subparts */
 .logged-in-bar{
-    height: 25%;
     width:100%;
-    background: black url(/images/bg_top_maroon.jpg) repeat-x scroll 0 0;
+    background: transparent url(/images/bg_top_maroon.jpg) repeat-x scroll 0 0;
     color:white;
     border-bottom: 1px solid maroon;
 }
-.logged-in-bar #logout{
+#logout{
+    width:100%;
+    text-align:right;
     float:right;
 }
 #category-bar{
-    height:55%;
+    height:80%;
     width: 100%;
     text-align:center;
     background: black;
@@ -104,6 +105,20 @@
     color:grey;
 }
 
+#index-footer a{
+    color:grey;
+    text-decoration:underline;
+    font-size:80%;
+    font-weight:normal;
+}
+
+#links-menu li{
+    float:left;
+    margin-right: 1em;
+}
+
+
+
 {/literal}
     </style>
     
@@ -112,8 +127,20 @@
 
     <div id='content'>
       <div id='left-column'>
+            
         <div id='ninjawars-home' class='header-section'>
-          <a href='{$WEB_ROOT}'><img src='' alt='Home'></a>
+            <div class="logged-in-bar">
+                <p>
+                  <a target="main" href="player.php?player={$username}">{$username}</a>
+                </p>
+                <p>
+                  <a target="main" href="messages.php">mailbox</a>
+                </p>
+                <p>
+                  <span id='logged-in-bar-health'> </span>
+                </p>
+
+            </div>
         </div>      
       
           <div id="quick-stats" class="boxes">
@@ -142,9 +169,7 @@
               </a>
             </div>
             <ul class="basemenu" id="actions-menu">
-              <li id='combat-link'><a href="attack_player.php" target="main">Combat</a></li>
               <li><a href="enemies.php" target="main">Enemies</a></li>
-              <li><a href="clan.php" target="main">Clan</a></li>
               <li><a href="inventory.php" target="main">Inventory</a></li>
               <li>
                 <ul class="submenu">
@@ -158,16 +183,12 @@
                   </li>
                 </ul>
               </li>
-              <li><a href="skills.php" target="main">Skills</a></li>
-              <li><a href="stats.php" target="main">Stats</a></li>
-              <li><a href="events.php" target="main">Events</a></li>
-              <li><a href="messages.php" target="main">Mail</a></li>
+              <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main">Heal</a></li>
             </ul>
           </div>
 
           <p>
-        Still To investigate.
-        Health/Status Turns Recent Event Recent Mail Actions HEAL use speed scroll use stealth scroll enemies
+        Still To investigate: Recent Event Recent Mail
           </p>
         
           <div id='vicious-killer' class='boxes'>
@@ -210,30 +231,16 @@
       <div id='menu-bar' class='header-section'>
         <div id='reactive-panel'>
 
-            <div class="logged-in-bar">
-
-            <a target="main" href="player.php?player={$username}">{$username}</a>
-            | <a target="main" href="messages.php">mailbox</a>
-            <span id='logged-in-bar-health'> </span>
-
-            <span id='logout'>
-              <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="{$IMAGE_ROOT}stop_square.png" alt="[]"></a>
-            </span>
-
-
-            </div>
-
-
             <div id='category-bar'>
               <ul>
                 <li id='status-actions'>
-                  Status
+                  <a href='events.php' target='main'>Status</a>
                 </li>
                 <li id='combat-actions'>
-                  Combat
+                  <a href='enemies.php' target='main'>Combat</a>
                 </li>
                 <li id='village-actions'>
-                  Village
+                  <a href='attack_player.php' target='main'>Village</a>
                 </li>
               </ul>
             </div>
@@ -241,19 +248,16 @@
                 <ul id='self-subcategory'>
                   Stats
                   Skills
-                  Mail
-                  Profile Page
+                  Profile
                   <!-- Settings -->
                 </ul>
                 <ul id='combat-subcategory'>
                   Ninjas
                   Clan
-                  Enemies
                   Fast Killer
                   Duels
                 </ul>
                 <ul id='village-subcategory'>
-                  NPCS
                   Dosh.
                   Dojo
                   Cas.
@@ -285,6 +289,10 @@
       
       
         <div id='ninja-stats' class='header-section'>
+        
+        <span id='logout'>
+            <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="{$IMAGE_ROOT}stop_square.png" alt="[]"></a>
+        </span>
 
           <div id='ninja-count-menu' class='boxes passive'>
             <a href="list_all_players.php" target="main">
@@ -336,37 +344,34 @@
           </div> <!-- End of index-chat --> 
 
           <div id='ooc-links'>
-
+            
           <div id="links" class="boxes passive">
             <div class="box-title">
               <a href="#" class="show-hide-link links-menu" onclick="toggle_visibility('links-menu');">
-                Links <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
+                Out of Character Links <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
               </a>
             </div>
-            <ul id="links-menu">
+            <div id='links-menu'>
+            <ul>
               <li><a href="about.php" target="main">Tutorial</a></li>
-              <li><a href="staff.php" target="main">Staff</a></li>
               <li><a href="duel.php" target="main">Duels</a></li>
               <!--  <a href="vote.php" target="main">Vote For NW </a>  -->
               <li>
                 <a href="http://ninjawars.proboards19.com/index.cgi?action=calendar" target="_blank" class="extLink">
                   Calendar <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""></a>
               </li>
+              <li>
+                  <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
+              </li>
+              <li>
+                
+              </li>
             </ul>
+          </div><!-- End of links-menu -->
+            
           </div>
 
-
-            <p>
-            <a href="rules.php" target="main">Rules</a> |
-            <a href="tutorial.php" target="main">Intro</a> |
-            <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum</a> 
-              <img class="extLink"  src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""> |
-            </p>
-            <p>
-            <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""> |
-            <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> 
-             <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
-            </p>
+            
           </div><!-- End of ooc-links -->
           
           
@@ -376,7 +381,15 @@
       <div id='index-footer'>
 <!-- TODO: make this absolute, floating at the page bottom as per facebook's bar. -->
         <!-- Substitute dynamic "catchphrases" here eventually -->
-        "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." - <a href='staff.php' target='main'>Staff</a>
+        "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." |
+        <a href="tutorial.php" target="main">Intro</a> |
+        <a href="rules.php" target="main">Rules</a> |
+        <a href='staff.php' target='main'>Staff</a> |
+          <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> 
+             <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""> |
+        <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum</a> 
+          <img class="extLink"  src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
+             
       </div>
       
     </div> <!-- End of content div -->
