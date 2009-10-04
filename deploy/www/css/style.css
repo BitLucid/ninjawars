@@ -455,11 +455,15 @@ td.playerTable {
 	padding: 3px 0 3px 5px;
 	background:transparent url(../images/bg_top_bar_teal.png) no-repeat scroll 0 0;
 }
-.boxes .active{
+.main-body .active {
 	background:transparent url(../images/bg_top_bar_maroon.png) no-repeat scroll 0 0;
 }
-.boxes .passive{
+.main-body .passive {
 	background:transparent url(../images/bg_top_bar_grey.png) no-repeat scroll 0 0;
+}
+.main-body .special {
+	background:none;
+	text-align:center;
 }
 .boxes ul {
 	padding-left:10px;padding-right: 0;margin-left:0;margin-right:0;
@@ -487,16 +491,6 @@ td.playerTable {
 }
 .column { /* class for repeated columns */
 	overflow:auto;
-}
-.column .active {
-	background:transparent url(../images/bg_top_bar_maroon.png) no-repeat scroll 0 0;
-}
-.column .passive {
-	background:transparent url(../images/bg_top_bar_grey.png) no-repeat scroll 0 0;
-}
-.column .special {
-	background:none;
-	text-align:center;
 }
 
 /* IFRAMES */

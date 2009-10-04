@@ -29,15 +29,8 @@ if ($logout) {
 
 $username = get_username();
 
-//var_dump($logout, $is_logged_in, $logout, $login_error, $username); die();
-
 $referrer = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
-// Display main page unless logged in.
-$main_src = 'main.php';
-if ($is_logged_in) {
-	$main_src = 'list_all_players.php';
-}
 
 // Today's Information Section of Left Column 
 $sql = new DBAccess(); // *** Instantiates wrapper class for manipulating pdo.
@@ -45,7 +38,6 @@ $GLOBALS['sql'] = $sql; // Put sql into globals array. :(
 
 $stats          = membership_and_combat_stats($sql);
 $vicious_killer = $stats['vicious_killer'];
-//TODO:  Get the player id instead of the actual name.
 $player_count   = $stats['player_count'];
 $players_online = $stats['players_online'];
 
@@ -53,17 +45,22 @@ $header = render_html_for_header('Live By the Sword', 'main-body');
 // render_html_for_header Writes out the html,head,meta,title,css,js.
 
 $version = 'NW Version 1.6.0 2009.09.06';
-
 $is_not_logged_in = !$is_logged_in;
 
 
+// Display main iframe page unless logged in.
+$main_src = 'main.php';
+if ($is_logged_in) {
+	$main_src = 'list_all_players.php';
+}
+
 $parts = get_certain_vars(get_defined_vars(), array('vicious_killer'));
+if(!$is_logged_in){
+    echo render_template('splash.tpl', $parts); // Non-logged in template.
+} else {
+    echo render_template('index.tpl', $parts); // Logged in template.
+}
 
-echo render_template('index2.tpl', $parts);
-// Username still exists here.
-
-// TODO: Abstract the display or don't display toggles to just be booleans or integers.
-// TODO: Change which items get toggled expanded when login occurs with the javascript.
-// TODO: Make sure that all the password modifying changes are secure.
+// TODO: Make sure that all password modifying changes are secure.
 
 ?>
