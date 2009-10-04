@@ -8,6 +8,9 @@ $is_logged_in = is_logged_in();
 $login_error  = false;
 $just_logged_out = false;
 
+$sql = new DBAccess(); // *** Instantiates wrapper class for manipulating pdo.
+$GLOBALS['sql'] = $sql; // Put sql into globals array. :(
+
 // Logout/already logged in/login
 
 if ($logout) { // on logout, kill the session and don't redirect. 
@@ -23,14 +26,12 @@ if ($logout) { // on logout, kill the session and don't redirect.
 	}
 }
 $username = get_username();
-
+$user_id = get_user_id();
 
 $referrer = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
 
 // Today's Information Section of Left Column 
-$sql = new DBAccess(); // *** Instantiates wrapper class for manipulating pdo.
-$GLOBALS['sql'] = $sql; // Put sql into globals array. :(
 
 $stats          = membership_and_combat_stats($sql);
 $vicious_killer = $stats['vicious_killer'];

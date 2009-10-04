@@ -131,7 +131,7 @@
         <div id='ninjawars-home' class='header-section'>
             <div class="logged-in-bar">
                 <p>
-                  <a target="main" href="player.php?player={$username}">{$username}</a>
+                  <a target="main" href="player.php?player={$user_id}">{$username}</a>
                 </p>
                 <p>
                   <a target="main" href="messages.php">mailbox</a>
