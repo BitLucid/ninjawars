@@ -59,7 +59,7 @@ $is_not_logged_in = !$is_logged_in;
 
 $parts = get_certain_vars(get_defined_vars(), array('vicious_killer'));
 
-echo render_template('index.tpl', $parts);
+echo render_template('index2.tpl', $parts);
 // Username still exists here.
 
 // TODO: Abstract the display or don't display toggles to just be booleans or integers.

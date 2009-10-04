@@ -1,88 +1,140 @@
     {$header}
     
+    <style type='text/css'>
+{literal}
+#left-column{
+    float:left;
+    width:15%;
+}
+#center-column{
+    float:left;
+    width:65%;
+}
+#right-column{
+    float:left;
+    width:20%;
+}
+.header-section{
+    height:7em;
+    border-bottom: thin solid blue;
+    color:white;
+}
+#menu-bar {
+}
+#ninjawars-home{
+    background-color:maroon;
+    color: white;
+}
+#reactive-panel{
+    height:100%;
+    background-color:black;
+    color: white;
+}
+
+#ninja-stats{
+}
+
+/* reactive-panel subparts */
+.logged-in-bar{
+    height: 25%;
+    width:100%;
+    background: black url(/images/bg_top_maroon.jpg) repeat-x scroll 0 0;
+    color:white;
+    border-bottom: 1px solid maroon;
+}
+.logged-in-bar #logout{
+    float:right;
+}
+#category-bar{
+    height:55%;
+    width: 100%;
+    text-align:center;
+    background: black;
+    color:white;
+    font-weight:bold;
+    font-size: 2.5em;
+}
+#category-bar ul{
+    height:100%;
+    margin: 0;
+    padding: 0;
+    list-style: inline;
+}
+#category-bar li{
+    margin: 0;
+    padding: 0;
+    width:33%;
+    height:100%;
+    float:left;
+    z-index:-1;
+    vertical-align:bottom;
+}
+#category-bar #status-actions{
+    background: url(/images/ninja_silhouette_50px.png) no-repeat top center;
+}
+#category-bar #combat-actions{
+    background: url(/images/50pxShuriken.png) no-repeat top center;
+}
+#category-bar #village-actions{
+    background: url(/images/pagodaIcon_60px.png) no-repeat top center;
+}
+
+#subcategory-bar{
+    height:20%;
+    width:100%;
+    float:left;
+    text-align:center;
+    background-color:maroon;
+    color:white;
+}
+#subcategory-bar ul{
+    float:left;
+    width:33%;
+    margin:0;
+    padding:0;
+}
+
+/* End reactive-panel */
+
+#index-footer{
+    text-align:center;
+    clear: both;
+    width:100%;
+    background-color:black;
+    color:grey;
+}
+
+{/literal}
+    </style>
+    
+    
     <!-- Version {$version} -->
 
-  <div id="content">
-
-    <div id="menu" class="login-menu">
-      <div id="menu-start">
-{if $is_not_logged_in}
-        <div id="login-bar">
-          <form id="login-form" action="{$WEB_ROOT}index.php#" method="post">
-            <span class="text">
-              <input type="hidden" name="ref" value="{$referrer}">
-                <label>
-                  Username:
-                  <input name="user" type="text" class="itext">
-                </label>
-                &nbsp;
-                <label>
-                  Password:
-                  <input name="pass" type="password" class="itext">
-                </label>
-                <input name="action" type="submit" value="login" class="ibutton formButton">
-              </span>
-            </form>
-          </div>
-{else} <!-- Displayed when logged in -->
-          <div class="logged-in-bar">
-            <a target="main" href="player.php?player={$username}">{$username}</a>
-            | <a target="main" href="messages.php">mailbox</a>
-            <span id='logged-in-bar-health'> </span>
-          </div>
-{/if} <!-- End of login/logged in bar. -->
-        </div>
-        <div id="menu-info">
-{if $is_not_logged_in}
-          <span class="signup-link">
-            <a target="main" href="{$WEB_ROOT}signup.php?referrer={$referrer}">Create a Ninja!</a> |
-          </span>
-          <span>
-            <a href="{$WEB_ROOT}lostpass.php" target="main" class="blend side">&nbsp;Lost&nbsp;Password?</a> |
-          </span>
-{/if}
-          <a href="rules.php" target="main">Rules</a> |
-          <a href="tutorial.php" target="main">Intro</a> |
-          <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki 
-            <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""></a> 
-          | <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum </a>
-            <img class="extLink"  src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
-          | <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a>
-             <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
-        </div>
-        
-        <div id="menu-end">
-{if $is_logged_in}
-          <span>
-            <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="{$IMAGE_ROOT}stop_square.png" alt="[]"></a>
-          </span>
-{/if}
-{if $just_logged_out}
-          <span>
-            You logged out.
-          </span>
-{/if}
-        </div>
-      </div>
-
-{if $login_error}
-      <div class="error">
-        That password/username combination was incorrect.  
-        Be aware that usernames are case sensitive.
-        Or request help with
-        <a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&amp;action=display&amp;thread=1051'>
-        login issues</a> on the forum.
-      </div>
-{/if}
-
-      <div class="three-columns">
-
-        <!-- LEFT COLUMN -->
-        <div id="leftColumn" class="column">
-          <div id="logo" class="boxes special">
-            <a href="list_all_players.php" target="main"><img src="{$IMAGE_ROOT}50pxShuriken.png" alt="Home"></a>
-          </div>
-{if $is_logged_in}
+    <div id='content'>
+      <div id='left-column'>
+        <div id='ninjawars-home' class='header-section'>
+          <a href='{$WEB_ROOT}'><img src='' alt='Home'></a>
+        </div>      
+      
+          <div id="quick-stats" class="boxes">
+            <div class="box-title centered">
+              <a href="#" class="show-hide-link" onclick="toggle_visibility('quickstats-and-switch-stats');">
+                Quick Stats <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+              </a>
+            </div>
+            <div id="quickstats-and-switch-stats">
+              <div class="centered quickstats-container">
+                <a href="quickstats.php" target="quickstats">Player</a> 
+                | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
+              </div>
+              <div id="quickstats-frame-container">
+                <iframe id="quickstats" src="quickstats.php" name="quickstats">
+                  Quick Stats Iframe Display section (Iframes Not supported by this browser)
+                </iframe>
+              </div>
+            </div><!-- End of quickstats and switch container -->
+          </div><!-- End of quickstats section. -->
+          
           <div id="actions" class="boxes active">
             <div class="box-title">
               <a href="#" class="show-hide-link" onclick="toggle_visibility('actions-menu');">
@@ -112,29 +164,12 @@
               <li><a href="messages.php" target="main">Mail</a></li>
             </ul>
           </div>
-          <div id="places" class="boxes active">
-            <div class="box-title">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('places-menu');">
-                Places <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
-              </a>
-            </div>
-            <ul id="places-menu">
-              <li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt=""></a></li>
-              <li><a href="dojo.php" target="main">Dojo</a></li>
-              <li><a href="casino.php" target="main">Casino</a></li>
-              <li><a href="work.php" target="main">Work</a></li>
-              <li><a href="shop.php" target="main">Shop</a></li>
-              <li><a href="shrine.php" target="main">Shrine <img src="images/shrine.png" alt=""></a></li>
-              <li>
-                <ul class="submenu">
-                  <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main">Heal</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <!-- End of content displayed when logged in -->
-{/if}
 
+          <p>
+        Still To investigate.
+        Health/Status Turns Recent Event Recent Mail Actions HEAL use speed scroll use stealth scroll enemies
+          </p>
+        
           <div id='vicious-killer' class='boxes'>
             <div class='box-title'>
               <a href='#' class='show-hide-link' onclick="toggle_visibility('vicious-killer-menu');">
@@ -143,14 +178,6 @@
             </div>
             <a id='vicious-killer-menu' href='player.php?player={$vicious_killer}' target='main'>{$vicious_killer}</a>
           </div><!-- End of vicious killer div -->
-          <div id='ninja-count-menu' class='boxes passive'>
-            <div class='box-title'>
-              <a href='#' class='show-hide-link ninja-count' onclick="toggle_visibility('ninja-count');">
-                Ninjas: <img class='show-hide-icon' src='{$IMAGE_ROOT}show_and_hide.png' alt='+/-'>
-              </a>
-            </div>
-            <div id='ninja-count'><p>{$players_online} Online </p><p> {$player_count} Total</p></div>
-          </div>
 
           <div id="music" class="boxes passive">
             <div class="box-title">
@@ -169,6 +196,147 @@
             </object>
           </div>
 
+      </div>  
+      
+      
+      
+      <!-- CENTRAL COLUMN STARTS HERE -->
+      
+      
+      
+      <div id='center-column'>
+
+      
+      <div id='menu-bar' class='header-section'>
+        <div id='reactive-panel'>
+
+            <div class="logged-in-bar">
+
+            <a target="main" href="player.php?player={$username}">{$username}</a>
+            | <a target="main" href="messages.php">mailbox</a>
+            <span id='logged-in-bar-health'> </span>
+
+            <span id='logout'>
+              <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="{$IMAGE_ROOT}stop_square.png" alt="[]"></a>
+            </span>
+
+
+            </div>
+
+
+            <div id='category-bar'>
+              <ul>
+                <li id='status-actions'>
+                  Status
+                </li>
+                <li id='combat-actions'>
+                  Combat
+                </li>
+                <li id='village-actions'>
+                  Village
+                </li>
+              </ul>
+            </div>
+            <div id='subcategory-bar'>
+                <ul id='self-subcategory'>
+                  Stats
+                  Skills
+                  Mail
+                  Profile Page
+                  <!-- Settings -->
+                </ul>
+                <ul id='combat-subcategory'>
+                  Ninjas
+                  Clan
+                  Enemies
+                  Fast Killer
+                  Duels
+                </ul>
+                <ul id='village-subcategory'>
+                  NPCS
+                  Dosh.
+                  Dojo
+                  Cas.
+                  Work
+                  Shop
+                  Shrine
+                </ul>
+            </div>
+        </div>
+        
+      </div><!-- End of menu-bar -->
+
+
+          <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
+            <iframe id="main" name="main" class="main-iframe" src="{$main_src}">
+              Main Content Display Section (Frames Not Supported)
+            </iframe>
+          </div><!-- End of mainFrame div -->
+          
+      </div> <!-- End of center-column -->
+
+
+
+
+      <!-- RIGHTMOST COLUMN STARTS HERE -->
+
+
+      <div id='right-column'>
+      
+      
+        <div id='ninja-stats' class='header-section'>
+
+          <div id='ninja-count-menu' class='boxes passive'>
+            <a href="list_all_players.php" target="main">
+              <span id='nin1'>Ni</span><span id='nin2'>nj</span><span id='nin3'>as</span> 
+              <img src="images/smallArrows.png" alt="&gt;&gt;&gt;">
+            </a>
+            {$players_online} Online, {$player_count} Total
+          </div>
+        
+        <div id="ninja-search" class="boxes active">
+            <form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">
+              <div>
+                Find A Ninja:
+                <input id="searched" type="text" maxlength="50" name="searched" class="textField">
+                <input id="hide" type="hidden" name="hide" value="dead">
+                <input type="submit" value="find" class="formButton">
+              </div>
+            </form>
+          </div>
+        
+        </div><!-- End of ninja-stats -->
+        
+        
+          <div id='index-chat'>
+              <div id="village-chat" class="boxes active">
+                <div class="box-title centered">
+                  <a href="#" class="show-hide-link" onclick="toggle_visibility('chat-and-switch');">
+                    Chat <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+                  </a>
+                </div>
+                <div id="chat-and-switch">
+                  <div class="chat-switch centered">
+                    <a href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
+                    <a href="mini_chat.php?chat_length=20" target="mini_chat">Refresh</a>
+                  </div>
+    <!-- TODO: move chat submit box out here. -->
+                  <div id="mini-chat-frame-container" class='chat-collapsed'>
+                    <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
+                      Mini Chat Iframe Display Section (Iframes not supported by this browser)
+                    </iframe>
+                  </div>
+                  <div id="expand-chat">
+                    <a href="mini_chat.php?chatlength=360" target="mini_chat">
+                      View more messages <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+                    </a>
+                  </div>
+                </div>
+              </div>
+          </div> <!-- End of index-chat --> 
+
+          <div id='ooc-links'>
+
           <div id="links" class="boxes passive">
             <div class="box-title">
               <a href="#" class="show-hide-link links-menu" onclick="toggle_visibility('links-menu');">
@@ -186,95 +354,34 @@
               </li>
             </ul>
           </div>
-        </div><!-- End of left Column div-->
 
-<!-- Substitute image and "catchphrases" here eventually -->
 
-        <div id="centerColumn" class="column"><!-- top menu starts here -->
-          <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe id="main" name="main" class="main-iframe" src="{$main_src}">
-              Main Content Display Section (Frames Not Supported)
-            </iframe>
-          </div><!-- End of mainFrame div -->
-
-<!-- LOCATION FOR CONTENT UNDER THE MAIN DISPLAY SECTION -->
-<!--
-          <div class="created-by">
-            catchphrase games
-          </div>
--->
-        </div><!-- End of centerColumn div -->
-
-        <div id="rightColumn" class="column"><!-- RIGHT COLUMN -->
-          <div id="player-list" class="boxes special centered">
-            <a href="list_all_players.php" target="main">
-              <span id='nin1'>Ni</span><span id='nin2'>nj</span><span id='nin3'>as</span> 
-              <img src="images/smallArrows.png" alt="&gt;&gt;&gt;">
-            </a>
-          </div>
-          <div id="ninja-search" class="boxes active">
-            <div class="box-title centered">Ninja Search</div>
-            <form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">
-              <div>
-                Ninja:
-                <input id="searched" type="text" maxlength="50" name="searched" class="textField">
-                <input id="hide" type="hidden" name="hide" value="dead">
-                <input type="submit" value="find" class="formButton">
-              </div>
-            </form>
-          </div>
-{if $is_logged_in}
-          <div id="quick-stats" class="boxes">
-            <div class="box-title centered">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('quickstats-and-switch-stats');">
-                Quick Stats <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
-              </a>
-            </div>
-            <div id="quickstats-and-switch-stats">
-              <div class="centered quickstats-container">
-                <a href="quickstats.php" target="quickstats">Player</a> 
-                | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
-              </div>
-              <div id="quickstats-frame-container">
-                <iframe id="quickstats" src="quickstats.php" name="quickstats">
-                  Quick Stats Iframe Display section (Iframes Not supported by this browser)
-                </iframe>
-              </div>
-            </div><!-- End of quickstats and switch container -->
-          </div><!-- End of quickstats section. -->
-<!-- End of display when logged in -->
-{/if}
-          <div id="village-chat" class="boxes active">
-            <div class="box-title centered">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('chat-and-switch');">
-                Chat <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
-              </a>
-            </div>
-            <div id="chat-and-switch">
-              <div class="chat-switch centered">
-                <a href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
-                <a href="mini_chat.php?chat_length=20" target="mini_chat">Refresh</a>
-              </div>
-<!-- TODO: move chat submit box out here. -->
-              <div id="mini-chat-frame-container" class='chat-collapsed'>
-                <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
-                  Mini Chat Iframe Display Section (Iframes not supported by this browser)
-                </iframe>
-              </div>
-              <div id="expand-chat">
-                <a href="mini_chat.php?chatlength=360" target="mini_chat">
-                  View more messages <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
-                </a>
-              </div>
-            </div>
-          </div>
-        </div><!--- End of rightColumn div -->
-
-      </div><!-- End of columns div -->
-
-    </div><!-- End of bodyContent div -->
-
-<!-- Validated as of Feb, 2009 with notices about self-closing br tags. -->
+            <p>
+            <a href="rules.php" target="main">Rules</a> |
+            <a href="tutorial.php" target="main">Intro</a> |
+            <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum</a> 
+              <img class="extLink"  src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""> |
+            </p>
+            <p>
+            <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""> |
+            <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> 
+             <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
+            </p>
+          </div><!-- End of ooc-links -->
+          
+          
+          
+      </div> <!-- End of right column -->
+      
+      <div id='index-footer'>
+<!-- TODO: make this absolute, floating at the page bottom as per facebook's bar. -->
+        <!-- Substitute dynamic "catchphrases" here eventually -->
+        "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." - <a href='staff.php' target='main'>Staff</a>
+      </div>
+      
+    </div> <!-- End of content div -->
+    
+<!-- Validated as of Oct, 2009 -->
 
     <!-- Version: {$version} -->
 
