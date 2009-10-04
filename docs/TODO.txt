@@ -20,6 +20,7 @@ Make giving items clan (done) and to newbies (based on existing play time and le
 // TODO: Put player-led multi-checking into play.
 // TODO: Put periodic but then constitutive captcha checks into play.
 Possibility of double or half turns, double or half health at the casino.
+Turn signup into the madlib that I wrote long ago, it's probably still in gmail.
 
 Environment:
 Create a map system.

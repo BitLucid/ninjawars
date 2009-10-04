@@ -51,25 +51,29 @@ if (getTurns($username) > 0) {
 			}
 
 			echo "<div class='ninja-error'>An Oni attacks you as you wander!</div>
-			<img src='images/Oni_pelted_by_beans.jpg' style='width:450px'>
+			<img src='images/scenes/Oni_pelted_by_beans.jpg' style='width:450px'>
 			<p>The Oni saps some of your soul before "
 			.($oni_killed ? "you kill it." : "it escapes into the wilderness.")."</p>";
 		} else if ($victim == "" ) {
 			echo "You attack the air.\n";
 		} else if ($victim == "villager") { // *** VILLAGER ***
-			echo "The villager sees you and prepares to defend!<br><br>\n";
-
 			$villager_attack = rand(0, 10); // *** Villager Damage ***
-
+			$just_villager = rand(0, 20);
+			echo "<p>The villager sees you and prepares to defend!</p>\n";
+			
+            if($just_villager){
+    			echo "<img src=\"images/characters/fighter.png\" alt=\"Villager\">";
+            } else {
+    			echo "<img src=\"images/characters/ninja.png\" alt=\"Ninja\">";
+            }
 			if (!subtractHealth($username, $villager_attack)) {
-				echo "The villager has slain you!<br>\n";
+				echo "<p>The villager has slain you!</p>\n";
 				echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.\n";
 			} else {
-				$just_villager = rand(0, 20);
+
 				$villager_gold = rand(0, 20);	// *** Vilager Gold ***
 				addGold($username, $villager_gold);
-
-				echo "The villager is no match for you!<br>\n";
+				echo "<p>The villager is no match for you!</p>\n";
 				echo "Villager does $villager_attack points of damage.<br>\n";
 				echo "You have gained $villager_gold gold.<br>\n";
 
@@ -91,7 +95,7 @@ if (getTurns($username) > 0) {
 			}
 		} else if ($victim == "samurai") {
 			$turn_cost = 1;
-			echo "<img src=\"images/samurai.png\" alt=\"Samurai\">\n";
+			echo "<img src=\"images/characters/samurai.png\" alt=\"Samurai\">\n";
 
 			if (getLevel($username) < 6) {
 				echo "You are too weak to take on the Samurai.<br>\n";
@@ -155,7 +159,7 @@ if (getTurns($username) > 0) {
 			}	// *** End valid turns and kills for the attack. ***
 		} else if ($victim == "merchant") {
 			echo "Merchant sees you and prepares to defend!<br><br>\n";
-			echo "<img src=\"images/merchant.png\" alt=\"Merchant\">";
+			echo "<img src=\"images/characters/merchant.png\" alt=\"Merchant\">";
 
 			$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
 
@@ -183,7 +187,7 @@ if (getTurns($username) > 0) {
 			} // End of if ninja won.
 		} else if ($victim == "guard") {
 			echo "The Guard sees you and prepares to defend!<br><br>\n";
-			echo "<img src=\"images/fighter.png\" alt=\"Fighter\">\n";
+			echo "<img src=\"images/characters/guard.png\" alt=\"Guard\">\n";
 
 			$guard_attack = rand(1, $attacker_str + 10);  // *** Guard Damage ***
 
@@ -217,7 +221,7 @@ if (getTurns($username) > 0) {
 			if ($counter>20 && rand(1, 3) == 3) { 
 				// Only after many attacks do you have the chance to be attacked back by the group of theives.
 				SESSION::set('counter', 0); // Reset the counter to zero.
-				echo "<img src='images/KunitsunaTrainingWithTengu.jpg' style='width:1000px'>";
+				echo "<img src='images/scenes/KunitsunaTrainingWithTengu.jpg' alt='' style='width:1000px'>";
 
 				echo "<p>A group of tengu thieves is waiting for you. They seem to be angered by your attacks on their brethren.</p>";
 				$group_attack= rand(50, 150);
@@ -239,7 +243,7 @@ if (getTurns($username) > 0) {
 				}
 			} else { // Normal attack on a single thief.
 				echo "Thief sees you and prepares to defend!<br><br>\n";
-				echo "<img src=\"images/thief.png\" alt=\"Thief\">\n";
+				echo "<img src=\"images/characters/thief.png\" alt=\"Thief\">\n";
 
 				$thief_attack = rand(0, 35);  // *** Thief Damage  ***
 
