@@ -57,14 +57,20 @@ function render_viewable_error($error){
 
 /**
  * Returns the state of the player from the database,
+ * uses a user_id if one is present, otherwise
  * defaults to the currently logged in player, but can act on any player
  * if another username is passed in.
+ * @param $user user_id or username
 **/
-function get_player_info($username=null){
+function get_player_info($user=null){
 	$sql = new DBAccess();
 	$player_data = null;
-	$username = either($username, $_SESSION['username']); // Default to current.
-	$sel_player = "select * from players where uname = '".$username."' limit 1";
+	if(is_numeric($user)){
+	    $sel_player = "select * from players where player_id = '".$user."' limit 1";
+	} else {
+    	$username = either($user, $_SESSION['username']); // Default to current session user.
+    	$sel_player = "select * from players where uname = '".sql($username)."' limit 1";
+    }
 	$player_data = $sql->QueryRowAssoc($sel_player);
 	// TODO: Make this return a player object instead of a player array. Or also a player obj?
 	return $player_data;

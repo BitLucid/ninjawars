@@ -39,20 +39,39 @@ function remove_enemy($enemy_id){
     set_setting('enemy_list', $enemy_list);
 }
 
+/**
+ * Comparison sort of two enemies by health, level.
+**/
+function compare_enemy_order($e1, $e2){
+    if($e1['health'] == $e2['health']){
+        return (int) $e1['level']<=$e2['level'];
+    } elseif($e1['health']>=$e2['health']){
+        return -1;
+    } else {
+        return 1;
+    }
+}
+
+function expand_enemy_info($enemy_id){
+    $enemy = get_player_info($enemy_id);
+    $enemy['enemy_id'] = $enemy_id;
+    return $enemy;
+}
 
 function render_current_enemies($enemy_list){
     $enemy_section = '';
     if(!is_array($enemy_list)){
         return $enemy_section;
     }
-    foreach($enemy_list as $loop_enemy_id){
-        $player_name = player_name_from_id($loop_enemy_id);
-        $health = getHealth($player_name);
-        $action = $health>0? 'Attack' : 'View';
-        $status_class = ($health>0? '' : 'enemy-dead');
-        $enemy_section .= "<li class='$status_class'><a href='enemies.php?remove_enemy=$loop_enemy_id'><img src='".IMAGE_ROOT."icons/delete.png' alt='remove'></a> $action <a href='player.php?player_id=$loop_enemy_id'>".out($player_name)."</a></li>";
+    $enemy_list = array_map('expand_enemy_info', $enemy_list); // Turn id into enemy info.
+    uasort($enemy_list, 'compare_enemy_order'); // Resort by health, level.
+    foreach($enemy_list as $loop_enemy_id=>$loop_enemy){
+        $action = $loop_enemy['health']>0? 'Attack' : 'View';
+        $status_class = ($loop_enemy['health']>0? '' : 'enemy-dead');
+        $enemy_section .= "<li class='$status_class'><a href='enemies.php?remove_enemy=$loop_enemy_id'><img src='".IMAGE_ROOT."icons/delete.png' alt='remove'></a> $action <a href='player.php?player_id=$loop_enemy_id'>".out($loop_enemy['uname'])."</a></li>";
         // TODO: Turn this into a template render.
     }
+    
     return $enemy_section;
 }
 
