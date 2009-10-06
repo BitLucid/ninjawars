@@ -532,7 +532,9 @@ td.playerTable {
 	height: 6em;
 	border: 0;
 }
-
+#quickstats-and-switch-stats a {
+    font-size: 85%;
+}
 #quickstats-and-switch-stats .centered{
     margin-bottom:10px;
 }
@@ -1109,7 +1111,7 @@ body.ninjawars-staff{
     background: black;
     color:white;
     font-weight:bold;
-    font-size: 2.5em;
+    font-size: 1.7em;
 }
 #category-bar ul{
     height:100%;
@@ -1123,12 +1125,6 @@ body.ninjawars-staff{
     width:33%;
     height:100%;
     float:left;
-}
-#category-bar li a{
-	filter:alpha(opacity=70);
-	-moz-opacity:0.7;
-	-khtml-opacity: 0.7;
-	opacity: 0.7;
 }
 /*
 #category-bar #status-actions{
@@ -1148,10 +1144,14 @@ body.ninjawars-staff{
     text-align:center;
 }
 #subcategory-bar ul{
-    margin: 0 .5em 0 0;
+    margin: 0 5px 0 5px;
     padding:0;
     background-color:#330000;
     color:white;
+    float:left;
+}
+#subcategory-bar li{
+    font-size:80%;
 }
 #subcategory-bar ul#village-subcategory{
     float:right;
@@ -1161,8 +1161,6 @@ body.ninjawars-staff{
 }
 #subcategory-bar ul#combat-subcategory{
     float:left;
-    margin-left:auto;
-    margin-right:auto;
 }
 
 #subcategory-bar li{
