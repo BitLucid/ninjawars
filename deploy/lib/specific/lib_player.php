@@ -187,7 +187,7 @@ function render_clan_members($clan=null, $limit=30){
     ob_start();
     if($clan){
         $where = "where clan = '$clan' and confirmed=1";
-        $sel = "select uname, player_id, health from players $where order by level desc limit $limit";
+        $sel = "select uname, player_id, health from players $where order by health desc, level desc limit $limit";
         $sql = new DBAccess();
         $ninjas = $sql->QueryAssoc($sel);
         ?>

@@ -31,6 +31,8 @@ $sql->Query("SELECT item, amount FROM inventory WHERE owner = '".sql($username).
 
 $items_section = '';
 
+// TODO: Change this and the template to be using dl/dd/dt instead of a table.
+
 foreach($sql->FetchAll() AS $loopItem){
     if($loopItem['amount']){ // Skip zero counts.
     $items_section .= "
