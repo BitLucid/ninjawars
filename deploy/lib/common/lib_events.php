@@ -18,10 +18,10 @@ function send_event($from_id,$to_id,$msg) {
   $sql->Insert("INSERT INTO events (event_id, send_from, send_to, message, date) VALUES (default, '".sql($from_id)."','".sql($to_id)."','".sql($msg)."',now())");
 }
 
-function get_events($user_id){
+function get_events($user_id, $limit=null){
     global $sql;
     $sql->Query("SELECT send_from, message, unread, uname as from FROM events 
-        join players on send_from = player_id where send_to = '".sql($user_id)."' ORDER BY date DESC");
+        join players on send_from = player_id where send_to = '".sql($user_id)."' ORDER BY date DESC ".($limit? "limit $limit" : '')."");
     return $sql->fetchAll();
 }
 

@@ -16,17 +16,19 @@
 }
 .header-section{
     height:7em;
-    border-bottom: thin solid teal;
+    border-bottom: thick solid #330000;
     color:white;
 }
 #menu-bar {
 }
 #ninjawars-home{
-    background-color:maroon;
+    background-color:black;
     color: white;
 }
 #logged-in-bar{
+    margin-left:1em;
     width:100%;
+    font-size:1.5em;
     /*background: transparent url(/images/bg_top_maroon.jpg) repeat-x scroll 0 0;*/
     color:white;
     /*border-bottom: 1px solid maroon;*/
@@ -68,9 +70,14 @@
     width:33%;
     height:100%;
     float:left;
-    z-index:-1;
-    vertical-align:bottom;
 }
+#category-bar li a{
+	filter:alpha(opacity=70);
+	-moz-opacity:0.7;
+	-khtml-opacity: 0.7;
+	opacity: 0.7;
+}
+/*
 #category-bar #status-actions{
     background: url(/images/ninja_silhouette_50px.png) no-repeat top center;
 }
@@ -79,21 +86,35 @@
 }
 #category-bar #village-actions{
     background: url(/images/pagodaIcon_60px.png) no-repeat top center;
-}
+}*/
 
 #subcategory-bar{
     height:20%;
     width:100%;
     float:left;
     text-align:center;
-    background-color:maroon;
-    color:white;
 }
 #subcategory-bar ul{
-    float:left;
-    width:33%;
-    margin:0;
+    margin: 0 1em 0 0;
     padding:0;
+    background-color:#330000;
+    color:white;
+}
+#subcategory-bar ul#village-subcategory{
+    float:right;
+}
+#subcategory-bar ul#self-subcategory{
+    float:left;
+}
+#subcategory-bar ul#combat-subcategory{
+    float:left;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#subcategory-bar li{
+    display:inline;
+    margin-right:1em;
 }
 
 /* End reactive-panel */
@@ -171,7 +192,6 @@
             </div>
             <ul class="basemenu" id="actions-menu">
               <li><a href="enemies.php" target="main">Enemies</a></li>
-              <li><a href="inventory.php" target="main">Inventory</a></li>
               <li>
                 <ul class="submenu">
                   <li>
@@ -187,10 +207,10 @@
               <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main">Heal</a></li>
             </ul>
           </div>
-
-          <p>
-        Still To investigate: Recent Event Recent Mail
-          </p>
+          
+          <!-- Recent Events & Recent Mail will get put in here via javascript -->
+          <div id='recent-events'></div>
+          <div id='recent-mail'></div>
         
           <div id='vicious-killer' class='boxes'>
             <div class='box-title'>
@@ -235,36 +255,40 @@
             <div id='category-bar'>
               <ul>
                 <li id='status-actions'>
+                  <img src='/images/ninja_silhouette_50px.png' alt=''>
                   <a href='events.php' target='main'>Status</a>
                 </li>
                 <li id='combat-actions'>
+                  <img src='/images/50pxShuriken.png' alt=''>
                   <a href='enemies.php' target='main'>Combat</a>
                 </li>
                 <li id='village-actions'>
+                  <img src='/images/pagodaIcon_60px.png' alt=''>
                   <a href='attack_player.php' target='main'>Village</a>
                 </li>
               </ul>
             </div>
             <div id='subcategory-bar'>
                 <ul id='self-subcategory'>
-                  Stats
-                  Skills
-                  Profile
+                  <li><a href="stats.php" target="main">Stats</a></li>
+                  <li><a href="skills.php" target="main">Skills</a></li>
+                  <li><a href="messages.php" target="main">Mail</a></li>
+                  <li><a href="inventory.php" target="main">Inventory</a></li>
+                  <!-- Profile -->
                   <!-- Settings -->
                 </ul>
                 <ul id='combat-subcategory'>
-                  Ninjas
-                  Clan
-                  Fast Killer
-                  Duels
+                  <li><a href="list_all_players.php" target="main">Ninjas</a></li>
+                  <li><a href="clan.php" target="main">Clan</a></li>
+                  <li><a href="duel.php" target="main">Duels</a></li>
                 </ul>
                 <ul id='village-subcategory'>
-                  Dosh.
-                  Dojo
-                  Cas.
-                  Work
-                  Shop
-                  Shrine
+                  <li><a href="shrine.php" target="main">Shrine <img src="images/shrine.png" alt=""></a></li>
+                  <li><a href="shop.php" target="main">Shop</a></li>
+                  <li><a href="work.php" target="main">Work</a></li>
+                  <li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt=""></a></li>
+                  <li><a href="dojo.php" target="main">Dojo</a></li>
+                  <li><a href="casino.php" target="main">Casino</a></li>  
                 </ul>
             </div>
         </div>
@@ -349,7 +373,7 @@
           <div id="links" class="boxes passive">
             <div class="box-title">
               <a href="#" class="show-hide-link links-menu" onclick="toggle_visibility('links-menu');">
-                Out of Character Links <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
+                Out of Character <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
               </a>
             </div>
             <div id='links-menu'>
