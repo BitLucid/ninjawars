@@ -95,7 +95,7 @@
     text-align:center;
 }
 #subcategory-bar ul{
-    margin: 0 1em 0 0;
+    margin: 0 .5em 0 0;
     padding:0;
     background-color:#330000;
     color:white;
@@ -114,7 +114,7 @@
 
 #subcategory-bar li{
     display:inline;
-    margin-right:1em;
+    margin-right:.5em;
 }
 
 /* End reactive-panel */
@@ -191,7 +191,6 @@
               </a>
             </div>
             <ul class="basemenu" id="actions-menu">
-              <li><a href="enemies.php" target="main">Enemies</a></li>
               <li>
                 <ul class="submenu">
                   <li>
@@ -316,7 +315,7 @@
         <div id='ninja-stats' class='header-section'>
         
         <span id='logout'>
-            <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="{$IMAGE_ROOT}stop_square.png" alt="[]"></a>
+            <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="{$IMAGE_ROOT}icons/stop.png" alt=""></a>
         </span>
 
           <div id='ninja-count-menu' class='boxes passive'>

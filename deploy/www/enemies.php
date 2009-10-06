@@ -68,7 +68,10 @@ function render_current_enemies($enemy_list){
     foreach($enemy_list as $loop_enemy_id=>$loop_enemy){
         $action = $loop_enemy['health']>0? 'Attack' : 'View';
         $status_class = ($loop_enemy['health']>0? '' : 'enemy-dead');
-        $enemy_section .= "<li class='$status_class'><a href='enemies.php?remove_enemy=$loop_enemy_id'><img src='".IMAGE_ROOT."icons/delete.png' alt='remove'></a> $action <a href='player.php?player_id=$loop_enemy_id'>".out($loop_enemy['uname'])."</a> ({$loop_enemy['health']} health)</li>";
+        $enemy_section .= "<li class='$status_class'>
+            <a href='enemies.php?remove_enemy=$loop_enemy_id'><img src='".IMAGE_ROOT."icons/delete.png' alt='remove'></a>
+             $action <a href='player.php?player_id=$loop_enemy_id'>".out($loop_enemy['uname'])."</a>
+              ({$loop_enemy['health']} health)</li>";
         // TODO: Turn this into a template render.
     }
     
