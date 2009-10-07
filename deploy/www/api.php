@@ -1,0 +1,52 @@
+<?php
+// TODO: Only allow for ajax requests.
+// Check login to allow for information.
+// Recent mails.
+// Recent events.
+// Check chats.
+$type = in('type', null);
+$jsoncallback = in('jsoncallback');
+echo render_json($type, $jsoncallback);
+
+// Make sure to default to private, just as a security reminder.
+
+
+/**
+ * Determine which function to call to get the json for.
+**/
+function render_json($type, $jsoncallback){
+    $valid_type_map = array('player'=>'json_latest_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message');
+    $res = null;
+    if($valid_type_map[$type]){
+        $res = $jsoncallback.'('.$valid_type_map[$type]().')';   
+    }
+    return $res;
+}
+
+function json_latest_message(){
+    $sql = new DBAccess();
+    $user_id = get_user_id();
+    $messages = $sql->FetchAll("select * from messages where player_id = '".sql($user_id)."' order by date limit 1");
+    return json_encode($messages);
+}
+
+function json_latest_event(){
+    $sql = new DBAccess();
+    $user_id = get_user_id();
+    $events = $sql->FetchAll("select * from events where player_id = '".sql($user_id)."' order by date limit 1");
+    return '{"messages":'.json_encode($messages).'}';
+}
+
+function json_player(){
+    $player = get_player_info();
+    return '{"player":'.json_encode($player).'}';
+}
+
+function json_chats(){
+    $sql = new DBAccess();
+    $chats = $sql->FetchAll("select * from chat order by time");
+    return '{"chats":'.json_encode($chats).'}';
+}
+
+
+?>

@@ -53,11 +53,43 @@ $(document).ready(function() {
     // footer gets excluded.
     */
     
+    updateIndex();
+    
    
  });
  
 
 // GLOBAL FUNCTIONS
+
+// Update the chat page without refresh.
+function updateChat(){
+// store a latest chat id to check against the chat.
+// Get the chat data.
+// If the latest hasn't changed, just return nothing.
+// If the latest has changed, return
+// If the latest has changed, cycle through the data
+//saving non-matches until you get back to the "latest" match.
+// Update the chat's ui.
+// update the "latest chat id" var.
+}
+
+// Update display elements that live on the index page.
+function updateIndex(){
+        $.getJSON('api.php?type=chats&jsoncallback=?', function(data){
+            console.log(data.chats[0].message);
+            $.each(data.chats, function(i,chat){
+                $('<a/>').attr("href", "player.php?player="+chat.send_from).text(chat.send_from+" ").appendTo('#recent-events');
+                $('<span/>').text(chat.message).appendTo('#recent-events');
+                if(i== 2) return false;
+            })
+        });
+// Recent events.
+// recent messages.
+// update chat
+// health bar.
+}
+
+
 
 // When clicking frame links, load a section instead of the iframe.
 function frameClickHandlers(links, div){
