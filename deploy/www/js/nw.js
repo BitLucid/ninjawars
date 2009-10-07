@@ -76,11 +76,12 @@ function updateChat(){
 // Update display elements that live on the index page.
 function updateIndex(){
         $.getJSON('api.php?type=chats&jsoncallback=?', function(data){
-            console.log(data.chats[0].message);
+            //console.log(data.chats[0].message);
             $.each(data.chats, function(i,chat){
-                $('<a/>').attr("href", "player.php?player="+chat.send_from).text(chat.send_from+" ").appendTo('#recent-events');
-                $('<span/>').text(chat.message).appendTo('#recent-events');
-                if(i== 2) return false;
+                $('#recent-events').html("<div class='recent-chat'><a href='player.php?player="+chat.send_from+"' target='main'>"+chat.send_from+"</a>: "+chat.message+" </div>");
+                /*$('<a/>').attr("href", "player.php?player="+chat.send_from).text(chat.send_from+" ").appendTo('#recent-events');
+                $('<span/>').text(chat.message).appendTo('#recent-events');*/
+                if(i== 0) return false;
             })
         });
 // Recent events.
