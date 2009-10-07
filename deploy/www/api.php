@@ -26,15 +26,15 @@ function render_json($type, $jsoncallback){
 function json_latest_message(){
     $sql = new DBAccess();
     $user_id = (int) get_user_id();
-    $messages = $sql->FetchAll("select * from messages where send_to = '".sql($user_id)."' order by date limit 1");
-    return '{"messages":'.json_encode($messages).'}';
+    $messages = $sql->FetchAll("select message_id, message, date, send_to, send_from, unread, uname from messages join players on player_id = send_to where send_to = '".sql($user_id)."' order by date limit 1");
+    return '{"message":'.json_encode($messages).'}';
 }
 
 function json_latest_event(){
     $sql = new DBAccess();
     $user_id = (int) get_user_id();
-    $events = $sql->FetchAll("select * from events where send_to = '".sql($user_id)."' order by date limit 1");
-    return '{"events":'.json_encode($events).'}';
+    $events = $sql->FetchAll("select event_id, event, date, send_to, send_from, unread, uname from events join players on player_id = send_to where send_to = '".sql($user_id)."' order by date limit 1");
+    return '{"event":'.json_encode($events).'}';
 }
 
 function json_player(){
