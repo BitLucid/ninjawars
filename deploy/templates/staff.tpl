@@ -8,7 +8,7 @@
     The preferred method of contacting us with problems or bugs with the game is via the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.
     For other issues, including confirmation problems, email us at: <a href="mailto:{$SUPPORT_EMAIL}">{$SUPPORT_EMAIL}</a>
   </p>
-
+  
 <div class='developers'>
   <h3 class='subtitle'>Developers</h3>
   <div class='developer'>
@@ -61,20 +61,19 @@
 </div>
 
 <div id='open-source-repository'>
-  <h3>Contributing to Ninjawars</h3>
+  <h3 class='subtitle'>Contributing to Ninjawars</h3>
 
   <p>Want to get involved?  You can hack away at the code on github and suggest changes or ask any questions on the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.</p>
   <p> Ninjawars is open source, with the source code downloadable and able to be openly contributed to at: 
     <a class='external' target='_blank' href="http://github.com/tchalvak/ninjawars/tree/master">http://github.com/tchalvak/ninjawars</a>
   </p>    
     
-    <div id='latest-commit-section'>
-    <span id='latest-commit-title'>The latest commit to the ninjawars code was:</span>
+    <p id='latest-commit-section'>
+    <p id='latest-commit-title'>The latest commit to the main ninjawars code was:</p>
     <span id='latest-commit'>
     </span>
-    </div>
+    </p>
 </div>
-
 
 <div class='license'>
   <div class='subtitle'>License</div>
@@ -88,5 +87,24 @@
     <a xmlns:cc="http://creativecommons.org/ns#" href="{$WEB_ROOT}staff.php" rel="cc:morePermissions">{$WEB_ROOT}staff.php</a>.
   </p>
 </div>
+
+
+<script>
+  {literal}
+  $(document).ready(function(){
+    $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?tags=ninja&tagmode=any&format=json&jsoncallback=?",
+        function(data){
+          $.each(data.items, function(i,item){
+            $("<img/>").attr("src", item.media.m).appendTo("#random-ninja-images");
+            if ( i == 2 ) return false;
+          });
+        });
+  });
+  {/literal}
+  </script>
+  
+  <div id='random-ninja-images'>
+  <h3 class='subtitle'>And now for something completely different:</h3>
+  </div>
 
 {$footer}
