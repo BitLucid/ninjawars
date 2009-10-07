@@ -61,8 +61,9 @@ function render_viewable_error($error){
  * defaults to the currently logged in player, but can act on any player
  * if another username is passed in.
  * @param $user user_id or username
+ * @param @password Unless true, wipe the password.
 **/
-function get_player_info($user=null){
+function get_player_info($user=null, $password=false){
 	$sql = new DBAccess();
 	$player_data = null;
 	if(is_numeric($user)){
@@ -72,7 +73,9 @@ function get_player_info($user=null){
     	$sel_player = "select * from players where uname = '".sql($username)."' limit 1";
     }
 	$player_data = $sql->QueryRowAssoc($sel_player);
-	// TODO: Make this return a player object instead of a player array. Or also a player obj?
+	if(!$password){
+	    unset($player_data['pname']);
+	}
 	return $player_data;
 }
 
