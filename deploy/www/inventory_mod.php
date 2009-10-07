@@ -169,6 +169,12 @@ else if ($item == 'Stealth Scroll')
 	$stealthScroll->setCovert(true);
 }
 
+if(!is_object($item)){
+    echo "No such item.";
+    die(); // hack to avoid fatal error, proper checking for items should be done.
+}
+
+
 $article = get_indefinite_article($item->getName());
 
 if ($using_item)
