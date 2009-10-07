@@ -28,6 +28,7 @@ Turn the Village into a single link off of the index, with a page that acts as t
 
 
 UI:
+Perhaps make the "status" icon use the old ninjawars icon silhouette.
 Copy digg's UI like a mofo, I really like that one.
 MAKE STANDALONE PAGES HAVE A LINK BACK THE MAIN SITE, presumably via javascript, 'cause search engines are indexing parts of the site now, as per this search: http://www.google.com/search?q=ninjawars.net
 Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now,
