@@ -231,7 +231,7 @@ function get_username(){
 
 
 function player_name_from_id($player_id){
-    global $sql;
+    $sql = new DBAccess();
     if(!$player_id){
         throw new Exception('Blank player ID to find the username of requested.');
     }
@@ -240,7 +240,7 @@ function player_name_from_id($player_id){
 
 // Return the id that corresponds with a player name, if no other source is available.
 function get_user_id($name=null){
-    global $sql;
+    $sql = new DBAccess();
     if($name === null){
         $name = get_username();
     }

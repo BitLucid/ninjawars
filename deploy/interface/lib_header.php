@@ -69,7 +69,7 @@ function get_player_info($user=null, $password=false){
 	if(is_numeric($user)){
 	    $sel_player = "select * from players where player_id = '".$user."' limit 1";
 	} else {
-    	$username = either($user, $_SESSION['username']); // Default to current session user.
+    	$username = either($user, SESSION::is_set('username')?SESSION::get('username'):null); // Default to current session user.
     	$sel_player = "select * from players where uname = '".sql($username)."' limit 1";
     }
 	$player_data = $sql->QueryRowAssoc($sel_player);
