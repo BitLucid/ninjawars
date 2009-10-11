@@ -3,7 +3,7 @@ require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper a
 
 $private    = false;
 $alive      = false;
-$page_title = "In-Game Chat";
+$page_title = "Chat Board";
 $quickstat  = false;
 
 include SERVER_ROOT."interface/header.php";

@@ -1,50 +1,42 @@
 <?php
 $private    = true;
 $alive      = false;
-$page_title = "Combat";
+$page_title = "Village";
 $quickstat  = "player";
 
 include SERVER_ROOT."interface/header.php";
-?>
-<div id='attack-player-page'>
-  <div class="brownHeading">Combat</div>
 
-  <p>
-    To attack a ninja, use the <a href="list_all_players.php?hide=dead">player list</a> or search for a ninja below.
-  </p>
 
-  <form id="player_search" action="list_all_players.php" method="get" name="player_search">
-    <div>
-      Search by Ninja Name or Rank
-      <input id="searched" type="text" maxlength="50" name="searched" class="textField">
-      <input id="hide" type="hidden" name="hide" value="dead">
-      <input type="submit" value="Search for Ninja" class="formButton">
-    </div>
-  </form>
+function render_village_locations(){
+    $locations = array(
+        array('name'=>'Shrine', 'url'=>'shrine.php'), 
+        array('name'=>'Doshin', 'url'=>'doshin_office.php'), 
+        array('name'=>'Fields', 'url'=>'work.php'), 
+        array('name'=>'Shop', 'url'=>'shop.php'), 
+        array('name'=>'Dojo', 'url'=>'dojo.php'), 
+        array('name'=>'Casino', 'url'=>'casino.php')
+    );
+    return render_template('village_locations.tpl', array('locations'=>$locations));
+}
 
-  <hr>
+function render_npc_list(){
+    // Array that simulates database information for switching out for an npc database solution.
+    $npcs = array(
+        array('name'=>'Villager', 'url'=>'attack_npc.php?attacked=1&victim=villager', 'image'=>'fighter.png'), 
+        array('name'=>'Thief', 'url'=>'attack_npc.php?attacked=1&victim=thief', 'image'=>'thief.png'), 
+        array('name'=>'Merchant', 'url'=>'attack_npc.php?attacked=1&victim=merchant', 'image'=>'fighter.png'), 
+        array('name'=>"Emperor's Guard", 'url'=>'attack_npc.php?attacked=1&victim=guard', 'image'=>'guard.png'), 
+        array('name'=>'Samurai', 'url'=>'attack_npc.php?attacked=1&victim=samurai', 'image'=>'samurai.png')
+    );
+    return render_template('npc_list.tpl', array('npcs'=>$npcs)); 
+}
 
-  <h3>Attack a citizen:</h3>
-  <ul>
-    <li>
-  	<a href="attack_npc.php?attacked=1&amp;victim=villager">Villager</a>
-    </li>
-    <li>
-      <a href="attack_npc.php?attacked=1&amp;victim=merchant">Merchant</a>
-    </li>
-    <li>
-      <a href="attack_npc.php?attacked=1&amp;victim=thief">Thief</a>
-    </li>
-    <li>
-      <a href="attack_npc.php?attacked=1&amp;victim=guard">Emperor's Guard</a>
-    </li>
-    <li>
-      <a href="attack_npc.php?attacked=1&amp;victim=samurai">Samurai</a>
-    </li>
-  </ul>
+$locations = render_village_locations();
 
-</div><!-- End of attack-player page container div -->
+$npcs = render_npc_list();
 
-<?php
+
+echo render_template('attack_player.tpl', array('locations'=>$locations, 'npcs'=>$npcs));
+
 include SERVER_ROOT."interface/footer.php";
 ?>

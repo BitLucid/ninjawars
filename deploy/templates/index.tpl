@@ -62,10 +62,6 @@
               <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main">Heal</a></li>
             </ul>
           </div>
-          
-          <!-- Recent Events & Recent Mail will get put in here via javascript -->
-          <div id='recent-events'></div>
-          <div id='recent-mail'></div>
         
           <div id='vicious-killer' class='boxes'>
             <div class='box-title'>
@@ -92,6 +88,10 @@
               </a>
             </object>
           </div>
+          
+          <!-- Recent Events & Recent Mail will get put in here via javascript -->
+          <div id='recent-events'></div>
+          <div id='recent-mail'></div>
 
       </div>  
       
@@ -128,7 +128,7 @@
                   <li><a href="stats.php" target="main">Stats</a></li>
                   <li><a href="skills.php" target="main">Skills</a></li>
                   <li><a href="messages.php" target="main">Mail</a></li>
-                  <li><a href="inventory.php" target="main">Inventory</a></li>
+                  <li><a href="inventory.php" target="main">Items</a></li>
                   <!-- Profile -->
                   <!-- Settings -->
                 </ul>
@@ -138,12 +138,9 @@
                   <li><a href="duel.php" target="main">Duels</a></li>
                 </ul>
                 <ul id='village-subcategory'>
-                  <li><a href="shrine.php" target="main">Shrine <img src="images/shrine.png" alt=""></a></li>
                   <li><a href="shop.php" target="main">Shop</a></li>
                   <li><a href="work.php" target="main">Work</a></li>
                   <li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt=""></a></li>
-                  <li><a href="dojo.php" target="main">Dojo</a></li>
-                  <li><a href="casino.php" target="main">Casino</a></li>  
                 </ul>
             </div>
         </div>
@@ -179,7 +176,7 @@
               <span id='nin1'>Ni</span><span id='nin2'>nj</span><span id='nin3'>as</span> 
               <img src="images/smallArrows.png" alt="&gt;&gt;&gt;">
             </a>
-            {$players_online} Online, {$player_count} Total
+            {$players_online} Online / {$player_count}
           </div>
         
         <div id="ninja-search" class="boxes active">

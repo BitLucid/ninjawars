@@ -4,6 +4,7 @@
 html {
     margin:0;
     padding:0;
+    background-color:black;
 }
 
 .main-body{
@@ -911,7 +912,12 @@ table .quickstats{
 
 /*   Attack player page css */
 #attack-player-page li{
-	margin-bottom: 2em;
+    margin: .2em .3em .2em .2em;
+	display:inline;
+}
+#attack-player-page ul{
+    margin:0;
+    padding:0;
 }
 
 #page-404 {
@@ -1105,9 +1111,8 @@ body.ninjawars-staff{
 
 /* reactive-panel subparts */
 #category-bar{
-    height:80%;
+    height:70%;
     width: 100%;
-    text-align:center;
     background: black;
     color:white;
     font-weight:bold;
@@ -1125,6 +1130,10 @@ body.ninjawars-staff{
     width:33%;
     height:100%;
     float:left;
+    text-align:center;
+}
+#category-bar a{
+    vertical-align:top;
 }
 /*
 #category-bar #status-actions{
@@ -1138,35 +1147,47 @@ body.ninjawars-staff{
 }*/
 
 #subcategory-bar{
-    height:20%;
+    height:30%;
     width:100%;
     float:left;
     text-align:center;
+    line-height:2em;
 }
+#subcategory-bar a{
+    font-size:90%;
+}
+#subcategory-bar a:hover{
+    font-size: 108%;
+    text-decoration:none;
+}
+
 #subcategory-bar ul{
-    margin: 0 5px 0 5px;
+    margin: 0 0 0 5px;
     padding:0;
     background-color:#330000;
     color:white;
     float:left;
-}
-#subcategory-bar li{
-    font-size:80%;
-}
-#subcategory-bar ul#village-subcategory{
-    float:right;
-}
-#subcategory-bar ul#self-subcategory{
-    float:left;
-}
-#subcategory-bar ul#combat-subcategory{
-    float:left;
+    overflow:hidden;
+    width:33.333%;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 #subcategory-bar li{
     display:inline;
-    margin-right:.5em;
+    margin: 0 2px 0 1px;
 }
+#subcategory-bar ul#self-subcategory{
+    float:left;
+    margin-left:0;
+}
+#subcategory-bar ul#combat-subcategory{
+}
+#subcategory-bar ul#village-subcategory{
+    float:right;
+    margin-right:0;
+}
+
 
 /* End reactive-panel */
 
