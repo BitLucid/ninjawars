@@ -15,7 +15,7 @@ function authenticate($p_user, $p_pass)
 		$statement->bindValue(':pass', $pass);
 		$statement->execute();
 
-		$returnValue = $statement->fetch();
+		$returnValue = $statement->fetch(PDO::FETCH_ASSOC);
 	}
 
 	return $returnValue;
@@ -201,11 +201,9 @@ function nw_session_set_username($logged_in_username){
 	SESSION::set('username', $logged_in_username);
 }
 
-
 function get_username(){
-	return (SESSION::is_set('username')? SESSION::get('username') : NULL);
+	return (SESSION::is_set('username') ? SESSION::get('username') : NULL);
 }
-
 
 function player_name_from_id($player_id){
 	global $sql;
