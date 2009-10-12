@@ -25,19 +25,22 @@ require_once(OBJ_ROOT."Session.class.php");
 // *** Include all common function includes here.
 require_once(LIB_ROOT."common/lib_input.php");
 require_once(LIB_ROOT."common/lib_output.php");
-require_once(LIB_ROOT."templates/lib_templates.php");
+require_once(LIB_ROOT."template_library/lib_templates.php");
 
 // Development includes, for live also.
 require_once(LIB_ROOT."common/lib_dev.php");
 
 // Includes that actually actively modify settings.
-require_once(LIB_ROOT."settings/lib_assert.php");
-require_once(LIB_ROOT."settings/lib_error_reporting.php");
-require_once(LIB_ROOT."settings/lib_formulas.php");
+require_once(LIB_ROOT."server/lib_assert.php");
+require_once(LIB_ROOT."server/lib_error_reporting.php");
+require_once(LIB_ROOT."server/lib_formulas.php");
 
 // Include all the commands, which eventually should be broken up.
 require_once(LIB_ROOT."common/commands.php");
+require_once(LIB_ROOT."common/lib_message.php");
+require_once(LIB_ROOT."common/lib_events.php");
 require_once(LIB_ROOT."common/lib_auth.php"); // Authentication and activity.
+require_once(LIB_ROOT."common/lib_settings.php");
 
 
 // Game objects

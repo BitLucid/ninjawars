@@ -1,16 +1,18 @@
 <?php
+// See lib_tags for more functions.
+
 // Show the form for the clan joining, or perform the join.
 function render_clan_join($process=null, $username, $clan_name){
    	$sql = new DBAccess();
     if ($process == 1) {
         $confirm = $sql->QueryItem("SELECT confirm FROM players WHERE uname = '$username'");
+        $url = message_url("clan_confirm.php?clan_joiner=".rawurlencode($username)
+            ."&confirm=$confirm&clan_name=".rawurlencode($clan_name), 'Confirm Request');
         $join_request_message = "CLAN JOIN REQUEST: $username has sent you a clan request.
             If you wish to allow this ninja into your clan click the following link:
-            <a href='clan_confirm.php?clan_joiner=".rawurlencode($username)
-            ."&confirm=$confirm&clan_name=".rawurlencode($clan_name)."'>
-            Confirm Request
-            </a>.";
-        sendMessage($username,$clan_name,$join_request_message);
+            $url";
+            
+        send_message(get_user_id($username),get_user_id($clan_name),$join_request_message);
         echo "<div>***Your request to join this clan has been sent to $clan_name***</div>\n";
     } else {                                            //Clan Join list of available Clans
         $clan_leaders = $sql->FetchAll("SELECT uname,level,clan,clan_long_name FROM players

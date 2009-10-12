@@ -1,3 +1,10 @@
+/* Someday I should probably just put the blueprint css into play. */
+
+
+html {
+    margin:0;
+    padding:0;
+}
 body {
 	/*font-family: <ideal>, <alternative>, <common>, <generic>;*/
 	/*font-family: Arial, Helvetica, sans-serif;*/
@@ -6,14 +13,15 @@ body {
 	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
 	/*font-family: "Franklin Gothic", Futura, Verdana, Arial, Helvetica, sans-serif;*/
 	/*font family: Tahoma, Arial, sans-serif;*/
-	/*font-size: 12px;*/
 	font-size: 80%;
 	color: DarkKhaki;
-	background-color: black; /* Required to deal with the ie bug. */
+	background-color: black;
+	/* Required for the ie bug */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
+	margin:0;
+	padding:0;
 }
-
 h1, h2, h3, h4, h5, h6, .subtitle{
 	/*font-family: "Palatino Linotype", “Book Antiqua”, Palatino, “Times New Roman”, Times, serif;*/
 	/*font-family: Georgia, Tahoma, Garamond, Palatino, serif;Mine*/
@@ -184,6 +192,11 @@ table.playerTable .Black, .player-info .Black {
 	background-color:white;
 }
 
+.your-stats #player-profile{
+    margin: 10px 0 10px 0;
+    text-align: center;
+}
+
 .playerTable th{
 	text-align: left;
 	background-color: #333333;
@@ -239,7 +252,7 @@ td.playerTable {
 }
 
 
-.DeadRow a {
+.DeadRow a{
 	color: DarkBlue; /*Darken links to dead players */
 }
 
@@ -254,18 +267,18 @@ td.playerTable {
 
 /* COLUMNS */
 #leftColumn {
-	 width:9%;
+	 width:10%;
 	 float:left;
 	 /*padding-left:10px;*/
 }
 #centerColumn {
-	 width:69%;
+	 width:65%;
 	 float:left;
 	 min-height:600px;
 	 height:100%;
 }
 #rightColumn {
-	 width:20%;
+	 width:25%;
 	 float:left;
 }
 
@@ -294,6 +307,38 @@ td.playerTable {
 	background-repeat: no-repeat;
 	background-position:center;
 	background-attachment:fixed;
+}
+
+
+.random-background-1{
+    background-image: url('/images/backgrounds/Koi_1_by_Alegion_stock.png');
+    background-color: transparent;
+    background-repeat: repeat-x;
+}
+.random-background-2{
+    background-image: url('/images/backgrounds/fuji_bleu.jpg');
+    background-color: transparent;
+    background-repeat: repeat-x;
+    color: black;
+}
+.random-background-2 a{
+    color: blue;
+}
+
+.random-background-3{
+    background-image: url('/images/backgrounds/Hokusai-fuji7.png');
+    background-color: transparent;
+    background-repeat: repeat-x;
+}
+.random-background-4{
+    background-image: url('/images/backgrounds/Hokusai_wave.jpg');
+    background-color: transparent;
+    background-repeat: repeat-x;
+}
+.random-background-5{
+    background-image: url('/images/backgrounds/Hokusai_fuji8.jpg');
+    background-color: transparent;
+    background-repeat: repeat-x;
 }
 
 .brownTitle { /*deprecated*/
@@ -444,6 +489,7 @@ td.playerTable {
 #mini_chat { /* iframe itself */
 	width:100%;
 	height:100%;
+	border: 0;
 }
 #mini-chat-frame-container { /* div */
 	width:100%;
@@ -468,14 +514,28 @@ td.playerTable {
     margin-bottom:0.5em;
 }
 
-#quickstats {
-	width: 100%;
-	height: 7em;
+.quickstats{
+    margin: 0;
 }
 
-body .Quickstats {
-    margin-top:0;
-    margin-bottom:0;
+#quickstats {
+	width: 100%;
+	height: 6em;
+	border: 0;
+}
+
+#quickstats-and-switch-stats .centered{
+    margin-bottom:10px;
+}
+
+table .quickstats{
+    margin-top:8px;
+    margin-bottom:8px;
+}
+
+/*Quickstats styles*/
+.quickstats td{
+	background-color:black;
 }
 
 .main-iframe { /* class for the main iframe */
@@ -502,6 +562,10 @@ body .Quickstats {
 
 #combat-link {
     font-size: 1.2em;
+}
+
+#ninja-count p{
+    margin:0;
 }
 
 /* End of Index page stuff */
@@ -588,6 +652,32 @@ body .Quickstats {
 	font-weight:bold;
 	padding: 3px;
 }
+
+.injured, .Injured {
+    font-weight:bold;
+    color:black;
+    background-color:#c75600;
+}
+
+.clan-members .injured{
+    background-color:maroon;
+    color:black;
+}
+
+.clan-members .injured a:link{
+    color: black;
+}
+
+.clan-members .injured a:visited{
+    color: black;
+}
+
+.Frozen {
+    background-color:skyblue;
+    font-weight:italic;
+    color: red;
+}
+
 .error {
 	text-align:center;
 	color:Red;
@@ -612,19 +702,6 @@ body .Quickstats {
 .notice a, .informational a{
 	color:Blue;
 	font-family: Times, inherit;
-}
-
-/*Quickstats styles*/
-.quickstats td{
-	background-color:black;
-}
-
-table .player-stats{
-	border:thin solid blue;
-}
-
-table .inventory{
-	border:thick solid red;
 }
 
 /*List all players and player profile styles*/
@@ -666,6 +743,12 @@ table .inventory{
 	background-color:maroon;
 	color:red;
 }
+
+.enemy-list .enemy-dead{
+    background-color:#202020;
+    color:maroon;
+}
+
 .player-info .Stealthed{
 	background-color:gray;
 	color:maroon;
@@ -836,13 +919,38 @@ table .inventory{
 
 /* Staff Page */
 
+body.ninjawars-staff{
+    margin: 10px 30px 10px 30px;
+}
+
 .developer{
-	border:thin darkred solid;
-	margin-top: 1em;
+	border-left:thin darkred solid;
+	border-top:thin darkred solid;
+	margin: .5em 0 .5em 0;
+	padding: .3em 0 .5em .2em;
 }
 
 .developer .social-networks {
 	color:#cc3333;font-weight:bold;
+}
+
+.developer .developer-image{
+    float:right;
+    text-align: bottom;
+}
+
+.other-credits ul{
+    list-style-type:square;
+}
+
+#latest-commit-section{
+    font-size:1.5em;
+}
+
+#latest-commit{
+    border-bottom: thin green dashed;
+    padding-left: .5em;
+    color: greenYellow;
 }
 
 #page-404{
@@ -856,3 +964,82 @@ table .inventory{
     font-size: .8em;
 }
 
+/* Main Landing Page */
+
+#create-a-ninja{
+    font-size:2em;
+}
+
+
+/* User Messages Page */
+
+.message-unread, .event-unread{
+    font-weight:bold;
+    background-color:DarkSlateBlue;
+    color:white;
+}
+
+#clan-mail-section{
+    width: 50%;
+    margin-left:auto;
+    margin-right:auto;
+    float: left;
+}
+
+.messages #ninja-search{
+    margin: 10px;
+    width:30%;
+    float:left;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.messages ul{
+    padding-left:5px;
+}
+
+.messages h2{
+    margin: 0 0 5px 0;
+}
+
+.messages #clan-and-search{
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+
+.messages #delete-messages{
+    float:left;
+    width:20%;
+}
+
+.messages #message-list{
+    clear:both;
+}
+
+.message-nav{
+    margin-top:1em;
+}
+
+#clan-mail-section form{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#clan-mail-section textarea{
+    width:50%;
+    height:3em;
+    margin-left:1em;
+}
+
+#message-sent-to{
+    clear:both;
+}
+
+.player-communications .FormButton{
+    display:block;
+}
+
+    padding:0 0 0 1em;
+.events #event-list{
+}

@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT."specific/lib_status.php");
 // lib_player.php
 
 // Defines for avatar options.
@@ -58,15 +59,11 @@ function render_skills($target, $skillListObj, $skillsListObj){
 /**
  * Pull out the url for the player's avatar
 **/
-function render_avatar($player, $size=null)
-{
+function render_avatar($player, $size=null){
 	// If the avatar_type is 0, return '';
-    if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email)
-	{
+    if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email){
         return '';
-    }
-	else
-	{	// Otherwise, user the player info for creating a gravatar.
+    } else {	// Otherwise, user the player info for creating a gravatar.
 		$def = 'identicon'; // Default image or image class.
 		// other options: wavatar , monsterid
 		$email = $player->vo->email;
@@ -82,75 +79,74 @@ function render_avatar($player, $size=null)
 }
 
 // Display the div for the avatar to live within.
-function render_avatar_section($player, $img_size=null)
-{
+function render_avatar_section($player, $img_size=null){
+    if(!is_object($player)){
+        $player = new Player($player);    
+    }
 	$img_url = (OFFLINE ? '' : render_avatar($player, $img_size));
-	//$img_url = IMAGE_ROOT."50pxShuriken.png";
 
-	if (!$img_url)
-	{
+	if (!$img_url){
 		return '';
 	}
-	else
-	{
-		ob_start();
-		?>
-        <div id='avatar'>
-            <img alt='No Avatar' src='<?php echo $img_url; ?>'>
-        </div>
-        <?php
-		$res = ob_get_contents();
-		ob_end_clean();
-		return $res;
-	}
+    return "
+    <div id='avatar'>
+        <img alt='No Avatar' src='$img_url'>
+    </div>";
 }
+
+function render_class_section($class){
+    $IMAGE_ROOT = IMAGE_ROOT;
+    return "<span class='player-class $class'>
+        <img src='{$IMAGE_ROOT}small{$class}Shuriken.gif' alt=''>
+        $class
+    </span>";
+}
+
+
+function render_level_and_category($level){
+    $res = '';
+    $level_and_cat = level_category($level);
+    $res .= "<span class='player-level-category {$level_and_cat['css']}'>
+		{$level_and_cat['display']} [{$level}]
+	</span>";
+	return $res;
+}
+
 
 // The player's stats
-// TODO: Ye gods this is begging for being cleaned up via a template.
-function display_player_stats($player_info){
-	$status = null;
-	if (!$player_info['health']) {
-	    $status = "Dead";
-	} elseif($player_info['status'] == STEALTH) {
-	    $status = "Stealthed";
-	}
-	$level = $player_info['level'];
-	$level_and_cat = level_category($level);
-	?>
-		<div class='player-name'><?php echo $player_info['uname']; ?></div>
-		<div class='player-titles centered'>
-			<span class='player-class <?php echo $player_info['class']; ?>'>
-				<img src='<?php echo WEB_ROOT;?>images/small<?php echo $player_info['class'];?>Shuriken.gif' alt=''>
-				<?php echo $player_info['class']; ?>
-			</span>
-			<span class='player-level-category <?php echo $level_and_cat['css']; ?>'>
-				<?php echo $level_and_cat['display']." [".$level."]"; ?>
-			</span>
-			<?php if($status){?>
-			<p class='player-status ninja-notice <?php echo $status;?>'><?php echo $status;?></p>
-			<?php }?>
-		</div>
-	<?php
+function render_player_stats($player_info){
+	$res = "
+		<div class='player-name'>{$player_info['uname']}</div>
+		<div class='player-titles centered'>";
+	$res .= render_class_section($player_info['class']);
+	$res .= render_level_and_category($player_info['level']);
+	$res .= render_status_section($player_info['uname']);
+	$res .= "</div>";
+	return $res;
 }
 
+
 // Player activity and events information.
-function display_player_activity($player_info){
+function render_player_activity($player_info){
 	$days = "Today";
 	if($player_info['days']){
 	    $days = $player_info['days']." days ago";
 	}
 	$bounty = $player_info['bounty'];
-	?>
+	$bounty_section = $bounty? " - <span class='player-bounty'>$bounty bounty</span>" : '';
+	$res = <<<HEREDOC
 		<div class='player-stats centered'>
 			<!-- Will display as floats horizontally -->
-			<span class='player-last-active'>Last logged in <?php echo $days;?></span>
-			<?php if($bounty){ ?> - <span class='player-bounty'><?php echo $bounty; ?> bounty</span><?php } ?>
+			<span class='player-last-active'>Last logged in $days</span>
+			$bounty_section
 		</div>
-	<?php
+HEREDOC;
+	return $res;
 }
 
 // Display the clan name and members.
-function display_player_clan($player_info, $viewers_clan=null){
+function render_player_clan($player_info, $viewers_clan=null){
+    ob_start();
 	// Display a message if they're the same clan.
 	$same_clan = false;
 	if ( $player_info['uname'] != get_username()
@@ -176,36 +172,55 @@ function display_player_clan($player_info, $viewers_clan=null){
 			    <a href='clan.php?command=view&amp;clan_name=<?php echo $clan;?>'><?php echo$clan_link;?></a>
 			</p>
 			<div class='clan-members centered'>
-			    <?php display_clan_members($player_info['clan']); ?>
+			    <?php echo render_clan_members($player_info['clan']); ?>
 			</div>
 		</div>
 		<?php
 	}
+	$res = ob_get_contents();
+	ob_end_clean();
+	return $res;
 }
 
 // Straight list of clan members
-function display_clan_members($clan=null, $limit=30){
+function render_clan_members($clan=null, $limit=30){
+    ob_start();
     if($clan){
-        $where = "where clan = '$clan' and health>0 and confirmed=1";
-        $sel = "select uname, player_id from players $where order by level desc limit $limit";
+        $where = "where clan = '$clan' and confirmed=1";
+        $sel = "select uname, player_id, health from players $where order by level desc limit $limit";
         $sql = new DBAccess();
-        $res = $sql->QueryAssoc($sel);
+        $ninjas = $sql->QueryAssoc($sel);
         ?>
         <div class='clan-members'>
             <div class='subtitle'>Clan members</div>
-            <ul>
                 <?php
-                foreach($res as $ninja){
-                    echo "<li class='clan-member'>
+                if(!empty($ninjas)){
+                    $display_ul = true;
+                }
+                if($display_ul){
+                    echo "<ul>";
+                }
+                foreach($ninjas as $ninja){
+                    $added_class = '';
+                    if($ninja['health']<1){
+                        $added_class = ' injured';
+                    }
+                    echo "<li class='clan-member$added_class'>
                             <a href='player.php?target_id=".$ninja['player_id']."'>
                                 ".$ninja['uname']."
                             </a>
                           </li>";
-                } ?>
-            </ul>
+                }
+                if($display_ul){
+                    echo "</ul>";
+                }
+                 ?>
         </div>
         <?php
     }
+    $res = ob_get_contents();
+    ob_end_clean();
+    return $res;
 }
 
 function display_player_profile($player_info){
@@ -220,11 +235,12 @@ function display_player_profile($player_info){
 }
 
 
-function display_ranking_link($player_info, $linkbackpage, $sql){
+function render_ranking_link($player_info, $linkbackpage, $sql){
 	$rank_spot = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".sql($player_info['uname'])."'");
-	echo "    <div class='player-ranking-linkback'>";
-	echo "      <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=dead&amp;page=$linkbackpage'>&lt; Go to rank $rank_spot in the ninja list</a>\n";
-	echo "    </div>";
+	$res = "    <div class='player-ranking-linkback'>
+              <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=dead&amp;page=$linkbackpage'>&lt; Go to rank $rank_spot in the ninja list</a>
+        </div>";
+    return $res;
 }
 
 
@@ -279,9 +295,14 @@ function render_item_use_on_another($target, $sql){
     <input type=\"submit\" value=\"Use\" class=\"formButton\">\n
     <select id=\"item\" name=\"item\">\n";
     $res .= render_inventory_options($username, $sql);
-    $res .= "      </select>\n
-        <input id=\"give\" type=\"submit\" value=\"Give\" name=\"give\" class=\"formButton\">\n
-    </form>\n";
+    $res .= "</select>";
+    $targets_clan = getClan($target);
+    if($targets_clan && $targets_clan == getClan($username)){
+        // Only allow giving items within the same clan.
+        $res .= "
+            <input id=\"give\" type=\"submit\" value=\"Give\" name=\"give\" class=\"formButton\">\n";
+    }
+    $res .= "</form>\n";
     return $res;
 }
 
@@ -333,17 +354,28 @@ function display_set_bounty($player_info){
 }
 
 // Display the form to send mail to an individual.
-function display_communication($target){
-    echo "  <div class='player-communications centered'>";
-    echo "    <form id=\"send_mail\" action=\"mail_send.php\" method=\"get\" name=\"send_mail\">\n";
-    echo "    <input id=\"to\" type=\"hidden\" name=\"to\" value=\"$target\">\n";
-    echo "    <input type=\"submit\" value=\"Send Mail\" class=\"formButton\">\n";
-    echo "    <input id=\"messenger\" type=\"hidden\" value=\"1\" name=\"messenger\"><br >\n";
-    echo "    <textarea name=\"message\" cols=\"20\" rows=\"2\"></textarea>\n";
-    echo "    </form>\n";
-    echo "  </div>";
+function render_communication($target){
+    $target_id = get_user_id($target);
+    $res = "<div class='player-communications centered'>
+        <form id='send_mail' action='player.php' method='get' name='send_mail'>
+        <input type='hidden' name='target_id' value='$target_id'>
+        <input id='messenger' type='hidden' value='1' name='messenger'><br >
+        <textarea name='message' cols='20' rows='2'></textarea>
+        <input type='submit' value='Send Mail' class='formButton'>
+        </form>
+      </div>";
+      return $res;
 }
 
+
+function get_rank($username, $sql=null){
+    if(!$sql){
+        $sql = new DBAccess();
+    }
+    $rank         = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".$username."'");
+    $rank         = ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
+    return $rank;
+}
 
 
 ?>

@@ -6,13 +6,6 @@ require_once(LIB_ROOT."specific/lib_inventory.php");
  * @package combat
  * @subpackage skill
  */
-/***********************************************
- File: inventory_mod.php
- Author: John K. Facey (NinjaLord)
- Date: Unknown
- Description: Submission page from inventory.php
-              to process results of item use
- ***********************************************/
 
 $quickstat  = "viewinv";
 $private    = true;
@@ -22,9 +15,7 @@ $page_title = "Item Usage";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Item Use</span>
-
-<br><br>
+<h1 class="brownHeading">Item Use</h1>
 
 <?php
 $link_back  = in('link_back');
@@ -70,6 +61,7 @@ if ($give == "on" || $give == "Give") {
 if ($target && $link_back == "") { $link_back = "<a href=\"player.php?player=".urlencode($target)."\">Player Detail</a>"; }
 else { $link_back = "<a href=\"inventory.php\">Inventory</a>"; }
 
+// This could probably be moved to some lib file for use in different places.
 class Item
 {
 	protected $m_name;
@@ -136,9 +128,12 @@ class Item
 		return $this->m_covert;
 	}
 }
+// Default could be an error later.
+
 
 $dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = null;
 
+// These different settings should just become an array of non-defaults somewhere else.
 if ($item == 'Dim Mak')
 {
 	$item = $dimMak = new Item('Dim Mak');
@@ -166,6 +161,7 @@ else if ($item == 'Ice Scroll')
 {
 	$item = $iceScroll = new Item('Ice Scroll');
 	$iceScroll->setTurnChange(-1*ice_scroll_turns($targets_turns, $near_level_power_increase));
+	// ice scroll turns comes out negative already, apparently.
 }
 else if ($item == 'Stealth Scroll')
 {
@@ -211,22 +207,6 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				if ($item->getTargetDamage() > 0) {
 					$result        = "lose ".$item->getTargetDamage()." HP";
 					$victim_alive  = subtractHealth($target, $item->getTargetDamage());
-				} else if ($item->getTurnChange() <= 0) {
-
-					$turns_change = $item->getTurnChange();
-
-					if ($turns_change == 0) {
-				        echo 'You fail to take any turns from '.$target.'.';
-					}
-
-					$result         = "lose ".(-1*$turns_change)." turns";
-					subtractTurns($target, $turns_change);
-					$victim_alive = true;
-				} else if ($item->getTurnChange > 0) {
-					$turns_change = $item->getTurnChange();
-					$result         = "gain $turns_change turns";
-					changeTurns($target, $turns_change);
-					$victim_alive = true;
 				} else if ($item === $stealthScroll) {
 					addStatus($target, STEALTH);
 					echo "<br>$target is now Stealthed.<br>\n";
@@ -237,6 +217,22 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$victim_alive = false;
 					$result = "be drained of your life-force and die!";
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
+				} else if ($item->getTurnChange() <= 0) {
+
+					$turns_change = $item->getTurnChange();
+
+					if ($turns_change == 0) {
+				        echo 'You fail to take any turns from '.$target.'.';
+					}
+
+					$result         = "lose ".(-1*$turns_change)." turns";
+					changeTurns($target, $turns_change);
+					$victim_alive = true;
+				} else if ($item->getTurnChange() > 0) {
+					$turns_change = $item->getTurnChange();
+					$result         = "gain $turns_change turns";
+					changeTurns($target, $turns_change);
+					$victim_alive = true;
 				}
 			}
 
@@ -244,15 +240,15 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				// *** Message to display based on item type ***
 				if ($item->getTargetDamage() > 0) {
 					echo "$target takes {$item->getTargetDamage()} damage from your attack!<br><br>\n";
+				} else if ($item === $dimMak) {
+					echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 				} else if ($turns_change <= 0) {
-					echo "$target's turns reduced by $turns_change.<br>\n";
+					echo "$target's turns reduced by ".(0-$turns_change).".<br>\n";
 					if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
 						echo "$target no longer has any turns.<br>\n";
 					}
 				} else if ($turns_change > 0) {
 					echo "$target's turns increased by $turns_change.<br>\n";
-				} else if ($item === $dimMak) {
-					echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 				}
 
 				if (!$victim_alive) { // Target was killed by the item.
@@ -297,7 +293,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			// *** Decreases the item amount by 1.
 
 			// Unstealth
-			if ($item->isCovert() && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
+			if (!$item->isCovert() && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
 				subtractStatus($username,STEALTH);
 				echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
 			}

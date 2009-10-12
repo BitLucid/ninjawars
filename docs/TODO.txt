@@ -1,10 +1,11 @@
 Documentation
-Explain the avatars on the stats page
+Read http://www.bbgdev.com/ for useful material.
+
 
 Attributes:
 Turn classes from colors to elements, void fire water earth air
 Need a much much much much better "affect" system.
-Make skills independent of classes and based on levelling up instead, preferrably choice-based.
+Make skills based on levelling up, preferrably choice-based.
 Integrate the energy stat into the game.
 Badges marking accomplishments.
 Karma for a silly social rating, and possibly for some simple non-combat benefit usages.
@@ -15,14 +16,25 @@ Kappa random encounter as a money source? Tengu random encounter useful for ???
 And random encounter generator to javascript and internal php that cause random encounters when the two systems match up?
 Make quest table for holding quest statuses.
 Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general, using a quests database.
+Make giving items clan (done) and to newbies (based on existing play time and level).
 // TODO: Put player-led multi-checking into play.
+// TODO: Put periodic but then constitutive captcha checks into play.
+Possibility of double or half turns, double or half health at the casino.
+
+Environment:
+Create a map system.
+Turn the Village into a single link off of the index, with a page that acts as the actual village.  Except healing.
+
 
 UI:
+Copy digg's UI like a mofo, I really like that one.
+MAKE STANDALONE PAGES HAVE A LINK BACK THE MAIN SITE, presumably via javascript, 'cause search engines are indexing parts of the site now, as per this search: http://www.google.com/search?q=ninjawars.net
 Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now,
 and make sure that the content is coming out correctly, like that apostrophes are working in chats.
 Make the main page and list_all_players page search forms default to showing dead ninja results.
 Make search assume show_dead
-Make a "embeddable" thing that can show your ninja's current rank and avatar and title.
+Make a "embeddable" social-networking-widget that can show your ninja's current rank and avatar and title, and links to a player landing page.
+Add newbie landing page.
 Cleanup the main page for speed.
 Health displayed as a bar percentage...
 Stop showing clans that don't have at least one member.
@@ -30,6 +42,9 @@ Stop showing clans that don't have at least one member.
 // TODO: make clans links in the player list.
 // TODO: Limit quickstats js refresh by last-occurred.
 // TODO: Give the "No such ninja" message (e.g. when linking from the ---- chat) a link back to a sane part of the list.
+Make title display Ninjawars: <title> as opposed to just <title>
+Expand-collapse the "messages" messaging section with jQuery.
+Fix the "you must log in to view this section" message by providing a link if they aren't housed in the main iframe.
 
 Levelling:
 Auto-levelling checks instead of kills banking.
@@ -37,8 +52,8 @@ Make customizations/benefits for levelling then make killpoints gaining more rea
 Make the highest level confer the title of "emperor" on that player.
 
 Backup:
-Made a simple crontab -e pg_dump backup script.  
-Schedule a periodic email to perform the manual copydown or copyover of the backup script contents.
+Make a simple crontab -e pg_dump backup script.  
+Schedule a periodic email to admin to perform the manual copydown or copyover of the backup script contents.
 // TODO: create lib_deity backup players function, copy players table or as insert.
 
 Database:
@@ -49,4 +64,14 @@ Make sure that the other databases are pared down to allow ease of backup.
 
 Security:
 // TODO: Make default filtering be toWord, and change item-related in()s to deal with their multi word inputs.
+// Add a blocked referral list, starting with hidemyass.com
+Create accounts.
 
+
+
+Incorporate "Your world of text":
+http://ianab.com/yourworld/
+http://www.chromeexperiments.com/detail/your-world-of-text/
+
+Bugs:
+See errors.txt

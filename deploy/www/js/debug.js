@@ -124,4 +124,4 @@ function print_r(x, max, sep, l) {
 	return r;
 
 };
-var_dump = print_r;
+//var_dump = print_r;

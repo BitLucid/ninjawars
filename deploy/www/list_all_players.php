@@ -1,7 +1,8 @@
 <?php
-$microtimes = array();
-$microtimes[1] = microtime();
+//$microtimes = array();
+//$microtimes[1] = microtime();
 require_once(LIB_ROOT."specific/lib_player_list.php");
+require_once(LIB_ROOT."specific/lib_player.php");
 
 $alive      = false;
 $private    = false;
@@ -13,7 +14,7 @@ include SERVER_ROOT."interface/header.php";
 //echo "<script type='text/javascript' src='js/player_accordian.js'></script>";
 // INIT
 
-$microtimes[2] = microtime();
+//$microtimes[2] = microtime();
 
 // TODO: Bring back the "show/hide dead" toggle, store in session, and make dead things able to be shown again.
 // TODO: Make the player.php player profile page accept player_id as a substitute for a string in the url.
@@ -40,7 +41,7 @@ $page 		 = in('page', ceil(($rank_spot - $dead_count) / $record_limit));
 if(!$searched && $hide_setting != $hide) { SESSION::set('hide_dead', $hide); }
 
 
-$microtimes[3] = microtime();
+//$microtimes[3] = microtime();
 
 // Display the clear search and create the sql search params.
 $where_clause = "";
@@ -70,11 +71,11 @@ if($hide == 'dead'){
 }
 $query_count  = "SELECT count(player_id) FROM rankings ".$where_clause;
 $totalrows    = $sql->QueryItem($query_count);
-$rank         = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".$username."'");
-$rank         = ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
+$rank = get_rank($username, $sql);
 
 
-$microtimes[4] = microtime();
+
+//$microtimes[4] = microtime();
 
 // Determine the current page spot navigated to.
 // If searching, use the page between 
@@ -108,14 +109,14 @@ $sql->Query($sel);
 $row = $sql->data;
 $ninja_count = $sql->rows;
 
-$microtimes[5] = microtime();
+//$microtimes[5] = microtime();
 
 	ob_start();
 	display_search_form($hide, $page, $searched, $dead_count);
 	$search_form = ob_get_contents();
 	ob_end_clean();
 	
-$microtimes[6] = microtime();	
+//$microtimes[6] = microtime();	
 
 	// Display the nav
 	ob_start();
@@ -123,18 +124,18 @@ $microtimes[6] = microtime();
 	$player_list_nav = ob_get_contents();
 	ob_end_clean();
 
-$microtimes[7] = microtime();
+//$microtimes[7] = microtime();
 
 	$active_ninja = '';
 	if (!$searched) { // Will not display active ninja on a search page.
 		$active_ninja = render_active(5, $alive_only); // Display the currently active ninjas
 	}
 
-$microtimes[8] = microtime();
+//$microtimes[8] = microtime();
 
 	$players = $sql->FetchAll();
 	
-$microtimes[9] = microtime();
+//$microtimes[9] = microtime();
 	
 	// Render each of the player rows.
 	$i = 0;
@@ -161,22 +162,13 @@ $microtimes[9] = microtime();
 		// Add all the player rows on to a big list of 'em.
 	}
 
-$microtimes[10] = microtime();
+//$microtimes[10] = microtime();
 
-// Main display section.
-$parts = array(
-	'searched' => $searched,
-	'ninja_count' => $ninja_count,
-	'search_form' => $search_form,
-	'player_list_nav' => $player_list_nav,
-	'active_ninja' => $active_ninja,
-	'player_rows' => $player_rows, // Display the concatenated player rows.
-	'hide' => $hide,
-	'WEB_ROOT' => WEB_ROOT,
-);
+$parts = get_certain_vars(get_defined_vars());
+
 echo render_template('player_list.tpl', $parts);
 
-$microtimes[11] = microtime();
+//$microtimes[11] = microtime();
 
 include SERVER_ROOT."interface/footer.php";
 

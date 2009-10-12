@@ -53,7 +53,7 @@ if (!$clan_name) {
             $sql->Update("UPDATE players SET clan = '$clan_name', clan_long_name = '$clan_l_name',
                 confirm = '$random' WHERE uname = '$clan_joiner'");
             echo "<br>$clan_joiner is now a member of your clan.<hr>\n";
-            sendMessage($clan_name,$clan_joiner,"CLAN: You have been accepted into $clan_l_name");
+            send_message(get_user_id($clan_name),get_user_id($clan_joiner),"CLAN: You have been accepted into $clan_l_name");
         } else {
             echo "This clan membership change can not be verified, please ask the ninja to request joining again.\n";
         }

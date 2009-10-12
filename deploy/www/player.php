@@ -19,8 +19,16 @@ include SERVER_ROOT."interface/header.php";
 $skillListObj = new Skill();
 $skillsListObj = $skillListObj;
 $target = $player = in('player');
-$target_id = either(in('target_id'), in('player_id'));
+$target_id = either(in('target_id'), either(in('player_id'), get_user_id($target)));
+$user_id = get_user_id();
 $score = get_score_formula();
+
+$message = in('message');
+if($message){
+    send_message($user_id, $target_id, $message);
+    echo "<div id='message-sent' class='ninja-notice'>Message sent</div>";
+}
+
 
 $linkbackpage = in('linkbackpage');
 $viewing_player_obj = new Player(get_username());
@@ -52,10 +60,11 @@ $attack_error = $AttackLegal->getError();
 if ($player_info) {
 	echo "<div class='player-info'>";
 
-	display_ranking_link($player_info, $linkbackpage, $sql);
-	display_player_stats($player_info);
+    echo render_ranking_link($player_info, $linkbackpage, $sql);
+	echo render_player_stats($player_info);
+	echo render_avatar_section($target_player_obj);
 
-	echo "<table id='player-profile-table' align='center'>\n";
+	echo "<table id='player-profile-table'>\n";
     echo "  <tr>\n";
 
 	if ($attack_error)
@@ -67,12 +76,9 @@ if ($player_info) {
 	    $class = getClass($username);
 
 		$is_own_profile = ($username == $player_info['uname']? true : false);
-		if ($is_own_profile)
-		{
+		if ($is_own_profile){
 			echo "<td><div class='ninja-notice'>This is you.</div></td>";
-		}
-		else
-		{
+		} else {
 			// Attack or Duel
 		    echo "<td colspan=\"2\">\n";
 		    echo "  <table id='player-profile-attack' align=\"left\">\n";
@@ -132,14 +138,14 @@ if ($player_info) {
 	echo "</table>\n";
 
 	// Alive or dead
-	display_player_activity($player_info);
+	echo render_player_activity($player_info);
 
 	if($player_info['uname'] != get_username()){
     	// Allows the viewer to set bounty on a player.
         display_set_bounty($player_info); // TODO: Move this functionality to the doshin.
 
-    	// Send 'em mail
-    	display_communication($player_info['uname']);
+    	// Display mail section
+    	echo render_communication($player_info['uname']);
 	}
 
 	if($player_info['uname'] != get_username()){
@@ -148,13 +154,11 @@ if ($player_info) {
     }
 	// Player clan and clan members
 
-	display_player_clan($player_info, $viewers_clan);
+	echo render_player_clan($player_info, $viewers_clan);
 
 	// Player profile message
 
 	display_player_profile($player_info);
-
-	echo render_avatar_section($target_player_obj);
 
 	echo "</div><!-- End player-info -->";
 }

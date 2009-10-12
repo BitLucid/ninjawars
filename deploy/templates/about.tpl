@@ -314,10 +314,23 @@
 
   <p class="answer">
     <hr>
+    
+    All Ninja<br>
+    Attack - A simple, quick attack, where you and your opponent both fight for a moment.<br>
+    Duel - A long attack that ends only when you or your opponent are dead.<br>
+    Sight - View the specific details of another ninja, with a turn cost.<br>
+    Stealth - Become immune to certain normal combat attacks until you attack yourself, or until you next receive turns.  Your first strike after being stealthed will cause additional damage.<br>
+    Unstealth - Stop sneaking and being stealthed.<br>
+    Deflect - Double your damage while dueling.<br>
+    Steal - Steal gold from an opponent.<br>
+    Cold Steal - Steal turns from an opponent, taking some of them for yourself.<br>
+  
+  
+    <hr>
 
     White Ninja<br>
-    Primary Skill: Sight - View a Ninja's Stats<br>
-    Aux Skill: Moonlight Heal -  Raise HP to 150 at midnight if life less than this amount. *
+    Primary Skill: Chi - Increased healing at the shrine.<br>
+    Aux Skill: Moonlight Heal -  Increases the hitpoints gained at midnight.
 
     <hr>
 
@@ -327,7 +340,7 @@
 
     Red Ninja<br>
     Primary Skill: Fire Bolt - Inflicts Damage based on Ninja Level<br>
-    Aux Skill: Blaze -  Adds extra 10 damage during attacks using extra turns.
+    Aux Skill: Blaze -  Adds extra damage during attacks, using extra turns.
 
     <hr>
 
@@ -336,8 +349,8 @@
     <hr>
 
     Blue Ninja<br>
-    Primary Skill: Ice Bolt - Decreases Turns based on Ninja Level. Modifications comming soon.<br>
-    Aux Skill:  Cold Steal: Steals turns from victim.
+    Primary Skill: Ice Bolt - Decreases an enemy's turns.<br>
+    Aux Skill:  Speed - Increases turns gained over time.
 
     <hr>
 
@@ -346,8 +359,8 @@
     <hr>
 
     Black Ninja<br>
-    Primary Skill: Poison Touch<br>
-    Aux Skill: Stealth - You are immune to normal combat until you fight, in that first fight, you will strike and take no damage.  This effect wears off after you fight or when you get your next turn.
+    Primary Skill: Poison Touch - Poison an enemy, causing them further damage over time.<br>
+    Aux Skill: Hidden Resurrect - When you die and resurrect, you will come back to life stealthed.<br>
 
     <hr>
 

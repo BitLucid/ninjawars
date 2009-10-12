@@ -229,6 +229,26 @@ function get_username(){
 	return (SESSION::is_set('username')? SESSION::get('username') : NULL);
 }
 
+
+function player_name_from_id($player_id){
+    global $sql;
+    if(!$player_id){
+        throw new Exception('Blank player ID to find the username of requested.');
+    }
+    return $sql->QueryItem("select uname from players where player_id ='".sql($player_id)."'");
+}
+
+// Return the id that corresponds with a player name, if no other source is available.
+function get_user_id($name=null){
+    global $sql;
+    if($name === null){
+        $name = get_username();
+    }
+    return $sql->QueryItem("select player_id from players where uname = '".sql($name)."'");
+}
+
+
+
 function update_activity_log($username){
 	$sql = new DBAccess();
 	$user_ip = $_SERVER['REMOTE_ADDR'];

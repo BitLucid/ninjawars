@@ -17,6 +17,24 @@ $page_title = "Battle Status";
 $quickstat  = "player";
 
 include SERVER_ROOT."interface/header.php";
+
+
+$recent_attack = null;
+$start_of_attack = microtime(true);
+$attack_spacing = 0.2; // fraction of a second
+if(SESSION::is_set('recent_attack')){
+    $recent_attack = SESSION::get('recent_attack');
+}
+
+if($recent_attack && $recent_attack>($start_of_attack-$attack_spacing)){
+    echo "<p>Even the best of ninjas cannot attack that quickly.</p>";
+    echo "<a href='attack_player.php'>Return to combat</a>";
+    SESSION::set('recent_attack', $start_of_attack);
+    die();
+} else {
+    SESSION::set('recent_attack', $start_of_attack);
+}
+
 ?>
 
 <span class="brownHeading">Battle Status</span>
@@ -109,7 +127,7 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 			sendMessage($attackee,$username,$attacker_msg);
 			runBountyExchange($username, $attackee); // *** Determines the bounty for normal attacking. ***
 
-			echo "<div class='ninja-notice'>You have slain $attackee with a dastardly attack!</div>\n";
+			echo "You have slain $attackee with a dastardly attack!\n";
 			echo "You do not receive recognition for this kill.<br>\n";
 			echo "<hr>\n";
 		} else {	// *** if damage from stealth only hurts the target. ***

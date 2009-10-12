@@ -9,13 +9,23 @@
 // Name the chat time will send under.
 define('CHAT_TIME_NAME', '----');
 
-function delete_old_mail($sql, $limit = null){
-	$interval_to_keep = '2 months';
-	$sql->Delete("delete from mail where date < now()- interval '$interval_to_keep'");
+function delete_old_messages($sql, $limit = null){
+	$interval_to_keep = '3 months';
+	$sql->Delete("delete from messages where date < now()- interval '$interval_to_keep'");
 	//$sql->Update("DELETE FROM mail
 	//	where send_to in (select uname from players where confirmed = 0)");  //Deletes mail for unconfirmed/deconfirmed players.
 	return $sql->a_rows;
 }
+
+
+
+function delete_old_events($sql, $limit = null){
+	$interval_to_keep = '1 week';
+	$sql->Delete("delete from events where date < now()- interval '$interval_to_keep'");
+	return $sql->a_rows;
+}
+
+
 
 function update_days($sql){
 	$sql->Update("UPDATE players SET days = days+1");

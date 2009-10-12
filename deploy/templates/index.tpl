@@ -27,7 +27,7 @@
 {else} <!-- Displayed when logged in -->
           <div class="logged-in-bar">
             <a target="main" href="player.php?player={$username}">{$username}</a>
-            | <a target="main" href="mail_read.php">mailbox</a>
+            | <a target="main" href="messages.php">mailbox</a>
             <span id='logged-in-bar-health'> </span>
           </div>
 {/if} <!-- End of login/logged in bar. -->
@@ -91,6 +91,7 @@
             </div>
             <ul class="basemenu" id="actions-menu">
               <li id='combat-link'><a href="attack_player.php" target="main">Combat</a></li>
+              <li><a href="enemies.php" target="main">Enemies</a></li>
               <li><a href="clan.php" target="main">Clan</a></li>
               <li><a href="inventory.php" target="main">Inventory</a></li>
               <li>
@@ -107,7 +108,8 @@
               </li>
               <li><a href="skills.php" target="main">Skills</a></li>
               <li><a href="stats.php" target="main">Stats</a></li>
-              <li><a href="mail_read.php" target="main">Mail</a></li>
+              <li><a href="events.php" target="main">Events</a></li>
+              <li><a href="messages.php" target="main">Mail</a></li>
             </ul>
           </div>
           <div id="places" class="boxes active">
@@ -147,7 +149,7 @@
                 Ninjas: <img class='show-hide-icon' src='{$IMAGE_ROOT}show_and_hide.png' alt='+/-'>
               </a>
             </div>
-            <span id='ninja-count'><p>{$players_online} Online </p><p> {$player_count} Total</p></span>
+            <div id='ninja-count'><p>{$players_online} Online </p><p> {$player_count} Total</p></div>
           </div>
 
           <div id="music" class="boxes passive">
@@ -190,7 +192,7 @@
 
         <div id="centerColumn" class="column"><!-- top menu starts here -->
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe id="main" name="main" class="main-iframe" src="{$main_src}" frameborder="0">
+            <iframe id="main" name="main" class="main-iframe" src="{$main_src}">
               Main Content Display Section (Frames Not Supported)
             </iframe>
           </div><!-- End of mainFrame div -->
@@ -229,12 +231,12 @@
               </a>
             </div>
             <div id="quickstats-and-switch-stats">
-              <div class="centered">
+              <div class="centered quickstats-container">
                 <a href="quickstats.php" target="quickstats">Player</a> 
                 | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
               </div>
               <div id="quickstats-frame-container">
-                <iframe id="quickstats" src="quickstats.php" frameborder="0" name="quickstats">
+                <iframe id="quickstats" src="quickstats.php" name="quickstats">
                   Quick Stats Iframe Display section (Iframes Not supported by this browser)
                 </iframe>
               </div>
@@ -255,7 +257,7 @@
               </div>
 <!-- TODO: move chat submit box out here. -->
               <div id="mini-chat-frame-container" class='chat-collapsed'>
-                <iframe id="mini_chat" name="mini_chat" src="mini_chat.php" frameborder="0">
+                <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
                   Mini Chat Iframe Display Section (Iframes not supported by this browser)
                 </iframe>
               </div>

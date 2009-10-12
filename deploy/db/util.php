@@ -70,8 +70,7 @@ class DBAccess {
 		$this->Query($query);
 		$this->data = null;
 
-		if ($this->result)
-		{
+		if (is_object($this->result)){
 			$this->data = $this->result->fetch($type);
         }
 

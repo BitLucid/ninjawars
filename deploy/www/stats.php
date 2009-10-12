@@ -1,14 +1,18 @@
 <?php
+require_once(LIB_ROOT."specific/lib_player.php"); // Player info display pieces.
+require_once(LIB_ROOT."specific/lib_status.php"); // Status alterations.
+
 $page_title = "Your Stats";
 $private    = true;
 $alive      = false;
 $quickstat  = "viewinv";
 
-include SERVER_ROOT."interface/header.php";
+include SERVER_ROOT."interface/header.php"; // Not sure whether this has to come first still or not.
 
 // *** To verify that the delete request was made.
 $in_delete_account = in('deleteaccount');
-$deleteAccount     = ($in_delete_account && $in_delete_account == 1 ? 1 : null);
+$deleteAccount     = ($in_delete_account == 1 ? 1 :
+    ($in_delete_account == 2 ? 2 : null)); // Stage of delete process.
 
 $in_changePass = in('changepass');
 $changePass    = ($in_changePass && $in_changePass == 1 ? 1 : null);
@@ -21,113 +25,52 @@ $newprofile    = in('newprofile', null, 'toMessage');
 
 $username = get_username();
 
-echo "<span class=\"brownHeading\">Your Stats</span>\n";
+$player = get_player_info();
+$confirm_delete = false;
+$profile_changed = false;
+$profile_max_length = 500; // Should match the limit in limitStatChars.js
 
-echo "<p>\n";
+$delete_attempts = (SESSION::is_set('delete_attempts')?SESSION::get('delete_attempts') : null);
 
-/*if  ($changePass){
-  if (trim($newPass) != "") { // *** To enforce non-blank passwords.
-    $sql->Update("UPDATE players SET pname = '$newPass' WHERE uname = '$username'");
-    echo "Password has been changed.\n";
-  } else {
-    echo "Can not enter a blank password.\n";
-  }
-} else
-*/
 if ($deleteAccount) {
 	$verify = false;
 	$verify = is_authentic($username, $passW);
-	if ($verify == true) {// *** To check that there's only 1 match for that username and password.
-		pauseAccount($username);
+	if ($verify == true && !$delete_attempts) {
+	    // *** Username&password matched, on the first attempt.
+		pauseAccount($username); // This may redirect and stuff?
 	} else {
-		echo "Please provide your password to confirm.<br>\n";
-		echo "<form method=\"POST\" action=\"stats.php\">\n";
-		echo "<div>\n";
-		echo "<input id=\"passw\" type=\"password\" maxlength=\"50\" name=\"passw\" class=\"textField\">\n";
-		echo "<input type=\"hidden\" name=\"deleteaccount\" value=\"1\">\n";
-		echo "<input type=\"submit\" value=\"Confirm Delete\" class=\"formButton\">\n";
-		echo "</div>\n";
-		echo "</form>\n";
+	    if($deleteAccount == 2){
+	        SESSION::set('delete_attempts', 1);
+	        $error = 'Deleting of account failed, please email '.SUPPORT_EMAIL;
+	    } else {
+    	    $confirm_delete = true;
+    	}
 	}
 } else if ($changeprofile == 1) {
+    // Limit the profile length.
 	if ($newprofile != "") {
-		$sql->Update("UPDATE players SET messages = '".sql($newprofile)."' WHERE uname = '$username'");
+		$sql->Update("UPDATE players SET messages = '".sql($newprofile)."' WHERE uname = '".sql($username)."'");
 		$affected_rows = $sql->a_rows;
-		echo "Profile has been changed.\n";
+		$profile_changed = true;
 	} else {
-		echo "Can not enter a blank profile.\n";
+		$error = "Can not enter a blank profile.";
 	}
 }
 
-$msg      = $sql->QueryItem("SELECT messages FROM players WHERE uname = '$username'");
-$email    = $sql->QueryItem("SELECT email FROM players WHERE uname = '$username'");
-$member   = $sql->QueryItem("SELECT member FROM players WHERE uname = '$username'");
+$level_and_cat = render_level_and_category($player['level']);
+$status_list = render_status_section();
+$avatar_display = render_avatar_section($player['player_id']);// include and render from player.php
+$rank_display = get_rank($username, $sql); // rank display.
+$health_section = render_health_section($player['health']);
 
-/*
-// Change password option removed as unnecessary, at this point.
-echo "<form action=\"stats.php\" method=\"post\">\n";
-echo "<input type=\"hidden\" name=\"changepass\" value=\"1\"><br>\n";
-//echo "Password: <input type=\"password\" name=\"newpass\" class=\"textField\">
-//    <input type=\"submit\" value=\"<== Change Password\" class=\"formButton\">\n";
-echo "</form><br>\n";
-*/
+$profile_editable = $player['messages'];
+$profile_display = out($profile_editable);
 
-echo "<form action=\"stats.php\" method=\"post\">\n";
-echo "<div>\n";
-echo "<input type=\"hidden\" name=\"changeprofile\" value=\"1\">\n";
 
-echo "Account Info: $username<br>\n";
-echo "Health: ".getHealth($username)."<br>\n";
-echo "Strength: ".getStrength($username)."<br>\n";
-echo "Gold: ".getGold($username)."<br>\n";
-echo "Kills: ".getKills($username)."<br>\n";
-echo "Turns: ".getTurns($username)."<br>\n";
-echo "Email: $email<br>\n";
-echo "Class: ".getClass($username)."<br>\n";
-echo "Level: ".getLevel($username)."<br>\n";
-echo "Bounty: ".getBounty($username)." gold<br>\n";
-echo "Clan: ".getClan($username)."<br>\n";
 
-$status   = getStatus($username);
-echo "Status: ";
+$parts = get_certain_vars(get_defined_vars(), array('player'));
 
-$status_output = array();
-if ($status['Stealth']) {$status_output[count($status_output)]="Stealthed";}
-if ($status['Poison'])  {$status_output[count($status_output)]="Poisoned";}
-if ($status['Frozen'])  {$status_output[count($status_output)]="Frozen";}
-if (!isset($status_output[0])) {
-	if (getHealth($username) == 0) {echo "Dead<br>\n";}
-	else if (getHealth($username) < 75) {echo "Injured<br>\n";}
-	else {echo "Healthy<br>\n";}
-} else { // Display the statuses.
-	$i = 0;
-
-	for ($i = 0; $i < count($status_output) - 1; $i++) {
-		echo $status_output[$i].", ";
-	}
-
-	echo  $status_output[$i]."<br>\n";
-}
-
-echo "Membership: ";
-if ($member == 0) {echo "Free Member<br>\n";}
-else if ($member == 1) {echo "Paid Member<br>\n";}
-
-echo "Profile: <br><textarea name=\"newprofile\" cols=\"45\" rows=\"10\" class=\"textField\">$msg</textarea><br>\n";
-echo "<input type=\"submit\" value=\"Change Profile\" class=\"formButton\"> (400 Character limit)\n";
-echo "</div>\n";
-echo "</form>\n";
-
-echo "<hr>If you require account help email: <a href=\"mailto:".SUPPORT_EMAIL."\">".SUPPORT_EMAIL."</a></a><hr>\n";
-echo "WARNING: Clicking on the button below will terminate your account.<br>\n";
-echo "<form action=\"stats.php\" method=\"POST\">\n";
-echo "<div>\n";
-echo "<input type=\"hidden\" name=\"deleteaccount\" value=\"1\">\n";
-echo "<input type=\"submit\" value=\"Permanently Remove Your Account\" class=\"formButton\">\n";
-echo "</div>\n";
-echo "</form>\n";
-
-echo "</p>";
+echo render_template("stats.tpl", $parts);
 
 include SERVER_ROOT."interface/footer.php";
 ?>

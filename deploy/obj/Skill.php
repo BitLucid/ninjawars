@@ -62,9 +62,9 @@ class Skill
 
 	function getTurnCost($type)
 	{
-		$skillsTypeToTurns = array('cold steal' => 2, 'ice bolt' => 3, 'sight' => 2,
-		 'deflect' => 4, 'blaze' => 4, 'duel' => 2, 'attack' => 1, 'fire bolt' => 3,
-		  'poison touch' => 1, 'stealth' => 2, 'unstealth' => 0, 'steal' => 1);
+		$skillsTypeToTurns = array('cold steal' => 3, 'ice bolt' => 2, 'sight' => 1,
+		 'deflect' => 4, 'blaze' => 3, 'duel' => 2, 'attack' => 1, 'fire bolt' => 2,
+		  'poison touch' => 2, 'stealth' => 2, 'unstealth' => 0, 'steal' => 1);
 		 $res = 1; // default
 		 if (isset($skillsTypeToTurns[strtolower($type)])){
 		 	$res = $skillsTypeToTurns[strtolower($type)];
@@ -97,7 +97,8 @@ class Skill
 	{
 		$skillsThatIgnoreStealth = array('sight' => true,
 		 'deflect' => true, 'blaze' => true, 'poison touch' => true, 'unstealth' => true,
-		 'ice bolt' => true, 'fire bolt' => true, 'cold steal' => true);
+		 'ice bolt' => true, 'fire bolt' => true);
+		 // Fire bolt probably shouldn't break stealth now.
 		$res = false; // default
 		if (isset($skillsThatIgnoreStealth[strtolower($type)])){
 			$res = true;

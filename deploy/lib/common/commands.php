@@ -869,7 +869,7 @@ function invitePlayer($who, $p_clanID) {
 	$clan = getClanLeader($p_clanID);
 
 	if ($current_clan == "" && $player_is_confirmed == 1 && !$status_array['Invited']) {
-		$invite_msg = "$clan has invited you into their clan.  To accept, choose their clan <b>".getClanLongName($clan)."</b> on the <a href=\"clan.php?command=join\">clan joining page.</a>";
+		$invite_msg = "$clan has invited you into their clan.  To accept, choose their clan ".getClanLongName($clan)." on the [href:clan.php?command=join|clan joining page.]";
 		sendMessage($clan, $who, $invite_msg);
 		addStatus($who, INVITED);
 		$failure_reason = "None.";
@@ -961,7 +961,8 @@ function removeItem($who,$item,$quantity=1)
 {
   global $sql;
 
-  $sql->Update("Update inventory set amount = amount - ".$quantity." WHERE owner = '$who' AND lower(item) =lower('$item') AND amount>1");
+  $sql->Update("Update inventory set amount = amount - ".$quantity." 
+    WHERE owner = '$who' AND lower(item) =lower('$item') AND amount>1");
 }
 
 
@@ -973,7 +974,9 @@ function removeItem($who,$item,$quantity=1)
 function sendLogOfDuel($attacker,$defender,$won,$killpoints)
 {
   global $sql;
-  $sql->Insert("INSERT INTO dueling_log values (default,'$attacker', '$defender', '$won', '$killpoints', now())");                            //Log of Dueling information.
+  $sql->Insert("INSERT INTO dueling_log values 
+        (default,'$attacker', '$defender', '$won', '$killpoints', now())");
+        //Log of Dueling information.
 }
 
 
@@ -990,7 +993,9 @@ function flagPlayer($player, $flag, $note, $originatingPage)
   $playerDetectionQuery = "SELECT player_ID FROM players WHERE uname='".$player."'";
   $playerResult=$sql->Query($playerDetectionQuery);
   $playerArray=$sql->Fetch();
-  $addToPlayersFlagged = "INSERT IGNORE INTO players_flagged (flag_ID, player_ID, extra_notes, originating_page, timestamp) VALUES ('$flagIDArray[0]', '$playerArray[0]', '$note', '$originatingPage', now())";
+  $addToPlayersFlagged = "INSERT IGNORE INTO players_flagged 
+        (flag_ID, player_ID, extra_notes, originating_page, timestamp) 
+        VALUES ('$flagIDArray[0]', '$playerArray[0]', '$note', '$originatingPage', now())";
   $result=$sql->Query($addToPlayersFlagged);
 }
 
@@ -999,20 +1004,9 @@ function flagPlayer($player, $flag, $note, $originatingPage)
 // ******** MESSAGE FUNCTIONS *********
 // ************************************
 
-// 
-function sendMessage($from,$to,$msg,$filter=false) {
-  global $sql;
-  if ($filter){
-  	$msg = strip_tags($msg);
-  }
-  $sql->Insert("INSERT INTO mail VALUES (default,'$from','$to','".sql($msg)."',now())");
-}
+// event/message functions are in lib_events.
 
-// For true user-to-user or user-to-clan messages as opposed to events.
-function sendUserMessage($from_id,$to_id,$msg) {
-  global $sql;
-  $sql->Insert("INSERT INTO messages VALUES (default,".sql($from_id).",".sql($to_id).",'".sql($msg)."',now())");
-}
+// user message functions are in lib_message now.
 
 
 // ************************************
@@ -1021,7 +1015,8 @@ function sendUserMessage($from_id,$to_id,$msg) {
 
 function sendChat($from,$to,$msg) {
   global $sql;
-  $sql->Insert("INSERT INTO chat (id, send_from, send_to, message, time) VALUES (default,'$from','$to','".sql($msg)."',now())");
+  $sql->Insert("INSERT INTO chat (id, send_from, send_to, message, time) 
+        VALUES (default,'$from','$to','".sql($msg)."',now())");
 }
 
 

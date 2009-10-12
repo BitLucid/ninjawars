@@ -15,7 +15,7 @@ include SERVER_ROOT."interface/header.php";
 $sql->Query("SELECT amount AS c, item FROM inventory WHERE owner = '$username' GROUP BY item, amount");
 
 if ($sql->rows == 0) {
-	echo "You have no items, to buy some, visit the <a href=\"shop.php\">shop</a>\n";
+	echo "You have no items, to buy some, visit the <a href=\"shop.php\">shop</a>.\n";
 } else {
 	$items['Speed Scroll']   = 0;
 	$items['Stealth Scroll'] = 0;
@@ -96,7 +96,6 @@ if ($sql->rows == 0) {
 
   <br>
   Current gold: <?php echo getGold($username);?>
-  <hr>
 
 </p>
 

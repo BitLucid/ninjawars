@@ -27,7 +27,7 @@ function render_clan_tags(){
             <ul>";
     foreach($clans as $clan => $size){
         $res .= "<li class='clan-tag size$size'>
-                <a href='?command=view&clan_long_name=".urlencode($clan)."'>$clan</a>
+                <a href='?command=view&amp;clan_long_name=".urlencode($clan)."'>$clan</a>
             </li>";
     }
     $res .= "</ul>
@@ -39,12 +39,20 @@ function render_clan_tags(){
 
 /* Display the clan member name list or tag list */
 function render_clan_view($clan, $clan_name=null, $clan_long_searched=null, $sql){
-    $search = "clan = '$clan_name'";
-    if($clan_long_searched){
-        $search = "clan_long_name = '$clan_long_searched'";
+    if(!$clan_name && !$clan_long_searched){
+        return ''; // No viewing criteria available.
     }
-    $members = $sql->FetchAll("SELECT uname, clan, clan_long_name, level, days FROM players WHERE $search AND days<60 AND confirmed = 1 order by level desc");
-    $max_list = $sql->FetchAll("SELECT max(level) as max FROM players WHERE $search AND confirmed = 1");
+    $search = "clan = '".sql($clan_name)."'";
+    if($clan_long_searched){
+        $search = "clan_long_name = '".sql($clan_long_searched)."'";
+    }
+    $members = $sql->FetchAll(
+        "SELECT uname, clan, clan_long_name, level, days 
+            FROM players 
+            WHERE $search AND confirmed = 1 order by level desc");
+    $max_list = $sql->FetchAll(
+        "SELECT max(level) as max 
+        FROM players WHERE $search AND confirmed = 1");
     $max_array = reset($max_list);
     $max = $max_array['max'];
     //$members = @natsort2d($members, 'days');

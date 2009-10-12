@@ -30,9 +30,9 @@ $(document).ready(function() {
     });
     
     
-    quickstatsLinks = $("a[target='quickstats']");
+    var quickstatsLinks = $("a[target='quickstats']");
     quickstatsLinks.css({'font-style':'italic'}); // Hide all links using target as a test.
-    quickDiv =  $('div#quickstats-frame-container');
+    var quickDiv =  $('div#quickstats-frame-container');
     //quickDiv.load('quickstats.php');
     // Add the click handlers for loading the quickstats frame.
     frameClickHandlers(quickstatsLinks, quickDiv);
@@ -74,15 +74,15 @@ function toggle_visibility(id) {
 }
 
 function refreshMinichat(){
-  parent.mini_chat.location="mini_chat.php";
+        parent.mini_chat.location="mini_chat.php";
 }
 
 
 // Keep in mind the need to use window.parent when in iframe.
 function updateHealthBar(health){
     // Should only update when a change occurs.
-    mess = '| '+health+' health';
-    span = $('#logged-in-bar-health', top.document);
+    var mess = '| '+health+' health';
+    var span = $('#logged-in-bar-health', top.document);
     span.text(mess);
     if(health<100){
         span.css({'color' : 'red'});
@@ -104,19 +104,6 @@ function refreshQuickstats(quickView){
         }
     }
     top.firstLoad++;
-}
-
-/* Need to parse the 'this' php file/page so that refreshing to login auto-passes the appropriate page after */
-function refreshToLogin(failed){
-	if (top.location!= self.location) {
-		top.location = 'index.php'
-	}
-	if(!failed){
-		parent.location.href=parent.location.href;
-	} else {
-		parent.main.location="index.php?action=login";
-	}
-	return false;
 }
 
 // GOOGLE ANALYTICS
