@@ -11,18 +11,21 @@ html {
     min-width: 800px;
 }
 
+body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
+    font: 83%/1.4 arial, helvetica, sans-serif;
+}
+
 body {
 	/*font-family: <ideal>, <alternative>, <common>, <generic>;*/
 	/*font-family: Arial, Helvetica, sans-serif;*/
-	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	/*font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;*/
 	/*font-family: Verdana, Arial, Helvetica, sans-serif;*/
 	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
 	/*font-family: "Franklin Gothic", Futura, Verdana, Arial, Helvetica, sans-serif;*/
 	/*font family: Tahoma, Arial, sans-serif;*/
 	font-size: 80%;
 	color: DarkKhaki;
-	background-color: black;
-	/* Required for the ie bug */
+	background-color: black;	/* Required for the ie bug */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
 	margin:0;
@@ -30,24 +33,16 @@ body {
 }
 
 
-h1, h2, h3, h4, h5, h6, .subtitle{
-	/*font-family: "Palatino Linotype", “Book Antiqua”, Palatino, “Times New Roman”, Times, serif;*/
-	/*font-family: Georgia, Tahoma, Garamond, Palatino, serif;Mine*/
+h1, h2, h3, h4, h5, h6, .subtitle, .title{
 	font-family: Georgia, "Times New Roman", Times, serif;
-	/*font-style:oblique;*/
 	text-align:center;
-	font-weight:bold;
 	font-size:1.2em;
 }
 
-body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
-    font: 83%/1.4 arial, helvetica, sans-serif;
-}
 
 h1, h2, .title, .player-info .player-name{
 	color:black;
 	background-color:DarkKhaki;
-	/*background-color:DarkRed;*/
 	text-align:center;
 	font-weight:bold;
 	font-size:1.5em;
@@ -87,7 +82,7 @@ select {
 
 a {
 	text-decoration: none;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	font-family: verdana, arial, helvetica, sans-serif;
 	color: SteelBlue;
 	/*font-family: Arial Black, Impact, Tahoma Bold, sans-serif;*/
@@ -97,6 +92,8 @@ a:hover {
 	color: white;
 	text-decoration: underline;
 }
+
+
 a:link {} a:visited {} a:active {}
 
 #avatar {
@@ -443,7 +440,7 @@ td.playerTable {
 .box-title, .box-title a{
 	padding-top:3px;
 	color: CadetBlue;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	text-decoration: none;
 }
 .active .box-title, .active .box-title a{
@@ -1111,7 +1108,7 @@ body.ninjawars-staff{
 
 /* reactive-panel subparts */
 #category-bar{
-    height:70%;
+    height:75%;
     width: 100%;
     background: black;
     color:white;
@@ -1147,7 +1144,7 @@ body.ninjawars-staff{
 }*/
 
 #subcategory-bar{
-    height:30%;
+    height:25%;
     width:100%;
     float:left;
     text-align:center;
@@ -1159,6 +1156,7 @@ body.ninjawars-staff{
 #subcategory-bar a:hover{
     font-size: 108%;
     text-decoration:none;
+    font-weight:bold;
 }
 
 #subcategory-bar ul{
