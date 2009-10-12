@@ -1,32 +1,44 @@
 <?php
 // lib_auth.php
 
+function authenticate($p_user, $p_pass)
+{
+	$user        = (string)$p_user;
+	$pass        = (string)$p_pass;
+	$returnValue = false;
+
+	if ($user != '' && $pass != '')
+	{
+		$dbConn = new DatabaseConnection();
+		$statement = DatabaseConnection::$pdo->prepare('SELECT uname, player_id FROM players WHERE lower(uname) = lower(:userName) AND pname = :pass AND confirmed = 1';
+		$statement->bindValue(':userName', $user);
+		$statement->bindValue(':pass', $pass);
+		$statement->execute();
+
+		$returnValue = $statement->fetch();
+	}
+
+	return $returnValue;
+}
+
 /**
  * Login the user and delegate the setup if login is valid.
 **/
-function login_user($user, $pass){
-    $filter = new Filter();
-    $user = $filter->toUsername($user);
-    $pass = $filter->toPassword($pass);
+function login_user($p_user, $p_pass)
+{
 	$success = false;
-	$error = 'That password/username combination was incorrect.';
-	if($user != '' && $pass != ''){
-		$sql = new DBAccess();
-		$q = "select uname, player_id from players where lower(uname) =
-			lower('".$user."') and pname = '".$pass."' and confirmed = 1 limit 1";
-		$results = $sql->QueryAssoc($q);
-		//$q = "select uname, player_id from players where uname = ':user' and pname = ':pass' limit 1";
-		//$binds = array(':user' => $user, ':pass' => $pass);
-		//$result = $sql->prepared($q, $binds);
-		$rows = $sql->getRowCount();
-		if(1 == $rows){
-			setup_logged_in($results[0]['player_id'], $results[0]['uname']);
-			// Set session stuff.
-			$success = true;
-			$error = '';
-		}
+	$error   = 'That password/username combination was incorrect.';
+
+	if ($data = authenticate($p_user, $p_pass))
+	{
+		setup_logged_in($data['player_id'], $data['uname']);
+
+		// *** Set return values ***
+		$success = true;
+		$error = '';
 	}
-	// Redirect if the login doesn't work.
+
+	// *** Return array of return values ***
 	return array('success' => $success, 'login_error' => $error);
 }
 
@@ -34,22 +46,9 @@ function login_user($user, $pass){
  * Just do a check whether the input username and password is valid
  * @return boolean
 **/
-function is_authentic($user, $pass){
-    $filter = new Filter();
-    $user = $filter->toUsername($user);
-    $pass = $filter->toPassword($pass);
-	$res = false;
-	if($user != '' && $pass != ''){
-		$sql = new DBAccess();
-		$q = "select uname, player_id from players where lower(uname) =
-			lower('".$user."') and pname = '".$pass."' and confirmed = 1 limit 1";
-		$results = $sql->QueryAssoc($q);
-		$rows = $sql->getRowCount();
-		if(1 == $rows){
-			$res = true;
-		}
-	}
-	return $res;
+function is_authentic($p_user, $p_pass)
+{
+	return (boolean)authenticate($p_user, $p_pass);
 }
 
 /**
@@ -57,7 +56,7 @@ function is_authentic($user, $pass){
 **/
 function logout_user($echo=false, $redirect='index.php'){
 	$msg = 'You have been logged out.';
-	SESSION :: destroy();
+	session_destroy(); // Why was this status function being used? SESSION :: destroy(); ????
 	if($echo){
 		echo $msg;
 	}
@@ -94,29 +93,7 @@ function setup_logged_in($player_id, $username){
 	// Block by ip list here, if necessary.
 
 	$player_data = get_player_info();
-	/*
-	$players_id = $player_data['player_id'];
-	$player_id = $players_id; // Just two aliases for the player id.
-	$players_email = $player_data['email'];
-	// password and messages intentionally excluded.
-	$players_turns    	= $player_data['turns'];
-	$players_health   	= $player_data['health'];
-	$players_bounty   	= $player_data['bounty'];
-	$players_gold     	= $player_data['gold'];
-	$players_level    	= $player_data['level'];
-	$players_class    	= $player_data['class'];
-	$players_strength 	= $player_data['strength'];
-	$players_kills		= $player_data['kills'];
-	$players_days		= $player_data['days'];
-	$players_created_date = $player_data['created_date'];
-	$players_last_started_attack = $player_data['last_started_attack'];
-	$players_clan 		= $player_data['clan_long_name'];
-	// TODO: not ready yet: $players_energy	= $player_data['energy'];
-	// Also migrate the player_score to a true player object.
-	// Also migrate the rank_id to a true player object.
-	$players_status   = getStatus($username);*/
 	put_player_info_in_session($player_data);
-
 }
 
 
@@ -137,8 +114,8 @@ function validate_username($send_name){
 	if (substr($send_name,0,1)!=0 || substr($send_name,0,1)=="0"){  // Case the first char isn't a letter???
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a number.\n";
 	} else if (strlen($send_name) >= 21){   // Case string is greater or equal to 21.
-	  	$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not exceed 20 characters.";
-  	} else if ($send_name[0] == " "){  //Checks for a white space at the beginning of the name
+		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not exceed 20 characters.";
+	} else if ($send_name[0] == " "){  //Checks for a white space at the beginning of the name
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a space.";
 	} else if ($send_name != htmlentities($send_name)
 			|| str_replace(" ","%20",$send_name) != urlencode($send_name)
@@ -231,20 +208,20 @@ function get_username(){
 
 
 function player_name_from_id($player_id){
-    global $sql;
-    if(!$player_id){
-        throw new Exception('Blank player ID to find the username of requested.');
-    }
-    return $sql->QueryItem("select uname from players where player_id ='".sql($player_id)."'");
+	global $sql;
+	if(!$player_id){
+		throw new Exception('Blank player ID to find the username of requested.');
+	}
+	return $sql->QueryItem("select uname from players where player_id ='".sql($player_id)."'");
 }
 
 // Return the id that corresponds with a player name, if no other source is available.
 function get_user_id($name=null){
-    global $sql;
-    if($name === null){
-        $name = get_username();
-    }
-    return $sql->QueryItem("select player_id from players where uname = '".sql($name)."'");
+	global $sql;
+	if($name === null){
+		$name = get_username();
+	}
+	return $sql->QueryItem("select player_id from players where uname = '".sql($name)."'");
 }
 
 
@@ -269,10 +246,13 @@ function put_player_info_in_session($player_stats){
 			}
 		}
 	}
+
+	/*
+	// TODO: not ready yet: $players_energy	= $player_data['energy'];
+	// Also migrate the player_score to a true player object.
+	// Also migrate the rank_id to a true player object.
+	*/
 }
-
-
-
 
 /**
     * A better alternative (RFC 2109 compatible) to the php setcookie() function
@@ -288,42 +268,41 @@ function put_player_info_in_session($player_stats){
     */
 function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure=false, $HTTPOnly=false)
 {
-    $ob = ini_get('output_buffering');
+	$ob = ini_get('output_buffering');
 
-    // Abort the method if headers have already been sent, except when output buffering has been enabled
-    if ( headers_sent() && (bool) $ob === false || strtolower($ob) == 'off' ){
-    	assert("(false) && ('Headers were sent before the cookie was reached, which should not happen.')");
-        return false;
-    }
+	// Abort the method if headers have already been sent, except when output buffering has been enabled
+	if ( headers_sent() && (bool) $ob === false || strtolower($ob) == 'off' ){
+		assert("(false) && ('Headers were sent before the cookie was reached, which should not happen.')");
+		return false;
+	}
 
+	if ( !empty($domain) )
+	{
+		// Cut off leading http:// or www
+		if ( strtolower( substr($domain, 0, 7) ) == 'http://' ) $domain = substr($domain, 7);
+		// Truncate the domain to accept domains with and without 'www.'.
+		if ( strtolower( substr($domain, 0, 4) ) == 'www.' ) $domain = substr($domain, 4);
+		// Add the dot prefix to ensure compatibility with subdomains
+		if ( substr($domain, 0, 1) != '.' ) $domain = '.'.$domain;
 
-    if ( !empty($domain) )
-    {
-    	// Cut off leading http:// or www
-    	if ( strtolower( substr($domain, 0, 7) ) == 'http://' ) $domain = substr($domain, 7);
-        // Truncate the domain to accept domains with and without 'www.'.
-        if ( strtolower( substr($domain, 0, 4) ) == 'www.' ) $domain = substr($domain, 4);
-        // Add the dot prefix to ensure compatibility with subdomains
-        if ( substr($domain, 0, 1) != '.' ) $domain = '.'.$domain;
+		// Remove port information.
+		$port = strpos($domain, ':');
 
-        // Remove port information.
-        $port = strpos($domain, ':');
+		if ( $port !== false ) $domain = substr($domain, 0, $port);
+	}
 
-        if ( $port !== false ) $domain = substr($domain, 0, $port);
-    }
-
-    // Prevent "headers already sent" error with utf8 support (BOM)
-    //if ( utf8_support ) header('Content-Type: text/html; charset=utf-8');
+	// Prevent "headers already sent" error with utf8 support (BOM)
+	//if ( utf8_support ) header('Content-Type: text/html; charset=utf-8');
 	$header_string = 'Set-Cookie: '.rawurlencode($name).'='.rawurlencode($value)
                                 .(empty($domain) ? '' : '; Domain='.$domain)
                                 .(empty($maxage) ? '' : '; Max-Age='.$maxage)
                                 .(empty($path) ? '' : '; Path='.$path)
                                 .(!$secure ? '' : '; Secure')
                                 .(!$HTTPOnly ? '' : '; HttpOnly');
-    //var_dump($header_string);
-    header($header_string, false);
+	//var_dump($header_string);
+	header($header_string, false);
 	assert(isset($domain));
-    return true;
+	return true;
 }
 
 /*
