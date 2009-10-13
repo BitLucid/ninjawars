@@ -6,7 +6,7 @@ if(!$){
 
 if(!firstLoad){
     // Counter starts at 1 to indicate a newly refreshed page,
-    // As opposed to subsequent loads of 
+    // As opposed to subsequent loads via js links. 
     var firstLoad = 1;
 }
 
@@ -15,7 +15,9 @@ if(!NW){
     NW = {}; // Ninjawars namespace object.
 }
 
-// INIT
+// TODO: Create a dummy console.log functionality to avoid errors on live?
+
+// Initial load of everything.
 $(document).ready(function() {
 
     // TODO: I need to specify whether this occurs in iframe windows. vs just outer window.
@@ -75,15 +77,29 @@ function updateChat(){
 
 // Update display elements that live on the index page.
 function updateIndex(){
+    // Only update the page when the location is actually the index.
+    if(window.location.pathname.substr(-9,9) == 'index.php'){
+        if(!NW.latest_message_id){
+            NW.latest_message_id = null;
+        }
         $.getJSON('api.php?type=latest_message&jsoncallback=?', function(data){
             //console.log(data.chats[0].message);
             $.each(data.message, function(i,message){
-                $('#recent-events').html("<div class='recent-chat'><a href='player.php?player="+message.send_from+"' target='main'>"+message.uname+"</a>: "+message.message+" </div>");
+                if(NW.latest_message_id == message.message_id){
+                    $('#recent-mail .latest-message-text').removeClass('message-unread');
+                    return false;
+                }
+
+                NW.latest_message_id = message.message_id; // Store latest message.
+                // Add the unread class until next update.
+                $('#recent-mail').html("<div class='latest-message'><a href='player.php?player="+message.send_from+"' target='main'>"+message.uname+"</a>: <span class='latest-message-text message-unread'>"+message.message.substr(0, 12)+"...</span> </div>");
+                // Pull a message with a truncated length of 12.
                 /*$('<a/>').attr("href", "player.php?player="+chat.send_from).text(chat.send_from+" ").appendTo('#recent-events');
                 $('<span/>').text(chat.message).appendTo('#recent-events');*/
                 if(i== 0) return false;
             })
         });
+    }
 // Recent events.
 // recent messages.
 // update chat

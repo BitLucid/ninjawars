@@ -26,7 +26,8 @@ function render_json($type, $jsoncallback){
 function json_latest_message(){
     $sql = new DBAccess();
     $user_id = (int) get_user_id();
-    $messages = $sql->FetchAll("select message_id, message, date, send_to, send_from, unread, uname from messages join players on player_id = send_to where send_to = '".sql($user_id)."' order by date limit 1");
+    $messages = $sql->FetchAll("select message_id, message, date, send_to, send_from, unread, uname from messages join players on player_id = send_to where send_to = '".sql($user_id)."' and send_from != '".sql($user_id)."' order by date limit 1");
+    // Skips message sent by self, i.e. clan send messages.
     return '{"message":'.json_encode($messages).'}';
 }
 
