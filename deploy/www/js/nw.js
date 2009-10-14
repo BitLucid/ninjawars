@@ -1,10 +1,10 @@
-/* Load all the js scripts here, essentially */
+/* Load all the js functionality here, mostly */
 
 // Url Resources:
 // http://www.jslint.com/
 // http://yuiblog.com/blog/2007/06/12/module-pattern/
 
-// TODO: Create a dummy console.log functionality to avoid errors on live?
+// TODO: Create a dummy con sole dot log functionality to avoid errors on live?
 
 
 /*  GLOBAL SETTINGS & VARS */
@@ -22,12 +22,13 @@ NW = window.NW || createNW();
 
 // GLOBAL FUNCTIONS
 
-
-function chainedTimeout(counter){
+// JS Update Heartbeat  // TODO: Make the update interval slowly logrithmic based on activity.
+function chainedUpdate(counter){
     var counter = counter || 1;
+    var interval = 10; // Seconds
     updateIndex(counter);
-    NW.updater_id = setTimeout(chainedTimeout, 10*1000); // Repeat once the interval has passed.
-    // Also store the timeout id for any potential cancellation requests.
+    setTimeout(function (){chainedUpdate(counter);}, interval*1000); // Repeat once the interval has passed.
+    // If we need a to cancel the update down the line, store the id that setTimeout returns.
 }       
 
 
@@ -43,12 +44,11 @@ function updateChat(){
 // update the "latest chat id" var.
 }
 
-function updateLastMessage(){
+function updateLatestMessage(){
     if(!NW.latest_message_id){
         NW.latest_message_id = null;
     }
     $.getJSON('api.php?type=latest_message&jsoncallback=?', function(data){
-        //console.log(data.chats[0].message);
         $.each(data.message, function(i,message){
             if(NW.latest_message_id == message.message_id){
                 $('#recent-mail .latest-message-text').removeClass('message-unread');
@@ -57,7 +57,7 @@ function updateLastMessage(){
 
             NW.latest_message_id = message.message_id; // Store latest message.
             // Add the unread class until next update.
-            $('#recent-mail').html("<div class='latest-message'><a href='player.php?player="+message.send_from+"' target='main'>"+message.uname+"</a>: <span class='latest-message-text message-unread'>"+message.message.substr(0, 12)+"...</span> </div>");
+            $('#recent-mail').html("<div class='latest-message'><div id='latest-message-title'>Latest Message</div><a href='player.php?player="+message.send_from+"' target='main'>"+message.sender+"</a>: <span class='latest-message-text message-unread'>"+message.message.substr(0, 12)+"...</span> </div>");
             // Pull a message with a truncated length of 12.
             /*$('<a/>').attr("href", "player.php?player="+chat.send_from).text(chat.send_from+" ").appendTo('#recent-events');
             $('<span/>').text(chat.message).appendTo('#recent-events');*/
@@ -66,14 +66,60 @@ function updateLastMessage(){
     });
 }
 
+
+function updateLatestEvent(){
+    if(!NW.latest_event_id){
+        NW.latest_event_id = null;
+    }
+    $.getJSON('api.php?type=latest_event&jsoncallback=?', function(data){
+        $.each(data.event, function(i,event){
+            if(NW.latest_event_id == event.event_id){
+                $('#recent-events .latest-event-text').removeClass('message-unread');
+                return false;
+            }
+
+            NW.latest_event_id = event.event_id; // Store latest event.
+            // Add the unread class until next update.
+
+            $('#recent-events').html("<div class='latest-event'><div id='latest-event-title'>Latest Event</div><a href='player.php?player="+event.send_from+"' target='main'>"+event.sender+"</a>: <span class='latest-event-text message-unread'>"+event.event.substr(0, 12)+"...</span> </div>");
+            // Pull a message with a truncated length of 12.
+            if(i=== 0) return false;
+        });
+    });
+}
+
+function getAndUpdateHealth(){
+    NW.currentHealth = NW.currentHealth ? NW.currentHealth : null;
+    $.getJSON('api.php?type=player&jsoncallback=?', function(data){
+        if(data.player.health != NW.currentHealth){
+            updateHealthBar(data.player.health);
+            // That will also update the global currentHealth.
+        }
+    });
+}
+
+// Keep in mind the need to use window.parent when calling from an iframe.
+function updateHealthBar(health){
+    // Should only update when a change occurs.
+    var mess = '| '+health+' health';
+    var span = $('#logged-in-bar-health', top.document);
+    span.text(mess);
+    if(health<100){
+        span.css({'color' : 'red'});
+    } else {
+        span.css({'color' : ''});
+    }
+    NW.currentHealth = health;
+}
+
 // Update display elements that live on the index page.
 function updateIndex(){
 
-        updateLastMessage();
-// Recent events.
-// recent messages.
-// update chat
-// health bar.
+    updateLatestMessage();
+    updateLatestEvent();
+    // update chat
+    // health bar.
+    getAndUpdateHealth()
 }
 
 
@@ -94,20 +140,6 @@ function toggle_visibility(id) {
 
 function refreshMinichat(){
         parent.mini_chat.location="mini_chat.php";
-}
-
-
-// Keep in mind the need to use window.parent when in iframe.
-function updateHealthBar(health){
-    // Should only update when a change occurs.
-    var mess = '| '+health+' health';
-    var span = $('#logged-in-bar-health', top.document);
-    span.text(mess);
-    if(health<100){
-        span.css({'color' : 'red'});
-    } else {
-        span.css({'color' : ''});
-    }
 }
 
 // For refreshing quickstats from inside main.
@@ -131,9 +163,8 @@ $(document).ready(function() {
    
     // INDEX ONLY CHANGES 
     if(window.location.pathname.substr(-9,9) == 'index.php'){    
-        updateIndex();
-        
 
+        chainedUpdate(); // Start the periodic index update.
        /* Collapse the following parts of the index */
         $("#links-menu").toggle();
         
@@ -166,9 +197,6 @@ $(document).ready(function() {
         // The mainDiv handler would want to refresh quickstats when it loads if it's
         // footer gets excluded.
         */
-        
-        
-        chainedTimeout(); // Start the periodic index update.
     }    
     
     /* THIS CODE RUNS FOR ALL SUBPAGES */

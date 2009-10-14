@@ -1,5 +1,7 @@
 <?php
 // TODO: Only allow for ajax requests.
+// TODO: Turn the DBAccess into an associative fetch instead of DB_BOTH type.
+
 // Check login to allow for information.
 // Recent mails.
 // Recent events.
@@ -34,7 +36,7 @@ function json_latest_message(){
 function json_latest_event(){
     $sql = new DBAccess();
     $user_id = (int) get_user_id();
-    $events = $sql->FetchAll("select event_id, event, date, send_to, send_from, unread, uname as sender from events join players on player_id = send_from where send_to = '".sql($user_id)."' order by date desc limit 1");
+    $events = $sql->FetchAll("select event_id, message as event, date, send_to, send_from, unread, uname as sender from events join players on player_id = send_from where send_to = '".sql($user_id)."' order by date desc limit 1");
     return '{"event":'.json_encode($events).'}';
 }
 
