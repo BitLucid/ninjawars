@@ -26,7 +26,7 @@ function render_json($type, $jsoncallback){
 function json_latest_message(){
     $sql = new DBAccess();
     $user_id = (int) get_user_id();
-    $messages = $sql->FetchAll("select message_id, message, date, send_to, send_from, unread, uname from messages join players on player_id = send_to where send_to = '".sql($user_id)."' and send_from != '".sql($user_id)."' order by date limit 1");
+    $messages = $sql->FetchAll("select message_id, message, date, send_to, send_from, unread, uname as sender from messages join players on player_id = send_from where send_to = '".sql($user_id)."' and send_from != '".sql($user_id)."' order by date desc limit 1");
     // Skips message sent by self, i.e. clan send messages.
     return '{"message":'.json_encode($messages).'}';
 }
@@ -34,7 +34,7 @@ function json_latest_message(){
 function json_latest_event(){
     $sql = new DBAccess();
     $user_id = (int) get_user_id();
-    $events = $sql->FetchAll("select event_id, event, date, send_to, send_from, unread, uname from events join players on player_id = send_to where send_to = '".sql($user_id)."' order by date limit 1");
+    $events = $sql->FetchAll("select event_id, event, date, send_to, send_from, unread, uname as sender from events join players on player_id = send_from where send_to = '".sql($user_id)."' order by date desc limit 1");
     return '{"event":'.json_encode($events).'}';
 }
 
@@ -45,7 +45,7 @@ function json_player(){
 
 function json_chats(){
     $sql = new DBAccess();
-    $chats = $sql->FetchAll("select * from chat order by time");
+    $chats = $sql->FetchAll("select * from chat order by time desc");
     return '{"chats":'.json_encode($chats).'}';
 }
 

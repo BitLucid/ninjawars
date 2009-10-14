@@ -15,7 +15,7 @@ Create the ability for players to set up "ambush" from their profile when viewer
 Kappa random encounter as a money source? Tengu random encounter useful for ???
 And random encounter generator to javascript and internal php that cause random encounters when the two systems match up?
 Make quest table for holding quest statuses.
-Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general, using a quests database.
+Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general, using a quests database.  Limited is good, just like the limited invites of google wave, it's a good model.
 Make giving items clan (done) and to newbies (based on existing play time and level).
 // TODO: Put player-led multi-checking into play.
 // TODO: Put periodic but then constitutive captcha checks into play.
@@ -24,9 +24,12 @@ Turn signup into the madlib that I wrote long ago, it's probably still in gmail.
 Create a twitter topic aggregator for #ninjawars.
 Create a way to find "easter egg" things via text input, mudlike.
 
+
 Environment:
 Create a map system.
 Turn the Village into a single link off of the index, with a page that acts as the actual village.  Except healing.
+Add a "interest on investment" or other "you have gone away and came back" stuff to the game.
+Add a javascript ip tester/tracker/location-correlator for interesting people/tracking/adding.
 
 
 UI:
