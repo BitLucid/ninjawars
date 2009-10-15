@@ -1,5 +1,5 @@
 /* Someday I should probably just put the blueprint css into play. */
-
+/* http://www.typetester.org/  */
 
 html {
     margin:0;
@@ -1073,7 +1073,7 @@ body.ninjawars-staff{
     width:20%;
 }
 .header-section{
-    height:7em;
+    height:6em;
     border-bottom: thick solid #330000;
     color:white;
 }
@@ -1108,6 +1108,7 @@ body.ninjawars-staff{
 
 /* reactive-panel subparts */
 #category-bar{
+    margin: .2em 0 0 0;
     height:75%;
     width: 100%;
     background: black;
@@ -1131,6 +1132,7 @@ body.ninjawars-staff{
 }
 #category-bar a{
     vertical-align:top;
+    font-family:cursive;
 }
 /*
 #category-bar #status-actions{
@@ -1157,6 +1159,7 @@ body.ninjawars-staff{
     font-size: 108%;
     text-decoration:none;
     font-weight:bold;
+    font-family: Verdana, sans-serif;
 }
 
 #subcategory-bar ul{

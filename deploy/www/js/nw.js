@@ -1,8 +1,12 @@
 /* Load all the js functionality here, mostly */
 
+// Sections are, in order: SETTINGS | FUNCTIONS | READY
+
 // Url Resources:
 // http://www.jslint.com/
 // http://yuiblog.com/blog/2007/06/12/module-pattern/
+// http://www.javascripttoolbox.com/bestpractices/
+// TODO: change generated vars to square bracket notation.
 
 // TODO: Create a dummy con sole dot log functionality to avoid errors on live?
 
@@ -19,22 +23,30 @@ function createNW(){
 $ = window.$ ? window.$ : jQuery;
 NW = window.NW ? window.NW : createNW();
 
-
 // GLOBAL FUNCTIONS
 
-// JS Update Heartbeat
-function chainedUpdate(counter){
-    var counter = counter ? counter : 1;
-    var interval = 10; // Seconds
-    // TODO: Make the update interval slowly logrithmic based on activity.
-    updateIndex(counter);
-    setTimeout(function (){chainedUpdate(counter);}, interval*1000); // Repeat once the interval has passed.
-    // If we need a to cancel the update down the line, store the id that setTimeout returns.
-}       
 
+// Determines the update interval, 
+//increases when feedback == false, rebaselines when feedback == true
+function getUpdateInterval(feedback){
+    var interval = feedback || !NW.updateInterval? 5 : (NW.updateInterval<300 ? NW.updateInterval+1 : 180);
+    NW.updateIterval = interval; // Store the current value.
+    return interval;
+    // Start is 10 sec, max is 3 minutes.
+}
+
+// JS Update Heartbeat
+function chainedUpdate(chainCounter){
+    chainCounter = chainCounter ? chainCounter : 1;
+    var feedback = updateIndex(chainCounter); 
+    // Update and get good or bad feedback to increase or decrease interval.
+    var secondInterval = getUpdateInterval(feedback); 
+    setTimeout(function (){chainedUpdate(chainCounter);}, secondInterval*1000); // Repeat once the interval has passed.
+    // If we need a to cancel the update down the line, store the id that setTimeout returns.
+}
 
 // Update the chat page without refresh.
-function updateChat(){
+//function updateChat(){
 // store a latest chat id to check against the chat.
 // Get the chat data.
 // If the latest hasn't changed, just return nothing.
@@ -43,7 +55,7 @@ function updateChat(){
 //saving non-matches until you get back to the "latest" match.
 // Update the chat's ui.
 // update the "latest chat id" var.
-}
+//}
 
 function updateLatestMessage(){
     if(!NW.latest_message_id){
@@ -62,7 +74,7 @@ function updateLatestMessage(){
             // Pull a message with a truncated length of 12.
             /*$('<a/>').attr("href", "player.php?player="+chat.send_from).text(chat.send_from+" ").appendTo('#recent-events');
             $('<span/>').text(chat.message).appendTo('#recent-events');*/
-            if(i=== 0) return false;
+            if(i=== 0) { return true; }
         });
     });
 }
@@ -73,31 +85,20 @@ function updateLatestEvent(){
         NW.latest_event_id = null;
     }
     $.getJSON('api.php?type=latest_event&jsoncallback=?', function(data){
-        $.each(data.event, function(i,event){
-            if(NW.latest_event_id == event.event_id){
-                $('#recent-events .latest-event-text').removeClass('message-unread');
-                return false;
-            }
-
-            NW.latest_event_id = event.event_id; // Store latest event.
-            // Add the unread class until next update.
-
-            $('#recent-events').html("<div class='latest-event'><div id='latest-event-title'>Latest Event</div><a href='player.php?player="+event.send_from+"' target='main'>"+event.sender+"</a>: <span class='latest-event-text message-unread'>"+event.event.substr(0, 12)+"...</span> </div>");
-            // Pull a message with a truncated length of 12.
-            if(i=== 0) return false;
-        });
-    });
-}
-
-function getAndUpdateHealth(){
-    NW.currentHealth = NW.currentHealth ? NW.currentHealth : null;
-    $.getJSON('api.php?type=player&jsoncallback=?', function(data){
-        if(data.player.health != NW.currentHealth){
-            updateHealthBar(data.player.health);
-            // That will also update the global currentHealth.
+        var event = data.event;
+        if(NW.latest_event_id == event.event_id){
+            $('#recent-events .latest-event-text').removeClass('message-unread');
+            return false; // Nothing to update.
         }
+        NW.latest_event_id = event.event_id; // Store latest event.
+        // Add the unread class until next update.
+
+        $('#recent-events').html("<div class='latest-event'><div id='latest-event-title'>Latest Event</div><a href='player.php?player="+event.send_from+"' target='main'>"+event.sender+"</a>: <span class='latest-event-text message-unread'>"+event.event.substr(0, 12)+"...</span> </div>");
+        // Pull a message with a truncated length of 12.
     });
+    return true; // There was a valid update.
 }
+
 
 // Keep in mind the need to use window.parent when calling from an iframe.
 function updateHealthBar(health){
@@ -113,14 +114,27 @@ function updateHealthBar(health){
     NW.currentHealth = health;
 }
 
+function getAndUpdateHealth(){
+    var res = false;
+    NW.currentHealth = NW.currentHealth ? NW.currentHealth : null;
+    $.getJSON('api.php?type=player&jsoncallback=?', function(data){
+        if(data.player.health != NW.currentHealth){
+            updateHealthBar(data.player.health);
+            res = true;
+            // That will also update the global currentHealth.
+        }
+    });
+    return res; // Whether there was anything to update.
+}
+
 // Update display elements that live on the index page.
 function updateIndex(){
-
-    updateLatestMessage();
-    updateLatestEvent();
+    var message = updateLatestMessage();
+    var event = updateLatestEvent();
     // update chat
     // health bar.
-    getAndUpdateHealth()
+    var health = getAndUpdateHealth();
+    return message && event && health; // determines good or bad feedback.
 }
 
 
@@ -152,7 +166,7 @@ function refreshQuickstats(quickView){
             top.window.NW.quickDiv.load(url, 'section_only=1');
         } else {
             // Use parent to indicate the parent global variable.
-    	    parent.quickstats.location=url;
+            parent.quickstats.location=url;
         }
     }
     top.windown.NW.firstLoad++;
