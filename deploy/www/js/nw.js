@@ -16,16 +16,17 @@ function createNW(){
     return innerNW;
 }
 
-$ = window.$ || jQuery;
-NW = window.NW || createNW();
+$ = window.$ ? window.$ : jQuery;
+NW = window.NW ? window.NW : createNW();
 
 
 // GLOBAL FUNCTIONS
 
-// JS Update Heartbeat  // TODO: Make the update interval slowly logrithmic based on activity.
+// JS Update Heartbeat
 function chainedUpdate(counter){
-    var counter = counter || 1;
+    var counter = counter ? counter : 1;
     var interval = 10; // Seconds
+    // TODO: Make the update interval slowly logrithmic based on activity.
     updateIndex(counter);
     setTimeout(function (){chainedUpdate(counter);}, interval*1000); // Repeat once the interval has passed.
     // If we need a to cancel the update down the line, store the id that setTimeout returns.
@@ -101,7 +102,7 @@ function getAndUpdateHealth(){
 // Keep in mind the need to use window.parent when calling from an iframe.
 function updateHealthBar(health){
     // Should only update when a change occurs.
-    var mess = '| '+health+' health';
+    var mess = health+' health';
     var span = $('#logged-in-bar-health', top.document);
     span.text(mess);
     if(health<100){
