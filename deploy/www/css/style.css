@@ -209,6 +209,20 @@ table.playerTable .Black, .player-info .Black {
     text-align: center;
 }
 
+#player-profile-attack .attacking-choices{
+    border: thin solid clear;padding-left: 5; padding-right: 5;padding-top: 5;padding-bottom: 5;text-align: center;
+}
+#player-profile-attack span.duel, #player-profile-attack .blaze, #player-profile-attack .deflect{
+    border: thin solid clear;padding: 1px;
+}
+#player-profile-table #skills-section{
+    border: thin solid clear;padding: 5px;text-align: center;
+}
+#player-profile-table #inventory-items{
+    border: thin solid clear;padding: 5px;text-align: center;
+}
+
+
 .playerTable th{
 	text-align: left;
 	background-color: #333333;
@@ -1142,7 +1156,6 @@ body.ninjawars-staff{
     text-transform:uppercase;
 }
 #subcategory-bar a{
-    font-size:90%;
     font-family: Verdana, sans-serif;
 }
 #subcategory-bar a:hover{

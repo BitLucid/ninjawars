@@ -60,6 +60,19 @@ class Skill
         return false;
     }
 
+    /**
+     * Get the list of skills that a character has, in an indexed array.
+    **/
+    function hasSkills($username=null){
+        $skills_avail = array();
+        foreach($this->getSkillList() as $loop_skill){
+            if($this->hasSkill($loop_skill, $username)){
+                $skills_avail[$loop_skill] = $loop_skill;
+            }
+        }
+        return $skills_avail;
+    }
+
 	function getTurnCost($type)
 	{
 		$skillsTypeToTurns = array('cold steal' => 3, 'ice bolt' => 2, 'sight' => 1,

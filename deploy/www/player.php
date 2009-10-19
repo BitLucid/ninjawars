@@ -45,6 +45,7 @@ if(!$target_player_obj || !$target_player_obj->player_id){
 $player_info = $target_player_obj->as_array(); // Pull the info out of the object.
 $player = $target = $player_info['uname']; // reset the target and target_id vars.
 $target_id = $player_info['player_id'];
+$self = (get_username() == $player_info['uname']); // Recorde whether this is a self-viewing.
 
 // Attack Legal section
 $attacker = get_username();
@@ -57,111 +58,66 @@ $attack_error = $AttackLegal->getError();
 
 
 // Display the player info.
-if ($player_info) {
-	echo "<div class='player-info'>";
+if(!$player_info){
+    echo "<div class='error'>No such ninja</div>";
+    echo render_list_link();
+	include SERVER_ROOT."interface/footer.php";
+	die();
+} else {
+    $ranking_link_section = render_ranking_link($player_info, $linkbackpage, $sql);
+	$player_stats_section = render_player_stats($player_info);
+	$avatar_section = render_avatar_section($target_player_obj);
 
-    echo render_ranking_link($player_info, $linkbackpage, $sql);
-	echo render_player_stats($player_info);
-	echo render_avatar_section($target_player_obj);
+	if(!$attack_error && !$self){ // They're not dead or otherwise unattackable.
+    	// Attack or Duel
 
-	echo "<table id='player-profile-table'>\n";
-    echo "  <tr>\n";
+        $skills_available = $skillsListObj->hasSkills();
 
-	if ($attack_error)
-	{	// They're dead or otherwise unattackable.
-		echo "<td><div class='ninja-error centered'>Cannot Attack: ".$attack_error."</div></td>";
-	}
-	else
-	{
-	    $class = getClass($username);
+        $item_use_section = render_item_use_on_another($target, $sql);
 
-		$is_own_profile = ($username == $player_info['uname']? true : false);
-		if ($is_own_profile){
-			echo "<td><div class='ninja-notice'>This is you.</div></td>";
-		} else {
-			// Attack or Duel
-		    echo "<td colspan=\"2\">\n";
-		    echo "  <table id='player-profile-attack' align=\"left\">\n";
-		    echo "    <tr>\n";
-		    echo "      <td style=\"border: thin solid clear;padding-left: 5; padding-right: 5;padding-top: 5;padding-bottom: 5;text-align: center;\">\n";
-			// Attack.
-			echo "        <form id=\"attack_player\" action=\"attack_mod.php\" method=\"post\" name=\"attack_player.php\">\n";
-			echo "          <span style=\"border: thin solid clear;padding: 1px;\">
-                              <label><a href=\"#\">Duel</a> <input id=\"duel\" type=\"checkbox\" name=\"duel\"></label>
-                            </span>\n";
 
-			if ($skillsListObj->hasSkill('Blaze'))
-			{
-				echo "      <span style=\"border: thin solid clear;padding: 1px;\">
-                              <label><a href=\"#\">Blaze</a><input id=\"blaze\" type=\"checkbox\" name=\"blaze\"></label>
-                            </span>\n";
-			}
+    	$skill_use_section = render_skills($target, $skillListObj, $skillsListObj);
+	} // End of the there-was-no-attack-error section
 
-			if ($skillsListObj->hasSkill('Deflect'))
-			{
-				echo "      <span style=\"border: thin solid clear;padding: 1px;\">
-                              <label><a href=\"#\">Deflect</a><input id=\"deflect\" type=\"checkbox\" name=\"deflect\"></label>
-                            </span>\n";
-			}
+	$player_activity_section = render_player_activity($player_info);
 
-			assert($player == $target);
-
-			echo "          <input id=\"target\" type=\"hidden\" value=\"$target\" name=\"target\">\n
-                            <label class='attack-player-trigger'>
-                              <input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='".IMAGE_ROOT."50pxShuriken.png' alt='Attack' title='Attack'>
-                              <a>Attack</a>
-                            </label>";
-			echo "        </form>\n";
-			echo "      </td>\n";
-
-			// Inventory Items
-			echo "      <td style=\"border: thin solid clear;padding: 5px;text-align: center;\">\n";
-
-			echo render_item_use_on_another($target, $sql);
-
-			echo "      </td>\n
-                      </tr>\n
-                      <tr>\n
-                        <td style=\"border: thin solid clear;padding: 5px;text-align: center;\">\n";
-
-			echo render_skills($target, $skillListObj, $skillsListObj);
-
-			echo "      </td>\n";
-			echo "    </tr>\n";
-		    echo "  </table>\n";
-		    echo "</td>\n";
-		} // End of the "viewing someone else's profile" section.
-	}
-
-	echo "  </tr>\n";
-
-	echo "</table>\n";
-
-	// Alive or dead
-	echo render_player_activity($player_info);
-
-	if($player_info['uname'] != get_username()){
+    $set_bounty_section = '';
+    $communication_section = '';
+    $clan_options_section = '';
+    $player_clan_section = '';
+    $player_profile_message = '';
+	if(!$self){
     	// Allows the viewer to set bounty on a player.
+    	ob_start();
         display_set_bounty($player_info); // TODO: Move this functionality to the doshin.
+        $set_bounty_section = ob_get_contents();
+        ob_end_clean();
 
-    	// Display mail section
-    	echo render_communication($player_info['uname']);
-	}
+    	$communication_section = render_communication($player_info['uname']);
 
-	if($player_info['uname'] != get_username()){
+    	ob_start();
         // Clan leader options on players in their clan.
     	display_clan_options($player_info, $viewing_player_obj);
+    	$clan_options_section = ob_get_contents();
+    	ob_end_clean();
+    	
     }
 	// Player clan and clan members
 
-	echo render_player_clan($player_info, $viewers_clan);
+	$player_clan_section = render_player_clan($player_info, $viewers_clan);
 
 	// Player profile message
-
+    ob_start();
 	display_player_profile($player_info);
-
-	echo "</div><!-- End player-info -->";
+	$player_profile_message = ob_get_contents();
+	ob_end_clean();
 }
+
+// Send the info to the template.
+
+$parts = get_certain_vars(get_defined_vars(), array('skills_available'));
+
+echo render_template('player.tpl', $parts);
 
 include SERVER_ROOT."interface/footer.php";
 ?>
