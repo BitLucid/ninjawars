@@ -24,13 +24,13 @@
                               <label><a href="#">Duel</a> <input id="duel" type="checkbox" name="duel"></label>
                       </span>
 
-            {if $skills_available.Blaze}
+            {if $skills_available.blaze}
 				      <span id='blaze'>
                               <label><a href="#">Blaze</a><input id="blaze" type="checkbox" name="blaze"></label>
                             </span>
 			{/if}
 
-            {if $skills_available.Deflect}
+            {if $skills_available.deflect}
 				      <span>
                               <label><a href="#">Deflect</a><input id="deflect" type="checkbox" name="deflect"></label>
                             </span>

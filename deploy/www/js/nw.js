@@ -29,9 +29,10 @@ NW = window.NW ? window.NW : createNW();
 // Determines the update interval, 
 //increases when feedback == false, rebaselines when feedback == true
 function getUpdateInterval(feedback){
-    var interval = (feedback || !NW.updateInterval)? 5 : (NW.updateInterval<300 ? NW.updateInterval+1 : 180);
+    var interval = (feedback || !NW.updateInterval)? 30 : (NW.updateInterval<300 ? NW.updateInterval+1 : 180);
+    // For now, put the interval at 30 until I have the increasing method set up.
     NW.updateInterval = interval; // Store the current value.
-    console.log(NW.updateInterval);
+    //console.log(NW.updateInterval);
     return interval;
     // Start is 10 sec, max is 3 minutes.
 }
@@ -124,6 +125,15 @@ function updateHealthBar(health){
     return false;
 }
 
+//function checkForInfoChanges(){
+    // Get everything all at once from the api.
+    // If info isn't stored, store it.
+    // Check if each info is changed.
+    // If changed, run each update functionality.
+//    $.getJSON('api.php?type=all&jsoncallback=?', function(data){
+//    });
+//}
+
 function getAndUpdateHealth(){
     var res = false;
     NW.currentHealth = NW.currentHealth ? NW.currentHealth : null;
@@ -143,9 +153,11 @@ function updateIndex(){
     // update chat
     // health bar.
     var healthUpdated = getAndUpdateHealth();
+    if(console){
     console.log(messageUpdated);
     console.log(eventUpdated);
     console.log(healthUpdated);
+    }
     return (!!(messageUpdated || eventUpdated || healthUpdated)); // determines good or bad feedback.
 }
 

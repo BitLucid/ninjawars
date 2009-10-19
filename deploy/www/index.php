@@ -2,7 +2,7 @@
 // Licensed under the creative commons license.  See the staff.php page for more detail.
 ob_start(null, 1); // Buffer and output it in chunks.
 
-$login        = (in('action') == 'login' ? true : false); // Request to login.
+$login        = (in('action') == 'login' ? true : false); // A request to login.
 $logout       = in('logout');
 $is_logged_in = is_logged_in();
 $login_error  = false;
@@ -51,7 +51,11 @@ $is_not_logged_in = !$is_logged_in;
 // Display main iframe page unless logged in.
 $main_src = 'main.php';
 if ($is_logged_in) {
-	$main_src = 'list_all_players.php';
+    $level = getLevel($username);
+    $main_src = 'list_all_players.php';
+    if($level==1){
+    	$main_src = 'attack_player.php';
+    }
 }
 
 $parts = get_certain_vars(get_defined_vars(), array('vicious_killer'));
