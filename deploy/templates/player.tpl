@@ -9,12 +9,12 @@
 	{$player_stats_section}
 	{$avatar_section}
 
+    {if !$self}
     <table id='player-profile-table'>
         <tr>
         {if $attack_error}
 		    <td><div class='ninja-error centered'>Cannot Attack: {$attack_error}</div></td>
 		{else}
-            {if !$is_own_profile}
 		    <td colspan='2'>
 		      <table id='player-profile-attack'>
 		        <tr>
@@ -34,7 +34,6 @@
 				      <span>
                               <label><a href="#">Deflect</a><input id="deflect" type="checkbox" name="deflect"></label>
                             </span>
-            {/if}
 
 			          <input id="target" type="hidden" value="{$target}" name="target">
                             <label class='attack-player-trigger'>
@@ -69,6 +68,8 @@
 	  </tr>
 
 	</table>
+	{/if}
+	    <!-- End of the "not self" viewing section -->
 
 	{$player_activity_section}
 

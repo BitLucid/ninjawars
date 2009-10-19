@@ -5,11 +5,19 @@ $quickstat  = false;
 $page_title = "Duel Log";
 
 include SERVER_ROOT."interface/header.php";
+
+$stats          = membership_and_combat_stats($sql);
+$vicious_killer = $stats['vicious_killer'];
 ?>
 
-<span class="brownHeading">Past Duels: Reset Nightly</span>
+<h2>Today's Duels: Reset Nightly</h2>
 
-<br><br>
+<div id='vicious-killer'>
+    Current Fastest Killer: 
+    <a id='vicious-killer-menu href='player.php?player=<?php echo $vicious_killer; ?>'>
+        <?php echo $vicious_killer; ?>
+    </a>
+</div>
 
 <?php
 
@@ -18,16 +26,12 @@ $row = $sql->data;
 
 if ($sql->rows == 0)
 {
-  echo "Duel log has reset\n";
+  echo "<p>Duel log has reset</p>";
 }
 
-echo "<table style=\"border:1 solid #000000;\">\n";
-echo "<tr>\n";
-echo "  <th>\n";
-echo "  Duel Log\n";
-echo "  </th>\n";
-echo "</tr>\n";
+echo "  <h3>Duel Log</h3>";
 
+echo "<ul id='duel-log' style='list-style-type:circle;'>";
 for ($i = 0; $i < $sql->rows; $i++)
 {
   $sql->Fetch($i);
@@ -41,14 +45,11 @@ for ($i = 0; $i < $sql->rows; $i++)
   if ($wonorlost==1) {$wonorlost="won";}
   else {$wonorlost="lost";}
 
-  echo "<tr>\n";
-  echo "  <td valign=\"top\">\n";
+  echo "<li>";
   echo "$attacker has dueled $defender and $wonorlost for $killpoints killpoints on $date\n";
-  echo "  </td>\n";
-  echo "</tr>\n";
+  echo "</li>";
 }
-echo "</table>\n";
-echo "</form>\n";
+echo "</ul>";
 
 
 include SERVER_ROOT."interface/footer.php";

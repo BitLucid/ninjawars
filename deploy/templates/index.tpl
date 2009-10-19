@@ -190,15 +190,6 @@
               </div>
           </div> <!-- End of index-chat --> 
 
-          <div id='vicious-killer' class='boxes'>
-            <div class='box-title'>
-              <a href='#' class='show-hide-link' onclick="toggle_visibility('vicious-killer-menu');">
-                Fast Killer:<img class='show-hide-icon' src='{$IMAGE_ROOT}show_and_hide.png' alt='+/-'>
-              </a>
-            </div>
-            <a id='vicious-killer-menu' href='player.php?player={$vicious_killer}' target='main'>{$vicious_killer}</a>
-          </div><!-- End of vicious killer div -->
-
           <div id="music" class="boxes passive">
             <div class="box-title">
               <a href="#" class="show-hide-link music" onclick="toggle_visibility('music-player');">

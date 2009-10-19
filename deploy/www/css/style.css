@@ -541,6 +541,9 @@ table .quickstats{
     margin-top:8px;
     margin-bottom:8px;
 }
+table .quickstats td{
+    padding-top:.1em;
+}
 
 /*Quickstats styles*/
 .quickstats td{
@@ -1159,9 +1162,7 @@ body.ninjawars-staff{
     font-family: Verdana, sans-serif;
 }
 #subcategory-bar a:hover{
-    font-size:90%;
     text-decoration:none;
-    font-weight:bold;
 }
 
 #subcategory-bar ul{
