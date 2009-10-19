@@ -1,5 +1,7 @@
 /* Someday I should probably just put the blueprint css into play. */
 /* http://www.typetester.org/  */
+/* Potential css layout example */
+
 
 html {
     margin:0;
@@ -320,37 +322,6 @@ td.playerTable {
 }
 
 
-.random-background-1{
-    background-image: url('/images/backgrounds/Koi_1_by_Alegion_stock.png');
-    background-color: transparent;
-    background-repeat: repeat-x;
-}
-.random-background-2{
-    background-image: url('/images/backgrounds/fuji_bleu.jpg');
-    background-color: transparent;
-    background-repeat: repeat-x;
-    color: black;
-}
-.random-background-2 a{
-    color: blue;
-}
-
-.random-background-3{
-    background-image: url('/images/backgrounds/Hokusai-fuji7.png');
-    background-color: transparent;
-    background-repeat: repeat-x;
-}
-.random-background-4{
-    background-image: url('/images/backgrounds/Hokusai_wave.jpg');
-    background-color: transparent;
-    background-repeat: repeat-x;
-}
-.random-background-5{
-    background-image: url('/images/backgrounds/Hokusai_fuji8.jpg');
-    background-color: transparent;
-    background-repeat: repeat-x;
-}
-
 .brownTitle { /*deprecated*/
     color: #ff9900;/*ccb094;*/
     font-weight: bold;
@@ -451,14 +422,26 @@ td.playerTable {
 }
 .boxes {
 	padding: 3px 0 3px 5px;
-	background:transparent url(../images/bg_top_bar_teal.png) no-repeat scroll 0 0;
+	background:transparent url(../images/bg_top_bar_teal.png) no-repeat scroll top left;
+}
+#right-column .boxes{
+	background:transparent url(../images/bg_top_bar_teal_right.png) no-repeat scroll top right;
 }
 .main-body .active {
 	background:transparent url(../images/bg_top_bar_maroon.png) no-repeat scroll 0 0;
 }
+#right-column .main-body .active{
+	background:transparent url(../images/bg_top_bar_maroon_right.png) no-repeat scroll top right;
+    background-position: top right;
+}
 .main-body .passive {
 	background:transparent url(../images/bg_top_bar_grey.png) no-repeat scroll 0 0;
 }
+#right-column .main-body .passive{
+	background:transparent url(../images/bg_top_bar_grey_right.png) no-repeat scroll top right;
+    background-position: top right;
+}
+
 .main-body .special {
 	background:none;
 	text-align:center;
@@ -510,6 +493,9 @@ td.playerTable {
 
 .chatMessages{
     margin-top:0em;
+}
+#expand-chat{
+    border: 1px dashed darkblue;
 }
 
 #full-chat .chatMessages{
@@ -662,7 +648,7 @@ table .quickstats{
 	padding: 3px;
 }
 
-.injured, .Injured {
+.injured, .Injured, #health-status .injured {
     font-weight:bold;
     color:black;
     background-color:#c75600;
@@ -911,6 +897,9 @@ table .quickstats{
 #attack-player-page li{
     margin: .2em .3em .2em .2em;
 	display:inline;
+	margin-left: 1em;
+	/*list-style-type:circle;
+	background-color:purple;*/
 }
 #attack-player-page ul{
     margin:0;
@@ -1087,9 +1076,6 @@ body.ninjawars-staff{
     margin-left:1em;
     width:100%;
     font-size:1.5em;
-    /*background: transparent url(/images/bg_top_maroon.jpg) repeat-x scroll 0 0;*/
-    color:white;
-    /*border-bottom: 1px solid maroon;*/
 }
 
 #reactive-panel{
@@ -1115,6 +1101,8 @@ body.ninjawars-staff{
     color:white;
     font-weight:bold;
     font-size: 1.7em;
+    font-family:Georgia,Times,serif;
+    text-transform:uppercase;
 }
 #category-bar ul{
     height:100%;
@@ -1132,7 +1120,7 @@ body.ninjawars-staff{
 }
 #category-bar a{
     vertical-align:top;
-    font-family:cursive;
+    font-family:Georgia,Times,serif;
 }
 /*
 #category-bar #status-actions{
@@ -1151,15 +1139,16 @@ body.ninjawars-staff{
     float:left;
     text-align:center;
     line-height:2em;
+    text-transform:uppercase;
 }
 #subcategory-bar a{
     font-size:90%;
+    font-family: Verdana, sans-serif;
 }
 #subcategory-bar a:hover{
     font-size: 108%;
     text-decoration:none;
     font-weight:bold;
-    font-family: Verdana, sans-serif;
 }
 
 #subcategory-bar ul{
@@ -1205,12 +1194,6 @@ body.ninjawars-staff{
     text-decoration:underline;
     font-size:80%;
     font-weight:normal;
-}
-
-#links-menu li{
-    float:left;
-    margin-right: 1em;
-    list-style-type: disc;
 }
 
 /* END OF INDEX REWRITE CSS */

@@ -7,20 +7,16 @@
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
+
+        </div>
+            <div>
+                <a target="main" href="player.php?player={$user_id}">{$username}</a>
+            </div>
             <div id='logged-in-bar'>
                 <div>
-                  <a target="main" href="player.php?player={$user_id}">{$username}</a>
+                  <span id='health-status'> </span>
                 </div>
-                <div>
-                  <a target="main" href="messages.php">mailbox</a>
-                </div>
-                <div>
-                  <span id='logged-in-bar-health'> </span>
-                </div>
-
             </div>
-        </div>      
-      
           <div id="quick-stats" class="boxes">
             <div class="box-title centered">
               <a href="#" class="show-hide-link" onclick="toggle_visibility('quickstats-and-switch-stats');">
@@ -47,50 +43,37 @@
               </a>
             </div>
             <ul class="basemenu" id="actions-menu">
+              <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main">Heal</a></li>
               <li>
                 <ul class="submenu">
-                  <li>
-                    <a href="inventory_mod.php?item=Speed%20Scroll&amp;selfTarget=1&amp;link_back=inventory" 
-                    target="main">Speed</a>
-                  </li>
                   <li>
                     <a href="inventory_mod.php?item=Stealth%20Scroll&amp;selfTarget=1&amp;link_back=inventory"
                      target="main">Stealth</a>
                   </li>
+                  <li>
+                    <a href="inventory_mod.php?item=Speed%20Scroll&amp;selfTarget=1&amp;link_back=inventory" 
+                    target="main">Speed</a>
+                  </li>
                 </ul>
               </li>
-              <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main">Heal</a></li>
             </ul>
           </div>
-        
-          <div id='vicious-killer' class='boxes'>
-            <div class='box-title'>
-              <a href='#' class='show-hide-link' onclick="toggle_visibility('vicious-killer-menu');">
-                Fast Killer:<img class='show-hide-icon' src='{$IMAGE_ROOT}show_and_hide.png' alt='+/-'>
-              </a>
-            </div>
-            <a id='vicious-killer-menu' href='player.php?player={$vicious_killer}' target='main'>{$vicious_killer}</a>
-          </div><!-- End of vicious killer div -->
-
-          <div id="music" class="boxes passive">
-            <div class="box-title">
-              <a href="#" class="show-hide-link music" onclick="toggle_visibility('music-player');">
-                Music <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
-              </a>
-            </div>
-
-            <object type="audio/x-midi" data="{$WEB_ROOT}music/samsho.mid" id="music-player">
-              <param name="src" value="{$WEB_ROOT}music/samsho.mid">
-              <param name="autoplay" value="true">
-              <param name="autoStart" value="0">
-              <a href="{$WEB_ROOT}music/samsho.mid">
-                Play <img class="play-button" src="{$IMAGE_ROOT}bullet_triangle_green.png" alt="&gt;">
-              </a>
-            </object>
+        <div id="ninja-search" class="boxes active">
+            <form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">
+              <div>
+                Find A Ninja:
+                <input id="searched" type="text" maxlength="50" size="10" name="searched" class="textField">
+                <input id="hide" type="hidden" name="hide" value="dead">
+                <input type="submit" value="find" class="formButton">
+              </div>
+            </form>
           </div>
-          
+            
           <!-- Recent Events & Recent Mail will get put in here via javascript -->
           <div id='recent-events'></div>
+            <div>
+                <a target="main" href="messages.php">Mailbox</a>
+            </div>
           <div id='recent-mail'></div>
 
       </div>  
@@ -127,7 +110,6 @@
                 <ul id='self-subcategory'>
                   <li><a href="stats.php" target="main">Stats</a></li>
                   <li><a href="skills.php" target="main">Skills</a></li>
-                  <li><a href="messages.php" target="main">Mail</a></li>
                   <li><a href="inventory.php" target="main">Items</a></li>
                   <!-- Profile -->
                   <!-- Settings -->
@@ -170,6 +152,8 @@
         <span id='logout'>
             <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="{$IMAGE_ROOT}icons/stop.png" alt=""></a>
         </span>
+        
+        </div><!-- End of ninja-stats -->
 
           <div id='ninja-count-menu' class='boxes passive'>
             <a href="list_all_players.php" target="main">
@@ -178,20 +162,6 @@
             </a>
             {$players_online} Online / {$player_count}
           </div>
-        
-        <div id="ninja-search" class="boxes active">
-            <form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">
-              <div>
-                Find A Ninja:
-                <input id="searched" type="text" maxlength="50" name="searched" class="textField">
-                <input id="hide" type="hidden" name="hide" value="dead">
-                <input type="submit" value="find" class="formButton">
-              </div>
-            </form>
-          </div>
-        
-        </div><!-- End of ninja-stats -->
-        
         
           <div id='index-chat'>
               <div id="village-chat" class="boxes active">
@@ -213,45 +183,38 @@
                   </div>
                   <div id="expand-chat">
                     <a href="mini_chat.php?chatlength=360" target="mini_chat">
-                      View more messages <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+                      View more chat messages <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
                     </a>
                   </div>
                 </div>
               </div>
           </div> <!-- End of index-chat --> 
 
-          <div id='ooc-links'>
-            
-          <div id="links" class="boxes passive">
-            <div class="box-title">
-              <a href="#" class="show-hide-link links-menu" onclick="toggle_visibility('links-menu');">
-                Out of Character <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
+          <div id='vicious-killer' class='boxes'>
+            <div class='box-title'>
+              <a href='#' class='show-hide-link' onclick="toggle_visibility('vicious-killer-menu');">
+                Fast Killer:<img class='show-hide-icon' src='{$IMAGE_ROOT}show_and_hide.png' alt='+/-'>
               </a>
             </div>
-            <div id='links-menu'>
-            <ul>
-              <li><a href="about.php" target="main">Tutorial</a></li>
-              <li><a href="duel.php" target="main">Duels</a></li>
-              <!--  <a href="vote.php" target="main">Vote For NW </a>  -->
-              <li>
-                <a href="http://ninjawars.proboards19.com/index.cgi?action=calendar" target="_blank" class="extLink">
-                  Calendar <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""></a>
-              </li>
-              <li>
-                  <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
-              </li>
-              <li>
-                
-              </li>
-            </ul>
-          </div><!-- End of links-menu -->
-            
-          </div>
+            <a id='vicious-killer-menu' href='player.php?player={$vicious_killer}' target='main'>{$vicious_killer}</a>
+          </div><!-- End of vicious killer div -->
 
-            
-          </div><!-- End of ooc-links -->
-          
-          
+          <div id="music" class="boxes passive">
+            <div class="box-title">
+              <a href="#" class="show-hide-link music" onclick="toggle_visibility('music-player');">
+                Music <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
+              </a>
+            </div>
+
+            <object type="audio/x-midi" data="{$WEB_ROOT}music/samsho.mid" id="music-player">
+              <param name="src" value="{$WEB_ROOT}music/samsho.mid">
+              <param name="autoplay" value="true">
+              <param name="autoStart" value="0">
+              <a href="{$WEB_ROOT}music/samsho.mid">
+                Play <img class="play-button" src="{$IMAGE_ROOT}bullet_triangle_green.png" alt="&gt;">
+              </a>
+            </object>
+          </div>          
           
       </div> <!-- End of right column -->
       
@@ -264,6 +227,9 @@
         <a href='staff.php' target='main'>Staff</a> |
           <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> 
              <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""> |
+                <a href="http://ninjawars.proboards19.com/index.cgi?action=calendar" target="_blank" class="extLink">
+                  Calendar <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt=""></a>
+                  <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> <img class="extLink" src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
         <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum</a> 
           <img class="extLink"  src="{$IMAGE_ROOT}externalLinkGraphic.gif" alt="">
              

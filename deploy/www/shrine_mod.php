@@ -125,7 +125,7 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 				echo "You do not have enough gold for this amount of healing.<br>\n";
 			}
 		} else {
-			echo "Please enter a valid number of hit points to heal.<br>\n";
+			echo "You cannot heal with zero gold.<br>\n";
 		}
 	} else {
 		echo "You must resurrect before you can heal.<br>\n";

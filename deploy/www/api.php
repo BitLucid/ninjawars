@@ -30,14 +30,14 @@ function json_latest_message(){
     $user_id = (int) get_user_id();
     $messages = $sql->FetchAll("select message_id, message, date, send_to, send_from, unread, uname as sender from messages join players on player_id = send_from where send_to = '".sql($user_id)."' and send_from != '".sql($user_id)."' order by date desc limit 1");
     // Skips message sent by self, i.e. clan send messages.
-    return '{"message":'.json_encode($messages).'}';
+    return '{"message":'.json_encode(reset($messages)).'}';
 }
 
 function json_latest_event(){
     $sql = new DBAccess();
     $user_id = (int) get_user_id();
     $events = $sql->FetchAll("select event_id, message as event, date, send_to, send_from, unread, uname as sender from events join players on player_id = send_from where send_to = '".sql($user_id)."' order by date desc limit 1");
-    return '{"event":'.json_encode($events).'}';
+    return '{"event":'.json_encode(reset($events)).'}';
 }
 
 function json_player(){

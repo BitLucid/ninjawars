@@ -18,12 +18,16 @@
 </ul>
 {/if}
 
-
+{if $enemy_section}
 <ul>
 
 {$enemy_section}
 
 </ul>
+{else}
+<p>You haven't decided who your enemies are yet.</p>
+
+{/if}
 
 
 <!--

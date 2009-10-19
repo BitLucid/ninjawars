@@ -1,4 +1,4 @@
-<h2>Events</h2>
+<h2>Status</h2>
 
 
 <ul id='event-list'>

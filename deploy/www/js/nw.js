@@ -29,8 +29,9 @@ NW = window.NW ? window.NW : createNW();
 // Determines the update interval, 
 //increases when feedback == false, rebaselines when feedback == true
 function getUpdateInterval(feedback){
-    var interval = feedback || !NW.updateInterval? 5 : (NW.updateInterval<300 ? NW.updateInterval+1 : 180);
-    NW.updateIterval = interval; // Store the current value.
+    var interval = (feedback || !NW.updateInterval)? 5 : (NW.updateInterval<300 ? NW.updateInterval+1 : 180);
+    NW.updateInterval = interval; // Store the current value.
+    console.log(NW.updateInterval);
     return interval;
     // Start is 10 sec, max is 3 minutes.
 }
@@ -41,6 +42,8 @@ function chainedUpdate(chainCounter){
     var feedback = updateIndex(chainCounter); 
     // Update and get good or bad feedback to increase or decrease interval.
     var secondInterval = getUpdateInterval(feedback); 
+    //console.log(feedback);
+    //console.log(secondInterval);
     setTimeout(function (){chainedUpdate(chainCounter);}, secondInterval*1000); // Repeat once the interval has passed.
     // If we need a to cancel the update down the line, store the id that setTimeout returns.
 }
@@ -58,42 +61,45 @@ function chainedUpdate(chainCounter){
 //}
 
 function updateLatestMessage(){
-    if(!NW.latest_message_id){
-        NW.latest_message_id = null;
-    }
     $.getJSON('api.php?type=latest_message&jsoncallback=?', function(data){
-        $.each(data.message, function(i,message){
+        var message = data.message
             if(NW.latest_message_id == message.message_id){
-                $('#recent-mail .latest-message-text').removeClass('message-unread');
+                // Don't need to update the text.
+                if(!message.unread){
+                    $('#recent-mail .latest-message-text').removeClass('message-unread');
+                }
                 return false;
             }
 
             NW.latest_message_id = message.message_id; // Store latest message.
-            // Add the unread class until next update.
-            $('#recent-mail').html("<div class='latest-message'><div id='latest-message-title'>Latest Message</div><a href='player.php?player="+message.send_from+"' target='main'>"+message.sender+"</a>: <span class='latest-message-text message-unread'>"+message.message.substr(0, 12)+"...</span> </div>");
+            $('#recent-mail').html("<div class='latest-message'><div id='latest-message-title'>Latest Message:</div><a href='player.php?player="+message.send_from+"' target='main'>"+message.sender+"</a>: <span class='latest-message-text "+(message.unread? "message-unread" : "")+"'>"+message.message.substr(0, 12)+"...</span> </div>");
+            // if unread, Add the unread class until next update.
             // Pull a message with a truncated length of 12.
-            /*$('<a/>').attr("href", "player.php?player="+chat.send_from).text(chat.send_from+" ").appendTo('#recent-events');
-            $('<span/>').text(chat.message).appendTo('#recent-events');*/
-            if(i=== 0) { return true; }
         });
-    });
+    return true;
 }
 
 
 function updateLatestEvent(){
-    if(!NW.latest_event_id){
-        NW.latest_event_id = null;
-    }
     $.getJSON('api.php?type=latest_event&jsoncallback=?', function(data){
         var event = data.event;
+        //console.log(data);
         if(NW.latest_event_id == event.event_id){
-            $('#recent-events .latest-event-text').removeClass('message-unread');
+            //console.log("Event:");
+            //console.log(event);
+            //console.log(NW.latest_event_id);
+            //console.log(event['event_id']);
+            //console.log(event);
+            //console.log(event.unread);
+            if(!event.unread){
+                $('#recent-events .latest-event-text').removeClass('message-unread');
+            }
             return false; // Nothing to update.
         }
         NW.latest_event_id = event.event_id; // Store latest event.
         // Add the unread class until next update.
 
-        $('#recent-events').html("<div class='latest-event'><div id='latest-event-title'>Latest Event</div><a href='player.php?player="+event.send_from+"' target='main'>"+event.sender+"</a>: <span class='latest-event-text message-unread'>"+event.event.substr(0, 12)+"...</span> </div>");
+        $('#recent-events').html("<div class='latest-event'><div id='latest-event-title'>Latest Event via <a href='player.php?player="+event.send_from+"' target='main'>"+event.sender+"</a>:</div><span class='latest-event-text "+(event.unread? "message-unread" : "")+"'>"+event.event.substr(0, 12)+"...</span></div>");
         // Pull a message with a truncated length of 12.
     });
     return true; // There was a valid update.
@@ -103,15 +109,19 @@ function updateLatestEvent(){
 // Keep in mind the need to use window.parent when calling from an iframe.
 function updateHealthBar(health){
     // Should only update when a change occurs.
-    var mess = health+' health';
-    var span = $('#logged-in-bar-health', top.document);
-    span.text(mess);
-    if(health<100){
-        span.css({'color' : 'red'});
-    } else {
-        span.css({'color' : ''});
+    if(health != NW.currentHealth){
+        var mess = health+' health';
+        var span = $('#health-status', top.document);
+        span.text(mess);
+        if(health<100){
+            span.addClass('injured');
+        } else {
+            span.removeClass('injured');
+        }
+        NW.currentHealth = health;
+        return true;
     }
-    NW.currentHealth = health;
+    return false;
 }
 
 function getAndUpdateHealth(){
@@ -119,8 +129,7 @@ function getAndUpdateHealth(){
     NW.currentHealth = NW.currentHealth ? NW.currentHealth : null;
     $.getJSON('api.php?type=player&jsoncallback=?', function(data){
         if(data.player.health != NW.currentHealth){
-            updateHealthBar(data.player.health);
-            res = true;
+            res = updateHealthBar(data.player.health);
             // That will also update the global currentHealth.
         }
     });
@@ -129,12 +138,15 @@ function getAndUpdateHealth(){
 
 // Update display elements that live on the index page.
 function updateIndex(){
-    var message = updateLatestMessage();
-    var event = updateLatestEvent();
+    var messageUpdated = updateLatestMessage();
+    var eventUpdated = updateLatestEvent();
     // update chat
     // health bar.
-    var health = getAndUpdateHealth();
-    return message && event && health; // determines good or bad feedback.
+    var healthUpdated = getAndUpdateHealth();
+    console.log(messageUpdated);
+    console.log(eventUpdated);
+    console.log(healthUpdated);
+    return (!!(messageUpdated || eventUpdated || healthUpdated)); // determines good or bad feedback.
 }
 
 
@@ -169,7 +181,7 @@ function refreshQuickstats(quickView){
             parent.quickstats.location=url;
         }
     }
-    top.windown.NW.firstLoad++;
+    top.window.NW.firstLoad++;
 }
 
 
