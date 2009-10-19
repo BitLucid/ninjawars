@@ -93,16 +93,19 @@
             <div id='category-bar'>
               <ul>
                 <li id='status-actions'>
-                  <img src='/images/ninja_silhouette_50px.png' alt=''>
-                  <a href='events.php' target='main'>Status</a>
+                  <a href='events.php' target='main'>
+                    <img src='/images/ninja_silhouette_50px.png' alt=''>Status
+                  </a>
                 </li>
                 <li id='combat-actions'>
-                  <img src='/images/50pxShuriken.png' alt=''>
-                  <a href='enemies.php' target='main'>Combat</a>
+                  <a href='enemies.php' target='main'>
+                    <img src='/images/50pxShuriken.png' alt=''>Combat
+                  </a>
                 </li>
                 <li id='village-actions'>
-                  <img src='/images/pagodaIcon_60px.png' alt=''>
-                  <a href='attack_player.php' target='main'>Village</a>
+                  <a href='attack_player.php' target='main'>                  
+                    <img src='/images/pagodaIcon_60px.png' alt=''>Village
+                  </a>
                 </li>
               </ul>
             </div>
