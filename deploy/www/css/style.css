@@ -100,6 +100,7 @@ a:link {} a:visited {} a:active {}
 
 #avatar {
     text-align:center;
+    float:right;
 }
 
 #menu a { /*Menu actions are a lighter blue to pop better on the red */
@@ -215,10 +216,7 @@ table.playerTable .Black, .player-info .Black {
 #player-profile-attack span.duel, #player-profile-attack .blaze, #player-profile-attack .deflect{
     border: thin solid clear;padding: 1px;
 }
-#player-profile-table #skills-section{
-    border: thin solid clear;padding: 5px;text-align: center;
-}
-#player-profile-table #inventory-items{
+#player-profile-table #skills-section, #player-profile-table #inventory-items{
     border: thin solid clear;padding: 5px;text-align: center;
 }
 

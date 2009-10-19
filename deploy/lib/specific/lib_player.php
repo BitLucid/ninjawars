@@ -7,49 +7,55 @@ define('GRAVATAR', 1);
 
 // TODO: This is also begging for a template.
 function render_skills($target, $skillListObj, $skillsListObj){
+    $available_skills = $skillsListObj->hasSkills();
+    if(empty($available_skills)){
+        return '';
+    }
     ob_start();
+    echo "<form id=\"skill_use\" class='skill_use' action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
     if ($skillsListObj->hasSkill('Fire Bolt')) {
-      echo "<form id=\"skill_use\" class='skill_use' action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<li>";
       echo "<input id=\"command\" class='command' type=\"submit\" value=\"Fire Bolt\" name=\"command\" class=\"formButton\">\n";
       echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
       echo "(".$skillListObj->getTurnCost('Fire Bolt')." Turns)\n";
-      echo "</form>\n";
+      echo "</li>";
     }
     if ($skillsListObj->hasSkill('Poison Touch')) {
-      echo "<form id=\"skill_use\" class='skill_use' action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<li>";
       echo "<input id=\"command\" class='command' type=\"submit\" value=\"Poison Touch\" name=\"command\" class=\"formButton\">\n";
       echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
       echo "(".$skillListObj->getTurnCost('Poison Touch')." Turns)\n";
-      echo "</form>\n";
+      echo "</li>";
     }
     if ($skillsListObj->hasSkill('Steal')) {
-      echo "<form id=\"skill_use\" class='skill_use' action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<li>";
       echo "<input id=\"command\" class='command' type=\"submit\" value=\"Steal\" name=\"command\" class=\"formButton\">\n";
       echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
       echo "(".$skillListObj->getTurnCost('Steal')." Turns)\n";
-      echo "</form>\n";
+      echo "</li>";
     }
     if ($skillsListObj->hasSkill('Ice Bolt')) {
-      echo "<form id=\"skill_use\" class='skill_use' action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<li>";
       echo "<input id=\"command\" class='command' type=\"submit\" value=\"Ice Bolt\" name=\"command\" class=\"formButton\">\n";
       echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
       echo "(".$skillListObj->getTurnCost('Ice Bolt')." Turns)\n";
-      echo "</form>\n";
+      echo "</li>";
     }
     if ($skillsListObj->hasSkill('Cold Steal')) {
-      echo "<form id=\"skill_use\" class='skill_use' action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<li>";
       echo "<input id=\"command\" class='command' type=\"submit\" value=\"Cold Steal\" name=\"command\" class=\"formButton\">\n";
       echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
       echo "(".$skillListObj->getTurnCost('Cold Steal')." Turns)<br>\n";
-      echo "</form>";
+      echo "</li>";
     }
     if ($skillsListObj->hasSkill('Sight')) {
-      echo "<form id=\"skill_use\" class='skill_use' action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+      echo "<li>";
       echo "<input id=\"command\" class='command' type=\"submit\" value=\"Sight\" name=\"command\" class=\"formButton\">\n";
       echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
       echo "(".$skillListObj->getTurnCost('Sight')." Turns)\n";
-      echo "</form>\n";
+      echo "</li>";
     }
+    echo "</form>\n";
     $res = ob_get_contents();
     ob_end_clean();
     return $res;
@@ -111,20 +117,6 @@ function render_level_and_category($level){
 	</span>";
 	return $res;
 }
-
-
-// The player's stats
-function render_player_stats($player_info){
-	$res = "
-		<div class='player-name'>{$player_info['uname']}</div>
-		<div class='player-titles centered'>";
-	$res .= render_class_section($player_info['class']);
-	$res .= render_level_and_category($player_info['level']);
-	$res .= render_status_section($player_info['uname']);
-	$res .= "</div>";
-	return $res;
-}
-
 
 // Player activity and events information.
 function render_player_activity($player_info){
@@ -227,8 +219,7 @@ function display_player_profile($player_info){
     if($player_info['messages']){
 	?>
 	<div class='player-profile'>
-		<p class='subtitle'>Message:</p>
-		<p class='centered'><?php echo out($player_info['messages']); ?></p>
+		<p class='centered'><span class='subtitle'>Message:</span> <?php echo out($player_info['messages']); ?></p>
 	</div>
 	<?php
 	}

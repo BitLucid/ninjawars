@@ -65,7 +65,12 @@ if(!$player_info){
 	die();
 } else {
     $ranking_link_section = render_ranking_link($player_info, $linkbackpage, $sql);
-	$player_stats_section = render_player_stats($player_info);
+
+    
+    $class_section = render_class_section($player_info['class']);
+	$level_and_category = render_level_and_category($player_info['level']);
+	$status_section = render_status_section($player_info['uname']);
+    
 	$avatar_section = render_avatar_section($target_player_obj);
 
 	if(!$attack_error && !$self){ // They're not dead or otherwise unattackable.

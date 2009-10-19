@@ -6,8 +6,18 @@
 
 
     {$ranking_link_section}
-	{$player_stats_section}
+
+    <div class='player-name'>{$player}</div>
+		
+	<div class='player-titles centered'>
+
 	{$avatar_section}
+    {$class_section}
+	{$level_and_category}
+
+	{$status_section}
+	
+	</div>
 
     {if !$self}
     <table id='player-profile-table'>
@@ -51,25 +61,21 @@
 
 			      </td>
                       </tr>
-                      <tr>
-                        <td id='skills-section'>
+    		      </table>
+    		  </td>
+    		</tr>
+    	   </table>
+    		      <div id='skills-section'>
+                        <ul id='skills-use-list'>
                         
             {$skill_use_section}
+            
+                    </ul>
+                    </div>
+		{/if}<!-- End of the "viewing someone else's profile" section. -->
+	{/if} <!-- End of the attacking-had-no-errors section -->
 
-			      </td>
-			    </tr>
-		      </table>
-		    </td>
-		{/if}
-		<!-- End of the "viewing someone else's profile" section. -->
-	{/if}
-	    <!-- End of the attacking-had-no-errors section -->
-
-	  </tr>
-
-	</table>
-	{/if}
-	    <!-- End of the "not self" viewing section -->
+	{/if} <!-- End of the "not self" viewing section -->
 
 	{$player_activity_section}
 
