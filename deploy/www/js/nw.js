@@ -29,10 +29,16 @@ NW = window.NW ? window.NW : createNW();
 // Determines the update interval, 
 //increases when feedback == false, rebaselines when feedback == true
 function getUpdateInterval(feedback){
+<<<<<<< HEAD
     var interval = (feedback || !NW.updateInterval)? 30 : (NW.updateInterval<300 ? NW.updateInterval+1 : 180);
     // For now, put the interval at 30 until I have the increasing method set up.
     NW.updateInterval = interval; // Store the current value.
     //console.log(NW.updateInterval);
+=======
+    var interval = (feedback || !NW.updateInterval)? 5 : (NW.updateInterval<300 ? NW.updateInterval+1 : 180);
+    NW.updateInterval = interval; // Store the current value.
+    console.log(NW.updateInterval);
+>>>>>>>   API: Fixed latest message/event unnecessary nesting.  Index: Pieces moved around. Enemies: Got a default message when no enemies chosen yet.
     return interval;
     // Start is 10 sec, max is 3 minutes.
 }
