@@ -2,7 +2,7 @@
 
 {if $max_enemies neq true}
 <div id='ninja-enemy'>
-    Mark a ninja as an enemy:
+    Search for ninja to add as enemies:
     <form id='enemy-add' action='enemies.php' method='get' name='enemy_add'>
         <input type='text' maxlength='50' name='enemy_match' class='textField'>
         <input type='submit' value='Find Enemies' class='formButton'>
