@@ -1,6 +1,6 @@
 <?php
 require_once(OBJ_ROOT."Skill.php");
-require_once(LIB_ROOT."specific/lib_player.php"); //
+require_once(LIB_ROOT."specific/lib_player.php");
 
 
 /**

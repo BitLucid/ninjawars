@@ -10,12 +10,17 @@ function sendMessage($from,$to,$msg,$filter=false) {
 }
 
 // For true user-to-user or user-to-clan messages as opposed to events.
-function send_event($from_id,$to_id,$msg) {
+function send_event($from_id, $to_id, $msg) {
   global $sql;
   if(!$to_id){
     $to_id = get_user_id();
   }
-  $sql->Insert("INSERT INTO events (event_id, send_from, send_to, message, date) VALUES (default, '".sql($from_id)."','".sql($to_id)."','".sql($msg)."',now())");
+  if(!is_numeric($from_id) || !is_numeric($to_id)){
+    throw new Exception('A player id wasn\'t sent in to the send_event function.');
+  }
+  $sql->Insert("INSERT INTO events (event_id, send_from, send_to, message, date) 
+    VALUES 
+    (default, '".sql($from_id)."','".sql($to_id)."','".sql($msg)."',now())");
 }
 
 function get_events($user_id, $limit=null){

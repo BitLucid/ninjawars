@@ -26,16 +26,31 @@ $lost_uname   = $data[1];
 
 echo "Retriving Confirm Code: It will be sent to your email.<br>\n";
 
-if ($lost_uname != "")
-{
-	echo "Confirm code sending for account: $lost_uname ...\n";
-	mail("$lost_email", "NinjaWars Confirm Code",
-  	"You have requested your confirm code for the account: $lost_uname.<br>\n<br>\nUse this link to activate your account<br>\n<br>\n<b>Account Info</b><br>\nUsername: $lost_uname<br>\n<br>\n<a href=\"".WEB_ROOT."confirm.php?username=$lost_uname&amp;confirm=$lost_confirm\">Activate Account</a><br>\n<br>\nOr, paste this URL into your browser.<br>\n<br>\n".WEB_ROOT."confirm.php?username=$lost_uname&amp;confirm=$lost_confirm<br>\n<br>\nIf you require any further help, email: ".SUPPORT_EMAIL, "$headers");
-}
-else
-{
+if ($lost_uname == ""){
 	echo "There are no accounts with that email. Please <a href=\"signup.php\">sign up</a> for an account.<br>\n";
+	die();
 }
+
+
+echo "Confirmation code being sent for account: $lost_uname ...\n";
+$_to = "$lost_email";
+$_subject = "NinjaWars Confirmation Code";
+$_body = render_template('lostconfirm_email_body.tpl', array(
+    'WEB_ROOT'=>WEB_ROOT,
+    'SUPPORT_EMAIL'=>SUPPORT_EMAIL,
+    'lost_uname'=>$lost_uname,
+    'lost_confirm'=>$lost_confirm));
+$_from = "$headers"; // Php generated.
+$mail_obj = new Nmail($_to, $_subject, $_body, $_from);
+if(DEBUG){$mail_obj->dump = true; }
+$sent = false;
+$sent = $mail_obj->send();
+if($sent){
+    echo "Confirmation code sent.";
+} else {
+    echo "NinjaWars was unable to send to that email address, please try again later.";
+}
+
 ?>
   <hr>
   <a href="main.php">Return to Game</a>

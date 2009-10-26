@@ -30,9 +30,19 @@ if (!$lost_email) {
 } else { // Email was validated.
 	if (!!$lost_pname && !!$lost_uname) {
 		echo "Account information will be sent to your email.\n";
-		mail("$lost_email", "NinjaWars Lost Password Request", "You have requested your password for the account:
-           $lost_uname.<br>\n<br>\n<b>Account Info</b><br>\nUsername: $lost_uname<br>\nPassword:
-             $lost_pname<br>\n<br>\nIf you require any further help, email: ".ADMIN_EMAIL,"$headers");
+        $_to = "$lost_email";
+        $_subject = "NinjaWars Lost Password Request";
+        $_body = render_template('lostpass_email_body.tpl', array(
+            'WEB_ROOT'=>WEB_ROOT,
+            'SUPPORT_EMAIL'=>SUPPORT_EMAIL,
+            'lost_uname'=>$lost_uname,
+            'lost_pname'=>$lost_pname));
+        $_from = "$headers"; // Php generated.
+        $mail_obj = new Nmail($_to, $_subject, $_body, $_from);
+        if(DEBUG){$mail_obj->dump = true; }
+        $sent = false;
+        $sent = $mail_obj->send();
+		
 	} else {
 		echo "No user with that email exists. Please <a href=\"signup.php\">sign up</a> for an account.<br>\n";
 	}
