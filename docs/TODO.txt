@@ -53,6 +53,7 @@ Stop showing clans that don't have at least one member.
 Make title display Ninjawars: <title> as opposed to just <title>
 Expand-collapse the "messages" messaging section with jQuery.
 Fix the "you must log in to view this section" message by providing a link if they aren't housed in the main iframe.
+Provide a random alternate stylesheet snippet, to start the process of potentially multiple alternate stylesheets.
 
 Levelling:
 Auto-levelling checks instead of kills banking.
