@@ -40,10 +40,14 @@ function get_certain_vars($var_list, $whitelist=array())
             $non_arrays[$loop_var_name] = $loop_variable;
         }
     }
-    $constants = get_defined_constants(true);
-    $non_arrays = $non_arrays + $constants['user'];
+    $constants = get_user_constants();
     // Add in the user defined constants too.
-    return $non_arrays;
+    return $non_arrays + $constants;
+}
+
+function get_user_constants(){
+	$temp = get_defined_constants(true);
+	return $temp['user'];
 }
 
 
