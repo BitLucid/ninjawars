@@ -43,7 +43,7 @@
               </a>
             </div>
             <ul class="basemenu" id="actions-menu">
-              <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main">Heal</a></li>
+              <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main"><img src='{$IMAGE_ROOT}shrine.png' alt=''>Heal</a></li>
               <li>
                 <ul class="submenu">
                   <li>
@@ -215,7 +215,9 @@
       <div id='index-footer'>
 <!-- TODO: make this absolute, floating at the page bottom as per facebook's bar. -->
         <!-- Substitute dynamic "catchphrases" here eventually -->
-        "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." |
+        <!-- "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." -->
+        "Helping ninjas stab people since 2003."
+         |
         <a href="tutorial.php" target="main">Intro</a> |
         <a href="rules.php" target="main">Rules</a> |
         <a href='staff.php' target='main'>Staff</a> |
