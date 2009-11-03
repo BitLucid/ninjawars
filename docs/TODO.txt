@@ -40,7 +40,7 @@ Weapons can have critical chances, elemental extras(/elemental damage).
 
 UI:
 Put a (x hours ago) identifier onto the chat.
-Use the colors of my twitter background image as a page background.
+Use the colors of my twitter background image as a page background, or the site here: http://www.vlptv.com.ar/futbol7/index.php
 Create a user-viewing page, e.g. ninjawars.com/ninja.php?n=glassbox .
 Go with better design principles: http://webitect.net/design/5-ways-to-become-a-better-designer-right-now/
 Perhaps make the "status" icon use the old ninjawars icon silhouette.
