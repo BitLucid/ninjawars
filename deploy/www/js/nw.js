@@ -29,18 +29,11 @@ NW = window.NW ? window.NW : createNW();
 // Determines the update interval, 
 //increases when feedback == false, rebaselines when feedback == true
 function getUpdateInterval(feedback){
-<<<<<<< HEAD
     var interval = (feedback || !NW.updateInterval)? 30 : (NW.updateInterval<300 ? NW.updateInterval+1 : 180);
     // For now, put the interval at 30 until I have the increasing method set up.
     NW.updateInterval = interval; // Store the current value.
-    //console.log(NW.updateInterval);
-=======
-    var interval = (feedback || !NW.updateInterval)? 5 : (NW.updateInterval<300 ? NW.updateInterval+1 : 180);
-    NW.updateInterval = interval; // Store the current value.
-    console.log(NW.updateInterval);
->>>>>>>   API: Fixed latest message/event unnecessary nesting.  Index: Pieces moved around. Enemies: Got a default message when no enemies chosen yet.
     return interval;
-    // Start is 10 sec, max is 3 minutes.
+    // Start is about 10 sec, max is 3 minutes.
 }
 
 // JS Update Heartbeat
@@ -49,8 +42,6 @@ function chainedUpdate(chainCounter){
     var feedback = updateIndex(chainCounter); 
     // Update and get good or bad feedback to increase or decrease interval.
     var secondInterval = getUpdateInterval(feedback); 
-    //console.log(feedback);
-    //console.log(secondInterval);
     setTimeout(function (){chainedUpdate(chainCounter);}, secondInterval*1000); // Repeat once the interval has passed.
     // If we need a to cancel the update down the line, store the id that setTimeout returns.
 }
@@ -90,14 +81,7 @@ function updateLatestMessage(){
 function updateLatestEvent(){
     $.getJSON('api.php?type=latest_event&jsoncallback=?', function(data){
         var event = data.event;
-        //console.log(data);
         if(NW.latest_event_id == event.event_id){
-            //console.log("Event:");
-            //console.log(event);
-            //console.log(NW.latest_event_id);
-            //console.log(event['event_id']);
-            //console.log(event);
-            //console.log(event.unread);
             if(!event.unread){
                 $('#recent-events .latest-event-text').removeClass('message-unread');
             }
@@ -154,17 +138,19 @@ function getAndUpdateHealth(){
 
 // Update display elements that live on the index page.
 function updateIndex(){
-    var messageUpdated = updateLatestMessage();
-    var eventUpdated = updateLatestEvent();
+    //var messageUpdated = updateLatestMessage();
+    //var eventUpdated = updateLatestEvent();
     // update chat
     // health bar.
     var healthUpdated = getAndUpdateHealth();
     if(console){
-    console.log(messageUpdated);
-    console.log(eventUpdated);
-    console.log(healthUpdated);
+    	//console.log(messageUpdated);
+    	//console.log(eventUpdated);
+    	console.log(healthUpdated);
     }
-    return (!!(messageUpdated || eventUpdated || healthUpdated)); // determines good or bad feedback.
+    //var res = (!!(messageUpdated || eventUpdated || healthUpdated));
+    var res = healthUpdated;
+    return res; // determines good or bad feedback.
 }
 
 
