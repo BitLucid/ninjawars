@@ -33,6 +33,7 @@ Add a javascript ip tester/tracker/location-correlator for interesting people/tr
 
 
 UI:
+Put a (x hours ago) identifier onto the chat.
 Go with better design principles: http://webitect.net/design/5-ways-to-become-a-better-designer-right-now/
 Perhaps make the "status" icon use the old ninjawars icon silhouette.
 Copy digg's UI like a mofo, I really like that one.
