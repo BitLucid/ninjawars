@@ -48,6 +48,11 @@ h1, h2, .title, .player-info .player-name{
 	text-align:center;
 	font-weight:bold;
 	font-size:1.5em;
+    border: 1px solid DarkKhaki;
+    -webkit-border-radius:16px;
+    -moz-border-radius:16px;
+    -op-border-radius:16px;
+    border-radius:16px;
 }
 .clan-members .subtitle{
     background-color:DarkKhaki;
