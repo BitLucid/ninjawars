@@ -13,3 +13,4 @@ test.php
 .testing
 TODO.txt
 deploy/www/images/dirty_raws
+./scripts/dbScripts/migrations
