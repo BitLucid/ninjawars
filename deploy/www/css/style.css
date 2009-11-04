@@ -1142,6 +1142,9 @@ body.ninjawars-staff{
     vertical-align:top;
     font-family:Georgia,Times,serif;
 }
+#category-bar a img{
+    vertical-align:top;
+}
 /*
 #category-bar #status-actions{
     background: url(/images/ninja_silhouette_50px.png) no-repeat top center;
