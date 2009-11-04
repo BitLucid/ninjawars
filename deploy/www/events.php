@@ -12,7 +12,7 @@ read_events($user_id); // mark events as viewed.
 
 
 
-$event_list = '';
+$event_list = 'You have not been attacked recently.';
 if(!empty($events)){
     foreach($events as $loop_event){
         $loop_event['message'] = out($loop_event['message']);
