@@ -9,14 +9,14 @@ include SERVER_ROOT."interface/header.php";
 
 function render_village_locations(){
     $locations = array(
-        array('name'=>'Shrine', 'url'=>'shrine.php'), 
-        array('name'=>'Doshin', 'url'=>'doshin_office.php'), 
+        array('name'=>'Shrine', 'url'=>'shrine.php', 'image'=>'shrine.png'), 
+        array('name'=>'Doshin', 'url'=>'doshin_office.php', 'image'=>'doshin.png'), 
         array('name'=>'Fields', 'url'=>'work.php'), 
         array('name'=>'Shop', 'url'=>'shop.php'), 
         array('name'=>'Dojo', 'url'=>'dojo.php'), 
         array('name'=>'Casino', 'url'=>'casino.php')
     );
-    return render_template('village_locations.tpl', array('locations'=>$locations));
+    return render_template('village_locations.tpl', array('locations'=>$locations, 'IMAGE_ROOT'=>IMAGE_ROOT));
 }
 
 function render_npc_list(){
