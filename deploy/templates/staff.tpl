@@ -88,6 +88,8 @@
   </p>
 </div>
 
+<script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_thin_badge.js"></script>
+<script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_languages.js"></script>
 
 <script>
   {literal}
