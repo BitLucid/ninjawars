@@ -722,8 +722,8 @@ table .quickstats td{
 /*List all players and player profile styles*/
 .active-players ul, .clan-members ul{
     margin:0;
-    padding:0;
-    border:thin tan solid;
+    padding:0 0 0 1em;
+    border:1px dashed darkblue;
     overflow:hidden;
 }
 .active-players li, .clan-members li{
@@ -759,9 +759,17 @@ table .quickstats td{
 	color:red;
 }
 
-.enemy-list .enemy-dead{
+.enemy-list .enemy-dead, .status-dead{
     background-color:#202020;
     color:maroon;
+}
+.status-dead a{
+	background-color:#202020;
+	color:maroon;
+}
+#recent-attackers li{
+	display:inline;
+	margin-right: 1em;
 }
 
 .player-info .Stealthed{

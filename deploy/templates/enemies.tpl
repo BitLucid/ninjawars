@@ -29,14 +29,7 @@
 
 {/if}
 
+{$recent_attackers_section}
 
-<!--
-<div id='ninja-search'>
-    Find a ninja enemy:
-    <form id='player_search' action='list_all_players.php' method='get' name='player_search'>
-        <input id='searched' type='text' maxlength='50' name='searched' class='textField'>
-        <input type='submit' value='Find' class='formButton'>
-    </form>
-</div>
--->
+{$active_ninja}
 

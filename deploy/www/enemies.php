@@ -3,6 +3,7 @@ $private    = true;
 $alive      = false;
 $quickstat  = false;
 $page_title = "Enemy List";
+require_once(LIB_ROOT."specific/lib_player_list.php");
 include SERVER_ROOT."interface/header.php";
 
 
@@ -78,6 +79,37 @@ function render_current_enemies($enemy_list){
     return $enemy_section;
 }
 
+function render_recent_attackers(){
+	$recent_attackers_section = '';
+	$recent_attackers = get_recent_attackers();
+	if(!empty($recent_attackers)){
+		$recent_attackers_section .= "<h3>You were recently attacked by</h3>
+			<ul id='recent-attackers'>";
+		foreach($recent_attackers as $l_attacker){
+			$status_class = '';
+			if($l_attacker['health']<1){
+				$status_class = 'status-dead';
+			}
+			$recent_attackers_section .= "<li class='recent-attacker {$status_class}'><a href='player.php?player_id={$l_attacker['send_from']}'>{$l_attacker['uname']}</a></li>";		
+		}
+		$recent_attackers_section .= '</ul>';
+	}
+	return $recent_attackers_section;
+}
+
+function get_recent_attackers(){
+	$recent_attackers = array();
+	$user_id = get_user_id();
+	$sql = new DBAccess();
+	$q = 'select distinct send_from, uname, level, health from events join players on send_from = player_id where send_to = \''.sql($user_id).'\'';
+	$sql->Query($q);
+	$recent_attackers = $sql->FetchAll();
+	return $recent_attackers;
+}
+
+
+$active_ninja = render_active(5, $alive_only=true); // Display the currently active ninjas
+
 $match_string = in('enemy_match', null, 'no filter');
 $add_enemy = in('add_enemy', null, 'toInt');
 $remove_enemy = in('remove_enemy', null, 'toInt');
@@ -105,6 +137,8 @@ $enemy_section = render_current_enemies($enemy_list);
 if(count($enemy_list)>($enemy_limit-1)){
     $max_enemies = true;
 }
+
+$recent_attackers_section = render_recent_attackers();
 
 $parts = get_certain_vars(get_defined_vars());
 
