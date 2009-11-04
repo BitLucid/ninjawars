@@ -138,18 +138,17 @@ function getAndUpdateHealth(){
 
 // Update display elements that live on the index page.
 function updateIndex(){
-    //var messageUpdated = updateLatestMessage();
-    //var eventUpdated = updateLatestEvent();
+    var messageUpdated = updateLatestMessage();
+    var eventUpdated = updateLatestEvent();
     // update chat
     // health bar.
     var healthUpdated = getAndUpdateHealth();
-    if(console){
-    	//console.log(messageUpdated);
-    	//console.log(eventUpdated);
+    var res = (!!(messageUpdated || eventUpdated || healthUpdated));
+	if(console){
+    	console.log(messageUpdated);
+    	console.log(eventUpdated);
     	console.log(healthUpdated);
     }
-    //var res = (!!(messageUpdated || eventUpdated || healthUpdated));
-    var res = healthUpdated;
     return res; // determines good or bad feedback.
 }
 

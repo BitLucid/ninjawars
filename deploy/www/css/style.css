@@ -966,6 +966,10 @@ body.ninjawars-staff{
     list-style-type:square;
 }
 
+#project-languages tr{
+	background-color:white;
+}
+
 #latest-commit-section{
     font-size:1.5em;
 }
@@ -1139,7 +1143,6 @@ body.ninjawars-staff{
     text-align:center;
 }
 #category-bar a{
-    vertical-align:top;
     font-family:Georgia,Times,serif;
 }
 #category-bar a img{
