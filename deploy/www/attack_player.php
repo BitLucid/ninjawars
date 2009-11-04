@@ -24,7 +24,7 @@ function render_npc_list(){
     $npcs = array(
         array('name'=>'Villager', 'url'=>'attack_npc.php?attacked=1&victim=villager', 'image'=>'fighter.png'), 
         array('name'=>'Thief', 'url'=>'attack_npc.php?attacked=1&victim=thief', 'image'=>'thief.png'), 
-        array('name'=>'Merchant', 'url'=>'attack_npc.php?attacked=1&victim=merchant', 'image'=>'fighter.png'), 
+        array('name'=>'Merchant', 'url'=>'attack_npc.php?attacked=1&victim=merchant', 'image'=>'merchant.png'), 
         array('name'=>"Emperor's Guard", 'url'=>'attack_npc.php?attacked=1&victim=guard', 'image'=>'guard.png'), 
         array('name'=>'Samurai', 'url'=>'attack_npc.php?attacked=1&victim=samurai', 'image'=>'samurai.png')
     );
