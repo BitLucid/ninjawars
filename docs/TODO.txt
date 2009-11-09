@@ -14,6 +14,7 @@ Karma for a silly social rating, and possibly for some simple non-combat benefit
 
 
 Actions:
+Use health in sorting the lurking list, perhaps.
 Create the ability for players to set up "ambush" from their profile when viewers wander in to view it.
 Kappa random encounter as a money source? Tengu random encounter useful for ???
 And random encounter generator to javascript and internal php that cause random encounters when the two systems match up?
