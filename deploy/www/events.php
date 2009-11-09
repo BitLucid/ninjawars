@@ -12,12 +12,15 @@ read_events($user_id); // mark events as viewed.
 
 
 
-$event_list = 'You have not been attacked recently.';
+$event_list = '';
 if(!empty($events)){
     foreach($events as $loop_event){
         $loop_event['message'] = out($loop_event['message']);
         $event_list .= render_template('single_event.tpl', array('event' => $loop_event));
     }
+}
+if(!$event_list){
+	$event_list = 'You have not been attacked recently.';
 }
 
 $parts = get_certain_vars(get_defined_vars());
