@@ -5,6 +5,22 @@
  * @package messages
  * @subpackage chat
  */
+ 
+
+// ************************************
+// ******** CHAT FUNCTIONS ************
+// ************************************
+
+function send_chat($user_id, $msg) {
+  global $sql;
+  $sql->Insert("INSERT INTO chat (chat_id, sender_id, message, date) 
+        VALUES (default,'$user_id','".sql($msg)."',now())");
+        
+  // could add channels later.
+}
+
+
+ 
 
 // Functions for rendering chat widgets
 
@@ -23,9 +39,10 @@ function render_active_members($sql){
  * Render the div full of chat messages.
  * @param $chatlength Essentially the limit on the number of messages.
 **/
-function render_chat_messages($sql, $chatlength, $show_elipsis=null){
+function render_chat_messages($chatlength, $show_elipsis=null){
     // Eventually there might be a reason to abstract out get_chats();
-    $sql->Query("SELECT send_from, message FROM chat ORDER BY id DESC LIMIT $chatlength");// Pull messages
+    $sql = new DBAccess();
+    $sql->Query("SELECT sender_id, uname, message, date FROM chat join players on chat.sender_id = player_id ORDER BY chat_id DESC LIMIT $chatlength");// Pull messages
     $chats = $sql->fetchAll();
     $message_rows = '';
     $messageCount = $sql->QueryItem("select count(*) from chat");
@@ -35,8 +52,8 @@ function render_chat_messages($sql, $chatlength, $show_elipsis=null){
     $res = "<div class='chatMessages'>";
     foreach($chats AS $messageData) {
 	// *** PROBABLY ALSO A SPEED PROBLEM AREA.
-	$message_rows .= "<a href='player.php?player={$messageData['send_from']}'
-	     target='main'>{$messageData['send_from']}</a>: ".out($messageData['message'])."<br>\n";
+	$message_rows .= "<li>&lt;<a href='player.php?player_id={$messageData['sender_id']}'
+	     target='main'>{$messageData['uname']}</a>&gt; ".out($messageData['message'])."</li>";
     }
     $res .= $message_rows;
     if ($show_elipsis){ // to indicate there are more chats available

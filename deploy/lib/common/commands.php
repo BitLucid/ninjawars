@@ -987,15 +987,6 @@ function flagPlayer($player, $flag, $note, $originatingPage)
 // user message functions are in lib_message now.
 
 
-// ************************************
-// ******** CHAT FUNCTIONS ************
-// ************************************
-
-function sendChat($from,$to,$msg) {
-  global $sql;
-  $sql->Insert("INSERT INTO chat (id, send_from, send_to, message, time) 
-        VALUES (default,'$from','$to','".sql($msg)."',now())");
-}
 
 
 

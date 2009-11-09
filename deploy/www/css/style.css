@@ -510,6 +510,7 @@ td.playerTable {
 
 .chatMessages{
     margin-top:0em;
+    list-style-type:none;
 }
 #expand-chat{
     border: 1px dashed darkblue;

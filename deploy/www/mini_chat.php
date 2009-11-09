@@ -16,12 +16,13 @@ $command = in('command');
 $sentMessage = in('message');
 $sent = false;
 $username = get_username();
+$user_id = get_user_id();
 $input_form = ($username ? render_chat_input() : '');
 
 // Take in a chat and record it to the database.
-if ($username) {
+if ($user_id) {
 	if ($command == "postnow" && $message) {
-		sendChat($username, 'ChatMsg', $message); // ChatMsg is deprecated.
+		send_chat($user_id, $message);
 	}
 }
 
@@ -35,7 +36,7 @@ echo $input_form;
 
 echo render_active_members($sql);
 
-echo render_chat_messages($sql, $chatlength);
+echo render_chat_messages($chatlength);
 
 echo "</div>"; // End of mini_chat div.
 
