@@ -30,7 +30,6 @@ $affected_rows['Statuses Removed'] = $sql->a_rows;
 
 $deleted = shorten_chat($sql); // run the shortening of the chat.
 $affected_rows['deleted chats'] = $deleted;
-sendChat(CHAT_TIME_NAME,"ChatMsg","----".date("F j, Y")."----"); // Display the date change.
 
 $stats = membership_and_combat_stats($sql, $update_past_stats=true);
 $affected_rows['Vicious killer: '] = $stats['vicious_killer'];

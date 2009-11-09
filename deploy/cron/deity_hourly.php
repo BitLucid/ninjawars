@@ -19,7 +19,6 @@ $turn_regen_threshold = 100;
 $out_display = array();
 
 // ******************* END OF CONSTANTS ***********************
-//sendChat("----","ChatMsg","----".date("h:i")."----"); // Halfhour message
 
 $sql->Update("UPDATE time SET amount = amount+1 WHERE time_label='hours'"); // Update the hours ticker.
 $sql->Update("UPDATE time SET amount = 0 WHERE time_label='hours' AND amount>=24"); // Rollover the time to hour zero.

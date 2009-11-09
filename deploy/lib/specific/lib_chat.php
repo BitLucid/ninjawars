@@ -42,29 +42,76 @@ function render_active_members($sql){
 function render_chat_messages($chatlength, $show_elipsis=null){
     // Eventually there might be a reason to abstract out get_chats();
     $sql = new DBAccess();
-    $sql->Query("SELECT sender_id, uname, message, date FROM chat join players on chat.sender_id = player_id ORDER BY chat_id DESC LIMIT $chatlength");// Pull messages
+    $sql->Query("SELECT sender_id, uname, message, age(now(), date) as ago FROM chat join players on chat.sender_id = player_id ORDER BY chat_id DESC LIMIT $chatlength");// Pull messages
     $chats = $sql->fetchAll();
     $message_rows = '';
     $messageCount = $sql->QueryItem("select count(*) from chat");
     if (!isset($show_elipsis) && $messageCount>$chatlength){
-	$show_elipsis = true;
+		$show_elipsis = true;
     }
     $res = "<div class='chatMessages'>";
+    $previous_date = null;
+    $skip_interval = 3; // minutes
     foreach($chats AS $messageData) {
-	// *** PROBABLY ALSO A SPEED PROBLEM AREA.
-	$message_rows .= "<li>&lt;<a href='player.php?player_id={$messageData['sender_id']}'
-	     target='main'>{$messageData['uname']}</a>&gt; ".out($messageData['message'])."</li>";
+    	$l_ago = time_ago($messageData['ago'], $previous_date);
+		$message_rows .= "<li>&lt;<a href='player.php?player_id={$messageData['sender_id']}'
+		     target='main'>{$messageData['uname']}</a>&gt; ".out($messageData['message'])." <span class='chat-time'>{$l_ago}</span></li>";
+		$previous_date = $messageData['ago']; // Store just prior date.
     }
     $res .= $message_rows;
     if ($show_elipsis){ // to indicate there are more chats available
-	$res .= ".<br>.<br>.<br>";
+		$res .= ".<br>.<br>.<br>";
     }
     $res .= "</div>";
     return $res;
 }
 
+// parse the date/time for the chat.
+function time_ago($time, $previous){
+	$time_array = array_reverse(preg_split("/(\D)/", $time)); // Split on non-digits.
+	$similar = false;
+	$res = null;
+	if($previous){
+		$previous_array = array_reverse(preg_split("/(\D)/", $previous)); // Split on non-digits.
+		/* If the time is substantially different from the previous (1 minute or more),
+		then mark down how long ago the time was and return it (to be displayed after the chat 
+		If the minutes, hours, and days are similar between two messages, they're similar.
+		*/
+		if($time_array[2] == $previous_array[2] && $time_array[3] == $previous_array[3] && 
+			((!isset($time_array[4]) || !isset($previous_array[4])) || $time_array[4] == $previous_array[4])){
+			$similar = true;
+		}
+	}
+	if(!$similar){ // Display time if no previous or non-similar previous time.
+		$ago = false;
+		if(isset($time_array[4]) && $time_array[4]>0){
+			$res .= (int)$time_array[4].(1==(int)$time_array[4]?' day' : ' days');
+			$ago = true;
+		}
+		if($time_array[3]>0){
+			if($ago){
+				$res .= ', ';
+			}
+			$res .= (int)$time_array[3].(1==(int)$time_array[3]?' hour' : ' hours');
+			$ago = true;
+		}
+		if($time_array[2]>0){
+			if($ago){
+				$res .= ', ';
+			}
+			$res .= (int)$time_array[2].(1==(int)$time_array[2]?' minute' : ' minutes');
+			$ago = true;
+		}
+		if($ago){
+			$res .= ' ago';
+		}
+	}
+	return $res;
+}
+
 // Render the "refresh chat periodically" js.
 function render_chat_refresh($not_mini=null){
+	// TODO: this chat javascript update needs to be cleaned up and put into the js file.
     $location = "mini_chat.php";
     $frame = 'mini_chat';
     if($not_mini){
@@ -92,7 +139,7 @@ function render_chat_refresh($not_mini=null){
 function render_chat_input($target='mini_chat.php', $field_size=20){
     return
     "<form id=\"post_msg\" action=\"$target\" method=\"post\" name=\"post_msg\">\n
-    <input id=\"message\" type=\"text\" size=\"$field_size\" maxlength=\"490\" name=\"message\" class=\"textField\">\n
+    <input id=\"message\" type=\"text\" size=\"$field_size\" maxlength=\"250\" name=\"message\" class=\"textField\">\n
     <input id=\"command\" type=\"hidden\" value=\"postnow\" name=\"command\">
     <input type=\"submit\" value=\"Send\" class=\"formButton\">\n
     </form>\n";

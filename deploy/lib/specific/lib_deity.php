@@ -36,18 +36,8 @@ function update_days($sql){
 // Chats stuff.
 function shorten_chat($sql, $message_limit=800){
     // Find the latest 800 messages and delete all the rest;
-	$deleted = $sql->Update("delete from chat where id not in (select id from chat order by time desc limit ".$message_limit.")");  //Deletes old chat messages.
+	$deleted = $sql->Update("delete from chat where chat_id not in (select chat_id from chat order by date desc limit ".$message_limit.")");  //Deletes old chat messages.
 	return (int) $deleted;
-}
-
-// Chat time-if-no-one-chatted-recently message
-function chat_timer(){
-    $sender = CHAT_TIME_NAME;
-    $sql = new DBAccess();
-    $last_chat = $sql->QueryItem('select send_from from chat order by id desc limit 1');
-    if ($last_chat != $sender){
-        sendChat($sender,"ChatMsg", "----".date("h:i")."----");
-    }
 }
 
 function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30, $just_testing=true){
@@ -79,37 +69,6 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 	$db->Update($unconfirm_within_limits);
 	$players_unconfirmed = $db->getAffectedRows();
 	return $players_unconfirmed;
-}
-
-// Test that the unconfirming never oversteps its bounds and unconfirms more than it should.
-function test_unconfirm_older_players_over_minimums(){
-	if (DEBUG) {
-		$original_error_reporting = error_reporting();
-		error_reporting(E_ALL | E_STRICT); //error_reporting(E_ALL);
-		// Turns on strict standards and notices.
-	}
-
-	// These run dummy unconfirmations.
-
-	$unconfirmed = unconfirm_older_players_over_minimums(2300, 90);
-	assert($unconfirmed < 21);
-	// IN: Default limits, out: nothing more than the max unconfirmed.
-
-	$unconfirmed = unconfirm_older_players_over_minimums(1, 1);
-	assert($unconfirmed < 31);
-	// in: when attempting to unconfirm everyone... out: a failsafe max of 30 are affected
-
-	$unconfirmed = unconfirm_older_players_over_minimums(1, 500);
-	assert($unconfirmed == 0);
-	// in: something that should match no-one, out: 0 unconfirmed
-
-	$unconfirmed = unconfirm_older_players_over_minimums(10000, 1);
-	assert($unconfirmed == 0);
-	// in: something that should match no-one, out: 0 unconfirmed
-
-	if (DEBUG) {
-		error_reporting($original_error_reporting);
-	}
 }
 
 /**
@@ -211,10 +170,5 @@ function revive_players($params=array()){
 	$truly_revived = $db->getAffectedRows();
     // Return the 'revived/total' actually revived.
     return array($truly_revived, $dead_count);
-}
-
-
-if (DEBUG) {
-	test_unconfirm_older_players_over_minimums();
 }
 ?>

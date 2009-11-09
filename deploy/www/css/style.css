@@ -512,6 +512,11 @@ td.playerTable {
     margin-top:0em;
     list-style-type:none;
 }
+.chatMessages .chat-time{
+	font: .8em verdana, helvetica, arial, sans-serif;
+	font-style:italic;
+	color: grey;
+}
 #expand-chat{
     border: 1px dashed darkblue;
 }
