@@ -6,9 +6,6 @@
  * @subpackage deity_lib
  */
 
-// Name the chat time will send under.
-define('CHAT_TIME_NAME', '----');
-
 function delete_old_messages($sql, $limit = null){
 	$interval_to_keep = '3 months';
 	$sql->Delete("delete from messages where date < now()- interval '$interval_to_keep'");

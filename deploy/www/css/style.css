@@ -513,7 +513,7 @@ td.playerTable {
     list-style-type:none;
 }
 .chatMessages .chat-time{
-	font: .8em verdana, helvetica, arial, sans-serif;
+	font: .8em sans-serif;
 	font-style:italic;
 	color: grey;
 }
