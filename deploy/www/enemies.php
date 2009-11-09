@@ -101,7 +101,7 @@ function get_recent_attackers(){
 	$recent_attackers = array();
 	$user_id = get_user_id();
 	$sql = new DBAccess();
-	$q = 'select distinct send_from, uname, level, health from events join players on send_from = player_id where send_to = \''.sql($user_id).'\'';
+	$q = 'select distinct send_from, uname, level, health from events join players on send_from = player_id where send_to = \''.sql($user_id).'\' limit 20';
 	$sql->Query($q);
 	$recent_attackers = $sql->FetchAll();
 	return $recent_attackers;
