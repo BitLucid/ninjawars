@@ -24,6 +24,7 @@ $changeprofile = in('changeprofile');
 $newprofile    = in('newprofile', null, 'toMessage');
 
 $username = get_username();
+$user_id = get_user_id();
 
 $player = get_player_info();
 $confirm_delete = false;
@@ -61,6 +62,7 @@ $level_and_cat = render_level_and_category($player['level']);
 $status_list = render_status_section();
 $avatar_display = render_avatar_section($player['player_id']);// include and render from player.php
 $rank_display = get_rank($username, $sql); // rank display.
+
 $health_section = render_health_section($player['health']);
 
 $profile_editable = $player['messages'];
