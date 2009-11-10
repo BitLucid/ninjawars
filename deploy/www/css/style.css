@@ -1,5 +1,6 @@
 /* Someday I should probably just put the blueprint css into play. */
 /* http://www.typetester.org/  */
+/* Useful fonts at dafont.com */
 /* Potential css layout example */
 
 
@@ -303,7 +304,7 @@ td.playerTable {
 #centerColumn {
 	 width:65%;
 	 float:left;
-	 min-height:600px;
+	 min-height:400px;
 	 height:100%;
 }
 #rightColumn {
@@ -560,8 +561,8 @@ table .quickstats td{
 }
 
 .main-iframe { /* class for the main iframe */
-	 min-height:600px;
-	 height:100%;
+	 min-height:300px;
+	 height:88%;
 	 width:100%;
 	 width:100%;
 	 border:0;
