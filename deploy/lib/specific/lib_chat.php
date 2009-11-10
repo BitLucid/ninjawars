@@ -85,25 +85,25 @@ function time_ago($time, $previous){
 	if(!$similar){ // Display time if no previous or non-similar previous time.
 		$ago = false;
 		if(isset($time_array[4]) && $time_array[4]>0){
-			$res .= '('.(int)$time_array[4].(1==(int)$time_array[4]?' day' : ' days');
+			$res .= (int)$time_array[4].(1==(int)$time_array[4]?' day' : ' days');
 			$ago = true;
 		}
 		if($time_array[3]>0){
 			if($ago){
 				$res .= ', ';
 			}
-			$res .= '('.(int)$time_array[3].(1==(int)$time_array[3]?' hour' : ' hours');
+			$res .= (int)$time_array[3].(1==(int)$time_array[3]?' hour' : ' hours');
 			$ago = true;
 		}
 		if($time_array[2]>0){
 			if($ago){
 				$res .= ', ';
 			}
-			$res .= '('.(int)$time_array[2].(1==(int)$time_array[2]?' minute' : ' minutes');
+			$res .= (int)$time_array[2].(1==(int)$time_array[2]?' minute' : ' minutes');
 			$ago = true;
 		}
 		if($ago){
-			$res .= ' ago)';
+			$res = '('.$res.' ago)';
 		}
 	}
 	return $res;
