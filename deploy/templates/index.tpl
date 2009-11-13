@@ -3,11 +3,11 @@
     
     <!-- Version {$version} -->
 
-    <div id='content'>
+    <div id='content' class='wrapper'>
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
-
+        	<a href='{$WEB_ROOT}list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='ninja list'></a>
         </div>
             <div>
                 <a target="main" href="player.php?player={$user_id}">{$username}</a>
@@ -211,7 +211,7 @@
           </div>          
           
       </div> <!-- End of right column -->
-      
+      <div id='push'></div>
       <div id='index-footer'>
 <!-- TODO: make this absolute, floating at the page bottom as per facebook's bar. -->
         <!-- Substitute dynamic "catchphrases" here eventually -->

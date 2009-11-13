@@ -3,10 +3,40 @@
 /* Useful fonts at dafont.com */
 /* Potential css layout example */
 
+* {
+	margin: 0;
+	padding: 0;
+}
+html, body {
+	height: 100%;
+}
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -20px; /* the bottom margin is the negative value of the footer's height */
+}
+.push {
+	height: 20px; /* .push must be the same height as .footer */
+}
+
+#index-footer{
+	height:20px;
+    text-align:center;
+    clear: both;
+    width:100%;
+    background-color:black;
+    color:grey;
+}
+
+#index-footer a{
+    color:grey;
+    text-decoration:underline;
+    font-size:80%;
+    font-weight:normal;
+}
 
 html {
-    margin:0;
-    padding:0;
     background-color:black;
 }
 
@@ -31,10 +61,12 @@ body {
 	background-color: black;	/* Required for the ie bug */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
-	margin:0;
-	padding:0;
 }
 
+hr {
+	margin-top:.3em;
+	margin-bottom:.3em;
+}
 
 h1, h2, h3, h4, h5, h6, .subtitle, .title{
 	font-family: Georgia, "Times New Roman", Times, serif;
@@ -226,6 +258,10 @@ table.playerTable .Black, .player-info .Black {
     border: thin solid clear;padding: 5px;text-align: center;
 }
 
+#skills-list form{
+	margin-top:.5em;
+	margin-bottom:.5em;
+}
 
 .playerTable th{
 	text-align: left;
@@ -304,8 +340,8 @@ td.playerTable {
 #centerColumn {
 	 width:65%;
 	 float:left;
-	 min-height:400px;
-	 height:100%;
+	 min-height:600px;
+	 height:800px;
 }
 #rightColumn {
 	 width:25%;
@@ -561,9 +597,8 @@ table .quickstats td{
 }
 
 .main-iframe { /* class for the main iframe */
-	 min-height:300px;
+	 min-height:500px;
 	 height:88%;
-	 width:100%;
 	 width:100%;
 	 border:0;
 }
@@ -680,7 +715,10 @@ table .quickstats td{
     color:black;
     background-color:#c75600;
 }
-
+/*
+.player-clan .subtitle{
+	background-color:white;
+}*/
 .clan-members .injured{
     background-color:maroon;
     color:black;
@@ -1216,22 +1254,12 @@ body.ninjawars-staff{
     margin-right:0;
 }
 
+.faq .brownHeading, .faq hr{
+	margin-top:.5em;
+	margin-bottom:.2em;
+}
 
 /* End reactive-panel */
 
-#index-footer{
-    text-align:center;
-    clear: both;
-    width:100%;
-    background-color:black;
-    color:grey;
-}
-
-#index-footer a{
-    color:grey;
-    text-decoration:underline;
-    font-size:80%;
-    font-weight:normal;
-}
 
 /* END OF INDEX REWRITE CSS */
