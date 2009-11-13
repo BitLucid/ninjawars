@@ -846,8 +846,42 @@ table .quickstats td{
 	margin-top: 1em;
 }
 
+/* Clan leader options */
+#leader-panel {
+    width: 40%;
+    float:left;
+    text-align: center;
+    border: thin solid white;
+    padding-bottom: 5px;
+}
+#leader-panel ul{
+    list-style-type: none;
+    margin: 3px;
+    height: 2.3em;
+}
+#leader-panel li {
+    width: 49%;
+    float: left;
+}
+#leader-options{
+    padding: 5px 5px 5px 5px;
+    width: 100%;
+}
+#leader-panel-title {
+    font-weight: bold;
+    text-align: center;
+}
+#clan-options {
+    width: 50%;
+    float: right;
+    list-style-type: none;
+}
 
-
+/* Player tags */
+#player-tags .player-tag{
+	float:left;
+	margin-right: 1em;
+}
 /*  Clan tags section */
 #clan-tags{
     clear: both;
@@ -862,75 +896,32 @@ table .quickstats td{
 }
 
 /* Clan member tags styles */
+#clan-members .member a, #player-tags .player-tag a{
+    color:orange;
+    background-color:green;
+}
 #clan-members {
     clear: both;
     margin-top: 3px;
 }
-
 #clan-members ul {
     list-style-type: none;
 }
-
 #clan-members-title {
     margin-bottom: 3px;
 }
-
 #clan-members-count {
     margin-bottom: 1em;
     text-align: center;
 }
-
 #clan-members .member{
     float:left;
     color:orange;
     background-color:green;
     margin: 5px 5px 5px 5px;
 }
-
-#clan-members .member a{
-    color:orange;
-    background-color:green;
-}
-
 #clan-page-title {
     text-align: center;
-}
-
-
-#leader-panel {
-    width: 40%;
-    float:left;
-    text-align: center;
-    border: thin solid white;
-    padding-bottom: 5px;
-}
-
-#leader-panel ul{
-    list-style-type: none;
-    margin: 3px;
-    height: 2.3em;
-}
-
-#leader-panel li {
-    width: 49%;
-    float: left;
-}
-
-
-#leader-options{
-    padding: 5px 5px 5px 5px;
-    width: 100%;
-}
-
-#leader-panel-title {
-    font-weight: bold;
-    text-align: center;
-}
-
-#clan-options {
-    width: 50%;
-    float: right;
-    list-style-type: none;
 }
 
 /*  End of Clan Tags section */

@@ -2,6 +2,48 @@
 
 // TODO: Oh god, these functions need templates.
 
+
+/**
+ * This determines how the clans get ranked and tagged, and how to only show non-empty clans.
+**/
+function player_size(){
+    $res = array();
+    $db = new DBAccess();
+    $sel = "select (level-3-round(days/5)) as sum, player_id, uname from players where confirmed = 1 and health>0 order by sum desc";
+    $counts = $db->FetchAll($sel);
+    $largest = reset($counts);
+    $max = $largest['sum'];
+    foreach($counts as $player_info){
+        // make percentage of highest, multiply by 10 and round to give a 1-10 size
+        $res[$player_info['uname']] = array('player_id'=>$player_info['player_id'],
+        	'size'=>
+             floor(( (($player_info['sum']-1 <1? 0 : $player_info['sum']-1)) /$max)*10)+1
+             );
+    }
+    return $res;
+}
+
+function render_player_tags(){
+    $players = player_size();
+    //$clans = @natsort2d($clans, 'level');
+    $res = "<div id='player-tags'>
+                <h4 id='player-tags-title'>
+                    All Players
+                </h4>
+            <ul>";
+    foreach($players as $player => $info){
+        $res .= "<li class='player-tag size{$info['size']}'>
+                <a href='player.php?player_id=".urlencode($info['player_id'])."'>$player</a>
+            </li>";
+    }
+    $res .= "</ul>
+            </div>";
+    return $res;
+}
+
+
+
+
 // Display the recently active players
 function render_active($limit=5, $alive_only=true) {
 	$where_cond = ($alive_only? 'and health>0' : '');

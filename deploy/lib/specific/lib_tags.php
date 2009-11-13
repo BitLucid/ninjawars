@@ -1,7 +1,9 @@
 <?php
 // File for creating the clan ranking tag cloud.
 
-
+/**
+ * This determines how the clans get ranked and tagged, and how to only show non-empty clans.
+**/
 function clan_size(){
     $res = array();
     $db = new DBAccess();
