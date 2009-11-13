@@ -5,7 +5,7 @@
 function clan_size(){
     $res = array();
     $db = new DBAccess();
-    $sel = "select sum(level-3-round(days/5)) as sum, clan_long_name from players group by clan_long_name order by sum desc";
+    $sel = "select sum(level-3-round(days/5)) as sum, clan_long_name from players where confirmed = 1 group by clan_long_name order by sum desc";
     $counts = $db->FetchAll($sel);
     $largest = reset($counts);
     $max = $largest['sum'];

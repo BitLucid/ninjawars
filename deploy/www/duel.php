@@ -14,7 +14,7 @@ $vicious_killer = $stats['vicious_killer'];
 
 <div id='vicious-killer'>
     Current Fastest Killer: 
-    <a id='vicious-killer-menu href='player.php?player=<?php echo $vicious_killer; ?>'>
+    <a id='vicious-killer-menu href='player.php?player=<?php echo out($vicious_killer); ?>'>
         <?php echo $vicious_killer; ?>
     </a>
 </div>
