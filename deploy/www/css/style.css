@@ -19,7 +19,10 @@ html, body {
 .push {
 	height: 20px; /* .push must be the same height as .footer */
 }
-
+/*
+Sticky Footer by Ryan Fait
+http://ryanfait.com/
+*/
 #index-footer{
 	height:20px;
     text-align:center;
