@@ -249,6 +249,13 @@ table.playerTable .Black, .player-info .Black {
 .your-stats #player-profile{
     margin: 10px 0 10px 0;
     text-align: center;
+    float:right;
+}
+.your-stats #profile-edit{
+	float:left;
+}
+.your-stats hr{
+	clear:both;
 }
 
 #player-profile-attack .attacking-choices{
