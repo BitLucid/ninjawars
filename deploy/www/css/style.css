@@ -1183,6 +1183,7 @@ body.ninjawars-staff{
     height:75px;
     text-align:right;
     float:right;
+    padding-top:20px;
 }
 
 /* reactive-panel subparts */
