@@ -153,7 +153,7 @@
         <div id='ninja-stats' class='header-section'>
         
         <span id='logout'>
-            <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="{$IMAGE_ROOT}icons/stop.png" alt=""></a>
+            <a href="index.php?logout=true">Logout</a>
         </span>
         
         </div><!-- End of ninja-stats -->
