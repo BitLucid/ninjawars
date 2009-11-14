@@ -6,8 +6,8 @@
 **/
 function login_user($user, $pass){
     $filter = new Filter();
-    $user = $filter->toUsername($user);
-    $pass = $filter->toPassword($pass);
+    $user = $filter->toUsername($user); //allow: ^[A-Za-z0-9_-]+ alphanumerics, digits, underscores, and dashes.
+    $pass = $filter->toPassword($pass); //strip out all sql-problematic characters, ' # ` ; and "
 	$success = false;
 	$error = 'That password/username combination was incorrect.';
 	if($user != '' && $pass != ''){
