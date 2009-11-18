@@ -14,6 +14,7 @@ $chatlength = in('chatlength', $default_limit, 'toInt');
 $message = in('message', null, 'forChat'); // Essentially no filtering.
 $command = in('command');
 $sentMessage = in('message');
+$chat_submit = in('chat_submit');
 $sent = false;
 $username = get_username();
 $user_id = get_user_id();
@@ -29,6 +30,14 @@ if ($user_id) {
 // Output section.
 
 echo render_chat_refresh(); // Write out the js to refresh.
+
+if($chat_submit){ // Js refocus code when chat sent.
+	echo '<script type="text/javascript">
+		$(document).ready(function(){
+			$(".chat-submit #message").focus();
+		});
+		</script>';
+}
 
 echo "<div id='mini-chat'>";
 

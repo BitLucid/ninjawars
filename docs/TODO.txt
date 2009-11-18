@@ -38,6 +38,13 @@ Arena that you have to fight npcs in consecutively, without healing, for rewards
 Items: More visual variations, with slight stat differences.
 Weapons can have critical chances, elemental extras(/elemental damage).
 
+Communication:
+Move a mailbox link in to the "clan" page.
+Mailbox rename to -> Messages and create an icon for it, perhaps a face and a voice.  Change "send mail" on profile to "send message".
+
+Clan:
+Perhaps standard-ish combat when outside the clan, can only stay inside the clan when not attacking, acts as a defensive measure.
+Also increases the reward that people can get from doing clan infiltration.
 
 UI:
 Put a (x hours ago) identifier onto the chat.

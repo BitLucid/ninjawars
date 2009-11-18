@@ -138,10 +138,11 @@ function render_chat_refresh($not_mini=null){
 **/
 function render_chat_input($target='mini_chat.php', $field_size=20){
     return
-    "<form id=\"post_msg\" action=\"$target\" method=\"post\" name=\"post_msg\">\n
+    "<form class='chat-submit' id=\"post_msg\" action=\"$target\" method=\"post\" name=\"post_msg\">\n
     <input id=\"message\" type=\"text\" size=\"$field_size\" maxlength=\"250\" name=\"message\" class=\"textField\">\n
     <input id=\"command\" type=\"hidden\" value=\"postnow\" name=\"command\">
-    <input type=\"submit\" value=\"Send\" class=\"formButton\">\n
+    <input name='chat_submit' type='hidden' value='1'>
+    <input type=\"submit\" value=\"&gt;\" class=\"formButton\">\n
     </form>\n";
 }
 
