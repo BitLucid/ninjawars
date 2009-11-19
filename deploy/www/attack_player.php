@@ -1,5 +1,5 @@
 <?php
-$private    = true;
+$private    = false;
 $alive      = false;
 $page_title = "Village";
 $quickstat  = "player";

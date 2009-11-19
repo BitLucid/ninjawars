@@ -7,36 +7,18 @@ $page_title = "FAQ";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Frequently Asked Questions</span><p>
+<h1>Introduction</h1>
 
 <p>
   Welcome to a world that is not all it seems, be on your guard!
 </p>
 
-<p>
-  The game is mainly one of fighting against other ninja.  Once you are a ninja, you can:
-</p>
+<?php 
+$progression = render_template('progression.tpl', array('WEB_ROOT'=>WEB_ROOT, 'IMAGE_ROOT'=>IMAGE_ROOT));
+echo $progression;
+?>
 
-<p>
-  <ul>
-    <li>Kill townsfolk (click on the combat link, and then click the link for a thief, villager, or merchant, the easiest targets).</li>
-    <li>
-      Kill other ninja! (click on the "ninjas" link and go the last page, click a ninja, and then click "attack" to attack them)
-      <div>use your skills or items to make more effective attacks.</div>
-    </li>
-    <li>If you die, just drag your ghost to the shrine and the monks will bring you back! (click on the "resurrect" link)</li>
-  </ul>
-</p>
-
-<p>
-  You can buy items to help your attack at the shop, but you'll need to work in the fields to get gold to buy stuff with.
-</p>
-
-<p>
-  Once you get enough kills, you can level up at the dojo.
-</p>
-
-For more detail, read the faqs below, or see <a href="about.php">the "About" page</a> or <a href="http://ninjawars.pbwiki.com">the Wiki</a>.
+For more detail, read the faqs below, or see the <a href="about.php">About Ninjawars</a> topics or <a href="http://ninjawars.pbwiki.com">the Wiki</a>.
 
 <hr>
 

@@ -7,14 +7,16 @@
 <h3><span id="ninjawars-subtitle">Ninja Wars</span>
      is an online game where you battle players all over the world.
      <a href="about.php">(read more)</a></h3>
-<p id='create-a-ninja'><a href="signup.php">Create a Ninja</a> or log in above!<p>
+
+{$progression}
+
 <p>
-Visit the <a href="about.php">FAQ</a> to learn more about Ninjawars.<br>
+View the <a href="about.php">Intro</a> to learn more about Ninjawars.<br>
 Post messages to other players on the <a href="village.php">Chat Board</a>
 or the <a href="{$WEB_ROOT}forum/" target="_blank" class="extLink">
     Forum <img src="images/externalLinkGraphic.gif"></a><br>
 Find out what has changed about NW in the announcements section of the
-    <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">Forum
+    <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">Forum
         <img src="images/externalLinkGraphic.gif"></a>.
 </p>
 <p><a href="lostpass.php">Lost Your Password ?</a> / Didn't get your <a href="lostconfirm.php">confirmation code ?</a></p>

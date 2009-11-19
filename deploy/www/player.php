@@ -10,7 +10,7 @@ require_once(LIB_ROOT."specific/lib_player.php");
  * @subpackage skill
 **/
 $alive      = false;
-$private    = true;
+$private    = false;
 $quickstat  = "player";
 $page_title = "Player Detail";
 
@@ -20,19 +20,12 @@ $skillListObj = new Skill();
 $skillsListObj = $skillListObj;
 $target = $player = in('player');
 $target_id = either(in('target_id'), either(in('player_id'), get_user_id($target)));
-$user_id = get_user_id();
 $score = get_score_formula();
-
-$message = in('message');
-if($message){
-    send_message($user_id, $target_id, $message);
-    echo "<div id='message-sent' class='ninja-notice'>Message sent</div>";
-}
-
+$user_id = get_user_id();
+$attacker = $username = get_username();
 
 $linkbackpage = in('linkbackpage');
-$viewing_player_obj = new Player(get_username());
-$viewers_clan = $viewing_player_obj->vo->clan;
+$message = in('message');
 
 $target_player_obj = new Player(either($target_id, $target));
 
@@ -45,10 +38,17 @@ if(!$target_player_obj || !$target_player_obj->player_id){
 $player_info = $target_player_obj->as_array(); // Pull the info out of the object.
 $player = $target = $player_info['uname']; // reset the target and target_id vars.
 $target_id = $player_info['player_id'];
-$self = (get_username() == $player_info['uname']); // Recorde whether this is a self-viewing.
+$self = (get_username() && get_username() == $player_info['uname']); // Record whether this is a self-viewing.
+
+if($message){
+    send_message($user_id, $target_id, $message);
+    echo "<div id='message-sent' class='ninja-notice'>Message sent</div>";
+}
+
+$viewing_player_obj = new Player(get_username());
+$viewers_clan = ($viewing_player_obj instanceof Player && $viewing_player_obj->vo? $viewing_player_obj->vo->clan : null);
 
 // Attack Legal section
-$attacker = get_username();
 $params = array('required_turns'=>0, 'ignores_stealth'=>true); // 0 for unstealth.
 $AttackLegal = new AttackLegal($attacker, $target, $params);
 $attack_allowed = $AttackLegal->check();
@@ -73,7 +73,7 @@ if(!$player_info){
     
 	$avatar_section = render_avatar_section($target_player_obj);
 
-	if(!$attack_error && !$self){ // They're not dead or otherwise unattackable.
+	if($username && !$attack_error && !$self){ // They're not dead or otherwise unattackable.
     	// Attack or Duel
 
         $skills_available = $skillsListObj->hasSkills();
@@ -91,7 +91,7 @@ if(!$player_info){
     $clan_options_section = '';
     $player_clan_section = '';
     $player_profile_message = '';
-	if(!$self){
+	if($username && !$self){
     	// Allows the viewer to set bounty on a player.
     	ob_start();
         display_set_bounty($player_info); // TODO: Move this functionality to the doshin.

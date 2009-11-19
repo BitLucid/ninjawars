@@ -6,6 +6,10 @@ $page_title = "Main";
 
 $header = render_html_for_header('Welcome to Ninjawars', 'main-intro');
 $footer = render_footer($quickstat);
-echo render_template('main.tpl', array('WEB_ROOT' => WEB_ROOT, 'header'=>$header, 'footer'=>$footer));
+
+$progression = render_template('progression.tpl', array('WEB_ROOT'=>WEB_ROOT, 'IMAGE_ROOT'=>IMAGE_ROOT));
+
+$parts = get_certain_vars(get_defined_vars());
+echo render_template('main.tpl', $parts);
 
 ?>

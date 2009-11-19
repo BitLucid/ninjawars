@@ -61,9 +61,8 @@ function getHealth($who)
 
   $health = $sql->QueryItem("SELECT health FROM players WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
-    {
-      $_SESSION['health'] = $health;
+  if ($who == SESSION::get('username')){
+      SESSION::set('health', $health);
     }
 
   return $health;
@@ -513,7 +512,7 @@ function getStatus($who)
 		$sql = new DBAccess();
 	}
 	$status = $sql->QueryItem("SELECT status FROM players WHERE uname = '$who'");
-	if (isset($_SESSION) && $who == $_SESSION['username']) {
+	if ($who == SESSION::get('username')) {
   		$_SESSION['status'] = $status;
 	}
 	$status_array['Stealth']    = ($status&STEALTH     ? 1 : 0);

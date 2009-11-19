@@ -14,7 +14,7 @@ require_once(LIB_ROOT."specific/lib_player.php");
 $alive             = false;
 $private           = false;
 $quickstat         = false;
-$page_title        = "Sign Up";
+$page_title        = "Become a Ninja";
 $starting_referral = in('referrer');
 $enteredName       = in('send_name', '', 'toText');
 $enteredEmail      = in('send_email', '', 'toText');

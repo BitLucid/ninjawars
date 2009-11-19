@@ -47,6 +47,7 @@ Perhaps standard-ish combat when outside the clan, can only stay inside the clan
 Also increases the reward that people can get from doing clan infiltration.
 
 UI:
+/* Someday I should probably just put the blueprint css into play. */
 Put a (x hours ago) identifier onto the chat.
 Use the colors of my twitter background image as a page background, or the site here: http://www.vlptv.com.ar/futbol7/index.php
 Create a user-viewing page, e.g. ninjawars.com/ninja.php?n=glassbox .

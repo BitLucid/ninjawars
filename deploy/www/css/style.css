@@ -1,4 +1,3 @@
-/* Someday I should probably just put the blueprint css into play. */
 /* http://www.typetester.org/  */
 /* Useful fonts at dafont.com */
 /* Potential css layout example */
@@ -6,6 +5,17 @@
 * {
 	margin: 0;
 	padding: 0;
+}
+p {
+	margin: .5em 0 .5em 0;
+}
+hr {
+	margin:1em auto 1em auto;
+	border: 0;
+	width: 90%;
+	color: maroon;
+	background-color: maroon;
+	height: 1px;
 }
 html, body {
 	height: 100%;
@@ -29,11 +39,11 @@ http://ryanfait.com/
     clear: both;
     width:100%;
     background-color:black;
-    color:grey;
+    color:gray;
 }
 
 #index-footer a{
-    color:grey;
+    color:gray;
     text-decoration:underline;
     font-size:80%;
     font-weight:normal;
@@ -58,6 +68,7 @@ body {
 	/*font-family: Verdana, Arial, Helvetica, sans-serif;*/
 	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
 	/*font-family: "Franklin Gothic", Futura, Verdana, Arial, Helvetica, sans-serif;*/
+	/*font-family: Copperplate / Copperplate Gothic Light, sans-serif;*/
 	/*font family: Tahoma, Arial, sans-serif;*/
 	font-size: 80%;
 	color: DarkKhaki;
@@ -72,9 +83,16 @@ hr {
 }
 
 h1, h2, h3, h4, h5, h6, .subtitle, .title{
-	font-family: Georgia, "Times New Roman", Times, serif;
+	font-family: ‘Lucida Sans Unicode’, ‘Lucida Grande’, sans-serif;
 	text-align:center;
 	font-size:1.2em;
+}
+h1, h2{
+	font-size:larger;
+}
+h1{
+	font-family: Impact, Charcoal, sans-serif;
+	font-size:larger;
 }
 
 
@@ -94,7 +112,14 @@ h1, h2, .title, .player-info .player-name{
     background-color:DarkKhaki;
     color:black;
 }
+/*
+@font-face {
+	font-family: 'JRandomCRegular';
+	src: url('../font/jrandomc.eot');
+	src: local('J Random C Regular'), local('JRandomC'), url('../font/jrandomc.woff') format('woff'), url('../font/jrandomc.ttf') format('truetype'), url('../font/jrandomc.svg#JRandomC') format('svg');
+}*/
 #ninjawars-title{
+	font-family: /*'JRandomCRegular', */'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 	font-size:larger;
 	color:maroon;
 	padding: 3px;
@@ -125,7 +150,7 @@ select {
 
 a {
 	text-decoration: none;
-	/*font-weight: bold;*/
+	font-weight: bolder;
 	font-family: verdana, arial, helvetica, sans-serif;
 	color: SteelBlue;
 	/*font-family: Arial Black, Impact, Tahoma Bold, sans-serif;*/
@@ -292,11 +317,11 @@ td.playerTable {
 }
 .playerTable .novice, .player-info .novice{ /* Level categories */
 	color:black;
-	background-color:LightGrey;
+	background-color:LightGray;
 }
 .playerTable .acolyte, .player-info .acolyte{
 	color:black;
-	background-color:DarkGrey;
+	background-color:DarkGray;
 }
 .playerTable .ninja, .player-info .ninja{
 	color:maroon;
@@ -316,14 +341,14 @@ td.playerTable {
 }
 .DeadRow td, .DeadRow td div, .DeadRow td span {
     background-color: black !important;
-    color:grey !important;
+    color:gray !important;
 }
 .DeadRow .classCell {
 	color:black !important;
 	background-color:black !important;
 }
 .DeadRow .levelCell {
-	color:grey !important;
+	color:gray !important;
 	background-color:black !important;
 }
 
@@ -467,7 +492,7 @@ td.playerTable {
 	margin-top:10px;
 	margin-bottom: 30px;
 	text-align: center;
-	color:darkGrey;
+	color:darkGray;
 	font-family: Tahoma,Arial,Helvetica,sans-serif;
 	font-size: 10px;
 }
@@ -554,15 +579,21 @@ td.playerTable {
 .chat-expanded {
     height: 880px;
 }
+.active-members-count{
+	font-size:smaller;
+	font-style:italics;
+	color:gray;
+}
 
 .chatMessages{
     margin-top:0em;
     list-style-type:none;
 }
 .chatMessages .chat-time{
-	font: .8em sans-serif;
+	font-family: Trebuchet MS1, Helvetica, sans-serif;
+	font-size: .8em;
 	font-style:italic;
-	color: grey;
+	color: gray;
 }
 #expand-chat{
     border: 1px dashed darkblue;
@@ -681,7 +712,7 @@ table .quickstats td{
 	width: 100px;
 	height: 15px;
 	background:maroon;
-	color:lightGrey;
+	color:lightGray;
 	/*border: 0;*/
 }
 #login-bar label{
@@ -1049,6 +1080,26 @@ body.ninjawars-staff{
 
 #create-a-ninja{
     font-size:2em;
+}
+#progression{
+	text-align:center;
+	margin: .2em 0 .5em 0;
+	font-weight:bolder;
+	font-size:2em;
+	font-family: Impact, sans-serif;
+	font-variant: small-caps;
+}
+#progression a{
+	font-family: Impact, sans-serif;
+}
+#progression .down-arrow{
+	height:45px;
+}
+#progression p{
+	margin: 0;
+}
+#progression p:first-child{
+	font-size:larger;
 }
 
 

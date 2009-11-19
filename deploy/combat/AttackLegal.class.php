@@ -105,7 +105,7 @@ class AttackLegal
 		}
 
 		if (!is_object($this->attacker)){
-			$this->error = 'Invalid attacker.';
+			$this->error = 'Only Ninja can get close enough to attack.';
     		return FALSE;
 		} elseif (!is_object($this->target)){
     		$this->error = 'No valid target was found.';

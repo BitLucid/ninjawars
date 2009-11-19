@@ -49,7 +49,7 @@ class SESSION
    public static function get($field)
    {
 		self :: commence();
-		return $_SESSION[$field];
+		return (isset($_SESSION[$field])?$_SESSION[$field] : null);
    }
 
    public static function has_values(){

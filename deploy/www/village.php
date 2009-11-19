@@ -8,10 +8,8 @@ $quickstat  = false;
 
 include SERVER_ROOT."interface/header.php";
 
-echo "<span class='brownHeading'>Chat Board</span> -";
-echo "<a href=\"".$_SERVER['PHP_SELF']."?chatlength=50\">Refresh</a>\n";
-echo "<br>\n";
-echo "Message: ";
+echo "<h1>Chat Board</h1>";
+echo "<p><a href=\"".$_SERVER['PHP_SELF']."?chatlength=50\">Refresh</a><p>";
 
 $default_limit = 360;
 $chatlength = in('chatlength', $default_limit, 'toInt');

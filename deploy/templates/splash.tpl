@@ -35,7 +35,7 @@
         <div id="menu-info">
 {if $is_not_logged_in}
           <span class="signup-link">
-            <a target="main" href="{$WEB_ROOT}signup.php?referrer={$referrer}">Create a Ninja!</a> |
+            <a target="main" href="{$WEB_ROOT}signup.php?referrer={$referrer}">Become a Ninja!</a> |
           </span>
           <span>
             <a href="{$WEB_ROOT}lostpass.php" target="main" class="blend side">&nbsp;Lost&nbsp;Password?</a> |
