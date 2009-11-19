@@ -14,10 +14,7 @@
 View the <a href="about.php">Intro</a> to learn more about Ninjawars.<br>
 Post messages to other players on the <a href="village.php">Chat Board</a>
 or the <a href="{$WEB_ROOT}forum/" target="_blank" class="extLink">
-    Forum <img src="images/externalLinkGraphic.gif"></a><br>
-Find out what has changed about NW in the announcements section of the
-    <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">Forum
-        <img src="images/externalLinkGraphic.gif"></a>.
+    Forum <img src="images/externalLinkGraphic.gif"></a>, or find out what has changed about NW in the <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">Announcements<img src="images/externalLinkGraphic.gif"></a> section of the Forum</a>.
 </p>
 <p><a href="lostpass.php">Lost Your Password ?</a> / Didn't get your <a href="lostconfirm.php">confirmation code ?</a></p>
 <!-- TODO: put display_active(); here -->

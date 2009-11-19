@@ -15,8 +15,8 @@ hr {
 	margin:1em auto 1em auto;
 	border: 0;
 	width: 90%;
-	color: maroon;
-	background-color: maroon;
+	color: #800000;/*maroon*/
+	background-color: #800000;/*maroon*/
 	height: 1px;
 }
 html, body {
@@ -111,18 +111,23 @@ h1, h2, .title, .player-info .player-name{
     background-color:#BDB76B;/*DarkKhaki*/
     color:black;
 }
-/*
+
 @font-face {
 	font-family: 'JRandomCRegular';
 	src: url('../font/jrandomc.eot');
 	src: local('J Random C Regular'), local('JRandomC'), url('../font/jrandomc.woff') format('woff'), url('../font/jrandomc.ttf') format('truetype'), url('../font/jrandomc.svg#JRandomC') format('svg');
-}*/
+}
 #ninjawars-title{
 	font-family: /*'JRandomCRegular', */'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 	font-size:larger;
-	color:maroon;
+	color:#800000;/*maroon*/
 	padding: 3px;
 }
+/*
+#ninjawars-title{
+	background-image:url(../images/doshin.png);
+	font-family:'JRandomCRegular', 'Lucida Sans Unicode', 'Lucida Grande', cursive;
+}*/
 
 #nin1{
     color:brown;
