@@ -1,6 +1,8 @@
-/* http://www.typetester.org/  */
-/* Useful fonts at dafont.com */
-/* Potential css layout example */
+/*
+ http://www.typetester.org/
+ Useful fonts at dafont.com
+ Potential css layout example 
+ */
 
 * {
 	margin: 0;
@@ -63,15 +65,12 @@ body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
 
 body {
 	/*font-family: <ideal>, <alternative>, <common>, <generic>;*/
-	/*font-family: Arial, Helvetica, sans-serif;*/
-	/*font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;*/
-	/*font-family: Verdana, Arial, Helvetica, sans-serif;*/
 	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
 	/*font-family: "Franklin Gothic", Futura, Verdana, Arial, Helvetica, sans-serif;*/
 	/*font-family: Copperplate / Copperplate Gothic Light, sans-serif;*/
 	/*font family: Tahoma, Arial, sans-serif;*/
 	font-size: 80%;
-	color: DarkKhaki;
+	color: #BDB76B;/*DarkKhaki*/
 	background-color: black;	/* Required for the ie bug */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
@@ -83,7 +82,7 @@ hr {
 }
 
 h1, h2, h3, h4, h5, h6, .subtitle, .title{
-	font-family: ‘Lucida Sans Unicode’, ‘Lucida Grande’, sans-serif;
+	font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 	text-align:center;
 	font-size:1.2em;
 }
@@ -98,18 +97,18 @@ h1{
 
 h1, h2, .title, .player-info .player-name{
 	color:black;
-	background-color:DarkKhaki;
+	background-color:#BDB76B;/*DarkKhaki*/
 	text-align:center;
 	font-weight:bold;
 	font-size:1.5em;
-    border: 1px solid DarkKhaki;
+    border: 1px solid #BDB76B;/*DarkKhaki*/
     -webkit-border-radius:16px;
     -moz-border-radius:16px;
     -op-border-radius:16px;
     border-radius:16px;
 }
 .clan-members .subtitle{
-    background-color:DarkKhaki;
+    background-color:#BDB76B;/*DarkKhaki*/
     color:black;
 }
 /*
@@ -167,6 +166,7 @@ a:link {} a:visited {} a:active {}
 #avatar {
     text-align:center;
     float:right;
+    width:80px;
 }
 
 #menu a { /*Menu actions are a lighter blue to pop better on the red */
@@ -284,13 +284,13 @@ table.playerTable .Black, .player-info .Black {
 }
 
 #player-profile-attack .attacking-choices{
-    border: thin solid clear;padding-left: 5; padding-right: 5;padding-top: 5;padding-bottom: 5;text-align: center;
+    border:none;padding-left: 5px; padding-right: 5px;padding-top: 5px;padding-bottom: 5px;text-align: center;
 }
 #player-profile-attack span.duel, #player-profile-attack .blaze, #player-profile-attack .deflect{
-    border: thin solid clear;padding: 1px;
+    border:none;padding: 1px;
 }
 #player-profile-table #skills-section, #player-profile-table #inventory-items{
-    border: thin solid clear;padding: 5px;text-align: center;
+    border:none;padding: 5px;text-align: center;
 }
 
 #skills-list form{
@@ -581,7 +581,7 @@ td.playerTable {
 }
 .active-members-count{
 	font-size:smaller;
-	font-style:italics;
+	font-style:italic;
 	color:gray;
 }
 
@@ -736,7 +736,7 @@ table .quickstats td{
 .ninja-error{
 	color:Red;
 	background-color:YellowGreen;
-	font-family: Comic Sans Ms, inherit;
+	font-family: 'Comic Sans Ms', cursive;
 	font-weight:bold;
 	font-variant:small-caps;
 	font-size:130%;
@@ -745,7 +745,7 @@ table .quickstats td{
 .ninja-notice{
 	color:Brown;
 	background-color:DarkKhaki;
-	font-family: Comic Sans Ms, inherit;
+	font-family: 'Comic Sans Ms', cursive;
 	text-align:center;
 	font-weight:bold;
 	padding: 3px;
@@ -775,7 +775,7 @@ table .quickstats td{
 
 .Frozen {
     background-color:skyblue;
-    font-weight:italic;
+    font-style:italic;
     color: red;
 }
 
@@ -783,9 +783,8 @@ table .quickstats td{
 	text-align:center;
 	color:Red;
 	background-color:Gold;
-	font-family: Times, inherit;
+	font-family: Times, serif;
 	font-weight:bold;
-	/*font-variant:small-caps;*/
 	font-size:150%;
 	padding: 3px;
 }
@@ -793,7 +792,7 @@ table .quickstats td{
 .notice, .informational{
 	color:Black;
 	background-color:DarkKhaki;
-	font-family: Times, inherit;
+	font-family: Times, serif;
 	text-align:center;
 	font-weight:bold;
 	font-size:130%;
@@ -802,7 +801,7 @@ table .quickstats td{
 
 .notice a, .informational a{
 	color:Blue;
-	font-family: Times, inherit;
+	font-family: Times, serif;
 }
 
 /*List all players and player profile styles*/
@@ -1044,7 +1043,7 @@ body.ninjawars-staff{
 
 .developer .developer-image{
     float:right;
-    text-align: bottom;
+    vertical-align: bottom;
 }
 
 .other-credits ul{
@@ -1244,7 +1243,7 @@ body.ninjawars-staff{
     height:100%;
     margin: 0;
     padding: 0;
-    list-style: inline;
+    display: inline;
 }
 #category-bar li{
     margin: 0;
