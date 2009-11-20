@@ -3,7 +3,9 @@
  Useful fonts at dafont.com
  Potential css layout example 
  */
-
+html, body {
+    background-color:black;
+}
 * {
 	margin: 0;
 	padding: 0;
@@ -51,10 +53,6 @@ http://ryanfait.com/
     font-weight:normal;
 }
 
-html {
-    background-color:black;
-}
-
 .main-body{
     min-width: 800px;
 }
@@ -86,15 +84,6 @@ h1, h2, h3, h4, h5, h6, .subtitle, .title{
 	text-align:center;
 	font-size:1.2em;
 }
-h1, h2{
-	font-size:larger;
-}
-h1{
-	font-family: Impact, Charcoal, sans-serif;
-	font-size:larger;
-}
-
-
 h1, h2, .title, .player-info .player-name{
 	color:black;
 	background-color:#BDB76B;/*DarkKhaki*/
@@ -106,6 +95,10 @@ h1, h2, .title, .player-info .player-name{
     -moz-border-radius:16px;
     -op-border-radius:16px;
     border-radius:16px;
+}
+h1{
+	font-family: Impact, Charcoal, sans-serif;
+	font-size:larger;
 }
 .clan-members .subtitle{
     background-color:#BDB76B;/*DarkKhaki*/
@@ -163,6 +156,7 @@ a {
 a:hover {
 	color: white;
 	text-decoration: underline;
+	text-shadow: white 0px 0px 2px;
 }
 
 
