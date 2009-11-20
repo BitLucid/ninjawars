@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="<?php echo WEB_ROOT; ?>css/style.css">
   </head>
   <body id="page-404">
+  	<img src='images/NinjaMeditationSilhouette_200.png' alt=''>
     <p>
       Pool of still water;
     </p>
@@ -22,7 +23,16 @@
       We are in the middle of an update. We should be done by 2:30pm EST. Please try back at that time.
     </p>
 -->
-    <div>Return to <a href="<?php echo WEB_ROOT; ?>index.php">Ninjawars</a></div>
+    <div>Return to <a href="<?php echo WEB_ROOT; ?>index.php">Ninjawars.net</a></div>
+<form action="http://www.google.com/search" name="searchbox" 
+  method="get" style="margin-left: 2em;" /> 
+  <input type="hidden" name="hl" value="en" /> 
+  <input type="hidden" name="ie" value="ISO-8859-1" /> 
+  <input type="hidden" name="sitesearch" value="ninjawars.net" /> 
+  <input maxlength="256" size="40" name="q" value="" /> 
+  <input type="submit" value="search the ninjawars site" name="btnG" 
+    style="font-size:75%;" /> 
+</form>
     <div id='support-email'>or email <a href="mailto:<?= SUPPORT_EMAIL ?>"><?= SUPPORT_EMAIL ?></a></div>
   </body>
 </html>
