@@ -41,7 +41,7 @@ $players_online = $stats['players_online'];
 // TODO: fix how vicious killer is only using duels as a criteria right now.
 
 
-$header = render_html_for_header('Live By the Sword', 'main-body');
+$header = render_html_for_header('Live By the Sword', 'main-body', $is_index=true);
 // render_html_for_header Writes out the html,head,meta,title,css,js.
 
 $version = 'NW Version 1.6.0 2009.09.06';

@@ -31,6 +31,8 @@
 	<script type="text/javascript" src="{$WEB_ROOT}js/nw.js"></script>
 </head>
 <body class='{$body_classes}'>
+{if !$is_index}
 <a href='/' id='logo-appended'>
 	<img src='images/ninjawarslogo_75px.png' alt='NinjaWars'>
 </a>
+{/if}

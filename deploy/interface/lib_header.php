@@ -37,13 +37,14 @@ function update_activity_info(){
  * Writes out the header for all the pages.
  * Will need a "don't write header" option for jQuery iframes.
 **/
-function render_html_for_header($title=null, $body_classes='body-default'){
+function render_html_for_header($title=null, $body_classes='body-default', $is_index=null){
 	$parts = array(
 		'title' => ($title? htmlentities($title) : ''),
 		'body_classes'=>$body_classes,
 		'WEB_ROOT'=>WEB_ROOT,
 		'local_js'=>(OFFLINE || DEBUG? true : false),
-		'DEBUG'=>DEBUG
+		'DEBUG'=>DEBUG,
+		'is_index'=>$is_index
 	);
 	return render_template('header.tpl', $parts);
 }
