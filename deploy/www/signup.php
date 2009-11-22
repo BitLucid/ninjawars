@@ -32,8 +32,7 @@ if ($submitted) {
 } // *** Validates submission.
 
 if (!$submit_successful) {
-	// Just uses the signup.tpl template now.
-	display_signup_form($enteredName, $enteredEmail, $enteredClass, $enteredReferral);
+	display_signup_form($enteredName, $enteredEmail, $enteredClass, $enteredReferral); 	// Just uses the signup.tpl template now.
 } // *** Displays form.
 
 

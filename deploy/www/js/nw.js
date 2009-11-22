@@ -144,7 +144,7 @@ function updateIndex(){
     // health bar.
     var healthUpdated = getAndUpdateHealth();
     var res = (!!(messageUpdated || eventUpdated || healthUpdated));
-	if(console){
+	if(debug() && console){
     	console.log(messageUpdated);
     	console.log(eventUpdated);
     	console.log(healthUpdated);
@@ -152,6 +152,10 @@ function updateIndex(){
     return res; // determines good or bad feedback.
 }
 
+// Returns true when debug bit set or localhost path used.
+function debug(){
+	return NW.debug || (window.location.host == 'localhost');
+}
 
 
 // When clicking frame links, load a section instead of the iframe.
@@ -191,8 +195,8 @@ function isIndex(){ // Return true if the index page.
 	return (window.location.pathname.substr(-9,9) == 'index.php');
 }
 
-function isRootUrl(){
-	return window.location.pathname == 'ninjawars.net';
+function isLive(){
+	return (window.location.host  == 'ninjawars.net');
 }
 
 
@@ -201,9 +205,8 @@ function isRootUrl(){
 **/
 function logoAppend(){
 	if(!isIndex()
-		&& !isRootUrl()
-		&& window.parent == window ){
-		
+	&& !isLive()
+	&& window.parent == window ){	
 		$('#logo-appended').addClass('sub-page'); // Should make the image display on subpages.
 	}
 }
