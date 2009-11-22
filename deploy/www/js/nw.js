@@ -187,12 +187,21 @@ function refreshQuickstats(quickView){
     top.window.NW.firstLoad++;
 }
 
+function isIndex(){ // Return true if the index page.
+	return (window.location.pathname.substr(-9,9) == 'index.php');
+}
+
+function isRootUrl(){
+	return window.location.pathname == 'ninjawars.net';
+}
+
+
 /**
  * Add the logo as a back-link to any pages that are broken out of the iframe.
 **/
 function logoAppend(){
-	if(window.location.pathname.substr(-9,9) != 'index.php' 
-		&& window.location.pathname != 'ninjawars.net'
+	if(!isIndex()
+		&& !isRootUrl()
 		&& window.parent == window ){
 		
 		$('#logo-appended').addClass('sub-page'); // Should make the image display on subpages.
@@ -203,7 +212,7 @@ function logoAppend(){
 $(document).ready(function() {
    
     // INDEX ONLY CHANGES 
-    if(window.location.pathname.substr(-9,9) == 'index.php'){
+    if(isIndex()){
     	// Not great because it doesn't allow for pretty urls, down the line.   
 
         chainedUpdate(); // Start the periodic index update.
