@@ -152,12 +152,6 @@ function updateIndex(){
     return res; // determines good or bad feedback.
 }
 
-// Returns true when debug bit set or localhost path used.
-function debug(){
-	return NW.debug || (window.location.host == 'localhost');
-}
-
-
 // When clicking frame links, load a section instead of the iframe.
 function frameClickHandlers(links, div){
     links.click(function(){
@@ -196,17 +190,27 @@ function isIndex(){ // Return true if the index page.
 }
 
 function isLive(){
-	return (window.location.host  == 'ninjawars.net');
+	return window.location.host  != 'localhost';
 }
 
+// Returns true when debug bit set or localhost path used.
+function debug(){
+	return NW.debug || !isLive();
+}
+
+function isRoot(){
+	return (window.location.pathname == '/');
+}
+
+function isSubpage(){
+	return !isIndex() && !isRoot() && (window.parent == window);
+}
 
 /**
  * Add the logo as a back-link to any pages that are broken out of the iframe.
 **/
 function logoAppend(){
-	if(!isIndex()
-	&& !isLive()
-	&& window.parent == window ){	
+	if(isSubpage()){	
 		$('#logo-appended').addClass('sub-page'); // Should make the image display on subpages.
 	}
 }
@@ -215,7 +219,7 @@ function logoAppend(){
 $(document).ready(function() {
    
     // INDEX ONLY CHANGES 
-    if(isIndex()){
+    if(isIndex() || isRoot()){
     	// Not great because it doesn't allow for pretty urls, down the line.   
 
         chainedUpdate(); // Start the periodic index update.
@@ -255,7 +259,8 @@ $(document).ready(function() {
     
     /* THIS CODE RUNS FOR ALL SUBPAGES */
     logoAppend(); // Append link back to main page for any lone subpages not in iframes.
-    // TODO: Analyse whether it's good for this code to run in auto-loaded subpages in iframes, e.g. chat, quickstats.
+    
+    // TODO: Analyze whether it's good for this code to run in auto-loaded subpages in iframes, e.g. chat, quickstats.
         
     // GOOGLE ANALYTICS
     /* Original suggested header include, I made it nw specific with

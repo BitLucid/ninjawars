@@ -2,14 +2,16 @@
 
 <div id='attack-player-page'>
 
-    {$npcs}
+  {$locations}
+  
+  <hr>
+  
+  {$npcs}
 
   <hr>
 
-  {$locations}
-
   <p>
-    To attack a ninja, use the <a href="list_all_players.php?hide=dead">player list</a> or search for a ninja below.
+    To attack a ninja, use the <a href="list_all_players.php?hide=dead" target='main'>player list</a> or search for a ninja below.
   </p>
 
   <form id="player_search" action="list_all_players.php" method="get" name="player_search">
