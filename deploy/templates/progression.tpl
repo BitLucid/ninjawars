@@ -7,5 +7,5 @@
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
 	<p>Join a <a target='main' href='{$WEB_ROOT}clan.php'>Clan</a>, wage war on other ninja clans</p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
-	<p>Try not to <a target='main' href='{$WEB_ROOT}shrine.php'>die</a>, life is hard!</p>
+	<p>Live by the Sword, and avoid <a target='main' href='{$WEB_ROOT}shrine.php'>death</a> if you can!</p>
 </div>

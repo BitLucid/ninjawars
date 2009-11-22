@@ -2,16 +2,15 @@
 
 <!-- Replace this with our banner image -->
 
-<h2>Welcome to <span id="ninjawars-title">Ninja Wars</span></h2>
-
+<h2 id='ninjawars-title'><img src='{$IMAGE_ROOT}ninjawars_title.png' alt='Ninja Wars'></h2>
 <h3><span id="ninjawars-subtitle">Ninja Wars</span>
-     is an online game where you battle players all over the world.
-     <a href="about.php">(read more)</a></h3>
-
+     is a game where you fight other ninja and battle for the most kills!
+</h3>
 {$progression}
-
 <p>
-View the <a href="about.php">Intro</a> to learn more about Ninjawars.<br>
+View the <a href="about.php">Intro</a> to learn more about Ninjawars.
+</p>
+<p>
 Post messages to other players on the <a href="village.php">Chat Board</a>
 or the <a href="{$WEB_ROOT}forum/" target="_blank" class="extLink">
     Forum <img src="images/externalLinkGraphic.gif"></a>, or find out what has changed about NW in the <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">Announcements<img src="images/externalLinkGraphic.gif"></a> section of the Forum</a>.

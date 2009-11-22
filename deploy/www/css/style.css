@@ -83,6 +83,7 @@ h1, h2, h3, h4, h5, h6, .subtitle, .title{
 	font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 	text-align:center;
 	font-size:1.2em;
+	margin-bottom:.5em;
 }
 h1, h2, .title, .player-info .player-name{
 	color:black;
@@ -104,17 +105,21 @@ h1{
     background-color:#BDB76B;/*DarkKhaki*/
     color:black;
 }
-
+/*
 @font-face {
 	font-family: 'JRandomCRegular';
 	src: url('../font/jrandomc.eot');
 	src: local('J Random C Regular'), local('JRandomC'), url('../font/jrandomc.woff') format('woff'), url('../font/jrandomc.ttf') format('truetype'), url('../font/jrandomc.svg#JRandomC') format('svg');
-}
+}*/
 #ninjawars-title{
 	font-family: /*'JRandomCRegular', */'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 	font-size:larger;
 	color:#800000;/*maroon*/
 	padding: 3px;
+}
+#ninjawars-title img{
+	height:70px;
+	vertical-align:middle;
 }
 /*
 #ninjawars-title{
