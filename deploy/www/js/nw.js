@@ -187,12 +187,24 @@ function refreshQuickstats(quickView){
     top.window.NW.firstLoad++;
 }
 
+/**
+ * Add the logo as a back-link to any pages that are broken out of the iframe.
+**/
+function logoAppend(){
+	if(window.location.pathname.substr(-9,9) != 'index.php' 
+		&& window.location.pathname != 'ninjawars.net'
+		&& window.parent == window ){
+		
+		$('#logo-appended').addClass('sub-page'); // Should make the image display on subpages.
+	}
+}
 
 // Initial load of everything, run at the bottom to allow everything else to be defined beforehand.
 $(document).ready(function() {
    
     // INDEX ONLY CHANGES 
-    if(window.location.pathname.substr(-9,9) == 'index.php'){    
+    if(window.location.pathname.substr(-9,9) == 'index.php'){
+    	// Not great because it doesn't allow for pretty urls, down the line.   
 
         chainedUpdate(); // Start the periodic index update.
        /* Collapse the following parts of the index */
@@ -230,6 +242,7 @@ $(document).ready(function() {
     }    
     
     /* THIS CODE RUNS FOR ALL SUBPAGES */
+    logoAppend(); // Append link back to main page for any lone subpages not in iframes.
     // TODO: Analyse whether it's good for this code to run in auto-loaded subpages in iframes, e.g. chat, quickstats.
         
     // GOOGLE ANALYTICS

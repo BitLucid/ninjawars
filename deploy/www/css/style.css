@@ -394,6 +394,20 @@ td.playerTable {
 	height:42px;
 }
 
+/* Logo when added as a link back in pages lacking an outer iframe */
+#logo-appended{
+	float:left;
+	width:100px;
+	margin-right: .5em;
+	display:none;
+}
+#logo-appended.sub-page{
+	display:inline;
+}
+#logo-appended img{
+	width:100px;
+}
+
 #content {
 	float:none;
 	margin:0;
