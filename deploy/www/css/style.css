@@ -1108,6 +1108,9 @@ body.ninjawars-staff{
     background-color:DarkSlateBlue;
     color:white;
 }
+#messages-icon{
+	height:15px;
+}
 
 #clan-mail-section{
     width: 50%;

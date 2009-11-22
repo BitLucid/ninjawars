@@ -71,9 +71,9 @@
             
           <!-- Recent Events & Recent Mail will get put in here via javascript -->
           <div id='recent-events'></div>
-            <div>
-                <a target="main" href="messages.php">Mailbox</a>
-            </div>
+          <div>
+              <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='{$IMAGE_ROOT}messages.png' alt=''></a>
+          </div>
           <div id='recent-mail'></div>
 
       </div>  
