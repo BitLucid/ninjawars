@@ -18,8 +18,6 @@ $progression = render_template('progression.tpl', array('WEB_ROOT'=>WEB_ROOT, 'I
 echo $progression;
 ?>
 
-For more detail, read the faqs below, or see the <a href="about.php">About Ninjawars</a> topics or <a href="http://ninjawars.pbwiki.com">the Wiki</a>.
-
 <hr>
 
 <span class="brownHeading">How do I level up ?</span><br>
@@ -49,7 +47,9 @@ Find a clan you want to join or a clanleader you want to follow and then click o
 <span class="brownHeading">How can I communicate with other players?</span><br>
 You can send mail to specific players using the Mail link on the left side of screen or from a players profile page.  You can send mail to all your clan members from the Clan link if you have a clan.  To check your own messages go to Mail and click Inbox.  You can post public messages to players on the chat board.<hr>
 
-For more detail see: <a href="about.php">the "About" page</a> or <a href="http://ninjawars.pbwiki.com">the Wiki</a>.
+<p>
+	For more detail, see the <a href="http://ninjawars.pbworks.com">the Wiki</a>.
+</p>
 
 <?php
 include SERVER_ROOT."interface/footer.php";
