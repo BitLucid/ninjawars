@@ -1,6 +1,5 @@
 <?php
 // Licensed under the creative commons license.  See the staff.php page for more detail.
-ob_start(null, 1); // Buffer and output it in chunks.
 
 $login        = (in('action') == 'login' ? true : false); // A request to login.
 $logout       = in('logout');
@@ -12,8 +11,7 @@ $referrer = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 $sql = new DBAccess(); // *** Instantiates wrapper class for manipulating pdo.
 $GLOBALS['sql'] = $sql; // Put sql into globals array. :(
 
-// Logout/already logged in/login
-
+// Logout/already logged in/login behaviors
 if ($logout) { // on logout, kill the session and don't redirect. 
 	logout(); 
 	$just_logged_out = true;
@@ -32,19 +30,16 @@ if ($logout) { // on logout, kill the session and don't redirect.
 $username = get_username();
 $user_id = get_user_id();
 
-// Today's Information Section of Left Column 
-
+// Player counts.
 $stats          = membership_and_combat_stats($sql);
-$vicious_killer = $stats['vicious_killer'];
 $player_count   = $stats['player_count'];
 $players_online = $stats['players_online'];
-// TODO: fix how vicious killer is only using duels as a criteria right now.
 
 
 $header = render_html_for_header('Live By the Sword', 'main-body', $is_index=true);
 // render_html_for_header Writes out the html,head,meta,title,css,js.
 
-$version = 'NW Version 1.6.0 2009.09.06';
+$version = 'NW Version 1.7.1 2009.11.22';
 $is_not_logged_in = !$is_logged_in;
 
 
@@ -65,6 +60,7 @@ if(!$is_logged_in){
     echo render_template('index.tpl', $parts); // Logged in template.
 }
 
-// TODO: Make sure that all password modifying changes are secure.
+echo render_footer(null, true); // Skip quickstats.
+// Um, need to render footer here.
 
 ?>

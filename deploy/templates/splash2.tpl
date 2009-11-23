@@ -28,7 +28,8 @@
                   Password
                   <input name="pass" type="password" class="itext">
                 </label>
-                <input name="action" type="submit" value="Login" class="ibutton formButton">
+                <input name="action" type="submit" value="login" class="ibutton formButton">
+                <!-- The value of this has to remain lowercase "login" to work with the login system -->
               </span>
             </form>
           </div>

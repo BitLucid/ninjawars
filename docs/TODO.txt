@@ -95,6 +95,7 @@ Make sure that the other databases are pared down to allow ease of backup.
 
 
 Security:
+// TODO: Make sure that all password modifying changes are secure.
 // TODO: Make default filtering be toWord, and change item-related in()s to deal with their multi word inputs.
 // Add a blocked referral list, starting with hidemyass.com
 Create accounts.
