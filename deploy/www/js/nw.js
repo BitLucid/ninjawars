@@ -206,6 +206,11 @@ function isSubpage(){
 	return !isIndex() && !isRoot() && (window.parent == window);
 }
 
+// Not secure, just convenient.
+function isLoggedIn(){
+	return true;
+}
+
 /**
  * Add the logo as a back-link to any pages that are broken out of the iframe.
 **/
@@ -222,7 +227,10 @@ $(document).ready(function() {
     if(isIndex() || isRoot()){
     	// Not great because it doesn't allow for pretty urls, down the line.   
 
-        chainedUpdate(); // Start the periodic index update.
+		if(isLoggedIn()){
+	       	chainedUpdate(); // Start the periodic index update.
+	    }
+       	
        /* Collapse the following parts of the index */
         $("#links-menu").toggle();
         

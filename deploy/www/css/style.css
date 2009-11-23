@@ -205,7 +205,7 @@ input.textField {
 }
 div.description {
 	text-align: center;
-	border: thin solid #ccb094;
+	border-bottom: thin solid #ccb094;
 	margin-top: 10px;
 	margin-bottom: 20px;
 }
@@ -433,20 +433,16 @@ td.playerTable {
 
 
 #menu {
-	line-height: 30px;
-	font-size:10px;
+	line-height: 40px;
+	font-size:12px;
 	padding:0;
-	list-style-type:none;
 	width:100%;
-	height:30px;
-	float:left;
+	height:40px;
 	text-align:center;
-	display:inline;
-	margin-bottom:5px;
+	margin-bottom:3px;
 	padding:0;
 	border-bottom:maroon thin solid;
-	background:url("../images/bg_top_maroon.jpg");
-	background-repeat:repeat-x;
+	background:#4f0101 bottom url("../images/bg_top_maroon.jpg") repeat-x;
 }
 #menu ul {
 	float:left;
@@ -477,19 +473,13 @@ td.playerTable {
 	display:inline;
 }
 #menu-info {
-	width:70%;
+	width:80%;
 	height:1em;
 	float:left;
 	text-align:center;
 }
 #menu-info ul {
 	margin-left: 30%;
-}
-#menu-end {
-	width:22%;
-	height:1em;
-	float:left;
-	text-align:right;
 }
 
 .centered {
@@ -687,11 +677,10 @@ table .quickstats td{
 	background:black;
 	color:SteelBlue;
 	font-weight:bold;
-	font-variant:small-caps;
 }
 
 /* Login menu and login-bar config */
-.login-menu {
+.login-menu { /* See also the #menu entry */
 	font-family: arial,helvetica,Verdana,sans-serif;
 }
 .login-menu #menu-start{
@@ -742,6 +731,7 @@ table .quickstats td{
 }
 
 /* Errors and Notices and the Like */
+
 .ninja-error{
 	color:Red;
 	background-color:YellowGreen;
@@ -1332,5 +1322,9 @@ body.ninjawars-staff{
 
 /* End reactive-panel */
 
+/* Signup form */
+form #signup .submit{
+	margin-top:2em;
+}
 
 /* END OF INDEX REWRITE CSS */

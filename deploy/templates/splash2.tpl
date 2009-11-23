@@ -1,18 +1,18 @@
     {$header}
     
-{if $login_error}
-      <div id='login-error' class="error">
-        That password/username combination was incorrect.  
-        <a href='lostpass.php' target='main'>Lost password?</a>/<a href='sendconfirm.php' target='main'>Account not confirmed?</a>
-        Otherwise, request help with
-        <a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&amp;action=display&amp;thread=1051'>
-        login problems</a> on the forum.
-      </div>
-{/if}
-    
     <!-- Version {$version} -->
 
     <div id='content' class='wrapper'>
+
+      <div id='login-error' class="error {if !$login_error}hidden{/if}">
+        That password/username combination was incorrect.  
+        <a href='lostpass.php' target='main'>Lost password?</a>
+         / <a href='sendconfirm.php' target='main'>Account not confirmed?</a>
+        Otherwise, request help with
+		<a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&amp;action=display&amp;thread=1051'>login problems</a>
+		on the forum.
+      </div>
+
 
     <div id="menu" class="login-menu">
       <div id="menu-start">
@@ -21,14 +21,14 @@
             <span class="text">
               <input type="hidden" name="ref" value="{$referrer}">
                 <label>
-                  Username:
+                  Username
                   <input name="user" type="text" class="itext">
                 </label>
                 <label>
-                  Password:
+                  Password
                   <input name="pass" type="password" class="itext">
                 </label>
-                <input name="action" type="submit" value="login" class="ibutton formButton">
+                <input name="action" type="submit" value="Login" class="ibutton formButton">
               </span>
             </form>
           </div>
@@ -42,16 +42,15 @@
           <span>
             <a href="{$WEB_ROOT}lostpass.php" target="main" class="blend side">&nbsp;Lost&nbsp;Password?</a> |
           </span>
+            <a href='{$WEB_ROOT}lostconfirm.php' target='main'>Resend Confirmation?</a> |
                   
-          <a href="rules.php" target="main">Rules</a> |
-          <a href="tutorial.php" target="main">Intro</a> |
-          <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
-          <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum </a> |
-          <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a>
+          <a href="{$WEB_ROOT}tutorial.php" target="main">Intro</a> |
+          <a href="{$WEB_ROOT}rules.php" target="main">Rules</a> |
+          <a href="http://ninjawars.pbworks.com/" target="_blank" class="extLink">Wiki</a> |
+          <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum </a> |
+          <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a>
         </div>
         
-        <div id="menu-end">
-        </div>
       </div>
 
       <div id='left-column'>
@@ -71,12 +70,11 @@
             </form>
           </div>
             
-          <div id='announcements'><a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">Announcements</a></div>
           <div id='contact-us'>
-	          <a href='mailto:ninjawarslivebythesword@gmail.com'>Contact Ninjawars Staff</a>
+	        <a href='mailto:ninjawarslivebythesword@gmail.com'>Email Ninjawars Staff</a>
 	      </div>
 	      <div id='staff-page-link'>
-          <a href='staff.php' target='main'>Staff Info Page</a>
+            <a href='staff.php' target='main'><img src='{$IMAGE_ROOT}staff.png' alt='Staff'> Info Page</a>
           </div>
 
       </div>  
@@ -101,7 +99,7 @@
                   </a>
                 </li>
                 <li>
-				  <div id='ninjawars-title'><img src='{$IMAGE_ROOT}ninjawars_title.png' alt='Ninja Wars'></div>
+				  <div id='ninjawars-title'><a href='{$WEB_ROOT}list_all_players.php' target='main'><img src='{$IMAGE_ROOT}ninjawars_title.png' alt='Ninja Wars'></a></div>
                 </li>
                 <li id='village-actions'>
                   <a href='attack_player.php' target='main'>                  
@@ -206,10 +204,9 @@
         <a href="tutorial.php" target="main">Intro</a> |
         <a href="rules.php" target="main">Rules</a> |
         <a href='staff.php' target='main'>Staff</a> |
-          <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
-                <a href="http://ninjawars.proboards19.com/index.cgi?action=calendar" target="_blank" class="extLink">
-                  Calendar</a>
-                  <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a>
+        <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
+        <a href="http://ninjawars.proboards19.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
+        <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
         <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum</a> 
              
       </div>

@@ -2,44 +2,33 @@
 	
 	
 	<p>
-	Please add <strong>{$SYSTEM_MESSENGER_EMAIL}</strong> to the safe email 
-	senders list of your email account before signing up, so you can receive 
-	your confirmation email.
+	  Please add <strong>{$SYSTEM_MESSENGER_EMAIL}</strong> to the safe email 
+	  senders list of your email account before signing up, so you can receive 
+	  your confirmation email.
 	</p>
 	
-	<form action="signup.php" method="post">
-	<div class="FormField">
-	 Username:  <input id="send_name" type="text" name="send_name" maxlength="50" class="textField" value='{$enteredName}'>
+	<form id='signup' action="signup.php" method="post">
+
+    <label for='send_email'>Email Address:</label>  <input id="send_email" type="text" name="send_email" class="textField" value='{$enteredEmail}'>
+
+	 <label for='send_name'>Username:</label>  <input id="send_name" type="text" name="send_name" maxlength="50" class="textField" value='{$enteredName}'>
 	   <div class="description">
 	         Your ninja name can only contain letters, numbers and underscores.
 	    </div>
-	</div>
-	<div class="FormField">
-	  Password:  <input id="key" type="password" maxlength="50" name="key" class="textField">
-	    <div class="description">
-			Your password can only contain letters, numbers, underscores, and interior spaces.
-			  Spaces at the beginning or end will be removed.
-		</div>
-	</div>
-	<div class="FormField">
-	  Ninja Type:  {$class_select}
 
-	  <div class="description">
-	    See the link to the Wiki below for more class information or 
-	    just change your class easily within the game.
+	  <label for='password'>Password:</label>  <input id="key" type="password" maxlength="50" name="key" class="textField">
+	    <div class="description">
+			Letters, numbers, underscores and spaces.  Starting or ending spaces are not allowed.
+		</div>
+
+	  <label for='send_class'>Ninja Type:</label>  {$class_select}
+	  <div class="description"> 
+	  Change class easily within the game, or see the 
+	  <a href="http://ninjawars.pbworks.com/" target="_blank">wiki</a> for more information.
 	  </div>
-	</div>
-	<div class="FormField" style="padding-bottom:2em">
-	    Email Address:  <input id="send_email" type="text" name="send_email" class="textField" value='{$enteredEmail}'>
-	</div>
-	<div class="FormField">
-	  <span style="font-style:italic">Optional:</span> 
-	  &nbsp; Website that linked you to Ninjawars:
-	    <input id="referred_by" type="text" name="referred_by" class="textField" value='{$enteredReferral}'>
-	</div>
-	<div class="submit" style="padding-top:2em">
-	    <input type="submit" name="submit" value="Create New Account" class="formButton">
-	</div>
+
+	    <input type="submit" name="submit" value="Become a Ninja!" class="formButton">
+
 	</form>
 	
 	
@@ -53,7 +42,7 @@
 	</p>
 	<p>
 	More information can be found on 
-	    <a href="http://ninjawars.pbwiki.com/" target="_blank">the Wiki</a>
+	    <a href="http://ninjawars.pbworks.com/" target="_blank">the Wiki</a>
 	    <img src="images/externalLinkGraphic.gif" alt="">.
 	</p>
 
