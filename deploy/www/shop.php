@@ -1,6 +1,6 @@
 <?php
 $alive      = false;
-$private    = true;
+$private    = false;
 $quickstat  = "viewinv";
 $page_title = "Shop";
 

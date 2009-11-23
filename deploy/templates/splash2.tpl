@@ -1,63 +1,66 @@
     {$header}
     
+{if $login_error}
+      <div id='login-error' class="error">
+        That password/username combination was incorrect.  
+        <a href='lostpass.php' target='main'>Lost password?</a>/<a href='sendconfirm.php' target='main'>Account not confirmed?</a>
+        Otherwise, request help with
+        <a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&amp;action=display&amp;thread=1051'>
+        login problems</a> on the forum.
+      </div>
+{/if}
     
     <!-- Version {$version} -->
+
+    <div id='content' class='wrapper'>
+
+    <div id="menu" class="login-menu">
+      <div id="menu-start">
+        <div id="login-bar">
+          <form id="login-form" action="{$WEB_ROOT}index.php#" method="post">
+            <span class="text">
+              <input type="hidden" name="ref" value="{$referrer}">
+                <label>
+                  Username:
+                  <input name="user" type="text" class="itext">
+                </label>
+                <label>
+                  Password:
+                  <input name="pass" type="password" class="itext">
+                </label>
+                <input name="action" type="submit" value="login" class="ibutton formButton">
+              </span>
+            </form>
+          </div>
+
+
+        </div>
+        <div id="menu-info">
+          <span class="signup-link">
+            <a target="main" href="{$WEB_ROOT}signup.php?referrer={$referrer}">Become a Ninja!</a> |
+          </span>
+          <span>
+            <a href="{$WEB_ROOT}lostpass.php" target="main" class="blend side">&nbsp;Lost&nbsp;Password?</a> |
+          </span>
+                  
+          <a href="rules.php" target="main">Rules</a> |
+          <a href="tutorial.php" target="main">Intro</a> |
+          <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
+          <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum </a> |
+          <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a>
+        </div>
+        
+        <div id="menu-end">
+        </div>
+      </div>
 
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
         	<a href='{$WEB_ROOT}list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='ninja list'></a>
         </div>
-            <div>
-                <a target="main" href="player.php?player={$user_id}">{$username}</a>
-            </div>
-            <div id='logged-in-bar'>
-                <div>
-                  <span id='health-status'> </span>
-                </div>
-            </div>
-          <div id="quick-stats" class="boxes">
-            <div class="box-title centered">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('quickstats-and-switch-stats');">
-                Quick Stats <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
-              </a>
-            </div>
-            <div id="quickstats-and-switch-stats">
-              <div class="centered quickstats-container">
-                <a href="quickstats.php" target="quickstats">Player</a> 
-                | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
-              </div>
-              <div id="quickstats-frame-container">
-                <iframe id="quickstats" src="quickstats.php" name="quickstats">
-                  Quick Stats Iframe Display section (Iframes Not supported by this browser)
-                </iframe>
-              </div>
-            </div><!-- End of quickstats and switch container -->
-          </div><!-- End of quickstats section. -->
           
-          <div id="actions" class="boxes active">
-            <div class="box-title">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('actions-menu');">
-                Actions <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
-              </a>
-            </div>
-            <ul class="basemenu" id="actions-menu">
-              <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main"><img src='{$IMAGE_ROOT}shrine.png' alt=''>Heal</a></li>
-              <li>
-                <ul class="submenu">
-                  <li>
-                    <a href="inventory_mod.php?item=Stealth%20Scroll&amp;selfTarget=1&amp;link_back=inventory"
-                     target="main">Stealth</a>
-                  </li>
-                  <li>
-                    <a href="inventory_mod.php?item=Speed%20Scroll&amp;selfTarget=1&amp;link_back=inventory" 
-                    target="main">Speed</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        <div id="ninja-search" class="boxes active">
+          <div id="ninja-search" class="boxes active">
             <form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">
               <div>
                 Find A Ninja:
@@ -68,12 +71,13 @@
             </form>
           </div>
             
-          <!-- Recent Events & Recent Mail will get put in here via javascript -->
-          <div id='recent-events'></div>
-          <div>
-              <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='{$IMAGE_ROOT}messages.png' alt=''></a>
+          <div id='announcements'><a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">Announcements</a></div>
+          <div id='contact-us'>
+	          <a href='mailto:ninjawarslivebythesword@gmail.com'>Contact Ninjawars Staff</a>
+	      </div>
+	      <div id='staff-page-link'>
+          <a href='staff.php' target='main'>Staff Info Page</a>
           </div>
-          <div id='recent-mail'></div>
 
       </div>  
       
@@ -91,15 +95,13 @@
 
             <div id='category-bar'>
               <ul>
-                <li id='status-actions'>
-                  <a href='events.php' target='main'>
-                    <img src='/images/ninja_silhouette_50px.png' alt=''>Status
-                  </a>
-                </li>
                 <li id='combat-actions'>
                   <a href='enemies.php' target='main'>
                     <img src='/images/50pxShuriken.png' alt=''>Combat
                   </a>
+                </li>
+                <li>
+				  <div id='ninjawars-title'><img src='{$IMAGE_ROOT}ninjawars_title.png' alt='Ninja Wars'></div>
                 </li>
                 <li id='village-actions'>
                   <a href='attack_player.php' target='main'>                  
@@ -109,13 +111,6 @@
               </ul>
             </div>
             <div id='subcategory-bar'>
-                <ul id='self-subcategory'>
-                  <li><a href="stats.php" target="main">Stats</a></li>
-                  <li><a href="skills.php" target="main">Skills</a></li>
-                  <li><a href="inventory.php" target="main">Items</a></li>
-                  <!-- Profile -->
-                  <!-- Settings -->
-                </ul>
                 <ul id='combat-subcategory'>
                   <li><a href="list_all_players.php" target="main">Ninjas</a></li>
                   <li><a href="clan.php" target="main">Clans</a></li>
@@ -151,9 +146,6 @@
       
         <div id='ninja-stats' class='header-section'>
         
-        <span id='logout'>
-            <a href="index.php?logout=true">Logout</a>
-        </span>
         
         </div><!-- End of ninja-stats -->
 
@@ -209,16 +201,20 @@
 <!-- TODO: make this absolute, floating at the page bottom as per facebook's bar. -->
         <!-- Substitute dynamic "catchphrases" here eventually -->
         <!-- "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." -->
-        "Helping ninjas stab people since 2003." |
+        "Helping ninjas stab people since 2003."
+         |
         <a href="tutorial.php" target="main">Intro</a> |
         <a href="rules.php" target="main">Rules</a> |
         <a href='staff.php' target='main'>Staff</a> |
-        <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
-        <a href="http://ninjawars.proboards.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
-        <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
-        <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum</a>
+          <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
+                <a href="http://ninjawars.proboards19.com/index.cgi?action=calendar" target="_blank" class="extLink">
+                  Calendar</a>
+                  <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a>
+        <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum</a> 
+             
       </div>
       
+    </div> <!-- End of content div -->
     
 <!-- Validated as of Oct, 2009 -->
 

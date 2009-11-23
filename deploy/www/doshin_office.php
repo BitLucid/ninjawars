@@ -1,6 +1,6 @@
 <?php
 $alive      = false;
-$private    = true;
+$private    = false;
 $quickstat  = false;
 $page_title = "Doshin Office";
 

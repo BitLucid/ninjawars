@@ -3,9 +3,13 @@ $alive      = false;
 $private    = false;
 $quickstat  = false;
 $page_title = "Main";
-
+require_once(LIB_ROOT."specific/lib_player_list.php");
 $header = render_html_for_header('Welcome to Ninjawars', 'main-intro');
+
 $footer = render_footer($quickstat);
+
+
+$active_ninja = render_active(5, $alive_only=true); // Display the currently active ninjas
 
 $progression = render_template('progression.tpl', array('WEB_ROOT'=>WEB_ROOT, 'IMAGE_ROOT'=>IMAGE_ROOT));
 

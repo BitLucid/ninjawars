@@ -6,7 +6,6 @@
 
     <div id="menu" class="login-menu">
       <div id="menu-start">
-{if $is_not_logged_in}
         <div id="login-bar">
           <form id="login-form" action="{$WEB_ROOT}index.php#" method="post">
             <span class="text">
@@ -24,23 +23,17 @@
               </span>
             </form>
           </div>
-{else} <!-- Displayed when logged in -->
-          <div class="logged-in-bar">
-            <a target="main" href="player.php?player={$username}">{$username}</a>
-            | <a target="main" href="messages.php">mailbox</a>
-            <span id='logged-in-bar-health'> </span>
-          </div>
-{/if} <!-- End of login/logged in bar. -->
+
+
         </div>
         <div id="menu-info">
-{if $is_not_logged_in}
           <span class="signup-link">
             <a target="main" href="{$WEB_ROOT}signup.php?referrer={$referrer}">Become a Ninja!</a> |
           </span>
           <span>
             <a href="{$WEB_ROOT}lostpass.php" target="main" class="blend side">&nbsp;Lost&nbsp;Password?</a> |
           </span>
-{/if}
+                  
           <a href="rules.php" target="main">Rules</a> |
           <a href="tutorial.php" target="main">Intro</a> |
           <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki 
@@ -52,26 +45,15 @@
         </div>
         
         <div id="menu-end">
-{if $is_logged_in}
-          <span>
-            <a href="index.php?logout=true">LOGOUT <img class="logout-stop" src="{$IMAGE_ROOT}stop_square.png" alt="[]"></a>
-          </span>
-{/if}
-{if $just_logged_out}
-          <span>
-            You logged out.
-          </span>
-{/if}
         </div>
       </div>
 
 {if $login_error}
-      <div class="error">
+      <div id='login-error' class="error">
         That password/username combination was incorrect.  
-        Be aware that usernames are case sensitive.
-        Or request help with
+        If needed, you can request help
         <a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&amp;action=display&amp;thread=1051'>
-        login issues</a> on the forum.
+        login problems</a> on the forum.
       </div>
 {/if}
 
@@ -79,70 +61,7 @@
 
         <!-- LEFT COLUMN -->
         <div id="leftColumn" class="column">
-          <div id="logo" class="boxes special">
-            <a href="list_all_players.php" target="main"><img src="{$IMAGE_ROOT}50pxShuriken.png" alt="Home"></a>
-          </div>
-{if $is_logged_in}
-          <div id="actions" class="boxes active">
-            <div class="box-title">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('actions-menu');">
-                Actions <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
-              </a>
-            </div>
-            <ul class="basemenu" id="actions-menu">
-              <li id='combat-link'><a href="attack_player.php" target="main">Combat</a></li>
-              <li><a href="enemies.php" target="main">Enemies</a></li>
-              <li><a href="clan.php" target="main">Clan</a></li>
-              <li><a href="inventory.php" target="main">Inventory</a></li>
-              <li>
-                <ul class="submenu">
-                  <li>
-                    <a href="inventory_mod.php?item=Speed%20Scroll&amp;selfTarget=1&amp;link_back=inventory" 
-                    target="main">Speed</a>
-                  </li>
-                  <li>
-                    <a href="inventory_mod.php?item=Stealth%20Scroll&amp;selfTarget=1&amp;link_back=inventory"
-                     target="main">Stealth</a>
-                  </li>
-                </ul>
-              </li>
-              <li><a href="skills.php" target="main">Skills</a></li>
-              <li><a href="stats.php" target="main">Stats</a></li>
-              <li><a href="events.php" target="main">Events</a></li>
-              <li><a href="messages.php" target="main">Mail</a></li>
-            </ul>
-          </div>
-          <div id="places" class="boxes active">
-            <div class="box-title">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('places-menu');">
-                Places <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
-              </a>
-            </div>
-            <ul id="places-menu">
-              <li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt=""></a></li>
-              <li><a href="dojo.php" target="main">Dojo</a></li>
-              <li><a href="casino.php" target="main">Casino</a></li>
-              <li><a href="work.php" target="main">Work</a></li>
-              <li><a href="shop.php" target="main">Shop</a></li>
-              <li><a href="shrine.php" target="main">Shrine <img src="images/shrine.png" alt=""></a></li>
-              <li>
-                <ul class="submenu">
-                  <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main">Heal</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <!-- End of content displayed when logged in -->
-{/if}
 
-          <div id='vicious-killer' class='boxes'>
-            <div class='box-title'>
-              <a href='#' class='show-hide-link' onclick="toggle_visibility('vicious-killer-menu');">
-                Fast Killer:<img class='show-hide-icon' src='{$IMAGE_ROOT}show_and_hide.png' alt='+/-'>
-              </a>
-            </div>
-            <a id='vicious-killer-menu' href='player.php?player={$vicious_killer}' target='main'>{$vicious_killer}</a>
-          </div><!-- End of vicious killer div -->
           <div id='ninja-count-menu' class='boxes passive'>
             <div class='box-title'>
               <a href='#' class='show-hide-link ninja-count' onclick="toggle_visibility('ninja-count');">
@@ -153,18 +72,12 @@
           </div>
 
           <div id="music" class="boxes passive">
-            <div class="box-title">
-              <a href="#" class="show-hide-link music" onclick="toggle_visibility('music-player');">
-                Music <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
-              </a>
-            </div>
-
             <object type="audio/x-midi" data="{$WEB_ROOT}music/samsho.mid" id="music-player">
               <param name="src" value="{$WEB_ROOT}music/samsho.mid">
               <param name="autoplay" value="true">
               <param name="autoStart" value="0">
               <a href="{$WEB_ROOT}music/samsho.mid">
-                Play <img class="play-button" src="{$IMAGE_ROOT}bullet_triangle_green.png" alt="&gt;">
+                Music <img class="play-button" src="{$IMAGE_ROOT}bullet_triangle_green.png" alt="&gt;">
               </a>
             </object>
           </div>
@@ -176,7 +89,6 @@
               </a>
             </div>
             <ul id="links-menu">
-              <li><a href="about.php" target="main">Tutorial</a></li>
               <li><a href="staff.php" target="main">Staff</a></li>
               <li><a href="duel.php" target="main">Duels</a></li>
               <!--  <a href="vote.php" target="main">Vote For NW </a>  -->

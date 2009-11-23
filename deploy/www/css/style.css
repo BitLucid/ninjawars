@@ -118,14 +118,9 @@ h1{
 	padding: 3px;
 }
 #ninjawars-title img{
-	height:70px;
+	height:60px;
 	vertical-align:middle;
 }
-/*
-#ninjawars-title{
-	background-image:url(../images/doshin.png);
-	font-family:'JRandomCRegular', 'Lucida Sans Unicode', 'Lucida Grande', cursive;
-}*/
 
 #nin1{
     color:brown;
@@ -180,6 +175,8 @@ a:link {} a:visited {} a:active {}
 
 .extLink, a.extLink, .extLink a, #menu.extLink, #menu.extLink a, #menu a.extLink {
 	color: SlateBlue;
+    background: url(/images/externalLinkGraphic.gif) right center no-repeat;
+    padding-right: 15px;
 }
 
 ol.aboutUpper {
@@ -411,12 +408,6 @@ td.playerTable {
 }
 #logo-appended img{
 	width:100px;
-}
-
-#content {
-	float:none;
-	margin:0;
-	padding:0;
 }
 
 .main-body { /* For the index page's background image only. */

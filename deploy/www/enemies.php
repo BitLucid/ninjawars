@@ -1,5 +1,5 @@
 <?php
-$private    = true;
+$private    = false;
 $alive      = false;
 $quickstat  = false;
 $page_title = "Enemy List";
