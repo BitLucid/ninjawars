@@ -17,7 +17,7 @@ $logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
 
 $keep_players_until_over_the_number                   = 2000;
 $days_players_have_to_be_older_than_to_be_unconfirmed = 60;
-$maximum_players_to_unconfirm                         = 100;
+$maximum_players_to_unconfirm                         = 200;
 
 // *************** DEITY NIGHTLY, manual-run-output occurs at the bottom.*********************
 
