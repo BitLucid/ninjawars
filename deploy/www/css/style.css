@@ -84,6 +84,7 @@ h1, h2, h3, h4, h5, h6, .subtitle, .title{
 	text-align:center;
 	font-size:1.2em;
 	margin-bottom:.5em;
+	font-weight:bold;
 }
 h1, h2, .title, .player-info .player-name{
 	color:black;
@@ -98,7 +99,7 @@ h1, h2, .title, .player-info .player-name{
     border-radius:16px;
 }
 h1{
-	font-family: Impact, Charcoal, sans-serif;
+	font-family: "edding-780-1","edding-780-2", Impact, Charcoal, sans-serif;
 	font-size:larger;
 }
 .clan-members .subtitle{
@@ -118,12 +119,14 @@ h1{
 	padding: 3px;
 }
 #ninjawars-title img{
-	height:60px;
+	max-height:60px;
 	vertical-align:middle;
+	max-width:100%;
+	
 }
 
 #nin1{
-    color:brown;
+    color:#A52A2A;
 }
 #nin2{
     color:red;
@@ -149,18 +152,19 @@ a {
 	text-decoration: none;
 	font-weight: bolder;
 	font-family: verdana, arial, helvetica, sans-serif;
-	color: SteelBlue;
+	color: #4682B4;
 	/*font-family: Arial Black, Impact, Tahoma Bold, sans-serif;*/
 	/*CadetBlue/YellowGreen/Turquoise/Tomatoe/SteelBlue/SlateBlue/Sienna/Brown/Chartreuse/Crimson*/
 }
 a:hover {
 	color: white;
 	text-decoration: underline;
-	text-shadow: white 0px 0px 2px;
+	text-shadow: white 0 0 2px;
 }
 
-
+/*
 a:link {} a:visited {} a:active {}
+*/
 
 #avatar {
     text-align:center;
@@ -330,7 +334,7 @@ td.playerTable {
 }
 .playerTable .elder-ninja, .player-info .elder-ninja{
 	color:DarkKhaki;
-	background-color:DarkRed;
+	background-color:#8B0000;
 }
 .playerTable .master-ninja, .player-info .master-ninja{
 	color:white;
@@ -355,7 +359,7 @@ td.playerTable {
 
 
 .DeadRow a{
-	color: DarkBlue; /*Darken links to dead players */
+	color: rgb(40, 40, 160); /*Darken links to dead players */
 }
 
 
@@ -433,14 +437,13 @@ td.playerTable {
 
 
 #menu {
-	line-height: 40px;
-	font-size:12px;
-	padding:0;
 	width:100%;
 	height:40px;
-	text-align:center;
-	margin-bottom:3px;
+	line-height: 40px;
+	/*font-size:12px;*/
 	padding:0;
+	margin: 0 0 3px;
+	text-align:center;
 	border-bottom:maroon thin solid;
 	background:#4f0101 bottom url("../images/bg_top_maroon.jpg") repeat-x;
 }
@@ -450,20 +453,13 @@ td.playerTable {
 	list-style-image:none;
 	list-style-position:outside;
 	list-style-type:none;
-}
-#menu li {
-	float:left;
-	padding-right: 15px;
+	margin:0;
+	padding:0;
 }
 #menu-start {
-	width:8%;
-	height:1em;
+	height:100%;
 	float:left;
 	text-align:left;
-}
-#menu-start ul {
-	padding:0;
-	margin-left: 10px;
 }
 .play-button {
 	margin:0;
@@ -473,13 +469,12 @@ td.playerTable {
 	display:inline;
 }
 #menu-info {
-	width:80%;
-	height:1em;
+	height:100%;
 	float:left;
 	text-align:center;
 }
 #menu-info ul {
-	margin-left: 30%;
+	padding: 0 .3em 0;
 }
 
 .centered {
@@ -585,7 +580,7 @@ td.playerTable {
 }
 
 .chatMessages{
-    margin-top:0em;
+    margin-top:0;
     list-style-type:none;
 }
 .chatMessages .chat-time{
@@ -603,7 +598,7 @@ td.playerTable {
 }
 
 #post_msg{
-    margin-top:0em;
+    margin-top:0;
     margin-bottom:0.5em;
 }
 
@@ -773,7 +768,7 @@ table .quickstats td{
 }
 
 .Frozen {
-    background-color:skyblue;
+    background-color:#87CEEB;
     font-style:italic;
     color: red;
 }
@@ -807,7 +802,7 @@ table .quickstats td{
 .active-players ul, .clan-members ul{
     margin:0;
     padding:0 0 0 1em;
-    border:1px dashed darkblue;
+    border:1px dashed #00008B;
     overflow:hidden;
 }
 .active-players li, .clan-members li{
@@ -816,8 +811,8 @@ table .quickstats td{
     padding-right: 5px;
 }
 .player-list-nav .current-page{
-    color:darkgreen;
-    border:thin darkgreen solid;
+    color:#006400;
+    border:thin #006400 solid;
 }
 .player-list-nav form{
     margin:0;
@@ -861,7 +856,7 @@ table .quickstats td{
 	color:maroon;
 }
 .red {
-    color: crimson;
+    color: #DC143C;
     background-color:red;
 }
 .hidden {
@@ -893,7 +888,7 @@ table .quickstats td{
     float: left;
 }
 #leader-options{
-    padding: 5px 5px 5px 5px;
+    padding: 5px;
     width: 100%;
 }
 #leader-panel-title {
@@ -920,7 +915,7 @@ table .quickstats td{
     color: blue;
     background-color:maroon;
     float:left;
-    margin: 5px 5px 5px 5px;
+    margin: 5px;
     list-style-type: none;
 }
 
@@ -947,7 +942,7 @@ table .quickstats td{
     float:left;
     color:orange;
     background-color:green;
-    margin: 5px 5px 5px 5px;
+    margin: 5px;
 }
 #clan-page-title {
     text-align: center;
@@ -1030,8 +1025,8 @@ body.ninjawars-staff{
 }
 
 .developer{
-	border-left:thin darkred solid;
-	border-top:thin darkred solid;
+	border-left:thin #8B0000 solid;
+	border-top:thin #8B0000 solid;
 	margin: .5em 0 .5em 0;
 	padding: .3em 0 .5em .2em;
 }
@@ -1196,8 +1191,6 @@ body.ninjawars-staff{
     border-bottom: thick solid #330000;
     color:white;
 }
-#menu-bar {
-}
 #ninjawars-home{
     background-color:black;
     color: white;
@@ -1214,8 +1207,6 @@ body.ninjawars-staff{
     color: white;
 }
 
-#ninja-stats{
-}
 #logout{
 	background-image:url('../images/logoutArrow.png');
 	background-repeat:no-repeat;
@@ -1308,8 +1299,8 @@ body.ninjawars-staff{
     float:left;
     margin-left:0;
 }
-#subcategory-bar ul#combat-subcategory{
-}
+/*#subcategory-bar ul#combat-subcategory{
+}*/
 #subcategory-bar ul#village-subcategory{
     float:right;
     margin-right:0;
