@@ -17,7 +17,7 @@ echo render_json($type, $jsoncallback);
  * Determine which function to call to get the json for.
 **/
 function render_json($type, $jsoncallback){
-    $valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message');
+    $valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index');
     $res = null;
     if($valid_type_map[$type]){
         $res = $jsoncallback.'('.$valid_type_map[$type]().')';   
@@ -50,6 +50,21 @@ function json_chats(){
     $chats = $sql->FetchAll("select * from chat order by time desc");
     return '{"chats":'.json_encode($chats).'}';
 }
+
+function json_index(){
+	$sql = new DBAccess();
+	$player = get_player_info();
+	$events = array();
+	$messages = array();
+	$user_id = $player['player_id'];
+	if($user_id){
+		$events = $sql->FetchAll("select event_id, message as event, date, send_to, send_from, unread, uname as sender from events join players on player_id = send_from where send_to = '".sql($user_id)."' order by date desc limit 1");
+		//$chats = $sql->FetchAll("select * from chat order by time desc");
+		$messages = $sql->FetchAll("select message_id, message, date, send_to, send_from, unread, uname as sender from messages join players on player_id = send_from where send_to = '".sql($user_id)."' and send_from != '".sql($user_id)."' order by date desc limit 1");
+	}
+	return '{"player":'.json_encode($player).',"message":'.json_encode(reset($messages)).',"event":'.json_encode(reset($events)).'}';
+}
+
 
 
 ?>
