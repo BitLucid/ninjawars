@@ -41,15 +41,10 @@
             <a target="main" href="{$WEB_ROOT}signup.php?referrer={$referrer}">Become a Ninja!</a> |
           </span>
           <span>
-            <a href="{$WEB_ROOT}lostpass.php" target="main" class="blend side">&nbsp;Lost&nbsp;Password?</a> |
+            <a href="{$WEB_ROOT}lostpass.php" target="main" class="blend side">Lost&nbsp;Password?</a> |
           </span>
-            <a href='{$WEB_ROOT}lostconfirm.php' target='main'>Resend Confirmation?</a> |
-                  
-          <a href="{$WEB_ROOT}tutorial.php" target="main">Intro</a> |
-          <a href="{$WEB_ROOT}rules.php" target="main">Rules</a> |
-          <a href="http://ninjawars.pbworks.com/" target="_blank" class="extLink">Wiki</a> |
-          <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum </a> |
-          <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a>
+            <a href='{$WEB_ROOT}lostconfirm.php' target='main'>Resend&nbsp;Confirmation?</a>
+            <!-- Already available via main <a href="{$WEB_ROOT}tutorial.php" target="main">Intro</a> |-->
         </div>
         
       </div>
