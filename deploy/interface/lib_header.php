@@ -44,7 +44,8 @@ function render_html_for_header($title=null, $body_classes='body-default', $is_i
 		'WEB_ROOT'=>WEB_ROOT,
 		'local_js'=>(OFFLINE || DEBUG? true : false),
 		'DEBUG'=>DEBUG,
-		'is_index'=>$is_index
+		'is_index'=>$is_index,
+		'logged_in'=>get_user_id()
 	);
 	return render_template('header.tpl', $parts);
 }
