@@ -1317,5 +1317,18 @@ body.ninjawars-staff{
 form #signup .submit{
 	margin-top:2em;
 }
-
+select option #red-class-select{
+	color:maroon;
+}
+select option #black-class-select{
+	background-color:black;
+	color:white;
+}
+select option #white-class-select{
+	font-weight:bold;
+}
+select option #blue-class-select{
+	color:blue;
+	font-weight:bold;
+}
 /* END OF INDEX REWRITE CSS */
