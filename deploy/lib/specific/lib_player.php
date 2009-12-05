@@ -409,10 +409,10 @@ function render_class_select($current) {
 ?>
 	  <select id="send_class" name="send_class">
 	    <option value="">Pick Ninja Color</option>
-	    <option value="Red" <?php if($current=='Red') { echo 'selected="selected"'; } ?>>Red - Strength</option>
-	    <option value="Blue" <?php if($current=='Blue') { echo 'selected="selected"'; } ?>>Blue - Speed</option>
-	    <option value="White" <?php if($current=='White') { echo 'selected="selected"'; } ?>>White - Healing</option>
-	    <option value="Black" <?php if($current=='Black') { echo 'selected="selected"'; } ?>>Black - Poison</option>
+	    <option value="Red" id='red-class-select' <?php if($current=='Red') { echo 'selected="selected"'; } ?>>Red - Strength</option>
+	    <option value="Blue" id='blue-class-select' <?php if($current=='Blue') { echo 'selected="selected"'; } ?>>Blue - Speed</option>
+	    <option value="White" id='white-class-select' <?php if($current=='White') { echo 'selected="selected"'; } ?>>White - Healing</option>
+	    <option value="Black" id='black-class-select' <?php if($current=='Black') { echo 'selected="selected"'; } ?>>Black - Poison</option>
 	  </select>
 <?php
     $res = ob_get_contents();
