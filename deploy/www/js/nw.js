@@ -20,30 +20,31 @@ function createNW(){
     return innerNW;
 }
 
-$ = window.$ ? window.$ : jQuery;
-NW = window.NW ? window.NW : createNW();
+$ = typeof window.$ == 'object' ? window.$ : jQuery;
+NW = typeof window.NW == 'object' ? window.NW : createNW();
 
 // GLOBAL FUNCTIONS
 
-
-// Determines the update interval, 
-//increases when feedback == false, rebaselines when feedback == true
-function getUpdateInterval(feedback){
-    var interval = (feedback || !NW.updateInterval)? 30 : (NW.updateInterval<300 ? NW.updateInterval+1 : 180);
-    // For now, put the interval at 30 until I have the increasing method set up.
-    NW.updateInterval = interval; // Store the current value.
-    return interval;
-    // Start is about 10 sec, max is 3 minutes.
+// Not secure, just convenient.
+function isLoggedIn(){
+	return NW.loggedIn;
 }
 
-// JS Update Heartbeat
-function chainedUpdate(chainCounter){
-    chainCounter = chainCounter ? chainCounter : 1;
-    var feedback = updateIndex(chainCounter); 
-    // Update and get good or bad feedback to increase or decrease interval.
-    var secondInterval = getUpdateInterval(feedback); 
-    setTimeout(function (){chainedUpdate(chainCounter);}, secondInterval*1000); // Repeat once the interval has passed.
-    // If we need a to cancel the update down the line, store the id that setTimeout returns.
+function setLoggedIn(){
+	NW.loggedIn = 1;
+}
+
+function clearLoggedIn(){
+	NW.loggedIn = 0;
+}
+
+// Returns true when debug bit set or localhost path used.
+function debug(arg){
+	if(NW.debug || !isLive()){
+		if(console){console.log(arg);}
+		return true;
+	} 
+	return false;
 }
 
 // Update the chat page without refresh.
@@ -58,83 +59,85 @@ function chainedUpdate(chainCounter){
 // update the "latest chat id" var.
 //}
 
-function updateLatestMessage(){
-    $.getJSON('api.php?type=latest_message&jsoncallback=?', function(data){
-        var message = data.message
-            if(NW.latest_message_id == message.message_id){
-                // Don't need to update the text.
-                if(!message.unread){
-                    $('#recent-mail .latest-message-text').removeClass('message-unread');
-                }
-                return false;
-            }
 
-            NW.latest_message_id = message.message_id; // Store latest message.
-            $('#recent-mail').html("<div class='latest-message'><div id='latest-message-title'>Latest Message:</div><a href='player.php?player="+message.send_from+"' target='main'>"+message.sender+"</a>: <span class='latest-message-text "+(message.unread? "message-unread" : "")+"'>"+message.message.substr(0, 12)+"...</span> </div>");
-            // if unread, Add the unread class until next update.
-            // Pull a message with a truncated length of 12.
-        });
-    return true;
+function writeLatestEvent(event){
+	$('#recent-events', top.document).html("<div class='latest-event'><div id='latest-event-title'>Latest Event via <a href='player.php?player="+event.send_from+"' target='main'>"+event.sender+"</a>:</div><span class='latest-event-text "+(event.unread? "message-unread" : "")+"'>"+event.event.substr(0, 12)+"...</span></div>");
+    // if unread, Add the unread class until next update.
+    // Pull a message with a truncated length of 12.
 }
-
 
 function updateLatestEvent(){
-    $.getJSON('api.php?type=latest_event&jsoncallback=?', function(data){
-        var event = data.event;
-        if(NW.latest_event_id == event.event_id){
-            if(!event.unread){
-                $('#recent-events .latest-event-text').removeClass('message-unread');
-            }
-            return false; // Nothing to update.
-        }
-        NW.latest_event_id = event.event_id; // Store latest event.
-        // Add the unread class until next update.
-
-        $('#recent-events').html("<div class='latest-event'><div id='latest-event-title'>Latest Event via <a href='player.php?player="+event.send_from+"' target='main'>"+event.sender+"</a>:</div><span class='latest-event-text "+(event.unread? "message-unread" : "")+"'>"+event.event.substr(0, 12)+"...</span></div>");
-        // Pull a message with a truncated length of 12.
-    });
-    return true; // There was a valid update.
+	var updated = false;
+	if(!NW.event){
+		updated = true; // Try again shortly.
+	}else if(NW.visibleEventId == NW.event.event_id){
+		// Makes the event read every update interval.
+        $('#recent-events .latest-event-text', top.document).removeClass('message-unread');
+	} else {
+		updated = true;
+		NW.visibleEventId = NW.event.event_id;
+        writeLatestEvent(event);
+	}
+	return updated;
 }
 
 
-// Keep in mind the need to use window.parent when calling from an iframe.
+function writeLatestMessage(message){
+		// TODO: Transform the appended html into hidden html that gets fleshed out and marked visible by this function.
+        // if unread, Add the unread class until next update.
+        // Pull a message with a truncated length of 12.
+		$('#recent-mail', top.document).html("<div class='latest-message'><div id='latest-message-title'>Latest Message:</div><a href='player.php?player="+message.send_from+"' target='main'>"+message.sender+"</a>: <span class='latest-message-text "+(message.unread? "message-unread" : "")+"'>"+message.message.substr(0, 12)+"...</span> </div>");
+}
+
+
+function updateLatestMessage(){
+	var updated = false;
+	if(!NW.message){
+		updated = true; // Check for info again shortly.
+	}else if(NW.visibleMessageId == NW.message.message_id){
+        if(!message.unread){ // Only turn a message read if it actually has been in the message page.
+			$('#recent-mail .latest-message-text', top.document).removeClass('message-unread');
+		}
+	} else {
+		updated = true;
+		NW.visibleMessageId = NW.message.message_id;
+		writeLatestMessage(message);
+	}
+	return updated;
+}
+
+
+
 function updateHealthBar(health){
     // Should only update when a change occurs.
-    if(health != NW.currentHealth){
+    if(health != NW.visibleHealth){
         var mess = health+' health';
         var span = $('#health-status', top.document);
+        // Keep in mind the need to use window.parent when calling from an iframe.
         span.text(mess);
         if(health<100){
             span.addClass('injured');
         } else {
             span.removeClass('injured');
         }
-        NW.currentHealth = health;
+        NW.visibleHealth = health;
         return true;
     }
     return false;
 }
 
-//function checkForInfoChanges(){
-    // Get everything all at once from the api.
-    // If info isn't stored, store it.
-    // Check if each info is changed.
-    // If changed, run each update functionality.
-//    $.getJSON('api.php?type=all&jsoncallback=?', function(data){
-//    });
-//}
 
 function getAndUpdateHealth(){
-    var res = false;
-    NW.currentHealth = NW.currentHealth ? NW.currentHealth : null;
-    $.getJSON('api.php?type=player&jsoncallback=?', function(data){
-        if(data.player.health != NW.currentHealth){
-            res = updateHealthBar(data.player.health);
-            // That will also update the global currentHealth.
-        }
-    });
-    return res; // Whether there was anything to update.
+    var updated = false;
+    NW.playerInfo.health = NW.playerInfo.health ? NW.playerInfo.health : null;
+    if(NW.playerInfo.health !== null && NW.visibleHealth != NW.playerInfo.health){
+    	updateHealthBar(NW.playerInfo.health);
+    	updated = true;
+    }
+    return updated;
 }
+
+
 
 // Update display elements that live on the index page.
 function updateIndex(){
@@ -144,13 +147,69 @@ function updateIndex(){
     // health bar.
     var healthUpdated = getAndUpdateHealth();
     var res = (!!(messageUpdated || eventUpdated || healthUpdated));
-	if(debug() && console){
-    	console.log(messageUpdated);
-    	console.log(eventUpdated);
-    	console.log(healthUpdated);
-    }
+    debug("Message Updated: "+messageUpdated);
+    debug("Event Updated: "+eventUpdated);
+    debug("Health Updated: "+healthUpdated);
     return res; // determines good or bad feedback.
 }
+
+
+function updateIndexInfo(){
+	var updated = false;
+    $.getJSON('api.php?type=index&jsoncallback=?', function(data){
+		if(data.player && data.player.player_id && !NW.playerInfo || !NW.playerInfo.health || data.player.health != NW.playerInfo.health || data.player.last_attacked != NW.playerInfo.last_attacked){
+	    	NW.playerInfo = data.player;
+	    	updated = true;
+	    }
+	    if(data.message && data.message.message_id && !NW.latestMessage || NW.latestMessage && NW.latestMessage.message_id != data.message.message_id){
+	    	NW.latestMessage = data.message;
+	    	updated = true;
+	    }
+	    if(data.event && data.event.event_id && !NW.latestEvent || NW.latestEvent.event_id != data.event.event_id){
+	    	NW.latestEvent = data.event;
+	    	updated = true;
+	    }
+	}); // End of getJSON function call.
+    if(updated){
+    	updateIndex(); // Always redisplay for any poll that has information updates.
+    }
+	return updated;
+}
+
+
+// Determines the update interval, 
+//increases when feedback == false, rebaselines when feedback == true
+function getUpdateInterval(feedback){
+	var maxInt = 180;
+	var min = 30;
+	var first = 5;
+	if(!NW.updateInterval){
+		NW.updateInterval = first;
+	} else if(feedback){
+		NW.updateInterval = min;
+	} else if(NW.updateInterval>=maxInt){
+		NW.updateInterval = maxInt;
+	} else {
+		NW.updateInterval++;
+	}
+    return NW.updateInterval;
+}
+
+// JS Update Heartbeat
+function chainedUpdate(chainCounter){
+    var chainCounter = !!chainCounter ? chainCounter : 1;
+    // Skip the update if not logged in.
+    // Skip the heartbeat the first time through, and skip it if not logged in.
+    var feedback = (isLoggedIn() && chainCounter != 1? updateIndexInfo() : true);
+    // Update and get good or bad feedback to increase or decrease interval.
+    var furtherIntervals = getUpdateInterval(feedback); 
+    debug(furtherIntervals);
+    debug("chainCounter: "+chainCounter);
+    chainCounter++;
+    setTimeout(function (){chainedUpdate(chainCounter);}, furtherIntervals*1000); // Repeat once the interval has passed.
+    // If we need a to cancel the update down the line, store the id that setTimeout returns.
+}
+
 
 // When clicking frame links, load a section instead of the iframe.
 function frameClickHandlers(links, div){
@@ -186,16 +245,12 @@ function refreshQuickstats(quickView){
 }
 
 function isIndex(){ // Return true if the index page.
+	// Not great because it doesn't allow for pretty urls, down the line.  
 	return (window.location.pathname.substr(-9,9) == 'index.php');
 }
 
 function isLive(){
 	return window.location.host  != 'localhost';
-}
-
-// Returns true when debug bit set or localhost path used.
-function debug(){
-	return NW.debug || !isLive();
 }
 
 function isRoot(){
@@ -204,11 +259,6 @@ function isRoot(){
 
 function isSubpage(){
 	return !isIndex() && !isRoot() && (window.parent == window);
-}
-
-// Not secure, just convenient.
-function isLoggedIn(){
-	return true;
 }
 
 /**
@@ -224,12 +274,9 @@ function logoAppend(){
 $(document).ready(function() {
    
     // INDEX ONLY CHANGES 
-    if(isIndex() || isRoot()){
-    	// Not great because it doesn't allow for pretty urls, down the line.   
+    if(isIndex() || isRoot()){ 
 
-		if(isLoggedIn()){
-	       	chainedUpdate(); // Start the periodic index update.
-	    }
+		chainedUpdate(); // Start the periodic index update.
        	
        /* Collapse the following parts of the index */
         $("#links-menu").toggle();
@@ -242,40 +289,21 @@ $(document).ready(function() {
         
         
         var quickstatsLinks = $("a[target='quickstats']");
-        quickstatsLinks.css({'font-style':'italic'}); // Hide all links using target as a test.
+        quickstatsLinks.css({'font-style':'italic'}); // Italicize 
         var quickDiv =  $('div#quickstats-frame-container');
         //quickDiv.load('quickstats.php');
         // Add the click handlers for loading the quickstats frame.
-        frameClickHandlers(quickstatsLinks, quickDiv);
+        frameClickHandlers(quickstatsLinks, quickDiv); // Load new contents into the div when clicked.
         NW.quickDiv = quickDiv;
         
-        /*
-        miniChatLinks = $("a[target='mini_chat']");
-        miniChatLinks.css({'font-style':'italic'}); // Hide all links using target as a test.
-        chatDiv = $('div#mini-chat-frame-container');
         
-        frameClickHandlers(miniChatLinks, chatDiv);
-        
-        mainLinks = $("a[target='main']");
-        mainLinks.css({'font-style':'italic'}); // Hide all links using target as a test.
-        mainDiv = $('div#main-frame-container');
-        mainDiv.hide();
-        // The mainDiv handler would want to refresh quickstats when it loads if it's
-        // footer gets excluded.
-        */
-    }    
+    }
     
     /* THIS CODE RUNS FOR ALL SUBPAGES */
-    logoAppend(); // Append link back to main page for any lone subpages not in iframes.
-    
-    // TODO: Analyze whether it's good for this code to run in auto-loaded subpages in iframes, e.g. chat, quickstats.
+    logoAppend(); // Append a link back to main page for any lone subpages not in iframes.
         
     // GOOGLE ANALYTICS
-    /* Original suggested header include, I made it nw specific with
-    // http://www and just included the file directly <script type="text/javascript">
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-    doscument.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script> */
+    /* There's a script include that goes with this, but I just put it in the head directly.*/
     try {
     var pageTracker = _gat._getTracker("UA-707264-2");
     pageTracker._trackPageview();

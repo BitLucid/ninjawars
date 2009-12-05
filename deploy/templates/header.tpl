@@ -29,6 +29,19 @@
     {/if}
     <!-- All the global ninjawars javascript -->
 	<script type="text/javascript" src="{$WEB_ROOT}js/nw.js"></script>
+		{if $logged_in}
+	<script type="text/javascript">
+	<!--
+		setLoggedIn();
+	// -->
+	</script>
+	{else}
+	<script type="text/javascript">
+	<!--
+		clearLoggedIn();
+	// -->
+	</script>
+	{/if}
 </head>
 <body class='{$body_classes}'>
 {if !$is_index}
