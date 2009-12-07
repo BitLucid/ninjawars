@@ -451,7 +451,7 @@ function create_player($send_name, $params=array()){
 		 (uname, pname, health, strength, gold, messages, kills, turns, confirm, confirmed,
 		  email, class, level,  status, member, days, ip, bounty, clan, clan_long_name, created_date)
 		 VALUES
-		 ('$send_name','$send_pass','150','5','100','','0','80','$confirm','$preconfirm',
+		 ('$send_name','$send_pass','150','5','100','','0','180','$confirm','$preconfirm',
 		 '$send_email','$send_class','1','1','0','0','','0','','', now())";
 	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 	$sql->Insert($playerCreationQuery);
