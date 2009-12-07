@@ -15,4 +15,4 @@ This message is from SysMsg, the AUTOMATED email system for NinjaWars. <br>
 	Username: {$send_name}<br>
 	Level: 1<br>
 	Password: ***yourpassword***<br>
-	Class: {$send_class} Ninja"
+	Class: {$send_class} Ninja
