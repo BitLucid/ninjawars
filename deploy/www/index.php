@@ -57,7 +57,7 @@ if ($is_logged_in) {
 
 $parts = get_certain_vars(get_defined_vars(), array('vicious_killer'));
 if(!$is_logged_in){
-    echo render_template('splash2.tpl', $parts); // Non-logged in template.
+    echo render_template('splash.tpl', $parts); // Non-logged in template.
 } else {
     echo render_template('index.tpl', $parts); // Logged in template.
 }
