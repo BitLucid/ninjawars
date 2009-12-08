@@ -177,6 +177,10 @@ a:link {} a:visited {} a:active {}
 	/*seaGreen/Teal*/
 }
 
+#menu label{
+    font-family: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, serif;
+}
+
 .extLink, a.extLink, .extLink a, #menu.extLink, #menu.extLink a, #menu a.extLink {
 	color: SlateBlue;
     background: url(/images/externalLinkGraphic.gif) right center no-repeat;
@@ -274,6 +278,16 @@ table.playerTable .Blue, .player-info .Blue {
 table.playerTable .Black, .player-info .Black {
 	color:black;
 	background-color:white;
+}
+
+.player-status, .ninja-error{
+    margin: 0 auto 0;
+    display:inline-block;
+    border: 1px solid #BDB76B;/*DarkKhaki*/
+    -webkit-border-radius:16px;
+    -moz-border-radius:16px;
+    -op-border-radius:16px;
+    border-radius:16px;
 }
 
 .your-stats #player-profile{
@@ -728,18 +742,20 @@ table .quickstats td{
 /* Errors and Notices and the Like */
 
 .ninja-error{
-	color:Red;
-	background-color:YellowGreen;
-	font-family: 'Comic Sans Ms', cursive;
+	color:#735005;
+	background-color:#F4A83D;
+	border-bottom:1px solid #D6800C;
+	font-family: ‘Trebuchet MS’, Helvetica, sans-serif;
 	font-weight:bold;
 	font-variant:small-caps;
 	font-size:130%;
 	padding: 3px;
 }
+
 .ninja-notice{
 	color:Brown;
 	background-color:DarkKhaki;
-	font-family: 'Comic Sans Ms', cursive;
+	font-family: Tahoma, Geneva, sans-serif;
 	text-align:center;
 	font-weight:bold;
 	padding: 3px;
@@ -749,6 +765,7 @@ table .quickstats td{
     font-weight:bold;
     color:black;
     background-color:#c75600;
+    border: 1px solid #c75600;
 }
 /*
 .player-clan .subtitle{
@@ -786,7 +803,7 @@ table .quickstats td{
 .notice, .informational{
 	color:Black;
 	background-color:DarkKhaki;
-	font-family: Times, serif;
+	font-family: ‘Lucida Console’, Monaco, monospace;
 	text-align:center;
 	font-weight:bold;
 	font-size:130%;
@@ -795,7 +812,7 @@ table .quickstats td{
 
 .notice a, .informational a{
 	color:Blue;
-	font-family: Times, serif;
+	font-family: ‘Lucida Console’, Monaco, monospace;
 }
 
 /*List all players and player profile styles*/
