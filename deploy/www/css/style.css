@@ -173,7 +173,7 @@ a:link {} a:visited {} a:active {}
 }
 
 #menu a { /*Menu actions are a lighter blue to pop better on the red */
-	color: CornflowerBlue;
+	color: #6495ED;/*CornflowerBlue;*/
 	/*seaGreen/Teal*/
 }
 
