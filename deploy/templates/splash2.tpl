@@ -91,7 +91,7 @@
               <ul>
                 <li id='combat-actions'>
                   <a href='enemies.php' target='main'>
-                    <img src='/images/50pxShuriken.png' alt=''>Combat
+                    <img src='images/50pxShuriken.png' alt=''>Combat
                   </a>
                 </li>
                 <li>
@@ -99,7 +99,7 @@
                 </li>
                 <li id='village-actions'>
                   <a href='attack_player.php' target='main'>                  
-                    <img src='/images/pagodaIcon_60px.png' alt=''>Village
+                    <img src='images/pagodaIcon_60px.png' alt=''>Village
                   </a>
                 </li>
               </ul>
