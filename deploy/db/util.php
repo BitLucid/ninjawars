@@ -13,8 +13,7 @@ class DBAccess {
     	$this->Create(); // Makes the constructor call for the creation of the pdo connection.
     }
     // *** Constructor.
-    function Create ($deprec=NULL) // *** first argument is no longer required, since it runs off resources file.
-	{
+    function Create () {
         $this->pdo = new PDO(CONNECTION_STRING);
 
         // *** This could just use a function to call the database connection
