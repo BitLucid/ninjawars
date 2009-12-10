@@ -52,7 +52,7 @@
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
-        	<a href='{$WEB_ROOT}list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='ninja list'></a>
+        	<a href='{$WEB_ROOT}list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='Ninjawars Intro' title='ninja list'></a>
         </div>
           
           <div id="ninja-search" class="boxes active">
@@ -95,7 +95,7 @@
                   </a>
                 </li>
                 <li>
-				  <div id='ninjawars-title'><a href='{$WEB_ROOT}list_all_players.php' target='main'><img src='{$IMAGE_ROOT}ninjawars_title.png' alt='Ninja Wars'></a></div>
+				  <div id='ninjawars-title'><a href='{$WEB_ROOT}tutorial.php' target='main'><img src='{$IMAGE_ROOT}ninjawars_title.png' alt='Ninja Wars'></a></div>
                 </li>
                 <li id='village-actions'>
                   <a href='attack_player.php' target='main'>                  
