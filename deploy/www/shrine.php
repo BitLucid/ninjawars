@@ -7,7 +7,7 @@ $quickstat  = "player";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<div class="brownTitle">Shrine</div>
+<h1>Shrine</h1>
 
 <div class="description">
   The shrine to the gods is peacefully quiet as you enter. The sound of flowing water soothes your mind.

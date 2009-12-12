@@ -7,7 +7,7 @@ $page_title = "Casino";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<div class="brownTitle">Casino</div>
+<h1>Casino</h1>
 
 <div class="description">
   You walk down the alley towards a shadowed door. As you enter the small casino, a guard eyes you with caution.

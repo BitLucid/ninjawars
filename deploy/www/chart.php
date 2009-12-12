@@ -7,7 +7,7 @@ $page_title = "Advancement Chart";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<div class="brownTitle">Dojo Chart</div>
+<h1>Dojo Advancement Chart</h1>
 <div class="description">
   <br>
   Hanging on the wall of the dojo is a scroll outlining the training requirements for all ninjas.

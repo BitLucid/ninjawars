@@ -1,9 +1,5 @@
 {$header}
-
-<script type='text/javascript' src="{$JS_ROOT}staffPage.js"></script>
-
-<h2 class="title">Ninjawars Staff</h2>
-
+<h1>Ninjawars Staff</h1>
   <p>
     The preferred method of contacting us with problems or bugs with the game is via the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.
     For other issues, including confirmation problems, email us at: <a href="mailto:{$SUPPORT_EMAIL}">{$SUPPORT_EMAIL}</a>
@@ -108,5 +104,5 @@
   <div id='random-ninja-images'>
   <h3 class='subtitle'>And now for something completely different:</h3>
   </div>
-
+<script type='text/javascript' src="{$JS_ROOT}staffPage.js"></script>
 {$footer}

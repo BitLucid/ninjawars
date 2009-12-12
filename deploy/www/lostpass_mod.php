@@ -7,7 +7,7 @@ $alive      = false;
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Retriving Password</span>
+<h1>Retriving Password</h1>
 
 <p>
 

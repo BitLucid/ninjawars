@@ -9,7 +9,7 @@ include(OBJ_ROOT."Skill.php");
 $skillsListObj = new Skill();
 ?>
 
-<div class="brownHeading">Shrine Effects</div>
+<h1>Shrine Effects</h1>
 
 <hr>
 

@@ -9,8 +9,7 @@ include SERVER_ROOT."interface/header.php";
 $stats          = membership_and_combat_stats($sql);
 $vicious_killer = $stats['vicious_killer'];
 ?>
-
-<h2>Today's Duels: Reset Nightly</h2>
+<h1>Today's Duels</h1>
 
 <div id='vicious-killer'>
     Current Fastest Killer: 

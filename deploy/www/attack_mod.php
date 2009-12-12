@@ -37,12 +37,12 @@ if($recent_attack && $recent_attack>($start_of_attack-$attack_spacing)){
 
 ?>
 
-<span class="brownHeading">Battle Status</span>
+<h1>Battle Status</h1>
 
 <hr>
 
 <?php
-// TODO: Turn this page/system into an object to be run.
+// TODO: Turn this page/system into a function to be rendered.
 
 // *** ********* GET VARS FROM POST - OR GET ************* ***
 $attacked = in('attacked'); // boolean for attacking again

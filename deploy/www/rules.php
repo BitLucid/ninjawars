@@ -6,7 +6,7 @@ $page_title = "Rules";
 
 include SERVER_ROOT."interface/header.php";
 ?>
-<span class="brownHeading">Fair Play Rules</span>
+<h1>Fair Play Rules</h1>
 <ul>
 	<li> <b style="color:red">Do not multiplay.</b></li>
 	Multiplaying is actively using two or more characters.<br>

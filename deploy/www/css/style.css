@@ -82,25 +82,38 @@ hr {
 h1, h2, h3, h4, h5, h6, .subtitle, .title{
 	font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 	text-align:center;
-	font-size:1.2em;
-	margin-bottom:.5em;
+	margin-bottom:.3em;
 	font-weight:bold;
+	background-color:#303030;
+	color:#cccccc;
 }
 h1, h2, .title, .player-info .player-name{
 	color:black;
 	background-color:#BDB76B;/*DarkKhaki*/
+	color:#000000;
+	font-weight:bolder;
 	text-align:center;
-	font-weight:bold;
 	font-size:1.5em;
     border: 1px solid #BDB76B;/*DarkKhaki*/
-    -webkit-border-radius:16px;
+    width: 70%;
+    margin-left:auto;
+    margin-right:auto;
+    /*-webkit-border-radius:16px;
     -moz-border-radius:16px;
     -op-border-radius:16px;
-    border-radius:16px;
+    border-radius:16px;*/
+}
+h2{
+    margin-left: auto;
+    margin-right: auto;
+    width:50%;
 }
 h1{
 	font-family: "edding-780-1","edding-780-2", Impact, Charcoal, sans-serif;
-	font-size:larger;
+	font-size:150%;
+	max-width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
 }
 .clan-members .subtitle{
     background-color:#BDB76B;/*DarkKhaki*/
@@ -137,11 +150,12 @@ h1{
 
 ul {
 	list-style-type: none;
+	margin-left:1.5em;
 }
 
 img {
       border: 0;
-      }
+}
 
 select {
 	font-family:Verdana, Arial, sans-serif;
@@ -174,9 +188,7 @@ a:link {} a:visited {} a:active {}
 
 #menu a { /*Menu actions are a lighter blue to pop better on the red */
 	color: #6495ED;/*CornflowerBlue;*/
-	/*seaGreen/Teal*/
 }
-
 #menu label{
     font-family: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, serif;
 }
@@ -190,11 +202,11 @@ a:link {} a:visited {} a:active {}
 ol.aboutUpper {
 	list-style-type: upper-roman;
 	margin-left: 0;
-	}
+}
 ol.aboutLower {
 	list-style-type: lower-alpha;
 	margin-left: 0;
-	}
+}
 
 input.shopButton {
 	font-family: Verdana,Arial,sans-serif;
@@ -209,7 +221,7 @@ input.formButton {
 }
 input.textField {
 	font-family:Verdana, Arial, sans-serif;
-	font-size:xx-small;
+	font-size:x-small;
 }
 div.description {
 	text-align: center;
@@ -217,6 +229,32 @@ div.description {
 	margin-top: 10px;
 	margin-bottom: 20px;
 }
+form#signup .description{
+    display:inline;
+    border-bottom: none;
+    margin: .5em 0 .5em;
+}
+form input#become-a-ninja{
+    margin-left:auto;
+    margin-right:auto;
+}
+fieldset { 
+    border:2px groove #800000; 
+    margin-bottom: .5em;
+    padding-left: .5em;
+    padding-bottom: .5em;
+}
+legend {
+  padding: 0.2em 0.5em;
+  margin-right: 2em;
+  border:2px solid #800000;
+  color:#ffffff;
+  font-style:italic;
+  font-size:90%;
+  text-align:center;
+}
+
+
 
 /*TABLES, general and specific */
 
@@ -690,7 +728,7 @@ table .quickstats td{
 
 /* Login menu and login-bar config */
 .login-menu { /* See also the #menu entry */
-	font-family: arial,helvetica,Verdana,sans-serif;
+	font-family: helvetica,Verdana,sans-serif;
 }
 .login-menu #menu-start{
 	width:50%;
@@ -961,9 +999,6 @@ table .quickstats td{
     background-color:green;
     margin: 5px;
 }
-#clan-page-title {
-    text-align: center;
-}
 
 /*  End of Clan Tags section */
 
@@ -1037,7 +1072,7 @@ table .quickstats td{
 
 /* Staff Page */
 
-body.ninjawars-staff{
+body.ninjawars-staff, body.solo-page{
     margin: 10px 30px 10px 30px;
 }
 

@@ -7,7 +7,7 @@ $page_title = "Accept a New Clan Member";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Accept A New Clan Member</span>
+<h1>Accept A New Clan Member</h1>
 
 <hr>
 

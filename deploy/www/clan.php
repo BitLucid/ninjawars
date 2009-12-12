@@ -13,7 +13,7 @@ include SERVER_ROOT."interface/header.php";
 ?>
 <script type="text/javascript" src="<?=WEB_ROOT?>js/clan.js"></script>
 
-<div id='clan-page-title' class="brownHeading">Clan Panel</div>
+<h1 id='clan-page-title'>Clan Panel</h1>
 
 <?php
 $command                         = in('command');

@@ -21,11 +21,11 @@
             <span class="text">
               <input type="hidden" name="ref" value="{$referrer}">
                 <label>
-                  Username
+                  <!-- Username -->
                   <input name="user" type="text" class="itext">
                 </label>
                 <label>
-                  Password
+                  <!-- Password -->
                   <input name="pass" type="password" class="itext">
                 </label>
                 <input name="action" type="submit" value="login" class="ibutton formButton">

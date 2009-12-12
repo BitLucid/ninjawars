@@ -93,7 +93,7 @@ else if ($command == "Bribe")
 	}
 }
 
-echo "<div class=\"brownTitle\">$location</div>\n";
+echo "<h1>$location</h1>\n";
 
 echo "<div class=\"description\">\n";
 echo $description;

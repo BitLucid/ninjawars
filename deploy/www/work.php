@@ -7,7 +7,7 @@ $page_title = "Working in the Village";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<div class="brownTitle">Working in the Village</div>
+<h1>Working in the Village</h1>
 
 <?php
 $work_multiplier = 30;

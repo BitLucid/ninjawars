@@ -7,7 +7,7 @@ $alive      = false;
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Lost Password</span>
+<h1>Lost Password</h1>
 
 <p>
   Please add <strong><?php echo SYSTEM_MESSENGER_EMAIL; ?></strong> to the safe email senders list of your email account before signing up, so you can receive your account email.

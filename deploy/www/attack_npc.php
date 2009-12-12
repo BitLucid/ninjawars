@@ -7,7 +7,7 @@ $page_title = "NPC Battle Status";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Battle Status</span>
+<h1>Battle Status</h1>
 
 <hr>
 

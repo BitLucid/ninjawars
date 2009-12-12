@@ -8,7 +8,7 @@ include SERVER_ROOT."interface/header.php";
 ?>
 
 
-<span class="brownHeading">Interview with NinjaWars creator</span>
+<h1>Interview with NinjaWars creator</h1>
 
 <div style="margin-top: 25;">
 <span style="font-weight: bold;text-decoration: underline;"></span>

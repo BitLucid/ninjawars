@@ -7,7 +7,7 @@ $quickstat  = false;
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Retriving Confirm Code</span>
+<h1>Retriving Confirm Code</h1>
 
 <p>
 <?php

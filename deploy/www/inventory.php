@@ -7,7 +7,7 @@ $page_title = "Your Inventory";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Your Inventory</span>
+<h1>Your Inventory</h1>
 
 <p>
 

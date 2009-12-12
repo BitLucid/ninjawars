@@ -15,7 +15,7 @@ $page_title = "Item Usage";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<h1 class="brownHeading">Item Use</h1>
+<h1>Item Use</h1>
 
 <?php
 $link_back  = in('link_back');

@@ -9,7 +9,7 @@ require_once(LIB_ROOT."specific/lib_status.php"); // statuses for quickstats
 require_once(LIB_ROOT."specific/lib_player.php"); // Player info display pieces.
 ?>
 
-<span class="brownHeading">Skills</span>
+<h1>Skills</h1>
 
 <p>
 <?php
