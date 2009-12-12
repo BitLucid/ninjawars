@@ -1,3 +1,13 @@
+AddVisitCounterToMainPage
+#   Kohana_v2.3.4.zip
+#   createNinjawarsAdminPhp
+#   emergentBehavior
+#   openid-selector-1.0.zip
+#   todoExplainTurnsInIntro
+#   todoMakeIntroExplainTurnGaining
+
+
+
 Reconstitute the voting page.
 
 
