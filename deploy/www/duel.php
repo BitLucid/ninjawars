@@ -1,4 +1,6 @@
 <?php
+require_once(LIB_ROOT."specific/lib_player.php");
+
 $private    = false;
 $alive      = false;
 $quickstat  = false;
@@ -21,33 +23,23 @@ $vicious_killer = $stats['vicious_killer'];
 <?php
 
 $sql->QueryRow("SELECT * FROM dueling_log ORDER BY id DESC LIMIT 500");
-$row = $sql->data;
-
-if ($sql->rows == 0)
-{
-  echo "<p>Duel log has reset</p>";
-}
 
 echo "  <h3>Duel Log</h3>";
 
-echo "<ul id='duel-log' style='list-style-type:circle;'>";
-for ($i = 0; $i < $sql->rows; $i++)
-{
-  $sql->Fetch($i);
-  $id = $sql->data[0];
-  $attacker = $sql->data[1];
-  $defender = $sql->data[2];
-  $wonorlost = $sql->data[3];
-  $killpoints = $sql->data[4];
-  $date = $sql->data[5];
-
-  if ($wonorlost==1) {$wonorlost="won";}
-  else {$wonorlost="lost";}
-
-  echo "<li>";
-  echo "$attacker has dueled $defender and $wonorlost for $killpoints killpoints on $date\n";
-  echo "</li>";
+$duels = $sql->FetchAll();
+if(empty($duels)){
+    echo "<p>No duels for today yet.</p>";
 }
+echo "<ul id='duel-log'>";
+//var_dump($duels);
+foreach($duels as $duel){
+  echo "<li>";
+  echo render_player_link($duel['attacker'])." has dueled ".render_player_link($duel['defender'])." 
+    and ".($duel['won']?'won':'lost')." for {$duel['killpoints']} killpoints on {$duel['date']}";
+  echo "</li>";
+
+}
+
 echo "</ul>";
 
 

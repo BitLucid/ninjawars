@@ -98,6 +98,7 @@ h1, h2, .title, .player-info .player-name{
     width: 70%;
     margin-left:auto;
     margin-right:auto;
+    margin-bottom:.1em;
     /*-webkit-border-radius:16px;
     -moz-border-radius:16px;
     -op-border-radius:16px;
@@ -229,20 +230,34 @@ div.description {
 	margin-top: 10px;
 	margin-bottom: 20px;
 }
-form#signup .description{
-    display:inline;
-    border-bottom: none;
-    margin: .5em 0 .5em;
-}
 form input#become-a-ninja{
     margin-left:auto;
     margin-right:auto;
+    text-align:center;
 }
 fieldset { 
     border:2px groove #800000; 
     margin-bottom: .5em;
     padding-left: .5em;
     padding-bottom: .5em;
+}
+form#signup label{
+    float:left;
+    margin-right:1em;
+    width: 5em;
+    text-align:right;
+    display:block;
+}
+form#signup input{
+    float:left;
+    display:block;
+    margin-right:3em;
+    margin-left: 1em;
+    width:4em;    
+}
+form#signup fieldset span{
+    font-style:italic;
+    font-size:smaller;
 }
 legend {
   padding: 0.2em 0.5em;
@@ -459,8 +474,13 @@ td.playerTable {
 	margin-right: .5em;
 	display:none;
 }
-#logo-appended.sub-page{
-	display:inline;
+
+body.solo-page{
+    margin: 10px 30px 10px 30px;
+}
+
+body.solo-page #logo-appended{
+	display:inline; /* Display the logo on solo pages */
 }
 #logo-appended img{
 	width:100px;
@@ -1068,12 +1088,6 @@ table .quickstats td{
 
 .q-and-a .answer {
 	text-align: justify;
-}
-
-/* Staff Page */
-
-body.ninjawars-staff, body.solo-page{
-    margin: 10px 30px 10px 30px;
 }
 
 .developer{

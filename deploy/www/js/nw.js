@@ -262,11 +262,11 @@ function isSubpage(){
 }
 
 /**
- * Add the logo as a back-link to any pages that are broken out of the iframe.
+ * Add a class to the body of any solo pages, which other css can then key off of.
 **/
-function logoAppend(){
-	if(isSubpage()){	
-		$('#logo-appended').addClass('sub-page'); // Should make the image display on subpages.
+function soloPage(){
+	if(isSubpage()){
+		$('body').addClass('solo-page'); // Added class to solo-page bodies.
 	}
 }
 
@@ -300,7 +300,7 @@ $(document).ready(function() {
     }
     
     /* THIS CODE RUNS FOR ALL SUBPAGES */
-    logoAppend(); // Append a link back to main page for any lone subpages not in iframes.
+    soloPage(); // Append a link back to main page for any lone subpages not in iframes.
         
     // GOOGLE ANALYTICS
     /* There's a script include that goes with this, but I just put it in the head directly.*/

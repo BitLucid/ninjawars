@@ -107,6 +107,11 @@ function get_recent_attackers(){
 	return $recent_attackers;
 }
 
+if(!get_user_id()){
+    header('Location: list_all_players.php');
+    exit();
+}
+
 
 $active_ninja = render_active(5, $alive_only=true); // Display the currently active ninjas
 

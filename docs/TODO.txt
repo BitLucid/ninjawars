@@ -1,3 +1,22 @@
+#   FixSubCatBlackSeparation
+#   #   Kohana_v2.3.4.zip
+#   #   css_browser_selector.zip
+#   #   deploy/templates/map.tpl
+#   #   deploy/www/admin.php
+#   #   deploy/www/ajax.php
+#   #   deploy/www/core.php
+#   #   deploy/www/html_page.php
+#   #   deploy/www/images/themes/
+#   #   deploy/www/js/nw.js.orig
+#   #   deploy/www/map.php
+#   #   jabbify_comet_ajax_for_chat_get_started.zip
+#   #   tagNW
+#   #   todoFixCombat
+#   #   todoFixContractedView
+#   #   todoFixSignup
+#   #   todoFixSubCatBlackSeparation
+#   #   todoShortenLoginBoxes
+#   #   todoShortenTopRightLinks
 AddVisitCounterToMainPage
 #   Kohana_v2.3.4.zip
 #   createNinjawarsAdminPhp

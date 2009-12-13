@@ -1,49 +1,60 @@
-	<h1>Sign Up</h1>
+	<h1>Become a Ninja!</h1>
 	
-	
-	<p>
-	  Please add <strong>{$SYSTEM_MESSENGER_EMAIL}</strong> to the safe email 
-	  senders list of your email account before signing up, so you can receive 
-	  your confirmation email.
-	</p>
 	
 	<form id='signup' action="signup.php" method="post">
-
-    <label for='send_email'>Email Address:</label>  <input id="send_email" type="text" name="send_email" class="textField" value='{$enteredEmail}'>
-
-	 <label for='send_name'>Username:</label>  <input id="send_name" type="text" name="send_name" maxlength="50" class="textField" value='{$enteredName}'>
-	   <div class="description">
+    
+    <fieldset>
+     <legend>Login Info</legend>
+     <div>
+	 <label for='send_name'>Ninja Name:</label>  
+	 <input id="send_name" type="text" name="send_name" maxlength="50" class="textField" value='{$enteredName}'>
+	   <span>
 	         Your ninja name can only contain letters, numbers and underscores.
-	    </div>
-
-	  <label for='password'>Password:</label>  <input id="key" type="password" maxlength="50" name="key" class="textField">
-	    <div class="description">
+	    </span>
+	 </div>
+	 <div>
+	  <label for='password'>Password:</label>  
+	  <input id="key" type="password" maxlength="50" name="key" class="textField">
+	    <span>
 			Letters, numbers, underscores and spaces.  Starting or ending spaces are not allowed.
-		</div>
-
-	  <label for='send_class'>Ninja Type:</label>  {$class_select}
-	  <div class="description"> 
-	  Change class easily within the game, or see the 
-	  <a href="http://ninjawars.pbworks.com/" target="_blank">wiki</a> for more information.
+		</span>
 	  </div>
-
-	    <input type="submit" name="submit" value="Become a Ninja!" class="formButton">
+	</fieldset>
+	
+	<fieldset>
+	 <legend>Ninja Info</legend>
+      <div>
+	  <label for='send_class'>Ninja Type:</label>  
+	  {$class_select}
+	  <span>
+	  Change class easily within the game, or click the "wiki" link below for more information.
+	  </span>
+	  </div>
+	</fieldset>
+	
+	<fieldset>
+	 <legend>Confirmation Info</legend>
+	  <div>
+	  <label for='send_email'>Email Address:</label>  
+	  <input id="send_email" type="text" name="send_email" class="textField" value='{$enteredEmail}'>
+      <span>
+        Please add <strong>{$SYSTEM_MESSENGER_EMAIL}</strong> to the safe email senders list of your email account to guarantee you receive your account and confirmation email.  This email address will only be used for confirmation purposes, never spammed, never shared.
+      </span>
+      </div>  
+	    <input id='become-a-ninja' type="submit" name="submit" value="Become a Ninja!" class="formButton">
+    </fieldset>
 
 	</form>
 	
-	
-	<hr>
-	
-	<p>A valid email address is required for this game, confirmation will be sent to the address you provide.<br><br>
-	Lost Your Password ? <a href="lostpass.php">Retrieve Password</a><br><br>
-	
-	
-	Didn't get your confirmation code ? <a href="lostconfirm.php">Activate Account</a>
+	<h3>Problems?</h3>
+	<p>
+	Lost Your Password ? <a href="lostpass.php">Retrieve Password</a> / Didn't get your confirmation code ? <a href="lostconfirm.php">Activate Account</a>
 	</p>
 	<p>
-	More information can be found on 
-	    <a href="http://ninjawars.pbworks.com/" target="_blank">the Wiki</a>
-	    <img src="images/externalLinkGraphic.gif" alt="">.
+	More information on classes and skills can be found on 
+	    <a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>the Wiki</a>.
 	</p>
-
+	<p>
+	  Otherwise, just <a href='staff.php'>Contact Us</a>.
+	</p>
 	<hr>
