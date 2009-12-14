@@ -14,7 +14,10 @@
 	<![endif]-->
 	<!-- [if gte IE 7]>
 	<link rel="stylesheet" type="text/css" href="{$WEB_ROOT}css/ie.css">
-	<![endif]-->
+	<![endif]-->	
+	{if $DEBUG}
+	<link rel="stylesheet" type="text/css" href="{$WEB_ROOT}css/debugger.css">	
+	{/if}
 
 	{if $local_js}
 	<!-- Local jquery lib -->

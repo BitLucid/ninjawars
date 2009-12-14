@@ -1,0 +1,266 @@
+/*
+This is a combination of:
+http://meyerweb.com/eric/thoughts/2007/09/07/diagnostic-styling/
+http://www.nealgrosskopf.com/tech/thread.asp?pid=17
+
+.. with some additional tweaking and additions
+*/
+
+/* Empty Attributes */
+/*img[alt=""],*/
+area[alt=""],
+a[href=""],
+a[title=""],
+input[title=""],
+input[type=""],
+label[for=""] {
+  border:5px dotted green!important;
+}
+
+/* Empty Elements */
+p:empty,
+a:empty,
+span:empty,
+ul:empty,
+ol:empty,
+li:empty,
+dl:empty,
+dt:empty,
+dd:empty,
+table:empty,
+td:empty,
+th:empty,
+thead:empty,
+tbody:empty {
+  border:5px solid green!important;
+}
+
+/* Inline Javascript */
+a[href="javascript:void(0)"],
+a[href="javascript:void(0);"],
+a[href="javascript:;"],
+a[href="javascript:"],
+a[onclick],
+*[onfocus],
+*[onblur],
+*[onhover],
+*[onmouseover],
+*[onmouseout] {
+  border:5px dotted cyan!important;
+}
+
+/* Proposed Deprecated Attributes */
+body[background],
+table[background],
+td[background],
+th[background],
+input[border],
+table[border],
+table[cellpadding],
+table[cellspacing],
+object[codebase],
+img[height],
+object[height],
+table[height],
+a[name],
+/*form[name],*/
+img[name],
+object[name],
+/*a[target],*/
+area[target],
+td[valign],
+th[valign],
+img[width],
+object[width],
+table[width] {
+  border:5px dotted orange!important;
+}
+
+/* Deprecated Attributes */
+applet[align],
+caption[align],
+div[align],
+h1[align],
+h2[align],
+h3[align],
+h4[align],
+h5[align],
+h6[align],
+hr[align],
+iframe[align],
+img[align],
+input[align],
+legend[align],
+object[align],
+p[align],
+table[align],
+body[alink],
+applet[alt],
+applet[archive],
+body[background],
+body[bgcolor],
+td[bgcolor],
+tr[bgcolor],
+table[bgcolor],
+img[border],
+object[border],
+br[clear],
+applet[code],
+applet[codebase],
+basefont[color],
+font[color],
+dir[compact],
+dl[compact],
+menu[compact],
+ol[compact],
+ul[compact],
+basefont[face],
+font[face],
+applet[height],
+td[height],
+th[height],
+applet[hspace],
+img[hspace],
+object[hspace],
+script[language],
+body[link],
+applet[name],
+hr[noshade],
+td[nowrap],
+th[nowrap],
+applet[object],
+isindex[prompt],
+hr[size],
+font[size],
+basefont[size],
+ol[start],
+body[text],
+li[type],
+ol[type],
+ul[type],
+html[version],
+body[vlink],
+li[value],
+applet[vspace],
+img[vspace],
+object[vspace],
+hr[width],
+td[width],
+th[width],
+applet[width],
+pre[width] {
+  border:5px dotted red!important;
+}
+
+/* Non-W3C Proprietary HTML Attributes */
+body[bgproperties],
+*[bordercolor],
+*[bordercolordark],
+*[bordercolorlight],
+body[topmargin],
+body[rightmargin],
+body[bottommargin],
+body[leftmargin],
+table[frame] {
+  border:5px dotted magenta!important;
+}
+
+/* Works with Firebug */
+div:empty {
+  background-color:#3875d7!important;
+  padding:1px 1px 0 0;
+}
+
+/* Proposed Deprecated Elements */
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+input[type="image"],
+tt,
+big,
+small {
+  border:5px solid orange!important;
+}
+
+/* Deprecated Elements */
+applet,
+basefont,
+center,
+dir,
+font,
+isindex,
+menu,
+s,
+i,
+b,
+hr,
+strike,
+u,
+listing,
+plaintext,
+xmp {
+  border:5px solid red!important;
+}
+
+/* Non-W3C Proprietary HTML Elements */
+audioscope,
+bgsound,
+blink,
+bq,
+comment,
+embed,
+fn,
+ilayer,
+keygen,
+layer,
+limittext,
+marquee,
+multicol,
+nobr,
+noembed,
+nolayer,
+nosmartquotes,
+rt,
+ruby,
+server,
+sidebar,
+spacer,
+wbr,
+xml,
+blackface,
+shadow {
+  border:5px solid magenta!important
+}
+
+/* XHTML 1.0 Strict Prohibitions */
+a > a,
+pre > img,
+pre > object,
+pre > big,
+pre > small,
+pre > sub,
+pre > sup,
+button > input,
+button > select,
+button > textarea,
+button > label,
+button > button,
+button > form,
+button > fieldset,
+button > iframe,
+button > isindex,
+label > label,
+form > form { 
+  border:5px solid lime!important 
+}
+ 
+/* XHTML 1.0 Strict Deprecated Attributes */
+a[name],
+applet[name],
+/*form[name],*/
+frame[name],
+/*iframe[name],*/
+img[name],
+map[name] { 
+  border:5px dotted lime!important
+}
