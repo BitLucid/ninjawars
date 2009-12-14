@@ -18,6 +18,7 @@ $target  = in('target');
 $command = in('command');
 $amount  = intval(in('amount'));
 $bribe   = intval(in('bribe'));
+$username = get_username();
 
 if ($command == "Offer Bounty")
 {
