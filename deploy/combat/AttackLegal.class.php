@@ -143,7 +143,7 @@ class AttackLegal
 				return false;
 			    break;
 		    case ($attacker->vo->turns < $required_turns):
-			    $this->error = "You do not have enough turns to perform this action in this way.";
+			    $this->error = "You don't have enough turns for that, use speed scrolls or wait for the half hour to gain more turns.";
 				return false;
 			    break;
 		    case (isset($_SESSION) && $target->vo->ip == $_SESSION['ip'] && $_SESSION['ip'] != '127.0.0.1' && !$self_use):
