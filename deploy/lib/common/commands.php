@@ -4,31 +4,15 @@
 // ********** CLASS FUNCTIONS *********
 // ************************************
 
-function setClass($who,$new_class)
-{
+function setClass($who,$new_class){
   global $sql;
-
   $sql->Update("UPDATE players SET class = '$new_class' WHERE uname = '$who'");
-
-  if ($who == $_SESSION['username'])
-    {
-      $_SESSION['class'] = $new_class;
-    }
-
   return $new_class;
 }
 
-function getClass($who)
-{
+function getClass($who){
   global $sql;
-
   $class = $sql->QueryItem("SELECT class FROM players WHERE uname = '$who'");
-
-  if ($who == $_SESSION['username'])
-    {
-      $_SESSION['class'] = $class;
-    }
-
   return $class;
 }
 
@@ -41,37 +25,20 @@ function getClass($who)
 // ********* HEALTH FUNCTIONS *********
 // ************************************
 
-function setHealth($who,$new_health)
-{
+function setHealth($who,$new_health){
   global $sql;
-
   $sql->Update("UPDATE players SET health = '$new_health' WHERE uname = '$who'");
-
-  if ($who == $_SESSION['username'])
-    {
-      $_SESSION['health'] = $new_health;
-    }
-
   return $new_health;
 }
 
-function getHealth($who)
-{
+function getHealth($who){
   global $sql;
-
   $health = $sql->QueryItem("SELECT health FROM players WHERE uname = '$who'");
-
-  if ($who == SESSION::get('username')){
-      SESSION::set('health', $health);
-    }
-
   return $health;
 }
 
-function changeHealth($who,$amount)
-{
-  if (abs($amount)>0)
-    {
+function changeHealth($who,$amount){
+  if (abs($amount)>0){
       global $sql;
 
       $sql->Update("UPDATE players SET health = health + ".
@@ -80,20 +47,16 @@ function changeHealth($who,$amount)
       $new_health = getHealth($who);
 
       return $new_health;
-    }
-  else
-    {
+    } else {
       return getHealth($who);
     }
 }
 
-function addHealth($who,$amount)
-{
+function addHealth($who,$amount){
   return changeHealth($who,$amount);
 }
 
-function subtractHealth($who,$amount)
-{
+function subtractHealth($who,$amount){
   return changeHealth($who,((-1)*$amount));
 }
 
@@ -115,17 +78,9 @@ function setGold($who,$new_gold)
   return $new_gold;
 }
 
-function getGold($who)
-{
+function getGold($who){
   global $sql;
-
   $gold = $sql->QueryItem("SELECT gold FROM players WHERE uname = '$who'");
-
-  if ($who == $_SESSION['username'])
-    {
-      $_SESSION['gold'] = $gold;
-    }
-
   return $gold;
 }
 
@@ -174,7 +129,7 @@ function setTurns($who,$new_turns)
 
   $sql->Update("UPDATE players SET turns = $new_turns WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
+  if ($who == get_username())
     {
       $_SESSION['turns'] = $new_turns;
     }
@@ -188,7 +143,7 @@ function getTurns($who)
 
   $turns = $sql->QueryItem("SELECT turns FROM players WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
+  if ($who == get_username())
     {
       $_SESSION['turns'] = $turns;
     }
@@ -241,7 +196,7 @@ function setKills($who,$new_kills)
 
   $sql->Update("UPDATE players SET kills = $new_kills WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
+  if ($who == get_username())
     {
       $_SESSION['kills'] = $new_kills;
     }
@@ -255,7 +210,7 @@ function getKills($who)
 
   $kills = $sql->QueryItem("SELECT kills FROM players WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
+  if ($who == get_username())
     {
       $_SESSION['kills'] = $kills;
     }
@@ -397,7 +352,7 @@ function setLevel($who,$new_level)
 
   $sql->Update("UPDATE players SET level = $new_level WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
+  if ($who == get_username())
     {
       $_SESSION['level'] = $new_level;
     }
@@ -411,7 +366,7 @@ function getLevel($who)
 
   $level = $sql->QueryItem("SELECT level FROM players WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
+  if ($who == get_username())
     {
       $_SESSION['level'] = $level;
     }
@@ -490,7 +445,7 @@ function setStatus($who,$what)
 	global $sql;
 	if (!$sql) { $sql = new DBAccess(); }
 	$sql->Update("UPDATE players SET status = $what WHERE uname = '$who'");
-	if ($who == $_SESSION['username'])   {
+	if ($who == get_username())   {
 	    $_SESSION['status'] = $what;
 	    if ($what == 0)	{
 			echo "<br>You have returned to normal.<br>\n";
@@ -538,7 +493,7 @@ function addStatus($who,$what)   //Takes in the Status in the ALL_CAPS_WORD form
 	if (!($status&$what)) {
 	    $sql->Update("UPDATE players SET status = status+$what WHERE uname = '$who'");
 
-	    if ($who == $_SESSION['username']) {
+	    if ($who == get_username()) {
 			$_SESSION['status']+=$what;
 		}
 	}
@@ -554,7 +509,7 @@ function subtractStatus($who,$what)     //Takes in the Status in the ALL_CAPS_WO
 	if ($status&$what) {
 		$sql->Update("UPDATE players SET status = status-($status&$what) WHERE uname = '$who'");
 
-		if ($who == $_SESSION['username']) {
+		if ($who == get_username()) {
 		  $_SESSION['status']-=($status&$what);
 		}
 	}
@@ -577,7 +532,7 @@ function setStrength($who,$new_strength)
 
   $sql->Update("UPDATE players SET strength = $new_strength WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
+  if ($who == get_username())
     {
       $_SESSION['strength'] = $new_strength;
     }
@@ -591,7 +546,7 @@ function getStrength($who)
 
   $strength = $sql->QueryItem("SELECT strength FROM players WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
+  if ($who == get_username())
     {
       $_SESSION['strength'] = $strength;
     }
@@ -641,7 +596,7 @@ function setBounty($who,$new_bounty)
 
   $sql->Update("UPDATE players SET bounty = $new_bounty WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
+  if ($who == get_username())
     {
       $_SESSION['bounty'] = $new_bounty;
     }
@@ -655,7 +610,7 @@ function getBounty($who)
 
   $bounty = $sql->QueryItem("SELECT bounty FROM players WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username'])
+  if ($who == get_username())
     {
       $_SESSION['bounty'] = $bounty;
     }
@@ -746,7 +701,7 @@ function setClan($who,$clan_name) {
 
   $sql->Update("UPDATE players SET clan = '$clan_name', clan_long_name = '$clan_long_name' WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username']) {
+  if ($who == get_username()) {
       $_SESSION['clan'] = $clan_name;
     }
 
@@ -767,7 +722,7 @@ function getClan($who) {
 
   $clan = $sql->QueryItem("SELECT clan FROM players WHERE uname = '$who'");
 
-  if ($who == $_SESSION['username']) {
+  if ($who == get_username()) {
       $_SESSION['clan'] = $clan;
     }
 /* //Commented out to prevent the invite status from allowing return of clan's name
@@ -806,9 +761,9 @@ function kick($who){
   setClan($who,"");
   setClanLongName($who,"");
 
-  $msg = "You have been kicked out of $clan_long_name by ".$_SESSION['username']." on $today.";
+  $msg = "You have been kicked out of $clan_long_name by ".get_username()." on $today.";
 
-  sendMessage($_SESSION['username'],$who,$msg);
+  sendMessage(get_username(),$who,$msg);
 }
 
 function disbandClan($clan_name) {
@@ -1008,7 +963,6 @@ function pauseAccount($who) {
 	$sql->Update("UPDATE players SET confirmed = 0, email= '$quickemail' WHERE uname = '$who'");
 	$sql->Delete("DELETE FROM inventory WHERE owner = '$who'");
 	$sql->Delete("DELETE FROM mail WHERE send_to = '$who'");
-	$_SESSION['username'] = false;
 	session_destroy();
 
 	echo "Your account has been removed from Ninja Wars.
@@ -1027,7 +981,6 @@ function deleteAccount($who) {
 	$sql->Delete("DELETE FROM players WHERE uname = '$who'");
 	$sql->Delete("DELETE FROM inventory WHERE owner = '$who'");
 	$sql->Delete("DELETE FROM mail WHERE send_to = '$who'");
-	$_SESSION['username'] = false;
 	session_destroy();
 
 	echo "Your account has been removed from Ninja Wars. If you wish to sign back up you may do so. <br>If not, we would be glad to receive an email telling us why you choose to leave the game,<br>Thank you.<br><br>Admin@NinjaWars.net\n";
