@@ -80,7 +80,8 @@ hr {
 }
 
 h1, h2, h3, h4, h5, h6, .subtitle, .title{
-	font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+	/*font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;*/
+	font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	text-align:center;
 	margin-bottom:.3em;
 	font-weight:bold;
@@ -110,6 +111,9 @@ h2{
     width:50%;
 }
 h1{
+	/*background: #BDB76B url(/images/tribal_header_right_sharp.png) right center no-repeat;*/
+	background: #BDB76B url(/images/tribal_header_left_sharp.png) left center no-repeat;
+    padding: 0 58px 0 58px;
 	font-family: "edding-780-1","edding-780-2", Impact, Charcoal, sans-serif;
 	font-size:150%;
 	max-width: 1000px;
@@ -275,6 +279,7 @@ legend {
 
 table{
 	border-collapse:collapse;
+	border:none;
 }
 .outer-table{
    	border-top: 1px solid DarkKhaki;
@@ -742,7 +747,7 @@ table .quickstats td{
 
 .formbutton, .formButton{
 	background:black;
-	color:SteelBlue;
+	color:SkyBlue;
 	font-weight:bold;
 }
 

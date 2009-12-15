@@ -63,7 +63,7 @@
                 Find A Ninja:
                 <input id="searched" type="text" maxlength="50" size="10" name="searched" class="textField">
                 <input id="hide" type="hidden" name="hide" value="dead">
-                <input type="submit" value="find" class="formButton">
+                <button type="submit" value="find" class="formButton">Find</button>
               </div>
             </form>
           </div>

@@ -124,7 +124,7 @@ if ($sql->rows)
 
 	echo "<hr>\n";
 
-	echo "<table cellpadding=\"2\" cellspacing=\"1\" class=\"playerTable\">\n";
+	echo "<table class=\"playerTable\">\n";
 	echo "<tr>\n";
 	echo "  <th class=\"playerTable\">\n";
 	echo "  Name\n";

@@ -79,7 +79,7 @@ if($no_skills){
   <div>
     <input id="searched" type="text" maxlength="50" name="searched" class="textField">
     <input type="hidden" name="hide" value="dead">
-    <input type="submit" value="Search for Ninja" class="formButton">
+    <button type="submit" value="1" class="formButton">Search for Ninja</button>
   </div>
 </form>
 </div>

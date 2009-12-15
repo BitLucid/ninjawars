@@ -28,7 +28,7 @@
                   <!-- Password -->
                   <input name="pass" type="password" class="itext">
                 </label>
-                <input name="action" type="submit" value="login" class="ibutton formButton">
+                <button name="action" type="submit" value="login" class="ibutton formButton">Login</button>
                 <!-- The value of this has to remain lowercase "login" to work with the login system -->
               </span>
             </form>
@@ -61,7 +61,7 @@
                 Find A Ninja:
                 <input id="searched" type="text" maxlength="50" size="10" name="searched" class="textField">
                 <input id="hide" type="hidden" name="hide" value="dead">
-                <input type="submit" value="find" class="formButton">
+                <button type="submit" value="find" class="formButton">Find</button>
               </div>
             </form>
           </div>
