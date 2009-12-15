@@ -55,7 +55,8 @@ function render_chat_messages($chatlength, $show_elipsis=null){
     foreach($chats AS $messageData) {
     	$l_ago = time_ago($messageData['ago'], $previous_date);
 		$message_rows .= "<li>&lt;<a href='player.php?player_id={$messageData['sender_id']}'
-		     target='main'>{$messageData['uname']}</a>&gt; ".out($messageData['message'])." <span class='chat-time'>{$l_ago}</span></li>";
+		     target='main'>{$messageData['uname']}</a>&gt; ".out($messageData['message']).
+		     ($l_ago?" <span class='chat-time'>{$l_ago}</span></li>" : "");
 		$previous_date = $messageData['ago']; // Store just prior date.
     }
     $res .= $message_rows;
@@ -142,7 +143,7 @@ function render_chat_input($target='mini_chat.php', $field_size=20){
     <input id=\"message\" type=\"text\" size=\"$field_size\" maxlength=\"250\" name=\"message\" class=\"textField\">\n
     <input id=\"command\" type=\"hidden\" value=\"postnow\" name=\"command\">
     <input name='chat_submit' type='hidden' value='1'>
-    <input type=\"submit\" value=\"&gt;\" class=\"formButton\">\n
+    <button type=\"submit\" value=\"&gt;\" class=\"formButton\">Chat</button>
     </form>\n";
 }
 
