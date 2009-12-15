@@ -108,6 +108,7 @@ $sel = "SELECT rank_id, uname, class, level, alive, days, clan, player_id
 $sql->Query($sel);
 $row = $sql->data;
 $ninja_count = $sql->rows;
+	$players = $sql->fetchData($sel);
 
 //$microtimes[5] = microtime();
 
@@ -133,7 +134,7 @@ $ninja_count = $sql->rows;
 
 //$microtimes[8] = microtime();
 
-	$players = $sql->FetchAll();
+
 	
 //$microtimes[9] = microtime();
 	
