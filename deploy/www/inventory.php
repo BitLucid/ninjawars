@@ -56,19 +56,17 @@ if ($sql->rows == 0) {
 	echo "<table style=\"width: 150;\">\n";
 
 	foreach ($items AS $itemName=>$amount) {
-		if ($amount > 0) {
+		if ($amount > 0 && is_array($itemData[$itemName])) {
 			echo "<tr>\n";
 			echo "  <td>\n    ";
 
-			if (array_key_exists('codename', $itemData[$itemName]))
-			{
+			if (array_key_exists('codename', $itemData[$itemName])) {
 				echo "<a href=\"inventory_mod.php?item=".urlencode($itemData[$itemName]['codename'])."&amp;selfTarget=1&amp;target=$username&amp;link_back=inventory\">";
 			}
 
 			echo $itemData[$itemName]['display'];
 
-			if (array_key_exists('codename', $itemData[$itemName]))
-			{
+			if (array_key_exists('codename', $itemData[$itemName])) {
 				echo "</a>";
 			}
 
