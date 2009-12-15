@@ -86,6 +86,19 @@ class DBAccess {
     	return $res; // Fetch the results.
     }
 
+	/**
+	 * Simple one-shot result pulling.
+	**/
+	function fetchData($query){
+		$res = null;
+		if($query){
+			$resultset = $this->pdo->query($query);
+		    if (is_object($resultset)){
+		        $res = $resultset->fetchAll(PDO::FETCH_ASSOC);
+		    }
+		}
+		return $res;
+	}
 
     /* Wrapper function for the PDO full result set function fetchAll using only the default values */
 	function fetchAll($query=null)
