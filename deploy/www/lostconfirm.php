@@ -14,8 +14,7 @@ include SERVER_ROOT."interface/header.php";
       
       <p>Please submit your email address and we will resend a confirmation.</p>
       <input id="email" type="text" name="email" class="textField">
-      <br>
-      <input type="submit" value="Resend Confirm Code" class="formButton">
+      <button type="submit" value="Resend Confirm Code" class="formButton">Resend Confirm Code</button>
   </form>
 
 <?php
