@@ -9,7 +9,7 @@
 <div class='developers'>
   <h3 class='subtitle'>Developers</h3>
   <div class='developer'>
-    <a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Flynn</a>  - Programmer and Maintainer 
+    <a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer 
     <span id='social-networks'>
       - <a target='_blank' href="http://www.facebook.com/tchalvak"><img src='{$IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a>
       - <a target='_blank' href="http://www.myspace.com/toastersquid"><img src='{$IMAGE_ROOT}icons/fasticons/MySpace_24x24.png'> on Myspace</a>
@@ -30,7 +30,7 @@
     </p>
 
     <img class='developer-image' alt='tchalvak' src="images/tchalvak-smaller.jpg">
-    <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" title="Roy Flynn" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Flynn</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" title="Make your own badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Make your own badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Flynn" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Flynn" style="border: 0px;"></a><!-- Facebook Badge END --></div>
+    <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Ronalds</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" title="Make your own badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Make your own badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Ronalds" style="border: 0px;"></a><!-- Facebook Badge END --></div>
     </div><!-- End of .developer-info -->
   </div>
   <div class='developer'>
