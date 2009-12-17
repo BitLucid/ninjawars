@@ -12,7 +12,7 @@ require_once(LIB_ROOT."specific/lib_player.php");
 $alive      = false;
 $private    = false;
 $quickstat  = "player";
-$page_title = "Player Detail";
+$page_title = "Player Profile";
 
 include SERVER_ROOT."interface/header.php";
 

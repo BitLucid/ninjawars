@@ -19,7 +19,7 @@
       Search by Ninja Name or Rank
       <input id="searched" type="text" maxlength="50" name="searched" class="textField">
       <input id="hide" type="hidden" name="hide" value="dead">
-      <input type="submit" value="Search for Ninja" class="formButton">
+      <button type="submit" value="Search for Ninja" class="formButton">Search for Ninja</button>
     </div>
   </form>
 
