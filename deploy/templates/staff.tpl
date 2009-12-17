@@ -1,9 +1,10 @@
 {$header}
 <h1>Ninjawars Staff</h1>
   <p>
-    The preferred method of contacting us with problems or bugs with the game is via the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.
-    For other issues, including confirmation problems, email us at: <a href="mailto:{$SUPPORT_EMAIL}">{$SUPPORT_EMAIL}</a>
-  </p>
+    The preferred method of contacting us with problems, ideas, or bugs with the game
+     is via the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.
+    </p>
+    <p>For private issues, including account/confirmation problems, email us at: {$mailto}</p>
   
 <div class='developers'>
   <h3 class='subtitle'>Developers</h3>
