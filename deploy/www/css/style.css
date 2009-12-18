@@ -109,6 +109,8 @@ h2{
     margin-left: auto;
     margin-right: auto;
     width:50%;
+    background: #9BB02D;
+    border: 1px solid #9BB02D;
 }
 h1{
 	/*background: #BDB76B url(/images/tribal_header_right_sharp.png) right center no-repeat;*/
@@ -865,7 +867,7 @@ table .quickstats td{
 
 .notice, .informational{
 	color:Black;
-	background-color:DarkKhaki;
+	background-color:#8AC575;
 	font-family: ‘Lucida Console’, Monaco, monospace;
 	text-align:center;
 	font-weight:bold;

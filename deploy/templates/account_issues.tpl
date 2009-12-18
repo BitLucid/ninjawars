@@ -33,5 +33,4 @@
         <button type="submit" value="Resend Confirm Code" class="formButton">Resend Confirm Code</button>
     </form>
 
-    </p>
 {/if}

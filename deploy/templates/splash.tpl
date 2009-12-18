@@ -5,12 +5,8 @@
     <div id='content' class='wrapper'>
 
       <div id='login-error' class="error {if !$login_error}hidden{/if}">
-        That password/username combination was incorrect.  
-        <a href='lostpass.php' target='main'>Lost password?</a>
-         / <a href='sendconfirm.php' target='main'>Account not confirmed?</a>
-        Otherwise, request help with
-		<a target='_blank' href='http://ninjawars.proboards.com/index.cgi?board=bug&amp;action=display&amp;thread=1051'>login problems</a>
-		on the forum.
+        That password/username combination was incorrect.  <a href='account_issues.php'>Lost Password/Missing Confirmation?</a> 
+        For other account problems, <a href='staff.php'>Contact Us</a>.
       </div>
 
 
@@ -41,10 +37,8 @@
             <a target="main" href="{$WEB_ROOT}signup.php?referrer={$referrer}">Become a Ninja!</a> |
           </span>
           <span>
-            <a href="{$WEB_ROOT}lostpass.php" target="main" class="blend side">Lost&nbsp;Password?</a> |
+            <a href="{$WEB_ROOT}account_issues.php" target="main" class="blend side">Signup Problems?</a>
           </span>
-            <a href='{$WEB_ROOT}lostconfirm.php' target='main'>Resend&nbsp;Confirmation?</a>
-            <!-- Already available via main <a href="{$WEB_ROOT}tutorial.php" target="main">Intro</a> |-->
         </div>
         
       </div>

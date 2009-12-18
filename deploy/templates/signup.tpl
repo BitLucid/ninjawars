@@ -48,7 +48,7 @@
 	
 	<h3>Problems?</h3>
 	<p>
-	Lost Your Password ? <a href="lostpass.php">Retrieve Password</a> / Didn't get your confirmation code ? <a href="lostconfirm.php">Activate Account</a>
+	Lost Your Password ? <a href="account_issues.php">Resend Account Info Email</a> / Didn't get your confirmation code ? <a href="account_issues.php">Resend Confirmation Email</a>
 	</p>
 	<p>
 	More information on classes and skills can be found on 
