@@ -34,3 +34,6 @@
     </form>
 
 {/if}
+
+    <h3>For Other Issues</h3>
+        <p>For other issues, please <a href='{$WEB_ROOT}staff.php'>contact us</a>.<p>
