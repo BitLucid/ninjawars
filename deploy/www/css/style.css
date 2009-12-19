@@ -10,17 +10,6 @@ html, body {
 	margin: 0;
 	padding: 0;
 }
-p {
-	margin: .5em 0 .5em 0;
-}
-hr {
-	margin:1em auto 1em auto;
-	border: 0;
-	width: 90%;
-	color: #800000;/*maroon*/
-	background-color: #800000;/*maroon*/
-	height: 1px;
-}
 html, body {
 	height: 100%;
 }
@@ -74,7 +63,16 @@ body {
 	/*opacity: .9;*/
 }
 
+p {
+	margin: .5em 0 .5em 0;
+}
 hr {
+	margin:1em auto 1em auto;
+	border: 0;
+	width: 90%;
+	color: #800000;/*maroon*/
+	background-color: #800000;/*maroon*/
+	height: 1px;
 	margin-top:.3em;
 	margin-bottom:.3em;
 }
@@ -348,7 +346,7 @@ table.playerTable .Black, .player-info .Black {
     -moz-border-radius:16px;
     -op-border-radius:16px;
     border-radius:16px;
-}
+}/* Note that ninja-error is used below as well. */
 
 .your-stats #player-profile{
     margin: 10px 0 10px 0;
@@ -806,14 +804,14 @@ table .quickstats td{
 
 /* Errors and Notices and the Like */
 
-.ninja-error{
+.ninja-error{/* Note that ninja-error is used above as well. */
 	color:#735005;
 	background-color:#F4A83D;
 	border-bottom:1px solid #D6800C;
 	font-family: ‘Trebuchet MS’, Helvetica, sans-serif;
 	font-weight:bold;
 	font-variant:small-caps;
-	font-size:130%;
+	font-size:120%;
 	padding: 3px;
 }
 
@@ -859,7 +857,7 @@ table .quickstats td{
 	text-align:center;
 	color:Red;
 	background-color:Gold;
-	font-family: Times, serif;
+	font-family: Georgia, 'Times New Roman', Times, serif;
 	font-weight:bold;
 	font-size:150%;
 	padding: 3px;
@@ -896,10 +894,19 @@ table .quickstats td{
     color:#006400;
     border:thin #006400 solid;
 }
+.player-list-nav .page-counter{
+    font-family:Verdana,Arial,san-serif;
+    font-size:xx-small;
+    text-align:center;
+}
+.player-list-nav a{
+    text-decoration:none;
+}
 .player-list-nav form{
     margin:0;
     padding:0;
     text-align:center;
+    font-weight:bold;
 }
 .player-info .clan-members{
     text-align:center;
