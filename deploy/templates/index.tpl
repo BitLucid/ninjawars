@@ -29,7 +29,7 @@
               </div>
               <div id="quickstats-frame-container">
                 <iframe id="quickstats" src="quickstats.php" name="quickstats">
-                  Quick Stats Iframe Display section (Iframes Not supported by this browser)
+                  <a href='quickstats.php' target='_blank'>Quick Stats</a> Iframe Display section (Iframes Not supported by this browser)
                 </iframe>
               </div>
             </div><!-- End of quickstats and switch container -->
@@ -134,7 +134,7 @@
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
             <iframe id="main" name="main" class="main-iframe" src="{$main_src}">
-              Main Content Display Section (Frames Not Supported)
+              <a href='{$main_src}' target='_blank'>Main Content</a> Display Section (Frames Not Supported)
             </iframe>
           </div><!-- End of mainFrame div -->
           
@@ -180,7 +180,7 @@
     <!-- TODO: move chat submit box out here. -->
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
                     <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
-                      Mini Chat Iframe Display Section (Iframes not supported by this browser)
+                      <a href='mini_chat.php' target='_blank'>Mini Chat</a> Iframe Display Section (Iframes not supported by this browser)
                     </iframe>
                   </div>
                   <div id="expand-chat">
