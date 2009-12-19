@@ -184,7 +184,7 @@ function render_clan_members($clan=null, $limit=30){
         $ninjas = $sql->QueryAssoc($sel);
         ?>
         <div class='clan-members'>
-            <div class='subtitle'>Clan members</div>
+            <h3 class='clan-members-header'>Clan members</h3>
                 <?php
                 if(!empty($ninjas)){
                     $display_ul = true;
@@ -220,7 +220,7 @@ function display_player_profile($player_info){
     if($player_info['messages']){
 	?>
 	<div class='player-profile'>
-		<p class='centered'><span class='subtitle'>Message:</span> <?php echo out($player_info['messages']); ?></p>
+		<p class='centered profile-message'><span class='subtitle'>Message:</span> <?php echo out($player_info['messages']); ?></p>
 	</div>
 	<?php
 	}
@@ -230,7 +230,7 @@ function display_player_profile($player_info){
 function render_ranking_link($player_info, $linkbackpage, $sql){
 	$rank_spot = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".sql($player_info['uname'])."'");
 	$res = "    <div class='player-ranking-linkback'>
-              <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=dead&amp;page=$linkbackpage'>&lt; Go to rank $rank_spot in the ninja list</a>
+              <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=dead&amp;page=$linkbackpage'>&lsaquo;Rank $rank_spot</a>
         </div>";
     return $res;
 }

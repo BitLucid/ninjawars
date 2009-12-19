@@ -4,10 +4,9 @@
 
 <div class='player-info'>
 
+    <h1 class='player-name'>{$player}</h1>
 
     {$ranking_link_section}
-
-    <div class='player-name'>{$player}</div>
 		
 	<div class='player-titles centered'>
 
@@ -44,6 +43,7 @@
 				      <span>
                               <label><a href="#">Deflect</a><input id="deflect" type="checkbox" name="deflect"></label>
                             </span>
+            {/if}
 
 			          <input id="target" type="hidden" value="{$target}" name="target">
                             <label class='attack-player-trigger'>
@@ -72,8 +72,7 @@
             
                     </ul>
                     </div>
-		{/if}<!-- End of the "viewing someone else's profile" section. -->
-	{/if} <!-- End of the attacking-had-no-errors section -->
+	    {/if} <!-- End of the attacking-had-no-errors section -->
 
 	{/if} <!-- End of the "not self" viewing section -->
 
@@ -84,11 +83,11 @@
 
     <!-- Clan leader options on players in their clan. -->
     {$clan_options_section}
-
+    
     <!-- Player clan and clan members -->
 
 	{$player_clan_section}
-
+	
     {$player_profile_message}
 
 	</div><!-- End player-info -->
