@@ -5,8 +5,7 @@
     <div id='content' class='wrapper'>
 
       <div id='login-error' class="error {if !$login_error}hidden{/if}">
-        That password/username combination was incorrect.  <a href='account_issues.php'>Lost Password/Missing Confirmation?</a> 
-        For other account problems, <a href='staff.php'>Contact Us</a>.
+        That password/username combination was incorrect.  <a href='account_issues.php' target='main'>Login/Signup Issues?</a> 
       </div>
 
 
@@ -117,7 +116,7 @@
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
             <iframe id="main" name="main" class="main-iframe" src="{$main_src}">
-              Main Content Display Section (Frames Not Supported)
+              <a href='{$main_src}' target='_blank'>Main Content</a> Display Section (Frames Not Supported)
             </iframe>
           </div><!-- End of mainFrame div -->
           
@@ -160,7 +159,7 @@
     <!-- TODO: move chat submit box out here. -->
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
                     <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
-                      Mini Chat Iframe Display Section (Iframes not supported by this browser)
+                      <a href='mini_chat.php' target='_blank'>Mini Chat</a> Iframe Display Section (Iframes not supported by this browser)
                     </iframe>
                   </div>
                   <div id="expand-chat">
