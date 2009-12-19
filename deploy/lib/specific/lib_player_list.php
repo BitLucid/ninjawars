@@ -87,38 +87,38 @@ function display_search_form($hide, $page, $searched, $dead_count){
 
 // Display first/previous/page/next/last
 function player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages) {
-	echo "<div class='player-list-nav'>\n";
-	echo "<form action=\"list_all_players.php\" method=\"get\">\n";
-	echo "  <div>\n";
+	echo "<div class='player-list-nav'>\n
+        <form action=\"list_all_players.php\" method=\"get\">\n
+          <div>\n";
 
 	if ($page != 1) {
 		$pageprev = $page-1;
-		echo "<a href=\"list_all_players.php?hide=$hide&amp;page=1&amp;searched=$searched\">&lt;First</a> | ";
-		echo("<a href=\"list_all_players.php?page=$pageprev&amp;searched=$searched&amp;hide=$hide\">&lt;&lt;Previous $record_limit</a>&nbsp;| ");
+		echo "<a href=\"list_all_players.php?hide=$hide&amp;page=1&amp;searched=$searched\">&laquo;First</a> |
+		    <a href=\"list_all_players.php?page=$pageprev&amp;searched=$searched&amp;hide=$hide\">&lsaquo;Previous $record_limit</a>&nbsp;| ";
 	} else {
-		echo "&lt;First | &lt;&lt;Previous $record_limit&nbsp; | ";
+		echo "&laquo;First | &lsaquo;Previous $record_limit&nbsp; | ";
 	}
 
-	echo "<span class='current-page'>";
-	echo "<input type=\"hidden\" name=\"hide\" value=\"$hide\">";
-	echo "<button type=\"submit\" class=\"formButton\" value=\"Page\">Page</button>";
-	echo "<input type=\"hidden\" name=\"searched\" value=\"$searched\">";
-	echo "<input type=\"text\" name=\"page\" value=\"$page\" style=\"font-family:Verdana, Arial;font-size:xx-small;\" size=\"3\">";
-	echo "/$numofpages ";
-	echo "</span>";
+	echo "<span class='current-page'>
+	    <input type=\"hidden\" name=\"hide\" value=\"$hide\">
+	    <button type=\"submit\" class=\"formButton\" value=\"Page\">Page</button>
+	    <input type=\"hidden\" name=\"searched\" value=\"$searched\">
+	    <input class='page-counter' type=\"text\" name=\"page\" value=\"$page\" size=\"3\">
+	    /$numofpages
+	    </span>";
 
 	if (($totalrows - ($record_limit * $page)) > 0) {
 		$pagenext   = $page+1;
-		echo(" | <a href=\"list_all_players.php?page=$pagenext&amp;searched=$searched&amp;hide=$hide\">Next $record_limit&gt;</a>");
-		echo " | <a href=\"list_all_players.php?page=$numofpages&amp;hide=$hide&amp;searched=$searched\">Last&gt;&gt;</a>\n";
+		echo " | <a href=\"list_all_players.php?page=$pagenext&amp;searched=$searched&amp;hide=$hide\">Next $record_limit&rsaquo;</a>
+		     | <a href=\"list_all_players.php?page=$numofpages&amp;hide=$hide&amp;searched=$searched\">Last&raquo;</a>\n";
 	} else {
-		echo(" | Next $record_limit&gt;");
-		echo " | Last&gt;&gt;\n";
+		echo " | Next $record_limit&rsaquo;
+		     | Last&raquo;\n";
 	}
 
-	echo "  </div>\n";
-	echo "</form>\n";
-	echo "</div>\n";
+	echo "  </div>\n
+        </form>\n
+        </div>\n";
 } // End of display functions.
 
 
