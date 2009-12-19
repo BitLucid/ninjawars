@@ -88,15 +88,13 @@ function time_ago($time, $previous){
 		if(isset($time_array[4]) && $time_array[4]>0){
 			$res .= (int)$time_array[4].(1==(int)$time_array[4]?' day' : ' days');
 			$ago = true;
-		}
-		if($time_array[3]>0){
+		} elseif($time_array[3]>0){
 			if($ago){
 				$res .= ', ';
 			}
 			$res .= (int)$time_array[3].(1==(int)$time_array[3]?' hour' : ' hours');
 			$ago = true;
-		}
-		if($time_array[2]>0){
+		} elseif($time_array[2]>0){
 			if($ago){
 				$res .= ', ';
 			}
