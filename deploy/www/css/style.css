@@ -84,7 +84,7 @@ h1, h2, h3, h4, h5, h6, .subtitle, .title{
 	margin-top: .1em;
 	margin-bottom:.3em;
 	font-weight:bold;
-	background-color:#303030;
+	background:#303030 url(/images/blacktransfaderight.png) right top repeat-y;
 	color:#cccccc;
 }
 h1, h2, .title, .player-info .player-name{
@@ -108,12 +108,14 @@ h2{
     margin-left: auto;
     margin-right: auto;
     width:50%;
-    background: #9BB02D;
+    background: #9BB02D url(/images/blacktransfaderight.png) right top repeat-y;
     border: 1px solid #9BB02D;
+    font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
+    letter-spacing:0.1em;
 }
 h1{
-	/*background: #BDB76B url(/images/tribal_header_right_sharp.png) right center no-repeat;*/
-	background: #BDB76B url(/images/tribal_header_left_sharp.png) left center no-repeat;
+	background: #BDB76B url(/images/blacktransfaderight.png) right top repeat-y;
+	border:none;
     padding: 0 58px 0 58px;
 	font-family: "edding-780-1","edding-780-2", Impact, Charcoal, sans-serif;
 	font-size:150%;
@@ -801,6 +803,10 @@ table .quickstats td{
 #login-bar form {
 	margin:0;
 }
+#login-bar form input{
+    height:1.5em;
+    vertical-align:center;
+}
 #login-bar div.text {
 	/*color:#707E77;*/
 	/*color:lightGreen;*/
@@ -920,6 +926,9 @@ table .quickstats td{
 }
 .player-info .clan-members{
     text-align:center;
+}
+.player-info .player-stats, .player-info .player-clan{
+    margin-bottom: 1.5em;
 }
 #player-profile-table{
     width:100%;
