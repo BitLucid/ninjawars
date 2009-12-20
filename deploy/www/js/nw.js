@@ -246,7 +246,7 @@ function refreshQuickstats(quickView){
 
 function isIndex(){ // Return true if the index page.
 	// Not great because it doesn't allow for pretty urls, down the line.  
-	return (window.location.pathname.substr(-9,9) == 'index.php');
+	return (window.location.pathname.substr(-9,9) == 'index.php')  || $('body').hasClass('main-body');
 }
 
 function isLive(){
