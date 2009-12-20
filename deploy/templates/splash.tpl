@@ -60,11 +60,8 @@
           </div>
             
           <div id='contact-us'>
-	        <a href='mailto:ninjawarslivebythesword@gmail.com'>Email Ninjawars Staff</a>
+	        <a href='staff.php' target='main'><img src='{$WEB_ROOT}images/dirty_raws/contactstaff.png' alt='Contact Staff'></a>
 	      </div>
-	      <div id='staff-page-link'>
-            <a href='staff.php' target='main'><img src='{$IMAGE_ROOT}staff.png' alt='Staff'> Info Page</a>
-          </div>
 
       </div>  
       
