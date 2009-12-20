@@ -11,7 +11,7 @@ html, body {
 	padding: 0;
 }
 html, body {
-	height: 100%;
+	height: 96%;
 }
 .wrapper {
 	min-height: 100%;
@@ -94,7 +94,6 @@ h1, h2, .title, .player-info .player-name{
 	font-weight:bolder;
 	text-align:center;
 	font-size:1.5em;
-    border: 1px solid #BDB76B;/*DarkKhaki*/
     width: 70%;
     margin-left:auto;
     margin-right:auto;
@@ -749,6 +748,10 @@ table .quickstats td{
     margin:0;
 }
 
+#contact-us img{
+    max-width:98%;
+}
+
 /* End of Index page stuff */
 
 
@@ -1177,8 +1180,9 @@ table .quickstats td{
 	text-align:center;
 	margin: .2em 0 .5em 0;
 	font-weight:bolder;
-	font-size:1.5em;
-	font-family: Impact, sans-serif;
+	font-size:1.7em;
+	font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
+	/*font-family: Impact, sans-serif;*/
 	font-variant: small-caps;
 }
 #progression a{
@@ -1430,4 +1434,3 @@ select option #blue-class-select{
 	color:blue;
 	font-weight:bold;
 }
-/* END OF INDEX REWRITE CSS */
