@@ -1,7 +1,7 @@
 <?php
 // Licensed under the creative commons license.  See the staff.php page for more detail.
-
-$login        = (!empty(in('action')) ? true : false); // A request to login.
+$action = in('action');
+$login        = (!empty($action) ? true : false); // A request to login.
 $logout       = in('logout');
 $is_logged_in = is_logged_in();
 $login_error  = false;
