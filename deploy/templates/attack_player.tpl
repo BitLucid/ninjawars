@@ -1,4 +1,4 @@
-<h2>Village</h2>
+<h1>Village</h1>
 
 <div id='attack-player-page'>
 
