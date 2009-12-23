@@ -16,7 +16,7 @@
 	  <label for='password'>Password:</label>  
 	  <input id="key" type="password" maxlength="50" name="key" class="textField">
 	    <span>
-			Letters, numbers, underscores and spaces.  Starting or ending spaces are not allowed.
+			Your Password can only contain letters, numbers, underscores and inner spaces.
 		</span>
 	  </div>
 	</fieldset>

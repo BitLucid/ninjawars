@@ -229,7 +229,7 @@ input.formButton {
 }
 input.textField {
 	font-family:Verdana, Arial, sans-serif;
-	font-size:x-small;
+	font-size:small;
 }
 div.description {
 	text-align: center;
@@ -250,28 +250,30 @@ fieldset {
 }
 form#signup label{
     float:left;
+    clear:left;
     margin-right:1em;
-    width: 5em;
     text-align:right;
     display:block;
+    font-weight:bolder;
 }
-form#signup input{
+form#signup input, form#signup select{
     float:left;
     display:block;
     margin-right:3em;
     margin-left: 1em;
-    width:4em;    
+    color:black;
+    background-color:white;   
 }
 form#signup fieldset span{
+    float:left;
     font-style:italic;
-    font-size:smaller;
 }
 legend {
   padding: 0.2em 0.5em;
   margin-right: 2em;
   border:2px solid #800000;
   color:#ffffff;
-  font-style:italic;
+  font-weight:bolder;
   font-size:90%;
   text-align:center;
 }
@@ -646,6 +648,9 @@ body.solo-page #logo-appended{
 }
 
 /* IFRAMES */
+iframe{
+    border:none;
+}
 
 #mini_chat { /* iframe itself */
 	width:100%;
