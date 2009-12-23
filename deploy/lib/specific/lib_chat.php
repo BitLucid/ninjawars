@@ -75,6 +75,7 @@ function render_chat_messages($chatlength, $show_elipsis=null){
 
 // parse the date/time for the chat.
 function time_ago($time, $previous){
+    // Need to modify the database calls in order to retrieve the right ago message stuff.
     $time_array = time_to_array($time);
 	$similar = false;
 	$res = null;
