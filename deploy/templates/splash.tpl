@@ -60,7 +60,7 @@
           </div>
             
           <div id='contact-us'>
-	        <a href='staff.php' target='main'><img src='{$WEB_ROOT}images/dirty_raws/contactstaff.png' alt='Contact Staff'></a>
+	        <a href='staff.php' target='main'><img src='{$WEB_ROOT}images/contactstaff.png' alt='Contact Staff'></a>
 	      </div>
 
       </div>  
