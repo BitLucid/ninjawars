@@ -108,7 +108,7 @@ h2{
     margin-right: auto;
     width:50%;
     background: #9BB02D url(/images/blacktransfaderight.png) right top repeat-y;
-    border: 1px solid #9BB02D;
+    /*border: 1px solid #9BB02D;*/
     font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
     letter-spacing:0.1em;
 }
