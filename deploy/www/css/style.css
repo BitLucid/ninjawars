@@ -667,21 +667,28 @@ body.solo-page #logo-appended{
 	color:gray;
 }
 
-.chatMessages{
+.chat-messages{
     margin-top:0;
     list-style-type:none;
 }
-.chatMessages .chat-time{
+.chat-messages dt{
+    float:left;
+    margin-right: .5em;
+}
+.chat-messages .chat-time{
 	font-family: Trebuchet MS1, Helvetica, sans-serif;
 	font-size: .8em;
 	font-style:italic;
 	color: gray;
 }
+.chat-messages .chat-message a{
+    font-size:smaller;
+}
 #expand-chat{
     border: 1px dashed darkblue;
 }
 
-#full-chat .chatMessages{
+#full-chat .chat-messages{
     font-size:1em;
 }
 
