@@ -61,10 +61,10 @@
     </div>
 </form>
 
-<div id='player-profile'>
+<div id='player-profile-section'>
 Profile Preview:
     <div id='player-profile">
-        {$profile_display}
+        &nbsp;{$profile_display}&nbsp;
     </div>
 </div>
 

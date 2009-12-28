@@ -357,10 +357,13 @@ table.playerTable .Black, .player-info .Black {
     border-radius:16px;
 }/* Note that ninja-error is used below as well. */
 
-.your-stats #player-profile{
+.your-stats #player-profile-section{
     margin: 10px 0 10px 0;
     text-align: center;
     float:right;
+}
+.your-stats #player-profile{
+    border:1px solid gray;
 }
 
 .profile-message{
