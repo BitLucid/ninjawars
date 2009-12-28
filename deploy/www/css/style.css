@@ -167,7 +167,7 @@ img {
 
 select {
 	font-family:Verdana, Arial, sans-serif;
-	font-size: 9px;
+	font-size: 12px;
 }
 
 a {
@@ -261,8 +261,12 @@ form#signup input, form#signup select{
     display:block;
     margin-right:3em;
     margin-left: 1em;
+    color:#66cc66;
+    background-color:black;   
+}
+form#signup input:focus, form#signup select:focus{
     color:black;
-    background-color:white;   
+    background-color:white;
 }
 form#signup fieldset span{
     float:left;
@@ -809,8 +813,9 @@ table .quickstats td{
 	width: 100px;
 	height: 15px;
 	background:maroon;
-	color:lightGray;
+	color:#66cc66;
 	/*border: 0;*/
+	font-weight:bold;
 }
 #login-bar label{
 	font-weight:bold;
@@ -927,7 +932,7 @@ table .quickstats td{
 }
 .player-list-nav .page-counter{
     font-family:Verdana,Arial,san-serif;
-    font-size:xx-small;
+    font-size:x-small;
     text-align:center;
 }
 .player-list-nav a{
