@@ -121,7 +121,7 @@ h1{
 	max-width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top:none;
+	margin-top:0;
 }
 .clan-members .subtitle{
     background-color:#BDB76B;/*DarkKhaki*/
@@ -825,7 +825,7 @@ table .quickstats td{
 }
 #login-bar form input{
     height:1.5em;
-    vertical-align:center;
+    vertical-align: middle;
 }
 #login-bar div.text {
 	/*color:#707E77;*/
