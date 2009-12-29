@@ -19,7 +19,7 @@ $random_encounter = rand(1, 200) == 200;
 
 if (getTurns($username) > 0) {
 	if ($attacked == 1) { // *** Bit to expect that it comes from the form. ***
-		echo "Commencing Attack<br><br>\n";
+		echo "<p>Attacking ...</p>\n";
 
 		if (getStatus($username) && $status_array['Stealth']) {
 			subtractStatus($username, STEALTH);
