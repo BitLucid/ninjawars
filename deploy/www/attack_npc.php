@@ -9,8 +9,6 @@ include SERVER_ROOT."interface/header.php";
 
 <h1>Battle Status</h1>
 
-<hr>
-
 <?php
 $turn_cost = 1;
 $attacked  = in('attacked');
@@ -68,7 +66,6 @@ if (getTurns($username) > 0) {
             }
 			if (!subtractHealth($username, $villager_attack)) {
 				echo "<p>The villager has slain you!</p>\n";
-				echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.\n";
 			} else {
 
 				$villager_gold = rand(0, 20);	// *** Vilager Gold ***
@@ -129,7 +126,6 @@ if (getTurns($username) > 0) {
 
 					if ($ninja_health < 1) {
 						echo "<br>The Samurai has slain you!<br>\n";
-						/*echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";*/
 					}
 				}
 
@@ -164,8 +160,7 @@ if (getTurns($username) > 0) {
 			$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
 
 			if (!subtractHealth($username, $merchant_attack)) {
-				echo "The Merchant has slain you!<br>\n";
-				echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";
+				echo "<p>The Merchant has slain you!</p>\n";
 			} else { // *** Ninja won the fight. ***
 				$merchant_gold   = rand(20, 70);  // *** Merchant Gold   ***
 				addGold($username, $merchant_gold);
@@ -193,7 +188,6 @@ if (getTurns($username) > 0) {
 
 			if (!subtractHealth($username, $guard_attack)) {
 				echo "The Guard has slain you!<br>\n";
-				echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";
 			} else {
 				$guard_gold   = rand(1, $attacker_str + 40);	// *** Guard Gold ***
 				addGold($username, $guard_gold);
@@ -229,7 +223,6 @@ if (getTurns($username) > 0) {
 				if (!subtractHealth($username, $group_attack)) { // If the den of theives killed the attacker.
 					echo "<p>The group of theives does $group_attack damage to you!</p>";
 					echo "<p>The group of thieves have avenged their brotherhood and beaten you to a bloody pulp.</p>";
-		            echo "<p>Go to the <a href=\"shrine.php\">shrine</a> to resurrect.</p>";
 				} else { // The den of thieves didn't accomplish their goal
 				    $group_gold = rand(100, 300);
 					if ($group_attack > 120) { // Powerful attack gives an additional disadvantage
@@ -249,7 +242,6 @@ if (getTurns($username) > 0) {
 
 				if (!subtractHealth($username, $thief_attack)) {
 					echo "Thief has slain you!<br>\n";
-					echo "Go to the <a href=\"shrine.php\">shrine</a> to resurrect.<br>\n";
 				} else {
 					$thief_gold = rand(0, 40);  // *** Thief Gold ***
 
@@ -273,7 +265,7 @@ if (getTurns($username) > 0) {
 
 		if (getHealth($username) <= 0){
 			sendMessage("SysMsg", $username, "DEATH: You have been killed by a non-player character at $today");
-            echo "<p>Go to the <a href=\"shrine.php\">shrine</a> to resurrect.</p>";
+            echo "<p class='ninja-notice'>Go to the <a href=\"shrine.php\">shrine</a> to resurrect.</p>";
 		}
 		subtractTurns($username, $turn_cost);
 
