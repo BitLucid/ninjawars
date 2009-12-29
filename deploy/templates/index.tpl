@@ -210,7 +210,7 @@
         <!-- Substitute dynamic "catchphrases" here eventually -->
         <!-- "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." -->
         "Helping ninjas stab people since 2003." |
-        <a href="tutorial.php" target="main">Intro</a> |
+        <a href="tutorial.php" target="main">Help</a> |
         <a href="rules.php" target="main">Rules</a> |
         <a href='staff.php' target='main'>Staff</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
