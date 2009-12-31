@@ -1,4 +1,23 @@
     {$header}
+{literal}
+<script type="text/javascript" charset="utf-8">
+  var is_ssl = ("https:" == document.location.protocol);
+  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
+  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  var feedback_widget_options = {};
+
+  feedback_widget_options.display = "overlay";  
+  feedback_widget_options.company = "ninjawars";
+  feedback_widget_options.placement = "left";
+  feedback_widget_options.color = "#222";
+  feedback_widget_options.style = "idea";
+  
+  var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+</script>
+{/literal}
     
     <!-- Version {$version} -->
 
@@ -187,13 +206,13 @@
         <!-- "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." -->
         "Helping ninjas stab people since 2003."
          |
-        <a href="tutorial.php" target="main">Intro</a> |
+        <a href="tutorial.php" target="main">Help</a> |
         <a href="rules.php" target="main">Rules</a> |
         <a href='staff.php' target='main'>Staff</a> |
-        <a href="http://ninjawars.proboards19.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
-        <a href="http://ninjawars.proboards19.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
+        <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
+        <a href="http://ninjawars.proboards.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
         <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
-        <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum</a> 
+        <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> 
              
       </div>
       
@@ -203,5 +222,4 @@
 
     <!-- Version: {$version} -->
 
-  </body>
-</html>
+<!-- body and html tags wrapped around this template via index.php -->
