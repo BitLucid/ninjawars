@@ -1,4 +1,4 @@
-<h2>Enemies</h2>
+<h1>Enemies</h1>
 
 {if $max_enemies neq true}
 <div id='ninja-enemy'>
@@ -12,20 +12,17 @@
 
 {if $found_enemies}
 <ul>
-
-{$found_enemies}
-
+    {$found_enemies}
 </ul>
 {/if}
 
 {if $enemy_section}
 <ul>
-
-{$enemy_section}
-
+    {$enemy_section}
 </ul>
+
 {else}
-<p>You haven't decided who your enemies are yet.</p>
+<p>You haven't decided who your enemies are yet, <a href='list_all_players.php' target='main'>find some</a>.</p>
 
 {/if}
 
