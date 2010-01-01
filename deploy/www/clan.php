@@ -43,7 +43,7 @@ if(!isset($username)){
 	}
 
 	if ($command == "new") { // *** Clan Creation Action ***
-		if ($viewer_level > $clan_creation_level_requirement) {
+		if ($viewer_level >= $clan_creation_level_requirement) {
 			setClan($username, $username);
 			$default_clan_name = "Clan_".$username;
 			renameClan($username,$default_clan_name);
@@ -51,7 +51,7 @@ if(!isset($username)){
 			$clan = getClan($username);
 			echo "<div class='notice'>You have created a new clan!</div><p>Name your clan: </p>\n";
 		} else { // *** Level req wasn't met. ***
-			echo "<div class='notice'>You do not have enough renown to create a clan.</div>";
+			echo "<div class='notice'>You do not have enough renown to create a clan. You must be at least level ".$clan_creation_level_requirement.".</div>";
 		}
 	}
 
