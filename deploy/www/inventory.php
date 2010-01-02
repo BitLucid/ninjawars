@@ -9,7 +9,7 @@ include SERVER_ROOT."interface/header.php";
 
 <h1>Your Inventory</h1>
 
-<p>
+<div class='item-list'>
 
 <?php
 $sql->Query("SELECT amount AS c, item FROM inventory WHERE owner = '$username' GROUP BY item, amount");
@@ -81,21 +81,23 @@ if ($sql->rows == 0) {
 
 	echo "</table>\n";
 }
+
+
 ?>
-  <br><br>
-  <a href="list_all_players.php?hide=dead">Use an Item on a ninja?</a>
+</div>
   <form id="player_search" action="list_all_players.php" method="get" name="player_search">
     <div>
+      <a href="list_all_players.php?hide=dead">Use an Item on a ninja?</a>
       <input id="searched" type="text" maxlength="50" name="searched" class="textField">
       <input id="hide" type="hidden" name="hide" value="dead">
       <input type="submit" value="Search for Ninja" class="formButton">
     </div>
   </form>
 
-  <br>
+  <p>
   Current gold: <?php echo getGold($username);?>
+  <p>
 
-</p>
 
 <?php
 include SERVER_ROOT."interface/footer.php";
