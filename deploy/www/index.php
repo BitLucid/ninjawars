@@ -7,6 +7,7 @@ $is_logged_in = is_logged_in();
 $login_error  = false;
 $just_logged_out = false;
 $referrer = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+$player_info = array();
 
 $sql = new DBAccess(); // *** Instantiates wrapper class for manipulating pdo.
 $GLOBALS['sql'] = $sql; // Put sql into globals array. :(
@@ -30,6 +31,7 @@ if ($logout) { // on logout, kill the session and don't redirect.
 $is_not_logged_in = !$is_logged_in;
 $username = get_username();
 $user_id = get_user_id();
+$player_info = get_player_info();
 
 // Player counts.
 $stats          = membership_and_combat_stats($sql);

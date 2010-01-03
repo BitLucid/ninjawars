@@ -226,6 +226,7 @@ function toggle_visibility(id) {
 }
 
 function refreshMinichat(){
+    // Add check for this location.
         parent.mini_chat.location="mini_chat.php";
 }
 
