@@ -50,6 +50,10 @@ body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
     font: 90%/1.4 arial, helvetica, sans-serif;
 }
 
+dl{
+    line-height:1.1;
+}
+
 body {
 	/*font-family: <ideal>, <alternative>, <common>, <generic>;*/
 	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
@@ -119,9 +123,7 @@ h1{
 	font-family: "edding-780-1","edding-780-2", Impact, Charcoal, sans-serif;
 	font-size:150%;
 	max-width: 1000px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top:0;
+	margin: 0 auto inherit auto;
 }
 .clan-members .subtitle{
     background-color:#BDB76B;/*DarkKhaki*/
@@ -628,7 +630,8 @@ body.solo-page #logo-appended{
 }
 .boxes ul {
 	padding-left:10px;padding-right: 0;margin-left:0;margin-right:0;
-	margin-top:0;margin-bottom:0;
+	margin-top:0;
+	margin-bottom:0;
 	list-style-image:none;
 	list-style-type:none;
 }
@@ -684,6 +687,7 @@ iframe{
     list-style-type:none;
 }
 .chat-messages dt{
+    clear:left;
     float:left;
     margin-right: .5em;
 }
@@ -1199,7 +1203,6 @@ table .quickstats td{
 #progression{
 	text-align:center;
 	margin: .2em 0 .5em 0;
-	font-weight:bolder;
 	font-size:1.7em;
 	font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
 	/*font-family: Impact, sans-serif;*/
