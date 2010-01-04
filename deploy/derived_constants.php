@@ -11,7 +11,7 @@ define('SERVER_IMAGE_ROOT', SERVER_ROOT.'images/');
 define('LIB_ROOT', SERVER_ROOT.'lib/');
 define('FUNC_ROOT', LIB_ROOT.'func/');
 define('DB_ROOT', SERVER_ROOT.'db/');
-define('OBJ_ROOT', SERVER_ROOT.'obj/'); // *** For generic business objects.
+define('OBJ_ROOT', SERVER_ROOT.'lib/obj/'); // *** For generic business objects.
 
 // *** Specific in-game concepts categorized into their folders.
 define('ACCOUNT_ROOT', SERVER_ROOT.'account/'); // *** For all the account objects.
