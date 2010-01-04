@@ -325,7 +325,7 @@ assert($ending_turns < $starting_turns || $starting_turns == 0);
 //  ***  START ACTION OVER AGAIN SECTION ***
 echo "<hr>\n";
 if (isset($attackee)) {
-	echo "<div>Return to <a href=\"player.php?player=".urlencode($attackee)."\">Player Detail</a></div>Or \n"
+	echo "<div>Return to <a href=\"player.php?player=".urlencode($attackee)."\">Player Detail</a></div>Or \n";
 }
 
 echo "Start your combat <a href=\"list_all_players.php\"> from the player list.</a>\n<br>\n";
