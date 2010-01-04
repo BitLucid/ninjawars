@@ -16,7 +16,7 @@ define('OBJ_ROOT', SERVER_ROOT.'obj/'); // *** For generic business objects.
 // *** Specific in-game concepts categorized into their folders.
 define('ACCOUNT_ROOT', SERVER_ROOT.'account/'); // *** For all the account objects.
 define('ADMIN_ROOT', SERVER_ROOT.'admin/'); // *** For all the admin objects.
-define('CHAR_ROOT', SERVER_ROOT.'char/'); // *** For all the in-game character objects.
+define('CHAR_ROOT', SERVER_ROOT.'lib/char/'); // *** For all the in-game character objects.
 define('AREA_ROOT', SERVER_ROOT.'area/'); // *** For all the in-game area or room objects.
 define('NPC_ROOT', SERVER_ROOT.'npc/'); // *** For all the in-game npc objects.
 define('CLAN_ROOT', SERVER_ROOT.'clan/');  // *** For all the in-game clan objects.
