@@ -19,6 +19,9 @@ if(!empty($events)){
         $event_list .= render_template('single_event.tpl', array('event' => $loop_event));
     }
 }
+if(!$event_list){
+	$event_list = 'You have not been attacked recently.';
+}
 
 $parts = get_certain_vars(get_defined_vars());
 echo render_template('events.tpl', $parts);

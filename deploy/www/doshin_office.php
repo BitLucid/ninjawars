@@ -1,6 +1,6 @@
 <?php
 $alive      = false;
-$private    = true;
+$private    = false;
 $quickstat  = false;
 $page_title = "Doshin Office";
 
@@ -18,6 +18,7 @@ $target  = in('target');
 $command = in('command');
 $amount  = intval(in('amount'));
 $bribe   = intval(in('bribe'));
+$username = get_username();
 
 if ($command == "Offer Bounty")
 {
@@ -45,55 +46,55 @@ if ($command == "Offer Bounty")
 			}
 			else
 			{
-				echo "You do not have that much gold.<br>\n";
+				echo "<div>You do not have that much gold.</div>\n";
 			}
 		}
 		else
 		{
-			echo "You did not offer a valid amount of gold.<br>\n";
+			echo "<div>You did not offer a valid amount of gold.</div>\n";
 		}
 	}
 	else
 	{
-		echo "The bounty on $target may go no higher.<br>\n";
+		echo "<div>The bounty on $target may go no higher.</div>\n";
 	}
 }
 else if ($command == "Bribe")
 {
-	switch(true)
+	if ($bribe <= getGold($username) && $bribe > 0)
 	{
-		case ($bribe <= getGold($username) && $bribe > 0):
-			subtractGold($username,$bribe);
-			subtractBounty($username,($bribe/2));
+		subtractGold($username,$bribe);
+		subtractBounty($username,($bribe/2));
 
-			$location    = "Behind the Doshin Office";
-			$description = "\"We'll see what we can do,\" one of the Doshin tells you as you hand off your gold. He then directs you out through a back alley.\n".
+		$location    = "Behind the Doshin Office";
+		$description = "\"We'll see what we can do,\" one of the Doshin tells you as you hand off your gold. He then directs you out through a back alley.\n".
                    "<br><br>\n".
                    "You find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.\n";
-			$quickstat = "player";
-			break;
-		case $bribe < 0:  // A negative bribe was put in, which on the 21st of March, 2007, was a road to instant wealth, as a bribe of -456345 would increase both your bounty and your gold by 456345, so this will flag players as bugabusers until it becomes a standard-use thing.
-			if (getGold($username) > 1000) //  *** If they have more than 1000 gold, their bounty will be mostly removed by this event.
-			{
-				$bountyGoesToNearlyZero = (getBounty($username) * .7);
-				subtractBounty($username, $bountyGoesToNearlyZero);
-			}
+		$quickstat = "player";
+	}
+	else if ($bribe < 0)  // A negative bribe was put in, which on the 21st of March, 2007, was a road to instant wealth, as a bribe of -456345 would increase both your bounty and your gold by 456345, so this will flag players as bugabusers until it becomes a standard-use thing.
+	{
+		if (getGold($username) > 1000) //  *** If they have more than 1000 gold, their bounty will be mostly removed by this event.
+		{
+			$bountyGoesToNearlyZero = (getBounty($username) * .7);
+			subtractBounty($username, $bountyGoesToNearlyZero);
+		}
 
-			subtractGold($username, floor(getGold($username) *.8));  //Takes away 80% of the players gold.
+		subtractGold($username, floor(getGold($username) *.8));  //Takes away 80% of the players gold.
 
-			$location    = "The Rat-infested Alley behind the Doshin Office";
-			$description = "\"Trying to steal from the Doshin, eh!\" one of the men growls.<br>Where before there were only relaxing men idly ignoring their duties there are now unsheathed katanas and glaring eyes.<br>A group of the Doshin advance on you before you can escape and proceed to rough you up with fists and the hilts of their katana.  Finally, they take most of your gold and toss you into the alley behind the building.\n".
+		$location    = "The Rat-infested Alley behind the Doshin Office";
+		$description = "\"Trying to steal from the Doshin, eh!\" one of the men growls.<br>Where before there were only relaxing men idly ignoring their duties there are now unsheathed katanas and glaring eyes.<br>A group of the Doshin advance on you before you can escape and proceed to rough you up with fists and the hilts of their katana.  Finally, they take most of your gold and toss you into the alley behind the building.\n".
                    "<br><br>\n".
                    "Bruised and battered, you find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.\n";
-			$quickstat = "player";
-		break;
-		default:
-			echo "The Doshin ignore your ill-funded attempt to bribe them.\n";
-		break;
+		$quickstat = "player";
+	}
+	else
+	{
+		echo "The Doshin ignore your ill-funded attempt to bribe them.\n";
 	}
 }
 
-echo "<div class=\"brownTitle\">$location</div>\n";
+echo "<h1>$location</h1>\n";
 
 echo "<div class=\"description\">\n";
 echo $description;
@@ -123,7 +124,7 @@ if ($sql->rows)
 
 	echo "<hr>\n";
 
-	echo "<table cellpadding=\"2\" cellspacing=\"1\" class=\"playerTable\">\n";
+	echo "<table class=\"playerTable\">\n";
 	echo "<tr>\n";
 	echo "  <th class=\"playerTable\">\n";
 	echo "  Name\n";
@@ -149,6 +150,7 @@ if ($sql->rows)
 	for ($i = 0; $i < $sql->rows; $i++)
 	{
 		$sql->Fetch($i);
+
 		$name        = $sql->data[0]; // username
 		$bounty      = $sql->data[1]; // bounty
 		$class       = $sql->data[2]; // class
@@ -186,7 +188,7 @@ if ($sql->rows)
 }
 else
 {
-	echo "The Doshin do not currently have any open bounties. Your village is safe.<br>\n";
+	echo "<p>The Doshin do not currently have any open bounties. Your village is safe.</p>\n";
 }
 
 include SERVER_ROOT."interface/footer.php";

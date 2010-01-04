@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -14,7 +14,10 @@
 	<![endif]-->
 	<!-- [if gte IE 7]>
 	<link rel="stylesheet" type="text/css" href="{$WEB_ROOT}css/ie.css">
-	<![endif]-->
+	<![endif]-->	
+	{if $DEBUG}
+	<link rel="stylesheet" type="text/css" href="{$WEB_ROOT}css/debugger.css">	
+	{/if}
 
 	{if $local_js}
 	<!-- Local jquery lib -->
@@ -29,5 +32,27 @@
     {/if}
     <!-- All the global ninjawars javascript -->
 	<script type="text/javascript" src="{$WEB_ROOT}js/nw.js"></script>
+		{if $logged_in}
+	<script type="text/javascript">
+	<!--
+		setLoggedIn();
+	// -->
+	</script>
+	{else}
+	<script type="text/javascript">
+	<!--
+		clearLoggedIn();
+	// -->
+	</script>
+	<!-- older IE assistive javascript -->
+	<!--[if lt IE 8]>
+    <script src="http://ie7-js.googlecode.com/svn/version/2.0(beta3)/IE8.js" type="text/javascript"></script>
+    <![endif]-->
+	{/if}
 </head>
 <body class='{$body_classes}'>
+{if !$is_index}
+<a href='/' id='logo-appended'>
+	<img src='images/ninjawarslogo_75px.png' alt='NinjaWars'>
+</a>
+{/if}

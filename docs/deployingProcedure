@@ -2,7 +2,8 @@ How to deploy (in this example, to test.ninjawars.net):
 
 Create a git archive of a commit:
 git archive --format=tar HEAD:deploy/ > nwDATEHERE.tar
-
+e.g.
+git archive --format=tar HEAD:deploy/ > nw-2009-10-14.tar
 
 Copy the archive up to the live:
 scp nw-mD.i.tar tchalvak@ninjawars.net:/home/tchalvak/

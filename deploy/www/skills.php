@@ -9,7 +9,7 @@ require_once(LIB_ROOT."specific/lib_status.php"); // statuses for quickstats
 require_once(LIB_ROOT."specific/lib_player.php"); // Player info display pieces.
 ?>
 
-<span class="brownHeading">Skills</span>
+<h1>Skills</h1>
 
 <p>
 <?php
@@ -79,7 +79,7 @@ if($no_skills){
   <div>
     <input id="searched" type="text" maxlength="50" name="searched" class="textField">
     <input type="hidden" name="hide" value="dead">
-    <input type="submit" value="Search for Ninja" class="formButton">
+    <button type="submit" value="1" class="formButton">Search for Ninja</button>
   </div>
 </form>
 </div>

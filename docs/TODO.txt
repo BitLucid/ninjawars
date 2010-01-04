@@ -1,32 +1,92 @@
+#   FixSubCatBlackSeparation
+#   #   Kohana_v2.3.4.zip
+#   #   css_browser_selector.zip
+#   #   deploy/templates/map.tpl
+#   #   deploy/www/admin.php
+#   #   deploy/www/ajax.php
+#   #   deploy/www/core.php
+#   #   deploy/www/html_page.php
+#   #   deploy/www/images/themes/
+#   #   deploy/www/js/nw.js.orig
+#   #   deploy/www/map.php
+#   #   jabbify_comet_ajax_for_chat_get_started.zip
+#   #   tagNW
+#   #   todoFixCombat
+#   #   todoFixContractedView
+#   #   todoFixSignup
+#   #   todoFixSubCatBlackSeparation
+#   #   todoShortenLoginBoxes
+#   #   todoShortenTopRightLinks
+AddVisitCounterToMainPage
+#   Kohana_v2.3.4.zip
+#   createNinjawarsAdminPhp
+#   emergentBehavior
+#   openid-selector-1.0.zip
+#   todoExplainTurnsInIntro
+#   todoMakeIntroExplainTurnGaining
+
+
+
+Reconstitute the voting page.
+
+
 Documentation
 Read http://www.bbgdev.com/ for useful material.
+Setup a youtube video to play to introduce people to ninjawars, and playing the game.
 
-
-Attributes:
+Attributes/Character:
 Turn classes from colors to elements, void fire water earth air
 Need a much much much much better "affect" system.
 Make skills based on levelling up, preferrably choice-based.
 Integrate the energy stat into the game.
+Aim for 4 stats, each with (at least) two effects to 'em.
+At the same time, change the way stats are calculated, on the fly instead of the lame way, so that items and creatures can increase them.
 Badges marking accomplishments.
 Karma for a silly social rating, and possibly for some simple non-combat benefit usages.
 
+
 Actions:
+Use health in sorting the lurking list, perhaps.
 Create the ability for players to set up "ambush" from their profile when viewers wander in to view it.
 Kappa random encounter as a money source? Tengu random encounter useful for ???
 And random encounter generator to javascript and internal php that cause random encounters when the two systems match up?
 Make quest table for holding quest statuses.
-Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general, using a quests database.
+Invitation quest, eventually, once the game is more interesting and fun, once per month, perhaps accompanied by a quest/time completed marker in general, using a quests database.  Limited is good, just like the limited invites of google wave, it's a good model.
 Make giving items clan (done) and to newbies (based on existing play time and level).
 // TODO: Put player-led multi-checking into play.
 // TODO: Put periodic but then constitutive captcha checks into play.
 Possibility of double or half turns, double or half health at the casino.
+Turn signup into the madlib that I wrote long ago, it's probably still in gmail.
+Create a twitter topic aggregator for #ninjawars.
+Create a way to find "easter egg" things via text input, mudlike.
+<!--  <a href="vote.php" target="main">Vote For NW </a>  -->
+Thief quest.
 
 Environment:
 Create a map system.
 Turn the Village into a single link off of the index, with a page that acts as the actual village.  Except healing.
+Add a "interest on investment" or other "you have gone away and came back" stuff to the game.
+Add a javascript ip tester/tracker/location-correlator for interesting people/tracking/adding.
+Arena that you have to fight npcs in consecutively, without healing, for rewards.
+Items: More visual variations, with slight stat differences.
+Weapons can have critical chances, elemental extras(/elemental damage).
 
+Communication:
+Move a mailbox link in to the "clan" page.
+Mailbox rename to -> Messages and create an icon for it, perhaps a face and a voice.  Change "send mail" on profile to "send message".
+
+Clan:
+Perhaps standard-ish combat when outside the clan, can only stay inside the clan when not attacking, acts as a defensive measure.
+Also increases the reward that people can get from doing clan infiltration.
 
 UI:
+/* Someday I should probably just put the blueprint css into play. */
+Put a (x hours ago) identifier onto the chat.
+Use the colors of my twitter background image as a page background, or the site here: http://www.vlptv.com.ar/futbol7/index.php
+Create a user-viewing page, e.g. ninjawars.com/ninja.php?n=glassbox .
+Go with better design principles: http://webitect.net/design/5-ways-to-become-a-better-designer-right-now/
+Perhaps make the "status" icon use the old ninjawars icon silhouette.
+Move the "mailbox" link, and also move the "username" and "health" texts.
 Copy digg's UI like a mofo, I really like that one.
 MAKE STANDALONE PAGES HAVE A LINK BACK THE MAIN SITE, presumably via javascript, 'cause search engines are indexing parts of the site now, as per this search: http://www.google.com/search?q=ninjawars.net
 Make the chat (and eventually the main iFrame) use js/jQuery instead of the horribleness that it is now,
@@ -45,6 +105,7 @@ Stop showing clans that don't have at least one member.
 Make title display Ninjawars: <title> as opposed to just <title>
 Expand-collapse the "messages" messaging section with jQuery.
 Fix the "you must log in to view this section" message by providing a link if they aren't housed in the main iframe.
+Provide a random alternate stylesheet snippet, to start the process of potentially multiple alternate stylesheets.
 
 Levelling:
 Auto-levelling checks instead of kills banking.
@@ -63,6 +124,7 @@ Make sure that the other databases are pared down to allow ease of backup.
 
 
 Security:
+// TODO: Make sure that all password modifying changes are secure.
 // TODO: Make default filtering be toWord, and change item-related in()s to deal with their multi word inputs.
 // Add a blocked referral list, starting with hidemyass.com
 Create accounts.
@@ -75,3 +137,12 @@ http://www.chromeexperiments.com/detail/your-world-of-text/
 
 Bugs:
 See errors.txt
+
+
+Voting:
+<span class="brownHeading">Vote for Ninja Wars</span>
+<a href="http://www.topwebgames.com/in.asp?id=1029" target="_blank">Vote for Ninja Wars on Top Web Games</a>
+<a href="http://www.gamesites200.com/mpog/vote.php?id=245" target="_blank"><img src="http://www.gamesites200.com/mpog/vote.gif" alt="Paid and Free MMORPG & MPOG" /></a>
+<a href="http://www.worldonlinegames.com/index.php?page=8&gid=107" target="_blank"><img src="http://worldonlinegames.com/images/vote.gif" alt="Vote for Ninja Wars" /></a>
+<a href="http://www.apexwebgaming.com/in.php?id=39" target="_blank">Click Here To Vote For Us At Apex Web Gaming</a>
+<script type="text/javascript" src="http://www.apexwebgaming.com/current_stats.php?id=39"></script>

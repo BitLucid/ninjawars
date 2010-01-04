@@ -7,9 +7,9 @@ $page_title = "Your Inventory";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<span class="brownHeading">Your Inventory</span>
+<h1>Your Inventory</h1>
 
-<p>
+<div class='item-list'>
 
 <?php
 $sql->Query("SELECT amount AS c, item FROM inventory WHERE owner = '$username' GROUP BY item, amount");
@@ -51,24 +51,22 @@ if ($sql->rows == 0) {
 		$items[$data['item']] = $data['c'];
 	}
 
-	echo "Click a linked item to use it on yourself.<br><br>\n";
+	echo "<div style='margin-bottom: 10px;'>Click a linked item to use it on yourself.</div>\n";
 
 	echo "<table style=\"width: 150;\">\n";
 
 	foreach ($items AS $itemName=>$amount) {
-		if ($amount > 0) {
+		if ($amount > 0 && is_array($itemData[$itemName])) {
 			echo "<tr>\n";
 			echo "  <td>\n    ";
 
-			if (array_key_exists('codename', $itemData[$itemName]))
-			{
+			if (array_key_exists('codename', $itemData[$itemName])) {
 				echo "<a href=\"inventory_mod.php?item=".urlencode($itemData[$itemName]['codename'])."&amp;selfTarget=1&amp;target=$username&amp;link_back=inventory\">";
 			}
 
 			echo $itemData[$itemName]['display'];
 
-			if (array_key_exists('codename', $itemData[$itemName]))
-			{
+			if (array_key_exists('codename', $itemData[$itemName])) {
 				echo "</a>";
 			}
 
@@ -83,21 +81,23 @@ if ($sql->rows == 0) {
 
 	echo "</table>\n";
 }
+
+
 ?>
-  <br><br>
-  <a href="list_all_players.php?hide=dead">Use an Item on a ninja?</a>
+</div>
   <form id="player_search" action="list_all_players.php" method="get" name="player_search">
     <div>
+      <a href="list_all_players.php?hide=dead">Use an Item on a ninja?</a>
       <input id="searched" type="text" maxlength="50" name="searched" class="textField">
       <input id="hide" type="hidden" name="hide" value="dead">
       <input type="submit" value="Search for Ninja" class="formButton">
     </div>
   </form>
 
-  <br>
+  <p>
   Current gold: <?php echo getGold($username);?>
+  <p>
 
-</p>
 
 <?php
 include SERVER_ROOT."interface/footer.php";

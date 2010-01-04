@@ -2,6 +2,48 @@
 
 // TODO: Oh god, these functions need templates.
 
+
+/**
+ * This determines how the clans get ranked and tagged, and how to only show non-empty clans.
+**/
+function player_size(){
+    $res = array();
+    $db = new DBAccess();
+    $sel = "select (level-3-round(days/5)) as sum, player_id, uname from players where confirmed = 1 and health>0 order by sum desc";
+    $counts = $db->FetchAll($sel);
+    $largest = reset($counts);
+    $max = $largest['sum'];
+    foreach($counts as $player_info){
+        // make percentage of highest, multiply by 10 and round to give a 1-10 size
+        $res[$player_info['uname']] = array('player_id'=>$player_info['player_id'],
+        	'size'=>
+             floor(( (($player_info['sum']-1 <1? 0 : $player_info['sum']-1)) /$max)*10)+1
+             );
+    }
+    return $res;
+}
+
+function render_player_tags(){
+    $players = player_size();
+    //$clans = @natsort2d($clans, 'level');
+    $res = "<div id='player-tags'>
+                <h4 id='player-tags-title'>
+                    All Players
+                </h4>
+            <ul>";
+    foreach($players as $player => $info){
+        $res .= "<li class='player-tag size{$info['size']}'>
+                <a href='player.php?player_id=".urlencode($info['player_id'])."'>$player</a>
+            </li>";
+    }
+    $res .= "</ul>
+            </div>";
+    return $res;
+}
+
+
+
+
 // Display the recently active players
 function render_active($limit=5, $alive_only=true) {
 	$where_cond = ($alive_only? 'and health>0' : '');
@@ -30,7 +72,7 @@ function display_search_form($hide, $page, $searched, $dead_count){
 	echo "    <div>\n";
     echo "      <input type=\"text\" name=\"searched\" class='textField' style=\"font-family:Verdana, Arial;font-size:xx-small;\">\n";
     echo "      <input type=\"hidden\" name=\"hide\" value=\"$hide\">\n";
-    echo "      <input type=\"submit\" class=\"formButton\" value=\"Search for Ninja\">\n";
+    echo "      <button type='submit' class='formButton' value='1'>Search for Ninja</button>";
 
     if ($hide == "dead") {
         echo "<a href=\"list_all_players.php?page=$page&amp;hide=none&amp;searched=$searched\">(Show $dead_count dead ninja)</a>\n";
@@ -45,38 +87,38 @@ function display_search_form($hide, $page, $searched, $dead_count){
 
 // Display first/previous/page/next/last
 function player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages) {
-	echo "<div class='player-list-nav'>\n";
-	echo "<form action=\"list_all_players.php\" method=\"get\">\n";
-	echo "  <div>\n";
+	echo "<div class='player-list-nav'>\n
+        <form action=\"list_all_players.php\" method=\"get\">\n
+          <div>\n";
 
 	if ($page != 1) {
 		$pageprev = $page-1;
-		echo "<a href=\"list_all_players.php?hide=$hide&amp;page=1&amp;searched=$searched\">&lt;First</a> | ";
-		echo("<a href=\"list_all_players.php?page=$pageprev&amp;searched=$searched&amp;hide=$hide\">&lt;&lt;Previous $record_limit</a>&nbsp;| ");
+		echo "<a href=\"list_all_players.php?hide=$hide&amp;page=1&amp;searched=$searched\">&laquo;First</a> |
+		    <a href=\"list_all_players.php?page=$pageprev&amp;searched=$searched&amp;hide=$hide\">&lsaquo;Previous $record_limit</a>&nbsp;| ";
 	} else {
-		echo "&lt;First | &lt;&lt;Previous $record_limit&nbsp; | ";
+		echo "&laquo;First | &lsaquo;Previous $record_limit&nbsp; | ";
 	}
 
-	echo "<span class='current-page'>";
-	echo "<input type=\"hidden\" name=\"hide\" value=\"$hide\">";
-	echo "<input type=\"submit\" class=\"formButton\" value=\"Page\">";
-	echo "<input type=\"hidden\" name=\"searched\" value=\"$searched\">";
-	echo "<input type=\"text\" name=\"page\" value=\"$page\" style=\"font-family:Verdana, Arial;font-size:xx-small;\" size=\"3\">";
-	echo "/$numofpages ";
-	echo "</span>";
+	echo "<span class='current-page'>
+	    <input type=\"hidden\" name=\"hide\" value=\"$hide\">
+	    <button type=\"submit\" class=\"formButton\" value=\"Page\">Page</button>
+	    <input type=\"hidden\" name=\"searched\" value=\"$searched\">
+	    <input class='page-counter' type=\"text\" name=\"page\" value=\"$page\" size=\"3\">
+	    /$numofpages
+	    </span>";
 
 	if (($totalrows - ($record_limit * $page)) > 0) {
 		$pagenext   = $page+1;
-		echo(" | <a href=\"list_all_players.php?page=$pagenext&amp;searched=$searched&amp;hide=$hide\">Next $record_limit&gt;</a>");
-		echo " | <a href=\"list_all_players.php?page=$numofpages&amp;hide=$hide&amp;searched=$searched\">Last&gt;&gt;</a>\n";
+		echo " | <a href=\"list_all_players.php?page=$pagenext&amp;searched=$searched&amp;hide=$hide\">Next $record_limit&rsaquo;</a>
+		     | <a href=\"list_all_players.php?page=$numofpages&amp;hide=$hide&amp;searched=$searched\">Last&raquo;</a>\n";
 	} else {
-		echo(" | Next $record_limit&gt;");
-		echo " | Last&gt;&gt;\n";
+		echo " | Next $record_limit&rsaquo;
+		     | Last&raquo;\n";
 	}
 
-	echo "  </div>\n";
-	echo "</form>\n";
-	echo "</div>\n";
+	echo "  </div>\n
+        </form>\n
+        </div>\n";
 } // End of display functions.
 
 

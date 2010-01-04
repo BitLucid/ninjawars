@@ -1,4 +1,4 @@
-<div class='title centered'>Ninja List</div>
+<h1>Ninja List</h1>
 
 {if $searched}
 <div>

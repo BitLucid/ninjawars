@@ -6,7 +6,9 @@ $page_title = "About NinjaWars";
 
 include SERVER_ROOT."interface/header.php";
 
-echo render_template('about.tpl');
+$progression = render_template('progression.tpl', array('WEB_ROOT'=>WEB_ROOT, 'IMAGE_ROOT'=>IMAGE_ROOT));
+
+echo render_template('about.tpl', array($progression));
 
 echo render_footer();
 ?>

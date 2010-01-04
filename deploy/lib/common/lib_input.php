@@ -33,7 +33,7 @@ function in($var_name, $default_val=null, $filter_method=null, $specific_source=
 		// Then rewrite for multiple variable names in an array.
 		$result = array();
 		foreach($var_name AS $loop_input_name){
-			$result[$loop_input_name] = input_assign($loop_input_name, &$IN, &$default_val, &$filter, &$filter_method);
+			$result[$loop_input_name] = input_assign($loop_input_name, $IN, $default_val, $filter, $filter_method);
 		}
 		// The array should be passed with index names and then the list function
 		// could be used to extract them.

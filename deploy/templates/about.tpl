@@ -1,5 +1,4 @@
-
-<span class="brownHeading">Ninja Wars Topics</span>
+<h1>Ninja Wars Topics</h1>
 
 <p>
   The game is mainly one of fighting against other ninja. Once you are a ninja, you can:

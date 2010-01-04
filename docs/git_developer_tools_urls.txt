@@ -1,3 +1,6 @@
+Git cheatsheet:
+http://git.or.cz/gitwiki/GitCheatSheet
+
 Mysysgit, prerequisite for tortoise git:
 http://code.google.com/p/msysgit/
 

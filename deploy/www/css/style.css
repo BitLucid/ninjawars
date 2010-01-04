@@ -1,56 +1,155 @@
-/* Someday I should probably just put the blueprint css into play. */
-
-
-html {
-    margin:0;
-    padding:0;
+/*
+ http://www.typetester.org/
+ Useful fonts at dafont.com
+ Potential css layout example 
+ */
+html, body {
+    background-color:black; /* To prevent the "white background flash" effect. */
 }
+* {
+	margin: 0;
+	padding: 0;
+}
+html, body {
+	height: 96%;
+}
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -20px; /* the bottom margin is the negative value of the footer's height */
+}
+.push {
+	height: 20px; /* .push must be the same height as .footer */
+}
+/*
+Sticky Footer by Ryan Fait
+http://ryanfait.com/
+*/
+#index-footer{
+	height:20px;
+    text-align:center;
+    clear: both;
+    width:100%;
+    background-color:black;
+    color:gray;
+}
+
+#index-footer a{
+    color:gray;
+    text-decoration:underline;
+    font-size:80%;
+    font-weight:normal;
+}
+
+.main-body{
+    min-width: 800px;
+}
+
+body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
+    font: 90%/1.4 arial, helvetica, sans-serif;
+}
+
+dl{
+    line-height:1.1;
+}
+
 body {
 	/*font-family: <ideal>, <alternative>, <common>, <generic>;*/
-	/*font-family: Arial, Helvetica, sans-serif;*/
-	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
-	/*font-family: Verdana, Arial, Helvetica, sans-serif;*/
 	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
 	/*font-family: "Franklin Gothic", Futura, Verdana, Arial, Helvetica, sans-serif;*/
+	/*font-family: Copperplate / Copperplate Gothic Light, sans-serif;*/
 	/*font family: Tahoma, Arial, sans-serif;*/
 	font-size: 80%;
-	color: DarkKhaki;
-	background-color: black;
-	/* Required for the ie bug */
+	color: #BDB76B;/*DarkKhaki*/
+	background-color: black;	/* Required for the ie bug */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
-	margin:0;
-	padding:0;
 }
-h1, h2, h3, h4, h5, h6, .subtitle{
-	/*font-family: "Palatino Linotype", “Book Antiqua”, Palatino, “Times New Roman”, Times, serif;*/
-	/*font-family: Georgia, Tahoma, Garamond, Palatino, serif;Mine*/
-	font-family: Georgia, "Times New Roman", Times, serif;
-	/*font-style:oblique;*/
+
+p {
+	margin: .5em 0 .5em 0;
+}
+hr {
+	margin:1em auto 1em auto;
+	border: 0;
+	width: 90%;
+	color: #800000;/*maroon*/
+	background-color: #800000;/*maroon*/
+	height: 1px;
+	margin-top:.3em;
+	margin-bottom:.3em;
+}
+
+h1, h2, h3, h4, h5, h6, .subtitle, .title{
+	/*font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;*/
+	font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	text-align:center;
+	margin-top: .1em;
+	margin-bottom:.3em;
 	font-weight:bold;
-	font-size:1.2em;
+	background:#303030 url(/images/blacktransfaderight.png) right top repeat-y;
+	color:#cccccc;
 }
 h1, h2, .title, .player-info .player-name{
 	color:black;
-	background-color:DarkKhaki;
-	/*background-color:DarkRed;*/
+	background-color:#BDB76B;/*DarkKhaki*/
+	color:#000000;
+	font-weight:bolder;
 	text-align:center;
-	font-weight:bold;
 	font-size:1.5em;
+    width: 70%;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom:.1em;
+    /*-webkit-border-radius:16px;
+    -moz-border-radius:16px;
+    -op-border-radius:16px;
+    border-radius:16px;*/
+}
+h2{
+    margin-left: auto;
+    margin-right: auto;
+    width:50%;
+    background: #9BB02D url(/images/blacktransfaderight.png) right top repeat-y;
+    /*border: 1px solid #9BB02D;*/
+    font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
+    letter-spacing:0.1em;
+}
+h1{
+	background: #BDB76B url(/images/blacktransfaderight.png) right top repeat-y;
+	border:none;
+    padding: 0 58px 0 58px;
+	font-family: "edding-780-1","edding-780-2", Impact, Charcoal, sans-serif;
+	font-size:150%;
+	max-width: 1000px;
+	margin: 0 auto inherit auto;
 }
 .clan-members .subtitle{
-    background-color:DarkKhaki;
+    background-color:#BDB76B;/*DarkKhaki*/
     color:black;
 }
+/*
+@font-face {
+	font-family: 'JRandomCRegular';
+	src: url('../font/jrandomc.eot');
+	src: local('J Random C Regular'), local('JRandomC'), url('../font/jrandomc.woff') format('woff'), url('../font/jrandomc.ttf') format('truetype'), url('../font/jrandomc.svg#JRandomC') format('svg');
+}*/
 #ninjawars-title{
+	font-family: /*'JRandomCRegular', */'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 	font-size:larger;
-	color:maroon;
+	color:#800000;/*maroon*/
 	padding: 3px;
+}
+#ninjawars-title img{
+	max-height:60px;
+	vertical-align:middle;
+	max-width:100%;
+	
 }
 
 #nin1{
-    color:brown;
+    color:#A52A2A;
 }
 #nin2{
     color:red;
@@ -61,52 +160,63 @@ h1, h2, .title, .player-info .player-name{
 
 ul {
 	list-style-type: none;
+	margin-left:1.5em;
 }
 
 img {
       border: 0;
-      }
+}
 
 select {
 	font-family:Verdana, Arial, sans-serif;
-	font-size: 9px;
+	font-size: 12px;
 }
 
 a {
 	text-decoration: none;
-	font-weight: bold;
+	font-weight: bolder;
 	font-family: verdana, arial, helvetica, sans-serif;
-	color: SteelBlue;
+	color: #4682B4;
 	/*font-family: Arial Black, Impact, Tahoma Bold, sans-serif;*/
 	/*CadetBlue/YellowGreen/Turquoise/Tomatoe/SteelBlue/SlateBlue/Sienna/Brown/Chartreuse/Crimson*/
 }
 a:hover {
 	color: white;
 	text-decoration: underline;
+	text-shadow: white 0 0 2px;
 }
+
+/*
 a:link {} a:visited {} a:active {}
+*/
 
 #avatar {
     text-align:center;
+    float:right;
+    width:80px;
 }
 
 #menu a { /*Menu actions are a lighter blue to pop better on the red */
-	color: CornflowerBlue;
-	/*seaGreen/Teal*/
+	color: #6495ED;/*CornflowerBlue;*/
+}
+#menu label{
+    font-family: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, serif;
 }
 
 .extLink, a.extLink, .extLink a, #menu.extLink, #menu.extLink a, #menu a.extLink {
 	color: SlateBlue;
+    background: url(/images/externalLinkGraphic.gif) right center no-repeat;
+    padding-right: 15px;
 }
 
 ol.aboutUpper {
 	list-style-type: upper-roman;
 	margin-left: 0;
-	}
+}
 ol.aboutLower {
 	list-style-type: lower-alpha;
 	margin-left: 0;
-	}
+}
 
 input.shopButton {
 	font-family: Verdana,Arial,sans-serif;
@@ -121,19 +231,66 @@ input.formButton {
 }
 input.textField {
 	font-family:Verdana, Arial, sans-serif;
-	font-size:xx-small;
+	font-size:small;
 }
 div.description {
 	text-align: center;
-	border: thin solid #ccb094;
+	border-bottom: thin solid #ccb094;
 	margin-top: 10px;
 	margin-bottom: 20px;
 }
+form input#become-a-ninja{
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+}
+fieldset { 
+    border:2px groove #800000; 
+    margin-bottom: .5em;
+    padding-left: .5em;
+    padding-bottom: .5em;
+}
+form#signup label{
+    float:left;
+    clear:left;
+    margin-right:1em;
+    text-align:right;
+    display:block;
+    font-weight:bolder;
+}
+form#signup input, form#signup select{
+    float:left;
+    display:block;
+    margin-right:3em;
+    margin-left: 1em;
+    color:#66cc66;
+    background-color:black;   
+}
+form#signup input:focus, form#signup select:focus{
+    color:black;
+    background-color:white;
+}
+form#signup fieldset span{
+    float:left;
+    font-style:italic;
+}
+legend {
+  padding: 0.2em 0.5em;
+  margin-right: 2em;
+  border:2px solid #800000;
+  color:#ffffff;
+  font-weight:bolder;
+  font-size:90%;
+  text-align:center;
+}
+
+
 
 /*TABLES, general and specific */
 
 table{
 	border-collapse:collapse;
+	border:none;
 }
 .outer-table{
    	border-top: 1px solid DarkKhaki;
@@ -192,9 +349,52 @@ table.playerTable .Black, .player-info .Black {
 	background-color:white;
 }
 
-.your-stats #player-profile{
+.player-status, .ninja-error{
+    margin: 0 auto 0;
+    display:inline-block;
+    border: 1px solid #BDB76B;/*DarkKhaki*/
+    -webkit-border-radius:16px;
+    -moz-border-radius:16px;
+    -op-border-radius:16px;
+    border-radius:16px;
+}/* Note that ninja-error is used below as well. */
+
+.your-stats #player-profile-section{
     margin: 10px 0 10px 0;
     text-align: center;
+    float:right;
+}
+.your-stats #player-profile{
+    border:1px solid gray;
+}
+
+.profile-message{
+    margin: .1em auto .1em;
+    width: 80%;
+    max-height: 3em;
+    overflow:auto;
+}
+
+.your-stats #profile-edit{
+	float:left;
+}
+.your-stats hr{
+	clear:both;
+}
+
+#player-profile-attack .attacking-choices{
+    border:none;padding-left: 5px; padding-right: 5px;padding-top: 5px;padding-bottom: 5px;text-align: center;
+}
+#player-profile-attack span.duel, #player-profile-attack .blaze, #player-profile-attack .deflect{
+    border:none;padding: 1px;
+}
+#player-profile-table #skills-section, #player-profile-table #inventory-items{
+    border:none;padding: 5px;text-align: center;
+}
+
+#skills-list form{
+	margin-top:.5em;
+	margin-bottom:.5em;
 }
 
 .playerTable th{
@@ -216,11 +416,11 @@ td.playerTable {
 }
 .playerTable .novice, .player-info .novice{ /* Level categories */
 	color:black;
-	background-color:LightGrey;
+	background-color:LightGray;
 }
 .playerTable .acolyte, .player-info .acolyte{
 	color:black;
-	background-color:DarkGrey;
+	background-color:DarkGray;
 }
 .playerTable .ninja, .player-info .ninja{
 	color:maroon;
@@ -228,7 +428,7 @@ td.playerTable {
 }
 .playerTable .elder-ninja, .player-info .elder-ninja{
 	color:DarkKhaki;
-	background-color:DarkRed;
+	background-color:#8B0000;
 }
 .playerTable .master-ninja, .player-info .master-ninja{
 	color:white;
@@ -240,20 +440,20 @@ td.playerTable {
 }
 .DeadRow td, .DeadRow td div, .DeadRow td span {
     background-color: black !important;
-    color:grey !important;
+    color:gray !important;
 }
 .DeadRow .classCell {
 	color:black !important;
 	background-color:black !important;
 }
 .DeadRow .levelCell {
-	color:grey !important;
+	color:gray !important;
 	background-color:black !important;
 }
 
 
 .DeadRow a{
-	color: DarkBlue; /*Darken links to dead players */
+	color: rgb(40, 40, 160); /*Darken links to dead players */
 }
 
 
@@ -275,7 +475,7 @@ td.playerTable {
 	 width:65%;
 	 float:left;
 	 min-height:600px;
-	 height:100%;
+	 height:800px;
 }
 #rightColumn {
 	 width:25%;
@@ -294,10 +494,23 @@ td.playerTable {
 	height:42px;
 }
 
-#content {
-	float:none;
-	margin:0;
-	padding:0;
+/* Logo when added as a link back in pages lacking an outer iframe */
+#logo-appended{
+	float:left;
+	width:100px;
+	margin-right: .5em;
+	display:none;
+}
+
+body.solo-page{
+    margin: 10px 30px 10px 30px;
+}
+
+body.solo-page #logo-appended{
+	display:inline; /* Display the logo on solo pages */
+}
+#logo-appended img{
+	width:100px;
 }
 
 .main-body { /* For the index page's background image only. */
@@ -309,37 +522,6 @@ td.playerTable {
 	background-attachment:fixed;
 }
 
-
-.random-background-1{
-    background-image: url('/images/backgrounds/Koi_1_by_Alegion_stock.png');
-    background-color: transparent;
-    background-repeat: repeat-x;
-}
-.random-background-2{
-    background-image: url('/images/backgrounds/fuji_bleu.jpg');
-    background-color: transparent;
-    background-repeat: repeat-x;
-    color: black;
-}
-.random-background-2 a{
-    color: blue;
-}
-
-.random-background-3{
-    background-image: url('/images/backgrounds/Hokusai-fuji7.png');
-    background-color: transparent;
-    background-repeat: repeat-x;
-}
-.random-background-4{
-    background-image: url('/images/backgrounds/Hokusai_wave.jpg');
-    background-color: transparent;
-    background-repeat: repeat-x;
-}
-.random-background-5{
-    background-image: url('/images/backgrounds/Hokusai_fuji8.jpg');
-    background-color: transparent;
-    background-repeat: repeat-x;
-}
 
 .brownTitle { /*deprecated*/
     color: #ff9900;/*ccb094;*/
@@ -354,20 +536,15 @@ td.playerTable {
 
 
 #menu {
-	line-height: 30px;
-	font-size:10px;
-	padding:0;
-	list-style-type:none;
 	width:100%;
-	height:30px;
-	float:left;
-	text-align:center;
-	display:inline;
-	margin-bottom:5px;
+	height:40px;
+	line-height: 40px;
+	/*font-size:12px;*/
 	padding:0;
+	margin: 0 0 3px;
+	text-align:center;
 	border-bottom:maroon thin solid;
-	background:url("../images/bg_top_maroon.jpg");
-	background-repeat:repeat-x;
+	background:#4f0101 bottom url("../images/bg_top_maroon.jpg") repeat-x;
 }
 #menu ul {
 	float:left;
@@ -375,20 +552,13 @@ td.playerTable {
 	list-style-image:none;
 	list-style-position:outside;
 	list-style-type:none;
-}
-#menu li {
-	float:left;
-	padding-right: 15px;
+	margin:0;
+	padding:0;
 }
 #menu-start {
-	width:8%;
-	height:1em;
+	height:100%;
 	float:left;
 	text-align:left;
-}
-#menu-start ul {
-	padding:0;
-	margin-left: 10px;
 }
 .play-button {
 	margin:0;
@@ -398,19 +568,12 @@ td.playerTable {
 	display:inline;
 }
 #menu-info {
-	width:70%;
-	height:1em;
+	height:100%;
 	float:left;
 	text-align:center;
 }
 #menu-info ul {
-	margin-left: 30%;
-}
-#menu-end {
-	width:22%;
-	height:1em;
-	float:left;
-	text-align:right;
+	padding: 0 .3em 0;
 }
 
 .centered {
@@ -422,7 +585,7 @@ td.playerTable {
 	margin-top:10px;
 	margin-bottom: 30px;
 	text-align: center;
-	color:darkGrey;
+	color:darkGray;
 	font-family: Tahoma,Arial,Helvetica,sans-serif;
 	font-size: 10px;
 }
@@ -430,7 +593,7 @@ td.playerTable {
 .box-title, .box-title a{
 	padding-top:3px;
 	color: CadetBlue;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	text-decoration: none;
 }
 .active .box-title, .active .box-title a{
@@ -440,15 +603,35 @@ td.playerTable {
 	color: CadetBlue;
 }
 .boxes {
-	margin-top:.5em;
-	padding-top:3px;
-	padding-left: .5em;
-	padding-bottom:.5em;
-	background:transparent url(../images/bg_top_bar_teal.png) no-repeat scroll 0 0;
+	padding: 3px 0 3px 5px;
+	background:transparent url(../images/bg_top_bar_teal.png) no-repeat scroll top left;
+}
+#right-column .boxes{
+	background:transparent url(../images/bg_top_bar_teal_right.png) no-repeat scroll top right;
+}
+.main-body .active {
+	background:transparent url(../images/bg_top_bar_maroon.png) no-repeat scroll 0 0;
+}
+#right-column .main-body .active{
+	background:transparent url(../images/bg_top_bar_maroon_right.png) no-repeat scroll top right;
+    background-position: top right;
+}
+.main-body .passive {
+	background:transparent url(../images/bg_top_bar_grey.png) no-repeat scroll 0 0;
+}
+#right-column .main-body .passive{
+	background:transparent url(../images/bg_top_bar_grey_right.png) no-repeat scroll top right;
+    background-position: top right;
+}
+
+.main-body .special {
+	background:none;
+	text-align:center;
 }
 .boxes ul {
 	padding-left:10px;padding-right: 0;margin-left:0;margin-right:0;
-	margin-top:0;margin-bottom:0;
+	margin-top:0;
+	margin-bottom:0;
 	list-style-image:none;
 	list-style-type:none;
 }
@@ -473,18 +656,11 @@ td.playerTable {
 .column { /* class for repeated columns */
 	overflow:auto;
 }
-.column .active {
-	background:transparent url(../images/bg_top_bar_maroon.png) no-repeat scroll 0 0;
-}
-.column .passive {
-	background:transparent url(../images/bg_top_bar_grey.png) no-repeat scroll 0 0;
-}
-.column .special {
-	background:none;
-	text-align:center;
-}
 
 /* IFRAMES */
+iframe{
+    border:none;
+}
 
 #mini_chat { /* iframe itself */
 	width:100%;
@@ -500,17 +676,45 @@ td.playerTable {
 .chat-expanded {
     height: 880px;
 }
-
-.chatMessages{
-    margin-top:0em;
+.active-members-count{
+	font-size:smaller;
+	font-style:italic;
+	color:gray;
 }
 
-#full-chat .chatMessages{
-    font-size:1.2em;
+.chat-messages{
+    margin-top:0;
+    list-style-type:none;
+}
+.chat-messages dt{
+    clear:left;
+    float:left;
+    margin-right: .5em;
+}
+.chat-messages dt a{ /* Breaks the formatting if the a is too large. */
+    font-size:1em;
+    font-size:smaller;
+}
+.chat-messages .chat-time{
+	font-family: Trebuchet MS1, Helvetica, sans-serif;
+	font-size: .8em;
+	font-style:italic;
+	color: gray;
+	display:inline-block;
+}
+.chat-messages .chat-message a{
+    font-size:smaller;
+}
+#expand-chat{
+    border: 1px dashed darkblue;
+}
+
+#full-chat .chat-messages{
+    font-size:1em;
 }
 
 #post_msg{
-    margin-top:0em;
+    margin-top:0;
     margin-bottom:0.5em;
 }
 
@@ -523,7 +727,9 @@ td.playerTable {
 	height: 6em;
 	border: 0;
 }
-
+#quickstats-and-switch-stats a {
+    font-size: 85%;
+}
 #quickstats-and-switch-stats .centered{
     margin-bottom:10px;
 }
@@ -532,6 +738,9 @@ table .quickstats{
     margin-top:8px;
     margin-bottom:8px;
 }
+table .quickstats td{
+    padding-top:.1em;
+}
 
 /*Quickstats styles*/
 .quickstats td{
@@ -539,9 +748,8 @@ table .quickstats{
 }
 
 .main-iframe { /* class for the main iframe */
-	 min-height:600px;
-	 height:100%;
-	 width:100%;
+	 min-height:500px;
+	 height:88%;
 	 width:100%;
 	 border:0;
 }
@@ -568,6 +776,10 @@ table .quickstats{
     margin:0;
 }
 
+#contact-us img{
+    max-width:98%;
+}
+
 /* End of Index page stuff */
 
 
@@ -578,14 +790,13 @@ table .quickstats{
 
 .formbutton, .formButton{
 	background:black;
-	color:SteelBlue;
+	color:SkyBlue;
 	font-weight:bold;
-	font-variant:small-caps;
 }
 
 /* Login menu and login-bar config */
-.login-menu {
-	font-family: arial,helvetica,Verdana,sans-serif;
+.login-menu { /* See also the #menu entry */
+	font-family: helvetica,Verdana,sans-serif;
 }
 .login-menu #menu-start{
 	width:50%;
@@ -614,14 +825,19 @@ table .quickstats{
 	width: 100px;
 	height: 15px;
 	background:maroon;
-	color:lightGrey;
+	color:#66cc66;
 	/*border: 0;*/
+	font-weight:bold;
 }
 #login-bar label{
 	font-weight:bold;
 }
 #login-bar form {
 	margin:0;
+}
+#login-bar form input{
+    height:1.5em;
+    vertical-align: middle;
 }
 #login-bar div.text {
 	/*color:#707E77;*/
@@ -635,30 +851,37 @@ table .quickstats{
 }
 
 /* Errors and Notices and the Like */
-.ninja-error{
-	color:Red;
-	background-color:YellowGreen;
-	font-family: Comic Sans Ms, inherit;
+
+.ninja-error{/* Note that ninja-error is used above as well. */
+	color:#735005;
+	background-color:#F4A83D;
+	border-bottom:1px solid #D6800C;
+	font-family: ‘Trebuchet MS’, Helvetica, sans-serif;
 	font-weight:bold;
 	font-variant:small-caps;
-	font-size:130%;
+	font-size:120%;
 	padding: 3px;
 }
+
 .ninja-notice{
 	color:Brown;
 	background-color:DarkKhaki;
-	font-family: Comic Sans Ms, inherit;
+	font-family: Tahoma, Geneva, sans-serif;
 	text-align:center;
 	font-weight:bold;
 	padding: 3px;
 }
 
-.injured, .Injured {
+.injured, .Injured, #health-status .injured {
     font-weight:bold;
     color:black;
     background-color:#c75600;
+    border: 1px solid #c75600;
 }
-
+/*
+.player-clan .subtitle{
+	background-color:white;
+}*/
 .clan-members .injured{
     background-color:maroon;
     color:black;
@@ -673,8 +896,8 @@ table .quickstats{
 }
 
 .Frozen {
-    background-color:skyblue;
-    font-weight:italic;
+    background-color:#87CEEB;
+    font-style:italic;
     color: red;
 }
 
@@ -682,17 +905,16 @@ table .quickstats{
 	text-align:center;
 	color:Red;
 	background-color:Gold;
-	font-family: Times, inherit;
+	font-family: Georgia, 'Times New Roman', Times, serif;
 	font-weight:bold;
-	/*font-variant:small-caps;*/
 	font-size:150%;
 	padding: 3px;
 }
 
 .notice, .informational{
 	color:Black;
-	background-color:DarkKhaki;
-	font-family: Times, inherit;
+	background-color:#8AC575;
+	font-family: ‘Lucida Console’, Monaco, monospace;
 	text-align:center;
 	font-weight:bold;
 	font-size:130%;
@@ -701,14 +923,14 @@ table .quickstats{
 
 .notice a, .informational a{
 	color:Blue;
-	font-family: Times, inherit;
+	font-family: ‘Lucida Console’, Monaco, monospace;
 }
 
 /*List all players and player profile styles*/
 .active-players ul, .clan-members ul{
     margin:0;
-    padding:0;
-    border:thin tan solid;
+    padding:0 0 0 1em;
+    border:1px dashed #00008B;
     overflow:hidden;
 }
 .active-players li, .clan-members li{
@@ -717,16 +939,28 @@ table .quickstats{
     padding-right: 5px;
 }
 .player-list-nav .current-page{
-    color:darkgreen;
-    border:thin darkgreen solid;
+    color:#1c1;
+    border:thin #1c1 solid;
+}
+.player-list-nav .page-counter{
+    font-family:Verdana,Arial,san-serif;
+    font-size:x-small;
+    text-align:center;
+}
+.player-list-nav a{
+    text-decoration:none;
 }
 .player-list-nav form{
     margin:0;
     padding:0;
     text-align:center;
+    font-weight:bold;
 }
 .player-info .clan-members{
     text-align:center;
+}
+.player-info .player-stats, .player-info .player-clan{
+    margin-bottom: 1.5em;
 }
 #player-profile-table{
     width:100%;
@@ -744,9 +978,17 @@ table .quickstats{
 	color:red;
 }
 
-.enemy-list .enemy-dead{
+.enemy-list .enemy-dead, .status-dead{
     background-color:#202020;
     color:maroon;
+}
+.status-dead a{
+	background-color:#202020;
+	color:maroon;
+}
+#recent-attackers li{
+	display:inline;
+	margin-right: 1em;
 }
 
 .player-info .Stealthed{
@@ -754,7 +996,7 @@ table .quickstats{
 	color:maroon;
 }
 .red {
-    color: crimson;
+    color: #DC143C;
     background-color:red;
 }
 .hidden {
@@ -768,8 +1010,42 @@ table .quickstats{
 	margin-top: 1em;
 }
 
+/* Clan leader options */
+#leader-panel {
+    width: 40%;
+    float:left;
+    text-align: center;
+    border: thin solid white;
+    padding-bottom: 5px;
+}
+#leader-panel ul{
+    list-style-type: none;
+    margin: 3px;
+    height: 2.3em;
+}
+#leader-panel li {
+    width: 49%;
+    float: left;
+}
+#leader-options{
+    padding: 5px;
+    width: 100%;
+}
+#leader-panel-title {
+    font-weight: bold;
+    text-align: center;
+}
+#clan-options {
+    width: 50%;
+    float: right;
+    list-style-type: none;
+}
 
-
+/* Player tags */
+#player-tags .player-tag{
+	float:left;
+	margin-right: 1em;
+}
 /*  Clan tags section */
 #clan-tags{
     clear: both;
@@ -779,80 +1055,34 @@ table .quickstats{
     color: blue;
     background-color:maroon;
     float:left;
-    margin: 5px 5px 5px 5px;
+    margin: 5px;
     list-style-type: none;
 }
 
 /* Clan member tags styles */
+#clan-members .member a, #player-tags .player-tag a{
+    color:orange;
+    background-color:green;
+}
 #clan-members {
     clear: both;
     margin-top: 3px;
 }
-
 #clan-members ul {
     list-style-type: none;
 }
-
 #clan-members-title {
     margin-bottom: 3px;
 }
-
 #clan-members-count {
     margin-bottom: 1em;
     text-align: center;
 }
-
 #clan-members .member{
     float:left;
     color:orange;
     background-color:green;
-    margin: 5px 5px 5px 5px;
-}
-
-#clan-members .member a{
-    color:orange;
-    background-color:green;
-}
-
-#clan-page-title {
-    text-align: center;
-}
-
-
-#leader-panel {
-    width: 40%;
-    float:left;
-    text-align: center;
-    border: thin solid white;
-    padding-bottom: 5px;
-}
-
-#leader-panel ul{
-    list-style-type: none;
-    margin: 3px;
-    height: 2.3em;
-}
-
-#leader-panel li {
-    width: 49%;
-    float: left;
-}
-
-
-#leader-options{
-    padding: 5px 5px 5px 5px;
-    width: 100%;
-}
-
-#leader-panel-title {
-    font-weight: bold;
-    text-align: center;
-}
-
-#clan-options {
-    width: 50%;
-    float: right;
-    list-style-type: none;
+    margin: 5px;
 }
 
 /*  End of Clan Tags section */
@@ -900,7 +1130,15 @@ table .quickstats{
 
 /*   Attack player page css */
 #attack-player-page li{
-	margin-bottom: 2em;
+    margin: .2em .3em .2em .2em;
+	display:inline;
+	margin-left: 1em;
+	/*list-style-type:circle;
+	background-color:purple;*/
+}
+#attack-player-page ul{
+    margin:0;
+    padding:0;
 }
 
 #page-404 {
@@ -917,15 +1155,9 @@ table .quickstats{
 	text-align: justify;
 }
 
-/* Staff Page */
-
-body.ninjawars-staff{
-    margin: 10px 30px 10px 30px;
-}
-
 .developer{
-	border-left:thin darkred solid;
-	border-top:thin darkred solid;
+	border-left:thin #8B0000 solid;
+	border-top:thin #8B0000 solid;
 	margin: .5em 0 .5em 0;
 	padding: .3em 0 .5em .2em;
 }
@@ -936,11 +1168,15 @@ body.ninjawars-staff{
 
 .developer .developer-image{
     float:right;
-    text-align: bottom;
+    vertical-align: bottom;
 }
 
 .other-credits ul{
     list-style-type:square;
+}
+
+#project-languages tr{
+	background-color:white;
 }
 
 #latest-commit-section{
@@ -969,6 +1205,26 @@ body.ninjawars-staff{
 #create-a-ninja{
     font-size:2em;
 }
+#progression{
+	text-align:center;
+	margin: .2em 0 .5em 0;
+	font-size:1.7em;
+	font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
+	/*font-family: Impact, sans-serif;*/
+	font-variant: small-caps;
+}
+#progression a{
+	font-family: Impact, sans-serif;
+}
+#progression .down-arrow{
+	height:35px;
+}
+#progression p{
+	margin: 0;
+}
+#progression p:first-child{
+	font-size:larger;
+}
 
 
 /* User Messages Page */
@@ -977,6 +1233,9 @@ body.ninjawars-staff{
     font-weight:bold;
     background-color:DarkSlateBlue;
     color:white;
+}
+#messages-icon{
+	height:15px;
 }
 
 #clan-mail-section{
@@ -1039,7 +1298,167 @@ body.ninjawars-staff{
 .player-communications .FormButton{
     display:block;
 }
-
-    padding:0 0 0 1em;
 .events #event-list{
+    padding:0 0 0 1em;
+}
+
+/* NEW INDEX REWRITE CSS */
+
+
+#left-column{
+    float:left;
+    width:15%;
+}
+#center-column{
+    float:left;
+    width:65%;
+}
+#right-column{
+    float:left;
+    width:20%;
+}
+.header-section{
+    height:6em;
+    border-bottom: thick solid #330000;
+    color:white;
+}
+#ninjawars-home{
+    background-color:black;
+    color: white;
+}
+#logged-in-bar{
+    margin-left:1em;
+    width:100%;
+    font-size:1.5em;
+}
+
+#reactive-panel{
+    height:100%;
+    background-color:black;
+    color: white;
+}
+
+#logout{
+	background-image:url('../images/logoutArrow.png');
+	background-repeat:no-repeat;
+	background-position:top right;
+	font-variant:small-caps;
+	font-weight:bold;
+    width:100%;
+    height:75px;
+    text-align:right;
+    float:right;
+    padding-top:20px;
+}
+
+/* reactive-panel subparts */
+#category-bar{
+    margin: .2em 0 0 0;
+    height:75%;
+    width: 100%;
+    background: black;
+    color:white;
+    font-weight:bold;
+    font-size: 1.7em;
+    font-family:Georgia,Times,serif;
+    text-transform:uppercase;
+}
+#category-bar ul{
+    height:100%;
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+#category-bar li{
+    margin: 0;
+    padding: 0;
+    width:33%;
+    height:100%;
+    float:left;
+    text-align:center;
+}
+#category-bar a{
+    font-family:Georgia,Times,serif;
+}
+#category-bar a img{
+    vertical-align:top;
+}
+/*
+#category-bar #status-actions{
+    background: url(/images/ninja_silhouette_50px.png) no-repeat top center;
+}
+#category-bar #combat-actions{
+    background: url(/images/50pxShuriken.png) no-repeat top center;
+}
+#category-bar #village-actions{
+    background: url(/images/pagodaIcon_60px.png) no-repeat top center;
+}*/
+
+#subcategory-bar{
+    height:25%;
+    width:100%;
+    float:left;
+    text-align:center;
+    line-height:2em;
+    text-transform:uppercase;
+}
+#subcategory-bar a{
+    font-family: Verdana, sans-serif;
+    font-weight:bold;
+}
+#subcategory-bar a:hover{
+    text-decoration:none;
+}
+
+#subcategory-bar ul{
+    margin: 0 0 0 5px;
+    padding:0;
+    background-color:#330000;
+    color:white;
+    float:left;
+    overflow:hidden;
+    width:33.333%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#subcategory-bar li{
+    display:inline;
+    margin: 0 2px 0 1px;
+}
+#subcategory-bar ul#self-subcategory{
+    float:left;
+    margin-left:0;
+}
+/*#subcategory-bar ul#combat-subcategory{
+}*/
+#subcategory-bar ul#village-subcategory{
+    float:right;
+    margin-right:0;
+}
+
+.faq .brownHeading, .faq hr{
+	margin-top:.5em;
+	margin-bottom:.2em;
+}
+
+/* End reactive-panel */
+
+/* Signup form */
+form #signup .submit{
+	margin-top:2em;
+}
+select option #red-class-select{
+	color:maroon;
+}
+select option #black-class-select{
+	background-color:black;
+	color:white;
+}
+select option #white-class-select{
+	font-weight:bold;
+}
+select option #blue-class-select{
+	color:blue;
+	font-weight:bold;
 }

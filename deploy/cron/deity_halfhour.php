@@ -12,9 +12,6 @@ $score                = get_score_formula();
 
 $sql = new DBAccess();
 
-// Chat the time if no-one chatted recently
-chat_timer();
-
 $sql->Update("UPDATE players SET turns = 0 WHERE turns < 0"); // if anyone has less than 0 turns, set it to 0
 $sql->Update("UPDATE players SET turns = turns+$regen_rate WHERE turns < ".$turn_regen_threshold);  // add turns at the regen rate for anyone below the threshold
 $sql->Update("UPDATE players SET bounty = 0 WHERE bounty < 0"); // if anyone has negative bounty, set it to 0

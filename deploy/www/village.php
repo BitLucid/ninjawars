@@ -3,15 +3,13 @@ require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper a
 
 $private    = false;
 $alive      = false;
-$page_title = "In-Game Chat";
+$page_title = "Chat Board";
 $quickstat  = false;
 
 include SERVER_ROOT."interface/header.php";
 
-echo "<span class='brownHeading'>Chat Board</span> -";
-echo "<a href=\"".$_SERVER['PHP_SELF']."?chatlength=50\">Refresh</a>\n";
-echo "<br>\n";
-echo "Message: ";
+echo "<h1>Chat Board</h1>";
+echo "<p><a href=\"".$_SERVER['PHP_SELF']."?chatlength=50\">Refresh</a><p>";
 
 $default_limit = 360;
 $chatlength = in('chatlength', $default_limit, 'toInt');
@@ -20,13 +18,14 @@ $command = in('command');
 $sentMessage = in('message');
 $sent = false;
 $username = get_username();
+$user_id = get_user_id();
 $input_form = ($username ? render_chat_input($_SERVER['PHP_SELF'], $field_size=40) : '');
 $channel = 1;
 
 // Take in a chat and record it to the database.
-if ($username) {
+if ($user_id) {
 	if ($command == "postnow" && $message) {
-		sendChat($username, $channel, $message);
+		send_chat($user_id, $message);
 	}
 }
 
@@ -40,7 +39,7 @@ echo $input_form;
 
 echo render_active_members($sql);
 
-echo render_chat_messages($sql, $chatlength);
+echo render_chat_messages($chatlength);
 
 echo "</div>"; // End of full_chat div.
 

@@ -14,7 +14,7 @@ include SERVER_ROOT."interface/header.php";
 include(OBJ_ROOT."Skill.php");
 ?>
 
-<span class="brownHeading">Skills You Possess</span><br>
+<h1>Skills You Possess</h1>
 
 <?php
 //Get filtered info from input.

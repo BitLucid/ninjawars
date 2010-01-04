@@ -1,77 +1,69 @@
 <?php
 // Licensed under the creative commons license.  See the staff.php page for more detail.
-ob_start(null, 1); // Buffer and output it in chunks.
-
-$login        = (in('action') == 'login' ? true : false); // Request to login.
+$action = in('action');
+$login        = (!empty($action) ? true : false); // A request to login.
 $logout       = in('logout');
 $is_logged_in = is_logged_in();
 $login_error  = false;
 $just_logged_out = false;
-
-$rand = rand(1, 100);
-$random_background = $rand<5? $rand : null; 
-
-// Logout/already logged in/login
-
-if ($logout) { 
-    // When a logout action is requested
-	logout(); // essentially just kill the session, and don't redirect.
-	$just_logged_out = true;
-} elseif ($is_logged_in) { 
-    // When user is already logged in.
-	$logged_in['success'] = $is_logged_in;
-} elseif ($login) { 
-	// Specially escaped password input, put into login.
-	$logged_in    = login_user(in('user'), in('pass', null, 'toPassword'));
-	$is_logged_in = $logged_in['success'];
-	if(!$is_logged_in){
-    	// Login was attempted, but failed, so show an error.
-    	$login_error = true;
-	}
-}
-
-$username = get_username();
-
-//var_dump($logout, $is_logged_in, $logout, $login_error, $username); die();
-
 $referrer = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+$player_info = array();
 
-// Display main page unless logged in.
-$main_src = 'main.php';
-if ($is_logged_in) {
-	$main_src = 'list_all_players.php';
-}
-
-// Today's Information Section of Left Column 
 $sql = new DBAccess(); // *** Instantiates wrapper class for manipulating pdo.
 $GLOBALS['sql'] = $sql; // Put sql into globals array. :(
 
+// Logout/already logged in/login behaviors
+if ($logout) { // on logout, kill the session and don't redirect. 
+	logout(); 
+	$just_logged_out = true;
+} elseif ($is_logged_in) {     // When user is already logged in.
+	$logged_in['success'] = $is_logged_in; 
+} elseif ($login) { 	// Specially escaped password input, put into login.
+	$logged_in    = login_user(in('user'), in('pass', null, 'toPassword'));
+	$is_logged_in = $logged_in['success'];
+	if(!$is_logged_in){ // Login was attempted, but failed, so display an error.
+    	$login_error = true;
+	} else {
+	    header("Location: index.php"); 
+	    exit(); // Login redirect to prevent the refresh postback problem.
+	}
+}
+$is_not_logged_in = !$is_logged_in;
+$username = get_username();
+$user_id = get_user_id();
+$player_info = get_player_info();
+
+// Player counts.
 $stats          = membership_and_combat_stats($sql);
-$vicious_killer = $stats['vicious_killer'];
-//TODO:  Get the player id instead of the actual name.
 $player_count   = $stats['player_count'];
 $players_online = $stats['players_online'];
 
-$added_body_classes = '';
-if(DEBUG){$random_background = rand(1,10);}
-if($random_background){ // Add a chance of random index backgrounds!
-    $added_body_classes = " random-background-$random_background"; // e.g. random-background 3
-}
-$header = render_html_for_header('Live By the Sword', 'main-body'.$added_body_classes);
+
+$header = render_html_for_header('Live By the Sword', 'main-body', $is_index=true);
 // render_html_for_header Writes out the html,head,meta,title,css,js.
 
-$version = 'NW Version 1.6.0 2009.09.06';
+$version = 'NW Version 1.7.1 2009.11.22';
 
-$is_not_logged_in = !$is_logged_in;
 
+// Display main iframe page unless logged in.
+$main_src = 'main.php';
+if ($is_logged_in) {
+    $level = getLevel($username);
+    $main_src = 'list_all_players.php';
+    if($level==1){
+    	$main_src = 'tutorial.php';
+    } elseif ($level<6){
+    	$main_src = 'attack_player.php';
+    }
+}
 
 $parts = get_certain_vars(get_defined_vars(), array('vicious_killer'));
+if(!$is_logged_in){
+    echo render_template('splash.tpl', $parts); // Non-logged in template.
+} else {
+    echo render_template('index.tpl', $parts); // Logged in template.
+}
 
-echo render_template('index.tpl', $parts);
-// Username still exists here.
-
-// TODO: Abstract the display or don't display toggles to just be booleans or integers.
-// TODO: Change which items get toggled expanded when login occurs with the javascript.
-// TODO: Make sure that all the password modifying changes are secure.
+echo render_footer(null, true); // Skip quickstats.
 
 ?>

@@ -37,12 +37,12 @@ if($recent_attack && $recent_attack>($start_of_attack-$attack_spacing)){
 
 ?>
 
-<span class="brownHeading">Battle Status</span>
+<h1>Battle Status</h1>
 
 <hr>
 
 <?php
-// TODO: Turn this page/system into an object to be run.
+// TODO: Turn this page/system into a function to be rendered.
 
 // *** ********* GET VARS FROM POST - OR GET ************* ***
 $attacked = in('attacked'); // boolean for attacking again
@@ -111,8 +111,8 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 		subtractStatus($username, STEALTH);
 		$turns_to_take = 1;
 
-		echo "You are striking from the shadows, you quickly strike your victim!<br>\n";
-		echo "Your attack has revealed you from the shadows! You are no longer stealthed.<br>\n";
+		echo "<div>You are striking from the shadows, you quickly strike your victim!</div>\n";
+		echo "<div>Your attack has revealed you from the shadows! You are no longer stealthed.</div>\n";
 
 		if (!subtractHealth($attackee, $stealthAttackDamage)) { //if Stealth attack of whatever damage kills target.
 			$gold_mod     = .1;
@@ -127,11 +127,11 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 			sendMessage($attackee,$username,$attacker_msg);
 			runBountyExchange($username, $attackee); // *** Determines the bounty for normal attacking. ***
 
-			echo "You have slain $attackee with a dastardly attack!\n";
-			echo "You do not receive recognition for this kill.<br>\n";
+			echo "<div>You have slain $attackee with a dastardly attack!\n";
+			echo "You do not receive recognition for this kill.</div>\n";
 			echo "<hr>\n";
 		} else {	// *** if damage from stealth only hurts the target. ***
-			echo "$attackee has lost ".$stealthAttackDamage." HP.<br>\n";
+			echo "<div>$attackee has lost ".$stealthAttackDamage." HP.</div>\n";
 
 			sendMessage($username, $attackee, "$username has attacked you from the shadows for ".$stealthAttackDamage." damage.");
 		}
@@ -184,13 +184,13 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 		}
 
 		if ($blaze) {	// *** Blaze does double damage. ***
-			echo "Your attack is more powerful due to blazing!<br>\n";
+			echo "<div>Your attack is more powerful due to blazing!</div>\n";
 		} else if ($deflect) {
-			echo "Your wounds are reduced by deflecting the attack!<br>\n";
+			echo "<div>Your wounds are reduced by deflecting the attack!</div>\n";
 		}
 
 		// *** END OF MAIN BATTLE ALGORITHM ***
-		echo "Total Rounds: $rounds<br>\n";
+		echo "<div>Total Rounds: $rounds</div>\n";
 
 		finalResults();	// *** Displays the final damage of the combat. ***
 
@@ -207,11 +207,11 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 		}
 
 		if ($blaze) {
-			echo "You spent two extra turns to blaze with power.<br>\n";	// *** Reminds of Blaze turn cost. ***
+			echo "<div>You spent two extra turns to blaze with power.</div>\n";	// *** Reminds of Blaze turn cost. ***
 		}
 
 		if ($deflect) {
-			echo "You spent two extra turns in order to deflect your enemy's blows.<br>\n"; // *** Deflect turn cost. ***
+			echo "<div>You spent two extra turns in order to deflect your enemy's blows.</div>\n"; // *** Deflect turn cost. ***
 		}
 
 		//  *** Let the victim know who hit them ***
@@ -249,7 +249,7 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 			$attacker_msg = "You have killed $attackee in combat and taken $loot gold on $today.";
 			sendMessage($attackee, $username, $attacker_msg);
 
-			echo "$username has killed $attackee!<br>\n";
+			echo "<div>$username has killed $attackee!</div>\n";
 			echo "<div class='ninja-notice'>
 				$attackee is dead, you have proven your might";
 
@@ -263,7 +263,7 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 			echo "!</div>\n";
 
 			if (!$simultaneousKill) {
-				echo "You have taken $loot gold from $attackee.<br>\n";
+				echo "<div>You have taken $loot gold from $attackee.</div>\n";
 			}
 
 			runBountyExchange($username, $attackee);	// *** Determines bounty for dueling. ***
@@ -297,12 +297,12 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 			sendMessage($attackee, $username, $attacker_msg);
 
 			echo "<div class='ninja-error'>$attackee has killed you!</div>\n";
-			echo "<div class='ninja-notice'>
-				You have been slain!  Go to the <a href=\"shrine.php\">Shrine</a> to return to the living.<br>
+			echo "<div class='ninja-notice' style='margin-bottom: 10px;'>
+				You have been slain!  Go to the <a href=\"shrine.php\">Shrine</a> to return to the living.
 				</div>\n";
 
 			if (!$simultaneousKill) {
-				echo "$attackee has taken $loot gold from you.<br>\n";
+				echo "<div>$attackee has taken $loot gold from you.</div>\n";
 			}
 		}
 
@@ -310,7 +310,7 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 	}
 
 	if (!$duel && getHealth($username) > 0 && getHealth($attackee) > 0) {	// *** After any partial attack. ***
-		echo "<a href=\"attack_mod.php?attacked=1&amp;attackee=$attackee\">Attack Again?</a><br>\n";
+		echo "<div><a href=\"attack_mod.php?attacked=1&amp;attackee=$attackee\">Attack Again?</a></div>\n";
 	}
 }
 
@@ -325,7 +325,7 @@ assert($ending_turns < $starting_turns || $starting_turns == 0);
 //  ***  START ACTION OVER AGAIN SECTION ***
 echo "<hr>\n";
 if (isset($attackee)) {
-	echo "Return to <a href=\"player.php?player=".urlencode($attackee)."\">Player Detail</a><br>Or \n";
+	echo "<div>Return to <a href=\"player.php?player=".urlencode($attackee)."\">Player Detail</a></div>Or \n";
 }
 
 echo "Start your combat <a href=\"list_all_players.php\"> from the player list.</a>\n<br>\n";

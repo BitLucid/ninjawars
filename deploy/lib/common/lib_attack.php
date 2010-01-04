@@ -56,7 +56,7 @@ function attack_legal()  //  Checks for errors in the initial stage of combat.
 		return false;
       break;
       case ($user_turns < $required_turns):
-        echo "You do not have enough turns to execute the attack you chose.<br>\n";
+        echo "You do not have enough turns to execute the attack you chose, use a speed scroll or wait for more turns on the half hour.<br>\n";
 		return false;
       break;
       case ($attackee_ip == $_SESSION['ip'] && $_SESSION['ip'] != '127.0.0.1'):

@@ -10,7 +10,7 @@ function authenticate($p_user, $p_pass)
 	if ($user != '' && $pass != '')
 	{
 		$dbConn = new DatabaseConnection();
-		$statement = DatabaseConnection::$pdo->prepare('SELECT uname, player_id FROM players WHERE lower(uname) = lower(:userName) AND pname = :pass AND confirmed = 1';
+		$statement = DatabaseConnection::$pdo->prepare('SELECT uname, player_id FROM players WHERE lower(uname) = lower(:userName) AND pname = :pass AND confirmed = 1');
 		$statement->bindValue(':userName', $user);
 		$statement->bindValue(':pass', $pass);
 		$statement->execute();
@@ -206,20 +206,20 @@ function get_username(){
 }
 
 function player_name_from_id($player_id){
-	global $sql;
-	if(!$player_id){
-		throw new Exception('Blank player ID to find the username of requested.');
-	}
-	return $sql->QueryItem("select uname from players where player_id ='".sql($player_id)."'");
+    $sql = new DBAccess();
+    if(!$player_id){
+        throw new Exception('Blank player ID to find the username of requested.');
+    }
+    return $sql->QueryItem("select uname from players where player_id ='".sql($player_id)."'");
 }
 
 // Return the id that corresponds with a player name, if no other source is available.
 function get_user_id($name=null){
-	global $sql;
-	if($name === null){
-		$name = get_username();
-	}
-	return $sql->QueryItem("select player_id from players where uname = '".sql($name)."'");
+    $sql = new DBAccess();
+    if($name === null){
+        $name = get_username();
+    }
+    return $sql->QueryItem("select player_id from players where uname = '".sql($name)."'");
 }
 
 

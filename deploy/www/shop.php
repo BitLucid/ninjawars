@@ -1,25 +1,27 @@
 <?php
 $alive      = false;
-$private    = true;
+$private    = false;
 $quickstat  = "viewinv";
 $page_title = "Shop";
 
 include SERVER_ROOT."interface/header.php";
 
-$description = "";
-$in_purchase = in('purchase');
-$in_quantity = in('quantity');
-$item = in('item');
-$grammar ="";
-$username = get_username();
-$gold = either(getGold($username), 0);
+$description       = "";
+$in_purchase       = in('purchase');
+$in_quantity       = in('quantity');
+$item              = in('item');
+$grammar           = "";
+$username          = get_username();
+$gold              = either(getGold($username), 0);
 $current_item_cost = 0;
-$quantity = intval($in_quantity);
-if(!$quantity || $quantity < 1){
+$quantity          = intval($in_quantity);
+
+if (!$quantity || $quantity < 1){
     $quantity = 1;
 } else if ($quantity > 1 && $item != "Shuriken"){
     $grammar = "s";
 }
+
 $item_costs = array(
     /*"Dim Mak"=>10000,*/
     "Speed Scroll"=>225,
@@ -49,127 +51,10 @@ if ($in_purchase == 1){
   $description.="<p>You enter the village shop and the shopkeeper greets you with a watchful eye.</p>";
   $description.="<p>As you browse his wares he says, \"Don't try anythin' you'd regret.\" and grins.</p>";
 }
-echo "<div class=\"brownTitle\">Shop</div>\n";
 
-echo "<div class=\"description\">\n";
-echo $description;
-echo "</div>\n";
-?>
 
-<form id="shop_form" action="shop.php" method="post" name="shop_form">
-<input id="purchase" type="hidden" value="1" name="purchase">
-<table border="0">
-<tr>
-  <td>
-  Item
-  </td>
-
-  <td>
-  Description
-  </td>
-
-  <td>
-  Cost
-  </td>
-
-  <td>
-  Picture
-  </td>
-</tr>
-<tr>
-  <td>
-  <input name="item" type="submit" value="Fire Scroll" class="shopButton">
-  </td>
-
-  <td>
-  Reduces HP
-  </td>
-
-  <td>
-  $175
-  </td>
-
-  <td>
-  <img src="images/scroll.png" alt="Scroll">
-</td>
-</tr>
-<tr>
-  <td>
-  <input name="item" type="submit" value="Ice Scroll" class="shopButton">
-  </td>
-
-  <td>
-  Reduces Turns
-  </td>
-
-  <td>
-  $125
-  </td>
-
-  <td>
-  <img src="images/scroll.png" alt="Scroll">
-  </td>
-</tr>
-<tr>
-  <td>
-  <input name="item" type="submit" value="Speed Scroll" class="shopButton">
-  </td>
-
-  <td>
-  Increases Turns
-  </td>
-
-  <td>
-  $225
-  </td>
-
-  <td>
-  <img src="images/scroll.png" alt="Scroll">
-  </td>
-</tr>
-<tr>
-  <td>
-  <input name="item" type="submit" value="Stealth Scroll" class="shopButton">
-  </td>
-
-  <td>
-  Stealths a Ninja(<a href="about.php#magic">*</a>)
-  </td>
-
-  <td>
-  $150
-  </td>
-
-  <td>
-  <img src="images/scroll.png" alt="Scroll">
-  </td>
-</tr>
-<tr>
-  <td>
-  <input name="item" type="submit" value="Shuriken" class="shopButton">
-  </td>
-
-  <td>
-  Reduces HP
-  </td>
-
-  <td>
-  $50
-  </td>
-
-  <td>
-  <img src="images/mini_star.png" alt="Shuriken">
-  </td>
-</tr>
-<tr>
-  <td colspan="3">
-  How Many? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField">
-  </td>
-</tr>
-</table>
-</form>
-
-<?php
+$parts = get_certain_vars(get_defined_vars(), array());
+echo render_template('shop.tpl', $parts); // Non-logged in template.
 
 include SERVER_ROOT."interface/footer.php";
 ?>

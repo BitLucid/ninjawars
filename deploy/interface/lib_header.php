@@ -50,7 +50,7 @@ function update_activity_info()
  * Writes out the header for all the pages.
  * Will need a "don't write header" option for jQuery iframes.
 **/
-function render_html_for_header($p_title = null, $p_bodyClasses = 'body-default')
+function render_html_for_header($p_title = null, $p_bodyClasses = 'body-default', $p_isIndex=null)
 {
 	$parts = array(
 		'title'          => ($p_title ? htmlentities($p_title) : '')
@@ -58,6 +58,8 @@ function render_html_for_header($p_title = null, $p_bodyClasses = 'body-default'
 		, 'WEB_ROOT'     => WEB_ROOT
 		, 'local_js'     => (OFFLINE || DEBUG)
 		, 'DEBUG'        => DEBUG
+		, 'is_index'     => $p_isIndex
+		, 'logged_in'    => get_user_id()
 	);
 
 	return render_template('header.tpl', $parts);
@@ -71,20 +73,33 @@ function render_viewable_error($p_error)
 
 /**
  * Returns the state of the player from the database,
+ * uses a user_id if one is present, otherwise
  * defaults to the currently logged in player, but can act on any player
  * if another username is passed in.
+ * @param $user user_id or username
+ * @param @password Unless true, wipe the password.
 **/
-function get_player_info($p_id = null)
+function get_player_info($p_id = null, $p_password = false)
 {
-	$dao = new PlayerDAO();
-	$id = either($p_id, $_SESSION['player_id']); // *** Default to current. ***
+	$dbconn = new DatabaseConnection();
+	$dao = new PlayerDAO($dbconn);
+	$id = either($p_id, SESSION::get('player_id')); // *** Default to current. ***
+
 	$playerVO = $dao->get($id);
 
 	$player_data = array();
 
-	foreach ($playerVO as $fieldName=>$value)
+	if ($playerVO)
 	{
-		$player_data[$fieldName] = $value;
+		foreach ($playerVO as $fieldName=>$value)
+		{
+			$player_data[$fieldName] = $value;
+		}
+
+		if (!$p_password)
+		{
+			unset($player_data['pname']);
+		}
 	}
 
 	///TODO: Migrate all calls of this function to a new function that returns a Player object. When all calls to this function are removed, remove this function

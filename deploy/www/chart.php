@@ -7,16 +7,14 @@ $page_title = "Advancement Chart";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<div class="brownTitle">Dojo Chart</div>
+<h1>Dojo Advancement Chart</h1>
 <div class="description">
-  <br>
-  Hanging on the wall of the dojo is a scroll outlining the training requirements for all ninjas.
-  <br><br>
+  <div style="margin-top: 10px;margin-bottom: 10px;">Hanging on the wall of the dojo is a scroll outlining the training requirements for all ninjas.</div>
 </div>
 
 <a href="dojo.php">Return to Dojo</a><hr>
 Shows how many kills you need to progress and how your stats will change:
-<table style="border: 0;">
+<table>
   <tr>
     <td>
       Level

@@ -9,13 +9,11 @@ include(OBJ_ROOT."Skill.php");
 $skillsListObj = new Skill();
 ?>
 
-<div class="brownHeading">Shrine Effects</div>
+<h1>Shrine Effects</h1>
 
 <hr>
 
-<br>
-
-<div id='heal-result'>
+<div id='heal-result' style="margin-top: 10px;">
 
 <?php
 $healed             = in('healed');
@@ -33,7 +31,7 @@ $heal_points        = (in('heal_points') ? intval(in('heal_points')) : null);  /
 $freeResLevelLimit  = 6;
 $freeResKillLimit   = 25;
 $lostTurns          = 10; // *** Default turns lost when the player has no kills.
-$has_chi = $skillsListObj->hasSkill('Chi'); // Extra healing benefits from chi, by level.
+$has_chi            = $skillsListObj->hasSkill('Chi'); // Extra healing benefits from chi, by level.
 
 // *** A True or False as to whether resurrection will be free.
 $freeResurrection = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
@@ -52,7 +50,7 @@ if ($restore == 1)
 {	//  *** RESURRECTION SECTION ***
 	if ($startingHealth > 0)
 	{
-		echo "You are not dead.<br><br>\n";
+		echo "<div style='margin-bottom: 10px;'>You are not dead.</div>\n";
 	}
 	else if ($startingKills > 1 || $freeResurrection)
     {	// If you're dead, and a newbie, or dead and have kills.
@@ -72,13 +70,13 @@ if ($restore == 1)
 			addStatus($username, STEALTH);
 		}
 
-		echo "What once was dead shall rise again.<br>\n";
-		echo "Current Kills: ".$startingKills."<br>\n";
-		echo "Adjusted Kills after returning to life: ".getKills($username)."<br>\n";
+		echo "<div>What once was dead shall rise again.</div>\n";
+		echo "<div>Current Kills: ".$startingKills."</div>\n";
+		echo "<div>Adjusted Kills after returning to life: ".getKills($username)."</div>\n";
 	}
 	elseif ($startingTurns > 0) // Dead and no killpoints left, and not a newbie.
 	{
-		echo "What once was dead shall rise again.<br>\n";
+		echo "<div>What once was dead shall rise again.</div>\n";
 
 		if ($startingTurns < $lostTurns && $startingTurns > 0) // *** From 9 to 1 turns.
 		{
@@ -89,14 +87,14 @@ if ($restore == 1)
 		setHealth($username, 100);
 		subtractStatus($username, STEALTH+POISON+FROZEN+CLASS_STATE);
 
-		echo "Since you have no kills, your resurrection will cost you part of your life time.";
-		echo "Current Turns: ".$startingTurns."<br>\n";
-		echo "Adjusted Turns after returning to life: ".getTurns($username)."<br>\n";
+		echo "<div>Since you have no kills, your resurrection will cost you part of your life time.</div>";
+		echo "<div>Current Turns: ".$startingTurns."</div>\n";
+		echo "<div>Adjusted Turns after returning to life: ".getTurns($username)."</div>\n";
 	}
 	else // *** No kills, no turns, and too high of a level.
 	{
-		echo "You must wait for time to pass before you can return to life.";
-		echo "Current Turns: ".$startingTurns."<br>\n";
+		echo "<div>You must wait for time to pass before you can return to life.</div>";
+		echo "<div>Current Turns: ".$startingTurns."</div>\n";
 	}
 } // *** end of resurrection ***
 
@@ -122,13 +120,13 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 				$finalHealth = getHealth($username);
 				echo "<p>A monk tends to your wounds and you are ".(($max_health <= $finalHealth) ? "fully healed" : "healed to $finalHealth hitpoints").".</p>\n";
 			} else {
-				echo "You do not have enough gold for this amount of healing.<br>\n";
+				echo "<div>You do not have enough gold for this amount of healing.</div>\n";
 			}
 		} else {
-			echo "Please enter a valid number of hit points to heal.<br>\n";
+			echo "<div>You cannot heal with zero gold.</div>\n";
 		}
 	} else {
-		echo "You must resurrect before you can heal.<br>\n";
+		echo "<div>You must resurrect before you can heal.</div>\n";
 	}
 } else if ($poisoned == 1) {	//  *** POISON SECTION ***
 	if (getHealth($username) > 0) {
@@ -140,21 +138,21 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 			{
 				subtractGold($username,$cost);
 				subtractStatus($username,POISON);
-				echo "You have been cured!<br>\n";
+				echo "<div>You have been cured!</div>\n";
 			}
 			else
 			{
-				echo "You are not ill.<br><br>\n";
+				echo "<div style='margin-bottom: 10px;'>You are not ill.</div>\n";
 			}
 		}
 		else
 		{
-			echo "You need more gold to remove poison.<br>\n";
+			echo "<div>You need more gold to remove poison.</div>\n";
 		}
 	}
 	else
 	{
-		echo "You must resurrect before you can heal.<br>\n";
+		echo "<div>You must resurrect before you can heal.</div>\n";
 	}
 }
 ?>

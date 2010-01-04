@@ -15,7 +15,7 @@ $page_title = "Item Usage";
 include SERVER_ROOT."interface/header.php";
 ?>
 
-<h1 class="brownHeading">Item Use</h1>
+<h1>Item Use</h1>
 
 <?php
 $link_back  = in('link_back');
@@ -168,6 +168,12 @@ else if ($item == 'Stealth Scroll')
 	$item = $stealthScroll = new Item('Stealth Scroll');
 	$stealthScroll->setCovert(true);
 }
+
+if(!is_object($item)){
+    echo "No such item.";
+    die(); // hack to avoid fatal error, proper checking for items should be done.
+}
+
 
 $article = get_indefinite_article($item->getName());
 

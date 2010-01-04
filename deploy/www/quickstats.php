@@ -31,10 +31,14 @@ $sql->Query("SELECT item, amount FROM inventory WHERE owner = '".sql($username).
 
 $items_section = '';
 
+// TODO: Change this and the template to be using dl/dd/dt instead of a table.
+
 foreach($sql->FetchAll() AS $loopItem){
+    if($loopItem['amount']){ // Skip zero counts.
     $items_section .= "
 	          <tr><td> {$loopItem['item']}: </td>
 	          <td> {$loopItem['amount']}</td></tr>\n";
+	}
 }
 
 $parts = get_certain_vars(get_defined_vars()); // Pull current flat vars into the template.

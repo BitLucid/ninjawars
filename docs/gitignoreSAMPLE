@@ -11,3 +11,11 @@ image_dump
 test.php
 .app_tools
 .testing
+TODO.txt
+deploy/www/images/dirty_raws
+./scripts/dbScripts/migrations
+scripts/dbScripts/migrations
+dirty_raws
+scripts/dbScripts/nw_db_backups
+.gitattributes
+scripts/dbScripts/uncleanDumps/

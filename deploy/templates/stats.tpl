@@ -39,6 +39,7 @@
     <li>Kills: {$player.kills}</li>
     <li>Turns: {$player.turns}</li>
     <li>Email: {$player.email|escape}</li>
+    <li>Created: {$player.created_date|escape}</li>
     <li>Rank: {$rank_display}</li>
     <li>Bounty: {$player.bounty} gold</li>
     {if $player.clan}<li>Clan: <a href='{$WEB_ROOT}clan.php?command=view&clan_name={$player.clan|escape}'>
@@ -60,10 +61,10 @@
     </div>
 </form>
 
-<div id='player-profile'>
+<div id='player-profile-section'>
 Profile Preview:
     <div id='player-profile">
-        {$profile_display}
+        &nbsp;{$profile_display}&nbsp;
     </div>
 </div>
 

@@ -2,7 +2,7 @@ Dependencies
 -------------
 PHP5, Postgresql8, Perl>=5, Apache2, Perl::Lingua::En::Inflect
 
-sudo apt-get install apache2 php5 postgresql perl liblingua-en-inflect-perl
+sudo apt-get install apache2 php5 postgresql perl liblingua-en-inflect-perl awstats
 
 All Deployments
 ---------------
@@ -31,6 +31,7 @@ Using your working copy
 !!! IMPORTANT NOTES !!!
 ------------------------
 
+TODO: awstats needs an example conf file.
 
 If you are using a .htaccess file
 ---------------------------------

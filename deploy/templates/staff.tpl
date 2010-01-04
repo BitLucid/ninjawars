@@ -1,18 +1,34 @@
 {$header}
+{literal}
+<script type="text/javascript" charset="utf-8">
+  var is_ssl = ("https:" == document.location.protocol);
+  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
+  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
 
-<script type='text/javascript' src="{$JS_ROOT}staffPage.js"></script>
+<script type="text/javascript" charset="utf-8">
+  var feedback_widget_options = {};
 
-<h2 class="title">Ninjawars Staff</h2>
-
+  feedback_widget_options.display = "overlay";  
+  feedback_widget_options.company = "ninjawars";
+  feedback_widget_options.placement = "right";
+  feedback_widget_options.color = "#222";
+  feedback_widget_options.style = "idea";
+  
+  var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+</script>
+{/literal}
+<h1>Ninjawars Staff</h1>
   <p>
-    The preferred method of contacting us with problems or bugs with the game is via the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.
-    For other issues, including confirmation problems, email us at: <a href="mailto:{$SUPPORT_EMAIL}">{$SUPPORT_EMAIL}</a>
-  </p>
-
+    The preferred method of contacting us with problems, ideas, or bugs with the game
+     is via the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.
+    </p>
+    <p>For private issues, including account/confirmation problems, email us at: {$mailto}</p>
+  
 <div class='developers'>
   <h3 class='subtitle'>Developers</h3>
   <div class='developer'>
-    <a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Flynn</a>  - Programmer and Maintainer 
+    <a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer 
     <span id='social-networks'>
       - <a target='_blank' href="http://www.facebook.com/tchalvak"><img src='{$IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a>
       - <a target='_blank' href="http://www.myspace.com/toastersquid"><img src='{$IMAGE_ROOT}icons/fasticons/MySpace_24x24.png'> on Myspace</a>
@@ -33,7 +49,7 @@
     </p>
 
     <img class='developer-image' alt='tchalvak' src="images/tchalvak-smaller.jpg">
-    <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" title="Roy Flynn" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Flynn</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" title="Make your own badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Make your own badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Flynn" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Flynn" style="border: 0px;"></a><!-- Facebook Badge END --></div>
+    <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Ronalds</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" title="Make your own badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Make your own badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Ronalds" style="border: 0px;"></a><!-- Facebook Badge END --></div>
     </div><!-- End of .developer-info -->
   </div>
   <div class='developer'>
@@ -61,20 +77,19 @@
 </div>
 
 <div id='open-source-repository'>
-  <h3>Contributing to Ninjawars</h3>
+  <h3 class='subtitle'>Contributing to Ninjawars</h3>
 
   <p>Want to get involved?  You can hack away at the code on github and suggest changes or ask any questions on the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.</p>
   <p> Ninjawars is open source, with the source code downloadable and able to be openly contributed to at: 
     <a class='external' target='_blank' href="http://github.com/tchalvak/ninjawars/tree/master">http://github.com/tchalvak/ninjawars</a>
   </p>    
     
-    <div id='latest-commit-section'>
-    <span id='latest-commit-title'>The latest commit to the ninjawars code was:</span>
+    <p id='latest-commit-section'>
+    <p id='latest-commit-title'>The latest commit to the main ninjawars code was:</p>
     <span id='latest-commit'>
     </span>
-    </div>
+    </p>
 </div>
-
 
 <div class='license'>
   <div class='subtitle'>License</div>
@@ -89,4 +104,25 @@
   </p>
 </div>
 
+<script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_thin_badge.js"></script>
+<div id='project-languages' style='background-color:white'><script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_languages.js"></script></div>
+
+<script>
+  {literal}
+  $(document).ready(function(){
+    $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?tags=ninja&tagmode=any&format=json&jsoncallback=?",
+        function(data){
+          $.each(data.items, function(i,item){
+            $("<img/>").attr("src", item.media.m).appendTo("#random-ninja-images");
+            if ( i == 2 ) return false;
+          });
+        });
+  });
+  {/literal}
+  </script>
+  
+  <div id='random-ninja-images'>
+  <h3 class='subtitle'>And now for something completely different:</h3>
+  </div>
+<script type='text/javascript' src="{$JS_ROOT}staffPage.js"></script>
 {$footer}

@@ -15,9 +15,9 @@ $logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
 // TODO: When the message table is created, delete from mail more stringently.
 // TODO: Set up a backup of the players table.
 
-$keep_players_until_over_the_number                   = 2600;
+$keep_players_until_over_the_number                   = 2000;
 $days_players_have_to_be_older_than_to_be_unconfirmed = 60;
-$maximum_players_to_unconfirm                         = 30;
+$maximum_players_to_unconfirm                         = 200;
 
 // *************** DEITY NIGHTLY, manual-run-output occurs at the bottom.*********************
 
@@ -30,7 +30,6 @@ $affected_rows['Statuses Removed'] = $sql->a_rows;
 
 $deleted = shorten_chat($sql); // run the shortening of the chat.
 $affected_rows['deleted chats'] = $deleted;
-sendChat(CHAT_TIME_NAME,"ChatMsg","----".date("F j, Y")."----"); // Display the date change.
 
 $stats = membership_and_combat_stats($sql, $update_past_stats=true);
 $affected_rows['Vicious killer: '] = $stats['vicious_killer'];
