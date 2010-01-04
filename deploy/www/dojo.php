@@ -20,9 +20,8 @@ $classChangeSequence = in('classChangeSequence');
 <h1>Dojo</h1>
 
 <div class="description">
-  You walk up the steps to the grandest building in the village. The dojo trains many respected ninja.
-  <br>
-  As you approach, you can hear the sounds of fighting coming from the wooden doors in front of you.
+  <div style="margin-bottom: 10px;">You walk up the steps to the grandest building in the village. The dojo trains many respected ninja.</div>
+  <div>As you approach, you can hear the sounds of fighting coming from the wooden doors in front of you.</div>
 </div>
 
 <?php
@@ -51,10 +50,10 @@ if(!isset($username)){
 		{
 			//*
 			echo "<form id=\"Buy_DimMak\" action=\"dojo.php?dimmak_sequence=2\" method=\"post\" name=\"buy_dimmak\">\n";
-			echo "<div>\n";
-			echo "<br>Trade your memories of ".$dimMakCost." kills for the DimMak Scroll?  \n";
+			echo "<div style='margin-top: 10px;margin-bottom: 10px;'>\n";
+			echo "Trade your memories of ".$dimMakCost." kills for the DimMak Scroll?  \n";
 			echo "<input id=\"dimmak_sequence\" type=\"hidden\" value=\"2\" name=\"obtainscroll\">\n";
-			echo "<input type=\"submit\" value=\"Obtain Dim Mak\" class=\"formButton\"><br>\n";
+			echo "<input type=\"submit\" value=\"Obtain Dim Mak\" class=\"formButton\">\n";
 			echo "</div>\n";
 			echo "</form>\n";
 			//*/
@@ -93,10 +92,10 @@ if(!isset($username)){
 		if ($classChangeSequence == 1)
 		{
 			echo "<form id=\"Buy_classChange\" action=\"dojo.php?classChangeSequence=2\" method=\"post\" name=\"changeofclass\">\n";
-			echo "<div>\n";
-			echo "<br>Trade your memories of ".$classChangeCost." kills to change your skills to those of the ".$class_array[$players_class]." ninja?\n";
+			echo "<div style='margin-top: 10px;margin-bottom: 10px;'>\n";
+			echo "Trade your memories of ".$classChangeCost." kills to change your skills to those of the ".$class_array[$players_class]." ninja?\n";
 			echo "<input id=\"classchangeSequence\" type=\"hidden\" value=\"2\" name=\"wantanewclass\">\n";
-			echo "<input type=\"submit\" value=\"Become A ".$class_array[$players_class]." Ninja\" class=\"formButton\"><br>\n";
+			echo "<input type=\"submit\" value=\"Become A ".$class_array[$players_class]." Ninja\" class=\"formButton\">\n";
 			echo "</div>\n";
 			echo "</form>\n";
 		}
@@ -128,7 +127,7 @@ if(!isset($username)){
 	{
 		if ($nextlevel > $MAX_LEVEL)
 		{
-			$msg =  "There are no trainers that can teach you beyond your current skill. You are legend among the ninja.<br>\n";
+			$msg =  "<div>There are no trainers that can teach you beyond your current skill. You are legendary among the ninja.</div>\n";
 		}
 		else if (getKills($username) >= getLevel($username) * 5)
 		{
@@ -140,32 +139,31 @@ if(!isset($username)){
 		}
 		else
 		{
-			echo "You do not have enough kills to proceed at this time.<br>\n";
+			echo "<div>You do not have enough kills to proceed at this time.</div>\n";
 		}
 	}
 	else if ($nextlevel > $MAX_LEVEL)  // *** If they just entered the dojo ***
 	{
-		$msg = "You enter the dojo as one of the elite ninja. No trainer has anything left to teach you.<br>\n";
+		$msg = "<div>You enter the dojo as one of the elite ninja. No trainer has anything left to teach you.</div>\n";
 	}
 	else if (getKills($username) < (getLevel($username) * 5))
 	{
-		$msg = "Your trainer finds you lacking. You are instructed to prove your might against more ninja before you return.<br>\n";
+		$msg = "<div>Your trainer finds you lacking. You are instructed to prove your might against more ninja before you return.</div>\n";
 	}
 	else
 	{
 		echo "<form id=\"level_up\" action=\"dojo.php\" method=\"post\" name=\"level_up\">\n";
-		echo "<div>\n";
-		echo "<br>Do you wish to upgrade to level " . $nextlevel."?<br>\n";
+		echo "<div style='margin-top: 10px;margin-bottom: 10px;'>\n";
+		echo "<div>Do you wish to upgrade to level " . $nextlevel."?</div>\n";
 		echo "<input id=\"upgrade\" type=\"hidden\" value=\"1\" name=\"upgrade\">\n";
-		echo "<input type=\"submit\" value=\"Upgrade\" class=\"formButton\"><br>\n";
+		echo "<input type=\"submit\" value=\"Upgrade\" class=\"formButton\">\n";
 		echo "</div>\n";
 		echo "</form>\n";
 	}
 
-	echo "Your current level is ".getLevel($username).".  <br>Your current kills are ".getKills($username).".<br><br>\n";
-	echo "Level ".(getLevel($username) + 1)." requires ".(getLevel($username) * 5)." kills.<br><br>\n";
+	echo "<div>Your current level is ".getLevel($username).".  </div><div style='margin-bottom: 10px;'>Your current kills are ".getKills($username).".</div>>\n";
+	echo "<div style='margin-bottom: 10px;'>Level ".(getLevel($username) + 1)." requires ".(getLevel($username) * 5)." kills.</div>\n";
 	echo $msg;
-
 }
 
 include SERVER_ROOT."interface/footer.php";
