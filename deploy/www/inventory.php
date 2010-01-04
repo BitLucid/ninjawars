@@ -51,7 +51,7 @@ if ($sql->rows == 0) {
 		$items[$data['item']] = $data['c'];
 	}
 
-	echo "Click a linked item to use it on yourself.<br><br>\n";
+	echo "<div style='margin-bottom: 10px;'>Click a linked item to use it on yourself.</div>\n";
 
 	echo "<table style=\"width: 150;\">\n";
 

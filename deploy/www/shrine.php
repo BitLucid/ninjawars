@@ -10,26 +10,25 @@ include SERVER_ROOT."interface/header.php";
 <h1>Shrine</h1>
 
 <div class="description">
-  The shrine to the gods is peacefully quiet as you enter. The sound of flowing water soothes your mind.
-  <br><br>
-  A monk approaches you quietly and asks, "Are you in need of healing?"
+  <div style="margin-bottom: 10px;">The shrine to the gods is peacefully quiet as you enter. The sound of flowing water soothes your mind.</div>
+  <div>A monk approaches you quietly and asks, "Are you in need of healing?"</div>
 </div>
 
 <?php
 $freeResLevelLimit = 6;
 $freeResKillLimit  = 25;
 $lostTurns         = 10; // *** Default turns lost when the player has no kills.
-$startingKills = 0;
-$userLevel = 0;
+$startingKills     = 0;
+$userLevel         = 0;
 
-if(!isset($username)){
+if (!isset($username)) {
 	echo "You have no need of healing.";
 } else {
 	$startingKills     = getKills($username);
 	$userLevel         = getLevel($username);
 
 	// *** A True or False as to whether resurrection will be free.
-	$freeResurrection = ($userLevel<$freeResLevelLimit && $startingKills<$freeResKillLimit);
+	$freeResurrection = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
 
 	if (!$players_health)
 	{
@@ -64,8 +63,8 @@ if(!isset($username)){
 	else
 	{
 		echo '<form id="heal_form" action="shrine_mod.php" method="post" name="heal_form">';
-		echo '<div>';
-		echo '<br>The cost is one gold per point of health<br>';
+		echo '<div style="margin-top: 10px;">';
+		echo '<div>The cost is one gold per point of health</div>';
 		echo '<input type="submit" value="Heal" class="formButton">';
 		echo '<input id="heal_points" type="text" size="3" maxlength="4" name="heal_points" class="textField">HP';
 		echo '<input id="healed" type="hidden" value="1" name="healed">';
@@ -90,6 +89,7 @@ if(!isset($username)){
 		echo '</p>';
 		echo '</form>';
 	}
-}// End of username check.
+}	// End of username check.
+
 include SERVER_ROOT."interface/footer.php";
 ?>

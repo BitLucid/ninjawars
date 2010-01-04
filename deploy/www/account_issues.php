@@ -6,8 +6,6 @@ $alive      = false;
 
 include SERVER_ROOT."interface/header.php";
 
-
-
 // Determines the user information for a certain email.
 function user_having_email($email){
     $sql = new DBAccess();
@@ -62,8 +60,6 @@ function send_confirmation_email($email, $data){
     $sent = $mail_obj->send();
     return $sent;
 }
-
-
 
 $email = in('email', null, 'toEmail'); // The default filter allows standard emails.
 $password_request = in('password_request');

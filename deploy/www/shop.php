@@ -6,20 +6,22 @@ $page_title = "Shop";
 
 include SERVER_ROOT."interface/header.php";
 
-$description = "";
-$in_purchase = in('purchase');
-$in_quantity = in('quantity');
-$item = in('item');
-$grammar ="";
-$username = get_username();
-$gold = either(getGold($username), 0);
+$description       = "";
+$in_purchase       = in('purchase');
+$in_quantity       = in('quantity');
+$item              = in('item');
+$grammar           = "";
+$username          = get_username();
+$gold              = either(getGold($username), 0);
 $current_item_cost = 0;
-$quantity = intval($in_quantity);
-if(!$quantity || $quantity < 1){
+$quantity          = intval($in_quantity);
+
+if (!$quantity || $quantity < 1){
     $quantity = 1;
 } else if ($quantity > 1 && $item != "Shuriken"){
     $grammar = "s";
 }
+
 $item_costs = array(
     /*"Dim Mak"=>10000,*/
     "Speed Scroll"=>225,
@@ -49,7 +51,6 @@ if ($in_purchase == 1){
   $description.="<p>You enter the village shop and the shopkeeper greets you with a watchful eye.</p>";
   $description.="<p>As you browse his wares he says, \"Don't try anythin' you'd regret.\" and grins.</p>";
 }
-
 
 
 $parts = get_certain_vars(get_defined_vars(), array());
