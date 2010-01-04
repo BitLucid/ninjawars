@@ -691,7 +691,7 @@ iframe{
     float:left;
     margin-right: .5em;
 }
-.chat-messages dt a{
+.chat-messages dt a{ /* Breaks the formatting if the a is too large. */
     font-size:1em;
     font-size:smaller;
 }
@@ -700,6 +700,7 @@ iframe{
 	font-size: .8em;
 	font-style:italic;
 	color: gray;
+	display:inline-block;
 }
 .chat-messages .chat-message a{
     font-size:smaller;
