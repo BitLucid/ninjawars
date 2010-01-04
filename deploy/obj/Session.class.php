@@ -1,66 +1,70 @@
 <?php
-// The session class from http://us3.php.net/session_start, referenced via static method calls.
+// *** The session class from the comments in http://us3.php.net/session_start, providing static methods that abstract common session usage patterns. ***
 class SESSION
 {
-   public function __construct()
-   {
-		self :: commence();
-   }
+	public function __construct()
+	{
+		self::commence();
+	}
 
-	// Starts the session whenever a method is called for.
-   public static function commence()
-   {
-		if (!isset($_SESSION ['ready'])){
+	// *** Starts the session whenever a method is called for. ***
+	public static function commence()
+	{
+		if (!isset($_SESSION ['ready']))
+		{
 			session_start();
 			$_SESSION['ready'] = TRUE;
 		}
-   }
+	}
 
-   public static function set($field, $val)
-   {
-		self :: commence();
+	public static function set($field, $val)
+	{
+		self::commence();
 		$_SESSION[$field] = $val;
-   }
+	}
 
-   // Set a session id if it doesn't exist yet.
-   public static function set_if_not_set($field, $val)
-   {
-		if (!self :: is_set($field)){
+	// *** Set a session id if it doesn't exist yet. ***
+	public static function set_if_not_set($field, $val)
+	{
+		if (!self::is_set($field))
+		{
 			self::set($field, $val);
 			return true;
 		}
+
 		return false;
-   }
+	}
 
-   public static function un_set($field)
-   {
-		self :: commence ();
+	public static function un_set($field)
+	{
+		self::commence();
 		unset($_SESSION[$field]);
-   }
+	}
 
-   public static function destroy()
-   {
-		self :: commence();
-		unset ($_SESSION);
+	public static function destroy()
+	{
+		self::commence();
+		unset($_SESSION);
 		session_destroy();
 		return true;
-   }
+	}
 
-   public static function get($field)
-   {
-		self :: commence();
-		return (isset($_SESSION[$field])?$_SESSION[$field] : null);
-   }
+	public static function get($field)
+	{
+		self::commence();
+		return (isset($_SESSION[$field]) ? $_SESSION[$field] : null);
+	}
 
-   public static function has_values(){
-		self :: commence();
-		return (count($_SESSION)>0? true : false);
-   }
+	public static function has_values()
+	{
+		self::commence();
+		return (count($_SESSION) > 0);
+	}
 
-   public static function is_set($field)
-   {
-		self :: commence();
+	public static function is_set($field)
+	{
+		self::commence();
 		return isset($_SESSION[$field]);
-   }
+	}
 }
 ?>
