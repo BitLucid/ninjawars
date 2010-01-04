@@ -691,6 +691,10 @@ iframe{
     float:left;
     margin-right: .5em;
 }
+.chat-messages dt a{
+    font-size:1em;
+    font-size:smaller;
+}
 .chat-messages .chat-time{
 	font-family: Trebuchet MS1, Helvetica, sans-serif;
 	font-size: .8em;

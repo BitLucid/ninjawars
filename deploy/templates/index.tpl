@@ -1,6 +1,5 @@
     {$header}
-    
-    
+        
     <!-- Version {$version} -->
 
       <div id='left-column'>
@@ -74,6 +73,11 @@
               <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='{$IMAGE_ROOT}messages.png' alt=''></a>
           </div>
           <div id='recent-mail'></div>
+          {if $player_info.level < 2}
+          <div id='helpful-info'>
+            <a target='main' href='tutorial.php'>Helpful Info</a>
+          </div>
+          {/if}
 
       </div>  
       
@@ -215,8 +219,8 @@
         <a href='staff.php' target='main'>Staff</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
-        <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
-        <a href="http://ninjawars.proboards19.com" target="_blank" class="extLink">Forum</a>
+        <a href="http://ninjawars.pbworks.com/" target="_blank" class="extLink">Wiki</a> |
+        <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a>
       </div>
       
     
