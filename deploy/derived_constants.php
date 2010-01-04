@@ -19,7 +19,7 @@ define('ADMIN_ROOT', SERVER_ROOT.'admin/'); // *** For all the admin objects.
 define('CHAR_ROOT', SERVER_ROOT.'lib/char/'); // *** For all the in-game character objects.
 define('AREA_ROOT', SERVER_ROOT.'area/'); // *** For all the in-game area or room objects.
 define('NPC_ROOT', SERVER_ROOT.'npc/'); // *** For all the in-game npc objects.
-define('CLAN_ROOT', SERVER_ROOT.'clan/');  // *** For all the in-game clan objects.
+define('CLAN_ROOT', SERVER_ROOT.'lib/clan/');  // *** For all the in-game clan objects.
 define('COMBAT_ROOT', SERVER_ROOT.'combat/');  // *** For all the in-game combat objects.
 define('SKILL_ROOT', SERVER_ROOT.'skill/');  // *** For all the in-game skill objects.
 define('ITEM_ROOT', SERVER_ROOT.'item/');  // *** For all the in-game item/inventory objects.
