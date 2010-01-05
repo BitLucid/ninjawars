@@ -1,18 +1,5 @@
 FOLLOW THESE OR BE RIDICULED:
 
-* Use spaces instead of tabs, tab size 4.
-
-* Variables, functions, and filenames use underscores:
-
-      $foo_bar = "baz"; // Good
-      $fooBar = "baz";  // BAD
-
-* Class names capitalized with underscores:
-
-      $foo = new Foo_Bar_Baz(); // Good
-      $foo = new FooBarBaz();   // BAD
-      $foo = new foo_bar_baz(); // BAD
-
 * If statements must look like this:
 
       if (true) {
@@ -33,6 +20,20 @@ FOLLOW THESE OR BE RIDICULED:
       if ( true ){
           ...
       }
+      
+    Essentially, a starting base of One True Brace style:  
+    http://en.wikipedia.org/wiki/Indent_style#Variant:_1TBS
+
+* Variables, functions, and filenames use underscores:
+
+      $foo_bar = "baz"; // Good
+      $fooBar = "baz";  // BAD
+
+* Class names capitalized with underscores:
+
+      $foo = new Foo_Bar_Baz(); // Good
+      $foo = new FooBarBaz();   // BAD
+      $foo = new foo_bar_baz(); // BAD
 
 * Function calls:
 
@@ -49,17 +50,8 @@ FOLLOW THESE OR BE RIDICULED:
   context. Assume the reader is a competent programmer and can understand
   the local code, unless it is extremely complex. API docs for libraries
   are the exception and should have meaningful summaries.
-
-* Try to keep your lines to within 80-100 characters in length. Using
-  temporary variables helps, e.g.:
-
-      // Use more meaningful names than condition1, etc., obviously
-      $condition1 = in_array($foo_long_var, $GLOBALS['bar_long_bar']);
-      $condition2 = ($some_other_variable == SOME_CONSTANT);
-      $condition3 = !empty($baz);
-      if ($condition1 && ($condition2 || $condition3)) {
-          ...
-      }
+  
+  A simple summary comment per function is a good minimum starting point.
 
 * Put closing parenthesis on the same line as the last line of code. E.g.,
   
@@ -68,15 +60,13 @@ FOLLOW THESE OR BE RIDICULED:
           "password" => $this->in['password'],
           "account_status" => 1));
 
-* Do not abuse the ternary operator. Keep it simple and readable. Here is an
-  example of proper usage:
+* Do not abuse the ternary operator. Keep it simple and readable. Use temporary variables.
+  Here is an example of simple proper usage, with only a single ternary on a line:
   
       $old_values = ($old_record ? $old_record->values() : null);
 
-  Real-world example of bad usage (original had no linebreaks):
-  
-      $this->root_url = $GLOBALS['site_root_url'] = (!empty($include_url) ?
-          $include_url : (!empty($match_str) ? preg_replace('/[\/]?('.
-          str_replace(array("/"),array("\/"),$match_str).')[\/]?(.*)[\/]?$/',
-          "/", $page['detail_page']) : (preg_replace(
-          '/(http\:\/\/([A-z0-9\-\.]*)\/)(.*)$/','$1',$page['detail_page']))));
+
+* Legacy Code:
+
+    Don't rewrite older code to match the coding standards unless you're actually 
+    refactoring functionality as well.
