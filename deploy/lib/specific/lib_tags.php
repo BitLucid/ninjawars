@@ -63,10 +63,13 @@ function render_clan_view($clan, $clan_name=null, $clan_long_searched=null, $sql
             <div id='clan-members-count'>Clans Members: ".count($members)."</div>
             <ul id='clan-members-list'>";
     foreach($members as $member){
+        // Days of inactivity get subtracted from your level, your percentage of the max member's level
+        // gets multiplied into a 1-3 scale. 
         $member['size'] = floor(( (($member['level']-$member['days'] <1? 0 : $member['level']-$member['days'])) /$max)*2)+1;
+        // Leadership of the clan bumps your name size up.
         if($member['uname'] == $member['clan']){
             $member['size'] = $member['size']+2;
-            $member['size'] = ($member['size']>2? 2 : $member['size']);
+            $member['size'] = ($member['size']>2? 3 : $member['size']);
         }
         $res .= "<li class='member size{$member['size']}'>
                 <a href='player.php?player={$member['uname']}'>{$member['uname']}</a>
