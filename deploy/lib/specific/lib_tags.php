@@ -76,15 +76,20 @@ function render_clan_view($p_clanID, $sql)
             <h3 id='clan-members-title'>".$members[0]['clan_name']."</h3>
             <div id='clan-members-count'>Clans Members: ".count($members)."</div>
             <ul id='clan-members-list'>";
+<<<<<<< HEAD:deploy/lib/specific/lib_tags.php
 
 	foreach ($members as $member)
 	{
+		// Days of inactivity get subtracted from your level, your percentage of the max member's level
+		// gets multiplied into a 1-3 scale. 
+
 		$member['size'] = floor( ( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) ) / $max) * 2) + 1;
 
+		// Leadership of the clan bumps your name size up.
 		if ($member['player_id'] == $member['_creator_player_id'])
 		{
 			$member['size'] = $member['size'] + 2;
-			$member['size'] = ($member['size'] > 2 ? 2 : $member['size']);
+			$member['size'] = ($member['size'] > 2 ? 3 : $member['size']);
 		}
 
 		$res .= "<li class='member size{$member['size']}'>

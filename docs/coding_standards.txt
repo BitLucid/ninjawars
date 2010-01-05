@@ -1,0 +1,72 @@
+FOLLOW THESE OR BE RIDICULED:
+
+* If statements must look like this:
+
+      if (true) {
+          ...
+      }
+  
+  NOT like this:
+  
+      // BAD
+      if (true)
+      {
+          ...
+      }
+  
+  or this:
+  
+      // ALSO BAD
+      if ( true ){
+          ...
+      }
+      
+    Essentially, a starting base of One True Brace style:  
+    http://en.wikipedia.org/wiki/Indent_style#Variant:_1TBS
+
+* Variables, functions, and filenames use underscores:
+
+      $foo_bar = "baz"; // Good
+      $fooBar = "baz";  // BAD
+
+* Class names capitalized with underscores:
+
+      $foo = new Foo_Bar_Baz(); // Good
+      $foo = new FooBarBaz();   // BAD
+      $foo = new foo_bar_baz(); // BAD
+
+* Function calls:
+
+      $foo = bar($baz, $qux);   // Good
+      $foo = bar ( $baz,$qux ); // BAD
+
+* Comment anything that does not adhere to conventions. Things that are done
+  idiomatically or by convention probably do not need comments. Prefer adding
+  to general-purpose documentation rather than documenting an individual,
+  isolated example (e.g., document a base class instead of every extended
+  class).
+  
+  Add comments to document WHY something is done, not WHAT is done -- provide
+  context. Assume the reader is a competent programmer and can understand
+  the local code, unless it is extremely complex. API docs for libraries
+  are the exception and should have meaningful summaries.
+  
+  A simple summary comment per function is a good minimum starting point.
+
+* Put closing parenthesis on the same line as the last line of code. E.g.,
+  
+      $person = Person::get(array(
+          "username" => $this->in['username'],
+          "password" => $this->in['password'],
+          "account_status" => 1));
+
+* Do not abuse the ternary operator. Keep it simple and readable. Use temporary variables.
+  Here is an example of simple proper usage, with only a single ternary on a line:
+  
+      $old_values = ($old_record ? $old_record->values() : null);
+
+
+* Legacy Code:
+
+    Don't rewrite older code to match the coding standards unless you're actually 
+    refactoring functionality as well.
