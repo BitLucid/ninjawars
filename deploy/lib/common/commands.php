@@ -784,10 +784,10 @@ function kick($p_playerID){
 
 	$clan_long_name = getClanLongName($p_playerID);
 
-	$sql->Delete("DELETE FROM clan_player WHERE _player_id = $p_playerID");
+	$sql->Delete("DELETE FROM clan_player WHERE _player_id = '".sql($p_playerID)."'");
 	$msg = "You have been kicked out of $clan_long_name by ".get_username()." on $today.";
 
-	sendMessage(get_username(),$who,$msg);
+	send_message(get_user_id(),$p_playerID,$msg);
 }
 
 function disbandClan($p_clanID)

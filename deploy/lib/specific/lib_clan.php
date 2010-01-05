@@ -1,4 +1,7 @@
 <?php
+// See also the older "clan functions" in commands.php
+
+
 // Show the form for the clan joining, or perform the join.
 function render_clan_join($process=null, $username, $clan_id){
    	$sql = new DBAccess();
