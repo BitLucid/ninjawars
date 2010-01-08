@@ -41,9 +41,11 @@ function var_dump_locals($defined=array()){
 }
 
 function debug($val){
-    echo "<pre style='font-size:12pt'>";
-    var_dump($val);
-    echo "</pre>";
+    if(DEBUG){
+        echo "<pre style='font-size:12pt'>";
+        var_dump($val);
+        echo "</pre>";
+    }
 }
 
 ?>
