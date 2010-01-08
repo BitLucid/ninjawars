@@ -55,23 +55,24 @@ function render_message_nav($current_page, $pages, $limit){
     return $res;
 }
 
-function message_to_clan($p_message)
-{
+function message_to_clan($p_message){
 	global $sql;
 
 	$error    = null;
 	$user_id  = get_user_id();
 	$username = get_username();
-	$clan     = getClan($user_id);
+	$clan_id     = get_clan_id($user_id);
 
-	$sql->Query("SELECT player_id, uname FROM clan JOIN clan_player ON _clan_id = clan_id JOIN players ON player_id = _player_id where clan_id = $clan");
+	$sql->Query(
+	    "SELECT player_id, uname 
+	    FROM clan JOIN clan_player ON _clan_id = clan_id JOIN players ON player_id = _player_id 
+	    where clan_id = ' $clan_id'");
 
 	$clan_members = $sql->fetchAll();
 	$messaged_to = '';
 	$comma = '';
 
-	foreach ($clan_members as $loop_member)
-	{
+	foreach ($clan_members as $loop_member){
 		send_message($user_id, $loop_member['player_id'], "CLAN: ".$p_message);
 		$messaged_to .= $comma.$loop_member['uname'];
 		$comma = ', ';
@@ -79,4 +80,5 @@ function message_to_clan($p_message)
 
 	return $messaged_to;
 }
+
 ?>

@@ -728,48 +728,29 @@ function setClanLongName($who,$clan_long_name)
   return $clan_long_name;
 }
 
-function getClan($p_playerID) {
-	global $sql,$status_array, $player_id;
-
-	$clan = $sql->QueryItem("SELECT _clan_id FROM clan_player WHERE _player_id = '".sql($p_playerID)."'");
-
-	if ($p_playerID == $player_id) {
-		$_SESSION['clan'] = $clan;
-	}
-/* //Commented out to prevent the invite status from allowing return of clan's name
-  if (getStatus($who) && !$status_array['Invited'])
-    {
-      return $clan;
-    }
-  else
-    {
-      return "";
-    }
-*/
-	return $clan;
+function get_clan_id($player_id){
+    global $sql;
+	$clan_id = $sql->QueryItem("SELECT _clan_id FROM clan_player WHERE _player_id = '".sql($player_id)."'");
+	return $clan_id;
 }
 
-function getClanLeader($p_clanID)
-{
+function get_clan_name($player_id){
+    global $sql;
+	$clan_name = $sql->QueryItem("SELECT clan_name from clan join clan_player on clan_id = _clan_id WHERE _player_id = '".sql($player_id)."'");
+	return $clan_name;    
+}
+
+function get_clan_id_by_name($clan_name){
+    global $sql;
+    $clan_id = $sql->QueryItem("SELECT clan_id from clan where clan_name = '".sql($clan_name)."'");
+    return $clan_id;
+}
+
+// Deprecated wrapper for get_clan_name.
+function getClan($player_name) {
 	global $sql;
-
-	$leaderID = $sql->QueryItem("SELECT _player_id FROM clan_player WHERE _clan_id = $p_clanID");
-
-	return $leaderID;
-}
-
-function getClanLongName($p_playerID) {
-	global $sql, $status_array;
-
-	$clan_long_name = $sql->QueryItem(
-	    "SELECT clan_name FROM clan JOIN clan_player on clan_id = _clan_id 
-	        WHERE _player_id = '".sql($p_playerID)."'");
-
-	if (getStatus(getPlayerName($p_playerID))){
-		return $clan_long_name;
-	} else {
-		return "";
-	}
+    $player_id = get_user_id($player_name);
+    return get_clan_name($player_id);
 }
 
 function getPlayerName($p_playerID)
@@ -782,7 +763,7 @@ function getPlayerName($p_playerID)
 function kick($p_playerID){
 	global $sql, $today;
 
-	$clan_long_name = getClanLongName($p_playerID);
+	$clan_long_name = get_clan_name($p_playerID);
 
 	$sql->Delete("DELETE FROM clan_player WHERE _player_id = '".sql($p_playerID)."'");
 	$msg = "You have been kicked out of $clan_long_name by ".get_username()." on $today.";
@@ -813,7 +794,7 @@ function disbandClan($p_clanID)
 function renameClan($p_clanID, $p_newName) {
   global $sql;
 
-  $sql->Update("UPDATE clan SET clan_name = '$p_newName' WHERE clan_id = $p_clanID");
+  $sql->Update("UPDATE clan SET clan_name = '".sql($p_newName)."' WHERE clan_id = $p_clanID");
 
   return $p_newName;
 }
@@ -821,14 +802,23 @@ function renameClan($p_clanID, $p_newName) {
 function invitePlayer($who, $p_clanID) {
 	global $sql, $status_array;
 
-	$current_clan = $sql->QueryItem("SELECT _clan_id FROM clan_player JOIN players ON player_id = _player_id WHERE uname = '$who'");
-	$player_is_confirmed = $sql->QueryItem("SELECT confirmed FROM players WHERE uname = '$who'");
+	$current_clan = 
+	    $sql->QueryItem("SELECT _clan_id 
+	   FROM clan_player JOIN players ON player_id = _player_id 
+	   WHERE lower(uname) = lower('".sql($who)."')");
+	$player_is_confirmed = 
+	    $sql->QueryItem("SELECT confirmed FROM players WHERE lower(uname) = lower('".sql($who)."')");
 
-	$clan = getClanLeader($p_clanID);
+    $leader_info = get_clan_leader_info($p_clanID);
+    $clan_name = $leader_info['clan_name'];
+    $clan_id = $leader_info['clan_id'];
+    $leader_id = $leader_info['player_id'];
+    $leader_name = $leader_info['uname'];
 
-	if ($current_clan == "" && $player_is_confirmed == 1 && !$status_array['Invited'])
-	{
-		$invite_msg = "$clan has invited you into their clan.  To accept, choose their clan ".getClanLongName($clan)." on the [href:clan.php?command=join|clan joining page.]";
+	if ($current_clan == "" && $player_is_confirmed == 1 && !$status_array['Invited']){
+		$invite_msg = "$leader_name has invited you into their clan.  
+		To accept, choose their clan $clan_name on the "
+		.message_url('clan.php?command=join', 'clan joining page').".";
 		sendMessage($clan, $who, $invite_msg);
 		addStatus($who, INVITED);
 		$failure_reason = "None.";
@@ -852,47 +842,6 @@ function invitePlayer($who, $p_clanID) {
 
 	return $failure_reason;
 }
-
-/*
-function invite($who,$clan)
-{
-  global $sql,$status_array;
-
-  if (getStatus($who) && !$status_array['Invited'] && getClan($who) == "")
-    {
-      addStatus($who,INVITED);
-      setClan($who,$clan);
-      setClanLongName($who,getClanLongName($clan));
-
-      $invite_msg = "$clan has invited you into his/her clan. Accept / Decline";
-      sendMessage($clan,$who,$invite_msg);
-    }
-  else
-    {
-      return false;
-    }
-}
-
-function acceptInvite($who)
-{
-  subtractStatus($who,INVITED);
-
-  $leader     = getClan($who);
-  $accept_msg = "$who has accepted your invitation to join your clan.";
-  sendMessage($who,$leader,$accept_msg);
-}
-
-function declineInvite($who)
-{
-  $leader      = getClan($who);
-  $decline_msg = "$who has declined your invitation to join your clan.";
-  sendMessage($who,$leader,$decline_msg);
-
-  subtractStatus($who,INVITED);
-  setClan($who,"");
-  setClanLongName($who,"");
-}
-*/
 // ************************************
 // ************************************
 
