@@ -9,8 +9,6 @@ include SERVER_ROOT."interface/header.php";
 
 <h1>Game Confirmation</h1>
 
-<hr>
-
 <?php
 
 $admin_override_pass = 'WeAllowIt'; // Just a weak passphrase for simply confirming players.
@@ -31,24 +29,21 @@ echo "<div style=\"border: 1 solid #000000;font-weight: bold;\">\n";
 if ($confirmed == 1) {
     // Confirmation state from the database is already confirmed.
 	echo "That player username (".$username.") is already confirmed in our system.";
-	echo "<br><br><a href=\"".WEB_ROOT."\">Please log in</a> or contact <a href='staff.php'>the game administrators</a> if you have further issues.\n";
-}
-elseif (($confirm == $check  && $check != "" && $confirm != "") || $acceptable_admin_override){
+	echo "<br><br>Please log in on the main page or contact <a href='staff.php'>the game administrators</a> if you have further issues.\n";
+} elseif (($confirm == $check  && $check != "" && $confirm != "") || $acceptable_admin_override){
     // Confirmation number matches whats in the dabase and neither is null, or the admin override was met.
   echo "Confirmation Confirmed\n";
   $sql->Update("UPDATE players SET confirmed = 1  WHERE uname = '".$username."'");
   $affected_rows = $sql->a_rows;
-  echo "<br><br><a href=\"".WEB_ROOT."\">You may now login.</a>\n";
-}
-else
-{
-  echo "This account can not be verified or the account was deactivated.  Please contact ".SUPPORT_EMAIL." if you require more information.\n";
+  echo "<p>You may now log in from the main page.</p>\n";
+} else {
+  echo "<p>This account can not be verified or the account was deactivated.  
+    Please contact ".SUPPORT_EMAIL." if you require more information.</p>\n";
 }
 ?>
 
-<br><br>
+<div><a target='main' href="tutorial.php">Return to Main ?</a></div>
 
-<a href="<?php echo WEB_ROOT; ?>">Return to Main ?</a>
 </div>
 
 <?php

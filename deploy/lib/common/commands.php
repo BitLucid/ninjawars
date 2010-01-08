@@ -731,7 +731,7 @@ function setClanLongName($who,$clan_long_name)
 function getClan($p_playerID) {
 	global $sql,$status_array, $player_id;
 
-	$clan = $sql->QueryItem("SELECT _clan_id FROM clan_player WHERE _player_id = $p_playerID");
+	$clan = $sql->QueryItem("SELECT _clan_id FROM clan_player WHERE _player_id = '".sql($p_playerID)."'");
 
 	if ($p_playerID == $player_id) {
 		$_SESSION['clan'] = $clan;
@@ -761,7 +761,9 @@ function getClanLeader($p_clanID)
 function getClanLongName($p_playerID) {
 	global $sql, $status_array;
 
-	$clan_long_name = $sql->QueryItem("SELECT clan_name FROM clan JOIN clan_player WHERE _player_id = $p_playerID");
+	$clan_long_name = $sql->QueryItem(
+	    "SELECT clan_name FROM clan JOIN clan_player on clan_id = _clan_id 
+	        WHERE _player_id = '".sql($p_playerID)."'");
 
 	if (getStatus(getPlayerName($p_playerID))){
 		return $clan_long_name;
@@ -782,10 +784,10 @@ function kick($p_playerID){
 
 	$clan_long_name = getClanLongName($p_playerID);
 
-	$sql->Delete("DELETE FROM clan_player WHERE _player_id = $p_playerID");
+	$sql->Delete("DELETE FROM clan_player WHERE _player_id = '".sql($p_playerID)."'");
 	$msg = "You have been kicked out of $clan_long_name by ".get_username()." on $today.";
 
-	sendMessage(get_username(),$who,$msg);
+	send_message(get_user_id(),$p_playerID,$msg);
 }
 
 function disbandClan($p_clanID)

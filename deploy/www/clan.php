@@ -1,5 +1,4 @@
 <?php
-require_once(LIB_ROOT."specific/lib_tags.php");
 require_once(LIB_ROOT."specific/lib_clan.php");
 $alive      = false;
 $private    = false;
@@ -16,8 +15,8 @@ include SERVER_ROOT."interface/header.php";
 <h1 id='clan-page-title'>Clan Panel</h1>
 
 <?php
-$player_id                       = SESSION::get('player_id');
-$username                        = SESSION::get('username');
+$player_id                       = get_user_id();
+$username                        = get_username();
 $command                         = in('command');
 $process                         = in('process');
 $clan_name                       = in('clan_name', ''); // View that clan name.
