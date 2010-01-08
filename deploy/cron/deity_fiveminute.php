@@ -9,21 +9,29 @@ $sql->Query("insert into player_rank (_player_id, score) select player_id, ((lev
 
 #   Running from a cron script, we don't want any output unless we have an error
 
-$out_display['Ranked Players'] = $sql->a_rows;
 
-// ***********
-// Log output:
+$rand = rand(1, 12);
+if($rand == 1){
+    // Only log fiveminute log output randomly about once an hour to cut down on
+    // spam in the log.  This log message isn't very important anyway.
 
-$logMessage = "DEITY_FIVEMINUTE STARTING: ".date(DATE_RFC1036)."\n";
+    $out_display['Ranked Players'] = $sql->a_rows;
 
-foreach ($out_display AS $loopKey => $loopRowResult)
-{
-	$logMessage .= "DEITY_FIVEMINUTE: Result type: $loopKey yeilded result number: $loopRowResult \n";
+
+    // ***********
+    // Log output:
+
+    $logMessage = "DEITY_FIVEMINUTE STARTING: ".date(DATE_RFC1036)."\n";
+
+    foreach ($out_display AS $loopKey => $loopRowResult){
+    	$logMessage .= "DEITY_FIVEMINUTE: Result type: $loopKey yeilded result number: $loopRowResult \n";
+    }
+
+    $logMessage .= "DEITY_FIVEMINUTE ENDING: ".date(DATE_RFC1036)."\n";
+
+
+    $log = fopen(LOGS.'deity.log', 'a');
+    fwrite($log, $logMessage);
+    fclose($log);
 }
-
-$logMessage .= "DEITY_FIVEMINUTE ENDING: ".date(DATE_RFC1036)."\n";
-
-$log = fopen(LOGS.'deity.log', 'a');
-fwrite($log, $logMessage);
-fclose($log);
 ?>
