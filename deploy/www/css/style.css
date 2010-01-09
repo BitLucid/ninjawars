@@ -682,28 +682,28 @@ iframe{
 	color:gray;
 }
 
-.chat-messages{
+.chat-messages, #message-list{
     margin-top:0;
     list-style-type:none;
 }
-.chat-messages dt{
+.chat-messages dt, #message-list dt{
     clear:left;
     float:left;
     margin-right: .5em;
+}
+.chat-messages .chat-message a{
+    font-size:smaller;
 }
 .chat-messages dt a{ /* Breaks the formatting if the a is too large. */
     font-size:1em;
     font-size:smaller;
 }
-.chat-messages .chat-time{
+.chat-messages .chat-time, #message-list .message-time{
 	font-family: Trebuchet MS1, Helvetica, sans-serif;
 	font-size: .8em;
 	font-style:italic;
 	color: gray;
 	display:inline-block;
-}
-.chat-messages .chat-message a{
-    font-size:smaller;
 }
 #expand-chat{
     border: 1px dashed darkblue;

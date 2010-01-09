@@ -40,9 +40,9 @@
         {$nav}
 {/if}
 
-<ul id='message-list'>
+<dl id='message-list'>
     {$message_list}
-</ul>
+</dl>
 
 {if $nav}
         {$nav}

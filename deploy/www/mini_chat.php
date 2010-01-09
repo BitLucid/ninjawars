@@ -31,6 +31,15 @@ if ($user_id) {
 
 echo render_chat_refresh(); // Write out the js to refresh.
 
+echo "
+<script src='".WEB_ROOT."js/jquery.timeago.js' type='text/javascript'></script>
+<script type='text/javascript'>
+    jQuery(document).ready(function() {
+      jQuery('abbr.timeago').timeago();
+    });
+</script>";
+
+
 if($chat_submit){ // Js refocus code when chat sent.
 	echo '<script type="text/javascript">
 		$(document).ready(function(){
