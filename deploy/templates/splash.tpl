@@ -188,11 +188,11 @@
           </div> <!-- End of index-chat --> 
 
           <div id="music" class="boxes passive">
-            <object type="audio/x-midi" data="{$WEB_ROOT}music/samsho.mid" id="music-player">
-              <param name="src" value="{$WEB_ROOT}music/samsho.mid">
+            <object type="audio/x-midi" data="{$WEB_ROOT}files/music/samsho.mid" id="music-player">
+              <param name="src" value="{$WEB_ROOT}files/music/samsho.mid">
               <param name="autoplay" value="true">
               <param name="autoStart" value="0">
-              <a href="{$WEB_ROOT}music/samsho.mid">
+              <a href="{$WEB_ROOT}files/music/samsho.mid">
                 Music <img class="play-button" src="{$IMAGE_ROOT}bullet_triangle_green.png" alt="&gt;">
               </a>
             </object>
@@ -204,7 +204,7 @@
 <!-- TODO: make this absolute, floating at the page bottom as per facebook's bar. -->
         <!-- Substitute dynamic "catchphrases" here eventually -->
         <!-- "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." -->
-        "Helping ninjas stab people since 2003."
+        "Join a clan, promote multiple stab wounds."
          |
         <a href="tutorial.php" target="main">Help</a> |
         <a href="rules.php" target="main">Rules</a> |
