@@ -4,7 +4,7 @@ require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
 
 $logMessage = "DEITY_HALFHOUR STARTING: ".date(DATE_RFC1036)."\n";
 
-$regen_rate           = 1;
+$regen_rate           = 2; // Rate is for turns.
 $turn_regen_threshold = 100;
 $maximum_heal         = 150;
 $maxtime              = '6 hours'; // *** Max time a person is kept online without being active.
