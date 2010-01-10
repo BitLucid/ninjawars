@@ -1,4 +1,4 @@
-<h2>Messages</h2>
+<h1>Messages</h1>
 
 <script type='text/javascript' src='{$JS_ROOT}messageDeleteConfirm.js'>
 </script>
