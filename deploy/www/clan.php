@@ -75,6 +75,7 @@ if (!$user_id) {
 				if ($new_clan_name != "" && strlen($new_clan_name) <= 20 && (str_replace(array('/','\'','*','--', '<', '>'), '', $new_clan_name) == $new_clan_name)) {
 					// *** The clan doesn't contain any special characters, including apostrophes, asterixes, slashes, and html code.
 					echo "<p>Your new clan name is <span style=\"font-weight: bold;\">".renameClan($clan_id, $new_clan_name).".</span></p>\n";
+					$clan_name = $new_clan_name;
 				} else {
 					if (strlen($new_clan_name) >= 21) {
 						echo "<div style=\"color:red;\">Your clan name cannot be blank or greater than 20 characters.</div>";
