@@ -38,7 +38,7 @@ function render_active_members($sql){
 // Get all the chats.
 function get_chats($chatlength){
     $sql = new DBAccess();
-    $sql->Query("SELECT sender_id, uname, message, age(now(), date) as ago FROM chat 
+    $sql->Query("SELECT sender_id, uname, message, date, age(now(), date) as ago FROM chat 
         join players on chat.sender_id = player_id ORDER BY chat_id DESC LIMIT $chatlength");// Pull messages
     $chats = $sql->fetchAll();
     return $chats;
@@ -55,6 +55,7 @@ function render_chat_messages($chatlength, $show_elipsis=null){
     $message_count = $sql->QueryItem("select count(*) from chat");
     $res = "<dl class='chat-messages'>";
     $previous_date = null;
+    $previous_ago = null;
     foreach($chats AS $chat_message) {
         // Check for the x time ago message.
     	$l_ago = time_ago($chat_message['ago'], $previous_date);
@@ -62,9 +63,10 @@ function render_chat_messages($chatlength, $show_elipsis=null){
 		    &lsaquo;<a href='player.php?player_id={$chat_message['sender_id']}'
 		        target='main'>".out($chat_message['uname'])."</a>&rsaquo;</dt>
 		      <dd class='chat-message'>".out($chat_message['message']).
-		     ($l_ago?" <span class='chat-time' title='{$l_ago}'>{$l_ago}</span>":"")
+		     ($l_ago != $previous_ago?" <abbr class='chat-time timeago' title='{$chat_message['date']}'>{$l_ago}</abbr>":"")
 		     ."</dd>";
 		$previous_date = $chat_message['ago']; // Store just prior date.
+		$previous_ago = $l_ago; // Save the prior ago message.
     }
     $res .= "</dl>";
     if ($show_elipsis && $message_count>$chatlength){ // to indicate there are more chats available
