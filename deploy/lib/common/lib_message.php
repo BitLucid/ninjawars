@@ -59,7 +59,7 @@ function render_message_nav($current_page, $pages, $limit){
     return $res;
 }
 
-function message_to_clan($p_message){
+function message_to_clan($p_message) {
 	global $sql;
 
 	$error    = null;

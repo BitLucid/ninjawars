@@ -3,12 +3,13 @@
 
 
 // Show the form for the clan joining, or perform the join.
-function render_clan_join($process=null, $username, $clan_id){
+function render_clan_join($process=null, $username, $clan_id) {
    	$sql = new DBAccess();
+
     if ($process == 1) {
         $clan = get_clan($clan_id);
         $confirm = $sql->QueryItem("SELECT confirm FROM players WHERE uname = '$username'");
-        $url = message_url("clan_confirm.php?clan_joiner=".rawurlencode($username)
+        $url = message_url("clan_confirm.php?clan_joiner=".get_user_id($username)
             ."&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
         $join_request_message = "CLAN JOIN REQUEST: $username has sent a request to join clan ".out($clan['clan_name']).".
             If you wish to allow this ninja into your clan click the following link:
@@ -21,26 +22,29 @@ function render_clan_join($process=null, $username, $clan_id){
             has been sent to ".out($leader_name)."</div>\n";
     } else {                                            
         //Clan Join list of available Clans
-        $leaders = get_clan_leaders();
+        $leaders = get_clan_leaders(($clan_id ? $clan_id : null), ($clan_id ? false : true));
         debug($leaders);
         $res = "<h2>Clans Available to Join</h2>
         <ul>";
-        foreach($leaders as $leader){
+
+        foreach ($leaders as $leader) {
             $info = get_player_info($leader['player_id']);
-            $res .= "<li><a target='main' class='clan-join' href=\"clan.php?command=join&clan_id={$leader['clan_id']}&process=1\">
+            $res .= "<li><a target='main' class='clan-join' href=\"clan.php?command=join&amp;clan_id={$leader['clan_id']}&amp;process=1\">
                     Join {$leader['clan_name']}</a>.
                     Its leader is <a href=\"player.php?player_id=".rawurlencode($leader['player_id'])."\">
                     {$leader['uname']}</a>, level {$info['level']}.
-                    <a target='main' href=\"clan.php?command=view&clan_id={$leader['clan_id']}\">View This Clan</a>
+                    <a target='main' href=\"clan.php?command=view&amp;clan_id={$leader['clan_id']}\">View This Clan</a>
                 </li>\n";
         }
+
         $res .= "</ul>";
     }
+
     return $res;
 }
 
 // Wrapper for getting a single clan's info.
-function get_clan($clan_id){
+function get_clan($clan_id) {
     $clans = get_clans($clan_id);
     return reset($clans);
 }
@@ -77,12 +81,13 @@ function get_clan_leader_id($clan_id){
 
 // Get the current clan leader or leaders.
 function get_clan_leaders($clan_id=null, $all=false){
-    $limit = $all? '' : ' limit 1';
-    $clan_or_clans = $clan_id? "and clan_id = '".sql($clan_id)."' order by level" : 'order by clan_id, level';
+    $limit = ($all ? '' : ' limit 1 ');
+    $clan_or_clans = ($clan_id ? " and clan_id = '".sql($clan_id)."' order by level " : ' order by clan_id, level ');
     $sql = new DBAccess();
     $clans = $sql->fetchData("select clan_id, clan_name, _creator_player_id, player_id, uname 
         from players join clan_player on player_id=_player_id join clan on _clan_id=clan_id 
-        where confirmed=1 and member_level>0 $clan_or_clans $limit");
+        where confirmed = 1 AND member_level > 0 $clan_or_clans $limit");
+
     return $clans;
 }
 

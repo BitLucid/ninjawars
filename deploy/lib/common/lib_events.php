@@ -1,6 +1,6 @@
 <?php
 // Now only a wrapper for the send_event function. 
-function sendMessage($from,$to,$msg,$filter=false) {
+function sendMessage($from, $to, $msg, $filter=false) {
 	// Filter argument is deprecated now.
 	$from_id = (int) get_user_id($from);
 	$to_id = get_user_id($to);

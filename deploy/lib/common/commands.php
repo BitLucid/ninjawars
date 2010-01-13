@@ -728,19 +728,19 @@ function setClanLongName($who,$clan_long_name)
   return $clan_long_name;
 }
 
-function get_clan_id($player_id){
+function get_clan_id($player_id) {
     global $sql;
 	$clan_id = $sql->QueryItem("SELECT _clan_id FROM clan_player WHERE _player_id = '".sql($player_id)."'");
 	return $clan_id;
 }
 
-function get_clan_name($player_id){
+function get_clan_name($player_id) {
     global $sql;
 	$clan_name = $sql->QueryItem("SELECT clan_name from clan join clan_player on clan_id = _clan_id WHERE _player_id = '".sql($player_id)."'");
 	return $clan_name;    
 }
 
-function get_clan_id_by_name($clan_name){
+function get_clan_id_by_name($clan_name) {
     global $sql;
     $clan_id = $sql->QueryItem("SELECT clan_id from clan where clan_name = '".sql($clan_name)."'");
     return $clan_id;
@@ -773,17 +773,16 @@ function kick($p_playerID) {
 function disbandClan($p_clanID) {
 	global $sql;
 
-	$sql->Query("SELECT uname, clan_name FROM clan JOIN clan_player ON _clan_id = clan_id AND clan_id = $p_clanID JOIN players ON player_id = _player_id");
-
+	$sql->Query("SELECT _player_id FROM clan_player WHERE _clan_id = $p_clanID");
 	$message = "Your leader has disbanded your clan. You are alone again.";
     $clan_members = $sql->fetchAll();
+	$leader = get_clan_leader_id($p_clanID);
 
 	foreach ($clan_members AS $data)
 	{
-		$name = $data[0];
-		$clan_name = $data[1];
+		$member_id = $data[0];
 
-		sendMessage($clan_name, $name, $message);
+		send_message($leader, $member_id, $message);
 	}
 
 	$sql->Delete("DELETE FROM clan WHERE clan_id = $p_clanID");
@@ -800,41 +799,34 @@ function renameClan($p_clanID, $p_newName) {
 function invitePlayer($who, $p_clanID) {
 	global $sql, $status_array;
 
+	$target_id = get_user_id($who);
+
 	$current_clan = 
 	    $sql->QueryItem("SELECT _clan_id 
-	   FROM clan_player JOIN players ON player_id = _player_id 
-	   WHERE lower(uname) = lower('".sql($who)."')");
+	   FROM clan_player WHERE _player_id = $target_id");
 	$player_is_confirmed = 
-	    $sql->QueryItem("SELECT confirmed FROM players WHERE lower(uname) = lower('".sql($who)."')");
+	    $sql->QueryItem("SELECT confirmed FROM players WHERE player_id = $target_id");
 
     $leader_info = get_clan_leader_info($p_clanID);
-    $clan_name = $leader_info['clan_name'];
-    $clan_id = $leader_info['clan_id'];
-    $leader_id = $leader_info['player_id'];
+    $clan_name   = $leader_info['clan_name'];
+    $clan_id     = $leader_info['clan_id'];
+    $leader_id   = $leader_info['player_id'];
     $leader_name = $leader_info['uname'];
 
-	if ($current_clan == "" && $player_is_confirmed == 1 && !$status_array['Invited']){
+	if ($current_clan == "" && $player_is_confirmed == 1 && !$status_array['Invited']) {
 		$invite_msg = "$leader_name has invited you into their clan.  
 		To accept, choose their clan $clan_name on the "
-		.message_url('clan.php?command=join', 'clan joining page').".";
-		sendMessage($clan, $who, $invite_msg);
+		.message_url('clan.php?command=join&clan_id='.$p_clanID, 'clan joining page').".";
+		send_message($leader_id, $target_id, $invite_msg);
 		addStatus($who, INVITED);
 		$failure_reason = "None.";
-	}
-	else if ($player_is_confirmed != 1)
-	{
+	} else if ($player_is_confirmed != 1) {
 		$failure_reason = "That player name does not exist.";
-	}
-	else if ($current_clan != "")
-	{
+	} else if ($current_clan != "") {
 		$failure_reason = "That player is already in a clan.";
-	}
-	else if ($status_array['Invited'])
-	{
+	} else if ($status_array['Invited']) {
 		$failure_reason = "That player has already been Invited into a Clan.";
-	}
-	else
-	{
+	} else {
 		$failure_reason = "Report invitePlayer Code Error: That Player cannot be invited.";
 	}
 
