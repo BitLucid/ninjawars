@@ -19,9 +19,6 @@ include SERVER_ROOT."interface/header.php";
 // TODO: Bring back the "show/hide dead" toggle, store in session, and make dead things able to be shown again.
 // TODO: Make the player.php player profile page accept player_id as a substitute for a string in the url.
 
-
-
-
 $username     = get_username();
 $searched     = in('searched');
 $hide_setting = (!$searched && SESSION::is_set('hide_dead')? SESSION::get('hide_dead') : 'dead'); // Defaults to hiding dead via session.
@@ -140,7 +137,7 @@ if (!$searched) { // Will not display active ninja on a search page.
 // Render each of the player rows.
 $i = 0;
 $player_rows = '';
-foreach($players as $a_player){
+foreach ($players as $a_player) {
 	$i++;
 	$level_cat = level_category($a_player['level']);
 	$parts = array(

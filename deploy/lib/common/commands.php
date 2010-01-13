@@ -749,18 +749,17 @@ function get_clan_id_by_name($clan_name){
 // Deprecated wrapper for get_clan_name.
 function getClan($player_name) {
 	global $sql;
-    $player_id = get_user_id($player_name);
-    return get_clan_name($player_id);
+	$player_id = get_user_id($player_name);
+	return get_clan_name($player_id);
 }
 
-function getPlayerName($p_playerID)
-{
+function getPlayerName($p_playerID) {
 	global $sql;
 
 	return $sql->QueryItem("SELECT uname FROM players WHERE player_id = $p_playerID");
 }
 
-function kick($p_playerID){
+function kick($p_playerID) {
 	global $sql, $today;
 
 	$clan_long_name = get_clan_name($p_playerID);
@@ -768,11 +767,10 @@ function kick($p_playerID){
 	$sql->Delete("DELETE FROM clan_player WHERE _player_id = '".sql($p_playerID)."'");
 	$msg = "You have been kicked out of $clan_long_name by ".get_username()." on $today.";
 
-	send_message(get_user_id(),$p_playerID,$msg);
+	send_message(get_user_id(), $p_playerID, $msg);
 }
 
-function disbandClan($p_clanID)
-{
+function disbandClan($p_clanID) {
 	global $sql;
 
 	$sql->Query("SELECT uname, clan_name FROM clan JOIN clan_player ON _clan_id = clan_id AND clan_id = $p_clanID JOIN players ON player_id = _player_id");

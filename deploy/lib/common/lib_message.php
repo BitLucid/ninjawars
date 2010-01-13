@@ -1,25 +1,29 @@
 <?php
 // For true user-to-user or user-to-clan messages as opposed to events.
-function send_message($from_id,$to_id,$msg) {
-  global $sql;
-  $sql->Insert("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default,'".sql($from_id)."','".sql($to_id)."','".sql($msg)."',now())");
+function send_message($from_id, $to_id, $msg) {
+	global $sql;
+	$sql->Insert("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default,'".sql($from_id)."','".sql($to_id)."','".sql($msg)."',now())");
 }
 
-function get_messages($to_id, $limit=null, $offset=null){
-    if(!is_numeric($limit)){
-        $limit = 25;
-    }
-    if(!is_numeric($offset)){
-        $offset=0;
-    }
+function get_messages($to_id, $limit=null, $offset=null) {
     global $sql;
-    $sql->Query("SELECT send_from, message, unread, uname as from FROM messages join players on send_from = player_id where send_to = '".sql($to_id)."' ORDER BY date DESC limit ".sql($limit)." offset ".sql($offset));
-    return $sql->fetchAll();
+
+	if (!is_numeric($limit)) {
+		$limit = 25;
+	}
+
+	if (!is_numeric($offset)) {
+		$offset = 0;
+	}
+
+	$sql->Query("SELECT send_from, message, unread, uname as from FROM messages join players on send_from = player_id where send_to = '".sql($to_id)."' ORDER BY date DESC limit ".sql($limit)." offset ".sql($offset));
+
+	return $sql->fetchAll();
 }
 
-function read_messages($to_id){
-    global $sql;
-    $sql->Update("UPDATE messages set unread = 0 where send_to = '".sql($to_id)."'");
+function read_messages($to_id) {
+	global $sql;
+	$sql->Update("UPDATE messages set unread = 0 where send_to = '".sql($to_id)."'");
 }
 
 function delete_messages(){
