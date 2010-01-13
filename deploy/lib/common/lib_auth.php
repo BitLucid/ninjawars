@@ -201,8 +201,17 @@ function nw_session_set_username($logged_in_username){
 	SESSION::set('username', $logged_in_username);
 }
 
-function get_username(){
-	return (SESSION::is_set('username') ? SESSION::get('username') : NULL);
+// Returns a username from a user id.
+function get_username($user_id=null){
+    static $self;
+    if($user_id){
+        $sql = new DBAccess();
+        return $sql->QueryItem("select uname from players where player_id = '".sql($user_id)."'");
+    }
+    if(!$self){
+        $self = (SESSION::is_set('username') ? SESSION::get('username') : NULL);
+    }
+	return $self;
 }
 
 function player_name_from_id($player_id){
