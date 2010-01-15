@@ -23,7 +23,6 @@ function render_clan_join($process=null, $username, $clan_id) {
     } else {                                            
         //Clan Join list of available Clans
         $leaders = get_clan_leaders(($clan_id ? $clan_id : null), ($clan_id ? false : true));
-        debug($leaders);
         $res = "<h2>Clans Available to Join</h2>
         <ul>";
 

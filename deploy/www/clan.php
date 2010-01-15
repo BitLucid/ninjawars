@@ -56,9 +56,6 @@ if (!$user_id) {
 	}
 
 	$self_is_leader = ($clan_id && get_clan_leader_id($clan_id) == $user_id);
-	//debug($clan_id);
-	debug(get_clan_leader_id($clan_id));
-	//debug($user_id);
 	if ($self_is_leader) {
 		echo "<div>You are the leader of this clan.</div>";
 	}
