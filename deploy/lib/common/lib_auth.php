@@ -223,14 +223,29 @@ function player_name_from_id($player_id){
 }
 
 // Return the id that corresponds with a player name, if no other source is available.
-function get_user_id($name=null) {
-	$sql = new DBAccess();
-
-	if ($name === null) {
-		$name = get_username();
-	}
-
-	return $sql->QueryItem("select player_id from players where lower(uname) = lower('".sql($name)."')");
+function get_user_id($p_name=null) {
+    static $self_id; // Store the player's own id.
+    $find = null;
+    
+    if($p_name === null){
+        if($self_id){
+            return $self_id; // Return the cached id.
+        }
+        $find = get_username(); // Use own username.
+    } else {
+        $find = $p_name; // Search to find someone else.
+    }
+    $sql = new DBAccess();
+    $id = $sql->QueryItem("select player_id from players 
+    	    where lower(uname) = lower('".sql($find)."')");
+    	    
+    if(!$id){
+        $id = null;
+    }
+    if($id && $p_name === null){
+        $self_id = $id;
+    }
+    return $id;
 }
 
 

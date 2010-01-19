@@ -668,7 +668,10 @@ function get_clan_by_id($p_clanID) {
 
 function get_clan_by_player_id($p_playerID) {
 	global $sql;
-	$sql->Query('SELECT clan_id, clan_name FROM clan JOIN clan_player ON clan_id = _clan_id WHERE _player_id = '.$p_playerID);
+	$sql->Query("SELECT clan_id, clan_name 
+	    FROM clan 
+	    JOIN clan_player ON clan_id = _clan_id 
+	    WHERE _player_id = '".sql($p_playerID)."'");
 
 	if ($data = $sql->Fetch()) {
 		$clan = new Clan($data['clan_id'], $data['clan_name']);
