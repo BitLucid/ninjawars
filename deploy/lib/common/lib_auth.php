@@ -230,7 +230,7 @@ function get_user_id($name=null) {
 		$name = get_username();
 	}
 
-	return $sql->QueryItem("select player_id from players where uname = '".sql($name)."'");
+	return $sql->QueryItem("select player_id from players where lower(uname) = lower('".sql($name)."')");
 }
 
 
