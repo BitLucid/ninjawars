@@ -177,7 +177,6 @@ div:empty {
 /* Proposed Deprecated Elements */
 input[type="button"],
 input[type="reset"],
-input[type="submit"],
 input[type="image"],
 tt,
 big,
