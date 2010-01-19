@@ -47,7 +47,7 @@ if(!is_logged_in()){
 	$players_days		= $player->vo->days;
 	$players_created_date = $player->vo->created_date;
 	$players_last_started_attack = $player->vo->last_started_attack;
-	$players_clan 		= $player->vo->clan_long_name;
+	$players_clan 		= get_clan_by_player_id($player->vo->player_id);
 
 	// TODO: not ready yet: $players_energy	= $player_data['energy'];
 	// Also migrate the player_score to a true player object.

@@ -68,9 +68,12 @@ $health_section = render_health_section($player['health']);
 $profile_editable = $player['messages'];
 $profile_display = out($profile_editable);
 
-
-
 $parts = get_certain_vars(get_defined_vars(), array('player'));
+
+if ($parts['player_clan'] = get_clan_by_player_id($user_id)) {
+	$parts['clan_name'] = $parts['player_clan']->getName();
+	$parts['clan_id']   = $parts['player_clan']->getID();
+}
 
 echo render_template("stats.tpl", $parts);
 

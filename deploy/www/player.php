@@ -1,5 +1,6 @@
 <?php
 require_once(OBJ_ROOT."Skill.php");
+require_once(LIB_ROOT."specific/lib_clan.php");
 require_once(LIB_ROOT."specific/lib_player.php");
 
 
@@ -46,7 +47,7 @@ if ($message) {
 }
 
 $viewing_player_obj = new Player(get_username());
-$viewers_clan       = ($viewing_player_obj instanceof Player && $viewing_player_obj->vo? $viewing_player_obj->vo->clan : null);
+$viewers_clan       = ($viewing_player_obj instanceof Player && $viewing_player_obj->vo ? get_clan_by_player_id($viewing_player_obj->vo->player_id) : null);
 
 // Attack Legal section
 $params          = array('required_turns'=>0, 'ignores_stealth'=>true); // 0 for unstealth.

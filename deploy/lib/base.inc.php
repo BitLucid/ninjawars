@@ -21,6 +21,7 @@ require_once(OBJ_ROOT."Sanitize.php");
 require_once(OBJ_ROOT."Nmail.class.php");
 require_once(OBJ_ROOT."Cookie.class.php");
 require_once(OBJ_ROOT."Session.class.php");
+require_once(OBJ_ROOT."Clan.php");
 
 // *** Include all common function includes here.
 require_once(LIB_ROOT."common/lib_input.php");

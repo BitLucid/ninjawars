@@ -32,24 +32,24 @@ function render_template($template_name, $assign_vars=array()){
  */
 function get_certain_vars($var_list, $whitelist=array())
 {
-    $non_arrays = array();
-    foreach($var_list as $loop_var_name => $loop_variable){
-        if( 
-            (!is_array($loop_variable) && !is_object($loop_variable)) 
-            || in_array($loop_var_name, $whitelist)){
-            $non_arrays[$loop_var_name] = $loop_variable;
-        }
-    }
-    $constants = get_user_constants();
-    // Add in the user defined constants too.
-    return $non_arrays + $constants;
+	$non_arrays = array();
+
+	foreach ($var_list as $loop_var_name => $loop_variable) {
+		if ( 
+			(!is_array($loop_variable) && !is_object($loop_variable)) 
+			|| in_array($loop_var_name, $whitelist)) {
+			$non_arrays[$loop_var_name] = $loop_variable;
+		}
+	}
+
+	$constants = get_user_constants();
+
+	// Add in the user defined constants too.
+	return $non_arrays + $constants;
 }
 
-function get_user_constants(){
+function get_user_constants() {
 	$temp = get_defined_constants(true);
 	return $temp['user'];
 }
-
-
-
 ?>

@@ -9,11 +9,11 @@
 {if $confirm_delete}
 
     <p>Please provide your password to confirm.</p>
-    <form method="POST" action="stats.php">
+    <form method="post" action="stats.php">
     <div>
     <input id="passw" type="password" maxlength="50" name="passw" class="textField">
     <input type="hidden" name="deleteaccount" value="2">
-    <input type="submit" onSubmit="alert('DELETING ACCOUNT')" value="Confirm Delete" class="formButton">
+    <input type="submit" onsubmit="alert('DELETING ACCOUNT');" value="Confirm Delete" class="formButton">
     </div>
     </form>
 
@@ -42,8 +42,8 @@
     <li>Created: {$player.created_date|escape}</li>
     <li>Rank: {$rank_display}</li>
     <li>Bounty: {$player.bounty} gold</li>
-    {if $player.clan}<li>Clan: <a href='{$WEB_ROOT}clan.php?command=view&clan_name={$player.clan|escape}'>
-        {$player.clan_long_name|escape}
+    {if $player_clan}<li>Clan: <a href='{$WEB_ROOT}clan.php?command=view&amp;clan_id={$clan_id|escape:'url'}'>
+        {$clan_name|escape}
         </a></li>{/if}
 </ul>
 

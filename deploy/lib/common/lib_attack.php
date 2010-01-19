@@ -5,12 +5,12 @@
  * @subpackage lib_attack
 **/
 
-
-function update_last_attack_time($player_id, $sql=null){
-	if(!$sql){
+function update_last_attack_time($player_id, $sql=null) {
+	if (!$sql) {
 		$sql = new DBAccess();
 	}
-	$update_last_attacked = "update players set last_started_attack=now() where player_id='".intval($player_id)."'";
+
+	$update_last_attacked = "UPDATE players SET last_started_attack = now() WHERE player_id = ".intval($player_id);
 	$sql->Query($update_last_attacked);  // updates the timestamp of the last_attacked column to slow excessive attacks.
 }
 
@@ -22,75 +22,61 @@ function update_last_attack_time($player_id, $sql=null){
  */
 function attack_legal()  //  Checks for errors in the initial stage of combat.
 {
-  global $attacked,$attackee,$user_turns,$required_turns,$username,$player_id,$sql;
-  global $attackee_ip,$attacker_ip,$attackee_confirmed,$attacker_health,$attackee_health, $attackee_status;
+	global $attacked, $attackee, $user_turns, $required_turns, $username, $player_id, $sql;
+	global $attackee_ip, $attacker_ip, $attackee_confirmed, $attacker_health, $attackee_health, $attackee_status;
 
-  $second_interval_limiter_on_attacks = '.20';
+	$second_interval_limiter_on_attacks = '.20';
 
-  $sel_last_started_attack = "select player_id from players
-  	where player_id = '".intval($player_id)."'
-  	and ((now() - interval '".$second_interval_limiter_on_attacks." second') >= last_started_attack) limit 1";
+	$sel_last_started_attack = "SELECT player_id FROM players
+  	WHERE player_id = '".intval($player_id)."'
+  	AND ((now() - interval '".$second_interval_limiter_on_attacks." second') >= last_started_attack) LIMIT 1";
 
+	$attack_later_than_limit = $sql->QueryItem($sel_last_started_attack);
+	// Returns a player id if the enough time has passed, or else or false/null.
 
-  $attack_later_than_limit = $sql->QueryItem($sel_last_started_attack);
-  // Returns a player id if the enough time has passed, or else or false/null.
+	// *** TODO: Take in and require energy in this function.
 
+	$attackee_id = get_user_id($attackee);
+	$defender_id = get_user_id($username);
 
-  // *** TODO: Take in and require energy in this function.
-
-  switch(true)
-  {
-      //  *** START OF ILLEGAL ATTACK ERROR LIST  ***
-      case (!$attack_later_than_limit):
-      	echo "You cannot attack more than five times in a second.";
-      	return false;
-      case ($attacked != 1):
-        return false;
-      break;
-      case ($attackee == ""):
-        echo "Your victim does not exist.<br>\n";
+	//  *** START OF ILLEGAL ATTACK ERROR LIST  ***
+	if (!$attack_later_than_limit) {
+		echo "You cannot attack more than five times in a second.";
 		return false;
-      break;
-      case ($attackee == $username):
-        echo "Commiting suicide is a tactic reserved for samurai.<br>\n";
+	} else if ($attacked != 1) {
 		return false;
-      break;
-      case ($user_turns < $required_turns):
-        echo "You do not have enough turns to execute the attack you chose, use a speed scroll or wait for more turns on the half hour.<br>\n";
+	} else if ($attackee == "") {
+		echo "Your victim does not exist.<br>\n";
 		return false;
-      break;
-      case ($attackee_ip == $_SESSION['ip'] && $_SESSION['ip'] != '127.0.0.1'):
-        echo "You can not attack a ninja from the same domain.<br>\n";
+	} else if ($attackee == $username) {
+		echo "Commiting suicide is a tactic reserved for samurai.<br>\n";
 		return false;
-      break;
-      case ($attackee_confirmed == 0):
-        echo "You can not attack an inactive ninja.<br>\n";
+	} else if ($user_turns < $required_turns) {
+		echo "You do not have enough turns to execute the attack you chose, use a speed scroll or wait for more turns on the half hour.<br>\n";
 		return false;
-      break;
-      case ($attackee_health<1):
-        echo "You can not attack a corpse.<br>\n";
+	} else if  ($attackee_ip == $_SESSION['ip'] && $_SESSION['ip'] != '127.0.0.1') {
+		echo "You can not attack a ninja from the same domain.<br>\n";
 		return false;
-      break;
-      case ($attackee_status['Stealth']):
-        echo "Your victim is stealthed. You cannot attack this ninja by normal means.<br>\n";
+	} else if ($attackee_confirmed == 0) {
+		echo "You can not attack an inactive ninja.<br>\n";
 		return false;
-      break;
-      case (getClan($attackee) == getClan($username) && getClan($username) !=""):
-        echo "You cannot attack a ninja in the same clan as you.\n";
+	} else if ($attackee_health < 1) {
+		echo "You can not attack a corpse.<br>\n";
 		return false;
-		break;
-      case (getClan($attackee) != getClan($username) || getClan($username) == ""):
-        return true;  //  ***  ATTACK IS LEGAL ***
-      break;
-      default:  //  *** CATCHALL ERROR MESSAGE ***
-        echo "There was a problem with your attack.<br>\n";
-        return false;
-      break;
-  }
+	} else if ($attackee_status['Stealth']) {
+		echo "Your victim is stealthed. You cannot attack this ninja by normal means.<br>\n";
+		return false;
+	} else if (($attackeeClan = get_clan_by_player_id($attackee_id)) && ($defenderClan = get_clan_by_player_id($defender_id))) {
+		if ($attackeeClan->getID() == $defenderClan->getID()) {
+			echo "You cannot attack a ninja in the same clan as you.\n";
+			return false;
+		} else {
+			return true;	// *** ATTACK IS LEGAL ***
+		}
+	} else {
+		return true;  //  ***  ATTACK IS LEGAL ***
+	}
 }
-
-
-
 
 function killpointsFromDueling()  //  *** Multiple Killpoints from Dueling ***
 {

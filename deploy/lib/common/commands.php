@@ -69,8 +69,7 @@ function subtractHealth($who,$amount){
 // ********** GOLD FUNCTIONS **********
 // ************************************
 
-function setGold($who,$new_gold)
-{
+function setGold($who,$new_gold) {
   global $sql;
 
   $sql->Update("UPDATE players SET gold = $new_gold WHERE uname = '$who'");
@@ -84,10 +83,8 @@ function getGold($who){
   return $gold;
 }
 
-function changeGold($who,$amount)
-{
-  if (abs($amount) >  0)
-    {
+function changeGold($who,$amount) {
+  if (abs($amount) >  0) {
       global $sql;
 
       $sql->Update("UPDATE players SET gold = gold + ".
@@ -97,20 +94,16 @@ function changeGold($who,$amount)
       $new_gold = getGold($who);
 
       return $new_gold;
-    }
-  else
-    {
+    } else {
       return getGold($who);
     }
 }
 
-function addGold($who,$amount)
-{
+function addGold($who,$amount) {
   return changeGold($who,$amount);
 }
 
-function subtractGold($who,$amount)
-{
+function subtractGold($who,$amount) {
   return changeGold($who,((-1)*$amount));
 }
 
@@ -123,28 +116,24 @@ function subtractGold($who,$amount)
 // ********** TURNS FUNCTIONS *********
 // ************************************
 
-function setTurns($who,$new_turns)
-{
+function setTurns($who,$new_turns) {
   global $sql;
 
   $sql->Update("UPDATE players SET turns = $new_turns WHERE uname = '$who'");
 
-  if ($who == get_username())
-    {
+  if ($who == get_username()) {
       $_SESSION['turns'] = $new_turns;
     }
 
   return $new_turns;
 }
 
-function getTurns($who)
-{
+function getTurns($who) {
   global $sql;
 
   $turns = $sql->QueryItem("SELECT turns FROM players WHERE uname = '$who'");
 
-  if ($who == get_username())
-    {
+  if ($who == get_username()) {
       $_SESSION['turns'] = $turns;
     }
 
@@ -153,8 +142,7 @@ function getTurns($who)
 
 function changeTurns($who,$amount)
 {
-  if (abs($amount) > 0)
-    {
+  if (abs($amount) > 0) {
       global $sql;
 
       $sql->Update("UPDATE players SET turns = turns + ".
@@ -164,20 +152,16 @@ function changeTurns($who,$amount)
       $new_turns = getTurns($who);
 
       return $new_turns;
-    }
-  else
-    {
+    } else {
       return getTurns($who);
     }
 }
 
-function addTurns($who,$amount)
-{
+function addTurns($who,$amount) {
   return changeTurns($who,$amount);
 }
 
-function subtractTurns($who,$amount)
-{
+function subtractTurns($who,$amount) {
   return changeTurns($who,((-1)*$amount));
 }
 
@@ -190,38 +174,32 @@ function subtractTurns($who,$amount)
 // ********** KILLS FUNCTIONS *********
 // ************************************
 
-function setKills($who,$new_kills)
-{
+function setKills($who,$new_kills) {
   global $sql;
 
   $sql->Update("UPDATE players SET kills = $new_kills WHERE uname = '$who'");
 
-  if ($who == get_username())
-    {
+  if ($who == get_username()) {
       $_SESSION['kills'] = $new_kills;
     }
 
   return $new_kills;
 }
 
-function getKills($who)
-{
+function getKills($who) {
   global $sql;
 
   $kills = $sql->QueryItem("SELECT kills FROM players WHERE uname = '$who'");
 
-  if ($who == get_username())
-    {
+  if ($who == get_username()) {
       $_SESSION['kills'] = $kills;
     }
 
   return $kills;
 }
 
-function changeKills($who,$amount)
-{
-  if (abs($amount) > 0)
-    {
+function changeKills($who,$amount) {
+  if (abs($amount) > 0) {
       global $sql;
 
       $sql->Update("UPDATE players SET kills = kills + ".
@@ -231,57 +209,49 @@ function changeKills($who,$amount)
       $new_kills = getKills($who);
 
       return $new_kills;
-    }
-  else
-    {
+    } else {
       return getKills($who);
     }
 }
 
-function addKills($who,$amount)
-{
-		  // *** UPDATE THE KILLS INCREASE LOG *** //
-  global $sql;
+function addKills($who,$amount) {
+	// *** UPDATE THE KILLS INCREASE LOG *** //
+	global $sql;
 
-	  $alreadyThere = $sql->Query("SELECT * FROM levelling_log WHERE uname='$who' AND killsdate = now() AND killpoints>0 LIMIT 1");  //Check for record.
+	$alreadyThere = $sql->Query("SELECT * FROM levelling_log WHERE uname='$who' AND killsdate = now() AND killpoints>0 LIMIT 1");  //Check for record.
 
-	  $notYetANewDay=$sql->rows;  //positive if todays record already exists
-	  if ($notYetANewDay != NULL)  // if record exists
-		{
-		  $sql->Query("UPDATE levelling_log SET killpoints=killpoints + $amount WHERE uname='$who' AND killsdate=now() AND killpoints>0");  //increase killpoints
-		}
-		else
-		{
-			$sql->Query("INSERT INTO levelling_log ( uname, killpoints, levelling, killsdate) VALUES ('$who', '$amount', '0', now())");  //create a new record for today
-		}
+	$notYetANewDay = $sql->rows;  //positive if todays record already exists
 
-  return changeKills($who,$amount);
+	if ($notYetANewDay != NULL) {
+		// if record exists
+		$sql->Query("UPDATE levelling_log SET killpoints=killpoints + $amount WHERE uname='$who' AND killsdate=now() AND killpoints>0");  //increase killpoints
+	} else {
+		$sql->Query("INSERT INTO levelling_log ( uname, killpoints, levelling, killsdate) VALUES ('$who', '$amount', '0', now())");  //create a new record for today
+	}
+
+	return changeKills($who,$amount);
 }
 
-function subtractKills($who,$amount)
-{
-  global $sql;
-		  // *** UPDATE THE KILLS INCREASE LOG (with a negative entry) *** //
+function subtractKills($who,$amount) {
+	global $sql;
+	// *** UPDATE THE KILLS INCREASE LOG (with a negative entry) *** //
 
-	  $alreadyThere = $sql->query("SELECT * FROM levelling_log WHERE uname='$who' AND killsdate=now() AND killpoints<0 LIMIT 1"); //check for record
+	$alreadyThere  = $sql->query("SELECT * FROM levelling_log WHERE uname='$who' AND killsdate=now() AND killpoints<0 LIMIT 1"); //check for record
 
-	  $notYetANewDay=$sql->rows;  //positive if todays record already exists
-	  if ($notYetANewDay != NULL)  // if record exists
-		{
-		  $sql->Query("UPDATE levelling_log SET killpoints=killpoints - $amount WHERE uname='$who' AND killsdate=now() AND killpoints<0 LIMIT 1");  //increase killpoints
-		}
-		else
-		{
-			$sql->Query("INSERT INTO levelling_log ( uname, killpoints, levelling, killsdate) VALUES ('$who', '-$amount', '0', now())");  //create a new record for today
-		}
+	$notYetANewDay = $sql->rows;  //positive if todays record already exists
 
+	if ($notYetANewDay != NULL) {
+		// if record exists
+		$sql->Query("UPDATE levelling_log SET killpoints=killpoints - $amount WHERE uname='$who' AND killsdate=now() AND killpoints<0 LIMIT 1");  //increase killpoints
+	} else {
+		$sql->Query("INSERT INTO levelling_log ( uname, killpoints, levelling, killsdate) VALUES ('$who', '-$amount', '0', now())");  //create a new record for today
+	}
 
-  return changeKills($who,((-1)*$amount));
+	return changeKills($who, ((-1)*$amount));
 }
 
 
-function getKillPointsAmount($attacker,$defender)
-{
+function getKillPointsAmount($attacker, $defender) {
   global $sql;
   $sql->Query("INSERT INTO 'dueling_log' values ('','$attacker', '$defender', '$won', '$killpoints', now())");                            //Log of Dueling information.
 }
@@ -289,52 +259,46 @@ function getKillPointsAmount($attacker,$defender)
 
 function kill($killer,$victim,$how,$what)  //This is a kill replacement function that may not yet be in use.
 {
-  echo "$killer has killed $victim!<br>\n";
+	echo "$killer has killed $victim!<br>\n";
 
-  global $sql,$today;
+	global $sql,$today;
 
-  setHealth($victim,0);
-  subtractStatus($victim,STEALTH+POISON+FROZEN+CLASS_STATE);
+	setHealth($victim,0);
+	subtractStatus($victim,STEALTH+POISON+FROZEN+CLASS_STATE);
 
-  $kill_point = 1;
-  $_killer    = $killer;
+	$kill_point = 1;
+	$_killer    = $killer;
 
-  if ($how == "combat")
-    {
-      $msg = "$killer has killed you in combat on $today";
-      $gold_mod  = .2;
+	if ($how == "combat") {
+		$msg = "$killer has killed you in combat on $today";
+		$gold_mod  = .2;
 
-      if ($what == "duel")
-	{
-	  $msg = "$killer has killed you in a duel on $today";
-	  $gold_mod = .25;
+		if ($what == "duel") {
+			$msg = "$killer has killed you in a duel on $today";
+			$gold_mod = .25;
+		} else if  ($what == "stealth") {
+			$msg = "A stealthed player has killed you in combat on $today";
+			$gold_mod = .1;
+			$kill_point = 0;
+			$_killer = "A stealthed player";
+		}
+	} else if ($how == "item") {
+		$msg  = "$killer has killed you using $what on $today";
+		$gold_mod = .15;
+	} else if ($how == "skill") {
+		$msg  = "$killer has killed you using $what on $today";
+		$gold_mod = .15;
 	}
-      else if  ($what == "stealth")
-	{
-	  $msg = "A stealthed player has killed you in combat on $today";
-	  $gold_mod = .1;
-	  $kill_point = 0;
-	  $_killer = "A stealthed player";
+
+	$gold_won = takeGold($victim,$killer,$gold_mod);
+	$msg.=" and taken $gold_won gold.";
+
+	if ($kill_point) {
+		addKills($killer, $kill_point);
 	}
-    }
-  else if ($how == "item")
-    {
-      $msg  = "$killer has killed you using $what on $today";
-      $gold_mod = .15;
-    }
-  else if ($how == "skill")
-    {
-      $msg  = "$killer has killed you using $what on $today";
-      $gold_mod = .15;
-    }
 
-  $gold_won = takeGold($victim,$killer,$gold_mod);
-  $msg.=" and taken $gold_won gold.";
-
-  if ($kill_point){addKills($killer,$kill_point);}
-
-  sendMessage($_killer,$victim,$msg);
-  sendMessage($victim,$killer,str_replace($_killer." has","You have",str_replace("you",$victim,$msg)));
+	sendMessage($_killer, $victim,$msg);
+	sendMessage($victim, $killer,str_replace($_killer." has","You have",str_replace("you",$victim,$msg)));
 }
 
 // ************************************
@@ -346,72 +310,61 @@ function kill($killer,$victim,$how,$what)  //This is a kill replacement function
 // ********** LEVEL FUNCTIONS *********
 // ************************************
 
-function setLevel($who,$new_level)
-{
-  global $sql;
+function setLevel($who, $new_level) {
+	global $sql;
 
-  $sql->Update("UPDATE players SET level = $new_level WHERE uname = '$who'");
+	$sql->Update("UPDATE players SET level = $new_level WHERE uname = '$who'");
 
-  if ($who == get_username())
-    {
-      $_SESSION['level'] = $new_level;
-    }
+	if ($who == get_username())
+	{
+		$_SESSION['level'] = $new_level;
+	}
 
-  return $new_level;
+	return $new_level;
 }
 
-function getLevel($who)
-{
-  global $sql;
+function getLevel($who) {
+	global $sql;
 
-  $level = $sql->QueryItem("SELECT level FROM players WHERE uname = '$who'");
+	$level = $sql->QueryItem("SELECT level FROM players WHERE uname = '$who'");
 
-  if ($who == get_username())
-    {
-      $_SESSION['level'] = $level;
-    }
+	if ($who == get_username()) {
+		$_SESSION['level'] = $level;
+	}
 
-  return $level;
+	return $level;
 }
 
-function changeLevel($who,$amount)
-{
-  if (abs($amount) > 0)
-    {
-      global $sql;
+function changeLevel($who, $amount) {
+	if (abs($amount) > 0) {
+		global $sql;
 
-      $sql->Update("UPDATE players SET level = level+$amount WHERE uname = '$who'");
+		$sql->Update("UPDATE players SET level = level+$amount WHERE uname = '$who'");
 
-      $new_level = getLevel($who);
+		$new_level = getLevel($who);
 
-	  // *** UPDATE THE LEVEL INCREASE LOG *** //
+		// *** UPDATE THE LEVEL INCREASE LOG *** //
 
-	  $alreadyThere = $sql->Query("SELECT * FROM levelling_log WHERE uname='$who' AND killsdate=now()");
-	  $notYetANewDay=$sql->rows;  //Throws back a row result if there is a pre-existing record.
-	  if ($notYetANewDay != NULL) //if record already exists.
-		{
-		  $sql->Query("UPDATE levelling_log SET levelling=levelling + $amount WHERE uname='$who' AND killsdate=now() LIMIT 1");
-		}
-		else   //if no prior record exists, create a new one.
-		{
+		$alreadyThere = $sql->Query("SELECT * FROM levelling_log WHERE uname='$who' AND killsdate=now()");
+		$notYetANewDay=$sql->rows;  //Throws back a row result if there is a pre-existing record.
+		if ($notYetANewDay != NULL) {
+			//if record already exists.
+			$sql->Query("UPDATE levelling_log SET levelling=levelling + $amount WHERE uname='$who' AND killsdate=now() LIMIT 1");
+		} else {	// if no prior record exists, create a new one.
 			$sql->Query("INSERT INTO levelling_log ( uname, killpoints, levelling, killsdate) VALUES ('$who', '0', '$amount', now())");  //inserts all except the autoincrement ones
 		}
 
-      return $new_level;
-    }
-  else
-    {
-      return getLevel($who);
-    }
+		return $new_level;
+	} else {
+		return getLevel($who);
+	}
 }
 
-function addLevel($who,$amount)
-{
+function addLevel($who,$amount) {
   return changeLevel($who,$amount);
 }
 
-function subtractLevel($who,$amount)
-{
+function subtractLevel($who,$amount) {
   return changeLevel($who,((-1)*$amount));
 }
 
@@ -434,8 +387,7 @@ define("SKILL_2",     32);
 define("INVITED",     64);
 $status_array;
 
-function setStatus($who,$what)
-{
+function setStatus($who,$what) {
 	//if (!is_numeric($what)) // *** If the status being sent in isn't a number...
 	//{
 	//  (isset($status_array[$what])? '
@@ -457,19 +409,23 @@ function setStatus($who,$what)
 			echo "<br>You are now stealthed.<br>\n";
 		}
 	}
+
 	return $what;
 }
 
-function getStatus($who)
-{
+function getStatus($who) {
 	global $sql, $status_array;
-	if(!$sql){
+
+	if (!$sql) {
 		$sql = new DBAccess();
 	}
+
 	$status = $sql->QueryItem("SELECT status FROM players WHERE uname = '$who'");
+
 	if ($who == SESSION::get('username')) {
   		$_SESSION['status'] = $status;
 	}
+
 	$status_array['Stealth']    = ($status&STEALTH     ? 1 : 0);
 	$status_array['Poison']     = ($status&POISON      ? 1 : 0);
 	$status_array['Frozen']     = ($status&FROZEN      ? 1 : 0);
@@ -490,7 +446,7 @@ function addStatus($who,$what)   //Takes in the Status in the ALL_CAPS_WORD form
 	    return subtractStatus($who,abs($what));
 	}
 
-	if (!($status&$what)) {
+	if (!($status & $what)) {
 	    $sql->Update("UPDATE players SET status = status+$what WHERE uname = '$who'");
 
 	    if ($who == get_username()) {
@@ -542,43 +498,41 @@ function setStrength($who,$new_strength)
 
 function getStrength($who)
 {
-  global $sql;
+	global $sql;
 
-  $strength = $sql->QueryItem("SELECT strength FROM players WHERE uname = '$who'");
+	$strength = $sql->QueryItem("SELECT strength FROM players WHERE uname = '$who'");
 
-  if ($who == get_username())
-    {
-      $_SESSION['strength'] = $strength;
-    }
-  return $strength;
+	if ($who == get_username())
+	{
+		$_SESSION['strength'] = $strength;
+	}
+
+	return $strength;
 }
 
-function changeStrength($who,$amount)
+function changeStrength($who, $amount)
 {
-  if (abs($amount) > 0)
-    {
-      global $sql;
+	if (abs($amount) > 0) {
+		global $sql;
 
-      $sql->Update("UPDATE players SET strength = strength+$amount WHERE uname = '$who'");
+		$sql->Update("UPDATE players SET strength = strength+$amount WHERE uname = '$who'");
 
-      $new_strength = getStrength($who);
+		$new_strength = getStrength($who);
 
-      return $new_strength;
-    }
-  else
-    {
-      return getStrength($who);
-    }
+		return $new_strength;
+	} else {
+		return getStrength($who);
+	}
 }
 
 function addStrength($who,$amount)
 {
-  return changeStrength($who,$amount);
+	return changeStrength($who, $amount);
 }
 
-function subtractStrength($who,$amount)
+function subtractStrength($who, $amount)
 {
-  return changeStrength($who,((-1)*$amount));
+	return changeStrength($who, ((-1) * $amount));
 }
 
 // ************************************
@@ -590,100 +544,95 @@ function subtractStrength($who,$amount)
 // ********* BOUNTY FUNCTIONS *********
 // ************************************
 
-function setBounty($who,$new_bounty)
+function setBounty($who, $new_bounty)
 {
-  global $sql;
+	global $sql;
 
-  $sql->Update("UPDATE players SET bounty = $new_bounty WHERE uname = '$who'");
+	$sql->Update("UPDATE players SET bounty = $new_bounty WHERE uname = '$who'");
 
-  if ($who == get_username())
-    {
-      $_SESSION['bounty'] = $new_bounty;
-    }
+	if ($who == get_username())
+	{
+		$_SESSION['bounty'] = $new_bounty;
+	}
 
-  return $new_bounty;
+	return $new_bounty;
 }
 
 function getBounty($who)
 {
-  global $sql;
+	global $sql;
 
-  $bounty = $sql->QueryItem("SELECT bounty FROM players WHERE uname = '$who'");
+	$bounty = $sql->QueryItem("SELECT bounty FROM players WHERE uname = '$who'");
 
-  if ($who == get_username())
-    {
-      $_SESSION['bounty'] = $bounty;
-    }
+	if ($who == get_username())
+	{
+		$_SESSION['bounty'] = $bounty;
+	}
 
-  return $bounty;
+	return $bounty;
 }
 
 function changeBounty($who,$amount)
 {
-  if (abs($amount) > 0)
-    {
-      global $sql;
+	if (abs($amount) > 0) {
+		global $sql;
 
-      $sql->Update("UPDATE players SET bounty = bounty+".
-		   "CASE WHEN bounty+$amount < 0 THEN bounty*(-1) ".
-		   "WHEN bounty+$amount > 5000 THEN (5000 - bounty) ".
-		   "ELSE $amount END ".
-		   "WHERE uname  = '$who'");
+		$sql->Update("UPDATE players SET bounty = bounty+".
+			"CASE WHEN bounty+$amount < 0 THEN bounty*(-1) ".
+			"WHEN bounty+$amount > 5000 THEN (5000 - bounty) ".
+			"ELSE $amount END ".
+			"WHERE uname  = '$who'");
 
-      $new_bounty = getBounty($who);
+		$new_bounty = getBounty($who);
 
-      return $new_bounty;
-    }
-  else
-    {
-      return getBounty($who);
-    }
+		return $new_bounty;
+	} else {
+		return getBounty($who);
+	}
 }
 
 function addBounty($who,$amount)
 {
-  return changeBounty($who,$amount);
+	return changeBounty($who,$amount);
 }
 
 function subtractBounty($who,$amount)
 {
-  return changeBounty($who,((-1)*$amount));
+	return changeBounty($who,((-1)*$amount));
 }
 
 function rewardBounty($bounty_to,$bounty_on)
 {
-  global $sql;
+	global $sql;
 
-  $bounty = getBounty($bounty_on);
+	$bounty = getBounty($bounty_on);
 
-  setBounty($bounty_on,0);  //Sets bounty to zero.
+	setBounty($bounty_on,0);  //Sets bounty to zero.
 
-  addGold($bounty_to,$bounty);
+	addGold($bounty_to,$bounty);
 
-  return $bounty;
+	return $bounty;
 }
 
-function runBountyExchange ($username, $defender)  //  *** BOUNTY EQUATION ***
+function runBountyExchange($username, $defender)  //  *** BOUNTY EQUATION ***
 {
-      //  Bounty Increase equation: attacker'slevel-defender'slevel/5,roundeddown,times25goldperpoint
-	$levelRatio=floor( ( getLevel($username)-getLevel($defender) )/5 );
-	 if ($levelRatio>0) $bountyIncrease=$levelRatio*25;  //Avoids negative increases.
-	 else $bountyIncrease=0;
+	// *** Bounty Increase equation: (attacker's level - defender's level) / 5, rounded down, times 25 gold per point ***
+	$levelRatio     = floor((getLevel($username) - getLevel($defender)) / 5);
 
-	 $bountyForAttacker = rewardBounty($username,$defender); //returns a value if bounty rewarded.
-	  if($bountyForAttacker)  //Reward bounty whenever available.
-		 {
-		  echo "You have received the $bountyForAttacker gold bounty on $defender's head for your deeds!<br>\n";
-		  $bounty_msg = "You have valiantly slain the wanted criminal, $defender! For your efforts, you have been awarded $bountyForAttacker gold!";
-		  sendMessage("Village Doshin",$username,$bounty_msg);
-		 }
-	  else if ($bountyIncrease>0)  // If Defender has no bounty and there was a level difference.
-	    {
-	      addBounty($username,$bountyIncrease);
-	      echo "Your victim was much weaker than you. The townsfolk are angered. A bounty of ".$bountyIncrease." gold has been placed on your head!<br>\n";
-	    }
+	$bountyIncrease = ($levelRatio > 0 ? $levelRatio * 25 : 0);	//Avoids negative increases.
+
+	$bountyForAttacker = rewardBounty($username, $defender); //returns a value if bounty rewarded.
+	if ($bountyForAttacker) {
+		// *** Reward bounty whenever available. ***
+		echo "You have received the $bountyForAttacker gold bounty on $defender's head for your deeds!<br>\n";
+		$bounty_msg = "You have valiantly slain the wanted criminal, $defender! For your efforts, you have been awarded $bountyForAttacker gold!";
+		sendMessage("Village Doshin",$username,$bounty_msg);
+	} else if ($bountyIncrease > 0) {
+		// *** If Defender has no bounty and there was a level difference. ***
+		addBounty($username, $bountyIncrease);
+		echo "Your victim was much weaker than you. The townsfolk are angered. A bounty of ", $bountyIncrease, " gold has been placed on your head!<br>\n";
+	}
 }
-
 
 // ************************************
 // ************************************
@@ -694,63 +643,39 @@ function runBountyExchange ($username, $defender)  //  *** BOUNTY EQUATION ***
 // ********** CLAN FUNCTIONS **********
 // ************************************
 
-function createClan($p_leaderID, $p_clanName)
-{
+function createClan($p_leaderID, $p_clanName) {
 	global $sql;
+	$p_clanName = sql(trim($p_clanName));
 
 	$newClanID = $sql->QueryItem("SELECT nextval('clan_clan_id_seq')");
 	$sql->Insert("INSERT INTO clan (clan_id, clan_name, _creator_player_id) VALUES ($newClanID, '$p_clanName', $p_leaderID)");
 	$sql->Insert("INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES ($p_leaderID, $newClanID, 1)");
 
-	return $newClanID;
+	return new Clan($newClanID, $p_clanName);
 }
 
-function setClan($who, $clan_name) {
-  global $sql;
-
-  $clan_long_name = $sql->QueryItem("SELECT clan_long_name FROM players WHERE clan = '$clan_name' LIMIT 1");
-
-  $sql->Update("UPDATE players SET clan = '$clan_name', clan_long_name = '$clan_long_name' WHERE uname = '$who'");
-
-  if ($who == get_username()) {
-      $_SESSION['clan'] = $clan_name;
-    }
-
-  return $clan_name;
-}
-
-function setClanLongName($who,$clan_long_name)
-{
-  global $sql;
-
-  $sql->Update("UPDATE players SET clan_long_name = '$clan_long_name' WHERE uname = '$who'");
-
-  return $clan_long_name;
-}
-
-function get_clan_id($player_id) {
-    global $sql;
-	$clan_id = $sql->QueryItem("SELECT _clan_id FROM clan_player WHERE _player_id = '".sql($player_id)."'");
-	return $clan_id;
-}
-
-function get_clan_name($player_id) {
-    global $sql;
-	$clan_name = $sql->QueryItem("SELECT clan_name from clan join clan_player on clan_id = _clan_id WHERE _player_id = '".sql($player_id)."'");
-	return $clan_name;    
-}
-
-function get_clan_id_by_name($clan_name) {
-    global $sql;
-    $clan_id = $sql->QueryItem("SELECT clan_id from clan where clan_name = '".sql($clan_name)."'");
-    return $clan_id;
-}
-
-// Deprecated wrapper for get_clan_name.
-function getClan($player_name) {
+function get_clan_by_id($p_clanID) {
 	global $sql;
-	$player_id = get_user_id($player_name);
-	return get_clan_name($player_id);
+	$sql->Query('SELECT clan_id, clan_name FROM clan WHERE clan_id = '.$p_clanID);
+
+	if ($data = $sql->Fetch()) {
+		$clan = new Clan($data['clan_id'], $data['clan_name']);
+		return $clan;
+	} else {
+		return null;
+	}
+}
+
+function get_clan_by_player_id($p_playerID) {
+	global $sql;
+	$sql->Query('SELECT clan_id, clan_name FROM clan JOIN clan_player ON clan_id = _clan_id WHERE _player_id = '.$p_playerID);
+
+	if ($data = $sql->Fetch()) {
+		$clan = new Clan($data['clan_id'], $data['clan_name']);
+		return $clan;
+	} else {
+		return null;
+	}
 }
 
 function getPlayerName($p_playerID) {
@@ -762,9 +687,9 @@ function getPlayerName($p_playerID) {
 function kick($p_playerID) {
 	global $sql, $today;
 
-	$clan_long_name = get_clan_name($p_playerID);
+	$clan_long_name = get_clan_by_player_id($p_playerID)->getName();
 
-	$sql->Delete("DELETE FROM clan_player WHERE _player_id = '".sql($p_playerID)."'");
+	$sql->Delete("DELETE FROM clan_player WHERE _player_id = ".sql($p_playerID));
 	$msg = "You have been kicked out of $clan_long_name by ".get_username()." on $today.";
 
 	send_message(get_user_id(), $p_playerID, $msg);
@@ -801,11 +726,8 @@ function invitePlayer($who, $p_clanID) {
 
 	$target_id = get_user_id($who);
 
-	$current_clan = 
-	    $sql->QueryItem("SELECT _clan_id 
-	   FROM clan_player WHERE _player_id = $target_id");
-	$player_is_confirmed = 
-	    $sql->QueryItem("SELECT confirmed FROM players WHERE player_id = $target_id");
+	$current_clan        = $sql->QueryItem("SELECT _clan_id FROM clan_player WHERE _player_id = $target_id");
+	$player_is_confirmed = $sql->QueryItem("SELECT confirmed FROM players WHERE player_id = $target_id");
 
     $leader_info = get_clan_leader_info($p_clanID);
     $clan_name   = $leader_info['clan_name'];
@@ -813,7 +735,7 @@ function invitePlayer($who, $p_clanID) {
     $leader_id   = $leader_info['player_id'];
     $leader_name = $leader_info['uname'];
 
-	if ($current_clan == "" && $player_is_confirmed == 1 && !$status_array['Invited']) {
+	if (!$current_clan && $player_is_confirmed == 1 && !$status_array['Invited']) {
 		$invite_msg = "$leader_name has invited you into their clan.  
 		To accept, choose their clan $clan_name on the "
 		.message_url('clan.php?command=join&clan_id='.$p_clanID, 'clan joining page').".";
@@ -841,25 +763,27 @@ function invitePlayer($who, $p_clanID) {
 // ******** INVENTORY FUNCTIONS *******
 // ************************************
 
-function addItem($who,$item,$quantity=1)
-{
-  global $sql;
-  if ($quantity<0)
-  	{$quantity=0;}
+function addItem($who, $item, $quantity = 1) {
+	global $sql;
 
-  $sql->Update("Update inventory set amount = amount + ".$quantity." WHERE owner = '$who' AND lower(item) =lower('$item')");
-  $rows = $sql->getRowCount();
-  if (!$rows)
-  {
-  		$sql->Insert("INSERT INTO inventory (owner, item, amount) VALUES ('$who','$item', '$quantity')");
-  }
+	if ($quantity < 0) {
+		$quantity = 0;
+	}
+
+	$sql->Update("Update inventory set amount = amount + ".$quantity." WHERE owner = '$who' AND lower(item) =lower('$item')");
+	$rows = $sql->getRowCount();
+
+	if (!$rows)
+	{
+		$sql->Insert("INSERT INTO inventory (owner, item, amount) VALUES ('$who','$item', '$quantity')");
+	}
 }
 
 function removeItem($who,$item,$quantity=1)
 {
-  global $sql;
+	global $sql;
 
-  $sql->Update("Update inventory set amount = amount - ".$quantity." 
+	$sql->Update("Update inventory set amount = amount - ".$quantity." 
     WHERE owner = '$who' AND lower(item) =lower('$item') AND amount>1");
 }
 
@@ -917,14 +841,16 @@ function flagPlayer($player, $flag, $note, $originatingPage)
 function pauseAccount($who) {
 	global $sql;
 
-	if (getClan($who) == $who) {
-	    disbandClan($who);
+	$user_id = get_user_id($who);
+
+	if (($clan = get_clan_by_player_id($user_id)) && get_clan_leader_id($clan->getID()) == $user_id) {
+	    disbandClan($clan->getID());
 	}
 
-	$selectStatement="SELECT email FROM players WHERE uname = '$who'";
-	$results=$sql->Query($selectStatement); //Calls the select statement, returns a resource for the statements that return.
+	$selectStatement = "SELECT email FROM players WHERE uname = '$who'";
+	$results = $sql->Query($selectStatement); //Calls the select statement, returns a resource for the statements that return.
 
-	$row=$sql->Fetch();  //Turns the first line of the resource into an array.
+	$row = $sql->Fetch();  //Turns the first line of the resource into an array.
 	$quickemail = $row[0]."PAUSED";
 	$sql->Update("UPDATE players SET confirmed = 0, email= '$quickemail' WHERE uname = '$who'");
 	$sql->Delete("DELETE FROM inventory WHERE owner = '$who'");
@@ -940,8 +866,10 @@ function pauseAccount($who) {
 function deleteAccount($who) {
 	global $sql;
 
-	if (getClan($who) == $who) {
-	    disbandClan($who);
+	$user_id = get_user_id($who);
+
+	if (($clan = get_clan_by_player_id($user_id)) && get_clan_leader_id($clan->getID()) == $user_id) {
+	    disbandClan($clan->getID());
 	}
 
 	$sql->Delete("DELETE FROM players WHERE uname = '$who'");

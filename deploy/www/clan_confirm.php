@@ -15,22 +15,21 @@ include SERVER_ROOT."interface/header.php";
 $confirm     = in('confirm');
 $username    = get_username();
 $user_id     = get_user_id();
-$clan_id     = get_clan_id($user_id);
-$clan_name   = get_clan_name($user_id);
+$clan        = get_clan_by_player_id($user_id);
 $clan_joiner = in('clan_joiner');
 $clan_joiner_name = getPlayerName($clan_joiner);
 $agree       = in('agree');
 $random      = rand(1001, 9990);
 
-if (!$clan_name) {
+if (!$clan) {
 	echo "You have no clan.";
 } elseif (!$clan_joiner) {
 	echo "There is no potential ninja specified, so the induction cannot occur.";
 } else {
-	echo "$clan_joiner_name has requested to join your clan, $clan_name.<br>\n";
+	echo "$clan_joiner_name has requested to join your clan, ".$clan->getName().".<br>\n";
 
 	if (!$agree) {
-		echo "<form action=\"clan_confirm.php?clan_id=$clan_id&amp;clan_joiner=$clan_joiner&amp;confirm=$confirm\" method=\"post\">\n";
+		echo "<form action=\"clan_confirm.php?clan_id=".$clan->getID()."&amp;clan_joiner=$clan_joiner&amp;confirm=$confirm\" method=\"post\">\n";
 		echo "  <div><input id=\"agree\" type=\"hidden\" name=\"agree\" value=\"1\"><input type=\"submit\" value=\"Accept Request\"></div>\n";
 		echo "</form>";
 	} else {
@@ -48,10 +47,10 @@ if (!$clan_name) {
 			echo "<p><a href=\"".WEB_ROOT."\">Return to Main</a></p>\n";
 		} elseif ($confirm == $check && $agree > 0) {
 			echo "Request Accepted.<br>\n";
-			$sql->Query("INSERT INTO clan_player (_clan_id, _player_id) VALUES ($clan_id, $clan_joiner)");
+			$sql->Query("INSERT INTO clan_player (_clan_id, _player_id) VALUES (".$clan->getID().", $clan_joiner)");
 			$sql->Query("UPDATE players SET confirm = '$random' WHERE player_id = $clan_joiner");
 			echo "<br>$clan_joiner_name is now a member of your clan.<hr>\n";
-			send_message($user_id, $clan_joiner,"CLAN: You have been accepted into $clan_name");
+			send_message($user_id, $clan_joiner,"CLAN: You have been accepted into ".$clan->getName());
 		} else {
 			echo "This clan membership change can not be verified, please ask the ninja to request joining again.\n";
 		}

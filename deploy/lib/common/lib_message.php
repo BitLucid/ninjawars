@@ -65,18 +65,18 @@ function message_to_clan($p_message) {
 	$error    = null;
 	$user_id  = get_user_id();
 	$username = get_username();
-	$clan_id     = get_clan_id($user_id);
+	$clan_id  = get_clan_by_player_id($user_id)->getID();
 
 	$sql->Query(
 	    "SELECT player_id, uname 
 	    FROM clan JOIN clan_player ON _clan_id = clan_id JOIN players ON player_id = _player_id 
-	    where clan_id = ' $clan_id'");
+	    WHERE clan_id = ' $clan_id'");
 
 	$clan_members = $sql->fetchAll();
 	$messaged_to = '';
 	$comma = '';
 
-	foreach ($clan_members as $loop_member){
+	foreach ($clan_members as $loop_member) {
 		send_message($user_id, $loop_member['player_id'], "CLAN: ".$p_message);
 		$messaged_to .= $comma.$loop_member['uname'];
 		$comma = ', ';

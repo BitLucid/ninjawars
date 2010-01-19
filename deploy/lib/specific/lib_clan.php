@@ -7,17 +7,20 @@ function render_clan_join($process=null, $username, $clan_id) {
    	$sql = new DBAccess();
 
     if ($process == 1) {
-        $clan = get_clan($clan_id);
+        $clan        = get_clan($clan_id);
+        $leader      = get_clan_leader_info($clan_id);
+        $leader_id   = $leader['player_id'];
+        $leader_name = $leader['uname'];
+
         $confirm = $sql->QueryItem("SELECT confirm FROM players WHERE uname = '$username'");
-        $url = message_url("clan_confirm.php?clan_joiner=".get_user_id($username)
-            ."&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
+
+        $url = message_url("clan_confirm.php?clan_joiner=".get_user_id($username)."&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
+
         $join_request_message = "CLAN JOIN REQUEST: $username has sent a request to join clan ".out($clan['clan_name']).".
             If you wish to allow this ninja into your clan click the following link:
             $url";
-        $leader = get_clan_leader_info($clan_id);
-        $leader_id = $leader['player_id'];
-        $leader_name = $leader['uname'];
         send_message(get_user_id($username),$leader_id,$join_request_message);
+
         $res =  "<div id='clan-join-request-sent' class='ninja-notice'>Your request to join ".out($clan['clan_name'])." 
             has been sent to ".out($leader_name)."</div>\n";
     } else {                                            
@@ -49,43 +52,42 @@ function get_clan($clan_id) {
 }
 
 // Just get the list of clans, plus the creator ids just for reference.
-function get_clans($clan_id=null){
-    $clan_or_clans = $clan_id? 'where clan_id = '.sql($clan_id) : 'order by clan_id';
+function get_clans($clan_id=null) {
+    $clan_or_clans = ($clan_id ? 'WHERE clan_id = '.sql($clan_id) : 'ORDER BY clan_id');
     $sql = new DBAccess();
-    $clans = $sql->fetchData("select clan_id, clan_name, clan_created_date, _creator_player_id 
-        from clan $clan_or_clans");
+    $clans = $sql->fetchData("SELECT clan_id, clan_name, clan_created_date, _creator_player_id FROM clan $clan_or_clans");
     return $clans;
 }
 
 // Gets the clan founders, though they may be dead and unconfirmed now.
-function get_clan_founders(){
+function get_clan_founders() {
     $sql = new DBAccess();
-    $clan_founders = $sql->fetchData("select uname, player_id, clan_name, confirmed 
-        from players join clan_player on player_id=_player_id join clan on clan_id=_clan_id 
-        where _creator_player_id = player_id order by clan_id");
+    $clan_founders = $sql->fetchData("SELECT uname, player_id, clan_name, confirmed 
+        FROM clan JOIN clan_player ON clan_id = _clan_id JOIN player ON _creator_player_id = player_id AND player_id = _player_id
+        ORDER BY clan_id");
     return $clan_founders;
 }
 
 // Return only the single clan leader and their information.
-function get_clan_leader_info($clan_id){
+function get_clan_leader_info($clan_id) {
     $clans = get_clan_leaders($clan_id);
     return reset($clans);
 }
 
 // Return just the clan leader id for a clan.
-function get_clan_leader_id($clan_id){
+function get_clan_leader_id($clan_id) {
     $leader_info = get_clan_leader_info($clan_id);
     return $leader_info['player_id'];
 }
 
 // Get the current clan leader or leaders.
-function get_clan_leaders($clan_id=null, $all=false){
-    $limit = ($all ? '' : ' limit 1 ');
-    $clan_or_clans = ($clan_id ? " and clan_id = '".sql($clan_id)."' order by level " : ' order by clan_id, level ');
+function get_clan_leaders($clan_id=null, $all=false) {
+    $limit = ($all ? '' : ' LIMIT 1 ');
+    $clan_or_clans = ($clan_id ? " AND clan_id = ".sql($clan_id)." ORDER BY level " : ' ORDER BY clan_id, level ');
     $sql = new DBAccess();
-    $clans = $sql->fetchData("select clan_id, clan_name, _creator_player_id, player_id, uname 
-        from players join clan_player on player_id=_player_id join clan on _clan_id=clan_id 
-        where confirmed = 1 AND member_level > 0 $clan_or_clans $limit");
+    $clans = $sql->fetchData("SELECT clan_id, clan_name, _creator_player_id, player_id, uname 
+        FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id=_player_id 
+        WHERE confirmed = 1 AND member_level > 0 $clan_or_clans $limit");
 
     return $clans;
 }
@@ -96,18 +98,18 @@ function get_clan_leaders($clan_id=null, $all=false){
  * This determines the criterial for how the clans get ranked and tagged, 
  *   and shows only non-empty clans.
 **/
-function clan_size(){
+function clan_size() {
 	$res = array();
 	$db = new DBAccess();
 
     // sum the levels of the players (minus days of inactivity) for each clan
-	$sel = "select sum(level-3-round(days/5)) as sum, clan_name, clan_id from clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id where confirmed = 1 group by clan_id, clan_name order by sum desc";
+	$sel = "SELECT sum(level-3-round(days/5)) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC";
 
 	$counts = $db->FetchAll($sel);
 	$largest = reset($counts);
 	$max = $largest['sum'];
 
-	foreach ($counts as $clan_info){
+	foreach ($counts as $clan_info) {
 		// *** make percentage of highest, multiply by 10 and round to give a 1-10 size ***
 		$res[$clan_info['clan_id']]['name'] = $clan_info['clan_name'];
 		$res[$clan_info['clan_id']]['score'] = floor(( (($clan_info['sum'] - 1 < 1 ? 0 : $clan_info['sum'] - 1)) / $max) * 10) + 1;
@@ -117,7 +119,7 @@ function clan_size(){
 }
 
 // Display the tag list of clans/clan links.
-function render_clan_tags(){
+function render_clan_tags() {
 	$clans = clan_size();
 	//$clans = @natsort2d($clans, 'level');
 	$res = "<div id='clan-tags'>
@@ -126,7 +128,7 @@ function render_clan_tags(){
                 </h4>
             <ul>";
 
-	foreach ($clans as $clan_id => $data){
+	foreach ($clans as $clan_id => $data) {
 		$res .= "<li class='clan-tag size".$data['score']."'>
                 <a href='?command=view&amp;clan_id=".urlencode($clan_id)."'>".$data['name']."</a>
             </li>";
@@ -134,26 +136,27 @@ function render_clan_tags(){
 
 	$res .= "</ul>
             </div>";
+
 	return $res;
 }
 
 /* Display the clan member name list or tag list */
-function render_clan_view($p_clanID, $sql){
-	if (!$p_clanID){
+function render_clan_view($p_clanID, $sql) {
+	if (!$p_clanID) {
 		return ''; // No viewing criteria available.
 	}
 
-	$members = $sql->FetchAll(
+	$members = $sql->FetchAll (
         "SELECT uname, clan_name, level, days, _creator_player_id, player_id
             FROM clan
             JOIN clan_player ON _clan_id = $p_clanID AND clan_id = _clan_id
-            JOIN players ON player_id = _player_id AND confirmed = 1 order by health, level desc");
+            JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC");
 
 	$max_list = $sql->FetchAll(
-        "SELECT max(level) as max 
+        "SELECT max(level) AS max 
         FROM clan
         JOIN clan_player ON _clan_id = $p_clanID AND clan_id = _clan_id
-        JOIN players on player_id = _player_id AND confirmed = 1");
+        JOIN players ON player_id = _player_id AND confirmed = 1");
 
 	$max_array = reset($max_list);
 	$max = $max_array['max'];
@@ -182,7 +185,6 @@ function render_clan_view($p_clanID, $sql){
 	return $res;
 }
 
-
 // Helper function.
 /*
 function natsort2d($arrIn, $index = null) {
@@ -201,7 +203,4 @@ function natsort2d($arrIn, $index = null) {
     $arrIn = $arrOut;
     return $arrIn;
 }*/
-
-
-
 ?>
