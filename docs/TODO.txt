@@ -159,3 +159,4 @@ Voting:
 <a href="http://www.worldonlinegames.com/index.php?page=8&gid=107" target="_blank"><img src="http://worldonlinegames.com/images/vote.gif" alt="Vote for Ninja Wars" /></a>
 <a href="http://www.apexwebgaming.com/in.php?id=39" target="_blank">Click Here To Vote For Us At Apex Web Gaming</a>
 <script type="text/javascript" src="http://www.apexwebgaming.com/current_stats.php?id=39"></script>
+Create Accounts

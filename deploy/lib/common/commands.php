@@ -725,6 +725,9 @@ function invitePlayer($who, $p_clanID) {
 	global $sql, $status_array;
 
 	$target_id = get_user_id($who);
+	if(!$target_id){
+	    return $failure_reason = 'No such ninja.';
+	}
 
 	$current_clan        = $sql->QueryItem("SELECT _clan_id FROM clan_player WHERE _player_id = $target_id");
 	$player_is_confirmed = $sql->QueryItem("SELECT confirmed FROM players WHERE player_id = $target_id");
