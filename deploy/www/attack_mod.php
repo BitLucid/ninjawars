@@ -18,15 +18,14 @@ $quickstat  = "player";
 
 include SERVER_ROOT."interface/header.php";
 
-
 $recent_attack = null;
 $start_of_attack = microtime(true);
 $attack_spacing = 0.2; // fraction of a second
-if(SESSION::is_set('recent_attack')){
+if (SESSION::is_set('recent_attack')) {
     $recent_attack = SESSION::get('recent_attack');
 }
 
-if($recent_attack && $recent_attack>($start_of_attack-$attack_spacing)){
+if ($recent_attack && ($recent_attack > ($start_of_attack - $attack_spacing))) {
     echo "<p>Even the best of ninjas cannot attack that quickly.</p>";
     echo "<a href='attack_player.php'>Return to combat</a>";
     SESSION::set('recent_attack', $start_of_attack);
@@ -34,7 +33,6 @@ if($recent_attack && $recent_attack>($start_of_attack-$attack_spacing)){
 } else {
     SESSION::set('recent_attack', $start_of_attack);
 }
-
 ?>
 
 <h1>Battle Status</h1>
@@ -45,101 +43,122 @@ if($recent_attack && $recent_attack>($start_of_attack-$attack_spacing)){
 // TODO: Turn this page/system into a function to be rendered.
 
 // *** ********* GET VARS FROM POST - OR GET ************* ***
-$attacked = in('attacked'); // boolean for attacking again
-$target = $attackee = either(in('target'), in('attackee'));
-$username = get_username(); // Pulls from an internal source.
-$attacker = $username;
+$attacked    = in('attacked'); // boolean for attacking again
+$target      = either(in('target'), in('attackee'));
+$duel        = (in('duel')    ? true : NULL);
+$blaze       = (in('blaze')   ? true : NULL);
+$deflect     = (in('deflect') ? true : NULL);
 
-// *** Target's stats. ***
-$attackee_health    = getHealth($target);
-$attackee_level     = getLevel($target);
-$attackee_str       = getStrength($target);
-$attackee_status    = getStatus($target);
-
-// *** Attacker's stats. ***
-$attacker_health     = getHealth($username);
-$attacker_level      = getLevel($username);
-$user_turns          = getTurns($username);
-$attacker_str        = getStrength($username);
-$attacker_status     = getStatus($username);
-$class               = getClass($username);
+$attacker    = get_username(); // Pulls from an internal source.
+$attacker_id = get_user_id();
 
 // *** Attack System Initialization ***
-$starting_attackee_health = $attackee_health;
-$starting_turns           = $user_turns;
 $killpoints               = 0; // *** Starting state for killpoints. ***
 $attack_turns             = 1; // *** Default cost, will go to zero if an error prevents combat. ***
-$required_turns           = $attack_turns;
-$level_check              = $attacker_level - $attackee_level;
+$required_turns           = 0;
 $what                     = ""; // *** This will be the attack type string, e.g. "duel". ***
 $loot                     = 0;
-$duel                     = (in('duel')? true : NULL);
-$blaze                    = (in('blaze')? true : NULL);
-$deflect                  = (in('deflect')? true : NULL);
 $simultaneousKill         = NULL; // *** Not simultaneous by default. ***
-$stealthAttackDamage      = $attacker_str;
 $turns_to_take            = null; // *** Even on failure take at least one turn. ***
-$attack_type              = 'attack'; // *** Default attack category type is single attack. ***
+$attack_type              = array();
 
 if ($blaze) {
-    $attack_type = 'blaze';
-} elseif ($deflect) {
-    $attack_type = 'deflect';
-} elseif ($duel) {
-    $attack_type = 'duel';
+    $attack_type['blaze'] = 'blaze';
+}
+
+if ($deflect) {
+    $attack_type['deflect'] = 'deflect';
+}
+
+if ($duel) {
+    $attack_type['duel'] = 'duel';
+} else {
+	$attack_type['attack'] = 'attack';
 }
 
 $skillListObj = new Skill();
-$ignores_stealth = $skillListObj->getIgnoreStealth($attack_type);
-$required_turns  = $skillListObj->getTurnCost($attack_type);
+
+$ignores_stealth = false;
+
+foreach ($attack_type as $type)
+{
+	$ignores_stealth = $ignores_stealth||$skillListObj->getIgnoreStealth($type);
+	$required_turns += $skillListObj->getTurnCost($type);
+}
 
 // *** Attack Legal section ***
-$attacker = $username;
-$params = array('required_turns'=>$required_turns, 'ignores_stealth'=>$ignores_stealth);
+$params = array(
+	'required_turns'    => $required_turns
+	, 'ignores_stealth' => $ignores_stealth
+);
+
 assert($attacker != $target);
+
 $AttackLegal = new AttackLegal($attacker, $target, $params);
 
 // *** There's a same-domain problem with this attack-legal now that it's been modified for skills ***
 
 // ***  MAIN BATTLE ALGORITHM  ***
-if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
-{	// *** Display the reason the attack failed.
+if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting.
+	// *** Display the reason the attack failed.
 	echo "<div class='ninja-error centered'>".$AttackLegal->getError()."</div>";
 } else {
+	$target_player    = new Player($target);
+	$attacking_player = new Player($attacker);
+
+	// *** Target's stats. ***
+	$target_health    = $target_player->vo->health;
+	$target_level     = $target_player->vo->level;
+	$target_str       = $target_player->vo->strength;
+	$target_status    = $target_player->getStatus();
+
+	// *** Attacker's stats. ***
+	$attacker_health     = $attacking_player->vo->health;
+	$attacker_level      = $attacking_player->vo->level;
+	$attacker_turns      = $attacking_player->vo->turns;
+	$attacker_str        = $attacking_player->vo->strength;
+	$attacker_status     = $attacking_player->getStatus();
+	$class               = $attacking_player->vo->class;
+
+	$starting_target_health   = $target_health;
+	$starting_turns           = $attacker_turns;
+	$stealthAttackDamage      = $attacker_str;
+	$level_check              = $attacker_level - $target_level;
+
 	// *** ATTACKING + STEALTHED SECTION  ***
-	if (!$duel && $attacker_status['Stealth']) { //Not dueling, and attacking from stealth
-		subtractStatus($username, STEALTH);
+	if (!$duel && $attacker_status['Stealth']) { // *** Not dueling, and attacking from stealth ***
+		$attacking_player->subtractStatus(STEALTH);
 		$turns_to_take = 1;
 
 		echo "<div>You are striking from the shadows, you quickly strike your victim!</div>\n";
 		echo "<div>Your attack has revealed you from the shadows! You are no longer stealthed.</div>\n";
 
-		if (!subtractHealth($attackee, $stealthAttackDamage)) { //if Stealth attack of whatever damage kills target.
+		if (!subtractHealth($target, $stealthAttackDamage)) { // *** if Stealth attack of whatever damage kills target. ***
 			$gold_mod     = .1;
-			$loot         = round($gold_mod * getGold($attackee));
-			$attackee_msg = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold on $today!";
-			$attacker_msg = "You have killed $attackee in combat and taken $loot gold on $today.";
+			$loot         = round($gold_mod * getGold($target));
+			$target_msg   = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold on $today!";
+			$attacker_msg = "You have killed $target in combat and taken $loot gold on $today.";
 
-			subtractStatus($attackee,STEALTH+POISON+FROZEN+CLASS_STATE);
-			addGold($username, $loot);
-			subtractGold($attackee, $loot);
-			sendMessage("A Stealthed Ninja", $attackee, $attackee_msg);
-			sendMessage($attackee,$username,$attacker_msg);
-			runBountyExchange($username, $attackee); // *** Determines the bounty for normal attacking. ***
+			$target_player->subtractStatus(STEALTH+POISON+FROZEN+CLASS_STATE);
+			addGold($attacker, $loot);
+			subtractGold($target, $loot);
+			sendMessage("A Stealthed Ninja", $target, $target_msg);
+			sendMessage($target, $attacker, $attacker_msg);
+			runBountyExchange($attacker, $target); // *** Determines the bounty for normal attacking. ***
 
-			echo "<div>You have slain $attackee with a dastardly attack!\n";
+			echo "<div>You have slain $target with a dastardly attack!\n";
 			echo "You do not receive recognition for this kill.</div>\n";
 			echo "<hr>\n";
 		} else {	// *** if damage from stealth only hurts the target. ***
-			echo "<div>$attackee has lost ".$stealthAttackDamage." HP.</div>\n";
+			echo "<div>$target has lost ".$stealthAttackDamage." HP.</div>\n";
 
-			sendMessage($username, $attackee, "$username has attacked you from the shadows for ".$stealthAttackDamage." damage.");
+			sendMessage($attacker, $target, "$attacker has attacked you from the shadows for $stealthAttackDamage damage.");
 		}
 	} else {	// *** If the attacker is purely dueling or attacking, even if stealthed, though stealth is broken by dueling. ***
        // *** MAIN DUELING SECTION ***
 
         if ($attacker_status['Stealth']) { // *** Remove their stealth if they duel instead of preventing dueling.
-            subtractStatus($username, STEALTH);
+            $attacking_player->subtractStatus(STEALTH);
             echo "You have lost your stealth.";
         }
 
@@ -157,35 +176,39 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 		// *** BEGINNING OF MAIN BATTLE ALGORITHM ***
 
 		$turns_counter         = $attack_turns;
-		$total_attackee_damage = 0;
+		$total_target_damage   = 0;
 		$total_attacker_damage = 0;
-		$attackee_damage       = 0;
+		$target_damage         = 0;
 		$attacker_damage       = 0;
 
 		// *** Combat Calculations ***
 		$round = 1;
 		$rounds = 0;
-		while ($turns_counter > 0 && $total_attackee_damage < $attacker_health && $total_attacker_damage < $attackee_health) {
+
+		while ($turns_counter > 0 && $total_target_damage < $attacker_health && $total_attacker_damage < $target_health) {
 			$turns_counter -= (!$duel ? 1 : 0);// *** SWITCH BETWEEN DUELING LOOP AND SINGLE ATTACK ***
 
-			$attackee_damage = rand (1, $attackee_str);
+			$target_damage   = rand (1, $target_str);
 			$attacker_damage = rand (1, $attacker_str);
 
 			if ($blaze) {	// *** Blaze does double damage. ***
 				$attacker_damage = $attacker_damage*2;
 			}
-			else if ($deflect) {
-				$attackee_damage = round($attackee_damage/2);
+
+			if ($deflect) {
+				$target_damage = round($target_damage/2);
 			}
 
-			$total_attackee_damage += $attackee_damage;
+			$total_target_damage   += $target_damage;
 			$total_attacker_damage += $attacker_damage;
 			$rounds++;	// *** Increases the number of rounds that has occured and restarts the while loop. ***
 		}
 
 		if ($blaze) {	// *** Blaze does double damage. ***
 			echo "<div>Your attack is more powerful due to blazing!</div>\n";
-		} else if ($deflect) {
+		}
+
+		if ($deflect) {
 			echo "<div>Your wounds are reduced by deflecting the attack!</div>\n";
 		}
 
@@ -211,16 +234,16 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 		}
 
 		if ($deflect) {
-			echo "<div>You spent two extra turns in order to deflect your enemy's blows.</div>\n"; // *** Deflect turn cost. ***
+			echo "<div>You spent three extra turns in order to deflect your enemy's blows.</div>\n"; // *** Deflect turn cost. ***
 		}
 
 		//  *** Let the victim know who hit them ***
-		$attack_type = ($duel ? 'dueled' : 'attacked');
-		$email_msg   = "You have been $attack_type by $username at $today for $total_attacker_damage!";
-		sendMessage($username,$attackee,$email_msg);
+		$attack_label = ($duel ? 'dueled' : 'attacked');
+		$email_msg     = "You have been $attack_label by $attacker at $today for $total_attacker_damage!";
+		sendMessage($attacker, $target, $email_msg);
 
-		$defenderHealthRemaining = subtractHealth($attackee, $total_attacker_damage);
-		$attackerHealthRemaining = subtractHealth($username, $total_attackee_damage);
+		$defenderHealthRemaining = subtractHealth($target, $total_attacker_damage);
+		$attackerHealthRemaining = subtractHealth($attacker, $total_target_damage);
 
 		if ($defenderHealthRemaining < 1) { //***  ATTACKER KILLS DEFENDER! ***
 			$simultaneousKill = ($attackerHealthRemaining < 1); // *** If both died at the same time. ***
@@ -229,29 +252,29 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 
 			if ($duel) {
 				killpointsFromDueling();	// *** Changes killpoints amount by dueling equation. ***
-				$duel_log_msg     = "$username has dueled $attackee and won $killpoints killpoints at $today.";
+				$duel_log_msg     = "$attacker has dueled $target and won $killpoints killpoints at $today.";
 				sendMessage("SysMsg", "SysMsg", $duel_log_msg);
-				sendLogOfDuel($username, $attackee, 1, $killpoints);	// *** Makes a WIN record in the dueling log. ***
+				sendLogOfDuel($attacker, $target, 1, $killpoints);	// *** Makes a WIN record in the dueling log. ***
 			}
 
-			addKills($username, $killpoints); // *** Attacker gains their killpoints. ***
-			subtractStatus($attackee, STEALTH+POISON+FROZEN+CLASS_STATE);
+			addKills($attacker, $killpoints); // *** Attacker gains their killpoints. ***
+			$target_player->subtractStatus(STEALTH+POISON+FROZEN+CLASS_STATE);
 
 			if (!$simultaneousKill)	{
-				$loot = round($gold_mod * getGold($attackee));
-				addGold($username, $loot);
-				subtractGold($attackee, $loot);
+				$loot = round($gold_mod * getGold($target));
+				addGold($attacker, $loot);
+				subtractGold($target, $loot);
 			}
 
-			$attackee_msg = "DEATH: You have been killed by $username in combat and lost $loot gold on $today!";
-			sendMessage($username, $attackee, $attackee_msg);
+			$target_msg = "DEATH: You have been killed by $attacker in combat and lost $loot gold on $today!";
+			sendMessage($attacker, $target, $target_msg);
 
-			$attacker_msg = "You have killed $attackee in combat and taken $loot gold on $today.";
-			sendMessage($attackee, $username, $attacker_msg);
+			$attacker_msg = "You have killed $target in combat and taken $loot gold on $today.";
+			sendMessage($target, $attacker, $attacker_msg);
 
-			echo "<div>$username has killed $attackee!</div>\n";
+			echo "<div>$attacker has killed $target!</div>\n";
 			echo "<div class='ninja-notice'>
-				$attackee is dead, you have proven your might";
+				$target is dead, you have proven your might";
 
 			if ($killpoints == 2) {
 				echo " twice over";
@@ -263,54 +286,54 @@ if (!$AttackLegal->check())	// *** Checks for error conditions before starting.
 			echo "!</div>\n";
 
 			if (!$simultaneousKill) {
-				echo "<div>You have taken $loot gold from $attackee.</div>\n";
+				echo "<div>You have taken $loot gold from $target.</div>\n";
 			}
 
-			runBountyExchange($username, $attackee);	// *** Determines bounty for dueling. ***
+			runBountyExchange($attacker, $target);	// *** Determines bounty for dueling. ***
 		}
 
 		if ($attackerHealthRemaining < 1) { // *** DEFENDER KILLS ATTACKER! ***
 			$defenderKillpoints = 1;
 
 			if ($duel) {	// *** if they were dueling when they died ***
-				$duel_log_msg     = "$username has dueled $attackee and lost at $today.";
+				$duel_log_msg     = "$attacker has dueled $target and lost at $today.";
 				sendMessage("SysMsg", "SysMsg", $duel_log_msg);
-				sendLogOfDuel($username, $attackee, 0, $killpoints);	// *** Makes a loss in the duel log. ***
+				sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
 			}
 
-			addKills($attackee, $defenderKillpoints);	// *** Adds a kill for the defender. ***
-			subtractStatus($username, STEALTH+POISON+FROZEN+CLASS_STATE);
+			addKills($target, $defenderKillpoints);	// *** Adds a kill for the defender. ***
+			$attacking_player->subtractStatus(STEALTH+POISON+FROZEN+CLASS_STATE);
 
 			if (!$simultaneousKill) {
-				$loot = round($gold_mod * getGold($username));//Loot for defender if he lives.
-				addGold($attackee, $loot);
-				subtractGold($username, $loot);
+				$loot = round($gold_mod * getGold($attacker));//Loot for defender if he lives.
+				addGold($target, $loot);
+				subtractGold($attacker, $loot);
 			}
 
-			$attackee_msg = "<div class='ninja-notice'>
-				You have killed $username in combat and taken $loot gold on $today.
+			$target_msg = "<div class='ninja-notice'>
+				You have killed $attacker in combat and taken $loot gold on $today.
 				</div>";
 
-			$attacker_msg = "DEATH: You have been killed by $attackee in combat and lost $loot gold on $today!";
+			$attacker_msg = "DEATH: You have been killed by $target in combat and lost $loot gold on $today!";
 
-			sendMessage($username, $attackee, $attackee_msg);
-			sendMessage($attackee, $username, $attacker_msg);
+			sendMessage($attacker, $target, $target_msg);
+			sendMessage($target, $attacker, $attacker_msg);
 
-			echo "<div class='ninja-error'>$attackee has killed you!</div>\n";
+			echo "<div class='ninja-error'>$target has killed you!</div>\n";
 			echo "<div class='ninja-notice' style='margin-bottom: 10px;'>
-				You have been slain!  Go to the <a href=\"shrine.php\">Shrine</a> to return to the living.
+				You have been slain! Go to the <a href=\"shrine.php\">Shrine</a> to return to the living.
 				</div>\n";
 
 			if (!$simultaneousKill) {
-				echo "<div>$attackee has taken $loot gold from you.</div>\n";
+				echo "<div>$target has taken $loot gold from you.</div>\n";
 			}
 		}
 
 		// *** END MAIN ATTACK AND DUELING SECTION ***
 	}
 
-	if (!$duel && getHealth($username) > 0 && getHealth($attackee) > 0) {	// *** After any partial attack. ***
-		echo "<div><a href=\"attack_mod.php?attacked=1&amp;attackee=$attackee\">Attack Again?</a></div>\n";
+	if (!$duel && getHealth($attacker) > 0 && getHealth($target) > 0) {	// *** After any partial attack. ***
+		echo "<div><a href=\"attack_mod.php?attacked=1&amp;target=$target\">Attack Again?</a></div>\n";
 	}
 }
 
@@ -319,13 +342,14 @@ if ($turns_to_take < 1) {
 	$turns_to_take = 1;
 }
 
-$ending_turns = subtractTurns($username, $turns_to_take);
+$ending_turns = subtractTurns($attacker, $turns_to_take);
 assert($ending_turns < $starting_turns || $starting_turns == 0);
 
 //  ***  START ACTION OVER AGAIN SECTION ***
 echo "<hr>\n";
-if (isset($attackee)) {
-	echo "<div>Return to <a href=\"player.php?player=".urlencode($attackee)."\">Player Detail</a></div>Or \n";
+
+if (isset($target)) {
+	echo "<div>Return to <a href=\"player.php?player=".urlencode($target)."\">Player Detail</a></div>Or \n";
 }
 
 echo "Start your combat <a href=\"list_all_players.php\"> from the player list.</a>\n<br>\n";

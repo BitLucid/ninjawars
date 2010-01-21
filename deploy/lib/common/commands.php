@@ -37,27 +37,27 @@ function getHealth($who){
   return $health;
 }
 
-function changeHealth($who,$amount){
-  if (abs($amount)>0){
-      global $sql;
+function changeHealth($who, $amount) {
+	if (abs($amount) > 0) {
+		global $sql;
 
-      $sql->Update("UPDATE players SET health = health + ".
+		$sql->Update("UPDATE players SET health = health + ".
 		   "CASE WHEN health+$amount < 0 THEN health*(-1) ELSE $amount END ".
 		   "WHERE uname  = '$who'");
-      $new_health = getHealth($who);
+		$new_health = getHealth($who);
 
-      return $new_health;
-    } else {
-      return getHealth($who);
-    }
+		return $new_health;
+	} else {
+		return getHealth($who);
+	}
 }
 
-function addHealth($who,$amount){
-  return changeHealth($who,$amount);
+function addHealth($who, $amount) {
+	return changeHealth($who, $amount);
 }
 
-function subtractHealth($who,$amount){
-  return changeHealth($who,((-1)*$amount));
+function subtractHealth($who, $amount) {
+	return changeHealth($who, ((-1)*$amount));
 }
 
 // ************************************
@@ -70,41 +70,41 @@ function subtractHealth($who,$amount){
 // ************************************
 
 function setGold($who,$new_gold) {
-  global $sql;
+	global $sql;
 
-  $sql->Update("UPDATE players SET gold = $new_gold WHERE uname = '$who'");
+	$sql->Update("UPDATE players SET gold = $new_gold WHERE uname = '$who'");
 
-  return $new_gold;
+	return $new_gold;
 }
 
-function getGold($who){
-  global $sql;
-  $gold = $sql->QueryItem("SELECT gold FROM players WHERE uname = '$who'");
-  return $gold;
+function getGold($who) {
+	global $sql;
+	$gold = $sql->QueryItem("SELECT gold FROM players WHERE uname = '$who'");
+	return $gold;
 }
 
-function changeGold($who,$amount) {
-  if (abs($amount) >  0) {
-      global $sql;
+function changeGold($who, $amount) {
+	if (abs($amount) >  0) {
+		global $sql;
 
-      $sql->Update("UPDATE players SET gold = gold + ".
+		$sql->Update("UPDATE players SET gold = gold + ".
 		   "CASE WHEN gold+$amount < 0 THEN gold*(-1) ELSE $amount END ".
 		   "WHERE uname = '$who'");
 
-      $new_gold = getGold($who);
+		$new_gold = getGold($who);
 
-      return $new_gold;
-    } else {
-      return getGold($who);
-    }
+		return $new_gold;
+	} else {
+		return getGold($who);
+	}
 }
 
-function addGold($who,$amount) {
-  return changeGold($who,$amount);
+function addGold($who, $amount) {
+	return changeGold($who, $amount);
 }
 
-function subtractGold($who,$amount) {
-  return changeGold($who,((-1)*$amount));
+function subtractGold($who, $amount) {
+	return changeGold($who, ((-1)*$amount));
 }
 
 // ************************************
@@ -436,7 +436,7 @@ function getStatus($who) {
 	return $status_array;
 }
 
-function addStatus($who,$what)   //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
+function addStatus($who, $what)   //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
 {
 	global $sql;
 
@@ -453,10 +453,11 @@ function addStatus($who,$what)   //Takes in the Status in the ALL_CAPS_WORD form
 			$_SESSION['status']+=$what;
 		}
 	}
+
 	return getStatus($who);
 }
 
-function subtractStatus($who,$what)     //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
+function subtractStatus($who, $what)     //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
 {
 	global $sql;
 

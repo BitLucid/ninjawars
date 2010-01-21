@@ -23,7 +23,7 @@ $target        = $player = in('player');
 $target_id     = either(in('target_id'), either(in('player_id'), get_user_id($target)));
 $score         = get_score_formula();
 $user_id       = get_user_id();
-$attacker      = $username = get_username();
+$username      = get_username();
 $linkbackpage  = in('linkbackpage');
 $message       = in('message');
 
@@ -51,7 +51,7 @@ $viewers_clan       = ($viewing_player_obj instanceof Player && $viewing_player_
 
 // Attack Legal section
 $params          = array('required_turns'=>0, 'ignores_stealth'=>true); // 0 for unstealth.
-$AttackLegal     = new AttackLegal($attacker, $target, $params);
+$AttackLegal     = new AttackLegal($username, $target, $params);
 $attack_allowed  = $AttackLegal->check();
 $attack_error    = $AttackLegal->getError();
 

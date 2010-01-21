@@ -22,8 +22,8 @@ function update_last_attack_time($player_id, $sql=null) {
  */
 function attack_legal()  //  Checks for errors in the initial stage of combat.
 {
-	global $attacked, $attackee, $user_turns, $required_turns, $username, $player_id, $sql;
-	global $attackee_ip, $attacker_ip, $attackee_confirmed, $attacker_health, $attackee_health, $attackee_status;
+	global $attacked, $target, $attacker_turns, $required_turns, $attacker, $player_id, $sql;
+	global $target_ip, $attacker_ip, $target_confirmed, $attacker_health, $target_health, $target_status;
 
 	$second_interval_limiter_on_attacks = '.20';
 
@@ -36,8 +36,8 @@ function attack_legal()  //  Checks for errors in the initial stage of combat.
 
 	// *** TODO: Take in and require energy in this function.
 
-	$attackee_id = get_user_id($attackee);
-	$defender_id = get_user_id($username);
+	$target_id = get_user_id($target);
+	$defender_id = get_user_id($attacker);
 
 	//  *** START OF ILLEGAL ATTACK ERROR LIST  ***
 	if (!$attack_later_than_limit) {
@@ -45,29 +45,29 @@ function attack_legal()  //  Checks for errors in the initial stage of combat.
 		return false;
 	} else if ($attacked != 1) {
 		return false;
-	} else if ($attackee == "") {
+	} else if ($target == "") {
 		echo "Your victim does not exist.<br>\n";
 		return false;
-	} else if ($attackee == $username) {
+	} else if ($target == $attacker) {
 		echo "Commiting suicide is a tactic reserved for samurai.<br>\n";
 		return false;
 	} else if ($user_turns < $required_turns) {
 		echo "You do not have enough turns to execute the attack you chose, use a speed scroll or wait for more turns on the half hour.<br>\n";
 		return false;
-	} else if  ($attackee_ip == $_SESSION['ip'] && $_SESSION['ip'] != '127.0.0.1') {
+	} else if  ($target_ip == $_SESSION['ip'] && $_SESSION['ip'] != '127.0.0.1') {
 		echo "You can not attack a ninja from the same domain.<br>\n";
 		return false;
-	} else if ($attackee_confirmed == 0) {
+	} else if ($target_confirmed == 0) {
 		echo "You can not attack an inactive ninja.<br>\n";
 		return false;
-	} else if ($attackee_health < 1) {
+	} else if ($target_health < 1) {
 		echo "You can not attack a corpse.<br>\n";
 		return false;
-	} else if ($attackee_status['Stealth']) {
+	} else if ($target_status['Stealth']) {
 		echo "Your victim is stealthed. You cannot attack this ninja by normal means.<br>\n";
 		return false;
-	} else if (($attackeeClan = get_clan_by_player_id($attackee_id)) && ($defenderClan = get_clan_by_player_id($defender_id))) {
-		if ($attackeeClan->getID() == $defenderClan->getID()) {
+	} else if (($targetClan = get_clan_by_player_id($target_id)) && ($defenderClan = get_clan_by_player_id($defender_id))) {
+		if ($targetClan->getID() == $defenderClan->getID()) {
 			echo "You cannot attack a ninja in the same clan as you.\n";
 			return false;
 		} else {
@@ -80,9 +80,9 @@ function attack_legal()  //  Checks for errors in the initial stage of combat.
 
 function killpointsFromDueling()  //  *** Multiple Killpoints from Dueling ***
 {
-  global $attackee_level,$attacker_level,$starting_attackee_health,$killpoints,$duel;
+  global $target_level,$attacker_level,$starting_target_health,$killpoints,$duel;
 
-  $levelDifference=($attackee_level-$attacker_level);
+  $levelDifference=($target_level-$attacker_level);
 
   switch (TRUE)
   {
@@ -117,7 +117,7 @@ function killpointsFromDueling()  //  *** Multiple Killpoints from Dueling ***
 
 function preBattleStats()
 {
-  global $attackee,$attackee_health,$attacker_health, $attackee_str,$username;
+  global $target,$target_health,$attacker_health, $target_str,$attacker;
 
   echo "<table border=\"0\">\n";
   echo "<tr>\n";
@@ -142,11 +142,11 @@ function preBattleStats()
 
   echo "<tr>\n";
   echo "  <td>\n";
-  echo "  $username\n";
+  echo "  $attacker\n";
   echo "  </td>\n";
 
   echo "  <td>\n";
-  echo    getStrength($username)."\n";
+  echo    getStrength($attacker)."\n";
   echo "  </td>\n";
 
   echo "  <td>\n";
@@ -158,15 +158,15 @@ function preBattleStats()
 
   echo "<tr>\n";
   echo "  <td>\n";
-  echo    $attackee."\n";
+  echo    $target."\n";
   echo "  </td>\n";
 
   echo "  <td>\n";
-  echo    $attackee_str."\n";
+  echo    $target_str."\n";
   echo "  </td>\n";
 
   echo "  <td>\n";
-  echo    $attackee_health."\n";
+  echo    $target_health."\n";
   echo "  </td>\n";
   echo "</tr>\n";
 
@@ -178,7 +178,7 @@ function preBattleStats()
 
 function finalResults()
 {
-  global $total_attacker_damage,$total_attackee_damage,$attackee,$attacker_health,$attackee_health,$username;
+  global $total_attacker_damage,$total_target_damage,$target,$attacker_health,$target_health,$attacker;
 
   echo "<table style=\"border: 0;\">\n";
   echo "<tr>\n";
@@ -203,7 +203,7 @@ function finalResults()
 
   echo "<tr>\n";
   echo "  <td>\n";
-  echo "  $username\n";
+  echo "  $attacker\n";
   echo "  </td>\n";
 
   echo "  <td style=\"text-align: center;\">\n";
@@ -211,7 +211,7 @@ function finalResults()
   echo "  </td>\n";
 
   echo "  <td>\n";
-  $finalizedHealth=$attacker_health-$total_attackee_damage;
+  $finalizedHealth=$attacker_health-$total_target_damage;
   if ($finalizedHealth<100)  // Makes your health red if you go below 100 hitpoints.
   {
 	echo "<span style=\"color:red;font-weight:bold;\">";
@@ -227,15 +227,15 @@ function finalResults()
 
   echo "<tr>\n";
   echo "  <td>\n";
-  echo    $attackee."\n";
+  echo    $target."\n";
   echo "  </td>\n";
 
   echo "  <td style=\"text-align: center;\">\n";
-  echo    $total_attackee_damage."\n";
+  echo    $total_target_damage."\n";
   echo "  </td>\n";
 
   echo "  <td>\n";
-  echo    $attackee_health-$total_attacker_damage."\n";
+  echo    $target_health-$total_attacker_damage."\n";
   echo "  </td>\n";
   echo "</tr>\n";
   echo "</table>";

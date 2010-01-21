@@ -47,12 +47,12 @@ class Player
 		return getStatus($this->vo->uname);
 	}
 
-	public function addStatus($status_in_caps) {
-		addStatus($status_in_caps);
+	public function addStatus($status_constant) {
+		addStatus($this->vo->uname, $status_constant);
 	}
 
-	public function subtractStatus($status_in_caps) {
-		subtractStatus($status_in_caps);
+	public function subtractStatus($status_constant) {
+		subtractStatus($this->vo->uname, $status_constant);
 	}
 
 	public function as_vo() {
@@ -62,6 +62,5 @@ class Player
 	public function as_array() {
 		return (array) $this->vo;
 	}
-
 }
 ?>

@@ -202,50 +202,56 @@ function nw_session_set_username($logged_in_username){
 }
 
 // Returns a username from a user id.
-function get_username($user_id=null){
-    static $self;
-    if($user_id){
-        $sql = new DBAccess();
-        return $sql->QueryItem("select uname from players where player_id = '".sql($user_id)."'");
-    }
-    if(!$self){
-        $self = (SESSION::is_set('username') ? SESSION::get('username') : NULL);
-    }
+function get_username($user_id=null) {
+	static $self;
+
+	if ($user_id) {
+		$sql = new DBAccess();
+		return $sql->QueryItem("select uname from players where player_id = '".sql($user_id)."'");
+	}
+
+	if (!$self) {
+		$self = (SESSION::is_set('username') ? SESSION::get('username') : NULL);
+	}
+
 	return $self;
 }
 
-function player_name_from_id($player_id){
-    $sql = new DBAccess();
-    if(!$player_id){
-        throw new Exception('Blank player ID to find the username of requested.');
-    }
-    return $sql->QueryItem("select uname from players where player_id ='".sql($player_id)."'");
+function player_name_from_id($player_id) {
+	$sql = new DBAccess();
+
+	if (!$player_id) {
+		throw new Exception('Blank player ID to find the username of requested.');
+	}
+
+	return $sql->QueryItem("select uname from players where player_id ='".sql($player_id)."'");
 }
 
 // Return the id that corresponds with a player name, if no other source is available.
 function get_user_id($p_name=null) {
-    static $self_id; // Store the player's own id.
-    $find = null;
+	static $self_id; // Store the player's own id.
+	$find = null;
     
-    if($p_name === null){
-        if($self_id){
-            return $self_id; // Return the cached id.
-        }
-        $find = get_username(); // Use own username.
-    } else {
-        $find = $p_name; // Search to find someone else.
-    }
-    $sql = new DBAccess();
-    $id = $sql->QueryItem("select player_id from players 
-    	    where lower(uname) = lower('".sql($find)."')");
-    	    
-    if(!$id){
-        $id = null;
-    }
-    if($id && $p_name === null){
-        $self_id = $id;
-    }
-    return $id;
+	if ($p_name === null) {
+		if ($self_id) {
+			return $self_id; // Return the cached id.
+		}
+
+		$find = get_username(); // Use own username.
+	} else {
+		$find = $p_name; // Search to find someone else.
+	}
+
+	$sql = new DBAccess();
+	$id = $sql->QueryItem("SELECT player_id FROM players WHERE lower(uname) = lower('".sql($find)."')");
+
+	if (!$id) {
+		$id = null;
+	} else if ($p_name === null) {
+		$self_id = $id;
+	}
+
+	return $id;
 }
 
 
