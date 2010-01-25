@@ -9,7 +9,7 @@ define('OFFLINE', false);				// *** Controls if remote or local resources are us
 define('DEBUG', true);					// *** Shorter debugging constant name, set as false on live.
 define('DEBUG_ALL_ERRORS', true);	// *** Only will turn on if debug is also on.
 define('SERVER_ROOT', "/home/tchalvak/ninjawars/deploy/");		// *** The root deployment directory of the game
-define('WEB_ROOT', "http://127.0.0.1/ninjawars/deploy/www/");			// *** The base URL used to access the game
+define('WEB_ROOT', "http://nw.local/");			// *** The base URL used to access the game
 define('ADMIN_EMAIL', "ninjawarslivebythesword@gmail.com");		// *** For logs/emailed errors.
 define('SUPPORT_EMAIL', "ninjawarslivebythesword@gmail.com");	// *** For public questions.
 define('SUPPORT_EMAIL_FORMAL_NAME', "Ninjawars Administrators");
