@@ -321,9 +321,9 @@ $ending_turns = subtractTurns($username, $turns_to_take);
 assert($item === $speedScroll || $ending_turns < $starting_turns || $starting_turns == 0);
 ?>
 
-<br><br>
-
-Return to <?echo $link_back;?>
+<p>
+Return to <?php echo ($link_back? $link_back : "<a href='combat.php'>Combat</a>");?>
+</p>
 
 <?php
 include SERVER_ROOT."interface/footer.php";
