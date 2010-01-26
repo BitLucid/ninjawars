@@ -1,4 +1,4 @@
-<h2>Account Info for {$username}</h2>
+<h1>Account Info for {$username}</h1>
 
 <div id='content'>
 
