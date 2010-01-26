@@ -3,6 +3,24 @@
 require_once(LIB_ROOT.'template_library/template_lite/src/class.template.php');
 // See: http://templatelite.sourceforge.net/docs/index.html for the docs, it's a smarty-like syntax.
 
+
+/** Displays a template wrapped in the header and footer.
+  *
+  * Example use:
+  * echo render_page('add.tpl', get_current_vars(get_defined_vars()), 'Homepage');
+**/
+function render_page($template, $local_vars, $title=null){
+    if($title == null){
+        $title = '';
+    }
+    $res = render_header($title, $title);
+    $res .= render_template($template, $local_vars);
+    $res .= render_footer();
+    return $res;
+}
+
+
+
 // Will return the rendered content of the template.
 function render_template($template_name, $assign_vars=array()){
 	// Initialize the template object.

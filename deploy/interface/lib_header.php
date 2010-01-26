@@ -65,6 +65,10 @@ function render_html_for_header($p_title = null, $p_bodyClasses = 'body-default'
 	return render_template('header.tpl', $parts);
 }
 
+function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses = 'body-default'){
+    return render_html_for_header($p_title, $p_bodyClasses = 'body-default');
+}
+
 // Renders the error message when a section isn't viewable.
 function render_viewable_error($p_error)
 {
