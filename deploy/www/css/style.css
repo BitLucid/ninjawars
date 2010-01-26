@@ -158,10 +158,17 @@ h1{
         margin-bottom: 1em;
         max-height:20em;
 }
-/*
+
 .doshin-office .description{
-    -moz-column-count: 3; -moz-column-gap: 1em;*/ /*-moz-column-rule: 1px solid white;*/ /*-webkit-column-count: 3; -webkit-column-gap: 1em;*/ /*-webkit-column-rule: 1px solid white;*/
-/*}*/
+    text-align:left;
+    -moz-column-count: 3; -moz-column-gap: 1em; -moz-column-rule: 1px solid #333; 
+    -webkit-column-count: 3; -webkit-column-gap: 1em; -webkit-column-rule: 1px solid #333;
+    padding-bottom:.5em;
+}
+
+.doshin-office .description p{
+    text-indent: 20px;
+}
 
 
 /* End of experimental css3 for the staff page */
