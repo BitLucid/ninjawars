@@ -210,7 +210,7 @@ function format_css_class_from_title($page_title){
  * Will need a "don't write header" option for jQuery iframes.
 **/
 function render_html_for_header($p_title = null, $p_bodyClasses = 'body-default', $p_isIndex=null){
-    $css_body_classes = $p_bodyClasses? $p_bodyClasses : format_css_class_from_title($page_title);
+    $css_body_classes = $p_bodyClasses? $p_bodyClasses : format_css_class_from_title($p_title);
 	$parts = array(
 		'title'          => ($p_title ? htmlentities($p_title) : '')
 		, 'body_classes' => $css_body_classes
