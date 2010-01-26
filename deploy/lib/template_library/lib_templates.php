@@ -9,13 +9,15 @@ require_once(LIB_ROOT.'template_library/template_lite/src/class.template.php');
   * Example use:
   * echo render_page('add.tpl', get_current_vars(get_defined_vars()), 'Homepage');
 **/
-function render_page($template, $local_vars, $title=null){
-    if($title == null){
-        $title = '';
+function render_page($template, $title=null, $local_vars=array(), $options=null){
+    if($options && isset($options['quickstat'])){
+        $quickstat = $options['quickstat'];
+    } else {
+        $quickstat = $local_vars && isset($local_vars['quickstat'])? $local_vars['quickstat'] : null;
     }
-    $res = render_header($title, $title);
+    $res = render_header($title);
     $res .= render_template($template, $local_vars);
-    $res .= render_footer();
+    $res .= render_footer($quickstat);
     return $res;
 }
 
