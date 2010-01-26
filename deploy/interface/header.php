@@ -1,83 +1,33 @@
 <?php
-// TODO: Make this into a render function.
-ob_start(null, 1); // File buffer output in chunks.
-// General utility objects.
-$filter = new Filter(); // *** Creates the filters for later use.
-$sql = new DBAccess();
-$section_only = in('section_only'); // Check whether it's an ajax section.
-
-// ******************** Declared variables *****************************
-$today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
-// Page viewing settings usually set before the header.
-$private 	= (isset($private)? $private : NULL);
-$quickstat 	= (isset($quickstat)? $quickstat : NULL);
-$alive 		= (isset($alive)? $alive : NULL);
-$page_title = (isset($page_title)? $page_title : "NinjaWars");
-$error = null; // Logged in or alive error.
 
 
-update_activity_info(); // *** Updates the activity of the page viewer in the database.
 
-if(!is_logged_in()){
-	if ($private) {
-		$error = render_viewable_error('log_in');
-		// Content being in the error triggers a die at the end of the header.
-    }
+
+
+
+
+
+$error = init(); // Creates some starting objects&vars, $sql, puts player info into global namespace (sadly), updates activity, starts buffering.
+
+
+
+$header = render_header_when_not_section($page_title);
+
+$error_to_display = render_error($error);
+
+
+// **************** OUTPUT SECTION *******************************//
+
+if($error_to_display){
+    echo $header;
+    echo $error_display;
+    echo render_footer($quickstat); // Display the bottom of the error page, refresh the quickstat view if necessary.
+    die();
 } else {
-	// **************** Player information settings. *******************
-	$username         = SESSION::get('username');
-
-	$player = new Player($username); // Defaults to current session user.
-
-	$players_id = $player->player_id;
-	$player_id = $players_id; // Just two aliases for the player id.
-	$players_email = $player->vo->email;
-
-	// TODO: Turn this into a list extraction?
-	// password and messages intentionally excluded.
-	$players_turns    	= $player->vo->turns;
-	$players_health   	= $player->vo->health;
-	$players_bounty   	= $player->vo->bounty;
-	$players_gold     	= $player->vo->gold;
-	$players_level    	= $player->vo->level;
-	$players_class    	= $player->vo->class;
-	$players_strength 	= $player->vo->strength;
-	$players_kills		= $player->vo->kills;
-
-	$players_days		= $player->vo->days;
-	$players_created_date = $player->vo->created_date;
-	$players_last_started_attack = $player->vo->last_started_attack;
-	$players_clan 		= get_clan_by_player_id($player->vo->player_id);
-
-	// TODO: not ready yet: $players_energy	= $player_data['energy'];
-	// Also migrate the player_score to a true player object.
-	// Also migrate the rank_id to a true player object.
-
-	$players_status   = $player->getStatus();
-
-	assert('isset($players_id)');
-
-	if ($alive) { // *** That page requires the player to be alive to view it.
-		if (!$players_health) {
-			$error = render_viewable_error('dead');
-		} else {
-			if ($status_array['Frozen']) {
-				$error = render_viewable_error('frozen');
-	    	}
-		}
-    }
+    echo $header;
 }
 
 
-if(!$section_only){
-    // make a dash separated css class from the page titles.
-    $css_body_class = strtolower(preg_replace('/\s/', '-', $page_title));
-    echo render_html_for_header($page_title, $css_body_class); // ***** Display the html header
-}
 
-if ($error){ // If there's an error, display that then end.
-	echo $error;
-	echo render_footer($quickstat); // Display the bottom of the page.
-	die(); // Skip displaying anything more.
-}
+
 ?>
