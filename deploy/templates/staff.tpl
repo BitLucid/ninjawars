@@ -84,11 +84,11 @@
     <a class='external' target='_blank' href="http://github.com/tchalvak/ninjawars/tree/master">http://github.com/tchalvak/ninjawars</a>
   </p>    
     
-    <p id='latest-commit-section'>
+    <div id='latest-commit-section'>
     <p id='latest-commit-title'>The latest commit to the main ninjawars code was:</p>
     <span id='latest-commit'>
     </span>
-    </p>
+    </div>
 </div>
 
 <div class='license'>

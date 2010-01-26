@@ -116,11 +116,6 @@ h2{
     font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
     letter-spacing:0.1em;
 }
-h3{
-    border-radius: 5px; 
-    padding: 5px 5px 5px 15px;
-    box-shadow: -10px -10px 0px #666;
-}
 h1{
 	background: #BDB76B url(/images/blacktransfaderight.png) right top repeat-y;
 	border:none;
@@ -130,6 +125,49 @@ h1{
 	max-width: 1000px;
 	margin: 0 auto inherit auto;
 }
+/* Experimental css3 for the staff page*/
+/*.ninjawars-staff h1{
+    border-image: url(/images/border.png) 27 27 27 27 stretch stretch;
+}*/
+.ninjawars-staff h1{
+    -moz-border-radius-bottomleft: 20px; -webkit-border-bottom-left-radius: 20px; padding: 10px;
+}
+.ninjawars-staff h3{
+    border-radius: 5px; 
+    padding: 5px 5px 5px 15px;
+    box-shadow: -10px -10px 0px #666;
+}
+
+.ninjawars-staff #open-source-repository h3{
+    background-color: hsla(0,100%,50%,0.3);
+    border:none;
+    border-image: url(/images/border.png) 27 27 27 27 stretch stretch;
+    text-shadow: white 0px 0px 4px, #FF3 0px -5px 4px, #FD3 2px -10px 6px, #F80 -2px -15px 11px, #F20 2px -25px 18px;
+    font-size:30px;
+}
+
+.ninjawars-staff #latest-commit{
+	/*background:#303030 url(/images/blacktransfaderight.png) right top repeat-y, url(/images/blacktransfadeleft.png) left top repeat-y;*/
+    /*background-color:blue;*/
+    color:pink;
+    background-color: hsla(0,100%,50%,0.3);
+}
+.ninjawars-staff #latest-commit-section{
+        width: 97%; height: 70px; border: 1px solid white; resize: vertical; overflow: auto; 
+        /*border-image: url(/images/border.png) 27 27 27 27 stretch stretch;*/
+        margin-bottom: 1em;
+        max-height:20em;
+}
+/*
+.doshin-office .description{
+    -moz-column-count: 3; -moz-column-gap: 1em;*/ /*-moz-column-rule: 1px solid white;*/ /*-webkit-column-count: 3; -webkit-column-gap: 1em;*/ /*-webkit-column-rule: 1px solid white;*/
+/*}*/
+
+
+/* End of experimental css3 for the staff page */
+
+
+
 .clan-members .subtitle{
     background-color:#BDB76B;/*DarkKhaki*/
     color:black;
@@ -1185,7 +1223,7 @@ table .quickstats td{
 }
 
 #latest-commit-section{
-    font-size:1.5em;
+    font-size:1.1em;
 }
 
 #latest-commit{
