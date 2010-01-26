@@ -116,6 +116,11 @@ h2{
     font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
     letter-spacing:0.1em;
 }
+h3{
+    border-radius: 5px; 
+    padding: 5px 5px 5px 15px;
+    box-shadow: -10px -10px 0px #666;
+}
 h1{
 	background: #BDB76B url(/images/blacktransfaderight.png) right top repeat-y;
 	border:none;
