@@ -49,7 +49,7 @@ function globalize_user_info($private=true, $alive=true){
     if((!is_logged_in() || !$username) && $private) {
     		$error = render_viewable_error('log_in');
     		// A non-null set of content being in the error triggers a die at the end of the header.
-    } else {
+    }elseif($username) {
     	// **************** Player information settings. *******************
     	global $player, $players_id, $player_id, $players_email, 
     	    $players_turns, $players_health, $players_bounty, $players_gold, $players_level,
@@ -57,7 +57,6 @@ function globalize_user_info($private=true, $alive=true){
     	    $players_last_started_attack, $players_clan, $players_status;
     	// Polluting the global namespace here.  Booo.
     	    
-
     	$player = new Player($username); // Defaults to current session user.
 
     	$players_id = $player->player_id;
