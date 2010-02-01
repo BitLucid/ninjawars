@@ -131,7 +131,7 @@
 
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe id="main" name="main" class="main-iframe" src="{$main_src}">
+            <iframe border='0' id="main" name="main" class="main-iframe" src="{$main_src}">
               <a href='{$main_src}' target='_blank'>Main Content</a> Display Section (Frames Not Supported)
             </iframe>
           </div><!-- End of mainFrame div -->
@@ -174,7 +174,7 @@
                   </div>
     <!-- TODO: move chat submit box out here. -->
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
-                    <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
+                    <iframe border='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
                       <a href='mini_chat.php' target='_blank'>Mini Chat</a> Iframe Display Section (Iframes not supported by this browser)
                     </iframe>
                   </div>

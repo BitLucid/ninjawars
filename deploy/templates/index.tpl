@@ -27,7 +27,7 @@
                 | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
               </div>
               <div id="quickstats-frame-container">
-                <iframe id="quickstats" src="quickstats.php" name="quickstats">
+                <iframe border='0' id="quickstats" src="quickstats.php" name="quickstats">
                   <a href='quickstats.php' target='_blank'>Quick Stats</a> Iframe Display section (Iframes Not supported by this browser)
                 </iframe>
               </div>
@@ -137,7 +137,7 @@
 
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe id="main" name="main" class="main-iframe" src="{$main_src}">
+            <iframe border='0' id="main" name="main" class="main-iframe" src="{$main_src}">
               <a href='{$main_src}' target='_blank'>Main Content</a> Display Section (Frames Not Supported)
             </iframe>
           </div><!-- End of mainFrame div -->

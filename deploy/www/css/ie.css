@@ -7,3 +7,6 @@ body {
 .ibutton{
     height:1em;
 }
+iframe{
+    border:none;
+}
