@@ -1,10 +1,8 @@
     {$header}
+
+   
 {literal}
-<script type="text/javascript" charset="utf-8">
-  var is_ssl = ("https:" == document.location.protocol);
-  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
-  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
+<script type='text/javascript' charset='utf-8' src='http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js' type='text/javascript'></script>
 
 <script type="text/javascript" charset="utf-8">
   var feedback_widget_options = {};
@@ -18,6 +16,7 @@
   var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
 </script>
 {/literal}
+ 
     
     <!-- Version {$version} -->
 
@@ -31,7 +30,7 @@
     <div id="menu" class="login-menu">
       <div id="menu-start">
         <div id="login-bar">
-          <form id="login-form" action="{$WEB_ROOT}index.php#" method="post">
+          <form id="login-form" action="index.php#" method="post">
             <span class="text">
               <input type="hidden" name="ref" value="{$referrer}">
                 <label>
@@ -52,10 +51,10 @@
         </div>
         <div id="menu-info">
           <span class="signup-link">
-            <a target="main" href="{$WEB_ROOT}signup.php?referrer={$referrer}">Become a Ninja!</a> |
+            <a target="main" href="signup.php?referrer={$referrer}">Become a Ninja!</a> |
           </span>
           <span>
-            <a href="{$WEB_ROOT}account_issues.php" target="main" class="blend side">Signup Problems?</a>
+            <a href="account_issues.php" target="main" class="blend side">Signup Problems?</a>
           </span>
         </div>
         
@@ -64,7 +63,7 @@
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
-        	<a href='{$WEB_ROOT}list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='Ninjawars Intro' title='ninja list'></a>
+        	<a href='list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='Ninjawars Intro' title='ninja list'></a>
         </div>
           
           <div id="ninja-search" class="boxes active">
@@ -79,7 +78,7 @@
           </div>
             
           <div id='contact-us'>
-	        <a href='staff.php' target='main'><img src='{$WEB_ROOT}images/contactstaff.png' alt='Contact Staff'></a>
+	        <a href='staff.php' target='main'><img src='images/contactstaff.png' alt='Contact Staff'></a>
 	      </div>
 
       </div>  
@@ -104,7 +103,7 @@
                   </a>
                 </li>
                 <li>
-				  <div id='ninjawars-title'><a href='{$WEB_ROOT}tutorial.php' target='main'><img src='{$IMAGE_ROOT}ninjawars_title.png' alt='Ninja Wars'></a></div>
+				  <div id='ninjawars-title'><a href='tutorial.php' target='main'><img src='images/ninjawars_title.png' alt='Ninja Wars'></a></div>
                 </li>
                 <li id='village-actions'>
                   <a href='attack_player.php' target='main'>                  
@@ -188,12 +187,12 @@
           </div> <!-- End of index-chat --> 
 
           <div id="music" class="boxes passive">
-            <object type="audio/x-midi" data="{$WEB_ROOT}files/music/samsho.mid" id="music-player">
-              <param name="src" value="{$WEB_ROOT}files/music/samsho.mid">
+            <object type="audio/x-midi" data="files/music/samsho.mid" id="music-player">
+              <param name="src" value="files/music/samsho.mid">
               <param name="autoplay" value="true">
               <param name="autoStart" value="0">
-              <a href="{$WEB_ROOT}files/music/samsho.mid">
-                Music <img class="play-button" src="{$IMAGE_ROOT}bullet_triangle_green.png" alt="&gt;">
+              <a href="files/music/samsho.mid">
+                Music <img class="play-button" src="images/bullet_triangle_green.png" alt="&gt;">
               </a>
             </object>
           </div>          
@@ -204,7 +203,8 @@
 <!-- TODO: make this absolute, floating at the page bottom as per facebook's bar. -->
         <!-- Substitute dynamic "catchphrases" here eventually -->
         <!-- "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." -->
-        "Join a clan, promote multiple stab wounds."
+        <!--"Join a clan, promote multiple stab wounds." -->
+        Annoy the Emperor, kill Samurai.
          |
         <a href="tutorial.php" target="main">Help</a> |
         <a href="rules.php" target="main">Rules</a> |
@@ -217,7 +217,7 @@
       </div>
       
     </div> <!-- End of content div -->
-    
+       
 <!-- Validated as of Oct, 2009 -->
 
     <!-- Version: {$version} -->

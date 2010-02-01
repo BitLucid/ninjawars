@@ -225,9 +225,25 @@ function toggle_visibility(id) {
     return false;
 }
 
-function refreshMinichat(){
-    // Add check for this location.
-        parent.mini_chat.location="mini_chat.php?from_js=1";
+function refreshMinichat(msg){
+    var container = $('#mini-chat-frame-container');
+    if(container){
+        container.load("mini_chat.php?from_js=1", {'message':msg,'command':'postnow'});
+    } else {
+        // Add check for this location.
+        parent.mini_chat.location="mini_chat.php?from_js=1&message="+escape(msg)+"&command=postnow";
+    }
+}
+
+function sendChatContents(form){
+    var chatbox = $(form).find('#message');
+    debug(chatbox);
+    if(chatbox){
+        refreshMinichat(chatbox.val()); // Send message to refreshMinichat.
+        chatbox.val(''); // Clear the chat message box.
+        return false;
+    }
+    return true;
 }
 
 // For refreshing quickstats from inside main.
@@ -299,6 +315,10 @@ $(document).ready(function() {
         
         
     }
+    
+    $('#index-chat form').submit(function (){sendChatContents(this)}).css({'font-weight':'bold','color':'maroon'});
+    // When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
+    
     
     /* THIS CODE RUNS FOR ALL SUBPAGES */
     soloPage(); // Append a link back to main page for any lone subpages not in iframes.

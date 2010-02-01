@@ -18,7 +18,6 @@ $chat_submit = in('chat_submit');
 $sent = false;
 $username = get_username();
 $user_id = get_user_id();
-$input_form = ($username ? render_chat_input() : '');
 
 // Take in a chat and record it to the database.
 if ($user_id) {
@@ -31,13 +30,15 @@ if ($user_id) {
 
 echo render_chat_refresh(); // Write out the js to refresh.
 
-echo "
+
+/*
 <script src='".WEB_ROOT."js/jquery.timeago.js' type='text/javascript'></script>
 <script type='text/javascript'>
     jQuery(document).ready(function() {
       jQuery('abbr.timeago').timeago();
     });
-</script>";
+</script>
+*/
 
 
 if($chat_submit){ // Js refocus code when chat sent.
@@ -49,8 +50,6 @@ if($chat_submit){ // Js refocus code when chat sent.
 }
 
 echo "<div id='mini-chat'>";
-
-echo $input_form;
 
 echo render_active_members($sql);
 

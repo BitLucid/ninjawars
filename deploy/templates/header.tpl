@@ -7,22 +7,23 @@
 	<meta name="description" content="Ninjawars: Battle other ninja for your survival.  Create a ninja and use skills or magic to kill samurai, the emperor's guards, or other ninja from rival clans.">
 
 	<title>Ninja Wars: {$title}</title>
-
-    <link rel="stylesheet" type="text/css" href="{$WEB_ROOT}css/style.css">
+    <base href="{$WEB_ROOT}">
+    <!--[if lte IE 6]></base><![endif]-->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 	<!--[if lte IE 6]>
-    <link rel="stylesheet" type="text/css" href="{$WEB_ROOT}css/ie-6.css">
+    <link rel="stylesheet" type="text/css" href="css/ie-6.css">
 	<![endif]-->
 	<!-- [if gte IE 7]>
-	<link rel="stylesheet" type="text/css" href="{$WEB_ROOT}css/ie.css">
+	<link rel="stylesheet" type="text/css" href="css/ie.css">
 	<![endif]-->	
 	{if $DEBUG}
-	<link rel="stylesheet" type="text/css" href="{$WEB_ROOT}css/debugger.css">	
+	<link rel="stylesheet" type="text/css" href="css/debugger.css">	
 	{/if}
 
 	{if $local_js}
 	<!-- Local jquery lib -->
-	<script type="text/javascript" src="{$WEB_ROOT}js/jquery-1.3.2.min.js"></script>
-	<script type="text/javascript" src="{$WEB_ROOT}js/debug.js"></script>
+	<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="js/debug.js"></script>
 	{else}
 	<!-- Google jquery lib -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
@@ -31,7 +32,7 @@
 	<!-- The google-analytics code that gets run is in nw.js -->
     {/if}
     <!-- All the global ninjawars javascript -->
-	<script type="text/javascript" src="{$WEB_ROOT}js/nw.js"></script>
+	<script type="text/javascript" src="js/nw.js"></script>
 		{if $logged_in}
 	<script type="text/javascript">
 	<!--
