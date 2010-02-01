@@ -89,7 +89,7 @@ function writeLatestMessage(message){
 		$('#recent-mail', top.document).html("<div class='latest-message'><div id='latest-message-title'>Latest Message:</div><a href='player.php?player="+message.send_from+"' target='main'>"+message.sender+"</a>: <span class='latest-message-text "+(message.unread? "message-unread" : "")+"'>"+message.message.substr(0, 12)+"...</span> </div>");
 }
 
-
+// Update the message that gets displayed.
 function updateLatestMessage(){
 	var updated = false;
 	if(!NW.message){
@@ -107,7 +107,7 @@ function updateLatestMessage(){
 }
 
 
-
+// Update the display of the health.
 function updateHealthBar(health){
     // Should only update when a change occurs.
     if(health != NW.visibleHealth){
@@ -126,7 +126,7 @@ function updateHealthBar(health){
     return false;
 }
 
-
+// Update the displayed health from the javascript-stored current value.
 function getAndUpdateHealth(){
     var updated = false;
     NW.playerInfo.health = NW.playerInfo.health ? NW.playerInfo.health : null;
@@ -150,10 +150,10 @@ function updateIndex(){
     debug("Message Updated: "+messageUpdated);
     debug("Event Updated: "+eventUpdated);
     debug("Health Updated: "+healthUpdated);
-    return res; // determines good or bad feedback.
+    return res;
 }
 
-
+// Pull in the new info, update display only on changes.
 function updateIndexInfo(){
 	var updated = false;
     $.getJSON('api.php?type=index&jsoncallback=?', function(data){
@@ -181,16 +181,16 @@ function updateIndexInfo(){
 //increases when feedback == false, rebaselines when feedback == true
 function getUpdateInterval(feedback){
 	var maxInt = 180;
-	var min = 30;
-	var first = 5;
+	var min = 10; // Changes push the interval to this minimum.
+	var first = 20;  // The starting update interval.
 	if(!NW.updateInterval){
-		NW.updateInterval = first;
+		NW.updateInterval = first; // Starting.
 	} else if(feedback){
-		NW.updateInterval = min;
+		NW.updateInterval = min; // Speed up to minimum.
 	} else if(NW.updateInterval>=maxInt){
-		NW.updateInterval = maxInt;
+		NW.updateInterval = maxInt; // Don't get any slower than max.
 	} else {
-		NW.updateInterval++;
+		NW.updateInterval++; // Slow down updates slightly.
 	}
     return NW.updateInterval;
 }
@@ -225,25 +225,38 @@ function toggle_visibility(id) {
     return false;
 }
 
+// Load the chat section, or if that's not available & nested iframe, refresh iframe
 function refreshMinichat(msg){
     var container = $('#mini-chat-frame-container');
     if(container){
         container.load("mini_chat.php?from_js=1", {'message':msg,'command':'postnow'});
+        return true;
     } else {
-        // Add check for this location.
-        parent.mini_chat.location="mini_chat.php?from_js=1&message="+escape(msg)+"&command=postnow";
+        if(top.window != document.window){
+            // When calling from within a nested iframe only, refresh.
+            parent.mini_chat.location.href="mini_chat.php?from_js=1&message="+escape(msg)+"&command=postnow";
+            return true;
+        }
     }
+    return false;
 }
 
-function sendChatContents(form){
-    var chatbox = $(form).find('#message');
-    debug(chatbox);
+function sendChatContents(domform){
+    var chatbox = $(domform).find('#message');
     if(chatbox){
         refreshMinichat(chatbox.val()); // Send message to refreshMinichat.
         chatbox.val(''); // Clear the chat message box.
         return false;
+    } else{
+        iframe = $('#mini-chat-frame-container iframe #mini_chat');
+        if(iframe){
+            // Return true only if the iframe is actually set.
+            return true;
+        } else {
+            // No iframe or chatbox found, just don't navigate away from the main page.
+            return false;
+        }
     }
-    return true;
 }
 
 // For refreshing quickstats from inside main.
@@ -316,7 +329,7 @@ $(document).ready(function() {
         
     }
     
-    $('#index-chat form').submit(function (){sendChatContents(this)}).css({'font-weight':'bold','color':'maroon'});
+    $('#index-chat form').submit(function (){return sendChatContents(this)}).css({'font-weight':'bold','color':'maroon'});
     // When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
     
     
