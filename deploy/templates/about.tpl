@@ -1,5 +1,7 @@
 <h1>Ninja Wars Topics</h1>
 
+    <base href="{$WEB_ROOT}about.php"><!--[if lte IE 6]></base><![endif]-->
+
 <p>
   The game is mainly one of fighting against other ninja. Once you are a ninja, you can:
 </p>
