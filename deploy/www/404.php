@@ -1,11 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
+<!-- html5 doctype enforces most compliant standards, even though use of html5 features isn't practical quite yet -->
 <html>
   <head>
     <title>
       404 Error Page Not Found
     </title>
-    <link rel="stylesheet" href="<?php echo WEB_ROOT; ?>css/style.css">
+    <base href="{$WEB_ROOT}">
+    <!--[if lte IE 6]></base><![endif]-->
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body id="page-404">
   	<h1>Page Not Found</h1>
@@ -32,7 +34,7 @@
   <input maxlength="256" size="40" name="q" value=""> 
   <input type="submit" value="search the ninjawars site" name="btnG" style="font-size:75%;"> 
 </form>
-    <div>Return to <a href="<?php echo WEB_ROOT; ?>index.php">Ninjawars.net</a></div>
+    <div>Return to <a href="index.php">Ninjawars.net</a></div>
     <div id='support-email'>or email <a href="mailto:<?php echo SUPPORT_EMAIL ?>"><?php echo SUPPORT_EMAIL ?></a></div>
   </body>
 </html>
