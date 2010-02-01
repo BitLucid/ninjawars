@@ -23,7 +23,10 @@ function render_page($template, $title=null, $local_vars=array(), $options=null)
 
 
 
-// Will return the rendered content of the template.
+/** Will return the rendered content of the template.
+  * Example use: $parts = get_certain_vars(get_defined_vars(), array('whitelisted_object');
+  * echo render_template('account_issues.tpl', $parts);
+**/
 function render_template($template_name, $assign_vars=array()){
 	// Initialize the template object.
 	$tpl = new Template_Lite;
