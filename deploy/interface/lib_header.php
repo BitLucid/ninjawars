@@ -5,8 +5,11 @@
 /**
   *  Creates all the environmental variables, with no outputting.
 **/
-function init(){
-    global $private, $quickstat, $alive, $page_title, $filter, $sql, $today;
+function init($options=array()){
+    global $filter, $sql, $today, $private, $alive;
+    
+    $private = @$options['private'] ? @$options['private'] : $private;
+    $alive = @$options['alive'] ? @$options['alive'] : $alive;
     // General utility objects.
     $filter = new Filter(); // *** Creates the filters for later use.
     $sql = new DBAccess();
@@ -14,10 +17,6 @@ function init(){
     // ******************** Declared variables *****************************
     $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
     // Page viewing settings usually set before the header.
-    $private 	= (isset($private)? $private : NULL);
-    $quickstat 	= (isset($quickstat)? $quickstat : NULL);
-    $alive 		= (isset($alive)? $alive : NULL);
-    $page_title = (isset($page_title)? $page_title : "NinjaWars");
     $error = null; // Logged in or alive error.
     
     update_activity_info(); // *** Updates the activity of the page viewer in the database.
@@ -31,7 +30,6 @@ function init(){
 }
 
 /** The breakdown function reversing initialize, should we ever need it.
-  *
 **
 function finalize(){
 }*/
@@ -122,22 +120,9 @@ function user_has_status_type($p_type){
 }
 
 
-// Render the header, null if ajax is calling just for a bare section.
-function render_header_when_not_section($page_title=null){
-    $res = null;
-    $section_only = in('section_only'); // Check whether it's an ajax section.
-    if(!$section_only){
-        // make a dash separated css class from the page titles.
-        
-        $res = render_html_for_header($page_title); // ***** Display the html header
-    }
-    return $res;
-}
 
 
-
-
-// Renders an error (and updates the quickstat, for errors like "you're dead.").
+// Renders an error
 function render_error($error){
     $res = null;
     if ($error){ // If there's an error, display that then end.
@@ -153,8 +138,7 @@ function render_error($error){
 /**
  * Update the information of a viewing observer, or player.
 **/
-function update_activity_info()
-{
+function update_activity_info(){
 	// ******************** Usage Information of the browser *********************
 	$remoteAddress = (isset($_SERVER['REMOTE_ADDR'])     ? $_SERVER['REMOTE_ADDR']     : NULL);
 	$userAgent     = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : NULL);
@@ -164,10 +148,8 @@ function update_activity_info()
 
 	$dbconn = new DatabaseConnection();
 
-	if (!SESSION::is_set('online'))
-	{	// *** Completely new session, update latest activity log. ***
-		if ($remoteAddress)
-		{	// *** Delete prior to trying to re-insert into the people online. ***
+	if (!SESSION::is_set('online')) {	// *** Completely new session, update latest activity log. ***
+		if ($remoteAddress) {	// *** Delete prior to trying to re-insert into the people online. ***
 			$statement = DatabaseConnection::$pdo->prepare('DELETE FROM ppl_online WHERE ip_address = :ip OR session_id = :sessionID');
 
 			$statement->bindValue(':ip',        $remoteAddress);
@@ -187,9 +169,7 @@ function update_activity_info()
 		$statement->execute();
 
 		SESSION::set('online', true);
-	}
-	else
-	{	// *** An already existing session. ***
+	} else {	// *** An already existing session. ***
 		$statement = DatabaseConnection::$pdo->prepare('UPDATE ppl_online SET activity = now(), member = :member WHERE session_id = :sessionID');
 		$statement->bindValue(':sessionID', session_id());
 		$statement->bindValue(':member', is_logged_in(), PDO::PARAM_BOOL);
@@ -197,18 +177,22 @@ function update_activity_info()
 	}
 }
 
-// Format a tite string into a css class to add to that page's body.
+// Format a title string into a css class to add to that page's body.
 function format_css_class_from_title($page_title){
-    // TODO: This should filter on non-alphanumerics, whitelist instead of blacklist.
-    $css_body_class = strtolower(preg_replace('/\s/', '-', $page_title));
+    // Filters out non-alphanumerics replaced with - dash.
+    $css_body_class = strtolower(preg_replace('/\W/', '-', $page_title));
     return $css_body_class;
 }
 
 /**
  * Writes out the header for all the pages.
- * Will need a "don't write header" option for jQuery iframes.
 **/
-function render_html_for_header($p_title = null, $p_bodyClasses = 'body-default', $p_isIndex=null){
+function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses = null, $p_options=array()){
+    $section_only = @$p_options['section_only']?@$p_options['section_only']:in('section_only');
+    if($section_only){
+        return null;
+    }
+    $is_index = @$p_options['is_index'];
     $css_body_classes = $p_bodyClasses? $p_bodyClasses : format_css_class_from_title($p_title);
 	$parts = array(
 		'title'          => ($p_title ? htmlentities($p_title) : '')
@@ -216,21 +200,16 @@ function render_html_for_header($p_title = null, $p_bodyClasses = 'body-default'
 		, 'WEB_ROOT'     => WEB_ROOT
 		, 'local_js'     => (OFFLINE || DEBUG)
 		, 'DEBUG'        => DEBUG
-		, 'is_index'     => $p_isIndex
+		, 'is_index'     => $is_index
+		, 'section_only' => $section_only
 		, 'logged_in'    => get_user_id()
 	);
 
 	return render_template('header.tpl', $parts);
 }
 
-// Wrapper for the function above.
-function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses = null, $p_isIndex=null){
-    return render_html_for_header($p_title, $p_bodyClasses, $p_isIndex);
-}
-
 // Renders the error message when a section isn't viewable.
-function render_viewable_error($p_error)
-{
+function render_viewable_error($p_error){
 	return render_template("error.tpl", array('error'=>$p_error));
 }
 
@@ -242,30 +221,25 @@ function render_viewable_error($p_error)
  * @param $user user_id or username
  * @param @password Unless true, wipe the password.
 **/
-function get_player_info($p_id = null, $p_password = false)
-{
+function get_player_info($p_id = null, $p_password = false){
 	$dbconn = new DatabaseConnection();
 	$dao = new PlayerDAO($dbconn);
-	$id = either($p_id, SESSION::get('player_id')); // *** Default to current. ***
+	$id = either($p_id, SESSION::get('player_id')); // *** Default to current player. ***
 
 	$playerVO = $dao->get($id);
 
 	$player_data = array();
 
-	if ($playerVO)
-	{
-		foreach ($playerVO as $fieldName=>$value)
-		{
+	if ($playerVO){
+		foreach ($playerVO as $fieldName=>$value){
 			$player_data[$fieldName] = $value;
 		}
 
-		if (!$p_password)
-		{
+		if (!$p_password){
 			unset($player_data['pname']);
 		}
 	}
 
-	///TODO: Migrate all calls of this function to a new function that returns a Player object. When all calls to this function are removed, remove this function
 	return $player_data;
 }
 

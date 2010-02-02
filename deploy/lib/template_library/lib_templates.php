@@ -10,11 +10,8 @@ require_once(LIB_ROOT.'template_library/template_lite/src/class.template.php');
   * echo render_page('add.tpl', get_current_vars(get_defined_vars()), 'Homepage');
 **/
 function render_page($template, $title=null, $local_vars=array(), $options=null){
-    if($options && isset($options['quickstat'])){
-        $quickstat = $options['quickstat'];
-    } else {
-        $quickstat = $local_vars && isset($local_vars['quickstat'])? $local_vars['quickstat'] : null;
-    }
+    $quickstat = @$options['quickstat']? $options['quickstat'] : 
+            @$local_vars['quickstat']? @$local_vars['quickstat'] : null;
     $res = render_header($title);
     $res .= render_template($template, $local_vars);
     $res .= render_footer($quickstat);
@@ -71,6 +68,7 @@ function get_certain_vars($var_list, $whitelist=array())
 	return $non_arrays + $constants;
 }
 
+// Get the user defined constants like WEB_ROOT
 function get_user_constants() {
 	$temp = get_defined_constants(true);
 	return $temp['user'];

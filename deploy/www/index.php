@@ -39,8 +39,8 @@ $player_count   = $stats['player_count'];
 $players_online = $stats['players_online'];
 
 
-$header = render_html_for_header('Live By the Sword', 'main-body', $is_index=true);
-// render_html_for_header Writes out the html,head,meta,title,css,js.
+$header = render_header('Live By the Sword', 'main-body', array('is_index'=>true));
+// render_header Writes out the html,head,meta,title,css,js.
 
 $version = 'NW Version 1.7.1 2009.11.22';
 
@@ -57,7 +57,7 @@ if ($is_logged_in) {
     }
 }
 
-$parts = get_certain_vars(get_defined_vars(), array('vicious_killer'));
+$parts = get_certain_vars(get_defined_vars(), $whitelist=array());
 if(!$is_logged_in){
     echo render_template('splash.tpl', $parts); // Non-logged in template.
 } else {
