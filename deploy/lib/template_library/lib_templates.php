@@ -10,11 +10,22 @@ require_once(LIB_ROOT.'template_library/template_lite/src/class.template.php');
   * echo render_page('add.tpl', get_current_vars(get_defined_vars()), 'Homepage');
 **/
 function render_page($template, $title=null, $local_vars=array(), $options=null){
-    $quickstat = @$options['quickstat']? $options['quickstat'] : 
-            @$local_vars['quickstat']? @$local_vars['quickstat'] : null;
-    $res = render_header($title);
+    $quickstat = @$options['quickstat'];
+    $quickstat = $quickstat? $quickstat : @$local_vars['quickstat'];
+    
+    $section_only = @$options['section_only'];
+    $section_only = $section_only? $section_only : @$local_vars['section_only'];
+    $section_only = $section_only? $section_only : in('section_only');
+    
+    // Display header and footer only if not section_only.
+    $res = '';
+    if(!$section_only){
+        $res .= render_header($title);
+    }
     $res .= render_template($template, $local_vars);
-    $res .= render_footer($quickstat);
+    if(!$section_only){
+        $res .= render_footer($quickstat);
+    }
     return $res;
 }
 
