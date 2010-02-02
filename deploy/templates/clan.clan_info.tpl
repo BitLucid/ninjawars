@@ -11,6 +11,7 @@
 {/literal}
 </style>
 <div id='clan-info'>
-  <img id='clan-avatar' alt='Upload a photo to flickr' title='{$clan_name}' src='{$avatar_url}'>
-
+    <div id='clan-avatar-section'>
+      <img id='clan-avatar' alt='Upload a photo to flickr' title='{$clan_name}' src='{$avatar_url}'>
+    </div>
 </div>

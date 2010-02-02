@@ -719,6 +719,7 @@ iframe{
 }
 #mini-chat-frame-container { /* div */
 	width:100%;
+	overflow:auto;
 }
 .chat-collapsed {
     height: 400px;
@@ -888,6 +889,11 @@ table .quickstats td{
 #login-bar form input{
     height:1.5em;
     vertical-align: middle;
+}
+#login-bar form button{
+    height:2em;
+    vertical-align:middle;
+    padding: .1em .2em .1em;
 }
 #login-bar div.text {
 	/*color:#707E77;*/
@@ -1096,6 +1102,19 @@ table .quickstats td{
 	float:left;
 	margin-right: 1em;
 }
+
+/* Clan info section */
+#clan-avatar-section{
+    max-height:110px;
+    max-width:650px;
+    overflow:auto;
+}
+
+#clan-avatar-section #clan-avatar{
+    max-height:100px;
+    max-width:600px;
+}
+
 /*  Clan tags section */
 #clan-tags{
     clear: both;
