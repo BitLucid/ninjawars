@@ -32,7 +32,8 @@
     {/if}
     <!-- All the global ninjawars javascript -->
 	<script type="text/javascript" src="js/nw.js"></script>
-		{if $logged_in}
+	
+	{if $logged_in}
 	<script type="text/javascript">
 	<!--
 		setLoggedIn();
@@ -44,14 +45,14 @@
 		clearLoggedIn();
 	// -->
 	</script>
+	{/if}
 	<!-- older IE assistive javascript -->
 	<!--[if lt IE 8]>
     <script src="http://ie7-js.googlecode.com/svn/version/2.0(beta3)/IE8.js" type="text/javascript"></script>
     <![endif]-->
-	{/if}
 </head>
 <body class='{$body_classes}'>
-{if !$is_index}
+{if !$is_index && !$section_only}
 <a href='/' id='logo-appended'>
 	<img src='images/ninjawarslogo_75px.png' alt='NinjaWars'>
 </a>
