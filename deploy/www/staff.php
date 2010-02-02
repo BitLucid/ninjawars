@@ -14,12 +14,11 @@ function mailtolink($email, $formal=null, $subject=null){
 
 $mailto = mailtolink(SUPPORT_EMAIL, SUPPORT_EMAIL_FORMAL_NAME, 'NinjaWars question: ');
 
-$header = render_html_for_header('Ninjawars Staff', 'ninjawars-staff');
-
-$footer = render_footer();
-
-$parts = get_certain_vars(get_defined_vars());
-
-echo render_template('staff.tpl', $parts);
+echo render_page('staff.tpl', 'Ninjawars Staff', get_certain_vars(get_defined_vars(), array()), $options=array(
+        'skip_quickstat'=>true,
+        'alive'=>false,
+        'private'=>false,
+        'quickstat'=>false
+    ));
 
 ?>

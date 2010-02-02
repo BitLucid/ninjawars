@@ -1,9 +1,6 @@
-{$header}
 {literal}
-<script type="text/javascript" charset="utf-8">
-  var is_ssl = ("https:" == document.location.protocol);
-  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
-  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+<script type="text/javascript" charset="utf-8" 
+    src="http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js">
 </script>
 
 <script type="text/javascript" charset="utf-8">
@@ -100,7 +97,7 @@
     is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">
     Creative Commons Attribution-Share Alike 3.0 United States License</a>.<br>
     Permissions beyond the scope of this license may be available from the contact information at:
-    <a xmlns:cc="http://creativecommons.org/ns#" href="{$WEB_ROOT}staff.php" rel="cc:morePermissions">{$WEB_ROOT}staff.php</a>.
+    <a xmlns:cc="http://creativecommons.org/ns#" href="staff.php" rel="cc:morePermissions">{$WEB_ROOT}staff.php</a>.
   </p>
 </div>
 
@@ -124,5 +121,4 @@
   <div id='random-ninja-images'>
   <h3 class='subtitle'>And now for something completely different:</h3>
   </div>
-<script type='text/javascript' src="{$JS_ROOT}staffPage.js"></script>
-{$footer}
+<script type='text/javascript' src="js/staffPage.js"></script>
