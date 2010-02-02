@@ -12,7 +12,7 @@
 // ************************************
 
 function send_chat($user_id, $msg) {
-  global $sql;
+  $sql = new DBAccess();
   $sql->Insert("INSERT INTO chat (chat_id, sender_id, message, date) 
         VALUES (default,'$user_id','".sql($msg)."',now())");
         
@@ -35,13 +35,20 @@ function render_active_members($sql){
         </div>";
 }
 
-// Get all the chats.
+// Get all the chat messages info.
 function get_chats($chatlength){
     $sql = new DBAccess();
+    $limit = $chatlength? 'LIMIT '.$chatlength : '';
     $sql->Query("SELECT sender_id, uname, message, date, age(now(), date) as ago FROM chat 
-        join players on chat.sender_id = player_id ORDER BY chat_id DESC LIMIT $chatlength");// Pull messages
+        join players on chat.sender_id = player_id ORDER BY chat_id DESC ".$limit);// Pull messages
     $chats = $sql->fetchAll();
     return $chats;
+}
+
+// Total number of chats available.
+function get_chat_count(){
+    $sql = new DBAccess();
+    return $sql->QueryItem("select count(*) from chat");
 }
 
 /**
@@ -51,8 +58,7 @@ function get_chats($chatlength){
 function render_chat_messages($chatlength, $show_elipsis=null){
     // Eventually there might be a reason to abstract out get_chats();
     $chats = get_chats($chatlength);
-    $sql = new DBAccess();
-    $message_count = $sql->QueryItem("select count(*) from chat");
+    $message_count = get_chat_count();
     $res = "<dl class='chat-messages'>";
     $previous_date = null;
     $previous_ago = null;
@@ -69,6 +75,7 @@ function render_chat_messages($chatlength, $show_elipsis=null){
 		$previous_ago = $l_ago; // Save the prior ago message.
     }
     $res .= "</dl>";
+    
     if ($show_elipsis && $message_count>$chatlength){ // to indicate there are more chats available
 		$res .= ".<br>.<br>.<br>";
     }

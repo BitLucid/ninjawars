@@ -225,20 +225,27 @@ function toggle_visibility(id) {
     return false;
 }
 
+// Begin the cycle of refreshing the mini chat after the standard delay.
+function startRefreshingMinichat(){
+    var secs = 20;
+    setTimeout(function (){
+        startRefreshingMinichat();
+    }, secs*1000); 
+}
+
 // Load the chat section, or if that's not available & nested iframe, refresh iframe
 function refreshMinichat(msg){
     var container = $('#mini-chat-frame-container');
-    if(container){
-        container.load("mini_chat.php?from_js=1", {'message':msg,'command':'postnow'});
-        return true;
+    var data;
+    if(msg){
+        data = {'message':msg,'command':'postnow', 'section_only':'1'};
     } else {
-        if(top.window != document.window){
-            // When calling from within a nested iframe only, refresh.
-            parent.mini_chat.location.href="mini_chat.php?from_js=1&message="+escape(msg)+"&command=postnow";
-            return true;
-        }
+        data = {'section_only':'1'};
     }
-    return false;
+    if(container){
+        container.load("mini_chat.php", data);
+        return false;
+    }
 }
 
 function sendChatContents(domform){
