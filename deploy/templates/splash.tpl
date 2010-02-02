@@ -168,10 +168,8 @@
                 </div>
                 <div id="chat-and-switch">
                   <div class="chat-switch centered">
-                    <a href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
-                    <a href="mini_chat.php?chat_length=20" target="mini_chat">Refresh</a>
+                    <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
                   </div>
-    <!-- TODO: move chat submit box out here. -->
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
                     <iframe border='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
                       <a href='mini_chat.php' target='_blank'>Mini Chat</a> Iframe Display Section (Iframes not supported by this browser)

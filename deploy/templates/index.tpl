@@ -28,7 +28,7 @@
               </div>
               <div id="quickstats-frame-container">
                 <iframe border='0' id="quickstats" src="quickstats.php" name="quickstats">
-                  <a href='quickstats.php' target='_blank'>Quick Stats</a> Iframe Display section (Iframes Not supported by this browser)
+                  <a href='quickstats.php' target='_blank'>Quick Stats</a> unavailable inside this browser window.
                 </iframe>
               </div>
             </div><!-- End of quickstats and switch container -->
@@ -138,7 +138,7 @@
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
             <iframe border='0' id="main" name="main" class="main-iframe" src="{$main_src}">
-              <a href='{$main_src}' target='_blank'>Main Content</a> Display Section (Frames Not Supported)
+              <a href='{$main_src}' target='_blank'>Main Content</a> unavailable inside this browser window.
             </iframe>
           </div><!-- End of mainFrame div -->
           
@@ -178,8 +178,7 @@
                 </div>
                 <div id="chat-and-switch">
                   <div class="chat-switch centered">
-                    <a href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
-                    <a href="mini_chat.php?chat_length=20" target="mini_chat">Refresh</a>
+                    <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
                   </div>
                   <form class='chat-submit' id="post_msg" action="mini_chat.php" method="post" name="post_msg" target='mini_chat'>
                     <input id="message" type="text" size="20" maxlength="250" name="message" class="textField">
@@ -189,7 +188,7 @@
                   </form>
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
                     <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
-                      <a href='mini_chat.php' target='_blank'>Mini Chat</a> Iframe Display Section (Iframes not supported by this browser)
+                      <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
                     </iframe>
                   </div>
                   <div id="expand-chat">
