@@ -7,12 +7,11 @@
 
 {if $stealth}
 	<div id='stealth-skills'>
-	<p>By selecting Stealth you will go into a mode where enemies can not 
-	    directly attack you for a short time.</p>
+	<p>By stealthing you will keep to the shadows where enemies cannot directly duel, for about the next half hour.</p>
     	<form action="skills_mod.php" method="post">
         	<div>
         	<input type="submit" name="command" value="Stealth" class="formButton">
-        	</select> Turn Cost: {$stealth_turn_cost} to Stealth.
+        	Turn Cost: {$stealth_turn_cost} to Stealth.
         	</div>
 
         	<div>
