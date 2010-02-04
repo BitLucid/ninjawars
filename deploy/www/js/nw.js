@@ -59,26 +59,38 @@ function debug(arg){
 // update the "latest chat id" var.
 //}
 
-
+// Display an event.
 function writeLatestEvent(event){
+    debug('Event display requested.');
 	$('#recent-events', top.document).html("<div class='latest-event'><div id='latest-event-title'>Latest Event via <a href='player.php?player="+event.send_from+"' target='main'>"+event.sender+"</a>:</div><span class='latest-event-text "+(event.unread? "message-unread" : "")+"'>"+event.event.substr(0, 12)+"...</span></div>");
     // if unread, Add the unread class until next update.
     // Pull a message with a truncated length of 12.
 }
 
+// Pull the event from the data store and request it be displayed.
 function updateLatestEvent(){
-	var updated = false;
-	if(!NW.event){
-		updated = true; // Try again shortly.
-	}else if(NW.visibleEventId == NW.event.event_id){
-		// Makes the event read every update interval.
-        $('#recent-events .latest-event-text', top.document).removeClass('message-unread');
-	} else {
-		updated = true;
-		NW.visibleEventId = NW.event.event_id;
-        writeLatestEvent(event);
-	}
-	return updated;
+	var feedback = false;
+	var event = getEvent();
+	if(!event){
+	    feedbackSpeedUp(); // Make the interval to try again shorter.
+		debug('No event data to use.');
+	}else{
+	     if(NW.visibleEventId == event.event_id){
+	        if(!NW.visibleEventRead){
+        		// Makes any unread event marked as read after a second update, even if it wasn't really read.
+                $('#recent-events .latest-event-text', top.document).removeClass('message-unread');
+                debug('Requested that latest event be marked as read.');
+        		NW.visibleEventRead = true;
+        	}
+    	} else {
+    	    debug('Request to write out the latest event.');
+    		feedback = true;
+    		NW.visibleEventId = event.event_id;
+    		NW.visibleEventRead = false;
+            writeLatestEvent(event);
+    	}
+    }
+	return feedback;
 }
 
 
@@ -92,15 +104,16 @@ function writeLatestMessage(message){
 // Update the message that gets displayed.
 function updateLatestMessage(){
 	var updated = false;
-	if(!NW.message){
+	var message = getMessage();
+	if(!message){
 		updated = true; // Check for info again shortly.
-	}else if(NW.visibleMessageId == NW.message.message_id){
-        if(!message.unread){ // Only turn a message read if it actually has been in the message page.
+	}else if(NW.visibleMessageId == message.message_id){
+        if(!message.unread){ // Only turn a message read if it actually has been viewed on the message page.
 			$('#recent-mail .latest-message-text', top.document).removeClass('message-unread');
 		}
 	} else {
 		updated = true;
-		NW.visibleMessageId = NW.message.message_id;
+		NW.visibleMessageId = message.message_id;
 		writeLatestMessage(message);
 	}
 	return updated;
@@ -153,27 +166,56 @@ function updateIndex(){
     return res;
 }
 
+function getEvent(){
+    return NW.latestEvent? NW.latestEvent : false;
+}
+
+function getMessage(){
+    return NW.latestMessage? NW.latestMessage : false;
+}
+
+function getPlayer(){
+    return NW.playerInfo ? NW.playerInfo : false;
+}
+
 // Pull in the new info, update display only on changes.
-function updateIndexInfo(){
-	var updated = false;
+function checkAPI(){
+    // NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
     $.getJSON('api.php?type=index&jsoncallback=?', function(data){
-		if(data.player && data.player.player_id && !NW.playerInfo || !NW.playerInfo.health || data.player.health != NW.playerInfo.health || data.player.last_attacked != NW.playerInfo.last_attacked){
-	    	NW.playerInfo = data.player;
-	    	updated = true;
-	    }
-	    if(data.message && data.message.message_id && !NW.latestMessage || NW.latestMessage && NW.latestMessage.message_id != data.message.message_id){
-	    	NW.latestMessage = data.message;
-	    	updated = true;
-	    }
-	    if(data.event && data.event.event_id && !NW.latestEvent || NW.latestEvent.event_id != data.event.event_id){
-	    	NW.latestEvent = data.event;
-	    	updated = true;
-	    }
+    	var updated = false;
+        // Update global data stores if an update is needed.
+        if(updateDataStore(data.player, 'player_id', 'playerInfo', 'health', 'last_attacked')){
+            updated = true;
+        }
+        if(updateDataStore(data.message, 'message_id', 'latestMessage', 'message_id')){
+            updated = true;
+        }
+        if(updateDataStore(data.event, 'event_id', 'latestEvent', 'event_id')){
+            updated = true;
+        }
+    	debug('Update requested: '+updated);
+        if(updated){
+        	updateIndex(); // Always redisplay for any poll that has information updates.
+	        feedbackSpeedUp(updated);
+        }
+        // Since this callback isn't immediate, the feedback has to occur whenever the callback finishes.
 	}); // End of getJSON function call.
-    if(updated){
-    	updateIndex(); // Always redisplay for any poll that has information updates.
+}
+
+// Saves stuff to global data storage.
+function updateDataStore(datum, property_name, global_store, comparison_name, comparison_name_2){
+    if(datum){
+        if(datum[property_name]){
+            if(!NW[global_store] || (NW[global_store][comparison_name] != datum[comparison_name] || 
+                    comparison_name_2 && NW[global_store][comparison_name_2] != datum[comparison_name_2])){
+                // If the data isn't there, or doesn't match, update the store.
+                NW[global_store] = datum;
+                debug(datum);
+                return true;
+            }
+        }
     }
-	return updated;
+    return false; // Input didn't contain the data, or the data hasn't changed.
 }
 
 
@@ -198,16 +240,31 @@ function getUpdateInterval(feedback){
 // JS Update Heartbeat
 function chainedUpdate(chainCounter){
     var chainCounter = !!chainCounter ? chainCounter : 1;
-    // Skip the update if not logged in.
     // Skip the heartbeat the first time through, and skip it if not logged in.
-    var feedback = (isLoggedIn() && chainCounter != 1? updateIndexInfo() : true);
-    // Update and get good or bad feedback to increase or decrease interval.
-    var furtherIntervals = getUpdateInterval(feedback); 
-    debug(furtherIntervals);
+    if(isLoggedIn() && chainCounter != 1){
+        checkAPI(); // Check for new information.
+    }
+    
+    var furtherIntervals = getUpdateInterval(feedback());
+    debug("Next Update will be in:"+furtherIntervals);
     debug("chainCounter: "+chainCounter);
     chainCounter++;
-    setTimeout(function (){chainedUpdate(chainCounter);}, furtherIntervals*1000); // Repeat once the interval has passed.
-    // If we need a to cancel the update down the line, store the id that setTimeout returns.
+    setTimeout(function (){
+            chainedUpdate(chainCounter);
+        }, furtherIntervals*1000); // Repeat once the interval has passed.
+    // If we need to cancel the updating down the line for some reason, store the id that setTimeout returns.
+}
+
+
+function feedbackSpeedUp(){
+    NW.feedback = true;
+}
+
+// Get the feedback value.
+function feedback(){
+    var res = (NW.feedback? NW.feedback : false);
+    NW.feedback = false; // Start slowing down after getting the value.
+    return res;
 }
 
 
@@ -306,6 +363,8 @@ function soloPage(){
 		$('body').addClass('solo-page'); // Added class to solo-page bodies.
 	}
 }
+
+
 
 // Initial load of everything, run at the bottom to allow everything else to be defined beforehand.
 $(document).ready(function() {
