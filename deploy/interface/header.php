@@ -10,7 +10,7 @@ $error_to_display = render_error($error);
 
 if($error_to_display){
     echo $header;
-    echo $error_display;
+    echo $error_to_display;
     echo render_footer($quickstat); // Display the bottom of the error page, refresh the quickstat view if necessary.
     die(); // Do not display any further on the page.
 } else {
