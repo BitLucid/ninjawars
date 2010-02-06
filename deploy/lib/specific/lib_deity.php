@@ -17,7 +17,7 @@ function delete_old_messages($sql, $limit = null){
 
 
 function delete_old_events($sql, $limit = null){
-	$interval_to_keep = '1 week';
+	$interval_to_keep = '4 days';
 	$sql->Delete("delete from events where date < ( now()- interval '$interval_to_keep' )");
 	return $sql->a_rows;
 }
