@@ -21,9 +21,9 @@ include SERVER_ROOT."interface/header.php";
 
 $username     = get_username();
 $searched     = in('searched');
-$hide_setting = (!$searched && SESSION::is_set('hide_dead')? SESSION::get('hide_dead') : 'dead'); // Defaults to hiding dead via session.
-$hide         = ($searched? 'none' : in('hide', $hide_setting)); // search override > get setting > session setting
-$alive_only   = ($hide == 'dead'? true : false);
+$hide_setting = (!$searched && SESSION::is_set('hide_dead') ? SESSION::get('hide_dead') : 'dead'); // Defaults to hiding dead via session.
+$hide         = ($searched ? 'none' : in('hide', $hide_setting)); // search override > get setting > session setting
+$alive_only   = ($hide == 'dead');
 $current_rank = in('rank_spot', 0);
 $rank_spot    = (is_numeric($current_rank) ? $current_rank : 0);
 $page         = in('page', 1); // Page will get changed down below.
@@ -51,9 +51,9 @@ $where_clause = "";
 
 
 // Select some players from the ranking.
-if ($searched){
+if ($searched) {
 	$view_type = 'searched';
-	if(strlen($searched) == 1){
+	if (strlen($searched) == 1) {
 		$where_clause = "WHERE (uname ilike '$searched%')";
 	} else {
 		$where_clause = "WHERE (uname ~* '$searched')";
@@ -62,7 +62,7 @@ if ($searched){
 	$where_clause = "WHERE score >= $rank_spot ";
 }
 
-if ($hide == 'dead'){
+if ($hide == 'dead') {
 	$where_clause .= "AND alive = true";
 }
 
@@ -141,20 +141,20 @@ foreach ($players as $a_player) {
 	$i++;
 	$level_cat = level_category($a_player['level']);
 	$parts = array(
-		'alive_class' => ($a_player['alive'] == 1? "AliveRow" : "DeadRow"),
-		'odd_or_even' => ($i % 2 ? "odd" : "even"),
-		'player_rank' => $a_player['rank_id'],
-		'player_id' => $a_player['player_id'],
-		'page' => $page,
-		'uname' => $a_player['uname'],
-		'level_cat_css' => $level_cat['css'],
-		'level_cat' => $level_cat['display'],
-		'level' => $a_player['level'],
-		'class' => $a_player['class'],
-		'WEB_ROOT' => WEB_ROOT,
-		'clan_id' => $a_player['clan_id'],
-		'clan_name' => $a_player['clan_name'],
-		'alive' => ($a_player['alive'] ? "&nbsp;" : "Dead"), // alive/dead display
+		'alive_class'     => ($a_player['alive'] == 1 ? "AliveRow" : "DeadRow")
+		, 'odd_or_even'   => ($i % 2 ? "odd" : "even")
+		, 'player_rank'   => $a_player['rank_id']
+		, 'player_id'     => $a_player['player_id']
+		, 'page'          => $page
+		, 'uname'         => $a_player['uname']
+		, 'level_cat_css' => $level_cat['css']
+		, 'level_cat'     => $level_cat['display']
+		, 'level'         => $a_player['level']
+		, 'class'         => $a_player['class']
+		, 'WEB_ROOT'      => WEB_ROOT
+		, 'clan_id'       => $a_player['clan_id']
+		, 'clan_name'     => $a_player['clan_name']
+		, 'alive'         => ($a_player['alive'] ? "&nbsp;" : "Dead"), // alive/dead display
 	);
 
 	$player_rows .= render_template('player_list_row.tpl', $parts);

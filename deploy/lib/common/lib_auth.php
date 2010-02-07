@@ -1,15 +1,13 @@
 <?php
 // lib_auth.php
 
-function authenticate($p_user, $p_pass)
-{
+function authenticate($p_user, $p_pass) {
 	$user        = (string)$p_user;
 	$pass        = (string)$p_pass;
 	$returnValue = false;
 
-	if ($user != '' && $pass != '')
-	{
-		$dbConn = new DatabaseConnection();
+	if ($user != '' && $pass != '') {
+		$dbConn = DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare('SELECT uname, player_id FROM players WHERE lower(uname) = lower(:userName) AND pname = :pass AND confirmed = 1');
 		$statement->bindValue(':userName', $user);
 		$statement->bindValue(':pass', $pass);
@@ -24,13 +22,11 @@ function authenticate($p_user, $p_pass)
 /**
  * Login the user and delegate the setup if login is valid.
 **/
-function login_user($p_user, $p_pass)
-{
+function login_user($p_user, $p_pass) {
 	$success = false;
 	$error   = 'That password/username combination was incorrect.';
 
-	if ($data = authenticate($p_user, $p_pass))
-	{
+	if ($data = authenticate($p_user, $p_pass)) {
 		setup_logged_in($data['player_id'], $data['uname']);
 
 		// *** Set return values ***
@@ -46,27 +42,27 @@ function login_user($p_user, $p_pass)
  * Just do a check whether the input username and password is valid
  * @return boolean
 **/
-function is_authentic($p_user, $p_pass)
-{
+function is_authentic($p_user, $p_pass) {
 	return (boolean)authenticate($p_user, $p_pass);
 }
 
 /**
  * Logout function.
 **/
-function logout_user($echo=false, $redirect='index.php'){
+function logout_user($echo=false, $redirect='index.php') {
 	$msg = 'You have been logged out.';
 	session_destroy(); // Why was this status function being used? SESSION :: destroy(); ????
-	if($echo){
+	if ($echo) {
 		echo $msg;
 	}
-	if($redirect){
+
+	if ($redirect) {
 		redirect($redirect);
 	}
 }
 
 // Wrapper for the logout_user function above.
-function logout($echo=false, $redirect='index.php'){
+function logout($echo=false, $redirect='index.php') {
 	return logout_user($echo, $redirect);
 }
 
@@ -74,17 +70,14 @@ function logout($echo=false, $redirect='index.php'){
 /**
  * @return boolean Based on the chosen method for deciding whether someone is logged in.
 **/
-function is_logged_in(){
-	if(SESSION :: is_set('username')){
-		return true;
-	} // else
-	return false;
+function is_logged_in() {
+	return (SESSION :: is_set('username'));
 }
 
 /**
  * Sets the extra settings after successful login, does not perform the authentication.
 **/
-function setup_logged_in($player_id, $username){
+function setup_logged_in($player_id, $username) {
 	$_COOKIE['username'] = $username;
 	SESSION::set('player_id', $player_id);
 	SESSION::set('username', $username);
@@ -254,23 +247,20 @@ function get_user_id($p_name=null) {
 	return $id;
 }
 
-
-
-function update_activity_log($username){
+function update_activity_log($username) {
 	$sql = new DBAccess();
 	$user_ip = $_SERVER['REMOTE_ADDR'];
 	$sql->Update("UPDATE players SET days = 0, ip = '$user_ip' WHERE uname='$username'");
 }
 
-
 // Loops over the array and puts the values into the session.
-function put_player_info_in_session($player_stats){
-	assert(count($player_stats)>0);
-	foreach($player_stats as $name => $val){
-		if(is_string($name)){
+function put_player_info_in_session($player_stats) {
+	assert(count($player_stats) > 0);
+	foreach ($player_stats as $name => $val) {
+		if (is_string($name)) {
 			SESSION::set($name, $val);
 		} else {
-			if(DEBUG){
+			if (DEBUG) {
 				var_dump($player_stats);
 				throw new Exception('player stat not a string');
 			}
@@ -296,29 +286,27 @@ function put_player_info_in_session($player_stats){
     * @param bool Only allow HTTP usage?
     * @return bool True or false whether the method has successfully run
     */
-function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure=false, $HTTPOnly=false)
-{
+function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure=false, $HTTPOnly=false) {
 	$ob = ini_get('output_buffering');
 
 	// Abort the method if headers have already been sent, except when output buffering has been enabled
-	if ( headers_sent() && (bool) $ob === false || strtolower($ob) == 'off' ){
+	if (headers_sent() && (bool) $ob === false || strtolower($ob) == 'off' ) {
 		assert("(false) && ('Headers were sent before the cookie was reached, which should not happen.')");
 		return false;
 	}
 
-	if ( !empty($domain) )
-	{
+	if (!empty($domain)) {
 		// Cut off leading http:// or www
-		if ( strtolower( substr($domain, 0, 7) ) == 'http://' ) $domain = substr($domain, 7);
+		if (strtolower(substr($domain, 0, 7)) == 'http://') $domain = substr($domain, 7);
 		// Truncate the domain to accept domains with and without 'www.'.
-		if ( strtolower( substr($domain, 0, 4) ) == 'www.' ) $domain = substr($domain, 4);
+		if (strtolower(substr($domain, 0, 4)) == 'www.') $domain = substr($domain, 4);
 		// Add the dot prefix to ensure compatibility with subdomains
-		if ( substr($domain, 0, 1) != '.' ) $domain = '.'.$domain;
+		if (substr($domain, 0, 1) != '.') $domain = '.'.$domain;
 
 		// Remove port information.
 		$port = strpos($domain, ':');
 
-		if ( $port !== false ) $domain = substr($domain, 0, $port);
+		if ($port !== false) $domain = substr($domain, 0, $port);
 	}
 
 	// Prevent "headers already sent" error with utf8 support (BOM)
@@ -338,7 +326,7 @@ function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure
 /*
  * Stats on recent activity and other aggregate counts/information.
  */
-function membership_and_combat_stats($sql, $update_past_stats=false){
+function membership_and_combat_stats($sql, $update_past_stats=false) {
 	$todaysViciousKiller = $sql->QueryItem(
 		'SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) group by uname, killpoints order by killpoints DESC LIMIT 1'); 
 	// *** Gets uname with the most kills today.
@@ -346,16 +334,18 @@ function membership_and_combat_stats($sql, $update_past_stats=false){
 	WHERE killsdate = current_date group by uname order by sum(killpoints)
 	DESC LIMIT 1'); // *** Gets uname with the most kills today.
 	*/
-	if($todaysViciousKiller == ''){
+	if ($todaysViciousKiller == '') {
 		$todaysViciousKiller = 'None';
 	} elseif ($update_past_stats) {
 		$sql->Update('UPDATE past_stats SET stat_result = \''
 			.$todaysViciousKiller
 			.'\' WHERE id = 4'); // 4 is the ID of the vicious killer stat.
 	}
+
 	$stats['vicious_killer'] = $todaysViciousKiller;
 	$stats['player_count'] = $sql->QueryItem("Select count(player_id) FROM players WHERE confirmed = 1");
 	$stats['players_online'] = $sql->QueryItem("select count(*) from ppl_online where member = true");
+
 	return $stats;
 }
 

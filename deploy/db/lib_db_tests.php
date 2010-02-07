@@ -6,7 +6,7 @@ function test_PlayerDAO(){
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();
 	$player_id = $db->QueryItem($player_id_sel);
-	$dao = new PlayerDAO($db);
+	$dao = new PlayerDAO();
 	$player_vo = $dao->get($player_id);
 	//var_dump($player_vo);
 	assert(isset($player_vo));
@@ -17,7 +17,7 @@ function test_PlayerDAO(){
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();
 	$player_id = $db->QueryItem($player_id_sel);
-	$dao = new PlayerDAO($db);
+	$dao = new PlayerDAO();
 	$player_vo2 = $dao->get($player_id);
 	assert($player_vo2->player_id == $player_id);
 
@@ -25,19 +25,19 @@ function test_PlayerDAO(){
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();
 	$player_id = $db->QueryItem($player_id_sel);
-	$dao = new PlayerDAO($db);
+	$dao = new PlayerDAO();
 	$player_vo2 = $dao->get($player_id);
 	assert($player_vo2->uname == 'glassbox');
 
 	// in: player_id that doesn't exist, out: null
 	$player_id = 999999;
-	$dao = new PlayerDAO($db);
+	$dao = new PlayerDAO();
 	$player_vo2 = $dao->get($player_id);
 	assert($player_vo2 === null);
 
 	// in: non-numeric player_id, out: false
 	$player_id = 'not-a-player-id';
-	$dao = new PlayerDAO($db);
+	$dao = new PlayerDAO();
 	$player_vo2 = $dao->get($player_id);
 	assert($player_vo2 === false);
 
@@ -46,7 +46,7 @@ function test_PlayerDAO(){
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();
 	$player_id = $db->QueryItem($player_id_sel);
-	$dao = new PlayerDAO($db);
+	$dao = new PlayerDAO();
 	$player_vo_original = $dao->get($player_id);
 	assert($player_vo_original->player_id == $player_id);
 	$orig_energy = $player_vo_original->energy;
@@ -60,7 +60,7 @@ function test_PlayerDAO(){
 	$player_id_sel = "select player_id from players where uname = 'glassbox'";
 	$db = new DBAccess();
 	$player_id = $db->QueryItem($player_id_sel);
-	$dao = new PlayerDAO($db);
+	$dao = new PlayerDAO();
 	$player_vo_original = $dao->get($player_id);
 	$starting_clan = $player_vo_original->clan_long_name;
 	$player_vo_original->clan_long_name = 'TestClanChange';
@@ -76,7 +76,7 @@ function test_PlayerDAO(){
 	$db = new DBAccess();
 	$player_id = $db->QueryItem($player_id_sel);
 	assert($player_id);
-	$dao = new PlayerDAO($db);
+	$dao = new PlayerDAO();
 	$player_vo = $dao->get($player_id);
 	assert(isset($player_vo->player_id));
 	$player_vo->player_id = null;
@@ -87,7 +87,7 @@ function test_PlayerDAO(){
 	$db = new DBAccess();
 	$player_id = $db->QueryItem($player_id_sel);
 	assert($player_id);
-	$dao = new PlayerDAO($db);
+	$dao = new PlayerDAO();
 	$player_vo = $dao->get($player_id);
 	assert(isset($player_vo->player_id));
 	$deleted = $dao->delete($player_vo); // Need a player_id to delete.
@@ -101,7 +101,7 @@ function test_PlayerDAO(){
 	$db = new DBAccess();
 	$player_id = $db->QueryItem($player_id_sel);
 	assert($player_id);
-	$dao = new PlayerDAO($db);
+	$dao = new PlayerDAO();
 	$player_vo1 = $dao->get($player_id);
 	assert(isset($player_vo1->player_id));
 	$player_vo1->player_id = null;

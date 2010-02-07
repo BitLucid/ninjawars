@@ -464,7 +464,7 @@ function display_signup_form($enteredName, $enteredEmail, $enteredClass, $entere
 } // *** End of function display_signup_form().
 
 
-function create_player($send_name, $params=array()){
+function create_player($send_name, $params=array()) {
     $sql = new DBAccess();
 
     $send_email  = $params['send_email'];
@@ -503,7 +503,7 @@ function create_player($send_name, $params=array()){
 	$_from = "$headers";
 	// *** Create message object.
 	$message = new Nmail($_to, $_subject, $_body, $_from);
-    if(DEBUG){$message->dump = true; }
+    if (DEBUG) {$message->dump = true;}
 	$sent = false; // By default, assume failure.
 	$sent = $message->send();
 

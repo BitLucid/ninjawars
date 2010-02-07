@@ -22,24 +22,23 @@ class Player
 	public $status;
 
 	public function __construct($player_id_or_username) {
-		$sql = new DatabaseConnection();
-
 		if (!is_numeric($player_id_or_username)) {
-			$sel = "select player_id from players where uname = '".$player_id_or_username."' limit 1";
-			$this->player_id = DatabaseConnection::$pdo->query($sel);
+			$sel = "select player_id from players where uname = :uname limit 1";
+			$this->player_id = DatabaseConnection::$pdo->prepare($sel);
+			$this->player_id->bindValue(':uname', $player_id_or_username);
+			$this->player_id->execute();
 			$this->player_id = $this->player_id->fetchColumn();
 		} else {
 			$this->player_id = $player_id_or_username;
 		}
 
-		$dao = new PlayerDAO($sql);
+		$dao = new PlayerDAO();
 		$this->vo = $dao->get($this->player_id);
 	}
 
 	// Save the Player state.
 	public function save() {
-		$sql = new DBAccess();
-		$dao = new PlayerDAO($sql);
+		$dao = new PlayerDAO();
 		$dao->save($this->vo);
 	}
 

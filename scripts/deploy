@@ -38,6 +38,7 @@ SUPPORT_EMAIL_NAME=''
 SYSTEM_EMAIL=''
 SYSTEM_EMAIL_NAME=''
 TEMPLATE_CACHING=false
+VHOST_LISTEN='*'
 
 source_files=''
 configuration_file=''
@@ -154,6 +155,9 @@ while read curline; do
 		;;
 		CRON_USER)
 		CRON_USER=$optarg
+		;;
+		VHOST_LISTEN)
+		VHOST_LISTEN=$optarg
 		;;
 	esac
 done < $configuration_file
@@ -374,7 +378,7 @@ apache_config="/etc/apache2/sites-available/ninjawars-$SERVER_NAME"
 
 if [ -w $apache_config ]
 then
-	if echo "<VirtualHost *>" > $apache_config && cat "${SERVER_ROOT}apache_directives_template" >> $apache_config && echo "</VirtualHost>" >> $apache_config
+	if echo "<VirtualHost ${VHOST_LISTEN}>" > $apache_config && cat "${SERVER_ROOT}apache_directives_template" >> $apache_config && echo "</VirtualHost>" >> $apache_config
 	then
 		rm "${SERVER_ROOT}apache_directives_template"
 		echo "Apache config set."
@@ -384,7 +388,7 @@ then
 	fi
 elif touch $cron_file
 then
-	if echo "<VirtualHost *>" > $apache_config && cat "${SERVER_ROOT}apache_directives_template" >> $apache_config && echo "</VirtualHost>" >> $apache_config
+	if echo "<VirtualHost ${VHOST_LISTEN}>" > $apache_config && cat "${SERVER_ROOT}apache_directives_template" >> $apache_config && echo "</VirtualHost>" >> $apache_config
 	then
 		rm "${SERVER_ROOT}apache_directives_template"
 		echo "Apache config set."

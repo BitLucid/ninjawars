@@ -6,6 +6,7 @@ $quickstat  = false;
 $page_title = "Clan Panel";
 
 include SERVER_ROOT."interface/header.php";
+$dbconn = DatabaseConnection::getInstance();
 
 ?>
 <script type="text/javascript" src="<?=WEB_ROOT?>js/clan.js"></script>
@@ -100,8 +101,11 @@ if (!$player_id || !$clan) {
 				}
 			} else if ($command == "kick") {	//Clan Leader Action Kick a chosen member
 				if ($kicked == "") {
-					$sql->Query("SELECT player_id, uname FROM players JOIN clan_player ON _player_id = player_id AND _clan_id = ".$clan->getID()." WHERE uname <> '$username' and confirmed = 1");
-					$members =  $sql->data;
+					$query = "SELECT player_id, uname FROM players JOIN clan_player ON _player_id = player_id AND _clan_id = :clanID WHERE uname <> :username AND confirmed = 1";
+					$statement = DatabaseConnection::$pdo->prepare($query);
+					$statement->bindValue(':clanID', $clan->getID());
+					$statement->bindValue(':username', $username);
+					$statement->execute();
 
 					echo "<form id=\"kick_form\" action=\"clan.php\" method=\"get\" name=\"kick_form\">\n";
 					echo "<div>\n";
@@ -109,10 +113,9 @@ if (!$player_id || !$clan) {
 					echo "<select id=\"kicked\" name=\"kicked\">\n";
 					echo "<option value=\"\">--Pick a Member--</option>\n";
 
-					for ($i = 0; $i < $sql->rows; $i++) {
-						$sql->Fetch($i);
-						$pid = $sql->data[0];
-						$name = $sql->data[1];
+					while ($data = $statement->fetch()) {
+						$pid  = $data[0];
+						$name = $data[1];
 						echo "<option value=\"$pid\">$name</option>\n";
 					}
 
@@ -172,7 +175,10 @@ if (!$player_id || !$clan) {
 			}
 		} else {
 			if ($command == "leave") {	// *** Clan Member Action to Leave their Clan ***
-				$sql->Delete("DELETE FROM clan_player WHERE _player_id = $player_id");
+				$query = "DELETE FROM clan_player WHERE _player_id = :playerID";
+				$statement = DatabaseConnection::$pdo->prepare($query);
+				$statement->bindValue(':playerID', $player_id);
+				$statement->execute();
 
 				echo "<p>You have left your clan.</p>";
 				die();
@@ -216,7 +222,7 @@ if (!$player_id || !$clan) {
 
 if ($command == "view")
 {	// *** A view of the member list of any clan ***
-	echo render_clan_view($clan_id_viewed, $sql);
+	echo render_clan_view($clan_id_viewed);
 }
 
 echo render_clan_tags(); // *** Display the clan tags section. ***

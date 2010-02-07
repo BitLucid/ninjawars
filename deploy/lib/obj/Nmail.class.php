@@ -110,18 +110,22 @@ class Nmail {
 	 **/
 	function send() {
 		$this->success = null;
+
 		if ($this->try_to_send) {
 			$this->success = mail($this->to, $this->subject, $this->body, $this->from.$this->cc_bcc_etc_headers);
 		}
-		if($this->dump) {
+
+		if ($this->dump) {
 			// *** TODO: Eventually make this create a javascript popup so
 			// *** header Redirection works still.
 			var_dump($this);
 			print_r($this->body);
 		}
+
 		if ($this->die_after_dump) {
 			die();
 		}
+
 		return $this->success;
 	}
 }

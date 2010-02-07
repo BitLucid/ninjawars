@@ -24,7 +24,7 @@ function render_page($template, $title=null, $local_vars=array(), $options=null)
 
 
 // Will return the rendered content of the template.
-function render_template($template_name, $assign_vars=array()){
+function render_template($template_name, $assign_vars=array()) {
 	// Initialize the template object.
 	$tpl = new Template_Lite;
 	// template directory 
@@ -33,17 +33,15 @@ function render_template($template_name, $assign_vars=array()){
 	$tpl->compile_dir = COMPILED_TEMPLATE_PATH;
 
 	// loop over the vars, assigning each.
-	foreach($assign_vars as $lname => $lvalue){
+	foreach ($assign_vars as $lname => $lvalue) {
 		$tpl->assign($lname, $lvalue);
 	}
+
 	// call the template
 	$rendered = $tpl->fetch($template_name);
 
 	return $rendered;
 }
-
-
-
 
 /*
  * Pulls out standard vars except arrays and objects.

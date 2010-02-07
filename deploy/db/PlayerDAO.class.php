@@ -11,12 +11,13 @@ class PlayerDAO extends DataAccessObject {
 	/*
 	 * Assigns and holds the connection to the db.
 	 */
-	public function __construct(DatabaseConnection $p_dbconn) {
-		$this->m_dbconn = $p_dbconn;
+	public function __construct() {
+		$this->m_dbconn = DatabaseConnection::getInstance();
 		$this->_vo_obj_name = 'PlayerVO';
 		$this->_vo_fields = array();
 		$vo = new ReflectionClass(new PlayerVO());
 		$vo = $vo->getProperties();
+
 		foreach ($vo AS $reflectionProperty)
 		{
 			$this->_vo_fields[] = $reflectionProperty->name;

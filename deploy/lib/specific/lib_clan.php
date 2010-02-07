@@ -106,13 +106,16 @@ function clan_size() {
 	$sel = "SELECT sum(level-3-round(days/5)) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC";
 
 	$counts = $db->FetchAll($sel);
-	$largest = reset($counts);
-	$max = $largest['sum'];
 
-	foreach ($counts as $clan_info) {
-		// *** make percentage of highest, multiply by 10 and round to give a 1-10 size ***
-		$res[$clan_info['clan_id']]['name'] = $clan_info['clan_name'];
-		$res[$clan_info['clan_id']]['score'] = floor(( (($clan_info['sum'] - 1 < 1 ? 0 : $clan_info['sum'] - 1)) / $max) * 10) + 1;
+	if (!empty($counts)) {
+		$largest = reset($counts);
+		$max     = $largest['sum'];
+
+		foreach ($counts as $clan_info) {
+			// *** make percentage of highest, multiply by 10 and round to give a 1-10 size ***
+			$res[$clan_info['clan_id']]['name'] = $clan_info['clan_name'];
+			$res[$clan_info['clan_id']]['score'] = floor(( (($clan_info['sum'] - 1 < 1 ? 0 : $clan_info['sum'] - 1)) / $max) * 10) + 1;
+		}
 	}
 
 	return $res;
@@ -141,22 +144,32 @@ function render_clan_tags() {
 }
 
 /* Display the clan member name list or tag list */
-function render_clan_view($p_clanID, $sql) {
+function render_clan_view($p_clanID) {
 	if (!$p_clanID) {
 		return ''; // No viewing criteria available.
 	}
 
-	$members = $sql->FetchAll (
-        "SELECT uname, clan_name, level, days, _creator_player_id, player_id
-            FROM clan
-            JOIN clan_player ON _clan_id = $p_clanID AND clan_id = _clan_id
-            JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC");
+	$dbconn = DatabaseConnection::getInstance();
 
-	$max_list = $sql->FetchAll(
-        "SELECT max(level) AS max 
+	$query = "SELECT uname, clan_name, level, days, _creator_player_id, player_id
+            FROM clan
+            JOIN clan_player ON _clan_id = :clanID AND clan_id = _clan_id
+            JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC";
+	$statement = DatabaseConnection::$pdo->prepare($query);
+	$statement->bindValue(':clanID', $p_clanID);
+	$statement->execute();
+
+	$members = $statement->fetchAll();
+
+	$query = "SELECT max(level) AS max 
         FROM clan
-        JOIN clan_player ON _clan_id = $p_clanID AND clan_id = _clan_id
-        JOIN players ON player_id = _player_id AND confirmed = 1");
+        JOIN clan_player ON _clan_id = :clanID AND clan_id = _clan_id
+        JOIN players ON player_id = _player_id AND confirmed = 1";
+	$statement = DatabaseConnection::$pdo->prepare($query);
+	$statement->bindValue(':clanID', $p_clanID);
+	$statement->execute();
+
+	$max_list = $statement->fetchAll();
 
 	$max_array = reset($max_list);
 	$max = $max_array['max'];
@@ -167,10 +180,10 @@ function render_clan_view($p_clanID, $sql) {
             <div id='clan-members-count'>Clans Members: ".count($members)."</div>
             <ul id='clan-members-list'>";
 
-	foreach ($members as $member){
+	foreach ($members as $member) {
 		$member['size'] = floor( ( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) ) / $max) * 2) + 1;
 
-		if ($member['player_id'] == $member['_creator_player_id']){
+		if ($member['player_id'] == $member['_creator_player_id']) {
 			$member['size'] = $member['size'] + 2;
 			$member['size'] = ($member['size'] > 2 ? 2 : $member['size']);
 		}

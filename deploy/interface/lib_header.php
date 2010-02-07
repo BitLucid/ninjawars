@@ -1,11 +1,8 @@
 <?php
-
-
-
 /**
   *  Creates all the environmental variables, with no outputting.
 **/
-function init(){
+function init() {
     global $private, $quickstat, $alive, $page_title, $filter, $sql, $today;
     // General utility objects.
     $filter = new Filter(); // *** Creates the filters for later use.
@@ -14,10 +11,10 @@ function init(){
     // ******************** Declared variables *****************************
     $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
     // Page viewing settings usually set before the header.
-    $private 	= (isset($private)? $private : NULL);
-    $quickstat 	= (isset($quickstat)? $quickstat : NULL);
-    $alive 		= (isset($alive)? $alive : NULL);
-    $page_title = (isset($page_title)? $page_title : "NinjaWars");
+    $private 	= (isset($private) ? $private : NULL);
+    $quickstat 	= (isset($quickstat) ? $quickstat : NULL);
+    $alive 		= (isset($alive) ? $alive : NULL);
+    $page_title = (isset($page_title) ? $page_title : "NinjaWars");
     $error = null; // Logged in or alive error.
     
     update_activity_info(); // *** Updates the activity of the page viewer in the database.
@@ -40,67 +37,63 @@ function finalize(){
 
 
 // Places much of the user into into the global namespace.
-function globalize_user_info($private=true, $alive=true){
-    global $username;
-    $error = null;
+function globalize_user_info($private=true, $alive=true) {
+	global $username;
+	$error = null;
     	    
-	$username         = SESSION::get('username'); // Will default to null.
+	$username = SESSION::get('username'); // Will default to null.
 
-    if((!is_logged_in() || !$username) && $private) {
-    		$error = render_viewable_error('log_in');
-    		// A non-null set of content being in the error triggers a die at the end of the header.
-    }elseif($username) {
-    	// **************** Player information settings. *******************
-    	global $player, $players_id, $player_id, $players_email, 
-    	    $players_turns, $players_health, $players_bounty, $players_gold, $players_level,
-    	    $players_class, $players_strength, $players_kills, $players_days, $players_created_date,
-    	    $players_last_started_attack, $players_clan, $players_status;
-    	// Polluting the global namespace here.  Booo.
+	if ((!is_logged_in() || !$username) && $private) {
+		$error = render_viewable_error('log_in');
+		// A non-null set of content being in the error triggers a die at the end of the header.
+	} elseif($username) {
+		// **************** Player information settings. *******************
+		global $player, $players_id, $player_id, $players_email, 
+		$players_turns, $players_health, $players_bounty, $players_gold, $players_level,
+		$players_class, $players_strength, $players_kills, $players_days, $players_created_date,
+		$players_last_started_attack, $players_clan, $players_status;
+		// Polluting the global namespace here.  Booo.
     	    
-    	$player = new Player($username); // Defaults to current session user.
+		$player = new Player($username); // Defaults to current session user.
 
-    	$players_id = $player->player_id;
-        $player_id = $players_id; // Just two aliases for the player id.
-    	$players_email = $player->vo->email;
+		$players_id = $player->player_id;
+		$player_id = $players_id; // Just two aliases for the player id.
+		$players_email = $player->vo->email;
     	
-       	assert('isset($players_id)');
+		assert('isset($players_id)');
 
-    	// TODO: Turn this into a list extraction?
-    	// password and messages intentionally excluded.
-    	$players_turns    	= $player->vo->turns;
-    	$players_health   	= $player->vo->health;
-    	$players_bounty   	= $player->vo->bounty;
-    	$players_gold     	= $player->vo->gold;
-    	$players_level    	= $player->vo->level;
-    	$players_class    	= $player->vo->class;
-    	$players_strength 	= $player->vo->strength;
-    	$players_kills		= $player->vo->kills;
+		// TODO: Turn this into a list extraction?
+		// password and messages intentionally excluded.
+		$players_turns    	= $player->vo->turns;
+		$players_health   	= $player->vo->health;
+		$players_bounty   	= $player->vo->bounty;
+		$players_gold     	= $player->vo->gold;
+		$players_level    	= $player->vo->level;
+		$players_class    	= $player->vo->class;
+		$players_strength 	= $player->vo->strength;
+		$players_kills		= $player->vo->kills;
 
-    	$players_days		= $player->vo->days;
-    	$players_created_date = $player->vo->created_date;
-    	$players_last_started_attack = $player->vo->last_started_attack;
-    	$players_clan 		= get_clan_by_player_id($player->vo->player_id);
+		$players_days		= $player->vo->days;
+		$players_created_date = $player->vo->created_date;
+		$players_last_started_attack = $player->vo->last_started_attack;
+		$players_clan 		= get_clan_by_player_id($player->vo->player_id);
 
-    	// TODO: not ready yet: $players_energy	= $player_data['energy'];
-    	// Also migrate the player_score to a true player object.
-    	// Also migrate the rank_id to a true player object.
+		// TODO: not ready yet: $players_energy	= $player_data['energy'];
+		// Also migrate the player_score to a true player object.
+		// Also migrate the rank_id to a true player object.
 
-    	$players_status   = $player->getStatus();
+		$players_status   = $player->getStatus();
 
-
-    	if ($alive) { // *** That page requires the player to be alive to view it.
-    		if (!$players_health) {
-    			$error = render_viewable_error('dead');
-    		} else {
-    			if (user_has_status_type('frozen')) {
-    				$error = render_viewable_error('frozen');
-    	    	}
-    		}
-        }
-        
-    }
+		if ($alive) { // *** That page requires the player to be alive to view it.
+			if (!$players_health) {
+				$error = render_viewable_error('dead');
+			} else if (user_has_status_type('frozen')) {
+				$error = render_viewable_error('frozen');
+			}
+		}
+	}
     
-    return $error;
+	return $error;
 }
 
 // Pull the status array.
@@ -162,7 +155,7 @@ function update_activity_info()
 
 	// ************** Setting anonymous and player usage information
 
-	$dbconn = new DatabaseConnection();
+	$dbconn = DatabaseConnection::getInstance();
 
 	if (!SESSION::is_set('online'))
 	{	// *** Completely new session, update latest activity log. ***
@@ -229,8 +222,7 @@ function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses 
 }
 
 // Renders the error message when a section isn't viewable.
-function render_viewable_error($p_error)
-{
+function render_viewable_error($p_error) {
 	return render_template("error.tpl", array('error'=>$p_error));
 }
 
@@ -244,8 +236,7 @@ function render_viewable_error($p_error)
 **/
 function get_player_info($p_id = null, $p_password = false)
 {
-	$dbconn = new DatabaseConnection();
-	$dao = new PlayerDAO($dbconn);
+	$dao = new PlayerDAO();
 	$id = either($p_id, SESSION::get('player_id')); // *** Default to current. ***
 
 	$playerVO = $dao->get($id);

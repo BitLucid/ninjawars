@@ -12,8 +12,8 @@ abstract class DataAccessObject {
 	/*
 	 * Assigns and holds the connection to the db.
 	 */
-	public function __construct(DatabaseConnection $p_dbconn) {
-		$this->m_dbconn = $p_dbconn;
+	public function __construct() {
+		$this->m_dbconn = DatabaseConnection::getInstance();
 	}
 
 	/*
