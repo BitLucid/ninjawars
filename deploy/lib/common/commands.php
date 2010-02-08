@@ -4,16 +4,23 @@
 // ********** CLASS FUNCTIONS *********
 // ************************************
 
-function setClass($who,$new_class){
-  global $sql;
-  $sql->Update("UPDATE players SET class = '$new_class' WHERE uname = '$who'");
-  return $new_class;
+function setClass($who, $new_class) {
+	$dbconn = DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET class = :class WHERE uname = :user");
+	$statement->bindValue(':class', $new_class);
+	$statement->bindValue(':user', $who);
+	$statement->execute();
+
+	return $new_class;
 }
 
-function getClass($who){
-  global $sql;
-  $class = $sql->QueryItem("SELECT class FROM players WHERE uname = '$who'");
-  return $class;
+function getClass($who) {
+	$dbconn = DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT class FROM players WHERE uname = :user");
+	$statement->bindValue(':user', $who);
+	$statement->execute();
+
+	return $statement->fetchColumn();
 }
 
 // ************************************
@@ -25,31 +32,37 @@ function getClass($who){
 // ********* HEALTH FUNCTIONS *********
 // ************************************
 
-function setHealth($who,$new_health){
-  global $sql;
-  $sql->Update("UPDATE players SET health = '$new_health' WHERE uname = '$who'");
-  return $new_health;
+function setHealth($who, $new_health) {
+	$dbconn = DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET health = :health WHERE uname = :user");
+	$statement->bindValue(':health', $new_health);
+	$statement->bindValue(':user', $who);
+	$statement->execute();
+	return $new_health;
 }
 
-function getHealth($who){
-  global $sql;
-  $health = $sql->QueryItem("SELECT health FROM players WHERE uname = '$who'");
-  return $health;
+function getHealth($who) {
+	$dbconn = DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT health FROM players WHERE uname = :user");
+	$statement->bindValue(':user', $who);
+	$statement->execute();
+
+	return $statement->fetchColumn();
 }
 
 function changeHealth($who, $amount) {
 	if (abs($amount) > 0) {
-		global $sql;
-
-		$sql->Update("UPDATE players SET health = health + ".
-		   "CASE WHEN health+$amount < 0 THEN health*(-1) ELSE $amount END ".
-		   "WHERE uname  = '$who'");
-		$new_health = getHealth($who);
-
-		return $new_health;
-	} else {
-		return getHealth($who);
+		$dbconn = DatabaseConnection::getInstance();
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET health = health + ".
+		   "CASE WHEN health + :amount < 0 THEN health*(-1) ELSE :amount2 END ".
+		   "WHERE uname  = :user");
+		$statement->bindValue(':user', $who);
+		$statement->bindValue(':amount', $amount);
+		$statement->bindValue(':amount2', $amount);
+		$statement->execute();
 	}
+
+	return getHealth($who);
 }
 
 function addHealth($who, $amount) {
@@ -69,34 +82,41 @@ function subtractHealth($who, $amount) {
 // ********** GOLD FUNCTIONS **********
 // ************************************
 
-function setGold($who,$new_gold) {
-	global $sql;
-
-	$sql->Update("UPDATE players SET gold = $new_gold WHERE uname = '$who'");
+/* *** Currently unused consider removing ***
+function setGold($who, $new_gold) {
+	$dbconn = DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET gold = :gold WHERE uname = :user");
+	$statement->bindValue(':user', $who);
+	$statement->bindValue(':gold', $new_gold);
+	$statement->execute();
 
 	return $new_gold;
 }
+*/
 
 function getGold($who) {
-	global $sql;
-	$gold = $sql->QueryItem("SELECT gold FROM players WHERE uname = '$who'");
-	return $gold;
+	$dbconn = DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT gold FROM players WHERE uname = :user");
+	$statement->bindValue(':user', $who);
+	$statement->execute();
+
+	return $statement->fetchColumn();
 }
 
 function changeGold($who, $amount) {
 	if (abs($amount) >  0) {
-		global $sql;
+		$dbconn = DatabaseConnection::getInstance();
 
-		$sql->Update("UPDATE players SET gold = gold + ".
-		   "CASE WHEN gold+$amount < 0 THEN gold*(-1) ELSE $amount END ".
-		   "WHERE uname = '$who'");
-
-		$new_gold = getGold($who);
-
-		return $new_gold;
-	} else {
-		return getGold($who);
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET gold = gold + ".
+		   "CASE WHEN gold + :amount < 0 THEN gold*(-1) ELSE :amount2 END ".
+		   "WHERE uname = :user");
+		$statement->bindValue(':amount', $amount);
+		$statement->bindValue(':amount2', $amount);
+		$statement->bindValue(':user', $who);
+		$statement->execute();
 	}
+
+	return getGold($who);
 }
 
 function addGold($who, $amount) {
@@ -116,53 +136,58 @@ function subtractGold($who, $amount) {
 // ********** TURNS FUNCTIONS *********
 // ************************************
 
-function setTurns($who,$new_turns) {
-  global $sql;
+/* *** Currently unused consider removing ***
+function setTurns($who, $new_turns) {
+	$dbconn = DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET turns = :turns WHERE uname = :user");
+	$statement->bindValue(':user', $who);
+	$statement->bindValue(':turns', $new_turns);
+	$statement->execute();
 
-  $sql->Update("UPDATE players SET turns = $new_turns WHERE uname = '$who'");
+	if ($who == get_username()) {
+		$_SESSION['turns'] = $new_turns;
+	}
 
-  if ($who == get_username()) {
-      $_SESSION['turns'] = $new_turns;
-    }
-
-  return $new_turns;
+	return $new_turns;
 }
+*/
 
 function getTurns($who) {
-  global $sql;
+	$dbconn = DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT turns FROM players WHERE uname = :user");
+	$statement->bindValue(':user', $who);
+	$statement->execute();
 
-  $turns = $sql->QueryItem("SELECT turns FROM players WHERE uname = '$who'");
+	$turns = $statement->fetchColumn();
 
-  if ($who == get_username()) {
-      $_SESSION['turns'] = $turns;
+	if ($who == get_username()) {
+		$_SESSION['turns'] = $turns;
+	}
+
+	return $turns;
+}
+
+function changeTurns($who, $amount) {
+	if (abs($amount) > 0) {
+		$dbconn = DatabaseConnection::getInstance();
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET turns = turns + ".
+		   "CASE WHEN turns + :amount < 0 THEN turns*(-1) ELSE :amount2 END ".
+		   "WHERE uname  = :user");
+		$statement->bindValue(':amount', $amount);
+		$statement->bindValue(':amount2', $amount);
+		$statement->bindValue(':user', $who);
+		$statement->execute();
     }
 
-  return $turns;
+	return getTurns($who);
 }
 
-function changeTurns($who,$amount)
-{
-  if (abs($amount) > 0) {
-      global $sql;
-
-      $sql->Update("UPDATE players SET turns = turns + ".
-		   "CASE WHEN turns+$amount < 0 THEN turns*(-1) ELSE $amount END ".
-		   "WHERE uname  = '$who'");
-
-      $new_turns = getTurns($who);
-
-      return $new_turns;
-    } else {
-      return getTurns($who);
-    }
+function addTurns($who, $amount) {
+  return changeTurns($who, $amount);
 }
 
-function addTurns($who,$amount) {
-  return changeTurns($who,$amount);
-}
-
-function subtractTurns($who,$amount) {
-  return changeTurns($who,((-1)*$amount));
+function subtractTurns($who, $amount) {
+  return changeTurns($who, ((-1)*$amount));
 }
 
 // ************************************
@@ -174,7 +199,8 @@ function subtractTurns($who,$amount) {
 // ********** KILLS FUNCTIONS *********
 // ************************************
 
-function setKills($who,$new_kills) {
+/* *** Currently unused consider removing ***
+function setKills($who, $new_kills) {
   global $sql;
 
   $sql->Update("UPDATE players SET kills = $new_kills WHERE uname = '$who'");
@@ -185,6 +211,7 @@ function setKills($who,$new_kills) {
 
   return $new_kills;
 }
+*/
 
 function getKills($who) {
   global $sql;
@@ -250,13 +277,15 @@ function subtractKills($who,$amount) {
 	return changeKills($who, ((-1)*$amount));
 }
 
-
+/* *** Currently unused consider removing ***
 function getKillPointsAmount($attacker, $defender) {
   global $sql;
   $sql->Query("INSERT INTO 'dueling_log' values ('','$attacker', '$defender', '$won', '$killpoints', now())");                            //Log of Dueling information.
 }
+*/
 
 
+/* *** Currently unused consider removing ***
 function kill($killer,$victim,$how,$what)  //This is a kill replacement function that may not yet be in use.
 {
 	echo "$killer has killed $victim!<br>\n";
@@ -300,6 +329,7 @@ function kill($killer,$victim,$how,$what)  //This is a kill replacement function
 	sendMessage($_killer, $victim,$msg);
 	sendMessage($victim, $killer,str_replace($_killer." has","You have",str_replace("you",$victim,$msg)));
 }
+*/
 
 // ************************************
 // ************************************
@@ -310,6 +340,7 @@ function kill($killer,$victim,$how,$what)  //This is a kill replacement function
 // ********** LEVEL FUNCTIONS *********
 // ************************************
 
+/* *** Currently unused consider removing ***
 function setLevel($who, $new_level) {
 	global $sql;
 
@@ -322,6 +353,7 @@ function setLevel($who, $new_level) {
 
 	return $new_level;
 }
+*/
 
 function getLevel($who) {
 	global $sql;
@@ -361,12 +393,14 @@ function changeLevel($who, $amount) {
 }
 
 function addLevel($who,$amount) {
-  return changeLevel($who,$amount);
+	return changeLevel($who,$amount);
 }
 
+/* *** Currently unused consider removing ***
 function subtractLevel($who,$amount) {
-  return changeLevel($who,((-1)*$amount));
+	return changeLevel($who,((-1)*$amount));
 }
+*/
 
 // ************************************
 // ************************************
@@ -387,6 +421,7 @@ define("SKILL_2",     32);
 define("INVITED",     64);
 $status_array;
 
+/* *** Currently unused consider removing ***
 function setStatus($who,$what) {
 	//if (!is_numeric($what)) // *** If the status being sent in isn't a number...
 	//{
@@ -412,6 +447,7 @@ function setStatus($who,$what) {
 
 	return $what;
 }
+*/
 
 function getStatus($who) {
 	global $sql, $status_array;
@@ -483,8 +519,8 @@ function subtractStatus($who, $what)     //Takes in the Status in the ALL_CAPS_W
 // ********* STRENGTH FUNCTIONS *******
 // ************************************
 
-function setStrength($who,$new_strength)
-{
+/* *** Currently unused consider removing ***
+function setStrength($who,$new_strength) {
   global $sql;
 
   $sql->Update("UPDATE players SET strength = $new_strength WHERE uname = '$who'");
@@ -496,9 +532,9 @@ function setStrength($who,$new_strength)
 
   return $new_strength;
 }
+*/
 
-function getStrength($who)
-{
+function getStrength($who) {
 	global $sql;
 
 	$strength = $sql->QueryItem("SELECT strength FROM players WHERE uname = '$who'");
@@ -511,8 +547,7 @@ function getStrength($who)
 	return $strength;
 }
 
-function changeStrength($who, $amount)
-{
+function changeStrength($who, $amount) {
 	if (abs($amount) > 0) {
 		global $sql;
 
@@ -526,15 +561,15 @@ function changeStrength($who, $amount)
 	}
 }
 
-function addStrength($who,$amount)
-{
+function addStrength($who,$amount) {
 	return changeStrength($who, $amount);
 }
 
-function subtractStrength($who, $amount)
-{
+/* Currently unused consider removing ***
+function subtractStrength($who, $amount) {
 	return changeStrength($who, ((-1) * $amount));
 }
+*/
 
 // ************************************
 // ************************************
@@ -655,6 +690,7 @@ function createClan($p_leaderID, $p_clanName) {
 	return new Clan($newClanID, $p_clanName);
 }
 
+/* *** Currently unused consider removing ***
 function get_clan_by_id($p_clanID) {
 	global $sql;
 	$sql->Query('SELECT clan_id, clan_name FROM clan WHERE clan_id = '.$p_clanID);
@@ -666,6 +702,7 @@ function get_clan_by_id($p_clanID) {
 		return null;
 	}
 }
+*/
 
 function get_clan_by_player_id($p_playerID) {
 	global $sql;
@@ -707,8 +744,7 @@ function disbandClan($p_clanID) {
     $clan_members = $sql->fetchAll();
 	$leader = get_clan_leader_id($p_clanID);
 
-	foreach ($clan_members AS $data)
-	{
+	foreach ($clan_members AS $data) {
 		$member_id = $data[0];
 
 		send_message($leader, $member_id, $message);
@@ -718,23 +754,33 @@ function disbandClan($p_clanID) {
 }
 
 function renameClan($p_clanID, $p_newName) {
-  global $sql;
+	DatabaseConnection::getInstance();
 
-  $sql->Update("UPDATE clan SET clan_name = '".sql($p_newName)."' WHERE clan_id = $p_clanID");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE clan SET clan_name = :name WHERE clan_id = :clan");
+	$statement->bindValue(':name', $p_newName);
+	$statement->bindValue(':clan', $p_clanID);
+	$statement->execute();
 
-  return $p_newName;
+	return $p_newName;
 }
 
 function invitePlayer($who, $p_clanID) {
-	global $sql, $status_array;
+	global $status_array;
+	DatabaseConnection::getInstance();
 
 	$target_id = get_user_id($who);
-	if(!$target_id){
-	    return $failure_reason = 'No such ninja.';
+
+	if (!$target_id) {
+		return $failure_reason = 'No such ninja.';
 	}
 
-	$current_clan        = $sql->QueryItem("SELECT _clan_id FROM clan_player WHERE _player_id = $target_id");
-	$player_is_confirmed = $sql->QueryItem("SELECT confirmed FROM players WHERE player_id = $target_id");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT confirmed, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target");
+	$statement->bindValue(':target', $target_id);
+	$statement->execute();
+	$data = $statement->fetch();
+
+	$current_clan        = $data['_clan_id'];
+	$player_is_confirmed = $data['confirmed'];
 
     $leader_info = get_clan_leader_info($p_clanID);
     $clan_name   = $leader_info['clan_name'];
@@ -771,28 +817,39 @@ function invitePlayer($who, $p_clanID) {
 // ************************************
 
 function addItem($who, $item, $quantity = 1) {
-	global $sql;
+	DatabaseConnection::getInstance();
 
 	if ($quantity < 0) {
 		$quantity = 0;
 	}
 
-	$sql->Update("Update inventory set amount = amount + ".$quantity." WHERE owner = '$who' AND lower(item) =lower('$item')");
-	$rows = $sql->getRowCount();
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount + :quantity WHERE owner = :who AND lower(item) = lower(:item)");
+	$statement->bindValue(':quantity', $quantity);
+	$statement->bindValue(':user', $who);
+	$statement->bindValue(':item', $item);
+	$statement->execute();
 
-	if (!$rows)
-	{
-		$sql->Insert("INSERT INTO inventory (owner, item, amount) VALUES ('$who','$item', '$quantity')");
+	$rows = $statement->rowCount();
+
+	if (!$rows) {
+		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO inventory (owner, item, amount) VALUES (:user, :item, :quantity)");
+		$statement->bindValue(':user', $who);
+		$statement->bindValue(':item', $item);
+		$statement->bindValue(':quantity', $quantity);
+		$statement->execute();
 	}
 }
 
-function removeItem($who,$item,$quantity=1)
-{
-	global $sql;
-
-	$sql->Update("Update inventory set amount = amount - ".$quantity." 
-    WHERE owner = '$who' AND lower(item) =lower('$item') AND amount>1");
+/* *** Currently unused consider removing ***
+function removeItem($who, $item, $quantity=1) {
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount - :quantity WHERE owner = :user AND lower(item) = lower(:item) AND amount > 1");
+	$statement->bindValue(':user', $who);
+	$statement->bindValue(':item', $item);
+	$statement->bindValue(':quantity', $quantity);
+	$statement->execute();
 }
+*/
 
 
 // ************************************
@@ -800,12 +857,16 @@ function removeItem($who,$item,$quantity=1)
 // ************************************
 
 
-function sendLogOfDuel($attacker,$defender,$won,$killpoints)
-{
-  global $sql;
-  $sql->Insert("INSERT INTO dueling_log values 
-        (default,'$attacker', '$defender', '$won', '$killpoints', now())");
+function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
+	$dbconn = DatabaseConnection:getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO dueling_log values 
+        (default, :attacker, :defender, :won, :killpoints, now())");
         //Log of Dueling information.
+	$statement->bindValue(':attacker', $attacker);
+	$statement->bindValue(':defender', $defender);
+	$statement->bindValue(':won', $won);
+	$statement->bindValue(':killpoints', $killpoints);
+	$statement->execute();
 }
 
 
@@ -813,21 +874,27 @@ function sendLogOfDuel($attacker,$defender,$won,$killpoints)
 // ******** FLAGGING FUNCTIONS *******
 // ************************************
 
-function flagPlayer($player, $flag, $note, $originatingPage)
-{
-  global $sql;
-  $flagDetectionQuery = "SELECT flag_ID FROM flags WHERE flag='".$flag."'";
-  $flagResult=$sql->Query($flagDetectionQuery);
-  $flagIDArray=$sql->Fetch;
-  $playerDetectionQuery = "SELECT player_ID FROM players WHERE uname='".$player."'";
-  $playerResult=$sql->Query($playerDetectionQuery);
-  $playerArray=$sql->Fetch();
-  $addToPlayersFlagged = "INSERT IGNORE INTO players_flagged 
-        (flag_ID, player_ID, extra_notes, originating_page, timestamp) 
-        VALUES ('$flagIDArray[0]', '$playerArray[0]', '$note', '$originatingPage', now())";
-  $result=$sql->Query($addToPlayersFlagged);
-}
+/* *** Currently unused consider removing ***
+function flagPlayer($player, $flag, $note, $originatingPage) {
+	$dbconn = DatabaseConnection::getInstance();
 
+	$statement = DatabaseConnection::$pdo->prepare("SELECT flag_ID FROM flags WHERE flag = :flag");
+	$statement->bindValue(':flag', $flag);
+	$statement->execute();
+	$flagID = $statement->fetchColumn();
+
+	$user_id = get_user_id($player);
+
+	$statement = DatabaseConnection::$pdo->prepare("INSERT IGNORE INTO players_flagged 
+        (flag_ID, player_ID, extra_notes, originating_page, timestamp) 
+        VALUES (:flagID, :playerID, :note, :originatingPage, now())");
+	$statement->bindValue(':flagID', $flagID);
+	$statement->bindValue(':playerID', $user_id);
+	$statement->bindValue(':note', $note);
+	$statement->bindValue(':originatingPage', $originatingPage);
+	$statement->execute();
+}
+*/
 
 // ************************************
 // ******** MESSAGE FUNCTIONS *********
@@ -846,22 +913,32 @@ function flagPlayer($player, $flag, $note, $originatingPage)
 // ************************************
 
 function pauseAccount($who) {
-	global $sql;
+	$dbconn = DatabaseConnection::getInstance();
 
 	$user_id = get_user_id($who);
 
 	if (($clan = get_clan_by_player_id($user_id)) && get_clan_leader_id($clan->getID()) == $user_id) {
-	    disbandClan($clan->getID());
+		disbandClan($clan->getID());
 	}
 
-	$selectStatement = "SELECT email FROM players WHERE uname = '$who'";
-	$results = $sql->Query($selectStatement); //Calls the select statement, returns a resource for the statements that return.
+	$statement = DatabaseConnection::$pdo->prepare("SELECT email FROM players WHERE player_id = :user");
+	$statement->bindValue(':user', $user_id);
+	$statement->execute();
 
-	$row = $sql->Fetch();  //Turns the first line of the resource into an array.
-	$quickemail = $row[0]."PAUSED";
-	$sql->Update("UPDATE players SET confirmed = 0, email= '$quickemail' WHERE uname = '$who'");
-	$sql->Delete("DELETE FROM inventory WHERE owner = '$who'");
-	$sql->Delete("DELETE FROM mail WHERE send_to = '$who'");
+	$quickemail = $email."PAUSED";
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET confirmed = 0, email = :pausedemail' WHERE player_id = :user");
+	$statement->bindValue(':pausedEmail', $quickemail);
+	$statement->bindValue(':user', $user_id);
+	$statement->execute();
+
+	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM inventory WHERE owner = :user");
+	$statement->bindValue(':user', $who);
+	$statement->execute();
+
+	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM mail WHERE send_to = :user");
+	$statement->bindValue(':user', $who);
+	$statement->execute();
+
 	session_destroy();
 
 	echo "Your account has been removed from Ninja Wars.
@@ -870,22 +947,33 @@ function pauseAccount($who) {
 	Thank you.<br><br>".ADMIN_EMAIL."\n";
 }
 
+/* *** Currently unused. Consider removing ***
 function deleteAccount($who) {
-	global $sql;
+	$dbconn = DatabaseConnection::getInstance();
 
 	$user_id = get_user_id($who);
 
 	if (($clan = get_clan_by_player_id($user_id)) && get_clan_leader_id($clan->getID()) == $user_id) {
-	    disbandClan($clan->getID());
+		disbandClan($clan->getID());
 	}
 
-	$sql->Delete("DELETE FROM players WHERE uname = '$who'");
-	$sql->Delete("DELETE FROM inventory WHERE owner = '$who'");
-	$sql->Delete("DELETE FROM mail WHERE send_to = '$who'");
+	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM inventory WHERE owner = :user");
+	$statement->bindValue(':user', $who);
+	$statement->execute();
+
+	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM mail WHERE send_to = :user");
+	$statement->bindValue(':user', $who);
+	$statement->execute();
+
+	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM players WHERE player_id = :user");
+	$statement->bindValue(':user', $user_id);
+	$statement->execute();
+
 	session_destroy();
 
-	echo "Your account has been removed from Ninja Wars. If you wish to sign back up you may do so. <br>If not, we would be glad to receive an email telling us why you choose to leave the game,<br>Thank you.<br><br>Admin@NinjaWars.net\n";
+	echo "Your account has been removed from Ninja Wars. If you wish to sign back up you may do so. <br>If not, we would be glad to receive an email telling us why you choose to leave the game,<br>Thank you.<br><br>".ADMIN_EMAIL."\n";
 }
+*/
 
 // *** NEED CLAN FUNCTIONS (invite,msg,view) ***
 // *** NEED SIGNUP/LOGIN FUNCTIONS ***
@@ -898,20 +986,17 @@ function deleteAccount($who) {
 // *** NEED DOJO FUNCTIONS ***
 
 
-function takeGold($from,$to,$mod)
-{
-  global $sql;
+function takeGold($from, $to, $mod) {
+	$victim_gold = getGold($from);
+	$gold_change = round($victim_gold * $mod);
+	$gold_change = ($gold_change < 0 ? 0 : $gold_change);
 
-  $victim_gold = getGold($from);
-  $gold_change = round($victim_gold * $mod);
-  $gold_change = ($gold_change < 0 ? 0 : $gold_change);
+	addGold($to, $gold_change);
+	subtractGold($from, $gold_change);
 
-  addGold($to,$gold_change);
-  subtractGold($from,$gold_change);
+	echo "$to has acquired $gold_change gold from $from.<br>\n";
 
-  echo "$to has acquired $gold_change gold from $from.<br>\n";
-
-  return $gold_change;
+	return $gold_change;
 }
 
 ?>
