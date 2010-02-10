@@ -153,7 +153,7 @@ h1{
     background-color: hsla(0,100%,50%,0.3);
 }
 .ninjawars-staff #latest-commit-section{
-        width: 97%; height: 70px; border: 1px solid white; resize: vertical; overflow: auto; 
+        width: 97%; height: 7em; border: 1px solid white; resize: vertical; overflow: auto; 
         /*border-image: url(/images/border.png) 27 27 27 27 stretch stretch;*/
         margin-bottom: 1em;
         max-height:20em;
@@ -240,11 +240,12 @@ a:hover {
 a:link {} a:visited {} a:active {}
 */
 
-#avatar {
+.player-profile #avatar, .your-stats #avatar {
     text-align:center;
     float:right;
     width:80px;
 }
+/* Clan avatar css set in the .member section. */
 
 #menu a { /*Menu actions are a lighter blue to pop better on the red */
 	color: #6495ED;/*CornflowerBlue;*/
@@ -1147,11 +1148,13 @@ table .quickstats td{
     margin-bottom: 1em;
     text-align: center;
 }
-#clan-members .member{
+#clan-members .member-info{
     float:left;
+    margin:5px;
+}
+#clan-members .member{
     color:orange;
     background-color:green;
-    margin: 5px;
 }
 
 /*  End of Clan Tags section */

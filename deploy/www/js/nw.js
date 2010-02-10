@@ -174,7 +174,7 @@ function getMessage(){
     return NW.latestMessage? NW.latestMessage : false;
 }
 
-function getPlayer(){
+function getPlayerInfo(){
     return NW.playerInfo ? NW.playerInfo : false;
 }
 

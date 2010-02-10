@@ -81,10 +81,18 @@ function render_avatar($player, $size=null) {
     if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email){
         return '';
     } else {	// Otherwise, user the player info for creating a gravatar.
-		$def         = 'identicon'; // Default image or image class.
-		// other options: wavatar , monsterid
 		$email       = $player->vo->email;
 		$avatar_type = $player->vo->avatar_type;
+		return render_avatar_from_email($email, $avatar_type, $size);
+	}
+}
+
+// Use the email information to return the gravatar image url.
+function render_avatar_from_email($email, $avatar_type=null, $size=null){
+		$def         = 'monsterid'; // Default image or image class.
+		// other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
+		$email       = $email;
+		$avatar_type = $avatar_type;
 		$base        = "http://www.gravatar.com/avatar/";
 		$hash        = md5(trim(strtolower($email)));
 		$no_gravatar = "d=".urlencode($def);
@@ -92,8 +100,21 @@ function render_avatar($player, $size=null) {
 		$rating      = "r=x";
 		$res         = $base.$hash."?".implode("&amp;", array($no_gravatar, $size, $rating));
 
-		return $res;
+		return $res;    
+}
+
+// Render an avatar section just from the email address.
+function render_avatar_section_from_email($email, $img_size=null){
+	$img_url = (OFFLINE ? '' : render_avatar_from_email($email, $img_size));
+
+	if (!$img_url) {
+		return '';
 	}
+
+    return "
+    <div id='avatar'>
+        <img alt='' src='$img_url'>
+    </div>";
 }
 
 // Display the div for the avatar to live within.
@@ -110,7 +131,7 @@ function render_avatar_section($player, $img_size=null){
 
     return "
     <div id='avatar'>
-        <img alt='No Avatar' src='$img_url'>
+        <img alt='' src='$img_url'>
     </div>";
 }
 
