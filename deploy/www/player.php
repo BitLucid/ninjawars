@@ -43,7 +43,7 @@ $self        = (get_username() && get_username() == $player_info['uname']); // R
 
 if ($message) {
     send_message($user_id, $target_id, $message);
-    echo "<div id='message-sent' class='ninja-notice'>Message sent</div>";
+    // "message sent" notice will be displayed by the template itself.
 }
 
 $viewing_player_obj = new Player(get_username());
