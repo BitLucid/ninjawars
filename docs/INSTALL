@@ -11,10 +11,10 @@ sudo apt-get install perl liblingua-en-inflect-perl
 sudo apt-get install awstats
 (Totally optional)
 
-All Deployments
+All Types of Deployment
 ---------------
-1. Copy a live database (probably the easiest) or run any outstanding migrations off of a skeleton database via the 
-2. Set permissions in pg_hba for the database, host, and user to match your configuration
+1. Copy a live database (probably the easiest) or create a skeleton database and then run the migrations in  /deploy/db/migrations/ on it.
+2. Set permissions in your pg_hba for the database, host, and user to match your configuration
 
 Using /scripts/deploy
 ---------------------
@@ -38,12 +38,11 @@ Using your working copy
 !!! IMPORTANT NOTES !!!
 ------------------------
 
-TODO: awstats needs an example conf file.
-
 If you are using a .htaccess file
 ---------------------------------
-The AllowOverride directive in /etc/apache2/sites-available/default cannot equal None, as that will prevent the .htaccess from working.
+In apache, the "AllowOverride" directive in /etc/apache2/sites-available/default cannot equal None, as that will prevent the .htaccess from being used correctly.
 
 If you are changing apache directives
 -------------------------------------
-If you are making changes to the apache config, outside of the .htaccess you will need to restart apache `sudo /etc/init.d/apache2 restart`
+If you are making changes to the apache config (as opposed to in the .htaccess), you will need to restart apache:
+sudo /etc/init.d/apache2 restart
