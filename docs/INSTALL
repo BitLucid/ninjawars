@@ -2,11 +2,18 @@ Dependencies
 -------------
 PHP5, Postgresql8, Perl>=5, Apache2, Perl::Lingua::En::Inflect
 
-sudo apt-get install apache2 php5 postgresql perl liblingua-en-inflect-perl awstats
+Via apt-get command line:
+
+sudo apt-get install apache2 php5 postgresql
+(Required)
+sudo apt-get install perl liblingua-en-inflect-perl
+(Recommended, but not completely required for local development)
+sudo apt-get install awstats
+(Totally optional)
 
 All Deployments
 ---------------
-1. Copy a live database (probably the easiest) or run any outstanding migrations off of a skeleton database.
+1. Copy a live database (probably the easiest) or run any outstanding migrations off of a skeleton database via the 
 2. Set permissions in pg_hba for the database, host, and user to match your configuration
 
 Using /scripts/deploy
