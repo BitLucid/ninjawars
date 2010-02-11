@@ -768,7 +768,7 @@ iframe{
     margin-bottom:0.5em;
 }
 
-.quickstats{
+.quickstats {
     margin: 0;
 }
 
@@ -781,19 +781,11 @@ iframe{
     font-size: 85%;
 }
 #quickstats-and-switch-stats .centered{
-    margin-bottom:10px;
-}
-
-table .quickstats{
-    margin-top:8px;
-    margin-bottom:8px;
-}
-table .quickstats td{
-    padding-top:.1em;
+    margin-bottom: 1em;
 }
 
 /*Quickstats styles*/
-.quickstats td{
+.quickstats td {
 	background-color:black;
 }
 

@@ -9,13 +9,14 @@
  * @subpackage status
  */
 
-function get_status_list($target=null){
+function get_status_list($target=null) {
 	$states = array();
 	$result = '';
 	$target = isset($target)? $target : get_username(); 
+
 	// Default to showing own status.
 	$statuses = getStatus($target);
-	$health = getHealth($target);
+	$health   = getHealth($target);
 
 	if ($health < 1) {
 	    $states[] = "Dead"; 
@@ -25,33 +26,30 @@ function get_status_list($target=null){
 		} else {
 			$states[] = "Healthy";
 		}
+
 		if ($statuses['Stealth']) { $states[] = "Stealthed"; }
 		if ($statuses['Poison']) { $states[] = "Poisoned"; }
 		if ($statuses['Frozen']) { $states[] = "Frozen"; }
 	}
+
 	return $states;
 }
-
 
 function render_status_list($target=null) {
     $states = get_status_list($target);
 	$result = implode(", ", $states);
+
 	return $result;
 }
 
-function render_status_section($target=null){
+function render_status_section($target=null) {
     $res = '';
 	$statuses = get_status_list($target);
-	if(!empty($statuses)){
+
+	if (!empty($statuses)) {
 	    $res .= "<span class='player-status ninja-notice ".implode(" ", $statuses)."'>".implode(", ", $statuses)."</span>";
 	}
+
 	return $res;
 }
-
-
-function render_health_section($health){
-    return "<span ".($health<80? "class='injured'":'')."> $health </span>";
-}
-
-
 ?>

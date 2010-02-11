@@ -46,18 +46,13 @@ if ($heal_and_resurrect) {
 	$max_heal = 1;
 }
 
-if ($restore == 1)
-{	//  *** RESURRECTION SECTION ***
-	if ($startingHealth > 0)
-	{
+if ($restore == 1) {	//  *** RESURRECTION SECTION ***
+	if ($startingHealth > 0) {
 		echo "<div style='margin-bottom: 10px;'>You are not dead.</div>\n";
-	}
-	else if ($startingKills > 1 || $freeResurrection)
-    {	// If you're dead, and a newbie, or dead and have kills.
+	} else if ($startingKills > 1 || $freeResurrection) {	// If you're dead, and a newbie, or dead and have kills.
 		//  *** FREE RESURRECTION DETERMINATION ***
 
-		if (!($freeResurrection)) // 1 kill point cost for resurrection above level 5 or 25 kills.
-		{
+		if (!($freeResurrection)) { // 1 kill point cost for resurrection above level 5 or 25 kills.
 			subtractKills($username, 1);
 		}
 
@@ -65,21 +60,17 @@ if ($restore == 1)
 		subtractStatus($username, STEALTH+POISON+FROZEN+CLASS_STATE);
 
 		// *** FREE STEALTHING FOR BLACK CLASS UPON NON-FREE RESURRECTION
-		if ($players_class == "Black" && (!$freeResurrection))
-		{
+		if ($players_class == "Black" && (!$freeResurrection)) {
 			addStatus($username, STEALTH);
 		}
 
 		echo "<div>What once was dead shall rise again.</div>\n";
 		echo "<div>Current Kills: ".$startingKills."</div>\n";
 		echo "<div>Adjusted Kills after returning to life: ".getKills($username)."</div>\n";
-	}
-	elseif ($startingTurns > 0) // Dead and no killpoints left, and not a newbie.
-	{
+	} elseif ($startingTurns > 0) { // Dead and no killpoints left, and not a newbie.
 		echo "<div>What once was dead shall rise again.</div>\n";
 
-		if ($startingTurns < $lostTurns && $startingTurns > 0) // *** From 9 to 1 turns.
-		{
+		if ($startingTurns < $lostTurns && $startingTurns > 0) { // *** From 9 to 1 turns.
 			$lostTurns = $startingTurns;
 		}
 
@@ -90,9 +81,7 @@ if ($restore == 1)
 		echo "<div>Since you have no kills, your resurrection will cost you part of your life time.</div>";
 		echo "<div>Current Turns: ".$startingTurns."</div>\n";
 		echo "<div>Adjusted Turns after returning to life: ".getTurns($username)."</div>\n";
-	}
-	else // *** No kills, no turns, and too high of a level.
-	{
+	} else { // *** No kills, no turns, and too high of a level.
 		echo "<div>You must wait for time to pass before you can return to life.</div>";
 		echo "<div>Current Turns: ".$startingTurns."</div>\n";
 	}
@@ -132,33 +121,25 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 	if (getHealth($username) > 0) {
 		$cost = 50;  //  the cost of curing poison is set here.
 
-		if ($startingGold >= $cost)
-		{
-			if (getStatus($username) && $status_array['Poison'])
-			{
+		if ($startingGold >= $cost) {
+			if (getStatus($username) && $status_array['Poison']) {
 				subtractGold($username,$cost);
 				subtractStatus($username,POISON);
 				echo "<div>You have been cured!</div>\n";
-			}
-			else
-			{
+			} else {
 				echo "<div style='margin-bottom: 10px;'>You are not ill.</div>\n";
 			}
-		}
-		else
-		{
+		} else {
 			echo "<div>You need more gold to remove poison.</div>\n";
 		}
-	}
-	else
-	{
+	} else {
 		echo "<div>You must resurrect before you can heal.</div>\n";
 	}
 }
 ?>
 </div> <!-- End of heal-result div -->
 
-<a href="shrine.php">Heal Again ?</a>
+<a href="shrine.php">Heal Again?</a>
 
 <?php
 include SERVER_ROOT."interface/footer.php";

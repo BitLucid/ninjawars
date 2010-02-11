@@ -12,7 +12,8 @@ include SERVER_ROOT."interface/header.php";
 <div class='item-list'>
 
 <?php
-$sql->Query("SELECT amount AS c, item FROM inventory WHERE owner = '$username' GROUP BY item, amount");
+$user_id = get_user_id();
+$sql->Query("SELECT amount AS c, item FROM inventory WHERE owner = $user_id GROUP BY item, amount");
 
 if ($sql->rows == 0) {
 	echo "You have no items, to buy some, visit the <a href=\"shop.php\">shop</a>.\n";

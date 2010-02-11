@@ -42,7 +42,7 @@ assert($unconfirmed < 21);
 $affected_rows['Players Unconfirmed'] = ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
 
 // Delete from inventory where owner is unconfirmed or non-existent.
-$sql->QueryRow("Delete from inventory where owner in (SELECT owner FROM inventory LEFT JOIN players ON owner = uname WHERE confirmed = 0 OR uname is null GROUP BY owner)");
+$sql->QueryRow("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE confirmed = 0 OR uname IS NULL GROUP BY owner)");
 $affected_rows['deleted items'] = $sql->a_rows;
 
 $deleted_mail = delete_old_messages($sql); // As per the mail function in lib_deity.

@@ -25,29 +25,23 @@ $classChangeSequence = in('classChangeSequence');
 </div>
 
 <?php
-if(!isset($username)){
+if (!isset($username)) {
 	echo "<p>The guards at the door block your way, saying \"Stranger, go on your way, you haven't the skill to enter here.\"";
 } else {
-	if (getLevel($username) >= $dimMakLevelReq && getKills($username) >= $dimMakCost)	// *** Start of Dim Mak Code, 20 kills. ***
-	{
-		if ($dimmak_sequence != 2)
-		{
+	if (getLevel($username) >= $dimMakLevelReq && getKills($username) >= $dimMakCost) {	// *** Start of Dim Mak Code, 20 kills. ***
+		if ($dimmak_sequence != 2) {
 			echo "A black-robed monk stands near the entrance to the dojo.";
 
-			if ($dimmak_sequence != 1)	// *** Link to start the Dim Mak sequence ***
-			{
+			if ($dimmak_sequence != 1) {	// *** Link to start the Dim Mak sequence ***
 				echo "  The black monk approaches you and offers to give you <a href=\"dojo.php?dimmak_sequence=1\">power over life and death,</a> at the cost of some of your memories.\n";
-			}
-			else
-			{
+			} else {
 				echo "  The black monk offers to give you power over life and death, at the cost of some of your memories.\n";	// *** Strips the link after it's been clicked. ***
 			}
 
 			echo "<br>";
 		}
 
-		if ($dimmak_sequence == 1)
-		{
+		if ($dimmak_sequence == 1) {
 			//*
 			echo "<form id=\"Buy_DimMak\" action=\"dojo.php?dimmak_sequence=2\" method=\"post\" name=\"buy_dimmak\">\n";
 			echo "<div style='margin-top: 10px;margin-bottom: 10px;'>\n";
@@ -59,8 +53,7 @@ if(!isset($username)){
 			//*/
 		}
 
-		if ($dimmak_sequence == 2)
-		{
+		if ($dimmak_sequence == 2) {
 			subtractKills($username, $dimMakCost);
 			additem($username,"Dim Mak",1);
 			echo "The monk meditates for a moment, then passes his hand over your forehead.  You feel a moment of dizziness.  \n";
@@ -72,25 +65,20 @@ if(!isset($username)){
 	}
 
 	//*/  Toggle Class Change Code On/Off
-	if (getLevel($username) >= $classChangeLevelReq && getKills($username) >= $classChangeCost)
-	{
-		if ($classChangeSequence != 2)
-		{
+	if (getLevel($username) >= $classChangeLevelReq && getKills($username) >= $classChangeCost) {
+		if ($classChangeSequence != 2) {
 			echo "A white-robed monk stands near the entrance to the dojo.";
 
-			if ($classChangeSequence != 1)	// *** Link to start the Class Change sequence ***
-			{
+			if ($classChangeSequence != 1) {	// *** Link to start the Class Change sequence ***
 				echo "  The white monk approaches you and offers to give you <a href=\"dojo.php?classChangeSequence=1\">the knowledge of your enemies</a> at the cost of your own memories.</a>\n";
-			}
-			else
-			{
+			} else {
 				echo "  The white monk approaches you and offers to give you the knowledge of your enemies at the cost of your own memories.\n";                            //Strips the link after it's been clicked.
 			}
+
 			echo "<br>";
 		}
 
-		if ($classChangeSequence == 1)
-		{
+		if ($classChangeSequence == 1) {
 			echo "<form id=\"Buy_classChange\" action=\"dojo.php?classChangeSequence=2\" method=\"post\" name=\"changeofclass\">\n";
 			echo "<div style='margin-top: 10px;margin-bottom: 10px;'>\n";
 			echo "Trade your memories of ".$classChangeCost." kills to change your skills to those of the ".$class_array[$players_class]." ninja?\n";
@@ -100,10 +88,8 @@ if(!isset($username)){
 			echo "</form>\n";
 		}
 
-		if ($classChangeSequence == 2)
-		{
-			if ($class_array[$players_class]) // *** Already also checks that they have sufficient kills.
-			{
+		if ($classChangeSequence == 2) {
+			if ($class_array[$players_class]) { // *** Already also checks that they have sufficient kills.
 				subtractKills($username, $classChangeCost);
 				setClass($username, $class_array[$players_class]);
 				echo "The monk tosses white powder in your face.  You blink at the pain, and when you open your eyes, everything looks different somehow.  <br>\n";
@@ -115,7 +101,6 @@ if(!isset($username)){
 		echo"<hr><br>\n";	// *** End of Class Changing Code. ***
 	}//*/
 
-
 	echo "<a href=\"chart.php\">Upgrade Chart</a><hr>\n";
 
 	$MAX_LEVEL = 250;
@@ -123,35 +108,23 @@ if(!isset($username)){
 	$nextlevel  = getLevel($username) + 1;
 	$in_upgrade = in('upgrade');
 
-	if ($in_upgrade && $in_upgrade == 1)  // *** If they requested an upgrade ***
-	{
-		if ($nextlevel > $MAX_LEVEL)
-		{
+	if ($in_upgrade && $in_upgrade == 1) {  // *** If they requested an upgrade ***
+		if ($nextlevel > $MAX_LEVEL) {
 			$msg =  "<div>There are no trainers that can teach you beyond your current skill. You are legendary among the ninja.</div>\n";
-		}
-		else if (getKills($username) >= getLevel($username) * 5)
-		{
+		} else if (getKills($username) >= getLevel($username) * 5) {
 			subtractKills($username, (getLevel($username) * 5));
 			addLevel($username, 1);
 			addStrength($username, 5);
 			addTurns($username, 50);
 			addHealth($username, 100);
-		}
-		else
-		{
+		} else {
 			echo "<div>You do not have enough kills to proceed at this time.</div>\n";
 		}
-	}
-	else if ($nextlevel > $MAX_LEVEL)  // *** If they just entered the dojo ***
-	{
+	} else if ($nextlevel > $MAX_LEVEL) {  // *** If they just entered the dojo ***
 		$msg = "<div>You enter the dojo as one of the elite ninja. No trainer has anything left to teach you.</div>\n";
-	}
-	else if (getKills($username) < (getLevel($username) * 5))
-	{
+	} else if (getKills($username) < (getLevel($username) * 5)) {
 		$msg = "<div>Your trainer finds you lacking. You are instructed to prove your might against more ninja before you return.</div>\n";
-	}
-	else
-	{
+	} else {
 		echo "<form id=\"level_up\" action=\"dojo.php\" method=\"post\" name=\"level_up\">\n";
 		echo "<div style='margin-top: 10px;margin-bottom: 10px;'>\n";
 		echo "<div>Do you wish to upgrade to level " . $nextlevel."?</div>\n";

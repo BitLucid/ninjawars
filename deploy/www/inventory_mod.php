@@ -29,7 +29,8 @@ $using_item     = true;
 $starting_turns = getTurns($username);
 $username_turns = $starting_turns;
 $username_level = getLevel($username);
-$item_count     = $sql->QueryItem("SELECT sum(amount) FROM inventory WHERE owner = '$username' AND lower(item)=lower('$item')");
+$user_id        = get_user_id();
+$item_count     = $sql->QueryItem("SELECT sum(amount) FROM inventory WHERE owner = $user_id AND lower(item) = lower('$item')");
 $ending_turns   = null;
 
 if ($selfTarget) {
@@ -58,8 +59,11 @@ if ($give == "on" || $give == "Give") {
 }
 
 // Sets the page to link back to.
-if ($target && $link_back == "") { $link_back = "<a href=\"player.php?player=".urlencode($target)."\">Player Detail</a>"; }
-else { $link_back = "<a href=\"inventory.php\">Inventory</a>"; }
+if ($target && $link_back == "") {
+	$link_back = "<a href=\"player.php?player=".urlencode($target)."\">Player Detail</a>";
+} else {
+	$link_back = "<a href=\"inventory.php\">Inventory</a>";
+}
 
 // This could probably be moved to some lib file for use in different places.
 class Item
@@ -71,62 +75,41 @@ class Item
 	protected $m_turnChange;
 	protected $m_covert;
 
-	public function __construct($p_name)
-	{
+	public function __construct($p_name) {
 		$this->m_ignoresStealth = false;
 		$this->m_name = trim($p_name);
 		$this->m_turnCost = 1;
 	}
 
 	public function getName()
-	{
-		return $this->m_name;
-	}
+	{ return $this->m_name; }
 
 	public function setIgnoresStealth($p_ignore)
-	{
-		$this->m_ignoresStealth = (boolean)$p_ignore;
-	}
+	{ $this->m_ignoresStealth = (boolean)$p_ignore; }
 
 	public function ignoresStealth()
-	{
-		return $this->m_ignoresStealth;
-	}
+	{ return $this->m_ignoresStealth; }
 
 	public function setTargetDamage($p_damage)
-	{
-		$this->m_targetDamage = (float)$p_damage;
-	}
+	{ $this->m_targetDamage = (float)$p_damage; }
 
 	public function getTargetDamage()
-	{
-		return $this->m_targetDamage;
-	}
+	{ return $this->m_targetDamage; }
 
 	public function getTurnCost()
-	{
-		return $this->m_turnCost;
-	}
+	{ return $this->m_turnCost; }
 
 	public function setTurnChange($p_turns)
-	{
-		$this->m_turnChange = (float)$p_turns;
-	}
+	{ $this->m_turnChange = (float)$p_turns; }
 
 	public function getTurnChange()
-	{
-		return $this->m_turnChange;
-	}
+	{ return $this->m_turnChange; }
 
 	public function setCovert($p_covert)
-	{
-		$this->m_covert = (boolean)$p_covert;
-	}
+	{ $this->m_covert = (boolean)$p_covert; }
 
 	public function isCovert()
-	{
-		return $this->m_covert;
-	}
+	{ return $this->m_covert; }
 }
 // Default could be an error later.
 
@@ -134,42 +117,31 @@ class Item
 $dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = null;
 
 // These different settings should just become an array of non-defaults somewhere else.
-if ($item == 'Dim Mak')
-{
+if ($item == 'Dim Mak') {
 	$item = $dimMak = new Item('Dim Mak');
 	$dimMak->setIgnoresStealth(true);
 	$dimMak->setCovert(true);
-}
-else if ($item == 'Speed Scroll')
-{
+} else if ($item == 'Speed Scroll') {
 	$item = $speedScroll = new Item('Speed Scroll');
 	$speedScroll->setIgnoresStealth(true);
 	$speedScroll->setTurnChange(6);
 	$speedScroll->setCovert(true);
-}
-else if ($item == 'Fire Scroll')
-{
+} else if ($item == 'Fire Scroll') {
 	$item = $fireScroll = new Item('Fire Scroll');
 	$fireScroll->setTargetDamage(rand(20, getStrength($username) + 20) + $near_level_power_increase);
-}
-else if ($item == 'Shuriken')
-{
+} else if ($item == 'Shuriken') {
 	$item = $shuriken = new Item('Shuriken');
 	$shuriken->setTargetDamage(rand(1, getStrength($username)) + $near_level_power_increase);
-}
-else if ($item == 'Ice Scroll')
-{
+} else if ($item == 'Ice Scroll') {
 	$item = $iceScroll = new Item('Ice Scroll');
 	$iceScroll->setTurnChange(-1*ice_scroll_turns($targets_turns, $near_level_power_increase));
 	// ice scroll turns comes out negative already, apparently.
-}
-else if ($item == 'Stealth Scroll')
-{
+} else if ($item == 'Stealth Scroll') {
 	$item = $stealthScroll = new Item('Stealth Scroll');
 	$stealthScroll->setCovert(true);
 }
 
-if(!is_object($item)){
+if (!is_object($item)) {
     echo "No such item.";
     die(); // hack to avoid fatal error, proper checking for items should be done.
 }
@@ -177,8 +149,7 @@ if(!is_object($item)){
 
 $article = get_indefinite_article($item->getName());
 
-if ($using_item)
-{
+if ($using_item) {
 	$turn_cost = $item->getTurnCost();
 }
 
@@ -199,6 +170,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 		echo "You didn't choose an item/victim.\n";
 	} else {
 		$row = $sql->data;
+
 		if ($item_count < 1) {
 			echo "You do not have".($item ? " $article ".$item->getName() : ' that item').".\n";
 		} else {
@@ -295,7 +267,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 			echo "<br>Removing {$item->getName()} from your inventory.<br>\n";
 
-			$sql->Update("UPDATE inventory set amount = amount-1 WHERE owner = '".$username."' AND item ='{$item->getName()}' AND amount>0");
+			$sql->Update("UPDATE inventory SET amount = amount-1 WHERE owner = $user_id AND item ='{$item->getName()}' AND amount > 0");
 			// *** Decreases the item amount by 1.
 
 			// Unstealth
@@ -305,7 +277,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			}
 
 			if ($victim_alive == true && $using_item == true) {
-				$self_targetting = $selfTarget? '&amp;selfTarget=1' : '';
+				$self_targetting = ($selfTarget ? '&amp;selfTarget=1' : '');
+
 				echo "<br><a href=\"inventory_mod.php?item=".urlencode($item->getName())."&amp;target=$target{$self_targetting}\">Use {$item->getName()} again?</a><br>\n";  //Repeat Usage
 			}
 		}

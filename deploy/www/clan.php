@@ -30,11 +30,13 @@ $message                         = in('message');
 
 $player_id    = get_user_id();
 $username     = get_username();
-if($player_id){
-    $clan         = get_clan_by_player_id($player_id);
+
+if ($player_id) {
+	$clan         = get_clan_by_player_id($player_id);
 }
-if($username){
-    $viewer_level = getLevel($username);
+
+if ($username) {
+	$viewer_level = getLevel($username);
 }
 
 // *** Useful Constants ***
@@ -44,6 +46,7 @@ if (!$player_id || !$clan) {
 	echo "<p class='ninja-notice'>You are not part of any clan.</p>";
 } else {
 	$self_is_leader = ($clan && (get_clan_leader_id($clan->getID()) == $player_id));
+
 	if ($command == "disband" && $sure == "yes" && $self_is_leader) {	// **** Clan Leader Action Disbanding of the Clan ***
 		disbandClan($clan->getID());
 		echo "<div class='notice'>Your clan has been disbanded.</div>\n";

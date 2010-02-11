@@ -825,7 +825,7 @@ function addItem($who, $item, $quantity = 1) {
 
 	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount + :quantity WHERE owner = :who AND lower(item) = lower(:item)");
 	$statement->bindValue(':quantity', $quantity);
-	$statement->bindValue(':user', $who);
+	$statement->bindValue(':who', get_user_id($who));
 	$statement->bindValue(':item', $item);
 	$statement->execute();
 
@@ -833,7 +833,7 @@ function addItem($who, $item, $quantity = 1) {
 
 	if (!$rows) {
 		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO inventory (owner, item, amount) VALUES (:user, :item, :quantity)");
-		$statement->bindValue(':user', $who);
+		$statement->bindValue(':user', get_user_id($who));
 		$statement->bindValue(':item', $item);
 		$statement->bindValue(':quantity', $quantity);
 		$statement->execute();
@@ -858,7 +858,7 @@ function removeItem($who, $item, $quantity=1) {
 
 
 function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
-	$dbconn = DatabaseConnection:getInstance();
+	$dbconn = DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO dueling_log values 
         (default, :attacker, :defender, :won, :killpoints, now())");
         //Log of Dueling information.
@@ -932,7 +932,7 @@ function pauseAccount($who) {
 	$statement->execute();
 
 	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM inventory WHERE owner = :user");
-	$statement->bindValue(':user', $who);
+	$statement->bindValue(':user', get_user_id($who));
 	$statement->execute();
 
 	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM mail WHERE send_to = :user");
@@ -958,7 +958,7 @@ function deleteAccount($who) {
 	}
 
 	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM inventory WHERE owner = :user");
-	$statement->bindValue(':user', $who);
+	$statement->bindValue(':user', get_user_id($who));
 	$statement->execute();
 
 	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM mail WHERE send_to = :user");

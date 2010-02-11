@@ -265,11 +265,12 @@ function render_list_link(){
  * Create the item options for the inventory dropdown.
 **/
 function render_inventory_options($username, $sql) {
+	$user_id = get_user_id($username);
 	$res = '';
 	$selected = "selected='selected'";// Mark first option as selected.
 	$loop_items = $sql->QueryAssoc(
         "SELECT owner, item, item_id, amount
-        FROM inventory WHERE owner = '$username'
+        FROM inventory WHERE owner = $user_id
         AND amount > 0 ORDER BY item");
 
 	if (empty($loop_items)) {
