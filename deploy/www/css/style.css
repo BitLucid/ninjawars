@@ -20,7 +20,7 @@ html, body {
 	margin: 0 auto -20px; /* the bottom margin is the negative value of the footer's height */
 }
 .push {
-	height: 20px; /* .push must be the same height as .footer */
+	height: 38px; /* .push must be the same height as .footer */
 }
 /*
 Sticky Footer by Ryan Fait
@@ -33,6 +33,8 @@ http://ryanfait.com/
     width:100%;
     background-color:black;
     color:gray;
+    border-top:10px solid #666666;
+    padding-top:8px;
 }
 
 #index-footer a{
