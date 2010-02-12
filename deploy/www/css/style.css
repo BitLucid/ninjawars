@@ -17,16 +17,17 @@ html, body {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -20px; /* the bottom margin is the negative value of the footer's height */
+	margin: 0 auto -40px; /* the bottom margin is the negative value of the footer's height */
 }
 .push {
-	height: 38px; /* .push must be the same height as .footer */
+	height: 40px; /* When you change this, change the .wrapper's height as well.push must be the same height as .footer's */
 }
 /*
 Sticky Footer by Ryan Fait
 http://ryanfait.com/
 */
 #index-footer{
+    /* When you change the total height here you haveto change .push and .wrapper as well.*/
 	height:20px;
     text-align:center;
     clear: both;
@@ -42,6 +43,21 @@ http://ryanfait.com/
     text-decoration:underline;
     font-size:80%;
     font-weight:normal;
+    margin:3px; /* Should correspond to the border width on hover below. */
+}
+
+#index-footer a:hover{
+   margin:0;
+}
+#index-footer a:hover{
+    -webkit-transition-property: all; 
+    -webkit-transition-duration: 500ms;
+    -webkit-transition-timing-function: linear;
+    -webkit-transition-delay: initial;
+    border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px;
+    border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid;
+    border-top-color: white; border-right-color: white; border-bottom-color: white; border-left-color: white; 
+    color:white;
 }
 
 .main-body{
