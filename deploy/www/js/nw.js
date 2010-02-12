@@ -365,6 +365,19 @@ function soloPage(){
 }
 
 
+// Just for fun.
+function april1stCheck(){
+    if(isIndex()){
+        var currentTime = new Date();
+        var day = currentTime.getDay();
+        var month = currentTime.getMonth();
+        var randomnumber=Math.floor(Math.random()*(10+1));
+        if(randomnumber == 10 && (debug() || (day == 0 && month == 3))){
+            $('body').css({'-webkit-transform':'rotate(20deg)','-moz-transform':'rotate(20deg)'});
+        }
+    }
+}
+
 
 // Initial load of everything, run at the bottom to allow everything else to be defined beforehand.
 $(document).ready(function() {
@@ -409,5 +422,6 @@ $(document).ready(function() {
     pageTracker._trackPageview();
     } catch(err) {}
 
+    april1stCheck();
    
  });
