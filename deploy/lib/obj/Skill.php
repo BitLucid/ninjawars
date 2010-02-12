@@ -5,7 +5,7 @@ class Skill
 
 	/**
 	 * This should eventually get ids from the database,
-	 * for now, the ids are just the array indexes.
+	 * for now, consider the ids as the array indexes.
 	**/
 	public $skills = array(
 		'cold steal', 'ice bolt', 'speed',
@@ -18,30 +18,30 @@ class Skill
 	// Temporarily trying a to move the skills out of the classes, to see how players make use of it.
 	public $skill_map = array(
 		'Blue'    => array(
-			'ice bolt' => 1
-			, 'speed'  => 1
+			'ice bolt' => array('available'=>1)
+			, 'speed'  => array('available'=>1)
 		)
 		, 'White' => array(
-			'chi'             => 1
-			, 'midnight heal' => 1
+			'chi'             => array('available'=>1)
+			, 'midnight heal' => array('available'=>1)
 		)
 		, 'Red'   => array(
-			'fire bolt' => 1
-			, 'blaze' => 1
+			'fire bolt' => array('available'=>1)
+			, 'blaze' => array('available'=>1)
 		)
 		, 'Black' => array(
-			'poison touch'       => 1
-			, 'hidden resurrect' => 1
+			'poison touch'       => array('available'=>1)
+			, 'hidden resurrect' => array('available'=>1)
 		)
 		, 'All'   => array(
-			'attack'       => 1
-			, 'duel'       => 1
-			, 'sight'      => 1
-			, 'deflect'    => 1
-			, 'stealth'    => 1
-			, 'unstealth'  => 1
-			, 'steal'      => 1
-			, 'cold steal' => 1
+			'attack'       => array('available'=>1)
+			, 'duel'       => array('available'=>1)
+			, 'sight'      => array('available'=>1)
+			, 'deflect'    => array('available'=>1, 'level'=>2)
+			, 'stealth'    => array('available'=>1)
+			, 'unstealth'  => array('available'=>1)
+			, 'steal'      => array('available'=>1, 'level'=>2)
+			, 'cold steal' => array('available'=>1, 'level'=>6)
 		)
 	);
 
@@ -77,10 +77,13 @@ class Skill
 		$skill = strtolower($skill);
 
 		if(!$username) { $username = get_username(); }
+		$player_info = get_player_info(get_user_id($username));
+		$player_level = $player_info['level'];
 
 		$skills = $this->skills($username);
+		$level_req = @$skills[$skill]['level']? $skills[$skill]['level'] : 1;
 
-		return (isset($skills[$skill]));
+		return (isset($skills[$skill]['available']) && ($player_level >= $level_req));
 	}
 
 	/**

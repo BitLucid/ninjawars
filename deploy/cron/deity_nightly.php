@@ -46,6 +46,7 @@ $sql->QueryRow("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventor
 $affected_rows['deleted items'] = $sql->a_rows;
 
 $deleted_mail = delete_old_messages($sql); // As per the mail function in lib_deity.
+$deleted_events = delete_old_events($sql);
 $affected_rows['Old Messages Deletion'] =  $deleted_mail;
 
 $sql->Delete("delete from levelling_log where killsdate < now()- interval '3 months'");

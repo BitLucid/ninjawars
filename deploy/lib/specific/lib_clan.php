@@ -1,6 +1,6 @@
 <?php
 // See also the older "clan functions" in commands.php
-
+require_once(SERVER_ROOT."lib/specific/lib_player.php");
 
 // Show the form for the clan joining, or perform the join.
 function render_clan_join($process=null, $username, $clan_id) {
@@ -133,7 +133,7 @@ function render_clan_tags() {
 
 	foreach ($clans as $clan_id => $data) {
 		$res .= "<li class='clan-tag size".$data['score']."'>
-                <a href='?command=view&amp;clan_id=".urlencode($clan_id)."'>".$data['name']."</a>
+                <a href='clan.php?command=view&amp;clan_id=".urlencode($clan_id)."'>".$data['name']."</a>
             </li>";
 	}
 
@@ -144,29 +144,29 @@ function render_clan_tags() {
 }
 
 /* Display the clan member name list or tag list */
-function render_clan_view($p_clanID) {
-	if (!$p_clanID) {
+function render_clan_view($p_clan_id) {
+	if (!$p_clan_id) {
 		return ''; // No viewing criteria available.
 	}
 
 	$dbconn = DatabaseConnection::getInstance();
 
-	$query = "SELECT uname, clan_name, level, days, _creator_player_id, player_id
+	$query = "SELECT uname, email, clan_name, level, days, _creator_player_id, player_id
             FROM clan
-            JOIN clan_player ON _clan_id = :clanID AND clan_id = _clan_id
+            JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
             JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC";
 	$statement = DatabaseConnection::$pdo->prepare($query);
-	$statement->bindValue(':clanID', $p_clanID);
+	$statement->bindValue(':clan_id', $p_clan_id);
 	$statement->execute();
 
 	$members = $statement->fetchAll();
 
 	$query = "SELECT max(level) AS max 
         FROM clan
-        JOIN clan_player ON _clan_id = :clanID AND clan_id = _clan_id
+        JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
         JOIN players ON player_id = _player_id AND confirmed = 1";
 	$statement = DatabaseConnection::$pdo->prepare($query);
-	$statement->bindValue(':clanID', $p_clanID);
+	$statement->bindValue(':clan_id', $p_clan_id);
 	$statement->execute();
 
 	$max_list = $statement->fetchAll();
@@ -188,9 +188,12 @@ function render_clan_view($p_clanID) {
 			$member['size'] = ($member['size'] > 2 ? 2 : $member['size']);
 		}
 
-		$res .= "<li class='member size{$member['size']}'>
+		$res .= "<li class='member-info'>
+		        <span class='member size{$member['size']}'>
                 <a href='player.php?player={$member['uname']}'>{$member['uname']}</a>
-            </li>";
+		        </span>";
+        $res .= render_avatar_section_from_email($member['email']);
+        $res .= "</li>";
 	}
 
 	$res .= "</ul>

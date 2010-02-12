@@ -10,21 +10,32 @@ require_once(LIB_ROOT.'template_library/template_lite/src/class.template.php');
   * echo render_page('add.tpl', get_current_vars(get_defined_vars()), 'Homepage');
 **/
 function render_page($template, $title=null, $local_vars=array(), $options=null){
-    if($options && isset($options['quickstat'])){
-        $quickstat = $options['quickstat'];
-    } else {
-        $quickstat = $local_vars && isset($local_vars['quickstat'])? $local_vars['quickstat'] : null;
+    $quickstat = @$options['quickstat'];
+    $quickstat = $quickstat? $quickstat : @$local_vars['quickstat'];
+    
+    $section_only = @$options['section_only'];
+    $section_only = $section_only? $section_only : @$local_vars['section_only'];
+    $section_only = $section_only? $section_only : in('section_only');
+    
+    // Display header and footer only if not section_only.
+    $res = '';
+    if(!$section_only){
+        $res .= render_header($title);
     }
-    $res = render_header($title);
     $res .= render_template($template, $local_vars);
-    $res .= render_footer($quickstat);
+    if(!$section_only){
+        $res .= render_footer($quickstat);
+    }
     return $res;
 }
 
 
 
-// Will return the rendered content of the template.
-function render_template($template_name, $assign_vars=array()) {
+/** Will return the rendered content of the template.
+  * Example use: $parts = get_certain_vars(get_defined_vars(), array('whitelisted_object');
+  * echo render_template('account_issues.tpl', $parts);
+**/
+function render_template($template_name, $assign_vars=array()){
 	// Initialize the template object.
 	$tpl = new Template_Lite;
 	// template directory 
@@ -66,6 +77,7 @@ function get_certain_vars($var_list, $whitelist=array())
 	return $non_arrays + $constants;
 }
 
+// Get the user defined constants like WEB_ROOT
 function get_user_constants() {
 	$temp = get_defined_constants(true);
 	return $temp['user'];

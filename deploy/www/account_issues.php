@@ -94,9 +94,6 @@ if(!$email && ($password_request || $confirmation_request)){
     }
 }
 $parts = get_certain_vars(get_defined_vars(), array('data'));
-/*echo '<pre style="font-size:2em">';
-var_dump('PARTS<br>', $parts);
-echo '</pre>';*/
 echo render_template('account_issues.tpl', $parts);
 
 include SERVER_ROOT."interface/footer.php";

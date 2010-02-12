@@ -5,7 +5,7 @@
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
-        	<a href='{$WEB_ROOT}list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='ninja list'></a>
+        	<a href='list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='ninja list'></a>
         </div>
             <div>
                 <a target="main" href="player.php?player={$user_id}">{$username}</a>
@@ -27,8 +27,8 @@
                 | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
               </div>
               <div id="quickstats-frame-container">
-                <iframe id="quickstats" src="quickstats.php" name="quickstats">
-                  <a href='quickstats.php' target='_blank'>Quick Stats</a> Iframe Display section (Iframes Not supported by this browser)
+                <iframe border='0' id="quickstats" src="quickstats.php" name="quickstats">
+                  <a href='quickstats.php' target='_blank'>Quick Stats</a> unavailable inside this browser window.
                 </iframe>
               </div>
             </div><!-- End of quickstats and switch container -->
@@ -37,11 +37,11 @@
           <div id="actions" class="boxes active">
             <div class="box-title">
               <a href="#" class="show-hide-link" onclick="toggle_visibility('actions-menu');">
-                Actions <img class="show-hide-icon" src="{$IMAGE_ROOT}show_and_hide.png" alt="+/-">
+                Actions <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
               </a>
             </div>
             <ul class="basemenu" id="actions-menu">
-              <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main"><img src='{$IMAGE_ROOT}shrine.png' alt=''>Heal</a></li>
+              <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main"><img src='images/shrine.png' alt=''>Heal</a></li>
               <li>
                 <ul class="submenu">
                   <li>
@@ -70,7 +70,7 @@
           <!-- Recent Events & Recent Mail will get put in here via javascript -->
           <div id='recent-events'></div>
           <div>
-              <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='{$IMAGE_ROOT}messages.png' alt=''></a>
+              <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''></a>
           </div>
           <div id='recent-mail'></div>
           {if $player_info.level < 2}
@@ -137,8 +137,8 @@
 
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe id="main" name="main" class="main-iframe" src="{$main_src}">
-              <a href='{$main_src}' target='_blank'>Main Content</a> Display Section (Frames Not Supported)
+            <iframe border='0' id="main" name="main" class="main-iframe" src="{$main_src}">
+              <a href='{$main_src}' target='_blank'>Main Content</a> unavailable inside this browser window.
             </iframe>
           </div><!-- End of mainFrame div -->
           
@@ -178,13 +178,17 @@
                 </div>
                 <div id="chat-and-switch">
                   <div class="chat-switch centered">
-                    <a href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
-                    <a href="mini_chat.php?chat_length=20" target="mini_chat">Refresh</a>
+                    <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
                   </div>
-    <!-- TODO: move chat submit box out here. -->
+                  <form class='chat-submit' id="post_msg" action="mini_chat.php" method="post" name="post_msg" target='mini_chat'>
+                    <input id="message" type="text" size="20" maxlength="250" name="message" class="textField">
+                    <input id="command" type="hidden" value="postnow" name="command">
+                    <input name='chat_submit' type='hidden' value='1'>
+                    <button type="submit" value="1" class="formButton">Chat</button>
+                  </form>
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
                     <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
-                      <a href='mini_chat.php' target='_blank'>Mini Chat</a> Iframe Display Section (Iframes not supported by this browser)
+                      <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
                     </iframe>
                   </div>
                   <div id="expand-chat">
@@ -197,12 +201,12 @@
           </div> <!-- End of index-chat --> 
 
           <div id="music" class="boxes passive">
-            <object type="audio/x-midi" data="{$WEB_ROOT}files/music/samsho.mid" id="music-player">
-              <param name="src" value="{$WEB_ROOT}files/music/samsho.mid">
+            <object type="audio/x-midi" data="files/music/samsho.mid" id="music-player">
+              <param name="src" value="files/music/samsho.mid">
               <param name="autoplay" value="true">
               <param name="autoStart" value="0">
-              <a href="{$WEB_ROOT}files/music/samsho.mid">
-                Music <img class="play-button" src="{$IMAGE_ROOT}bullet_triangle_green.png" alt="&gt;">
+              <a href="files/music/samsho.mid">
+                Music <img class="play-button" src="images/bullet_triangle_green.png" alt="&gt;">
               </a>
             </object>
           </div>          
@@ -210,17 +214,18 @@
       </div> <!-- End of right column -->
       <div id='push'></div>
       <div id='index-footer'>
-<!-- TODO: make this absolute, floating at the page bottom as per facebook's bar. -->
         <!-- Substitute dynamic "catchphrases" here eventually -->
         <!-- "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." -->
-        "Helping ninjas stab people since 2003." |
+        <!-- "Helping ninjas stab people since 2003." | -->
+        Annoy the Emperor, kill Samurai. |
         <a href="tutorial.php" target="main">Help</a> |
         <a href="rules.php" target="main">Rules</a> |
         <a href='staff.php' target='main'>Staff</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
         <a href="http://ninjawars.pbworks.com/" target="_blank" class="extLink">Wiki</a> |
-        <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a>
+        <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
+        <a href="http://getsatisfaction.com/ninjawars" target="_blank" class="extLink">Feedback</a>
       </div>
       
     

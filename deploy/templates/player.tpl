@@ -2,6 +2,14 @@
     <div id='message-sent' class='ninja-notice'>Message sent</div>
 {/if}
 
+{literal}
+<style type='text/css'>
+label{
+    color:cornflowerblue;
+}
+</style>
+{/literal}
+
 <div class='player-info'>
 
     <h1 class='player-name'>{$player}</h1>
@@ -30,18 +38,18 @@
 		          <td id='attacking-choices'>
 			        <form id='attack_player' action='attack_mod.php' method='post' name='attack_player.php'>
 			          <span id='duel'>
-                              <label><a href="#">Duel</a> <input id="duel" type="checkbox" name="duel"></label>
+                              <label>Duel<input id="duel" type="checkbox" name="duel"></label>
                       </span>
 
             {if $skills_available.blaze}
 				      <span id='blaze'>
-                              <label><a href="#">Blaze</a><input id="blaze" type="checkbox" name="blaze"></label>
+                              <label>Blaze<input id="blaze" type="checkbox" name="blaze"></label>
                             </span>
 			{/if}
 
             {if $skills_available.deflect}
 				      <span>
-                              <label><a href="#">Deflect</a><input id="deflect" type="checkbox" name="deflect"></label>
+                              <label>Deflect<input id="deflect" type="checkbox" name="deflect"></label>
                             </span>
             {/if}
 
