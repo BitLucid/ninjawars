@@ -1,6 +1,6 @@
 <?php
 // See also the older "clan functions" in commands.php
-
+require_once(SERVER_ROOT."lib/specific/lib_player.php");
 
 // Show the form for the clan joining, or perform the join.
 function render_clan_join($process=null, $username, $clan_id) {
@@ -141,21 +141,21 @@ function render_clan_tags() {
 }
 
 /* Display the clan member name list or tag list */
-function render_clan_view($p_clanID, $sql) {
-	if (!$p_clanID) {
+function render_clan_view($p_clan_id, $sql) {
+	if (!$p_clan_id) {
 		return ''; // No viewing criteria available.
 	}
 
 	$members = $sql->FetchAll (
-        "SELECT uname, clan_name, level, days, _creator_player_id, player_id
+        "SELECT uname, email, clan_name, level, days, _creator_player_id, player_id
             FROM clan
-            JOIN clan_player ON _clan_id = $p_clanID AND clan_id = _clan_id
+            JOIN clan_player ON _clan_id = $p_clan_id AND clan_id = _clan_id
             JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC");
 
 	$max_list = $sql->FetchAll(
         "SELECT max(level) AS max 
         FROM clan
-        JOIN clan_player ON _clan_id = $p_clanID AND clan_id = _clan_id
+        JOIN clan_player ON _clan_id = $p_clan_id AND clan_id = _clan_id
         JOIN players ON player_id = _player_id AND confirmed = 1");
 
 	$max_array = reset($max_list);
@@ -175,9 +175,12 @@ function render_clan_view($p_clanID, $sql) {
 			$member['size'] = ($member['size'] > 2 ? 2 : $member['size']);
 		}
 
-		$res .= "<li class='member size{$member['size']}'>
+		$res .= "<li class='member-info'>
+		        <span class='member size{$member['size']}'>
                 <a href='player.php?player={$member['uname']}'>{$member['uname']}</a>
-            </li>";
+		        </span>";
+        $res .= render_avatar_section_from_email($member['email']);
+        $res .= "</li>";
 	}
 
 	$res .= "</ul>
