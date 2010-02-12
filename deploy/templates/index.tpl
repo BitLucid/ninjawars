@@ -214,17 +214,18 @@
       </div> <!-- End of right column -->
       <div id='push'></div>
       <div id='index-footer'>
-<!-- TODO: make this absolute, floating at the page bottom as per facebook's bar. -->
         <!-- Substitute dynamic "catchphrases" here eventually -->
         <!-- "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." -->
-        "Helping ninjas stab people since 2003." |
+        <!-- "Helping ninjas stab people since 2003." | -->
+        Annoy the Emperor, kill Samurai. |
         <a href="tutorial.php" target="main">Help</a> |
         <a href="rules.php" target="main">Rules</a> |
         <a href='staff.php' target='main'>Staff</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
         <a href="http://ninjawars.pbworks.com/" target="_blank" class="extLink">Wiki</a> |
-        <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a>
+        <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
+        <a href="http://getsatisfaction.com/ninjawars" target="_blank" class="extLink">Feedback</a>
       </div>
       
     
