@@ -130,7 +130,7 @@ function render_clan_tags() {
 
 	foreach ($clans as $clan_id => $data) {
 		$res .= "<li class='clan-tag size".$data['score']."'>
-                <a href='?command=view&amp;clan_id=".urlencode($clan_id)."'>".$data['name']."</a>
+                <a href='clan.php?command=view&amp;clan_id=".urlencode($clan_id)."'>".$data['name']."</a>
             </li>";
 	}
 
