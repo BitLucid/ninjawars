@@ -215,8 +215,7 @@ function render_viewable_error($p_error) {
  * @param @password Unless true, wipe the password.
 **/
 function get_player_info($p_id = null, $p_password = false){
-	$dbconn = new DatabaseConnection();
-	$dao = new PlayerDAO($dbconn);
+	$dao = new PlayerDAO();
 	$id = either($p_id, SESSION::get('player_id')); // *** Default to current player. ***
 
 	$playerVO = $dao->get($id);
