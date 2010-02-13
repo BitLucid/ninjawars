@@ -1,3 +1,4 @@
+drop view rankings;
 create view rankings as SELECT player_rank.rank_id, players.player_id, player_rank.score, players.uname, players.class, players.level, 
         CASE
             WHEN players.health = 0 THEN 0
