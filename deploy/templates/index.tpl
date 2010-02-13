@@ -191,11 +191,12 @@
                       <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
                     </iframe>
                   </div>
-                  <div id="expand-chat">
+                  <!-- <div id="expand-chat">
                     <a href="mini_chat.php?chatlength=360" target="mini_chat">
                       View more chat messages <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
                     </a>
                   </div>
+                  -->
                 </div>
               </div>
           </div> <!-- End of index-chat --> 
