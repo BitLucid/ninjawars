@@ -17,11 +17,11 @@
             </div>
           <div id="quick-stats" class="boxes">
             <div class="box-title centered">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('quickstats-and-switch-stats');">
+              <a id='show-hide-quickstats' class="show-hide-link"><!-- jQuery show/hide -->
                 Quick Stats <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
               </a>
             </div>
-            <div id="quickstats-and-switch-stats">
+            <div id="quickstats-and-switch-stats"><!-- Id used by show hide jquery -->
               <div class="centered quickstats-container">
                 <a href="quickstats.php" target="quickstats">Player</a> 
                 | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
@@ -36,11 +36,11 @@
           
           <div id="actions" class="boxes active">
             <div class="box-title">
-              <a href="#" class="show-hide-link" onclick="toggle_visibility('actions-menu');">
+              <a id='show-hide-actions-menu' class="show-hide-link"><!-- jQuery show/hide -->
                 Actions <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
               </a>
             </div>
-            <ul class="basemenu" id="actions-menu">
+            <ul class="basemenu" id="actions-menu"><!-- Id used by show hide jquery -->
               <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main"><img src='images/shrine.png' alt=''>Heal</a></li>
               <li>
                 <ul class="submenu">
@@ -172,7 +172,7 @@
           <div id='index-chat'>
               <div id="village-chat" class="boxes active">
                 <div class="box-title centered">
-                  <a href="#" class="show-hide-link" onclick="toggle_visibility('chat-and-switch');">
+                  <a id='show-hide-chat' class="show-hide-link">
                     Chat <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
                   </a>
                 </div>

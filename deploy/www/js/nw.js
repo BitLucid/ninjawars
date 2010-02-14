@@ -282,13 +282,13 @@ function toggle_visibility(id) {
     return false;
 }
 
-// Add toggle-parent-on-clickre functionality to any section.
-/*function addHandlersClickToToggleParent(html_class){
-    $('.'+html_class).click(function (){
-        $(this).parent().toggle();
+// Adds a "click to hide another section" to any section, second param has default, but can be specified.
+function clickHidesTarget(ident, targetToHide){
+    $(ident).click(function (){
+        $(targetToHide).toggle();
         return false;
     });
-}*/
+}
 
 // Begin the cycle of refreshing the mini chat after the standard delay.
 function startRefreshingMinichat(){
@@ -381,7 +381,7 @@ function april1stCheck(){
         var month = currentTime.getMonth();
         var randomnumber=Math.floor(Math.random()*(10+1));
         if(randomnumber == 10 && (debug() || (day == 0 && month == 3))){
-            $('body').css({'-webkit-transform':'rotate(20deg)','-moz-transform':'rotate(20deg)'});
+            $('body').css({'-webkit-transform':'rotate(20deg)','-moz-transform':'rotate(20deg)', 'transform':'rotate(20deg)'});
         }
     }
 }
@@ -431,5 +431,9 @@ $(document).ready(function() {
     } catch(err) {}
 
     april1stCheck();
-    //addHandlersClickToToggleParent('click-to-toggle-parent');
+    
+    // Add click handlers to certain sections.
+    clickHidesTarget('#show-hide-chat', '#chat-and-switch');
+    clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
+    clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
  });
