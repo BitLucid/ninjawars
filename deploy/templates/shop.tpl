@@ -5,7 +5,7 @@
 </div>
 <form id="shop_form" action="shop.php" method="post" name="shop_form">
 <input id="purchase" type="hidden" value="1" name="purchase">
-<table border="0">
+<table>
 <tr>
   <td>
   Item
