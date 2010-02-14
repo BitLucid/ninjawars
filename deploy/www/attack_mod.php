@@ -343,13 +343,12 @@ if ($turns_to_take < 1) {
 }
 
 $ending_turns = subtractTurns($attacker, $turns_to_take);
-assert($ending_turns < $starting_turns || $starting_turns == 0);
 
 //  ***  START ACTION OVER AGAIN SECTION ***
 echo "<hr>\n";
 
 if (isset($target)) {
-	echo "<div>Return to <a href=\"player.php?player=".urlencode($target)."\">Player Detail</a></div>Or \n";
+	echo "<div>Return to <a href=\"player.php?player=".urlencode($target)."\">".out($target)."'s Info</a></div>Or \n";
 }
 
 echo "Start your combat <a href=\"list_all_players.php\"> from the player list.</a>\n<br>\n";
