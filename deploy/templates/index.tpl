@@ -5,10 +5,10 @@
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
-        	<a href='list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='ninja list'></a>
+        	<a href='list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='Go to the ninja list'></a>
         </div>
             <div>
-                <a target="main" href="player.php?player={$user_id}">{$username}</a>
+                <a target="main" href="player.php?player={$user_id}" title='Display your player information'>{$username}</a>
             </div>
             <div id='logged-in-bar'>
                 <div>
@@ -66,18 +66,13 @@
               </div>
             </form>
           </div>
-            
-          <!-- Recent Events & Recent Mail will get put in here via javascript -->
-          <div id='recent-events'></div>
-          <div>
-              <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''></a>
-          </div>
-          <div id='recent-mail'></div>
-          {if $player_info.level < 2}
+{if $player_info.level < 2}
           <div id='helpful-info'>
             <a target='main' href='tutorial.php'>Helpful Info</a>
           </div>
-          {/if}
+{/if}
+          <!-- Recent Events & Recent Mail will get put in here via javascript -->
+          <div id='recent-events'></div>
 
       </div>  
       
@@ -96,17 +91,17 @@
             <div id='category-bar'>
               <ul>
                 <li id='status-actions'>
-                  <a href='events.php' target='main'>
+                  <a href='events.php' target='main' title='See messages about whether you were attacked or other events.'>
                     <img src='/images/ninja_silhouette_50px.png' alt=''>Status
                   </a>
                 </li>
                 <li id='combat-actions'>
-                  <a href='enemies.php' target='main'>
+                  <a href='enemies.php' target='main' title='Check up on your enemies and see who recently attacked you.'>
                     <img src='/images/50pxShuriken.png' alt=''>Combat
                   </a>
                 </li>
                 <li id='village-actions'>
-                  <a href='attack_player.php' target='main'>                  
+                  <a href='attack_player.php' target='main' title='Travel to different locations in the village.'>                  
                     <img src='/images/pagodaIcon_60px.png' alt=''>Village
                   </a>
                 </li>
@@ -114,21 +109,21 @@
             </div>
             <div id='subcategory-bar'>
                 <ul id='self-subcategory'>
-                  <li><a href="stats.php" target="main">Stats</a></li>
-                  <li><a href="skills.php" target="main">Skills</a></li>
-                  <li><a href="inventory.php" target="main">Items</a></li>
+                  <li><a href="stats.php" target="main" title='Your ninja strength, level, profile, etc.'>Stats</a></li>
+                  <li><a href="skills.php" target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
+                  <li><a href="inventory.php" target="main" title='Your items and links to use them on yourself.'>Items</a></li>
                   <!-- Profile -->
                   <!-- Settings -->
                 </ul>
                 <ul id='combat-subcategory'>
-                  <li><a href="list_all_players.php" target="main">Ninjas</a></li>
-                  <li><a href="clan.php" target="main">Clans</a></li>
-                  <li><a href="duel.php" target="main">Duels</a></li>
+                  <li><a href="list_all_players.php" target="main" title='Ranked list of ninjas to attack.'>Ninjas</a></li>
+                  <li><a href="clan.php" target="main" title='Clans and your clan options.'>Clans</a></li>
+                  <li><a href="duel.php" target="main" title="Today's Duels">Duels</a></li>
                 </ul>
                 <ul id='village-subcategory'>
-                  <li><a href="shop.php" target="main">Shop</a></li>
-                  <li><a href="work.php" target="main">Work</a></li>
-                  <li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt=""></a></li>
+                  <li><a href="shop.php" target="main" title='Spend your money to get weapons.'>Shop</a></li>
+                  <li><a href="work.php" target="main" title='Trade your turns to get money.'>Work</a></li>
+                  <li><a href="doshin_office.php" target="main" title='Hunt bounties for money.'>Doshin <img src="images/doshin.png" alt=""></a></li>
                 </ul>
             </div>
         </div>
@@ -160,13 +155,18 @@
         </span>
         
         </div><!-- End of ninja-stats -->
-
           <div id='ninja-count-menu' class='boxes passive'>
             <!-- <a href="list_all_players.php" target="main">
               <span id='nin1'>Ni</span><span id='nin2'>nj</span><span id='nin3'>as</span> 
               <img src="images/smallArrows.png" alt="&gt;&gt;&gt;">
             </a> -->
             {$players_online} ninjas around / {$player_count} 
+          </div>
+          <div id='messages' class='boxes active'>
+              <div>
+                  <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''></a>
+              </div>
+              <div id='recent-mail'></div>
           </div>
         
           <div id='index-chat'>

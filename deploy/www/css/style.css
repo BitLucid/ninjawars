@@ -27,15 +27,15 @@ Sticky Footer by Ryan Fait
 http://ryanfait.com/
 */
 #index-footer{
-    /* When you change the total height here you haveto change .push and .wrapper as well.*/
+    /* When you change the total height here you have to change .push and .wrapper as well.*/
+    border-top:10px solid #666666;
+    padding-top:8px;
 	height:20px;
     text-align:center;
     clear: both;
     width:100%;
     background-color:black;
     color:gray;
-    border-top:10px solid #666666;
-    padding-top:8px;
 }
 
 #index-footer a{
@@ -751,6 +751,21 @@ iframe{
 	font-style:italic;
 	color:gray;
 }
+
+#latest-message-title{
+    display:block;
+}
+#recent-mail{
+    height:2.5em;
+    width:100%;
+    overflow:hidden;
+}
+#recent-event{
+    max-height:2.5em;
+    width:100%;
+    overflow:hidden;
+}
+
 
 .chat-messages, #message-list{
     margin-top:0;
