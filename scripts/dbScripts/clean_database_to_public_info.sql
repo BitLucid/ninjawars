@@ -1,0 +1,16 @@
+delete from players where confirmed=0;
+update players set pname = 'password' where 1=1;
+update players set email = 'example@example.com' where 1=1;
+update players set ip = '127.0.0.33' where 1=1;
+delete from inventory where item = '';
+update inventory set amount=10 where amount != 0 and amount != 1;
+update past_stats set stat_result='no-one' where stat_type='Yesterday''s Vicious Killer';
+truncate chat;
+truncate events;
+truncate messages;
+truncate settings;
+truncate dueling_log;
+truncate levelling_log;
+truncate players_backup;
+truncate players_flagged;
+truncate ppl_online;
