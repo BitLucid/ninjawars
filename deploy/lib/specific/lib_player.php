@@ -405,7 +405,7 @@ function render_communication($target) {
 	return $res;
 }
 
-function get_rank($username, $sql=null) {
+function get_rank($username) {
 	if (!$sql) {
 		$sql = new DBAccess();
 	}

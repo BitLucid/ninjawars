@@ -10,6 +10,9 @@ $quickstat  = false;
 $page_title = "Ninja List";
 
 include SERVER_ROOT."interface/header.php";
+
+DatabaseConnection::getInstance();
+
 // The script for the accordian opening.
 //echo "<script type='text/javascript' src='js/player_accordian.js'></script>";
 // INIT
@@ -27,10 +30,12 @@ $alive_only   = ($hide == 'dead');
 $current_rank = in('rank_spot', 0);
 $rank_spot    = (is_numeric($current_rank) ? $current_rank : 0);
 $page         = in('page', 1); // Page will get changed down below.
-$dead_count   = $sql->QueryItem("SELECT count(player_id) FROM rankings WHERE alive = false");
 $alive_count  = 0;
 $record_limit = 20; // *** The number of players that gets shown per page.
 $view_type    = in('view_type');
+$rank         = get_rank($username);
+$dead_count   = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM rankings WHERE alive = false");
+$dead_count   = $dead_count->fetchColumn();
 
 /*if ($hide != 'dead') {
 	$dead_count = 0; // Set the count of dead rows to zero for later listing.
@@ -51,24 +56,36 @@ $where_clause = "";
 
 
 // Select some players from the ranking.
+$queryParams = array();
+
 if ($searched) {
 	$view_type = 'searched';
+
 	if (strlen($searched) == 1) {
-		$where_clause = "WHERE (uname ilike '$searched%')";
+		$where_clause = "WHERE (uname ilike :param".count($queryParams).")";
+		$queryParams[] = $searched.'%';
 	} else {
-		$where_clause = "WHERE (uname ~* '$searched')";
+		$where_clause = "WHERE (uname ~* :param".count($queryParams).")";
+		$queryParams[] = $searched;
 	}
 } else {
-	$where_clause = "WHERE score >= $rank_spot ";
+	$where_clause = "WHERE score >= :param".count($queryParams)." ";
+	$queryParams[] = $rank_spot;
 }
 
 if ($hide == 'dead') {
 	$where_clause .= "AND alive = true";
 }
 
-$query_count  = "SELECT count(player_id) FROM rankings ".$where_clause;
-$totalrows    = $sql->QueryItem($query_count);
-$rank = get_rank($username, $sql);
+$query_count     = "SELECT count(player_id) FROM rankings ".$where_clause;
+$count_statement = DatabaseConnection::$pdo->prepare($query_count);
+
+for ($i = 0;$i < count($queryParams); $i++) {	// *** Reformulate if queryParams gets to be more than 3 or for items
+	$count_statement->bindValue(':param'.$i, $queryParams[$i]);
+}
+
+$count_statement->execute();
+$totalrows = $count_statement->fetchColumn();
 
 //$microtimes[4] = microtime();
 
@@ -102,11 +119,14 @@ $limitvalue = ($page * $record_limit) - $record_limit;
 $sel = "SELECT rank_id, uname, class, level, alive, days, _clan_id AS clan_id, clan_name, player_id
 	FROM rankings LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id ".$where_clause." ORDER BY rank_id ASC, player_id ASC
 	LIMIT $record_limit OFFSET $limitvalue";
-$sql->Query($sel);
-$row = $sql->data;
 
-$ninja_count = $sql->rows;
-$players     = $sql->fetchData($sel);
+$ninja_info = DatabaseConnection::$pdo->prepare($sel);
+
+for ($i = 0;$i < count($queryParams); $i++) {	// *** Reformulate if queryParams gets to be more than 3 or for items
+	$ninja_info->bindValue(':param'.$i, $queryParams[$i]);
+}
+
+$ninja_info->execute();
 
 //$microtimes[5] = microtime();
 
@@ -135,14 +155,15 @@ if (!$searched) { // Will not display active ninja on a search page.
 //$microtimes[9] = microtime();
 	
 // Render each of the player rows.
-$i = 0;
+
+$ninja_count = 0;
 $player_rows = '';
-foreach ($players as $a_player) {
-	$i++;
+while ($a_player = $ninja_info->fetch()) {
+	$ninja_count++;
 	$level_cat = level_category($a_player['level']);
 	$parts = array(
 		'alive_class'     => ($a_player['alive'] == 1 ? "AliveRow" : "DeadRow")
-		, 'odd_or_even'   => ($i % 2 ? "odd" : "even")
+		, 'odd_or_even'   => ($ninja_count % 2 ? "odd" : "even")
 		, 'player_rank'   => $a_player['rank_id']
 		, 'player_id'     => $a_player['player_id']
 		, 'page'          => $page
@@ -157,7 +178,7 @@ foreach ($players as $a_player) {
 		, 'alive'         => ($a_player['alive'] ? "&nbsp;" : "Dead"), // alive/dead display
 	);
 
-	$player_rows .= render_template('player_list_row.tpl', $parts);
+	$player_rows .= render_template('player_list_row.tpl', $parts);	// *** Very inefficient, consider revising ***
 	// Add all the player rows on to a big list of 'em.
 }
 
