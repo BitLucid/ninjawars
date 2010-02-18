@@ -4,7 +4,7 @@ require_once(SERVER_ROOT."lib/specific/lib_player.php");
 
 // Show the form for the clan joining, or perform the join.
 function render_clan_join($process=null, $username, $clan_id) {
-   	$sql = new DBAccess();
+	DatabaseConnection::getInstance();
 
     if ($process == 1) {
         $clan        = get_clan($clan_id);
@@ -12,17 +12,20 @@ function render_clan_join($process=null, $username, $clan_id) {
         $leader_id   = $leader['player_id'];
         $leader_name = $leader['uname'];
 
-        $confirm = $sql->QueryItem("SELECT confirm FROM players WHERE uname = '$username'");
+		$confirmStatement = DatabaseConnection::$pdo->prepare("SELECT confirm FROM players WHERE uname = :user");
+		$confirmStatement->bindValue(':user', $username);
+		$confirmStatement->execute();
+        $confirm = $confirmStatement->fetchColumn();
 
-        $url = message_url("clan_confirm.php?clan_joiner=".get_user_id($username)."&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
+        $url = message_url("clan_confirm.php?clan_joiner=".get_user_id($username)."&amp;confirm=$confirm&amp;clan_id=".urlencode($clan_id), 'Confirm Request');
 
-        $join_request_message = "CLAN JOIN REQUEST: $username has sent a request to join clan ".out($clan['clan_name']).".
+        $join_request_message = "CLAN JOIN REQUEST: ".htmlentities($username)." has sent a request to join clan ".htmlentities($clan['clan_name']).".
             If you wish to allow this ninja into your clan click the following link:
             $url";
-        send_message(get_user_id($username),$leader_id,$join_request_message);
+        send_message(get_user_id($username), $leader_id, $join_request_message);
 
-        $res =  "<div id='clan-join-request-sent' class='ninja-notice'>Your request to join ".out($clan['clan_name'])." 
-            has been sent to ".out($leader_name)."</div>\n";
+        $res =  "<div id='clan-join-request-sent' class='ninja-notice'>Your request to join ".htmlentities($clan['clan_name'])." 
+            has been sent to ".htmlentities($leader_name)."</div>\n";
     } else {                                            
         //Clan Join list of available Clans
         $leaders = get_clan_leaders(($clan_id ? $clan_id : null), ($clan_id ? false : true));
@@ -32,9 +35,9 @@ function render_clan_join($process=null, $username, $clan_id) {
         foreach ($leaders as $leader) {
             $info = get_player_info($leader['player_id']);
             $res .= "<li><a target='main' class='clan-join' href=\"clan.php?command=join&amp;clan_id={$leader['clan_id']}&amp;process=1\">
-                    Join {$leader['clan_name']}</a>.
+                    Join ".htmlentities($leader['clan_name'])."</a>.
                     Its leader is <a href=\"player.php?player_id=".rawurlencode($leader['player_id'])."\">
-                    {$leader['uname']}</a>, level {$info['level']}.
+                    ".htmlentities($leader['uname'])."</a>, level {$info['level']}.
                     <a target='main' href=\"clan.php?command=view&amp;clan_id={$leader['clan_id']}\">View This Clan</a>
                 </li>\n";
         }
@@ -61,11 +64,13 @@ function get_clans($clan_id=null) {
 
 // Gets the clan founders, though they may be dead and unconfirmed now.
 function get_clan_founders() {
-    $sql = new DBAccess();
-    $clan_founders = $sql->fetchData("SELECT uname, player_id, clan_name, confirmed 
+	DatabaseConnection::getInstance();
+
+	$founders_statement = DatabaseConnection::$pdo->query("SELECT uname, player_id, clan_name, confirmed 
         FROM clan JOIN clan_player ON clan_id = _clan_id JOIN player ON _creator_player_id = player_id AND player_id = _player_id
         ORDER BY clan_id");
-    return $clan_founders;
+
+    return $founders_statement->fetchAll();
 }
 
 // Return only the single clan leader and their information.
@@ -99,13 +104,13 @@ function get_clan_leaders($clan_id=null, $all=false) {
  *   and shows only non-empty clans.
 **/
 function clan_size() {
+	DatabaseConnection::getInstance();
 	$res = array();
-	$db = new DBAccess();
 
     // sum the levels of the players (minus days of inactivity) for each clan
-	$sel = "SELECT sum(level-3-round(days/5)) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC";
+	$sel = DatabaseConnection::$pdo->query("SELECT sum(level-3-round(days/5)) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC");
 
-	$counts = $db->FetchAll($sel);
+	$counts = $sel->fetchAll();
 
 	if (!empty($counts)) {
 		$largest = reset($counts);
@@ -133,7 +138,7 @@ function render_clan_tags() {
 
 	foreach ($clans as $clan_id => $data) {
 		$res .= "<li class='clan-tag size".$data['score']."'>
-                <a href='clan.php?command=view&amp;clan_id=".urlencode($clan_id)."'>".$data['name']."</a>
+                <a href='clan.php?command=view&amp;clan_id=".urlencode($clan_id)."'>".htmlentities($data['name'])."</a>
             </li>";
 	}
 
@@ -176,8 +181,8 @@ function render_clan_view($p_clan_id) {
 	//$members = @natsort2d($members, 'days');
 
 	$res = "<div id='clan-members'>
-            <h3 id='clan-members-title'>".$members[0]['clan_name']."</h3>
-            <div id='clan-members-count'>Clans Members: ".count($members)."</div>
+            <h3 id='clan-members-title'>".htmlentities($members[0]['clan_name'])."</h3>
+            <div id='clan-members-count'>Clan Members: ".count($members)."</div>
             <ul id='clan-members-list'>";
 
 	foreach ($members as $member) {
@@ -190,7 +195,7 @@ function render_clan_view($p_clan_id) {
 
 		$res .= "<li class='member-info'>
 		        <span class='member size{$member['size']}'>
-                <a href='player.php?player={$member['uname']}'>{$member['uname']}</a>
+                <a href='player.php?player=".urlencode($member['uname'])."'>".htmlentities($member['uname'])."</a>
 		        </span>";
         $res .= render_avatar_section_from_email($member['email']);
         $res .= "</li>";
@@ -198,6 +203,7 @@ function render_clan_view($p_clan_id) {
 
 	$res .= "</ul>
             </div>";
+
 	return $res;
 }
 

@@ -3,9 +3,13 @@
 <div class='description'>
 {$description}
 </div>
-<form id="shop_form" action="shop.php" method="post" name="shop_form">
+<form id="shop_form" action="shop.php" method="post" name="shop_form" {if !$logged_in}onsubmit="return false;"{/if}>
 <input id="purchase" type="hidden" value="1" name="purchase">
 <table>
+<tr>
+  <td colspan="4">&nbsp; </td>
+</tr>
+<!--
 <tr>
   <td>
   Item
@@ -23,6 +27,7 @@
   Picture
   </td>
 </tr>
+-->
 <tr>
   <td>
   <input name="item" type="submit" value="Fire Scroll" class="shopButton">
@@ -109,9 +114,16 @@
   </td>
 </tr>
 <tr>
-  <td colspan="3">
-  How Many? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField">
+  <td colspan="4" style="text-align: center;padding: 1em;">
+{if $logged_in}
+  How many would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField">
+{else}
+  To purchase items you must <a href="signup.php?referrer=">become a ninja</a>.
+{/if}
   </td>
+</tr>
+<tr>
+  <td colspan="4">&nbsp; </td>
 </tr>
 </table>
 </form>

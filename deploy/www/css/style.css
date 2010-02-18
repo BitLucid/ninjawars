@@ -319,6 +319,10 @@ fieldset {
     padding-left: .5em;
     padding-bottom: .5em;
 }
+form#signup {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
 form#signup label{
     float:left;
     clear:left;
@@ -326,16 +330,17 @@ form#signup label{
     text-align:right;
     display:block;
     font-weight:bolder;
+	height: 3em;
+	width: 7.5em;
 }
 form#signup input, form#signup select{
-    float:left;
     display:block;
-    margin-right:3em;
+    margin-right: 2em;
     margin-left: 1em;
     color:#66cc66;
     background-color:black;   
 }
-form#signup input:focus, form#signup select:focus{
+form#signup input:focus, form#signup select:focus {
     color:black;
     background-color:white;
 }
@@ -466,10 +471,14 @@ table.playerTable .Black, .player-info .Black {
 	margin-bottom:.5em;
 }
 
-.playerTable th{
+.playerTable th {
 	text-align: left;
-	background-color: #333333;
-	padding-left: 8px;
+	background-color: #555555;
+	padding-left: .8em;
+	padding-bottom: .4em;
+}
+.playerTable td {
+	line-height: 1.6em;
 }
 td.playerTable {
     text-align: left;
@@ -969,11 +978,11 @@ iframe{
     color:black;
 }
 
-.clan-members .injured a:link{
+.clan-members .injured a:link {
     color: black;
 }
 
-.clan-members .injured a:visited{
+.clan-members .injured a:visited {
     color: black;
 }
 
@@ -1146,18 +1155,19 @@ iframe{
     clear: both;
     padding-top: 3px;
 }
-.clan-tag{
+.clan-tag {
     color: blue;
-    background-color:maroon;
+    background-color: maroon;
     float:left;
     margin: 5px;
     list-style-type: none;
+	padding: 0px 8px 0 8px;
 }
 
 /* Clan member tags styles */
 #clan-members .member a, #player-tags .player-tag a{
-    color:orange;
-    background-color:green;
+    color: orange;
+    background-color: green;
 }
 #clan-members {
     clear: both;
@@ -1180,18 +1190,19 @@ iframe{
 #clan-members .member{
     color:orange;
     background-color:green;
+	padding: 0px 8px 0 8px;
 }
 
 /*  End of Clan Tags section */
 
 #clan-tags .size10{ /* Reverse the biggest tag color */
-    color: red;
-    background-color: blue;
+    color: maroon;
+	background-color: #4682B4;
     font-family:tahoma, sans;
 }
-#clan-tags .size10 a{
-    color: red;
-    background-color: blue;
+#clan-tags .size10 a {
+    color: maroon;
+	background-color: #4682B4;
     font-family:tahoma, sans;
 }
 .size10{

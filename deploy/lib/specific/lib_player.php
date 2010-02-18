@@ -556,7 +556,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 	$referred_by = $enteredReferral;
 
 	echo "Your responses:<br> Name - $send_name,<br>
-		 Password - ".(isset($send_pass)? "***yourpassword***" : "NO PASSWORD").",<br>
+		 Password - ".((isset($send_pass) ? "***yourpassword***" : "NO PASSWORD")).",<br>
 		 Class - $send_class,<br>
 		 Email - $send_email,<br>
 		 Site Referred By - $referred_by<br><br>\n";
@@ -585,13 +585,13 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 			echo "Phase 1 Complete: Name passes requirements.<hr>\n";
 
 			// Validate the password!
-			$password_error = validate_password($send_pass);
+			$password_error = false && validate_password($send_pass);
 
 			if ($password_error) {
 				echo $password_error;
 			} else {
 				$send_pass = trim($send_pass); // *** Trims any extra space off of the password.
-				$send_pass = $filter->toPassword($send_pass); // Filter any un-whitelisted characters.
+				//$send_pass = $filter->toPassword($send_pass); // Filter any un-whitelisted characters.
 				echo "Phase 2 Complete: Password passes requirements.<hr>\n";
 
 				if (FALSE) { // CURRENTLY NO BLOCKED EMAIL SERVICES strstr($send_email, "@") == "@aol.com" || strstr($send_email, "@") == "@netscape.com" || strstr($send_email, "@") == "@aim.com"
