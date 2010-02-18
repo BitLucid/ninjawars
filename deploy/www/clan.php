@@ -42,7 +42,7 @@ if ($username) {
 // *** Useful Constants ***
 define('CLAN_CREATOR_MIN_LEVEL', 15);
 
-if (!$player_id || !$clan) {
+if (!$player_id) {
 	echo "<p class='ninja-notice'>You are not part of any clan.</p>";
 } else {
 	$self_is_leader = ($clan && (get_clan_leader_id($clan->getID()) == $player_id));
