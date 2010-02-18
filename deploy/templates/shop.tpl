@@ -116,7 +116,7 @@
 <tr>
   <td colspan="4" style="text-align: center;padding: 1em;">
 {if $is_logged_in}
-  How many would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField">
+  How many would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" value="1">
 {else}
   To purchase items you must <a href="signup.php?referrer=">become a ninja</a>.
 {/if}
