@@ -51,6 +51,8 @@ function getHealth($who) {
 }
 
 function changeHealth($who, $amount) {
+	$amount = (int)$amount;
+
 	if (abs($amount) > 0) {
 		$dbconn = DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET health = health + ".
@@ -104,6 +106,8 @@ function getGold($who) {
 }
 
 function changeGold($who, $amount) {
+	$amount = (int)$amount;
+
 	if (abs($amount) >  0) {
 		$dbconn = DatabaseConnection::getInstance();
 
@@ -168,6 +172,7 @@ function getTurns($who) {
 }
 
 function changeTurns($who, $amount) {
+	$amount = (int)$amount;
 	if (abs($amount) > 0) {
 		$dbconn = DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET turns = turns + ".
@@ -214,34 +219,37 @@ function setKills($who, $new_kills) {
 */
 
 function getKills($who) {
-  global $sql;
+	global $sql;
 
-  $kills = $sql->QueryItem("SELECT kills FROM players WHERE uname = '$who'");
+	$kills = $sql->QueryItem("SELECT kills FROM players WHERE uname = '$who'");
 
-  if ($who == get_username()) {
-      $_SESSION['kills'] = $kills;
-    }
+	if ($who == get_username()) {
+		$_SESSION['kills'] = $kills;
+	}
 
-  return $kills;
+	return $kills;
 }
 
 function changeKills($who,$amount) {
-  if (abs($amount) > 0) {
-      global $sql;
+	$amount = (int)$amount;
 
-      $sql->Update("UPDATE players SET kills = kills + ".
-		   "CASE WHEN kills+$amount < 0 THEN kills*(-1) ELSE $amount END ".
-		   "WHERE uname  = '$who'");
+	if (abs($amount) > 0) {
+		DatabaseConnection::getInstance();
 
-      $new_kills = getKills($who);
+		$update = DatabaseConnection::$pdo->prepare("UPDATE players SET kills = kills + 
+		   CASE WHEN kills + :amount1 < 0 THEN kills*(-1) ELSE :amount2 END
+		   WHERE uname = :user");
+		$update->bindValue(':amount1', $amount);
+		$update->bindValue(':amount2', $amount);
+		$update->bindValue(':user', $who);
+		$update->execute();
+	}
 
-      return $new_kills;
-    } else {
-      return getKills($who);
-    }
+	return getKills($who);
 }
 
 function addKills($who,$amount) {
+	$amount = (int)$amount;
 	// *** UPDATE THE KILLS INCREASE LOG *** //
 	global $sql;
 
@@ -260,6 +268,7 @@ function addKills($who,$amount) {
 }
 
 function subtractKills($who,$amount) {
+	$amount = (int)$amount;
 	global $sql;
 	// *** UPDATE THE KILLS INCREASE LOG (with a negative entry) *** //
 
@@ -368,28 +377,26 @@ function getLevel($who) {
 }
 
 function changeLevel($who, $amount) {
+	$amount = (int)$amount;
 	if (abs($amount) > 0) {
 		global $sql;
 
 		$sql->Update("UPDATE players SET level = level+$amount WHERE uname = '$who'");
 
-		$new_level = getLevel($who);
-
 		// *** UPDATE THE LEVEL INCREASE LOG *** //
 
 		$alreadyThere = $sql->Query("SELECT * FROM levelling_log WHERE uname='$who' AND killsdate=now()");
 		$notYetANewDay=$sql->rows;  //Throws back a row result if there is a pre-existing record.
+
 		if ($notYetANewDay != NULL) {
 			//if record already exists.
 			$sql->Query("UPDATE levelling_log SET levelling=levelling + $amount WHERE uname='$who' AND killsdate=now() LIMIT 1");
 		} else {	// if no prior record exists, create a new one.
 			$sql->Query("INSERT INTO levelling_log ( uname, killpoints, levelling, killsdate) VALUES ('$who', '0', '$amount', now())");  //inserts all except the autoincrement ones
 		}
-
-		return $new_level;
-	} else {
-		return getLevel($who);
 	}
+
+	return getLevel($who);
 }
 
 function addLevel($who,$amount) {
@@ -472,8 +479,7 @@ function getStatus($who) {
 	return $status_array;
 }
 
-function addStatus($who, $what)   //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
-{
+function addStatus($who, $what) {   //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
 	global $sql;
 
 	$status = $sql->QueryItem("SELECT status FROM players WHERE uname = '$who'");
@@ -493,8 +499,7 @@ function addStatus($who, $what)   //Takes in the Status in the ALL_CAPS_WORD for
 	return getStatus($who);
 }
 
-function subtractStatus($who, $what)     //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
-{
+function subtractStatus($who, $what) {     //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
 	global $sql;
 
 	$status = $sql->QueryItem("SELECT status FROM players WHERE uname = '$who'");
@@ -548,17 +553,15 @@ function getStrength($who) {
 }
 
 function changeStrength($who, $amount) {
+	$amount = (int)$amount;
+
 	if (abs($amount) > 0) {
 		global $sql;
 
 		$sql->Update("UPDATE players SET strength = strength+$amount WHERE uname = '$who'");
-
-		$new_strength = getStrength($who);
-
-		return $new_strength;
-	} else {
-		return getStrength($who);
 	}
+
+	return getStrength($who);
 }
 
 function addStrength($who,$amount) {
@@ -580,22 +583,20 @@ function subtractStrength($who, $amount) {
 // ********* BOUNTY FUNCTIONS *********
 // ************************************
 
-function setBounty($who, $new_bounty)
-{
+function setBounty($who, $new_bounty) {
+	$new_bounty = (int)$new_bounty;
 	global $sql;
 
 	$sql->Update("UPDATE players SET bounty = $new_bounty WHERE uname = '$who'");
 
-	if ($who == get_username())
-	{
+	if ($who == get_username()) {
 		$_SESSION['bounty'] = $new_bounty;
 	}
 
 	return $new_bounty;
 }
 
-function getBounty($who)
-{
+function getBounty($who) {
 	global $sql;
 
 	$bounty = $sql->QueryItem("SELECT bounty FROM players WHERE uname = '$who'");
@@ -608,8 +609,9 @@ function getBounty($who)
 	return $bounty;
 }
 
-function changeBounty($who,$amount)
-{
+function changeBounty($who,$amount) {
+	$amount = (int)$amount;
+
 	if (abs($amount) > 0) {
 		global $sql;
 
@@ -618,27 +620,20 @@ function changeBounty($who,$amount)
 			"WHEN bounty+$amount > 5000 THEN (5000 - bounty) ".
 			"ELSE $amount END ".
 			"WHERE uname  = '$who'");
-
-		$new_bounty = getBounty($who);
-
-		return $new_bounty;
-	} else {
-		return getBounty($who);
 	}
+
+	return getBounty($who);
 }
 
-function addBounty($who,$amount)
-{
+function addBounty($who,$amount) {
 	return changeBounty($who,$amount);
 }
 
-function subtractBounty($who,$amount)
-{
+function subtractBounty($who,$amount) {
 	return changeBounty($who,((-1)*$amount));
 }
 
-function rewardBounty($bounty_to,$bounty_on)
-{
+function rewardBounty($bounty_to,$bounty_on) {
 	global $sql;
 
 	$bounty = getBounty($bounty_on);
@@ -650,8 +645,7 @@ function rewardBounty($bounty_to,$bounty_on)
 	return $bounty;
 }
 
-function runBountyExchange($username, $defender)  //  *** BOUNTY EQUATION ***
-{
+function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 	// *** Bounty Increase equation: (attacker's level - defender's level) / 5, rounded down, times 25 gold per point ***
 	$levelRatio     = floor((getLevel($username) - getLevel($defender)) / 5);
 
@@ -823,6 +817,8 @@ function addItem($who, $item, $quantity = 1) {
 		$quantity = 0;
 	}
 
+	$quantity = (int)$quantity;
+
 	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount + :quantity WHERE owner = :who AND lower(item) = lower(:item)");
 	$statement->bindValue(':quantity', $quantity);
 	$statement->bindValue(':who', get_user_id($who));
@@ -858,6 +854,8 @@ function removeItem($who, $item, $quantity=1) {
 
 
 function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
+	$killpoints = (int)$killpoints;
+
 	$dbconn = DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO dueling_log values 
         (default, :attacker, :defender, :won, :killpoints, now())");
