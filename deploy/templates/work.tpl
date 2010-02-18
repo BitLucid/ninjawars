@@ -25,7 +25,7 @@
 
 <p>You can earn money by working in the village fields. Field work will exchange turns for gold.</p>
 <div>The current work exchange rate: 1 Turn = {$work_multiplier} Gold.</div>
-{if $logged_in}
+{if $is_logged_in}
 <form id="work" action="work.php" method="post" name="work">
   <div>
     <p>

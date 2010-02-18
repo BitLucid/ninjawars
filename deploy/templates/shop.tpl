@@ -3,7 +3,7 @@
 <div class='description'>
 {$description}
 </div>
-<form id="shop_form" action="shop.php" method="post" name="shop_form" {if !$logged_in}onsubmit="return false;"{/if}>
+<form id="shop_form" action="shop.php" method="post" name="shop_form" {if !$is_logged_in}onsubmit="return false;"{/if}>
 <input id="purchase" type="hidden" value="1" name="purchase">
 <table>
 <tr>
@@ -115,7 +115,7 @@
 </tr>
 <tr>
   <td colspan="4" style="text-align: center;padding: 1em;">
-{if $logged_in}
+{if $is_logged_in}
   How many would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField">
 {else}
   To purchase items you must <a href="signup.php?referrer=">become a ninja</a>.

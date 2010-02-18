@@ -11,21 +11,22 @@ $worked = null;
 $new_gold = null;
 $not_enough_energy = null;
 $use_second_description = null;
+$is_logged_in = is_logged_in();
 
 $worked = intval(in('worked'));
 
-if ($worked > 0){
+if ($worked > 0) {
 	$turns = getTurns($username);
 	$gold  = getGold($username);
 
-	if ($worked > $turns){
+	if ($worked > $turns) {
 	    $not_enough_energy = true;
 	} else {
 		$new_gold  = $worked * $work_multiplier;   // *** calc amount worked ***
 
 		$gold  = addGold($username, $new_gold);
 		$turns = subtractTurns($username, $worked);
-		
+
 		$use_second_description = true;
 	}
 }

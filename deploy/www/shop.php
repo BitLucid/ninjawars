@@ -15,6 +15,7 @@ $username          = get_username();
 $gold              = either(getGold($username), 0);
 $current_item_cost = 0;
 $quantity          = intval($in_quantity);
+$is_logged_in      = is_logged_in();
 
 if (!$quantity || $quantity < 1){
     $quantity = 1;
