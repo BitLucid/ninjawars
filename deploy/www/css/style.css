@@ -445,7 +445,7 @@ table.playerTable .Black, .player-info .Black {
 .profile-message{
     margin: .1em auto .1em;
     width: 80%;
-    max-height: 3em;
+    max-height: 6em;
     overflow:auto;
 }
 

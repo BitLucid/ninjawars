@@ -31,16 +31,17 @@ $confirm_delete = false;
 $profile_changed = false;
 $profile_max_length = 500; // Should match the limit in limitStatChars.js
 
-$delete_attempts = (SESSION::is_set('delete_attempts')?SESSION::get('delete_attempts') : null);
+$delete_attempts = (SESSION::is_set('delete_attempts') ? SESSION::get('delete_attempts') : null);
 
 if ($deleteAccount) {
 	$verify = false;
 	$verify = is_authentic($username, $passW);
+
 	if ($verify == true && !$delete_attempts) {
 	    // *** Username&password matched, on the first attempt.
 		pauseAccount($username); // This may redirect and stuff?
 	} else {
-	    if($deleteAccount == 2){
+	    if ($deleteAccount == 2) {
 	        SESSION::set('delete_attempts', 1);
 	        $error = 'Deleting of account failed, please email '.SUPPORT_EMAIL;
 	    } else {

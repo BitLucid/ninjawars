@@ -57,9 +57,7 @@
         <input type="hidden" name="changeprofile" value="1">
         Profile: 
         <div>
-            <textarea id='player-profile-area' name='newprofile' cols='45' rows='10' class='textField'>
-                {$profile_editable}
-            </textarea>
+            <textarea id='player-profile-area' name='newprofile' cols='45' rows='10' class='textField'>{$profile_editable}</textarea>
         </div>
         <input type='submit' value='Change Profile' class='formButton'> (<span id='characters-left'>{$profile_max_length} Character Limit</span>)
     </div>
@@ -67,7 +65,7 @@
 
 <div id='player-profile-section'>
 Profile Preview:
-    <div id='player-profile">
+    <div id='player-profile'>
         &nbsp;{$profile_display}&nbsp;
     </div>
 </div>
@@ -78,7 +76,7 @@ Profile Preview:
 
 {if !$delete_attempts}
 <p>WARNING: Clicking on the button below will terminate your account.</p>
-<form action='stats.php' method='POST'>
+<form action='stats.php' method='post'>
     <div>
         <input type='hidden' name='deleteaccount' value='1'>
         <input type='submit' value='Permanently Remove Your Account' class='formButton'>

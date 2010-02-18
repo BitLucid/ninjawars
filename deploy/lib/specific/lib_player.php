@@ -259,7 +259,7 @@ function display_player_profile($player_info) {
 	if ($player_info['messages']) {
 ?>
 	<div class='player-profile'>
-		<p class='centered profile-message'><span class='subtitle'>Message:</span> <?php echo out($player_info['messages']); ?></p>
+		<p class='centered profile-message'><span class='subtitle'>Message:</span> <?php echo nl2br(out($player_info['messages'])); ?></p>
 	</div>
 <?php
 	}
