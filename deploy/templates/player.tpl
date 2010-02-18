@@ -31,6 +31,7 @@ label{
         <tr>
         {if $attack_error}
 		    <td><div class='ninja-error centered'>Cannot Attack: {$attack_error}</div></td>
+        </tr></table>
 		{else}
 		    <td colspan='2'>
 		      <table id='player-profile-attack'>
