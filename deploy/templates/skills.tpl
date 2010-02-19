@@ -23,7 +23,7 @@
 {/if}
 
 {if $chi}
-    <p id='chi-skill'>Chi: Your Chi skill increases the benefits of healing at the shrine.</p>
+    <p id='chi-skill'>Chi: Your Chi skill increases the benefits of healing and resurrecting at the shrine.</p>
 {/if}
 
 {if $speed}

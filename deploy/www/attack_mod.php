@@ -321,7 +321,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 
 			echo "<div class='ninja-error'>$target has killed you!</div>\n";
 			echo "<div class='ninja-notice' style='margin-bottom: 10px;'>
-				You have been slain! Go to the <a href=\"shrine.php\">Shrine</a> to return to the living.
+				Go to the <a href=\"shrine.php\">Shrine</a> to return to the living.
 				</div>\n";
 
 			if (!$simultaneousKill) {
