@@ -406,9 +406,7 @@ function render_communication($target) {
 }
 
 function get_rank($username) {
-	if (!$sql) {
-		$sql = new DBAccess();
-	}
+	$sql = new DBAccess();
 
 	$rank = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".$username."'");
 	$rank = ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
