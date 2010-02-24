@@ -171,9 +171,14 @@
                     <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
                   </div>
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
-                    <iframe border='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
-                      <a href='mini_chat.php' target='_blank'>Mini Chat</a> Iframe Display Section (Iframes not supported by this browser)
-                    </iframe>
+                    ...Chat loading...
+                    <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
+                    <noscript>
+                        <!-- Only display the frame if javascript isn't enabled. -->
+                        <iframe border='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
+                          <a href='mini_chat.php' target='_blank'>Mini Chat</a> Iframe Display Section (Iframes not supported by this browser)
+                        </iframe>
+                    </noscript>
                   </div>
                   <div id="expand-chat">
                     <a href="mini_chat.php?chatlength=360" target="mini_chat">
@@ -210,7 +215,8 @@
         <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
         <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
-        <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> 
+        <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
+        <a href="http://getsatisfaction.com/ninjawars" target="_blank" class="extLink">Feedback</a>
              
       </div>
       

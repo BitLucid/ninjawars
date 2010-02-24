@@ -224,9 +224,11 @@ function updateDataStore(datum, property_name, global_store, comparison_name, co
 function getUpdateInterval(feedback){
 	var maxInt = 180;
 	var min = 10; // Changes push the interval to this minimum.
-	var first = 20;  // The starting update interval.
+	var first = 1;  // The very first interval to run the update for.
+	var first_interval = false;
 	if(!NW.updateInterval){
-		NW.updateInterval = first; // Starting.
+	    first_interval = true;// Starting.
+		NW.updateInterval = min; // Default.
 	} else if(feedback){
 		NW.updateInterval = min; // Speed up to minimum.
 	} else if(NW.updateInterval>=maxInt){
@@ -234,7 +236,7 @@ function getUpdateInterval(feedback){
 	} else {
 		NW.updateInterval++; // Slow down updates slightly.
 	}
-    return NW.updateInterval;
+	return (first_interval? first : NW.updateInterval);
 }
 
 // JS Update Heartbeat
@@ -334,6 +336,9 @@ function sendChatContents(domform){
 // For refreshing quickstats from inside main.
 function refreshQuickstats(quickView){
     // Accounts for ajax section.
+    if(!quickView){
+        quickView = '';
+    }
     var url = 'quickstats.php?command='+quickView;
     if(top.window.NW.firstLoad > 1){
         if(top.window.NW.quickDiv){
@@ -413,6 +418,11 @@ $(document).ready(function() {
         frameClickHandlers(quickstatsLinks, quickDiv); // Load new contents into the div when clicked.
         NW.quickDiv = quickDiv;
         
+        // Update the quickstats section.
+        //refreshQuickstats();
+        
+        // Update the mini chat section.
+        refreshMinichat();
         
     }
     

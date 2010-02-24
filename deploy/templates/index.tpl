@@ -187,9 +187,13 @@
                     <button type="submit" value="1" class="formButton">Chat</button>
                   </form>
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
-                    <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
-                      <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
-                    </iframe>
+                    ...Chat loading...
+                    <a id='full-chat-link' href="village.php" target="main">View Full Chat <img src="images/chat.png" alt=""> </a>
+                    <noscript>
+                        <iframe id="mini_chat" name="mini_chat" src="mini_chat.php">
+                          <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
+                        </iframe>
+                    </noscript>
                   </div>
                   <!-- <div id="expand-chat">
                     <a href="mini_chat.php?chatlength=360" target="mini_chat">
