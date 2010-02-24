@@ -1,13 +1,13 @@
 <?php
 
-
+// Determine the score for ranking.
 function get_score_formula(){
 	$score = '(level*1000 + gold/100 + kills*3 - days*5)';
 	return $score;
 }
 
 
-// Categorize by level.
+// Categorize ninja ranks by level.
 function level_category($level){
 	$res = '';
 	switch (true) {
@@ -32,6 +32,11 @@ function level_category($level){
 	}
 	return array('display' => $res,
 		'css' => strtolower(str_replace(" ", "-", $res)));
+}
+
+// Standard location for the formula to determine max health.
+function determine_max_health($level){
+    return (150 + (($level - 1) * 25));
 }
 
 

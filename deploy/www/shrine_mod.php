@@ -27,8 +27,7 @@ $freeResKillLimit   = 25;
 $lostTurns          = 10; // *** Default turns lost when the player has no kills.
 $has_chi            = $skillsListObj->hasSkill('Chi'); // Extra healing benefits from chi, by level.
 $error = null;
-$max_health = (150 + (($userLevel - 1) * 25));
-
+$max_health = determine_max_health($level);
 
 // *** A True or False as to whether resurrection will be free.
 $freeResurrection = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
