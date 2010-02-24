@@ -385,7 +385,8 @@ function april1stCheck(){
         var day = currentTime.getDay();
         var month = currentTime.getMonth();
         var randomnumber=Math.floor(Math.random()*(10+1));
-        if(randomnumber == 10 && (debug() || (day == 0 && month == 3))){
+        var random2 = Math.floor(Math.random()*(10+1));
+        if(randomnumber == 10 && ((debug() && random2 == 10) || (day == 0 && month == 3))){
             $('body').css({'-webkit-transform':'rotate(20deg)','-moz-transform':'rotate(20deg)', 'transform':'rotate(20deg)'});
         }
     }
