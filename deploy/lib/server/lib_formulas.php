@@ -59,6 +59,7 @@ function experience_needed_by_level($level){
   * 'killed'=>true or 'killed'=>false
   * and: 'experience_today'=>(int)
   * Dependencies: max_health_by_level function.
+  * Dependencies: experience_needed_by_level($level) function
 **/
 function calculate_experience($damage, $injury, $enemy_level, $attacker_level, $modifiers=array()){
     /**
