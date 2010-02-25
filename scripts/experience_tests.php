@@ -20,7 +20,7 @@ function run_the_numbers($step = 5, $start = 1, $end = 50) {
 }
 
 function calculate_single_attack($attacker_level, $victim_level, $attack_kills = false) {
-	return calculate_experience1(calculate_average_dmg($attacker_level), calculate_average_dmg($victim_level), $attacker_level, $victim_level, max_calculate_health($attacker_level), max_calculate_health($victim_level), 0);
+	return round(calculate_experience1(calculate_average_dmg($victim_level), calculate_average_dmg($attacker_level), $attacker_level, $victim_level, max_calculate_health($attacker_level), max_calculate_health($victim_level), 0), 2);
 }
 
 function calculate_average_duel_length($attacker_level, $victim_level) {
@@ -30,7 +30,7 @@ function calculate_average_duel_length($attacker_level, $victim_level) {
 function calculate_duel($attacker_level, $victim_level) {
 	$rounds = calculate_average_duel_length($attacker_level, $victim_level);
 
-	return calculate_experience1(calculate_average_dmg($attacker_level)*$rounds, $rounds*calculate_average_dmg($victim_level), $attacker_level, $victim_level, max_calculate_health($attacker_level), max_calculate_health($victim_level), 100);
+	return round(calculate_experience1(calculate_average_dmg($victim_level)*$rounds, $rounds*calculate_average_dmg($attacker_level), $attacker_level, $victim_level, max_calculate_health($attacker_level), max_calculate_health($victim_level), 100), 2);
 }
 
 function calculate_strength($level) {
