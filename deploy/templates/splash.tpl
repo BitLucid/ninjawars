@@ -21,10 +21,11 @@
     <!-- Version {$version} -->
 
     <div id='content' class='wrapper'>
-
-      <div id='login-error' class="error {if !$login_error}hidden{/if}">
+        {if $login_error}
+      <div id='login-error' class="error">
         That password/username combination was incorrect.  <a href='account_issues.php' target='main'>Login/Signup Issues?</a> 
       </div>
+        {/if}
 
 
     <div id="menu" class="login-menu">
@@ -41,7 +42,7 @@
                   <!-- Password -->
                   <input name="pass" type="password" class="itext">
                 </label>
-                <button name="action" type="submit" value="login" class="ibutton formButton">Login</button>
+                <input id='login-button' name="action" type="submit" value="Login" class="ibutton formButton">
                 <!-- The value of this has to remain lowercase "login" to work with the login system -->
               </span>
             </form>

@@ -925,7 +925,7 @@ iframe{
     height:1.5em;
     vertical-align: middle;
 }
-#login-bar form button{
+#login-bar form #login-button{
     height:2em;
     vertical-align:middle;
     padding: .1em .2em .1em;
