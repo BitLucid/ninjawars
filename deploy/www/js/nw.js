@@ -301,13 +301,14 @@ function startRefreshingMinichat(){
 }
 
 // Load the chat section, or if that's not available & nested iframe, refresh iframe
-function refreshMinichat(msg){
+function refreshMinichat(msg, chatLength){
     var container = $('#mini-chat-frame-container');
     var data;
+    var leng = chatLength? chatLength : 20;
     if(msg){
-        data = {'message':msg,'command':'postnow', 'section_only':'1'};
+        data = {'message':msg,'command':'postnow', 'section_only':'1', 'chatlength':leng};
     } else {
-        data = {'section_only':'1'};
+        data = {'section_only':'1', 'chatlength':leng};
     }
     if(container){
         container.load("mini_chat.php", data);
@@ -405,9 +406,20 @@ $(document).ready(function() {
         $("#links-menu").toggle();
         
         /* Expand the chat when it's clicked. */
-        $("#expand-chat").click(function () {
-            $("#mini-chat-frame-container").removeClass('chat-collapsed').addClass('chat-expanded');/*.height(780);*/
-            $(this).hide();  // Hide the clicked section after expansion.
+        //$("#expand-chat").click(function () {
+            //$("#mini-chat-frame-container").removeClass('chat-collapsed').addClass('chat-expanded');/*.height(780);*/
+            //$(this).hide();  // Hide the clicked section after expansion.
+        //});
+        
+        // Click to view more chat messages than you were looking at before.
+        $('#expand-chat').click(function (){
+            var chat = $('#mini-chat');
+            // Animate the chat to show that the messages have changed.
+            chat.fadeOut('slow', function (){
+                refreshMinichat('', 500); // Refresh the chat with a longer length.
+                chat.fadeIn('slow');
+            });
+            return false;
         });
         
         

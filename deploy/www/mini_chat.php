@@ -3,7 +3,7 @@ require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper a
 
 init(); // Initialize the environment.
 
-$default_limit = 22;
+$default_limit = 20;
 $chatlength = in('chatlength', $default_limit, 'toInt');
 $message = in('message', null, 'forChat'); // Essentially no filtering.
 $command = in('command');

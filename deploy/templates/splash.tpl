@@ -183,9 +183,10 @@
                   </div>
                   <div id="expand-chat">
                     <a href="mini_chat.php?chatlength=360" target="mini_chat">
-                      View more chat messages <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+                        View more chat messages <!-- <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> -->
                     </a>
-                  </div>
+                </div>
+
                 </div>
               </div>
           </div> <!-- End of index-chat --> 
