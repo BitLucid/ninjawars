@@ -80,7 +80,7 @@ class Nmail {
 	 * @return void
 	 **/
 	function replace($to=null, $subject=null, $body=null, $from=null, $cc_bcc_etc_headers=null) {
-		$this->Zmail($to, $subject, $body, $from, $cc_bcc_etc_headers);
+		$this->Nmail($to, $subject, $body, $from, $cc_bcc_etc_headers);
 		// *** Just re-call the constructor.
 	}
 
@@ -103,16 +103,20 @@ class Nmail {
 	// *** TODO: get functions to get the email parts.
 
 
-
 	/**
 	 * Sends the mail out using the php mail() function.
 	 * @return boolean whether the mail function accepted the inputs.
 	 **/
 	function send() {
 		$this->success = null;
-
+		$remove = array("\n", "\r");
+        // Blacklist filtering, but emails are complicated, so has to be done.
+        $filtered_from = str_replace($remove, '', $this->from);
+        $filtered_to = str_replace($remove, '', $this->to);
+        $filtered_subject = str_replace($remove, '', $this->subject);
+        // Naive filtering, still need to move this wrapper to using Pear Mail.
 		if ($this->try_to_send) {
-			$this->success = mail($this->to, $this->subject, $this->body, $this->from.$this->cc_bcc_etc_headers);
+			$this->success = mail($filtered_to, $filtered_subject, $this->body, $filtered_from.$this->cc_bcc_etc_headers);
 		}
 
 		if ($this->dump) {
