@@ -19,10 +19,10 @@ function get_status_list($target=null) {
 	$health   = getHealth($target);
 
 	if ($health < 1) {
-	    $states[] = "Dead"; 
+		$states[] = "Dead"; 
 	} else { // *** Other statuses only display if not dead.
 		if ($health < 80) {
-		    $states[] = "Injured"; 
+			$states[] = "Injured"; 
 		} else {
 			$states[] = "Healthy";
 		}
@@ -36,25 +36,25 @@ function get_status_list($target=null) {
 }
 
 function render_status_list($target=null) {
-    $states = get_status_list($target);
+	$states = get_status_list($target);
 	$result = implode(", ", $states);
 
 	return $result;
 }
 
 function render_status_section($target=null) {
-    $res = '';
+	$res = '';
 	$statuses = get_status_list($target);
 
 	if (!empty($statuses)) {
-	    $res .= "<span class='player-status ninja-notice ".implode(" ", $statuses)."'>".implode(", ", $statuses)."</span>";
+		$res .= "<span class='player-status ninja-notice ".implode(" ", $statuses)."'>".implode(", ", $statuses)."</span>";
 	}
 
 	return $res;
 }
 
-function render_health_section($health){
-    return "<span ".($health<80? "class='injured'":'')."> $health </span>";
-    return $res;
+function render_health_section($health) {
+	return "<span ".($health < 80 ? "class='injured'":'')."> $health </span>";
+	//return $res;
 }
 ?>

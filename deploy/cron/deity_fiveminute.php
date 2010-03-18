@@ -2,21 +2,20 @@
 require_once(dirname(__FILE__).'/../lib/base.inc.php'); // Currently this forces crons locally to be called from the cron folder.
 require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
 
-$sql = new DBAccess();
-$sql->Query("truncate player_rank");
-$sql->Query("SELECT setval('player_rank_rank_id_seq1', 1, false);");
-$sql->Query("insert into player_rank (_player_id, score) select player_id, ((level*900) + (CASE WHEN gold < 1 THEN 0 ELSE floor(gold/200) END) + (kills*3) - (days*5)) AS score from players WHERE confirmed = 1 ORDER BY score DESC");
+DatabaseConnection::getInstance();
+DatabaseConnection::$pdo->query("TRUNCATE player_rank");
+DatabaseConnection::$pdo->query("SELECT setval('player_rank_rank_id_seq1', 1, false);");
+$ranked_players = DatabaseConnection::$pdo->query("INSERT INTO player_rank (_player_id, score) SELECT player_id, ((level*900) + (CASE WHEN gold < 1 THEN 0 ELSE floor(gold/200) END) + (kills*3) - (days*5)) AS score FROM players WHERE confirmed = 1 ORDER BY score DESC");
 
 #   Running from a cron script, we don't want any output unless we have an error
 
 
 $rand = rand(1, 12);
-if($rand == 1){
+if ($rand == 1) {
     // Only log fiveminute log output randomly about once an hour to cut down on
     // spam in the log.  This log message isn't very important anyway.
 
-    $out_display['Ranked Players'] = $sql->a_rows;
-
+    $out_display['Ranked Players'] = $ranked_players->rowCount();
 
     // ***********
     // Log output:

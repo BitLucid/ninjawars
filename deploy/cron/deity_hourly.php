@@ -7,7 +7,8 @@ $logMessage = "DEITY_HOURLY STARTING: ".date(DATE_RFC1036)."\n";
 $score = get_score_formula();
 
 /// @ TODO - This script should be secured.
-$sql = new DBAccess();
+/// @ TODO - How is it not secure?
+DatabaseConnection::getInstance();
 
 // ******************* INITIALIZATION ******************************
 $poisonHealthDecrease = 50;			// *** The amount that poison decreases health each half-hour.
@@ -20,20 +21,19 @@ $out_display = array();
 
 // ******************* END OF CONSTANTS ***********************
 
-$sql->Update("UPDATE time SET amount = amount+1 WHERE time_label='hours'"); // Update the hours ticker.
-$sql->Update("UPDATE time SET amount = 0 WHERE time_label='hours' AND amount>=24"); // Rollover the time to hour zero.
-$sql->Update("UPDATE players SET turns = 0 WHERE turns < 0");
-$sql->Update("UPDATE players SET bounty = 0 WHERE bounty < 0");
-$sql->Update("UPDATE players SET turns = turns+1 WHERE class ='Blue' and turns < ".$turn_regen_threshold);         // Blue turn code
-$sql->Update("UPDATE players SET turns = turns+2 where turns < ".$turn_regen_threshold);   // add 2 turns on the hour, up to 100.
+DatabaseConnection::$pdo->query("UPDATE time SET amount = amount+1 WHERE time_label='hours'"); // Update the hours ticker.
+DatabaseConnection::$pdo->query("UPDATE time SET amount = 0 WHERE time_label='hours' AND amount>=24"); // Rollover the time to hour zero.
+DatabaseConnection::$pdo->query("UPDATE players SET turns = 0 WHERE turns < 0");
+DatabaseConnection::$pdo->query("UPDATE players SET bounty = 0 WHERE bounty < 0");
+DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 WHERE class ='Blue' and turns < ".$turn_regen_threshold);         // Blue turn code
+DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+2 where turns < ".$turn_regen_threshold);   // add 2 turns on the hour, up to 100.
 
 // Database connection information here
-$sql->Query("DELETE FROM ppl_online WHERE activity < (now() - interval '".$maxtime."')");
-//Skip error logging this for now. $out_display['Inactive Browsers Deactivated'] = $sql->a_rows;
+$inactivity = DatabaseConnection::$pdo->query("DELETE FROM ppl_online WHERE activity < (now() - interval '".$maxtime."')");
+//Skip error logging this for now. $out_display['Inactive Browsers Deactivated'] = $inactivity->rowCount();
 
 // *** HEAL ***
-$sql->Update
-(
+DatabaseConnection::$pdo->query(
 	"UPDATE players SET health=numeric_smaller(health+8, $maximum_heal) ".
 	     "WHERE health BETWEEN 1 AND $maximum_heal AND NOT ".
 		 "cast(status&".POISON." AS boolean)"
@@ -62,23 +62,20 @@ $resurrected = revive_players($params);
 
 // previously: CASE WHEN health-10 < 0 THEN health*(-1) ELSE 10 END
 assert(POISON != 'POISON');
-$sql->Update("UPDATE players SET health = numeric_larger(0, health-$poisonHealthDecrease) WHERE health>0 AND CAST((status&".POISON.") AS bool)"); // *** poisoned takes away life ***
+DatabaseConnection::$pdo->query("UPDATE players SET health = numeric_larger(0, health-$poisonHealthDecrease) WHERE health>0 AND CAST((status&".POISON.") AS bool)"); // *** poisoned takes away life ***
 
-$sql->Update("UPDATE players SET health = 0 WHERE health < 0"); // *** zeros negative health totals.
-$sql->Update("UPDATE players SET turns = ".$maximum_turns." WHERE turns > ".$maximum_turns); // max turn limiter gets run from the constants section.
+DatabaseConnection::$pdo->query("UPDATE players SET health = 0 WHERE health < 0"); // *** zeros negative health totals.
+DatabaseConnection::$pdo->query("UPDATE players SET turns = ".$maximum_turns." WHERE turns > ".$maximum_turns); // max turn limiter gets run from the constants section.
 
 assert(FROZEN != 'FROZEN'); // These constants should be numeric.
 assert(STEALTH != 'STEALTH');
-$sql->Update("UPDATE players SET status = status-".FROZEN." WHERE cast(status&".FROZEN." AS bool)"); // Cold Steal Crit Fail Unfreeze
-$sql->Update("UPDATE players SET status = status-".STEALTH."  WHERE cast(status&".STEALTH." AS bool)"); //stealth lasts 1 hr
-
-
+DatabaseConnection::$pdo->query("UPDATE players SET status = status-".FROZEN." WHERE cast(status&".FROZEN." AS bool)"); // Cold Steal Crit Fail Unfreeze
+DatabaseConnection::$pdo->query("UPDATE players SET status = status-".STEALTH."  WHERE cast(status&".STEALTH." AS bool)"); //stealth lasts 1 hr
 
 // **************
 // Visual output:
 
-foreach ($out_display AS $loopKey => $loopRowResult)
-{
+foreach ($out_display AS $loopKey => $loopRowResult) {
     $logMessage .= "DEITY_HOURLY: Result type: $loopKey yeilded result: $loopRowResult\n";
 }
 

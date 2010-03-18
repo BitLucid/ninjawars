@@ -21,19 +21,19 @@ $maximum_players_to_unconfirm                         = 200;
 
 // *************** DEITY NIGHTLY, manual-run-output occurs at the bottom.*********************
 
-$sql = new DBAccess();
-$affected_rows['Increase Days Of Players'] = update_days($sql);
+DatabaseConnection::getInstance();
+$affected_rows['Increase Days Of Players'] = update_days();
 
-//$sql->Update("UPDATE players SET status = status-".POISON." WHERE status&".POISON);  // Black Poison Fix
-$sql->Update("UPDATE players SET status = 0");  // Hmmm, gets rid of all status effects, we may want to make that not have that limit, some day.
-$affected_rows['Statuses Removed'] = $sql->a_rows;
+//DatabaseConnection::$pdo->query("UPDATE players SET status = status-".POISON." WHERE status&".POISON);  // Black Poison Fix
+$status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  // Hmmm, gets rid of all status effects, we may want to make that not have that limit, some day.
+$affected_rows['Statuses Removed'] = $status_removal->rowCount();
 
-$deleted = shorten_chat($sql); // run the shortening of the chat.
+$deleted = shorten_chat(); // run the shortening of the chat.
 $affected_rows['deleted chats'] = $deleted;
 
-$stats = membership_and_combat_stats($sql, $update_past_stats=true);
+$stats = membership_and_combat_stats($update_past_stats=true);
 $affected_rows['Vicious killer: '] = $stats['vicious_killer'];
-//$sql->Update("DELETE FROM mail WHERE send_to='SysMsg'");  //Deletes any mail directed to the sysmsg message bot.
+//DatabaseConnection::$pdo->query("DELETE FROM mail WHERE send_to='SysMsg'");  //Deletes any mail directed to the sysmsg message bot.
 
 //Nightly Unconfirm old players script settings.
 $unconfirmed = unconfirm_older_players_over_minimums($keep_players_until_over_the_number, $days_players_have_to_be_older_than_to_be_unconfirmed, $maximum_players_to_unconfirm, $just_testing=false);
@@ -42,21 +42,21 @@ assert($unconfirmed < 21);
 $affected_rows['Players Unconfirmed'] = ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
 
 // Delete from inventory where owner is unconfirmed or non-existent.
-$sql->QueryRow("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE confirmed = 0 OR uname IS NULL GROUP BY owner)");
-$affected_rows['deleted items'] = $sql->a_rows;
+$deleted_items = DatabaseConnection::$pdo->query("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE confirmed = 0 OR uname IS NULL GROUP BY owner)");
+$affected_rows['deleted items'] = $deleted_items->rowCount();
 
-$deleted_mail = delete_old_messages($sql); // As per the mail function in lib_deity.
-$deleted_events = delete_old_events($sql);
-$affected_rows['Old Messages Deletion'] =  $deleted_mail;
+$deleted_mail = delete_old_messages(); // As per the mail function in lib_deity.
+$deleted_events = delete_old_events();
+$affected_rows['Old Messages Deletion'] = $deleted_mail;
 
-$sql->Delete("delete from levelling_log where killsdate < now()- interval '3 months'");
-$affected_rows['levelling log deletion'] = $sql->a_rows; // Keep only the last 3 months of logs.
+$level_log_delete = DatabaseConnection::$pdo->query("delete from levelling_log where killsdate < now()- interval '3 months'");
+$affected_rows['levelling log deletion'] = $level_log_delete->rowCount(); // Keep only the last 3 months of logs.
 
-$sql->Delete("delete from dueling_log where date != cast(now() AS date) AND date != cast(now() AS date)-1"); // Keep only the last two days of duels.
-$affected_rows['dueling log deletion'] = $sql->a_rows;
+$duel_log_delete = DatabaseConnection::$pdo->query("delete from dueling_log where date != cast(now() AS date) AND date != cast(now() AS date)-1"); // Keep only the last two days of duels.
+$affected_rows['dueling log deletion'] = $duel_log_delete->rowCount();
 
-$sql->Delete("delete from players where confirmed = 0 and level = 1"); // Delete old level 1's.
-$affected_rows['old level 1 players deletion'] = $sql->a_rows; 
+$level_1_delete = DatabaseConnection::$pdo->query("delete from players where confirmed = 0 and level = 1"); // Delete old level 1's.
+$affected_rows['old level 1 players deletion'] = $level_1_delete->rowCount(); 
 
 
 $logMessage .= "DEITY_NIGHTLY: Deity reset occurred at server date/time: ".date('l jS \of F Y h:i:s A').".\n";
@@ -69,8 +69,7 @@ $logMessage .= "DEITY_NIGHTLY: Chats deleted (if a deletion value is returned): 
 // **************
 // Visual output:
 
-foreach ($affected_rows AS $loopKey => $loopRowResult)
-{
+foreach ($affected_rows AS $loopKey => $loopRowResult) {
     $logMessage .= "DEITY_NIGHTLY: Result type: $loopKey yeilded result: $loopRowResult\n";
 }
 

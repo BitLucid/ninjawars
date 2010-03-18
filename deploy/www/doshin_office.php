@@ -92,7 +92,7 @@ if (getBounty($username) > 0) {
 	echo "</form>\n";
 }
 
-$row = $sql->Query("SELECT uname, bounty, class, level, clan_id, clan_name FROM players LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id WHERE bounty > 0 AND confirmed = 1 and health > 0 ORDER BY bounty DESC");
+$row = $sql->Query("SELECT uname, bounty, class_name AS class, level, clan_id, clan_name FROM players JOIN class ON class_id = _class_id LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id WHERE bounty > 0 AND confirmed = 1 and health > 0 ORDER BY bounty DESC");
 
 $row = $sql->data;
 
@@ -136,8 +136,8 @@ if ($sql->rows) {
 		$clan        = urlencode($sql->data[4]); // clanID
 		$clan_l_name = htmlentities($sql->data[5]); // clan name
 
-		$class       = ($class == "" ? "(none)" : $class);
-		$clan_l_name = ($clan_l_name == "" ? '' : "<a href=\"clan.php?command=view&amp;clan_id=$clan\">$clan_l_name</a>");
+		$class       = $class;
+		$clan_l_name = (empty($clan_l_name) ? '' : "<a href=\"clan.php?command=view&amp;clan_id=$clan\">$clan_l_name</a>");
 
 		echo "<tr class='playerRow'>\n";
 		echo "  <td class='playerCell'>\n";

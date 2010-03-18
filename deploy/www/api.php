@@ -1,6 +1,6 @@
 <?php
 // TODO: Only allow for ajax requests.
-// TODO: Turn the DBAccess into an associative fetch instead of DB_BOTH type.
+// TODO: Turn the data fecthing into an associative fetch instead of DB_BOTH type.
 
 // Check login to allow for information.
 // Recent mails.
@@ -16,55 +16,80 @@ echo render_json($type, $jsoncallback);
 /**
  * Determine which function to call to get the json for.
 **/
-function render_json($type, $jsoncallback){
-    $valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index');
-    $res = null;
-    if($valid_type_map[$type]){
-        $res = $jsoncallback.'('.$valid_type_map[$type]().')';   
-    }
-    return $res;
-}
+function render_json($type, $jsoncallback) {
+	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index');
+	$res = null;
 
-function json_latest_message(){
-    $sql = new DBAccess();
-    $user_id = (int) get_user_id();
-    $messages = $sql->FetchAll("select message_id, message, date, send_to, send_from, unread, uname as sender from messages join players on player_id = send_from where send_to = '".sql($user_id)."' and send_from != '".sql($user_id)."' order by date desc limit 1");
-    // Skips message sent by self, i.e. clan send messages.
-    return '{"message":'.json_encode(reset($messages)).'}';
-}
-
-function json_latest_event(){
-    $sql = new DBAccess();
-    $user_id = (int) get_user_id();
-    $events = $sql->FetchAll("select event_id, message as event, date, send_to, send_from, unread, uname as sender from events join players on player_id = send_from where send_to = '".sql($user_id)."' order by date desc limit 1");
-    return '{"event":'.json_encode(reset($events)).'}';
-}
-
-function json_player(){
-    $player = get_player_info();
-    return '{"player":'.json_encode($player).'}';
-}
-
-function json_chats(){
-    $sql = new DBAccess();
-    $chats = $sql->FetchAll("select * from chat order by time desc");
-    return '{"chats":'.json_encode($chats).'}';
-}
-
-function json_index(){
-	$sql = new DBAccess();
-	$player = get_player_info();
-	$events = array();
-	$messages = array();
-	$user_id = $player['player_id'];
-	if($user_id){
-		$events = $sql->FetchData("select event_id, message as event, date, send_to, send_from, unread, uname as sender from events join players on player_id = send_from where send_to = '".sql($user_id)."' order by date desc limit 1");
-		//$chats = $sql->FetchAll("select * from chat order by time desc");
-		$messages = $sql->FetchData("select message_id, message, date, send_to, send_from, unread, uname as sender from messages join players on player_id = send_from where send_to = '".sql($user_id)."' and send_from != '".sql($user_id)."' order by date desc limit 1");
+	if ($valid_type_map[$type]) {
+		$res = $jsoncallback.'('.$valid_type_map[$type]().')';   
 	}
+
+	return $res;
+}
+
+function json_latest_message() {
+	DatabaseConnection::getInstance();
+	$user_id = (int) get_user_id();
+
+	$statement = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 ORDER BY date DESC LIMIT 1");
+	$statement->bindValue(':userID1', $user_id);
+	$statement->bindValue(':userID2', $user_id);
+	$statment->execute();
+
+	$messages = $statement->fetchAll();
+
+	// Skips message sent by self, i.e. clan send messages.
+	return '{"message":'.json_encode(reset($messages)).'}';
+}
+
+function json_latest_event() {
+	DatabaseConnection::getInstance();
+	$user_id = (int) get_user_id();
+
+	$statement = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID ORDER BY date DESC LIMIT 1");
+	$statement->bindValue(':userID', $user_id);
+	$statement->execute();
+
+	$events = $statement->FetchAll();
+
+	return '{"event":'.json_encode(reset($events)).'}';
+}
+
+function json_player() {
+	$player = get_player_info();
+	return '{"player":'.json_encode($player).'}';
+}
+
+function json_chats() {
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->query("SELECT * FROM chat ORDER BY time DESC");
+	$chats = $statement->fetchAll();
+
+	return '{"chats":'.json_encode($chats).'}';
+}
+
+function json_index() {
+	DatabaseConnection::getInstance();
+	$player   = get_player_info();
+	$events   = array();
+	$messages = array();
+	$user_id  = $player['player_id'];
+
+	if ($user_id) {
+		$statement = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID ORDER BY date DESC LIMIT 1");
+		$statement->bindValue(':userID', $user_id);
+
+		$statement->execute();
+		$events = $statement->fetchAll();
+
+		$statement = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 ORDER BY date DESC LIMIT 1");
+		$statement->bindValue(':userID1', $user_id);
+		$statement->bindValue(':userID2', $user_id);
+
+		$statement->execute();
+		$messages = $statement->fetchAll();
+	}
+
 	return '{"player":'.json_encode($player).',"message":'.json_encode(reset($messages)).',"event":'.json_encode(reset($events)).'}';
 }
-
-
-
 ?>

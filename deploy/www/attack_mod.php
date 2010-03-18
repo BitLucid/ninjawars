@@ -125,6 +125,10 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 	$stealthAttackDamage      = $attacker_str;
 	$level_check              = $attacker_level - $target_level;
 
+	$loot   = 0;
+	$victor = null;
+	$loser  = null;
+
 	// *** ATTACKING + STEALTHED SECTION  ***
 	if (!$duel && $attacker_status['Stealth']) { // *** Not dueling, and attacking from stealth ***
 		$attacking_player->subtractStatus(STEALTH);
@@ -134,14 +138,16 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 		echo "<div>Your attack has revealed you from the shadows! You are no longer stealthed.</div>\n";
 
 		if (!subtractHealth($target, $stealthAttackDamage)) { // *** if Stealth attack of whatever damage kills target. ***
+			$victor = $attacker;
+			$loser  = $victim;
+
 			$gold_mod     = .1;
 			$loot         = round($gold_mod * getGold($target));
+
 			$target_msg   = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold on $today!";
 			$attacker_msg = "You have killed $target in combat and taken $loot gold on $today.";
 
 			$target_player->subtractStatus(STEALTH+POISON+FROZEN+CLASS_STATE);
-			addGold($attacker, $loot);
-			subtractGold($target, $loot);
 			sendMessage("A Stealthed Ninja", $target, $target_msg);
 			sendMessage($target, $attacker, $attacker_msg);
 			runBountyExchange($attacker, $target); // *** Determines the bounty for normal attacking. ***
@@ -246,7 +252,11 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 		$attackerHealthRemaining = subtractHealth($attacker, $total_target_damage);
 
 		if ($defenderHealthRemaining < 1) { //***  ATTACKER KILLS DEFENDER! ***
-			$simultaneousKill = ($attackerHealthRemaining < 1); // *** If both died at the same time. ***
+			if ($simultaneousKill = ($attackerHealthRemaining < 1)) { // *** If both died at the same time. ***
+			} else {
+				$victor = $attacker;
+				$loser  = $victim;
+			}
 
 			$killpoints = 1; // *** Changes killpoints from zero to one. ***
 
@@ -262,8 +272,6 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 
 			if (!$simultaneousKill)	{
 				$loot = round($gold_mod * getGold($target));
-				addGold($attacker, $loot);
-				subtractGold($target, $loot);
 			}
 
 			$target_msg = "DEATH: You have been killed by $attacker in combat and lost $loot gold on $today!";
@@ -306,8 +314,6 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 
 			if (!$simultaneousKill) {
 				$loot = round($gold_mod * getGold($attacker));//Loot for defender if he lives.
-				addGold($target, $loot);
-				subtractGold($attacker, $loot);
 			}
 
 			$target_msg = "<div class='ninja-notice'>
@@ -332,8 +338,9 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 		// *** END MAIN ATTACK AND DUELING SECTION ***
 	}
 
-	if (!$duel && getHealth($attacker) > 0 && getHealth($target) > 0) {	// *** After any partial attack. ***
-		echo "<div><a href=\"attack_mod.php?attacked=1&amp;target=$target\">Attack Again?</a></div>\n";
+	if ($loot) {
+		addGold($victor, $loot);
+		subtractGold($loser, $loot);
 	}
 }
 
@@ -348,6 +355,10 @@ $ending_turns = subtractTurns($attacker, $turns_to_take);
 echo "<hr>\n";
 
 if (isset($target)) {
+	if ($AttackLegal && getHealth($attacker) > 0 && getHealth($target) > 0) {	// *** After any partial attack. ***
+		echo "<div><a href=\"attack_mod.php?attacked=1&amp;target=$target\">Attack Again?</a></div>\n";
+	}
+
 	echo "<div>Return to <a href=\"player.php?player=".urlencode($target)."\">".out($target)."'s Info</a></div>Or \n";
 }
 

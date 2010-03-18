@@ -77,7 +77,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 	echo "You do not have the requested skill.\n";
 } else {
 	// Initial attack conditions are alright.
-	echo "Preparing to use skill...<br>\n";
+    echo "<div class='usage-mod-result'>";
 	$result = "";
 
 	if ($command == "Sight") {
@@ -89,7 +89,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			//$username_status = subtractStatus($target, STEALTH);
 			// Sight will no longer break stealth.
 
-			$sql->Query("SELECT uname, class, health, strength, gold, kills, turns, level FROM players WHERE uname='$target'");
+			$sql->Query("SELECT uname, class_name AS class, health, strength, gold, kills, turns, level FROM players JOIN class ON _class_id = class_id WHERE uname='$target'");
 
 			$data = $sql->FetchAssociative();
 
@@ -188,7 +188,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 			$victim_alive = subtractHealth($target,$target_damage);
 			echo "$target has beeen poisoned!<br>\n";
-			echo "$target's HP reduced by $target_damage!<br>\n";
+			echo "$target has taken $target_damage damage!<br>\n";
 
 			$msg = "You have been poisoned by $attacker_id at $today";
 			sendMessage($attacker_id, $target, $msg);
@@ -200,7 +200,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		if ($starting_turns >= $turn_cost) {
 			$target_damage = (5*(ceil($level / 3))+rand(1, getStrength($username)));
 
-			echo "$target's HP reduced by $target_damage!<br>\n";
+			echo "$target has taken $target_damage damage!<br>\n";
 
 			if ($victim_alive = subtractHealth($target, $target_damage)) {
 				$attacker_id  = $username;
@@ -311,7 +311,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 $ending_turns = changeTurns($username, $turns_to_take);
 ?>
-
+  </div>
   <div class="skillReload">
     <a href="skills_mod.php?command=<?php echo urlencode($command); ?>&amp;target=<?php echo $target; ?>">Use <?php echo $command; ?> again.</a>
   </div>

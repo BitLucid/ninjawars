@@ -442,11 +442,14 @@ table.playerTable .Black, .player-info .Black {
     border:1px solid gray;
 }
 
-.profile-message{
+.player-profile {
     margin: .1em auto .1em;
     width: 80%;
-    max-height: 6em;
+}
+
+.profile-message {
     overflow:auto;
+    max-height: 8em;
 }
 
 .your-stats #profile-edit{
@@ -1571,4 +1574,14 @@ select option #white-class-select{
 select option #blue-class-select{
 	color:blue;
 	font-weight:bold;
+}
+
+.usage-mod-result {
+	margin-top: 10px;
+	width: 75%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	border: 1px solid gray;
+	padding: 10px;
 }

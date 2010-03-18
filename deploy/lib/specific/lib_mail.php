@@ -1,25 +1,24 @@
 <?php
-
-
 /**
  * Delete an array of ids or all mail for a certain user.
 **/
-function delete_mail($ids, $all=false){
-    $sql = new DBAccess();
-    $deleted = 0;
-    $username = get_username();
-    if($all){ // Delete all a user's mail.
-        $del = "DELETE from mail where send_to='".$username."'";
-    } else { // Delete an id list.
-        $del = "DELETE from mail where send_to='".$username."'
-            AND id in ('".implode("', '", $ids)."')";
-    }
-    $sql->Delete($del);
-    $deleted = $sql->a_rows;
-    return $deleted;
+function delete_mail($ids, $all=false) {
+	DatabaseConnection::getInstance();
+
+	$deleted = 0;
+	$user_d = get_user_id();
+
+	if ($all) { // Delete all a user's mail.
+		$del = "DELETE FROM message WHERE send_to = :user";
+	} else { // Delete an id list.
+		$del = "DELETE FROM message WHERE send_to = :user AND id IN ('".implode("', '", $ids)."')";
+	}
+
+	$statement = DatabaseConnection::$pdo->preapre($del);
+	$statement->bindValue(':user', $user_id);
+
+	$statement->execute();
+
+	return $statement->rowCount();
 }
-
-
-
-
 ?>

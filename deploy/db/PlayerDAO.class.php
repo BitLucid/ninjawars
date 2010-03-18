@@ -24,7 +24,15 @@ class PlayerDAO extends DataAccessObject {
 		}
 
 		$this->_id_field = 'player_id';
-		$this->_table = 'players';
+		$this->_table = 'players JOIN class ON class_id = _class_id';
+	}
+
+	public function get($id) {
+		$vo = parent::get($id);
+
+		$vo->class = $vo->class_name;
+
+		return $vo;
 	}
 }
 ?>

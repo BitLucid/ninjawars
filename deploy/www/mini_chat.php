@@ -4,14 +4,13 @@ require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper a
 init(); // Initialize the environment.
 
 $default_limit = 20;
-$chatlength = in('chatlength', $default_limit, 'toInt');
-$message = in('message', null, 'forChat'); // Essentially no filtering.
-$command = in('command');
-$sentMessage = in('message');
-$chat_submit = in('chat_submit');
-$sent = false;
-
-$user_id = get_user_id();
+$chatlength    = in('chatlength', $default_limit, 'toInt');
+$message       = in('message', null, 'forChat'); // Essentially no filtering.
+$command       = in('command');
+$sentMessage   = in('message');
+$chat_submit   = in('chat_submit');
+$sent          = false;
+$user_id       = get_user_id();
 
 // Take in a chat and record it to the database.
 if ($user_id) {
@@ -20,13 +19,15 @@ if ($user_id) {
 	}
 }
 
-$sql = new DBAccess();
-$members = $sql->QueryItem(
-        "select count(*) from ppl_online where member = true AND activity > (now() - CAST('30 minutes' AS interval))");
-$members = either($members, '0');
-$membersTotal = $sql->QueryItem("select count(*) from ppl_online where member = true");
-$membersTotal = either($membersTotal, '0');
+DatabaseConnection::getInstance();
+$statement = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('30 minutes' AS interval))");
 
+$members = $statement->fetchColumn();
+$members = either($members, '0');
+
+$statement = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true");
+$membersTotal = $statement->fetchColumn();
+$membersTotal = either($membersTotal, '0');
 
 // Output section.
 
@@ -40,7 +41,4 @@ echo render_page('mini_chat.tpl', 'Mini Chat', get_certain_vars(get_defined_vars
         'private'=>false,
         'quickstat'=>null,
     ));
-
-
-
 ?>

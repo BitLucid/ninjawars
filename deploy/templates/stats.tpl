@@ -66,7 +66,7 @@
 <div id='player-profile-section'>
 Profile Preview:
     <div id='player-profile'>
-        &nbsp;{$profile_display}&nbsp;
+        &nbsp;{$profile_display|nl2br}&nbsp;
     </div>
 </div>
 

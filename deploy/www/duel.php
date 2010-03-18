@@ -8,7 +8,7 @@ $page_title = "Duel Log";
 
 include SERVER_ROOT."interface/header.php";
 
-$stats          = membership_and_combat_stats($sql);
+$stats          = membership_and_combat_stats();
 $vicious_killer = $stats['vicious_killer'];
 ?>
 <h1>Today's Duels</h1>

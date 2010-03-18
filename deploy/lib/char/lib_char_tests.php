@@ -1,11 +1,9 @@
 <?php
-
-
-function test_player_obj(){
+function test_player_obj() {
 	// in: player_id, out: valid db save
-	$player_id_sel = "select player_id from players where uname = 'glassbox'";
-	$db = new DBAccess();
-	$player_id = $db->QueryItem($player_id_sel);
+	DatabaseConnection::getInstance();
+	$player_id_sel = DatabaseConnection::$pdo->query("SELECT player_id FROM players WHERE uname = 'glassbox'");
+	$player_id = $player_id_sel->fetchColumn();
 	$player = new Player($player_id);
 	assert($player->vo->player_id == $player_id);
 	$orig_clan = $player->vo->clan_long_name;
@@ -15,7 +13,6 @@ function test_player_obj(){
 	$changed_clan = $changed_player->vo->clan_long_name;
 	$changed_player->vo->clan_long_name = $orig_clan;
 	assert($changed_clan == 'Testingz');
-
 
 	// in: player uname, out: valid db save
 	$player = new Player('glassbox');
@@ -27,7 +24,6 @@ function test_player_obj(){
 	$changed_clan = $changed_player->vo->clan_long_name;
 	$changed_player->vo->clan_long_name = $orig_clan;
 	assert($changed_clan == 'Testingz');
-
 
 	// in: player status check, out: no errors
 	$player = new Player('glassbox');
@@ -50,7 +46,5 @@ function test_player_obj(){
 	$arr = $player->as_array();
 	assert(count($arr)>0);
 	var_dump($arr);
-
 }
-
 ?>

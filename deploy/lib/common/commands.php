@@ -6,7 +6,7 @@
 
 function setClass($who, $new_class) {
 	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET class = :class WHERE uname = :user");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET _class_id = (select class_id FROM class WHERE class_name = :class) WHERE uname = :user");
 	$statement->bindValue(':class', $new_class);
 	$statement->bindValue(':user', $who);
 	$statement->execute();
@@ -16,7 +16,7 @@ function setClass($who, $new_class) {
 
 function getClass($who) {
 	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT class FROM players WHERE uname = :user");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT class_name FROM players JOIN class ON class_id = _class_id WHERE uname = :user");
 	$statement->bindValue(':user', $who);
 	$statement->execute();
 
@@ -436,9 +436,8 @@ function setStatus($who,$what) {
 	//}
 
 
-	global $sql;
-	if (!$sql) { $sql = new DBAccess(); }
-	$sql->Update("UPDATE players SET status = $what WHERE uname = '$who'");
+	DatabaseConnection::getInstance();
+	DatabaseConnection::$pdo->query("UPDATE players SET status = $what WHERE uname = '$who'");
 	if ($who == get_username())   {
 	    $_SESSION['status'] = $what;
 	    if ($what == 0)	{
@@ -457,13 +456,12 @@ function setStatus($who,$what) {
 */
 
 function getStatus($who) {
-	global $sql, $status_array;
+	global $status_array;
 
-	if (!$sql) {
-		$sql = new DBAccess();
-	}
+	DatabaseConnection::getInstance();
 
-	$status = $sql->QueryItem("SELECT status FROM players WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->query("SELECT status FROM players WHERE uname = '$who'");
+	$status = $statement->fetchColumn();
 
 	if ($who == SESSION::get('username')) {
   		$_SESSION['status'] = $status;
@@ -480,16 +478,17 @@ function getStatus($who) {
 }
 
 function addStatus($who, $what) {   //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
-	global $sql;
+	DatabaseConnection::getInstance();
 
-	$status = $sql->QueryItem("SELECT status FROM players WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->query("SELECT status FROM players WHERE uname = '$who'");
+	$status = $statement->fetchColumn();
 
 	if ($what < 0) {
 	    return subtractStatus($who,abs($what));
 	}
 
 	if (!($status & $what)) {
-	    $sql->Update("UPDATE players SET status = status+$what WHERE uname = '$who'");
+	    DatabaseConnection::$pdo->query("UPDATE players SET status = status+$what WHERE uname = '$who'");
 
 	    if ($who == get_username()) {
 			$_SESSION['status']+=$what;
@@ -500,12 +499,13 @@ function addStatus($who, $what) {   //Takes in the Status in the ALL_CAPS_WORD f
 }
 
 function subtractStatus($who, $what) {     //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
-	global $sql;
+	DatabaseConnection::getInstance();
 
-	$status = $sql->QueryItem("SELECT status FROM players WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->query("SELECT status FROM players WHERE uname = '$who'");
+	$status = $statement->fetchColumn();
 
 	if ($status&$what) {
-		$sql->Update("UPDATE players SET status = status-($status&$what) WHERE uname = '$who'");
+		DatabaseConnection::$pdo->query("UPDATE players SET status = status-($status&$what) WHERE uname = '$who'");
 
 		if ($who == get_username()) {
 		  $_SESSION['status']-=($status&$what);

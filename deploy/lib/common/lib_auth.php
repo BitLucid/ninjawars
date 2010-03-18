@@ -326,9 +326,10 @@ function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure
 /*
  * Stats on recent activity and other aggregate counts/information.
  */
-function membership_and_combat_stats($sql, $update_past_stats=false) {
-	$todaysViciousKiller = $sql->QueryItem(
-		'SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) group by uname, killpoints order by killpoints DESC LIMIT 1'); 
+function membership_and_combat_stats($update_past_stats=false) {
+	DatabaseConnection::getInstance();
+	$vk = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) group by uname, killpoints order by killpoints DESC LIMIT 1'); 
+	$todaysViciousKiller = $vk->fetchColumn();
 	// *** Gets uname with the most kills today.
 	/* $todaysViciousKiller = $sql->QueryItem('SELECT uname FROM levelling_log
 	WHERE killsdate = current_date group by uname order by sum(killpoints)
@@ -337,14 +338,16 @@ function membership_and_combat_stats($sql, $update_past_stats=false) {
 	if ($todaysViciousKiller == '') {
 		$todaysViciousKiller = 'None';
 	} elseif ($update_past_stats) {
-		$sql->Update('UPDATE past_stats SET stat_result = \''
+		DatabaseConnection::$pdo->query('UPDATE past_stats SET stat_result = \''
 			.$todaysViciousKiller
 			.'\' WHERE id = 4'); // 4 is the ID of the vicious killer stat.
 	}
 
 	$stats['vicious_killer'] = $todaysViciousKiller;
-	$stats['player_count'] = $sql->QueryItem("Select count(player_id) FROM players WHERE confirmed = 1");
-	$stats['players_online'] = $sql->QueryItem("select count(*) from ppl_online where member = true");
+	$pc = DatabaseConnection::$pdo->query("Select count(player_id) FROM players WHERE confirmed = 1");
+	$stats['player_count'] = $pc->fetchColumn();
+	$po = DatabaseConnection::$pdo->query("select count(*) from ppl_online where member = true");
+	$stats['players_online'] = $po->fetchColumn();
 
 	return $stats;
 }

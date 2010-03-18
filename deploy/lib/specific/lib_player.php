@@ -258,9 +258,12 @@ function render_clan_members($clan_id = 0, $limit = 30) {
 function display_player_profile($player_info) {
 	if ($player_info['messages']) {
 ?>
-	<div class='player-profile'>
-		<p class='centered profile-message'><span class='subtitle'>Message:</span> <?php echo nl2br(out($player_info['messages'])); ?></p>
-	</div>
+    <div class='player-profile'>
+      <div class='subtitle'>Message:</div>
+      <p class='centered profile-message'>
+<?php echo nl2br(out($player_info['messages'])); ?>
+      </p>
+    </div>
 <?php
 	}
 }
@@ -501,10 +504,10 @@ function create_player($send_name, $params=array()) {
 	// Create the initial player row.
 	$playerCreationQuery= "INSERT INTO players
 		 (uname, pname, health, strength, gold, messages, kills, turns, confirm, confirmed,
-		  email, class, level,  status, member, days, ip, bounty, created_date)
+		  email, _class_id, level,  status, member, days, ip, bounty, created_date)
 		 VALUES
 		 ('$send_name','$send_pass','150','5','100','','0','180','$confirm','$preconfirm',
-		 '$send_email','$send_class','1','1','0','0','','0', now())";
+		 '$send_email',(select class_id FROM class WHERE class_name = '$send_class'),'1','1','0','0','','0', now())";
 	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 	$sql->Insert($playerCreationQuery);
 

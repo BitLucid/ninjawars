@@ -30,28 +30,27 @@ function level_category($level){
 			$res= 'Shadow Master';
 			break;
 	}
+
 	return array('display' => $res,
 		'css' => strtolower(str_replace(" ", "-", $res)));
 }
 
 // Standard location for the formula to determine max health.
-function determine_max_health($level){
+function determine_max_health($level) {
     return max_health_by_level($level);
 }
 
-
 /** Calculate a max health by a level, will be used in dojo.php and calculating experience.**/
-function max_health_by_level($level){
-    // TODO: Needs to be aware of white health benefit.
-    $health_per_level = 25;
-return round($health_per_level*$level);
+function max_health_by_level($level) {
+	// TODO: Needs to be aware of white health benefit.
+	$health_per_level = 25;
+	return 150 + round($health_per_level*($level-1));
 }
 
 /** Calculates the experience needed for a certain level, to reach the next. **/
-function experience_needed_by_level($level){
-    return 1000; // Arbitrary and adjustable.
+function experience_needed_by_level($level) {
+	return 1000; // Arbitrary and adjustable.
 }
-
 
 /**
   * Takes in damage in/out, enemy and attacker level, uses that to calculate health percentages for both.
@@ -188,18 +187,9 @@ function calculate_experience($damage, $injury, $enemy_level, $attacker_level, $
   * can contain: 'experience_today'=>(int)
   * Dependencies: max_health_by_level function.
 **/
-function experience_breakdown(){
+function experience_breakdown() {
     echo calculate_experience(100, 100, 1, 1, $modifiers=array('killed'=>true, 'experience_today'=>0));
     echo ' Different situation: ';
     echo calculate_experience(500, 100, 1, 1, $modifiers=array('killed'=>true, 'experience_today'=>0));
 }
-
-// experience_breakdown();
-
-
-
-
-
-
-
 ?>

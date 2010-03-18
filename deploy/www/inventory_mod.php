@@ -175,7 +175,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			echo "You do not have".($item ? " $article ".$item->getName() : ' that item').".\n";
 		} else {
 			/**** MAIN SUCCESSFUL USE ****/
-			echo "Preparing to use item - <br>\n";
+			echo "<div class='usage-mod-result'>";
 
 			if ($give == "on" || $give == "Give") {
 				echo render_give_item($username, $target, $item->getName());
@@ -221,12 +221,12 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				} else if ($item === $dimMak) {
 					echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 				} else if ($turns_change <= 0) {
-					echo "$target's turns reduced by ".(0-$turns_change).".<br>\n";
+					echo "$target has lost ".(0-$turns_change)." turns!<br>\n";
 					if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
 						echo "$target no longer has any turns.<br>\n";
 					}
 				} else if ($turns_change > 0) {
-					echo "$target's turns increased by $turns_change.<br>\n";
+					echo "$target has gained $turns_change turns!<br>\n";
 				}
 
 				if (!$victim_alive) { // Target was killed by the item.
@@ -260,6 +260,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					sendMessage($attacker_id, $target, $target_email_msg);
 				}
 			}
+
+			echo "</div>";
 
 			$turns_to_take = 1;
 

@@ -88,7 +88,6 @@ class AttackLegal
 	 * @return boolean
 	**/
 	public function check() {
-		$sql = new DBAccess();
 		$attacker = $this->attacker;
 		$target = $this->target;
 
@@ -115,13 +114,19 @@ class AttackLegal
 		$second_interval_limiter_on_attacks = '.25'; // Originally .2
 
 		$sel_last_started_attack = "SELECT player_id FROM players
-			WHERE player_id = '".intval($this->attacker->player_id)."'
+			WHERE player_id = :user
 			AND ((now() - interval '".$second_interval_limiter_on_attacks." second') >= last_started_attack) LIMIT 1";
 		// *** Returns a player id if the enough time has passed, or else or false/null. ***
-		$attack_later_than_limit = $sql->QueryItem($sel_last_started_attack);
+
+		DatabaseConnection::getInstance();
+		$statement = DatabaseConnection::$pdo->prepare($sel_last_started_attack);
+		$statement->bindValue(':user', intval($this->attacker->player_id));
+		$statement->execute();
+
+		$attack_later_than_limit = $statement->fetchColumn();
 
 		if ($attack_later_than_limit) { // *** If not too soon, update the attack limit. ***
-			update_last_attack_time($attacker->vo->player_id, $sql);
+			update_last_attack_time($attacker->vo->player_id);
 			// updates the timestamp of the last_attacked column to slow excessive attacks.
 		}
 
