@@ -155,7 +155,7 @@ function revive_players($params=array()) {
 						THEN health
 						ELSE
 							(
-							CASE WHEN class='White'
+							CASE WHEN _class_id = 4
 							THEN (150+(level*3))
 							ELSE (100+(level*3)) END
 							)
