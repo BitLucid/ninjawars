@@ -30,18 +30,45 @@ $starting_turns = getTurns($username);
 $username_turns = $starting_turns;
 $username_level = getLevel($username);
 $user_id        = get_user_id();
-$item_count     = $sql->QueryItem("SELECT sum(amount) FROM inventory WHERE owner = $user_id AND lower(item) = lower('$item')");
 $ending_turns   = null;
+
+DatabaseConnection::getInstance();
+$statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) FROM inventory WHERE owner = :owner AND lower(item) = :item");
+$statement->bindValue(':owner', $user_id);
+$statement->bindValue(':item', strtolower($item));
+$statement->execute();
+
+$item_count     = $statement->fetchColumn();
 
 if ($selfTarget) {
 	$target = $username;
 }
 
-$targets_turns = ($target ? getTurns($target) : false);
-$targets_level = ($target ? getLevel($target) : NULL);
-$target_hp     = $sql->QueryItem("SELECT health FROM players WHERE uname = '$target'");
-$target_status = getStatus($target);
-$target_ip     = $sql->QueryItem("SELECT ip FROM players WHERE uname = '$target'");
+if ($target) {
+	$statement = DatabaseConnection::$pdo->prepare('SELECT health, ip, turns, level FROM players WHERE uname = :player');
+	$statement->bindValue(':player', $target);
+	$statement->execute();
+
+	if ($data = $statement->fetch()) {
+		$targets_turns = $data['turns'];
+		$targets_level = $data['level'];
+		$target_hp     = $data['health'];
+		$target_ip     = $data['ip'];
+		$target_status = getStatus($target);
+	} else {
+		$targets_turns =
+		$targets_level =
+		$target_hp     =
+		$target_ip     =
+		$target_status = null;
+	}
+} else {
+	$targets_turns =
+	$targets_level =
+	$target_hp     =
+	$target_ip     =
+	$target_status = null;
+}
 
 $gold_mod		= NULL;
 $result			= NULL;
@@ -53,8 +80,8 @@ $near_level_power_increase = nearLevelPowerIncrease($level_difference, $max_powe
 
 $turns_to_take = null;   // *** Take at least one turn away even on failure.
 
-if ($give == "on" || $give == "Give") {
-	$turn_cost   = 0;
+if (in_array($give, array("on", "Give")) {
+	$turn_cost  = 0;
 	$using_item = false;
 }
 
@@ -169,8 +196,6 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 	if (is_string($item) || $target == "")  {
 		echo "You didn't choose an item/victim.\n";
 	} else {
-		$row = $sql->data;
-
 		if ($item_count < 1) {
 			echo "You do not have".($item ? " $article ".$item->getName() : ' that item').".\n";
 		} else {
@@ -269,7 +294,10 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 			echo "<br>Removing {$item->getName()} from your inventory.<br>\n";
 
-			$sql->Update("UPDATE inventory SET amount = amount-1 WHERE owner = $user_id AND item ='{$item->getName()}' AND amount > 0");
+			$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount-1 WHERE owner = :owner AND item = :item AND amount > 0");
+			$statement->bindValue(':owner', $user_id);
+			$statement->bindValue(':item', $item->getName());
+			$statement->execute();
 			// *** Decreases the item amount by 1.
 
 			// Unstealth

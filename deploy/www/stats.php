@@ -51,8 +51,11 @@ if ($deleteAccount) {
 } else if ($changeprofile == 1) {
     // Limit the profile length.
 	if ($newprofile != "") {
-		$sql->Update("UPDATE players SET messages = '".sql($newprofile)."' WHERE uname = '".sql($username)."'");
-		$affected_rows = $sql->a_rows;
+		DabaseConnection:getInstance();
+		$statement = DatabaseConnection::$pdo-prepare("UPDATE players SET messages = :profile WHERE uname = :player");
+		$statement->bindValue(':profile', $newprofile);
+		$statement->bindValue(':player', $username);
+		$statement->execute();	// todo - test for success
 		$profile_changed = true;
 	} else {
 		$error = "Can not enter a blank profile.";

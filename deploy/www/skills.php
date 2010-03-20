@@ -19,7 +19,6 @@ $level = getLevel($username);
 $class = getClass($username);
 $status_array = getStatus($username);
 
-$row = $sql->data;
 $status_output_list = render_status_section();
 $no_skills = true;
 $stealth = $skillsListObj->hasSkill('Stealth');
