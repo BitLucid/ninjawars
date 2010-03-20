@@ -78,7 +78,7 @@ function render_skills($target, $skillListObj, $skillsListObj) {
 **/
 function render_avatar($player, $size=null) {
 	// If the avatar_type is 0, return '';
-    if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email){
+    if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email) {
         return '';
     } else {	// Otherwise, user the player info for creating a gravatar.
 		$email       = $player->vo->email;
@@ -89,18 +89,18 @@ function render_avatar($player, $size=null) {
 
 // Use the email information to return the gravatar image url.
 function render_avatar_from_email($email, $avatar_type=null, $size=null){
-		$def         = 'monsterid'; // Default image or image class.
-		// other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
-		$email       = $email;
-		$avatar_type = $avatar_type;
-		$base        = "http://www.gravatar.com/avatar/";
-		$hash        = md5(trim(strtolower($email)));
-		$no_gravatar = "d=".urlencode($def);
-		$size        = either($size, 80);
-		$rating      = "r=x";
-		$res         = $base.$hash."?".implode("&amp;", array($no_gravatar, $size, $rating));
+	$def         = 'monsterid'; // Default image or image class.
+	// other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
+	$email       = $email;
+	$avatar_type = $avatar_type;
+	$base        = "http://www.gravatar.com/avatar/";
+	$hash        = md5(trim(strtolower($email)));
+	$no_gravatar = "d=".urlencode($def);
+	$size        = either($size, 80);
+	$rating      = "r=x";
+	$res         = $base.$hash."?".implode("&amp;", array($no_gravatar, $size, $rating));
 
-		return $res;    
+	return $res;    
 }
 
 // Render an avatar section just from the email address.
@@ -157,11 +157,13 @@ function render_level_and_category($level) {
 // Player activity and events information.
 function render_player_activity($player_info) {
 	$days = "Today";
-	if($player_info['days']){
+
+	if ($player_info['days']) {
 	    $days = $player_info['days']." days ago";
 	}
+
 	$bounty = $player_info['bounty'];
-	$bounty_section = $bounty? " - <span class='player-bounty'>$bounty bounty</span>" : '';
+	$bounty_section = ($bounty ? " - <span class='player-bounty'>$bounty bounty</span>" : '');
 	$res = <<<HEREDOC
 		<div class='player-stats centered'>
 			<!-- Will display as floats horizontally -->
@@ -218,9 +220,11 @@ function render_clan_members($clan_id = 0, $limit = 30) {
 	ob_start();
 
 	if ($clan_id) {
-		$sel = "SELECT uname, player_id, health FROM clan_player JOIN players ON player_id = _player_id AND _clan_id = $clan_id AND confirmed = 1 ORDER BY health DESC, level DESC LIMIT $limit";
-		$sql = new DBAccess();
-		$ninjas = $sql->QueryAssoc($sel);
+		$sel = "SELECT uname, player_id, health FROM clan_player JOIN players ON player_id = _player_id AND _clan_id = :clanID AND confirmed = 1 ORDER BY health DESC, level DESC LIMIT $limit";
+		DatabaseConnection::getInstance();
+		$statement = DatabaseConnection::$pdo->prepare($sel);
+		$statement->bindValue(':clanID', $clan_id);
+		$statement->execute();
 ?>
         <div class='clan-members'>
             <h3 class='clan-members-header'>Clan members</h3>
@@ -229,7 +233,7 @@ function render_clan_members($clan_id = 0, $limit = 30) {
 			$display_ul = true;
 			echo "<ul>";
 
-			foreach ($ninjas as $ninja) {
+			while ($ninja = $statement->fetch()) {
 				$added_class = '';
 
 				if ($ninja['health'] < 1) {
@@ -269,8 +273,14 @@ function display_player_profile($player_info) {
 }
 
 
-function render_ranking_link($player_info, $linkbackpage, $sql) {
-	$rank_spot = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".sql($player_info['uname'])."'");
+function render_ranking_link($player_info, $linkbackpage) {
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE uname = :player");
+	$statement->prepare(':player', $player_info['uname']);
+	$statement->execute();
+
+	$rank_spot = $statement->fetchColumn();
+
 	$res = "    <div class='player-ranking-linkback'>
               <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=dead&amp;page=$linkbackpage'>&lsaquo;Rank $rank_spot</a>
         </div>";
@@ -288,14 +298,18 @@ function render_list_link(){
 /**
  * Create the item options for the inventory dropdown.
 **/
-function render_inventory_options($username, $sql) {
+function render_inventory_options($username) {
+	DatabaseConnection::getInstance();
+
 	$user_id = get_user_id($username);
 	$res = '';
 	$selected = "selected='selected'";// Mark first option as selected.
-	$loop_items = $sql->QueryAssoc(
+	$loop_items = DatabaseConnection::$pdo->prepare(
         "SELECT owner, item, item_id, amount
-        FROM inventory WHERE owner = $user_id
+        FROM inventory WHERE owner = :owner
         AND amount > 0 ORDER BY item");
+	$loop_items->bindValue(':owner', $user_id);
+	$loop_items->execute();
 
 	if (empty($loop_items)) {
 		$res = "          <option value=\"\" selected=\"selected\">No Items</option>\n";
@@ -303,7 +317,7 @@ function render_inventory_options($username, $sql) {
 		// Set shuriken at highest precedence.
 		$items_indexed = array();
 
-		foreach ($loop_items as $litem) {
+		while ($litem = $loop_items->fetch()) {
 			$items_indexed[$litem['item']] = $litem; // indexed by item name.
 		}
 
@@ -315,7 +329,7 @@ function render_inventory_options($username, $sql) {
 			$items_indexed = array_reverse($items_indexed);
 		}
 
-		foreach($items_indexed AS $loopItem) {
+		foreach ($items_indexed AS $loopItem) {
 			$res .= "      <option $selected value='{$loopItem['item']}'>{$loopItem['amount']} {$loopItem['item']}</option>\n";
 			$selected = '';
 		}
@@ -327,14 +341,14 @@ function render_inventory_options($username, $sql) {
 /**
  * Display the full form for item use/dropdowns/give/
 **/
-function render_item_use_on_another($target, $sql) {
+function render_item_use_on_another($target) {
 	$username = get_username();
 	$res = "<form id=\"inventory_form\" action=\"inventory_mod.php\" method=\"post\" name=\"inventory_form\">\n
     <input id=\"target\" type=\"hidden\" name=\"target\" value=\"$target\">
     <input type=\"submit\" value=\"Use\" class=\"formButton\">\n
     <select id=\"item\" name=\"item\">\n";
 
-	$res .= render_inventory_options($username, $sql);
+	$res .= render_inventory_options($username);
 	$res .= "</select>";
 
 	$target_id   = get_user_id($target);
@@ -409,11 +423,14 @@ function render_communication($target) {
 }
 
 function get_rank($username) {
-	$sql = new DBAccess();
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE uname = :player");
+	$statement->bindValue(':player', $username);
+	$statement->execute();
 
-	$rank = $sql->QueryItem("SELECT rank_id FROM rankings WHERE uname = '".$username."'");
-	$rank = ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
-	return $rank;
+	$rank = $statement->fetchColumn();
+
+	return ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
 }
 
 // Gives the blacklisted emails, should eventually be from a table.
@@ -449,22 +466,26 @@ function preconfirm_some_emails($email) {
 }
 
 function render_class_select($current) {
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->query('SELECT class_id, class_name, class_note FROM class WHERE class_active');
+
     ob_start();
 ?>
 	    <select id="send_class" name="send_class">
 	      <option value="">Pick Ninja Color</option>
-	    <option name='send_class' value="Red" type='radio' id='red-class-select' <?php if($current=='Red') { echo 'selected="selected"'; } ?>>
-	        Red - Strength
+<?php
+	while ($classData = $statement->fetch())
+	{
+		$className = htmlentities($classData['class_name']);
+		$classNote = htmlentities($classData['class_note']);
+		$elementID = strtolower($className).'-class-select';
+?>
+	    <option name='send_class' value="<?php echo $className;?>" id='<?php echo $elementID;?>' <?php if($current == $className) { echo 'selected="selected"'; } ?>>
+          <?php echo $className, ' - ', $classNote;?>
 	    </option>
-	    <option name='send_class' value="Blue" type='radio' id='blue-class-select' <?php if($current=='Blue') { echo 'selected="selected"'; } ?>>
-	        Blue - Speed
-	    </option>
-	    <option name='send_class' value="White" type='radio' id='white-class-select' <?php if($current=='White') { echo 'selected="selected"'; } ?>>
-	        White - Healing
-	    </option>
-	    <option name='send_class' value="Black" type='radio' id='black-class-select' <?php if($current=='Black') { echo 'selected="selected"'; } ?>>
-	        Black - Poison
-	    </option>
+<?php
+	}
+?>
 	  </select>
 <?php
     $res = ob_get_contents();
@@ -488,7 +509,7 @@ function display_signup_form($enteredName, $enteredEmail, $enteredClass, $entere
 
 
 function create_player($send_name, $params=array()) {
-    $sql = new DBAccess();
+	DatabaseConnection::getInstance();
 
     $send_email  = $params['send_email'];
     $send_pass   = $params['send_pass'];
@@ -506,10 +527,17 @@ function create_player($send_name, $params=array()) {
 		 (uname, pname, health, strength, gold, messages, kills, turns, confirm, confirmed,
 		  email, _class_id, level,  status, member, days, ip, bounty, created_date)
 		 VALUES
-		 ('$send_name','$send_pass','150','5','100','','0','180','$confirm','$preconfirm',
-		 '$send_email',(select class_id FROM class WHERE class_name = '$send_class'),'1','1','0','0','','0', now())";
+		 (:username, :pass, '150', '5', '100', '', '0', '180', :confirm, :preconfirm,
+		 :email,(select class_id FROM class WHERE class_name = :class),'1','1','0','0','','0', now())";
 	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
-	$sql->Insert($playerCreationQuery);
+	$statement = DatabaseConnection::$pdo->prepare($playerCreationQuery);
+	$statement->bindValue(':username', $send_name);
+	$statement->bindValue(':pass', $send_pass);
+	$statement->bindValue(':confirm', $confirm);
+	$statement->bindValue(':preconfirm', $preconfirm);
+	$statement->bindValue(':email', $send_email);
+	$statement->bindValue(':class', $send_class);
+	$statement->execute();
 
 	//  ***  Sends out the confirmation email to the chosen email address.  ***
 	$_to = "$send_email";
@@ -535,20 +563,28 @@ function create_player($send_name, $params=array()) {
 }
 
 function confirm_player($player_name, $confirmation=0, $autoconfirm=false) {
-    $sql = new DBAccess();
+	DatabaseConnection::getInstance();
+
 	// Preconfirmed or the email didn't send, so automatically confirm the player.
-	$require_confirm = $autoconfirm? '' : "and confirm = '$confirmation'";
-	$up = "update players set confirmed = 1, confirm='55555' where uname = '".$player_name."' "
-	    .$require_confirm;
-	$up_res = $sql->Update($up);
-    $res = $autoconfirm? true : !!$up_res;
-	return $res;
+	$require_confirm = ($autoconfirm ? '' : "and confirm = :confirmation");
+
+	$up = "update players set confirmed = 1, confirm='55555' where uname = :player ".$require_confirm;
+
+	$statement = DatabaseConnection::$pdo->prepare($up);
+	$statement->bindValue(':player', $player_name);
+
+	if ($require_confirm) {
+		$statement->bindValue(':confirmation', $confirmation);
+	}
+
+	$up_res = $statement->execute();
+
+    return ($autoconfirm ? true : $up_res);
 }
 
 function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredReferral, $enteredPass) {
 	$successful = false;
-	$sql = $GLOBALS['sql'];
-	assert($sql);
+	DatabaseConnection::getInstance();
 
 	$send_name   = $enteredName;
 	$send_pass   = $enteredPass;
@@ -568,11 +604,15 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 		$check_name  = 0;
 		$check_email = 0;
 
-		$sql->QueryItem("SELECT uname FROM players WHERE uname = '$send_name'");
-		$check_name  = $sql->getRowCount();
+		$statement = DatabaseConnection::$pdo->prepare("SELECT uname FROM players WHERE uname = :username");
+		$statement->bindValue(':username', $send_name);
+		$statement->execute();
+		$check_name = $statement->fetch();
 
-		$sql->QueryItem("SELECT email FROM players WHERE email = '$send_email'");
-		$check_email = $sql->getRowCount();
+		$statement = DatabaseConnection::$pdo->prepare("SELECT email FROM players WHERE email = :email");
+		$statement->bindValue(':email', $send_email);
+		$statement->execute();
+		$check_email = $statement->fetch();
 
         // Validate the username symbols!
 		$username_error = validate_username($send_name);
@@ -601,10 +641,19 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 				} elseif (!eregi("^[[:alnum:]][a-z0-9_.-]*@[a-z0-9.-]+\.[a-z]{2,4}$", trim($send_email))) {
 					echo "Phase 3 Incomplete: The email address (".htmlentities($send_email).")
 					    must contain an @ symbol and a domain name to be valid.";
-				} else if ($check_name == 0 && $check_email == 0 && $send_name != "SysMsg" && $send_name != "NewUserList") {
+				} else if (!$check_name && !$check_email && $send_name != "SysMsg" && $send_name != "NewUserList") {
 				    //Uses previous query to make sure name and email aren't duplicates.
 					echo "Phase 3 Complete: Username and Email are unique.<br><hr>\n";
-					if ($send_class != 'Red' && $send_class != 'Blue' && $send_class != 'White' && $send_class != 'Black') {
+
+					$statement = DatabaseConnection::$pdo->query('SELECT class_name FROM class WHERE class_active');
+					$statement->execute();
+
+					$legalClasess = array();
+					while ($classData = $statement->fetch()) {
+						$legalClasses[] = $classData['class_name'];
+					}
+
+					if (!in_array($send_class, $legalClasses)) {
 						echo "Phase 4 Incomplete: No proper class was specified.<br>";
 					} else {
 						echo "Phase 4 Complete: Class was specified.<br><hr>";

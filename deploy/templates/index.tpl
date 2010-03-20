@@ -150,9 +150,9 @@
       
         <div id='ninja-stats' class='header-section'>
         
-        <span id='logout'>
+        <div id='logout'>
             <a href="index.php?logout=true">Logout</a>
-        </span>
+        </div>
         
         </div><!-- End of ninja-stats -->
           <div id='ninja-count-menu' class='boxes passive'>

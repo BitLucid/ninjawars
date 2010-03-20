@@ -64,7 +64,7 @@ if (!$player_info) {
 	include SERVER_ROOT."interface/footer.php";
 	die();
 } else {
-	$ranking_link_section    = render_ranking_link($player_info, $linkbackpage, $sql);
+	$ranking_link_section    = render_ranking_link($player_info, $linkbackpage);
 	$class_section           = render_class_section($player_info['class']);
 	$level_and_category      = render_level_and_category($player_info['level']);
 	$status_section          = render_status_section($player_info['uname']);
@@ -75,7 +75,7 @@ if (!$player_info) {
 		// Attack or Duel
 
 		$skills_available  = $skillsListObj->hasSkills();
-		$item_use_section  = render_item_use_on_another($target, $sql);
+		$item_use_section  = render_item_use_on_another($target);
 		$skill_use_section = render_skills($target, $skillListObj, $skillsListObj);
 	}	// End of the there-was-no-attack-error section
 
