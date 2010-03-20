@@ -15,30 +15,28 @@ $vicious_killer = $stats['vicious_killer'];
 
 <div id='vicious-killer'>
     Current Fastest Killer: 
-    <a id='vicious-killer-menu' href='player.php?player=<?php echo out($vicious_killer); ?>'><?php echo $vicious_killer;?></a>
+    <a id='vicious-killer-menu' href='player.php?player=<?php echo out($vicious_killer); ?>'><?php echo htmlentities($vicious_killer);?></a>
 </div>
 
 <h3>Duel Log</h3>
 
 <?php
+DatabaseConnection::getInstance();
+$statement = DatabaseConnection::$pdo->query("SELECT * FROM dueling_log ORDER BY id DESC LIMIT 500");
 
-$sql->QueryRow("SELECT * FROM dueling_log ORDER BY id DESC LIMIT 500");
-
-$duels = $sql->FetchAll();
-if (empty($duels)) {
-    echo "<p>No duels for today yet.</p>";
-}
-else
-{
+if ($duel = $statement->fetch()) {
 	echo "<ul id='duel-log'>";
-	//var_dump($duels);
-	foreach($duels as $duel){
+
+	do {
 		echo "<li>";
 		echo render_player_link($duel['attacker'])." has dueled ".render_player_link($duel['defender'])." and ".($duel['won']?'won':'lost')." for {$duel['killpoints']} killpoints on {$duel['date']}";
 		echo "</li>";
-	}
+	} while ($duel = $statement->fetch());
 
 	echo "</ul>";
+}
+else {
+	echo "<p>No duels for today yet.</p>";
 }
 
 include SERVER_ROOT."interface/footer.php";
