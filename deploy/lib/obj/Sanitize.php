@@ -19,13 +19,12 @@
 //           characters)
 // sanitize($input, $flags) -- input any variable, performs sanitization
 //           functions specified in flags. flags can be bitwise
-//           combination of PARANOID, SQL, SYSTEM, HTML, INT, FLOAT, LDAP,
+//           combination of PARANOID, SYSTEM, HTML, INT, FLOAT, LDAP,
 //           UTF8
 ///////////////////////////////////////
 
 
 define("PARANOID", 1);
-define("SQL", 2);
 define("SYSTEM", 4);
 define("HTML", 8);
 define("INT", 16);
@@ -61,7 +60,7 @@ function sanitize_system_string($string, $min='', $max='')
 }
 
 
-// sanitize a string for SQL input (simple slash out quotes and slashes)
+// sanitize a string for LDAP input (simple slash out quotes and slashes)
 function sanitize_ldap_string($string, $min='', $max='')
 {
   $pattern = '/(\)|\(|\||&)/';
