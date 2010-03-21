@@ -13,11 +13,12 @@ include SERVER_ROOT."interface/header.php";
 
 <?php
 $user_id = get_user_id();
-$sql->Query("SELECT amount AS c, item FROM inventory WHERE owner = $user_id GROUP BY item, amount");
+DatabaseConnection::getInstance();
+$statement = DatabaseConnection::$pdo->prepare("SELECT amount AS c, item FROM inventory WHERE owner = :owner GROUP BY item, amount");
+$statement->bindValue(':owner', $user_id);
+$statement->execute();
 
-if ($sql->rows == 0) {
-	echo "You have no items, to buy some, visit the <a href=\"shop.php\">shop</a>.\n";
-} else {
+if ($data = $statement->fetch()) {
 	$items['Speed Scroll']   = 0;
 	$items['Stealth Scroll'] = 0;
 	$items['Shuriken']       = 0;
@@ -48,9 +49,9 @@ if ($sql->rows == 0) {
 		)
 	);
 
-	while ($data = $sql->Fetch()) {
+	do {
 		$items[$data['item']] = $data['c'];
-	}
+	} while ($data = $statement->fetch());
 
 	echo "<div style='margin-bottom: 10px;'>Click a linked item to use it on yourself.</div>\n";
 
@@ -81,6 +82,8 @@ if ($sql->rows == 0) {
 	}
 
 	echo "</table>\n";
+} else {
+	echo "You have no items, to buy some, visit the <a href=\"shop.php\">shop</a>.\n";
 }
 
 

@@ -188,11 +188,11 @@ function changeTurns($who, $amount) {
 }
 
 function addTurns($who, $amount) {
-  return changeTurns($who, $amount);
+	return changeTurns($who, $amount);
 }
 
 function subtractTurns($who, $amount) {
-  return changeTurns($who, ((-1)*$amount));
+	return changeTurns($who, ((-1)*$amount));
 }
 
 // ************************************
@@ -206,22 +206,27 @@ function subtractTurns($who, $amount) {
 
 /* *** Currently unused consider removing ***
 function setKills($who, $new_kills) {
-  global $sql;
+	DatabaseConnection::getInstance();
 
-  $sql->Update("UPDATE players SET kills = $new_kills WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET kills = $new_kills WHERE uname = :player");
+	$statement->bindValue(':player', $who);
+	$statement->execute();
 
-  if ($who == get_username()) {
-      $_SESSION['kills'] = $new_kills;
-    }
+	if ($who == get_username()) {
+		$_SESSION['kills'] = $new_kills;
+	}
 
-  return $new_kills;
+	return $new_kills;
 }
 */
 
 function getKills($who) {
-	global $sql;
+	DatabaseConnection::getInstance();
 
-	$kills = $sql->QueryItem("SELECT kills FROM players WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT kills FROM players WHERE uname = :player");
+	$statement->bindValue(':player', $who);
+	$statement->execute();
+	$kills = $statement->fetchColumn();
 
 	if ($who == get_username()) {
 		$_SESSION['kills'] = $kills;
@@ -230,7 +235,7 @@ function getKills($who) {
 	return $kills;
 }
 
-function changeKills($who,$amount) {
+function changeKills($who, $amount) {
 	$amount = (int)$amount;
 
 	if (abs($amount) > 0) {
@@ -248,58 +253,72 @@ function changeKills($who,$amount) {
 	return getKills($who);
 }
 
-function addKills($who,$amount) {
+function addKills($who, $amount) {
+	DatabaseConnection::getInstance();
 	$amount = (int)$amount;
 	// *** UPDATE THE KILLS INCREASE LOG *** //
-	global $sql;
 
-	$alreadyThere = $sql->Query("SELECT * FROM levelling_log WHERE uname='$who' AND killsdate = now() AND killpoints>0 LIMIT 1");  //Check for record.
+	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE uname = :player AND killsdate = now() AND killpoints > 0 LIMIT 1");  //Check for record.
+	$statement->bindValue(':player', $who);
+	$statement->execute();
 
-	$notYetANewDay = $sql->rows;  //positive if todays record already exists
+	$notYetANewDay = $statement->fetch();  //positive if todays record already exists
 
 	if ($notYetANewDay != NULL) {
 		// if record exists
-		$sql->Query("UPDATE levelling_log SET killpoints=killpoints + $amount WHERE uname='$who' AND killsdate=now() AND killpoints>0");  //increase killpoints
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints + :amount WHERE uname = :player AND killsdate = now() AND killpoints > 0");  //increase killpoints
+		$statement->bindValue(':amount', $amount);
+		$statement->bindValue(':player', $player);
 	} else {
-		$sql->Query("INSERT INTO levelling_log ( uname, killpoints, levelling, killsdate) VALUES ('$who', '$amount', '0', now())");  //create a new record for today
+		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())");  //create a new record for today
+		$statement->bindValue(':amount', $amount);
+		$statement->bindValue(':player', $player);
 	}
 
-	return changeKills($who,$amount);
+	$statement->execute();
+	return changeKills($who, $amount);
 }
 
 function subtractKills($who,$amount) {
+	DatabaseConnection::getInstance();
 	$amount = (int)$amount;
-	global $sql;
+
 	// *** UPDATE THE KILLS INCREASE LOG (with a negative entry) *** //
 
-	$alreadyThere  = $sql->query("SELECT * FROM levelling_log WHERE uname='$who' AND killsdate=now() AND killpoints<0 LIMIT 1"); //check for record
+	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE uname = :player AND killsdate = now() AND killpoints > 0 LIMIT 1");  //Check for record.
+	$statement->bindValue(':player', $who);
+	$statement->execute();
 
-	$notYetANewDay = $sql->rows;  //positive if todays record already exists
+	$notYetANewDay = $statement->fetch();  //positive if todays record already exists
 
 	if ($notYetANewDay != NULL) {
 		// if record exists
-		$sql->Query("UPDATE levelling_log SET killpoints=killpoints - $amount WHERE uname='$who' AND killsdate=now() AND killpoints<0 LIMIT 1");  //increase killpoints
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints - :amount WHERE uname = :player AND killsdate = now() AND killpoints < 0");  //increase killpoints
+		$statement->bindValue(':amount', $amount);
+		$statement->bindValue(':player', $player);
 	} else {
-		$sql->Query("INSERT INTO levelling_log ( uname, killpoints, levelling, killsdate) VALUES ('$who', '-$amount', '0', now())");  //create a new record for today
+		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())");  //create a new record for today
+		$statement->bindValue(':amount', $amount*-1);
+		$statement->bindValue(':player', $player);
 	}
 
+	$statement->execute();
 	return changeKills($who, ((-1)*$amount));
 }
 
 /* *** Currently unused consider removing ***
 function getKillPointsAmount($attacker, $defender) {
-  global $sql;
-  $sql->Query("INSERT INTO 'dueling_log' values ('','$attacker', '$defender', '$won', '$killpoints', now())");                            //Log of Dueling information.
+	DatabaseConnection::getInstance();
+	DatabaseConnection::$pdo->query("INSERT INTO 'dueling_log' values ('','$attacker', '$defender', '$won', '$killpoints', now())");                            //Log of Dueling information.
 }
 */
 
 
 /* *** Currently unused consider removing ***
-function kill($killer,$victim,$how,$what)  //This is a kill replacement function that may not yet be in use.
-{
+function kill($killer, $victim, $how, $what) {  //This is a kill replacement function that may not yet be in use.
 	echo "$killer has killed $victim!<br>\n";
 
-	global $sql,$today;
+	global $today;
 
 	setHealth($victim,0);
 	subtractStatus($victim,STEALTH+POISON+FROZEN+CLASS_STATE);
@@ -351,9 +370,9 @@ function kill($killer,$victim,$how,$what)  //This is a kill replacement function
 
 /* *** Currently unused consider removing ***
 function setLevel($who, $new_level) {
-	global $sql;
+	DatabaseConnection::getInstance();
 
-	$sql->Update("UPDATE players SET level = $new_level WHERE uname = '$who'");
+	DatabaseConnection::$pdo->query("UPDATE players SET level = $new_level WHERE uname = '$who'");
 
 	if ($who == get_username())
 	{
@@ -365,9 +384,12 @@ function setLevel($who, $new_level) {
 */
 
 function getLevel($who) {
-	global $sql;
+	DatabaseConnection::getInstance();
 
-	$level = $sql->QueryItem("SELECT level FROM players WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT level FROM players WHERE uname = :player");
+	$statement->bindValue(':player', $who);
+	$statement->execute();
+	$level = $statement->fetchColumn();
 
 	if ($who == get_username()) {
 		$_SESSION['level'] = $level;
@@ -379,33 +401,45 @@ function getLevel($who) {
 function changeLevel($who, $amount) {
 	$amount = (int)$amount;
 	if (abs($amount) > 0) {
-		global $sql;
+		DatabaseConnection::getInstance();
 
-		$sql->Update("UPDATE players SET level = level+$amount WHERE uname = '$who'");
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET level = level+:amount WHERE uname = :player");
+		$statement->bindValue(':player', $who);
+		$statement->bindValue(':amount', $amount);
+		$statement->execute();
 
 		// *** UPDATE THE LEVEL INCREASE LOG *** //
 
-		$alreadyThere = $sql->Query("SELECT * FROM levelling_log WHERE uname='$who' AND killsdate=now()");
-		$notYetANewDay=$sql->rows;  //Throws back a row result if there is a pre-existing record.
+		$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE uname = :player AND killsdate = now()");
+		$statement->bindValue(':player', $who);
+		$statement->execute();
+
+		$notYetANewDay = $statement->fetch();  //Throws back a row result if there is a pre-existing record.
 
 		if ($notYetANewDay != NULL) {
 			//if record already exists.
-			$sql->Query("UPDATE levelling_log SET levelling=levelling + $amount WHERE uname='$who' AND killsdate=now() LIMIT 1");
+			$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET levelling=levelling + :amount WHERE uname = :player AND killsdate=now() LIMIT 1");
+			$statement->bindValue(':amount', $amount);
+			$statement->bindValue(':player', $who);
 		} else {	// if no prior record exists, create a new one.
-			$sql->Query("INSERT INTO levelling_log ( uname, killpoints, levelling, killsdate) VALUES ('$who', '0', '$amount', now())");  //inserts all except the autoincrement ones
+			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, '0', :amount, now())");  //inserts all except the autoincrement ones
+			$statement->bindValue(':amount', $amount);
+			$statement->bindValue(':player', $who);
 		}
+
+		$statement->execute();
 	}
 
 	return getLevel($who);
 }
 
-function addLevel($who,$amount) {
-	return changeLevel($who,$amount);
+function addLevel($who, $amount) {
+	return changeLevel($who, $amount);
 }
 
 /* *** Currently unused consider removing ***
-function subtractLevel($who,$amount) {
-	return changeLevel($who,((-1)*$amount));
+function subtractLevel($who, $amount) {
+	return changeLevel($who, ((-1)*$amount));
 }
 */
 
@@ -429,24 +463,20 @@ define("INVITED",     64);
 $status_array;
 
 /* *** Currently unused consider removing ***
-function setStatus($who,$what) {
-	//if (!is_numeric($what)) // *** If the status being sent in isn't a number...
-	//{
+function setStatus($who, $what) {
+	//if (!is_numeric($what)) { // *** If the status being sent in isn't a number...
 	//  (isset($status_array[$what])? '
 	//}
 
-
 	DatabaseConnection::getInstance();
 	DatabaseConnection::$pdo->query("UPDATE players SET status = $what WHERE uname = '$who'");
-	if ($who == get_username())   {
+	if ($who == get_username()) {
 	    $_SESSION['status'] = $what;
 	    if ($what == 0)	{
 			echo "<br>You have returned to normal.<br>\n";
-		}
-		else if ($what == 1) {
+		} else if ($what == 1) {
 			echo "<br>You have been poisoned.<br>\n";
-		}
-	    else if ($what == 2) {
+		} else if ($what == 2) {
 			echo "<br>You are now stealthed.<br>\n";
 		}
 	}
@@ -460,7 +490,9 @@ function getStatus($who) {
 
 	DatabaseConnection::getInstance();
 
-	$statement = DatabaseConnection::$pdo->query("SELECT status FROM players WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
+	$statement->bindValue(':player', $who);
+	$statement->execute();
 	$status = $statement->fetchColumn();
 
 	if ($who == SESSION::get('username')) {
@@ -480,18 +512,24 @@ function getStatus($who) {
 function addStatus($who, $what) {   //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
 	DatabaseConnection::getInstance();
 
-	$statement = DatabaseConnection::$pdo->query("SELECT status FROM players WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
+	$statement->bindValue(':player', $who);
+	$statement->execute();
+
 	$status = $statement->fetchColumn();
 
 	if ($what < 0) {
-	    return subtractStatus($who,abs($what));
+	    return subtractStatus($who, abs($what));
 	}
 
 	if (!($status & $what)) {
-	    DatabaseConnection::$pdo->query("UPDATE players SET status = status+$what WHERE uname = '$who'");
+	    $statement = DatabaseConnection::$pdo->prepare("UPDATE players SET status = status+:what WHERE uname = :player");
+		$statement->bindValue(':player', $who);
+		$statement->bindValue(':what', $what);
+		$statement->execute();
 
 	    if ($who == get_username()) {
-			$_SESSION['status']+=$what;
+			$_SESSION['status'] += $what;
 		}
 	}
 
@@ -501,11 +539,17 @@ function addStatus($who, $what) {   //Takes in the Status in the ALL_CAPS_WORD f
 function subtractStatus($who, $what) {     //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
 	DatabaseConnection::getInstance();
 
-	$statement = DatabaseConnection::$pdo->query("SELECT status FROM players WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
+	$statement->bindValue(':player', $who);
+	$statement->execute();
 	$status = $statement->fetchColumn();
 
 	if ($status&$what) {
-		DatabaseConnection::$pdo->query("UPDATE players SET status = status-($status&$what) WHERE uname = '$who'");
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET status = status-(:status&:what) WHERE uname = :prepare");
+		$statement->bindValue(':player', $who);
+		$statement->bindValue(':status', $status);
+		$statement->bindValue(':what', $what);
+		$statement->execute();
 
 		if ($who == get_username()) {
 		  $_SESSION['status']-=($status&$what);
@@ -517,7 +561,6 @@ function subtractStatus($who, $what) {     //Takes in the Status in the ALL_CAPS
 
 // ************************************
 // ************************************
-
 
 
 // ************************************

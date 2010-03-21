@@ -22,7 +22,7 @@ function update_last_attack_time($player_id) {
  *
  */
 function attack_legal() {  //  Checks for errors in the initial stage of combat.
-	global $attacked, $target, $attacker_turns, $required_turns, $attacker, $player_id, $sql;
+	global $attacked, $target, $attacker_turns, $required_turns, $attacker, $player_id;
 	global $target_ip, $attacker_ip, $target_confirmed, $attacker_health, $target_health, $target_status;
 
 	$second_interval_limiter_on_attacks = '.20';

@@ -8,8 +8,8 @@ function authenticate($p_user, $p_pass) {
 
 	if ($user != '' && $pass != '') {
 		$dbConn = DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare('SELECT uname, player_id FROM players WHERE lower(uname) = lower(:userName) AND pname = :pass AND confirmed = 1');
-		$statement->bindValue(':userName', $user);
+		$statement = DatabaseConnection::$pdo->prepare('SELECT uname, player_id FROM players WHERE lower(uname) = :player AND pname = :pass AND confirmed = 1');
+		$statement->bindValue(':player', strtolower($user));
 		$statement->bindValue(':pass', $pass);
 		$statement->execute();
 
@@ -52,6 +52,7 @@ function is_authentic($p_user, $p_pass) {
 function logout_user($echo=false, $redirect='index.php') {
 	$msg = 'You have been logged out.';
 	session_destroy(); // Why was this status function being used? SESSION :: destroy(); ????
+
 	if ($echo) {
 		echo $msg;
 	}
@@ -65,7 +66,6 @@ function logout_user($echo=false, $redirect='index.php') {
 function logout($echo=false, $redirect='index.php') {
 	return logout_user($echo, $redirect);
 }
-
 
 /**
  * @return boolean Based on the chosen method for deciding whether someone is logged in.
@@ -89,33 +89,35 @@ function setup_logged_in($player_id, $username) {
 	put_player_info_in_session($player_data);
 }
 
-
-function validate_password($send_pass){
+function validate_password($send_pass) {
 	$error = null;
 	$filter = new Filter();
+
 	if ($send_pass != htmlentities($send_pass)
-	    || $send_pass != $filter->toPassword($send_pass)){  //  Throws error if password has html elements.
+	    || $send_pass != $filter->toPassword($send_pass)) {  //  Throws error if password has html elements.
 		$error = "Phase 2 Incomplete: Passwords can only have spaces, underscores, numbers, and letters.<hr>\n";
 	}
+
 	return $error;
 }
 
-
-function validate_username($send_name){
+function validate_username($send_name) {
 	$error = null;
 	$filter = new Filter();
-	if (substr($send_name,0,1)!=0 || substr($send_name,0,1)=="0"){  // Case the first char isn't a letter???
+
+	if (substr($send_name, 0, 1) != 0 || substr($send_name, 0, 1) == "0") {  // Case the first char isn't a letter???
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a number.\n";
-	} else if (strlen($send_name) >= 21){   // Case string is greater or equal to 21.
+	} else if (strlen($send_name) >= 21) {   // Case string is greater or equal to 21.
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not exceed 20 characters.";
-	} else if ($send_name[0] == " "){  //Checks for a white space at the beginning of the name
+	} else if ($send_name[0] == " ") {  //Checks for a white space at the beginning of the name
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a space.";
 	} else if ($send_name != htmlentities($send_name)
 			|| str_replace(" ","%20",$send_name) != urlencode($send_name)
-			|| $send_name != $filter->toUsername($send_name)){
+			|| $send_name != $filter->toUsername($send_name)) {
 		//Checks whether the name is different from the html stripped version, or from url-style version, or matches the filter.
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." should only contain letters, numbers, and underscores.";
 	}
+
 	return $error;
 }
 
@@ -131,65 +133,66 @@ function valid_name($username){
 }
 */
 
-
-function nw_session_start($potential_username = ''){
+function nw_session_start($potential_username = '') {
 	$result = array('cookie_created' => false, 'session_existed' => false, 'cookie_existed'=> false);
-	if(!isset($_COOKIE['user_cookie']) || $_COOKIE['user_cookie'] != $potential_username){
+
+	if (!isset($_COOKIE['user_cookie']) || $_COOKIE['user_cookie'] != $potential_username) {
 		// Refresh cookie if the username isn't set in it yet.
 		$result['cookie_created'] =
 			createCookie("user_cookie", $potential_username, (time()+60*60*24*365), "/", WEB_ROOT); // *** 360 days ***
 	} else {
 		$result['cookie_existed'] = true;
 	}
-	if($potential_username){
+
+	if ($potential_username) {
 		SESSION::set('username', $potential_username);
 	} else {
 		SESSION::commence();
 	}
+
 	return $result;
 }
-
 
 /**
  * Returns display:none style information depending on the current state.
  * Used primarily on the index page.
 **/
-function display_when($state){
+function display_when($state) {
 	$on = '';
 	$off = "style='display:none;'";
-	switch(true){
+
+	switch (true) {
 		case $state == 'logged_in':
-			return (is_logged_in()? $on : $off);
+			return (is_logged_in() ? $on : $off);
 		break;
 		case $state == 'logged_out':
-			return (is_logged_in()? $off : $on);
+			return (is_logged_in() ? $off : $on);
 		break;
 		case $state == 'logout_occurs':
 			$logout = in('logout');
-			return (isset($logout)? $on : $off);
+			return (isset($logout) ? $on : $off);
 		break;
 		case $state == 'login_failed':
-			return (in('action') == 'login' && !is_logged_in()? $on : $off);
+			return (in('action') == 'login' && !is_logged_in() ? $on : $off);
 		break;
 		default:
-			if(DEBUG){
+			if (DEBUG) {
 				throw Exception('improper display_when() argument');
 			} else {
 				error_log('improper display_when() argument');
 			}
+
 			return $off;
 		break;
 	}
 }
 
-
-
-function nw_session_destroy(){
+function nw_session_destroy() {
 	session_destroy();
 }
 
 // Remove this.
-function nw_session_set_username($logged_in_username){
+function nw_session_set_username($logged_in_username) {
 	// Indicates successful login.
 	SESSION::set('username', $logged_in_username);
 }
@@ -199,8 +202,12 @@ function get_username($user_id=null) {
 	static $self;
 
 	if ($user_id) {
-		$sql = new DBAccess();
-		return $sql->QueryItem("select uname from players where player_id = '".sql($user_id)."'");
+		DatabaseConnection::getInstance();
+		$statement = DatabaseConnection::$pdo->prepare("SELECT uname FROM players WHERE player_id = :player");
+		$statement->bindValue(':player', $user_id);
+		$statement->execute();
+
+		return $statement->fetchColumn();
 	}
 
 	if (!$self) {
@@ -211,13 +218,17 @@ function get_username($user_id=null) {
 }
 
 function player_name_from_id($player_id) {
-	$sql = new DBAccess();
+	DatabaseConnection::getInstance();
 
 	if (!$player_id) {
 		throw new Exception('Blank player ID to find the username of requested.');
 	}
 
-	return $sql->QueryItem("select uname from players where player_id ='".sql($player_id)."'");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT uname FROM players WHERE player_id = :player");
+	$statement->bindValue(':player', $player_id);
+	$statement->execute();
+
+	return $statement->fetchColumn();
 }
 
 // Return the id that corresponds with a player name, if no other source is available.
@@ -235,8 +246,11 @@ function get_user_id($p_name=null) {
 		$find = $p_name; // Search to find someone else.
 	}
 
-	$sql = new DBAccess();
-	$id = $sql->QueryItem("SELECT player_id FROM players WHERE lower(uname) = lower('".sql($find)."')");
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT player_id FROM players WHERE lower(uname) = :find");
+	$statement->bindValue(':find', strtolower($find));
+	$statement->execute();
+	$id = $statement->fetchColumn();
 
 	if (!$id) {
 		$id = null;
@@ -248,14 +262,18 @@ function get_user_id($p_name=null) {
 }
 
 function update_activity_log($username) {
-	$sql = new DBAccess();
+	DatabaseConnection::getInstance();
 	$user_ip = $_SERVER['REMOTE_ADDR'];
-	$sql->Update("UPDATE players SET days = 0, ip = '$user_ip' WHERE uname='$username'");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET days = 0, ip = :ip WHERE uname = :player");
+	$statement->bindValue(':ip', $user_ip);
+	$statement->bindValue(':player', $username);
+	$statement->execute();
 }
 
 // Loops over the array and puts the values into the session.
 function put_player_info_in_session($player_stats) {
 	assert(count($player_stats) > 0);
+
 	foreach ($player_stats as $name => $val) {
 		if (is_string($name)) {
 			SESSION::set($name, $val);
@@ -330,11 +348,7 @@ function membership_and_combat_stats($update_past_stats=false) {
 	DatabaseConnection::getInstance();
 	$vk = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) group by uname, killpoints order by killpoints DESC LIMIT 1'); 
 	$todaysViciousKiller = $vk->fetchColumn();
-	// *** Gets uname with the most kills today.
-	/* $todaysViciousKiller = $sql->QueryItem('SELECT uname FROM levelling_log
-	WHERE killsdate = current_date group by uname order by sum(killpoints)
-	DESC LIMIT 1'); // *** Gets uname with the most kills today.
-	*/
+
 	if ($todaysViciousKiller == '') {
 		$todaysViciousKiller = 'None';
 	} elseif ($update_past_stats) {
@@ -351,5 +365,4 @@ function membership_and_combat_stats($update_past_stats=false) {
 
 	return $stats;
 }
-
 ?>

@@ -33,8 +33,16 @@ if (!$clan) {
 		echo "  <div><input id=\"agree\" type=\"hidden\" name=\"agree\" value=\"1\"><input type=\"submit\" value=\"Accept Request\"></div>\n";
 		echo "</form>";
 	} else {
-		$check = $sql->QueryItem("SELECT confirm FROM players WHERE player_id = '$clan_joiner'");
-		$current_clan = $sql->QueryItem("SELECT _clan_id FROM clan_player WHERE _player_id = $clan_joiner");
+		DatabaseConnection::getInstance();
+		$statement = DatabaseConnection::$pdo->prepare("SELECT confirm FROM players WHERE player_id = :player");
+		$statement->bindValue(':player', $clan_joiner);
+		$statement->execute();
+		$check = $statement->fetchColumn();
+
+		$statement = DatabaseConnection::$pdo->prepare("SELECT _clan_id FROM clan_player WHERE _player_id = :player");
+		$statement->bindValue(':player', $clan_joiner);
+		$statement->execute();
+		$current_clan = $statement->fetchColumn();
 
 		echo "<div style=\"border:1 solid #000000;font-weight: bold;\">\n";
 
@@ -47,9 +55,17 @@ if (!$clan) {
 			echo "<p><a href=\"".WEB_ROOT."\">Return to Main</a></p>\n";
 		} elseif ($confirm == $check && $agree > 0) {
 			echo "Request Accepted.<br>\n";
-			$sql->Query("INSERT INTO clan_player (_clan_id, _player_id) VALUES (".$clan->getID().", $clan_joiner)");
-			$sql->Query("UPDATE players SET confirm = '$random' WHERE player_id = $clan_joiner");
-			echo "<br>$clan_joiner_name is now a member of your clan.<hr>\n";
+			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_clan_id, _player_id) VALUES (:clan, :player)");
+			$statement->bindValue(':clan', $clan->getID());
+			$statement->bindValue(':player', $clan_joiner);
+			$statement->execute();
+
+			$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET confirm = :confirm WHERE player_id = :player");
+			$statement->bindValue(':confirm', $random);
+			$statement->bindValue(':player', $clan_joiner);
+			$statement->execute();
+
+			echo "<br>".htmlentities($clan_joiner_name)." is now a member of your clan.<hr>\n";
 			send_message($user_id, $clan_joiner,"CLAN: You have been accepted into ".$clan->getName());
 		} else {
 			echo "This clan membership change can not be verified, please ask the ninja to request joining again.\n";

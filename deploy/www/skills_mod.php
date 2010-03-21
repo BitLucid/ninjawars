@@ -47,9 +47,6 @@ if ($target != "") {
 $user_ip         = $_SESSION['ip'];
 $username_status = getStatus($username);
 $class           = getClass($username);
-$target_hp       = getHealth($target);
-$target_ip       = $sql->QueryItem("SELECT ip FROM players WHERE uname = '$target'");
-$target_turns    = $sql->QueryItem("SELECT turns FROM players WHERE uname = '$target'");
 $level           = getLevel($username);
 $covert          = false;
 $victim_alive    = true;
@@ -57,7 +54,18 @@ $attacker_id     = $username;
 $starting_turns  = getTurns($username);
 $ending_turns    = null;
 
-$level_check  = $level - getLevel($target);
+DatabaseConnection::getInstance();
+$statement = DatabaseConnection::$pdo->prepare('SELECT health, ip, turns, level FROM players WHERE uname = :target');
+$statement->bindValue(':target', $target);
+$statement->execute();
+$target_data = $statement->fetch();
+
+$target_hp       = $target_data['health'];
+$target_ip       = $target_data['ip'];
+$target_turns    = $target_data['turns'];
+$target_level    = $target_data['level'];
+
+$level_check  = $level - $target_level;
 
 if ($username_status && $status_array['Stealth']) {
 	$attacker_id = "A Stealthed Ninja";
@@ -81,7 +89,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 	$result = "";
 
 	if ($command == "Sight") {
-		$covert    = true;
+		$covert = true;
 
 		if ($starting_turns >= $turn_cost) {
 			//$msg = "You have had sight cast on you by $attacker_id at $today";
@@ -89,9 +97,11 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			//$username_status = subtractStatus($target, STEALTH);
 			// Sight will no longer break stealth.
 
-			$sql->Query("SELECT uname, class_name AS class, health, strength, gold, kills, turns, level FROM players JOIN class ON _class_id = class_id WHERE uname='$target'");
+			$statement = DatabaseConnection::$pdo->prepare("SELECT uname, class_name AS class, health, strength, gold, kills, turns, level FROM players JOIN class ON _class_id = class_id WHERE uname = :player");
+			$statement->bindValue(':player', $target);
+			$statement->execute();
 
-			$data = $sql->FetchAssociative();
+			$data = $statement->fetch();
 
 			echo "<table>\n";
 			echo "<tr>\n";
@@ -105,20 +115,11 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			echo "  <th>Level</th>\n";
 			echo "</tr>\n";
 			echo "<tr>\n";
-			//var_dump($data);
-			//var_dump($target);
-			//var_dump('DEBUG: ');
-			//print_r($sql->data);
 
 			foreach ($data AS $loopPart) {
 				echo "<td>".$loopPart."</td>\n";
 			}
-			/*
-			for ($i = 0; $i <= 12; $i++)
-			{
-				echo "<td>".$sql->data[$i]."</td>\n";
-			}
-			*/
+
 			echo "</tr>";
 			echo "</table>";
 		} else {

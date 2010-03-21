@@ -9,7 +9,6 @@ function sendMessage($from, $to, $msg, $filter=false) {
 
 // For true user-to-user or user-to-clan messages as opposed to events.
 function send_event($from_id, $to_id, $msg) {
-	global $sql;
 	if (!$to_id) {
 		$to_id = get_user_id();
 	}
@@ -18,22 +17,34 @@ function send_event($from_id, $to_id, $msg) {
 		throw new Exception('A player id wasn\'t sent in to the send_event function.');
 	}
 
-	$sql->Insert("INSERT INTO events (event_id, send_from, send_to, message, date) 
-    VALUES 
-    (default, '".sql($from_id)."','".sql($to_id)."','".sql($msg)."',now())");
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO events (event_id, send_from, send_to, message, date) 
+    VALUES (default, :from, :to, :message, now())");
+	$statement->bindValue(':from', $from_id);
+	$statement->bindValue(':to', $to_id);
+	$statement->bindValue(':message', $msg);
+	$statement->execute();
 }
 
 function get_events($user_id, $limit=null) {
-	global $sql;
-	$sql->Query("SELECT send_from, message, unread, uname as from FROM events 
-        join players on send_from = player_id where send_to = '".sql($user_id)."' ORDER BY date DESC ".($limit? "limit $limit" : '')."");
-	return $sql->fetchAll();
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT send_from, message, unread, uname AS from FROM events 
+        JOIN players ON send_from = player_id WHERE send_to = :to ORDER BY date DESC ".($limit ? "LIMIT :limit" : '')."");
+	$statement->bindValue(':to', $user_id);
+
+	if ($limit) {
+		$statement->bindValue(':limit', $limit);
+	}
+
+	$statement->execute();
+
+	return $statement->fetchAll();
 }
 
 function read_events($user_id) {
-	global $sql;
-	$sql->Update("UPDATE events set unread = 0 where send_to = '".sql($user_id)."'");
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE events SET unread = 0 WHERE send_to = :to");
+	$statement->bindValue(':to', $user_id);
+	$statement->execute();
 }
-
-
 ?>

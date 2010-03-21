@@ -12,15 +12,15 @@ echo "<h1>Chat Board</h1>";
 echo "<p><a href=\"".$_SERVER['PHP_SELF']."?chatlength=50\">Refresh</a><p>";
 
 $default_limit = 360;
-$chatlength = in('chatlength', $default_limit, 'toInt');
-$message = in('message', null, 'forChat'); // Essentially no filtering.
-$command = in('command');
-$sentMessage = in('message');
-$sent = false;
-$username = get_username();
-$user_id = get_user_id();
-$input_form = ($username ? render_chat_input($_SERVER['PHP_SELF'], $field_size=40) : '');
-$channel = 1;
+$chatlength    = in('chatlength', $default_limit, 'toInt');
+$message       = in('message', null, 'forChat'); // Essentially no filtering.
+$command       = in('command');
+$sentMessage   = in('message');
+$sent          = false;
+$username      = get_username();
+$user_id       = get_user_id();
+$input_form    = ($username ? render_chat_input($_SERVER['PHP_SELF'], $field_size = 40) : '');
+$channel       = 1;
 
 // Take in a chat and record it to the database.
 if ($user_id) {
@@ -37,7 +37,7 @@ echo "<div id='full-chat'>";
 
 echo $input_form;
 
-echo render_active_members($sql);
+echo render_active_members();
 
 echo render_chat_messages($chatlength);
 

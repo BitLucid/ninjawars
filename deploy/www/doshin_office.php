@@ -92,14 +92,15 @@ if (getBounty($username) > 0) {
 	echo "</form>\n";
 }
 
-$row = $sql->Query("SELECT uname, bounty, class_name AS class, level, clan_id, clan_name FROM players JOIN class ON class_id = _class_id LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id WHERE bounty > 0 AND confirmed = 1 and health > 0 ORDER BY bounty DESC");
+DatabaseConnection::getInstance();
+$result = DatabaseConnection::$pdo->query("SELECT player_id, uname, bounty, class_name AS class, level, clan_id, clan_name FROM players JOIN class ON class_id = _class_id LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id WHERE bounty > 0 AND confirmed = 1 and health > 0 ORDER BY bounty DESC");
 
-$row = $sql->data;
-
-if ($sql->rows) {
+if ($data = $result->fetch()) {
 	echo "Click on a Name to view a Ninja's profile. (You can place a bounty on them from their profile)<br><br>\n";
 
-	echo "Total Wanted Ninja: ".$sql->rows."\n";
+	$statement = DatabaseConnection::$pdo->query('SELECT count(player_id) FROM players WHERE bounty > 0 AND confirmed = 1 and health > 0');
+
+	echo "Total Wanted Ninja: ".$statement->fetchColumn()."\n";
 
 	echo "<hr>\n";
 
@@ -126,22 +127,21 @@ if ($sql->rows) {
 	echo "  </th>\n";
 	echo "</tr>\n";
 
-	for ($i = 0; $i < $sql->rows; $i++) {
-		$sql->Fetch($i);
-
-		$name        = $sql->data[0]; // username - don't encode because it's used in 2 locations differently
-		$bounty      = htmlentities($sql->data[1]); // bounty
-		$class       = htmlentities($sql->data[2]); // class
-		$level       = htmlentities($sql->data[3]); // level
-		$clan        = urlencode($sql->data[4]); // clanID
-		$clan_l_name = htmlentities($sql->data[5]); // clan name
+	do {
+		$player_id   = urlencode($data['player_id']);
+		$name        = htmlentities($data['uname']);
+		$bounty      = htmlentities($data['bounty']);
+		$class       = htmlentities($data['class']);
+		$level       = htmlentities($data['level']);
+		$clan        = urlencode($data['clan']);
+		$clan_l_name = htmlentities($data['clan_name']);
 
 		$class       = $class;
 		$clan_l_name = (empty($clan_l_name) ? '' : "<a href=\"clan.php?command=view&amp;clan_id=$clan\">$clan_l_name</a>");
 
 		echo "<tr class='playerRow'>\n";
 		echo "  <td class='playerCell'>\n";
-		echo "  <a href=\"player.php?player=".urlencode($name)."\">".htmlentities($name)."</a>\n";
+		echo "  <a href=\"player.php?player_id=$player_id\">$name</a>\n";
 		echo "  </td>\n";
 
 		echo "  <td class='playerCell'>\n";
@@ -160,7 +160,7 @@ if ($sql->rows) {
 		echo    $clan_l_name."\n";
 		echo "  </td>\n";
 		echo "</tr>\n";
-	}
+	} while ($data = $result->fetch());
 
 	echo "</table>\n";
 } else {
