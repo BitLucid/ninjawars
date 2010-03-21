@@ -73,6 +73,7 @@
   <li> Magatsu - the Shop Graphics </li>
   <li> Alegion - the original for the Koi photograph Background - <a href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a> </li>
   <li> Social networking icons by: <a href='http://www.fasticon.com'>FastIcon.com</a></li>
+  <li>DNS forwarding provided by: <a class='external-link' href='afraid.org'>afraid.org</a>
   </ul>
 </div>
 
