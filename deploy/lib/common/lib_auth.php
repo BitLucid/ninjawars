@@ -93,8 +93,7 @@ function validate_password($send_pass) {
 	$error = null;
 	$filter = new Filter();
 
-	if ($send_pass != htmlentities($send_pass)
-	    || $send_pass != $filter->toPassword($send_pass)) {  //  Throws error if password has html elements.
+	if ($send_pass != htmlentities($send_pass)) {  //  Throws error if password has html elements.
 		$error = "Phase 2 Incomplete: Passwords can only have spaces, underscores, numbers, and letters.<hr>\n";
 	}
 

@@ -48,7 +48,7 @@ if (!$searched && $hide_setting != $hide) { SESSION::set('hide_dead', $hide); }
 
 //$microtimes[3] = microtime();
 
-// Display the clear search and create the sql search params.
+// Display the clear search and create the where clause for searching.
 $where_clause = "";
 // If a search was made, specify letter or word-based search.
 // If unless showing dead, check that health is > 0, or alive = true from the ranking.

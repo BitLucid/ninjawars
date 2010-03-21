@@ -80,7 +80,7 @@ $near_level_power_increase = nearLevelPowerIncrease($level_difference, $max_powe
 
 $turns_to_take = null;   // *** Take at least one turn away even on failure.
 
-if (in_array($give, array("on", "Give")) {
+if (in_array($give, array("on", "Give"))) {
 	$turn_cost  = 0;
 	$using_item = false;
 }

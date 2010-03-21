@@ -57,8 +57,14 @@ function get_clan($clan_id) {
 // Just get the list of clans, plus the creator ids just for reference.
 function get_clans($clan_id=null) {
 	DatabaseConnection::getInstance();
-	$clan_or_clans = ($clan_id ? 'WHERE clan_id = '.sql($clan_id) : 'ORDER BY clan_id');
-	$clans = DatabaseConnection::$pdo->query("SELECT clan_id, clan_name, clan_created_date, _creator_player_id FROM clan $clan_or_clans");
+	$clan_or_clans = ($clan_id ? 'WHERE clan_id = :clan' : 'ORDER BY clan_id');
+	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_created_date, _creator_player_id FROM clan $clan_or_clans");
+	if ($clan_id) {
+		$clans->bindValue(':clan', $clan_id);
+	}
+
+	$clans->execute();
+
 	return $clans->fetchAll();
 }
 
@@ -88,11 +94,17 @@ function get_clan_leader_id($clan_id) {
 // Get the current clan leader or leaders.
 function get_clan_leaders($clan_id=null, $all=false) {
 	$limit = ($all ? '' : ' LIMIT 1 ');
-	$clan_or_clans = ($clan_id ? " AND clan_id = ".sql($clan_id)." ORDER BY level " : ' ORDER BY clan_id, level ');
+	$clan_or_clans = ($clan_id ? " AND clan_id = :clan ORDER BY level " : ' ORDER BY clan_id, level ');
 	DatabaseConnection::getInstance();
-	$clans = DatabaseConnection::$pdo->query("SELECT clan_id, clan_name, _creator_player_id, player_id, uname 
+	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, _creator_player_id, player_id, uname 
 		FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id=_player_id 
 		WHERE confirmed = 1 AND member_level > 0 $clan_or_clans $limit");
+
+	if ($clan_id) {
+		$clans->bindValue(':clan', $clan_id);
+	}
+
+	$clans->execute();
 
 	return $clans->fetchAll();
 }

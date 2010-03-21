@@ -17,8 +17,8 @@ $deleteAccount     = ($in_delete_account == 1 ? 1 :
 $in_changePass = in('changepass');
 $changePass    = ($in_changePass && $in_changePass == 1 ? 1 : null);
 
-$newPass = in('newpass', null, 'toPassword');
-$passW   = in('passw', null, 'toPassword'); // *** To verify whether there's a password put in.
+$newPass = in('newpass', null);
+$passW   = in('passw', null); // *** To verify whether there's a password put in.
 
 $changeprofile = in('changeprofile');
 $newprofile    = in('newprofile', null, 'toMessage');
@@ -51,7 +51,7 @@ if ($deleteAccount) {
 } else if ($changeprofile == 1) {
     // Limit the profile length.
 	if ($newprofile != "") {
-		DabaseConnection:getInstance();
+		DabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo-prepare("UPDATE players SET messages = :profile WHERE uname = :player");
 		$statement->bindValue(':profile', $newprofile);
 		$statement->bindValue(':player', $username);

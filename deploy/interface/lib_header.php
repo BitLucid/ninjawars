@@ -3,13 +3,12 @@
   *  Creates all the environmental variables, with no outputting.
 **/
 function init($options=array()){
-    global $filter, $sql, $today, $private, $alive;
+    global $filter, $today, $private, $alive;
     
     $private = @$options['private'] ? @$options['private'] : $private;
     $alive   = @$options['alive'] ? @$options['alive'] : $alive;
     // General utility objects.
     $filter = new Filter(); // *** Creates the filters for later use.
-    $sql = new DBAccess();
 
     // ******************** Declared variables *****************************
     $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.

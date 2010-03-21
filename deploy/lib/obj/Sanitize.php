@@ -13,9 +13,6 @@
 //           alphanumeric
 // sanitize_system_string($string) -- input string, returns string stripped of special
 //           characters
-// sanitize_sql_string($string) -- input string, returns string with slashed out quotes
-// sanitize_html_string($string) -- input string, returns string with html replacements
-//           for special characters
 // sanitize_int($integer) -- input integer, returns ONLY the integer (no extraneous
 //           characters
 // sanitize_float($float) -- input float, returns ONLY the float (no extraneous
@@ -65,22 +62,6 @@ function sanitize_system_string($string, $min='', $max='')
 
 
 // sanitize a string for SQL input (simple slash out quotes and slashes)
-function sanitize_sql_string($string, $min='', $max='')
-{
-  $pattern[0] = '/(\\\\)/';
-  $pattern[1] = "/\"/";
-  $pattern[2] = "/'/";
-  $replacement[0] = '\\\\\\';
-  $replacement[1] = '\"';
-  $replacement[2] = "\\'";
-  $len = strlen($string);
-  if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
-    return FALSE;
-  return preg_replace($pattern, $replacement, $string);
-}
-
-
-// sanitize a string for SQL input (simple slash out quotes and slashes)
 function sanitize_ldap_string($string, $min='', $max='')
 {
   $pattern = '/(\)|\(|\||&)/';
@@ -89,36 +70,6 @@ function sanitize_ldap_string($string, $min='', $max='')
     return FALSE;
   return preg_replace($pattern, '', $string);
 }
-
-
-// sanitize a string for HTML (make sure nothing gets interpretted!)
-function sanitize_html_string($string)
-{
-  $pattern[0] = '/\&/';
-  $pattern[1] = '/</';
-  $pattern[2] = "/>/";
-  $pattern[3] = '/\n/';
-  $pattern[4] = '/"/';
-  $pattern[5] = "/'/";
-  $pattern[6] = "/%/";
-  $pattern[7] = '/\(/';
-  $pattern[8] = '/\)/';
-  $pattern[9] = '/\+/';
-  $pattern[10] = '/-/';
-  $replacement[0] = '&amp;';
-  $replacement[1] = '&lt;';
-  $replacement[2] = '&gt;';
-  $replacement[3] = '<br>';
-  $replacement[4] = '&quot;';
-  $replacement[5] = '&#39;';
-  $replacement[6] = '&#37;';
-  $replacement[7] = '&#40;';
-  $replacement[8] = '&#41;';
-  $replacement[9] = '&#43;';
-  $replacement[10] = '&#45;';
-  return preg_replace($pattern, $replacement, $string);
-}
-
 
 // make int int!
 function sanitize_int($integer, $min='', $max='')
@@ -148,7 +99,6 @@ function sanitize($input, $flags, $min='', $max='')
   if($flags & INT) $input = sanitize_int($input, $min, $max);
   if($flags & FLOAT) $input = sanitize_float($input, $min, $max);
   if($flags & HTML) $input = sanitize_html_string($input, $min, $max);
-  if($flags & SQL) $input = sanitize_sql_string($input, $min, $max);
   if($flags & LDAP) $input = sanitize_ldap_string($input, $min, $max);
   if($flags & SYSTEM) $input = sanitize_system_string($input, $min, $max);
   return $input;

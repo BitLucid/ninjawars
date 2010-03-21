@@ -12,107 +12,74 @@ class Filter
 {
 	// TODO: Username and password validation functions are in lib_auth.
 
-	function toNumeric($dirty)
-	{
+	function toNumeric($dirty) {
 		$result = NULL;
-		if(is_numeric($dirty)){
+
+		if (is_numeric($dirty)) {
 			$result = $dirty;
 		}
+
 		return $result;
 	}
 
-	function toID($dirty)
-	{
+	function toID($dirty) {
 		return filter_var($dirty, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1) ) );
 	}
 
-	function toInt($dirty, $max=NULL, $min=NULL)
-	{
+	function toInt($dirty, $max=NULL, $min=NULL) {
 		$options = NULL;
-		if ($max || $min){
+
+		if ($max || $min) {
 			$options = array("options" => array("min_range"=>$min, "max_range"=>$max));
 		}
+
 		return filter_var($dirty, FILTER_VALIDATE_INT, $options);
 	}
 
-	function toWord($dirty)
-	{ // Essentially allows numbers, words, and usernames, no spaces.
+	function toWord($dirty) { // Essentially allows numbers, words, and usernames, no spaces.
 		return preg_replace("[^A-Za-z0-9_\-]", "", (string) $dirty);
 	}
 
 	// Can be used as the default solution for the in() function.
-	function toDefault($dirty)
-	{
+	function toDefault($dirty) {
 	    return toText($dirty);
 	}
 
 	// This is the default non-user-message filtering.
 	// Only needs to cover fewer eventualities: spaces, emails and usernames, digits,
 	// and standard urls.
-	function toText($dirty)
-	{
+	function toText($dirty) {
 	    // Allows words, digits, spaces, _, -, ., @, :, and slash for urls /
 		return preg_replace("/[^\w\d\s_\-\.\@\:\/]/", "", (string) $dirty);
-	}
-
-	/** Extensive filtering for passwords going into sql, legacy passwords
-	 * shouldn't be effected, validate_password should limit the possibilities further.
-	**/
-	function toPassword($dirty){
-	    // should strip out all sql-problematic characters, ' # ` ; and "
-	    $dirty = preg_replace("/[^\w\d_\+\-\.\&\s\!\?\,\=\*\(\)\:\@\/]/", "", (string) $dirty);
-	    return $dirty;
 	}
 
 	/**
 	 * Relatively permissive username filter used during login procedure.
 	 * Must allow: ^[A-Za-z0-9_-]+ alphanumerics, digits, underscores, and dashes.
 	**/
-	function toUsername($dirty){
+	function toUsername($dirty) {
 	    return preg_replace("/[^\w\d\s_\-]/", "", (string) $dirty);
 	}
 
 	/**
 	 * Filters an array of ids each to the id filter
 	**/
-	function toIds($dirty){
-	    if(is_array($dirty)){
-	        foreach($dirty as $key => $dirty_val){
+	function toIds($dirty) {
+	    if (is_array($dirty)) {
+	        foreach($dirty as $key => $dirty_val) {
 	            $dirty[$key] = $this->toID($dirty_val);
 	        }
 	    }
+
 	    return $dirty;
 	}
 
-	function forSql($dirty){
-	    return $this->sanitize_sql_string($dirty);
-	}
-
-	// sanitize a string for SQL input (simple slash out quotes and slashes)
-    function sanitize_sql_string($string, $min='', $max='')
-    {
-      // Replace slashes, slash code double-quotes, and slash code apostrophes.
-      $pattern[0] = '/(\\\\)/';
-      $pattern[1] = "/\"/";
-      $pattern[2] = "/'/";
-      $replacement[0] = '\\\\\\';
-      $replacement[1] = '\"';
-      $replacement[2] = "\\'";
-      $len = strlen($string);
-      if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
-        return FALSE;
-      return preg_replace($pattern, $replacement, $string);
-    }
-
-
-	function toUrl($dirty)
-	{
+	function toUrl($dirty) {
 		return preg_replace("/[^\w\d_\-\.\&\+\?\,\%\:\/]/", "", (string) $dirty);
 	}
 
 	// User messages should have a special exception made of them.
-	function toMessage($dirty, $limit=null)
-	{
+	function toMessage($dirty, $limit=null) {
 /*	We are no longer filtering messages INTO the database, only OUT OF
 		// Encode the quotes.
 		$default_message_limit = 2000;
@@ -128,8 +95,7 @@ class Filter
 		return $dirty;
 	}
 
-	function toEmail($dirty)
-	{
+	function toEmail($dirty) {
 		$result = NULL;
 		$result = filter_var($dirty, FILTER_VALIDATE_EMAIL);
 		return $result;
@@ -137,25 +103,22 @@ class Filter
 
 	// Filter flags: http://phpro.org/tutorials/Filtering-Data-with-PHP.html#10
 
-	function toHtml($dirty)
-	{
+	function toHtml($dirty) {
 		return htmlentities($dirty);
 	}
 
 	// Wraps toMessage method.
-	function forChat($dirty)
-	{
+	function forChat($dirty) {
 		return $this->toMessage($dirty);
 	}
 
 	// *** Wrapper function for user-originating mail.
-	function forMail($dirty)
-	{
+	function forMail($dirty) {
 		return $this->toMessage($dirty);
 	}
 
 	// Replaces occurances of http://whatever with links (in blank tab).
-	function replace_urls($string){
+	function replace_urls($string) {
 	    return replace_urls($string); // Use the lib_output.php function.
 	}
 
@@ -187,5 +150,4 @@ class Filter
 	//IF NEEDED: function toIP
 
 }
-
 ?>

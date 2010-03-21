@@ -1,11 +1,11 @@
 <?php
 // Object Test function.
 
-function test_PlayerDAO(){
+function test_PlayerDAO() {
+	DatabaseConnection::getInstance();
 	// in: player_id, out: vo with uname and player_id.
-	$player_id_sel = "select player_id from players where uname = 'glassbox'";
-	$db = new DBAccess();
-	$player_id = $db->QueryItem($player_id_sel);
+	$player_id_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = 'glassbox'");
+	$player_id = $$player_id_sel->fetchColumn();
 	$dao = new PlayerDAO();
 	$player_vo = $dao->get($player_id);
 	//var_dump($player_vo);
@@ -14,17 +14,15 @@ function test_PlayerDAO(){
 	assert(isset($player_vo->player_id));
 
 	// in: player_id, out: vo with same id.
-	$player_id_sel = "select player_id from players where uname = 'glassbox'";
-	$db = new DBAccess();
-	$player_id = $db->QueryItem($player_id_sel);
+	$player_id_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = 'glassbox'");
+	$player_id = $player_id_sel->fetchColumn();
 	$dao = new PlayerDAO();
 	$player_vo2 = $dao->get($player_id);
 	assert($player_vo2->player_id == $player_id);
 
 	// in: player_id, out: vo with same username.
-	$player_id_sel = "select player_id from players where uname = 'glassbox'";
-	$db = new DBAccess();
-	$player_id = $db->QueryItem($player_id_sel);
+	$player_id_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = 'glassbox'");
+	$player_id = $player_id_sel->fetchColumn();
 	$dao = new PlayerDAO();
 	$player_vo2 = $dao->get($player_id);
 	assert($player_vo2->uname == 'glassbox');
@@ -43,9 +41,8 @@ function test_PlayerDAO(){
 
 
 	// in: player_vo, change the energy, save it. out: get that player, compare energy
-	$player_id_sel = "select player_id from players where uname = 'glassbox'";
-	$db = new DBAccess();
-	$player_id = $db->QueryItem($player_id_sel);
+	$player_id_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = 'glassbox'");
+	$player_id = $player_id_sel->fetchColumn();
 	$dao = new PlayerDAO();
 	$player_vo_original = $dao->get($player_id);
 	assert($player_vo_original->player_id == $player_id);
@@ -57,9 +54,8 @@ function test_PlayerDAO(){
 
 
 	// in: player_vo, change the energy, save it. out: get that player, compare energy
-	$player_id_sel = "select player_id from players where uname = 'glassbox'";
-	$db = new DBAccess();
-	$player_id = $db->QueryItem($player_id_sel);
+	$player_id_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = 'glassbox'");
+	$player_id = $player_id_sel->fetchColumn();
 	$dao = new PlayerDAO();
 	$player_vo_original = $dao->get($player_id);
 	$starting_clan = $player_vo_original->clan_long_name;
@@ -72,9 +68,8 @@ function test_PlayerDAO(){
 	assert('TestClanChange' == $changed_clan);
 
 	// in: a player_vo to change and save then delete, out: successful deletion
-	$player_id_sel = "select player_id from players where uname = 'glassbox'";
-	$db = new DBAccess();
-	$player_id = $db->QueryItem($player_id_sel);
+	$player_id_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = 'glassbox'");
+	$player_id = $player_id_sel->fetchColumn();
 	assert($player_id);
 	$dao = new PlayerDAO();
 	$player_vo = $dao->get($player_id);
@@ -83,23 +78,23 @@ function test_PlayerDAO(){
 	$player_vo->uname = "TestUserName2";
 	$player_vo->pname = "dummypassword";
 	$dao->save($player_vo);
-	$player_id_sel = "select player_id from players where uname = 'TestUserName2'";
-	$db = new DBAccess();
-	$player_id = $db->QueryItem($player_id_sel);
+
+	$player_id_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = 'TestUserName2'");
+	$player_id = $player_id_sel->fetchColumn();
 	assert($player_id);
 	$dao = new PlayerDAO();
 	$player_vo = $dao->get($player_id);
 	assert(isset($player_vo->player_id));
 	$deleted = $dao->delete($player_vo); // Need a player_id to delete.
 	assert($deleted == true);
-	$player_id_sel = "select player_id from players where uname = 'TestUserName2'";
-	$deleted_id = $db->QueryItem($player_id_sel);
+
+	$player_id_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = 'TestUserName2'");
+	$deleted_id = $player_id_sel->fetchColumn();
 	assert($deleted_id == null);
 
 	// in: a new player_vo to save n delete, out: no such new vo.
-	$player_id_sel = "select player_id from players where uname = 'glassbox'";
-	$db = new DBAccess();
-	$player_id = $db->QueryItem($player_id_sel);
+	$player_id_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = 'glassbox'");
+	$player_id = $player_id_sel->fetchColumn();
 	assert($player_id);
 	$dao = new PlayerDAO();
 	$player_vo1 = $dao->get($player_id);
@@ -112,12 +107,14 @@ function test_PlayerDAO(){
 	assert(($player_vo1->player_id != 0));
 	//var_dump($player_vo1->player_id, $player_vo1->uname);
 	$saved_vo1 = $dao->get($player_vo1->player_id);
-	$player_from_uname_sel = "select player_id from players where uname = '".$username."'";
-	$player_id_from_uname = $db->QueryItem($player_from_uname_sel);
+
+	$player_from_uname_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = '$username'");
+	$player_id_from_uname = $player_from_uname_sel->fetchColumn();
 	assert($player_id_from_uname != false);
 	//var_dump($player_id_from_uname, $username);
-	$player_uname_from_id_sel = "select uname from players where player_id = '".$player_vo1->player_id."'";
-	$player_uname = $db->QueryItem($player_uname_from_id_sel);
+
+	$player_uname_from_id_sel = DatabaseConnection::$pdo->query("select uname from players where player_id = '".$player_vo1->player_id."'");
+	$player_uname = $player_uname_from_id_sel->fetchColumn();
 	//var_dump($saved_vo1->uname); // for some reason the vo is not coming back here.
 	assert(isset($saved_vo1->player_id));
 	assert($saved_vo1->uname == $username);
@@ -125,5 +122,4 @@ function test_PlayerDAO(){
 	$success = $dao->delete($saved_vo1);
 	assert($success == true);
 }
-
 ?>

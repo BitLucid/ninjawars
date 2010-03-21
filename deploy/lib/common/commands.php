@@ -568,27 +568,28 @@ function subtractStatus($who, $what) {     //Takes in the Status in the ALL_CAPS
 // ************************************
 
 /* *** Currently unused consider removing ***
-function setStrength($who,$new_strength) {
-  global $sql;
+function setStrength($who, $new_strength) {
+	DatabaseConnection::getInstance();
 
-  $sql->Update("UPDATE players SET strength = $new_strength WHERE uname = '$who'");
+	DatabaseConnection::$pdo->query>("UPDATE players SET strength = $new_strength WHERE uname = '$who'");
 
-  if ($who == get_username())
-    {
-      $_SESSION['strength'] = $new_strength;
-    }
+	if ($who == get_username()) {
+		$_SESSION['strength'] = $new_strength;
+	}
 
-  return $new_strength;
+	return $new_strength;
 }
 */
 
 function getStrength($who) {
-	global $sql;
+	DatabaseConnection::getInstance();
 
-	$strength = $sql->QueryItem("SELECT strength FROM players WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT strength FROM players WHERE uname = :player");
+	$statement->bindValue(':player', $who);
+	$statement->execute();
+	$strength = $statement->fetchColumn();
 
-	if ($who == get_username())
-	{
+	if ($who == get_username()) {
 		$_SESSION['strength'] = $strength;
 	}
 
@@ -599,9 +600,12 @@ function changeStrength($who, $amount) {
 	$amount = (int)$amount;
 
 	if (abs($amount) > 0) {
-		global $sql;
+		DatabaseConnection::getInstance();
 
-		$sql->Update("UPDATE players SET strength = strength+$amount WHERE uname = '$who'");
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET strength = strength+:amount WHERE uname = :player");
+		$statement->bindValue(':amount', $amount);
+		$statement->bindValue(':player', $who);
+		$statement->execute();
 	}
 
 	return getStrength($who);
@@ -620,17 +624,18 @@ function subtractStrength($who, $amount) {
 // ************************************
 // ************************************
 
-
-
 // ************************************
 // ********* BOUNTY FUNCTIONS *********
 // ************************************
 
 function setBounty($who, $new_bounty) {
 	$new_bounty = (int)$new_bounty;
-	global $sql;
+	DatabaseConnection::getInstance();
 
-	$sql->Update("UPDATE players SET bounty = $new_bounty WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET bounty = :bounty WHERE uname = :player");
+	$statement->bindValue(':bounty', $new_bounty);
+	$statement->bindValue(':player', $who);
+	$statement->execute();
 
 	if ($who == get_username()) {
 		$_SESSION['bounty'] = $new_bounty;
@@ -640,50 +645,54 @@ function setBounty($who, $new_bounty) {
 }
 
 function getBounty($who) {
-	global $sql;
+	DatabaseConnection::getInstance();
 
-	$bounty = $sql->QueryItem("SELECT bounty FROM players WHERE uname = '$who'");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT bounty FROM players WHERE uname = :player");
+	$statement->bindValue(':player', $who);
+	$statement->execute();
+	$bounty = $statement->fetchColumn();
 
-	if ($who == get_username())
-	{
+	if ($who == get_username()) {
 		$_SESSION['bounty'] = $bounty;
 	}
 
 	return $bounty;
 }
 
-function changeBounty($who,$amount) {
+function changeBounty($who, $amount) {
 	$amount = (int)$amount;
 
 	if (abs($amount) > 0) {
-		global $sql;
-
-		$sql->Update("UPDATE players SET bounty = bounty+".
-			"CASE WHEN bounty+$amount < 0 THEN bounty*(-1) ".
-			"WHEN bounty+$amount > 5000 THEN (5000 - bounty) ".
-			"ELSE $amount END ".
-			"WHERE uname  = '$who'");
+		DatabaseConnection::getInstance();
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET bounty = bounty+".
+			"CASE WHEN bounty+:amount1 < 0 THEN bounty*(-1) ".
+			"WHEN bounty+:amount2 > 5000 THEN (5000 - bounty) ".
+			"ELSE :amount3 END ".
+			"WHERE uname  = :player");
+		$statement->bindValue(':player', $who);
+		$statement->bindValue(':amount1', $amount);
+		$statement->bindValue(':amount2', $amount);
+		$statement->bindValue(':amount3', $amount);
+		$statement->execute();
 	}
 
 	return getBounty($who);
 }
 
-function addBounty($who,$amount) {
-	return changeBounty($who,$amount);
+function addBounty($who, $amount) {
+	return changeBounty($who, $amount);
 }
 
-function subtractBounty($who,$amount) {
-	return changeBounty($who,((-1)*$amount));
+function subtractBounty($who, $amount) {
+	return changeBounty($who, ((-1)*$amount));
 }
 
-function rewardBounty($bounty_to,$bounty_on) {
-	global $sql;
-
+function rewardBounty($bounty_to, $bounty_on) {
 	$bounty = getBounty($bounty_on);
 
-	setBounty($bounty_on,0);  //Sets bounty to zero.
+	setBounty($bounty_on, 0);  //Sets bounty to zero.
 
-	addGold($bounty_to,$bounty);
+	addGold($bounty_to, $bounty);
 
 	return $bounty;
 }
@@ -711,28 +720,38 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 // ************************************
 
 
-
 // ************************************
 // ********** CLAN FUNCTIONS **********
 // ************************************
 
 function createClan($p_leaderID, $p_clanName) {
-	global $sql;
-	$p_clanName = sql(trim($p_clanName));
+	DatabaseConnection::getInstance();
 
-	$newClanID = $sql->QueryItem("SELECT nextval('clan_clan_id_seq')");
-	$sql->Insert("INSERT INTO clan (clan_id, clan_name, _creator_player_id) VALUES ($newClanID, '$p_clanName', $p_leaderID)");
-	$sql->Insert("INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES ($p_leaderID, $newClanID, 1)");
+	$p_clanName = trim($p_clanName);
+
+	$result = DatabaseConnection::$pdo->query("SELECT nextval('clan_clan_id_seq')");
+	$newClanID = $result->fetchColumn();
+
+	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan (clan_id, clan_name, _creator_player_id) VALUES (:clanID, :clanName, :leader)");
+	$statement->bindValue(':clanID', $newClanID);
+	$statement->bindValue(':clanName', $p_clanName);
+	$statement->bindValue(':leader', $p_leaderID);
+	$statement->execute();
+
+	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 1)");
+	$statement->bindValue(':clanID', $newClanID);
+	$statement->bindValue(':leader', $p_leaderID);
+	$statement->execute();
 
 	return new Clan($newClanID, $p_clanName);
 }
 
 /* *** Currently unused consider removing ***
 function get_clan_by_id($p_clanID) {
-	global $sql;
-	$sql->Query('SELECT clan_id, clan_name FROM clan WHERE clan_id = '.$p_clanID);
+	DatabaseConnection::getInstance();
+	$result = DatabaseConnection::$pdo->query('SELECT clan_id, clan_name FROM clan WHERE clan_id = '.$p_clanID);
 
-	if ($data = $sql->Fetch()) {
+	if ($data = $result->fetch()) {
 		$clan = new Clan($data['clan_id'], $data['clan_name']);
 		return $clan;
 	} else {
@@ -742,13 +761,15 @@ function get_clan_by_id($p_clanID) {
 */
 
 function get_clan_by_player_id($p_playerID) {
-	global $sql;
-	$sql->Query("SELECT clan_id, clan_name 
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name 
 	    FROM clan 
 	    JOIN clan_player ON clan_id = _clan_id 
-	    WHERE _player_id = '".sql($p_playerID)."'");
+	    WHERE _player_id = :player'");
+	$statement->bindValue(':player', $p_playerID);
+	$statement->execute();
 
-	if ($data = $sql->Fetch()) {
+	if ($data = $statement->fetch()) {
 		$clan = new Clan($data['clan_id'], $data['clan_name']);
 		return $clan;
 	} else {
@@ -757,37 +778,49 @@ function get_clan_by_player_id($p_playerID) {
 }
 
 function getPlayerName($p_playerID) {
-	global $sql;
+	DatabaseConnection::getInstance();
 
-	return $sql->QueryItem("SELECT uname FROM players WHERE player_id = $p_playerID");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT uname FROM players WHERE player_id = :player");
+	$statement->bindValue(':player', $p_playerID);
+	$statement->execute();
+
+	return $statement->fetchColumn();
 }
 
 function kick($p_playerID) {
-	global $sql, $today;
+	global $today;
 
 	$clan_long_name = get_clan_by_player_id($p_playerID)->getName();
 
-	$sql->Delete("DELETE FROM clan_player WHERE _player_id = ".sql($p_playerID));
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM clan_player WHERE _player_id = :player");
+	$statement->bindValue(':player', $p_playerID);
+	$statement->execute();
+
 	$msg = "You have been kicked out of $clan_long_name by ".get_username()." on $today.";
 
 	send_message(get_user_id(), $p_playerID, $msg);
 }
 
 function disbandClan($p_clanID) {
-	global $sql;
+	DatabaseConnection::getInstance();
 
-	$sql->Query("SELECT _player_id FROM clan_player WHERE _clan_id = $p_clanID");
 	$message = "Your leader has disbanded your clan. You are alone again.";
-    $clan_members = $sql->fetchAll();
 	$leader = get_clan_leader_id($p_clanID);
 
-	foreach ($clan_members AS $data) {
+	$statement = DatabaseConnection::$pdo->prepare("SELECT _player_id FROM clan_player WHERE _clan_id = :clan");
+	$statement->bindValue(':clan', $p_clanID);
+	$statement->execute();
+
+	while ($data = $statement->fetch()) {
 		$member_id = $data[0];
 
 		send_message($leader, $member_id, $message);
 	}
 
-	$sql->Delete("DELETE FROM clan WHERE clan_id = $p_clanID");
+	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM clan WHERE clan_id = :clan");
+	$statement->bindValue(':clan', $p_clanID);
+	$statement->execute();
 }
 
 function renameClan($p_clanID, $p_newName) {
@@ -846,7 +879,6 @@ function invitePlayer($who, $p_clanID) {
 }
 // ************************************
 // ************************************
-
 
 
 // ************************************
@@ -944,8 +976,6 @@ function flagPlayer($player, $flag, $note, $originatingPage) {
 // event/message functions are in lib_events.
 
 // user message functions are in lib_message now.
-
-
 
 
 

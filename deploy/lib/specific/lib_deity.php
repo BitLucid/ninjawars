@@ -94,7 +94,6 @@ function revive_players($params=array()) {
 	7: ...etc.
 	*/
 
-	// SQL pulls.
 	// Determine the total dead (& confirmed).
 	$sel_dead = DatabaseConnection::$pdo->query('select count(*) from players where health<1 and confirmed=1');
 	$dead_count = $sel_dead->fetchColumn();

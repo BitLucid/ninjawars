@@ -1,5 +1,5 @@
 <?php
-// *** Run the resurrection sql.
+// *** Run the resurrection script.
 function check_for_resurrection($echo=FALSE) {
 	DatabaseConnection::getInstance();
 

@@ -9,9 +9,6 @@ $just_logged_out = false;
 $referrer        = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 $player_info     = array();
 
-$sql = new DBAccess(); // *** Instantiates wrapper class for manipulating pdo.
-$GLOBALS['sql'] = $sql; // Put sql into globals array. :(
-
 // Logout/already logged in/login behaviors
 if ($logout) { // on logout, kill the session and don't redirect. 
 	logout(); 
@@ -19,7 +16,7 @@ if ($logout) { // on logout, kill the session and don't redirect.
 } elseif ($is_logged_in) {     // When user is already logged in.
 	$logged_in['success'] = $is_logged_in; 
 } elseif ($login) { 	// Specially escaped password input, put into login.
-	$logged_in    = login_user(in('user'), in('pass', null, 'toPassword'));
+	$logged_in    = login_user(in('user'), in('pass', null));
 	$is_logged_in = $logged_in['success'];
 
 	if (!$is_logged_in) { // Login was attempted, but failed, so display an error.

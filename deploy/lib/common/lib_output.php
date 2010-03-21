@@ -48,11 +48,6 @@ function message_url($url, $text){
 
 // Change this to default to toHtml.
 
-function sql($dirty){
-	// wrapper function for filtering to sql, to encode or not to encode.
-    return pg_escape_string($dirty);
-}
-
 // Replaces occurances of http://whatever with links (in blank tab).
 function replace_urls($string){
 	// Images get added by the css after the fact.

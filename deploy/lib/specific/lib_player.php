@@ -632,7 +632,6 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 				echo $password_error;
 			} else {
 				$send_pass = trim($send_pass); // *** Trims any extra space off of the password.
-				//$send_pass = $filter->toPassword($send_pass); // Filter any un-whitelisted characters.
 				echo "Phase 2 Complete: Password passes requirements.<hr>\n";
 
 				if (FALSE) { // CURRENTLY NO BLOCKED EMAIL SERVICES strstr($send_email, "@") == "@aol.com" || strstr($send_email, "@") == "@netscape.com" || strstr($send_email, "@") == "@aim.com"

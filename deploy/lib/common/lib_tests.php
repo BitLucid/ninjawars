@@ -12,9 +12,6 @@ function test_input(){
 	var_dump('RESULT:');
 	var_dump($res);
 
-	$start = "Unallowed \'SQL\"''##--';";
-	$TEST['test'] = $start;
-	$res = sanitize_sql_string($start);
 	assert($res != $start);
 	var_dump('RESULT:');
 	var_dump($res);*/
@@ -46,11 +43,6 @@ function test_input(){
 	$TEST['test'] = $start;
 	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
 	assert($res == 'Unallowed HTMLa/a');
-
-	$start = "Unallowed \'SQL\"''##--';";
-	$TEST['test'] = $start;
-	$res = in('test', $default_val=null, $filter_method=NULL, $TEST);
-	assert($res == 'Unallowed SQL--');
 
 	$start = 'Unallowed Characters>&<>""';
 	$TEST['test'] = $start;
