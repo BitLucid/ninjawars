@@ -133,11 +133,11 @@ if ($data = $result->fetch()) {
 		$bounty      = htmlentities($data['bounty']);
 		$class       = htmlentities($data['class']);
 		$level       = htmlentities($data['level']);
-		$clan        = urlencode($data['clan']);
-		$clan_l_name = htmlentities($data['clan_name']);
+		$clan        = get_clan_by_player_id($data['player_id']);
+		$clan_id = $clan? $clan->getID() : null;
+		$clan_name = $clan? $clan->getName() : null;
 
-		$class       = $class;
-		$clan_l_name = (empty($clan_l_name) ? '' : "<a href=\"clan.php?command=view&amp;clan_id=$clan\">$clan_l_name</a>");
+		$clan_name_display = (empty($clan_name) ? '' : "<a href=\"clan.php?command=view&amp;clan_id=$clan_id\">".htmlentities($clan_name)."</a>");
 
 		echo "<tr class='playerRow'>\n";
 		echo "  <td class='playerCell'>\n";
@@ -157,7 +157,7 @@ if ($data = $result->fetch()) {
 		echo "  </td>\n";
 
 		echo "  <td class='playerCell'>\n";
-		echo    $clan_l_name."\n";
+		echo    $clan_name_display."\n";
 		echo "  </td>\n";
 		echo "</tr>\n";
 	} while ($data = $result->fetch());
