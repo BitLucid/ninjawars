@@ -276,7 +276,7 @@ function display_player_profile($player_info) {
 function render_ranking_link($player_info, $linkbackpage) {
 	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE uname = :player");
-	$statement->prepare(':player', $player_info['uname']);
+	$statement->bindValue(':player', $player_info['uname']);
 	$statement->execute();
 
 	$rank_spot = $statement->fetchColumn();
