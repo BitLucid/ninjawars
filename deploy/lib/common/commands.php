@@ -762,11 +762,12 @@ function get_clan_by_id($p_clanID) {
 
 function get_clan_by_player_id($p_playerID) {
 	DatabaseConnection::getInstance();
+	$id = (int) $p_playerID;
 	$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name 
 	    FROM clan 
 	    JOIN clan_player ON clan_id = _clan_id 
-	    WHERE _player_id = :player'");
-	$statement->bindValue(':player', $p_playerID);
+	    WHERE _player_id = :player");
+	$statement->bindValue(':player', $id);
 	$statement->execute();
 
 	if ($data = $statement->fetch()) {
