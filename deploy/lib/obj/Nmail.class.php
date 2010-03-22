@@ -89,20 +89,13 @@ class Nmail {
 	 * @return boolean
 	 */
 	function valid() {
-		if ($this->to == null || $this->subject == null || $this->body == null
-			|| $this->from == null) {
-			return false;
-		} else {
-			return true;
-		}
+		return !($this->to == null || $this->subject == null || $this->body == null || $this->from == null);
 	}
 
 	// *** TODO: Add a addToAddresses() function that takes in an array
 	// *** of addresses and Names to create formal emails.
 
 	// *** TODO: get functions to get the email parts.
-
-
 
 	/**
 	 * Sends the mail out using the php mail() function.
@@ -129,5 +122,4 @@ class Nmail {
 		return $this->success;
 	}
 }
-
 ?>

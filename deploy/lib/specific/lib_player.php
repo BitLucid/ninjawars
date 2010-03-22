@@ -518,17 +518,13 @@ function create_player($send_name, $params=array()) {
     $confirm     = (int) $params['confirm'];
     $referred_by = $params['referred_by'];
 
-	$headers  = "MIME-Version: 1.0\r\n";
-	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
-	$headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n";
-	$headers .= "Reply-To: ".SUPPORT_EMAIL_FORMAL_NAME." <".SUPPORT_EMAIL.">\r\n";
 	// Create the initial player row.
 	$playerCreationQuery= "INSERT INTO players
 		 (uname, pname, health, strength, gold, messages, kills, turns, confirm, confirmed,
 		  email, _class_id, level,  status, member, days, ip, bounty, created_date)
 		 VALUES
 		 (:username, :pass, '150', '5', '100', '', '0', '180', :confirm, :preconfirm,
-		 :email,(select class_id FROM class WHERE class_name = :class),'1','1','0','0','','0', now())";
+		 :email, (SELECT class_id FROM class WHERE class_name = :class), '1', '1', '0', '0', '', '0', now())";
 	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 	$statement = DatabaseConnection::$pdo->prepare($playerCreationQuery);
 	$statement->bindValue(':username', $send_name);
@@ -538,6 +534,11 @@ function create_player($send_name, $params=array()) {
 	$statement->bindValue(':email', $send_email);
 	$statement->bindValue(':class', $send_class);
 	$statement->execute();
+
+	$headers  = "MIME-Version: 1.0\r\n";
+	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
+	$headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n";
+	$headers .= "Reply-To: ".SUPPORT_EMAIL_FORMAL_NAME." <".SUPPORT_EMAIL.">\r\n";
 
 	//  ***  Sends out the confirmation email to the chosen email address.  ***
 	$_to = "$send_email";
@@ -551,7 +552,7 @@ function create_player($send_name, $params=array()) {
 		)
 	);
 
-	$_from = "$headers";
+	$_from = $headers;
 	// *** Create message object.
 	$message = new Nmail($_to, $_subject, $_body, $_from);
     if (DEBUG) {$message->dump = true;}

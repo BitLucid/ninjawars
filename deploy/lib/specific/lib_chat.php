@@ -48,7 +48,7 @@ function get_chats($chatlength) {
         JOIN players ON chat.sender_id = player_id ORDER BY chat_id DESC ".$limit);// Pull messages
 
 	if ($limit) {
-		$statement->bindValue(':limit', $limit);
+		$statement->bindValue(':limit', $chatlength);
 	}
 
 	$statement->execute();
