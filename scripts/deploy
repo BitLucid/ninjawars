@@ -46,6 +46,8 @@ resource_file=''
 host_alias=''
 CRON_USER=''
 
+CLEAN_DEPLOY=false;
+
 while test $# -gt 0; do
 	case "$1" in
 		-*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'`
@@ -57,6 +59,12 @@ while test $# -gt 0; do
 	case $1 in
 		-c=*)
 		configuration_file=$optarg
+		;;
+	esac
+
+	case $1 in
+		--clean)
+		CLEAN_DEPLOY=true
 		;;
 	esac
 	shift
@@ -92,7 +100,17 @@ then
 
 	source_files=$tmp_dir
 else
-	source_files="`pwd`/$source_files"
+	lastchr=${source_files#${source_files%?}}
+
+	if [ ! $lastchr == '/' ]
+	then
+		source_files="$source_files/"
+	fi
+
+	if [ ! ${source_files:0:1} == '/' ]
+	then
+		source_files="`pwd`/$source_files"
+	fi
 fi
 
 if ! touch "$source_files"
@@ -200,8 +218,11 @@ fi
 ## CD TO DESTINATION
 cd $SERVER_ROOT || exit
 
-# WIPE EXISTING SITE - PROTECT resources/ FOR NOW
-rm -rf `find -P ./ -maxdepth 1|grep -v "./$"|grep -v resources`
+if [ $CLEAN_DEPLOY == true ]
+then
+	# WIPE EXISTING SITE - PROTECT resources/ FOR NOW
+	rm -rf `find -P ./ -maxdepth 1|grep -v "./$"|grep -v resources`
+fi
 
 if [ ! -d "${SERVER_ROOT}resources/" ]
 then
@@ -214,8 +235,8 @@ then
 	chmod 777 "${SERVER_ROOT}resources/logs/"
 fi
 
-cp -r $source_files/* $SERVER_ROOT
-cp $source_files/.* $SERVER_ROOT
+cp -r $source_files* $SERVER_ROOT
+cp $source_files.* $SERVER_ROOT
 echo "source files copied to $SERVER_ROOT"
 
 mkdir templates/compiled/
