@@ -139,7 +139,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 
 		if (!subtractHealth($target, $stealthAttackDamage)) { // *** if Stealth attack of whatever damage kills target. ***
 			$victor = $attacker;
-			$loser  = $victim;
+			$loser  = $target;
 
 			$gold_mod     = .1;
 			$loot         = round($gold_mod * getGold($target));
@@ -255,7 +255,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			if ($simultaneousKill = ($attackerHealthRemaining < 1)) { // *** If both died at the same time. ***
 			} else {
 				$victor = $attacker;
-				$loser  = $victim;
+				$loser  = $target;
 			}
 
 			$killpoints = 1; // *** Changes killpoints from zero to one. ***
@@ -301,6 +301,11 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 		}
 
 		if ($attackerHealthRemaining < 1) { // *** DEFENDER KILLS ATTACKER! ***
+			if ($simultaneousKill = ($attackerHealthRemaining < 1)) { // *** If both died at the same time. ***
+			} else {
+				$victor = $target;
+				$loser  = $attacker;
+			}
 			$defenderKillpoints = 1;
 
 			if ($duel) {	// *** if they were dueling when they died ***

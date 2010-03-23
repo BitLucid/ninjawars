@@ -30,7 +30,9 @@ class PlayerDAO extends DataAccessObject {
 	public function get($id) {
 		$vo = parent::get($id);
 
-		$vo->class = $vo->class_name;
+		if (is_object($vo)) {
+			$vo->class = $vo->class_name;
+		}
 
 		return $vo;
 	}
