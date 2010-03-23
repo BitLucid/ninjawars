@@ -545,10 +545,10 @@ function subtractStatus($who, $what) {     //Takes in the Status in the ALL_CAPS
 	$status = $statement->fetchColumn();
 
 	if ($status&$what) {
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET status = status-(:status&:what) WHERE uname = :player");
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET status = status-(:status::int&:what::int) WHERE uname = :player");
 		$statement->bindValue(':player', $who);
-		$statement->bindValue(':status', $status);
-		$statement->bindValue(':what', $what);
+		$statement->bindValue(':status', $status, PDO::PARAM_INT);
+		$statement->bindValue(':what', $what, PDO::PARAM_INT);
 		$statement->execute();
 
 		if ($who == get_username()) {
