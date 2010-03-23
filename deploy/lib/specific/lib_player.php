@@ -220,20 +220,21 @@ function render_clan_members($clan_id = 0, $limit = 30) {
 	ob_start();
 
 	if ($clan_id) {
-		$sel = "SELECT uname, player_id, health FROM clan_player JOIN players ON player_id = _player_id AND _clan_id = :clanID AND confirmed = 1 ORDER BY health DESC, level DESC LIMIT $limit";
+		$sel = "SELECT uname, player_id, health FROM clan_player JOIN players ON player_id = _player_id AND _clan_id = :clanID AND confirmed = 1 ORDER BY health DESC, level DESC LIMIT :limit";
 		DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare($sel);
 		$statement->bindValue(':clanID', $clan_id);
+		$statement->bindValue(':limit', $limit);
 		$statement->execute();
 ?>
         <div class='clan-members'>
             <h3 class='clan-members-header'>Clan members</h3>
 <?php
-		if (!empty($ninjas)) {
+		if ($ninja = $statement->fetch()) {
 			$display_ul = true;
 			echo "<ul>";
 
-			while ($ninja = $statement->fetch()) {
+			do {
 				$added_class = '';
 
 				if ($ninja['health'] < 1) {
@@ -241,9 +242,9 @@ function render_clan_members($clan_id = 0, $limit = 30) {
 				}
 
 				echo "<li class='clan-member$added_class'>
-                            <a href='player.php?target_id=", $ninja['player_id'], "'>", htmlentities($ninja['uname']), "</a>
+                            <a href='player.php?target_id=", urlencode($ninja['player_id']), "'>", htmlentities($ninja['uname']), "</a>
                           </li>";
-			}
+			} while ($ninja = $statement->fetch());
 
 			echo "</ul>\n";
 		}
@@ -288,7 +289,7 @@ function render_ranking_link($player_info, $linkbackpage) {
 }
 
 
-function render_list_link(){
+function render_list_link() {
     $res = "<div class='player-list-link'>
                 <a href='list_all_players.php'>Go back to the ninja list</a>
             </div>";
@@ -311,15 +312,13 @@ function render_inventory_options($username) {
 	$loop_items->bindValue(':owner', $user_id);
 	$loop_items->execute();
 
-	if (empty($loop_items)) {
-		$res = "          <option value=\"\" selected=\"selected\">No Items</option>\n";
-	} else { // Some items available.
+	if ($litem = $loop_items->fetch()) {
 		// Set shuriken at highest precedence.
 		$items_indexed = array();
 
-		while ($litem = $loop_items->fetch()) {
+		do {
 			$items_indexed[$litem['item']] = $litem; // indexed by item name.
-		}
+		} while ($litem = $loop_items->fetch());
 
 		if (isset($items_indexed['Shuriken'])) {
 			// Set shuriken as first dropdown entry.
@@ -330,9 +329,11 @@ function render_inventory_options($username) {
 		}
 
 		foreach ($items_indexed AS $loopItem) {
-			$res .= "      <option $selected value='{$loopItem['item']}'>{$loopItem['amount']} {$loopItem['item']}</option>\n";
+			$res .= "      <option $selected value='{$loopItem['item']}'>{$loopItem['amount']} ".htmlentities($loopItem['item'])."</option>\n";
 			$selected = '';
 		}
+	} else { // Some items available.
+		$res = "          <option value=\"\" selected=\"selected\">No Items</option>\n";
 	}
 
 	return $res;

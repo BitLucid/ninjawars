@@ -101,7 +101,8 @@ function render_current_enemies($enemy_list) {
 function render_recent_attackers() {
 	$recent_attackers_section = '';
 	$recent_attackers = get_recent_attackers();
-	if(!empty($recent_attackers)){
+
+	if (!empty($recent_attackers)) {
 		$recent_attackers_section .= "<h3>You were recently attacked by</h3>
 			<ul id='recent-attackers'>";
 		foreach($recent_attackers as $l_attacker) {
@@ -162,7 +163,7 @@ if (is_numeric($add_enemy)) {
 
 $enemy_section = render_current_enemies($enemy_list);
 
-if (count($enemy_list)>($enemy_limit-1)) {
+if (count($enemy_list) > ($enemy_limit - 1)) {
 	$max_enemies = true;
 }
 

@@ -9,8 +9,8 @@
  * Hack to dump out the local variables in a very visible format.
  * @param array $locals get_defined_vars() passed to this function.
 **/
-function var_dump_locals($defined=array()){
-	if(DEBUG){
+function var_dump_locals($defined=array()) {
+	if (DEBUG) {
 		echo "<table cellspacing='0' cellpadding='0' dir='ltr' class='xdebug-local-vars'
 		style='background-color:lavender;clear:both;border:thin solid grey;width:800px;padding:0;margin:0;'>
 			<tbody>
@@ -18,10 +18,10 @@ function var_dump_locals($defined=array()){
 			<th>Local Var Name </th>
 			<th>Value </th>
 			</tr>";
-		if(count($defined)==0){
+		if (count($defined)==0) {
 			echo "<tr><td colspan='2'>None sent in.</td><tr>";
 		} else {
-			foreach ($defined as $name => $contents){
+			foreach ($defined as $name => $contents) {
 				echo "<tr class='table-row-2-column' style='border:thin solid grey;padding:1px;'>
 					<td style='background-color:#e9b96e;color:black;font-weight:bold;border:thin solid grey;'>
 					&#36$name =
@@ -40,12 +40,11 @@ function var_dump_locals($defined=array()){
 	}
 }
 
-function debug($val){
-    if(DEBUG){
+function debug($val) {
+    if (DEBUG) {
         echo "<pre style='font-size:12pt'>";
         var_dump($val);
         echo "</pre>";
     }
 }
-
 ?>
