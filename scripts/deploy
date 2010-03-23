@@ -98,7 +98,7 @@ then
 		;;
 	esac
 
-	source_files=$tmp_dir
+	source_files="$tmp_dir/"
 else
 	lastchr=${source_files#${source_files%?}}
 
