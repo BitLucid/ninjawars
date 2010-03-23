@@ -101,7 +101,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			$statement->bindValue(':player', $target);
 			$statement->execute();
 
-			$data = $statement->fetch();
+			$data = $statement->fetch(PDO::FETCH_ASSOC);
 
 			echo "<table>\n";
 			echo "<tr>\n";

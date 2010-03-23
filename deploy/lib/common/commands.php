@@ -268,11 +268,11 @@ function addKills($who, $amount) {
 		// if record exists
 		$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints + :amount WHERE uname = :player AND killsdate = now() AND killpoints > 0");  //increase killpoints
 		$statement->bindValue(':amount', $amount);
-		$statement->bindValue(':player', $player);
+		$statement->bindValue(':player', $who);
 	} else {
 		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())");  //create a new record for today
 		$statement->bindValue(':amount', $amount);
-		$statement->bindValue(':player', $player);
+		$statement->bindValue(':player', $who);
 	}
 
 	$statement->execute();
@@ -295,11 +295,11 @@ function subtractKills($who,$amount) {
 		// if record exists
 		$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints - :amount WHERE uname = :player AND killsdate = now() AND killpoints < 0");  //increase killpoints
 		$statement->bindValue(':amount', $amount);
-		$statement->bindValue(':player', $player);
+		$statement->bindValue(':player', $who);
 	} else {
 		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())");  //create a new record for today
 		$statement->bindValue(':amount', $amount*-1);
-		$statement->bindValue(':player', $player);
+		$statement->bindValue(':player', $who);
 	}
 
 	$statement->execute();
