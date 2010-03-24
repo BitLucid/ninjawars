@@ -54,7 +54,7 @@ label{
                             </span>
             {/if}
 
-			          <input id="target" type="hidden" value="{$target}" name="target">
+			          <input id="target" type="hidden" value="{$target}" name="target" title='Attack or Duel this ninja'>
                             <label class='attack-player-trigger'>
                               <input class='attack-player-image' type='image' value='Attack'
                                  name='attack-player-shuriken' src='{$IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>

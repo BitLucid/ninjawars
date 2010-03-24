@@ -58,7 +58,7 @@ table[background],
 td[background],
 th[background],
 input[border],
-table[border],
+/*table[border], sometimes needed for older browsers*/
 table[cellpadding],
 table[cellspacing],
 object[codebase],

@@ -417,7 +417,7 @@ function render_communication($target) {
         <input type='hidden' name='target_id' value='$target_id'>
         <input id='messenger' type='hidden' value='1' name='messenger'><br >
         <textarea name='message' cols='20' rows='2'></textarea>
-        <input type='submit' value='Send Mail' class='formButton'>
+        <input type='submit' value='Send Message' class='formButton'>
         </form>
       </div>";
 	return $res;
