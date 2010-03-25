@@ -17,10 +17,10 @@ echo render_json($type, $jsoncallback);
  * Determine which function to call to get the json for.
 **/
 function render_json($type, $jsoncallback) {
-	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index');
+	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index', 'latest_chat_id'=>'json_latest_chat_id');
 	$res = null;
 
-	if ($valid_type_map[$type]) {
+	if (isset($valid_type_map[$type])) {
 		$res = $jsoncallback.'('.$valid_type_map[$type]().')';   
 	}
 
@@ -62,10 +62,18 @@ function json_player() {
 
 function json_chats() {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->query("SELECT * FROM chat ORDER BY time DESC");
+	$statement = DatabaseConnection::$pdo->query("SELECT * FROM chat ORDER BY date DESC");
 	$chats = $statement->fetchAll();
 
 	return '{"chats":'.json_encode($chats).'}';
+}
+
+function json_latest_chat_id() {
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->query("SELECT chat_id FROM chat ORDER BY date DESC limit 1");
+	$chat_id = $statement->fetchAll();
+
+	return '{"latest_chat_id":'.json_encode($chat_id).'}';
 }
 
 function json_index() {
