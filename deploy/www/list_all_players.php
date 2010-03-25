@@ -116,8 +116,8 @@ $numofpages = ceil($totalrows / $record_limit);
 $limitvalue = ($page * $record_limit) - $record_limit;
 
 // Get the ninja information.
-$sel = "SELECT rank_id, uname, class, level, alive, days, _clan_id AS clan_id, clan_name, player_id
-	FROM rankings LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id ".$where_clause." ORDER BY rank_id ASC, player_id ASC
+$sel = "SELECT rank_id, rankings.uname, class.class_name as class, rankings.level, rankings.alive, rankings.days, clan_player._clan_id AS clan_id, clan.clan_name, players.player_id
+	FROM rankings LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id JOIN players on rankings.player_id = players.player_id JOIN class on class.class_id = players._class_id ".$where_clause." ORDER BY rank_id ASC, player_id ASC
 	LIMIT $record_limit OFFSET $limitvalue";
 
 $ninja_info = DatabaseConnection::$pdo->prepare($sel);
