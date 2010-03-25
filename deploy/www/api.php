@@ -71,9 +71,9 @@ function json_chats() {
 function json_latest_chat_id() {
 	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->query("SELECT chat_id FROM chat ORDER BY date DESC limit 1");
-	$chat_id = $statement->fetchAll();
+	$chat_ids = $statement->fetchAll();
 
-	return '{"latest_chat_id":'.json_encode($chat_id).'}';
+	return '{"latest_chat_id":'.json_encode(reset($chat_ids)).'}';
 }
 
 function json_index() {

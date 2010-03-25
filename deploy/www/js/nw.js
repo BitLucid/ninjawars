@@ -294,10 +294,30 @@ function clickHidesTarget(ident, targetToHide){
 
 // Begin the cycle of refreshing the mini chat after the standard delay.
 function startRefreshingMinichat(){
-    var secs = 20;
+    var secs = 20; // Chat reloading frequency.
     setTimeout(function (){
-        startRefreshingMinichat();
+        checkForNewChats();
+        startRefreshingMinichat(); // Loop the check for refresh.
     }, secs*1000); 
+}
+
+// Check for the latest chat and update if it's different.
+function checkForNewChats(){
+    // TODO: Eventually this should just pull the chats and load them into the dom.
+    // Check whether the latest chat doesn't match the latest displayed chat.
+    // NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
+    $.getJSON('api.php?type=latest_chat_id&jsoncallback=?', function(data){
+        debug('chat id found: '+data.latest_chat_id.chat_id);
+        // Update global data stores if an update is needed.
+        var newChats = false;
+        if(updateDataStore(data.latest_chat_id, 'chat_id', 'latestChatId', 'chat_id')){
+            newChats = true;
+        }
+        if(newChats){
+            refreshMinichat(null, 20);
+        }
+        // Since this callback isn't immediate, the feedback has to occur whenever the callback finishes.
+	}); // End of getJSON function call.
 }
 
 // Load the chat section, or if that's not available & nested iframe, refresh iframe
@@ -310,12 +330,13 @@ function refreshMinichat(msg, chatLength){
     } else {
         data = {'section_only':'1', 'chatlength':leng};
     }
-    if(container){
+    if(container){ // check that there is a new chat -to- load.
         container.load("mini_chat.php", data);
         return false;
     }
 }
 
+// Send the contents of the chat form input box.
 function sendChatContents(domform){
     var chatbox = $(domform).find('#message');
     if(chatbox){
@@ -430,10 +451,11 @@ $(document).ready(function() {
         
         // Update the mini chat section.
         refreshMinichat();
+        startRefreshingMinichat(); // Start refreshing the chat.
         
     }
     
-    $('#index-chat form').submit(function (){return sendChatContents(this)}).css({'font-weight':'bold','color':'maroon'});
+    $('#index-chat form').submit(function (){return sendChatContents(this)});
     // When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
     
     
