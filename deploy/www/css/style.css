@@ -1351,6 +1351,11 @@ iframe{
 	height:15px;
 }
 
+#message-inbox{
+    font-size: 1.3em;
+    font-weight:normal;
+}
+
 #clan-mail-section{
     width: 50%;
     margin-left:auto;
