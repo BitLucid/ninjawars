@@ -74,9 +74,15 @@ if [ ! -d $source_files ]
 then
 	tmp_dir=`mktemp -d /tmp/nw.XXXXXXXXXX`
 
+	if [ ! -f $source_files ]
+	then
+		echo "ERROR: Source files not found! Aborting.";
+		exit;
+	fi
+
 	if ! touch "$tmp_dir"
 	then
-		echo "ERROR: Can't make temporary directory for source extraction";
+		echo "ERROR: Can't make temporary directory for source extraction! Aborting.";
 		exit;
 	fi
 
