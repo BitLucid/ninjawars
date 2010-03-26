@@ -62,10 +62,10 @@ if ($searched) {
 	$view_type = 'searched';
 
 	if (strlen($searched) == 1) {
-		$where_clause = "WHERE (uname ilike :param".count($queryParams).")";
+		$where_clause = "WHERE (ranking.uname ilike :param".count($queryParams).")";
 		$queryParams[] = $searched.'%';
 	} else {
-		$where_clause = "WHERE (uname ~* :param".count($queryParams).")";
+		$where_clause = "WHERE (ranking.uname ~* :param".count($queryParams).")";
 		$queryParams[] = $searched;
 	}
 } else {
