@@ -223,7 +223,7 @@ function updateDataStore(datum, property_name, global_store, comparison_name, co
 //increases when feedback == false, rebaselines when feedback == true
 function getUpdateInterval(feedback){
 	var maxInt = 180;
-	var min = 10; // Changes push the interval to this minimum.
+	var min = 20; // Changes push the interval to this minimum.
 	var first = 1;  // The very first interval to run the update for.
 	var first_interval = false;
 	if(!NW.updateInterval){
@@ -294,7 +294,8 @@ function clickHidesTarget(ident, targetToHide){
 
 // Begin the cycle of refreshing the mini chat after the standard delay.
 function startRefreshingMinichat(){
-    var secs = 20; // Chat reloading frequency.
+    // TODO: MAKE THIS A SINGLET!
+    var secs = 30; // Chat reloading frequency.
     setTimeout(function (){
         checkForNewChats();
         startRefreshingMinichat(); // Loop the check for refresh.
@@ -307,7 +308,7 @@ function checkForNewChats(){
     // Check whether the latest chat doesn't match the latest displayed chat.
     // NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
     $.getJSON('api.php?type=latest_chat_id&jsoncallback=?', function(data){
-        debug('chat id found: '+data.latest_chat_id.chat_id);
+        //debug('chat id found: '+data.latest_chat_id.chat_id);
         // Update global data stores if an update is needed.
         var newChats = false;
         if(updateDataStore(data.latest_chat_id, 'chat_id', 'latestChatId', 'chat_id')){
@@ -449,8 +450,10 @@ $(document).ready(function() {
         // Update the quickstats section.
         //refreshQuickstats();
         
-        // Update the mini chat section.
+        // Update the mini chat section for the first time.
         refreshMinichat();
+        
+        // Start refreshing the chat.
         startRefreshingMinichat(); // Start refreshing the chat.
         
     }

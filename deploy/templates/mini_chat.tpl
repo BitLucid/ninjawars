@@ -1,10 +1,3 @@
-<script type="text/javascript">
-{literal}
-    startRefreshingMinichat();
-{/literal}
-</script>
-
-
 <div id='mini-chat'>
 
     <div class='active-members-count'>
