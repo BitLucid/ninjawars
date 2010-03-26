@@ -66,8 +66,12 @@ class Skill
 				$this->skill_map['All'];
 			return $skills;
 		}
-
-		return $this->skill_map[getClass($username)] + $this->skill_map['All'];
+		$class = getClass($username);
+		$class_skills = array();
+		if($class){
+			$class_skills = $this->skill_map[$class];
+		}
+		return $class_skills + $this->skill_map['All'];
 	}
 
 	/**
