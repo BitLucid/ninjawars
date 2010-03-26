@@ -51,7 +51,7 @@ if ($deleteAccount) {
 } else if ($changeprofile == 1) {
     // Limit the profile length.
 	if ($newprofile != "") {
-		DabaseConnection::getInstance();
+		DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo-prepare("UPDATE players SET messages = :profile WHERE uname = :player");
 		$statement->bindValue(':profile', $newprofile);
 		$statement->bindValue(':player', $username);
