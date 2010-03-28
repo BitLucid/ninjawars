@@ -262,6 +262,12 @@ a:link {} a:visited {} a:active {}
     text-align:center;
     float:right;
     width:80px;
+    height:80px;
+}
+
+img#class-shuriken{
+    width:20px;
+    height:17px;
 }
 /* Clan avatar css set in the .member section. */
 

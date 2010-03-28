@@ -104,7 +104,7 @@
                   </a>
                 </li>
                 <li>
-				  <div id='ninjawars-title'><a href='tutorial.php' target='main'><img src='images/ninjawars_title.png' alt='Ninja Wars'></a></div>
+				  <div id='ninjawars-title'><a href='tutorial.php' target='main'><img id='ninjawars-title-image' src='images/ninjawars_title.png' alt='Ninja Wars'></a></div>
                 </li>
                 <li id='village-actions'>
                   <a href='attack_player.php' target='main'>                  

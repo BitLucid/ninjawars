@@ -113,7 +113,7 @@ function render_avatar_section_from_email($email, $img_size=null){
 
     return "
     <div id='avatar'>
-        <img alt='' src='$img_url'>
+        <img alt='' src='$img_url' height='80' width='80'>
     </div>";
 }
 
@@ -138,7 +138,7 @@ function render_avatar_section($player, $img_size=null){
 function render_class_section($class) {
     $IMAGE_ROOT = IMAGE_ROOT;
     return "<span class='player-class $class'>
-        <img src='{$IMAGE_ROOT}small{$class}Shuriken.gif' alt=''>
+        <img id='class-shuriken' src='{$IMAGE_ROOT}small{$class}Shuriken.gif' alt=''>
         $class
     </span>";
 }
