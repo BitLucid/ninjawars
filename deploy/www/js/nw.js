@@ -405,7 +405,7 @@ function soloPage(){
 function april1stCheck(){
     if(isIndex()){
         var currentTime = new Date();
-        var day = currentTime.getDay();
+        var day = currentTime.getDate();
         var month = currentTime.getMonth();
         var randomnumber=Math.floor(Math.random()*(10+1));
         var random2 = Math.floor(Math.random()*(10+1));
@@ -421,6 +421,8 @@ $(document).ready(function() {
    
     // INDEX ONLY CHANGES 
     if(isIndex() || isRoot()){ 
+
+        $('#chat-loading').text('...Chat Loading...');
 
 		chainedUpdate(); // Start the periodic index update.
        	
@@ -455,11 +457,19 @@ $(document).ready(function() {
         
         // Start refreshing the chat.
         startRefreshingMinichat(); // Start refreshing the chat.
+
+    
+        $('#index-chat form').submit(function (){return sendChatContents(this)});
+        // When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
+        
+        
+        // Add click handlers to certain sections.
+        clickHidesTarget('#show-hide-chat', '#chat-and-switch');
+        clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
+        clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
         
     }
-    
-    $('#index-chat form').submit(function (){return sendChatContents(this)});
-    // When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
+
     
     
     /* THIS CODE RUNS FOR ALL SUBPAGES */
@@ -472,10 +482,6 @@ $(document).ready(function() {
     pageTracker._trackPageview();
     } catch(err) {}
 
-    april1stCheck();
+    //april1stCheck();
     
-    // Add click handlers to certain sections.
-    clickHidesTarget('#show-hide-chat', '#chat-and-switch');
-    clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
-    clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
  });
