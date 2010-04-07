@@ -1,8 +1,12 @@
 <?php
-// For true user-to-user or user-to-clan messages as opposed to events.
+// For true user-to-user or user-to-clan messages, 255 chars or less,  as opposed to game events.
 function send_message($from_id, $to_id, $msg) {
+    $length = strlen($msg);
+    if($length > 255){
+        error_log('Message length limit exceeded: ['.$msg.']');
+    }
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default, :from, :to, :message, now())");
+	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default, :from, :to, :message::varchar(255), now())");
 	$statement->bindValue(':from', $from_id);
 	$statement->bindValue(':to', $to_id);
 	$statement->bindValue(':message', $msg);
