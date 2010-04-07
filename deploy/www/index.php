@@ -16,7 +16,7 @@ if ($logout) { // on logout, kill the session and don't redirect.
 } elseif ($is_logged_in) {     // When user is already logged in.
 	$logged_in['success'] = $is_logged_in; 
 } elseif ($login) { 	// Specially escaped password input, put into login.
-	$logged_in    = login_user(in('user'), in('pass', null, null));
+	$logged_in    = login_user(in('user'), in('pass', null, 'toMessage'));
 	$is_logged_in = $logged_in['success'];
 
 	if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
