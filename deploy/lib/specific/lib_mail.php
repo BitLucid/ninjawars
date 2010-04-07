@@ -6,7 +6,7 @@ function delete_mail($ids, $all=false) {
 	DatabaseConnection::getInstance();
 
 	$deleted = 0;
-	$user_d = get_user_id();
+	$user_id = get_user_id();
 
 	if ($all) { // Delete all a user's mail.
 		$del = "DELETE FROM message WHERE send_to = :user";
