@@ -1,10 +1,5 @@
 
 
-<!-- Update the login-bar's health display. -->
-<script language='javascript' type='text/javascript'>
-    updateHealthBar({$players_health});
-</script>
-
 
 
 {if !$viewinv}
@@ -83,3 +78,9 @@
 	      </tr>
 	    </table>
 {/if}
+
+
+<!-- Update the login-bar's health display. -->
+<script language='javascript' type='text/javascript'>
+    updateHealthBar({$players_health});
+</script>
