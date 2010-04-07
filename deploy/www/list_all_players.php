@@ -62,10 +62,10 @@ if ($searched) {
 	$view_type = 'searched';
 
 	if (strlen($searched) == 1) {
-		$where_clause = "WHERE (ranking.uname ilike :param".count($queryParams).")";
+		$where_clause = "WHERE (rankings.uname ilike :param".count($queryParams).")";
 		$queryParams[] = $searched.'%';
-	} else {
-		$where_clause = "WHERE (ranking.uname ~* :param".count($queryParams).")";
+	} else if (substr_compare($searched, '#', 0, 1) != 0) {
+		$where_clause = "WHERE (rankings.uname ~* :param".count($queryParams).")";
 		$queryParams[] = $searched;
 	}
 } else {
@@ -96,7 +96,8 @@ $totalrows = $count_statement->fetchColumn();
 // Determine the page, if the dead count is more than the rank spot, default to 1, otherwise use the input page.
 // Number of pages = ceil($totalrows / $record_limit);
 // limit value = ($page * $record_limit) - $record_limit;
-if ($searched > 0) {
+
+if ($searched && substr_compare($searched, '#', 0, 1) === 0) {
 	$page = ceil($searched / $record_limit);
 } else if ($page == "searched") {
 	$page = in('page', 1);
@@ -106,9 +107,11 @@ if ($searched > 0) {
 	} else {
 		$rank_spot = ($rank_spot > 0 ? $rank_spot : $totalrows + 1);
 	}
+
 	if ($page == "") {
 		$page       = ($dead_count > $rank_spot ? 1 : $page);
 	}
+
 	$page = ($page < 1 ? 1 : $page); // Prevent the page number from going negative.
 }
 
