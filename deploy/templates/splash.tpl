@@ -172,8 +172,7 @@
                     <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
                   </div>
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
-                    ...Chat loading...
-                    <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
+                    <span id='chat-loading-message' style='display:hidden'>...Loading Chat...</span>
                     <noscript>
                         <!-- Only display the frame if javascript isn't enabled. -->
                         <iframe frameborder='0' border='0' id="mini_chat" name="mini_chat" src="mini_chat.php">

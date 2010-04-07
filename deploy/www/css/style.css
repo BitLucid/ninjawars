@@ -107,6 +107,7 @@ h1, h2, h3, h4, h5, h6, .subtitle, .title{
 	margin-bottom:.3em;
 	font-weight:bold;
 	background:#303030 url(/images/blacktransfaderight.png) right top repeat-y;
+	padding-left: 160px;
 	color:#cccccc;
 }
 h1, h2, .title, .player-info .player-name{
@@ -137,7 +138,7 @@ h2{
 h1{
 	background: #BDB76B url(/images/blacktransfaderight.png) right top repeat-y;
 	border:none;
-    padding: 0 58px 0 58px;
+    padding: 0 58px 0 102px; /* Increased left padding to account for black fade image */
 	font-family: "edding-780-1","edding-780-2", Impact, Charcoal, sans-serif;
 	font-size:150%;
 	max-width: 1000px;

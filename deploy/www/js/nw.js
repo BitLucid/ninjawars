@@ -422,7 +422,7 @@ $(document).ready(function() {
     // INDEX ONLY CHANGES 
     if(isIndex() || isRoot()){ 
 
-        $('#chat-loading').text('...Chat Loading...');
+        $('#chat-loading').show();
 
 		chainedUpdate(); // Start the periodic index update.
        	

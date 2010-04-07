@@ -187,7 +187,7 @@
                     <button type="submit" value="1" class="formButton">Chat</button>
                   </form>
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
-                    <span id='chat-loading-message'></span>
+                    <span id='chat-loading-message' style='display:hidden'>...Loading Chat...</span>
                     <noscript>
                         <iframe frameborder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
                           <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
