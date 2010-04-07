@@ -44,7 +44,7 @@ if (!$clan) {
 		$statement->execute();
 		$current_clan = $statement->fetchColumn();
 
-		echo "<div style=\"border:1 solid #000000;font-weight: bold;\">\n";
+		echo "<div style=\"border:1px solid #000000;font-weight: bold;\">\n";
 
 		if ($current_clan != "") {
 			echo "This member is already part of a clan.\n";
