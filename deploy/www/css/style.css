@@ -1602,3 +1602,12 @@ select option #blue-class-select{
 	border: 1px solid gray;
 	padding: 10px;
 }
+
+.debug{
+    border:2px red dashed;
+    font-size: 12px;
+    color:white;
+    background-color:black;
+    font-weight:bold;
+}
+
