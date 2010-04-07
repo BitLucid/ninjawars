@@ -2,6 +2,24 @@
 // See also the older "clan functions" in commands.php
 require_once(SERVER_ROOT."lib/specific/lib_player.php");
 
+
+// Without checking for pre-existing clan and other errors, adds a player into a clan.
+function add_player_to_clan($player_id, $clan_id){
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_clan_id, _player_id) VALUES (:clan, :player_id)");
+	$statement->bindValue(':clan', $clan_id);
+	$statement->bindValue(':player_id', $player_id);
+	$statement->execute();
+	// Add the player into the clan.
+
+    $random      = rand(1001, 9990); // Semi-random confirmation number, and change the players confirmation number.
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET confirm = :confirm WHERE player_id = :player_id");
+	$statement->bindValue(':confirm', $random);
+	$statement->bindValue(':player_id', $player_id);
+	$statement->execute();
+}
+
+
 // Show the form for the clan joining, or perform the join.
 function render_clan_join($process=null, $username, $clan_id) {
 	DatabaseConnection::getInstance();
@@ -16,10 +34,11 @@ function render_clan_join($process=null, $username, $clan_id) {
 		$confirmStatement->bindValue(':user', $username);
 		$confirmStatement->execute();
 		$confirm = $confirmStatement->fetchColumn();
+		
+		// These ampersands get encoded later.
+		$url = message_url("clan_confirm.php?clan_joiner=".get_user_id($username)."&agree=1&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
 
-		$url = message_url("clan_confirm.php?clan_joiner=".get_user_id($username)."&amp;confirm=$confirm&amp;clan_id=".urlencode($clan_id), 'Confirm Request');
-
-		$join_request_message = "CLAN JOIN REQUEST: ".htmlentities($username)." has sent a request to join clan ".htmlentities($clan['clan_name']).".
+		$join_request_message = "CLAN JOIN REQUEST: ".htmlentities($username)." has sent a request to join your clan.
 			If you wish to allow this ninja into your clan click the following link:
 			$url";
 		send_message(get_user_id($username), $leader_id, $join_request_message);

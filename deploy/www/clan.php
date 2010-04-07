@@ -213,7 +213,13 @@ if (!$player_id) {
 		}
 
 		echo "<div>You are not a member of any clan.</div>\n";
-		echo "<div><a href=\"clan.php?command=join\">Join a Clan</a></div>\n";
+		echo "<div><a href=\"clan.php?command=join\">View clans available to join</a></div>\n";
+		if($clan_id_viewed){
+		    $viewed_clan = get_clan($clan_id_viewed);
+		    $viewed_clan_name = $viewed_clan['clan_name'];
+    		echo "<div><a href='clan.php?command=join&amp;clan_id=". $clan_id_viewed ."&process=1'>Send a request to join Clan ". $viewed_clan_name ."</a></div>"; 
+    	}
+		
 		if ($viewer_level >= CLAN_CREATOR_MIN_LEVEL) {
 			//Prevents characters under the level req from seeing clan creation option.
 			echo "<div><a href=\"clan.php?command=new\">Start a New Clan</a></div>";
