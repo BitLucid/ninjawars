@@ -78,23 +78,6 @@ class Filter
 		return preg_replace("/[^\w\d_\-\.\&\+\?\,\%\:\/]/", "", (string) $dirty);
 	}
 
-	// User messages should have a special exception made of them.
-	function toMessage($dirty, $limit=null) {
-/*	We are no longer filtering messages INTO the database, only OUT OF
-		// Encode the quotes.
-		$default_message_limit = 2000;
-		// Encode single quotes.
-		$dirty = substr(htmlentities($dirty), 0, ($limit? $limit : $default_message_limit));
-		// Custom replacement of the apostrophe.
-//		$dirty = preg_replace("/[\']/", "&apos;", (string) $dirty); // &apos is not an HTML entity, only in XML, and even then, not required
-		// Whitelist replace everything else that isn't in the character groups listed.
-		$dirty = preg_replace("/[^\w\d_\-\+\.\&\;\s\!\?\,\=\*\%\(\)\:\@\/]/", "", (string) $dirty);
-		// Replace urls with anchor hrefs.
-		$dirty = $this->replace_urls($dirty);
-*/
-		return $dirty;
-	}
-
 	function toEmail($dirty) {
 		$result = NULL;
 		$result = filter_var($dirty, FILTER_VALIDATE_EMAIL);
@@ -121,33 +104,5 @@ class Filter
 	function replace_urls($string) {
 	    return replace_urls($string); // Use the lib_output.php function.
 	}
-
-
-	/* EVENTUAL POTENTIAL FILTERS*/
-
-	/*
-	function cleanTags($source, $tags = null)
-	{
-	    function clean($matched)
-	    {
-	          $attribs = "javascript:|onclick|ondblclick|onmousedown|onmouseup|onmouseover|".
-	                     "onmousemove|onmouseout|onkeypress|onkeydown|onkeyup|".
-	                     "onload|class|id|src|style";
-	          $quot = "\"|\'|\`";
-	          $stripAttrib = "' ($attribs)\s*=\s*($quot)(.*?)(\\2)'i";
-	          $clean = stripslashes($matched[0]);
-	          $clean = preg_replace($stripAttrib, '', $clean);
-	          return $clean;
-	    }
-
-	    $allowedTags='<a><br><b><i><br><li><ol><p><strong><u><ul>';
-	    $clean = strip_tags($source, $allowedTags);
-	    $clean = preg_replace_callback('#<(.*?)>#', "clean", $source);
-	    return $source;
-	}
-	*/
-
-	//IF NEEDED: function toIP
-
 }
 ?>

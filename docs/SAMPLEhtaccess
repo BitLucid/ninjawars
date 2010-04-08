@@ -11,3 +11,6 @@ php_value session.cookie_domain "www.ninjawars.net"
 </FilesMatch>
 #Note that the AllowOverride directive in /etc/apache2/sites-available/default
 #cannot equal None, as that will prevent the .htaccess from working.
+
+addType application/x-javascript .js
+addType image/gif .gif
