@@ -12,7 +12,7 @@
 		  </td>
 		  <td class="playerCell classCell">
 		    <!-- Display an image of the right colored shuriken. -->
-		    <span class='{$class}'><img src='{$WEB_ROOT}images/small{$class}Shuriken.gif' alt=''>
+		    <span class='{$class}'><img style='width:20px;height:17px' src='{$WEB_ROOT}images/small{$class}Shuriken.gif' alt=''>
 		      {$class}
 		    </span>
 		  </td>
