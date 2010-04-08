@@ -23,7 +23,7 @@ $username     = get_username();
 $next_level   = (getLevel($username) * 5);
 $max_health   = max_health_by_level($level);
 $progress     = min(100, round(($kills/$next_level)*100));
-$health_pct   = round(($health/$max_health)*100);
+$health_pct   = min(100, round(($health/$max_health)*100));
 
 $status_output_list = render_status_list();
 
