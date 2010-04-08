@@ -124,7 +124,7 @@
                 <ul id='village-subcategory'>
                   <li><a href="shop.php" target="main" title='Spend your money to get weapons.'>Shop</a></li>
                   <li><a href="work.php" target="main" title='Trade your turns to get money.'>Work</a></li>
-                  <li><a href="doshin_office.php" target="main" title='Hunt bounties for money.'>Doshin <img src="images/doshin.png" alt=""></a></li>
+                  <li><a href="doshin_office.php" target="main" title='Hunt bounties for money.'>Doshin <img src="images/doshin.png" alt="" style='height:8px;width:8px'></a></li>
                 </ul>
             </div>
         </div>
@@ -152,7 +152,7 @@
         <div id='ninja-stats' class='header-section'>
         
         <div id='logout'>
-            <a href="index.php?logout=true"><img href='{$IMAGE_ROOT}logoutArrowAndText.png' alt='Logout' title='Log off the game' style='height:75px;width:71px'></a>
+            <a href="index.php?logout=true"><img src='{$IMAGE_ROOT}logoutTriangle.png' alt='Logout' title='Log off the game' style='height:70px;width:70px'></a>
         </div>
         
         </div><!-- End of ninja-stats -->
