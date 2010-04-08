@@ -2,12 +2,29 @@
 
 <div id='attack-player-page'>
 
-  {$locations}
+    <h3>Locations</h3>
+    <ul>
+    {section name=looploc loop=$locations}
+      <li style='padding-left:8px'>
+      	<a href='{$locations[looploc].url}'>
+      		{if $locations[looploc].image}<img src='{$IMAGE_ROOT}{$locations[looploc].image}' alt='' style='width:8px;height:8px'>{/if}
+      		{$locations[looploc].name}
+      	</a>
+      </li>
+    {/section}
+    </ul>
   
   <hr>
   
-  {$npcs}
-
+  <h3>Attack a citizen:</h3>
+  <ul id='npc-list'>
+    {section name=person loop=$npcs}
+        {if $npcs[person]}
+      <li><a href='{$npcs[person].url}' target='main'><img alt='' src='images/characters/{$npcs[person].image}' style='width:25px;height:46px'> {$npcs[person].name}</a></li>
+      {/if}
+    {/section}
+  </ul>
+      
   <hr>
 
   <p>

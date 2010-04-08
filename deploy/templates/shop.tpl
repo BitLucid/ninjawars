@@ -42,7 +42,7 @@
   </td>
 
   <td>
-  <img src="images/scroll.png" alt="Scroll">
+  <img style='width:55px;height:20px' src="images/scroll.png" alt="Scroll">
 </td>
 </tr>
 <tr>
@@ -59,7 +59,7 @@
   </td>
 
   <td>
-  <img src="images/scroll.png" alt="Scroll">
+  <img style='width:55px;height:20px' src="images/scroll.png" alt="Scroll">
   </td>
 </tr>
 <tr>
@@ -76,7 +76,7 @@
   </td>
 
   <td>
-  <img src="images/scroll.png" alt="Scroll">
+  <img style='width:55px;height:20px' src="images/scroll.png" alt="Scroll">
   </td>
 </tr>
 <tr>
@@ -93,7 +93,7 @@
   </td>
 
   <td>
-  <img src="images/scroll.png" alt="Scroll">
+  <img style='width:55px;height:20px' src="images/scroll.png" alt="Scroll">
   </td>
 </tr>
 <tr>
@@ -110,7 +110,7 @@
   </td>
 
   <td>
-  <img src="images/mini_star.png" alt="Shuriken">
+  <img src="images/mini_star.png" alt="Shuriken" style='width:25px;height:23px'>
   </td>
 </tr>
 <tr>

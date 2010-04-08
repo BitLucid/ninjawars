@@ -6,7 +6,7 @@ $quickstat  = "player";
 
 include SERVER_ROOT."interface/header.php";
 
-function render_village_locations() {
+function village_locations_list() {
     $locations = array(
         array('name'=>'Shrine', 'url'=>'shrine.php', 'image'=>'shrine.png'), 
         array('name'=>'Doshin', 'url'=>'doshin_office.php', 'image'=>'doshin.png'), 
@@ -15,10 +15,10 @@ function render_village_locations() {
         array('name'=>'Dojo', 'url'=>'dojo.php'), 
         array('name'=>'Casino', 'url'=>'casino.php')
     );
-    return render_template('village_locations.tpl', array('locations'=>$locations, 'IMAGE_ROOT'=>IMAGE_ROOT));
+    return $locations;
 }
 
-function render_npc_list() {
+function npcs_list() {
     // Array that simulates database information for switching out for an npc database solution.
     $npcs = array(
         array('name'=>'Villager', 'url'=>'attack_npc.php?attacked=1&amp;victim=villager', 'image'=>'fighter.png'), 
@@ -27,15 +27,14 @@ function render_npc_list() {
         array('name'=>"Emperor's Guard", 'url'=>'attack_npc.php?attacked=1&amp;victim=guard', 'image'=>'guard.png'), 
         array('name'=>'Samurai', 'url'=>'attack_npc.php?attacked=1&amp;victim=samurai', 'image'=>'samurai.png')
     );
-
-    return render_template('npc_list.tpl', array('npcs'=>$npcs)); 
+    return $npcs;
 }
 
-$locations = render_village_locations();
+$locations = village_locations_list();
 
-$npcs = render_npc_list();
+$npcs = npcs_list();
 
-echo render_template('attack_player.tpl', array('locations'=>$locations, 'npcs'=>$npcs));
+echo render_template('attack_player.tpl', array('locations'=>$locations, 'npcs'=>$npcs, 'IMAGE_ROOT'=>IMAGE_ROOT));
 
 include SERVER_ROOT."interface/footer.php";
 ?>
