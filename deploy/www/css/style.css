@@ -285,6 +285,12 @@ img#class-shuriken{
     padding-right: 15px;
 }
 
+a.show-hide-link{
+    background: url(/images/show_and_hide.png) left center no-repeat;
+    padding: 0 16px;
+    color:gray;
+}
+
 ol.aboutUpper {
 	list-style-type: upper-roman;
 	margin-left: 0;
@@ -676,19 +682,6 @@ body.solo-page #logo-appended{
 	color:darkGray;
 	font-family: Tahoma,Arial,Helvetica,sans-serif;
 	font-size: 10px;
-}
-
-.box-title, .box-title a{
-	padding-top:3px;
-	color: CadetBlue;
-	/*font-weight: bold;*/
-	text-decoration: none;
-}
-.active .box-title, .active .box-title a{
-	color: CadetBlue;
-}
-.passive .box-title, .passive .box-title a{
-	color: CadetBlue;
 }
 .boxes {
 	padding: 3px 0 3px 5px;

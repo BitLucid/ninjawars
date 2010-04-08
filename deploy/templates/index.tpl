@@ -18,7 +18,7 @@
           <div id="quick-stats" class="boxes">
             <div class="box-title centered">
               <a id='show-hide-quickstats' class="show-hide-link"><!-- jQuery show/hide -->
-                Quick Stats <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+                Quick Stats
               </a>
             </div>
             <div id="quickstats-and-switch-stats"><!-- Id used by show hide jquery -->
@@ -37,7 +37,7 @@
           <div id="actions" class="boxes active">
             <div class="box-title">
               <a id='show-hide-actions-menu' class="show-hide-link"><!-- jQuery show/hide -->
-                Actions <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+                Actions
               </a>
             </div>
             <ul class="basemenu" id="actions-menu"><!-- Id used by show hide jquery -->
@@ -173,7 +173,7 @@
               <div id="village-chat" class="boxes active">
                 <div class="box-title centered">
                   <a id='show-hide-chat' class="show-hide-link">
-                    Chat <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+                    Chat
                   </a>
                 </div>
                 <div id="chat-and-switch">

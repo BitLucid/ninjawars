@@ -163,8 +163,8 @@
           <div id='index-chat'>
               <div id="village-chat" class="boxes active">
                 <div class="box-title centered">
-                  <a href="#" class="show-hide-link" onclick="toggle_visibility('chat-and-switch');">
-                    Chat <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-">
+                  <a id='show-hide-chat' class="show-hide-link">
+                    Chat
                   </a>
                 </div>
                 <div id="chat-and-switch">
