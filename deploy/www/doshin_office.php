@@ -16,36 +16,47 @@ $description = "<p>You walk up to the Doshin Office to find the door locked.
 
 $target   = in('target');
 $command  = in('command');
+$username = get_username();
 $amount   = intval(in('amount'));
 $bribe    = intval(in('bribe'));
-$username = get_username();
+$bounty   = intval(in('bounty'));
+$ninja    = in('ninja'); // Ninja to put bounty on.
+
+
+if($bounty && $ninja && get_user_id($ninja)){
+    $command = 'Offer Bounty';
+}
 
 if ($command == "Offer Bounty") {
-	$target_bounty = getBounty($target);
+    if(!get_user_id($target)){
+        echo "<p>No such ninja to put bounty on.</p>";
+    } else {
+    	$target_bounty = getBounty($target);
 
-	if ($target_bounty < 5000) {
-		if ($amount > 0) {
-			if (($target_bounty + $amount) > 5000) {
-				$amount = (5000 - $target_bounty);
+    	if ($target_bounty < 5000) {
+    		if ($amount > 0) {
+    			if (($target_bounty + $amount) > 5000) {
+    				$amount = (5000 - $target_bounty);
 
-				echo "The doshin will only accept $amount gold towards $target's bounty.<br>\n";
-			}
+    				echo "The doshin will only accept $amount gold towards $target's bounty.<br>\n";
+    			}
 
-			if (getGold($username) >= $amount) {
-				addBounty($target, $amount);
-				subtractGold($username, $amount);
-				sendMessage($username, $target, "$username has offered $amount gold in reward for your head!");
+    			if (getGold($username) >= $amount) {
+    				addBounty($target, $amount);
+    				subtractGold($username, $amount);
+    				sendMessage($username, $target, "$username has offered $amount gold in reward for your head!");
 
-				echo "You have offered $amount towards bringing $target to justice.<br>\n";
-				$quickstat = "player";
-			} else {
-				echo "<div>You do not have that much gold.</div>\n";
-			}
-		} else {
-			echo "<div>You did not offer a valid amount of gold.</div>\n";
-		}
-	} else {
-		echo "<div>The bounty on $target may go no higher.</div>\n";
+    				echo "<div class='ninja-notice'>You have offered $amount gold towards bringing $target to justice.</div>\n";
+    				$quickstat = "player";
+    			} else {
+    				echo "<div>You do not have that much gold.</div>\n";
+    			}
+    		} else {
+    			echo "<div>You did not offer a valid amount of gold.</div>\n";
+    		}
+    	} else {
+    		echo "<div>The bounty on $target may go no higher.</div>\n";
+    	}
 	}
 } else if ($command == "Bribe") {
 	if ($bribe <= getGold($username) && $bribe > 0) {
@@ -96,7 +107,18 @@ DatabaseConnection::getInstance();
 $result = DatabaseConnection::$pdo->query("SELECT player_id, uname, bounty, class_name AS class, level, clan_id, clan_name FROM players JOIN class ON class_id = _class_id LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id WHERE bounty > 0 AND confirmed = 1 and health > 0 ORDER BY bounty DESC");
 
 if ($data = $result->fetch()) {
-	echo "Click on a Name to view a Ninja's profile. (You can place a bounty on them from their profile)<br><br>\n";
+	echo "
+	<form action=''>
+	<p>
+	Put <input type='text' name='amount' value='{$amount}'> bounty on <input type='text' name='target' value='{$target}'>
+	<input id='submit-bounty' type='submit' value='Offer Bounty' name='command'>
+	</p>
+	</form>
+	
+	Click on a Name to view a Ninja's profile. (You can place a bounty on them from their profile)<br><br>\n
+	
+	
+	";
 
 	$statement = DatabaseConnection::$pdo->query('SELECT count(player_id) FROM players WHERE bounty > 0 AND confirmed = 1 and health > 0');
 
