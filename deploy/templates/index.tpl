@@ -92,17 +92,18 @@
               <ul>
                 <li id='status-actions'>
                   <a href='events.php' target='main' title='See messages about whether you were attacked or other events.'>
-                    <img src='/images/ninja_silhouette_50px.png' alt=''>Status
+                    <img src='/images/ninja_status_icon_50px.png' alt='' style='width:50px;height:51px'>Status
                   </a>
                 </li>
                 <li id='combat-actions'>
                   <a href='enemies.php' target='main' title='Check up on your enemies and see who recently attacked you.'>
-                    <img src='/images/50pxShuriken.png' alt=''>Combat
+                    <img src='images/50pxShuriken.png' alt=''  style='width:50px;height:42px'>Combat
                   </a>
+                </li>
                 </li>
                 <li id='village-actions'>
                   <a href='attack_player.php' target='main' title='Travel to different locations in the village.'>                  
-                    <img src='/images/pagodaIcon_60px.png' alt=''>Village
+                    <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Village
                   </a>
                 </li>
               </ul>
@@ -178,7 +179,7 @@
                 </div>
                 <div id="chat-and-switch">
                   <div class="chat-switch centered">
-                    <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
+                    <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt="" style='width:10px;height:9px'> </a>
                   </div>
                   <form class='chat-submit' id="post_msg" action="mini_chat.php" method="post" name="post_msg" target='mini_chat'>
                     <input id="message" type="text" size="20" maxlength="250" name="message" class="textField">

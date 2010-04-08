@@ -99,16 +99,16 @@
             <div id='category-bar'>
               <ul>
                 <li id='combat-actions'>
-                  <a href='enemies.php' target='main'>
-                    <img src='images/50pxShuriken.png' alt=''>Combat
+                  <a href='enemies.php' target='main' title='Check up on your enemies and see who recently attacked you.'>
+                    <img src='images/50pxShuriken.png' alt=''  style='width:50px;height:42px'>Combat
                   </a>
                 </li>
                 <li>
-				  <div id='ninjawars-title'><a href='tutorial.php' target='main'><img id='ninjawars-title-image' src='images/ninjawars_title.png' alt='Ninja Wars'></a></div>
+				  <div id='ninjawars-title'><a href='tutorial.php' target='main'><img id='ninjawars-title-image' src='images/ninjawars_title.png' alt='Ninja Wars' style='width:428px;height:100px'></a></div>
                 </li>
                 <li id='village-actions'>
-                  <a href='attack_player.php' target='main'>                  
-                    <img src='images/pagodaIcon_60px.png' alt=''>Village
+                  <a href='attack_player.php' target='main' title='Travel to different locations in the village.'>                  
+                    <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Village
                   </a>
                 </li>
               </ul>
@@ -122,7 +122,7 @@
                 <ul id='village-subcategory'>
                   <li><a href="shop.php" target="main">Shop</a></li>
                   <li><a href="work.php" target="main">Work</a></li>
-                  <li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt=""></a></li>
+                  <li><a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt="" style='width:8px;height:8px'></a></li>
                 </ul>
             </div>
         </div>
