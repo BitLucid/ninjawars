@@ -152,7 +152,7 @@
         <div id='ninja-stats' class='header-section'>
         
         <div id='logout'>
-            <a href="index.php?logout=true">Logout</a>
+            <a href="index.php?logout=true"><img href='{$IMAGE_ROOT}logoutArrowAndText.png' alt='Logout' title='Log off the game' style='height:75px;width:71px'></a>
         </div>
         
         </div><!-- End of ninja-stats -->

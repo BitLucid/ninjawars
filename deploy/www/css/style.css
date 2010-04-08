@@ -1457,20 +1457,11 @@ iframe{
 }
 
 #logout {
-	background-image:url('../images/logoutArrow.png');
-	background-repeat:no-repeat;
-	background-position:top right;
-	font-variant:small-caps;
-	font-weight:bold;
-    height:75px;
-	width: 100px;
-    text-align: center;
     float:right;
 }
 
 #logout a {
-    padding-top: 5px;
-	display: block;
+    font-variant:small-caps;
 	height: 100%;
 	width: 100%;
 }
