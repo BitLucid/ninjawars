@@ -5,7 +5,7 @@ init(); // Initialize the environment.
 
 $default_limit = 20;
 $chatlength    = in('chatlength', $default_limit, 'toInt');
-$message       = in('message', null, 'forChat'); // Essentially no filtering.
+$message       = in('message', null, 'no filter'); // Essentially no filtering.
 $command       = in('command');
 $sentMessage   = in('message');
 $chat_submit   = in('chat_submit');

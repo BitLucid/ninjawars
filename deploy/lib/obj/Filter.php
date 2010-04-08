@@ -90,16 +90,6 @@ class Filter
 		return htmlentities($dirty);
 	}
 
-	// Wraps toMessage method.
-	function forChat($dirty) {
-		return $this->toMessage($dirty);
-	}
-
-	// *** Wrapper function for user-originating mail.
-	function forMail($dirty) {
-		return $this->toMessage($dirty);
-	}
-
 	// Replaces occurances of http://whatever with links (in blank tab).
 	function replace_urls($string) {
 	    return replace_urls($string); // Use the lib_output.php function.

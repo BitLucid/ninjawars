@@ -13,7 +13,7 @@ echo "<p><a href=\"".$_SERVER['PHP_SELF']."?chatlength=50\">Refresh</a><p>";
 
 $default_limit = 360;
 $chatlength    = in('chatlength', $default_limit, 'toInt');
-$message       = in('message', null, 'forChat'); // Essentially no filtering.
+$message       = in('message', null, 'no filter'); // Essentially no filtering.
 $command       = in('command');
 $sentMessage   = in('message');
 $sent          = false;
