@@ -1,6 +1,4 @@
 <?php
-//$microtimes = array();
-//$microtimes[1] = microtime();
 require_once(LIB_ROOT."specific/lib_player_list.php");
 require_once(LIB_ROOT."specific/lib_player.php");
 
@@ -13,19 +11,17 @@ include SERVER_ROOT."interface/header.php";
 
 DatabaseConnection::getInstance();
 
-// The script for the accordian opening.
-//echo "<script type='text/javascript' src='js/player_accordian.js'></script>";
-// INIT
-
-//$microtimes[2] = microtime();
-
-// TODO: Bring back the "show/hide dead" toggle, store in session, and make dead things able to be shown again.
-// TODO: Make the player.php player profile page accept player_id as a substitute for a string in the url.
 
 $username     = get_username();
-$searched     = in('searched');
+$searched     = in('searched', null, 'no filter'); // Don't filter the search setting.
+$list_by_rank = ($searched && substr_compare($searched, '#', 0, 1) === 0); // Whether the search is by rank.
+
+
+
 $hide_setting = (!$searched && SESSION::is_set('hide_dead') ? SESSION::get('hide_dead') : 'dead'); // Defaults to hiding dead via session.
 $hide         = ($searched ? 'none' : in('hide', $hide_setting)); // search override > get setting > session setting
+
+
 $alive_only   = ($hide == 'dead');
 $current_rank = in('rank_spot', 0);
 $rank_spot    = (is_numeric($current_rank) ? $current_rank : 0);
@@ -37,16 +33,17 @@ $rank         = get_rank($username);
 $dead_count   = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM rankings WHERE alive = false");
 $dead_count   = $dead_count->fetchColumn();
 
-/*if ($hide != 'dead') {
-	$dead_count = 0; // Set the count of dead rows to zero for later listing.
-}*/
+
+
 
 $page 		 = in('page', ceil(($rank_spot - $dead_count) / $record_limit));
 
-if (!$searched && $hide_setting != $hide) { SESSION::set('hide_dead', $hide); }
+if (!$searched && $hide_setting != $hide) { SESSION::set('hide_dead', $hide); } // Save the toggled state for later.
 
 
-//$microtimes[3] = microtime();
+
+
+
 
 // Display the clear search and create the where clause for searching.
 $where_clause = "";
@@ -64,7 +61,7 @@ if ($searched) {
 	if (strlen($searched) == 1) {
 		$where_clause = "WHERE (rankings.uname ilike :param".count($queryParams).")";
 		$queryParams[] = $searched.'%';
-	} else if (substr_compare($searched, '#', 0, 1) != 0) {
+	} else if (!$list_by_rank) {
 		$where_clause = "WHERE (rankings.uname ~* :param".count($queryParams).")";
 		$queryParams[] = $searched;
 	}
@@ -87,8 +84,6 @@ for ($i = 0;$i < count($queryParams); $i++) {	// *** Reformulate if queryParams 
 $count_statement->execute();
 $totalrows = $count_statement->fetchColumn();
 
-//$microtimes[4] = microtime();
-
 // Determine the current page spot navigated to.
 // If searching, use the page between 
 // If no specific rank was requested, use the viewer's rank
@@ -97,7 +92,7 @@ $totalrows = $count_statement->fetchColumn();
 // Number of pages = ceil($totalrows / $record_limit);
 // limit value = ($page * $record_limit) - $record_limit;
 
-if ($searched && substr_compare($searched, '#', 0, 1) === 0) {
+if ($searched && $list_by_rank) {
 	$page = ceil($searched / $record_limit);
 } else if ($page == "searched") {
 	$page = in('page', 1);
@@ -118,7 +113,12 @@ if ($searched && substr_compare($searched, '#', 0, 1) === 0) {
 $numofpages = ceil($totalrows / $record_limit);
 $limitvalue = ($page * $record_limit) - $record_limit;
 
-// Get the ninja information.
+
+
+
+
+
+// Get the ninja information to create the lists.
 $sel = "SELECT rank_id, rankings.uname, class.class_name as class, rankings.level, rankings.alive, rankings.days, clan_player._clan_id AS clan_id, clan.clan_name, players.player_id
 	FROM rankings LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id JOIN players on rankings.player_id = players.player_id JOIN class on class.class_id = players._class_id ".$where_clause." ORDER BY rank_id ASC, player_id ASC
 	LIMIT $record_limit OFFSET $limitvalue";
@@ -131,80 +131,62 @@ for ($i = 0;$i < count($queryParams); $i++) {	// *** Reformulate if queryParams 
 
 $ninja_info->execute();
 
-//$microtimes[5] = microtime();
 
+
+
+// Display the search form.
 ob_start();
 display_search_form($hide, $page, $searched, $dead_count);
 $search_form = ob_get_contents();
 ob_end_clean();
 	
-//$microtimes[6] = microtime();	
-
 // Display the nav
 ob_start();
 player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages);
 $player_list_nav = ob_get_contents();
 ob_end_clean();
 
-//$microtimes[7] = microtime();
+
+// Display the recently-active-ninja section.
 
 $active_ninja = '';
 if (!$searched) { // Will not display active ninja on a search page.
 	$active_ninja = render_active(5, $alive_only); // Display the currently active ninjas
 }
 
-//$microtimes[8] = microtime();
-
-//$microtimes[9] = microtime();
-	
-// Render each of the player rows.
-
-$ninja_count = 0;
-$player_rows = '';
-while ($a_player = $ninja_info->fetch()) {
-	$ninja_count++;
+// Function to format each row of the player list.
+function format_ninja_row($a_player){
 	$level_cat = level_category($a_player['level']);
-	$parts = array(
+	$row = array(
 		'alive_class'     => ($a_player['alive'] == 1 ? "AliveRow" : "DeadRow")
-		, 'odd_or_even'   => ($ninja_count % 2 ? "odd" : "even")
 		, 'player_rank'   => $a_player['rank_id']
 		, 'player_id'     => $a_player['player_id']
-		, 'page'          => $page
 		, 'uname'         => $a_player['uname']
 		, 'level_cat_css' => $level_cat['css']
 		, 'level_cat'     => $level_cat['display']
 		, 'level'         => $a_player['level']
 		, 'class'         => $a_player['class']
-		, 'WEB_ROOT'      => WEB_ROOT
 		, 'clan_id'       => $a_player['clan_id']
 		, 'clan_name'     => $a_player['clan_name']
 		, 'alive'         => ($a_player['alive'] ? "&nbsp;" : "Dead"), // alive/dead display
 	);
-
-	$player_rows .= render_template('player_list_row.tpl', $parts);	// *** Very inefficient, consider revising ***
-	// Add all the player rows on to a big list of 'em.
+	return $row;
 }
 
-//$microtimes[10] = microtime();
+// Format each of the player rows, then just pass 'em to the template.
 
-$parts = get_certain_vars(get_defined_vars());
+$ninja_count = 0;
+$player_rows = '';
+$ninja_rows = array();
+while ($a_player = $ninja_info->fetch()) {
+	$ninja_rows[] = format_ninja_row($a_player);
+	$ninja_rows[$ninja_count]['odd_or_even'] = (($ninja_count+1) % 2 ? "odd" : "even");
+	$ninja_count++;
+}
 
+$parts = get_certain_vars(get_defined_vars(), $whitelist=array('ninja_rows'));
 echo render_template('player_list.tpl', $parts);
-
-//$microtimes[11] = microtime();
 
 include SERVER_ROOT."interface/footer.php";
 
-/*$microtimes[12] = microtime();
-$start=true;
-foreach($microtimes as $num => $time){
-	//echo "<!-- Benchmark times";
-	if($start){
-		var_dump('start: '.$time);
-	} else {
-		var_dump("$num: ".($time - either($microtimes[$num-1], 0)));
-	}
-	//echo "-->";
-	$start = false;
-}*/
 ?>

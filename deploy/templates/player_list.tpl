@@ -26,7 +26,36 @@
 		<th>Rank</th><th>Name</th><th>Level</th><th>Class</th><th>Clan</th>
 	  </tr>
 	  <!--  Loop over and display each of the players in a table row format -->
-	  {$player_rows}
+	  
+	  
+	  
+{foreach from=$ninja_rows key=row item=ninja}
+		<!-- Darken row if dead, change a little on odd vs. even -->
+		<tr class="playerRow {$ninja.alive_class} {$ninja.odd_or_even}">
+		  <td class="playerCell rankCell">{$ninja.player_rank}</td>
+		  <td class="playerCell nameCell">
+		  	<a href="player.php?player_id={$ninja.player_id|escape:"url"}&amp;linkbackpage={$page}">{$ninja.uname|escape}</a>
+		  </td>
+		  <!-- Level category as a static resource -->
+		  <td class="playerCell levelCell">
+		  	<span class='{$ninja.level_cat_css}'>{$ninja.level_cat} [{$ninja.level}]</span>
+		  </td>
+		  <td class="playerCell classCell">
+		    <!-- Display an image of the right colored shuriken. -->
+		    <span class='{$ninja.class}'><img style='width:20px;height:17px' src='{$WEB_ROOT}images/small{$ninja.class}Shuriken.gif' alt=''>
+		      {$ninja.class}
+		    </span>
+		  </td>
+		  <td class="playerCell clanCell">
+		    {if $ninja.clan_id}<a href='clan.php?command=view&amp;clan_id={$clan_id|escape:"url"}'>{/if}{$ninja.clan_name|escape}{if $ninja.clan_id}</a>{/if}
+		  </td>
+		</tr>
+		<!-- Location to display the player profile content
+		<tr class='profile' style='display:none'>
+		</tr>
+		-->
+{/foreach}
+	  
 	</table><!-- End the player table -->
 
 	<!-- Display the nav again -->

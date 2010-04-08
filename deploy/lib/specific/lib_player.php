@@ -283,7 +283,7 @@ function render_ranking_link($player_info, $linkbackpage) {
 	$rank_spot = $statement->fetchColumn();
 
 	$res = "    <div class='player-ranking-linkback'>
-              <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=dead&amp;page=$linkbackpage'>&lsaquo;Rank $rank_spot</a>
+              <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=none&amp;page=$linkbackpage'>&lsaquo;Rank $rank_spot</a>
         </div>";
     return $res;
 }
