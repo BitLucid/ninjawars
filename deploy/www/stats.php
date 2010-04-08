@@ -21,7 +21,7 @@ $newPass = in('newpass', null);
 $passW   = in('passw', null); // *** To verify whether there's a password put in.
 
 $changeprofile = in('changeprofile');
-$newprofile    = in('newprofile', null, 'toMessage');
+$newprofile    = in('newprofile', null, null); // Unfiltered input.
 
 $username = get_username();
 $user_id = get_user_id();

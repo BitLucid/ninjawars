@@ -8,7 +8,7 @@ include SERVER_ROOT."interface/header.php";
 $to        = in('to'); // The target of the message, if any were specified.
 $to_clan   = in('toclan');
 $messenger = in('messenger'); // naive spam detection attempt
-$message   = in('message', null, 'toMessage'); // Special filtering to a message.
+$message   = in('message', null, null); // Unfiltered input for this message.
 $target_id = ($to ? get_user_id($to) : null);
 $user_id   = get_user_id();
 $username  = get_username();
