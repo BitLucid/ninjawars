@@ -100,7 +100,6 @@
                     <img src='images/50pxShuriken.png' alt=''  style='width:50px;height:42px'>Combat
                   </a>
                 </li>
-                </li>
                 <li id='village-actions'>
                   <a href='attack_player.php' target='main' title='Travel to different locations in the village.'>                  
                     <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Village
