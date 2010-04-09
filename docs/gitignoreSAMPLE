@@ -19,3 +19,4 @@ dirty_raws
 scripts/dbScripts/nw_db_backups
 .gitattributes
 scripts/dbScripts/uncleanDumps/
+www/files/fonts/dirty_raw_fonts
