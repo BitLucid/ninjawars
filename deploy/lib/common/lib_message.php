@@ -1,16 +1,33 @@
 <?php
 // For true user-to-user or user-to-clan messages, 255 chars or less,  as opposed to game events.
 function send_message($from_id, $to_id, $msg) {
-    $length = strlen($msg);
-    if($length > 255){
-        error_log('Message length limit exceeded: ['.$msg.']');
-    }
+	$msg = trim($msg);
+
+	$length = strlen($msg);
+
+	if ($length > MAX_MSG_LENGTH) {
+		error_log('Message length limit exceeded: ['.$msg.']');
+	}
+
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default, :from, :to, :message::varchar(255), now())");
+
+	$statement = DatabaseConnection::$pdo->prepare("SELECT message FROM messages WHERE send_from = :from AND send_to = :to ORDER BY date DESC LIMIT 1");
 	$statement->bindValue(':from', $from_id);
 	$statement->bindValue(':to', $to_id);
-	$statement->bindValue(':message', $msg);
 	$statement->execute();
+	$prevMsg = trim($statement->fetchColumn());
+
+	if ($prevMsg != $msg) {
+		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default, :from, :to, :message::varchar(255), now())");
+		$statement->bindValue(':from', $from_id);
+		$statement->bindValue(':to', $to_id);
+		$statement->bindValue(':message', $msg);
+		$statement->execute();
+
+		return true;
+	} else {
+		return false;
+	}
 }
 
 function get_messages($to_id, $limit=null, $offset=null) {
