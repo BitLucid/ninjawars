@@ -588,10 +588,10 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 	$successful = false;
 	DatabaseConnection::getInstance();
 
-	$send_name   = $enteredName;
+	$send_name   = trim($enteredName);
 	$send_pass   = $enteredPass;
 	$send_class  = $enteredClass;
-	$send_email  = $enteredEmail;
+	$send_email  = trim($enteredEmail);
 	$referred_by = $enteredReferral;
 
 	echo "Your responses:<br> Name - $send_name,<br>
@@ -606,13 +606,13 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 		$check_name  = 0;
 		$check_email = 0;
 
-		$statement = DatabaseConnection::$pdo->prepare("SELECT uname FROM players WHERE uname = :username");
-		$statement->bindValue(':username', $send_name);
+		$statement = DatabaseConnection::$pdo->prepare("SELECT uname FROM players WHERE lower(uname) = :username");
+		$statement->bindValue(':username', strtolower($send_name));
 		$statement->execute();
 		$check_name = $statement->fetch();
 
-		$statement = DatabaseConnection::$pdo->prepare("SELECT email FROM players WHERE email = :email");
-		$statement->bindValue(':email', $send_email);
+		$statement = DatabaseConnection::$pdo->prepare("SELECT email FROM players WHERE lower(email) = :email");
+		$statement->bindValue(':email', strtolower($send_email));
 		$statement->execute();
 		$check_email = $statement->fetch();
 

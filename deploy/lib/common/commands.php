@@ -668,8 +668,8 @@ function changeBounty($who, $amount) {
 			"CASE WHEN bounty+:amount1 < 0 THEN bounty*(-1) ".
 			"WHEN bounty+:amount2 > 5000 THEN (5000 - bounty) ".
 			"ELSE :amount3 END ".
-			"WHERE uname  = :player");
-		$statement->bindValue(':player', $who);
+			"WHERE lower(uname) = :player");
+		$statement->bindValue(':player', strtolower($who));
 		$statement->bindValue(':amount1', $amount);
 		$statement->bindValue(':amount2', $amount);
 		$statement->bindValue(':amount3', $amount);

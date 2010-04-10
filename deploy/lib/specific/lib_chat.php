@@ -13,10 +13,24 @@
 
 function send_chat($user_id, $msg) {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO chat (chat_id, sender_id, message, date) VALUES (default, :sender, :message, now())");
+
+	$msg = trim($msg);
+
+	$statement = DatabaseConnection::$pdo->prepare("SELECT message FROM chat WHERE sender_id = :sender ORDER BY date DESC LIMIT 1");
 	$statement->bindValue(':sender', $user_id);
-	$statement->bindValue(':message', $msg);
 	$statement->execute();
+	$prevMsg = trim($statement->fetchColumn());
+
+	if ($prevMsg != $msg) {
+		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO chat (chat_id, sender_id, message, date) VALUES (default, :sender, :message, now())");
+		$statement->bindValue(':sender', $user_id);
+		$statement->bindValue(':message', $msg);
+		$statement->execute();
+
+		return true;
+	} else {
+		return false;
+	}
         
 	// could add channels later.
 }

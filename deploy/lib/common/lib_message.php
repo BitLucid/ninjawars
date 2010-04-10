@@ -18,7 +18,7 @@ function send_message($from_id, $to_id, $msg) {
 	$prevMsg = trim($statement->fetchColumn());
 
 	if ($prevMsg != $msg) {
-		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default, :from, :to, :message::varchar(255), now())");
+		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default, :from, :to, :message, now())");
 		$statement->bindValue(':from', $from_id);
 		$statement->bindValue(':to', $to_id);
 		$statement->bindValue(':message', $msg);

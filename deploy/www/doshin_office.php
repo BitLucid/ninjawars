@@ -9,10 +9,10 @@ include SERVER_ROOT."interface/header.php";
 $location    = "Doshin Office";
 
 $description = "<p>You walk up to the Doshin Office to find the door locked.
-               The Doshin are busy protecting the borders of the village from thieves.</p>
-               <p> Nailed to the door is an official roster of wanted criminals and the bounties offered for their heads.</p>
-               <p>A few men that do seem to be associated with the doshin doze near the entrance.
-                 Every so often someone approaches and slips them something that clinks and jingles.</p>";
+			   The Doshin are busy protecting the borders of the village from thieves.</p>
+			   <p> Nailed to the door is an official roster of wanted criminals and the bounties offered for their heads.</p>
+			   <p>A few men that do seem to be associated with the doshin doze near the entrance.
+				 Every so often someone approaches and slips them something that clinks and jingles.</p>";
 
 $target   = in('target');
 $command  = in('command');
@@ -22,41 +22,40 @@ $bribe    = intval(in('bribe'));
 $bounty   = intval(in('bounty'));
 $ninja    = in('ninja'); // Ninja to put bounty on.
 
-
-if($bounty && $ninja && get_user_id($ninja)){
-    $command = 'Offer Bounty';
+if ($bounty && $ninja && get_user_id($ninja)) {
+	$command = 'Offer Bounty';
 }
 
 if ($command == "Offer Bounty") {
-    if(!get_user_id($target)){
-        echo "<p>No such ninja to put bounty on.</p>";
-    } else {
-    	$target_bounty = getBounty($target);
+	if (!get_user_id($target)) {
+		echo "<p>No such ninja to put bounty on.</p>";
+	} else {
+		$target_bounty = getBounty($target);
 
-    	if ($target_bounty < 5000) {
-    		if ($amount > 0) {
-    			if (($target_bounty + $amount) > 5000) {
-    				$amount = (5000 - $target_bounty);
+		if ($target_bounty < 5000) {
+			if ($amount > 0) {
+				if (($target_bounty + $amount) > 5000) {
+					$amount = (5000 - $target_bounty);
 
-    				echo "The doshin will only accept $amount gold towards $target's bounty.<br>\n";
-    			}
+					echo "The doshin will only accept $amount gold towards $target's bounty.<br>\n";
+				}
 
-    			if (getGold($username) >= $amount) {
-    				addBounty($target, $amount);
-    				subtractGold($username, $amount);
-    				sendMessage($username, $target, "$username has offered $amount gold in reward for your head!");
+				if (getGold($username) >= $amount) {
+					addBounty($target, $amount);
+					subtractGold($username, $amount);
+					sendMessage($username, $target, "$username has offered $amount gold in reward for your head!");
 
-    				echo "<div class='ninja-notice'>You have offered $amount gold towards bringing $target to justice.</div>\n";
-    				$quickstat = "player";
-    			} else {
-    				echo "<div>You do not have that much gold.</div>\n";
-    			}
-    		} else {
-    			echo "<div>You did not offer a valid amount of gold.</div>\n";
-    		}
-    	} else {
-    		echo "<div>The bounty on $target may go no higher.</div>\n";
-    	}
+					echo "<div class='ninja-notice'>You have offered $amount gold towards bringing $target to justice.</div>\n";
+					$quickstat = "player";
+				} else {
+					echo "<div>You do not have that much gold.</div>\n";
+				}
+			} else {
+				echo "<div>You did not offer a valid amount of gold.</div>\n";
+			}
+		} else {
+			echo "<div>The bounty on $target may go no higher.</div>\n";
+		}
 	}
 } else if ($command == "Bribe") {
 	if ($bribe <= getGold($username) && $bribe > 0) {
@@ -65,8 +64,8 @@ if ($command == "Offer Bounty") {
 
 		$location    = "Behind the Doshin Office";
 		$description = "\"We'll see what we can do,\" one of the Doshin tells you as you hand off your gold. He then directs you out through a back alley.\n".
-                   "<br><br>\n".
-                   "You find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.\n";
+				   "<br><br>\n".
+				   "You find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.\n";
 		$quickstat = "player";
 	} else if ($bribe < 0) { // A negative bribe was put in, which on the 21st of March, 2007, was a road to instant wealth, as a bribe of -456345 would increase both your bounty and your gold by 456345, so this will flag players as bugabusers until it becomes a standard-use thing.
 		if (getGold($username) > 1000) { //  *** If they have more than 1000 gold, their bounty will be mostly removed by this event.
@@ -78,8 +77,8 @@ if ($command == "Offer Bounty") {
 
 		$location    = "The Rat-infested Alley behind the Doshin Office";
 		$description = "\"Trying to steal from the Doshin, eh!\" one of the men growls.<br>Where before there were only relaxing men idly ignoring their duties there are now unsheathed katanas and glaring eyes.<br>A group of the Doshin advance on you before you can escape and proceed to rough you up with fists and the hilts of their katana.  Finally, they take most of your gold and toss you into the alley behind the building.\n".
-                   "<br><br>\n".
-                   "Bruised and battered, you find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.\n";
+				   "<br><br>\n".
+				   "Bruised and battered, you find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.\n";
 		$quickstat = "player";
 	} else {
 		echo "The Doshin ignore your ill-funded attempt to bribe them.\n";
