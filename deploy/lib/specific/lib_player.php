@@ -329,11 +329,11 @@ function render_inventory_options($username) {
 		}
 
 		foreach ($items_indexed AS $loopItem) {
-			$res .= "      <option $selected value='{$loopItem['item']}'>{$loopItem['amount']} ".htmlentities($loopItem['item'])."</option>\n";
+			$res .= "      <option $selected value='{$loopItem['item']}'>".htmlentities($loopItem['item'])." ({$loopItem['amount']})</option>\n";
 			$selected = '';
 		}
 	} else { // Some items available.
-		$res = "          <option value=\"\" selected=\"selected\">No Items</option>\n";
+		$res = "          <option value=\"\" selected=\"selected\">You Have No Items</option>\n";
 	}
 
 	return $res;
