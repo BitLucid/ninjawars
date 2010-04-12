@@ -15,6 +15,12 @@
 	<!-- [if gte IE 7]>
 	<link rel="stylesheet" type="text/css" href="css/ie.css">
 	<![endif]-->
+
+	<!-- older IE assistive javascript -->
+	<!--[if lt IE 8]>
+    <script src="http://ie7-js.googlecode.com/svn/version/2.0(beta3)/IE8.js" type="text/javascript"></script>
+    <![endif]-->
+    
 	{if $local_js}
 	<!-- Local jquery lib -->
 	<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
@@ -42,11 +48,6 @@
 	// -->
 	</script>
 	{/if}
-	<!-- older IE assistive javascript -->
-	<!--[if lt IE 8]>
-    <script src="http://ie7-js.googlecode.com/svn/version/2.0(beta3)/IE8.js" type="text/javascript"></script>
-    <![endif]-->
-    
     {if $DEBUG}
 	<link rel="stylesheet" type="text/css" href="css/debugger.css">	
 	<script type="text/javascript">
