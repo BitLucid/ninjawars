@@ -19,8 +19,6 @@ $hide_setting = (!$searched && SESSION::is_set('hide_dead') ? SESSION::get('hide
 $hide         = ($searched ? 'none' : in('hide', $hide_setting)); // search override > get setting > session setting
 
 $alive_only   = ($hide == 'dead');
-$current_rank = in('rank_spot', 0);
-$rank_spot    = (is_numeric($current_rank) ? $current_rank : 0);
 $page         = in('page', 1); // Page will get changed down below.
 $alive_count  = 0;
 $record_limit = 20; // *** The number of players that gets shown per page.
@@ -29,7 +27,7 @@ $rank         = get_rank($username);
 $dead_count   = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM rankings WHERE alive = false");
 $dead_count   = $dead_count->fetchColumn();
 
-$page 		 = in('page', ceil(($rank_spot - $dead_count) / $record_limit));
+$page 		 = in('page');
 
 if (!$searched && $hide_setting != $hide) { SESSION::set('hide_dead', $hide); } // Save the toggled state for later.
 
@@ -53,9 +51,6 @@ if ($searched) {
 		$where_clause = "WHERE (rankings.uname ~* :param".count($queryParams).")";
 		$queryParams[] = $searched;
 	}
-} else {
-	$where_clause = "WHERE score >= :param".count($queryParams)." ";
-	$queryParams[] = $rank_spot;
 }
 
 if ($hide == 'dead') {
@@ -85,16 +80,6 @@ if ($searched && $list_by_rank) {
 } else if ($page == "searched") {
 	$page = in('page', 1);
 } else {
-	if (!$rank_spot) {
-		$rank_spot = $rank;
-	} else {
-		$rank_spot = ($rank_spot > 0 ? $rank_spot : $totalrows + 1);
-	}
-
-	if ($page == "") {
-		$page       = ($dead_count > $rank_spot ? 1 : $page);
-	}
-
 	$page = ($page < 1 ? 1 : $page); // Prevent the page number from going negative.
 }
 

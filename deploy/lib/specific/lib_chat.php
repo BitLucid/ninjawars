@@ -152,7 +152,7 @@ function time_to_array($time) {
 	$res['seconds']     = $time_array[1];
 	$res['minutes']     = $time_array[2];
 	$res['hours']       = $time_array[3];
-	$res['days']        = isset($time_array[4])? $time_array[4] : 0;
+	$res['days']        = (isset($time_array[4]) ? $time_array[4] : 0);
 
 	return $res;
 }

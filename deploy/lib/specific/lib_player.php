@@ -274,7 +274,7 @@ function display_player_profile($player_info) {
 }
 
 
-function render_ranking_link($player_info, $linkbackpage) {
+function render_ranking_link($player_info) {
 	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE uname = :player");
 	$statement->bindValue(':player', $player_info['uname']);
@@ -283,7 +283,7 @@ function render_ranking_link($player_info, $linkbackpage) {
 	$rank_spot = $statement->fetchColumn();
 
 	$res = "    <div class='player-ranking-linkback'>
-              <a href='list_all_players.php?rank_spot=$rank_spot&amp;hide=none&amp;page=$linkbackpage'><img src='/images/return-triangle.png' alt='&lsaquo;Rank $rank_spot' title='&lsaquo;Return to rank $rank_spot' style='width:50px;height:50px;float:left;'></a>
+              <a href='list_all_players.php?searched=".urlencode('#')."$rank_spot&amp;hide=none'><img src='/images/return-triangle.png' alt='&lsaquo;Rank $rank_spot' title='&lsaquo;Return to rank $rank_spot' style='width:50px;height:50px;float:left;'></a>
         </div>";
     return $res;
 }

@@ -24,7 +24,6 @@ $target_id     = either(in('target_id'), either(in('player_id'), get_user_id($ta
 $score         = get_score_formula();
 $user_id       = get_user_id();
 $username      = get_username();
-$linkbackpage  = in('linkbackpage');
 $message       = in('message');
 
 $target_player_obj = new Player(either($target_id, $target));
@@ -64,7 +63,7 @@ if (!$player_info) {
 	include SERVER_ROOT."interface/footer.php";
 	die();
 } else {
-	$ranking_link_section    = render_ranking_link($player_info, $linkbackpage);
+	$ranking_link_section    = render_ranking_link($player_info);
 	$class_section           = render_class_section($player_info['class']);
 	$level_and_category      = render_level_and_category($player_info['level']);
 	$status_section          = render_status_section($player_info['uname']);
