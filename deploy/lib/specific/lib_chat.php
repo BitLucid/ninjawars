@@ -128,9 +128,9 @@ function time_ago($time, $previous) {
 
 		if ($time_array['minutes'] == $previous_array['minutes'] 
 			&& $time_array['hours'] == $previous_array['hours'] 
-			&& ((!isset($time_array['days']) 
-				|| !isset($previous_array['days']))
-			|| $time_array['days'] == $previous_array['days'])) {
+			&& (
+				(!isset($time_array['days']) || !isset($previous_array['days']))
+				|| $time_array['days'] == $previous_array['days'])) {
 			// So no need to change the ago message.
 			$similar = true;
 		}
@@ -145,16 +145,35 @@ function time_ago($time, $previous) {
 
 // Transform the time format into an array of its different parts.
 function time_to_array($time) {
-	$time_array = array_reverse(preg_split("/(\D)/", $time)); // Split on non-digits.
-	$res = array();
+	$returnValue = array();
 
-	$res['nanoseconds'] = $time_array[0];
-	$res['seconds']     = $time_array[1];
-	$res['minutes']     = $time_array[2];
-	$res['hours']       = $time_array[3];
-	$res['days']        = (isset($time_array[4]) ? $time_array[4] : 0);
+	$divider = strrpos($time, ' ');
 
-	return $res;
+	if ($divider) {
+		$time_only = substr($time, $divider+1);
+		$date_only = substr($time, 0, $divider);
+
+		$date_array = split(' ', $date_only);
+
+		foreach ($date_array AS $index=>$value) {
+			if (stripos($value, 'day') !== false) {
+				$returnValue['days'] = $date_array[--$index];
+				break;
+			}
+		}
+	} else {
+		$time_only = $time;
+		$returnValue['days'] = 0;
+	}
+
+	$time_array = preg_split("/\D/", $time_only); // Split on non-digits (\D).
+
+	$returnValue['hours']       = $time_array[0];
+	$returnValue['minutes']     = $time_array[1];
+	$returnValue['seconds']     = $time_array[2];
+	$returnValue['nanoseconds'] = $time_array[3];
+
+	return $returnValue;
 }
 
 // Format the string of the amount of time that it was ago.
