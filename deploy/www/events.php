@@ -6,7 +6,7 @@ $page_title = "Events";
 include(SERVER_ROOT."interface/header.php");
 
 $user_id = get_user_id();
-$events = get_events($user_id);
+$events = get_events($user_id, 300);
 
 read_events($user_id); // mark events as viewed.
 
