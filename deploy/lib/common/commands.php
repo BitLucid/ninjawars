@@ -887,28 +887,25 @@ function invitePlayer($who, $p_clanID) {
 // ************************************
 
 function addItem($who, $item, $quantity = 1) {
-	DatabaseConnection::getInstance();
-
-	if ($quantity < 0) {
-		$quantity = 0;
-	}
-
 	$quantity = (int)$quantity;
 
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount + :quantity WHERE owner = :who AND lower(item) = lower(:item)");
-	$statement->bindValue(':quantity', $quantity);
-	$statement->bindValue(':who', get_user_id($who));
-	$statement->bindValue(':item', $item);
-	$statement->execute();
-
-	$rows = $statement->rowCount();
-
-	if (!$rows) {
-		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO inventory (owner, item, amount) VALUES (:user, :item, :quantity)");
-		$statement->bindValue(':user', get_user_id($who));
-		$statement->bindValue(':item', $item);
+	if ($quantity > 0 && !empty($item)) {
+		DatabaseConnection::getInstance();
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount + :quantity WHERE owner = :who AND lower(item) = lower(:item)");
 		$statement->bindValue(':quantity', $quantity);
+		$statement->bindValue(':who', get_user_id($who));
+		$statement->bindValue(':item', $item);
 		$statement->execute();
+
+		$rows = $statement->rowCount();
+
+		if (!$rows) {
+			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO inventory (owner, item, amount) VALUES (:user, :item, :quantity)");
+			$statement->bindValue(':user', get_user_id($who));
+			$statement->bindValue(':item', $item);
+			$statement->bindValue(':quantity', $quantity);
+			$statement->execute();
+		}
 	}
 }
 

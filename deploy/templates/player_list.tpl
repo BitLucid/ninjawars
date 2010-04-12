@@ -47,7 +47,7 @@
 		    </span>
 		  </td>
 		  <td class="playerCell clanCell">
-		    {if $ninja.clan_id}<a href='clan.php?command=view&amp;clan_id={$clan_id|escape:"url"}'>{/if}{$ninja.clan_name|escape}{if $ninja.clan_id}</a>{/if}
+		    {if $ninja.clan_id}<a href='clan.php?command=view&amp;clan_id={$ninja.clan_id|escape:"url"}'>{/if}{$ninja.clan_name|escape}{if $ninja.clan_id}</a>{/if}
 		  </td>
 		</tr>
 		<!-- Location to display the player profile content
