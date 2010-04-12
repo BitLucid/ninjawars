@@ -27,4 +27,7 @@ define('LIB_PERL', LIB_ROOT.'perl/'); // *** For perl scripts
 
 define('TEMPLATE_PATH', SERVER_ROOT.'templates/'); // ** For templates.
 // COMPILED_TEMPLATE_PATH is kept in resources since it requires write permissions.
+
+
+define('MAX_MSG_LENGTH', 255);
 ?>
