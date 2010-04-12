@@ -11,16 +11,12 @@ include SERVER_ROOT."interface/header.php";
 
 DatabaseConnection::getInstance();
 
-
 $username     = get_username();
 $searched     = in('searched', null, 'no filter'); // Don't filter the search setting.
 $list_by_rank = ($searched && substr_compare($searched, '#', 0, 1) === 0); // Whether the search is by rank.
 
-
-
 $hide_setting = (!$searched && SESSION::is_set('hide_dead') ? SESSION::get('hide_dead') : 'dead'); // Defaults to hiding dead via session.
 $hide         = ($searched ? 'none' : in('hide', $hide_setting)); // search override > get setting > session setting
-
 
 $alive_only   = ($hide == 'dead');
 $current_rank = in('rank_spot', 0);
@@ -33,17 +29,9 @@ $rank         = get_rank($username);
 $dead_count   = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM rankings WHERE alive = false");
 $dead_count   = $dead_count->fetchColumn();
 
-
-
-
 $page 		 = in('page', ceil(($rank_spot - $dead_count) / $record_limit));
 
 if (!$searched && $hide_setting != $hide) { SESSION::set('hide_dead', $hide); } // Save the toggled state for later.
-
-
-
-
-
 
 // Display the clear search and create the where clause for searching.
 $where_clause = "";
@@ -93,7 +81,7 @@ $totalrows = $count_statement->fetchColumn();
 // limit value = ($page * $record_limit) - $record_limit;
 
 if ($searched && $list_by_rank) {
-	$page = ceil($searched / $record_limit);
+	$page = ceil(substr($searched, 1) / $record_limit);
 } else if ($page == "searched") {
 	$page = in('page', 1);
 } else {
@@ -111,12 +99,7 @@ if ($searched && $list_by_rank) {
 }
 
 $numofpages = ceil($totalrows / $record_limit);
-$limitvalue = ($page * $record_limit) - $record_limit;
-
-
-
-
-
+$limitvalue = max(0, ($page * $record_limit) - $record_limit);
 
 // Get the ninja information to create the lists.
 $sel = "SELECT rank_id, rankings.uname, class.class_name as class, rankings.level, rankings.alive, rankings.days, clan_player._clan_id AS clan_id, clan.clan_name, players.player_id
@@ -130,9 +113,6 @@ for ($i = 0;$i < count($queryParams); $i++) {	// *** Reformulate if queryParams 
 }
 
 $ninja_info->execute();
-
-
-
 
 // Display the search form.
 ob_start();
