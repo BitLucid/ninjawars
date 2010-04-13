@@ -381,7 +381,7 @@ function display_clan_options($player_info, $viewing_player_obj) {
 		&& $clan->getID() == $viewer_clan->getID()
 		&& is_clan_leader($viewing_player_obj->vo->player_id)) {
 		echo "<div class='clan-leader-options centered'>";
-		echo "<form id=\"kick_form\" action=\"clan.php\" method=\"get\" name=\"kick_form\" onsubmit=\"return confirm('Are you sure you want to kick this player from your clan?');\">\n";
+		echo "<form id=\"kick_form\" action=\"clan.php\" method=\"get\" name=\"kick_form\">\n";
 		echo "<input id=\"kicked\" type=\"hidden\" value=\"", htmlentities($player_info['player_id']), "\" name=\"kicked\">\n";
 		echo "<input id=\"command\" type=\"hidden\" value=\"kick\" name=\"command\">\n";
 		echo "<input type=\"submit\" value=\"Kick This Ninja From Your Clan\" class=\"formButton\">\n";
