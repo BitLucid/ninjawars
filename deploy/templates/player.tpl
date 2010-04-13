@@ -8,6 +8,10 @@ label{
     color:cornflowerblue;
 }
 </style>
+
+<script type='text/javascript'>
+$('#kick_form').submit(function(){return confirm('Are you sure you want to kick this player?');});
+</script>
 {/literal}
 
 <div class='player-info'>
