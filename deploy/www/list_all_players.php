@@ -45,16 +45,19 @@ if ($searched) {
 	$view_type = 'searched';
 
 	if (strlen($searched) == 1) {
-		$where_clause = "WHERE (rankings.uname ilike :param".count($queryParams).")";
+		$where_clause = " WHERE (rankings.uname ilike :param".count($queryParams).") ";
 		$queryParams[] = $searched.'%';
 	} else if (!$list_by_rank) {
-		$where_clause = "WHERE (rankings.uname ~* :param".count($queryParams).")";
+		$where_clause = " WHERE (rankings.uname ~* :param".count($queryParams).") ";
 		$queryParams[] = $searched;
 	}
-}
 
-if ($hide == 'dead') {
-	$where_clause .= "AND alive = true";
+	if ($hide == 'dead') {
+		$where_clause .= " AND alive = true";
+	}
+}
+else if ($hide == 'dead') {
+	$where_clause .= " WHERE alive";
 }
 
 $query_count     = "SELECT count(player_id) FROM rankings ".$where_clause;
