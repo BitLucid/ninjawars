@@ -153,7 +153,7 @@ function time_to_array($time) {
 		$time_only = substr($time, $divider+1);
 		$date_only = substr($time, 0, $divider);
 
-		$date_array = split(' ', $date_only);
+		$date_array = explode(' ', $date_only);
 
 		foreach ($date_array AS $index=>$value) {
 			if (stripos($value, 'day') !== false) {
