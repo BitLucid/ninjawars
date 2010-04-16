@@ -59,8 +59,8 @@
 </head>
 <body class='{$body_classes}'>
 {if !$is_index && !$section_only}
-<div>
-<a href='/' id='logo-appended'>
+<div id='logo-appended'>
+<a href='/'>
 	<img src='images/ninjawarslogo_75px.png' alt='NinjaWars'>
 </a>
 </div>

@@ -616,10 +616,10 @@ td.playerTable {
 
 /* Logo when added as a link back in pages lacking an outer iframe */
 #logo-appended{
-	float:left;
-	width:100px;
+	float: left;
+	width: 100px;
 	margin-right: .5em;
-	display:none;
+	display: none;
 }
 
 body.solo-page{
@@ -627,10 +627,10 @@ body.solo-page{
 }
 
 body.solo-page #logo-appended{
-	display:inline; /* Display the logo on solo pages */
+	display: block; /* Display the logo on solo pages */
 }
 #logo-appended img{
-	width:100px;
+	width: 100px;
 }
 
 .main-body { /* For the index page's background image only. */
