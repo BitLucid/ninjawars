@@ -92,16 +92,20 @@ function render_chat_messages($chatlength, $show_elipsis=null) {
 	$previous_ago  = null;
 
 	foreach ($chats AS $chat_message) {
-		// Check for the x time ago message.
-		$l_ago = time_ago($chat_message['ago'], $previous_date);
-		$res .= "<dt class='chat-author'>
-		    &lsaquo;<a href='player.php?player_id={$chat_message['sender_id']}'
-		        target='main'>".out($chat_message['uname'])."</a>&rsaquo;</dt>
-		      <dd class='chat-message'>".out($chat_message['message']).
-		     ($l_ago != $previous_ago ? " <abbr class='chat-time timeago' title='{$chat_message['date']}'>{$l_ago}</abbr>" : "")
-		     ."</dd>";
-		$previous_date = $chat_message['ago']; // Store just prior date.
-		$previous_ago = $l_ago; // Save the prior ago message.
+		$chat_message['message'] = trim($chat_message['message']);
+
+		if (!empty($chat_message['message'])) {
+			// Check for the x time ago message.
+			$l_ago = time_ago($chat_message['ago'], $previous_date);
+			$res .= "<dt class='chat-author'>
+			    &lsaquo;<a href='player.php?player_id={$chat_message['sender_id']}'
+			        target='main'>".out($chat_message['uname'])."</a>&rsaquo;</dt>
+			      <dd class='chat-message'>".out($chat_message['message']).
+			     ($l_ago != $previous_ago ? " <abbr class='chat-time timeago' title='{$chat_message['date']}'>{$l_ago}</abbr>" : "")
+			     ."</dd>";
+			$previous_date = $chat_message['ago']; // Store just prior date.
+			$previous_ago = $l_ago; // Save the prior ago message.
+		}
 	}
 
 	$res .= "</dl>";
