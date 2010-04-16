@@ -27,9 +27,12 @@
                 | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
               </div>
               <div id="quickstats-frame-container">
+                <noscript>
                 <iframe frameBorder='0' id="quickstats" src="quickstats.php" name="quickstats">
+                  <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
                   <a href='quickstats.php' target='_blank'>Quick Stats</a> unavailable inside this browser window.
                 </iframe>
+                </noscript>
               </div>
             </div><!-- End of quickstats and switch container -->
           </div><!-- End of quickstats section. -->
@@ -133,6 +136,7 @@
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
             <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src}">
+            <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
               <a href='{$main_src}' target='_blank'>Main Content</a> unavailable inside this browser window.
             </iframe>
           </div><!-- End of mainFrame div -->
@@ -190,6 +194,7 @@
                     <span id='chat-loading-message' style='display:hidden'>...Loading Chat...</span>
                     <noscript>
                         <iframe frameBorder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
+                        <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
                           <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
                         </iframe>
                     </noscript>

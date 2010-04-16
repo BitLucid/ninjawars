@@ -269,15 +269,6 @@ function feedback(){
     return res;
 }
 
-
-// When clicking frame links, load a section instead of the iframe.
-function frameClickHandlers(links, div){
-    links.click(function(){
-        div.load(this.href, 'section_only=1');
-        return false;
-    });
-}
-
 function toggle_visibility(id) {
     var tog = $("#"+id);
     tog.toggle();
@@ -356,22 +347,30 @@ function sendChatContents(domform){
     }
 }
 
+// When clicking frame links, load a section instead of the iframe.
+function frameClickHandlers(links, div){
+    links.click(function(){
+        div.load(this.href, 'section_only=1');
+        return false;
+    });
+}
+
 // For refreshing quickstats from inside main.
-function refreshQuickstats(quickView){
+function refreshQuickstats(typeOfView, quickDiv){
     // Accounts for ajax section.
-    if(!quickView){
-        quickView = '';
+    if(!typeOfView){
+        typeOfView = '';
     }
-    var url = 'quickstats.php?command='+quickView;
-    if(top.window.NW.firstLoad > 1){
-        if(top.window.NW.quickDiv){
-            top.window.NW.quickDiv.load(url, 'section_only=1');
-        } else {
-            // Use parent to indicate the parent global variable.
-            parent.quickstats.location=url;
-        }
+    if(!quickDiv){
+    	quickDiv = $('div#quickstats-frame-container', top);
     }
-    top.window.NW.firstLoad++;
+    var url = 'quickstats.php?command='+typeOfView;
+    if(quickDiv){
+        quickDiv.load(url, 'section_only=1');
+    } else {
+        // Use parent to indicate the parent global variable.
+        parent.quickstats.location=url;
+    }
 }
 
 function isIndex(){ // Return true if the index page.
@@ -450,7 +449,7 @@ $(document).ready(function() {
         NW.quickDiv = quickDiv;
         
         // Update the quickstats section.
-        //refreshQuickstats();
+        refreshQuickstats('', quickDiv);
         
         // Update the mini chat section for the first time.
         refreshMinichat();
@@ -473,7 +472,7 @@ $(document).ready(function() {
     
     
     /* THIS CODE RUNS FOR ALL SUBPAGES */
-    soloPage(); // Append a link back to main page for any lone subpages not in iframes.
+    soloPage(); // Displays the link back to main page for any lone subpages not in iframes.
         
     // GOOGLE ANALYTICS
     /* There's a script include that goes with this, but I just put it in the head directly.*/
