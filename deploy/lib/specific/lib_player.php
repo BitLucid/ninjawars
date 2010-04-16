@@ -481,7 +481,7 @@ function render_class_select($current) {
 		$classNote = htmlentities($classData['class_note']);
 		$elementID = strtolower($className).'-class-select';
 ?>
-	    <option name='send_class' value="<?php echo $className;?>" id='<?php echo $elementID;?>' <?php if($current == $className) { echo 'selected="selected"'; } ?>>
+	    <option value="<?php echo $className;?>" id='<?php echo $elementID;?>' <?php if($current == $className) { echo 'selected="selected"'; } ?>>
           <?php echo $className, ' - ', $classNote;?>
 	    </option>
 <?php

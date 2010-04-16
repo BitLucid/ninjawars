@@ -12,7 +12,7 @@
 	   Your ninja name can only contain letters, numbers and underscores.
 	 </div>
 	 <div>
-	  <label for='password'>Password:</label>  
+	  <label for='key'>Password:</label>  
 	  <input id="key" type="password" maxlength="50" name="key" class="textField">
 	 </div>
 	</fieldset>
