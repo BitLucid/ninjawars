@@ -27,7 +27,7 @@
                 | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
               </div>
               <div id="quickstats-frame-container">
-                <iframe frameborder='0' id="quickstats" src="quickstats.php" name="quickstats">
+                <iframe frameBorder='0' id="quickstats" src="quickstats.php" name="quickstats">
                   <a href='quickstats.php' target='_blank'>Quick Stats</a> unavailable inside this browser window.
                 </iframe>
               </div>
@@ -132,7 +132,7 @@
 
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe frameborder='0' id="main" name="main" class="main-iframe" src="{$main_src}">
+            <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src}">
               <a href='{$main_src}' target='_blank'>Main Content</a> unavailable inside this browser window.
             </iframe>
           </div><!-- End of mainFrame div -->
@@ -189,7 +189,7 @@
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
                     <span id='chat-loading-message' style='display:hidden'>...Loading Chat...</span>
                     <noscript>
-                        <iframe frameborder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
+                        <iframe frameBorder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
                           <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
                         </iframe>
                     </noscript>

@@ -131,7 +131,7 @@
 
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe frameborder='0' id="main" name="main" class="main-iframe" src="{$main_src}">
+            <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src}">
               <a href='{$main_src}' target='_blank'>Main Content</a> Display Section (Frames Not Supported)
             </iframe>
           </div><!-- End of mainFrame div -->
@@ -175,7 +175,7 @@
                     <span id='chat-loading-message' style='display:hidden'>...Loading Chat...</span>
                     <noscript>
                         <!-- Only display the frame if javascript isn't enabled. -->
-                        <iframe frameborder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
+                        <iframe frameBorder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
                           <a href='mini_chat.php' target='_blank'>Mini Chat</a> Iframe Display Section (Iframes not supported by this browser)
                         </iframe>
                     </noscript>
