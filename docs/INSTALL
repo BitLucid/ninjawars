@@ -1,13 +1,15 @@
 Dependencies
 -------------
-PHP5, Postgresql8, Perl>=5, Apache2, Perl::Lingua::En::Inflect
+PHP5, Postgresql8, Perl>=5, Apache2, Perl::Lingua::En::Inflect, postgresql-contrib & libpq-dev (for password hashing)
 
 Via apt-get command line:
 
-sudo apt-get install apache2 php5 postgresql
+sudo apt-get install apache2 php5 postgresql postgresql-contrib libpq-dev
 (Required)
+
 sudo apt-get install perl liblingua-en-inflect-perl
 (Recommended, but not completely required for local development)
+
 sudo apt-get install awstats
 (Totally optional)
 
@@ -15,6 +17,17 @@ All Types of Deployment
 ---------------
 1. Copy a live database (probably the easiest) or create a skeleton database and then run the migrations in  /deploy/db/migrations/ on it.
 2. Set permissions in your pg_hba for the database, host, and user to match your configuration
+
+Create the postgresql password hashing functions
+---------------
+Determine the postgresql user shared folder.
+> pg_config --sharedir
+/usr/share/postgresql/8.4 (example)
+Run the module setup sql in the SHARE_DIRECTORY/contrib/pgcrypto.sql, e.g.
+> psql -d ninjawars -f /usr/share/postgresql/8.4/contrib/pgcrypto.sql
+
+For the pgcrypto functions, see: http://www.postgresql.org/docs/8.3/static/pgcrypto.html
+
 
 Using /scripts/deploy
 ---------------------
