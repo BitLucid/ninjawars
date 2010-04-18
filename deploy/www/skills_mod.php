@@ -41,8 +41,8 @@ $turns_to_take = null;  // *** Even on failure take at least one turn.
 if ($target != "") {
 	$link_back = "<a href=\"player.php?player=$target\">Player Detail</a>";
 } else {
+    $link_back = "<a href=\"skills.php\">Skills</a>";
 	$target    = $username;
-	$link_back = "<a href=\"skills.php\">Skills</a>";
 }
 $user_ip         = $_SESSION['ip'];
 $username_status = getStatus($username);
@@ -324,7 +324,7 @@ $ending_turns = changeTurns($username, $turns_to_take);
   </div>
   <br>
   <div class="LinkBack">
-    Return to <?echo $link_back;?>
+    Return to <?php echo $link_back; ?>
   </div>
 </p>
 
