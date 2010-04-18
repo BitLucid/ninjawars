@@ -215,15 +215,21 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		}
 	} else if ($command == "Ice Bolt") {
 		if ($starting_turns >= $turn_cost) {
-			$turns_decrease = rand(1,5);
-			subtractTurns($target,$turns_decrease);
-			// Changed ice bolt to kill stealth.
-			$username_status = subtractStatus($target, STEALTH);
+    		if ($target_turns >= 10) {
+    		
+    			$turns_decrease = rand(1,5);
+    			subtractTurns($target,$turns_decrease);
+    			// Changed ice bolt to kill stealth.
+    			$username_status = subtractStatus($target, STEALTH);
 
-			$msg = "Ice bolt cast on you by $attacker_id at $today, your turns have been reduced by $turns_decrease.";
-			sendMessage($attacker_id,$target,$msg);
+    			$msg = "Ice bolt cast on you by $attacker_id at $today, your turns have been reduced by $turns_decrease.";
+    			sendMessage($attacker_id,$target,$msg);
 
-			$result = "$target's turns reduced by $turns_decrease!<br>\n";
+    			$result = "$target's turns reduced by $turns_decrease!<br>\n";
+    		} else {
+    		    $turn_cost = 0;
+    		    $result = "The target does not have enough turns for you to take them.";
+    		}
 		} else {
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
@@ -233,8 +239,8 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			$critical_failure = rand(1,100);
 
 			if ($critical_failure > 7) {// *** If the critical failure rate wasn't hit.
-				if ($target_turns >= 5) {
-					$turns_decrease = rand(2, 5);
+				if ($target_turns >= 10) {
+					$turns_decrease = rand(2, 7);
 
 					subtractTurns($target, $turns_decrease);
 					addTurns($username, $turns_decrease);
