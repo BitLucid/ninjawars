@@ -401,6 +401,7 @@ function soloPage(){
 
 
 // Just for fun.
+/*
 function april1stCheck(){
     if(isIndex()){
         var currentTime = new Date();
@@ -412,7 +413,7 @@ function april1stCheck(){
             $('body').css({'-webkit-transform':'rotate(20deg)','-moz-transform':'rotate(20deg)', 'transform':'rotate(20deg)'});
         }
     }
-}
+}*/
 
 
 // Initial load of everything, run at the bottom to allow everything else to be defined beforehand.
