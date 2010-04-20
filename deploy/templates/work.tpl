@@ -6,8 +6,8 @@
 
 {if !$new_gold}
 <div class="description">
-    <p>On your way to the foreman's office, you pass by several peasants drenched in sweat from working in the sun all day.</p>
-    <p>The foreman barely looks up at you as he busies himself with paperwork and a cigarette. "So, how much work can we expect from you?"</p>
+    <p>On your way to the foreman's office, you pass by several <a href='attack_npc.php?attacked=1&victim=villager' target='main' title='A peasant?  Or a disguised ninja?  Kill one of the peasants.'>peasants</a> drenched in sweat from working in the sun all day.</p>
+    <p><a href='attack_npc.php?attacked=1&victim=samurai' target='main' title='A samurai?  Kill him.'>A foreman in full samurai garb</a> barely looks up at you as he busies himself with paperwork and a cigarette. "So, how much work can we expect from you?"</p>
 </div>
 {else}
 <div class="description">
@@ -15,7 +15,7 @@
         On your way back from the fields, you pass by a few young children 
         chasing grasshoppers in the tall grass.</p>
     
-    <p>The foreman hands you a small pouch of gold as he says 
+    <p>The samurai foreman hands you a small pouch of gold as he says 
     "Care to put a little more work in? I'll pay the same rate."</p>
     
     <p class='ninja-notice'>You have worked for {$worked} {if $worked eq 1}turn{else}turns{/if} and earned {$new_gold} gold.</p>
@@ -37,7 +37,7 @@
 </form>
 {else}
 <p>
-To earn pay for your work you must first <a href="signup.php?referrer=">become a citizen of this village.</a>
+To earn pay for your work you must first <a href="signup.php">become a citizen of this village.</a>
 </p>
 {/if}
 <hr>

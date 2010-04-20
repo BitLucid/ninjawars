@@ -1,5 +1,7 @@
 Dependencies
 -------------
+Linux, Debian-based, highly recommended, you're on your own on windows.
+
 PHP5, Postgresql8, Perl>=5, Apache2, Perl::Lingua::En::Inflect, postgresql-contrib & libpq-dev (for password hashing)
 
 Via apt-get command line:
@@ -27,6 +29,7 @@ Run the module setup sql in the SHARE_DIRECTORY/contrib/pgcrypto.sql, e.g.
 > psql -d ninjawars -f /usr/share/postgresql/8.4/contrib/pgcrypto.sql
 
 For the pgcrypto functions, see: http://www.postgresql.org/docs/8.3/static/pgcrypto.html
+For contrib install instructions, see: http://www.postgresql.org/docs/8.3/static/contrib.html
 
 
 Using /scripts/deploy

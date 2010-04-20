@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<meta name="keywords" content="ninjawars, ninja wars, ninjas, samurai, free online games, {$title}">
+	<meta name="keywords" content="ninjawars, ninja wars, ninjas, ninja weapons & techniques, samurai, free online games, {$title}">
 	<meta name="author" content="ninjawars.net">
 	<meta name="description" content="Ninjawars: Battle other ninja for your survival.  Create a ninja and use skills or magic to kill samurai, the emperor's guards, or other ninja from rival clans.">
 
