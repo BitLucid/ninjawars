@@ -28,10 +28,7 @@
 {if $is_logged_in}
 <form id="work" action="work.php" method="post" name="work">
   <div>
-    <p>
-      Work in the Fields?
-    </p>
-    <input id="worked" type="text" size="3" maxlength="3" name="worked" class="textField">
+    Work in the fields for: <input id="worked" type="text" size="3" maxlength="3" name="worked" class="textField" value='10'>
     <input id="workButton" type="submit" value="Turns" name="workButton" class="formButton">
   </div>
 </form>
