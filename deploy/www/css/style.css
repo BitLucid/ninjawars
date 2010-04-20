@@ -114,7 +114,7 @@ body {
 	/*font-family: Copperplate / Copperplate Gothic Light, sans-serif;*/
 	/*font family: Tahoma, Arial, sans-serif;*/
 	font-size: 80%;
-	color: #BDB76B;/*DarkKhaki*/
+	color: whitesmoke;/* was #BDB76B; aka DarkKhaki*/
 	background-color: black;	/* Required for the ie bug */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
