@@ -1,13 +1,14 @@
 <h1>Working in the Village</h1>
 
 {if $not_enough_energy}
-    		<p class='ninja-notice'>You don't have the energy in turns to do that much work.</p>
+    		<p class='ninja-notice'>You don't have the energy in turns to do {if $worked} {$worked} turns of work.{else} that much work.{/if}</p>
 {/if}
 
 {if !$new_gold}
 <div class="description">
     <p>On your way to the foreman's office, you pass by several <a href='attack_npc.php?attacked=1&victim=villager' target='main' title='A peasant?  Or a disguised ninja?  Kill one of the peasants.'>peasants</a> drenched in sweat from working in the sun all day.</p>
-    <p><a href='attack_npc.php?attacked=1&victim=samurai' target='main' title='A samurai?  Kill him.'>A foreman in full samurai garb</a> barely looks up at you as he busies himself with paperwork and a cigarette. "So, how much work can we expect from you?"</p>
+    <p><a href='attack_npc.php?attacked=1&victim=samurai' target='main' title='A samurai?  Kill him.'>A foreman in full samurai garb</a> barely looks up at you as he busies himself with paperwork and a cigarette. </p>
+    <p>"So, how much work can we expect from you?"</p>
 </div>
 {else}
 <div class="description">
@@ -28,7 +29,7 @@
 {if $is_logged_in}
 <form id="work" action="work.php" method="post" name="work">
   <div>
-    Work in the fields for: <input id="worked" type="text" size="3" maxlength="3" name="worked" class="textField" value='10'>
+    Work in the fields for: <input id="worked" type="text" size="3" maxlength="3" name="worked" class="textField" value='{$recommended_to_work}'>
     <input id="workButton" type="submit" value="Turns" name="workButton" class="formButton">
   </div>
 </form>
