@@ -24,7 +24,7 @@ $new_clan_name                   = in('new_clan_name', '');
 $sure                            = in('sure', '');
 $kicked                          = in('kicked', '');
 $person_invited                  = in('person_invited', '');
-$message                         = in('message');
+$message                         = in('message', null, null); // Don't filter messages sent in.
 
 // *** Used Variables ***
 
