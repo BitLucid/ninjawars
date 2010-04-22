@@ -100,7 +100,8 @@ http://ryanfait.com/
 }
 
 body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
-    font: 90%/1.4 arial, helvetica, sans-serif;
+	font: 90%/1.4 arial, helvetica, sans-serif;
+    /*font: 90%/1.4 'Trebuchet MS', Tahoma, Geneva, sans-serif;*/
 }
 
 dl{
@@ -114,7 +115,7 @@ body {
 	/*font-family: Copperplate / Copperplate Gothic Light, sans-serif;*/
 	/*font family: Tahoma, Arial, sans-serif;*/
 	font-size: 80%;
-	color: whitesmoke;/* was #BDB76B; aka DarkKhaki*/
+	color: #CCCCCC;/*#9BA7B2; was whitesmoke was #BDB76B; aka DarkKhaki*/
 	background-color: black;	/* Required for the ie bug */
 	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
 	/*opacity: .9;*/
@@ -1422,6 +1423,7 @@ iframe{
 
 .message-nav{
     margin-top:1em;
+    clear:both;
 }
 
 #clan-mail-section form{

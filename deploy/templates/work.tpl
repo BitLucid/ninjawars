@@ -6,9 +6,12 @@
 
 {if !$new_gold}
 <div class="description">
+<!-- For google ad targetting -->
+<!-- google_ad_section_start -->
     <p>On your way to the foreman's office, you pass by several <a href='attack_npc.php?attacked=1&victim=villager' target='main' title='A peasant?  Or a disguised ninja?  Kill one of the peasants.'>peasants</a> drenched in sweat from working in the sun all day.</p>
     <p><a href='attack_npc.php?attacked=1&victim=samurai' target='main' title='A samurai?  Kill him.'>A foreman in full samurai garb</a> barely looks up at you as he busies himself with paperwork and a cigarette. </p>
     <p>"So, how much work can we expect from you?"</p>
+<!-- google_ad_section_end -->
 </div>
 {else}
 <div class="description">

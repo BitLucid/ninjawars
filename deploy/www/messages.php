@@ -44,7 +44,7 @@ $nav = render_message_nav($page, $pages, $limit);
 
 read_messages($user_id); // mark messages as read for next viewing.
 
-// TODO: Handle "send" and "deletion";
+// TODO: Handle "send" ing to specific, known users.
 $message_list = '';
 if (!empty($messages)) {
 	foreach ($messages as $loop_message) {
