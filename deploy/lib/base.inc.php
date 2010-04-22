@@ -25,6 +25,7 @@ require_once(OBJ_ROOT."Clan.php");
 // *** Include all common function includes here.
 require_once(LIB_ROOT."common/lib_input.php");
 require_once(LIB_ROOT."common/lib_output.php");
+require_once(LIB_ROOT."common/lib_db.php");
 require_once(LIB_ROOT."template_library/lib_templates.php");
 
 // Development includes, for live also.
