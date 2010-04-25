@@ -19,14 +19,10 @@ if ($user_id) {
 	}
 }
 
-DatabaseConnection::getInstance();
-$statement = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('30 minutes' AS interval))");
-
-$members = $statement->fetchColumn();
+$members = query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('30 minutes' AS interval))");
 $members = either($members, '0');
 
-$statement = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true");
-$membersTotal = $statement->fetchColumn();
+$membersTotal = query_item("SELECT count(*) FROM ppl_online WHERE member = true");
 $membersTotal = either($membersTotal, '0');
 
 // Output section.

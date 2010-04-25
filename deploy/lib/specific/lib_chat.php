@@ -55,27 +55,23 @@ function render_active_members() {
 
 // Get all the chat messages info.
 function get_chats($chatlength) {
-	DatabaseConnection::getInstance();
 	$limit = ($chatlength ? 'LIMIT :limit' : '');
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT sender_id, uname, message, date, age(now(), date) AS ago FROM chat 
-        JOIN players ON chat.sender_id = player_id ORDER BY chat_id DESC ".$limit);// Pull messages
-
-	if ($limit) {
-		$statement->bindValue(':limit', $chatlength);
+	$bindings = array();
+	if($limit){
+	    $bindings[':limit'] = $chatlength;
 	}
+	
+	$chats = query_resultset("SELECT sender_id, uname, message, date, age(now(), date) AS ago FROM chat 
+        JOIN players ON chat.sender_id = player_id ORDER BY chat_id DESC ".$limit, $bindings);
 
-	$statement->execute();
-
-	return $statement->fetchAll();
+	return $chats;
 }
+
+
 
 // Total number of chats available.
 function get_chat_count() {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->query("SELECT count(*) FROM chat");
-	return $statement->fetchColumn();
+	return query_item("SELECT count(*) FROM chat");
 }
 
 /**
