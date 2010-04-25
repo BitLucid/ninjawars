@@ -41,18 +41,8 @@ function query_resultset($sql_query, $bindings=array()){
 
 // Run to just get the first row, for 1 row queries.
 function query_row($sql, $bindings=array()){
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare($sql);
-	foreach($bindings as $binding => $value){
-		if(is_array($value)){
-		    // Cast the bindings when something to cast to was sent in.
-			$statement->bindParam($binding, $value[0], $value[1]);
-		} else {
-			$statement->bindValue($binding, $value);
-		}
-	}
-	$statement->execute();
-	return $statement->fetch(PDO::FETCH_ASSOC);
+    $resultset = query_resultset($sql, $bindings);
+	return $resultset->fetch(PDO::FETCH_ASSOC);
 }
 
 // Get only the first result item.
