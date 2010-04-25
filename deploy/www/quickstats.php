@@ -29,16 +29,13 @@ $status_output_list = render_status_list();
 
 $viewinv = ($command == 'viewinv');
 
-DatabaseConnection::getInstance();
-$statement = DatabaseConnection::$pdo->prepare("SELECT item, amount FROM inventory WHERE owner = :user ORDER BY item");
-$statement->bindValue(':user', get_user_id($username));
-$statement->execute();
+$inv_resultset = query_resultset("SELECT item, amount FROM inventory WHERE owner = :user ORDER BY item", array(':user'=>get_user_id($username)));
 
 $items_section = '';
 
 // TODO: Change this and the template to be using dl/dd/dt instead of a table.
 
-while ($loopItem = $statement->fetch()) {
+foreach($inv_resultset as $loopItem) {
 	if ($loopItem['amount']) { // Skip zero counts.
 		$items_section .= "
 	          <tr><td> {$loopItem['item']}: </td>
