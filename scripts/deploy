@@ -390,9 +390,10 @@ SERVER_NAME=${WWW_ROOT#h*//}
 SHORT_SERVER_NAME=${SERVER_NAME#*.}
 SERVER_NAME=${SERVER_NAME%/}
 SHORT_SERVER_NAME=${SHORT_SERVER_NAME%/}
+REDIRECT_WWW_ROOT=${WWW_ROOT%/}
 
 sed -i -e {s/__SERVER_ROOT__/${SERVER_ROOT//\//\\/}/}                "${SERVER_ROOT}apache_directives_template"
-sed -i -e {s/__WWW_ROOT__/${WWW_ROOT//\//\\/}/}                      "${SERVER_ROOT}apache_directives_template"
+sed -i -e {s/__WWW_ROOT__/${REDIRECT_WWW_ROOT//\//\\/}/}             "${SERVER_ROOT}apache_directives_template"
 sed -i -e {s/__SERVER_NAME__/${SERVER_NAME//\//\\/}/}                "${SERVER_ROOT}apache_directives_template"
 sed -i -e {s/__SHORT_SERVER_NAME__/${SHORT_SERVER_NAME//\//\\/}/}    "${SERVER_ROOT}apache_directives_template"
 
