@@ -1,15 +1,10 @@
 <?php
 require_once(OBJ_ROOT."Skill.php");
+require_once(DB_ROOT."SkillDAO.class.php");
 require_once(LIB_ROOT."specific/lib_clan.php");
 require_once(LIB_ROOT."specific/lib_player.php");
 
 
-/**
- * Displays a players' available skills and allows their use.
- *
- * @package combat
- * @subpackage skill
-**/
 $alive      = false;
 $private    = false;
 $quickstat  = "player";
@@ -17,8 +12,6 @@ $page_title = "Player Profile";
 
 include SERVER_ROOT."interface/header.php";
 
-$skillListObj  = new Skill();
-$skillsListObj = $skillListObj;
 $target        = $player = in('player');
 $target_id     = either(in('target_id'), either(in('player_id'), get_user_id($target)));
 $score         = get_score_formula();
@@ -73,9 +66,12 @@ if (!$player_info) {
 	if ($username && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
 		// Attack or Duel
 
-		$skills_available  = $skillsListObj->hasSkills();
+		$skillDAO = new SkillDAO();
+
+		$combat_skills     = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->level)->fetchAll(); // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
+
 		$item_use_section  = render_item_use_on_another($target);
-		$skill_use_section = render_skills($target, $skillListObj, $skillsListObj);
+		$skill_use_section = render_skills($target, $viewing_player_obj);
 	}	// End of the there-was-no-attack-error section
 
 	$set_bounty_section     = '';
@@ -112,7 +108,7 @@ if (!$player_info) {
 
 // Send the info to the template.
 
-$parts = get_certain_vars(get_defined_vars(), array('skills_available'));
+$parts = get_certain_vars(get_defined_vars(), array('combat_skills'));
 
 echo render_template('player.tpl', $parts);
 

@@ -22,9 +22,11 @@ $status_array = getStatus($username);
 $status_output_list = render_status_section();
 $no_skills = true;
 $stealth = $skillsListObj->hasSkill('Stealth');
+
 if ($stealth) {
 	$no_skills = false;
 }
+
 $stealth_turn_cost = $skillsListObj->getTurnCost('Stealth');
 $unstealth_turn_cost = $skillsListObj->getTurnCost('Unstealth');
 $chi = $skillsListObj->hasSkill('Chi');

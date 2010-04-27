@@ -6,71 +6,37 @@ require_once(LIB_ROOT."specific/lib_status.php");
 define('GRAVATAR', 1);
 
 // TODO: This is also begging for a template.
-function render_skills($target, $skillListObj, $skillsListObj) {
-	$available_skills = $skillsListObj->hasSkills();
+function render_skills($target, $player) {
+	$skillDAO = new SkillDAO();
+	$skillListObj = new Skill();
+	$available_skills = $skillDAO->getSkillsByTypeAndClass($player->vo->_class_id, 'targeted', $player->vo->level);
 
-	if (empty($available_skills)) {
+	$skill = $available_skills->fetch();
+
+	if (empty($skill)) {
 		return '';
+	} else {
+		ob_start();
+
+		echo "<form id=\"skill_use\" class='skill_use' action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
+		echo "<ul>";
+
+		do {
+			echo "<li>";
+			echo "<input id=\"command\" class='command' type=\"submit\" value=\"".$skill['skill_display_name']."\" name=\"command\" class=\"formButton\">\n";
+			echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
+			echo "(".$skillListObj->getTurnCost($skill['skill_display_name'])." Turns)\n";
+			echo "</li>";
+		} while ($skill = $available_skills->fetch());
+
+		echo "</ul>\n";
+		echo "</form>\n";
+
+		$res = ob_get_contents();
+		ob_end_clean();
+
+		return $res;
 	}
-
-	ob_start();
-
-	echo "<form id=\"skill_use\" class='skill_use' action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-
-	if ($skillsListObj->hasSkill('Fire Bolt')) {
-		echo "<li>";
-		echo "<input id=\"command\" class='command' type=\"submit\" value=\"Fire Bolt\" name=\"command\" class=\"formButton\">\n";
-		echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
-		echo "(".$skillListObj->getTurnCost('Fire Bolt')." Turns)\n";
-		echo "</li>";
-	}
-
-	if ($skillsListObj->hasSkill('Poison Touch')) {
-		echo "<li>";
-		echo "<input id=\"command\" class='command' type=\"submit\" value=\"Poison Touch\" name=\"command\" class=\"formButton\">\n";
-		echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
-		echo "(".$skillListObj->getTurnCost('Poison Touch')." Turns)\n";
-		echo "</li>";
-	}
-
-	if ($skillsListObj->hasSkill('Steal')) {
-		echo "<li>";
-		echo "<input id=\"command\" class='command' type=\"submit\" value=\"Steal\" name=\"command\" class=\"formButton\">\n";
-		echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
-		echo "(".$skillListObj->getTurnCost('Steal')." Turns)\n";
-		echo "</li>";
-	}
-
-	if ($skillsListObj->hasSkill('Ice Bolt')) {
-		echo "<li>";
-		echo "<input id=\"command\" class='command' type=\"submit\" value=\"Ice Bolt\" name=\"command\" class=\"formButton\">\n";
-		echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
-		echo "(".$skillListObj->getTurnCost('Ice Bolt')." Turns)\n";
-		echo "</li>";
-	}
-
-	if ($skillsListObj->hasSkill('Cold Steal')) {
-		echo "<li>";
-		echo "<input id=\"command\" class='command' type=\"submit\" value=\"Cold Steal\" name=\"command\" class=\"formButton\">\n";
-		echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
-		echo "(".$skillListObj->getTurnCost('Cold Steal')." Turns)<br>\n";
-		echo "</li>";
-	}
-
-	if ($skillsListObj->hasSkill('Sight')) {
-		echo "<li>";
-		echo "<input id=\"command\" class='command' type=\"submit\" value=\"Sight\" name=\"command\" class=\"formButton\">\n";
-		echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
-		echo "(".$skillListObj->getTurnCost('Sight')." Turns)\n";
-		echo "</li>";
-	}
-
-	echo "</form>\n";
-
-	$res = ob_get_contents();
-	ob_end_clean();
-
-	return $res;
 }
 
 /**
