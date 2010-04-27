@@ -2,7 +2,7 @@
 
 init(); // Initializes a full environment.
 
-$progression = render_template('progression.tpl', array('WEB_ROOT'=>WEB_ROOT, 'IMAGE_ROOT'=>IMAGE_ROOT));
+$progression = render_template('progression.tpl', array());
 
 echo render_page('about.tpl', 
         'About NinjaWars', 

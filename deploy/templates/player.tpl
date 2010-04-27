@@ -18,12 +18,19 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
     <h1 class='player-name'>{$player}</h1>
 
-    {$ranking_link_section}
+    <div class='player-ranking-linkback'>
+      <a href='list_all_players.php?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none'><img src='{$templatelite.const.IMAGE_ROOT}return-triangle.png' alt='&lsaquo;Rank {$rank_spot|escape}' title='&lsaquo;Return to rank $rank_spot' style='width:50px;height:50px;float:left;'></a>
+    </div>
 
 	<div class='player-titles centered'>
 
 	{$avatar_section}
-    {$class_section}
+
+    <span class='player-class {$player_info.class|escape}'>
+      <img id='class-shuriken' src='{$templatelite.const.IMAGE_ROOT}small{$player_info.class|escape:'url'|escape}Shuriken.gif' alt=''>
+      {$player_info.class|escape}
+    </span>
+
 	{$level_and_category}
 
 	{$status_section}
@@ -57,7 +64,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 			       <input id="target" type="hidden" value="{$target}" name="target" title='Attack or Duel this ninja'>
                    <label class='attack-player-trigger'>
-                     <input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>
+                     <input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>
                      <a>Attack</a>
                    </label>
 			     </form>
@@ -87,8 +94,28 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 	{$player_activity_section}
 
-    {$set_bounty_section}
-    {$communication_section}
+{if !$self}
+     <div class='set-bounty centered'>
+       <form id="set_bounty" action="doshin_office.php" method="post" name="set_bounty">
+         <div>
+           <input id="amount" type="text" size="4" maxlength="5" name="amount" class="textField">
+           <input id="command" type="submit" value="Offer Bounty" name="command" class="formButton">
+           <input id="target" type="hidden" value="{$player_info.uname|escape}" name="target">
+         </div>
+       </form>
+     </div>
+
+     <div class='player-communications centered'>
+       <form id='send_mail' action='player.php' method='get' name='send_mail'>
+         <div>
+           <input type='hidden' name='target_id' value='{$player_info.player_id|escape}'>
+           <div><input id='messenger' type='hidden' value='1' name='messenger'></div>
+           <textarea name='message' cols='20' rows='2'></textarea>
+           <input type='submit' value='Send Message' class='formButton'>
+         </div>
+       </form>
+     </div>
+{/if}
 
     <!-- Clan leader options on players in their clan. -->
     {$clan_options_section}
@@ -97,6 +124,13 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 	{$player_clan_section}
 
-    {$player_profile_message}
+{if $player_info.messages}
+    <div class='player-profile'>
+      <div class='subtitle'>Message:</div>
+      <p class='centered profile-message'>
+        {$player_info.messages|escape|nl2br}
+      </p>
+    </div>
+{/if}
 
 	</div><!-- End player-info -->

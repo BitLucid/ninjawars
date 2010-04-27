@@ -101,15 +101,6 @@ function render_avatar_section($player, $img_size=null){
     </div>";
 }
 
-function render_class_section($class) {
-    $IMAGE_ROOT = IMAGE_ROOT;
-    return "<span class='player-class $class'>
-        <img id='class-shuriken' src='{$IMAGE_ROOT}small{$class}Shuriken.gif' alt=''>
-        $class
-    </span>";
-}
-
-
 function render_level_and_category($level) {
     $res = '';
     $level_and_cat = level_category($level);
@@ -225,36 +216,6 @@ function render_clan_members($clan_id = 0, $limit = 30) {
 	return $res;
 }
 
-// Display the profile message.
-function display_player_profile($player_info) {
-	if ($player_info['messages']) {
-?>
-    <div class='player-profile'>
-      <div class='subtitle'>Message:</div>
-      <p class='centered profile-message'>
-<?php echo nl2br(out($player_info['messages'])); ?>
-      </p>
-    </div>
-<?php
-	}
-}
-
-
-function render_ranking_link($player_info) {
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE uname = :player");
-	$statement->bindValue(':player', $player_info['uname']);
-	$statement->execute();
-
-	$rank_spot = $statement->fetchColumn();
-
-	$res = "    <div class='player-ranking-linkback'>
-              <a href='list_all_players.php?searched=".urlencode('#')."$rank_spot&amp;hide=none'><img src='/images/return-triangle.png' alt='&lsaquo;Rank $rank_spot' title='&lsaquo;Return to rank $rank_spot' style='width:50px;height:50px;float:left;'></a>
-        </div>";
-    return $res;
-}
-
-
 function render_list_link() {
     $res = "<div class='player-list-link'>
                 <a href='list_all_players.php'>Go back to the ninja list</a>
@@ -330,14 +291,6 @@ function render_item_use_on_another($target) {
 	return $res;
 }
 
-
-function display_attack_options() {
-	// Attack Duel deflect or blaze
-	// Use [Item List] Give (only if in same clan)
-	// Extra skills (sight, pickpocket)
-	// Make Attacks central, secondary options up against left and right sides.
-}
-
 // Display the in-clan options for clan leaders.
 function display_clan_options($player_info, $viewing_player_obj) {
 	$clan        = get_clan_by_player_id($player_info['player_id']);
@@ -361,32 +314,6 @@ function display_clan_options($player_info, $viewing_player_obj) {
 // Check whether the player is the leader of their clan.
 function is_clan_leader($player_id) {
 	return (($clan = get_clan_by_player_id($player_id)) && $player_id == get_clan_leader_id($clan->getID()));
-}
-
-// display the form to set bounty on a player.
-function display_set_bounty($player_info) {
-	echo "
-        <div class='set-bounty centered'>
-        <form id=\"set_bounty\" action=\"doshin_office.php\" method=\"post\" name=\"set_bounty\">
-        <input id=\"amount\" type=\"text\" size=\"4\" maxlength=\"5\" name=\"amount\" class=\"textField\">
-        <input id=\"command\" type=\"submit\" value=\"Offer Bounty\" name=\"command\" class=\"formButton\">
-        <input id=\"target\" type=\"hidden\" value=\"{$player_info['uname']}\" name=\"target\">
-        </form>
-      </div>";
-}
-
-// Display the form to send mail to an individual.
-function render_communication($target) {
-	$target_id = get_user_id($target);
-	$res = "<div class='player-communications centered'>
-        <form id='send_mail' action='player.php' method='get' name='send_mail'>
-        <input type='hidden' name='target_id' value='$target_id'>
-        <input id='messenger' type='hidden' value='1' name='messenger'><br >
-        <textarea name='message' cols='20' rows='2'></textarea>
-        <input type='submit' value='Send Message' class='formButton'>
-        </form>
-      </div>";
-	return $res;
 }
 
 function get_rank($username) {
@@ -514,7 +441,6 @@ function create_player($send_name, $params=array()) {
 	        'send_name'       => $send_name
 			, 'confirm'       => $confirm
 			, 'send_class'    => $send_class
-			, 'WEB_ROOT'      => WEB_ROOT
 			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
 		)
 	);

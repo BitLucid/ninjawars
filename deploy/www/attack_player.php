@@ -34,7 +34,7 @@ $locations = village_locations_list();
 
 $npcs = npcs_list();
 
-echo render_template('attack_player.tpl', array('locations'=>$locations, 'npcs'=>$npcs, 'IMAGE_ROOT'=>IMAGE_ROOT));
+echo render_template('attack_player.tpl', array('locations'=>$locations, 'npcs'=>$npcs));
 
 include SERVER_ROOT."interface/footer.php";
 ?>

@@ -12,7 +12,7 @@ include SERVER_ROOT."interface/header.php";
 <h3>Welcome to a world that is not all it seems, be on your guard!</h3>
 
 <?php 
-$progression = render_template('progression.tpl', array('WEB_ROOT'=>WEB_ROOT, 'IMAGE_ROOT'=>IMAGE_ROOT, 'user_id'=>get_user_id()));
+$progression = render_template('progression.tpl', array('user_id'=>get_user_id()));
 echo $progression;
 ?>
 

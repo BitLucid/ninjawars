@@ -26,7 +26,6 @@ function send_account_email($email, $data) {
 	$_to = "$email";
 	$_subject = "NinjaWars Lost Password Request";
 	$_body = render_template('lostpass_email_body.tpl', array(
-	    'WEB_ROOT'=>WEB_ROOT,
 	    'SUPPORT_EMAIL'=>SUPPORT_EMAIL,
 	    'lost_uname'=>$data['uname'],
 	    'lost_pname'=>$data['pname'],
@@ -55,7 +54,6 @@ function send_confirmation_email($email, $data) {
 	$_to = "$email";
 	$_subject = "NinjaWars Confirmation Info";
 	$_body = render_template('lostconfirm_email_body.tpl', array(
-	    'WEB_ROOT'=>WEB_ROOT,
 	    'SUPPORT_EMAIL'=>SUPPORT_EMAIL,
 	    'lost_uname'=>$lost_uname,
 	    'lost_confirm'=>$lost_confirm));

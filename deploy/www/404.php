@@ -5,7 +5,7 @@
     <title>
       404 Error Page Not Found
     </title>
-    <base href="{$WEB_ROOT}">
+    <base href="<?php echo WEB_ROOT;?>">
     <!--[if lte IE 6]></base><![endif]-->
     <link rel="stylesheet" href="css/style.css">
   </head>

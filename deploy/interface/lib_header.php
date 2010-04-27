@@ -189,7 +189,6 @@ function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses 
 	$parts = array(
 		'title'          => ($p_title ? htmlentities($p_title) : '')
 		, 'body_classes' => $css_body_classes
-		, 'WEB_ROOT'     => WEB_ROOT
 		, 'local_js'     => (OFFLINE || DEBUG)
 		, 'DEBUG'        => DEBUG
 		, 'is_index'     => $is_index
