@@ -70,28 +70,29 @@ function render_active($limit=5, $alive_only=true) {
 	return $out;
 }
 
-// Displays the search section of the page.
-function display_search_form($hide, $page, $searched, $dead_count) {
-	echo "<div class='list-all-players-search centered'>";
-	echo "  <form action=\"list_all_players.php\" method=\"get\">";
-	echo "    <div>\n";
-	echo "      <input type=\"text\" name=\"searched\" class='textField' style=\"font-family:Verdana, Arial;font-size:xx-small;\">\n";
-	echo "      <input type=\"hidden\" name=\"hide\" value=\"$hide\">\n";
-	echo "      <button type='submit' class='formButton' value='1'>Search for Ninja</button>";
-
-	if ($hide == "dead") {
-		echo "<a href=\"list_all_players.php?page=$page&amp;hide=none&amp;searched=$searched\">(Show $dead_count dead ninja)</a>\n";
-	} else {
-		echo "<a href=\"list_all_players.php?page=$page&amp;hide=dead&amp;searched=$searched\">(Hide $dead_count dead ninja)</a>\n";
-	}
-
-	echo "    </div>\n";
-	echo "  </form>\n";
-	echo "</div>";
+// Function to format each row of the player list.
+function format_ninja_row($a_player){
+	$level_cat = level_category($a_player['level']);
+	$row = array(
+		'alive_class'     => ($a_player['alive'] == 1 ? "AliveRow" : "DeadRow")
+		, 'player_rank'   => $a_player['rank_id']
+		, 'player_id'     => $a_player['player_id']
+		, 'uname'         => $a_player['uname']
+		, 'level_cat_css' => $level_cat['css']
+		, 'level_cat'     => $level_cat['display']
+		, 'level'         => $a_player['level']
+		, 'class'         => $a_player['class']
+		, 'clan_id'       => $a_player['clan_id']
+		, 'clan_name'     => $a_player['clan_name']
+		, 'alive'         => ($a_player['alive'] ? "&nbsp;" : "Dead"), // alive/dead display
+	);
+	return $row;
 }
 
+
 // Display first/previous/page/next/last
-function player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages) {
+function render_player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages) {
+    ob_start();
 	echo "<div class='player-list-nav'>\n
 	      <form action=\"list_all_players.php\" method=\"get\">\n
 	        <div>\n";
@@ -124,5 +125,10 @@ function player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $nu
 	echo "  </div>\n
 	      </form>\n
 	      </div>\n";
+    $search_form = ob_get_contents();
+    ob_end_clean();
+    return $search_form;
 } // End of display functions.
+
+
 ?>
