@@ -228,7 +228,7 @@ function render_clan_view($p_clan_id) {
 				<span class='member size{$member['size']}'>
 				<a href='player.php?player=".urlencode($member['uname'])."'>".htmlentities($member['uname'])."</a>
 				</span>";
-		$res .= render_avatar_section_from_email($member['email']);
+		$res .= render_template('gravatar.tpl', array('url' => generate_gravatar_url($member['player_id'])));
 		$res .= "</li>";
 	}
 

@@ -53,11 +53,18 @@ function render_avatar($player, $size=null) {
 	}
 }
 
+function generate_gravatar_url($player) {
+	if (!is_object($player)) {
+		$player = new Player($player);
+	}
+
+	return (OFFLINE ? '' : render_avatar($player));
+}
+
 // Use the email information to return the gravatar image url.
 function render_avatar_from_email($email, $avatar_type=null, $size=null){
 	$def         = 'monsterid'; // Default image or image class.
 	// other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
-	$avatar_type = $avatar_type;
 	$base        = "http://www.gravatar.com/avatar/";
 	$hash        = md5(trim(strtolower($email)));
 	$no_gravatar = "d=".urlencode($def);
@@ -66,38 +73,6 @@ function render_avatar_from_email($email, $avatar_type=null, $size=null){
 	$res         = $base.$hash."?".implode('&', array($no_gravatar, $size, $rating));
 
 	return $res;    
-}
-
-// Render an avatar section just from the email address.
-function render_avatar_section_from_email($email, $img_size=null){
-	$img_url = (OFFLINE ? '' : render_avatar_from_email($email, $img_size));
-
-	if (!$img_url) {
-		return '';
-	}
-
-    return "
-    <div id='avatar'>
-        <img alt='' src='".htmlentities($img_url)."' height='80' width='80'>
-    </div>";
-}
-
-// Display the div for the avatar to live within.
-function render_avatar_section($player, $img_size=null){
-    if (!is_object($player)) {
-        $player = new Player($player);
-    }
-
-	$img_url = (OFFLINE ? '' : render_avatar($player, $img_size));
-
-	if (!$img_url) {
-		return '';
-	}
-
-    return "
-    <div id='avatar'>
-        <img alt='' src='".htmlentities($img_url)."'>
-    </div>";
 }
 
 // Player activity and events information.

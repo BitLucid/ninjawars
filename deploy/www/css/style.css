@@ -286,7 +286,7 @@ a:hover {
 a:link {} a:visited {} a:active {}
 */
 
-.player-profile #avatar, .your-stats #avatar {
+#avatar {
     text-align:center;
     float:right;
     width:80px;

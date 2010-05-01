@@ -59,7 +59,7 @@ if (!$target_player_obj || !$target_player_obj->player_id) {
 		// Display the player info.
 		$level_category          = level_category($player_info['level']);
 		$status_section          = render_status_section($player_info['uname']);
-		$avatar_section          = render_avatar_section($target_player_obj);
+		$gravatar_url            = generate_gravatar_url($target_player_obj);
 		$player_activity_section = render_player_activity($player_info);
 	
 		if ($username && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
