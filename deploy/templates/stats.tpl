@@ -29,8 +29,8 @@
 <div>Avatar: (change your avatar for your account email at <a href='http://gravatar.com'>gravatar.com</a>) {$avatar_display}</div>
 {$status_list}
 <ul id='player-info' class='player-info'>
-    <li>Health: {$health_section}</li>
-    <li>Level: {$level_and_cat}</li>
+    <li>Health: <span{if $player.health lt 80} class="injured"{/if}>{$player.health|escape}</span></li>
+    <li>Level: <span class='player-level-category {$level_category.css|escape}'> {$level_category.display|escape} [{$player.level|escape}] </span></li>
     <li>Class: {$player.class}</li>
     <li>Strength: {$player.strength}</li>
     <li>Gold: {$player.gold}</li>

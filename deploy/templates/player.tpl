@@ -31,7 +31,9 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
       {$player_info.class|escape}
     </span>
 
-	{$level_and_category}
+    <span class='player-level-category {$level_category.css|escape}'>
+      {$level_category.display|escape} [{$player_info.level|escape}]
+    </span>
 
 	{$status_section}
 

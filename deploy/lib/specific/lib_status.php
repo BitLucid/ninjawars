@@ -52,9 +52,4 @@ function render_status_section($target=null) {
 
 	return $res;
 }
-
-function render_health_section($health) {
-	return "<span ".($health < 80 ? "class='injured'":'')."> $health </span>";
-	//return $res;
-}
 ?>

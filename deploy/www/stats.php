@@ -62,15 +62,14 @@ if ($deleteAccount) {
 	}
 }
 
-$level_and_cat    = render_level_and_category($player['level']);
+$level_category   = level_category($player['level']);
 $status_list      = render_status_section();
 $avatar_display   = render_avatar_section($player['player_id']);// include and render from player.php
 $rank_display     = get_rank($username); // rank display.
-$health_section   = render_health_section($player['health']);
 $profile_editable = $player['messages'];
 $profile_display  = out($profile_editable);
 
-$parts = get_certain_vars(get_defined_vars(), array('player'));
+$parts = get_certain_vars(get_defined_vars(), array('player', $level_category));
 
 if ($parts['player_clan'] = get_clan_by_player_id($user_id)) {
 	$parts['clan_name'] = $parts['player_clan']->getName();

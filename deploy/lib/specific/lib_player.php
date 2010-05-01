@@ -57,14 +57,13 @@ function render_avatar($player, $size=null) {
 function render_avatar_from_email($email, $avatar_type=null, $size=null){
 	$def         = 'monsterid'; // Default image or image class.
 	// other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
-	$email       = $email;
 	$avatar_type = $avatar_type;
 	$base        = "http://www.gravatar.com/avatar/";
 	$hash        = md5(trim(strtolower($email)));
 	$no_gravatar = "d=".urlencode($def);
 	$size        = either($size, 80);
 	$rating      = "r=x";
-	$res         = $base.$hash."?".implode("&amp;", array($no_gravatar, $size, $rating));
+	$res         = $base.$hash."?".implode('&', array($no_gravatar, $size, $rating));
 
 	return $res;    
 }
@@ -79,7 +78,7 @@ function render_avatar_section_from_email($email, $img_size=null){
 
     return "
     <div id='avatar'>
-        <img alt='' src='$img_url' height='80' width='80'>
+        <img alt='' src='".htmlentities($img_url)."' height='80' width='80'>
     </div>";
 }
 
@@ -97,18 +96,8 @@ function render_avatar_section($player, $img_size=null){
 
     return "
     <div id='avatar'>
-        <img alt='' src='$img_url'>
+        <img alt='' src='".htmlentities($img_url)."'>
     </div>";
-}
-
-function render_level_and_category($level) {
-    $res = '';
-    $level_and_cat = level_category($level);
-    $res .= "<span class='player-level-category {$level_and_cat['css']}'>
-		{$level_and_cat['display']} [{$level}]
-	</span>";
-
-	return $res;
 }
 
 // Player activity and events information.
@@ -199,7 +188,7 @@ function render_clan_members($clan_id = 0, $limit = 30) {
 				}
 
 				echo "<li class='clan-member$added_class'>
-                            <a href='player.php?target_id=", urlencode($ninja['player_id']), "'>", htmlentities($ninja['uname']), "</a>
+                            <a href='player.php?target_id=", htmlentities(urlencode($ninja['player_id'])), "'>", htmlentities($ninja['uname']), "</a>
                           </li>";
 			} while ($ninja = $statement->fetch());
 
@@ -214,13 +203,6 @@ function render_clan_members($clan_id = 0, $limit = 30) {
 	ob_end_clean();
 
 	return $res;
-}
-
-function render_list_link() {
-    $res = "<div class='player-list-link'>
-                <a href='list_all_players.php'>Go back to the ninja list</a>
-            </div>";
-    return $res;
 }
 
 /**
@@ -615,6 +597,6 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 } // *** End of validate_signup() function.
 
 function render_player_link($username) {
-    return "<a href='player.php?player=".urlencode($username)."'>".htmlentities($username)."</a>";
+    return "<a href='player.php?player=".htmlentities(urlencode($username))."'>".htmlentities($username)."</a>";
 }
 ?>

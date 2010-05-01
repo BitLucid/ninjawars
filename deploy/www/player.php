@@ -17,14 +17,12 @@ $target_id     = either(in('target_id'), either(in('player_id'), get_user_id($ta
 $target_player_obj = new Player(either($target_id, $target));
 
 if (!$target_player_obj || !$target_player_obj->player_id) {
-	echo "<div class='error'>No such ninja.</div>";
-	echo render_list_link();
+	echo render_template('no-player.tpl', array());
 } else {
 	$player_info = $target_player_obj->as_array(); // Pull the info out of the object.
 
 	if (!$player_info) {
-		echo "<div class='error'>No such ninja</div>";
-		echo render_list_link();
+		echo render_template('no-player.tpl', array());
 	} else {
 		$score         = get_score_formula();
 		$user_id       = get_user_id();
@@ -59,7 +57,7 @@ if (!$target_player_obj || !$target_player_obj->player_id) {
 		$rank_spot = $statement->fetchColumn();
 
 		// Display the player info.
-		$level_and_category      = render_level_and_category($player_info['level']);
+		$level_category          = level_category($player_info['level']);
 		$status_section          = render_status_section($player_info['uname']);
 		$avatar_section          = render_avatar_section($target_player_obj);
 		$player_activity_section = render_player_activity($player_info);
@@ -93,7 +91,7 @@ if (!$target_player_obj || !$target_player_obj->player_id) {
 	
 		// Send the info to the template.
 	
-		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot'));
+		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category'));
 	
 		echo render_template('player.tpl', $parts);
 	}
