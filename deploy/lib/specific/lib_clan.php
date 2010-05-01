@@ -135,13 +135,10 @@ function get_clan_leaders($clan_id=null, $all=false) {
  *   and shows only non-empty clans.
 **/
 function clan_size() {
-	DatabaseConnection::getInstance();
 	$res = array();
 
 	// sum the levels of the players (minus days of inactivity) for each clan
-	$sel = DatabaseConnection::$pdo->query("SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC");
-
-	$counts = $sel->fetchAll();
+	$counts = query("SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC");
 
 	if (!empty($counts)) {
 		$largest = reset($counts);
@@ -185,40 +182,29 @@ function render_clan_view($p_clan_id) {
 		return ''; // No viewing criteria available.
 	}
 
-	$dbconn = DatabaseConnection::getInstance();
-
-	$query = "SELECT uname, email, clan_name, level, days, _creator_player_id, player_id
+    $members_resultset = query_resultset("SELECT uname, email, clan_name, level, days, _creator_player_id, player_id
 			FROM clan
 			JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-			JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC";
-	$statement = DatabaseConnection::$pdo->prepare($query);
-	$statement->bindValue(':clan_id', $p_clan_id);
-	$statement->execute();
+			JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC", 
+			array(':clan_id'=>$p_clan_id));
 
-	$members = $statement->fetchAll();
-
-	$query = "SELECT max(level) AS max 
+	
+	$max = query_item("SELECT max(level) AS max 
 		FROM clan
 		JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-		JOIN players ON player_id = _player_id AND confirmed = 1";
-	$statement = DatabaseConnection::$pdo->prepare($query);
-	$statement->bindValue(':clan_id', $p_clan_id);
-	$statement->execute();
-
-	$max_list = $statement->fetchAll();
-
-	$max_array = reset($max_list);
-	$max = $max_array['max'];
-	//$members = @natsort2d($members, 'days');
+		JOIN players ON player_id = _player_id AND confirmed = 1", 
+		array(":clan_id"=>$p_clan_id));
+	
+	$clan = get_clan($p_clan_id); // Clan array.
+	$clan_name = $clan['clan_name'];
 
 	$res = "<div id='clan-members'>
-			<h3 id='clan-members-title'>".htmlentities($members[0]['clan_name'])."</h3>
-			<div id='clan-members-count'>Clan Members: ".count($members)."</div>
+			<h3 id='clan-members-title'>".htmlentities($clan_name)."</h3>
 			<ul id='clan-members-list'>";
-
-	foreach ($members as $member) {
+    $count = 0;
+	foreach ($members_resultset as $member) {
 		$member['size'] = floor( ( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) ) / $max) * 2) + 1;
-
+        // Calc the member display size based on their level relative to the max.
 		if ($member['player_id'] == $member['_creator_player_id']) {
 			$member['size'] = $member['size'] + 2;
 			$member['size'] = ($member['size'] > 2 ? 2 : $member['size']);
@@ -230,28 +216,14 @@ function render_clan_view($p_clan_id) {
 				</span>";
 		$res .= render_template('gravatar.tpl', array('url' => generate_gravatar_url($member['player_id'])));
 		$res .= "</li>";
+        $count++;
 	}
 
 	$res .= "</ul>
-			</div>";
+			</div>
+			<div id='clan-members-count' style='clear:both;margin-top:1em;'>Clan Members: ".$count."</div>";
 
 	return $res;
 }
 
-// Helper function.
-/*
-function natsort2d($arrIn, $index = null) {
-	$arrTemp = array();
-	$arrOut = array();
-	foreach ( $arrIn as $key=>$value ) {
-		reset($value);
-		$arrTemp[$key] = is_null($index) ? current($value) : $value[$index];
-	}
-	natsort($arrTemp);
-	foreach ( $arrTemp as $key=>$value ) {
-		$arrOut[$key] = $arrIn[$key];
-	}
-	$arrIn = $arrOut;
-	return $arrIn;
-}*/
 ?>

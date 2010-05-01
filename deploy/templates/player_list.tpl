@@ -13,7 +13,23 @@
 	<p><a href="list_all_players.php?hide={$hide}">Back to Ninja List</a></p>
 	{/if}
 	
-	{$search_form}
+	<div class='list-all-players-search centered'>
+	  <form action="list_all_players.php" method="get">
+	    <div>
+	      <input type="text" name="searched" class='textField' style="font-family:Verdana, Arial;font-size:xx-small;">
+	     <input type="hidden" name="hide" value="{$hide}">
+	      <button type='submit' class='formButton' value='1'>Search for Ninja</button>
+
+{if !$searched}
+    		<a href="list_all_players.php?page={$page}&amp;hide={if $hide == "dead"}none{else}dead{/if}&amp;searched={$searched}">
+    		    ({if $hide == "dead"}Show{else}Hide{/if} {$dead_count} dead ninja)
+    		</a>
+{/if}
+
+	    </div>
+	  </form>
+	</div>
+
 	
 	<!-- The player list navigation section -->
 	{$player_list_nav}

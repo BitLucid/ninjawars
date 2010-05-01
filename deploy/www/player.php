@@ -67,7 +67,9 @@ if (!$target_player_obj || !$target_player_obj->player_id) {
 	
 			$skillDAO = new SkillDAO();
 	
-			$combat_skills     = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->level)->fetchAll(); // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
+			$combat_skills     = $skillDAO->getSkillsByTypeAndClass(
+			    $viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level)->fetchAll(); 
+			    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
 	
 			$item_use_section  = render_item_use_on_another($target);
 			$skill_use_section = render_skills($target, $viewing_player_obj);

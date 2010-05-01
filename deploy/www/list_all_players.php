@@ -7,8 +7,6 @@ $private    = false;
 $quickstat  = false;
 $page_title = "Ninja List";
 
-include SERVER_ROOT."interface/header.php";
-
 DatabaseConnection::getInstance();
 
 $username     = get_username();
@@ -24,20 +22,25 @@ $alive_count  = 0;
 $record_limit = 20; // *** The number of players that gets shown per page.
 $view_type    = in('view_type');
 $rank         = get_rank($username);
-$dead_count   = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM rankings WHERE alive = false");
-$dead_count   = $dead_count->fetchColumn();
+
+$dead_count = query_item("SELECT count(player_id) FROM rankings WHERE alive = false");
 
 $page 		 = in('page');
 
 if (!$searched && $hide_setting != $hide) { SESSION::set('hide_dead', $hide); } // Save the toggled state for later.
 
 // Display the clear search and create the where clause for searching.
-$where_clause = "";
+
+
+
+
+
+
 // If a search was made, specify letter or word-based search.
 // If unless showing dead, check that health is > 0, or alive = true from the ranking.
 // Otherwise, no searching was done, so the score
 
-
+$where_clause = "";
 // Select some players from the ranking.
 $queryParams = array();
 
@@ -69,6 +72,10 @@ for ($i = 0;$i < count($queryParams); $i++) {	// *** Reformulate if queryParams 
 
 $count_statement->execute();
 $totalrows = $count_statement->fetchColumn();
+
+
+
+
 
 // Determine the current page spot navigated to.
 // If searching, use the page between 
@@ -102,17 +109,13 @@ for ($i = 0;$i < count($queryParams); $i++) {	// *** Reformulate if queryParams 
 
 $ninja_info->execute();
 
-// Display the search form.
-ob_start();
-display_search_form($hide, $page, $searched, $dead_count);
-$search_form = ob_get_contents();
-ob_end_clean();
+
+
+
+
 	
-// Display the nav
-ob_start();
-player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages);
-$player_list_nav = ob_get_contents();
-ob_end_clean();
+// Create the nav.
+$player_list_nav = render_player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages);
 
 
 // Display the recently-active-ninja section.
@@ -122,24 +125,7 @@ if (!$searched) { // Will not display active ninja on a search page.
 	$active_ninja = render_active(5, $alive_only); // Display the currently active ninjas
 }
 
-// Function to format each row of the player list.
-function format_ninja_row($a_player){
-	$level_cat = level_category($a_player['level']);
-	$row = array(
-		'alive_class'     => ($a_player['alive'] == 1 ? "AliveRow" : "DeadRow")
-		, 'player_rank'   => $a_player['rank_id']
-		, 'player_id'     => $a_player['player_id']
-		, 'uname'         => $a_player['uname']
-		, 'level_cat_css' => $level_cat['css']
-		, 'level_cat'     => $level_cat['display']
-		, 'level'         => $a_player['level']
-		, 'class'         => $a_player['class']
-		, 'clan_id'       => $a_player['clan_id']
-		, 'clan_name'     => $a_player['clan_name']
-		, 'alive'         => ($a_player['alive'] ? "&nbsp;" : "Dead"), // alive/dead display
-	);
-	return $row;
-}
+
 
 // Format each of the player rows, then just pass 'em to the template.
 
@@ -152,9 +138,14 @@ while ($a_player = $ninja_info->fetch()) {
 	$ninja_count++;
 }
 
-$parts = get_certain_vars(get_defined_vars(), $whitelist=array('ninja_rows'));
-echo render_template('player_list.tpl', $parts);
 
-include SERVER_ROOT."interface/footer.php";
+
+$parts = get_certain_vars(get_defined_vars(), $whitelist=array('ninja_rows'));
+
+echo render_page(
+        'player_list.tpl', 
+        'Ninja List',
+        $parts, 
+        $options=array('quickstat'=>false, 'private'=>false, 'alive'=>false));
 
 ?>
