@@ -15,7 +15,7 @@
 
 function createNW(){
     var innerNW = {};
-    innerNW.firstLoad = 1; 
+    innerNW.firstLoad = 1;
     // Counter starts at 1 to indicate newly refreshed page, as opposed to ajax loads.
     return innerNW;
 }
@@ -43,7 +43,7 @@ function debug(arg){
 	if(NW.debug || !isLive()){
 		if(console){console.log(arg);}
 		return true;
-	} 
+	}
 	return false;
 }
 
@@ -206,7 +206,7 @@ function checkAPI(){
 function updateDataStore(datum, property_name, global_store, comparison_name, comparison_name_2){
     if(datum){
         if(datum[property_name]){
-            if(!NW[global_store] || (NW[global_store][comparison_name] != datum[comparison_name] || 
+            if(!NW[global_store] || (NW[global_store][comparison_name] != datum[comparison_name] ||
                     comparison_name_2 && NW[global_store][comparison_name_2] != datum[comparison_name_2])){
                 // If the data isn't there, or doesn't match, update the store.
                 NW[global_store] = datum;
@@ -219,7 +219,7 @@ function updateDataStore(datum, property_name, global_store, comparison_name, co
 }
 
 
-// Determines the update interval, 
+// Determines the update interval,
 //increases when feedback == false, rebaselines when feedback == true
 function getUpdateInterval(feedback){
 	var maxInt = 180;
@@ -246,7 +246,7 @@ function chainedUpdate(chainCounter){
     if(isLoggedIn() && chainCounter != 1){
         checkAPI(); // Check for new information.
     }
-    
+
     var furtherIntervals = getUpdateInterval(feedback());
     debug("Next Update will be in:"+furtherIntervals);
     debug("chainCounter: "+chainCounter);
@@ -290,7 +290,7 @@ function startRefreshingMinichat(){
     setTimeout(function (){
         checkForNewChats();
         startRefreshingMinichat(); // Loop the check for refresh.
-    }, secs*1000); 
+    }, secs*1000);
 }
 
 // Check for the latest chat and update if it's different.
@@ -357,24 +357,26 @@ function frameClickHandlers(links, div){
 
 // For refreshing quickstats from inside main.
 function refreshQuickstats(typeOfView, quickDiv){
-    // Accounts for ajax section.
-    if(!typeOfView){
-        typeOfView = '';
-    }
-    if(!quickDiv){
-    	quickDiv = $('div#quickstats-frame-container', top);
-    }
-    var url = 'quickstats.php?command='+typeOfView;
-    if(quickDiv){
-        quickDiv.load(url, 'section_only=1');
-    } else {
-        // Use parent to indicate the parent global variable.
-        parent.quickstats.location=url;
-    }
+	// Accounts for ajax section.
+	if (!typeOfView) {
+		typeOfView = '';
+	}
+
+	if (!quickDiv) {
+		quickDiv = $('div#quickstats-frame-container', top);
+	}
+
+	var url = 'quickstats.php?command='+typeOfView;
+	if (quickDiv) {
+		quickDiv.load(url, 'section_only=1');
+	} else {
+		// Use parent to indicate the parent global variable.
+		parent.quickstats.location=url;
+	}
 }
 
 function isIndex(){ // Return true if the index page.
-	// Not great because it doesn't allow for pretty urls, down the line.  
+	// Not great because it doesn't allow for pretty urls, down the line.
 	return (window.location.pathname.substr(-9,9) == 'index.php')  || $('body').hasClass('main-body');
 }
 
@@ -418,17 +420,17 @@ function april1stCheck(){
 
 // Initial load of everything, run at the bottom to allow everything else to be defined beforehand.
 $(document).ready(function() {
-   
-    // INDEX ONLY CHANGES 
-    if(isIndex() || isRoot()){ 
+
+    // INDEX ONLY CHANGES
+    if(isIndex() || isRoot()){
 
         $('#chat-loading').show();
 
 		chainedUpdate(); // Start the periodic index update.
-       	
+
        /* Collapse the following parts of the index */
         //$("#links-menu").toggle();
-        
+
         // Click to view more chat messages than you were looking at before.
         $('#expand-chat').click(function (){
             var chat = $('#mini-chat');
@@ -439,42 +441,42 @@ $(document).ready(function() {
             });
             return false;
         });
-        
-        
+
+
         var quickstatsLinks = $("a[target='quickstats']");
-        quickstatsLinks.css({'font-style':'italic'}); // Italicize 
+        quickstatsLinks.css({'font-style':'italic'}); // Italicize
         var quickDiv =  $('div#quickstats-frame-container');
         //quickDiv.load('quickstats.php');
         // Add the click handlers for loading the quickstats frame.
         frameClickHandlers(quickstatsLinks, quickDiv); // Load new contents into the div when clicked.
         NW.quickDiv = quickDiv;
-        
+
         // Update the quickstats section.
         refreshQuickstats('', quickDiv);
-        
+
         // Update the mini chat section for the first time.
         refreshMinichat();
-        
+
         // Start refreshing the chat.
         startRefreshingMinichat(); // Start refreshing the chat.
 
-    
+
         $('#index-chat form').submit(function (){return sendChatContents(this)});
         // When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
-        
-        
+
+
         // Add click handlers to certain sections.
         clickHidesTarget('#show-hide-chat', '#chat-and-switch');
         clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
         clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
-        
+
     }
 
-    
-    
+
+
     /* THIS CODE RUNS FOR ALL SUBPAGES */
     soloPage(); // Displays the link back to main page for any lone subpages not in iframes.
-        
+
     // GOOGLE ANALYTICS
     /* There's a script include that goes with this, but I just put it in the head directly.*/
     try {
@@ -483,5 +485,5 @@ $(document).ready(function() {
     } catch(err) {}
 
     //april1stCheck();
-    
+
  });

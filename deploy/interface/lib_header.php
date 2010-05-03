@@ -2,27 +2,26 @@
 /**
   *  Creates all the environmental variables, with no outputting.
 **/
-function init($options=array()){
-    global $filter, $today, $private, $alive;
-    
-    $private = @$options['private'] ? @$options['private'] : $private;
-    $alive   = @$options['alive'] ? @$options['alive'] : $alive;
-    // General utility objects.
-    $filter = new Filter(); // *** Creates the filters for later use.
+function init($buffer=true) {
+	global $filter, $today, $private, $alive;
 
-    // ******************** Declared variables *****************************
-    $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
-    // Page viewing settings usually set before the header.
-    $error = null; // Logged in or alive error.
-    
-    update_activity_info(); // *** Updates the activity of the page viewer in the database.
-    
-    ob_start(null, 1); // Start the overall file buffer, output in chunks.
-    // TODO: Remove this once scripts are generally moved to the render_page function.
-    
+	// General utility objects.
+	$filter = new Filter(); // *** Creates the filters for later use.
 
-    $error = globalize_user_info($private, $alive); // Sticks lots of user info into the global namespace for backwards compat.
-    return $error;
+	// ******************** Declared variables *****************************
+	$today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
+	// Page viewing settings usually set before the header.
+	$error = null; // Logged in or alive error.
+
+	update_activity_info(); // *** Updates the activity of the page viewer in the database.
+
+	// TODO: Remove this once scripts are generally moved to the render_page function.
+	if ($buffer) {
+		ob_start(null, 1); // Start the overall file buffer, output in chunks.
+	}
+
+	$error = globalize_user_info($private, $alive); // Sticks lots of user info into the global namespace for backwards compat.
+	return $error;
 }
 
 /** The breakdown function reversing initialize, should we ever need it.
@@ -31,13 +30,11 @@ function finalize(){
 }*/
 
 
-
-
 // Places much of the user into into the global namespace.
 function globalize_user_info($private=true, $alive=true) {
 	global $username;
 	$error = null;
-    	    
+
 	$username = SESSION::get('username'); // Will default to null.
 
 	if ((!is_logged_in() || !$username) && $private) {
@@ -45,18 +42,18 @@ function globalize_user_info($private=true, $alive=true) {
 		// A non-null set of content being in the error triggers a die at the end of the header.
 	} elseif ($username) {
 		// **************** Player information settings. *******************
-		global $player, $players_id, $player_id, $players_email, 
+		global $player, $players_id, $player_id, $players_email,
 		$players_turns, $players_health, $players_bounty, $players_gold, $players_level,
 		$players_class, $players_strength, $players_kills, $players_days, $players_created_date,
 		$players_last_started_attack, $players_clan, $players_status;
 		// Polluting the global namespace here.  Booo.
-    	    
+
 		$player = new Player($username); // Defaults to current session user.
 
 		$players_id = $player->player_id;
 		$player_id = $players_id; // Just two aliases for the player id.
 		$players_email = $player->vo->email;
-    	
+
 		assert('isset($players_id)');
 
 		// TODO: Turn this into a list extraction?
@@ -89,52 +86,47 @@ function globalize_user_info($private=true, $alive=true) {
 			}
 		}
 	}
-    
+
 	return $error;
 }
 
 // Pull the status array.
-function get_status_array(){
-    // TODO: Make this not use the global, perhaps use player_info instead.
-    global $status_array;
-    return $status_array;
+function get_status_array() {
+	// TODO: Make this not use the global, perhaps use player_info instead.
+	global $status_array;
+	return $status_array;
 }
 
 // Boolean check for a status type.
-function user_has_status_type($p_type){
-    $status_array = get_status_array();
-    $type = strtoupper($p_type);
-    $res = false;
-    if($status_array && isset($status_array[$type]) && $status_array[$type]){
-        $res = true;
-    }
-    return $res;
+function user_has_status_type($p_type) {
+	$status_array = get_status_array();
+	$type = strtoupper($p_type);
+	$res = false;
+
+	if ($status_array && isset($status_array[$type]) && $status_array[$type]) {
+		$res = true;
+	}
+
+	return $res;
 }
-
-
-
 
 // Renders an error
-function render_error($error){
-    $res = null;
-    if ($error){ // If there's an error, display that then end.
-    	$res = $error;
-    }
-    return $res;
+function render_error($error) {
+	$res = null;
+	if ($error){ // If there's an error, display that then end.
+		$res = $error;
+	}
+	return $res;
 }
-
-
-
-
 
 /**
  * Update the information of a viewing observer, or player.
 **/
-function update_activity_info(){
+function update_activity_info() {
 	// ******************** Usage Information of the browser *********************
-	$remoteAddress = (isset($_SERVER['REMOTE_ADDR'])     ? $_SERVER['REMOTE_ADDR']     : NULL);
-	$userAgent     = (isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 250) : NULL); // Truncate at 250 char.
-	$referer       = (isset($_SERVER['HTTP_REFERER'])    ? substr($_SERVER['HTTP_REFERER'], 0, 250)    : ''); // Truncated at 250 char.
+	$remoteAddress = (isset($_SERVER['REMOTE_ADDR'])     ? $_SERVER['REMOTE_ADDR']                     : NULL);
+	$userAgent     = (isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 250) : NULL); // Truncated at 250 char.
+	$referer       = (isset($_SERVER['HTTP_REFERER'])    ? substr($_SERVER['HTTP_REFERER'], 0, 250)    : '');   // Truncated at 250 char.
 
 	// ************** Setting anonymous and player usage information
 
@@ -170,22 +162,24 @@ function update_activity_info(){
 }
 
 // Format a title string into a css class to add to that page's body.
-function format_css_class_from_title($page_title){
-    // Filters out non-alphanumerics replaced with - dash.
-    $css_body_class = strtolower(preg_replace('/\W/', '-', $page_title));
-    return $css_body_class;
+function format_css_class_from_title($page_title) {
+	// Filters out non-alphanumerics replaced with - dash.
+	$css_body_class = strtolower(preg_replace('/\W/', '-', $page_title));
+	return $css_body_class;
 }
 
 /**
  * Writes out the header for all the pages.
 **/
-function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses = null, $p_options=array()){
-    $section_only = @$p_options['section_only']?@$p_options['section_only']:in('section_only');
-    if($section_only){
-        return null;
-    }
-    $is_index = @$p_options['is_index'];
-    $css_body_classes = $p_bodyClasses? $p_bodyClasses : format_css_class_from_title($p_title);
+function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses = null, $p_options=array()) {
+	$section_only = (@$p_options['section_only'] ? @$p_options['section_only'] : in('section_only'));
+
+	if ($section_only) {
+		return null;
+	}
+
+	$is_index = @$p_options['is_index'];
+	$css_body_classes = ($p_bodyClasses ? $p_bodyClasses : format_css_class_from_title($p_title));
 	$parts = array(
 		'title'          => ($p_title ? htmlentities($p_title) : '')
 		, 'body_classes' => $css_body_classes
@@ -212,7 +206,7 @@ function render_viewable_error($p_error) {
  * @param $user user_id or username
  * @param @password Unless true, wipe the password.
 **/
-function get_player_info($p_id = null, $p_password = false){
+function get_player_info($p_id = null, $p_password = false) {
 	$dao = new PlayerDAO();
 	$id = either($p_id, SESSION::get('player_id')); // *** Default to current player. ***
 
@@ -220,12 +214,12 @@ function get_player_info($p_id = null, $p_password = false){
 
 	$player_data = array();
 
-	if ($playerVO){
-		foreach ($playerVO as $fieldName=>$value){
+	if ($playerVO) {
+		foreach ($playerVO as $fieldName=>$value) {
 			$player_data[$fieldName] = $value;
 		}
 
-		if (!$p_password){
+		if (!$p_password) {
 			unset($player_data['pname']);
 		}
 	}

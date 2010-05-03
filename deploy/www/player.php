@@ -7,8 +7,9 @@ require_once(LIB_ROOT."specific/lib_player.php");
 
 $alive      = false;
 $private    = false;
-$quickstat  = "player";
-$page_title = "Player Profile";
+$page_title = 'Player Profile';
+$quickstat  = 'player';
+$buffer     = false;
 
 include SERVER_ROOT."interface/header.php";
 
@@ -17,12 +18,12 @@ $target_id     = either(in('target_id'), either(in('player_id'), get_user_id($ta
 $target_player_obj = new Player(either($target_id, $target));
 
 if (!$target_player_obj || !$target_player_obj->player_id) {
-	echo render_template('no-player.tpl', array());
+	transitional_display_full_template('no-player.tpl', get_certain_vars('quickstat'));
 } else {
 	$player_info = $target_player_obj->as_array(); // Pull the info out of the object.
 
 	if (!$player_info) {
-		echo render_template('no-player.tpl', array());
+		transitional_display_full_template('no-player.tpl', get_certain_vars('quickstat'));
 	} else {
 		$score         = get_score_formula();
 		$user_id       = get_user_id();
@@ -93,11 +94,9 @@ if (!$target_player_obj || !$target_player_obj->player_id) {
 	
 		// Send the info to the template.
 	
-		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category'));
+		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'quickstat'));
 	
-		echo render_template('player.tpl', $parts);
+		transitional_display_full_template('player.tpl', $parts);
 	}
 }
-
-include SERVER_ROOT."interface/footer.php";
 ?>

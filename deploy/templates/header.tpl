@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<meta name="keywords" content="ninjawars, ninja wars, ninjas, ninja weapons & techniques, samurai, free online games, {$title}">
+	<meta name="keywords" content="ninjawars, ninja wars, ninjas, ninja weapons & techniques, samurai, free online games, {$title|escape}">
 	<meta name="author" content="ninjawars.net">
 	<meta name="description" content="Ninjawars: Battle other ninja for your survival.  Create a ninja and use skills or magic to kill samurai, the emperor's guards, or other ninja from rival clans.">
 
-	<title>Ninja Wars: {$title}</title>
+	<title>Ninja Wars: {$title|escape}</title>
     <base href="{$templatelite.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 	<!--[if lte IE 6]>

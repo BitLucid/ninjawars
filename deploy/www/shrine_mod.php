@@ -9,7 +9,6 @@ init(); // Initializes a full environment.
 include(OBJ_ROOT."Skill.php");
 $skillsListObj = new Skill();
 
-
 $healed             = in('healed');
 $poisoned           = in('poisoned');
 $restore            = in('restore');
@@ -37,6 +36,7 @@ if ($heal_and_resurrect) {
 	if ($startingHealth < 1) {
 		$restore = 1;
 	}
+
 	// Set heal always.
 	$max_heal = 1;
 }
@@ -45,6 +45,7 @@ if ($restore == 1) {	//  *** RESURRECTION SECTION ***
     $resurrect_requested = true;
     $turn_taking_resurrect = false;
     $kill_taking_resurrect = true;
+
 	if ($startingHealth > 0) {
 		$error = 'You are not dead.';
 	} else if ($startingKills > 1 || $freeResurrection) {	// If you're dead, and a newbie, or dead and have kills.
@@ -92,9 +93,10 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 	}
 	
 	$current_health = getHealth($username);
-	if($current_health>=$max_health){
+
+	if ($current_health >= $max_health) {
 	    $error = 'You are currently at full health.';
-	}else{
+	} else {
     	if ($current_health > 0) {  //Requires the user to be resurrected first.
     		if ($heal_points && $heal_points > 0) {  // Requires a heal number, and a positive one.
     			if ($heal_points <= $startingGold) {   //If there's enough money for the amount that they want to heal.
@@ -121,6 +123,7 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
     }
 } else if ($poisoned == 1) {	//  *** POISON SECTION ***
 	$poison_cure_requested = true;
+
 	if (getHealth($username) > 0) {
 		$cost = 50;  //  the cost of curing poison is set here.
 
@@ -139,10 +142,8 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 	}
 }
 
-echo render_page('shrine.effects.tpl', 
+render_page('shrine.effects.tpl', 
         'Shrine', 
         get_certain_vars(get_defined_vars(), array()), 
         $options=array('quickstat'=>true, 'private'=>false, 'alive'=>false)); 
-
-
 ?>

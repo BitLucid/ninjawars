@@ -31,11 +31,6 @@ if (!$searched && $hide_setting != $hide) { SESSION::set('hide_dead', $hide); } 
 
 // Display the clear search and create the where clause for searching.
 
-
-
-
-
-
 // If a search was made, specify letter or word-based search.
 // If unless showing dead, check that health is > 0, or alive = true from the ranking.
 // Otherwise, no searching was done, so the score
@@ -78,7 +73,7 @@ $totalrows = $count_statement->fetchColumn();
 
 
 // Determine the current page spot navigated to.
-// If searching, use the page between 
+// If searching, use the page between
 // If no specific rank was requested, use the viewer's rank
 // If a certain rank was requested, use that rank spot.
 // Determine the page, if the dead count is more than the rank spot, default to 1, otherwise use the input page.
@@ -109,14 +104,8 @@ for ($i = 0;$i < count($queryParams); $i++) {	// *** Reformulate if queryParams 
 
 $ninja_info->execute();
 
-
-
-
-
-	
 // Create the nav.
 $player_list_nav = render_player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages);
-
 
 // Display the recently-active-ninja section.
 
@@ -125,27 +114,23 @@ if (!$searched) { // Will not display active ninja on a search page.
 	$active_ninja = render_active(5, $alive_only); // Display the currently active ninjas
 }
 
-
-
 // Format each of the player rows, then just pass 'em to the template.
 
 $ninja_count = 0;
 $player_rows = '';
 $ninja_rows = array();
+
 while ($a_player = $ninja_info->fetch()) {
 	$ninja_rows[] = format_ninja_row($a_player);
 	$ninja_rows[$ninja_count]['odd_or_even'] = (($ninja_count+1) % 2 ? "odd" : "even");
 	$ninja_count++;
 }
 
-
-
 $parts = get_certain_vars(get_defined_vars(), $whitelist=array('ninja_rows'));
 
-echo render_page(
-        'player_list.tpl', 
+render_page(
+        'player_list.tpl',
         'Ninja List',
-        $parts, 
+        $parts,
         $options=array('quickstat'=>false, 'private'=>false, 'alive'=>false));
-
 ?>

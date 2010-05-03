@@ -19,7 +19,7 @@ $worked = intval($worked);
 $recommended_to_work = 10;
 
 // Store or retrieve the last value of turns worked.
-if($worked && is_numeric($worked)){
+if ($worked && is_numeric($worked)) {
 	set_setting('turns_worked', $worked);
 	$recommended_to_work = $worked;
 } else {
@@ -44,9 +44,8 @@ if ($worked > 0) {
 	}
 }
 
-echo render_page('work.tpl', 
+render_page('work.tpl', 
         'Working in the Village', 
         get_certain_vars(get_defined_vars(), array()), 
         $options=array('quickstat'=>'player', 'private'=>false, 'alive'=>true)); 
-        
 ?>

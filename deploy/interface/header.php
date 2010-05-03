@@ -1,6 +1,6 @@
 <?php
 
-$error = init(); // Creates some starting objects&vars, puts player info into global namespace (sadly), updates activity, starts buffering.
+$error = init(isset($buffer) ? $buffer : true); // Creates some starting objects&vars, puts player info into global namespace (sadly), updates activity, starts buffering.
 
 $header = render_header($page_title);
 
@@ -16,5 +16,4 @@ if ($error_to_display) {
 } else {
     echo $header;
 }
-
 ?>
