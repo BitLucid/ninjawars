@@ -29,10 +29,10 @@
     <span id='social-networks'>
       - <a target='_blank' href="http://www.facebook.com/tchalvak"><img src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a>
       - <a target='_blank' href="http://www.myspace.com/toastersquid"><img src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/MySpace_24x24.png'> on Myspace</a>
-      - <a target='_blank' hret="http://twitter.com/tchalvak"><img src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a>
+      - <a target='_blank' href="http://twitter.com/tchalvak"><img src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a>
       - on AIM: Tchalvak
     </span>
-    <div><a class='expand-link'>Expand <img alt=">>>" src="images/smallArrows.png"/></a></div>
+    <div><a class='expand-link'>Expand <img alt="&gt;&gt;&gt;" src="images/smallArrows.png"></a></div>
     <div class='developer-info'>
 
     <p>
@@ -73,7 +73,7 @@
   <li> Magatsu - the Shop Graphics </li>
   <li> Alegion - the original for the Koi photograph Background - <a href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a> </li>
   <li> Social networking icons by: <a href='http://www.fasticon.com'>FastIcon.com</a></li>
-  <li>DNS forwarding provided by: <a class='external-link' href='afraid.org'>afraid.org</a>
+  <li>DNS services provided by: <a class='external-link' href='afraid.org'>afraid.org</a>
   </ul>
 </div>
 
