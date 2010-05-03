@@ -6,7 +6,7 @@ $quickstat  = false;
 
 function mailtolink($email, $formal=null, $subject=null){
     $formal_sec = ($formal? "'$formal' " : "");
-    return "<a href=\"mailto:$formal_sec<$email>".($subject? '?subject='.rawurlencode($subject) : '')."\">".out($formal)." &lt;$email&gt;</a>";
+    return "<a href=\"mailto:".htmlentities(rawurlencode("$formal_sec<$email>")).($subject ? '?subject='.rawurlencode($subject) : '')."\">".out($formal)." &lt;$email&gt;</a>";
 }
 
 $mailto = mailtolink(SUPPORT_EMAIL, SUPPORT_EMAIL_FORMAL_NAME, 'NinjaWars question: ');
