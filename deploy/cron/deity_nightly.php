@@ -45,6 +45,9 @@ $affected_rows['Players Unconfirmed'] = ($unconfirmed === false ? 'Under the Min
 $deleted_items = DatabaseConnection::$pdo->query("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE confirmed = 0 OR uname IS NULL GROUP BY owner)");
 $affected_rows['deleted items'] = $deleted_items->rowCount();
 
+$deleted_items = DatabaseConnection::$pdo->query("delete from levelling_log where killsdate < (now() - interval '2 months')");
+$affected_rows['deleted levelling_logs'] = $deleted_items->rowCount();
+
 $deleted_mail = delete_old_messages(); // As per the mail function in lib_deity.
 $deleted_events = delete_old_events();
 $affected_rows['Old Messages Deletion'] = $deleted_mail;
