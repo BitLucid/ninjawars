@@ -85,9 +85,7 @@ function render_template($template_name, $assign_vars=array()){
 	}
 
 	// call the template
-	$rendered = $tpl->fetch($template_name);
-
-	return $rendered;
+	return $tpl->fetch($template_name);
 }
 
 /*

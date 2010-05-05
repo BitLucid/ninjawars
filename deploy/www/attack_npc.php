@@ -34,7 +34,7 @@ if (getTurns($username) > 0) {
 			// *** They take turns and a kill and do a little damage. ***
 			// **********************************************************
 
-	    	$victim          = "Oni";
+			$victim          = "Oni";
 			$oni_turn_loss   = 10;
 			$oni_health_loss = rand(1, 20);
 			$oni_kill_loss   = 1;
@@ -52,44 +52,36 @@ if (getTurns($username) > 0) {
 			<img src='images/scenes/Oni_pelted_by_beans.jpg' style='width:450px'>
 			<p>The Oni saps some of your soul before "
 			.($oni_killed ? "you kill it." : "it escapes into the wilderness.")."</p>";
-		} else if ($victim == "" ) {
+		} else if ($victim == "") {
 			echo "You attack the air.\n";
 		} else if ($victim == "villager") { // *** VILLAGER ***
 			$villager_attack = rand(0, 10); // *** Villager Damage ***
 			$just_villager = rand(0, 20);
-			echo "<p>The villager sees you and prepares to defend!</p>\n";
-			
-            if($just_villager){
-    			echo "<img src=\"images/characters/fighter.png\" alt=\"Villager\">";
-            } else {
-    			echo "<img src=\"images/characters/ninja.png\" alt=\"Ninja\">";
-            }
-			if (!subtractHealth($username, $villager_attack)) {
-				echo "<p>The villager has slain you!</p>\n";
-			} else {
 
+			if ($victory = subtractHealth($username, $villager_attack)) {	// *** Player defeated villager ***
 				$villager_gold = rand(0, 20);	// *** Vilager Gold ***
 				addGold($username, $villager_gold);
-				echo "<p>The villager is no match for you!</p>\n";
-				echo "Villager does $villager_attack points of damage.<br>\n";
-				echo "You have gained $villager_gold gold.<br>\n";
+
+				$attacker_level = getLevel($username);
 
 				// *** Bounty or no bounty ***
-				if (getLevel($username) > 5) {
-					if (getLevel($username) > 20) {
-						echo "You slay the villager easily, leaving no trace behind!<br>\n";
-					} else {
-						$added_bounty = floor(getLevel($username) / 3);
-						echo "You have unjustly slain a commoner! A bounty of ".($added_bounty)." gold has been placed on your head!<br>\n";
+				if ($attacker_level > 5) {
+					if ($attacker_level <= 20) {
+						$added_bounty = floor($attacker_level / 3);
 						addBounty($username, ($added_bounty));
 					}
 				}	// *** End of if > 5 ***
 
 				if (!$just_villager) { // *** Something beyond just a villager, drop a shuriken. ***
 					addItem($username, 'Shuriken', $quantity = 1);
-					echo "The villager dropped a Shuriken.\n";
 				}
+			} else {	// *** Player lost against villager ***
+				$villager_gold  = 
+				$attacker_level = 
+				$added_bounty   = 0;
 			}
+
+			echo render_template('villager_result.tpl', array('just_villager'=>$just_villager, 'villager_attack'=>$villager_attack, 'villager_gold'=>$villager_gold, 'attacker_level'=>$attacker_level, 'added_bounty'=>$added_bounty, 'victory'=>$victory));
 		} else if ($victim == "samurai") {
 			$turn_cost = 1;
 			echo "<img src=\"images/characters/samurai.png\" alt=\"Samurai\">\n";
@@ -204,15 +196,16 @@ if (getTurns($username) > 0) {
 			}
 		} else if ($victim == "thief") {
 			// Check the counter to see whether they've attacked a thief multiple times in a row.
-			if(SESSION::is_set('counter')){
-			  $counter = SESSION::get('counter');
+			if (SESSION::is_set('counter')) {
+				$counter = SESSION::get('counter');
 			} else {
-			  $counter = 1;
+				$counter = 1;
 			}
+
 			$counter = $counter + 1;
 			SESSION::set('counter', $counter); // Save the current state of the counter.
 			
-			if ($counter>20 && rand(1, 3) == 3) { 
+			if ($counter > 20 && rand(1, 3) == 3) { 
 				// Only after many attacks do you have the chance to be attacked back by the group of theives.
 				SESSION::set('counter', 0); // Reset the counter to zero.
 				echo "<img src='images/scenes/KunitsunaTrainingWithTengu.jpg' alt='' style='width:1000px'>";
@@ -224,7 +217,8 @@ if (getTurns($username) > 0) {
 					echo "<p>The group of theives does $group_attack damage to you!</p>";
 					echo "<p>The group of thieves have avenged their brotherhood and beaten you to a bloody pulp.</p>";
 				} else { // The den of thieves didn't accomplish their goal
-				    $group_gold = rand(100, 300);
+					$group_gold = rand(100, 300);
+
 					if ($group_attack > 120) { // Powerful attack gives an additional disadvantage
 						echo "<p>You overpowered the swine, but the blow to the head they gave you before they ran made you lose some of your memories!</p>";
 						subtractKills($username, 1);
@@ -265,7 +259,7 @@ if (getTurns($username) > 0) {
 
 		if (getHealth($username) <= 0){
 			sendMessage("SysMsg", $username, "DEATH: You have been killed by a non-player character at $today");
-            echo "<p class='ninja-notice'>Go to the <a href=\"shrine.php\">shrine</a> to resurrect.</p>";
+			echo "<p class='ninja-notice'>Go to the <a href=\"shrine.php\">shrine</a> to resurrect.</p>";
 		}
 		subtractTurns($username, $turn_cost);
 
