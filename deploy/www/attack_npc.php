@@ -202,7 +202,7 @@ if (getTurns($username) > 0) {
 					$group_gold = 0;
 				}
 
-				echo render_template('thief-group_result.tpl', array('group_attack'=>$group_attack, 'group_gold'=>$group_gold 'victory'=>$victory));
+				echo render_template('thief-group_result.tpl', array('group_attack'=>$group_attack, 'group_gold'=>$group_gold, 'victory'=>$victory));
 			} else { // Normal attack on a single thief.
 				$thief_attack = rand(0, 35);  // *** Thief Damage  ***
 
@@ -219,7 +219,7 @@ if (getTurns($username) > 0) {
 					$thief_gold = 0;
 				}
 
-				echo render_template('thief_result.tpl', array('thief_attack'=>$thief_attack, 'thief_gold'=>$thief_gold 'victory'=>$victory));
+				echo render_template('thief_result.tpl', array('thief_attack'=>$thief_attack, 'thief_gold'=>$thief_gold, 'victory'=>$victory));
 			}
 		}
 

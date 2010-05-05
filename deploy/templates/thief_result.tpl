@@ -7,7 +7,9 @@ Thief escaped and stole {$thief_gold} pieces of your gold!
 The Thief is injured!<br>
 Thief does {$thief_attack} points of damage!<br>
 You have gained {$thief_gold} gold.<br>
+		{if $thief_attack lt 30}
 You have found a Shuriken on the thief!
+		{/if}
 	{/if}
 <br>
 Beware the Ninja Thieves, they have entered this world to steal from all!<br>
