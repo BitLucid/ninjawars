@@ -1209,9 +1209,11 @@ iframe{
 }
 
 /* Clan member tags styles */
-#clan-members .member a, #player-tags .player-tag a{
-    color: orange;
-    background-color: green;
+#clan-members .member, #player-tags .player-tag a{
+    color: #F1D98C;
+    background-color: #712800;
+    padding-left: .3em;
+    padding-right: .3em;
 }
 #clan-members {
     clear: both;
@@ -1231,11 +1233,13 @@ iframe{
     float:left;
     margin:5px;
 }
+/*
 #clan-members .member{
-    color:orange;
-    background-color:green;
-	padding: 0px 8px 0 8px;
-}
+    color: #F1D98C;
+    background-color: #712800;
+    padding-left: .3em;
+    padding-right: .3em;
+}*/
 
 /*  End of Clan Tags section */
 
@@ -1248,6 +1252,7 @@ iframe{
     color: maroon;
 	background-color: #4682B4;
     font-family:tahoma, sans;
+    text-shadow: black 2px 2px 2px;
 }
 .size10{
     font-size: 5.5em;
