@@ -297,6 +297,10 @@ a:link {} a:visited {} a:active {}
 	margin-bottom: 2px;
 }
 
+.member-info .original-creator{
+    text-shadow: black 2px 2px 2px;
+}
+
 .player-info .avatar {
     float:right;
 }

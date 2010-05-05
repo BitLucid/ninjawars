@@ -77,7 +77,7 @@ function get_clan($clan_id) {
 function get_clans($clan_id=null) {
 	DatabaseConnection::getInstance();
 	$clan_or_clans = ($clan_id ? 'WHERE clan_id = :clan' : 'ORDER BY clan_id');
-	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_created_date, _creator_player_id FROM clan $clan_or_clans");
+	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_created_date, original_creator FROM clan $clan_or_clans");
 	if ($clan_id) {
 		$clans->bindValue(':clan', $clan_id);
 	}
@@ -92,7 +92,7 @@ function get_clan_founders() {
 	DatabaseConnection::getInstance();
 
 	$founders_statement = DatabaseConnection::$pdo->query("SELECT uname, player_id, clan_name, confirmed 
-		FROM clan JOIN clan_player ON clan_id = _clan_id JOIN player ON _creator_player_id = player_id AND player_id = _player_id
+		FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON original_creator = player_id AND player_id = _player_id
 		ORDER BY clan_id");
 
 	return $founders_statement->fetchAll();
@@ -115,7 +115,7 @@ function get_clan_leaders($clan_id=null, $all=false) {
 	$limit = ($all ? '' : ' LIMIT 1 ');
 	$clan_or_clans = ($clan_id ? " AND clan_id = :clan ORDER BY level " : ' ORDER BY clan_id, level ');
 	DatabaseConnection::getInstance();
-	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, _creator_player_id, player_id, uname 
+	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, original_creator, player_id, uname 
 		FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id=_player_id 
 		WHERE confirmed = 1 AND member_level > 0 $clan_or_clans $limit");
 
@@ -182,7 +182,7 @@ function render_clan_view($p_clan_id) {
 		return ''; // No viewing criteria available.
 	}
 
-    $members_resultset = query_resultset("SELECT uname, email, clan_name, level, days, _creator_player_id, player_id
+    $members_resultset = query_resultset("SELECT uname, email, clan_name, level, days, original_creator, player_id
 			FROM clan
 			JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
 			JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC", 
@@ -205,14 +205,16 @@ function render_clan_view($p_clan_id) {
 	foreach ($members_resultset as $member) {
 		$member['size'] = floor( ( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) ) / $max) * 2) + 1;
         // Calc the member display size based on their level relative to the max.
-		if ($member['player_id'] == $member['_creator_player_id']) {
+        $original_creator_class = null;
+		if ($member['player_id'] == $member['original_creator']) {
+		    $original_creator_class = 'original-creator';
 			$member['size'] = $member['size'] + 2;
 			$member['size'] = ($member['size'] > 2 ? 2 : $member['size']);
 		}
 
 		$res .= "<li class='member-info'>
                 <a href='player.php?player=".urlencode($member['uname'])."'>
-				<span class='member size{$member['size']}'>".
+				<span class='member size{$member['size']} {$original_creator_class}'>".
 				htmlentities($member['uname']).
                 "</span>";
 		$res .= render_template('gravatar.tpl', array('url' => generate_gravatar_url($member['player_id'])));
