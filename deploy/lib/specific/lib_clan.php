@@ -211,10 +211,12 @@ function render_clan_view($p_clan_id) {
 		}
 
 		$res .= "<li class='member-info'>
-				<span class='member size{$member['size']}'>
-				<a href='player.php?player=".urlencode($member['uname'])."'>".htmlentities($member['uname'])."</a>
-				</span>";
+                <a href='player.php?player=".urlencode($member['uname'])."'>
+				<span class='member size{$member['size']}'>".
+				htmlentities($member['uname']).
+                "</span>";
 		$res .= render_template('gravatar.tpl', array('url' => generate_gravatar_url($member['player_id'])));
+		$res .= "</a>";
 		$res .= "</li>";
         $count++;
 	}

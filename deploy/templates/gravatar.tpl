@@ -1,1 +1,1 @@
-<div id="avatar"><img alt="" src="{$url|escape}"></div>
+<span class="avatar"><img alt="" src="{$url|escape}"></span>

@@ -58,7 +58,7 @@ function generate_gravatar_url($player) {
 		$player = new Player($player);
 	}
 
-	return (OFFLINE ? '' : render_avatar($player));
+	return (OFFLINE ? IMAGE_ROOT.'default_avatar.png' : render_avatar($player));
 }
 
 // Use the email information to return the gravatar image url.

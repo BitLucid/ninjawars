@@ -58,10 +58,12 @@ if (!$target_player_obj || !$target_player_obj->player_id) {
 		$rank_spot = $statement->fetchColumn();
 
 		// Display the player info.
-		$level_category          = level_category($player_info['level']);
 		$status_section          = render_status_section($player_info['uname']);
-		$gravatar_url            = generate_gravatar_url($target_player_obj);
 		$player_activity_section = render_player_activity($player_info);
+
+		$level_category          = level_category($player_info['level']);
+
+		$gravatar_url            = generate_gravatar_url($target_player_obj);
 	
 		if ($username && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
 			// Attack or Duel
@@ -94,7 +96,7 @@ if (!$target_player_obj || !$target_player_obj->player_id) {
 	
 		// Send the info to the template.
 	
-		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'quickstat'));
+		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'quickstat', 'gravatar_url'));
 	
 		transitional_display_full_template('player.tpl', $parts);
 	}

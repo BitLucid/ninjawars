@@ -24,7 +24,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 	<div class='player-titles centered'>
 
-	{include file="gravatar.tpl" url=$gravatr_url}
+	{include file="gravatar.tpl" url=$gravatar_url}
 
     <span class='player-class {$player_info.class|escape}'>
       <img id='class-shuriken' src='{$templatelite.const.IMAGE_ROOT}small{$player_info.class|escape:'url'|escape}Shuriken.gif' alt=''>
