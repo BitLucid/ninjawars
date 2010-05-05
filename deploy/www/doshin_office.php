@@ -94,11 +94,9 @@ echo "</div>\n";
 echo "<p>\n";
 
 if (getBounty($username) > 0) {
-	echo "<form id=\"bribe_form\" action=\"doshin_office.php\" method=\"post\" name=\"bribe_form\">\n";
-	echo "<div>\n";
-	echo "<input id=\"bribe\"type=\"text\" size=\"4\" maxlength=\"6\" name=\"bribe\" class=\"textField\">\n";
+	echo "<form id=\"bribe_form\" action=\"doshin_office.php\" method=\"post\" name=\"bribe_form\" style='width:40%;float:left;'>\n";
+	echo "Bribe down your own bounty: <input id=\"bribe\"type=\"text\" size=\"4\" maxlength=\"6\" name=\"bribe\" class=\"textField\">\n";
 	echo "<input id=\"command\" type=\"submit\" value=\"Bribe\" name=\"command\" class=\"formButton\">\n";
-	echo "</div>\n";
 	echo "</form>\n";
 }
 
@@ -107,21 +105,15 @@ $result = DatabaseConnection::$pdo->query("SELECT player_id, uname, bounty, clas
 
 if ($data = $result->fetch()) {
 	echo "
-	<form action=''>
-	<p>
-	Put <input type='text' name='amount' value='{$amount}'> bounty on <input type='text' name='target' value='{$target}'>
-	<input id='submit-bounty' type='submit' value='Offer Bounty' name='command'>
-	</p>
+	<form action='' style='float:left;width:50%'>
+	Put <input type='text' name='amount' value='{$amount}' size='4' class='textField'> bounty on the ninja: <input type='text' name='target' value='{$target}' class='textField'>
+	<input id='submit-bounty' type='submit' value='Offer Bounty' name='command' class='formButton'>
 	</form>
-	
-	Click on a Name to view a Ninja's profile. (You can place a bounty on them from their profile)<br><br>\n
-	
-	
 	";
 
 	$statement = DatabaseConnection::$pdo->query('SELECT count(player_id) FROM players WHERE bounty > 0 AND confirmed = 1 and health > 0');
 
-	echo "Total Wanted Ninja: ".$statement->fetchColumn()."\n";
+	echo "<p style='clear:both;text-align:center;margin-top:.5em;'>Total Wanted Ninja: ".$statement->fetchColumn()."</p>\n";
 
 	echo "<hr>\n";
 
