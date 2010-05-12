@@ -285,8 +285,7 @@ function clickHidesTarget(ident, targetToHide){
 
 // Begin the cycle of refreshing the mini chat after the standard delay.
 function startRefreshingMinichat(){
-    // TODO: MAKE THIS A SINGLET!
-    var secs = 30; // Chat reloading frequency.
+    var secs = 30; // Chat checking frequency.
     setTimeout(function (){
         checkForNewChats();
         startRefreshingMinichat(); // Loop the check for refresh.
@@ -299,14 +298,13 @@ function checkForNewChats(){
     // Check whether the latest chat doesn't match the latest displayed chat.
     // NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
     $.getJSON('api.php?type=latest_chat_id&jsoncallback=?', function(data){
-        //debug('chat id found: '+data.latest_chat_id.chat_id);
         // Update global data stores if an update is needed.
         var newChats = false;
         if(updateDataStore(data.latest_chat_id, 'chat_id', 'latestChatId', 'chat_id')){
             newChats = true;
         }
         if(newChats){
-            refreshMinichat(null, 20);
+            refreshMinichat(null, 50);
         }
         // Since this callback isn't immediate, the feedback has to occur whenever the callback finishes.
 	}); // End of getJSON function call.
