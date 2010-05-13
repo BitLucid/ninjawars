@@ -285,6 +285,7 @@ function clickHidesTarget(ident, targetToHide){
 
 // Begin the cycle of refreshing the mini chat after the standard delay.
 function startRefreshingMinichat(){
+	// TODO: Potentially make this use the timewatch pattern, so that the countdown can simply be zeroed instead of having multiple update threads.
     var secs = 30; // Chat checking frequency.
     setTimeout(function (){
         checkForNewChats();
