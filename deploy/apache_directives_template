@@ -20,3 +20,43 @@ php_value session.cookie_domain "__SERVER_NAME__"
 <FilesMatch "\.(php)$">
 	php_value auto_prepend_file "__SERVER_ROOT__lib/base.inc.php"
 </FilesMatch>
+
+<IfModule mod_headers.c>
+# From http://www.evolt.org/ultimate_htaccess_examples
+
+# HEADERS and CACHING
+##############################################
+#### CACHING ####
+# YEAR 3110400
+#<FilesMatch "\.()$">
+#   Header set Cache-Control "max-age=2592000"
+#</FilesMatch>
+# MONTH 2592000
+<FilesMatch "\.(flv|ico|swf|pdf|eot|ttf|woff)$">
+   Header set Cache-Control "max-age=2592000"
+</FilesMatch>
+# WEEK 604800
+#<FilesMatch "\.()$">
+#   Header set Cache-Control "max-age=604800"
+#</FilesMatch>
+# DAY 86400 (ish)
+<FilesMatch "\.(gif|jpg|jpeg|png|svg)$">
+   Header set Cache-Control "max-age=80000"
+</FilesMatch>
+# 12 hours
+<FilesMatch "\.(html|htm|txt|css)$">
+   Header set Cache-Control "max-age=43200"
+</FilesMatch>
+# 30 minutes 1800
+<FilesMatch "\.(js)$">
+   Header set Cache-Control "max-age=1800"
+</FilesMatch>
+# 10 minutes 600
+#<FilesMatch "\.()$">
+#   Header set Cache-Control "max-age=600"
+#</FilesMatch>
+# DONT CACHE
+#<FilesMatch "\.(pl|php|cgi|spl|scgi|fcgi)$">
+#   Header unset Cache-Control
+#</FilesMatch>
+</IfModule>
