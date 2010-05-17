@@ -17,6 +17,9 @@ class DatabaseConnection
 			self::$pdo = new PDO(CONNECTION_STRING);
 			self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch (Exception $e) {   // *** We catch this error to keep the exception from throwing back essential connection data.
+			if(DEBUG){
+				throw $e;
+			}
 			throw new Exception('The Database connection failed.');
 		}
 	}
