@@ -7,13 +7,8 @@ function authenticate($p_user, $p_pass) {
 	$returnValue = false;
 
 	if ($user != '' && $pass != '') {
-		$dbConn = DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare('SELECT uname, player_id FROM players WHERE lower(uname) = :player AND pname = :pass AND confirmed = 1');
-		$statement->bindValue(':player', strtolower($user));
-		$statement->bindValue(':pass', $pass);
-		$statement->execute();
-
-		$returnValue = $statement->fetch(PDO::FETCH_ASSOC);
+	    $sql = "SELECT uname, player_id FROM players WHERE lower(uname) = :player AND pname = :pass AND confirmed = 1";
+	    $returnValue = query_row($sql, array(':player'=>$user, ':pass'=>$pass));
 	}
 
 	return $returnValue;
