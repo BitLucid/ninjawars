@@ -39,9 +39,9 @@ php_value session.cookie_domain "__SERVER_NAME__"
 #<FilesMatch "\.()$">
 #   Header set Cache-Control "max-age=604800"
 #</FilesMatch>
-# DAY 86400 (ish)
+# DAY 86400 (a little more than a day is used below)
 <FilesMatch "\.(gif|jpg|jpeg|png|svg)$">
-   Header set Cache-Control "max-age=80000"
+   Header set Cache-Control "max-age=95000"
 </FilesMatch>
 # 12 hours
 <FilesMatch "\.(html|htm|txt|css)$">
