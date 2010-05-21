@@ -1,0 +1,7 @@
+#!/bin/bash
+./scripts/lint deploy/
+./scripts/git-version
+git archive HEAD:deploy | gzip > nw-2010-05-21.tgz
+scp nw-2010-05-21.tgz tchalvak@ninjawars.net:/home/ninjawars/
+ssh tchalvak@ninjawars.net "cd /home/ninjawars/; ./deploy --clean -c=test.conf nw-2010-05-21.tgz"
+scp version tchalvak@ninjawars.net:/home/ninjawars/game/test/www/
