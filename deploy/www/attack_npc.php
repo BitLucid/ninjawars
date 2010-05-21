@@ -41,14 +41,15 @@ if (getTurns($username) > 0) {
 			$player_turns    = subtractTurns($username, $oni_turn_loss);
 			$attacker_health = subtractHealth($username, $oni_health_loss);
 			$attacker_kills  = subtractKills($username, $oni_kill_loss);
-			$oni_killed      = false;
 
 			if ($player_turns > 50 && $attacker_health > 0) { // *** If the turns are high/you are energetic, and you survive, you can kill them. ***
 				$oni_killed = true;
 				addItem($username, "Dim Mak", 1);
+			} else {
+				$oni_killed = false;
 			}
 
-			echo render_template('oni_result.tpl', array('oni_killed'=>$oni_killed));
+			echo render_template('oni_result.tpl', array('victory'=>$oni_killed));
 		} else if ($victim == "") {
 			echo render_template('no_npc_result.tpl');
 		} else if ($victim == "villager") { // *** VILLAGER ***
@@ -78,7 +79,7 @@ if (getTurns($username) > 0) {
 				$added_bounty   = 0;
 			}
 
-			echo render_template('villager_result.tpl', array('just_villager'=>$just_villager, 'villager_attack'=>$villager_attack, 'villager_gold'=>$villager_gold, 'attacker_level'=>$attacker_level, 'added_bounty'=>$added_bounty, 'victory'=>$victory));
+			echo render_template('villager_result.tpl', array('just_villager'=>$just_villager, 'attack'=>$villager_attack, 'gold'=>$villager_gold, 'level'=>$attacker_level, 'bounty'=>$added_bounty, 'victory'=>$victory));
 		} else if ($victim == "samurai") {
 			$attacker_level = getLevel($username);
 			$attacker_kills = getKills($username);
@@ -132,7 +133,7 @@ if (getTurns($username) > 0) {
 				}
 			}	// *** End valid turns and kills for the attack. ***
 
-			echo render_template('samurai_result.tpl', array('samurai_damage_array'=>$samurai_damage_array, 'samurai_gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'attacker_level'=>$attacker_level, 'attacker_kills'=>$attacker_kills));
+			echo render_template('samurai_result.tpl', array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills));
 		} else if ($victim == "merchant") {
 			$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
 
@@ -154,7 +155,7 @@ if (getTurns($username) > 0) {
 				$added_bounty    = 0;
 			}
 
-			echo render_template('merchant_result.tpl', array('merchant_attack'=>$merchant_attack, 'merchant_gold'=>$merchant_gold, 'added_bounty'=>$added_bounty, 'victory'=>$victory));
+			echo render_template('merchant_result.tpl', array('attack'=>$merchant_attack, 'gold'=>$merchant_gold, 'bounty'=>$added_bounty, 'victory'=>$victory));
 		} else if ($victim == "guard") {	// *** The Player kills the guard ***
 			$guard_attack = rand(1, $attacker_str + 10);  // *** Guard Damage ***
 
@@ -172,7 +173,7 @@ if (getTurns($username) > 0) {
 				$added_bounty = 0;
 			}
 
-			echo render_template('guard_result.tpl', array('guard_attack'=>$guard_attack, 'guard_gold'=>$guard_gold, 'added_bounty'=>$added_bounty, 'victory'=>$victory));
+			echo render_template('guard_result.tpl', array('attack'=>$guard_attack, 'gold'=>$guard_gold, 'bounty'=>$added_bounty, 'victory'=>$victory));
 		} else if ($victim == "thief") {
 			// Check the counter to see whether they've attacked a thief multiple times in a row.
 			if (SESSION::is_set('counter')) {
@@ -202,7 +203,7 @@ if (getTurns($username) > 0) {
 					$group_gold = 0;
 				}
 
-				echo render_template('thief-group_result.tpl', array('group_attack'=>$group_attack, 'group_gold'=>$group_gold, 'victory'=>$victory));
+				echo render_template('thief-group_result.tpl', array('attack'=>$group_attack, 'gold'=>$group_gold, 'victory'=>$victory));
 			} else { // Normal attack on a single thief.
 				$thief_attack = rand(0, 35);  // *** Thief Damage  ***
 
@@ -219,7 +220,7 @@ if (getTurns($username) > 0) {
 					$thief_gold = 0;
 				}
 
-				echo render_template('thief_result.tpl', array('thief_attack'=>$thief_attack, 'thief_gold'=>$thief_gold, 'victory'=>$victory));
+				echo render_template('thief_result.tpl', array('attack'=>$thief_attack, 'gold'=>$thief_gold, 'victory'=>$victory));
 			}
 		}
 

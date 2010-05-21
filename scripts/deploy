@@ -238,7 +238,7 @@ fi
 if [ ! -d "${SERVER_ROOT}resources/logs/" ]
 then
 	mkdir "${SERVER_ROOT}resources/logs/"
-	chmod 777 "${SERVER_ROOT}resources/logs/"
+	chmod -f 777 "${SERVER_ROOT}resources/logs/"
 fi
 
 cp -r $source_files* $SERVER_ROOT
@@ -246,7 +246,7 @@ cp $source_files.* $SERVER_ROOT
 echo "source files copied to $SERVER_ROOT"
 
 mkdir templates/compiled/
-chmod 777 templates/compiled/
+chmod -f 777 templates/compiled/
 
 #########################
 ### RESOURCES SECTION ###
@@ -332,7 +332,7 @@ mv -f $resources_file "${SERVER_ROOT}resources.php"
 ### /RESOURCES SECTION ###
 ##########################
 
-chmod -R g+w ./*
+chmod -Rf g+w ./*
 
 ###################
 ## CRON SECTION ###

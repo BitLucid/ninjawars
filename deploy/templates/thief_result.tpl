@@ -1,13 +1,13 @@
 Thief sees you and prepares to defend!<br><br>
 <img src="images/characters/thief.png" alt="Thief">
 {if $victory}
-	{if $thief_attack gt 30}
-Thief escaped and stole {$thief_gold} pieces of your gold!
+	{if $attack gt 30}
+Thief escaped and stole {$gold} pieces of your gold!
 	{else}
 The Thief is injured!<br>
-Thief does {$thief_attack} points of damage!<br>
-You have gained {$thief_gold} gold.<br>
-		{if $thief_attack lt 30}
+Thief does {$attack} points of damage!<br>
+You have gained {$gold} gold.<br>
+		{if $attack lt 30}
 You have found a Shuriken on the thief!
 		{/if}
 	{/if}

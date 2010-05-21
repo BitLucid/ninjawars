@@ -10,7 +10,7 @@ The Samurai slashes you mercilessly for {$samurai_damage_array.1} damage.<br>
 The Samurai thrusts his katana into you for {$samurai_damage_array.2} damage.<br>
 	{if $victory}
 You use an ancient ninja strike upon the Samurai, slaying him instantly!<br><br>
-You have gained {$samurai_gold} gold.<br>
+You have gained {$gold} gold.<br>
 You gain a kill point.<br>
 		{if $samurai_damage_array.2 gt 100}
 The Samurai had a speed scroll on him. You have a new Speed Scroll in your inventory.

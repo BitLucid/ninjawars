@@ -232,7 +232,7 @@
         <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
         <a href="http://ninjawars.pbworks.com/" target="_blank" class="extLink">Wiki</a> |
-        <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
+        <a href="http://forum.ninjawars.net" target="_blank" class="extLink">Forum</a> |
         <a href="http://getsatisfaction.com/ninjawars" target="_blank" class="extLink">Feedback</a>
       </div>
       

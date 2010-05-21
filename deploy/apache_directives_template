@@ -12,6 +12,7 @@ ServerName __SERVER_NAME__
 RewriteEngine On
 RewriteRule webgame/?(.*) __WWW_ROOT__$1 [L,R=301]
 #~RewriteCond %{HTTP_HOST} ^__SHORT_SERVER_NAME__ [NC]
+#~RewriteCond %{REQUEST_URI} !awstats
 #~RewriteRule ^(.*)$ __WWW_ROOT__$1 [L,R=301]
 
 ErrorDocument 404 /404.php
@@ -59,4 +60,7 @@ php_value session.cookie_domain "__SERVER_NAME__"
 #<FilesMatch "\.(pl|php|cgi|spl|scgi|fcgi)$">
 #   Header unset Cache-Control
 #</FilesMatch>
+
+CustomLog /var/log/apache2/ninjawars.net.access combined
+
 </IfModule>

@@ -5,13 +5,7 @@ $quickstat  = "viewinv";
 $page_title = "Your Inventory";
 
 include SERVER_ROOT."interface/header.php";
-?>
 
-<h1>Your Inventory</h1>
-
-<div class='item-list'>
-
-<?php
 $user_id = get_user_id();
 DatabaseConnection::getInstance();
 $statement = DatabaseConnection::$pdo->prepare("SELECT amount AS c, item FROM inventory WHERE owner = :owner GROUP BY item, amount");
@@ -52,57 +46,9 @@ if ($data = $statement->fetch()) {
 	do {
 		$items[$data['item']] = $data['c'];
 	} while ($data = $statement->fetch());
-
-	echo "<div style='margin-bottom: 10px;'>Click a linked item to use it on yourself.</div>\n";
-
-	echo "<table style=\"width: 150;\">\n";
-
-	foreach ($items AS $itemName=>$amount) {
-		if ($amount > 0 && is_array($itemData[$itemName])) {
-			echo "<tr>\n";
-			echo "  <td>\n    ";
-
-			if (array_key_exists('codename', $itemData[$itemName])) {
-				echo "<a href=\"inventory_mod.php?item=".urlencode($itemData[$itemName]['codename'])."&amp;selfTarget=1&amp;target=$username&amp;link_back=inventory\">";
-			}
-
-			echo $itemData[$itemName]['display'];
-
-			if (array_key_exists('codename', $itemData[$itemName])) {
-				echo "</a>";
-			}
-
-			echo ":\n  </td>\n";
-
-			echo "  <td>\n";
-			echo    $amount."\n";
-			echo "  </td>\n";
-			echo "</tr>\n";
-		}
-	}
-
-	echo "</table>\n";
 } else {
-	echo "You have no items, to buy some, visit the <a href=\"shop.php\">shop</a>.\n";
+	$items = false;
 }
 
-
-?>
-</div>
-  <form id="player_search" action="list_all_players.php" method="get" name="player_search">
-    <div>
-      <a href="list_all_players.php?hide=dead">Use an Item on a ninja?</a>
-      <input id="searched" type="text" maxlength="50" name="searched" class="textField">
-      <input id="hide" type="hidden" name="hide" value="dead">
-      <input type="submit" value="Search for Ninja" class="formButton">
-    </div>
-  </form>
-
-  <p>
-  Current gold: <?php echo getGold($username);?>
-  <p>
-
-
-<?php
-include SERVER_ROOT."interface/footer.php";
+transitional_display_full_template('inventory.tpl', array('gold'=>getGold($username), 'items'=>$items, 'item_data'=>$item_data, 'username'=>$username));
 ?>
