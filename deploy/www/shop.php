@@ -5,7 +5,7 @@ $quickstat  = "viewinv";
 $page_title = "Shop";
 $buffer     = false;
 
-include SERVER_ROOT."interface/header.php";
+init();
 
 $description       = "";
 $in_purchase       = in('purchase');
@@ -54,7 +54,8 @@ if ($in_purchase == 1){
 	$description.="<p>As you browse his wares he says, \"Don't try anythin' you'd regret.\" and grins.</p>";
 }
 
-$parts = get_certain_vars(get_defined_vars(), array());
+$parts = get_certain_vars(get_defined_vars(), array($item_costs));
 
-transitional_display_full_template('shop.tpl', $parts); // Non-logged in template.
+echo render_page('shop.tpl', 'Shop', $parts, array('quickstat'=>'viewinv', 'alive'=>true, 'private'=>false));
+
 ?>
