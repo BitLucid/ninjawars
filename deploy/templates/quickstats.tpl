@@ -1,86 +1,55 @@
 
-
-
-
 {if !$viewinv}
 
-  <table class='quickstats player-stats'>
-  <tr>
-    <td>
-    Health: 
-    </td>
-
-    <td>
-      <div style="width: 80%;border: 1px solid #ee2520;" title="HP: {$health}">
+  <dl class='quickstats player-stats'>
+    <dt>Health:</dt>
+    <dd>
+      <div style="width: 100%;border: 1px solid #ee2520;" title="HP: {$health}">
         <div style="width: {$health_pct}%;background-color: #ee2520;">&nbsp;</div>
       </div>
-    </td>
-  </tr>
-  <tr>
-    <td>
-    Exp:
-    </td>
-
-    <td>
-      <div style="width: 80%;border: 1px solid #6612ee;" title="Exp: {$progress}%">
+    </dd>
+    <dt>Exp:</dt>
+    <dd>
+      {if $progress == 100}<a target='main' href='dojo.php' style='text-decoration:none'>{/if}
+      <div style="width: 100%;border: 1px solid #6612ee;" title="Exp: {$progress}%">
         <div style="width: {$progress}%;background-color: #6612ee;">&nbsp;</div>
       </div>
-    </td>
-  </tr>
-  <tr>
-    <td>
-    Status:
-    </td>
-
-    <td>
-
-	{$status_output_list}
-
-    </td>
-  </tr>
-  <tr>
-    <td>
-    Turns:
-    </td>
-    <td>
+      {if $progress == 100}</a>{/if}
+    </dd>
+    <dt>Status:</dt>
+    <dd>
+     {$status_output_list}
+    </dd>
+    <dt>Turns:</dt>
+    <dd>
         {$turns}
-    </td>
-  </tr>
-  <tr>
-    <td>
-    Gold: 
-    </td>
-    <td>
+    </dd>
+    <dt>Gold:</dt>
+    <dd>
         {$gold}
-    </td>
-  </tr>
-  <tr>
-    <td>
-    Bounty: 
-    </td>
-    <td>
+    </dd>
+    <dt>Bounty:</dt>
+    <dd>
         {$bounty}
-    </td>
-  </tr>
+    </dd>
+  </dl>
 
-  </table>
+
 {else}
 
-	    <table class='quickstats inventory'>
-        {$items_section}
-	      <tr>
-	        <td>
-	          Gold: 
-	        </td>
-	        <td>
-	          {$players_gold}<br>
-	        </td>
-	      </tr>
-	    </table>
+	    <dl class='quickstats inventory'>
+	    {foreach from=$items item=item}
+	          <dt>{$item.item}: </dt>
+	          <dd> {$item.amount}</dd>
+	    {/foreach}
+	      <dt style='color:gold'>Gold:</dt>
+	      <dd style='color:gold'>{$gold}</dd>
+
+	    </dl>
 {/if}
 
 
 <!-- Update the login-bar's health display. -->
 <script language='javascript' type='text/javascript'>
-    updateHealthBar({$players_health});
+    updateHealthBar({$health});
 </script>
