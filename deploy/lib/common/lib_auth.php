@@ -7,10 +7,12 @@ function authenticate($p_user, $p_pass) {
 	$returnValue = false;
 
 	if ($user != '' && $pass != '') {
-	    $sql = "SELECT uname, player_id FROM players WHERE lower(uname) = :player AND pname = :pass AND confirmed = 1";
-	    $returnValue = query_row($sql, array(':player'=>$user, ':pass'=>$pass));
+	    $sql = "SELECT account_identity, uname, player_id 
+	        FROM accounts join account_players on account_id=_account_id join players on player_id = _player_id 
+	        WHERE lower(account_identity) = lower(:email) OR lower(uname) = lower(:email) AND phash = crypt(:pass, phash)";
+	    // Allow login via username or email.
+	    $returnValue = query_row($sql, array(':email'=>$user, ':pass'=>$pass));
 	}
-
 	return $returnValue;
 }
 
