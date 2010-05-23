@@ -38,6 +38,7 @@ function render_page($template, $title=null, $local_vars=array(), $options=null)
 	}
 
 	$tpl->assign('main_template', $template);
+	$tpl->assign('quickstat', $quickstat);
 
 	// the template
 	$tpl->display('full_template.tpl');

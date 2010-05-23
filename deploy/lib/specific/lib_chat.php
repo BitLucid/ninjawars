@@ -178,7 +178,7 @@ function time_to_array($time) {
 
 // Format the string of the amount of time that it was ago.
 function ago_string($time_array) {
-	if ($time_array['days'] > 0) {
+	if (@$time_array['days'] > 0) {
 		$res = (int)$time_array['days'].(1 == (int)$time_array['days'] ? ' day' : ' days');
 	} elseif($time_array['hours'] > 0) {
 		$res = (int)$time_array['hours'].(1 == (int)$time_array['hours'] ? ' hour' : ' hours');
