@@ -7,11 +7,12 @@ function authenticate($p_user, $p_pass) {
 	$returnValue = false;
 
 	if ($user != '' && $pass != '') {
-	    $sql = "SELECT account_identity, uname, player_id 
+	    // Allow login via username or email.
+	    $sql = "SELECT account_id, account_identity, uname, player_id 
 	        FROM accounts join account_players on account_id=_account_id join players on player_id = _player_id 
 	        WHERE lower(account_identity) = lower(:email) OR lower(uname) = lower(:email) AND phash = crypt(:pass, phash)";
-	    // Allow login via username or email.
 	    $returnValue = query_row($sql, array(':email'=>$user, ':pass'=>$pass));
+	    
 	}
 	return $returnValue;
 }
@@ -24,7 +25,7 @@ function login_user($p_user, $p_pass) {
 	$error   = 'That password/username combination was incorrect.';
 
 	if ($data = authenticate($p_user, $p_pass)) {
-		setup_logged_in($data['player_id'], $data['uname']);
+		setup_logged_in($data['player_id'], $data['uname'], $data['account_id']);
 
 		// *** Set return values ***
 		$success = true;
@@ -74,10 +75,11 @@ function is_logged_in() {
 /**
  * Sets the extra settings after successful login, does not perform the authentication.
 **/
-function setup_logged_in($player_id, $username) {
-	$_COOKIE['username'] = $username;
-	SESSION::set('player_id', $player_id);
+function setup_logged_in($player_id, $username, $account_id) {
+	$_COOKIE['username'] = $username; // May want to keep this for login purposes.
+	SESSION::set('player_id', $player_id); // Actually ninja id.
 	SESSION::set('username', $username);
+	SESSION::set('account_id', $account_id);
 
 	update_activity_log($username);
 	// Block by ip list here, if necessary.
