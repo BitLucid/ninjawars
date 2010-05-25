@@ -230,22 +230,14 @@ then
 	rm -rf `find -P ./ -maxdepth 1|grep -v "./$"|grep -v resources`
 fi
 
-if [ ! -d "${SERVER_ROOT}resources/" ]
-then
-	mkdir "${SERVER_ROOT}resources/"
-fi
-
-if [ ! -d "${SERVER_ROOT}resources/logs/" ]
-then
-	mkdir "${SERVER_ROOT}resources/logs/"
-	chmod -f 777 "${SERVER_ROOT}resources/logs/"
-fi
+mkdir -p "${SERVER_ROOT}resources/logs/"
+chmod -f 777 "${SERVER_ROOT}resources/logs/"
 
 cp -r $source_files* $SERVER_ROOT
 cp $source_files.* $SERVER_ROOT
 echo "source files copied to $SERVER_ROOT"
 
-mkdir templates/compiled/
+mkdir -p templates/compiled/
 chmod -f 777 templates/compiled/
 
 #########################
@@ -307,12 +299,12 @@ fi
 #then
 #	rm -rf $SERVER_ROOT/templates/*
 #else
-#	mkdir $SERVER_ROOT/templates/
+#	mkdir -p $SERVER_ROOT/templates/
 #fi
 
 #if [ ! -d $SERVER_ROOT/templates_c]
 #then
-#	mkdir $SERVER_ROOT/templates_c/
+#	mkdir -p $SERVER_ROOT/templates_c/
 #fi
 
 #if [[ $TEMPLATE_CACHING ]]
