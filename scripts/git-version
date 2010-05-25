@@ -1,4 +1,4 @@
 #!/bin/bash
-git rev-parse HEAD >> version
-echo " " >> version
-echo `date` >> version
+git rev-parse HEAD
+echo " "
+echo `date`

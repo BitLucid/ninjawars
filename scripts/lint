@@ -1,2 +1,2 @@
 #!/bin/bash
-find $1 -name "*.php" -exec php -l {} \;
+find $1 -name "*.php" -exec php -l {} \;|grep -v "^No syntax errors"

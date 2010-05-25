@@ -1,7 +1,36 @@
 #!/bin/bash
+
+archive="nw-`date +%Y-%m-%d`.tgz"
+user="tchalvak"
+host="ninjawars.net"
+config="test.conf"
+
+echo -ne "Starting lint check..."
 ./scripts/lint deploy/
-./scripts/git-version
-git archive HEAD:deploy | gzip > nw-2010-05-21.tgz
-scp nw-2010-05-21.tgz tchalvak@ninjawars.net:/home/ninjawars/
-ssh tchalvak@ninjawars.net "cd /home/ninjawars/; ./deploy --clean -c=test.conf nw-2010-05-21.tgz"
-scp version tchalvak@ninjawars.net:/home/ninjawars/game/test/www/
+echo "...done"
+
+echo -ne "Creating archive..."
+git archive HEAD:deploy > tmpArchive.tar
+./scripts/git-version > ./deploy/www/version
+tar -C deploy/ -rf tmpArchive.tar www/version
+gzip -c tmpArchive.tar > $archive
+echo "...done"
+
+echo -ne "Removing temporary files..."
+rm tmpArchive.tar
+rm ./deploy/www/version
+echo "...done"
+
+echo "Transferring archive..."
+scp $archive $user@$host:/home/ninjawars/
+echo "...done"
+
+echo "Transferring most recent deploy script..."
+scp ./scripts/deploy $user@$host:/home/ninjawars/
+echo "...done"
+
+echo "Executing remote deployment ($config)..."
+ssh $user@$host "cd /home/ninjawars/; ./deploy --clean -c=$config $archive"
+echo "...done"
+
+echo "Remote deployment completed!"
