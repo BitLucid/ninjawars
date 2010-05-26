@@ -316,49 +316,6 @@ function preconfirm_some_emails($email) {
 	return $res;
 }
 
-function render_class_select($current) {
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->query('SELECT class_id, class_name, class_note FROM class WHERE class_active');
-
-    ob_start();
-?>
-	    <select id="send_class" name="send_class">
-	      <option value="">Pick Ninja Color</option>
-<?php
-	while ($classData = $statement->fetch())
-	{
-		$className = htmlentities($classData['class_name']);
-		$classNote = htmlentities($classData['class_note']);
-		$elementID = strtolower($className).'-class-select';
-?>
-	    <option value="<?php echo $className;?>" id='<?php echo $elementID;?>' <?php if($current == $className) { echo 'selected="selected"'; } ?>>
-          <?php echo $className, ' - ', $classNote;?>
-	    </option>
-<?php
-	}
-?>
-	  </select>
-<?php
-    $res = ob_get_contents();
-    ob_end_clean();
-    return $res;
-}
-
-function display_signup_form($enteredName, $enteredEmail, $enteredClass, $enteredReferral) {
-	// ************************* START OF SIGNUP FORM ********************************
-	$class_select = render_class_select($enteredClass);
-    echo render_template('signup.tpl', array(
-        'enteredName'              => $enteredName
-		, 'enteredEmail'           => $enteredEmail
-		, 'enteredClass'           => $enteredClass
-		, 'enteredReferral'        => $enteredReferral
-		, 'class_select'           => $class_select
-		, 'SYSTEM_MESSENGER_EMAIL' => SYSTEM_MESSENGER_EMAIL
-		)
-	);
-} // *** End of function display_signup_form().
-
-
 function create_player($send_name, $params=array()) {
 	DatabaseConnection::getInstance();
 
@@ -443,10 +400,10 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 	$send_email  = trim($enteredEmail);
 	$referred_by = $enteredReferral;
 
-	echo "Your responses:<br> Name - $send_name,<br>
-		 Password - ".((isset($send_pass) ? "***yourpassword***" : "NO PASSWORD")).",<br>
-		 Class - $send_class,<br>
-		 Email - $send_email,<br>
+	echo "Your responses:<br> Name - $send_name<br>
+		 Password - ".((isset($send_pass) ? "***yourpassword***" : "NO PASSWORD"))."<br>
+		 Class - $send_class<br>
+		 Email - $send_email<br>
 		 Site Referred By - $referred_by<br><br>\n";
 
 	//  *** Requirement checking Section  ***
