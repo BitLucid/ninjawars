@@ -63,5 +63,5 @@ if (!$is_logged_in) {
     echo render_template('index.tpl', $parts); // Logged in template.
 }
 
-echo render_footer(null, true); // Skip quickstats.
+echo render_template('footer.tpl', array('quickstat'=>null));
 ?>

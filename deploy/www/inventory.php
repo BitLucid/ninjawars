@@ -50,5 +50,5 @@ if ($data = $statement->fetch()) {
 	$items = false;
 }
 
-transitional_display_full_template('inventory.tpl', array('gold'=>getGold($username), 'items'=>$items, 'item_data'=>$item_data, 'username'=>$username));
+transitional_display_full_template('inventory.tpl', array('gold'=>getGold($username), 'items'=>$items, 'item_data'=>$item_data, 'username'=>$username, 'quickstat'=>$quickstat));
 ?>

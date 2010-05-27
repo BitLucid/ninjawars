@@ -8,9 +8,6 @@ $quickstat  = false;
 
 include SERVER_ROOT."interface/header.php";
 
-echo "<h1>Chat Board</h1>";
-echo "<p><a href=\"".$_SERVER['PHP_SELF']."?chatlength=50\">Refresh</a><p>";
-
 $default_limit = 360;
 $chatlength    = in('chatlength', $default_limit, 'toInt');
 $message       = in('message', null, 'no filter'); // Essentially no filtering.
@@ -31,17 +28,13 @@ if ($user_id) {
 
 // Output section.
 
-echo render_chat_refresh($not_mini=true); // Write out the js to refresh to refresh page to full chat.
+$chat_refresh = render_chat_refresh($not_mini=true); // Write out the js to refresh to refresh page to full chat.
 
-echo "<div id='full-chat'>";
+$active_members = render_active_members();
 
-echo $input_form;
+$chat_messages = render_chat_messages($chatlength);
 
-echo render_active_members();
+$parts = get_certain_vars(get_defined_vars(), array('chat_refresh', 'input_form', 'active_members', 'chat_messages'));
 
-echo render_chat_messages($chatlength);
-
-echo "</div>"; // End of full_chat div.
-
-echo render_footer(); // Don't skip the quickstat.
+transitional_display_full_template('village.tpl', $parts);
 ?>

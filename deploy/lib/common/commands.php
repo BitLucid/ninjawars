@@ -995,7 +995,7 @@ function pauseAccount($who) {
 	$statement->execute();
 
 	$quickemail = $email."PAUSED";
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET confirmed = 0, email = :pausedemail' WHERE player_id = :user");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET confirmed = 0, email = :pausedEmail WHERE player_id = :user");
 	$statement->bindValue(':pausedEmail', $quickemail);
 	$statement->bindValue(':user', $user_id);
 	$statement->execute();
