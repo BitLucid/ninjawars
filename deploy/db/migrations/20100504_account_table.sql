@@ -3,8 +3,8 @@ drop table if exists accounts;
 create table accounts (
     account_id serial primary key not null, 
     account_identity text not null unique, 
-    phash text not null unique,
-    active_email text default null,
+    phash text,
+    active_email text default null unique,
     type integer default 0::integer,
     created_date timestamp without time zone NOT NULL default now()
 );
