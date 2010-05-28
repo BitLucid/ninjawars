@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ $1 ]
+then
+	archive=$1
+
+	if [[ ! $1 == *.tar.gz ]]
+	then
+		echo -n "The target file $1 will be a gzipped archive. Should I add the .tar.gz extension? [Y/n]: "
+		read answer
+		if [[ $answer == "y" || $answer == "Y" || $answer == "" ]]
+		then
+			archive=$1.tar.gz
+		fi
+	fi
+else
+	archive="nw-`date +%Y-%m-%d`.tgz"
+fi
+
+tmpArchive=mktemp
+
+git archive HEAD:deploy > $tmpArchive
+./scripts/git-version > ./deploy/www/version
+tar -C deploy/ -rf $tmpArchive www/version
+gzip -c $tmpArchive > $archive
+
+rm $tmpArchive
+rm ./deploy/www/version
