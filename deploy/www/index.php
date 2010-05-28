@@ -37,8 +37,7 @@ $stats          = membership_and_combat_stats();
 $player_count   = $stats['player_count'];
 $players_online = $stats['players_online'];
 
-$header = render_header('Live By the Sword', 'main-body', array('is_index'=>true));
-// render_header Writes out the html,head,meta,title,css,js.
+$header = render_template('header.tpl', array('title'=>'Live By the Sword', 'body_classes'=>'main-body', 'is_index'=>true, 'logged_in'=>get_user_id(), 'section_only'=>in('section_only'))); // Writes out the html,head,meta,title,css,js.
 
 $version = 'NW Version 1.7.1 2009.11.22';
 

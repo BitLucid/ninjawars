@@ -4,7 +4,7 @@ require_once(LIB_ROOT.'template_library/template_lite/src/class.template.php');
 // See: http://templatelite.sourceforge.net/docs/index.html for the docs, it's a smarty-like syntax.
 
 function display_error($p_error) {
-	display_page('transitional_error.tpl', 'Error', array('error'=>$p_error));
+	display_page('error.tpl', 'Error', array('error'=>$p_error));
 }
 
 /** Displays a template wrapped in the header and footer as needed.

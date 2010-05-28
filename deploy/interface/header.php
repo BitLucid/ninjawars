@@ -1,19 +1,13 @@
 <?php
-
 $error = init($private, $alive); // Creates some starting objects&vars, puts player info into global namespace (sadly), updates activity, starts buffering.
-
-$header = render_header($page_title);
-
-$error_to_display = render_error($error);
 
 // **************** OUTPUT SECTION *******************************//
 
-if ($error_to_display) {
-    echo $header;
-    echo $error_to_display;
+echo render_template('header.tpl', array('title'=>$page_title, 'logged_in'=>get_user_id(), 'section_only'=>in('section_only')));
+
+if ($error) {
+	echo render_template("error.tpl", array('error'=>$error));
 	echo render_template('footer.tpl', array("quickstat"=>(isset($quickstat) ? $quickstat : null))); // Display the bottom of the error page, refresh the quickstat view if necessary.
     die(); // Do not display any further on the page.
-} else {
-    echo $header;
 }
 ?>

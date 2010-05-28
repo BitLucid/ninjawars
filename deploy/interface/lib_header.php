@@ -15,8 +15,7 @@ function init($private, $alive) {
 
 	update_activity_info(); // *** Updates the activity of the page viewer in the database.
 
-	$error = globalize_user_info($private, $alive); // Sticks lots of user info into the global namespace for backwards compat.
-	return $error;
+	return globalize_user_info($private, $alive); // Sticks lots of user info into the global namespace for backwards compat.
 }
 
 /** The breakdown function reversing initialize, should we ever need it.
@@ -33,7 +32,7 @@ function globalize_user_info($private=true, $alive=true) {
 	$username = SESSION::get('username'); // Will default to null.
 
 	if ((!is_logged_in() || !$username) && $private) {
-		$error = render_viewable_error('log_in');
+		$error = 'log_in';
 		// A non-null set of content being in the error triggers a die at the end of the header.
 	} elseif ($username) {
 		// **************** Player information settings. *******************
@@ -75,9 +74,9 @@ function globalize_user_info($private=true, $alive=true) {
 
 		if ($alive) { // *** That page requires the player to be alive to view it.
 			if (!$players_health) {
-				$error = render_viewable_error('dead');
+				$error = 'dead';
 			} else if (user_has_status_type('frozen')) {
-				$error = render_viewable_error('frozen');
+				$error = 'frozen';
 			}
 		}
 	}
@@ -161,34 +160,6 @@ function format_css_class_from_title($page_title) {
 	// Filters out non-alphanumerics replaced with - dash.
 	$css_body_class = strtolower(preg_replace('/\W/', '-', $page_title));
 	return $css_body_class;
-}
-
-/**
- * Writes out the header for all the pages.
-**/
-function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses = null, $p_options=array()) {
-	$section_only = (@$p_options['section_only'] ? @$p_options['section_only'] : in('section_only'));
-
-	if ($section_only) {
-		return null;
-	}
-
-	$is_index = @$p_options['is_index'];
-	$css_body_classes = ($p_bodyClasses ? $p_bodyClasses : format_css_class_from_title($p_title));
-	$parts = array(
-		'title'          => ($p_title ? htmlentities($p_title) : '')
-		, 'body_classes' => $css_body_classes
-		, 'is_index'     => $is_index
-		, 'section_only' => $section_only
-		, 'logged_in'    => get_user_id()
-	);
-
-	return render_template('header.tpl', $parts);
-}
-
-// Renders the error message when a section isn't viewable.
-function render_viewable_error($p_error) {
-	return render_template("error.tpl", array('error'=>$p_error));
 }
 
 /**
