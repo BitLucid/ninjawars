@@ -78,7 +78,6 @@ function get_clans($clan_id=null) {
 	DatabaseConnection::getInstance();
 	$clan_or_clans = ($clan_id ? 'WHERE clan_id = :clan' : 'ORDER BY clan_id');
 	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_created_date, clan_founder FROM clan $clan_or_clans");
-
 	if ($clan_id) {
 		$clans->bindValue(':clan', $clan_id);
 	}
@@ -88,15 +87,13 @@ function get_clans($clan_id=null) {
 	return $clans->fetchAll();
 }
 
-// Gets the clan founders, though they may be dead and unconfirmed now.
+// Gets the clan founder, though they may be dead and unconfirmed now.
 function get_clan_founders() {
 	DatabaseConnection::getInstance();
 
-	$founders_statement = DatabaseConnection::$pdo->query("SELECT uname, player_id, clan_name, confirmed 
-		FROM clan LEFT JOIN player ON lower(clan_founder) = lower(uname)
-		ORDER BY clan_id");
-
-	return $founders_statement->fetchAll();
+	$founders_statement = DatabaseConnection::$pdo->query("SELECT clan_founder, clan_name, uname, player_id, confirmed 
+		FROM clan LEFT JOIN players ON lower(clan_founder) = lower(uname)");
+	return $founder_statement->fetchAll();
 }
 
 // Return only the single clan leader and their information.
