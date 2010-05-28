@@ -1,10 +1,10 @@
 <?php
-$private    = true;
-$alive      = false;
-$quickstat  = "viewinv";
-$page_title = "Your Inventory";
+$private   = true;
+$alive     = false;
 
-include SERVER_ROOT."interface/header.php";
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
 
 $user_id = get_user_id();
 DatabaseConnection::getInstance();
@@ -50,5 +50,20 @@ if ($data = $statement->fetch()) {
 	$items = false;
 }
 
-transitional_display_full_template('inventory.tpl', array('gold'=>getGold($username), 'items'=>$items, 'item_data'=>$item_data, 'username'=>$username, 'quickstat'=>$quickstat));
+display_page(
+	'inventory.tpl'
+	, 'Your Inventory'
+	, array(
+		'gold'        => getGold($username)
+		, 'items'     => $items
+		, 'item_data' => $item_data
+		, 'username'  => $username
+	)
+	, array(
+		'quickstat' => 'viewinv'
+		, 'alive'   => $alive
+		, 'private' => $private
+	)
+);
+}
 ?>

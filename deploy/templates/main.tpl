@@ -1,7 +1,7 @@
 <h1><span id="ninjawars-subtitle">Live by the Sword</span></h1>
 <h3>Fight other ninja and battle for the most kills!</h3>
 
-{$progression}
+{include file="progression.tpl"}
 
 <hr>
 

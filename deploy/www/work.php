@@ -1,20 +1,19 @@
 <?php
-$private    = false;
-$alive      = true;
-$quickstat  = "player";
-$page_title = "Working in the Village";
+$private   = false;
+$alive     = true;
 
-init();
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
 
-$work_multiplier = 30;
-$worked = null;
-$new_gold = null;
-$not_enough_energy = null;
+$work_multiplier        = 30;
+$worked                 =
+$new_gold               =
+$not_enough_energy      =
 $use_second_description = null;
-$is_logged_in = is_logged_in();
+$is_logged_in           = is_logged_in();
 
-$worked = in('worked');
-$worked = intval($worked);
+$worked = intval(in('worked'));
 
 $recommended_to_work = 10;
 
@@ -23,7 +22,7 @@ if ($worked && is_numeric($worked)) {
 	set_setting('turns_worked', $worked);
 	$recommended_to_work = $worked;
 } else {
-	$last_worked = get_setting('turns_worked');	
+	$last_worked = get_setting('turns_worked');
 	$recommended_to_work = $last_worked? $last_worked : 10;
 }
 
@@ -44,8 +43,15 @@ if ($worked > 0) {
 	}
 }
 
-render_page('work.tpl', 
-        'Working in the Village', 
-        get_certain_vars(get_defined_vars(), array()), 
-        $options=array('quickstat'=>'player', 'private'=>false, 'alive'=>true)); 
+display_page(
+	'work.tpl' // *** Main Template ***
+	, 'Working in the Village' // *** Page Title ***
+	, get_certain_vars(get_defined_vars(), array()) // *** Page Variables ***
+	, array( // *** Page Options ***
+		'quickstat' => 'player'
+		, 'private' => $private
+		, 'alive'   => $alive
+	)
+);
+}
 ?>

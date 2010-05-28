@@ -1494,6 +1494,7 @@ iframe{
 
 #logout {
     float:right;
+	margin-right: 2px;
 }
 
 #logout a {

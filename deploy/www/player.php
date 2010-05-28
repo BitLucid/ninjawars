@@ -1,29 +1,28 @@
 <?php
+$private   = false;
+$alive     = false;
+
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
 require_once(OBJ_ROOT."Skill.php");
 require_once(DB_ROOT."SkillDAO.class.php");
 require_once(LIB_ROOT."specific/lib_clan.php");
 require_once(LIB_ROOT."specific/lib_player.php");
-
-
-$alive      = false;
-$private    = false;
-$page_title = 'Player Profile';
-$quickstat  = 'player';
-$buffer     = false;
-
-include SERVER_ROOT."interface/header.php";
 
 $target        = $player = in('player');
 $target_id     = either(in('target_id'), either(in('player_id'), get_user_id($target)));
 $target_player_obj = new Player(either($target_id, $target));
 
 if (!$target_player_obj || !$target_player_obj->player_id) {
-	transitional_display_full_template('no-player.tpl', get_certain_vars('quickstat'));
+	$template = 'no-player.tpl';
+	$parts    = array();
 } else {
 	$player_info = $target_player_obj->as_array(); // Pull the info out of the object.
 
 	if (!$player_info) {
-		transitional_display_full_template('no-player.tpl', get_certain_vars('quickstat'));
+		$template = 'no-player.tpl';
+		$parts    = array();
 	} else {
 		$score         = get_score_formula();
 		$user_id       = get_user_id();
@@ -96,9 +95,20 @@ if (!$target_player_obj || !$target_player_obj->player_id) {
 	
 		// Send the info to the template.
 	
-		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'quickstat', 'gravatar_url'));
-	
-		transitional_display_full_template('player.tpl', $parts);
+		$template = 'player.tpl';
+		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url'));
 	}
+}
+
+display_page(
+	$template
+	, 'Player Profile'
+	, $parts
+	, array(
+		'quickstat' => 'player'
+		, 'alive'   => $alive
+		, 'private' => $private
+	)
+);
 }
 ?>

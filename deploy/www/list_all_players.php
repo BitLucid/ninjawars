@@ -1,11 +1,13 @@
 <?php
+$private = false;
+$alive   = false;
+
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
+
 require_once(LIB_ROOT."specific/lib_player_list.php");
 require_once(LIB_ROOT."specific/lib_player.php");
-
-$alive      = false;
-$private    = false;
-$quickstat  = false;
-$page_title = "Ninja List";
 
 DatabaseConnection::getInstance();
 
@@ -69,9 +71,6 @@ $count_statement->execute();
 $totalrows = $count_statement->fetchColumn();
 
 
-
-
-
 // Determine the current page spot navigated to.
 // If searching, use the page between
 // If no specific rank was requested, use the viewer's rank
@@ -128,9 +127,15 @@ while ($a_player = $ninja_info->fetch()) {
 
 $parts = get_certain_vars(get_defined_vars(), $whitelist=array('ninja_rows'));
 
-render_page(
-        'player_list.tpl',
-        'Ninja List',
-        $parts,
-        $options=array('quickstat'=>false, 'private'=>false, 'alive'=>false));
+display_page(
+	'player_list.tpl'	// *** Main Template ***
+	, 'Ninja List'		// *** Page Title ***
+	, $parts			// *** Page Variables ***
+	, array(			// *** Page Options ***
+		'quickstat' => false
+		, 'private' => false
+		, 'alive'   => false
+	)
+);
+}
 ?>

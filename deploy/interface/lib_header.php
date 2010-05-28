@@ -2,8 +2,8 @@
 /**
   *  Creates all the environmental variables, with no outputting.
 **/
-function init($buffer=true) {
-	global $filter, $today, $private, $alive;
+function init($private, $alive) {
+	global $filter, $today;
 
 	// General utility objects.
 	$filter = new Filter(); // *** Creates the filters for later use.
@@ -14,11 +14,6 @@ function init($buffer=true) {
 	$error = null; // Logged in or alive error.
 
 	update_activity_info(); // *** Updates the activity of the page viewer in the database.
-
-	// TODO: Remove this once scripts are generally moved to the render_page function.
-	if ($buffer) {
-		ob_start(null, 1); // Start the overall file buffer, output in chunks.
-	}
 
 	$error = globalize_user_info($private, $alive); // Sticks lots of user info into the global namespace for backwards compat.
 	return $error;
@@ -183,8 +178,6 @@ function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses 
 	$parts = array(
 		'title'          => ($p_title ? htmlentities($p_title) : '')
 		, 'body_classes' => $css_body_classes
-		, 'local_js'     => (OFFLINE || DEBUG)
-		, 'DEBUG'        => DEBUG
 		, 'is_index'     => $is_index
 		, 'section_only' => $section_only
 		, 'logged_in'    => get_user_id()

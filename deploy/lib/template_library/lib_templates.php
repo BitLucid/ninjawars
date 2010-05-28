@@ -3,78 +3,54 @@
 require_once(LIB_ROOT.'template_library/template_lite/src/class.template.php');
 // See: http://templatelite.sourceforge.net/docs/index.html for the docs, it's a smarty-like syntax.
 
+function display_error($p_error) {
+	display_page('transitional_error.tpl', 'Error', array('error'=>$p_error));
+}
 
-/** Displays a template wrapped in the header and footer.
+/** Displays a template wrapped in the header and footer as needed.
   *
   * Example use:
-  * echo render_page('add.tpl', 'Homepage', get_current_vars(get_defined_vars()));
+  * display_page('add.tpl', 'Homepage', get_current_vars(get_defined_vars()), array());
 **/
-function render_page($template, $title=null, $local_vars=array(), $options=null) {
+function display_page($template, $title=null, $local_vars=array(), $options=null) {
     $quickstat = @$options['quickstat'];
     $quickstat = ($quickstat ? $quickstat : @$local_vars['quickstat']);
-    
+
     $section_only = @$options['section_only'];
     $section_only = ($section_only ? $section_only : @$local_vars['section_only']);
     $section_only = ($section_only ? $section_only : in('section_only'));
-    
-    // Display header and footer only if not section_only.
 
-    if (!$section_only) {
-        echo render_header($title);
-    }
+	$is_index = @$options['is_index'];
 
-	// Initialize the template object.
-	$tpl = new Template_Lite;
+	$tpl               = new Template_Lite;      // *** Initialize the template object ***
+	$tpl->template_dir = TEMPLATE_PATH;          // *** template directory ***
+	$tpl->compile_dir  = COMPILED_TEMPLATE_PATH; // *** compile directory ***
 
-	// template directory 
-	$tpl->template_dir = TEMPLATE_PATH;
-
-	// compile directory
-	$tpl->compile_dir = COMPILED_TEMPLATE_PATH;
-
-	// loop over the vars, assigning each.
-	foreach ($local_vars as $lname => $lvalue) {
+	foreach ($local_vars as $lname => $lvalue) { // *** loop over the vars, assigning each to the template ***
 		$tpl->assign($lname, $lvalue);
 	}
 
-	$tpl->assign('main_template', $template);
+	$tpl->assign('logged_in', get_user_id());
+	$tpl->assign('user_id', get_user_id());
+	$tpl->assign('title', $title);
+	$tpl->assign('is_index', $is_index);
+	$tpl->assign('section_only', $section_only);
 	$tpl->assign('quickstat', $quickstat);
+	$tpl->assign('main_template', $template);
 
 	// the template
 	$tpl->display('full_template.tpl');
 }
-
-function transitional_display_full_template($template_name, $assigned_vars = array()) {
-	// Initialize the template object.
-	$tpl = new Template_Lite;
-
-	// template directory 
-	$tpl->template_dir = TEMPLATE_PATH;
-
-	// compile directory
-	$tpl->compile_dir = COMPILED_TEMPLATE_PATH;
-
-	// loop over the vars, assigning each.
-	foreach ($assigned_vars as $lname => $lvalue) {
-		$tpl->assign($lname, $lvalue);
-	}
-
-	$tpl->assign('main_template', $template_name);
-
-	// the template
-	$tpl->display('full_template.tpl');
-}
-
 
 /** Will return the rendered content of the template.
   * Example use: $parts = get_certain_vars(get_defined_vars(), array('whitelisted_object');
   * echo render_template('account_issues.tpl', $parts);
 **/
-function render_template($template_name, $assign_vars=array()){
+function render_template($template_name, $assign_vars=array()) {
 	// Initialize the template object.
 	$tpl = new Template_Lite;
 
-	// template directory 
+	// template directory
 	$tpl->template_dir = TEMPLATE_PATH;
 
 	// compile directory
@@ -99,8 +75,8 @@ function get_certain_vars($var_list, $whitelist=array())
 	$non_arrays = array();
 
 	foreach ($var_list as $loop_var_name => $loop_variable) {
-		if ( 
-			(!is_array($loop_variable) && !is_object($loop_variable)) 
+		if (
+			(!is_array($loop_variable) && !is_object($loop_variable))
 			|| in_array($loop_var_name, $whitelist)) {
 			$non_arrays[$loop_var_name] = $loop_variable;
 		}

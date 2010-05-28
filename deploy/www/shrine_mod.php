@@ -1,10 +1,10 @@
 <?php
-$page_title = "Shrine";
-$alive      = false;
-$private    = true;
-$quickstat  = "player";
+$private   = false;
+$alive     = false;
 
-init(); // Initializes a full environment.
+if ($error = init($private, $false)) {
+	display_error($error);
+} else {
 
 include(OBJ_ROOT."Skill.php");
 $skillsListObj = new Skill();
@@ -142,8 +142,15 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 	}
 }
 
-render_page('shrine.effects.tpl', 
-        'Shrine', 
-        get_certain_vars(get_defined_vars(), array()), 
-        $options=array('quickstat'=>true, 'private'=>false, 'alive'=>false)); 
+display_page(
+	'shrine.effects.tpl'	// *** Main Template ***
+	, 'Shrine'				// *** Page Title ***
+	, get_certain_vars(get_defined_vars(), array())	// *** Page Variables ***
+	, array(	// *** Page Options ***
+		'quickstat' => 'player'
+		, 'private' => $private
+		, 'alive'   => $alive
+	)
+);
+}
 ?>

@@ -239,7 +239,4 @@
     
 <!-- Validated as of Oct, 2009 -->
 
-    <!-- Version: {$version} -->
-
-  </body>
-</html>
+<!-- Version: {$version} -->

@@ -1,10 +1,10 @@
 <?php
-$private    = false;
-$alive      = false;
-$page_title = "Village";
-$buffer     = false;
+$private = false;
+$alive   = false;
 
-include SERVER_ROOT."interface/header.php";
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
 
 $locations = array(
 	array('name'=>'Shrine', 'url'=>'shrine.php', 'image'=>'shrine.png')
@@ -24,5 +24,18 @@ $npcs = array(
 	, array('name'=>'Samurai',         'url'=>'attack_npc.php?attacked=1&amp;victim=samurai',  'image'=>'samurai.png')
 );
 
-echo transitional_display_full_template('attack_player.tpl', array('locations'=>$locations, 'npcs'=>$npcs, 'quickstat'=>'player'));
+display_page(
+	'attack_player.tpl'
+	, 'Village'
+	, array(
+		'locations'   => $locations
+		, 'npcs'      => $npcs
+	)
+	, array(
+		'quickstat' => 'player'
+		, 'alive'   => $alive
+		, 'private' => $private
+	)
+);
+}
 ?>

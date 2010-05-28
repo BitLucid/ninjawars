@@ -1,7 +1,12 @@
 <?php
-require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper and rendering functions.
+$private = false;
+$alive   = false;
 
-init(); // Initialize the environment.
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
+
+require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper and rendering functions.
 
 $default_limit = 20;
 $chatlength    = in('chatlength', $default_limit, 'toInt');
@@ -29,12 +34,15 @@ $membersTotal = either($membersTotal, '0');
 
 $chat_messages = render_chat_messages($chatlength, true);
 
-// $template, $title=null, $local_vars=array(), $options=null
-
-render_page('mini_chat.tpl', 'Mini Chat', get_certain_vars(get_defined_vars(), array()), $options=array(
-        'skip_quickstat'=>true,
-        'alive'=>false,
-        'private'=>false,
-        'quickstat'=>null,
-));
+display_page(
+	'mini_chat.tpl'	// *** Main template ***
+	, 'Mini Chat' // *** Page Title ***
+	, get_certain_vars(get_defined_vars(), array()) // *** Page Variables ***
+	, array( // *** Page Options ***
+		'alive'       => $alive
+		, 'private'   => $private
+		, 'quickstat' => false
+	)
+);
+}
 ?>

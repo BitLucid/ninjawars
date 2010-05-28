@@ -1,8 +1,8 @@
 <div id='progression'>
-	{if !$user_id}
+{if !$user_id}
 	<p><a target='main' href='{$templatelite.const.WEB_ROOT}signup.php'>Become a Ninja!</a></p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
-	{/if}
+{/if}
 	<p>Rob townsfolk in the <a target='main' href='{$templatelite.const.WEB_ROOT}attack_player.php'>Village</a>, gather loot</p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
 	<p>Kill other <a target='main' href='{$templatelite.const.WEB_ROOT}list_all_players.php'>Ninja</a>, get stronger at the <a href='{$templatelite.const.WEB_ROOT}dojo.php'>Dojo</a></p>

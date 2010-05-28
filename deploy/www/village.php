@@ -1,12 +1,12 @@
 <?php
+$private = false;
+$alive   = false;
+
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
+
 require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper and rendering functions.
-
-$private    = false;
-$alive      = false;
-$page_title = "Chat Board";
-$quickstat  = false;
-
-include SERVER_ROOT."interface/header.php";
 
 $default_limit = 360;
 $chatlength    = in('chatlength', $default_limit, 'toInt');
@@ -36,5 +36,15 @@ $chat_messages = render_chat_messages($chatlength);
 
 $parts = get_certain_vars(get_defined_vars(), array('chat_refresh', 'input_form', 'active_members', 'chat_messages'));
 
-transitional_display_full_template('village.tpl', $parts);
+display_page(
+	'village.tpl'
+	, 'Chat Board'
+	, $parts
+	, array (
+		'quickstat' => false
+		, 'alive'   => $alive
+		, 'private' => $private
+	)
+);
+}
 ?>

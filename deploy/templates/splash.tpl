@@ -1,4 +1,4 @@
-    {$header}
+{$header}
 
    
 {literal}
@@ -226,6 +226,4 @@
        
 <!-- Validated as of Oct, 2009 -->
 
-    <!-- Version: {$version} -->
-
-<!-- body and html tags wrapped around this template via index.php -->
+<!-- Version: {$version} -->
