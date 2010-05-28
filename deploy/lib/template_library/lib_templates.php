@@ -82,15 +82,6 @@ function get_certain_vars($var_list, $whitelist=array())
 		}
 	}
 
-	$constants = get_user_constants();
-
-	// Add in the user defined constants too.
-	return $non_arrays + $constants;
-}
-
-// Get the user defined constants like WEB_ROOT
-function get_user_constants() {
-	$temp = get_defined_constants(true);
-	return $temp['user'];
+	return $non_arrays;
 }
 ?>

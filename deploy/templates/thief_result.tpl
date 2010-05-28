@@ -13,6 +13,8 @@ You have found a Shuriken on the thief!
 	{/if}
 <br>
 Beware the Ninja Thieves, they have entered this world to steal from all!<br>
+<a href="attack_npc.php?attacked=1&amp;victim=thief">Attack Another Thief</a>
+<br>
 {else}
 Thief has slain you!<br>
 {/if}

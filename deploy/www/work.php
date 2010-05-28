@@ -49,8 +49,6 @@ display_page(
 	, get_certain_vars(get_defined_vars(), array()) // *** Page Variables ***
 	, array( // *** Page Options ***
 		'quickstat' => 'player'
-		, 'private' => $private
-		, 'alive'   => $alive
 	)
 );
 }

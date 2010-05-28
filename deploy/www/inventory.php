@@ -61,8 +61,6 @@ display_page(
 	)
 	, array(
 		'quickstat' => 'viewinv'
-		, 'alive'   => $alive
-		, 'private' => $private
 	)
 );
 }

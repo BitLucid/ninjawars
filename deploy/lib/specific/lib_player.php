@@ -355,7 +355,6 @@ function create_player($send_name, $params=array()) {
 	        'send_name'       => $send_name
 			, 'confirm'       => $confirm
 			, 'send_class'    => $send_class
-			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
 		)
 	);
 

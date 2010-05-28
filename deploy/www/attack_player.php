@@ -33,8 +33,6 @@ display_page(
 	)
 	, array(
 		'quickstat' => 'player'
-		, 'alive'   => $alive
-		, 'private' => $private
 	)
 );
 }

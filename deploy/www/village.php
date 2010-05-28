@@ -42,8 +42,6 @@ display_page(
 	, $parts
 	, array (
 		'quickstat' => false
-		, 'alive'   => $alive
-		, 'private' => $private
 	)
 );
 }

@@ -39,9 +39,7 @@ display_page(
 	, 'Mini Chat' // *** Page Title ***
 	, get_certain_vars(get_defined_vars(), array()) // *** Page Variables ***
 	, array( // *** Page Options ***
-		'alive'       => $alive
-		, 'private'   => $private
-		, 'quickstat' => false
+		'quickstat' => false
 	)
 );
 }

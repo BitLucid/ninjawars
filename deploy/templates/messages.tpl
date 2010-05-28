@@ -1,7 +1,6 @@
 <h1>Messages</h1>
 
-<script type='text/javascript' src='{$JS_ROOT}messageDeleteConfirm.js'>
-</script>
+<script type='text/javascript' src='{$templatelite.const.JS_ROOT}messageDeleteConfirm.js'></script>
 
 <div id='clan-and-search'>
 

@@ -133,8 +133,6 @@ display_page(
 	, $parts			// *** Page Variables ***
 	, array(			// *** Page Options ***
 		'quickstat' => false
-		, 'private' => false
-		, 'alive'   => false
 	)
 );
 }

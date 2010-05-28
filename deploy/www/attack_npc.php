@@ -1,24 +1,20 @@
 <?php
 $alive      = true;
 $private    = true;
-$quickstat  = "player";
-$page_title = "NPC Battle Status";
 
-include SERVER_ROOT."interface/header.php";
-?>
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
 
-<h1>Battle Status</h1>
-
-<?php
-$turn_cost = 1;
-$attacked  = in('attacked');
-$victim    = in('victim');
+$turn_cost  = 1;
+$health     = 1;
+$attacked   = in('attacked');
+$victim     = in('victim');
 $random_encounter = (rand(1, 200) == 200);
+$combat_data = array();
 
-if (getTurns($username) > 0) {
+if (($turns = getTurns($username)) > 0) {
 	if ($attacked == 1) { // *** Bit to expect that it comes from the form. ***
-		echo "<p>Attacking ...</p>\n";
-
 		if (getStatus($username) && $status_array['Stealth']) {
 			subtractStatus($username, STEALTH);
 		}
@@ -49,9 +45,10 @@ if (getTurns($username) > 0) {
 				$oni_killed = false;
 			}
 
-			echo render_template('oni_result.tpl', array('victory'=>$oni_killed));
+			$npc_template = 'oni_result.tpl';
+			$combat_data = array('victory'=>$oni_killed);
 		} else if ($victim == "") {
-			echo render_template('no_npc_result.tpl');
+			$npc_template = 'no_npc_result.tpl';
 		} else if ($victim == "villager") { // *** VILLAGER ***
 			$villager_attack = rand(0, 10); // *** Villager Damage ***
 			$just_villager = rand(0, 20);
@@ -79,7 +76,8 @@ if (getTurns($username) > 0) {
 				$added_bounty   = 0;
 			}
 
-			echo render_template('villager_result.tpl', array('just_villager'=>$just_villager, 'attack'=>$villager_attack, 'gold'=>$villager_gold, 'level'=>$attacker_level, 'bounty'=>$added_bounty, 'victory'=>$victory));
+			$npc_template = 'villager_result.tpl';
+			$combat_data = array('just_villager'=>$just_villager, 'attack'=>$villager_attack, 'gold'=>$villager_gold, 'level'=>$attacker_level, 'bounty'=>$added_bounty, 'victory'=>$victory);
 		} else if ($victim == "samurai") {
 			$attacker_level = getLevel($username);
 			$attacker_kills = getKills($username);
@@ -133,7 +131,8 @@ if (getTurns($username) > 0) {
 				}
 			}	// *** End valid turns and kills for the attack. ***
 
-			echo render_template('samurai_result.tpl', array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills));
+			$npc_template = 'samurai_result.tpl';
+			$combat_data  = array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills);
 		} else if ($victim == "merchant") {
 			$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
 
@@ -155,7 +154,8 @@ if (getTurns($username) > 0) {
 				$added_bounty    = 0;
 			}
 
-			echo render_template('merchant_result.tpl', array('attack'=>$merchant_attack, 'gold'=>$merchant_gold, 'bounty'=>$added_bounty, 'victory'=>$victory));
+			$npc_template = 'merchant_result.tpl';
+			$combat_data  = array('attack'=>$merchant_attack, 'gold'=>$merchant_gold, 'bounty'=>$added_bounty, 'victory'=>$victory);
 		} else if ($victim == "guard") {	// *** The Player kills the guard ***
 			$guard_attack = rand(1, $attacker_str + 10);  // *** Guard Damage ***
 
@@ -173,7 +173,8 @@ if (getTurns($username) > 0) {
 				$added_bounty = 0;
 			}
 
-			echo render_template('guard_result.tpl', array('attack'=>$guard_attack, 'gold'=>$guard_gold, 'bounty'=>$added_bounty, 'victory'=>$victory));
+			$npc_template = 'guard_result.tpl';
+			$combat_data  = array('attack'=>$guard_attack, 'gold'=>$guard_gold, 'bounty'=>$added_bounty, 'victory'=>$victory);
 		} else if ($victim == "thief") {
 			// Check the counter to see whether they've attacked a thief multiple times in a row.
 			if (SESSION::is_set('counter')) {
@@ -203,7 +204,8 @@ if (getTurns($username) > 0) {
 					$group_gold = 0;
 				}
 
-				echo render_template('thief-group_result.tpl', array('attack'=>$group_attack, 'gold'=>$group_gold, 'victory'=>$victory));
+				$npc_template = 'thief-group_result.tpl';
+				$combat_data = array('attack'=>$group_attack, 'gold'=>$group_gold, 'victory'=>$victory);
 			} else { // Normal attack on a single thief.
 				$thief_attack = rand(0, 35);  // *** Thief Damage  ***
 
@@ -220,29 +222,33 @@ if (getTurns($username) > 0) {
 					$thief_gold = 0;
 				}
 
-				echo render_template('thief_result.tpl', array('attack'=>$thief_attack, 'gold'=>$thief_gold, 'victory'=>$victory));
+				$npc_template = 'thief_result.tpl';
+				$combat_data = array('attack'=>$thief_attack, 'gold'=>$thief_gold, 'victory'=>$victory);
 			}
 		}
 
 		if (getHealth($username) <= 0) {
+			$health = false;
 			sendMessage("SysMsg", $username, "DEATH: You have been killed by a non-player character at $today");
-			echo "<p class='ninja-notice'>Go to the <a href=\"shrine.php\">shrine</a> to resurrect.</p>";
 		}
 
 		subtractTurns($username, $turn_cost);
-
-		if ($victim && !$random_encounter) {
-			echo "<a href=\"attack_npc.php?attacked=1&amp;victim=$victim\">Attack $victim again</a>\n";
-			echo "<br>\n";
-		}
-
-		echo "<a href=\"attack_player.php\">Return to Combat</a>\n";
 	}
 }
-else
-{
-	echo "You have no turns left today. Buy a speed scroll or wait for your turns to replenish.\n";
-}
 
-include SERVER_ROOT."interface/footer.php";
+display_page(
+	'attack_npc.tpl'
+	, 'NPC Battle Status'
+	, array(
+		'npc_template'       => $npc_template
+		, 'attacked'         => $attacked
+		, 'turns'            => $turns
+		, 'random_encounter' => $random_encounter
+		, 'health'           => $health
+	)+$combat_data
+	, array (
+		'quickstats' => 'player'
+	)
+);
+}
 ?>

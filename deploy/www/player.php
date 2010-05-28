@@ -106,8 +106,6 @@ display_page(
 	, $parts
 	, array(
 		'quickstat' => 'player'
-		, 'alive'   => $alive
-		, 'private' => $private
 	)
 );
 }

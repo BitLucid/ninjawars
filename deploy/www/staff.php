@@ -18,9 +18,7 @@ display_page(
 	, 'Ninjawars Staff' // *** Page Title ***
 	, get_certain_vars(get_defined_vars(), array()) // *** Page Variables ***
 	, array( // *** Options ***
-		'alive'        => $alive
-		, 'private'      => $private
-		, 'quickstat'    => false
+		'quickstat'    => false
 	)
 );
 }

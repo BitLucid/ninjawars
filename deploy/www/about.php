@@ -11,8 +11,6 @@ if ($error = init($private, $alive)) {
 		, get_certain_vars(get_defined_vars(), array()) // *** Page Variables ***
 		, array( // *** Page Options ***
 			'quickstat' => false
-			, 'private'=> $private
-			, 'alive'  => $alive
 		)
 	);
 }

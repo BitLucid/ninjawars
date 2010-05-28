@@ -71,7 +71,7 @@ Profile Preview:
 </div>
 
 <hr>
-<p>If you require account help email: <a href='mailto:{$SUPPORT_EMAIL}'>{$SUPPORT_EMAIL}</a></p>
+<p>If you require account help email: <a href='mailto:{$templatelite.const.SUPPORT_EMAIL}'>{$templatelite.const.SUPPORT_EMAIL}</a></p>
 <hr>
 
 {if !$delete_attempts}

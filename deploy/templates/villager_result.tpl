@@ -16,9 +16,11 @@ You slay the villager easily, leaving no trace behind!<br>
 	{else if $bounty}
 You have unjustly slain a commoner! A bounty of {$bounty} gold has been placed on your head!<br>
 	{/if}
+	{if !$just_villager}
+<p>The villager dropped a Shuriken.</p>
+	{/if}
+<a href="attack_npc.php?attacked=1&amp;victim=villager">Attack Another Villager</a>
+<br>
 {else}
 <p>The villager has slain you!</p>
-{/if}
-{if !$just_villager}
-<p>The villager dropped a Shuriken.</p>
 {/if}

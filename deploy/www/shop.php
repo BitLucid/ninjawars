@@ -59,8 +59,6 @@ display_page(
 	, $parts	// *** Page Variables ***
 	, array(	// *** Page Options ***
 		'quickstats' => 'viewinv'
-		, 'alive'    => $alive
-		, 'private'  => $private
 	)
 );
 }
