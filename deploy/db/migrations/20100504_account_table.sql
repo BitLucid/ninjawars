@@ -13,8 +13,7 @@ create table account_players (
     _player_id serial not null references players(player_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-update players set email = email || player_id where email ~* 'PAUSED';
-
 -- Still a problem with duplicate accounts/identities here.
-insert into accounts (account_identity, phash, type) select email as email, crypt(pname, gen_salt('bf')) as phash, 0 from players;
-insert into account_players (_account_id, _player_id) select account_id, player_id from accounts join players on account_identity = email;
+insert into accounts (account_identity, active_email, phash, type) select distinct lower(email) as email, lower(email) as active_email, crypt(pname, gen_salt('bf')) as phash, 0 from players;
+-- Just a simple hack to deal with lowercasing of emails.
+insert into account_players (_account_id, _player_id) select account_id, player_id from accounts join players on account_identity = lower(email);
