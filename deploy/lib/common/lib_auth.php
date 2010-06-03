@@ -11,7 +11,7 @@ function authenticate($p_login, $p_pass) {
 	    // Allow login via username or email.
 	    $sql = "SELECT account_id, account_identity, uname, player_id 
 	        FROM accounts join account_players on account_id=_account_id join players on player_id = _player_id 
-	        WHERE lower(account_identity) = lower(:login) OR lower(uname) = lower(:login) AND phash = crypt(:pass, phash)";
+	        WHERE (lower(account_identity) = lower(:login) OR lower(uname) = lower(:login)) AND phash = crypt(:pass, phash)";
 	    $returnValue = query_row($sql, array(':login'=>$login, ':pass'=>$pass));
 	    
 	}
@@ -28,6 +28,7 @@ function login_user($p_user, $p_pass) {
 	if ($data = authenticate($p_user, $p_pass)) {
 		SESSION::commence(); // Start a session on a successful login.
     	$_COOKIE['username'] = $data['uname']; // May want to keep this for relogin easing purposes.
+    	SESSION::set('username', $data['uname']); // Actually ninja name
     	SESSION::set('player_id', $data['player_id']); // Actually ninja id.
     	SESSION::set('account_id', $data['account_id']);
 
@@ -50,6 +51,18 @@ function get_logged_in_ninja_id(){
 
 function get_logged_in_account_id(){
     return SESSION::get('account_id');
+}
+
+// Abstraction for getting the account's ip.
+function get_account_ip(){
+    static $ip;
+    if($ip){
+        return $ip;
+    } else {
+        $info = get_player_info();
+        $ip = $info['ip'];
+        return $ip;
+    }
 }
 
 /**
@@ -248,12 +261,13 @@ function get_ninja_id($p_name=null) {
 	    }
 	} else {
 	    $sql = "SELECT player_id FROM players WHERE lower(uname) = :find";
-	    return query_item($sql, array(':find'=>$find));
+	    return query_item($sql, array(':find'=>$p_name));
 	}
 }
 
 // Update activity for a logged in player.
 function update_activity_log($username) {
+    // (See update_activity_info in lib_header for the function that updates all the detailed info.)
 	DatabaseConnection::getInstance();
 	$user_ip = $_SERVER['REMOTE_ADDR'];
 	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET days = 0, ip = :ip WHERE uname = :player");

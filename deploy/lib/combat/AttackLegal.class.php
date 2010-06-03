@@ -129,6 +129,8 @@ class AttackLegal
 			update_last_attack_time($attacker->vo->player_id);
 			// updates the timestamp of the last_attacked column to slow excessive attacks.
 		}
+		
+		$account_ip = get_account_ip();
 
 		//  *** START OF ILLEGAL ATTACK ERROR LIST  ***
 		if (!$attack_later_than_limit) {
@@ -143,7 +145,7 @@ class AttackLegal
 		} else if ($attacker->vo->turns < $required_turns) {
 			$this->error = "You don't have enough turns for that, use speed scrolls or wait for the half hour to gain more turns.";
 			return false;
-		} else if (isset($_SESSION) && ($target->vo->ip == $_SESSION['ip']) && ($_SESSION['ip'] != '127.0.0.1') && !$self_use) {
+		} else if (isset($_SESSION) && ($target->vo->ip == $account_ip) && ($account_ip != '127.0.0.1') && !$self_use) {
 			$this->error = "You can not attack a ninja from the same domain.";
 			return false;
 		} else if ($target->vo->confirmed == 0) {
