@@ -2,6 +2,8 @@
 require_once(LIB_ROOT."specific/lib_status.php"); // Status alterations.
 init(); // Initialize the environment.
 
+// TODO: Protect this file from unlogged-in displaying.
+
 // *** Turning the header variables into variables for this page.
 $section_only = in('section_only'); // Check whether it's an ajax section.
 $command      = in('command');
@@ -30,6 +32,6 @@ $items = query("SELECT item, amount FROM inventory WHERE owner = :user ORDER BY 
 
 $parts = get_certain_vars(get_defined_vars(), array('items')); // Pull current flat vars + the resultset into the template.
 
-echo render_page('quickstats.tpl', "Quickstats", $parts, $options=array('alive'=>false, 'private'=>true, 'quickstat'=>false));
+display_page('quickstats.tpl', "Quickstats", $parts, $options=array('alive'=>false, 'private'=>true, 'quickstat'=>false));
 
 ?>

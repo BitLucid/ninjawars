@@ -871,8 +871,20 @@ iframe{
 }
 
 /*Quickstats styles*/
-.quickstats td {
-	background-color:black;
+.quickstats dt{
+    clear: right;
+    float: left;
+    margin-right: .2em;
+}
+
+.quickstats dd{
+    margin-left: 50%;
+}
+
+.quickstats{
+    width:90%;
+    margin-right: auto;
+    margin-left:auto;
 }
 
 .main-iframe { /* class for the main iframe */
