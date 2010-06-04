@@ -67,6 +67,8 @@
         	<a href='list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='Ninjawars Intro' title='ninja list'></a>
         </div>
           
+          <div style='height:50%;position:absolute;bottom:0;'>
+          
           <div id="ninja-search" class="boxes active">
             <form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">
               <div>
@@ -80,6 +82,8 @@
             
           <div id='contact-us'>
 	        <a href='staff.php' target='main'><img src='images/contactstaff.png' alt='Contact Staff'></a>
+	      </div>
+	      
 	      </div>
 
       </div>  
