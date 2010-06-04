@@ -9,10 +9,12 @@ require_once(LIB_ROOT.'template_library/template_lite/src/class.template.php');
   * Example use:
   * echo render_page('add.tpl', 'Homepage', get_current_vars(get_defined_vars()));
 **/
-function render_page($template, $title=null, $local_vars=array(), $options=null) {
+function display_page($template, $title=null, $local_vars=array(), $options=null) {
+    // Updates the quickstat via javascript if requested.
     $quickstat = @$options['quickstat'];
     $quickstat = ($quickstat ? $quickstat : @$local_vars['quickstat']);
     
+    // Displays headless html for javascript if requested.
     $section_only = @$options['section_only'];
     $section_only = ($section_only ? $section_only : @$local_vars['section_only']);
     $section_only = ($section_only ? $section_only : in('section_only'));
@@ -20,7 +22,7 @@ function render_page($template, $title=null, $local_vars=array(), $options=null)
     // Display header and footer only if not section_only.
 
     if (!$section_only) {
-        echo render_header($title);
+        display_header($title); // Displays the template instead of echoing a rendered template.
     }
 
 	// Initialize the template object.
@@ -44,6 +46,17 @@ function render_page($template, $title=null, $local_vars=array(), $options=null)
 	$tpl->display('full_template.tpl');
 }
 
+
+// Wrapper around the display_page function.
+function render_page($template, $title=null, $local_vars=array(), $options=null) {
+    ob_start();
+    display_page($template, $title, $local_vars, $options);
+    $res = ob_get_contents();
+    ob_end_clean();
+    return $res;
+}
+
+
 function transitional_display_full_template($template_name, $assigned_vars = array()) {
 	// Initialize the template object.
 	$tpl = new Template_Lite;
@@ -60,7 +73,6 @@ function transitional_display_full_template($template_name, $assigned_vars = arr
 	}
 
 	$tpl->assign('main_template', $template_name);
-
 	// the template
 	$tpl->display('full_template.tpl');
 }
@@ -87,6 +99,25 @@ function render_template($template_name, $assign_vars=array()){
 
 	// call the template
 	return $tpl->fetch($template_name);
+}
+
+function display_template($template_name, $assign_vars=array()){
+	// Initialize the template object.
+	$tpl = new Template_Lite;
+
+	// template directory 
+	$tpl->template_dir = TEMPLATE_PATH;
+
+	// compile directory
+	$tpl->compile_dir = COMPILED_TEMPLATE_PATH;
+
+	// loop over the vars, assigning each.
+	foreach ($assign_vars as $lname => $lvalue) {
+		$tpl->assign($lname, $lvalue);
+	}
+
+	// display the template
+	return $tpl->display($template_name);
 }
 
 /*
