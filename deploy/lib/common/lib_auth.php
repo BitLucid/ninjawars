@@ -5,17 +5,15 @@
 function authenticate($p_login, $p_pass) {
 	$login        = (string)$p_login;
 	$pass        = (string)$p_pass;
-	$returnValue = false;
 
 	if ($login != '' && $pass != '') {
 	    // Allow login via username or email.
 	    $sql = "SELECT account_id, account_identity, uname, player_id 
 	        FROM accounts join account_players on account_id=_account_id join players on player_id = _player_id 
-	        WHERE (lower(account_identity) = lower(:login) OR lower(uname) = lower(:login)) AND phash = crypt(:pass, phash)";
-	    $returnValue = query_row($sql, array(':login'=>$login, ':pass'=>$pass));
-	    
+	        WHERE (lower(active_email) = lower(:login) OR lower(uname) = lower(:login)) AND phash = crypt(:pass, phash)";
+	    $valid_or_not = query_row($sql, array(':login'=>$login, ':pass'=>$pass));
 	}
-	return $returnValue;
+	return $valid_or_not;
 }
 
 /**
@@ -120,6 +118,7 @@ function validate_password($send_pass) {
 
 	return $error;
 }
+
 
 function validate_username($send_name) {
 	$error = null;
@@ -270,10 +269,7 @@ function update_activity_log($username) {
     // (See update_activity_info in lib_header for the function that updates all the detailed info.)
 	DatabaseConnection::getInstance();
 	$user_ip = $_SERVER['REMOTE_ADDR'];
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET days = 0, ip = :ip WHERE uname = :player");
-	$statement->bindValue(':ip', $user_ip);
-	$statement->bindValue(':player', $username);
-	$statement->execute();
+	query_resultset("UPDATE players SET days = 0, ip = :ip WHERE uname = :player", array(':ip'=>$user_ip, ':player'=>$username));
 }
 
 /**
