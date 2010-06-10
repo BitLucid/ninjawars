@@ -112,8 +112,8 @@ function validate_password($send_pass) {
 	$error = null;
 	$filter = new Filter();
 
-	if ($send_pass != htmlentities($send_pass)) {  //  Throws error if password has html elements.
-		$error = "Phase 2 Incomplete: Passwords can only have spaces, underscores, numbers, and letters.<hr>\n";
+	if (strlen($password_to_hash)<7 || strlen($password_to_hash)>500) {  //  Throws error if password has html elements.
+		$error = "Phase 2 Incomplete: Passwords must be at least 7 characters long.<hr>\n";
 	}
 
 	return $error;
