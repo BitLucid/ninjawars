@@ -35,7 +35,7 @@ function globalize_user_info($private=true, $alive=true) {
 	global $username;
 	$error = null;
 
-	$username = SESSION::get('username'); // Will default to null.
+	$username = get_username(); // Will default to null.
 
 	if ((!is_logged_in() || !$username) && $private) {
 		$error = render_viewable_error('log_in');
@@ -71,10 +71,6 @@ function globalize_user_info($private=true, $alive=true) {
 		$players_created_date = $player->vo->created_date;
 		$players_last_started_attack = $player->vo->last_started_attack;
 		$players_clan 		= get_clan_by_player_id($player->vo->player_id);
-
-		// TODO: not ready yet: $players_energy	= $player_data['energy'];
-		// Also migrate the player_score to a true player object.
-		// Also migrate the rank_id to a true player object.
 
 		$players_status   = $player->getStatus();
 
@@ -168,10 +164,18 @@ function format_css_class_from_title($page_title) {
 	return $css_body_class;
 }
 
+function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses=null, $p_options=array()){
+    ob_start();
+    display_header($p_title, $p_bodyClasses, $p_options);
+    $res = ob_get_contents();
+    ob_end_clean();
+    echo $res;
+}
+
 /**
  * Writes out the header for all the pages.
 **/
-function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses = null, $p_options=array()) {
+function display_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses = null, $p_options=array()) {
 	$section_only = (@$p_options['section_only'] ? @$p_options['section_only'] : in('section_only'));
 
 	if ($section_only) {
@@ -190,7 +194,7 @@ function render_header($p_title='Ninjawars : Live by the Sword', $p_bodyClasses 
 		, 'logged_in'    => get_user_id()
 	);
 
-	return render_template('header.tpl', $parts);
+	display_template('header.tpl', $parts);
 }
 
 // Renders the error message when a section isn't viewable.
@@ -224,7 +228,7 @@ function get_player_info($p_id = null, $p_password = false) {
 		}
 	}
 
-	///TODO: Migrate all calls of this function to a new function that returns a Player object. When all calls to this function are removed, remove this function
+	///TODO: Migrate all calls of this function to a new function that returns an arrayizable Player object. When all calls to this function are removed, remove this function
 	return $player_data;
 }
 

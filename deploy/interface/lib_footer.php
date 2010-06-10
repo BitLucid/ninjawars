@@ -11,4 +11,5 @@ function render_footer($specific_quickstat=null, $skip_quickstat=null){
 	return render_template('footer.tpl', array("quickstat"=>$quickstat));
 }
 
+
 ?>
