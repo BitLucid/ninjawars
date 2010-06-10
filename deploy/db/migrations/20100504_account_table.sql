@@ -6,7 +6,9 @@ create table accounts (
     phash text,
     active_email text default null unique,
     type integer default 0::integer,
-    created_date timestamp without time zone NOT NULL default now()
+    active integer default 1::integer,
+    created_date timestamp without time zone NOT NULL default now(),
+    last_login timestamp without time zone
 );
 create table account_players (
     _account_id serial not null references accounts(account_id) ON DELETE CASCADE ON UPDATE CASCADE,
