@@ -2,30 +2,31 @@
 
 <div class="item-list">
 
-{if $items}
-<div style="margin-bottom: 10px;">Click a linked item to use it on yourself.</div>
-<table style="width: 150px;">
-{foreach from=$items item="amount" key="item"}
-	{assign var="data" value=$itemData.item}
-	{if $amount gt 0 and $data}
+{if $inventory}
+<div style="margin-bottom: 1em;">Click a linked item to use it on yourself.</div>
+<table style="width: 25em;height:10em;margin-bottom:2em;">
+{foreach from=$inventory item="item_info" key="item_name"}
+	{if $item_info.count gt 0}
   <tr>
-    <td>
-		{if $data.codename}
-      <a href="inventory_mod.php?item={$data.codename|escape:'url'|escape}&amp;selfTarget=1&amp;target={$username|escape:'url'|escape}&amp;link_back=inventory">
+    <td style="font-size:1.3em;margin-bottom:.5em">
+		{if $item_info.codename}
+      <a href="inventory_mod.php?item={$item_info.codename|escape:'url'|escape}&amp;selfTarget=1&amp;target={$username|escape:'url'|escape}&amp;link_back=inventory">
 		{/if}
-      {$data.display|escape}:
-		{if $data.codename}
+      {$item_info.display|escape}:
+		{if $item_info.codename}
       </a>
 		{/if}
     </td>
-    <td>{$amount}</td>
+    <td style="font-size:1.1em;margin-bottom:.6em">{$item_info.count}</td>
   </tr>
 	{/if}
 {/foreach}
 </table>
 {else}
-You have no items, to buy some, visit the <a href="shop.php">shop</a>.
+    You have no items, to buy some, visit the <a href="shop.php">shop</a>.
 {/if}
+
+
 </div>
   <form id="player_search" action="list_all_players.php" method="get" name="player_search">
     <div>

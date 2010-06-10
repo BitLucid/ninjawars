@@ -1,26 +1,15 @@
 <?php
-$private    = true;
-$alive      = false;
-$quickstat  = "viewinv";
-$page_title = "Your Inventory";
+init();
 
-include SERVER_ROOT."interface/header.php";
-
+$username = get_username();
 $user_id = get_user_id();
-DatabaseConnection::getInstance();
-$statement = DatabaseConnection::$pdo->prepare("SELECT amount AS c, item FROM inventory WHERE owner = :owner GROUP BY item, amount");
-$statement->bindValue(':owner', $user_id);
-$statement->execute();
+$sql = "SELECT amount AS count, item AS name FROM inventory WHERE owner = :owner GROUP BY item, amount";
+$inv_counts = query_resultset($sql, array(':owner'=>$user_id));
+$gold = getGold($username);
 
-if ($data = $statement->fetch()) {
-	$items['Speed Scroll']   = 0;
-	$items['Stealth Scroll'] = 0;
-	$items['Shuriken']       = 0;
-	$items['Fire Scroll']    = 0;
-	$items['Ice Scroll']     = 0;
-	$items['Dim Mak']        = 0;
-
-	$itemData = array(
+// TODO: move this to a more standard location so that it can be used, for example, in the shop.
+function standard_items(){
+	return array(
 		'Speed Scroll' => array(
 			'codename'   => 'Speed Scroll'
 			, 'display'  => 'Speed Scrolls'
@@ -42,13 +31,29 @@ if ($data = $statement->fetch()) {
 			'display'  => 'Dim Mak'
 		)
 	);
-
-	do {
-		$items[$data['item']] = $data['c'];
-	} while ($data = $statement->fetch());
-} else {
-	$items = false;
 }
 
-transitional_display_full_template('inventory.tpl', array('gold'=>getGold($username), 'items'=>$items, 'item_data'=>$item_data, 'username'=>$username));
+
+if ($inv_counts) {
+    // Codename means it can have a link to be used, apparently...
+		$standard_items = standard_items();
+	// Make the information into a single, trivially usable, array.
+	foreach($inv_counts as $item_info){
+    	$l_name = $item_info['name'];
+    	$l_count = $item_info['count'];
+	    if(isset($standard_items[$l_name]) && isset($l_count)){
+	        // If a type of item exists and has a non-zero count, ...
+	        //...join the array of it's count with it's standard info.
+	        $inventory[$l_name]=array('count'=>$l_count) + $standard_items[$l_name];
+	    }
+	}
+} else {
+	$inventory = false;
+}
+
+display_page('inventory.tpl', 
+    'Your Items', 
+    array('gold'=>$gold, 'inventory'=>$inventory, 'username'=>$username), 
+    $options=array('quickstat'=>'viewinv', 'alive'=>false, 'private'=>true));
+    
 ?>
