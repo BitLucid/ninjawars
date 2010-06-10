@@ -6,10 +6,10 @@ $alive      = false;
 $page_title = "Chat Board";
 $quickstat  = false;
 
-include SERVER_ROOT."interface/header.php";
+init();
 
-echo "<h1>Chat Board</h1>";
-echo "<p><a href=\"".$_SERVER['PHP_SELF']."?chatlength=50\">Refresh</a><p>";
+//include SERVER_ROOT."interface/header.php";
+$self = $_SERVER['PHP_SELF'];
 
 $default_limit = 360;
 $chatlength    = in('chatlength', $default_limit, 'toInt');
@@ -19,7 +19,10 @@ $sentMessage   = in('message');
 $sent          = false;
 $username      = get_username();
 $user_id       = get_user_id();
-$input_form    = ($username ? render_chat_input($_SERVER['PHP_SELF'], $field_size = 40) : '');
+
+
+
+$input_form    = ($user_id ? render_chat_input($self, $field_size = 40) : ''); // Display chat box if logged in.
 $channel       = 1;
 
 // Take in a chat and record it to the database.
@@ -31,17 +34,13 @@ if ($user_id) {
 
 // Output section.
 
-echo render_chat_refresh($not_mini=true); // Write out the js to refresh to refresh page to full chat.
+$chat_refresh = render_chat_refresh($not_mini=true); // Write out the js to refresh the full chat.
 
-echo "<div id='full-chat'>";
+$active_members = render_active_members();
 
-echo $input_form;
+$chat_messages = render_chat_messages($chatlength);
 
-echo render_active_members();
 
-echo render_chat_messages($chatlength);
+display_page('village.tpl', $page_title, get_certain_vars(get_defined_vars(), array()), $options=array('private'=>$private, 'alive'=>$alive, 'quickstat'=>$quickstat));
 
-echo "</div>"; // End of full_chat div.
-
-echo render_footer(); // Don't skip the quickstat.
 ?>
