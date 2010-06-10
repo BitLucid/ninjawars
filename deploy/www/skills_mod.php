@@ -44,14 +44,16 @@ if ($target != "") {
     $link_back = "<a href=\"skills.php\">Skills</a>";
 	$target    = $username;
 }
+
+$player          = new Player($username);
 $user_ip         = $_SESSION['ip'];
 $username_status = getStatus($username);
-$class           = getClass($username);
-$level           = getLevel($username);
+$class           = $player->vo->class;
+$level           = $player->vo->level;
 $covert          = false;
 $victim_alive    = true;
 $attacker_id     = $username;
-$starting_turns  = getTurns($username);
+$starting_turns  = $player->vo->turns;
 $ending_turns    = null;
 
 DatabaseConnection::getInstance();
@@ -199,7 +201,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		}
 	} elseif ($command == "Fire Bolt") {
 		if ($starting_turns >= $turn_cost) {
-			$target_damage = (5*(ceil($level / 3))+rand(1, getStrength($username)));
+			$target_damage = (5*(ceil($level / 3))+rand(1, $player->getStrength()));
 
 			echo "$target has taken $target_damage damage!<br>\n";
 
@@ -310,7 +312,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 	$turns_to_take = $turns_to_take - $turn_cost;
 
-	if (!$covert && getStatus($username) && $status_array['Stealth']) {
+	if (!$covert && $player->hasStatus(STEALTH)) {
 		subtractStatus($username, STEALTH);
 		echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
 	}

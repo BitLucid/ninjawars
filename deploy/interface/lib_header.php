@@ -58,19 +58,18 @@ function globalize_user_info($private=true, $alive=true) {
 		$players_gold     	= $player->vo->gold;
 		$players_level    	= $player->vo->level;
 		$players_class    	= $player->vo->class;
-		$players_strength 	= $player->vo->strength;
+		$players_strength 	= $player->getStrength();
 		$players_kills		= $player->vo->kills;
-
 		$players_days		= $player->vo->days;
+		$players_clan 		= get_clan_by_player_id($player->vo->player_id);
+		$players_status     = $player->getStatus();
 		$players_created_date = $player->vo->created_date;
 		$players_last_started_attack = $player->vo->last_started_attack;
-		$players_clan 		= get_clan_by_player_id($player->vo->player_id);
 
 		// TODO: not ready yet: $players_energy	= $player_data['energy'];
 		// Also migrate the player_score to a true player object.
 		// Also migrate the rank_id to a true player object.
 
-		$players_status   = $player->getStatus();
 
 		if ($alive) { // *** That page requires the player to be alive to view it.
 			if (!$players_health) {

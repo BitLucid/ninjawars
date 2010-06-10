@@ -148,10 +148,6 @@ function setTurns($who, $new_turns) {
 	$statement->bindValue(':turns', $new_turns);
 	$statement->execute();
 
-	if ($who == get_username()) {
-		$_SESSION['turns'] = $new_turns;
-	}
-
 	return $new_turns;
 }
 */
@@ -162,13 +158,7 @@ function getTurns($who) {
 	$statement->bindValue(':user', $who);
 	$statement->execute();
 
-	$turns = $statement->fetchColumn();
-
-	if ($who == get_username()) {
-		$_SESSION['turns'] = $turns;
-	}
-
-	return $turns;
+	return $statement->fetchColumn();
 }
 
 function changeTurns($who, $amount) {
@@ -212,10 +202,6 @@ function setKills($who, $new_kills) {
 	$statement->bindValue(':player', $who);
 	$statement->execute();
 
-	if ($who == get_username()) {
-		$_SESSION['kills'] = $new_kills;
-	}
-
 	return $new_kills;
 }
 */
@@ -226,13 +212,7 @@ function getKills($who) {
 	$statement = DatabaseConnection::$pdo->prepare("SELECT kills FROM players WHERE uname = :player");
 	$statement->bindValue(':player', $who);
 	$statement->execute();
-	$kills = $statement->fetchColumn();
-
-	if ($who == get_username()) {
-		$_SESSION['kills'] = $kills;
-	}
-
-	return $kills;
+	return $statement->fetchColumn();
 }
 
 function changeKills($who, $amount) {
@@ -374,11 +354,6 @@ function setLevel($who, $new_level) {
 
 	DatabaseConnection::$pdo->query("UPDATE players SET level = $new_level WHERE uname = '$who'");
 
-	if ($who == get_username())
-	{
-		$_SESSION['level'] = $new_level;
-	}
-
 	return $new_level;
 }
 */
@@ -389,13 +364,7 @@ function getLevel($who) {
 	$statement = DatabaseConnection::$pdo->prepare("SELECT level FROM players WHERE uname = :player");
 	$statement->bindValue(':player', $who);
 	$statement->execute();
-	$level = $statement->fetchColumn();
-
-	if ($who == get_username()) {
-		$_SESSION['level'] = $level;
-	}
-
-	return $level;
+	return $statement->fetchColumn();
 }
 
 function changeLevel($who, $amount) {
@@ -454,12 +423,14 @@ function subtractLevel($who, $amount) {
 // TODO: These must be moved to a more visible place,
 //and the global status_array as well.
 define("STEALTH",     1);
-define("POISON",      2);
-define("FROZEN",      4);
-define("CLASS_STATE", 8);
-define("SKILL_1",     16);
-define("SKILL_2",     32);
-define("INVITED",     64);
+define("POISON",      1<<1);
+define("FROZEN",      1<<2);
+define("CLASS_STATE", 1<<3);
+define("SKILL_1",     1<<4);
+define("SKILL_2",     1<<5);
+define("INVITED",     1<<6);
+define("STR_UP1",     1<<7);
+define("STR_UP2",     1<<8);
 $status_array;
 
 /* *** Currently unused consider removing ***
@@ -471,7 +442,6 @@ function setStatus($who, $what) {
 	DatabaseConnection::getInstance();
 	DatabaseConnection::$pdo->query("UPDATE players SET status = $what WHERE uname = '$who'");
 	if ($who == get_username()) {
-	    $_SESSION['status'] = $what;
 	    if ($what == 0)	{
 			echo "<br>You have returned to normal.<br>\n";
 		} else if ($what == 1) {
@@ -485,6 +455,17 @@ function setStatus($who, $what) {
 }
 */
 
+function hasStatus($who, $p_status) {
+	DatabaseConnection::getInstance();
+
+	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
+	$statement->bindValue(':player', $who);
+	$statement->execute();
+	$status = $statement->fetchColumn();
+
+	return (bool)$status&$p_status;
+}
+
 function getStatus($who) {
 	global $status_array;
 
@@ -494,10 +475,6 @@ function getStatus($who) {
 	$statement->bindValue(':player', $who);
 	$statement->execute();
 	$status = $statement->fetchColumn();
-
-	if ($who == SESSION::get('username')) {
-  		$_SESSION['status'] = $status;
-	}
 
 	$status_array['Stealth']    = ($status&STEALTH     ? 1 : 0);
 	$status_array['Poison']     = ($status&POISON      ? 1 : 0);
@@ -527,10 +504,6 @@ function addStatus($who, $what) {   //Takes in the Status in the ALL_CAPS_WORD f
 		$statement->bindValue(':player', $who);
 		$statement->bindValue(':what', $what);
 		$statement->execute();
-
-	    if ($who == get_username()) {
-			$_SESSION['status'] += $what;
-		}
 	}
 
 	return getStatus($who);
@@ -550,10 +523,6 @@ function subtractStatus($who, $what) {     //Takes in the Status in the ALL_CAPS
 		$statement->bindValue(':status', $status, PDO::PARAM_INT);
 		$statement->bindValue(':what', $what, PDO::PARAM_INT);
 		$statement->execute();
-
-		if ($who == get_username()) {
-		  $_SESSION['status']-=($status&$what);
-		}
 	}
 
 	return getStatus($who);
@@ -573,10 +542,6 @@ function setStrength($who, $new_strength) {
 
 	DatabaseConnection::$pdo->query>("UPDATE players SET strength = $new_strength WHERE uname = '$who'");
 
-	if ($who == get_username()) {
-		$_SESSION['strength'] = $new_strength;
-	}
-
 	return $new_strength;
 }
 */
@@ -587,13 +552,7 @@ function getStrength($who) {
 	$statement = DatabaseConnection::$pdo->prepare("SELECT strength FROM players WHERE uname = :player");
 	$statement->bindValue(':player', $who);
 	$statement->execute();
-	$strength = $statement->fetchColumn();
-
-	if ($who == get_username()) {
-		$_SESSION['strength'] = $strength;
-	}
-
-	return $strength;
+	return $statement->fetchColumn();
 }
 
 function changeStrength($who, $amount) {
@@ -637,10 +596,6 @@ function setBounty($who, $new_bounty) {
 	$statement->bindValue(':player', $who);
 	$statement->execute();
 
-	if ($who == get_username()) {
-		$_SESSION['bounty'] = $new_bounty;
-	}
-
 	return $new_bounty;
 }
 
@@ -650,13 +605,7 @@ function getBounty($who) {
 	$statement = DatabaseConnection::$pdo->prepare("SELECT bounty FROM players WHERE uname = :player");
 	$statement->bindValue(':player', $who);
 	$statement->execute();
-	$bounty = $statement->fetchColumn();
-
-	if ($who == get_username()) {
-		$_SESSION['bounty'] = $bounty;
-	}
-
-	return $bounty;
+	return $statement->fetchColumn();
 }
 
 function changeBounty($who, $amount) {

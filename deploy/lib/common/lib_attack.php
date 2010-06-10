@@ -97,9 +97,7 @@ function killpointsFromDueling() { //  *** Multiple Killpoints from Dueling ***
 	$killpoints = 1+$levelDifferenceMultiplier;
 }
 
-function preBattleStats() {
-	global $target,$target_health,$attacker_health, $target_str,$attacker;
-
+function preBattleStats($target, $attacker) {
 	echo "<table border=\"0\">\n";
 	echo "<tr>\n";
 	echo "  <th colspan=\"3\">\n";
@@ -123,31 +121,29 @@ function preBattleStats() {
 
 	echo "<tr>\n";
 	echo "  <td>\n";
-	echo "  $attacker\n";
+	echo "    ".$attacker->vo->uname."\n";
 	echo "  </td>\n";
 
 	echo "  <td>\n";
-	echo    getStrength($attacker)."\n";
+	echo "    ".$attacker->getStrength()."\n";
 	echo "  </td>\n";
 
-	echo "  <td>\n";
-	echo "<span style=\"color:brown;font-weight:normal;\">";
-	echo    $attacker_health."\n";
-	echo "</span>";
+	echo "  <td style=\"color:brown;font-weight:normal;\">";
+	echo "    ".$attacker->vo->health."\n";
 	echo "  </td>\n";
 	echo "</tr>\n";
 
 	echo "<tr>\n";
 	echo "  <td>\n";
-	echo    $target."\n";
+	echo "    ".$target->vo->uname."\n";
 	echo "  </td>\n";
 
 	echo "  <td>\n";
-	echo    $target_str."\n";
+	echo "    ".$target->getStrength()."\n";
 	echo "  </td>\n";
 
 	echo "  <td>\n";
-	echo    $target_health."\n";
+	echo "    ".$target->vo->health."\n";
 	echo "  </td>\n";
 	echo "</tr>\n";
 

@@ -4,12 +4,13 @@
 
 {if $items}
 <div style="margin-bottom: 10px;">Click a linked item to use it on yourself.</div>
-<table style="width: 150px;">
+<table style="width: 250px;">
 {foreach from=$items item="amount" key="item"}
-	{assign var="data" value=$itemData.item}
+	{assign var="data" value=$item_data[$item]}
+	Data: {$item_data[$item]}
 	{if $amount gt 0 and $data}
   <tr>
-    <td>
+    <td style="line-height: 14px;">
 		{if $data.codename}
       <a href="inventory_mod.php?item={$data.codename|escape:'url'|escape}&amp;selfTarget=1&amp;target={$username|escape:'url'|escape}&amp;link_back=inventory">
 		{/if}

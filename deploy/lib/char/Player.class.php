@@ -54,6 +54,26 @@ class Player
 		subtractStatus($this->vo->uname, $status_constant);
 	}
 
+	public function getStrength() {
+		$str = getStrength($this->vo->uname);
+
+		if ($this->hasStatus(STR_UP2)) {
+			return $str+(ceil($str*.25));
+		} elseif ($this->hasStatus(STR_UP1)) {
+			return $str+(ceil($str*.12));
+		} else {
+			return $str;
+		}
+	}
+
+	public function hasStatus($p_status) {
+		return (bool)($this->vo->status&$p_status);
+	}
+
+	public function death() {
+		$this->subtractStatus(STEALTH+POISON+FROZEN+CLASS_STATE+STR_UP1+STR_UP2);
+	}
+
 	public function as_vo() {
 		return $this->vo;
 	}

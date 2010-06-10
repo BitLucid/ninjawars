@@ -109,14 +109,14 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 	// *** Target's stats. ***
 	$target_health    = $target_player->vo->health;
 	$target_level     = $target_player->vo->level;
-	$target_str       = $target_player->vo->strength;
+	$target_str       = $target_player->getStrength();
 	$target_status    = $target_player->getStatus();
 
 	// *** Attacker's stats. ***
 	$attacker_health     = $attacking_player->vo->health;
 	$attacker_level      = $attacking_player->vo->level;
 	$attacker_turns      = $attacking_player->vo->turns;
-	$attacker_str        = $attacking_player->vo->strength;
+	$attacker_str        = $attacking_player->getStrength();
 	$attacker_status     = $attacking_player->getStatus();
 	$class               = $attacking_player->vo->class;
 
@@ -147,7 +147,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			$target_msg   = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold on $today!";
 			$attacker_msg = "You have killed $target in combat and taken $loot gold on $today.";
 
-			$target_player->subtractStatus(STEALTH+POISON+FROZEN+CLASS_STATE);
+			$target_player->death();
 			sendMessage("A Stealthed Ninja", $target, $target_msg);
 			sendMessage($target, $attacker, $attacker_msg);
 			runBountyExchange($attacker, $target); // *** Determines the bounty for normal attacking. ***
@@ -177,7 +177,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 		}
 
 		// *** PRE-BATTLE STATS ***
-		preBattleStats();	// *** Displays the starting state of the attacker and defender. ***
+		preBattleStats($target_player, $attacking_player);	// *** Displays the starting state of the attacker and defender. ***
 
 		// *** BEGINNING OF MAIN BATTLE ALGORITHM ***
 
@@ -268,7 +268,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			}
 
 			addKills($attacker, $killpoints); // *** Attacker gains their killpoints. ***
-			$target_player->subtractStatus(STEALTH+POISON+FROZEN+CLASS_STATE);
+			$target_player->death();
 
 			if (!$simultaneousKill)	{
 				$loot = round($gold_mod * getGold($target));
@@ -315,7 +315,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			}
 
 			addKills($target, $defenderKillpoints);	// *** Adds a kill for the defender. ***
-			$attacking_player->subtractStatus(STEALTH+POISON+FROZEN+CLASS_STATE);
+			$attacking_player->death();
 
 			if (!$simultaneousKill) {
 				$loot = round($gold_mod * getGold($attacker));//Loot for defender if he lives.

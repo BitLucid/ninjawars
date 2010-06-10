@@ -8,7 +8,7 @@ if ($error = init($private, $alive)) {
 
 $user_id = get_user_id();
 DatabaseConnection::getInstance();
-$statement = DatabaseConnection::$pdo->prepare("SELECT amount AS c, item FROM inventory WHERE owner = :owner GROUP BY item, amount");
+$statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) AS c, item FROM inventory WHERE owner = :owner GROUP BY item");
 $statement->bindValue(':owner', $user_id);
 $statement->execute();
 
@@ -19,8 +19,10 @@ if ($data = $statement->fetch()) {
 	$items['Fire Scroll']    = 0;
 	$items['Ice Scroll']     = 0;
 	$items['Dim Mak']        = 0;
+	$items['Kampo Formula']  = 0;
+	$items['Strange Herb']   = 0;
 
-	$itemData = array(
+	$item_data = array(
 		'Speed Scroll' => array(
 			'codename'   => 'Speed Scroll'
 			, 'display'  => 'Speed Scrolls'
@@ -40,6 +42,14 @@ if ($data = $statement->fetch()) {
 		)
 		, 'Dim Mak' => array(
 			'display'  => 'Dim Mak'
+		)
+		, 'Strange Herb' => array(
+			'codename'   => 'Strange Herb'
+			, 'display'  => 'Strange Herbs'
+		)
+		, 'Kampo Formula' => array(
+			'codename'   => 'Kampo Formula'
+			, 'display'  => 'Kampo Formulas'
 		)
 	);
 

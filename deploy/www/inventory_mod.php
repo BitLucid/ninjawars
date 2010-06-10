@@ -106,6 +106,7 @@ class Item
 		$this->m_ignoresStealth = false;
 		$this->m_name = trim($p_name);
 		$this->m_turnCost = 1;
+		$this->m_turnChange = null;
 	}
 
 	public function getName()
@@ -166,13 +167,20 @@ if ($item == 'Dim Mak') {
 } else if ($item == 'Stealth Scroll') {
 	$item = $stealthScroll = new Item('Stealth Scroll');
 	$stealthScroll->setCovert(true);
+} else if ($item == 'Strange Herb') {
+	$item = $strangeHerb = new Item('Strange Herb');
+	$strangeHerb->setCovert(true);
+	$strangeHerb->setIgnoresStealth(true);
+} else if ($item == 'Kampo Formula') {
+	$item = $kampoFormula = new Item('Kampo Formula');
+	$kampoFomula->setCovert(true);
+	$kampoFormula->setIgnoresStealth(true);
 }
 
 if (!is_object($item)) {
     echo "No such item.";
     die(); // hack to avoid fatal error, proper checking for items should be done.
 }
-
 
 $article = get_indefinite_article($item->getName());
 
@@ -205,9 +213,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			if ($give == "on" || $give == "Give") {
 				echo render_give_item($username, $target, $item->getName());
 			} else {
-
-				// *** HP Altering ***
-				if ($item->getTargetDamage() > 0) {
+				if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 					$result        = "lose ".$item->getTargetDamage()." HP";
 					$victim_alive  = subtractHealth($target, $item->getTargetDamage());
 				} else if ($item === $stealthScroll) {
@@ -220,6 +226,12 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$victim_alive = false;
 					$result = "be drained of your life-force and die!";
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
+				} else if ($item === $strangeHerb) {
+					addStatus($target, STR_UP1);
+					$result = "$target's muscles experience a strange tingling.<br>\n";
+				} else if ($item === $kampoFormula) {
+					addStatus($target, STR_UP2);
+					$result = "$target feels a surge of power!<br>\n";
 				} else if ($item->getTurnChange() <= 0) {
 
 					$turns_change = $item->getTurnChange();
@@ -245,13 +257,17 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					echo "$target takes {$item->getTargetDamage()} damage from your attack!<br><br>\n";
 				} else if ($item === $dimMak) {
 					echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
-				} else if ($turns_change <= 0) {
-					echo "$target has lost ".(0-$turns_change)." turns!<br>\n";
-					if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
-						echo "$target no longer has any turns.<br>\n";
+				} else if ($item->getTurnChange() !== null) {
+					if ($turns_change <= 0) {
+						echo "$target has lost ".(0-$turns_change)." turns!<br>\n";
+						if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
+							echo "$target no longer has any turns.<br>\n";
+						}
+					} else if ($turns_change > 0) {
+						echo "$target has gained $turns_change turns!<br>\n";
 					}
-				} else if ($turns_change > 0) {
-					echo "$target has gained $turns_change turns!<br>\n";
+				} else {
+					echo $result;
 				}
 
 				if (!$victim_alive) { // Target was killed by the item.

@@ -14,22 +14,23 @@ $poisoned           = in('poisoned');
 $restore            = in('restore');
 $max_heal           = in('max_heal');
 $heal_and_resurrect = in('heal_and_resurrect');
-$userLevel          = getLevel($username);
-$startingHealth     = getHealth($username);
-$startingGold       = getGold($username);
-$startingKills      = getKills($username);
-$startingTurns      = getTurns($username);
-$level              = getLevel($username);
+$player             = new Player($username);
+$startingHealth     = $player->vo->health;
+$userLevel          = $player->vo->level;
+$startingGold       = $player->vo->gold;
+$startingKills      = $player->vo->kills;
+$startingTurns      = $player->vo->turns;
+$level              = $player->vo->level;
 $heal_points        = (in('heal_points') ? intval(in('heal_points')) : null);  // The pointwise healing method.
 $freeResLevelLimit  = 6;
 $freeResKillLimit   = 25;
 $lostTurns          = 10; // *** Default turns lost when the player has no kills.
 $has_chi            = $skillsListObj->hasSkill('Chi'); // Extra healing benefits from chi, by level.
-$error = null;
-$max_health = determine_max_health($level);
+$error              = null;
+$max_health         = determine_max_health($level);
 
-// *** A True or False as to whether resurrection will be free.
-$freeResurrection = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
+// *** A boolean for whether or not resurrection will be free.
+$freeResurrection   = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
 
 if ($heal_and_resurrect) {
 	// Set resurrect if needed.
@@ -55,10 +56,11 @@ if ($restore == 1) {	//  *** RESURRECTION SECTION ***
 			subtractKills($username, 1);
 			$kill_taking_resurrect = false;
 		}
-		
-		$returning_health = $has_chi? 150 : 100;
+
+		$player->death();
+
+		$returning_health = ($has_chi ? 150 : 100);
 		setHealth($username, $returning_health);
-		subtractStatus($username, STEALTH+POISON+FROZEN+CLASS_STATE);
 		$final_turns = (string) getTurns($username);
 		$final_kills = getKills($username);
 		
@@ -71,9 +73,10 @@ if ($restore == 1) {	//  *** RESURRECTION SECTION ***
 			$lostTurns = $startingTurns;
 		}
 
+		$player->death();
+
 		subtractTurns($username, $lostTurns); // *** Takes away necessary turns.
 		setHealth($username, 100);
-		subtractStatus($username, STEALTH+POISON+FROZEN+CLASS_STATE);
 		$final_turns = (string) getTurns($username);
 		
 		$turn_taking_resurrect = true; // Template display variable.
