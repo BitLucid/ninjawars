@@ -31,7 +31,7 @@ $chat_messages = render_chat_messages($chatlength, true);
 
 // $template, $title=null, $local_vars=array(), $options=null
 
-render_page('mini_chat.tpl', 'Mini Chat', get_certain_vars(get_defined_vars(), array()), $options=array(
+display_page('mini_chat.tpl', 'Mini Chat', get_certain_vars(get_defined_vars(), array()), $options=array(
         'skip_quickstat'=>true,
         'alive'=>false,
         'private'=>false,

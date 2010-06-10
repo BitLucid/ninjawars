@@ -142,7 +142,7 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 	}
 }
 
-render_page('shrine.effects.tpl', 
+display_page('shrine.effects.tpl', 
         'Shrine', 
         get_certain_vars(get_defined_vars(), array()), 
         $options=array('quickstat'=>true, 'private'=>false, 'alive'=>false)); 

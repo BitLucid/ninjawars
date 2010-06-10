@@ -35,7 +35,7 @@ $hidden_resurrect = $skillsListObj->hasSkill('hidden resurrect');
 $midnight_heal = $skillsListObj->hasSkill('midnight heal');
 // TODO:  Midnight Heal currently isn't in play, needs fixing in the deity_nightly script.
 
-render_page(
+display_page(
         'skills.tpl', 
         'Your Skills',
         get_certain_vars(get_defined_vars(), array()), 

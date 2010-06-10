@@ -44,7 +44,7 @@ if ($worked > 0) {
 	}
 }
 
-render_page('work.tpl', 
+display_page('work.tpl', 
         'Working in the Village', 
         get_certain_vars(get_defined_vars(), array()), 
         $options=array('quickstat'=>'player', 'private'=>false, 'alive'=>true)); 

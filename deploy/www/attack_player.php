@@ -19,5 +19,5 @@ $npcs = array(
 	, array('name'=>'Samurai',         'url'=>'attack_npc.php?attacked=1&amp;victim=samurai',  'image'=>'samurai.png')
 );
 
-echo render_page('attack_player.tpl', "Village", array('locations'=>$locations, 'npcs'=>$npcs, 'quickstat'=>'player'), $options=array('alive'=>false, 'private'=>false));
+display_page('attack_player.tpl', "Village", array('locations'=>$locations, 'npcs'=>$npcs, 'quickstat'=>'player'), $options=array('alive'=>false, 'private'=>false));
 ?>

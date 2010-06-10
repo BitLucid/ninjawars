@@ -1,16 +1,21 @@
 <?php
-$alive      = false;
-$private    = false;
-$quickstat  = false;
-$page_title = "FAQ";
+
+// Eventually this page will simply be rerouted through apache to the static page system.
 
 init();
 
+$page = 'tutorial';
+$pages = array('tutorial'=>array('title'=>'FAQ', 'callback'=>'tutorial_page_vars', 'template'=>'tutorial.tpl'));
 
-$progression = render_template('progression.tpl', array('user_id'=>get_user_id()));
 
-// Gets passed to the later template.
+/* CALLBACK FUNCTIONS */
+function tutorial_page_vars(){
+     $progression = render_template('progression.tpl', array('user_id'=>get_user_id()));
+     return array('progression'=>$progression);
+}
 
-display_page('tutorial.tpl', $page_title, get_certain_vars(get_defined_vars()), $options=array('quickstat'=>$quickstat, 'alive'=>$alive, 'private'=>$private))
+
+
+display_static_page($page, $pages, $vars=array(), $options=array('private'=>false));
 
 ?>

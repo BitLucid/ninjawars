@@ -1,6 +1,6 @@
 <h1>Helpful Introduction</h1>
 
-<h2>Live by the Sword!</h2>
+<h3>Live by the Sword!</h3>
 
 
 <script type='text/javascript'>

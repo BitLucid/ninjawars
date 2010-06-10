@@ -7,7 +7,7 @@ $private    = true;
 $alive      = false;
 $quickstat  = "viewinv";
 
-include SERVER_ROOT."interface/header.php"; // Not sure whether this has to come first still or not.
+init();
 
 // *** To verify that the delete request was made.
 $in_delete_account = in('deleteaccount');
@@ -76,7 +76,6 @@ if ($parts['player_clan'] = get_clan_by_player_id($user_id)) {
 	$parts['clan_id']   = $parts['player_clan']->getID();
 }
 
-echo render_template("stats.tpl", $parts);
+display_page("stats.tpl", $page_title, $parts, $options=array('quickstat'=>$quickstat, 'alive'=>false, 'private'=>true));
 
-include SERVER_ROOT."interface/footer.php";
 ?>

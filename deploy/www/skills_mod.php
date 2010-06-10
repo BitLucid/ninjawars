@@ -44,7 +44,7 @@ if ($target != "") {
     $link_back = "<a href=\"skills.php\">Skills</a>";
 	$target    = $username;
 }
-$user_ip         = $_SESSION['ip'];
+$user_ip         = get_account_ip();
 $username_status = getStatus($username);
 $class           = getClass($username);
 $level           = getLevel($username);

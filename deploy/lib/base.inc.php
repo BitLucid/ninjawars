@@ -12,7 +12,7 @@ require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/')))."resources.php");
 // *** Included first from the index, so has to be on the same level as index.
 // Standalone utilities
 require_once(LIB_ROOT."func/either.php");
-require_once(LIB_ROOT."func/whichever.php");
+require_once(LIB_ROOT."func/first_value.php");
 require_once(LIB_ROOT."func/redirect.php");
 require_once(DB_ROOT."DatabaseConnection.php");
 require_once(OBJ_ROOT."Filter.php");

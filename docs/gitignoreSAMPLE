@@ -23,3 +23,6 @@ www/files/fonts/dirty_raw_fonts
 dirty_backup/
 nw_db_backups
 version
+/nw-20*
+test_remote_deploy
+/deploy/www/js/potentials/

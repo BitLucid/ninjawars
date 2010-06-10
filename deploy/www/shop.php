@@ -56,6 +56,6 @@ if ($in_purchase == 1){
 
 $parts = get_certain_vars(get_defined_vars(), array($item_costs));
 
-echo render_page('shop.tpl', 'Shop', $parts, array('quickstat'=>'viewinv', 'alive'=>true, 'private'=>false));
+display_page('shop.tpl', 'Shop', $parts, array('quickstat'=>'viewinv', 'alive'=>true, 'private'=>false));
 
 ?>

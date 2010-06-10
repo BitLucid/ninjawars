@@ -18,7 +18,7 @@ if (isset($username)) {
 	$freeResurrection = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
 }	// End of username check.
 
-render_page('shrine.tpl', 
+display_page('shrine.tpl', 
         'Healing Shrine', 
         get_certain_vars(get_defined_vars(), array()), 
         $options=array('quickstat'=>true, 'private'=>false, 'alive'=>false)); 
