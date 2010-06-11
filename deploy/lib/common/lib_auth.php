@@ -22,24 +22,27 @@ function authenticate($p_login, $p_pass) {
 function login_user($p_user, $p_pass) {
 	$success = false;
 	$error   = 'That password/username combination was incorrect.';
-
 	if ($data = authenticate($p_user, $p_pass)) {
 		SESSION::commence(); // Start a session on a successful login.
     	$_COOKIE['username'] = $data['uname']; // May want to keep this for relogin easing purposes.
     	SESSION::set('username', $data['uname']); // Actually ninja name
     	SESSION::set('player_id', $data['player_id']); // Actually ninja id.
     	SESSION::set('account_id', $data['account_id']);
-
     	update_activity_log($data['uname']);
+    	update_last_logged_in($data['player_id']);
     	// Block by ip list here, if necessary.
-
 		// *** Set return values ***
 		$success = true;
 		$error = '';
 	}
-
 	// *** Return array of return values ***
 	return array('success' => $success, 'login_error' => $error);
+}
+
+// Sets the last logged in date equal to now.
+function update_last_logged_in($ninja_id){
+    $up = "update accounts set last_login = now() where account_id in (select _account_id from account_players where _player_id = :ninja_id )";
+    return query($up, array(':ninja_id'=>array($ninja_id, PDO::PARAM_INT)));
 }
 
 // Simple method to check for player id if you're logged in.
@@ -108,7 +111,6 @@ function logout($echo=false, $redirect='index.php') {
 
 // Check that the password format fits.
 function validate_password($send_pass) {
-    // TODO: This needs to be refactored away, since passwords should have little more than length constraints now.
 	$error = null;
 	$filter = new Filter();
 
@@ -139,6 +141,8 @@ function validate_username($send_name) {
 
 	return $error;
 }
+
+
 
 /*
 Potential regex for a username.
