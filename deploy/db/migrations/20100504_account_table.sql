@@ -11,8 +11,8 @@ create table accounts (
     last_login timestamp without time zone
 );
 create table account_players (
-    _account_id serial not null references accounts(account_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    _player_id serial not null references players(player_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    _account_id integer not null references accounts(account_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    _player_id integer not null references players(player_id) ON DELETE CASCADE ON UPDATE CASCADE,
     last_login timestamp without time zone NOT NULL default now()
 );
 
