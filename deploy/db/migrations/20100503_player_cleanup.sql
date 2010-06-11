@@ -8,7 +8,7 @@ HAVING ( COUNT(lower(email)) > 1 );
 update players set email = email || player_id where email ~* 'PAUSED' and email !~* ('PAUSED' || player_id);
 
 
-delete from players where ((level < 5 and days>7) or days > 30) and lower(email) in (SELECT lower(email)
+update players set email = email || 'PAUSED' || player_id where ((level < 5 and days>7) or days > 30) and lower(email) in (SELECT lower(email)
 FROM players
 GROUP BY lower(email)
 HAVING ( COUNT(lower(email)) > 1 ));
