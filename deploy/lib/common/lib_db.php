@@ -18,8 +18,10 @@ function query($sql, $bindings=array(), $return_resultset=false){
 	$statement = DatabaseConnection::$pdo->prepare($sql);
 	foreach($bindings as $binding => $value){
 		if(is_array($value)){
+		    $first = reset($value);
+		    $last = end($value);
 		    // Cast the bindings when something to cast to was sent in.
-			$statement->bindParam($binding, $value[0], $value[1]);
+			$statement->bindParam($binding, $first, $last);
 		} else {
 			$statement->bindValue($binding, $value);
 		}
