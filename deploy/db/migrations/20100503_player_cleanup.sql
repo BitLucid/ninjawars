@@ -5,7 +5,7 @@ GROUP BY lower(email)
 HAVING ( COUNT(lower(email)) > 1 );
 -- email case duplicates
 
-update players set email = email || player_id where email ~* 'PAUSED';
+update players set email = email || player_id where email ~* 'PAUSED' and email !~* ('PAUSED' || player_id);
 
 
 delete from players where ((level < 5 and days>7) or days > 30) and lower(email) in (SELECT lower(email)
