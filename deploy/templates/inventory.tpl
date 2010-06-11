@@ -7,7 +7,6 @@
 <table style="width: 250px;">
 {foreach from=$items item="amount" key="item"}
 	{assign var="data" value=$item_data[$item]}
-	Data: {$item_data[$item]}
 	{if $amount gt 0 and $data}
   <tr>
     <td style="line-height: 14px;">
