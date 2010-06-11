@@ -7,7 +7,7 @@ $private    = true;
 $alive      = false;
 $quickstat  = "player";
 
-init();
+init($private=true, $alive=true);
 
 // *** To verify that the delete request was made.
 $in_delete_account = in('deleteaccount');

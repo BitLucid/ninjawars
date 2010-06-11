@@ -1,6 +1,6 @@
 <?php
 require_once(LIB_ROOT."specific/lib_status.php"); // Status alterations.
-init(); // Initialize the environment.
+init(true, false); // Initialize the environment.
 
 // TODO: Protect this file from unlogged-in displaying.
 

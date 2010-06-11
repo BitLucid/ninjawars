@@ -2,7 +2,7 @@
 
 // Eventually this page will simply be rerouted through apache to the static page system.
 
-init();
+init(false, false);
 
 $page = 'tutorial';
 $pages = array('tutorial'=>array('title'=>'FAQ', 'callback'=>'tutorial_page_vars', 'template'=>'tutorial.tpl'));
@@ -16,6 +16,6 @@ function tutorial_page_vars(){
 
 
 
-display_static_page($page, $pages, $vars=array(), $options=array('private'=>false));
+display_static_page($page, $pages, $vars=array(), $options=array());
 
 ?>
