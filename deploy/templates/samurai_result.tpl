@@ -12,11 +12,13 @@ The Samurai thrusts his katana into you for {$samurai_damage_array.2} damage.<br
 You use an ancient ninja strike upon the Samurai, slaying him instantly!<br><br>
 You have gained {$gold} gold.<br>
 You gain a kill point.<br>
-		{if $samurai_damage_array.2 gt 100}
-The Samurai had a speed scroll on him. You have a new Speed Scroll in your inventory.<br>
-		{/if}
 		{if $samurai_damage_array.3 eq $ninja_str*3}
 You have gained a Dim Mak from the Samurai.<br>
+		{/if}
+		{if $drop eq 'speed'}
+The Samurai had a speed scroll on him. You have a new Speed Scroll in your inventory.<br>
+		{elseif $drop eq 'herb'}
+You quickly snatch small pouch from around the dead samurai's neck before disappearing.<br>
 		{/if}
 <a href="attack_npc.php?attacked=1&amp;victim=samurai">Attack Another Samurai</a>
 <br>

@@ -38,9 +38,16 @@ if (($turns = getTurns($username)) > 0) {
 			$attacker_health = subtractHealth($username, $oni_health_loss);
 			$attacker_kills  = subtractKills($username, $oni_kill_loss);
 
-			if ($player_turns > 50 && $attacker_health > 0) { // *** If the turns are high/you are energetic, and you survive, you can kill them. ***
-				$oni_killed = true;
-				addItem($username, "Dim Mak", 1);
+			if ($attacker_health > 0) { // *** if you survive ***
+				if ($player_turns > 50) { // *** And youir turns are high/you are energetic, you can kill them. ***
+					$oni_killed = true;
+					addItem($username, "Dim Mak", 1);
+				} else if ($player_turns > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
+					$oni_killed = true;
+					addItem($username, "Strange Herb", 4);
+				} else {
+					$oni_killed = false;
+				}
 			} else {
 				$oni_killed = false;
 			}
@@ -89,6 +96,7 @@ if (($turns = getTurns($username)) > 0) {
 
 				$ninja_str               = getStrength($username);
 				$ninja_health            = getHealth($username);
+				$drop                    = false;
 
 				$samurai_damage_array    = array();
 
@@ -115,7 +123,13 @@ if (($turns = getTurns($username)) > 0) {
 					addKills($username, 1);
 
 					if ($samurai_damage_array[2] > 100) {	// *** If samurai damage was over 100, but the ninja lived, give a speed scroll. ***
-						addItem($username, 'Speed Scroll', $quantity = 1);
+						if (rand()&1) {
+							$drop = 'speed';
+							addItem($username, 'Speed Scroll', 1);
+						} else {
+							$drop = 'herb';
+							addItem($username, 'Strange Herb', 1);
+						}
 					}
 
 					if ($samurai_damage_array[3] == $ninja_str * 3) {	// *** If the final damage was the exact max damage... ***
@@ -132,7 +146,7 @@ if (($turns = getTurns($username)) > 0) {
 			}	// *** End valid turns and kills for the attack. ***
 
 			$npc_template = 'samurai_result.tpl';
-			$combat_data  = array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills);
+			$combat_data  = array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills, 'drop'=>$drop);
 		} else if ($victim == "merchant") {
 			$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
 
@@ -156,8 +170,9 @@ if (($turns = getTurns($username)) > 0) {
 
 			$npc_template = 'merchant_result.tpl';
 			$combat_data  = array('attack'=>$merchant_attack, 'gold'=>$merchant_gold, 'bounty'=>$added_bounty, 'victory'=>$victory);
-		} else if ($victim == "guard") {	// *** The Player kills the guard ***
+		} else if ($victim == "guard") {	// *** The Player attacks the guard ***
 			$guard_attack = rand(1, $attacker_str + 10);  // *** Guard Damage ***
+			$herb         = false;
 
 			if ($victory = subtractHealth($username, $guard_attack)) {
 				$guard_gold = rand(1, $attacker_str + 40);	// *** Guard Gold ***
@@ -167,6 +182,13 @@ if (($turns = getTurns($username)) > 0) {
 					$added_bounty = 10*floor((getLevel($username) - 10) / 5);
 					addBounty($username, ($added_bounty));
 				}
+
+				if (rand(1,9) == 9) { // *** 1/9 chance of getting an herb for Kampo ***
+					$herb = true;
+					addItem($username, "Strange Herb", 1);
+				} else {
+					$herb = false;
+				}
 			} else {	// *** The Guard kills the player ***
 				$guard_attack =
 				$guard_gold   =
@@ -174,7 +196,7 @@ if (($turns = getTurns($username)) > 0) {
 			}
 
 			$npc_template = 'guard_result.tpl';
-			$combat_data  = array('attack'=>$guard_attack, 'gold'=>$guard_gold, 'bounty'=>$added_bounty, 'victory'=>$victory);
+			$combat_data  = array('attack'=>$guard_attack, 'gold'=>$guard_gold, 'bounty'=>$added_bounty, 'victory'=>$victory, 'herb'=>$herb);
 		} else if ($victim == "thief") {
 			// Check the counter to see whether they've attacked a thief multiple times in a row.
 			if (SESSION::is_set('counter')) {

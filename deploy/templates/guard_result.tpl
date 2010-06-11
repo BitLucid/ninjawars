@@ -4,6 +4,9 @@ The Guard sees you and prepares to defend!<br><br>
 The guard is defeated!<br>
 Guard does {$attack} points of damage.<br>
 You have gained {$gold} gold.<br>
+	{if $herb}
+The guard was carrying a good luck charm!<br>
+	{/if}
 	{if $bounty}
 You have slain a member of the military! A bounty of {$bounty} gold has been placed on your head!<br>
 	{/if}
