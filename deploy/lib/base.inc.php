@@ -54,6 +54,6 @@ require_once(LIB_ROOT."common/lib_attack.php");
 
 // Include the functions abstracted out of the header and footer
 require_once(SERVER_ROOT."interface/lib_header.php");
-require_once(SERVER_ROOT."interface/lib_footer.php");
+//require_once(SERVER_ROOT."interface/lib_footer.php");
 
 ?>
