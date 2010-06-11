@@ -181,6 +181,31 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
 		}
+	} else if ($command == "Kampo") {
+		$covert = true;
+
+		if ($starting_turns >= $turn_cost) {
+			// *** Get Special Items From Inventory ***
+			$user_id = get_user_id();
+			DatabaseConnection::getInstance();
+			$statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item = 'Strange Herb' GROUP BY item");
+			$statement->bindValue(':owner', $user_id);
+			$statement->execute();
+
+			if ($itemCount = $statement->fetchColumn()) {	// *** If special item count > 0 ***
+				$itemsConverted = min($itemCount, $starting_turns);
+				removeItem($user_id, 'Strange Herb', $itemsConverted);
+				addItem($username, 'Kampo Formula', $itemsConverted);
+				$turn_cost = $itemsConverted;
+				echo "With intense focus you grind the strange herbs into potent formulas.\n";
+			} else { // *** no special items, give error message ***
+				$turn_cost = 0;
+				echo "You do not have the necessary ingredients for any Kampo formulas.\n";
+			}
+		} else {
+			$turn_cost = 0;
+			echo "You do not have enough turns to use $command.\n";
+		}
 	} else if ($command == "Poison Touch") {
 		$covert = true;
 

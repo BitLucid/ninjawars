@@ -28,10 +28,12 @@ if ($stealth) {
 
 $stealth_turn_cost   = $skillsListObj->getTurnCost('Stealth');
 $unstealth_turn_cost = $skillsListObj->getTurnCost('Unstealth');
+$kampo_turn_cost     = $skillsListObj->getTurnCost('Kampo');
 $chi                 = $skillsListObj->hasSkill('Chi');
 $speed               = $skillsListObj->hasSkill('Chi');
 $hidden_resurrect    = $skillsListObj->hasSkill('hidden resurrect');
 $midnight_heal       = $skillsListObj->hasSkill('midnight heal');
+$kampo               = $skillsListObj->hasSkill('kampo');
 // TODO:  Midnight Heal currently isn't in play, needs fixing in the deity_nightly script.
 
 display_page(

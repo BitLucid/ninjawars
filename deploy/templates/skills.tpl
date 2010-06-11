@@ -6,20 +6,40 @@
 <div id='skills-list'>
 
 {if $stealth}
-	<div id='stealth-skills'>
-	<p>By stealthing you will keep to the shadows where enemies cannot directly duel, for about the next half hour.</p>
-    	<form action="skills_mod.php" method="post">
-        	<div>
-        	<input type="submit" name="command" value="Stealth" class="formButton">
-        	Turn Cost: {$stealth_turn_cost} to Stealth.
-        	</div>
+  <div id='stealth-skills'>
+    <form action="skills_mod.php" method="post">
+      <fieldset>
+        <legend>Stealth</legend>
+    <p>By stealthing you will keep to the shadows where enemies cannot directly duel, for about the next half hour.</p>
+      <div>
+        <input type="submit" name="command" value="Stealth" class="formButton">
+        Turn Cost: {$stealth_turn_cost} to Stealth.
+      </div>
 
-        	<div>
-        	<input type="submit" name="command" value="Unstealth" class="formButton">
-        	Turn Cost: {$unstealth_turn_cost} to Unstealth.
-        	</div>
-    	</form>
-	</div>
+      <div>
+        <input type="submit" name="command" value="Unstealth" class="formButton">
+        Turn Cost: {$unstealth_turn_cost} to Unstealth.
+      </div>
+      </fieldset>
+    </form>
+  </div>
+{/if}
+
+{if $kampo}
+  <div id='kampo-skill'>
+    <form action="skills_mod.php" method="post">
+      <fieldset>
+        <legend>Kampo</legend>
+        <p>
+          The ancient and mystical art of herbal medicine. Your knowledge of Kampo allows you to convert various herbs into potent medicines.
+        </p>
+      <div>
+        <input type="submit" name="command" value="Kampo" class="formButton">
+        Turn Cost: {$kampo_turn_cost} to make a Kampo formula.
+      </div>
+      </fieldset>
+    </form>
+  </div>
 {/if}
 
 {if $chi}

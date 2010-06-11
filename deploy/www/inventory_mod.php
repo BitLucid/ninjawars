@@ -173,7 +173,7 @@ if ($item == 'Dim Mak') {
 	$strangeHerb->setIgnoresStealth(true);
 } else if ($item == 'Kampo Formula') {
 	$item = $kampoFormula = new Item('Kampo Formula');
-	$kampoFomula->setCovert(true);
+	$kampoFormula->setCovert(true);
 	$kampoFormula->setIgnoresStealth(true);
 }
 
@@ -307,14 +307,9 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			$turns_to_take = 1;
 
 			// *** remove Item ***
+			removeItem($user_id, $item->getName(), 1); // *** Decreases the item amount by 1.
 
 			echo "<br>Removing {$item->getName()} from your inventory.<br>\n";
-
-			$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount-1 WHERE owner = :owner AND item = :item AND amount > 0");
-			$statement->bindValue(':owner', $user_id);
-			$statement->bindValue(':item', $item->getName());
-			$statement->execute();
-			// *** Decreases the item amount by 1.
 
 			// Unstealth
 			if (!$item->isCovert() && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts

@@ -858,17 +858,14 @@ function addItem($who, $item, $quantity = 1) {
 	}
 }
 
-/* *** Currently unused consider removing ***
 function removeItem($who, $item, $quantity=1) {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount - :quantity WHERE owner = :user AND lower(item) = lower(:item) AND amount > 1");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount - :quantity WHERE owner = :user AND lower(item) = lower(:item) AND amount > 0");
 	$statement->bindValue(':user', $who);
 	$statement->bindValue(':item', $item);
 	$statement->bindValue(':quantity', $quantity);
 	$statement->execute();
 }
-*/
-
 
 // ************************************
 // ******** LOGGING FUNCTIONS *******

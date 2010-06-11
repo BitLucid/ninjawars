@@ -12,7 +12,7 @@ class Skill
 		'sight', 'deflect', 'chi', 'midnight heal',
 		'blaze', 'fire bolt',
 		'poison touch', 'stealth', 'unstealth', 'steal', 'hidden resurrect',
-		'duel', 'attack',
+		'duel', 'attack', 'kampo', 'evasion'
 	); // Midnight heal currently doesn't work.
 
 	// Temporarily trying a to move the skills out of the classes, to see how players make use of it.
@@ -32,6 +32,10 @@ class Skill
 		, 'Black' => array(
 			'poison touch'       => array('available'=>1)
 			, 'hidden resurrect' => array('available'=>1)
+		)
+		, 'Gray' => array(
+			'kampo'       => array('available'=>1)
+			, 'evasion'   => array('available'=>1)
 		)
 		, 'All'   => array(
 			'attack'       => array('available'=>1)
@@ -61,6 +65,7 @@ class Skill
 		if (false && DEBUG && $username == 'glassbox') {
 			$skills = $this->skill_map['Blue'] +
 				$this->skill_map['White'] +
+				$this->skill_map['Gray'] +
 				$this->skill_map['Red'] +
 				$this->skill_map['Black'] +
 				$this->skill_map['All'];
@@ -122,6 +127,8 @@ class Skill
 			, 'stealth'      => 2
 			, 'unstealth'    => 0
 			, 'steal'        => 1
+			, 'kampo'        => 1
+			, 'evasion'      => 2
 		);
 
 		$res = 1; // default
@@ -137,6 +144,7 @@ class Skill
 		$skillsTypeToSelf = array(
 			'stealth'     => true
 			, 'unstealth' => true
+			, 'kampo'     => true
 		);
 
 		$res = false; // default
