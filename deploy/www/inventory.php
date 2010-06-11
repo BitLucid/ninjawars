@@ -8,7 +8,8 @@ if ($error = init($private, $alive)) {
 
 $username = get_username();
 $user_id = get_user_id();
-$inv_counts = query_resultset($sql, array(':owner'=>$user_id));
+$sql = "SELECT amount AS count, item AS name FROM inventory WHERE owner = :owner GROUP BY item, amount";
+$inv_counts = query_resultset($sql, array(':owner'=>array($user_id, PDO::PARAM_INT)));
 $gold = getGold($username);
 
 // TODO: move this to a more standard location so that it can be used, for example, in the shop.
@@ -54,8 +55,7 @@ if ($inv_counts) {
 	foreach ($inv_counts as $item_info) {
 		$l_name  = $item_info['name'];
 		$l_count = $item_info['count'];
-
-		if (isset($standard_items[$l_name]) && isset($l_count)) {
+		if (isset($standard_items[ucfirst($l_name)]) && isset($l_count)) {
 			// If a type of item exists and has a non-zero count, join the array of it's count with it's standard info.
 			$inventory[$l_name] = array('count'=>$l_count) + $standard_items[$l_name];
 		}
@@ -63,6 +63,8 @@ if ($inv_counts) {
 } else {
 	$inventory = false;
 }
+//debug($standard_items);
+//debug($inventory);
 
 display_page(
 	'inventory.tpl'

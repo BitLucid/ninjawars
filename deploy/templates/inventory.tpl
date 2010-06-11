@@ -9,11 +9,11 @@
 	{if $item_info.count gt 0}
   <tr>
     <td style="font-size:1.3em;margin-bottom:.5em">
-		{if $item_info.codename}
+		{if isset($item_info.codename)}
       <a href="inventory_mod.php?item={$item_info.codename|escape:'url'|escape}&amp;selfTarget=1&amp;target={$username|escape:'url'|escape}&amp;link_back=inventory">
 		{/if}
       {$item_info.display|escape}:
-		{if $item_info.codename}
+		{if isset($item_info.codename)}
       </a>
 		{/if}
     </td>
