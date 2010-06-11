@@ -46,7 +46,7 @@ if ($target != "") {
 }
 
 $player          = new Player($username);
-$user_ip         = $_SESSION['ip'];
+$user_ip         = get_account_ip();
 $username_status = getStatus($username);
 $class           = $player->vo->class;
 $level           = $player->vo->level;

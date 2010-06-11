@@ -7,7 +7,7 @@
     {section name=looploc loop=$locations}
       <li style='padding-left:8px'>
       	<a href='{$locations[looploc].url}'>
-      		{if $locations[looploc].image}<img src='{$templatelist.const.IMAGE_ROOT}{$locations[looploc].image}' alt='' style='width:8px;height:8px'>{/if}
+      		{if $locations[looploc].image}<img src='/images/{$locations[looploc].image}' alt='' style='width:8px;height:8px'>{/if}
       		{$locations[looploc].name}
       	</a>
       </li>

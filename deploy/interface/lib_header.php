@@ -29,7 +29,7 @@ function globalize_user_info($private=true, $alive=true) {
 	global $username;
 	$error = null;
 
-	$username = SESSION::get('username'); // Will default to null.
+	$username = get_username(); // Will default to null.
 
 	if ((!is_logged_in() || !$username) && $private) {
 		$error = 'log_in';
@@ -65,11 +65,6 @@ function globalize_user_info($private=true, $alive=true) {
 		$players_status     = $player->getStatus();
 		$players_created_date = $player->vo->created_date;
 		$players_last_started_attack = $player->vo->last_started_attack;
-
-		// TODO: not ready yet: $players_energy	= $player_data['energy'];
-		// Also migrate the player_score to a true player object.
-		// Also migrate the rank_id to a true player object.
-
 
 		if ($alive) { // *** That page requires the player to be alive to view it.
 			if (!$players_health) {
@@ -187,7 +182,7 @@ function get_player_info($p_id = null, $p_password = false) {
 		}
 	}
 
-	///TODO: Migrate all calls of this function to a new function that returns a Player object. When all calls to this function are removed, remove this function
+	///TODO: Migrate all calls of this function to a new function that returns an arrayizable Player object. When all calls to this function are removed, remove this function
 	return $player_data;
 }
 

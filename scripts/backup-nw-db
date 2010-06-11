@@ -1,0 +1,4 @@
+#!/bin/bash
+filename=nw-backup-`date '+%Y-%m-%d-Time-%k-%M'`.sql
+pg_dump ninjawarsLive >> /home/tchalvak/backups/nw_backups/${filename}
+scp /home/tchalvak/backups/nw_backups/${filename} threadhack@royronalds.com:~/backups/nw_backups/${filename}

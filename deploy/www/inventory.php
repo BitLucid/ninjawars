@@ -6,23 +6,16 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
+$username = get_username();
 $user_id = get_user_id();
-DatabaseConnection::getInstance();
-$statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) AS c, item FROM inventory WHERE owner = :owner GROUP BY item");
-$statement->bindValue(':owner', $user_id);
-$statement->execute();
+$inv_counts = query_resultset($sql, array(':owner'=>$user_id));
+$gold = getGold($username);
 
-if ($data = $statement->fetch()) {
-	$items['Speed Scroll']   = 0;
-	$items['Stealth Scroll'] = 0;
-	$items['Shuriken']       = 0;
-	$items['Fire Scroll']    = 0;
-	$items['Ice Scroll']     = 0;
-	$items['Dim Mak']        = 0;
-	$items['Kampo Formula']  = 0;
-	$items['Strange Herb']   = 0;
+// TODO: move this to a more standard location so that it can be used, for example, in the shop.
+function standard_items() {
+	// Codename means it can have a link to be used, apparently...
 
-	$item_data = array(
+	return array(
 		'Speed Scroll' => array(
 			'codename'   => 'Speed Scroll'
 			, 'display'  => 'Speed Scrolls'
@@ -52,21 +45,31 @@ if ($data = $statement->fetch()) {
 			, 'display'  => 'Kampo Formulas'
 		)
 	);
+}
 
-	do {
-		$items[$data['item']] = $data['c'];
-	} while ($data = $statement->fetch());
+if ($inv_counts) {
+	$standard_items = standard_items();
+
+	// Make the information into a single, trivially usable, array.
+	foreach ($inv_counts as $item_info) {
+		$l_name  = $item_info['name'];
+		$l_count = $item_info['count'];
+
+		if (isset($standard_items[$l_name]) && isset($l_count)) {
+			// If a type of item exists and has a non-zero count, join the array of it's count with it's standard info.
+			$inventory[$l_name] = array('count'=>$l_count) + $standard_items[$l_name];
+		}
+	}
 } else {
-	$items = false;
+	$inventory = false;
 }
 
 display_page(
 	'inventory.tpl'
 	, 'Your Inventory'
 	, array(
-		'gold'        => getGold($username)
-		, 'items'     => $items
-		, 'item_data' => $item_data
+		'gold'        => $gold
+		, 'inventory' => $inventory
 		, 'username'  => $username
 	)
 	, array(

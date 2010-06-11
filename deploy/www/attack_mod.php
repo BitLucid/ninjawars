@@ -321,9 +321,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 				$loot = round($gold_mod * getGold($attacker));//Loot for defender if he lives.
 			}
 
-			$target_msg = "<div class='ninja-notice'>
-				You have killed $attacker in combat and taken $loot gold on $today.
-				</div>";
+			$target_msg = "You have killed $attacker in combat and taken $loot gold on $today.";
 
 			$attacker_msg = "DEATH: You have been killed by $target in combat and lost $loot gold on $today!";
 

@@ -16,7 +16,10 @@ $sentMessage   = in('message');
 $sent          = false;
 $username      = get_username();
 $user_id       = get_user_id();
-$input_form    = ($username ? render_chat_input($_SERVER['PHP_SELF'], $field_size = 40) : '');
+
+
+
+$input_form    = ($user_id ? render_chat_input($self, $field_size = 40) : ''); // Display chat box if logged in.
 $channel       = 1;
 
 // Take in a chat and record it to the database.
@@ -34,7 +37,7 @@ $active_members = render_active_members();
 
 $chat_messages = render_chat_messages($chatlength);
 
-$parts = get_certain_vars(get_defined_vars(), array('chat_refresh', 'input_form', 'active_members', 'chat_messages'));
+$parts = get_certain_vars(get_defined_vars(), array());
 
 display_page(
 	'village.tpl'

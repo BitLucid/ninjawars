@@ -78,6 +78,7 @@ function get_clans($clan_id=null) {
 	DatabaseConnection::getInstance();
 	$clan_or_clans = ($clan_id ? 'WHERE clan_id = :clan' : 'ORDER BY clan_id');
 	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_created_date, clan_founder FROM clan $clan_or_clans");
+
 	if ($clan_id) {
 		$clans->bindValue(':clan', $clan_id);
 	}
@@ -205,15 +206,17 @@ function render_clan_view($p_clan_id) {
 	foreach ($members_resultset as $member) {
 		$member['size'] = floor( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
 
+        $current_leader_class = null;
         // Calc the member display size based on their level relative to the max.
 		if ($member['member_level'] == 1) {
+		    $current_leader_class = 'original-creator';
 			$member['size'] = $member['size'] + 2;
 			$member['size'] = ($member['size'] > 2 ? 2 : $member['size']);
 		}
 
 		$res .= "<li class='member-info'>
                 <a href='player.php?player=".urlencode($member['uname'])."'>
-				<span class='member size{$member['size']}'>".
+				<span class='member size{$member['size']} {$current_leader_class}'>".
 				htmlentities($member['uname']).
                 "</span>";
 		$res .= render_template('gravatar.tpl', array('url' => generate_gravatar_url($member['player_id'])));

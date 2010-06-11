@@ -42,7 +42,7 @@ function var_dump_locals($defined=array()) {
 
 function debug($val) {
     if (DEBUG) {
-        echo "<pre class='debug' style='font-size:12pt'>";
+        echo "<pre class='debug' style='font-size:12pt;background-color:white;color:black;'>";
         var_dump($val);
         echo "</pre>";
     }

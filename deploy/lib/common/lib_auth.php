@@ -1,22 +1,19 @@
 <?php
 // lib_auth.php
 
-function authenticate($p_user, $p_pass) {
-	$user        = (string)$p_user;
+// Side-effect-less check for whether a login & pass work.
+function authenticate($p_login, $p_pass) {
+	$login        = (string)$p_login;
 	$pass        = (string)$p_pass;
-	$returnValue = false;
 
-	if ($user != '' && $pass != '') {
-		$dbConn = DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare('SELECT uname, player_id FROM players WHERE lower(uname) = :player AND pname = :pass AND confirmed = 1');
-		$statement->bindValue(':player', strtolower($user));
-		$statement->bindValue(':pass', $pass);
-		$statement->execute();
-
-		$returnValue = $statement->fetch(PDO::FETCH_ASSOC);
+	if ($login != '' && $pass != '') {
+	    // Allow login via username or email.
+	    $sql = "SELECT account_id, account_identity, uname, player_id 
+	        FROM accounts join account_players on account_id=_account_id join players on player_id = _player_id 
+	        WHERE (lower(active_email) = lower(:login) OR lower(uname) = lower(:login)) AND phash = crypt(:pass, phash)";
+	    $valid_or_not = query_row($sql, array(':login'=>$login, ':pass'=>$pass));
 	}
-
-	return $returnValue;
+	return $valid_or_not;
 }
 
 /**
@@ -27,7 +24,14 @@ function login_user($p_user, $p_pass) {
 	$error   = 'That password/username combination was incorrect.';
 
 	if ($data = authenticate($p_user, $p_pass)) {
-		setup_logged_in($data['player_id'], $data['uname']);
+		SESSION::commence(); // Start a session on a successful login.
+    	$_COOKIE['username'] = $data['uname']; // May want to keep this for relogin easing purposes.
+    	SESSION::set('username', $data['uname']); // Actually ninja name
+    	SESSION::set('player_id', $data['player_id']); // Actually ninja id.
+    	SESSION::set('account_id', $data['account_id']);
+
+    	update_activity_log($data['uname']);
+    	// Block by ip list here, if necessary.
 
 		// *** Set return values ***
 		$success = true;
@@ -38,11 +42,41 @@ function login_user($p_user, $p_pass) {
 	return array('success' => $success, 'login_error' => $error);
 }
 
+// Simple method to check for player id if you're logged in.
+function get_logged_in_ninja_id(){
+    return SESSION::get('player_id');
+}
+
+function get_logged_in_account_id(){
+    return SESSION::get('account_id');
+}
+
+// Abstraction for getting the account's ip.
+function get_account_ip(){
+    static $ip;
+    if($ip){
+        return $ip;
+    } else {
+        $info = get_player_info();
+        $ip = $info['ip'];
+        return $ip;
+    }
+}
+
+/**
+ * @return boolean Check whether someone is logged into their account.
+**/
+function is_logged_in() {
+	return !!get_logged_in_account_id();
+}
+
+
 /**
  * Just do a check whether the input username and password is valid
  * @return boolean
 **/
 function is_authentic($p_user, $p_pass) {
+    // Note that authenticate is happily side-effect-less.
 	return (boolean)authenticate($p_user, $p_pass);
 }
 
@@ -51,7 +85,7 @@ function is_authentic($p_user, $p_pass) {
 **/
 function logout_user($echo=false, $redirect='index.php') {
 	$msg = 'You have been logged out.';
-	session_destroy(); // Why was this status function being used? SESSION :: destroy(); ????
+    nw_session_destroy();
 
 	if ($echo) {
 		echo $msg;
@@ -67,38 +101,24 @@ function logout($echo=false, $redirect='index.php') {
 	return logout_user($echo, $redirect);
 }
 
-/**
- * @return boolean Based on the chosen method for deciding whether someone is logged in.
-**/
-function is_logged_in() {
-	return (SESSION :: is_set('username'));
-}
 
-/**
- * Sets the extra settings after successful login, does not perform the authentication.
-**/
-function setup_logged_in($player_id, $username) {
-	$_COOKIE['username'] = $username;
-	SESSION::set('player_id', $player_id);
-	SESSION::set('username', $username);
 
-	update_activity_log($username);
-	// Block by ip list here, if necessary.
+// Signup validation functions.
 
-	$player_data = get_player_info();
-	put_player_info_in_session($player_data);
-}
 
+// Check that the password format fits.
 function validate_password($send_pass) {
+    // TODO: This needs to be refactored away, since passwords should have little more than length constraints now.
 	$error = null;
 	$filter = new Filter();
 
-	if ($send_pass != htmlentities($send_pass)) {  //  Throws error if password has html elements.
-		$error = "Phase 2 Incomplete: Passwords can only have spaces, underscores, numbers, and letters.<hr>\n";
+	if (strlen($password_to_hash)<7 || strlen($password_to_hash)>500) {  //  Throws error if password has html elements.
+		$error = "Phase 2 Incomplete: Passwords must be at least 7 characters long.<hr>\n";
 	}
 
 	return $error;
 }
+
 
 function validate_username($send_name) {
 	$error = null;
@@ -132,24 +152,24 @@ function valid_name($username){
 }
 */
 
+// Takes in a potential login name and saves it over multiple logins.
 function nw_session_start($potential_username = '') {
 	$result = array('cookie_created' => false, 'session_existed' => false, 'cookie_existed'=> false);
 
 	if (!isset($_COOKIE['user_cookie']) || $_COOKIE['user_cookie'] != $potential_username) {
 		// Refresh cookie if the username isn't set in it yet.
 		$result['cookie_created'] =
-			createCookie("user_cookie", $potential_username, (time()+60*60*24*365), "/", WEB_ROOT); // *** 360 days ***
+			createCookie("user_cookie", $potential_username, (time()+60*60*24*365), "/", WEB_ROOT); // *** 365 days ***
 	} else {
 		$result['cookie_existed'] = true;
 	}
 
-	if ($potential_username) {
-		SESSION::set('username', $potential_username);
-	} else {
-		SESSION::commence();
-	}
-
 	return $result;
+}
+
+// Just to mimic the nw_session_start wrapper.
+function nw_session_destroy() {
+	session_destroy();
 }
 
 /**
@@ -186,109 +206,70 @@ function display_when($state) {
 	}
 }
 
-function nw_session_destroy() {
-	session_destroy();
+// Wrapper to get a ninja name from a ninja id.
+function get_username($ninja_id=null){
+    return get_ninja_name($ninja_id);
+    
 }
 
-// Remove this.
-function nw_session_set_username($logged_in_username) {
-	// Indicates successful login.
-	SESSION::set('username', $logged_in_username);
-}
-
-// Returns a username from a user id.
-function get_username($user_id=null) {
+// Returns a ninja name from a ninja id.
+function get_ninja_name($ninja_id=null) {
 	static $self;
-
-	if ($user_id) {
-		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare("SELECT uname FROM players WHERE player_id = :player");
-		$statement->bindValue(':player', $user_id);
-		$statement->execute();
-
-		return $statement->fetchColumn();
+	
+	if(!$ninja_id){
+	    if($self){
+    	    // Self info requested
+    	    return $self;
+    	} else {
+            // Determine & store username.
+            $ninja_id = get_logged_in_ninja_id();
+            $sql = "SELECT uname FROM players WHERE player_id = :player";
+            $username = query_item($sql, array(':player'=>$ninja_id));
+            $self = $username; // Store it for later.
+            return $self;
+    	}
+	} else {
+        // Determine some other ninja's username and return it.
+        $sql = "SELECT uname FROM players WHERE player_id = :player";
+        return query_item($sql, array(':player'=>$user_id));	    
 	}
-
-	if (!$self) {
-		$self = (SESSION::is_set('username') ? SESSION::get('username') : NULL);
-	}
-
-	return $self;
 }
 
+// Requires a player id, throwing an exception otherwise.
 function player_name_from_id($player_id) {
-	DatabaseConnection::getInstance();
-
 	if (!$player_id) {
 		throw new Exception('Blank player ID to find the username of requested.');
 	}
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT uname FROM players WHERE player_id = :player");
-	$statement->bindValue(':player', $player_id);
-	$statement->execute();
-
-	return $statement->fetchColumn();
+	return get_username($player_id);
 }
 
-// Return the id that corresponds with a player name, if no other source is available.
-function get_user_id($p_name=null) {
+// Old named wrapper for get_ninja_id
+function get_user_id($p_name=null){
+    return get_ninja_id($p_name);
+}
+
+// Return the ninja id that corresponds with a ninja name, if no other source is available.
+function get_ninja_id($p_name=null) {
 	static $self_id; // Store the player's own id.
-	$find = null;
-    
-	if ($p_name === null) {
-		if ($self_id) {
-			return $self_id; // Return the cached id.
-		}
-
-		$find = get_username(); // Use own username.
+	if(!$p_name){
+	    if($self_id){
+	        return $self_id;
+	    } else {
+	        $self_id = get_logged_in_ninja_id();
+	        return $self_id;
+	    }
 	} else {
-		$find = $p_name; // Search to find someone else.
+	    $sql = "SELECT player_id FROM players WHERE lower(uname) = :find";
+	    return query_item($sql, array(':find'=>$p_name));
 	}
-
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT player_id FROM players WHERE lower(uname) = :find");
-	$statement->bindValue(':find', strtolower($find));
-	$statement->execute();
-	$id = $statement->fetchColumn();
-
-	if (!$id) {
-		$id = null;
-	} else if ($p_name === null) {
-		$self_id = $id;
-	}
-
-	return $id;
 }
 
+// Update activity for a logged in player.
 function update_activity_log($username) {
+    // (See update_activity_info in lib_header for the function that updates all the detailed info.)
 	DatabaseConnection::getInstance();
 	$user_ip = $_SERVER['REMOTE_ADDR'];
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET days = 0, ip = :ip WHERE uname = :player");
-	$statement->bindValue(':ip', $user_ip);
-	$statement->bindValue(':player', $username);
-	$statement->execute();
-}
-
-// Loops over the array and puts the values into the session.
-function put_player_info_in_session($player_stats) {
-	assert(count($player_stats) > 0);
-
-	foreach ($player_stats as $name => $val) {
-		if (is_string($name)) {
-			SESSION::set($name, $val);
-		} else {
-			if (DEBUG) {
-				var_dump($player_stats);
-				throw new Exception('player stat not a string');
-			}
-		}
-	}
-
-	/*
-	// TODO: not ready yet: $players_energy	= $player_data['energy'];
-	// Also migrate the player_score to a true player object.
-	// Also migrate the rank_id to a true player object.
-	*/
+	query_resultset("UPDATE players SET days = 0, ip = :ip WHERE uname = :player", array(':ip'=>$user_ip, ':player'=>$username));
 }
 
 /**
@@ -345,7 +326,8 @@ function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure
  */
 function membership_and_combat_stats($update_past_stats=false) {
 	DatabaseConnection::getInstance();
-	$vk = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) group by uname, killpoints order by killpoints DESC LIMIT 1'); 
+	$vk = DatabaseConnection::$pdo->query(
+	    'SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) group by uname, killpoints order by killpoints DESC LIMIT 1'); 
 	$todaysViciousKiller = $vk->fetchColumn();
 
 	if ($todaysViciousKiller == '') {
@@ -364,4 +346,6 @@ function membership_and_combat_stats($update_past_stats=false) {
 
 	return $stats;
 }
+
+
 ?>

@@ -13,9 +13,11 @@ function display_error($p_error) {
   * display_page('add.tpl', 'Homepage', get_current_vars(get_defined_vars()), array());
 **/
 function display_page($template, $title=null, $local_vars=array(), $options=null) {
+    // Updates the quickstat via javascript if requested.
     $quickstat = @$options['quickstat'];
     $quickstat = ($quickstat ? $quickstat : @$local_vars['quickstat']);
 
+    // Displays headless html for javascript if requested.
     $section_only = @$options['section_only'];
     $section_only = ($section_only ? $section_only : @$local_vars['section_only']);
     $section_only = ($section_only ? $section_only : in('section_only'));
@@ -34,7 +36,7 @@ function display_page($template, $title=null, $local_vars=array(), $options=null
 	$tpl->assign('user_id', get_user_id());
 	$tpl->assign('title', $title);
 	$tpl->assign('is_index', $is_index);
-	$tpl->assign('section_only', $section_only);
+	$tpl->assign('section_only', ($section_only === '1'));
 	$tpl->assign('quickstat', $quickstat);
 	$tpl->assign('main_template', $template);
 
@@ -63,6 +65,25 @@ function render_template($template_name, $assign_vars=array()) {
 
 	// call the template
 	return $tpl->fetch($template_name);
+}
+
+function display_template($template_name, $assign_vars=array()){
+	// Initialize the template object.
+	$tpl = new Template_Lite;
+
+	// template directory 
+	$tpl->template_dir = TEMPLATE_PATH;
+
+	// compile directory
+	$tpl->compile_dir = COMPILED_TEMPLATE_PATH;
+
+	// loop over the vars, assigning each.
+	foreach ($assign_vars as $lname => $lvalue) {
+		$tpl->assign($lname, $lvalue);
+	}
+
+	// display the template
+	return $tpl->display($template_name);
 }
 
 /*

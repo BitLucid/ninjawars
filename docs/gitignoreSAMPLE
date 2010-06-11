@@ -24,3 +24,5 @@ dirty_backup/
 nw_db_backups
 version
 nw*20*-*-*.t*gz
+test_remote_deploy
+/deploy/www/js/potentials/

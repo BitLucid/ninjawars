@@ -51,7 +51,7 @@ if ($in_purchase == 1){
 	$description .= "<p>As you browse his wares he says, \"Don't try anythin' you'd regret.\" and grins.</p>";
 }
 
-$parts = get_certain_vars(get_defined_vars(), array());
+$parts = get_certain_vars(get_defined_vars(), array($item_costs));
 
 display_page(
 	'shop.tpl'	// *** Main Template ***
