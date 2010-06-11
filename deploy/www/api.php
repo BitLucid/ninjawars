@@ -34,7 +34,7 @@ function json_latest_message() {
 	$statement = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 ORDER BY date DESC LIMIT 1");
 	$statement->bindValue(':userID1', $user_id);
 	$statement->bindValue(':userID2', $user_id);
-	$statment->execute();
+	$statement->execute();
 
 	$messages = $statement->fetchAll();
 
