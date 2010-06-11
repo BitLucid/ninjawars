@@ -4,7 +4,7 @@ create table accounts (
     account_id serial primary key not null, 
     account_identity text not null unique, 
     phash text,
-    active_email text default null unique,
+    active_email text not null unique,
     type integer default 0::integer,
     active integer default 1::integer,
     created_date timestamp without time zone NOT NULL default now(),
@@ -20,3 +20,4 @@ create table account_players (
 insert into accounts (account_identity, active_email, phash, type) select lower(email) as email, lower(email) as active_email, crypt(pname, gen_salt('bf')) as phash, 0 from players;
 -- Just a simple hack to deal with lowercasing of emails.
 insert into account_players (_account_id, _player_id) select account_id, player_id from accounts join players on account_identity = lower(email);
+

@@ -2,7 +2,7 @@
 $private   = false;
 $alive     = false;
 
-if ($error = init($private, $false)) {
+if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
