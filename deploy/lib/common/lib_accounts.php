@@ -57,11 +57,18 @@ function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1
         ));
     // Get last created id.
     $sel_acc = "select account_id from accounts where account_identity = lower(:email)";
-    $acc_id = query($sel_acc, array(':email'=>$email));
+    $acc_id = query_item($sel_acc, array(':email'=>$email));
     // Create the link between account and player.
-    $link_ninja = "insert into account_players ( _account_id , _player_id ) values ( :acc_id , :ninja_id )";
-    query($link_ninja, array(":acc_id"=>array($acc_id, PDO::PARAM_INT), ":ninja_id"=>array($ninja_id, PDO::PARAM_INT)));
+    $link_ninja = "insert into account_players ( _account_id , _player_id, last_login ) values ( :acc_id , :ninja_id, default )";
     
+    //query($link_ninja, array(":acc_id"=>array($acc_id, PDO::PARAM_INT), ":ninja_id"=>array($ninja_id, PDO::PARAM_INT)));
+    
+    
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare($link_ninja);
+	$statement->bindParam(':acc_id', $acc_id, PDO::PARAM_INT);
+	$statement->bindParam(':ninja_id', $ninja_id, PDO::PARAM_INT);
+	$statement->execute();
     
     
     //$ins = "insert into account_players (_account_id, _player_id) values (:acc_id, :ninja_id)";
@@ -162,7 +169,7 @@ function send_signup_email($signup_email, $signup_name, $confirm, $class){
 	$_body = render_template('signup_email_body.tpl', array(
 	        'send_name'       => $signup_name
 			, 'confirm'       => $confirm
-			, 'send_class'    => $send_class
+			, 'send_class'    => $class
 			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
 		)
 	);
