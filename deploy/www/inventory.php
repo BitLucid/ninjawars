@@ -8,7 +8,7 @@ if ($error = init($private, $alive)) {
 
 $username = get_username();
 $user_id = get_user_id();
-$sql = "SELECT sum(amount) AS count, item AS name FROM inventory WHERE owner = :owner AND amount > 0";
+$sql = "SELECT amount AS count, item AS name FROM inventory WHERE owner = :owner";
 $inv_counts = query_resultset($sql, array(':owner'=>array($user_id, PDO::PARAM_INT)));
 $gold = getGold($username);
 
