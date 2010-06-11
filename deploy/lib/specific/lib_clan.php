@@ -208,7 +208,7 @@ function render_clan_view($p_clan_id) {
 		if ($member['member_level'] == 1) {
 		    $current_leader_class = 'original-creator';
 			$member['size'] = $member['size'] + 2;
-			$member['size'] = ($member['size'] > 2 ? 2 : $member['size']);
+			$member['size'] = ($member['size'] > 3 ? 3 : $member['size']);
 		}
 
 		$res .= "<li class='member-info'>

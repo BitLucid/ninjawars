@@ -144,7 +144,7 @@ function create_ninja($send_name, $params=array()){
 		  email, _class_id, level,  status, member, days, ip, bounty, created_date)
 		 VALUES
 		 (:username, :pass, '150', '5', '100', '', '0', '180', :confirm, :preconfirm,
-		 :email, (SELECT class_id FROM class WHERE class_name = :class), '1', '1', '0', '0', '', '0', now())";
+		 :email, (SELECT class_id FROM class WHERE lower(class_name) = lower(:class)), '1', '1', '0', '0', '', '0', now())";
 	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 	$statement = DatabaseConnection::$pdo->prepare($playerCreationQuery);
 	$statement->bindValue(':username', $send_name);
@@ -293,17 +293,14 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 				}else{
 				    //Uses previous query to make sure name and email aren't duplicates.
 					$success_message .= "Phase 3 Complete: Username and Email are unique.<br><hr>\n";
-
-                	DatabaseConnection::getInstance();
-					$statement = DatabaseConnection::$pdo->query('SELECT class_name FROM class WHERE class_active');
-					$statement->execute();
-
-					$legalClasses = array();
-					while ($classData = $statement->fetch()) {
-						$legalClasses[] = $classData['class_name'];
+                    $classes = query_resultset('SELECT class_name FROM class WHERE class_active');
+					
+					$legal_classes = array();
+					foreach($classes as $l_class){
+						$legal_classes[] = strtolower($l_class['class_name']);
 					}
-
-					if (!in_array($send_class, $legalClasses)) {
+					//debug($send_class);debug($legal_classes);
+					if (!in_array(strtolower($send_class), $legal_classes)) {
 						$error .= "Phase 4 Incomplete: No proper class was specified.<br>";
 					} else {
 						$success_message .= "Phase 4 Complete: Class was specified.<br><hr>";
