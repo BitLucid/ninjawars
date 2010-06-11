@@ -23,8 +23,8 @@
             </div>
             <div id="quickstats-and-switch-stats"><!-- Id used by show hide jquery -->
               <div class="centered quickstats-container">
-                <a href="quickstats.php" target="quickstats">Player</a> 
-                | <a href="quickstats.php?command=viewinv" target="quickstats">Inventory</a>
+                <a href="quickstats.php" target="quickstats" onclick="refreshQuickstats();return false;">Player</a> 
+                | <a href="quickstats.php?command=viewinv" target="quickstats" onclick="refreshQuickstats('viewinv'); return false;">Inventory</a>
               </div>
               <div id="quickstats-frame-container">
                 <noscript>
@@ -191,7 +191,7 @@
                     <button type="submit" value="1" class="formButton">Chat</button>
                   </form>
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
-                    <span id='chat-loading-message' style='display:hidden'>...Loading Chat...</span>
+                    <span id='chat-loading-message' style='display: none;'>...Loading Chat...</span>
                     <noscript>
                         <iframe frameBorder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
                         <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->

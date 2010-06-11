@@ -1,6 +1,12 @@
+{if !$section_only}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
+	{if $templatelite.server.SCRIPT_NAME eq '/village.php' or $templatelite.server.SCRIPT_NAME eq '/mini_chat.php'}
+    <noscript>
+      <meta http-equiv="refresh" content="30">
+    </noscript>
+	{/if}
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta name="keywords" content="ninjawars, ninja wars, ninjas, ninja weapons & techniques, samurai, free online games, {$title|escape}">
     <meta name="author" content="ninjawars.net">
@@ -55,8 +61,9 @@
 {/if}
   </head>
   <body class="{$body_classes|escape}">
-{if !$is_index && !$section_only}
+	{if !$is_index and $templatelite.server.SCRIPT_NAME neq '/quickstats.php'}
     <div id="logo-appended">
       <a href="/"><img src="images/ninjawarslogo_75px.png" alt="NinjaWars"></a>
     </div>
+	{/if}
 {/if}

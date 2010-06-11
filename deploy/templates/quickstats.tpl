@@ -1,7 +1,4 @@
 
-
-
-
 {if !$viewinv}
 
   <table class='quickstats player-stats'>
@@ -84,3 +81,8 @@
 <script language='javascript' type='text/javascript'>
     updateHealthBar({$players_health});
 </script>
+
+{if !$section_only}
+  </body>
+</html>
+{/if}

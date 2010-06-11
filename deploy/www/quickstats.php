@@ -8,7 +8,7 @@ include_once(SERVER_ROOT."interface/header.php");
 require_once(LIB_ROOT."specific/lib_status.php"); // Status alterations.
 
 // *** Turning the header variables into variables for this page.
-$section_only = in('section_only'); // Check whether it's an ajax section.
+$section_only = (in('section_only') === '1'); // Check whether it's an ajax section.
 $command      = in('command');
 $health       = $players_health;
 $strength     = $players_strength;
@@ -46,11 +46,4 @@ foreach($inv_resultset as $loopItem) {
 $parts = get_certain_vars(get_defined_vars()); // Pull current flat vars into the template.
 
 echo render_template('quickstats.tpl', $parts);
-
-if (!$section_only) {
-?>
-  </body>
-</html>
-<?php
-}
 ?>

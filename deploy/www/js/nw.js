@@ -362,12 +362,17 @@ function refreshQuickstats(typeOfView, quickDiv){
 	}
 
 	if (!quickDiv) {
-		quickDiv = $('div#quickstats-frame-container', top);
+		if (window.parent) {
+			quickDiv = window.parent.$('#quickstats-frame-container');
+		} else {
+			quickDiv = $('#quickstats-frame-container');
+		}
 	}
 
 	var url = 'quickstats.php?command='+typeOfView;
+
 	if (quickDiv) {
-		quickDiv.load(url, 'section_only=1');
+		quickDiv.load(url+'&section_only=1');
 	} else {
 		// Use parent to indicate the parent global variable.
 		parent.quickstats.location=url;

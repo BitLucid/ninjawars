@@ -5,7 +5,7 @@ require_once(LIB_ROOT."specific/lib_status.php"); // Status alterations.
 $page_title = "Your Stats";
 $private    = true;
 $alive      = false;
-$quickstat  = "viewinv";
+$quickstat  = "player";
 
 include SERVER_ROOT."interface/header.php"; // Not sure whether this has to come first still or not.
 
