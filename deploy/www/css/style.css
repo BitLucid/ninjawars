@@ -638,6 +638,9 @@ td.playerTable {
 body.solo-page{
     margin: 10px 30px 10px 30px;
 }
+body.solo-page h1{
+    margin-bottom:2em;
+}
 
 body.solo-page #logo-appended{
 	display: block; /* Display the logo on solo pages */
