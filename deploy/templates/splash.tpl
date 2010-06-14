@@ -64,21 +64,9 @@
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
-        	<a href='list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='Ninjawars Intro' title='ninja list'></a>
         </div>
           
-          <div style='height:50%;position:absolute;bottom:0;'>
-          
-          <div id="ninja-search" class="boxes active">
-            <form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">
-              <div>
-                Find A Ninja:
-                <input id="searched" type="text" maxlength="50" size="10" name="searched" class="textField">
-                <input id="hide" type="hidden" name="hide" value="dead">
-                <button type="submit" value="find" class="formButton">Find</button>
-              </div>
-            </form>
-          </div>
+          <div style='height:10%;position:absolute;bottom:0;'>
             
           <div id='contact-us'>
 	        <a href='staff.php' target='main'><img src='images/contactstaff.png' alt='Contact Staff'></a>
@@ -173,9 +161,6 @@
                   </a>
                 </div>
                 <div id="chat-and-switch">
-                  <div class="chat-switch centered">
-                    <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt=""> </a>
-                  </div>
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
                     <span id='chat-loading-message' style='display: none;'>...Loading Chat...</span>
                     <noscript>
@@ -186,10 +171,8 @@
                     </noscript>
                   </div>
                   <div id="expand-chat">
-                    <a href="mini_chat.php?chatlength=360" target="mini_chat">
-                        View more chat messages <!-- <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> -->
-                    </a>
-                </div>
+                    <a href="village.php" target="main">View Older Chats <img src="images/chat.png" alt=""> </a>
+                  </div>
 
                 </div>
               </div>
@@ -209,17 +192,28 @@
       </div> <!-- End of right column -->
       <div id='push'></div>
       <div id='index-footer'>
-<!-- TODO: make this absolute, floating at the page bottom as per facebook's bar. -->
-        <!-- Substitute dynamic "catchphrases" here eventually -->
-        <!-- "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." -->
-        <!--"Join a clan, promote multiple stab wounds." -->
-        Annoy the Emperor, kill Samurai.
+        <span id='nw-catchphrases'>
+        {literal}
+        <script>
+            $().ready(function (){
+                var catchphrases = $('#nw-catchphrases span');
+                var rand = Math.floor(Math.random()*catchphrases.size());
+                // Choose random index.
+                catchphrases.hide().eq(rand).show();
+                // Hide all, show one at random.
+            });
+        </script>
+        {/literal}
+        <!-- These catchphrases will be displayed randomly. -->
+        <span style="display:none">There was going to be a NinjaWars2, but NinjaWars1 stabbed it.</span>
+        <span style="display:none">Join a clan, promote multiple stab wounds.</span>
+        <span style="display:none">Annoy the Emperor, kill Samurai.</span>
+        <span>Oni are actually quite friendly, if you get to know them.</span>
+        </span>
          |
         <a href="tutorial.php" target="main">Help</a> |
         <a href="rules.php" target="main">Rules</a> |
-        <a href='staff.php' target='main'>Staff</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
-        <a href="http://ninjawars.proboards.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
         <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
         <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
         <a href="http://getsatisfaction.com/ninjawars" target="_blank" class="extLink">Feedback</a>
