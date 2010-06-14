@@ -58,7 +58,7 @@ display_page(
 	, 'Shop'	// *** Page Title ***
 	, $parts	// *** Page Variables ***
 	, array(	// *** Page Options ***
-		'quickstats' => 'viewinv'
+		'quickstat' => 'viewinv'
 	)
 );
 }
