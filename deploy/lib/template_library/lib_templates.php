@@ -32,8 +32,10 @@ function display_page($template, $title=null, $local_vars=array(), $options=null
 		$tpl->assign($lname, $lvalue);
 	}
 
-	$tpl->assign('logged_in', get_user_id());
-	$tpl->assign('user_id', get_user_id());
+    $user_id = get_user_id(); // Character id.
+    
+	$tpl->assign('logged_in', $user_id);
+	$tpl->assign('user_id', $user_id);
 	$tpl->assign('title', $title);
 	$tpl->assign('is_index', $is_index);
 	$tpl->assign('section_only', ($section_only === '1'));
