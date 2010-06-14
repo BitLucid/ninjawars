@@ -1,5 +1,3 @@
-    {$header}
-        
     <!-- Version {$version} -->
 
       <div id='left-column'>

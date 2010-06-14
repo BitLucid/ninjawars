@@ -1,5 +1,3 @@
-{$header}
-
    
 {literal}
 <script type='text/javascript' charset='utf-8' src='http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js'></script>

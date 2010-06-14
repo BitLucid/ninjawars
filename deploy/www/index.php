@@ -3,11 +3,11 @@
 $action          = in('action');
 $login           = !empty($action); // A request to login.
 $logout          = in('logout');
-$is_logged_in    = is_logged_in();
 $login_error     = false;
 $just_logged_out = false;
 $referrer        = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
-$player_info     = array();
+
+$is_logged_in    = is_logged_in();
 
 // Logout/already logged in/login behaviors
 if ($logout) { // on logout, kill the session and don't redirect. 
@@ -27,24 +27,20 @@ if ($logout) { // on logout, kill the session and don't redirect.
 	}
 }
 
-$is_not_logged_in = !$is_logged_in;
-$username         = get_username();
-$user_id          = get_user_id();
-$player_info      = get_player_info();
+$username = null;
+$player_info = array();
+$level           = null;
+$main_src = 'main.php'; // Display main iframe page unless logged in.
+$title = 'Live by the Sword';
 
-// Player counts.
-$stats          = membership_and_combat_stats();
-$player_count   = $stats['player_count'];
-$players_online = $stats['players_online'];
 
-$header = render_template('header.tpl', array('title'=>'Live By the Sword', 'body_classes'=>'main-body', 'is_index'=>true, 'logged_in'=>get_user_id(), 'section_only'=>in('section_only'))); // Writes out the html,head,meta,title,css,js.
-
-$version = 'NW Version 1.7.1 2009.11.22';
-
-// Display main iframe page unless logged in.
-$main_src = 'main.php';
-if ($is_logged_in) {
+$user_id = get_user_id();
+if($user_id){
+    // Only bother trying to change these if logged in.
     $level = getLevel($username);
+    $username = get_username();
+    $player_info = get_player_info();
+
     $main_src = 'list_all_players.php';
 
     if ($level == 1) {
@@ -52,15 +48,42 @@ if ($is_logged_in) {
     } elseif ($level < 6) {
     	$main_src = 'attack_player.php';
     }
+
+
 }
 
-$parts = get_certain_vars(get_defined_vars(), $whitelist=array());
+// Player counts.
+$stats          = membership_and_combat_stats();
+$player_count   = $stats['player_count'];
+$players_online = $stats['players_online'];
 
-if (!$is_logged_in) {
-    echo render_template('splash.tpl', $parts); // Non-logged in template.
+$options = array(/*'section_only'=>in('section_only'), */'is_index'=>true);
+
+// Assign these vars to the template.
+$parts = array(
+    'main_src'=>$main_src,
+    'body_classes'=>'main-body',
+    'version'=>'NW Version 1.7.1 2009.11.22',
+    'logged_in'=>!!$user_id,
+    'is_not_logged_in'=>!$user_id,
+    'body_classes'=>'main-body',
+    'username'=>$username,
+    'user_id'=>$user_id,
+    'player_info'=>$player_info,
+    'player_count'=>$player_count,
+    'players_online'=>$players_online,
+    'level'=>$level,
+    'stats'=>$stats,
+    'login_error'=>$login_error,
+    );
+
+if (!$user_id) {
+    // Non-logged in display.
+    display_page('splash.tpl', $title, $parts, $options);
+    //echo render_template('splash.tpl', $parts); // Non-logged in template.
 } else {
-    echo render_template('index.tpl', $parts); // Logged in template.
+    // Logged in display.
+    display_page('index.tpl', $title, $parts, $options);
+    //echo render_template('index.tpl', $parts); // Logged in template.
 }
-
-echo render_template('footer.tpl', array('quickstat'=>null));
 ?>
