@@ -31,7 +31,7 @@
         <div id="login-bar">
           <form id="login-form" action="index.php#" method="post">
             <span class="text">
-              <input type="hidden" name="ref" value="{$referrer}">
+              <input type="hidden" name="ref" value="{$referrer|escape}">
                 <label>
                   <!-- Username -->
                   <input name="user" type="text" class="itext">
@@ -50,7 +50,7 @@
         </div>
         <div id="menu-info">
           <span class="signup-link">
-            <a target="main" href="signup.php?referrer={$referrer}">Become a Ninja!</a> |
+            <a target="main" href="signup.php?referrer={$referrer|escape}">Become a Ninja!</a> |
           </span>
           <span>
             <a href="account_issues.php" target="main" class="blend side">Signup Problems?</a>

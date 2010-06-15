@@ -7,22 +7,22 @@ init(true, false); // Initialize the environment.
 // *** Turning the header variables into variables for this page.
 $section_only = (in('section_only') === '1'); // Check whether it's an ajax section.
 $command      = in('command');
-$user_id = get_user_id();
-$info = get_player_info();
-$health       = $info['health'];
-$strength     = $info['strength'];
-$gold         = $info['gold'];
-$kills        = $info['kills'];
-$turns        = $info['turns'];
-$level        = $info['level'];
-$class        = $info['class'];
-$bounty       = $info['bounty'];
+$user_id      = get_user_id();
+$info         = get_player_info();
+$health       = ($user_id ? $info['health'] : 0);
+$strength     = ($user_id ? $info['strength'] : 0);
+$gold         = ($user_id ? $info['gold'] : 0);
+$kills        = ($user_id ? $info['kills'] : 0);
+$turns        = ($user_id ? $info['turns'] : 0);
+$level        = ($user_id ? $info['level'] : 0);
+$class        = ($user_id ? $info['class'] : 0);
+$bounty       = ($user_id ? $info['bounty'] : 0);
 $status       = get_status_array();  //The status variable is an array, of course.
 $username     = get_username();
 $next_level   = (getLevel($username) * 5); // This needs to have a more centralized formula source.
 $max_health   = max_health_by_level($level);
-$progress     = min(100, round(($kills/$next_level)*100));
-$health_pct   = min(100, round(($health/$max_health)*100));
+$progress     = ($user_id ? min(100, round(($kills/$next_level)*100)) : 0);
+$health_pct   = ($user_id ? min(100, round(($health/$max_health)*100)) : 0);
 
 $status_output_list = render_status_list();
 

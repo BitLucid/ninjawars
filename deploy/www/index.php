@@ -48,8 +48,6 @@ if($user_id){
     } elseif ($level < 6) {
     	$main_src = 'attack_player.php';
     }
-
-
 }
 
 // Player counts.
@@ -75,15 +73,14 @@ $parts = array(
     'level'=>$level,
     'stats'=>$stats,
     'login_error'=>$login_error,
-    );
+    'referrer'=>$referrer
+   );
 
 if (!$user_id) {
     // Non-logged in display.
     display_page('splash.tpl', $title, $parts, $options);
-    //echo render_template('splash.tpl', $parts); // Non-logged in template.
 } else {
     // Logged in display.
     display_page('index.tpl', $title, $parts, $options);
-    //echo render_template('index.tpl', $parts); // Logged in template.
 }
 ?>
