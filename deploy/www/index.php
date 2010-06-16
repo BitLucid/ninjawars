@@ -61,7 +61,7 @@ $options = array(/*'section_only'=>in('section_only'), */'is_index'=>true);
 $parts = array(
     'main_src'=>$main_src,
     'body_classes'=>'main-body',
-    'version'=>'NW Version 1.7.1 2009.11.22',
+    'version'=>'NW Version 1.7.2 2010.06.01',
     'logged_in'=>!!$user_id,
     'is_not_logged_in'=>!$user_id,
     'body_classes'=>'main-body',
