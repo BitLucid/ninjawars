@@ -1,5 +1,7 @@
 <h1>Account Info for {$username}</h1>
 
+<div id='content'>
+
 {if $error}
     <p class='error'>{$error}</p>
 {else}
@@ -83,3 +85,4 @@ Profile Preview:
     </div>
 </form>
 {/if}
+</div>
