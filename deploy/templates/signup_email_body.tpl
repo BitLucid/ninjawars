@@ -7,14 +7,16 @@
 
 	<p>
 	Any automated emails you ask to receive from the game will come from this address.
-	Please click on the link below to confirm your account if it isn't confirmed already.
 	</p>
 	
 	<p>
+	Please click on the link below to confirm your account if it isn't confirmed already:<br>
 	<a href='{$templatelite.const.WEB_ROOT}confirm.php?username={$send_name|escape:'url'}&confirm={$confirm}'>Confirm Account</a><br>
 	Or paste this link:<br>
 	{$templatelite.const.WEB_ROOT}confirm.php?username={$send_name|escape:'url'}&confirm={$confirm} <br>
 	into your browser.
+	</p>
+	
 	<p>
 	If you require help use the forums at {$templatelite.const.WEB_ROOT}forum/<br>
 	or email the site administrators at: {$templatelite.const.SUPPORT_EMAIL}
