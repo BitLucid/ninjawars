@@ -13,9 +13,10 @@
     <button type='submit'>Create a quest</button>
 </form>
 
-Quest From:  
+Quests:  
 <ol>
-<li>Quest via <a target='main' href='player.php?user_id={$user_id}'>Username Here</a>: Tagline description here <a target='main' href='quests.php?quest_id={$quest_id}'>View Quest</a></li>
-<li></li>
+{foreach from=$quests item=$a_quest}
+<li>Quest from <a target='main' href='player.php?user_id={$user_id}'>Username Here</a>: Tagline description here <a target='main' href='quests.php?quest_id={$quest_id}'>View Quest</a></li>
+{/foreach}
 </ol>
 
