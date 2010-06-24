@@ -1,3 +1,7 @@
+<?php
+// I guess the autoprepend won't work reliably for this 404.
+include_once(substr(__FILE__, 0, (strpos(__FILE__, 'www/')))."resources.php");
+?>
 <!DOCTYPE html>
 <!-- html5 doctype enforces most compliant standards, even though use of html5 features isn't practical quite yet -->
 <html>
