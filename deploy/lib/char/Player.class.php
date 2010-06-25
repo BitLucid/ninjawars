@@ -69,6 +69,11 @@ class Player
 	public function hasStatus($p_status) {
 		return (bool)($this->vo->status&$p_status);
 	}
+	
+	public function isActive(){
+	    $activity_threshhold = 91;
+	    return (bool) (($this->vo->days)<$activity_threshhold);
+	}
 
 	public function death() {
 		$this->subtractStatus(STEALTH+POISON+FROZEN+CLASS_STATE+STR_UP1+STR_UP2);

@@ -11,10 +11,12 @@ require_once(LIB_ROOT."specific/lib_clan.php");
 require_once(LIB_ROOT."specific/lib_player.php");
 
 $target        = $player = in('player');
-$target_id     = either(in('target_id'), either(in('player_id'), get_user_id($target)));
-$target_player_obj = new Player(either($target_id, $target));
+$target_id     = first_value(in('target_id'), in('player_id'), get_user_id($target)); // Find target_id if possible.
+$target_player_obj = new Player($target_id);
 
-if (!$target_player_obj || !$target_player_obj->player_id) {
+//debug($target_id);debug(in('target_id'));debug(in('player_id'));debug(get_user_id($target));debug($target_player_obj);
+
+if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj->isActive()) {
 	$template = 'no-player.tpl';
 	$parts    = array();
 } else {
