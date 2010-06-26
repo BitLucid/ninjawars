@@ -1,0 +1,27 @@
+#!/bin/bash
+
+destinationDB="ninjawarsMaster"
+sourceHost="ninjawars.net"
+
+if [[ $1 == "live" || $1 == "" ]]
+then
+	sourceDB="ninjawarsLive"
+elif [[ $1 == "test" ]]
+then
+	sourceDB="ninjawarstest"
+fi
+
+
+echo -n "Warning: This will wipe your local $destinationDB database! Do you wish to continue? [y/N]"
+read answer
+if [[ $answer == "y" || $answer == "Y" ]]
+then
+	dropdb $destinationDB
+	createdb $destinationDB
+	sudo -u postgres psql $destinationDB < /usr/share/postgresql/8.4/contrib/pgcrypto.sql
+	ssh $sourceHost pg_dump $sourceDB | psql $destinationDB
+	echo "Successfully mirrored $sourceDB!"
+else
+	echo "Aborted. No changes have been made."
+	exit
+fi
