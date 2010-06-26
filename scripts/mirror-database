@@ -17,9 +17,8 @@ read answer
 if [[ $answer == "y" || $answer == "Y" ]]
 then
 	dropdb $destinationDB
-	createdb $destinationDB
-	sudo -u postgres psql $destinationDB < /usr/share/postgresql/8.4/contrib/pgcrypto.sql
-	ssh $sourceHost pg_dump $sourceDB | psql $destinationDB
+	createdb -T template0 $destinationDB 
+	ssh $sourceHost pg_dump $sourceDB | sudo -u postgres psql $destinationDB
 	echo "Successfully mirrored $sourceDB!"
 else
 	echo "Aborted. No changes have been made."
