@@ -8,6 +8,7 @@
 // http://www.javascripttoolbox.com/bestpractices/
 
 // TODO: change generated vars to square bracket notation.
+// TODO: Create a fade-out/fadein functionality like the google homepage, so that elements display only when needed/when the main element is moused-off-of.
 
 var NW = {};
 
