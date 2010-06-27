@@ -3,7 +3,7 @@
 
 <h1>Thank you for creating a ninja in Ninja Wars.</h1>
 
-<h2>This your automated email for the account you created at Ninjawars.net. </h2>
+<h2>This is your automated email for the account you created at Ninjawars.net. </h2>
 
 	<p>
 	Any automated emails you ask to receive from the game will come from this address.
