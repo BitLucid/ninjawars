@@ -8,11 +8,11 @@ function authenticate($p_login, $p_pass) {
 
 	if ($login != '' && $pass != '') {
 		// Allow login via username or email.
-		$sql = "SELECT account_id, account_identity, uname, player_id
+		$sql = "SELECT account_id, account_identity, uname, player_id, phash = crypt(:pass, phash) AS authenticated
 			FROM accounts
 			JOIN account_players ON account_id = _account_id
 			JOIN players ON player_id = _player_id
-			WHERE (lower(active_email) = :login OR lower(uname) = :login) AND phash = crypt(:pass, phash)";
+			WHERE (lower(active_email) = :login OR lower(uname) = :login)";
 		return query_row($sql, array(':login'=>$login, ':pass'=>$pass));
 	} else {
 		return false;
@@ -26,7 +26,7 @@ function login_user($p_user, $p_pass) {
 	$success = false;
 	$error   = 'That password/username combination was incorrect.';
 
-	if ($data = authenticate($p_user, $p_pass)) {
+	if (($data = authenticate($p_user, $p_pass)) && $data['authenticated'] == 't') {
 		SESSION::commence(); // Start a session on a successful login.
 		$_COOKIE['username'] = $data['uname']; // May want to keep this for relogin easing purposes.
 		SESSION::set('username', $data['uname']); // Actually ninja name
@@ -86,7 +86,8 @@ function is_logged_in() {
  **/
 function is_authentic($p_user, $p_pass) {
 	// Note that authenticate is happily side-effect-less.
-	return (boolean)authenticate($p_user, $p_pass);
+	$data = authenticate($p_user, $p_pass);
+	return ($data['authenticated'] == 't');
 }
 
 /**
