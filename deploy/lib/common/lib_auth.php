@@ -237,7 +237,7 @@ function get_ninja_name($ninja_id=null) {
 	} else {
 		// Determine some other ninja's username and return it.
 		$sql = "SELECT uname FROM players WHERE player_id = :player";
-		return query_item($sql, array(':player'=>$user_id));
+		return query_item($sql, array(':player'=>$ninja_id));
 	}
 }
 
