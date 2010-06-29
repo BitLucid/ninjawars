@@ -48,6 +48,7 @@ $target      = either(in('target'), in('attackee'));
 $duel        = (in('duel')    ? true : NULL);
 $blaze       = (in('blaze')   ? true : NULL);
 $deflect     = (in('deflect') ? true : NULL);
+$evade       = (in('evasion') ? true : NULL);
 
 $attacker    = get_username(); // Pulls from an internal source.
 $attacker_id = get_user_id();
@@ -68,6 +69,10 @@ if ($blaze) {
 
 if ($deflect) {
     $attack_type['deflect'] = 'deflect';
+}
+
+if ($evade) {
+    $attack_type['evade'] = 'evade';
 }
 
 if ($duel) {
@@ -176,6 +181,10 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			echo "You center your body and soul before battle!\n";
 		}
 
+		if ($evade) {
+			echo "As you enter battle, you note your potential escape routes...\n";
+		}
+
 		// *** PRE-BATTLE STATS ***
 		preBattleStats($target_player, $attacking_player);	// *** Displays the starting state of the attacker and defender. ***
 
@@ -208,6 +217,10 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			$total_target_damage   += $target_damage;
 			$total_attacker_damage += $attacker_damage;
 			$rounds++;	// *** Increases the number of rounds that has occured and restarts the while loop. ***
+
+			if ($evade && (($attacker_health - $total_target_damage)/$attacker_health < .1)) {
+				break;
+			}
 		}
 
 		if ($blaze) {	// *** Blaze does double damage. ***
@@ -216,6 +229,10 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 
 		if ($deflect) {
 			echo "<div>Your wounds are reduced by deflecting the attack!</div>\n";
+		}
+
+		if ($evade && $total_attacker_damage < $target_health) {
+			echo "<div>Realizing you are out matched, you escape with your life to fight another day!</div>";
 		}
 
 		// *** END OF MAIN BATTLE ALGORITHM ***
@@ -243,98 +260,109 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			echo "<div>You spent three extra turns in order to deflect your enemy's blows.</div>\n"; // *** Deflect turn cost. ***
 		}
 
+		if ($evade) {
+			echo "<div>You spent 2 extra turns preparing your escape routes.</div>\n"; // *** Evade turn cost. ***
+		}
+
 		//  *** Let the victim know who hit them ***
 		$attack_label = ($duel ? 'dueled' : 'attacked');
-		$email_msg     = "You have been $attack_label by $attacker at $today for $total_attacker_damage!";
-		sendMessage($attacker, $target, $email_msg);
 
 		$defenderHealthRemaining = subtractHealth($target, $total_attacker_damage);
 		$attackerHealthRemaining = subtractHealth($attacker, $total_target_damage);
 
-		if ($defenderHealthRemaining < 1) { //***  ATTACKER KILLS DEFENDER! ***
-			if ($simultaneousKill = ($attackerHealthRemaining < 1)) { // *** If both died at the same time. ***
-			} else {
-				$victor = $attacker;
-				$loser  = $target;
-			}
-
-			$killpoints = 1; // *** Changes killpoints from zero to one. ***
-
-			if ($duel) {
-				killpointsFromDueling();	// *** Changes killpoints amount by dueling equation. ***
-				$duel_log_msg     = "$attacker has dueled $target and won $killpoints killpoints at $today.";
-				sendMessage("SysMsg", "SysMsg", $duel_log_msg);
-				sendLogOfDuel($attacker, $target, 1, $killpoints);	// *** Makes a WIN record in the dueling log. ***
-			}
-
-			addKills($attacker, $killpoints); // *** Attacker gains their killpoints. ***
-			$target_player->death();
-
-			if (!$simultaneousKill)	{
-				$loot = round($gold_mod * getGold($target));
-			}
-
-			$target_msg = "DEATH: You have been killed by $attacker in combat and lost $loot gold on $today!";
-			sendMessage($attacker, $target, $target_msg);
-
-			$attacker_msg = "You have killed $target in combat and taken $loot gold on $today.";
-			sendMessage($target, $attacker, $attacker_msg);
-
-			echo "<div>$attacker has killed $target!</div>\n";
-			echo "<div class='ninja-notice'>
-				$target is dead, you have proven your might";
-
-			if ($killpoints == 2) {
-				echo " twice over";
-			}
-			elseif ($killpoints > 2) {
-				echo " $killpoints times over";
-			}
-
-			echo "!</div>\n";
-
-			if (!$simultaneousKill) {
-				echo "<div>You have taken $loot gold from $target.</div>\n";
-			}
-
-			runBountyExchange($attacker, $target);	// *** Determines bounty for dueling. ***
+		if ($defenderHealthRemaining && $attackerHealthRemaining) {
+			$email_msg = "You have been $attack_label by $attacker at $today for $total_attacker_damage, but they got away before you could kill them!";
+		} else {
+			$email_msg = "You have been $attack_label by $attacker at $today for $total_attacker_damage!";
 		}
 
-		if ($attackerHealthRemaining < 1) { // *** DEFENDER KILLS ATTACKER! ***
-			if ($simultaneousKill = ($attackerHealthRemaining < 1)) { // *** If both died at the same time. ***
-			} else {
-				$victor = $target;
-				$loser  = $attacker;
+		sendMessage($attacker, $target, $email_msg);
+
+		if ($defenderHealthRemaining < 1 || $attackerHealthRemaining < 1) {
+			if ($defenderHealthRemaining < 1) { //***  ATTACKER KILLS DEFENDER! ***
+				if ($simultaneousKill = ($attackerHealthRemaining < 1)) { // *** If both died at the same time. ***
+				} else {
+					$victor = $attacker;
+					$loser  = $target;
+				}
+
+				$killpoints = 1; // *** Changes killpoints from zero to one. ***
+
+				if ($duel) {
+					killpointsFromDueling();	// *** Changes killpoints amount by dueling equation. ***
+					$duel_log_msg     = "$attacker has dueled $target and won $killpoints killpoints at $today.";
+					sendMessage("SysMsg", "SysMsg", $duel_log_msg);
+					sendLogOfDuel($attacker, $target, 1, $killpoints);	// *** Makes a WIN record in the dueling log. ***
+				}
+
+				addKills($attacker, $killpoints); // *** Attacker gains their killpoints. ***
+				$target_player->death();
+
+				if (!$simultaneousKill)	{
+					$loot = round($gold_mod * getGold($target));
+				}
+
+				$target_msg = "DEATH: You have been killed by $attacker in combat and lost $loot gold on $today!";
+				sendMessage($attacker, $target, $target_msg);
+
+				$attacker_msg = "You have killed $target in combat and taken $loot gold on $today.";
+				sendMessage($target, $attacker, $attacker_msg);
+
+				echo "<div>$attacker has killed $target!</div>\n";
+				echo "<div class='ninja-notice'>
+					$target is dead, you have proven your might";
+
+				if ($killpoints == 2) {
+					echo " twice over";
+				} elseif ($killpoints > 2) {
+					echo " $killpoints times over";
+				}
+
+				echo "!</div>\n";
+
+				if (!$simultaneousKill) {
+					echo "<div>You have taken $loot gold from $target.</div>\n";
+				}
+
+				runBountyExchange($attacker, $target);	// *** Determines bounty for dueling. ***
 			}
-			$defenderKillpoints = 1;
 
-			if ($duel) {	// *** if they were dueling when they died ***
-				$duel_log_msg     = "$attacker has dueled $target and lost at $today.";
-				sendMessage("SysMsg", "SysMsg", $duel_log_msg);
-				sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
-			}
+			if ($attackerHealthRemaining < 1) { // *** DEFENDER KILLS ATTACKER! ***
+				if ($simultaneousKill = ($attackerHealthRemaining < 1)) { // *** If both died at the same time. ***
+				} else {
+					$victor = $target;
+					$loser  = $attacker;
+				}
+				$defenderKillpoints = 1;
 
-			addKills($target, $defenderKillpoints);	// *** Adds a kill for the defender. ***
-			$attacking_player->death();
+				if ($duel) {	// *** if they were dueling when they died ***
+					$duel_log_msg     = "$attacker has dueled $target and lost at $today.";
+					sendMessage("SysMsg", "SysMsg", $duel_log_msg);
+					sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
+				}
 
-			if (!$simultaneousKill) {
-				$loot = round($gold_mod * getGold($attacker));//Loot for defender if he lives.
-			}
+				addKills($target, $defenderKillpoints);	// *** Adds a kill for the defender. ***
+				$attacking_player->death();
 
-			$target_msg = "You have killed $attacker in combat and taken $loot gold on $today.";
+				if (!$simultaneousKill) {
+					$loot = round($gold_mod * getGold($attacker));//Loot for defender if he lives.
+				}
 
-			$attacker_msg = "DEATH: You have been killed by $target in combat and lost $loot gold on $today!";
+				$target_msg = "You have killed $attacker in combat and taken $loot gold on $today.";
 
-			sendMessage($attacker, $target, $target_msg);
-			sendMessage($target, $attacker, $attacker_msg);
+				$attacker_msg = "DEATH: You have been killed by $target in combat and lost $loot gold on $today!";
 
-			echo "<div class='ninja-error'>$target has killed you!</div>\n";
-			echo "<div class='ninja-notice' style='margin-bottom: 10px;'>
-				Go to the <a href=\"shrine.php\">Shrine</a> to return to the living.
-				</div>\n";
+				sendMessage($attacker, $target, $target_msg);
+				sendMessage($target, $attacker, $attacker_msg);
 
-			if (!$simultaneousKill) {
-				echo "<div>$target has taken $loot gold from you.</div>\n";
+				echo "<div class='ninja-error'>$target has killed you!</div>\n";
+				echo "<div class='ninja-notice' style='margin-bottom: 10px;'>
+					Go to the <a href=\"shrine.php\">Shrine</a> to return to the living.
+					</div>\n";
+
+				if (!$simultaneousKill) {
+					echo "<div>$target has taken $loot gold from you.</div>\n";
+				}
 			}
 		}
 
@@ -368,5 +396,5 @@ if (isset($target)) {
 echo "Start your combat <a href=\"list_all_players.php\"> from the player list.</a>\n<br>\n";
 echo "<hr><br>\n";
 
-include SERVER_ROOT."interface/footer.php";
+include(SERVER_ROOT."interface/footer.php");
 ?>
