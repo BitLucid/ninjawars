@@ -4,25 +4,25 @@
 
     <h3>Locations</h3>
     <ul style='margin: .5em auto;text-align:center;'>
-    {section name=looploc loop=$locations}
+{foreach name="looploc" from=$locations item="loc" key="idx"}
       <li style='padding-left:8px'>
-      	<a href='{$locations[looploc].url}'>
-      		{if $locations[looploc].image}<img src='/images/{$locations[looploc].image}' alt='' style='width:8px;height:8px'>{/if}
-      		{$locations[looploc].name}
+      	<a href='{$loc.url|escape}'>
+	{if isset($loc.image)}
+          <img src='/images/{$loc.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
+	{/if}
+          {$loc.name|escape}
       	</a>
       </li>
-    {/section}
+{/foreach}
     </ul>
   
   <hr>
   
   <h3>Attack a citizen:</h3>
   <ul id='npc-list' style='margin: .5em auto;text-align:center;'>
-    {section name=person loop=$npcs}
-        {if $npcs[person]}
-      <li><a href='{$npcs[person].url}' target='main'><img alt='' src='images/characters/{$npcs[person].image}' style='width:25px;height:46px'> {$npcs[person].name}</a></li>
-      {/if}
-    {/section}
+{foreach name="person" from=$npcs key="idx" item="npc"}
+      <li><a href='{$npc.url|escape}' target='main'><img alt='' src='images/characters/{$npc.image|escape:'url'|escape}' style='width:25px;height:46px'> {$npc.name|escape}</a></li>
+{/foreach}
   </ul>
       
   <hr>

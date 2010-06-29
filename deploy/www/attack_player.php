@@ -17,11 +17,11 @@ $locations = array(
 
 // Array that simulates database information for switching out for an npc database solution.
 $npcs = array(
-	  array('name'=>'Villager',        'url'=>'attack_npc.php?attacked=1&amp;victim=villager', 'image'=>'fighter.png')
-	, array('name'=>'Thief',           'url'=>'attack_npc.php?attacked=1&amp;victim=thief',    'image'=>'thief.png')
-	, array('name'=>'Merchant',        'url'=>'attack_npc.php?attacked=1&amp;victim=merchant', 'image'=>'merchant.png')
-	, array('name'=>"Emperor's Guard", 'url'=>'attack_npc.php?attacked=1&amp;victim=guard',    'image'=>'guard.png')
-	, array('name'=>'Samurai',         'url'=>'attack_npc.php?attacked=1&amp;victim=samurai',  'image'=>'samurai.png')
+	  array('name'=>'Villager',        'url'=>'attack_npc.php?attacked=1&victim=villager', 'image'=>'fighter.png')
+	, array('name'=>'Thief',           'url'=>'attack_npc.php?attacked=1&victim=thief',    'image'=>'thief.png')
+	, array('name'=>'Merchant',        'url'=>'attack_npc.php?attacked=1&victim=merchant', 'image'=>'merchant.png')
+	, array('name'=>"Emperor's Guard", 'url'=>'attack_npc.php?attacked=1&victim=guard',    'image'=>'guard.png')
+	, array('name'=>'Samurai',         'url'=>'attack_npc.php?attacked=1&victim=samurai',  'image'=>'samurai.png')
 );
 
 display_page(
