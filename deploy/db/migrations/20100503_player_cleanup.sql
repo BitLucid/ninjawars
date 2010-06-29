@@ -11,21 +11,21 @@ UPDATE players
 --   135672 | Perseus |   55 |   55555 |         1 |     2 | 2010-03-01 17:49:29.497972 | 2010-03-01 13:53:24.362684
 --   134957 | samurai |   60 |   55555 |         1 |     4 | 2010-02-19 17:48:12.939701 | 2010-02-22 07:04:04.032542
 
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 134957;
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 134957 and email !~* 'paused';
 
 -- player_id |     uname     | days | confirm | confirmed | level |        created_date        |    last_started_attack     
 -----------+---------------+------+---------+-----------+-------+----------------------------+----------------------------
 --    112152 | NinjaLord_45  |  456 |    3938 |         0 |    36 | 2008-09-17 20:43:28.521563 | 2008-11-07 03:26:02.113723
 --    113948 | TheFinalBlade |  426 |    8404 |         0 |    13 | 2008-11-07 18:57:01.296793 | 2008-12-18 06:35:08.702628
 
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 112152;
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 112152 and email !~* 'paused';
 
 -- player_id |      uname      | days | confirm | confirmed | level |        created_date        |    last_started_attack     
 -----------+-----------------+------+---------+-----------+-------+----------------------------+----------------------------
 --    105756 | All-Seeing-EyeZ |  609 |    8531 |         0 |    11 | 2008-05-30 12:40:02.778696 | 2008-10-11 13:55:37.192898
 --    105972 | Xena            |  541 |    9878 |         0 |    26 | 2008-06-02 14:41:26.302664 | 2008-10-11 13:55:37.192898
 
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 105756;
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 105756 and email !~* 'paused';
 
 -- player_id |   uname   | days | confirm | confirmed | level |        created_date        |    last_started_attack     
 -----------+-----------+------+---------+-----------+-------+----------------------------+----------------------------
@@ -33,29 +33,29 @@ UPDATE players SET email = email||'paused'||player_id WHERE player_id = 105756;
 --    125415 | maho      |  122 |    6905 |         0 |    31 | 2009-08-21 15:08:11.446455 | 2009-11-26 11:38:53.865341
 --    108303 | voidninja |  467 |    5194 |         0 |    11 | 2008-07-06 15:18:03.705221 | 2008-10-11 13:55:37.192898
 
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 108303;
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 116753;
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 108303 and email !~* 'paused';
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 116753 and email !~* 'paused';
 
 -- player_id |    uname    | days | confirm | confirmed | level |        created_date        |    last_started_attack     
 -----------+-------------+------+---------+-----------+-------+----------------------------+----------------------------
 --    132782 | BlackDagger |   85 |   55555 |         0 |     3 | 2010-01-20 11:00:17.825644 | 2010-01-20 07:18:14.308009
 --    141275 | Dronge      |   10 |   55555 |         1 |     1 | 2010-05-19 08:40:36.370154 | 2010-05-19 04:48:27.040153
 
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 132782;
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 132782 and email !~* 'paused';
 
 -- player_id | uname  | days | confirm | confirmed | level |        created_date        |    last_started_attack     
 -----------+--------+------+---------+-----------+-------+----------------------------+----------------------------
 --     90123 | bLaze  |  692 |    4035 |         0 |    23 | 2007-12-02 08:35:29.636978 | 2008-10-11 13:55:37.192898
 --     99687 | ScreaM |  281 |    6784 |         0 |    76 | 2008-03-08 10:00:46.088632 | 2009-06-03 14:20:49.888238
 
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 90123;
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 90123 and email !~* 'paused';
 
 -- player_id |   uname    | days | confirm | confirmed | level |        created_date        |    last_started_attack     
 -----------+------------+------+---------+-----------+-------+----------------------------+----------------------------
 --    132948 | scorpion   |   83 |   55555 |         0 |     3 | 2010-01-22 21:11:18.201839 | 2010-01-22 19:37:08.813573
 --    132950 | scorpion17 |   82 |   55555 |         0 |     7 | 2010-01-22 21:21:12.906063 | 2010-01-23 08:55:55.204337
 
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 132948;
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 132948 and email !~* 'paused';
 
 -- player_id |     uname     |             email             | level | kills | days 
 -------------+---------------+-------------------------------+-------+-------+------
@@ -83,14 +83,14 @@ delete from players where player_id = 138006;
 --    143046 | YourWorstNightMare | guymi@loreto.vic.edu.au |     1 |     0 |    3
 --    141044 | WickedNightMare    | guymi@loreto.vic.edu.au |     1 |    12 |   25
 
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 141044;
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 141044 and email !~* 'paused';
 
 -- player_id |  uname   |          email          | level | kills | days 
 -------------+----------+-------------------------+-------+-------+------
 --    141773 | shreeder | e.g.free2ryme@yahoo.com |     1 |     0 |   17
 --    141395 | shredder | e.g.free2ryme@yahoo.com |     1 |     1 |   21
 
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 141395;
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 141395 and email !~* 'paused';
 
 -- player_id |  uname  |        email        | level | kills | days 
 -------------+---------+---------------------+-------+-------+------
@@ -104,7 +104,14 @@ delete from players where player_id = 143108;
 --    137077 | cowpie12 | mephits@comcast.net |     1 |     1 |   55
 --    137125 | Cowpee   | mephits@comcast.net |     1 |     1 |   54
 
-UPDATE players SET email = email||'paused'||player_id WHERE player_id = 137077;
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 137077 and email !~* 'paused';
+
+-- player_id |  uname  |         email          | level | kills | days |        created_date        
+-------------+---------+------------------------+-------+-------+------+----------------------------
+--    143583 | Alex747 | ag.s232009@hotmail.com |     1 |     0 |    5 | 2010-06-14 15:00:08.192945
+--    143581 | Alex002 | ag.s232009@hotmail.com |     1 |     0 |    5 | 2010-06-14 14:58:44.066892
+
+UPDATE players SET email = email||'paused'||player_id WHERE player_id = 143581 and email !~* 'paused';
 
 -- player_id |   uname   |        email         | level | kills | days 
 -------------+-----------+----------------------+-------+-------+------
@@ -144,6 +151,12 @@ SELECT
 	GROUP BY email
 	HAVING COUNT(email) > 1;
 -- email case duplicates
+
+SELECT
+	lower(uname), count(lower(uname)) AS NumOccurences
+	FROM players
+	GROUP BY lower(uname)
+	HAVING count(lower(uname)) > 1;
 
 --UPDATE players SET
 --	email = email || 'paused' || player_id
