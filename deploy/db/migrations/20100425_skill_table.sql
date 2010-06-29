@@ -31,7 +31,9 @@ INSERT INTO skill VALUES
 , (default, 1, true, 'Sight', 'sight', 'targeted')
 , (default, 1, true, 'Stealth', 'stealth', 'self-only')
 , (default, 1, true, 'Unstealth', 'unstealth', 'self-only')
-, (default, 2, true, 'Steal', 'steal', 'targeted');
+, (default, 2, true, 'Steal', 'steal', 'targeted')
+, (default, 2, true, 'Kampo', 'kampo', 'self-only')
+, (default, 2, true, 'Evasion', 'evasion', 'combat');
 
 INSERT INTO class_skill VALUES
 ((SELECT class_id FROM class WHERE class_name = 'Black'), (SELECT skill_id FROM skill WHERE skill_internal_name = 'poison'), null)
@@ -40,5 +42,7 @@ INSERT INTO class_skill VALUES
 , ((SELECT class_id FROM class WHERE class_name = 'Blue'), (SELECT skill_id FROM skill WHERE skill_internal_name = 'speed'), null)
 , ((SELECT class_id FROM class WHERE class_name = 'White'), (SELECT skill_id FROM skill WHERE skill_internal_name = 'chi'), null)
 , ((SELECT class_id FROM class WHERE class_name = 'White'), (SELECT skill_id FROM skill WHERE skill_internal_name = 'heal'), null)
+, ((SELECT class_id FROM class WHERE class_name = 'Gray'), (SELECT skill_id FROM skill WHERE skill_internal_name = 'evasion'), null)
+, ((SELECT class_id FROM class WHERE class_name = 'Gray'), (SELECT skill_id FROM skill WHERE skill_internal_name = 'kampo'), null)
 , ((SELECT class_id FROM class WHERE class_name = 'Red'), (SELECT skill_id FROM skill WHERE skill_internal_name = 'fire'), null)
 , ((SELECT class_id FROM class WHERE class_name = 'Red'), (SELECT skill_id FROM skill WHERE skill_internal_name = 'blaze'), null);
