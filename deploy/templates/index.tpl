@@ -1,4 +1,4 @@
-    <!-- Version {$version} -->
+    <!-- Version {$version|escape} -->
 
       <div id='left-column'>
             
@@ -6,7 +6,7 @@
         	<a href='list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='Go to the ninja list'></a>
         </div>
             <div>
-                <a target="main" href="player.php?player={$user_id}" title='Display your player information'>{$username}</a>
+                <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your player information'>{$username|escape}</a>
             </div>
             <div id='logged-in-bar'>
                 <div>
@@ -133,9 +133,9 @@
 
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src}">
+            <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src|escape}">
             <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
-              <a href='{$main_src}' target='_blank'>Main Content</a> unavailable inside this browser window.
+              <a href='{$main_src|escape}' target='_blank'>Main Content</a> unavailable inside this browser window.
             </iframe>
           </div><!-- End of mainFrame div -->
           
@@ -153,7 +153,7 @@
         <div id='ninja-stats' class='header-section'>
         
         <div id='logout'>
-            <a href="index.php?logout=true"><img src='{$templatelite.const.IMAGE_ROOT}logoutTriangle.png' alt='Logout' title='Log off the game' style='height:70px;width:70px'></a>
+            <a href="index.php?logout=true"><img src='{$templatelite.const.IMAGE_ROOT|escape}logoutTriangle.png' alt='Logout' title='Log off the game' style='height:70px;width:70px'></a>
         </div>
         
         </div><!-- End of ninja-stats -->
@@ -162,7 +162,7 @@
               <span id='nin1'>Ni</span><span id='nin2'>nj</span><span id='nin3'>as</span> 
               <img src="images/smallArrows.png" alt="&gt;&gt;&gt;">
             </a> -->
-            {$players_online} ninjas around / {$player_count} 
+            {$players_online|escape} ninjas around / {$player_count|escape} 
           </div>
           <div id='messages' class='boxes active'>
               <div>
@@ -238,4 +238,4 @@
     
 <!-- Validated as of Oct, 2009 -->
 
-<!-- Version: {$version} -->
+<!-- Version: {$version|escape} -->

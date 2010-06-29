@@ -62,7 +62,7 @@ function debug(arg){
 // Display an event.
 function writeLatestEvent(event){
     debug('Event display requested.');
-	$('#recent-events', top.document).html("<div class='latest-event' title='"+event.sender+": "+event.event+"'><div id='latest-event-title'>Latest Event via <a href='player.php?player="+event.send_from+"' target='main'>"+event.sender+"</a>:</div><span class='latest-event-text "+(event.unread? "message-unread" : "")+"'>"+event.event+"</span></div>");
+	$('#recent-events', top.document).html("<div class='latest-event' title='"+event.sender+": "+event.event+"'><div id='latest-event-title'>Latest Event via <a href='player.php?player_id="+event.send_from+"' target='main'>"+event.sender+"</a>:</div><span class='latest-event-text "+(event.unread? "message-unread" : "")+"'>"+event.event+"</span></div>");
     // if unread, Add the unread class until next update.
     // Pull a message with a truncated length of 12.
 }
@@ -98,7 +98,7 @@ function writeLatestMessage(message){
 		// TODO: Transform the appended html into hidden html that gets fleshed out and marked visible by this function.
         // if unread, Add the unread class until next update.
         // Pull a message with a truncated length of 12.
-		$('#recent-mail', top.document).html("<div class='latest-message' title='"+message.send_from+": "+message.message+"'><div id='latest-message-title'>Latest Message, from <a href='player.php?player="+message.send_from+"' target='main'>"+message.sender+"</a>:</div><span class='latest-message-text "+(message.unread? "message-unread" : "")+"'>"+message.message+"</span> </div>");
+		$('#recent-mail', top.document).html("<div class='latest-message' title='"+message.send_from+": "+message.message+"'><div id='latest-message-title'>Latest Message, from <a href='player.php?player_id="+message.send_from+"' target='main'>"+message.sender+"</a>:</div><span class='latest-message-text "+(message.unread? "message-unread" : "")+"'>"+message.message+"</span> </div>");
 }
 
 // Update the message that gets displayed.
