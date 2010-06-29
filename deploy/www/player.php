@@ -86,6 +86,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 	
 		if ($username && !$self) {
 			// Clan leader options on players in their clan.
+			ob_start();
 			display_clan_options($player_info, $viewing_player_obj);
 			$clan_options_section = ob_get_contents();
 			ob_end_clean();
