@@ -8,16 +8,16 @@
 {foreach from=$inventory item="item_info" key="item_name"}
 	{if $item_info.count gt 0}
   <tr>
-    <td style="font-size:1.3em;margin-bottom:.5em">
+    <td style="font-size:1em;padding-bottom:.3em;text-align: right;padding-right:40%">
 		{if isset($item_info.codename)}
       <a href="inventory_mod.php?item={$item_info.codename|escape:'url'|escape}&amp;selfTarget=1&amp;target={$username|escape:'url'|escape}&amp;link_back=inventory">
 		{/if}
-      {$item_info.display|escape}:
+      {$item_info.display|escape}
 		{if isset($item_info.codename)}
       </a>
 		{/if}
     </td>
-    <td style="font-size:1.1em;margin-bottom:.6em">{$item_info.count}</td>
+    <td style="font-size:1em;padding-bottom:.3em">{$item_info.count}</td>
   </tr>
 	{/if}
 {/foreach}
