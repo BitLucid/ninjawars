@@ -17,9 +17,7 @@ $sent          = false;
 $username      = get_username();
 $user_id       = get_user_id();
 
-
-
-$input_form    = ($user_id ? render_chat_input($self, $field_size = 40) : ''); // Display chat box if logged in.
+$input_form    = ($user_id ? render_chat_input($_SERVER['PHP_SELF'], $field_size = 40) : ''); // Display chat box if logged in.
 $channel       = 1;
 
 // Take in a chat and record it to the database.
