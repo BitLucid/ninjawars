@@ -142,7 +142,7 @@ class Item
 // Default could be an error later.
 
 
-$dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = null;
+$dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = $kampoFormula = $strangeHerb = null;
 
 // These different settings should just become an array of non-defaults somewhere else.
 if ($item == 'Dim Mak') {

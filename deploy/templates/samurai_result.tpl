@@ -12,7 +12,7 @@ The Samurai thrusts his katana into you for {$samurai_damage_array.2} damage.<br
 You use an ancient ninja strike upon the Samurai, slaying him instantly!<br><br>
 You have gained {$gold} gold.<br>
 You gain a kill point.<br>
-		{if $samurai_damage_array.3 eq $ninja_str*3}
+		{if $samurai_damage_array.2 eq $ninja_str*3}
 You have gained a Dim Mak from the Samurai.<br>
 		{/if}
 		{if $drop eq 'speed'}

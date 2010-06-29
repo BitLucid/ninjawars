@@ -2,10 +2,8 @@
 require_once(LIB_ROOT."specific/lib_player.php"); // Player info display pieces.
 require_once(LIB_ROOT."specific/lib_status.php"); // Status alterations.
 
-$page_title = "Your Stats";
 $private    = true;
 $alive      = false;
-$quickstat  = "player";
 
 if ($error = init($private, $alive)) {
 	display_error($error);
@@ -79,6 +77,13 @@ if ($parts['player_clan'] = get_clan_by_player_id($user_id)) {
 	$parts['clan_id']   = $parts['player_clan']->getID();
 }
 
-display_page("stats.tpl", $page_title, $parts, $options=array('quickstat'=>$quickstat, 'alive'=>false, 'private'=>true));
+display_page(
+	"stats.tpl"
+	, "Your Stats"
+	, $parts
+	, array(
+		'quickstat' => 'player'
+	)
+);
 
 ?>

@@ -132,7 +132,7 @@ if (($turns = getTurns($username)) > 0) {
 						}
 					}
 
-					if ($samurai_damage_array[3] == $ninja_str * 3) {	// *** If the final damage was the exact max damage... ***
+					if ($samurai_damage_array[2] == $ninja_str * 3) {	// *** If the final damage was the exact max damage... ***
 						addItem($username, "Dim Mak", 1);
 					}
 
@@ -149,6 +149,7 @@ if (($turns = getTurns($username)) > 0) {
 			$combat_data  = array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills, 'drop'=>$drop);
 		} else if ($victim == "merchant") {
 			$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
+			$added_bounty    = 0;
 
 			if ($victory = subtractHealth($username, $merchant_attack)) {	// *** Player killed merchant ***
 				$merchant_gold   = rand(20, 70);  // *** Merchant Gold   ***
@@ -163,9 +164,7 @@ if (($turns = getTurns($username)) > 0) {
 					addBounty($username, $added_bounty);
 				}
 			} else {	// *** Merchant killed player
-				$merchant_attack =
-				$merchant_gold   =
-				$added_bounty    = 0;
+				$merchant_attack = $merchant_gold = 0;
 			}
 
 			$npc_template = 'merchant_result.tpl';
@@ -173,6 +172,7 @@ if (($turns = getTurns($username)) > 0) {
 		} else if ($victim == "guard") {	// *** The Player attacks the guard ***
 			$guard_attack = rand(1, $attacker_str + 10);  // *** Guard Damage ***
 			$herb         = false;
+			$added_bounty = 0;
 
 			if ($victory = subtractHealth($username, $guard_attack)) {
 				$guard_gold = rand(1, $attacker_str + 40);	// *** Guard Gold ***
@@ -269,7 +269,7 @@ display_page(
 		, 'health'           => $health
 	)+$combat_data
 	, array (
-		'quickstats' => 'player'
+		'quickstat' => 'player'
 	)
 );
 }
