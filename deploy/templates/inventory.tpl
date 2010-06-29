@@ -5,22 +5,22 @@
 {if $inventory}
 <div style="margin-bottom: 1em;">Click a linked item to use it on yourself.</div>
 <table style="width: 25em;height:10em;margin-bottom:2em;">
-{foreach from=$inventory item="item_info" key="item_name"}
-	{if $item_info.count gt 0}
+	{foreach from=$inventory item="item_info" key="item_name"}
+		{if $item_info.count gt 0}
   <tr>
-    <td style="font-size:1em;padding-bottom:.3em;text-align: right;padding-right:40%">
-		{if isset($item_info.codename)}
+    <td style="font-size:1em;padding-bottom:.3em;text-align: right;padding-right:32%">
+			{if isset($item_info.codename)}
       <a href="inventory_mod.php?item={$item_info.codename|escape:'url'|escape}&amp;selfTarget=1&amp;target={$username|escape:'url'|escape}&amp;link_back=inventory">
-		{/if}
+			{/if}
       {$item_info.display|escape}
-		{if isset($item_info.codename)}
+			{if isset($item_info.codename)}
       </a>
-		{/if}
+			{/if}
     </td>
-    <td style="font-size:1em;padding-bottom:.3em">{$item_info.count}</td>
+    <td style="font-size:1em;padding-bottom:.3em">{$item_info.count|escape}</td>
   </tr>
-	{/if}
-{/foreach}
+		{/if}
+	{/foreach}
 </table>
 {else}
     You have no items, to buy some, visit the <a href="shop.php">shop</a>.
@@ -38,5 +38,5 @@
   </form>
 
   <p>
-  Current gold: {$gold}
+  Current gold: {$gold|escape}
   <p>
