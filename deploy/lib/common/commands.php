@@ -681,7 +681,7 @@ function createClan($p_leaderID, $p_clanName) {
 	$result = DatabaseConnection::$pdo->query("SELECT nextval('clan_clan_id_seq')");
 	$newClanID = $result->fetchColumn();
 
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan (clan_id, clan_name, original_creator) VALUES (:clanID, :clanName, :leader)");
+	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (:clanID, :clanName, :leader)");
 	$statement->bindValue(':clanID', $newClanID);
 	$statement->bindValue(':clanName', $p_clanName);
 	$statement->bindValue(':leader', $p_leaderID);
