@@ -3,10 +3,7 @@
   *  Creates all the environmental variables, with no outputting.
 **/
 function init($private, $alive) {
-	global $filter, $today;
-
-	// General utility objects.
-	$filter = new Filter(); // *** Creates the filters for later use.
+	global $today;
 
 	// ******************** Declared variables *****************************
 	$today = date("F j, Y, g:i a");  // Today var is only used for creating mails.

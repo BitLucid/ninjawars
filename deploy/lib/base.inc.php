@@ -15,7 +15,6 @@ require_once(LIB_ROOT."func/either.php");
 require_once(LIB_ROOT."func/first_value.php");
 require_once(LIB_ROOT."func/redirect.php");
 require_once(DB_ROOT."DatabaseConnection.php");
-require_once(OBJ_ROOT."Filter.php");
 require_once(OBJ_ROOT."Sanitize.php");
 require_once(OBJ_ROOT."Nmail.class.php");
 require_once(OBJ_ROOT."Cookie.class.php");

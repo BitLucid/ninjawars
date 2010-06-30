@@ -66,7 +66,7 @@ function send_confirmation_email($email, $data) {
 	return $sent;
 }
 
-$email = in('email', null, 'toEmail'); // The default filter allows standard emails.
+$email = in('email', null, 'sanitize_to_email'); // The default filter allows standard emails.
 $password_request = in('password_request');
 $confirmation_request = in('confirmation_request');
 
