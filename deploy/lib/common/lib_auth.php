@@ -146,7 +146,7 @@ function validate_username($send_name) {
 }
 
 function username_is_valid($username) {
-	return ($username == preg_replace("/[^\w\d\s_\-]/", "", (string) $username));
+	return preg_match("/[^\w\d\s_\- ]/", (string) $username);
 }
 
 /*

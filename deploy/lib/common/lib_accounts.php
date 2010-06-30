@@ -22,7 +22,7 @@ function validate_email($email) {
 		//strstr($send_email, "@") == "@aol.com" || strstr($send_email, "@") == "@netscape.com" || strstr($send_email, "@") == "@aim.com"
 		//Throws error if email from blocked domain.
 		$error = "Phase 3 Incomplete: We cannot currently accept @aol.com, @netscape.com, or @aim.com email addresses.";
-	} elseif (!eregi("^[[:alnum:]][a-z0-9_.-]*@[a-z0-9.-]+\.[a-z]{2,4}$", trim($email))) {
+	} elseif (!preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", trim($email))) {
 		$error = "Phase 3 Incomplete: The email address ("
 				.htmlentities($email).") must contain an @ symbol and a domain name to be valid.";
 	} elseif (email_is_duplicate($email)) {
