@@ -218,8 +218,12 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			$total_attacker_damage += $attacker_damage;
 			$rounds++;	// *** Increases the number of rounds that has occured and restarts the while loop. ***
 
-			if ($evade && (($attacker_health - $total_target_damage)/$attacker_health < ($target_str*.5))) {
-				break;
+			if ($evade) {
+				$testValue = ($attacker_health - $total_target_damage);
+
+				if ($testValue < ($target_str*.5) || $testValue < ($attacker_health*.1)) {
+					break;
+				}
 			}
 		}
 
