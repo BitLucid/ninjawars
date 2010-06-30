@@ -111,17 +111,14 @@ function logout($echo=false, $redirect='index.php') {
 	return logout_user($echo, $redirect);
 }
 
-
-
 // Signup validation functions.
 
 
 // Check that the password format fits.
-function validate_password($send_pass) {
+function validate_password($password_to_hash) {
 	$error = null;
-	$filter = new Filter();
 
-	if (strlen($password_to_hash) < 7 || strlen($password_to_hash) > 500) {
+	if (strlen($password_to_hash) < 7 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
 		$error = "Phase 2 Incomplete: Passwords must be at least 7 characters long.<hr>\n";
 	}
 
@@ -131,7 +128,6 @@ function validate_password($send_pass) {
 
 function validate_username($send_name) {
 	$error = null;
-	$filter = new Filter();
 
 	if (substr($send_name, 0, 1) != 0 || substr($send_name, 0, 1) == "0") {  // Case the first char isn't a letter???
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a number.\n";
@@ -141,12 +137,16 @@ function validate_username($send_name) {
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a space.";
 	} else if ($send_name != htmlentities($send_name)
 			|| str_replace(" ","%20",$send_name) != urlencode($send_name)
-			|| $send_name != $filter->toUsername($send_name)) {
+			|| $send_name != username_is_valid($send_name)) {
 		//Checks whether the name is different from the html stripped version, or from url-style version, or matches the filter.
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." should only contain letters, numbers, and underscores.";
 	}
 
 	return $error;
+}
+
+function username_is_valid($username) {
+	return ($username == preg_replace("/[^\w\d\s_\-]/", "", (string) $username));
 }
 
 /*

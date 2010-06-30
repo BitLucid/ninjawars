@@ -271,16 +271,9 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 
 		$duplicate_email = email_is_duplicate($send_email);
 
-
-		// Validate the username symbols!
-		$username_error = validate_username($send_name);
-
-		if ($username_error) {
+		if ($username_error = username_is_valid($send_name)) {
 			$error .= $username_error;
 		} else {  //when all the name requirement errors didn't trigger.
-			$send_name = trim($send_name);  // Just cuts off any white space at the end.
-			$filter = new Filter();
-			$send_name = $filter->toUsername($send_name); // Filter any un-whitelisted characters.
 			$success_message .= "Phase 1 Complete: Name passes requirements.<hr>\n";
 
 			// Validate the password!
@@ -318,6 +311,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 						$success_message .= "Phase 4 Complete: Class was specified.<br><hr>";
 
 						// *** Signup is successful at this point  ***
+						$successful = true;
 						$preconfirm = 0;
 						$preconfirm = preconfirm_some_emails($send_email);
 
