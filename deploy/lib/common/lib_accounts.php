@@ -46,7 +46,7 @@ function email_is_duplicate($email) {
 
 function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1) {
 	$ins = "INSERT INTO accounts (account_identity, active_email, phash, type, active)
-		VALUES (:email, :email, crypt(:password, gen_salt('bf')), :type, :active)";
+		VALUES (:email, :email, crypt(:password, gen_salt('bf', 8)), :type, :active)";
 
 	query($ins, array(
 			':email'      => strtolower($email)
