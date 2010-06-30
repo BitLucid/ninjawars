@@ -29,8 +29,8 @@ function login_user($p_user, $p_pass) {
 	if (($data = authenticate($p_user, $p_pass)) && $data['authenticated'] == 't') {
 		SESSION::commence(); // Start a session on a successful login.
 		$_COOKIE['username'] = $data['uname']; // May want to keep this for relogin easing purposes.
-		SESSION::set('username', $data['uname']); // Actually ninja name
-		SESSION::set('player_id', $data['player_id']); // Actually ninja id.
+		SESSION::set('username', $data['uname']); // Actually char name
+		SESSION::set('player_id', $data['player_id']); // Actually char id.
 		SESSION::set('account_id', $data['account_id']);
 		update_activity_log($data['uname']);
 		update_last_logged_in($data['player_id']);
@@ -45,13 +45,13 @@ function login_user($p_user, $p_pass) {
 }
 
 // Sets the last logged in date equal to now.
-function update_last_logged_in($ninja_id) {
-	$up = "UPDATE accounts SET last_login = now() WHERE account_id IN (SELECT _account_id FROM account_players WHERE _player_id = :ninja_id)";
-	return query($up, array(':ninja_id'=>array($ninja_id, PDO::PARAM_INT)));
+function update_last_logged_in($char_id) {
+	$up = "UPDATE accounts SET last_login = now() WHERE account_id IN (SELECT _account_id FROM account_players WHERE _player_id = :char_id)";
+	return query($up, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
 }
 
 // Simple method to check for player id if you're logged in.
-function get_logged_in_ninja_id() {
+function get_logged_in_char_id() {
 	return SESSION::get('player_id');
 }
 
@@ -214,31 +214,31 @@ function display_when($state) {
 	}
 }
 
-// Wrapper to get a ninja name from a ninja id.
-function get_username($ninja_id=null) {
-	return get_ninja_name($ninja_id);
+// Wrapper to get a char name from a char id.
+function get_username($char_id=null) {
+	return get_char_name($char_id);
 }
 
-// Returns a ninja name from a ninja id.
-function get_ninja_name($ninja_id=null) {
+// Returns a char name from a char id.
+function get_char_name($char_id=null) {
 	static $self;
 
-	if (!$ninja_id) {
+	if (!$char_id) {
 		if ($self) {
 			// Self info requested
 			return $self;
 		} else {
 			// Determine & store username.
-			$ninja_id = get_logged_in_ninja_id();
+			$char_id = get_logged_in_char_id();
 			$sql = "SELECT uname FROM players WHERE player_id = :player";
-			$username = query_item($sql, array(':player'=>$ninja_id));
+			$username = query_item($sql, array(':player'=>$char_id));
 			$self = $username; // Store it for later.
 			return $self;
 		}
 	} else {
-		// Determine some other ninja's username and return it.
+		// Determine some other character's username and return it.
 		$sql = "SELECT uname FROM players WHERE player_id = :player";
-		return query_item($sql, array(':player'=>$ninja_id));
+		return query_item($sql, array(':player'=>$char_id));
 	}
 }
 
@@ -250,20 +250,20 @@ function player_name_from_id($player_id) {
 	return get_username($player_id);
 }
 
-// Old named wrapper for get_ninja_id
+// Old named wrapper for get_char_id
 function get_user_id($p_name=null){
-	return get_ninja_id($p_name);
+	return get_char_id($p_name);
 }
 
-// Return the ninja id that corresponds with a ninja name, if no other source is available.
-function get_ninja_id($p_name=null) {
+// Return the char id that corresponds with a char name, or the logged in account, if no other source is available.
+function get_char_id($p_name=null) {
 	static $self_id; // Store the player's own id.
 
 	if (!$p_name) {
 		if ($self_id) {
 			return $self_id;
 		} else {
-			$self_id = get_logged_in_ninja_id();
+			$self_id = get_logged_in_char_id();
 			return $self_id;
 		}
 	} else {

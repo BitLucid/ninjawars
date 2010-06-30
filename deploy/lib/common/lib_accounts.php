@@ -158,7 +158,7 @@ function create_ninja($send_name, $params=array()) {
 	$statement->bindValue(':email', $send_email);
 	$statement->bindValue(':class', $send_class);
 	$statement->execute();
-	return get_ninja_id($send_name);
+	return get_char_id($send_name);
 }
 
 
