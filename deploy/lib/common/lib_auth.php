@@ -137,7 +137,7 @@ function validate_username($send_name) {
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a space.";
 	} else if ($send_name != htmlentities($send_name)
 			|| str_replace(" ","%20",$send_name) != urlencode($send_name)
-			|| $send_name != username_is_valid($send_name)) {
+			|| !username_is_valid($send_name)) {
 		//Checks whether the name is different from the html stripped version, or from url-style version, or matches the filter.
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." should only contain letters, numbers, and underscores.";
 	}
@@ -146,7 +146,7 @@ function validate_username($send_name) {
 }
 
 function username_is_valid($username) {
-	return preg_match("/[^\w\d\s_\- ]/", (string) $username);
+	return !preg_match("/[^\w\d\s_\- ]/", (string) $username);
 }
 
 /*

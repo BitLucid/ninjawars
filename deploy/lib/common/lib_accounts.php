@@ -271,7 +271,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 
 		$duplicate_email = email_is_duplicate($send_email);
 
-		if ($username_error = username_is_valid($send_name)) {
+		if ($username_error = validate_username($send_name)) {
 			$error .= $username_error;
 		} else {  //when all the name requirement errors didn't trigger.
 			$success_message .= "Phase 1 Complete: Name passes requirements.<hr>\n";
