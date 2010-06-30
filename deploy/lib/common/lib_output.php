@@ -1,5 +1,5 @@
 <?php
-// See also: the filter object for useful preg_replace usages.
+// See also: the lib_input functions for filter methods.
 
 function get_indefinite_article($p_noun) {
 	return str_replace(' '.$p_noun, '', shell_exec('perl '.LIB_PERL.'lingua-a.pl "'.escapeshellcmd($p_noun).'"'));
@@ -9,12 +9,14 @@ function get_indefinite_article($p_noun) {
 
 
 // For filtering user text/messages for output.
-function out($dirty, $filter_method='toHtml', $echo=false, $links=true){
-    if ($filter_method=='toHtml') {
+function out($dirty, $filter_callback='toHtml', $echo=false, $links=true){
+    if ($filter_callback=='toHtml') {
         $res = htmlentities($dirty);
     } else {
-    	$filter = new Filter();
-    	$res = $filter->$filter_method($dirty);
+        $res = $dirty;
+        if($filter_callback && function_exists($filter_callback)){
+            $res = $filter_callback($dirty);
+        }
     }
 
     if ($links){ // Render http:// sections as links.
