@@ -24,11 +24,11 @@ if ($user_id) {
 	}
 }
 
-$members = query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('30 minutes' AS interval))");
-$members = either($members, '0');
+$members = whichever(query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('15 minutes' AS interval))"), '0');
 
-$membersTotal = query_item("SELECT count(*) FROM ppl_online WHERE member = true");
-$membersTotal = either($membersTotal, '0');
+$membersTotal = whichever(query_item("SELECT count(*) FROM ppl_online WHERE member = true"), '0');
+
+$total_chars = whichever(query_item("SELECT count(*) FROM players where confirmed = 1"), '0');
 
 // Output section.
 
