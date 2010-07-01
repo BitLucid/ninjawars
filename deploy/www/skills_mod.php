@@ -188,16 +188,16 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			// *** Get Special Items From Inventory ***
 			$user_id = get_user_id();
 			DatabaseConnection::getInstance();
-			$statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item = 'Strange Herb' GROUP BY item");
+			$statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item = 'Ginseng Root' GROUP BY item");
 			$statement->bindValue(':owner', $user_id);
 			$statement->execute();
 
 			if ($itemCount = $statement->fetchColumn()) {	// *** If special item count > 0 ***
 				$itemsConverted = min($itemCount, $starting_turns);
-				removeItem($user_id, 'Strange Herb', $itemsConverted);
-				addItem($username, 'Kampo Formula', $itemsConverted);
+				removeItem($user_id, 'Ginseng Root', $itemsConverted);
+				addItem($username, 'Tiger Salve', $itemsConverted);
 				$turn_cost = $itemsConverted;
-				echo "With intense focus you grind the strange herbs into potent formulas.\n";
+				echo "With intense focus you grind the herbs into potent formulas.\n";
 			} else { // *** no special items, give error message ***
 				$turn_cost = 0;
 				echo "You do not have the necessary ingredients for any Kampo formulas.\n";

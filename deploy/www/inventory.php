@@ -37,13 +37,13 @@ function standard_items() {
 		, 'Dim Mak' => array(
 			'display'  => 'Dim Mak'
 		)
-		, 'Strange Herb' => array(
-			'codename'   => 'Strange Herb'
-			, 'display'  => 'Strange Herbs'
+		, 'Ginseng Root' => array(
+			'codename'   => 'Ginseng Root'
+			, 'display'  => 'Ginseng Roots'
 		)
-		, 'Kampo Formula' => array(
-			'codename'   => 'Kampo Formula'
-			, 'display'  => 'Kampo Formulas'
+		, 'Tiger Salve' => array(
+			'codename'   => 'Tiger Salve'
+			, 'display'  => 'Tiger Salves'
 		)
 	);
 }

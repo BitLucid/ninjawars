@@ -167,18 +167,18 @@ if ($item == 'Dim Mak') {
 } else if ($item == 'Stealth Scroll') {
 	$item = $stealthScroll = new Item('Stealth Scroll');
 	$stealthScroll->setCovert(true);
-} else if ($item == 'Strange Herb') {
-	$item = $strangeHerb = new Item('Strange Herb');
+} else if ($item == 'Ginseng Root') {
+	$item = $strangeHerb = new Item('Ginseng Root');
 	$strangeHerb->setCovert(true);
 	$strangeHerb->setIgnoresStealth(true);
-} else if ($item == 'Kampo Formula') {
-	$item = $kampoFormula = new Item('Kampo Formula');
+} else if ($item == 'Tiger Salve') {
+	$item = $kampoFormula = new Item('Tiger Salve');
 	$kampoFormula->setCovert(true);
 	$kampoFormula->setIgnoresStealth(true);
 }
 
 if (!is_object($item)) {
-    echo "No such item.";
+    echo 'No such item.';
     die(); // hack to avoid fatal error, proper checking for items should be done.
 }
 

@@ -44,7 +44,7 @@ if (($turns = getTurns($username)) > 0) {
 					addItem($username, "Dim Mak", 1);
 				} else if ($player_turns > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
 					$oni_killed = true;
-					addItem($username, "Strange Herb", 4);
+					addItem($username, "Ginseng Root", 4);
 				} else {
 					$oni_killed = false;
 				}
@@ -128,7 +128,7 @@ if (($turns = getTurns($username)) > 0) {
 							addItem($username, 'Speed Scroll', 1);
 						} else {
 							$drop = 'herb';
-							addItem($username, 'Strange Herb', 1);
+							addItem($username, 'Ginseng Root', 1);
 						}
 					}
 
@@ -185,7 +185,7 @@ if (($turns = getTurns($username)) > 0) {
 
 				if (rand(1,9) == 9) { // *** 1/9 chance of getting an herb for Kampo ***
 					$herb = true;
-					addItem($username, "Strange Herb", 1);
+					addItem($username, 'Ginseng Root', 1);
 				} else {
 					$herb = false;
 				}
