@@ -24,11 +24,19 @@ if ($user_id) {
 	}
 }
 
-$members = whichever(query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('15 minutes' AS interval))"), '0');
+$stats          = membership_and_combat_stats();
+$player_count   = $stats['player_count'];
+$players_online = $stats['players_online'];
+$active_chars   = $stats['active_chars'];
 
-$membersTotal = whichever(query_item("SELECT count(*) FROM ppl_online WHERE member = true"), '0');
+// Active ninja.
+$members = first_value($active_chars, '0');
 
-$total_chars = whichever(query_item("SELECT count(*) FROM players where confirmed = 1"), '0');
+// Online ninja.
+$membersTotal = whichever($players_online, '0');
+
+// Total ninja.
+$total_chars = whichever($player_count, '0');
 
 // Output section.
 

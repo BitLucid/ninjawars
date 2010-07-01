@@ -4,6 +4,8 @@
 {$chat_refresh}
 <div id='full-chat'>
 {$input_form}
-{$active_members}
+    <div class='active-members-count'>
+        Ninjas: {$active_chars} Active / {$chars_online} Online / {$total_chars} Total
+    </div>
 {$chat_messages}
 </div>

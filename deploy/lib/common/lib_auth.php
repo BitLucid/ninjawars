@@ -346,6 +346,9 @@ function membership_and_combat_stats($update_past_stats=false) {
 
 	$po = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true");
 	$stats['players_online'] = $po->fetchColumn();
+	
+	$stats['active_chars'] = query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('15 minutes' AS interval))");
+	
 
 	return $stats;
 }

@@ -51,9 +51,7 @@ if ($user_id) {
 }
 
 // Player counts.
-$stats          = membership_and_combat_stats();
-$player_count   = $stats['player_count'];
-$players_online = $stats['players_online'];
+
 
 $options = array(/*'section_only'=>in('section_only'), */'is_index'=>true);
 
@@ -67,10 +65,7 @@ $parts = array(
 	, 'username'         => $username
 	, 'user_id'          => $user_id
 	, 'player_info'      => $player_info
-	, 'player_count'     => $player_count
-	, 'players_online'   => $players_online
 	, 'level'            => $level
-	, 'stats'            => $stats
 	, 'login_error'      => $login_error
 	, 'referrer'         => $referrer
 );

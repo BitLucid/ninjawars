@@ -142,14 +142,6 @@
         
         
         </div><!-- End of ninja-stats -->
-
-          <div id='ninja-count-menu' class='boxes passive'>
-            <!-- <a href="list_all_players.php" target="main">
-              <span id='nin1'>Ni</span><span id='nin2'>nj</span><span id='nin3'>as</span> 
-              <img src="images/smallArrows.png" alt="&gt;&gt;&gt;">
-            </a> -->
-            {$players_online} ninjas around / {$player_count} 
-          </div>
         
           <div id='index-chat'>
               <div id="village-chat" class="boxes active">

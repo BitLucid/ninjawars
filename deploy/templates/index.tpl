@@ -156,14 +156,8 @@
             <a href="index.php?logout=true"><img src='{$templatelite.const.IMAGE_ROOT|escape}logoutTriangle.png' alt='Logout' title='Log off the game' style='height:70px;width:70px'></a>
         </div>
         
-        </div><!-- End of ninja-stats -->
-          <div id='ninja-count-menu' class='boxes passive'>
-            <!-- <a href="list_all_players.php" target="main">
-              <span id='nin1'>Ni</span><span id='nin2'>nj</span><span id='nin3'>as</span> 
-              <img src="images/smallArrows.png" alt="&gt;&gt;&gt;">
-            </a> -->
-            {$players_online|escape} ninjas around / {$player_count|escape} 
-          </div>
+        </div><!-- End of ninja-stats div -->
+          
           <div id='messages' class='boxes active'>
               <div>
                   <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''></a>

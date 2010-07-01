@@ -31,7 +31,10 @@ if ($user_id) {
 
 $chat_refresh = render_chat_refresh($not_mini=true); // Write out the js to refresh to refresh page to full chat.
 
-$active_members = render_active_members();
+$stats          = membership_and_combat_stats();
+$total_chars   = $stats['player_count'];
+$chars_online = $stats['players_online'];
+$active_chars   = $stats['active_chars'];
 
 $chat_messages = render_chat_messages($chatlength);
 

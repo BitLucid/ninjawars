@@ -1,7 +1,7 @@
 <div id='mini-chat'>
 
     <div class='active-members-count'>
-        Ninjas: Active {$members} / Online {$membersTotal} / Total {$total_chars}
+        Ninjas: {$members} Active / {$membersTotal} Online / {$total_chars} Total
     </div>
     
     {$chat_messages}
