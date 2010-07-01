@@ -1,6 +1,7 @@
 <?php
 // I guess the autoprepend won't work reliably for this 404.
-include_once(substr(__FILE__, 0, (strpos(__FILE__, 'www/')))."resources.php");
+include_once(substr(__FILE__, 0, (strrpos(__FILE__, 'www/')))."resources.php");
+// Using strrpos it finds the -last- occurance, to prevent collisions.
 ?>
 <!DOCTYPE html>
 <!-- html5 doctype enforces most compliant standards, even though use of html5 features isn't practical quite yet -->
