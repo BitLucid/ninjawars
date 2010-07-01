@@ -17,7 +17,7 @@ CREATE TABLE account_players (
 	created_date timestamp without time zone NOT NULL default now()
 );
 
-INSERT INTO accounts (account_identity, active_email, phash, type, last_login, created_date) SELECT email AS email, email AS active_email, crypt(pname, gen_salt('bf')) AS phash, 0, now() - (days||' days')::interval, created_date FROM players;
+INSERT INTO accounts (account_identity, active_email, phash, type, last_login, created_date) SELECT email AS email, email AS active_email, crypt(pname, gen_salt('bf', 8)) AS phash, 0, now() - (days||' days')::interval, created_date FROM players;
 
 INSERT INTO account_players (_account_id, _player_id, last_login, created_date) SELECT account_id, player_id, now() - (days||' days')::interval, accounts.created_date FROM accounts JOIN players ON account_identity = lower(email);
 

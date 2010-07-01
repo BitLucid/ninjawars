@@ -22,7 +22,7 @@ function validate_email($email) {
 		//strstr($send_email, "@") == "@aol.com" || strstr($send_email, "@") == "@netscape.com" || strstr($send_email, "@") == "@aim.com"
 		//Throws error if email from blocked domain.
 		$error = "Phase 3 Incomplete: We cannot currently accept @aol.com, @netscape.com, or @aim.com email addresses.";
-	} elseif (!eregi("^[[:alnum:]][a-z0-9_.-]*@[a-z0-9.-]+\.[a-z]{2,4}$", trim($email))) {
+	} elseif (!preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", trim($email))) {
 		$error = "Phase 3 Incomplete: The email address ("
 				.htmlentities($email).") must contain an @ symbol and a domain name to be valid.";
 	} elseif (email_is_duplicate($email)) {
@@ -46,7 +46,7 @@ function email_is_duplicate($email) {
 
 function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1) {
 	$ins = "INSERT INTO accounts (account_identity, active_email, phash, type, active)
-		VALUES (:email, :email, crypt(:password, gen_salt('bf')), :type, :active)";
+		VALUES (:email, :email, crypt(:password, gen_salt('bf', 8)), :type, :active)";
 
 	query($ins, array(
 			':email'      => strtolower($email)
@@ -271,16 +271,9 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 
 		$duplicate_email = email_is_duplicate($send_email);
 
-
-		// Validate the username symbols!
-		$username_error = validate_username($send_name);
-
-		if ($username_error) {
+		if ($username_error = validate_username($send_name)) {
 			$error .= $username_error;
 		} else {  //when all the name requirement errors didn't trigger.
-			$send_name = trim($send_name);  // Just cuts off any white space at the end.
-			$filter = new Filter();
-			$send_name = $filter->toUsername($send_name); // Filter any un-whitelisted characters.
 			$success_message .= "Phase 1 Complete: Name passes requirements.<hr>\n";
 
 			// Validate the password!
@@ -318,6 +311,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 						$success_message .= "Phase 4 Complete: Class was specified.<br><hr>";
 
 						// *** Signup is successful at this point  ***
+						$successful = true;
 						$preconfirm = 0;
 						$preconfirm = preconfirm_some_emails($send_email);
 
