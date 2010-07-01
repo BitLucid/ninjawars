@@ -146,20 +146,15 @@ function validate_username($send_name) {
 }
 
 function username_is_valid($username) {
-	return !preg_match("/[^\w\d\s_\- ]/", (string) $username);
-}
-
 /*
    Potential regex for a username.
  * A username must start with a lower-case or upper-case letter
- * A username can contain only letters, numbers or underscores
+ * A username can contain only letters, numbers, underscores, or dashes.
  * A username must be between 8 and 24 characters
  * A username cannot end in an underscore
-
- function valid_name($username) {
- return preg_match("#^[a-z][\da-z_]{6,22}[a-z\d]\$#i", $username);
- }
  */
+	return !preg_match("#^[a-z][\da-z_]{6,22}[a-z\d]\$#i", (string) $username);
+}
 
 // Takes in a potential login name and saves it over multiple logins.
 function nw_session_start($potential_username = '') {
