@@ -69,7 +69,7 @@ function render_avatar_from_email($email, $avatar_type=null, $size=null){
 	$base        = "http://www.gravatar.com/avatar/";
 	$hash        = md5(trim(strtolower($email)));
 	$no_gravatar = "d=".urlencode($def);
-	$size        = either($size, 80);
+	$size        = whichever($size, 80);
 	$rating      = "r=x";
 	$res         = $base.$hash."?".implode('&', array($no_gravatar, $size, $rating));
 

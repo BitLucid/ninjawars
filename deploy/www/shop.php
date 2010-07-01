@@ -11,7 +11,7 @@ $in_quantity       = in('quantity');
 $item              = in('item');
 $grammar           = "";
 $username          = get_username();
-$gold              = either(getGold($username), 0);
+$gold              = first_value(getGold($username), 0);
 $current_item_cost = 0;
 $quantity          = intval($in_quantity);
 $is_logged_in      = is_logged_in();
@@ -32,7 +32,7 @@ $item_costs = array(
 );
 
 if ($in_purchase == 1){
-	$current_item_cost  = either($item_costs[$item], 0);
+	$current_item_cost  = first_value($item_costs[$item], 0);
 	$current_item_cost *= $quantity;
 
 	if ($current_item_cost > $gold){ // Not enough gold.

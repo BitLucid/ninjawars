@@ -163,7 +163,7 @@ function format_css_class_from_title($page_title) {
 **/
 function get_player_info($p_id = null, $p_password = false) {
 	$dao = new PlayerDAO();
-	$id = either($p_id, SESSION::get('player_id')); // *** Default to current player. ***
+	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
 
 	$playerVO = $dao->get($id);
 
@@ -179,7 +179,8 @@ function get_player_info($p_id = null, $p_password = false) {
 		}
 	}
 
-	///TODO: Migrate all calls of this function to a new function that returns an arrayizable Player object. When all calls to this function are removed, remove this function
+	///TODO: Migrate all calls of this function to a new function that returns an arrayizable Player object. 
+	//When all calls to this function are removed, remove this function
 	return $player_data;
 }
 

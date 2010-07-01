@@ -44,7 +44,7 @@ if ($recent_attack && ($recent_attack > ($start_of_attack - $attack_spacing))) {
 
 // *** ********* GET VARS FROM POST - OR GET ************* ***
 $attacked    = in('attacked'); // boolean for attacking again
-$target      = either(in('target'), in('attackee'));
+$target      = whichever(in('target'), in('attackee'));
 $duel        = (in('duel')    ? true : NULL);
 $blaze       = (in('blaze')   ? true : NULL);
 $deflect     = (in('deflect') ? true : NULL);
