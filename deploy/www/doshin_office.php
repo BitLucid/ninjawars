@@ -94,7 +94,7 @@ echo "</div>\n";
 echo "<p>\n";
 
 if (getBounty($username) > 0) {
-	echo "<form id=\"bribe_form\" action=\"doshin_office.php\" method=\"post\" name=\"bribe_form\" style='width:40%;float:left;'>\n";
+	echo "<form id=\"bribe_form\" action=\"doshin_office.php\" method=\"post\" name=\"bribe_form\" style='width:40%;float:left;padding-right: 40px;'>\n";
 	echo "Bribe down your own bounty: <input id=\"bribe\"type=\"text\" size=\"4\" maxlength=\"6\" name=\"bribe\" class=\"textField\">\n";
 	echo "<input id=\"command\" type=\"submit\" value=\"Bribe\" name=\"command\" class=\"formButton\">\n";
 	echo "</form>\n";
@@ -113,7 +113,7 @@ if ($data = $result->fetch()) {
 
 	$statement = DatabaseConnection::$pdo->query('SELECT count(player_id) FROM players WHERE bounty > 0 AND confirmed = 1 and health > 0');
 
-	echo "<p style='clear:both;text-align:center;margin-top:.5em;'>Total Wanted Ninja: ".$statement->fetchColumn()."</p>\n";
+	echo "<p style='clear:both;text-align:center;margin-top:8em;'>Total Wanted Ninja: ".$statement->fetchColumn()."</p>\n";
 
 	echo "<hr>\n";
 

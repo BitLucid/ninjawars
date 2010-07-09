@@ -59,6 +59,7 @@ if (($turns = getTurns($username)) > 0) {
 		} else if ($victim == "villager") { // *** VILLAGER ***
 			$villager_attack = rand(0, 10); // *** Villager Damage ***
 			$just_villager = rand(0, 20);
+			$added_bounty  = 0;
 
 			if ($victory = subtractHealth($username, $villager_attack)) {	// *** Player defeated villager ***
 				$villager_gold = rand(0, 20);	// *** Vilager Gold ***
