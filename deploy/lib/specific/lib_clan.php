@@ -34,7 +34,7 @@ function render_clan_join($process=null, $username, $clan_id) {
 		$confirmStatement->bindValue(':user', $username);
 		$confirmStatement->execute();
 		$confirm = $confirmStatement->fetchColumn();
-		
+
 		// These ampersands get encoded later.
 		$url = message_url("clan_confirm.php?clan_joiner=".get_user_id($username)."&agree=1&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
 
@@ -43,9 +43,9 @@ function render_clan_join($process=null, $username, $clan_id) {
 			$url";
 		send_message(get_user_id($username), $leader_id, $join_request_message);
 
-		$res =  "<div id='clan-join-request-sent' class='ninja-notice'>Your request to join ".htmlentities($clan['clan_name'])." 
+		$res =  "<div id='clan-join-request-sent' class='ninja-notice'>Your request to join ".htmlentities($clan['clan_name'])."
 			has been sent to ".htmlentities($leader_name)."</div>\n";
-	} else {                                            
+	} else {
 		//Clan Join list of available Clans
 		$leaders = get_clan_leaders(($clan_id ? $clan_id : null), ($clan_id ? false : true));
 		$res = "<h2>Clans Available to Join</h2>
@@ -91,7 +91,7 @@ function get_clans($clan_id=null) {
 function get_clan_founders() {
 	DatabaseConnection::getInstance();
 
-	$founders_statement = DatabaseConnection::$pdo->query("SELECT clan_founder, clan_name, uname, player_id, confirmed 
+	$founders_statement = DatabaseConnection::$pdo->query("SELECT clan_founder, clan_name, uname, player_id, confirmed
 		FROM clan LEFT JOIN players ON lower(clan_founder) = lower(uname)");
 	return $founder_statement->fetchAll();
 }
@@ -113,8 +113,8 @@ function get_clan_leaders($clan_id=null, $all=false) {
 	$limit = ($all ? '' : ' LIMIT 1 ');
 	$clan_or_clans = ($clan_id ? " AND clan_id = :clan ORDER BY level " : ' ORDER BY clan_id, level ');
 	DatabaseConnection::getInstance();
-	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname 
-		FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id=_player_id 
+	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
+		FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id=_player_id
 		WHERE confirmed = 1 AND member_level > 0 $clan_or_clans $limit");
 
 	if ($clan_id) {
@@ -129,14 +129,14 @@ function get_clan_leaders($clan_id=null, $all=false) {
 // Functions for creating the clan ranking tag cloud.
 
 /**
- * This determines the criterial for how the clans get ranked and tagged, 
+ * This determines the criterial for how the clans get ranked and tagged,
  *   and shows only non-empty clans.
 **/
 function clan_size() {
 	$res = array();
 
 	// sum the levels of the players (minus days of inactivity) for each clan
-	$counts = query("SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC");
+	$counts = query_array("SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC");
 
 	if (!empty($counts)) {
 		$largest = reset($counts);
@@ -183,16 +183,15 @@ function render_clan_view($p_clan_id) {
     $members_resultset = query_resultset("SELECT uname, email, clan_name, level, days, clan_founder, player_id, member_level
 			FROM clan
 			JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-			JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC", 
+			JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC",
 			array(':clan_id'=>$p_clan_id));
 
-	
-	$max = query_item("SELECT max(level) AS max 
+	$max = query_item("SELECT max(level) AS max
 		FROM clan
 		JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-		JOIN players ON player_id = _player_id AND confirmed = 1", 
+		JOIN players ON player_id = _player_id AND confirmed = 1",
 		array(":clan_id"=>$p_clan_id));
-	
+
 	$clan = get_clan($p_clan_id); // Clan array.
 	$clan_name = $clan['clan_name'];
 
@@ -200,6 +199,7 @@ function render_clan_view($p_clan_id) {
 			<h3 id='clan-members-title'>".htmlentities($clan_name)."</h3>
 			<ul id='clan-members-list'>";
     $count = 0;
+
 	foreach ($members_resultset as $member) {
 		$member['size'] = floor( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
 
@@ -228,5 +228,4 @@ function render_clan_view($p_clan_id) {
 
 	return $res;
 }
-
 ?>

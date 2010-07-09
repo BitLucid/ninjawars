@@ -8,15 +8,45 @@ function authenticate($p_login, $p_pass) {
 
 	if ($login != '' && $pass != '') {
 		// Allow login via username or email.
+/*	*** This query should be used when we have gotten rid of all duped unames ***
 		$sql = "SELECT account_id, account_identity, uname, player_id, phash = crypt(:pass, phash) AS authenticated
 			FROM accounts
 			JOIN account_players ON account_id = _account_id
 			JOIN players ON player_id = _player_id
 			WHERE (lower(active_email) = :login OR lower(uname) = :login)";
-		return query_row($sql, array(':login'=>$login, ':pass'=>$pass));
+*/
+
+		$sql = "SELECT account_id, account_identity, uname, player_id, CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated
+			FROM accounts
+			JOIN account_players ON account_id = _account_id
+			JOIN players ON player_id = _player_id
+			WHERE (lower(active_email) = :login
+					OR lower(uname) = :login
+					OR lower(uname) IN 
+						(SELECT lower(uname) FROM players WHERE lower(email) = :login))";
+
+		$result = query($sql, array(':login'=>$login, ':pass'=>$pass));
+
+		if ($result->rowCount() > 1) {	// *** More than 1 record was found, commence dupe handling ***
+			return $result;
+		} else if ($result->rowCount() < 1) {	// *** No record was found, user does not exist ***
+			return false;
+		} else {	// *** Exactly one result found, return it ***
+			return $result->fetch();
+		}
 	} else {
 		return false;
 	}
+}
+
+function _login_user($p_username, $p_player_id, $p_account_id) {
+	SESSION::commence(); // Start a session on a successful login.
+	$_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
+	SESSION::set('username', $p_username); // Actually char name
+	SESSION::set('player_id', $p_player_id); // Actually char id.
+	SESSION::set('account_id', $p_account_id);
+	update_activity_log($p_username);
+	update_last_logged_in($p_player_id);
 }
 
 /**
@@ -26,18 +56,50 @@ function login_user($p_user, $p_pass) {
 	$success = false;
 	$error   = 'That password/username combination was incorrect.';
 
-	if (($data = authenticate($p_user, $p_pass)) && $data['authenticated'] == 't') {
-		SESSION::commence(); // Start a session on a successful login.
-		$_COOKIE['username'] = $data['uname']; // May want to keep this for relogin easing purposes.
-		SESSION::set('username', $data['uname']); // Actually char name
-		SESSION::set('player_id', $data['player_id']); // Actually char id.
-		SESSION::set('account_id', $data['account_id']);
-		update_activity_log($data['uname']);
-		update_last_logged_in($data['player_id']);
-		// Block by ip list here, if necessary.
-		// *** Set return values ***
-		$success = true;
-		$error = '';
+/*	*** This conditional should be used instead of what is below when we get rid of all duped unames ***
+	if (($data =authenticate($p_user, $p_pass)) && $data['authenticated'] == 't') {
+*/
+
+	$data = authenticate($p_user, $p_pass);
+
+	if ($data) {
+		if (is_array($data)) {
+			if ((bool)$data['authenticated']) {
+				_login_user($data['uname'], $data['player_id'], $data['account_id']);
+				// Block by ip list here, if necessary.
+				// *** Set return values ***
+				$success = true;
+				$error = '';
+			}
+		} else {	// *** Getting a resultset implies uname duplication, commence de-dupe procedure after authentication ***
+			$player_ids = array();
+
+			while ($row = $data->fetch()) {
+				$player_ids = $row['player_id'];
+
+				if ((bool)$row['authenticated']) {
+					$active_id = $row['player_id'];
+
+					// *** If this user reserved their name, they can continue ***
+					if ((bool)query_item('SELECT CASE WHEN locked THEN 1 ELSE 0 END FROM duped_unames WHERE player_id = :player_id', array(':player_id'=>$row['player_id']))) {
+						_login_user($row['uname'], $row['player_id'], $row['account_id']);
+						$success = true;
+						$error = '';
+						break;
+					}
+				}
+			}
+
+			if (isset($active_id) && !$success) {	// *** Player authenticated, set session vars for de-duping and redirect ***
+				SESSION::commence(); // Start a session on a successful login.
+				SESSION::set('players', $player_ids);
+				SESSION::set('active_player', $active_id);
+				header('Location: deduplicate.php');
+				exit();
+			}
+
+			// *** If the player did not manage to authenticate against any of the dupes, handle as though login failed ***
+		}
 	}
 
 	// *** Return array of return values ***
@@ -152,8 +214,10 @@ function username_is_valid($username) {
  * A username can contain only letters, numbers, underscores, or dashes.
  * A username must be between 8 and 24 characters
  * A username cannot end in an underscore
+ * A username cannot contain 2 consecutive underscores
  */
-	return !preg_match("#^[a-z][\da-z_]{6,22}[a-z\d]\$#i", (string) $username);
+	$username = (string)$username;
+	return (!preg_match("#[\-_]{2}#", $username) && preg_match("#^[a-z][\da-z_\-]{6,22}[a-z\d]$#i", $username));
 }
 
 // Takes in a potential login name and saves it over multiple logins.
