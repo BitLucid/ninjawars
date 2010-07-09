@@ -125,6 +125,17 @@ then
 	exit;
 fi
 
+if [ ! -f $configuration_file ]
+then
+	if [ ! -f "local_configs/$configuration_file" ]
+	then
+		echo "No configuration found! Please provide a deployment configuration file. Aborting."
+		exit
+	else
+		configuration_file="local_configs/$configuration_file"
+	fi
+fi
+
 # READ IN CONFIGURATION FILE
 while read curline; do
 	optarg=${curline##*=}
@@ -185,12 +196,6 @@ while read curline; do
 		;;
 	esac
 done < $configuration_file
-
-if [ ! -f $configuration_file ] && [[ ! $resource_file || ! -f $resource_file ]]
-then
-       echo "No configuration found! Please provide a completed resource file or a configuration file. Aborting."
-       exit
-fi
 
 if [ ${SERVER_ROOT: -1} != '/' ]
 then
