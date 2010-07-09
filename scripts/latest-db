@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ $1 ]
+then
+	sed -i -e {s/ninjawarsMaster/$1/g} ./scripts/mirror-database
+fi
+
+./scripts/mirror-database
+cd deploy/db/migrations
+psql $1 < 20100105drop_old_clan_columns.sql
+psql $1 < 20100411_add_fk_to_messages.sql
+psql $1 < 20100412_item_table.sql
+psql $1 < 20100425_improving_classes.sql
+psql $1 < 20100425_skill_table.sql
+psql $1 < 20100501_clan_founder_unlink.sql
+psql $1 < 20100503_player_cleanup.sql
+psql $1 < 20100504_account_table.sql
+psql $1 < 20100709_activate_gray_ninja.sql
+psql $1 < 20100709_track_duped_unames.sql
+
+cd -
