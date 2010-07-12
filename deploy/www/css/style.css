@@ -61,7 +61,7 @@ html, body {
 Sticky Footer by Ryan Fait
 http://ryanfait.com/
 */
-#index-footer{
+#index-footer {
     /* When you change the total height here you have to change .push and .wrapper as well.*/
     border-top:10px solid #666666;
     padding-top:8px;
@@ -73,7 +73,7 @@ http://ryanfait.com/
     color:gray;
 }
 
-#index-footer a{
+#index-footer a {
     color:gray;
     text-decoration:underline;
     font-size:80%;
@@ -81,10 +81,10 @@ http://ryanfait.com/
     margin:3px; /* Should correspond to the border width on hover below. */
 }
 
-#index-footer a:hover{
+#index-footer a:hover {
    margin:0;
 }
-#index-footer a:hover{
+#index-footer a:hover {
     -webkit-transition-property: all; 
     -webkit-transition-duration: 500ms;
     -webkit-transition-timing-function: linear;
@@ -95,7 +95,7 @@ http://ryanfait.com/
     color:white;
 }
 
-.main-body{
+.main-body {
     min-width: 800px;
 }
 
@@ -104,7 +104,7 @@ body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
     /*font: 90%/1.4 'Trebuchet MS', Tahoma, Geneva, sans-serif;*/
 }
 
-dl{
+dl {
     line-height:1.1;
 }
 
@@ -135,7 +135,7 @@ hr {
 	margin-bottom:.3em;
 }
 
-h1, h2, h3, h4, h5, h6, .subtitle, .title{
+h1, h2, h3, h4, h5, h6, .subtitle, .title {
 	/*font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;*/
 	font: 27px/36px 'GazelleFLFRegular', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	letter-spacing: 0;
@@ -147,7 +147,7 @@ h1, h2, h3, h4, h5, h6, .subtitle, .title{
 	padding-left: 160px;
 	color:#cccccc;
 }
-h1, h2, .title, .player-info .player-name{
+h1, h2, .title, .player-info .player-name {
 	color:black;
 	background-color:#BDB76B;/*DarkKhaki*/
 	color:#000000;
@@ -159,7 +159,7 @@ h1, h2, .title, .player-info .player-name{
     margin-right:auto;
     margin-bottom:.1em;
 }
-h2{
+h2 {
     margin-left: auto;
     margin-right: auto;
     width:50%;
@@ -167,7 +167,7 @@ h2{
     font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
     letter-spacing:0.1em;
 }
-h1{
+h1 {
 	background: #BDB76B url(/images/blacktransfaderight.png) right top repeat-y;
 	border:none;
     padding: 0 58px 0 102px; /* Increased left padding to account for black fade image */
@@ -177,16 +177,16 @@ h1{
 	margin: 0 auto inherit auto;
 }
 /* Experimental css3 for the staff page*/
-.ninjawars-staff h1{
+.ninjawars-staff h1 {
     -moz-border-radius-bottomleft: 20px; -webkit-border-bottom-left-radius: 20px; padding: 10px;
 }
-.ninjawars-staff h3{
+.ninjawars-staff h3 {
     border-radius: 5px; 
     padding: 5px 5px 5px 15px;
     box-shadow: -10px -10px 0px #666;
 }
 
-.ninjawars-staff #open-source-repository h3{
+.ninjawars-staff #open-source-repository h3 {
     background-color: hsla(0,100%,50%,0.3);
     border:none;
     border-image: url(/images/border.png) 27 27 27 27 stretch stretch;
@@ -194,25 +194,25 @@ h1{
     font-size:30px;
 }
 
-.ninjawars-staff #latest-commit{
+.ninjawars-staff #latest-commit {
     color:pink;
     background-color: hsla(0,100%,50%,0.3);
 }
-.ninjawars-staff #latest-commit-section{
+.ninjawars-staff #latest-commit-section {
         width: 97%; height: 7em; border: 1px solid white; resize: vertical; overflow: auto; 
         /*border-image: url(/images/border.png) 27 27 27 27 stretch stretch;*/
         margin-bottom: 1em;
         max-height:20em;
 }
 
-.doshin-office .description{
+.doshin-office .description {
     text-align:left;
     -moz-column-count: 3; -moz-column-gap: 1em; -moz-column-rule: 1px solid #333; 
     -webkit-column-count: 3; -webkit-column-gap: 1em; -webkit-column-rule: 1px solid #333;
     padding-bottom:.5em;
 }
 
-.doshin-office .description p{
+.doshin-office .description p {
     text-indent: 20px;
 }
 
@@ -221,7 +221,7 @@ h1{
 
 
 
-.clan-members .subtitle{
+.clan-members .subtitle {
     background-color:#BDB76B;/*DarkKhaki*/
     color:black;
 }
@@ -231,26 +231,26 @@ h1{
 	src: url('../font/jrandomc.eot');
 	src: local('J Random C Regular'), local('JRandomC'), url('../font/jrandomc.woff') format('woff'), url('../font/jrandomc.ttf') format('truetype'), url('../font/jrandomc.svg#JRandomC') format('svg');
 }*/
-#ninjawars-title{
+#ninjawars-title {
 	font: /*'JRandomCRegular', */'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 	font-size:larger;
 	color:#800000;/*maroon*/
 	padding: 3px;
 }
-#ninjawars-title img{
+#ninjawars-title img {
 	max-height:60px;
 	vertical-align:middle;
 	max-width:100%;
 	
 }
 
-#nin1{
+#nin1 {
     color:#A52A2A;
 }
-#nin2{
+#nin2 {
     color:red;
 }
-#nin3{
+#nin3 {
     color:orange;
 }
 
@@ -297,7 +297,7 @@ a:link {} a:visited {} a:active {}
 	margin-bottom: 2px;
 }
 
-.member-info .original-creator{
+.member-info .original-creator {
     text-shadow: black 2px 2px 2px;
 }
 
@@ -305,7 +305,7 @@ a:link {} a:visited {} a:active {}
     float:right;
 }
 
-img#class-shuriken{
+img#class-shuriken {
     width:20px;
     height:17px;
 }
@@ -314,7 +314,7 @@ img#class-shuriken{
 #menu a { /*Menu actions are a lighter blue to pop better on the red */
 	color: #6495ED;/*CornflowerBlue;*/
 }
-#menu label{
+#menu label {
     font: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, serif;
 }
 
@@ -324,7 +324,7 @@ img#class-shuriken{
     padding-right: 15px;
 }
 
-a.show-hide-link{
+a.show-hide-link {
     background: url(/images/show_and_hide.png) left center no-repeat;
     padding: 0 16px;
     color:gray;
@@ -360,7 +360,7 @@ div.description {
 	margin-top: 10px;
 	margin-bottom: 20px;
 }
-form input#become-a-ninja{
+form input#become-a-ninja {
     margin-left:auto;
     margin-right:auto;
     text-align:center;
@@ -375,7 +375,7 @@ form#signup {
 	margin-top: 1em;
 	margin-bottom: 1em;
 }
-form#signup label{
+form#signup label {
     float:left;
     clear:left;
     margin-right:1em;
@@ -385,7 +385,7 @@ form#signup label{
 	height: 3em;
 	width: 7.5em;
 }
-form#signup input, form#signup select{
+form#signup input, form#signup select {
     display:block;
     margin-right: 2em;
     margin-left: 1em;
@@ -396,7 +396,7 @@ form#signup input:focus, form#signup select:focus {
     color:black;
     background-color:white;
 }
-form#signup fieldset span{
+form#signup fieldset span {
     float:left;
     font-style:italic;
 }
@@ -414,11 +414,11 @@ legend {
 
 /*TABLES, general and specific */
 
-table{
+table {
 	border-collapse:collapse;
 	border:none;
 }
-.outer-table{
+.outer-table {
    	border-top: 1px solid DarkKhaki;
 	border-left: 1px solid DarkKhaki;
 
@@ -440,18 +440,18 @@ td {
 tr {
 	background-color:#333333;
 }
-.odd{
+.odd {
 	background-color:#3D3D3D;
 }
 table.playerTable {
 	width: 100%;
 	background-color: #ccb094;
 }
-table.playerTable .classCell div{
+table.playerTable .classCell div {
 	height:100%;
 	width: 60%;
 }
-table.playerTable .classCell img{
+table.playerTable .classCell img {
 	vertical-align:middle;
 }
 
@@ -473,7 +473,7 @@ table.playerTable .Black, .player-info .Black {
 	background-color:white;
 }
 
-.player-status, .ninja-error{
+.player-status, .ninja-error {
     margin: 0 auto 0;
     display:inline-block;
     border: 1px solid #BDB76B;/*DarkKhaki*/
@@ -484,12 +484,12 @@ table.playerTable .Black, .player-info .Black {
 }
 /* Note that ninja-error is used below as well. */
 
-.your-stats #player-profile-section{
+.your-stats #player-profile-section {
     margin: 10px 0 10px 0;
     text-align: center;
     float:right;
 }
-.your-stats #player-profile{
+.your-stats #player-profile {
     border:1px solid gray;
 }
 
@@ -499,18 +499,19 @@ table.playerTable .Black, .player-info .Black {
 }
 
 .profile-message {
-    overflow:auto;
-    max-height: 8em;
+    overflow: auto;
+    max-height: 10em;
+	padding-bottom: 4em;
 }
 
-.your-stats #profile-edit{
+.your-stats #profile-edit {
 	float:left;
 }
-.your-stats hr{
+.your-stats hr {
 	clear:both;
 }
 
-#player-profile-attack .attacking-choices{
+#player-profile-attack .attacking-choices {
     border:none;
     padding-left: 5px;
     padding-right: 5px;
@@ -518,17 +519,17 @@ table.playerTable .Black, .player-info .Black {
     padding-bottom: 5px;
     text-align: center;
 }
-#player-profile-attack span.duel, #player-profile-attack .blaze, #player-profile-attack .deflect{
+#player-profile-attack span.duel, #player-profile-attack .blaze, #player-profile-attack .deflect {
     border:none;
     padding: 1px;
 }
-#player-profile-table #skills-section, #player-profile-table #inventory-items{
+#player-profile-table #skills-section, #player-profile-table #inventory-items {
     border:none;
     padding: 5px;
     text-align: center;
 }
 
-#skills-list form{
+#skills-list form {
 	margin-top:.5em;
 	margin-bottom:.5em;
 }
@@ -546,35 +547,35 @@ td.playerTable {
     text-align: left;
     background-color: #333333;
 }
-.playerTable .levelCell{
+.playerTable .levelCell {
 	padding:0;
 	line-height:1.5;
 }
-.playerTable .levelCell div{
+.playerTable .levelCell div {
 	height:100%;
 	width:60%;
 }
-.playerTable .novice, .player-info .novice{ /* Level categories */
+.playerTable .novice, .player-info .novice { /* Level categories */
 	color:black;
 	background-color:LightGray;
 }
-.playerTable .acolyte, .player-info .acolyte{
+.playerTable .acolyte, .player-info .acolyte {
 	color:black;
 	background-color:DarkGray;
 }
-.playerTable .ninja, .player-info .ninja{
+.playerTable .ninja, .player-info .ninja {
 	color:maroon;
 	background-color:black;
 }
-.playerTable .elder-ninja, .player-info .elder-ninja{
+.playerTable .elder-ninja, .player-info .elder-ninja {
 	color:DarkKhaki;
 	background-color:#8B0000;
 }
-.playerTable .master-ninja, .player-info .master-ninja{
+.playerTable .master-ninja, .player-info .master-ninja {
 	color:white;
 	background-color:maroon;
 }
-.playerTable .shadow-master, .player-info .shadow-master{
+.playerTable .shadow-master, .player-info .shadow-master {
 	color:black;
 	background-color:red;
 }
@@ -592,7 +593,7 @@ td.playerTable {
 }
 
 
-.DeadRow a{
+.DeadRow a {
 	color: rgb(40, 40, 160); /*Darken links to dead players */
 }
 
@@ -629,40 +630,35 @@ td.playerTable {
 	 margin-top:10px;
 	 margin-bottom:10px;
 }
-#logo img{
+#logo img {
 	width:50px;
 	height:42px;
 }
 
 /* Logo when added as a link back in pages lacking an outer iframe */
-#logo-appended{
-<<<<<<< HEAD
-	float: left;
-	width: 100px;
-=======
+#logo-appended {
     clear:both;
 	float:left;
 	width:100px;
->>>>>>> c274b0b...   Quests: Templates and script, WIP.
 	margin-right: .5em;
 	display: none;
 }
 
-body.solo-page{
+body.solo-page {
     margin: 10px 30px 10px 30px;
 }
-body.solo-page h1{
+body.solo-page h1 {
     margin-bottom:2em;
 }
 
-body.solo-page #logo-appended{
+body.solo-page #logo-appended {
 	display: block; /* Display the logo on solo pages */
 }
-body.solo-page h1{
+body.solo-page h1 {
     display:block;
     clear:both;
 }
-#logo-appended img{
+#logo-appended img {
 	width: 100px;
 }
 
@@ -746,20 +742,20 @@ body.solo-page h1{
 	padding: 3px 0 3px 5px;
 	background:transparent url(../images/bg_top_bar_teal.png) no-repeat scroll top left;
 }
-#right-column .boxes{
+#right-column .boxes {
 	background:transparent url(../images/bg_top_bar_teal_right.png) no-repeat scroll top right;
 }
 .main-body .active {
 	background:transparent url(../images/bg_top_bar_maroon.png) no-repeat scroll 0 0;
 }
-#right-column .main-body .active{
+#right-column .main-body .active {
 	background:transparent url(../images/bg_top_bar_maroon_right.png) no-repeat scroll top right;
     background-position: top right;
 }
 .main-body .passive {
 	background:transparent url(../images/bg_top_bar_grey.png) no-repeat scroll 0 0;
 }
-#right-column .main-body .passive{
+#right-column .main-body .passive {
 	background:transparent url(../images/bg_top_bar_grey_right.png) no-repeat scroll top right;
     background-position: top right;
 }
@@ -798,7 +794,7 @@ body.solo-page h1{
 }
 
 /* IFRAMES */
-iframe{
+iframe {
     border:none;
 }
 
@@ -817,59 +813,59 @@ iframe{
 .chat-expanded {
     height: 880px;
 }
-.active-members-count{
+.active-members-count {
 	font-size:smaller;
 	font-style:italic;
 	color:gray;
 }
 
-#latest-message-title{
+#latest-message-title {
     display:block;
 }
-#recent-mail{
+#recent-mail {
     height:2.5em;
     width:100%;
     overflow:hidden;
 }
-#recent-event{
+#recent-event {
     max-height:2.5em;
     width:100%;
     overflow:hidden;
 }
 
 
-.chat-messages, #message-list{
+.chat-messages, #message-list {
     margin-top:0;
     list-style-type:none;
 }
-.chat-messages dt, #message-list dt{
+.chat-messages dt, #message-list dt {
     clear:left;
     float:left;
     margin-right: .5em;
 }
-.chat-messages .chat-message a{
+.chat-messages .chat-message a {
     font-size:smaller;
 }
-.chat-messages dt a{ /* Breaks the formatting if the a is too large. */
+.chat-messages dt a { /* Breaks the formatting if the a is too large. */
     font-size:1em;
     font-size:smaller;
 }
-.chat-messages .chat-time, #message-list .message-time{
+.chat-messages .chat-time, #message-list .message-time {
 	font-family: Trebuchet MS1, Helvetica, sans-serif;
 	font-size: .8em;
 	font-style:italic;
 	color: gray;
 	display:inline-block;
 }
-#expand-chat{
+#expand-chat {
     border: 1px dashed darkblue;
 }
 
-#full-chat .chat-messages{
+#full-chat .chat-messages {
     font-size:1em;
 }
 
-#post_msg{
+#post_msg {
     margin-top:0;
     margin-bottom:0.5em;
 }
@@ -886,22 +882,22 @@ iframe{
 #quickstats-and-switch-stats a {
     font-size: 85%;
 }
-#quickstats-and-switch-stats .centered{
+#quickstats-and-switch-stats .centered {
     margin-bottom: 1em;
 }
 
 /*Quickstats styles*/
-.quickstats dt{
+.quickstats dt {
     clear: right;
     float: left;
     margin-right: .2em;
 }
 
-.quickstats dd{
+.quickstats dd {
     margin-left: 50%;
 }
 
-.quickstats{
+.quickstats {
     width:90%;
     margin-right: auto;
     margin-left:auto;
@@ -932,23 +928,23 @@ iframe{
     font-size: 1.2em;
 }
 
-#ninja-count p{
+#ninja-count p {
     margin:0;
 }
 
-#contact-us img{
+#contact-us img {
     max-width:98%;
 }
 
 /* End of Index page stuff */
 
 
-.textField{
+.textField {
 	background-color:black;
 	color:white;
 }
 
-.formbutton, .formButton{
+.formbutton, .formButton {
 	background:black;
 	color:SkyBlue;
 	font-weight:bold;
@@ -958,30 +954,30 @@ iframe{
 .login-menu { /* See also the #menu entry */
 	font-family: helvetica,Verdana,sans-serif;
 }
-.login-menu #menu-start{
+.login-menu #menu-start {
 	width:50%;
 	font-size:15px;
 }
-.login-menu #menu-start .logged-in-bar{
+.login-menu #menu-start .logged-in-bar {
     padding-left: .5em;
 }
 
-.login-menu #menu-info{
+.login-menu #menu-info {
 	width:40%;
 }
 
-.login-menu #menu-end{
+.login-menu #menu-end {
 	width:10%;
 }
 
-.login-menu #menu-end span{
+.login-menu #menu-end span {
     padding-right: .5em;
 }
 
 #login-bar {
 	margin:-2px 17px 0;
 }
-#login-bar .itext{
+#login-bar .itext {
 	width: 100px;
 	height: 15px;
 	background:maroon;
@@ -989,17 +985,17 @@ iframe{
 	/*border: 0;*/
 	font-weight:bold;
 }
-#login-bar label{
+#login-bar label {
 	font-weight:bold;
 }
 #login-bar form {
 	margin:0;
 }
-#login-bar form input{
+#login-bar form input {
     height:1.5em;
     vertical-align: middle;
 }
-#login-bar form #login-button{
+#login-bar form #login-button {
     height:2em;
     vertical-align:middle;
     padding: .1em .2em .1em;
@@ -1017,7 +1013,7 @@ iframe{
 
 /* Errors and Notices and the Like */
 
-.ninja-error{/* Note that ninja-error is used above as well. */
+.ninja-error {/* Note that ninja-error is used above as well. */
 	color:#735005;
 	background-color:#F4A83D;
 	border-bottom:1px solid #D6800C;
@@ -1028,7 +1024,7 @@ iframe{
 	padding: 3px;
 }
 
-.ninja-notice{
+.ninja-notice {
 	color:Brown;
 	background-color:DarkKhaki;
 	font-family: Tahoma, Geneva, sans-serif;
@@ -1046,10 +1042,10 @@ iframe{
     border: 1px solid #c75600;
 }
 /*
-.player-clan .subtitle{
+.player-clan .subtitle {
 	background-color:white;
 }*/
-.clan-members .injured{
+.clan-members .injured {
     background-color:maroon;
     color:black;
 }
@@ -1078,7 +1074,7 @@ iframe{
 	padding: 3px;
 }
 
-.notice, .informational{
+.notice, .informational {
 	color:Black;
 	background-color:#8AC575;
 	font-family: ‘Lucida Console’, Monaco, monospace;
@@ -1088,77 +1084,77 @@ iframe{
 	padding: 3px;
 }
 
-.notice a, .informational a{
+.notice a, .informational a {
 	color:Blue;
 	font-family: ‘Lucida Console’, Monaco, monospace;
 }
 
 /*List all players and player profile styles*/
-.active-players ul, .clan-members ul{
+.active-players ul, .clan-members ul {
     margin:0;
     padding:0 0 0 1em;
     border:1px dashed #00008B;
     overflow:hidden;
 }
-.active-players li, .clan-members li{
+.active-players li, .clan-members li {
     display: inline;
     list-style-type: none;
     padding-right: 5px;
 }
-.player-list-nav .current-page{
+.player-list-nav .current-page {
     color:#1c1;
     border:thin #1c1 solid;
 }
-.player-list-nav .page-counter{
+.player-list-nav .page-counter {
     font-family:Verdana,Arial,san-serif;
     font-size:x-small;
     text-align:center;
 }
-.player-list-nav a{
+.player-list-nav a {
     text-decoration:none;
 }
-.player-list-nav form{
+.player-list-nav form {
     margin:0;
     padding:0;
     text-align:center;
     font-weight:bold;
 }
-.player-info .clan-members{
+.player-info .clan-members {
     text-align:center;
 }
-.player-info .player-stats, .player-info .player-clan{
+.player-info .player-stats, .player-info .player-clan {
     margin-bottom: 1.5em;
 }
-#player-profile-table{
+#player-profile-table {
     width:100%;
     text-align:center;
 }
-#player-profile-attack{
+#player-profile-attack {
     width:100%;
     text-align:center;
     margin:0;
     padding:0;
 }
 
-.player-info .Dead{
+.player-info .Dead {
 	background-color:maroon;
 	color:red;
 }
 
-.enemy-list .enemy-dead, .status-dead{
+.enemy-list .enemy-dead, .status-dead {
     background-color:#202020;
     color:maroon;
 }
-.status-dead a{
+.status-dead a {
 	background-color:#202020;
 	color:maroon;
 }
-#recent-attackers li{
+#recent-attackers li {
 	display:inline;
 	margin-right: 1em;
 }
 
-.player-info .Stealthed{
+.player-info .Stealthed {
 	background-color:gray;
 	color:maroon;
 }
@@ -1185,7 +1181,7 @@ iframe{
     border: thin solid white;
     padding-bottom: 5px;
 }
-#leader-panel ul{
+#leader-panel ul {
     list-style-type: none;
     margin: 3px;
     height: 2.3em;
@@ -1194,7 +1190,7 @@ iframe{
     width: 49%;
     float: left;
 }
-#leader-options{
+#leader-options {
     padding: 5px;
     width: 100%;
 }
@@ -1209,25 +1205,25 @@ iframe{
 }
 
 /* Player tags */
-#player-tags .player-tag{
+#player-tags .player-tag {
 	float:left;
 	margin-right: 1em;
 }
 
 /* Clan info section */
-#clan-avatar-section{
+#clan-avatar-section {
     max-height:110px;
     max-width:650px;
     overflow:auto;
 }
 
-#clan-avatar-section #clan-avatar{
+#clan-avatar-section #clan-avatar {
     max-height:100px;
     max-width:600px;
 }
 
 /*  Clan tags section */
-#clan-tags{
+#clan-tags {
     clear: both;
     padding-top: 3px;
 }
@@ -1241,7 +1237,7 @@ iframe{
 }
 
 /* Clan member tags styles */
-#clan-members .member, #player-tags .player-tag a{
+#clan-members .member, #player-tags .player-tag a {
     color: #F1D98C;
     background-color: #712800;
     padding-left: .3em;
@@ -1261,12 +1257,12 @@ iframe{
     margin-bottom: 1em;
     text-align: center;
 }
-#clan-members .member-info{
+#clan-members .member-info {
     float:left;
     margin:5px;
 }
 /*
-#clan-members .member{
+#clan-members .member {
     color: #F1D98C;
     background-color: #712800;
     padding-left: .3em;
@@ -1275,7 +1271,7 @@ iframe{
 
 /*  End of Clan Tags section */
 
-#clan-tags .size10{ /* Reverse the biggest tag color */
+#clan-tags .size10 { /* Reverse the biggest tag color */
     color: maroon;
 	background-color: #4682B4;
     font-family:tahoma, sans;
@@ -1286,46 +1282,46 @@ iframe{
     font-family:tahoma, sans;
     text-shadow: black 2px 2px 2px;
 }
-.size10{
+.size10 {
     font-size: 5.5em;
 }
-.size9{
+.size9 {
     font-size: 5em;
 }
-.size8{
+.size8 {
     font-size: 4.5em;
 }
-.size7{
+.size7 {
     font-size: 4em;
 }
-.size6{
+.size6 {
     font-size: 3.5em;
 }
-.size5{
+.size5 {
     font-size: 3em;
 }
-.size4{
+.size4 {
     font-size: 2.5em;
 }
-.size3{
+.size3 {
     font-size: 2em;
 }
-.size2{
+.size2 {
     font-size: 1.5em;
 }
-.size1{
+.size1 {
     font-size: 1em;
 }
 
 /*   Attack player page css */
-#attack-player-page li{
+#attack-player-page li {
     margin: .2em .3em .2em .2em;
 	display:inline;
 	margin-left: 1em;
 	/*list-style-type:circle;
 	background-color:purple;*/
 }
-#attack-player-page ul{
+#attack-player-page ul {
     margin:0;
     padding:0;
 }
@@ -1344,7 +1340,7 @@ iframe{
 	text-align: justify;
 }
 
-.developer{
+.developer {
 	border-left:thin #8B0000 solid;
 	border-top:thin #8B0000 solid;
 	margin: .5em 0 .5em 0;
@@ -1355,46 +1351,46 @@ iframe{
 	color:#cc3333;font-weight:bold;
 }
 
-.developer .developer-image{
+.developer .developer-image {
     float:right;
     vertical-align: bottom;
 }
 
-.other-credits ul{
+.other-credits ul {
     list-style-type:square;
 }
 
-#project-languages tr{
+#project-languages tr {
 	background-color:white;
 }
 
-#latest-commit-section{
+#latest-commit-section {
     font-size:1.1em;
 }
 
-#latest-commit{
+#latest-commit {
     border-bottom: thin green dashed;
     padding-left: .5em;
     color: greenYellow;
 }
 
-#page-404{
+#page-404 {
     font-size: 1.5em;
 }
-#page-404 p{
+#page-404 p {
     margin-bottom: .5em;
 }
 
-#page-404 #support-email{
+#page-404 #support-email {
     font-size: .8em;
 }
 
 /* Main Landing Page */
 
-#create-a-ninja{
+#create-a-ninja {
     font-size:2em;
 }
-#progression{
+#progression {
 	text-align:center;
 	margin: .2em 0 .5em 0;
 	font-size:1.7em;
@@ -1402,44 +1398,44 @@ iframe{
 	/*font-family: Impact, sans-serif;*/
 	font-variant: small-caps;
 }
-#progression a{
+#progression a {
 	font-family: Impact, sans-serif;
 }
-#progression .down-arrow{
+#progression .down-arrow {
 	height:35px;
 }
-#progression p{
+#progression p {
 	margin: 0;
 }
-#progression p:first-child{
+#progression p:first-child {
 	font-size:larger;
 }
 
 
 /* User Messages Page */
 
-.message-unread, .event-unread{
+.message-unread, .event-unread {
     font-weight:bold;
     background-color:DarkSlateBlue;
     color:white;
 }
-#messages-icon{
+#messages-icon {
 	height:15px;
 }
 
-#message-inbox{
+#message-inbox {
     font-size: 1.3em;
     font-weight:normal;
 }
 
-#clan-mail-section{
+#clan-mail-section {
     width: 50%;
     margin-left:auto;
     margin-right:auto;
     float: left;
 }
 
-.messages #ninja-search{
+.messages #ninja-search {
     margin: 10px;
     width:30%;
     float:left;
@@ -1447,87 +1443,87 @@ iframe{
     margin-right:auto;
 }
 
-.messages ul{
+.messages ul {
     padding-left:5px;
 }
 
-.messages h2{
+.messages h2 {
     margin: 0 0 5px 0;
 }
 
-.messages #clan-and-search{
+.messages #clan-and-search {
     margin: 0;
     padding: 0;
     clear: both;
 }
 
-.messages #delete-messages{
+.messages #delete-messages {
     float:left;
     width:20%;
 }
 
-.messages #message-list{
+.messages #message-list {
     clear:both;
 }
 
-.message-nav{
+.message-nav {
     margin-top:1em;
     clear:both;
 }
 
-#clan-mail-section form{
+#clan-mail-section form {
     margin-left:auto;
     margin-right:auto;
 }
 
-#clan-mail-section textarea{
+#clan-mail-section textarea {
     width:50%;
     height:3em;
     margin-left:1em;
 }
 
-#message-sent-to{
+#message-sent-to {
     clear:both;
 }
 
-.player-communications .FormButton{
+.player-communications .FormButton {
     display:block;
 }
-.events #event-list{
+.events #event-list {
     padding:0 0 0 1em;
 }
 
 /* NEW INDEX REWRITE CSS */
 
 
-#left-column{
+#left-column {
     float:left;
     width:15%;
 }
-#center-column{
+#center-column {
     float:left;
     width:65%;
 }
-#right-column{
+#right-column {
     float:left;
     width:20%;
 }
-.header-section{
+.header-section {
     height:6em;
     border-bottom: thick solid #330000;
     color:white;
 }
-#ninjawars-home{
+#ninjawars-home {
     background-color:black;
     color: white;
 }
-#logged-in-bar{
+#logged-in-bar {
     margin-left:1em;
     width:100%;
     font-size:1.5em;
 }
 
-#reactive-panel{
+#reactive-panel {
     height:100%;
     background-color:black;
     color: white;
@@ -1545,7 +1541,7 @@ iframe{
 }
 
 /* reactive-panel subparts */
-#category-bar{
+#category-bar {
     margin: .2em 0 0 0;
     height:75%;
     width: 100%;
@@ -1557,13 +1553,13 @@ iframe{
     letter-spacing: 0;
     text-transform:uppercase;
 }
-#category-bar ul{
+#category-bar ul {
     height:100%;
     margin: 0;
     padding: 0;
     display: inline;
 }
-#category-bar li{
+#category-bar li {
     margin: 0;
     padding: 0;
     width:33%;
@@ -1571,25 +1567,25 @@ iframe{
     float:left;
     text-align:center;
 }
-#category-bar a{
+#category-bar a {
     font:30px/34px 'PisanNormal',Georgia,Times,serif;
     letter-spacing: 0;
 }
-#category-bar a img{
+#category-bar a img {
     vertical-align:top;
 }
 /*
-#category-bar #status-actions{
+#category-bar #status-actions {
     background: url(/images/ninja_silhouette_50px.png) no-repeat top center;
 }
-#category-bar #combat-actions{
+#category-bar #combat-actions {
     background: url(/images/50pxShuriken.png) no-repeat top center;
 }
-#category-bar #village-actions{
+#category-bar #village-actions {
     background: url(/images/pagodaIcon_60px.png) no-repeat top center;
 }*/
 
-#subcategory-bar{
+#subcategory-bar {
     height:25%;
     width:100%;
     float:left;
@@ -1597,16 +1593,16 @@ iframe{
     line-height:2em;
     text-transform:uppercase;
 }
-#subcategory-bar a{
+#subcategory-bar a {
     font: 18px/27px 'ShangriLaNFRegular', Verdana, sans-serif;
     letter-spacing: 0;
     font-weight:bold;
 }
-#subcategory-bar a:hover{
+#subcategory-bar a:hover {
     text-decoration:none;
 }
 
-#subcategory-bar ul{
+#subcategory-bar ul {
     margin: 0 0 0 5px;
     padding:0;
     background-color:#330000;
@@ -1618,22 +1614,22 @@ iframe{
     margin-right:auto;
 }
 
-#subcategory-bar li{
+#subcategory-bar li {
     display:inline;
     margin: 0 2px 0 1px;
 }
-#subcategory-bar ul#self-subcategory{
+#subcategory-bar ul#self-subcategory {
     float:left;
     margin-left:0;
 }
-/*#subcategory-bar ul#combat-subcategory{
+/*#subcategory-bar ul#combat-subcategory {
 }*/
-#subcategory-bar ul#village-subcategory{
+#subcategory-bar ul#village-subcategory {
     float:right;
     margin-right:0;
 }
 
-.faq .brownHeading, .faq hr{
+.faq .brownHeading, .faq hr {
 	margin-top:.5em;
 	margin-bottom:.2em;
 }
@@ -1641,20 +1637,20 @@ iframe{
 /* End reactive-panel */
 
 /* Signup form */
-form #signup .submit{
+form #signup .submit {
 	margin-top:2em;
 }
-select option #red-class-select{
+select option #red-class-select {
 	color:maroon;
 }
-select option #black-class-select{
+select option #black-class-select {
 	background-color:black;
 	color:white;
 }
-select option #white-class-select{
+select option #white-class-select {
 	font-weight:bold;
 }
-select option #blue-class-select{
+select option #blue-class-select {
 	color:blue;
 	font-weight:bold;
 }
@@ -1669,7 +1665,7 @@ select option #blue-class-select{
 	padding: 10px;
 }
 
-.debug{
+.debug {
     border:2px red dashed;
     font-size: 12px;
     color:white;
