@@ -3,7 +3,7 @@
 <div id='attack-player-page'>
 
     <h3>Locations</h3>
-    <ul style='margin: .5em auto;text-align:center;'>
+    <ul style='margin: .5em auto;text-align:center;font-size:1.3em;'>
 {foreach name="looploc" from=$locations item="loc" key="idx"}
       <li style='padding-left:8px'>
       	<a href='{$loc.url|escape}'>
@@ -19,7 +19,7 @@
   <hr>
   
   <h3>Attack a citizen:</h3>
-  <ul id='npc-list' style='margin: .5em auto;text-align:center;'>
+  <ul id='npc-list' style='margin: .5em auto;text-align:center;font-size:1.3em;'>
 {foreach name="person" from=$npcs key="idx" item="npc"}
       <li><a href='{$npc.url|escape}' target='main'><img alt='' src='images/characters/{$npc.image|escape:'url'|escape}' style='width:25px;height:46px'> {$npc.name|escape}</a></li>
 {/foreach}
