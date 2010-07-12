@@ -55,13 +55,10 @@ function _login_user($p_username, $p_player_id, $p_account_id) {
 function login_user($p_user, $p_pass) {
 	$success = false;
 	$error   = 'That password/username combination was incorrect.';
-
 /*	*** This conditional should be used instead of what is below when we get rid of all duped unames ***
 	if (($data =authenticate($p_user, $p_pass)) && $data['authenticated'] == 't') {
 */
-
 	$data = authenticate($p_user, $p_pass);
-
 	if ($data) {
 		if (is_array($data)) {
 			if ((bool)$data['authenticated']) {
@@ -89,7 +86,6 @@ function login_user($p_user, $p_pass) {
 					}
 				}
 			}
-
 			if (isset($active_id) && !$success) {	// *** Player authenticated, set session vars for de-duping and redirect ***
 				SESSION::commence(); // Start a session on a successful login.
 				SESSION::set('players', $player_ids);
@@ -97,11 +93,9 @@ function login_user($p_user, $p_pass) {
 				header('Location: deduplicate.php');
 				exit();
 			}
-
 			// *** If the player did not manage to authenticate against any of the dupes, handle as though login failed ***
 		}
 	}
-
 	// *** Return array of return values ***
 	return array('success' => $success, 'login_error' => $error);
 }
@@ -124,7 +118,6 @@ function get_logged_in_account_id() {
 // Abstraction for getting the account's ip.
 function get_account_ip() {
 	static $ip;
-
 	if ($ip) {
 		return $ip;
 	} else {
@@ -158,11 +151,9 @@ function is_authentic($p_user, $p_pass) {
 function logout_user($echo=false, $redirect='index.php') {
 	$msg = 'You have been logged out.';
 	nw_session_destroy();
-
 	if ($echo) {
 		echo $msg;
 	}
-
 	if ($redirect) {
 		redirect($redirect);
 	}
@@ -179,18 +170,15 @@ function logout($echo=false, $redirect='index.php') {
 // Check that the password format fits.
 function validate_password($password_to_hash) {
 	$error = null;
-
 	if (strlen($password_to_hash) < 7 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
 		$error = "Phase 2 Incomplete: Passwords must be at least 7 characters long.<hr>\n";
 	}
-
 	return $error;
 }
 
 
 function validate_username($send_name) {
 	$error = null;
-
 	if (substr($send_name, 0, 1) != 0 || substr($send_name, 0, 1) == "0") {  // Case the first char isn't a letter???
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a number.\n";
 	} else if (strlen($send_name) >= 21) {   // Case string is greater or equal to 21.
@@ -203,19 +191,18 @@ function validate_username($send_name) {
 		//Checks whether the name is different from the html stripped version, or from url-style version, or matches the filter.
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." should only contain letters, numbers, and underscores.";
 	}
-
 	return $error;
 }
 
-function username_is_valid($username) {
 /*
-   Potential regex for a username.
+ * Potential regex for a username.
  * A username must start with a lower-case or upper-case letter
  * A username can contain only letters, numbers, underscores, or dashes.
  * A username must be between 8 and 24 characters
  * A username cannot end in an underscore
  * A username cannot contain 2 consecutive underscores
  */
+function username_is_valid($username) {
 	$username = (string)$username;
 	return (!preg_match("#[\-_]{2}#", $username) && preg_match("#^[a-z][\da-z_\-]{6,22}[a-z\d]$#i", $username));
 }
@@ -223,14 +210,12 @@ function username_is_valid($username) {
 // Takes in a potential login name and saves it over multiple logins.
 function nw_session_start($potential_username = '') {
 	$result = array('cookie_created' => false, 'session_existed' => false, 'cookie_existed'=> false);
-
 	if (!isset($_COOKIE['user_cookie']) || $_COOKIE['user_cookie'] != $potential_username) {
 		// Refresh cookie if the username isn't set in it yet.
 		$result['cookie_created'] = createCookie("user_cookie", $potential_username, (time()+60*60*24*365), "/", WEB_ROOT); // *** 365 days ***
 	} else {
 		$result['cookie_existed'] = true;
 	}
-
 	return $result;
 }
 
@@ -246,7 +231,6 @@ function nw_session_destroy() {
 function display_when($state) {
 	$on  = '';
 	$off = "style='display: none;'";
-
 	switch ($state) {
 		case 'logged_in':
 			return (is_logged_in() ? $on : $off);
@@ -267,7 +251,6 @@ function display_when($state) {
 			} else {
 				error_log('improper display_when() argument');
 			}
-
 			return $off;
 			break;
 	}
@@ -281,7 +264,6 @@ function get_username($char_id=null) {
 // Returns a char name from a char id.
 function get_char_name($char_id=null) {
 	static $self;
-
 	if (!$char_id) {
 		if ($self) {
 			// Self info requested
@@ -317,7 +299,6 @@ function get_user_id($p_name=null){
 // Return the char id that corresponds with a char name, or the logged in account, if no other source is available.
 function get_char_id($p_name=null) {
 	static $self_id; // Store the player's own id.
-
 	if (!$p_name) {
 		if ($self_id) {
 			return $self_id;
@@ -353,13 +334,11 @@ function update_activity_log($username) {
  */
 function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure=false, $HTTPOnly=false) {
 	$ob = ini_get('output_buffering');
-
 	// Abort the method if headers have already been sent, except when output buffering has been enabled
 	if (headers_sent() && (bool) $ob === false || strtolower($ob) == 'off' ) {
 		assert("(false) && ('Headers were sent before the cookie was reached, which should not happen.')");
 		return false;
 	}
-
 	if (!empty($domain)) {
 		// Cut off leading http:// or www
 		if (strtolower(substr($domain, 0, 7)) == 'http://') $domain = substr($domain, 7);
@@ -373,7 +352,6 @@ function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure
 
 		if ($port !== false) $domain = substr($domain, 0, $port);
 	}
-
 	// Prevent "headers already sent" error with utf8 support (BOM)
 	//if ( utf8_support ) header('Content-Type: text/html; charset=utf-8');
 	$header_string = 'Set-Cookie: '.rawurlencode($name).'='.rawurlencode($value)
@@ -402,9 +380,7 @@ function membership_and_combat_stats($update_past_stats=false) {
 		$update->bindValue(':visciousKiller', $todaysViciousKiller);
 		$update->execute();
 	}
-
 	$stats['vicious_killer'] = $todaysViciousKiller;
-
 	$pc = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE confirmed = 1");
 	$stats['player_count'] = $pc->fetchColumn();
 
@@ -412,8 +388,6 @@ function membership_and_combat_stats($update_past_stats=false) {
 	$stats['players_online'] = $po->fetchColumn();
 	
 	$stats['active_chars'] = query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('15 minutes' AS interval))");
-	
-
 	return $stats;
 }
 ?>
