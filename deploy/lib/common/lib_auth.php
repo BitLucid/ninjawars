@@ -4,7 +4,7 @@
 // Side-effect-less check for whether a login & pass work.
 function authenticate($p_login, $p_pass) {
 	$login = strtolower((string)$p_login);
-	$pass  = strtolower((string)$p_pass);
+	$pass  = (string)$p_pass;
 
 	if ($login != '' && $pass != '') {
 		// Allow login via username or email.
@@ -56,7 +56,7 @@ function login_user($p_user, $p_pass) {
 	$success = false;
 	$error   = 'That password/username combination was incorrect.';
 /*	*** This conditional should be used instead of what is below when we get rid of all duped unames ***
-	if (($data =authenticate($p_user, $p_pass)) && $data['authenticated'] == 't') {
+	if (($data =authenticate($p_user, $p_pass)) && (bool)$data['authenticated']) {
 */
 	$data = authenticate($p_user, $p_pass);
 	if ($data) {
@@ -142,7 +142,8 @@ function is_logged_in() {
 function is_authentic($p_user, $p_pass) {
 	// Note that authenticate is happily side-effect-less.
 	$data = authenticate($p_user, $p_pass);
-	return ($data['authenticated'] == 't');
+
+	return (is_array($data['authenticated']) && (bool)$data['authenticated']);
 }
 
 /**
@@ -154,6 +155,7 @@ function logout_user($echo=false, $redirect='index.php') {
 	if ($echo) {
 		echo $msg;
 	}
+
 	if ($redirect) {
 		redirect($redirect);
 	}
