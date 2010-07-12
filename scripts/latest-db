@@ -3,6 +3,7 @@
 if [ $1 ]
 then
 	sed -i -e {s/ninjawarsMaster/$1/g} ./scripts/mirror-database
+	sed -i -e {s/ninjawarsMaster/$1/g} ./scripts/latest-db
 fi
 
 ./scripts/mirror-database
