@@ -28,6 +28,7 @@ $status_output_list = render_status_list();
 
 $viewinv = ($command == 'viewinv');
 
+// *** TODO: switch this to query() when we switch to SMARTY. Templatelite can't handle iterating over the resultset ***
 $items = query_array("SELECT item, amount FROM inventory WHERE owner = :user ORDER BY item", array(':user'=>$user_id));
 
 $parts = get_certain_vars(get_defined_vars(), array('items')); // Pull current flat vars + the resultset into the template.

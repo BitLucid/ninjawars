@@ -37,17 +37,15 @@
 
 {else}
 
-	    <dl class='quickstats inventory'>
-	    {foreach from=$items item=item}
-	          <dt>{$item.item}: </dt>
-	          <dd> {$item.amount}</dd>
-	    {/foreach}
-	      <dt style='color:gold'>Gold:</dt>
-	      <dd style='color:gold'>{$gold}</dd>
-
-	    </dl>
+  <dl class='quickstats inventory'>
+    {foreach from=$items item="item"}
+    <dt>{$item.item}: </dt>
+    <dd> {$item.amount}</dd>
+    {/foreach}
+    <dt style='color:gold'>Gold:</dt>
+    <dd style='color:gold'>{$gold}</dd>
+  </dl>
 {/if}
-
 
 <!-- Update the login-bar's health display. -->
 <script language='javascript' type='text/javascript'>
