@@ -33,7 +33,7 @@ function get_messages($to_id, $limit=null, $offset=null) {
 		$offset = 0;
 	}
 	
-	$res = query_array("SELECT send_from, message, unread, uname AS from FROM messages JOIN players ON send_from = player_id WHERE send_to = :to ORDER BY date DESC LIMIT :limit OFFSET :offset",
+	$res = query("SELECT send_from, message, unread, uname AS from FROM messages JOIN players ON send_from = player_id WHERE send_to = :to ORDER BY date DESC LIMIT :limit OFFSET :offset",
 	  array(':to'=>$to_id,
 	        ':limit'=>$limit,
 	        ':offset'=>$offset));

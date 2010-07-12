@@ -46,11 +46,9 @@ read_messages($user_id); // mark messages as read for next viewing.
 
 // TODO: Handle "send" ing to specific, known users.
 $message_list = '';
-if (!empty($messages)) {
-	foreach ($messages as $loop_message) {
-		$loop_message['message'] = out($loop_message['message']);
-		$message_list .= render_template('single_message.tpl', array('message' => $loop_message));
-	}
+foreach ($messages as $loop_message) {
+	$loop_message['message'] = out($loop_message['message']);
+	$message_list .= render_template('single_message.tpl', array('message' => $loop_message));
 }
 
 $parts = get_certain_vars(get_defined_vars());

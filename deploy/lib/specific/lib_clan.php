@@ -129,24 +129,23 @@ function get_clan_leaders($clan_id=null, $all=false) {
 // Functions for creating the clan ranking tag cloud.
 
 /**
- * This determines the criterial for how the clans get ranked and tagged,
- *   and shows only non-empty clans.
+ * This determines the criteria for how the clans get ranked and tagged, and shows only non-empty clans.
 **/
 function clan_size() {
 	$res = array();
 
 	// sum the levels of the players (minus days of inactivity) for each clan
-	$counts = query_array("SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC");
+	$counts = query("SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC");
 
-	if (!empty($counts)) {
-		$largest = reset($counts);
-		$max     = $largest['sum'];
+	if ($counts->rowCount() > 0) {
+		$clan_info = $counts->fetch();
+		$max       = $clan_info['sum'];
 
-		foreach ($counts as $clan_info) {
+		do {
 			// *** make percentage of highest, multiply by 10 and round to give a 1-10 size ***
 			$res[$clan_info['clan_id']]['name'] = $clan_info['clan_name'];
 			$res[$clan_info['clan_id']]['score'] = floor(( (($clan_info['sum'] - 1 < 1 ? 0 : $clan_info['sum'] - 1)) / $max) * 10) + 1;
-		}
+		} while ($clan_info = $counts->fetch());
 	}
 
 	return $res;
