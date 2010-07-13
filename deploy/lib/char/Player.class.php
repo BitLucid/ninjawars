@@ -55,7 +55,7 @@ class Player
 	}
 
 	public function getStrength() {
-		$str = getStrength($this->vo->uname);
+		$str = $this->vo->strength;
 
 		if ($this->hasStatus(STR_UP2)) {
 			return $str+(ceil($str*.25));
