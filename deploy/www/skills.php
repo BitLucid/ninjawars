@@ -16,7 +16,6 @@ $skillsListObj = new Skill();
 
 $level = getLevel($username);
 $class = getClass($username);
-$status_array = getStatus($username);
 
 $status_output_list = render_status_section();
 $no_skills = true;

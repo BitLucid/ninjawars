@@ -86,5 +86,22 @@ class Player
 	public function as_array() {
 		return (array) $this->vo;
 	}
+
+	public function getClan() {
+		DatabaseConnection::getInstance();
+		$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name 
+				FROM clan 
+				JOIN clan_player ON clan_id = _clan_id 
+				WHERE _player_id = :player");
+		$statement->bindValue(':player', $this->player_id);
+		$statement->execute();
+
+		if ($data = $statement->fetch()) {
+			$clan = new Clan($data['clan_id'], $data['clan_name']);
+			return $clan;
+		} else {
+			return null;
+		}
+	}
 }
 ?>

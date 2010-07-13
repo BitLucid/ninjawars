@@ -38,7 +38,7 @@ $starting_turn_cost = $turn_cost;
 assert($turn_cost>=0);
 $turns_to_take = null;  // *** Even on failure take at least one turn.
 
-if ($target != "") {
+if ($target != '') {
 	$link_back = "<a href=\"player.php?player=$target\">Player Detail</a>";
 } else {
     $link_back = "<a href=\"skills.php\">Skills</a>";
@@ -47,29 +47,18 @@ if ($target != "") {
 
 $player          = new Player($username);
 $user_ip         = get_account_ip();
-$username_status = getStatus($username);
 $class           = $player->vo->class;
-$level           = $player->vo->level;
 $covert          = false;
 $victim_alive    = true;
 $attacker_id     = $username;
 $starting_turns  = $player->vo->turns;
 $ending_turns    = null;
 
-DatabaseConnection::getInstance();
-$statement = DatabaseConnection::$pdo->prepare('SELECT health, ip, turns, level FROM players WHERE uname = :target');
-$statement->bindValue(':target', $target);
-$statement->execute();
-$target_data = $statement->fetch();
+$target = new Player($target);
 
-$target_hp       = $target_data['health'];
-$target_ip       = $target_data['ip'];
-$target_turns    = $target_data['turns'];
-$target_level    = $target_data['level'];
+$level_check  = $player->vo->level - $target->vo->level;
 
-$level_check  = $level - $target_level;
-
-if ($username_status && $status_array['Stealth']) {
+if ($player->hasStatus(STEALTH)) {
 	$attacker_id = "A Stealthed Ninja";
 }
 
@@ -77,7 +66,7 @@ if ($username_status && $status_array['Stealth']) {
 // TODO: Make attackLegal also check that the skill can be used on an outside target.
 // *** Checks the skill use legality, as long as the target isn't self.
 $params         = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$ignores_stealth, 'self_use'=>$self_use);
-$AttackLegal    = new AttackLegal($username, $target, $params);
+$AttackLegal    = new AttackLegal($player->player_id, $target->player_id, $params);
 $attack_allowed = $AttackLegal->check();
 $attack_error   = $AttackLegal->getError();
 
@@ -96,7 +85,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		if ($starting_turns >= $turn_cost) {
 			//$msg = "You have had sight cast on you by $attacker_id at $today";
 			//sendMessage($attacker_id, $target, $msg);
-			//$username_status = subtractStatus($target, STEALTH);
+			//subtractStatus($target, STEALTH);
 			// Sight will no longer break stealth.
 
 			$statement = DatabaseConnection::$pdo->prepare("SELECT uname, class_name AS class, health, strength, gold, kills, turns, level FROM players JOIN class ON _class_id = class_id WHERE uname = :player");
@@ -153,7 +142,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		$state = "unstealthed";
 
 		if ($starting_turns >= $turn_cost) {
-			if ($status_array['Stealth'] == true) {
+			if ($target->hasStatus(STEALTH)) {
 				addStatus($target, $mode);
 				echo "You are now $state.<br>\n";
 			} else {
@@ -170,7 +159,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		$state      = "stealthed";
 
 		if ($starting_turns >= $turn_cost) {
-			if (false == $status_array['Stealth']) {
+			if (!$target->hasStatus(STEALTH)) {
 				addStatus($target, $mode);
 				echo "You are now $state.<br>\n";
 			} else {
@@ -226,7 +215,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		}
 	} elseif ($command == "Fire Bolt") {
 		if ($starting_turns >= $turn_cost) {
-			$target_damage = (5*(ceil($level / 3))+rand(1, $player->getStrength()));
+			$target_damage = (5*(ceil($player->vo->level / 3))+rand(1, $player->getStrength()));
 
 			echo "$target has taken $target_damage damage!<br>\n";
 
@@ -242,12 +231,12 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		}
 	} else if ($command == "Ice Bolt") {
 		if ($starting_turns >= $turn_cost) {
-    		if ($target_turns >= 10) {
+    		if ($target->vo->turns >= 10) {
 
     			$turns_decrease = rand(1, 5);
     			subtractTurns($target, $turns_decrease);
     			// Changed ice bolt to kill stealth.
-    			$username_status = subtractStatus($target, STEALTH);
+    			subtractStatus($target, STEALTH);
 
     			$msg = "Ice bolt cast on you by $attacker_id at $today, your turns have been reduced by $turns_decrease.";
     			sendMessage($attacker_id, $target, $msg);
@@ -266,7 +255,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			$critical_failure = rand(1, 100);
 
 			if ($critical_failure > 7) {// *** If the critical failure rate wasn't hit.
-				if ($target_turns >= 10) {
+				if ($target->vo->turns >= 10) {
 					$turns_decrease = rand(2, 7);
 
 					subtractTurns($target, $turns_decrease);

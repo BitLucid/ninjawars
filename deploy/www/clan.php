@@ -1,11 +1,11 @@
 <?php
-require_once(LIB_ROOT."specific/lib_clan.php");
+require_once(LIB_ROOT.'specific/lib_clan.php');
 $alive      = false;
 $private    = false;
 $quickstat  = false;
-$page_title = "Clan Panel";
+$page_title = 'Clan Panel';
 
-include SERVER_ROOT."interface/header.php";
+include SERVER_ROOT.'interface/header.php';
 $dbconn = DatabaseConnection::getInstance();
 
 ?>
@@ -44,22 +44,22 @@ if ($player_id) {
 define('CLAN_CREATOR_MIN_LEVEL', 15);
 
 if (!$player_id) {
-	echo "<p class='ninja-notice'>You are not part of any clan.</p>";
+	echo '<p class="ninja-notice">You are not part of any clan.</p>';
 } else {
 	$self_is_leader = ($clan && (get_clan_leader_id($clan->getID()) == $player_id));
 
-	if ($command == "disband" && $sure == "yes" && $self_is_leader) {	// **** Clan Leader Action Disbanding of the Clan ***
-		disbandClan($clan->getID());
+	if ($command == 'disband' && $sure == 'yes' && $self_is_leader) {	// **** Clan Leader Action Disbanding of the Clan ***
+		$clan->disband();
 		echo "<div class='notice'>Your clan has been disbanded.</div>\n";
 		$clan = $self_is_leader = false;
 	}
 
-	if ($command == "new") {
+	if ($command == 'new') {
 		// *** Clan Creation Action ***
 		if ($viewer_level >= CLAN_CREATOR_MIN_LEVEL) {
-			$default_clan_name = "Clan ".$username;
+			$default_clan_name = 'Clan '.$username;
 			$clan              = createClan($player_id, $default_clan_name);
-			$command           = "rename"; // *** Shortcut to rename after. ***
+			$command           = 'rename'; // *** Shortcut to rename after. ***
 
 			echo "<div class='notice'>You have created a new clan!</div>\n";
 		} else {	// *** Level req wasn't met. ***
@@ -70,7 +70,7 @@ if (!$player_id) {
 	$self_is_leader = ($clan && (get_clan_leader_id($clan->getID()) == $player_id));
 
 	if ($self_is_leader) {
-		echo "<div>You are the leader of this clan.</div>";
+		echo '<div>You are the leader of this clan.</div>';
 	}
 
 	if ($message) {
@@ -80,7 +80,7 @@ if (!$player_id) {
 
 	if ($clan) {
 		if ($self_is_leader) {
-			if ($command == "rename") {
+			if ($command == 'rename') {
 				//Clan Leader Action Rename
 				if ($new_clan_name != "" && strlen($new_clan_name) <= 20 && (str_replace(array('/','\'','*','--', '<', '>'), '', $new_clan_name) == $new_clan_name)) {
 					// *** The clan doesn't contain any special characters, including apostrophes, asterixes, slashes, and html code.
@@ -88,7 +88,7 @@ if (!$player_id) {
 					$clan->setName($new_clan_name);
 				} else {
 					if (strlen($new_clan_name) >= 21) {
-						echo "<div style=\"color:red;\">Your clan name cannot be blank or greater than 20 characters.</div>";
+						echo '<div style="color:red;">Your clan name cannot be blank or greater than 20 characters.</div>';
 					} elseif ("" == $new_clan_name) {
 						echo "<p>(Clan names must be between 1 and 20 characters long.)</p>\n";
 					} else {
@@ -103,9 +103,9 @@ if (!$player_id) {
 	                    </div>
 	    	            </form>";
 				}
-			} else if ($command == "kick") {	//Clan Leader Action Kick a chosen member
-				if ($kicked == "") {
-					$query = "SELECT player_id, uname FROM players JOIN clan_player ON _player_id = player_id AND _clan_id = :clanID WHERE uname <> :username AND confirmed = 1";
+			} else if ($command == 'kick') {	//Clan Leader Action Kick a chosen member
+				if ($kicked == '') {
+					$query = 'SELECT player_id, uname FROM players JOIN clan_player ON _player_id = player_id AND _clan_id = :clanID WHERE uname <> :username AND confirmed = 1';
 					$statement = DatabaseConnection::$pdo->prepare($query);
 					$statement->bindValue(':clanID', $clan->getID());
 					$statement->bindValue(':username', $username);
@@ -129,10 +129,11 @@ if (!$player_id) {
 					echo "</div>\n";
 					echo "</form>\n";
 				} else {	// *** An actual successful kick of a member. ***
-					kick($kicked);
-					echo "<p>You have removed ".getPlayerName($kicked)." from your clan.</p>";
+					$kickPlayer = new Player($kicked);
+					$clan->kickMember($kicked);
+					echo '<p>You have removed '.$kickedPlayer->vo->name.' from your clan.</p>';
 				}
-			} else if ($command == "disband") {	// *** Clan Leader Confirmation of Disbanding of the Clan ***
+			} else if ($command == 'disband') {	// *** Clan Leader Confirmation of Disbanding of the Clan ***
 				if (!$sure) {
 					echo "Are you sure you want to continue? This will remove all members from your clan.<br>\n";
 					echo "<form id=\"disband\" method=\"get\" action=\"clan.php\" name=\"disband\">\n";
@@ -143,7 +144,7 @@ if (!$player_id) {
 					echo "</div>\n";
 					echo "</form>\n";
 				}
-			} else if ($command == "invite") {	// *** Clan Leader Invite Input ***
+			} else if ($command == 'invite') {	// *** Clan Leader Invite Input ***
 				if (!$person_invited) {
 					echo "Name of potential clan member:<br>\n";
 					echo "<form id=\"clan_invite\" action=\"clan.php\" name=\"clan_rename\">\n";
@@ -178,13 +179,13 @@ if (!$player_id) {
 	      </div>";
 			}
 		} else {
-			if ($command == "leave") {	// *** Clan Member Action to Leave their Clan ***
+			if ($command == 'leave') {	// *** Clan Member Action to Leave their Clan ***
 				$query = "DELETE FROM clan_player WHERE _player_id = :playerID";
 				$statement = DatabaseConnection::$pdo->prepare($query);
 				$statement->bindValue(':playerID', $player_id);
 				$statement->execute();
 
-				echo "<p>You have left your clan.</p>";
+				echo '<p>You have left your clan.</p>';
 				die();
 			}
 
@@ -192,7 +193,7 @@ if (!$player_id) {
 			echo "<p><a href=\"clan.php?command=leave\" onclick='leave_clan(); return false;'>Leave Current Clan</a></p>";
 		}
 
-		if ($command == "msgclan") {	// *** Clan Member Input for Messaging their Entire Clan ***
+		if ($command == 'msgclan') {	// *** Clan Member Input for Messaging their Entire Clan ***
 			echo "<form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
 	          <div>
 	          Message: <input id=\"message\" type=\"text\" size=\"50\" maxlength=\"1000\" name=\"message\" class=\"textField\">
@@ -230,12 +231,12 @@ if (!$player_id) {
 	}
 }	// End of logged-in display.
 
-if ($command == "view")
+if ($command == 'view')
 {	// *** A view of the member list of any clan ***
 	echo render_clan_view($clan_id_viewed);
 }
 
 echo render_clan_tags(); // *** Display the clan tags section. ***
 
-include SERVER_ROOT."interface/footer.php";
+include SERVER_ROOT.'interface/footer.php';
 ?>

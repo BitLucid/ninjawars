@@ -55,21 +55,15 @@ if ($target) {
 		$targets_turns = $data['turns'];
 		$targets_level = $data['level'];
 		$target_hp     = $data['health'];
-		$target_ip     = $data['ip'];
-		$target_status = getStatus($target);
 	} else {
 		$targets_turns =
 		$targets_level =
-		$target_hp     =
-		$target_ip     =
-		$target_status = null;
+		$target_hp     = null;
 	}
 } else {
 	$targets_turns =
 	$targets_level =
-	$target_hp     =
-	$target_ip     =
-	$target_status = null;
+	$target_hp     = null;
 }
 
 $gold_mod		= NULL;

@@ -1,7 +1,7 @@
 <?php
-require_once(DB_ROOT . "PlayerVO.class.php");
-require_once(DB_ROOT . "PlayerDAO.class.php");
-require_once(CHAR_ROOT . "Player.class.php");
+require_once(DB_ROOT . 'PlayerVO.class.php');
+require_once(DB_ROOT . 'PlayerDAO.class.php');
+require_once(CHAR_ROOT . 'Player.class.php');
 
 /* PHP Attack Legal Check
  *
@@ -109,8 +109,6 @@ class AttackLegal
 			return FALSE;
 		}
 
-		$target_status = $target->getStatus();
-
 		$second_interval_limiter_on_attacks = '.25'; // Originally .2
 
 		$sel_last_started_attack = "SELECT player_id FROM players
@@ -134,40 +132,33 @@ class AttackLegal
 
 		//  *** START OF ILLEGAL ATTACK ERROR LIST  ***
 		if (!$attack_later_than_limit) {
-			$this->error = "Even the fastest ninja cannot act more than four times a second.";
-			return false;
-		} else if ($target->vo->uname == "") {
-			$this->error = "Your target does not exist.";
-			return false;
+			$this->error = 'Even the fastest ninja cannot act more than four times a second.';
+		} else if (empty($target->vo->uname)) {
+			$this->error = 'Your target does not exist.';
 		} else if (($target->player_id == $attacker->player_id) && !$self_use) {
-			$this->error = "Commiting suicide is a tactic reserved for samurai.";
-			return false;
+			$this->error = 'Commiting suicide is a tactic reserved for samurai.';
 		} else if ($attacker->vo->turns < $required_turns) {
-			$this->error = "You don't have enough turns for that, use speed scrolls or wait for the half hour to gain more turns.";
-			return false;
+			$this->error = 'You don\'t have enough turns for that, use speed scrolls or wait for the half hour to gain more turns.';
 		} else if (isset($_SESSION) && ($target->vo->ip == $account_ip) && ($account_ip != '127.0.0.1') && !$self_use) {
-			$this->error = "You can not attack a ninja from the same domain.";
-			return false;
+			$this->error = 'You can not attack a ninja from the same domain.';
 		} else if ($target->vo->confirmed == 0) {
-			$this->error = "You can not attack an inactive ninja.";
-			return false;
+			$this->error = 'You can not attack an inactive ninja.';
 		} else if ($target->vo->health < 1) {
-			$this->error = "Your target is a ghost.";
-			return false;
-		} else if ($target_status['Stealth'] && !$ignores_stealth) {
+			$this->error = 'Your target is a ghost.';
+		} else if ($target->hasStatus(STEALTH) && !$ignores_stealth) {
 			// Attacks that ignore stealth will skip this.
-			$this->error = "Your target is stealthed. You can only hit this ninja using certain techniques.";
-			return false;
-		} else if ($clan_forbidden && ($target->vo->clan == $attacker->vo->clano) && ($attacker->vo->clan != "") && !$self_use) {
-			$this->error = "Your clan would outcast you if you attacked one of your own.";
-			return false;
+			$this->error = 'Your target is stealthed. You can only hit this ninja using certain techniques.';
+		} else if ($clan_forbidden && ($target->getClan()->getID() == $attacker->getClan()->getID()) && ($attacker->getClan() == null) && !$self_use) {
+			$this->error = 'Your clan would outcast you if you attacked one of your own.';
 		} else if ($target->vo->health > 0) {
+			$this->error = null;
 			return true;  //  ***  ATTACK IS LEGAL ***
 		} else {  //  *** CATCHALL ERROR MESSAGE ***
-			$this->error = "There was a problem with your attack.";
+			$this->error = 'There was a problem with your attack.';
 			error_log('The problem catch-all for attackLegal object was triggered, which should not occur.');
-			return false;
 		}
+
+		return empty($this->error);
 	}
 } // End Class AttackLegal
 

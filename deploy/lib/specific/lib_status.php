@@ -12,24 +12,23 @@
 function get_status_list($target=null) {
 	$states = array();
 	$result = '';
-	$target = isset($target)? $target : get_username(); 
+	$target = (isset($target) ? $target : get_username());
 
 	// Default to showing own status.
-	$statuses = getStatus($target);
-	$health   = getHealth($target);
+	$target = new Player($target);
 
-	if ($health < 1) {
-		$states[] = "Dead"; 
+	if ($target->vo->health < 1) {
+		$states[] = 'Dead';
 	} else { // *** Other statuses only display if not dead.
-		if ($health < 80) {
-			$states[] = "Injured"; 
+		if ($target->vo->health < 80) {
+			$states[] = 'Injured';
 		} else {
-			$states[] = "Healthy";
+			$states[] = 'Healthy';
 		}
 
-		if ($statuses['Stealth']) { $states[] = "Stealthed"; }
-		if ($statuses['Poison']) { $states[] = "Poisoned"; }
-		if ($statuses['Frozen']) { $states[] = "Frozen"; }
+		if ($target->hasStatus(STEALTH)) { $states[] = 'Stealthed'; }
+		if ($target->hasStatus(POISON)) { $states[] = 'Poisoned'; }
+		if ($target->hasStatus(FROZEN)) { $states[] = 'Frozen'; }
 	}
 
 	return $states;
@@ -37,7 +36,7 @@ function get_status_list($target=null) {
 
 function render_status_list($target=null) {
 	$states = get_status_list($target);
-	$result = implode(", ", $states);
+	$result = implode(', ', $states);
 
 	return $result;
 }
@@ -47,7 +46,7 @@ function render_status_section($target=null) {
 	$statuses = get_status_list($target);
 
 	if (!empty($statuses)) {
-		$res .= "<span class='player-status ninja-notice ".implode(" ", $statuses)."'>".implode(", ", $statuses)."</span>";
+		$res .= '<span class="player-status ninja-notice '.implode(' ', $statuses).'">'.implode(', ', $statuses).'</span>';
 	}
 
 	return $res;

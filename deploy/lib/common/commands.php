@@ -329,17 +329,6 @@ define('STR_UP1',     1<<7);
 define('STR_UP2',     1<<8);
 $status_array;
 
-function hasStatus($who, $p_status) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	$status = $statement->fetchColumn();
-
-	return (bool)$status&$p_status;
-}
-
 function getStatus($who) {
 	global $status_array;
 
@@ -564,52 +553,6 @@ function get_clan_by_player_id($p_playerID) {
 	}
 }
 
-function getPlayerName($p_playerID) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT uname FROM players WHERE player_id = :player");
-	$statement->bindValue(':player', $p_playerID);
-	$statement->execute();
-
-	return $statement->fetchColumn();
-}
-
-function kick($p_playerID) {
-	global $today;
-
-	$clan_long_name = get_clan_by_player_id($p_playerID)->getName();
-
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM clan_player WHERE _player_id = :player");
-	$statement->bindValue(':player', $p_playerID);
-	$statement->execute();
-
-	$msg = "You have been kicked out of $clan_long_name by ".get_username()." on $today.";
-
-	send_message(get_user_id(), $p_playerID, $msg);
-}
-
-function disbandClan($p_clanID) {
-	DatabaseConnection::getInstance();
-
-	$message = "Your leader has disbanded your clan. You are alone again.";
-	$leader = get_clan_leader_id($p_clanID);
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT _player_id FROM clan_player WHERE _clan_id = :clan");
-	$statement->bindValue(':clan', $p_clanID);
-	$statement->execute();
-
-	while ($data = $statement->fetch()) {
-		$member_id = $data[0];
-
-		send_message($leader, $member_id, $message);
-	}
-
-	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM clan WHERE clan_id = :clan");
-	$statement->bindValue(':clan', $p_clanID);
-	$statement->execute();
-}
-
 function renameClan($p_clanID, $p_newName) {
 	DatabaseConnection::getInstance();
 
@@ -723,18 +666,4 @@ function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
 	$statement->bindValue(':killpoints', $killpoints);
 	$statement->execute();
 }
-
-function takeGold($from, $to, $mod) {
-	$victim_gold = getGold($from);
-	$gold_change = round($victim_gold * $mod);
-	$gold_change = ($gold_change < 0 ? 0 : $gold_change);
-
-	addGold($to, $gold_change);
-	subtractGold($from, $gold_change);
-
-	echo "$to has acquired $gold_change gold from $from.<br>\n";
-
-	return $gold_change;
-}
-
 ?>
