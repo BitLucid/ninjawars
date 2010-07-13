@@ -76,7 +76,7 @@ $gold_mod		= NULL;
 $result			= NULL;
 
 $max_power_increase        = 10;
-$level_difference          = $targets_level - $players_level;
+$level_difference          = $targets_level - $username_level;
 $level_check               = $username_level - $targets_level;
 $near_level_power_increase = nearLevelPowerIncrease($level_difference, $max_power_increase);
 

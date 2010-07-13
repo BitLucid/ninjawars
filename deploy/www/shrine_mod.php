@@ -76,7 +76,7 @@ if ($restore == 1) {	//  *** RESURRECTION SECTION ***
 
 			if ($kill_taking_resurrect) {
 				// *** FREE STEALTHING FOR BLACK CLASS UPON NON-FREE RESURRECTION
-				if ($players_class == "Black" && (!$freeResurrection)) {
+				if ($player->vo->class == "Black" && (!$freeResurrection)) {
 					addStatus($username, STEALTH);
 				}
 

@@ -6,17 +6,19 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
+$player = new Player(get_char_id());
 $freeResLevelLimit = 6;
 $freeResKillLimit  = 25;
 $lostTurns         = 10; // *** Default turns lost when the player has no kills.
 $startingKills     = 0;
 $userLevel         = 0;
-$poisoned          = getStatus($username) && isset($status_array['Poisoned']) && $status_array['Poisoned'];
+$poisoned          = $player->hasStatus(POISONED);
 
 if (isset($username)) {
-	$startingKills     = getKills($username);
-	$userLevel         = getLevel($username);
-	$at_max_health     = ($players_health >= (150 + (($players_level - 1) * 25)));
+	$startingKills     = $player->vo->kills;
+	$userLevel         = $player->vo->level;
+	$at_max_health     = ($player->vo->health >= (150 + (($userLevel - 1) * 25)));
+	$player_health     = $player->vo->health;
 
 	// *** A True or False as to whether resurrection will be free.
 	$freeResurrection = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);

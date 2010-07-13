@@ -33,6 +33,8 @@ if (is_logged_in()) {
 	$player    = new Player(get_char_id());
 	$userLevel = $player->vo->level;
 	$userKills = $player->vo->kills;
+	$userClass = $player->vo->class;
+
 	$classChangeAllowed = ($userLevel >= $classChangeLevelReq && $userKills >= $classChangeCost);
 	$dimMakAllowed      = ($userLevel >= $dimMakLevelReq && $userKills >= $dimMakCost);
 
@@ -43,10 +45,10 @@ if (is_logged_in()) {
 		}
 	}	// *** End of Dim Mak Code. ***
 
-	if ($classChangeAllowed && isset($class_array[$players_class]) && $class_array[$players_class]) {
+	if ($classChangeAllowed && isset($class_array[$userClass]) && $class_array[$userClass]) {
 		if ($classChangeSequence == 2) {
 			$userKills = subtractKills($username, $classChangeCost);
-			setClass($username, $class_array[$players_class]);
+			setClass($username, $class_array[$userClass]);
 		}
 	}
 
@@ -72,7 +74,7 @@ if (is_logged_in()) {
 display_page(
 	'dojo.tpl'
 	, 'Dojo'
-	, array('classChangeAllowed'=>$classChangeAllowed, 'dimMakAllowed'=>$dimMakAllowed, 'dimMakCost'=>$dimMakCost, 'dimmak_sequence'=>$dimmak_sequence, 'classChangeCost'=>$classChangeCost, 'classChangeSequence'=>$classChangeSequence, 'destination_class'=>$class_array[$players_class], 'msg'=>$msg, 'userLevel'=>$userLevel, 'userKills'=>$userKills, 'nextLevel'=>$nextLevel, 'max_level'=>$MAX_LEVEL, 'required_kills'=>$required_kills, 'upgrade_requested'=>$upgrade_requested)
+	, array('classChangeAllowed'=>$classChangeAllowed, 'dimMakAllowed'=>$dimMakAllowed, 'dimMakCost'=>$dimMakCost, 'dimmak_sequence'=>$dimmak_sequence, 'classChangeCost'=>$classChangeCost, 'classChangeSequence'=>$classChangeSequence, 'destination_class'=>$class_array[$userClass], 'msg'=>$msg, 'userLevel'=>$userLevel, 'userKills'=>$userKills, 'nextLevel'=>$nextLevel, 'max_level'=>$MAX_LEVEL, 'required_kills'=>$required_kills, 'upgrade_requested'=>$upgrade_requested)
 	, array('quickstat'=>'player')
 );
 }

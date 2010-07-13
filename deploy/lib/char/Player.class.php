@@ -23,7 +23,7 @@ class Player
 
 	public function __construct($player_id_or_username) {
 		if (!is_numeric($player_id_or_username)) {
-			$sel = "select player_id from players where uname = :uname limit 1";
+			$sel = "SELECT player_id FROM players WHERE uname = :uname LIMIT 1";
 			$this->player_id = DatabaseConnection::$pdo->prepare($sel);
 			$this->player_id->bindValue(':uname', $player_id_or_username);
 			$this->player_id->execute();
@@ -70,9 +70,9 @@ class Player
 		return (bool)($this->vo->status&$p_status);
 	}
 	
-	public function isActive(){
+	public function isActive() {
 	    $activity_threshhold = 91;
-	    return (bool) (($this->vo->days)<$activity_threshhold);
+	    return ($this->vo->days < $activity_threshhold);
 	}
 
 	public function death() {

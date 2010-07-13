@@ -33,7 +33,7 @@ function globalize_user_info($private=true, $alive=true) {
 		// A non-null set of content being in the error triggers a die at the end of the header.
 	} elseif ($username) {
 		// **************** Player information settings. *******************
-		global $player, $player_id, $players_health, $players_level, $players_class;
+		global $player, $player_id;
 		// Polluting the global namespace here.  Booo.
 
 		$player = new Player($username); // Defaults to current session user.
@@ -42,14 +42,8 @@ function globalize_user_info($private=true, $alive=true) {
 
 		assert('isset($player_id)');
 
-		// TODO: Turn this into a list extraction?
-		// password and messages intentionally excluded.
-		$players_health   	= $player->vo->health;
-		$players_level    	= $player->vo->level;
-		$players_class    	= $player->vo->class;
-
 		if ($alive) { // *** That page requires the player to be alive to view it.
-			if (!$players_health) {
+			if (!$player->vo->health) {
 				$error = 'dead';
 			} else if ($player->hasStatus(FROZEN)) {
 				$error = 'frozen';
