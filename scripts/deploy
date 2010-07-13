@@ -244,6 +244,7 @@ echo "source files copied to $SERVER_ROOT"
 
 mkdir -p templates/compiled/
 chmod -f 777 templates/compiled/
+rm -f templates/compiled/*
 
 #########################
 ### RESOURCES SECTION ###
