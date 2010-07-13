@@ -30,8 +30,9 @@ $dimmak_sequence     = in('dimmak_sequence', '');
 $classChangeSequence = in('classChangeSequence');
 
 if (is_logged_in()) {
-	$userLevel = getLevel($username);
-	$userKills = getKills($username);
+	$player    = new Player(get_char_id());
+	$userLevel = $player->vo->level;
+	$userKills = $player->vo->kills;
 	$classChangeAllowed = ($userLevel >= $classChangeLevelReq && $userKills >= $classChangeCost);
 	$dimMakAllowed      = ($userLevel >= $dimMakLevelReq && $userKills >= $dimMakCost);
 
@@ -65,6 +66,7 @@ if (is_logged_in()) {
 			addHealth($username, 100);
 		}
 	}
+
 }
 
 display_page(

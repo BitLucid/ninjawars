@@ -30,13 +30,14 @@ $message                         = in('message', null, null); // Don't filter me
 
 $player_id    = get_user_id();
 $username     = get_username();
+$player       = new Player($player_id);
 
 if ($player_id) {
 	$clan         = get_clan_by_player_id($player_id);
 }
 
-if ($username) {
-	$viewer_level = getLevel($username);
+if ($player_id) {
+	$viewer_level = $player->vo->level;
 }
 
 // *** Useful Constants ***
