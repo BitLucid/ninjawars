@@ -42,7 +42,7 @@ function json_latest_message() {
 	DatabaseConnection::getInstance();
 	$user_id = (int) get_user_id();
 
-	$statement = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 ORDER BY date DESC LIMIT 1");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 and unread = 1 ORDER BY date DESC LIMIT 1");
 	$statement->bindValue(':userID1', $user_id);
 	$statement->bindValue(':userID2', $user_id);
 	$statement->execute();
@@ -55,7 +55,7 @@ function json_latest_event() {
 	DatabaseConnection::getInstance();
 	$user_id = (int) get_user_id();
 
-	$statement = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID ORDER BY date DESC LIMIT 1");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC LIMIT 1");
 	$statement->bindValue(':userID', $user_id);
 	$statement->execute();
 
@@ -129,12 +129,12 @@ function json_index() {
 	$user_id  = $player['player_id'];
 
 	if ($user_id) {
-		$events = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID ORDER BY date DESC LIMIT 1");
+		$events = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC LIMIT 1");
 		$events->bindValue(':userID', $user_id);
 
 		$events->execute();
 
-		$messages = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 ORDER BY date DESC LIMIT 1");
+		$messages = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 and unread = 1 ORDER BY date DESC LIMIT 1");
 		$messages->bindValue(':userID1', $user_id);
 		$messages->bindValue(':userID2', $user_id);
 

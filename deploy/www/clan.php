@@ -231,8 +231,8 @@ if (!$player_id) {
 	}
 }	// End of logged-in display.
 
-if ($command == 'view')
-{	// *** A view of the member list of any clan ***
+if ($command == "view"){
+	// *** A view of the member list of any clan ***
 	echo render_clan_view($clan_id_viewed);
 }
 

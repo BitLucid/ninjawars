@@ -1,3 +1,22 @@
+<<<<<<< HEAD
+=======
+{literal}
+<script type='text/javascript' charset='utf-8' src='http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js'></script>
+
+<script type="text/javascript" charset="utf-8">
+  var feedback_widget_options = {};
+
+  feedback_widget_options.display = "overlay";  
+  feedback_widget_options.company = "ninjawars";
+  feedback_widget_options.placement = "left";
+  feedback_widget_options.color = "#222";
+  feedback_widget_options.style = "idea";
+  
+  var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+</script>
+{/literal}
+ 
+>>>>>>>   Index: Only shows unread events and unread messages instead of all types.
     
     <!-- Version {$version} -->
 
@@ -166,6 +185,8 @@
         <span style="display:none">Join a clan, promote multiple stab wounds.</span>
         <span style="display:none">Annoy the Emperor, kill Samurai.</span>
         <span style="display:none">Some theorize that poison is actually liquified ninja.</span>
+        <span style="display:none">Helping ninja stab people since 2003.</span>
+        <span style="display:none">Fact: Ninja can just click faster.</span>
         <span>Oni are actually quite friendly, if you get to know them.</span>
         </span>
          |

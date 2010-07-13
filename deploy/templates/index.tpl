@@ -161,7 +161,7 @@
               <div>
                   <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''></a>
               </div>
-              <div id='recent-mail'></div>
+              <div id='recent-mail' class='message-unread'></div>
           </div>
         
 {include file="mini-chat.section.tpl"}
@@ -180,11 +180,27 @@
       </div> <!-- End of right column -->
       <div id='push'></div>
       <div id='index-footer'>
-        <!-- Substitute dynamic "catchphrases" here eventually -->
-        <!-- "There was going to be a NinjaWars2, but NinjaWars1 stabbed it." -->
-        <!-- "Helping ninjas stab people since 2003." | -->
-        <!-- Annoy the Emperor, kill Samurai. | -->
-        Fact: Ninja can just click faster. |
+        <span id='nw-catchphrases'>
+        {literal}
+        <script>
+            $().ready(function (){
+                var catchphrases = $('#nw-catchphrases span');
+                var rand = Math.floor(Math.random()*catchphrases.size());
+                // Choose random index.
+                catchphrases.hide().eq(rand).show();
+                // Hide all, show one at random.
+            });
+        </script>
+        {/literal}
+        <!-- These catchphrases will be displayed randomly. -->
+        <span style="display:none">There was going to be a NinjaWars2, but NinjaWars1 stabbed it.</span>
+        <span style="display:none">Join a clan, promote multiple stab wounds.</span>
+        <span style="display:none">Annoy the Emperor, kill Samurai.</span>
+        <span style="display:none">Helping ninja stab people since 2003.</span>
+        <span style="display:none">Fact: Ninja can just click faster.</span>
+        <span>Oni are actually quite friendly, if you get to know them.</span>
+        </span>
+        |
         <a href="tutorial.php" target="main">Help</a> |
         <a href="rules.php" target="main">Rules</a> |
         <a href='staff.php' target='main'>Staff</a> |

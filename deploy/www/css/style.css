@@ -97,6 +97,8 @@ http://ryanfait.com/
 
 .main-body {
     min-width: 800px;
+    margin-right:2px;
+    margin-left:2px;
 }
 
 body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
@@ -828,7 +830,7 @@ iframe {
     display:block;
 }
 #recent-mail {
-    height:2.5em;
+    height:2.7em;
     width:100%;
     overflow:hidden;
 }
@@ -1502,6 +1504,8 @@ iframe {
 
 
 #left-column {
+    /*background-image:url('/images/black_bg_splash.png');
+    background-repeat:no-repeat;*/
     float:left;
     width:15%;
 }
