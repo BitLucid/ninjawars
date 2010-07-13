@@ -37,7 +37,7 @@ $affected_rows['Vicious killer: '] = $stats['vicious_killer'];
 
 //Nightly Unconfirm old players script settings.
 $unconfirmed = unconfirm_older_players_over_minimums($keep_players_until_over_the_number, $days_players_have_to_be_older_than_to_be_unconfirmed, $maximum_players_to_unconfirm, $just_testing=false);
-assert($unconfirmed < 21);
+assert($unconfirmed < $maximum_players_to_unconfirm+1);
 
 $affected_rows['Players Unconfirmed'] = ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
 
