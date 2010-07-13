@@ -24,12 +24,14 @@ $selfTarget = in('selfTarget');
 $item       = in('item');
 $give       = in('give');
 
+$user_id    = get_user_id();
+$player     = new Player($user_id);
+
 $victim_alive   = true;
 $using_item     = true;
-$starting_turns = getTurns($username);
+$starting_turns = $player->vo->turns;
 $username_turns = $starting_turns;
-$username_level = getLevel($username);
-$user_id        = get_user_id();
+$username_level = $player->vo->level;
 $ending_turns   = null;
 
 DatabaseConnection::getInstance();
@@ -156,10 +158,10 @@ if ($item == 'Dim Mak') {
 	$speedScroll->setCovert(true);
 } else if ($item == 'Fire Scroll') {
 	$item = $fireScroll = new Item('Fire Scroll');
-	$fireScroll->setTargetDamage(rand(20, getStrength($username) + 20) + $near_level_power_increase);
+	$fireScroll->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
 } else if ($item == 'Shuriken') {
 	$item = $shuriken = new Item('Shuriken');
-	$shuriken->setTargetDamage(rand(1, getStrength($username)) + $near_level_power_increase);
+	$shuriken->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
 } else if ($item == 'Ice Scroll') {
 	$item = $iceScroll = new Item('Ice Scroll');
 	$iceScroll->setTurnChange(-1*ice_scroll_turns($targets_turns, $near_level_power_increase));
@@ -271,8 +273,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				}
 
 				if (!$victim_alive) { // Target was killed by the item.
-					if (getStatus($username) && ($target != $username) ) {   // *** SUCCESSFUL KILL ***
-						$attacker_id = ($status_array['Stealth'] ? "A Stealthed Ninja" : $username);
+					if (($target != $username) ) {   // *** SUCCESSFUL KILL ***
+						$attacker_id = ($player->hasStatus(STEALTH) ? "A Stealthed Ninja" : $username);
 
 						if (!$gold_mod) {
 							$gold_mod = 0.15;
@@ -312,8 +314,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			echo "<br>Removing {$item->getName()} from your inventory.<br>\n";
 
 			// Unstealth
-			if (!$item->isCovert() && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
-				subtractStatus($username,STEALTH);
+			if (!$item->isCovert() && $give != "on" && $give != "Give" && $player->hasStatus(STEALTH)) { //non-covert acts
+				subtractStatus($username, STEALTH);
 				echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
 			}
 
