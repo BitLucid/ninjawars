@@ -14,7 +14,9 @@ $poisoned           = in('poisoned');
 $restore            = in('restore');
 $max_heal           = in('max_heal');
 $heal_and_resurrect = in('heal_and_resurrect');
-$player             = new Player($username);
+$cured              = false;
+$player             = new Player(get_char_id());
+$finalHealth        =
 $startingHealth     = $player->vo->health;
 $userLevel          = $player->vo->level;
 $startingGold       = $player->vo->gold;
@@ -28,6 +30,7 @@ $lostTurns          = 10; // *** Default turns lost when the player has no kills
 $has_chi            = $skillsListObj->hasSkill('Chi'); // Extra healing benefits from chi, by level.
 $error              = null;
 $max_health         = determine_max_health($level);
+$fully_healed       = false;
 
 // *** A boolean for whether or not resurrection will be free.
 $freeResurrection   = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
@@ -56,7 +59,7 @@ if ($restore == 1) {	//  *** RESURRECTION SECTION ***
 			//  *** FREE RESURRECTION DETERMINATION ***
 
 			if (!$freeResurrection) { // 1 kill point cost for resurrection above level 5 or 25 kills.
-				$player->vo->kills = subtractKills($username, 1);
+				$player->vo->kills = subtractKills($player->vo->uname, 1);
 				$kill_taking_resurrect = true;
 			}
 		} elseif ($startingTurns > 0) { // Dead and no killpoints left, and not a newbie.
@@ -65,7 +68,7 @@ if ($restore == 1) {	//  *** RESURRECTION SECTION ***
 
 			if ($startingTurns < $lostTurns && $startingTurns > 0) { // *** From 9 to 1 turns.
 				$lostTurns = $startingTurns;
-				$final_turns = $player->vo->turns = subtractTurns($username, $lostTurns); // *** Takes away necessary turns.
+				$final_turns = $player->vo->turns = subtractTurns($player->vo->uname, $lostTurns); // *** Takes away necessary turns.
 			}
 		} else { // *** No kills, no turns, and too high of a level.
 	    	$error = 'You have no kills or turns, so you must wait to regain turns before you can return to life.';
@@ -77,7 +80,7 @@ if ($restore == 1) {	//  *** RESURRECTION SECTION ***
 			if ($kill_taking_resurrect) {
 				// *** FREE STEALTHING FOR BLACK CLASS UPON NON-FREE RESURRECTION
 				if ($player->vo->class == "Black" && (!$freeResurrection)) {
-					addStatus($username, STEALTH);
+					$player->addStatus(STEALTH);
 				}
 
 				$returning_health = ($has_chi ? 150 : 100);
@@ -85,10 +88,9 @@ if ($restore == 1) {	//  *** RESURRECTION SECTION ***
 				$returning_health = 100;
 			}
 
-			$finalHealth = $player->vo->health = setHealth($username, $returning_health);
+			$finalHealth = $player->vo->health = setHealth($player->vo->uname, $returning_health);
 			$final_turns = $player->vo->turns;
 			$final_kills = $player->vo->kills;
-			$fully_healed = false;
 		}
 	}
 } // *** end of resurrection ***
@@ -114,9 +116,9 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
     					$heal_points = ($max_health-$current_health);  //Rounds off.
     				}
 
-    				subtractGold($username,$heal_points);
+    				subtractGold($player->vo->uname,$heal_points);
     				// Having chi increases the amount healed in all cases.
-    				$player->vo->health = $finalHealth = addHealth($username, ($has_chi? round($heal_points*1.5) : $heal_points));
+    				$player->vo->health = $finalHealth = addHealth($player->vo->uname, ($has_chi? round($heal_points*1.5) : $heal_points));
     				
     				$fully_healed = ($finalHealth >= $max_health); // Let the user know whether they're fully healed.
     				
@@ -138,8 +140,9 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 
 		if ($startingGold >= $cost) {
 			if ($player->hasStatus(POISON)) {
-				subtractGold($username, $cost);
-				subtractStatus($username, POISON);
+				subtractGold($player->vo->uname, $cost);
+				$player->subtractStatus(POISON);
+				$cured = true;
 			} else {
 			    $error = 'You are not ill.';
 			}

@@ -38,14 +38,16 @@ $starting_turn_cost = $turn_cost;
 assert($turn_cost>=0);
 $turns_to_take = null;  // *** Even on failure take at least one turn.
 
-if ($target != '') {
+$player          = new Player($username);
+
+if ($target != '' && $target != $player->player_id) {
 	$link_back = "<a href=\"player.php?player=$target\">Player Detail</a>";
+	$target = new Player($target);
 } else {
     $link_back = "<a href=\"skills.php\">Skills</a>";
-	$target    = $username;
+	$target    = $player;
 }
 
-$player          = new Player($username);
 $user_ip         = get_account_ip();
 $class           = $player->vo->class;
 $covert          = false;
@@ -53,8 +55,6 @@ $victim_alive    = true;
 $attacker_id     = $username;
 $starting_turns  = $player->vo->turns;
 $ending_turns    = null;
-
-$target = new Player($target);
 
 $level_check  = $player->vo->level - $target->vo->level;
 
@@ -84,12 +84,12 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 		if ($starting_turns >= $turn_cost) {
 			//$msg = "You have had sight cast on you by $attacker_id at $today";
-			//sendMessage($attacker_id, $target, $msg);
-			//subtractStatus($target, STEALTH);
+			//sendMessage($attacker_id, $target->vo->uname, $msg);
+			//$target->subtractStatus(STEALTH);
 			// Sight will no longer break stealth.
 
-			$statement = DatabaseConnection::$pdo->prepare("SELECT uname, class_name AS class, health, strength, gold, kills, turns, level FROM players JOIN class ON _class_id = class_id WHERE uname = :player");
-			$statement->bindValue(':player', $target);
+			$statement = DatabaseConnection::$pdo->prepare("SELECT uname, class_name AS class, health, strength, gold, kills, turns, level FROM players JOIN class ON _class_id = class_id WHERE player_id = :player");
+			$statement->bindValue(':player', $target->player_id);
 			$statement->execute();
 
 			$data = $statement->fetch(PDO::FETCH_ASSOC);
@@ -123,27 +123,26 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 		if ($starting_turns >= $turn_cost) {
 			$gold_decrease = rand(1, 50);
-			$target_gold   = getGold($target);
+			$target_gold   = $target->vo->gold;
 			$gold_decrease = ($target_gold < $gold_decrease ? $target_gold : $gold_decrease);
 
 			changeGold($username, $gold_decrease); // *** This one actually adds the value.
-			subtractGold($target, $gold_decrease); // *** Subtracts whatever positive value is put in.
+			subtractGold($target->vo->uname, $gold_decrease); // *** Subtracts whatever positive value is put in.
 
 			$msg = "You have had pick pocket cast on you for $gold_decrease by $attacker_id at $today";
-			sendMessage($attacker_id, $target, $msg);
+			sendMessage($attacker_id, $target->vo->uname, $msg);
 
 			$result = "You have stolen $gold_decrease gold from $target!<br>\n";
 		} else {
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
 		}
-	} else if ($command == "Unstealth") {
-		$mode = (-1 * STEALTH);
-		$state = "unstealthed";
+	} else if ($command == 'Unstealth') {
+		$state = 'unstealthed';
 
 		if ($starting_turns >= $turn_cost) {
 			if ($target->hasStatus(STEALTH)) {
-				addStatus($target, $mode);
+				$target->subtractStatus(STEALTH);
 				echo "You are now $state.<br>\n";
 			} else {
 				$turn_cost = 0;
@@ -153,14 +152,13 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
 		}
-	} else if ($command == "Stealth") {
+	} else if ($command == 'Stealth') {
 		$covert     = true;
-		$mode       = STEALTH;
-		$state      = "stealthed";
+		$state      = 'stealthed';
 
 		if ($starting_turns >= $turn_cost) {
 			if (!$target->hasStatus(STEALTH)) {
-				addStatus($target, $mode);
+				$target->addStatus(STEALTH);
 				echo "You are now $state.<br>\n";
 			} else {
 				$turn_cost = 0;
@@ -195,62 +193,61 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			$turn_cost = 0;
 			echo "You do not have enough turns to use $command.\n";
 		}
-	} else if ($command == "Poison Touch") {
+	} else if ($command == 'Poison Touch') {
 		$covert = true;
 
 		if ($starting_turns >= $turn_cost) {
-			addStatus($target, POISON);
+			$target->addStatus(POISON);
 
 			$target_damage = rand($poisonMinimum, $poisonMaximum);
 
-			$victim_alive = subtractHealth($target, $target_damage);
+			$victim_alive = subtractHealth($target->vo->uname, $target_damage);
 			echo "$target has beeen poisoned!<br>\n";
 			echo "$target has taken $target_damage damage!<br>\n";
 
 			$msg = "You have been poisoned by $attacker_id at $today";
-			sendMessage($attacker_id, $target, $msg);
+			sendMessage($attacker_id, $target->vo->uname, $msg);
 		} else {
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
 		}
-	} elseif ($command == "Fire Bolt") {
+	} elseif ($command == 'Fire Bolt') {
 		if ($starting_turns >= $turn_cost) {
-			$target_damage = (5*(ceil($player->vo->level / 3))+rand(1, $player->getStrength()));
+			$target_damage = (5 * (ceil($player->vo->level / 3)) + rand(1, $player->getStrength()));
 
 			echo "$target has taken $target_damage damage!<br>\n";
 
-			if ($victim_alive = subtractHealth($target, $target_damage)) {
+			if ($victim_alive = subtractHealth($target->vo->uname, $target_damage)) {
 				$attacker_id  = $username;
 			}
 
 			$msg = "You have had fire bolt cast on you by $attacker_id at $today";
-			sendMessage($attacker_id, $target, $msg);
+			sendMessage($attacker_id, $target->vo->uname, $msg);
 		} else {
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
 		}
-	} else if ($command == "Ice Bolt") {
+	} else if ($command == 'Ice Bolt') {
 		if ($starting_turns >= $turn_cost) {
     		if ($target->vo->turns >= 10) {
-
     			$turns_decrease = rand(1, 5);
-    			subtractTurns($target, $turns_decrease);
+    			subtractTurns($target->vo->uname, $turns_decrease);
     			// Changed ice bolt to kill stealth.
-    			subtractStatus($target, STEALTH);
+    			$target->subtractStatus(STEALTH);
 
     			$msg = "Ice bolt cast on you by $attacker_id at $today, your turns have been reduced by $turns_decrease.";
-    			sendMessage($attacker_id, $target, $msg);
+    			sendMessage($attacker_id, $target->vo->uname, $msg);
 
     			$result = "$target's turns reduced by $turns_decrease!<br>\n";
     		} else {
     		    $turn_cost = 0;
-    		    $result = "The target does not have enough turns for you to take them.";
+    		    $result = "$target does not have enough turns for you to take.";
     		}
 		} else {
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
 		}
-	} else if ($command == "Cold Steal") {
+	} else if ($command == 'Cold Steal') {
 		if ($starting_turns >= $turn_cost) {
 			$critical_failure = rand(1, 100);
 
@@ -258,11 +255,11 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 				if ($target->vo->turns >= 10) {
 					$turns_decrease = rand(2, 7);
 
-					subtractTurns($target, $turns_decrease);
+					subtractTurns($target->vo->uname, $turns_decrease);
 					addTurns($username, $turns_decrease);
 
 					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id at $today";
-					sendMessage($attacker_id, $target, $msg);
+					sendMessage($attacker_id, $target->vo->uname, $msg);
 
 					$result = "You cast Cold Steal on $target and take $turns_decrease of his turns.<br>\n";
 				} else {
@@ -270,7 +267,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 					$result = "The victim did not have enough turns to give you.<br>\n";
 				}
 			} else { // *** CRITICAL FAILURE !!
-				addStatus($username, FROZEN);
+				$player->addStatus(FROZEN);
 
 				$unfreeze_time = date("F j, Y, g:i a", mktime(date("G")+1, 0, 0, date("m"), date("d"), date("Y")));
 
@@ -287,11 +284,11 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 	echo $result;
 
 	if (!$victim_alive) {
-		if ($target != $username) {
+		if ($target->player_id != $player->player_id) {
 			$gold_mod = 0.15;
-			$loot     = round($gold_mod * getGold($target));
+			$loot     = round($gold_mod * getGold($target->vo->uname));
 
-			subtractGold($target, $loot);
+			subtractGold($target->vo->uname, $loot);
 			addGold($username, $loot);
 
 			addKills($username, 1);
@@ -305,7 +302,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 				addBounty($username, ($added_bounty * 25));
 				echo "Your victim was much weaker than you. The townsfolk are angered. A bounty of ".($added_bounty * 25)." gold has been placed on your head!<br>\n";
 			} else {
-				if ($bounty = rewardBounty($username, $target)) {
+				if ($bounty = rewardBounty($username, $target->vo->uname)) {
 					echo "You have received the $bounty gold bounty on $target's head for your deeds!<br>\n";
 
 					$bounty_msg = "You have valiantly slain the wanted criminal, $target! For your efforts, you have been awarded $bounty gold!";
@@ -314,10 +311,10 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			}
 
 			$target_message = "$attacker_id has killed you with $command on $today and taken $loot gold.";
-			sendMessage($attacker_id, $target, $target_message);
+			sendMessage($attacker_id, $target->vo->uname, $target_message);
 
 			$attacker_message = "You have killed $target with $command on $today and taken $loot gold.";
-			sendMessage($target, $username, $attacker_message);
+			sendMessage($target->vo->uname, $username, $attacker_message);
 		} else {
 			$loot = 0;
 			echo "You have comitted suicide!<br>\n";
@@ -327,7 +324,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 	$turns_to_take = $turns_to_take - $turn_cost;
 
 	if (!$covert && $player->hasStatus(STEALTH)) {
-		subtractStatus($username, STEALTH);
+		$player->subtractStatus(STEALTH);
 		echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
 	}
 } // End of the skill use SUCCESS block.
@@ -336,7 +333,7 @@ $ending_turns = changeTurns($username, $turns_to_take);
 ?>
   </div>
   <div class="skillReload">
-    <a href="skills_mod.php?command=<?php echo urlencode($command); ?>&amp;target=<?php echo $target; ?>">Use <?php echo $command; ?> again.</a>
+    <a href="skills_mod.php?command=<?php echo urlencode($command); ?>&amp;target=<?php echo $target->player_id; ?>">Use <?php echo $command; ?> again.</a>
   </div>
   <br>
   <div class="LinkBack">

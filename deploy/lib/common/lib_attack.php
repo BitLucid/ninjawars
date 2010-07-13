@@ -23,7 +23,7 @@ function update_last_attack_time($player_id) {
  */
 function attack_legal() {  //  Checks for errors in the initial stage of combat.
 	global $attacked, $target, $attacker_turns, $required_turns, $attacker, $player_id;
-	global $target_ip, $attacker_ip, $target_confirmed, $attacker_health, $target_health, $target_status;
+	global $target_ip, $attacker_ip, $target_confirmed, $attacker_health, $target_health;
 
 	$second_interval_limiter_on_attacks = '.20';
 
@@ -41,6 +41,7 @@ function attack_legal() {  //  Checks for errors in the initial stage of combat.
 
 	$target_id   = get_user_id($target);
 	$defender_id = get_user_id($attacker);
+	$targetObj   = new Player($target_id);
 
 	//  *** START OF ILLEGAL ATTACK ERROR LIST  ***
 	if (!$attack_later_than_limit) {
@@ -66,7 +67,7 @@ function attack_legal() {  //  Checks for errors in the initial stage of combat.
 	} else if ($target_health < 1) {
 		echo "You can not attack a corpse.<br>\n";
 		return false;
-	} else if ($target_status['Stealth']) {
+	} else if ($targetObj->hasStatus(STEALTH)) {
 		echo "Your victim is stealthed. You cannot attack this ninja by normal means.<br>\n";
 		return false;
 	} else if (($targetClan = get_clan_by_player_id($target_id)) && ($defenderClan = get_clan_by_player_id($defender_id))) {

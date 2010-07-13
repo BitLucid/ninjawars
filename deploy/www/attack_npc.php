@@ -17,7 +17,7 @@ $player     = new Player(get_char_id());
 if (($turns = getTurns($username)) > 0) {
 	if ($attacked == 1) { // *** Bit to expect that it comes from the form. ***
 		if ($player->hasStatus(STEALTH)) {
-			subtractStatus($username, STEALTH);
+			$player->subtractStatus(STEALTH);
 		}
 
 		$attacker_str    = $player->getStrength();

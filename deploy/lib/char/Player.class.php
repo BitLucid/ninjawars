@@ -36,22 +36,63 @@ class Player
 		$this->vo = $dao->get($this->player_id);
 	}
 
+	public function __toString() {
+		return $this->vo->uname;
+	}
+
 	// Save the Player state.
 	public function save() {
 		$dao = new PlayerDAO();
 		$dao->save($this->vo);
 	}
 
-	public function getStatus() {
-		return getStatus($this->vo->uname);
+	protected function queryStatus() {
+		DatabaseConnection::getInstance();
+
+		$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE player_id = :player");
+		$statement->bindValue(':player', $this->player_id);
+		$statement->execute();
+		return $this->status = $statement->fetchColumn();
 	}
 
-	public function addStatus($status_constant) {
-		addStatus($this->vo->uname, $status_constant);
+	protected function getStatus() {
+		return ($this->vo->status === null ? $this->queryStatus() : $this->vo->status);
 	}
 
-	public function subtractStatus($status_constant) {
-		subtractStatus($this->vo->uname, $status_constant);
+	public function addStatus($p_status) {
+		if ((int)$p_status == $p_status && $p_status != 0) {
+			if ($p_status < 0) {
+				return $this->subtractStatus(abs($p_status));
+			} else {
+				$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = status+:status1 WHERE player_id = :player AND status&:status2 = 0');
+				$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
+				$statement->bindValue(':status1', $p_status, PDO::PARAM_INT);
+				$statement->bindValue(':status2', $p_status, PDO::PARAM_INT);
+				$statement->execute();
+
+				$this->vo->status = null; // *** Ensures that the next call to hasStatus pulls the updated status from the DB ***
+			}
+		}
+	}
+
+	public function resetStatus() {
+		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = 0 WHERE player_id = :player');
+		$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
+		$statement->execute();
+
+		$this->vo->status = 0;
+	}
+
+	public function subtractStatus($p_status) {
+		if ((int)$p_status == $p_status && $p_status > 0) {
+			$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = status-:status1 WHERE player_id = :player AND status&:status2 <> 0');
+			$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
+			$statement->bindValue(':status1', $p_status, PDO::PARAM_INT);
+			$statement->bindValue(':status2', $p_status, PDO::PARAM_INT);
+			$statement->execute();
+
+			$this->vo->status = null; // *** Ensures that the next call to hasStatus pulls the updated status from the DB ***
+		}
 	}
 
 	public function getStrength() {
@@ -67,16 +108,16 @@ class Player
 	}
 
 	public function hasStatus($p_status) {
-		return (bool)($this->vo->status&$p_status);
+		return (bool)($this->getStatus()&$p_status);
 	}
-	
+
 	public function isActive() {
-	    $activity_threshhold = 91;
-	    return ($this->vo->days < $activity_threshhold);
+		$activity_threshhold = 91;
+		return ($this->vo->days < $activity_threshhold);
 	}
 
 	public function death() {
-		$this->subtractStatus(STEALTH+POISON+FROZEN+CLASS_STATE+STR_UP1+STR_UP2);
+		$this->resetStatus();
 	}
 
 	public function as_vo() {

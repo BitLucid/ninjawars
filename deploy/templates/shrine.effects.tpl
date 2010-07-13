@@ -4,6 +4,7 @@
 
 {if $error}
     <div class='ninja-notice'>{$error}</div>
+{/if}
 
     {if isset($resurrect_requested) and $resurrect_requested}
         <p>What once was dead shall rise again.</p>
@@ -21,13 +22,11 @@
 		{/if}
 	{/if}
 
-    {if isset($heal_requested) and $heal_requested}
+    {if $startingHealth < $finalHealth}
         <p>A monk tends to your wounds and you are {if $fully_healed}fully healed{else}healed to {$finalHealth|escape} health{/if}.</p>
-    {elseif isset($poison_cure_requested) and $poison_cure_requested}
+    {elseif isset($poison_cure_requested) and $poison_cure_requested and $cured}
         <p>You have been cured!</p>
     {/if}
-
-{/if}
 
 </div> <!-- End of heal-result div -->
 

@@ -312,12 +312,7 @@ function addLevel($who, $amount) {
 // ************************************
 
 
-
-// ************************************
-// ********* STATUS FUNCTIONS *********
-// ************************************
 // TODO: These must be moved to a more visible place,
-//and the global status_array as well.
 define('STEALTH',     1);
 define('POISON',      1<<1);
 define('FROZEN',      1<<2);
@@ -327,72 +322,6 @@ define('SKILL_2',     1<<5);
 define('INVITED',     1<<6);
 define('STR_UP1',     1<<7);
 define('STR_UP2',     1<<8);
-$status_array;
-
-function getStatus($who) {
-	global $status_array;
-
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	$status = $statement->fetchColumn();
-
-	$status_array['Stealth']    = ($status&STEALTH     ? 1 : 0);
-	$status_array['Poison']     = ($status&POISON      ? 1 : 0);
-	$status_array['Frozen']     = ($status&FROZEN      ? 1 : 0);
-	$status_array['ClassState'] = ($status&CLASS_STATE ? 1 : 0);
-	$status_array['Skill1']     = ($status&SKILL_1     ? 1 : 0);
-	$status_array['Skill2']     = ($status&SKILL_2     ? 1 : 0);
-	$status_array['Invited']    = ($status&INVITED     ? 1 : 0);
-	return $status_array;
-}
-
-function addStatus($who, $what) {   //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-
-	$status = $statement->fetchColumn();
-
-	if ($what < 0) {
-	    return subtractStatus($who, abs($what));
-	}
-
-	if (!($status & $what)) {
-	    $statement = DatabaseConnection::$pdo->prepare("UPDATE players SET status = status+:what WHERE uname = :player");
-		$statement->bindValue(':player', $who);
-		$statement->bindValue(':what', $what);
-		$statement->execute();
-	}
-
-	return getStatus($who);
-}
-
-function subtractStatus($who, $what) {     //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	$status = $statement->fetchColumn();
-
-	if ($status&$what) {
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET status = status-(:status::int&:what::int) WHERE uname = :player");
-		$statement->bindValue(':player', $who);
-		$statement->bindValue(':status', $status, PDO::PARAM_INT);
-		$statement->bindValue(':what', $what, PDO::PARAM_INT);
-		$statement->execute();
-	}
-
-	return getStatus($who);
-}
-
-// ************************************
-// ************************************
 
 
 // ************************************
@@ -565,7 +494,6 @@ function renameClan($p_clanID, $p_newName) {
 }
 
 function invitePlayer($who, $p_clanID) {
-	global $status_array;
 	DatabaseConnection::getInstance();
 
 	$target_id = get_user_id($who);
@@ -575,7 +503,7 @@ function invitePlayer($who, $p_clanID) {
 		return $failure_reason = 'No such ninja.';
 	}
 
-	$statement = DatabaseConnection::$pdo->prepare("SELECT confirmed, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target");
+	$statement = DatabaseConnection::$pdo->prepare('SELECT confirmed, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target');
 	$statement->bindValue(':target', $target_id);
 	$statement->execute();
 	$data = $statement->fetch();
@@ -589,21 +517,19 @@ function invitePlayer($who, $p_clanID) {
     $leader_id   = $leader_info['player_id'];
     $leader_name = $leader_info['uname'];
 
-	if (!$current_clan && $player_is_confirmed == 1 && !$target->hasStatus(INVITED)) {
+	if ($player_is_confirmed != 1) {
+		$failure_reason = 'That player name does not exist.';
+	} else if (!empty($current_clan)) {
+		$failure_reason = 'That player is already in a clan.';
+	} else if ($target->hasStatus(INVITED)) {
+		$failure_reason = 'That player has already been Invited into a Clan.';
+	} else {
 		$invite_msg = "$leader_name has invited you into their clan.  
 		To accept, choose their clan $clan_name on the "
 		.message_url('clan.php?command=join&clan_id='.$p_clanID, 'clan joining page').".";
 		send_message($leader_id, $target_id, $invite_msg);
-		addStatus($who, INVITED);
-		$failure_reason = "None.";
-	} else if ($player_is_confirmed != 1) {
-		$failure_reason = "That player name does not exist.";
-	} else if ($current_clan != "") {
-		$failure_reason = "That player is already in a clan.";
-	} else if ($status_array['Invited']) {
-		$failure_reason = "That player has already been Invited into a Clan.";
-	} else {
-		$failure_reason = "Report invitePlayer Code Error: That Player cannot be invited.";
+		$target->addStatus(INVITED);
+		$failure_reason = 'None.';
 	}
 
 	return $failure_reason;

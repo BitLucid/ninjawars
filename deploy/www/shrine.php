@@ -12,7 +12,7 @@ $freeResKillLimit  = 25;
 $lostTurns         = 10; // *** Default turns lost when the player has no kills.
 $startingKills     = 0;
 $userLevel         = 0;
-$poisoned          = $player->hasStatus(POISONED);
+$poisoned          = $player->hasStatus(POISON);
 
 if (isset($username)) {
 	$startingKills     = $player->vo->kills;

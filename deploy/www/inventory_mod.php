@@ -44,22 +44,15 @@ $item_count     = $statement->fetchColumn();
 
 if ($selfTarget) {
 	$target = $username;
+	$targetObj = $player;
+} else if ($target) {
+	$targetObj = new Player($target);
 }
 
-if ($target) {
-	$statement = DatabaseConnection::$pdo->prepare('SELECT health, ip, turns, level FROM players WHERE uname = :player');
-	$statement->bindValue(':player', $target);
-	$statement->execute();
-
-	if ($data = $statement->fetch()) {
-		$targets_turns = $data['turns'];
-		$targets_level = $data['level'];
-		$target_hp     = $data['health'];
-	} else {
-		$targets_turns =
-		$targets_level =
-		$target_hp     = null;
-	}
+if ($targetObj->player_id) {
+	$targets_turns = $targetObj->vo->turns;
+	$targets_level = $targetObj->vo->level;
+	$target_hp     = $targetObj->vo->health;
 } else {
 	$targets_turns =
 	$targets_level =
@@ -213,7 +206,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$result        = "lose ".$item->getTargetDamage()." HP";
 					$victim_alive  = subtractHealth($target, $item->getTargetDamage());
 				} else if ($item === $stealthScroll) {
-					addStatus($target, STEALTH);
+					$targetObj->addStatus(STEALTH);
 					echo "<br>$target is now Stealthed.<br>\n";
 					$result = false;
 					$victim_alive = true;
@@ -223,10 +216,10 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$result = "be drained of your life-force and die!";
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 				} else if ($item === $strangeHerb) {
-					addStatus($target, STR_UP1);
+					$targetObj->addStatus(STR_UP1);
 					$result = "$target's muscles experience a strange tingling.<br>\n";
 				} else if ($item === $kampoFormula) {
-					addStatus($target, STR_UP2);
+					$targetObj->addStatus(STR_UP2);
 					$result = "$target feels a surge of power!<br>\n";
 				} else if ($item->getTurnChange() <= 0) {
 
@@ -309,7 +302,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 			// Unstealth
 			if (!$item->isCovert() && $give != "on" && $give != "Give" && $player->hasStatus(STEALTH)) { //non-covert acts
-				subtractStatus($username, STEALTH);
+				$player->subtractStatus(STEALTH);
 				echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
 			}
 

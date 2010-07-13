@@ -12,7 +12,7 @@
 function get_status_list($target=null) {
 	$states = array();
 	$result = '';
-	$target = (isset($target) ? $target : get_username());
+	$target = (isset($target) && (int)$target == $target ? $target : get_char_id());
 
 	// Default to showing own status.
 	$target = new Player($target);
@@ -29,6 +29,8 @@ function get_status_list($target=null) {
 		if ($target->hasStatus(STEALTH)) { $states[] = 'Stealthed'; }
 		if ($target->hasStatus(POISON)) { $states[] = 'Poisoned'; }
 		if ($target->hasStatus(FROZEN)) { $states[] = 'Frozen'; }
+		if ($target->hasStatus(STR_UP1)) { $states[] = 'Buffed'; }
+		if ($target->hasStatus(STR_UP2)) { $states[] = 'Buffed+'; }
 	}
 
 	return $states;

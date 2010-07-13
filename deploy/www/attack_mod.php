@@ -115,14 +115,12 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 	$target_health    = $target_player->vo->health;
 	$target_level     = $target_player->vo->level;
 	$target_str       = $target_player->getStrength();
-	$target_status    = $target_player->getStatus();
 
 	// *** Attacker's stats. ***
 	$attacker_health     = $attacking_player->vo->health;
 	$attacker_level      = $attacking_player->vo->level;
 	$attacker_turns      = $attacking_player->vo->turns;
 	$attacker_str        = $attacking_player->getStrength();
-	$attacker_status     = $attacking_player->getStatus();
 	$class               = $attacking_player->vo->class;
 
 	$starting_target_health   = $target_health;
@@ -135,7 +133,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 	$loser  = null;
 
 	// *** ATTACKING + STEALTHED SECTION  ***
-	if (!$duel && $attacker_status['Stealth']) { // *** Not dueling, and attacking from stealth ***
+	if (!$duel && $attacking_player->hasStatus(STEALTH)) { // *** Not dueling, and attacking from stealth ***
 		$attacking_player->subtractStatus(STEALTH);
 		$turns_to_take = 1;
 
@@ -168,7 +166,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 	} else {	// *** If the attacker is purely dueling or attacking, even if stealthed, though stealth is broken by dueling. ***
        // *** MAIN DUELING SECTION ***
 
-        if ($attacker_status['Stealth']) { // *** Remove their stealth if they duel instead of preventing dueling.
+        if ($attacking_player->hasStatus(STEALTH)) { // *** Remove their stealth if they duel instead of preventing dueling.
             $attacking_player->subtractStatus(STEALTH);
             echo "You have lost your stealth.";
         }
