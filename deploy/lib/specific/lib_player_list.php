@@ -8,19 +8,19 @@
 function player_size() {
 	$res = array();
 	DatabaseConnection::getInstance();
-	$sel = "select (level-3-round(days/5)) as sum, player_id, uname from players where confirmed = 1 and health>0 order by sum desc";
+	$sel = "SELECT (level-3-round(days/5)) AS sum, player_id, uname FROM players WHERE confirmed = 1 AND health > 0 ORDER BY sum DESC";
 	$statement = DatabaseConnection::$pdo->query($sel);
-	$counts = $statement->fetchAll();
 
-	$largest = reset($counts);
-	$max = $largest['sum'];
+	$player_info = $statement->fetch();
 
-	foreach ($counts as $player_info) {
+	$max = $player_info['sum'];
+
+	do {
 		// make percentage of highest, multiply by 10 and round to give a 1-10 size
 		$res[$player_info['uname']] = array(
 			'player_id'=>$player_info['player_id'],
 	      	'size'=> floor(( (($player_info['sum']-1 < 1 ? 0 : $player_info['sum']-1)) /$max)*10)+1);
-	}
+	} while ($player_info = $statement->fetch());
 
 	return $res;
 }

@@ -69,22 +69,12 @@ function render_clan_join($process=null, $username, $clan_id) {
 
 // Wrapper for getting a single clan's info.
 function get_clan($clan_id) {
-	$clans = get_clans($clan_id);
-	return reset($clans);
-}
-
-// Just get the list of clans, plus the creator ids just for reference.
-function get_clans($clan_id=null) {
 	DatabaseConnection::getInstance();
-	$clan_or_clans = ($clan_id ? 'WHERE clan_id = :clan' : 'ORDER BY clan_id');
-	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_created_date, clan_founder FROM clan $clan_or_clans");
-	if ($clan_id) {
-		$clans->bindValue(':clan', $clan_id);
-	}
-
+	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_created_date, clan_founder FROM clan WHERE clan_id = :clan");
+	$clans->bindValue(':clan', $clan_id);
 	$clans->execute();
 
-	return $clans->fetchAll();
+	return $clans->fetch();
 }
 
 // Gets the clan founder, though they may be dead and unconfirmed now.
@@ -93,13 +83,14 @@ function get_clan_founders() {
 
 	$founders_statement = DatabaseConnection::$pdo->query("SELECT clan_founder, clan_name, uname, player_id, confirmed
 		FROM clan LEFT JOIN players ON lower(clan_founder) = lower(uname)");
-	return $founder_statement->fetchAll();
+	return $founder_statement;
 }
 
 // Return only the single clan leader and their information.
 function get_clan_leader_info($clan_id) {
 	$clans = get_clan_leaders($clan_id);
-	return reset($clans);
+
+	return $clans->fetch();
 }
 
 // Return just the clan leader id for a clan.
@@ -123,7 +114,7 @@ function get_clan_leaders($clan_id=null, $all=false) {
 
 	$clans->execute();
 
-	return $clans->fetchAll();
+	return $clans;
 }
 
 // Functions for creating the clan ranking tag cloud.
