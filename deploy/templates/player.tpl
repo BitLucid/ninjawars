@@ -35,7 +35,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
       {$level_category.display|escape} [{$player_info.level|escape}]
     </span>
 
-	{$status_section}
+    {include file="status_section.tpl" statuses=$status_list}
 
 	</div>
 

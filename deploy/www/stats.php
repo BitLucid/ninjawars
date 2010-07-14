@@ -1,6 +1,6 @@
 <?php
-require_once(LIB_ROOT."specific/lib_player.php"); // Player info display pieces.
-require_once(LIB_ROOT."specific/lib_status.php"); // Status alterations.
+require_once(LIB_ROOT.'specific/lib_player.php'); // Player info display pieces.
+require_once(LIB_ROOT.'specific/lib_status.php'); // Status alterations.
 
 $private    = true;
 $alive      = false;
@@ -38,7 +38,7 @@ if ($deleteAccount) {
 	$verify = false;
 	$verify = is_authentic($username, $passW);
 
-	if ($verify == true && !$delete_attempts) {
+	if ($verify && !$delete_attempts) {
 	    // *** Username&password matched, on the first attempt.
 		pauseAccount($username); // This may redirect and stuff?
 	} else {
@@ -51,26 +51,26 @@ if ($deleteAccount) {
 	}
 } else if ($changeprofile == 1) {
     // Limit the profile length.
-	if ($newprofile != "") {
+	if ($newprofile != '') {
 		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET messages = :profile WHERE uname = :player");
+		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET messages = :profile WHERE uname = :player');
 		$statement->bindValue(':profile', $newprofile);
 		$statement->bindValue(':player', $username);
 		$statement->execute();	// todo - test for success
 		$profile_changed = true;
 	} else {
-		$error = "Can not enter a blank profile.";
+		$error = 'Cannot enter a blank profile.';
 	}
 }
 
 $level_category   = level_category($player['level']);
-$status_list      = render_status_section();
+$status_list      = get_status_list();
 $gravatar_url     = generate_gravatar_url($player['player_id']);
 $rank_display     = get_rank($username); // rank display.
 $profile_editable = $player['messages'];
 $profile_display  = out($profile_editable);
 
-$parts = get_certain_vars(get_defined_vars(), array('player', 'level_category'));
+$parts = get_certain_vars(get_defined_vars(), array('player', 'level_category', 'status_list'));
 
 if ($parts['player_clan'] = get_clan_by_player_id($user_id)) {
 	$parts['clan_name'] = $parts['player_clan']->getName();
@@ -78,8 +78,8 @@ if ($parts['player_clan'] = get_clan_by_player_id($user_id)) {
 }
 
 display_page(
-	"stats.tpl"
-	, "Your Stats"
+	'stats.tpl'
+	, 'Your Stats'
 	, $parts
 	, array(
 		'quickstat' => 'player'

@@ -14,10 +14,11 @@ include(OBJ_ROOT."Skill.php");
 
 $skillsListObj = new Skill();
 
-$level = getLevel($username);
-$class = getClass($username);
+$player = new Player(get_char_id());
+$level = $player->vo->level;
+$class = getClass($username); // *** double-check player values before replacing this line ***
 
-$status_output_list = render_status_section();
+$status_list = get_status_list();
 $no_skills = true;
 $stealth   = $skillsListObj->hasSkill('Stealth');
 
@@ -38,7 +39,7 @@ $kampo               = $skillsListObj->hasSkill('kampo');
 display_page(
 	'skills.tpl'	// *** Main Template ***
 	, 'Your Skills'	// *** Page Title ***
-	, get_certain_vars(get_defined_vars(), array())	// *** Page Variables ***
+	, get_certain_vars(get_defined_vars(), array('status_list'))	// *** Page Variables ***
 	, array(	// *** Page Options ***
 		'quickstat' => 'player'
 	)

@@ -35,22 +35,4 @@ function get_status_list($target=null) {
 
 	return $states;
 }
-
-function render_status_list($target=null) {
-	$states = get_status_list($target);
-	$result = implode(', ', $states);
-
-	return $result;
-}
-
-function render_status_section($target=null) {
-	$res = '';
-	$statuses = get_status_list($target);
-
-	if (!empty($statuses)) {
-		$res .= '<span class="player-status ninja-notice '.implode(' ', $statuses).'">'.implode(', ', $statuses).'</span>';
-	}
-
-	return $res;
-}
 ?>

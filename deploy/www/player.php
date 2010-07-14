@@ -59,7 +59,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		$rank_spot = $statement->fetchColumn();
 
 		// Display the player info.
-		$status_section          = render_status_section($player_info['uname']);
+		$status_list          = get_status_list();
 		$player_activity_section = render_player_activity($player_info);
 
 		$level_category          = level_category($player_info['level']);
@@ -99,7 +99,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		// Send the info to the template.
 	
 		$template = 'player.tpl';
-		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url'));
+		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list'));
 	}
 }
 

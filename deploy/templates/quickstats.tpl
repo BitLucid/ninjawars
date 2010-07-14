@@ -18,7 +18,7 @@
     </dd>
     <dt>Status:</dt>
     <dd>
-     {$status_output_list}
+      {', '|implode:$status_list}
     </dd>
     <dt>Turns:</dt>
     <dd>
