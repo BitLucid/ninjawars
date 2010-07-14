@@ -104,8 +104,7 @@ function render_player_clan($player_info, $viewers_clan=null) {
 
 	$clan = get_clan_by_player_id($player_info['player_id']);
 
-	if ($player_info['uname'] != get_username()
-	    && $viewers_clan && $clan && $clan->getID() == $viewers_clan->getID()) {
+	if ($player_info['uname'] != get_username() && $viewers_clan && $clan && $clan->getID() == $viewers_clan->getID()) {
 	    $same_clan = $player_info['uname']; // puts the username in same_clan
 	}
 
@@ -247,26 +246,6 @@ function render_item_use_on_another($target) {
 
 	$res .= "</form>\n";
 	return $res;
-}
-
-// Display the in-clan options for clan leaders.
-function display_clan_options($player_info, $viewing_player_obj) {
-	$clan        = get_clan_by_player_id($player_info['player_id']);
-	$viewer_clan = get_clan_by_player_id($viewing_player_obj->vo->player_id);
-
-	if ($clan && $viewer_clan
-		&& $clan->getID() == $viewer_clan->getID()
-		&& is_clan_leader($viewing_player_obj->vo->player_id)) {
-		echo "<div class='clan-leader-options centered'>";
-		echo "<form id=\"kick_form\" action=\"clan.php\" method=\"get\" name=\"kick_form\">\n";
-		echo "<input id=\"kicked\" type=\"hidden\" value=\"", htmlentities($player_info['player_id']), "\" name=\"kicked\">\n";
-		echo "<input id=\"command\" type=\"hidden\" value=\"kick\" name=\"command\">\n";
-		echo "<input type=\"submit\" value=\"Kick This Ninja From Your Clan\" class=\"formButton\">\n";
-		echo "</form>\n";
-		echo "</div>";
-	} else {
-		return;
-	}
 }
 
 function render_player_link($username) {

@@ -120,7 +120,17 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 {/if}
 
     <!-- Clan leader options on players in their clan. -->
-    {$clan_options_section}
+{if $render_clan_options}
+    <div class='clan-leader-options centered'>
+      <form id="kick_form" action="clan.php" method="get" name="kick_form">
+        <div>
+          <input id="kicked" type="hidden" value="{$player_info.player_id}" name="kicked">
+          <input id="command" type="hidden" value="kick" name="command">
+          <input type="submit" value="Kick This Ninja From Your Clan" class="formButton">
+        </div>
+      </form>
+    </div>
+{/if}
 
     <!-- Player clan and clan members -->
 

@@ -85,11 +85,12 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		$player_clan_section    = '';
 	
 		if ($username && !$self) {
-			// Clan leader options on players in their clan.
-			ob_start();
-			display_clan_options($player_info, $viewing_player_obj);
-			$clan_options_section = ob_get_contents();
-			ob_end_clean();
+			$clan        = get_clan_by_player_id($player_info['player_id']);
+			$viewer_clan = get_clan_by_player_id($viewing_player_obj->vo->player_id);
+
+			$render_clan_options = ($clan && $viewer_clan && $clan->getID() == $viewer_clan->getID() && is_clan_leader($viewing_player_obj->vo->player_id));
+		} else {
+			$render_clan_options = false;
 		}
 	
 		// Player clan and clan members
