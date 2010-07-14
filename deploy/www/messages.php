@@ -1,9 +1,10 @@
 <?php
 $private    = true;
 $alive      = false;
-$quickstat  = false;
-$page_title = "Messages";
-include SERVER_ROOT."interface/header.php";
+
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
 
 $to        = in('to'); // The target of the message, if any were specified.
 $to_clan   = in('toclan');
@@ -38,9 +39,8 @@ if ($delete) {
 $messages      = get_messages($user_id, $limit, $offset);
 $message_count = message_count();
 $pages         = ceil($message_count / $limit);  // Total pages.
-//$current_page = floor(($message_count/$limit) - $limit); // 
 
-$nav = render_message_nav($page, $pages, $limit);
+$current_page = $page;
 
 read_messages($user_id); // mark messages as read for next viewing.
 
@@ -53,7 +53,10 @@ foreach ($messages as $loop_message) {
 
 $parts = get_certain_vars(get_defined_vars());
 
-echo render_template('messages.tpl', $parts);
-
-include SERVER_ROOT."interface/footer.php";
+display_page(
+	'messages.tpl'
+	, 'Messages'
+	, $parts
+);
+}
 ?>

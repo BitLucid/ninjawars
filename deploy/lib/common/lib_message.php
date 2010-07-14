@@ -53,27 +53,6 @@ function message_count() {
 	return query_item("SELECT count(*) from messages where send_to = :to", array(':to'=>get_user_id()));
 }
 
-// Return an array of nav settings.
-function render_message_nav($current_page, $pages, $limit) {
-	$res = '';
-	if ($pages > 1) {
-		$res .= "<div class='message-nav'>";
-		if (($current_page - 1) > 0) {
-			$res .= "<a href='messages.php?page=".($current_page - 1)."'>Prev</a>";
-		} else {
-			$res .= "Prev";
-		}
-		$res .= "- $current_page / $pages -";
-		if (($current_page + 1) < ($pages + 1)) {
-			$res .= "<a href='messages.php?page=".($current_page + 1)."'>Next</a>";
-		} else {
-			$res .= "Next";
-		}
-		$res .= "</div>";
-	}
-	return $res;
-}
-
 function message_to_clan($p_message) {
 
 	$error    = null;
