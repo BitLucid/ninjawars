@@ -81,26 +81,30 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 	
 		$set_bounty_section     = '';
 		$communication_section  = '';
-		$clan_options_section   = '';
 		$player_clan_section    = '';
 	
-		if ($username && !$self) {
-			$clan        = get_clan_by_player_id($player_info['player_id']);
-			$viewer_clan = get_clan_by_player_id($viewing_player_obj->vo->player_id);
+		$clan = get_clan_by_player_id($player_info['player_id']);
 
-			$render_clan_options = ($clan && $viewer_clan && $clan->getID() == $viewer_clan->getID() && is_clan_leader($viewing_player_obj->vo->player_id));
-		} else {
-			$render_clan_options = false;
-		}
-	
 		// Player clan and clan members
-	
-		$player_clan_section = render_player_clan($player_info, $viewers_clan);
+
+		if ($clan) {
+			$viewer_clan  = get_clan_by_player_id($viewing_player_obj->vo->player_id);
+			$clan_members = render_clan_members($clan->getID());
+			$clan_id      = $clan->getID();
+			$clan_name    = $clan->getName();
+
+			if ($viewer_clan) {
+				$same_clan = ($clan->getID() == $viewer_clan->getID());
+				$render_clan_options = ($username && !$self && $same_clan && is_clan_leader($viewing_player_obj->vo->player_id));
+			} else {
+				$same_clan = $render_clan_options = false;
+			}
+		}
 	
 		// Send the info to the template.
 	
 		$template = 'player.tpl';
-		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list'));
+		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan'));
 	}
 }
 
