@@ -198,6 +198,7 @@
         <span style="display:none">There was going to be a NinjaWars2, but NinjaWars1 stabbed it.</span>
         <span style="display:none">Join a clan, promote multiple stab wounds.</span>
         <span style="display:none">Annoy the Emperor, kill Samurai.</span>
+        <span style="display:none">Some theorize that poison is actually liquified ninja.</span>
         <span>Oni are actually quite friendly, if you get to know them.</span>
         </span>
          |
