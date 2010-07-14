@@ -41,10 +41,8 @@ function send_chat($user_id, $msg) {
 function render_active_members() {
 	DatabaseConnection::getInstance();
 
-	$statement = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('30 minutes' AS interval))");
+	$statement = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('30 minutes' AS interval)) UNION SELECT count(*) FROM ppl_online WHERE member = true");
 	$members = $statement->fetchColumn();
-
-	$statement = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true");
 	$membersTotal = $statement->fetchColumn();
 
 	return
@@ -93,20 +91,22 @@ function render_chat_messages($chatlength, $show_elipsis=null) {
 		if (!empty($chat_message['message'])) {
 			// Check for the x time ago message.
 			$l_ago = time_ago($chat_message['ago'], $previous_date);
-			$res .= "<dt class='chat-author'>
-			    &lsaquo;<a href='player.php?player_id={$chat_message['sender_id']}'
-			        target='main'>".out($chat_message['uname'])."</a>&rsaquo;</dt>
-			      <dd class='chat-message'>".out($chat_message['message']).
-			     ($l_ago != $previous_ago ? " <abbr class='chat-time timeago' title='{$chat_message['date']}'>{$l_ago}</abbr>" : "")
-			     ."</dd>";
+			$template_data = array('sender_id'=>$chat_message['sender_id'], 'sender_name'=>$chat_message['uname'], 'message'=>$chat_message['message'], 'message_date'=>$chat_message['date']);
+
+			if ($l_ago != $previous_ago) {
+				$template_data['ago'] = $l_ago;
+			}
+
+			$res .= render_template('chatmessage.tpl', $template_data);
+
 			$previous_date = $chat_message['ago']; // Store just prior date.
-			$previous_ago = $l_ago; // Save the prior ago message.
+			$previous_ago  = $l_ago; // Save the prior ago message.
 		}
 	}
 
 	$res .= "</dl>";
     
-	if ($show_elipsis && $message_count>$chatlength) { // to indicate there are more chats available
+	if ($show_elipsis && $message_count > $chatlength) { // to indicate there are more chats available
 		$res .= ".<br>.<br>.<br>";
 	}
 
@@ -188,44 +188,4 @@ function ago_string($time_array) {
 
 	return '('.$res.' ago)';
 }
-
-// Render the "refresh chat periodically" js.
-function render_chat_refresh($not_mini=null) {
-	// TODO: this chat javascript update needs to be cleaned up and put into the js file.
-	$location = "mini_chat.php";
-	$frame    = 'mini_chat';
-
-	if ($not_mini) {
-		$location = "village.php";
-		$frame    = 'main';
-	}
-
-	ob_start();
-?>
-
-    <script type="text/javascript">
-	function refreshpage<?php echo $frame; ?>() {
-		parent.<?php echo $frame; ?>.location="<?php echo $location; ?>";
-	}
-	setInterval("refreshpage<?php echo $frame; ?>()",300*1000);
-    </script>
-<?php
-	$res = ob_get_contents();
-	ob_end_clean();
-	return $res;
-}
-
-/**
- * Display the chat input form.
-**/
-function render_chat_input($target='mini_chat.php', $field_size=20) {
-	return
-    "<form class='chat-submit' id=\"post_msg\" action=\"$target\" method=\"post\" name=\"post_msg\">\n
-    <input id=\"message\" type=\"text\" size=\"$field_size\" maxlength=\"250\" name=\"message\" class=\"textField\">\n
-    <input id=\"command\" type=\"hidden\" value=\"postnow\" name=\"command\">
-    <input name='chat_submit' type='hidden' value='1'>
-    <button type=\"submit\" value=\"&gt;\" class=\"formButton\">Chat</button>
-    </form>\n";
-}
-
 ?>
