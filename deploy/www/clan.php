@@ -129,9 +129,9 @@ if (!$player_id) {
 					echo "</div>\n";
 					echo "</form>\n";
 				} else {	// *** An actual successful kick of a member. ***
-					$kickPlayer = new Player($kicked);
+					$kickedPlayer = new Player($kicked);
 					$clan->kickMember($kicked);
-					echo '<p>You have removed '.$kickedPlayer->vo->name.' from your clan.</p>';
+					echo '<p>You have removed '.$kickedPlayer->vo->uname.' from your clan.</p>';
 				}
 			} else if ($command == 'disband') {	// *** Clan Leader Confirmation of Disbanding of the Clan ***
 				if (!$sure) {
