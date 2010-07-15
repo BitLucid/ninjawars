@@ -49,25 +49,10 @@ function render_player_tags() {
 // Display the recently active players
 function render_active($limit=5, $alive_only=true) {
 	$where_cond = ($alive_only ? 'and health>0' : '');
-	$sel = "select uname, player_id from players where confirmed=1 $where_cond order by last_started_attack desc limit $limit";
-	DatabaseConnection::getInstance();
-	$res = DatabaseConnection::$pdo->query($sel);
-	$out = "
-	  <div class='active-players'>
-	    <ul>
-	      <li><span>Lurking ninja: </span></li>
-	";
-
-	foreach ($res as $ninja) {
-		$out .= "        <li class='active-ninja'><a href='player.php?target_id=".$ninja['player_id']."'>".$ninja['uname']."</a></li>";
-	}
-
-	$out .= "
-	    </ul>
-	  </div>
-	  ";
-
-	return $out;
+	$sel = "select uname, player_id from players where confirmed=1 $where_cond order by last_started_attack desc limit :limit";
+	$active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
+	$active = render_template('player_list.active.tpl', array('active_ninjas'=>$active_ninjas));
+	return $active;
 }
 
 // Function to format each row of the player list.
