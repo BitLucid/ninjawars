@@ -92,42 +92,24 @@ function format_ninja_row($a_player){
 
 // Display first/previous/page/next/last
 function render_player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages) {
-    ob_start();
-	echo "<div class='player-list-nav'>\n
-	      <form action=\"list_all_players.php\" method=\"get\">\n
-	        <div>\n";
 
-	if ($page != 1) {
-		$pageprev = $page-1;
-		echo "<a href=\"list_all_players.php?hide=$hide&amp;page=1&amp;searched=$searched\">&laquo;First</a> |
-		    <a href=\"list_all_players.php?page=$pageprev&amp;searched=$searched&amp;hide=$hide\">&lsaquo;Previous $record_limit</a>&nbsp;| ";
-	} else {
-		echo "&laquo;First | &lsaquo;Previous $record_limit&nbsp; | ";
-	}
-
-	echo "<span class='current-page'>
-	    <input type=\"hidden\" name=\"hide\" value=\"$hide\">
-	    <button type=\"submit\" class=\"formButton\" value=\"Page\">Page</button>
-	    <input type=\"hidden\" name=\"searched\" value=\"$searched\">
-	    <input class='page-counter' type=\"text\" name=\"page\" value=\"$page\" size=\"3\">
-	    /$numofpages
-	    </span>";
-
-	if (($totalrows - ($record_limit * $page)) > 0) {
-		$pagenext   = $page+1;
-		echo " | <a href=\"list_all_players.php?page=$pagenext&amp;searched=$searched&amp;hide=$hide\">Next $record_limit&rsaquo;</a>
-		     | <a href=\"list_all_players.php?page=$numofpages&amp;hide=$hide&amp;searched=$searched\">Last&raquo;</a>\n";
-	} else {
-		echo " | Next $record_limit&rsaquo;
-		     | Last&raquo;\n";
-	}
-
-	echo "  </div>\n
-	      </form>\n
-	      </div>\n";
-    $search_form = ob_get_contents();
-    ob_end_clean();
-    return $search_form;
+	$pageprev = $page -1;
+	$pagenext = $page +1;
+    $last_page = (($totalrows - ($record_limit * $page)) > 0);
+	
+	// Use the page's template, here.
+	$nav = render_template('player_list.nav.tpl', 
+	    array(
+	        'page'=>$page,
+	        'hide'=>$hide,
+	        'searched'=>$searched,
+	        'record_limit'=>$record_limit,
+	        'totalrows'=>$totalrows,
+	        'numofpages'=>$numofpages,
+	        'pageprev'=>$pageprev,
+	        'pagenext'=>$pagenext,
+            'last_page'=>$last_page));
+    return $nav;
 } // End of display functions.
 
 
