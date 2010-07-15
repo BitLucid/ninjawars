@@ -15,3 +15,13 @@ iframe{
     font-size:1.1em;
     vertical-align:middle;
 }
+h1, h2, h3, h4, h5, h6, .subtitle, .title{
+    font-size:12px;
+}
+#category-bar{
+    font-size: 30px;
+}
+#subcategory-bar a{
+    font-size: 10px;
+}
+
