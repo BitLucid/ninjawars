@@ -5,7 +5,7 @@
         	<a href='list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='Go to the ninja list'></a>
         </div>
             <div>
-                <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your player information'>{$username|escape}</a>
+                <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your ninja information'>{$username|escape}</a>
             </div>
             <div id='logged-in-bar'>
                 <div>
@@ -20,7 +20,7 @@
             </div>
             <div id="quickstats-and-switch-stats"><!-- Id used by show hide jquery -->
               <div class="centered quickstats-container">
-                <a href="quickstats.php" target="quickstats" onclick="return !NW.refreshQuickstats('player');">Player</a> 
+                <a href="quickstats.php" target="quickstats" onclick="return !NW.refreshQuickstats('player');">Stats</a> 
                 | <a href="quickstats.php?command=viewinv" target="quickstats" onclick="return !NW.refreshQuickstats('viewinv');">Inventory</a>
               </div>
               <div id="quickstats-frame-container"><div></div>
