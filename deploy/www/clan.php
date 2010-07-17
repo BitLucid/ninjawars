@@ -25,12 +25,19 @@ $sure                            = in('sure', '');
 $kicked                          = in('kicked', '');
 $person_invited                  = in('person_invited', '');
 $message                         = in('message', null, null); // Don't filter messages sent in.
+$clan_avatar_url                 = in('clan-avatar-url');
+
 
 // *** Used Variables ***
 
-$player_id    = get_user_id();
+$player_id    = get_char_id();
 $username     = get_username();
 $player       = new Player($player_id);
+
+$leader_id = whichever(get_clan_leader_id($clan_id_viewed), null);
+$viewed_clan_avatar = $clan_id_viewed? clan_avatar_url($clan_id_viewed) : null;
+$self_is_leader = ($leader_id && $player_id && $leader_id == $player_id);
+
 
 if ($player_id) {
 	$clan         = get_clan_by_player_id($player_id);
@@ -47,6 +54,12 @@ if (!$player_id) {
 	echo '<p class="ninja-notice">You are not part of any clan.</p>';
 } else {
 	$self_is_leader = ($clan && (get_clan_leader_id($clan->getID()) == $player_id));
+	$self_clan_id = clan_id($player_id);
+	
+
+    if($clan_avatar_url && $self_is_leader){
+        save_clan_avatar_url($clan_avatar_url, $self_clan_id);
+    }
 
 	if ($command == 'disband' && $sure == 'yes' && $self_is_leader) {	// **** Clan Leader Action Disbanding of the Clan ***
 		$clan->disband();
@@ -77,6 +90,13 @@ if (!$player_id) {
 		message_to_clan($message);
 		echo "<div id='message-sent' class='ninja-notice'>Message sent.</div>";
 	}
+	
+	
+	
+	
+//function is_valid_clan_name($potential){
+//    return ($potential && (strlen($potential) <= 20) && (preg_match(
+//}
 
 	if ($clan) {
 		if ($self_is_leader) {
@@ -166,8 +186,11 @@ if (!$player_id) {
 				}
 			}
 
-			if ($clan && $self_is_leader)
-			{
+
+            // Clan leader display
+			if ($clan && $self_is_leader){
+			
+        $clan_avatar_current = whichever($clan_avatar_url, $viewed_clan_avatar);     
 				echo "<div id='leader-panel'>
 	      <div id='leader-panel-title'>", $clan->getName(), " Clan Leader Panel</div>
 	        <ul id='leader-options'>
@@ -175,8 +198,22 @@ if (!$player_id) {
 	            <li><a href=\"clan.php?command=rename\">Rename Clan</a></li>
 	            <li><a href=\"clan.php?command=disband\">Disband Your Clan</a></li>
 	            <li><a href=\"clan.php?command=kick\">Kick a Clan Member</a></li>
-	        </ul>
-	      </div>";
+	        </ul>";
+	      
+	    echo "
+	    <div>
+	    To create a clan avatar, upload an image to <a href='http://www.imageshack.com'>imageshack.com</a>
+	    <form>
+	        Then put the image's full url here:
+	        <input name='clan-avatar-url' type='text' value='{$clan_avatar_current}'>
+	        (Image can be .jpg or .png)
+	        </form>
+	    </div>
+	        
+	        
+	        </div><!-- End of leader-panel -->
+	        ";
+	      
 			}
 		} else {
 			if ($command == 'leave') {	// *** Clan Member Action to Leave their Clan ***
@@ -219,7 +256,9 @@ if (!$player_id) {
 		if($clan_id_viewed){
 		    $viewed_clan = get_clan($clan_id_viewed);
 		    $viewed_clan_name = $viewed_clan['clan_name'];
-    		echo "<div><a href='clan.php?command=join&amp;clan_id=". $clan_id_viewed ."&process=1'>Send a request to join Clan ". $viewed_clan_name ."</a></div>"; 
+    		echo "<div><a href='clan.php?command=join&amp;clan_id=". $clan_id_viewed ."&process=1'>
+    		        Send a request to join Clan ". $viewed_clan_name ."
+    		        </a></div>"; 
     	}
 		
 		if ($viewer_level >= CLAN_CREATOR_MIN_LEVEL) {
@@ -231,9 +270,13 @@ if (!$player_id) {
 	}
 }	// End of logged-in display.
 
-if ($command == "view"){
+
+
+if ($command == "view"){    
 	// *** A view of the member list of any clan ***
 	echo render_clan_view($clan_id_viewed);
+	//var_dump(get_char_id($leader_id));
+    echo render_clan_info($clan_id_viewed);
 }
 
 echo render_clan_tags(); // *** Display the clan tags section. ***

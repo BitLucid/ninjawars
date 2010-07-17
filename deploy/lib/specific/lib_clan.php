@@ -20,6 +20,23 @@ function add_player_to_clan($player_id, $clan_id){
 }
 
 
+// Get the clan info for displaying an avatar and a description.
+function render_clan_info($clan_id){
+    $clan = get_clan($clan_id);
+    $clan_name = $clan['clan_name'];
+    $avatar_url = 'http://farm5.static.flickr.com/4023/4303942106_b1ed43f71d_m.jpg';
+    $avatar_url = clan_avatar_url($clan_id);
+//    $avatar_host = clan_avatar_url($clan_id);
+    $description = whichever(@$clan['description'], "An introductory description of the clan and stuff like that.");
+    // This will contain: clan member info, and clan avatar url, for now.
+    return render_template('clan.clan_info.tpl', array(
+        'avatar_url'=>$avatar_url, 
+//        'avatar_host'=>$avatar_host, 
+        'clan_name'=>$clan_name,
+        'clan_description'=>$description));
+}
+
+
 // Show the form for the clan joining, or perform the join.
 function render_clan_join($process=null, $username, $clan_id) {
 	DatabaseConnection::getInstance();
@@ -67,6 +84,11 @@ function render_clan_join($process=null, $username, $clan_id) {
 	return $res;
 }
 
+function clan_id($char_id){
+    $clan_id = query_item('select _clan_id from clan_player where _player_id = :char_id', array(':char_id'=>$char_id));
+    return $clan_id;
+}
+
 // Wrapper for getting a single clan's info.
 function get_clan($clan_id) {
 	DatabaseConnection::getInstance();
@@ -81,7 +103,8 @@ function get_clan($clan_id) {
 function get_clan_founders() {
 	DatabaseConnection::getInstance();
 
-	$founders_statement = DatabaseConnection::$pdo->query("SELECT clan_founder, clan_name, uname, player_id, confirmed
+	$founders_statement = DatabaseConnection::$pdo->query(
+	    "SELECT clan_founder, clan_name, uname, player_id, confirmed
 		FROM clan LEFT JOIN players ON lower(clan_founder) = lower(uname)");
 	return $founder_statement;
 }
@@ -117,6 +140,35 @@ function get_clan_leaders($clan_id=null, $all=false) {
 	return $clans;
 }
 
+// Save the url of the clan avatar to the database.
+function save_clan_avatar_url($url, $clan_id){
+    $update = 'update clan set clan_avatar_url = :url where clan_id = :clan_id';
+    query_resultset($update, array(':url'=>$url, ':clan_id'=>$clan_id));
+}
+
+// return boolean, checks that an avatar is valid.
+function clan_avatar_is_valid($dirty_url){
+    $is_url = ($dirty_url == filter_var($dirty_url, FILTER_VALIDATE_URL));
+    if(!$is_url){
+        return false;
+    } else {
+        $parts = @parse_url($dirty_url);
+        $host_matches = !!preg_match('#\w\.imageshack\.com#i', $parts['host']);
+        if($host_matches){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+function clan_avatar_url($clan_id){
+    $sel = 'select clan_avatar_url from clan where clan_id = :clan_id';
+    return query_item($sel, array(':clan_id'=>$clan_id));
+}
+
+
+
 // Functions for creating the clan ranking tag cloud.
 
 /**
@@ -126,7 +178,9 @@ function clan_size() {
 	$res = array();
 
 	// sum the levels of the players (minus days of inactivity) for each clan
-	$counts = query("SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC");
+	$counts = query("SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id 
+	    FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id 
+	    WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC");
 
 	if ($counts->rowCount() > 0) {
 		$clan_info = $counts->fetch();
