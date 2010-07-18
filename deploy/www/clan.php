@@ -25,17 +25,19 @@ $sure                            = in('sure', '');
 $kicked                          = in('kicked', '');
 $person_invited                  = in('person_invited', '');
 $message                         = in('message', null, null); // Don't filter messages sent in.
-$clan_avatar_url                 = in('clan-avatar-url');
+$new_clan_avatar_url                 = in('clan-avatar-url');
+$new_clan_description                 = in('clan-description');
 
 
 // *** Used Variables ***
 
 $player_id    = get_char_id();
-$username     = get_username();
 $player       = new Player($player_id);
+$username     = get_char_name(); // Probably shouldn't even get this via this method.
 
 $leader_id = whichever(get_clan_leader_id($clan_id_viewed), null);
 $viewed_clan_avatar = $clan_id_viewed? clan_avatar_url($clan_id_viewed) : null;
+$viewed_clan_description = $clan_id_viewed? clan_description($clan_id_viewed) : null;
 $self_is_leader = ($leader_id && $player_id && $leader_id == $player_id);
 
 
@@ -56,9 +58,13 @@ if (!$player_id) {
 	$self_is_leader = ($clan && (get_clan_leader_id($clan->getID()) == $player_id));
 	$self_clan_id = clan_id($player_id);
 	
-
-    if($clan_avatar_url && $self_is_leader){
-        save_clan_avatar_url($clan_avatar_url, $self_clan_id);
+    if($self_is_leader){
+        if($new_clan_avatar_url){
+            save_clan_avatar_url($new_clan_avatar_url, $self_clan_id);
+        }
+        if($new_clan_description){
+            save_clan_description($new_clan_description, $self_clan_id);
+        }
     }
 
 	if ($command == 'disband' && $sure == 'yes' && $self_is_leader) {	// **** Clan Leader Action Disbanding of the Clan ***
@@ -190,7 +196,9 @@ if (!$player_id) {
             // Clan leader display
 			if ($clan && $self_is_leader){
 			
-        $clan_avatar_current = whichever($clan_avatar_url, $viewed_clan_avatar);     
+        $clan_avatar_current = whichever($new_clan_avatar_url, $viewed_clan_avatar);
+        var_dump($new_clan_description);
+        $clan_description_current = whichever($new_clan_description, $viewed_clan_description);
 				echo "<div id='leader-panel'>
 	      <div id='leader-panel-title'>", $clan->getName(), " Clan Leader Panel</div>
 	        <ul id='leader-options'>
@@ -202,12 +210,18 @@ if (!$player_id) {
 	      
 	    echo "
 	    <div>
+	    <div><b>Clan Image</b></div>
 	    To create a clan avatar, upload an image to <a href='http://www.imageshack.com'>imageshack.com</a>
-	    <form>
-	        Then put the image's full url here:
-	        <input name='clan-avatar-url' type='text' value='{$clan_avatar_current}'>
-	        (Image can be .jpg or .png)
+    	    <form>
+    	        Then put the image's full url here:
+    	        <input name='clan-avatar-url' type='text' value='".htmlentities($clan_avatar_current)."'>
+    	        (Image can be .jpg or .png)
+	        <div><b>Clan Message</b></div>
+    	        Change your clan description below:
+    	        <textarea name='clan-description'>".htmlentities($clan_description_current)."</textarea>
+    	        <input type='submit'>
 	        </form>
+	        
 	    </div>
 	        
 	        

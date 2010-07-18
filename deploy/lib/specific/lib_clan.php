@@ -27,7 +27,7 @@ function render_clan_info($clan_id){
     $avatar_url = 'http://farm5.static.flickr.com/4023/4303942106_b1ed43f71d_m.jpg';
     $avatar_url = clan_avatar_url($clan_id);
 //    $avatar_host = clan_avatar_url($clan_id);
-    $description = whichever(@$clan['description'], "An introductory description of the clan and stuff like that.");
+    $description = whichever(clan_description($clan_id), "An introductory description of the clan and stuff like that.");
     // This will contain: clan member info, and clan avatar url, for now.
     return render_template('clan.clan_info.tpl', array(
         'avatar_url'=>$avatar_url, 
@@ -145,6 +145,20 @@ function save_clan_avatar_url($url, $clan_id){
     $update = 'update clan set clan_avatar_url = :url where clan_id = :clan_id';
     query_resultset($update, array(':url'=>$url, ':clan_id'=>$clan_id));
 }
+
+// Get the clan description from the database.
+function clan_description($clan_id){
+    $sel = 'select description from clan where clan_id = :clan_id';
+    return query_item($sel, array(':clan_id'=>$clan_id));
+}
+
+
+// Save the clan description to the database.
+function save_clan_description($desc, $clan_id){
+    $update = 'update clan set description = :desc where clan_id = :clan_id';
+    query_resultset($update, array(':desc'=>$desc, ':clan_id'=>$clan_id));
+}
+
 
 // return boolean, checks that an avatar is valid.
 function clan_avatar_is_valid($dirty_url){
