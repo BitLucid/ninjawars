@@ -52,7 +52,7 @@ if (is_logged_in()) {
 		}
 	}
 
-	$MAX_LEVEL = 250;
+	$max_level = 250;
 
 	$nextLevel  = $userLevel + 1;
 	$in_upgrade = in('upgrade');
@@ -60,7 +60,7 @@ if (is_logged_in()) {
 	$upgrade_requested = ($in_upgrade && $in_upgrade == 1);
 
 	if ($upgrade_requested) {  // *** If they requested an upgrade ***
-		if ($nextLevel < $MAX_LEVEL && $userKills >= $required_kills) {
+		if ($nextLevel < $max_level && $userKills >= $required_kills) {
 			$userKills = subtractKills($username, ($userLevel * 5));
 			$userLevel = addLevel($username, 1);
 			addStrength($username, 5);
@@ -74,7 +74,7 @@ if (is_logged_in()) {
 display_page(
 	'dojo.tpl'
 	, 'Dojo'
-	, array('classChangeAllowed'=>$classChangeAllowed, 'dimMakAllowed'=>$dimMakAllowed, 'dimMakCost'=>$dimMakCost, 'dimmak_sequence'=>$dimmak_sequence, 'classChangeCost'=>$classChangeCost, 'classChangeSequence'=>$classChangeSequence, 'destination_class'=>$class_array[$userClass], 'msg'=>$msg, 'userLevel'=>$userLevel, 'userKills'=>$userKills, 'nextLevel'=>$nextLevel, 'max_level'=>$MAX_LEVEL, 'required_kills'=>$required_kills, 'upgrade_requested'=>$upgrade_requested)
+	, get_defined_vars()
 	, array('quickstat'=>'player')
 );
 }

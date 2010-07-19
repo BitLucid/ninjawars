@@ -59,7 +59,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		$rank_spot = $statement->fetchColumn();
 
 		// Display the player info.
-		$status_list          = get_status_list();
+		$status_list          = get_status_list($player);
 		$player_activity_section = render_player_activity($player_info);
 
 		$level_category          = level_category($player_info['level']);
@@ -87,7 +87,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		// Player clan and clan members
 
 		if ($clan) {
-			$viewer_clan  = get_clan_by_player_id($viewing_player_obj->vo->player_id);
+			$viewer_clan  = (is_logged_in() ? get_clan_by_player_id($viewing_player_obj->vo->player_id) : null);
 			$clan_members = render_clan_members($clan->getID());
 			$clan_id      = $clan->getID();
 			$clan_name    = $clan->getName();

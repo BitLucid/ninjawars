@@ -10,7 +10,7 @@
 <p><a href="village.php?chatlength=50">Refresh</a><p>
 
 <script type="text/javascript">
-{literal}function refreshpage{$frame}() {{/literal}
+function refreshpage{$frame}() {literal}{{/literal}
 	parent.{$frame}.location = "{$location}";
 {literal}}{/literal}
 setInterval("refreshpage{$frame}()",300*1000);

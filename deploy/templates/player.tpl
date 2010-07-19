@@ -96,7 +96,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 	{$player_activity_section}
 
-{if !$self}
+{if is_logged_in() and !$self}
      <div class='set-bounty centered'>
        <form id="set_bounty" action="doshin_office.php" method="post" name="set_bounty">
          <div>
@@ -120,7 +120,8 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 {/if}
 
     <!-- Clan leader options on players in their clan. -->
-{if $render_clan_options}
+{if $clan}
+	{if $render_clan_options}
     <div class='clan-leader-options centered'>
       <form id="kick_form" action="clan.php" method="get" name="kick_form">
         <div>
@@ -130,10 +131,9 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
         </div>
       </form>
     </div>
-{/if}
+	{/if}
 
     <!-- Player clan and clan members -->
-{if $clan}
     <div class='player-clan'>
 	{if $same_clan}
       <p class='ninja-notice'>{$player_info.uname|escape} is part of your clan.</p>

@@ -4,6 +4,12 @@ $alive      = false;
 $quickstat  = false;
 $page_title = "Enemy List";
 require_once(LIB_ROOT."specific/lib_player_list.php");
+
+if (!get_user_id()) {
+	header('Location: list_all_players.php');
+	exit();
+}
+
 include SERVER_ROOT."interface/header.php";
 
 function render_enemy_matches($match_string) {
@@ -131,10 +137,6 @@ function get_recent_attackers() {
 	return $statement;
 }
 
-if (!get_user_id()) {
-	header('Location: list_all_players.php');
-	exit();
-}
 
 $active_ninja = render_active(5, $alive_only=true); // Display the currently active ninjas
 
