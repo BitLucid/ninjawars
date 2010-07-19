@@ -33,11 +33,12 @@ $new_clan_description                 = in('clan-description');
 
 $player_id    = get_char_id();
 $player       = new Player($player_id);
-$username     = get_char_name(); // Probably shouldn't even get this via this method.
+$char_info    = get_player_info();
+$username     = $char_info['uname'];
 
 $leader_id = whichever(get_clan_leader_id($clan_id_viewed), null);
 if($clan_id_viewed){
-    $viewed_clan_data = clan_data($clan_id_viewed);
+    $viewed_clan_data = get_clan($clan_id_viewed);
 }
 $self_is_leader = ($leader_id && $player_id && $leader_id == $player_id);
 
@@ -197,9 +198,9 @@ if (!$player_id) {
             // Clan leader display
 			if ($clan && $self_is_leader){
 			
-        $clan_avatar_current = whichever($new_clan_avatar_url, $viewed_clan_data['clan_avatar_url']);
-        var_dump($new_clan_description);
-        $clan_description_current = whichever($new_clan_description, $viewed_clan_data['description']);
+        $clan_avatar_current = whichever($new_clan_avatar_url, @$viewed_clan_data['clan_avatar_url']);
+//        var_dump($new_clan_description);
+        $clan_description_current = whichever($new_clan_description, @$viewed_clan_data['description']);
 				echo "<div id='leader-panel'>
 	      <div id='leader-panel-title'>", $clan->getName(), " Clan Leader Panel</div>
 	        <ul id='leader-options'>
@@ -214,6 +215,8 @@ if (!$player_id) {
 	    <div><b>Clan Image</b></div>
 	    To create a clan avatar, upload an image to <a href='http://www.imageshack.com'>imageshack.com</a>
     	    <form>
+    	        <input type='hidden' name='command' value='view'>
+    	        <input type='hidden' name='clan_id' value='".htmlentities($self_clan_id)."'>
     	        Then put the image's full url here:
     	        <input name='clan-avatar-url' type='text' value='".htmlentities($clan_avatar_current)."'>
     	        (Image can be .jpg or .png)

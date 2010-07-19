@@ -85,7 +85,7 @@ function clan_id($char_id){
 // Wrapper for getting a single clan's info.
 function get_clan($clan_id) {
 	DatabaseConnection::getInstance();
-	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_created_date, clan_founder FROM clan WHERE clan_id = :clan");
+	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description FROM clan WHERE clan_id = :clan");
 	$clans->bindValue(':clan', $clan_id);
 	$clans->execute();
 
