@@ -36,8 +36,9 @@ $player       = new Player($player_id);
 $username     = get_char_name(); // Probably shouldn't even get this via this method.
 
 $leader_id = whichever(get_clan_leader_id($clan_id_viewed), null);
-$viewed_clan_avatar = $clan_id_viewed? clan_avatar_url($clan_id_viewed) : null;
-$viewed_clan_description = $clan_id_viewed? clan_description($clan_id_viewed) : null;
+if($clan_id_viewed){
+    $viewed_clan_data = clan_data($clan_id_viewed);
+}
 $self_is_leader = ($leader_id && $player_id && $leader_id == $player_id);
 
 
@@ -196,9 +197,9 @@ if (!$player_id) {
             // Clan leader display
 			if ($clan && $self_is_leader){
 			
-        $clan_avatar_current = whichever($new_clan_avatar_url, $viewed_clan_avatar);
+        $clan_avatar_current = whichever($new_clan_avatar_url, $viewed_clan_data['clan_avatar_url']);
         var_dump($new_clan_description);
-        $clan_description_current = whichever($new_clan_description, $viewed_clan_description);
+        $clan_description_current = whichever($new_clan_description, $viewed_clan_data['description']);
 				echo "<div id='leader-panel'>
 	      <div id='leader-panel-title'>", $clan->getName(), " Clan Leader Panel</div>
 	        <ul id='leader-options'>

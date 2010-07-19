@@ -23,17 +23,10 @@ function add_player_to_clan($player_id, $clan_id){
 // Get the clan info for displaying an avatar and a description.
 function render_clan_info($clan_id){
     $clan = get_clan($clan_id);
-    $clan_name = $clan['clan_name'];
-    $avatar_url = 'http://farm5.static.flickr.com/4023/4303942106_b1ed43f71d_m.jpg';
-    $avatar_url = clan_avatar_url($clan_id);
-//    $avatar_host = clan_avatar_url($clan_id);
-    $description = whichever(clan_description($clan_id), "An introductory description of the clan and stuff like that.");
-    // This will contain: clan member info, and clan avatar url, for now.
     return render_template('clan.clan_info.tpl', array(
-        'avatar_url'=>$avatar_url, 
-//        'avatar_host'=>$avatar_host, 
-        'clan_name'=>$clan_name,
-        'clan_description'=>$description));
+        'avatar_url'=>$clan['clan_avatar_url'],
+        'clan_name'=>$clan['clan_name'],
+        'clan_description'=>$clan['description']));
 }
 
 
@@ -146,12 +139,12 @@ function save_clan_avatar_url($url, $clan_id){
     query_resultset($update, array(':url'=>$url, ':clan_id'=>$clan_id));
 }
 
-// Get the clan description from the database.
-function clan_description($clan_id){
-    $sel = 'select description from clan where clan_id = :clan_id';
-    return query_item($sel, array(':clan_id'=>$clan_id));
-}
 
+// Get the clan info from the database.
+function clan_data($clan_id){
+    $sel = 'select * from clan where clan_id = :clan_id';
+    return query_row($sel, array(':clan_id'=>$clan_id));
+}
 
 // Save the clan description to the database.
 function save_clan_description($desc, $clan_id){
@@ -176,11 +169,6 @@ function clan_avatar_is_valid($dirty_url){
     }
 }
 
-function clan_avatar_url($clan_id){
-    $sel = 'select clan_avatar_url from clan where clan_id = :clan_id';
-    return query_item($sel, array(':clan_id'=>$clan_id));
-}
-
 
 
 // Functions for creating the clan ranking tag cloud.
@@ -188,7 +176,7 @@ function clan_avatar_url($clan_id){
 /**
  * This determines the criteria for how the clans get ranked and tagged, and shows only non-empty clans.
 **/
-function clan_size() {
+function clans_ranked() {
 	$res = array();
 
 	// sum the levels of the players (minus days of inactivity) for each clan
@@ -212,24 +200,8 @@ function clan_size() {
 
 // Display the tag list of clans/clan links.
 function render_clan_tags() {
-	$clans = clan_size();
-	//$clans = @natsort2d($clans, 'level');
-	$res = "<div id='clan-tags'>
-				<h4 id='clan-tags-title'>
-					All Clans
-				</h4>
-			<ul>";
-
-	foreach ($clans as $clan_id => $data) {
-		$res .= "<li class='clan-tag size".$data['score']."'>
-				<a href='clan.php?command=view&amp;clan_id=".urlencode($clan_id)."'>".htmlentities($data['name'])."</a>
-			</li>";
-	}
-
-	$res .= "</ul>
-			</div>";
-
-	return $res;
+	$clans = clans_ranked();
+	return render_template('clan.list.tpl', array('clans'=>$clans));
 }
 
 /* Display the clan member name list or tag list */
@@ -238,11 +210,12 @@ function render_clan_view($p_clan_id) {
 		return ''; // No viewing criteria available.
 	}
 
-    $members_resultset = query_resultset("SELECT uname, email, clan_name, level, days, clan_founder, player_id, member_level
+    $members_array = query_array("SELECT uname, email, clan_name, level, days, clan_founder, player_id, member_level
 			FROM clan
 			JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-			JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY health, level DESC",
+			JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY level, health DESC",
 			array(':clan_id'=>$p_clan_id));
+	
 
 	$max = query_item("SELECT max(level) AS max
 		FROM clan
@@ -250,15 +223,13 @@ function render_clan_view($p_clan_id) {
 		JOIN players ON player_id = _player_id AND confirmed = 1",
 		array(":clan_id"=>$p_clan_id));
 
-	$clan = get_clan($p_clan_id); // Clan array.
+	$clan = get_clan($p_clan_id); // Clan data array.
 	$clan_name = $clan['clan_name'];
 
-	$res = "<div id='clan-members'>
-			<h3 id='clan-members-title'>".htmlentities($clan_name)."</h3>
-			<ul id='clan-members-list'>";
     $count = 0;
 
-	foreach ($members_resultset as $member) {
+    // Modify the members by reference
+	foreach ($members_array as &$member) {
 		$member['size'] = floor( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
 
         $current_leader_class = null;
@@ -269,21 +240,15 @@ function render_clan_view($p_clan_id) {
 			$member['size'] = ($member['size'] > 3 ? 3 : $member['size']);
 		}
 
-		$res .= "<li class='member-info'>
-                <a href='player.php?player=".urlencode($member['uname'])."'>
-				<span class='member size{$member['size']} {$current_leader_class}'>".
-				htmlentities($member['uname']).
-                "</span>";
-		$res .= render_template('gravatar.tpl', array('gurl' => generate_gravatar_url($member['player_id'])));
-		$res .= "</a>";
-		$res .= "</li>";
+        $member['gravatar_url'] =  generate_gravatar_url($member['player_id']);
         $count++;
 	}
 
-	$res .= "</ul>
-			</div>
-			<div id='clan-members-count' style='clear:both;margin-top:1em;'>Clan Members: ".$count."</div>";
-
-	return $res;
+	return render_template('clan.members.tpl', 
+	    array(
+	        'members_array'=>$members_array, 
+	        'clan_name'=>$clan_name, 
+	        'count'=>$count
+	        ));
 }
 ?>
