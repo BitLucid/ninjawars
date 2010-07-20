@@ -197,7 +197,7 @@ function validate_username($send_name) {
 }
 
 /*
- * Potential regex for a username.
+ * Username requirements
  * A username must start with a lower-case or upper-case letter
  * A username can contain only letters, numbers, underscores, or dashes.
  * A username must be between 8 and 24 characters

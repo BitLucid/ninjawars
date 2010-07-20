@@ -178,6 +178,19 @@ h1 {
 	max-width: 1000px;
 	margin: 0 auto inherit auto;
 }
+h3 {
+    font: 18px/24px;
+}
+h4 {
+    font: 16px/20px;
+}
+h5 {
+    font: 14px/18px;
+}
+h6 {
+    font: 10px/14px;
+}
+
 /* Experimental css3 for the staff page*/
 .ninjawars-staff h1 {
     -moz-border-radius-bottomleft: 20px; -webkit-border-bottom-left-radius: 20px; padding: 10px;

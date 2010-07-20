@@ -20,13 +20,46 @@ function add_player_to_clan($player_id, $clan_id){
 }
 
 
-// Get the clan info for displaying an avatar and a description.
-function render_clan_info($clan_id){
-    $clan = get_clan($clan_id);
-    return render_template('clan.clan_info.tpl', array(
-        'avatar_url'=>$clan['clan_avatar_url'],
-        'clan_name'=>$clan['clan_name'],
-        'clan_description'=>$clan['description']));
+// Send a message and change the status of a player so that they are in an "invited" state.
+function inviteChar($char_id, $p_clanID) {
+    $failure_reason = null;
+	DatabaseConnection::getInstance();
+	$target_id = $char_id;
+	$target    = new Player($target_id);
+	if (!$target_id) {
+		return $failure_reason = 'No such ninja.';
+	}
+	$statement = DatabaseConnection::$pdo->prepare(
+	    'SELECT confirmed, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target');
+	$statement->bindValue(':target', $target_id);
+	$statement->execute();
+	$data = $statement->fetch();
+
+	$current_clan        = $data['_clan_id'];
+	$player_is_confirmed = $data['confirmed'];
+
+    $leader_info = get_clan_leader_info($p_clanID);
+    $clan_name   = $leader_info['clan_name'];
+    $clan_id     = $leader_info['clan_id'];
+    $leader_id   = $leader_info['player_id'];
+    $leader_name = $leader_info['uname'];
+
+	if (!$player_is_confirmed) {
+		$failure_error = 'That player name does not exist.';
+	} else if (!empty($current_clan)) {
+		$failure_error = 'That player is already in a clan.';
+	} else if ($target->hasStatus(INVITED)) {
+		$failure_error = 'That player has already been Invited into a Clan.';
+	} else {
+		$invite_msg = "$leader_name has invited you into their clan.  
+		To accept, choose their clan $clan_name on the "
+		.message_url('clan.php?command=join&clan_id='.$p_clanID, 'clan joining page').".";
+		send_message($leader_id, $target_id, $invite_msg);
+		$target->addStatus(INVITED);
+		$failure_error = null;
+	}
+
+	return $failure_error;
 }
 
 
@@ -78,24 +111,33 @@ function render_clan_join($process=null, $username, $clan_id) {
 }
 
 function clan_id($char_id){
-    $clan_id = query_item('select _clan_id from clan_player where _player_id = :char_id', array(':char_id'=>$char_id));
-    return $clan_id;
+    return query_item('select _clan_id from clan_player where _player_id = :char_id', array(':char_id'=>$char_id));
 }
+
+
+
+/*
+ * Clan name requirements:
+ * Must be at least 3 characters to a max of 24, can only contain:
+ * letters, numbers, spaces, underscores, or dashes.
+ */
+function is_valid_clan_name($potential) {
+	$potential = (string)$potential;
+	return preg_match("#^[\da-z_\-][\da-z_\-]{1,24}[\da-z_\-]$#i", $potential);
+}
+
 
 // Wrapper for getting a single clan's info.
 function get_clan($clan_id) {
-	DatabaseConnection::getInstance();
-	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description FROM clan WHERE clan_id = :clan");
-	$clans->bindValue(':clan', $clan_id);
-	$clans->execute();
-
-	return $clans->fetch();
+    return query_row(
+        "SELECT clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description FROM clan WHERE clan_id = :clan",
+        array(':clan'=>array($clan_id, PDO::PARAM_INT))
+        );
 }
 
 // Gets the clan founder, though they may be dead and unconfirmed now.
 function get_clan_founders() {
 	DatabaseConnection::getInstance();
-
 	$founders_statement = DatabaseConnection::$pdo->query(
 	    "SELECT clan_founder, clan_name, uname, player_id, confirmed
 		FROM clan LEFT JOIN players ON lower(clan_founder) = lower(uname)");
@@ -123,13 +165,10 @@ function get_clan_leaders($clan_id=null, $all=false) {
 	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
 		FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id=_player_id
 		WHERE confirmed = 1 AND member_level > 0 $clan_or_clans $limit");
-
 	if ($clan_id) {
 		$clans->bindValue(':clan', $clan_id);
 	}
-
 	$clans->execute();
-
 	return $clans;
 }
 
@@ -204,7 +243,7 @@ function render_clan_tags() {
 	return render_template('clan.list.tpl', array('clans'=>$clans));
 }
 
-/* Display the clan member name list or tag list */
+/* Display the clan info */
 function render_clan_view($p_clan_id) {
 	if (!$p_clan_id) {
 		return ''; // No viewing criteria available.
@@ -244,11 +283,15 @@ function render_clan_view($p_clan_id) {
         $count++;
 	}
 
-	return render_template('clan.members.tpl', 
+	return render_template('clan.info.tpl', 
 	    array(
 	        'members_array'=>$members_array, 
 	        'clan_name'=>$clan_name, 
-	        'count'=>$count
+	        'count'=>$count,
+            'avatar_url'=>$clan['clan_avatar_url'],
+            'clan_name'=>$clan['clan_name'],
+            'clan_description'=>$clan['description']
 	        ));
 }
+
 ?>

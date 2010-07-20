@@ -492,50 +492,9 @@ function renameClan($p_clanID, $p_newName) {
 
 	return $p_newName;
 }
-
-function invitePlayer($who, $p_clanID) {
-	DatabaseConnection::getInstance();
-
-	$target_id = get_user_id($who);
-	$target    = new Player($target_id);
-
-	if (!$target_id) {
-		return $failure_reason = 'No such ninja.';
-	}
-
-	$statement = DatabaseConnection::$pdo->prepare('SELECT confirmed, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target');
-	$statement->bindValue(':target', $target_id);
-	$statement->execute();
-	$data = $statement->fetch();
-
-	$current_clan        = $data['_clan_id'];
-	$player_is_confirmed = $data['confirmed'];
-
-    $leader_info = get_clan_leader_info($p_clanID);
-    $clan_name   = $leader_info['clan_name'];
-    $clan_id     = $leader_info['clan_id'];
-    $leader_id   = $leader_info['player_id'];
-    $leader_name = $leader_info['uname'];
-
-	if ($player_is_confirmed != 1) {
-		$failure_reason = 'That player name does not exist.';
-	} else if (!empty($current_clan)) {
-		$failure_reason = 'That player is already in a clan.';
-	} else if ($target->hasStatus(INVITED)) {
-		$failure_reason = 'That player has already been Invited into a Clan.';
-	} else {
-		$invite_msg = "$leader_name has invited you into their clan.  
-		To accept, choose their clan $clan_name on the "
-		.message_url('clan.php?command=join&clan_id='.$p_clanID, 'clan joining page').".";
-		send_message($leader_id, $target_id, $invite_msg);
-		$target->addStatus(INVITED);
-		$failure_reason = 'None.';
-	}
-
-	return $failure_reason;
-}
 // ************************************
 // ************************************
+
 
 
 // ************************************
