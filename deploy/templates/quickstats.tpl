@@ -49,7 +49,7 @@
 
 <!-- Update the login-bar's health display. -->
 <script language='javascript' type='text/javascript'>
-    updateHealthBar({$health});
+	NW.updateHealthBar({$health});
 </script>
 
 {if !$section_only}

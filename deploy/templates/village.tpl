@@ -13,7 +13,7 @@
 function refreshpage{$frame}() {literal}{{/literal}
 	parent.{$frame}.location = "{$location}";
 {literal}}{/literal}
-setInterval("refreshpage{$frame}()",300*1000);
+setInterval(refreshpage{$frame}, 300*1000);
 </script>
 
 <div id='full-chat'>

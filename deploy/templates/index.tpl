@@ -1,5 +1,4 @@
     <!-- Version {$version|escape} -->
-
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
@@ -21,10 +20,10 @@
             </div>
             <div id="quickstats-and-switch-stats"><!-- Id used by show hide jquery -->
               <div class="centered quickstats-container">
-                <a href="quickstats.php" target="quickstats" onclick="refreshQuickstats();return false;">Player</a> 
-                | <a href="quickstats.php?command=viewinv" target="quickstats" onclick="refreshQuickstats('viewinv'); return false;">Inventory</a>
+                <a href="quickstats.php" target="quickstats" onclick="return !NW.refreshQuickstats('player');">Player</a> 
+                | <a href="quickstats.php?command=viewinv" target="quickstats" onclick="return !NW.refreshQuickstats('viewinv');">Inventory</a>
               </div>
-              <div id="quickstats-frame-container">
+              <div id="quickstats-frame-container"><div></div>
                 <noscript>
                 <iframe frameBorder='0' id="quickstats" src="quickstats.php" name="quickstats">
                   <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
