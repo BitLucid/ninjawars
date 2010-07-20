@@ -107,37 +107,6 @@ function update_activity_info() {
 	}
 }
 
-/**
- * Returns the state of the player from the database,
- * uses a user_id if one is present, otherwise
- * defaults to the currently logged in player, but can act on any player
- * if another username is passed in.
- * @param $user user_id or username
- * @param @password Unless true, wipe the password.
-**/
-function get_player_info($p_id = null, $p_password = false) {
-	$dao = new PlayerDAO();
-	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
-
-	$playerVO = $dao->get($id);
-
-	$player_data = array();
-
-	if ($playerVO) {
-		foreach ($playerVO as $fieldName=>$value) {
-			$player_data[$fieldName] = $value;
-		}
-
-		if (!$p_password) {
-			unset($player_data['pname']);
-		}
-	}
-
-	///TODO: Migrate all calls of this function to a new function that returns an arrayizable Player object. 
-	//When all calls to this function are removed, remove this function
-	return $player_data;
-}
-
 /* Potential solution for hash-based in-iframe navigation.
 function hash_page_name($page_title=null){
 	$page = basename(__FILE__, ".php");

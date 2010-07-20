@@ -592,4 +592,41 @@ function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
 	$statement->bindValue(':killpoints', $killpoints);
 	$statement->execute();
 }
+
+/**
+ * Returns the state of the player from the database,
+ * uses a user_id if one is present, otherwise
+ * defaults to the currently logged in player, but can act on any player
+ * if another username is passed in.
+ * @param $user user_id or username
+ * @param @password Unless true, wipe the password.
+**/
+function get_player_info($p_id = null, $p_password = false) {
+	require_once(LIB_ROOT."specific/lib_status.php");
+	$dao = new PlayerDAO();
+	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
+
+	$playerVO = $dao->get($id);
+
+	$player_data = array();
+
+	if ($playerVO) {
+		foreach ($playerVO as $fieldName=>$value) {
+			$player_data[$fieldName] = $value;
+		}
+
+		if (!$p_password) {
+			unset($player_data['pname']);
+		}
+	}
+
+	$player_data['hp_percent'] = min(100, round(($player_data['health']/max_health_by_level($player_data['level']))*100));
+	$player_data['exp_precent'] = min(100, round(($player_data['kills']/(($player_data['level']+1)*5))*100));
+	$player_data['status_list'] = get_status_list($p_id);
+
+	///TODO: Migrate all calls of this function to a new function that returns an arrayizable Player object. 
+	//When all calls to this function are removed, remove this function
+	return $player_data;
+}
+
 ?>
