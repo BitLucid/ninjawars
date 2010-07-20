@@ -19,11 +19,11 @@
     <!-- Version {$version} -->
 
     <div id='content' class='wrapper'>
-        {if $login_error}
+{if $login_error}
       <div id='login-error' class="error">
-        That password/username combination was incorrect.  <a href='account_issues.php' target='main'>Login/Signup Issues?</a> 
+        That password/username combination was incorrect. <a href='account_issues.php' target='main'>Login/Signup Issues?</a> 
       </div>
-        {/if}
+{/if}
 
 
     <div id="menu" class="login-menu">
@@ -183,8 +183,8 @@
       <div id='push'></div>
       <div id='index-footer'>
         <span id='nw-catchphrases'>
-        {literal}
-        <script>
+{literal}
+        <script type="text/javascript">
             $().ready(function (){
                 var catchphrases = $('#nw-catchphrases span');
                 var rand = Math.floor(Math.random()*catchphrases.size());
@@ -193,7 +193,7 @@
                 // Hide all, show one at random.
             });
         </script>
-        {/literal}
+{/literal}
         <!-- These catchphrases will be displayed randomly. -->
         <span style="display:none">There was going to be a NinjaWars2, but NinjaWars1 stabbed it.</span>
         <span style="display:none">Join a clan, promote multiple stab wounds.</span>
