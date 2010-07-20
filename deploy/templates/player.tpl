@@ -50,7 +50,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 		   <table id='player-profile-attack'>
 		     <tr>
 		       <td id='attacking-choices'>
-			     <form id='attack_player' action='attack_mod.php' method='post' name='attack_player.php'>
+			     <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
 			       <span id='duel'>
                      <label>Duel<input id="duel" type="checkbox" name="duel"></label>
                    </span>
@@ -66,8 +66,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 			       <input id="target" type="hidden" value="{$target}" name="target" title='Attack or Duel this ninja'>
                    <label class='attack-player-trigger'>
-                     <input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>
-                     <a>Attack</a>
+                     <a onclick="document.attack_player.submit();"><input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack</a>
                    </label>
 			     </form>
 			   </td>
