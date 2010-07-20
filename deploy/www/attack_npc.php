@@ -258,6 +258,8 @@ if (($turns = getTurns($username)) > 0) {
 
 		subtractTurns($username, $turn_cost);
 	}
+} else {
+	$npc_template = null;
 }
 
 display_page(
