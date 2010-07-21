@@ -38,7 +38,12 @@ if (parent.window != window) {
 		}
 
 		if (this.quickDiv) {
-			this.checkAPI(function() {self.displayPlayerQuickstats();});
+			if (typeOfView == 'viewinv') {
+				this.checkAPI(function() {self.quickDiv.replaceChild(self.renderInventoryQuickstats(), self.quickDiv.firstChild);});
+			} else {
+				this.checkAPI(function() {self.quickDiv.replaceChild(self.renderPlayerQuickstats(), self.quickDiv.firstChild);});
+			}
+
 			return true;
 		} else if (parent.quickstats) {
 			parent.quickstats.location = url;
@@ -48,13 +53,38 @@ if (parent.window != window) {
 		}
 	}
 
-	NW.displayInventoryQuickstats = function() {
-		if (!this.datastore.inventory) { this.checkAPI(); return true; }
+	NW.renderInventoryQuickstats = function() {
+		var container, goldLabel, goldValue, itemLabel, itemValue;
+
+		container = document.createElement('dl');
+		container.className = "quickstats inventory";
+		var items = this.datastore.inventory.items;
+
+		for (i in items)
+		{
+			itemLabel = document.createElement('dt');
+			itemLabel.appendChild(document.createTextNode(items[i].item+':'));
+			container.appendChild(itemLabel);
+
+			itemValue = document.createElement('dd');
+			itemValue.appendChild(document.createTextNode(items[i].amount));
+			container.appendChild(itemValue);
+		}
+
+		goldLabel = document.createElement('dt');
+		goldLabel.appendChild(document.createTextNode('Gold:'));
+		goldLabel.style.color = "gold";
+		container.appendChild(goldLabel);
+
+		goldValue = document.createElement('dd');
+		goldValue.appendChild(document.createTextNode(this.datastore.playerInfo.gold));
+		goldValue.style.color = "gold";
+		container.appendChild(goldValue);
+
+		return container;
 	}
 
-	NW.displayPlayerQuickstats = function() {
-		var destination = this.quickDiv;
-
+	NW.renderPlayerQuickstats = function() {
 		var container, healthLabel, healthBar, expLabel, expBar, statusLabel, statusValue, turnsLabel, turnsValue, goldLabel, goldValue, bountyLabel, bountyValue;
 
 		container = document.createElement('dl');
@@ -70,6 +100,7 @@ if (parent.window != window) {
 		turnsLabel.appendChild(document.createTextNode('Turns:'));
 		goldLabel = document.createElement('dt');
 		goldLabel.appendChild(document.createTextNode('Gold:'));
+		goldLabel.style.color = "gold";
 		bountyLabel = document.createElement('dt');
 		bountyLabel.appendChild(document.createTextNode('Bounty:'));
 
@@ -101,6 +132,7 @@ if (parent.window != window) {
 		turnsValue.appendChild(document.createTextNode(this.datastore.playerInfo.turns));
 		goldValue = document.createElement('dd');
 		goldValue.appendChild(document.createTextNode(this.datastore.playerInfo.gold));
+		goldValue.style.color = "gold";
 		bountyValue = document.createElement('dd');
 		bountyValue.appendChild(document.createTextNode(this.datastore.playerInfo.bounty));
 
@@ -117,7 +149,7 @@ if (parent.window != window) {
 		container.appendChild(bountyLabel);
 		container.appendChild(bountyValue);
 
-		destination.replaceChild(container, destination.firstChild);
+		return container;
 	}
 
 	NW.isIndex = (window.location.pathname.substr(-9, 9) == 'index.php')  || $('body').hasClass('main-body');
@@ -305,6 +337,10 @@ if (parent.window != window) {
 			updated = true;
 		}
 
+		if (this.updateDataStore(data.inventory, 'inv', 'inventory', 'hash')) {
+			updated = true;
+		}
+
 		if (this.updateDataStore(data.message, 'message_id', 'latestMessage', 'message_id')) {
 			updated = true;
 		}
@@ -328,10 +364,9 @@ if (parent.window != window) {
 	}
 
 	// Saves stuff to global data storage.
-	NW.updateDataStore = function(datum, property_name, global_store, comparison_name, comparison_name_2) {
+	NW.updateDataStore = function(datum, property_name, global_store, comparison_name) {
 		if (datum && datum[property_name]) {
-			if (!this.datastore[global_store] || (this.datastore[global_store][comparison_name] != datum[comparison_name] ||
-						(comparison_name_2 && this.datastore[global_store][comparison_name_2] != datum[comparison_name_2]))) {
+			if (!this.datastore[global_store] || (this.datastore[global_store][comparison_name] != datum[comparison_name])) {
 				// If the data isn't there, or doesn't match, update the store.
 				this.datastore[global_store] = datum;
 				this.debug(datum);

@@ -17,7 +17,7 @@ echo render_json($type, $jsoncallback);
  * Determine which function to call to get the json for.
 **/
 function render_json($type, $jsoncallback) {
-	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index', 'latest_chat_id'=>'json_latest_chat_id');
+	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index', 'latest_chat_id'=>'json_latest_chat_id', 'inventory'=>'json_inventory');
 	$res = null;
 
 	if (isset($valid_type_map[$type])) {
@@ -71,6 +71,12 @@ function json_latest_chat_id() {
 	return '{"latest_chat_id":'.json_encode($statement->fetch()).'}';
 }
 
+function json_inventory() {
+	return '{"inventory":'.json_encode(
+		query_array("SELECT item, amount FROM inventory WHERE owner = :user ORDER BY item", array(':user'=>$user_id))
+	).'}';
+}
+
 function json_index() {
 	DatabaseConnection::getInstance();
 	$player   = get_player_info();
@@ -91,6 +97,9 @@ function json_index() {
 		$messages->execute();
 	}
 
-	return '{"player":'.json_encode($player).',"message":'.json_encode($messages->fetch()).',"event":'.json_encode($events->fetch()).'}';
+	return '{"player":'.json_encode($player).',
+				"message":'.json_encode($messages->fetch()).',
+				"inventory":{"inv":1,"items":'.json_encode(query_array("SELECT item, amount FROM inventory WHERE owner = :user ORDER BY item", array(':user'=>$user_id))).',"hash":"'.md5(strtotime("now")).'"},
+				"event":'.json_encode($events->fetch()).'}';
 }
 ?>
