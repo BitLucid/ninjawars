@@ -159,7 +159,7 @@ function get_clan_leader_id($clan_id) {
 
 // Get the current clan leader or leaders.
 function get_clan_leaders($clan_id=null, $all=false) {
-	$limit = ($all ? '' : ' LIMIT 1 ');
+	$limit = ($all ? '' : ' LIMIT 1 ORDER BY level');
 	$clan_or_clans = ($clan_id ? " AND clan_id = :clan ORDER BY level " : ' ORDER BY clan_id, level ');
 	DatabaseConnection::getInstance();
 	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
