@@ -6,14 +6,10 @@
     <div class='ninja-notice'>{$action_message}</div>
 {/if}
 
-{if $self_is_leader}
-	<div>You are the leader of this clan.</div>
-{/if}
-
 
 {if $player_id}
-	{if $clan }
-		{if $self_is_leader}
+	{if $own_clan_id }
+		{if $leader_of_own_clan}
 			{if $command == 'rename'}
 				<!-- //Clan Leader Clan renaming -->
 				
@@ -24,7 +20,8 @@
 				{else}
 				
 				    <div class='notice'>
-				        Clan names must be from 3 to 24 characters, and can only contain letters, numbers, spaces, underscores, or dashes, although you can request exceptions if they're fun.
+				        Clan names must be from 3 to 24 characters, and can only contain letters,
+				         numbers, spaces, underscores, or dashes, although you can request exceptions if they're fun.
 				    </div>                    
 					<form id='clan_rename' action='clan.php' name='clan_rename'>
 	                     <div>
@@ -85,7 +82,7 @@
 
 
 
-            {if $self_is_leader}
+            {if $leader_of_own_clan}
 
 	<!-- Checks whether the viewer is the leader to display these sections.  -->
 	<div id='leader-panel'>
@@ -102,7 +99,7 @@
 	    To create a clan avatar, upload an image to <a href='http://www.imageshack.com'>imageshack.com</a>
     	    <form>
     	        <input type='hidden' name='command' value='view'>
-    	        <input type='hidden' name='clan_id' value='{$self_clan_id}'>
+    	        <input type='hidden' name='clan_id' value='{$own_clan_id}'>
     	        Then put the image's full url here:
     	        <input name='clan-avatar-url' type='text' value='{$clan_avatar_current}'>
     	        (Image can be .jpg or .png)
@@ -139,7 +136,7 @@
 
 		{/if}<!-- End of options for clan-members -->
 
-		{if $clan }
+		{if $own_clan_id }
 		
 
     		{if $command == 'msgclan'}
@@ -156,7 +153,7 @@
 		    <!-- Note that these should not display after a clan "leave" option occurs.  -->
 			<ul id='clan-options'>
 	            <li><a href='clan.php?command=msgclan'>Message Clan Members</a></li>
-	            <li><a href='clan.php?command=view&amp;clan_id={$clan_id|escape:'url'}'>View Your Clan</a></li>
+	            <li><a href='clan.php?command=view&amp;clan_id={$own_clan_id|escape:'url'}'>View Your Clan</a></li>
 	        </ul>
 		{/if}
 	{else}
@@ -191,10 +188,16 @@
 {/if}
 
 
-
 {if $command == "view"}
+
 	<!-- // *** A view of the member list of any clan *** -->
 	{$clan_view}
+	
+
+    {if $leader_of_viewed_clan}
+    	<div class='ninja-notice'>You are the leader of this clan.</div>
+    {/if}
+	
 {/if}
 
 

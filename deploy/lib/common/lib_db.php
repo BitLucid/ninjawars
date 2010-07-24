@@ -45,7 +45,7 @@ function query_resultset($sql_query, $bindings=array()) {
 
 // Wrapper to explicitly & simply get a multi-dimensional array.
 function query_array($sql_query, $bindings=array()) {
-	return query($sql_query, $bindings, false);
+	return query($sql_query, $bindings, false); // Set return_resultset to false to return the array.
 }
 
 // Run to just get the first row, for 1 row queries.

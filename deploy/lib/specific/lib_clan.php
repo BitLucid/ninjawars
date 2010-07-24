@@ -32,7 +32,8 @@ function createClan($p_leaderID, $p_clanName) {
 
 // Gets the clan object from 
 function get_clan_by_player_id($p_playerID) {
-    $clan_info = clan_id((int) $p_playerID);
+    $clan_id = clan_id((int) $p_playerID);
+    $clan_info = get_clan($clan_id);
 	if (!empty($clan_info)) {
 		$clan = new Clan($clan_info['clan_id'], $clan_info['clan_name']);
 		return $clan;
@@ -171,7 +172,7 @@ function render_clan_join($process=null, $username, $clan_id) {
 // Gets the clan_id of a character/player.
 function clan_id($char_id=null){
     $info = get_player_info($char_id);
-    return $info['player_id'];
+    return $info['clan_id'];
 }
 
 
@@ -189,10 +190,15 @@ function is_valid_clan_name($potential) {
 
 // Wrapper for getting a single clan's info.
 function get_clan($clan_id) {
+    return clan_info($clan_id);
+}
+
+// Better name for the function to get the array of clan info.
+function clan_info($clan_id){
     return query_row(
         "SELECT clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description FROM clan WHERE clan_id = :clan",
         array(':clan'=>array($clan_id, PDO::PARAM_INT))
-        );
+        );    
 }
 
 // Gets the clan founder, though they may be dead and unconfirmed now.
@@ -372,5 +378,19 @@ function render_clan_view($p_clan_id) {
             'clan_description'=>$clan['description']
 	        ));
 }
+
+
+
+// Get clan member names & ids other than self, useful for lists & messaging
+function clan_member_names_and_ids($clan_id, $self_char_id){
+    $query = 'SELECT player_id, uname 
+        FROM players JOIN clan_player ON _player_id = player_id AND _clan_id = :clan_id 
+        WHERE player_id != :self_char_id AND confirmed = 1';
+    $members_and_ids = query_array($query, 
+        array(':clan_id'=>array($clan_id, PDO::PARAM_INT), ':self_char_id'=>array($self_char_id, PDO::PARAM_INT)
+        ));
+    return $members_and_ids;
+}
+
 
 ?>

@@ -511,10 +511,13 @@ function get_player_info($p_id = null, $p_password = false) {
 	$player_data = array();
 
 	if ($player) {
+	    // Turn the player data vo into a simple array.
 	    $player_data = (array) $player->vo;
 		if (!$p_password) {
 			unset($player_data['pname']);
 		}
+		
+		$player_data['clan_id'] = $player->getClan()->getID();
 
     	$player_data['hp_percent'] = min(100, round(($player_data['health']/max_health_by_level($player_data['level']))*100));
     	$player_data['exp_percent'] = min(100, round(($player_data['kills']/(($player_data['level']+1)*5))*100));
@@ -525,8 +528,6 @@ function get_player_info($p_id = null, $p_password = false) {
 	}
 
 
-	///TODO: Migrate all calls of this function to a new function that returns an arrayizable Player object. 
-	//When all calls to this function are removed, remove this function
 	return $player_data;
 }
 

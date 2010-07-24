@@ -3,17 +3,27 @@ require_once(LIB_ROOT.'specific/lib_clan.php');
 $alive      = false;
 $private    = false;
 $quickstat  = false;
-$page_title = 'Clan Panel';
+$page_title = 'Clans';
 
-include SERVER_ROOT.'interface/header.php';
+
+
+
+
+if ($error = init($private, $alive)) {
+	display_error($error);
+	die();
+}
+
+//include SERVER_ROOT.'interface/header.php';
 $dbconn = DatabaseConnection::getInstance();
-
+/*
 ?>
 <script type="text/javascript" src="<?=WEB_ROOT?>js/clan.js"></script>
 
 <h1 id='clan-page-title'>Clan Panel</h1>
 
 <?php
+*/
 // *** Possible Input Values ***
 
 $command                         = in('command');
@@ -39,8 +49,8 @@ $clan_creator_min_level = CLAN_CREATOR_MIN_LEVEL; // For the template.
 // *** Used Variables ***
 
 $player_id    = get_char_id();
-$player       = new Player($player_id);
-$char_info    = get_player_info();
+$player       = $player_id? new Player($player_id) : null;
+$char_info    = $player_id? get_player_info() : null;
 $username     = @$char_info['uname'];
 
 
@@ -48,41 +58,80 @@ if($clan_id_viewed){
     $viewed_clan_data = get_clan($clan_id_viewed);
 }
 
+$own_clan_id = null;
+
+
+// Logical cascade: No player id? Display error message.
+// No clan? Display no clan message, clan list, join link, creation limit
+// Clan member not leader? Display clan list, view clan link, msg link, leave clan link.
+// Clan leader -> Display leader options (make expand/contract), view clan, msg, disband.
+
+// TODO: Made the clan tags list hidden&toggleable when leader or view options are being displayed.
+// TODO: Make leader options hidden&toggle-displayable.
+
+$own_clan_id = null;
+$own_clan_info = null;
+$own_clan_name = null;
+$own_clan_obj = null;
+
+$led_clan_info = null;
+$leader_of_own_clan = null;
+$led_clan_id = null;
+$self_is_leader = null;
+$leader_of_viewed_clan = null;
+
+
 if ($player_id) {
-    // These are only used for logged in viewers.
-	$clan         = get_clan_by_player_id($player_id); // Own clan.
-	$own_clan_name = $clan? $clan->getName() : null;
-	$own_clan_id = $clan->getID();
-    $own_clan_data = get_clan($own_clan_id);
+    // ***** A LOGGED IN CHARACTER *****
+
+
 	$viewer_level = $player->vo->level;
     $can_create_a_clan = ($viewer_level >= 	CLAN_CREATOR_MIN_LEVEL);
+
+
+
+    $own_clan_id = clan_id($player_id); 
+    if($own_clan_id){
+        // Is a member of a clan.
+        $own_clan_info = clan_info($own_clan_id);
+        $own_clan_name = $own_clan_info['clan_name'];
+    	$own_clan_obj  = get_clan_by_player_id($player_id); // Own clan.
+    	
+    	
+    	
+    	$led_clan_info = clan_char_is_leader_of($player_id);
+        $leader_of_own_clan = !empty($led_clan_info)? true : false;    	
+    	if($leader_of_own_clan){
+            $led_clan_id = whichever($led_clan_info['clan_id'], null);
+            $leader_of_viewed_clan = 
+                ($clan_id_viewed && !empty($led_clan_info) && $clan_id_viewed == $led_clan_info['clan_id'])?
+                true : false;
+                
+        }
+    	    	
+    }
+
+	
 }
 
-$leader_id = whichever(get_clan_leader_id($own_clan_id), null);
-$self_is_leader = ($leader_id && $player_id && $leader_id == $player_id);
 
 if (!$player_id) {
     $action_message = "You are not part of any clan.";
-	echo '<p class="ninja-notice">You are not part of any clan.</p>';
+	////   echo '<p class="ninja-notice">You are not part of any clan.</p>';
 } else {
-	$self_is_leader = ($clan && (get_clan_leader_id($clan->getID()) == $player_id));
-	$self_clan_id = clan_id($player_id);
 	
-    if($self_is_leader){
+    if($leader_of_own_clan){
+        // Saving incoming changes to clan leader edits.
         if($new_clan_avatar_url){
-            save_clan_avatar_url($new_clan_avatar_url, $self_clan_id);
+            save_clan_avatar_url($new_clan_avatar_url, $own_clan_id);
         }
         if($new_clan_description){
-            save_clan_description($new_clan_description, $self_clan_id);
+            save_clan_description($new_clan_description, $own_clan_id);
         }
     }
-
-	if ($command == 'disband' && $sure == 'yes' && $self_is_leader) {	// **** Clan Leader Action Disbanding of the Clan ***
-		$clan->disband();
-        $action_message = "Your clan has been disbanded.";
-		echo "<div class='notice'>Your clan has been disbanded.</div>";
-		$clan = $self_is_leader = false;
-	}
+    
+    
+    // Commands Section
 
 	if ($command == 'new') {
 		// *** Clan Creation Action ***
@@ -91,30 +140,28 @@ if (!$player_id) {
 			$clan              = createClan($player_id, $default_clan_name);
 			$command           = 'rename'; // *** Shortcut to rename after. ***
             $action_message = "You have created a new clan!";
-			echo "<div class='notice'>You have created a new clan!</div>";
+			////   echo "<div class='notice'>You have created a new clan!</div>";
 		} else {	// *** Level req wasn't met. ***
 		    $action_message = "You do not have enough renown to create a clan. You must be at least level ".CLAN_CREATOR_MIN_LEVEL.".";
-			echo "<div class='notice'>{$action_message}</div>";
+			////   echo "<div class='notice'>{$action_message}</div>";
 		}
 	}
 
-	$self_is_leader = ($clan && (get_clan_leader_id($clan->getID()) == $player_id));
-
-	if ($self_is_leader) {
-		echo '<div>You are the leader of this clan.</div>';
-	}
+	//if ($leader_of_viewed_clan) {
+		////   echo '<div>You are the leader of this clan.</div>';
+	//}
 
 	if ($message) {
 		message_to_clan($message);
 		$action_message = "Message sent.";
-		echo "<div id='message-sent' class='ninja-notice'>Message sent.</div>";
+		////   echo "<div id='message-sent' class='ninja-notice'>Message sent.</div>";
 	}
 	
 	
 
 
-	if ($clan) {
-		if ($self_is_leader) {
+	if ($own_clan_id) {
+		if ($leader_of_own_clan) {
 		    
 		    
 			if ($command == 'rename') {
@@ -122,13 +169,13 @@ if (!$player_id) {
 				if (is_valid_clan_name($new_clan_name)) {
 					// *** Rename the clan if it is valid.
 					$clan_renamed = true;
-					$new_clan_name = renameClan($clan->getID(), $new_clan_name);
+					$new_clan_name = rename_clan($own_clan_obj->getID(), $new_clan_name);
 					
-					echo "<p>Your new clan name is <strong>{$new_clan_name}.</strong></p>";
-					$clan->setName($new_clan_name); // Store the renamed value for the rest of this document.
+					////   echo "<p>Your new clan name is <strong>{$new_clan_name}.</strong></p>";
+					$own_clan_obj->setName($new_clan_name); // Store the renamed value for the rest of this document.
 				} else {
 				    
-				    echo "
+				    /*   echo "
 				    <div class='notice'>
 				        Clan names must be from 3 to 24 characters, and can only contain letters, numbers, spaces, underscores, or dashes, although you can request exceptions if they're fun.
 				    </div>                    
@@ -139,15 +186,22 @@ if (!$player_id) {
     	    	            <input type='submit' class='formButton' value='Rename Clan'>
 	                    </div>
     	            </form>";
+    	            
+    	            */
 				}
 			} else if ($command == 'kick') {	
+			
+			
+			
 			    //Clan Leader Action Kick a chosen member
 				if ($kicked == '') {
+				
+				    // Get the member info for the select dropdown list.
+                    $members_and_ids = clan_member_names_and_ids((int) $own_clan_id, (int) get_char_id());
+                    
+                    // There's a bug with this request.
 
-					$query = 'SELECT player_id, uname FROM players JOIN clan_player ON _player_id = player_id AND _clan_id = :clanID WHERE uname <> :username AND confirmed = 1';
-					$members_and_ids = query_array($query, array(':clanID'=>array($clan->getID(), PDO::PARAM_INT), ':username'=>$username));
-
-
+                    /*
 					echo "<form id='kick_form' action='clan.php' method='get' name='kick_form'>
 					<div>
 					Kick: 
@@ -160,19 +214,19 @@ if (!$player_id) {
 					<input type='submit' value='Kick' class='formButton'>
 					</div>
 					</form>";
-					
+					*/
 					
 				} else {	// *** An actual successful kick of a member. ***
 					$kicked_name = get_char_name($kicked);
-					$clan->kickMember($kicked);
+					$own_clan_obj->kickMember($kicked);
 					
 					$action_message = "You have removed ".htmlentities($kicked_name)." from your clan.";
-					echo '<p>You have removed {$kicked_name|escape} from your clan.</p>';
+					/// echo '<p>You have removed {$kicked_name|escape} from your clan.</p>';
 				}
 			} else if ($command == 'disband') {	// *** Clan Leader Confirmation of Disbanding of the Clan ***
 				if (!$sure) {
 				    $display_disband_form = true;
-					echo "
+					/* echo "
 					Are you sure you want to continue? This will remove all members from your clan.<br>
 					<form id='disband' method='get' action='clan.php' name='disband'>
     					<div>
@@ -181,12 +235,25 @@ if (!$player_id) {
         					<input id='sure' type='hidden' value='yes' name='sure'>
     					</div>
 					</form>";
-				} elseif ($sure == 'yes' && $self_is_leader) {	// **** Clan Leader Action Disbanding of the Clan ***
-            		$clan->disband();
+					
+					*/
+				} elseif ($sure == 'yes' && $leader_of_own_clan) {	// **** Clan Leader Action Disbanding of the Clan ***
+            		$own_clan_obj->disband();
             		$clan_disbanded = true;
                     $action_message = "Your clan has been disbanded.";
-            		echo "<div class='notice'>Your clan has been disbanded.</div>";
-            		$clan = $self_is_leader = $clan_id = false;
+            		/// echo "<div class='notice'>Your clan has been disbanded.</div>";
+
+                    $own_clan_id = null;
+                    $own_clan_info = null;
+                    $own_clan_name = null;
+                    $own_clan_obj = null;
+
+                    $led_clan_info = null;
+                    $leader_of_own_clan = null;
+                    $led_clan_id = null;
+                    $self_is_leader = null;
+                    $leader_of_viewed_clan = null;
+
             	}
 			} else if ($command == 'invite') {	// *** Clan Leader Invite Input ***
 			    if($person_invited){
@@ -194,7 +261,7 @@ if (!$player_id) {
 				    if(!$char_id_invited){
 				        $action_message = "No such ninja as <i>".htmlentities($person_invited)."</i> exists.";
 				    } else {
-    					$invite_failure_message = inviteChar($char_id_invited, $clan->getID());	// *** Clan leader Invite Action ***
+    					$invite_failure_message = inviteChar($char_id_invited, $own_clan_obj->getID());	// *** Clan leader Invite Action ***
     					if(!$invite_failure_message){
     					    $action_message  = "You have invited {$person_invited} to join your clan.";
     					} else {
@@ -203,6 +270,7 @@ if (!$player_id) {
 					}			
 				}
 				
+				/*
 				// Remove me in template:
 				echo "<div class='notice'>{$action_message}</div>";
 				
@@ -216,11 +284,13 @@ if (!$player_id) {
         				</div>
     				</form>
 				<hr>";
-			}
+				
+				*/
+			} // End of invite command.
 
 
 
-			if ($self_is_leader){
+			if ($leader_of_own_clan){
             // ******* CLAN LEADER OPTIONS ******
             
             
@@ -231,7 +301,7 @@ if (!$player_id) {
 //        var_dump($new_clan_description);
         $clan_description_current = whichever($new_clan_description, @$own_clan_data['description']);
         
-        
+        /*
 	echo "
 	<!-- Checks whether the viewer is the leader to display these sections.  -->
 	<div id='leader-panel'>
@@ -263,6 +333,8 @@ if (!$player_id) {
 	        
     </div><!-- End of leader-panel -->
 	        ";
+	        
+	        */
 	      
 			}
 		} else {
@@ -284,73 +356,97 @@ if (!$player_id) {
 				
 				
                 $action_message = "You have left your clan.";
-				echo '<p>You have left your clan.</p>';
-				die();
-			} else {
-    			echo "<p>You are currently a member of the ", $own_clan_name, " Clan.</p>
-    			<p><a href='clan.php?command=leave' onclick='leave_clan(); return false;'>Leave Current Clan</a></p>";
-    		}
-		}
+				 echo '<p>You have left your clan.</p>';
+				 
+				 
 
-		if ($clan){
+                $own_clan_id = null;
+                $own_clan_info = null;
+                $own_clan_name = null;
+                $own_clan_obj = null;
+				 
+				die();
+			} 
+			//else {
+    			/* echo "<p>You are currently a member of the ", $own_clan_name, " Clan.</p>
+    			<p><a href='clan.php?command=leave' onclick='leave_clan(); return false;'>Leave Current Clan</a></p>";
+    			*/
+    		//}
 
     		if ($command == 'msgclan') {	// *** Clan Member Input for Messaging their Entire Clan ***
-    			echo "<form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
+    			/*echo "<form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
     	          <div>
     	          Message: <input id='message' type='text' size='50' maxlength='1000' name='message' class='textField'>
     	          <input type='submit' value='Send This Message' class='formButton'>
     	          </div>
     	          </form>";
+    	          */
     		}
 
 
+            /*
 			echo "<ul id='clan-options'>
 	            <li><a href='clan.php?command=msgclan'>Message Clan Members</a></li>
 	            <li><a href='clan.php?command=view&amp;clan_id=", $clan->getID(), "'>View Your Clan</a></li>
 	        </ul>";
-		}
-	} else {
+	        */
+		} // End of non-leader clan options.
+	} else { 
 	
-	    // ****** NON-CLAN-MEMBER *******
+	    // ****** NOT-MEMBER OF ANY CLAN *******
 	
 		if ($command == "join") {	// *** Clan Joining Action ***
 			$clan_join_section = render_clan_join($process, $username, $clan_id_viewed);
-			echo $clan_join_section;
-		}
+			//echo $clan_join_section;
+		} // End of join command code.
 
+        /*
 		echo "<div>You are not a member of any clan.</div>
 		<div><a href='clan.php?command=join'>View clans available to join</a></div>";
+		
+		*/
 		if($clan_id_viewed){
+		    // Provide a link to join any clan that you're currently viewing.
 		    $viewed_clan = get_clan($clan_id_viewed);
 		    $viewed_clan_name = $viewed_clan['clan_name'];
+		    
+		    /*
     		echo "<div><a href='clan.php?command=join&amp;clan_id=". $clan_id_viewed ."&process=1'>
     		        Send a request to join Clan ". $viewed_clan_name ."
     		        </a></div>"; 
-    	}
+    		        
+    		*/
+    	}// End of clan_id_viewed as a non-member code.
     	
     	
     	
     	
-		if ($can_create_a_clan) {
+		//if ($can_create_a_clan) {
 			//Prevents characters under the level req from seeing clan creation option.
-			echo "<div><a href='clan.php?command=new'>Start a New Clan</a></div>";
-		} else {
-			echo "<div>You can start your own clan when you reach level ".CLAN_CREATOR_MIN_LEVEL.".</div>";
-		}
-	}
-}	// End of logged-in display.
+			// echo "<div><a href='clan.php?command=new'>Start a New Clan</a></div>";
+		//} 
+		//else {
+			//   echo "<div>You can start your own clan when you reach level ".CLAN_CREATOR_MIN_LEVEL.".</div>";
+		//}
+		
+		
+		
+		
+	} // End of not-a member code
+}	// End of logged-in code
 
 
 
 if ($command == "view"){    
 	// *** A view of the member list of any clan ***
 	$clan_view = render_clan_view($clan_id_viewed);
-	echo $clan_view;
+	//  echo $clan_view;
 }
 
 $clan_tags = render_clan_tags(); // *** Display all the clans in their tag list. ***
 
-echo $clan_tags; 
+//  echo $clan_tags; 
 
-include SERVER_ROOT.'interface/footer.php';
+display_page('clan.tpl', $page_title, get_defined_vars(), array('quickstat'=>false));
+//include SERVER_ROOT.'interface/footer.php';
 ?>
