@@ -5,7 +5,9 @@ require_once(SERVER_ROOT.'lib/specific/lib_player.php');
 // ********** CLAN FUNCTIONS **********
 // ************************************
 
+
 // ***** The below three functions are from commands.php, refactoring recommended ***
+
 
 function createClan($p_leaderID, $p_clanName) {
 	DatabaseConnection::getInstance();
@@ -47,6 +49,7 @@ function get_clan_by_player_id($p_playerID) {
 		return null;
 	}
 }
+
 
 // ************************************
 // ************************************
@@ -272,7 +275,7 @@ function clan_avatar_is_valid($dirty_url) {
 	if (!$is_url) {
 		return false;
 	} else {
-        // TODO: Allow ninjawars as a host, and imgur.com as a host as well.
+		// TODO: Allow ninjawars as a host, and imgur.com as a host as well.
 		$parts = @parse_url($dirty_url);
 		return !!preg_match('#[\w\d]*\.imageshack\.[\w\d]*#i', $parts['host']);
 	}

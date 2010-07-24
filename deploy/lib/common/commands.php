@@ -508,14 +508,14 @@ function get_player_info($p_id = null, $p_password = false) {
 	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
 	$player = new Player($id); // Constructor uses DAO to get player object.
 	$player_data = array();
-	
+
 	if (get_class($player) == 'Player' && $player->id()) {
-	    // Turn the player data vo into a simple array.
-	    $player_data = (array) $player->vo;	    
-	 	$player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);   
-	    $player_data = add_data_to_player_row($player_data, !!$p_password); 
-	    // Add additional data via an external, reusable function.
+		// Turn the player data vo into a simple array.
+		$player_data = (array) $player->vo;
+		$player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
+		$player_data = add_data_to_player_row($player_data, !!$p_password);
 	}
+
 	return $player_data;
 }
 
