@@ -383,12 +383,9 @@ function render_clan_view($p_clan_id) {
 
 // Get clan member names & ids other than self, useful for lists & messaging
 function clan_member_names_and_ids($clan_id, $self_char_id){
-    $query = 'SELECT player_id, uname 
-        FROM players JOIN clan_player ON _player_id = player_id AND _clan_id = :clan_id 
-        WHERE player_id != :self_char_id AND confirmed = 1';
-    $members_and_ids = query_array($query, 
-        array(':clan_id'=>array($clan_id, PDO::PARAM_INT), ':self_char_id'=>array($self_char_id, PDO::PARAM_INT)
-        ));
+    $member_select = "select uname, player_id from players join clan_player on player_id = _player_id
+        where _clan_id = :clan_id and player_id != :player_id";
+    $members_and_ids = query_array($member_select, array(':clan_id'=>$clan_id, ':player_id'=>$self_char_id));
     return $members_and_ids;
 }
 

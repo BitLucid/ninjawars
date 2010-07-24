@@ -197,9 +197,20 @@ if (!$player_id) {
 				if ($kicked == '') {
 				
 				    // Get the member info for the select dropdown list.
-                    $members_and_ids = clan_member_names_and_ids((int) $own_clan_id, (int) get_char_id());
+                    $members_and_ids = clan_member_names_and_ids($own_clan_id, get_char_id());
                     
-                    // There's a bug with this request.
+                    /*
+                    
+                    $member_select = "select uname, player_id from players join clan_player on player_id = _player_id
+                        where _clan_id = :clan_id and player_id != :player_id";
+                    $members_and_ids = query_array($member_select, array(':clan_id'=>$own_clan_id, ':player_id'=>get_char_id()));
+                      
+                    */
+                        
+                    //var_dump($members_and_ids);
+                        
+                    // $members_and_ids gets passed to the template, so use that name exactly.
+                    
 
                     /*
 					echo "<form id='kick_form' action='clan.php' method='get' name='kick_form'>
