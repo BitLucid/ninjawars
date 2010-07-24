@@ -5,7 +5,7 @@
 define('DATABASE_HOST', "localhost");		// *** The host to connect to for the database
 define('DATABASE_USER', "tchalvak");		// *** The user that should connect to the database
 define('DATABASE_NAME', "ninjawars");		// *** The name of the database to connect to
-define('OFFLINE', false);				// *** Controls if remote or local resources are used
+define('OFFLINE', true);				// *** Controls if remote or local resources are used
 define('DEBUG', true);					// *** Shorter debugging constant name, set as false on live.
 define('DEBUG_ALL_ERRORS', true);	// *** Only will turn on if debug is also on.
 define('SERVER_ROOT', "/home/tchalvak/ninjawars/deploy/");		// *** The root deployment directory of the game
