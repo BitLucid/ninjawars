@@ -1,6 +1,67 @@
 <?php
-// See also the older "clan functions" in commands.php
 require_once(SERVER_ROOT."lib/specific/lib_player.php");
+
+
+// ************************************
+// ********** CLAN FUNCTIONS **********
+// ************************************
+
+// ***** The below three functions are from commands.php, refactoring recommended *** 
+
+function createClan($p_leaderID, $p_clanName) {
+	DatabaseConnection::getInstance();
+
+	$p_clanName = trim($p_clanName);
+
+	$result = DatabaseConnection::$pdo->query("SELECT nextval('clan_clan_id_seq')");
+	$newClanID = $result->fetchColumn();
+
+	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (:clanID, :clanName, :leader)");
+	$statement->bindValue(':clanID', $newClanID);
+	$statement->bindValue(':clanName', $p_clanName);
+	$statement->bindValue(':leader', $p_leaderID);
+	$statement->execute();
+
+	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 2)");
+	$statement->bindValue(':clanID', $newClanID);
+	$statement->bindValue(':leader', $p_leaderID);
+	$statement->execute();
+
+	return new Clan($newClanID, $p_clanName);
+}
+
+function get_clan_by_player_id($p_playerID) {
+	DatabaseConnection::getInstance();
+	$id = (int) $p_playerID;
+	$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name 
+	    FROM clan 
+	    JOIN clan_player ON clan_id = _clan_id 
+	    WHERE _player_id = :player");
+	$statement->bindValue(':player', $id);
+	$statement->execute();
+
+	if ($data = $statement->fetch()) {
+		$clan = new Clan($data['clan_id'], $data['clan_name']);
+		return $clan;
+	} else {
+		return null;
+	}
+}
+
+function renameClan($p_clanID, $p_newName) {
+	DatabaseConnection::getInstance();
+
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE clan SET clan_name = :name WHERE clan_id = :clan");
+	$statement->bindValue(':name', $p_newName);
+	$statement->bindValue(':clan', $p_clanID);
+	$statement->execute();
+
+	return $p_newName;
+}
+
+
+// ************************************
+// ************************************
 
 
 // Without checking for pre-existing clan and other errors, adds a player into a clan.
@@ -110,8 +171,10 @@ function render_clan_join($process=null, $username, $clan_id) {
 	return $res;
 }
 
-function clan_id($char_id){
-    return query_item('select _clan_id from clan_player where _player_id = :char_id', array(':char_id'=>$char_id));
+// Gets the clan_id of a character/player.
+function clan_id($char_id=null){
+    $info = get_player_info($char_id);
+    return $info['player_id'];
 }
 
 
@@ -146,9 +209,20 @@ function get_clan_founders() {
 
 // Return only the single clan leader and their information.
 function get_clan_leader_info($clan_id) {
-	$clans = get_clan_leaders($clan_id);
+	$clans = get_clan_leaders($clan_id, false);
+	$temp = $clans->fetchAll();
 
 	return $clans->fetch();
+}
+
+// Checks that a char is the leader of a clan, and optionally that that character is leader of a specific clan.
+// @return array clan_info_array
+// @return null if not leader of anything.
+function clan_char_is_leader_of($char_id, $clan_id=null){
+    $sel = 'SELECT clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description 
+        from clan join clan_player on clan_id = _clan_id 
+        where _player_id = :char_id order by clan_id limit 1';
+    return query_row($sel, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
 }
 
 // Return just the clan leader id for a clan.
@@ -159,7 +233,7 @@ function get_clan_leader_id($clan_id) {
 
 // Get the current clan leader or leaders.
 function get_clan_leaders($clan_id=null, $all=false) {
-	$limit = ($all ? '' : ' LIMIT 1 ORDER BY level');
+	$limit = ($all ? '' : ' LIMIT 1');
 	$clan_or_clans = ($clan_id ? " AND clan_id = :clan ORDER BY level " : ' ORDER BY clan_id, level ');
 	DatabaseConnection::getInstance();
 	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
@@ -199,7 +273,7 @@ function clan_avatar_is_valid($dirty_url){
         return false;
     } else {
         $parts = @parse_url($dirty_url);
-        $host_matches = !!preg_match('#\w\.imageshack\.com#i', $parts['host']);
+        $host_matches = !!preg_match('#[\w\d]*\.imageshack\.com#i', $parts['host']);
         if($host_matches){
             return true;
         } else {

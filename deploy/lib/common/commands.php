@@ -438,63 +438,6 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 // ************************************
 
 
-// ************************************
-// ********** CLAN FUNCTIONS **********
-// ************************************
-
-function createClan($p_leaderID, $p_clanName) {
-	DatabaseConnection::getInstance();
-
-	$p_clanName = trim($p_clanName);
-
-	$result = DatabaseConnection::$pdo->query("SELECT nextval('clan_clan_id_seq')");
-	$newClanID = $result->fetchColumn();
-
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (:clanID, :clanName, :leader)");
-	$statement->bindValue(':clanID', $newClanID);
-	$statement->bindValue(':clanName', $p_clanName);
-	$statement->bindValue(':leader', $p_leaderID);
-	$statement->execute();
-
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 1)");
-	$statement->bindValue(':clanID', $newClanID);
-	$statement->bindValue(':leader', $p_leaderID);
-	$statement->execute();
-
-	return new Clan($newClanID, $p_clanName);
-}
-
-function get_clan_by_player_id($p_playerID) {
-	DatabaseConnection::getInstance();
-	$id = (int) $p_playerID;
-	$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name 
-	    FROM clan 
-	    JOIN clan_player ON clan_id = _clan_id 
-	    WHERE _player_id = :player");
-	$statement->bindValue(':player', $id);
-	$statement->execute();
-
-	if ($data = $statement->fetch()) {
-		$clan = new Clan($data['clan_id'], $data['clan_name']);
-		return $clan;
-	} else {
-		return null;
-	}
-}
-
-function renameClan($p_clanID, $p_newName) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE clan SET clan_name = :name WHERE clan_id = :clan");
-	$statement->bindValue(':name', $p_newName);
-	$statement->bindValue(':clan', $p_clanID);
-	$statement->execute();
-
-	return $p_newName;
-}
-// ************************************
-// ************************************
-
 
 
 // ************************************
@@ -562,28 +505,25 @@ function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
 **/
 function get_player_info($p_id = null, $p_password = false) {
 	require_once(LIB_ROOT."specific/lib_status.php");
-	$dao = new PlayerDAO();
 	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
-
-	$playerVO = $dao->get($id);
+	$player = new Player($id); // Constructor uses DAO to get player object.
 
 	$player_data = array();
 
-	if ($playerVO) {
-		foreach ($playerVO as $fieldName=>$value) {
-			$player_data[$fieldName] = $value;
-		}
-
+	if ($player) {
+	    $player_data = (array) $player->vo;
 		if (!$p_password) {
 			unset($player_data['pname']);
 		}
+
+    	$player_data['hp_percent'] = min(100, round(($player_data['health']/max_health_by_level($player_data['level']))*100));
+    	$player_data['exp_percent'] = min(100, round(($player_data['kills']/(($player_data['level']+1)*5))*100));
+    	$player_data['status_list'] = implode(', ', get_status_list($p_id));
+
+    	$player_data['hash'] = md5(implode($player_data));
+
 	}
 
-	$player_data['hp_percent'] = min(100, round(($player_data['health']/max_health_by_level($player_data['level']))*100));
-	$player_data['exp_percent'] = min(100, round(($player_data['kills']/(($player_data['level']+1)*5))*100));
-	$player_data['status_list'] = implode(', ', get_status_list($p_id));
-
-	$player_data['hash'] = md5(implode($player_data));
 
 	///TODO: Migrate all calls of this function to a new function that returns an arrayizable Player object. 
 	//When all calls to this function are removed, remove this function
