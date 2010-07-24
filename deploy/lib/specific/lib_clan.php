@@ -30,25 +30,24 @@ function createClan($p_leaderID, $p_clanName) {
 	return new Clan($newClanID, $p_clanName);
 }
 
+// Gets the clan object from 
 function get_clan_by_player_id($p_playerID) {
-	DatabaseConnection::getInstance();
-	$id = (int) $p_playerID;
-	$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name 
-	    FROM clan 
-	    JOIN clan_player ON clan_id = _clan_id 
-	    WHERE _player_id = :player");
-	$statement->bindValue(':player', $id);
-	$statement->execute();
-
-	if ($data = $statement->fetch()) {
-		$clan = new Clan($data['clan_id'], $data['clan_name']);
+    $clan_info = clan_id((int) $p_playerID);
+	if (!empty($clan_info)) {
+		$clan = new Clan($clan_info['clan_id'], $clan_info['clan_name']);
 		return $clan;
 	} else {
 		return null;
 	}
 }
 
-function renameClan($p_clanID, $p_newName) {
+// ************************************
+// ************************************
+
+
+
+// Does not check for validity, simply renames the clan to the new name.
+function rename_clan($p_clanID, $p_newName) {
 	DatabaseConnection::getInstance();
 
 	$statement = DatabaseConnection::$pdo->prepare("UPDATE clan SET clan_name = :name WHERE clan_id = :clan");
@@ -59,20 +58,17 @@ function renameClan($p_clanID, $p_newName) {
 	return $p_newName;
 }
 
-
-// ************************************
-// ************************************
-
-
 // Without checking for pre-existing clan and other errors, adds a player into a clan.
-function add_player_to_clan($player_id, $clan_id){
+function add_player_to_clan($player_id, $clan_id, $member_level=0){
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_clan_id, _player_id) VALUES (:clan, :player_id)");
+	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_clan_id, _player_id, member_level) VALUES (:clan, :player_id, :member_level)");
 	$statement->bindValue(':clan', $clan_id);
 	$statement->bindValue(':player_id', $player_id);
+	$statement->bindParam(':member_level', (int) $member_level, PDO::PARAM_INT);
 	$statement->execute();
 	// Add the player into the clan.
 
+    // Because the confirmation number is used for inviting, change the confirmation number.
     $random      = rand(1001, 9990); // Semi-random confirmation number, and change the players confirmation number.
 	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET confirm = :confirm WHERE player_id = :player_id");
 	$statement->bindValue(':confirm', $random);
@@ -80,6 +76,7 @@ function add_player_to_clan($player_id, $clan_id){
 	$statement->execute();
 }
 
+// TODO: Simplify this invite system.
 
 // Send a message and change the status of a player so that they are in an "invited" state.
 function inviteChar($char_id, $p_clanID) {
@@ -219,10 +216,18 @@ function get_clan_leader_info($clan_id) {
 // @return array clan_info_array
 // @return null if not leader of anything.
 function clan_char_is_leader_of($char_id, $clan_id=null){
-    $sel = 'SELECT clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description 
+    
+    $sel = 'SELECT clan_id
         from clan join clan_player on clan_id = _clan_id 
-        where _player_id = :char_id order by clan_id limit 1';
-    return query_row($sel, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
+        where _player_id = :char_id and member_level > 1 order by clan_id limit 1';
+        
+    
+    $id = query_item($sel, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
+    if($id){
+        return get_clan($id);
+    } else {
+        return null;
+    }
 }
 
 // Return just the clan leader id for a clan.
