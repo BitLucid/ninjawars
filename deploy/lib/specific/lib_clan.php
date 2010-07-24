@@ -6,7 +6,9 @@ require_once(SERVER_ROOT."lib/specific/lib_player.php");
 // ********** CLAN FUNCTIONS **********
 // ************************************
 
+
 // ***** The below three functions are from commands.php, refactoring recommended ***
+
 
 function createClan($p_leaderID, $p_clanName) {
 	DatabaseConnection::getInstance();
@@ -30,17 +32,25 @@ function createClan($p_leaderID, $p_clanName) {
 	return new Clan($newClanID, $p_clanName);
 }
 
-// Gets the clan object from player_id->clan_id->clan_info->clan_object
+// Clan object a player belongs to.
 function get_clan_by_player_id($p_playerID) {
-    $clan_id = clan_id((int) $p_playerID);
-    $clan_info = get_clan($clan_id);
-	if (!empty($clan_info)) {
-		$clan = new Clan($clan_info['clan_id'], $clan_info['clan_name']);
+	DatabaseConnection::getInstance();
+	$id = (int) $p_playerID;
+	$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name 
+	    FROM clan 
+	    JOIN clan_player ON clan_id = _clan_id 
+	    WHERE _player_id = :player");
+	$statement->bindValue(':player', $id);
+	$statement->execute();
+
+	if ($data = $statement->fetch()) {
+		$clan = new Clan($data['clan_id'], $data['clan_name']);
 		return $clan;
 	} else {
 		return null;
 	}
 }
+
 
 // ************************************
 // ************************************
@@ -58,6 +68,11 @@ function rename_clan($p_clanID, $p_newName) {
 
 	return $p_newName;
 }
+
+// ************************************
+// ************************************
+
+
 
 // Without checking for pre-existing clan and other errors, adds a player into a clan.
 function add_player_to_clan($player_id, $clan_id, $member_level=0){
@@ -202,7 +217,6 @@ function get_clan_founders() {
 // Return only the single clan leader and their information.
 function get_clan_leader_info($clan_id) {
 	$clans = get_clan_leaders($clan_id, false);
-
 	return $clans->fetch();
 }
 
@@ -276,6 +290,7 @@ function clan_avatar_is_valid($dirty_url) {
         return false;
     } else {
         $parts = @parse_url($dirty_url);
+
         return !!preg_match('#[\w\d]*\.imageshack\.[\w\d]*#i', $parts['host']);
     }
 }
