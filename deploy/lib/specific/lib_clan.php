@@ -30,7 +30,7 @@ function createClan($p_leaderID, $p_clanName) {
 	return new Clan($newClanID, $p_clanName);
 }
 
-// Gets the clan object from 
+// Gets the clan object from player_id->clan_id->clan_info->clan_object
 function get_clan_by_player_id($p_playerID) {
     $clan_id = clan_id((int) $p_playerID);
     $clan_info = get_clan($clan_id);

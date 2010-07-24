@@ -1,4 +1,5 @@
 <?php
+
 $alive      = false;
 $private    = false;
 $quickstat  = false;
@@ -147,8 +148,8 @@ if ($data = $result->fetch()) {
 		$class       = htmlentities($data['class']);
 		$level       = htmlentities($data['level']);
 		$clan        = get_clan_by_player_id($data['player_id']);
-		$clan_id = $clan? $clan->getID() : null;
-		$clan_name = $clan? $clan->getName() : null;
+		$clan_id = is_object($clan)? $clan->getID() : null;
+		$clan_name = is_object($clan)? $clan->getName() : null;
 
 		$clan_name_display = (empty($clan_name) ? '' : "<a href=\"clan.php?command=view&amp;clan_id=$clan_id\">".htmlentities($clan_name)."</a>");
 
