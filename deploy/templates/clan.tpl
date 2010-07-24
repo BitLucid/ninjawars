@@ -95,18 +95,17 @@
 	        </ul>
 	      
 	    <div>
-	    <div>Clan Image</div>
-	    To create a clan avatar, upload an image to <a href='http://www.imageshack.com'>imageshack.com</a>
+	    <div><strong>Change Clan Image</strong></div>
+	    To create a clan avatar, upload an image to <a href='http://www.imageshack.com' class='extLink'>imageshack.com</a> Then put the image's full url here:
     	    <form>
     	        <input type='hidden' name='command' value='view'>
     	        <input type='hidden' name='clan_id' value='{$own_clan_id}'>
-    	        Then put the image's full url here:
     	        <input name='clan-avatar-url' type='text' value='{$clan_avatar_current}'>
     	        (Image can be .jpg or .png)
-	        <div>Clan Message</div>
+	        <div><strong>Change Clan Message</strong></div>
     	        Change your clan description below:
     	        <textarea name='clan-description'>{$clan_description_current}</textarea>
-    	        <input type='submit'>
+    	        <input type='submit' value='Save Changes'>
 	        </form>
 	        
 	    </div>
@@ -164,35 +163,32 @@
 			{$clan_join_section}
 		{/if}
 
-		<div>You are a lone ronin, not a member of any ninja clan.</div>
+		<div>You are a lone ninja, not a member of any clan.</div>
 		<div><a href='clan.php?command=join'>View clans available to join</a></div>
 		{if $clan_id_viewed}
-		    $viewed_clan = get_clan($clan_id_viewed);
-		    $viewed_clan_name = $viewed_clan['clan_name'];
     		<div><a href='clan.php?command=join&amp;clan_id={$clan_id_viewed|escape}&process=1'>
-    		        Send a request to join Clan {$viewed_clan_name|escape}
+    		        Send a request to join the Clan {$viewed_clan_name|escape}
     		        </a></div>
     	{/if}
-    	
-    	
-    	
     	
 		{if $can_create_a_clan}
 			<div><a href='clan.php?command=new'>Start a New Clan</a></div>
 		{else}
 			<div>You can start your own clan when you reach level {$clan_creator_min_level}.</div>
 		{/if}
+
+
 		<!-- End of viewer not part of any clan section -->
 	{/if}
+
+
 	<!-- End of logged-in-only display section -->
 {/if}
 
 
 {if $command == "view"}
-
 	<!-- // *** A view of the member list of any clan *** -->
 	{$clan_view}
-	
 
     {if $leader_of_viewed_clan}
     	<div class='ninja-notice'>You are the leader of this clan.</div>

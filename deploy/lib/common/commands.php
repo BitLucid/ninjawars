@@ -517,7 +517,7 @@ function get_player_info($p_id = null, $p_password = false) {
 			unset($player_data['pname']);
 		}
 		
-		$player_data['clan_id'] = $player->getClan()->getID();
+		$player_data['clan_id'] = $player->getClan()? $player->getClan()->getID() : null;
 
     	$player_data['hp_percent'] = min(100, round(($player_data['health']/max_health_by_level($player_data['level']))*100));
     	$player_data['exp_percent'] = min(100, round(($player_data['kills']/(($player_data['level']+1)*5))*100));
