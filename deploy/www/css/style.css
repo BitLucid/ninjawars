@@ -473,6 +473,11 @@ table.playerTable .Black, .player-info .Black {
 	background-color:white;
 }
 
+table.playerTable .Gray, .player-info .Gray {
+	color: gray;
+	background-color: black;
+}
+
 .player-status, .ninja-error {
     margin: 0 auto 0;
     display:inline-block;
