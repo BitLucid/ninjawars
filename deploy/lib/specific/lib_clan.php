@@ -266,6 +266,7 @@ function save_clan_description($desc, $clan_id) {
 
 // return boolean, checks that an avatar is valid.
 function clan_avatar_is_valid($dirty_url) {
+
 	if ($dirty_url === "" || $dirty_url === null) {
 		return true;  // Allows for no clan avatar.
 	}
