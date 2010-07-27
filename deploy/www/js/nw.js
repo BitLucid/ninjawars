@@ -8,10 +8,17 @@
 // http://www.javascripttoolbox.com/bestpractices/
 // TODO: change generated vars to square bracket notation.
 
-// TODO: Create a dummy con sole dot log functionality to avoid errors on live?
+// TODO: Create a dummy console dot log functionality to avoid errors on live?
 
-var $;
-var NW;
+var NW = {};
+
+g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body');
+
+g_isLive = (window.location.host != 'localhost');
+
+g_isRoot = (window.location.pathname == '/');
+
+g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent == window));
 
 /*  GLOBAL SETTINGS & VARS */
 if (parent.window != window) {
@@ -22,6 +29,13 @@ if (parent.window != window) {
 	NW = {};
 
 	NW.datastore = {};
+	NW.lastChatCheck = '';
+
+	NW.sendChat = function(p_inputField) {
+		p_inputField.value = '';
+
+		return true;
+	}
 
 	// For refreshing quickstats from inside main.
 	NW.refreshQuickstats = function(typeOfView) {
@@ -152,18 +166,10 @@ if (parent.window != window) {
 		return container;
 	}
 
-	NW.isIndex = (window.location.pathname.substr(-9, 9) == 'index.php')  || $('body').hasClass('main-body');
-
-	NW.isLive = (window.location.host != 'localhost');
-
-	NW.isRoot = (window.location.pathname == '/');
-
-	NW.isSubpage = (!this.isIndex && !this.isRoot && (window.parent == window));
-
 	// Returns true when debug bit set or localhost path used.
 	NW.debug = function(arg) {
 		if (this.debugging || !this.isLive) {
-			if (console) {console.log(arg);}
+			//if (console) {console.log(arg);}
 			return true;
 		}
 
@@ -442,8 +448,11 @@ if (parent.window != window) {
 		var self = this;
 		return function(data) {
 			// Update global data stores if an update is needed.
-			if (self.updateDataStore(data.latest_chat_id, 'chat_id', 'latestChatId', 'chat_id')) {
+			if (self.updateDataStore(data.new_chats, 'new_count', 'new_chats', 'new_count')) {
+				self.datastore.new_chats.new_count = 0;
 				self.refreshMinichat(null, 50);
+			} else {
+				NW.lastChatCheck = data.new_chats.datetime;
 			}
 		}
 	}
@@ -453,42 +462,65 @@ if (parent.window != window) {
 		// TODO: Eventually this should just pull the chats and load them into the dom.
 		// Check whether the latest chat doesn't match the latest displayed chat.
 		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
-		$.getJSON('api.php?type=latest_chat_id&jsoncallback=?', this.make_checkForNewChats_callback());
+		$.getJSON('api.php?type=new_chats&since='+NW.lastChatCheck+'&jsoncallback=?', NW.make_checkForNewChats_callback());
 	}
 
 	// Load the chat section, or if that's not available & nested iframe, refresh iframe
-	NW.refreshMinichat = function(msg, chatLength) {
-		var container = this.miniChatContainer;
-		var data;
-		var leng = (chatLength ? chatLength : 20);
+	NW.refreshMinichat = function() {
+		if (this.datastore.new_chats) {
+			var container = document.getElementById('mini-chat-display');
+			var data;
 
-		if (msg) {
-			data = {'message':msg,'command':'postnow', 'section_only':'1', 'chatlength':leng};
-		} else {
-			data = {'section_only':'1', 'chatlength':leng};
-		}
+			NW.lastChatCheck = this.datastore.new_chats.datetime;
 
-		if (container) { // check that there is a new chat -to- load.
-			container.load("mini_chat.php", data);
-			return false;
+			if (container) { // check that there is a new chat -to- load.
+				var chats = this.datastore.new_chats.chats;
+				var after = container.insertBefore(document.createTextNode(''), container.firstChild);
+				for (chat_message in chats) {
+					after = container.insertBefore(this.renderChatAuthor(chats[chat_message]), after.nextSibling);
+					after = container.insertBefore(this.renderChatMessage(chats[chat_message]), after.nextSibling);
+				}
+
+				this.datastore.new_chats = null;
+				return false;
+			}
 		}
 	}
 
+	NW.renderChatMessage = function(p_message) {
+		var container = document.createElement('dd');
+		container.className = "chat-message";
+		container.appendChild(document.createTextNode(p_message.message));
+		return container;
+	}
+
+	NW.renderChatAuthor = function(p_message) {
+		var container = document.createElement('dt');
+		container.className = "chat-author";
+		container.appendChild(document.createTextNode('<'));
+		var authorLink = document.createElement('a');
+		authorLink.href = "player.php?player_id="+p_message.sender_id;
+		authorLink.target = "main";
+		authorLink.appendChild(document.createTextNode(p_message.uname));
+		container.appendChild(authorLink);
+		container.appendChild(document.createTextNode('>'));
+		return container;
+	}
+
 	// Send the contents of the chat form input box.
-	NW.sendChatContents = function() {
-		if (this.chatbox) {
-			this.refreshMinichat(this.chatbox.val()); // Send message to refreshMinichat.
-			this.chatbox.val(''); // Clear the chat message box.
-			return false;
-		} else {
-			return Boolean($('#mini-chat-frame-container iframe #mini_chat'));
+	NW.sendChatContents = function(p_form) {
+		if (p_form.message) {
+			$.getJSON('api.php?type=send_chat&msg='+escape(p_form.message.value)+'&jsoncallback=?', NW.checkForNewChats);
+			p_form.message.value = ''; // Clear the chat message box.
 		}
+
+		return false;
 	}
 
 	// Just for fun.
 	/*
 	   function april1stCheck() {
-	   if (NW.isIndex) {
+	   if (g_isIndex) {
 	   var currentTime = new Date();
 	   var day = currentTime.getDate();
 	   var month = currentTime.getMonth();
@@ -505,7 +537,7 @@ if (parent.window != window) {
 // Initial load of everything, run at the bottom to allow everything else to be defined beforehand.
 $(document).ready(function() {
 	// INDEX ONLY CHANGES
-	if (NW.isIndex || NW.isRoot) {
+	if (g_isIndex || g_isRoot) {
 		NW.quickDiv = null;
 		NW.miniChatContainer = null;
 
@@ -533,16 +565,15 @@ $(document).ready(function() {
 		var quickstatsLinks = $("a[target='quickstats']");
 		quickstatsLinks.css({'font-style':'italic'}); // Italicize
 
-		NW.miniChatContainer = $('#mini-chat-frame-container');
-		NW.chatbox = $($('#index-chat form')).find('#message');
+		NW.miniChatContainer = document.getElementById('mini-chat-display');
 
 		// Update the mini chat section for the first time.
-		NW.refreshMinichat();
+		NW.checkForNewChats();
 
 		// Start refreshing the chat.
 		NW.startRefreshingMinichat(); // Start refreshing the chat.
 
-		$('#index-chat form').submit(function() {return NW.sendChatContents(this)});
+		$('#post_msg_js').submit(function() {return NW.sendChatContents(this)});
 		// When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
 
 		// Add click handlers to certain sections.

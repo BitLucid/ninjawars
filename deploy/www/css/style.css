@@ -12,7 +12,7 @@ ShangriLa is useful for the index subcategory headers.
 Gazelle is useful for the h1,h2,h3 and player name headers.
 
 */
-/*
+
 @font-face {
 	font-family: 'PisanNormal';
 	src: url('/files/fonts/PISAN.eot');
@@ -30,7 +30,7 @@ Gazelle is useful for the h1,h2,h3 and player name headers.
 	src: url('/files/fonts/GazelleFLF.eot');
 	src: local('GazelleFLF'), local('GazelleFLF'), url('/files/fonts/GazelleFLF.woff') format('woff'), url('/files/fonts/GazelleFLF.ttf') format('truetype'), url('/files/fonts/GazelleFLF.svg#GazelleFLF') format('svg');
 }
-*/
+
 /* Font usage examples:
 h1.fontface-gazelle {font: 60px/68px 'GazelleFLFRegular', Arial, sans-serif;letter-spacing: 0;}
 p.style1 {font: 18px/27px 'GazelleFLFRegular', Arial, sans-serif;}
@@ -1604,6 +1604,7 @@ iframe {
     font-weight:bold;
 }
 #subcategory-bar a:hover {
+    font: 18px/27px 'ShangriLaNFRegular', Verdana, sans-serif;
     text-decoration:none;
 }
 

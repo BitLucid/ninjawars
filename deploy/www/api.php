@@ -17,11 +17,22 @@ echo render_json($type, $jsoncallback);
  * Determine which function to call to get the json for.
 **/
 function render_json($type, $jsoncallback) {
-	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index', 'latest_chat_id'=>'json_latest_chat_id', 'inventory'=>'json_inventory');
+	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index', 'latest_chat_id'=>'json_latest_chat_id', 'inventory'=>'json_inventory', 'new_chats'=>'json_new_chats', 'send_chat'=>'json_send_chat');
 	$res = null;
 
 	if (isset($valid_type_map[$type])) {
-		$res = $jsoncallback.'('.$valid_type_map[$type]().')';   
+		if ($type == 'send_chat') {
+			$res = $jsoncallback.'('.json_send_chat(in('msg')).')';
+		} else if ($type == 'new_chats') {
+			$chat_since = in('since', null);
+			$chat_limit = in('chat_limit', 20);
+			$res = $jsoncallback.'('.json_new_chats($chat_since, $chat_limit).')';
+		} elseif ($type == 'chats') {
+			$chat_limit = in('chat_limit', 20);
+			$res = $jsoncallback.'('.json_chats($chat_limit).')';
+		} else {
+			$res = $jsoncallback.'('.$valid_type_map[$type]().')';
+		}
 	}
 
 	return $res;
@@ -56,9 +67,10 @@ function json_player() {
 	return '{"player":'.json_encode($player).'}';
 }
 
-function json_chats() {
+function json_chats($limit = 20) {
+	$limit = (int)$limit;
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->query("SELECT * FROM chat ORDER BY date DESC");
+	$statement = DatabaseConnection::$pdo->query("SELECT * FROM chat ORDER BY date DESC LIMIT ".$limit);
 	$chats = $statement->fetchAll();
 
 	return '{"chats":'.json_encode($chats).'}';
@@ -66,12 +78,43 @@ function json_chats() {
 
 function json_latest_chat_id() {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->query("SELECT chat_id FROM chat ORDER BY date DESC limit 1");
+	$statement = DatabaseConnection::$pdo->query("SELECT chat_id FROM chat ORDER BY date DESC LIMIT 1");
 
 	return '{"latest_chat_id":'.json_encode($statement->fetch()).'}';
 }
 
+function json_send_chat($msg) {
+	if ($msg = trim($msg)) {
+		DatabaseConnection::getInstance();
+		$user_id = (int) get_user_id();
+		$query = 'INSERT INTO chat (sender_id, message) VALUES (:sender, :msg)';
+		$statement = DatabaseConnection::$pdo->prepare($query);
+		$statement->bindValue(':msg', $msg);
+		$statement->bindValue(':sender', $user_id);
+		$statement->execute();
+	}
+}
+
+function json_new_chats($since, $limit = 20) {
+	$limit = (int)$limit;
+	$since = ($since ? date('D, d M y H:i:s', (int)$since) : null);
+	$now = strtotime('now');
+	DatabaseConnection::getInstance();
+
+	if ($since) {
+		$statement = DatabaseConnection::$pdo->query("SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id WHERE date > '$since' ORDER BY date DESC LIMIT ".$limit);
+	} else {
+		$statement = DatabaseConnection::$pdo->query("SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id ORDER BY date DESC LIMIT ".$limit);
+	}
+
+	$chats = $statement->fetchAll();
+
+	return '{"new_chats":{"datetime":'.json_encode($now).',"new_count":'.count($chats).',"chats":'.json_encode($chats).'}}';
+}
+
+
 function json_inventory() {
+	$user_id = (int) get_user_id();
 	return '{"inventory":'.json_encode(
 		query_array("SELECT item, amount FROM inventory WHERE owner = :user ORDER BY item", array(':user'=>$user_id))
 	).'}';

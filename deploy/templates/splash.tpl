@@ -143,30 +143,7 @@
         
         </div><!-- End of ninja-stats -->
         
-          <div id='index-chat'>
-              <div id="village-chat" class="boxes active">
-                <div class="box-title centered">
-                  <a id='show-hide-chat' class="show-hide-link">
-                    Chat
-                  </a>
-                </div>
-                <div id="chat-and-switch">
-                  <div id="mini-chat-frame-container" class='chat-collapsed'>
-                    <span id='chat-loading-message' style='display: none;'>...Loading Chat...</span>
-                    <noscript>
-                        <!-- Only display the frame if javascript isn't enabled. -->
-                        <iframe frameBorder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
-                          <a href='mini_chat.php' target='_blank'>Mini Chat</a> Iframe Display Section (Iframes not supported by this browser)
-                        </iframe>
-                    </noscript>
-                  </div>
-                  <div id="expand-chat">
-                    <a href="village.php" target="main">View Older Chats <img src="images/chat.png" alt=""> </a>
-                  </div>
-
-                </div>
-              </div>
-          </div> <!-- End of index-chat --> 
+{include file="mini-chat.section.tpl"}
 
           <div id="music" class="boxes passive">
             <object type="audio/x-midi" data="files/music/samsho.mid" id="music-player">
