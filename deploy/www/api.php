@@ -97,12 +97,12 @@ function json_send_chat($msg) {
 
 function json_new_chats($since, $limit = 20) {
 	$limit = (int)$limit;
-	$since = ($since ? date('D, d M y H:i:s', (int)$since) : null);
-	$now = strtotime('now');
+	$since = ($since ? (float)$since : null);
+	$now = microtime(true);
 	DatabaseConnection::getInstance();
 
 	if ($since) {
-		$statement = DatabaseConnection::$pdo->query("SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id WHERE date > '$since' ORDER BY date DESC LIMIT ".$limit);
+		$statement = DatabaseConnection::$pdo->query("SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id WHERE EXTRACT(EPOCH FROM date) > $since ORDER BY date DESC LIMIT ".$limit);
 	} else {
 		$statement = DatabaseConnection::$pdo->query("SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id ORDER BY date DESC LIMIT ".$limit);
 	}

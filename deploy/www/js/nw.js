@@ -30,6 +30,19 @@ if (parent.window != window) {
 
 	NW.datastore = {};
 	NW.lastChatCheck = '';
+	NW.chatLock = false;
+
+	NW.chatLocked = function() {
+		return NW.chatLock;
+	}
+
+	NW.lockChat = function() {
+		NW.chatLock = true;
+	}
+
+	NW.unlockChat = function() {
+		NW.chatLock = false;
+	}
 
 	NW.sendChat = function(p_inputField) {
 		p_inputField.value = '';
@@ -451,9 +464,13 @@ if (parent.window != window) {
 			if (self.updateDataStore(data.new_chats, 'new_count', 'new_chats', 'new_count')) {
 				self.datastore.new_chats.new_count = 0;
 				self.refreshMinichat(null, 50);
-			} else {
+			}
+
+			if (data.new_chats && data.new_chats.datetime) {
 				NW.lastChatCheck = data.new_chats.datetime;
 			}
+
+			NW.unlockChat();
 		}
 	}
 
@@ -462,7 +479,10 @@ if (parent.window != window) {
 		// TODO: Eventually this should just pull the chats and load them into the dom.
 		// Check whether the latest chat doesn't match the latest displayed chat.
 		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
-		$.getJSON('api.php?type=new_chats&since='+NW.lastChatCheck+'&jsoncallback=?', NW.make_checkForNewChats_callback());
+		if (!NW.chatLocked()) {
+			NW.lockChat();
+			$.getJSON('api.php?type=new_chats&since='+NW.lastChatCheck+'&jsoncallback=?', NW.make_checkForNewChats_callback());
+		}
 	}
 
 	// Load the chat section, or if that's not available & nested iframe, refresh iframe
@@ -470,8 +490,6 @@ if (parent.window != window) {
 		if (this.datastore.new_chats) {
 			var container = document.getElementById('mini-chat-display');
 			var data;
-
-			NW.lastChatCheck = this.datastore.new_chats.datetime;
 
 			if (container) { // check that there is a new chat -to- load.
 				var chats = this.datastore.new_chats.chats;
