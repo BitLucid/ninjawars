@@ -25,7 +25,7 @@ function render_json($type, $jsoncallback) {
 			$res = $jsoncallback.'('.json_send_chat(in('msg')).')';
 		} else if ($type == 'new_chats') {
 			$chat_since = in('since', null);
-			$chat_limit = in('chat_limit', 20);
+			$chat_limit = in('chat_limit', 100);
 			$res = $jsoncallback.'('.json_new_chats($chat_since, $chat_limit).')';
 		} elseif ($type == 'chats') {
 			$chat_limit = in('chat_limit', 20);
@@ -84,7 +84,8 @@ function json_latest_chat_id() {
 }
 
 function json_send_chat($msg) {
-	if ($msg = trim($msg)) {
+	$msg = trim($msg);
+	if (strlen($msg) > 0) {
 		DatabaseConnection::getInstance();
 		$user_id = (int) get_user_id();
 		$query = 'INSERT INTO chat (sender_id, message) VALUES (:sender, :msg)';
@@ -95,7 +96,7 @@ function json_send_chat($msg) {
 	}
 }
 
-function json_new_chats($since, $limit = 20) {
+function json_new_chats($since, $limit = 100) {
 	$limit = (int)$limit;
 	$since = ($since ? (float)$since : null);
 	$now = microtime(true);

@@ -34,7 +34,7 @@
                     </noscript>
                   </div>
                   <div id="expand-chat">
-                    <a href="mini_chat.php?chatlength=360" target="mini_chat">
+                    <a href="mini_chat.php?chatlength=360" target="mini_chat" onclick="main.location.href = 'village.php';return false;">
                       View more chat messages <!-- <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> -->
                     </a>
                   </div>

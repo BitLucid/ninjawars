@@ -31,6 +31,8 @@ if (parent.window != window) {
 	NW.datastore = {};
 	NW.lastChatCheck = '';
 	NW.chatLock = false;
+	NW.maxMiniChats = 250;
+	NW.currentMiniChats = 0;
 
 	NW.chatLocked = function() {
 		return NW.chatLock;
@@ -497,6 +499,16 @@ if (parent.window != window) {
 				for (chat_message in chats) {
 					after = container.insertBefore(this.renderChatAuthor(chats[chat_message]), after.nextSibling);
 					after = container.insertBefore(this.renderChatMessage(chats[chat_message]), after.nextSibling);
+
+					if (this.maxMiniChats <= this.currentMiniChats) {
+						if (container.removeChild(container.lastChild).nodeType == 3) {
+							container.removeChild(container.lastChild);
+						}
+
+						container.removeChild(container.lastChild);
+					} else {
+						++this.currentMiniChats;
+					}
 				}
 
 				this.datastore.new_chats = null;
@@ -529,7 +541,7 @@ if (parent.window != window) {
 	NW.sendChatContents = function(p_form) {
 		if (p_form.message) {
 			$.getJSON('api.php?type=send_chat&msg='+escape(p_form.message.value)+'&jsoncallback=?', NW.checkForNewChats);
-			p_form.message.value = ''; // Clear the chat message box.
+			p_form.reset(); // Clear the chat form.
 		}
 
 		return false;
