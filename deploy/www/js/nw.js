@@ -31,6 +31,8 @@ if (parent.window != window) {
 	NW.datastore = {};
 	NW.lastChatCheck = '';
 	NW.chatLock = false;
+	NW.manualChatLock = false;
+	NW.manualChatLockTime = 3*1000;
 	NW.maxMiniChats = 250;
 	NW.currentMiniChats = 0;
 
@@ -540,15 +542,32 @@ if (parent.window != window) {
 	NW.chatRefreshClicked = function(button) {
 		button.onclick = null;
 		button.style.cursor = 'default';
-		setTimeout(function(){button.onclick = function() { NW.chatRefreshClicked(this);};button.style.cursor = 'pointer';}, 3*1000);
+		button.style.border = '1px solid red';
+		setTimeout(function(){button.onclick = function() { NW.chatRefreshClicked(this);};button.style.border = 'none'; button.style.cursor = 'pointer';}, this.manualChatLockTime);
 		this.checkForNewChats();
+	}
+
+	NW.manualChatLocked = function() {
+		return this.manualChatLock;
+	}
+
+	NW.lockManualChat = function() {
+		this.manualChatLock = true;
+		setTimeout(function() { NW.unlockManualChat(); }, this.manualChatLockTime);
+	}
+
+	NW.unlockManualChat = function() {
+		this.manualChatLock = false;
 	}
 
 	// Send the contents of the chat form input box.
 	NW.sendChatContents = function(p_form) {
-		if (p_form.message) {
+		if (p_form.message && p_form.message.value.length > 0) {
 			$.getJSON('api.php?type=send_chat&msg='+escape(p_form.message.value)+'&jsoncallback=?', NW.checkForNewChats);
 			p_form.reset(); // Clear the chat form.
+		} else if (!NW.manualChatLocked()) {
+			this.lockManualChat();
+			this.checkForNewChats();
 		}
 
 		return false;
