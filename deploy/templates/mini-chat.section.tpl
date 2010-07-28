@@ -11,8 +11,13 @@
                   </div>
 {if isset($user_id) and $user_id}
                   <form class='chat-submit' id="post_msg_js" action="mini_chat.php" method="post" name="post_msg">
-                    <input type="text" size="20" maxlength="250" name="message" class="textField">
-                    <input type="submit" value="Chat" class="formButton">
+                    <div>
+                      <div><input type="text" size="20" maxlength="250" name="message" class="textField"></div>
+                      <div style="height: 40px;">
+                        <input type="submit" value="Chat" class="formButton" style="display: block;float: left;margin-top: 8px;">
+                        <img src="images/refresh.gif" alt="()" onclick="NW.chatRefreshClicked(this);" height="32" width="32" style="cursor: pointer;">
+                      </div>
+                    </div>
                   </form>
 {/if}
                   <div id="mini-chat-frame-container" class='chat-collapsed'>

@@ -537,6 +537,13 @@ if (parent.window != window) {
 		return container;
 	}
 
+	NW.chatRefreshClicked = function(button) {
+		button.onclick = null;
+		button.style.cursor = 'default';
+		setTimeout(function(){button.onclick = function() { NW.chatRefreshClicked(this);};button.style.cursor = 'pointer';}, 3*1000);
+		this.checkForNewChats();
+	}
+
 	// Send the contents of the chat form input box.
 	NW.sendChatContents = function(p_form) {
 		if (p_form.message) {
