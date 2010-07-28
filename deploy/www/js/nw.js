@@ -542,8 +542,8 @@ if (parent.window != window) {
 	NW.chatRefreshClicked = function(button) {
 		button.onclick = null;
 		button.style.cursor = 'default';
-		button.style.border = '1px solid red';
-		setTimeout(function(){button.onclick = function() { NW.chatRefreshClicked(this);};button.style.border = 'none'; button.style.cursor = 'pointer';}, this.manualChatLockTime);
+		button.src = 'images/refresh_disabled.gif';
+		setTimeout(function(){button.onclick = function() { NW.chatRefreshClicked(this);};button.src = 'images/refresh.gif'; button.style.cursor = 'pointer';}, this.manualChatLockTime);
 		this.checkForNewChats();
 	}
 

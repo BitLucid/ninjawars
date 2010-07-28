@@ -15,7 +15,7 @@
                       <div><input type="text" size="20" maxlength="250" name="message" class="textField"></div>
                       <div style="height: 40px;">
                         <input type="submit" value="Chat" class="formButton" style="display: block;float: left;margin-top: 8px;">
-                        <img src="images/refresh.gif" alt="()" onclick="NW.chatRefreshClicked(this);" height="32" width="32" style="cursor: pointer;">
+                        <img src="images/refresh.gif" alt="()" onclick="NW.chatRefreshClicked(this);" height="24" width="24" style="cursor: pointer;margin-top: 6px;margin-left: 4px;">
                       </div>
                     </div>
                   </form>
