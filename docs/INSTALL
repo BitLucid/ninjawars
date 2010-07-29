@@ -12,7 +12,7 @@ sudo apt-get install apache2 php5 postgresql postgresql-contrib libpq-dev
 sudo apt-get install perl liblingua-en-inflect-perl
 (Recommended, but not completely required for local development)
 
-sudo apt-get install awstats
+sudo apt-get install awstats git-core
 (Totally optional)
 
 All Types of Deployment
