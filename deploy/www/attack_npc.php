@@ -12,16 +12,17 @@ $attacked   = in('attacked');
 $victim     = in('victim');
 $random_encounter = (rand(1, 200) == 200);
 $combat_data = array();
+$player     = new Player(get_char_id());
 
 if (($turns = getTurns($username)) > 0) {
 	if ($attacked == 1) { // *** Bit to expect that it comes from the form. ***
-		if (getStatus($username) && $status_array['Stealth']) {
-			subtractStatus($username, STEALTH);
+		if ($player->hasStatus(STEALTH)) {
+			$player->subtractStatus(STEALTH);
 		}
 
-		$attacker_str    = getStrength($username);
-		$attacker_health = getHealth($username);
-		$attacker_gold   = getGold($username);
+		$attacker_str    = $player->getStrength();
+		$attacker_health = $player->vo->health;
+		$attacker_gold   = $player->vo->gold;
 
 		if ($random_encounter) { // *** ONI, Mothafucka! ***
 
@@ -35,16 +36,16 @@ if (($turns = getTurns($username)) > 0) {
 			$oni_health_loss = rand(1, 20);
 			$oni_kill_loss   = 1;
 			$player_turns    = subtractTurns($username, $oni_turn_loss);
-			$attacker_health = subtractHealth($username, $oni_health_loss);
+			$attacker_health = $player->vo->health = subtractHealth($username, $oni_health_loss);
 			$attacker_kills  = subtractKills($username, $oni_kill_loss);
 
 			if ($attacker_health > 0) { // *** if you survive ***
 				if ($player_turns > 50) { // *** And youir turns are high/you are energetic, you can kill them. ***
 					$oni_killed = true;
-					addItem($username, "Dim Mak", 1);
+					addItem($username, 'Dim Mak', 1);
 				} else if ($player_turns > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
 					$oni_killed = true;
-					addItem($username, "Ginseng Root", 4);
+					addItem($username, 'Ginseng Root', 4);
 				} else {
 					$oni_killed = false;
 				}
@@ -54,18 +55,18 @@ if (($turns = getTurns($username)) > 0) {
 
 			$npc_template = 'oni_result.tpl';
 			$combat_data = array('victory'=>$oni_killed);
-		} else if ($victim == "") {
+		} else if (empty($victim)) {
 			$npc_template = 'no_npc_result.tpl';
-		} else if ($victim == "villager") { // *** VILLAGER ***
+		} else if ($victim == 'villager') { // *** VILLAGER ***
 			$villager_attack = rand(0, 10); // *** Villager Damage ***
 			$just_villager = rand(0, 20);
 			$added_bounty  = 0;
 
-			if ($victory = subtractHealth($username, $villager_attack)) {	// *** Player defeated villager ***
+			if ($player->vo->health = $victory = subtractHealth($username, $villager_attack)) {	// *** Player defeated villager ***
 				$villager_gold = rand(0, 20);	// *** Vilager Gold ***
 				addGold($username, $villager_gold);
 
-				$attacker_level = getLevel($username);
+				$attacker_level = $player->vo->level;
 
 				// *** Bounty or no bounty ***
 				if ($attacker_level > 5) {
@@ -87,16 +88,16 @@ if (($turns = getTurns($username)) > 0) {
 			$npc_template = 'villager_result.tpl';
 			$combat_data = array('just_villager'=>$just_villager, 'attack'=>$villager_attack, 'gold'=>$villager_gold, 'level'=>$attacker_level, 'bounty'=>$added_bounty, 'victory'=>$victory);
 		} else if ($victim == "samurai") {
-			$attacker_level = getLevel($username);
-			$attacker_kills = getKills($username);
+			$attacker_level = $player->vo->level;
+			$attacker_kills = $player->vo->kills;
 
 			if ($attacker_level < 6 || $attacker_kills < 1) {
 				$turn_cost = 0;
 			} else {
 				$turn_cost = 1;
 
-				$ninja_str               = getStrength($username);
-				$ninja_health            = getHealth($username);
+				$ninja_str               = $player->getStrength();
+				$ninja_health            = $player->vo->health;
 				$drop                    = false;
 
 				$samurai_damage_array    = array();
@@ -112,7 +113,7 @@ if (($turns = getTurns($username)) > 0) {
 				}
 
 				for ($i = 0; $i < 3 && $ninja_health > 0; ++$i) {
-					$ninja_health = $ninja_health-$samurai_damage_array[$i];
+					$ninja_health = $ninja_health - $samurai_damage_array[$i];
 				}
 
 				if ($ninja_health > 0) {	// *** Ninja still has health after all three attacks. ***
@@ -137,9 +138,9 @@ if (($turns = getTurns($username)) > 0) {
 						addItem($username, "Dim Mak", 1);
 					}
 
-					setHealth($username, $ninja_health);
+					$player->vo->health = setHealth($username, $ninja_health);
 				} else {
-					setHealth($username, 0);
+					$player->vo->health = setHealth($username, 0);
 					$victory = false;
 					$ninja_str    =
 					$samurai_gold = 0;
@@ -148,11 +149,11 @@ if (($turns = getTurns($username)) > 0) {
 
 			$npc_template = 'samurai_result.tpl';
 			$combat_data  = array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills, 'drop'=>$drop);
-		} else if ($victim == "merchant") {
+		} else if ($victim == 'merchant') {
 			$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
 			$added_bounty    = 0;
 
-			if ($victory = subtractHealth($username, $merchant_attack)) {	// *** Player killed merchant ***
+			if ($player->vo->health = $victory = subtractHealth($username, $merchant_attack)) {	// *** Player killed merchant ***
 				$merchant_gold   = rand(20, 70);  // *** Merchant Gold   ***
 				addGold($username, $merchant_gold);
 
@@ -160,8 +161,8 @@ if (($turns = getTurns($username)) > 0) {
 					addItem($username, 'Fire Scroll', $quantity = 1);
 				}
 
-				if (getLevel($username) > 10) {
-					$added_bounty = 5*floor((getLevel($username) - 5) / 3);
+				if ($player->vo->level > 10) {
+					$added_bounty = 5 * floor(($player->vo->level - 5) / 3);
 					addBounty($username, $added_bounty);
 				}
 			} else {	// *** Merchant killed player
@@ -170,21 +171,21 @@ if (($turns = getTurns($username)) > 0) {
 
 			$npc_template = 'merchant_result.tpl';
 			$combat_data  = array('attack'=>$merchant_attack, 'gold'=>$merchant_gold, 'bounty'=>$added_bounty, 'victory'=>$victory);
-		} else if ($victim == "guard") {	// *** The Player attacks the guard ***
+		} else if ($victim == 'guard') {	// *** The Player attacks the guard ***
 			$guard_attack = rand(1, $attacker_str + 10);  // *** Guard Damage ***
 			$herb         = false;
 			$added_bounty = 0;
 
-			if ($victory = subtractHealth($username, $guard_attack)) {
+			if ($player->vo->health = $victory = subtractHealth($username, $guard_attack)) {
 				$guard_gold = rand(1, $attacker_str + 40);	// *** Guard Gold ***
 				addGold($username, $guard_gold);
 
-				if (getLevel($username) > 15) {
-					$added_bounty = 10*floor((getLevel($username) - 10) / 5);
+				if ($player->vo->level > 15) {
+					$added_bounty = 10 * floor(($player->vo->level - 10) / 5);
 					addBounty($username, ($added_bounty));
 				}
 
-				if (rand(1,9) == 9) { // *** 1/9 chance of getting an herb for Kampo ***
+				if (rand(1, 9) == 9) { // *** 1/9 chance of getting an herb for Kampo ***
 					$herb = true;
 					addItem($username, 'Ginseng Root', 1);
 				} else {
@@ -214,7 +215,7 @@ if (($turns = getTurns($username)) > 0) {
 				SESSION::set('counter', 0); // Reset the counter to zero.
 				$group_attack= rand(50, 150);
 
-				if ($victory = subtractHealth($username, $group_attack)) {	// The den of thieves didn't accomplish their goal
+				if ($player->vo->health = $victory = subtractHealth($username, $group_attack)) {	// The den of thieves didn't accomplish their goal
 					$group_gold = rand(100, 300);
 
 					if ($group_attack > 120) { // Powerful attack gives an additional disadvantage
@@ -232,7 +233,7 @@ if (($turns = getTurns($username)) > 0) {
 			} else { // Normal attack on a single thief.
 				$thief_attack = rand(0, 35);  // *** Thief Damage  ***
 
-				if ($victory = subtractHealth($username, $thief_attack)) {
+				if ($player->vo->health = $victory = subtractHealth($username, $thief_attack)) {
 					$thief_gold = rand(0, 40);  // *** Thief Gold ***
 
 					if ($thief_attack > 30) {
@@ -250,13 +251,15 @@ if (($turns = getTurns($username)) > 0) {
 			}
 		}
 
-		if (getHealth($username) <= 0) {
+		if ($player->vo->health <= 0) {
 			$health = false;
 			sendMessage("SysMsg", $username, "DEATH: You have been killed by a non-player character at $today");
 		}
 
 		subtractTurns($username, $turn_cost);
 	}
+} else {
+	$npc_template = null;
 }
 
 display_page(

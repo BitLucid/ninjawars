@@ -96,47 +96,6 @@ HEREDOC;
 	return $res;
 }
 
-// Display the clan name and members.
-function render_player_clan($player_info, $viewers_clan=null) {
-	ob_start();
-	// Display a message if they're the same clan.
-	$same_clan = false;
-
-	$clan = get_clan_by_player_id($player_info['player_id']);
-
-	if ($player_info['uname'] != get_username()
-	    && $viewers_clan && $clan && $clan->getID() == $viewers_clan->getID()) {
-	    $same_clan = $player_info['uname']; // puts the username in same_clan
-	}
-
-	if ($clan) {
-		$clan_link = $clan_long_name = $clan->getName();
-?>
-
-		<div class='player-clan'>
-<?php
-		if ($same_clan) {
-?>
-            <p class='ninja-notice'><?php echo htmlentities($same_clan);?> is part of your clan.</p>
-<?php
-		}
-?>
-			<p class='clan-link centered'>
-			    <span class='subtitle'>Clan:</span>
-			    <a href='clan.php?command=view&amp;clan_id=<?php echo $clan->getID();?>'><?php echo $clan_link;?></a>
-			</p>
-			<div class='clan-members centered'>
-			    <?php echo render_clan_members($clan->getID());?>
-			</div>
-		</div>
-<?php
-	}
-
-	$res = ob_get_contents();
-	ob_end_clean();
-	return $res;
-}
-
 // Straight list of clan members
 function render_clan_members($clan_id = 0, $limit = 30) {
 	ob_start();
@@ -247,26 +206,6 @@ function render_item_use_on_another($target) {
 
 	$res .= "</form>\n";
 	return $res;
-}
-
-// Display the in-clan options for clan leaders.
-function display_clan_options($player_info, $viewing_player_obj) {
-	$clan        = get_clan_by_player_id($player_info['player_id']);
-	$viewer_clan = get_clan_by_player_id($viewing_player_obj->vo->player_id);
-
-	if ($clan && $viewer_clan
-		&& $clan->getID() == $viewer_clan->getID()
-		&& is_clan_leader($viewing_player_obj->vo->player_id)) {
-		echo "<div class='clan-leader-options centered'>";
-		echo "<form id=\"kick_form\" action=\"clan.php\" method=\"get\" name=\"kick_form\">\n";
-		echo "<input id=\"kicked\" type=\"hidden\" value=\"", htmlentities($player_info['player_id']), "\" name=\"kicked\">\n";
-		echo "<input id=\"command\" type=\"hidden\" value=\"kick\" name=\"command\">\n";
-		echo "<input type=\"submit\" value=\"Kick This Ninja From Your Clan\" class=\"formButton\">\n";
-		echo "</form>\n";
-		echo "</div>";
-	} else {
-		return;
-	}
 }
 
 function render_player_link($username) {

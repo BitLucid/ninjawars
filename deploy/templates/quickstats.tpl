@@ -18,7 +18,7 @@
     </dd>
     <dt>Status:</dt>
     <dd>
-     {$status_output_list}
+      {', '|implode:$status_list}
     </dd>
     <dt>Turns:</dt>
     <dd>
@@ -49,7 +49,7 @@
 
 <!-- Update the login-bar's health display. -->
 <script language='javascript' type='text/javascript'>
-    updateHealthBar({$health});
+	NW.updateHealthBar({$health});
 </script>
 
 {if !$section_only}

@@ -35,7 +35,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
       {$level_category.display|escape} [{$player_info.level|escape}]
     </span>
 
-	{$status_section}
+    {include file="status_section.tpl" statuses=$status_list}
 
 	</div>
 
@@ -50,7 +50,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 		   <table id='player-profile-attack'>
 		     <tr>
 		       <td id='attacking-choices'>
-			     <form id='attack_player' action='attack_mod.php' method='post' name='attack_player.php'>
+			     <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
 			       <span id='duel'>
                      <label>Duel<input id="duel" type="checkbox" name="duel"></label>
                    </span>
@@ -66,8 +66,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 			       <input id="target" type="hidden" value="{$target}" name="target" title='Attack or Duel this ninja'>
                    <label class='attack-player-trigger'>
-                     <input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>
-                     <a>Attack</a>
+                     <a onclick="document.attack_player.submit();"><input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack</a>
                    </label>
 			     </form>
 			   </td>
@@ -96,7 +95,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 	{$player_activity_section}
 
-{if !$self}
+{if is_logged_in() and !$self}
      <div class='set-bounty centered'>
        <form id="set_bounty" action="doshin_office.php" method="post" name="set_bounty">
          <div>
@@ -120,11 +119,33 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 {/if}
 
     <!-- Clan leader options on players in their clan. -->
-    {$clan_options_section}
+{if $clan}
+	{if $render_clan_options}
+    <div class='clan-leader-options centered'>
+      <form id="kick_form" action="clan.php" method="get" name="kick_form">
+        <div>
+          <input id="kicked" type="hidden" value="{$player_info.player_id}" name="kicked">
+          <input id="command" type="hidden" value="kick" name="command">
+          <input type="submit" value="Kick This Ninja From Your Clan" class="formButton">
+        </div>
+      </form>
+    </div>
+	{/if}
 
     <!-- Player clan and clan members -->
-
-	{$player_clan_section}
+    <div class='player-clan'>
+	{if $same_clan}
+      <p class='ninja-notice'>{$player_info.uname|escape} is part of your clan.</p>
+	{/if}
+      <p class='clan-link centered'>
+        <span class='subtitle'>Clan:</span>
+        <a href='clan.php?command=view&amp;clan_id={$clan_id}'>{$clan_name|escape}</a>
+      </p>
+      <div class='clan-members centered'>
+        {$clan_members}
+      </div>
+    </div>
+{/if}
 
 {if $player_info.messages}
     <div class='player-profile'>

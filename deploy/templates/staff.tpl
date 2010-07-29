@@ -1,7 +1,5 @@
 {literal}
-<script type="text/javascript" charset="utf-8" 
-    src="http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js">
-</script>
+<script type="text/javascript" charset="utf-8" src="http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js"></script>
 
 <script type="text/javascript" charset="utf-8">
   var feedback_widget_options = {};
@@ -109,17 +107,16 @@
 <div id='project-languages' style='background-color:white'><script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_languages.js"></script></div>
 
 <script type="text/javascript">
-  {literal}
-  $(document).ready(function(){
-    $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?tags=ninja&tagmode=any&format=json&jsoncallback=?",
-        function(data){
-          $.each(data.items, function(i,item){
-            $("<img/>").attr("src", item.media.m).appendTo("#random-ninja-images");
-            if ( i == 2 ) return false;
-          });
-        });
-  });
-  {/literal}
+{literal}
+$(document).ready(function(){
+	$.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?tags=ninja&tagmode=any&format=json&jsoncallback=?", function(data){
+		$.each(data.items, function(i,item){
+			$("<img/>").attr("src", item.media.m).appendTo("#random-ninja-images");
+			if (i == 2) return false;
+		});
+	});
+});
+{/literal}
   </script>
   
   <div id='random-ninja-images'>

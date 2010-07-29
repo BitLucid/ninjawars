@@ -11,11 +11,9 @@ $events = get_events($user_id, 300);
 read_events($user_id); // mark events as viewed.
 
 $event_list = '';
-if (!empty($events)) {
-	foreach($events as $loop_event) {
-		$loop_event['message'] = out($loop_event['message']);
-		$event_list .= render_template('single_event.tpl', array('event' => $loop_event));
-	}
+foreach($events as $loop_event) {
+	$loop_event['message'] = out($loop_event['message']);
+	$event_list .= render_template('single_event.tpl', array('event' => $loop_event));
 }
 
 if (!$event_list) {

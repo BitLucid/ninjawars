@@ -22,41 +22,45 @@
     <link rel="stylesheet" type="text/css" href="css/ie.css">
     <![endif]-->
 
-    <!-- older IE assistive javascript -->
-    <!--[if lt IE 8]>
-    <script src="http://ie7-js.googlecode.com/svn/version/2.0(beta3)/IE8.js" type="text/javascript"></script>
-    <![endif]-->
-    
 {if $templatelite.const.LOCAL_JS}
     <!-- Local jquery lib -->
     <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-    <script type="text/javascript" src="js/debug.js"></script>
 {else}
-    <!-- Google jquery lib -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <!-- Google Analytics -->
     <script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script>
     <!-- The google-analytics code that gets run is in nw.js -->
+    <script type="text/javascript">
+    // GOOGLE ANALYTICS
+    /* There's a script include that goes with this, but I just put it in the head directly.*/
+{literal}
+    try {
+        var pageTracker = _gat._getTracker("UA-707264-2");
+        pageTracker._trackPageview();
+    } catch(err) {}
+{/literal}
+    </script>
+
+    <!-- Google jquery lib -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 {/if}
     <!-- All the global ninjawars javascript -->
     <script type="text/javascript" src="js/nw.js"></script>
 
     <script type="text/javascript">
-    <!--
-{if $logged_in}
-		setLoggedIn();
-{else}
-		clearLoggedIn();
-{/if}
-    // -->
+	NW.loggedIn = {if $logged_in}true{else}false{/if};
     </script>
 
 {if $templatelite.const.DEBUG}
     <link rel="stylesheet" type="text/css" href="css/debugger.css">
     <script type="text/javascript">
-    <!--
-		NW.debug = 1;
-    // -->
+		NW.debugging = true;
+    </script>
+{/if}
+{if $quickstat and not $is_index}
+    <script type="text/javascript">
+	{literal}$(document).ready(function() {{/literal}
+		NW.refreshQuickstats('{$quickstat}');
+	{literal}});{/literal}
     </script>
 {/if}
   </head>

@@ -2,7 +2,7 @@
 
 
 <p>You are a level {$level}, {$class} Ninja.</p>
-<p>Your status is: {$status_output_list}</p>
+<p>Your status is: {include file="status_section.tpl" statuses=$status_list}</p>
 <div id='skills-list'>
 
 {if $stealth}

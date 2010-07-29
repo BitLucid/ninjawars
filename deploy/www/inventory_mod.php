@@ -24,12 +24,14 @@ $selfTarget = in('selfTarget');
 $item       = in('item');
 $give       = in('give');
 
+$user_id    = get_user_id();
+$player     = new Player($user_id);
+
 $victim_alive   = true;
 $using_item     = true;
-$starting_turns = getTurns($username);
+$starting_turns = $player->vo->turns;
 $username_turns = $starting_turns;
-$username_level = getLevel($username);
-$user_id        = get_user_id();
+$username_level = $player->vo->level;
 $ending_turns   = null;
 
 DatabaseConnection::getInstance();
@@ -42,39 +44,26 @@ $item_count     = $statement->fetchColumn();
 
 if ($selfTarget) {
 	$target = $username;
+	$targetObj = $player;
+} else if ($target) {
+	$targetObj = new Player($target);
 }
 
-if ($target) {
-	$statement = DatabaseConnection::$pdo->prepare('SELECT health, ip, turns, level FROM players WHERE uname = :player');
-	$statement->bindValue(':player', $target);
-	$statement->execute();
-
-	if ($data = $statement->fetch()) {
-		$targets_turns = $data['turns'];
-		$targets_level = $data['level'];
-		$target_hp     = $data['health'];
-		$target_ip     = $data['ip'];
-		$target_status = getStatus($target);
-	} else {
-		$targets_turns =
-		$targets_level =
-		$target_hp     =
-		$target_ip     =
-		$target_status = null;
-	}
+if ($targetObj->player_id) {
+	$targets_turns = $targetObj->vo->turns;
+	$targets_level = $targetObj->vo->level;
+	$target_hp     = $targetObj->vo->health;
 } else {
 	$targets_turns =
 	$targets_level =
-	$target_hp     =
-	$target_ip     =
-	$target_status = null;
+	$target_hp     = null;
 }
 
 $gold_mod		= NULL;
 $result			= NULL;
 
 $max_power_increase        = 10;
-$level_difference          = $targets_level - $players_level;
+$level_difference          = $targets_level - $username_level;
 $level_check               = $username_level - $targets_level;
 $near_level_power_increase = nearLevelPowerIncrease($level_difference, $max_power_increase);
 
@@ -156,10 +145,10 @@ if ($item == 'Dim Mak') {
 	$speedScroll->setCovert(true);
 } else if ($item == 'Fire Scroll') {
 	$item = $fireScroll = new Item('Fire Scroll');
-	$fireScroll->setTargetDamage(rand(20, getStrength($username) + 20) + $near_level_power_increase);
+	$fireScroll->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
 } else if ($item == 'Shuriken') {
 	$item = $shuriken = new Item('Shuriken');
-	$shuriken->setTargetDamage(rand(1, getStrength($username)) + $near_level_power_increase);
+	$shuriken->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
 } else if ($item == 'Ice Scroll') {
 	$item = $iceScroll = new Item('Ice Scroll');
 	$iceScroll->setTurnChange(-1*ice_scroll_turns($targets_turns, $near_level_power_increase));
@@ -217,7 +206,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$result        = "lose ".$item->getTargetDamage()." HP";
 					$victim_alive  = subtractHealth($target, $item->getTargetDamage());
 				} else if ($item === $stealthScroll) {
-					addStatus($target, STEALTH);
+					$targetObj->addStatus(STEALTH);
 					echo "<br>$target is now Stealthed.<br>\n";
 					$result = false;
 					$victim_alive = true;
@@ -227,10 +216,10 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$result = "be drained of your life-force and die!";
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 				} else if ($item === $strangeHerb) {
-					addStatus($target, STR_UP1);
+					$targetObj->addStatus(STR_UP1);
 					$result = "$target's muscles experience a strange tingling.<br>\n";
 				} else if ($item === $kampoFormula) {
-					addStatus($target, STR_UP2);
+					$targetObj->addStatus(STR_UP2);
 					$result = "$target feels a surge of power!<br>\n";
 				} else if ($item->getTurnChange() <= 0) {
 
@@ -271,8 +260,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				}
 
 				if (!$victim_alive) { // Target was killed by the item.
-					if (getStatus($username) && ($target != $username) ) {   // *** SUCCESSFUL KILL ***
-						$attacker_id = ($status_array['Stealth'] ? "A Stealthed Ninja" : $username);
+					if (($target != $username) ) {   // *** SUCCESSFUL KILL ***
+						$attacker_id = ($player->hasStatus(STEALTH) ? "A Stealthed Ninja" : $username);
 
 						if (!$gold_mod) {
 							$gold_mod = 0.15;
@@ -312,8 +301,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			echo "<br>Removing {$item->getName()} from your inventory.<br>\n";
 
 			// Unstealth
-			if (!$item->isCovert() && $give != "on" && $give != "Give" && getStatus($username) && $status_array['Stealth']) { //non-covert acts
-				subtractStatus($username,STEALTH);
+			if (!$item->isCovert() && $give != "on" && $give != "Give" && $player->hasStatus(STEALTH)) { //non-covert acts
+				$player->subtractStatus(STEALTH);
 				echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
 			}
 

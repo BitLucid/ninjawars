@@ -59,7 +59,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		$rank_spot = $statement->fetchColumn();
 
 		// Display the player info.
-		$status_section          = render_status_section($player_info['uname']);
+		$status_list          = get_status_list($player);
 		$player_activity_section = render_player_activity($player_info);
 
 		$level_category          = level_category($player_info['level']);
@@ -71,8 +71,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 	
 			$skillDAO = new SkillDAO();
 	
-			$combat_skills     = $skillDAO->getSkillsByTypeAndClass(
-			    $viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level)->fetchAll(); 
+			$combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level)->fetchAll(); 
 			    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
 	
 			$item_use_section  = render_item_use_on_another($target);
@@ -81,25 +80,30 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 	
 		$set_bounty_section     = '';
 		$communication_section  = '';
-		$clan_options_section   = '';
 		$player_clan_section    = '';
 	
-		if ($username && !$self) {
-			// Clan leader options on players in their clan.
-			ob_start();
-			display_clan_options($player_info, $viewing_player_obj);
-			$clan_options_section = ob_get_contents();
-			ob_end_clean();
-		}
-	
+		$clan = get_clan_by_player_id($player_info['player_id']);
+
 		// Player clan and clan members
-	
-		$player_clan_section = render_player_clan($player_info, $viewers_clan);
+
+		if ($clan) {
+			$viewer_clan  = (is_logged_in() ? get_clan_by_player_id($viewing_player_obj->vo->player_id) : null);
+			$clan_members = render_clan_members($clan->getID());
+			$clan_id      = $clan->getID();
+			$clan_name    = $clan->getName();
+
+			if ($viewer_clan) {
+				$same_clan = ($clan->getID() == $viewer_clan->getID());
+				$render_clan_options = ($username && !$self && $same_clan && is_clan_leader($viewing_player_obj->vo->player_id));
+			} else {
+				$same_clan = $render_clan_options = false;
+			}
+		}
 	
 		// Send the info to the template.
 	
 		$template = 'player.tpl';
-		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url'));
+		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan'));
 	}
 }
 

@@ -4,6 +4,12 @@ $alive      = false;
 $quickstat  = false;
 $page_title = "Enemy List";
 require_once(LIB_ROOT."specific/lib_player_list.php");
+
+if (!get_user_id()) {
+	header('Location: list_all_players.php');
+	exit();
+}
+
 include SERVER_ROOT."interface/header.php";
 
 function render_enemy_matches($match_string) {
@@ -17,15 +23,13 @@ function render_enemy_matches($match_string) {
 
 	$statement->execute();
 
-	$enemy_rows = $statement->fetchAll();
-
 	$res = null;
 
-	foreach ($enemy_rows as $loop_enemy) {
+	foreach ($statement as $loop_enemy) {
 		$res .= "<li><a href='enemies.php?add_enemy={$loop_enemy['player_id']}'><img src='".IMAGE_ROOT."icons/add.png' alt='Add enemy:'> Add {$loop_enemy['uname']}</a></li>";
 	}
 
-	if (!empty($enemy_rows) && count($enemy_rows) > 10) {
+	if ($statement->rowCount() > 10) {
 		$res .= "<li>...with more matches...</li>";
 	}
 
@@ -102,7 +106,7 @@ function render_recent_attackers() {
 	$recent_attackers_section = '';
 	$recent_attackers = get_recent_attackers();
 
-	if (!empty($recent_attackers)) {
+	if ($recent_attackers->rowCount() > 0) {
 		$recent_attackers_section .= "<h3>You were recently attacked by</h3>
 			<ul id='recent-attackers'>";
 		foreach($recent_attackers as $l_attacker) {
@@ -130,13 +134,9 @@ function get_recent_attackers() {
 	$statement->bindValue(':user', $user_id);
 	$statement->execute();
 
-	return $statement->FetchAll();
+	return $statement;
 }
 
-if (!get_user_id()) {
-	header('Location: list_all_players.php');
-	exit();
-}
 
 $active_ninja = render_active(5, $alive_only=true); // Display the currently active ninjas
 

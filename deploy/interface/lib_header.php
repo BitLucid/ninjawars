@@ -33,40 +33,19 @@ function globalize_user_info($private=true, $alive=true) {
 		// A non-null set of content being in the error triggers a die at the end of the header.
 	} elseif ($username) {
 		// **************** Player information settings. *******************
-		global $player, $players_id, $player_id, $players_email,
-		$players_turns, $players_health, $players_bounty, $players_gold, $players_level,
-		$players_class, $players_strength, $players_kills, $players_days, $players_created_date,
-		$players_last_started_attack, $players_clan, $players_status;
+		global $player, $player_id;
 		// Polluting the global namespace here.  Booo.
 
 		$player = new Player($username); // Defaults to current session user.
 
-		$players_id = $player->player_id;
-		$player_id = $players_id; // Just two aliases for the player id.
-		$players_email = $player->vo->email;
+		$player_id = $player->player_id;
 
-		assert('isset($players_id)');
-
-		// TODO: Turn this into a list extraction?
-		// password and messages intentionally excluded.
-		$players_turns    	= $player->vo->turns;
-		$players_health   	= $player->vo->health;
-		$players_bounty   	= $player->vo->bounty;
-		$players_gold     	= $player->vo->gold;
-		$players_level    	= $player->vo->level;
-		$players_class    	= $player->vo->class;
-		$players_strength 	= $player->getStrength();
-		$players_kills		= $player->vo->kills;
-		$players_days		= $player->vo->days;
-		$players_clan 		= get_clan_by_player_id($player->vo->player_id);
-		$players_status     = $player->getStatus();
-		$players_created_date = $player->vo->created_date;
-		$players_last_started_attack = $player->vo->last_started_attack;
+		assert('isset($player_id)');
 
 		if ($alive) { // *** That page requires the player to be alive to view it.
-			if (!$players_health) {
+			if (!$player->vo->health) {
 				$error = 'dead';
-			} else if (user_has_status_type('frozen')) {
+			} else if ($player->hasStatus(FROZEN)) {
 				$error = 'frozen';
 			}
 		}
@@ -75,32 +54,14 @@ function globalize_user_info($private=true, $alive=true) {
 	return $error;
 }
 
-// Pull the status array.
-function get_status_array() {
-	// TODO: Make this not use the global, perhaps use player_info instead.
-	global $status_array;
-	return $status_array;
-}
-
-// Boolean check for a status type.
-function user_has_status_type($p_type) {
-	$status_array = get_status_array();
-	$type = strtoupper($p_type);
-	$res = false;
-
-	if ($status_array && isset($status_array[$type]) && $status_array[$type]) {
-		$res = true;
-	}
-
-	return $res;
-}
-
 // Renders an error
 function render_error($error) {
-	$res = null;
-	if ($error){ // If there's an error, display that then end.
+	if ($error) { // If there's an error, display that then end.
 		$res = $error;
+	} else {
+		$res = null;
 	}
+
 	return $res;
 }
 
@@ -144,44 +105,6 @@ function update_activity_info() {
 		$statement->bindValue(':member', is_logged_in(), PDO::PARAM_BOOL);
 		$statement->execute();
 	}
-}
-
-// Format a title string into a css class to add to that page's body.
-function format_css_class_from_title($page_title) {
-	// Filters out non-alphanumerics replaced with - dash.
-	$css_body_class = strtolower(preg_replace('/\W/', '-', $page_title));
-	return $css_body_class;
-}
-
-/**
- * Returns the state of the player from the database,
- * uses a user_id if one is present, otherwise
- * defaults to the currently logged in player, but can act on any player
- * if another username is passed in.
- * @param $user user_id or username
- * @param @password Unless true, wipe the password.
-**/
-function get_player_info($p_id = null, $p_password = false) {
-	$dao = new PlayerDAO();
-	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
-
-	$playerVO = $dao->get($id);
-
-	$player_data = array();
-
-	if ($playerVO) {
-		foreach ($playerVO as $fieldName=>$value) {
-			$player_data[$fieldName] = $value;
-		}
-
-		if (!$p_password) {
-			unset($player_data['pname']);
-		}
-	}
-
-	///TODO: Migrate all calls of this function to a new function that returns an arrayizable Player object. 
-	//When all calls to this function are removed, remove this function
-	return $player_data;
 }
 
 /* Potential solution for hash-based in-iframe navigation.

@@ -30,8 +30,11 @@ $dimmak_sequence     = in('dimmak_sequence', '');
 $classChangeSequence = in('classChangeSequence');
 
 if (is_logged_in()) {
-	$userLevel = getLevel($username);
-	$userKills = getKills($username);
+	$player    = new Player(get_char_id());
+	$userLevel = $player->vo->level;
+	$userKills = $player->vo->kills;
+	$userClass = $player->vo->class;
+
 	$classChangeAllowed = ($userLevel >= $classChangeLevelReq && $userKills >= $classChangeCost);
 	$dimMakAllowed      = ($userLevel >= $dimMakLevelReq && $userKills >= $dimMakCost);
 
@@ -42,14 +45,14 @@ if (is_logged_in()) {
 		}
 	}	// *** End of Dim Mak Code. ***
 
-	if ($classChangeAllowed && isset($class_array[$players_class]) && $class_array[$players_class]) {
+	if ($classChangeAllowed && isset($class_array[$userClass]) && $class_array[$userClass]) {
 		if ($classChangeSequence == 2) {
 			$userKills = subtractKills($username, $classChangeCost);
-			setClass($username, $class_array[$players_class]);
+			setClass($username, $class_array[$userClass]);
 		}
 	}
 
-	$MAX_LEVEL = 250;
+	$max_level = 250;
 
 	$nextLevel  = $userLevel + 1;
 	$in_upgrade = in('upgrade');
@@ -57,7 +60,7 @@ if (is_logged_in()) {
 	$upgrade_requested = ($in_upgrade && $in_upgrade == 1);
 
 	if ($upgrade_requested) {  // *** If they requested an upgrade ***
-		if ($nextLevel < $MAX_LEVEL && $userKills >= $required_kills) {
+		if ($nextLevel < $max_level && $userKills >= $required_kills) {
 			$userKills = subtractKills($username, ($userLevel * 5));
 			$userLevel = addLevel($username, 1);
 			addStrength($username, 5);
@@ -65,12 +68,13 @@ if (is_logged_in()) {
 			addHealth($username, 100);
 		}
 	}
+
 }
 
 display_page(
 	'dojo.tpl'
 	, 'Dojo'
-	, array('classChangeAllowed'=>$classChangeAllowed, 'dimMakAllowed'=>$dimMakAllowed, 'dimMakCost'=>$dimMakCost, 'dimmak_sequence'=>$dimmak_sequence, 'classChangeCost'=>$classChangeCost, 'classChangeSequence'=>$classChangeSequence, 'destination_class'=>$class_array[$players_class], 'msg'=>$msg, 'userLevel'=>$userLevel, 'userKills'=>$userKills, 'nextLevel'=>$nextLevel, 'max_level'=>$MAX_LEVEL, 'required_kills'=>$required_kills, 'upgrade_requested'=>$upgrade_requested)
+	, get_defined_vars()
 	, array('quickstat'=>'player')
 );
 }

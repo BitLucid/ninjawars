@@ -5,9 +5,7 @@
 {if $error}
     <p class='error'>{$error}</p>
 {else}
-
-{if $confirm_delete}
-
+	{if $confirm_delete}
     <p>Please provide your password to confirm.</p>
     <form method="post" action="stats.php">
         <div>
@@ -16,20 +14,16 @@
             <input type="submit" onsubmit="alert('DELETING ACCOUNT');" value="Confirm Delete" class="formButton">
         </div>
     </form>
+	{/if}
 
-{/if}
-
-{if $profile_changed}
+	{if $profile_changed}
     <p class='notice'>Profile has been changed.</p>
-{/if}
-
-
-
+	{/if}
 {/if}
 
 
 <div>Avatar: (change your avatar for your account email at <a href='http://gravatar.com'>gravatar.com</a>) {include file="gravatar.tpl" url=$gravatar_url}</div>
-{$status_list}
+{include file="status_section.tpl" statuses=$status_list}
 <ul id='player-info' class='player-info'>
     <li>Health: <span{if $player.health lt 80} class="injured"{/if}>{$player.health|escape}</span></li>
     <li>Level: <span class='player-level-category {$level_category.css|escape}'> {$level_category.display|escape} [{$player.level|escape}] </span></li>

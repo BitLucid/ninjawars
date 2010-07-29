@@ -38,7 +38,7 @@ function get_events($user_id, $limit=null) {
 
 	$statement->execute();
 
-	return $statement->fetchAll();
+	return $statement;
 }
 
 function read_events($user_id) {

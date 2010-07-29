@@ -8,486 +8,638 @@
 // http://www.javascripttoolbox.com/bestpractices/
 // TODO: change generated vars to square bracket notation.
 
-// TODO: Create a dummy con sole dot log functionality to avoid errors on live?
+// TODO: Create a dummy console dot log functionality to avoid errors on live?
 
+var NW = {};
+
+g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body');
+
+g_isLive = (window.location.host != 'localhost');
+
+g_isRoot = (window.location.pathname == '/');
+
+g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent == window));
 
 /*  GLOBAL SETTINGS & VARS */
+if (parent.window != window) {
+	$ = parent.$;
+	NW = parent.NW;
+} else {
+	$ = jQuery;
+	NW = {};
 
-function createNW(){
-    var innerNW = {};
-    innerNW.firstLoad = 1;
-    // Counter starts at 1 to indicate newly refreshed page, as opposed to ajax loads.
-    return innerNW;
-}
+	NW.datastore = {};
+	NW.lastChatCheck = '';
+	NW.chatLock = false;
+	NW.manualChatLock = false;
+	NW.manualChatLockTime = 3*1000;
+	NW.maxMiniChats = 250;
+	NW.currentMiniChats = 0;
 
-$ = typeof window.$ == 'object' ? window.$ : jQuery;
-NW = typeof window.NW == 'object' ? window.NW : createNW();
+	NW.chatLocked = function() {
+		return NW.chatLock;
+	}
 
-// GLOBAL FUNCTIONS
+	NW.lockChat = function() {
+		NW.chatLock = true;
+	}
 
-// Not secure, just convenient.
-function isLoggedIn(){
-	return NW.loggedIn;
-}
+	NW.unlockChat = function() {
+		NW.chatLock = false;
+	}
 
-function setLoggedIn(){
-	NW.loggedIn = 1;
-}
+	NW.sendChat = function(p_inputField) {
+		p_inputField.value = '';
 
-function clearLoggedIn(){
-	NW.loggedIn = 0;
-}
-
-// Returns true when debug bit set or localhost path used.
-function debug(arg){
-	if(NW.debug || !isLive()){
-		if(console){console.log(arg);}
 		return true;
 	}
-	return false;
-}
 
-// Update the chat page without refresh.
-//function updateChat(){
-// store a latest chat id to check against the chat.
-// Get the chat data.
-// If the latest hasn't changed, just return nothing.
-// If the latest has changed, return
-// If the latest has changed, cycle through the data
-//saving non-matches until you get back to the "latest" match.
-// Update the chat's ui.
-// update the "latest chat id" var.
-//}
-
-// Display an event.
-function writeLatestEvent(event){
-    debug('Event display requested.');
-	$('#recent-events', top.document).html("<div class='latest-event' title='"+event.sender+": "+event.event+"'><div id='latest-event-title'>Latest Event via <a href='player.php?player_id="+event.send_from+"' target='main'>"+event.sender+"</a>:</div><span class='latest-event-text "+(event.unread? "message-unread" : "")+"'>"+event.event+"</span></div>");
-    // if unread, Add the unread class until next update.
-    // Pull a message with a truncated length of 12.
-}
-
-// Pull the event from the data store and request it be displayed.
-function updateLatestEvent(){
-	var feedback = false;
-	var event = getEvent();
-	if(!event){
-	    feedbackSpeedUp(); // Make the interval to try again shorter.
-		debug('No event data to use.');
-	}else{
-	     if(NW.visibleEventId == event.event_id){
-	        if(!NW.visibleEventRead){
-        		// Makes any unread event marked as read after a second update, even if it wasn't really read.
-                $('#recent-events .latest-event-text', top.document).removeClass('message-unread');
-                debug('Requested that latest event be marked as read.');
-        		NW.visibleEventRead = true;
-        	}
-    	} else {
-    	    debug('Request to write out the latest event.');
-    		feedback = true;
-    		NW.visibleEventId = event.event_id;
-    		NW.visibleEventRead = false;
-            writeLatestEvent(event);
-    	}
-    }
-	return feedback;
-}
-
-
-function writeLatestMessage(message){
-		// TODO: Transform the appended html into hidden html that gets fleshed out and marked visible by this function.
-        // if unread, Add the unread class until next update.
-        // Pull a message with a truncated length of 12.
-		$('#recent-mail', top.document).html("<div class='latest-message' title='"+message.send_from+": "+message.message+"'><div id='latest-message-title'>Latest Message, from <a href='player.php?player_id="+message.send_from+"' target='main'>"+message.sender+"</a>:</div><span class='latest-message-text "+(message.unread? "message-unread" : "")+"'>"+message.message+"</span> </div>");
-}
-
-// Update the message that gets displayed.
-function updateLatestMessage(){
-	var updated = false;
-	var message = getMessage();
-	if(!message){
-		updated = true; // Check for info again shortly.
-	}else if(NW.visibleMessageId == message.message_id){
-        if(!message.unread){ // Only turn a message read if it actually has been viewed on the message page.
-			$('#recent-mail .latest-message-text', top.document).removeClass('message-unread');
+	// For refreshing quickstats from inside main.
+	NW.refreshQuickstats = function(typeOfView) {
+		var self = this;
+		// Accounts for ajax section.
+		if (!typeOfView) {
+			typeOfView = '';
 		}
-	} else {
-		updated = true;
-		NW.visibleMessageId = message.message_id;
-		writeLatestMessage(message);
-	}
-	return updated;
-}
 
+		var url = 'quickstats.php?command='+typeOfView;
 
-// Update the display of the health.
-function updateHealthBar(health){
-    // Should only update when a change occurs.
-    if(health != NW.visibleHealth){
-        var mess = health+' health';
-        var span = $('#health-status', top.document);
-        // Keep in mind the need to use window.parent when calling from an iframe.
-        span.text(mess);
-        if(health<100){
-            span.addClass('injured');
-        } else {
-            span.removeClass('injured');
-        }
-        NW.visibleHealth = health;
-        return true;
-    }
-    return false;
-}
+		if (!this.quickDiv) {
+			this.quickDiv = document.getElementById('quickstats-frame-container');
+		}
 
-// Update the displayed health from the javascript-stored current value.
-function getAndUpdateHealth(){
-    var updated = false;
-    NW.playerInfo.health = NW.playerInfo.health ? NW.playerInfo.health : null;
-    if(NW.playerInfo.health !== null && NW.visibleHealth != NW.playerInfo.health){
-    	updateHealthBar(NW.playerInfo.health);
-    	updated = true;
-    }
-    return updated;
-}
+		if (this.quickDiv) {
+			if (typeOfView == 'viewinv') {
+				this.checkAPI(function() {self.quickDiv.replaceChild(self.renderInventoryQuickstats(), self.quickDiv.firstChild);});
+			} else {
+				this.checkAPI(function() {self.quickDiv.replaceChild(self.renderPlayerQuickstats(), self.quickDiv.firstChild);});
+			}
 
-
-
-// Update display elements that live on the index page.
-function updateIndex(){
-    var messageUpdated = updateLatestMessage();
-    var eventUpdated = updateLatestEvent();
-    // update chat
-    // health bar.
-    var healthUpdated = getAndUpdateHealth();
-    var res = (!!(messageUpdated || eventUpdated || healthUpdated));
-    debug("Message Updated: "+messageUpdated);
-    debug("Event Updated: "+eventUpdated);
-    debug("Health Updated: "+healthUpdated);
-    return res;
-}
-
-function getEvent(){
-    return NW.latestEvent? NW.latestEvent : false;
-}
-
-function getMessage(){
-    return NW.latestMessage? NW.latestMessage : false;
-}
-
-function getPlayerInfo(){
-    return NW.playerInfo ? NW.playerInfo : false;
-}
-
-// Pull in the new info, update display only on changes.
-function checkAPI(){
-    // NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
-    $.getJSON('api.php?type=index&jsoncallback=?', function(data){
-    	var updated = false;
-        // Update global data stores if an update is needed.
-        if(updateDataStore(data.player, 'player_id', 'playerInfo', 'health', 'last_attacked')){
-            updated = true;
-        }
-        if(updateDataStore(data.message, 'message_id', 'latestMessage', 'message_id')){
-            updated = true;
-        }
-        if(updateDataStore(data.event, 'event_id', 'latestEvent', 'event_id')){
-            updated = true;
-        }
-    	debug('Update requested: '+updated);
-        if(updated){
-        	updateIndex(); // Always redisplay for any poll that has information updates.
-	        feedbackSpeedUp(updated);
-        }
-        // Since this callback isn't immediate, the feedback has to occur whenever the callback finishes.
-	}); // End of getJSON function call.
-}
-
-// Saves stuff to global data storage.
-function updateDataStore(datum, property_name, global_store, comparison_name, comparison_name_2){
-    if(datum){
-        if(datum[property_name]){
-            if(!NW[global_store] || (NW[global_store][comparison_name] != datum[comparison_name] ||
-                    comparison_name_2 && NW[global_store][comparison_name_2] != datum[comparison_name_2])){
-                // If the data isn't there, or doesn't match, update the store.
-                NW[global_store] = datum;
-                debug(datum);
-                return true;
-            }
-        }
-    }
-    return false; // Input didn't contain the data, or the data hasn't changed.
-}
-
-
-// Determines the update interval,
-//increases when feedback == false, rebaselines when feedback == true
-function getUpdateInterval(feedback){
-	var maxInt = 180;
-	var min = 20; // Changes push the interval to this minimum.
-	var first = 1;  // The very first interval to run the update for.
-	var first_interval = false;
-	if(!NW.updateInterval){
-	    first_interval = true;// Starting.
-		NW.updateInterval = min; // Default.
-	} else if(feedback){
-		NW.updateInterval = min; // Speed up to minimum.
-	} else if(NW.updateInterval>=maxInt){
-		NW.updateInterval = maxInt; // Don't get any slower than max.
-	} else {
-		NW.updateInterval++; // Slow down updates slightly.
-	}
-	return (first_interval? first : NW.updateInterval);
-}
-
-// JS Update Heartbeat
-function chainedUpdate(chainCounter){
-    var chainCounter = !!chainCounter ? chainCounter : 1;
-    // Skip the heartbeat the first time through, and skip it if not logged in.
-    if(isLoggedIn() && chainCounter != 1){
-        checkAPI(); // Check for new information.
-    }
-
-    var furtherIntervals = getUpdateInterval(feedback());
-    debug("Next Update will be in:"+furtherIntervals);
-    debug("chainCounter: "+chainCounter);
-    chainCounter++;
-    setTimeout(function (){
-            chainedUpdate(chainCounter);
-        }, furtherIntervals*1000); // Repeat once the interval has passed.
-    // If we need to cancel the updating down the line for some reason, store the id that setTimeout returns.
-}
-
-
-function feedbackSpeedUp(){
-    NW.feedback = true;
-}
-
-// Get the feedback value.
-function feedback(){
-    var res = (NW.feedback? NW.feedback : false);
-    NW.feedback = false; // Start slowing down after getting the value.
-    return res;
-}
-
-function toggle_visibility(id) {
-    var tog = $("#"+id);
-    tog.toggle();
-    return false;
-}
-
-// Adds a "click to hide another section" to any section, second param has default, but can be specified.
-function clickHidesTarget(ident, targetToHide){
-    $(ident).click(function (){
-        $(targetToHide).toggle();
-        return false;
-    });
-}
-
-// Begin the cycle of refreshing the mini chat after the standard delay.
-function startRefreshingMinichat(){
-	// TODO: Potentially make this use the timewatch pattern, so that the countdown can simply be zeroed instead of having multiple update threads.
-    var secs = 30; // Chat checking frequency.
-    setTimeout(function (){
-        checkForNewChats();
-        startRefreshingMinichat(); // Loop the check for refresh.
-    }, secs*1000);
-}
-
-// Check for the latest chat and update if it's different.
-function checkForNewChats(){
-    // TODO: Eventually this should just pull the chats and load them into the dom.
-    // Check whether the latest chat doesn't match the latest displayed chat.
-    // NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
-    $.getJSON('api.php?type=latest_chat_id&jsoncallback=?', function(data){
-        // Update global data stores if an update is needed.
-        var newChats = false;
-        if(updateDataStore(data.latest_chat_id, 'chat_id', 'latestChatId', 'chat_id')){
-            newChats = true;
-        }
-        if(newChats){
-            refreshMinichat(null, 50);
-        }
-        // Since this callback isn't immediate, the feedback has to occur whenever the callback finishes.
-	}); // End of getJSON function call.
-}
-
-// Load the chat section, or if that's not available & nested iframe, refresh iframe
-function refreshMinichat(msg, chatLength){
-    var container = $('#mini-chat-frame-container');
-    var data;
-    var leng = chatLength? chatLength : 20;
-    if(msg){
-        data = {'message':msg,'command':'postnow', 'section_only':'1', 'chatlength':leng};
-    } else {
-        data = {'section_only':'1', 'chatlength':leng};
-    }
-    if(container){ // check that there is a new chat -to- load.
-        container.load("mini_chat.php", data);
-        return false;
-    }
-}
-
-// Send the contents of the chat form input box.
-function sendChatContents(domform){
-    var chatbox = $(domform).find('#message');
-    if(chatbox){
-        refreshMinichat(chatbox.val()); // Send message to refreshMinichat.
-        chatbox.val(''); // Clear the chat message box.
-        return false;
-    } else{
-        iframe = $('#mini-chat-frame-container iframe #mini_chat');
-        if(iframe){
-            // Return true only if the iframe is actually set.
-            return true;
-        } else {
-            // No iframe or chatbox found, just don't navigate away from the main page.
-            return false;
-        }
-    }
-}
-
-// When clicking frame links, load a section instead of the iframe.
-function frameClickHandlers(links, div){
-    links.click(function(){
-        div.load(this.href, 'section_only=1');
-        return false;
-    });
-}
-
-// For refreshing quickstats from inside main.
-function refreshQuickstats(typeOfView, quickDiv){
-	// Accounts for ajax section.
-	if (!typeOfView) {
-		typeOfView = '';
-	}
-
-	if (!quickDiv) {
-		if (window.parent) {
-			quickDiv = window.parent.$('#quickstats-frame-container');
+			return true;
+		} else if (parent.quickstats) {
+			parent.quickstats.location = url;
+			return true;
 		} else {
-			quickDiv = $('#quickstats-frame-container');
+			return false;
 		}
 	}
 
-	var url = 'quickstats.php?command='+typeOfView;
+	NW.renderInventoryQuickstats = function() {
+		var container, goldLabel, goldValue, itemLabel, itemValue;
 
-	if (quickDiv) {
-		quickDiv.load(url+'&section_only=1');
-	} else {
-		// Use parent to indicate the parent global variable.
-		parent.quickstats.location=url;
+		container = document.createElement('dl');
+		container.className = "quickstats inventory";
+		var items = this.datastore.inventory.items;
+
+		for (i in items)
+		{
+			itemLabel = document.createElement('dt');
+			itemLabel.appendChild(document.createTextNode(items[i].item+':'));
+			container.appendChild(itemLabel);
+
+			itemValue = document.createElement('dd');
+			itemValue.appendChild(document.createTextNode(items[i].amount));
+			container.appendChild(itemValue);
+		}
+
+		goldLabel = document.createElement('dt');
+		goldLabel.appendChild(document.createTextNode('Gold:'));
+		goldLabel.style.color = "gold";
+		container.appendChild(goldLabel);
+
+		goldValue = document.createElement('dd');
+		goldValue.appendChild(document.createTextNode(this.datastore.playerInfo.gold));
+		goldValue.style.color = "gold";
+		container.appendChild(goldValue);
+
+		return container;
 	}
-}
 
-function isIndex(){ // Return true if the index page.
-	// Not great because it doesn't allow for pretty urls, down the line.
-	return (window.location.pathname.substr(-9,9) == 'index.php')  || $('body').hasClass('main-body');
-}
+	NW.renderPlayerQuickstats = function() {
+		var container, healthLabel, healthBar, expLabel, expBar, statusLabel, statusValue, turnsLabel, turnsValue, goldLabel, goldValue, bountyLabel, bountyValue;
 
-function isLive(){
-	return window.location.host  != 'localhost';
-}
+		container = document.createElement('dl');
+		container.className = "quickstats player-stats";
 
-function isRoot(){
-	return (window.location.pathname == '/');
-}
+		healthLabel = document.createElement('dt');
+		healthLabel.appendChild(document.createTextNode('Health:'));
+		expLabel = document.createElement('dt');
+		expLabel.appendChild(document.createTextNode('Exp:'));
+		statusLabel = document.createElement('dt');
+		statusLabel.appendChild(document.createTextNode('Status:'));
+		turnsLabel = document.createElement('dt');
+		turnsLabel.appendChild(document.createTextNode('Turns:'));
+		goldLabel = document.createElement('dt');
+		goldLabel.appendChild(document.createTextNode('Gold:'));
+		goldLabel.style.color = "gold";
+		bountyLabel = document.createElement('dt');
+		bountyLabel.appendChild(document.createTextNode('Bounty:'));
 
-function isSubpage(){
-	return !isIndex() && !isRoot() && (window.parent == window);
-}
+		healthBar = document.createElement('dd');
+		var healthBarOuter = document.createElement('div');
+		healthBarOuter.title = "HP: "+this.datastore.playerInfo.health;
+		healthBarOuter.style.border = "1px solid rgb(238, 37, 32)";
+		healthBarOuter.style.width = "100%";
+		healthBarInner = document.createElement('div');
+		healthBarInner.style.backgroundColor = "rgb(238, 37, 32)";
+		healthBarInner.style.width = this.datastore.playerInfo.hp_percent+"%";
+		healthBarInner.appendChild(document.createTextNode('\u00a0'));
+		healthBarOuter.appendChild(healthBarInner);
+		healthBar.appendChild(healthBarOuter);
+		expBar = document.createElement('dd');
+		var expBarOuter = document.createElement('div');
+		expBarOuter.title = "Exp: "+this.datastore.playerInfo.exp_percent+"%";
+		expBarOuter.style.border = "1px solid #6612ee";
+		expBarOuter.style.width = "100%";
+		expBarInner = document.createElement('div');
+		expBarInner.style.backgroundColor = "#6612ee";
+		expBarInner.style.width = this.datastore.playerInfo.exp_percent+"%";
+		expBarInner.appendChild(document.createTextNode('\u00a0'));
+		expBarOuter.appendChild(expBarInner);
+		expBar.appendChild(expBarOuter);
+		statusValue = document.createElement('dd');
+		statusValue.appendChild(document.createTextNode(this.datastore.playerInfo.status_list));
+		turnsValue = document.createElement('dd');
+		turnsValue.appendChild(document.createTextNode(this.datastore.playerInfo.turns));
+		goldValue = document.createElement('dd');
+		goldValue.appendChild(document.createTextNode(this.datastore.playerInfo.gold));
+		goldValue.style.color = "gold";
+		bountyValue = document.createElement('dd');
+		bountyValue.appendChild(document.createTextNode(this.datastore.playerInfo.bounty));
 
-/**
- * Add a class to the body of any solo pages, which other css can then key off of.
-**/
-function soloPage(){
-	if(isSubpage()){
-		$('body').addClass('solo-page'); // Added class to solo-page bodies.
+		container.appendChild(healthLabel);
+		container.appendChild(healthBar);
+		container.appendChild(expLabel);
+		container.appendChild(expBar);
+		container.appendChild(statusLabel);
+		container.appendChild(statusValue);
+		container.appendChild(turnsLabel);
+		container.appendChild(turnsValue);
+		container.appendChild(goldLabel);
+		container.appendChild(goldValue);
+		container.appendChild(bountyLabel);
+		container.appendChild(bountyValue);
+
+		return container;
 	}
+
+	// Returns true when debug bit set or localhost path used.
+	NW.debug = function(arg) {
+		if (this.debugging || !this.isLive) {
+			//if (console) {console.log(arg);}
+			return true;
+		}
+
+		return false;
+	}
+
+	// Display an event.
+	NW.writeLatestEvent = function(event) {
+		this.debug('Event display requested.');
+		$('#recent-events', top.document).html("<div class='latest-event' title='"+event.sender+": "+event.event+"'><div id='latest-event-title'>Latest Event via <a href='player.php?player_id="+event.send_from+"' target='main'>"+event.sender+"</a>:</div><span class='latest-event-text "+(event.unread? "message-unread" : "")+"'>"+event.event+"</span></div>");
+		// if unread, Add the unread class until next update.
+		// Pull a message with a truncated length of 12.
+	}
+
+	// Pull the event from the data store and request it be displayed.
+	NW.updateLatestEvent = function() {
+		var feedback = false;
+		var event = this.getEvent();
+
+		if (!event) {
+			this.feedbackSpeedUp(); // Make the interval to try again shorter.
+			this.debug('No event data to use.');
+		} else if (this.datastore.visibleEventId == event.event_id) {
+			if (!this.datastore.visibleEventRead) {
+				// Makes any unread event marked as read after a second update, even if it wasn't really read.
+				$('#recent-events .latest-event-text', top.document).removeClass('message-unread');
+				this.debug('Requested that latest event be marked as read.');
+				this.datastore.visibleEventRead = true;
+			}
+		} else {
+			this.debug('Request to write out the latest event.');
+			feedback = true;
+			this.datastore.visibleEventId = event.event_id;
+			this.datastore.visibleEventRead = false;
+			this.writeLatestEvent(event);
+		}
+
+		return feedback;
+	}
+
+	NW.writeLatestMessage = function(message) {
+		// TODO: Transform the appended html into hidden html that gets fleshed out and marked visible by this function.
+		// if unread, Add the unread class until next update.
+		// Pull a message with a truncated length of 12.
+		$('#recent-mail', top.document).html("<div class='latest-message' title='"+message.send_from+": "+message.message+"'><div id='latest-message-title'>Latest Message, from <a href='player.php?player_id="+message.send_from+"' target='main'>"+message.sender+"</a>:</div><span class='latest-message-text "+(message.unread? "message-unread" : "")+"'>"+message.message+"</span> </div>");
+	}
+
+	// Update the message that gets displayed.
+	NW.updateLatestMessage = function() {
+		var updated = false;
+		var message = this.getMessage();
+
+		if (!message) {
+			updated = true; // Check for info again shortly.
+		} else if (this.datastore.visibleMessageId == message.message_id) {
+			if (!message.unread) { // Only turn a message read if it actually has been viewed on the message page.
+				$('#recent-mail .latest-message-text', top.document).removeClass('message-unread');
+			}
+		} else {
+			updated = true;
+			this.datastore.visibleMessageId = message.message_id;
+			this.writeLatestMessage(message);
+		}
+
+		return updated;
+	}
+
+	// Update the display of the health.
+	NW.updateHealthBar = function(health) {
+		// Should only update when a change occurs.
+		if (health != this.datastore.visibleHealth) {
+			var mess = health+' health';
+			var span = $('#health-status', top.document);
+			// Keep in mind the need to use window.parent when calling from an iframe.
+			span.text(mess);
+
+			if (health < 100) {
+				span.addClass('injured');
+			} else {
+				span.removeClass('injured');
+			}
+
+			this.datastore.visibleHealth = health;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	// Update the displayed health from the javascript-stored current value.
+	NW.getAndUpdateHealth = function() {
+		var updated = false;
+		this.datastore.playerInfo.health = (this.datastore.playerInfo.health ? this.datastore.playerInfo.health : null);
+
+		if (this.datastore.playerInfo.health !== null && this.datastore.visibleHealth != this.datastore.playerInfo.health) {
+			this.updateHealthBar(this.datastore.playerInfo.health);
+			updated = true;
+		}
+
+		return updated;
+	}
+
+	NW.getEvent = function() {
+		return (this.datastore.latestEvent ? this.datastore.latestEvent : false);
+	}
+
+	NW.getMessage = function() {
+		return (this.datastore.latestMessage ? this.datastore.latestMessage : false);
+	}
+
+	NW.getPlayerInfo = function() {
+		return (this.datastore.playerInfo ? this.datastore.playerInfo : false);
+	}
+
+	// Update display elements that live on the index page.
+	NW.updateIndex = function() {
+		var messageUpdated = this.updateLatestMessage();
+		var eventUpdated = this.updateLatestEvent();
+		// update chat
+		// health bar.
+		var healthUpdated = this.getAndUpdateHealth();
+		var res = (!!(messageUpdated || eventUpdated || healthUpdated));
+		this.debug("Message Updated: "+messageUpdated);
+		this.debug("Event Updated: "+eventUpdated);
+		this.debug("Health Updated: "+healthUpdated);
+
+		return res;
+	}
+
+	NW.feedbackSpeedUp = function() {
+		this.feedbackValue = true;
+	}
+
+	// Get the feedback value.
+	NW.feedback = function() {
+		var res = (this.feedbackValue ? this.feedbackValue : false);
+		this.feedbackValue = false; // Start slowing down after getting the value.
+		return res;
+	}
+
+	// Update the chat page without refresh.
+	//function updateChat() {
+	// store a latest chat id to check against the chat.
+	// Get the chat data.
+	// If the latest hasn't changed, just return nothing.
+	// If the latest has changed, return
+	// If the latest has changed, cycle through the data
+	//saving non-matches until you get back to the "latest" match.
+	// Update the chat's ui.
+	// update the "latest chat id" var.
+	//}
+
+	NW.make_checkAPI_callback = function(p_additionalCallback) {
+		var self = this;
+
+		return function(data) {
+			self.checkAPI_callback(data);
+
+			if (p_additionalCallback) {
+				p_additionalCallback();
+			}
+		}
+	}
+
+	NW.checkAPI_callback = function(data) {
+		var updated = false;
+
+		// Update global data stores if an update is needed.
+		if (this.updateDataStore(data.player, 'player_id', 'playerInfo', 'hash')) {
+			updated = true;
+		}
+
+		if (this.updateDataStore(data.inventory, 'inv', 'inventory', 'hash')) {
+			updated = true;
+		}
+
+		if (this.updateDataStore(data.message, 'message_id', 'latestMessage', 'message_id')) {
+			updated = true;
+		}
+
+		if (this.updateDataStore(data.event, 'event_id', 'latestEvent', 'event_id')) {
+			updated = true;
+		}
+
+		this.debug('Update requested: '+updated);
+
+		if (updated) {
+			this.updateIndex(); // Always redisplay for any poll that has information updates.
+			this.feedbackSpeedUp(updated);
+		}
+	}
+
+	// Pull in the new info, update display only on changes.
+	NW.checkAPI = function(p_additionalCallback) {
+		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
+		$.getJSON('api.php?type=index&jsoncallback=?', this.make_checkAPI_callback(p_additionalCallback));
+	}
+
+	// Saves stuff to global data storage.
+	NW.updateDataStore = function(datum, property_name, global_store, comparison_name) {
+		if (datum && datum[property_name]) {
+			if (!this.datastore[global_store] || (this.datastore[global_store][comparison_name] != datum[comparison_name])) {
+				// If the data isn't there, or doesn't match, update the store.
+				this.datastore[global_store] = datum;
+				this.debug(datum);
+				return true;
+			}
+		}
+
+		return false; // Input didn't contain the data, or the data hasn't changed.
+	}
+
+	// Determines the update interval,
+	//increases when feedback == false, rebaselines when feedback == true
+	NW.getUpdateInterval = function(feedback) {
+		var maxInt = 180;
+		var min = 20; // Changes push the interval to this minimum.
+		var first = 1;  // The very first interval to run the update for.
+		var first_interval = false;
+
+		if (!this.updateInterval) {
+			first_interval = true;// Starting.
+			this.updateInterval = min; // Default.
+		} else if (feedback) {
+			this.updateInterval = min; // Speed up to minimum.
+		} else if (this.updateInterval >= maxInt) {
+			this.updateInterval = maxInt; // Don't get any slower than max.
+		} else {
+			this.updateInterval++; // Slow down updates slightly.
+		}
+
+		return (first_interval ? first : this.updateInterval);
+	}
+
+	// JS Update Heartbeat
+	NW.chainedUpdate = function(p_chainCounter) {
+		var chainCounter = (!!p_chainCounter ? p_chainCounter : 1);
+		// Skip the heartbeat the first time through, and skip it if not logged in.
+		if (this.loggedIn && chainCounter != 1) {
+			this.checkAPI(); // Check for new information.
+		}
+
+		var furtherIntervals = this.getUpdateInterval(this.feedback());
+		this.debug("Next Update will be in:"+furtherIntervals);
+		this.debug("chainCounter: "+chainCounter);
+		chainCounter++;
+
+		var self = this;
+		setTimeout(function() {
+			self.chainedUpdate(chainCounter);
+		}, furtherIntervals*1000); // Repeat once the interval has passed.
+		// If we need to cancel the updating down the line for some reason, store the id that setTimeout returns.
+	}
+
+	// Adds a "click to hide another section" to any section, second param has default, but can be specified.
+	NW.clickHidesTarget = function(ident, targetToHide) {
+		$(ident).click(function() {
+			$(targetToHide).toggle();
+			return false;
+		});
+	}
+
+	// Begin the cycle of refreshing the mini chat after the standard delay.
+	NW.startRefreshingMinichat = function() {
+		// TODO: Potentially make this use the timewatch pattern, so that the countdown can simply be zeroed instead of having multiple update threads.
+		var secs = 30; // Chat checking frequency.
+		var self = this;
+		setTimeout(function() {
+			self.checkForNewChats();
+			self.startRefreshingMinichat(); // Loop the check for refresh.
+		}, secs*1000);
+	}
+
+	NW.make_checkForNewChats_callback = function() {
+		var self = this;
+		return function(data) {
+			// Update global data stores if an update is needed.
+			if (self.updateDataStore(data.new_chats, 'new_count', 'new_chats', 'new_count')) {
+				self.datastore.new_chats.new_count = 0;
+				self.refreshMinichat(null, 50);
+			}
+
+			if (data.new_chats && data.new_chats.datetime) {
+				NW.lastChatCheck = data.new_chats.datetime;
+			}
+
+			NW.unlockChat();
+		}
+	}
+
+	// Check for the latest chat and update if it's different.
+	NW.checkForNewChats = function() {
+		// TODO: Eventually this should just pull the chats and load them into the dom.
+		// Check whether the latest chat doesn't match the latest displayed chat.
+		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
+		if (!NW.chatLocked()) {
+			NW.lockChat();
+			$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatCheck)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
+		}
+	}
+
+	// Load the chat section, or if that's not available & nested iframe, refresh iframe
+	NW.refreshMinichat = function() {
+		if (this.datastore.new_chats) {
+			var container = document.getElementById('mini-chat-display');
+			var data;
+
+			if (container) { // check that there is a new chat -to- load.
+				var chats = this.datastore.new_chats.chats;
+				var after = container.insertBefore(document.createTextNode(''), container.firstChild);
+				for (chat_message in chats) {
+					after = container.insertBefore(this.renderChatAuthor(chats[chat_message]), after.nextSibling);
+					after = container.insertBefore(this.renderChatMessage(chats[chat_message]), after.nextSibling);
+
+					if (this.maxMiniChats <= this.currentMiniChats) {
+						if (container.removeChild(container.lastChild).nodeType == 3) {
+							container.removeChild(container.lastChild);
+						}
+
+						container.removeChild(container.lastChild);
+					} else {
+						++this.currentMiniChats;
+					}
+				}
+
+				this.datastore.new_chats = null;
+				return false;
+			}
+		}
+	}
+
+	NW.renderChatMessage = function(p_message) {
+		var container = document.createElement('dd');
+		container.className = "chat-message";
+		container.appendChild(document.createTextNode(p_message.message));
+		return container;
+	}
+
+	NW.renderChatAuthor = function(p_message) {
+		var container = document.createElement('dt');
+		container.className = "chat-author";
+		container.appendChild(document.createTextNode('<'));
+		var authorLink = document.createElement('a');
+		authorLink.href = "player.php?player_id="+p_message.sender_id;
+		authorLink.target = "main";
+		authorLink.appendChild(document.createTextNode(p_message.uname));
+		container.appendChild(authorLink);
+		container.appendChild(document.createTextNode('>'));
+		return container;
+	}
+
+	NW.chatRefreshClicked = function(button) {
+		button.onclick = null;
+		button.style.cursor = 'default';
+		button.src = 'images/refresh_disabled.gif';
+		setTimeout(function(){button.onclick = function() { NW.chatRefreshClicked(this);};button.src = 'images/refresh.gif'; button.style.cursor = 'pointer';}, this.manualChatLockTime);
+		this.checkForNewChats();
+	}
+
+	NW.manualChatLocked = function() {
+		return this.manualChatLock;
+	}
+
+	NW.lockManualChat = function() {
+		this.manualChatLock = true;
+		setTimeout(function() { NW.unlockManualChat(); }, this.manualChatLockTime);
+	}
+
+	NW.unlockManualChat = function() {
+		this.manualChatLock = false;
+	}
+
+	// Send the contents of the chat form input box.
+	NW.sendChatContents = function(p_form) {
+		if (p_form.message && p_form.message.value.length > 0) {
+			$.getJSON('api.php?type=send_chat&msg='+encodeURIComponent(p_form.message.value)+'&jsoncallback=?', NW.checkForNewChats);
+			p_form.reset(); // Clear the chat form.
+		} else if (!NW.manualChatLocked()) {
+			this.lockManualChat();
+			this.checkForNewChats();
+		}
+
+		return false;
+	}
+
+	// Just for fun.
+	/*
+	   function april1stCheck() {
+	   if (g_isIndex) {
+	   var currentTime = new Date();
+	   var day = currentTime.getDate();
+	   var month = currentTime.getMonth();
+	   var randomnumber=Math.floor(Math.random()*(10+1));
+	   var random2 = Math.floor(Math.random()*(10+1));
+	   if (randomnumber == 10 && ((NW.debug() && random2 == 10) || (day == 0 && month == 3))) {
+	   $('body').css({'-webkit-transform':'rotate(20deg)','-moz-transform':'rotate(20deg)', 'transform':'rotate(20deg)'});
+	   }
+	   }
+	   }
+	 */
 }
-
-
-// Just for fun.
-/*
-function april1stCheck(){
-    if(isIndex()){
-        var currentTime = new Date();
-        var day = currentTime.getDate();
-        var month = currentTime.getMonth();
-        var randomnumber=Math.floor(Math.random()*(10+1));
-        var random2 = Math.floor(Math.random()*(10+1));
-        if(randomnumber == 10 && ((debug() && random2 == 10) || (day == 0 && month == 3))){
-            $('body').css({'-webkit-transform':'rotate(20deg)','-moz-transform':'rotate(20deg)', 'transform':'rotate(20deg)'});
-        }
-    }
-}*/
-
 
 // Initial load of everything, run at the bottom to allow everything else to be defined beforehand.
 $(document).ready(function() {
+	// INDEX ONLY CHANGES
+	if (g_isIndex || g_isRoot) {
+		NW.quickDiv = null;
+		NW.miniChatContainer = null;
 
-    // INDEX ONLY CHANGES
-    if(isIndex() || isRoot()){
+		NW.quickDiv = document.getElementById('quickstats-frame-container');
 
-        $('#chat-loading').show();
+		$('#chat-loading').show();
 
-		chainedUpdate(); // Start the periodic index update.
+		NW.chainedUpdate(); // Start the periodic index update.
 
-       /* Collapse the following parts of the index */
-        //$("#links-menu").toggle();
+		/* Collapse the following parts of the index */
+		//$("#links-menu").toggle();
 
-        // Click to view more chat messages than you were looking at before.
-        $('#expand-chat').click(function (){
-            var chat = $('#mini-chat');
-            // Animate the chat to show that the messages have changed.
-            chat.fadeOut('slow', function (){
-                refreshMinichat('', 500); // Refresh the chat with a longer length.
-                chat.fadeIn('slow');
-            });
-            return false;
-        });
+		// Click to view more chat messages than you were looking at before.
+		$('#expand-chat').click(function() {
+			var chat = $('#mini-chat');
+			// Animate the chat to show that the messages have changed.
+			chat.fadeOut('slow', function() {
+				NW.refreshMinichat('', 500); // Refresh the chat with a longer length.
+				chat.fadeIn('slow');
+			});
 
+			return false;
+		});
 
-        var quickstatsLinks = $("a[target='quickstats']");
-        quickstatsLinks.css({'font-style':'italic'}); // Italicize
-        var quickDiv =  $('div#quickstats-frame-container');
-        //quickDiv.load('quickstats.php');
-        // Add the click handlers for loading the quickstats frame.
-        frameClickHandlers(quickstatsLinks, quickDiv); // Load new contents into the div when clicked.
-        NW.quickDiv = quickDiv;
+		var quickstatsLinks = $("a[target='quickstats']");
+		quickstatsLinks.css({'font-style':'italic'}); // Italicize
 
-        // Update the quickstats section.
-        refreshQuickstats('', quickDiv);
+		NW.miniChatContainer = document.getElementById('mini-chat-display');
 
-        // Update the mini chat section for the first time.
-        refreshMinichat();
+		// Update the mini chat section for the first time.
+		NW.checkForNewChats();
 
-        // Start refreshing the chat.
-        startRefreshingMinichat(); // Start refreshing the chat.
+		// Start refreshing the chat.
+		NW.startRefreshingMinichat(); // Start refreshing the chat.
 
+		$('#post_msg_js').submit(function() {return NW.sendChatContents(this)});
+		// When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
 
-        $('#index-chat form').submit(function (){return sendChatContents(this)});
-        // When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
+		// Add click handlers to certain sections.
+		NW.clickHidesTarget('#show-hide-chat', '#chat-and-switch');
+		NW.clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
+		NW.clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
+	} else if (NW.isSubpage) {
+		$('body').addClass('solo-page'); // Add class to solo-page bodies.
+		// Displays the link back to main page for any lone subpages not in iframes.
+	}
 
-
-        // Add click handlers to certain sections.
-        clickHidesTarget('#show-hide-chat', '#chat-and-switch');
-        clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
-        clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
-
-    }
-
-
-
-    /* THIS CODE RUNS FOR ALL SUBPAGES */
-    soloPage(); // Displays the link back to main page for any lone subpages not in iframes.
-
-    // GOOGLE ANALYTICS
-    /* There's a script include that goes with this, but I just put it in the head directly.*/
-    try {
-    var pageTracker = _gat._getTracker("UA-707264-2");
-    pageTracker._trackPageview();
-    } catch(err) {}
-
-    //april1stCheck();
-
- });
+	//april1stCheck();
+});

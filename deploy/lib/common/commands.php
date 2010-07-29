@@ -38,6 +38,7 @@ function setHealth($who, $new_health) {
 	$statement->bindValue(':health', $new_health);
 	$statement->bindValue(':user', $who);
 	$statement->execute();
+
 	return $new_health;
 }
 
@@ -84,18 +85,6 @@ function subtractHealth($who, $amount) {
 // ********** GOLD FUNCTIONS **********
 // ************************************
 
-/* *** Currently unused consider removing ***
-function setGold($who, $new_gold) {
-	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET gold = :gold WHERE uname = :user");
-	$statement->bindValue(':user', $who);
-	$statement->bindValue(':gold', $new_gold);
-	$statement->execute();
-
-	return $new_gold;
-}
-*/
-
 function getGold($who) {
 	$dbconn = DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("SELECT gold FROM players WHERE uname = :user");
@@ -140,18 +129,6 @@ function subtractGold($who, $amount) {
 // ********** TURNS FUNCTIONS *********
 // ************************************
 
-/* *** Currently unused consider removing ***
-function setTurns($who, $new_turns) {
-	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET turns = :turns WHERE uname = :user");
-	$statement->bindValue(':user', $who);
-	$statement->bindValue(':turns', $new_turns);
-	$statement->execute();
-
-	return $new_turns;
-}
-*/
-
 function getTurns($who) {
 	$dbconn = DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("SELECT turns FROM players WHERE uname = :user");
@@ -193,18 +170,6 @@ function subtractTurns($who, $amount) {
 // ************************************
 // ********** KILLS FUNCTIONS *********
 // ************************************
-
-/* *** Currently unused consider removing ***
-function setKills($who, $new_kills) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET kills = $new_kills WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-
-	return $new_kills;
-}
-*/
 
 function getKills($who) {
 	DatabaseConnection::getInstance();
@@ -286,59 +251,6 @@ function subtractKills($who,$amount) {
 	return changeKills($who, ((-1)*$amount));
 }
 
-/* *** Currently unused consider removing ***
-function getKillPointsAmount($attacker, $defender) {
-	DatabaseConnection::getInstance();
-	DatabaseConnection::$pdo->query("INSERT INTO 'dueling_log' values ('','$attacker', '$defender', '$won', '$killpoints', now())");                            //Log of Dueling information.
-}
-*/
-
-
-/* *** Currently unused consider removing ***
-function kill($killer, $victim, $how, $what) {  //This is a kill replacement function that may not yet be in use.
-	echo "$killer has killed $victim!<br>\n";
-
-	global $today;
-
-	setHealth($victim,0);
-	subtractStatus($victim,STEALTH+POISON+FROZEN+CLASS_STATE);
-
-	$kill_point = 1;
-	$_killer    = $killer;
-
-	if ($how == "combat") {
-		$msg = "$killer has killed you in combat on $today";
-		$gold_mod  = .2;
-
-		if ($what == "duel") {
-			$msg = "$killer has killed you in a duel on $today";
-			$gold_mod = .25;
-		} else if  ($what == "stealth") {
-			$msg = "A stealthed player has killed you in combat on $today";
-			$gold_mod = .1;
-			$kill_point = 0;
-			$_killer = "A stealthed player";
-		}
-	} else if ($how == "item") {
-		$msg  = "$killer has killed you using $what on $today";
-		$gold_mod = .15;
-	} else if ($how == "skill") {
-		$msg  = "$killer has killed you using $what on $today";
-		$gold_mod = .15;
-	}
-
-	$gold_won = takeGold($victim,$killer,$gold_mod);
-	$msg.=" and taken $gold_won gold.";
-
-	if ($kill_point) {
-		addKills($killer, $kill_point);
-	}
-
-	sendMessage($_killer, $victim,$msg);
-	sendMessage($victim, $killer,str_replace($_killer." has","You have",str_replace("you",$victim,$msg)));
-}
-*/
-
 // ************************************
 // ************************************
 
@@ -347,16 +259,6 @@ function kill($killer, $victim, $how, $what) {  //This is a kill replacement fun
 // ************************************
 // ********** LEVEL FUNCTIONS *********
 // ************************************
-
-/* *** Currently unused consider removing ***
-function setLevel($who, $new_level) {
-	DatabaseConnection::getInstance();
-
-	DatabaseConnection::$pdo->query("UPDATE players SET level = $new_level WHERE uname = '$who'");
-
-	return $new_level;
-}
-*/
 
 function getLevel($who) {
 	DatabaseConnection::getInstance();
@@ -406,154 +308,25 @@ function addLevel($who, $amount) {
 	return changeLevel($who, $amount);
 }
 
-/* *** Currently unused consider removing ***
-function subtractLevel($who, $amount) {
-	return changeLevel($who, ((-1)*$amount));
-}
-*/
-
 // ************************************
 // ************************************
 
 
-
-// ************************************
-// ********* STATUS FUNCTIONS *********
-// ************************************
 // TODO: These must be moved to a more visible place,
-//and the global status_array as well.
-define("STEALTH",     1);
-define("POISON",      1<<1);
-define("FROZEN",      1<<2);
-define("CLASS_STATE", 1<<3);
-define("SKILL_1",     1<<4);
-define("SKILL_2",     1<<5);
-define("INVITED",     1<<6);
-define("STR_UP1",     1<<7);
-define("STR_UP2",     1<<8);
-$status_array;
-
-/* *** Currently unused consider removing ***
-function setStatus($who, $what) {
-	//if (!is_numeric($what)) { // *** If the status being sent in isn't a number...
-	//  (isset($status_array[$what])? '
-	//}
-
-	DatabaseConnection::getInstance();
-	DatabaseConnection::$pdo->query("UPDATE players SET status = $what WHERE uname = '$who'");
-	if ($who == get_username()) {
-	    if ($what == 0)	{
-			echo "<br>You have returned to normal.<br>\n";
-		} else if ($what == 1) {
-			echo "<br>You have been poisoned.<br>\n";
-		} else if ($what == 2) {
-			echo "<br>You are now stealthed.<br>\n";
-		}
-	}
-
-	return $what;
-}
-*/
-
-function hasStatus($who, $p_status) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	$status = $statement->fetchColumn();
-
-	return (bool)$status&$p_status;
-}
-
-function getStatus($who) {
-	global $status_array;
-
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	$status = $statement->fetchColumn();
-
-	$status_array['Stealth']    = ($status&STEALTH     ? 1 : 0);
-	$status_array['Poison']     = ($status&POISON      ? 1 : 0);
-	$status_array['Frozen']     = ($status&FROZEN      ? 1 : 0);
-	$status_array['ClassState'] = ($status&CLASS_STATE ? 1 : 0);
-	$status_array['Skill1']     = ($status&SKILL_1     ? 1 : 0);
-	$status_array['Skill2']     = ($status&SKILL_2     ? 1 : 0);
-	$status_array['Invited']    = ($status&INVITED     ? 1 : 0);
-	return $status_array;
-}
-
-function addStatus($who, $what) {   //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-
-	$status = $statement->fetchColumn();
-
-	if ($what < 0) {
-	    return subtractStatus($who, abs($what));
-	}
-
-	if (!($status & $what)) {
-	    $statement = DatabaseConnection::$pdo->prepare("UPDATE players SET status = status+:what WHERE uname = :player");
-		$statement->bindValue(':player', $who);
-		$statement->bindValue(':what', $what);
-		$statement->execute();
-	}
-
-	return getStatus($who);
-}
-
-function subtractStatus($who, $what) {     //Takes in the Status in the ALL_CAPS_WORD format seen above for each.
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	$status = $statement->fetchColumn();
-
-	if ($status&$what) {
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET status = status-(:status::int&:what::int) WHERE uname = :player");
-		$statement->bindValue(':player', $who);
-		$statement->bindValue(':status', $status, PDO::PARAM_INT);
-		$statement->bindValue(':what', $what, PDO::PARAM_INT);
-		$statement->execute();
-	}
-
-	return getStatus($who);
-}
-
-// ************************************
-// ************************************
+define('STEALTH',     1);
+define('POISON',      1<<1);
+define('FROZEN',      1<<2);
+define('CLASS_STATE', 1<<3);
+define('SKILL_1',     1<<4);
+define('SKILL_2',     1<<5);
+define('INVITED',     1<<6);
+define('STR_UP1',     1<<7);
+define('STR_UP2',     1<<8);
 
 
 // ************************************
 // ********* STRENGTH FUNCTIONS *******
 // ************************************
-
-/* *** Currently unused consider removing ***
-function setStrength($who, $new_strength) {
-	DatabaseConnection::getInstance();
-
-	DatabaseConnection::$pdo->query>("UPDATE players SET strength = $new_strength WHERE uname = '$who'");
-
-	return $new_strength;
-}
-*/
-
-function getStrength($who) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT strength FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	return $statement->fetchColumn();
-}
 
 function changeStrength($who, $amount) {
 	$amount = (int)$amount;
@@ -567,18 +340,14 @@ function changeStrength($who, $amount) {
 		$statement->execute();
 	}
 
-	return getStrength($who);
+	$player = new Player($who);
+
+	return $player->getStrength();
 }
 
 function addStrength($who,$amount) {
 	return changeStrength($who, $amount);
 }
-
-/* Currently unused consider removing ***
-function subtractStrength($who, $amount) {
-	return changeStrength($who, ((-1) * $amount));
-}
-*/
 
 // ************************************
 // ************************************
@@ -695,20 +464,6 @@ function createClan($p_leaderID, $p_clanName) {
 	return new Clan($newClanID, $p_clanName);
 }
 
-/* *** Currently unused consider removing ***
-function get_clan_by_id($p_clanID) {
-	DatabaseConnection::getInstance();
-	$result = DatabaseConnection::$pdo->query('SELECT clan_id, clan_name FROM clan WHERE clan_id = '.$p_clanID);
-
-	if ($data = $result->fetch()) {
-		$clan = new Clan($data['clan_id'], $data['clan_name']);
-		return $clan;
-	} else {
-		return null;
-	}
-}
-*/
-
 function get_clan_by_player_id($p_playerID) {
 	DatabaseConnection::getInstance();
 	$id = (int) $p_playerID;
@@ -727,52 +482,6 @@ function get_clan_by_player_id($p_playerID) {
 	}
 }
 
-function getPlayerName($p_playerID) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT uname FROM players WHERE player_id = :player");
-	$statement->bindValue(':player', $p_playerID);
-	$statement->execute();
-
-	return $statement->fetchColumn();
-}
-
-function kick($p_playerID) {
-	global $today;
-
-	$clan_long_name = get_clan_by_player_id($p_playerID)->getName();
-
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM clan_player WHERE _player_id = :player");
-	$statement->bindValue(':player', $p_playerID);
-	$statement->execute();
-
-	$msg = "You have been kicked out of $clan_long_name by ".get_username()." on $today.";
-
-	send_message(get_user_id(), $p_playerID, $msg);
-}
-
-function disbandClan($p_clanID) {
-	DatabaseConnection::getInstance();
-
-	$message = "Your leader has disbanded your clan. You are alone again.";
-	$leader = get_clan_leader_id($p_clanID);
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT _player_id FROM clan_player WHERE _clan_id = :clan");
-	$statement->bindValue(':clan', $p_clanID);
-	$statement->execute();
-
-	while ($data = $statement->fetch()) {
-		$member_id = $data[0];
-
-		send_message($leader, $member_id, $message);
-	}
-
-	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM clan WHERE clan_id = :clan");
-	$statement->bindValue(':clan', $p_clanID);
-	$statement->execute();
-}
-
 function renameClan($p_clanID, $p_newName) {
 	DatabaseConnection::getInstance();
 
@@ -785,16 +494,16 @@ function renameClan($p_clanID, $p_newName) {
 }
 
 function invitePlayer($who, $p_clanID) {
-	global $status_array;
 	DatabaseConnection::getInstance();
 
 	$target_id = get_user_id($who);
+	$target    = new Player($target_id);
 
 	if (!$target_id) {
 		return $failure_reason = 'No such ninja.';
 	}
 
-	$statement = DatabaseConnection::$pdo->prepare("SELECT confirmed, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target");
+	$statement = DatabaseConnection::$pdo->prepare('SELECT confirmed, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target');
 	$statement->bindValue(':target', $target_id);
 	$statement->execute();
 	$data = $statement->fetch();
@@ -808,21 +517,19 @@ function invitePlayer($who, $p_clanID) {
     $leader_id   = $leader_info['player_id'];
     $leader_name = $leader_info['uname'];
 
-	if (!$current_clan && $player_is_confirmed == 1 && !$status_array['Invited']) {
+	if ($player_is_confirmed != 1) {
+		$failure_reason = 'That player name does not exist.';
+	} else if (!empty($current_clan)) {
+		$failure_reason = 'That player is already in a clan.';
+	} else if ($target->hasStatus(INVITED)) {
+		$failure_reason = 'That player has already been Invited into a Clan.';
+	} else {
 		$invite_msg = "$leader_name has invited you into their clan.  
 		To accept, choose their clan $clan_name on the "
 		.message_url('clan.php?command=join&clan_id='.$p_clanID, 'clan joining page').".";
 		send_message($leader_id, $target_id, $invite_msg);
-		addStatus($who, INVITED);
-		$failure_reason = "None.";
-	} else if ($player_is_confirmed != 1) {
-		$failure_reason = "That player name does not exist.";
-	} else if ($current_clan != "") {
-		$failure_reason = "That player is already in a clan.";
-	} else if ($status_array['Invited']) {
-		$failure_reason = "That player has already been Invited into a Clan.";
-	} else {
-		$failure_reason = "Report invitePlayer Code Error: That Player cannot be invited.";
+		$target->addStatus(INVITED);
+		$failure_reason = 'None.';
 	}
 
 	return $failure_reason;
@@ -886,132 +593,42 @@ function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
 	$statement->execute();
 }
 
+/**
+ * Returns the state of the player from the database,
+ * uses a user_id if one is present, otherwise
+ * defaults to the currently logged in player, but can act on any player
+ * if another username is passed in.
+ * @param $user user_id or username
+ * @param @password Unless true, wipe the password.
+**/
+function get_player_info($p_id = null, $p_password = false) {
+	require_once(LIB_ROOT."specific/lib_status.php");
+	$dao = new PlayerDAO();
+	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
 
-// ************************************
-// ******** FLAGGING FUNCTIONS *******
-// ************************************
+	$playerVO = $dao->get($id);
 
-/* *** Currently unused consider removing ***
-function flagPlayer($player, $flag, $note, $originatingPage) {
-	$dbconn = DatabaseConnection::getInstance();
+	$player_data = array();
 
-	$statement = DatabaseConnection::$pdo->prepare("SELECT flag_ID FROM flags WHERE flag = :flag");
-	$statement->bindValue(':flag', $flag);
-	$statement->execute();
-	$flagID = $statement->fetchColumn();
+	if ($playerVO) {
+		foreach ($playerVO as $fieldName=>$value) {
+			$player_data[$fieldName] = $value;
+		}
 
-	$user_id = get_user_id($player);
-
-	$statement = DatabaseConnection::$pdo->prepare("INSERT IGNORE INTO players_flagged 
-        (flag_ID, player_ID, extra_notes, originating_page, timestamp) 
-        VALUES (:flagID, :playerID, :note, :originatingPage, now())");
-	$statement->bindValue(':flagID', $flagID);
-	$statement->bindValue(':playerID', $user_id);
-	$statement->bindValue(':note', $note);
-	$statement->bindValue(':originatingPage', $originatingPage);
-	$statement->execute();
-}
-*/
-
-// ************************************
-// ******** MESSAGE FUNCTIONS *********
-// ************************************
-
-// event/message functions are in lib_events.
-
-// user message functions are in lib_message now.
-
-
-
-// ************************************
-// ******** ACCOUNT FUNCTIONS *********
-// ************************************
-
-function pauseAccount($who) {
-	$dbconn = DatabaseConnection::getInstance();
-
-	$user_id = get_user_id($who);
-
-	if (($clan = get_clan_by_player_id($user_id)) && get_clan_leader_id($clan->getID()) == $user_id) {
-		disbandClan($clan->getID());
+		if (!$p_password) {
+			unset($player_data['pname']);
+		}
 	}
 
-	$statement = DatabaseConnection::$pdo->prepare("SELECT email FROM players WHERE player_id = :user");
-	$statement->bindValue(':user', $user_id);
-	$statement->execute();
+	$player_data['hp_percent'] = min(100, round(($player_data['health']/max_health_by_level($player_data['level']))*100));
+	$player_data['exp_percent'] = min(100, round(($player_data['kills']/(($player_data['level']+1)*5))*100));
+	$player_data['status_list'] = implode(', ', get_status_list($p_id));
 
-	$quickemail = $email."PAUSED";
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET confirmed = 0, email = :pausedEmail WHERE player_id = :user");
-	$statement->bindValue(':pausedEmail', $quickemail);
-	$statement->bindValue(':user', $user_id);
-	$statement->execute();
+	$player_data['hash'] = md5(implode($player_data));
 
-	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM inventory WHERE owner = :user");
-	$statement->bindValue(':user', get_user_id($who));
-	$statement->execute();
-
-	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM mail WHERE send_to = :user");
-	$statement->bindValue(':user', $who);
-	$statement->execute();
-
-	session_destroy();
-
-	echo "Your account has been removed from Ninja Wars.
-	If you wish to sign back up you may do so, though your previous ninja name will be unavailable. <br>
-	If you don't plan on creating another account, we would be glad to receive an email telling us why you choose to leave the game,<br>
-	Thank you.<br><br>".ADMIN_EMAIL."\n";
-}
-
-/* *** Currently unused. Consider removing ***
-function deleteAccount($who) {
-	$dbconn = DatabaseConnection::getInstance();
-
-	$user_id = get_user_id($who);
-
-	if (($clan = get_clan_by_player_id($user_id)) && get_clan_leader_id($clan->getID()) == $user_id) {
-		disbandClan($clan->getID());
-	}
-
-	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM inventory WHERE owner = :user");
-	$statement->bindValue(':user', get_user_id($who));
-	$statement->execute();
-
-	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM mail WHERE send_to = :user");
-	$statement->bindValue(':user', $who);
-	$statement->execute();
-
-	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM players WHERE player_id = :user");
-	$statement->bindValue(':user', $user_id);
-	$statement->execute();
-
-	session_destroy();
-
-	echo "Your account has been removed from Ninja Wars. If you wish to sign back up you may do so. <br>If not, we would be glad to receive an email telling us why you choose to leave the game,<br>Thank you.<br><br>".ADMIN_EMAIL."\n";
-}
-*/
-
-// *** NEED CLAN FUNCTIONS (invite,msg,view) ***
-// *** NEED SIGNUP/LOGIN FUNCTIONS ***
-// *** NEED WORK FUNCTIONS ***
-// *** NEED CASINO FUNCTIONS ***
-// *** NEED SHRINE FUNCTIONS ***
-// *** NEED COMBAT FUNCTIONS ***
-// *** NEED INVENTORY FUNCTIONS ***
-// *** NEED MAIL FUNCTIONS ***
-// *** NEED DOJO FUNCTIONS ***
-
-
-function takeGold($from, $to, $mod) {
-	$victim_gold = getGold($from);
-	$gold_change = round($victim_gold * $mod);
-	$gold_change = ($gold_change < 0 ? 0 : $gold_change);
-
-	addGold($to, $gold_change);
-	subtractGold($from, $gold_change);
-
-	echo "$to has acquired $gold_change gold from $from.<br>\n";
-
-	return $gold_change;
+	///TODO: Migrate all calls of this function to a new function that returns an arrayizable Player object. 
+	//When all calls to this function are removed, remove this function
+	return $player_data;
 }
 
 ?>
