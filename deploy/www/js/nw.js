@@ -485,7 +485,7 @@ if (parent.window != window) {
 		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
 		if (!NW.chatLocked()) {
 			NW.lockChat();
-			$.getJSON('api.php?type=new_chats&since='+NW.lastChatCheck+'&jsoncallback=?', NW.make_checkForNewChats_callback());
+			$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatCheck)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
 		}
 	}
 
@@ -563,7 +563,7 @@ if (parent.window != window) {
 	// Send the contents of the chat form input box.
 	NW.sendChatContents = function(p_form) {
 		if (p_form.message && p_form.message.value.length > 0) {
-			$.getJSON('api.php?type=send_chat&msg='+escape(p_form.message.value)+'&jsoncallback=?', NW.checkForNewChats);
+			$.getJSON('api.php?type=send_chat&msg='+encodeURIComponent(p_form.message.value)+'&jsoncallback=?', NW.checkForNewChats);
 			p_form.reset(); // Clear the chat form.
 		} else if (!NW.manualChatLocked()) {
 			this.lockManualChat();
