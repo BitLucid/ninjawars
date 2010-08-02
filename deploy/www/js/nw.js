@@ -636,7 +636,7 @@ $(document).ready(function() {
 		NW.clickHidesTarget('#show-hide-chat', '#chat-and-switch');
 		NW.clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
 		NW.clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
-	} else if (NW.isSubpage) {
+	} else if (g_isSubpage) {
 		$('body').addClass('solo-page'); // Add class to solo-page bodies.
 		// Displays the link back to main page for any lone subpages not in iframes.
 	}
