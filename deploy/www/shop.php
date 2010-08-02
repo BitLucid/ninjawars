@@ -48,7 +48,7 @@ if ($in_purchase == 1){
 	}
 } else { // Default, before anything has been bought.
 	$description .= "<p>You enter the village shop and the shopkeeper greets you with a watchful eye.</p>";
-	$description .= "<p>As you browse his wares he says, \"Don't try anythin' you'd regret.\" and grins.</p>";
+	$description .= "<p>As you look over his wares he says, \"Don't try anythin' you'd regret.\", waves his hand at a katana on the wall, and grins at you.</p>";
 }
 
 $parts = get_certain_vars(get_defined_vars(), array($item_costs));

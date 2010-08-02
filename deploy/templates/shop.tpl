@@ -1,5 +1,8 @@
 <h1>Shop</h1>
 
+<!-- For google ad targetting -->
+<!-- google_ad_section_start -->
+
 <div class='description'>
 {$description}
 </div>
@@ -28,6 +31,15 @@
   </td>
 </tr>
 -->
+<tr>
+  <td colspan="4" style="text-align: center;padding: 1em;">
+{if $is_logged_in}
+  How many of the choice below would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" value="1">
+{else}
+  To purchase the items below you must <a href="signup.php?referrer=">become a ninja</a>.
+{/if}
+  </td>
+</tr>
 <tr>
   <td>
   <input name="item" type="submit" value="Fire Scroll" class="shopButton">
@@ -114,16 +126,25 @@
   </td>
 </tr>
 <tr>
-  <td colspan="4" style="text-align: center;padding: 1em;">
-{if $is_logged_in}
-  How many would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" value="1">
-{else}
-  To purchase items you must <a href="signup.php?referrer=">become a ninja</a>.
-{/if}
-  </td>
-</tr>
-<tr>
   <td colspan="4">&nbsp; </td>
 </tr>
 </table>
 </form>
+
+<!-- google_ad_section_end -->
+
+
+<hr>
+
+<!-- Google Ad -->
+<script type="text/javascript"><!--
+google_ad_client = "pub-9488510237149880";
+/* 300x250, created 12/17/09 */
+google_ad_slot = "9563671390";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+

@@ -2,6 +2,7 @@
 $private = false;
 $alive   = false;
 
+
 if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
@@ -30,6 +31,7 @@ display_page(
 	, array(
 		'locations'   => $locations
 		, 'npcs'      => $npcs
+		, 'show_ad'   => rand(1, 3) // Only show the ad in the village 1/3rd of the time.
 	)
 	, array(
 		'quickstat' => 'player'
