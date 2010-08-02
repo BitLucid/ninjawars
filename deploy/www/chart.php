@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT."specific/lib_player.php"); // To pull the maximum_level();
 $alive      = false;
 $private    = true;
 $quickstat  = false;
@@ -13,7 +14,7 @@ include SERVER_ROOT."interface/header.php";
 </div>
 
 <a href="dojo.php">Return to Dojo</a><hr>
-Shows how many kills you need to progress and how your stats will change:
+Shows how many kills you need to progress to the next level and how your stats will change:
 <table>
   <tr>
     <td>
@@ -38,7 +39,7 @@ $level_chart = 1;
 $kills_chart = 0;
 $str_chart   = 5;
 $hp_chart    = 150;
-$MAX_LEVEL   = 150;
+$MAX_LEVEL   = maximum_level();
 $MAX_HP      = 150 + (($MAX_LEVEL - 1) * 25);
 
 for ($i = 1; $i <= $MAX_LEVEL; $i++)

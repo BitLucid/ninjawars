@@ -6,21 +6,6 @@ require_once(LIB_ROOT."common/lib_accounts.php");
 // Defines for avatar options.
 define('GRAVATAR', 1);
 
-// Check that a class matches against the class identities available in the database.
-function is_valid_class($potential_class_identity){
-    $sel = "select identity from class";
-    $classes = query_array($sel);
-    if(in_array($potential_class_identity, $classes)){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-
-
-
-
 /***********************   Refactor these class functions from commands.php  ********************************/
 
 
@@ -48,18 +33,81 @@ function getClass($who){
     // ************************************	
 
 
+// Centralized holding for the maximum level available in the game.
+function maximum_level(){
+    return 250;
+}
+
+// The number of kills needed to level up to the next level.
+function required_kills_to_level($current_level){
+    $levelling_cost_multiplier = 5; // 5 more kills in cost for every level you go up.
+    $required_kills = ($current_level+1)*$levelling_cost_multiplier;
+    return $required_kills;
+    
+}
 
 
+// ******** Leveling up Function *************************
+// Incorporate this into the kill system to cause auto-levelling.
+function level_up_if_possible($char_id){
+    // Setup values: 
+	$max_level = maximum_level();
+    $health_to_add = 100;
+    $turns_to_give = 50;
+    $strength_to_add = 5;
+    
+    
+        
+    $username = get_char_name($char_id);
+    $char_level = getLevel($username);
+    $char_kills = getKills($username);
+
+
+    // Check required values:
+	$nextLevel  = $char_level + 1;
+	$required_kills = required_kills_to_level($char_level);
+	// Have to be under the max level and have enough kills.
+	$level_up_possible = ( 
+	    ($nextLevel < $max_level) && 
+	    ($char_kills >= $required_kills) );
+	    
+	    
+	if ($level_up_possible) {
+	    // ****** Perform the level up actions ****** //
+		$userKills = subtractKills($username, $required_kills);
+		$userLevel = addLevel($username, 1);
+		addStrength($username, $strength_to_add);
+		addHealth($username, $health_to_add);
+		addTurns($username, $turns_to_give);
+		return true;
+	} else {
+	    return false;
+	}
+}
+
+
+
+// Check that a class matches against the class identities available in the database.
+function is_valid_class($potential_class_identity){
+    $sel = "select identity from class";
+    $classes = query_array($sel);
+    foreach($classes as $l_class){
+        if($l_class['identity'] == $potential_class_identity){
+            return true;
+        }
+    }
+    return false;
+}
 
 // Set the character's class.
 function set_class($char_id, $new_class) {
     if(!is_valid_class($new_class)){
-        return null;
+        return "That class was not an option to change into.";
     } else {
     	$up = "UPDATE players SET _class_id = (select class_id FROM class WHERE class.identity = :class) WHERE player_id = :char_id";
     	query($up, array(':class'=>$new_class, ':char_id'=>$char_id));
 
-    	return $new_class;
+    	return null;
     }
 }
 

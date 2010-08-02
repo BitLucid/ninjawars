@@ -18,7 +18,8 @@ class Skill
 		'duel', 'attack', 'kampo', 'evasion'
 	); // Midnight heal currently doesn't work.
 
-	// Temporarily trying a to move the skills out of the classes, to see how players make use of it.
+	// Use the class identities as the array keys here, so $skill_map['Crane'] 
+	// ... should return an array of Crane-specific skills.
 	public $skill_map = array(
 		'Crane'    => array(
 			'ice bolt' => array('available'=>1)
@@ -66,7 +67,7 @@ class Skill
 	    if(!$char_id){ $char_id = get_char_id(); }
 		$username = get_username($char_id);
 
-		if (false && DEBUG && ($username == 'tchalvak' || $username == 'glassbox')) {
+		if (false && DEBUG && $username == 'tchalvak') {
 			$skills = $this->skill_map['Crane'] +
 				$this->skill_map['Dragon'] +
 				$this->skill_map['Mantis'] +
