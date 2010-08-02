@@ -58,6 +58,7 @@ if ($deleteAccount) {
 		$statement->bindValue(':player', $username);
 		$statement->execute();	// todo - test for success
 		$profile_changed = true;
+		$player['messages'] = $newprofile;
 	} else {
 		$error = 'Cannot enter a blank profile.';
 	}
