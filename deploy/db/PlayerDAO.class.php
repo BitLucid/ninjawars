@@ -16,9 +16,8 @@ class PlayerDAO extends DataAccessObject {
 		$this->_vo_obj_name = 'PlayerVO';
 		$this->_vo_fields = array();
 		$vo = new ReflectionClass(new PlayerVO());
-		$vo = $vo->getProperties();
 
-		foreach ($vo AS $reflectionProperty)
+		foreach ($vo->getProperties() AS $reflectionProperty)
 		{
 			$this->_vo_fields[] = $reflectionProperty->name;
 		}

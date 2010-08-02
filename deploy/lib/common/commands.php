@@ -1,31 +1,8 @@
 <?php
 
-// ************************************
-// ********** CLASS FUNCTIONS *********
-// ************************************
 
-function setClass($who, $new_class) {
-	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET _class_id = (select class_id FROM class WHERE class_name = :class) WHERE uname = :user");
-	$statement->bindValue(':class', $new_class);
-	$statement->bindValue(':user', $who);
-	$statement->execute();
 
-	return $new_class;
-}
-
-function getClass($who) {
-	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT class_name FROM players JOIN class ON class_id = _class_id WHERE uname = :user");
-	$statement->bindValue(':user', $who);
-	$statement->execute();
-
-	return $statement->fetchColumn();
-}
-
-// ************************************
-// ************************************
-
+// ********************* CLASS FUNCTIONS MOVED TO PLAYER OBJECT ******* //
 
 
 // ************************************

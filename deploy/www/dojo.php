@@ -19,11 +19,11 @@ $classChangeLevelReq = 6;
 
 $class_array = array(
 // *** START  => NEXT ***
-	'Black'   => 'Red'
-	, 'Red'   => 'White'
-	, 'White' => 'Gray'
-	, 'Gray'  => 'Blue'
-	, 'Blue'  => 'Black'
+	'Viper'   => 'Tiger'
+	, 'Tiger'   => 'Dragon'
+	, 'Dragon' => 'Mantis'
+	, 'Mantis'  => 'Crane'
+	, 'Crane'  => 'Viper'
 );
 
 $dimmak_sequence     = in('dimmak_sequence', '');

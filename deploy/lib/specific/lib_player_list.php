@@ -67,6 +67,8 @@ function format_ninja_row($a_player){
 		, 'level_cat'     => $level_cat['display']
 		, 'level'         => $a_player['level']
 		, 'class'         => $a_player['class']
+		, 'class_theme'   => $a_player['class_theme']
+		, 'class_identity'=> $a_player['class_identity']
 		, 'clan_id'       => $a_player['clan_id']
 		, 'clan_name'     => $a_player['clan_name']
 		, 'alive'         => ($a_player['alive'] ? "&nbsp;" : "Dead"), // alive/dead display

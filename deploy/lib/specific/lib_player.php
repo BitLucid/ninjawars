@@ -6,6 +6,72 @@ require_once(LIB_ROOT."common/lib_accounts.php");
 // Defines for avatar options.
 define('GRAVATAR', 1);
 
+// Check that a class matches against the class identities available in the database.
+function is_valid_class($potential_class_identity){
+    $sel = "select identity from class";
+    $classes = query_array($sel);
+    if(in_array($potential_class_identity, $classes)){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
+
+
+/***********************   Refactor these class functions from commands.php  ********************************/
+
+
+// ************************************
+// ********** CLASS FUNCTIONS *********
+// ************************************
+
+// Wrapper functions for the old usages.
+// DEPRECATED
+function setClass($who, $new_class){
+    $char_id = get_char_id($who);
+    return set_class($char_id, $new_class);
+}
+
+// Wrapper functions for the old usages.
+// DEPRECATED
+function getClass($who){
+    $char_id = get_char_id($who);
+    return char_class_identity($char_id);
+    // Note that classes now have identity/name(for display)/theme, so this function should be deprecated.
+}
+
+
+    // ************************************
+    // ************************************	
+
+
+
+
+
+// Set the character's class.
+function set_class($char_id, $new_class) {
+    if(!is_valid_class($new_class)){
+        return null;
+    } else {
+    	$up = "UPDATE players SET _class_id = (select class_id FROM class WHERE class.identity = :class) WHERE player_id = :char_id";
+    	query($up, array(':class'=>$new_class, ':char_id'=>$char_id));
+
+    	return $new_class;
+    }
+}
+
+
+// Get the character class information.
+function char_class_identity($char_id) {
+    return query_item("SELECT class.identity FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id", 
+        array(':char_id'=>$char_id));
+}
+
+
+
 // TODO: This is also begging for a template.
 function render_skills($target, $player) {
 	$skillDAO = new SkillDAO();

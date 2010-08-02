@@ -1,4 +1,7 @@
 <?php
+require_once(LIB_ROOT."specific/lib_player.php");
+
+
 class Skill
 {
 	// *** Constructor should eventually get a specific skill's stats from the database.
@@ -17,23 +20,23 @@ class Skill
 
 	// Temporarily trying a to move the skills out of the classes, to see how players make use of it.
 	public $skill_map = array(
-		'Blue'    => array(
+		'Crane'    => array(
 			'ice bolt' => array('available'=>1)
 			, 'speed'  => array('available'=>1)
 		)
-		, 'White' => array(
+		, 'Dragon' => array(
 			'chi'             => array('available'=>1)
 			, 'midnight heal' => array('available'=>1)
 		)
-		, 'Red'   => array(
+		, 'Tiger'   => array(
 			'fire bolt' => array('available'=>1)
 			, 'blaze' => array('available'=>1)
 		)
-		, 'Black' => array(
+		, 'Viper' => array(
 			'poison touch'       => array('available'=>1)
 			, 'hidden resurrect' => array('available'=>1)
 		)
-		, 'Gray' => array(
+		, 'Mantis' => array(
 			'kampo'       => array('available'=>1)
 			, 'evasion'   => array('available'=>1)
 		)
@@ -59,20 +62,21 @@ class Skill
 	/**
 	 * Returns the list fo all skills available to a ninja.
 	**/
-	public function skills($username) {
-		if (!$username) { $username = get_username(); }
+	public function skills($char_id=null) {
+	    if(!$char_id){ $char_id = get_char_id(); }
+		$username = get_username($char_id);
 
-		if (false && DEBUG && $username == 'glassbox') {
-			$skills = $this->skill_map['Blue'] +
-				$this->skill_map['White'] +
-				$this->skill_map['Gray'] +
-				$this->skill_map['Red'] +
-				$this->skill_map['Black'] +
+		if (false && DEBUG && ($username == 'tchalvak' || $username == 'glassbox')) {
+			$skills = $this->skill_map['Crane'] +
+				$this->skill_map['Dragon'] +
+				$this->skill_map['Mantis'] +
+				$this->skill_map['Tiger'] +
+				$this->skill_map['Viper'] +
 				$this->skill_map['All'];
 			return $skills;
 		}
 
-		$class = getClass($username);
+		$class = char_class_identity($char_id);
 		$class_skills = array();
 
 		if ($class) {
@@ -89,10 +93,11 @@ class Skill
 		$skill = strtolower($skill);
 
 		if(!$username) { $username = get_username(); }
-		$player_info = get_player_info(get_user_id($username));
+		$char_id = get_char_id($username);
+		$player_info = get_player_info($char_id);
 		$player_level = $player_info['level'];
 
-		$skills = $this->skills($username);
+		$skills = $this->skills($char_id);
 		$level_req = @$skills[$skill]['level']? $skills[$skill]['level'] : 1;
 
 		return (isset($skills[$skill]['available']) && ($player_level >= $level_req));

@@ -11,8 +11,7 @@ require_once(DB_ROOT . "PlayerVO.class.php");
  * @subpackage	player
  * @author      Tchalvak <ninjawarsTchalvak@gmail.com>
  * @author
- * @link        http://someLinkToExampleUsage.com/
- * TODO: Create as_array() and as_vo() functions to convert the data.
+ * @link        http://ninjawars.net/player.php?player=tchalvak
 */
 
 class Player
@@ -144,5 +143,6 @@ class Player
 			return null;
 		}
 	}
+		
 }
 ?>

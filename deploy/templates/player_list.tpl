@@ -58,7 +58,7 @@
 		  </td>
 		  <td class="playerCell classCell">
 		    <!-- Display an image of the right colored shuriken. -->
-		    <span class='{$ninja.class}'><img style='width:20px;height:17px' src='{$templatelite.const.WEB_ROOT}images/small{$ninja.class}Shuriken.gif' alt=''>
+		    <span class='{$ninja.class_theme}'><img style='width:20px;height:17px' src='{$templatelite.const.WEB_ROOT}images/small{$ninja.class_theme}Shuriken.gif' alt=''>
 		      {$ninja.class}
 		    </span>
 		  </td>
