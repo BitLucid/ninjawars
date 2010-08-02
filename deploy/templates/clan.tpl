@@ -103,7 +103,7 @@
     	        <input name='clan-avatar-url' type='text' value='{$clan_avatar_current}'>
     	        (Image can be .jpg or .png)
 	        <div><strong>Change Clan Message</strong></div>
-    	        Change your clan description below:
+    	        Change your clan description below (max of 500 characters):
     	        <textarea name='clan-description'>{$clan_description_current}</textarea>
     	        <input type='submit' value='Save Changes'>
 	        </form>

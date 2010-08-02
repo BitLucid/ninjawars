@@ -284,7 +284,7 @@ function clan_avatar_is_valid($dirty_url){
         return false;
     } else {
         $parts = @parse_url($dirty_url);
-        $host_matches = !!preg_match('#[\w\d]*\.imageshack\.com#i', $parts['host']);
+        $host_matches = !!preg_match('#[\w\d]*\.imageshack\.[\w\d]*#i', $parts['host']);
         if($host_matches){
             return true;
         } else {

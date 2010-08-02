@@ -5,10 +5,23 @@
         {literal}
         #clan-avatar{
             max-height:240px;
-            max-width:240px;
+            max-width:400px;
         }
-        #clan-info #clan-avatar{
+        #clan-info{
+            margin-left:auto;
+            margin-right:auto;
+        }
+        #clan-info #clan-avatar-section{
+            margin: 0 auto;
             text-align:center;
+        }        
+        #clan-description{
+            max-height:240px;
+            max-width:400px;
+        }
+        #clan-info #clan-description{
+            margin-left:auto;
+            margin-right:auto;
         }
 
         {/literal}

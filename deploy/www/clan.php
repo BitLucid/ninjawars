@@ -54,6 +54,11 @@ if($clan_id_viewed){
 
 $own_clan_id = null;
 
+// Truncate at 500 chars if necessary.
+$truncated_clan_desc = substr((string)$new_clan_description, 0, 500); 
+if($truncated_clan_desc != (string) $new_clan_description){
+    $new_clan_description = $truncated_clan_desc;
+}
 
 // Logical cascade: No player id? Display error message.
 // No clan? Display no clan message, clan list, join link, creation limit
