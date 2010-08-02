@@ -116,7 +116,11 @@ if (!$player_id) {
     if($leader_of_own_clan){
         // Saving incoming changes to clan leader edits.
         if($new_clan_avatar_url){
-            save_clan_avatar_url($new_clan_avatar_url, $own_clan_id);
+            if(clan_avatar_is_valid($new_clan_avatar_url)){
+                save_clan_avatar_url($new_clan_avatar_url, $own_clan_id);
+            } else {
+                $action_message = "That avatar url is not valid.";
+            }
         }
         if($new_clan_description){
             save_clan_description($new_clan_description, $own_clan_id);
