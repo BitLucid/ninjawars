@@ -21,9 +21,10 @@ $out_display['Inactive Browsers Deactivated'] = $inactivity->rowCount();
 
 // *** HEAL CODE ***
 
-DatabaseConnection::$pdo->query("UPDATE players SET health = numeric_smaller(health+8+cast(floor(level/10) AS int), $maximum_heal)
+DatabaseConnection::$pdo->query("UPDATE players SET health = numeric_smaller(health+8+cast(floor(level/10) AS int), ($maximum_heal+cast(level AS int)))
 	     WHERE health BETWEEN 1 AND $maximum_heal AND NOT cast(status&".POISON." AS bool)");
 // Higher levels now heal faster.
+// Higher levels should now also heal to a larger maximum, level dependent.  e.g. level 100 gets +50 in how many hitpoints they'll heal up to.
 
 // **************
 // Visual output:
