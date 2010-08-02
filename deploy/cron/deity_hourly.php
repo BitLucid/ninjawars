@@ -11,7 +11,7 @@ DatabaseConnection::getInstance();
 
 // ******************* INITIALIZATION ******************************
 $poisonHealthDecrease = 50;			// *** The amount that poison decreases health each half-hour.
-$maximum_heal         = 150;
+$maximum_heal         = 200;
 $maximum_turns        = 300;		// *** Turn # beyond which you will drop back down to, though normal turn increase stops earlier.
 $maxtime              = '6 hours';	// *** Max time a person is kept online without being active.
 $turn_regen_threshold = 100;
@@ -24,7 +24,7 @@ DatabaseConnection::$pdo->query("UPDATE time SET amount = amount+1 WHERE time_la
 DatabaseConnection::$pdo->query("UPDATE time SET amount = 0 WHERE time_label='hours' AND amount>=24"); // Rollover the time to hour zero.
 DatabaseConnection::$pdo->query("UPDATE players SET turns = 0 WHERE turns < 0");
 DatabaseConnection::$pdo->query("UPDATE players SET bounty = 0 WHERE bounty < 0");
-DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 WHERE _class_id = 2 and turns < ".$turn_regen_threshold);         // Blue turn code
+DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 WHERE _class_id = 2 and turns < ".$turn_regen_threshold);         // Blue/Crane turn code
 DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+2 where turns < ".$turn_regen_threshold);   // add 2 turns on the hour, up to 100.
 
 // Database connection information here
