@@ -31,6 +31,7 @@ $person_invited                  = in('person_invited', '');
 $message                         = in('message', null, null); // Don't filter messages sent in.
 $new_clan_avatar_url                 = in('clan-avatar-url');
 $new_clan_description                 = in('clan-description');
+$avatar_or_message_change         = in('avatar_or_message_change', false);
 
 $action_message = null; // Action or error message for template.
 
@@ -118,14 +119,13 @@ if (!$player_id) {
     $action_message = "You are not part of any clan.";
 } else {
 	
-    if($leader_of_own_clan){
+    if($leader_of_own_clan && $avatar_or_message_change){
+        $action_message = "Clan avatar or message changed.";
         // Saving incoming changes to clan leader edits.
-        if($new_clan_avatar_url){
-            if(clan_avatar_is_valid($new_clan_avatar_url)){
-                save_clan_avatar_url($new_clan_avatar_url, $own_clan_id);
-            } else {
-                $action_message = "That avatar url is not valid.";
-            }
+        if(clan_avatar_is_valid($new_clan_avatar_url)){
+            save_clan_avatar_url($new_clan_avatar_url, $own_clan_id);
+        } else {
+            $action_message = "That avatar url is not valid.";
         }
         if($new_clan_description){
             save_clan_description($new_clan_description, $own_clan_id);

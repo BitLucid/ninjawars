@@ -96,9 +96,11 @@
 	      
 	    <div>
 	    <div><strong>Change Clan Image</strong></div>
-	    To create a clan avatar, upload an image to <a href='http://www.imageshack.com' class='extLink'>imageshack.com</a> Then put the image's full url here:
+	    To create a clan avatar, upload an image to <a href='http://www.imageshack.com' class='extLink'>imageshack.com</a> 
+	    Then put the image's full url here:
     	    <form action='clan.php' name='avatar_and_message'>
     	        <input type='hidden' name='command' value='view'>
+    	        <input type='hidden' name='avatar_or_message_change' value='1'>
     	        <input type='hidden' name='clan_id' value='{$own_clan_id}'>
     	        <input name='clan-avatar-url' type='text' value='{$clan_avatar_current}'>
     	        (Image can be .jpg or .png)

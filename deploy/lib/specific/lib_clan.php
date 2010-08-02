@@ -213,7 +213,6 @@ function get_clan_founders() {
 // Return only the single clan leader and their information.
 function get_clan_leader_info($clan_id) {
 	$clans = get_clan_leaders($clan_id, false);
-	$temp = $clans->fetchAll();
 
 	return $clans->fetch();
 }
@@ -225,7 +224,7 @@ function clan_char_is_leader_of($char_id, $clan_id=null){
     
     $sel = 'SELECT clan_id
         from clan join clan_player on clan_id = _clan_id 
-        where _player_id = :char_id and member_level > 1 order by clan_id limit 1';
+        where _player_id = :char_id and member_level > 0 order by clan_id limit 1';
         
     
     $id = query_item($sel, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
@@ -279,6 +278,9 @@ function save_clan_description($desc, $clan_id){
 
 // return boolean, checks that an avatar is valid.
 function clan_avatar_is_valid($dirty_url){
+    if($dirty_url === "" || $dirty_url === null){
+        return true;  // Allows for no clan avatar.
+    }
     $is_url = ($dirty_url == filter_var($dirty_url, FILTER_VALIDATE_URL));
     if(!$is_url){
         return false;
