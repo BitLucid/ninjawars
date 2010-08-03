@@ -26,8 +26,8 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 	{include file="gravatar.tpl" gurl=$gravatar_url}
 
-    <span class='player-class {$player_info.class|escape}'>
-      <img id='class-shuriken' src='{$templatelite.const.IMAGE_ROOT}small{$player_info.class|escape:'url'|escape}Shuriken.gif' alt=''>
+    <span class='player-class {$target_class_theme|escape}'>
+      <img id='class-shuriken' src='{$templatelite.const.IMAGE_ROOT}small{$target_class_theme|escape}Shuriken.gif' alt=''>
       {$player_info.class|escape}
     </span>
 

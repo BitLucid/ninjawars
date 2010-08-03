@@ -119,6 +119,13 @@ function char_class_identity($char_id) {
 }
 
 
+// Get the character class theme string.
+function char_class_theme($char_id) {
+    return query_item("SELECT class.theme FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id", 
+        array(':char_id'=>$char_id));
+}
+
+
 
 // TODO: This is also begging for a template.
 function render_skills($target, $player) {

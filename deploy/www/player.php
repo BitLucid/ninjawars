@@ -42,7 +42,15 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 
 		$player      = $target = $player_info['uname']; // reset the target and target_id vars.
 		$target_id   = $player_info['player_id'];
+<<<<<<< HEAD
 
+=======
+		$self        = (get_username() && get_username() == $player_info['uname']); // Record whether this is a self-viewing.
+	
+    	$target_class_theme = char_class_theme($target_id);
+	
+	
+>>>>>>>   Player: Class display shows the themed color and image correctly.
 		if ($message) {
 		    send_message($user_id, $target_id, $message);
 		    // "message sent" notice will be displayed by the template itself.
