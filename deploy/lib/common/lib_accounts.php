@@ -45,9 +45,22 @@ function email_is_duplicate($email) {
 }
 
 function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1) {
-	$ins = "INSERT INTO accounts (account_identity, active_email, phash, type, active)
-		VALUES (:email, :email, crypt(:password, gen_salt('bf', 8)), :type, :active)";
+	DatabaseConnection::getInstance();
 
+	$ins = "INSERT INTO accounts (account_identity, active_email, phash, type, active)
+		VALUES (:email, :email2, crypt(:password, gen_salt('bf', 8)), :type, :active)";
+
+	$email = strtolower($email)
+
+	$statement = DatabaseConnection::$pdo->prepare($ins);
+	$statement->bindParam(':email', $email);
+	$statement->bindParam(':email2', $email);
+	$statement->bindParam(':password', $password_to_hash);
+	$statement->bindParam(':type', $type, PDO::PARAM_INT);
+	$statement->bindParam(':active', $active, PDO::PARAM_INT);
+	$statement->execute();
+
+/*
 	query($ins, array(
 			':email'      => strtolower($email)
 			, ':password' => $password_to_hash
@@ -55,17 +68,17 @@ function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1
 			, ':active'   => array($active, PDO::PARAM_INT)
 		)
 	);
+*/
 
 	// Get last created id.
-	$sel_acc = "SELECT account_id FROM accounts WHERE account_identity = lower(:email)";
+	$sel_acc = "SELECT account_id FROM accounts WHERE account_identity = :email";
 	$acc_id = query_item($sel_acc, array(':email'=>$email));
 
 	// Create the link between account and player.
-	$link_ninja = "INSERT INTO account_players ( _account_id , _player_id, last_login ) VALUES ( :acc_id , :ninja_id, default )";
+	$link_ninja = "INSERT INTO account_players (_account_id, _player_id, last_login) VALUES (:acc_id, :ninja_id, default)";
 
 	//query($link_ninja, array(":acc_id"=>array($acc_id, PDO::PARAM_INT), ":ninja_id"=>array($ninja_id, PDO::PARAM_INT)));
 
-	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare($link_ninja);
 	$statement->bindParam(':acc_id', $acc_id, PDO::PARAM_INT);
 	$statement->bindParam(':ninja_id', $ninja_id, PDO::PARAM_INT);
