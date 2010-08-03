@@ -145,6 +145,20 @@ DELETE FROM players WHERE player_id = 138342;
 
 DELETE FROM players WHERE email = 'noreply@ninjawars.net';
 
+-- player_id |    uname    |         email          | level | kills | days 
+-------------+-------------+------------------------+-------+-------+------
+--    145894 | sasuke12345 | dalvin2811@hotmail.com |     1 |     0 |   21
+--    145895 | itachi2811  | dalvin2811@hotmail.com |     1 |     0 |   21
+
+DELETE FROM players WHERE player_id = 145894;
+
+-- player_id |   uname   |             email             | level | kills | days 
+-------------+-----------+-------------------------------+-------+-------+------
+--    146929 | Brendan   | imonthecouchwoman@hotmail.com |     1 |     0 |    5
+--    146930 | evane98ac | imonthecouchwoman@hotmail.com |     1 |     0 |    5
+
+DELETE FROM players WHERE player_id = 146930;
+
 SELECT
 	email, COUNT(email) AS NumOccurrences
 	FROM players

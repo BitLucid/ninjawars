@@ -1606,6 +1606,7 @@ iframe {
 #subcategory-bar a:hover {
     font: 18px/27px 'ShangriLaNFRegular', Verdana, sans-serif;
     text-decoration:none;
+    font-weight:bold;
 }
 
 #subcategory-bar ul {
@@ -1677,4 +1678,8 @@ select option #blue-class-select {
     color:white;
     background-color:black;
     font-weight:bold;
+}
+
+#npc-list li {
+	white-space: nowrap;
 }
