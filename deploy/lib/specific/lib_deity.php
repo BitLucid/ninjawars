@@ -35,33 +35,31 @@ function shorten_chat($message_limit=800) {
 }
 
 function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30, $just_testing=true) {
-	$change_confirm_to = ($just_testing? '1' : '0'); // Only unconfirm players when not testing.
+	$change_confirm_to = ($just_testing ? '1' : '0'); // Only unconfirm players when not testing.
 	$minimum_days = 30;
-	$max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30 );
+	$max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30);
 	$players_unconfirmed = null;
 	DatabaseConnection::getInstance();
 	$sel_cur = DatabaseConnection::$pdo->query("select count(*) from players where confirmed = 1");
 	$current_players = $sel_cur->fetchColumn();
 
-	if ($current_players<$keep_players){
+	if ($current_players < $keep_players) {
 		// *** If we're under the minimum, don't unconfirm anyone.
 		return false;
 	}
 
-	if (intval($unconfirm_days_over)<$minimum_days){
-		// *** Don't unconfirm anyone below the minimum floor.
-		$unconfirm_days_over = $minimum_days;
-	}
+	// *** Don't unconfirm anyone below the minimum floor.
+	$unconfirm_days_over = max($unconfirm_days_over, $minimum_days);
 
 	// Unconfirm at a maximum of 20 players at a time.
-	$unconfirm_within_limits = "update players
-		set confirmed = ".$change_confirm_to."
-		where players.player_id
+	$unconfirm_within_limits = "UPDATE players
+		SET confirmed = ".$change_confirm_to."
+		WHERE players.player_id
 		IN (
-			select player_id from players
-			where confirmed = 1
-			and days > ".intval($unconfirm_days_over)."
-			order by player_id DESC	limit ".$max_to_unconfirm."
+			SELECT player_id FROM players
+			WHERE confirmed = 1
+			AND days > ".intval($unconfirm_days_over)."
+			ORDER BY player_id DESC	LIMIT ".$max_to_unconfirm."
 			)";
 	$update = DatabaseConnection::$pdo->query($unconfirm_within_limits);
 	return $update->rowCount();
