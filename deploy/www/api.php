@@ -144,6 +144,6 @@ function json_index() {
 	return '{"player":'.json_encode($player).',
 				"message":'.json_encode($messages ? $messages->fetch() : null).',
 				"inventory":{"inv":1,"items":'.json_encode(query_array("SELECT item, amount FROM inventory WHERE owner = :user ORDER BY item", array(':user'=>$user_id))).',"hash":"'.md5(strtotime("now")).'"},
-				"event":'.json_encode($events->fetch()).'}';
+				"event":'.json_encode($events ? $events->fetch() : null).'}';
 }
 ?>
