@@ -87,7 +87,7 @@ class AttackLegal
 	 *
 	 * @return boolean
 	**/
-	public function check() {
+	public function check($update_timer = true) {
 		$attacker = $this->attacker;
 		$target = $this->target;
 
@@ -123,7 +123,7 @@ class AttackLegal
 
 		$attack_later_than_limit = $statement->fetchColumn();
 
-		if ($attack_later_than_limit) { // *** If not too soon, update the attack limit. ***
+		if ($attack_later_than_limit && $update_timer) { // *** If not too soon, update the attack limit. ***
 			update_last_attack_time($attacker->vo->player_id);
 			// updates the timestamp of the last_attacked column to slow excessive attacks.
 		}

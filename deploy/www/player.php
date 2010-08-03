@@ -53,7 +53,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		// Attack Legal section
 		$params          = array('required_turns'=>0, 'ignores_stealth'=>true); // 0 for unstealth.
 		$AttackLegal     = new AttackLegal($username, $target, $params);
-		$attack_allowed  = $AttackLegal->check();
+		$attack_allowed  = $AttackLegal->check(false);
 		$attack_error    = $AttackLegal->getError();
 
 		// TODO: Add the "player since" date to the player profile/info.
