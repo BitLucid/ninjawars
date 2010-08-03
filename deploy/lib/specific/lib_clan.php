@@ -206,7 +206,7 @@ function render_clan_view($p_clan_id) {
 				<span class='member size{$member['size']} {$current_leader_class}'>".
 				htmlentities($member['uname']).
                 "</span>";
-		$res .= render_template('gravatar.tpl', array('url' => generate_gravatar_url($member['player_id'])));
+		$res .= render_template('gravatar.tpl', array('gurl' => generate_gravatar_url($member['player_id'])));
 		$res .= "</a>";
 		$res .= "</li>";
         $count++;
