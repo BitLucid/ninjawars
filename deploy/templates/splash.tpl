@@ -46,6 +46,10 @@
             
         <div id='ninjawars-home' class='header-section'>
         </div>
+        
+        <div id='feedback-link'>
+                <a style='font-size:2em' class='font-pisan' href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Give Feedback</a>
+        </div>
           
           <div style='height:110px;position:absolute;bottom:0;'>
             
@@ -170,7 +174,7 @@
         <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
         <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
         <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
-        <a href="http://ninjawars.proboards.com/index.cgi?board=suggcomp" target="_blank" class="extLink">Feedback</a>
+        <a href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Feedback</a>
              
       </div>
       

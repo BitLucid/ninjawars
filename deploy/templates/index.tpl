@@ -192,7 +192,7 @@
         <a href="http://ninjawars.proboards.com/index.cgi?action=calendar" target="_blank" class="extLink">Calendar</a> |
         <a href="http://ninjawars.pbworks.com/" target="_blank" class="extLink">Wiki</a> |
         <a href="http://forum.ninjawars.net" target="_blank" class="extLink">Forum</a> |
-        <a href="http://ninjawars.proboards.com/index.cgi?board=suggcomp" target="_blank" class="extLink">Feedback</a>
+        <a href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Feedback</a>
       </div>
       
     

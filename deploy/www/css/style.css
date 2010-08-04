@@ -1545,6 +1545,10 @@ iframe {
 	width: 100%;
 }
 
+.font-pisan{
+    font:30px/34px 'PisanNormal',Georgia,Times,serif;
+}
+
 /* reactive-panel subparts */
 #category-bar {
     margin: .2em 0 0 0;
