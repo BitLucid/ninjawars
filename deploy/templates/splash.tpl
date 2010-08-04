@@ -1,20 +1,3 @@
-   
-{literal}
-<script type='text/javascript' charset='utf-8' src='http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js'></script>
-
-<script type="text/javascript" charset="utf-8">
-  var feedback_widget_options = {};
-
-  feedback_widget_options.display = "overlay";  
-  feedback_widget_options.company = "ninjawars";
-  feedback_widget_options.placement = "left";
-  feedback_widget_options.color = "#222";
-  feedback_widget_options.style = "idea";
-  
-  var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
-</script>
-{/literal}
- 
     
     <!-- Version {$version} -->
 
@@ -187,7 +170,7 @@
         <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
         <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
         <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
-        <a href="http://getsatisfaction.com/ninjawars" target="_blank" class="extLink">Feedback</a>
+        <a href="http://ninjawars.proboards.com/index.cgi?board=suggcomp" target="_blank" class="extLink">Feedback</a>
              
       </div>
       
