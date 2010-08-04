@@ -23,6 +23,9 @@
 <div class='developers'>
   <h3 class='subtitle'>Developers</h3>
   <div class='developer'>
+    <div class='gtalk-chat'>
+        <iframe src="http://www.google.com/talk/service/badge/Show?tk=z01q6amlq2pc0od9ms6m36jk9p0lncem83qghsqacgi5e1akm10254oogtclbbh96d0c5870tgkb63h2b66ntkg7on0crqn451ui988hbpk53ikv71fhsa3d5f84j2shna8ijsf474r80ut32oql3dio4ov6brdi3cn49bpuvi2j40u91hrrrea806bsnlhnelc&amp;w=200&amp;h=60" frameborder="0" allowtransparency="true" width="200" height="60"></iframe>
+    </div>
     <a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer 
     <span id='social-networks'>
       - <a target='_blank' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a>
