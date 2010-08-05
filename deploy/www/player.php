@@ -76,6 +76,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		$level_category          = level_category($player_info['level']);
 
 		$gravatar_url            = generate_gravatar_url($target_player_obj);
+		$gurl = $gravatar_url;
 
 		if ($username && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
 			// Attack or Duel

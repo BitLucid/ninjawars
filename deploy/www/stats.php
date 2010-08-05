@@ -67,6 +67,7 @@ if ($deleteAccount) {
 $level_category   = level_category($player['level']);
 $status_list      = get_status_list();
 $gravatar_url     = generate_gravatar_url($player['player_id']);
+$gurl = $gravatar_url;
 $rank_display     = get_rank($username); // rank display.
 $profile_editable = $player['messages'];
 $profile_display  = out($profile_editable);
