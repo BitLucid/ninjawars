@@ -74,7 +74,7 @@ if ($restore == 1) {	//  *** RESURRECTION SECTION ***
 	    	$error = 'You have no kills or turns, so you must wait to regain turns before you can return to life.';
 		}
 
-		if ($kill_taking_resurrect || $turn_taking_resurrect) {
+		if ($kill_taking_resurrect || $turn_taking_resurrect || $freeResurrection) {
 			$player->death();
 
 			if ($kill_taking_resurrect) {
