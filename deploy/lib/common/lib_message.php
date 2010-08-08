@@ -5,10 +5,6 @@ function send_message($from_id, $to_id, $msg) {
 
 	$length = strlen($msg);
 
-	if ($length > MAX_MSG_LENGTH) {
-		error_log('Message length limit exceeded: ['.$msg.']');
-	}
-
 	$prevMsg = trim(query_item("SELECT message FROM messages WHERE send_from = :from AND send_to = :to ORDER BY date DESC LIMIT 1",
 		array(':from'=>$from_id,
 		':to'=>$to_id)));
