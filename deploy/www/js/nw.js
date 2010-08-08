@@ -1,4 +1,5 @@
-/* Load all the js functionality here, mostly */
+/* The main javascript functionality of the site, apart from very page specific behaviors */
+
 
 // Sections are, in order: SETTINGS | FUNCTIONS | READY
 
@@ -6,6 +7,9 @@
 // http://www.jslint.com/
 // http://yuiblog.com/blog/2007/06/12/module-pattern/
 // http://www.javascripttoolbox.com/bestpractices/
+
+
+
 // TODO: change generated vars to square bracket notation.
 
 // TODO: Create a dummy console dot log functionality to avoid errors on live?
@@ -22,11 +26,15 @@ g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent == window));
 
 /*  GLOBAL SETTINGS & VARS */
 if (parent.window != window) {
+    // If the interior page of an iframe, use the already-defined globals from the index.
 	$ = parent.$;
 	NW = parent.NW;
 } else {
+    // If the page is standalone, define the objects as needed.
 	$ = jQuery;
 	NW = {};
+	
+    	
 
 	NW.datastore = {};
 	NW.lastChatCheck = '';
@@ -499,6 +507,7 @@ if (parent.window != window) {
 				var chats = this.datastore.new_chats.chats;
 				var after = container.insertBefore(document.createTextNode(''), container.firstChild);
 				for (chat_message in chats) {
+				    // Jesus.
 					after = container.insertBefore(this.renderChatAuthor(chats[chat_message]), after.nextSibling);
 					after = container.insertBefore(this.renderChatMessage(chats[chat_message]), after.nextSibling);
 
@@ -590,7 +599,9 @@ if (parent.window != window) {
 	 */
 }
 
-// Initial load of everything, run at the bottom to allow everything else to be defined beforehand.
+
+
+/***************************** Execution of code, run at the end to allow all definitions to exist beforehand. ******/
 $(document).ready(function() {
 	// INDEX ONLY CHANGES
 	if (g_isIndex || g_isRoot) {
@@ -636,6 +647,11 @@ $(document).ready(function() {
 		NW.clickHidesTarget('#show-hide-chat', '#chat-and-switch');
 		NW.clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
 		NW.clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
+		
+		// Display the chat refresh image and toggle it if it is clicked.
+		$('#chat-refresh-image').toggle().click(NW.chatRefreshClicked(this));
+		
+		
 	} else if (g_isSubpage) {
 		$('body').addClass('solo-page'); // Add class to solo-page bodies.
 		// Displays the link back to main page for any lone subpages not in iframes.

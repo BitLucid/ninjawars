@@ -6,25 +6,25 @@
                   </a>
                 </div>
                 <div id="chat-and-switch">
-                  <div class="chat-switch centered">
-                    <a id='full-chat-link' href="village.php" target="main">Full Chat <img src="images/chat.png" alt="" style='width:10px;height:9px'> </a>
-                  </div>
 {if isset($user_id) and $user_id}
                   <form class='chat-submit' id="post_msg_js" action="mini_chat.php" method="post" name="post_msg">
-                    <div>
-                      <div><input type="text" size="20" maxlength="250" name="message" class="textField"></div>
-                      <div style="height: 40px;">
-                        <input type="submit" value="Chat" class="formButton" style="display: block;float: left;margin-top: 8px;">
-                        <img src="images/refresh.gif" alt="()" onclick="NW.chatRefreshClicked(this);" height="24" width="24" style="cursor: pointer;margin-top: 6px;margin-left: 4px;">
-                      </div>
+                  
+                    <div style='width:55%;display:inline;margin-top:.5em;margin-bottom:.5em;'>
+                        <input type="text" size="20" maxlength="250" name="message" class="textField">
+                    </div>
+                    <div style='width:40%;display:inline;margin-top:.5em;margin-bottom:.5em;'>
+                        <input type="submit" value="Chat" class="formButton" style="display:inline;margin-right:.3em;margin-left:.3em;">
+                        <img src="images/refresh.gif" id='chat-refresh-image' alt="Refresh" style="max-height:24px;max-width:24px;cursor: pointer;display:none;margin-top:.2em">
                     </div>
                   </form>
 {/if}
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
                     <dl id="mini-chat-display" class="chat-messages">
                     </dl>
+                    
                     <noscript>
 {if isset($user_id) and $user_id}
+                <!-- TODO: Determine why this duplicate chat submission section here? -->
                   <form class='chat-submit' id="post_msg" action="mini_chat.php" method="post" name="post_msg" target='mini_chat'>
                     <input id="message" type="text" size="20" maxlength="250" name="message" class="textField">
                     <input id="command" type="hidden" value="postnow" name="command">
@@ -37,14 +37,12 @@
                           <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
                         </iframe>
                     </noscript>
+
+
                   </div>
-                  <div id="expand-chat">
-                    <a href="mini_chat.php?chatlength=360" target="mini_chat" onclick="main.location.href = 'village.php';return false;">
-                      View more chat messages <!-- <img class="show-hide-icon" src="images/show_and_hide.png" alt="+/-"> -->
-                    </a>
+                  <div class="chat-switch centered">
+                    <a id='full-chat-link' href="village.php" target="main">View older chat messages <img src="images/chat.png" alt="" style='width:10px;height:9px'> </a>
                   </div>
                 </div>
               </div>
           </div> <!-- End of index-chat --> 
-
-
