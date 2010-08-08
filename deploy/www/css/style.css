@@ -881,9 +881,6 @@ iframe {
 	color: gray;
 	display:inline-block;
 }
-#expand-chat {
-    border: 1px dashed darkblue;
-}
 
 #full-chat .chat-messages {
     font-size:1em;

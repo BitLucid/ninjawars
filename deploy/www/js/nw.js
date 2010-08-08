@@ -614,20 +614,6 @@ $(document).ready(function() {
 
 		NW.chainedUpdate(); // Start the periodic index update.
 
-		/* Collapse the following parts of the index */
-		//$("#links-menu").toggle();
-
-		// Click to view more chat messages than you were looking at before.
-		$('#expand-chat').click(function() {
-			var chat = $('#mini-chat');
-			// Animate the chat to show that the messages have changed.
-			chat.fadeOut('slow', function() {
-				NW.refreshMinichat('', 500); // Refresh the chat with a longer length.
-				chat.fadeIn('slow');
-			});
-
-			return false;
-		});
 
 		var quickstatsLinks = $("a[target='quickstats']");
 		quickstatsLinks.css({'font-style':'italic'}); // Italicize
