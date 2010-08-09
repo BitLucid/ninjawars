@@ -395,7 +395,7 @@ if (isset($target)) {
 	echo "<div>Return to <a href=\"player.php?player=".urlencode($target)."\">".out($target)."'s Info</a></div>Or \n";
 }
 
-echo "Start your combat <a href=\"list_all_players.php\"> from the player list.</a>\n<br>\n";
+echo "Start your combat <a href=\"list_all_players.php\"> from the ninja list.</a>\n<br>\n";
 echo "<hr><br>\n";
 
 include(SERVER_ROOT."interface/footer.php");
