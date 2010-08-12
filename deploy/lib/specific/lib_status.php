@@ -25,12 +25,12 @@ function get_status_list($target=null) {
 		} else {
 			$states[] = 'Healthy';
 		}
-
+        // The visibly viewable statuses.
 		if ($target->hasStatus(STEALTH)) { $states[] = 'Stealthed'; }
 		if ($target->hasStatus(POISON)) { $states[] = 'Poisoned'; }
 		if ($target->hasStatus(FROZEN)) { $states[] = 'Frozen'; }
-		if ($target->hasStatus(STR_UP1)) { $states[] = 'Buffed'; }
-		if ($target->hasStatus(STR_UP2)) { $states[] = 'Buffed+'; }
+		if ($target->hasStatus(STR_UP1)) { $states[] = 'Buff'; }
+		if ($target->hasStatus(STR_UP2)) { $states[] = 'Strength+'; }
 	}
 
 	return $states;
