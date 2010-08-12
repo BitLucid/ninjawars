@@ -22,7 +22,7 @@
 {/if}
 
 
-<div>Avatar: (change your avatar for your account email at <a href='http://gravatar.com'>gravatar.com</a>) {include file="gravatar.tpl" url=$gravatar_url}</div>
+<div>Avatar: (change your avatar for your account email at <a href='http://gravatar.com'>gravatar.com</a>) {include file="gravatar.tpl" gurl=$gravatar_url}</div>
 {include file="status_section.tpl" statuses=$status_list}
 <ul id='player-info' class='player-info'>
     <li>Health: <span{if $player.health lt 80} class="injured"{/if}>{$player.health|escape}</span></li>
