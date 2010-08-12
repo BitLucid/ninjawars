@@ -9,6 +9,7 @@
  * @subpackage status
  */
  
+ 
 function get_status_list($target=null) {
 	$states = array();
 	$result = '';
