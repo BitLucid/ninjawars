@@ -33,6 +33,7 @@ if (DEBUG) {
 
 // Includes that actually actively modify settings.
 require_once(LIB_ROOT.'server/lib_assert.php');
+require_once(LIB_ROOT.'server/status_defines.php'); // Status constant definitions.
 require_once(LIB_ROOT.'server/lib_error_reporting.php');
 require_once(LIB_ROOT.'server/lib_formulas.php');
 
@@ -41,7 +42,7 @@ require_once(LIB_ROOT.'common/commands.php');
 require_once(LIB_ROOT.'common/lib_message.php');
 require_once(LIB_ROOT.'common/lib_events.php');
 require_once(LIB_ROOT.'common/lib_auth.php'); // Authentication and activity.
-require_once(LIB_ROOT.'common/lib_settings.php');
+require_once(LIB_ROOT.'common/lib_settings.php'); // The player settings system.
 require_once(LIB_ROOT.'specific/lib_clan.php'); // Clan functionality.
 
 // Game objects
