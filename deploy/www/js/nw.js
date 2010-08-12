@@ -57,6 +57,8 @@ if (parent.window != window) {
 	// For refreshing quickstats from inside main.
 	NW.refreshQuickstats = function(typeOfView) {
 		var self = this;
+		self.getAndUpdateHealth()
+
 		// Accounts for ajax section.
 		if (!typeOfView) {
 			typeOfView = '';
