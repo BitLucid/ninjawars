@@ -103,14 +103,14 @@ if (getBounty($username) > 0) {
 DatabaseConnection::getInstance();
 $result = DatabaseConnection::$pdo->query("SELECT player_id, uname, bounty, class_name AS class, level, clan_id, clan_name FROM players JOIN class ON class_id = _class_id LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id WHERE bounty > 0 AND confirmed = 1 and health > 0 ORDER BY bounty DESC");
 
-if ($data = $result->fetch()) {
-	echo "
-	<form action='' style='float:left;width:50%'>
-	Put <input type='text' name='amount' value='{$amount}' size='4' class='textField'> bounty on the ninja: <input type='text' name='target' value='{$target}' class='textField'>
-	<input id='submit-bounty' type='submit' value='Offer Bounty' name='command' class='formButton'>
-	</form>
-	";
+echo "
+<form action='' style='float:left;width:45%;border-right: 1px solid white;margin-right: 5%;'>
+Put <input type='text' name='amount' value='".htmlentities($amount)."' size='4' class='textField'> bounty on: <input type='text' name='target' value='".htmlentities($target)."' class='textField'>
+<input id='submit-bounty' type='submit' value='Offer Bounty' name='command' class='formButton'>
+</form>
+";
 
+if ($data = $result->fetch()) {
 	$statement = DatabaseConnection::$pdo->query('SELECT count(player_id) FROM players WHERE bounty > 0 AND confirmed = 1 and health > 0');
 
 	echo "<p style='clear:both;text-align:center;margin-top:8em;'>Total Wanted Ninja: ".$statement->fetchColumn()."</p>\n";
