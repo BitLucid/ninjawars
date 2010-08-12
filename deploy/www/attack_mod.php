@@ -217,8 +217,10 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			$rounds++;	// *** Increases the number of rounds that has occured and restarts the while loop. ***
 
 			if ($evade) {
+			    // Evasion effect:
+			    // Check current level of damage.
 				$testValue = ($attacker_health - $total_target_damage);
-
+                // Break off the duel/attack if less than 10% health or health is less than average of defender's strength
 				if ($testValue < ($target_str*.5) || $testValue < ($attacker_health*.1)) {
 					break;
 				}
@@ -263,7 +265,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 		}
 
 		if ($evade) {
-			echo "<div>You spent 2 extra turns preparing your escape routes.</div>\n"; // *** Evade turn cost. ***
+			echo "<div>You spent two extra turns preparing your escape routes.</div>\n"; // *** Evade turn cost. ***
 		}
 
 		//  *** Let the victim know who hit them ***
