@@ -31,7 +31,7 @@ $item_costs = array(
 //	, "Dim Mak"        => 10000
 );
 
-if ($in_purchase == 1){
+if ($in_purchase == 1 && $item) {
 	$current_item_cost  = first_value($item_costs[$item], 0);
 	$current_item_cost *= $quantity;
 
@@ -40,11 +40,10 @@ if ($in_purchase == 1){
 		$description .= "<p>Unfortunately, you do not have that much gold.</p>";
 	} else { // Has enough gold.
 		addItem($username, $item, $quantity);
+		subtractGold($username, $current_item_cost);
 
 		$description .= "<p>The shopkeeper hands over $quantity ".$item.$grammar.".</p>";
 		$description .= "<p>\"Will you be needing anything else today?\" he asks you as he puts your gold in a safe.</p>";
-
-		subtractGold($username, $current_item_cost);
 	}
 } else { // Default, before anything has been bought.
 	$description .= "<p>You enter the village shop and the shopkeeper greets you with a watchful eye.</p>";

@@ -11,7 +11,7 @@ $skillsListObj = new Skill();
 
 $healed             = in('healed');
 $poisoned           = in('poisoned');
-$restore            = in('restore');
+$restore            = (int)in('restore');
 $max_heal           = in('max_heal');
 $heal_and_resurrect = in('heal_and_resurrect');
 $cured              = false;
@@ -45,7 +45,7 @@ if ($heal_and_resurrect) {
 	$max_heal = 1;
 }
 
-if ($restore == 1) {	//  *** RESURRECTION SECTION ***
+if ($restore === 1) {	//  *** RESURRECTION SECTION ***
     $resurrect_requested = true;
     $turn_taking_resurrect = false;
     $kill_taking_resurrect = true;
@@ -68,13 +68,14 @@ if ($restore == 1) {	//  *** RESURRECTION SECTION ***
 
 			if ($startingTurns < $lostTurns && $startingTurns > 0) { // *** From 9 to 1 turns.
 				$lostTurns = $startingTurns;
-				$final_turns = $player->vo->turns = subtractTurns($player->vo->uname, $lostTurns); // *** Takes away necessary turns.
 			}
+
+			$final_turns = $player->vo->turns = subtractTurns($player->vo->uname, $lostTurns); // *** Takes away necessary turns.
 		} else { // *** No kills, no turns, and too high of a level.
 	    	$error = 'You have no kills or turns, so you must wait to regain turns before you can return to life.';
 		}
 
-		if ($kill_taking_resurrect || $turn_taking_resurrect) {
+		if ($kill_taking_resurrect || $turn_taking_resurrect || $freeResurrection) {
 			$player->death();
 
 			if ($kill_taking_resurrect) {
@@ -125,7 +126,7 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
     			} else {
     			    $error = 'You do not have enough gold for that much healing.';
     			}
-    		} else {
+    		} else if ($restore !== 1) {	// *** Only display this error if they have not requested a ressurect. ***
     		    $error = 'You cannot heal with zero gold.';
     		}
     	} else {

@@ -65,6 +65,8 @@ if (parent.window != window) {
 	// For refreshing quickstats from inside main.
 	NW.refreshQuickstats = function(typeOfView) {
 		var self = this;
+		self.getAndUpdateHealth()
+
 		// Accounts for ajax section.
 		if (!typeOfView) {
 			typeOfView = '';
@@ -288,11 +290,14 @@ if (parent.window != window) {
 	// Update the displayed health from the javascript-stored current value.
 	NW.getAndUpdateHealth = function() {
 		var updated = false;
-		this.datastore.playerInfo.health = (this.datastore.playerInfo.health ? this.datastore.playerInfo.health : null);
 
-		if (this.datastore.playerInfo.health !== null && this.datastore.visibleHealth != this.datastore.playerInfo.health) {
-			this.updateHealthBar(this.datastore.playerInfo.health);
-			updated = true;
+		if (this.datastore.playerInfo) {
+			this.datastore.playerInfo.health = (this.datastore.playerInfo.health ? this.datastore.playerInfo.health : '0');
+
+			if (this.datastore.visibleHealth != this.datastore.playerInfo.health) {
+				this.updateHealthBar(this.datastore.playerInfo.health);
+				updated = true;
+			}
 		}
 
 		return updated;

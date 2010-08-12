@@ -19,7 +19,7 @@ function createClan($p_leaderID, $p_clanName) {
 	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (:clanID, :clanName, :leader)");
 	$statement->bindValue(':clanID', $newClanID);
 	$statement->bindValue(':clanName', $p_clanName);
-	$statement->bindValue(':leader', $p_leaderID);
+	$statement->bindValue(':leader', get_username($p_leaderID));
 	$statement->execute();
 
 	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 2)");

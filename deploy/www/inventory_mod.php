@@ -33,6 +33,7 @@ $starting_turns = $player->vo->turns;
 $username_turns = $starting_turns;
 $username_level = $player->vo->level;
 $ending_turns   = null;
+$item_used      = true;
 
 DatabaseConnection::getInstance();
 $statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) FROM inventory WHERE owner = :owner AND lower(item) = :item");
@@ -216,11 +217,21 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$result = "be drained of your life-force and die!";
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 				} else if ($item === $strangeHerb) {
-					$targetObj->addStatus(STR_UP1);
-					$result = "$target's muscles experience a strange tingling.<br>\n";
+					if ($targetObj->hasStatus(STR_UP1)) {
+						$result = "$target's body cannot withstand any more Ginseng Root!<br>\n";
+						$item_used = false;
+					} else {
+						$targetObj->addStatus(STR_UP1);
+						$result = "$target's muscles experience a strange tingling.<br>\n";
+					}
 				} else if ($item === $kampoFormula) {
-					$targetObj->addStatus(STR_UP2);
-					$result = "$target feels a surge of power!<br>\n";
+					if ($targetObj->hasStatus(STR_UP2)) {
+						$result = "$target's body cannot withstand any more Tiger Salve!<br>\n";
+						$item_used = false;
+					} else {
+						$targetObj->addStatus(STR_UP2);
+						$result = "$target feels a surge of power!<br>\n";
+					}
 				} else if ($item->getTurnChange() <= 0) {
 
 					$turns_change = $item->getTurnChange();
@@ -295,10 +306,12 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 			$turns_to_take = 1;
 
-			// *** remove Item ***
-			removeItem($user_id, $item->getName(), 1); // *** Decreases the item amount by 1.
+			if ($item_used) {
+				// *** remove Item ***
+				removeItem($user_id, $item->getName(), 1); // *** Decreases the item amount by 1.
 
-			echo "<br>Removing {$item->getName()} from your inventory.<br>\n";
+				echo "<br>Removing {$item->getName()} from your inventory.<br>\n";
+			}
 
 			// Unstealth
 			if (!$item->isCovert() && $give != "on" && $give != "Give" && $player->hasStatus(STEALTH)) { //non-covert acts

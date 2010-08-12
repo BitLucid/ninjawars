@@ -41,8 +41,8 @@ $turns_to_take = null;  // *** Even on failure take at least one turn.
 $player          = new Player($username);
 
 if ($target != '' && $target != $player->player_id) {
-	$link_back = "<a href=\"player.php?player=$target\">Player Detail</a>";
 	$target = new Player($target);
+	$link_back = "<a href=\"player.php?player_id={$target->vo->player_id}\">Player Detail</a>";
 } else {
     $link_back = "<a href=\"skills.php\">Skills</a>";
 	$target    = $player;

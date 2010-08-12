@@ -404,8 +404,6 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 // ************************************
 
 
-
-
 // ************************************
 // ******** INVENTORY FUNCTIONS *******
 // ************************************

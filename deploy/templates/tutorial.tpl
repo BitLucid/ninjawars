@@ -58,7 +58,7 @@ $(document).ready(function () {
     <hr>
 
     <p><span class="brownHeading">How do I use my skills?</span><br>
-    Different Ninjas have different <a href="skills.php">skills</a> based on your ninja color (red, white, blue, and black).  Either click the <a href='skills.php'>Skills</a> link from the menu for any skills that you can use on yourself, or find an enemy ninja's profile page and click a skill to use it on them.</p>
+    Different Ninjas have different <a href="skills.php">skills</a> based on your ninja color (red, white, blue, black, and gray).  Either click the <a href='skills.php'>Skills</a> link from the menu for any skills that you can use on yourself, or find an enemy ninja's profile page and click a skill to use it on them.</p>
     <hr>
 
     <p><span class="brownHeading">How can I communicate with other players?</span><br>
