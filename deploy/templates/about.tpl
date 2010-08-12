@@ -369,4 +369,14 @@
 
     <hr>
 
+    Gray Ninja<br>
+    Primary Skill: Evasion - While dueling, if the gray ninja is close to defeat, they will escape before the final blow.<br>
+    Aux Skill:  Kampo - The ancient Japanese system of herbalism, Kampo allows you to turn potent ingredients into more powerful concotions.
+
+    <hr>
+
+    <a href="about.php">Return to Contents</a>
+
+    <hr>
+
 </div>
