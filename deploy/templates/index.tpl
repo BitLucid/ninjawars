@@ -1,3 +1,10 @@
+{literal}
+      <script type="text/javascript">
+	if (parent.frames.length != 0) {
+		location.href = "attack_player.php";
+	}
+      </script>
+{/literal}
     <!-- Version {$version|escape} -->
       <div id='left-column'>
             
