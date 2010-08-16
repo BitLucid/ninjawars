@@ -6,9 +6,12 @@
  * @subpackage base
 **/
 
+///TODO - require_once is more expensive than require, and if we're smart about it, we could convert all of these to requires. Let's do that ***
+
 // Cut down on the global includes, use specific includes instead.
 
 require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/'))).'resources.php');
+require_once(LIB_ROOT.'global_error_handling.php');
 // *** Included first from the index, so has to be on the same level as index.
 // Standalone utilities
 require_once(LIB_ROOT.'func/assignment_functions.php');

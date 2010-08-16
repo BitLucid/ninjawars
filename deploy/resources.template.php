@@ -16,6 +16,7 @@ define('SUPPORT_EMAIL', __SUPPORT_EMAIL__);	// *** For public questions.
 define('SUPPORT_EMAIL_FORMAL_NAME', __SUPPORT_EMAIL_NAME__);
 define('SYSTEM_MESSENGER_EMAIL', __SYSTEM_EMAIL__);
 define('SYSTEM_MESSENGER_NAME', __SYSTEM_EMAIL_NAME__);
+define('ALERTS_EMAIL', __ALERTS_EMAIL__);
 
 // For not-in-the-repository constants.
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
