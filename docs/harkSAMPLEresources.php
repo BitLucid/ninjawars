@@ -12,6 +12,7 @@ define('SERVER_ROOT', "/home/tchalvak/ninjawars/deploy/");		// *** The root depl
 define('WEB_ROOT', "http://nw.local/");			// *** The base URL used to access the game
 define('ADMIN_EMAIL', "ninjawarslivebythesword@gmail.com");		// *** For logs/emailed errors.
 define('SUPPORT_EMAIL', "ninjawarslivebythesword@gmail.com");	// *** For public questions.
+define('ALERTS_EMAIL', "ninjawarslivebythesword@gmail.com");
 define('SUPPORT_EMAIL_FORMAL_NAME', "Ninjawars Administrators");
 define('SYSTEM_MESSENGER_EMAIL', "noreply@ninjawars.net");
 define('SYSTEM_MESSENGER_NAME', "Automated Ninjawars Messenger");
