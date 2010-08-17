@@ -8,5 +8,5 @@ You have no turns left today. Buy a speed scroll or wait for your turns to reple
 {if !$health}
 <p class="ninja-notice">Go to the <a href="shrine.php">shrine</a> to resurrect.</p>
 {else}
-<a href="attack_player.php">Return to Combat</a>
+<a href="attack_player.php">Return to the Village</a>
 {/if}
