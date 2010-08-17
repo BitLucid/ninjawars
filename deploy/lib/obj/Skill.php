@@ -12,7 +12,7 @@ class Skill
 	**/
 	public $skills = array(
 		'cold steal', 'ice bolt', 'speed',
-		'sight', 'deflect', 'chi', 'midnight heal',
+		'sight', 'deflect', 'chi', 'midnight heal', 'heal',
 		'blaze', 'fire bolt',
 		'poison touch', 'stealth', 'unstealth', 'steal', 'hidden resurrect',
 		'duel', 'attack', 'kampo', 'evasion'
@@ -27,7 +27,7 @@ class Skill
 		)
 		, 'Dragon' => array(
 			'chi'             => array('available'=>1)
-			, 'midnight heal' => array('available'=>1)
+			, 'heal' => array('available'=>1)
 		)
 		, 'Tiger'   => array(
 			'fire bolt' => array('available'=>1)
@@ -50,6 +50,7 @@ class Skill
 			, 'unstealth'  => array('available'=>1)
 			, 'steal'      => array('available'=>1, 'level'=>2)
 			, 'cold steal' => array('available'=>1, 'level'=>6)
+			, 'midnight heal' => array('available'=>1, 'level'=>20)
 		)
 	);
 
@@ -135,6 +136,7 @@ class Skill
 			, 'steal'        => 1
 			, 'kampo'        => 1
 			, 'evasion'      => 2
+			, 'heal'         => 2
 		);
 
 		$res = 1; // default
@@ -151,6 +153,7 @@ class Skill
 			'stealth'     => true
 			, 'unstealth' => true
 			, 'kampo'     => true
+			, 'heal'      => true
 		);
 
 		$res = false; // default
@@ -190,7 +193,7 @@ class Skill
 
 	//public static $skillsNumbers = array(1 => 'cold steal', 2 => 'ice bolt',
 	//3 => 'sight', 4 => 'deflect', 5 => 'fire bolt', 6 => 'blaze', 7 => 'poison touch',
-	//8 => 'stealth', 9 => 'unstealth', 10 => 'steal');
+	//8 => 'stealth', 9 => 'unstealth', 10 => 'steal', 11 => 'heal');
 	// *** Eventually, should be able to get the skill ID from the database, not from that array above.
 }
 ?>

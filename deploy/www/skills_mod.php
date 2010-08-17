@@ -227,6 +227,26 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
 		}
+	} else if ($command == 'Heal') {
+		if ($starting_turns >= $turn_cost) {
+		    // Check that the target is not already status healed.
+		    if($target->hasStatus(HEALING)){
+		        $turn_cost = 0;
+		        echo "That ninja is already under a healing aura.";
+            } else {
+    		    $self_level = 150;
+    		    $healed_by = $self_level*2;
+    		    $new_health = addHealth($target->vo->uname, $healed_by);
+    		    $result = "$target healed by $healed_by to $new_health.<br>";
+    		    if($target->vo->uname != $attacker_id){
+        		    sendMessage($attacker_id, $target->vo->uname, 
+        		        "You have been healed by $attacker_id at $today for $healed_by.");
+        		}
+            }
+		} else {
+			$turn_cost = 0;
+			echo "You do not have enough turns to cast $command.\n";
+		}
 	} else if ($command == 'Ice Bolt') {
 		if ($starting_turns >= $turn_cost) {
     		if ($target->vo->turns >= 10) {

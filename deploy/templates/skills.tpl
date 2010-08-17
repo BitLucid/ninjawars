@@ -42,6 +42,24 @@
   </div>
 {/if}
 
+
+{if $heal}
+  <div id='heal-skill'>
+    <form action="skills_mod.php" method="post">
+      <fieldset>
+        <legend>Heal</legend>
+        <p>
+          You can heal your wounds or another's wounds.
+        </p>
+      <div>
+        <input type="submit" name="command" value="Heal" class="formButton">
+        Turn Cost: {$heal_turn_cost} to heal yourself (or another).
+      </div>
+      </fieldset>
+    </form>
+  </div>
+{/if}
+
 {if $chi}
     <p id='chi-skill'>Chi: Your Chi skill increases the benefits of healing and resurrecting at the shrine.</p>
 {/if}
@@ -53,7 +71,7 @@
 
 
 
-{if false or $midnight_heal}
+{if $midnight_heal}
     <!-- Not currently working, so not currently being shown.  -->
     <p id='midnight-heal-skill'>Midnight Heal: When resurrected you will come back with more health than other ninja.</p>
 {/if}

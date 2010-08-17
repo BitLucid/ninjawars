@@ -1,5 +1,6 @@
 <?php
-// Status defines
+// Status definitions
+// TODO: These should probably be moved to Player class constants.
 
 define('STEALTH',     1);
 define('POISON',      1<<1);
