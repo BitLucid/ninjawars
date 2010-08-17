@@ -61,11 +61,12 @@ function rename_clan($p_clanID, $p_newName) {
 
 // Without checking for pre-existing clan and other errors, adds a player into a clan.
 function add_player_to_clan($player_id, $clan_id, $member_level=0){
+    $member_level = (int) $member_level;
 	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_clan_id, _player_id, member_level) VALUES (:clan, :player_id, :member_level)");
 	$statement->bindValue(':clan', $clan_id);
 	$statement->bindValue(':player_id', $player_id);
-	$statement->bindParam(':member_level', (int) $member_level, PDO::PARAM_INT);
+	$statement->bindParam(':member_level', $member_level, PDO::PARAM_INT);
 	$statement->execute();
 	// Add the player into the clan.
 
