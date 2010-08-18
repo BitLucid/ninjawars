@@ -324,6 +324,17 @@ a:link {} a:visited {} a:active {}
     float:right;
 }
 
+.stats-avatar{
+    width:100%;
+    position:relative;
+}
+
+.stats-avatar .avatar{
+    position:absolute;
+    top:0;
+    right: 0;
+}
+
 img#class-shuriken {
     width:20px;
     height:17px;

@@ -555,9 +555,15 @@ if (parent.window != window) {
 
 	NW.chatRefreshClicked = function(button) {
 		button.onclick = null;
-		button.style.cursor = 'default';
+		$(button).css({'cursor':'default'});
+		//button.style.cursor = 'default';
 		button.src = 'images/refresh_disabled.gif';
-		setTimeout(function(){button.onclick = function() { NW.chatRefreshClicked(this);};button.src = 'images/refresh.gif'; button.style.cursor = 'pointer';}, this.manualChatLockTime);
+		setTimeout(function(){
+		    button.onclick = function() { NW.chatRefreshClicked(this);};
+		    button.src = 'images/refresh.gif';
+		    $(button).css({'cursor':'pointer'});
+            //button.style.cursor = 'pointer'; // This fails in chrome.
+        }, this.manualChatLockTime);
 		this.checkForNewChats();
 	}
 

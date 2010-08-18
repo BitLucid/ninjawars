@@ -19,7 +19,9 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
     <h1 class='player-name'>{$player|escape}</h1>
 
     <div class='player-ranking-linkback'>
-      <a href='list_all_players.php?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none'><img src='{$templatelite.const.IMAGE_ROOT}return-triangle.png' alt='&lsaquo;Rank {$rank_spot|escape}' title='&lsaquo;Return to rank $rank_spot' style='width:50px;height:50px;float:left;'></a>
+      <a href='list_all_players.php?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none'>
+        <img src='{$templatelite.const.IMAGE_ROOT}return-triangle.png' alt='&lsaquo;Rank {$rank_spot|escape}' title='&lsaquo;Return to rank {$rank_spot}' style='width:50px;height:50px;float:left;'>
+      </a>
     </div>
 
 	<div class='player-titles centered'>

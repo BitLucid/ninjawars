@@ -5,12 +5,13 @@ $alive      = false;
 if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
+
 $description       = "";
 $in_purchase       = in('purchase');
 $in_quantity       = in('quantity');
 $item              = in('item');
 $grammar           = "";
-$username          = get_username();
+$username          = get_char_name();
 $gold              = first_value(getGold($username), 0);
 $current_item_cost = 0;
 $quantity          = intval($in_quantity);
@@ -26,7 +27,7 @@ $item_costs = array(
 	"Speed Scroll"     => 225
 	, "Fire Scroll"    => 175
 	, "Stealth Scroll" => 150
-	, "Ice Scroll"     => 125
+	, "Caltrops"     => 125
 	, "Shuriken"       => 50
 //	, "Dim Mak"        => 10000
 );

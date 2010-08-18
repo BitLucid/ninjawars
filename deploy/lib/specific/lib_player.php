@@ -192,9 +192,10 @@ function render_inventory_options($username) {
 	$res = '';
 	$selected = "selected='selected'";// Mark first option as selected.
 	$loop_items = DatabaseConnection::$pdo->prepare(
-        "SELECT owner, item, item_id, amount
-        FROM inventory WHERE owner = :owner
-        AND amount > 0 ORDER BY item");
+        "SELECT owner, item_display_name as item, item_type, amount
+        FROM inventory join item on inventory.item_type = item.item_id 
+        WHERE owner = :owner
+        AND amount > 0 ORDER BY item_display_name");
 	$loop_items->bindValue(':owner', $user_id);
 	$loop_items->execute();
 
@@ -213,15 +214,13 @@ function render_inventory_options($username) {
 			$items_indexed['Shuriken'] = $shuriken_entry;
 			$items_indexed = array_reverse($items_indexed);
 		}
-
 		foreach ($items_indexed AS $loopItem) {
-			$res .= "      <option $selected value='{$loopItem['item']}'>".htmlentities($loopItem['item'])." ({$loopItem['amount']})</option>\n";
+			$res .= "      <option $selected value='{$loopItem['item']}'>".htmlentities($loopItem['item'])." ({$loopItem['amount']})</option>";
 			$selected = '';
 		}
 	} else { // Some items available.
-		$res = "          <option value=\"\" selected=\"selected\">You Have No Items</option>\n";
+		$res = "          <option value='' selected='selected'>You Have No Items</option>";
 	}
-
 	return $res;
 }
 

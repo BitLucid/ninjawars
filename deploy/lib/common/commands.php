@@ -413,7 +413,7 @@ function addItem($who, $item, $quantity = 1) {
 
 	if ($quantity > 0 && !empty($item)) {
 		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount + :quantity WHERE owner = :who AND lower(item) = lower(:item)");
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount + :quantity WHERE owner = :who AND item_type = (select item_id from item where lower(item_display_name) = lower(:item))");
 		$statement->bindValue(':quantity', $quantity);
 		$statement->bindValue(':who', get_user_id($who));
 		$statement->bindValue(':item', $item);
@@ -433,7 +433,7 @@ function addItem($who, $item, $quantity = 1) {
 
 function removeItem($who, $item, $quantity=1) {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount - :quantity WHERE owner = :user AND lower(item) = lower(:item) AND amount > 0");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount - :quantity WHERE owner = :user AND item_type = (select item_id from item where lower(item_display_name) = lower(:item)) AND amount > 0");
 	$statement->bindValue(':user', $who);
 	$statement->bindValue(':item', $item);
 	$statement->bindValue(':quantity', $quantity);

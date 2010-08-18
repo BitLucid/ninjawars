@@ -103,7 +103,9 @@ function json_new_chats($since, $limit = 100) {
 	DatabaseConnection::getInstance();
 
 	if ($since) {
-		$statement = DatabaseConnection::$pdo->query("SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id WHERE EXTRACT(EPOCH FROM date) > $since ORDER BY date DESC LIMIT ".$limit);
+		$statement = DatabaseConnection::$pdo->query(
+		    "SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id WHERE EXTRACT(EPOCH FROM date) > $since ORDER BY date DESC LIMIT ".$limit
+		  );
 	} else {
 		$statement = DatabaseConnection::$pdo->query("SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id ORDER BY date DESC LIMIT ".$limit);
 	}
@@ -115,9 +117,9 @@ function json_new_chats($since, $limit = 100) {
 
 
 function json_inventory() {
-	$user_id = (int) get_user_id();
+	$char_id = (int) get_char_id();
 	return '{"inventory":'.json_encode(
-		query_array("SELECT item, amount FROM inventory WHERE owner = :user ORDER BY item", array(':user'=>$user_id))
+		query_array("SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :char_id ORDER BY item_display_name", array(':char_id'=>$char_id))
 	).'}';
 }
 
@@ -143,7 +145,7 @@ function json_index() {
 
 	return '{"player":'.json_encode($player).',
 				"message":'.json_encode($messages ? $messages->fetch() : null).',
-				"inventory":{"inv":1,"items":'.json_encode(query_array("SELECT item, amount FROM inventory WHERE owner = :user ORDER BY item", array(':user'=>$user_id))).',"hash":"'.md5(strtotime("now")).'"},
+				"inventory":{"inv":1,"items":'.json_encode(query_array("SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :user_id ORDER BY item_display_name", array(':user_id'=>$user_id))).',"hash":"'.md5(strtotime("now")).'"},
 				"event":'.json_encode($events ? $events->fetch() : null).'}';
 }
 ?>

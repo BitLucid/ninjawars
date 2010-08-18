@@ -23,8 +23,18 @@ $target     = in('target');
 $selfTarget = in('selfTarget');
 $item       = in('item');
 $give       = in('give');
+$item_type  = in('item_type');
+$target_id  = in('target_id');
 
-$user_id    = get_user_id();
+if($item_type){
+    $item = item_display_name($item_type);
+}
+
+if($target_id){
+    $target = get_char_name($target_id);
+}
+
+$user_id    = get_char_id();
 $player     = new Player($user_id);
 
 $victim_alive   = true;
@@ -35,12 +45,9 @@ $username_level = $player->vo->level;
 $ending_turns   = null;
 $item_used      = true;
 
-DatabaseConnection::getInstance();
-$statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) FROM inventory WHERE owner = :owner AND lower(item) = :item");
-$statement->bindValue(':owner', $user_id);
-$statement->bindValue(':item', strtolower($item));
-$statement->execute();
+$target_id = get_char_id($target);
 
+$statement = query("SELECT sum(amount) FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :owner AND lower(item_display_name) = lower(:item)", array(':owner'=>array($user_id, PDO::PARAM_INT), ':item'=>strtolower($item)));
 $item_count     = $statement->fetchColumn();
 
 if ($selfTarget) {
@@ -76,8 +83,8 @@ if (in_array($give, array("on", "Give"))) {
 }
 
 // Sets the page to link back to.
-if ($target && $link_back == "") {
-	$link_back = "<a href=\"player.php?player=".urlencode($target)."\">Player Detail</a>";
+if ($target_id && $link_back == "") {
+	$link_back = "<a href=\"player.php?player_id=".htmlentities(urlencode($target_id))."\">Ninja Detail</a>";
 } else {
 	$link_back = "<a href=\"inventory.php\">Inventory</a>";
 }
@@ -91,12 +98,14 @@ class Item
 	protected $m_turnCost;
 	protected $m_turnChange;
 	protected $m_covert;
+	protected $m_type;
 
 	public function __construct($p_name) {
 		$this->m_ignoresStealth = false;
 		$this->m_name = trim($p_name);
 		$this->m_turnCost = 1;
 		$this->m_turnChange = null;
+		$this->m_type = item_id_from_display_name($p_name);
 	}
 
 	public function getName()
@@ -128,6 +137,9 @@ class Item
 
 	public function isCovert()
 	{ return $this->m_covert; }
+	
+	public function getType()
+	{ return $this->m_type; }
 }
 // Default could be an error later.
 
@@ -146,13 +158,13 @@ if ($item == 'Dim Mak') {
 	$speedScroll->setCovert(true);
 } else if ($item == 'Fire Scroll') {
 	$item = $fireScroll = new Item('Fire Scroll');
-	$fireScroll->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
+	$item->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
 } else if ($item == 'Shuriken') {
 	$item = $shuriken = new Item('Shuriken');
-	$shuriken->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
-} else if ($item == 'Ice Scroll') {
-	$item = $iceScroll = new Item('Ice Scroll');
-	$iceScroll->setTurnChange(-1*ice_scroll_turns($targets_turns, $near_level_power_increase));
+	$item->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
+} else if ($item == 'Caltrops') {
+	$item = $caltrops = new Item('Caltrops');
+	$item->setTurnChange(-1*caltrop_turn_loss($targets_turns, $near_level_power_increase));
 	// ice scroll turns comes out negative already, apparently.
 } else if ($item == 'Stealth Scroll') {
 	$item = $stealthScroll = new Item('Stealth Scroll');
@@ -322,7 +334,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			if ($victim_alive == true && $using_item == true) {
 				$self_targetting = ($selfTarget ? '&amp;selfTarget=1' : '');
 
-				echo "<br><a href=\"inventory_mod.php?item=".urlencode($item->getName())."&amp;target=$target{$self_targetting}\">Use {$item->getName()} again?</a><br>\n";  //Repeat Usage
+				echo "<br><a href=\"inventory_mod.php?item_type=".urlencode($item->getType())."&amp;target_id=$target_id{$self_targetting}\">Use {$item->getName()} again?</a><br>\n";  //Repeat Usage
 			}
 		}
 	}

@@ -59,23 +59,6 @@
 </tr>
 <tr>
   <td>
-  <input name="item" type="submit" value="Ice Scroll" class="shopButton">
-  </td>
-
-  <td>
-  Reduces Turns
-  </td>
-
-  <td>
-  $125
-  </td>
-
-  <td>
-  <img style='width:55px;height:20px' src="images/scroll.png" alt="Scroll">
-  </td>
-</tr>
-<tr>
-  <td>
   <input name="item" type="submit" value="Speed Scroll" class="shopButton">
   </td>
 
@@ -108,6 +91,25 @@
   <img style='width:55px;height:20px' src="images/scroll.png" alt="Scroll">
   </td>
 </tr>
+
+<tr>
+  <td>
+  <input name="item" type="submit" value="Caltrops" class="shopButton">
+  </td>
+
+  <td>
+  Reduces Turns
+  </td>
+
+  <td>
+  $125
+  </td>
+
+  <td>
+  <img style='width:23px;height:20px;background-color:black;' src="images/caltrops.png" alt="Scroll">
+  </td>
+</tr>
+
 <tr>
   <td>
   <input name="item" type="submit" value="Shuriken" class="shopButton">

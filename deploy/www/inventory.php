@@ -1,4 +1,6 @@
 <?php
+require_once(LIB_ROOT."specific/lib_inventory.php");
+
 $private   = true;
 $alive     = false;
 
@@ -8,42 +10,51 @@ if ($error = init($private, $alive)) {
 
 $username = get_username();
 $user_id = get_user_id();
-$sql = "SELECT amount AS count, item AS name FROM inventory WHERE owner = :owner";
+$sql = "SELECT amount AS count, item_display_name AS name FROM inventory join item on item_type = item.item_id WHERE owner = :owner";
 $inv_counts = query_resultset($sql, array(':owner'=>array($user_id, PDO::PARAM_INT)));
 $gold = getGold($username);
 
 // TODO: move this to a more standard location so that it can be used, for example, in the shop.
 function standard_items() {
 	// Codename means it can have a link to be used, apparently...
+	// Pull this from the database.
 
 	return array(
 		'Speed Scroll' => array(
 			'codename'   => 'Speed Scroll'
 			, 'display'  => 'Speed Scrolls'
+			, 'item_id'  => item_id_from_display_name('Speed Scroll')
 		)
 		, 'Stealth Scroll' => array(
 			'codename'   => 'Stealth Scroll'
 			, 'display'  => 'Stealth Scrolls'
+			, 'item_id'  => item_id_from_display_name('Stealth Scroll')
 		)
 		, 'Shuriken' => array(
 			'display'  => 'Shuriken'
+			, 'item_id'  => item_id_from_display_name('Shuriken')
 		)
 		, 'Fire Scroll' => array(
 			'display'  => 'Fire Scrolls'
+			, 'item_id'  => item_id_from_display_name('Fire Scroll')
 		)
-		, 'Ice Scroll' => array(
-			'display'  => 'Ice Scrolls'
+		, 'Caltrops' => array(
+			'display'  => 'Caltrops'
+			, 'item_id'  => item_id_from_display_name('Caltrops')
 		)
 		, 'Dim Mak' => array(
 			'display'  => 'Dim Mak'
+			, 'item_id'  => item_id_from_display_name('Dim Mak')
 		)
 		, 'Ginseng Root' => array(
 			'codename'   => 'Ginseng Root'
 			, 'display'  => 'Ginseng Roots'
+			, 'item_id'  => item_id_from_display_name('Ginseng Root')
 		)
 		, 'Tiger Salve' => array(
 			'codename'   => 'Tiger Salve'
 			, 'display'  => 'Tiger Salves'
+			, 'item_id'  => item_id_from_display_name('Tiger Salve')
 		)
 	);
 }

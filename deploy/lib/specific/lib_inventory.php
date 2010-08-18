@@ -4,6 +4,19 @@
 
 // FUNCTIONS
 
+
+function item_identity($item_id){
+    return query_item('select item_internal_name from item where item_id = :item_id', array(':item_id'=>array($item_id, PDO::PARAM_INT)));    
+}
+
+function item_id_from_display_name($item_display_name){
+    return query_item('select item_id from item where item_display_name = :item_display_name', array(':item_display_name'=>array($item_display_name, PDO::PARAM_INT)));    
+}
+
+function item_display_name($item_id){
+    return query_item('select item_display_name from item where item_id = :item_id', array(':item_id'=>array($item_id, PDO::PARAM_INT)));
+}
+
 // Benefits for near-equivalent levels.
 function nearLevelPowerIncrease($level_difference, $max_increase) {
 	$res = 0;
@@ -24,9 +37,8 @@ function render_give_item($username, $target, $item){
     return "$target will receive your $item.<br>\n";
 }
 
-
-// Determine the turns for ice scroll.
-function ice_scroll_turns($targets_turns, $near_level_power_increase){
+// Determine the turns for caltrops, which was once ice scrolls.
+function caltrop_turn_loss($targets_turns, $near_level_power_increase){
     if ($targets_turns>50) {
     	$turns_decrease = rand(1,11)+$near_level_power_increase; // *** 1-11 + 0-10
     } elseif ($targets_turns>10) {
