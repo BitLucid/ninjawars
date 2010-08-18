@@ -65,6 +65,8 @@ function showErrorPage() {
 	}
 }
 
-set_exception_handler('globalExceptionHandler');
-set_error_handler('globalErrorHandler', E_USER_ERROR);
+if (TRAP_ERRORS) {
+	set_exception_handler('globalExceptionHandler');
+	set_error_handler('globalErrorHandler', E_USER_ERROR);
+}
 ?>

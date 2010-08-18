@@ -8,7 +8,7 @@
 class PlayerVO {
 	public $player_id, $uname, $pname, $health, $strength, $gold,
 	  	$messages, $kills, $turns, $confirm, $confirmed, $email,
-	  	$_class_id, $identity, $class_name, $theme, 
+	  	$_class_id, $identity, $class_name, $theme,
 	  	$level, $status, $member, $days, $ip, $bounty, 
 	  	$created_date, $last_started_attack, $energy, $avatar_type;
 }

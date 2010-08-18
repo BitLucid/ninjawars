@@ -11,6 +11,4 @@ define('INVITED',     1<<6);
 define('STR_UP1',     1<<7);
 define('STR_UP2',     1<<8);
 define('HEALING',     1<<9);
-
-
 ?>

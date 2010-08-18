@@ -40,6 +40,7 @@ SYSTEM_EMAIL_NAME=''
 ALERTS_EMAIL=''
 TEMPLATE_CACHING=false
 VHOST_LISTEN='*'
+TRAP_ERRORS=true
 
 source_files=''
 configuration_file=''
@@ -195,6 +196,9 @@ while read curline; do
 		CRON_USER)
 		CRON_USER=$optarg
 		;;
+		TRAP_ERRORS)
+		TRAP_ERRORS=$optarg
+		;;
 		VHOST_LISTEN)
 		VHOST_LISTEN=$optarg
 		;;
@@ -274,6 +278,13 @@ sed -i -e {s/__SUPPORT_EMAIL_NAME__/"'"${SUPPORT_EMAIL_NAME//\//\\/}"'"/}  $reso
 sed -i -e {s/__SYSTEM_EMAIL__/"'"${SYSTEM_EMAIL//\//\\/}"'"/}              $resources_file
 sed -i -e {s/__SYSTEM_EMAIL_NAME__/"'"${SYSTEM_EMAIL_NAME//\//\\/}"'"/}    $resources_file
 sed -i -e {s/__ALERTS_EMAIL__/"'"${ALERTS_EMAIL//\//\\/}"'"/}              $resources_file
+
+if [[ $TRAP_ERRORS == "true" ]]
+then
+    sed -i -e {s/__TRAP_ERRORS__/"true"/}  $resources_file
+else
+    sed -i -e {s/__TRAP_ERRORS__/"false"/} $resources_file
+fi
 
 if [[ $OFFLINE == "true" ]]
 then

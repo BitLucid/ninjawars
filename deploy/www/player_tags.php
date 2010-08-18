@@ -1,17 +1,23 @@
 <?php
+$private    = false;
+$alive      = false;
+
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
+
 require_once(LIB_ROOT."specific/lib_player_list.php");
 require_once(LIB_ROOT."specific/lib_player.php");
 
-$alive      = false;
-$private    = false;
-$quickstat  = false;
-$page_title = "Ninja List";
+$player_size = player_size();
 
-include SERVER_ROOT."interface/header.php";
-
-echo render_player_tags();
-
-include SERVER_ROOT."interface/footer.php";
-
-
+display_page(
+	'player-tags.tpl'	// *** Main Template ***
+	, 'Ninja List'	// *** Page Title ***
+	, array('player_size' => $player_size)	// *** Page Variables ***
+	, array(	// *** Page Options ***
+		'quickstat' => false
+	)
+);
+}
 ?>

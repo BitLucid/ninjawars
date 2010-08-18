@@ -25,27 +25,6 @@ function player_size() {
 	return $res;
 }
 
-function render_player_tags() {
-	$players = player_size();
-	//$clans = @natsort2d($clans, 'level');
-	$res = "<div id='player-tags'>
-	              <h4 id='player-tags-title'>
-	                  All Players
-	              </h4>
-	          <ul>";
-
-	foreach ($players as $player => $info) {
-		$res .= "<li class='player-tag size{$info['size']}'>
-	              <a href='player.php?player_id=".urlencode($info['player_id'])."'>$player</a>
-	          </li>";
-	}
-
-	$res .= "</ul>
-	          </div>";
-
-	return $res;
-}
-
 // Display the recently active players
 function render_active($limit=5, $alive_only=true) {
 	$where_cond = ($alive_only ? 'and health>0' : '');

@@ -12,7 +12,7 @@ if (!get_user_id()) {
 
 include SERVER_ROOT."interface/header.php";
 
-function render_enemy_matches($match_string) {
+function get_enemy_matches($match_string) {
 	DatabaseConnection::getInstance();
 
 	$user_id = get_user_id();
@@ -23,17 +23,7 @@ function render_enemy_matches($match_string) {
 
 	$statement->execute();
 
-	$res = null;
-
-	foreach ($statement as $loop_enemy) {
-		$res .= "<li><a href='enemies.php?add_enemy={$loop_enemy['player_id']}'><img src='".IMAGE_ROOT."icons/add.png' alt='Add enemy:'> Add {$loop_enemy['uname']}</a></li>";
-	}
-
-	if ($statement->rowCount() > 10) {
-		$res .= "<li>...with more matches...</li>";
-	}
-
-	return $res;
+	return $statement;
 }
 
 function add_enemy($enemy_id) {
@@ -150,7 +140,8 @@ $max_enemies  = false;
 $enemy_list   = get_setting('enemy_list');
 
 if ($match_string) {
-	$found_enemies = render_enemy_matches($match_string);
+	$found_enemies = get_enemy_matches($match_string);
+	$found_enemies = $found_enemies->fetchAll();
 }
 
 if (is_numeric($remove_enemy)) {
@@ -171,7 +162,7 @@ if (count($enemy_list) > ($enemy_limit - 1)) {
 
 $recent_attackers_section = render_recent_attackers();
 
-$parts = get_certain_vars(get_defined_vars());
+$parts = get_certain_vars(get_defined_vars(), array('found_enemies'));
 
 echo render_template('enemies.tpl', $parts);
 

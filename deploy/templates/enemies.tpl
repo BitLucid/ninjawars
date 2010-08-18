@@ -10,10 +10,8 @@
 </div>
 {/if}
 
-{if $found_enemies}
-<ul>
-    {$found_enemies}
-</ul>
+{if $found_enemies && count($found_enemies) gt 0}
+	{include file="enemy-matches.tpl" enemies=$found_enemies}
 {/if}
 
 {if $enemy_section}
