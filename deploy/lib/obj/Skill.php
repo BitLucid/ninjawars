@@ -5,7 +5,7 @@ require_once(LIB_ROOT."specific/lib_player.php");
 class Skill
 {
 	// *** Constructor should eventually get a specific skill's stats from the database.
-
+	
 	/**
 	 * This should eventually get ids from the database,
 	 * for now, consider the ids as the array indexes.
@@ -66,9 +66,12 @@ class Skill
 	**/
 	public function skills($char_id=null) {
 	    if(!$char_id){ $char_id = get_char_id(); }
-		$username = get_username($char_id);
+	    $char = new Player($char_id);
+		$char_name = $char->name();
 
-		if (false && DEBUG && $username == 'tchalvak') {
+		if ($char->isAdmin()) {
+		    // Admins get access to all skills.
+		
 			$skills = $this->skill_map['Crane'] +
 				$this->skill_map['Dragon'] +
 				$this->skill_map['Mantis'] +
@@ -110,17 +113,17 @@ class Skill
 	**/
 	public function hasSkills($username=null) {
 		$skills_avail = array();
-
 		foreach ($this->getSkillList() as $loop_skill) {
 			if ($this->hasSkill($loop_skill, $username)) {
 				$skills_avail[$loop_skill] = $loop_skill;
 			}
 		}
-
 		return $skills_avail;
 	}
 
+    // Get the turn costs of the skills, which default to 1.
 	public function getTurnCost($type) {
+	    $type = strtolower($type);
 		$skillsTypeToTurns = array(
 			'cold steal'     => 3
 			, 'ice bolt'     => 2
@@ -136,46 +139,44 @@ class Skill
 			, 'steal'        => 1
 			, 'kampo'        => 1
 			, 'evasion'      => 2
-			, 'heal'         => 2
+			, 'heal'         => 3
 		);
-
 		$res = 1; // default
-
-		if (isset($skillsTypeToTurns[strtolower($type)])) {
-			$res = $skillsTypeToTurns[strtolower($type)];
+		if (isset($skillsTypeToTurns[$type])) {
+			$res = $skillsTypeToTurns[$type];
 		}
-
 		return $res; // *** Throws back the turns cost.
 	}
 
+    // Check whether the item is usable on yourself.
 	public function getSelfUse($type) {
+	    $type = strtolower($type);
 		$skillsTypeToSelf = array(
 			'stealth'     => true
 			, 'unstealth' => true
 			, 'kampo'     => true
 			, 'heal'      => true
 		);
-
-		$res = false; // default
-
-		if (isset($skillsTypeToSelf[strtolower($type)])) {
+		$res = false; // default is that they're not self usable.
+		if (isset($skillsTypeToSelf[$type])) {
 			$res = true;
 		}
-
 		return $res;
 	}
 
 	// Whether the skill is usable on someone other than self.
 	public function getUsableOnTarget($type) {
+	    $type = strtolower($type);
 		$skillsUsableOnTarget = array(
 			'stealth'     => false
 			, 'unstealth' => false
 		);
-
-		return !(isset($skillsUsableOnTarget[strtolower($type)]));
+		// By default, skills aren't usable on self.
+		return !(isset($skillsUsableOnTarget[$type]));
 	}
 
 	public function getIgnoreStealth($type) {
+	    $type = strtolower($type);
 		$skillsThatIgnoreStealth = array(
 			'sight'          => true
 			, 'deflect'      => true
@@ -185,10 +186,8 @@ class Skill
 			, 'ice bolt'     => true
 			, 'fire bolt'    => true
 		);
-
 		// Fire bolt probably shouldn't break stealth now.
-
-		return (isset($skillsThatIgnoreStealth[strtolower($type)]));
+		return (isset($skillsThatIgnoreStealth[$type]));
 	}
 
 	//public static $skillsNumbers = array(1 => 'cold steal', 2 => 'ice bolt',

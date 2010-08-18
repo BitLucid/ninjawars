@@ -37,12 +37,14 @@ $has_skill = $skillListObj->hasSkill($command);
 $starting_turn_cost = $turn_cost;
 assert($turn_cost>=0);
 $turns_to_take = null;  // *** Even on failure take at least one turn.
+$char_id = get_char_id();
 
-$player          = new Player($username);
+$player          = new Player($char_id);
 
 if ($target != '' && $target != $player->player_id) {
 	$target = new Player($target);
-	$link_back = "<a href=\"player.php?player_id={$target->vo->player_id}\">Player Detail</a>";
+	$target_id = $target->id();
+	$link_back = "<a href='player.php?player_id=$target_id'>Ninja Detail</a>";
 } else {
     $link_back = "<a href=\"skills.php\">Skills</a>";
 	$target    = $player;
@@ -229,17 +231,23 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		}
 	} else if ($command == 'Heal') {
 		if ($starting_turns >= $turn_cost) {
-		    // Check that the target is not already status healed.
+		    // Check that the target is not already status healing.
+		    $heal_per_level = 10;
+		    $healed_by = $player->level()*$heal_per_level;		    
+		    $target_current_health = $target->health();
+		    $target_max_health = $target->max_health();
 		    if($target->hasStatus(HEALING)){
 		        $turn_cost = 0;
-		        echo "That ninja is already under a healing aura.";
+		        echo $target->name()." is already under a healing aura.";
+            } elseif($target_current_health>=$target_max_health){
+                $turn_cost = 0;
+                echo $target->name()." is already fully healed.";
             } else {
-    		    $self_level = 150;
-    		    $healed_by = $self_level*2;
-    		    $new_health = addHealth($target->vo->uname, $healed_by);
-    		    $result = "$target healed by $healed_by to $new_health.<br>";
-    		    if($target->vo->uname != $attacker_id){
-        		    sendMessage($attacker_id, $target->vo->uname, 
+    		    $new_health = $target->heal($healed_by);
+    		    $target->addStatus(HEALING);
+    		    $result = $target->name()." healed by $healed_by to $new_health.<br>";
+    		    if($target->name() != $player->name()){
+        		    sendMessage($attacker_id, $target->name(), 
         		        "You have been healed by $attacker_id at $today for $healed_by.");
         		}
             }

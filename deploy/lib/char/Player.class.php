@@ -38,6 +38,18 @@ class Player
 	public function __toString() {
 		return $this->vo->uname;
 	}
+	
+	public function name(){
+		return $this->vo->uname;
+	}
+	
+	public function id(){
+	    return $this->vo->player_id;
+	}
+	
+	public function level(){
+	    return $this->vo->level;
+	}
 
 	// Save the Player state.
 	public function save() {
@@ -114,6 +126,14 @@ class Player
 		$activity_threshhold = 91;
 		return ($this->vo->days < $activity_threshhold);
 	}
+	
+	public function isAdmin(){
+	    $name = strtolower($this->name());
+	    if($name == 'tchalvak' || $name == 'beagle'){
+	        return true;
+	    }
+	    return false;
+	}
 
 	public function death() {
 		$this->resetStatus();
@@ -142,6 +162,54 @@ class Player
 		} else {
 			return null;
 		}
+	}
+
+    // Complex wrapper that allows for robust healing with a limit of the max health.	
+	public function heal($amount){
+	    $health = $this->health();
+	    $max_health = $this->max_health();
+	    
+        if(($health+$amount)>$max_health){
+            $amount = $max_health-$health;
+        }
+	    return $this->addHealth($amount);
+	}
+	
+	// Simple wrapper for changeHealth
+	public function addHealth($amount){
+	    return $this->changeHealth($amount);
+	}
+	
+	// Simple wrapper for subtractive action.
+	public function subtractHealth($amount){
+	    return $this->changeHealth((-1*(int)$amount));
+	}
+	
+	// To subtract just send in a negative integer.
+	public function changeHealth($add_amount){
+    	$amount = (int)$add_amount;
+    	$amount2 = $amount;
+    	if (abs($amount) > 0) {
+        	$id = $this->id();
+            // Set health = 0 when it's less than zero, otherwise modify it.
+    	    $up = "UPDATE players SET health = 
+    		   CASE WHEN health + :amount < 0 THEN 0 ELSE health + :amount2 END 
+    		   WHERE player_id  = :player_id";
+    		query($up, array(':player_id'=>array($id, PDO::PARAM_INT),
+    		    ':amount'=>$amount, ':amount2'=>$amount2));
+    	}
+    	return $this->health(); // Return the current health.
+	}
+
+    // Pull the current health.	
+	public function health(){
+	    $id = $this->id();
+        $sel = "SELECT health from players where player_id = :id";
+		return query_item($sel, array(':id'=>array($id, PDO::PARAM_INT)));
+	}
+	
+	public function max_health(){
+	    return determine_max_health($this->level());
 	}
 		
 }
