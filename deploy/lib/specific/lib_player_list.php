@@ -25,13 +25,12 @@ function player_size() {
 	return $res;
 }
 
-// Display the recently active players
-function render_active($limit=5, $alive_only=true) {
-	$where_cond = ($alive_only ? 'and health>0' : '');
-	$sel = "select uname, player_id from players where confirmed=1 $where_cond order by last_started_attack desc limit :limit";
+// query the recently active players
+function get_active_players($limit=5, $alive_only=true) {
+	$where_cond = ($alive_only ? ' AND health > 0' : '');
+	$sel = "SELECT uname, player_id FROM players WHERE confirmed = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
 	$active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
-	$active = render_template('player_list.active.tpl', array('active_ninjas'=>$active_ninjas));
-	return $active;
+	return $active_ninjas;
 }
 
 // Function to format each row of the player list.
@@ -54,29 +53,4 @@ function format_ninja_row($a_player){
 	);
 	return $row;
 }
-
-
-// Display first/previous/page/next/last
-function render_player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages) {
-
-	$pageprev = $page -1;
-	$pagenext = $page +1;
-    $last_page = (($totalrows - ($record_limit * $page)) > 0);
-	
-	// Use the page's template, here.
-	$nav = render_template('player_list.nav.tpl', 
-	    array(
-	        'page'=>$page,
-	        'hide'=>$hide,
-	        'searched'=>$searched,
-	        'record_limit'=>$record_limit,
-	        'totalrows'=>$totalrows,
-	        'numofpages'=>$numofpages,
-	        'pageprev'=>$pageprev,
-	        'pagenext'=>$pagenext,
-            'last_page'=>$last_page));
-    return $nav;
-} // End of display functions.
-
-
 ?>

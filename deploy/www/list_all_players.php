@@ -103,14 +103,12 @@ for ($i = 0;$i < count($queryParams); $i++) {	// *** Reformulate if queryParams 
 
 $ninja_info->execute();
 
-// Create the nav.
-$player_list_nav = render_player_list_nav($page, $hide, $searched, $record_limit, $totalrows, $numofpages);
+$last_page = (($totalrows - ($record_limit * $page)) > 0);
 
-// Display the recently-active-ninja section.
-
-$active_ninja = '';
 if (!$searched) { // Will not display active ninja on a search page.
-	$active_ninja = render_active(5, $alive_only); // Display the currently active ninjas
+	$active_ninjas = get_active_players(5, $alive_only); // get  the currently active ninjas
+} else {
+	$active_ninjas = null;
 }
 
 // Format each of the player rows, then just pass 'em to the template.
@@ -125,7 +123,7 @@ while ($a_player = $ninja_info->fetch()) {
 	$ninja_count++;
 }
 
-$parts = get_certain_vars(get_defined_vars(), $whitelist=array('ninja_rows'));
+$parts = get_certain_vars(get_defined_vars(), $whitelist=array('ninja_rows', 'active_ninjas'));
 
 display_page(
 	'player_list.tpl'	// *** Main Template ***

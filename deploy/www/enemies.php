@@ -130,7 +130,7 @@ function get_recent_attackers() {
 }
 
 
-$active_ninja = render_active(5, $alive_only=true); // Display the currently active ninjas
+$active_ninjas = get_active_players(5, true); // Get the currently active ninjas
 
 $match_string = in('enemy_match', null, 'no filter');
 $add_enemy    = in('add_enemy', null, 'toInt');
@@ -162,7 +162,7 @@ if (count($enemy_list) > ($enemy_limit - 1)) {
 
 $recent_attackers_section = render_recent_attackers();
 
-$parts = get_certain_vars(get_defined_vars(), array('found_enemies'));
+$parts = get_certain_vars(get_defined_vars(), array('found_enemies', 'active_ninjas'));
 
 echo render_template('enemies.tpl', $parts);
 

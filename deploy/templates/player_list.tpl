@@ -2,64 +2,65 @@
 
 {if $searched}
 <div>
-	Searching for: {$searched|escape} <a href="{$templatelite.const.WEB_ROOT}list_all_players.php">(Clear Search)</a>
+  Searching for: {$searched|escape} <a href="{$templatelite.const.WEB_ROOT}list_all_players.php">(Clear Search)</a>
 </div>
 {/if}
 
 <div id='player-list'>
-	{if $ninja_count eq 0}
-	<!-- Search found nothing to display -->
-	<p class='notice'>No ninja to display.</p>
-	<p><a href="list_all_players.php?hide={$hide}">Back to Ninja List</a></p>
-	{/if}
-	
-	<div class='list-all-players-search centered'>
-	  <form action="list_all_players.php" method="get">
-	    <div>
-	      <input type="text" name="searched" class='textField' style="font-family:Verdana, Arial;font-size:xx-small;">
-	     <input type="hidden" name="hide" value="{$hide}">
-	      <button type='submit' class='formButton' value='1'>Search for Ninja</button>
-
-{if !$searched}
-    		<a href="list_all_players.php?page={$page}&amp;hide={if $hide == "dead"}none{else}dead{/if}&amp;searched={$searched}">
-    		    ({if $hide == "dead"}Show{else}Hide{/if} {$dead_count} dead ninja)
-    		</a>
+{if $ninja_count eq 0}
+  <!-- Search found nothing to display -->
+  <p class='notice'>No ninja to display.</p>
+  <p><a href="list_all_players.php?hide={$hide|escape:'url'}">Back to Ninja List</a></p>
 {/if}
 
-	    </div>
-	  </form>
-	</div>
+  <div class='list-all-players-search centered'>
+    <form action="list_all_players.php" method="get">
+      <div>
+        <input type="text" name="searched" class='textField' style="font-family:Verdana, Arial;font-size:xx-small;">
+        <input type="hidden" name="hide" value="{$hide|escape}">
+        <button type='submit' class='formButton' value='1'>Search for Ninja</button>
 
-	
-	<!-- The player list navigation section -->
-	{$player_list_nav}
-	<!-- Active Lurker List -->
-	{$active_ninja}
+{if !$searched}
+       <a href="list_all_players.php?page={$page|escape:'url'}&amp;hide={if $hide == "dead"}none{else}dead{/if}&amp;searched={$searched|escape:'url'}">
+         ({if $hide == "dead"}Show{else}Hide{/if} {$dead_count} dead ninja)
+       </a>
+{/if}
 
-	<!-- Table header -->
-	<table class="playerTable outer-table">
+     </div>
+   </form>
+  </div>
+
+  <!-- The player list navigation section -->
+{include file='player_list.nav.tpl'}
+
+  <!-- Active Lurker List -->
+{if $active_ninjas}
+	{include file='player_list.active.tpl' active_ninja=$active_ninjas}
+{/if}
+
+  <!-- Table header -->
+  <table class="playerTable outer-table">
 	  <tr class='playerTableHead'>
 		<th>Rank</th><th>Name</th><th>Level</th><th>Class</th><th>Clan</th>
 	  </tr>
 	  <!--  Loop over and display each of the players in a table row format -->
-	  
-	  
-	  
+
+
 {foreach from=$ninja_rows key=row item=ninja}
 		<!-- Darken row if dead, change a little on odd vs. even -->
 		<tr class="playerRow {$ninja.alive_class} {$ninja.odd_or_even}">
-		  <td class="playerCell rankCell">{$ninja.player_rank}</td>
+		  <td class="playerCell rankCell">{$ninja.player_rank|escape}</td>
 		  <td class="playerCell nameCell">
 		  	<a href="player.php?player_id={$ninja.player_id|escape:"url"}">{$ninja.uname|escape}</a>
 		  </td>
 		  <!-- Level category as a static resource -->
 		  <td class="playerCell levelCell">
-		  	<span class='{$ninja.level_cat_css}'>{$ninja.level_cat} [{$ninja.level}]</span>
+		  	<span class='{$ninja.level_cat_css}'>{$ninja.level_cat|escape} [{$ninja.level|escape}]</span>
 		  </td>
 		  <td class="playerCell classCell">
 		    <!-- Display an image of the right colored shuriken. -->
-		    <span class='{$ninja.class_theme}'><img style='width:20px;height:17px' src='{$templatelite.const.WEB_ROOT}images/small{$ninja.class_theme}Shuriken.gif' alt=''>
-		      {$ninja.class}
+		    <span class='{$ninja.class_theme}'><img style='width:20px;height:17px' src='{$templatelite.const.WEB_ROOT}images/small{$ninja.class_theme|escape:'url'}Shuriken.gif' alt=''>
+		      {$ninja.class|escape}
 		    </span>
 		  </td>
 		  <td class="playerCell clanCell">
@@ -71,9 +72,9 @@
 		</tr>
 		-->
 {/foreach}
-	  
+
 	</table><!-- End the player table -->
 
 	<!-- Display the nav again -->
-	{$player_list_nav}
+{include file='player_list.nav.tpl'}
    </div> <!-- End of player list -->

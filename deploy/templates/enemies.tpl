@@ -26,5 +26,4 @@
 
 {$recent_attackers_section}
 
-{$active_ninja}
-
+{include file='player_list.active.tpl' active_ninja=$active_ninjas}
