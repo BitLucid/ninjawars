@@ -22,14 +22,14 @@ $vicious_killer = $stats['vicious_killer'];
 
 <?php
 DatabaseConnection::getInstance();
-$statement = DatabaseConnection::$pdo->query("SELECT * FROM dueling_log ORDER BY id DESC LIMIT 500");
+$statement = DatabaseConnection::$pdo->query("SELECT dueling_log.*, attackers.player_id AS attacker_id, defenders.player_id AS defender_id FROM dueling_log JOIN players AS attackers ON attackers.uname = attacker JOIN players AS defenders ON defender = defenders.uname ORDER BY id DESC LIMIT 500");
 
 if ($duel = $statement->fetch()) {
 	echo "<ul id='duel-log'>";
 
 	do {
 		echo "<li>";
-		echo render_player_link($duel['attacker'])." has dueled ".render_player_link($duel['defender'])." and ".($duel['won']?'won':'lost')." for {$duel['killpoints']} killpoints on {$duel['date']}";
+		echo render_template('player-link.tpl', array('username'=>$duel['attacker'], 'id'=>$duel['attacker_id']))." has dueled ".render_template('player-link.tpl', array('username'=>$duel['defender'], 'id'=>$duel['defender_id']))." and ".($duel['won'] ? 'won' : 'lost')." for {$duel['killpoints']} killpoints on {$duel['date']}";
 		echo "</li>";
 	} while ($duel = $statement->fetch());
 

@@ -329,10 +329,6 @@ function render_item_use_on_another($target) {
 	return $res;
 }
 
-function render_player_link($username) {
-    return "<a href='player.php?player=".htmlentities(urlencode($username))."'>".htmlentities($username)."</a>";
-}
-
 // Check whether the player is the leader of their clan.
 function is_clan_leader($player_id) {
 	return (($clan = get_clan_by_player_id($player_id)) && $player_id == get_clan_leader_id($clan->getID()));
