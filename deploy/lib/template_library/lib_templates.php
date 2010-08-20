@@ -125,7 +125,7 @@ function display_static_page($page, $pages, $vars=array(), $options=array()) {
 			$callback = @$page_info['callback'];
 
 			if ($callback && function_exists($callback)) {
-				$vars = $callback(); // Call the callback to return the vars.
+				$vars = array_merge($callback(), $vars); // Call the callback to return the vars.
 			}
 		}
 

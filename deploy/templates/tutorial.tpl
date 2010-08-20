@@ -2,10 +2,8 @@
 
 <h3>Live by the Sword!</h3>
 
-
 <script type='text/javascript'>
 {literal}
-
 $(document).ready(function () {
 
     $('#show-faqs').click(function(){
@@ -17,13 +15,10 @@ $(document).ready(function () {
     $('#faqs').toggle();
 
 });
-
 {/literal}
 </script>
 
-
-{$progression}
-
+{include file='progression.tpl' user_id=$user_id}
 
 <a target='main' href="tutorial.php?show-faqs=true" id='show-faqs'>
   <div style='margin: .3em auto;text-align:center;font-size:1.1em;font-style:italic;border:2px dashed blue;'>
