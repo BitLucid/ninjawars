@@ -47,8 +47,7 @@ $item_used      = true;
 
 $target_id = get_char_id($target);
 
-$statement = query("SELECT sum(amount) FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :owner AND lower(item_display_name) = lower(:item)", array(':owner'=>array($user_id, PDO::PARAM_INT), ':item'=>strtolower($item)));
-$item_count     = $statement->fetchColumn();
+$item_count = item_count($user_id, $item);
 
 if ($selfTarget) {
 	$target = $username;
@@ -84,65 +83,10 @@ if (in_array($give, array("on", "Give"))) {
 
 // Sets the page to link back to.
 if ($target_id && $link_back == "") {
-	$link_back = "<a href=\"player.php?player_id=".htmlentities(urlencode($target_id))."\">Ninja Detail</a>";
+	$link_back = "<a href=\"player.php?player_id=".urlencode($target_id)."\">Ninja Detail</a>";
 } else {
 	$link_back = "<a href=\"inventory.php\">Inventory</a>";
 }
-
-// This could probably be moved to some lib file for use in different places.
-class Item
-{
-	protected $m_name;
-	protected $m_ignoresStealth;
-	protected $m_targetDamage;
-	protected $m_turnCost;
-	protected $m_turnChange;
-	protected $m_covert;
-	protected $m_type;
-
-	public function __construct($p_name) {
-		$this->m_ignoresStealth = false;
-		$this->m_name = trim($p_name);
-		$this->m_turnCost = 1;
-		$this->m_turnChange = null;
-		$this->m_type = item_id_from_display_name($p_name);
-	}
-
-	public function getName()
-	{ return $this->m_name; }
-
-	public function setIgnoresStealth($p_ignore)
-	{ $this->m_ignoresStealth = (boolean)$p_ignore; }
-
-	public function ignoresStealth()
-	{ return $this->m_ignoresStealth; }
-
-	public function setTargetDamage($p_damage)
-	{ $this->m_targetDamage = (float)$p_damage; }
-
-	public function getTargetDamage()
-	{ return $this->m_targetDamage; }
-
-	public function getTurnCost()
-	{ return $this->m_turnCost; }
-
-	public function setTurnChange($p_turns)
-	{ $this->m_turnChange = (float)$p_turns; }
-
-	public function getTurnChange()
-	{ return $this->m_turnChange; }
-
-	public function setCovert($p_covert)
-	{ $this->m_covert = (boolean)$p_covert; }
-
-	public function isCovert()
-	{ return $this->m_covert; }
-	
-	public function getType()
-	{ return $this->m_type; }
-}
-// Default could be an error later.
-
 
 $dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = $kampoFormula = $strangeHerb = null;
 
@@ -151,13 +95,13 @@ if ($item == 'Dim Mak') {
 	$item = $dimMak = new Item('Dim Mak');
 	$dimMak->setIgnoresStealth(true);
 	$dimMak->setCovert(true);
-} else if ($item == 'Speed Scroll') {
-	$item = $speedScroll = new Item('Speed Scroll');
+} else if ($item == 'Amanita Mushroom') {
+	$item = $speedScroll = new Item('Amanita Mushroom');
 	$speedScroll->setIgnoresStealth(true);
 	$speedScroll->setTurnChange(6);
 	$speedScroll->setCovert(true);
-} else if ($item == 'Fire Scroll') {
-	$item = $fireScroll = new Item('Fire Scroll');
+} else if ($item == 'Phosphor Powder') {
+	$item = $fireScroll = new Item('Phosphor Powder');
 	$item->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
 } else if ($item == 'Shuriken') {
 	$item = $shuriken = new Item('Shuriken');
@@ -166,8 +110,8 @@ if ($item == 'Dim Mak') {
 	$item = $caltrops = new Item('Caltrops');
 	$item->setTurnChange(-1*caltrop_turn_loss($targets_turns, $near_level_power_increase));
 	// ice scroll turns comes out negative already, apparently.
-} else if ($item == 'Stealth Scroll') {
-	$item = $stealthScroll = new Item('Stealth Scroll');
+} else if ($item == 'Smoke Bomb') {
+	$item = $stealthScroll = new Item('Smoke Bomb');
 	$stealthScroll->setCovert(true);
 } else if ($item == 'Ginseng Root') {
 	$item = $strangeHerb = new Item('Ginseng Root');
@@ -333,8 +277,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 			if ($victim_alive == true && $using_item == true) {
 				$self_targetting = ($selfTarget ? '&amp;selfTarget=1' : '');
-
-				echo "<br><a href=\"inventory_mod.php?item_type=".urlencode($item->getType())."&amp;target_id=$target_id{$self_targetting}\">Use {$item->getName()} again?</a><br>\n";  //Repeat Usage
+                echo "<br><a href=\"inventory_mod.php?item_type=".urlencode($item->getType())."&amp;target_id=$target_id{$self_targetting}\">Use {$item->getName()} again?</a><br>\n";  //Repeat Usage
 			}
 		}
 	}

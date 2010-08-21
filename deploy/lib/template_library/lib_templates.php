@@ -134,7 +134,8 @@ function display_static_page($page, $pages, $vars=array(), $options=array()) {
 			$title = $page_info['title'];
 
 			$callback = @$page_info['callback'];
-
+			
+			// TODO: Merge the vars array instead of overwriting.
 			if ($callback && function_exists($callback)) {
 				$vars = array_merge($callback(), $vars); // Call the callback to return the vars.
 			}

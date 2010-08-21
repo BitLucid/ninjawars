@@ -1,135 +1,101 @@
+<style>
+{literal}
+table.shop-list{
+    margin-left:0;
+    margin-right:0;
+}
+form{
+    text-align:center;    
+}
+input.shopButton{
+    width:17em;
+}
+
+.gold{
+    color: rgb(255, 215, 0);
+}
+{/literal}
+</style>
+
+
 <h1>Shop</h1>
 
 <!-- For google ad targetting -->
 <!-- google_ad_section_start -->
 
-<div class='description'>
-{$description}
+<div class='description' style='margin-bottom:.3em'>
+{if $in_purchase}
+    {if $not_enough_gold}
+        <p>"The total comes to {$current_item_cost gold}," the shopkeeper tells you.</p>
+        <p>Unfortunately, you do not have that much gold.</p>
+    {else}
+        <p>The shopkeeper hands over {$quantity} {$item}{$grammar}.</p>
+        <p>"Will you be needing anything else today?" he asks you as he puts your gold in a safe.</p>
+    {/if}
+{else}
+    <p>You enter the village shop and the shopkeeper greets you with a watchful eye.</p>
+    <p>As you look over his wares he says, "Don't try anythin' you'd regret.", waves his hand at a katana on the wall, and grins at you.</p>
+{/if}
+
 </div>
 <form id="shop_form" action="shop.php" method="post" name="shop_form" {if !$is_logged_in}onsubmit="return false;"{/if}>
 <input id="purchase" type="hidden" value="1" name="purchase">
-<table>
-<tr>
-  <td colspan="4">&nbsp; </td>
-</tr>
+
+
+
+<table class='shop-list' style='border-collapse:separate; border-spacing:.3em;background-color:#333;'>
+
+<caption colspan='4' style='text-align:center;padding:.2em;font-size:1.3em;color:chocolate;'>
+    A Shelf of Items
+</caption>
 <!--
+<thead>
 <tr>
-  <td>
-  Item
-  </td>
-
-  <td>
-  Description
-  </td>
-
-  <td>
-  Cost
-  </td>
-
-  <td>
-  Picture
-  </td>
+  <td>  Item  </td>  <td>  Description  </td>  <td>  Cost  </td>  <td>  Picture  </td>
 </tr>
+</thead>
 -->
+
+
 <tr>
-  <td colspan="4" style="text-align: center;padding: 1em;">
-{if $is_logged_in}
-  How many of the choice below would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" value="1">
-{else}
-  To purchase the items below you must <a href="signup.php?referrer=">become a ninja</a>.
-{/if}
-  </td>
-</tr>
-<tr>
-  <td>
-  <input name="item" type="submit" value="Fire Scroll" class="shopButton">
-  </td>
-
-  <td>
-  Reduces HP
-  </td>
-
-  <td>
-  $175
-  </td>
-
-  <td>
-  <img style='width:55px;height:20px' src="images/scroll.png" alt="Scroll">
-</td>
-</tr>
-<tr>
-  <td>
-  <input name="item" type="submit" value="Speed Scroll" class="shopButton">
-  </td>
-
-  <td>
-  Increases Turns
-  </td>
-
-  <td>
-  $225
-  </td>
-
-  <td>
-  <img style='width:55px;height:20px' src="images/scroll.png" alt="Scroll">
-  </td>
-</tr>
-<tr>
-  <td>
-  <input name="item" type="submit" value="Stealth Scroll" class="shopButton">
-  </td>
-
-  <td>
-  Stealths a Ninja(<a href="about.php#magic">*</a>)
-  </td>
-
-  <td>
-  $150
-  </td>
-
-  <td>
-  <img style='width:55px;height:20px' src="images/scroll.png" alt="Scroll">
+  <td colspan="4" style="text-align: center;padding: .3em;">
+    {if $is_logged_in}
+      How many of an item below would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" value="1">
+    {else}
+      To purchase the items below you must <a href="signup.php?referrer=">become a ninja</a>.
+    {/if}
   </td>
 </tr>
 
+
+{foreach from=$item_costs item="item_info" key="item_internal_name"}
 <tr>
   <td>
-  <input name="item" type="submit" value="Caltrops" class="shopButton">
+    <input name="item" type="submit" value="{$item_info.item_display_name}" class="shopButton">
   </td>
 
   <td>
-  Reduces Turns
+    {$item_info.usage}
+  </td>
+
+  <td class='gold'>
+    ${$item_info.item_cost}
   </td>
 
   <td>
-  $125
-  </td>
-
-  <td>
-  <img style='width:23px;height:20px;background-color:black;' src="images/caltrops.png" alt="Scroll">
+    <img style='max-height:25px;max-width:50px' src="images/{$item_info.image}" alt="{$item_info.item_display_name}">
   </td>
 </tr>
+{/foreach}
 
-<tr>
-  <td>
-  <input name="item" type="submit" value="Shuriken" class="shopButton">
-  </td>
+<tfoot>
+    <tr>
+        <td colspan='4'>
+            &nbsp;
+        </td>
+    </tr>
+</tfoot>
 
-  <td>
-  Reduces HP
-  </td>
-
-  <td>
-  $50
-  </td>
-
-  <td>
-  <img src="images/mini_star.png" alt="Shuriken" style='width:25px;height:23px'>
-  </td>
-</tr>
-<tr>
-  <td colspan="4">&nbsp; </td>
-</tr>
 </table>
 </form>
 
@@ -147,6 +113,4 @@ google_ad_width = 300;
 google_ad_height = 250;
 //-->
 </script>
-<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>

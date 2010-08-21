@@ -422,7 +422,7 @@ function addItem($who, $item, $quantity = 1) {
 		$rows = $statement->rowCount();
 
 		if (!$rows) {
-			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO inventory (owner, item, amount) VALUES (:user, :item, :quantity)");
+			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO inventory (owner, item_type, amount) VALUES (:user, (select item_id from item where lower(item_display_name) = lower(:item)), :quantity)");
 			$statement->bindValue(':user', get_user_id($who));
 			$statement->bindValue(':item', $item);
 			$statement->bindValue(':quantity', $quantity);
