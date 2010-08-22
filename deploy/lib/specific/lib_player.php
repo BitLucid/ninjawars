@@ -125,42 +125,6 @@ function char_class_theme($char_id) {
         array(':char_id'=>$char_id));
 }
 
-
-
-// TODO: This is also begging for a template.
-function render_skills($target, $player) {
-	$skillDAO = new SkillDAO();
-	$skillListObj = new Skill();
-	$available_skills = $skillDAO->getSkillsByTypeAndClass($player->vo->_class_id, 'targeted', $player->vo->level);
-
-	$skill = $available_skills->fetch();
-
-	if (empty($skill)) {
-		return '';
-	} else {
-		ob_start();
-
-		echo "<form id=\"skill_use\" class='skill_use' action=\"skills_mod.php\" method=\"post\" name=\"skill_use\">\n";
-		echo "<ul>";
-
-		do {
-			echo "<li>";
-			echo "<input id=\"command\" class='command' type=\"submit\" value=\"".$skill['skill_display_name']."\" name=\"command\" class=\"formButton\">\n";
-			echo "<input id=\"target\" class='target' type=\"hidden\" value=\"$target\" name=\"target\">\n";
-			echo "(".$skillListObj->getTurnCost($skill['skill_display_name'])." Turns)\n";
-			echo "</li>";
-		} while ($skill = $available_skills->fetch());
-
-		echo "</ul>\n";
-		echo "</form>\n";
-
-		$res = ob_get_contents();
-		ob_end_clean();
-
-		return $res;
-	}
-}
-
 /**
  * Pull out the url for the player's avatar
 **/

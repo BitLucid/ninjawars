@@ -7,12 +7,7 @@ function display_error($p_error) {
 	display_page('error.tpl', 'Error', array('error'=>$p_error));
 }
 
-/** Displays a template wrapped in the header and footer as needed.
-  *
-  * Example use:
-  * display_page('add.tpl', 'Homepage', get_current_vars(get_defined_vars()), array());
-**/
-function display_page($template, $title=null, $local_vars=array(), $options=null) {
+function prep_page($template, $title=null, $local_vars=array(), $options=null) {
     // Updates the quickstat via javascript if requested.
     $quickstat = @$options['quickstat'];
     $quickstat = ($quickstat ? $quickstat : @$local_vars['quickstat']);
@@ -42,8 +37,20 @@ function display_page($template, $title=null, $local_vars=array(), $options=null
 	$tpl->assign('quickstat', $quickstat);
 	$tpl->assign('main_template', $template);
 
-	// the template
-	$tpl->display('full_template.tpl');
+	return $tpl;
+}
+
+/** Displays a template wrapped in the header and footer as needed.
+  *
+  * Example use:
+  * display_page('add.tpl', 'Homepage', get_current_vars(get_defined_vars()), array());
+**/
+function display_page($template, $title=null, $local_vars=array(), $options=null) {
+	display_prepped_template(prep_page($template, $title, $local_vars, $options));
+}
+
+function display_prepped_template($p_tpl) {
+	$p_tpl->display('full_template.tpl');
 }
 
 /** Will return the rendered content of the template.

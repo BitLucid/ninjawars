@@ -39,59 +39,68 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 	</div>
 
-    {if !$self}
+{if !$self}
     <table id='player-profile-table'>
       <tr>
-        {if $attack_error}
+	{if $attack_error}
         <td><div class='ninja-error centered'>Cannot Attack: {$attack_error}</div></td>
-      </tr></table>
-		{else}
-         <td colspan='2'>
-		   <table id='player-profile-attack'>
-		     <tr>
-		       <td id='attacking-choices'>
-			     <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
-			       <span id='duel'>
-                     <label>Duel<input id="duel" type="checkbox" name="duel"></label>
-                   </span>
+      </tr>
+    </table>
+	{else}
+        <td colspan='2'>
+          <table id='player-profile-attack'>
+            <tr>
+              <td id='attacking-choices'>
+                <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
+                  <span id='duel'>
+                    <label>Duel<input id="duel" type="checkbox" name="duel"></label>
+                  </span>
 
-			{foreach from=$combat_skills item="skill"}
-				   <span id='{$skill.skill_internal_name|escape}'>
-                     <label>
-                       {$skill.skill_display_name|escape}
-                       <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}">
-                     </label>
-                   </span>
-            {/foreach}
+		{foreach from=$combat_skills item="skill"}
+                  <span id='{$skill.skill_internal_name|escape}'>
+                    <label>
+                      {$skill.skill_display_name|escape}
+                      <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}">
+                    </label>
+                  </span>
+		{/foreach}
 
-			       <input id="target" type="hidden" value="{$target}" name="target" title='Attack or Duel this ninja'>
-                   <label class='attack-player-trigger'>
-                     <a onclick="document.attack_player.submit();"><input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack</a>
-                   </label>
-			     </form>
-			   </td>
+                  <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
+                  <label class='attack-player-trigger'>
+                    <a onclick="document.attack_player.submit();"><input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack</a>
+                  </label>
+                </form>
+              </td>
 
-			<!-- Inventory Items -->
-			   <td id='inventory-items'>
+              <!-- Inventory Items -->
+              <td id='inventory-items'>
 
-			{$item_use_section}
+                {$item_use_section}
 
-			   </td>
-             </tr>
-           </table>
-         </td>
-       </tr>
-     </table>
-     <div id='skills-section'>
-       <ul id='skills-use-list'>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <div id='skills-section'>
+		{if count($targeted_skills) gt 0}
+      <form id="skill_use" class="skill_use" action="skills_mod.php" method="post" name="skill_use">
+        <ul id='skills-use-list'>
+			{foreach from=$targeted_skills item="skill"}
+          <li>
+            <input id="command" class="command" type="submit" value="{$skill.skill_display_name}" name="command" class="formButton">
+            <input id="target" class="target" type="hidden" value="{$target|escape}" name="target">
+            ({getTurnCost skillName=$skill.skill_display_name} Turns)
+          </li>
+			{/foreach}
+        </ul>
+      </form>
+		{/if}
+    </div>
+	{/if} <!-- End of the attacking-had-no-errors section -->
 
-            {$skill_use_section}
-
-       </ul>
-     </div>
-	    {/if} <!-- End of the attacking-had-no-errors section -->
-
-	{/if} <!-- End of the "not self" viewing section -->
+{/if} <!-- End of the "not self" viewing section -->
 
      <div class='player-stats centered'>
        <!-- Will display as floats horizontally -->
@@ -107,8 +116,6 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
        <span class='player-bounty'>{$player_info.bounty} bounty</span>
 {/if}
      </div>
-
-	{$player_activity_section}
 
 {if is_logged_in() and !$self}
      <div class='set-bounty centered'>

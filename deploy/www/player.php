@@ -83,10 +83,10 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 			$skillDAO = new SkillDAO();
 
 			$combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level)->fetchAll();
-			    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
+			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level)->fetchAll();
+		    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
 
 			$item_use_section  = render_item_use_on_another($target);
-			$skill_use_section = render_skills($target, $viewing_player_obj);
 		}	// End of the there-was-no-attack-error section
 
 		$set_bounty_section     = '';
@@ -114,11 +114,16 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		// Send the info to the template.
 
 		$template = 'player.tpl';
-		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan'));
+		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan'));
 	}
 }
 
-display_page(
+function getTurnCost($p_params, &$tpl) {
+	$skillListObj = new Skill();
+	return $skillListObj->getTurnCost($p_params['skillName']);
+}
+
+$template = prep_page(
 	$template
 	, 'Player Profile'
 	, $parts
@@ -126,5 +131,10 @@ display_page(
 		'quickstat' => 'player'
 	)
 );
+
+$template->register_function('getTurnCost', 'getTurnCost');
+
+display_prepped_template($template);
+
 }
 ?>
