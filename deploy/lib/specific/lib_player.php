@@ -197,26 +197,6 @@ function render_avatar_from_email($email, $avatar_type=null, $size=null){
 	return $res;    
 }
 
-// Player activity and events information.
-function render_player_activity($player_info) {
-	$days = "Today";
-
-	if ($player_info['days']) {
-	    $days = $player_info['days']." days ago";
-	}
-
-	$bounty = $player_info['bounty'];
-	$bounty_section = ($bounty ? " - <span class='player-bounty'>$bounty bounty</span>" : '');
-	$res = <<<HEREDOC
-		<div class='player-stats centered'>
-			<!-- Will display as floats horizontally -->
-			<span class='player-last-active'>Last logged in $days</span>
-			$bounty_section
-		</div>
-HEREDOC;
-	return $res;
-}
-
 // Straight list of clan members
 function render_clan_members($clan_id = 0, $limit = 30) {
 	ob_start();

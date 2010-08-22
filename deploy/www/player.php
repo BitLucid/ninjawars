@@ -71,7 +71,6 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 
 		// Display the player info.
 		$status_list          = get_status_list($player);
-		$player_activity_section = render_player_activity($player_info);
 
 		$level_category          = level_category($player_info['level']);
 

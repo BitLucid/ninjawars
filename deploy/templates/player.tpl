@@ -93,6 +93,21 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 	{/if} <!-- End of the "not self" viewing section -->
 
+     <div class='player-stats centered'>
+       <!-- Will display as floats horizontally -->
+       <span class='player-last-active'>
+         Last logged in
+{if $player_info.days gt 0}
+         {$player_info.days} days ago
+{else}
+         Today
+{/if}
+       </span>
+{if $player_info.bounty gt 0}
+       <span class='player-bounty'>{$player_info.bounty} bounty</span>
+{/if}
+     </div>
+
 	{$player_activity_section}
 
 {if is_logged_in() and !$self}
