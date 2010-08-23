@@ -40,7 +40,9 @@ FOLLOW THESE OR BE RIDICULED:
       $foo = bar($baz, $qux);   // Good
       $foo = bar ( $baz,$qux ); // BAD
 
-* Comment anything that does not adhere to conventions. Things that are done
+*   A simple summary comment per function is a MINIMUM STARTING POINT.
+
+  Comment anything that does not adhere to conventions. Things that are done
   idiomatically or by convention probably do not need comments. Prefer adding
   to general-purpose documentation rather than documenting an individual,
   isolated example (e.g., document a base class instead of every extended
@@ -50,8 +52,6 @@ FOLLOW THESE OR BE RIDICULED:
   context. Assume the reader is a competent programmer and can understand
   the local code, unless it is extremely complex. API docs for libraries
   are the exception and should have meaningful summaries.
-  
-  A simple summary comment per function is a good minimum starting point.
 
 * Put closing parenthesis on the same line as the last line of code. E.g.,
   
