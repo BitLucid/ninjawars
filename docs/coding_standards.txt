@@ -2,7 +2,7 @@ FOLLOW THESE OR BE RIDICULED:
 
 * If statements must look like this:
 
-      if (true) {
+      if(true){
           ...
       }
   
@@ -24,6 +24,8 @@ FOLLOW THESE OR BE RIDICULED:
     Essentially, a starting base of One True Brace style:  
     http://en.wikipedia.org/wiki/Indent_style#Variant:_1TBS
 
+  Use line returns sparingly inside functions, it tends to make the code less readable instead of more readable.
+
 * Variables, functions, and filenames use underscores:
 
       $foo_bar = "baz"; // Good
@@ -34,6 +36,10 @@ FOLLOW THESE OR BE RIDICULED:
       $foo = new Foo_Bar_Baz(); // Good
       $foo = new FooBarBaz();   // BAD
       $foo = new foo_bar_baz(); // BAD
+
+* Class methods should be camelCase:
+
+      $out = $inst->someMethodName();
 
 * Function calls:
 
@@ -65,8 +71,13 @@ FOLLOW THESE OR BE RIDICULED:
   
       $old_values = ($old_record ? $old_record->values() : null);
 
+  AND NOT
+  
+      $recorded = 
+
 
 * Legacy Code:
 
     Don't rewrite older code to match the coding standards unless you're actually 
-    refactoring functionality as well.
+    refactoring functionality as well, because whitespace changes cause noise in commits
+    that make it hard to tell whether actual functionality changed or just whitespace.
