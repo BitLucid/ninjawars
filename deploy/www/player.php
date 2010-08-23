@@ -99,7 +99,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 
 		if ($clan) {
 			$viewer_clan  = (is_logged_in() ? get_clan_by_player_id($viewing_player_obj->vo->player_id) : null);
-			$clan_members = render_clan_members($clan->getID());
+			$clan_members = get_clan_members($clan->getID())->fetchAll(); // TODO - When we switch to Smarty 3, remove fetchAll for foreach
 			$clan_id      = $clan->getID();
 			$clan_name    = $clan->getName();
 
@@ -114,7 +114,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		// Send the info to the template.
 
 		$template = 'player.tpl';
-		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan'));
+		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan', 'clan_members'));
 	}
 }
 

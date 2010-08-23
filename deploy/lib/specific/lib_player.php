@@ -161,48 +161,25 @@ function render_avatar_from_email($email, $avatar_type=null, $size=null){
 	return $res;    
 }
 
-// Straight list of clan members
-function render_clan_members($clan_id = 0, $limit = 30) {
-	ob_start();
-
-	if ($clan_id) {
-		$sel = "SELECT uname, player_id, health FROM clan_player JOIN players ON player_id = _player_id AND _clan_id = :clanID AND confirmed = 1 ORDER BY health DESC, level DESC LIMIT :limit";
+// *** Get list of clan members from clan ***
+/// TODO - Should be moved to clan stuff
+function get_clan_members($p_clanID, $p_limit = 30) {
+	if ((int)$p_clanID == $p_clanID && $p_clanID > 0) {
+		$sel = "SELECT uname, player_id, health FROM clan_player JOIN players ON player_id = _player_id AND _clan_id = :clanID AND confirmed = 1 ORDER BY health DESC, level DESC ".(!is_null($p_limit) && $p_limit > 0 ? "LIMIT :limit" : '');
 		DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare($sel);
-		$statement->bindValue(':clanID', $clan_id);
-		$statement->bindValue(':limit', $limit);
-		$statement->execute();
-?>
-        <div class='clan-members'>
-            <h3 class='clan-members-header'>Clan members</h3>
-<?php
-		if ($ninja = $statement->fetch()) {
-			$display_ul = true;
-			echo "<ul>";
+		$statement->bindValue(':clanID', $p_clanID);
 
-			do {
-				$added_class = '';
-
-				if ($ninja['health'] < 1) {
-					$added_class = ' injured';
-				}
-
-				echo "<li class='clan-member$added_class'>
-                            <a href='player.php?target_id=", htmlentities(urlencode($ninja['player_id'])), "'>", htmlentities($ninja['uname']), "</a>
-                          </li>";
-			} while ($ninja = $statement->fetch());
-
-			echo "</ul>\n";
+		if (!is_null($p_limit) && $p_limit > 0) {
+			$statement->bindValue(':limit', $p_limit);
 		}
-?>
-        </div>
-<?php
+
+		$statement->execute();
+
+		return $statement;
+	} else {
+		return null;
 	}
-
-	$res = ob_get_contents();
-	ob_end_clean();
-
-	return $res;
 }
 
 /**

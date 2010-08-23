@@ -164,7 +164,24 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
         <a href='clan.php?command=view&amp;clan_id={$clan_id}'>{$clan_name|escape}</a>
       </p>
       <div class='clan-members centered'>
-        {$clan_members}
+{if count($clan_members) > 0}
+        <div class='clan-members'>
+          <h3 class='clan-members-header'>Clan members</h3>
+          <ul>
+	{foreach from=$clan_members item="member"}
+		{if $member.health < 1}
+			{assign var="added_class" value=' injured'}
+		{else}
+			{assign var="added_class" value=''}
+		{/if}
+
+            <li class='clan-member{$added_class}'>
+              <a href='player.php?target_id={$member.player_id|escape:'url'|escape}'>{$member.uname|escape}</a>
+            </li>
+	{/foreach}
+          </ul>
+        </div>
+{/if}
       </div>
     </div>
 {/if}
