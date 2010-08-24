@@ -76,6 +76,10 @@ FOLLOW THESE OR BE RIDICULED:
       $recorded = 
 
 
+* Database
+
+    Name the database tables with plural terms (e.g. Classes, Messages, Players, Octopi instead of Class, Message, Player, Octopus), by convention.
+
 * Legacy Code:
 
     Don't rewrite older code to match the coding standards unless you're actually 
