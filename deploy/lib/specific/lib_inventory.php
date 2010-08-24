@@ -125,23 +125,83 @@ function standard_items() {
 // This could probably be moved to some lib file for use in different places.
 class Item {
 	protected $m_name;
+	protected $m_plural;
 	protected $m_ignoresStealth;
 	protected $m_targetDamage;
+	protected $m_maxDamage;
 	protected $m_turnCost;
 	protected $m_turnChange;
+	protected $m_maxTurnChange;
 	protected $m_covert;
+	protected $m_selfUse;
 	protected $m_type;
+	protected $m_identity;
 
+    /*
 	public function __construct($p_name) {
 		$this->m_ignoresStealth = false;
 		$this->m_name = trim($p_name);
 		$this->m_turnCost = 1;
 		$this->m_turnChange = null;
 		$this->m_type = item_id_from_display_name($p_name);
+	}*/
+	
+	// Set all the default settings for items, overridden by specified settings.
+	public function __construct($p_id){
+	    $sel = 'select * from item where item_id = :item_id';
+	    $res = query_row($sel, array(':item_id'=>array((int)$p_id, PDO::PARAM_INT)));
+	    $this->m_type = $res['item_id'];
+	    $this->m_identity = $res['item_internal_name'];
+	    $this->m_name = $res['item_display_name'];
+	    $this->m_plural = $res['plural'];
+	    $this->m_turnCost = $res['turn_cost']? $res['turn_cost'] : 1;
+	    $this->m_maxTurnChange = $res['turn_change']? $res['turn_change'] : 0;
+	    $this->m_maxDamage = $res['target_damage']? $res['target_damage'] : null;
+	    $this->m_ignoresStealth = $res['ignore_stealth'] == 't'? true : false;
+	    $this->m_covert = $res['covert'] == 't'? true : false;
+	    $this->m_selfUse = $res['self_use'] == 't'? true : false;
 	}
 
 	public function getName()
 	{ return $this->m_name; }
+	
+	// Convenience function to get the plural name for the object.
+	public function getPluralName()
+	{
+	    return $this->m_name.$this->m_plural;
+    }
+    
+    public function __toString()
+    { return $this->getName(); }
+    
+    public function id()
+    { return $this->m_type; }
+    
+    // The item's internally used name.
+    public function identity()
+    { return $this->m_identity; }
+    
+
+    // Gets the list of effects that the item does.
+    function effects(){
+        $sel = 'select effect_identity, effect_name, effect_verb, effect_self from effects 
+            join item_effects on _effect_id = effect_id where _item_id = :item_id';
+        $data = query_array($sel, array(':item_id'=>array((int)$this->id(), PDO::PARAM_INT)));
+        $res = array();
+        foreach($data as $effect){
+            $res[$effect['effect_identity']] = $effect;
+        }
+        return $res;
+    }
+    
+    // Checks whether the item causes a certain effect.
+    function hasEffect($effect_identity){
+        if(array_key_exists($effect_identity, $this->effects())){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 	public function setIgnoresStealth($p_ignore)
 	{ $this->m_ignoresStealth = (boolean)$p_ignore; }
@@ -158,17 +218,24 @@ class Item {
 	public function getTurnCost()
 	{ return $this->m_turnCost; }
 
+    // Note that this just determines the -maximum- turn change.
 	public function setTurnChange($p_turns)
 	{ $this->m_turnChange = (float)$p_turns; }
 
 	public function getTurnChange()
 	{ return $this->m_turnChange; }
 
+    public function getMaxTurnChange()
+	{ return $this->m_maxTurnChange; }
+
 	public function setCovert($p_covert)
 	{ $this->m_covert = (boolean)$p_covert; }
 
 	public function isCovert()
 	{ return $this->m_covert; }
+	
+	public function isSelfUsable()
+	{ return $this->m_selfUse;	}
 	
 	public function getType()
 	{ return $this->m_type; }

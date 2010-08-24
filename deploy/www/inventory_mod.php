@@ -26,8 +26,12 @@ $give       = in('give');
 $item_type  = in('item_type');
 $target_id  = in('target_id');
 
-if($item_type){
-    $item = item_display_name($item_type);
+if($item){
+    throw new Exception('Item sent to page as item display name instead of item id.');
+}
+
+if(is_numeric($item_type)){
+    $item = $item_obj = new Item($item_type);
 }
 
 if($target_id){
@@ -66,6 +70,10 @@ if ($targetObj->player_id) {
 	$target_hp     = null;
 }
 
+//debug($item->effects());
+//debug($item_obj);
+
+
 $gold_mod		= NULL;
 $result			= NULL;
 
@@ -82,53 +90,42 @@ if (in_array($give, array("on", "Give"))) {
 }
 
 // Sets the page to link back to.
-if ($target_id && $link_back == "") {
+if ($target_id && ($link_back == "" || $link_back == 'player') && $target_id != $user_id) {
+    $return_to = 'player';
 	$link_back = "<a href=\"player.php?player_id=".urlencode($target_id)."\">Ninja Detail</a>";
 } else {
+    $return_to = 'inventory';
 	$link_back = "<a href=\"inventory.php\">Inventory</a>";
 }
 
-$dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = $kampoFormula = $strangeHerb = null;
+//$dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = $kampoFormula = $strangeHerb = null;
 
-// These different settings should just become an array of non-defaults somewhere else.
-if ($item == 'Dim Mak') {
-	$item = $dimMak = new Item('Dim Mak');
-	$dimMak->setIgnoresStealth(true);
-	$dimMak->setCovert(true);
-} else if ($item == 'Amanita Mushroom') {
-	$item = $speedScroll = new Item('Amanita Mushroom');
-	$speedScroll->setIgnoresStealth(true);
-	$speedScroll->setTurnChange(6);
-	$speedScroll->setCovert(true);
-} else if ($item == 'Phosphor Powder') {
-	$item = $fireScroll = new Item('Phosphor Powder');
-	$item->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
-} else if ($item == 'Shuriken') {
-	$item = $shuriken = new Item('Shuriken');
-	$item->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
-} else if ($item == 'Caltrops') {
-	$item = $caltrops = new Item('Caltrops');
-	$item->setTurnChange(-1*caltrop_turn_loss($targets_turns, $near_level_power_increase));
-	// ice scroll turns comes out negative already, apparently.
-} else if ($item == 'Smoke Bomb') {
-	$item = $stealthScroll = new Item('Smoke Bomb');
-	$stealthScroll->setCovert(true);
-} else if ($item == 'Ginseng Root') {
-	$item = $strangeHerb = new Item('Ginseng Root');
-	$strangeHerb->setCovert(true);
-	$strangeHerb->setIgnoresStealth(true);
-} else if ($item == 'Tiger Salve') {
-	$item = $kampoFormula = new Item('Tiger Salve');
-	$kampoFormula->setCovert(true);
-	$kampoFormula->setIgnoresStealth(true);
+if($item->hasEffect('wound') && $item->hasEffect('fire')){
+    // Major fire damage
+    $item->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
 }
 
-if (!is_object($item)) {
+if($item->hasEffect('wound') && $item->hasEffect('slice')){
+    // Minor piercing damage.
+	$item->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
+}
+
+if($item->hasEffect('slow')){
+	$item->setTurnChange(-1*caltrop_turn_loss($targets_turns, $near_level_power_increase));
+}
+
+if($item->hasEffect('speed')){
+	$item->setTurnChange($item->getMaxTurnChange());    
+}
+
+$turn_change = $item_obj->getTurnChange();
+
+if (!is_object($item_obj)) {
     echo 'No such item.';
     die(); // hack to avoid fatal error, proper checking for items should be done.
 }
 
-$article = get_indefinite_article($item->getName());
+$article = get_indefinite_article($item_obj->getName());
 
 if ($using_item) {
 	$turn_cost = $item->getTurnCost();
@@ -136,7 +133,7 @@ if ($using_item) {
 
 // Attack Legal section
 $attacker = $username;
-$params   = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$item->ignoresStealth(), 'self_use'=>$selfTarget);
+$params   = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$item_obj->ignoresStealth(), 'self_use'=>$item->isSelfUsable());
 assert(!!$selfTarget || $attacker != $target);
 
 $AttackLegal    = new AttackLegal($attacker, $target, $params);
@@ -151,7 +148,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 		echo "You didn't choose an item/victim.\n";
 	} else {
 		if ($item_count < 1) {
-			echo "You do not have".($item ? " $article ".$item->getName() : ' that item').".\n";
+			echo "You do not have ".($item ? "$article ".$item->getName() : 'that item').".\n";
 		} else {
 			/**** MAIN SUCCESSFUL USE ****/
 			echo "<div class='usage-mod-result'>";
@@ -162,17 +159,17 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 					$result        = "lose ".$item->getTargetDamage()." HP";
 					$victim_alive  = subtractHealth($target, $item->getTargetDamage());
-				} else if ($item === $stealthScroll) {
+				} else if ($item->hasEffect('stealth')) {
 					$targetObj->addStatus(STEALTH);
 					echo "<br>$target is now Stealthed.<br>\n";
 					$result = false;
 					$victim_alive = true;
-				} else if ($item === $dimMak) {
+				} else if ($item->hasEffect('death')) {
 					setHealth($target,0);
 					$victim_alive = false;
 					$result = "be drained of your life-force and die!";
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
-				} else if ($item === $strangeHerb) {
+				} else if ($item->hasEffect('vigor')) {
 					if ($targetObj->hasStatus(STR_UP1)) {
 						$result = "$target's body cannot withstand any more Ginseng Root!<br>\n";
 						$item_used = false;
@@ -180,7 +177,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$targetObj->addStatus(STR_UP1);
 						$result = "$target's muscles experience a strange tingling.<br>\n";
 					}
-				} else if ($item === $kampoFormula) {
+				} else if ($item->hasEffect('strength')) {
 					if ($targetObj->hasStatus(STR_UP2)) {
 						$result = "$target's body cannot withstand any more Tiger Salve!<br>\n";
 						$item_used = false;
@@ -188,7 +185,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$targetObj->addStatus(STR_UP2);
 						$result = "$target feels a surge of power!<br>\n";
 					}
-				} else if ($item->getTurnChange() <= 0) {
+				} else if ($item->hasEffect('slow')) {
 
 					$turns_change = $item->getTurnChange();
 
@@ -199,7 +196,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$result         = "lose ".(-1*$turns_change)." turns";
 					changeTurns($target, $turns_change);
 					$victim_alive = true;
-				} else if ($item->getTurnChange() > 0) {
+				} else if ($item->hasEffect('speed')) {
 					$turns_change = $item->getTurnChange();
 					$result         = "gain $turns_change turns";
 					changeTurns($target, $turns_change);
@@ -211,7 +208,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				// *** Message to display based on item type ***
 				if ($item->getTargetDamage() > 0) {
 					echo "$target takes {$item->getTargetDamage()} damage from your attack!<br><br>\n";
-				} else if ($item === $dimMak) {
+				} else if ($item->hasEffect('death')) {
 					echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 				} else if ($item->getTurnChange() !== null) {
 					if ($turns_change <= 0) {
@@ -270,26 +267,28 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			}
 
 			// Unstealth
-			if (!$item->isCovert() && $give != "on" && $give != "Give" && $player->hasStatus(STEALTH)) { //non-covert acts
+			if (!$item->isCovert() && !$item->hasEffect('stealth') 
+			        && $give != "on" && $give != "Give" && $player->hasStatus(STEALTH)) { //non-covert acts
 				$player->subtractStatus(STEALTH);
 				echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
 			}
 
 			if ($victim_alive == true && $using_item == true) {
 				$self_targetting = ($selfTarget ? '&amp;selfTarget=1' : '');
-                echo "<br><a href=\"inventory_mod.php?item_type=".urlencode($item->getType())."&amp;target_id=$target_id{$self_targetting}\">Use {$item->getName()} again?</a><br>\n";  //Repeat Usage
+                echo "<br><a href=\"inventory_mod.php?item_type=".urlencode($item->getType())."&amp;target_id=$target_id&amp;link_back={$return_to}{$self_targetting}\">Use {$item->getName()} again?</a><br>\n";  //Repeat Usage
 			}
 		}
 	}
 }
 
-// *** Take away at least one turn even on attacks that fail. ***
+// *** Take away at least one turn even on attacks that fail to prevent page reload spamming ***
+// TODO: Once attack attempt limiting works, this can be removed.
 if ($turns_to_take<1) {
 	$turns_to_take = 1;
 }
 
 $ending_turns = subtractTurns($username, $turns_to_take);
-assert($item === $speedScroll || $ending_turns < $starting_turns || $starting_turns == 0);
+assert($item->hasEffect('speed') || $ending_turns < $starting_turns || $starting_turns == 0);
 ?>
 
 <p>

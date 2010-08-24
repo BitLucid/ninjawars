@@ -28,6 +28,10 @@ update item set usage = 'Increases Turns' where item_internal_name = 'amanita';
 update item set usage = 'Stealths a Ninja' where item_internal_name = 'smokebomb';
 update item set usage = 'Reduces Turns', image='caltrops.png' where item_internal_name = 'caltrops';
 update item set usage = 'Reduces health', image='mini_star.png' where item_internal_name = 'shuriken';
+update item set turn_change = 6 where item_internal_name = 'amanita';
+update item set turn_change = -6 where item_internal_name = 'caltrops';
+update item set ignore_stealth = TRUE where item_internal_name = 'amanita' or item_internal_name = 'ginsengroot' or item_internal_name = 'tigersalve' or item_internal_name = 'dimmak';
+update item set covert = TRUE where item_internal_name = 'amanita' or item_internal_name = 'ginsengroot' or item_internal_name = 'tigersalve' or item_internal_name = 'dimmak';
 
 -- alter table item drop column image;
 -- alter table item drop column for_sale;

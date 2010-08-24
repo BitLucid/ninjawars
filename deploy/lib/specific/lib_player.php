@@ -186,41 +186,55 @@ function get_clan_members($p_clanID, $p_limit = 30) {
  * Create the item options for the inventory dropdown.
 **/
 function render_inventory_options($username) {
-	DatabaseConnection::getInstance();
-
-	$user_id = get_user_id($username);
+	$char_id = get_char_id($username);
+	
+	if(!$char_id){
+	    return '';
+	}
+	
 	$res = '';
 	$selected = "selected='selected'";// Mark first option as selected.
-	$loop_items = DatabaseConnection::$pdo->prepare(
-        "SELECT owner, item_display_name as item, item_type, amount
+
+    
+    $sel = "SELECT owner, item_internal_name, item_display_name, item.item_id, amount
         FROM inventory join item on inventory.item_type = item.item_id 
-        WHERE owner = :owner
-        AND amount > 0 ORDER BY item_display_name");
-	$loop_items->bindValue(':owner', $user_id);
-	$loop_items->execute();
-
-	if ($litem = $loop_items->fetch()) {
-		// Set shuriken at highest precedence.
-		$items_indexed = array();
-
-		do {
-			$items_indexed[$litem['item']] = $litem; // indexed by item name.
-		} while ($litem = $loop_items->fetch());
-
-		if (isset($items_indexed['Shuriken'])) {
-			// Set shuriken as first dropdown entry.
-			$shuriken_entry = $items_indexed['Shuriken'];
-			unset($items_indexed['Shuriken']);
-			$items_indexed['Shuriken'] = $shuriken_entry;
-			$items_indexed = array_reverse($items_indexed);
-		}
-		foreach ($items_indexed AS $loopItem) {
-			$res .= "      <option $selected value='{$loopItem['item']}'>".htmlentities($loopItem['item'])." ({$loopItem['amount']})</option>";
-			$selected = '';
-		}
-	} else { // Some items available.
+        WHERE owner = :owner_id
+        AND amount > 0 ORDER BY item_display_name";
+    $loop_items = query($sel, array(':owner_id'=>array((int)$char_id, PDO::PARAM_INT)));
+    
+    if(!$loop_items->rowCount()){
 		$res = "          <option value='' selected='selected'>You Have No Items</option>";
-	}
+    } else {
+    
+        $items_indexed = array();
+        foreach($loop_items as $litem){
+            // Index by internal name.
+            $items_indexed[$litem['item_internal_name']] = $litem;
+        }    
+    
+        // Custom multidimensional inventory array sorting function.
+        function sort_alpha_with_shuriken_first($item, $item_2){
+            if($item['item_internal_name'] == 'shuriken'){
+                return -1;
+            }
+            if($item_2['item_internal_name'] == 'shuriken'){
+                return 1;
+            }
+            if ($item['item_internal_name'] == $item_2['item_internal_name']) {
+                return 0;
+            }
+            return ($item < $item_2) ? -1 : 1;
+        }
+
+        usort($items_indexed, "sort_alpha_with_shuriken_first");
+        
+        foreach($items_indexed as $sorted_item){
+    			$res .= "      <option $selected value='{$sorted_item['item_id']}'>"
+    			    .htmlentities($sorted_item['item_display_name']).
+    			    " ({$sorted_item['amount']})</option>";
+    			$selected = '';// Further items will not be marked as selected.
+        }
+    }
 	return $res;
 }
 
@@ -232,7 +246,7 @@ function render_item_use_on_another($target) {
 	$res = "<form id=\"inventory_form\" action=\"inventory_mod.php\" method=\"post\" name=\"inventory_form\">\n
     <input id=\"target\" type=\"hidden\" name=\"target\" value=\"$target\">
     <input type=\"submit\" value=\"Use\" class=\"formButton\">\n
-    <select id=\"item\" name=\"item\">\n";
+    <select id=\"item\" name=\"item_type\">\n";
 
 	$res .= render_inventory_options($username);
 	$res .= "</select>";
