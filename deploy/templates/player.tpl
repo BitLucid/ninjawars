@@ -159,7 +159,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
     <!-- Player clan and clan members -->
     <div class='player-clan'>
 	{if $same_clan}
-      <p class='ninja-notice'><i>{$player_info.uname|escape}</i> is part of your clan.</p>
+      <p class='ninja-notice'><em class='charname'>{$player_info.uname|escape}</em> is part of your clan.</p>
 	{/if}
       <p class='clan-link centered'>
         <span class='subtitle'>Clan:</span>
