@@ -24,6 +24,8 @@
 
 {/if}
 
-{$recent_attackers_section}
+{if count($recent_attackers) gt 0}
+	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
+{/if}
 
 {include file='player_list.active.tpl' active_ninja=$active_ninjas}

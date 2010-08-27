@@ -94,29 +94,6 @@ function render_current_enemies($enemy_list) {
 	return $enemy_section;
 }
 
-function render_recent_attackers() {
-	$recent_attackers_section = '';
-	$recent_attackers = get_recent_attackers();
-
-	if ($recent_attackers->rowCount() > 0) {
-		$recent_attackers_section .= "<h3>You were recently attacked by</h3>
-			<ul id='recent-attackers'>";
-		foreach($recent_attackers as $l_attacker) {
-			$status_class = '';
-
-			if ($l_attacker['health'] < 1) {
-				$status_class = 'status-dead';
-			}
-
-			$recent_attackers_section .= "<li class='recent-attacker {$status_class}'><a href='player.php?player_id={$l_attacker['send_from']}'>{$l_attacker['uname']}</a></li>";
-		}
-
-		$recent_attackers_section .= '</ul>';
-	}
-
-	return $recent_attackers_section;
-}
-
 function get_recent_attackers() {
 	$recent_attackers = array();
 	$user_id = get_user_id();
@@ -160,9 +137,9 @@ if (count($enemy_list) > ($enemy_limit - 1)) {
 	$max_enemies = true;
 }
 
-$recent_attackers_section = render_recent_attackers();
+$recent_attackers = get_recent_attackers()->fetchAll();
 
-$parts = get_certain_vars(get_defined_vars(), array('found_enemies', 'active_ninjas'));
+$parts = get_certain_vars(get_defined_vars(), array('found_enemies', 'active_ninjas', 'recent_attackers'));
 
 echo render_template('enemies.tpl', $parts);
 
