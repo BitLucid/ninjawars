@@ -1,16 +1,11 @@
 <?php
-$private    = false;
+$private    = true;
 $alive      = false;
-$quickstat  = false;
-$page_title = "Enemy List";
 require_once(LIB_ROOT."specific/lib_player_list.php");
 
-if (!get_user_id()) {
+if ($error = init($private, $alive)) {
 	header('Location: list_all_players.php');
-	exit();
-}
-
-include SERVER_ROOT."interface/header.php";
+} else {
 
 function get_enemy_matches($match_string) {
 	DatabaseConnection::getInstance();
@@ -55,7 +50,7 @@ function remove_enemy($enemy_id) {
 **/
 function compare_enemy_order($e1, $e2) {
 	if ($e1['health'] == $e2['health']) {
-		return (int) $e1['level']<=$e2['level'];
+		return (int) $e1['level'] <= $e2['level'];
 	} elseif ($e1['health'] >= $e2['health']) {
 		return -1;
 	} else {
@@ -69,9 +64,7 @@ function expand_enemy_info($enemy_id) {
 	return $enemy;
 }
 
-function render_current_enemies($enemy_list) {
-	$enemy_section = '';
-
+function get_current_enemies($enemy_list) {
 	if (!is_array($enemy_list)) {
 		return $enemy_section;
 	}
@@ -80,18 +73,7 @@ function render_current_enemies($enemy_list) {
 	$enemy_list = array_map('expand_enemy_info', $enemy_list); // Turn id into enemy info.
 	uasort($enemy_list, 'compare_enemy_order'); // Resort by health, level.
 
-	foreach ($enemy_list as $loop_enemy_id=>$loop_enemy) { // TODO: Turn this into a template render.
-		if ($loop_enemy['confirmed']) {
-			$action = ($loop_enemy['health'] > 0 ? 'Attack' : 'View');
-			$status_class = ($loop_enemy['health'] > 0 ? '' : 'enemy-dead');
-			$enemy_section .= "<li class='$status_class'>
-	        <a href='enemies.php?remove_enemy=$loop_enemy_id'><img src='".IMAGE_ROOT."icons/delete.png' alt='remove'></a>
-	         $action <a href='player.php?player_id=$loop_enemy_id'>".out($loop_enemy['uname'])."</a>
-	          ({$loop_enemy['health']} health)</li>";
-		}
-	}
-
-	return $enemy_section;
+	return $enemy_list;
 }
 
 function get_recent_attackers() {
@@ -119,6 +101,8 @@ $enemy_list   = get_setting('enemy_list');
 if ($match_string) {
 	$found_enemies = get_enemy_matches($match_string);
 	$found_enemies = $found_enemies->fetchAll();
+} else {
+	$found_enemies = null;
 }
 
 if (is_numeric($remove_enemy)) {
@@ -131,17 +115,20 @@ if (is_numeric($add_enemy)) {
 	$enemy_list = get_setting('enemy_list'); // Update to new enemy list.
 }
 
-$enemy_section = render_current_enemies($enemy_list);
-
 if (count($enemy_list) > ($enemy_limit - 1)) {
 	$max_enemies = true;
 }
 
+$enemy_list = get_current_enemies($enemy_list);
 $recent_attackers = get_recent_attackers()->fetchAll();
 
-$parts = get_certain_vars(get_defined_vars(), array('found_enemies', 'active_ninjas', 'recent_attackers'));
-
-echo render_template('enemies.tpl', $parts);
-
-include SERVER_ROOT."interface/footer.php";
+display_page(
+	'enemies.tpl'	// *** Main template ***
+	, 'Enemy List' // *** Page Title ***
+	, get_certain_vars(get_defined_vars(), array('found_enemies', 'active_ninjas', 'recent_attackers', 'enemy_list')) // *** Page Variables ***
+	, array( // *** Page Options ***
+		'quickstat' => false
+	)
+);
+}
 ?>
