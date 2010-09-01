@@ -162,7 +162,16 @@
 	
 		{if $command == "join"}	
 		    <!-- // *** Clan Joining Action *** -->
+			{if $process == 1}
+            <div id='clan-join-request-sent' class='ninja-notice'>
+              Your request to join {$viewed_clan.clan_name|escape} has been sent to {$leader.uname|escape}
+            </div>
+			{else}
+            <h2>Clans Available to Join</h2>
+            <ul>
 			{$clan_join_section}
+            </ul>
+			{/if}
 		{/if}
 
 		<div>You are a lone ninja, not a member of any clan.</div>
@@ -201,4 +210,4 @@
 
 <!-- *** Display all the clans in their tag list. *** -->
 
-{$clan_tags}
+{include file="clan.list.tpl" clans=$clans}

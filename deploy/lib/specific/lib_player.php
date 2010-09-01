@@ -128,14 +128,14 @@ function char_class_theme($char_id) {
 /**
  * Pull out the url for the player's avatar
 **/
-function render_avatar($player, $size=null) {
+function create_avatar_url($player, $size=null) {
 	// If the avatar_type is 0, return '';
     if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email) {
         return '';
     } else {	// Otherwise, user the player info for creating a gravatar.
 		$email       = $player->vo->email;
 		$avatar_type = $player->vo->avatar_type;
-		return render_avatar_from_email($email, $avatar_type, $size);
+		return create_gravatar_url_from_email($email, $avatar_type, $size);
 	}
 }
 
@@ -144,11 +144,11 @@ function generate_gravatar_url($player) {
 		$player = new Player($player);
 	}
 
-	return (OFFLINE ? IMAGE_ROOT.'default_avatar.png' : render_avatar($player));
+	return (OFFLINE ? IMAGE_ROOT.'default_avatar.png' : create_avatar_url($player));
 }
 
 // Use the email information to return the gravatar image url.
-function render_avatar_from_email($email, $avatar_type=null, $size=null){
+function create_gravatar_url_from_email($email, $avatar_type=null, $size=null){
 	$def         = 'monsterid'; // Default image or image class.
 	// other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
 	$base        = "http://www.gravatar.com/avatar/";

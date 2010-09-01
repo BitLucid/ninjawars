@@ -54,17 +54,6 @@ function globalize_user_info($private=true, $alive=true) {
 	return $error;
 }
 
-// Renders an error
-function render_error($error) {
-	if ($error) { // If there's an error, display that then end.
-		$res = $error;
-	} else {
-		$res = null;
-	}
-
-	return $res;
-}
-
 /**
  * Update the information of a viewing observer, or player.
 **/

@@ -105,9 +105,9 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 
 			if ($viewer_clan) {
 				$same_clan = ($clan->getID() == $viewer_clan->getID());
-				$render_clan_options = ($username && !$self && $same_clan && is_clan_leader($viewing_player_obj->vo->player_id));
+				$display_clan_options = ($username && !$self && $same_clan && is_clan_leader($viewing_player_obj->vo->player_id));
 			} else {
-				$same_clan = $render_clan_options = false;
+				$same_clan = $display_clan_options = false;
 			}
 		}
 

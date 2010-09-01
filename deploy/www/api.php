@@ -8,7 +8,7 @@
 // Check chats.
 $type = in('type', null);
 $jsoncallback = in('jsoncallback');
-echo render_json($type, $jsoncallback);
+echo nw_json($type, $jsoncallback);
 
 // Make sure to default to private, just as a security reminder.
 
@@ -16,7 +16,7 @@ echo render_json($type, $jsoncallback);
 /**
  * Determine which function to call to get the json for.
 **/
-function render_json($type, $jsoncallback) {
+function nw_json($type, $jsoncallback) {
 	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index', 'latest_chat_id'=>'json_latest_chat_id', 'inventory'=>'json_inventory', 'new_chats'=>'json_new_chats', 'send_chat'=>'json_send_chat');
 	$res = null;
 

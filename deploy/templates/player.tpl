@@ -144,7 +144,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
     <!-- Clan leader options on players in their clan. -->
 {if $clan}
-	{if $render_clan_options}
+	{if $display_clan_options}
     <div class='clan-leader-options centered'>
       <form id="kick_form" action="clan.php" method="get" name="kick_form">
         <div>
