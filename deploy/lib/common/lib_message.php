@@ -49,6 +49,10 @@ function message_count() {
 	return query_item("SELECT count(*) from messages where send_to = :to", array(':to'=>get_user_id()));
 }
 
+function unread_message_count() {
+	return query_item("SELECT count(*) from messages where send_to = :to and unread != 0", array(':to'=>get_user_id()));
+}
+
 function message_to_clan($p_message) {
 
 	$error    = null;

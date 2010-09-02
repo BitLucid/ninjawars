@@ -34,7 +34,6 @@ if (parent.window != window) {
 	$ = jQuery;
 	NW = {};
 	
-    	
 
 	NW.datastore = {};
 	NW.lastChatCheck = '';
@@ -46,26 +45,26 @@ if (parent.window != window) {
 
 	NW.chatLocked = function() {
 		return NW.chatLock;
-	}
+	};
 
 	NW.lockChat = function() {
 		NW.chatLock = true;
-	}
+	};
 
 	NW.unlockChat = function() {
 		NW.chatLock = false;
-	}
+	};
 
 	NW.sendChat = function(p_inputField) {
 		p_inputField.value = '';
 
 		return true;
-	}
+	};
 
 	// For refreshing quickstats from inside main.
 	NW.refreshQuickstats = function(typeOfView) {
 		var self = this;
-		self.getAndUpdateHealth()
+		self.getAndUpdateHealth();
 
 		// Accounts for ajax section.
 		if (!typeOfView) {
@@ -92,7 +91,7 @@ if (parent.window != window) {
 		} else {
 			return false;
 		}
-	}
+	};
 
 	NW.renderInventoryQuickstats = function() {
 		var container, goldLabel, goldValue, itemLabel, itemValue;
@@ -123,10 +122,12 @@ if (parent.window != window) {
 		container.appendChild(goldValue);
 
 		return container;
-	}
+	};
 
 	NW.renderPlayerQuickstats = function() {
 		var container, healthLabel, healthBar, expLabel, expBar, statusLabel, statusValue, turnsLabel, turnsValue, goldLabel, goldValue, bountyLabel, bountyValue;
+
+        // Jesus dammit christmas!  We need to keep the html out of the js.
 
 		container = document.createElement('dl');
 		container.className = "quickstats player-stats";
@@ -191,7 +192,7 @@ if (parent.window != window) {
 		container.appendChild(bountyValue);
 
 		return container;
-	}
+	};
 
 	// Returns true when debug bit set or localhost path used.
 	NW.debug = function(arg) {
@@ -201,15 +202,29 @@ if (parent.window != window) {
 		}
 
 		return false;
-	}
+	};
 
 	// Display an event.
 	NW.writeLatestEvent = function(event) {
 		this.debug('Event display requested.');
-		$('#recent-events', top.document).html("<div class='latest-event' title='"+event.sender+": "+event.event+"'><div id='latest-event-title'>Latest Event via <a href='player.php?player_id="+event.send_from+"' target='main'>"+event.sender+"</a>:</div><span class='latest-event-text "+(event.unread? "message-unread" : "")+"'>"+event.event+"</span></div>");
-		// if unread, Add the unread class until next update.
-		// Pull a message with a truncated length of 12.
+		
+		var recent = $('#recent-events', top.document)
+		.find('#recent-event-attacked-by').text('You were recently in combat').end()
+		.find('#view-event-char').text(event.sender).attr('href', 'player.php?player_id='+event.send_from).end();
+		if(recent && recent.addClass){
+    		if(event.unread){
+    		    recent.addClass('message-unread');
+        		// if unread, Add the unread class until next update.
+    		} else {
+    		    recent.removeClass('message-unread');
+    		}
+    		recent.toggle();
+    	}
 	}
+	
+	NW.eventsRead = function(){
+		$('#recent-events', top.document).removeClass('message-unread').toggle(false);	    
+	};
 
 	// Pull the event from the data store and request it be displayed.
 	NW.updateLatestEvent = function() {
@@ -222,7 +237,7 @@ if (parent.window != window) {
 		} else if (this.datastore.visibleEventId == event.event_id) {
 			if (!this.datastore.visibleEventRead) {
 				// Makes any unread event marked as read after a second update, even if it wasn't really read.
-				$('#recent-events .latest-event-text', top.document).removeClass('message-unread');
+				NW.eventsRead();
 				this.debug('Requested that latest event be marked as read.');
 				this.datastore.visibleEventRead = true;
 			}
@@ -235,34 +250,39 @@ if (parent.window != window) {
 		}
 
 		return feedback;
-	}
+	};
 
-	NW.writeLatestMessage = function(message) {
-		// TODO: Transform the appended html into hidden html that gets fleshed out and marked visible by this function.
-		// if unread, Add the unread class until next update.
-		// Pull a message with a truncated length of 12.
-		$('#recent-mail', top.document).html("<div class='latest-message' title='"+message.send_from+": "+message.message+"'><div id='latest-message-title'>Latest Message, from <a href='player.php?player_id="+message.send_from+"' target='main'>"+message.sender+"</a>:</div><span class='latest-message-text "+(message.unread? "message-unread" : "")+"'>"+message.message+"</span> </div>");
-	}
+    // Get the message count initially from the api datastore.
+	NW.getMessageCount = function() {
+		return this.pullArrayValue('unread_messages_count');
+	};
+	
+	// Pull an unread message count from the new api storage, compare it to the stored value, and call the display function as necessary.
+	NW.updateMessageCount = function () {
+	    var updated = false;
+	    var count = this.getMessageCount();
+	    
+	    if (this.storeArrayValue('unread_messages_count', count)){
+	        updated = true;
+	        this.unreadMessageCount(count); // Display a value if changed.
+	    }
+	    return updated;
+	};
 
-	// Update the message that gets displayed.
-	NW.updateLatestMessage = function() {
-		var updated = false;
-		var message = this.getMessage();
 
-		if (!message) {
-			updated = true; // Check for info again shortly.
-		} else if (this.datastore.visibleMessageId == message.message_id) {
-			if (!message.unread) { // Only turn a message read if it actually has been viewed on the message page.
-				$('#recent-mail .latest-message-text', top.document).removeClass('message-unread');
-			}
-		} else {
-			updated = true;
-			this.datastore.visibleMessageId = message.message_id;
-			this.writeLatestMessage(message);
-		}
-
-		return updated;
-	}
+    // Update the number of unread messages, displayed on index. 
+	NW.unreadMessageCount = function(messageCount) {        
+		var recent = $('#messages', top.document).find('.unread-count').text(messageCount);
+			// if unread, Add the unread class until next update.
+		if(recent && recent.addClass){
+    		if(messageCount>0){
+    		  recent.addClass('message-unread');
+    		} else {
+    		  recent.removeClass('message-unread');
+    		}
+    	}
+	};
+	
 
 	// Update the display of the health.
 	NW.updateHealthBar = function(health) {
@@ -285,7 +305,7 @@ if (parent.window != window) {
 		}
 
 		return false;
-	}
+	};
 
 	// Update the displayed health from the javascript-stored current value.
 	NW.getAndUpdateHealth = function() {
@@ -301,57 +321,42 @@ if (parent.window != window) {
 		}
 
 		return updated;
-	}
+	};
 
 	NW.getEvent = function() {
-		return (this.datastore.latestEvent ? this.datastore.latestEvent : false);
-	}
-
-	NW.getMessage = function() {
-		return (this.datastore.latestMessage ? this.datastore.latestMessage : false);
-	}
+		return this.pullFromDataStore('latestEvent');
+	};
 
 	NW.getPlayerInfo = function() {
-		return (this.datastore.playerInfo ? this.datastore.playerInfo : false);
-	}
+		return this.pullFromDataStore('playerInfo');
+	};
 
 	// Update display elements that live on the index page.
 	NW.updateIndex = function() {
-		var messageUpdated = this.updateLatestMessage();
+		var messageUpdated = this.updateMessageCount();
 		var eventUpdated = this.updateLatestEvent();
-		// update chat
 		// health bar.
 		var healthUpdated = this.getAndUpdateHealth();
+
+        // If any changes to data occurred, return true.		
 		var res = (!!(messageUpdated || eventUpdated || healthUpdated));
 		this.debug("Message Updated: "+messageUpdated);
 		this.debug("Event Updated: "+eventUpdated);
 		this.debug("Health Updated: "+healthUpdated);
 
 		return res;
-	}
+	};
 
 	NW.feedbackSpeedUp = function() {
 		this.feedbackValue = true;
-	}
+	};
 
 	// Get the feedback value.
 	NW.feedback = function() {
 		var res = (this.feedbackValue ? this.feedbackValue : false);
 		this.feedbackValue = false; // Start slowing down after getting the value.
 		return res;
-	}
-
-	// Update the chat page without refresh.
-	//function updateChat() {
-	// store a latest chat id to check against the chat.
-	// Get the chat data.
-	// If the latest hasn't changed, just return nothing.
-	// If the latest has changed, return
-	// If the latest has changed, cycle through the data
-	//saving non-matches until you get back to the "latest" match.
-	// Update the chat's ui.
-	// update the "latest chat id" var.
-	//}
+	};
 
 	NW.make_checkAPI_callback = function(p_additionalCallback) {
 		var self = this;
@@ -363,8 +368,12 @@ if (parent.window != window) {
 				p_additionalCallback();
 			}
 		}
-	}
+	};
+	
+	// The checkAPI probably shouldn't delay display, display should happen whenever the api returns?
+	// I guess the original objective was to decouple display calls and api data requests.
 
+    // This pulls the data from api.php and stores the data, and then returns true if any of the data was different.
 	NW.checkAPI_callback = function(data) {
 		var updated = false;
 
@@ -380,6 +389,16 @@ if (parent.window != window) {
 		if (this.updateDataStore(data.message, 'message_id', 'latestMessage', 'message_id')) {
 			updated = true;
 		}
+		
+		// Save the unread message count into an array.
+		if (this.storeArrayValue('unread_messages_count', data.unread_messages_count)) {
+			updated = true;
+		}
+
+		// Save the unread event count into an array.
+		if (this.storeArrayValue('unread_events_count', data.unread_events_count)) {
+			updated = true;
+		}
 
 		if (this.updateDataStore(data.event, 'event_id', 'latestEvent', 'event_id')) {
 			updated = true;
@@ -388,21 +407,23 @@ if (parent.window != window) {
 		this.debug('Update requested: '+updated);
 
 		if (updated) {
-			this.updateIndex(); // Always redisplay for any poll that has information updates.
+			this.updateIndex(); // Always request a redisplay for any poll that has information updates.
 			this.feedbackSpeedUp(updated);
 		}
-	}
+	};
 
 	// Pull in the new info, update display only on changes.
 	NW.checkAPI = function(p_additionalCallback) {
 		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
 		$.getJSON('api.php?type=index&jsoncallback=?', this.make_checkAPI_callback(p_additionalCallback));
-	}
+	};
 
-	// Saves stuff to global data storage.
+	// Saves an array of data to the global data storage, only works on array data, with an index.
+	// Take in a new datum from the api, compare it's <property name> to the already-in-js-global-storage's property called <comparison_name>
+	// This is comparing an old version to a new version, and storing any changes between the two.
 	NW.updateDataStore = function(datum, property_name, global_store, comparison_name) {
 		if (datum && datum[property_name]) {
-			if (!this.datastore[global_store] || (this.datastore[global_store][comparison_name] != datum[comparison_name])) {
+			if (!this.datastore[global_store] || (this.datastore[global_store][comparison_name] != datum[property_name])) {
 				// If the data isn't there, or doesn't match, update the store.
 				this.datastore[global_store] = datum;
 				this.debug(datum);
@@ -411,7 +432,43 @@ if (parent.window != window) {
 		}
 
 		return false; // Input didn't contain the data, or the data hasn't changed.
-	}
+	};
+	
+	// Return the most up-to-date value, which was stored prior.
+	NW.pullFromDataStore = function(global_store, property_name){
+	    if(this.datastore[global_store]){
+	        if(property_name && typeof(this.datastore[global_store][property_name]) != 'undefined'){
+	            // If a property_name was specified, return the value for that specific property (e.g. event.event_id)...
+    	        return this.datastore[global_store][property_name];
+    	    }
+    	    // ...otherwise return the whole storage entity, (e.g. event).
+    	    return this.datastore[global_store];
+	    }
+	    return null;
+	};
+	
+	// Store any changes to the value, if any, and return true if changed, false if unchanged.
+	NW.storeArrayValue = function(name, value){
+	    if(!this.datastore['array']){
+	        this.datastore['array'] = {}; // Verify there's a storage array.
+	    }
+	    // Check for a change to the value to store.
+	    if((typeof(this.datastore['array'][name]) != 'undefined') 
+	        || this.datastore['array'][name] == value){
+	        // If it exists and differs, store the new one and return true.
+	        this.datastore['array'][name] = value;
+	        return true;
+	    } else {
+    	    return false;
+    	}
+	};
+	
+	// Get a stored hash if available.
+	NW.pullArrayValue = function(name){
+	    return (this.datastore['array'] && typeof(this.datastore['array'][name]) != 'undefined'?
+	         this.datastore['array'][name] 
+	         : null);
+	};
 
 	// Determines the update interval,
 	//increases when feedback == false, rebaselines when feedback == true
@@ -433,12 +490,13 @@ if (parent.window != window) {
 		}
 
 		return (first_interval ? first : this.updateInterval);
-	}
+	};
 
 	// JS Update Heartbeat
 	NW.chainedUpdate = function(p_chainCounter) {
 		var chainCounter = (!!p_chainCounter ? p_chainCounter : 1);
 		// Skip the heartbeat the first time through, and skip it if not logged in.
+		// TODO: skip heartbeat entirely when not logged in.
 		if (this.loggedIn && chainCounter != 1) {
 			this.checkAPI(); // Check for new information.
 		}
@@ -453,7 +511,7 @@ if (parent.window != window) {
 			self.chainedUpdate(chainCounter);
 		}, furtherIntervals*1000); // Repeat once the interval has passed.
 		// If we need to cancel the updating down the line for some reason, store the id that setTimeout returns.
-	}
+	};
 
 	// Adds a "click to hide another section" to any section, second param has default, but can be specified.
 	NW.clickHidesTarget = function(ident, targetToHide) {
@@ -461,7 +519,7 @@ if (parent.window != window) {
 			$(targetToHide).toggle();
 			return false;
 		});
-	}
+	};
 
 	// Begin the cycle of refreshing the mini chat after the standard delay.
 	NW.startRefreshingMinichat = function() {
@@ -472,7 +530,7 @@ if (parent.window != window) {
 			self.checkForNewChats();
 			self.startRefreshingMinichat(); // Loop the check for refresh.
 		}, secs*1000);
-	}
+	};
 
 	NW.make_checkForNewChats_callback = function() {
 		var self = this;
@@ -489,7 +547,7 @@ if (parent.window != window) {
 
 			NW.unlockChat();
 		}
-	}
+	};
 
 	// Check for the latest chat and update if it's different.
 	NW.checkForNewChats = function() {
@@ -500,7 +558,7 @@ if (parent.window != window) {
 			NW.lockChat();
 			$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatCheck)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
 		}
-	}
+	};
 
 	// Load the chat section, or if that's not available & nested iframe, refresh iframe
 	NW.refreshMinichat = function() {
@@ -531,14 +589,14 @@ if (parent.window != window) {
 				return false;
 			}
 		}
-	}
+	};
 
 	NW.renderChatMessage = function(p_message) {
 		var container = document.createElement('dd');
 		container.className = "chat-message";
 		container.appendChild(document.createTextNode(p_message.message));
 		return container;
-	}
+	};
 
 	NW.renderChatAuthor = function(p_message) {
 		var container = document.createElement('dt');
@@ -551,7 +609,7 @@ if (parent.window != window) {
 		container.appendChild(authorLink);
 		container.appendChild(document.createTextNode('>'));
 		return container;
-	}
+	};
 
 	NW.chatRefreshClicked = function(button) {
 		button.onclick = null;
@@ -565,20 +623,25 @@ if (parent.window != window) {
             //button.style.cursor = 'pointer'; // This fails in chrome.
         }, this.manualChatLockTime);
 		this.checkForNewChats();
-	}
+	};
 
+
+    // This locking mechanism should probably be migrated to a timewatch pattern instead.
+    //So that 234 immediately consecutive spammings of enter to refresh the chat results in a delay until the last spamming comes through +3
+    // Instead of preventing anything from happening for a time, only refresh the chat on the -last- request.
+    
 	NW.manualChatLocked = function() {
 		return this.manualChatLock;
-	}
+	};
 
 	NW.lockManualChat = function() {
 		this.manualChatLock = true;
 		setTimeout(function() { NW.unlockManualChat(); }, this.manualChatLockTime);
-	}
+	};
 
 	NW.unlockManualChat = function() {
 		this.manualChatLock = false;
-	}
+	};
 
 	// Send the contents of the chat form input box.
 	NW.sendChatContents = function(p_form) {
@@ -591,7 +654,7 @@ if (parent.window != window) {
 		}
 
 		return false;
-	}
+	};
 
 	// Just for fun.
 	/*

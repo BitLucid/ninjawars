@@ -33,6 +33,8 @@ $level       = null;
 $main_src    = 'main.php'; // Display main iframe page unless logged in.
 $title       = 'Live by the Sword';
 
+$unread_message_count = 0;
+
 $user_id = get_user_id();
 
 if ($user_id) {
@@ -40,6 +42,9 @@ if ($user_id) {
 	$level       = getLevel($username);
 	$username    = get_username();
 	$player_info = get_player_info();
+
+    // Unread message count.
+    $unread_message_count = unread_message_count();
 
 	$main_src = 'list_all_players.php';
 
@@ -50,7 +55,6 @@ if ($user_id) {
 	}
 }
 
-// Player counts.
 
 
 $options = array(/*'section_only'=>in('section_only'), */'is_index'=>true);
@@ -65,6 +69,7 @@ $parts = array(
 	, 'username'         => $username
 	, 'user_id'          => $user_id
 	, 'player_info'      => $player_info
+	, 'unread_message_count' => $unread_message_count
 	, 'level'            => $level
 	, 'login_error'      => $login_error
 	, 'referrer'         => $referrer

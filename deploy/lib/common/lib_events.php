@@ -7,7 +7,7 @@ function sendMessage($from, $to, $msg, $filter=false) {
 	send_event($from_id, $to_id, $msg);
 }
 
-// For true user-to-user or user-to-clan messages as opposed to events.
+// For events, attacks, kills, invites, etc, and no user-created messages.
 function send_event($from_id, $to_id, $msg) {
 	if (!$to_id) {
 		$to_id = get_user_id();

@@ -289,6 +289,10 @@ if ($turns_to_take<1) {
 
 $ending_turns = subtractTurns($username, $turns_to_take);
 assert($item->hasEffect('speed') || $ending_turns < $starting_turns || $starting_turns == 0);
+
+
+// TODO: Add a "this is the target's resulting hitpoints bar at the end here.
+
 ?>
 
 <p>

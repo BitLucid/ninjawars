@@ -4,6 +4,29 @@
 		location.href = "attack_player.php";
 	}
       </script>
+      
+    <style>
+    .unread-count, .unread-count a{
+        display:inline-block;
+        font-size:10px;
+        margin-left:2px;
+        padding:1px 5px;
+        background:#ddd;
+        color:#999;
+        font-weight:bold;
+        text-shadow:none;
+        text-decoration:none;
+        border-radius:5px;
+        -webkit-border-radius:5px;
+        -moz-border-radius:5px;
+        color:black;
+    }
+    .unread-count.message-unread, .unread-count.message-unread a{
+        background-color:#4183c4;
+        color:#fff;
+    }
+    </style>
+      
 {/literal}
     <!-- Version {$version|escape} -->
       <div id='left-column'>
@@ -63,6 +86,8 @@
               </li>
             </ul>
           </div>
+
+
         <div id="ninja-search" class="boxes active">
             <form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">
               <div>
@@ -73,13 +98,32 @@
               </div>
             </form>
           </div>
+
 {if $player_info.level < 2}
           <div id='helpful-info'>
             <a target='main' href='tutorial.php'>Helpful Info</a>
           </div>
 {/if}
-          <!-- Recent Events & Recent Mail will get put in here via javascript -->
-          <div id='recent-events'></div>
+
+
+
+          <!-- Recent Events count and target will get put in here via javascript -->
+          <div id='recent-events' class="boxes active" style='display:none'>
+            <!--<div>
+                <a id='view-events' target='main' href='events.php' title='View events'>
+                  Unread Events <span class='unread-events-count unread-count'>0</span>
+                </a>
+            </div>-->
+              
+            <div>
+                <a target='main' id='recent-event-attacked-by' href='events.php' title='View events'>
+                      You weren't recently in combat
+                </a> with 
+                <a id='view-event-char' target='main' href='#' title="View a player's profile">
+                  anyone
+                </a>.
+            </div>
+          </div>
 
       </div>  
       
@@ -164,11 +208,13 @@
         
         </div><!-- End of ninja-stats div -->
           
+          
           <div id='messages' class='boxes active'>
               <div>
-                  <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''></a>
+                  <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''>
+                    <span class='unread-count'>{$unread_message_count}</span>
+                  </a>
               </div>
-              <div id='recent-mail' class='message-unread'></div>
           </div>
         
 {include file="mini-chat.section.tpl"}
