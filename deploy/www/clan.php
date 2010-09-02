@@ -34,7 +34,7 @@ $clan_creator_min_level = CLAN_CREATOR_MIN_LEVEL; // For the template.
 // *** Used Variables ***
 
 $player_id    = get_char_id();
-$player       = ($player_id ? new Player($player_id) : null_;
+$player       = ($player_id ? new Player($player_id) : null);
 $char_info    = ($player_id ? get_player_info() : null);
 $username     = @$char_info['uname'];
 
