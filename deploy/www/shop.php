@@ -17,13 +17,20 @@ $grammar           = "";
 $username          = get_char_name();
 $gold              = first_value(getGold($username), 0);
 $current_item_cost = 0;
-$quantity          = intval($in_quantity);
 $is_logged_in      = is_logged_in();
 
 
-if (!$quantity || $quantity < 1) {
-	$quantity = 1;
-} else if ($quantity > 1 && $item != "Shuriken") {
+$setting_quantity = get_setting('items_quantity');
+
+// Determine the quantity from input, or settings, or as a fallback, default of 1.
+$quantity = (!intval($in_quantity) || intval($in_quantity) < 1) ? 
+        ($setting_quantity? $setting_quantity : 1) : 
+        intval($in_quantity);
+
+set_setting('items_quantity', $quantity);
+
+if ($quantity > 1 && $item != "Shuriken") {
+    // TODO: Change this to use the database plural field.
 	$grammar = "s";
 }
 

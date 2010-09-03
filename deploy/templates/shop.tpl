@@ -60,7 +60,7 @@ input.shopButton{
 <tr>
   <td colspan="4" style="text-align: center;padding: .3em;">
     {if $is_logged_in}
-      How many of an item below would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" value="1">
+      How many of an item below would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" value="{$quantity}">
     {else}
       To purchase the items below you must <a href="signup.php?referrer=">become a ninja</a>.
     {/if}
