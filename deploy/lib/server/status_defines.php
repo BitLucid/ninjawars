@@ -12,4 +12,12 @@ define('INVITED',     1<<6);
 define('STR_UP1',     1<<7);
 define('STR_UP2',     1<<8);
 define('HEALING',     1<<9);
+define('FIRE_RESISTING',    1<<10);
+define('INSULATED',   1<<11);
+define('GROUNDED',   1<<12);
+define('BLESSED',     1<<13);
+define('IMMUNIZED',   1<<14);
+define('ACID_RESISTING',  1<<15);
+
+
 ?>
