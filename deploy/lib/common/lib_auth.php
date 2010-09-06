@@ -178,35 +178,50 @@ function validate_password($password_to_hash) {
 	return $error;
 }
 
-
+// Function for account creation to return the reasons that a username isn't acceptable.
 function validate_username($send_name) {
+    $lower = null;
+    $upper = null;
+    allowable_username_length($lower, $upper); // Get the standards.
 	$error = null;
 	if (substr($send_name, 0, 1) != 0 || substr($send_name, 0, 1) == "0") {  // Case the first char isn't a letter???
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a number.\n";
-	} else if (strlen($send_name) >= 21) {   // Case string is greater or equal to 21.
-		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not exceed 20 characters.";
 	} else if ($send_name[0] == " ") {  //Checks for a white space at the beginning of the name
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a space.";
-	} else if ($send_name != htmlentities($send_name)
-			|| str_replace(" ","%20",$send_name) != urlencode($send_name)
-			|| !username_is_valid($send_name)) {
+	} else if (strlen($send_name)<$lower || strlen($send_name)>$upper){
+		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." must be at least $lower characters and at most $upper characters.";
+	} else if ($send_name != htmlentities($send_name)){
+	    $error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not contain html.";
+	} else if (!username_is_valid($send_name)) {
 		//Checks whether the name is different from the html stripped version, or from url-style version, or matches the filter.
-		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." should only contain letters, numbers, and underscores.";
+		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." should only contain letters, numbers, dashes, and underscores.";
 	}
 	return $error;
+}
+
+// Give the upper and lower ninja name lengths by association.
+function allowable_username_length(&$lower, &$upper){
+    $lower = 3;
+    $upper = 24;
 }
 
 /*
  * Username requirements
  * A username must start with a lower-case or upper-case letter
  * A username can contain only letters, numbers, underscores, or dashes.
- * A username must be between 8 and 24 characters
+ * A username must be from 3 to 24 characters long
  * A username cannot end in an underscore
- * A username cannot contain 2 consecutive underscores
+ * A username cannot contain 2 consecutive special characters
  */
 function username_is_valid($username) {
+    $lower = null;
+    $upper = null;
+    allowable_username_length($lower, $upper); // Get the standards.
+    $internal_lower = $lower-2;
+    $internal_upper = $upper-2;
 	$username = (string)$username;
-	return (!preg_match("#[\-_]{2}#", $username) && preg_match("#^[a-z][\da-z_\-]{6,22}[a-z\d]$#i", $username));
+	return (!preg_match("#[\-_]{2}#", $username) && !preg_match("#[a-z][\-_][\da-z]#i", $username) 
+	    && preg_match("#^[a-z][\da-z_\-]{".$internal_lower.",".$internal_upper."}[a-z\d]$#i", $username));
 }
 
 // Takes in a potential login name and saves it over multiple logins.
