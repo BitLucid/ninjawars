@@ -26,3 +26,4 @@ version
 nw*20*-*-*.t*gz
 test_remote_deploy
 /deploy/www/js/potentials/
+deploy/lib/third-party/Swift-4.0.6.tar.gz
