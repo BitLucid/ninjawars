@@ -176,12 +176,12 @@ function create_ninja($send_name, $params=array()) {
 
 
 function send_signup_email($signup_email, $signup_name, $confirm, $class) {
-	$headers  = "MIME-Version: 1.0\r\n";
+	/*$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 	$headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n";
-	$headers .= "Reply-To: ".SUPPORT_EMAIL_FORMAL_NAME." <".SUPPORT_EMAIL.">\r\n";
+	$headers .= "Reply-To: ".SUPPORT_EMAIL_FORMAL_NAME." <".SUPPORT_EMAIL.">\r\n";*/
 	//  ***  Sends out the confirmation email to the chosen email address.  ***
-	$_to = "$signup_email";
+	$_to = array("$signup_email"=>$signup_name);
 	$_subject = "NinjaWars Account Sign Up";
 	$_body = render_template('signup_email_body.tpl', array(
 			'send_name'       => $signup_name
@@ -190,10 +190,11 @@ function send_signup_email($signup_email, $signup_name, $confirm, $class) {
 			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
 		)
 	);
-
-	$_from = $headers;
+    $_from = array(SYSTEM_MESSENGER_EMAIL=>SYSTEM_MESSENGER_NAME);
 	// *** Create message object.
 	$message = new Nmail($_to, $_subject, $_body, $_from);
+	// Set replyto address.
+	$message->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_FORMAL_NAME));
 	if (DEBUG) {$message->dump = true;}
 	$sent = false; // By default, assume failure.
 	$sent = $message->send();

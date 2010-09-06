@@ -18,20 +18,23 @@ function user_having_email($email) {
 
 // Sends an email for the user's account data.
 function send_account_email($email, $data) {
-	$headers  = "MIME-Version: 1.0\r\n";
+	/*$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
-	$headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n".
-	        'Reply-To: '.SUPPORT_EMAIL."\r\n";
+	$headers .= 'Reply-To: '.SUPPORT_EMAIL."\r\n";*/
+	
+	$_from = array(SYSTEM_MESSENGER_EMAIL=>SYSTEM_MESSENGER_NAME);
+	        
 	/* additional headers */
-	$_to = "$email";
+	$_to = array("$email"=>$data['uname']);
 	$_subject = "NinjaWars Lost Password Request";
 	$_body = render_template('lostpass_email_body.tpl', array(
 	    'lost_uname'=>$data['uname'],
 	    'lost_pname'=>$data['pname'],
 	    'confirmed'=>$data['confirmed']));
-	$_from = "$headers"; // Php generated.
-	$mail_obj = new Nmail($_to, $_subject, $_body, $_from);
 
+	$mail_obj = new Nmail($_to, $_subject, $_body, $_from);
+    // Set the custom replyto email.
+    $mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_FORMAL_NAME));
 	if (DEBUG) { $mail_obj->dump = true; }
 
 	$sent = false;
@@ -46,17 +49,18 @@ function send_confirmation_email($email, $data) {
 	$lost_uname   = $data['uname'];
 	$confirmed = $data['confirmed'];
 
-	$headers  = "MIME-Version: 1.0\r\n";
+	/*$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
-	$headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n".
-	        'Reply-To: '.SUPPORT_EMAIL."\r\n";
-	$_to = "$email";
-	$_subject = "NinjaWars Confirmation Info";
+	$headers .= 'Reply-To: '.SUPPORT_EMAIL."\r\n";*/
+	
+	$_from = array(SYSTEM_MESSENGER_NAME=>SYSTEM_MESSENGER_EMAIL);
+	$_to = array("$email"=>$data['uname']);
+	$_subject = "NinjaWars Account Confirmation Info";
 	$_body = render_template('lostconfirm_email_body.tpl', array(
 	    'lost_uname'=>$lost_uname,
 	    'lost_confirm'=>$lost_confirm));
-	$_from = "$headers"; // Php generated.
 	$mail_obj = new Nmail($_to, $_subject, $_body, $_from);
+	$mail_obj->setReplyTo(SUPPORT_EMAIL);
 
 	if (DEBUG) { $mail_obj->dump = true; }
 

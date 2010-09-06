@@ -1,7 +1,7 @@
 <?php
+require_once(LIB_ROOT.'third-party/swift-mailer/lib/swift_required.php');
 /**
- * Wrapper class around the mail function, allows dumping/debugging of mail,
- * should eventually just wrap PEAR's Mail class.
+ * Wrapper class around the swiftmail mail library.
  *
  * @category Mail
  * @package obj
@@ -13,23 +13,27 @@ class Nmail {
    /**#@+
     * @access public
     */
+    
+    
+    /**
+    * The to is a simple email address or an array of emails or a mixed array of email-indexed formal names and/or simple email values.
+    * For example: 'bob@gmail.com' or array('bob@gmail.com') 
+    * or array('bob@gmail.com'=>'Robert') or array('bob@gmail.com'=>'Robert', 'william@gmail.com')
+    * @var mixed
+    */
 	public $to;
 
 	public $subject;
 
 	public $body;
+	
+	public $reply_to;
 
     /**
-    * The From header is used as the first part of the "additional headers".
-    * @var string
+    * The From is a simple email address or an email-indexed array of emails and formal names as with the to above.
+    * @var mixed
     */
 	public $from;
-
-    /**
-    * Additional headers that would be tacked on the end of the from header.
-    * @var string
-    */
-	public $cc_bcc_etc_headers;
 
 	/**
     * Boolean result of whether the mail() function accepted the send input.
@@ -56,6 +60,9 @@ class Nmail {
 	 * @var boolean
 	 */
 	public $try_to_send = true;
+	
+	
+	public $message = null;  // Swiftmail sending mechanism.
 
    /**#@-*/
 
@@ -63,25 +70,23 @@ class Nmail {
     * Constructor
     *
     * Just sets the fields to use for the mail() function, defaults null.
-    * @param $from string  The header using From: <address>
-    * @param $cc_bcc_etc_headers string Will append to the from header.
+    * @param $from string or array of email-indexed from addresses
     * @access public
 	**/
-	function Nmail($to=null, $subject=null, $body=null, $from=null, $cc_bcc_etc_headers=null) {
+	function __construct($to=null, $subject=null, $body=null, $from=null) {
 		$this->to = $to;
 		$this->subject = $subject;
 		$this->body = $body;
 		$this->from = $from;
-		$this->cc_bcc_etc_headers = $cc_bcc_etc_headers;
 	}
 
 	/**
 	 * Replace the mail settings with completely new ones, reusing the constructor.
 	 * @return void
 	 **/
-	function replace($to=null, $subject=null, $body=null, $from=null, $cc_bcc_etc_headers=null) {
-		$this->Zmail($to, $subject, $body, $from, $cc_bcc_etc_headers);
-		// *** Just re-call the constructor.
+	function replace($to=null, $subject=null, $body=null, $from=null) {
+	    $this->__construct($to, $subject, $body, $from);
+		// *** Replace the current Nmail parameters with a new mailing.
 	}
 
 	/**
@@ -91,11 +96,11 @@ class Nmail {
 	function valid() {
 		return !($this->to == null || $this->subject == null || $this->body == null || $this->from == null);
 	}
-
-	// *** TODO: Add a addToAddresses() function that takes in an array
-	// *** of addresses and Names to create formal emails.
-
-	// *** TODO: get functions to get the email parts.
+	
+	// Direct mapping to allow the setting of the reply to address.
+	function setReplyTo($email_or_array){
+	    $this->reply_to = $email_or_array;
+	}
 
 	/**
 	 * Sends the mail out using the php mail() function.
@@ -104,17 +109,62 @@ class Nmail {
 	function send() {
 		$this->success = null;
 
+
+        // Only send email on systems where an email system exists and sending attempts are actually requested.
 		if ($this->try_to_send) {
-			$this->success = mail($this->to, $this->subject, $this->body, $this->from.$this->cc_bcc_etc_headers);
+		
+            //Create the Transport
+            /* SMTP Example for later ease of reference 
+            $transport = Swift_SmtpTransport::newInstance('smtp.example.org', 25)
+              ->setUsername('your username')
+              ->setPassword('your password')
+              ;*/
+		
+		    if(!isset($this->mailer) || !is_object($this->mailer)){
+    		    $transport = Swift_MailTransport::newInstance();
+    		    $this->mailer = Swift_Mailer::newInstance($transport);
+    		}
+		
+            //Create the message using the mail() function!
+            // This is a chained object syntax.
+            $this->message = Swift_Message::newInstance()
+
+              //Give the message a subject
+              ->setSubject($this->subject)
+
+              //Set the From address with an associative array
+              ->setFrom($this->from)
+
+              //Set the To addresses with an associative array
+              ->setTo($this->to)
+
+              //Give it a body
+              ->setBody($this->body)
+
+              //And optionally an alternative/html body
+              ->addPart('<p>'.$this->body.'</p>', 'text/html')
+
+              //Optionally add any attachments
+            //  ->attach(Swift_Attachment::fromPath('my-document.pdf'))
+              ;
+              
+              if($this->reply_to){
+                $this->message->setReplyTo($this->reply_to);
+              }
+
+			$this->success = $this->mailer->send($this->message);
+			// Send the message along.
 		}
 
+        // When debugging, simply dump the full contents of this object instead of sending email.
 		if ($this->dump) {
 			// *** TODO: Eventually make this create a javascript popup so
 			// *** header Redirection works still.
-			var_dump($this);
 			print_r($this->body);
+			var_dump($this);
 		}
-
+        
+        // If the page would forward to another page, this will kill any further processing.
 		if ($this->die_after_dump) {
 			die();
 		}
