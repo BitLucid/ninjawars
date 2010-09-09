@@ -55,8 +55,8 @@
 	Lost Your Password ? <a href="account_issues.php">Resend Account Info Email</a> / Didn't get your confirmation code ? <a href="account_issues.php">Resend Confirmation Email</a>
 	</p>
 	<p>
-	More information on classes and skills can be found on
-	    <a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>the Wiki</a>.
+	More information on the ninja classes and their skills can be found on
+	    <a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>the Wiki</a> or on the "skills" page once you begin playing.
 	</p>
 	<p>
 	  Otherwise, just <a href='staff.php'>Contact Us</a>.

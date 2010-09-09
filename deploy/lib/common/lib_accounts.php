@@ -150,7 +150,7 @@ function create_ninja($send_name, $params=array()) {
 
 	$send_email  = $params['send_email'];
 	$send_pass   = $params['send_pass'];
-	$send_class  = $params['send_class'];
+	$class_identity  = $params['send_class'];
 	$preconfirm  = (int) $params['preconfirm'];
 	$confirm     = (int) $params['confirm'];
 	$referred_by = $params['referred_by'];
@@ -161,7 +161,7 @@ function create_ninja($send_name, $params=array()) {
 		  email, _class_id, level,  status, member, days, ip, bounty, created_date)
 		 VALUES
 		 (:username, :pass, '150', '5', '100', '', '0', '180', :confirm, :preconfirm,
-		 :email, (SELECT class_id FROM class WHERE lower(class_name) = lower(:class)), '1', '1', '0', '0', '', '0', now())";
+		 :email, (SELECT class_id FROM class WHERE identity = :class_identity), '1', '1', '0', '0', '', '0', now())";
 	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 	$statement = DatabaseConnection::$pdo->prepare($playerCreationQuery);
 	$statement->bindValue(':username', $send_name);
@@ -169,24 +169,27 @@ function create_ninja($send_name, $params=array()) {
 	$statement->bindValue(':confirm', $confirm);
 	$statement->bindValue(':preconfirm', $preconfirm);
 	$statement->bindValue(':email', $send_email);
-	$statement->bindValue(':class', $send_class);
+	$statement->bindValue(':class_identity', $class_identity);
 	$statement->execute();
 	return get_char_id($send_name);
 }
 
 
-function send_signup_email($signup_email, $signup_name, $confirm, $class) {
+function send_signup_email($signup_email, $signup_name, $confirm, $class_identity) {
 	/*$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 	$headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n";
 	$headers .= "Reply-To: ".SUPPORT_EMAIL_FORMAL_NAME." <".SUPPORT_EMAIL.">\r\n";*/
 	//  ***  Sends out the confirmation email to the chosen email address.  ***
+	
+	$class_display = class_display_name_from_identity($class_identity);
+	
 	$_to = array("$signup_email"=>$signup_name);
 	$_subject = "NinjaWars Account Sign Up";
 	$_body = render_template('signup_email_body.tpl', array(
 			'send_name'       => $signup_name
 			, 'confirm'       => $confirm
-			, 'send_class'    => $class
+			, 'send_class'    => $class_display
 			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
 		)
 	);
@@ -205,14 +208,14 @@ function send_signup_email($signup_email, $signup_name, $confirm, $class) {
 function create_account_and_ninja($send_name, $params=array()) {
 	$send_email  = $params['send_email'];
 	$send_pass   = $params['send_pass'];
-	$send_class  = $params['send_class'];
+	$class_identity  = $params['send_class'];
 	$confirm     = (int) $params['confirm'];
 	$error       = false;
 	$ninja_id    = create_ninja($send_name, $params);
 	$error       = create_account($ninja_id, $send_email, $send_pass);
 
 	if (!$error) {
-		$sent = send_signup_email($send_email, $send_name, $confirm, $send_class);
+		$sent = send_signup_email($send_email, $send_name, $confirm, $class_identity);
 
 		if (!$sent) {
 			$error = "There was a problem sending your signup to that email address.";
@@ -242,9 +245,9 @@ function confirm_player($player_name, $confirmation=0, $autoconfirm=false) {
 
 
 
-// Check for reserved or already in use.
+// Check for reserved or already in use by another player.
 function ninja_name_available($ninja_name) {
-	$reserved = array("SysMsg", "NewUserList", "Admin", "Administrator");
+	$reserved = array("SysMsg", "NewUserList", "Admin", "Administrator", "A Stealthed Ninja");
 
 	foreach ($reserved as $l_names) {
 		if (strtolower($ninja_name) == strtolower($l_names)) {
@@ -255,20 +258,27 @@ function ninja_name_available($ninja_name) {
 	return (!get_user_id($ninja_name));
 }
 
+// Get the display name from the identity.
+function class_display_name_from_identity($identity){
+	return query_item('SELECT class_name from class where identity = :identity', array(':identity'=>$identity));
+}
+
 // Check that the signup info is valid.
-function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredReferral, $enteredPass) {
+function validate_signup($enteredName, $enteredEmail, $class_identity, $enteredReferral, $enteredPass) {
 	$successful = false;
 
 	$send_name   = trim($enteredName);
 	$send_pass   = $enteredPass;
-	$send_class  = $enteredClass;
+	$send_class  = $class_identity;
+	$class_display = class_display_name_from_identity($class_identity);
+	
 	$send_email  = trim($enteredEmail);
 	$referred_by = $enteredReferral;
 
 	$success_message = "<div id='signup-process'>
          Your responses:<br> Name - ".htmlentities($send_name).",<br>
 		 Password - ".((isset($send_pass) ? "***yourpassword***" : "NO PASSWORD")).",<br>
-		 Class - ".htmlentities($send_class).",<br>
+		 Class - ".htmlentities($class_display).",<br>
 		 Email - ".htmlentities($send_email).",<br>
 		 Site Referred By - ".htmlentities($referred_by)."<br><br>\n";
 
@@ -311,11 +321,11 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 				} else {
 					//Uses previous query to make sure name and email aren't duplicates.
 					$success_message .= "Phase 3 Complete: Username and Email are unique.<br><hr>\n";
-					$classes = query_resultset('SELECT class_name FROM class WHERE class_active');
+					$classes = query_resultset('SELECT identity FROM class WHERE class_active');
 
 					$legal_classes = array();
 					foreach ($classes as $l_class) {
-						$legal_classes[] = strtolower($l_class['class_name']);
+						$legal_classes[] = strtolower($l_class['identity']);
 					}
 
 					//debug($send_class);debug($legal_classes);
@@ -368,7 +378,7 @@ function validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredRef
 							$success_message .= "<p>Only one account per person is allowed.</p>";
 						}
 
-						$success_message .= "If you require help use the forums at <a href='".WEB_ROOT."forum/'>"
+						$success_message .= "If you need help use the forums at <a href='".WEB_ROOT."forum/'>"
 										.WEB_ROOT."forum/</a> or email: ".SUPPORT_EMAIL;
 					}	// *** End of class checking.
 				}

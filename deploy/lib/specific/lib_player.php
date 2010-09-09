@@ -101,11 +101,11 @@ function is_valid_class($potential_class_identity){
 
 // Set the character's class.
 function set_class($char_id, $new_class) {
-    if(!is_valid_class($new_class)){
+    if(!is_valid_class(strtolower($new_class))){
         return "That class was not an option to change into.";
     } else {
     	$up = "UPDATE players SET _class_id = (select class_id FROM class WHERE class.identity = :class) WHERE player_id = :char_id";
-    	query($up, array(':class'=>$new_class, ':char_id'=>$char_id));
+    	query($up, array(':class'=>strtolower($new_class), ':char_id'=>$char_id));
 
     	return null;
     }

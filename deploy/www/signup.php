@@ -18,7 +18,7 @@ $page_title        = "Become a Ninja";
 $starting_referral = in('referrer');
 $enteredName       = trim(in('send_name', '', 'toText'));
 $enteredEmail      = trim(in('send_email', '', 'toText'));
-$enteredClass      = in('send_class', '');
+$enteredClass      = strtolower(trim(in('send_class', '')));
 $enteredReferral   = in('referred_by', $starting_referral);
 $enteredPass       = in('key', null, 'toText');
 $enteredCPass      = in('cpass', null, 'toText');
@@ -29,7 +29,7 @@ include SERVER_ROOT."interface/header.php";
 $submit_successful = false; // *** Default.
 
 if ($submitted) {
-	if ($enteredPass == $enteredCPass) {
+	if ($enteredPass == $enteredPass) {
 		$submit_successful = validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredReferral, $enteredPass);
 	} else {
 		echo "Your password entries did not match. Please try again.<br>";
@@ -38,11 +38,12 @@ if ($submitted) {
 
 if (!$submit_successful) {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->query('SELECT lower(class_name) AS class_name, class_name||\' - \'||class_note AS class_label FROM class WHERE class_active');
+	$statement = DatabaseConnection::$pdo->query('SELECT identity, class_name||\' - \'||class_note AS class_label FROM class WHERE class_active');
 	$classes = array(''=>'Pick Ninja Color');
 
+    // Create the options array from the class data in the database.
 	while ($data = $statement->fetch()) {
-		$classes[$data['class_name']] = $data['class_label'];
+		$classes[$data['identity']] = $data['class_label'];
 	}
 
 	echo render_template('signup.tpl', array(
