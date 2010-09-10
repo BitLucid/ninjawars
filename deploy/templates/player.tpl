@@ -36,19 +36,24 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
     <span class='player-level-category {$level_category.css|escape}'>
       {$level_category.display|escape} [{$player_info.level|escape}]
     </span>
-
+	
     {include file="status_section.tpl" statuses=$status_list}
 
-	</div>
+    <span style='width:10em;display:inline-block;'>
+            {include file="health_bar.tpl" health=$player_info.health health_percent=$player_info.health_percent}
+    </span>
 
+	</div>
+	
 {if !$self}
     <table id='player-profile-table'>
-      <tr>
 	{if $attack_error}
+	  <tr>
         <td><div class='ninja-error centered'>Cannot Attack: {$attack_error}</div></td>
       </tr>
     </table>
 	{else}
+	  <tr>
         <td colspan='2'>
           <table id='player-profile-attack'>
             <tr>

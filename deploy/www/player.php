@@ -94,6 +94,8 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		$player_clan_section    = '';
 
 		$clan = get_clan_by_player_id($player_info['player_id']);
+		
+		$player_info = format_health_percent($player_info);
 
 		// Player clan and clan members
 
