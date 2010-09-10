@@ -99,7 +99,7 @@ function is_valid_class($potential_class_identity){
     return false;
 }
 
-// Set the character's class.
+// Set the character's class, using the identity.
 function set_class($char_id, $new_class) {
     if(!is_valid_class(strtolower($new_class))){
         return "That class was not an option to change into.";
@@ -110,6 +110,8 @@ function set_class($char_id, $new_class) {
     	return null;
     }
 }
+
+
 
 
 // Get the character class information.

@@ -160,7 +160,7 @@
             </div>
             <div id='subcategory-bar'>
                 <ul id='self-subcategory'>
-                  <li><a href="stats.php" target="main" title='Your ninja strength, level, profile, etc.'>Stats</a></li>
+                  <li><a href="stats.php" target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
                   <li><a href="skills.php" target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
                   <li><a href="inventory.php" target="main" title='Your items and links to use them on yourself.'>Items</a></li>
                   <!-- Profile -->

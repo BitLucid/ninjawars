@@ -74,7 +74,9 @@ $profile_display  = out($profile_editable);
 
 $parts = get_certain_vars(get_defined_vars(), array('player', 'level_category', 'status_list'));
 
+// Set the parts array's player clan if any is found.
 if ($parts['player_clan'] = get_clan_by_player_id($user_id)) {
+    // Set the char clan name and id for later usage.
 	$parts['clan_name'] = $parts['player_clan']->getName();
 	$parts['clan_id']   = $parts['player_clan']->getID();
 }

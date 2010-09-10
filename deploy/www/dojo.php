@@ -20,11 +20,11 @@ $classChangeLevelReq = 6;
 
 $class_array = array(
 // *** STARTING CLASS  => NEXT CLASS ***
-	  'Viper'   => 'Tiger'
-	, 'Tiger'   => 'Dragon'
-	, 'Dragon' => 'Mantis'
-	, 'Mantis'  => 'Crane'
-	, 'Crane'  => 'Viper'
+	  'viper'   => 'tiger'
+	, 'tiger'   => 'dragon'
+	, 'dragon' => 'mantis'
+	, 'mantis'  => 'crane'
+	, 'crane'  => 'viper'
 );
 
 $in_upgrade = in('upgrade'); // Level up request.
@@ -43,7 +43,9 @@ if (is_logged_in()) {
 	$userLevel = $player->vo->level;
 	$userKills = $player->vo->kills;
 	$userClass = char_class_identity($char_id);
+	$user_class_display = class_display_name_from_identity($userClass);
 	$destination_class = $class_array[$userClass];
+	$destination_class_display = class_display_name_from_identity($class_array[$userClass]);
 	$required_kills = required_kills_to_level($char_id);
 
 

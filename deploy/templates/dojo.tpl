@@ -63,10 +63,10 @@
         {if $classChangeSequence eq 1}
         <form id="Buy_classChange" action="dojo.php" method="post" name="changeofclass">
           <div style='margin-top: 10px;margin-bottom: 10px;'>
-            Trade your memories of {$classChangeCost|escape} kills to change your skills to those of the {$destination_class|escape} ninja?
+            Trade your memories of {$classChangeCost|escape} kills to change your skills to those of the {$destination_class_display|escape} ninja?
             <input id='classchangeSequence' name='classChangeSequence' type='hidden' value='2'>
             <input id='current_class' name='current_class' type='hidden' value='{$userClass|escape}'>
-            <input type="submit" value="Become A {$destination_class|escape} Ninja" class="formButton">
+            <input type="submit" value="Become A {$destination_class_display|escape} Ninja" class="formButton">
           </div>
         </form>
         {elseif $classChangeSequence eq 2}
