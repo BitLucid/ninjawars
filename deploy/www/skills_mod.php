@@ -358,6 +358,11 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 } // End of the skill use SUCCESS block.
 
 $ending_turns = changeTurns($username, $turns_to_take);
+
+
+display_template('defender_health.tpl', array('health'=>$target->health(), 'health_percent'=>$target->health_percent(), 'target_name'=>$target->name()));
+
+
 ?>
   </div>
   <div class="skillReload">

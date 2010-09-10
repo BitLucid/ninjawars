@@ -273,6 +273,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
 			}
 
+
 			if ($victim_alive == true && $using_item == true) {
 				$self_targetting = ($selfTarget ? '&amp;selfTarget=1' : '');
                 echo "<br><a href=\"inventory_mod.php?item_type=".urlencode($item->getType())."&amp;target_id=$target_id&amp;link_back={$return_to}{$self_targetting}\">Use {$item->getName()} again?</a><br>\n";  //Repeat Usage
@@ -280,6 +281,10 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 		}
 	}
 }
+
+
+display_template('defender_health.tpl', array('health'=>$targetObj->health(), 'health_percent'=>$targetObj->health_percent(), 'target_name'=>$targetObj->name()));
+
 
 // *** Take away at least one turn even on attacks that fail to prevent page reload spamming ***
 // TODO: Once attack attempt limiting works, this can be removed.

@@ -395,11 +395,8 @@ if (isset($target)) {
 	if ($AttackLegal && $attacker_health_snapshot > 0 && $defender_health_snapshot > 0) {	// *** After any partial attack. ***
 		echo "<div><a href=\"attack_mod.php?attacked=1&amp;target=$target\">Attack Again?</a></div>\n";
 	}
-	echo "<div id='target-ending-health'>$target's final health: 
-	        <span style='width:30em;display:inline-block'>";
-	display_template('health_bar.tpl', array('health'=>$target_player->health(), 'health_percent'=>$target_player->health_percent()));
-	echo "        </span>
-          </div>";
+
+    display_template('defender_health.tpl', array('health'=>$target_player->health(), 'health_percent'=>$target_player->health_percent(), 'target_name'=>$target_player->name()));
 
 	echo "<div>Return to <a href=\"player.php?player=".urlencode($target)."\">".out($target)."'s Info</a></div>Or \n";
 }
