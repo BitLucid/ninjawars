@@ -62,12 +62,8 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 
 		// TODO: Add the "player since" date to the player profile/info.
 
-		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE uname = :player");
-		$statement->bindValue(':player', $player_info['uname']);
-		$statement->execute();
-
-		$rank_spot = $statement->fetchColumn();
+        $sel_rank_spot = "SELECT rank_id FROM rankings WHERE uname = :player limit 1";
+        $rank_spot = query_item($sel_rank_spot, array(':player'=>$player_info['uname']));
 
 		// Display the player info.
 		$status_list          = get_status_list($player);

@@ -211,6 +211,11 @@ class Player
 	public function max_health(){
 	    return determine_max_health($this->level());
 	}
+	
+	// Return the current percentage health.
+	public function health_percent(){
+	    return health_percent($this->health(), $this->level());
+	}
 		
 }
 ?>

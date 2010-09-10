@@ -280,11 +280,14 @@ function get_rank($username) {
 	return ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
 }
 
+// Return the current percentage of the maximum health that a character could have.
+function health_percent($health, $level){
+    return min(100, round(($health/determine_max_health($level))*100));
+}
+
 // Format a player data row with health and level and add the data for a health percentage.
 function format_health_percent($player_row){
-    //$health_pct   = ($user_id ? min(100, round(($health/$max_health)*100)) : 0);
-    $max_health = determine_max_health($player_row['level']);
-    $percent = min(100, round(($player_row['health']/$max_health)*100));
+    $percent = health_percent($player_row['health'], $player_row['level']);
     $player_row['health_percent'] = $percent;
     return $player_row;    
 }

@@ -120,20 +120,14 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 {/if}
        </span>
 {if $player_info.bounty gt 0}
-       <span class='player-bounty'>{$player_info.bounty} bounty</span>
+       <span class='player-bounty'><a class='bounty-link' href='doshin_office.php' target='main'>{$player_info.bounty} bounty</a></span>
 {/if}
      </div>
 
 {if is_logged_in() and !$self}
-     <div class='set-bounty centered'>
-       <form id="set_bounty" action="doshin_office.php" method="post" name="set_bounty">
-         <div>
-           <input id="amount" type="text" size="4" maxlength="5" name="amount" class="textField">
-           <input id="command" type="submit" value="Offer Bounty" name="command" class="formButton">
-           <input id="target" type="hidden" value="{$player_info.uname|escape}" name="target">
-         </div>
-       </form>
-     </div>
+    <div class='set-bounty centered'>
+        <a class='set-bounty-link' href='doshin_office.php?target={$player_info.uname|escape:'url'}'>Add bounty</a>
+    </div>
 
      <div class='player-communications centered'>
        <form id='send_mail' action='player.php' method='get' name='send_mail'>
