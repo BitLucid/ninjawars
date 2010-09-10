@@ -18,30 +18,30 @@ class Skill
 		'duel', 'attack', 'kampo', 'evasion'
 	); // Midnight heal currently doesn't work.
 
-	// Use the class identities as the array keys here, so $skill_map['Crane'] 
-	// ... should return an array of Crane-specific skills.
+	// Use the class identities as the array keys here, so $skill_map['crane'] 
+	// ... should return an array of crane-specific skills.
 	public $skill_map = array(
-		'Crane'    => array(
+		'crane'    => array(
 			'ice bolt' => array('available'=>1)
 			, 'speed'  => array('available'=>1)
 		)
-		, 'Dragon' => array(
+		, 'dragon' => array(
 			'chi'             => array('available'=>1)
 			, 'heal' => array('available'=>1)
 		)
-		, 'Tiger'   => array(
+		, 'tiger'   => array(
 			'fire bolt' => array('available'=>1)
 			, 'blaze' => array('available'=>1)
 		)
-		, 'Viper' => array(
+		, 'viper' => array(
 			'poison touch'       => array('available'=>1)
 			, 'hidden resurrect' => array('available'=>1)
 		)
-		, 'Mantis' => array(
+		, 'mantis' => array(
 			'kampo'       => array('available'=>1)
 			, 'evasion'   => array('available'=>1)
 		)
-		, 'All'   => array(
+		, 'all'   => array(
 			'attack'       => array('available'=>1)
 			, 'duel'       => array('available'=>1)
 			, 'sight'      => array('available'=>1)
@@ -72,12 +72,12 @@ class Skill
 		if ($char->isAdmin()) {
 		    // Admins get access to all skills.
 		
-			$skills = $this->skill_map['Crane'] +
-				$this->skill_map['Dragon'] +
-				$this->skill_map['Mantis'] +
-				$this->skill_map['Tiger'] +
-				$this->skill_map['Viper'] +
-				$this->skill_map['All'];
+			$skills = $this->skill_map['crane'] +
+				$this->skill_map['dragon'] +
+				$this->skill_map['mantis'] +
+				$this->skill_map['tiger'] +
+				$this->skill_map['viper'] +
+				$this->skill_map['all'];
 			return $skills;
 		}
 
@@ -88,7 +88,7 @@ class Skill
 			$class_skills = $this->skill_map[$class];
 		}
 
-		return $class_skills + $this->skill_map['All'];
+		return $class_skills + $this->skill_map['all'];
 	}
 
 	/**
