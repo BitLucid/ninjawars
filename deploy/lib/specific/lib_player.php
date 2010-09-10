@@ -268,6 +268,7 @@ function is_clan_leader($player_id) {
 	return (($clan = get_clan_by_player_id($player_id)) && $player_id == get_clan_leader_id($clan->getID()));
 }
 
+// Get the rank integer for a certain character.
 function get_rank($username) {
 	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE uname = :player");
@@ -277,5 +278,14 @@ function get_rank($username) {
 	$rank = $statement->fetchColumn();
 
 	return ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
+}
+
+// Format a player data row with health and level and add the data for a health percentage.
+function format_health_percent($player_row){
+    //$health_pct   = ($user_id ? min(100, round(($health/$max_health)*100)) : 0);
+    $max_health = determine_max_health($player_row['level']);
+    $percent = min(100, round(($player_row['health']/$max_health)*100));
+    $player_row['health_percent'] = $percent;
+    return $player_row;    
 }
 ?>

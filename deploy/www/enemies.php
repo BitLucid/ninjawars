@@ -1,26 +1,18 @@
 <?php
-$private    = true;
-$alive      = false;
 require_once(LIB_ROOT."specific/lib_player_list.php");
 
-if ($error = init($private, $alive)) {
-	header('Location: list_all_players.php');
-} else {
 
+// Search for enemies to add.
 function get_enemy_matches($match_string) {
-	DatabaseConnection::getInstance();
-
 	$user_id = get_user_id();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT player_id, uname FROM players WHERE uname ~* :matchString AND confirmed = 1 AND player_id != :user ORDER BY level LIMIT 11");
-	$statement->bindValue(':matchString', $match_string);
-	$statement->bindValue(':user', $user_id);
-
-	$statement->execute();
-
-	return $statement;
+	$sel = "SELECT player_id, uname FROM players WHERE uname ~* :matchString AND confirmed = 1 AND player_id != :user ORDER BY level LIMIT 11";
+	$enemies = query_array($sel, array(
+	    ':matchString'=>$match_string,
+	    ':user'=>$user_id));
+	return $enemies;
 }
 
+// Add a certain enemy to the enemy list.
 function add_enemy($enemy_id) {
 	if (!is_numeric($enemy_id)) {
 		throw new Exception('Enemy id to add must be present to succeed.');
@@ -31,6 +23,7 @@ function add_enemy($enemy_id) {
 	set_setting('enemy_list', $enemy_list);
 }
 
+// Drop a certain enemy from the list.
 function remove_enemy($enemy_id) {
 	if (!is_numeric($enemy_id)) {
 		throw new Exception('Enemy id to remove must be present to succeed.');
@@ -58,12 +51,16 @@ function compare_enemy_order($e1, $e2) {
 	}
 }
 
+// Get the info for a certain single enemy.
 function expand_enemy_info($enemy_id) {
 	$enemy = get_player_info($enemy_id);
+	$enemy = format_health_percent($enemy);
 	$enemy['enemy_id'] = $enemy_id;
 	return $enemy;
 }
 
+
+// Pull the current enemies, expand out their info, and then sort 'em by health & level.
 function get_current_enemies($enemy_list) {
 	if (!is_array($enemy_list)) {
 		return $enemy_section;
@@ -76,6 +73,7 @@ function get_current_enemies($enemy_list) {
 	return $enemy_list;
 }
 
+// Pull the recent attackers from the event table.
 function get_recent_attackers() {
 	$recent_attackers = array();
 	$user_id = get_user_id();
@@ -88,6 +86,40 @@ function get_recent_attackers() {
 	return $statement;
 }
 
+// Select characters right nearby in ranking score, up and down.
+function nearby_peers($char_id/*, $limit=5*/){
+    $sel = 
+        "(select rank_id, uname, level, player_id, health from players join player_rank on _player_id = player_id where score > 
+            (select score from player_rank where _player_id = :char_id) and confirmed = 1 and health>0 ORDER BY score ASC LIMIT 5)
+        UNION
+        (select rank_id, uname, level, player_id, health from players join player_rank on _player_id = player_id where score < 
+            (select score from player_rank where _player_id = :char_id2) and confirmed = 1 and health>0 ORDER BY score DESC LIMIT 5)";
+    $peers = query_array($sel, array(
+            ':char_id'=>array($char_id, PDO::PARAM_INT),
+            ':char_id2'=>array($char_id, PDO::PARAM_INT)
+            /*':limit'=>array($limit, PDO::PARAM_INT),
+            ':limit2'=>array($limit, PDO::PARAM_INT)*/
+            ));
+            
+	$peers = array_map('format_health_percent', $peers);  
+    return $peers;
+}
+
+
+
+
+$private    = true;
+$alive      = false;
+
+if ($error = init($private, $alive)) {
+	header('Location: list_all_players.php');
+} else {
+
+
+$char_name = get_char_name();
+
+
+$peers = nearby_peers(get_char_id());
 
 $active_ninjas = get_active_players(5, true); // Get the currently active ninjas
 
@@ -100,7 +132,6 @@ $enemy_list   = get_setting('enemy_list');
 
 if ($match_string) {
 	$found_enemies = get_enemy_matches($match_string);
-	$found_enemies = $found_enemies->fetchAll();
 } else {
 	$found_enemies = null;
 }
@@ -125,7 +156,7 @@ $recent_attackers = get_recent_attackers()->fetchAll();
 display_page(
 	'enemies.tpl'	// *** Main template ***
 	, 'Enemy List' // *** Page Title ***
-	, get_certain_vars(get_defined_vars(), array('found_enemies', 'active_ninjas', 'recent_attackers', 'enemy_list')) // *** Page Variables ***
+	, get_certain_vars(get_defined_vars(), array('char_name', 'found_enemies', 'active_ninjas', 'recent_attackers', 'enemy_list', 'peers')) // *** Page Variables ***
 	, array( // *** Page Options ***
 		'quickstat' => false
 	)

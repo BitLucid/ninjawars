@@ -1,3 +1,4 @@
+<div style='clear:both'>
 <h3>You were recently attacked by</h3>
 <ul id='recent-attackers'>
 {foreach from=$recent_attackers item=l_attacker}
@@ -10,3 +11,4 @@
   <li class='recent-attacker {$status_class}'><a href='player.php?player_id={$l_attacker.send_from|escape:'url'|escape}'>{$l_attacker.uname|escape}</a></li>
 {/foreach}
 </ul>
+</div>
