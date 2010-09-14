@@ -42,8 +42,8 @@ if (is_logged_in()) {
 	$player    = new Player($char_id);
 	$userLevel = $player->vo->level;
 	$userKills = $player->vo->kills;
-	$userClass = char_class_identity($char_id);
-	$user_class_display = class_display_name_from_identity($userClass);
+	$userClass = $player->class_identity();
+	$user_class_display = $player->class_display_name();
 	$destination_class = $class_array[$userClass];
 	$destination_class_display = class_display_name_from_identity($class_array[$userClass]);
 	$required_kills = required_kills_to_level($char_id);

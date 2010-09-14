@@ -1,7 +1,8 @@
 <?php
+
 require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
-/* Player behavior object.
+/* Player (actually character) behavior object.
  *
  * This file should make use of a private PlayerVO.class.php and PlayerDAO.class.php
  * to propegate and save its data.
@@ -163,6 +164,16 @@ class Player
 			return null;
 		}
 	}
+	
+	// Pull the class identity for a character.
+	public function class_identity(){
+	    return char_class_identity($this->id());
+	}
+	
+	// Pull the class display name for a character.
+	public function class_display(){
+	    return char_class_name($this->id());
+	}
 
     // Complex wrapper that allows for robust healing with a limit of the max health.	
 	public function heal($amount){
@@ -218,4 +229,5 @@ class Player
 	}
 		
 }
+
 ?>

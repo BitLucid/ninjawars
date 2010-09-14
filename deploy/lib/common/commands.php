@@ -465,7 +465,7 @@ function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
  * defaults to the currently logged in player, but can act on any player
  * if another username is passed in.
  * @param $user user_id or username
- * @param @password Unless true, wipe the password.
+ * @param @password Unless true, wipe the password from any available data.
 **/
 function get_player_info($p_id = null, $p_password = false) {
 	require_once(LIB_ROOT."specific/lib_status.php");
@@ -474,7 +474,7 @@ function get_player_info($p_id = null, $p_password = false) {
 
 	$player_data = array();
 
-	if ($player) {
+	if (get_class($player) == 'Player' && $player->id()) {
 	    // Turn the player data vo into a simple array.
 	    $player_data = (array) $player->vo;
 		if (!$p_password) {
