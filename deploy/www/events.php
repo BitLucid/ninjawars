@@ -1,10 +1,10 @@
 <?php
 $private    = true;
 $alive      = false;
-$quickstat  = false;
-$page_title = "Events";
-include(SERVER_ROOT."interface/header.php");
 
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
 $user_id = get_user_id();
 $events = get_events($user_id, 300);
 
@@ -20,8 +20,14 @@ if (!$event_list) {
 	$event_list = 'You have not been attacked recently.';
 }
 
-$parts = get_certain_vars(get_defined_vars());
-echo render_template('events.tpl', $parts);
+display_page(
+	'events.tpl'
+	, 'Events'
+	, get_certain_vars(get_defined_vars())
+	, array(
+		'quickstat' => false
+	)
+);
 
-include(SERVER_ROOT."interface/footer.php");
+}
 ?>
