@@ -1,10 +1,10 @@
 <?php
-$page_title = "Account Problems";
-$quickstat  = false;
 $private    = false;
 $alive      = false;
 
-include SERVER_ROOT."interface/header.php";
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
 
 // Determines the user information for a certain email.
 function user_having_email($email) {
@@ -106,8 +106,14 @@ if (!$email && ($password_request || $confirmation_request)) {
 	}
 }
 
-$parts = get_certain_vars(get_defined_vars(), array('data'));
-echo render_template('account_issues.tpl', $parts);
+display_page(
+	'account_issues.tpl'
+	, 'Account Problems'
+	, get_certain_vars(get_defined_vars(), array('data'))
+	, array(
+		'quickstat' => false
+	)
+);
 
-include SERVER_ROOT."interface/footer.php";
+}
 ?>
