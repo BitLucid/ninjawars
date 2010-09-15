@@ -22,7 +22,7 @@
 {/if}
 
 {if $state eq $templatelite.const.CASINO_WIN or $state eq $templatelite.const.CASINO_LOSE}
-<a href="casino.php" style="display: block;margin-top: 10px;">Try Again?</a>
+<div style="margin-top: 10px;"><a href="casino.php">Try Again?</a></div>
 {/if}
 
 <form id="coin_flip" action="casino.php" method="post" name="coin_flip">
