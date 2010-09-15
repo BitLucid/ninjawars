@@ -38,12 +38,24 @@ function maximum_level(){
     return 250;
 }
 
+// Get a character's level, necessary when a character's level gets changed.
+function char_level($char_id){
+    $info = get_player_info($char_id);
+    return $info['level'];
+}
+
 // The number of kills needed to level up to the next level.
 function required_kills_to_level($current_level){
     $levelling_cost_multiplier = 5; // 5 more kills in cost for every level you go up.
-    $required_kills = ($current_level+1)*$levelling_cost_multiplier;
+    $required_kills = ($current_level)*$levelling_cost_multiplier;
     return $required_kills;
     
+}
+
+// Get a character's current kills, necessary when a character's level changes.
+function char_kills($char_id){
+    $info = get_player_info($char_id);
+    return $info['kills'];
 }
 
 
@@ -130,6 +142,12 @@ function char_class_identity($char_id) {
 function char_class_theme($char_id) {
     return query_item("SELECT class.theme FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id", 
         array(':char_id'=>$char_id));
+}
+
+// Pull the class theme by identity.
+function class_theme($class_identity){
+    return query_item('select theme from class where identity = :class_identity',
+        array(':class_identity'=>$class_identity));
 }
 
 /**

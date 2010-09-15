@@ -63,7 +63,7 @@ function expand_enemy_info($enemy_id) {
 // Pull the current enemies, expand out their info, and then sort 'em by health & level.
 function get_current_enemies($enemy_list) {
 	if (!is_array($enemy_list)) {
-		return $enemy_section;
+		return $enemy_list;
 	}
 
 	/// TODO - Stop iterating database calls. array_map iterates, expand_enemy_info calls the database

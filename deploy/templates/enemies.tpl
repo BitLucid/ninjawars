@@ -57,7 +57,7 @@
 </ul>
 </div>
 {else}
-<p style='width:45%;float:right;margin-left:0;margin-right:0;'>Everyone is dead, {$username}.</p>
+<p style='width:45%;float:right;margin-left:0;margin-right:0;'>No nearby enemies, <em class='char-name'>{$username}</em>.</p>
 {/if}
 
 

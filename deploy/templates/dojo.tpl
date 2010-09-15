@@ -63,7 +63,7 @@
         {if $classChangeSequence eq 1}
         <form id="Buy_classChange" action="dojo.php" method="post" name="changeofclass">
           <div style='margin-top: 10px;margin-bottom: 10px;'>
-            Trade your memories of {$classChangeCost|escape} kills to change your skills to those of the {$destination_class_display|escape} ninja?
+            Trade your memories of {$classChangeCost|escape} kills to change your skills to those of the <span class='class-name {$destination_class_theme}'>{$destination_class_display|escape}</span> ninja?
             <input id='classchangeSequence' name='classChangeSequence' type='hidden' value='2'>
             <input id='current_class' name='current_class' type='hidden' value='{$userClass|escape}'>
             <input type="submit" value="Become A {$destination_class_display|escape} Ninja" class="formButton">
@@ -82,7 +82,7 @@
 <div>Your current level is {$userLevel|escape}.</div>
 <div style='margin-bottom: 10px;'>Your current kills are {$userKills|escape}.</div>
 <div style='margin-bottom: 10px;'>Level {$nextLevel|escape} requires {$required_kills|escape} kills.</div>
-<p>Your current class is {$possibly_changed_class|escape}.</p>
+<p>Your current class is <span class='class-name {$possibly_changed_class_theme}'>{$possibly_changed_class_name|escape}</span>.</p>
 
 	{if $upgrade_requested}
 		{if $userLevel+1 > $max_level}

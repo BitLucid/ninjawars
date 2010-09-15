@@ -11,6 +11,8 @@ $alive      = false;
 if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
+
+
 $msg            = '';
 $dimMakCost     = 40;
 $dimMakLevelReq = 10;
@@ -19,7 +21,7 @@ $classChangeCost     = 20; // *** Cost of class change in Kills
 $classChangeLevelReq = 6;
 
 $class_array = array(
-// *** STARTING CLASS  => NEXT CLASS ***
+// *** STARTING CLASS IDENTITY  => NEXT CLASS IDENTITY ***
 	  'viper'   => 'tiger'
 	, 'tiger'   => 'dragon'
 	, 'dragon' => 'mantis'
@@ -44,13 +46,18 @@ if (is_logged_in()) {
 	$userKills = $player->vo->kills;
 	$userClass = $player->class_identity();
 	$user_class_display = $player->class_display_name();
+	$user_class_theme = class_theme($userClass);
+	
+	// Pull info for the next class in line.
 	$destination_class = $class_array[$userClass];
 	$destination_class_display = class_display_name_from_identity($class_array[$userClass]);
-	$required_kills = required_kills_to_level($char_id);
+	$destination_class_theme = class_theme($destination_class);
+	// Pull the number of kills required to get to the next level.
+	$required_kills = required_kills_to_level($player->level());
 
 
-    $current_class = whichever($current_class, $userClass); 
-        // Initialize the class record to prevent double change on refresh.
+    $current_class = whichever($current_class, $userClass);
+    // Initialize the class record to prevent double change on refresh.
 
     // Check that they can do one action or another.
     $class_change_sufficient_kills = $userKills >= $classChangeCost;
@@ -82,6 +89,8 @@ if (is_logged_in()) {
     }
 	
 	$possibly_changed_class = char_class_identity($char_id);
+	$possibly_changed_class_name = char_class_name($char_id);
+	$possibly_changed_class_theme = class_theme($possibly_changed_class);
 
     
 	$upgrade_requested = ($in_upgrade && $in_upgrade == 1);
@@ -90,6 +99,10 @@ if (is_logged_in()) {
 	if ($upgrade_requested) {
 	    // Try to level up.
 	    $levelled = level_up_if_possible($char_id);
+	    $userLevel = char_level($char_id);
+	    $nextLevel = $userLevel+1;
+	    $userKills = char_kills($char_id);
+    	$required_kills = required_kills_to_level($userLevel);
 	}
 
 } // End of the logged in processing.

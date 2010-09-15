@@ -486,27 +486,35 @@ table.playerTable .classCell img {
 }
 
 /* Profile and Player list Class Colors */
-table.playerTable .Red, .player-info .Red { /* Class Colors */
+table.playerTable .Red, .player-info .Red, .class-name.Red{ /* Class Colors */
 	color:red;
 	background-color:black;
 }
-table.playerTable .White, .player-info .White {
+table.playerTable .White, .player-info .White, .class-name.White{
 	color:white;
 	background-color:black;
 }
-table.playerTable .Blue, .player-info .Blue {
+table.playerTable .Blue, .player-info .Blue, .class-name.Blue{
 	color:blue;
 	background-color:white;
 }
-table.playerTable .Black, .player-info .Black {
+table.playerTable .Black, .player-info .Black, .class-name.Black{
 	color:black;
 	background-color:white;
 }
 
-table.playerTable .Gray, .player-info .Gray {
+table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	color: gray;
 	background-color: black;
 }
+
+.class-name{
+    font-weight:bold;
+    font-style:italic;
+}
+
+
+
 
 .player-status, .ninja-error {
     margin: 0 auto 0;

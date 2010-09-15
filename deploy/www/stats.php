@@ -27,7 +27,9 @@ $newprofile    = in('newprofile', null, null); // Unfiltered input.
 $username = get_username();
 $user_id = get_user_id();
 
+$char_obj = new Player($user_id);
 $player = get_player_info();
+$class_theme = class_theme($char_obj->class_identity());
 $confirm_delete = false;
 $profile_changed = false;
 $profile_max_length = 500; // Should match the limit in limitStatChars.js

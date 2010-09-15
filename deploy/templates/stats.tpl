@@ -27,7 +27,7 @@
 <ul id='player-info' class='player-info'>
     <li>Health: <span{if $player.health lt 80} class="injured"{/if}>{$player.health|escape}</span></li>
     <li>Level: <span class='player-level-category {$level_category.css|escape}'> {$level_category.display|escape} [{$player.level|escape}] </span></li>
-    <li>Class: {$player.class}</li>
+    <li>Class: <span class='class-name {$class_theme}'>{$player.class}</span></li>
     <li>Strength: {$player.strength}</li>
     <li>Gold: {$player.gold}</li>
     <li>Kills: {$player.kills}</li>

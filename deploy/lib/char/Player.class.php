@@ -171,7 +171,7 @@ class Player
 	}
 	
 	// Pull the class display name for a character.
-	public function class_display(){
+	public function class_display_name(){
 	    return char_class_name($this->id());
 	}
 
