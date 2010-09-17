@@ -24,6 +24,9 @@ g_isRoot = (window.location.pathname == '/');
 
 g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent == window));
 
+// Guarantee that there is a console to prevent errors while debugging.
+if (typeof('console') == 'undefined') { console = { log: function() { } }; }
+
 /*  GLOBAL SETTINGS & VARS */
 if (parent.window != window) {
     // If the interior page of an iframe, use the already-defined globals from the index.
@@ -197,7 +200,7 @@ if (parent.window != window) {
 	// Returns true when debug bit set or localhost path used.
 	NW.debug = function(arg) {
 		if (this.debugging || !this.isLive) {
-			//if (console) {console.log(arg);}
+			if (console) {console.log(arg);}
 			return true;
 		}
 
