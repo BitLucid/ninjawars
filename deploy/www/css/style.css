@@ -1724,3 +1724,7 @@ select option #blue-class-select {
 #npc-list li {
 	white-space: nowrap;
 }
+
+.gold-count{
+    color: rgb(255, 215, 0);
+}

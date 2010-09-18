@@ -13,23 +13,18 @@
 {if $state eq $templatelite.const.CASINO_NO_GOLD}
 <div>You do not have that much gold.</div>
 {elseif $state eq $templatelite.const.CASINO_LOSE}
-<div class='ninja-notice'>You lose!</div>
+<div class='ninja-notice'>You lose the coin toss!</div>
 {elseif $state eq $templatelite.const.CASINO_WIN}
-<div>You win!</div>
+<div>You win the coin toss!</div>
 {elseif $state eq $templatelite.const.CASINO_DEFAULT}
-<div>The minimum bet at this table is 5 gold.</div>
 <div>The maximum bet at this table is 1,000 gold.</div>
-{/if}
-
-{if $state eq $templatelite.const.CASINO_WIN or $state eq $templatelite.const.CASINO_LOSE}
-<div style="margin-top: 10px;"><a href="casino.php">Try Again?</a></div>
 {/if}
 
 <form id="coin_flip" action="casino.php" method="post" name="coin_flip">
   <div>
-    Bet: <input id="bet" type="text" size="3" maxlength="4" name="bet" class="textField">
+    Bet: <input id="bet" type="text" value='{$bet}' size="3" maxlength="4" name="bet" class="textField">
     &nbsp;&nbsp;<input type="submit" value="Place bet" class="formButton">
   </div>
 </form>
 
-<div>Current Gold: {$current_gold}</div>
+<div class='gold-count'>Current Gold: {$current_gold}</div>

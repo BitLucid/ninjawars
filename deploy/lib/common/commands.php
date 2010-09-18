@@ -408,25 +408,33 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 // ******** INVENTORY FUNCTIONS *******
 // ************************************
 
+// DEPRECATED
+// Add an item using the old display name
 function addItem($who, $item, $quantity = 1) {
+    $item_identity = item_identity_from_display_name($item);
+    if((int)$quantity>0 && !empty($item) && $item_identity){
+        add_item($user_id, $item_identity, $quantity);
+    }
+}
+
+// Add an item using it's database identity.
+function add_item($user_id, $identity, $quantity = 1) {
 	$quantity = (int)$quantity;
-
 	if ($quantity > 0 && !empty($item)) {
-		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount + :quantity WHERE owner = :who AND item_type = (select item_id from item where lower(item_display_name) = lower(:item))");
-		$statement->bindValue(':quantity', $quantity);
-		$statement->bindValue(':who', get_user_id($who));
-		$statement->bindValue(':item', $item);
-		$statement->execute();
-
-		$rows = $statement->rowCount();
+	    $up_res = query_resultset(
+	        "UPDATE inventory SET amount = amount + :quantity 
+	            WHERE owner = :who AND item_type = (select item_id from item where item_internal_name = :identity)",
+	        array(':quantity'=>$quantity,
+	            ':who'=>$user_id,
+	            ':item'=>$item));
+	    $rows = $up_res->rowCount();
 
 		if (!$rows) {
-			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO inventory (owner, item_type, amount) VALUES (:user, (select item_id from item where lower(item_display_name) = lower(:item)), :quantity)");
-			$statement->bindValue(':user', get_user_id($who));
-			$statement->bindValue(':item', $item);
-			$statement->bindValue(':quantity', $quantity);
-			$statement->execute();
+		    $ins_res = query_resultset("INSERT INTO inventory (owner, item_type, amount) 
+		        VALUES (:user, (select item_id from item where item_internal_name = :item), :quantity)",
+		        array(':user'=>$user_id,
+		            ':item'=>$item,
+		            ':quantity'=>$quantity));
 		}
 	}
 }
