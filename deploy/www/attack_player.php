@@ -8,12 +8,12 @@ if ($error = init($private, $alive)) {
 } else {
 
 $locations = array(
-	array('name'=>'Shrine', 'url'=>'shrine.php', 'image'=>'shrine.png')
-	, array('name'=>'Doshin', 'url'=>'doshin_office.php', 'image'=>'doshin.png')
-	, array('name'=>'Fields', 'url'=>'work.php')
-	, array('name'=>'Shop',   'url'=>'shop.php')
-	, array('name'=>'Dojo',   'url'=>'dojo.php')
-	, array('name'=>'Casino', 'url'=>'casino.php')
+	array('name'=>'Shrine', 'url'=>'shrine.php', 'image'=>'shrine.png', 'tile_image'=>'concentric_shrine.png')
+	, array('name'=>'Doshin', 'url'=>'doshin_office.php', 'image'=>'doshin.png', 'tile_image'=>'doshin_building.png')
+	, array('name'=>'Fields', 'url'=>'work.php', 'tile_image'=>'concentric_field.png')
+	, array('name'=>'Shop',   'url'=>'shop.php', 'tile_image'=>'concentric_star.png')
+	, array('name'=>'Dojo',   'url'=>'dojo.php', 'tile_image'=>'concentric_leaf.png')
+	, array('name'=>'Casino', 'url'=>'casino.php', 'tile_image'=>'elemental_coin.png')
 );
 
 // Array that simulates database information for switching out for an npc database solution.
