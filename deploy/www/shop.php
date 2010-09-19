@@ -12,9 +12,11 @@ $description       = "";
 $in_purchase       = in('purchase');
 $in_quantity       = in('quantity');
 $item              = in('item');
-$item_internal_name = item_internal_from_display($item);
+$item_info        = item_info(item_id_from_display_name($item));
+$item_identity = $item_info['item_internal_name'];
 $grammar           = "";
 $username          = get_char_name();
+$char_id           = get_char_id();
 $gold              = first_value(getGold($username), 0);
 $current_item_cost = 0;
 $is_logged_in      = is_logged_in();
@@ -40,13 +42,13 @@ $not_enough_gold = false;
 
 
 if ($in_purchase == 1 && $item) {
-	$current_item_cost  = first_value($item_costs[$item_internal_name]['item_cost'], 0);
+	$current_item_cost  = first_value($item_costs[$item_identity]['item_cost'], 0);
 	$current_item_cost *= $quantity;
 
 	if ($current_item_cost > $gold){ // Not enough gold.
 	    $not_enough_gold = true;
 	} else { // Has enough gold.
-		addItem($username, $item, $quantity);
+		add_item($char_id, $item_identity, $quantity);
 		subtractGold($username, $current_item_cost);
 
 	}

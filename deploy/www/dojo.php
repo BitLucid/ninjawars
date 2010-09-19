@@ -71,7 +71,7 @@ if (is_logged_in()) {
 	if ($dimMakAllowed && $dimmak_sequence == 2) {
 	    // *** Start of Dim Mak Code, A dim mak was requested. ***
 		$userKills = subtractKills($username, $dimMakCost);
-		additem($username, 'Dim Mak', 1);
+		add_item($char_id, 'dimmak', 1);
 	}	// *** End of Dim Mak Code. ***
 
     // Class Change Buy

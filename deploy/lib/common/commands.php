@@ -413,29 +413,31 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 function addItem($who, $item, $quantity = 1) {
     $item_identity = item_identity_from_display_name($item);
     if((int)$quantity>0 && !empty($item) && $item_identity){
-        add_item($user_id, $item_identity, $quantity);
+        add_item(get_char_id($who), $item_identity, $quantity);
     }
 }
 
 // Add an item using it's database identity.
-function add_item($user_id, $identity, $quantity = 1) {
+function add_item($char_id, $identity, $quantity = 1) {
 	$quantity = (int)$quantity;
-	if ($quantity > 0 && !empty($item)) {
+	if ($quantity > 0 && !empty($identity)) {
 	    $up_res = query_resultset(
 	        "UPDATE inventory SET amount = amount + :quantity 
-	            WHERE owner = :who AND item_type = (select item_id from item where item_internal_name = :identity)",
+	            WHERE owner = :char AND item_type = (select item_id from item where item_internal_name = :identity)",
 	        array(':quantity'=>$quantity,
-	            ':who'=>$user_id,
-	            ':item'=>$item));
+	            ':char'=>$char_id,
+	            ':identity'=>$identity));
 	    $rows = $up_res->rowCount();
 
-		if (!$rows) {
+		if (!$rows) { // No entry was present, insert one.
 		    $ins_res = query_resultset("INSERT INTO inventory (owner, item_type, amount) 
-		        VALUES (:user, (select item_id from item where item_internal_name = :item), :quantity)",
-		        array(':user'=>$user_id,
-		            ':item'=>$item,
+		        VALUES (:char, (select item_id from item where item_internal_name = :item), :quantity)",
+		        array(':char'=>$char_id,
+		            ':identity'=>$identity,
 		            ':quantity'=>$quantity));
 		}
+	} else {
+	    throw new Exception('Invalid item to add to inventory.');
 	}
 }
 

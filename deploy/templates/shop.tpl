@@ -71,11 +71,11 @@ input.shopButton{
 {foreach from=$item_costs item="item_info" key="item_internal_name"}
 <tr>
   <td>
-    <input name="item" type="submit" value="{$item_info.item_display_name}" class="shopButton">
+    <input name="item" type="submit" value="{$item_info.item_display_name|escape}" class="shopButton">
   </td>
 
   <td>
-    {$item_info.usage}
+    ({$item_info.usage})
   </td>
 
   <td class='gold'>
@@ -83,7 +83,7 @@ input.shopButton{
   </td>
 
   <td>
-    <img style='max-height:25px;max-width:50px' src="images/{$item_info.image}" alt="{$item_info.item_display_name}">
+    {if !$item_info.image}&nbsp;{else}<img style='max-height:25px;max-width:50px' src="images/{$item_info.image}" alt="{$item_info.item_display_name}">{/if}
   </td>
 </tr>
 {/foreach}
