@@ -4,30 +4,48 @@
 
 // FUNCTIONS
 
-// 
-function item_identity($item_id){
-    return query_item('select item_internal_name from item where item_id = :item_id', array(':item_id'=>array($item_id, PDO::PARAM_INT)));    
+function items_info($item_id=null){
+    return query('select * from item');
 }
 
+// Return a specific bit of info about an item, or else all the info about an item.
+function item_info($item_id, $specific=null){
+        $info = query_row('select item_id, item_internal_name, item_display_name, item_cost, image, for_sale, usage, ignore_stealth, covert, turn_cost, target_damage, turn_change, self_use, plural, damage_callback from item where item_id = :item_id', array(':item_id'=>array($item_id, PDO::PARAM_INT)));
+        if($specific && !isset($info[$specific])){
+            return null;
+        } elseif($specific){
+            return $info[$specific];
+        } else {
+            return $info;
+        }
+}
+
+// Find all the info or just a piece from the item's identity.
+function item_info_from_identity($identity, $specific=null){
+    $item_id = query_item('select item_id from item where item_internal_name = :identity',
+        array(':identity'=>$identity));
+    return item_info($item_id, $specific);
+}
+
+// Wrapper functions to return certain aspects of items.
+
+function item_identity($item_id){
+    return item_info($item_id, 'item_internal_name');
+}
+
+function item_display_name($item_id){
+    return item_info($item_id, 'item_display_name');
+}
+
+// Necessary reversal function for older uses of display names in the code.
 function item_id_from_display_name($item_display_name){
     return query_item('select item_id from item where item_display_name = :item_display_name', array(':item_display_name'=>
         array($item_display_name, PDO::PARAM_INT)));    
 }
 
-function item_display_name($item_id){
-    return query_item('select item_display_name from item where item_id = :item_id', array(':item_id'=>array($item_id, PDO::PARAM_INT)));
-}
-
-// Get the item internal identity and display name.
-function item_info($item_id){
-    $sel = 'select item_display_name, item_internal_name, item_cost from item where item_id = :item_id';
-    return query_array($sel, array(':item_id'=>array($item_id, PDO::PARAM_INT)));
-}
-
 // Get an input display name and turn it into the internal name for use in the actual script.
-function item_internal_from_display($item_display_name){
-    $sel = 'select item_internal_name from item where item_display_name = :item_display_name';
-    return query_item($sel, array(':item_display_name'=>$item_display_name));    
+function item_identity_from_display_name($item_display_name){
+    return item_info(item_id_from_display_name($item_display_name), 'item_internal_name');
 }
 
 
@@ -102,8 +120,7 @@ function send_kill_mails($username, $target, $attacker_id, $article, $item, $tod
 function standard_items() {
 	// Codename means it can have a link to be used, apparently...
 	// Pull this from the database.
-	$sel = 'select * from item';
-	$it = query($sel);
+	$it = items_info();
 	
 	$res = array();
 	// Format the items for display on the inventory.

@@ -71,15 +71,19 @@
               </a>
             </div>
             <ul class="basemenu" id="actions-menu"><!-- Id used by show hide jquery -->
-              <li id='heal-link'><a href="shrine_mod.php?heal_and_resurrect=1" target="main"><img src='images/shrine.png' alt=''>Heal</a></li>
+              <li id='heal-link'>
+                <a href="shrine_mod.php?heal_and_resurrect=1" target="main">
+                    <img src='images/shrine.png' alt=''>Heal
+                </a>
+              </li>
               <li>
                 <ul class="submenu">
                   <li>
-                    <a href="inventory_mod.php?item=Stealth%20Scroll&amp;selfTarget=1&amp;link_back=inventory"
+                    <a href="inventory_mod.php?item_identity=smokebomb&amp;selfTarget=1"
                      target="main">Stealth</a>
                   </li>
                   <li>
-                    <a href="inventory_mod.php?item=Speed%20Scroll&amp;selfTarget=1&amp;link_back=inventory" 
+                    <a href="inventory_mod.php?item_identity=amanita&amp;selfTarget=1" 
                     target="main">Speed</a>
                   </li>
                 </ul>

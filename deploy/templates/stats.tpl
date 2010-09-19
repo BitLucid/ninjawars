@@ -29,7 +29,7 @@
     <li>Level: <span class='player-level-category {$level_category.css|escape}'> {$level_category.display|escape} [{$player.level|escape}] </span></li>
     <li>Class: <span class='class-name {$class_theme}'>{$player.class}</span></li>
     <li>Strength: {$player.strength}</li>
-    <li>Gold: {$player.gold}</li>
+    <li class='gold-count'>Gold: {$player.gold}</li>
     <li>Kills: {$player.kills}</li>
     <li>Turns: {$player.turns}</li>
     <li>Email: {$player.email|escape}</li>

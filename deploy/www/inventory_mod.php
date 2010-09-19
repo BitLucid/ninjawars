@@ -16,17 +16,25 @@ if ($error = init($private, $alive)) {
 $link_back  = in('link_back');
 $target     = in('target');
 $selfTarget = in('selfTarget');
-$item       = in('item');
-$give       = in('give');
+
+// Possible identifiers of the item.
 $item_type  = in('item_type');
+$item_identity = in('item_identity');
+$item       = in('item');
+
+$give       = in('give');
+
 $target_id  = in('target_id');
 
-if ($item) {
-	throw new Exception('Item sent to page as item display name instead of item id.');
+if(is_numeric($item_type)){
+    $item = $item_obj = new Item($item_type);
+} elseif($item_identity) {
+    $item = $item_obj = new Item(item_info_from_identity($item_identity, 'item_id'));
 }
 
-if (is_numeric($item_type)) {
-	$item = $item_obj = new Item($item_type);
+
+if(!is_obj($item)){
+    throw new Exception('Item sent to page as item display name instead of item id.');
 }
 
 if ($target_id) {
