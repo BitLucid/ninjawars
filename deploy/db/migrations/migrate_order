@@ -49,3 +49,4 @@
 20100831_event_type_column.sql~
 20100902_defensive_effects.sql~
 20100905make_class_identity_field_lowercase.sql
+20100918_remove_shop_scroll_images_where_inappropriate.sql
