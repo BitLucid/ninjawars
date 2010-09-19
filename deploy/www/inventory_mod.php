@@ -23,7 +23,6 @@ $item_identity = in('item_identity');
 $item       = in('item');
 
 $give       = in('give');
-
 $target_id  = in('target_id');
 
 if(is_numeric($item_type)){
@@ -31,7 +30,6 @@ if(is_numeric($item_type)){
 } elseif($item_identity) {
     $item = $item_obj = new Item(item_info_from_identity($item_identity, 'item_id'));
 }
-
 
 if(!is_object($item)){
     throw new Exception('Item sent to page as item display name instead of item id.');
