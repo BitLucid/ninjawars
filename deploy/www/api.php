@@ -129,6 +129,8 @@ function json_index() {
 	$events   = array();
 	$messages = array();
 	$user_id  = $player['player_id'];
+	$unread_messages = null;
+	$unread_events = null;
 
 	if ($user_id) {
 		$events = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC LIMIT 1");
@@ -149,9 +151,9 @@ function json_index() {
 
 	return '{"player":'.json_encode($player).',
 	            "unread_messages_count":'.json_encode($unread_messages).',
-				"message":'.json_encode($messages ? $messages->fetch() : null).',
+				"message":'.json_encode(!empty($messages) ? $messages->fetch() : null).',
 				"inventory":{"inv":1,"items":'.json_encode(query_array("SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :user_id ORDER BY item_display_name", array(':user_id'=>$user_id))).',"hash":"'.md5(strtotime("now")).'"},
 				"unread_events_count":'.json_encode($unread_events).',
-				"event":'.json_encode($events ? $events->fetch() : null).'}';
+				"event":'.json_encode(!empty($events) ? $events->fetch() : null).'}';
 }
 ?>
