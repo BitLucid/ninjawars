@@ -43,7 +43,7 @@
 
 {if count($peers) gt 0}
 <div style='width:45%;float:right;margin-left:0;margin-right:0'>
-<h3>Competitors</h3>
+<h3>Nearby Ninja</h3>
 <ul id='peer-chars'>
     {foreach from=$peers item="loop_peer"}
         <li style='position:relative;margin-bottom:.5em'>
@@ -57,7 +57,7 @@
 </ul>
 </div>
 {else}
-<p style='width:45%;float:right;margin-left:0;margin-right:0;'>No nearby enemies, <em class='char-name'>{$username}</em>.</p>
+<p style='width:45%;float:right;margin-left:0;margin-right:0;'>No nearby ninja, <em class='char-name'>{$username}</em>.</p>
 {/if}
 
 
