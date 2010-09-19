@@ -413,12 +413,13 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 // DEPRECATED
 // Add an item using the old display name
 function addItem($who, $item, $quantity = 1) {
-    $item_identity = item_identity_from_display_name($item);
-    if((int)$quantity>0 && !empty($item) && $item_identity){
-        add_item(get_char_id($who), $item_identity, $quantity);
-    } else {
-        throw new Exception('Improper deprecated item addition request made.');
-    }
+	$item_identity = item_identity_from_display_name($item);
+
+	if ((int)$quantity > 0 && !empty($item) && $item_identity) {
+		add_item(get_char_id($who), $item_identity, $quantity);
+	} else {
+		throw new Exception('Improper deprecated item addition request made.');
+	}
 }
 
 // Add an item using it's database identity.
@@ -435,7 +436,7 @@ function add_item($char_id, $identity, $quantity = 1) {
 
 		if (!$rows) { // No entry was present, insert one.
 		    $ins_res = query_resultset("INSERT INTO inventory (owner, item_type, amount) 
-		        VALUES (:char, (select item_id from item where item_internal_name = :identity), :quantity)",
+		        VALUES (:char, (SELECT item_id FROM item WHERE item_internal_name = :identity), :quantity)",
 		        array(':char'=>$char_id,
 		            ':identity'=>$identity,
 		            ':quantity'=>$quantity));
