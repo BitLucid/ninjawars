@@ -134,7 +134,6 @@ function is_logged_in() {
 	return !!get_logged_in_account_id();
 }
 
-
 /**
  * Just do a check whether the input username and password is valid
  * @return boolean
@@ -149,16 +148,8 @@ function is_authentic($p_user, $p_pass) {
 /**
  * Logout function.
  **/
-function logout_user($echo=false, $redirect='index.php') {
-	$msg = 'You have been logged out.';
+function logout_user() {
 	nw_session_destroy();
-	if ($echo) {
-		echo $msg;
-	}
-
-	if ($redirect) {
-		redirect($redirect);
-	}
 }
 
 // Wrapper for the logout_user function above.
