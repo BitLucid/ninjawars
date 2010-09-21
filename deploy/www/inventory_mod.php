@@ -33,7 +33,7 @@ if(is_numeric($item_type)){
 }
 
 
-if(!is_obj($item)){
+if(!is_object($item)){
     throw new Exception('Item sent to page as item display name instead of item id.');
 }
 
