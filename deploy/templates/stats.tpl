@@ -1,6 +1,6 @@
 <h1>Account Info for {$username}</h1>
 
-<div id='content'>
+<div id='content' class='your-stats'>
 
 {if $error}
     <p class='error'>{$error}</p>
@@ -22,50 +22,86 @@
 {/if}
 
 
-<div class='stats-avatar'>Avatar: (change your avatar for your account email at <a href='http://gravatar.com'>gravatar.com</a>) {include file="gravatar.tpl" gurl=$gravatar_url}</div>
-{include file="status_section.tpl" statuses=$status_list}
-<ul id='player-info' class='player-info'>
-    <li>Health: <span{if $player.health lt 80} class="injured"{/if}>{$player.health|escape}</span></li>
-    <li>Level: <span class='player-level-category {$level_category.css|escape}'> {$level_category.display|escape} [{$player.level|escape}] </span></li>
-    <li>Class: <span class='class-name {$class_theme}'>{$player.class}</span></li>
-    <li>Strength: {$player.strength}</li>
-    <li class='gold-count'>Gold: {$player.gold}</li>
-    <li>Kills: {$player.kills}</li>
-    <li>Turns: {$player.turns}</li>
-    <li>Email: {$player.email|escape}</li>
-    <li>Created: {$player.created_date|escape}</li>
-    <li>Rank: {$rank_display}</li>
-    <li>Bounty: {$player.bounty} gold</li>
-{if $player_clan}
-    <li>Clan: 
-        <a href='clan.php?command=view&amp;clan_id={$clan_id|escape:'url'}'>
-        {$clan_name|escape}
-        </a>
-    </li>
-{/if}
-</ul>
+<style>
+{literal}
+.two-column{
+    position:relative;
+    width:100%;
+    height:300px;
+    clear:both;  
+}
+.two-column .primary{
+    position:absolute;
+    width:45%;
+    left:0;
+    top:0;
+}
+.two-column .secondary{
+    position:absolute;
+    width:47%;
+    right:0;
+    top:0;
+}
+{/literal}
+</style>
 
-<!-- Scripts with actual content are hated with smarty-like templates -->
-<script type='text/javascript' src='js/textAreaLimits.js'></script>
 
-<form id="profile-edit" action="stats.php" method="post">
-    <div>
-        <input type="hidden" name="changeprofile" value="1">
-        Profile: 
-        <div>
-            <textarea id='player-profile-area' name='newprofile' cols='45' rows='10' class='textField'>{$profile_editable}</textarea>
-        </div>
-        <input type='submit' value='Change Profile' class='formButton'> (<span id='characters-left'>{$profile_max_length} Character Limit</span>)
-    </div>
-</form>
 
-<div id='player-profile-section'>
-Profile Preview:
-    <div id='player-profile'>
-        &nbsp;{$profile_display|nl2br}&nbsp;
-    </div>
+<div class='stats-avatar'>
+    Avatar: (change your avatar for your account email at <a href='http://gravatar.com'>gravatar.com</a>) {include file="gravatar.tpl" gurl=$gravatar_url}
 </div>
+<div class='two-column'>
+    <div class='primary'>
+        {include file="status_section.tpl" statuses=$status_list}
+        <ul id='player-info' class='player-info'>
+            <li>Health: <span style='width:85%;display:inline-block'>
+                {include file="health_bar.tpl" health=$player.health health_percent=$player.hp_percent}
+                </span>
+            </li>
+            <li>Level: <span class='player-level-category {$level_category.css|escape}'> {$level_category.display|escape} [{$player.level|escape}] </span></li>
+            <li>Class: <span class='class-name {$class_theme}'>{$player.class}</span></li>
+            <li>Strength: {$player.strength}</li>
+            <li class='gold-count'>Gold: {$player.gold}</li>
+            <li>Kills: {$player.kills}</li>
+            <li>Turns: {$player.turns}</li>
+            <li>Email: {$player.email|escape}</li>
+            <li>Created: {$player.created_date|escape}</li>
+            <li>Rank: {$rank_display}</li>
+            <li>Bounty: {$player.bounty} gold</li>
+        {if $player_clan}
+            <li>Clan: 
+                <a href='clan.php?command=view&amp;clan_id={$clan_id|escape:'url'}'>
+                {$clan_name|escape}
+                </a>
+            </li>
+        {/if}
+        </ul>
 
+    </div>
+    <!-- Scripts with actual content are hated with smarty-like templates -->
+    <script type='text/javascript' src='js/textAreaLimits.js'></script>
+
+    <div class='secondary'>
+        <form id="profile-edit" action="stats.php" method="post">
+            <div>
+                <input type="hidden" name="changeprofile" value="1">
+                <span style='font-weight:bold'>Profile:</span>
+                <div style='padding-right:83px;width:100%'>
+                    <textarea id='player-profile-area' name='newprofile' style='width:100%;height:10em;' class='textField'>{$profile_editable}</textarea>
+                </div>
+                <input type='submit' value='Change Profile' class='formButton'> (<span id='characters-left'>{$profile_max_length} Character Limit</span>)
+            </div>
+        </form>
+
+        <div id='player-profile-section'>
+        Profile Preview:
+            <div id='player-profile'>
+                &nbsp;{$profile_display|nl2br}&nbsp;
+            </div>
+        </div>
+
+    </div>
+</div><!-- End of the two-column arrangement. -->
 <hr>
 <p>If you require account help email: <a href='mailto:{$templatelite.const.SUPPORT_EMAIL}'>{$templatelite.const.SUPPORT_EMAIL}</a></p>
 <hr>

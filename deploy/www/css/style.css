@@ -486,6 +486,10 @@ table.playerTable .classCell img {
 }
 
 /* Profile and Player list Class Colors */
+.class-name{
+    padding-right:.3em;
+    padding-left:.3em;
+}
 table.playerTable .Red, .player-info .Red, .class-name.Red{ /* Class Colors */
 	color:red;
 	background-color:black;
@@ -530,7 +534,7 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 .your-stats #player-profile-section {
     margin: 10px 0 10px 0;
     text-align: center;
-    float:right;
+    clear:both;
 }
 .your-stats #player-profile {
     border:1px solid gray;
@@ -691,7 +695,7 @@ body.solo-page {
     margin: 10px 30px 10px 30px;
 }
 body.solo-page h1 {
-    margin-bottom:2em;
+    margin-bottom:1.5em;
 }
 
 body.solo-page #logo-appended {
