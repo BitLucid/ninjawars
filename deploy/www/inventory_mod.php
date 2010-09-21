@@ -7,17 +7,12 @@ require_once(LIB_ROOT."specific/lib_inventory.php");
  * @subpackage skill
  */
 
-$quickstat  = "viewinv";
 $private    = true;
 $alive      = true;
-$page_title = "Item Usage";
 
-include SERVER_ROOT."interface/header.php";
-?>
-
-<h1>Item Use</h1>
-
-<?php
+if ($error = init($private, $alive)) {
+	header('Location: list_all_players.php');
+} else {
 $link_back  = in('link_back');
 $target     = in('target');
 $selfTarget = in('selfTarget');
@@ -26,16 +21,16 @@ $give       = in('give');
 $item_type  = in('item_type');
 $target_id  = in('target_id');
 
-if($item){
-    throw new Exception('Item sent to page as item display name instead of item id.');
+if ($item) {
+	throw new Exception('Item sent to page as item display name instead of item id.');
 }
 
-if(is_numeric($item_type)){
-    $item = $item_obj = new Item($item_type);
+if (is_numeric($item_type)) {
+	$item = $item_obj = new Item($item_type);
 }
 
-if($target_id){
-    $target = get_char_name($target_id);
+if ($target_id) {
+	$target = get_char_name($target_id);
 }
 
 $user_id    = get_char_id();
@@ -70,9 +65,12 @@ if ($targetObj->player_id) {
 	$target_hp     = null;
 }
 
+$targetName = '';
+$targetHealth = '';
+$targetHealthPercent = '';
+
 //debug($item->effects());
 //debug($item_obj);
-
 
 $gold_mod		= NULL;
 $result			= NULL;
@@ -91,38 +89,41 @@ if (in_array($give, array("on", "Give"))) {
 
 // Sets the page to link back to.
 if ($target_id && ($link_back == "" || $link_back == 'player') && $target_id != $user_id) {
-    $return_to = 'player';
+	$return_to = 'player';
 	$link_back = "<a href=\"player.php?player_id=".urlencode($target_id)."\">Ninja Detail</a>";
 } else {
-    $return_to = 'inventory';
+	$return_to = 'inventory';
 	$link_back = "<a href=\"inventory.php\">Inventory</a>";
 }
 
 //$dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = $kampoFormula = $strangeHerb = null;
 
-if($item->hasEffect('wound') && $item->hasEffect('fire')){
-    // Major fire damage
-    $item->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
+if ($item->hasEffect('wound') && $item->hasEffect('fire')) {
+	// Major fire damage
+	$item->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
 }
 
-if($item->hasEffect('wound') && $item->hasEffect('slice')){
-    // Minor piercing damage.
+if ($item->hasEffect('wound') && $item->hasEffect('slice')) {
+	// Minor piercing damage.
 	$item->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
 }
 
-if($item->hasEffect('slow')){
+if ($item->hasEffect('slow')) {
 	$item->setTurnChange(-1*caltrop_turn_loss($targets_turns, $near_level_power_increase));
 }
 
-if($item->hasEffect('speed')){
+if ($item->hasEffect('speed')) {
 	$item->setTurnChange($item->getMaxTurnChange());    
 }
 
 $turn_change = $item_obj->getTurnChange();
 
 if (!is_object($item_obj)) {
-    echo 'No such item.';
-    die(); // hack to avoid fatal error, proper checking for items should be done.
+	echo 'No such item.';
+	die(); // hack to avoid fatal error, proper checking for items should be done.
+} else {
+	$itemName = $item->getName();
+	$itemType = $item->getType();
 }
 
 $article = get_indefinite_article($item_obj->getName());
@@ -139,33 +140,34 @@ assert(!!$selfTarget || $attacker != $target);
 $AttackLegal    = new AttackLegal($attacker, $target, $params);
 $attack_allowed = $AttackLegal->check();
 $attack_error   = $AttackLegal->getError();
+$bountyMessage = $resultMessage = $alternateResultMessage = '';
+$error = false;
+$suicide = $kill = $repeat = false;
 
 // *** Any ERRORS prevent attacks happen here  ***
 if (!$attack_allowed) { //Checks for error conditions before starting.
-	echo "<div class='ninja-error centered'>$attack_error</div>"; // Display the reason the attack failed.
+	$error = 1;
 } else {
 	if (is_string($item) || $target == "")  {
-		echo "You didn't choose an item/victim.\n";
+		$error = 2;
 	} else {
 		if ($item_count < 1) {
-			echo "You do not have ".($item ? "$article ".$item->getName() : 'that item').".\n";
+			$error = 3;
 		} else {
 			/**** MAIN SUCCESSFUL USE ****/
-			echo "<div class='usage-mod-result'>";
-
 			if ($give == "on" || $give == "Give") {
-				echo render_give_item($username, $target, $item->getName());
+				$alternateResultMessage = render_give_item($username, $target, $item->getName());
 			} else {
 				if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 					$result        = "lose ".$item->getTargetDamage()." HP";
-					$victim_alive  = subtractHealth($target, $item->getTargetDamage());
+					$targetObj->vo->health = $victim_alive  = subtractHealth($target, $item->getTargetDamage());
 				} else if ($item->hasEffect('stealth')) {
 					$targetObj->addStatus(STEALTH);
-					echo "<br>$target is now Stealthed.<br>\n";
+					$alternateResultMessage = "<br>$target is now Stealthed.<br>\n";
 					$result = false;
 					$victim_alive = true;
 				} else if ($item->hasEffect('death')) {
-					setHealth($target,0);
+					$targetObj->vo->health = setHealth($target,0);
 					$victim_alive = false;
 					$result = "be drained of your life-force and die!";
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
@@ -190,7 +192,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$turns_change = $item->getTurnChange();
 
 					if ($turns_change == 0) {
-				        echo 'You fail to take any turns from '.$target.'.';
+				        $alternateResultMessage = 'You fail to take any turns from '.$target.'.';
 					}
 
 					$result         = "lose ".(-1*$turns_change)." turns";
@@ -207,24 +209,25 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			if ($result) {
 				// *** Message to display based on item type ***
 				if ($item->getTargetDamage() > 0) {
-					echo "$target takes {$item->getTargetDamage()} damage from your attack!<br><br>\n";
+					$resultMessage = "$target takes {$item->getTargetDamage()} damage from your attack!<br><br>\n";
 				} else if ($item->hasEffect('death')) {
-					echo "The life force drains from $target and they drop dead before your eyes!.<br>\n";
+					$resultMessage = "The life force drains from $target and they drop dead before your eyes!.<br>\n";
 				} else if ($item->getTurnChange() !== null) {
 					if ($turns_change <= 0) {
-						echo "$target has lost ".(0-$turns_change)." turns!<br>\n";
+						$resultMessage = "$target has lost ".(0-$turns_change)." turns!<br>\n";
+
 						if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
-							echo "$target no longer has any turns.<br>\n";
+							$resultMessage .= "$target no longer has any turns.<br>\n";
 						}
 					} else if ($turns_change > 0) {
-						echo "$target has gained $turns_change turns!<br>\n";
+						$resultMessage = "$target has gained $turns_change turns!<br>\n";
 					}
 				} else {
-					echo $result;
+					$resultMessage = $result;
 				}
 
 				if (!$victim_alive) { // Target was killed by the item.
-					if (($target != $username) ) {   // *** SUCCESSFUL KILL ***
+					if (($target != $username)) {   // *** SUCCESSFUL KILL ***
 						$attacker_id = ($player->hasStatus(STEALTH) ? "A Stealthed Ninja" : $username);
 
 						if (!$gold_mod) {
@@ -235,12 +238,11 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						subtractGold($target,$loot);
 						addGold($username,$loot);
 						addKills($username,1);
-						echo "You have killed $target with $article {$item->getName()}!<br>\n";
-						echo "You receive $loot gold from $target.<br>\n";
-						runBountyExchange($username, $target);  //Rewards or increases bounty.
+						$kill = true;
+						$bountyMessage = runBountyExchange($username, $target);  //Rewards or increases bounty.
 					} else {
 						$loot = 0;
-						echo "You have comitted suicide!<br>\n";
+						$suicide = true;
 					}
 
 					send_kill_mails($username, $target, $attacker_id, $article, $item->getName(), $today, $loot);
@@ -250,60 +252,54 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				}
 
 				if ($target != $username) {
-					$target_email_msg   = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
+					$target_email_msg = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
 					sendMessage($attacker_id, $target, $target_email_msg);
+
+					$targetName = $targetObj->vo->uname;
+					$targetHealth = $targetObj->vo->health;
+					$targetHealthPercent = $targetObj->health_percent();
 				}
 			}
-
-			echo "</div>";
 
 			$turns_to_take = 1;
 
 			if ($item_used) {
 				// *** remove Item ***
 				removeItem($user_id, $item->getName(), 1); // *** Decreases the item amount by 1.
-
-				echo "<br>Removing {$item->getName()} from your inventory.<br>\n";
 			}
 
+			$stealthLost = false;
 			// Unstealth
-			if (!$item->isCovert() && !$item->hasEffect('stealth') 
-			        && $give != "on" && $give != "Give" && $player->hasStatus(STEALTH)) { //non-covert acts
+			if (!$item->isCovert() && !$item->hasEffect('stealth') && $give != "on" && $give != "Give" && $player->hasStatus(STEALTH)) { //non-covert acts
 				$player->subtractStatus(STEALTH);
-				echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
+				$stealthLost = true;
 			}
-
 
 			if ($victim_alive == true && $using_item == true) {
-				$self_targetting = ($selfTarget ? '&amp;selfTarget=1' : '');
-                echo "<br><a href=\"inventory_mod.php?item_type=".urlencode($item->getType())."&amp;target_id=$target_id&amp;link_back={$return_to}{$self_targetting}\">Use {$item->getName()} again?</a><br>\n";  //Repeat Usage
+				$repeat = true;
 			}
 		}
 	}
 }
 
-
-display_template('defender_health.tpl', array('health'=>$targetObj->health(), 'health_percent'=>$targetObj->health_percent(), 'target_name'=>$targetObj->name()));
-
-
 // *** Take away at least one turn even on attacks that fail to prevent page reload spamming ***
 // TODO: Once attack attempt limiting works, this can be removed.
-if ($turns_to_take<1) {
+if ($turns_to_take < 1) {
 	$turns_to_take = 1;
 }
 
 $ending_turns = subtractTurns($username, $turns_to_take);
 assert($item->hasEffect('speed') || $ending_turns < $starting_turns || $starting_turns == 0);
 
-
 // TODO: Add a "this is the target's resulting hitpoints bar at the end here.
 
-?>
-
-<p>
-Return to <?php echo ($link_back? $link_back : "<a href='combat.php'>Combat</a>");?>
-</p>
-
-<?php
-include SERVER_ROOT."interface/footer.php";
+display_page(
+	'inventory_mod.tpl'
+	, 'Item Usage'
+	, get_defined_vars()
+	, array(
+		'quickstat' => 'viewinv'
+	)
+);
+}
 ?>
