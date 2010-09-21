@@ -12,7 +12,8 @@ $attacked   = in('attacked');
 $victim     = in('victim');
 $random_encounter = (rand(1, 200) == 200);
 $combat_data = array();
-$player     = new Player(get_char_id());
+$char_id = get_char_id();
+$player     = new Player($char_id);
 
 if (($turns = getTurns($username)) > 0) {
 	if ($attacked == 1) { // *** Bit to expect that it comes from the form. ***
@@ -42,10 +43,10 @@ if (($turns = getTurns($username)) > 0) {
 			if ($attacker_health > 0) { // *** if you survive ***
 				if ($player_turns > 50) { // *** And youir turns are high/you are energetic, you can kill them. ***
 					$oni_killed = true;
-					addItem($username, 'Dim Mak', 1);
+					add_item($username, 'dimmak', 1);
 				} else if ($player_turns > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
 					$oni_killed = true;
-					addItem($username, 'Ginseng Root', 4);
+					add_item($username, 'Ginseng Root', 4);
 				} else {
 					$oni_killed = false;
 				}
@@ -77,7 +78,7 @@ if (($turns = getTurns($username)) > 0) {
 				}	// *** End of if > 5 ***
 
 				if (!$just_villager) { // *** Something beyond just a villager, drop a shuriken. ***
-					addItem($username, 'Shuriken', $quantity = 1);
+					add_item($char_id, 'shuriken', $quantity = 1);
 				}
 			} else {	// *** Player lost against villager ***
 				$villager_gold  =
@@ -127,15 +128,15 @@ if (($turns = getTurns($username)) > 0) {
 					if ($samurai_damage_array[2] > 100) {	// *** If samurai damage was over 100, but the ninja lived, give a speed scroll. ***
 						if (rand()&1) {
 							$drop = 'speed';
-							addItem($username, 'Speed Scroll', 1);
+							add_item($char_id, 'amanita', 1);
 						} else {
 							$drop = 'herb';
-							addItem($username, 'Ginseng Root', 1);
+							add_item($char_id, 'ginsengroot', 1);
 						}
 					}
 
 					if ($samurai_damage_array[2] == $ninja_str * 3) {	// *** If the final damage was the exact max damage... ***
-						addItem($username, "Dim Mak", 1);
+						add_item($char_id, "dimmak", 1);
 					}
 
 					$player->vo->health = setHealth($username, $ninja_health);
@@ -158,7 +159,7 @@ if (($turns = getTurns($username)) > 0) {
 				addGold($username, $merchant_gold);
 
 				if ($merchant_attack > 34) {
-					addItem($username, 'Fire Scroll', $quantity = 1);
+					add_item($char_id, 'phosphor', $quantity = 1);
 				}
 
 				if ($player->vo->level > 10) {
@@ -187,7 +188,7 @@ if (($turns = getTurns($username)) > 0) {
 
 				if (rand(1, 9) == 9) { // *** 1/9 chance of getting an herb for Kampo ***
 					$herb = true;
-					addItem($username, 'Ginseng Root', 1);
+					add_item($char_id, 'ginsengroot', 1);
 				} else {
 					$herb = false;
 				}
@@ -223,7 +224,7 @@ if (($turns = getTurns($username)) > 0) {
 					}
 
 					addGold($username, $group_gold);
-					addItem($username, 'Fire Scroll', $quantity = 1);
+					add_item($char_id, 'phosphor', $quantity = 1);
 				} else {	// If the den of theives killed the attacker.
 					$group_gold = 0;
 				}
@@ -240,7 +241,7 @@ if (($turns = getTurns($username)) > 0) {
 						subtractGold($username, $thief_gold);
 					} else if ($thief_attack < 30) {
 						addGold($username, $thief_gold);
-						addItem($username, 'Shuriken', $quantity = 1);
+						add_item($char_id, 'shuriken', $quantity = 1);
 					}
 				} else {
 					$thief_gold = 0;

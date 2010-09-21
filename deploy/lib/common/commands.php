@@ -416,6 +416,8 @@ function addItem($who, $item, $quantity = 1) {
     $item_identity = item_identity_from_display_name($item);
     if((int)$quantity>0 && !empty($item) && $item_identity){
         add_item(get_char_id($who), $item_identity, $quantity);
+    } else {
+        throw new Exception('Improper deprecated item addition request made.');
     }
 }
 
