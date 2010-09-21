@@ -222,7 +222,22 @@ if (!$player_id) {
 			if ($process == 1) {
 				send_clan_join_request($username, $clan_id_viewed);
 			} else {
-				$clan_join_section = render_joinable_clans($clan_id_viewed);
+				$clan_leaders = get_clan_leaders(null, true);
+				$leader_ids = array();
+
+				$clan_leaders = $clan_leaders->fetchAll();
+
+				foreach ($clan_leaders AS $leader) {
+					$leader_ids[] = $leader['player_id'];
+				}
+
+				$leaders_data = get_players_info($leader_ids);
+
+				$leaders = array();
+
+				foreach ($clan_leaders AS $leader) {
+					$leaders[] = $leaders_data[$leader['player_id']]->vo + $leader;
+				}
 			}
 		} // End of join command code.
 
@@ -242,5 +257,5 @@ if ($command == "view") {
 
 $clans = clans_ranked();
 
-display_page('clan.tpl', 'Clans', get_defined_vars(), array('quickstat'=>false));
+display_page('clan.tpl', 'Clans', get_defined_vars(array('leaders')), array('quickstat'=>false));
 ?>
