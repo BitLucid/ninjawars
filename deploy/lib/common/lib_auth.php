@@ -15,8 +15,11 @@ function authenticate($p_login, $p_pass) {
 			JOIN players ON player_id = _player_id
 			WHERE (lower(active_email) = :login OR lower(uname) = :login)";
 */
-
-		$sql = "SELECT account_id, account_identity, uname, player_id, CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated
+        
+        // Pull the account data regardless of whether the password matches, but create an int about whether it does match or not.
+        // matches long against active_email or username or the email from the player table.
+		$sql = "SELECT account_id, account_identity, uname, player_id, confirmed,
+		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated
 			FROM accounts
 			JOIN account_players ON account_id = _account_id
 			JOIN players ON player_id = _player_id
@@ -39,15 +42,6 @@ function authenticate($p_login, $p_pass) {
 	}
 }
 
-function _login_user($p_username, $p_player_id, $p_account_id) {
-	SESSION::commence(); // Start a session on a successful login.
-	$_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
-	SESSION::set('username', $p_username); // Actually char name
-	SESSION::set('player_id', $p_player_id); // Actually char id.
-	SESSION::set('account_id', $p_account_id);
-	update_activity_log($p_username);
-	update_last_logged_in($p_player_id);
-}
 
 /**
  * Login the user and delegate the setup if login is valid.
@@ -58,6 +52,20 @@ function login_user($p_user, $p_pass) {
 /*	*** This conditional should be used instead of what is below when we get rid of all duped unames ***
 	if (($data =authenticate($p_user, $p_pass)) && (bool)$data['authenticated']) {
 */
+
+    // Internal function due to it being insecure otherwise.
+    function _login_user($p_username, $p_player_id, $p_account_id) {
+    	SESSION::commence(); // Start a session on a successful login.
+    	$_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
+    	SESSION::set('username', $p_username); // Actually char name
+    	SESSION::set('player_id', $p_player_id); // Actually char id.
+    	SESSION::set('account_id', $p_account_id);
+    	update_activity_log($p_username);
+    	update_last_logged_in($p_player_id);
+    }
+
+
+
 	$data = authenticate($p_user, $p_pass);
 	if ($data) {
 		if (is_array($data)) {
