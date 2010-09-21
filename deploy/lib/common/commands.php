@@ -468,6 +468,26 @@ function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
 }
 
 /**
+ * Gets player data for multiple players, no option for password
+*/
+function get_players_info($p_ids) {
+	$dbconn = DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM players WHERE player_id IN (".join(',', $p_ids).")");
+        //Log of Dueling information.
+	$statement->execute();
+
+	$players = array();
+
+	foreach ($statement AS $player) {
+		$p = new Player();
+		$p->player_id = $player['player_id'];
+		$p->vo = $player;
+		$players[$p->player_id] = $p;
+	}
+
+	return $players;
+}
+/**
  * Returns the state of the player from the database,
  * uses a user_id if one is present, otherwise
  * defaults to the currently logged in player, but can act on any player
@@ -489,18 +509,15 @@ function get_player_info($p_id = null, $p_password = false) {
 			unset($player_data['pname']);
 		}
 		
-		$player_data['clan_id'] = $player->getClan()? $player->getClan()->getID() : null;
+		$player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
 
-    	$player_data['hp_percent'] = min(100, round(($player_data['health']/max_health_by_level($player_data['level']))*100));
-    	$player_data['exp_percent'] = min(100, round(($player_data['kills']/(($player_data['level']+1)*5))*100));
-    	$player_data['status_list'] = implode(', ', get_status_list($p_id));
+		$player_data['hp_percent'] = min(100, round(($player_data['health']/max_health_by_level($player_data['level']))*100));
+		$player_data['exp_percent'] = min(100, round(($player_data['kills']/(($player_data['level']+1)*5))*100));
+		$player_data['status_list'] = implode(', ', get_status_list($p_id));
 
-    	$player_data['hash'] = md5(implode($player_data));
-
+		$player_data['hash'] = md5(implode($player_data));
 	}
-
 
 	return $player_data;
 }
-
 ?>
