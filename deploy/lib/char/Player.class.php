@@ -21,19 +21,21 @@ class Player
 	public $vo;
 	public $status;
 
-	public function __construct($player_id_or_username) {
-		if (!is_numeric($player_id_or_username)) {
-			$sel = "SELECT player_id FROM players WHERE uname = :uname LIMIT 1";
-			$this->player_id = DatabaseConnection::$pdo->prepare($sel);
-			$this->player_id->bindValue(':uname', $player_id_or_username);
-			$this->player_id->execute();
-			$this->player_id = $this->player_id->fetchColumn();
-		} else {
-			$this->player_id = $player_id_or_username;
-		}
+	public function __construct($player_id_or_username=null) {
+		if (!empty($player_id_or_username)) {
+			if (!is_numeric($player_id_or_username)) {
+				$sel = "SELECT player_id FROM players WHERE uname = :uname LIMIT 1";
+				$this->player_id = DatabaseConnection::$pdo->prepare($sel);
+				$this->player_id->bindValue(':uname', $player_id_or_username);
+				$this->player_id->execute();
+				$this->player_id = $this->player_id->fetchColumn();
+			} else {
+				$this->player_id = $player_id_or_username;
+			}
 
-		$dao = new PlayerDAO();
-		$this->vo = $dao->get($this->player_id);
+			$dao = new PlayerDAO();
+			$this->vo = $dao->get($this->player_id);
+		}
 	}
 
 	public function __toString() {
