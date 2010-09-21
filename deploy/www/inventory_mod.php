@@ -156,7 +156,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 		} else {
 			/**** MAIN SUCCESSFUL USE ****/
 			if ($give == "on" || $give == "Give") {
-				$alternateResultMessage = render_give_item($username, $target, $item->getName());
+				give_item($username, $target, $item->getName());
+				$alternateResultMessage = "$target will receive your {$item->getName()}.<br>\n";
 			} else {
 				if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 					$result        = "lose ".$item->getTargetDamage()." HP";

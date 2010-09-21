@@ -67,12 +67,11 @@ function nearLevelPowerIncrease($level_difference, $max_increase) {
 
 
 // Give the item and return a message to show the user.
-function render_give_item($username, $target, $item){
+function give_item($username, $target, $item){
 	$article = get_indefinite_article($item);
     addItem($target,$item,1);
     $give_msg = "You have been given $article $item by $username.";
     sendMessage($username,$target,$give_msg);
-    return "$target will receive your $item.<br>\n";
 }
 
 // Determine the turns for caltrops, which was once ice scrolls.
