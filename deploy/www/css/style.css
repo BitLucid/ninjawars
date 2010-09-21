@@ -1054,8 +1054,8 @@ iframe {
 /* Errors and Notices and the Like */
 
 .ninja-error {/* Note that ninja-error is used above as well. */
-	color:#735005;
-	background-color:#F4A83D;
+	color:#F4A83D;
+	background-color:#660000;
 	border-bottom:1px solid #D6800C;
 	font-family: ‘Trebuchet MS’, Helvetica, sans-serif;
 	font-weight:bold;
@@ -1065,14 +1065,24 @@ iframe {
 }
 
 .ninja-notice {
-	color:Brown;
-	background-color:DarkKhaki;
+	color:#BD7A26;
+	background-color:#1D0F00;
 	font-family: Tahoma, Geneva, sans-serif;
 	text-align:center;
 	font-weight:bold;
 	padding: 3px;
 	border-top-right-radius: 20px 20px;
 	border-bottom-left-radius: 20px 20px;
+	border-color: rgb(0, 0, 0);
+	border-color: rgba(0, 0, 0, 1);
+	text-shadow: black 0 0 4px;
+}
+
+.player-status.ninja-notice{
+    color:orange;
+    background-color:#660000;
+	border-color: rgb(0, 0, 0);
+	border-color: rgba(0, 0, 0, 1);
 }
 
 .injured, .Injured, #health-status .injured {
