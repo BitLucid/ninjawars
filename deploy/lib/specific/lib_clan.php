@@ -293,12 +293,7 @@ function clans_ranked() {
 	return $res;
 }
 
-/* Display the clan info */
-function render_clan_view($p_clan_id) {
-	if (!$p_clan_id) {
-		return ''; // No viewing criteria available.
-	}
-
+function get_ranked_clan_members($p_clan_id) {
 	$members_array = query_array("SELECT uname, email, clan_name, level, days, clan_founder, player_id, member_level
 			FROM clan
 			JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
@@ -311,37 +306,20 @@ function render_clan_view($p_clan_id) {
 		JOIN players ON player_id = _player_id AND confirmed = 1",
 		array(":clan_id"=>$p_clan_id));
 
-	$clan = get_clan($p_clan_id); // Clan data array.
-	$clan_name = $clan['clan_name'];
-
-	$count = 0;
-
 	// Modify the members by reference
 	foreach ($members_array as &$member) {
 		$member['size'] = floor( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
 
-		$current_leader_class = null;
 		// Calc the member display size based on their level relative to the max.
 		if ($member['member_level'] == 1) {
-		   $current_leader_class = 'original-creator';
 			$member['size'] = $member['size'] + 2;
 			$member['size'] = ($member['size'] > 3 ? 3 : $member['size']);
 		}
 
 		$member['gravatar_url'] = generate_gravatar_url($member['player_id']);
-		$count++;
 	}
 
-	return render_template('clan.info.tpl',
-		array(
-		   'members_array'      => $members_array
-			, 'clan_name'        => $clan_name
-			, 'count'            => $count
-			, 'avatar_url'       => $clan['clan_avatar_url']
-			, 'clan_name'        => $clan['clan_name']
-			, 'clan_description' => $clan['description']
-		)
-	);
+	return $members_array;
 }
 
 // Get clan member names & ids other than self, useful for lists & messaging

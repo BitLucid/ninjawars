@@ -252,10 +252,12 @@ if (!$player_id) {
 
 if ($command == "view") {
 	// *** A view of the member list of any clan ***
-	$clan_view = render_clan_view($clan_id_viewed);
+	$clan = get_clan($clan_id_viewed);
+	$clan_name = $clan['clan_name'];
+	$members = get_ranked_clan_members($clan_id_viewed);
 }
 
 $clans = clans_ranked();
 
-display_page('clan.tpl', 'Clans', get_defined_vars(array('leaders')), array('quickstat'=>false));
+display_page('clan.tpl', 'Clans', get_defined_vars(array('leaders', 'members', 'clan')), array('quickstat'=>false));
 ?>
