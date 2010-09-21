@@ -132,9 +132,10 @@ class Player
 	
 	public function isAdmin(){
 	    $name = strtolower($this->name());
-	    if($name == 'tchalvak' || $name == 'beagle'){
+	    if ($name == 'tchalvak' || $name == 'beagle') {
 	        return true;
 	    }
+
 	    return false;
 	}
 
@@ -168,38 +169,39 @@ class Player
 	}
 	
 	// Pull the class identity for a character.
-	public function class_identity(){
+	public function class_identity() {
 	    return char_class_identity($this->id());
 	}
 	
 	// Pull the class display name for a character.
-	public function class_display_name(){
+	public function class_display_name() {
 	    return char_class_name($this->id());
 	}
 
     // Complex wrapper that allows for robust healing with a limit of the max health.	
-	public function heal($amount){
+	public function heal($amount) {
 	    $health = $this->health();
 	    $max_health = $this->max_health();
 	    
-        if(($health+$amount)>$max_health){
+        if (($health+$amount)>$max_health) {
             $amount = $max_health-$health;
         }
+
 	    return $this->addHealth($amount);
 	}
 	
 	// Simple wrapper for changeHealth
-	public function addHealth($amount){
+	public function addHealth($amount) {
 	    return $this->changeHealth($amount);
 	}
 	
 	// Simple wrapper for subtractive action.
-	public function subtractHealth($amount){
+	public function subtractHealth($amount) {
 	    return $this->changeHealth((-1*(int)$amount));
 	}
 	
 	// To subtract just send in a negative integer.
-	public function changeHealth($add_amount){
+	public function changeHealth($add_amount) {
     	$amount = (int)$add_amount;
     	$amount2 = $amount;
     	if (abs($amount) > 0) {
@@ -215,21 +217,19 @@ class Player
 	}
 
     // Pull the current health.	
-	public function health(){
+	public function health() {
 	    $id = $this->id();
         $sel = "SELECT health from players where player_id = :id";
 		return query_item($sel, array(':id'=>array($id, PDO::PARAM_INT)));
 	}
 	
-	public function max_health(){
+	public function max_health() {
 	    return determine_max_health($this->level());
 	}
-	
+
 	// Return the current percentage health.
-	public function health_percent(){
+	public function health_percent() {
 	    return health_percent($this->health(), $this->level());
 	}
-		
 }
-
 ?>
