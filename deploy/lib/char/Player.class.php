@@ -143,6 +143,11 @@ class Player
 		$this->resetStatus();
 	}
 
+    // Pull the data of the player obj as an array.
+    public function data() {
+        return add_data_to_player_row($this->as_array());
+    }
+
 	public function as_vo() {
 		return $this->vo;
 	}
