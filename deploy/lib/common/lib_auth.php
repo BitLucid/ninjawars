@@ -15,9 +15,9 @@ function authenticate($p_login, $p_pass) {
 			JOIN players ON player_id = _player_id
 			WHERE (lower(active_email) = :login OR lower(uname) = :login)";
 */
-        
-        // Pull the account data regardless of whether the password matches, but create an int about whether it does match or not.
-        // matches long against active_email or username or the email from the player table.
+
+		// Pull the account data regardless of whether the password matches, but create an int about whether it does match or not.
+		// matches long against active_email or username or the email from the player table.
 		$sql = "SELECT account_id, account_identity, uname, player_id, confirmed,
 		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated
 			FROM accounts
@@ -25,7 +25,7 @@ function authenticate($p_login, $p_pass) {
 			JOIN players ON player_id = _player_id
 			WHERE (lower(active_email) = :login
 					OR lower(uname) = :login
-					OR lower(uname) IN 
+					OR lower(uname) IN
 						(SELECT lower(uname) FROM players WHERE lower(email) = :login))";
 
 		$result = query($sql, array(':login'=>$login, ':pass'=>$pass));
@@ -53,16 +53,16 @@ function login_user($p_user, $p_pass) {
 	if (($data =authenticate($p_user, $p_pass)) && (bool)$data['authenticated']) {
 */
 
-    // Internal function due to it being insecure otherwise.
-    function _login_user($p_username, $p_player_id, $p_account_id) {
-    	SESSION::commence(); // Start a session on a successful login.
-    	$_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
-    	SESSION::set('username', $p_username); // Actually char name
-    	SESSION::set('player_id', $p_player_id); // Actually char id.
-    	SESSION::set('account_id', $p_account_id);
-    	update_activity_log($p_username);
-    	update_last_logged_in($p_player_id);
-    }
+	// Internal function due to it being insecure otherwise.
+	function _login_user($p_username, $p_player_id, $p_account_id) {
+		SESSION::commence(); // Start a session on a successful login.
+		$_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
+		SESSION::set('username', $p_username); // Actually char name
+		SESSION::set('player_id', $p_player_id); // Actually char id.
+		SESSION::set('account_id', $p_account_id);
+		update_activity_log($p_username);
+		update_last_logged_in($p_player_id);
+	}
 
 
 
@@ -142,7 +142,6 @@ function is_logged_in() {
 	return !!get_logged_in_account_id();
 }
 
-
 /**
  * Just do a check whether the input username and password is valid
  * @return boolean
@@ -186,31 +185,27 @@ function validate_password($password_to_hash) {
 	return $error;
 }
 
+define('UNAME_LOWER_LENGTH', 3);
+define('UNAME_UPPER_LENGTH', 24);
+
 // Function for account creation to return the reasons that a username isn't acceptable.
 function validate_username($send_name) {
-    $lower = null;
-    $upper = null;
-    allowable_username_length($lower, $upper); // Get the standards.
 	$error = null;
+
 	if (substr($send_name, 0, 1) != 0 || substr($send_name, 0, 1) == "0") {  // Case the first char isn't a letter???
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a number.\n";
 	} else if ($send_name[0] == " ") {  //Checks for a white space at the beginning of the name
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a space.";
-	} else if (strlen($send_name)<$lower || strlen($send_name)>$upper){
-		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." must be at least $lower characters and at most $upper characters.";
-	} else if ($send_name != htmlentities($send_name)){
-	    $error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not contain html.";
+	} else if (strlen($send_name) < UNAME_LOWER_LENGTH || strlen($send_name) > UNAME_UPPER_LENGTH) {
+		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." must be at least ".UNAME_LOWER_LENGTH." characters and at most ".UNAME_UPPER_LENGTH." characters.";
+	} else if ($send_name != htmlentities($send_name)) {
+		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not contain html.";
 	} else if (!username_is_valid($send_name)) {
 		//Checks whether the name is different from the html stripped version, or from url-style version, or matches the filter.
 		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." should only contain letters, numbers, dashes, and underscores.";
 	}
-	return $error;
-}
 
-// Give the upper and lower ninja name lengths by association.
-function allowable_username_length(&$lower, &$upper){
-    $lower = 3;
-    $upper = 24;
+	return $error;
 }
 
 /*
@@ -222,14 +217,11 @@ function allowable_username_length(&$lower, &$upper){
  * A username cannot contain 2 consecutive special characters
  */
 function username_is_valid($username) {
-    $lower = null;
-    $upper = null;
-    allowable_username_length($lower, $upper); // Get the standards.
-    $internal_lower = $lower-2;
-    $internal_upper = $upper-2;
+	$internal_lower = UNAME_LOWER_LENGTH-2;
+	$internal_upper = UNAME_UPPER_LENGTH-2;
 	$username = (string)$username;
-	return (!preg_match("#[\-_]{2}#", $username) && !preg_match("#[a-z][\-_][\da-z]#i", $username) 
-	    && preg_match("#^[a-z][\da-z_\-]{".$internal_lower.",".$internal_upper."}[a-z\d]$#i", $username));
+	return (!preg_match("#[\-_]{2}#", $username) && !preg_match("#[a-z][\-_][\da-z]#i", $username)
+		&& preg_match("#^[a-z][\da-z_\-]{".$internal_lower.",".$internal_upper."}[a-z\d]$#i", $username));
 }
 
 // Takes in a potential login name and saves it over multiple logins.
@@ -317,7 +309,7 @@ function player_name_from_id($player_id) {
 }
 
 // Old named wrapper for get_char_id
-function get_user_id($p_name=null){
+function get_user_id($p_name=null) {
 	return get_char_id($p_name);
 }
 
@@ -364,6 +356,7 @@ function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure
 		assert("(false) && ('Headers were sent before the cookie was reached, which should not happen.')");
 		return false;
 	}
+
 	if (!empty($domain)) {
 		// Cut off leading http:// or www
 		if (strtolower(substr($domain, 0, 7)) == 'http://') $domain = substr($domain, 7);
@@ -405,13 +398,14 @@ function membership_and_combat_stats($update_past_stats=false) {
 		$update->bindValue(':visciousKiller', $todaysViciousKiller);
 		$update->execute();
 	}
+
 	$stats['vicious_killer'] = $todaysViciousKiller;
 	$pc = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE confirmed = 1");
 	$stats['player_count'] = $pc->fetchColumn();
 
 	$po = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true");
 	$stats['players_online'] = $po->fetchColumn();
-	
+
 	$stats['active_chars'] = query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('15 minutes' AS interval))");
 	return $stats;
 }

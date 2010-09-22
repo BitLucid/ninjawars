@@ -259,7 +259,7 @@ function ninja_name_available($ninja_name) {
 }
 
 // Get the display name from the identity.
-function class_display_name_from_identity($identity){
+function class_display_name_from_identity($identity) {
 	return query_item('SELECT class_name from class where identity = :identity', array(':identity'=>$identity));
 }
 
