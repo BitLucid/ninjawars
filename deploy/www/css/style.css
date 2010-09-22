@@ -183,7 +183,7 @@ h1 {
 	letter-spacing: 0;
     width:100%;
 	margin: 0 7em inherit 7em;
-	text-shadow: white 0 0 3px;
+	text-shadow: white 2px 2px 3px;
 }
 h3 {
     font: 18px/24px;
@@ -301,7 +301,7 @@ a {
 a:hover {
 	color: white;
 	text-decoration: underline;
-	text-shadow: white 0 0 2px;
+	text-shadow: white 1px 1px 2px;
 }
 
 /*
@@ -1083,7 +1083,7 @@ iframe {
 	border-bottom-left-radius: 20px 20px;
 	border-color: rgb(0, 0, 0);
 	border-color: rgba(0, 0, 0, 1);
-	text-shadow: black 0 0 4px;
+	text-shadow: black 2px 2px 4px;
 }
 
 .player-status.ninja-notice{
