@@ -687,8 +687,9 @@ td.playerTable {
 
 /* Logo when added as a link back in pages lacking an outer iframe */
 #logo-appended {
-    clear:both;
-	float:left;
+    position:absolute;
+    top:.3em;
+    left:4em;
 	width:100px;
 	margin-right: .5em;
 	display: none;
