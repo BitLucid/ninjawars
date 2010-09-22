@@ -1,9 +1,6 @@
 <?php
-
 /**
  * Account creation and validation.
- *
- *
 **/
 
 function validate_account($ninja_id, $email, $password_to_hash) {
@@ -11,8 +8,6 @@ function validate_account($ninja_id, $email, $password_to_hash) {
 			&& is_numeric($type) && get_ninja_name($ninja_id) && !account_by_email($email)
 			&& validate_password($password_to_hash) && validate_email($email));
 }
-
-
 
 function validate_email($email) {
 	$error = null;
@@ -31,8 +26,6 @@ function validate_email($email) {
 
 	return $error;
 }
-
-
 
 function email_is_duplicate($email) {
 	$acc_check = "SELECT account_identity FROM accounts
@@ -193,7 +186,7 @@ function send_signup_email($signup_email, $signup_name, $confirm, $class_identit
 			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
 		)
 	);
-    $_from = array(SYSTEM_MESSENGER_EMAIL=>SYSTEM_MESSENGER_NAME);
+	$_from = array(SYSTEM_MESSENGER_EMAIL=>SYSTEM_MESSENGER_NAME);
 	// *** Create message object.
 	$message = new Nmail($_to, $_subject, $_body, $_from);
 	// Set replyto address.

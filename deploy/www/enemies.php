@@ -1,7 +1,6 @@
 <?php
 require_once(LIB_ROOT."specific/lib_player_list.php");
 
-
 // Search for enemies to add.
 function get_enemy_matches($match_string) {
 	$user_id = get_user_id();
@@ -105,16 +104,12 @@ function nearby_peers($char_id/*, $limit=5*/){
     return $peers;
 }
 
-
-
-
 $private    = true;
 $alive      = false;
 
 if ($error = init($private, $alive)) {
 	header('Location: list_all_players.php');
 } else {
-
 
 $char_name = get_char_name();
 
