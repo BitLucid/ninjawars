@@ -60,13 +60,14 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
               <td id='attacking-choices'>
                 <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
                   <span id='duel'>
-                    <label>Duel<input id="duel" type="checkbox" name="duel"></label>
+                    <label>Duel ({getTurnCost skillName="duel"}) <input id="duel" type="checkbox" name="duel"></label>
                   </span>
 
 		{foreach from=$combat_skills item="skill"}
                   <span id='{$skill.skill_internal_name|escape}'>
                     <label>
                       {$skill.skill_display_name|escape}
+                     ({getTurnCost skillName=$skill.skill_display_name})
                       <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}">
                     </label>
                   </span>
