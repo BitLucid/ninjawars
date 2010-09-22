@@ -2,7 +2,7 @@
 require_once(LIB_ROOT."specific/lib_inventory.php");
 
 $private    = false;
-$alive      = false;
+$alive      = true;
 
 if ($error = init($private, $alive)) {
 	display_error($error);
