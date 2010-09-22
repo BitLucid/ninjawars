@@ -120,6 +120,7 @@ function standard_items() {
 	// Codename means it can have a link to be used, apparently...
 	// Pull this from the database.
 	$it = items_info();
+
 	$res = array();
 	// Format the items for display on the inventory.
 	foreach($it as $item){
