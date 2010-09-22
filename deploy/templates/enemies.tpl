@@ -12,6 +12,11 @@
 
 {if $found_enemies && count($found_enemies) gt 0}
 	{include file="enemy-matches.tpl" enemies=$found_enemies}
+{elseif $match_string}
+<div>
+  Your search returned no ninja. maybe you should make an enemy of someone who recently attacked you.
+	{include file="enemy-matches.tpl" enemies=$recent_attackers}
+</div>
 {/if}
 
 {if count($enemy_list) gt 0}
@@ -57,9 +62,8 @@
 </ul>
 </div>
 {else}
-<p style='width:45%;float:right;margin-left:0;margin-right:0;'>No nearby ninja, <em class='char-name'>{$username}</em>.</p>
+<p style='width:45%;float:right;margin-left:0;margin-right:0;'>No nearby ninja, <em class='char-name'>{$username|escape}</em>.</p>
 {/if}
-
 
 {if count($recent_attackers) gt 0}
 	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}

@@ -6,8 +6,11 @@ function get_enemy_matches($match_string) {
 	$user_id = get_user_id();
 	$sel = "SELECT player_id, uname FROM players WHERE uname ~* :matchString AND confirmed = 1 AND player_id != :user ORDER BY level LIMIT 11";
 	$enemies = query_array($sel, array(
-	    ':matchString'=>$match_string,
-	    ':user'=>$user_id));
+		':matchString' => $match_string
+		, ':user' => $user_id
+		)
+	);
+
 	return $enemies;
 }
 
@@ -78,7 +81,7 @@ function get_recent_attackers() {
 	$user_id = get_user_id();
 	DatabaseConnection::getInstance();
 
-	$statement = DatabaseConnection::$pdo->prepare('SELECT DISTINCT send_from, uname, level, health FROM events JOIN players ON send_from = player_id WHERE send_to = :user LIMIT 20');
+	$statement = DatabaseConnection::$pdo->prepare('SELECT DISTINCT player_id, send_from, uname, level, health FROM events JOIN players ON send_from = player_id WHERE send_to = :user LIMIT 20');
 	$statement->bindValue(':user', $user_id);
 	$statement->execute();
 
@@ -86,22 +89,23 @@ function get_recent_attackers() {
 }
 
 // Select characters right nearby in ranking score, up and down.
-function nearby_peers($char_id/*, $limit=5*/){
-    $sel = 
-        "(select rank_id, uname, level, player_id, health from players join player_rank on _player_id = player_id where score > 
-            (select score from player_rank where _player_id = :char_id) and confirmed = 1 and health>0 ORDER BY score ASC LIMIT 5)
+function nearby_peers($char_id/*, $limit=5*/) {
+	$sel =
+		"(SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id WHERE score >
+            (SELECT score FROM player_rank WHERE _player_id = :char_id) AND confirmed = 1 AND health > 0 ORDER BY score ASC LIMIT 5)
         UNION
-        (select rank_id, uname, level, player_id, health from players join player_rank on _player_id = player_id where score < 
-            (select score from player_rank where _player_id = :char_id2) and confirmed = 1 and health>0 ORDER BY score DESC LIMIT 5)";
-    $peers = query_array($sel, array(
-            ':char_id'=>array($char_id, PDO::PARAM_INT),
-            ':char_id2'=>array($char_id, PDO::PARAM_INT)
-            /*':limit'=>array($limit, PDO::PARAM_INT),
-            ':limit2'=>array($limit, PDO::PARAM_INT)*/
-            ));
-            
-	$peers = array_map('format_health_percent', $peers);  
-    return $peers;
+        (SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id WHERE score <
+            (SELECT score FROM player_rank WHERE _player_id = :char_id2) AND confirmed = 1 AND health > 0 ORDER BY score DESC LIMIT 5)";
+	$peers = query_array($sel, array(
+		':char_id'=>array($char_id, PDO::PARAM_INT)
+		, ':char_id2'=>array($char_id, PDO::PARAM_INT)
+		/*, ':limit'=>array($limit, PDO::PARAM_INT)
+		, ':limit2'=>array($limit, PDO::PARAM_INT)*/
+		)
+	);
+
+	$peers = array_map('format_health_percent', $peers);
+	return $peers;
 }
 
 $private    = true;
@@ -112,7 +116,6 @@ if ($error = init($private, $alive)) {
 } else {
 
 $char_name = get_char_name();
-
 
 $peers = nearby_peers(get_char_id());
 
