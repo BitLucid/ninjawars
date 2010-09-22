@@ -84,15 +84,17 @@ function json_latest_chat_id() {
 }
 
 function json_send_chat($msg) {
-	$msg = trim($msg);
-	if (strlen($msg) > 0) {
-		DatabaseConnection::getInstance();
-		$user_id = (int) get_user_id();
-		$query = 'INSERT INTO chat (sender_id, message) VALUES (:sender, :msg)';
-		$statement = DatabaseConnection::$pdo->prepare($query);
-		$statement->bindValue(':msg', $msg);
-		$statement->bindValue(':sender', $user_id);
-		$statement->execute();
+	if (is_logged_in()) {
+		$msg = trim($msg);
+		if (strlen($msg) > 0) {
+			DatabaseConnection::getInstance();
+			$user_id = (int) get_user_id();
+			$query = 'INSERT INTO chat (sender_id, message) VALUES (:sender, :msg)';
+			$statement = DatabaseConnection::$pdo->prepare($query);
+			$statement->bindValue(':msg', $msg);
+			$statement->bindValue(':sender', $user_id);
+			$statement->execute();
+		}
 	}
 }
 
