@@ -149,8 +149,9 @@ h1, h2, h3, h4, h5, h6, .subtitle, .title {
 	margin-top: 3px;
 	margin-bottom: 3px;
 	font-weight:bold;
-	background:#303030 url(/images/blacktransfaderight.png) right top repeat-y;
-	padding-left: 160px;
+	background:#303030;
+	/*background:#303030 url(/images/blacktransfaderight.png) right top repeat-y;
+	padding-left: 160px;*/
 	color:#cccccc;
 }
 h1, h2, .title, .player-info .player-name {
@@ -169,18 +170,20 @@ h2 {
     margin-left: auto;
     margin-right: auto;
     width:50%;
-    background: #9BB02D url(/images/blacktransfaderight.png) right top repeat-y;
+    background: #9BB02D;
     font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
     letter-spacing:0.1em;
 }
 h1 {
-	background: #BDB76B url(/images/blacktransfaderight.png) right top repeat-y;
-	border:none;
-    padding: 0 58px 0 102px; /* Increased left padding to account for black fade image */
+	background: DarkKhaki;
+    border-bottom: none;
+    padding-left:0;
+    padding-right:0;
 	font: 30px/34px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Impact, Charcoal, sans-serif;
 	letter-spacing: 0;
-	max-width: 1000px;
-	margin: 0 auto inherit auto;
+    width:100%;
+	margin: 0 7em inherit 7em;
+	text-shadow: white 0 0 3px;
 }
 h3 {
     font: 18px/24px;
