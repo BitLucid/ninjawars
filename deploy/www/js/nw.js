@@ -25,7 +25,7 @@ g_isRoot = (window.location.pathname == '/');
 g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent == window));
 
 // Guarantee that there is a console to prevent errors while debugging.
-if (typeof('console') == 'undefined') { console = { log: function() { } }; }
+if (typeof(console) == 'undefined') { console = { log: function() { } }; }
 
 /*  GLOBAL SETTINGS & VARS */
 if (parent.window != window) {
