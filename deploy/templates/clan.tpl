@@ -86,8 +86,12 @@
 
 	<!-- Checks whether the viewer is the leader to display these sections.  -->
 	<div id='leader-panel'>
-	      <div id='leader-panel-title'>{$own_clan_name|escape} Clan Leader Actions</div>
-	      <div id='show-leader-options' style='display:none'><a name='show-leader-options'>Show leader options</a></div>
+	      <div id='leader-panel-title' title='Show or hide the clan leader options'>
+	        {$own_clan_name|escape} Clan Leader Actions
+	      </div>
+	      <div id='show-leader-options' style='display:none'>
+	        <a class='show-hide' href='#show-leader-options'>Show leader options</a>
+	      </div>
 	      <div id='leader-options' style='margin: 0 inherit 0'>
 	      <script>
 	        {literal}
