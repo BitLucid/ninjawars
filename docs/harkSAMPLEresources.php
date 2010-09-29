@@ -17,7 +17,7 @@ define('SUPPORT_EMAIL_FORMAL_NAME', "Ninjawars Administrators");
 define('SYSTEM_MESSENGER_EMAIL', "noreply@ninjawars.net");
 define('SYSTEM_MESSENGER_NAME', "Automated Ninjawars Messenger");
 define('ALERTS_EMAIL', "ninjawarslivebythesword@gmail.com");
-define('TRAP_ERRORS', true);
+define('TRAP_ERRORS', false);
 
 
 // For location-specific derived-or-not constants.
