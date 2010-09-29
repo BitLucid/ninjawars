@@ -80,33 +80,33 @@
 
             {if $leader_of_own_clan}
 
-<!-- Checks whether the viewer is the leader to display these sections.  -->
-    <div id='leader-panel'>
-      <div id='leader-panel-title'>{$own_clan_name|escape} Leader Actions</div>
-      <ul id='leader-options'>
-        <li><a href='clan.php?command=invite'>Recruit for your Clan</a></li>
-        <li><a href='clan.php?command=rename'>Rename Clan</a></li>
-        <li><a href='clan.php?command=disband'>Disband Your Clan</a></li>
-        <li><a href='clan.php?command=kick'>Kick a Clan Member</a></li>
-      </ul>
-      <div>
-        <div><strong>Change Clan Image</strong></div>
-        To create a clan avatar, upload an image to <a href='http://www.imageshack.com' class='extLink'>imageshack.com</a>
-        Then put the image's full url here:
-        <form action='clan.php' name='avatar_and_message'>
-          <div>
-            <input type='hidden' name='command' value='view'>
-            <input type='hidden' name='avatar_or_message_change' value='1'>
-            <input type='hidden' name='clan_id' value='{$own_clan_id}'>
-            <input name='clan-avatar-url' type='text' value='{$clan_avatar_current}'>
-            (Image can be .jpg or .png)
-            <div><strong>Change Clan Message</strong></div>
-            Change your clan description below (max of 500 characters):
-            <textarea name='clan-description'>{$clan_description_current}</textarea>
-            <input type='submit' value='Save Changes'>
-          </div>
-        </form>
-      </div>
+	<!-- Checks whether the viewer is the leader to display these sections.  -->
+	<div id='leader-panel'>
+	      <div id='leader-panel-title'>{$own_clan_name|escape} Leader Actions</div>
+	        <ul id='leader-options'>
+	            <li><a href='clan.php?command=invite'>Recruit for your Clan</a></li>
+	            <li><a href='clan.php?command=rename'>Rename Clan</a></li>
+	            <li><a href='clan.php?command=disband'>Disband Your Clan</a></li>
+	            <li><a href='clan.php?command=kick'>Kick a Clan Member</a></li>
+	        </ul>
+	      
+	    <div>
+	    <div><strong>Change Clan Image</strong></div>
+	    To create a clan avatar, upload an image to <a href='http://www.imageshack.com' target='_blank' class='extLink'>imageshack.com</a> 
+	    Then put the image's full url here:
+    	    <form action='clan.php' name='avatar_and_message'>
+    	        <input type='hidden' name='command' value='view'>
+    	        <input type='hidden' name='avatar_or_message_change' value='1'>
+    	        <input type='hidden' name='clan_id' value='{$own_clan_id}'>
+    	        <input name='clan-avatar-url' type='text' value='{$clan_avatar_current}'>
+    	        (Image can be .jpg or .png)
+	        <div><strong>Change Clan Message</strong></div>
+    	        Change your clan description below (max of 500 characters):
+    	        <textarea name='clan-description'>{$clan_description_current}</textarea>
+    	        <input type='submit' value='Save Changes'>
+	        </form>
+	        
+	    </div>
     </div>
 
 <!-- End of leader-panel options -->
