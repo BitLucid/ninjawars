@@ -91,7 +91,7 @@
             </ul>
           </div>
 
-
+        <!--
         <div id="ninja-search" class="boxes active">
             <form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">
               <div>
@@ -102,6 +102,7 @@
               </div>
             </form>
           </div>
+        -->
 
 {if $player_info.level < 2}
           <div id='helpful-info'>
