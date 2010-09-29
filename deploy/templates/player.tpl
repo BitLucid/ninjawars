@@ -165,7 +165,10 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
         <span class='subtitle'>Clan:</span>
         <a href='clan.php?command=view&amp;clan_id={$clan_id}'>{$clan_name|escape}</a>
       </p>
+{*
+Clan members are no longer shown on a player's profile, 'cause it just made it too dirty anyway.
       <div class='clan-members centered'>
+
 {if count($clan_members) > 0}
         <div class='clan-members'>
           <h3 class='clan-members-header'>Clan members</h3>
@@ -184,7 +187,10 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
           </ul>
         </div>
 {/if}
+
       </div>
+      
+*}
     </div>
 {/if}
 
