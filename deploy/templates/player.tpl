@@ -135,7 +135,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
          <div>
            <input type='hidden' name='target_id' value='{$player_info.player_id|escape}'>
            <div><input id='messenger' type='hidden' value='1' name='messenger'></div>
-           <textarea name='message' cols='20' rows='2'></textarea>
+           <input type='text' name='message' size='30'>
            <input type='submit' value='Send Message' class='formButton'>
          </div>
        </form>
