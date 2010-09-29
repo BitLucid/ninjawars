@@ -82,8 +82,21 @@
 
 	<!-- Checks whether the viewer is the leader to display these sections.  -->
 	<div id='leader-panel'>
-	      <div id='leader-panel-title'>{$own_clan_name|escape} Leader Actions</div>
-	        <ul id='leader-options'>
+	      <div id='leader-panel-title'>{$own_clan_name|escape} Clan Leader Actions</div>
+	      <div id='show-leader-options' style='display:none'><a name='show-leader-options'>Show leader options</a></div>
+	      <div id='leader-options' style='margin: 0 inherit 0'>
+	      <script>
+	        {literal}
+	        $().ready(function (){
+	            $('#leader-panel-title, #show-leader-options').click(function(){
+	                $('#leader-options, #show-leader-options').toggle();
+	                return false;
+	            });
+                $('#leader-options, #show-leader-options').toggle();
+	        });
+	        {/literal}
+	      </script>
+	        <ul id='leader-options-list'>
 	            <li><a href='clan.php?command=invite'>Recruit for your Clan</a></li>
 	            <li><a href='clan.php?command=rename'>Rename Clan</a></li>
 	            <li><a href='clan.php?command=disband'>Disband Your Clan</a></li>
@@ -107,9 +120,12 @@
 	        </form>
 	        
 	    </div>
-    </div>
+	    
+	    </div><!-- End of leader-options div -->
+	        
+	        
+    </div>    <!-- End of leader-panel options -->
 
-<!-- End of leader-panel options -->
             {/if}
 		{else}
 <!-- Part of a clan, but not the leader -->
