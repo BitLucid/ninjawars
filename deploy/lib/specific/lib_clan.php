@@ -290,6 +290,8 @@ function clan_avatar_is_valid($dirty_url) {
         return false;
     } else {
         $parts = @parse_url($dirty_url);
+        
+        // TODO: Allow ninjawars as a host, and imgur.com as a host as well.
 
         return !!preg_match('#[\w\d]*\.imageshack\.[\w\d]*#i', $parts['host']);
     }
