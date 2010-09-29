@@ -83,5 +83,7 @@ insert into item_effects values ((select item_id from item where item_internal_n
 
 insert into item_effects values ((select item_id from item where item_internal_name = 'smokebomb'), (select effect_id from effects where effect_identity = 'stealth'));
 
+grant all on item_effects to developers;
+alter table item_effects owner to developers;
 grant all on effects to developers;
 alter table effects owner to developers;
