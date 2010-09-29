@@ -16,6 +16,8 @@ cd /home/ninjawars/
 
 Call the deploy script on the archive in the user home directory:
 ./deploy -c=test.conf ~/nw-mD-i.tar
+or from the /home/ninjawars directory:
+./deploy --clean -c=test.conf ./nw-
 
 Then browse to:
 http://test.ninjawars.net/
