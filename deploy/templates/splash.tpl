@@ -41,7 +41,7 @@
         
       </div>
 
-      <div id='left-column'>
+      <div id='left-column' style='position:relative;height:100%;min-height:600px'>
             
         <div id='ninjawars-home' class='header-section'>
         </div>
