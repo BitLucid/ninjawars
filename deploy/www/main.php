@@ -1,19 +1,12 @@
 <?php
-$alive   = false;
-$private = false;
+// Eventually this page will simply be rerouted through apache to the static page system.
 
-if ($error = init($private, $alive)) {
-	display_error($error);
-} else {
-require_once(LIB_ROOT."specific/lib_player_list.php");
+init(false, false);
 
-display_page(
-	'main.tpl' // *** Main Template ***
-	, 'Welcome to Ninjawars' // *** Page Title ***
-	, get_certain_vars(get_defined_vars(), array()) // *** Page Variables ***
-	, array( // *** Page Options ***
-		'quickstat' => false
-	)
-);
-}
+$show_faqs = in('show_faqs');
+
+$page = 'main';
+$pages = array('main'=>array('title'=>'Live by the Sword', 'template'=>'main.tpl'));
+
+display_static_page($page, $pages, $vars=array('user_id'=>get_user_id(), 'show_faqs'=>$show_faqs), $options=array());
 ?>
