@@ -1443,32 +1443,6 @@ iframe {
     font-size: .8em;
 }
 
-/* Main Landing Page */
-
-#create-a-ninja {
-    font-size:2em;
-}
-#progression {
-	text-align:center;
-	margin: .2em 0 .5em 0;
-	font-size:1.7em;
-	font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
-	/*font-family: Impact, sans-serif;*/
-	font-variant: small-caps;
-}
-#progression a {
-	font-family: Impact, sans-serif;
-}
-#progression .down-arrow {
-	height:35px;
-}
-#progression p {
-	margin: 0;
-}
-#progression p:first-child {
-	font-size:larger;
-}
-
 
 /* User Messages Page */
 
