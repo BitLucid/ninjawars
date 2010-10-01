@@ -1,24 +1,28 @@
 <h1>Live by the Sword!</h1>
 
 <script type='text/javascript'>
+{if $show_faqs}
+var show_faqs = true;
+{else}
+var show_faqs = false;
+{/if}
 {literal}
-$(document).ready(function () {
+//$(document).ready(function () {
+window.onload = function () {
 
-    $('#show-faqs').click(function(){
-            $('#faqs').toggle();
-            $('#show-faqs').toggle();
-            return false;
-        });
-        
-    {/literal}
-    {if $show_faqs}
-    $('#show-faqs').toggle();
-    {else}
-    $('#faqs').toggle();
-    {/if}
-    {literal}
+    var showfaqsLink;
+    (showfaqsLink = document.getElementById('show-faqs')).onclick = function(){
+        $(document.getElementById('faqs')).toggle();
+        $(showfaqsLink).toggle();
+        return false;
+    }
 
-});
+    if (show_faqs) {
+        $(showfaqsLink).toggle();
+    } else {
+        $(document.getElementById('faqs')).toggle();
+    }
+}
 {/literal}
 </script>
 
@@ -26,7 +30,7 @@ $(document).ready(function () {
 
 {if !$show_faqs}
   <div id='show-faqs' style='margin: .3em auto;text-align:center;font-size:1.1em;font-style:italic;border-top:1px solid blue;border-bottom:1px solid blue;'>
-  <a target='main' href="tutorial.php?show_faqs=true" id='show-faqs-link' style='display:inline-block;width:100%;height:100%'>
+  <a target='main' href="tutorial.php?show_faqs=1" id='show-faqs-link' style='display:inline-block;width:100%;height:100%'>
     Show More Info
   </a>
   </div>

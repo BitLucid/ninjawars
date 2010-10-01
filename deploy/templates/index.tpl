@@ -5,7 +5,7 @@
 	}
       </script>
       
-    <style>
+    <style type='text/css'>
     .unread-count, .unread-count a{
         display:inline-block;
         font-size:10px;
