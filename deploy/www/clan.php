@@ -21,6 +21,7 @@ $sure                            = in('sure', '');
 $kicked                          = in('kicked', '');
 $person_invited                  = in('person_invited', '');
 $message                         = in('message', null, null); // Don't filter messages sent in.
+$message_sent = false;
 $new_clan_avatar_url             = in('clan-avatar-url');
 $new_clan_description            = in('clan-description');
 $avatar_or_message_change        = in('avatar_or_message_change', false);
@@ -125,6 +126,7 @@ if (!$player_id) {
 
 	if ($message) {
 		message_to_clan($message);
+		$message_sent = true;
 		$action_message = "Message sent.";
 	}
 
