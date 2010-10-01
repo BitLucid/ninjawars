@@ -12,8 +12,6 @@
 
 // TODO: change generated vars to square bracket notation.
 
-// TODO: Create a dummy console dot log functionality to avoid errors on live?
-
 var NW = {};
 
 g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body');
@@ -36,7 +34,6 @@ if (parent.window != window) {
     // If the page is standalone, define the objects as needed.
 	$ = jQuery;
 	NW = {};
-	
 
 	NW.datastore = {};
 	NW.lastChatCheck = '';
