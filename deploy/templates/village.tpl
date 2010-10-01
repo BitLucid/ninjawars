@@ -14,6 +14,11 @@ function refreshpage{$frame}() {literal}{{/literal}
 	parent.{$frame}.location = "{$location}";
 {literal}}{/literal}
 setInterval(refreshpage{$frame}, 300*1000);
+{literal}
+window.onload = function(){
+	$(document.getElementById('message')).focus();
+};
+{/literal}
 </script>
 
 <div id='full-chat'>
