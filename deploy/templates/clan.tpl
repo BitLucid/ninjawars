@@ -150,23 +150,33 @@
 			As such, after the leave command, no clan membership display information should occur. -->
 		{/if}<!-- End of options for clan-members -->
 
-		{if $own_clan_id }
-    		{if $command == 'msgclan'}
-<!--  *** Clan Member Input for Messaging their Entire Clan *** -->
-    <form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
-      <div>
-        Message: <input id='message' type='text' size='50' maxlength='1000' name='message' class='textField'>
-        <input type='submit' value='Send This Message' class='formButton'>
-      </div>
-    </form>
-    		{/if}
-
-<!-- *** OPTIONS FOR ALL IN-CLAN PLAYERS -->
-<!-- Note that these should not display after a clan "leave" option occurs.  -->
-    <ul id='clan-options'>
-      <li><a href='clan.php?command=msgclan'>Message Clan Members</a></li>
-      <li><a href='clan.php?command=view&amp;clan_id={$own_clan_id|escape:'url'}'>View Your Clan</a></li>
-    </ul>
+		{if $own_clan_id }	
+		    <!-- *** OPTIONS FOR ALL IN-CLAN PLAYERS -->
+		    
+		    {if $message_sent}
+		    <!-- When a message is sent, refocus on the text input section -->
+		    <script type='text/javascript'>
+		    	{literal}
+		    	$().ready(function(){
+		    		$('input#message').focus();
+		    	});
+		    	{/literal}
+		    </script>
+		    {/if}
+		    
+		    <!-- Note that these should not display after a clan "leave" option occurs.  -->
+			<ul id='clan-options'>
+				<li>
+	    		    <!--  *** Clan Member Input for Messaging their Entire Clan *** -->
+	    		   <form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
+	    	          <div>
+	    	          Message clan: <input id='message' type='text' size='30' maxlength='1000' name='message' class='textField'>
+	    	          <input type='submit' value='Send This Message' class='formButton'>
+	    	          </div>
+    	           </form>
+				</li>
+	            <li><a href='clan.php?command=view&amp;clan_id={$own_clan_id|escape:'url'}'>View Your Clan</a></li>
+	        </ul>
 		{/if}
 	{else}
 <!-- // ****** VIEWER NOT YET PART OF ANY CLAN ******* -->
