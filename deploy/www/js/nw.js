@@ -220,7 +220,7 @@ if (parent.window != window) {
 		}
 	}
 
-	NW.eventsRead = function(} (
+	NW.eventsRead = function() {
 		$('#recent-events', top.document).removeClass('message-unread').toggle(false);
 	};
 
@@ -260,7 +260,7 @@ if (parent.window != window) {
 		var updated = false;
 		var count = this.getMessageCount();
 
-		if (this.storeArrayValue('unread_messages_count', count)} (
+		if (this.storeArrayValue('unread_messages_count', count)) {
 			updated = true;
 			this.unreadMessageCount(count); // Display a value if changed.
 		}
@@ -434,9 +434,9 @@ if (parent.window != window) {
 	};
 
 	// Return the most up-to-date value, which was stored prior.
-	NW.pullFromDataStore = function(global_store, property_name} (
-		if (this.datastore[global_store]} (
-			if (property_name && typeof(this.datastore[global_store][property_name]) != 'undefined'} (
+	NW.pullFromDataStore = function(global_store, property_name) {
+		if (this.datastore[global_store]) {
+			if (property_name && typeof(this.datastore[global_store][property_name]) != 'undefined') {
 				// If a property_name was specified, return the value for that specific property (e.g. event.event_id)...
 				return this.datastore[global_store][property_name];
 			}
@@ -449,12 +449,12 @@ if (parent.window != window) {
 	};
 
 	// Store any changes to the value, if any, and return true if changed, false if unchanged.
-	NW.storeArrayValue = function(name, value} (
-		if (!this.datastore['array']} (
+	NW.storeArrayValue = function(name, value) {
+		if (!this.datastore['array']) {
 			this.datastore['array'] = {}; // Verify there's a storage array.
 		}
 		// Check for a change to the value to store.
-		if ((typeof(this.datastore['array'][name]) != 'undefined') || this.datastore['array'][name] == value} (
+		if ((typeof(this.datastore['array'][name]) != 'undefined') || this.datastore['array'][name] == value) {
 			// If it exists and differs, store the new one and return true.
 			this.datastore['array'][name] = value;
 			return true;
@@ -464,7 +464,7 @@ if (parent.window != window) {
 	};
 
 	// Get a stored hash if available.
-	NW.pullArrayValue = function(name} (
+	NW.pullArrayValue = function(name) {
 		return (this.datastore['array'] && typeof(this.datastore['array'][name]) != 'undefined' ? this.datastore['array'][name] : null);
 	};
 
@@ -596,6 +596,9 @@ if (parent.window != window) {
 		return container;
 	};
 
+	/**
+	* Takes in a chat message and returns an HTML node that contains the display for the author of the chat message
+	*/
 	NW.renderChatAuthor = function(p_message) {
 		var container = document.createElement('dt');
 		container.className = "chat-author";
@@ -609,17 +612,21 @@ if (parent.window != window) {
 		return container;
 	};
 
+	/**
+	* Event handler for when the chat refresh button is clicked
+	*/
 	NW.chatRefreshClicked = function(button) {
 		button.onclick = null;
 		$(button).css({'cursor':'default'});
 		//button.style.cursor = 'default';
 		button.src = 'images/refresh_disabled.gif';
-		setTimeout(function(} (
+		setTimeout(function() {
 			button.onclick = function() { NW.chatRefreshClicked(this);};
 			button.src = 'images/refresh.gif';
 			$(button).css({'cursor':'pointer'});
 			//button.style.cursor = 'pointer'; // This fails in chrome.
 		}, this.manualChatLockTime);
+
 		this.checkForNewChats();
 	};
 
@@ -627,6 +634,9 @@ if (parent.window != window) {
 	//So that 234 immediately consecutive spammings of enter to refresh the chat results in a delay until the last spamming comes through +3
 	// Instead of preventing anything from happening for a time, only refresh the chat on the -last- request.
 
+	/**
+	* Returns whether or not manual chat refresh (as opposed to automatic chat refresh) is currently locked (because a manual refresh is ongoing)
+	*/
 	NW.manualChatLocked = function() {
 		return this.manualChatLock;
 	};
