@@ -121,6 +121,8 @@ $peers = nearby_peers(get_char_id());
 
 $active_ninjas = get_active_players(5, true); // Get the currently active ninjas
 
+$char_info = get_player_info();
+
 $match_string = in('enemy_match', null, 'no filter');
 $add_enemy    = in('add_enemy', null, 'toInt');
 $remove_enemy = in('remove_enemy', null, 'toInt');
@@ -154,7 +156,7 @@ $recent_attackers = get_recent_attackers()->fetchAll();
 display_page(
 	'enemies.tpl'	// *** Main template ***
 	, 'Enemy List' // *** Page Title ***
-	, get_certain_vars(get_defined_vars(), array('char_name', 'found_enemies', 'active_ninjas', 'recent_attackers', 'enemy_list', 'peers')) // *** Page Variables ***
+	, get_certain_vars(get_defined_vars(), array('char_name', 'char_info', 'found_enemies', 'active_ninjas', 'recent_attackers', 'enemy_list', 'peers')) // *** Page Variables ***
 	, array( // *** Page Options ***
 		'quickstat' => false
 	)

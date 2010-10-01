@@ -35,7 +35,9 @@
   <li class="{$status_class}" style='position:relative;margin-bottom:.2em'>
     <a href="enemies.php?remove_enemy={$loop_enemy_id|escape}"><img src="{$templatelite.const.IMAGE_ROOT}icons/delete.png" alt="remove"></a>
     {$action} <a href="player.php?player_id={$loop_enemy_id|escape}">{$loop_enemy.uname|escape}</a>
+    {if $char_info.health}
 	<span style='margin-left:2em;width:10em;display:inline-block;position:absolute;right:2em;'>{include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}</span>
+	{/if}
   </li>
 		{/if}
 	{/foreach}
@@ -55,8 +57,10 @@
             <a href='player.php?player_id={$loop_peer.player_id}' target='main'>
                 {$loop_peer.uname}
             </a>
+            {if $char_info.health}
         	<span style='margin-left:2em;width:10em;display:inline-block;position:absolute;right:2em;'>{include file="health_bar.tpl" health=$loop_peer.health health_percent=$loop_peer.health_percent}</span>
             <!-- (level {$loop_peer.level}) -->
+            {/if}
         </li>
     {/foreach}
 </ul>
