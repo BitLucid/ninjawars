@@ -4,9 +4,8 @@
 		location.href = "attack_player.php";
 	}
       </script>
-      
-    <style type='text/css'>
-    .unread-count, .unread-count a{
+    <style type="text/css">
+    .unread-count, .unread-count a {
         display:inline-block;
         font-size:10px;
         margin-left:2px;
@@ -21,7 +20,8 @@
         -moz-border-radius:5px;
         color:black;
     }
-    .unread-count.message-unread, .unread-count.message-unread a{
+
+    .unread-count.message-unread, .unread-count.message-unread a {
         background-color:#4183c4;
         color:#fff;
     }

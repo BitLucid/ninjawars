@@ -1,6 +1,5 @@
 /* The main javascript functionality of the site, apart from very page specific behaviors */
 
-
 // Sections are, in order: SETTINGS | FUNCTIONS | READY
 
 // Url Resources:
@@ -8,30 +7,28 @@
 // http://yuiblog.com/blog/2007/06/12/module-pattern/
 // http://www.javascripttoolbox.com/bestpractices/
 
-
-
 // TODO: change generated vars to square bracket notation.
 
 var NW = {};
 
-g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body');
+var g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body');
 
-g_isLive = (window.location.host != 'localhost');
+var g_isLive = (window.location.host != 'localhost');
 
-g_isRoot = (window.location.pathname == '/');
+var g_isRoot = (window.location.pathname == '/');
 
-g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent == window));
+var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent == window));
 
 // Guarantee that there is a console to prevent errors while debugging.
 if (typeof(console) == 'undefined') { console = { log: function() { } }; }
 
 /*  GLOBAL SETTINGS & VARS */
 if (parent.window != window) {
-    // If the interior page of an iframe, use the already-defined globals from the index.
+	// If the interior page of an iframe, use the already-defined globals from the index.
 	$ = parent.$;
 	NW = parent.NW;
 } else {
-    // If the page is standalone, define the objects as needed.
+	// If the page is standalone, define the objects as needed.
 	$ = jQuery;
 	NW = {};
 
@@ -127,7 +124,7 @@ if (parent.window != window) {
 	NW.renderPlayerQuickstats = function() {
 		var container, healthLabel, healthBar, expLabel, expBar, statusLabel, statusValue, turnsLabel, turnsValue, goldLabel, goldValue, bountyLabel, bountyValue;
 
-        // Jesus dammit christmas!  We need to keep the html out of the js.
+		// Jesus dammit christmas!  We need to keep the html out of the js.
 
 		container = document.createElement('dl');
 		container.className = "quickstats player-stats";
@@ -207,23 +204,24 @@ if (parent.window != window) {
 	// Display an event.
 	NW.writeLatestEvent = function(event) {
 		this.debug('Event display requested.');
-		
+
 		var recent = $('#recent-events', top.document)
 		.find('#recent-event-attacked-by').text('You were recently in combat').end()
 		.find('#view-event-char').text(event.sender).attr('href', 'player.php?player_id='+event.send_from).end();
-		if(recent && recent.addClass){
-    		if(event.unread){
-    		    recent.addClass('message-unread');
-        		// if unread, Add the unread class until next update.
-    		} else {
-    		    recent.removeClass('message-unread');
-    		}
-    		recent.toggle();
-    	}
+		if (recent && recent.addClass) {
+			if (event.unread) {
+				recent.addClass('message-unread');
+				// if unread, Add the unread class until next update.
+			} else {
+				recent.removeClass('message-unread');
+			}
+
+			recent.toggle();
+		}
 	}
-	
-	NW.eventsRead = function(){
-		$('#recent-events', top.document).removeClass('message-unread').toggle(false);	    
+
+	NW.eventsRead = function(} (
+		$('#recent-events', top.document).removeClass('message-unread').toggle(false);
 	};
 
 	// Pull the event from the data store and request it be displayed.
@@ -252,37 +250,38 @@ if (parent.window != window) {
 		return feedback;
 	};
 
-    // Get the message count initially from the api datastore.
+	// Get the message count initially from the api datastore.
 	NW.getMessageCount = function() {
 		return this.pullArrayValue('unread_messages_count');
 	};
-	
+
 	// Pull an unread message count from the new api storage, compare it to the stored value, and call the display function as necessary.
 	NW.updateMessageCount = function () {
-	    var updated = false;
-	    var count = this.getMessageCount();
-	    
-	    if (this.storeArrayValue('unread_messages_count', count)){
-	        updated = true;
-	        this.unreadMessageCount(count); // Display a value if changed.
-	    }
-	    return updated;
+		var updated = false;
+		var count = this.getMessageCount();
+
+		if (this.storeArrayValue('unread_messages_count', count)} (
+			updated = true;
+			this.unreadMessageCount(count); // Display a value if changed.
+		}
+
+		return updated;
 	};
 
 
-    // Update the number of unread messages, displayed on index. 
-	NW.unreadMessageCount = function(messageCount) {        
+	// Update the number of unread messages, displayed on index.
+	NW.unreadMessageCount = function(messageCount) {
 		var recent = $('#messages', top.document).find('.unread-count').text(messageCount);
-			// if unread, Add the unread class until next update.
-		if(recent && recent.addClass){
-    		if(messageCount>0){
-    		  recent.addClass('message-unread');
-    		} else {
-    		  recent.removeClass('message-unread');
-    		}
-    	}
+		// if unread, Add the unread class until next update.
+		if (recent && recent.addClass) {
+			if (messageCount>0) {
+				recent.addClass('message-unread');
+			} else {
+				recent.removeClass('message-unread');
+			}
+		}
 	};
-	
+
 
 	// Update the display of the health.
 	NW.updateHealthBar = function(health) {
@@ -338,7 +337,7 @@ if (parent.window != window) {
 		// health bar.
 		var healthUpdated = this.getAndUpdateHealth();
 
-        // If any changes to data occurred, return true.		
+		// If any changes to data occurred, return true.
 		var res = (!!(messageUpdated || eventUpdated || healthUpdated));
 		this.debug("Message Updated: "+messageUpdated);
 		this.debug("Event Updated: "+eventUpdated);
@@ -369,11 +368,11 @@ if (parent.window != window) {
 			}
 		}
 	};
-	
+
 	// The checkAPI probably shouldn't delay display, display should happen whenever the api returns?
 	// I guess the original objective was to decouple display calls and api data requests.
 
-    // This pulls the data from api.php and stores the data, and then returns true if any of the data was different.
+	// This pulls the data from api.php and stores the data, and then returns true if any of the data was different.
 	NW.checkAPI_callback = function(data) {
 		var updated = false;
 
@@ -389,7 +388,7 @@ if (parent.window != window) {
 		if (this.updateDataStore(data.message, 'message_id', 'latestMessage', 'message_id')) {
 			updated = true;
 		}
-		
+
 		// Save the unread message count into an array.
 		if (this.storeArrayValue('unread_messages_count', data.unread_messages_count)) {
 			updated = true;
@@ -433,41 +432,40 @@ if (parent.window != window) {
 
 		return false; // Input didn't contain the data, or the data hasn't changed.
 	};
-	
+
 	// Return the most up-to-date value, which was stored prior.
-	NW.pullFromDataStore = function(global_store, property_name){
-	    if(this.datastore[global_store]){
-	        if(property_name && typeof(this.datastore[global_store][property_name]) != 'undefined'){
-	            // If a property_name was specified, return the value for that specific property (e.g. event.event_id)...
-    	        return this.datastore[global_store][property_name];
-    	    }
-    	    // ...otherwise return the whole storage entity, (e.g. event).
-    	    return this.datastore[global_store];
-	    }
-	    return null;
+	NW.pullFromDataStore = function(global_store, property_name} (
+		if (this.datastore[global_store]} (
+			if (property_name && typeof(this.datastore[global_store][property_name]) != 'undefined'} (
+				// If a property_name was specified, return the value for that specific property (e.g. event.event_id)...
+				return this.datastore[global_store][property_name];
+			}
+
+			// ...otherwise return the whole storage entity, (e.g. event).
+			return this.datastore[global_store];
+		}
+
+		return null;
 	};
-	
+
 	// Store any changes to the value, if any, and return true if changed, false if unchanged.
-	NW.storeArrayValue = function(name, value){
-	    if(!this.datastore['array']){
-	        this.datastore['array'] = {}; // Verify there's a storage array.
-	    }
-	    // Check for a change to the value to store.
-	    if((typeof(this.datastore['array'][name]) != 'undefined') 
-	        || this.datastore['array'][name] == value){
-	        // If it exists and differs, store the new one and return true.
-	        this.datastore['array'][name] = value;
-	        return true;
-	    } else {
-    	    return false;
-    	}
+	NW.storeArrayValue = function(name, value} (
+		if (!this.datastore['array']} (
+			this.datastore['array'] = {}; // Verify there's a storage array.
+		}
+		// Check for a change to the value to store.
+		if ((typeof(this.datastore['array'][name]) != 'undefined') || this.datastore['array'][name] == value} (
+			// If it exists and differs, store the new one and return true.
+			this.datastore['array'][name] = value;
+			return true;
+		} else {
+			return false;
+		}
 	};
-	
+
 	// Get a stored hash if available.
-	NW.pullArrayValue = function(name){
-	    return (this.datastore['array'] && typeof(this.datastore['array'][name]) != 'undefined'?
-	         this.datastore['array'][name] 
-	         : null);
+	NW.pullArrayValue = function(name} (
+		return (this.datastore['array'] && typeof(this.datastore['array'][name]) != 'undefined' ? this.datastore['array'][name] : null);
 	};
 
 	// Determines the update interval,
@@ -570,7 +568,7 @@ if (parent.window != window) {
 				var chats = this.datastore.new_chats.chats;
 				var after = container.insertBefore(document.createTextNode(''), container.firstChild);
 				for (chat_message in chats) {
-				    // Jesus.
+					// Jesus.
 					after = container.insertBefore(this.renderChatAuthor(chats[chat_message]), after.nextSibling);
 					after = container.insertBefore(this.renderChatMessage(chats[chat_message]), after.nextSibling);
 
@@ -616,20 +614,19 @@ if (parent.window != window) {
 		$(button).css({'cursor':'default'});
 		//button.style.cursor = 'default';
 		button.src = 'images/refresh_disabled.gif';
-		setTimeout(function(){
-		    button.onclick = function() { NW.chatRefreshClicked(this);};
-		    button.src = 'images/refresh.gif';
-		    $(button).css({'cursor':'pointer'});
-            //button.style.cursor = 'pointer'; // This fails in chrome.
-        }, this.manualChatLockTime);
+		setTimeout(function(} (
+			button.onclick = function() { NW.chatRefreshClicked(this);};
+			button.src = 'images/refresh.gif';
+			$(button).css({'cursor':'pointer'});
+			//button.style.cursor = 'pointer'; // This fails in chrome.
+		}, this.manualChatLockTime);
 		this.checkForNewChats();
 	};
 
+	// This locking mechanism should probably be migrated to a timewatch pattern instead.
+	//So that 234 immediately consecutive spammings of enter to refresh the chat results in a delay until the last spamming comes through +3
+	// Instead of preventing anything from happening for a time, only refresh the chat on the -last- request.
 
-    // This locking mechanism should probably be migrated to a timewatch pattern instead.
-    //So that 234 immediately consecutive spammings of enter to refresh the chat results in a delay until the last spamming comes through +3
-    // Instead of preventing anything from happening for a time, only refresh the chat on the -last- request.
-    
 	NW.manualChatLocked = function() {
 		return this.manualChatLock;
 	};
@@ -673,8 +670,6 @@ if (parent.window != window) {
 	 */
 }
 
-
-
 /***************************** Execution of code, run at the end to allow all definitions to exist beforehand. ******/
 $(document).ready(function() {
 	// INDEX ONLY CHANGES
@@ -707,11 +702,9 @@ $(document).ready(function() {
 		NW.clickHidesTarget('#show-hide-chat', '#chat-and-switch');
 		NW.clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
 		NW.clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
-		
+
 		// Display the chat refresh image and toggle it if it is clicked.
 		$('#chat-refresh-image').toggle().click(NW.chatRefreshClicked(this));
-		
-		
 	} else if (g_isSubpage) {
 		$('body').addClass('solo-page'); // Add class to solo-page bodies.
 		// Displays the link back to main page for any lone subpages not in iframes.
