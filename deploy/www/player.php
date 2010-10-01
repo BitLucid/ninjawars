@@ -14,7 +14,7 @@ $target        = $player = in('player');
 $target_id     = first_value(in('target_id'), in('player_id'), get_user_id($target)); // Find target_id if possible.
 $target_player_obj = new Player($target_id);
 
-//debug($target_id);debug(in('target_id'));debug(in('player_id'));debug(get_user_id($target));debug($target_player_obj);
+$char_info = get_player_info();
 
 if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj->isActive()) {
 	$template = 'no-player.tpl';
@@ -112,7 +112,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		// Send the info to the template.
 
 		$template = 'player.tpl';
-		$parts = get_certain_vars(get_defined_vars(), array('combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan', 'clan_members'));
+		$parts = get_certain_vars(get_defined_vars(), array('char_info', 'combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan', 'clan_members'));
 	}
 }
 
