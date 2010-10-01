@@ -435,7 +435,7 @@ function add_item($char_id, $identity, $quantity = 1) {
 
 		if (!$rows) { // No entry was present, insert one.
 		    $ins_res = query_resultset("INSERT INTO inventory (owner, item_type, amount) 
-		        VALUES (:char, (select item_id from item where item_internal_name = :item), :quantity)",
+		        VALUES (:char, (select item_id from item where item_internal_name = :identity), :quantity)",
 		        array(':char'=>$char_id,
 		            ':identity'=>$identity,
 		            ':quantity'=>$quantity));
