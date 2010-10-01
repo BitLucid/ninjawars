@@ -39,9 +39,12 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 	
     {include file="status_section.tpl" statuses=$status_list}
 
+
+	{if $char_info.health}
     <span style='width:10em;display:inline-block;'>
             {include file="health_bar.tpl" health=$player_info.health health_percent=$player_info.health_percent}
     </span>
+    {/if}
 
 	</div>
 	
