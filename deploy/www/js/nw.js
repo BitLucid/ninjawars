@@ -11,6 +11,8 @@
 
 var NW = {};
 
+var $ = jQuery;
+
 var g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body');
 
 var g_isLive = (window.location.host != 'localhost');
@@ -25,11 +27,11 @@ if (typeof(console) == 'undefined') { console = { log: function() { } }; }
 /*  GLOBAL SETTINGS & VARS */
 if (parent.window != window) {
 	// If the interior page of an iframe, use the already-defined globals from the index.
-	$ = parent.$;
+	//$ = parent.$;
 	NW = parent.NW;
 } else {
 	// If the page is standalone, define the objects as needed.
-	$ = jQuery;
+	//$ = jQuery;
 	NW = {};
 
 	NW.datastore = {};
