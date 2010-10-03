@@ -51,3 +51,4 @@
 20100905make_class_identity_field_lowercase.sql
 20100918_remove_shop_scroll_images_where_inappropriate.sql
 20100929_grant_permissions_on_item_effects_table.sql
+20101001_add_last_login_attempt_field_to_accounts.sql
