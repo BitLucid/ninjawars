@@ -1,17 +1,7 @@
 <?php
-$alive      = false;
-$private    = false;
+init($private=false, $alive=false);
 
-if ($error = init($private, $alive)) {
-	display_error($error);
-} else {
-logout_user(); // From lib_auth (for authenticate)
+logout_user($echo=false, $redirect='login.php?logged_out=1'); // logout_user lives in lib_auth
+// Logout immediately redirects to login.php to display a "you are now logged out" message.
 
-display_template(
-	'logout.tpl'
-	, 'Log Out'
-	, array()
-	, false
-);
-}
 ?>

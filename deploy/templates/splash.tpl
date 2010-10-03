@@ -19,24 +19,8 @@
 
     <div id="menu" class="login-menu">
       <div id="menu-start">
-        <div id="login-bar">
-          <form id="login-form" action="index.php#" method="post">
-            <span class="text">
-              <input type="hidden" name="ref" value="{$referrer|escape}">
-                <label>
-                  <!-- Username -->
-                  <input name="user" type="text" class="itext">
-                </label>
-                <label>
-                  <!-- Password -->
-                  <input name="pass" type="password" class="itext">
-                </label>
-                <input id='login-button' name="action" type="submit" value="Login" class="ibutton formButton">
-                <!-- The value of this has to remain lowercase "login" to work with the login system -->
-              </span>
-            </form>
-          </div>
-
+      
+{include file='login-bar.tpl' referrer=$referrer stored_username=$stored_username}
 
         </div>
         <div id="menu-info">
