@@ -16,7 +16,8 @@
 <!-- Message an individual ninja-->
 <div id='message-ninja' style='margin-bottom:1em'>
 	<form action='messages.php' method='post' name='ninja_message'>
-	<em class='char-name'>@</em><input type='text' size='26' name='to' value='{$to}' class='textField'> <span style='font-weight:bold'>::</span>
+	<em class='char-name'>@<input class='char-name textField' type='text' size='26' name='to' value='{$to}'></em>
+	<span style='font-weight:bold'>::</span>
 	<input id='message-to-ninja' type='text' size='30' name='message' class='textField'>
 	<input type='hidden' name='messenger' value='1>
 	<input type='submit' value='Send' name='ninja_message' class='formButton'>
