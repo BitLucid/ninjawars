@@ -1720,3 +1720,10 @@ select option #blue-class-select {
 .gold-count{
     color: rgb(255, 215, 0);
 }
+
+/* Class to add to locations that show character names */
+.char-name{
+	font-style:italic;
+	color:#BD7A26;
+	background-color:#1D0F00;
+}
