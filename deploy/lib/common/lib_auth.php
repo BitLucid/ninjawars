@@ -1,12 +1,16 @@
 <?php
 // lib_auth.php
 
-// Side-effect-less check for whether a login & pass work.
-function authenticate($p_login, $p_pass) {
-	$login = strtolower((string)$p_login);
-	$pass  = (string)$p_pass;
+// Check for whether a login and pass match uname/active_email and hash, respectively.
+function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 
-	if ($login != '' && $pass != '') {
+	$login = strtolower(sanitize_to_text((string)$dirty_login));
+	$last_login_failure_was_recent = false;
+	$pass  = (string)$p_pass;
+	if($limit_login_attempts){
+		$last_login_failure_was_recent = last_login_failure_was_recent(potential_account_id_from_login_username($login));
+	}
+	if ($login != '' && $pass != '' && !$last_login_failure_was_recent) {
 		// Allow login via username or email.
 /*	*** This query should be used when we have gotten rid of all duped unames ***
 		$sql = "SELECT account_id, account_identity, uname, player_id, phash = crypt(:pass, phash) AS authenticated
@@ -33,11 +37,14 @@ function authenticate($p_login, $p_pass) {
 		if ($result->rowCount() > 1) {	// *** More than 1 record was found, commence dupe handling ***
 			return $result;
 		} else if ($result->rowCount() < 1) {	// *** No record was found, user does not exist ***
+			update_last_login_failure(potential_account_id_from_login_username($login));
 			return false;
 		} else {	// *** Exactly one result found, return it ***
 			return $result->fetch();
 		}
 	} else {
+		// Update the last login failure timestamp.
+		update_last_login_failure(potential_account_id_from_login_username($login));
 		return false;
 	}
 }
@@ -46,14 +53,9 @@ function authenticate($p_login, $p_pass) {
 /**
  * Login the user and delegate the setup if login is valid.
  **/
-function login_user($p_user, $p_pass) {
-	$success = false;
-	$error   = 'That password/username combination was incorrect.';
-/*	*** This conditional should be used instead of what is below when we get rid of all duped unames ***
-	if (($data =authenticate($p_user, $p_pass)) && (bool)$data['authenticated']) {
-*/
-
+function login_user($dirty_user, $p_pass) {
 	// Internal function due to it being insecure otherwise.
+	// Sets up the environment for a logged in user, using vetted data.
 	function _login_user($p_username, $p_player_id, $p_account_id) {
 		SESSION::commence(); // Start a session on a successful login.
 		$_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
@@ -64,7 +66,15 @@ function login_user($p_user, $p_pass) {
 		update_last_logged_in($p_player_id);
 	}
 
-	$data = authenticate($p_user, $p_pass);
+	$success = false;
+	$error   = 'That password/username combination was incorrect.';
+/*	*** This conditional should be used instead of what is below when we get rid of all duped unames ***
+	if (($data =authenticate($dirty_user, $p_pass)) && (bool)$data['authenticated']) {
+*/
+
+	// Just checks whether the username and password are correct.
+	$data = authenticate($dirty_user, $p_pass);
+
 	if ($data) {
 		if (is_array($data)) {
 			if ((bool)$data['authenticated']) {
@@ -72,9 +82,11 @@ function login_user($p_user, $p_pass) {
 				// Block by ip list here, if necessary.
 				// *** Set return values ***
 				$success = true;
-				$error = '';
+				$error = null;
 			}
 		} else {	// *** Getting a resultset implies uname duplication, commence de-dupe procedure after authentication ***
+		
+			// TODO: This duping code needs removal as soon as we can.
 			$player_ids = array();
 
 			while ($row = $data->fetch()) {
@@ -87,7 +99,7 @@ function login_user($p_user, $p_pass) {
 					if ((bool)query_item('SELECT CASE WHEN locked THEN 1 ELSE 0 END FROM duped_unames WHERE player_id = :player_id', array(':player_id'=>$row['player_id']))) {
 						_login_user($row['uname'], $row['player_id'], $row['account_id']);
 						$success = true;
-						$error = '';
+						$error = null;
 						break;
 					}
 				}
@@ -99,6 +111,8 @@ function login_user($p_user, $p_pass) {
 				header('Location: deduplicate.php');
 				exit();
 			}
+			
+			// The LOGIN FAILURE case occurs here.
 			// *** If the player did not manage to authenticate against any of the dupes, handle as though login failed ***
 		}
 	}
@@ -110,6 +124,27 @@ function login_user($p_user, $p_pass) {
 function update_last_logged_in($char_id) {
 	$up = "UPDATE accounts SET last_login = now() WHERE account_id IN (SELECT _account_id FROM account_players WHERE _player_id = :char_id)";
 	return query($up, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
+}
+
+// Sets the last failed login date to now()
+function update_last_login_failure($account_id) {
+	$up = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";
+	return query($up, array(':account_id'=>array($account_id, PDO::PARAM_INT)));
+}
+
+// Makes sure that the last login failure was't under a second ago.
+function last_login_failure_was_recent($account_id){
+	$query_res = query_item("select CASE WHEN (now() - last_login_failure)< interval '1 second' THEN 1 ELSE 0 END from accounts where account_id = :account_id", array(':account_id'=>array($account_id, PDO::PARAM_INT)));
+	if($query_res == 1){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+// Pull the account_id for any possible username part of the login.
+function potential_account_id_from_login_username($login){
+	return query_item('select account_id from accounts join account_players on account_id = _account_id join players on _player_id = player_id where lower(active_email) = lower(:login1) or lower(uname) = lower(:login2)', array(':login1'=>$login, ':login2'=>$login));
 }
 
 // Simple method to check for player id if you're logged in.
@@ -145,8 +180,8 @@ function is_logged_in() {
  * @return boolean
  **/
 function is_authentic($p_user, $p_pass) {
-	// Note that authenticate is happily side-effect-less.
-	$data = authenticate($p_user, $p_pass);
+	// Note that authenticate is dangerously side-effect-less.
+	$data = authenticate($p_user, $p_pass, false);
 
 	return (isset($data['authenticated']) && (bool)$data['authenticated']);
 }
