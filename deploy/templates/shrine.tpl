@@ -1,8 +1,11 @@
 <h1>Shrine</h1>
 
 <div class="description">
-  <div style="margin-bottom: 10px;">
+  <div style="margin-bottom: 1.5em;">
     The shrine to the gods is peacefully quiet as you enter. The sound of flowing water soothes your mind.
+  </div>
+  <div id='shrine-music' style='width:200px;height:25px;margin-bottom:1.5em;'>
+	{include file='music.tpl'}
   </div>
   <div>A monk approaches you quietly and asks, "Are you in need of healing?"</div>
 </div>
