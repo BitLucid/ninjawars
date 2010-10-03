@@ -2,6 +2,27 @@
 
 <script type='text/javascript' src='{$templatelite.const.JS_ROOT}messageDeleteConfirm.js'></script>
 
+{if $message_to eq 'individual'}
+<script type='text/javascript'>
+{literal}
+	$().ready(function(){
+		$('input#message-to-ninja').focus();
+	});
+{/literal}
+</script>
+{/if}
+
+
+<!-- Message an individual ninja-->
+<div id='message-ninja' style='margin-bottom:1em'>
+	<form action='messages.php' method='post' name='ninja_message'>
+	<em class='char-name'>@</em><input type='text' size='26' name='to' value='{$to}' class='textField'> <span style='font-weight:bold'>::</span>
+	<input id='message-to-ninja' type='text' size='30' name='message' class='textField'>
+	<input type='hidden' name='messenger' value='1>
+	<input type='submit' value='Send' name='ninja_message' class='formButton'>
+	</form>
+</div>
+
 <div id='clan-and-search'>
 
 {if $has_clan}
@@ -17,6 +38,7 @@
   </div>
 {/if}
 
+  <!-- 
   <div id='ninja-search'>
     Find a ninja to message:
     <form id='player_search' action='list_all_players.php' method='get' name='player_search'>
@@ -26,14 +48,16 @@
       </div>
     </form>
   </div>
+  
+  -->
 
   <div id='delete-messages'>
     <a href="messages.php?delete=1">Delete Messages</a>
   </div>
-</div>
+</div> <!-- End of clan and search div -->
 
 {if $message_sent_to}
-<div id='message-sent-to'>Message sent to {$message_sent_to|escape}.</div>
+<div id='message-sent-to' class='ninja-notice'>Message sent to <em class='char-name'>{$message_sent_to|escape}</em>.</div>
 {/if}
 
 {include file="messages.nav.tpl"}
