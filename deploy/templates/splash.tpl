@@ -52,9 +52,6 @@
           
           <div style='height:110px;position:absolute;bottom:0;'>
             
-            <div id='staff-chat'>
-            <iframe src="http://www.google.com/talk/service/badge/Show?tk=z01q6amlq2pc0od9ms6m36jk9p0lncem83qghsqacgi5e1akm10254oogtclbbh96d0c5870tgkb63h2b66ntkg7on0crqn451ui988hbpk53ikv71fhsa3d5f84j2shna8ijsf474r80ut32oql3dio4ov6brdi3cn49bpuvi2j40u91hrrrea806bsnlhnelc&amp;w=200&amp;h=60" frameborder="0" allowtransparency="true" width="200" height="60"></iframe>
-            </div>
           <div id='contact-us'>
 	        <a href='staff.php' target='main'><img src='images/contactstaff.png' alt='Contact Staff'></a>
 	      </div>
