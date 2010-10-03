@@ -11,7 +11,7 @@
 
 var NW = {};
 
-var $ = jQuery;
+var $ = jQuery; // In an iframe, this will cause different instances of jQuery inside and out.
 
 var g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body');
 

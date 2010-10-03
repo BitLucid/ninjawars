@@ -129,11 +129,10 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
      </div>
 
 {if is_logged_in() and !$self}
-    <div class='set-bounty centered'>
-        <a class='set-bounty-link' href='doshin_office.php?target={$player_info.uname|escape:'url'}'>Add bounty</a>
-    </div>
 
      <div class='player-communications centered'>
+
+	<div>
        <form id='send_mail' action='player.php' method='get' name='send_mail'>
          <div>
            <input type='hidden' name='target_id' value='{$player_info.player_id|escape}'>
@@ -142,7 +141,16 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
            <input type='submit' value='Send Message' class='formButton'>
          </div>
        </form>
+	</div>
+	
+	<span id='message-ninja'><a href='messages.php?target_id={$player_info.player_id|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em></a></span>
+       
      </div>
+     
+    <div class='set-bounty centered'>
+        <a class='set-bounty-link' href='doshin_office.php?target={$player_info.uname|escape:'url'}'>Add bounty</a>
+    </div>
+     
 {/if}
 
     <!-- Clan leader options on players in their clan. -->
