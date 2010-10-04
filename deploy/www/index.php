@@ -11,7 +11,7 @@ $is_logged_in    = is_logged_in();
 
 // Logout/already logged in/login behaviors
 if ($logout) { // on logout, kill the session and don't redirect. 
-	logout(); 
+	logout_user(); 
 	$just_logged_out = true;
 } elseif ($is_logged_in) {     // When user is already logged in.
 	$logged_in['success'] = $is_logged_in; 
