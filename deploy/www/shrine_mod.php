@@ -28,6 +28,7 @@ $freeResLevelLimit  = 6;
 $freeResKillLimit   = 25;
 $lostTurns          = 10; // *** Default turns lost when the player has no kills.
 $has_chi            = $skillsListObj->hasSkill('Chi'); // Extra healing benefits from chi, by level.
+$has_hidden_res     = $skillsListObj->hasSkill('hidden resurrect');
 $error              = null;
 $max_health         = determine_max_health($level);
 $fully_healed       = false;
@@ -79,8 +80,10 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 			$player->death();
 
 			if ($kill_taking_resurrect) {
-				// *** FREE STEALTHING FOR BLACK CLASS UPON NON-FREE RESURRECTION
-				if ($player->vo->class == "Black" && (!$freeResurrection)) {
+				// *** FREE STEALTHING FOR ANYONE WITH HIDDEN RESURRECT SKILL UPON NON-FREE RESURRECTION
+				$skillsListObj = new Skill();
+
+				if (!$freeResurrection && $has_hidden_res) {
 					$player->addStatus(STEALTH);
 				}
 
@@ -119,7 +122,7 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 
     				subtractGold($player->vo->uname,$heal_points);
     				// Having chi increases the amount healed in all cases.
-    				$player->vo->health = $finalHealth = addHealth($player->vo->uname, ($has_chi? round($heal_points*1.5) : $heal_points));
+    				$player->vo->health = $finalHealth = addHealth($player->vo->uname, ($has_chi ? round($heal_points*1.5) : $heal_points));
     				
     				$fully_healed = ($finalHealth >= $max_health); // Let the user know whether they're fully healed.
     				
