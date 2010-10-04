@@ -64,8 +64,6 @@ function login_user($p_user, $p_pass) {
 		update_last_logged_in($p_player_id);
 	}
 
-
-
 	$data = authenticate($p_user, $p_pass);
 	if ($data) {
 		if (is_array($data)) {
@@ -150,7 +148,7 @@ function is_authentic($p_user, $p_pass) {
 	// Note that authenticate is happily side-effect-less.
 	$data = authenticate($p_user, $p_pass);
 
-	return (is_array($data['authenticated']) && (bool)$data['authenticated']);
+	return (isset($data['authenticated']) && (bool)$data['authenticated']);
 }
 
 /**
@@ -168,13 +166,7 @@ function logout_user($echo=false, $redirect='index.php') {
 	}
 }
 
-// Wrapper for the logout_user function above.
-function logout($echo=false, $redirect='index.php') {
-	return logout_user($echo, $redirect);
-}
-
 // Signup validation functions.
-
 
 // Check that the password format fits.
 function validate_password($password_to_hash) {
@@ -182,6 +174,7 @@ function validate_password($password_to_hash) {
 	if (strlen($password_to_hash) < 7 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
 		$error = "Phase 2 Incomplete: Passwords must be at least 7 characters long.<hr>\n";
 	}
+
 	return $error;
 }
 

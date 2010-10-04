@@ -12,8 +12,6 @@ function validate_account($ninja_id, $email, $password_to_hash) {
 			&& validate_password($password_to_hash) && validate_email($email));
 }
 
-
-
 function validate_email($email) {
 	$error = null;
 
@@ -31,8 +29,6 @@ function validate_email($email) {
 
 	return $error;
 }
-
-
 
 function email_is_duplicate($email) {
 	$acc_check = "SELECT account_identity FROM accounts
@@ -100,14 +96,12 @@ function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1
 	}
 }
 
-
 function account_of_email($email) {
 	$sel = 'select account_id from accounts where active_email = :email';
 	$existing_account = query_item($sel, array(':email'=>$email));
 
 	return !!$existing_account;
 }
-
 
 // Gives the blacklisted emails, should eventually be from a table.
 function get_blacklisted_emails() {
@@ -174,16 +168,15 @@ function create_ninja($send_name, $params=array()) {
 	return get_char_id($send_name);
 }
 
-
 function send_signup_email($signup_email, $signup_name, $confirm, $class_identity) {
 	/*$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 	$headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n";
 	$headers .= "Reply-To: ".SUPPORT_EMAIL_FORMAL_NAME." <".SUPPORT_EMAIL.">\r\n";*/
 	//  ***  Sends out the confirmation email to the chosen email address.  ***
-	
+
 	$class_display = class_display_name_from_identity($class_identity);
-	
+
 	$_to = array("$signup_email"=>$signup_name);
 	$_subject = "NinjaWars Account Sign Up";
 	$_body = render_template('signup_email_body.tpl', array(
@@ -193,7 +186,7 @@ function send_signup_email($signup_email, $signup_name, $confirm, $class_identit
 			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
 		)
 	);
-    $_from = array(SYSTEM_MESSENGER_EMAIL=>SYSTEM_MESSENGER_NAME);
+	$_from = array(SYSTEM_MESSENGER_EMAIL=>SYSTEM_MESSENGER_NAME);
 	// *** Create message object.
 	$message = new Nmail($_to, $_subject, $_body, $_from);
 	// Set replyto address.
@@ -225,7 +218,6 @@ function create_account_and_ninja($send_name, $params=array()) {
 	return $error;
 }
 
-
 function confirm_player($player_name, $confirmation=0, $autoconfirm=false) {
 	DatabaseConnection::getInstance();
 	// Preconfirmed or the email didn't send, so automatically confirm the player.
@@ -242,8 +234,6 @@ function confirm_player($player_name, $confirmation=0, $autoconfirm=false) {
 
 	return ($autoconfirm ? true : $update_result);
 }
-
-
 
 // Check for reserved or already in use by another player.
 function ninja_name_available($ninja_name) {
@@ -271,7 +261,7 @@ function validate_signup($enteredName, $enteredEmail, $class_identity, $enteredR
 	$send_pass   = $enteredPass;
 	$send_class  = $class_identity;
 	$class_display = class_display_name_from_identity($class_identity);
-	
+
 	$send_email  = trim($enteredEmail);
 	$referred_by = $enteredReferral;
 
@@ -394,5 +384,18 @@ function validate_signup($enteredName, $enteredEmail, $class_identity, $enteredR
 	echo $error;
 
 	return $successful;
+}
+
+function pauseAccount($p_playerID) {
+	$accountActiveQuery = 'UPDATE accounts SET active = false WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)';
+	$playerConfirmedQuery = 'UPDATE players SET confirmed = 0 WHERE player_id = :pid';
+
+    $statement = DatabaseConnection::$pdo->prepare($playerConfirmedQuery);
+    $statement->bindValue(':pid', $p_playerID);
+    $statement->execute();
+
+    $statement = DatabaseConnection::$pdo->prepare($accountActiveQuery);
+    $statement->bindValue(':pid', $p_playerID);
+    $statement->execute();
 }
 ?>

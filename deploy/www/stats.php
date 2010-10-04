@@ -12,8 +12,7 @@ if ($error = init($private, $alive)) {
 
 // *** To verify that the delete request was made.
 $in_delete_account = in('deleteaccount');
-$deleteAccount     = ($in_delete_account == 1 ? 1 :
-    ($in_delete_account == 2 ? 2 : null)); // Stage of delete process.
+$deleteAccount     = (in_array($in_delete_account, array(1,2)) ? $in_delete_account : null); // Stage of delete process.
 
 $in_changePass = in('changepass');
 $changePass    = ($in_changePass && $in_changePass == 1 ? 1 : null);
@@ -32,7 +31,7 @@ $player = get_player_info();
 $class_theme = class_theme($char_obj->class_identity());
 $confirm_delete = false;
 $profile_changed = false;
-$profile_max_length = 500; // Should match the limit in limitStatChars.js
+$profile_max_length = 500; // Should match the limit in limitStatChars.js - ajv: No, limitStatChars.js should be dynamically generated with this number from a common location -
 
 $delete_attempts = (SESSION::is_set('delete_attempts') ? SESSION::get('delete_attempts') : null);
 
@@ -41,8 +40,9 @@ if ($deleteAccount) {
 	$verify = is_authentic($username, $passW);
 
 	if ($verify && !$delete_attempts) {
-	    // *** Username&password matched, on the first attempt.
-		pauseAccount($username); // This may redirect and stuff?
+	    // *** Username & password matched, on the first attempt.
+		pauseAccount($user_id); // This may redirect and stuff?
+		logout_user();
 	} else {
 	    if ($deleteAccount == 2) {
 	        SESSION::set('delete_attempts', 1);
@@ -91,5 +91,4 @@ display_page(
 		'quickstat' => 'player'
 	)
 );
-
 ?>
