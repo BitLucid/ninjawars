@@ -1,4 +1,13 @@
     <!-- Version {$version} -->
+{literal}
+      <script type="text/javascript">
+	if (parent.frames.length != 0) {
+{/literal}
+		location.href = "{$main_src}";
+{literal}
+	}
+      </script>
+{/literal}
 
     <div id='content' class='wrapper'>
 {if $login_error}
