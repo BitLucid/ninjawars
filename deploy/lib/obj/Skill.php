@@ -5,7 +5,7 @@ require_once(LIB_ROOT."specific/lib_player.php");
 class Skill
 {
 	// *** Constructor should eventually get a specific skill's stats from the database.
-	
+
 	/**
 	 * This should eventually get ids from the database,
 	 * for now, consider the ids as the array indexes.
@@ -18,20 +18,20 @@ class Skill
 		'duel', 'attack', 'kampo', 'evasion'
 	); // Midnight heal currently doesn't work.
 
-	// Use the class identities as the array keys here, so $skill_map['crane'] 
+	// Use the class identities as the array keys here, so $skill_map['crane']
 	// ... should return an array of crane-specific skills.
 	public $skill_map = array(
-		'crane'    => array(
+		'crane' => array(
 			'ice bolt' => array('available'=>1)
 			, 'speed'  => array('available'=>1)
 		)
 		, 'dragon' => array(
-			'chi'             => array('available'=>1)
+			'chi'    => array('available'=>1)
 			, 'heal' => array('available'=>1)
 		)
-		, 'tiger'   => array(
+		, 'tiger' => array(
 			'fire bolt' => array('available'=>1)
-			, 'blaze' => array('available'=>1)
+			, 'blaze'   => array('available'=>1)
 		)
 		, 'viper' => array(
 			'poison touch'       => array('available'=>1)
@@ -41,15 +41,15 @@ class Skill
 			'kampo'       => array('available'=>1)
 			, 'evasion'   => array('available'=>1)
 		)
-		, 'all'   => array(
-			'attack'       => array('available'=>1)
-			, 'duel'       => array('available'=>1)
-			, 'sight'      => array('available'=>1)
-			, 'deflect'    => array('available'=>1, 'level'=>2)
-			, 'stealth'    => array('available'=>1)
-			, 'unstealth'  => array('available'=>1)
-			, 'steal'      => array('available'=>1, 'level'=>2)
-			, 'cold steal' => array('available'=>1, 'level'=>6)
+		, 'all' => array(
+			'attack'          => array('available'=>1)
+			, 'duel'          => array('available'=>1)
+			, 'sight'         => array('available'=>1)
+			, 'deflect'       => array('available'=>1, 'level'=>2)
+			, 'stealth'       => array('available'=>1)
+			, 'unstealth'     => array('available'=>1)
+			, 'steal'         => array('available'=>1, 'level'=>2)
+			, 'cold steal'    => array('available'=>1, 'level'=>6)
 			, 'midnight heal' => array('available'=>1, 'level'=>20)
 		)
 	);
@@ -59,25 +59,27 @@ class Skill
 	**/
 	public function getSkillList() {
 		return $this->skills;
-    }
+	}
 
 	/**
 	 * Returns the list fo all skills available to a ninja.
 	**/
 	public function skills($char_id=null) {
-	    if(!$char_id){ $char_id = get_char_id(); }
+	    if (!$char_id) {
+			$char_id = get_char_id();
+		}
+
 	    $char = new Player($char_id);
 		$char_name = $char->name();
 
-		if ($char->isAdmin()) {
-		    // Admins get access to all skills.
-		
+		if ($char->isAdmin()) { // Admins get access to all skills.
 			$skills = $this->skill_map['crane'] +
 				$this->skill_map['dragon'] +
 				$this->skill_map['mantis'] +
 				$this->skill_map['tiger'] +
 				$this->skill_map['viper'] +
 				$this->skill_map['all'];
+
 			return $skills;
 		}
 
@@ -97,13 +99,16 @@ class Skill
 	public function hasSkill($skill, $username=null) {
 		$skill = strtolower($skill);
 
-		if(!$username) { $username = get_username(); }
+		if (!$username) {
+			$username = get_username();
+		}
+
 		$char_id = get_char_id($username);
 		$player_info = get_player_info($char_id);
 		$player_level = $player_info['level'];
 
 		$skills = $this->skills($char_id);
-		$level_req = @$skills[$skill]['level']? $skills[$skill]['level'] : 1;
+		$level_req = (isset($skills[$skill]['level']) ? $skills[$skill]['level'] : 1);
 
 		return (isset($skills[$skill]['available']) && ($player_level >= $level_req));
 	}
@@ -113,15 +118,17 @@ class Skill
 	**/
 	public function hasSkills($username=null) {
 		$skills_avail = array();
+
 		foreach ($this->getSkillList() as $loop_skill) {
 			if ($this->hasSkill($loop_skill, $username)) {
 				$skills_avail[$loop_skill] = $loop_skill;
 			}
 		}
+
 		return $skills_avail;
 	}
 
-    // Get the turn costs of the skills, which default to 1.
+	// Get the turn costs of the skills, which default to 1.
 	public function getTurnCost($type) {
 	    $type = strtolower($type);
 		$skillsTypeToTurns = array(
@@ -141,14 +148,17 @@ class Skill
 			, 'evasion'      => 2
 			, 'heal'         => 3
 		);
+
 		$res = 1; // default
+
 		if (isset($skillsTypeToTurns[$type])) {
 			$res = $skillsTypeToTurns[$type];
 		}
+
 		return $res; // *** Throws back the turns cost.
 	}
 
-    // Check whether the item is usable on yourself.
+	// Check whether the item is usable on yourself.
 	public function getSelfUse($type) {
 	    $type = strtolower($type);
 		$skillsTypeToSelf = array(
