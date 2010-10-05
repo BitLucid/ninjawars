@@ -35,9 +35,9 @@ function createClan($p_leaderID, $p_clanName) {
 function get_clan_by_player_id($p_playerID) {
 	DatabaseConnection::getInstance();
 	$id = (int) $p_playerID;
-	$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name 
-	    FROM clan 
-	    JOIN clan_player ON clan_id = _clan_id 
+	$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name
+	    FROM clan
+	    JOIN clan_player ON clan_id = _clan_id
 	    WHERE _player_id = :player");
 	$statement->bindValue(':player', $id);
 	$statement->execute();
@@ -212,11 +212,7 @@ function clan_char_is_leader_of($char_id, $clan_id=null) {
 
 	$id = query_item($sel, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
 
-	if ($id) {
-		return get_clan($id);
-	} else {
-		return null;
-	}
+	return ($id ? get_clan($id) : null);
 }
 
 // Return just the clan leader id for a clan.
