@@ -620,7 +620,7 @@ if (parent.window != window) {
 	NW.chatRefreshClicked = function(button) {
 		button.onclick = null;
 		$(button).css({'cursor':'default'});
-		//button.style.cursor = 'default';
+		//button.style.cursor = 'default'; // This fails in chrome.
 		button.src = 'images/refresh_disabled.gif';
 		setTimeout(function() {
 			button.onclick = function() { NW.chatRefreshClicked(this);};
@@ -716,7 +716,9 @@ $(document).ready(function() {
 		NW.clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
 
 		// Display the chat refresh image and toggle it if it is clicked.
-		$('#chat-refresh-image').toggle().click(NW.chatRefreshClicked(this));
+		var chat_refresh_button = document.getElementById('chat-refresh-image');
+		$(chat_refresh_button).toggle();
+		chat_refresh_button.onclick = function() { NW.chatRefreshClicked(this); };
 	} else if (g_isSubpage) {
 		$('body').addClass('solo-page'); // Add class to solo-page bodies.
 		// Displays the link back to main page for any lone subpages not in iframes.
