@@ -1,7 +1,7 @@
 <?php
 // Eventually this page will simply be rerouted through apache to the static page system.
 
-init(false, false);
+init($private=false, $alive=false);
 
 $show_faqs = in('show_faqs');
 
