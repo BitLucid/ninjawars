@@ -13,7 +13,7 @@ Villager does {$attack} points of damage.<br>
 You have gained {$gold} gold.<br>
 	{if $level gt 20}
 You slay the villager easily, leaving no trace behind!<br>
-	{else if $bounty}
+	{elseif $bounty}
 You have unjustly slain a commoner! A bounty of {$bounty} gold has been placed on your head!<br>
 	{/if}
 	{if !$just_villager}
