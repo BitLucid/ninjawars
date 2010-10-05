@@ -24,7 +24,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
       </a>
     </div>
 
-	<div class='player-titles centered'>
+  <div class='player-titles centered'>
 
 	{include file="gravatar.tpl" gurl=$gravatar_url}
 
@@ -36,121 +36,120 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
     <span class='player-level-category {$level_category.css|escape}'>
       {$level_category.display|escape} [{$player_info.level|escape}]
     </span>
-	
+
     {include file="status_section.tpl" statuses=$status_list}
 
 
 	{if $char_info.health}
     <span style='width:10em;display:inline-block;'>
-            {include file="health_bar.tpl" health=$player_info.health health_percent=$player_info.health_percent}
+      {include file="health_bar.tpl" health=$player_info.health health_percent=$player_info.health_percent}
     </span>
-    {/if}
+	{/if}
 
-	</div>
-	
+  </div>
+
 {if !$self}
-    <table id='player-profile-table'>
+  <table id='player-profile-table'>
 	{if $attack_error}
-	  <tr>
-        <td><div class='ninja-error centered'>Cannot Attack: {$attack_error}</div></td>
-      </tr>
-    </table>
+    <tr>
+      <td><div class='ninja-error centered'>Cannot Attack: {$attack_error}</div></td>
+    </tr>
+  </table>
 	{else}
-	  <tr>
-        <td colspan='2'>
-          <table id='player-profile-attack'>
-            <tr>
-              <td id='attacking-choices'>
-                <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
-                  <span id='duel'>
-                    <label>Duel ({getTurnCost skillName="duel"}) <input id="duel" type="checkbox" name="duel"></label>
-                  </span>
+    <tr>
+      <td colspan='2'>
+        <table id='player-profile-attack'>
+          <tr>
+            <td id='attacking-choices'>
+              <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
+                <span id='duel'>
+                  <label>Duel ({getTurnCost skillName="duel"}) <input id="duel" type="checkbox" name="duel"></label>
+                </span>
 
 		{foreach from=$combat_skills item="skill"}
-                  <span id='{$skill.skill_internal_name|escape}'>
-                    <label>
-                      {$skill.skill_display_name|escape}
-                     ({getTurnCost skillName=$skill.skill_display_name})
-                      <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}">
-                    </label>
-                  </span>
+                <span id='{$skill.skill_internal_name|escape}'>
+                  <label>
+                    {$skill.skill_display_name|escape}
+                    ({getTurnCost skillName=$skill.skill_display_name})
+                    <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}">
+                  </label>
+                </span>
 		{/foreach}
 
-                  <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
-                  <label class='attack-player-trigger'>
-                    <a onclick="document.attack_player.submit();"><input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack</a>
-                  </label>
-                </form>
-              </td>
+                <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
+                <label class='attack-player-trigger'>
+                  <a onclick="document.attack_player.submit();"><input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack</a>
+                </label>
+              </form>
+            </td>
 
-              <!-- Inventory Items -->
-              <td id='inventory-items'>
-
-                {$item_use_section}
-
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-    <div id='skills-section'>
+            <!-- Inventory Items -->
+            <td id='inventory-items'>
+              {$item_use_section}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <div id='skills-section'>
 		{if count($targeted_skills) gt 0}
-      <form id="skill_use" class="skill_use" action="skills_mod.php" method="post" name="skill_use">
-        <ul id='skills-use-list'>
+    <form id="skill_use" class="skill_use" action="skills_mod.php" method="post" name="skill_use">
+      <ul id='skills-use-list'>
 			{foreach from=$targeted_skills item="skill"}
-          <li>
-            <input id="command" class="command" type="submit" value="{$skill.skill_display_name}" name="command" class="formButton">
-            <input id="target" class="target" type="hidden" value="{$target|escape}" name="target">
-            ({getTurnCost skillName=$skill.skill_display_name} Turns)
-          </li>
+        <li>
+          <input id="command" class="command" type="submit" value="{$skill.skill_display_name}" name="command" class="formButton">
+          <input id="target" class="target" type="hidden" value="{$target|escape}" name="target">
+          ({getTurnCost skillName=$skill.skill_display_name} Turns)
+        </li>
 			{/foreach}
-        </ul>
-      </form>
+      </ul>
+    </form>
 		{/if}
-    </div>
+  </div>
 	{/if} <!-- End of the attacking-had-no-errors section -->
 
 {/if} <!-- End of the "not self" viewing section -->
 
-     <div class='player-stats centered'>
-       <!-- Will display as floats horizontally -->
-       <span class='player-last-active'>
-         Last logged in
+  <div class='player-stats centered'>
+  <!-- Will display as floats horizontally -->
+    <span class='player-last-active'>
+      Last logged in
 {if $player_info.days gt 0}
-         {$player_info.days} days ago
+      {$player_info.days} days ago
 {else}
-         Today
+      Today
 {/if}
-       </span>
+    </span>
 {if $player_info.bounty gt 0}
-       <span class='player-bounty'><a class='bounty-link' href='doshin_office.php' target='main'>{$player_info.bounty} bounty</a></span>
+    <span class='player-bounty'><a class='bounty-link' href='doshin_office.php' target='main'>{$player_info.bounty} bounty</a></span>
 {/if}
-     </div>
+  </div>
 
 {if is_logged_in() and !$self}
 
-     <div class='player-communications centered'>
-
+  <div class='player-communications centered'>
 	<div>
-       <form id='send_mail' action='player.php' method='get' name='send_mail'>
-         <div>
-           <input type='hidden' name='target_id' value='{$player_info.player_id|escape}'>
-           <div><input id='messenger' type='hidden' value='1' name='messenger'></div>
-           <input type='text' name='message' size='30'>
-           <input type='submit' value='Send Message' class='formButton'>
-         </div>
-       </form>
+      <form id='send_mail' action='player.php' method='get' name='send_mail'>
+        <div>
+          <input type='hidden' name='target_id' value='{$player_info.player_id|escape}'>
+          <div><input id='messenger' type='hidden' value='1' name='messenger'></div>
+          <input type='text' name='message' size='30' maxlength="{$templatelite.const.MAX_MSG_LENGTH|escape}">
+          <input type='submit' value='Send Message' class='formButton'>
+        </div>
+      </form>
 	</div>
-	
-	<span id='message-ninja'><a href='messages.php?target_id={$player_info.player_id|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em></a></span>
-       
-     </div>
-     
-    <div class='set-bounty centered'>
-        <a class='set-bounty-link' href='doshin_office.php?target={$player_info.uname|escape:'url'}'>Add bounty</a>
-    </div>
-     
+
+	<span id='message-ninja'>
+      <a href='messages.php?target_id={$player_info.player_id|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em></a>
+    </span>
+
+  </div>
+
+  <div class='set-bounty centered'>
+    <a class='set-bounty-link' href='doshin_office.php?target={$player_info.uname|escape:'url'}'>Add bounty</a>
+  </div>
+
 {/if}
 
     <!-- Clan leader options on players in their clan. -->
@@ -200,7 +199,7 @@ Clan members are no longer shown on a player's profile, 'cause it just made it t
 {/if}
 
       </div>
-      
+
 *}
     </div>
 {/if}
@@ -214,4 +213,4 @@ Clan members are no longer shown on a player's profile, 'cause it just made it t
     </div>
 {/if}
 
-	</div><!-- End player-info -->
+  </div><!-- End player-info -->
