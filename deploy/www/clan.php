@@ -16,7 +16,7 @@ $command                  = in('command');
 $process                  = in('process');
 $clan_name_viewed         = in('clan_name', ''); // View that clan name.
 $clan_id_viewed           = in('clan_id', null); // View that clan
-$new_clan_name            = in('new_clan_name', '');
+$new_clan_name            = trim(in('new_clan_name', ''));
 $sure                     = in('sure', '');
 $kicked                   = in('kicked', '');
 $person_invited           = in('person_invited', '');
@@ -144,11 +144,15 @@ if (!$player_id) {
 			if ($command == 'rename') {
 				//Clan Leader Action Rename
 				if (is_valid_clan_name($new_clan_name)) {
-					// *** Rename the clan if it is valid.
-					$clan_renamed = true;
-					$new_clan_name = rename_clan($own_clan_obj->getID(), $new_clan_name);
+					if (is_unique_clan_name($new_clan_name)) {
+						// *** Rename the clan if it is valid.
+						$clan_renamed = true;
+						$new_clan_name = rename_clan($own_clan_obj->getID(), $new_clan_name);
 
-					$own_clan_obj->setName($new_clan_name); // Store the renamed value for the rest of this document.
+						$own_clan_obj->setName($new_clan_name); // Store the renamed value for the rest of this document.
+					} else {
+						$action_message = 'That clan name is already in use!';
+					}
 				} else {
 
 				}
