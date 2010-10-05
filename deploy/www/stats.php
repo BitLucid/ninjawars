@@ -33,10 +33,49 @@ if ($changeprofile == 1) {
 	} else {
 		$error = 'Cannot enter a blank profile.';
 	}
+} else if ($change_email) {
+	if ($change_email == 2) {
+		$verify = is_authentic($username, $passW);
+
+		if ($verify) {
+			if ($in_newEmail === $in_confirmEmail) {
+				if (!email_is_duplicate($in_newEmail)) {
+					if (email_fits_pattern($in_newEmail)) {
+						changeEmail($user_id, $in_newEmail);
+						$change_email = 0;
+						$successMessage = 'Your email has been updated.';
+					} else {
+						$error = 'Your email must be a valid email address containing a domain name and no spaces.';
+					}
+				} else {
+					$error = 'The email you provided is already in use.';
+				}
+			} else {
+				$error = 'Your new emails did not match.';
+			}
+		} else {
+			$error = 'You did not provide the correct current password.';
+		}
+	}
+} else if ($change_pass) {
+	if ($change_pass == 2) {
+		$verify = is_authentic($username, $passW);
+
+		if ($verify) {
+			if ($in_newPass === $in_confirmPass) {
+				changePassword($user_id, $in_newPass);
+				$change_pass = 0;
+				$successMessage = 'Your password has been updated.';
+			} else {
+				$error = 'Your new passwords did not match.';
+			}
+		} else {
+			$error = 'You did not provide the correct current password.';
+		}
+	}
 }
 
 // Password and email changing systems exist in account.php (& account.tpl).
-
 
 $char_obj         = new Player($user_id);
 $player           = get_player_info();

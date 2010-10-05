@@ -99,29 +99,35 @@
 	<a href='account.php'>View your account info</a>
 </div>
 <div class='two-column'>
-    <div class='primary'>
-        {include file="status_section.tpl" statuses=$status_list}
-        <ul id='player-info' class='player-info'>
-            <li>Health: <span style='width:85%;display:inline-block'>
-                {include file="health_bar.tpl" health=$player.health health_percent=$player.hp_percent}
-                </span>
-            </li>
-            <li>Level: <span class='player-level-category {$level_category.css|escape}'> {$level_category.display|escape} [{$player.level|escape}] </span></li>
-            <li>Class: <span class='class-name {$class_theme}'>{$player.class}</span></li>
-            <li>Strength: {$player.strength}</li>
-            <li class='gold-count'>Gold: {$player.gold}</li>
-            <li>Kills: {$player.kills}</li>
-            <li>Turns: {$player.turns}</li>
-            <li>Email: {$player.email|escape}</li>
-            <li>Created: {$player.created_date|escape}</li>
-            <li>Rank: {$rank_display}</li>
-            <li>Bounty: {$player.bounty} gold</li>
+  <div class='primary'>
+    {include file="status_section.tpl" statuses=$status_list}
+    <ul id='player-info' class='player-info'>
+      <li>
+        Health:
+        <span style='width:85%;display:inline-block'>
+          {include file="health_bar.tpl" health=$player.health health_percent=$player.hp_percent}
+        </span>
+      </li>
+      <li>
+        Level:
+        <span class='player-level-category {$level_category.css|escape}'>
+          {$level_category.display|escape} [{$player.level|escape}]
+        </span>
+      </li>
+      <li>Class: <span class='class-name {$class_theme}'>{$player.class}</span></li>
+      <li>Strength: {$player.strength}</li>
+      <li class='gold-count'>Gold: {$player.gold}</li>
+      <li>Kills: {$player.kills}</li>
+      <li>Turns: {$player.turns}</li>
+      <li>Email: {$player.email|escape}</li>
+      <li>Created: {$player.created_date|escape}</li>
+      <li>Rank: {$rank_display}</li>
+      <li>Bounty: {$player.bounty} gold</li>
         {if $player_clan}
-            <li>Clan: 
-                <a href='clan.php?command=view&amp;clan_id={$clan_id|escape:'url'}'>
-                {$clan_name|escape}
-                </a>
-            </li>
+      <li>
+        Clan:
+        <a href='clan.php?command=view&amp;clan_id={$clan_id|escape:'url'}'>{$clan_name|escape}</a>
+      </li>
         {/if}
         </ul>
 
