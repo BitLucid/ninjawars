@@ -20,12 +20,14 @@ $out_display = array();
 
 // ******************* END OF CONSTANTS ***********************
 
-DatabaseConnection::$pdo->query("UPDATE time SET amount = amount+1 WHERE time_label='hours'"); // Update the hours ticker.
-DatabaseConnection::$pdo->query("UPDATE time SET amount = 0 WHERE time_label='hours' AND amount>=24"); // Rollover the time to hour zero.
+DatabaseConnection::$pdo->query("UPDATE time SET amount = amount+1 WHERE time_label = 'hours'"); // Update the hours ticker.
+DatabaseConnection::$pdo->query("UPDATE time SET amount = 0 WHERE time_label = 'hours' AND amount >= 24"); // Rollover the time to hour zero.
 DatabaseConnection::$pdo->query("UPDATE players SET turns = 0 WHERE turns < 0");
 DatabaseConnection::$pdo->query("UPDATE players SET bounty = 0 WHERE bounty < 0");
-DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 WHERE _class_id = 2 and turns < ".$turn_regen_threshold);         // Blue/Crane turn code
-DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+2 where turns < ".$turn_regen_threshold);   // add 2 turns on the hour, up to 100.
+DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 FROM class_skill WHERE _skill_id = 3 AND class_skill._class_id = players._class_id AND turns < ".$turn_regen_threshold);	// *** Speed skill turn gain code, replaces Blue/Crane turn gain code ***
+
+//DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 WHERE _class_id = 2 AND turns < ".$turn_regen_threshold); // Blue/Crane turn code
+DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+2 WHERE turns < ".$turn_regen_threshold); // add 2 turns on the hour, up to 100.
 
 // Database connection information here
 $inactivity = DatabaseConnection::$pdo->query("DELETE FROM ppl_online WHERE activity < (now() - interval '".$maxtime."')");
@@ -33,9 +35,9 @@ $inactivity = DatabaseConnection::$pdo->query("DELETE FROM ppl_online WHERE acti
 
 // *** HEAL ***
 DatabaseConnection::$pdo->query(
-	"UPDATE players SET health=numeric_smaller(health+8, $maximum_heal) ".
+	"UPDATE players SET health = numeric_smaller(health+8, $maximum_heal) ".
 	     "WHERE health BETWEEN 1 AND $maximum_heal AND NOT ".
-		 "cast(status&".POISON." AS boolean)"
+		 "CAST(status&".POISON." AS boolean)"
 );
 
 // ****************************** RESURRECTION CHECK, DEPENDENT UPON RESURRECTION_TIME ****************************
@@ -61,15 +63,15 @@ $resurrected = revive_players($params);
 
 // previously: CASE WHEN health-10 < 0 THEN health*(-1) ELSE 10 END
 assert(POISON != 'POISON');
-DatabaseConnection::$pdo->query("UPDATE players SET health = numeric_larger(0, health-$poisonHealthDecrease) WHERE health>0 AND CAST((status&".POISON.") AS bool)"); // *** poisoned takes away life ***
+DatabaseConnection::$pdo->query("UPDATE players SET health = numeric_larger(0, health-$poisonHealthDecrease) WHERE health > 0 AND CAST((status&".POISON.") AS bool)"); // *** poisoned takes away life ***
 
 DatabaseConnection::$pdo->query("UPDATE players SET health = 0 WHERE health < 0"); // *** zeros negative health totals.
 DatabaseConnection::$pdo->query("UPDATE players SET turns = ".$maximum_turns." WHERE turns > ".$maximum_turns); // max turn limiter gets run from the constants section.
 
 assert(FROZEN != 'FROZEN'); // These constants should be numeric.
 assert(STEALTH != 'STEALTH');
-DatabaseConnection::$pdo->query("UPDATE players SET status = status-".FROZEN." WHERE cast(status&".FROZEN." AS bool)"); // Cold Steal Crit Fail Unfreeze
-DatabaseConnection::$pdo->query("UPDATE players SET status = status-".STEALTH."  WHERE cast(status&".STEALTH." AS bool)"); //stealth lasts 1 hr
+DatabaseConnection::$pdo->query("UPDATE players SET status = status-".FROZEN." WHERE CAST(status&".FROZEN." AS bool)"); // Cold Steal Crit Fail Unfreeze
+DatabaseConnection::$pdo->query("UPDATE players SET status = status-".STEALTH."  WHERE CAST(status&".STEALTH." AS bool)"); //stealth lasts 1 hr
 
 // **************
 // Visual output:
