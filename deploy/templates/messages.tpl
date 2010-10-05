@@ -15,13 +15,15 @@
 
 <!-- Message an individual ninja-->
 <div id='message-ninja' style='margin-bottom:1em'>
-	<form action='messages.php' method='post' name='ninja_message'>
-	<em class='char-name'>@<input class='char-name textField' type='text' size='26' name='to' value='{$to}'></em>
-	<span style='font-weight:bold'>::</span>
-	<input id='message-to-ninja' type='text' size='30' name='message' class='textField'>
-	<input type='hidden' name='messenger' value='1>
-	<input type='submit' value='Send' name='ninja_message' class='formButton'>
-	</form>
+  <form action='messages.php' method='post' name='ninja_message'>
+    <div>
+      <em class='char-name'>@<input class='char-name textField' type='text' size='26' name='to' value='{$to}'></em>
+      <span style='font-weight:bold'>::</span>
+      <input id='message-to-ninja' type='text' size='30' name='message' class='textField' maxlength="{$templatelite.const.MAX_MSG_LENGTH|escape}">
+      <input type='hidden' name='messenger' value='1'>
+      <input type='submit' value='Send' name='ninja_message' class='formButton'>
+    </div>
+  </form>
 </div>
 
 <div id='clan-and-search'>
@@ -30,7 +32,7 @@
   <div id='clan-mail-section'>
     <form id='clan_msg' action='messages.php' method='get' name='clan_msg'>
       <div>
-        <textarea id='message' name='message' class='textField'></textarea>
+        <input type="text" id='message' name='message' class='textField' maxlength="{$templatelite.const.MAX_CLAN_MSG_LENGTH|escape}">
         <input type='hidden' value='toclan' name='toclan'>
         <input type='hidden' value='1' name='messenger'>
         <input type='submit' value='Mail Clan' class='formButton'>

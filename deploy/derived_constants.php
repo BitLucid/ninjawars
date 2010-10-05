@@ -29,5 +29,6 @@ define('TEMPLATE_PATH', SERVER_ROOT.'templates/'); // ** For templates.
 // COMPILED_TEMPLATE_PATH is kept in resources since it requires write permissions.
 
 define('LOCAL_JS', (DEBUG||OFFLINE));
-define('MAX_MSG_LENGTH', 255);
+define('MAX_MSG_LENGTH', 750);
+define('MAX_CLAN_MSG_LENGTH', MAX_MSG_LENGTH - strlen('clan: '));
 ?>
