@@ -5,9 +5,7 @@ require_once(SERVER_ROOT."lib/specific/lib_player.php");
 // ********** CLAN FUNCTIONS **********
 // ************************************
 
-
 // ***** The below three functions are from commands.php, refactoring recommended ***
-
 
 function createClan($p_leaderID, $p_clanName) {
 	DatabaseConnection::getInstance();
@@ -50,7 +48,6 @@ function get_clan_by_player_id($p_playerID) {
 	}
 }
 
-
 // ************************************
 // ************************************
 
@@ -68,8 +65,6 @@ function rename_clan($p_clanID, $p_newName) {
 
 // ************************************
 // ************************************
-
-
 
 // Without checking for pre-existing clan and other errors, adds a player into a clan.
 function add_player_to_clan($player_id, $clan_id, $member_level=0) {
@@ -166,13 +161,21 @@ function clan_id($char_id=null) {
 /*
  * Clan name requirements:
  * Must be at least 3 characters to a max of 24, can only contain:
- * letters, numbers, spaces, underscores, or dashes.
+ * letters, numbers, non-consecutive spaces, underscores, or dashes.
+ * Must begin and end with non-whitespace characters.
  */
 function is_valid_clan_name($potential) {
 	$potential = (string)$potential;
-	return preg_match("#^[\da-z_\-][\da-z_\-]{1,24}[\da-z_\-]$#i", $potential);
+	return preg_match("#^[\da-z_\-]([\da-z_\-]| [\da-z_\-]){2,25}$#i", $potential);
 }
 
+/*
+ * Unique clan name check, ignores whitespace
+ */
+function is_unique_clan_name($p_potential) {
+	return !(bool)query_row("SELECT clan_name FROM clan WHERE regexp_replace(clan_name, '[[:space:]]', '', 'g') ~~* regexp_replace(:testName, '[[:space:]]', '', 'g')", array(':testName' => $p_potential));
+
+}
 
 // Wrapper for getting a single clan's info.
 function get_clan($clan_id) {
@@ -246,7 +249,6 @@ function save_clan_avatar_url($url, $clan_id) {
 	query_resultset($update, array(':url'=>$url, ':clan_id'=>$clan_id));
 }
 
-
 // Get the clan info from the database.
 function clan_data($clan_id) {
 	$sel = 'SELECT * FROM clan WHERE clan_id = :clan_id';
@@ -258,7 +260,6 @@ function save_clan_description($desc, $clan_id) {
 	$update = 'UPDATE clan SET description = :desc WHERE clan_id = :clan_id';
 	query_resultset($update, array(':desc'=>$desc, ':clan_id'=>$clan_id));
 }
-
 
 // return boolean, checks that an avatar is valid.
 function clan_avatar_is_valid($dirty_url) {
@@ -336,7 +337,8 @@ function get_ranked_clan_members($p_clan_id) {
 
 // Get clan member names & ids other than self, useful for lists & messaging
 function clan_member_names_and_ids($clan_id, $self_char_id) {
-	$member_select = "SELECT uname, player_id FROM players JOIN clan_player ON player_id = _player_id
+	$member_select = "SELECT uname, player_id 
+		FROM players JOIN clan_player ON player_id = _player_id
         WHERE _clan_id = :clan_id AND player_id != :player_id";
 	$members_and_ids = query_array($member_select, array(':clan_id'=>$clan_id, ':player_id'=>$self_char_id));
 	return $members_and_ids;
