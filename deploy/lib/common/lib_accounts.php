@@ -9,6 +9,10 @@ function validate_account($ninja_id, $email, $password_to_hash) {
 			&& validate_password($password_to_hash) && validate_email($email));
 }
 
+function email_fits_pattern($p_email) {
+	return preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", $p_email);
+}
+
 function validate_email($email) {
 	$error = null;
 
@@ -17,9 +21,9 @@ function validate_email($email) {
 		//strstr($send_email, "@") == "@aol.com" || strstr($send_email, "@") == "@netscape.com" || strstr($send_email, "@") == "@aim.com"
 		//Throws error if email from blocked domain.
 		$error = "Phase 3 Incomplete: We cannot currently accept @aol.com, @netscape.com, or @aim.com email addresses.";
-	} elseif (!preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", trim($email))) {
+	} elseif (!email_fits_pattern($email)) {
 		$error = "Phase 3 Incomplete: The email address ("
-				.htmlentities($email).") must contain an @ symbol and a domain name to be valid.";
+				.htmlentities($email).") must not contain spaces and must contain an @ symbol and a domain name to be valid.";
 	} elseif (email_is_duplicate($email)) {
 		$error = "Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.";
 	}
@@ -29,12 +33,10 @@ function validate_email($email) {
 
 function email_is_duplicate($email) {
 	$acc_check = "SELECT account_identity FROM accounts
-		WHERE active_email = lower(:email) OR account_identity = lower(:email)
-		UNION SELECT active_email from accounts
-		WHERE active_email = lower(:email) OR account_identity = lower(:email)";
+		WHERE lower(:email) IN (account_identity, active_email)";
 	$dupe = query_item($acc_check, array(':email'=>$email));
 
-	return !!$dupe;
+	return !empty($dupe);
 }
 
 function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1) {
@@ -387,12 +389,37 @@ function pauseAccount($p_playerID) {
 	$accountActiveQuery = 'UPDATE accounts SET active = false WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)';
 	$playerConfirmedQuery = 'UPDATE players SET confirmed = 0 WHERE player_id = :pid';
 
-    $statement = DatabaseConnection::$pdo->prepare($playerConfirmedQuery);
-    $statement->bindValue(':pid', $p_playerID);
-    $statement->execute();
+	$statement = DatabaseConnection::$pdo->prepare($playerConfirmedQuery);
+	$statement->bindValue(':pid', $p_playerID);
+	$statement->execute();
 
-    $statement = DatabaseConnection::$pdo->prepare($accountActiveQuery);
-    $statement->bindValue(':pid', $p_playerID);
-    $statement->execute();
+	$statement = DatabaseConnection::$pdo->prepare($accountActiveQuery);
+	$statement->bindValue(':pid', $p_playerID);
+	$statement->execute();
+}
+
+function changePassword($p_playerID, $p_newPassword) {
+	$changePasswordQuery = "UPDATE accounts SET phash = crypt(:password, gen_salt('bf', 8)) WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
+
+	$statement = DatabaseConnection::$pdo->prepare($changePasswordQuery);
+	$statement->bindValue(':pid', $p_playerID);
+	$statement->bindValue(':password', $p_newPassword);
+	$statement->execute();
+}
+
+function changeEmail($p_playerID, $p_newEmail) {
+	$changeEmailQuery1 = "UPDATE accounts SET account_identity = :identity, active_email = :email WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
+	$changeEmailQuery2 = "UPDATE players SET email = :email WHERE player_id = :id";
+
+	$statement = DatabaseConnection::$pdo->prepare($changeEmailQuery1);
+	$statement->bindValue(':pid', $p_playerID);
+	$statement->bindValue(':identity', $p_newEmail);
+	$statement->bindValue(':email', $p_newEmail);
+	$statement->execute();
+
+	$statement = DatabaseConnection::$pdo->prepare($changeEmailQuery2);
+	$statement->bindValue(':id', $p_playerID);
+	$statement->bindValue(':email', $p_newEmail);
+	$statement->execute();
 }
 ?>
