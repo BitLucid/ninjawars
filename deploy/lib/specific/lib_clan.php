@@ -152,7 +152,6 @@ function send_clan_join_request($username, $clan_id) {
 	send_message(get_user_id($username), $leader_id, $join_request_message);
 }
 
-
 // Gets the clan_id of a character/player.
 function clan_id($char_id=null) {
 	$info = get_player_info($char_id);
