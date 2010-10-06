@@ -35,7 +35,7 @@
 	{else}
 <form id="heal_form" action="shrine_mod.php" method="post" name="heal_form">
   <div style="margin-top: 10px;">
-    <div>The cost is one gold per point of health</div>
+    <div>How much healing do you need?</div>
     <input type="submit" value="Heal" class="formButton">
     <input id="heal_points" type="text" size="3" maxlength="4" name="heal_points" class="textField">HP
     <input id="healed" type="hidden" value="1" name="healed">
