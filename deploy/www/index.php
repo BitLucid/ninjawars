@@ -20,7 +20,7 @@ if ($logout) { // on logout, kill the session and don't redirect.
 	$is_logged_in = $logged_in['success'];
 
 	if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
-		logout_user(); 
+		logout_user($echo=false, $redirect=false); 
 		$login_error = true;
 	} else {
 		header("Location: index.php"); 
