@@ -11,7 +11,8 @@
 
 var NW = {};
 
-var $ = jQuery; // In an iframe, this will cause different instances of jQuery inside and out.
+//var $ = jQuery; // jQuery sets itself to use the dollar sign shortcut by default.
+// A different instance of jquery is currently used in the iframe and outside.
 
 var g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body');
 
