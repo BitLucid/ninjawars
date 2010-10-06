@@ -86,9 +86,8 @@ function json_latest_chat_id() {
 function json_send_chat($msg) {
 	if (is_logged_in()) {
 		$msg = trim($msg);
-			$user_id = (int) get_user_id();
-			send_chat(get_user_id(), $msg);
-		}
+		$user_id = (int) get_user_id();
+		send_chat(get_user_id(), $msg);
 	}
 }
 
