@@ -13,13 +13,14 @@ $is_logged_in    = is_logged_in();
 if ($logout) { // on logout, kill the session and don't redirect. 
 	logout_user(); 
 	$just_logged_out = true;
-} elseif ($is_logged_in) {     // When user is already logged in.
-	$logged_in['success'] = $is_logged_in; 
+//} elseif ($is_logged_in) {     // When user is already logged in.
+//	$logged_in['success'] = $is_logged_in; 
 } elseif ($login) { 	// Specially escaped password input, put into login.
 	$logged_in    = login_user(in('user', null, 'sanitize_to_text'), in('pass'));
 	$is_logged_in = $logged_in['success'];
 
 	if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
+		logout_user(); 
 		$login_error = true;
 	} else {
 		header("Location: index.php"); 
