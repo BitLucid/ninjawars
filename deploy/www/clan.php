@@ -118,6 +118,11 @@ if (!$player_id) {
 		// *** Clan Creation Action ***
 		if ($can_create_a_clan) {
 			$default_clan_name = 'Clan '.$username;
+
+			while (!is_unique_clan_name($default_clan_name)) {
+				$default_clan_name = $default_clan_name.rand(1,999);
+			}
+
 			$clan              = createClan($player_id, $default_clan_name);
 			$command           = 'rename'; // *** Shortcut to rename after. ***
 			$action_message    = 'You have created a new clan!';
