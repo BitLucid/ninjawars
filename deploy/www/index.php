@@ -38,10 +38,9 @@ $unread_message_count = 0;
 
 $user_id = get_user_id();
 
-if ($user_id) {
-	// Only bother trying to change these if logged in.
+if ($user_id) { // Only bother trying to change these if logged in.
+	$username    = get_char_name();
 	$level       = getLevel($username);
-	$username    = get_username();
 	$player_info = get_player_info();
 
     // Unread message count.
