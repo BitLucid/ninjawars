@@ -28,6 +28,8 @@ if ($logout) { // on logout, kill the session and don't redirect.
 	}
 }
 
+$stored_username = isset($_COOKIE['username'])? $_COOKIE['username'] : null; // Used for the login field.
+
 $username    = null;
 $player_info = array();
 $level       = null;
@@ -73,6 +75,7 @@ $parts = array(
 	, 'level'            => $level
 	, 'login_error'      => $login_error
 	, 'referrer'         => $referrer
+	, 'stored_username'  => $stored_username
 );
 
 if (!$user_id) {

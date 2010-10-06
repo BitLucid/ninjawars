@@ -42,7 +42,6 @@ function determine_max_health($level) {
 
 /** Calculate a max health by a level, will be used in dojo.php and calculating experience.**/
 function max_health_by_level($level) {
-	// TODO: Needs to be aware of white health benefit.
 	$health_per_level = 25;
 	return 150 + round($health_per_level*($level-1));
 }
