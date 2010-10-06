@@ -28,7 +28,6 @@ $freeResLevelLimit  = 6;
 $freeResKillLimit   = 25;
 $lostTurns          = 10; // *** Default turns lost when the player has no kills.
 $has_chi            = $skillsListObj->hasSkill('Chi'); // Extra healing benefits from chi, by level.
-$has_hidden_res     = $skillsListObj->hasSkill('hidden resurrect');
 $error              = null;
 $max_health         = determine_max_health($level);
 $fully_healed       = false;
@@ -47,9 +46,10 @@ if ($heal_and_resurrect) {
 }
 
 if ($restore === 1) {	//  *** RESURRECTION SECTION ***
-    $resurrect_requested = true;
-    $turn_taking_resurrect = false;
-    $kill_taking_resurrect = true;
+	$resurrect_requested   = true;
+	$turn_taking_resurrect = false;
+	$kill_taking_resurrect = true;
+	$has_hidden_res        = $skillsListObj->hasSkill('hidden resurrect');
 
 	if ($startingHealth > 0) {
 		$error = 'You are not dead.';
@@ -100,42 +100,42 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 } // *** end of resurrection ***
 
 if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
-    $heal_requested = true;
-    //  ***  HEALING SECTION  ***
+	$heal_requested = true;
+	//  ***  HEALING SECTION  ***
+
+	// *** Having chi decreases the cost of healing by 50% ***
+	$costOfHealPoint = ($has_chi ? .5 : 1);
 
 	if ($max_heal == 1) {
 	    // Sets the heal_points when the heal-all button was hit.
-	    $heal_points = $startingGold;
+	    $heal_points = floor($startingGold/$costOfHealPoint);
 	}
-	
+
 	$current_health = $player->vo->health;
+	$current_damage = $max_health - $current_health;
+	$heal_points    = min($heal_points, $current_damage); // *** Cannot heal higher than max ***
+	$total_cost     = ceil($heal_points*$costOfHealPoint);
 
 	if ($current_health >= $max_health) {
 	    $error = 'You are currently at full health.';
 	} else {
-    	if ($current_health > 0) {  //Requires the user to be resurrected first.
-    		if ($heal_points && $heal_points > 0) {  // Requires a heal number, and a positive one.
-    			if ($heal_points <= $startingGold) {   //If there's enough money for the amount that they want to heal.
-    				if (($current_health + $heal_points) > $max_health){  // Allows numeric healing to "round off" at the max.
-    					$heal_points = ($max_health-$current_health);  //Rounds off.
-    				}
+		if ($current_health > 0) {  // *** Requires the user to be resurrected first. ***
+			if ($heal_points && $heal_points > 0) {  // *** Requires a heal number, and a positive one. ***
+				if ($total_cost <= $startingGold) {   // *** If there's enough money for the amount that they want to heal. ***
+					subtractGold($player->vo->uname, $total_cost);
+					$player->vo->health = $finalHealth = addHealth($player->vo->uname, $heal_points);
 
-    				subtractGold($player->vo->uname,$heal_points);
-    				// Having chi increases the amount healed in all cases.
-    				$player->vo->health = $finalHealth = addHealth($player->vo->uname, ($has_chi ? round($heal_points*1.5) : $heal_points));
-    				
-    				$fully_healed = ($finalHealth >= $max_health); // Let the user know whether they're fully healed.
-    				
-    			} else {
-    			    $error = 'You do not have enough gold for that much healing.';
-    			}
-    		} else if ($restore !== 1) {	// *** Only display this error if they have not requested a ressurect. ***
-    		    $error = 'You cannot heal with zero gold.';
-    		}
-    	} else {
-    	    $error = 'You must resurrect before you can heal.';
-    	}
-    }
+					$fully_healed = ($finalHealth >= $max_health); // ** Test if user is fully healed. ***
+				} else {
+					$error = 'You do not have enough gold for that much healing.';
+				}
+			} else if ($restore !== 1) {	// *** Only display this error if they have not requested a ressurect. ***
+				$error = 'You cannot heal with zero gold.';
+			}
+		} else {
+			$error = 'You must resurrect before you can heal.';
+		}
+	}
 } else if ($poisoned == 1) {	//  *** POISON SECTION ***
 	$poison_cure_requested = true;
 

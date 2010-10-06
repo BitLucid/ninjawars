@@ -24,6 +24,9 @@
 
     {if $startingHealth < $finalHealth}
         <p>A monk tends to your wounds and you are {if $fully_healed}fully healed{else}healed to {$finalHealth|escape} health{/if}.</p>
+		{if $has_chi}
+        <p>Your chi is strong and you recover faster than expected!</p>
+		{/if}
     {elseif isset($poison_cure_requested) and $poison_cure_requested and $cured}
         <p>You have been cured!</p>
     {/if}
