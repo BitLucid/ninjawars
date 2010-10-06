@@ -17,22 +17,6 @@ $page_title = "Battle Status";
 $quickstat  = "player";
 
 include SERVER_ROOT."interface/header.php";
-
-$recent_attack = null;
-$start_of_attack = microtime(true);
-$attack_spacing = 0.2; // fraction of a second
-if (SESSION::is_set('recent_attack')) {
-    $recent_attack = SESSION::get('recent_attack');
-}
-
-if ($recent_attack && ($recent_attack > ($start_of_attack - $attack_spacing))) {
-    echo "<p>Even the best of ninjas cannot attack that quickly.</p>";
-    echo "<a href='attack_player.php'>Return to combat</a>";
-    SESSION::set('recent_attack', $start_of_attack);
-    die();
-} else {
-    SESSION::set('recent_attack', $start_of_attack);
-}
 ?>
 
 <h1>Battle Status</h1>
@@ -103,14 +87,14 @@ $AttackLegal = new AttackLegal($attacker, $target, $params);
 
 // *** There's a same-domain problem with this attack-legal now that it's been modified for skills ***
 
+$target_player    = new Player($target);
+$attacking_player = new Player($attacker);
+
 // ***  MAIN BATTLE ALGORITHM  ***
 if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting.
 	// *** Display the reason the attack failed.
 	echo "<div class='ninja-error centered'>".$AttackLegal->getError()."</div>";
 } else {
-	$target_player    = new Player($target);
-	$attacking_player = new Player($attacker);
-
 	// *** Target's stats. ***
 	$target_health    = $target_player->vo->health;
 	$target_level     = $target_player->vo->level;
