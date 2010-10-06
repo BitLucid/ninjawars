@@ -289,7 +289,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id at $today";
 					sendMessage($attacker_id, $target->vo->uname, $msg);
 
-					$result = "You cast Cold Steal on $target and take $turns_decrease of his turns.<br>\n";
+					$result = "You cast Cold Steal on $target and take $turns_decrease turns.<br>\n";
 				} else {
 					$turn_cost = 0;
 					$result = "The victim did not have enough turns to give you.<br>\n";
