@@ -77,14 +77,14 @@ abstract class DataAccessObject {
 	// *** private functions
 
 	private function _getFromResult($vo, $data) {
-		#fill vo from the database result set
+		// fill vo from the database result set
 		foreach ($this->_vo_fields AS $loopField) { // *** use fields dynamically from list.
 			$vo->$loopField = $data[$loopField];
 		}
 	}
 
 	private function _update($vo) {
-		#execute update statement here
+		// execute update statement here
 		$up = "UPDATE ".$this->_table." SET ";
 
 		foreach ($this->_vo_fields AS $loopField) { // Put in values from vo.
@@ -105,7 +105,7 @@ abstract class DataAccessObject {
 	}
 
 	private function _insert($vo) {
-		#generate id using sequence
+		// generate id using sequence
 		$new_id = $this->m_dbconn->nextSequenceValue($this->_id_field, $this->_table);
 		assert(is_numeric($new_id));
 
@@ -119,7 +119,7 @@ abstract class DataAccessObject {
 		$in = rtrim($in, ', '); // *** Remove that final comma.
 		$in .= ")"; // *** Final closing of the parentheses.
 
-		#insert record into db
+		// insert record into db
 		$statement = DatabaseConnection::$pdo->prepare($in);
 
 		foreach ($this->_vo_fields AS $loopField) {
@@ -133,7 +133,7 @@ abstract class DataAccessObject {
 		$statement->execute();
 
 		// The new id is set at the beginning of the function.
-		#set id on vo
+		// set id on vo
 		$vo->{$this->_id_field} = $new_id;
 	}
 }

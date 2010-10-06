@@ -1,6 +1,5 @@
 <?php
-require_once(SERVER_ROOT."lib/specific/lib_player.php");
-
+require_once(SERVER_ROOT.'lib/specific/lib_player.php');
 
 // ************************************
 // ********** CLAN FUNCTIONS **********
@@ -16,13 +15,13 @@ function createClan($p_leaderID, $p_clanName) {
 	$result = DatabaseConnection::$pdo->query("SELECT nextval('clan_clan_id_seq')");
 	$newClanID = $result->fetchColumn();
 
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (:clanID, :clanName, :leader)");
+	$statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (:clanID, :clanName, :leader)');
 	$statement->bindValue(':clanID', $newClanID);
 	$statement->bindValue(':clanName', $p_clanName);
 	$statement->bindValue(':leader', get_username($p_leaderID));
 	$statement->execute();
 
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 2)");
+	$statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 2)');
 	$statement->bindValue(':clanID', $newClanID);
 	$statement->bindValue(':leader', $p_leaderID);
 	$statement->execute();
@@ -34,10 +33,10 @@ function createClan($p_leaderID, $p_clanName) {
 function get_clan_by_player_id($p_playerID) {
 	DatabaseConnection::getInstance();
 	$id = (int) $p_playerID;
-	$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name
+	$statement = DatabaseConnection::$pdo->prepare('SELECT clan_id, clan_name
 	    FROM clan
 	    JOIN clan_player ON clan_id = _clan_id
-	    WHERE _player_id = :player");
+	    WHERE _player_id = :player');
 	$statement->bindValue(':player', $id);
 	$statement->execute();
 
@@ -56,7 +55,7 @@ function get_clan_by_player_id($p_playerID) {
 function rename_clan($p_clanID, $p_newName) {
 	DatabaseConnection::getInstance();
 
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE clan SET clan_name = :name WHERE clan_id = :clan");
+	$statement = DatabaseConnection::$pdo->prepare('UPDATE clan SET clan_name = :name WHERE clan_id = :clan');
 	$statement->bindValue(':name', $p_newName);
 	$statement->bindValue(':clan', $p_clanID);
 	$statement->execute();
@@ -71,7 +70,7 @@ function rename_clan($p_clanID, $p_newName) {
 function add_player_to_clan($player_id, $clan_id, $member_level=0) {
 	$member_level = (int) $member_level;
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO clan_player (_clan_id, _player_id, member_level) VALUES (:clan, :player_id, :member_level)");
+	$statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan_player (_clan_id, _player_id, member_level) VALUES (:clan, :player_id, :member_level)');
 	$statement->bindValue(':clan', $clan_id);
 	$statement->bindValue(':player_id', $player_id);
 	$statement->bindParam(':member_level', $member_level, PDO::PARAM_INT);
@@ -80,7 +79,7 @@ function add_player_to_clan($player_id, $clan_id, $member_level=0) {
 
 	// Because the confirmation number is used for inviting, change the confirmation number.
 	$random      = rand(1001, 9990); // Semi-random confirmation number, and change the players confirmation number.
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET confirm = :confirm WHERE player_id = :player_id");
+	$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET confirm = :confirm WHERE player_id = :player_id');
 	$statement->bindValue(':confirm', $random);
 	$statement->bindValue(':player_id', $player_id);
 	$statement->execute();
@@ -121,7 +120,7 @@ function inviteChar($char_id, $p_clanID) {
 	} else {
 		$invite_msg = "$leader_name has invited you into their clan.
 		To accept, choose their clan $clan_name on the "
-		.message_url('clan.php?command=join&clan_id='.$p_clanID, 'clan joining page').".";
+		.message_url('clan.php?command=join&clan_id='.$p_clanID, 'clan joining page').'.';
 		send_message($leader_id, $target_id, $invite_msg);
 		$target->addStatus(INVITED);
 		$failure_error = null;
@@ -137,15 +136,15 @@ function send_clan_join_request($username, $clan_id) {
 	$leader_id   = $leader['player_id'];
 	$leader_name = $leader['uname'];
 
-	$confirmStatement = DatabaseConnection::$pdo->prepare("SELECT confirm FROM players WHERE uname = :user");
+	$confirmStatement = DatabaseConnection::$pdo->prepare('SELECT confirm FROM players WHERE uname = :user');
 	$confirmStatement->bindValue(':user', $username);
 	$confirmStatement->execute();
 	$confirm = $confirmStatement->fetchColumn();
 
 	// These ampersands get encoded later.
-	$url = message_url("clan_confirm.php?clan_joiner=".get_user_id($username)."&agree=1&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
+	$url = message_url('clan_confirm.php?clan_joiner='.get_user_id($username)."&agree=1&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
 
-	$join_request_message = "CLAN JOIN REQUEST: ".htmlentities($username)." has sent a request to join your clan.
+	$join_request_message = 'CLAN JOIN REQUEST: '.htmlentities($username)." has sent a request to join your clan.
 		If you wish to allow this ninja into your clan click the following link:
 		$url";
 	send_message(get_user_id($username), $leader_id, $join_request_message);
@@ -155,16 +154,17 @@ function render_joinable_clans($clan_id) {
 	//Clan Join list of available Clans
 	$leaders = get_clan_leaders(($clan_id ? $clan_id : null), ($clan_id ? false : true));
 
-	$res = "";
+	$res = '';
 	foreach ($leaders as $leader) {
 		$info = get_player_info($leader['player_id']);
-		$res .= "<li><a target='main' class='clan-join' href=\"clan.php?command=join&amp;clan_id={$leader['clan_id']}&amp;process=1\">
-				Join ".htmlentities($leader['clan_name'])."</a>.
-					Its leader is <a href=\"player.php?player_id=".rawurlencode($leader['player_id'])."\">
-				".htmlentities($leader['uname'])."</a>, level {$info['level']}.
-				<a target='main' href=\"clan.php?command=view&amp;clan_id={$leader['clan_id']}\">View This Clan</a>
+		$res .= '<li><a target="main" class="clan-join" href="clan.php?command=join&amp;clan_id='.$leader['clan_id'].'&amp;process=1">
+				Join '.htmlentities($leader['clan_name']).'</a>.
+					Its leader is <a href="player.php?player_id='.rawurlencode($leader['player_id']).'">'
+				.htmlentities($leader['uname']).'</a>, level '.$info['level'].'.
+				<a target="main" href="clan.php?command=view&amp;clan_id='.$leader['clan_id']."\">View This Clan</a>
 			</li>\n";
-		}
+	}
+
 	return $res;
 }
 
@@ -201,7 +201,7 @@ function get_clan($clan_id) {
 // Better name for the function to get the array of clan info.
 function clan_info($clan_id) {
 	return query_row(
-		"SELECT clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description FROM clan WHERE clan_id = :clan",
+		'SELECT clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description FROM clan WHERE clan_id = :clan',
 		array(':clan'=>array($clan_id, PDO::PARAM_INT))
 	);
 }
@@ -210,8 +210,8 @@ function clan_info($clan_id) {
 function get_clan_founders() {
 	DatabaseConnection::getInstance();
 	$founders_statement = DatabaseConnection::$pdo->query(
-	    "SELECT clan_founder, clan_name, uname, player_id, confirmed
-		FROM clan LEFT JOIN players ON lower(clan_founder) = lower(uname)");
+	    'SELECT clan_founder, clan_name, uname, player_id, confirmed
+		FROM clan LEFT JOIN players ON lower(clan_founder) = lower(uname)');
 	return $founder_statement;
 }
 
@@ -241,15 +241,18 @@ function get_clan_leader_id($clan_id) {
 // Get the current clan leader or leaders.
 function get_clan_leaders($clan_id=null, $all=false) {
 	$limit = ($all ? '' : ' LIMIT 1');
-	$clan_or_clans = ($clan_id ? " AND clan_id = :clan ORDER BY member_level DESC, level DESC" : ' ORDER BY clan_id, member_level DESC, level DESC');
+	$clan_or_clans = ($clan_id ? ' AND clan_id = :clan ORDER BY member_level DESC, level DESC' : ' ORDER BY clan_id, member_level DESC, level DESC');
 	DatabaseConnection::getInstance();
 	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
 		FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id=_player_id
 		WHERE confirmed = 1 AND member_level > 0 $clan_or_clans $limit");
+
 	if ($clan_id) {
 		$clans->bindValue(':clan', $clan_id);
 	}
+
 	$clans->execute();
+
 	return $clans;
 }
 
@@ -273,7 +276,7 @@ function save_clan_description($desc, $clan_id) {
 
 // return boolean, checks that an avatar is valid.
 function clan_avatar_is_valid($dirty_url) {
-	if ($dirty_url === "" || $dirty_url === null) {
+	if ($dirty_url === '' || $dirty_url === null) {
 		return true;  // Allows for no clan avatar.
 	}
 
@@ -299,9 +302,9 @@ function clans_ranked() {
 	$res = array();
 
 	// sum the levels of the players (minus days of inactivity) for each clan
-	$counts = query("SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id
+	$counts = query('SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id
 	    FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id
-	    WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC");
+	    WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC');
 
 	if ($counts->rowCount() > 0) {
 		$clan_info = $counts->fetch();
@@ -323,17 +326,17 @@ function render_clan_view($p_clan_id) {
 		return ''; // No viewing criteria available.
 	}
 
-	$members_array = query_array("SELECT uname, email, clan_name, level, days, clan_founder, player_id, member_level
+	$members_array = query_array('SELECT uname, email, clan_name, level, days, clan_founder, player_id, member_level
 			FROM clan
 			JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-			JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY level, health DESC",
+			JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY level, health DESC',
 			array(':clan_id'=>$p_clan_id));
 
-	$max = query_item("SELECT max(level) AS max
+	$max = query_item('SELECT max(level) AS max
 		FROM clan
 		JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-		JOIN players ON player_id = _player_id AND confirmed = 1",
-		array(":clan_id"=>$p_clan_id));
+		JOIN players ON player_id = _player_id AND confirmed = 1',
+		array(':clan_id'=>$p_clan_id));
 
 	$clan = get_clan($p_clan_id); // Clan data array.
 	$clan_name = $clan['clan_name'];
@@ -342,14 +345,14 @@ function render_clan_view($p_clan_id) {
 
 	// Modify the members by reference
 	foreach ($members_array as &$member) {
+		$member['leader'] = false;
 		$member['size'] = floor( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
 
 		$current_leader_class = null;
 		// Calc the member display size based on their level relative to the max.
 		if ($member['member_level'] == 1) {
-		    $current_leader_class = 'original-creator';
-			$member['size'] = $member['size'] + 2;
-			$member['size'] = ($member['size'] > 3 ? 3 : $member['size']);
+		    $member['leader'] = true;
+			$member['size'] = max($member['size'] + 2, 3);
 		}
 
 		$member['gravatar_url'] = generate_gravatar_url($member['player_id']);
@@ -370,7 +373,7 @@ function render_clan_view($p_clan_id) {
 
 // Get clan member names & ids other than self, useful for lists & messaging
 function clan_member_names_and_ids($clan_id, $self_char_id) {
-	$member_select = "SELECT uname, player_id FROM players JOIN clan_player ON player_id = _player_id WHERE _clan_id = :clan_id AND player_id <> :player_id";
+	$member_select = 'SELECT uname, player_id FROM players JOIN clan_player ON player_id = _player_id WHERE _clan_id = :clan_id AND player_id <> :player_id';
 	$members_and_ids = query_array($member_select, array(':clan_id'=>$clan_id, ':player_id'=>$self_char_id));
 	return $members_and_ids;
 }
