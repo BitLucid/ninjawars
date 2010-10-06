@@ -14,7 +14,7 @@ var NW = {};
 //var $ = jQuery; // jQuery sets itself to use the dollar sign shortcut by default.
 // A different instance of jquery is currently used in the iframe and outside.
 
-var g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body');
+var g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body'); // This line requires and makes use of the $ jQuery var!
 
 var g_isLive = (window.location.host != 'localhost');
 
