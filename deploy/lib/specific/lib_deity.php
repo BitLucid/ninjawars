@@ -9,14 +9,14 @@
 function delete_old_messages($limit = null) {
 	DatabaseConnection::getInstance();
 	$interval_to_keep = '3 months';
-	$statement = DatabaseConnection::$pdo->query("delete from messages where date < ( now()- interval '$interval_to_keep' )");
+	$statement = DatabaseConnection::$pdo->query("DELETE FROM messages WHERE date < ( now()- interval '$interval_to_keep' )");
 	return $statement->rowCount();
 }
 
 function delete_old_events($limit = null) {
 	DatabaseConnection::getInstance();
 	$interval_to_keep = '4 days';
-	$statement = DatabaseConnection::$pdo->query("delete from events where date < ( now()- interval '$interval_to_keep' )");
+	$statement = DatabaseConnection::$pdo->query("DELETE FROM events WHERE date < ( now()- interval '$interval_to_keep' )");
 	return $statement->rowCount();
 }
 
@@ -30,7 +30,7 @@ function update_days() {
 function shorten_chat($message_limit=800) {
 	DatabaseConnection::getInstance();
 	// Find the latest 800 messages and delete all the rest;
-	$deleted = DatabaseConnection::$pdo->query("delete from chat where chat_id not in (select chat_id from chat order by date desc limit ".$message_limit.")");  //Deletes old chat messages.
+	$deleted = DatabaseConnection::$pdo->query("DELETE FROM chat WHERE chat_id NOT IN (SELECT chat_id FROM chat ORDER BY date DESC LIMIT $message_limit)");  //Deletes old chat messages.
 	return (int) $deleted->rowCount();
 }
 
@@ -40,7 +40,7 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 	$max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30);
 	$players_unconfirmed = null;
 	DatabaseConnection::getInstance();
-	$sel_cur = DatabaseConnection::$pdo->query("select count(*) from players where confirmed = 1");
+	$sel_cur = DatabaseConnection::$pdo->query("SELECT count(*) FROM players WHERE confirmed = 1");
 	$current_players = $sel_cur->fetchColumn();
 
 	if ($current_players < $keep_players) {
@@ -53,14 +53,13 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 
 	// Unconfirm at a maximum of 20 players at a time.
 	$unconfirm_within_limits = "UPDATE players
-		SET confirmed = ".$change_confirm_to."
+		SET confirmed = $change_confirm_to
 		WHERE players.player_id
 		IN (
 			SELECT player_id FROM players
 			WHERE confirmed = 1
 			AND days > ".intval($unconfirm_days_over)."
-			ORDER BY player_id DESC	LIMIT ".$max_to_unconfirm."
-			)";
+			ORDER BY player_id DESC	LIMIT $max_to_unconfirm)";
 	$update = DatabaseConnection::$pdo->query($unconfirm_within_limits);
 	return $update->rowCount();
 }
@@ -78,7 +77,7 @@ function revive_players($params=array()) {
 	$full_max             = (isset($params['full_max']) ? $params['full_max'] : 80); // In: full_max, default 80%
 	$minor_revive_to      = (isset($params['minor_revive_to']) ? $params['minor_revive_to'] : 100); // minor_revive_to, default 100
 	$major_revive_percent = (isset($params['major_revive_percent']) ? $params['major_revive_percent'] : 5); // major_revive_percent, default 5%
-	$just_testing         = (isset($params['just_testing']) ? 'true' : 'false');
+	$just_testing         = isset($params['just_testing']);
 	$revive_amount        = 0; // Initial.
 	$major_hour           = 3; // Hour for the major revive.
 
@@ -93,7 +92,7 @@ function revive_players($params=array()) {
 	*/
 
 	// Determine the total dead (& confirmed).
-	$sel_dead = DatabaseConnection::$pdo->query('select count(*) from players where health<1 and confirmed=1');
+	$sel_dead = DatabaseConnection::$pdo->query('SELECT count(*) FROM players WHERE health < 1 AND confirmed = 1');
 	$dead_count = $sel_dead->fetchColumn();
 
 	// If none dead, return false.
@@ -102,14 +101,14 @@ function revive_players($params=array()) {
 	}
 
 	// Determine the total confirmed.
-	$sel_total_active = DatabaseConnection::$pdo->query('select count(*) from players where confirmed=1');
+	$sel_total_active = DatabaseConnection::$pdo->query('SELECT count(*) FROM players WHERE confirmed = 1');
 	$total_active = $sel_total_active->fetchColumn();
 
 	// Calc the total alive.
 	$total_alive = ($total_active - $dead_count);
 
 	// Determine major or minor based on the hour.
-	$sel_current_time = DatabaseConnection::$pdo->query("SELECT amount from time where time_label='hours'");
+	$sel_current_time = DatabaseConnection::$pdo->query("SELECT amount FROM time WHERE time_label = 'hours'");
 	$current_time = $sel_current_time->fetchColumn();
 	assert(is_numeric($current_time));
 
@@ -117,7 +116,7 @@ function revive_players($params=array()) {
 
 	// If minor, and total_alive is more than minor_revive_to-1, return 0/total.
 	if (!$major) { // minor
-		if ($total_alive>($minor_revive_to-1)) { // minor_revive_to already met.
+		if ($total_alive > ($minor_revive_to-1)) { // minor_revive_to already met.
 			return array(0, $dead_count);
 		} else {  // else revive minor_revive_to - total_alive.
 			$revive_amount = floor($minor_revive_to - $total_alive);
@@ -143,22 +142,25 @@ function revive_players($params=array()) {
 	// Actually perform the revive on those integers.
 	// Use the order by clause to determine who revives, by time, days and then by level, using the limit set previously.
 	//select uname, player_id, level,floor(($major_revive_percent/100)*$total_active) days, resurrection_time from players where confirmed = 1 AND health < 1 ORDER BY abs(8 - resurrection_time) asc, level desc, days asc
-	$select = "select player_id from players where confirmed = 1 AND health < 1 ORDER BY abs(".intval($current_time)."
-			- resurrection_time) asc, level desc, days asc limit ".$revive_amount;
-	$up_revive_players= "UPDATE players
-					SET status = 0,
-					health =
-						CASE WHEN ".$just_testing."
-						THEN health
-						ELSE
-							(
-							CASE WHEN _class_id = 4
+	$select = 'SELECT player_id FROM players WHERE confirmed = 1 AND health < 1 '.
+			' ORDER BY abs('.intval($current_time)." - resurrection_time) ASC, level DESC, days ASC LIMIT $revive_amount";
+
+	$up_revive_players= 'UPDATE players SET status = 0 ';
+
+	if ($just_testing) {
+		$up_revive_players .= ', health =
+							CASE WHEN level >= coalesce(class_skill_level, skill_level)
 							THEN (150+(level*3))
 							ELSE (100+(level*3)) END
-							)
-						END
-					WHERE
-					player_id IN (".$select.")";
+							FROM (SELECT * FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE skill_id = 5) AS class_skill ';
+	}
+
+	$up_revive_players .= " WHERE player_id IN ($select) ";
+
+	if ($just_testing) {
+		$up_revive_players .= ' AND coalesce(class_skill._class_id, players._class_id) = players._class_id';
+	}
+
 	$update = DatabaseConnection::$pdo->query($up_revive_players);
 	$truly_revived = $update->rowCount();
 

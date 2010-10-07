@@ -24,7 +24,7 @@ DatabaseConnection::$pdo->query("UPDATE time SET amount = amount+1 WHERE time_la
 DatabaseConnection::$pdo->query("UPDATE time SET amount = 0 WHERE time_label = 'hours' AND amount >= 24"); // Rollover the time to hour zero.
 DatabaseConnection::$pdo->query("UPDATE players SET turns = 0 WHERE turns < 0");
 DatabaseConnection::$pdo->query("UPDATE players SET bounty = 0 WHERE bounty < 0");
-DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 FROM class_skill JOIN skill ON skill_id = _skill_id WHERE turns < ".$turn_regen_threshold." AND _skill_id = 3 AND class_skill._class_id = players._class_id AND level >= coalesce(class_skill_level, skill_level)");	// *** Speed skill turn gain code, replaces Blue/Crane turn gain code ***
+DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 FROM class_skill JOIN skill ON skill_id = _skill_id WHERE turns < $turn_regen_threshold AND _skill_id = 3 AND class_skill._class_id = players._class_id AND level >= coalesce(class_skill_level, skill_level)");	// *** Speed skill turn gain code, replaces Blue/Crane turn gain code ***
 
 //DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 WHERE _class_id = 2 AND turns < ".$turn_regen_threshold); // Blue/Crane turn code
 DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+2 WHERE turns < ".$turn_regen_threshold); // add 2 turns on the hour, up to 100.
