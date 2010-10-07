@@ -1,8 +1,10 @@
-You have requested your password for the account: {$lost_uname}.<br>\n<br>\n
+{include file="email.header.tpl" title='Ninjawars Account Password Request' subtitle=''}
+
+You have requested your password for the account: {$lost_uname}.<br><br>
            
-           <b>Account Info</b><br>\n
-           Username: {$lost_uname}<br>\n
-           Password: {$lost_pname}<br>\n<br>\n
+           <b>Account Info</b><br>
+           Username: {$lost_uname}<br>
+           Password: {$lost_pname}<br><br>
            {if !$confirmed}
            
            Your account has not yet been confirmed, request a reconfirmation email at:
@@ -14,3 +16,5 @@ You have requested your password for the account: {$lost_uname}.<br>\n<br>\n
            
            
 If you did not request this reminder email, please contact us at {$templatelite.const.SUPPORT_EMAIL} .
+
+{include file="email.footer.tpl"}	
