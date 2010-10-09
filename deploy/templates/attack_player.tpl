@@ -7,11 +7,11 @@
 {foreach name="looploc" from=$locations item="loc" key="idx"}
       <li style='padding-left:8px'>
       	<a href='{$loc.url|escape}'>
-	{if isset($loc.image)}
-          <img src='/images/{$loc.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
-	{/if}
 	{if isset($loc.tile_image)}
 	    <img src='/images/{$loc.tile_image}' alt='' style='max-width:100px;max-height:100px'>
+	{/if}
+	{if isset($loc.image)}
+          <img src='/images/{$loc.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
 	{/if}
           {$loc.name|escape}
       	</a>
