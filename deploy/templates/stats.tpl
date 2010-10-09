@@ -1,4 +1,4 @@
-<h1>Account Info for {$username|escape}</h1>
+<h1>Ninja Stats for {$username|escape}</h1>
 
 <div id='content' class='your-stats'>
 
@@ -6,37 +6,6 @@
 <p class='error'>{$error}</p>
 {elseif $successMessage}
 <p class='notice'>{$successMessage|escape}</p>
-{elseif $confirm_delete}
-<p>Please provide your password to confirm.</p>
-<form method="post" action="stats.php" onsubmit="return confirm('Are you sure you want to delete your account?');">
-  <div>
-    <input id="passw" type="password" maxlength="50" name="passw" class="textField">
-    <input type="hidden" name="deleteaccount" value="2">
-    <input type="submit" value="Confirm Delete" class="formButton">
-  </div>
-</form>
-{/if}
-
-{if $change_pass}
-<form method="post" action="stats.php">
-  <div>
-    <div>Current Password: <input type="password" maxlength="50" name="passw" class="textField"></div>
-    <div>New Password: <input type="password" maxlength="50" name="newpassw" class="textField"></div>
-    <div>Confirm New Password: <input type="password" maxlength="50" name="confirmpassw" class="textField"></div>
-    <input type="hidden" name="changepass" value="2">
-    <input type="submit" value="Change Password" class="formButton">
-  </div>
-</form>
-{elseif $change_email}
-<form method="post" action="stats.php">
-  <div>
-    <div>Current Password: <input id="passw" type="password" maxlength="50" name="passw" class="textField"></div>
-    <div>New Email: <input type="text" maxlength="500" name="newemail" class="textField"></div>
-    <div>Confirm New Email: <input type="text" maxlength="500" name="confirmemail" class="textField"></div>
-    <input type="hidden" name="changeemail" value="2">
-    <input type="submit" value="Change Email" class="formButton">
-  </div>
-</form>
 {/if}
 
 {if $profile_changed}
@@ -91,7 +60,6 @@
       <li class='gold-count'>Gold: {$player.gold}</li>
       <li>Kills: {$player.kills}</li>
       <li>Turns: {$player.turns}</li>
-      <li>Email: {$player.email|escape}</li>
       <li>Created: {$player.created_date|escape}</li>
       <li>Rank: {$rank_display}</li>
       <li>Bounty: {$player.bounty} gold</li>
@@ -126,33 +94,13 @@
     </div>
   </div>
 </div><!-- End of the two-column arrangement. -->
-<hr>
-<form action='stats.php' method='post'>
-  <div>
-    <input type='hidden' name='changepass' value='1'>
-    <input type='submit' value='Change Your Password' class='formButton'>
-  </div>
-</form>
-<hr>
-<form action='stats.php' method='post'>
-  <div>
-    <input type='hidden' name='changeemail' value='1'>
-    <input type='submit' value='Change Your Email' class='formButton'>
-  </div>
-</form>
-<hr>
+
+<div class='switch-to-account notice' style='font-size:1.3em'>
+	<a href='account.php'>View your account info</a>
+</div>
+
 <p>
   If you require account help email: <a href='mailto:{$templatelite.const.SUPPORT_EMAIL}'>{$templatelite.const.SUPPORT_EMAIL}</a>
 </p>
-<hr>
 
-{if !$delete_attempts}
-<p>WARNING: Clicking on the button below will terminate your account.</p>
-<form action='stats.php' method='post'>
-  <div>
-    <input type='hidden' name='deleteaccount' value='1'>
-    <input type='submit' value='Permanently Remove Your Account' class='formButton'>
-  </div>
-</form>
-{/if}
-</div>
+</div><!-- End of content div -->

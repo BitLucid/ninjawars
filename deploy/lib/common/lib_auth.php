@@ -157,7 +157,13 @@ function get_logged_in_char_id() {
 	return SESSION::get('player_id');
 }
 
+// Wrapper for the account_id function.
 function get_logged_in_account_id() {
+	return account_id();
+}
+
+// Get the account_id as logged in.
+function account_id(){
 	return SESSION::get('account_id');
 }
 
