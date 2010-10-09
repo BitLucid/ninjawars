@@ -43,10 +43,10 @@
                 <a style='font-size:2em' class='font-pisan' href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Give Feedback</a>
         </div>
           
-          <div style='height:110px;position:absolute;bottom:0;'>
+          <div style='height:110px;position:absolute;bottom:112px;'>
             
           <div id='contact-us'>
-	        <a href='staff.php' target='main'><img src='images/contactstaff.png' alt='Contact Staff'></a>
+	        <a href='staff.php' target='main'><img src='images/contact_us.png' style='max-width:200px' alt='Contact Staff'></a>
 	      </div>
 	      
 	      </div>
