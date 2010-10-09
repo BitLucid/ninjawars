@@ -7,7 +7,7 @@
 {/if}
 
 <h1>Chat Board</h1>
-<p><a href="village.php?chatlength=50">Refresh</a><p>
+<button type='button' style='margin-bottom:1em;margin-top:.5em' class='formButton'><a href="village.php?chatlength=50">Refresh</a></button>
 
 <script type="text/javascript">
 function refreshpage{$frame}() {literal}{{/literal}
