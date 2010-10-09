@@ -3,6 +3,11 @@
  * Account creation and validation.
 **/
 
+// Pull account data in a * like manner.
+function account_info($account_id){
+	return query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
+}
+
 function validate_account($ninja_id, $email, $password_to_hash) {
 	return ($ninja_id && $email && $password_to_hash
 			&& is_numeric($type) && get_ninja_name($ninja_id) && !account_by_email($email)
