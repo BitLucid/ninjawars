@@ -6,6 +6,7 @@
 html, body {
 	background-color:black; /* To prevent the "white background flash" effect. */
 	height: 96%;
+	min-height:600px;
 }
 
 img {
