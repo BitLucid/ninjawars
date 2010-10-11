@@ -18,22 +18,22 @@ function validate_email($email) {
 
 	if (FALSE) {
 		// CURRENTLY NO BLOCKED EMAIL SERVICES
-		//strstr($send_email, "@") == "@aol.com" || strstr($send_email, "@") == "@netscape.com" || strstr($send_email, "@") == "@aim.com"
+		//strstr($send_email, '@') == '@aol.com' || strstr($send_email, '@') == '@netscape.com' || strstr($send_email, '@') == '@aim.com'
 		//Throws error if email from blocked domain.
-		$error = "Phase 3 Incomplete: We cannot currently accept @aol.com, @netscape.com, or @aim.com email addresses.";
+		$error = 'Phase 3 Incomplete: We cannot currently accept @aol.com, @netscape.com, or @aim.com email addresses.';
 	} elseif (!email_fits_pattern($email)) {
-		$error = "Phase 3 Incomplete: The email address ("
-				.htmlentities($email).") must not contain spaces and must contain an @ symbol and a domain name to be valid.";
+		$error = 'Phase 3 Incomplete: The email address ('
+				.htmlentities($email).') must not contain spaces and must contain an @ symbol and a domain name to be valid.';
 	} elseif (email_is_duplicate($email)) {
-		$error = "Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.";
+		$error = 'Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.';
 	}
 
 	return $error;
 }
 
 function email_is_duplicate($email) {
-	$acc_check = "SELECT account_identity FROM accounts
-		WHERE lower(:email) IN (account_identity, active_email)";
+	$acc_check = 'SELECT account_identity FROM accounts
+		WHERE lower(:email) IN (account_identity, active_email)';
 	$dupe = query_item($acc_check, array(':email'=>$email));
 
 	return !empty($dupe);
@@ -42,12 +42,15 @@ function email_is_duplicate($email) {
 function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1) {
 	DatabaseConnection::getInstance();
 
-	$ins = "INSERT INTO accounts (account_identity, active_email, phash, type, active)
-		VALUES (:email, :email2, crypt(:password, gen_salt('bf', 8)), :type, :active)";
+	$newID = query_item("SELECT nextval('accounts_account_id_seq')");
+
+	$ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, active)
+		VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 8)), :type, :active)";
 
 	$email = strtolower($email);
 
 	$statement = DatabaseConnection::$pdo->prepare($ins);
+	$statement->bindParam(':acc_id', $newID);
 	$statement->bindParam(':email', $email);
 	$statement->bindParam(':email2', $email);
 	$statement->bindParam(':password', $password_to_hash);
@@ -65,38 +68,30 @@ function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1
 	);
 */
 
-	// Get last created id.
-	$sel_acc = "SELECT account_id FROM accounts WHERE account_identity = :email";
-	$acc_id = query_item($sel_acc, array(':email'=>$email));
-
 	// Create the link between account and player.
-	$link_ninja = "INSERT INTO account_players (_account_id, _player_id, last_login) VALUES (:acc_id, :ninja_id, default)";
+	$link_ninja = 'INSERT INTO account_players (_account_id, _player_id, last_login) VALUES (:acc_id, :ninja_id, default)';
 
 	//query($link_ninja, array(":acc_id"=>array($acc_id, PDO::PARAM_INT), ":ninja_id"=>array($ninja_id, PDO::PARAM_INT)));
 
 	$statement = DatabaseConnection::$pdo->prepare($link_ninja);
-	$statement->bindParam(':acc_id', $acc_id, PDO::PARAM_INT);
+	$statement->bindParam(':acc_id', $newID, PDO::PARAM_INT);
 	$statement->bindParam(':ninja_id', $ninja_id, PDO::PARAM_INT);
 	$statement->execute();
 
 	//$ins = "insert into account_players (_account_id, _player_id) values (:acc_id, :ninja_id)";
 	//query($ins, array(':acc_id'=>array($acc_id, PDO::PARAM_INT), ':ninja_id'=>array($ninja_id, PDO::PARAM_INT)));
-	$sel_ninja_id = "SELECT player_id FROM players
+	$sel_ninja_id = 'SELECT player_id FROM players
 		JOIN account_players ON player_id = _player_id
 		JOIN accounts ON _account_id = account_id
-		WHERE account_id = :acc_id ORDER BY level DESC LIMIT 1";
+		WHERE account_id = :acc_id ORDER BY level DESC LIMIT 1';
 
-	$verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($acc_id, PDO::PARAM_INT)));
+	$verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($newID, PDO::PARAM_INT)));
 
-	if ($verify_ninja_id != $ninja_id) {
-		return "There was a problem with creating that account.";
-	} else {
-		return false;
-	}
+	return ($verify_ninja_id != $ninja_id ? false : $newID);
 }
 
 function account_of_email($email) {
-	$sel = 'select account_id from accounts where active_email = :email';
+	$sel = 'SELECT account_id FROM accounts WHERE active_email = :email';
 	$existing_account = query_item($sel, array(':email'=>$email));
 
 	return !!$existing_account;
@@ -167,7 +162,7 @@ function create_ninja($send_name, $params=array()) {
 	return get_char_id($send_name);
 }
 
-function send_signup_email($signup_email, $signup_name, $confirm, $class_identity) {
+function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
 	/*$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 	$headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n";
@@ -177,18 +172,22 @@ function send_signup_email($signup_email, $signup_name, $confirm, $class_identit
 	$class_display = class_display_name_from_identity($class_identity);
 
 	$_to = array("$signup_email"=>$signup_name);
-	$_subject = "NinjaWars Account Sign Up";
+	$_subject = 'NinjaWars Account Sign Up';
 	$_body = render_template('signup_email_body.tpl', array(
 			'send_name'       => $signup_name
 			, 'confirm'       => $confirm
 			, 'send_class'    => $class_display
 			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
+			, 'account_id'    => $account_id
 		)
 	);
+
 	$_from = array(SYSTEM_MESSENGER_EMAIL=>SYSTEM_MESSENGER_NAME);
-	// *** Create message object.
+
+	// *** Create message object. ***
 	$message = new Nmail($_to, $_subject, $_body, $_from);
-	// Set replyto address.
+
+	// *** Set replyto address. ***
 	$message->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_FORMAL_NAME));
 	if (DEBUG) {$message->dump = true;}
 	$sent = false; // By default, assume failure.
@@ -204,13 +203,13 @@ function create_account_and_ninja($send_name, $params=array()) {
 	$confirm     = (int) $params['confirm'];
 	$error       = false;
 	$ninja_id    = create_ninja($send_name, $params);
-	$error       = create_account($ninja_id, $send_email, $send_pass);
+	$account_id  = create_account($ninja_id, $send_email, $send_pass);
 
-	if (!$error) {
-		$sent = send_signup_email($send_email, $send_name, $confirm, $class_identity);
+	if ($account_id) {
+		$sent = send_signup_email($account_id, $send_email, $send_name, $confirm, $class_identity);
 
 		if (!$sent) {
-			$error = "There was a problem sending your signup to that email address.";
+			$error = 'There was a problem sending your signup to that email address.';
 		}
 	}
 
@@ -221,7 +220,7 @@ function confirm_player($player_name, $confirmation=0, $autoconfirm=false) {
 	DatabaseConnection::getInstance();
 	// Preconfirmed or the email didn't send, so automatically confirm the player.
 	$require_confirm = ($autoconfirm ? '' : ' AND confirm = :confirmation ');
-	$up = "UPDATE players SET confirmed = 1, confirm='55555' WHERE uname = :player $require_confirm";
+	$up = "UPDATE players SET confirmed = 1, confirm = 55555 WHERE uname = :player $require_confirm";
 	$statement = DatabaseConnection::$pdo->prepare($up);
 	$statement->bindValue(':player', $player_name);
 
@@ -236,7 +235,7 @@ function confirm_player($player_name, $confirmation=0, $autoconfirm=false) {
 
 // Check for reserved or already in use by another player.
 function ninja_name_available($ninja_name) {
-	$reserved = array("SysMsg", "NewUserList", "Admin", "Administrator", "A Stealthed Ninja");
+	$reserved = array('SysMsg', 'NewUserList', 'Admin', 'Administrator', 'A Stealthed Ninja');
 
 	foreach ($reserved as $l_names) {
 		if (strtolower($ninja_name) == strtolower($l_names)) {
@@ -349,8 +348,7 @@ function validate_signup($enteredName, $enteredEmail, $class_identity, $enteredR
 						$player_creation_error = create_account_and_ninja($send_name, $player_params); // Create the player.
 
 						if ($player_creation_error) {
-							$error .= "There was a problem with creating a player account. ".$player_creation_error.
-									" Please contact us as mentioned below: ";
+							$error .= 'There was a problem with creating a player account. Please contact us as mentioned below: ';
 						} else {
 							if (!$preconfirm) {
 								//  *** Continues the page display ***
