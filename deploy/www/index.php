@@ -10,20 +10,20 @@ $referrer        = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] :
 $is_logged_in    = is_logged_in();
 
 // Logout/already logged in/login behaviors
-if ($logout) { // on logout, kill the session and don't redirect. 
-	logout_user(); 
+if ($logout) { // on logout, kill the session and don't redirect.
+	logout_user();
 	$just_logged_out = true;
 //} elseif ($is_logged_in) {     // When user is already logged in.
-//	$logged_in['success'] = $is_logged_in; 
+//	$logged_in['success'] = $is_logged_in;
 } elseif ($login) { 	// Specially escaped password input, put into login.
 	$logged_in    = login_user(in('user', null, 'sanitize_to_text'), in('pass'));
 	$is_logged_in = $logged_in['success'];
 
 	if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
-		logout_user($echo=false, $redirect=false); 
-		$login_error = true;
+		logout_user($echo=false, $redirect=false);
+		$login_error = $logged_in['login_error'];
 	} else {
-		header("Location: index.php"); 
+		header("Location: index.php");
 		exit(); // Login redirect to prevent the refresh postback problem.
 	}
 }
@@ -45,8 +45,8 @@ if ($user_id) { // Only bother trying to change these if logged in.
 	$level       = getLevel($username);
 	$player_info = get_player_info();
 
-    // Unread message count.
-    $unread_message_count = unread_message_count();
+	// Unread message count.
+	$unread_message_count = unread_message_count();
 
 	$main_src = 'list_all_players.php';
 
@@ -56,8 +56,6 @@ if ($user_id) { // Only bother trying to change these if logged in.
 		$main_src = 'attack_player.php';
 	}
 }
-
-
 
 $options = array(/*'section_only'=>in('section_only'), */'is_index'=>true);
 

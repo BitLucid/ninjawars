@@ -1,18 +1,18 @@
 <h1>Login</h1>
 
 {if $logged_out}
-	<div class='notice'>You logged out!  Log in again below if you want.</div>
+<div class='notice'>You logged out! Log in again below if you want.</div>
 {/if}
 
 {if $login_error}
-	<div class='error'>
-		{$login_error}
-	</div>
+<div class='error'>
+  {$login_error}
+</div>
 {/if}
 
 {if $is_logged_in}
 <div>
-	You are already logged in!
+  You are already logged in!
 </div>
 {else}
 

@@ -9,7 +9,7 @@ if ($error = init($private, $alive)) {
 // Determines the user information for a certain email.
 function user_having_email($email) {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT pname, uname, confirmed, confirm FROM players WHERE lower(email) = lower(:email)");
+	$statement = DatabaseConnection::$pdo->prepare('SELECT pname, uname, confirmed, confirm FROM players WHERE lower(email) = lower(:email)');
 	$statement->bindValue(':email', $email);
 	$statement->execute();
 
@@ -21,19 +21,22 @@ function send_account_email($email, $data) {
 	/*$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 	$headers .= 'Reply-To: '.SUPPORT_EMAIL."\r\n";*/
-	
+
 	$_from = array(SYSTEM_MESSENGER_EMAIL=>SYSTEM_MESSENGER_NAME);
-	        
+
 	/* additional headers */
 	$_to = array("$email"=>$data['uname']);
-	$_subject = "NinjaWars Lost Password Request";
+	$_subject = 'NinjaWars Lost Password Request';
 	$_body = render_template('lostpass_email_body.tpl', array(
-	    'lost_uname'=>$data['uname'],
-	    'lost_pname'=>$data['pname'],
-	    'confirmed'=>$data['confirmed']));
+		    'lost_uname'   => $data['uname']
+			, 'lost_pname' => $data['pname']
+			, 'confirmed'  => $data['confirmed']
+		)
+	);
 
 	$mail_obj = new Nmail($_to, $_subject, $_body, $_from);
-    // Set the custom replyto email.
+
+    // *** Set the custom replyto email. ***
     $mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_FORMAL_NAME));
 	if (DEBUG) { $mail_obj->dump = true; }
 
@@ -47,18 +50,22 @@ function send_account_email($email, $data) {
 function send_confirmation_email($email, $data) {
 	$lost_confirm = $data['confirm'];
 	$lost_uname   = $data['uname'];
-	$confirmed = $data['confirmed'];
+	$confirmed    = $data['confirmed'];
 
 	/*$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 	$headers .= 'Reply-To: '.SUPPORT_EMAIL."\r\n";*/
-	
+
 	$_from = array(SYSTEM_MESSENGER_NAME=>SYSTEM_MESSENGER_EMAIL);
 	$_to = array("$email"=>$data['uname']);
 	$_subject = "NinjaWars Account Confirmation Info";
 	$_body = render_template('lostconfirm_email_body.tpl', array(
-	    'lost_uname'=>$lost_uname,
-	    'lost_confirm'=>$lost_confirm));
+	    	'lost_uname'     => $lost_uname
+			, 'lost_confirm' => $lost_confirm
+			, 'account_id'   => $data['account_id']
+		)
+	);
+
 	$mail_obj = new Nmail($_to, $_subject, $_body, $_from);
 	$mail_obj->setReplyTo(SUPPORT_EMAIL);
 
@@ -89,18 +96,18 @@ if (!$email && ($password_request || $confirmation_request)) {
 	    $sent = send_account_email($email, $data);
 
 	    if (!$sent) {
-	        $error = "There was a problem sending to that email, please allow a few minutes for the server load to go down,
-	        or else <a href='staff.php'>contact us</a> if the problem persists.";   
+	        $error = 'There was a problem sending to that email, please allow a few minutes for the server load to go down,
+	        or else <a href="staff.php">contact us</a> if the problem persists.';
 	    }
 	} else {
 	    // Confirmation request.
 	    if (!$data['confirmed']) {
-	        $error = "That account is already confirmed.  If you are having problems logging in, please <a href='staff.php'>Contact Us</a>.";
+	        $error = 'That account is already confirmed.  If you are having problems logging in, please <a href="staff.php">Contact Us</a>.';
 	    } else {
 	        $sent = send_confirmation_email($email, $data);
 	        if (!$sent) {
-	            $error = "There was a problem sending to that email, please allow a few minutes for the server load to go down,
-	             or else <a href='staff.php'>contact us</a> if the problem persists.";   
+	            $error = 'There was a problem sending to that email, please allow a few minutes for the server load to go down,
+	             or else <a href="staff.php">contact us</a> if the problem persists.';
 	        }
 	    }
 	}

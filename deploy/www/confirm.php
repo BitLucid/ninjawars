@@ -14,7 +14,7 @@ $user_to_confirm           = in('username');
 
 DatabaseConnection::getInstance();
 
-$statement = DatabaseConnection::$pdo->prepare("SELECT player_id, uname, confirm, confirmed, email, status, member, days, ip, created_date FROM players WHERE uname = :player");
+$statement = DatabaseConnection::$pdo->prepare('SELECT player_id, uname, confirm, confirmed, email, status, member, days, ip, created_date FROM players WHERE uname = :player');
 $statement->bindValue(':player', $user_to_confirm);
 $statement->execute();
 
@@ -23,8 +23,8 @@ if ($data = $statement->fetch()) {
 	$confirmed = $data['confirmed'];
 	$username  = $data['uname'];
 } else {
-	$check     = 
-	$confirmed = 
+	$check     =
+	$confirmed =
 	$username  = null;
 }
 
@@ -32,9 +32,9 @@ $confirmation_confirmed = false;
 
 if ($confirmed == 1) {
 	// Confirmation state from the database is already confirmed.
-} else if (($confirm == $check && $check != "" && $confirm != "") || $acceptable_admin_override) {
+} else if (($confirm == $check && $check != '' && $confirm != '') || $acceptable_admin_override) {
 	// Confirmation number matches whats in the dabase and neither is null, or the admin override was met.
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET confirmed = 1  WHERE uname = :player");
+	$statement = DatabaseConnection::$pdo->prepare('UPDATE accounts SET active = true WHERE account_id = :accountID');
 	$statement->bindValue(':player', $username);
 	$statement->execute();	// todo - test for success
 
