@@ -1,11 +1,11 @@
-<h1>Today's Duels</h1>
+<h1>Rumors from the War</h1>
 
 <div id='vicious-killer'>
     Current Fastest Killer: 
     <a id='vicious-killer-menu' href='player.php?player={$vicious_killer|escape:'url'|escape}'>{$vicious_killer|escape}</a>
 </div>
 
-<h3>Duel Log</h3>
+<h3>Rumors</h3>
 
 {if count($duels) gt 0}
 <ul id='duel-log'>
@@ -25,5 +25,5 @@ for {$duel.killpoints} killpoints on {$duel.date}
 	{/foreach}
 </ul>
 {else}
-<p>No duels for today yet.</p>
+<p>Nothing has happened yet today.</p>
 {/if}
