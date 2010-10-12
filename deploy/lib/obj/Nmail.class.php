@@ -150,6 +150,7 @@ class Nmail {
               
               if($this->reply_to){
                 $this->message->setReplyTo($this->reply_to);
+                $this->message->setSender($this->from); // Have to set sender when there's a different reply-to.
               }
 
 			$this->success = $this->mailer->send($this->message);
