@@ -272,7 +272,11 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
         $this->_grammar['FWS'] . '?\]' . $this->_grammar['CFWS'] . '?)';
     $this->_grammar['domain'] = '(?:' . $this->_grammar['dot-atom'] . '|' .
         $this->_grammar['domain-literal'] . ')';
+/* *** Changing acceptable grammar for email address, because the RFC is to strict ***
     $this->_grammar['addr-spec'] = '(?:' . $this->_grammar['local-part'] . '@' .
+        $this->_grammar['domain'] . ')';
+*/
+    $this->_grammar['addr-spec'] = '(?:[a-zA-Z0-9!#\.\$%&\'\*\+\-\/=\?\^_`\{\}\|~]+@' .
         $this->_grammar['domain'] . ')';
   }
   
