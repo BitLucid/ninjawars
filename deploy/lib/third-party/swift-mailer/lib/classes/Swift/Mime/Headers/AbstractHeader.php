@@ -276,6 +276,11 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
     $this->_grammar['addr-spec'] = '(?:' . $this->_grammar['local-part'] . '@' .
         $this->_grammar['domain'] . ')';
 */
+/*
+The original grammar for the mailbox name, local-part, was dot-atom|quoted-string. We're not allowing quoted string anymore, so focus on dot-atom
+dot-atom is dot-atom-text+, (go learn regular expressions). dot-atom-text is atext+, atext is a list of valid characters
+The new grammar is basically atext-extended+, which simply adds a period to the list of valid characters.
+*/
     $this->_grammar['addr-spec'] = '(?:[a-zA-Z0-9!#\.\$%&\'\*\+\-\/=\?\^_`\{\}\|~]+@' .
         $this->_grammar['domain'] . ')';
   }
