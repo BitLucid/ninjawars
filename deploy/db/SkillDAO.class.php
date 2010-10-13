@@ -44,7 +44,7 @@ class SkillDAO extends DataAccessObject {
 			$query .= ' AND COALESCE(class_skill_level, skill_level) <= :level2';
 		}
 
-		$statement = DatabaseConnection::$pdo->prepare($query);
+		$statement = DatabaseConnection::$pdo->prepare($query.' ORDER BY _class_id');
 		$statement->bindValue(':classID1', $p_classID);
 		$statement->bindValue(':classID2', $p_classID);
 
@@ -65,7 +65,7 @@ class SkillDAO extends DataAccessObject {
 			$query .= ' AND COALESCE(class_skill_level, skill_level) <= :level';
 		}
 
-		$statement = DatabaseConnection::$pdo->prepare($query);
+		$statement = DatabaseConnection::$pdo->prepare($query.' ORDER BY _class_id');
 		$statement->bindValue(':classID1', $p_classID);
 		$statement->bindValue(':classID2', $p_classID);
 		$statement->bindValue(':type', $p_type);
