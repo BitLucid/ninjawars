@@ -9,7 +9,7 @@ if ($error = init($private, $alive)) {
 // Determines the user information for a certain email.
 function user_having_email($email) {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare('SELECT pname, uname, confirmed, confirm FROM players WHERE lower(email) = lower(:email)');
+	$statement = DatabaseConnection::$pdo->prepare('SELECT pname, uname, confirmed, confirm, _account_id AS account_id FROM players JOIN account_players ON _player_id = player_id WHERE lower(email) = lower(:email)');
 	$statement->bindValue(':email', $email);
 	$statement->execute();
 
@@ -22,7 +22,7 @@ function send_account_email($email, $data) {
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 	$headers .= 'Reply-To: '.SUPPORT_EMAIL."\r\n";*/
 
-	$_from = array(SYSTEM_MESSENGER_EMAIL=>SYSTEM_MESSENGER_NAME);
+	$_from = array(SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME);
 
 	/* additional headers */
 	$_to = array("$email"=>$data['uname']);
@@ -37,7 +37,7 @@ function send_account_email($email, $data) {
 	$mail_obj = new Nmail($_to, $_subject, $_body, $_from);
 
     // *** Set the custom replyto email. ***
-    $mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_FORMAL_NAME));
+    $mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
 	if (DEBUG) { $mail_obj->dump = true; }
 
 	$sent = false;
@@ -56,7 +56,7 @@ function send_confirmation_email($email, $data) {
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
 	$headers .= 'Reply-To: '.SUPPORT_EMAIL."\r\n";*/
 
-	$_from = array(SYSTEM_MESSENGER_NAME=>SYSTEM_MESSENGER_EMAIL);
+	$_from = array(SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME);
 	$_to = array("$email"=>$data['uname']);
 	$_subject = "NinjaWars Account Confirmation Info";
 	$_body = render_template('lostconfirm_email_body.tpl', array(
@@ -67,7 +67,7 @@ function send_confirmation_email($email, $data) {
 	);
 
 	$mail_obj = new Nmail($_to, $_subject, $_body, $_from);
-	$mail_obj->setReplyTo(SUPPORT_EMAIL);
+	$mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
 
 	if (DEBUG) { $mail_obj->dump = true; }
 

@@ -13,9 +13,9 @@ define('SERVER_ROOT', __SERVER_ROOT__);		// *** The root deployment directory of
 define('WEB_ROOT', __WWW_ROOT__);			// *** The base URL used to access the game
 define('ADMIN_EMAIL', __ADMIN_EMAIL__);		// *** For logs/emailed errors.
 define('SUPPORT_EMAIL', __SUPPORT_EMAIL__);	// *** For public questions.
-define('SUPPORT_EMAIL_FORMAL_NAME', __SUPPORT_EMAIL_NAME__);
-define('SYSTEM_MESSENGER_EMAIL', __SYSTEM_EMAIL__);
-define('SYSTEM_MESSENGER_NAME', __SYSTEM_EMAIL_NAME__);
+define('SUPPORT_EMAIL_NAME', __SUPPORT_EMAIL_NAME__);
+define('SYSTEM_EMAIL', __SYSTEM_EMAIL__);
+define('SYSTEM_EMAIL_NAME', __SYSTEM_EMAIL_NAME__);
 define('ALERTS_EMAIL', __ALERTS_EMAIL__);
 define('TRAP_ERRORS', __TRAP_ERRORS__); // Whether to use the global error handler & oops page.
 

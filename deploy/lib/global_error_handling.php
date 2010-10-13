@@ -51,7 +51,7 @@ function sendErrorEmail($p_errorMsg) {
 	$headers = "MIME-Version: 1.0\r\n".
 		"Content-Type: text/plain; charset=ISO-8859-15\r\n".
 		"To: ".ALERTS_EMAIL."\r\n".
-		"From: ".SYSTEM_MESSENGER_EMAIL."\r\n".
+		"From: ".SYSTEM_EMAIL."\r\n".
 		'X-Mailer: PHP/' . phpversion();
 
 	mail(ALERTS_EMAIL, 'Ninjawars: Error', $p_errorMsg, $headers);
