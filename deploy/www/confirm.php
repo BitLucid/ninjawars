@@ -14,13 +14,13 @@ $aid                       = in('aid');
 
 DatabaseConnection::getInstance();
 
-$statement = DatabaseConnection::$pdo->prepare('SELECT player_id, uname, confirm, confirmed, email, status, member, days, ip, players.created_date FROM accounts JOIN account_players ON _account_id = account_id JOIN players ON _player_id = player_id WHERE account_id = :acctID');
+$statement = DatabaseConnection::$pdo->prepare('SELECT player_id, uname, confirm, confirmed, CASE WHEN active THEN 1 ELSE 0 END AS active, email, status, member, days, ip, players.created_date FROM accounts JOIN account_players ON _account_id = account_id JOIN players ON _player_id = player_id WHERE account_id = :acctID');
 $statement->bindValue(':acctID', $aid);
 $statement->execute();
 
 if ($data = $statement->fetch()) {
 	$check     = $data['confirm'];
-	$confirmed = $data['confirmed'];
+	$confirmed = $data['active'];
 	$username  = $data['uname'];
 } else {
 	$check     =

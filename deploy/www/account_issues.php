@@ -9,7 +9,7 @@ if ($error = init($private, $alive)) {
 // Determines the user information for a certain email.
 function user_having_email($email) {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare('SELECT pname, uname, confirmed, confirm, _account_id AS account_id FROM players JOIN account_players ON _player_id = player_id WHERE lower(email) = lower(:email)');
+	$statement = DatabaseConnection::$pdo->prepare('SELECT pname, uname, confirmed, confirm, account_id, CASE WHEN active THEN 1 ELSE 0 END AS active FROM players JOIN account_players ON _player_id = player_id JOIN accounts ON account_id = _account_id WHERE lower(email) = lower(:email)');
 	$statement->bindValue(':email', $email);
 	$statement->execute();
 
@@ -92,7 +92,7 @@ if (!$email && ($password_request || $confirmation_request)) {
 	if (!$data['uname'] || !$data['pname']) {
 	    $error = 'No user with that email exists. Please <a href="signup.php">sign up</a> for an account,
 	    or <a href="staff.php">contact us</a> if you have other account issues.';
-	} elseif ($password_request) {
+	} elseif ($password_request && $data['active']) {
 	    $sent = send_account_email($email, $data);
 
 	    if (!$sent) {
