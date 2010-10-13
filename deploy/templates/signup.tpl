@@ -40,7 +40,7 @@
 	  <label for='send_email'>Email Address:</label>
 	  <input id="send_email" type="text" name="send_email" class="textField" value="{$enteredEmail|escape}">
       <span>
-        Please add <strong>{$templatelite.const.SYSTEM_MESSENGER_EMAIL}</strong> to the safe email senders list of your email account to guarantee you receive your account and confirmation email.  This email address will only be used for confirmation purposes, never spammed, never shared.
+        Please add <strong>{$templatelite.const.SYSTEM_EMAIL}</strong> to the safe email senders list of your email account to guarantee you receive your account and confirmation email.  This email address will only be used for confirmation purposes, never spammed, never shared.
       </span>
       </div>
     </fieldset>

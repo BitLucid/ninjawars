@@ -167,8 +167,8 @@ function create_ninja($send_name, $params=array()) {
 function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
 	/*$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
-	$headers .= "From: ".SYSTEM_MESSENGER_NAME." <".SYSTEM_MESSENGER_EMAIL.">\r\n";
-	$headers .= "Reply-To: ".SUPPORT_EMAIL_FORMAL_NAME." <".SUPPORT_EMAIL.">\r\n";*/
+	$headers .= "From: ".SYSTEM_EMAIL_NAME." <".SYSTEM__EMAIL.">\r\n";
+	$headers .= "Reply-To: ".SUPPORT_EMAIL_NAME." <".SUPPORT_EMAIL.">\r\n";*/
 	//  ***  Sends out the confirmation email to the chosen email address.  ***
 
 	$class_display = class_display_name_from_identity($class_identity);
@@ -184,13 +184,13 @@ function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $
 		)
 	);
 
-	$_from = array(SYSTEM_MESSENGER_EMAIL=>SYSTEM_MESSENGER_NAME);
+	$_from = array(SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME);
 
 	// *** Create message object. ***
 	$message = new Nmail($_to, $_subject, $_body, $_from);
 
 	// *** Set replyto address. ***
-	$message->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_FORMAL_NAME));
+	$message->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
 	if (DEBUG) {$message->dump = true;}
 	$sent = false; // By default, assume failure.
 	$sent = $message->send();

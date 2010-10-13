@@ -9,9 +9,9 @@ if ($error = init($private, $alive)) {
 $mailto = 
 	"<a href=".
 	"\"mailto:".
-	htmlentities(rawurlencode("'".SUPPORT_EMAIL_FORMAL_NAME."' <".SUPPORT_EMAIL.">")).
+	htmlentities(rawurlencode("'".SUPPORT_EMAIL_NAME."' <".SUPPORT_EMAIL.">")).
 	'?subject='.rawurlencode('NinjaWars question: ')."\"".
-	">".out(SUPPORT_EMAIL_FORMAL_NAME)." &lt;".SUPPORT_EMAIL."&gt;</a>";
+	">".out(SUPPORT_EMAIL_NAME)." &lt;".SUPPORT_EMAIL."&gt;</a>";
 
 display_page(
 	'staff.tpl' // *** Main Template ***
