@@ -15,9 +15,9 @@
 	  <label for='key'>Password:</label>
 	  <input id="key" type="password" maxlength="50" name="key" class="textField">
 	 </div>
-	 <div>
-	  <label for='cpass'>Confirm Password:</label>
-	  <input id="cpass" type="password" maxlength="50" name="cpass" class="textField">
+	 <div style='margin-top:1.5em'>
+	  <label for='cpass'>Re-type Password:</label>
+	  <input id="cpass" type="password" maxlength="50" name="cpass" class='textField'>
 	 </div>
 	</fieldset>
 
