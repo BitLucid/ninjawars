@@ -41,7 +41,7 @@
 
                   </div>
                   <div class="chat-switch centered">
-                    <a id='full-chat-link' href="village.php" target="main">View older chat messages <img src="images/chat.png" alt="" style='width:10px;height:9px'> </a>
+                    <a id='full-chat-link' href="village.php" target="main">View full chat archive<img src="images/chat.png" alt="" style='width:10px;height:9px'> </a>
                   </div>
                 </div>
               </div>
