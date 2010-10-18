@@ -914,6 +914,7 @@ iframe {
 	font-style:italic;
 	color: gray;
 	display:inline-block;
+        margin-left:1em;
 }
 
 #full-chat .chat-messages {
