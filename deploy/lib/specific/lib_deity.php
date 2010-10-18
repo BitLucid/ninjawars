@@ -40,7 +40,7 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 	$max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30);
 	$players_unconfirmed = null;
 	DatabaseConnection::getInstance();
-	$sel_cur = DatabaseConnection::$pdo->query("SELECT count(*) FROM players WHERE confirmed = 1");
+	$sel_cur = DatabaseConnection::$pdo->query("SELECT count(*) FROM players WHERE active = 1");
 	$current_players = $sel_cur->fetchColumn();
 
 	if ($current_players < $keep_players) {
@@ -53,11 +53,11 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 
 	// Unconfirm at a maximum of 20 players at a time.
 	$unconfirm_within_limits = "UPDATE players
-		SET confirmed = $change_confirm_to
+		SET active = $change_confirm_to
 		WHERE players.player_id
 		IN (
 			SELECT player_id FROM players
-			WHERE confirmed = 1
+			WHERE active = 1
 			AND days > ".intval($unconfirm_days_over)."
 			ORDER BY player_id DESC	LIMIT $max_to_unconfirm)";
 	$update = DatabaseConnection::$pdo->query($unconfirm_within_limits);

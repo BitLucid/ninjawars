@@ -238,12 +238,17 @@ function confirm_player($player_name, $confirmation=0, $autoconfirm=false) {
 	$up = "UPDATE players SET active = 1, verification_number = 55555 WHERE uname = :player $require_confirm";
 	$statement = DatabaseConnection::$pdo->prepare($up);
 	$statement->bindValue(':player', $player_name);
+	
+	$up = "UPDATE accounts set operational = true where account_id = (select _account_id from account_players join players on player_id = _player_id where uname = :uname)";
+	$statement2 = DatabaseConnection::$pdo->prepare($up);
+	$statement2->bindValue(':uname', $player_name);
 
 	if ($require_confirm) {
 		$statement->bindValue(':confirmation', $confirmation);
 	}
 
 	$update_result = $statement->execute();
+	$statement2->execute();
 
 	return ($autoconfirm ? true : $update_result);
 }
