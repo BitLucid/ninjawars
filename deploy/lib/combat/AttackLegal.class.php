@@ -135,24 +135,24 @@ class AttackLegal
 			$this->error = 'Even the fastest ninja cannot act more than four times a second.';
 		} else if (empty($target->vo->uname)) {
 			$this->error = 'Your target does not exist.';
-		} else if (($target->player_id == $attacker->player_id) && !$self_use) {
+		} else if (($target->id() == $attacker->id()) && !$self_use) {
 			$this->error = 'Commiting suicide is a tactic reserved for samurai.';
 		} else if ($attacker->vo->turns < $required_turns) {
 			$this->error = 'You don\'t have enough turns for that, use speed scrolls or wait for the half hour to gain more turns.';
-		} else if (isset($_SESSION) && ($target->vo->ip == $account_ip) && ($account_ip != '127.0.0.1') && !$self_use) {
+		} else if (isset($_SESSION) && ($target->ip() == $account_ip) && ($account_ip != '127.0.0.1') && !$self_use) {
 			$this->error = 'You can not attack a ninja from the same domain.';
-		} else if ($target->vo->confirmed == 0) {
+		} else if ($target->vo->active == 0) {
 			$this->error = 'You can not attack an inactive ninja.';
-		} else if ($attacker->vo->confirmed == 0) {
+		} else if ($attacker->vo->active == 0) {
 		    $this->error = 'You cannot attack when your account is not confirmed.';
-		} else if ($target->vo->health < 1) {
+		} else if ($target->health() < 1) {
 			$this->error = 'Your target is a ghost.';
 		} else if ($target->hasStatus(STEALTH) && !$ignores_stealth) {
 			// Attacks that ignore stealth will skip this.
 			$this->error = 'Your target is stealthed. You can only hit this ninja using certain techniques.';
 		} else if ($clan_forbidden && ($target->getClan()->getID() == $attacker->getClan()->getID()) && ($attacker->getClan() == null) && !$self_use) {
 			$this->error = 'Your clan would outcast you if you attacked one of your own.';
-		} else if ($target->vo->health > 0) {
+		} else if ($target->health() > 0) {
 			$this->error = null;
 			return true;  //  ***  ATTACK IS LEGAL ***
 		} else {  //  *** CATCHALL ERROR MESSAGE ***

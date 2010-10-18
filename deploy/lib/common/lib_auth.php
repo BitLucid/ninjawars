@@ -13,21 +13,32 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 
 	if ($login != '' && $pass != '' && !$last_login_failure_was_recent) {
 		// Allow login via username or email.
-		$sql = "SELECT account_id, account_identity, uname, player_id, phash = crypt(:pass, phash) AS authenticated, CASE WHEN active THEN 1 ELSE 0 END AS active
+
+		// Pull the account data regardless of whether the password matches, but create an int about whether it does match or not.
+		// matches login string against active_email or username.
+		
+
+		$sql = "SELECT account_id, account_identity, uname, player_id, accounts.confirmed as confirmed,
+		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated,
+		    CASE WHEN accounts.operational THEN 1 ELSE 0 END AS active
 			FROM accounts
 			JOIN account_players ON account_id = _account_id
 			JOIN players ON player_id = _player_id
-			WHERE (lower(active_email) = :login OR lower(uname) = :login)";
+			WHERE (lower(active_email) = :login
+					OR lower(uname) = :login)";
 
 		$result = query($sql, array(':login'=>$login, ':pass'=>$pass));
 
-		$result = $result->fetch();
-
-		if ($result) { // *** Exactly one result found, return it ***
-			return $result;
-		} else { // *** No result found, login failure ***
+		if ($result->rowCount() < 1) {	// *** No record was found, user does not exist ***
 			update_last_login_failure(potential_account_id_from_login_username($login));
 			return false;
+		} else {
+			if($result->rowCount()>1){
+		// Just for later reference, check for duplicate usernames via: 
+		//select array_accum(uname), count(*) from players group by lower(trim(uname)) having count(*) > 1;
+				error_log('Case-insensitive duplicate username found: '.$login);
+			}
+			return $result->fetch();
 		}
 	} else {
 		// Update the last login failure timestamp.
@@ -50,14 +61,17 @@ function login_user($dirty_user, $p_pass) {
 		SESSION::set('account_id', $p_account_id);
 		update_activity_log($p_username);
 		update_last_logged_in($p_player_id);
-		$up = "UPDATE players SET confirmed = 1 WHERE player_id = :char_id";
+		$up = "UPDATE players SET active = 1 WHERE player_id = :char_id";
 		query($up, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
 	}
 
 	$success = false;
 	$error   = 'That password/username combination was incorrect.';
 
-	if (($data = authenticate($dirty_user, $p_pass)) && (bool)$data['authenticated']) {
+	// Just checks whether the username and password are correct.
+	$data = authenticate($dirty_user, $p_pass);
+
+	if ($data) {
 		if (is_array($data)) {
 			if ((bool)$data['authenticated']) {
 				if ((bool)$data['active']) {
@@ -71,6 +85,8 @@ function login_user($dirty_user, $p_pass) {
 					$error = 'You must activate your account before logging in.';
 				}
 			}
+
+			// The LOGIN FAILURE case occurs here, and is the default.
 		}
 	}
 
@@ -122,9 +138,7 @@ function get_account_ip() {
 	if ($ip) {
 		return $ip;
 	} else {
-		$info = get_player_info();
-		$ip = $info['ip'];
-		return $ip;
+		return account_info(account_id(), 'ip');
 	}
 }
 
@@ -164,9 +178,6 @@ function validate_password($password_to_hash) {
 
 	return $error;
 }
-
-define('UNAME_LOWER_LENGTH', 3);
-define('UNAME_UPPER_LENGTH', 24);
 
 // Function for account creation to return the reasons that a username isn't acceptable.
 function validate_username($send_name) {
@@ -382,7 +393,7 @@ function membership_and_combat_stats($update_past_stats=false) {
 	}
 
 	$stats['vicious_killer'] = $todaysViciousKiller;
-	$pc = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE confirmed = 1");
+	$pc = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE active = 1");
 	$stats['player_count'] = $pc->fetchColumn();
 
 	$po = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true");

@@ -4,8 +4,20 @@
 **/
 
 // Pull account data in a * like manner.
-function account_info($account_id){
-	return query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
+function account_info($account_id, $specific=null){
+	$res = query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
+	if($specific){
+		if(isset($res[$specific])){
+			$res = $res[$specific];
+		} else {
+			$res = null;
+		}
+	}
+	return $res;
+}
+
+function account_info_by_char_id($char_id){
+	return query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', array(':char_id'=>array($char_id, PDO::PARAM_INT)));
 }
 
 function validate_account($ninja_id, $email, $password_to_hash) {
@@ -49,8 +61,8 @@ function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1
 
 	$newID = query_item("SELECT nextval('accounts_account_id_seq')");
 
-	$ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, active)
-		VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 8)), :type, :active)";
+	$ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, operational)
+		VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 8)), :type, :operational)";
 
 	$email = strtolower($email);
 
@@ -60,7 +72,7 @@ function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1
 	$statement->bindParam(':email2', $email);
 	$statement->bindParam(':password', $password_to_hash);
 	$statement->bindParam(':type', $type, PDO::PARAM_INT);
-	$statement->bindParam(':active', $active, PDO::PARAM_INT);
+	$statement->bindParam(':operational', $active, PDO::PARAM_INT);
 	$statement->execute();
 
 /*
@@ -150,18 +162,16 @@ function create_ninja($send_name, $params=array()) {
 
 	// Create the initial player row.
 	$playerCreationQuery= "INSERT INTO players
-		 (uname, pname, health, strength, gold, messages, kills, turns, confirm, confirmed,
-		  email, _class_id, level,  status, member, days, ip, bounty, created_date)
+		 (uname, health, strength, gold, messages, kills, turns, verification_number, active,
+		  _class_id, level,  status, member, days, ip, bounty, created_date)
 		 VALUES
-		 (:username, :pass, '150', '5', '100', '', '0', '180', :confirm, :preconfirm,
-		 :email, (SELECT class_id FROM class WHERE identity = :class_identity), '1', '1', '0', '0', '', '0', now())";
+		 (:username, '150', '5', '100', '', '0', '180', :verification_number, :active,
+		 (SELECT class_id FROM class WHERE identity = :class_identity), '1', '1', '0', '0', '', '0', now())";
 	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 	$statement = DatabaseConnection::$pdo->prepare($playerCreationQuery);
 	$statement->bindValue(':username', $send_name);
-	$statement->bindValue(':pass', $send_pass);
-	$statement->bindValue(':confirm', $confirm);
-	$statement->bindValue(':preconfirm', $preconfirm);
-	$statement->bindValue(':email', $send_email);
+	$statement->bindValue(':verification_number', $confirm);
+	$statement->bindValue(':active', $preconfirm);
 	$statement->bindValue(':class_identity', $class_identity);
 	$statement->execute();
 	return get_char_id($send_name);
@@ -224,8 +234,8 @@ function create_account_and_ninja($send_name, $params=array()) {
 function confirm_player($player_name, $confirmation=0, $autoconfirm=false) {
 	DatabaseConnection::getInstance();
 	// Preconfirmed or the email didn't send, so automatically confirm the player.
-	$require_confirm = ($autoconfirm ? '' : ' AND confirm = :confirmation ');
-	$up = "UPDATE players SET confirmed = 1, confirm = 55555 WHERE uname = :player $require_confirm";
+	$require_confirm = ($autoconfirm ? '' : ' AND active = :confirmation ');
+	$up = "UPDATE players SET active = 1, verification_number = 55555 WHERE uname = :player $require_confirm";
 	$statement = DatabaseConnection::$pdo->prepare($up);
 	$statement->bindValue(':player', $player_name);
 
@@ -290,8 +300,8 @@ function validate_signup_phase4($enteredClass) {
 }
 
 function pauseAccount($p_playerID) {
-	$accountActiveQuery = 'UPDATE accounts SET active = false WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)';
-	$playerConfirmedQuery = 'UPDATE players SET confirmed = 0 WHERE player_id = :pid';
+	$accountActiveQuery = 'UPDATE accounts SET operational = false WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)';
+	$playerConfirmedQuery = 'UPDATE players SET active = 0 WHERE player_id = :pid';
 
 	$statement = DatabaseConnection::$pdo->prepare($playerConfirmedQuery);
 	$statement->bindValue(':pid', $p_playerID);
@@ -313,16 +323,10 @@ function changePassword($p_playerID, $p_newPassword) {
 
 function changeEmail($p_playerID, $p_newEmail) {
 	$changeEmailQuery1 = "UPDATE accounts SET account_identity = :identity, active_email = :email WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
-	$changeEmailQuery2 = "UPDATE players SET email = :email WHERE player_id = :id";
 
 	$statement = DatabaseConnection::$pdo->prepare($changeEmailQuery1);
 	$statement->bindValue(':pid', $p_playerID);
 	$statement->bindValue(':identity', $p_newEmail);
-	$statement->bindValue(':email', $p_newEmail);
-	$statement->execute();
-
-	$statement = DatabaseConnection::$pdo->prepare($changeEmailQuery2);
-	$statement->bindValue(':id', $p_playerID);
 	$statement->bindValue(':email', $p_newEmail);
 	$statement->execute();
 }

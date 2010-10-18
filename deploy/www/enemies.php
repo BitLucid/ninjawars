@@ -4,7 +4,7 @@ require_once(LIB_ROOT."specific/lib_player_list.php");
 // Search for enemies to add.
 function get_enemy_matches($match_string) {
 	$user_id = get_user_id();
-	$sel = "SELECT player_id, uname FROM players WHERE uname ~* :matchString AND confirmed = 1 AND player_id != :user ORDER BY level LIMIT 11";
+	$sel = "SELECT player_id, uname FROM players WHERE uname ~* :matchString AND active = 1 AND player_id != :user ORDER BY level LIMIT 11";
 	$enemies = query_array($sel, array(
 		':matchString' => $match_string
 		, ':user' => $user_id
@@ -81,7 +81,9 @@ function get_recent_attackers() {
 	$user_id = get_user_id();
 	DatabaseConnection::getInstance();
 
-	$statement = DatabaseConnection::$pdo->prepare('SELECT DISTINCT player_id, send_from, uname, level, health FROM events JOIN players ON send_from = player_id WHERE send_to = :user LIMIT 20');
+	$statement = DatabaseConnection::$pdo->prepare(
+		'SELECT DISTINCT player_id, send_from, uname, level, health 
+		FROM events JOIN players ON send_from = player_id WHERE send_to = :user LIMIT 20');
 	$statement->bindValue(':user', $user_id);
 	$statement->execute();
 
@@ -92,10 +94,10 @@ function get_recent_attackers() {
 function nearby_peers($char_id/*, $limit=5*/) {
 	$sel =
 		"(SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id WHERE score >
-            (SELECT score FROM player_rank WHERE _player_id = :char_id) AND confirmed = 1 AND health > 0 ORDER BY score ASC LIMIT 5)
+            (SELECT score FROM player_rank WHERE _player_id = :char_id) AND active = 1 AND health > 0 ORDER BY score ASC LIMIT 5)
         UNION
         (SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id WHERE score <
-            (SELECT score FROM player_rank WHERE _player_id = :char_id2) AND confirmed = 1 AND health > 0 ORDER BY score DESC LIMIT 5)";
+            (SELECT score FROM player_rank WHERE _player_id = :char_id2) AND active = 1 AND health > 0 ORDER BY score DESC LIMIT 5)";
 	$peers = query_array($sel, array(
 		':char_id'=>array($char_id, PDO::PARAM_INT)
 		, ':char_id2'=>array($char_id, PDO::PARAM_INT)

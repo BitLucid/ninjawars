@@ -31,4 +31,8 @@ define('TEMPLATE_PATH', SERVER_ROOT.'templates/'); // ** For templates.
 define('LOCAL_JS', (DEBUG||OFFLINE));
 define('MAX_MSG_LENGTH', 750);
 define('MAX_CLAN_MSG_LENGTH', MAX_MSG_LENGTH - strlen('clan: '));
+
+// username upper and lower
+define('UNAME_LOWER_LENGTH', 3);
+define('UNAME_UPPER_LENGTH', 24);
 ?>

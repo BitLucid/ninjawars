@@ -155,10 +155,10 @@ function class_theme($class_identity) {
 **/
 function create_avatar_url($player, $size=null) {
 	// If the avatar_type is 0, return '';
-	if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email) {
-		return '';
-	} else {	// Otherwise, user the player info for creating a gravatar.
-		$email       = $player->vo->email;
+    if (!$player->vo || !$player->vo->avatar_type || !$player->email()) {
+        return '';
+    } else {	// Otherwise, user the player info for creating a gravatar.
+		$email       = $player->email();
 		$avatar_type = $player->vo->avatar_type;
 		return create_gravatar_url_from_email($email, $avatar_type, $size);
 	}

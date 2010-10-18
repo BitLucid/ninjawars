@@ -24,7 +24,7 @@
 <h3>Enemies</h3>
 <ul>
 	{foreach from=$enemy_list item="loop_enemy" key="loop_enemy_id"}
-		{if $loop_enemy.confirmed}
+		{if $loop_enemy.active}
 			{if $loop_enemy.health gt 0}
 				{assign var="status_class" value=""}
 				{assign var="action" value="Attack"}

@@ -304,17 +304,18 @@ function clans_ranked() {
 	return $res;
 }
 
+
 function get_ranked_clan_members($p_clan_id) {
-	$members_array = query_array('SELECT uname, email, clan_name, level, days, clan_founder, player_id, member_level
+	$members_array = query_array('SELECT uname, accounts.active_email as email, clan_name, level, days, clan_founder, player_id, member_level
 			FROM clan
 			JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-			JOIN players ON player_id = _player_id AND confirmed = 1 ORDER BY level, health DESC',
+			JOIN players ON player_id = clan_player._player_id join account_players on player_id = account_players._player_id join accounts on account_id = _account_id AND players.active = 1 ORDER BY level, health DESC',
 			array(':clan_id'=>$p_clan_id));
 
 	$max = query_item('SELECT max(level) AS max
 		FROM clan
 		JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-		JOIN players ON player_id = _player_id AND confirmed = 1',
+		JOIN players ON player_id = _player_id AND active = 1',
 		array(':clan_id'=>$p_clan_id));
 
 	// Modify the members by reference

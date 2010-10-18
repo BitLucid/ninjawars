@@ -144,6 +144,11 @@ class Player
 	public function death() {
 		$this->resetStatus();
 	}
+	
+	public function email() {
+		$account = account_info_by_char_id($this->id());
+		return $account['active_email'];
+	}
 
     // Pull the data of the player obj as an array.
     public function data() {
@@ -237,6 +242,11 @@ class Player
 	// Return the current percentage health.
 	public function health_percent() {
 	    return health_percent($this->health(), $this->level());
+	}
+
+	
+	public function ip(){
+		return account_info_by_char_id($this->id(), 'ip');
 	}
 }
 ?>
