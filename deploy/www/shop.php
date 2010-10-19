@@ -17,7 +17,7 @@ $item_identity = $item_info['item_internal_name'];
 $grammar           = "";
 $username          = get_char_name();
 $char_id           = get_char_id();
-$gold              = first_value(getGold($username), 0);
+$gold              = get_gold($char_id);
 $current_item_cost = 0;
 $is_logged_in      = is_logged_in();
 
@@ -49,7 +49,7 @@ if ($in_purchase == 1 && $item) {
 	    $not_enough_gold = true;
 	} else { // Has enough gold.
 		add_item($char_id, $item_identity, $quantity);
-		subtractGold($username, $current_item_cost);
+		subtract_gold($char_id, $current_item_cost);
 
 	}
 }
