@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT.'specific/lib_inventory.php');
 /*
  * Deals with the skill based attacks, and status effects.
  *
@@ -55,6 +56,7 @@ $class           = $player->vo->class;
 $covert          = false;
 $victim_alive    = true;
 $attacker_id     = $username;
+$attacker_char_id = get_char_id();
 $starting_turns  = $player->vo->turns;
 $ending_turns    = null;
 
@@ -85,9 +87,6 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		$covert = true;
 
 		if ($starting_turns >= $turn_cost) {
-			//$msg = "You have had sight cast on you by $attacker_id at $today";
-			//sendMessage($attacker_id, $target->vo->uname, $msg);
-			//$target->subtractStatus(STEALTH);
 			// Sight will no longer break stealth.
 
 			$statement = DatabaseConnection::$pdo->prepare("SELECT uname, class_name AS class, health, strength, gold, kills, turns, level FROM players JOIN class ON _class_id = class_id WHERE player_id = :player");
@@ -128,11 +127,11 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			$target_gold   = $target->vo->gold;
 			$gold_decrease = ($target_gold < $gold_decrease ? $target_gold : $gold_decrease);
 
-			changeGold($username, $gold_decrease); // *** This one actually adds the value.
-			subtractGold($target->vo->uname, $gold_decrease); // *** Subtracts whatever positive value is put in.
+			add_gold($char_id, $gold_decrease); // *** This one actually adds the value.
+			subtract_gold($target->id(), $gold_decrease); // *** Subtracts whatever positive value is put in.
 
 			$msg = "You have had pick pocket cast on you for $gold_decrease by $attacker_id at $today";
-			sendMessage($attacker_id, $target->vo->uname, $msg);
+			send_message($attacker_char_id, $target->id(), $msg);
 
 			$result = "You have stolen $gold_decrease gold from $target!<br>\n";
 		} else {
@@ -208,7 +207,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			echo "$target has taken $target_damage damage!<br>\n";
 
 			$msg = "You have been poisoned by $attacker_id at $today";
-			sendMessage($attacker_id, $target->vo->uname, $msg);
+			send_message($attacker_char_id, $target->id(), $msg);
 		} else {
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
@@ -224,7 +223,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			}
 
 			$msg = "You have had fire bolt cast on you by $attacker_id at $today";
-			sendMessage($attacker_id, $target->vo->uname, $msg);
+			send_message($attacker_char_id, $target->id(), $msg);
 		} else {
 			$turn_cost = 0;
 			echo "You do not have enough turns to cast $command.\n";
@@ -247,7 +246,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
     		    $target->addStatus(HEALING);
     		    $result = $target->name()." healed by $healed_by to $new_health.<br>";
     		    if($target->name() != $player->name()){
-        		    sendMessage($attacker_id, $target->name(), 
+        		    send_message($attacker_char_id, $target->id(), 
         		        "You have been healed by $attacker_id at $today for $healed_by.");
         		}
             }
@@ -264,7 +263,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
     			$target->subtractStatus(STEALTH);
 
     			$msg = "Ice bolt cast on you by $attacker_id at $today, your turns have been reduced by $turns_decrease.";
-    			sendMessage($attacker_id, $target->vo->uname, $msg);
+    			send_message($attacker_char_id, $target->id(), $msg);
 
     			$result = "$target's turns reduced by $turns_decrease!<br>\n";
     		} else {
@@ -287,7 +286,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 					addTurns($username, $turns_decrease);
 
 					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id at $today";
-					sendMessage($attacker_id, $target->vo->uname, $msg);
+					send_message($attacker_char_id, $target->id(), $msg);
 
 					$result = "You cast Cold Steal on $target and take $turns_decrease turns.<br>\n";
 				} else {
@@ -314,10 +313,10 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 	if (!$victim_alive) {
 		if ($target->player_id != $player->player_id) {
 			$gold_mod = 0.15;
-			$loot     = round($gold_mod * getGold($target->vo->uname));
+			$loot     = round($gold_mod * get_gold($target->id()));
 
-			subtractGold($target->vo->uname, $loot);
-			addGold($username, $loot);
+			subtract_gold($target->id(), $loot);
+			add_gold($username, $loot);
 
 			addKills($username, 1);
 
@@ -339,7 +338,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			}
 
 			$target_message = "$attacker_id has killed you with $command on $today and taken $loot gold.";
-			sendMessage($attacker_id, $target->vo->uname, $target_message);
+			send_message($attacker_char_id, $target->id(), $target_message);
 
 			$attacker_message = "You have killed $target with $command on $today and taken $loot gold.";
 			sendMessage($target->vo->uname, $username, $attacker_message);
@@ -366,7 +365,11 @@ display_template('defender_health.tpl', array('health'=>$target->health(), 'heal
 ?>
   </div>
   <div class="skillReload">
-    <a href="skills_mod.php?command=<?php echo urlencode($command); ?>&amp;target=<?php echo $target->player_id; ?>">Use <?php echo $command; ?> again.</a>
+    <button>
+    	<a href="skills_mod.php?command=<?php echo urlencode($command); ?>&amp;target=<?php echo $target->player_id; ?>">
+    		Use <?php echo $command; ?> again
+    	</a>
+    </button>
   </div>
   <br>
   <div class="LinkBack">

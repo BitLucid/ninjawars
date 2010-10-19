@@ -45,7 +45,7 @@ class AttackLegal
 	* The error that comes with the illegal attack, if any.
 	* @var string
 	*/
-	private $_error;
+	private $error;
 	private $attacker;
 	private $target;
 
@@ -68,8 +68,8 @@ class AttackLegal
 
 		if ($attacker_name_or_id) {
 			$this->attacker = new Player($attacker_name_or_id);
-		} elseif ($username = get_username()) {
-			$this->attacker = new Player($username);
+		} elseif ($char_id = get_char_id()) { // Pull logged in char_id.
+			$this->attacker = new Player($char_id);
 		}
 
 		if ($target_name_or_id) {
@@ -89,15 +89,12 @@ class AttackLegal
 	**/
 	public function check($update_timer = true) {
 		$attacker = $this->attacker;
-		$target = $this->target;
-
+		$target   = $this->target;
 		$possible = array('required_turns', 'ignores_stealth', 'self_use', 'clan_forbidden');
-
 		// *** Initializes all the possible param indexes. ***
 		foreach ($possible as $loop_index) {
 			$$loop_index = (isset($this->params[$loop_index]) ? $this->params[$loop_index] : NULL);
 		}
-
 		if (!is_object($this->attacker)) {
 			$this->error = 'Only Ninja can get close enough to attack.';
 			return FALSE;
@@ -110,21 +107,16 @@ class AttackLegal
 		}
 
 		$second_interval_limiter_on_attacks = '.25'; // Originally .2
-
 		$sel_last_started_attack = "SELECT player_id FROM players
-			WHERE player_id = :user
-			AND ((now() - interval '".$second_interval_limiter_on_attacks." second') >= last_started_attack) LIMIT 1";
+			WHERE player_id = :char_id
+			AND ((now() - interval '$second_interval_limiter_on_attacks second') >= last_started_attack) LIMIT 1";
 		// *** Returns a player id if the enough time has passed, or else or false/null. ***
-
-		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare($sel_last_started_attack);
-		$statement->bindValue(':user', intval($this->attacker->player_id));
-		$statement->execute();
-
-		$attack_later_than_limit = $statement->fetchColumn();
+		$attack_later_than_limit = query_item($sel_last_started_attack, 
+				array(':char_id'=>intval($this->attacker->id()))
+				);
 
 		if ($attack_later_than_limit && $update_timer) { // *** If not too soon, update the attack limit. ***
-			update_last_attack_time($attacker->vo->player_id);
+			update_last_attack_time($attacker->id());
 			// updates the timestamp of the last_attacked column to slow excessive attacks.
 		}
 		

@@ -402,7 +402,7 @@ if (isset($target)) {
 
     display_template('defender_health.tpl', array('health'=>$target_player->health(), 'health_percent'=>$target_player->health_percent(), 'target_name'=>$target_player->name()));
 
-	echo "<div>Return to <a href=\"player.php?player=".urlencode($target)."\">".out($target)."'s Info</a></div>Or \n";
+	echo "<div>Return to <button><a class='char-name' href=\"player.php?player=".urlencode($target)."\">".out($target)."'s Info</a></button></div>Or \n";
 }
 
 echo "Start your combat <a href=\"list.php\"> from the ninja list.</a>\n<br>\n";
