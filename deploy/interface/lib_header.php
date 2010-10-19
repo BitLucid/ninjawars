@@ -21,23 +21,24 @@ function finalize(){
 }*/
 
 
-// Places much of the user into into the global namespace.
+// Places much of the user info into the global namespace.
 function globalize_user_info($private=true, $alive=true) {
 	global $username;
+	global $char_id;
 	$error = null;
+	$char_id = get_char_id(); // Will default to null.
+	//$username = get_username(); // Will default to null.
 
-	$username = get_username(); // Will default to null.
-
-	if ((!is_logged_in() || !$username) && $private) {
+	if ((!is_logged_in() || !$char_id) && $private) {
 		$error = 'log_in';
 		// A non-null set of content being in the error triggers a die at the end of the header.
-	} elseif ($username) {
+	} elseif ($char_id) {
 		// **************** Player information settings. *******************
 		global $player, $player_id;
 		// Polluting the global namespace here.  Booo.
 
-		$player = new Player($username); // Defaults to current session user.
-
+		$player = new Player($char_id); // Defaults to current session user.
+		$username = $player->name(); // Set the global username.
 		$player_id = $player->player_id;
 
 		assert('isset($player_id)');
