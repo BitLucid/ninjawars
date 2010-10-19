@@ -79,7 +79,7 @@ function inventory_counts($char_id){
 	return query_resultset($sql, array(':owner'=>array($char_id, PDO::PARAM_INT)));
 }
 
-// TODO: This should get the costs for each of the items from the database.
+// Pulls the shop items costs and all.
 function item_for_sale_costs(){
 	$sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item where for_sale = TRUE';
 	$items_data = query_resultset($sel);

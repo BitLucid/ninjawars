@@ -17,6 +17,7 @@ $description[] = 'A few men that do seem to be associated with the doshin doze n
 $target   = in('target');
 $command  = in('command');
 $username = get_username();
+$char_id  = get_char_id();
 $amount   = intval(in('amount'));
 $bribe    = intval(in('bribe'));
 $bounty   = intval(in('bounty'));
@@ -43,10 +44,12 @@ if ($command == 'Offer Bounty') {
 					$amount = (5000 - $target_bounty);
 				}
 
-				if (getGold($username) >= $amount) {
+				if (get_gold($char_id) >= $amount) {
 					addBounty($target, $amount);
-					subtractGold($username, $amount);
-					sendMessage($username, $target, "$username has offered $amount gold in reward for your head!");
+
+					subtract_gold($char_id, $amount);
+					send_message($char_id, get_char_id($target), "$username has offered $amount gold in reward for your head!");
+					
 					$success = true;
 					$quickstat = 'player';
 				} else {
@@ -60,8 +63,8 @@ if ($command == 'Offer Bounty') {
 		}
 	}
 } else if ($command == 'Bribe') {
-	if ($bribe <= getGold($username) && $bribe > 0) {
-		subtractGold($username, $bribe);
+	if ($bribe <= get_gold($char_id) && $bribe > 0) {
+		subtract_gold($char_id, $bribe);
 		subtractBounty($username, ($bribe/2));
 
 		$location    = 'Behind the Doshin Office';
@@ -71,7 +74,7 @@ if ($command == 'Offer Bounty') {
 
 		$quickstat = 'player';
 	} else if ($bribe < 0) { // A negative bribe was put in, which on the 21st of March, 2007, was a road to instant wealth, as a bribe of -456345 would increase both your bounty and your gold by 456345, so this will flag players as bugabusers until it becomes a standard-use thing.
-		if (getGold($username) > 1000) { //  *** If they have more than 1000 gold, their bounty will be mostly removed by this event.
+		if (get_gold($char_id) > 1000) { //  *** If they have more than 1000 gold, their bounty will be mostly removed by this event.
 			$bountyGoesToNearlyZero = (getBounty($username) * .7);
 			subtractBounty($username, $bountyGoesToNearlyZero);
 		}

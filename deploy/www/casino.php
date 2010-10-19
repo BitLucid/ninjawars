@@ -32,14 +32,14 @@ function casino_results($char_id, $incoming_bet){
 
     		if ($answer == 1) {
     			$state = CASINO_WIN;
-    			$current_gold = addGold($username, $bet);
+    			$current_gold = add_gold($char_id, $bet);
 
     			if ($bet >= round(MAX_BET*0.99)) {
     			    // within about 1% of the max bet & you win, you get a reward item.
     				add_item($char_id, $reward, 1);
     			}
     		} else if ($answer == 2) {
-    			$current_gold = subtractGold($username, $bet);
+    			$current_gold = subtract_gold($char_id, $bet);
     			$state = CASINO_LOSE;
     		}
     	} else {

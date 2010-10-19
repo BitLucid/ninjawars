@@ -14,7 +14,7 @@ $user_id = get_char_id();
 $inv_counts = inventory_counts($user_id);
 $inventory = array();
 
-$gold = getGold($username);
+$gold = get_gold($char_id);
 
 if ($inv_counts) {
     // Standard item info.

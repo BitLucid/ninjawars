@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT.'specific/lib_inventory.php');
 $private   = false;
 $alive     = true;
 
@@ -29,14 +30,14 @@ if ($worked && is_numeric($worked)) {
 // Work only if the work was requested, not just if the setting was set.
 if ($worked > 0) {
 	$turns = getTurns($username);
-	$gold  = getGold($username);
+	$gold  = get_gold($char_id);
 
 	if ($worked > $turns) {
 	    $not_enough_energy = true;
 	} else {
 		$new_gold  = $worked * $work_multiplier;   // *** calc amount worked ***
 
-		$gold  = addGold($username, $new_gold);
+		$gold  = add_gold($char_id, $new_gold);
 		$turns = subtractTurns($username, $worked);
 
 		$use_second_description = true;
