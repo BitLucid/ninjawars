@@ -64,30 +64,17 @@ function subtractHealth($who, $amount) {
 // ************************************
 
 function getGold($who) {
-	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT gold FROM players WHERE uname = :user");
-	$statement->bindValue(':user', $who);
-	$statement->execute();
-
-	return $statement->fetchColumn();
+	if(DEBUG){
+		throw new Exception('Use of deprecated function "getGold" from commands.php, should be replaced with get_gold($char_id)');
+	}
+	return get_gold(get_char_id($who));
 }
 
 function changeGold($who, $amount) {
-	$amount = (int)$amount;
-
-	if (abs($amount) >  0) {
-		$dbconn = DatabaseConnection::getInstance();
-
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET gold = gold + ".
-		   "CASE WHEN gold + :amount < 0 THEN gold*(-1) ELSE :amount2 END ".
-		   "WHERE uname = :user");
-		$statement->bindValue(':amount', $amount);
-		$statement->bindValue(':amount2', $amount);
-		$statement->bindValue(':user', $who);
-		$statement->execute();
+	if(DEBUG){
+		throw new Exception('Use of deprecated function "changeGold" from commands.php, should be replaced with add_gold($char_id, $amount)');
 	}
-
-	return getGold($who);
+	return add_gold(get_char_id($who), $amount);
 }
 
 function addGold($who, $amount) {

@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT.'specific/lib_inventory.php');
 $private    = true;
 $alive      = true;
 
@@ -21,7 +22,7 @@ function casino_results($char_id, $incoming_bet){
     $username = get_char_name($char_id);
     set_setting('bet', $bet);
     
-    $current_gold = getGold($username);
+    $current_gold = get_gold($char_id);
     
     define('MAX_BET', 1000);
     $state = CASINO_DEFAULT;

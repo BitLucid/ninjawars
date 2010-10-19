@@ -91,6 +91,27 @@ function item_for_sale_costs(){
 	return $item_costs;
 }
 
+// Pull the gold a user has.
+function get_gold($char_id){
+	return query_item('SELECT gold FROM players WHERE player_id = :char_id', array(':char_id'=>$char_id));
+}
+
+// Add to the gold of a user.
+function add_gold($char_id, $amount){
+	$amount = (int)$amount;
+	if (abs($amount) >  0) { // Only update anything if it's a non-null non-zero value.
+		query('UPDATE players SET 
+			gold = gold + CASE WHEN gold + :amount < 0 THEN gold*(-1) ELSE :amount2 END where player_id = :char_id', 
+				array(':char_id'=>$char_id, ':amount'=>$amount));
+	}
+	return get_gold($char_id);
+}
+
+// Negative brother of the add_gold function.
+function subtract_gold($char_id, $amount){
+	return add_gold($char_id, $amount*-1);
+}
+
 // Benefits for near-equivalent levels.
 function nearLevelPowerIncrease($level_difference, $max_increase) {
 	$res = 0;
