@@ -46,7 +46,7 @@ if (($turns = getTurns($username)) > 0) {
 					add_item($char_id, 'dimmak', 1);
 				} else if ($player_turns > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
 					$oni_killed = true;
-					add_item($char_id, 'Ginseng Root', 4);
+					add_item($char_id, 'ginsengroot', 4);
 				} else {
 					$oni_killed = false;
 				}
