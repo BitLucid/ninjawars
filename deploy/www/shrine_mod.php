@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT."specific/lib_inventory.php");
 $private   = false;
 $alive     = false;
 
@@ -122,7 +123,7 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 		if ($current_health > 0) {  // *** Requires the user to be resurrected first. ***
 			if ($heal_points && $heal_points > 0) {  // *** Requires a heal number, and a positive one. ***
 				if ($total_cost <= $startingGold) {   // *** If there's enough money for the amount that they want to heal. ***
-					subtractGold($player->vo->uname, $total_cost);
+					subtract_gold($player->id(), $total_cost);
 					$player->vo->health = $finalHealth = addHealth($player->vo->uname, $heal_points);
 
 					$fully_healed = ($finalHealth >= $max_health); // ** Test if user is fully healed. ***
@@ -144,7 +145,7 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 
 		if ($startingGold >= $cost) {
 			if ($player->hasStatus(POISON)) {
-				subtractGold($player->vo->uname, $cost);
+				subtract_gold($player->id(), $cost);
 				$player->subtractStatus(POISON);
 				$cured = true;
 			} else {

@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT."specific/lib_inventory.php");
 $alive      = true;
 $private    = true;
 
@@ -65,7 +66,7 @@ if (($turns = getTurns($username)) > 0) {
 
 			if ($player->vo->health = $victory = subtractHealth($username, $villager_attack)) {	// *** Player defeated villager ***
 				$villager_gold = rand(0, 20);	// *** Vilager Gold ***
-				addGold($username, $villager_gold);
+				add_gold($char_id, $villager_gold);
 
 				$attacker_level = $player->vo->level;
 
@@ -122,7 +123,7 @@ if (($turns = getTurns($username)) > 0) {
 
 					$samurai_gold = rand(50, 50 + $samurai_damage_array[2] + $samurai_damage_array[1]);
 
-					addGold($username, $samurai_gold);
+					add_gold($char_id, $samurai_gold);
 					addKills($username, 1);
 
 					if ($samurai_damage_array[2] > 100) {	// *** If samurai damage was over 100, but the ninja lived, give a speed scroll. ***
@@ -156,7 +157,7 @@ if (($turns = getTurns($username)) > 0) {
 
 			if ($player->vo->health = $victory = subtractHealth($username, $merchant_attack)) {	// *** Player killed merchant ***
 				$merchant_gold   = rand(20, 70);  // *** Merchant Gold   ***
-				addGold($username, $merchant_gold);
+				add_gold($char_id, $merchant_gold);
 
 				if ($merchant_attack > 34) {
 					add_item($char_id, 'phosphor', $quantity = 1);
@@ -179,7 +180,7 @@ if (($turns = getTurns($username)) > 0) {
 
 			if ($player->vo->health = $victory = subtractHealth($username, $guard_attack)) {
 				$guard_gold = rand(1, $attacker_str + 40);	// *** Guard Gold ***
-				addGold($username, $guard_gold);
+				add_gold($char_id, $guard_gold);
 
 				if ($player->vo->level > 15) {
 					$added_bounty = 10 * floor(($player->vo->level - 10) / 5);
@@ -223,7 +224,7 @@ if (($turns = getTurns($username)) > 0) {
 						subtractKills($username, 1);
 					}
 
-					addGold($username, $group_gold);
+					add_gold($char_id, $group_gold);
 					add_item($char_id, 'phosphor', $quantity = 1);
 				} else {	// If the den of theives killed the attacker.
 					$group_gold = 0;
@@ -238,9 +239,9 @@ if (($turns = getTurns($username)) > 0) {
 					$thief_gold = rand(0, 40);  // *** Thief Gold ***
 
 					if ($thief_attack > 30) {
-						subtractGold($username, $thief_gold);
+						subtract_gold($char_id, $thief_gold);
 					} else if ($thief_attack < 30) {
-						addGold($username, $thief_gold);
+						add_gold($char_id, $thief_gold);
 						add_item($char_id, 'shuriken', $quantity = 1);
 					}
 				} else {
