@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT.'specific/lib_inventory.php');
 $private   = false;
 $alive     = false;
 
@@ -10,13 +11,13 @@ require_once(DB_ROOT."SkillDAO.class.php");
 require_once(LIB_ROOT."specific/lib_clan.php");
 require_once(LIB_ROOT."specific/lib_player.php");
 
-$target        = $player = in('player');
-$target_id     = first_value(in('target_id'), in('player_id'), get_user_id($target)); // Find target_id if possible.
+$target        = $player = first_value(in('ninja'), in('player'));
+$target_id     = first_value(in('target_id'), in('player_id'), get_char_id($target)); // Find target_id if possible.
 $target_player_obj = new Player($target_id);
 
 $char_info = get_player_info();
 
-if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj->isActive()) {
+if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isActive()) {
 	$template = 'no-player.tpl';
 	$parts    = array();
 } else {
@@ -26,29 +27,26 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		$template = 'no-player.tpl';
 		$parts    = array();
 	} else {
-		$viewing_player_obj = new Player(get_user_id());
+		$viewing_player_obj = new Player(get_char_id());
 
 		$score = get_score_formula();
+		
+		$self        = (get_char_id() && get_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
 
 		if ($viewing_player_obj && $viewing_player_obj->vo) {
-			$user_id  = $viewing_player_obj->vo->player_id;
-			$username = $viewing_player_obj->vo->uname;
-			$self     = ($username && $username == $player_info['uname']); // Record whether this is a self-viewing.
-		} else {
-			$self = false;
+			$char_id  = $viewing_player_obj->id();
+			$username = $viewing_player_obj->name();
 		}
 
 		$message       = in('message');
 
 		$player      = $target = $player_info['uname']; // reset the target and target_id vars.
 		$target_id   = $player_info['player_id'];
-
-		$self        = (get_username() && get_username() == $player_info['uname']); // Record whether this is a self-viewing.
 	
     	$target_class_theme = char_class_theme($target_id);
 
 		if ($message) {
-		    send_message($user_id, $target_id, $message);
+		    send_message($char_id, $target_id, $message);
 		    // "message sent" notice will be displayed by the template itself.
 		}
 
@@ -60,10 +58,8 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		$attack_allowed  = $AttackLegal->check(false);
 		$attack_error    = $AttackLegal->getError();
 
-		// TODO: Add the "player since" date to the player profile/info.
-
-        $sel_rank_spot = "SELECT rank_id FROM rankings WHERE uname = :player limit 1";
-        $rank_spot = query_item($sel_rank_spot, array(':player'=>$player_info['uname']));
+        $sel_rank_spot = "SELECT rank_id FROM rankings WHERE player_id = :char_id limit 1";
+        $rank_spot = query_item($sel_rank_spot, array(':char_id'=>$player_info['player_id']));
 
 		// Display the player info.
 		$status_list          = get_status_list($player);
@@ -73,7 +69,7 @@ if (!$target_player_obj || !$target_player_obj->player_id || !$target_player_obj
 		$gravatar_url            = generate_gravatar_url($target_player_obj);
 		$gurl = $gravatar_url;
 
-		if ($username && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
+		if ($char_id && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
 			// Attack or Duel
 
 			$skillDAO = new SkillDAO();
@@ -123,7 +119,7 @@ function getTurnCost($p_params, &$tpl) {
 
 $template = prep_page(
 	$template
-	, 'Player Profile'
+	, 'Ninja'
 	, $parts
 	, array(
 		'quickstat' => 'player'

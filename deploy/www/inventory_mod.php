@@ -14,7 +14,8 @@ if ($error = init($private, $alive)) {
 	redirect('list.php');
 } else {
 $link_back  = in('link_back');
-$target     = in('target');
+$target_id  = in('target_id');
+$target     = first_value(get_char_name($target_id), in('target'));
 $selfTarget = in('selfTarget');
 
 // *** Item identifier, either it's id or internal name ***
@@ -35,10 +36,6 @@ if (!is_object($item)) {
 	throw new Exception('Invalid item identifier ('.(is_string($item_in) ? $item_in : 'non-string').') sent to page from '.(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '(no referrer)').'.');
 }
 
-if ($target_id) {
-	$target = get_char_name($target_id);
-}
-
 $user_id    = get_char_id();
 $player     = new Player($user_id);
 
@@ -57,8 +54,9 @@ $item_count = item_count($user_id, $item);
 if ($selfTarget) {
 	$target = $username;
 	$targetObj = $player;
-} else if ($target) {
-	$targetObj = new Player($target);
+} else if ($target_id) {
+	$targetObj = new Player($target_id);
+	$target = $targetObj->name();
 }
 
 if ($targetObj->player_id) {

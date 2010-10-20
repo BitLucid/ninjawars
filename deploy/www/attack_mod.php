@@ -34,8 +34,12 @@ $blaze       = (in('blaze')   ? true : NULL);
 $deflect     = (in('deflect') ? true : NULL);
 $evade       = (in('evasion') ? true : NULL);
 
-$attacker    = get_username(); // Pulls from an internal source.
-$attacker_id = get_user_id();
+$attacker_id = get_char_id();
+
+$attacker_obj = new Player($attacker_id);
+$attacker = $attacker_obj->name();
+
+$target_id   = get_char_id($target);
 
 // *** Attack System Initialization ***
 $killpoints               = 0; // *** Starting state for killpoints. ***
@@ -81,14 +85,12 @@ $params = array(
 	, 'ignores_stealth' => $ignores_stealth
 );
 
-assert($attacker != $target);
-
 $AttackLegal = new AttackLegal($attacker, $target, $params);
 
 // *** There's a same-domain problem with this attack-legal now that it's been modified for skills ***
 
-$target_player    = new Player($target);
-$attacking_player = new Player($attacker);
+$target_player    = new Player($target_id);
+$attacking_player = new Player($attacker_id);
 
 // ***  MAIN BATTLE ALGORITHM  ***
 if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting.
@@ -129,7 +131,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			$loser  = $target;
 
 			$gold_mod     = .1;
-			$loot         = round($gold_mod * getGold($target));
+			$loot         = round($gold_mod * get_gold($target_id));
 
 			$target_msg   = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold on $today!";
 			$attacker_msg = "You have killed $target in combat and taken $loot gold on $today.";
@@ -307,7 +309,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 				$target_player->death();
 
 				if (!$simultaneousKill)	{
-					$loot = round($gold_mod * getGold($target));
+					$loot = round($gold_mod * get_gold($target_id));
 				}
 
 				$target_msg = "DEATH: You have been killed by $attacker in combat and lost $loot gold on $today!";
@@ -353,7 +355,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 				$attacking_player->death();
 
 				if (!$simultaneousKill) {
-					$loot = round($gold_mod * getGold($attacker));//Loot for defender if he lives.
+					$loot = round($gold_mod * get_gold($attacker_id));//Loot for defender if he lives.
 				}
 
 				$target_msg = "You have killed $attacker in combat and taken $loot gold on $today.";
@@ -378,8 +380,8 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 	}
 
 	if ($loot) {
-		addGold($victor, $loot);
-		subtractGold($loser, $loot);
+		add_gold(get_char_id($victor), $loot);
+		subtract_gold(get_char_id($loser), $loot);
 	}
 }
 
@@ -402,7 +404,7 @@ if (isset($target)) {
 
     display_template('defender_health.tpl', array('health'=>$target_player->health(), 'health_percent'=>$target_player->health_percent(), 'target_name'=>$target_player->name()));
 
-	echo "<div>Return to <button><a class='char-name' href=\"player.php?player=".urlencode($target)."\">".out($target)."'s Info</a></button></div>Or \n";
+	echo "<div>Return to <a class='char-name' href=\"player.php?player=".urlencode($target)."\">".out($target)."'s Info</a></div>Or \n";
 }
 
 echo "Start your combat <a href=\"list.php\"> from the ninja list.</a>\n<br>\n";

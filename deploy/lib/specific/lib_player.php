@@ -210,11 +210,11 @@ function get_clan_members($p_clanID, $p_limit = 30) {
 /**
  * Create the item options for the inventory dropdown.
 **/
-function render_inventory_options($username) {
-	$char_id = get_char_id($username);
-
-	if (!$char_id) {
-		return '';
+function render_inventory_options() {
+	$char_id = get_char_id();
+	
+	if(!$char_id){
+	    return '';
 	}
 
 	$res = '';
@@ -243,18 +243,18 @@ function render_inventory_options($username) {
 **/
 function render_item_use_on_another($target) {
 	$username = get_username();
+	$char_id = get_char_id($target);
 	$res = "<form id=\"inventory_form\" action=\"inventory_mod.php\" method=\"post\" name=\"inventory_form\">\n
-	<input id=\"target\" type=\"hidden\" name=\"target\" value=\"".htmlentities($target)."\">
-	<input type=\"submit\" value=\"Use\" class=\"formButton\">\n
-	<select id=\"item\" name=\"item\">\n";
+    <input id=\"target\" type=\"hidden\" name=\"target_id\" value=\"$char_id\">
+    <input type=\"submit\" value=\"Use\" class=\"formButton\">\n
+    <select id=\"item\" name=\"item\">\n";
 
-	$res .= render_inventory_options($username);
-	$res .= "</select>\n";
+	$res .= render_inventory_options();
+	$res .= "</select>";
 
-	$target_id   = get_user_id($target);
-	$target_clan = get_clan_by_player_id($target_id);
+	$target_clan = get_clan_by_player_id($char_id);
 
-	if ($target_clan && ($user_clan = get_clan_by_player_id(get_user_id($username))) && $target_clan->getID() == $user_clan->getID()) {
+	if ($target_clan && ($user_clan = get_clan_by_player_id($char_id)) && $target_clan->getID() == $user_clan->getID()) {
 		// Only allow giving items within the same clan.
 		$res .= "<input id=\"give\" type=\"submit\" value=\"Give\" name=\"give\" class=\"formButton\">\n";
 	}
