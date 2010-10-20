@@ -85,6 +85,7 @@ function json_latest_chat_id() {
 
 function json_send_chat($msg) {
 	if (is_logged_in()) {
+		require_once(LIB_ROOT."specific/lib_chat.php");
 		$msg = trim($msg);
 		$user_id = (int) get_user_id();
 		send_chat(get_user_id(), $msg);
