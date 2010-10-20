@@ -322,15 +322,17 @@ function setBounty($who, $new_bounty) {
 }
 
 function getBounty($who) {
+	$char_id = get_char_id($who);
 	DatabaseConnection::getInstance();
 
-	$statement = DatabaseConnection::$pdo->prepare("SELECT bounty FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
+	$statement = DatabaseConnection::$pdo->prepare("SELECT bounty FROM players WHERE player_id = :player");
+	$statement->bindValue(':player', $char_id);
 	$statement->execute();
 	return $statement->fetchColumn();
 }
 
 function changeBounty($who, $amount) {
+	$char_id = get_char_id($who);
 	$amount = (int)$amount;
 
 	if (abs($amount) > 0) {
@@ -339,8 +341,8 @@ function changeBounty($who, $amount) {
 			"CASE WHEN bounty+:amount1 < 0 THEN bounty*(-1) ".
 			"WHEN bounty+:amount2 > 5000 THEN (5000 - bounty) ".
 			"ELSE :amount3 END ".
-			"WHERE lower(uname) = :player");
-		$statement->bindValue(':player', strtolower($who));
+			"WHERE player_id = :player");
+		$statement->bindValue(':player', $char_id);
 		$statement->bindValue(':amount1', $amount);
 		$statement->bindValue(':amount2', $amount);
 		$statement->bindValue(':amount3', $amount);
@@ -362,8 +364,8 @@ function rewardBounty($bounty_to, $bounty_on) {
 	$bounty = getBounty($bounty_on);
 
 	setBounty($bounty_on, 0);  //Sets bounty to zero.
-
-	addGold($bounty_to, $bounty);
+	$char_id = get_char_id($bounty_to);
+	add_gold($char_id, $bounty);
 
 	return $bounty;
 }
