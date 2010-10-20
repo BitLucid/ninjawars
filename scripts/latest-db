@@ -1,22 +1,27 @@
 #!/bin/bash
 
-if [ $1 ]
-then
-	sed -i -e {s/ninjawarsMaster/$1/g} ./scripts/mirror-database
-	sed -i -e {s/ninjawarsMaster/$1/g} ./scripts/latest-db
-fi
-
-./scripts/mirror-database
 cd deploy/db/migrations
-psql $1 < 20100105drop_old_clan_columns.sql
-psql $1 < 20100411_add_fk_to_messages.sql
-psql $1 < 20100412_item_table.sql
-psql $1 < 20100425_improving_classes.sql
-psql $1 < 20100425_skill_table.sql
-psql $1 < 20100501_clan_founder_unlink.sql
-psql $1 < 20100503_player_cleanup.sql
-psql $1 < 20100504_account_table.sql
-psql $1 < 20100709_activate_gray_ninja.sql
-psql $1 < 20100709_track_duped_unames.sql
+psql $1 < 20100716_clan_add_avatar_url.sql
+psql $1 < 20100717_clan_add_description.sql
+psql $1 < 20100801_classes_as_animals.sql
+psql $1 < 20100802_message_length_fix.sql
+psql $1 < 20100802_remove_players_backups.sql
+psql $1 < 20100802_unique_clan_membership.sql
+psql $1 < 20100810_item_display_separate.sql
+psql $1 < 20100811_inventory_string_removal.sql
+psql $1 < 20100812_delete_empty_clan.sql
+psql $1 < 20100812_fix_clan_founders.sql
+psql $1 < 20100817_heal_skill.sql
+psql $1 < 20100817_item_renames.sql
+psql $1 < 20100818_skill_rearrangement.sql
+psql $1 < 20100819_item_shop_prep.sql
+psql $1 < 20100824_effects_table.sql
+psql $1 < 20100905make_class_identity_field_lowercase.sql
+psql $1 < 20100918_remove_shop_scroll_images_where_inappropriate.sql
+psql $1 < 20100929_grant_permissions_on_item_effects_table.sql
+psql $1 < 20101001_add_last_login_attempt_field_to_accounts.sql
+psql $1 < 20101004_unique_account_players.sql
+psql $1 < 20101020_drop_inventory_item_column.sql
+psql $1 < 20101020_drop_players_backup_sequence.sql
 
 cd -

@@ -1,0 +1,1 @@
+drop SEQUENCE players_backup_player_id_seq;
