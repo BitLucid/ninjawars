@@ -692,6 +692,8 @@ $(document).ready(function() {
 
 		NW.quickDiv = document.getElementById('quickstats-frame-container');
 
+
+
 		$('#chat-loading').show();
 
 		NW.chainedUpdate(); // Start the periodic index update.
@@ -704,7 +706,7 @@ $(document).ready(function() {
 
 		// Update the mini chat section for the first time.
 		NW.checkForNewChats();
-
+                NW.refreshQuickstats('player');// Load the quickstats initially.
 		// Start refreshing the chat.
 		NW.startRefreshingMinichat(); // Start refreshing the chat.
 
