@@ -5,7 +5,7 @@ require_once(LIB_ROOT."specific/lib_deity.php"); // Deity-specific functions
 DatabaseConnection::getInstance();
 DatabaseConnection::$pdo->query('TRUNCATE player_rank');
 DatabaseConnection::$pdo->query("SELECT setval('player_rank_rank_id_seq1', 1, false)");
-$ranked_players = DatabaseConnection::$pdo->query('INSERT INTO player_rank (_player_id, score) SELECT player_id, ((level*900) + (CASE WHEN gold < 1 THEN 0 ELSE floor(gold/200) END) + ((kills/level)*100) - (days*5)) AS score FROM players WHERE confirmed = 1 ORDER BY score DESC');
+$ranked_players = DatabaseConnection::$pdo->query('INSERT INTO player_rank (_player_id, score) SELECT player_id, ((level*1000) + floor(gold/200) + (CASE WHEN kills > (5*level) THEN 750 + least(floor((kills - (5*level)) * .2), 249) ELSE ((kills/(5*level))*750) END) - (days*5)) AS score FROM players WHERE confirmed = 1 ORDER BY score DESC');
 
 // *** Running from a cron script, we don't want any output unless we have an error ***
 
