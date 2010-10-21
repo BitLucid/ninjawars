@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd deploy/db/migrations
+cd db/migrations
 psql $1 < 20100716_clan_add_avatar_url.sql
 psql $1 < 20100717_clan_add_description.sql
 psql $1 < 20100801_classes_as_animals.sql
