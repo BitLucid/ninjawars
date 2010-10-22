@@ -32,7 +32,7 @@ if(is_numeric($item_type)){
 }
 
 if(!is_object($item)){
-    throw new Exception('Item sent to page as item display name instead of item id.');
+    throw new Exception('Item sent to page from '.$_SERVER['HTTP_REFERER'].' as item display name instead of item id.');
 }
 
 if ($target_id) {
