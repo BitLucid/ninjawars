@@ -1,13 +1,15 @@
 <h1>Ninjawars Staff</h1>
+
 <p>
   The preferred method of contacting us with problems, ideas, or bugs with the game
   is via the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.
 </p>
 <p>
   For private issues, including account/confirmation problems, email us at:
+</p>
+<p>
   <a href="mailto:'{$templatelite.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' <{$templatelite.const.SUPPORT_EMAIL|escape:'url'|escape}>?subject=NinjaWars%20question:%20">{$templatelite.const.SUPPORT_EMAIL_NAME|escape} &lt;{$templatelite.const.SUPPORT_EMAIL|escape}&gt;</a>
 </p>
-
 <div class='developers'>
   <h3 class='subtitle'>Developers</h3>
   <div class='developer'>
@@ -16,13 +18,15 @@
     </div>
     <a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer
     <span id='social-networks'>
+      - <a target='_blank' href="http://twitter.com/tchalvak"><img alt="T" src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a>
       - <a target='_blank' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a>
       - <a target='_blank' href="http://www.myspace.com/toastersquid"><img alt="MS" src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/MySpace_24x24.png'> on Myspace</a>
-      - <a target='_blank' href="http://twitter.com/tchalvak"><img alt="T" src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a>
+      
       - on AIM: Tchalvak
     </span>
     <div><a class='expand-link'>Expand <img alt="&gt;&gt;&gt;" src="images/smallArrows.png"></a></div>
     <div class='developer-info'>
+    	<!-- Expanded & contracted section -->
       <p>
         Hailing from the icy steppes of upstate New York, Roy got his first computer at the ripe old age of 14, and has been addicted to computers ever since.  He's worked in IT fixing computers, and eventually decided that the web is the future, got in on the action, and hasn't looked back. Since 2003, he's been working in php and webdesign, which he got started on from working on NinjaWars.
       </p>
