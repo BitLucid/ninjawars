@@ -219,16 +219,25 @@ if (parent.window != window) {
 				recent.removeClass('message-unread');
 			}
 
-			recent.toggle();
+			recent.show().click(NW.eventsHide);
 		}
 	}
 
 	NW.eventsRead = function() {
-		$('#recent-events', top.document).removeClass('message-unread').toggle(false);
+		$('#recent-events', top.document).removeClass('message-unread');
 	};
+	
+	NW.eventsHide = function() {
+		$('#recent-events', top.document).hide();
+	};
+	
+	NW.eventsShow = function() {
+		$('#recent-events', top.document).show();
+	}
 
 	// Pull the event from the data store and request it be displayed.
 	NW.updateLatestEvent = function() {
+		var hideEventsAfter = 10;
 		var feedback = false;
 		var event = this.getEvent();
 
@@ -236,10 +245,16 @@ if (parent.window != window) {
 			this.feedbackSpeedUp(); // Make the interval to try again shorter.
 			this.debug('No event data to use.');
 		} else if (this.datastore.visibleEventId == event.event_id) {
+			// If the stored data is the same as the latest pulled event...
+			this.datastore.eventUpdateCount = (typeof this.datastore.eventUpdateCount === 'undefined'? 
+					this.datastore.eventUpdateCount = 1 : 
+					this.datastore.eventUpdateCount + 1 ) ;
+			if(this.datastore.eventUpdateCount > hideEventsAfter){
+				NW.eventsHide();
+			}
 			if (!this.datastore.visibleEventRead) {
 				// Makes any unread event marked as read after a second update, even if it wasn't really read.
 				NW.eventsRead();
-				this.debug('Requested that latest event be marked as read.');
 				this.datastore.visibleEventRead = true;
 			}
 		} else {
