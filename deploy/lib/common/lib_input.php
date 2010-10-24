@@ -18,6 +18,10 @@ function in($var_name, $default_val=null, $filter_callback=null) {
     return $result;
 }
 
+function toInt($dirty) {
+	return sanitize_to_int($dirty);
+}
+
 // Casts to an integer anything that can be cast that way non-destructively, otherwise null.
 function sanitize_to_int($dirty) {
 	if ($dirty == (int) $dirty) { // Cast anything that can be non-destructively cast.
