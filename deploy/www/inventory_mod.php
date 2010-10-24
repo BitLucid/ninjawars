@@ -11,7 +11,7 @@ $private    = true;
 $alive      = true;
 
 if ($error = init($private, $alive)) {
-	header('Location: list_all_players.php');
+	redirect('list.php');
 } else {
 $link_back  = in('link_back');
 $target     = in('target');

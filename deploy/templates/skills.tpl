@@ -86,8 +86,8 @@
 
 </div>
 <div id='search-for-ninja'>
-<p><a href="list_all_players.php?hide=dead">Use a Skill on a ninja?</a></p>
-<form action="list_all_players.php" method="get">
+<p><a href="list.php?hide=dead">Use a Skill on a ninja?</a></p>
+<form action="list.php" method="get">
   <div>
     <input id="searched" type="text" maxlength="50" name="searched" class="textField">
     <input type="hidden" name="hide" value="dead">

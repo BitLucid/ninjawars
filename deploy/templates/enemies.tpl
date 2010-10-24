@@ -44,7 +44,7 @@
 </ul>
 </div>
 {else}
-<p style='width:55%;float:left;margin-left:0;margin-right:0'>You haven't decided who your enemies are yet, <a href="list_all_players.php" target="main">find some</a>.</p>
+<p style='width:55%;float:left;margin-left:0;margin-right:0'>You haven't decided who your enemies are yet, <a href="list.php" target="main">find some</a>.</p>
 {/if}
 
 

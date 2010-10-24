@@ -32,7 +32,7 @@
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
-        	<a href='list_all_players.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='Go to the ninja list'></a>
+        	<a href='list.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='Go to the ninja list'></a>
         </div>
             <div>
                 <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your ninja information'>{$username|escape}</a>
@@ -93,7 +93,7 @@
 
         <!--
         <div id="ninja-search" class="boxes active">
-            <form id="player_search" action="list_all_players.php" target="main" method="get" name="player_search">
+            <form id="player_search" action="list.php" target="main" method="get" name="player_search">
               <div>
                 Find A Ninja:
                 <input id="searched" type="text" maxlength="50" size="10" name="searched" class="textField">
@@ -172,7 +172,7 @@
                   <!-- Settings -->
                 </ul>
                 <ul id='combat-subcategory'>
-                  <li><a href="list_all_players.php" target="main" title='Ranked list of ninjas to attack.'>Ninjas</a></li>
+                  <li><a href="list.php" target="main" title='Ranked list of ninjas to attack.'>Ninjas</a></li>
                   <li><a href="clan.php" target="main" title='Clans and your clan options.'>Clans</a></li>
                   <li><a href="duel.php" target="main" title="Today's Duels">Duels</a></li>
                 </ul>

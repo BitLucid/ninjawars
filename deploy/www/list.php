@@ -126,7 +126,7 @@ while ($a_player = $ninja_info->fetch()) {
 $parts = get_certain_vars(get_defined_vars(), $whitelist=array('ninja_rows', 'active_ninjas'));
 
 display_page(
-	'player_list.tpl'	// *** Main Template ***
+	'list.tpl'	// *** Main Template ***
 	, 'Ninja List'		// *** Page Title ***
 	, $parts			// *** Page Variables ***
 	, array(			// *** Page Options ***

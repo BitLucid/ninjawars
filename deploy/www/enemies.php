@@ -112,7 +112,7 @@ $private    = true;
 $alive      = false;
 
 if ($error = init($private, $alive)) {
-	header('Location: list_all_players.php');
+	header('Location: list.php');
 } else {
 
 $char_name = get_char_name();

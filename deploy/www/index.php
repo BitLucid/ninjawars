@@ -48,7 +48,7 @@ if ($user_id) { // Only bother trying to change these if logged in.
 	// Unread message count.
 	$unread_message_count = unread_message_count();
 
-	$main_src = 'list_all_players.php';
+	$main_src = 'list.php';
 
 	if ($level == 1) {
 		$main_src = 'tutorial.php';

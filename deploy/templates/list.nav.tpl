@@ -1,12 +1,12 @@
 <div class='player-list-nav'>
-  <form action='list_all_players.php' method='get'>
+  <form action='list.php' method='get'>
     <div>
 
 {if $page == 1}
       &laquo;First | &lsaquo;Previous {$record_limit}&nbsp; |
 {else}
-      <a href="list_all_players.php?hide={$hide}&amp;page=1&amp;searched={$searched}">&laquo;First</a> |
-      <a href="list_all_players.php?page={math equation="x-1" x=$page}&amp;searched={$searched}&amp;hide={$hide}">&lsaquo;Previous {$record_limit}</a>&nbsp;|
+      <a href="list.php?hide={$hide}&amp;page=1&amp;searched={$searched}">&laquo;First</a> |
+      <a href="list.php?page={math equation="x-1" x=$page}&amp;searched={$searched}&amp;hide={$hide}">&lsaquo;Previous {$record_limit}</a>&nbsp;|
 {/if}
 
       <span class='current-page'>
@@ -20,8 +20,8 @@
       | Next {$record_limit}&rsaquo;
       | Last&raquo;
 {else}
-      | <a href='list_all_players.php?page={math equation="x+1" x=$page}&amp;searched={$searched}&amp;hide={$hide}'>Next {$record_limit}&rsaquo;</a>
-      | <a href='list_all_players.php?page={$numofpages}&amp;hide={$hide}&amp;searched={$searched}'>Last&raquo;</a>
+      | <a href='list.php?page={math equation="x+1" x=$page}&amp;searched={$searched}&amp;hide={$hide}'>Next {$record_limit}&rsaquo;</a>
+      | <a href='list.php?page={$numofpages}&amp;hide={$hide}&amp;searched={$searched}'>Last&raquo;</a>
 {/if}
     </div>
   </form>
