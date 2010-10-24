@@ -16,6 +16,7 @@ $sentMessage   = in('message');
 $chat_submit   = in('chat_submit');
 $sent          = false;
 $user_id       = get_user_id();
+$chatmax       = 800;
 
 // Take in a chat and record it to the database.
 if ($user_id) {
