@@ -16,6 +16,7 @@ $sentMessage   = in('message');
 $chat_submit   = in('chat_submit');
 $sent          = false;
 $user_id       = get_user_id();
+$chatmax       = 800;
 
 // Take in a chat and record it to the database.
 if ($user_id) {
@@ -40,7 +41,7 @@ $total_chars = whichever($player_count, '0');
 
 // Output section.
 
-$chat_messages = render_chat_messages($chatlength, true);
+$chat_messages = render_chat_messages(min($chatlength, $chatmax), true);
 
 display_page(
 	'mini_chat.tpl'	// *** Main template ***
