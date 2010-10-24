@@ -177,14 +177,14 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 			// *** Get Special Items From Inventory ***
 			$user_id = get_user_id();
 			DatabaseConnection::getInstance();
-			$statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item = 'Ginseng Root' GROUP BY item");
+			$statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type");
 			$statement->bindValue(':owner', $user_id);
 			$statement->execute();
 
 			if ($itemCount = $statement->fetchColumn()) {	// *** If special item count > 0 ***
-				$itemsConverted = min($itemCount, $starting_turns);
-				removeItem($user_id, 'Ginseng Root', $itemsConverted);
-				addItem($username, 'Tiger Salve', $itemsConverted);
+				$itemsConverted = min($itemCount, $starting_turns-1);
+				remove_item($user_id, 'ginsengroot', $itemsConverted);
+				add_item($user_id, 'tigersalve', $itemsConverted);
 				$turn_cost = $itemsConverted;
 				echo "With intense focus you grind the herbs into potent formulas.\n";
 			} else { // *** no special items, give error message ***
