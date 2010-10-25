@@ -147,7 +147,7 @@ function revive_players($params=array()) {
 
 	$up_revive_players= 'UPDATE players SET status = 0 ';
 
-	if ($just_testing) {
+	if (!$just_testing) {
 		$up_revive_players .= ', health =
 							CASE WHEN level >= coalesce(class_skill_level, skill_level)
 							THEN (150+(level*3))
@@ -157,7 +157,7 @@ function revive_players($params=array()) {
 
 	$up_revive_players .= " WHERE player_id IN ($select) ";
 
-	if ($just_testing) {
+	if (!$just_testing) {
 		$up_revive_players .= ' AND coalesce(class_skill._class_id, players._class_id) = players._class_id';
 	}
 
