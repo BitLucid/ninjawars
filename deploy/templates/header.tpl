@@ -14,7 +14,8 @@
 
     <title>Ninja Wars: {$title|escape}</title>
     <base href="{$templatelite.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="Screen">
+	<link rel="stylesheet" href="css/mobile.css" type="text/css" media="handheld">
     <!--[if lte IE 6]>
     <link rel="stylesheet" type="text/css" href="css/ie-6.css">
     <![endif]-->
