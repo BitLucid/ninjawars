@@ -1223,7 +1223,8 @@ iframe {
 
 .player-info .Stealthed {
 	background-color:gray;
-	color:maroon;
+	color:#1F0F05;
+	text-shadow:none;
 }
 .red {
 	color: #DC143C;
