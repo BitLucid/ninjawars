@@ -154,7 +154,7 @@ h1, h2, h3, h4, h5, h6, .subtitle, .title {
 	padding-left: 160px;*/
 	color:#cccccc;
 }
-h1, h2, .title, .player-info .player-name {
+h1, h2, .title {
 	color:black;
 	background-color:#BDB76B;/*DarkKhaki*/
 	color:#000000;
@@ -174,16 +174,17 @@ h2 {
 	font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
 	letter-spacing:0.1em;
 }
-h1 {
-	background: DarkKhaki;
+h1, .player-info .player-name {
+	background: #291F16;
+	color: #B3B286;
 	border-bottom: none;
 	padding-left:0;
 	padding-right:0;
-	font: 30px/34px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Impact, Charcoal, sans-serif;
+	font: 30px/34px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;
 	letter-spacing: 0;
 	width:100%;
 	margin: 0 7em inherit 7em;
-	text-shadow: white 2px 2px 3px;
+	text-shadow: black 2px 2px 3px;
 }
 h3 {
 	font: 18px/24px;
