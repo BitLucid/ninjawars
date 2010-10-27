@@ -146,10 +146,19 @@ class Player
 		$account = account_info_by_char_id($this->id());
 		return $account['active_email'];
 	}
+	
+	public function turns(){
+		return $this->vo->turns;
+	}
 
     // Pull the data of the player obj as an array.
-    public function data() {
-        return add_data_to_player_row($this->as_array());
+    public function data($specific = null) {
+    	if($specific){
+    		$temp = add_data_to_player_row($this->as_array());
+    		return $temp[$specific];
+    	} else {
+	        return add_data_to_player_row($this->as_array());
+        }
     }
 
 	public function as_vo() {

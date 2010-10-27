@@ -1766,3 +1766,9 @@ select option #blue-class-select {
 	border: 2px rgb(20, 30, 100) solid;
 	text-shadow: rgb(34, 27, 20) 2px 2px 2px;
 }
+
+.npc{
+	font-style:italic;
+	text-shadow: rgb(11, 9, 9) 2px 2px 2px;
+}
+

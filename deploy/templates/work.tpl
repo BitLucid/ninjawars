@@ -31,6 +31,7 @@ $(document).ready(function (){
     <p>
         On your way back from the fields, you pass by a few young children 
         chasing grasshoppers in the tall grass.</p>
+    <p>You see a <a href='npc.php?victim=viper' class='npc'>Viper</a> in the tall grass.</p>
     
     <p>The samurai foreman hands you a small pouch of gold as he says
     <em class='speech'>Care to put a little more work in? I'll pay the same rate.</em></p>
