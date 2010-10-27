@@ -34,6 +34,8 @@
   <p>{$error|escape}</p>
 	{else}
   <p>Only one account per person is allowed.</p>
+	{include file='signup.success.tpl'}
+	<!-- Display the conversion tracking for successful signup -->
 	{/if}
   If you need help use the forums at
   <a href="{$templatelite.const.WEB_ROOT}forum/">{$templatelite.const.WEB_ROOT}forum/</a>

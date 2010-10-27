@@ -284,6 +284,7 @@ function validate_signup_phase2($enteredPass) {
 	return (false && validate_password($enteredPass));
 }
 
+
 function validate_signup_phase3($enteredName, $enteredEmail) {
 	$name_available  = ninja_name_available($enteredName);
 	$duplicate_email = email_is_duplicate($enteredEmail);
