@@ -157,8 +157,8 @@
                   </a>
                 </li>
                 <li id='village-actions'>
-                  <a href='attack_player.php' target='main' title='Travel to different locations in the village.'>                  
-                    <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Village
+                  <a href='attack_player.php' target='main' title='Travel to different locations on the Map.'>                  
+                    <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Map
                   </a>
                 </li>
               </ul>
