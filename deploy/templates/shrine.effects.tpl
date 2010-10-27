@@ -32,5 +32,4 @@
     {/if}
 
 </div> <!-- End of heal-result div -->
-
-<a href="shrine.php">Heal Again?</a>
+<a href="shrine.php">Return to Shrine?</a>
