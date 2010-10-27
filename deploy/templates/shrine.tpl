@@ -4,10 +4,11 @@
   <div style="margin-bottom: 1.5em;">
     The shrine to the gods is peacefully quiet as you enter. The sound of flowing water soothes your mind.
   </div>
+  <p>A monk plays a reed flute in one corner of the shrine.</p>
   <div id='shrine-music' style='width:200px;height:25px;margin-bottom:1.5em;'>
 	{include file='music.tpl'}
   </div>
-  <div>A monk approaches you quietly and asks, "Are you in need of healing?"</div>
+  <div>A monk approaches you quietly and asks, <em class='speech'>Are you in need of healing?</em></div>
 </div>
 {if !$username}
 <div id='ninja-notice'>You have no need of healing.</div>
@@ -35,7 +36,7 @@
 	{else}
 <form id="heal_form" action="shrine_mod.php" method="post" name="heal_form">
   <div style="margin-top: 10px;">
-    <div>How much healing do you need?</div>
+    <div><em class='speech'>How much healing do you need?</em></div>
     <input type="submit" value="Heal" class="formButton">
     <input id="heal_points" type="text" size="3" maxlength="4" name="heal_points" class="textField">HP
     <input id="healed" type="hidden" value="1" name="healed">

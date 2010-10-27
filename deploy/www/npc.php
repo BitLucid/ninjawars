@@ -15,6 +15,8 @@ $random_encounter = (rand(1, 200) == 200);
 $combat_data = array();
 $char_id = get_char_id();
 $player     = new Player($char_id);
+$npc_template = 'npc.no_one_found.tpl'; // Error condition by default.
+
 
 if (($turns = getTurns($username)) > 0) {
 	if ($attacked == 1) { // *** Bit to expect that it comes from the form. ***
@@ -55,11 +57,11 @@ if (($turns = getTurns($username)) > 0) {
 				$oni_killed = false;
 			}
 
-			$npc_template = 'oni_result.tpl';
+			$npc_template = 'npc.oni.tpl';
 			$combat_data = array('victory'=>$oni_killed);
 		} else if (empty($victim)) {
-			$npc_template = 'no_npc_result.tpl';
-		} else if ($victim == 'villager') { // *** VILLAGER ***
+			$npc_template = 'npc.no-one.tpl';
+		} else if ($victim == 'peasant') { // *** PEASANT, was VILLAGER ***
 			$villager_attack = rand(0, 10); // *** Villager Damage ***
 			$just_villager = rand(0, 20);
 			$added_bounty  = 0;
@@ -87,7 +89,7 @@ if (($turns = getTurns($username)) > 0) {
 				$added_bounty   = 0;
 			}
 
-			$npc_template = 'villager_result.tpl';
+			$npc_template = 'npc.peasant.tpl';
 			$combat_data = array('just_villager'=>$just_villager, 'attack'=>$villager_attack, 'gold'=>$villager_gold, 'level'=>$attacker_level, 'bounty'=>$added_bounty, 'victory'=>$victory);
 		} else if ($victim == "samurai") {
 			$attacker_level = $player->vo->level;
@@ -149,7 +151,7 @@ if (($turns = getTurns($username)) > 0) {
 				}
 			}	// *** End valid turns and kills for the attack. ***
 
-			$npc_template = 'samurai_result.tpl';
+			$npc_template = 'npc.samurai.tpl';
 			$combat_data  = array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills, 'drop'=>$drop);
 		} else if ($victim == 'merchant') {
 			$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
@@ -171,7 +173,7 @@ if (($turns = getTurns($username)) > 0) {
 				$merchant_attack = $merchant_gold = 0;
 			}
 
-			$npc_template = 'merchant_result.tpl';
+			$npc_template = 'npc.merchant.tpl';
 			$combat_data  = array('attack'=>$merchant_attack, 'gold'=>$merchant_gold, 'bounty'=>$added_bounty, 'victory'=>$victory);
 		} else if ($victim == 'guard') {	// *** The Player attacks the guard ***
 			$guard_attack = rand(1, $attacker_str + 10);  // *** Guard Damage ***
@@ -199,9 +201,9 @@ if (($turns = getTurns($username)) > 0) {
 				$added_bounty = 0;
 			}
 
-			$npc_template = 'guard_result.tpl';
+			$npc_template = 'npc.guard.tpl';
 			$combat_data  = array('attack'=>$guard_attack, 'gold'=>$guard_gold, 'bounty'=>$added_bounty, 'victory'=>$victory, 'herb'=>$herb);
-		} else if ($victim == "thief") {
+		} else if ($victim == 'thief') {
 			// Check the counter to see whether they've attacked a thief multiple times in a row.
 			if (SESSION::is_set('counter')) {
 				$counter = SESSION::get('counter');
@@ -230,7 +232,7 @@ if (($turns = getTurns($username)) > 0) {
 					$group_gold = 0;
 				}
 
-				$npc_template = 'thief-group_result.tpl';
+				$npc_template = 'npc.thief-group.tpl';
 				$combat_data = array('attack'=>$group_attack, 'gold'=>$group_gold, 'victory'=>$victory);
 			} else { // Normal attack on a single thief.
 				$thief_attack = rand(0, 35);  // *** Thief Damage  ***
@@ -248,7 +250,7 @@ if (($turns = getTurns($username)) > 0) {
 					$thief_gold = 0;
 				}
 
-				$npc_template = 'thief_result.tpl';
+				$npc_template = 'npc.thief.tpl';
 				$combat_data = array('attack'=>$thief_attack, 'gold'=>$thief_gold, 'victory'=>$victory);
 			}
 		}
@@ -265,8 +267,8 @@ if (($turns = getTurns($username)) > 0) {
 }
 
 display_page(
-	'attack_npc.tpl'
-	, 'NPC Battle Status'
+	'npc.tpl'
+	, 'Battle'
 	, array(
 		'npc_template'       => $npc_template
 		, 'attacked'         => $attacked

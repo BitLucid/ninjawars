@@ -1737,3 +1737,32 @@ select option #blue-class-select {
 	color:#BD7A26;
 	background-color:#1D0F00;
 }
+
+/* Methods for returning from results pages, large links for easy clickability */
+.return-to-location{
+	font-size: 1.3em;
+	margin-top: 1.7em;
+	margin-bottom; .7em;
+	margin-left: 1em;
+}
+.return-to-location:before{
+	content: '<< ';
+}
+/* Use the .speech class for character speech */
+.speech{
+	font-style:none;
+	color: rgb(250, 200, 50);
+}
+.speech:before{
+	content: '"';
+}
+.speech:after{
+	content: '"';
+}
+
+.attack-again{
+	display:inline-block;
+	padding: .3em;
+	border: 2px rgb(20, 30, 100) solid;
+	text-shadow: rgb(34, 27, 20) 2px 2px 2px;
+}

@@ -20,7 +20,7 @@ The Samurai had a speed scroll on him. You have a new Speed Scroll in your inven
 		{elseif $drop eq 'herb'}
 You quickly snatch small pouch from around the dead samurai's neck before disappearing.<br>
 		{/if}
-<a href="attack_npc.php?attacked=1&amp;victim=samurai">Attack Another Samurai</a>
+<a href="npc.php?attacked=1&amp;victim=samurai" class='attack-again'>Attack Another Samurai</a>
 <br>
 	{else}
 <br>The Samurai has slain you!<br>

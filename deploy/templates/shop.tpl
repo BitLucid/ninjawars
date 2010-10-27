@@ -26,15 +26,15 @@ input.shopButton{
 <div class='description' style='margin-bottom:.3em'>
 {if $in_purchase}
     {if $not_enough_gold}
-        <p>"The total comes to {$current_item_cost gold}," the shopkeeper tells you.</p>
+        <p><em class='speech'>The total comes to {$current_item_cost gold},</em> the shopkeeper tells you.</p>
         <p>Unfortunately, you do not have that much gold.</p>
     {else}
         <p>The shopkeeper hands over {$quantity} {$item}{$grammar}.</p>
-        <p>"Will you be needing anything else today?" he asks you as he puts your gold in a safe.</p>
+        <p><em class='speech'>Will you be needing anything else today?</em> he asks you as he puts your gold in a safe.</p>
     {/if}
 {else}
     <p>You enter the village shop and the shopkeeper greets you with a watchful eye.</p>
-    <p>As you look over his wares he says, "Don't try anythin' you'd regret.", waves his hand at a katana on the wall, and grins at you.</p>
+    <p>As you look over his wares he says, <em class='speech'>Don't try anythin' you'd regret.</em>, waves his hand at a katana on the wall, and grins at you.</p>
 {/if}
 
 </div>
@@ -60,7 +60,7 @@ input.shopButton{
 <tr>
   <td colspan="4" style="text-align: center;padding: .3em;">
     {if $is_logged_in}
-      How many of an item below would you like? <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" value="{$quantity}">
+      <em class='speech'>How many of those would you like?</em> <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" value="{$quantity}">
     {else}
       To purchase the items below you must <a href="signup.php?referrer=">become a ninja</a>.
     {/if}

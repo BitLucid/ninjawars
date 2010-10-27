@@ -400,7 +400,7 @@ if (isset($target)) {
     $attacker_health_snapshot = getHealth($attacker);
     $defender_health_snapshot = getHealth($target);
 	if ($AttackLegal && $attacker_health_snapshot > 0 && $defender_health_snapshot > 0) {	// *** After any partial attack. ***
-		echo "<div><a href=\"attack_mod.php?attacked=1&amp;target=$target\">Attack Again?</a></div>\n";
+		echo "<div><a href=\"attack_mod.php?attacked=1&amp;target=$target\" class='attack-again'>Attack Again?</a></div>\n";
 	}
 
     display_template('defender_health.tpl', array('health'=>$target_player->health(), 'health_percent'=>$target_player->health_percent(), 'target_name'=>$target_player->name()));
@@ -408,7 +408,7 @@ if (isset($target)) {
 	echo "<div>Return to <a class='char-name' href=\"player.php?player=".urlencode($target)."\">".out($target)."'s Info</a></div>Or \n";
 }
 
-echo "Start your combat <a href=\"list.php\"> from the ninja list.</a>\n<br>\n";
+echo "Start your combat <a href=\"list.php\" class='central-location'> from the ninja list.</a>\n<br>\n";
 echo "<hr><br>\n";
 
 include(SERVER_ROOT."interface/footer.php");

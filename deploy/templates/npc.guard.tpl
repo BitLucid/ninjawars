@@ -10,7 +10,7 @@ The guard was carrying a good luck charm!<br>
 	{if $bounty}
 You have slain a member of the military! A bounty of {$bounty} gold has been placed on your head!<br>
 	{/if}
-<a href="attack_npc.php?attacked=1&amp;victim=guard">Attack Another Guard</a>
+<a href="npc.php?attacked=1&amp;victim=guard" class='attack-again'>Attack Another Guard</a>
 <br>
 {else}
 The Guard has slain you!<br>
