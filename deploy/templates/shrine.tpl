@@ -49,7 +49,7 @@
   </div>
 </form>
 	{/if}
-	{if $poisoned}
+	{if $poisoned && $player_health}
 <hr>
 <form action="shrine_mod.php" method="post">
   <span class="brownHeading">Antidote(remove poison)</span>

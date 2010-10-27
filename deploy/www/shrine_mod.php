@@ -32,6 +32,7 @@ $has_chi            = $skillsListObj->hasSkill('Chi'); // Extra healing benefits
 $error              = null;
 $max_health         = determine_max_health($level);
 $fully_healed       = false;
+$final_kills        = $startingKills; // No kills taken unless they're taken.
 
 // *** A boolean for whether or not resurrection will be free.
 $freeResurrection   = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
@@ -50,11 +51,17 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 	$resurrect_requested   = true;
 	$turn_taking_resurrect = false;
 	$kill_taking_resurrect = true;
-	$has_hidden_res        = $skillsListObj->hasSkill('hidden resurrect');
+	$has_hidden_res        = false;
 
 	if ($startingHealth > 0) {
 		$error = 'You are not dead.';
 	} else {
+	
+	
+	
+		// *********  Determine the type of Resurrection *********
+	
+	
 		if ($startingKills > 1 || $freeResurrection) {	// If you're dead, and a newbie, or dead and have kills.
 			$turn_taking_resurrect = false; // Template display variable.
 			$kill_taking_resurrect = false;
@@ -77,20 +84,33 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 	    	$error = 'You have no kills or turns, so you must wait to regain turns before you can return to life.';
 		}
 
+
+
+		// ********** Peform resurrect effects for worthy characters **************
+		
+		
 		if ($kill_taking_resurrect || $turn_taking_resurrect || $freeResurrection) {
 			$player->death();
+			
+			$base_res = 100;
+			$chi_multiplier = 3;
+			
+			$base_health= ($has_chi? $base_res*$chi_multiplier : $base_res);
+			// Chi triples the base health.
 
 			if ($kill_taking_resurrect) {
 				// *** FREE STEALTHING FOR ANYONE WITH HIDDEN RESURRECT SKILL UPON NON-FREE RESURRECTION
 				$skillsListObj = new Skill();
-
-				if (!$freeResurrection && $has_hidden_res) {
+				
+				$has_hidden_res = $skillsListObj->hasSkill('hidden resurrect');
+				if ($has_hidden_res) {
 					$player->addStatus(STEALTH);
 				}
-
-				$returning_health = ($has_chi ? 150 : 100);
-			} else {
-				$returning_health = 100;
+				
+				// Resurrecting gives health benefits for higher levels.
+				$returning_health = $base_health + ($level-1)*5;
+			} else {  // Non-standard resurrect costs give a substandard result.
+				$returning_health = $base_health;
 			}
 
 			$finalHealth = $player->vo->health = setHealth($player->vo->uname, $returning_health);
@@ -100,7 +120,7 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 	}
 } // *** end of resurrection ***
 
-if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
+if ($healed == 1 || $max_heal == 1) {  //If the player wants to heal themselves.
 	$heal_requested = true;
 	//  ***  HEALING SECTION  ***
 
@@ -140,8 +160,8 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 } else if ($poisoned == 1) {	//  *** POISON SECTION ***
 	$poison_cure_requested = true;
 
-	if ($player->vo->health > 0) {
-		$cost = 50;  //  the cost of curing poison is set here.
+	if ($player->health() > 0) {
+		$cost = 100;  //  the cost of curing poison is set here.
 
 		if ($startingGold >= $cost) {
 			if ($player->hasStatus(POISON)) {
@@ -158,6 +178,8 @@ if ($healed == 1 || $max_heal == 1) {  //If the user tried to heal themselves.
 	    $error = 'You must resurrect before you can heal.';
 	}
 }
+
+$health_percent = $player? $player->health_percent() : null; // Get the final health percent for display.
 
 display_page(
 	'shrine.effects.tpl'	// *** Main Template ***
