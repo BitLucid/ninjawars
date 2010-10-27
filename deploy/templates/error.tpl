@@ -1,10 +1,11 @@
+<h1>You can't do that</h1>
 {if $error eq 'log_in'}
     <span class='notice'>
       You must log in to view this section.
     </span>
 {elseif $error eq 'dead'}
     <span class='ninja-notice'>
-      You are a ghost. You must resurrect before you may act again. Go to the <a href='shrine.php'>shrine</a> for the monks to bring you back to life.
+      You are a ghost. You must resurrect before you may act again. Go to the <a target='main' href='shrine.php' style='font-size:2em'>shrine</a> for the monks to bring you back to life.
     </span>
 {elseif $error eq 'frozen'}
     <span class='ninja-notice'>
@@ -13,3 +14,4 @@
 {else}
     <span class='ninja-notice'>{$error}</span>
 {/if}
+</div>
