@@ -8,7 +8,7 @@ if ($error = init($private, $alive)) {
 
 require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper and rendering functions.
 
-$default_limit = 360;
+$default_limit = 20;
 $field_size    = 40;
 $chatlength    = in('chatlength', $default_limit, 'toInt');
 $message       = in('message', null, 'no filter'); // Essentially no filtering.
@@ -33,11 +33,17 @@ $total_chars  = $stats['player_count'];
 $chars_online = $stats['players_online'];
 $active_chars = $stats['active_chars'];
 
-$chat_messages = render_chat_messages($chatlength);
+$chats = get_chats($chatlength);
+$chats = $chats->fetchAll();
+$message_count = get_chat_count();
 
-$parts = get_certain_vars(get_defined_vars(), array());
+$parts = get_certain_vars(get_defined_vars(), array('chats'));
 
-display_page(
+function get_time_ago($p_params, &$tpl) {
+	return time_ago($p_params['ago'], $p_params['previous_date']);
+}
+
+$template = prep_page(
 	'village.tpl'
 	, 'Chat Board'
 	, $parts
@@ -45,5 +51,10 @@ display_page(
 		'quickstat' => false
 	)
 );
+
+$template->register_function('time_ago', 'get_time_ago');
+
+display_prepped_template($template);
+
 }
 ?>

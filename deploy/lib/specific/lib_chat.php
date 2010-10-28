@@ -56,53 +56,12 @@ function get_chat_count() {
 	return query_item("SELECT count(*) FROM chat");
 }
 
-/**
- * Render the div full of chat messages.
- * @param $chatlength Essentially the limit on the number of messages.
-**/
-function render_chat_messages($chatlength, $show_elipsis=null) {
-	// Eventually there might be a reason to abstract out get_chats();
-	$chats = get_chats($chatlength);
-	$message_count = get_chat_count();
-	$res = "<dl class='chat-messages'>";
-
-	$previous_date = null;
-	$previous_ago  = null;
-
-	foreach ($chats AS $chat_message) {
-		$chat_message['message'] = trim($chat_message['message']);
-
-		if (!empty($chat_message['message'])) {
-			// Check for the x time ago message.
-			$l_ago = time_ago($chat_message['ago'], $previous_date);
-			$template_data = array('sender_id'=>$chat_message['sender_id'], 'sender_name'=>$chat_message['uname'], 'message'=>$chat_message['message'], 'message_date'=>$chat_message['date']);
-
-			if ($l_ago != $previous_ago) {
-				$template_data['ago'] = $l_ago;
-			}
-
-			$res .= render_template('chatmessage.tpl', $template_data);
-
-			$previous_date = $chat_message['ago']; // Store just prior date.
-			$previous_ago  = $l_ago; // Save the prior ago message.
-		}
-	}
-
-	$res .= "</dl>";
-
-	if ($show_elipsis && $message_count > $chatlength) { // to indicate there are more chats available
-		$res .= ".<br>.<br>.<br>";
-	}
-
-	return $res;
-}
-
 // parse the date/time for the chat.
 function time_ago($time, $previous) {
 	// Need to modify the database calls in order to retrieve the right ago message stuff.
 	$time_array = time_to_array($time);
 	$similar = false;
-	$res = null;
+	$res = '';
 
 	if ($previous) {
 		$previous_array = time_to_array($previous);

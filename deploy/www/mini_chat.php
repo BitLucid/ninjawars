@@ -40,15 +40,26 @@ $total_chars = whichever($player_count, '0');
 
 // Output section.
 
-$chat_messages = render_chat_messages($chatlength, true);
+$chats = get_chats($chatlength);
+$chats = $chats->fetchAll();
+$message_count = get_chat_count();
 
-display_page(
+function get_time_ago($p_params, &$tpl) {
+	return time_ago($p_params['ago'], $p_params['previous_date']);
+}
+
+$template = prep_page(
 	'mini_chat.tpl'	// *** Main template ***
 	, 'Mini Chat' // *** Page Title ***
-	, get_certain_vars(get_defined_vars(), array()) // *** Page Variables ***
+	, get_certain_vars(get_defined_vars(), array('chats')) // *** Page Variables ***
 	, array( // *** Page Options ***
 		'quickstat' => false
 	)
 );
+
+$template->register_function('time_ago', 'get_time_ago');
+
+display_prepped_template($template);
+
 }
 ?>
