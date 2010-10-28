@@ -111,6 +111,11 @@ function json_new_chats($since, $limit = 100) {
 	return '{"new_chats":{"datetime":'.json_encode($now).',"new_count":'.count($chats).',"chats":'.json_encode($chats).'}}';
 }
 
+function json_member_count() {
+	include(LIB_ROOT.'lib_game.php');
+	$members = getMemberCount();
+	return json_encode($members);
+}
 
 function json_inventory() {
 	$char_id = (int) get_char_id();
@@ -146,6 +151,7 @@ function json_index() {
 	}
 
 	return '{"player":'.json_encode($player).',
+				"member_counts":'.json_member_count().',
 	            "unread_messages_count":'.json_encode($unread_messages).',
 				"message":'.json_encode(!empty($messages) ? $messages->fetch() : null).',
 				"inventory":{"inv":1,"items":'.json_encode(query_array("SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :user_id ORDER BY item_display_name", array(':user_id'=>$user_id))).',"hash":"'.md5(strtotime("now")).'"},

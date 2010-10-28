@@ -29,8 +29,9 @@ DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 FROM class_s
 //DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+1 WHERE _class_id = 2 AND turns < ".$turn_regen_threshold); // Blue/Crane turn code
 DatabaseConnection::$pdo->query("UPDATE players SET turns = turns+2 WHERE turns < ".$turn_regen_threshold); // add 2 turns on the hour, up to 100.
 
-// Database connection information here
-$inactivity = DatabaseConnection::$pdo->query("DELETE FROM ppl_online WHERE activity < (now() - interval '".$maxtime."')");
+//In activity is being handled by half-hourly right now, no need to run this query in both scripts.
+//$inactivity = DatabaseConnection::$pdo->query("DELETE FROM ppl_online WHERE activity < (now() - interval '".$maxtime."')");
+
 //Skip error logging this for now. $out_display['Inactive Browsers Deactivated'] = $inactivity->rowCount();
 
 // *** HEAL ***

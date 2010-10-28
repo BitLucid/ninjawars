@@ -274,7 +274,7 @@ if (parent.window != window) {
 	};
 
 	// Pull an unread message count from the new api storage, compare it to the stored value, and call the display function as necessary.
-	NW.updateMessageCount = function () {
+	NW.updateMessageCount = function() {
 		var updated = false;
 		var count = this.getMessageCount();
 
@@ -286,6 +286,15 @@ if (parent.window != window) {
 		return updated;
 	};
 
+	NW.updateMemberCounts = function() {
+		var activeCount = this.pullFromDataStore('member_counts', 'active');
+		var totalCount = this.pullFromDataStore('member_counts', 'total');
+
+		NW.activeMembersContainer.textContent = activeCount;
+		NW.totalMembersContainer.textContent = totalCount;
+
+		return true;
+	};
 
 	// Update the number of unread messages, displayed on index.
 	NW.unreadMessageCount = function(messageCount) {
@@ -350,16 +359,17 @@ if (parent.window != window) {
 
 	// Update display elements that live on the index page.
 	NW.updateIndex = function() {
-		var messageUpdated = this.updateMessageCount();
-		var eventUpdated = this.updateLatestEvent();
-		// health bar.
-		var healthUpdated = this.getAndUpdateHealth();
+		var messageUpdated      = this.updateMessageCount();
+		var eventUpdated        = this.updateLatestEvent();
+		var healthUpdated       = this.getAndUpdateHealth(); // health bar.
+		var memberCountsUpdated = this.updateMemberCounts(); // Active member count over chat
 
 		// If any changes to data occurred, return true.
 		var res = (!!(messageUpdated || eventUpdated || healthUpdated));
 		this.debug("Message Updated: "+messageUpdated);
 		this.debug("Event Updated: "+eventUpdated);
 		this.debug("Health Updated: "+healthUpdated);
+		this.debug("Member Counts Updated: "+memberCountsUpdated);
 
 		return res;
 	};
@@ -412,8 +422,7 @@ if (parent.window != window) {
 			updated = true;
 		}
 
-		// Save the unread event count into an array.
-		if (this.storeArrayValue('unread_events_count', data.unread_events_count)) {
+		if (this.updateDataStore(data.member_counts, 'active', 'member_counts', 'active')) {
 			updated = true;
 		}
 
@@ -471,6 +480,7 @@ if (parent.window != window) {
 		if (!this.datastore['array']) {
 			this.datastore['array'] = {}; // Verify there's a storage array.
 		}
+
 		// Check for a change to the value to store.
 		if ((typeof(this.datastore['array'][name]) != 'undefined') || this.datastore['array'][name] == value) {
 			// If it exists and differs, store the new one and return true.
@@ -737,6 +747,9 @@ $(document).ready(function() {
 		var chat_refresh_button = document.getElementById('chat-refresh-image');
 		$(chat_refresh_button).toggle();
 		chat_refresh_button.onclick = function() { NW.chatRefreshClicked(this); };
+
+		NW.activeMembersContainer = document.getElementById('active-members-display');
+		NW.totalMembersContainer = document.getElementById('total-members-display');
 	} else if (g_isSubpage) {
 		$('body').addClass('solo-page'); // Add class to solo-page bodies.
 		// Displays the link back to main page for any lone subpages not in iframes.

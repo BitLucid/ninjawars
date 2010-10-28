@@ -5,7 +5,7 @@
  * @package messages
  * @subpackage chat
  */
- 
+
 
 // ************************************
 // ******** CHAT FUNCTIONS ************
@@ -33,41 +33,23 @@ function send_chat($user_id, $msg) {
 	}
 
 	return false;
-        
+
 	// could add channels later.
-}
-
-// Functions for rendering chat widgets
-
-// Just return a div with an active member count.
-function render_active_members() {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('30 minutes' AS interval)) UNION SELECT count(*) FROM ppl_online WHERE member = true");
-	$members = $statement->fetchColumn();
-	$membersTotal = $statement->fetchColumn();
-
-	return
-        "<div class='active-members-count'>
-            Active Members:  ".($members ? $members : '0')." / ".($membersTotal ? $membersTotal : '0')."
-        </div>";
 }
 
 // Get all the chat messages info.
 function get_chats($chatlength) {
 	$limit = ($chatlength ? 'LIMIT :limit' : '');
 	$bindings = array();
-	if($limit){
+	if ($limit) {
 	    $bindings[':limit'] = $chatlength;
 	}
-	
-	$chats = query_resultset("SELECT sender_id, uname, message, date, age(now(), date) AS ago FROM chat 
+
+	$chats = query_resultset("SELECT sender_id, uname, message, date, age(now(), date) AS ago FROM chat
         JOIN players ON chat.sender_id = player_id ORDER BY chat_id DESC ".$limit, $bindings);
 
 	return $chats;
 }
-
-
 
 // Total number of chats available.
 function get_chat_count() {
@@ -107,7 +89,7 @@ function render_chat_messages($chatlength, $show_elipsis=null) {
 	}
 
 	$res .= "</dl>";
-    
+
 	if ($show_elipsis && $message_count > $chatlength) { // to indicate there are more chats available
 		$res .= ".<br>.<br>.<br>";
 	}
@@ -125,11 +107,11 @@ function time_ago($time, $previous) {
 	if ($previous) {
 		$previous_array = time_to_array($previous);
 		/* If the time is substantially different from the previous (1 minute or more),
-		then mark down how long ago the time was and return it (to be displayed after the chat 
+		then mark down how long ago the time was and return it (to be displayed after the chat
 		If the minutes, hours, and days are similar between two messages, they're similar.*/
 
-		if ($time_array['minutes'] == $previous_array['minutes'] 
-			&& $time_array['hours'] == $previous_array['hours'] 
+		if ($time_array['minutes'] == $previous_array['minutes']
+			&& $time_array['hours'] == $previous_array['hours']
 			&& (
 				(!isset($time_array['days']) || !isset($previous_array['days']))
 				|| $time_array['days'] == $previous_array['days'])) {
@@ -182,7 +164,7 @@ function time_to_array($time) {
 function ago_string($time_array) {
 	if (@$time_array['days'] > 0) {
 		$res = (int)$time_array['days'].(1 == (int)$time_array['days'] ? ' day' : ' days');
-	} elseif($time_array['hours'] > 0) {
+	} elseif ($time_array['hours'] > 0) {
 		$res = (int)$time_array['hours'].(1 == (int)$time_array['hours'] ? ' hour' : ' hours');
 	} else {
 		$res = (int)$time_array['minutes'].(1 == (int)$time_array['minutes'] ? ' minute' : ' minutes');

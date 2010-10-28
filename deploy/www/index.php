@@ -28,7 +28,9 @@ if ($logout) { // on logout, kill the session and don't redirect.
 	}
 }
 
-$stored_username = isset($_COOKIE['username'])? $_COOKIE['username'] : null; // Used for the login field.
+include(LIB_ROOT.'lib_game.php');
+
+$stored_username = (isset($_COOKIE['username']) ? $_COOKIE['username'] : null); // Used for the login field.
 
 $username    = null;
 $player_info = array();
@@ -59,6 +61,8 @@ if ($user_id) { // Only bother trying to change these if logged in.
 
 $options = array(/*'section_only'=>in('section_only'), */'is_index'=>true);
 
+$memberCounts = getMemberCount();
+
 // Assign these vars to the template.
 $parts = array(
 	'main_src'           => $main_src
@@ -74,6 +78,8 @@ $parts = array(
 	, 'login_error'      => $login_error
 	, 'referrer'         => $referrer
 	, 'stored_username'  => $stored_username
+	, 'members'          => $memberCounts['active']
+	, 'membersTotal'     => $memberCounts['total']
 );
 
 if (!$user_id) {

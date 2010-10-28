@@ -5,6 +5,12 @@
                     Chat
                   </a>
                 </div>
+                <div class='active-members-count'>
+                  Active Members:
+                  <span id="active-members-display">{$members|default:'???'}</span>
+                  /
+                  <span id="total-members-display">{$membersTotal|default:'???'}</span>
+                </div>
                 <div id="chat-and-switch">
 {if isset($user_id) and $user_id}
                   <form class='chat-submit' id="post_msg_js" action="mini_chat.php" method="post" name="post_msg">
