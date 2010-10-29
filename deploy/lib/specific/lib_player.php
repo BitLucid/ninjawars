@@ -271,7 +271,7 @@ function render_item_use_on_another($target) {
 	$res = "<form id=\"inventory_form\" action=\"inventory_mod.php\" method=\"post\" name=\"inventory_form\">\n
     <input id=\"target\" type=\"hidden\" name=\"target\" value=\"$target\">
     <input type=\"submit\" value=\"Use\" class=\"formButton\">\n
-    <select id=\"item\" name=\"item_type\">\n";
+    <select id=\"item\" name=\"item\">\n";
 
 	$res .= render_inventory_options($username);
 	$res .= "</select>";

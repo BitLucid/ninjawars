@@ -7,11 +7,30 @@ function items_info($item_id=null) {
 	return query('select * from item');
 }
 
+function getItemByID($p_itemID) {
+	return buildItem(item_info($p_itemID));
+}
+
+function getItemByIdentity($p_itemIdentity) {
+	return buildItem(item_info_from_identity($p_itemIdentity));
+}
+
+function buildItem($p_data) {
+	$item = null;
+
+	if ($p_data) {
+		$item = new Item();
+		$item->buildFromArray($p_data);
+	}
+
+	return $item;
+}
+
 // Return a specific bit of info about an item, or else all the info about an item.
 function item_info($item_id, $specific=null) {
 	$info = query_row('SELECT item_id, item_internal_name, item_display_name, item_cost, image, for_sale, usage, ignore_stealth, covert, turn_cost, target_damage, turn_change, self_use, plural FROM item WHERE item_id = :item_id', array(':item_id'=>array($item_id, PDO::PARAM_INT)));
 
-	if ($specific && !isset($info[$specific])) {
+	if (!$info || ($specific && !isset($info[$specific]))) {
 		return null;
 	} elseif ($specific) {
 		return $info[$specific];
@@ -163,19 +182,20 @@ class Item {
 	}*/
 
 	// Set all the default settings for items, overridden by specified settings.
-	public function __construct($p_id) {
-		$sel = 'SELECT * FROM item WHERE item_id = :item_id';
-		$res = query_row($sel, array(':item_id' => array((int)$p_id, PDO::PARAM_INT)));
-		$this->m_type = $res['item_id'];
-		$this->m_identity = $res['item_internal_name'];
-		$this->m_name = $res['item_display_name'];
-		$this->m_plural = $res['plural'];
-		$this->m_turnCost = ($res['turn_cost'] ? $res['turn_cost'] : 1);
-		$this->m_maxTurnChange = ($res['turn_change'] ? $res['turn_change'] : 0);
-		$this->m_maxDamage = ($res['target_damage'] ? $res['target_damage'] : null);
-		$this->m_ignoresStealth = ($res['ignore_stealth'] == 't');
-		$this->m_covert = ($res['covert'] == 't');
-		$this->m_selfUse = ($res['self_use'] == 't');
+	public function __construct() {
+	}
+
+	public function buildFromArray($p_data) {
+		$this->m_type              = $p_data['item_id'];
+		$this->m_identity          = $p_data['item_internal_name'];
+		$this->m_name              = $p_data['item_display_name'];
+		$this->m_plural            = $p_data['plural'];
+		$this->m_turnCost          = ($p_data['turn_cost']     ? $p_data['turn_cost']     : 1);
+		$this->m_maxTurnChange     = ($p_data['turn_change']   ? $p_data['turn_change']   : 0);
+		$this->m_maxDamage         = ($p_data['target_damage'] ? $p_data['target_damage'] : null);
+		$this->m_ignop_dataStealth = ($p_data['ignore_stealth'] == 't');
+		$this->m_covert            = ($p_data['covert']         == 't');
+		$this->m_selfUse           = ($p_data['self_use']       == 't');
 	}
 
 	public function getName()
