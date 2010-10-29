@@ -1,12 +1,12 @@
 <?php
-
 $alive      = false;
 $private    = false;
+
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
+
 $quickstat  = false;
-$page_title = "Doshin Office";
-
-include SERVER_ROOT."interface/header.php";
-
 $location    = "Doshin Office";
 
 $description = "<p>You walk up to the Doshin Office to find the door locked.
@@ -23,13 +23,18 @@ $bribe    = intval(in('bribe'));
 $bounty   = intval(in('bounty'));
 $ninja    = in('ninja'); // Ninja to put bounty on.
 
+$amount_in = $amount;
+
 if ($bounty && $ninja && get_user_id($ninja)) {
 	$command = 'Offer Bounty';
 }
 
+$error = 0;
+$success = false;
+
 if ($command == "Offer Bounty") {
 	if (!get_user_id($target)) {
-		echo "<p>No such ninja to put bounty on.</p>";
+		$error = 1;
 	} else {
 		$target_bounty = getBounty($target);
 
@@ -37,25 +42,22 @@ if ($command == "Offer Bounty") {
 			if ($amount > 0) {
 				if (($target_bounty + $amount) > 5000) {
 					$amount = (5000 - $target_bounty);
-
-					echo "The doshin will only accept $amount gold towards $target's bounty.<br>\n";
 				}
 
 				if (getGold($username) >= $amount) {
 					addBounty($target, $amount);
 					subtractGold($username, $amount);
 					sendMessage($username, $target, "$username has offered $amount gold in reward for your head!");
-
-					echo "<div class='ninja-notice'>You have offered $amount gold towards bringing $target to justice.</div>\n";
+					$success = true;
 					$quickstat = "player";
 				} else {
-					echo "<div>You do not have that much gold.</div>\n";
+					$error = 2;
 				}
 			} else {
-				echo "<div>You did not offer a valid amount of gold.</div>\n";
+				$error = 3;
 			}
 		} else {
-			echo "<div>The bounty on $target may go no higher.</div>\n";
+			$error = 4;
 		}
 	}
 } else if ($command == "Bribe") {
@@ -82,104 +84,24 @@ if ($command == "Offer Bounty") {
 				   "Bruised and battered, you find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.\n";
 		$quickstat = "player";
 	} else {
-		echo "The Doshin ignore your ill-funded attempt to bribe them.\n";
+		$error = 5;
 	}
 }
 
-echo "<h1>$location</h1>\n";
-
-echo "<div class=\"description\">\n";
-echo $description;
-echo "</div>\n";
-
-echo "<p>\n";
-
-if (getBounty($username) > 0) {
-	echo "<form id=\"bribe_form\" action=\"doshin_office.php\" method=\"post\" name=\"bribe_form\" style='width:40%;float:left;padding-right: 40px;'>\n";
-	echo "Bribe down your own bounty: <input id=\"bribe\"type=\"text\" size=\"4\" maxlength=\"6\" name=\"bribe\" class=\"textField\">\n";
-	echo "<input id=\"command\" type=\"submit\" value=\"Bribe\" name=\"command\" class=\"formButton\">\n";
-	echo "</form>\n";
-}
+$myBounty = getBounty($username);
 
 DatabaseConnection::getInstance();
 $result = DatabaseConnection::$pdo->query("SELECT player_id, uname, bounty, class_name AS class, level, clan_id, clan_name FROM players JOIN class ON class_id = _class_id LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id WHERE bounty > 0 AND confirmed = 1 and health > 0 ORDER BY bounty DESC");
 
-echo "
-<form action='' style='float:left;width:45%;'>
-Put <input type='text' name='amount' value='".htmlentities($amount)."' size='4' class='textField'> bounty on: <input type='text' name='target' value='".htmlentities($target)."' class='textField'>
-<input id='submit-bounty' type='submit' value='Offer Bounty' name='command' class='formButton'>
-</form>
-";
+$data = $result->fetchAll();
 
-if ($data = $result->fetch()) {
-	$statement = DatabaseConnection::$pdo->query('SELECT count(player_id) FROM players WHERE bounty > 0 AND confirmed = 1 and health > 0');
-
-	echo "<p style='clear:both;text-align:center;margin-top:8em;'>Total Wanted Ninja: ".$statement->fetchColumn()."</p>\n";
-
-	echo "<hr>\n";
-
-	echo "<table class=\"playerTable\">\n";
-	echo "<tr class='playerTableHead'>\n";
-	echo "  <th>\n";
-	echo "  Name\n";
-	echo "  </th>\n";
-
-	echo "  <th>\n";
-	echo "  Bounty\n";
-	echo "  </th>\n";
-
-	echo "  <th>\n";
-	echo "  Level\n";
-	echo "  </th>\n";
-
-	echo "  <th>\n";
-	echo "  Class\n";
-	echo "  </th>\n";
-
-	echo "  <th>\n";
-	echo "  Clan\n";
-	echo "  </th>\n";
-	echo "</tr>\n";
-
-	do {
-		$player_id   = urlencode($data['player_id']);
-		$name        = htmlentities($data['uname']);
-		$bounty      = htmlentities($data['bounty']);
-		$class       = htmlentities($data['class']);
-		$level       = htmlentities($data['level']);
-		$clan        = get_clan_by_player_id($data['player_id']);
-		$clan_id = is_object($clan)? $clan->getID() : null;
-		$clan_name = is_object($clan)? $clan->getName() : null;
-
-		$clan_name_display = (empty($clan_name) ? '' : "<a href=\"clan.php?command=view&amp;clan_id=$clan_id\">".htmlentities($clan_name)."</a>");
-
-		echo "<tr class='playerRow'>\n";
-		echo "  <td class='playerCell'>\n";
-		echo "  <a href=\"player.php?player_id=$player_id\">$name</a>\n";
-		echo "  </td>\n";
-
-		echo "  <td class='playerCell'>\n";
-		echo    $bounty."\n";
-		echo "  </td>\n";
-
-		echo "  <td class='playerCell'>\n";
-		echo    $level."\n";
-		echo "  </td>\n";
-
-		echo "  <td class='playerCell'>\n";
-		echo    $class."\n";
-		echo "  </td>\n";
-
-		echo "  <td class='playerCell'>\n";
-		echo    $clan_name_display."\n";
-		echo "  </td>\n";
-		echo "</tr>\n";
-	} while ($data = $result->fetch());
-
-	echo "</table>\n";
-} else {
-	echo "<p>The Doshin do not currently have any open bounties. Your village is safe.</p>\n";
+display_page(
+	'doshin.tpl'
+	, 'Doshin Office'
+	, get_certain_vars(get_defined_vars(), array('data'))
+	, array(
+		'quickstat' => $quickstat
+	)
+);
 }
-
-include SERVER_ROOT."interface/footer.php";
 ?>

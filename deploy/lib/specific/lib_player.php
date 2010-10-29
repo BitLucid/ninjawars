@@ -15,77 +15,77 @@ define('GRAVATAR', 1);
 
 // Wrapper functions for the old usages.
 // DEPRECATED
-function setClass($who, $new_class){
-    $char_id = get_char_id($who);
-    return set_class($char_id, $new_class);
+function setClass($who, $new_class) {
+	$char_id = get_char_id($who);
+	return set_class($char_id, $new_class);
 }
 
 // Wrapper functions for the old usages.
 // DEPRECATED
-function getClass($who){
-    $char_id = get_char_id($who);
-    return char_class_identity($char_id);
-    // Note that classes now have identity/name(for display)/theme, so this function should be deprecated.
+function getClass($who) {
+	$char_id = get_char_id($who);
+	return char_class_identity($char_id);
+	// Note that classes now have identity/name(for display)/theme, so this function should be deprecated.
 }
 
 
-    // ************************************
-    // ************************************	
+	// ************************************
+	// ************************************
 
 
 // Centralized holding for the maximum level available in the game.
-function maximum_level(){
-    return 250;
+function maximum_level() {
+	return 250;
 }
 
 // Get a character's level, necessary when a character's level gets changed.
-function char_level($char_id){
-    $info = get_player_info($char_id);
-    return $info['level'];
+function char_level($char_id) {
+	$info = get_player_info($char_id);
+	return $info['level'];
 }
 
 // The number of kills needed to level up to the next level.
-function required_kills_to_level($current_level){
-    $levelling_cost_multiplier = 5; // 5 more kills in cost for every level you go up.
-    $required_kills = ($current_level)*$levelling_cost_multiplier;
-    return $required_kills;
-    
+function required_kills_to_level($current_level) {
+	$levelling_cost_multiplier = 5; // 5 more kills in cost for every level you go up.
+	$required_kills = ($current_level)*$levelling_cost_multiplier;
+	return $required_kills;
+
 }
 
 // Get a character's current kills, necessary when a character's level changes.
-function char_kills($char_id){
-    $info = get_player_info($char_id);
-    return $info['kills'];
+function char_kills($char_id) {
+	$info = get_player_info($char_id);
+	return $info['kills'];
 }
 
 
 // ******** Leveling up Function *************************
 // Incorporate this into the kill system to cause auto-levelling.
-function level_up_if_possible($char_id){
-    // Setup values: 
+function level_up_if_possible($char_id) {
+	// Setup values:
 	$max_level = maximum_level();
-    $health_to_add = 100;
-    $turns_to_give = 50;
-    $strength_to_add = 5;
-    
-    
-        
-    $username = get_char_name($char_id);
-    $char_level = getLevel($username);
-    $char_kills = getKills($username);
+	$health_to_add = 100;
+	$turns_to_give = 50;
+	$strength_to_add = 5;
 
 
-    // Check required values:
+
+	$username = get_char_name($char_id);
+	$char_level = getLevel($username);
+	$char_kills = getKills($username);
+
+
+	// Check required values:
 	$nextLevel  = $char_level + 1;
 	$required_kills = required_kills_to_level($char_level);
 	// Have to be under the max level and have enough kills.
-	$level_up_possible = ( 
-	    ($nextLevel < $max_level) && 
-	    ($char_kills >= $required_kills) );
-	    
-	    
+	$level_up_possible = (
+		($nextLevel < $max_level) &&
+		($char_kills >= $required_kills) );
+
+
 	if ($level_up_possible) {
-	    // ****** Perform the level up actions ****** //
+		// ****** Perform the level up actions ****** //
 		$userKills = subtractKills($username, $required_kills);
 		$userLevel = addLevel($username, 1);
 		addStrength($username, $strength_to_add);
@@ -93,61 +93,61 @@ function level_up_if_possible($char_id){
 		addTurns($username, $turns_to_give);
 		return true;
 	} else {
-	    return false;
+		return false;
 	}
 }
 
 
 
 // Check that a class matches against the class identities available in the database.
-function is_valid_class($potential_class_identity){
-    $sel = "select identity from class";
-    $classes = query_array($sel);
-    foreach($classes as $l_class){
-        if($l_class['identity'] == $potential_class_identity){
-            return true;
-        }
-    }
-    return false;
+function is_valid_class($potential_class_identity) {
+	$sel = "select identity from class";
+	$classes = query_array($sel);
+	foreach ($classes as $l_class) {
+		if ($l_class['identity'] == $potential_class_identity) {
+			return true;
+		}
+	}
+	return false;
 }
 
 // Set the character's class, using the identity.
 function set_class($char_id, $new_class) {
-    if(!is_valid_class(strtolower($new_class))){
-        return "That class was not an option to change into.";
-    } else {
-    	$up = "UPDATE players SET _class_id = (select class_id FROM class WHERE class.identity = :class) WHERE player_id = :char_id";
-    	query($up, array(':class'=>strtolower($new_class), ':char_id'=>$char_id));
+	if (!is_valid_class(strtolower($new_class))) {
+		return "That class was not an option to change into.";
+	} else {
+		$up = "UPDATE players SET _class_id = (select class_id FROM class WHERE class.identity = :class) WHERE player_id = :char_id";
+		query($up, array(':class'=>strtolower($new_class), ':char_id'=>$char_id));
 
-    	return null;
-    }
+		return null;
+	}
 }
 
 
 // Get the character class display name info.
 function char_class_name($char_id) {
-    return query_item("SELECT class.class_name FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id", 
-        array(':char_id'=>$char_id));
+	return query_item("SELECT class.class_name FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
+		array(':char_id'=>$char_id));
 }
 
 
 // Get the character class information.
 function char_class_identity($char_id) {
-    return query_item("SELECT class.identity FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id", 
-        array(':char_id'=>$char_id));
+	return query_item("SELECT class.identity FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
+		array(':char_id'=>$char_id));
 }
 
 
 // Get the character class theme string.
 function char_class_theme($char_id) {
-    return query_item("SELECT class.theme FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id", 
-        array(':char_id'=>$char_id));
+	return query_item("SELECT class.theme FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
+		array(':char_id'=>$char_id));
 }
 
 // Pull the class theme by identity.
-function class_theme($class_identity){
-    return query_item('select theme from class where identity = :class_identity',
-        array(':class_identity'=>$class_identity));
+function class_theme($class_identity) {
+	return query_item('SELECT theme FROM class WHERE identity = :class_identity',
+		array(':class_identity'=>$class_identity));
 }
 
 /**
@@ -155,9 +155,9 @@ function class_theme($class_identity){
 **/
 function create_avatar_url($player, $size=null) {
 	// If the avatar_type is 0, return '';
-    if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email) {
-        return '';
-    } else {	// Otherwise, user the player info for creating a gravatar.
+	if (!$player->vo || !$player->vo->avatar_type || !$player->vo->email) {
+		return '';
+	} else {	// Otherwise, user the player info for creating a gravatar.
 		$email       = $player->vo->email;
 		$avatar_type = $player->vo->avatar_type;
 		return create_gravatar_url_from_email($email, $avatar_type, $size);
@@ -173,7 +173,7 @@ function generate_gravatar_url($player) {
 }
 
 // Use the email information to return the gravatar image url.
-function create_gravatar_url_from_email($email, $avatar_type=null, $size=null){
+function create_gravatar_url_from_email($email, $avatar_type=null, $size=null) {
 	$def         = 'monsterid'; // Default image or image class.
 	// other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
 	$base        = "http://www.gravatar.com/avatar/";
@@ -183,7 +183,7 @@ function create_gravatar_url_from_email($email, $avatar_type=null, $size=null){
 	$rating      = "r=x";
 	$res         = $base.$hash."?".implode('&', array($no_gravatar, $size, $rating));
 
-	return $res;    
+	return $res;
 }
 
 // *** Get list of clan members from clan ***
@@ -212,54 +212,29 @@ function get_clan_members($p_clanID, $p_limit = 30) {
 **/
 function render_inventory_options($username) {
 	$char_id = get_char_id($username);
-	
-	if(!$char_id){
-	    return '';
+
+	if (!$char_id) {
+		return '';
 	}
-	
+
 	$res = '';
-	$selected = "selected='selected'";// Mark first option as selected.
 
-    
-    $sel = "SELECT owner, item_internal_name, item_display_name, item.item_id, amount
-        FROM inventory join item on inventory.item_type = item.item_id 
-        WHERE owner = :owner_id
-        AND amount > 0 ORDER BY item_display_name";
-    $loop_items = query($sel, array(':owner_id'=>array((int)$char_id, PDO::PARAM_INT)));
-    
-    if(!$loop_items->rowCount()){
-		$res = "          <option value='' selected='selected'>You Have No Items</option>";
-    } else {
-    
-        $items_indexed = array();
-        foreach($loop_items as $litem){
-            // Index by internal name.
-            $items_indexed[$litem['item_internal_name']] = $litem;
-        }    
-    
-        // Custom multidimensional inventory array sorting function.
-        function sort_alpha_with_shuriken_first($item, $item_2){
-            if($item['item_internal_name'] == 'shuriken'){
-                return -1;
-            }
-            if($item_2['item_internal_name'] == 'shuriken'){
-                return 1;
-            }
-            if ($item['item_internal_name'] == $item_2['item_internal_name']) {
-                return 0;
-            }
-            return ($item < $item_2) ? -1 : 1;
-        }
+	$sel = "SELECT owner, item_internal_name, item_display_name, item.item_id, amount
+		FROM inventory JOIN item on inventory.item_type = item.item_id
+		WHERE owner = :owner_id
+		AND amount > 0 ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
+	$items = query($sel, array(':owner_id'=>array((int)$char_id, PDO::PARAM_INT)));
 
-        usort($items_indexed, "sort_alpha_with_shuriken_first");
-        
-        foreach($items_indexed as $sorted_item){
-    			$res .= "      <option $selected value='{$sorted_item['item_id']}'>"
-    			    .htmlentities($sorted_item['item_display_name']).
-    			    " ({$sorted_item['amount']})</option>";
-    			$selected = '';// Further items will not be marked as selected.
-        }
-    }
+	if (!$items->rowCount()) {
+		$res = "          <option value=''>You Have No Items</option>";
+	} else {
+		foreach ($items as $item) {
+			$res .= '      <option value="'.$item['item_id'].'">'
+				.htmlentities($item['item_display_name'])
+				.' ('.$item['amount'].")</option>\n";
+		}
+	}
+
 	return $res;
 }
 
@@ -269,12 +244,12 @@ function render_inventory_options($username) {
 function render_item_use_on_another($target) {
 	$username = get_username();
 	$res = "<form id=\"inventory_form\" action=\"inventory_mod.php\" method=\"post\" name=\"inventory_form\">\n
-    <input id=\"target\" type=\"hidden\" name=\"target\" value=\"$target\">
-    <input type=\"submit\" value=\"Use\" class=\"formButton\">\n
-    <select id=\"item\" name=\"item\">\n";
+	<input id=\"target\" type=\"hidden\" name=\"target\" value=\"".htmlentities($target)."\">
+	<input type=\"submit\" value=\"Use\" class=\"formButton\">\n
+	<select id=\"item\" name=\"item\">\n";
 
 	$res .= render_inventory_options($username);
-	$res .= "</select>";
+	$res .= "</select>\n";
 
 	$target_id   = get_user_id($target);
 	$target_clan = get_clan_by_player_id($target_id);
@@ -306,14 +281,14 @@ function get_rank($username) {
 }
 
 // Return the current percentage of the maximum health that a character could have.
-function health_percent($health, $level){
-    return min(100, round(($health/determine_max_health($level))*100));
+function health_percent($health, $level) {
+	return min(100, round(($health/determine_max_health($level))*100));
 }
 
 // Format a player data row with health and level and add the data for a health percentage.
-function format_health_percent($player_row){
-    $percent = health_percent($player_row['health'], $player_row['level']);
-    $player_row['health_percent'] = $percent;
-    return $player_row;    
+function format_health_percent($player_row) {
+	$percent = health_percent($player_row['health'], $player_row['level']);
+	$player_row['health_percent'] = $percent;
+	return $player_row;
 }
 ?>
