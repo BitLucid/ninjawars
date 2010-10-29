@@ -25,7 +25,7 @@
 
 {if $templatelite.const.LOCAL_JS}
     <!-- Local jquery lib -->
-    <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.3.min.js"></script>
 {else}
     <!-- Google Analytics -->
     <script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script>
@@ -42,7 +42,7 @@
     </script>
 
     <!-- Google jquery lib -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 {/if}
     <!-- All the global ninjawars javascript -->
     <script type="text/javascript" src="js/nw.js"></script>
