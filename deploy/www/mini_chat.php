@@ -41,7 +41,7 @@ $total_chars = whichever($player_count, '0');
 
 // Output section.
 
-$chats = get_chats($chatlength);
+$chats = get_chats(min($chatlength, $chatmax));
 $chats = $chats->fetchAll();
 $message_count = get_chat_count();
 
