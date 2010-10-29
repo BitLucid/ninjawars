@@ -34,7 +34,9 @@ class Player
 			}
 
 			$dao = new PlayerDAO();
-			$this->vo = $dao->get($this->player_id);
+			if (!($this->vo = $dao->get($this->player_id))) {
+				$this->vo = new PlayerVO();
+			}
 		}
 	}
 
