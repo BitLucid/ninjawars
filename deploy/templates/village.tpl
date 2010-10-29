@@ -7,7 +7,6 @@
 {/if}
 
 <h1>Chat Board</h1>
-<button type='button' style='margin-bottom:1em;margin-top:.5em' class='formButton' onclick="location.href='village.php?chatlength=50';">Refresh</button>
 
 <script type="text/javascript">
 function refreshpage{$frame}() {literal}{{/literal}
@@ -20,6 +19,13 @@ window.onload = function(){
 };
 {/literal}
 </script>
+{literal}
+<style type='text/css'>
+	#full-chat{
+		font-size:1.1em;
+	}
+</style>
+{/literal}
 
 <div id='full-chat'>
 {if is_logged_in()}
@@ -32,6 +38,9 @@ window.onload = function(){
     </div>
   </form>
 {/if}
+
+<a class='link-as-button' style='margin-bottom:.5em;margin-top:1em' href="village.php?chatlength=100">Refresh</a>
+
   <div class='active-members-count'>
     Ninjas: {$active_chars} Active / {$chars_online} Online / {$total_chars} Total
   </div>
