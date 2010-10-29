@@ -4,10 +4,12 @@
   <div style="margin-bottom: 1.5em;">
     The shrine to the gods is peacefully quiet as you enter. The sound of flowing water soothes your mind.
   </div>
-  <p>A monk plays a reed flute in one corner of the shrine.</p>
-  <div id='shrine-music' style='width:200px;height:25px;margin-bottom:1.5em;'>
+  <p>A monk looks ready to play a reed flute 
+  <span id='shrine-music' style='width:200px;height:25px;display:inline-block'>
 	{include file='music.tpl'}
-  </div>
+  </span> 
+  in one corner of the shrine.</p>
+  
   <div>A monk approaches you quietly and asks, <em class='speech'>Are you in need of healing?</em></div>
 </div>
 {if !$username}

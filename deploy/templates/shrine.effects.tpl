@@ -1,9 +1,13 @@
 <h1>Shrine Effects</h1>
 
 <div id='heal-result' style="margin-top: 10px;">
-
+	
 {if $error}
     <div class='ninja-notice'>{$error}</div>
+{else}
+	<p class='description'>
+		The Shrine echos with the sound of the monks chanting their soothing chant that vibrates and bounces between the hard stone walls.
+	</p>
 {/if}
 
     {if !$startingHealth && isset($resurrect_requested) and $resurrect_requested}
@@ -31,6 +35,11 @@
 		{/if}
 		{if $has_chi}
 	        <p>Your chi is strong and you recover faster than expected!</p>
+		{/if}
+		{if !$fully_healed}
+			<div>
+				<a class='link-to-button' href='shrine_mod.php?max_heal=1'>Heal Fully</a>
+			</div>
 		{/if}
     {elseif isset($poison_cure_requested) and $poison_cure_requested and $cured}
         <p>You have been cured!</p>

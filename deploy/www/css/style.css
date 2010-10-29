@@ -1772,7 +1772,7 @@ select option #blue-class-select {
 	text-shadow: rgb(11, 9, 9) 2px 2px 2px;
 }
 
-.link-as-button{
+.link-as-button, .link-to-button{
 	display:inline-block;
 	padding: .3em;
 	border: 3px rgb(190, 190, 190) solid;
