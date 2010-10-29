@@ -13,4 +13,6 @@
 		<div class='ninja-error'>The {$display_name|escape} has killed you!</div>
 	{/if}
 
-<a href='npc.php?victim={$victim|escape|escape:'url'}' class='attack-again'>Attack another {$display_name|escape}</a>
+	<div>
+		<a href='npc.php?victim={$victim|escape|escape:'url'}' class='attack-again'>Attack another {$display_name|escape}</a>
+	</div>
