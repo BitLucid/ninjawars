@@ -37,7 +37,7 @@ You have comitted suicide!<br>
 	{/if}
 
 	{if $repeat}
-<br><a href="inventory_mod.php?item_type={$itemType|escape:'url'|escape}&amp;target_id={$target_id|escape:'url'|escape}&amp;link_back={$return_to|escape:'url'|escape}{if $selfTarget}&amp;selfTarget=1{/if}">Use {$itemName|escape} again?</a><br>
+<br><a href="inventory_mod.php?item={$itemType|escape:'url'|escape}&amp;target_id={$target_id|escape:'url'|escape}&amp;link_back={$return_to|escape:'url'|escape}{if $selfTarget}&amp;selfTarget=1{/if}">Use {$itemName|escape} again?</a><br>
 	{/if}
 </div>
 {/if}
