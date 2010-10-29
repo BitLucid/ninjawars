@@ -98,8 +98,10 @@
 
 {include file="mini-chat.section.tpl"}
 
+		{* Took out the music box on splash
         <div id="music" class="boxes passive">
 {include file='music.tpl'}
+		*}
         </div>
       </div> <!-- End of right column -->
       <div id='push'></div>
