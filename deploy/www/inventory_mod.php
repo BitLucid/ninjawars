@@ -296,7 +296,7 @@ assert($item->hasEffect('speed') || $ending_turns < $starting_turns || $starting
 
 // TODO: Add a "this is the target's resulting hitpoints bar at the end here.
 
-<<<<<<< HEAD
+
 display_page(
 	'inventory_mod.tpl'
 	, 'Item Usage'
@@ -306,14 +306,4 @@ display_page(
 	)
 );
 }
-=======
-?>
-
-<p>
-Return to <?php echo ($link_back? $link_back : "<a href='combat.php' class='central-location'>Combat</a>");?>
-</p>
-
-<?php
-include SERVER_ROOT."interface/footer.php";
->>>>>>>   Inventory_mod: Fixed deprecated use of getGold.
 ?>
