@@ -7,7 +7,7 @@ var show_faqs = true;
 var show_faqs = false;
 {/if}
 {literal}
-$().ready(function () {
+$(document).ready(function () {
 	var showfaqsLink;
 	(showfaqsLink = document.getElementById('show-faqs')).onclick = function(){
 		$(document.getElementById('faqs')).toggle();
