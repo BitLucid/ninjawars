@@ -17,22 +17,22 @@ $link_back  = in('link_back');
 $target     = in('target');
 $selfTarget = in('selfTarget');
 
-// Possible identifiers of the item.
-$item_type  = in('item_type');
-$item_identity = in('item_identity');
-$item       = in('item');
+// *** Item identifier, either it's id or internal name ***
+$item_in = in('item');
 
 $give       = in('give');
 $target_id  = in('target_id');
 
-if(is_numeric($item_type)){
-    $item = $item_obj = new Item($item_type);
-} elseif($item_identity) {
-    $item = $item_obj = new Item(item_info_from_identity($item_identity, 'item_id'));
+$item = null;
+
+if (is_numeric($item_in)) {
+	$item = $item_obj = getItemByID($item_in);
+} elseif (is_string($item_in)) {
+	$item = $item_obj = getItemByIdentity($item_in);
 }
 
-if(!is_object($item)){
-    throw new Exception('Item sent to page from '.$_SERVER['HTTP_REFERER'].' as item display name instead of item id.');
+if (!is_object($item)) {
+	throw new Exception('Invalid item identifier ('.(is_string($item_in) ? $item_in : 'non-string').') sent to page from '.(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '(no referrer)').'.');
 }
 
 if ($target_id) {

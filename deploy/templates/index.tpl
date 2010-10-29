@@ -79,11 +79,11 @@
               <li>
                 <ul class="submenu">
                   <li>
-                    <a href="inventory_mod.php?item_identity=smokebomb&amp;selfTarget=1"
+                    <a href="inventory_mod.php?item=smokebomb&amp;selfTarget=1"
                      target="main">Stealth</a>
                   </li>
                   <li>
-                    <a href="inventory_mod.php?item_identity=amanita&amp;selfTarget=1" 
+                    <a href="inventory_mod.php?item=amanita&amp;selfTarget=1" 
                     target="main">Speed</a>
                   </li>
                 </ul>
