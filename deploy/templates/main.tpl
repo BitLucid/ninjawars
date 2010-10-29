@@ -7,8 +7,7 @@ var show_faqs = true;
 var show_faqs = false;
 {/if}
 {literal}
-//$(document).ready(function () {
-window.onload = function () {
+$().ready(function () {
 	var showfaqsLink;
 	(showfaqsLink = document.getElementById('show-faqs')).onclick = function(){
 		$(document.getElementById('faqs')).toggle();
@@ -21,7 +20,7 @@ window.onload = function () {
 	} else {
 		$(document.getElementById('faqs')).toggle();
 	}
-}
+});
 {/literal}
 </script>
 
