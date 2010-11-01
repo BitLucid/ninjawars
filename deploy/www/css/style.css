@@ -498,6 +498,9 @@ table.playerTable .classCell div {
 table.playerTable .classCell img {
 	vertical-align:middle;
 }
+table.playerTable a{
+	text-shadow: black 1px 1px 1px;
+}
 
 /* Profile and Player list Class Colors */
 .class-name{
