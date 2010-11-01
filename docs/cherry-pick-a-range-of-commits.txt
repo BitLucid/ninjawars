@@ -1,0 +1,17 @@
+The easiest way to perform the action that you are looking for is with git rebase. Here's a recipe. Assume that tag A is the commit on top of which the patch series that you want to select is based and that tag B is the commit of the final patch in the series. Also, assume that br is the name of the current branch and the branch where the new patch series should be applied.
+
+
+A = first commit BEFORE those that you want in the range. = 39020a1
+B = final linear commit in the range. = a6b2ad2
+
+br = root branch to apply the commits. = master_combine
+
+
+# Checkout a new temporary branch at the current location, somewhat storing the latest/current commit by making a new branch out of it.
+git checkout -b temporary
+
+# Move the br (old root branch) branch to the head of the new patchset
+git branch -f master_combine a6b2ad2
+
+# Rebase the patchset onto tmp (duplicated-from-root-branch), the old location of br (old-root-branch)
+git rebase --onto temporary 39020a1 master_combine
