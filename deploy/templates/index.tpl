@@ -5,26 +5,6 @@
 	}
       </script>
     <style type="text/css">
-    .unread-count, .unread-count a {
-        display:inline-block;
-        font-size:10px;
-        margin-left:2px;
-        padding:1px 5px;
-        background:#ddd;
-        color:#999;
-        font-weight:bold;
-        text-shadow:none;
-        text-decoration:none;
-        border-radius:5px;
-        -webkit-border-radius:5px;
-        -moz-border-radius:5px;
-        color:black;
-    }
-
-    .unread-count.message-unread, .unread-count.message-unread a {
-        background-color:#4183c4;
-        color:#fff;
-    }
     </style>
       
 {/literal}
@@ -146,17 +126,17 @@
 
             <div id='category-bar'>
               <ul>
-                <li id='status-actions'>
+                <li id='status-actions' class='self'>
                   <a href='events.php' target='main' title='See messages about whether you were attacked or other events.'>
                     <img src='/images/ninja_status_icon_50px.png' alt='' style='width:50px;height:51px'>Status
                   </a>
                 </li>
-                <li id='combat-actions'>
+                <li id='combat-actions' class='combat'>
                   <a href='enemies.php' target='main' title='Check up on your enemies and see who recently attacked you.'>
                     <img src='images/50pxShuriken.png' alt=''  style='width:50px;height:42px'>Combat
                   </a>
                 </li>
-                <li id='village-actions'>
+                <li id='map-actions' class='map'>
                   <a href='map.php' target='main' title='Travel to different locations on the Map.'>                  
                     <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Map
                   </a>
@@ -176,7 +156,7 @@
                   <li><a href="clan.php" target="main" title='Clans and your clan options.'>Clans</a></li>
                   <li><a href="duel.php" target="main" title="Today's Duels">Duels</a></li>
                 </ul>
-                <ul id='village-subcategory'>
+                <ul id='map-subcategory'>
                   <li><a href="shop.php" target="main" title='Spend your money to get weapons.'>Shop</a></li>
                   <li><a href="work.php" target="main" title='Trade your turns to get money.'>Work</a></li>
                   <li><a href="doshin_office.php" target="main" title='Hunt bounties for money.'>Doshin <img src="images/doshin.png" alt="" style='height:8px;width:8px'></a></li>

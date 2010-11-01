@@ -1625,16 +1625,6 @@ iframe {
 #category-bar a img {
 	vertical-align:top;
 }
-/*
-#category-bar #status-actions {
-	background: url(/images/ninja_silhouette_50px.png) no-repeat top center;
-}
-#category-bar #combat-actions {
-	background: url(/images/50pxShuriken.png) no-repeat top center;
-}
-#category-bar #village-actions {
-	background: url(/images/pagodaIcon_60px.png) no-repeat top center;
-}*/
 
 #subcategory-bar {
 	height:25%;
@@ -1643,6 +1633,8 @@ iframe {
 	text-align:center;
 	line-height:2em;
 	text-transform:uppercase;
+	background-color:#330000;	
+	color:white;
 }
 #subcategory-bar a {
 	font: 18px/27px 'ShangriLaNFRegular', Verdana, sans-serif;
@@ -1650,18 +1642,13 @@ iframe {
 	font-weight:bold;
 }
 #subcategory-bar a:hover {
-	font: 18px/27px 'ShangriLaNFRegular', Verdana, sans-serif;
 	text-decoration:none;
-	font-weight:bold;
 }
 
 #subcategory-bar ul {
 	margin: 0 0 0 5px;
 	padding:0;
-	background-color:#330000;
-	color:white;
 	float:left;
-	overflow:hidden;
 	width:33.333%;
 	margin-left:auto;
 	margin-right:auto;
@@ -1677,7 +1664,7 @@ iframe {
 }
 /*#subcategory-bar ul#combat-subcategory {
 }*/
-#subcategory-bar ul#village-subcategory {
+#subcategory-bar ul#map-subcategory {
 	float:right;
 	margin-right:0;
 }
@@ -1783,5 +1770,26 @@ select option #blue-class-select {
 	border: 3px rgb(190, 190, 190) solid;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
+}
+
+.unread-count, .unread-count a {
+    display:inline-block;
+    font-size:10px;
+    margin-left:2px;
+    padding:1px 5px;
+    background:#ddd;
+    color:#999;
+    font-weight:bold;
+    text-shadow:none;
+    text-decoration:none;
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    color:black;
+}
+
+.unread-count.message-unread, .unread-count.message-unread a {
+    background-color:#4183c4;
+    color:#fff;
 }
 
