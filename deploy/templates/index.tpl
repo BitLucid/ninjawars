@@ -123,7 +123,25 @@
       
       <div id='menu-bar' class='header-section'>
         <div id='reactive-panel'>
-
+            <script type='text/javascript'>
+            {literal}
+            $(document).ready(function(){
+            	// Hide the subcats initially.
+            	$('#combat-subcategory, #self-subcategory, #map-subcategory').hide();
+            	
+            	// Find the trigger areas and show the appropriate subcategory.
+            	var triggers = $('#category-bar').find('.combat, .self, .map');
+            	if(triggers){
+	            	triggers.mouseenter(function(){
+	            		var trigger = $(this);
+	            		var triggeredSubcat = $("#"+trigger.attr('class')+'-subcategory').show().siblings().hide();
+		            	// When a different trigger area is hovered, hide the other subcats.
+	            	});
+            	}
+            	
+            });
+            {/literal}
+            </script>
             <div id='category-bar'>
               <ul>
                 <li id='status-actions' class='self'>

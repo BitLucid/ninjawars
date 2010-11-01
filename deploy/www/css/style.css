@@ -1662,8 +1662,10 @@ iframe {
 	float:left;
 	margin-left:0;
 }
-/*#subcategory-bar ul#combat-subcategory {
-}*/
+#subcategory-bar ul#combat-subcategory {
+	margin-left:33%;
+	margin-right:auto;
+}
 #subcategory-bar ul#map-subcategory {
 	float:right;
 	margin-right:0;
