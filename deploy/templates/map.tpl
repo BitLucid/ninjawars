@@ -1,8 +1,7 @@
-<h1>Village</h1>
+<h1>Map</h1>
 
 <div id='attack-player-page'>
 
-    <h3>Locations</h3>
     <ul style='margin: .5em auto;text-align:center;font-size:1.3em;'>
 {foreach name="looploc" from=$locations item="loc" key="idx"}
       <li style='padding-left:8px'>
