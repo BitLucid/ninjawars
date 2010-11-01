@@ -207,7 +207,6 @@ if (parent.window != window) {
 
 	// Display an event.
 	NW.writeLatestEvent = function(event) {
-		this.debug('Event display requested.');
 
 		var recent = $('#recent-events', top.document)
 		.find('#recent-event-attacked-by').text('You were recently in combat').end()
@@ -244,7 +243,6 @@ if (parent.window != window) {
 
 		if (!event) {
 			this.feedbackSpeedUp(); // Make the interval to try again shorter.
-			this.debug('No event data to use.');
 		} else if (this.datastore.visibleEventId == event.event_id) {
 			// If the stored data is the same as the latest pulled event...
 			this.datastore.eventUpdateCount = (typeof this.datastore.eventUpdateCount === 'undefined'? 
@@ -259,7 +257,6 @@ if (parent.window != window) {
 				this.datastore.visibleEventRead = true;
 			}
 		} else {
-			this.debug('Request to write out the latest event.');
 			feedback = true;
 			this.datastore.visibleEventId = event.event_id;
 			this.datastore.visibleEventRead = false;
@@ -367,10 +364,6 @@ if (parent.window != window) {
 
 		// If any changes to data occurred, return true.
 		var res = (!!(messageUpdated || eventUpdated || healthUpdated));
-		this.debug("Message Updated: "+messageUpdated);
-		this.debug("Event Updated: "+eventUpdated);
-		this.debug("Health Updated: "+healthUpdated);
-		this.debug("Member Counts Updated: "+memberCountsUpdated);
 
 		return res;
 	};
@@ -431,8 +424,6 @@ if (parent.window != window) {
 			updated = true;
 		}
 
-		this.debug('Update requested: '+updated);
-
 		if (updated) {
 			this.updateIndex(); // Always request a redisplay for any poll that has information updates.
 			this.feedbackSpeedUp(updated);
@@ -453,7 +444,6 @@ if (parent.window != window) {
 			if (!this.datastore[global_store] || (this.datastore[global_store][comparison_name] != datum[property_name])) {
 				// If the data isn't there, or doesn't match, update the store.
 				this.datastore[global_store] = datum;
-				this.debug(datum);
 				return true;
 			}
 		}
@@ -530,7 +520,6 @@ if (parent.window != window) {
 
 		var furtherIntervals = this.getUpdateInterval(this.feedback());
 		this.debug("Next Update will be in:"+furtherIntervals);
-		this.debug("chainCounter: "+chainCounter);
 		chainCounter++;
 
 		var self = this;
