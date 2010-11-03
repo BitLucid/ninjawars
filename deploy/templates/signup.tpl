@@ -1,3 +1,4 @@
+    {$error}
 	<h1>Become a Ninja!</h1>
 
 	<form id='signup' action="signup.php" method="post">

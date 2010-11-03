@@ -268,14 +268,9 @@ function validate_signup($enteredName, $enteredEmail, $class_identity, $enteredR
 	$send_email  = trim($enteredEmail);
 	$referred_by = $enteredReferral;
 
-	$success_message = "<div id='signup-process'>
-         Your responses:<br> Name - ".htmlentities($send_name).",<br>
-		 Password - ".((isset($send_pass) ? "***yourpassword***" : "NO PASSWORD")).",<br>
-		 Class - ".htmlentities($class_display).",<br>
-		 Email - ".htmlentities($send_email).",<br>
-		 Site Referred By - ".htmlentities($referred_by)."<br><br>\n";
+	$success_message = '';
 
-	$error = null;
+	$error = '';
 
 	//  *** Requirement checking Section  ***
 	if (!$send_name || !$send_pass || !$send_email || !$send_class) {
@@ -321,7 +316,6 @@ function validate_signup($enteredName, $enteredEmail, $class_identity, $enteredR
 						$legal_classes[] = strtolower($l_class['identity']);
 					}
 
-					//debug($send_class);debug($legal_classes);
 					if (!in_array(strtolower($send_class), $legal_classes)) {
 						$error .= "Phase 4 Incomplete: No proper class was specified.<br>";
 					} else {
@@ -355,19 +349,10 @@ function validate_signup($enteredName, $enteredEmail, $class_identity, $enteredR
 						if ($player_creation_error) {
 							$error .= 'There was a problem with creating a player account. Please contact us as mentioned below: ';
 						} else {
-							if (!$preconfirm) {
-								//  *** Continues the page display ***
-								$success_message .= "Confirmation email has been sent to <b>".$send_email."</b>.  <br>
-    				  					Be sure to also check for the email in any \"Junk Mail\" or \"Spam\" folders.
-    				  					Delivery typically takes less than 15 minutes.";
-							} else {
+							if ($preconfirm) {
 								// Use the confirm function from lib_player.
 								confirm_player($send_name, false, true); // name, no confirm #, just autoconfirm.
-								$success_message .= "<p>Account with the login name \"".$send_name
-								."\" is now confirmed!  Please login on the login bar of the ninjawars.net page.</p>";
 							}
-
-							$success_message .= "<p>Only one account per person is allowed.</p>";
 						}
 
 						$success_message .= "If you need help use the forums at <a href='".WEB_ROOT."forum/'>"
@@ -382,8 +367,11 @@ function validate_signup($enteredName, $enteredEmail, $class_identity, $enteredR
 	//insert and confirmation number has -not- been acheived.
 
 	$success_message .= "</div>";
-	echo $success_message;
-	echo $error;
+
+	if (!$successful) {
+		echo $success_message;
+		echo $error;
+	}
 
 	return $successful;
 }

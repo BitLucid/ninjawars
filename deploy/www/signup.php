@@ -27,12 +27,25 @@ $submitted         = in('submit');
 include SERVER_ROOT."interface/header.php";
 
 $submit_successful = false; // *** Default.
+$error = '';
 
 if ($submitted) {
 	if ($enteredPass == $enteredPass) {
 		$submit_successful = validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredReferral, $enteredPass);
+
+		display_template('signup-submit-intro.tpl', array(
+				'send_name'       => $enteredName
+				, 'send_pass'     => $enteredPass
+				, 'send_email'    => $enteredEmail
+				, 'send_class'    => $enteredClass
+				, 'class_display' => class_display_name_from_identity($enteredClass)
+				, 'referred_by'   => $enteredReferral
+				, 'success'       => $submit_successful
+				, 'confirmed'     => is_confirmed($enteredName)
+			)
+		);
 	} else {
-		echo "Your password entries did not match. Please try again.<br>";
+		$error = 'Your password entries did not match. Please try again.';
 	}
 } // *** Validates submission.
 
@@ -52,6 +65,7 @@ if (!$submit_successful) {
 			, 'enteredClass'           => $enteredClass
 			, 'enteredReferral'        => $enteredReferral
 			, 'classes'                => $classes
+			, 'error'                  => $error
 		)
 	);
 } // *** Displays form.
