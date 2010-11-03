@@ -390,13 +390,13 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 	$bountyForAttacker = rewardBounty($username, $defender); //returns a value if bounty rewarded.
 	if ($bountyForAttacker) {
 		// *** Reward bounty whenever available. ***
-		return "You have received the $bountyForAttacker gold bounty on $defender's head for your deeds!<br>\n";
+		return "You have received the $bountyForAttacker gold bounty on $defender's head for your deeds!";
 		$bounty_msg = "You have valiantly slain the wanted criminal, $defender! For your efforts, you have been awarded $bountyForAttacker gold!";
-		sendMessage("Village Doshin",$username,$bounty_msg);
+		sendMessage("Village Doshin", $username, $bounty_msg);
 	} else if ($bountyIncrease > 0) {
 		// *** If Defender has no bounty and there was a level difference. ***
 		addBounty($username, $bountyIncrease);
-		return "Your victim was much weaker than you. The townsfolk are angered. A bounty of  $bountyIncrease gold has been placed on your head!<br>\n";
+		return "Your victim was much weaker than you. The townsfolk are angered. A bounty of  $bountyIncrease gold has been placed on your head!";
 	} else {
 		return null;
 	}

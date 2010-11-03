@@ -17,7 +17,9 @@ You receive {$loot|escape} gold from {$target|escape}.<br>
 	{/if}
 
 	{if $bountyMessage}
-{$bountyMessage}
+<p>
+  {$bountyMessage}
+</p>
 	{/if}
 
 	{if $item_used}
