@@ -169,9 +169,7 @@ if (!$player_id) {
 				} else {	// *** An actual successful kick of a member. ***
 					$kicked_name = get_char_name($kicked);
 					$own_clan_obj->kickMember($kicked);
-
-					$action_message = "You have removed ".htmlentities($kicked_name)." from your clan.";
-					/// echo '<p>You have removed {$kicked_name|escape} from your clan.</p>';
+					$kick_success = true;
 				}
 			} else if ($command == 'disband') {	// *** Clan Leader Confirmation of Disbanding of the Clan ***
 				if (!$sure) {
@@ -198,15 +196,9 @@ if (!$player_id) {
 				if ($person_invited) {
 					$char_id_invited = get_char_id($person_invited);
 
-					if (!$char_id_invited) {
-						$action_message = "No such ninja as <i>".htmlentities($person_invited)."</i> exists.";
-					} else {
-						$invite_failure_message = inviteChar($char_id_invited, $own_clan_obj->getID());	// *** Clan leader Invite Action ***
-						if (!$invite_failure_message) {
-							$action_message  = "You have invited $person_invited to join your clan.";
-						} else {
-							$action_message = "You cannot invite $person_invited. $invite_failure_message";
-						}
+					if ($char_id_invited) {
+						// *** Clan leader Invite Action ***
+						$invite_failure_message = inviteChar($char_id_invited, $own_clan_obj->getID());
 					}
 				}
 			} // End of invite command.

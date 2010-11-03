@@ -4,6 +4,16 @@
 
 {if $action_message}
 <div class='ninja-notice'>{$action_message}</div>
+{elseif isset($kick_success) and $kick_success}
+<div class='ninja-notice'>You have removed {$kicked_name|escape} from your clan.</div>
+{elseif $command eq 'invite' and isset($person_invited) and $person_invited}
+	{if !isset($char_id_invited) or !$char_id_invited}
+<div class='ninja-notice'>No such ninja as <i>{$person_invited|escape}</i> exists.</div>
+	{elseif $invite_failure_message}
+<div class='ninja-notice'>You cannot invite {$person_invited|escape}. {$invite_failure_message}</div>
+	{else}
+<div class='ninja-notice'>You have invited {$person_invited|escape} to join your clan.</div>
+	{/if}
 {/if}
 
 {if $player_id}
