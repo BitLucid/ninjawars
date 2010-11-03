@@ -1,5 +1,17 @@
 {if $error}
-    <p class='error'>{$error}</p>
+    <p class="error">
+	{if $error eq 'invalidemail'}
+      The submitted email was invalid.
+	{elseif $error eq 'nouser'}
+      No user with that email exists.
+      Please <a href="signup.php">sign up</a> for an account, or <a href="staff.php">contact us</a> if you have other account issues.
+      Please allow a few minutes for the server load to go down, or else <a href="staff.php">contact us</a> if the problem persists.
+	{elseif $error eq 'alreadyconfirmed'}
+      That account is already confirmed. If you are having problems logging in, please <a href="staff.php">Contact Us</a>.
+	{elseif $error eq 'emailfail'}
+      There was a problem sending to that email.
+	{/if}
+    </p>
 {elseif $password_request}
         <h1>Resending Account Information Email</h1>
         <p>Your account information has been resent to your email.</p>

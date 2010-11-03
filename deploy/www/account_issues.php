@@ -28,7 +28,7 @@ function send_account_email($email, $data) {
 	$_to = array("$email"=>$data['uname']);
 	$_subject = 'NinjaWars Lost Password Request';
 	$_body = render_template('lostpass_email_body.tpl', array(
-		    'lost_uname'   => $data['uname']
+			'lost_uname'   => $data['uname']
 			, 'lost_pname' => $data['pname']
 			, 'confirmed'  => $data['confirmed']
 		)
@@ -36,8 +36,8 @@ function send_account_email($email, $data) {
 
 	$mail_obj = new Nmail($_to, $_subject, $_body, $_from);
 
-    // *** Set the custom replyto email. ***
-    $mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
+	// *** Set the custom replyto email. ***
+	$mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
 	if (DEBUG) { $mail_obj->dump = true; }
 
 	$sent = false;
@@ -60,7 +60,7 @@ function send_confirmation_email($email, $data) {
 	$_to = array("$email"=>$data['uname']);
 	$_subject = "NinjaWars Account Confirmation Info";
 	$_body = render_template('lostconfirm_email_body.tpl', array(
-	    	'lost_uname'     => $lost_uname
+			'lost_uname'     => $lost_uname
 			, 'lost_confirm' => $lost_confirm
 			, 'account_id'   => $data['account_id']
 		)
@@ -82,35 +82,34 @@ $password_request = in('password_request');
 $confirmation_request = in('confirmation_request');
 
 $error = null;
+$sent  = null;
+$attemptedToSendEmail = false;
 
 if (!$email && ($password_request || $confirmation_request)) {
-	$error = 'The submitted email was invalid.';
+	$error = 'invalidemail';
 } else if ($email) {
 	$data = user_having_email($email);
 	$username = $data['uname'];
 
 	if (!$data['uname'] || !$data['pname']) {
-	    $error = 'No user with that email exists. Please <a href="signup.php">sign up</a> for an account,
-	    or <a href="staff.php">contact us</a> if you have other account issues.';
+		$error = 'nouser';
 	} elseif ($password_request && $data['active']) {
-	    $sent = send_account_email($email, $data);
+		$sent = send_account_email($email, $data);
 
-	    if (!$sent) {
-	        $error = 'There was a problem sending to that email, please allow a few minutes for the server load to go down,
-	        or else <a href="staff.php">contact us</a> if the problem persists.';
-	    }
+		$attemptedToSendEmail = true;
 	} else {
-	    // Confirmation request.
-	    if (!$data['confirmed']) {
-	        $error = 'That account is already confirmed.  If you are having problems logging in, please <a href="staff.php">Contact Us</a>.';
-	    } else {
-	        $sent = send_confirmation_email($email, $data);
-	        if (!$sent) {
-	            $error = 'There was a problem sending to that email, please allow a few minutes for the server load to go down,
-	             or else <a href="staff.php">contact us</a> if the problem persists.';
-	        }
-	    }
+		// Confirmation request.
+		if (!$data['confirmed']) {
+			$error = 'alreadyconfirmed';
+		} else {
+			$attemptedToSendEmail = true;
+			$sent = send_confirmation_email($email, $data);
+		}
 	}
+}
+
+if ($attemptedToSendEmail && !$sent) {
+	$error = 'emailfail';
 }
 
 display_page(
