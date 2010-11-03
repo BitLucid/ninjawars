@@ -21,7 +21,11 @@ The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bou
 <h1>{$location|escape}</h1>
 
 <div class="description">
-{$description}
+{foreach from=$description item="line"}
+  <p>
+    {$line|escape}
+  </p>
+{/foreach}
 </div>
 
 {if $myBounty gt 0}

@@ -168,7 +168,17 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 		}
 
 		// *** PRE-BATTLE STATS ***
-		preBattleStats($target_player, $attacking_player);	// *** Displays the starting state of the attacker and defender. ***
+		display_template(
+			'combat-prebattle-stats.tpl'
+			, array(
+				'attacker_name'  => $attacking_player->vo->uname
+				, 'attacker_str' => $attacking_player->getStrength()
+				, 'attacker_hp'  => $attacking_player->vo->health
+				, 'target_name'  => $target_player->vo->uname
+				, 'target_str'   => $target_player->getStrength()
+				, 'target_hp'    => $target_player->vo->health
+			)
+		);	// *** Displays the starting state of the attacker and defender. ***
 
 		// *** BEGINNING OF MAIN BATTLE ALGORITHM ***
 
@@ -226,7 +236,17 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 		// *** END OF MAIN BATTLE ALGORITHM ***
 		echo "<div>Total Rounds: $rounds</div>\n";
 
-		finalResults();	// *** Displays the final damage of the combat. ***
+		display_template(
+			'combat-final-results.tpl'
+			, array(
+				'total_attacker_damage' => $total_attacker_damage
+				, 'total_target_damage' => $total_target_damage
+				, 'target'              => $target
+				, 'target_health'       => $target_health
+				, 'attacker'            => $attacker
+				, 'finalizedHealth'     => ($attacker_health-$total_target_damage)
+			)
+		); // *** Displays the final damage of the combat. ***
 
 		// *** RESULTING PLAYER MODIFICATION ***
 
