@@ -1,3 +1,4 @@
+{literal}
 <style type="text/css">
 	dl.rules dt {
 		color: red;
@@ -24,6 +25,7 @@
 		font-style: italic;
 	}
 </style>
+{/literal}
 
 <h1>Fair Play Rules</h1>
 <dl class="rules">
