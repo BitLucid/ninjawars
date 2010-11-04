@@ -15,35 +15,81 @@ $alive             = false;
 $private           = false;
 $quickstat         = false;
 $page_title        = "Become a Ninja";
+
 $starting_referral = in('referrer');
 $enteredName       = trim(in('send_name', '', 'toText'));
 $enteredEmail      = trim(in('send_email', '', 'toText'));
 $enteredClass      = strtolower(trim(in('send_class', '')));
-$enteredReferral   = in('referred_by', $starting_referral);
+$enteredReferral   = trim(in('referred_by', $starting_referral));
 $enteredPass       = in('key', null, 'toText');
 $enteredCPass      = in('cpass', null, 'toText');
 $submitted         = in('submit');
 
+$submit_successful = false; // *** Default.
+$error = null;
+
 include SERVER_ROOT."interface/header.php";
 
-$submit_successful = false; // *** Default.
-$error = '';
-
 if ($submitted) {
-	if ($enteredPass == $enteredPass) {
-		$submit_successful = validate_signup($enteredName, $enteredEmail, $enteredClass, $enteredReferral, $enteredPass);
+	$completedPhase = 0;
 
-		display_template('signup-submit-intro.tpl', array(
-				'send_name'       => $enteredName
-				, 'send_pass'     => $enteredPass
-				, 'send_email'    => $enteredEmail
-				, 'send_class'    => $enteredClass
-				, 'class_display' => class_display_name_from_identity($enteredClass)
-				, 'referred_by'   => $enteredReferral
-				, 'success'       => $submit_successful
-				, 'confirmed'     => is_confirmed($enteredName)
-			)
-		);
+	if ($enteredPass == $enteredCPass) {
+		if (!validate_signup_phase0($enteredName, $enteredEmail, $enteredClass, $enteredPass)) {
+			$error = 'Phase 1 Incomplete: You did not correctly fill out all the necessary information.';
+		} else {
+			$phase1 = validate_signup_phase1($enteredName);
+			if ($phase1) {
+				$error = $phase1;
+			} else {
+				$completedPhase = 1;
+
+				$phase2 = validate_signup_phase2($enteredPass);
+				if ($phase2) {
+					$error = $phase2;
+				} else {
+					$completedPhase = 2;
+
+					$phase3 = validate_signup_phase3($enteredName, $enteredEmail);
+					if ($phase3) {
+						$error = $phase3;
+					} else {
+						$completedPhase = 3;
+
+						if (!validate_signup_phase4($enteredClass)) {
+							$error = 'Phase 4 Incomplete: No proper class was specified.';
+						} else {
+							$completedPhase = 4;
+
+							$preconfirm = preconfirm_some_emails($enteredEmail);
+							$confirm = rand(1000,9999); //generate confirmation code
+
+							// Use the function from lib_player
+							$player_params = array(
+								'send_email'    => $enteredEmail
+								, 'send_pass'   => $enteredPass
+								, 'send_class'  => $enteredClass
+								, 'preconfirm'  => $preconfirm
+								, 'confirm'     => $confirm
+								, 'referred_by' => $enteredReferral
+							);
+
+							if (create_account_and_ninja($enteredName, $player_params)) { // Create the player.
+								$error = 'There was a problem with creating a player account. Please contact us as mentioned below: ';
+							} else {
+								$submit_successful = true;
+
+								if ($preconfirm) {
+									// Use the confirm function from lib_player.
+									confirm_player($enteredName, false, true); // name, no confirm #, just autoconfirm.
+								} else {	/* not blacklisted by, so require a normal email confirmation */
+									$completedPhase = 5;
+								}
+							}
+						}	// phase 4
+					}	// phase 3
+				}	// phase 2
+			}	// phase 1
+		}	// phase 0
 	} else {
 		$error = 'Your password entries did not match. Please try again.';
 	}
@@ -58,17 +104,38 @@ if (!$submit_successful) {
 	while ($data = $statement->fetch()) {
 		$classes[$data['identity']] = $data['class_label'];
 	}
+} // *** Displays form.
 
-	echo render_template('signup.tpl', array(
+$quickstat         = false;
+$page_title        = "Become a Ninja";
+
+if ($submitted) {
+	display_template('signup-submit-intro.tpl', array(
+			'send_name'       => $enteredName
+			, 'send_pass'     => $enteredPass
+			, 'send_email'    => $enteredEmail
+			, 'send_class'    => $enteredClass
+			, 'class_display' => class_display_name_from_identity($enteredClass)
+			, 'referred_by'   => $enteredReferral
+			, 'success'       => $submit_successful
+			, 'confirmed'     => ($submit_successful && is_confirmed($enteredName))
+			, 'completedPhase'=> $completedPhase
+			, 'error'         => $error
+		)
+	);
+}
+
+if (!$submit_successful) {
+	display_template('signup.tpl', array(
 			'enteredName'              => $enteredName
 			, 'enteredEmail'           => $enteredEmail
 			, 'enteredClass'           => $enteredClass
 			, 'enteredReferral'        => $enteredReferral
 			, 'classes'                => $classes
-			, 'error'                  => $error
+//			, 'error'                  => $error
 		)
 	);
-} // *** Displays form.
+}
 
 include SERVER_ROOT."interface/footer.php";
 ?>

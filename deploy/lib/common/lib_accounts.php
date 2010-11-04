@@ -256,124 +256,37 @@ function class_display_name_from_identity($identity) {
 	return query_item('SELECT class_name from class where identity = :identity', array(':identity'=>$identity));
 }
 
-// Check that the signup info is valid.
-function validate_signup($enteredName, $enteredEmail, $class_identity, $enteredReferral, $enteredPass) {
-	$successful = false;
+function validate_signup_phase0($enteredName, $enteredEmail, $class_identity, $enteredPass) {
+	return ($enteredName && $enteredPass && $enteredEmail && $class_identity);
+}
 
-	$send_name   = trim($enteredName);
-	$send_pass   = $enteredPass;
-	$send_class  = $class_identity;
-	$class_display = class_display_name_from_identity($class_identity);
+function validate_signup_phase1($enteredName) {
+	return validate_username($enteredName);
+}
 
-	$send_email  = trim($enteredEmail);
-	$referred_by = $enteredReferral;
+function validate_signup_phase2($enteredPass) {
+	// Validate the password!
+	return (false && validate_password($enteredPass));
+}
 
-	$success_message = '';
+function validate_signup_phase3($enteredName, $enteredEmail) {
+	$name_available  = ninja_name_available($enteredName);
+	$duplicate_email = email_is_duplicate($enteredEmail);
+	$email_error     = validate_email($enteredEmail);
 
-	$error = '';
-
-	//  *** Requirement checking Section  ***
-	if (!$send_name || !$send_pass || !$send_email || !$send_class) {
-		$error .= "Phase 1 Incomplete: You did not correctly fill out all the necessary information.\n";
-	} else {  //When everything is non-blank.
-		$name_in_use  = null;
-		$duplicate_email = null;
-
-		$name_available = ninja_name_available($send_name);
-
-		$duplicate_email = email_is_duplicate($send_email);
-
-		if ($username_error = validate_username($send_name)) {
-			$error .= $username_error;
-		} else {  //when all the name requirement errors didn't trigger.
-			$success_message .= "Phase 1 Complete: Name passes requirements.<hr>\n";
-
-			// Validate the password!
-			$password_error = false && validate_password($send_pass);
-
-			if ($password_error) {
-				$error .= $password_error;
-			} else {
-				$send_pass = trim($send_pass); // *** Trims any extra space off of the password.
-				$success_message .= "Phase 2 Complete: Password passes requirements.<hr>\n";
-
-				$email_error = validate_email($send_email);
-
-				if ($email_error) {
-					$error .= $email_error;
-				} elseif (!$name_available) {
-					$error .= "Phase 3 Incomplete: That ninja name is already in use.";
-				} elseif ($duplicate_email) {
-					$error .= "Phase 3 Incomplete: That account email is already in use.
-				        You can send a password reset request below if that email is your correct email.";
-				} else {
-					//Uses previous query to make sure name and email aren't duplicates.
-					$success_message .= "Phase 3 Complete: Username and Email are unique.<br><hr>\n";
-					$classes = query_resultset('SELECT identity FROM class WHERE class_active');
-
-					$legal_classes = array();
-					foreach ($classes as $l_class) {
-						$legal_classes[] = strtolower($l_class['identity']);
-					}
-
-					if (!in_array(strtolower($send_class), $legal_classes)) {
-						$error .= "Phase 4 Incomplete: No proper class was specified.<br>";
-					} else {
-						$success_message .= "Phase 4 Complete: Class was specified.<br><hr>";
-
-						// *** Signup is successful at this point  ***
-						$successful = true;
-						$preconfirm = 0;
-						$preconfirm = preconfirm_some_emails($send_email);
-
-						if (!$preconfirm) { /* not blacklisted by, so require a normal email confirmation */
-							$success_message .= "Phase 5: When you receive an email from SysMsg,
-							 it will describe how to activate your account.<br><br>\n";
-						}
-
-						// The preconfirmation message occurs later.
-						$confirm = rand(1000,9999); //generate confirmation code
-
-						// Use the function from lib_player
-						$player_params = array(
-							'send_email'    => $send_email
-							, 'send_pass'   => $send_pass
-							, 'send_class'  => $send_class
-							, 'preconfirm'  => $preconfirm
-							, 'confirm'     => $confirm
-							, 'referred_by' => $referred_by
-						);
-
-						$player_creation_error = create_account_and_ninja($send_name, $player_params); // Create the player.
-
-						if ($player_creation_error) {
-							$error .= 'There was a problem with creating a player account. Please contact us as mentioned below: ';
-						} else {
-							if ($preconfirm) {
-								// Use the confirm function from lib_player.
-								confirm_player($send_name, false, true); // name, no confirm #, just autoconfirm.
-							}
-						}
-
-						$success_message .= "If you need help use the forums at <a href='".WEB_ROOT."forum/'>"
-										.WEB_ROOT."forum/</a> or email: ".SUPPORT_EMAIL;
-					}	// *** End of class checking.
-				}
-			}
-		}
+	if ($email_error) {
+		return $email_error;
+	} elseif (!$name_available) {
+		return 'Phase 3 Incomplete: That ninja name is already in use.';
+	} elseif ($duplicate_email) {
+		return 'Phase 3 Incomplete: That account email is already in use. You can send a password reset request below if that email is your correct email.';
+	} else {
+		return null;
 	}
+}
 
-	//This is the final signup return section, which only shows if a successful
-	//insert and confirmation number has -not- been acheived.
-
-	$success_message .= "</div>";
-
-	if (!$successful) {
-		echo $success_message;
-		echo $error;
-	}
-
-	return $successful;
+function validate_signup_phase4($enteredClass) {
+	return (boolean)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', array(':id'=>$enteredClass));
 }
 
 function pauseAccount($p_playerID) {
