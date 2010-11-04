@@ -1,10 +1,10 @@
 <div id='signup-process'>
   Your responses:<br>
-  Name - {$send_name|escape}<br>
-  Password - {if $send_pass}***yourpassword***{else}NO PASSWORD{/if}<br>
+  Name - {$enteredName|escape}<br>
+  Password - {if $enteredPass}***yourpassword***{else}NO PASSWORD{/if}<br>
   Class - {$class_display|escape}<br>
-  Email - {$send_email|escape}<br>
-  Site Referred By - {$referred_by|escape}<br><br>
+  Email - {$enteredEmail|escape}<br>
+  Site Referred By - {$enteredReferral|escape}<br><br>
 {if isset($completedPhase)}
 	{if $completedPhase gte 1}
   Phase 1 Complete: Name passes requirements.<hr>
@@ -19,12 +19,12 @@
   Phase 4 Complete: Class was specified.<br><hr>
 	{/if}
 
-	{if $success}
+	{if $submit_successful}
 		{if $confirmed}
-  <p>Account with the login name "{$send_name|escape}" is now confirmed! Please login on the login bar of the ninjawars.net page.</p>
+  <p>Account with the login name "{$enteredName|escape}" is now confirmed! Please login on the login bar of the ninjawars.net page.</p>
 		{else}
   Phase 5: When you receive an email from SysMsg, it will describe how to activate your account.<br><br>
-  Confirmation email has been sent to <b>{$send_email|escape}</b>.<br>
+  Confirmation email has been sent to <strong>{$enteredEmail|escape}</strong>.<br>
   Be sure to also check for the email in any "Junk Mail" or "Spam" folders.
   Delivery typically takes less than 15 minutes.
 		{/if}
@@ -38,5 +38,5 @@
   If you need help use the forums at
   <a href="{$templatelite.const.WEB_ROOT}forum/">{$templatelite.const.WEB_ROOT}forum/</a>
   or email: <a href="mailto:{$templatelite.const.SUPPORT_EMAIL}">{$templatelite.const.SUPPORT_EMAIL}</a>
-</div>
 {/if}
+</div>

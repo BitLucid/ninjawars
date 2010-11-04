@@ -13,8 +13,10 @@ require_once(LIB_ROOT."specific/lib_player.php");
 
 $alive             = false;
 $private           = false;
-$quickstat         = false;
-$page_title        = "Become a Ninja";
+
+if ($error = init($private, $alive)) {
+	display_error($error);
+} else {
 
 $starting_referral = in('referrer');
 $enteredName       = trim(in('send_name', '', 'toText'));
@@ -28,9 +30,8 @@ $submitted         = in('submit');
 $submit_successful = false; // *** Default.
 $error = null;
 
-include SERVER_ROOT."interface/header.php";
-
 if ($submitted) {
+	$class_display = class_display_name_from_identity($enteredClass);
 	$completedPhase = 0;
 
 	if ($enteredPass == $enteredCPass) {
@@ -81,8 +82,10 @@ if ($submitted) {
 								if ($preconfirm) {
 									// Use the confirm function from lib_player.
 									confirm_player($enteredName, false, true); // name, no confirm #, just autoconfirm.
+									$confirmed = true;
 								} else {	/* not blacklisted by, so require a normal email confirmation */
 									$completedPhase = 5;
+									$confirmed = false;
 								}
 							}
 						}	// phase 4
@@ -106,36 +109,13 @@ if (!$submit_successful) {
 	}
 } // *** Displays form.
 
-$quickstat         = false;
-$page_title        = "Become a Ninja";
-
-if ($submitted) {
-	display_template('signup-submit-intro.tpl', array(
-			'send_name'       => $enteredName
-			, 'send_pass'     => $enteredPass
-			, 'send_email'    => $enteredEmail
-			, 'send_class'    => $enteredClass
-			, 'class_display' => class_display_name_from_identity($enteredClass)
-			, 'referred_by'   => $enteredReferral
-			, 'success'       => $submit_successful
-			, 'confirmed'     => ($submit_successful && is_confirmed($enteredName))
-			, 'completedPhase'=> $completedPhase
-			, 'error'         => $error
-		)
-	);
+display_page(
+	'signup.tpl'
+	, 'Become a Ninja' // *** Page Title ***
+	, get_certain_vars(get_defined_vars(), array('classes')) // *** Page Variables ***
+	, array( // *** Page Options ***
+		'quickstat' => false
+	)
+);
 }
-
-if (!$submit_successful) {
-	display_template('signup.tpl', array(
-			'enteredName'              => $enteredName
-			, 'enteredEmail'           => $enteredEmail
-			, 'enteredClass'           => $enteredClass
-			, 'enteredReferral'        => $enteredReferral
-			, 'classes'                => $classes
-//			, 'error'                  => $error
-		)
-	);
-}
-
-include SERVER_ROOT."interface/footer.php";
 ?>
