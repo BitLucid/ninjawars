@@ -210,7 +210,7 @@ function logout_user() {
 function validate_password($password_to_hash) {
 	$error = null;
 	if (strlen($password_to_hash) < 7 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
-		$error = "Phase 2 Incomplete: Passwords must be at least 7 characters long.<hr>\n";
+		$error = 'Phase 2 Incomplete: Passwords must be at least 7 characters long.';
 	}
 
 	return $error;
