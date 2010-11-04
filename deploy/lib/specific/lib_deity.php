@@ -91,8 +91,8 @@ function revive_players($params=array()) {
 	7: ...etc.
 	*/
 
-	// Determine the total dead (& confirmed).
-	$sel_dead = DatabaseConnection::$pdo->query('SELECT count(*) FROM players WHERE health < 1 AND confirmed = 1');
+	// Determine the total dead (& active).
+	$sel_dead = DatabaseConnection::$pdo->query('SELECT count(*) FROM players WHERE health < 1 AND active = 1');
 	$dead_count = $sel_dead->fetchColumn();
 
 	// If none dead, return false.
@@ -100,8 +100,8 @@ function revive_players($params=array()) {
 		return array(0, 0);
 	}
 
-	// Determine the total confirmed.
-	$sel_total_active = DatabaseConnection::$pdo->query('SELECT count(*) FROM players WHERE confirmed = 1');
+	// Determine the total active.
+	$sel_total_active = DatabaseConnection::$pdo->query('SELECT count(*) FROM players WHERE active = 1');
 	$total_active = $sel_total_active->fetchColumn();
 
 	// Calc the total alive.
@@ -141,8 +141,8 @@ function revive_players($params=array()) {
 	assert(isset($major));
 	// Actually perform the revive on those integers.
 	// Use the order by clause to determine who revives, by time, days and then by level, using the limit set previously.
-	//select uname, player_id, level,floor(($major_revive_percent/100)*$total_active) days, resurrection_time from players where confirmed = 1 AND health < 1 ORDER BY abs(8 - resurrection_time) asc, level desc, days asc
-	$select = 'SELECT player_id FROM players WHERE confirmed = 1 AND health < 1 '.
+	//select uname, player_id, level,floor(($major_revive_percent/100)*$total_active) days, resurrection_time from players where active = 1 AND health < 1 ORDER BY abs(8 - resurrection_time) asc, level desc, days asc
+	$select = 'SELECT player_id FROM players WHERE active = 1 AND health < 1 '.
 			' ORDER BY abs('.intval($current_time)." - resurrection_time) ASC, level DESC, days ASC LIMIT $revive_amount";
 
 	$up_revive_players= 'UPDATE players SET status = 0 ';

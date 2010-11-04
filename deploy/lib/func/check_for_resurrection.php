@@ -6,7 +6,7 @@ function check_for_resurrection($echo=FALSE) {
 	$query = DatabaseConnection::$pdo->query("UPDATE players
                     SET status = 0,
                     health = (CASE WHEN _class_id = 4 THEN (150+(level*3)) ELSE 100 END)
-                    WHERE confirmed = 1
+                    WHERE active = 1
                     AND health < 0
                     AND resurrection_time = (SELECT amount from time where time_label='hours')
                     AND

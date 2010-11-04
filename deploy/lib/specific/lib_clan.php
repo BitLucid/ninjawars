@@ -79,7 +79,7 @@ function add_player_to_clan($player_id, $clan_id, $member_level=0) {
 
 	// Because the confirmation number is used for inviting, change the confirmation number.
 	$random      = rand(1001, 9990); // Semi-random confirmation number, and change the players confirmation number.
-	$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET confirm = :confirm WHERE player_id = :player_id');
+	$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET verification_number = :confirm WHERE player_id = :player_id');
 	$statement->bindValue(':confirm', $random);
 	$statement->bindValue(':player_id', $player_id);
 	$statement->execute();
@@ -99,13 +99,13 @@ function inviteChar($char_id, $p_clanID) {
 	}
 
 	$statement = DatabaseConnection::$pdo->prepare(
-		'SELECT confirmed, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target');
+		'SELECT active, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target');
 	$statement->bindValue(':target', $target_id);
 	$statement->execute();
 	$data = $statement->fetch();
 
 	$current_clan        = $data['_clan_id'];
-	$player_is_confirmed = $data['confirmed'];
+	$player_is_confirmed = $data['active'];
 
 	$leader_info = get_clan_leader_info($p_clanID);
 	$clan_name   = $leader_info['clan_name'];
@@ -138,7 +138,7 @@ function send_clan_join_request($username, $clan_id) {
 	$leader_id   = $leader['player_id'];
 	$leader_name = $leader['uname'];
 
-	$confirmStatement = DatabaseConnection::$pdo->prepare('SELECT confirm FROM players WHERE uname = :user');
+	$confirmStatement = DatabaseConnection::$pdo->prepare('SELECT verification_number FROM players WHERE uname = :user');
 	$confirmStatement->bindValue(':user', $username);
 	$confirmStatement->execute();
 	$confirm = $confirmStatement->fetchColumn();
@@ -194,7 +194,7 @@ function clan_info($clan_id) {
 function get_clan_founders() {
 	DatabaseConnection::getInstance();
 	$founders_statement = DatabaseConnection::$pdo->query(
-	    'SELECT clan_founder, clan_name, uname, player_id, confirmed
+	    'SELECT clan_founder, clan_name, uname, player_id, active
 		FROM clan LEFT JOIN players ON lower(clan_founder) = lower(uname)');
 	return $founder_statement;
 }
@@ -231,7 +231,7 @@ function get_clan_leaders($clan_id=null, $all=false) {
 	DatabaseConnection::getInstance();
 	$clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
 		FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id = _player_id
-		WHERE confirmed = 1 AND member_level > 0 $clan_or_clans $limit");
+		WHERE active = 1 AND member_level > 0 $clan_or_clans $limit");
 
 	if ($clan_id) {
 		$clans->bindValue(':clan', $clan_id);
@@ -288,7 +288,7 @@ function clans_ranked() {
 	// sum the levels of the players (minus days of inactivity) for each clan
 	$counts = query('SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, clan_name, clan_id
 	    FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id
-	    WHERE confirmed = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC');
+	    WHERE active = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC');
 
 	if ($counts->rowCount() > 0) {
 		$clan_info = $counts->fetch();

@@ -9,7 +9,7 @@ if ($error = init($private, $alive)) {
 // Determines the user information for a certain email.
 function user_having_email($email) {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare('SELECT pname, uname, confirmed, confirm, account_id, CASE WHEN active THEN 1 ELSE 0 END AS active FROM players JOIN account_players ON _player_id = player_id JOIN accounts ON account_id = _account_id WHERE lower(email) = lower(:email)');
+	$statement = DatabaseConnection::$pdo->prepare('SELECT pname, uname, confirmed, verification_number, account_id, CASE WHEN active THEN 1 ELSE 0 END AS active FROM players JOIN account_players ON _player_id = player_id JOIN accounts ON account_id = _account_id WHERE lower(email) = lower(:email)');
 	$statement->bindValue(':email', $email);
 	$statement->execute();
 
@@ -48,7 +48,7 @@ function send_account_email($email, $data) {
 
 // Sends the account confirmation email.
 function send_confirmation_email($email, $data) {
-	$lost_confirm = $data['confirm'];
+	$lost_confirm = $data['verification_number'];
 	$lost_uname   = $data['uname'];
 	$confirmed    = $data['confirmed'];
 

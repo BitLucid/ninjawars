@@ -8,7 +8,7 @@
 function player_size() {
 	$res = array();
 	DatabaseConnection::getInstance();
-	$sel = "SELECT (level-3-round(days/5)) AS sum, player_id, uname FROM players WHERE confirmed = 1 AND health > 0 ORDER BY sum DESC";
+	$sel = "SELECT (level-3-round(days/5)) AS sum, player_id, uname FROM players WHERE active = 1 AND health > 0 ORDER BY sum DESC";
 	$statement = DatabaseConnection::$pdo->query($sel);
 
 	$player_info = $statement->fetch();
@@ -28,7 +28,7 @@ function player_size() {
 // query the recently active players
 function get_active_players($limit=5, $alive_only=true) {
 	$where_cond = ($alive_only ? ' AND health > 0' : '');
-	$sel = "SELECT uname, player_id FROM players WHERE confirmed = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
+	$sel = "SELECT uname, player_id FROM players WHERE active = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
 	$active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
 	return $active_ninjas;
 }

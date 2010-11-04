@@ -190,7 +190,7 @@ function create_gravatar_url_from_email($email, $avatar_type=null, $size=null) {
 /// TODO - Should be moved to clan stuff
 function get_clan_members($p_clanID, $p_limit = 30) {
 	if ((int)$p_clanID == $p_clanID && $p_clanID > 0) {
-		$sel = "SELECT uname, player_id, health FROM clan_player JOIN players ON player_id = _player_id AND _clan_id = :clanID AND confirmed = 1 ORDER BY health DESC, level DESC ".(!is_null($p_limit) && $p_limit > 0 ? "LIMIT :limit" : '');
+		$sel = "SELECT uname, player_id, health FROM clan_player JOIN players ON player_id = _player_id AND _clan_id = :clanID AND active = 1 ORDER BY health DESC, level DESC ".(!is_null($p_limit) && $p_limit > 0 ? "LIMIT :limit" : '');
 		DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare($sel);
 		$statement->bindValue(':clanID', $p_clanID);

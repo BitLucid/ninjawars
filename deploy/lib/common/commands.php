@@ -537,14 +537,4 @@ function add_data_to_player_row($player_data, $kill_password=true){
 	$player_data['hash'] = md5(implode($player_data));
 	return $player_data;
 }
-
-function is_confirmed($name) {
-	$query = 'SELECT confirmed FROM players WHERE uname = :name';
-	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare($query);
-	$statement->bindValue(':name', $name);
-	$statement->execute();
-
-	return $statement->fetchColumn();
-}
 ?>

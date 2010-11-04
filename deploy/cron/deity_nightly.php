@@ -42,7 +42,7 @@ assert($unconfirmed < $maximum_players_to_unconfirm+1);
 $affected_rows['Players Unconfirmed'] = ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
 
 // Delete from inventory where owner is unconfirmed or non-existent.
-$deleted_items = DatabaseConnection::$pdo->query("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE confirmed = 0 OR uname IS NULL GROUP BY owner)");
+$deleted_items = DatabaseConnection::$pdo->query("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE active = 0 OR uname IS NULL GROUP BY owner)");
 $affected_rows['deleted items'] = $deleted_items->rowCount();
 
 $deleted_items = DatabaseConnection::$pdo->query("delete from levelling_log where killsdate < (now() - interval '2 months')");
@@ -58,7 +58,7 @@ $affected_rows['levelling log deletion'] = $level_log_delete->rowCount(); // Kee
 $duel_log_delete = DatabaseConnection::$pdo->query("delete from dueling_log where date != cast(now() AS date) AND date != cast(now() AS date)-1"); // Keep only the last two days of duels.
 $affected_rows['dueling log deletion'] = $duel_log_delete->rowCount();
 
-$level_1_delete = DatabaseConnection::$pdo->query("delete from players where confirmed = 0 and level = 1"); // Delete old level 1's.
+$level_1_delete = DatabaseConnection::$pdo->query("delete from players where active = 0 and level = 1"); // Delete old level 1's.
 $affected_rows['old level 1 players deletion'] = $level_1_delete->rowCount(); 
 
 
