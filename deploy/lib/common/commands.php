@@ -543,7 +543,7 @@ function add_data_to_player_row($player_data, $kill_password=true){
         unset($player_data['pname']);
     }
 	$player_data['hp_percent'] = min(100, round(($player_data['health']/max_health_by_level($player_data['level']))*100));
-	$player_data['exp_percent'] = min(100, round(($player_data['kills']/(($player_data['level']+1)*5))*100));
+	$player_data['exp_percent'] = min(100, round(($player_data['kills']/($player_data['level']*5))*100));
 	$player_data['status_list'] = implode(', ', get_status_list($player_data['player_id']));
 	$player_data['hash'] = md5(implode($player_data));
 	return $player_data;
