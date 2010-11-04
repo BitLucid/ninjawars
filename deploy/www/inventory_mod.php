@@ -96,10 +96,8 @@ if (in_array($give, array("on", "Give"))) {
 // Sets the page to link back to.
 if ($target_id && ($link_back == "" || $link_back == 'player') && $target_id != $user_id) {
 	$return_to = 'player';
-	$link_back = "<a href=\"player.php?player_id=".urlencode($target_id)."\">Ninja Detail</a>";
 } else {
 	$return_to = 'inventory';
-	$link_back = "<a href=\"inventory.php\">Inventory</a>";
 }
 
 //$dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = $kampoFormula = $strangeHerb = null;
@@ -163,14 +161,14 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			/**** MAIN SUCCESSFUL USE ****/
 			if ($give == "on" || $give == "Give") {
 				give_item($username, $target, $item->getName());
-				$alternateResultMessage = "$target will receive your {$item->getName()}.<br>\n";
+				$alternateResultMessage = "$target will receive your {$item->getName()}.";
 			} else {
 				if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 					$result        = "lose ".$item->getTargetDamage()." HP";
 					$targetObj->vo->health = $victim_alive  = subtractHealth($target, $item->getTargetDamage());
 				} else if ($item->hasEffect('stealth')) {
 					$targetObj->addStatus(STEALTH);
-					$alternateResultMessage = "<br>$target is now Stealthed.<br>\n";
+					$alternateResultMessage = "$target is now Stealthed.";
 					$result = false;
 					$victim_alive = true;
 				} else if ($item->hasEffect('death')) {
@@ -180,19 +178,19 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 				} else if ($item->hasEffect('vigor')) {
 					if ($targetObj->hasStatus(STR_UP1)) {
-						$result = "$target's body cannot withstand any more Ginseng Root!<br>\n";
+						$result = "$target's body cannot withstand any more Ginseng Root!";
 						$item_used = false;
 					} else {
 						$targetObj->addStatus(STR_UP1);
-						$result = "$target's muscles experience a strange tingling.<br>\n";
+						$result = "$target's muscles experience a strange tingling.";
 					}
 				} else if ($item->hasEffect('strength')) {
 					if ($targetObj->hasStatus(STR_UP2)) {
-						$result = "$target's body cannot withstand any more Tiger Salve!<br>\n";
+						$result = "$target's body cannot withstand any more Tiger Salve!";
 						$item_used = false;
 					} else {
 						$targetObj->addStatus(STR_UP2);
-						$result = "$target feels a surge of power!<br>\n";
+						$result = "$target feels a surge of power!";
 					}
 				} else if ($item->hasEffect('slow')) {
 
@@ -216,18 +214,18 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			if ($result) {
 				// *** Message to display based on item type ***
 				if ($item->getTargetDamage() > 0) {
-					$resultMessage = "$target takes {$item->getTargetDamage()} damage from your attack!<br><br>\n";
+					$resultMessage = "$target takes {$item->getTargetDamage()} damage from your attack!";
 				} else if ($item->hasEffect('death')) {
-					$resultMessage = "The life force drains from $target and they drop dead before your eyes!.<br>\n";
+					$resultMessage = "The life force drains from $target and they drop dead before your eyes!.";
 				} else if ($item->getTurnChange() !== null) {
 					if ($turns_change <= 0) {
-						$resultMessage = "$target has lost ".(0-$turns_change)." turns!<br>\n";
+						$resultMessage = "$target has lost ".(0-$turns_change)." turns!";
 
 						if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
-							$resultMessage .= "$target no longer has any turns.<br>\n";
+							$resultMessage .= "$target no longer has any turns.";
 						}
 					} else if ($turns_change > 0) {
-						$resultMessage = "$target has gained $turns_change turns!<br>\n";
+						$resultMessage = "$target has gained $turns_change turns!";
 					}
 				} else {
 					$resultMessage = $result;

@@ -8,8 +8,12 @@ You didn't choose an item/victim.
 You do not have {$article|escape} {$itemName|escape}
 {else}
 <div class='usage-mod-result'>
-{$alternateResultMessage}
-{$resultMessage}
+  <p>
+    {$alternateResultMessage}
+  </p>
+  <p>
+    {$resultMessage}
+  </p>
 
 	{if $kill}
 You have killed {$target|escape} with {$article|escape} {$itemName|escape}!<br>
@@ -45,10 +49,12 @@ You have comitted suicide!<br>
 {/if}
 
 <p>
-Return to
-{if $link_back}
-	{$link_back}
+  Return to
+{if $return_to eq 'player'}
+  <a href="player.php?player_id={$target_id|escape:'url'}">Ninja Detail</a>
+{elseif $return_to eq 'inventory'}
+  <a href="inventory.php">Inventory</a>
 {else}
-	<a href='combat.php'>Combat</a>
+  <a href='combat.php'>Combat</a>
 {/if}
 </p>
