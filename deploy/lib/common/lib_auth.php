@@ -13,36 +13,21 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 
 	if ($login != '' && $pass != '' && !$last_login_failure_was_recent) {
 		// Allow login via username or email.
-/*	*** This query should be used when we have gotten rid of all duped unames ***
-		$sql = "SELECT account_id, account_identity, uname, player_id, phash = crypt(:pass, phash) AS authenticated
+		$sql = "SELECT account_id, account_identity, uname, player_id, phash = crypt(:pass, phash) AS authenticated, CASE WHEN active THEN 1 ELSE 0 END AS active
 			FROM accounts
 			JOIN account_players ON account_id = _account_id
 			JOIN players ON player_id = _player_id
 			WHERE (lower(active_email) = :login OR lower(uname) = :login)";
-*/
-
-		// Pull the account data regardless of whether the password matches, but create an int about whether it does match or not.
-		// matches long against active_email or username or the email from the player table.
-		$sql = "SELECT account_id, account_identity, uname, player_id, confirmed,
-		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated,
-		    CASE WHEN active THEN 1 ELSE 0 END AS active
-			FROM accounts
-			JOIN account_players ON account_id = _account_id
-			JOIN players ON player_id = _player_id
-			WHERE (lower(active_email) = :login
-					OR lower(uname) = :login
-					OR lower(uname) IN
-						(SELECT lower(uname) FROM players WHERE lower(email) = :login))";
 
 		$result = query($sql, array(':login'=>$login, ':pass'=>$pass));
 
-		if ($result->rowCount() > 1) {	// *** More than 1 record was found, commence dupe handling ***
+		$result = $result->fetch();
+
+		if ($result) { // *** Exactly one result found, return it ***
 			return $result;
-		} else if ($result->rowCount() < 1) {	// *** No record was found, user does not exist ***
+		} else { // *** No result found, login failure ***
 			update_last_login_failure(potential_account_id_from_login_username($login));
 			return false;
-		} else {	// *** Exactly one result found, return it ***
-			return $result->fetch();
 		}
 	} else {
 		// Update the last login failure timestamp.
@@ -71,14 +56,8 @@ function login_user($dirty_user, $p_pass) {
 
 	$success = false;
 	$error   = 'That password/username combination was incorrect.';
-/*	*** This conditional should be used instead of what is below when we get rid of all duped unames ***
-	if (($data =authenticate($dirty_user, $p_pass)) && (bool)$data['authenticated']) {
-*/
 
-	// Just checks whether the username and password are correct.
-	$data = authenticate($dirty_user, $p_pass);
-
-	if ($data) {
+	if (($data = authenticate($dirty_user, $p_pass)) && (bool)$data['authenticated']) {
 		if (is_array($data)) {
 			if ((bool)$data['authenticated']) {
 				if ((bool)$data['active']) {
@@ -92,36 +71,6 @@ function login_user($dirty_user, $p_pass) {
 					$error = 'You must activate your account before logging in.';
 				}
 			}
-		} else {	// *** Getting a resultset implies uname duplication, commence de-dupe procedure after authentication ***
-			// TODO: This duping code needs removal as soon as we can.
-			$player_ids = array();
-
-			while ($row = $data->fetch()) {
-				$player_ids = $row['player_id'];
-
-				if ((bool)$row['authenticated']) {
-					$active_id = $row['player_id'];
-
-					// *** If this user reserved their name, they can continue ***
-					if ((bool)query_item('SELECT CASE WHEN locked THEN 1 ELSE 0 END FROM duped_unames WHERE player_id = :player_id', array(':player_id'=>$row['player_id']))) {
-						_login_user($row['uname'], $row['player_id'], $row['account_id']);
-						$success = true;
-						$error = null;
-						break;
-					}
-				}
-			}
-
-			if (isset($active_id) && !$success) {	// *** Player authenticated, set session vars for de-duping and redirect ***
-				SESSION::commence(); // Start a session on a successful login.
-				SESSION::set('players', $player_ids);
-				SESSION::set('active_player', $active_id);
-				header('Location: deduplicate.php');
-				exit();
-			}
-
-			// The LOGIN FAILURE case occurs here.
-			// *** If the player did not manage to authenticate against any of the dupes, handle as though login failed ***
 		}
 	}
 
