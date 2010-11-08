@@ -3,21 +3,18 @@
 
 // TODO: Change this into a simple object.
 
-// Get all the settings from the database as an assoc array.  refresh refreshes the in-memory static storage.
-function get_settings($refresh=null) {
+function _get_settings($p_userID, $refresh=null) {
 	static $settings; // In memory static storage, if any.
 
 	if ($refresh) {
 		$settings = null; // Nullify to pull from the database again.
 	}
-	
-	$user_id = get_user_id();
 
-	if (!$settings && $user_id) {
+	if (!$settings && $p_userID) {
 		// If the static var isn't present yet, so get it
 		DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare("SELECT settings_store FROM settings WHERE player_id = :player");
-		$statement->bindValue(':player', $user_id);
+		$statement->bindValue(':player', $p_userID);
 		$statement->execute();
 
 		$serial_settings = $statement->fetchColumn();
@@ -34,10 +31,19 @@ function get_settings($refresh=null) {
 	return $settings;
 }
 
+// Get all the settings from the database as an assoc array.  refresh refreshes the in-memory static storage.
+function get_settings($refresh=null) {
+	return _get_settings(get_user_id(), $refresh);
+}
+
+function _get_setting($p_playerID, $name, $refresh=null) {
+	$set = _get_settings($p_playerID, $refresh);
+	return (isset($set[$name]) ? $set[$name] : null);
+}
+
 // Get a single setting from the static settings store.
 function get_setting($name) {
-	$set = get_settings();
-	return (isset($set[$name]) ? $set[$name] : null);
+	return _get_setting(get_user_id(), $name);
 }
 
 // Add a single setting pair to the current settings, & save the result.

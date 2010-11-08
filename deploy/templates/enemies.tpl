@@ -19,11 +19,11 @@
 </div>
 {/if}
 
-{if count($enemy_list) gt 0}
+{if $enemyCount gt 0}
 <div style='width:55%;float:left;margin-left:0;margin-right:0'>
-<h3>Enemies</h3>
-<ul>
-	{foreach from=$enemy_list item="loop_enemy" key="loop_enemy_id"}
+  <h3>Enemies</h3>
+  <ul>
+	{foreach from=$enemy_list item="loop_enemy"}
 		{if $loop_enemy.active}
 			{if $loop_enemy.health gt 0}
 				{assign var="status_class" value=""}
@@ -32,38 +32,37 @@
 				{assign var="status_class" value="enemy-dead"}
 				{assign var="action" value="View"}
 			{/if}
-  <li class="{$status_class}" style='position:relative;margin-bottom:.2em'>
-    <a href="enemies.php?remove_enemy={$loop_enemy_id|escape}"><img src="{$templatelite.const.IMAGE_ROOT}icons/delete.png" alt="remove"></a>
-    {$action} <a href="player.php?player_id={$loop_enemy_id|escape}">{$loop_enemy.uname|escape}</a>
-    {if $char_info.health}
-	<span style='margin-left:2em;width:10em;display:inline-block;position:absolute;right:2em;'>{include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}</span>
-	{/if}
-  </li>
+    <li class="{$status_class}" style='position:relative;margin-bottom:.2em;'>
+      <a href="enemies.php?remove_enemy={$loop_enemy.player_id|escape}"><img src="{$templatelite.const.IMAGE_ROOT}icons/delete.png" alt="remove"></a>
+      <span style='display:inline-block;width: 16em;'>{$action} <a href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
+      <span style='display:inline-block;margin-left:1em;width: 5.9em;'>
+        {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}
+      </span>
+    </li>
 		{/if}
 	{/foreach}
-</ul>
+  </ul>
 </div>
 {else}
 <p style='width:55%;float:left;margin-left:0;margin-right:0'>You haven't decided who your enemies are yet, <a href="list.php" target="main">find some</a>.</p>
 {/if}
 
-
 {if count($peers) gt 0}
 <div style='width:45%;float:right;margin-left:0;margin-right:0'>
-<h3>Nearby Ninja</h3>
-<ul id='peer-chars'>
-    {foreach from=$peers item="loop_peer"}
-        <li style='position:relative;margin-bottom:.5em'>
-            <a href='player.php?player_id={$loop_peer.player_id}' target='main'>
-                {$loop_peer.uname}
-            </a>
-            {if $char_info.health}
-        	<span style='margin-left:2em;width:10em;display:inline-block;position:absolute;right:2em;'>{include file="health_bar.tpl" health=$loop_peer.health health_percent=$loop_peer.health_percent}</span>
-            <!-- (level {$loop_peer.level}) -->
-            {/if}
-        </li>
+  <h3>Nearby Ninja</h3>
+  <ul id='peer-chars'>
+	{foreach from=$peers item="loop_peer"}
+    <li style='position:relative;margin-bottom:.5em'>
+       <a style='width:10em;display:inline-block;' href='player.php?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname}</a>
+		{if $char_info.health}
+       <span style='margin-left:2em;width:6em;display:inline-block;'>
+         {include file="health_bar.tpl" health=$loop_peer.health health_percent=$loop_peer.health_percent}
+       </span>
+<!-- (level {$loop_peer.level}) -->
+		{/if}
+    </li>
     {/foreach}
-</ul>
+  </ul>
 </div>
 {else}
 <p style='width:45%;float:right;margin-left:0;margin-right:0;'>No nearby ninja, <em class='char-name'>{$username|escape}</em>.</p>

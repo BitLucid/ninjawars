@@ -20,9 +20,12 @@ function add_enemy($enemy_id) {
 		throw new Exception('Enemy id to add must be present to succeed.');
 	}
 
-	$enemy_list = get_setting('enemy_list');
-	$enemy_list[$enemy_id] = $enemy_id;
-	set_setting('enemy_list', $enemy_list);
+	DatabaseConnection::getInstance();
+	$query = 'INSERT INTO enemies (_player_id, _enemy_id) VALUES (:pid, :eid)';
+	$statement = DatabaseConnection::$pdo->prepare($query);
+	$statement->bindValue(':pid', get_user_id());
+	$statement->bindValue(':eid', $enemy_id);
+	$statement->execute();
 }
 
 // Drop a certain enemy from the list.
@@ -31,13 +34,12 @@ function remove_enemy($enemy_id) {
 		throw new Exception('Enemy id to remove must be present to succeed.');
 	}
 
-	$enemy_list = get_setting('enemy_list');
-
-	if (isset($enemy_list[$enemy_id])) {
-		unset($enemy_list[$enemy_id]);
-	}
-
-	set_setting('enemy_list', $enemy_list);
+	DatabaseConnection::getInstance();
+	$query = 'DELETE FROM enemies WHERE _player_id = :pid AND _enemy_id = :eid';
+	$statement = DatabaseConnection::$pdo->prepare($query);
+	$statement->bindValue(':pid', get_user_id());
+	$statement->bindValue(':eid', $enemy_id);
+	$statement->execute();
 }
 
 /**
@@ -63,28 +65,25 @@ function expand_enemy_info($enemy_id) {
 
 
 // Pull the current enemies, expand out their info, and then sort 'em by health & level.
-function get_current_enemies($enemy_list) {
-	if (!is_array($enemy_list)) {
-		return $enemy_list;
-	}
+function get_current_enemies() {
+	$query = 'SELECT player_id, active, level, uname, health, least(100,floor((health / (150 + ((level-1)*25))::float)*100)) AS health_percent FROM players JOIN enemies ON _enemy_id = player_id AND _player_id = :pid ORDER BY health DESC, level DESC';
+	DatabaseConnection::getInstance();
 
-	/// TODO - Stop iterating database calls. array_map iterates, expand_enemy_info calls the database
-	$enemy_list = array_map('expand_enemy_info', $enemy_list); // Turn id into enemy info.
-	uasort($enemy_list, 'compare_enemy_order'); // Resort by health, level.
+	$statement = DatabaseConnection::$pdo->prepare($query);
+	$statement->bindValue(':pid', get_user_id());
+	$statement->execute();
 
-	return $enemy_list;
+	return $statement;
 }
 
 // Pull the recent attackers from the event table.
 function get_recent_attackers() {
-	$recent_attackers = array();
-	$user_id = get_user_id();
 	DatabaseConnection::getInstance();
 
 	$statement = DatabaseConnection::$pdo->prepare(
 		'SELECT DISTINCT player_id, send_from, uname, level, health 
 		FROM events JOIN players ON send_from = player_id WHERE send_to = :user LIMIT 20');
-	$statement->bindValue(':user', $user_id);
+	$statement->bindValue(':user', get_user_id());
 	$statement->execute();
 
 	return $statement;
@@ -130,7 +129,6 @@ $add_enemy    = in('add_enemy', null, 'toInt');
 $remove_enemy = in('remove_enemy', null, 'toInt');
 $enemy_limit  = 20;
 $max_enemies  = false;
-$enemy_list   = get_setting('enemy_list');
 
 if ($match_string) {
 	$found_enemies = get_enemy_matches($match_string);
@@ -138,21 +136,21 @@ if ($match_string) {
 	$found_enemies = null;
 }
 
-if (is_numeric($remove_enemy)) {
+if (is_numeric($remove_enemy) && $remove_enemy != 0) {
 	remove_enemy($remove_enemy);
-	$enemy_list = get_setting('enemy_list'); // Update to new enemy list.
 }
 
-if (is_numeric($add_enemy)) {
+if (is_numeric($add_enemy) && $add_enemy != 0) {
 	add_enemy($add_enemy);
-	$enemy_list = get_setting('enemy_list'); // Update to new enemy list.
 }
 
 if (count($enemy_list) > ($enemy_limit - 1)) {
 	$max_enemies = true;
 }
 
-$enemy_list = get_current_enemies($enemy_list);
+$enemy_list = get_current_enemies();
+$enemyCount = $enemy_list->rowCount();
+$enemy_list = $enemy_list->fetchAll();
 $recent_attackers = get_recent_attackers()->fetchAll();
 
 display_page(
