@@ -129,6 +129,8 @@ $add_enemy    = in('add_enemy', null, 'toInt');
 $remove_enemy = in('remove_enemy', null, 'toInt');
 $enemy_limit  = 20;
 $max_enemies  = false;
+$enemy_list = null;
+
 
 if ($match_string) {
 	$found_enemies = get_enemy_matches($match_string);
