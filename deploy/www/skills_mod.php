@@ -97,7 +97,7 @@ if(!$attack_error){ // Only bother to check for other errors if there aren't som
 			$allowed = array('uname', 'class', 'health', 'strength', 'gold', 'kills', 'turns', 'level');
 			$res = array();
 			foreach($allowed as $field){
-+				$res[$field]=$data[$field];
+				$res[$field]=$data[$field];
 			}
 			return $res;
 		}
