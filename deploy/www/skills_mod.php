@@ -1,5 +1,6 @@
 <?php
 require_once(LIB_ROOT.'specific/lib_inventory.php');
+require_once(OBJ_ROOT."Skill.php");
 /*
  * Deals with the skill based attacks, and status effects.
  *
@@ -11,13 +12,13 @@ $alive      = true;
 $quickstat  = "player";
 $page_title = "Using Skills";
 
-include SERVER_ROOT."interface/header.php";
-include(OBJ_ROOT."Skill.php");
-?>
+if ($error = init($private, $alive)) {
+	display_error($error);
+	die();
+}
 
-<h1>Skills</h1>
+$display_sight_table = $generic_skill_result_message = $generic_state_change = $killed_target = $loot = $added_bounty = $bounty = $suicided = $destealthed = null;
 
-<?php
 //Get filtered info from input.
 $target  = in('target');
 $command = in('command');
@@ -45,10 +46,12 @@ $player          = new Player($char_id);
 if ($target != '' && $target != $player->player_id) {
 	$target = new Player($target);
 	$target_id = $target->id();
-	$link_back = "<a href='player.php?player_id=$target_id'>Ninja Detail</a>";
+	$return_to_target = true;
 } else {
-    $link_back = "<a href=\"skills.php\">Skills</a>";
+	// Use the skill on himself.
+	$return_to_target = false;
 	$target    = $player;
+	$target_id = null;
 }
 
 $user_ip         = get_account_ip();
@@ -74,55 +77,51 @@ $AttackLegal    = new AttackLegal($player->player_id, $target->player_id, $param
 $attack_allowed = $AttackLegal->check();
 $attack_error   = $AttackLegal->getError();
 
-if ($attack_error) { // Use AttackLegal if not attacking self.
-	echo "<div class='ninja-notice'>$attack_error</div>"; // Display the reason for the attack failure.
-} elseif (!$has_skill || $class == "" || $command == "") {
-	echo "You do not have the requested skill.\n";
-} else {
+
+
+if(!$attack_error){ // Only bother to check for other errors if there aren't some already.
+	if(!$has_skill || $class == "" || $command == ""){
+		// Set the attack error to display that that skill wasn't available.
+		$attack_error = 'You do not have the requested skill.';
+	} elseif($starting_turns < $turn_cost){
+		$turn_cost = 0;
+		$attack_error = "You do not have enough turns to use $command.";
+	}
+}
+
+
+
+		function pull_sight_data($target_id){
+			$data = get_player_info($target_id);
+			// Strip all fields but those allowed.
+			$allowed = array('uname', 'class', 'health', 'strength', 'gold', 'kills', 'turns', 'level');
+			$res = array();
+			foreach($allowed as $field){
++				$res[$field]=$data[$field];
+			}
+			return $res;
+		}
+
+
+if (!$attack_error) { // Nothing to prevent the attack from happening.
 	// Initial attack conditions are alright.
-    echo "<div class='usage-mod-result'>";
 	$result = "";
+
+
 
 	if ($command == "Sight") {
 		$covert = true;
 
-		if ($starting_turns >= $turn_cost) {
 			// Sight will no longer break stealth.
 
-			$statement = DatabaseConnection::$pdo->prepare("SELECT uname, class_name AS class, health, strength, gold, kills, turns, level FROM players JOIN class ON _class_id = class_id WHERE player_id = :player");
-			$statement->bindValue(':player', $target->player_id);
-			$statement->execute();
+		$sight_data = pull_sight_data($target_id);
+			
+			$display_sight_table = true;
 
-			$data = $statement->fetch(PDO::FETCH_ASSOC);
 
-			echo "<table>\n";
-			echo "<tr>\n";
-			echo "  <th>Name</th>\n";
-			echo "  <th>Class</th>\n";
-			echo "  <th>Health</th>\n";
-			echo "  <th>Str</th>\n";
-			echo "  <th>Gold</th>\n";
-			echo "  <th>Kills</th>\n";
-			echo "  <th>Turns</th>\n";
-			echo "  <th>Level</th>\n";
-			echo "</tr>\n";
-			echo "<tr>\n";
-
-			foreach ($data AS $loopPart) {
-				echo "<td>".$loopPart."</td>\n";
-			}
-
-			echo "</tr>";
-			echo "</table>";
-		} else {
-			$turn_cost = 0;
-			echo "You do not have enough turns to cast $command.\n";
-			// Ye gods this repeated code needs to be made into a single check.
-		}
 	} elseif  ($command == "Steal") {
 		$covert = true;
 
-		if ($starting_turns >= $turn_cost) {
 			$gold_decrease = rand(1, 50);
 			$target_gold   = $target->vo->gold;
 			$gold_decrease = ($target_gold < $gold_decrease ? $target_gold : $gold_decrease);
@@ -132,51 +131,40 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 			$msg = "You have had pick pocket cast on you for $gold_decrease by $attacker_id at $today";
 			send_message($attacker_char_id, $target->id(), $msg);
+			
+			$generic_skill_result_message = "You have stolen $gold_decrease gold from $target!";
+			
 
-			$result = "You have stolen $gold_decrease gold from $target!<br>\n";
-		} else {
-			$turn_cost = 0;
-			echo "You do not have enough turns to cast $command.\n";
-		}
 	} else if ($command == 'Unstealth') {
 		$state = 'unstealthed';
 
-		if ($starting_turns >= $turn_cost) {
 			if ($target->hasStatus(STEALTH)) {
 				$target->subtractStatus(STEALTH);
-				echo "You are now $state.<br>\n";
+				$generic_state_change = "You are now $state.";
 			} else {
 				$turn_cost = 0;
-				echo "$target is already $state.\n";
+				$generic_state_change = "$target is already $state.";
 			}
-		} else {
-			$turn_cost = 0;
-			echo "You do not have enough turns to cast $command.\n";
-		}
 	} else if ($command == 'Stealth') {
 		$covert     = true;
 		$state      = 'stealthed';
-
-		if ($starting_turns >= $turn_cost) {
 			if (!$target->hasStatus(STEALTH)) {
 				$target->addStatus(STEALTH);
-				echo "You are now $state.<br>\n";
+				$generic_state_change = "You are now $state.";
 			} else {
 				$turn_cost = 0;
-				echo "$target is already $state.\n";
+				$generic_state_change = "$target is already $state.";
 			}
-		} else {
-			$turn_cost = 0;
-			echo "You do not have enough turns to cast $command.\n";
-		}
 	} else if ($command == "Kampo") {
 		$covert = true;
 
-		if ($starting_turns >= $turn_cost) {
 			// *** Get Special Items From Inventory ***
 			$user_id = get_user_id();
+
+
 			DatabaseConnection::getInstance();
-			$statement = DatabaseConnection::$pdo->prepare("SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type");
+			$statement = DatabaseConnection::$pdo->prepare(
+				"SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type");
 			$statement->bindValue(':owner', $user_id);
 			$statement->execute();
 
@@ -185,38 +173,29 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 				remove_item($user_id, 'ginsengroot', $itemsConverted);
 				add_item($user_id, 'tigersalve', $itemsConverted);
 				$turn_cost = $itemsConverted;
-				echo "With intense focus you grind the herbs into potent formulas.\n";
+				
+				$generic_skill_result_message = "With intense focus you grind the herbs into potent formulas.";
 			} else { // *** no special items, give error message ***
 				$turn_cost = 0;
-				echo "You do not have the necessary ingredients for any Kampo formulas.\n";
+				$generic_skill_result_message = "You do not have the necessary ingredients for any Kampo formulas.";
 			}
-		} else {
-			$turn_cost = 0;
-			echo "You do not have enough turns to use $command.\n";
-		}
 	} else if ($command == 'Poison Touch') {
 		$covert = true;
 
-		if ($starting_turns >= $turn_cost) {
 			$target->addStatus(POISON);
 
 			$target_damage = rand($poisonMinimum, $poisonMaximum);
 
 			$victim_alive = subtractHealth($target->vo->uname, $target_damage);
-			echo "$target has beeen poisoned!<br>\n";
-			echo "$target has taken $target_damage damage!<br>\n";
+			$generic_state_change = "$target has been poisoned!";
+			$generic_skill_result_message = "$target has taken $target_damage damage!";
 
 			$msg = "You have been poisoned by $attacker_id at $today";
 			send_message($attacker_char_id, $target->id(), $msg);
-		} else {
-			$turn_cost = 0;
-			echo "You do not have enough turns to cast $command.\n";
-		}
 	} elseif ($command == 'Fire Bolt') {
-		if ($starting_turns >= $turn_cost) {
 			$target_damage = (5 * (ceil($player->vo->level / 3)) + rand(1, $player->getStrength()));
 
-			echo "$target has taken $target_damage damage!<br>\n";
+			$generic_skill_result_message = "$target has taken $target_damage damage!";
 
 			if ($victim_alive = subtractHealth($target->vo->uname, $target_damage)) {
 				$attacker_id  = $username;
@@ -224,12 +203,7 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 			$msg = "You have had fire bolt cast on you by $attacker_id at $today";
 			send_message($attacker_char_id, $target->id(), $msg);
-		} else {
-			$turn_cost = 0;
-			echo "You do not have enough turns to cast $command.\n";
-		}
 	} else if ($command == 'Heal') {
-		if ($starting_turns >= $turn_cost) {
 		    // Check that the target is not already status healing.
 		    $heal_per_level = 10;
 		    $healed_by = $player->level()*$heal_per_level;		    
@@ -237,25 +211,20 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 		    $target_max_health = $target->max_health();
 		    if($target->hasStatus(HEALING)){
 		        $turn_cost = 0;
-		        echo $target->name()." is already under a healing aura.";
+		        $generic_state_change = $target->name()." is already under a healing aura.";
             } elseif($target_current_health>=$target_max_health){
                 $turn_cost = 0;
-                echo $target->name()." is already fully healed.";
+                $generic_skill_result_message = $target->name()." is already fully healed.";
             } else {
     		    $new_health = $target->heal($healed_by);
     		    $target->addStatus(HEALING);
-    		    $result = $target->name()." healed by $healed_by to $new_health.<br>";
+    		    $generic_skill_result_message = $target->name()." healed by $healed_by to $new_health.";
     		    if($target->name() != $player->name()){
         		    send_message($attacker_char_id, $target->id(), 
         		        "You have been healed by $attacker_id at $today for $healed_by.");
         		}
             }
-		} else {
-			$turn_cost = 0;
-			echo "You do not have enough turns to cast $command.\n";
-		}
 	} else if ($command == 'Ice Bolt') {
-		if ($starting_turns >= $turn_cost) {
     		if ($target->vo->turns >= 10) {
     			$turns_decrease = rand(1, 5);
     			subtractTurns($target->vo->uname, $turns_decrease);
@@ -265,17 +234,12 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
     			$msg = "Ice bolt cast on you by $attacker_id at $today, your turns have been reduced by $turns_decrease.";
     			send_message($attacker_char_id, $target->id(), $msg);
 
-    			$result = "$target's turns reduced by $turns_decrease!<br>\n";
+    			$generic_skill_result_message = "$target's turns reduced by $turns_decrease!";
     		} else {
     		    $turn_cost = 0;
-    		    $result = "$target does not have enough turns for you to take.";
+    		    $generic_skill_result_message = "$target does not have enough turns for you to take.";
     		}
-		} else {
-			$turn_cost = 0;
-			echo "You do not have enough turns to cast $command.\n";
-		}
 	} else if ($command == 'Cold Steal') {
-		if ($starting_turns >= $turn_cost) {
 			$critical_failure = rand(1, 100);
 
 			if ($critical_failure > 7) {// *** If the critical failure rate wasn't hit.
@@ -288,10 +252,10 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id at $today";
 					send_message($attacker_char_id, $target->id(), $msg);
 
-					$result = "You cast Cold Steal on $target and take $turns_decrease turns.<br>\n";
+					$generic_skill_result_message = "You cast Cold Steal on $target and take $turns_decrease turns.<br>\n";
 				} else {
 					$turn_cost = 0;
-					$result = "The victim did not have enough turns to give you.<br>\n";
+					$generic_skill_result_message = "The victim did not have enough turns to give you.<br>\n";
 				}
 			} else { // *** CRITICAL FAILURE !!
 				$player->addStatus(FROZEN);
@@ -300,18 +264,16 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 				$failure_msg = "You have experienced a critical failure while using Cold Steal on $today. You will be unfrozen on $unfreeze_time";
 				sendMessage("SysMsg", $username, $failure_msg);
-				$result = "Cold Steal has backfired! You have lost 3 turns and are now frozen until $unfreeze_time!<br>\n";
+				$generic_skill_result_message = "Cold Steal has backfired! You are frozen until $unfreeze_time!<br>\n";
 			}
-	    } else {
-			$turn_cost = 0;
-			echo "You do not have enough turns to cast $command.\n";
-		}
 	}
 
-	echo $result;
-
-	if (!$victim_alive) {
-		if ($target->player_id != $player->player_id) {
+	if (!$victim_alive) { // Someone died.
+		if ($target->player_id == $player->player_id) { // Attacker killed themself.
+					$loot = 0;
+			$suicided = true;
+		} else { // Attacker killed someone else.
+			$killed_target = true;
 			$gold_mod = 0.15;
 			$loot     = round($gold_mod * get_gold($target->id()));
 
@@ -320,17 +282,12 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 			addKills($username, 1);
 
-			echo "You have killed $target with $command!<br>\n";
-			echo "You receive $loot gold from $target.<br>\n";
-
 			$added_bounty = floor($level_check / 5);
 
 			if ($added_bounty > 0) {
 				addBounty($username, ($added_bounty * 25));
-				echo "Your victim was much weaker than you. The townsfolk are angered. A bounty of ".($added_bounty * 25)." gold has been placed on your head!<br>\n";
-			} else {
+			} else { // Can only receive bounty if you're not getting it on your own head.
 				if ($bounty = rewardBounty($username, $target->vo->uname)) {
-					echo "You have received the $bounty gold bounty on $target's head for your deeds!<br>\n";
 
 					$bounty_msg = "You have valiantly slain the wanted criminal, $target! For your efforts, you have been awarded $bounty gold!";
 					sendMessage("Village Doshin", $username, $bounty_msg);
@@ -342,9 +299,6 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 			$attacker_message = "You have killed $target with $command on $today and taken $loot gold.";
 			sendMessage($target->vo->uname, $username, $attacker_message);
-		} else {
-			$loot = 0;
-			echo "You have comitted suicide!<br>\n";
 		}
 	}
 
@@ -352,31 +306,19 @@ if ($attack_error) { // Use AttackLegal if not attacking self.
 
 	if (!$covert && $player->hasStatus(STEALTH)) {
 		$player->subtractStatus(STEALTH);
-		echo "Your actions have revealed you. You are no longer stealthed.<br>\n";
+		$destealthed = true;
 	}
+	
+	
 } // End of the skill use SUCCESS block.
 
 $ending_turns = changeTurns($username, $turns_to_take);
 
 
-display_template('defender_health.tpl', array('health'=>$target->health(), 'health_percent'=>$target->health_percent(), 'target_name'=>$target->name()));
+$target_ending_health = $target->health();
+$target_ending_health_percent = $target->health_percent();
+$target_name = $target->name();
 
+display_page('skills_mod.tpl', 'Skill Effect', get_defined_vars());
 
-?>
-  </div>
-  <div class="skillReload">
-    <button>
-    	<a href="skills_mod.php?command=<?php echo urlencode($command); ?>&amp;target=<?php echo $target->player_id; ?>">
-    		Use <?php echo $command; ?> again
-    	</a>
-    </button>
-  </div>
-  <br>
-  <div class="LinkBack">
-    Return to <?php echo $link_back; ?>
-  </div>
-</p>
-
-<?php
-include SERVER_ROOT."interface/footer.php";
 ?>
