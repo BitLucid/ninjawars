@@ -208,55 +208,43 @@ function get_clan_members($p_clanID, $p_limit = 30) {
 }
 
 /**
- * Create the item options for the inventory dropdown.
-**/
-function render_inventory_options() {
-	$char_id = get_char_id();
-	
-	if(!$char_id){
-	    return '';
-	}
-
-	$res = '';
-
-	$sel = "SELECT owner, item_internal_name, item_display_name, item.item_id, amount
-		FROM inventory JOIN item on inventory.item_type = item.item_id
-		WHERE owner = :owner_id
-		AND amount > 0 ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
-	$items = query($sel, array(':owner_id'=>array((int)$char_id, PDO::PARAM_INT)));
-
-	if (!$items->rowCount()) {
-		$res = "          <option value=''>You Have No Items</option>";
-	} else {
-		foreach ($items as $item) {
-			$res .= '      <option value="'.$item['item_id'].'">'
-				.htmlentities($item['item_display_name'])
-				.' ('.$item['amount'].")</option>\n";
-		}
-	}
-
-	return $res;
-}
-
-/**
  * Display the full form for item use/dropdowns/give/
 **/
 function render_item_use_on_another($target) {
 	$username = get_username();
 	$char_id = get_char_id($target);
 	$res = "<form id=\"inventory_form\" action=\"inventory_mod.php\" method=\"post\" name=\"inventory_form\">\n
-    <input id=\"target\" type=\"hidden\" name=\"target_id\" value=\"$char_id\">
-    <input type=\"submit\" value=\"Use\" class=\"formButton\">\n
-    <select id=\"item\" name=\"item\">\n";
+    <input id=\"target\" type=\"hidden\" name=\"target_id\" value=\"$char_id\">\n";
 
-	$res .= render_inventory_options();
-	$res .= "</select>";
+	$user_id = get_char_id();
+	
+	$sel = "SELECT owner, item_internal_name, item_display_name, item.item_id, amount
+		FROM inventory JOIN item on inventory.item_type = item.item_id
+		WHERE owner = :owner_id
+		AND amount > 0 ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
+	$items = query($sel, array(':owner_id'=>array((int)$user_id, PDO::PARAM_INT)));
 
-	$target_clan = get_clan_by_player_id($char_id);
+	if (!$items->rowCount()) {
+    	$res .= "<select id=\"item\" name=\"item\">\n";
+		$res .= "          <option value=''>You Have No Items</option>";
+		$res .= "</select>";
+	} else {
+    	$res .= "<input type=\"submit\" value=\"Use\" class=\"formButton\">\n
+                 <select id=\"item\" name=\"item\">\n";
 
-	if ($target_clan && ($user_clan = get_clan_by_player_id($char_id)) && $target_clan->getID() == $user_clan->getID()) {
-		// Only allow giving items within the same clan.
-		$res .= "<input id=\"give\" type=\"submit\" value=\"Give\" name=\"give\" class=\"formButton\">\n";
+		foreach ($items as $item) {
+			$res .= '      <option value="'.$item['item_id'].'">'
+				.htmlentities($item['item_display_name'])
+				.' ('.$item['amount'].")</option>\n";
+		}
+		$res .= "</select>";
+
+		$target_clan = get_clan_by_player_id($char_id);
+
+		if ($target_clan && ($user_clan = get_clan_by_player_id($user_id)) && $target_clan->getID() == $user_clan->getID()) {
+			// Only allow giving items within the same clan.
+			$res .= "<input id=\"give\" type=\"submit\" value=\"Give\" name=\"give\" class=\"formButton\">\n";
+		}
 	}
 
 	$res .= "</form>\n";
