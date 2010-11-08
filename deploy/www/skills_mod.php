@@ -90,17 +90,17 @@ if(!$attack_error){ // Only bother to check for other errors if there aren't som
 }
 
 
-
-		function pull_sight_data($target_id){
-			$data = get_player_info($target_id);
-			// Strip all fields but those allowed.
-			$allowed = array('uname', 'class', 'health', 'strength', 'gold', 'kills', 'turns', 'level');
-			$res = array();
-			foreach($allowed as $field){
-				$res[$field]=$data[$field];
-			}
-			return $res;
-		}
+// Strip down the player info to get the sight data.
+function pull_sight_data($target_id){
+	$data = get_player_info($target_id);
+	// Strip all fields but those allowed.
+	$allowed = array('uname', 'class', 'health', 'strength', 'gold', 'kills', 'turns', 'level');
+	$res = array();
+	foreach($allowed as $field){
+		$res[$field]=$data[$field];
+	}
+	return $res;
+}
 
 
 if (!$attack_error) { // Nothing to prevent the attack from happening.
@@ -112,118 +112,114 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 	if ($command == "Sight") {
 		$covert = true;
 
-			// Sight will no longer break stealth.
-
 		$sight_data = pull_sight_data($target_id);
 			
-			$display_sight_table = true;
-
+		$display_sight_table = true;
 
 	} elseif  ($command == "Steal") {
 		$covert = true;
 
-			$gold_decrease = rand(1, 50);
-			$target_gold   = $target->vo->gold;
-			$gold_decrease = ($target_gold < $gold_decrease ? $target_gold : $gold_decrease);
+		$gold_decrease = rand(1, 50);
+		$target_gold   = $target->vo->gold;
+		$gold_decrease = ($target_gold < $gold_decrease ? $target_gold : $gold_decrease);
 
-			add_gold($char_id, $gold_decrease); // *** This one actually adds the value.
-			subtract_gold($target->id(), $gold_decrease); // *** Subtracts whatever positive value is put in.
+		add_gold($char_id, $gold_decrease); // *** This one actually adds the value.
+		subtract_gold($target->id(), $gold_decrease); // *** Subtracts whatever positive value is put in.
 
-			$msg = "You have had pick pocket cast on you for $gold_decrease by $attacker_id at $today";
-			send_message($attacker_char_id, $target->id(), $msg);
-			
-			$generic_skill_result_message = "You have stolen $gold_decrease gold from $target!";
-			
-
+		$msg = "You have had pick pocket cast on you for $gold_decrease by $attacker_id at $today";
+		send_message($attacker_char_id, $target->id(), $msg);
+		
+		$generic_skill_result_message = "You have stolen $gold_decrease gold from $target!";
+		
 	} else if ($command == 'Unstealth') {
 		$state = 'unstealthed';
 
-			if ($target->hasStatus(STEALTH)) {
-				$target->subtractStatus(STEALTH);
-				$generic_state_change = "You are now $state.";
-			} else {
-				$turn_cost = 0;
-				$generic_state_change = "$target is already $state.";
-			}
+		if ($target->hasStatus(STEALTH)) {
+			$target->subtractStatus(STEALTH);
+			$generic_state_change = "You are now $state.";
+		} else {
+			$turn_cost = 0;
+			$generic_state_change = "$target is already $state.";
+		}
 	} else if ($command == 'Stealth') {
 		$covert     = true;
 		$state      = 'stealthed';
-			if (!$target->hasStatus(STEALTH)) {
-				$target->addStatus(STEALTH);
-				$generic_state_change = "You are now $state.";
-			} else {
-				$turn_cost = 0;
-				$generic_state_change = "$target is already $state.";
-			}
+		if (!$target->hasStatus(STEALTH)) {
+			$target->addStatus(STEALTH);
+			$generic_state_change = "You are now $state.";
+		} else {
+			$turn_cost = 0;
+			$generic_state_change = "$target is already $state.";
+		}
 	} else if ($command == "Kampo") {
 		$covert = true;
 
-			// *** Get Special Items From Inventory ***
-			$user_id = get_user_id();
+		// *** Get Special Items From Inventory ***
+		$user_id = get_user_id();
 
 
-			DatabaseConnection::getInstance();
-			$statement = DatabaseConnection::$pdo->prepare(
-				"SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type");
-			$statement->bindValue(':owner', $user_id);
-			$statement->execute();
+		DatabaseConnection::getInstance();
+		$statement = DatabaseConnection::$pdo->prepare(
+			"SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type");
+		$statement->bindValue(':owner', $user_id);
+		$statement->execute();
 
-			if ($itemCount = $statement->fetchColumn()) {	// *** If special item count > 0 ***
-				$itemsConverted = min($itemCount, $starting_turns-1);
-				remove_item($user_id, 'ginsengroot', $itemsConverted);
-				add_item($user_id, 'tigersalve', $itemsConverted);
-				$turn_cost = $itemsConverted;
-				
-				$generic_skill_result_message = "With intense focus you grind the herbs into potent formulas.";
-			} else { // *** no special items, give error message ***
-				$turn_cost = 0;
-				$generic_skill_result_message = "You do not have the necessary ingredients for any Kampo formulas.";
-			}
+		if ($itemCount = $statement->fetchColumn()) {	// *** If special item count > 0 ***
+			$itemsConverted = min($itemCount, $starting_turns-1);
+			remove_item($user_id, 'ginsengroot', $itemsConverted);
+			add_item($user_id, 'tigersalve', $itemsConverted);
+			$turn_cost = $itemsConverted;
+			
+			$generic_skill_result_message = "With intense focus you grind the herbs into potent formulas.";
+		} else { // *** no special items, give error message ***
+			$turn_cost = 0;
+			$generic_skill_result_message = "You do not have the necessary ingredients for any Kampo formulas.";
+		}
 	} else if ($command == 'Poison Touch') {
 		$covert = true;
 
-			$target->addStatus(POISON);
+		$target->addStatus(POISON);
 
-			$target_damage = rand($poisonMinimum, $poisonMaximum);
+		$target_damage = rand($poisonMinimum, $poisonMaximum);
 
-			$victim_alive = subtractHealth($target->vo->uname, $target_damage);
-			$generic_state_change = "$target has been poisoned!";
-			$generic_skill_result_message = "$target has taken $target_damage damage!";
+		$victim_alive = subtractHealth($target->vo->uname, $target_damage);
+		$generic_state_change = "$target has been poisoned!";
+		$generic_skill_result_message = "$target has taken $target_damage damage!";
 
-			$msg = "You have been poisoned by $attacker_id at $today";
-			send_message($attacker_char_id, $target->id(), $msg);
+		$msg = "You have been poisoned by $attacker_id at $today";
+		send_message($attacker_char_id, $target->id(), $msg);
 	} elseif ($command == 'Fire Bolt') {
-			$target_damage = (5 * (ceil($player->vo->level / 3)) + rand(1, $player->getStrength()));
+		$target_damage = (5 * (ceil($player->vo->level / 3)) + rand(1, $player->getStrength()));
 
-			$generic_skill_result_message = "$target has taken $target_damage damage!";
+		$generic_skill_result_message = "$target has taken $target_damage damage!";
 
-			if ($victim_alive = subtractHealth($target->vo->uname, $target_damage)) {
-				$attacker_id  = $username;
-			}
+		if ($victim_alive = subtractHealth($target->vo->uname, $target_damage)) {
+			$attacker_id  = $username;
+		}
 
-			$msg = "You have had fire bolt cast on you by $attacker_id at $today";
-			send_message($attacker_char_id, $target->id(), $msg);
+		$msg = "You have had fire bolt cast on you by $attacker_id at $today";
+		send_message($attacker_char_id, $target->id(), $msg);
 	} else if ($command == 'Heal') {
-		    // Check that the target is not already status healing.
-		    $heal_per_level = 10;
-		    $healed_by = $player->level()*$heal_per_level;		    
-		    $target_current_health = $target->health();
-		    $target_max_health = $target->max_health();
-		    if($target->hasStatus(HEALING)){
-		        $turn_cost = 0;
-		        $generic_state_change = $target->name()." is already under a healing aura.";
-            } elseif($target_current_health>=$target_max_health){
-                $turn_cost = 0;
-                $generic_skill_result_message = $target->name()." is already fully healed.";
-            } else {
-    		    $new_health = $target->heal($healed_by);
-    		    $target->addStatus(HEALING);
-    		    $generic_skill_result_message = $target->name()." healed by $healed_by to $new_health.";
-    		    if($target->name() != $player->name()){
-        		    send_message($attacker_char_id, $target->id(), 
-        		        "You have been healed by $attacker_id at $today for $healed_by.");
-        		}
-            }
+	    // Check that the target is not already status healing.
+	    $heal_per_level = 10;
+	    $healed_by = $player->level()*$heal_per_level;		    
+	    $target_current_health = $target->health();
+	    $target_max_health = $target->max_health();
+	    if($target->hasStatus(HEALING)){
+	        $turn_cost = 0;
+	        $generic_state_change = $target->name()." is already under a healing aura.";
+        } elseif($target_current_health>=$target_max_health){
+            $turn_cost = 0;
+            $generic_skill_result_message = $target->name()." is already fully healed.";
+        } else {
+		    $new_health = $target->heal($healed_by);
+		    $target->addStatus(HEALING);
+		    $generic_skill_result_message = $target->name()." healed by $healed_by to $new_health.";
+		    if($target->name() != $player->name()){
+    		    send_message($attacker_char_id, $target->id(), 
+    		        "You have been healed by $attacker_id at $today for $healed_by.");
+    		}
+        }
 	} else if ($command == 'Ice Bolt') {
     		if ($target->vo->turns >= 10) {
     			$turns_decrease = rand(1, 5);
