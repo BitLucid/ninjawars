@@ -17,7 +17,9 @@ if ($error = init($private, $alive)) {
 	die();
 }
 
-$display_sight_table = $generic_skill_result_message = $generic_state_change = $killed_target = $loot = $added_bounty = $bounty = $suicided = $destealthed = null;
+// Template vars.
+$display_sight_table = $generic_skill_result_message = $generic_state_change = $killed_target = 
+	$loot = $added_bounty = $bounty = $suicided = $destealthed = null;
 
 //Get filtered info from input.
 $target  = in('target');

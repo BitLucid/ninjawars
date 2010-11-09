@@ -17,14 +17,12 @@ $alive      = true;
 $page_title = "Battle Status";
 $quickstat  = "player";
 
-include SERVER_ROOT."interface/header.php";
-?>
+if ($error = init($private, $alive)) {
+	display_error($error);
+	die();
+}
 
-<h1>Battle Status</h1>
 
-<hr>
-
-<?php
 // TODO: Turn this page/system into a function to be rendered.
 
 // *** ********* GET VARS FROM POST - OR GET ************* ***
@@ -41,6 +39,10 @@ $attacker_obj = new Player($attacker_id);
 $attacker = $attacker_obj->name();
 
 $target_id   = get_char_id($target);
+
+// Template vars.
+$stealthed_attack = $stealth_damage = $stealth_lost = $pre_battle_stats = $rounds =
+	$combat_final_results = $killed_target = $attacker_died = $bounty_result = false;
 
 // *** Attack System Initialization ***
 $killpoints               = 0; // *** Starting state for killpoints. ***
@@ -74,8 +76,7 @@ $skillListObj = new Skill();
 
 $ignores_stealth = false;
 
-foreach ($attack_type as $type)
-{
+foreach ($attack_type as $type){
 	$ignores_stealth = $ignores_stealth||$skillListObj->getIgnoreStealth($type);
 	$required_turns += $skillListObj->getTurnCost($type);
 }
@@ -87,6 +88,9 @@ $params = array(
 );
 
 $AttackLegal = new AttackLegal($attacker, $target, $params);
+$attack_is_legal = $AttackLegal->check();
+$attack_error = $AttackLegal->getError();
+
 
 // *** There's a same-domain problem with this attack-legal now that it's been modified for skills ***
 
@@ -94,10 +98,7 @@ $target_player    = new Player($target_id);
 $attacking_player = new Player($attacker_id);
 
 // ***  MAIN BATTLE ALGORITHM  ***
-if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting.
-	// *** Display the reason the attack failed.
-	echo "<div class='ninja-error centered'>".$AttackLegal->getError()."</div>";
-} else {
+if ($attack_is_legal){
 	// *** Target's stats. ***
 	$target_health    = $target_player->vo->health;
 	$target_level     = $target_player->vo->level;
@@ -118,14 +119,15 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 	$loot   = 0;
 	$victor = null;
 	$loser  = null;
+	
+	
 
 	// *** ATTACKING + STEALTHED SECTION  ***
 	if (!$duel && $attacking_player->hasStatus(STEALTH)) { // *** Not dueling, and attacking from stealth ***
 		$attacking_player->subtractStatus(STEALTH);
 		$turns_to_take = 1;
 
-		echo "<div>You are striking from the shadows, you quickly strike your victim!</div>\n";
-		echo "<div>Your attack has revealed you from the shadows! You are no longer stealthed.</div>\n";
+		$stealthed_attack = true;
 
 		if (!subtractHealth($target, $stealthAttackDamage)) { // *** if Stealth attack of whatever damage kills target. ***
 			$victor = $attacker;
@@ -140,46 +142,36 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			$target_player->death();
 			sendMessage("A Stealthed Ninja", $target, $target_msg);
 			sendMessage($target, $attacker, $attacker_msg);
-			runBountyExchange($attacker, $target); // *** Determines the bounty for normal attacking. ***
+			$bounty_result = runBountyExchange($attacker, $target); // *** Determines the bounty for normal attacking. ***
 
-			echo "<div>You have slain $target with a dastardly attack!\n";
-			echo "You do not receive recognition for this kill.</div>\n";
-			echo "<hr>\n";
+			$stealth_kill = true;
 		} else {	// *** if damage from stealth only hurts the target. ***
-			echo "<div>$target has lost ".$stealthAttackDamage." HP.</div>\n";
+		
+			$stealth_damage = true;
 
 			sendMessage($attacker, $target, "$attacker has attacked you from the shadows for $stealthAttackDamage damage.");
 		}
 	} else {	// *** If the attacker is purely dueling or attacking, even if stealthed, though stealth is broken by dueling. ***
        // *** MAIN DUELING SECTION ***
+       
 
         if ($attacking_player->hasStatus(STEALTH)) { // *** Remove their stealth if they duel instead of preventing dueling.
             $attacking_player->subtractStatus(STEALTH);
-            echo "You have lost your stealth.";
+            
+            $stealth_lost = true;
         }
 
-		if ($blaze) {
-			echo "Your soul blazes with fire!\n";
-		}
-
-		if ($deflect) {
-			echo "You center your body and soul before battle!\n";
-		}
-
-		if ($evade) {
-			echo "As you enter battle, you note your potential escape routes...\n";
-		}
 
 		// *** PRE-BATTLE STATS ***
-		display_template(
+		$pre_battle_stats = render_template(
 			'combat-prebattle-stats.tpl'
 			, array(
-				'attacker_name'  => $attacking_player->vo->uname
+				'attacker_name'  => $attacking_player->name()
 				, 'attacker_str' => $attacking_player->getStrength()
-				, 'attacker_hp'  => $attacking_player->vo->health
-				, 'target_name'  => $target_player->vo->uname
+				, 'attacker_hp'  => $attacking_player->health()
+				, 'target_name'  => $target_player->name()
 				, 'target_str'   => $target_player->getStrength()
-				, 'target_hp'    => $target_player->vo->health
+				, 'target_hp'    => $target_player->health()
 			)
 		);	// *** Displays the starting state of the attacker and defender. ***
 
@@ -224,22 +216,11 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 			}
 		}
 
-		if ($blaze) {	// *** Blaze does double damage. ***
-			echo "<div>Your attack is more powerful due to blazing!</div>\n";
-		}
-
-		if ($deflect) {
-			echo "<div>Your wounds are reduced by deflecting the attack!</div>\n";
-		}
-
-		if ($evade && $total_attacker_damage < $target_health) {
-			echo "<div>Realizing you are out matched, you escape with your life to fight another day!</div>";
-		}
 
 		// *** END OF MAIN BATTLE ALGORITHM ***
-		echo "<div>Total Rounds: $rounds</div>\n";
 
-		display_template(
+
+		$combat_final_results = render_template(
 			'combat-final-results.tpl'
 			, array(
 				'total_attacker_damage' => $total_attacker_damage
@@ -258,21 +239,8 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 		$turns_to_take = $required_turns;
 
 		if ($duel) {
-			echo "<br>You spent an extra turn dueling.<br>\n";	// *** Reminds of Dueling turn cost. ***
 			$gold_mod = 0.25;
 			$what     = "duel";
-		}
-
-		if ($blaze) {
-			echo "<div>You spent two extra turns to blaze with power.</div>\n";	// *** Reminds of Blaze turn cost. ***
-		}
-
-		if ($deflect) {
-			echo "<div>You spent three extra turns in order to deflect your enemy's blows.</div>\n"; // *** Deflect turn cost. ***
-		}
-
-		if ($evade) {
-			echo "<div>You spent two extra turns preparing your escape routes.</div>\n"; // *** Evade turn cost. ***
 		}
 
 		//  *** Let the victim know who hit them ***
@@ -282,12 +250,12 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 		$attackerHealthRemaining = subtractHealth($attacker, $total_target_damage);
 
 		if ($defenderHealthRemaining && $attackerHealthRemaining) {
-			$email_msg = "You have been $attack_label by $attacker at $today for $total_attacker_damage, but they got away before you could kill them!";
+			$combat_msg = "You have been $attack_label by $attacker at $today for $total_attacker_damage, but they got away before you could kill them!";
 		} else {
-			$email_msg = "You have been $attack_label by $attacker at $today for $total_attacker_damage!";
+			$combat_msg = "You have been $attack_label by $attacker at $today for $total_attacker_damage!";
 		}
 
-		sendMessage($attacker, $target, $email_msg);
+		sendMessage($attacker, $target, $combat_msg);
 
 		if ($defenderHealthRemaining < 1 || $attackerHealthRemaining < 1) {
 			if ($defenderHealthRemaining < 1) { //***  ATTACKER KILLS DEFENDER! ***
@@ -296,6 +264,8 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 					$victor = $attacker;
 					$loser  = $target;
 				}
+
+				$killed_target = true;
 
 				$killpoints = 1; // *** Changes killpoints from zero to one. ***
 
@@ -319,23 +289,7 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 				$attacker_msg = "You have killed $target in combat and taken $loot gold on $today.";
 				sendMessage($target, $attacker, $attacker_msg);
 
-				echo "<div>$attacker has killed $target!</div>\n";
-				echo "<div class='ninja-notice'>
-					$target is dead, you have proven your might";
-
-				if ($killpoints == 2) {
-					echo " twice over";
-				} elseif ($killpoints > 2) {
-					echo " $killpoints times over";
-				}
-
-				echo "!</div>\n";
-
-				if (!$simultaneousKill) {
-					echo "<div>You have taken $loot gold from $target.</div>\n";
-				}
-
-				runBountyExchange($attacker, $target);	// *** Determines bounty for dueling. ***
+				$bounty_result = runBountyExchange($attacker, $target);	// *** Determines bounty for dueling. ***
 			}
 
 			if ($attackerHealthRemaining < 1) { // *** DEFENDER KILLS ATTACKER! ***
@@ -344,6 +298,9 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 					$victor = $target;
 					$loser  = $attacker;
 				}
+				
+				$attacker_died = true;
+				
 				$defenderKillpoints = 1;
 
 				if ($duel) {	// *** if they were dueling when they died ***
@@ -366,14 +323,6 @@ if (!$AttackLegal->check())	{	// *** Checks for error conditions before starting
 				sendMessage($attacker, $target, $target_msg);
 				sendMessage($target, $attacker, $attacker_msg);
 
-				echo "<div class='ninja-error'>$target has killed you!</div>\n";
-				echo "<div class='ninja-notice' style='margin-bottom: 10px;'>
-					Go to the <a href=\"shrine.php\">Shrine</a> to return to the living.
-					</div>\n";
-
-				if (!$simultaneousKill) {
-					echo "<div>$target has taken $loot gold from you.</div>\n";
-				}
 			}
 		}
 
@@ -394,22 +343,23 @@ if ($turns_to_take < 1) {
 $ending_turns = subtractTurns($attacker, $turns_to_take);
 
 //  ***  START ACTION OVER AGAIN SECTION ***
-echo "<hr>\n";
 
+$attack_again = false;
 if (isset($target)) {
     $attacker_health_snapshot = getHealth($attacker);
     $defender_health_snapshot = getHealth($target);
 	if ($AttackLegal && $attacker_health_snapshot > 0 && $defender_health_snapshot > 0) {	// *** After any partial attack. ***
-		echo "<div><a href=\"attack_mod.php?attacked=1&amp;target=$target\" class='attack-again'>Attack Again?</a></div>\n";
+		$attack_again = true;
 	}
-
-    display_template('defender_health.tpl', array('health'=>$target_player->health(), 'health_percent'=>$target_player->health_percent(), 'target_name'=>$target_player->name()));
-
-	echo "<div>Return to <a class='char-name' href=\"player.php?player=".urlencode($target)."\">".out($target)."'s Info</a></div>Or \n";
 }
 
-echo "Start your combat <a href=\"list.php\" class='central-location'> from the ninja list.</a>\n<br>\n";
-echo "<hr><br>\n";
 
-include(SERVER_ROOT."interface/footer.php");
+
+$target_ending_health = $target_player->health();
+$target_ending_health_percent = $target_player->health_percent();
+$target_name = $target_player->name();
+
+display_page('attack_mod.tpl', 'Battle Status', get_defined_vars());
+
+
 ?>
