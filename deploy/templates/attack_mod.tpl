@@ -112,10 +112,14 @@
 	
 	{/if}{* End of no attack error section *}
 
-	<hr>
-	{if $target}
+	{if $target_ending_health}
 	
 		{include file="defender_health.tpl" health=$target_ending_health health_percent=$target_ending_health_percent target_name=$target_name}
+	
+	{/if}
+
+	<hr>
+	{if $target}
 		
 		{if $attack_again}
 			<div><a href="attack_mod.php?attacked=1&amp;target={$target|escape:'url'}" class='attack-again'>Attack Again?</a></div>

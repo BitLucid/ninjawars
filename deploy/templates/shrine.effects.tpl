@@ -6,7 +6,7 @@
     <div class='ninja-notice'>{$error}</div>
 {else}
 	<p class='description'>
-		The Shrine echos with the sound of the monks chanting their soothing chant that vibrates and bounces between the hard stone walls.
+		The Shrine echoes with the sound of the monks chanting their soothing chant that vibrates and bounces between the hard stone walls.
 	</p>
 {/if}
 
