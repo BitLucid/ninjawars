@@ -18,8 +18,8 @@
   <form action='messages.php' method='post' name='ninja_message'>
     <div>
       <em class='char-name'>@<input class='char-name textField' type='text' size='26' name='to' value='{$to}'></em>
-      <span style='font-weight:bold'>::</span>
-      <input id='message-to-ninja' type='text' size='30' name='message' class='textField' maxlength="{$templatelite.const.MAX_MSG_LENGTH|escape}">
+      <span style='font-weight:bold'>say</span>
+      "<input id='message-to-ninja' type='text' size='30' name='message' class='textField' maxlength="{$templatelite.const.MAX_MSG_LENGTH|escape}">"
       <input type='hidden' name='messenger' value='1'>
       <input type='submit' value='Send' name='ninja_message' class='formButton'>
     </div>
