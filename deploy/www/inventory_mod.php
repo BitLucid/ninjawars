@@ -197,7 +197,11 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$item_used = false;
 						$turns_change = 0;
 					} else {
-						$targetObj->addStatus(SLOW);
+						if($targetObj->hasStatus(FAST)){
+							$targetObj->removeStatus(FAST);
+						} else {
+							$targetObj->addStatus(SLOW);
+						}
 						$turns_change = $item->getTurnChange();
 
 						if ($turns_change == 0) {
@@ -209,10 +213,21 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$victim_alive = true;
 					}
 				} else if ($item->hasEffect('speed')) {
-					$turns_change = $item->getTurnChange();
-					$result         = "gain $turns_change turns";
-					changeTurns($target, $turns_change);
-					$victim_alive = true;
+					if($targetObj->hasStatus(FAST)){
+						$turns_change = 0;
+					    $alternateResultMessage = "<strong class='char-name'>$target</strong> is already moving quickly.";
+					    $item_used = false;
+					} else {
+						if($targetObj->hasStatus(SLOW)){
+							$targetObj->removeStatus(SLOW);
+						} else {
+							$targetObj->addStatus(FAST);
+						}
+						$turns_change = $item->getTurnChange();
+						$result         = "gain $turns_change turns";
+						changeTurns($target, $turns_change);
+						$victim_alive = true;
+					}
 				}
 			}
 
