@@ -16,7 +16,7 @@ class Skill
 		'blaze', 'fire bolt',
 		'poison touch', 'stealth', 'unstealth', 'steal', 'hidden resurrect',
 		'duel', 'attack', 'kampo', 'evasion'
-	); // Midnight heal currently doesn't work.
+	);
 
 	// Use the class identities as the array keys here, so $skill_map['crane']
 	// ... should return an array of crane-specific skills.
