@@ -52,10 +52,10 @@ You have comitted suicide!<br>
 <p>
   Return to
 {if $return_to eq 'player'}
-  <a href="player.php?player_id={$target_id|escape:'url'}">Ninja Detail</a>
+  <a href="player.php?player_id={$target_id|escape:'url'}" class='return-to-location'>Ninja Detail</a>
 {elseif $return_to eq 'inventory'}
-  <a href="inventory.php">Inventory</a>
+  <a href="inventory.php" class='return-to-location'>Inventory</a>
 {else}
-  <a href='combat.php'>Combat</a>
+  <a href='combat.php' class='return-to-location'>Combat</a>
 {/if}
 </p>

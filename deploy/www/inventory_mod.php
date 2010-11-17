@@ -159,14 +159,14 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			/**** MAIN SUCCESSFUL USE ****/
 			if ($give == "on" || $give == "Give") {
 				give_item($username, $target, $item->getName());
-				$alternateResultMessage = "$target will receive your {$item->getName()}.";
+				$alternateResultMessage = "<strong class='char-name'>$target</strong> will receive your {$item->getName()}.";
 			} else {
 				if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 					$result        = "lose ".$item->getTargetDamage()." HP";
 					$targetObj->vo->health = $victim_alive  = subtractHealth($target, $item->getTargetDamage());
 				} else if ($item->hasEffect('stealth')) {
 					$targetObj->addStatus(STEALTH);
-					$alternateResultMessage = "$target is now Stealthed.";
+					$alternateResultMessage = "<strong class='char-name'>$target</strong> is now stealthed.";
 					$result = false;
 					$victim_alive = true;
 				} else if ($item->hasEffect('death')) {
@@ -176,7 +176,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 				} else if ($item->hasEffect('vigor')) {
 					if ($targetObj->hasStatus(STR_UP1)) {
-						$result = "$target's body cannot withstand any more Ginseng Root!";
+						$result = "<strong class='char-name'>$target's</strong> body cannot withstand any more Ginseng Root!";
 						$item_used = false;
 					} else {
 						$targetObj->addStatus(STR_UP1);
@@ -184,23 +184,30 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					}
 				} else if ($item->hasEffect('strength')) {
 					if ($targetObj->hasStatus(STR_UP2)) {
-						$result = "$target's body cannot withstand any more Tiger Salve!";
+						$result = "<strong class='char-name'>$target's</strong> body cannot withstand any more Tiger Salve!";
 						$item_used = false;
 					} else {
 						$targetObj->addStatus(STR_UP2);
-						$result = "$target feels a surge of power!";
+						$result = "<strong class='char-name'>$target</strong> feels a surge of power!";
 					}
 				} else if ($item->hasEffect('slow')) {
+					if ($targetObj->hasStatus(SLOW)) {
+						$result = "<strong class='char-name'>$target</strong> is already slowed.";
+						$alternateResultMessage = "<strong class='char-name'>$target</strong> is already slowed.";
+						$item_used = false;
+						$turns_change = 0;
+					} else {
+						$targetObj->addStatus(SLOW);
+						$turns_change = $item->getTurnChange();
 
-					$turns_change = $item->getTurnChange();
+						if ($turns_change == 0) {
+						    $alternateResultMessage = "You fail to take any turns from <strong class='char-name'>$target</strong>.";
+						}
 
-					if ($turns_change == 0) {
-				        $alternateResultMessage = 'You fail to take any turns from '.$target.'.';
+						$result         = "lose ".(-1*$turns_change)." turns";
+						changeTurns($target, $turns_change);
+						$victim_alive = true;
 					}
-
-					$result         = "lose ".(-1*$turns_change)." turns";
-					changeTurns($target, $turns_change);
-					$victim_alive = true;
 				} else if ($item->hasEffect('speed')) {
 					$turns_change = $item->getTurnChange();
 					$result         = "gain $turns_change turns";
@@ -212,18 +219,18 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			if ($result) {
 				// *** Message to display based on item type ***
 				if ($item->getTargetDamage() > 0) {
-					$resultMessage = "$target takes {$item->getTargetDamage()} damage from your attack!";
+					$resultMessage = "<strong class='char-name'>$target</strong> takes {$item->getTargetDamage()} damage from your attack!";
 				} else if ($item->hasEffect('death')) {
-					$resultMessage = "The life force drains from $target and they drop dead before your eyes!.";
-				} else if ($item->getTurnChange() !== null) {
+					$resultMessage = "The life force drains from <strong class='char-name'>$target</strong> and they drop dead before your eyes!.";
+				} else if ($turns_change !== null) {
 					if ($turns_change <= 0) {
-						$resultMessage = "$target has lost ".(0-$turns_change)." turns!";
+						$resultMessage = "<strong class='char-name'>$target</strong> has lost ".(0-$turns_change)." turns!";
 
 						if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
-							$resultMessage .= "$target no longer has any turns.";
+							$resultMessage .= "<strong class='char-name'>$target</strong> no longer has any turns.";
 						}
 					} else if ($turns_change > 0) {
-						$resultMessage = "$target has gained $turns_change turns!";
+						$resultMessage = "<strong class='char-name'>$target</strong> has gained $turns_change turns!";
 					}
 				} else {
 					$resultMessage = $result;
