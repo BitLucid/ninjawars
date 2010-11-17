@@ -223,21 +223,28 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
     		}
         }
 	} else if ($command == 'Ice Bolt') {
+		if(!$target->hasStatus(SLOW)){
     		if ($target->vo->turns >= 10) {
     			$turns_decrease = rand(1, 5);
     			subtractTurns($target->vo->uname, $turns_decrease);
     			// Changed ice bolt to kill stealth.
     			$target->subtractStatus(STEALTH);
+    			$target->addStatus(SLOW);
 
     			$msg = "Ice bolt cast on you by $attacker_id at $today, your turns have been reduced by $turns_decrease.";
     			send_message($attacker_char_id, $target->id(), $msg);
 
-    			$generic_skill_result_message = "$target's turns reduced by $turns_decrease!";
+    			$generic_skill_result_message = "<strong class='char-name'>$target's</strong> turns reduced by $turns_decrease!";
     		} else {
     		    $turn_cost = 0;
-    		    $generic_skill_result_message = "$target does not have enough turns for you to take.";
+    		    $generic_skill_result_message = "<strong class='char-name'>$target</strong> does not have enough turns for you to take.";
     		}
+    	} else {
+    		$turn_cost = 0;
+    		$generic_skill_result_message = "<strong class='char-name'>$target</strong> is already iced.";
+    	}
 	} else if ($command == 'Cold Steal') {
+		if(!$target->hasStatus(SLOW)){
 			$critical_failure = rand(1, 100);
 
 			if ($critical_failure > 7) {// *** If the critical failure rate wasn't hit.
@@ -245,12 +252,13 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 					$turns_decrease = rand(2, 7);
 
 					subtractTurns($target->vo->uname, $turns_decrease);
+					$target->addStatus(SLOW);
 					addTurns($username, $turns_decrease);
 
 					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id at $today";
 					send_message($attacker_char_id, $target->id(), $msg);
 
-					$generic_skill_result_message = "You cast Cold Steal on $target and take $turns_decrease turns.<br>\n";
+					$generic_skill_result_message = "You cast Cold Steal on <strong class='char-name'>$target</strong> and take $turns_decrease turns.<br>\n";
 				} else {
 					$turn_cost = 0;
 					$generic_skill_result_message = "The victim did not have enough turns to give you.<br>\n";
@@ -264,6 +272,10 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 				sendMessage("SysMsg", $username, $failure_msg);
 				$generic_skill_result_message = "Cold Steal has backfired! You are frozen until $unfreeze_time!<br>\n";
 			}
+		} else {
+			$turn_cost = 0;
+			$generic_skill_result_message = "<strong class='char-name'>$target</strong> is already iced.";
+		}
 	}
 
 	if (!$victim_alive) { // Someone died.

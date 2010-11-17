@@ -18,6 +18,8 @@ define('GROUNDED',   1<<12);
 define('BLESSED',     1<<13);
 define('IMMUNIZED',   1<<14);
 define('ACID_RESISTING',  1<<15);
+define('SLOW',  1<<16);
+define('FAST',  1<<17);
 
 
 ?>
