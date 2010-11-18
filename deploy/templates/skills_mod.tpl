@@ -42,10 +42,10 @@
 
 
 {if $killed_target}
-	<p>You have killed $target with $command!</p>
+	<p>You have killed <strong class='char-name'>{$target}</strong> with {$command}!</p>
 {/if}
 {if $loot > 0}
-	<p>You receive $loot gold from $target.</p>
+	<p>You receive <span class='gold-count'>{$loot} gold</span> from {$target}.</p>
 {/if}
 
 
