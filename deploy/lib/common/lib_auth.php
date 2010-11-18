@@ -142,6 +142,36 @@ function get_account_ip() {
 	}
 }
 
+// Pull the account_ids for a certain character
+function get_char_account_id($char_id){
+	return query_item('SELECT account_id from accounts JOIN account_players ON account_id = _account_id 
+		where _player_id = :char_id', array(':char_id'=>$char_id));
+}
+
+// Check whether two characters have similarities, same account, same ip, etc.
+function characters_are_linked($char_id, $char_2_id){
+	$account_id = get_char_account_id($char_id);
+	$account_2_id = get_char_account_id($char_2_id);
+	if(empty($account_id) || empty($account_2_id)){
+		return false;
+	} else {
+		if ($account_id == $account_2_id){
+			return true;
+		}
+		$account_ip = account_info($account_id, 'last_ip');
+		$account_2_ip = account_info($account_2_id, 'last_ip');
+		if(empty($account_ip) || empty($account_2_ip)){
+			return false;
+		} else {
+			if ($account_ip == $account_2_ip){
+				return true;
+			} else {
+				return false; // If none of the other stuff matched, then the accounts count as not linked.
+			}
+		}
+	}
+}
+
 /**
  * @return boolean Check whether someone is logged into their account.
  **/
