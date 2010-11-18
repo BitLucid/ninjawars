@@ -170,9 +170,9 @@
                   <!-- Settings -->
                 </ul>
                 <ul id='combat-subcategory'>
-                  <li><a href="list.php" target="main" title='Ranked list of ninjas to attack.'>Ninjas</a></li>
+                  <li><a href="list.php" target="main" title='Ranked list of ninjas to attack.'>Ninja</a></li>
                   <li><a href="clan.php" target="main" title='Clans and your clan options.'>Clans</a></li>
-                  <li><a href="duel.php" target="main" title="Today's Duels">Duels</a></li>
+                  <li><a href="duel.php" target="main" title="Today's Duels">Rumors</a></li>
                 </ul>
                 <ul id='map-subcategory'>
                   <li><a href="shop.php" target="main" title='Spend your money to get weapons.'>Shop</a></li>

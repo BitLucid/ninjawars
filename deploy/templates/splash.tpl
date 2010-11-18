@@ -68,9 +68,9 @@
             </div>
             <div id='subcategory-bar'>
               <ul id='combat-subcategory'>
-                <li><a href="list" target="main">Ninjas</a></li>
+                <li><a href="list.php" target="main">Ninja</a></li>
                 <li><a href="clan.php" target="main">Clans</a></li>
-                <li><a href="duel.php" target="main">Duels</a></li>
+                <li><a href="duel.php" target="main">Rumors</a></li>
               </ul>
               <ul id='village-subcategory'>
                 <li><a href="shop.php" target="main">Shop</a></li>
