@@ -31,6 +31,7 @@ function get_status_list($target=null) {
         // The visibly viewable statuses.
 		if ($target->hasStatus(STEALTH)) { $states[] = 'Stealthed'; }
 		if ($target->hasStatus(POISON)) { $states[] = 'Poisoned'; }
+		if ($target->hasStatus(WEAKENED)) { $states[] = 'Weakened'; }
 		if ($target->hasStatus(FROZEN)) { $states[] = 'Frozen'; }
 		if ($target->hasStatus(STR_UP1)) { $states[] = 'Buff'; }
 		if ($target->hasStatus(STR_UP2)) { $states[] = 'Strength+'; }
