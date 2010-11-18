@@ -74,7 +74,7 @@
 
 
 		{if $killed_target}
-			<div>{$attacker} has killed $target!</div>
+			<div>{$attacker} has killed {$target}!</div>
 			<div class='ninja-notice'>
 				{$target} is dead, you have proven your might
 			{if $killpoints == 2}
