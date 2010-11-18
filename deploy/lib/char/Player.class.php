@@ -2,6 +2,7 @@
 
 require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
+require_once(LIB_ROOT . "specific/lib_status.php");
 /* Player (actually character) behavior object.
  *
  * This file should make use of a private PlayerVO.class.php and PlayerDAO.class.php
@@ -59,13 +60,15 @@ class Player
 		$dao->save($this->vo);
 	}
 
+	// Actively pulls the latest status data from the db.
 	protected function queryStatus() {
-		DatabaseConnection::getInstance();
-
-		$statement = DatabaseConnection::$pdo->prepare("SELECT status FROM players WHERE player_id = :player");
-		$statement->bindValue(':player', $this->player_id);
-		$statement->execute();
-		return $this->status = $statement->fetchColumn();
+		$id = $this->id();
+		if($id){
+			return query_item("SELECT status FROM players WHERE player_id = :player", 
+				array(':player', array($id, PDO::PARAM_INT)));
+		} else {
+			return null;
+		}
 	}
 
 	protected function getStatus() {
@@ -97,11 +100,12 @@ class Player
 	}
 
 	public function subtractStatus($p_status) {
-		if ((int)$p_status == $p_status && $p_status > 0) {
+		$status = valid_status($p_status); // Filter it.
+		if ((int)$status == $status && $status > 0) {
 			$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = status-:status1 WHERE player_id = :player AND status&:status2 <> 0');
 			$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
-			$statement->bindValue(':status1', $p_status, PDO::PARAM_INT);
-			$statement->bindValue(':status2', $p_status, PDO::PARAM_INT);
+			$statement->bindValue(':status1', $status, PDO::PARAM_INT);
+			$statement->bindValue(':status2', $status, PDO::PARAM_INT);
 			$statement->execute();
 
 			$this->vo->status = null; // *** Ensures that the next call to hasStatus pulls the updated status from the DB ***
@@ -110,8 +114,9 @@ class Player
 
 	public function getStrength() {
 		$str = $this->vo->strength;
-
-		if ($this->hasStatus(STR_UP2)) {
+		if ($this->hasStatus(WEAKENED)) {
+			return $str-(ceil($str*.25));
+		} elseif ($this->hasStatus(STR_UP2)) {
 			return $str+(ceil($str*.25));
 		} elseif ($this->hasStatus(STR_UP1)) {
 			return $str+(ceil($str*.12));
@@ -121,7 +126,12 @@ class Player
 	}
 
 	public function hasStatus($p_status) {
-		return (bool)($this->getStatus()&$p_status);
+		$status = valid_status($p_status);
+		if($status){
+			return (bool)($this->getStatus()&$status);
+		} else {
+			return false;
+		}
 	}
 
 	public function isActive() {
@@ -140,6 +150,7 @@ class Player
 
 	public function death() {
 		$this->resetStatus();
+		$this->setHealth(0);
 	}
 	
 	public function email() {
@@ -149,6 +160,10 @@ class Player
 	
 	public function turns(){
 		return $this->vo->turns;
+	}
+
+	public function changeTurns($amount){
+		changeTurns($this->name(), $amount);
 	}
 
     // Pull the data of the player obj as an array.
@@ -230,6 +245,18 @@ class Player
     		   WHERE player_id  = :player_id";
     		query($up, array(':player_id'=>array($id, PDO::PARAM_INT),
     		    ':amount'=>$amount, ':amount2'=>$amount2));
+    	}
+    	return $this->health(); // Return the current health.
+	}
+	
+	public function setHealth($amount){
+    	$amount = (int)$amount;
+    	if ($amount >= 0) {
+        	$id = $this->id();
+    	    $up = "UPDATE players SET health = :amount
+    		   WHERE player_id = :player_id";
+    		query($up, array(':player_id'=>array($id, PDO::PARAM_INT),
+    		    ':amount'=>array($amount, PDO::PARAM_INT)));
     	}
     	return $this->health(); // Return the current health.
 	}
