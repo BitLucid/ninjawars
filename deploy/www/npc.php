@@ -154,6 +154,7 @@ if($turns > 0 && !empty($victim)) {
 			$ninja_str               = $player->getStrength();
 			$ninja_health            = $player->vo->health;
 			$drop                    = false;
+			$drop_display 			 = null;
 
 			$samurai_damage_array    = array();
 
@@ -179,17 +180,21 @@ if($turns > 0 && !empty($victim)) {
 				add_gold($char_id, $samurai_gold);
 				addKills($username, 1);
 
-				if ($samurai_damage_array[2] > 100) {	// *** If samurai damage was over 100, but the ninja lived, give a speed scroll. ***
+				if ($samurai_damage_array[2] > 100) {	// *** If samurai damage was over 100, but the ninja lived, give some extra rewards. ***
 					if (rand()&1) {
-						$drop = 'speed';
+						$drop = true;
+						$drop_display = 'mushroom powder';
 						add_item($char_id, 'amanita', 1);
 					} else {
-						$drop = 'herb';
+						$drop = true;
+						$drop_display = 'a strange herb';
 						add_item($char_id, 'ginsengroot', 1);
 					}
 				}
 
 				if ($samurai_damage_array[2] == $ninja_str * 3) {	// *** If the final damage was the exact max damage... ***
+					$drop = true;
+					$drop_display = 'a black scroll';
 					add_item($char_id, "dimmak", 1);
 				}
 
@@ -203,7 +208,7 @@ if($turns > 0 && !empty($victim)) {
 		}	// *** End valid turns and kills for the attack. ***
 
 		$npc_template = 'npc.samurai.tpl';
-		$combat_data  = array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills, 'drop'=>$drop);
+		$combat_data  = array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills, 'drop'=>$drop, 'drop_display'=>$drop_display);
 	} else if ($victim == 'merchant') {
 		$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
 		$added_bounty    = 0;
