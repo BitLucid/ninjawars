@@ -189,10 +189,11 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		$covert = true;
 
 		$target->addStatus(POISON);
+		$target->addStatus(WEAKENED); // Weakness kills strength.
 
 		$target_damage = rand($poisonMinimum, $poisonMaximum);
 
-		$victim_alive = subtractHealth($target->vo->uname, $target_damage);
+		$victim_alive = $target->subtractHealth($target_damage);
 		$generic_state_change = "$target has been poisoned!";
 		$generic_skill_result_message = "$target has taken $target_damage damage!";
 
@@ -319,8 +320,8 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 				$clone_char_2->changeTurns(-1*$clone_char_2->turns());
 				$generic_skill_result_message = "You obliterate the clone {$clone_char->name()} for $clone_char_health health, $clone_char_turns turns
 					 and the clone {$clone_char_2->name()} for $clone_char_2_health health, $clone_char_2_turns turns.";
-				send_message($char_id, $clone_1_id, "You and {$clone_char_2->name()} were Clone Killed at $today.");
-				send_message($char_id, $clone_2_id, "You and {$clone_char->name()} were Clone Killed at $today.");
+				send_event($char_id, $clone_1_id, "You and {$clone_char_2->name()} were Clone Killed at $today.");
+				send_event($char_id, $clone_2_id, "You and {$clone_char->name()} were Clone Killed at $today.");
 			} else {
 				$generic_skill_result_message = "Those two ninja don't seem to be clones.";
 			}
@@ -337,7 +338,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			$loot     = round($gold_mod * get_gold($target->id()));
 
 			subtract_gold($target->id(), $loot);
-			add_gold($username, $loot);
+			add_gold($char_id, $loot);
 
 			addKills($username, 1);
 
