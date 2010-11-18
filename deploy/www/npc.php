@@ -24,7 +24,7 @@ $turns = $player->turns();
 $npcs = array('spider'=>array('damage'=>10, 'gold'=>10), 'viper'=>array('name'=>'Black Viper', 'damage'=>99, 'status'=>POISON, 'gold'=>30));
 
 if($turns > 0 && !empty($victim)) {
-	if ($player->hasStatus(STEALTH) && (strtolower($victim) == 'samurai' || strtolower($victim) == 'oni')) {
+	if ($player->hasStatus('stealth') && (strtolower($victim) == 'samurai' || strtolower($victim) == 'oni')) {
 		$player->subtractStatus(STEALTH);
 	}
 
