@@ -130,7 +130,7 @@ class AttackLegal
 		} else if (($target->id() == $attacker->id()) && !$self_use) {
 			$this->error = 'Commiting suicide is a tactic reserved for samurai.';
 		} else if ($attacker->vo->turns < $required_turns) {
-			$this->error = 'You don\'t have enough turns for that, use speed scrolls or wait for the half hour to gain more turns.';
+			$this->error = 'You don\'t have enough turns for that, wait for the half hour or use amanita mushrooms to gain more turns.';
 		} else if (isset($_SESSION) && ($target->ip() == $account_ip) && ($account_ip != '127.0.0.1') && !$self_use) {
 			$this->error = 'You can not attack a ninja from the same domain.';
 		} else if ($target->vo->active == 0) {
