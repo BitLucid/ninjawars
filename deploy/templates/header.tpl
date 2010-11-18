@@ -67,8 +67,13 @@
   </head>
   <body class="{$body_classes|escape}">
 	{if !$is_index and $templatelite.server.SCRIPT_NAME neq '/quickstats.php'}
-    <div id="logo-appended">
-      <a href="/"><img src="images/ninjawarslogo_75px.png" alt="NinjaWars"></a>
+	<div id='solo-page-header'>
+		<div id="logo-appended">
+		  <a href="/"><img src="images/ninjawarslogo_75px.png" style='width:116px;height:75px' alt="NinjaWars"></a>
+		</div>
+{if !$logged_in}
+		<span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span>
+{/if}
     </div>
 	{/if}
 {/if}

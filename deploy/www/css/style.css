@@ -695,15 +695,15 @@ td.playerTable {
 	width:50px;
 	height:42px;
 }
-
-/* Logo when added as a link back in pages lacking an outer iframe */
 #logo-appended {
-	position:absolute;
-	top:.3em;
-	left:4em;
-	width:100px;
-	margin-right: .5em;
-	display: none;
+	display:inline-block;
+}
+#solo-page-header {
+	display:none;
+}
+#solo-page-header #solo-page-login-link {
+	margin-top: auto;
+	margin-bottom: auto;
 }
 
 body.solo-page {
@@ -712,16 +712,12 @@ body.solo-page {
 body.solo-page h1 {
 	margin-bottom:1.5em;
 }
-
-body.solo-page #logo-appended {
-	display: block; /* Display the logo on solo pages */
+body.solo-page #solo-page-header {
+	display: block;
 }
 body.solo-page h1 {
 	display:block;
 	clear:both;
-}
-#logo-appended img {
-	width: 100px;
 }
 
 .main-body { /* For the index page's background image only. */
