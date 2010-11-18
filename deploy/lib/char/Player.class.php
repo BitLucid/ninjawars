@@ -150,7 +150,7 @@ class Player
 
 	public function death() {
 		$this->resetStatus();
-		$this->setHealth(0);
+		$this->subtractHealth($this->health());
 	}
 	
 	public function email() {
@@ -192,7 +192,6 @@ class Player
 				WHERE _player_id = :player");
 		$statement->bindValue(':player', $this->player_id);
 		$statement->execute();
-
 		if ($data = $statement->fetch()) {
 			$clan = new Clan($data['clan_id'], $data['clan_name']);
 			return $clan;
@@ -245,18 +244,7 @@ class Player
     		   WHERE player_id  = :player_id";
     		query($up, array(':player_id'=>array($id, PDO::PARAM_INT),
     		    ':amount'=>$amount, ':amount2'=>$amount2));
-    	}
-    	return $this->health(); // Return the current health.
-	}
-	
-	public function setHealth($amount){
-    	$amount = (int)$amount;
-    	if ($amount >= 0) {
-        	$id = $this->id();
-    	    $up = "UPDATE players SET health = :amount
-    		   WHERE player_id = :player_id";
-    		query($up, array(':player_id'=>array($id, PDO::PARAM_INT),
-    		    ':amount'=>array($amount, PDO::PARAM_INT)));
+    		$this->vo->health = $amount;
     	}
     	return $this->health(); // Return the current health.
 	}

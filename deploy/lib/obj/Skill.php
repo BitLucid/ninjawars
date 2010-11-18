@@ -51,6 +51,7 @@ class Skill
 			, 'steal'         => array('available'=>1, 'level'=>2)
 			, 'cold steal'    => array('available'=>1, 'level'=>6)
 			, 'midnight heal' => array('available'=>1, 'level'=>20)
+			, 'clone kill'    => array('available'=>1)
 		)
 	);
 
@@ -166,6 +167,7 @@ class Skill
 			, 'unstealth' => true
 			, 'kampo'     => true
 			, 'heal'      => true
+			, 'clone kill'=> true
 		);
 		$res = false; // default is that they're not self usable.
 		if (isset($skillsTypeToSelf[$type])) {

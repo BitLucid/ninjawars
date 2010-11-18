@@ -78,13 +78,17 @@
 		
 </div> {* End of usage mod result div*}
   
+{if $reuse}
+  
 <div class="skillReload">
 	<a class='link-as-button' href="skills_mod.php?command={$command|escape:'url'}{if $target_id}&amp;target={$target_id|escape:'url'}{/if}">
 		Use {$command} again
 	</a>
 </div>
+
+{/if}
   
-{/if}{* End of no attack-error block. *}
+{/if}{* End of there was no attack-error block. *}
   
 <div class="LinkBack">
 	Return to

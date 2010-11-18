@@ -34,6 +34,7 @@ $turn_cost       = $skillListObj->getTurnCost(strtolower($command));
 $ignores_stealth = $skillListObj->getIgnoreStealth($command);
 $self_use        = $skillListObj->getSelfUse($command);
 $use_on_target   = $skillListObj->getUsableOnTarget($command);
+$reuse 			 = true;  // Able to reuse the skill.
 
 // Check whether the user actually has the needed skill.
 $has_skill = $skillListObj->hasSkill($command);
@@ -71,14 +72,21 @@ if ($player->hasStatus(STEALTH)) {
 	$attacker_id = "A Stealthed Ninja";
 }
 
-// TODO: Make attackLegal use self_use param.
-// TODO: Make attackLegal also check that the skill can be used on an outside target.
-// *** Checks the skill use legality, as long as the target isn't self.
-$params         = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$ignores_stealth, 'self_use'=>$self_use);
-$AttackLegal    = new AttackLegal($player->player_id, $target->player_id, $params);
-$attack_allowed = $AttackLegal->check();
-$attack_error   = $AttackLegal->getError();
+$use_attack_legal = true;
 
+if($command == 'Clone Kill'){
+	$use_attack_legal = false;
+	$attack_allowed = true;
+	$attack_error = null;
+	$covert = true;
+} else {
+
+	// *** Checks the skill use legality, as long as the target isn't self.
+	$params         = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$ignores_stealth, 'self_use'=>$self_use);
+	$AttackLegal    = new AttackLegal($player->player_id, $target->player_id, $params);
+	$attack_allowed = $AttackLegal->check();
+	$attack_error   = $AttackLegal->getError();
+}
 
 
 if(!$attack_error){ // Only bother to check for other errors if there aren't some already.
@@ -258,10 +266,10 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id at $today";
 					send_message($attacker_char_id, $target->id(), $msg);
 
-					$generic_skill_result_message = "You cast Cold Steal on <strong class='char-name'>$target</strong> and take $turns_decrease turns.<br>\n";
+					$generic_skill_result_message = "You cast Cold Steal on <strong class='char-name'>$target</strong> and take $turns_decrease turns.";
 				} else {
 					$turn_cost = 0;
-					$generic_skill_result_message = "The victim did not have enough turns to give you.<br>\n";
+					$generic_skill_result_message = "The victim did not have enough turns to give you.";
 				}
 			} else { // *** CRITICAL FAILURE !!
 				$player->addStatus(FROZEN);
@@ -270,11 +278,52 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 				$failure_msg = "You have experienced a critical failure while using Cold Steal on $today. You will be unfrozen on $unfreeze_time";
 				sendMessage("SysMsg", $username, $failure_msg);
-				$generic_skill_result_message = "Cold Steal has backfired! You are frozen until $unfreeze_time!<br>\n";
+				$generic_skill_result_message = "Cold Steal has backfired! You are frozen until $unfreeze_time!";
 			}
 		} else {
 			$turn_cost = 0;
 			$generic_skill_result_message = "<strong class='char-name'>$target</strong> is already iced.";
+		}
+	} else if ($command == 'Clone Kill') {
+		// Obliterates the turns and the health of similar accounts that get clone killed.
+		$reuse = false; // Don't give a reuse link.
+	
+		$clone1 = in('clone1');
+		$clone2 = in('clone2');
+		$clone_1_id = get_char_id($clone1);
+		$clone_2_id = get_char_id($clone2);
+		$clones = false;
+		if(!$clone_1_id || !$clone_2_id){
+			$not_a_ninja = $clone1;
+			if(!$clone_2_id){
+				$not_a_ninja = $clone2;
+			}
+			$generic_skill_result_message = "There is no such ninja as $not_a_ninja.";
+		} elseif($clone_1_id == $clone_2_id){
+			$generic_skill_result_message = "{$target} is just the same ninja, so not the same thing as a clone at all.";
+		} elseif ($clone_1_id == $char_id || $clone_2_id == $char_id){
+			$generic_skill_result_message = "You cannot clone kill yourself.";
+		} else {
+			// The check for multiplaying traits.
+			$are_clones = characters_are_linked($clone_1_id, $clone_2_id);
+			if($are_clones){
+				$clone_char = new Player($clone_1_id);
+				$clone_char_2 = new Player($clone_2_id);
+				$clone_char_health = $clone_char->health();
+				$clone_char_2_health = $clone_char_2->health();
+				$clone_char_turns = $clone_char->turns();
+				$clone_char_2_turns = $clone_char_2->turns();
+				$clone_char->death();
+				$clone_char->changeTurns(-1*$clone_char->turns());
+				$clone_char_2->death();
+				$clone_char_2->changeTurns(-1*$clone_char_2->turns());
+				$generic_skill_result_message = "You obliterate the clone {$clone_char->name()} for $clone_char_health health, $clone_char_turns turns
+					 and the clone {$clone_char_2->name()} for $clone_char_2_health health, $clone_char_2_turns turns.";
+				send_message($char_id, $clone_1_id, "You and {$clone_char_2->name()} were Clone Killed at $today.");
+				send_message($char_id, $clone_2_id, "You and {$clone_char->name()} were Clone Killed at $today.");
+			} else {
+				$generic_skill_result_message = "Those two ninja don't seem to be clones.";
+			}
 		}
 	}
 
@@ -322,7 +371,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 	
 } // End of the skill use SUCCESS block.
 
-$ending_turns = changeTurns($username, $turns_to_take);
+$ending_turns = changeTurns($username, $turns_to_take); // Take the skill use cost.
 
 
 $target_ending_health = $target->health();

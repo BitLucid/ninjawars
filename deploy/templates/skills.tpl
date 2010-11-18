@@ -3,6 +3,7 @@
 
 <p>You are a level {$level}, {$class} Ninja.</p>
 <p>Your status is: {include file="status_section.tpl" statuses=$status_list}</p>
+<p>You currently {if !$starting_turns}<span class='ninja-notice'>do not have any</span>{else}have {$starting_turns}{/if} turns.</p>
 <div id='skills-list'>
 
 {if $stealth}
@@ -59,6 +60,26 @@
     </form>
   </div>
 {/if}
+
+
+
+{if $clone_kill}
+  <div id='clone-kill'>
+    <form action="skills_mod.php" method="post">
+      <fieldset>
+        <legend>Clone Kill</legend>
+    <p>Obliterate two ninja if they are clones.</p>
+      <div>
+      	Possible Clones: <input type='text' name='clone1' class='char-name'> and 
+      	<input type='text' name='clone2' class='char-name'>
+      	<input type='submit' name='command' value='Clone Kill' class='formButton'>
+        Turn Cost: {$clone_kill_turn_cost}
+      </div>
+      </fieldset>
+    </form>
+  </div>
+{/if}
+
 
 {if $chi}
     <p id='chi-skill'>Chi: Your Chi skill increases the benefits of healing and resurrecting at the shrine.</p>
