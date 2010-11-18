@@ -55,7 +55,7 @@
   -->
 
   <div id='delete-messages'>
-    <a href="messages.php?delete=1">Delete Messages</a>
+    <a href="messages.php?delete=1">Delete All Messages</a>
   </div>
 </div> <!-- End of clan and search div -->
 
