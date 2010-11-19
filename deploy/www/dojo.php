@@ -1,5 +1,5 @@
 <?php
-require_once(LIB_ROOT."specific/lib_player.php");
+require_once(LIB_ROOT."control/lib_player.php");
 /*
  *** IMPORTANT MAINTENANCE NOTES ***
  * To disable class change code: set $classChangeAllowed to boolean false

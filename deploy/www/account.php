@@ -1,6 +1,6 @@
 <?php
-require_once(LIB_ROOT.'specific/lib_player.php'); // Player info display pieces.
-require_once(LIB_ROOT.'specific/lib_status.php'); // Status alterations.
+require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
+require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.
 
 $private    = true;
 $alive      = false;

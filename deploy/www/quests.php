@@ -3,7 +3,7 @@ $private    = false;
 $alive      = false;
 $quickstat  = false;
 $page_title = "Quests";
-//require_once(LIB_ROOT."specific/lib_player_list.php");
+//require_once(LIB_ROOT."control/lib_player_list.php");
 
 init($private=false, $alive=false);
 

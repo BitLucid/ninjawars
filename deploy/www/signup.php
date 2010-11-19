@@ -9,7 +9,7 @@
 // Emailing of confirmation email is still not stable...
 // Consider removing all email confirmation requirements...
 // And creating a one-button ninja creation system.
-require_once(LIB_ROOT."specific/lib_player.php");
+require_once(LIB_ROOT."control/lib_player.php");
 
 $alive             = false;
 $private           = false;

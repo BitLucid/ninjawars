@@ -1,6 +1,6 @@
 <?php
-require_once(LIB_ROOT.'specific/lib_inventory.php');
-require_once(OBJ_ROOT."Skill.php");
+require_once(LIB_ROOT.'control/lib_inventory.php');
+require_once(LIB_ROOT."control/Skill.php");
 /*
  * Deals with the skill based attacks, and status effects.
  *

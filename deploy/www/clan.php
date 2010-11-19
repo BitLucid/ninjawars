@@ -1,5 +1,5 @@
 <?php
-require_once(LIB_ROOT.'specific/lib_clan.php');
+require_once(LIB_ROOT.'control/lib_clan.php');
 $alive      = false;
 $private    = false;
 

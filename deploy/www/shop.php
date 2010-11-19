@@ -1,5 +1,5 @@
 <?php
-require_once(LIB_ROOT."specific/lib_inventory.php");
+require_once(LIB_ROOT."control/lib_inventory.php");
 
 $private    = false;
 $alive      = true;

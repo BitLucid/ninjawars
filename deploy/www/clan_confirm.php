@@ -6,7 +6,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-require_once(LIB_ROOT.'specific/lib_clan.php');
+require_once(LIB_ROOT.'control/lib_clan.php');
 
 $confirm     = in('confirm');
 $username    = get_username();

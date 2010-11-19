@@ -6,7 +6,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-include(LIB_ROOT.'specific/lib_inventory.php');
+include(LIB_ROOT.'control/lib_inventory.php');
 $quickstat   = false;
 $location    = 'Doshin Office';
 

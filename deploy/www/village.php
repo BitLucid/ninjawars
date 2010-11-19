@@ -6,7 +6,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-require_once(LIB_ROOT."specific/lib_chat.php"); // Require all the chat helper and rendering functions.
+require_once(LIB_ROOT."control/lib_chat.php"); // Require all the chat helper and rendering functions.
 
 $default_limit = 20;
 $field_size    = 40;

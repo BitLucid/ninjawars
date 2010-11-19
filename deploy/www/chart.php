@@ -6,7 +6,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-require_once(LIB_ROOT."specific/lib_player.php"); // To pull the maximum_level();
+require_once(LIB_ROOT."control/lib_player.php"); // To pull the maximum_level();
 
 $level_chart = 1;
 $kills_chart = 0;

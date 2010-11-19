@@ -1,15 +1,15 @@
 <?php
-require_once(LIB_ROOT.'specific/lib_inventory.php');
+require_once(LIB_ROOT.'control/lib_inventory.php');
 $private   = false;
 $alive     = false;
 
 if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
-require_once(OBJ_ROOT."Skill.php");
+require_once(LIB_ROOT."control/Skill.php");
 require_once(DB_ROOT."SkillDAO.class.php");
-require_once(LIB_ROOT."specific/lib_clan.php");
-require_once(LIB_ROOT."specific/lib_player.php");
+require_once(LIB_ROOT."control/lib_clan.php");
+require_once(LIB_ROOT."control/lib_player.php");
 
 $target        = $player = first_value(in('ninja'), in('player'));
 $target_id     = first_value(in('target_id'), in('player_id'), get_char_id($target)); // Find target_id if possible.

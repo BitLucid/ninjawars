@@ -1,11 +1,10 @@
 <?php
 require_once(DB_ROOT . "PlayerVO.class.php");
 require_once(DB_ROOT . "PlayerDAO.class.php");
-require_once(COMBAT_ROOT . "lib_combat_tests.php");
-require_once(CHAR_ROOT . "Player.class.php");
-require_once(LIB_ROOT."common/lib_attack.php");
-require_once(OBJ_ROOT."Skill.php");
-require_once(LIB_ROOT."specific/lib_inventory.php");
+require_once(LIB_ROOT."control/Player.class.php");
+require_once(LIB_ROOT."control/lib_attack.php");
+require_once(LIB_ROOT."control/Skill.php");
+require_once(LIB_ROOT."control/lib_inventory.php");
 /*
  * Deals with the non-skill based attacks and stealthed attacks.
  *
