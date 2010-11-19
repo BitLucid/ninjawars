@@ -50,7 +50,9 @@
 		{/if}	
 	
 	
-		<div>Total Rounds: {$rounds}</div>
+		{if $rounds}
+			<div>Total Rounds: {$rounds}</div>
+		{/if}
 
 		{$combat_final_results}
 

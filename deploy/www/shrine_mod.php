@@ -24,13 +24,13 @@ $startingGold       = $player->vo->gold;
 $startingKills      = $player->vo->kills;
 $startingTurns      = $player->vo->turns;
 $level              = $player->vo->level;
+$max_health         = $player->max_health();
 $heal_points        = (in('heal_points') ? intval(in('heal_points')) : null);  // The pointwise healing method.
 $freeResLevelLimit  = 6;
 $freeResKillLimit   = 25;
 $lostTurns          = 10; // *** Default turns lost when the player has no kills.
 $has_chi            = $skillsListObj->hasSkill('Chi'); // Extra healing benefits from chi, by level.
 $error              = null;
-$max_health         = determine_max_health($level);
 $fully_healed       = false;
 $final_kills        = $startingKills; // No kills taken unless they're taken.
 

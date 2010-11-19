@@ -16,9 +16,9 @@ $poisoned          = $player->hasStatus(POISON);
 
 if (isset($username)) {
 	$startingKills     = $player->vo->kills;
-	$userLevel         = $player->vo->level;
-	$at_max_health     = ($player->vo->health >= (150 + (($userLevel - 1) * 25)));
-	$player_health     = $player->vo->health;
+	$userLevel         = $player->level();
+	$at_max_health     = ($player->vo->health >= $player->max_health());
+	$player_health     = $player->health();
 
 	// *** A True or False as to whether resurrection will be free.
 	$freeResurrection = ($userLevel < $freeResLevelLimit && $startingKills < $freeResKillLimit);
