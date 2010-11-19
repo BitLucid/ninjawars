@@ -66,7 +66,7 @@ function level_up_if_possible($char_id) {
 	$max_level = maximum_level();
 	$health_to_add = 100;
 	$turns_to_give = 50;
-	$strength_to_add = 5;
+	$stat_value_to_add = 5;
 
 
 
@@ -83,12 +83,15 @@ function level_up_if_possible($char_id) {
 		($nextLevel < $max_level) &&
 		($char_kills >= $required_kills) );
 
-
 	if ($level_up_possible) {
 		// ****** Perform the level up actions ****** //
 		$userKills = subtractKills($username, $required_kills);
 		$userLevel = addLevel($username, 1);
-		addStrength($username, $strength_to_add);
+		change_strength($char_id, $stat_value_to_add);
+		change_speed($char_id, $stat_value_to_add);
+		change_stamina($char_id, $stat_value_to_add);
+		change_karma($char_id, 1); // Only add 1 to karma via levelling.
+		change_ki($char_id, 50); // Add 50 ki points via levelling.
 		addHealth($username, $health_to_add);
 		addTurns($username, $turns_to_give);
 		return true;
@@ -97,6 +100,55 @@ function level_up_if_possible($char_id) {
 	}
 }
 
+// ************************************
+// ********* STAT changing functions *******
+// ************************************
+
+function change_strength($char_id, $amount){
+	$amount = (int) $amount;
+	if(abs($amount) > 0){
+		$up = "UPDATE players set strength = (strength+:amount) where player_id = :player_id";
+		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
+	}
+}
+
+
+function change_speed($char_id, $amount){
+	$amount = (int) $amount;
+	if(abs($amount) > 0){
+		$up = "UPDATE players set speed = (speed+:amount) where player_id = :player_id";
+		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
+	}
+}
+
+
+function change_stamina($char_id, $amount){
+	$amount = (int) $amount;
+	if(abs($amount) > 0){
+		$up = "UPDATE players set stamina = (stamina+:amount) where player_id = :player_id";
+		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
+	}
+}
+
+function change_karma($char_id, $amount){
+	$amount = (int) $amount;
+	if(abs($amount) > 0){
+		$up = "UPDATE players set karma = (karma+:amount) where player_id = :player_id";
+		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
+		// Change the total karma tracked in the account at the same time as the character karma changes.
+		$up2 = "UPDATE accounts set karma_total = (karma_total+:amount) where account_id = 
+			(select _account_id from account_players where _player_id = :player_id)";
+		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
+	}
+}
+
+function change_ki($char_id, $amount){
+	$amount = (int) $amount;
+	if(abs($amount) > 0){
+		$up = "UPDATE players set ki = (ki+:amount) where player_id = :player_id";
+		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
+	}
+}
 
 
 // Check that a class matches against the class identities available in the database.

@@ -6,8 +6,8 @@
  * @var database_fields
  */
 class PlayerVO {
-	public $player_id, $uname, $health, $strength, $gold,
-	  	$messages, $kills, $turns, $active,
+	public $player_id, $uname, $health, $strength, $speed, $stamina,
+		$ki, $karma, $gold, $messages, $kills, $turns, $active,
 	  	$_class_id, $identity, $class_name, $theme,
 	  	$level, $status, $days, $bounty, 
 	  	$created_date, $last_started_attack, $energy, $avatar_type;

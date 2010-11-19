@@ -112,7 +112,12 @@ class Player
 		}
 	}
 
+	// Wrapper function name.
 	public function getStrength() {
+		return $this->strength();
+	}
+
+	public function strength() {
 		$str = $this->vo->strength;
 		if ($this->hasStatus(WEAKENED)) {
 			return $str-(ceil($str*.25));
@@ -123,6 +128,34 @@ class Player
 		} else {
 			return $str;
 		}
+	}
+	
+	
+
+	public function speed() {
+		$speed = $this->vo->speed;
+		if ($this->hasStatus(SLOW)) {
+			return $speed-(ceil($speed*.25));
+		} else {
+			return $str;
+		}
+	}
+	
+	public function stamina() {
+		$stat = $this->vo->stamina;
+		if ($this->hasStatus(POISON)) {
+			return $stat-(ceil($stat*.25));
+		} else {
+			return $stat;
+		}
+	}
+	
+	public function ki() {
+		return $this->vo->ki;
+	}
+
+	public function karma() {
+		return $this->vo->karma;
 	}
 
 	public function hasStatus($p_status) {

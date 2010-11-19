@@ -57,6 +57,10 @@
       </li>
       <li>Class: <span class='class-name {$class_theme}'>{$player.class}</span></li>
       <li>Strength: {$player.strength}</li>
+      <li>Speed: {$player.speed}</li>
+	  <li>Stamina: {$player.stamina}</li>
+      <li>Ki: {$player.ki}</li>
+      <li>Karma: {$player.karma}</li>
       <li class='gold-count'>Gold: {$player.gold}</li>
       <li>Kills: {$player.kills}</li>
       <li>Turns: {$player.turns}</li>

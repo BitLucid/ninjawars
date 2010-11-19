@@ -278,34 +278,6 @@ function addLevel($who, $amount) {
 
 
 // ************************************
-// ********* STRENGTH FUNCTIONS *******
-// ************************************
-
-function changeStrength($who, $amount) {
-	$amount = (int)$amount;
-
-	if (abs($amount) > 0) {
-		DatabaseConnection::getInstance();
-
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET strength = strength+:amount WHERE uname = :player");
-		$statement->bindValue(':amount', $amount);
-		$statement->bindValue(':player', $who);
-		$statement->execute();
-	}
-
-	$player = new Player($who);
-
-	return $player->getStrength();
-}
-
-function addStrength($who,$amount) {
-	return changeStrength($who, $amount);
-}
-
-// ************************************
-// ************************************
-
-// ************************************
 // ********* BOUNTY FUNCTIONS *********
 // ************************************
 

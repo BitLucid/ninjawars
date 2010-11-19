@@ -50,11 +50,10 @@
         A white-robed monk stands near the entrance to the dojo.
 
         	{if $classChangeSequence neq 1} {* Link to start the Class Change sequence *}
-        The white monk approaches you and offers to give you <a href="dojo.php?classChangeSequence=1">the knowledge of your enemies</a> at the cost of your own memories.</a>
+        <p>The white monk approaches you and offers to give you <a href="dojo.php?classChangeSequence=1">the knowledge of your enemies</a> at the cost of your own memories.</a></p>
         	{else} {* Strips the link after it's been clicked. *}
-        The white monk approaches you and offers to give you the knowledge of your enemies at the cost of your own memories.
+        <p>The white monk approaches you and offers to give you the knowledge of your enemies at the cost of your own memories.</p>
         	{/if}
-        <br>
         {/if}
         
         {if $class_change_error}
@@ -71,18 +70,18 @@
           </div>
         </form>
         {elseif $classChangeSequence eq 2}
-        The monk tosses white powder in your face. You blink at the pain, and when you open your eyes, everything looks different somehow.<br>
-        The white monk grins at you and walks slowly back to the dojo.<br>
+        <p>
+        The monk tosses white powder in your face. You blink at the pain, and when you open your eyes, everything looks different somehow.</p>
+        <p>The white monk grins at you and walks slowly back to the dojo.</p>
         {/if}
-        <hr><br>
+        <hr>
         <!-- End of class changing special event display -->
 	{/if}
 
-<a href="chart.php">View the scroll of kills needed for each Rank</a><hr>
+<div style='border-bottom: 1px red dashed'><a href="chart.php">View the scroll of kills needed for each Rank</a></div>
 
-<div>Your current level is {$userLevel|escape}.</div>
-<div style='margin-bottom: 10px;'>Your current kills are {$userKills|escape}.</div>
-<div style='margin-bottom: 10px;'>Level {$nextLevel|escape} requires {$required_kills|escape} kills.</div>
+<p>Your current level is {$userLevel|escape}. Your current kills are {$userKills|escape}.</p>
+<p>Level {$nextLevel|escape} requires {$required_kills|escape} kills.</p>
 <p>Your current class is <span class='class-name {$possibly_changed_class_theme}'>{$possibly_changed_class_name|escape}</span>.</p>
 
 	{if $upgrade_requested}
@@ -92,7 +91,14 @@
 <div>You do not have enough kills to proceed at this time.</div>
 		{else}
 		<!-- ************************** GLORIOUS LEVEL UP MESSAGE!  ************************ -->
-<div id='ninja-error'>Your trainer puts you through your paces and you learn a great deal from your bruises. Welcome to Ninja Rank {$userLevel|escape}!</div>
+	<div class='ninja-notice'>
+		Your trainer puts you through your paces and you learn a great deal from your bruises. Welcome to Ninja Rank {$userLevel|escape}!
+	</div>
+		<p>Your strength is now {$char_data.strength}.</p>
+		<p>Your speed is now {$char_data.speed}.</p>
+		<p>Your stamina is now {$char_data.stamina}.</p>
+		<p>Your Karma changed only a little, and is now {$char_data.karma}.</p>
+		<p>Your Ki changed only a little, and is now {$char_data.ki}.</p>
 		{/if}
 	{/if}
 	{if $userLevel + 1 gt $max_level}

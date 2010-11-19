@@ -99,7 +99,10 @@ if (is_logged_in()) {
 	if ($upgrade_requested) {
 	    // Try to level up.
 	    $levelled = level_up_if_possible($char_id);
-	    $userLevel = char_level($char_id);
+	    $char = new Player($char_id);
+	    $userLevel = $char->level();
+	    $char_data = $char->data();
+	    
 	    $nextLevel = $userLevel+1;
 	    $userKills = char_kills($char_id);
     	$required_kills = required_kills_to_level($userLevel);
