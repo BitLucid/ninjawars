@@ -1,5 +1,5 @@
 <?php
-require_once(LIB_ROOT."specific/lib_player_list.php");
+require_once(LIB_ROOT."control/lib_player_list.php");
 
 // Search for enemies to add.
 function get_enemy_matches($match_string) {

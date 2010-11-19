@@ -6,8 +6,8 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-require_once(LIB_ROOT."specific/lib_player_list.php");
-require_once(LIB_ROOT."specific/lib_player.php");
+require_once(LIB_ROOT."control/lib_player_list.php");
+require_once(LIB_ROOT."control/lib_player.php");
 
 DatabaseConnection::getInstance();
 
