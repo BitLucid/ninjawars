@@ -1,7 +1,7 @@
 <?php
 require_once(DB_ROOT . 'PlayerVO.class.php');
 require_once(DB_ROOT . 'PlayerDAO.class.php');
-require_once(CHAR_ROOT . 'Player.class.php');
+require_once(LIB_ROOT . 'control/Player.class.php');
 
 /* PHP Attack Legal Check
  *

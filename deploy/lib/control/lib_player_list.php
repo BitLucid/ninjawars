@@ -53,4 +53,18 @@ function format_ninja_row($a_player){
 	);
 	return $row;
 }
+
+// Consolidated from lib_game.php to here.
+
+
+function getMemberCount() {
+	DatabaseConnection::getInstance();
+
+	$statement = DatabaseConnection::$pdo->query("SELECT count(session_id) FROM ppl_online WHERE member AND activity > (now() - CAST('30 minutes' AS interval)) UNION SELECT count(session_id) FROM ppl_online WHERE member");
+	$members = $statement->fetchColumn();
+	$membersTotal = $statement->fetchColumn();
+
+	return array('active'=>$members, 'total'=>$membersTotal);
+}
+
 ?>

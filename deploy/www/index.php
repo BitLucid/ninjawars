@@ -30,7 +30,7 @@ if ($logout) { // on logout, kill the session and don't redirect.
 	}
 }
 
-include(LIB_ROOT.'lib_game.php');
+include(LIB_ROOT.'control/lib_player_list.php');
 
 $stored_username = (isset($_COOKIE['username']) ? $_COOKIE['username'] : null); // Used for the login field.
 

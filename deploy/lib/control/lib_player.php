@@ -1,10 +1,9 @@
 <?php
-require_once(LIB_ROOT."specific/lib_status.php");
-require_once(LIB_ROOT."common/lib_accounts.php");
+require_once(LIB_ROOT."control/lib_status.php");
+require_once(LIB_ROOT."control/lib_accounts.php");
 // lib_player.php
 
-// Defines for avatar options.
-define('GRAVATAR', 1);
+// Define for GRAVATAR OPTIONS moved to the tracked constant file.
 
 /***********************   Refactor these class functions from commands.php  ********************************/
 

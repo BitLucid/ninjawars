@@ -1,6 +1,6 @@
 <?php
 // Require the template engine.
-require_once(LIB_ROOT.'template_library/template_lite/src/class.template.php');
+require_once(LIB_ROOT.'third-party/template_lite/src/class.template.php');
 // See: http://templatelite.sourceforge.net/docs/index.html for the docs, it's a smarty-like syntax.
 
 function display_error($p_error) {

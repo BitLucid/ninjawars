@@ -1,5 +1,5 @@
 <?php
-require_once(SERVER_ROOT.'lib/specific/lib_player.php');
+require_once(LIB_ROOT.'control/lib_player.php');
 
 // ************************************
 // ********** CLAN FUNCTIONS **********

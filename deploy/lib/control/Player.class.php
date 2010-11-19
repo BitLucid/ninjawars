@@ -1,8 +1,10 @@
 <?php
-
 require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
-require_once(LIB_ROOT . "specific/lib_status.php");
+require_once(LIB_ROOT . "control/lib_status.php");
+
+
+
 /* Player (actually character) behavior object.
  *
  * This file should make use of a private PlayerVO.class.php and PlayerDAO.class.php

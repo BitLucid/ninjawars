@@ -483,7 +483,6 @@ function get_players_info($p_ids) {
  * @param @password Unless true, wipe the password from any available data.
 **/
 function get_player_info($p_id = null, $p_password = false) {
-	require_once(LIB_ROOT."specific/lib_status.php");
 	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
 	$player = new Player($id); // Constructor uses DAO to get player object.
 	$player_data = array();
