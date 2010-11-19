@@ -35,4 +35,7 @@ define('MAX_CLAN_MSG_LENGTH', MAX_MSG_LENGTH - strlen('clan: '));
 // username upper and lower
 define('UNAME_LOWER_LENGTH', 3);
 define('UNAME_UPPER_LENGTH', 24);
+
+// Defines for avatar options.
+define('GRAVATAR', 1);
 ?>
