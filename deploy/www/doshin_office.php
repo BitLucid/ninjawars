@@ -70,7 +70,7 @@ if ($command == 'Offer Bounty') {
 
 		$location    = 'Behind the Doshin Office';
 		$description = array();
-		$description[] = "\"We'll see what we can do,\" one of the Doshin tells you as you hand off your gold. He then directs you out through a back alley.";
+		$description[] = "<span class='speech'>\"We'll see what we can do,\"</span> one of the Doshin tells you as you hand off your gold. He then directs you out through a back alley.";
 		$description[] = 'You find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.';
 
 		$quickstat = 'player';
@@ -84,7 +84,7 @@ if ($command == 'Offer Bounty') {
 
 		$location    = 'The Rat-infested Alley behind the Doshin Office';
 		$description = array();
-		$description[] = "\"Trying to steal from the Doshin, eh!\" one of the men growls.";
+		$description[] = "<span class='speech'>\"Trying to steal from the Doshin, eh!\"</span> one of the men growls.";
 		$description[] = 'Where before there were only relaxing men idly ignoring their duties there are now unsheathed katanas and glaring eyes.';
 		$description[] = 'A group of the Doshin advance on you before you can escape and proceed to rough you up with fists and the hilts of their katana.  Finally, they take most of your gold and toss you into the alley behind the building.';
 		$description[] = 'Bruised and battered, you find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.';

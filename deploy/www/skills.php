@@ -7,7 +7,7 @@ if ($error = init($private, $alive)) {
 } else {
 require_once(LIB_ROOT."control/lib_status.php"); // statuses for quickstats
 require_once(LIB_ROOT."control/lib_player.php"); // Player info display pieces.
-include(OBJ_ROOT."Skill.php");
+require_once(LIB_ROOT."control/Skill.php");
 
 $skillsListObj = new Skill();
 

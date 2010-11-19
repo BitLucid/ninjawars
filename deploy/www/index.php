@@ -1,4 +1,6 @@
 <?php
+require_once(LIB_ROOT.'control/lib_player_list.php');
+
 // Licensed under the creative commons license.  See the staff.php page for more detail.
 $action          = in('action');
 $login           = !empty($action); // A request to login.
@@ -29,8 +31,6 @@ if ($logout) { // on logout, kill the session and don't redirect.
 		exit(); // Login redirect to prevent the refresh postback problem.
 	}
 }
-
-include(LIB_ROOT.'control/lib_player_list.php');
 
 $stored_username = (isset($_COOKIE['username']) ? $_COOKIE['username'] : null); // Used for the login field.
 

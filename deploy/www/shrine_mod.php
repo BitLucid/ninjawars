@@ -7,7 +7,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-include(OBJ_ROOT."Skill.php");
+require_once(LIB_ROOT."control/Skill.php");
 $skillsListObj = new Skill();
 
 $healed             = in('healed');

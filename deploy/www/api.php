@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT.'control/lib_player_list.php');
 // TODO: Only allow for ajax requests.
 // TODO: Turn the data fecthing into an associative fetch instead of DB_BOTH type.
 

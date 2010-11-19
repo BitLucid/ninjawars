@@ -1,3 +1,5 @@
+<h1>{$location|escape}</h1>
+
 {if $error eq 1}
 <p>No such ninja to put bounty on.</p>
 {elseif $error eq 2}
@@ -18,7 +20,6 @@ The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bou
 <div class='ninja-notice'>You have offered {$amount|escape} gold towards bringing {$target|escape} to justice.</div>
 {/if}
 
-<h1>{$location|escape}</h1>
 
 <div class="description">
 {foreach from=$description item="line"}
