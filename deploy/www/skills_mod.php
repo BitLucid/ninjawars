@@ -156,7 +156,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		$state      = 'stealthed';
 		if (!$target->hasStatus(STEALTH)) {
 			$target->addStatus(STEALTH);
-			$generic_state_change = "You are now $state.";
+			$generic_state_change = "$target is now $state.";
 		} else {
 			$turn_cost = 0;
 			$generic_state_change = "$target is already $state.";

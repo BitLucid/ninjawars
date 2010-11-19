@@ -113,8 +113,7 @@ function json_new_chats($since, $limit = 100) {
 }
 
 function json_member_count() {
-	include(LIB_ROOT.'lib_game.php');
-	$members = getMemberCount();
+	$members = getMemberCount(); // From lib_player_list.
 	return json_encode($members);
 }
 

@@ -66,8 +66,8 @@ class Player
 	protected function queryStatus() {
 		$id = $this->id();
 		if($id){
-			return query_item("SELECT status FROM players WHERE player_id = :player", 
-				array(':player', array($id, PDO::PARAM_INT)));
+			return query_item("SELECT status FROM players WHERE player_id = :player_id", 
+				array(':player_id'=>array($id, PDO::PARAM_INT)));
 		} else {
 			return null;
 		}
