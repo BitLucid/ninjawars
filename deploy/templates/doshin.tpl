@@ -24,7 +24,7 @@ The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bou
 <div class="description">
 {foreach from=$description item="line"}
   <p>
-    {$line|escape}
+    {$line}{* Unescaped *}
   </p>
 {/foreach}
 </div>
