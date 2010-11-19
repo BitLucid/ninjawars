@@ -6,7 +6,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-include(LIB_ROOT.'control/lib_inventory.php');
+require_once(LIB_ROOT.'control/lib_inventory.php');
 $quickstat   = false;
 $location    = 'Doshin Office';
 
@@ -49,7 +49,7 @@ if ($command == 'Offer Bounty') {
 					addBounty($target, $amount);
 
 					subtract_gold($char_id, $amount);
-					send_message($char_id, get_char_id($target), "$username has offered $amount gold in reward for your head!");
+					send_event($char_id, get_char_id($target), "$username has offered $amount gold in reward for your head!");
 					
 					$success = true;
 					$quickstat = 'player';
