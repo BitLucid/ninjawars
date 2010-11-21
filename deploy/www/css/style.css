@@ -798,24 +798,24 @@ body.solo-page h1 {
 }
 .boxes {
 	padding: 3px 0 3px 5px;
-	background:transparent url(../images/bg_top_bar_teal.png) no-repeat scroll top left;
 }
-#right-column .boxes {
-	background:transparent url(../images/bg_top_bar_teal_right.png) no-repeat scroll top right;
+.boxes .box-title {
+	background: #006633; /* for non-css3 browsers */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#006633', endColorstr='#000000'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#063), to(#000)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #063,  #000); /* for firefox 3.6+ */
 }
-.main-body .active {
-	background:transparent url(../images/bg_top_bar_maroon.png) no-repeat scroll 0 0;
+.main-body .active .box-title {
+	background: #660000; /* for non-css3 browsers */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#660000', endColorstr='#000000'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#600), to(#000)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #600,  #000); /* for firefox 3.6+ */
 }
-#right-column .main-body .active {
-	background:transparent url(../images/bg_top_bar_maroon_right.png) no-repeat scroll top right;
-	background-position: top right;
-}
-.main-body .passive {
-	background:transparent url(../images/bg_top_bar_grey.png) no-repeat scroll 0 0;
-}
-#right-column .main-body .passive {
-	background:transparent url(../images/bg_top_bar_grey_right.png) no-repeat scroll top right;
-	background-position: top right;
+.main-body .passive  .box-title{
+	background: #336600; /* for non-css3 browsers */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#336600', endColorstr='#000000'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#360), to(#000)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #360,  #000); /* for firefox 3.6+ */
 }
 
 .main-body .special {
