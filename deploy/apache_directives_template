@@ -41,17 +41,20 @@ php_value session.cookie_domain "__SERVER_NAME__"
 #   Header set Cache-Control "max-age=604800"
 #</FilesMatch>
 # DAY 86400 (a little more than a day is used below)
-#<FilesMatch "\.(gif|jpg|jpeg|png|svg)$">
-#   Header set Cache-Control "max-age=95000, public"
-#</FilesMatch>
-# 12 hours
 <FilesMatch "\.(html|htm|txt|css)$">
-   Header set Cache-Control "max-age=43200"
+   Header set Cache-Control "max-age=95000, public"
 </FilesMatch>
-# 30 minutes 1800
 <FilesMatch "\.(js)$">
-   Header set Cache-Control "max-age=1800"
+   Header set Cache-Control "max-age=95000"
 </FilesMatch>
+# 12 hours 43200
+#<FilesMatch "\.(html|htm|txt|css|js)$">
+#   Header set Cache-Control "max-age=43200"
+#</FilesMatch>
+# 30 minutes 1800
+#<FilesMatch "\.()$">
+#   Header set Cache-Control "max-age=1800"
+#</FilesMatch>
 # 10 minutes 600
 #<FilesMatch "\.()$">
 #   Header set Cache-Control "max-age=600"
