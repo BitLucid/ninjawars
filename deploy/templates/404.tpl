@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body id="page-404">
-  	<h1>Page Not Found</h1>
+  	<h1>NinjaWars :: Page Not Found</h1>
   	<img src='images/NinjaMeditationSilhouette_200.png' alt=''>
     <p>
       Pool of still water;
