@@ -733,10 +733,11 @@ $(document).ready(function() {
 		NW.clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
 		NW.clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
 
-		// Display the chat refresh image and toggle it if it is clicked.
-		var chat_refresh_button = document.getElementById('chat-refresh-image');
-		$(chat_refresh_button).toggle();
-		chat_refresh_button.onclick = function() { NW.chatRefreshClicked(this); };
+		// Display the chat refresh image when js is present and toggle it if it is clicked.
+		var chat_refresh_button = document.getElementById();
+		$('#chat-refresh-image').toggle().click(
+			function() { NW.chatRefreshClicked(this); });
+
 
 		NW.activeMembersContainer = document.getElementById('active-members-display');
 		NW.totalMembersContainer = document.getElementById('total-members-display');
