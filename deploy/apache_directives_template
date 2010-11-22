@@ -33,17 +33,17 @@ php_value session.cookie_domain "__SERVER_NAME__"
 #   Header set Cache-Control "max-age=2592000"
 #</FilesMatch>
 # MONTH 2592000
-<FilesMatch "\.(flv|ico|swf|pdf|eot|ttf|woff|mid|midi)$">
-   Header set Cache-Control "max-age=2592000"
+<FilesMatch "\.(flv|ico|swf|pdf|eot|ttf|woff|mid|midi|gif|jpg|jpeg|png|svg)$">
+   Header set Cache-Control "max-age=2592000, public"
 </FilesMatch>
 # WEEK 604800
 #<FilesMatch "\.()$">
 #   Header set Cache-Control "max-age=604800"
 #</FilesMatch>
 # DAY 86400 (a little more than a day is used below)
-<FilesMatch "\.(gif|jpg|jpeg|png|svg)$">
-   Header set Cache-Control "max-age=95000"
-</FilesMatch>
+#<FilesMatch "\.(gif|jpg|jpeg|png|svg)$">
+#   Header set Cache-Control "max-age=95000, public"
+#</FilesMatch>
 # 12 hours
 <FilesMatch "\.(html|htm|txt|css)$">
    Header set Cache-Control "max-age=43200"
