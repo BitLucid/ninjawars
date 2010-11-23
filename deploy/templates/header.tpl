@@ -72,7 +72,7 @@
 		  <a href="/"><img src="images/ninjawarslogo_75px.png" style='width:116px;height:75px' alt="NinjaWars"></a>
 		</div>
 {if !$logged_in}
-		<span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span>
+		<span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
 {/if}
     </div>
 	{/if}
