@@ -1,5 +1,6 @@
 <h1>Ninjawars Staff</h1>
 
+<div id='contact-us' style='margin-left:auto;margin-right:auto;'><a href='staff.php' target='main'><img src='images/contact_us.png' style='max-width:200px' alt='Contact Staff'></a></div>
 <p>
   The preferred method of contacting us with problems, ideas, or bugs with the game
   is via the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.

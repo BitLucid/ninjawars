@@ -39,7 +39,7 @@
         </div>
         <div style='height:110px;position:absolute;bottom:112px;'>
           <div id='contact-us'>
-            <a href='staff.php' target='main'><img src='images/contact_us.png' style='max-width:200px' alt='Contact Staff'></a>
+            <a href='staff.php' target='main' class='font-pisan'>Contact Staff</a>
           </div>
         </div>
       </div>
