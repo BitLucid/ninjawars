@@ -1,4 +1,16 @@
-<h1>Live by the Sword!</h1>
+<style type='text/css'>
+{literal}
+/* Don't display the h1 when housed within the iframe */
+.main-h1{
+	display:none;
+}
+.solo-page .main-h1 {
+	display:block;
+}
+
+{/literal}
+</style>
+<h1 class='main-h1'>Live by the Sword!</h1>
 
 <script type='text/javascript'>
 {if $show_faqs}
@@ -26,6 +38,11 @@ $(document).ready(function () {
 
 <style>
 {literal}
+#faqs {
+	margin-left:auto;
+	margin-right:auto;
+	width: 90%;
+}
 #faqs p{
 	border: 1px solid #7BA9AD;
 	border-bottom-left-radius: 10px 10px;
@@ -40,6 +57,12 @@ $(document).ready(function () {
 #faqs .brownHeading{
 	font-variant:small-caps;
 }
+#scrollable-viewport {
+	overflow:scroll;
+	max-height:13em;
+	overflow-x:hidden;
+	padding:1em;
+}
 {/literal}
 </style>
 
@@ -52,6 +75,7 @@ $(document).ready(function () {
 {/if}
 
 <div id='faqs'>
+<div id='scrollable-viewport'>
   <p>
     <span class="brownHeading">How do I level up ?</span><br>
     By <a href='list_all_players.php'>killing other Ninja</a>.
@@ -101,4 +125,6 @@ $(document).ready(function () {
   <p class='notice'>
     For various other info, see the <a target='_blank' class='extLink' href="http://ninjawars.pbworks.com">Wiki</a>
   </p>
+ </div>
 </div><!-- End of faqs div -->
+
