@@ -52,13 +52,7 @@ if ($user_id) { // Only bother trying to change these if logged in.
 	// Unread message count.
 	$unread_message_count = unread_message_count();
 
-	$main_src = 'list.php';
-
-	if ($level == 1) {
-		$main_src = 'tutorial.php';
-	} elseif ($level < 6) {
-		$main_src = 'attack_player.php';
-	}
+	$main_src = 'main.php';
 }
 
 $options = array(/*'section_only'=>in('section_only'), */'is_index'=>true);
@@ -86,6 +80,7 @@ $parts = array(
 
 if (!$user_id) {
 	// Non-logged in display.
+	$parts['body_classes'] = 'main-body splash';
 	display_page('splash.tpl', $title, $parts, $options);
 } else {
 	// Logged in display.
