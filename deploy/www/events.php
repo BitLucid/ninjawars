@@ -22,6 +22,7 @@ $template = prep_page(
 );
 
 $template->register_modifier('replace_urls', 'replace_urls');
+$template->register_modifier('markdown', 'markdown');
 
 display_prepped_template($template);
 }

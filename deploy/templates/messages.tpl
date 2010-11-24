@@ -66,7 +66,9 @@
 {include file="messages.nav.tpl"}
 
 <dl id='message-list'>
-  {$message_list}
+{foreach from=$messages item="loop_message"}
+	{include file='single_message.tpl' message=$loop_message}
+{/foreach}
 </dl>
 
 {include file="messages.nav.tpl"}

@@ -46,24 +46,28 @@ if ($delete) {
 $messages      = get_messages($user_id, $limit, $offset);
 $message_count = message_count();
 $pages         = ceil($message_count / $limit);  // Total pages.
+$messages      = $messages->fetchAll();
 
 $current_page = $page;
 
 read_messages($user_id); // mark messages as read for next viewing.
 
 // TODO: Handle "send" ing to specific, known users.
-$message_list = '';
-foreach ($messages as $loop_message) {
-	$loop_message['message'] = out($loop_message['message']);
-	$message_list .= render_template('single_message.tpl', array('message' => $loop_message));
-}
 
-$parts = get_certain_vars(get_defined_vars());
+$parts = get_certain_vars(get_defined_vars(), array('messages'));
 
-display_page(
+$template = prep_page(
 	'messages.tpl'
 	, 'Messages'
 	, $parts
+	, array(
+		'quickstat' => false
+	)
 );
+
+$template->register_modifier('replace_urls', 'replace_urls');
+$template->register_modifier('markdown', 'markdown');
+
+display_prepped_template($template);
 }
 ?>
