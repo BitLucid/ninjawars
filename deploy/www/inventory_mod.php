@@ -121,13 +121,8 @@ if ($item->hasEffect('speed')) {
 
 $turn_change = $item_obj->getTurnChange();
 
-if (!is_object($item_obj)) {
-	echo 'No such item.';
-	die(); // hack to avoid fatal error, proper checking for items should be done.
-} else {
-	$itemName = $item->getName();
-	$itemType = $item->getType();
-}
+$itemName = $item->getName();
+$itemType = $item->getType();
 
 $article = get_indefinite_article($item_obj->getName());
 
