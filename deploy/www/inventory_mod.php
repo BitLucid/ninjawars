@@ -46,6 +46,7 @@ $username_turns = $starting_turns;
 $username_level = $player->vo->level;
 $ending_turns   = null;
 $item_used      = true;
+$turns_change   = null;
 
 $target_id = get_char_id($target);
 
@@ -218,7 +219,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					    $alternateResultMessage = "<strong class='char-name'>$target</strong> is already moving quickly.";
 					    $item_used = false;
 					} else {
-						if($targetObj->hasStatus(SLOW)){
+						if ($targetObj->hasStatus(SLOW)) {
 							$targetObj->removeStatus(SLOW);
 						} else {
 							$targetObj->addStatus(FAST);

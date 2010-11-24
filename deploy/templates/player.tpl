@@ -39,7 +39,6 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
     {include file="status_section.tpl" statuses=$status_list}
 
-
 	{if $char_info.health}
     <span style='width:10em;display:inline-block;'>
       {include file="health_bar.tpl" health=$player_info.health health_percent=$player_info.health_percent}
@@ -86,7 +85,27 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
             <!-- Inventory Items -->
             <td id='inventory-items'>
-              {$item_use_section}
+              <form id="inventory_form" action="inventory_mod.php" method="post" name="inventory_form">
+                <div>
+                  <input id="target" type="hidden" name="target_id" value="{$target_id|escape}">
+		{if count($items) lt 1}
+                  <select id="item" name="item">
+                    <option value=''>You Have No Items</option>
+                  </select>
+		{else}
+                  <input type="submit" value="Use" class="formButton">
+                  <select id="item" name="item">
+			{foreach from=$items item="item"}
+                    <option value="{$item.item_id|escape}">{$item.item_display_name|escape} ({$item.amount|escape})</option>
+			{/foreach}
+                  </select>
+		{/if}
+
+		{if $same_clan}
+                  <input id="give" type="submit" value="Give" name="give" class="formButton">
+		{/if}
+                </div>
+              </form>
             </td>
           </tr>
         </table>

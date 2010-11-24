@@ -30,7 +30,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		$viewing_player_obj = new Player(get_char_id());
 
 		$score = get_score_formula();
-		
+
 		$self        = (get_char_id() && get_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
 
 		if ($viewing_player_obj && $viewing_player_obj->vo) {
@@ -42,7 +42,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 
 		$player      = $target = $player_info['uname']; // reset the target and target_id vars.
 		$target_id   = $player_info['player_id'];
-	
+
     	$target_class_theme = char_class_theme($target_id);
 
 		if ($message) {
@@ -63,11 +63,8 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 
 		// Display the player info.
 		$status_list          = get_status_list($player);
-
-		$level_category          = level_category($player_info['level']);
-
-		$gravatar_url            = generate_gravatar_url($target_player_obj);
-		$gurl = $gravatar_url;
+		$level_category       = level_category($player_info['level']);
+		$gurl = $gravatar_url = generate_gravatar_url($target_player_obj);
 
 		if ($char_id && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
 			// Attack or Duel
@@ -78,7 +75,8 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level)->fetchAll();
 		    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
 
-			$item_use_section  = render_item_use_on_another($target);
+			$items = getInventory($char_id);
+			$items = $items->fetchAll();
 		}	// End of the there-was-no-attack-error section
 
 		$set_bounty_section     = '';
@@ -86,7 +84,8 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		$player_clan_section    = '';
 
 		$clan = get_clan_by_player_id($player_info['player_id']);
-		
+		$same_clan = false;
+
 		$player_info = format_health_percent($player_info);
 
 		// Player clan and clan members
@@ -108,7 +107,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		// Send the info to the template.
 
 		$template = 'player.tpl';
-		$parts = get_certain_vars(get_defined_vars(), array('char_info', 'combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan', 'clan_members'));
+		$parts = get_certain_vars(get_defined_vars(), array('char_info', 'combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan', 'clan_members', 'items'));
 	}
 }
 
