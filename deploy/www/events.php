@@ -8,26 +8,21 @@ if ($error = init($private, $alive)) {
 $user_id = get_user_id();
 $events = get_events($user_id, 300);
 
+$events = $events->fetchAll();
+
 read_events($user_id); // mark events as viewed.
 
-$event_list = '';
-foreach($events as $loop_event) {
-	$loop_event['message'] = out($loop_event['message']);
-	$event_list .= render_template('single_event.tpl', array('event' => $loop_event));
-}
-
-if (!$event_list) {
-	$event_list = 'You have not been attacked recently.';
-}
-
-display_page(
+$template = prep_page(
 	'events.tpl'
 	, 'Events'
-	, get_certain_vars(get_defined_vars())
+	, get_certain_vars(get_defined_vars(), array('events'))
 	, array(
 		'quickstat' => false
 	)
 );
 
+$template->register_modifier('replace_urls', 'replace_urls');
+
+display_prepped_template($template);
 }
 ?>
