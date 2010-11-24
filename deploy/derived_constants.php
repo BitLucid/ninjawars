@@ -12,6 +12,7 @@ define('LIB_ROOT', SERVER_ROOT.'lib/');
 define('DB_ROOT', LIB_ROOT.'data/');
 
 define('TEMPLATE_PATH', SERVER_ROOT.'templates/'); // ** For templates.
+define('TEMPLATE_PLUGIN_PATH', SERVER_ROOT.'lib/plugins/'); // ** For template plugins.
 // COMPILED_TEMPLATE_PATH is kept in resources since it requires write permissions.
 
 define('LOCAL_JS', (DEBUG||OFFLINE));

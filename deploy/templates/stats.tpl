@@ -55,18 +55,18 @@
           {$level_category.display|escape} [{$player.level|escape}]
         </span>
       </li>
-      <li>Class: <span class='class-name {$class_theme}'>{$player.class}</span></li>
-      <li>Strength: {$player.strength}</li>
-      <li>Speed: {$player.speed}</li>
-	  <li>Stamina: {$player.stamina}</li>
-      <li>Ki: {$player.ki}</li>
-      <li>Karma: {$player.karma}</li>
-      <li class='gold-count'>Gold: {$player.gold}</li>
-      <li>Kills: {$player.kills}</li>
-      <li>Turns: {$player.turns}</li>
+      <li>Class: <span class='class-name {$class_theme}'>{$player.class|escape}</span></li>
+      <li>Strength: {$player.strength|escape}</li>
+      <li>Speed: {$player.speed|escape}</li>
+	  <li>Stamina: {$player.stamina|escape}</li>
+      <li>Ki: {$player.ki|escape}</li>
+      <li>Karma: {$player.karma|escape}</li>
+      <li class='gold-count'>Gold: {$player.gold|escape}</li>
+      <li>Kills: {$player.kills|escape}</li>
+      <li>Turns: {$player.turns|escape}</li>
       <li>Created: {$player.created_date|escape}</li>
-      <li>Rank: {$rank_display}</li>
-      <li>Bounty: {$player.bounty} gold</li>
+      <li>Rank: {$rank_display|escape}</li>
+      <li>Bounty: {$player.bounty|escape} gold</li>
         {if $player_clan}
       <li>
         Clan:
@@ -84,7 +84,7 @@
         <input type="hidden" name="changeprofile" value="1">
         <span style='font-weight:bold'>Profile:</span>
         <div style='padding-right:83px;width:100%'>
-          <textarea id='player-profile-area' name='newprofile' style='width:100%;height:10em;' class='textField'>{$profile_editable}</textarea>
+          <textarea id='player-profile-area' name='newprofile' style='width:100%;height:10em;' class='textField'>{$profile_editable|escape}</textarea>
         </div>
         <input type='submit' value='Change Profile' class='formButton'> (<span id='characters-left'>{$profile_max_length} Character Limit</span>)
       </div>
@@ -93,7 +93,7 @@
     <div id='player-profile-section'>
       Profile Preview:
       <div id='player-profile'>
-        &nbsp;{$profile_display|nl2br}&nbsp;
+        &nbsp;{$profile_editable|escape|replace_urls|markdown|nl2br}&nbsp;
       </div>
     </div>
   </div>

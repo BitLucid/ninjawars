@@ -49,7 +49,6 @@ $gravatar_url     = generate_gravatar_url($player['player_id']);
 $gurl             = $gravatar_url;
 $rank_display     = get_rank($username); // rank display.
 $profile_editable = $player['messages'];
-$profile_display  = out($profile_editable);
 
 $parts = get_certain_vars(get_defined_vars(), array('player', 'level_category', 'status_list'));
 

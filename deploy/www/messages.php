@@ -56,7 +56,7 @@ read_messages($user_id); // mark messages as read for next viewing.
 
 $parts = get_certain_vars(get_defined_vars(), array('messages'));
 
-$template = prep_page(
+display_page(
 	'messages.tpl'
 	, 'Messages'
 	, $parts
@@ -64,10 +64,5 @@ $template = prep_page(
 		'quickstat' => false
 	)
 );
-
-$template->register_modifier('replace_urls', 'replace_urls');
-$template->register_modifier('markdown', 'markdown');
-
-display_prepped_template($template);
 }
 ?>

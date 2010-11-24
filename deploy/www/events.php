@@ -12,7 +12,7 @@ $events = $events->fetchAll();
 
 read_events($user_id); // mark events as viewed.
 
-$template = prep_page(
+display_page(
 	'events.tpl'
 	, 'Events'
 	, get_certain_vars(get_defined_vars(), array('events'))
@@ -20,10 +20,5 @@ $template = prep_page(
 		'quickstat' => false
 	)
 );
-
-$template->register_modifier('replace_urls', 'replace_urls');
-$template->register_modifier('markdown', 'markdown');
-
-display_prepped_template($template);
 }
 ?>

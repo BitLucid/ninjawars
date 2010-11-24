@@ -20,9 +20,8 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
 
 	$is_index = @$options['is_index'];
 
-	$tpl               = new Template_Lite;      // *** Initialize the template object ***
-	$tpl->template_dir = TEMPLATE_PATH;          // *** template directory ***
-	$tpl->compile_dir  = COMPILED_TEMPLATE_PATH; // *** compile directory ***
+	// *** Initialize the template object ***
+	$tpl = createTemplateLite();
 
 	foreach ($local_vars as $lname => $lvalue) { // *** loop over the vars, assigning each to the template ***
 		$tpl->assign($lname, $lvalue);
@@ -56,20 +55,13 @@ function display_page($template, $title=null, $local_vars=array(), $options=null
 	display_prepped_template(prep_page($template, $title, $local_vars, $options));
 }
 
-
 /** Will return the rendered content of the template.
   * Example use: $parts = get_certain_vars(get_defined_vars(), array('whitelisted_object');
   * echo render_template('account_issues.tpl', $parts);
 **/
 function render_template($template_name, $assign_vars=array()) {
 	// Initialize the template object.
-	$tpl = new Template_Lite;
-
-	// template directory
-	$tpl->template_dir = TEMPLATE_PATH;
-
-	// compile directory
-	$tpl->compile_dir = COMPILED_TEMPLATE_PATH;
+	$tpl = createTemplateLite();
 
 	// loop over the vars, assigning each.
 	foreach ($assign_vars as $lname => $lvalue) {
@@ -80,15 +72,24 @@ function render_template($template_name, $assign_vars=array()) {
 	return $tpl->fetch($template_name);
 }
 
-function display_template($template_name, $assign_vars=array()){
-	// Initialize the template object.
-	$tpl = new Template_Lite;
+function createTemplateLite() {
+	$tpl = new Template_Lite();
 
 	// template directory
 	$tpl->template_dir = TEMPLATE_PATH;
 
 	// compile directory
 	$tpl->compile_dir = COMPILED_TEMPLATE_PATH;
+
+	// plugin directory
+	$tpl->plugin_dir = TEMPLATE_PLUGIN_PATH;
+
+	return $tpl;
+}
+
+function display_template($template_name, $assign_vars=array()){
+	// Initialize the template object.
+	$tpl = createTemplateLite();
 
 	// loop over the vars, assigning each.
 	foreach ($assign_vars as $lname => $lvalue) {
