@@ -160,19 +160,14 @@ if ($attack_is_legal){
             $stealth_lost = true;
         }
 
-
-		// *** PRE-BATTLE STATS ***
-		$pre_battle_stats = render_template(
-			'combat-prebattle-stats.tpl'
-			, array(
-				'attacker_name'  => $attacking_player->name()
-				, 'attacker_str' => $attacking_player->getStrength()
-				, 'attacker_hp'  => $attacking_player->health()
-				, 'target_name'  => $target_player->name()
-				, 'target_str'   => $target_player->getStrength()
-				, 'target_hp'    => $target_player->health()
-			)
-		);	// *** Displays the starting state of the attacker and defender. ***
+		// *** PRE-BATTLE STATS - Template Vars ***
+		$pre_battle_stats = true;
+		$pbs_attacker_name = $attacking_player->name();
+		$pbs_attacker_str = $attacking_player->getStrength();
+		$pbs_attacker_hp = $attacking_player->health();
+		$pbs_target_name = $target_player->name();
+		$pbs_target_str = $target_player->getStrength();
+		$pbs_target_hp = $target_player->health();
 
 		// *** BEGINNING OF MAIN BATTLE ALGORITHM ***
 
@@ -215,21 +210,10 @@ if ($attack_is_legal){
 			}
 		}
 
-
 		// *** END OF MAIN BATTLE ALGORITHM ***
 
-
-		$combat_final_results = render_template(
-			'combat-final-results.tpl'
-			, array(
-				'total_attacker_damage' => $total_attacker_damage
-				, 'total_target_damage' => $total_target_damage
-				, 'target'              => $target
-				, 'target_health'       => $target_health
-				, 'attacker'            => $attacker
-				, 'finalizedHealth'     => ($attacker_health-$total_target_damage)
-			)
-		); // *** Displays the final damage of the combat. ***
+		$combat_final_results = true;
+		$finalizedHealth = ($attacker_health-$total_target_damage);
 
 		// *** RESULTING PLAYER MODIFICATION ***
 
@@ -352,13 +336,9 @@ if (isset($target)) {
 	}
 }
 
-
-
 $target_ending_health = $target_player->health();
 $target_ending_health_percent = $target_player->health_percent();
 $target_name = $target_player->name();
 
 display_page('attack_mod.tpl', 'Battle Status', get_defined_vars());
-
-
 ?>
