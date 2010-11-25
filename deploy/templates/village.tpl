@@ -34,7 +34,7 @@ window.onload = function(){
       <input id="message" type="text" size="{$field_size}" maxlength="250" name="message" class="textField">
       <input id="command" type="hidden" value="postnow" name="command">
       <input name='chat_submit' type='hidden' value='1'>
-      <button type="submit" value="&gt;" class="formButton">Chat</button>
+      <input type="submit" value="Chat" class="formButton" style='padding:.2em .4em;font-size:1.3em;font-weight:bolder'>
     </div>
   </form>
 {/if}
