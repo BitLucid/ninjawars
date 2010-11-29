@@ -8,12 +8,7 @@ if ($error = init($private, $alive)) {
 
 require_once(LIB_ROOT.'control/lib_inventory.php');
 $quickstat   = false;
-$location    = 'Doshin Office';
-
-$description = array();
-$description[] = 'You walk up to the Doshin Office to find the door locked. The Doshin are busy protecting the borders of the village from thieves.';
-$description[] = 'Nailed to the door is an official roster of wanted criminals and the bounties offered for their heads.';
-$description[] = 'A few men that do seem to be associated with the doshin doze near the entrance. Every so often someone approaches and slips them something that clinks and jingles.';
+$location    = 0;
 
 $target   = in('target');
 $command  = in('command');
@@ -67,11 +62,7 @@ if ($command == 'Offer Bounty') {
 	if ($bribe <= get_gold($char_id) && $bribe > 0) {
 		subtract_gold($char_id, $bribe);
 		subtractBounty($username, ($bribe/2));
-
-		$location    = 'Behind the Doshin Office';
-		$description = array();
-		$description[] = "<span class='speech'>\"We'll see what we can do,\"</span> one of the Doshin tells you as you hand off your gold. He then directs you out through a back alley.";
-		$description[] = 'You find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.';
+		$location = 1;
 
 		$quickstat = 'player';
 	} else if ($bribe < 0) { // A negative bribe was put in, which on the 21st of March, 2007, was a road to instant wealth, as a bribe of -456345 would increase both your bounty and your gold by 456345, so this will flag players as bugabusers until it becomes a standard-use thing.
@@ -82,12 +73,8 @@ if ($command == 'Offer Bounty') {
 
 		subtractGold($username, floor(getGold($username) *.8));  //Takes away 80% of the players gold.
 
-		$location    = 'The Rat-infested Alley behind the Doshin Office';
-		$description = array();
-		$description[] = "<span class='speech'>\"Trying to steal from the Doshin, eh!\"</span> one of the men growls.";
-		$description[] = 'Where before there were only relaxing men idly ignoring their duties there are now unsheathed katanas and glaring eyes.';
-		$description[] = 'A group of the Doshin advance on you before you can escape and proceed to rough you up with fists and the hilts of their katana.  Finally, they take most of your gold and toss you into the alley behind the building.';
-		$description[] = 'Bruised and battered, you find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.';
+		$location = 2;
+
 		$quickstat = 'player';
 	} else {
 		$error = 5;
@@ -104,7 +91,7 @@ $data = $result->fetchAll();
 display_page(
 	'doshin.tpl'
 	, 'Doshin Office'
-	, get_certain_vars(get_defined_vars(), array('data', 'description'))
+	, get_certain_vars(get_defined_vars(), array('data'))
 	, array(
 		'quickstat' => $quickstat
 	)
