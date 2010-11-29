@@ -8,12 +8,13 @@ You didn't choose an item/victim.
 You do not have {$article|escape} {$itemName|escape}
 {else}
 <div class='usage-mod-result'>
-	{assign var="charName" value='<strong class="char-name">':$target:'</strong>'}
+	{assign var="charName" value=$target|escape}
+	{assign var="charName" value='<strong class="char-name">':$charName:'</strong>'}
   <p>
     {$alternateResultMessage|replace:'__TARGET__':$charName}
   </p>
   <p>
-    {$resultMessage|replace:'__TARGET__':$target}
+    {$resultMessage|replace:'__TARGET__':$charName}
   </p>
 
 	{if $kill}
