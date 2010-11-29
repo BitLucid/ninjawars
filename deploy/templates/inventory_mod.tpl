@@ -8,11 +8,12 @@ You didn't choose an item/victim.
 You do not have {$article|escape} {$itemName|escape}
 {else}
 <div class='usage-mod-result'>
+	{assign var="charName" value='<strong class="char-name">':$target:'</strong>'}
   <p>
-    {$alternateResultMessage}
+    {$alternateResultMessage|replace:'__TARGET__':$charName}
   </p>
   <p>
-    {$resultMessage}
+    {$resultMessage|replace:'__TARGET__':$target}
   </p>
 
 	{if $kill}
@@ -35,7 +36,7 @@ Your actions have revealed you. You are no longer stealthed.<br>
 	{/if}
 
 	{if not $selfTarget}
-		{include file='defender_health.tpl' health=$targetHealth health_percent=$targetHealthPercent target_name=$targetName}
+		{include file='defender_health.tpl' health=$targetHealth health_percent=$targetHealthPercent target_name=$target}
 	{/if}
 
 	{if $suicide}
