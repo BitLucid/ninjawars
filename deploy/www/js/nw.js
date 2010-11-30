@@ -734,7 +734,6 @@ $(document).ready(function() {
 		NW.clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
 
 		// Display the chat refresh image when js is present and toggle it if it is clicked.
-		var chat_refresh_button = document.getElementById();
 		$('#chat-refresh-image').toggle().click(
 			function() { NW.chatRefreshClicked(this); });
 
