@@ -11,6 +11,14 @@
 // Cut down on the global includes, use specific includes instead.
 
 require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/'))).'resources.php');
+
+if (PROFILE) {
+	$mtime = microtime();
+	$mtime = explode(" ",$mtime);
+	$mtime = $mtime[1] + $mtime[0];
+	$__starttime = $mtime;
+}
+
 require_once(LIB_ROOT.'environment/global_error_handling.php');
 // *** Included first from the index, so has to be on the same level as index.
 // Standalone utilities

@@ -30,6 +30,7 @@ DB_NAME=''
 DEBUG=''
 OFFLINE=''
 DEBUG_ALL=''
+PROFILE=''
 SERVER_ROOT=''
 WWW_ROOT=''
 ADMIN_EMAIL=''
@@ -166,6 +167,9 @@ while read curline; do
 		OFFLINE)
 		OFFLINE=$optarg
 		;;
+		PROFILE)
+		PROFILE=$optarg
+		;;
 		DEBUG)
 		DEBUG=$optarg
 		;;
@@ -291,6 +295,13 @@ then
     sed -i -e {s/__OFFLINE__/"true"/}  $resources_file
 else
     sed -i -e {s/__OFFLINE__/"false"/} $resources_file
+fi
+
+if [[ $PROFILE == "true" ]]
+then
+    sed -i -e {s/__PROFILE__/"true"/}  $resources_file
+else
+    sed -i -e {s/__PROFILE__/"false"/} $resources_file
 fi
 
 if [[ $DEBUG == "true" ]]
