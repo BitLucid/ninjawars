@@ -292,12 +292,12 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 			$stealthLost = false;
 			// Unstealth
-			if (!$item->isCovert() && !$item->hasEffect('stealth') && $give && $player->hasStatus(STEALTH)) { //non-covert acts
+			if (!$item->isCovert() && !$item->hasEffect('stealth') && !$give && $player->hasStatus(STEALTH)) { //non-covert acts
 				$player->subtractStatus(STEALTH);
 				$stealthLost = true;
 			}
 
-			if ($victim_alive == true && $using_item == true) {
+			if ($victim_alive && $using_item) {
 				$repeat = true;
 			}
 		}
