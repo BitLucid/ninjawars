@@ -1,5 +1,5 @@
 <?php
-require_once(LIB_ROOT.'control/lib_player_list.php');
+require_once(LIB_ROOT.'control/lib_player_list.php'); // Used for getMemberCount()
 
 // Licensed under the creative commons license.  See the staff.php page for more detail.
 $action          = in('action');
