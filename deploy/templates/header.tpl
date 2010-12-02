@@ -4,7 +4,7 @@
   <head>
 	{if $templatelite.server.SCRIPT_NAME eq '/village.php' or $templatelite.server.SCRIPT_NAME eq '/mini_chat.php'}
     <noscript>
-      <meta http-equiv="refresh" content="30">
+      <meta http-equiv="refresh" content="90">
     </noscript>
 	{/if}
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
