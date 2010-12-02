@@ -73,7 +73,7 @@
 	        <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='108' height='108'>
 		  </a>
 		</div>
-		<div id='logo-placeholder' style='width:120px;height:120px;display:inline-block;'>
+		<div id='logo-placeholder' style='width:100px;height:100px;display:inline-block;'>
 		  <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
 {if !$logged_in}
