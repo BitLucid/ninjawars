@@ -68,8 +68,13 @@
   <body class="{$body_classes|escape}">
 	{if !$is_index and $templatelite.server.SCRIPT_NAME neq '/quickstats.php'}
 	<div id='solo-page-header'>
-		<div id="logo-appended">
-		  <a href="/"><img src="images/ninjawarslogo_75px.png" style='width:116px;height:75px' alt="NinjaWars"></a>
+		<div id="logo-appended" style='position:absolute;top:0;left:0'>
+		  <a href="/">
+	        <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='108' height='108'>
+		  </a>
+		</div>
+		<div id='logo-placeholder' style='width:120px;height:120px;display:inline-block;'>
+		  <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
 {if !$logged_in}
 		<span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
