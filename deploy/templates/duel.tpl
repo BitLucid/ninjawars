@@ -1,8 +1,18 @@
-<h1>Rumors from the War</h1>
+<h1>Bath House</h1>
+
+<div class='description'>
+You enter the steaming confines of the bath house.  
+A geisha takes your clothes and concealed weaponry with a knowing smile.
+Shedding your clothes, you ease into a large copper tub that is filled with steaming water and exotic bath salts.
+<p>While your tensions melt away, you listen to the conversations around you that carry through the paper thin walls, telling of legendary exploits and dark deeds.
+</p>
+</div>
 
 <div id='vicious-killer'>
     Current Fastest Killer: 
-    <a id='vicious-killer-menu' href='player.php?player={$vicious_killer|escape:'url'|escape}'>{$vicious_killer|escape}</a>
+    <a id='vicious-killer-menu' href='player.php?player={$vicious_killer|escape:'url'|escape}'>
+    	{$vicious_killer|escape}
+    </a>
 </div>
 
 <h3>Rumors</h3>

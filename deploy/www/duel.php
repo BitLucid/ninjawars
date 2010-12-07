@@ -17,7 +17,7 @@ $duels = $statement->fetchAll();
 
 display_page(
 	'duel.tpl'	// *** Main template ***
-	, 'Duel Log' // *** Page Title ***
+	, 'Bath House' // *** Page Title ***
 	, get_certain_vars(get_defined_vars(), array('duels')) // *** Page Variables ***
 	, array( // *** Page Options ***
 		'quickstat' => false
