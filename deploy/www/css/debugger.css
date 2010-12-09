@@ -62,7 +62,7 @@ input[border],
 table[cellpadding],
 table[cellspacing],
 object[codebase],
-img[height],
+/*img[height],*/
 object[height],
 table[height],
 a[name],
@@ -73,7 +73,7 @@ object[name],
 area[target],
 td[valign],
 th[valign],
-img[width],
+/*img[width],*/
 object[width],
 table[width] {
   border:5px dotted orange!important;

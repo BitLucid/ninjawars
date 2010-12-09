@@ -1,16 +1,16 @@
           <div id='index-chat'>
               <div id="village-chat" class="boxes active">
                 <div class="box-title centered">
-                  <a id='show-hide-chat' class="show-hide-link">
-                    Chat
-                  </a>
+                  Chat
                 </div>
+                
                 <div class='active-members-count'>
-                  Active Members:
-                  <span id="active-members-display">{$members|default:'???'}</span>
+                  Ninjas:
+                  <span id="active-members-display">{$members|default:'???'}</span> Active
                   /
-                  <span id="total-members-display">{$membersTotal|default:'???'}</span>
+                  <span id="total-members-display">{$membersTotal|default:'???'}</span> Total
                 </div>
+                
                 <div id="chat-and-switch">
 {if isset($user_id) and $user_id}
                   <form class='chat-submit' id="post_msg_js" action="mini_chat.php" method="post" name="post_msg">
@@ -29,7 +29,9 @@
                     </dl>
                     
                     <noscript>
+{* // Commented out as unneeded
 {if isset($user_id) and $user_id}
+				<!--
                 <!-- TODO: Determine why this duplicate chat submission section here? -->
                   <form class='chat-submit' id="post_msg" action="mini_chat.php" method="post" name="post_msg" target='mini_chat'>
                     <input id="message" type="text" size="20" maxlength="250" name="message" class="textField">
@@ -38,6 +40,7 @@
                     <button type="submit" value="1" class="formButton">Chat</button>
                   </form>
 {/if}
+*}
                         <iframe frameBorder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
                         <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
                           <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
@@ -46,9 +49,11 @@
 
 
                   </div>
-                  <div class="chat-switch centered">
-                    <a id='full-chat-link' href="village.php" target="main">View full chat archive<img src="images/chat.png" alt="" style='width:10px;height:9px'> </a>
-                  </div>
                 </div>
               </div>
+              
+              <div class="chat-switch centered">
+                <a id='full-chat-link' href="village.php" target="main">View full chat archive<img src="images/chat.png" alt="" style='width:10px;height:9px'> </a>
+              </div>
+              
           </div> <!-- End of index-chat --> 

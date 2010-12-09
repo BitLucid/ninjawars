@@ -12,7 +12,10 @@
       <div id='left-column'>
             
         <div id='ninjawars-home' class='header-section'>
-        	<a href='list.php' target='main'><img src='images/ninjawarslogo_75px.png' alt='ninja list' title='Go to the ninja list'></a>
+			    <a href='list.php' target='main'>
+			      <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='100' height='100'>
+			    </a>
+			  </div>
         </div>
             <div>
                 <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your ninja information'>{$username|escape}</a>
@@ -84,7 +87,7 @@
           </div>
         -->
 
-{if $player_info.level < 2}
+{if $new_player}
           <div id='helpful-info'>
             <a target='main' href='tutorial.php'>Helpful Info</a>
           </div>
@@ -206,7 +209,7 @@
         <div id='ninja-stats' class='header-section'>
         
         <div id='logout'>
-            <a href="index.php?logout=true"><img src='{$templatelite.const.IMAGE_ROOT|escape}logoutTriangle.png' alt='Logout' title='Log off the game' style='height:70px;width:70px'></a>
+            <a href="logout.php"><img src='{$templatelite.const.IMAGE_ROOT|escape}logoutTriangle.png' alt='Logout' title='Log off the game' style='height:70px;width:70px'></a>
         </div>
         
         </div><!-- End of ninja-stats div -->

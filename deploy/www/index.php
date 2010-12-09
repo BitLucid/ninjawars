@@ -1,89 +1,50 @@
 <?php
-require_once(LIB_ROOT.'control/lib_player_list.php'); // Used for getMemberCount()
-
 // Licensed under the creative commons license.  See the staff.php page for more detail.
-$action          = in('action');
-$login           = !empty($action); // A request to login.
-$logout          = in('logout');
-$login_error     = false;
-$just_logged_out = false;
-$referrer        = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+require_once(LIB_ROOT.'control/lib_player_list.php'); // Used for member_counts()
 
-$is_logged_in    = is_logged_in();
+$char_id = get_char_id();
 
-// Logout/already logged in/login behaviors
-if ($logout) { // on logout, kill the session and don't redirect.
-	logout_user();
-	$just_logged_out = true;
-	header("Location: index.php");
-	exit(); // Login redirect to prevent the refresh postback problem.
-//} elseif ($is_logged_in) {     // When user is already logged in.
-//	$logged_in['success'] = $is_logged_in;
-} elseif ($login) { 	// Specially escaped password input, put into login.
-	$logged_in    = login_user(in('user', null, 'sanitize_to_text'), in('pass'));
-	$is_logged_in = $logged_in['success'];
-
-	if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
-		logout_user($echo=false, $redirect=false);
-		$login_error = $logged_in['login_error'];
-	} else {
-		header("Location: index.php");
-		exit(); // Login redirect to prevent the refresh postback problem.
-	}
-}
-
-$stored_username = (isset($_COOKIE['username']) ? $_COOKIE['username'] : null); // Used for the login field.
-
-$username    = null;
-$player_info = array();
-$level       = null;
-$main_src    = 'main.php'; // Display main iframe page unless logged in.
-$title       = 'Live by the Sword';
-
-$unread_message_count = 0;
-
-$user_id = get_user_id();
-
-if ($user_id) { // Only bother trying to change these if logged in.
-	$username    = get_char_name();
-	$level       = getLevel($username);
-	$player_info = get_player_info();
-
-	// Unread message count.
-	$unread_message_count = unread_message_count();
-
-	$main_src = 'main.php';
-}
-
-$options = array(/*'section_only'=>in('section_only'), */'is_index'=>true);
-
-$memberCounts = getMemberCount();
-
-// Assign these vars to the template.
-$parts = array(
-	'main_src'           => $main_src
-	, 'body_classes'     => 'main-body'
-	, 'version'          => 'NW Version 1.7.2 2010.06.01'
-	, 'logged_in'        => (bool)$user_id
-	, 'is_not_logged_in' => !$user_id
-	, 'username'         => $username
-	, 'user_id'          => $user_id
-	, 'player_info'      => $player_info
-	, 'unread_message_count' => $unread_message_count
-	, 'level'            => $level
-	, 'login_error'      => $login_error
-	, 'referrer'         => $referrer
-	, 'stored_username'  => $stored_username
-	, 'members'          => $memberCounts['active']
-	, 'membersTotal'     => $memberCounts['total']
-);
-
-if (!$user_id) {
-	// Non-logged in display.
-	$parts['body_classes'] = 'main-body splash';
-	display_page('splash.tpl', $title, $parts, $options);
+if(!$char_id){
+	require_once(SERVER_ROOT.'www/splash.php');
 } else {
+	// Initialize page display vars.
+	$username    = null;
+	$player_info = array();
+	$new_player = null;
+	$title       = 'Live by the Sword';
+	$unread_message_count = 0;
+
+	// Get the actual values of the vars.
+	$player_info = get_player_info();
+	$username = $player_info['uname'];
+	$level = $player_info['level'];
+	$new_player = $level<2;
+
+	$unread_message_count = unread_message_count();
+	
+	$member_counts = member_counts();
+	
+	// Create the settings to pass to the page.
+
+	$options = array('is_index'=>true);
+
+	// Assign these vars to the template.
+	$parts = array(
+		'main_src'           => 'main.php'
+		, 'body_classes'     => 'main-body'
+		, 'version'          => 'NW Version 1.7.5 2010.12.05'
+		, 'logged_in'        => (bool)$char_id
+		, 'is_not_logged_in' => !$char_id
+		, 'username'         => $username
+		, 'new_player'		 => $new_player
+		, 'user_id'          => $char_id
+		, 'player_info'      => $player_info
+		, 'unread_message_count' => $unread_message_count
+		, 'members'          => $member_counts['active']
+		, 'membersTotal'     => $member_counts['total']
+	);
+	
 	// Logged in display.
 	display_page('index.tpl', $title, $parts, $options);
-}
+} // End of check for displaying the splash page.
 ?>

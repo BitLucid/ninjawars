@@ -703,7 +703,7 @@ $(document).ready(function() {
 	// INDEX ONLY CHANGES
 	if (g_isIndex || g_isRoot) {
 		NW.quickDiv = null;
-		NW.miniChatContainer = null;
+		//NW.miniChatContainer = null;
 
 		NW.quickDiv = document.getElementById('quickstats-frame-container');
 
@@ -717,21 +717,14 @@ $(document).ready(function() {
 		var quickstatsLinks = $("a[target='quickstats']");
 		quickstatsLinks.css({'font-style':'italic'}); // Italicize
 
-		NW.miniChatContainer = document.getElementById('mini-chat-display');
-
+		//NW.miniChatContainer = document.getElementById('mini-chat-display');
+        NW.refreshQuickstats('player');// Load the quickstats initially.
 		// Update the mini chat section for the first time.
 		NW.checkForNewChats();
-                NW.refreshQuickstats('player');// Load the quickstats initially.
-		// Start refreshing the chat.
 		NW.startRefreshingMinichat(); // Start refreshing the chat.
 
 		$('#post_msg_js').submit(function() {return NW.sendChatContents(this)});
 		// When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
-
-		// Add click handlers to certain sections.
-		NW.clickHidesTarget('#show-hide-chat', '#chat-and-switch');
-		NW.clickHidesTarget('#show-hide-quickstats', '#quickstats-and-switch-stats');
-		NW.clickHidesTarget('#show-hide-actions-menu', '#actions-menu');
 
 		// Display the chat refresh image when js is present and toggle it if it is clicked.
 		$('#chat-refresh-image').toggle().click(

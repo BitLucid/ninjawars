@@ -1,6 +1,7 @@
     <!-- Version {$version} -->
 {literal}
       <script type="text/javascript">
+      // Break out of any outer frames.
 	if (parent.frames.length != 0) {
 {/literal}
 		location.href = "{$main_src}";
@@ -9,79 +10,96 @@
       </script>
 {/literal}
 
+<style type='text/css'>
+{literal}
+#top-bar{
+	display:inline-block;
+	position:relative;
+	top:0;
+}
+#logo-appended{
+	position:absolute;
+	top:0;
+	left:0;
+}
+#top-logo{
+	display:inline-block;
+	vertical-align:top;
+	margin-left: 2em;
+	margin-right: 2em;
+}
+#contact-us img {
+	max-width:98%;
+}
+#header{
+	height:20%;
+}
+{/literal}
+</style>
+
     <div id='content' class='wrapper'>
-{if $login_error}
-      <div id='login-error' class="error">
-        {$login_error|escape} <a href='account_issues.php' target='main'>Login/Signup Issues?</a>
-      </div>
-{/if}
+    <!-- Top horizontal bar -->
+    <div class='header'>
+		<div id="logo-appended">
+		  <a href="/">
+	        <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='108' height='108'>
+		  </a>
+		</div>
+		<div id='logo-placeholder' style='width:100px;height:100px;display:inline-block;vertical-align:top;z-index:-1'>
+		  <!-- Spacer div for the main shuriken linkback logo -->
+		</div>
+		<div id='top-bar'>
+		  <span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
+		</div>
+		<div id='top-logo'>
+          <a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='' width='200' height='100'></a>
+		</div>
+      
+        <div id='subcategory-bar' style='padding-top:.5em'>
+          <ul id='ninjas-subcategory'>
+            <li><a href="list.php" target="main">Ninja</a></li>
+            <li><a href="clan.php" target="main">Clans</a></li>
+            <li><a href="duel.php" target="main">Rumors</a></li>
+          </ul>
+          <ul>
+          	<li>&nbsp;</li>
+            <!-- Placeholder to fill space-->
+          </ul>
+          <ul id='map-subcategory'>
+          	<li><a href='map.php' id='menu-map-head' target='main' title='Travel to different locations on the map' style='font-size:xx-large;margin-right:.5em;'>Map&rarr;</a></li>
+            <li><a href="shop.php" target="main">Shop</a></li>
+            <li><a href="work.php" target="main">Field</a></li>
+            <li>
+              <a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt="" style='width:8px;height:8px'></a>
+            </li>
+          </ul>
+        </div>
+      
+	  </div><!-- End of header -->
+      
+      
+      <div id='left-column'>
+        
+		<div id='contact-us' style='margin-top:.5em;margin-bottom:.5em;'>
+		  <a href='staff.php' target='main' class='font-shangrila'>Contact Staff</a>
+		</div>
+		
 
-      <div id="menu" class="login-menu">
-        <div id="menu-start">
+		<div id='feedback-link'>
+		  <a style='font-size:2em' class='font-shangrila extLink' href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank">Give Feedback</a>
+		</div>
+        
+      <div id='chat-housing' style='height:250px;'>
+        
+{include file="mini-chat.section.tpl" chatlength=5}
 
-{include file='login-bar.tpl' referrer=$referrer stored_username=$stored_username}
+	  </div><!-- End of chat-housing -->
 
-        </div>
-        <div id="menu-info">
-          <span class="signup-link">
-            <a target="main" href="signup.php?referrer={$referrer|escape}">Become a Ninja!</a> |
-          </span>
-          <span>
-            <a href="account_issues.php" target="main" class="blend side">Signup Problems?</a>
-          </span>
-        </div>
-      </div>
-      <div id='left-column' style='position:relative;height:100%;min-height:600px'>
-        <div id='ninjawars-home' class='header-section'>
-        </div>
-        <div id='feedback-link'>
-          <a style='font-size:2em' class='font-pisan' href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Give Feedback</a>
-        </div>
-        <div style='height:110px;position:absolute;bottom:112px;'>
-          <div id='contact-us'>
-            <a href='staff.php' target='main' class='font-pisan'>Contact Staff</a>
-          </div>
-        </div>
-      </div>
+      </div><!-- End of left-column -->
 
       <!-- CENTRAL COLUMN STARTS HERE -->
 
       <div id='center-column'>
-        <div id='menu-bar' class='header-section'>
-          <div id='reactive-panel'>
-            <div id='category-bar'>
-              <ul>
-                <li id='combat-actions'>
-                  <a href='enemies.php' target='main' title='Check up on your enemies and see who recently attacked you.'>
-                    <img src='images/50pxShuriken.png' alt=''  style='width:50px;height:42px'>Combat
-                  </a>
-                </li>
-                <li>
-				  <div id='ninjawars-title'><a href='tutorial.php' target='main'><img id='ninjawars-title-image' src='images/ninjawars_title.png' alt='Ninja Wars' style='width:428px;height:100px'></a></div>
-                </li>
-                <li id='village-actions'>
-                  <a href='map.php' target='main' title='Travel to different locations on the map.'>
-                    <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Map
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div id='subcategory-bar'>
-              <ul id='combat-subcategory'>
-                <li><a href="list.php" target="main">Ninja</a></li>
-                <li><a href="clan.php" target="main">Clans</a></li>
-                <li><a href="duel.php" target="main">Rumors</a></li>
-              </ul>
-              <ul id='village-subcategory'>
-                <li><a href="shop.php" target="main">Shop</a></li>
-                <li><a href="work.php" target="main">Work</a></li>
-                <li>
-                  <a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt="" style='width:8px;height:8px'></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- End of menu-bar -->
         <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
           <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src}">
             <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
@@ -90,20 +108,9 @@
         </div><!-- End of mainFrame div -->
       </div> <!-- End of center-column -->
 
-      <!-- RIGHTMOST COLUMN STARTS HERE -->
 
-      <div id='right-column'>
-        <div id='ninja-stats' class='header-section'>
-        </div><!-- End of ninja-stats -->
 
-{include file="mini-chat.section.tpl"}
 
-		{* Took out the music box on splash
-        <div id="music" class="boxes passive">
-{include file='music.tpl'}
-		*}
-        </div>
-      </div> <!-- End of right column -->
       <div id='push'></div>
       <div id='index-footer'>
         <span id='nw-catchphrases'>
@@ -135,6 +142,8 @@
         <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Feedback</a>
       </div>
+      
+      
     </div> <!-- End of content div -->
 
 <!-- Validated as of Oct, 2009 -->

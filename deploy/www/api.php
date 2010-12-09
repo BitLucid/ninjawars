@@ -113,7 +113,7 @@ function json_new_chats($since, $limit = 100) {
 }
 
 function json_member_count() {
-	$members = getMemberCount(); // From lib_player_list.
+	$members = member_counts(); // From lib_player_list.
 	return json_encode($members);
 }
 

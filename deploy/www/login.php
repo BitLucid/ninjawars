@@ -7,7 +7,7 @@ $login_error = in('error', null); // Error to display after unsuccessful login a
 $stored_username = isset($_COOKIE['username'])? $_COOKIE['username'] : null;
 $referrer        = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
-$is_logged_in    = is_logged_in();
+$is_logged_in = get_char_id();
 
 // Eventually this page will simply be rerouted through apache to the static page system.
 
@@ -15,9 +15,10 @@ init($private=false, $alive=false);
 
 
 // already logged in/login behaviors
-if ($is_logged_in) {   // When user is already logged in.
-	$logged_in['success'] = $is_logged_in; 
-} else { // Only honor a request to login if they aren't already.
+if ($logged_out){
+	logout_user();
+	$is_logged_in = false;
+} elseif (!$is_logged_in) { // Perform login if they aren't already logged in.
 	if ($login) { 	// Request to login was made.
 		$logged_in    = login_user(in('user', null), in('pass'));
 		$is_logged_in = $logged_in['success'];
