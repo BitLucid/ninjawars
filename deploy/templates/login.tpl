@@ -71,7 +71,7 @@
 	      </div>
 	    </label>
 	    <div class='left-side'>
-		    <input name="login_request" type="submit" value="Login" style='font-size:2em;'>
+		    <input name="login_request" type="submit" value="Login" style='font-size:2em;width:100%;'>
 		</div>
 	    </div>
 	    </div>
