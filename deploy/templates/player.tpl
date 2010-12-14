@@ -77,8 +77,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
                 <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
                 <label class='attack-player-trigger'>
-                  <a onclick="document.attack_player.submit();">
-                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack</a>
+                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack
                 </label>
               </form>
             </td>

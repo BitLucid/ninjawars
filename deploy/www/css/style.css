@@ -1238,6 +1238,7 @@ iframe {
 .attack-player-trigger {
 	display:block;
 	margin-top: 1em;
+	cursor: pointer;
 }
 
 /* Clan leader options */
