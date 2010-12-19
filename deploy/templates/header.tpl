@@ -1,4 +1,3 @@
-{if !$section_only}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
@@ -62,13 +61,13 @@
 {if $quickstat and not $is_index}
     <script type="text/javascript">
 	{literal}$(document).ready(function() {{/literal}
-		NW.refreshQuickstats('{$quickstat}');
+		NW.refreshStats({$json_public_char_info});
 	{literal}});{/literal}
     </script>
 {/if}
   </head>
   <body class="{$body_classes|escape}">
-	{if !$is_index and $templatelite.server.SCRIPT_NAME neq '/quickstats.php'}
+{if !$is_index}
 	<div id='solo-page-header'>
 		<div id="logo-appended" style='position:absolute;top:0;left:0'>
 		  <a href="/">
@@ -82,5 +81,4 @@
 		<span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
 {/if}
     </div>
-	{/if}
-{/if}
+{/if}{* End of check for index or quickstats to not display the appended logo for those *}

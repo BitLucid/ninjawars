@@ -61,9 +61,68 @@ if (parent.window != window) {
 
 		return true;
 	};
+	
+	
+	// Update the barstats visuals with incoming data.
+	NW.updateBarstats = function (barstats) {
+		//alert('update of barstats visuals reached! Barstats are:'+barstats.health+' '+barstats.max_health+' '+barstats.kills+' '+barstats.next_level+' '+barstats.turns+' '+barstats.kills_percent);
+		// Find the barstats container.
+		var barstatsContainer = $('#barstats');
+		// Find the bars inside that.
+		// Change the number floating over the bars.
+		barstatsContainer.find('#health').find('.bar-number').text(barstats.health).end().find('.bar').css({'width':barstats.health_percent+'%'}).end()
+		.end().find('#kills').find('.bar-number').text(barstats.kills).end().find('.bar').css({'width':barstats.kills_percent+'%'}).end()
+		.end().find('#turns').find('.bar-number').text(barstats.turns).end().find('.bar').css({'width':barstats.turns_percent+'%'}).end()
+		.end();
+		// Change the percentage of the background bar.
+	}
+	
+	NW.displayBarstats = function() {
+		$('#barstats').show();
+	}
+	
+	NW.refreshStats = function(playerInfo) {
+		// Pull health, turns, and kills.
+		var updated = false;
+		if(typeof(NW.barstats) == 'undefined'){
+			// Create the barstats data container if it doesn't already exist.
+			NW.barstats = {};
+			NW.barstats.health = null;
+			NW.barstats.turns = null;
+			NW.barstats.kills = null;
+		}
+		if(playerInfo && typeof(playerInfo.health) != 'undefined'){
+			this.datastore.playerInfo = playerInfo;
+		}
+		if (this.datastore.playerInfo) {
+			if (NW.barstats.health != this.datastore.playerInfo.health ||
+				NW.barstats.turns != this.datastore.playerInfo.turns ||
+				NW.barstats.kills != this.datastore.playerInfo.kills) {
+				// Save the data to the barstats temp variable.
+				NW.barstats.health = this.datastore.playerInfo.health;
+				NW.barstats.max_health = this.datastore.playerInfo.max_health;
+				// Calculate all the percentages from the maximums.
+				NW.barstats.health_percent = this.datastore.playerInfo.hp_percent;
+				NW.barstats.turns = this.datastore.playerInfo.turns;
+				NW.barstats.max_turns = this.datastore.playerInfo.max_turns;
+				NW.barstats.turns_percent = this.datastore.playerInfo.turns_percent;
+				NW.barstats.kills = this.datastore.playerInfo.kills;
+				NW.barstats.next_level = this.datastore.playerInfo.next_level;
+				NW.barstats.kills_percent = this.datastore.playerInfo.exp_percent;
+				NW.updateBarstats(this.barstats);
+				updated = true;
+			}
+		}
 
-	// For refreshing quickstats from inside main.
+		return updated;
+	}
+
+	// For refreshing quickstats (now barstats) from inside the main iframe.
 	NW.refreshQuickstats = function(typeOfView) {
+		NW.refreshStats(); // Just call the function to refresh stats.
+		
+		/*
+		
 		var self = this;
 		//self.getAndUpdateHealth();
 
@@ -92,8 +151,12 @@ if (parent.window != window) {
 		} else {
 			return false;
 		}
+		
+		*/
 	};
 
+
+	/*
 	NW.renderInventoryQuickstats = function() {
 		var container, goldLabel, goldValue, itemLabel, itemValue;
 
@@ -194,6 +257,7 @@ if (parent.window != window) {
 
 		return container;
 	};
+	*/
 
 	// Returns true when debug bit set or localhost path used.
 	NW.debug = function(arg) {
@@ -719,7 +783,8 @@ $(document).ready(function() {
 		quickstatsLinks.css({'font-style':'italic'}); // Italicize
 
 		//NW.miniChatContainer = document.getElementById('mini-chat-display');
-        NW.refreshQuickstats('player');// Load the quickstats initially.
+        //NW.refreshQuickstats('player');// Load the quickstats initially.
+        NW.displayBarstats(); // Display the barstats already fleshed out by php.
 		// Update the mini chat section for the first time.
 		NW.checkForNewChats();
 		NW.startRefreshingMinichat(); // Start refreshing the chat.

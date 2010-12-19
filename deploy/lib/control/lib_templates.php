@@ -13,11 +13,6 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
     $quickstat = @$options['quickstat'];
     $quickstat = ($quickstat ? $quickstat : @$local_vars['quickstat']);
 
-    // Displays headless html for javascript if requested.
-    $section_only = @$options['section_only'];
-    $section_only = ($section_only ? $section_only : @$local_vars['section_only']);
-    $section_only = ($section_only ? $section_only : in('section_only'));
-
 	$is_index = @$options['is_index'];
 
 	// *** Initialize the template object ***
@@ -28,13 +23,14 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
 	}
 
     $user_id = get_user_id(); // Character id.
+    $public_char_info = public_char_info($user_id); // Char info to pass to javascript.
 
 	$tpl->assign('logged_in', $user_id);
 	$tpl->assign('user_id', $user_id);
 	$tpl->assign('title', $title);
-	$tpl->assign('is_index', $is_index);
-	$tpl->assign('section_only', ($section_only === '1'));
 	$tpl->assign('quickstat', $quickstat);
+	$tpl->assign('is_index', $is_index);
+	$tpl->assign('json_public_char_info', json_encode($public_char_info));
 	$tpl->assign('main_template', $template);
 
 	return $tpl;

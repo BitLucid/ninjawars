@@ -37,7 +37,7 @@
 	    &nbsp;
 	  </div>
 	  <div id='health-and-turns' class='various-bars' style='width:50%;display:inline-block;vertical-align:top;margin:0 15% .3em;'>
-	  	<div style='width:100%;display:block;height:5em'>
+	  	<div id='barstats' style='width:100%;display:none;height:5em'>
 		  	<!-- Display the number bars for various char stats-->
 		  	<div id='health' style='height:33%'>
 			  {include file="generic_bar.tpl" bar_percent=$player_info.hp_percent number=$player_info.health zero_word='Dead' number_of='Health' bar_color='#660000' title='Heal Yourself' action='shrine_mod.php?heal_and_resurrect=1'}<!-- #ee2520 -->
@@ -130,12 +130,14 @@
                 	{$username|escape}
                 </a>
             </div>
+            
+            {*
             <div id='logged-in-bar'>
                 <div>
                   <span id='health-status'> </span>
                 </div>
             </div>
-            
+            *}
             
             {*
             // This is to be replaced by info bars in the header.

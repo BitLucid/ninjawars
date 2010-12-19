@@ -126,7 +126,7 @@ function json_inventory() {
 
 function json_index() {
 	DatabaseConnection::getInstance();
-	$player   = get_player_info();
+	$player   = public_char_info();
 	$events   = array();
 	$messages = array();
 	$user_id  = $player['player_id'];
