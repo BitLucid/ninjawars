@@ -203,12 +203,15 @@ class Player
 
     // Pull the data of the player obj as an array.
     public function data($specific = null) {
-    	// TODO: Make this method cache it's data.
+    	static $data;
+    	if(!$data){
+    		$data = add_data_to_player_row($this->as_array());
+    		// Cache this data over the live of the player object.
+    	}
     	if($specific){
-    		$temp = add_data_to_player_row($this->as_array());
-    		return $temp[$specific];
+    		return $data[$specific];
     	} else {
-	        return add_data_to_player_row($this->as_array());
+	        return $data;
         }
     }
 
