@@ -6,11 +6,11 @@
         </span>
     </span>
     <span class='bar-text' style='position:absolute;top:0;left:1em;color:whitesmoke;display:inline-block;text-shadow: 2px 2px 2px #000;'>
-{if $number eq 0}
-        <span style='color:crimson;font-weight:bolder'>{$zero_word|default:'0'}</span>
-{else}<span class='bar-number'>{$number}</span>
+        <span class='bar-number'>{$number}</span>
         <span class='bar-number-of-word'>{$number_of|default:''}</span>
-{/if}
+        
+        
+		<span style='color:crimson;font-weight:bolder;display:none'>{$zero_word|default:'0'}</span>
     </span>
   </a>
 </span>

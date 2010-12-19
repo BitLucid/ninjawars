@@ -30,7 +30,7 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
 	$tpl->assign('title', $title);
 	$tpl->assign('quickstat', $quickstat);
 	$tpl->assign('is_index', $is_index);
-	$tpl->assign('json_public_char_info', json_encode($public_char_info));
+	$tpl->assign('json_public_char_info', $public_char_info? json_encode($public_char_info) : null);
 	$tpl->assign('main_template', $template);
 
 	return $tpl;
