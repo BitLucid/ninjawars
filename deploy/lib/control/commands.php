@@ -137,84 +137,91 @@ function subtractTurns($who, $amount) {
 // ************************************
 
 function getKills($who) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT kills FROM players WHERE uname = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	return $statement->fetchColumn();
+	$char_id = get_char_id($who);
+	get_kills($char_id);
 }
 
+// Deprecated now.
 function changeKills($who, $amount) {
-	$amount = (int)$amount;
+ 	return change_kills(get_char_id($who), $amount);
+}
 
+function addKills($who, $amount) {
+	$char_id = get_char_id($who);
+	update_levelling_log($who, $amount);
+	return change_kills($char_id, $amount);
+}
+
+function subtractKills($who,$amount) {
+	$amount = (int)$amount;
+	$char_id = get_char_id($who);
+	update_levelling_log($who, $amount);
+	return change_kills($char_id, $amount);
+}
+
+function get_kills($char_id) {
+	return query_item("SELECT kills FROM players WHERE player_id = :player_id", 
+		array(':player_id'=>array($char_id, PDO::PARAM_INT)));
+}
+
+// Change the kills amount of a char.
+function change_kills($char_id, $amount, $auto_level_check=true) {
+	$amount = (int)$amount;
 	if (abs($amount) > 0) {
+		// Ignore changes that amount to zero.
+		if($amount > 0 && $auto_level_check) {
+			// For positive kill changes, check whether levelling occurs.
+			level_up_if_possible($char_id, $auto_levelling=true);
+		}
 		DatabaseConnection::getInstance();
 
 		$update = DatabaseConnection::$pdo->prepare("UPDATE players SET kills = kills + 
 		   CASE WHEN kills + :amount1 < 0 THEN kills*(-1) ELSE :amount2 END
-		   WHERE uname = :user");
+		   WHERE player_id = :player_id");
 		$update->bindValue(':amount1', $amount);
 		$update->bindValue(':amount2', $amount);
-		$update->bindValue(':user', $who);
+		$update->bindValue(':player_id', $char_id);
 		$update->execute();
 	}
-
-	return getKills($who);
+	return get_kills($char_id);
 }
 
-function addKills($who, $amount) {
+// Update the levelling log with the increased kills.
+function update_levelling_log($who, $amount){
+	// TODO: This should be deprecated once we have only upwards kills_total increases, but for now I'm just refactoring.
 	DatabaseConnection::getInstance();
 	$amount = (int)$amount;
-	// *** UPDATE THE KILLS INCREASE LOG *** //
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE uname = :player AND killsdate = now() AND killpoints > 0 LIMIT 1");  //Check for record.
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-
-	$notYetANewDay = $statement->fetch();  //positive if todays record already exists
-
-	if ($notYetANewDay != NULL) {
-		// if record exists
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints + :amount WHERE uname = :player AND killsdate = now() AND killpoints > 0");  //increase killpoints
-		$statement->bindValue(':amount', $amount);
-		$statement->bindValue(':player', $who);
-	} else {
-		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())");  //create a new record for today
-		$statement->bindValue(':amount', $amount);
-		$statement->bindValue(':player', $who);
+	if($amount == 0){
+		return;
+	}
+	// *** UPDATE THE KILLS LOG *** //
+	$record_check = '<';
+	$add = true;
+	if($amount>0){
+		$record_check = '>';
+		$add = false;
 	}
 
-	$statement->execute();
-	return changeKills($who, $amount);
-}
-
-function subtractKills($who,$amount) {
-	DatabaseConnection::getInstance();
-	$amount = (int)$amount;
-
-	// *** UPDATE THE KILLS INCREASE LOG (with a negative entry) *** //
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE uname = :player AND killsdate = now() AND killpoints > 0 LIMIT 1");  //Check for record.
+	$statement = DatabaseConnection::$pdo->prepare(
+		"SELECT * FROM levelling_log WHERE uname = :player AND killsdate = now() AND killpoints $record_check 0 LIMIT 1");  
+	//Check for an existing record of either negative or positive types.
 	$statement->bindValue(':player', $who);
 	$statement->execute();
-
+	
 	$notYetANewDay = $statement->fetch();  //positive if todays record already exists
-
 	if ($notYetANewDay != NULL) {
-		// if record exists
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints - :amount WHERE uname = :player AND killsdate = now() AND killpoints < 0");  //increase killpoints
-		$statement->bindValue(':amount', $amount);
-		$statement->bindValue(':player', $who);
+		// If an entry already exists, update it.
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints + :amount WHERE uname = :player AND killsdate = now() AND killpoints $record_check 0");  //increase killpoints
 	} else {
-		$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())");  //create a new record for today
-		$statement->bindValue(':amount', $amount*-1);
-		$statement->bindValue(':player', $who);
+		$statement = DatabaseConnection::$pdo->prepare(
+			"INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())");  
+		//create a new record for today
 	}
-
+	$statement->bindValue(':amount', $amount);
+	$statement->bindValue(':player', $who);
 	$statement->execute();
-	return changeKills($who, ((-1)*$amount));
 }
+
 
 // ************************************
 // ************************************
@@ -503,6 +510,7 @@ function add_data_to_player_row($player_data, $kill_password=true){
         unset($player_data['pname']);
     }
 	$player_data['hp_percent'] = min(100, round(($player_data['health']/max_health_by_level($player_data['level']))*100));
+	$player_data['turns_percent'] = min(100, round($player_data['turns']/100));
 	$player_data['exp_percent'] = min(100, round(($player_data['kills']/($player_data['level']*5))*100));
 	$player_data['status_list'] = implode(', ', get_status_list($player_data['player_id']));
 	$player_data['hash'] = md5(implode($player_data));
