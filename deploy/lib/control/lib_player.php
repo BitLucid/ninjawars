@@ -311,4 +311,83 @@ function format_health_percent($player_row) {
 	$player_row['health_percent'] = $percent;
 	return $player_row;
 }
+
+
+/**
+ * Gets player data for multiple players, no option for password
+*/
+function get_players_info($p_ids) {
+	$dbconn = DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM players WHERE player_id IN (".join(',', $p_ids).")");
+        //Log of Dueling information.
+	$statement->execute();
+
+	$players = array();
+
+	foreach ($statement AS $player) {
+		$p = new Player();
+		$p->player_id = $player['player_id'];
+		$p->vo = $player;
+		$players[$p->player_id] = $p;
+	}
+
+	return $players;
+}
+
+
+// Add data to the info you get from a player row.
+function add_data_to_player_row($player_data, $kill_password=true){
+    if($kill_password){
+        unset($player_data['pname']);
+    }
+    $player_data['max_health'] = max_health_by_level($player_data['level']);
+	$player_data['hp_percent'] = min(100, round(($player_data['health']/$player_data['max_health'])*100));
+	$player_data['max_turns'] = 100;
+	$player_data['turns_percent'] = min(100, round($player_data['turns']/$player_data['max_turns']));
+	$player_data['next_level'] = required_kills_to_level($player_data['level']);
+	$player_data['exp_percent'] = min(100, round(($player_data['kills']/$player_data['next_level'])*100));
+	$player_data['status_list'] = implode(', ', get_status_list($player_data['player_id']));
+	$player_data['hash'] = md5(implode($player_data));
+	return $player_data;
+}
+
+// Return the data that should be publicly readable to javascript or the api while the player is logged in.
+function public_char_info($p_id=null) {
+	$char_info = char_info($p_id);
+	unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
+	return $char_info;
+}
+
+/**
+ * Returns the state of the player from the database,
+ * uses a user_id if one is present, otherwise
+ * defaults to the currently logged in player, but can act on any player
+ * if another username is passed in.
+ * @param $user user_id or username
+**/
+function char_info($p_id = null) {
+	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
+	if(!is_numeric($id)){
+		// If there's no id, don't try to get any data.
+		return null;
+	}
+	$player = new Player($id); // Constructor uses DAO to get player object.
+	$player_data = array();
+	
+	if ($player instanceof Player && $player->id()) {
+		// Turn the player data vo into a simple array.
+		$player_data = (array) $player->vo;
+		$player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
+		$player_data = add_data_to_player_row($player_data);
+	}
+
+	return $player_data;
+}
+
+// Deprecated, used in various places.  $p_password param is now simply ignored.
+function get_player_info($p_id = null, $p_password = false) {
+	return char_info($p_id);
+}
+
+
 ?>
