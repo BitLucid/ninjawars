@@ -59,43 +59,57 @@ function char_kills($char_id) {
 
 
 // ******** Leveling up Function *************************
-// Incorporate this into the kill system to cause auto-levelling.
-function level_up_if_possible($char_id) {
+function level_up_if_possible($char_id, $auto_level=false) {
 	// Setup values:
 	$max_level = maximum_level();
 	$health_to_add = 100;
 	$turns_to_give = 50;
 	$stat_value_to_add = 5;
+	
+	$char_kills = get_kills($char_id);
 
-
-
-	$username = get_char_name($char_id);
-	$char_level = getLevel($username);
-	$char_kills = getKills($username);
-
-
-	// Check required values:
-	$nextLevel  = $char_level + 1;
-	$required_kills = required_kills_to_level($char_level);
-	// Have to be under the max level and have enough kills.
-	$level_up_possible = (
-		($nextLevel < $max_level) &&
-		($char_kills >= $required_kills) );
-
-	if ($level_up_possible) {
-		// ****** Perform the level up actions ****** //
-		$userKills = subtractKills($username, $required_kills);
-		$userLevel = addLevel($username, 1);
-		change_strength($char_id, $stat_value_to_add);
-		change_speed($char_id, $stat_value_to_add);
-		change_stamina($char_id, $stat_value_to_add);
-		change_karma($char_id, 1); // Only add 1 to karma via levelling.
-		change_ki($char_id, 50); // Add 50 ki points via levelling.
-		addHealth($username, $health_to_add);
-		addTurns($username, $turns_to_give);
-		return true;
-	} else {
+	if($char_kills<0){
+		// If the character doesn't have any kills, shortcut the levelling process.
 		return false;
+	} else {
+		$char_obj = new Player($char_id);
+		$username = $char_obj->name();
+		$char_level = $char_obj->level();
+	
+		if($auto_level && $char_obj->isAdmin()){
+			// If the character is an admin, do not auto-level them.
+			return false;
+		} else {
+			// For normal characters, do auto-level them.
+		
+			// Check required values:
+			$nextLevel  = $char_level + 1;
+			$required_kills = required_kills_to_level($char_level);
+			// Have to be under the max level and have enough kills.
+			$level_up_possible = (
+				($nextLevel < $max_level) &&
+				($char_kills >= $required_kills) );
+
+			if ($level_up_possible) {
+				// ****** Perform the level up actions ****** //
+				// Explicitly call for the special case of kill changing to prevent an infinite loop.
+				$userKills = change_kills($char_id, -1*$required_kills, $auto_level_check=false);
+				$userLevel = addLevel($username, 1);
+				change_strength($char_id, $stat_value_to_add);
+				change_speed($char_id, $stat_value_to_add);
+				change_stamina($char_id, $stat_value_to_add);
+				change_karma($char_id, 1); // Only add 1 to karma via levelling.
+				change_ki($char_id, 50); // Add 50 ki points via levelling.
+				addHealth($username, $health_to_add);
+				addTurns($username, $turns_to_give);
+				// Send a level-up message, for those times when auto-levelling happens.
+				send_event($char_id, $char_id, 
+					"You levelled up!  Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by 1, and your Ki raised 50!  You gained some health and turns as well!  You are now a level $userLevel ninja!  Go kill some stuff.");
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }
 
