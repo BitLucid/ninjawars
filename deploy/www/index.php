@@ -25,7 +25,6 @@ if(!$char_id){
 	$member_counts = member_counts();
 	
 	// Create the settings to pass to the page.
-
 	$options = array('is_index'=>true);
 
 	// Assign these vars to the template.

@@ -859,10 +859,7 @@ iframe {
 	overflow:auto;
 }
 .chat-collapsed {
-	height: 400px;
-}
-.splash .chat-collapsed{
-	height: 300px;
+	max-height: 300px;
 }
 .chat-expanded {
 	height: 880px;
@@ -1533,14 +1530,14 @@ iframe {
 	/*background-image:url('/images/black_bg_splash.png');
 	background-repeat:no-repeat;*/
 	float:left;
-	width:20%;
+	width:30%;
 }
 .splash #left-column {
 	width: 20%;
 }
 #center-column {
 	float:left;
-	width:80%;
+	width:70%;
 	height:75%;
 }
 .header-section {

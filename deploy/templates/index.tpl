@@ -1,3 +1,4 @@
+    <!-- Version {$version|escape} -->
 {literal}
       <script type="text/javascript">
 	if (parent.frames.length != 0) {
@@ -8,122 +9,54 @@
     </style>
       
 {/literal}
-    <!-- Version {$version|escape} -->
-      <div id='left-column'>
-            
-        <div id='ninjawars-home' class='header-section'>
-			    <a href='list.php' target='main'>
-			      <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='100' height='100'>
-			    </a>
-			  </div>
-        </div>
-            <div>
-                <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your ninja information'>{$username|escape}</a>
-            </div>
-            <div id='logged-in-bar'>
-                <div>
-                  <span id='health-status'> </span>
-                </div>
-            </div>
-          <div id="quick-stats" class="boxes">
-            <div class="box-title centered">
-              <a id='show-hide-quickstats' class="show-hide-link"><!-- jQuery show/hide -->
-                Quick Stats
-              </a>
-            </div>
-            <div id="quickstats-and-switch-stats"><!-- Id used by show hide jquery -->
-              <div class="centered quickstats-container">
-                <a href="quickstats.php" target="quickstats" onclick="return !NW.refreshQuickstats('player');">Stats</a> 
-                | <a href="quickstats.php?command=viewinv" target="quickstats" onclick="return !NW.refreshQuickstats('viewinv');">Inventory</a>
-              </div>
-              <div id="quickstats-frame-container"><div></div>
-                <noscript>
-                <iframe frameBorder='0' id="quickstats" src="quickstats.php" name="quickstats">
-                  <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
-                  <a href='quickstats.php' target='_blank'>Quick Stats</a> unavailable inside this browser window.
-                </iframe>
-                </noscript>
-              </div>
-            </div><!-- End of quickstats and switch container -->
-          </div><!-- End of quickstats section. -->
-          
-          <div id="actions" class="boxes active">
-            <div class="box-title">
-              <a id='show-hide-actions-menu' class="show-hide-link"><!-- jQuery show/hide -->
-                Actions
-              </a>
-            </div>
-            <ul class="basemenu" id="actions-menu"><!-- Id used by show hide jquery -->
-              <li id='heal-link'>
-                <a href="shrine_mod.php?heal_and_resurrect=1" target="main">
-                    <img src='images/shrine.png' alt=''>Heal
-                </a>
-              </li>
-              <li>
-                <ul class="submenu">
-                  <li>
-                    <a href="inventory_mod.php?item=smokebomb&amp;selfTarget=1"
-                     target="main">Stealth</a>
-                  </li>
-                  <li>
-                    <a href="inventory_mod.php?item=amanita&amp;selfTarget=1" 
-                    target="main">Speed</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-
-        <!--
-        <div id="ninja-search" class="boxes active">
-            <form id="player_search" action="list.php" target="main" method="get" name="player_search">
-              <div>
-                Find A Ninja:
-                <input id="searched" type="text" maxlength="50" size="10" name="searched" class="textField">
-                <input id="hide" type="hidden" name="hide" value="dead">
-                <button type="submit" value="find" class="formButton">Find</button>
-              </div>
-            </form>
-          </div>
-        -->
-
-{if $new_player}
-          <div id='helpful-info'>
-            <a target='main' href='tutorial.php'>Helpful Info</a>
-          </div>
-{/if}
 
 
+<style type='text/css'>
+{literal}
+#logo-appended{
+	position:absolute;
+	top:0;
+	left:0;
+}
+#header{
+	height:20%;
+}
+{/literal}
+</style>
 
-          <!-- Recent Events count and target will get put in here via javascript -->
-          <div id='recent-events' class="boxes active" style='display:none'>
-            <!--<div>
-                <a id='view-events' target='main' href='events.php' title='View events'>
-                  Unread Events <span class='unread-events-count unread-count'>0</span>
-                </a>
-            </div>-->
-              
-            <div>
-                <a target='main' id='recent-event-attacked-by' href='events.php' title='View events'>
-                      You weren't recently in combat
-                </a> with 
-                <a id='view-event-char' target='main' href='#' title="View a player's profile">
-                  anyone
-                </a>.
-            </div>
-          </div>
+	<div id="logo-appended">
+	  <a href="/">
+        <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='100' height='100'>
+	  </a>
+	</div>
 
-      </div>  
-      
-      
-      
-      <!-- CENTRAL COLUMN STARTS HERE -->
-      
-      
-      
-      <div id='center-column'>
+    <div class='header'>
 
-      
+	  <div id='logo-placeholder' style='width:75px;height:75px;display:inline-block;vertical-align:top;z-index:-1'>
+	    <!-- Spacer div for the main shuriken linkback logo -->
+	    &nbsp;
+	  </div>
+	  <div id='health-and-turns' class='various-bars' style='width:50%;display:inline-block;vertical-align:top;margin:0 15% .3em;'>
+	  	<div style='width:100%;display:block;height:5em'>
+		  	<!-- Display the number bars for various char stats-->
+		  	<div id='health' style='height:33%'>
+			  {include file="generic_bar.tpl" bar_percent=$player_info.hp_percent number=$player_info.health zero_word='Dead' number_of='Health' bar_color='#660000' title='Heal Yourself' action='shrine_mod.php?heal_and_resurrect=1'}<!-- #ee2520 -->
+		  	</div>
+		  	<div id='turns' style='height:33%'>
+			  {include file="generic_bar.tpl" bar_percent=$player_info.turns_percent number=$player_info.turns zero_word='No Turns' number_of='Turns' bar_color='#003366' title='Speed Up' action='inventory_mod.php?item=amanita&amp;selfTarget=1'}	
+		  	</div>
+		  	<div id='kills' style='height:33%'>
+			  {include file="generic_bar.tpl" bar_percent=$player_info.exp_percent number=$player_info.kills zero_word='No Kills' number_of='Kills' bar_color='#330066' title='View Stats' action='stats.php'}<!-- #6612ee -->
+		  	</div>
+	  	</div>
+	  </div>
+
+		<div id='logout'>
+		    <a href="logout.php">
+		      <img src='{$templatelite.const.IMAGE_ROOT|escape}logoutTriangle.png' alt='Logout' title='Leave the game' style='height:70px;width:70px'>
+		    </a>
+		</div>
+
       <div id='menu-bar' class='header-section'>
         <div id='reactive-panel'>
             <script type='text/javascript'>
@@ -183,9 +116,142 @@
                   <li><a href="doshin_office.php" target="main" title='Hunt bounties for money.'>Doshin <img src="images/doshin.png" alt="" style='height:8px;width:8px'></a></li>
                 </ul>
             </div>
-        </div>
+        </div><!-- End of reactive panel -->
         
       </div><!-- End of menu-bar -->
+
+
+            
+	  </div><!-- End of header -->
+
+      <div id='left-column'>
+            <div>
+                <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your ninja information'>
+                	{$username|escape}
+                </a>
+            </div>
+            <div id='logged-in-bar'>
+                <div>
+                  <span id='health-status'> </span>
+                </div>
+            </div>
+            
+            
+            {*
+            // This is to be replaced by info bars in the header.
+            
+          <div id="quick-stats" class="boxes">
+            <div class="box-title centered">
+              <a id='show-hide-quickstats' class="show-hide-link"><!-- jQuery show/hide -->
+                Quick Stats
+              </a>
+            </div>
+            <div id="quickstats-and-switch-stats"><!-- Id used by show hide jquery -->
+              <div class="centered quickstats-container">
+                <a href="quickstats.php" target="quickstats" onclick="return !NW.refreshQuickstats('player');">Stats</a> 
+                | <a href="quickstats.php?command=viewinv" target="quickstats" onclick="return !NW.refreshQuickstats('viewinv');">Inventory</a>
+              </div>
+              <div id="quickstats-frame-container"><div></div>
+                <noscript>
+                <iframe frameBorder='0' id="quickstats" src="quickstats.php" name="quickstats">
+                  <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
+                  <a href='quickstats.php' target='_blank'>Quick Stats</a> unavailable inside this browser window.
+                </iframe>
+                </noscript>
+              </div>
+            </div><!-- End of quickstats and switch container -->
+          </div><!-- End of quickstats section. -->
+          *}
+          
+          
+          {*
+          
+          // Actions are no longer needed as such, since they're mostly fulfilled by the generic bars.
+          
+          <div id="actions" class="boxes active">
+            <div class="box-title">
+              <a id='show-hide-actions-menu' class="show-hide-link"><!-- jQuery show/hide -->
+                Actions
+              </a>
+            </div>
+            <ul class="basemenu" id="actions-menu"><!-- Id used by show hide jquery -->
+              <li id='heal-link'>
+                <a href="shrine_mod.php?heal_and_resurrect=1" target="main">
+                    <img src='images/shrine.png' alt=''>Heal
+				</a>
+              </li>
+              <li>
+                <ul class="submenu">
+                  <li>
+                    <a href="inventory_mod.php?item=smokebomb&amp;selfTarget=1"
+                     target="main">Stealth</a>
+                  </li>
+                  <li>
+                    <a href="inventory_mod.php?item=amanita&amp;selfTarget=1" 
+                    target="main">Speed</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          
+          *}
+
+
+{if $new_player}
+          <div id='helpful-info'>
+            <a target='main' href='tutorial.php'>Helpful Info</a>
+          </div>
+{/if}
+
+
+
+          <!-- Recent Events count and target will get put in here via javascript -->
+          
+
+          <div id='messages' class='boxes active'>
+              <div>
+                  <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''>
+                    <span class='unread-count'>{$unread_message_count}</span>
+                  </a>
+              </div>
+          </div>
+          
+          <div id='recent-events' class="boxes active" style='display:none'>
+            <!--<div>
+                <a id='view-events' target='main' href='events.php' title='View events'>
+                  Unread Events <span class='unread-events-count unread-count'>0</span>
+                </a>
+            </div>-->
+              
+            <div>
+                <a target='main' id='recent-event-attacked-by' href='events.php' title='View events'>
+                      You weren't recently in combat
+                </a> with 
+                <a id='view-event-char' target='main' href='#' title="View a player's profile">
+                  anyone
+                </a>.
+            </div>
+            
+          </div><!-- End of recent events -->
+
+        
+      <div id='chat-housing' style='height:250px;'>
+        
+		{include file="mini-chat.section.tpl"}
+
+	  </div><!-- End of chat-housing -->
+
+
+      </div><!-- End of left-column -->  
+      
+      
+      
+      <!-- CENTRAL COLUMN STARTS HERE -->
+      
+      
+      
+      <div id='center-column'>
 
 
           <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
@@ -207,25 +273,14 @@
       
       
         <div id='ninja-stats' class='header-section'>
-        
-        <div id='logout'>
-            <a href="logout.php"><img src='{$templatelite.const.IMAGE_ROOT|escape}logoutTriangle.png' alt='Logout' title='Log off the game' style='height:70px;width:70px'></a>
-        </div>
+       
         
         </div><!-- End of ninja-stats div -->
-          
-          
-          <div id='messages' class='boxes active'>
-              <div>
-                  <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''>
-                    <span class='unread-count'>{$unread_message_count}</span>
-                  </a>
-              </div>
-          </div>
-        
-{include file="mini-chat.section.tpl"}
-          
+
       </div> <!-- End of right column -->
+      
+      
+      
       <div id='push'></div>
       <div id='index-footer'>
         <span id='nw-catchphrases'>

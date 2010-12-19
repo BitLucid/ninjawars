@@ -65,7 +65,7 @@ if (parent.window != window) {
 	// For refreshing quickstats from inside main.
 	NW.refreshQuickstats = function(typeOfView) {
 		var self = this;
-		self.getAndUpdateHealth();
+		//self.getAndUpdateHealth();
 
 		// Accounts for ajax section.
 		if (!typeOfView) {
@@ -307,7 +307,7 @@ if (parent.window != window) {
 		}
 	};
 
-
+	/*
 	// Update the display of the health.
 	NW.updateHealthBar = function(health) {
 		// Should only update when a change occurs.
@@ -346,6 +346,7 @@ if (parent.window != window) {
 
 		return updated;
 	};
+	*/
 
 	NW.getEvent = function() {
 		return this.pullFromDataStore('latestEvent');
@@ -359,7 +360,7 @@ if (parent.window != window) {
 	NW.updateIndex = function() {
 		var messageUpdated      = this.updateMessageCount();
 		var eventUpdated        = this.updateLatestEvent();
-		var healthUpdated       = this.getAndUpdateHealth(); // health bar.
+		//var healthUpdated       = this.getAndUpdateHealth(); // health bar.
 		var memberCountsUpdated = this.updateMemberCounts(); // Active member count over chat
 
 		// If any changes to data occurred, return true.

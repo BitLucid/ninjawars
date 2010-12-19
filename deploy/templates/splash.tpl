@@ -91,7 +91,7 @@
         
       <div id='chat-housing' style='height:250px;'>
         
-{include file="mini-chat.section.tpl" chatlength=5}
+{include file="mini-chat.section.tpl"}
 
 	  </div><!-- End of chat-housing -->
 
