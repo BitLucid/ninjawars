@@ -9,10 +9,10 @@ $ranked_players = DatabaseConnection::$pdo->query('INSERT INTO player_rank (_pla
 
 // *** Running from a cron script, we don't want any output unless we have an error ***
 
-$rand = rand(1, 12);
+$rand = rand(1, 60);
 
 if ($rand == 1) {
-	// Only log fiveminute log output randomly about once an hour to cut down on
+	// Only log fiveminute log output randomly about once every 6 hours to cut down on
 	// spam in the log.  This log message isn't very important anyway.
 
 	$out_display['Ranked Players'] = $ranked_players->rowCount();
