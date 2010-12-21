@@ -99,7 +99,7 @@ function get_gold($char_id){
 // Add to the gold of a user.
 function add_gold($char_id, $amount){
 	$amount = (int)$amount;
-	if (abs($amount) >  0) { // Only update anything if it's a non-null non-zero value.
+	if ($amount != 0) { // Only update anything if it's a non-null non-zero value.
 		query('UPDATE players SET 
 			gold = gold + CASE WHEN gold + :amount < 0 THEN gold*(-1) ELSE :amount END where player_id = :char_id', 
 				array(':char_id'=>$char_id, ':amount'=>$amount));
