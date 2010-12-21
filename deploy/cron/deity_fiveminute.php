@@ -9,6 +9,9 @@ $ranked_players = DatabaseConnection::$pdo->query('INSERT INTO player_rank (_pla
 
 // *** Running from a cron script, we don't want any output unless we have an error ***
 
+// Add 1 to player's ki when they've been active in the last 5 minutes.
+query("update players set ki = ki + 1 where last_started_attack > (now() - interval '6 minutes')");
+
 $rand = rand(1, 60);
 
 if ($rand == 1) {
