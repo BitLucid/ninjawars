@@ -169,9 +169,12 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			"SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type");
 		$statement->bindValue(':owner', $user_id);
 		$statement->execute();
+		
+		$itemCount = $statement->fetchColumn();
+		$itemsConverted = min($itemCount, $starting_turns-1);
 
-		if ($itemCount = $statement->fetchColumn()) {	// *** If special item count > 0 ***
-			$itemsConverted = min($itemCount, $starting_turns-1);
+		if ($itemsConverted) {	// *** If special item count > 0 ***
+			
 			remove_item($user_id, 'ginsengroot', $itemsConverted);
 			add_item($user_id, 'tigersalve', $itemsConverted);
 			$turn_cost = $itemsConverted;
@@ -179,7 +182,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			$generic_skill_result_message = "With intense focus you grind the herbs into potent formulas.";
 		} else { // *** no special items, give error message ***
 			$turn_cost = 0;
-			$generic_skill_result_message = "You do not have the necessary ingredients for any Kampo formulas.";
+			$generic_skill_result_message = "You do not have the necessary ingredients or time for any Kampo formulas.";
 		}
 	} else if ($command == 'Poison Touch') {
 		$covert = true;
