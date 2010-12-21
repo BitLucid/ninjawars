@@ -101,8 +101,8 @@ function add_gold($char_id, $amount){
 	$amount = (int)$amount;
 	if ($amount != 0) { // Only update anything if it's a non-null non-zero value.
 		query('UPDATE players SET 
-			gold = gold + CASE WHEN gold + :amount < 0 THEN gold*(-1) ELSE :amount END where player_id = :char_id', 
-				array(':char_id'=>$char_id, ':amount'=>$amount));
+			gold = gold + CASE WHEN gold + :amount1 < 0 THEN gold*(-1) ELSE :amount2 END where player_id = :char_id', 
+				array(':char_id'=>$char_id, ':amount1'=>array($amount, PDO::PARAM_INT), ':amount2'=>array($amount, PDO::PARAM_INT)));
 	}
 	return get_gold($char_id);
 }
