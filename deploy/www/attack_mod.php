@@ -255,7 +255,7 @@ if ($attack_is_legal){
 				if ($duel) {
 					killpointsFromDueling();	// *** Changes killpoints amount by dueling equation. ***
 					$duel_log_msg     = "$attacker has dueled $target and won $killpoints killpoints at $today.";
-					if($killpoints>1 || $killspoints<0){
+					if($killpoints>1 || $killspoint<0){
 						// Only log duels if they're better than 1 or if they're a failure.
 						sendLogOfDuel($attacker, $target, 1, $killpoints);	// *** Makes a WIN record in the dueling log. ***
 					}
