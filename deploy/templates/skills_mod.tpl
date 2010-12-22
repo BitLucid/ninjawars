@@ -12,7 +12,10 @@
       <th>Name</th>
       <th>Class</th>
       <th>Health</th>
-      <th>Str</th>
+      <th>Strength</th>
+      <th>Speed</th>
+      <th>Stamina</th>
+      <th>Ki</th>
       <th>Gold</th>
       <th>Kills</th>
       <th>Turns</th>
