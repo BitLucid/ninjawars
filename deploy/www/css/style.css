@@ -1538,7 +1538,7 @@ iframe {
 #center-column {
 	float:left;
 	width:70%;
-	height:75%;
+	height:100%;
 }
 .header-section {
 	height:6em;
@@ -1626,6 +1626,7 @@ iframe {
 	text-transform:uppercase;
 	background-color:#330000;	
 	color:white;
+	padding-top: .5em;
 }
 #subcategory-bar a {
 	font: 18px/27px 'ShangriLaNFRegular', Verdana, sans-serif;
@@ -1786,3 +1787,79 @@ select option #blue-class-select {
     color:#fff;
 }
 
+#main-frame-container {
+	height: 100%;
+}
+
+#top-bar {
+	display:inline-block;
+	position:relative;
+	top:0;
+}
+
+#logo-appended{
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+#top-logo{
+	display:inline-block;
+	vertical-align:top;
+	margin-left: 2em;
+	margin-right: 2em;
+}
+
+#contact-us img {
+	max-width:98%;
+}
+
+#header{
+	height:20%;
+}
+
+body, html {
+	margin:0;
+	padding:0;
+}
+
+#wrap {
+	width:100%;
+	margin:0 auto;
+}
+
+#main {
+	float:right;
+	width:75%;
+	height: 80%;
+}
+
+#sidebar {
+	float:left;
+	width:25%;
+	height: 80%;
+}
+
+#footer {
+	clear:both;
+}
+
+#nav ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+#nav li {
+	display:inline;
+	margin:0;
+	padding:0;
+}
+
+#logo-placeholder {
+	width:100px;
+	height:100px;
+	display:inline-block;
+	vertical-align:top;
+	z-index:-1;
+}

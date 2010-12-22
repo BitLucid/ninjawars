@@ -32,7 +32,7 @@
 
     <div class='header'>
 
-	  <div id='logo-placeholder' style='width:75px;height:75px;display:inline-block;vertical-align:top;z-index:-1'>
+	  <div id='logo-placeholder'>
 	    <!-- Spacer div for the main shuriken linkback logo -->
 	    &nbsp;
 	  </div>

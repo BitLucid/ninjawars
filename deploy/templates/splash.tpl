@@ -9,34 +9,6 @@
 	}
       </script>
 {/literal}
-
-<style type='text/css'>
-{literal}
-#top-bar{
-	display:inline-block;
-	position:relative;
-	top:0;
-}
-#logo-appended{
-	position:absolute;
-	top:0;
-	left:0;
-}
-#top-logo{
-	display:inline-block;
-	vertical-align:top;
-	margin-left: 2em;
-	margin-right: 2em;
-}
-#contact-us img {
-	max-width:98%;
-}
-#header{
-	height:20%;
-}
-{/literal}
-</style>
-
     <div id='content' class='wrapper'>
     <!-- Top horizontal bar -->
     <div class='header'>
@@ -45,7 +17,7 @@
 	        <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='108' height='108'>
 		  </a>
 		</div>
-		<div id='logo-placeholder' style='width:100px;height:100px;display:inline-block;vertical-align:top;z-index:-1'>
+		<div id='logo-placeholder'>
 		  <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
 		<div id='top-bar'>
@@ -55,7 +27,7 @@
           <a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='' width='200' height='100'></a>
 		</div>
       
-        <div id='subcategory-bar' style='padding-top:.5em'>
+        <div id='subcategory-bar'>
           <ul id='ninjas-subcategory'>
             <li><a href="list.php" target="main">Ninja</a></li>
             <li><a href="clan.php" target="main">Clans</a></li>

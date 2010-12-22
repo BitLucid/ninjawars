@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>Ninja Wars: Live by the Sword</title>
+
+    <base href="http://nw.localhost.com/"><!--[if lte IE 6]></base><![endif]-->
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="Screen">
+    <link rel="stylesheet" href="css/mobile.css" type="text/css" media="handheld">
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="css/ie-6.css">
+    <![endif]-->
+    <!-- [if gte IE 7]>
+    <link rel="stylesheet" type="text/css" href="css/ie.css">
+    <![endif]-->
+
+    <!-- Local jquery lib -->
+    <script type="text/javascript" src="js/jquery-1.4.3.min.js"></script>
+    <!-- All the global ninjawars javascript -->
+
+    <script type="text/javascript" src="js/nw.js"></script>
+
+    <script type="text/javascript">
+	NW.loggedIn = false;
+    </script>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="header">
+        <div id="logo-appended">
+          <a href="/"><img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='108' height='108'></a>
+        </div>
+		<div id='logo-placeholder' style='width:100px;height:100px;display:inline-block;vertical-align:top;z-index:-1'></div>
+        <div id='top-bar'>
+          <span id='solo-page-login-link'>
+            <a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a>
+          </span>
+        </div>
+        <div id='top-logo'>
+          <a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='' width='200' height='100'></a>
+        </div>
+      </div>
+      <div id="nav">
+<ul>
+<li><a href="#">Option 1</a></li>
+<li><a href="#">Option 2</a></li>
+</ul>
+</div>
+<div id="main">
+<h2>Column 1</h2>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit...</p>
+</div>
+<div id="sidebar">
+<h2>Column 2</h2>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit...</p>
+<ul>
+<li><a href="#">Link 1</a></li>
+<li><a href="#">Link 2</a></li>
+</ul>
+</div>
+<div id="footer">
+<p>Footer</p>
+</div>
+</div>
+</body>
+</html>

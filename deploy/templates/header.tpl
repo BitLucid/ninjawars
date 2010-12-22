@@ -1,13 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
-  	{* // Commented out because it's kinda just annoying when js is turned off.
-	{if $templatelite.server.SCRIPT_NAME eq '/village.php' or $templatelite.server.SCRIPT_NAME eq '/mini_chat.php'}
+{* // Commented out because it's kinda just annoying when js is turned off.
+{if $templatelite.server.SCRIPT_NAME eq '/village.php' or $templatelite.server.SCRIPT_NAME eq '/mini_chat.php'}
     <noscript>
       <meta http-equiv="refresh" content="90">
     </noscript>
-	{/if}
-	*}
+{/if}
+*}
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta name="keywords" content="ninjawars, ninja wars, ninjas, ninja weapons & techniques, samurai, free online games, {$title|escape}">
     <meta name="author" content="ninjawars.net">
@@ -16,7 +16,7 @@
     <title>Ninja Wars: {$title|escape}</title>
     <base href="{$templatelite.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
     <link rel="stylesheet" type="text/css" href="css/style.css" media="Screen">
-	<link rel="stylesheet" href="css/mobile.css" type="text/css" media="handheld">
+    <link rel="stylesheet" href="css/mobile.css" type="text/css" media="handheld">
     <!--[if lte IE 6]>
     <link rel="stylesheet" type="text/css" href="css/ie-6.css">
     <![endif]-->
@@ -77,8 +77,8 @@
 		<div id='logo-placeholder' style='width:110px;height:110px;display:inline-block;z-index:-1'>
 		  <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
-{if !$logged_in}
+	{if !$logged_in}
 		<span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
-{/if}
+	{/if}
     </div>
 {/if}{* End of check for index or quickstats to not display the appended logo for those *}
