@@ -34,7 +34,7 @@ function getClass($who) {
 
 // Centralized holding for the maximum level available in the game.
 function maximum_level() {
-	return 250;
+	return 300;
 }
 
 // Get a character's level, necessary when a character's level gets changed.
