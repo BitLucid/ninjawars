@@ -2,16 +2,20 @@ The easiest way to perform the action that you are looking for is with git rebas
 
 
 A = first commit BEFORE those that you want in the range. = 39020a1
+				Now will be commit: 
 B = final linear commit in the range. = a6b2ad2
+				Now will be commit: 
 
 br = root branch to apply the commits. = master_combine
-
+				Now will be branch:
 
 # Checkout a new temporary branch at the current location, somewhat storing the latest/current commit by making a new branch out of it.
 git checkout -b temporary
 
 # Move the br (old root branch) branch to the head of the new patchset
 git branch -f master_combine a6b2ad2
+	(hash B is used)
 
 # Rebase the patchset onto tmp (duplicated-from-root-branch), the old location of br (old-root-branch)
 git rebase --onto temporary 39020a1 master_combine
+	(hash A is used) lkj 
