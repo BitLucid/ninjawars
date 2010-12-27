@@ -100,7 +100,7 @@ $(document).ready(function () {
 
 <div id='progression'>
 {if !$user_id}
-	<p><a target='main' href='{$templatelite.const.WEB_ROOT}signup.php' id='join-link'>Become a Ninja!&shy;</a></p>
+	<p><a target='main' href='{$smarty.const.WEB_ROOT}signup.php' id='join-link'>Become a Ninja!&shy;</a></p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
 {/if}
     <div id='later-progression' style='margin-top:0;margin-bottom:0'>
@@ -123,13 +123,13 @@ $(document).ready(function () {
         });
     </script>
     {/literal}
-	<p>Rob townsfolk in the <a target='main' href='{$templatelite.const.WEB_ROOT}attack_player.php'>Village</a>, gather loot</p>
+	<p>Rob townsfolk in the <a target='main' href='{$smarty.const.WEB_ROOT}attack_player.php'>Village</a>, gather loot</p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
-	<p>Kill other <a target='main' href='{$templatelite.const.WEB_ROOT}list.php'>Ninja</a>, get stronger at the <a target='main' href='{$templatelite.const.WEB_ROOT}dojo.php'>Dojo</a></p>
+	<p>Kill other <a target='main' href='{$smarty.const.WEB_ROOT}list.php'>Ninja</a>, get stronger at the <a target='main' href='{$smarty.const.WEB_ROOT}dojo.php'>Dojo</a></p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
-	<p>Join a <a target='main' href='{$templatelite.const.WEB_ROOT}clan.php'>Clan</a>, wage war on other ninja clans</p>
+	<p>Join a <a target='main' href='{$smarty.const.WEB_ROOT}clan.php'>Clan</a>, wage war on other ninja clans</p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
-	<p>Live by the Sword, and <a target='main' href='{$templatelite.const.WEB_ROOT}shrine.php'>avoid death</a> if you can!</p>
+	<p>Live by the Sword, and <a target='main' href='{$smarty.const.WEB_ROOT}shrine.php'>avoid death</a> if you can!</p>
 	</div>
 </div>
 

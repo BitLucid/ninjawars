@@ -38,7 +38,7 @@
 	<!-- Display the conversion tracking for successful signup -->
 	{/if}
   If you need help use the forums at
-  <a href="{$templatelite.const.WEB_ROOT}forum/">{$templatelite.const.WEB_ROOT}forum/</a>
-  or email: <a href="mailto:{$templatelite.const.SUPPORT_EMAIL}">{$templatelite.const.SUPPORT_EMAIL}</a>
+  <a href="{$smarty.const.WEB_ROOT}forum/">{$smarty.const.WEB_ROOT}forum/</a>
+  or email: <a href="mailto:{$smarty.const.SUPPORT_EMAIL}">{$smarty.const.SUPPORT_EMAIL}</a>
 {/if}
 </div>

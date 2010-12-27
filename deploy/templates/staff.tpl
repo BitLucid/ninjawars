@@ -9,7 +9,7 @@
   For private issues, including account/confirmation problems, email us at:
 </p>
 <p>
-  <a href="mailto:'{$templatelite.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' <{$templatelite.const.SUPPORT_EMAIL|escape:'url'|escape}>?subject=NinjaWars%20question:%20">{$templatelite.const.SUPPORT_EMAIL_NAME|escape} &lt;{$templatelite.const.SUPPORT_EMAIL|escape}&gt;</a>
+  <a href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' <{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}>?subject=NinjaWars%20question:%20">{$smarty.const.SUPPORT_EMAIL_NAME|escape} &lt;{$smarty.const.SUPPORT_EMAIL|escape}&gt;</a>
 </p>
 <div class='developers'>
   <h3 class='subtitle'>Developers</h3>
@@ -19,9 +19,9 @@
     </div>
     <a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer
     <span id='social-networks'>
-      - <a target='_blank' href="http://twitter.com/tchalvak"><img alt="T" src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a>
-      - <a target='_blank' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a>
-      - <a target='_blank' href="http://www.myspace.com/toastersquid"><img alt="MS" src='{$templatelite.const.IMAGE_ROOT}icons/fasticons/MySpace_24x24.png'> on Myspace</a>
+      - <a target='_blank' href="http://twitter.com/tchalvak"><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a>
+      - <a target='_blank' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a>
+      - <a target='_blank' href="http://www.myspace.com/toastersquid"><img alt="MS" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/MySpace_24x24.png'> on Myspace</a>
       
       - on AIM: Tchalvak
     </span>
@@ -99,11 +99,11 @@
   <p>
     <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png"></a><br>
     <span>Ninjawars</span>
-    by <a href="{$templatelite.const.WEB_ROOT}" rel="cc:attributionURL">Ninjawars.net</a>
+    by <a href="{$smarty.const.WEB_ROOT}" rel="cc:attributionURL">Ninjawars.net</a>
     is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">
     Creative Commons Attribution-Share Alike 3.0 United States License</a>.<br>
     Permissions beyond the scope of this license may be available from the contact information at:
-    <a href="staff.php" rel="cc:morePermissions">{$templatelite.const.WEB_ROOT}staff.php</a>.
+    <a href="staff.php" rel="cc:morePermissions">{$smarty.const.WEB_ROOT}staff.php</a>.
   </p>
 </div>
 

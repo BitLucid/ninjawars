@@ -1,6 +1,6 @@
 <h1>Messages</h1>
 
-<script type='text/javascript' src='{$templatelite.const.JS_ROOT}messageDeleteConfirm.js'></script>
+<script type='text/javascript' src='{$smarty.const.JS_ROOT}messageDeleteConfirm.js'></script>
 
 {if $message_to eq 'individual'}
 <script type='text/javascript'>
@@ -19,7 +19,7 @@
     <div>
       <em class='char-name'>@<input class='char-name textField' type='text' size='26' name='to' value='{$to}'></em>
       <span style='font-weight:bold'>say</span>
-      "<input id='message-to-ninja' type='text' size='30' name='message' class='textField' maxlength="{$templatelite.const.MAX_MSG_LENGTH|escape}">"
+      "<input id='message-to-ninja' type='text' size='30' name='message' class='textField' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}">"
       <input type='hidden' name='messenger' value='1'>
       <input type='submit' value='Send' name='ninja_message' class='formButton'>
     </div>
@@ -32,7 +32,7 @@
   <div id='clan-mail-section'>
     <form id='clan_msg' action='messages.php' method='get' name='clan_msg'>
       <div>
-        <input type="text" id='message' name='message' class='textField' maxlength="{$templatelite.const.MAX_CLAN_MSG_LENGTH|escape}">
+        <input type="text" id='message' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}">
         <input type='hidden' value='toclan' name='toclan'>
         <input type='hidden' value='1' name='messenger'>
         <input type='submit' value='Mail Clan' class='formButton'>

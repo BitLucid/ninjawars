@@ -33,7 +33,7 @@
 				{assign var="action" value="View"}
 			{/if}
     <li class="{$status_class}" style='position:relative;margin-bottom:.2em;'>
-      <a href="enemies.php?remove_enemy={$loop_enemy.player_id|escape}"><img src="{$templatelite.const.IMAGE_ROOT}icons/delete.png" alt="remove"></a>
+      <a href="enemies.php?remove_enemy={$loop_enemy.player_id|escape}"><img src="{$smarty.const.IMAGE_ROOT}icons/delete.png" alt="remove"></a>
       <span style='display:inline-block;width: 16em;'>{$action} <a href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
       <span style='display:inline-block;margin-left:1em;width: 5.9em;'>
         {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}

@@ -26,7 +26,7 @@
     <h1>Account Issues</h1>
 
     <p class='notice'>
-      Please add <strong>{$templatelite.const.SYSTEM_EMAIL}</strong> to the safe email senders list 
+      Please add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to the safe email senders list 
       of your email account before resending these email requests, to ensure they won't be caught as spam.
     </p>
     <h2>Resend Account Information</h2>
@@ -48,4 +48,4 @@
 {/if}
 
     <h3>For Other Issues</h3>
-        <p>For other issues, please <a href='{$templatelite.const.WEB_ROOT}staff.php'>contact us</a>.<p>
+        <p>For other issues, please <a href='{$smarty.const.WEB_ROOT}staff.php'>contact us</a>.<p>

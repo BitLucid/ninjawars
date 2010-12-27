@@ -157,7 +157,7 @@ As such, after the leave command, no clan membership display information should 
     <!--  *** Clan Member Input for Messaging their Entire Clan *** -->
     <form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
       <div>
-        Message clan: <input id='message' type='text' size='30' maxlength='{$templatelite.const.MAX_CLAN_MSG_LENGTH|escape}' name='message' class='textField'>
+        Message clan: <input id='message' type='text' size='30' maxlength='{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}' name='message' class='textField'>
         <input type='submit' value='Send This Message' class='formButton'>
       </div>
     </form>

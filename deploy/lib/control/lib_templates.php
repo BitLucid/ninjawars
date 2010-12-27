@@ -1,7 +1,8 @@
 <?php
 // Require the template engine.
-require_once(LIB_ROOT.'third-party/template_lite/src/class.template.php');
+//require_once(LIB_ROOT.'third-party/template_lite/src/class.template.php');
 // See: http://templatelite.sourceforge.net/docs/index.html for the docs, it's a smarty-like syntax.
+require_once('Smarty.class.php');
 
 function display_error($p_error) {
 	display_page('error.tpl', 'Error', array('error'=>$p_error));
@@ -30,7 +31,7 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
 	$tpl->assign('title', $title);
 	$tpl->assign('quickstat', $quickstat);
 	$tpl->assign('is_index', $is_index);
-	$tpl->assign('json_public_char_info', $public_char_info? json_encode($public_char_info) : null);
+	$tpl->assign('json_public_char_info', ($public_char_info ? json_encode($public_char_info) : null));
 	$tpl->assign('main_template', $template);
 
 	return $tpl;
@@ -69,7 +70,8 @@ function render_template($template_name, $assign_vars=array()) {
 }
 
 function createTemplateLite() {
-	$tpl = new Template_Lite();
+	$tpl = new Smarty();
+	//$tpl = new Template_Lite();
 
 	// template directory
 	$tpl->template_dir = TEMPLATE_PATH;
@@ -131,7 +133,7 @@ function display_static_page($page, $pages, $vars=array(), $options=array()) {
 			$title = $page_info['title'];
 
 			$callback = @$page_info['callback'];
-			
+
 			// TODO: Merge the vars array instead of overwriting.
 			if ($callback && function_exists($callback)) {
 				$vars = array_merge($callback(), $vars); // Call the callback to return the vars.

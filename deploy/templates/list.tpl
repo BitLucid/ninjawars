@@ -2,7 +2,7 @@
 
 {if $searched}
 <div>
-  Searching for: {$searched|escape} <a href="{$templatelite.const.WEB_ROOT}list.php">(Clear Search)</a>
+  Searching for: {$searched|escape} <a href="{$smarty.const.WEB_ROOT}list.php">(Clear Search)</a>
 </div>
 {/if}
 
@@ -59,7 +59,7 @@
 		  </td>
 		  <td class="playerCell classCell">
 		    <!-- Display an image of the right colored shuriken. -->
-		    <span class='{$ninja.class_theme}'><img style='width:20px;height:17px' src='{$templatelite.const.WEB_ROOT}images/small{$ninja.class_theme|escape:'url'}Shuriken.gif' alt=''>
+		    <span class='{$ninja.class_theme}'><img style='width:20px;height:17px' src='{$smarty.const.WEB_ROOT}images/small{$ninja.class_theme|escape:'url'}Shuriken.gif' alt=''>
 		      {$ninja.class|escape}
 		    </span>
 		  </td>

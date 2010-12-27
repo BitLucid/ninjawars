@@ -4,7 +4,7 @@
     <title>
       Ninja Wars - 404 - Page Not Found
     </title>
-    <base href="{$templatelite.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
+    <base href="{$smarty.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body id="page-404">
@@ -28,6 +28,6 @@
   <input type="submit" value="search the ninjawars site" name="btnG" style="font-size:75%;"> 
 </form>
     <div>Return to <a href="index.php">Ninjawars.net</a></div>
-    <div id='support-email'>or email <a href="mailto:{$templatelite.const.SUPPORT_EMAIL}">{$templatelite.const.SUPPORT_EMAIL}</a></div>
+    <div id='support-email'>or email <a href="mailto:{$smarty.const.SUPPORT_EMAIL}">{$smarty.const.SUPPORT_EMAIL}</a></div>
   </body>
 </html>

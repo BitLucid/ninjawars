@@ -30,5 +30,5 @@
 {/if}
 
 <div class="return-to-main-link">
-  <a href="{$templatelite.const.WEB_ROOT}">Return to Main ?</a>
+  <a href="{$smarty.const.WEB_ROOT}">Return to Main ?</a>
 </div>

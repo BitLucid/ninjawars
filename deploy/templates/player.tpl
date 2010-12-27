@@ -20,7 +20,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
     <div class='player-ranking-linkback'>
       <a href='list.php?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none'>
-        <img src='{$templatelite.const.IMAGE_ROOT}return-triangle.png' alt='&lsaquo;Rank {$rank_spot|escape}' title='&lsaquo;Return to rank {$rank_spot}' style='width:50px;height:50px;float:left;'>
+        <img src='{$smarty.const.IMAGE_ROOT}return-triangle.png' alt='&lsaquo;Rank {$rank_spot|escape}' title='&lsaquo;Return to rank {$rank_spot}' style='width:50px;height:50px;float:left;'>
       </a>
     </div>
 
@@ -29,7 +29,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 	{include file="gravatar.tpl" gurl=$gravatar_url}
 
     <span class='player-class {$target_class_theme|escape}'>
-      <img id='class-shuriken' src='{$templatelite.const.IMAGE_ROOT}small{$target_class_theme|escape}Shuriken.gif' alt=''>
+      <img id='class-shuriken' src='{$smarty.const.IMAGE_ROOT}small{$target_class_theme|escape}Shuriken.gif' alt=''>
       {$player_info.class|escape}
     </span>
 
@@ -77,7 +77,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
                 <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
                 <label class='attack-player-trigger'>
-                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$templatelite.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack
+                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$smarty.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack
                 </label>
               </form>
             </td>
@@ -153,7 +153,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
         <div>
           <input type='hidden' name='target_id' value='{$player_info.player_id|escape}'>
           <div><input id='messenger' type='hidden' value='1' name='messenger'></div>
-          <input type='text' name='message' size='30' maxlength="{$templatelite.const.MAX_MSG_LENGTH|escape}">
+          <input type='text' name='message' size='30' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}">
           <input type='submit' value='Send Message' class='formButton'>
         </div>
       </form>

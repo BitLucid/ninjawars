@@ -72,7 +72,7 @@
 </form>
 <hr>
 <p>
-  If you require account help email: <a href='mailto:{$templatelite.const.SUPPORT_EMAIL}'>{$templatelite.const.SUPPORT_EMAIL}</a>
+  If you require account help email: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>
 </p>
 <hr>
 

@@ -10,13 +10,13 @@
 
 <div>Welcome to the Casino, {$username|escape}!</div>
 
-{if $state eq $templatelite.const.CASINO_NO_GOLD}
+{if $state eq $smarty.const.CASINO_NO_GOLD}
 <div>You do not have that much gold.</div>
-{elseif $state eq $templatelite.const.CASINO_LOSE}
+{elseif $state eq $smarty.const.CASINO_LOSE}
 <div class='ninja-notice'>You lose the coin toss!</div>
-{elseif $state eq $templatelite.const.CASINO_WIN}
+{elseif $state eq $smarty.const.CASINO_WIN}
 <div>You win the coin toss!</div>
-{elseif $state eq $templatelite.const.CASINO_DEFAULT}
+{elseif $state eq $smarty.const.CASINO_DEFAULT}
 <div>The maximum bet at this table is 1,000 gold.</div>
 {/if}
 
