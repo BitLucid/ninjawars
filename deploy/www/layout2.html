@@ -28,7 +28,7 @@
         <div id="logo-appended">
           <a href="/"><img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='108' height='108'></a>
         </div>
-		<div id='logo-placeholder' style='width:100px;height:100px;display:inline-block;vertical-align:top;z-index:-1'></div>
+		<div id='logo-placeholder'></div>
         <div id='top-bar'>
           <span id='solo-page-login-link'>
             <a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a>
@@ -39,15 +39,19 @@
         </div>
       </div>
       <div id="nav">
-<ul>
-<li><a href="#">Option 1</a></li>
-<li><a href="#">Option 2</a></li>
-</ul>
-</div>
-<div id="main">
-<h2>Column 1</h2>
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit...</p>
-</div>
+        <ul>
+          <li><a href="#">Option 1</a></li>
+          <li><a href="#">Option 2</a></li>
+        </ul>
+      </div>
+      <div id="main">
+        <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
+          <iframe frameBorder="0" name="main" class="main-iframe" src="splash.php">
+          <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
+            <a href='splash.php' target='_blank'>Main Content</a> unavailable inside this browser window.
+          </iframe>
+        </div><!-- End of mainFrame div -->
+      </div>
 <div id="sidebar">
 <h2>Column 2</h2>
 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit...</p>
@@ -56,9 +60,35 @@
 <li><a href="#">Link 2</a></li>
 </ul>
 </div>
-<div id="footer">
-<p>Footer</p>
-</div>
-</div>
-</body>
+      <div id="index-footer">
+        <span id='nw-catchphrases'>
+          <!-- These catchphrases will be displayed randomly. -->
+          <span>There was going to be a NinjaWars2, but NinjaWars1 stabbed it.</span>
+          <span>Join a clan, promote multiple stab wounds.</span>
+          <span>Annoy the Emperor, kill Samurai.</span>
+          <span>Helping ninja stab people since 2003.</span>
+          <span>Fact: Ninja can just click faster.</span>
+          <span class="default">Oni are actually quite friendly, if you get to know them.</span>
+        </span>
+        <script>
+            $().ready(function (){
+                var catchphrases = $('#nw-catchphrases');
+                var rand = Math.floor(Math.random()*catchphrases.size());
+                // Choose random index.
+                catchphrases.hide().eq(rand).show();
+                // Hide all, show one at random.
+            });
+        </script>
+        |
+        <a href="tutorial.php" target="main">Help</a> |
+        <a href="rules.php" target="main">Rules</a> |
+        <a href='staff.php' target='main'>Staff</a> |
+        <a href='http://google.com/search?q=site%3Awww.ninjawars.net' target='_blank' class='extLink'>Search</a> |
+        <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
+        <a href="http://ninjawars.pbworks.com/" target="_blank" class="extLink">Wiki</a> |
+        <a href="http://forum.ninjawars.net" target="_blank" class="extLink">Forum</a> |
+        <a href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Feedback</a>
+      </div>
+    </div>
+  </body>
 </html>

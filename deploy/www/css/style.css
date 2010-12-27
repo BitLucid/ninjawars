@@ -1863,3 +1863,11 @@ body, html {
 	vertical-align:top;
 	z-index:-1;
 }
+
+#nw-catchphrases span {
+	display: none;
+}
+
+#nw-catchphrases .default {
+	display: default;
+}
