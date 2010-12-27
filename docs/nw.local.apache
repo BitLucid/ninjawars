@@ -1,0 +1,15 @@
+<VirtualHost *>
+        ServerName nw.local
+        ServerAlias nw.local
+        DocumentRoot /home/tchalvak/ninjawars/deploy/www/
+        php_value session.cookie_domain "nw.local"
+		php_value include_path "/usr/share/php/smarty/"
+</VirtualHost>
+
+<VirtualHost *>
+        ServerName www.nw.local
+        ServerAlias www.nw.local
+        DocumentRoot /home/tchalvak/ninjawars/deploy/www/
+        php_value session.cookie_domain "nw.local"
+		php_value include_path "/usr/share/php/smarty/"
+</VirtualHost>
