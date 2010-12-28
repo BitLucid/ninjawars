@@ -123,8 +123,25 @@
 
             
 	  </div><!-- End of header -->
+      
+      
+      
+      <!-- MAIN COLUMN STARTS HERE -->
+      <div id='main-column'>
 
-      <div id='left-column'>
+
+          <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
+            <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src|escape}">
+            <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
+              <a href='{$main_src|escape}' target='_blank'>Main Content</a> unavailable inside this browser window.
+            </iframe>
+          </div><!-- End of mainFrame div -->
+          
+      </div> <!-- End of main-column -->
+
+
+      <!-- SIDEBAR COLUMN STARTS HERE -->
+      <div id='sidebar-column'>
             <div>
                 <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your ninja information'>
                 	{$username|escape}
@@ -245,42 +262,8 @@
 	  </div><!-- End of chat-housing -->
 
 
-      </div><!-- End of left-column -->  
-      
-      
-      
-      <!-- CENTRAL COLUMN STARTS HERE -->
-      
-      
-      
-      <div id='center-column'>
-
-
-          <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src|escape}">
-            <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
-              <a href='{$main_src|escape}' target='_blank'>Main Content</a> unavailable inside this browser window.
-            </iframe>
-          </div><!-- End of mainFrame div -->
-          
-      </div> <!-- End of center-column -->
-
-
-
-
-      <!-- RIGHTMOST COLUMN STARTS HERE -->
-
-
-      <div id='right-column'>
-      
-      
-        <div id='ninja-stats' class='header-section'>
-       
-        
-        </div><!-- End of ninja-stats div -->
-
-      </div> <!-- End of right column -->
-      
+      </div><!-- End of sidebar-column -->  
+     
       
       
       <div id='push'></div>

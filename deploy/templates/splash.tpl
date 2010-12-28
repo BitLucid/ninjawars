@@ -50,8 +50,17 @@
 	  </div><!-- End of header -->
       
       
-      <div id='left-column'>
-        
+      <!-- MAIN COLUMN STARTS HERE -->
+      <div id='main-column'>
+        <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
+          <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src}">
+            <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
+            <a href='{$main_src}' target='_blank'>Main Content</a> Display Section (Frames Not Supported)
+          </iframe>
+        </div><!-- End of mainFrame div -->
+      </div> <!-- End of main-column -->      
+      
+      <div id='sidebar-column'>
 		<div id='contact-us' style='margin-top:.5em;margin-bottom:.5em;'>
 		  <a href='staff.php' target='main' class='font-shangrila'>Contact Staff</a>
 		</div>
@@ -68,19 +77,6 @@
 	  </div><!-- End of chat-housing -->
 
       </div><!-- End of left-column -->
-
-      <!-- CENTRAL COLUMN STARTS HERE -->
-
-      <div id='center-column'>
-        <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-          <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src}">
-            <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
-            <a href='{$main_src}' target='_blank'>Main Content</a> Display Section (Frames Not Supported)
-          </iframe>
-        </div><!-- End of mainFrame div -->
-      </div> <!-- End of center-column -->
-
-
 
 
       <div id='push'></div>

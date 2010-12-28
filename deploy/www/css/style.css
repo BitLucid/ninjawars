@@ -1526,16 +1526,16 @@ iframe {
 /* NEW INDEX REWRITE CSS */
 
 
-#left-column {
+#sidebar-column {
 	/*background-image:url('/images/black_bg_splash.png');
 	background-repeat:no-repeat;*/
-	float:left;
+	float:right;
 	width:30%;
 }
-.splash #left-column {
+.splash #sidebar-column {
 	width: 20%;
 }
-#center-column {
+#main-column {
 	float:left;
 	width:70%;
 	height:100%;
