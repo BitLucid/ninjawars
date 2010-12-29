@@ -83,7 +83,7 @@ input.shopButton{
   </td>
 
   <td>
-    {if !$item_info.image}&nbsp;{else}<img style='max-height:25px;max-width:50px' src="images/{$item_info.image}" alt="{$item_info.item_display_name}">{/if}
+    {if !$item_info.image}&nbsp;{else}<img style='max-height:25px;max-width:50px' src="images/items/{$item_info.image}" alt="{$item_info.item_display_name}">{/if}
   </td>
 </tr>
 {/foreach}

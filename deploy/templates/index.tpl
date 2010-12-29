@@ -36,7 +36,7 @@
 	    <!-- Spacer div for the main shuriken linkback logo -->
 	    &nbsp;
 	  </div>
-	  <div id='health-and-turns' class='various-bars' style='width:50%;display:inline-block;vertical-align:top;margin:0 15% .3em;'>
+	  <div id='health-and-turns' class='various-bars' style='width:46%;display:inline-block;vertical-align:top;margin:0 15% .3em;'>
 	  	<div id='barstats' style='width:100%;display:none;height:5em'>
 		  	<!-- Display the number bars for various char stats-->
 		  	<div id='health' style='height:33%'>
