@@ -61,17 +61,17 @@
 	    <label>
 	      <div class='line'>
 	      <span class='left-side'>Ninja Name or Email</span>
-	      <input name="user" type="text" value='{$stored_username|escape}' class='right-side'>
+	      <input tabindex=1 name="user" type="text" value='{$stored_username|escape}' class='right-side'>
 		  </div>
 	    </label>
 	    <label>
 	      <div class='line'>
-	      <span class='left-side'>Password <a href='account_issues.php'>(Forgot password?)</a></span>
-	      <input name="pass" type="password" class='right-side'>
+	      <span class='left-side'>Password <a tabindex=4 href='account_issues.php'>(Forgot password?)</a></span>
+	      <input tabindex=2 name="pass" type="password" class='right-side'>
 	      </div>
 	    </label>
 	    <div class='left-side'>
-		    <input name="login_request" type="submit" value="Login" style='font-size:2em;width:100%;'>
+		    <input tabindex=3 name="login_request" type="submit" value="Login" style='font-size:2em;width:100%;'>
 		</div>
 	    </div>
 	    </div>
