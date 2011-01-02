@@ -1,30 +1,67 @@
     <style>
     {literal}
-    #map td{
-    	background-color:black;
-    }
-    #map td.grass{
-    	background-color:green;
-    }
-    
-    #map td.rice-field{
-    	background-color:aqua;
-    }
     
     #map table {
     	margin: 0 auto;
+    }
+    
+    #map td{
+    	background-color:black;
+    }
+    
+    #map td.doshin {
+    	background-image:url(/images/nodes/node-tiles.png);
+    	background-position:0px 0px;
+    	background-repeat:no-repeat;
+    }
+    
+    #map td.dojo {
+    	background-image:url(/images/nodes/node-tiles.png);
+    	background-position:0px -111px;
+    	background-repeat:no-repeat;
+    }
+    
+    #map td.shrine {
+    	background-image:url(/images/nodes/node-tiles.png);
+    	background-position:0px -227px;
+    	background-repeat:no-repeat;
+    }
+    
+    #map td.rice-field {
+    	background-image:url(/images/nodes/node-tiles.png);
+    	background-position:0px -342px;
+    	background-repeat:no-repeat;
+    }
+    
+    #map td.casino {
+    	background-image:url(/images/nodes/node-tiles.png);
+    	background-position:0px -444px;
+    	background-repeat:no-repeat;
+    }
+    
+    #map td.weapons-shop {
+    	background-image:url(/images/nodes/node-tiles.png);
+    	background-position:0px -558px;
+    	background-repeat:no-repeat;
+    }
+    
+    #map td.grass{
+    	background-color:rgb(30,60,0);
+    }
+    
+    #map td.rice-field{
+    	background-color:rgb(12,44,44);
     }
     
     {/literal}
     </style>
     
     
-    
     <div id='map'>
-    <table style='width:310px;background-color:black'>
+    <table style='width:510px;background-color:black'>
     	<thead>
     	<tr>
-    		<td colspan='3' class='area-name' style='background-color:rgb(55, 10, 10);font-size:1.3em'>The Village</td>
+    		<td colspan='5' class='area-name' style='background-color:rgb(55, 10, 10);font-size:1.3em;text-align:center'>The Village</td>
     	</tr>
     	</thead>
     	<!-- <tfoot></tfoot> -->
@@ -33,30 +70,25 @@
 {foreach name='foreach-row' from=$nodes item='row' key='ycoord'}
     	<tr>
 {foreach name='foreach-over-row-of-nodes' from=$row item='node' key='xcoord'}
-    		<td class='node-id-{$node.id} {$node.type} some-node-type-like-building' style='width:100px;height:120px'>	
+    		<td class='node-id-{$node.id} {$node.type}' style='width:100px;height:100px;margin:0;padding:0'>	
     			<form action='map.php' method='post'>
     				<input type='hidden' name='ycoord' value='{$ycoord}>
     				<input type='hidden' name='xcoord' value='{$xcoord}>
-    				<input type='submit' name='move' value='{if isset($node.name)}{$node.name}{else}Move{/if}'>
-	{if isset($node.tile_image)}
-	    <img src='/images/{$node.tile_image}' alt='' style='max-width:100px;max-height:100px'>
-	{else}
-		<div style='display:inline-block;width:100px;height:100px'>
-		</div>
-	{/if}
+    				<input type='submit' name='move' value='{if isset($node.name)}{$node.name}{else}Go{/if}'>
     			</form>
     			
-    		<div class='details' style='height:20px;font-size:1.3em'>
-    		
-		      	{if $node.url}<a href='{$node.url|escape:'url'|escape}'>{/if}
-			{if isset($node.image)}
-		          <img src='/images/{$node.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
-			{/if}
-		          {$node.name|escape}
+				<div class='details' style='height:20px;font-size:1.3em;background-color:black;background-color:rgba(0,0,0,.8);'>
+				
+				  	{if $node.url}<a href='{$node.url|escape:'url'|escape}'>{/if}
+				{if isset($node.image)}
+				      <img src='/images/{$node.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
+				{/if}
+				      {if $node.url}View {/if}
+				      {$node.name|escape}
 
-		      	{if $node.url}</a>{/if}
-    		
-    		</div>
+				  	{if $node.url}</a>{/if}
+				
+				</div>
 
     		
     		</td>
