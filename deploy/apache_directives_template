@@ -41,12 +41,9 @@ php_value session.cookie_domain "__SERVER_NAME__"
 #<FilesMatch "\.()$">
 #   Header set Cache-Control "max-age=604800"
 #</FilesMatch>
-# DAY 86400 (a little more than a day is used below)
-<FilesMatch "\.(html|htm|txt|css)$">
-   Header set Cache-Control "max-age=95000, public"
-</FilesMatch>
-<FilesMatch "\.(js)$">
-   Header set Cache-Control "max-age=95000"
+# DAY 86400 (two days is used in the actual match below)
+<FilesMatch "\.(html|htm|txt|css|js)$">
+   Header set Cache-Control "max-age=95000, proxy-revalidate"
 </FilesMatch>
 # 12 hours 43200
 #<FilesMatch "\.(html|htm|txt|css|js)$">

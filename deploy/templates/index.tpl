@@ -286,6 +286,8 @@
         <span style="display:none">Annoy the Emperor, kill Samurai.</span>
         <span style="display:none">Helping ninja stab people since 2003.</span>
         <span style="display:none">Fact: Ninja can just click faster.</span>
+        <span style="display:none">True ninja do not use IE6.</span>
+        <span style="display:none">Ask a geisha for "full service", get a free chopstick in the eye.</span>
         <span>Oni are actually quite friendly, if you get to know them.</span>
         </span>
         |
