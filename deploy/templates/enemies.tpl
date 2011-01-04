@@ -12,26 +12,27 @@
 {literal}
 	$(document).ready(function(){
 	
-	// Function to display the matches.
-	NW.displayMatches = function(json_matches){
-		var sample = $('#sample-enemy-match');
-		$('#ninja-matches .enemy').not('#sample-enemy-match').css({'color':'red'}).remove();
-		//NW.debug(json_matches);
-		if(typeof(json_matches.char_matches) != 'undefined'){
-			// Take the matches, extract them into individuals.
-			for(var i in json_matches.char_matches){
-				var clone = sample.clone();
-				var match = json_matches.char_matches[i];
-				//NW.debug(match);
-				var link = clone.find('a');
-				//NW.debug(sample);
-				// For each individual, extend the default link to make an attack link.
-				var newlink = link.attr('href')+match.uname;
-				// Add the new ones back on after the sample.
-				sample.after(link.attr('href',newlink).text(match.uname).end().show());
+		// Function to display the matches.
+		NW.displayMatches = function(json_matches){
+			var sample = $('#sample-enemy-match');
+			//NW.debug(json_matches);
+			if(typeof(json_matches.char_matches) != 'undefined'){
+				// Make this remove instead of just hiding.
+				$('#ninja-matches .enemy:not(#sample-enemy-match)').remove();
+				// Take the matches, extract them into individuals.
+				for(var i in json_matches.char_matches){
+					var clone = sample.clone().attr('id', 'enemy-match-'+i);
+					var match = json_matches.char_matches[i];
+					//NW.debug(match);
+					var link = clone.find('a');
+					//NW.debug(sample);
+					// For each individual, extend the default link to make an attack link.
+					var newlink = link.attr('href')+match.uname;
+					// Add the new ones back on after the sample.
+					sample.after(link.attr('href',newlink).text(match.uname).end().show());
+				}
 			}
-		}
-	};
+		};
 		
 		
 		var searchbox = $('#enemy-match');
