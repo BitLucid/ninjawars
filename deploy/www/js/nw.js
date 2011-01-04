@@ -44,6 +44,25 @@ if (parent.window != window) {
 	NW.maxMiniChats = 250;
 	NW.currentMiniChats = 0;
 
+	// Create the typewatch var and store it for later.
+	NW.typewatch = (function(){
+	  var timer = 0;
+	  return function(callback, ms){
+		clearTimeout (timer);
+		timer = setTimeout(callback, ms);
+	  }  
+	})();
+	
+	// Accept a json data array of matches and house them in the interface.
+	NW.displayMatches = function(json_matches){
+		
+	}
+	
+	// Get the chars/ids matching a term and then have the callback run.
+	NW.charMatch = function(term, callback) {
+		$.getJSON('api.php?type=char_search&term='+term+'&jsoncallback=?', callback);
+	};
+
 	NW.chatLocked = function() {
 		return NW.chatLock;
 	};
@@ -77,6 +96,7 @@ if (parent.window != window) {
 		// Change the percentage of the background bar.
 	}
 	
+	
 	NW.displayBarstats = function() {
 		$('#barstats').show();
 	}
@@ -101,7 +121,7 @@ if (parent.window != window) {
 				// Save the data to the barstats temp variable.
 				NW.barstats.health = this.datastore.playerInfo.health;
 				NW.barstats.max_health = this.datastore.playerInfo.max_health;
-				// Calculate all the percentages from the maximums.
+				// Save all the percentages as well.
 				NW.barstats.health_percent = this.datastore.playerInfo.hp_percent;
 				NW.barstats.turns = this.datastore.playerInfo.turns;
 				NW.barstats.max_turns = this.datastore.playerInfo.max_turns;
@@ -120,144 +140,8 @@ if (parent.window != window) {
 	// For refreshing quickstats (now barstats) from inside the main iframe.
 	NW.refreshQuickstats = function(typeOfView) {
 		NW.refreshStats(); // Just call the function to refresh stats.
-		
-		/*
-		
-		var self = this;
-		//self.getAndUpdateHealth();
-
-		// Accounts for ajax section.
-		if (!typeOfView) {
-			typeOfView = '';
-		}
-
-		var url = 'quickstats.php?command='+typeOfView;
-
-		if (!this.quickDiv) {
-			this.quickDiv = document.getElementById('quickstats-frame-container');
-		}
-
-		if (this.quickDiv) {
-			if (typeOfView == 'viewinv') {
-				this.checkAPI(function() {self.quickDiv.replaceChild(self.renderInventoryQuickstats(), self.quickDiv.firstChild);});
-			} else {
-				this.checkAPI(function() {self.quickDiv.replaceChild(self.renderPlayerQuickstats(), self.quickDiv.firstChild);});
-			}
-
-			return true;
-		} else if (parent.quickstats) {
-			parent.quickstats.location = url;
-			return true;
-		} else {
-			return false;
-		}
-		
-		*/
 	};
 
-
-	/*
-	NW.renderInventoryQuickstats = function() {
-		var container, goldLabel, goldValue, itemLabel, itemValue;
-
-		container = document.createElement('dl');
-		container.className = "quickstats inventory";
-		var items = this.datastore.inventory.items;
-
-		for (i in items)
-		{
-			itemLabel = document.createElement('dt');
-			itemLabel.appendChild(document.createTextNode(items[i].item+':'));
-			container.appendChild(itemLabel);
-
-			itemValue = document.createElement('dd');
-			itemValue.appendChild(document.createTextNode(items[i].amount));
-			container.appendChild(itemValue);
-		}
-
-		goldLabel = document.createElement('dt');
-		goldLabel.appendChild(document.createTextNode('Gold:'));
-		goldLabel.style.color = "gold";
-		container.appendChild(goldLabel);
-
-		goldValue = document.createElement('dd');
-		goldValue.appendChild(document.createTextNode(this.datastore.playerInfo.gold));
-		goldValue.style.color = "gold";
-		container.appendChild(goldValue);
-
-		return container;
-	};
-
-	NW.renderPlayerQuickstats = function() {
-		var container, healthLabel, healthBar, expLabel, expBar, statusLabel, statusValue, turnsLabel, turnsValue, goldLabel, goldValue, bountyLabel, bountyValue;
-
-		// Jesus dammit christmas!  We need to keep the html out of the js.
-
-		container = document.createElement('dl');
-		container.className = "quickstats player-stats";
-
-		healthLabel = document.createElement('dt');
-		healthLabel.appendChild(document.createTextNode('Health:'));
-		expLabel = document.createElement('dt');
-		expLabel.appendChild(document.createTextNode('Exp:'));
-		statusLabel = document.createElement('dt');
-		statusLabel.appendChild(document.createTextNode('Status:'));
-		turnsLabel = document.createElement('dt');
-		turnsLabel.appendChild(document.createTextNode('Turns:'));
-		goldLabel = document.createElement('dt');
-		goldLabel.appendChild(document.createTextNode('Gold:'));
-		goldLabel.style.color = "gold";
-		bountyLabel = document.createElement('dt');
-		bountyLabel.appendChild(document.createTextNode('Bounty:'));
-
-		healthBar = document.createElement('dd');
-		var healthBarOuter = document.createElement('div');
-		healthBarOuter.title = "HP: "+this.datastore.playerInfo.health;
-		healthBarOuter.style.border = "1px solid rgb(238, 37, 32)";
-		healthBarOuter.style.width = "100%";
-		healthBarInner = document.createElement('div');
-		healthBarInner.style.backgroundColor = "rgb(238, 37, 32)";
-		healthBarInner.style.width = this.datastore.playerInfo.hp_percent+"%";
-		healthBarInner.appendChild(document.createTextNode('\u00a0'));
-		healthBarOuter.appendChild(healthBarInner);
-		healthBar.appendChild(healthBarOuter);
-		expBar = document.createElement('dd');
-		var expBarOuter = document.createElement('div');
-		expBarOuter.title = "Exp: "+this.datastore.playerInfo.exp_percent+"%";
-		expBarOuter.style.border = "1px solid #6612ee";
-		expBarOuter.style.width = "100%";
-		expBarInner = document.createElement('div');
-		expBarInner.style.backgroundColor = "#6612ee";
-		expBarInner.style.width = this.datastore.playerInfo.exp_percent+"%";
-		expBarInner.appendChild(document.createTextNode('\u00a0'));
-		expBarOuter.appendChild(expBarInner);
-		expBar.appendChild(expBarOuter);
-		statusValue = document.createElement('dd');
-		statusValue.appendChild(document.createTextNode(this.datastore.playerInfo.status_list));
-		turnsValue = document.createElement('dd');
-		turnsValue.appendChild(document.createTextNode(this.datastore.playerInfo.turns));
-		goldValue = document.createElement('dd');
-		goldValue.appendChild(document.createTextNode(this.datastore.playerInfo.gold));
-		goldValue.style.color = "gold";
-		bountyValue = document.createElement('dd');
-		bountyValue.appendChild(document.createTextNode(this.datastore.playerInfo.bounty));
-
-		container.appendChild(healthLabel);
-		container.appendChild(healthBar);
-		container.appendChild(expLabel);
-		container.appendChild(expBar);
-		container.appendChild(statusLabel);
-		container.appendChild(statusValue);
-		container.appendChild(turnsLabel);
-		container.appendChild(turnsValue);
-		container.appendChild(goldLabel);
-		container.appendChild(goldValue);
-		container.appendChild(bountyLabel);
-		container.appendChild(bountyValue);
-
-		return container;
-	};
-	*/
 
 	// Returns true when debug bit set or localhost path used.
 	NW.debug = function(arg) {
@@ -265,7 +149,6 @@ if (parent.window != window) {
 			if (console) {console.log(arg);}
 			return true;
 		}
-
 		return false;
 	};
 
@@ -371,47 +254,6 @@ if (parent.window != window) {
 		}
 	};
 
-	/*
-	// Update the display of the health.
-	NW.updateHealthBar = function(health) {
-		// Should only update when a change occurs.
-		if (health != this.datastore.visibleHealth) {
-			var mess = health+' health';
-			var span = $('#health-status', top.document);
-			// Keep in mind the need to use window.parent when calling from an iframe.
-			span.text(mess);
-
-			if (health < 100) {
-				span.addClass('injured');
-			} else {
-				span.removeClass('injured');
-			}
-
-			this.datastore.visibleHealth = health;
-
-			return true;
-		}
-
-		return false;
-	};
-
-	// Update the displayed health from the javascript-stored current value.
-	NW.getAndUpdateHealth = function() {
-		var updated = false;
-
-		if (this.datastore.playerInfo) {
-			this.datastore.playerInfo.health = (this.datastore.playerInfo.health ? this.datastore.playerInfo.health : '0');
-
-			if (this.datastore.visibleHealth != this.datastore.playerInfo.health) {
-				this.updateHealthBar(this.datastore.playerInfo.health);
-				updated = true;
-			}
-		}
-
-		return updated;
-	};
-	*/
-
 	NW.getEvent = function() {
 		return this.pullFromDataStore('latestEvent');
 	};
@@ -442,18 +284,6 @@ if (parent.window != window) {
 		var res = (this.feedbackValue ? this.feedbackValue : false);
 		this.feedbackValue = false; // Start slowing down after getting the value.
 		return res;
-	};
-
-	NW.make_checkAPI_callback = function(p_additionalCallback) {
-		var self = this;
-
-		return function(data) {
-			self.checkAPI_callback(data);
-
-			if (p_additionalCallback) {
-				p_additionalCallback();
-			}
-		}
 	};
 
 	// The checkAPI probably shouldn't delay display, display should happen whenever the api returns?
@@ -499,6 +329,17 @@ if (parent.window != window) {
 	NW.checkAPI = function(p_additionalCallback) {
 		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
 		$.getJSON('api.php?type=index&jsoncallback=?', this.make_checkAPI_callback(p_additionalCallback));
+	};
+	
+	// No-one knows what the fuck this does.
+	NW.make_checkAPI_callback = function(p_additionalCallback) {
+		var self = this;
+		return function(data) {
+			self.checkAPI_callback(data);
+			if (p_additionalCallback) {
+				p_additionalCallback();
+			}
+		}
 	};
 
 	// Saves an array of data to the global data storage, only works on array data, with an index.

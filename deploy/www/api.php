@@ -1,7 +1,6 @@
 <?php
 require_once(LIB_ROOT.'control/lib_player_list.php');
-// TODO: Only allow for ajax requests.
-// TODO: Turn the data fecthing into an associative fetch instead of DB_BOTH type.
+// How to call:  something/api.php?type=char_search&further_arg=blah
 
 // Check login to allow for information.
 // Recent mails.
@@ -18,7 +17,7 @@ echo nw_json($type, $jsoncallback);
  * Determine which function to call to get the json for.
 **/
 function nw_json($type, $jsoncallback) {
-	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index', 'latest_chat_id'=>'json_latest_chat_id', 'inventory'=>'json_inventory', 'new_chats'=>'json_new_chats', 'send_chat'=>'json_send_chat');
+	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 'latest_message'=>'json_latest_message', 'index'=>'json_index', 'latest_chat_id'=>'json_latest_chat_id', 'inventory'=>'json_inventory', 'new_chats'=>'json_new_chats', 'send_chat'=>'json_send_chat', 'char_search'=>'json_char_search');
 	$res = null;
 
 	if (isset($valid_type_map[$type])) {
@@ -31,12 +30,20 @@ function nw_json($type, $jsoncallback) {
 		} elseif ($type == 'chats') {
 			$chat_limit = in('chat_limit', 20);
 			$res = $jsoncallback.'('.json_chats($chat_limit).')';
+		} elseif ($type == 'char_search') {
+			$res = $jsoncallback.'('.json_char_search(in('term')).')';
 		} else {
 			$res = $jsoncallback.'('.$valid_type_map[$type]().')';
 		}
 	}
 
 	return $res;
+}
+
+// Search through characters by text, returning multiple matches.
+function json_char_search($term) {
+	$res = query('select player_id, uname from players where uname ~* :term order by level desc limit 100', array(':term'=>$term));
+	return '{"char_matches":'.json_encode($res->fetchAll(PDO::FETCH_ASSOC)).'}';
 }
 
 function json_latest_message() {

@@ -4,7 +4,9 @@ require_once(LIB_ROOT."control/lib_player_list.php");
 // Search for enemies to add.
 function get_enemy_matches($match_string) {
 	$user_id = get_user_id();
-	$sel = "SELECT player_id, uname FROM players WHERE uname ~* :matchString AND active = 1 AND player_id != :user ORDER BY level LIMIT 11";
+	$sel = "SELECT player_id, uname FROM players 
+		WHERE uname ~* :matchString AND active = 1 AND player_id != :user 
+		ORDER BY level LIMIT 11";
 	$enemies = query_array($sel, array(
 		':matchString' => $match_string
 		, ':user' => $user_id

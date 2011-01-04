@@ -1,14 +1,63 @@
 <h1>Combat</h1>
 
-{if $max_enemies neq true}
 <div id="ninja-enemy">
-  Search for ninja to add as enemies:
+  Search for ninja:
   <form id="enemy-add" action="enemies.php" method="get" name="enemy_add">
-    <input type="text" maxlength="50" name="enemy_match" class="textField">
+    <input id='enemy-match' type="text" maxlength="50" name="enemy_match" class="textField">
     <input type="submit" value="Find Enemies" class="formButton">
   </form>    
 </div>
-{/if}
+
+<script type='text/javascript'>
+{literal}
+	$(document).ready(function(){
+	
+	// Function to display the matches.
+	NW.displayMatches = function(json_matches){
+		var sample = $('#sample-enemy-match');
+		$('#ninja-matches .enemy').not('#sample-enemy-match').css({'color':'red'}).remove();
+		//NW.debug(json_matches);
+		if(typeof(json_matches.char_matches) != 'undefined'){
+			// Take the matches, extract them into individuals.
+			for(var i in json_matches.char_matches){
+				var clone = sample.clone();
+				var match = json_matches.char_matches[i];
+				//NW.debug(match);
+				var link = clone.find('a');
+				//NW.debug(sample);
+				// For each individual, extend the default link to make an attack link.
+				var newlink = link.attr('href')+match.uname;
+				// Add the new ones back on after the sample.
+				sample.after(link.attr('href',newlink).text(match.uname).end().show());
+			}
+		}
+	};
+		
+		
+		var searchbox = $('#enemy-match');
+		searchbox.keyup(function () {
+			NW.typewatch(function () {
+				// executed only 500 ms after the last keyup event.
+				var term = $('#enemy-match').val();
+				if(term && term.length>2){
+					// Only search after a few characters are typed out
+					NW.charMatch(term, NW.displayMatches);
+				}
+			}, 500);
+		});
+		
+	});
+{/literal}
+</script>
+
+
+<div id='ninja-matches' style=''>
+	<ul>
+		<li id='sample-enemy-match' class='enemy' style='display:none'>
+			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&target='>Someone</a></strong>
+		</li>
+	</ul>
+</div>
 
 {if $found_enemies && count($found_enemies) gt 0}
 	{include file="enemy-matches.tpl" enemies=$found_enemies}
