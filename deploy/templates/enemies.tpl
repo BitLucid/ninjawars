@@ -17,8 +17,8 @@
 			var sample = $('#sample-enemy-match');
 			//NW.debug(json_matches);
 			if(typeof(json_matches.char_matches) != 'undefined'){
-				// Make this remove instead of just hiding.
-				$('#ninja-matches .enemy:not(#sample-enemy-match)').remove();
+				// Remove all li's not preceded by an li.
+				$('#ninja-matches li+li').remove();
 				// Take the matches, extract them into individuals.
 				for(var i in json_matches.char_matches){
 					var clone = sample.clone().attr('id', 'enemy-match-'+i);
