@@ -22,6 +22,7 @@ $maximum_players_to_unconfirm                         = 200;
 // *************** DEITY NIGHTLY, manual-run-output occurs at the bottom.*********************
 
 DatabaseConnection::getInstance();
+DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
 $affected_rows['Increase Days Of Players'] = update_days();
 
 //DatabaseConnection::$pdo->query("UPDATE players SET status = status-".POISON." WHERE status&".POISON);  // Black Poison Fix
@@ -59,6 +60,7 @@ $duel_log_delete = DatabaseConnection::$pdo->query("delete from dueling_log wher
 $affected_rows['dueling log deletion'] = $duel_log_delete->rowCount();
 
 $level_1_delete = DatabaseConnection::$pdo->query("delete from players where active = 0 and level = 1"); // Delete old level 1's.
+DatabaseConnection::$pdo->query('COMMIT');
 $affected_rows['old level 1 players deletion'] = $level_1_delete->rowCount(); 
 
 

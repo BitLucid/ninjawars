@@ -20,6 +20,7 @@ $out_display = array();
 
 // ******************* END OF CONSTANTS ***********************
 
+DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
 DatabaseConnection::$pdo->query("UPDATE time SET amount = amount+1 WHERE time_label = 'hours'"); // Update the hours ticker.
 DatabaseConnection::$pdo->query("UPDATE time SET amount = 0 WHERE time_label = 'hours' AND amount >= 24"); // Rollover the time to hour zero.
 DatabaseConnection::$pdo->query("UPDATE players SET turns = 0 WHERE turns < 0");
@@ -73,6 +74,7 @@ assert(FROZEN != 'FROZEN'); // These constants should be numeric.
 assert(STEALTH != 'STEALTH');
 DatabaseConnection::$pdo->query("UPDATE players SET status = status-".FROZEN." WHERE CAST(status&".FROZEN." AS bool)"); // Cold Steal Crit Fail Unfreeze
 DatabaseConnection::$pdo->query("UPDATE players SET status = status-".STEALTH."  WHERE CAST(status&".STEALTH." AS bool)"); //stealth lasts 1 hr
+DatabaseConnection::$pdo->query('COMMIT');
 
 // **************
 // Visual output:

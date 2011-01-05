@@ -3,6 +3,7 @@ require_once(dirname(__FILE__).'/../lib/base.inc.php'); // Currently this forces
 require_once(LIB_ROOT."control/lib_deity.php"); // Deity-specific functions
 
 DatabaseConnection::getInstance();
+DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
 DatabaseConnection::$pdo->query('TRUNCATE player_rank');
 DatabaseConnection::$pdo->query("SELECT setval('player_rank_rank_id_seq1', 1, false)");
 $ranked_players = DatabaseConnection::$pdo->query('INSERT INTO player_rank (_player_id, score) SELECT player_id, ((level*5000) + floor(gold/200) + (CASE WHEN kills > (5*level) THEN 3000 + least(floor((kills - (5*level)) * .3), 2000) ELSE ((kills/(5*level))*3000) END) - (days*200)) AS score FROM players WHERE active = 1 ORDER BY score DESC');
@@ -11,6 +12,7 @@ $ranked_players = DatabaseConnection::$pdo->query('INSERT INTO player_rank (_pla
 
 // Add 1 to player's ki when they've been active in the last 5 minutes.
 query("update players set ki = ki + 1 where last_started_attack > (now() - interval '6 minutes')");
+DatabaseConnection::$pdo->query('COMMIT');
 
 $rand = rand(1, 60);
 
