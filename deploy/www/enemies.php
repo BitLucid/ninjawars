@@ -68,7 +68,7 @@ function expand_enemy_info($enemy_id) {
 
 // Pull the current enemies, expand out their info, and then sort 'em by health & level.
 function get_current_enemies() {
-	$query = 'SELECT player_id, active, level, uname, health, least(100,floor((health / (150 + ((level-1)*25))::float)*100)) AS health_percent FROM players JOIN enemies ON _enemy_id = player_id AND _player_id = :pid ORDER BY health DESC, level DESC';
+	$query = 'SELECT player_id, active, level, uname, health, least(100,floor((health / (150 + ((level-1)*25))::float)*100)) AS health_percent FROM players JOIN enemies ON _enemy_id = player_id AND _player_id = :pid WHERE active = 1 ORDER BY health DESC, level DESC';
 	DatabaseConnection::getInstance();
 
 	$statement = DatabaseConnection::$pdo->prepare($query);
@@ -84,7 +84,7 @@ function get_recent_attackers() {
 
 	$statement = DatabaseConnection::$pdo->prepare(
 		'SELECT DISTINCT player_id, send_from, uname, level, health 
-		FROM events JOIN players ON send_from = player_id WHERE send_to = :user LIMIT 20');
+		FROM events JOIN players ON send_from = player_id WHERE send_to = :user AND active = 1 LIMIT 20');
 	$statement->bindValue(':user', get_user_id());
 	$statement->execute();
 
