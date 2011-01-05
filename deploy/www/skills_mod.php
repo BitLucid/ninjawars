@@ -1,6 +1,6 @@
 <?php
 require_once(LIB_ROOT.'control/lib_inventory.php');
-require_once(LIB_ROOT."control/Skill.php");
+require_once(LIB_ROOT.'control/Skill.php');
 /*
  * Deals with the skill based attacks, and status effects.
  *
@@ -42,7 +42,7 @@ assert($turn_cost>=0);
 $turns_to_take = null;  // *** Even on failure take at least one turn.
 $char_id = get_char_id();
 
-$player          = new Player($char_id);
+$player = new Player($char_id);
 
 if ($target != '' && $target != $player->player_id) {
 	$target = new Player($target);
@@ -78,7 +78,6 @@ if ($command == 'Clone Kill') {
 	$attack_error = null;
 	$covert = true;
 } else {
-
 	// *** Checks the skill use legality, as long as the target isn't self.
 	$params         = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$ignores_stealth, 'self_use'=>$self_use);
 	$AttackLegal    = new AttackLegal($player->player_id, $target->player_id, $params);
@@ -86,9 +85,8 @@ if ($command == 'Clone Kill') {
 	$attack_error   = $AttackLegal->getError();
 }
 
-
 if (!$attack_error) { // Only bother to check for other errors if there aren't some already.
-	if (!$has_skill || $class == "" || $command == "") {
+	if (!$has_skill || $class == '' || $command == '') {
 		// Set the attack error to display that that skill wasn't available.
 		$attack_error = 'You do not have the requested skill.';
 	} elseif ($starting_turns < $turn_cost) {
@@ -96,7 +94,6 @@ if (!$attack_error) { // Only bother to check for other errors if there aren't s
 		$attack_error = "You do not have enough turns to use $command.";
 	}
 }
-
 
 // Strip down the player info to get the sight data.
 function pull_sight_data($target_id) {
@@ -106,7 +103,7 @@ function pull_sight_data($target_id) {
 	$res = array();
 
 	foreach ($allowed as $field) {
-		$res[$field]=$data[$field];
+		$res[$field] = $data[$field];
 	}
 
 	return $res;
@@ -114,15 +111,15 @@ function pull_sight_data($target_id) {
 
 if (!$attack_error) { // Nothing to prevent the attack from happening.
 	// Initial attack conditions are alright.
-	$result = "";
+	$result = '';
 
-	if ($command == "Sight") {
+	if ($command == 'Sight') {
 		$covert = true;
 
 		$sight_data = pull_sight_data($target_id);
 			
 		$display_sight_table = true;
-	} elseif ($command == "Steal") {
+	} elseif ($command == 'Steal') {
 		$covert = true;
 
 		$gold_decrease = rand(1, 50);
@@ -136,7 +133,6 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		send_message($attacker_char_id, $target->id(), $msg);
 		
 		$generic_skill_result_message = "You have stolen $gold_decrease gold from __TARGET__!";
-		
 	} else if ($command == 'Unstealth') {
 		$state = 'unstealthed';
 
@@ -150,6 +146,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 	} else if ($command == 'Stealth') {
 		$covert     = true;
 		$state      = 'stealthed';
+
 		if (!$target->hasStatus(STEALTH)) {
 			$target->addStatus(STEALTH);
 			$generic_state_change = "__TARGET__ is now $state.";
@@ -157,32 +154,29 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			$turn_cost = 0;
 			$generic_state_change = "__TARGET__ is already $state.";
 		}
-	} else if ($command == "Kampo") {
+	} else if ($command == 'Kampo') {
 		$covert = true;
 
 		// *** Get Special Items From Inventory ***
 		$user_id = get_user_id();
 
-
 		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare(
-			"SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type");
+		$statement = DatabaseConnection::$pdo->prepare('SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type');
 		$statement->bindValue(':owner', $user_id);
 		$statement->execute();
 		
 		$itemCount = $statement->fetchColumn();
 		$itemsConverted = min($itemCount, $starting_turns-1);
 
-		if ($itemsConverted) {	// *** If special item count > 0 ***
-			
+		if ($itemsConverted > 0) {	// *** If special item count > 0 ***
 			remove_item($user_id, 'ginsengroot', $itemsConverted);
 			add_item($user_id, 'tigersalve', $itemsConverted);
 			$turn_cost = $itemsConverted;
 			
-			$generic_skill_result_message = "With intense focus you grind the herbs into potent formulas.";
+			$generic_skill_result_message = 'With intense focus you grind the herbs into potent formulas.';
 		} else { // *** no special items, give error message ***
 			$turn_cost = 0;
-			$generic_skill_result_message = "You do not have the necessary ingredients or time for any Kampo formulas.";
+			$generic_skill_result_message = 'You do not have the necessary ingredients or time for any Kampo formulas.';
 		}
 	} else if ($command == 'Poison Touch') {
 		$covert = true;
@@ -215,16 +209,18 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 	    $healed_by = $player->level()*$heal_per_level;		    
 	    $target_current_health = $target->health();
 	    $target_max_health = $target->max_health();
+
 	    if ($target->hasStatus(HEALING)) {
 	        $turn_cost = 0;
 	        $generic_state_change = '__TARGET__ is already under a healing aura.';
-		} elseif ($target_current_health>=$target_max_health) {
+		} elseif ($target_current_health >= $target_max_health) {
 			$turn_cost = 0;
 			$generic_skill_result_message = '__TARGET__ is already fully healed.';
 		} else {
 		    $new_health = $target->heal($healed_by);
 		    $target->addStatus(HEALING);
 		    $generic_skill_result_message = "__TARGET__ healed by $healed_by to $new_health.";
+
 		    if ($target->name() != $player->name())  {
 				send_message($attacker_char_id, $target->id(), "You have been healed by $attacker_id at $today for $healed_by.");
 			}
@@ -248,7 +244,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			}
 		} else {
 			$turn_cost = 0;
-			$generic_skill_result_message = "__TARGET__ is already iced.";
+			$generic_skill_result_message = '__TARGET__ is already iced.';
 		}
 	} else if ($command == 'Cold Steal') {
 		if (!$target->hasStatus(SLOW)) {
@@ -268,12 +264,12 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 					$generic_skill_result_message = "You cast Cold Steal on __TARGET__ and take $turns_decrease turns.";
 				} else {
 					$turn_cost = 0;
-					$generic_skill_result_message = "__TARGET__ did not have enough turns to give you.";
+					$generic_skill_result_message = '__TARGET__ did not have enough turns to give you.';
 				}
 			} else { // *** CRITICAL FAILURE !!
 				$player->addStatus(FROZEN);
 
-				$unfreeze_time = date("F j, Y, g:i a", mktime(date("G")+1, 0, 0, date("m"), date("d"), date("Y")));
+				$unfreeze_time = date('F j, Y, g:i a', mktime(date('G')+1, 0, 0, date('m'), date('d'), date('Y')));
 
 				$failure_msg = "You have experienced a critical failure while using Cold Steal on $today. You will be unfrozen on $unfreeze_time";
 				sendMessage("SysMsg", $username, $failure_msg);
@@ -281,7 +277,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			}
 		} else {
 			$turn_cost = 0;
-			$generic_skill_result_message = "__TARGET__ is already iced.";
+			$generic_skill_result_message = '__TARGET__ is already iced.';
 		}
 	} else if ($command == 'Clone Kill') {
 		// Obliterates the turns and the health of similar accounts that get clone killed.
@@ -295,17 +291,20 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 		if (!$clone_1_id || !$clone_2_id) {
 			$not_a_ninja = $clone1;
+
 			if (!$clone_2_id) {
 				$not_a_ninja = $clone2;
 			}
+
 			$generic_skill_result_message = "There is no such ninja as $not_a_ninja.";
 		} elseif ($clone_1_id == $clone_2_id) {
-			$generic_skill_result_message = "__TARGET__ is just the same ninja, so not the same thing as a clone at all.";
+			$generic_skill_result_message = '__TARGET__ is just the same ninja, so not the same thing as a clone at all.';
 		} elseif ($clone_1_id == $char_id || $clone_2_id == $char_id) {
-			$generic_skill_result_message = "You cannot clone kill yourself.";
+			$generic_skill_result_message = 'You cannot clone kill yourself.';
 		} else {
 			// The check for multiplaying traits.
 			$are_clones = characters_are_linked($clone_1_id, $clone_2_id);
+
 			if ($are_clones) {
 				$clone_char = new Player($clone_1_id);
 				$clone_char_2 = new Player($clone_2_id);
@@ -329,7 +328,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 	if (!$victim_alive) { // Someone died.
 		if ($target->player_id == $player->player_id) { // Attacker killed themself.
-					$loot = 0;
+			$loot = 0;
 			$suicided = true;
 		} else { // Attacker killed someone else.
 			$killed_target = true;
@@ -349,7 +348,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 				if ($bounty = rewardBounty($username, $target->vo->uname)) {
 
 					$bounty_msg = "You have valiantly slain the wanted criminal, $target! For your efforts, you have been awarded $bounty gold!";
-					sendMessage("Village Doshin", $username, $bounty_msg);
+					sendMessage('Village Doshin', $username, $bounty_msg);
 				}
 			}
 
@@ -372,7 +371,6 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 } // End of the skill use SUCCESS block.
 
 $ending_turns = changeTurns($username, $turns_to_take); // Take the skill use cost.
-
 
 $target_ending_health = $target->health();
 $target_ending_health_percent = $target->health_percent();

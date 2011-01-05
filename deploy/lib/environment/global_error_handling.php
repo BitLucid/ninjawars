@@ -31,7 +31,7 @@ function globalErrorHandler($errno, $errstr, $errfile, $errline) {
 
 	error_log(sprintf("PHP %s:  %s in %s on line %d", $errors, $errstr, $errfile, $errline));
 	$msg = "ERROR: [$errno] $errstr\r\n".
-        "$errors on line $errline in file $errfile";
+        "$errors on line $errline in file $errfile\r\n";
 
 	sendErrorEmail($msg);
 	showErrorPage();
@@ -46,6 +46,14 @@ function sendErrorEmail($p_errorMsg) {
 
 	if (isset($_SESSION['player_id'])) {
 		$p_errorMsg .= "Error Occured for playerID ".$_SESSION['player_id']."\r\n";
+	}
+
+	$p_errorMsg .= 'REQUEST_URI: '.$_SERVER['REQUEST_URI']."\r\n";
+	$p_errorMsg .= 'REFERER: '.$_SERVER['HTTP_REFERER']."\r\n";
+	$p_errorMsg .= 'METHOD: '.$_SERVER['REQUEST_METHOD']."\r\n";
+
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		$p_errorMsg .= 'POST_DATA: '.print_r($_POST, true)."\r\n";
 	}
 
 	$headers = "MIME-Version: 1.0\r\n".

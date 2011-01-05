@@ -427,7 +427,7 @@ function remove_item($char_id, $identity, $quantity = 1) {
 			)
 		);
 	} else {
-	    throw new Exception('Invalid item to add to inventory.');
+	    throw new Exception('Invalid item to remove from inventory.');
 	}
 }
 
