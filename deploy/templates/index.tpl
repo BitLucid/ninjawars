@@ -36,8 +36,8 @@
 	    <!-- Spacer div for the main shuriken linkback logo -->
 	    &nbsp;
 	  </div>
-	  <div id='health-and-turns' class='various-bars' style='width:46%;display:inline-block;vertical-align:top;margin:0 15% .3em;'>
-	  	<div id='barstats' style='width:100%;display:none;height:5em'>
+	  <div id='health-and-turns' class='various-bars' style='width:46%;display:inline-block;vertical-align:top;margin:0 15% .1em;'>
+	  	<div id='barstats' style='width:100%;display:none;height:100%;font-size:.9em'>
 		  	<!-- Display the number bars for various char stats-->
 		  	<div id='health' style='height:33%'>
 			  {include file="generic_bar.tpl" bar_percent=$player_info.hp_percent number=$player_info.health zero_word='Dead' number_of='Health' bar_color='#660000' title='Heal Yourself' action='shrine_mod.php?heal_and_resurrect=1'}<!-- #ee2520 -->
@@ -53,7 +53,7 @@
 
 		<div id='logout'>
 		    <a href="logout.php">
-		      <img src='{$smarty.const.IMAGE_ROOT|escape}logoutTriangle.png' alt='Logout' title='Leave the game' style='height:70px;width:70px'>
+		      <img src='{$smarty.const.IMAGE_ROOT|escape}logoutTriangle.png' alt='Logout' title='Leave the game' style='height:60px;width:60px'>
 		    </a>
 		</div>
 
@@ -106,14 +106,13 @@
                   <!-- Settings -->
                 </ul>
                 <ul id='combat-subcategory'>
-                  <li><a href="list.php" target="main" title='Ranked list of ninjas to attack.'>Ninja</a></li>
+                  <li><a href="list.php" target="main" title='Ranked list of ninjas to attack.'>Ninjas</a></li>
                   <li><a href="clan.php" target="main" title='Clans and your clan options.'>Clans</a></li>
-                  <li><a href="duel.php" target="main" title="Today's Duels">Rumors</a></li>
                 </ul>
                 <ul id='map-subcategory'>
-                  <li><a href="shop.php" target="main" title='Spend your money to get weapons.'>Shop</a></li>
+                  <li><a href="shop.php" target="main" title='Spend your money to get weapons.'>Buy</a></li>
                   <li><a href="work.php" target="main" title='Trade your turns to get money.'>Work</a></li>
-                  <li><a href="doshin_office.php" target="main" title='Hunt bounties for money.'>Doshin <img src="images/doshin.png" alt="" style='height:8px;width:8px'></a></li>
+                  <li><a href="doshin_office.php" target="main" title='Hunt bounties for money.'>Hunt<img src="images/doshin.png" alt="" style='height:8px;width:8px'></a></li>
                 </ul>
             </div>
         </div><!-- End of reactive panel -->

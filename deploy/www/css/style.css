@@ -1532,18 +1532,13 @@ iframe {
 	float:right;
 	width:30%;
 }
-.splash #sidebar-column {
-	width: 20%;
-}
 #main-column {
 	float:left;
 	width:70%;
 	height:100%;
 }
 .header-section {
-	height:6em;
-	border-bottom: thick solid #330000;
-	color:white;
+	height:5.5em;
 }
 #ninjawars-home {
 	background-color:black;
@@ -1557,8 +1552,6 @@ iframe {
 
 #reactive-panel {
 	height:100%;
-	background-color:black;
-	color: white;
 }
 
 #logout {
@@ -1583,7 +1576,7 @@ iframe {
 /* reactive-panel subparts */
 #category-bar {
 	margin: 0;
-	height:75%;
+	height:70%;
 	width: 100%;
 	background: black;
 	color:white;
@@ -1593,11 +1586,10 @@ iframe {
 	/*font:30px/34px 'PisanNormal',Georgia,Times,serif;*/
 	letter-spacing: 0;
 	text-transform:uppercase;
+	padding-bottom:.2em;
 }
 #category-bar ul {
 	height:100%;
-	margin: 0;
-	padding: 0;
 	display: inline;
 }
 #category-bar li {
@@ -1622,11 +1614,14 @@ iframe {
 	width:100%;
 	float:left;
 	text-align:center;
-	line-height:2em;
 	text-transform:uppercase;
 	background-color:#330000;	
 	color:white;
-	padding-top: .5em;
+	padding-bottom:.5em;
+}
+.splash #subcategory-bar{
+	padding-bottom:0;
+	padding-top:.5em;
 }
 #subcategory-bar a {
 	font: 18px/27px 'ShangriLaNFRegular', Verdana, sans-serif;
@@ -1711,9 +1706,6 @@ select option #blue-class-select {
 	white-space: nowrap;
 }
 
-.gold-count {
-	color: rgb(255, 215, 0);
-}
 
 /* Class to add to locations that show character names */
 .char-name {
@@ -1803,13 +1795,6 @@ select option #blue-class-select {
 	left:0;
 }
 
-#top-logo{
-	display:inline-block;
-	vertical-align:top;
-	margin-left: 2em;
-	margin-right: 2em;
-}
-
 #contact-us img {
 	max-width:98%;
 }
@@ -1830,8 +1815,8 @@ body, html {
 
 #main {
 	float:right;
-	width:75%;
-	height: 80%;
+	width:90%;
+	height: 100%;
 }
 
 #sidebar {
@@ -1858,7 +1843,7 @@ body, html {
 
 #logo-placeholder {
 	width:100px;
-	height:75px;
+	height:60px;
 	display:inline-block;
 	vertical-align:top;
 	z-index:-1;
@@ -1870,4 +1855,8 @@ body, html {
 
 #nw-catchphrases .default {
 	display: default;
+}
+
+.gold, .gold-count {
+	color:goldenrod;
 }

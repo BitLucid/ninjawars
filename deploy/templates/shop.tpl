@@ -10,10 +10,6 @@ form{
 input.shopButton{
     width:17em;
 }
-
-.gold{
-    color: rgb(255, 215, 0);
-}
 {/literal}
 </style>
 

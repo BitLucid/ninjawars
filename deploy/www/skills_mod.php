@@ -99,11 +99,12 @@ if (!$attack_error) { // Only bother to check for other errors if there aren't s
 function pull_sight_data($target_id) {
 	$data = get_player_info($target_id);
 	// Strip all fields but those allowed.
-	$allowed = array('uname', 'class', 'health', 'strength', 'speed', 'stamina', 'ki', 'gold', 'kills', 'turns', 'level');
+	$allowed = array('Name'=>'uname', 'Class'=>'class', 'Level'=>'level', 'Turns'=>'turns', 'Strength'=>'strength', 'Speed'=>'speed', 'Stamina'=>'stamina', 'Ki'=>'ki', 'Gold'=>'gold', 'Kills'=>'kills');
 	$res = array();
 
-	foreach ($allowed as $field) {
-		$res[$field] = $data[$field];
+	
+	foreach ($allowed as $header => $field) {
+		$res[$header] = $data[$field];
 	}
 
 	return $res;

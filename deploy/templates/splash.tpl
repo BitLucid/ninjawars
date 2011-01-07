@@ -23,15 +23,14 @@
 		<div id='top-bar'>
 		  <span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
 		</div>
-		<div id='top-logo'>
+		<div id='top-logo' style='width:50%;text-align:center;display:inline-block;vertical-align:top;margin-left: 2em;margin-right: 2em;'>
           <a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='' width='200' height='100'></a>
 		</div>
       
         <div id='subcategory-bar'>
           <ul id='ninjas-subcategory'>
-            <li><a href="list.php" target="main">Ninja</a></li>
+            <li><a href="list.php" target="main">Ninjas</a></li>
             <li><a href="clan.php" target="main">Clans</a></li>
-            <li><a href="duel.php" target="main">Rumors</a></li>
           </ul>
           <ul>
           	<li>&nbsp;</li>

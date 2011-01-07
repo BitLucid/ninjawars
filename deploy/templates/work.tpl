@@ -42,7 +42,7 @@ $(document).ready(function (){
 {/if}
 
 <p>You can earn money by working in the village fields. Field work will exchange turns for gold.</p>
-<div>The current work exchange rate: 1 Turn = {$work_multiplier} Gold.</div>
+<div>The current work pay rate is: <span style='color:turquoise;'>1 Turn</span> = <span class='gold'>{$work_multiplier} Gold</span>.</div>
 {if $is_logged_in}
 <form id="work" action="work.php" method="post" name="work">
   <div>
