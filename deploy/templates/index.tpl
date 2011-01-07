@@ -82,17 +82,17 @@
               <ul>
                 <li id='status-actions' class='self'>
                   <a href='events.php' target='main' title='See messages about whether you were attacked or other events.'>
-                    <img src='/images/ninja_status_icon_50px.png' alt='' style='width:50px;height:51px'>Status
+                    <img src='/images/ninja_status_icon_50px.png' alt='' style='width:50px;height:51px'>Watch
                   </a>
                 </li>
                 <li id='combat-actions' class='combat'>
                   <a href='enemies.php' target='main' title='Check up on your enemies and see who recently attacked you.'>
-                    <img src='images/50pxShuriken.png' alt=''  style='width:50px;height:42px'>Combat
+                    <img src='images/50pxShuriken.png' alt=''  style='width:50px;height:42px'>Fight
                   </a>
                 </li>
                 <li id='map-actions' class='map'>
                   <a href='map.php' target='main' title='Travel to different locations on the Map.'>                  
-                    <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Map
+                    <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Move
                   </a>
                 </li>
               </ul>
