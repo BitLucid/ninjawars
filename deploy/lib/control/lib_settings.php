@@ -63,7 +63,6 @@ function set_setting($name, $setting) {
 // Save a set of settings & call for a refresh of the static in-memory storage.
 function save_settings($settings) {
 	$user_id = get_user_id();
-	assert($user_id);
     if($user_id){
     	DatabaseConnection::getInstance();
     	$statement = DatabaseConnection::$pdo->prepare("SELECT count(settings_store) FROM settings WHERE player_id = :player");
@@ -84,7 +83,6 @@ function save_settings($settings) {
 
     	$statement->execute();
     }
-
 	return get_settings($refresh=true); // This refreshes the static, saved settings variable.
 }
 ?>
