@@ -37,7 +37,9 @@ if (!$searched && $hide_setting != $hide) { SESSION::set('hide_dead', $hide); } 
 // If unless showing dead, check that health is > 0, or alive = true from the ranking.
 // Otherwise, no searching was done, so the score
 
-$where_clause = "";
+$where_clauses = array(); // Array to add where clauses to.
+
+
 // Select some players from the ranking.
 $queryParams = array();
 
@@ -45,23 +47,25 @@ if ($searched) {
 	$view_type = 'searched';
 
 	if (strlen($searched) == 1) {
-		$where_clause = " WHERE (rankings.uname ilike :param".count($queryParams).") ";
+		$where_clauses[] = " (rankings.uname ilike :param".count($queryParams).") ";
 		$queryParams[] = $searched.'%';
 	} else if (!$list_by_rank) {
-		$where_clause = " WHERE (rankings.uname ~* :param".count($queryParams).") ";
+		$where_clauses[] = " (rankings.uname ~* :param".count($queryParams).") ";
 		$queryParams[] = $searched;
 	}
 
 	if ($hide == 'dead') {
-		$where_clause .= " AND alive = true";
+		$where_clause[] = " alive = true";
 	}
 }
 else if ($hide == 'dead') {
-	$where_clause .= " WHERE alive";
+	$where_clauses[] = " alive";
 }
 
-$query_count     = "SELECT count(player_id) FROM rankings ".$where_clause;
+$query_count     = "SELECT count(player_id) FROM rankings ".(count($where_clauses)? "WHERE ".implode($where_clauses, ' AND ') : "");
 $count_statement = DatabaseConnection::$pdo->prepare($query_count);
+
+$where_clauses[] = " active = 1"; // Filter out inactives when not dealing with rankings, which is filtered separately.
 
 for ($i = 0;$i < count($queryParams); $i++) {	// *** Reformulate if queryParams gets to be more than 3 or for items
 	$count_statement->bindValue(':param'.$i, $queryParams[$i]);
@@ -92,7 +96,7 @@ $limitvalue = max(0, ($page * $record_limit) - $record_limit);
 
 // Get the ninja information to create the lists.
 $sel = "SELECT rank_id, rankings.uname, class.class_name as class, class.identity as class_identity, class.theme as class_theme, rankings.level, rankings.alive, rankings.days, clan_player._clan_id AS clan_id, clan.clan_name, players.player_id
-	FROM rankings LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id JOIN players on rankings.player_id = players.player_id JOIN class on class.class_id = players._class_id ".$where_clause." ORDER BY rank_id ASC, player_id ASC
+	FROM rankings LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id JOIN players on rankings.player_id = players.player_id JOIN class on class.class_id = players._class_id ".(count($where_clauses)? " WHERE active = 1 AND ".implode($where_clauses, ' AND ') : "")." ORDER BY rank_id ASC, player_id ASC
 	LIMIT $record_limit OFFSET $limitvalue";
 
 $ninja_info = DatabaseConnection::$pdo->prepare($sel);
