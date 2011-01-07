@@ -5,6 +5,13 @@
  * @package deity
  * @subpackage deity_lib
  */
+ 
+
+// Determine the score for ranking.
+function get_score_formula(){
+	$score = '(level*1000 + gold/100 + kills*3 - days*5)';
+	return $score;
+}
 
 function delete_old_messages($limit = null) {
 	DatabaseConnection::getInstance();
@@ -168,4 +175,16 @@ function revive_players($params=array()) {
 	// Return the 'revived/total' actually revived.
 	return array($truly_revived, $dead_count);
 }
+
+// Update the vicious killer stat.
+function update_most_vicious_killer_stat(){
+		$vk = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) GROUP BY uname, killpoints ORDER BY killpoints DESC LIMIT 1');
+		$todaysViciousKiller = $vk->fetchColumn();
+		if($todaysViciousKiller){
+			$update = DatabaseConnection::$pdo->prepare('UPDATE past_stats SET stat_result = :visciousKiller WHERE id = 4'); // 4 is the ID of the vicious killer stat.
+			$update->bindValue(':visciousKiller', $todaysViciousKiller);
+			$update->execute();	
+		}
+}
+
 ?>

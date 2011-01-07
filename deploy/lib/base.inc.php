@@ -19,8 +19,14 @@ if (PROFILE) {
 	$__starttime = $mtime;
 }
 
+
+// Includes that actually actively modify settings.
+require_once(LIB_ROOT.'environment/lib_assert.php');
+require_once(LIB_ROOT.'environment/status_defines.php'); // Status constant definitions.
+require_once(LIB_ROOT.'environment/lib_error_reporting.php');
+require_once(LIB_ROOT.'environment/lib_formulas.php');
 require_once(LIB_ROOT.'environment/global_error_handling.php');
-// *** Included first from the index, so has to be on the same level as index.
+
 // Standalone utilities
 require_once(LIB_ROOT.'control/assignment_functions.php');
 require_once(LIB_ROOT.'control/redirect.php');
@@ -41,12 +47,6 @@ require_once(LIB_ROOT.'control/lib_templates.php');
 if (DEBUG) {
 	require_once(LIB_ROOT.'control/lib_dev.php');
 }
-
-// Includes that actually actively modify settings.
-require_once(LIB_ROOT.'environment/lib_assert.php');
-require_once(LIB_ROOT.'environment/status_defines.php'); // Status constant definitions.
-require_once(LIB_ROOT.'environment/lib_error_reporting.php');
-require_once(LIB_ROOT.'environment/lib_formulas.php');
 
 // Include all the commands, which eventually should be broken up.
 require_once(LIB_ROOT.'control/commands.php');

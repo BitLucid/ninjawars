@@ -29,7 +29,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 	} else {
 		$viewing_player_obj = new Player(get_char_id());
 
-		$score = get_score_formula();
+		//$score = get_score_formula();
 
 		$self        = (get_char_id() && get_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
 

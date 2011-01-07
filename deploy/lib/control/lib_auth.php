@@ -411,16 +411,8 @@ function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure
  */
 function membership_and_combat_stats($update_past_stats=false) {
 	DatabaseConnection::getInstance();
-	$vk = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) GROUP BY uname, killpoints ORDER BY killpoints DESC LIMIT 1');
+	$vk = DatabaseConnection::$pdo->query('SELECT stat_result from past_stats where id = 4');
 	$todaysViciousKiller = $vk->fetchColumn();
-
-	if ($todaysViciousKiller == '') {
-		$todaysViciousKiller = 'None';
-	} elseif ($update_past_stats) {
-		$update = DatabaseConnection::$pdo->prepare('UPDATE past_stats SET stat_result = :visciousKiller WHERE id = 4'); // 4 is the ID of the vicious killer stat.
-		$update->bindValue(':visciousKiller', $todaysViciousKiller);
-		$update->execute();
-	}
 
 	$stats['vicious_killer'] = $todaysViciousKiller;
 	$pc = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE active = 1");

@@ -5,8 +5,13 @@
  * @package deity
  * @subpackage deity_lib
  */
-require_once(dirname(__FILE__).'/../lib/base.inc.php'); // Currently this forces crons locally to be called from the cron folder.
-require_once(LIB_ROOT.'control/lib_deity.php');
+require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/'))).'resources.php');
+require_once(LIB_ROOT.'data/DatabaseConnection.php');
+require_once(LIB_ROOT.'environment/lib_assert.php');
+require_once(LIB_ROOT.'environment/status_defines.php'); // Status constant definitions.
+require_once(LIB_ROOT.'environment/lib_error_reporting.php');
+require_once(LIB_ROOT.'data/lib_db.php');
+require_once(LIB_ROOT."control/lib_deity.php"); // Deity-specific functions
 
 $logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
 
@@ -26,15 +31,13 @@ DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
 $affected_rows['Increase Days Of Players'] = update_days();
 
 //DatabaseConnection::$pdo->query("UPDATE players SET status = status-".POISON." WHERE status&".POISON);  // Black Poison Fix
-$status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  // Hmmm, gets rid of all status effects, we may want to make that not have that limit, some day.
+$status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  // Hmmm, gets rid of all status effects, we may want to make that not have that limitation, some day.
 $affected_rows['Statuses Removed'] = $status_removal->rowCount();
 
 $deleted = shorten_chat(); // run the shortening of the chat.
 $affected_rows['deleted chats'] = $deleted;
 
-$stats = membership_and_combat_stats($update_past_stats=true);
-$affected_rows['Vicious killer: '] = $stats['vicious_killer'];
-//DatabaseConnection::$pdo->query("DELETE FROM mail WHERE send_to='SysMsg'");  //Deletes any mail directed to the sysmsg message bot.
+update_most_vicious_killer_stat();// Update the vicious killer stat.
 
 //Nightly Unconfirm old players script settings.
 $unconfirmed = unconfirm_older_players_over_minimums($keep_players_until_over_the_number, $days_players_have_to_be_older_than_to_be_unconfirmed, $maximum_players_to_unconfirm, $just_testing=false);
@@ -59,7 +62,7 @@ $affected_rows['levelling log deletion'] = $level_log_delete->rowCount(); // Kee
 $duel_log_delete = DatabaseConnection::$pdo->query("delete from dueling_log where date != cast(now() AS date) AND date != cast(now() AS date)-1"); // Keep only the last two days of duels.
 $affected_rows['dueling log deletion'] = $duel_log_delete->rowCount();
 
-$level_1_delete = DatabaseConnection::$pdo->query("delete from players where active = 0 and level = 1"); // Delete old level 1's.
+$level_1_delete = DatabaseConnection::$pdo->query("delete from players where active = 0 and level = 1 and created_date < (now() - interval '5 days')"); // Delete old level 1's.
 DatabaseConnection::$pdo->query('COMMIT');
 $affected_rows['old level 1 players deletion'] = $level_1_delete->rowCount(); 
 
@@ -68,7 +71,6 @@ $logMessage .= "DEITY_NIGHTLY: Deity reset occurred at server date/time: ".date(
 $logMessage .= 'DEITY_NIGHTLY: Mail deleted: ('.$affected_rows['Old Messages Deletion'].")\n";
 $logMessage .= "DEITY_NIGHTLY: Items: ".$affected_rows['deleted items']."\n";
 $logMessage .= 'DEITY_NIGHTLY: Players unconfirmed: ('.$unconfirmed.").  30 is the current default maximum.\n";
-$logMessage .= "DEITY_NIGHTLY: Vicious killer at reset was: (".$stats['vicious_killer'].")\n";
 $logMessage .= "DEITY_NIGHTLY: Chats deleted (if a deletion value is returned): $deleted\n";
 
 // **************

@@ -1,5 +1,10 @@
 <?php
-require_once(dirname(__FILE__).'/../lib/base.inc.php'); // Currently this forces crons locally to be called from the cron folder.
+require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/'))).'resources.php');
+require_once(LIB_ROOT.'data/DatabaseConnection.php');
+require_once(LIB_ROOT.'environment/lib_assert.php');
+require_once(LIB_ROOT.'environment/status_defines.php'); // Status constant definitions.
+require_once(LIB_ROOT.'environment/lib_error_reporting.php');
+require_once(LIB_ROOT.'data/lib_db.php');
 require_once(LIB_ROOT."control/lib_deity.php"); // Deity-specific functions
 
 DatabaseConnection::getInstance();
