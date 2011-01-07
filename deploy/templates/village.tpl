@@ -37,7 +37,7 @@ window.onload = function(){
       <input type="submit" value="Chat" class="formButton" style='padding:.2em .4em;font-size:1.3em;font-weight:bolder'>
 {/if}
 
-<a class='link-as-button' style='margin-bottom:.5em;margin-top:1em;margin-left:25%;' href="village.php?chatlength=100">Refresh</a>
+<a class='link-as-button' style='margin-bottom:.5em;margin-top:1em;float:right;margin-right:1.5em' href="village.php?chatlength=100">Refresh</a>
 
 
 {if is_logged_in()}
@@ -71,4 +71,7 @@ window.onload = function(){
 	{/if}
 {/foreach}
   </dl>
+{if $more_chats_to_see}
+  <a id='view-all' href='village.php?view_all=1' style='display:block;border:1px dashed blue;margin-top:2em;text-align:center;font-size:1.3em'>View All Chat Messages</a>
+{/if}
 </div>

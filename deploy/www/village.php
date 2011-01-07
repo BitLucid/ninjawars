@@ -12,6 +12,7 @@ $default_limit = 200;
 $field_size    = 40;
 $chatlength    = in('chatlength', $default_limit, 'toInt');
 $message       = in('message', null, 'no filter'); // Essentially no filtering.
+$view_all      = in('view_all');
 $command       = in('command');
 $sentMessage   = in('message');
 $sent          = false;
@@ -33,9 +34,10 @@ $total_chars  = $stats['player_count'];
 $chars_online = $stats['players_online'];
 $active_chars = $stats['active_chars'];
 
-$chats = get_chats($chatlength);
-$chats = $chats->fetchAll();
 $message_count = get_chat_count();
+$chats = get_chats(($view_all? null : $chatlength)); // Limit by chatlength unless a request to view all came in.
+$chats = $chats->fetchAll();
+$more_chats_to_see = (count($chats)<$message_count? true : null);
 
 $parts = get_certain_vars(get_defined_vars(), array('chats'));
 
