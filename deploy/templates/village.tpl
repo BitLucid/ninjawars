@@ -35,11 +35,15 @@ window.onload = function(){
       <input id="command" type="hidden" value="postnow" name="command">
       <input name='chat_submit' type='hidden' value='1'>
       <input type="submit" value="Chat" class="formButton" style='padding:.2em .4em;font-size:1.3em;font-weight:bolder'>
+{/if}
+
+<a class='link-as-button' style='margin-bottom:.5em;margin-top:1em;margin-left:25%;' href="village.php?chatlength=100">Refresh</a>
+
+
+{if is_logged_in()}
     </div>
   </form>
 {/if}
-
-<a class='link-as-button' style='margin-bottom:.5em;margin-top:1em' href="village.php?chatlength=100">Refresh</a>
 
   <div class='active-members-count'>
     Ninjas: {$active_chars} Active / {$chars_online} Online / {$total_chars} Total

@@ -8,7 +8,7 @@ if ($error = init($private, $alive)) {
 
 require_once(LIB_ROOT."control/lib_chat.php"); // Require all the chat helper and rendering functions.
 
-$default_limit = 20;
+$default_limit = 200;
 $field_size    = 40;
 $chatlength    = in('chatlength', $default_limit, 'toInt');
 $message       = in('message', null, 'no filter'); // Essentially no filtering.
