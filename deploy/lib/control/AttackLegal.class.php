@@ -136,7 +136,7 @@ class AttackLegal
 		} else if ($target->vo->active == 0) {
 			$this->error = 'You can not attack an inactive ninja.';
 		} else if ($attacker->vo->active == 0) {
-		    $this->error = 'You cannot attack when your account is not confirmed.';
+		    $this->error = 'You cannot attack when your ninja is retired/inactive.';
 		} else if ($target->health() < 1) {
 			$this->error = 'Your target is a ghost.';
 		} else if ($target->hasStatus(STEALTH) && !$ignores_stealth) {
