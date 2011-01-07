@@ -59,7 +59,7 @@
 	{/if}
 
 	{assign var="charName" value=$target|escape}
-	{assign var="charName" value='<strong class="char-name">':$charName:'</strong>'}
+	{assign var="charName" value="<strong class=\"char-name\">$charName</strong>"}
 
 	{if $generic_skill_result_message}
   {$generic_skill_result_message|replace:'__TARGET__':$charName}

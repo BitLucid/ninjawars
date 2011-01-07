@@ -9,7 +9,8 @@ You do not have {$article|escape} {$itemName|escape}
 {else}
 <div class='usage-mod-result'>
 	{assign var="charName" value=$target|escape}
-	{assign var="charName" value='<strong class="char-name">':$charName:'</strong>'}
+	{assign var="charName" value="<strong class=\"char-name\">$charName</strong>"}
+	{* This is kinda an abomination. *}
   <p>
     {$alternateResultMessage|replace:'__TARGET__':$charName}
   </p>
