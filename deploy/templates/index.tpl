@@ -144,7 +144,7 @@
       <div id='sidebar-column'>
             <div>
                 <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your ninja information'>
-                	{$username|escape}
+                	<strong class='char-name'>{$username|escape}</strong>
                 </a>
             </div>
             
