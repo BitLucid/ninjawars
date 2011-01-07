@@ -7,25 +7,54 @@
 <div class='usage-mod-result'>
 
 	{if $display_sight_table}
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Class</th>
-      <th>Health</th>
-      <th>Strength</th>
-      <th>Speed</th>
-      <th>Stamina</th>
-      <th>Ki</th>
-      <th>Gold</th>
-      <th>Kills</th>
-      <th>Turns</th>
-      <th>Level</th>
-    </tr>
-    <tr>
-		{foreach from=$sight_data item="loop_data"}
-      <td>{$loop_data}</td>
+	
+	<style type='text/css'>
+	{literal}
+	table#sight-info {
+		width:100%;
+		text-align:center;
+		font-size:1.3em;
+		margin-bottom:2em;	
+	}
+	
+	#sight-info thead {
+		border:none;
+		border-bottom: 2px dashed rgb(100, 30, 30);
+		font-weight:bold;
+	}
+	
+	#sight-info td, #sight-info thead th{
+		padding: .2em;
+		font-size: 1.1em;
+		text-align:center;
+	}
+	#sight-info td {
+		text-shadow:black 2px 2px 2px;
+		padding:.7em;
+	}
+	
+	#sight-info td:hover {
+		background-color:rgb(80, 30, 30);
+	}
+	{/literal}
+	</style>
+   		
+   		
+  <table id='sight-info' style='width:100%;'>
+  	<thead>
+		<tr>   
+		{foreach from=$sight_data item="loop_data" key="loop_header"}
+      <th>{$loop_header}</th>
 		{/foreach}
-    </tr>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+		{foreach from=$sight_data item="loop_data" key="loop_header"}
+		<td>{$loop_data}</td>
+		{/foreach}
+		</tr>
+	</tbody>
   </table>
 	{/if}
 
