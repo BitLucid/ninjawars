@@ -163,11 +163,8 @@ function characters_are_linked($char_id, $char_2_id){
 		if(empty($account_ip) || empty($account_2_ip)){
 			return false;
 		} else {
-			if ($account_ip == $account_2_ip){
-				return true;
-			} else {
-				return false; // If none of the other stuff matched, then the accounts count as not linked.
-			}
+			return ($account_ip == $account_2_ip);
+			// If none of the other stuff matched, then the accounts count as not linked.
 		}
 	}
 }

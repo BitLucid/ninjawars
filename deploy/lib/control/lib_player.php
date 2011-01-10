@@ -318,8 +318,12 @@ function format_health_percent($player_row) {
 */
 function get_players_info($p_ids) {
 	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM players WHERE player_id IN (".join(',', $p_ids).")");
-        //Log of Dueling information.
+	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM players WHERE player_id IN (:id".join(', :id', array_keys($p_ids)).")");
+	//Log of Dueling information.
+	foreach ($p_ids AS $key=>$value) {
+		$statement->bindValue(':id'.$key, $value);
+	}
+
 	$statement->execute();
 
 	$players = array();

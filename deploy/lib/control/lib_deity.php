@@ -16,14 +16,16 @@ function get_score_formula(){
 function delete_old_messages($limit = null) {
 	DatabaseConnection::getInstance();
 	$interval_to_keep = '3 months';
-	$statement = DatabaseConnection::$pdo->query("DELETE FROM messages WHERE date < ( now()- interval '$interval_to_keep' )");
+	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM messages WHERE date < ( now()- :interval::interval)");
+	$statement->bindValue(':interval', $interval_to_keep);
 	return $statement->rowCount();
 }
 
 function delete_old_events($limit = null) {
 	DatabaseConnection::getInstance();
 	$interval_to_keep = '4 days';
-	$statement = DatabaseConnection::$pdo->query("DELETE FROM events WHERE date < ( now()- interval '$interval_to_keep' )");
+	$statement = DatabaseConnection::$pdo->query("DELETE FROM events WHERE date < ( now()- :interval::interval)");
+	$statement->bindValue(':interval', $interval_to_keep);
 	return $statement->rowCount();
 }
 
@@ -37,7 +39,9 @@ function update_days() {
 function shorten_chat($message_limit=800) {
 	DatabaseConnection::getInstance();
 	// Find the latest 800 messages and delete all the rest;
-	$deleted = DatabaseConnection::$pdo->query("DELETE FROM chat WHERE chat_id NOT IN (SELECT chat_id FROM chat ORDER BY date DESC LIMIT $message_limit)");  //Deletes old chat messages.
+	$deleted = DatabaseConnection::$pdo->prepare("DELETE FROM chat WHERE chat_id NOT IN (SELECT chat_id FROM chat ORDER BY date DESC LIMIT :msg_limit)");  //Deletes old chat messages.
+	$deleted->bindValue(':msg_limit', $message_limit);
+	$deleted->execute();
 	return (int) $deleted->rowCount();
 }
 
@@ -60,14 +64,18 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 
 	// Unconfirm at a maximum of 20 players at a time.
 	$unconfirm_within_limits = "UPDATE players
-		SET active = $change_confirm_to
+		SET active = :active
 		WHERE players.player_id
 		IN (
 			SELECT player_id FROM players
 			WHERE active = 1
-			AND days > ".intval($unconfirm_days_over)."
-			ORDER BY player_id DESC	LIMIT $max_to_unconfirm)";
-	$update = DatabaseConnection::$pdo->query($unconfirm_within_limits);
+			AND days > :age
+			ORDER BY player_id DESC	LIMIT :max)";
+	$update = DatabaseConnection::$pdo->prepare($unconfirm_within_limits);
+	$update->bindValue(':active', $change_confirm_to);
+	$update->bindValue(':age', intval($unconfirm_days_over));
+	$update->bindValue(':max', $max_to_unconfirm);
+	$update->execute();
 	return $update->rowCount();
 }
 
@@ -150,7 +158,7 @@ function revive_players($params=array()) {
 	// Use the order by clause to determine who revives, by time, days and then by level, using the limit set previously.
 	//select uname, player_id, level,floor(($major_revive_percent/100)*$total_active) days, resurrection_time from players where active = 1 AND health < 1 ORDER BY abs(8 - resurrection_time) asc, level desc, days asc
 	$select = 'SELECT player_id FROM players WHERE active = 1 AND health < 1 '.
-			' ORDER BY abs('.intval($current_time)." - resurrection_time) ASC, level DESC, days ASC LIMIT $revive_amount";
+			' ORDER BY abs(:time - resurrection_time) ASC, level DESC, days ASC LIMIT :amount';
 
 	$up_revive_players= 'UPDATE players SET status = 0 ';
 
@@ -169,7 +177,10 @@ function revive_players($params=array()) {
 		$up_revive_players .= ' AND coalesce(class_skill._class_id, players._class_id) = players._class_id';
 	}
 
-	$update = DatabaseConnection::$pdo->query($up_revive_players);
+	$update = DatabaseConnection::$pdo->prepare($up_revive_players);
+	$update->bindValue(':amount', $revive_amount);
+	$update->bindValue(':time', intval($current_time));
+	$update->execute();
 	$truly_revived = $update->rowCount();
 
 	// Return the 'revived/total' actually revived.
@@ -177,14 +188,14 @@ function revive_players($params=array()) {
 }
 
 // Update the vicious killer stat.
-function update_most_vicious_killer_stat(){
-		$vk = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) GROUP BY uname, killpoints ORDER BY killpoints DESC LIMIT 1');
-		$todaysViciousKiller = $vk->fetchColumn();
-		if($todaysViciousKiller){
-			$update = DatabaseConnection::$pdo->prepare('UPDATE past_stats SET stat_result = :visciousKiller WHERE id = 4'); // 4 is the ID of the vicious killer stat.
-			$update->bindValue(':visciousKiller', $todaysViciousKiller);
-			$update->execute();	
-		}
+function update_most_vicious_killer_stat() {
+	$vk = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log WHERE killsdate = cast(now() AS date) GROUP BY uname, killpoints ORDER BY killpoints DESC LIMIT 1');
+	$todaysViciousKiller = $vk->fetchColumn();
+	if ($todaysViciousKiller) {
+		$update = DatabaseConnection::$pdo->prepare('UPDATE past_stats SET stat_result = :visciousKiller WHERE id = 4'); // 4 is the ID of the vicious killer stat.
+		$update->bindValue(':visciousKiller', $todaysViciousKiller);
+		$update->execute();	
+	}
 }
 
 ?>

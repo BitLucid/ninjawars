@@ -78,7 +78,9 @@ function json_player() {
 function json_chats($limit = 20) {
 	$limit = (int)$limit;
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->query("SELECT * FROM chat ORDER BY date DESC LIMIT ".$limit);
+	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM chat ORDER BY date DESC LIMIT :limit");
+	$statement->bindValue(':limit', $limit);
+	$statement->execute();
 	$chats = $statement->fetchAll();
 
 	return '{"chats":'.json_encode($chats).'}';
@@ -107,13 +109,16 @@ function json_new_chats($since, $limit = 100) {
 	DatabaseConnection::getInstance();
 
 	if ($since) {
-		$statement = DatabaseConnection::$pdo->query(
-		    "SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id WHERE EXTRACT(EPOCH FROM date) > $since ORDER BY date DESC LIMIT ".$limit
+		$statement = DatabaseConnection::$pdo->prepare(
+		    "SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id WHERE EXTRACT(EPOCH FROM date) > :since ORDER BY date DESC LIMIT :limit"
 		  );
+		$statement->bindValue(':since', $since);
 	} else {
-		$statement = DatabaseConnection::$pdo->query("SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id ORDER BY date DESC LIMIT ".$limit);
+		$statement = DatabaseConnection::$pdo->prepare("SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id ORDER BY date DESC LIMIT :limit");
 	}
 
+	$statement->bindValue(':limit', $limit);
+	$statement->execute();
 	$chats = $statement->fetchAll();
 
 	return '{"new_chats":{"datetime":'.json_encode($now).',"new_count":'.count($chats).',"chats":'.json_encode($chats).'}}';

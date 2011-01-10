@@ -108,12 +108,16 @@ function test_PlayerDAO() {
 	//var_dump($player_vo1->player_id, $player_vo1->uname);
 	$saved_vo1 = $dao->get($player_vo1->player_id);
 
-	$player_from_uname_sel = DatabaseConnection::$pdo->query("select player_id from players where uname = '$username'");
+	$player_from_uname_sel = DatabaseConnection::$pdo->prepare("select player_id from players where uname = :user");
+	$player_from_uname_sel->bindValue(':user', $username);
+	$player_from_uname_sel->execute();
 	$player_id_from_uname = $player_from_uname_sel->fetchColumn();
 	assert($player_id_from_uname != false);
 	//var_dump($player_id_from_uname, $username);
 
-	$player_uname_from_id_sel = DatabaseConnection::$pdo->query("select uname from players where player_id = '".$player_vo1->player_id."'");
+	$player_uname_from_id_sel = DatabaseConnection::$pdo->prepare("select uname from players where player_id = :pid");
+	$player_uname_from_id_sel->bindValue(':pid', $player_vo1->player_id);
+	$player_uname_from_id_sel->execute();
 	$player_uname = $player_uname_from_id_sel->fetchColumn();
 	//var_dump($saved_vo1->uname); // for some reason the vo is not coming back here.
 	assert(isset($saved_vo1->player_id));

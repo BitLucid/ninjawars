@@ -109,10 +109,10 @@ class AttackLegal
 		$second_interval_limiter_on_attacks = '.25'; // Originally .2
 		$sel_last_started_attack = "SELECT player_id FROM players
 			WHERE player_id = :char_id
-			AND ((now() - interval '$second_interval_limiter_on_attacks second') >= last_started_attack) LIMIT 1";
+			AND ((now() - :interval::interval) >= last_started_attack) LIMIT 1";
 		// *** Returns a player id if the enough time has passed, or else or false/null. ***
 		$attack_later_than_limit = query_item($sel_last_started_attack, 
-				array(':char_id'=>intval($this->attacker->id()))
+				array(':char_id'=>intval($this->attacker->id()),':interval'->$second_interval_limiter_on_attacks.' second')
 				);
 
 		if ($attack_later_than_limit && $update_timer) { // *** If not too soon, update the attack limit. ***
