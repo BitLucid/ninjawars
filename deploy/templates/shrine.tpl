@@ -1,5 +1,16 @@
 <h1>Shrine</h1>
 
+<style type='text/css'>
+{literal}
+.formButton {
+	font-size: 1.5em !important;
+}
+form {
+	text-align:center;
+}
+{/literal}
+</style>
+
 <div class="description">
   <div style="margin-bottom: 1.5em;">
     The shrine to the gods is peacefully quiet as you enter. The sound of flowing water soothes your mind.
@@ -36,18 +47,18 @@
 	{elseif $at_max_health}
 <p>You are at full health.</p>
 	{else}
-<form id="heal_form" action="shrine_mod.php" method="post" name="heal_form">
-  <div style="margin-top: 10px;">
+<form id="max_heal_form" action="shrine_mod.php" method="post" name="max_heal_form" style='margin: .5em auto .5em;text-align:center'>
+  <div>
     <div><em class='speech'>How much healing do you need?</em></div>
-    <input type="submit" value="Heal" class="formButton">
-    <input id="heal_points" type="text" size="3" maxlength="4" name="heal_points" class="textField">HP
-    <input id="healed" type="hidden" value="1" name="healed">
+    <input id="max_heal" type="hidden" value="1" name="max_heal">
+    <input type="submit" value="Full Heal" class="formButton" style='width:90%'>
   </div>
 </form>
-<form id="max_heal_form" action="shrine_mod.php" method="post" name="max_heal_form">
-  <div>
-    <input id="max_heal" type="hidden" value="1" name="max_heal">
-    <input type="submit" value="Full Heal" class="formButton">
+<form id="heal_form" action="shrine_mod.php" method="post" name="heal_form">
+  <div style="margin-top: 10px;">
+    <input type="submit" value="Heal" class="formButton">
+    <input id="heal_points" type="text" size="3" maxlength="4" name="heal_points" class="textField" style='font-size:1.1em'> HP
+    <input id="healed" type="hidden" value="1" name="healed">
   </div>
 </form>
 	{/if}

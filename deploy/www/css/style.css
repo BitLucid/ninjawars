@@ -103,7 +103,6 @@ http://ryanfait.com/
 	min-width: 800px;
 	margin-right: 2px;
 	margin-left: 2px;
-	padding: .5em;
 }
 
 body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
@@ -1527,7 +1526,6 @@ iframe {
 
 
 #sidebar-column {
-	/*background-image:url('/images/black_bg_splash.png');
 	background-repeat:no-repeat;*/
 	float:right;
 	width:30%;
