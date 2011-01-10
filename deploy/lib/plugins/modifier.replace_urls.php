@@ -1,5 +1,5 @@
 <?php
-function templatelite_modifier_replace_urls($p_string) {
-//	replace_urls($p_string);
+function smarty_modifier_replace_urls($p_string) {
+	return replace_urls($p_string);
 }
 ?>

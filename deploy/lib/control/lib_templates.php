@@ -4,6 +4,33 @@
 // See: http://templatelite.sourceforge.net/docs/index.html for the docs, it's a smarty-like syntax.
 require_once('Smarty.class.php');
 
+class NWTemplate extends Smarty {
+	public function __construct() {
+		$this->Smarty();
+
+		// template directory
+		$this->template_dir = TEMPLATE_PATH;
+
+		// compile directory
+		$this->compile_dir = COMPILED_TEMPLATE_PATH;
+
+		// plugin directory
+		$this->plugins_dir[] = TEMPLATE_PLUGIN_PATH;
+
+		$this->caching = false;
+	}
+
+	public function fullDisplay() {
+		$this->display('full_template.tpl');
+	}
+
+	public function assignArray($p_vars) {
+		foreach ($p_vars as $lname => $lvalue) { // *** loop over the vars, assigning each to the template ***
+			$this->assign($lname, $lvalue);
+		}
+	}
+}
+
 function display_error($p_error) {
 	display_page('error.tpl', 'Error', array('error'=>$p_error));
 }
@@ -17,11 +44,8 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
 	$is_index = @$options['is_index'];
 
 	// *** Initialize the template object ***
-	$tpl = createTemplateLite();
-
-	foreach ($local_vars as $lname => $lvalue) { // *** loop over the vars, assigning each to the template ***
-		$tpl->assign($lname, $lvalue);
-	}
+	$tpl = new NWTemplate();
+	$tpl->assignArray($local_vars);
 
     $user_id = get_user_id(); // Character id.
     $public_char_info = public_char_info($user_id); // Char info to pass to javascript.
@@ -37,19 +61,13 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
 	return $tpl;
 }
 
-// Final step to display a page, takes a template object with the page-level variables and performs the final display.
-function display_prepped_template($p_tpl) {
-	$p_tpl->display('full_template.tpl');
-}
-
-
 /** Displays a template wrapped in the header and footer as needed.
   *
   * Example use:
   * display_page('add.tpl', 'Homepage', get_current_vars(get_defined_vars()), array());
 **/
 function display_page($template, $title=null, $local_vars=array(), $options=null) {
-	display_prepped_template(prep_page($template, $title, $local_vars, $options));
+	prep_page($template, $title, $local_vars, $options)->fullDisplay();
 }
 
 /** Will return the rendered content of the template.
@@ -58,41 +76,17 @@ function display_page($template, $title=null, $local_vars=array(), $options=null
 **/
 function render_template($template_name, $assign_vars=array()) {
 	// Initialize the template object.
-	$tpl = createTemplateLite();
-
-	// loop over the vars, assigning each.
-	foreach ($assign_vars as $lname => $lvalue) {
-		$tpl->assign($lname, $lvalue);
-	}
+	$tpl = new NWTemplate();
+	$tpl->assignArray($assign_vars);
 
 	// call the template
 	return $tpl->fetch($template_name);
 }
 
-function createTemplateLite() {
-	$tpl = new Smarty();
-	//$tpl = new Template_Lite();
-
-	// template directory
-	$tpl->template_dir = TEMPLATE_PATH;
-
-	// compile directory
-	$tpl->compile_dir = COMPILED_TEMPLATE_PATH;
-
-	// plugin directory
-	$tpl->plugin_dir = TEMPLATE_PLUGIN_PATH;
-
-	return $tpl;
-}
-
 function display_template($template_name, $assign_vars=array()){
 	// Initialize the template object.
-	$tpl = createTemplateLite();
-
-	// loop over the vars, assigning each.
-	foreach ($assign_vars as $lname => $lvalue) {
-		$tpl->assign($lname, $lvalue);
-	}
+	$tpl = new NWTemplate();
+	$tpl->assignArray($assign_vars);
 
 	// display the template
 	return $tpl->display($template_name);

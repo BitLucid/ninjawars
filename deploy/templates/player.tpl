@@ -227,7 +227,7 @@ Clan members are no longer shown on a player's profile, 'cause it just made it t
     <div class='player-profile'>
       <div class='subtitle'>Message:</div>
       <p class='centered profile-message'>
-        {$player_info.messages|trim|escape|nl2br}
+        {$player_info.messages|trim|escape|replace_urls|nl2br}
       </p>
     </div>
 {/if}

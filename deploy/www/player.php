@@ -127,7 +127,7 @@ $template = prep_page(
 
 $template->register_function('getTurnCost', 'getTurnCost');
 
-display_prepped_template($template);
+$template->fullDisplay();
 
 }
 ?>

@@ -56,7 +56,7 @@ $template = prep_page(
 
 $template->register_function('time_ago', 'get_time_ago');
 
-display_prepped_template($template);
+$template->fullDisplay();
 
 }
 ?>

@@ -51,7 +51,7 @@ function message_url($url, $text){
 // Change this to default to toHtml.
 
 // Replaces occurances of http://whatever with links (in blank tab).
-function replace_urls($string){
+function replace_urls($string) {
 	// Images get added by the css after the fact.
     $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
     $port = "(:\d{1,})?";
