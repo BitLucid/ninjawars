@@ -131,25 +131,26 @@ function inviteChar($char_id, $p_clanID) {
 	return $failure_error;
 }
 
-function send_clan_join_request($username, $clan_id) {
+function send_clan_join_request($user_id, $clan_id) {
 	DatabaseConnection::getInstance();
 	$clan        = get_clan($clan_id);
 	$leader      = get_clan_leader_info($clan_id);
 	$leader_id   = $leader['player_id'];
 	$leader_name = $leader['uname'];
+	$username    = get_username($user_id);
 
-	$confirmStatement = DatabaseConnection::$pdo->prepare('SELECT verification_number FROM players WHERE uname = :user');
-	$confirmStatement->bindValue(':user', $username);
+	$confirmStatement = DatabaseConnection::$pdo->prepare('SELECT verification_number FROM players WHERE player_id = :user');
+	$confirmStatement->bindValue(':user', $user_id);
 	$confirmStatement->execute();
 	$confirm = $confirmStatement->fetchColumn();
 
 	// These ampersands get encoded later.
-	$url = message_url('clan_confirm.php?clan_joiner='.get_user_id($username)."&agree=1&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
+	$url = message_url('clan_confirm.php?clan_joiner='.$user_id."&agree=1&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
 
 	$join_request_message = 'CLAN JOIN REQUEST: '.htmlentities($username)." has sent a request to join your clan.
 		If you wish to allow this ninja into your clan click the following link:
 		$url";
-	send_message(get_user_id($username), $leader_id, $join_request_message);
+	send_message($user_id, $leader_id, $join_request_message);
 }
 
 // Gets the clan_id of a character/player.

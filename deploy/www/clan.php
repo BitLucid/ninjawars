@@ -233,7 +233,7 @@ if (!$player_id) {
 		// ****** NOT-MEMBER OF ANY CLAN *******
 		if ($command == 'join') {	// *** Clan Joining Action ***
 			if ($process == 1) {
-				send_clan_join_request($username, $clan_id_viewed);
+				send_clan_join_request($player_id, $clan_id_viewed);
 			} else {
 				$clan_leaders = get_clan_leaders(null, true);
 				$leader_ids = array();

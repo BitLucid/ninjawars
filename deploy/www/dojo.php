@@ -70,7 +70,7 @@ if (is_logged_in()) {
     // DIM MAK BUY
 	if ($dimMakAllowed && $dimmak_sequence == 2) {
 	    // *** Start of Dim Mak Code, A dim mak was requested. ***
-		$userKills = subtractKills($username, $dimMakCost);
+		$userKills = subtractKills($char_id, $dimMakCost);
 		add_item($char_id, 'dimmak', 1);
 	}	// *** End of Dim Mak Code. ***
 
@@ -83,7 +83,7 @@ if (is_logged_in()) {
         } elseif ($classChangeAllowed){
             // Class change conditions are ok, so take the cost in kills
             // ...and change the class.
-    		$userKills = subtractKills($username, $classChangeCost);
+    		$userKills = subtractKills($char_id, $classChangeCost);
     		$class_change_error = set_class($char_id, $destination_class);            
         }
     }

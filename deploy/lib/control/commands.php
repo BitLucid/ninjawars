@@ -12,7 +12,7 @@
 
 function setHealth($who, $new_health) {
 	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET health = :health WHERE uname = :user");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET health = :health WHERE player_id = :user");
 	$statement->bindValue(':health', $new_health);
 	$statement->bindValue(':user', $who);
 	$statement->execute();
@@ -22,7 +22,7 @@ function setHealth($who, $new_health) {
 
 function getHealth($who) {
 	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT health FROM players WHERE uname = :user");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT health FROM players WHERE player_id = :user");
 	$statement->bindValue(':user', $who);
 	$statement->execute();
 
@@ -36,7 +36,7 @@ function changeHealth($who, $amount) {
 		$dbconn = DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET health = health + ".
 		   "CASE WHEN health + :amount < 0 THEN health*(-1) ELSE :amount2 END ".
-		   "WHERE uname  = :user");
+		   "WHERE player_id = :user");
 		$statement->bindValue(':user', $who);
 		$statement->bindValue(':amount', $amount);
 		$statement->bindValue(':amount2', $amount);
@@ -96,7 +96,7 @@ function subtractGold($who, $amount) {
 
 function getTurns($who) {
 	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT turns FROM players WHERE uname = :user");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT turns FROM players WHERE player_id = :user");
 	$statement->bindValue(':user', $who);
 	$statement->execute();
 
@@ -109,7 +109,7 @@ function changeTurns($who, $amount) {
 		$dbconn = DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET turns = turns + ".
 		   "CASE WHEN turns + :amount < 0 THEN turns*(-1) ELSE :amount2 END ".
-		   "WHERE uname  = :user");
+		   "WHERE player_id  = :user");
 		$statement->bindValue(':amount', $amount);
 		$statement->bindValue(':amount2', $amount);
 		$statement->bindValue(':user', $who);
@@ -136,27 +136,15 @@ function subtractTurns($who, $amount) {
 // ********** KILLS FUNCTIONS *********
 // ************************************
 
-function getKills($who) {
-	$char_id = get_char_id($who);
-	get_kills($char_id);
-}
-
-// Deprecated now.
-function changeKills($who, $amount) {
- 	return change_kills(get_char_id($who), $amount);
-}
-
 function addKills($who, $amount) {
-	$char_id = get_char_id($who);
 	update_levelling_log($who, $amount);
-	return change_kills($char_id, $amount);
+	return change_kills($who, $amount);
 }
 
 function subtractKills($who,$amount) {
 	$amount = (int)$amount;
-	$char_id = get_char_id($who);
 	update_levelling_log($who, $amount);
-	return change_kills($char_id, $amount);
+	return change_kills($who, $amount);
 }
 
 function get_kills($char_id) {
@@ -190,6 +178,11 @@ function change_kills($char_id, $amount, $auto_level_check=true) {
 function update_levelling_log($who, $amount){
 	// TODO: This should be deprecated once we have only upwards kills_total increases, but for now I'm just refactoring.
 	DatabaseConnection::getInstance();
+
+	if (is_numeric($who)) {
+		$who = get_username($who);
+	}
+
 	$amount = (int)$amount;
 	if($amount == 0){
 		return;
@@ -235,7 +228,7 @@ function update_levelling_log($who, $amount){
 function getLevel($who) {
 	DatabaseConnection::getInstance();
 
-	$statement = DatabaseConnection::$pdo->prepare("SELECT level FROM players WHERE uname = :player");
+	$statement = DatabaseConnection::$pdo->prepare("SELECT level FROM players WHERE player_id = :player");
 	$statement->bindValue(':player', $who);
 	$statement->execute();
 	return $statement->fetchColumn();
@@ -246,15 +239,16 @@ function changeLevel($who, $amount) {
 	if (abs($amount) > 0) {
 		DatabaseConnection::getInstance();
 
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET level = level+:amount WHERE uname = :player");
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET level = level+:amount WHERE player_id = :player");
 		$statement->bindValue(':player', $who);
 		$statement->bindValue(':amount', $amount);
 		$statement->execute();
 
 		// *** UPDATE THE LEVEL INCREASE LOG *** //
+		$username = get_username($who);
 
 		$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE uname = :player AND killsdate = now()");
-		$statement->bindValue(':player', $who);
+		$statement->bindValue(':player', $username);
 		$statement->execute();
 
 		$notYetANewDay = $statement->fetch();  //Throws back a row result if there is a pre-existing record.
@@ -263,11 +257,11 @@ function changeLevel($who, $amount) {
 			//if record already exists.
 			$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET levelling=levelling + :amount WHERE uname = :player AND killsdate=now() LIMIT 1");
 			$statement->bindValue(':amount', $amount);
-			$statement->bindValue(':player', $who);
+			$statement->bindValue(':player', $username);
 		} else {	// if no prior record exists, create a new one.
 			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, '0', :amount, now())");  //inserts all except the autoincrement ones
 			$statement->bindValue(':amount', $amount);
-			$statement->bindValue(':player', $who);
+			$statement->bindValue(':player', $username);
 		}
 
 		$statement->execute();
@@ -292,7 +286,7 @@ function setBounty($who, $new_bounty) {
 	$new_bounty = (int)$new_bounty;
 	DatabaseConnection::getInstance();
 
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET bounty = :bounty WHERE uname = :player");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET bounty = :bounty WHERE player_id = :player");
 	$statement->bindValue(':bounty', $new_bounty);
 	$statement->bindValue(':player', $who);
 	$statement->execute();
@@ -301,17 +295,15 @@ function setBounty($who, $new_bounty) {
 }
 
 function getBounty($who) {
-	$char_id = get_char_id($who);
 	DatabaseConnection::getInstance();
 
 	$statement = DatabaseConnection::$pdo->prepare("SELECT bounty FROM players WHERE player_id = :player");
-	$statement->bindValue(':player', $char_id);
+	$statement->bindValue(':player', $who);
 	$statement->execute();
 	return $statement->fetchColumn();
 }
 
 function changeBounty($who, $amount) {
-	$char_id = get_char_id($who);
 	$amount = (int)$amount;
 
 	if (abs($amount) > 0) {
@@ -321,7 +313,7 @@ function changeBounty($who, $amount) {
 			"WHEN bounty+:amount2 > 5000 THEN (5000 - bounty) ".
 			"ELSE :amount3 END ".
 			"WHERE player_id = :player");
-		$statement->bindValue(':player', $char_id);
+		$statement->bindValue(':player', $who);
 		$statement->bindValue(':amount1', $amount);
 		$statement->bindValue(':amount2', $amount);
 		$statement->bindValue(':amount3', $amount);
@@ -343,19 +335,20 @@ function rewardBounty($bounty_to, $bounty_on) {
 	$bounty = getBounty($bounty_on);
 
 	setBounty($bounty_on, 0);  //Sets bounty to zero.
-	$char_id = get_char_id($bounty_to);
-	add_gold($char_id, $bounty);
+	add_gold($bounty_to, $bounty);
 
 	return $bounty;
 }
 
 function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
+	$user_id = get_user_id($username);
+	$defender_id = get_user_id($defender);
 	// *** Bounty Increase equation: (attacker's level - defender's level) / 5, rounded down, times 25 gold per point ***
-	$levelRatio     = floor((getLevel($username) - getLevel($defender)) / 5);
+	$levelRatio     = floor((getLevel($user_id) - getLevel($defender_id)) / 5);
 
 	$bountyIncrease = ($levelRatio > 0 ? $levelRatio * 25 : 0);	//Avoids negative increases.
 
-	$bountyForAttacker = rewardBounty($username, $defender); //returns a value if bounty rewarded.
+	$bountyForAttacker = rewardBounty($user_id, $defender_id); //returns a value if bounty rewarded.
 	if ($bountyForAttacker) {
 		// *** Reward bounty whenever available. ***
 		return "You have received the $bountyForAttacker gold bounty on $defender's head for your deeds!";
@@ -363,7 +356,7 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 		sendMessage("Village Doshin", $username, $bounty_msg);
 	} else if ($bountyIncrease > 0) {
 		// *** If Defender has no bounty and there was a level difference. ***
-		addBounty($username, $bountyIncrease);
+		addBounty($user_id, $bountyIncrease);
 		return "Your victim was much weaker than you. The townsfolk are angered. A bounty of  $bountyIncrease gold has been placed on your head!";
 	} else {
 		return null;

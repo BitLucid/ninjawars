@@ -43,9 +43,9 @@ if($turns > 0 && !empty($victim)) {
 		$oni_turn_loss   = 10;
 		$oni_health_loss = rand(1, 20);
 		$oni_kill_loss   = 1;
-		$player_turns    = subtractTurns($username, $oni_turn_loss);
-		$attacker_health = $player->vo->health = subtractHealth($username, $oni_health_loss);
-		$attacker_kills  = subtractKills($username, $oni_kill_loss);
+		$player_turns    = subtractTurns($char_id, $oni_turn_loss);
+		$attacker_health = $player->vo->health = subtractHealth($char_id, $oni_health_loss);
+		$attacker_kills  = subtractKills($char_id, $oni_kill_loss);
 
 		if ($attacker_health > 0) { // *** if you survive ***
 			if ($player_turns > 50) { // *** And youir turns are high/you are energetic, you can kill them. ***
@@ -82,7 +82,7 @@ if($turns > 0 && !empty($victim)) {
 		$received_item = null;
 		
 		// Hope for victory.
-		if($player->vo->health = $victory = subtractHealth($username, $attack_damage)) {
+		if($player->vo->health = $victory = subtractHealth($char_id, $attack_damage)) {
 			// Victory occurred, reward the poor sap.
 			add_gold($char_id, $reward_gold);
 			$received_gold = $reward_gold;
@@ -116,7 +116,7 @@ if($turns > 0 && !empty($victim)) {
 		$just_villager = rand(0, 20);
 		$added_bounty  = 0;
 
-		if ($player->vo->health = $victory = subtractHealth($username, $villager_attack)) {	// *** Player defeated villager ***
+		if ($player->vo->health = $victory = subtractHealth($char_id, $villager_attack)) {	// *** Player defeated villager ***
 			$villager_gold = rand(0, 20);	// *** Vilager Gold ***
 			add_gold($char_id, $villager_gold);
 
@@ -126,7 +126,7 @@ if($turns > 0 && !empty($victim)) {
 			if ($attacker_level > 5) {
 				if ($attacker_level <= 20) {
 					$added_bounty = floor($attacker_level / 3);
-					addBounty($username, ($added_bounty));
+					addBounty($char_id, ($added_bounty));
 				}
 			}	// *** End of if > 5 ***
 
@@ -178,7 +178,7 @@ if($turns > 0 && !empty($victim)) {
 				$samurai_gold = rand(50, 50 + $samurai_damage_array[2] + $samurai_damage_array[1]);
 
 				add_gold($char_id, $samurai_gold);
-				addKills($username, 1);
+				addKills($char_id, 1);
 
 				if ($samurai_damage_array[2] > 100) {	// *** If samurai damage was over 100, but the ninja lived, give some extra rewards. ***
 					if (rand()&1) {
@@ -198,9 +198,9 @@ if($turns > 0 && !empty($victim)) {
 					add_item($char_id, "dimmak", 1);
 				}
 
-				$player->vo->health = setHealth($username, $ninja_health);
+				$player->vo->health = setHealth($char_id, $ninja_health);
 			} else {
-				$player->vo->health = setHealth($username, 0);
+				$player->vo->health = setHealth($char_id, 0);
 				$victory = false;
 				$ninja_str    =
 				$samurai_gold = 0;
@@ -213,7 +213,7 @@ if($turns > 0 && !empty($victim)) {
 		$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
 		$added_bounty    = 0;
 
-		if ($player->vo->health = $victory = subtractHealth($username, $merchant_attack)) {	// *** Player killed merchant ***
+		if ($player->vo->health = $victory = subtractHealth($char_id, $merchant_attack)) {	// *** Player killed merchant ***
 			$merchant_gold   = rand(20, 70);  // *** Merchant Gold   ***
 			add_gold($char_id, $merchant_gold);
 
@@ -223,7 +223,7 @@ if($turns > 0 && !empty($victim)) {
 
 			if ($player->vo->level > 10) {
 				$added_bounty = 5 * floor(($player->vo->level - 5) / 3);
-				addBounty($username, $added_bounty);
+				addBounty($char_id, $added_bounty);
 			}
 		} else {	// *** Merchant killed player
 			$merchant_attack = $merchant_gold = 0;
@@ -236,13 +236,13 @@ if($turns > 0 && !empty($victim)) {
 		$herb         = false;
 		$added_bounty = 0;
 
-		if ($player->vo->health = $victory = subtractHealth($username, $guard_attack)) {
+		if ($player->vo->health = $victory = subtractHealth($char_id, $guard_attack)) {
 			$guard_gold = rand(1, $attacker_str + 40);	// *** Guard Gold ***
 			add_gold($char_id, $guard_gold);
 
 			if ($player->vo->level > 15) {
 				$added_bounty = 10 * floor(($player->vo->level - 10) / 5);
-				addBounty($username, ($added_bounty));
+				addBounty($char_id, $added_bounty);
 			}
 
 			if (rand(1, 9) == 9) { // *** 1/9 chance of getting an herb for Kampo ***
@@ -275,11 +275,11 @@ if($turns > 0 && !empty($victim)) {
 			SESSION::set('counter', 0); // Reset the counter to zero.
 			$group_attack= rand(50, 150);
 
-			if ($player->vo->health = $victory = subtractHealth($username, $group_attack)) {	// The den of thieves didn't accomplish their goal
+			if ($player->vo->health = $victory = subtractHealth($char_id, $group_attack)) {	// The den of thieves didn't accomplish their goal
 				$group_gold = rand(100, 300);
 
 				if ($group_attack > 120) { // Powerful attack gives an additional disadvantage
-					subtractKills($username, 1);
+					subtractKills($char_id, 1);
 				}
 
 				add_gold($char_id, $group_gold);
@@ -293,7 +293,7 @@ if($turns > 0 && !empty($victim)) {
 		} else { // Normal attack on a single thief.
 			$thief_attack = rand(0, 35);  // *** Thief Damage  ***
 
-			if ($player->vo->health = $victory = subtractHealth($username, $thief_attack)) {
+			if ($player->vo->health = $victory = subtractHealth($char_id, $thief_attack)) {
 				$thief_gold = rand(0, 40);  // *** Thief Gold ***
 
 				if ($thief_attack > 30) {
@@ -324,7 +324,7 @@ if($turns > 0 && !empty($victim)) {
 	
 	
 	// Subtract the turn cost for attacking an npc, almost always going to be 1 apart from perhaps oni or group-of-thieves
-	subtractTurns($username, $turn_cost);
+	subtractTurns($char_id, $turn_cost);
 }
 
 display_page(

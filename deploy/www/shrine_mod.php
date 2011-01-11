@@ -68,7 +68,7 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 			//  *** FREE RESURRECTION DETERMINATION ***
 
 			if (!$freeResurrection) { // 1 kill point cost for resurrection above level 5 or 25 kills.
-				$player->vo->kills = subtractKills($player->vo->uname, 1);
+				$player->vo->kills = subtractKills($player->vo->player_id, 1);
 				$kill_taking_resurrect = true;
 			}
 		} elseif ($startingTurns > 0) { // Dead and no killpoints left, and not a newbie.
@@ -79,7 +79,7 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 				$lostTurns = $startingTurns;
 			}
 
-			$final_turns = $player->vo->turns = subtractTurns($player->vo->uname, $lostTurns); // *** Takes away necessary turns.
+			$final_turns = $player->vo->turns = subtractTurns($player->vo->player_id, $lostTurns); // *** Takes away necessary turns.
 		} else { // *** No kills, no turns, and too high of a level.
 	    	$error = 'You have no kills or turns, so you must wait to regain turns before you can return to life.';
 		}
@@ -113,7 +113,7 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 				$returning_health = $base_health;
 			}
 
-			$finalHealth = $player->vo->health = setHealth($player->vo->uname, $returning_health);
+			$finalHealth = $player->vo->health = setHealth($player->vo->player_id, $returning_health);
 			$final_turns = $player->vo->turns;
 			$final_kills = $player->vo->kills;
 		}
@@ -144,7 +144,7 @@ if ($healed == 1 || $max_heal == 1) {  //If the player wants to heal themselves.
 			if ($heal_points && $heal_points > 0) {  // *** Requires a heal number, and a positive one. ***
 				if ($total_cost <= $startingGold) {   // *** If there's enough money for the amount that they want to heal. ***
 					subtract_gold($player->id(), $total_cost);
-					$player->vo->health = $finalHealth = addHealth($player->vo->uname, $heal_points);
+					$player->vo->health = $finalHealth = addHealth($player->vo->player_id, $heal_points);
 
 					$fully_healed = ($finalHealth >= $max_health); // ** Test if user is fully healed. ***
 				} else {

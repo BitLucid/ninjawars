@@ -198,7 +198,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 		$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
-		if ($victim_alive = subtractHealth($target->vo->uname, $target_damage)) {
+		if ($victim_alive = subtractHealth($target->vo->player_id, $target_damage)) {
 			$attacker_id  = $username;
 		}
 
@@ -230,7 +230,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		if (!$target->hasStatus(SLOW)) {
 			if ($target->vo->turns >= 10) {
 				$turns_decrease = rand(1, 5);
-				subtractTurns($target->vo->uname, $turns_decrease);
+				subtractTurns($target->vo->player_id, $turns_decrease);
 				// Changed ice bolt to kill stealth.
 				$target->subtractStatus(STEALTH);
 				$target->addStatus(SLOW);
@@ -255,9 +255,9 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 				if ($target->vo->turns >= 10) {
 					$turns_decrease = rand(2, 7);
 
-					subtractTurns($target->vo->uname, $turns_decrease);
+					subtractTurns($target->vo->player_id, $turns_decrease);
 					$target->addStatus(SLOW);
-					addTurns($username, $turns_decrease);
+					addTurns($char_id, $turns_decrease);
 
 					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id at $today";
 					send_message($attacker_char_id, $target->id(), $msg);
@@ -339,14 +339,14 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			subtract_gold($target->id(), $loot);
 			add_gold($char_id, $loot);
 
-			addKills($username, 1);
+			addKills($char_id, 1);
 
 			$added_bounty = floor($level_check / 5);
 
 			if ($added_bounty > 0) {
-				addBounty($username, ($added_bounty * 25));
+				addBounty($char_id, ($added_bounty * 25));
 			} else { // Can only receive bounty if you're not getting it on your own head.
-				if ($bounty = rewardBounty($username, $target->vo->uname)) {
+				if ($bounty = rewardBounty($char_id, $target->vo->player_id)) {
 
 					$bounty_msg = "You have valiantly slain the wanted criminal, $target! For your efforts, you have been awarded $bounty gold!";
 					sendMessage('Village Doshin', $username, $bounty_msg);
@@ -371,7 +371,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 	
 } // End of the skill use SUCCESS block.
 
-$ending_turns = changeTurns($username, $turns_to_take); // Take the skill use cost.
+$ending_turns = changeTurns($attacker_char_id, $turns_to_take); // Take the skill use cost.
 
 $target_ending_health = $target->health();
 $target_ending_health_percent = $target->health_percent();

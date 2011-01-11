@@ -117,8 +117,6 @@ if ($attack_is_legal){
 	$loot   = 0;
 	$victor = null;
 	$loser  = null;
-	
-	
 
 	// *** ATTACKING + STEALTHED SECTION  ***
 	if (!$duel && $attacking_player->hasStatus(STEALTH)) { // *** Not dueling, and attacking from stealth ***
@@ -127,7 +125,7 @@ if ($attack_is_legal){
 
 		$stealthed_attack = true;
 
-		if (!subtractHealth($target, $stealthAttackDamage)) { // *** if Stealth attack of whatever damage kills target. ***
+		if (!subtractHealth($target_id, $stealthAttackDamage)) { // *** if Stealth attack of whatever damage kills target. ***
 			$victor = $attacker;
 			$loser  = $target;
 
@@ -228,8 +226,8 @@ if ($attack_is_legal){
 		//  *** Let the victim know who hit them ***
 		$attack_label = ($duel ? 'dueled' : 'attacked');
 
-		$defenderHealthRemaining = subtractHealth($target, $total_attacker_damage);
-		$attackerHealthRemaining = subtractHealth($attacker, $total_target_damage);
+		$defenderHealthRemaining = subtractHealth($target_id, $total_attacker_damage);
+		$attackerHealthRemaining = subtractHealth($attacker_id, $total_target_damage);
 
 		if ($defenderHealthRemaining && $attackerHealthRemaining) {
 			$combat_msg = "You have been $attack_label by $attacker at $today for $total_attacker_damage, but they got away before you could kill them!";
@@ -260,7 +258,7 @@ if ($attack_is_legal){
 					}
 				}
 
-				addKills($attacker, $killpoints); // *** Attacker gains their killpoints. ***
+				addKills($attacker_id, $killpoints); // *** Attacker gains their killpoints. ***
 				$target_player->death();
 
 				if (!$simultaneousKill)	{
@@ -293,7 +291,7 @@ if ($attack_is_legal){
 					sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
 				}
 
-				addKills($target, $defenderKillpoints);	// *** Adds a kill for the defender. ***
+				addKills($target_id, $defenderKillpoints);	// *** Adds a kill for the defender. ***
 				$attacking_player->death();
 
 				if (!$simultaneousKill) {
@@ -324,14 +322,14 @@ if ($turns_to_take < 1) {
 	$turns_to_take = 1;
 }
 
-$ending_turns = subtractTurns($attacker, $turns_to_take);
+$ending_turns = subtractTurns($attacker_id, $turns_to_take);
 
 //  ***  START ACTION OVER AGAIN SECTION ***
 
 $attack_again = false;
 if (isset($target)) {
-    $attacker_health_snapshot = getHealth($attacker);
-    $defender_health_snapshot = getHealth($target);
+    $attacker_health_snapshot = getHealth($attacker_id);
+    $defender_health_snapshot = getHealth($target_id);
 	if ($AttackLegal && $attacker_health_snapshot > 0 && $defender_health_snapshot > 0) {	// *** After any partial attack. ***
 		$attack_again = true;
 	}

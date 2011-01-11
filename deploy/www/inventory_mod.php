@@ -160,14 +160,14 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			} else {
 				if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 					$result        = "lose ".$item->getTargetDamage()." HP";
-					$targetObj->vo->health = $victim_alive = subtractHealth($target, $item->getTargetDamage());
+					$targetObj->vo->health = $victim_alive = subtractHealth($target_id, $item->getTargetDamage());
 				} else if ($item->hasEffect('stealth')) {
 					$targetObj->addStatus(STEALTH);
 					$alternateResultMessage = "__TARGET__ is now stealthed.";
 					$result = false;
 					$victim_alive = true;
 				} else if ($item->hasEffect('death')) {
-					$targetObj->vo->health = setHealth($target,0);
+					$targetObj->vo->health = setHealth($target_id, 0);
 					$victim_alive = false;
 					$result = "be drained of your life-force and die!";
 					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
@@ -206,7 +206,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						}
 
 						$result         = "lose ".(-1*$turns_change)." turns";
-						changeTurns($target, $turns_change);
+						changeTurns($target_id, $turns_change);
 						$victim_alive = true;
 					}
 				} else if ($item->hasEffect('speed')) {
@@ -222,7 +222,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						}
 						$turns_change = $item->getTurnChange();
 						$result         = "gain $turns_change turns";
-						changeTurns($target, $turns_change);
+						changeTurns($target_id, $turns_change);
 						$victim_alive = true;
 					}
 				}
@@ -238,7 +238,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					if ($turns_change <= 0) {
 						$resultMessage = "__TARGET__ has lost ".(0-$turns_change)." turns!";
 
-						if (getTurns($target) <= 0) { //Message when a target has no more turns to ice scroll away.
+						if (getTurns($target_id) <= 0) { //Message when a target has no more turns to ice scroll away.
 							$resultMessage .= "__TARGET__ no longer has any turns.";
 						}
 					} else if ($turns_change > 0) {
@@ -257,9 +257,9 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						}
 
 						$loot = round($gold_mod * get_gold($char_id));
-						subtract_gold($char_id,$loot);
-						add_gold($char_id,$loot);
-						addKills($username,1);
+						subtract_gold($char_id, $loot);
+						add_gold($char_id, $loot);
+						addKills($char_id, 1);
 						$kill = true;
 						$bountyMessage = runBountyExchange($username, $target);  //Rewards or increases bounty.
 					} else {
@@ -310,7 +310,7 @@ if ($turns_to_take < 1) {
 	$turns_to_take = 1;
 }
 
-$ending_turns = subtractTurns($username, $turns_to_take);
+$ending_turns = subtractTurns($user_id, $turns_to_take);
 assert($item->hasEffect('speed') || $ending_turns < $starting_turns || $starting_turns == 0);
 
 // TODO: Add a "this is the target's resulting hitpoints bar at the end here.

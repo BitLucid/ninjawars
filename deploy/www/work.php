@@ -29,7 +29,7 @@ if ($worked && is_numeric($worked)) {
 
 // Work only if the work was requested, not just if the setting was set.
 if ($worked > 0) {
-	$turns = getTurns($username);
+	$turns = getTurns($char_id);
 	$gold  = get_gold($char_id);
 
 	if ($worked > $turns) {
@@ -38,7 +38,7 @@ if ($worked > 0) {
 		$new_gold  = $worked * $work_multiplier;   // *** calc amount worked ***
 
 		$gold  = add_gold($char_id, $new_gold);
-		$turns = subtractTurns($username, $worked);
+		$turns = subtractTurns($char_id, $worked);
 
 		$use_second_description = true;
 	}

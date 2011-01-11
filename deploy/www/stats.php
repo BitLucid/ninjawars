@@ -24,9 +24,9 @@ if ($changeprofile == 1) {
     // Limit the profile length.
 	if ($newprofile != '') {
 		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET messages = :profile WHERE uname = :player');
+		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET messages = :profile WHERE player_id = :player');
 		$statement->bindValue(':profile', $newprofile);
-		$statement->bindValue(':player', $username);
+		$statement->bindValue(':player', $user_id);
 		$statement->execute();	// todo - test for success
 
 		$profile_changed = true;
