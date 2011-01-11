@@ -329,7 +329,7 @@
   
     <hr>
 
-    White Ninja<br>
+    Dragon Ninja<br>
     Primary Skill: Chi - Increased healing at the shrine.<br>
     Aux Skill: Moonlight Heal -  Increases the hitpoints gained at midnight.
 
@@ -339,7 +339,7 @@
 
     <hr>
 
-    Red Ninja<br>
+    Tiger Ninja<br>
     Primary Skill: Fire Bolt - Inflicts Damage based on Ninja Level<br>
     Aux Skill: Blaze -  Adds extra damage during attacks, using extra turns.
 
@@ -349,7 +349,7 @@
 
     <hr>
 
-    Blue Ninja<br>
+    Crane Ninja<br>
     Primary Skill: Ice Bolt - Decreases an enemy's turns.<br>
     Aux Skill:  Speed - Increases turns gained over time.
 
@@ -359,7 +359,7 @@
 
     <hr>
 
-    Black Ninja<br>
+    Viper Ninja<br>
     Primary Skill: Poison Touch - Poison an enemy, causing them further damage over time.<br>
     Aux Skill: Hidden Resurrect - When you die and resurrect, you will come back to life stealthed.<br>
 
@@ -369,7 +369,7 @@
 
     <hr>
 
-    Gray Ninja<br>
+    Mantis Ninja<br>
     Primary Skill: Evasion - While dueling, if the gray ninja is close to defeat, they will escape before the final blow.<br>
     Aux Skill:  Kampo - The ancient Japanese system of herbalism, Kampo allows you to turn potent ingredients into more powerful concotions.
 
