@@ -21,13 +21,18 @@ class Clan
 	public function setName($p_name)
 	{ $this->m_name = trim($p_name); }
 
-	public function getLeader() {
-		return get_clan_leader_id($this->getID());
+	public function getLeaderID() {
+		$leader_info = $this->getLeaderInfo();
+		return $leader_info['player_id'];
+	}
+
+	public function getLeaderInfo() {
+		return get_clan_leader_info($this->getID());
 	}
 
 	public function disband() {
 		DatabaseConnection::getInstance();
-		$leader = $this->getLeader();
+		$leader = $this->getLeaderID();
 
 		$message = "Your leader has disbanded your clan. You are alone again.";
 
@@ -58,6 +63,9 @@ class Clan
 		$msg = "You have been kicked out of ".$this->getName()." by ".get_username()." on $today.";
 
 		send_message(get_user_id(), $p_playerID, $msg);
+	}
+
+	public function promoteMember($p_playerID) {
 	}
 }
 ?>

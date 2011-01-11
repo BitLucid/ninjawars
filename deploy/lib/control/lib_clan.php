@@ -88,43 +88,36 @@ function add_player_to_clan($player_id, $clan_id, $member_level=0) {
 // TODO: Simplify this invite system.
 
 // Send a message and change the status of a player so that they are in an "invited" state.
-function inviteChar($char_id, $p_clanID) {
+function inviteChar($p_target, $p_clan, $p_inviter) {
 	$failure_reason = null;
 	DatabaseConnection::getInstance();
-	$target_id = $char_id;
-	$target    = new Player($target_id);
 
-	if (!$target_id) {
+	if (!$p_target) {
 		return $failure_reason = 'No such ninja.';
 	}
 
 	$statement = DatabaseConnection::$pdo->prepare(
 		'SELECT active, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target');
-	$statement->bindValue(':target', $target_id);
+	$statement->bindValue(':target', $p_target->id());
 	$statement->execute();
 	$data = $statement->fetch();
 
 	$current_clan        = $data['_clan_id'];
 	$player_is_confirmed = $data['active'];
 
-	$leader_info = get_clan_leader_info($p_clanID);
-	$clan_name   = $leader_info['clan_name'];
-	$clan_id     = $leader_info['clan_id'];
-	$leader_id   = $leader_info['player_id'];
-	$leader_name = $leader_info['uname'];
-
 	if (!$player_is_confirmed) {
 		$failure_error = 'That player name does not exist.';
 	} else if (!empty($current_clan)) {
 		$failure_error = 'That player is already in a clan.';
-	} else if ($target->hasStatus(INVITED)) {
-		$failure_error = 'That player has already been Invited into a Clan.';
+	} else if ($p_target->hasStatus(INVITED)) {
+		$failure_error = 'That player has already been invited into a clan.';
 	} else {
-		$invite_msg = "$leader_name has invited you into their clan.
-		To accept, choose their clan $clan_name on the "
-		.message_url('clan.php?command=join&clan_id='.$p_clanID, 'clan joining page').'.';
-		send_message($leader_id, $target_id, $invite_msg);
-		$target->addStatus(INVITED);
+		$invite_msg = $p_inviter->name().' has invited you into their clan, '.$p_clan->getName().'. '
+		.'To accept, choose their clan '.$p_clan->getName().' on the '
+		.message_url('clan.php?command=join&clan_id='.$p_clan->getID(), 'clan joining page').'.';
+
+		send_message($p_inviter->id(), $p_target->id(), $invite_msg);
+		$p_target->addStatus(INVITED);
 		$failure_error = null;
 	}
 
@@ -134,7 +127,7 @@ function inviteChar($char_id, $p_clanID) {
 function send_clan_join_request($user_id, $clan_id) {
 	DatabaseConnection::getInstance();
 	$clan        = get_clan($clan_id);
-	$leader      = get_clan_leader_info($clan_id);
+	$leader      = $clan->getLeaderInfo();
 	$leader_id   = $leader['player_id'];
 	$leader_name = $leader['uname'];
 	$username    = get_username($user_id);
@@ -217,12 +210,6 @@ function clan_char_is_leader_of($char_id, $clan_id=null) {
 	$id = query_item($sel, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
 
 	return ($id ? get_clan($id) : null);
-}
-
-// Return just the clan leader id for a clan.
-function get_clan_leader_id($clan_id) {
-	$leader_info = get_clan_leader_info($clan_id);
-	return $leader_info['player_id'];
 }
 
 // Get the current clan leader or leaders.

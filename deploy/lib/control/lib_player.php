@@ -285,7 +285,7 @@ function getInventory($p_characterID) {
 
 // Check whether the player is the leader of their clan.
 function is_clan_leader($player_id) {
-	return (($clan = get_clan_by_player_id($player_id)) && $player_id == get_clan_leader_id($clan->getID()));
+	return (($clan = get_clan_by_player_id($player_id)) && $player_id == $clan->getLeaderID());
 }
 
 // Get the rank integer for a certain character.

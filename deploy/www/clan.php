@@ -178,7 +178,7 @@ if (!$player_id) {
 				} elseif ($sure == 'yes' && $leader_of_own_clan) {	// **** Clan Leader Action Disbanding of the Clan ***
 					$own_clan_obj->disband();
 					$clan_disbanded = true;
-					$action_message = "Your clan has been disbanded.";
+					$action_message = 'Your clan has been disbanded.';
 
 					$own_clan_id   = null;
 					$own_clan_info = null;
@@ -194,12 +194,8 @@ if (!$player_id) {
 				}
 			} else if ($command == 'invite') {	// *** Clan Leader Invite Input ***
 				if ($person_invited) {
-					$char_id_invited = get_char_id($person_invited);
-
-					if ($char_id_invited) {
-						// *** Clan leader Invite Action ***
-						$invite_failure_message = inviteChar($char_id_invited, $own_clan_obj->getID());
-					}
+					// *** Clan leader Invite Action ***
+					$invite_failure_message = inviteChar(new Player($person_invited), $own_clan_obj, $player);
 				}
 			} // End of invite command.
 
@@ -257,7 +253,7 @@ if (!$player_id) {
 		if ($clan_id_viewed) {
 			// Provide a link to join any clan that you're currently viewing.
 			$viewed_clan = get_clan($clan_id_viewed);
-			$leader      = get_clan_leader_info($clan_id_viewed);
+			$leader      = $viewed_clan->getLeaderInfo();
 			$viewed_clan_name = $viewed_clan['clan_name'];
 		}	// End of clan_id_viewed as a non-member code.
 	} // End of not-a member code
