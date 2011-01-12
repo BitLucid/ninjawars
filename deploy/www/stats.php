@@ -47,7 +47,7 @@ $level_category   = level_category($player['level']);
 $status_list      = get_status_list();
 $gravatar_url     = generate_gravatar_url($player['player_id']);
 $gurl             = $gravatar_url;
-$rank_display     = get_rank($username); // rank display.
+$rank_display     = get_rank($user_id); // rank display.
 $profile_editable = $player['messages'];
 
 $parts = get_certain_vars(get_defined_vars(), array('player', 'level_category', 'status_list'));

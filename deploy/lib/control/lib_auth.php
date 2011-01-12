@@ -59,7 +59,7 @@ function login_user($dirty_user, $p_pass) {
 		SESSION::set('username', $p_username); // Actually char name
 		SESSION::set('player_id', $p_player_id); // Actually char id.
 		SESSION::set('account_id', $p_account_id);
-		update_activity_log($p_username);
+		update_activity_log($p_player_id);
 		update_last_logged_in($p_player_id);
 		$up = "UPDATE players SET active = 1 WHERE player_id = :char_id";
 		query($up, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
@@ -350,11 +350,11 @@ function get_char_id($p_name=null) {
 }
 
 // Update activity for a logged in player.
-function update_activity_log($username) {
+function update_activity_log($p_playerID) {
 	// (See update_activity_info in lib_header for the function that updates all the detailed info.)
 	DatabaseConnection::getInstance();
 	$user_ip = $_SERVER['REMOTE_ADDR'];
-	query_resultset("UPDATE players SET days = 0, ip = :ip WHERE uname = :player", array(':ip'=>$user_ip, ':player'=>$username));
+	query_resultset("UPDATE players SET days = 0, ip = :ip WHERE player_id = :player", array(':ip'=>$user_ip, ':player'=>$p_playerID));
 }
 
 /**

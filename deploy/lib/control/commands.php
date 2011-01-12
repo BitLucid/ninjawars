@@ -175,28 +175,24 @@ function change_kills($char_id, $amount, $auto_level_check=true) {
 }
 
 // Update the levelling log with the increased kills.
-function update_levelling_log($who, $amount){
+function update_levelling_log($who, $amount) {
 	// TODO: This should be deprecated once we have only upwards kills_total increases, but for now I'm just refactoring.
 	DatabaseConnection::getInstance();
 
-	if (is_numeric($who)) {
-		$who = get_username($who);
-	}
-
 	$amount = (int)$amount;
-	if($amount == 0){
+	if ($amount == 0) {
 		return;
 	}
 	// *** UPDATE THE KILLS LOG *** //
 	$record_check = '<';
 	$add = true;
-	if($amount>0){
+	if ($amount > 0) {
 		$record_check = '>';
 		$add = false;
 	}
 
 	$statement = DatabaseConnection::$pdo->prepare(
-		"SELECT * FROM levelling_log WHERE uname = :player AND killsdate = now() AND killpoints $record_check 0 LIMIT 1");  
+		"SELECT * FROM levelling_log WHERE _player_id = :player AND killsdate = now() AND killpoints $record_check 0 LIMIT 1");  
 	//Check for an existing record of either negative or positive types.
 	$statement->bindValue(':player', $who);
 	$statement->execute();
@@ -204,10 +200,10 @@ function update_levelling_log($who, $amount){
 	$notYetANewDay = $statement->fetch();  //positive if todays record already exists
 	if ($notYetANewDay != NULL) {
 		// If an entry already exists, update it.
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints + :amount WHERE uname = :player AND killsdate = now() AND killpoints $record_check 0");  //increase killpoints
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints + :amount WHERE _player_id = :player AND killsdate = now() AND killpoints $record_check 0");  //increase killpoints
 	} else {
 		$statement = DatabaseConnection::$pdo->prepare(
-			"INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())");  
+			"INSERT INTO levelling_log (_player_id, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())");  
 		//create a new record for today
 	}
 	$statement->bindValue(':amount', $amount);
@@ -245,23 +241,21 @@ function changeLevel($who, $amount) {
 		$statement->execute();
 
 		// *** UPDATE THE LEVEL INCREASE LOG *** //
-		$username = get_username($who);
-
-		$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE uname = :player AND killsdate = now()");
-		$statement->bindValue(':player', $username);
+		$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE _player_id = :player AND killsdate = now()");
+		$statement->bindValue(':player', $who);
 		$statement->execute();
 
 		$notYetANewDay = $statement->fetch();  //Throws back a row result if there is a pre-existing record.
 
 		if ($notYetANewDay != NULL) {
 			//if record already exists.
-			$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET levelling=levelling + :amount WHERE uname = :player AND killsdate=now() LIMIT 1");
+			$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET levelling=levelling + :amount WHERE _player_id = :player AND killsdate=now() LIMIT 1");
 			$statement->bindValue(':amount', $amount);
-			$statement->bindValue(':player', $username);
+			$statement->bindValue(':player', $who);
 		} else {	// if no prior record exists, create a new one.
-			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (uname, killpoints, levelling, killsdate) VALUES (:player, '0', :amount, now())");  //inserts all except the autoincrement ones
+			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (_player_id, killpoints, levelling, killsdate) VALUES (:player, '0', :amount, now())");  //inserts all except the autoincrement ones
 			$statement->bindValue(':amount', $amount);
-			$statement->bindValue(':player', $username);
+			$statement->bindValue(':player', $who);
 		}
 
 		$statement->execute();

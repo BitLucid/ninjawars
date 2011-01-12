@@ -289,10 +289,10 @@ function is_clan_leader($player_id) {
 }
 
 // Get the rank integer for a certain character.
-function get_rank($username) {
+function get_rank($p_charID) {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE uname = :player");
-	$statement->bindValue(':player', $username);
+	$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE player_id = :player");
+	$statement->bindValue(':player', $p_charID);
 	$statement->execute();
 
 	$rank = $statement->fetchColumn();
