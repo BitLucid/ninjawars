@@ -98,16 +98,25 @@ if ($submitted) {
 	}
 } // *** Validates submission.
 
-if (!$submit_successful) {
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->query('SELECT identity, class_name||\' - \'||class_note AS class_label FROM class WHERE class_active');
-	$classes = array(''=>'Pick Ninja Color');
-
-    // Create the options array from the class data in the database.
-	while ($data = $statement->fetch()) {
-		$classes[$data['identity']] = $data['class_label'];
+// Pull the class choices.
+function class_choices(){
+	$st = query_array('SELECT identity, class_name, class_note as expertise FROM class WHERE class_active');
+	$classes = array();
+	foreach($st as $loop_class){
+		$classes[$loop_class['identity']] = array(
+			'name'=>$loop_class['class_name']
+			,'expertise'=>$loop_class['expertise']
+		);
 	}
-} // *** Displays form.
+	return $classes;
+}
+
+$classes = class_choices();
+
+if(!$enteredClass){
+	$first_class = key($classes);
+	$enteredClass = $first_class;
+}
 
 display_page(
 	'signup.tpl'

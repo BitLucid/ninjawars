@@ -423,13 +423,14 @@ form#signup label {
 	height: 3em;
 	width: 7.5em;
 }
+/*
 form#signup input, form#signup select {
-	display:block;
-	margin-right: 2em;
+	display:inline-block;
+	margin-right: 1em;
 	margin-left: 1em;
 	color:#66cc66;
 	background-color:black;
-}
+}*/
 form#signup input:focus, form#signup select:focus {
 	color:black;
 	background-color:white;

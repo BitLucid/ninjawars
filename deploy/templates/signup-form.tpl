@@ -1,4 +1,5 @@
     {$error}
+
 	<h1>Become a Ninja!</h1>
 
 	<form id='signup' action="signup.php" method="post">
@@ -26,12 +27,19 @@
 	 <legend>Ninja Info</legend>
       <div>
 	  <label for='send_class'>Ninja Type:</label>
-      <select name="send_class" id="send_class">
-        {html_options options=$classes selected=$enteredClass}
-      </select>
-	  <span>
+
+	  <div style='margin-left:17%;width:70%'>
+  	{foreach from=$classes item='class' key='identity'}
+  		<div>
+  		<input type='radio' name='send_class' value='{$identity}' {if $enteredClass eq $identity}checked='true'{/if} style=''>
+  			{$class.name} - {$class.expertise}
+  		</input>
+  		</div>
+  	{/foreach}
+      </div>
+	  <div>
 	  Change class easily within the game, or click the "wiki" link below for more information.
-	  </span>
+	  </div>
 	  </div>
 	</fieldset>
 
