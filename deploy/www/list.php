@@ -93,7 +93,7 @@ if ($searched && $list_by_rank) {
 }
 
 $numofpages = ceil($totalrows / $record_limit);
-$limitvalue = max(0, ($page * $record_limit) - $record_limit);
+$limitvalue = (int) max(0, ($page * $record_limit) - $record_limit);
 
 // Get the ninja information to create the lists.
 $sel = "SELECT rank_id, rankings.uname, class.class_name as class, class.identity as class_identity, class.theme as class_theme, rankings.level, rankings.alive, rankings.days, clan_player._clan_id AS clan_id, clan.clan_name, players.player_id
