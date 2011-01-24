@@ -61,14 +61,17 @@
         {/if}
 
         {if $classChangeSequence eq 1}
+          {foreach from=$classes item='class' key='identity'}
         <form id="Buy_classChange" action="dojo.php" method="post" name="changeofclass">
-          <div style='margin-top: 10px;margin-bottom: 10px;'>
-            Trade your memories of {$classChangeCost|escape} kills to change your skills to those of the <span class='class-name {$destination_class_theme}'>{$destination_class_display|escape}</span> ninja?
+          <div style='margin-top: .3em;margin-bottom: .3em;'>
+            Trade your memories of {$classChangeCost|escape} kills to change your skills to those of the <span class='class-name {$class.theme}'>{$class.class_name|escape}</span> ninja?
             <input id='classchangeSequence' name='classChangeSequence' type='hidden' value='2'>
             <input id='current_class' name='current_class' type='hidden' value='{$userClass|escape}'>
-            <input type="submit" value="Become A {$destination_class_display|escape} Ninja" class="formButton">
+            <input id='requested_identity' name='requested_identity' type='hidden' value='{$identity|escape}'>
+            <input type="submit" value="Become A {$class.class_name|escape} Ninja" class="formButton">
           </div>
         </form>
+          {/foreach}
         {elseif $classChangeSequence eq 2}
         <p>
         The monk tosses white powder in your face. You blink at the pain, and when you open your eyes, everything looks different somehow.</p>

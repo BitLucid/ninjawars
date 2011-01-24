@@ -59,4 +59,16 @@ function query_item($sql, $bindings=array()) {
 	$row = query_row($sql, $bindings);
 	return (is_array($row) ? reset($row) : null);
 }
+
+// Turn a randomly indexed array into an associatively indexed array.
+function array_identity_associate($data, $identity_column='identity'){
+    $res = array();
+    foreach($data as $single_row){
+        $loop_identity = $single_row[$identity_column];
+        $res[$loop_identity] = $single_row;
+    }
+    return $res;
+}
+
+
 ?>

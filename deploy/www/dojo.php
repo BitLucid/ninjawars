@@ -19,24 +19,15 @@ $dim_mak_cost     = 40; // In turns.
 $dim_mak_strength_requirement = 50; // Must have at least a strength of 50 to get and use DimMak, usually level 10.
 
 $class_change_cost     = 20; // *** Cost of class change in turns.
-//$classChangeLevelReq = 1; // No level requirement on class changing any more.
 
-//$classes = classes_info();
-
-$class_array = array(
-// *** STARTING CLASS IDENTITY  => NEXT CLASS IDENTITY ***
-	  'viper'   => 'tiger'
-	, 'tiger'   => 'dragon'
-	, 'dragon' => 'mantis'
-	, 'mantis'  => 'crane'
-	, 'crane'  => 'viper'
-);
+$classes = classes_info();
 
 $in_upgrade = in('upgrade'); // Level up request.
 $dimmak_sequence     = in('dimmak_sequence', '');
 $classChangeSequence = in('classChangeSequence');
-$current_class       = in('current_class'); 
+$current_class_untrusted       = in('current_class'); 
     // Untrusted courtesy check to prevent doubled class change in the event of a refresh.
+$requested_identity     = in('requested_identity'); // Untrusted class identity request.
 
 
 if (is_logged_in()) {
@@ -50,16 +41,23 @@ if (is_logged_in()) {
 	$userClass = $player->class_identity();
 	$user_class_display = $player->class_display_name();
 	$user_class_theme = class_theme($userClass);
+		
+	// Pull info for the class requested to change to.
+	$destination_class_identity = isset($requested_identity) && isset($classes[$requested_identity])? $requested_identity : null;
+
+
+	$destination_class_info = $destination_class_display = $destination_class_theme = null;
+	if($destination_class_identity){
+		$destination_class_info = $classes[$destination_class_identity];
+		$destination_class_display = $destination_class_info['class_name'];
+		$destination_class_theme = $destination_class_info['theme'];
+	}
 	
-	// Pull info for the next class in line.
-	$destination_class = $class_array[$userClass];
-	$destination_class_display = class_display_name_from_identity($class_array[$userClass]);
-	$destination_class_theme = class_theme($destination_class);
 	// Pull the number of kills required to get to the next level.
 	$required_kills = required_kills_to_level($player->level());
 
 
-    $current_class = whichever($current_class, $userClass);
+    $current_class_untrusted = whichever($current_class_untrusted, $userClass);
     // Initialize the class record to prevent double change on refresh.
 
 	// Requirement functions.
@@ -106,13 +104,13 @@ function dim_mak_reqs($char_obj, $turn_req, $str_req){
     // Class Change Buy
     $class_change_error = null;
 
-    if($classChangeSequence == 2 && $current_class == $userClass && $destination_class){
+    if($classChangeSequence == 2 && $current_class_untrusted == $userClass && $destination_class_identity){
         // Class change requested, not a page refresh, and requested class is existant.
         if(!$class_change_requirement_error){
             // Class change conditions are ok, so:
             // subtract the cost in turns
             // ...and change the class.
-    		$class_change_error = set_class($char_id, $destination_class);       
+    		$class_change_error = set_class($char_id, $destination_class_identity);       
     		if(!$class_change_error){
     			$char->changeTurns((-1)*$class_change_cost);
     		}
