@@ -94,38 +94,45 @@ function subtractGold($who, $amount) {
 // ********** TURNS FUNCTIONS *********
 // ************************************
 
+
+// Deprecated.
 function getTurns($who) {
-	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT turns FROM players WHERE player_id = :user");
-	$statement->bindValue(':user', $who);
-	$statement->execute();
-
-	return $statement->fetchColumn();
+	return get_turns($char_id);
 }
 
+// Deprecated.
 function changeTurns($who, $amount) {
-	$amount = (int)$amount;
-	if (abs($amount) > 0) {
-		$dbconn = DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET turns = turns + ".
-		   "CASE WHEN turns + :amount < 0 THEN turns*(-1) ELSE :amount2 END ".
-		   "WHERE player_id  = :user");
-		$statement->bindValue(':amount', $amount);
-		$statement->bindValue(':amount2', $amount);
-		$statement->bindValue(':user', $who);
-		$statement->execute();
-    }
-
-	return getTurns($who);
+	return change_turns($who, $amount);
 }
 
+// Deprecated.
 function addTurns($who, $amount) {
-	return changeTurns($who, $amount);
+	return change_turns($who, $amount);
 }
 
+// Deprecated.
 function subtractTurns($who, $amount) {
-	return changeTurns($who, ((-1)*$amount));
+	return change_turns($who, ((-1)*$amount));
 }
+
+
+// Add or subtract from a players turns (zeroed-out).
+function change_turns($char_id, $amount){
+	$amount = (int) $amount;
+	if($amount){ // Ignore zero
+		query("UPDATE players set turns = (CASE WHEN turns + :amount < 0 THEN 0 ELSE turns + :amount END) where player_id = :char_id",
+			array(':amount'=>$amount, ':char_id'=>$char_id));
+	}
+	return get_turns($char_id);
+}
+
+// Pull a character's turns.
+function get_turns($char_id){
+	return query_item("select turns from players where player_id = :char_id", array(':char_id'=>$char_id));
+}
+
+
+
 
 // ************************************
 // ************************************

@@ -198,7 +198,7 @@ class Player
 	}
 
 	public function changeTurns($amount){
-		changeTurns($this->id(), $amount);
+		return change_turns($this->id(), $amount);
 	}
 
     // Pull the data of the player obj as an array.

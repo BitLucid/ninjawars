@@ -14,11 +14,14 @@ if ($error = init($private, $alive)) {
 
 
 $msg            = '';
-$dimMakCost     = 40;
-$dimMakLevelReq = 10;
 
-$classChangeCost     = 20; // *** Cost of class change in Kills
-$classChangeLevelReq = 6;
+$dim_mak_cost     = 40; // In turns.
+$dim_mak_strength_requirement = 50; // Must have at least a strength of 50 to get and use DimMak, usually level 10.
+
+$class_change_cost     = 20; // *** Cost of class change in turns.
+//$classChangeLevelReq = 1; // No level requirement on class changing any more.
+
+//$classes = classes_info();
 
 $class_array = array(
 // *** STARTING CLASS IDENTITY  => NEXT CLASS IDENTITY ***
@@ -36,14 +39,14 @@ $current_class       = in('current_class');
     // Untrusted courtesy check to prevent doubled class change in the event of a refresh.
 
 
-
 if (is_logged_in()) {
 
     // Get the character data.
     $char_id = get_char_id();
-	$player    = new Player($char_id);
+	$char = $player    = new Player($char_id);
 	$userLevel = $player->vo->level;
 	$userKills = $player->vo->kills;
+	$user_turns = $player->turns();
 	$userClass = $player->class_identity();
 	$user_class_display = $player->class_display_name();
 	$user_class_theme = class_theme($userClass);
@@ -59,32 +62,60 @@ if (is_logged_in()) {
     $current_class = whichever($current_class, $userClass);
     // Initialize the class record to prevent double change on refresh.
 
+	// Requirement functions.
+
+// Returns an error if there's an obstacle to changing classes.
+function class_change_reqs($char_obj, $turn_req){
+
+	$error = null;
+	if($char_obj->turns() < $turn_req){
+		// Check the turns, return the error if it's too below.
+		$error = "You don't have enough turns to change your class.";
+	}
+	return $error;
+}
+
+// Returns an error if the requirements for getting a dim mak aren't met.
+function dim_mak_reqs($char_obj, $turn_req, $str_req){
+	$error = null;
+	if ($char_obj->turns()<$turn_req){
+		$error = "You don't have enough turns to get a Dim Mak.";
+	}
+	if($char_obj->strength()<$str_req){
+		$error = "You don't have enough strength to get a Dim Mak.";
+	}
+	return $error;
+}
+
+
     // Check that they can do one action or another.
-    $class_change_sufficient_kills = $userKills >= $classChangeCost;
-	$classChangeAllowed = ($userLevel >= $classChangeLevelReq && $class_change_sufficient_kills);
-	$dimMakAllowed      = ($userLevel >= $dimMakLevelReq && $userKills >= $dimMakCost);
 	$max_level = maximum_level(); // For display in the template.
 	$nextLevel = $userLevel + 1;
 
+	$class_change_requirement_error = class_change_reqs($char, $class_change_cost);
+	$dim_mak_requirement_error = dim_mak_reqs($char, $dim_mak_cost, $dim_mak_strength_requirement);
+
 
     // DIM MAK BUY
-	if ($dimMakAllowed && $dimmak_sequence == 2) {
-	    // *** Start of Dim Mak Code, A dim mak was requested. ***
-		$userKills = subtractKills($char_id, $dimMakCost);
+	if (!$dim_mak_requirement_error && $dimmak_sequence == 2) {
+	    // *** Start of Dim Mak Code, A dim mak didn't error and was requested. ***
+		$char_turns = $char->changeTurns((-1)*$dim_mak_cost);
 		add_item($char_id, 'dimmak', 1);
 	}	// *** End of Dim Mak Code. ***
 
     // Class Change Buy
     $class_change_error = null;
+
     if($classChangeSequence == 2 && $current_class == $userClass && $destination_class){
         // Class change requested, not a page refresh, and requested class is existant.
-        if(!$class_change_sufficient_kills){
-            $class_change_error = "You don't have enough kills to change your class.";
-        } elseif ($classChangeAllowed){
-            // Class change conditions are ok, so take the cost in kills
+        if(!$class_change_requirement_error){
+            // Class change conditions are ok, so:
+            // subtract the cost in turns
             // ...and change the class.
-    		$userKills = subtractKills($char_id, $classChangeCost);
-    		$class_change_error = set_class($char_id, $destination_class);            
+    		$class_change_error = set_class($char_id, $destination_class);       
+    		if(!$class_change_error){
+    			$char->changeTurns((-1)*$class_change_cost);
+    		}
         }
     }
 	
@@ -99,10 +130,11 @@ if (is_logged_in()) {
 	if ($upgrade_requested) {
 	    // Try to level up.
 	    $levelled = level_up_if_possible($char_id);
-	    $char = new Player($char_id);
+	    $char = $player = new Player($char_id);
 	    $userLevel = $char->level();
 	    $char_data = $char->data();
 	    
+	    // Get the info for the next level, especially if that has changed.
 	    $nextLevel = $userLevel+1;
 	    $userKills = char_kills($char_id);
     	$required_kills = required_kills_to_level($userLevel);

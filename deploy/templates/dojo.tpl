@@ -13,7 +13,7 @@
 <p>The guards at the door block your way, saying "Stranger, go on your way, you haven't the skill to enter here."</p>
 {else}
 
-	{if $dimMakAllowed}
+	{if !$dim_mak_requirement_error}
 	<!-- DIMMAK OBTAINING EVENT REQUESTED -->
     {if $dimmak_sequence neq 2}
     A black-robed monk stands near the entrance to the dojo.
@@ -44,7 +44,7 @@
     <!-- END OF DIMMAK OBTAINING EVENT DISPLAY -->
     
 	{/if}
-	{if $classChangeAllowed}
+	{if !$class_change_requirement_error}
         {if $classChangeSequence neq 2}
         <!-- CLASS CHANGING SPECIAL EVENT DISPLAY -->
         A white-robed monk stands near the entrance to the dojo.
