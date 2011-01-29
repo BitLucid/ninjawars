@@ -152,7 +152,13 @@ function get_char_account_id($char_id){
 function characters_are_linked($char_id, $char_2_id){
 	$account_id = get_char_account_id($char_id);
 	$account_2_id = get_char_account_id($char_2_id);
-	if(empty($account_id) || empty($account_2_id)){
+	$char_1_info = char_info($char_id);
+	$char_2_info = char_info($char_2_id);
+	if(empty($account_id) || empty($account_2_id) || empty($char_1_info) || empty($char_2_info)){
+		return false;
+	} elseif (isset($char_1_info['active']) && !$char_1_info['active'] ||
+		 isset($char_1_info['active']) && !$char_2_info['active']){
+		 // Not both of the potential clones are active.
 		return false;
 	} else {
 		if ($account_id == $account_2_id){
