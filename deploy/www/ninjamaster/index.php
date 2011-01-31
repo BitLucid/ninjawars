@@ -13,11 +13,13 @@ function high_rollers(){
 	// Max turns.
 	// Max gold.
 	// Max kills
+	// etc.
 	$res = array();
 	$res['gold'] = query_array('select player_id, uname, gold from players order by gold desc limit 10');
 	$res['turns'] = query_array('select player_id, uname, turns from players order by turns desc limit 10');
 	$res['kills'] = query_array('select player_id, uname, kills from players order by kills desc limit 10');
 	$res['health'] = query_array('select player_id, uname, health from players order by health desc limit 10');
+	$res['ki'] = query_array('select player_id, uname, ki from players order by ki desc limit 10');
 	return $res;
 }
 
