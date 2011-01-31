@@ -1,5 +1,7 @@
 <h1>Messages</h1>
 
+{include file='message-tabs.tpl' current='messages'}
+
 <script type='text/javascript' src='{$smarty.const.JS_ROOT}messageDeleteConfirm.js'></script>
 
 {if $message_to eq 'individual'}
