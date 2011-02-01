@@ -206,6 +206,7 @@ if ($attack_is_legal){
 				}
 			}
 		}
+		
 
 		// *** END OF MAIN BATTLE ALGORITHM ***
 
@@ -315,6 +316,13 @@ if ($attack_is_legal){
 		add_gold(get_char_id($victor), $loot);
 		subtract_gold(get_char_id($loser), $loot);
 	}
+	
+
+	if($rounds>4){
+		// Even matched battle!  Reward some ki to the attacker.
+		change_ki($attacker_id, 1); // Award Ki.
+	}
+	
 }
 
 // *** Take away at least one turn even on attacks that fail. ***
