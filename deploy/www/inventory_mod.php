@@ -256,8 +256,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 							$gold_mod = 0.15;
 						}
 
-						$loot = round($gold_mod * get_gold($char_id));
-						subtract_gold($char_id, $loot);
+						$loot = round($gold_mod * get_gold($target_id));
+						subtract_gold($target_id, $loot);
 						add_gold($char_id, $loot);
 						addKills($char_id, 1);
 						$kill = true;
