@@ -93,6 +93,10 @@
 				<div>You have taken {$loot} gold from {$target}.</div>
 			{/if}
 		{/if}
+		
+		{if $rewarded_ki}
+			<div>Your ki lifeforce has increased.</div>
+		{/if}
 
 
 

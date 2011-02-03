@@ -40,7 +40,7 @@ $target_id   = get_char_id($target);
 
 // Template vars.
 $stealthed_attack = $stealth_damage = $stealth_lost = $pre_battle_stats = $rounds =
-	$combat_final_results = $killed_target = $attacker_died = $bounty_result = false;
+	$combat_final_results = $killed_target = $attacker_died = $bounty_result = $rewarded_ki = false;
 
 // *** Attack System Initialization ***
 $killpoints               = 0; // *** Starting state for killpoints. ***
@@ -321,6 +321,7 @@ if ($attack_is_legal){
 	if($rounds>4){
 		// Even matched battle!  Reward some ki to the attacker.
 		change_ki($attacker_id, 1); // Award Ki.
+		$rewarded_ki = 1;
 	}
 	
 }
