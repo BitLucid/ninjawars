@@ -1,6 +1,6 @@
 <?php
-require_once(DB_ROOT . "PlayerVO.class.php");
-require_once(DB_ROOT . "PlayerDAO.class.php");
+//require_once(DB_ROOT . "PlayerVO.class.php");
+//require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(LIB_ROOT."control/Player.class.php");
 require_once(LIB_ROOT."control/lib_attack.php");
 require_once(LIB_ROOT."control/Skill.php");
