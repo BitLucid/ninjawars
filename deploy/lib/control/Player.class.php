@@ -170,8 +170,8 @@ class Player
 	}
 
 	public function isActive() {
-		$activity_threshhold = 91;
-		return ($this->vo->days < $activity_threshhold);
+		// Set to make active the primary indicator, lets deity fully determine who to make inactive or not.
+		return !!$this->vo->active;
 	}
 	
 	public function isAdmin(){
