@@ -118,7 +118,7 @@ function getTurnCost($p_params, &$tpl) {
 
 $template = prep_page(
 	$template
-	, 'Ninja'
+	, 'Ninja Profile'
 	, $parts
 	, array(
 		'quickstat' => 'player'
