@@ -121,7 +121,7 @@ function change_turns($char_id, $amount){
 	$amount = (int) $amount;
 	if($amount){ // Ignore zero
 		query("UPDATE players set turns = (CASE WHEN turns + :amount < 0 THEN 0 ELSE turns + :amount END) where player_id = :char_id",
-			array(':amount'=>$amount, ':char_id'=>$char_id));
+			array(':amount'=>array($amount, PDO::PARAM_INT), ':char_id'=>$char_id));
 	}
 	return get_turns($char_id);
 }
@@ -168,15 +168,14 @@ function change_kills($char_id, $amount, $auto_level_check=true) {
 			// For positive kill changes, check whether levelling occurs.
 			level_up_if_possible($char_id, $auto_levelling=true);
 		}
-		DatabaseConnection::getInstance();
 
-		$update = DatabaseConnection::$pdo->prepare("UPDATE players SET kills = kills + 
+		query("UPDATE players SET kills = kills + 
 		   CASE WHEN kills + :amount1 < 0 THEN kills*(-1) ELSE :amount2 END
-		   WHERE player_id = :player_id");
-		$update->bindValue(':amount1', $amount);
-		$update->bindValue(':amount2', $amount);
-		$update->bindValue(':player_id', $char_id);
-		$update->execute();
+		   WHERE player_id = :player_id", 
+		   array(':amount1'=>array($amount, PDO::PARAM_INT),
+		   ':amount2'=>array($amount, PDO::PARAM_INT),
+		   ':player_id'=>$char_id
+		   ));
 	}
 	return get_kills($char_id);
 }
