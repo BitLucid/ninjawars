@@ -7,6 +7,8 @@ if ($error = init($private, $alive)) {
 } else {
 
 $to        = in('to'); // The target of the message, if any were specified.
+$to = $to? $to : get_setting('last_messaged');
+save_setting('last_messaged', $to);
 $to_clan   = in('toclan');
 $messenger = in('messenger'); // naive spam detection attempt
 $message   = in('message', null, null); // Unfiltered input for this message.
