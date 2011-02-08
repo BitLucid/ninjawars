@@ -59,8 +59,8 @@ if (parent.window != window) {
 	}
 	
 	// Get the chars/ids matching a term and then have the callback run.
-	NW.charMatch = function(term, callback) {
-		$.getJSON('api.php?type=char_search&term='+term+'&jsoncallback=?', callback);
+	NW.charMatch = function(term, limit, callback) {
+		$.getJSON('api.php?type=char_search&term='+term+'&limit='+limit+'&jsoncallback=?', callback);
 	};
 
 	NW.chatLocked = function() {

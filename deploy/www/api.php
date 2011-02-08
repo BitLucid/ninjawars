@@ -31,7 +31,7 @@ function nw_json($type, $jsoncallback) {
 			$chat_limit = in('chat_limit', 20);
 			$res = $jsoncallback.'('.json_chats($chat_limit).')';
 		} elseif ($type == 'char_search') {
-			$res = $jsoncallback.'('.json_char_search(in('term')).')';
+			$res = $jsoncallback.'('.json_char_search(in('term'), in('limit')).')';
 		} else {
 			$res = $jsoncallback.'('.$valid_type_map[$type]().')';
 		}
@@ -41,8 +41,11 @@ function nw_json($type, $jsoncallback) {
 }
 
 // Search through characters by text, returning multiple matches.
-function json_char_search($term) {
-	$res = query('select player_id, uname from players where uname ~* :term order by level desc limit 100', array(':term'=>$term));
+function json_char_search($term, $limit) {
+	if(!is_numeric($limit)){
+		$limit = 10;
+	}
+	$res = query('select player_id, uname from players where uname ~* :term order by level desc limit :limit', array(':term'=>$term, ':limit'=>array($limit, PDO::PARAM_INT)));
 	return '{"char_matches":'.json_encode($res->fetchAll(PDO::FETCH_ASSOC)).'}';
 }
 
