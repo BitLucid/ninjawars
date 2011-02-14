@@ -13,7 +13,7 @@
     <meta name="author" content="ninjawars.net">
     <meta name="description" content="Ninjawars: Battle other ninja for your survival.  Create a ninja and use skills or magic to kill samurai, the emperor's guards, or other ninja from rival clans.">
 
-    <title>Ninja Wars: {$title|escape}</title>
+    <title>{$title|escape} - Ninja Wars</title>
     <base href="{$smarty.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
     <link rel="stylesheet" type="text/css" href="css/style.css" media="Screen">
     <link rel="stylesheet" href="css/mobile.css" type="text/css" media="handheld">
