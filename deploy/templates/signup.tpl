@@ -49,7 +49,7 @@
 	{if $submit_successful}
 		{if $confirmed}
   <p>
-  	Account with the login name "{$enteredName|escape}" is now confirmed! Please login on the login bar of the ninjawars.net page.
+  	Account with the login name "{$enteredName|escape}" is now confirmed! <strong>You can now <a href='login.php'>login!</a></strong>
   </p>
 		{else}
   Phase 5: When you receive an email from ninjawars ({$smarty.const.SYSTEM_EMAIL}), it will describe how to activate your account.
