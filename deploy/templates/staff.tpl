@@ -18,14 +18,31 @@
       <iframe src="http://www.google.com/talk/service/badge/Show?tk=z01q6amlq2pc0od9ms6m36jk9p0lncem83qghsqacgi5e1akm10254oogtclbbh96d0c5870tgkb63h2b66ntkg7on0crqn451ui988hbpk53ikv71fhsa3d5f84j2shna8ijsf474r80ut32oql3dio4ov6brdi3cn49bpuvi2j40u91hrrrea806bsnlhnelc&amp;w=200&amp;h=60" frameborder="0" allowtransparency="true" width="200" height="60"></iframe>
     </div>
     <a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer
-    <span id='social-networks'>
-      - <a target='_blank' href="http://twitter.com/tchalvak"><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a>
-      - <a target='_blank' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a>
-      - <a target='_blank' href="http://www.myspace.com/toastersquid"><img alt="MS" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/MySpace_24x24.png'> on Myspace</a>
+    <style type='text/css'>
+    	{literal}
+    	ul#social-networks{
+    		list-style-type:none;
+    	}
+    	#social-networks li{
+    		display:inline;
+    		padding-right:.5em;
+    		margin-right:.3em;
+    	}
+    	ul#social-networks li:before {
+			content: "\00BB";
+		}
+    	{/literal}
+    </style>
+    <ul id='social-networks' style='margin-top:1em'>
+      <li> <a target='_blank' href="http://twitter.com/tchalvak"><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a></li>
+      <li> <a target='_blank' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a> </li>
+
       
-      - on AIM: Tchalvak
-    </span>
-    <div><a class='expand-link'>Expand <img alt="&gt;&gt;&gt;" src="images/smallArrows.png"></a></div>
+      <li> on AIM: <em>Tchalvak</em> </li>
+	  <li>or check out my professional programming website</li>
+	  <li><a target='_blank' href='http://royronalds.com' class='ext-link'>royronalds.com</a></li>
+    </ul>
+    <div style='margin-top:1em'><a class='expand-link'>More info &amp; bio <img alt="&gt;&gt;&gt;" src="images/smallArrows.png"></a></div>
     <div class='developer-info'>
     	<!-- Expanded & contracted section -->
       <p>
