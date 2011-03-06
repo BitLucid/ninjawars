@@ -120,8 +120,9 @@ function subtractTurns($who, $amount) {
 function change_turns($char_id, $amount){
 	$amount = (int) $amount;
 	if($amount){ // Ignore zero
-		query("UPDATE players set turns = (CASE WHEN turns + :amount < 0 THEN 0 ELSE turns + :amount END) where player_id = :char_id",
-			array(':amount'=>array($amount, PDO::PARAM_INT), ':char_id'=>$char_id));
+		// These PDO parameters must be split into amount1 and amount2 because otherwise PDO gets confused.  See github issue 147.
+		query("UPDATE players set turns = (CASE WHEN turns + :amount < 0 THEN 0 ELSE turns + :amount2 END) where player_id = :char_id",
+			array(':amount'=>array($amount, PDO::PARAM_INT), ':amount2'=>array($amount, PDO::PARAM_INT), ':char_id'=>$char_id));
 	}
 	return get_turns($char_id);
 }
