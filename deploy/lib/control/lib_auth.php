@@ -363,6 +363,18 @@ function update_activity_log($p_playerID) {
 	query_resultset("UPDATE players SET days = 0, ip = :ip WHERE player_id = :player", array(':ip'=>$user_ip, ':player'=>$p_playerID));
 }
 
+// Simply store whatever authentication info is passed in.
+function store_auth_attempt($info){
+	// Simply log the attempts in the database.
+	$additional_info = null;
+	if($info['additional_info']){
+		// Encode all the info from $_SERVER, for now.
+		$additional_info = json_encode($info['additional_info']);
+	}
+	
+	query("insert into login_attempts (username, ua_string, ip, successful, additional_info) values (:username, :user_agent, :ip, :successful, :additional_info)", array(':username'=>$info['username'], ':user_agent'=>$info['user_agent'], ':ip'=>$info['ip'], ':successful'=>$info['successful'], ':additional_info'=>$additional_info));
+}
+
 /**
  * A better alternative (RFC 2109 compatible) to the php setcookie() function
  *

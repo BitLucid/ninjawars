@@ -9,9 +9,9 @@ $referrer        = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] :
 
 $is_logged_in = get_char_id();
 
-// Eventually this page will simply be rerouted through apache to the static page system.
-
 init($private=false, $alive=false);
+
+
 
 
 // already logged in/login behaviors
@@ -20,13 +20,23 @@ if ($logged_out){
 	$is_logged_in = false;
 } elseif (!$is_logged_in) { // Perform login if they aren't already logged in.
 	if ($login) { 	// Request to login was made.
-		$logged_in    = login_user(in('user', null), in('pass'));
+	
+		$username_requested = in('user');
+
+		$login_attempt_info = array('username'=>$username_requested, 'user_agent'=>$_SERVER['HTTP_USER_AGENT'], 'ip'=>$_SERVER['REMOTE_ADDR'], 'successful'=>0, 'additional_info'=>$_SERVER);
+	
+		$logged_in    = login_user($username_requested, in('pass'));
 		$is_logged_in = $logged_in['success'];
 
 		if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
+			store_auth_attempt($login_attempt_info);		
 			$login_error = $logged_in['login_error'];
 			redirect("login.php?error=".urlencode($login_error));
 		} else {
+			// log a successful login attempt
+			$login_attempt_info['successful']=1;
+			store_auth_attempt($login_attempt_info);
+		
 			// Successful login, go to the main page...
 			redirect("index.php");
 		}
