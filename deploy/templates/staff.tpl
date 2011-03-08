@@ -34,13 +34,13 @@
     	{/literal}
     </style>
     <ul id='social-networks' style='margin-top:1em'>
-      <li> <a target='_blank' href="http://twitter.com/tchalvak"><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a></li>
-      <li> <a target='_blank' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a> </li>
+      <li> <a target='_blank' rel='me' href="http://twitter.com/tchalvak"><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a></li>
+      <li> <a target='_blank' rel='me' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a> </li>
 
       
       <li> on AIM: <em>Tchalvak</em> </li>
 	  <li>or check out my professional programming website</li>
-	  <li><a target='_blank' href='http://royronalds.com' class='ext-link'>royronalds.com</a></li>
+	  <li><a target='_blank' href='http://royronalds.com' rel='me' class='ext-link'>royronalds.com</a></li>
     </ul>
     <div style='margin-top:1em'><a class='expand-link'>More info &amp; bio <img alt="&gt;&gt;&gt;" src="images/smallArrows.png"></a></div>
     <div class='developer-info'>
