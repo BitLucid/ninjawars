@@ -321,7 +321,7 @@ display_page(
 	, 'Item Usage'
 	, get_defined_vars()
 	, array(
-		'quickstat' => 'viewinv'
+		'quickstat' => 'player'
 	)
 );
 }
