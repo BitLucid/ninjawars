@@ -62,7 +62,7 @@ function sendErrorEmail($p_errorMsg) {
 		"From: ".SYSTEM_EMAIL."\r\n".
 		'X-Mailer: PHP/' . phpversion();
 
-	mail(ALERTS_EMAIL, 'Ninjawars: Error'.substr($p_errorMsg, 0, 20), $p_errorMsg, $headers);
+	mail(ALERTS_EMAIL, 'Ninjawars: Error'.substr($p_errorMsg, 0, 100), $p_errorMsg, $headers);
 }
 
 function showErrorPage() {

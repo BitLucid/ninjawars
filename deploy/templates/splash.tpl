@@ -48,6 +48,7 @@
       
 	  </div><!-- End of header -->
       
+
       
       <!-- MAIN COLUMN STARTS HERE -->
       <div id='main-column'>
@@ -77,8 +78,7 @@
 
       </div><!-- End of left-column -->
 
-
-      <div id='push'></div>
+      <!-- <div id='push'></div> -->
       <div id='index-footer'>
         <span id='nw-catchphrases'>
 {literal}

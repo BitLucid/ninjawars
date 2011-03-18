@@ -512,6 +512,10 @@ if (parent.window != window) {
 			}
 		}
 	};
+	
+	NW.addChat = function(author, message, timestamp, author_id){
+		
+	};
 
 	NW.renderChatMessage = function(p_message) {
 		var container = document.createElement('dd');

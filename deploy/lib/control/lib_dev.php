@@ -8,6 +8,7 @@
 /**
  * Hack to dump out the local variables in a very visible format.
  * @param array $locals get_defined_vars() passed to this function.
+ * Used as: var_dump_locals(get_defined_vars());
 **/
 function var_dump_locals($defined=array()) {
 	if (DEBUG) {

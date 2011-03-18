@@ -25,22 +25,19 @@
                   </form>
 {/if}
                   <div id="mini-chat-frame-container" class='chat-collapsed'>
-                    <dl id="mini-chat-display" class="chat-messages">
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                    <!-- Chat section with template chat author and messages --> 
+                    <dl id="mini-chat-display" class="chat-messages" style='display:hidden'>
+                       	<dt class='chat-author'>&lt;<a href='player.php?player_id=' target='main'></a>&gt;</dt><dd class='chat-message' title=''><dt>
                     </dl>
                     
                     <noscript>
-{* // Commented out as unneeded
-{if isset($user_id) and $user_id}
-				<!--
-                <!-- TODO: Determine why this duplicate chat submission section here? -->
-                  <form class='chat-submit' id="post_msg" action="mini_chat.php" method="post" name="post_msg" target='mini_chat'>
-                    <input id="message" type="text" size="20" maxlength="250" name="message" class="textField">
-                    <input id="command" type="hidden" value="postnow" name="command">
-                    <input name='chat_submit' type='hidden' value='1'>
-                    <button type="submit" value="1" class="formButton">Chat</button>
-                  </form>
-{/if}
-*}
                         <iframe frameBorder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
                         <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
                           <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
@@ -48,7 +45,7 @@
                     </noscript>
 
 
-                  </div>
+                  </div><!-- End of chat-collapsed -->
                 </div>
               </div>
               

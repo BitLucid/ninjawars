@@ -60,6 +60,20 @@ function query_item($sql, $bindings=array()) {
 	return (is_array($row) ? reset($row) : null);
 }
 
+// Shortcut for associative fetching.
+function fet($pdo){
+	return $pdo->fetch(PDO::FETCH_ASSOC);
+}
+
+// Shortcut for row count on a pdo resultset.
+function rco($pdo){
+	return $pdo->rowCount();
+}
+
+function fall($pdo){
+	return $pdo->fetchall(PDO::FETCH_ASSOC);
+}
+
 // Turn a randomly indexed array into an associatively indexed array.
 function array_identity_associate($data, $identity_column='identity'){
     $res = array();
