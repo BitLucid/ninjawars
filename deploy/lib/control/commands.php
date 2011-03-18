@@ -97,7 +97,7 @@ function subtractGold($who, $amount) {
 
 // Deprecated.
 function getTurns($who) {
-	return get_turns($char_id);
+	return get_turns($who);
 }
 
 // Deprecated.
