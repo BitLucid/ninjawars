@@ -213,7 +213,7 @@ class Item {
 		$this->m_turnCost          = ($p_data['turn_cost']     ? $p_data['turn_cost']     : 1);
 		$this->m_maxTurnChange     = ($p_data['turn_change']   ? $p_data['turn_change']   : 0);
 		$this->m_maxDamage         = ($p_data['target_damage'] ? $p_data['target_damage'] : null);
-		$this->m_ignop_dataStealth = ($p_data['ignore_stealth'] == 't');
+		$this->m_ignoresStealth	   = ($p_data['ignore_stealth'] == 't');
 		$this->m_covert            = ($p_data['covert']         == 't');
 		$this->m_selfUse           = ($p_data['self_use']       == 't');
 	}
