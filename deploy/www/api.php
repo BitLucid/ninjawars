@@ -45,7 +45,7 @@ function json_char_search($term, $limit) {
 	if(!is_numeric($limit)){
 		$limit = 10;
 	}
-	$res = query('select player_id, uname from players where uname ~* :term order by level desc limit :limit', array(':term'=>$term, ':limit'=>array($limit, PDO::PARAM_INT)));
+	$res = query('select player_id, uname from players where uname ~* :term and active=1 order by level desc limit :limit', array(':term'=>$term, ':limit'=>array($limit, PDO::PARAM_INT)));
 	return '{"char_matches":'.json_encode($res->fetchAll(PDO::FETCH_ASSOC)).'}';
 }
 
