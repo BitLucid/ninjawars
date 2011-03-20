@@ -114,8 +114,8 @@ if ($item->hasEffect('wound')) {
 	}
 	
 	if ($item->hasEffect('pierce')) {
-		// Minor piercing damage.
-		$item->setTargetDamage(rand(1, 20) + $near_level_power_increase);
+		// Minor piercing damage, e.g. 1-50 plus the near level power increase.
+		$item->setTargetDamage(rand(1, $item->getMaxDamage()) + $near_level_power_increase);
 	}
 
 	// Increased damage from damaging effects.
