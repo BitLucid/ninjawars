@@ -382,7 +382,7 @@ display_page(
 	, 'Skill Effect'
 	, get_defined_vars()
 	, array(
-		'quickstats' => 'player'
+		'quickstat' => 'player'
 	)
 );
 ?>
