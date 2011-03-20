@@ -102,21 +102,35 @@ if ($target_id && ($link_back == "" || $link_back == 'player') && $target_id != 
 
 //$dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = $kampoFormula = $strangeHerb = null;
 
-if ($item->hasEffect('wound') && $item->hasEffect('fire')) {
-	// Major fire damage
-	$item->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
-}
+// Exceptions to the rules, using effects.
 
-if ($item->hasEffect('wound') && $item->hasEffect('slice')) {
-	// Minor piercing damage.
-	$item->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
-}
+if ($item->hasEffect('wound')) {
+	// Minor damage by default items.
+	$item->setTargetDamage(rand(1, $item->getMaxDamage())); // DEFAULT, overwritable.
 
+	if ($item->hasEffect('slice')) {
+		// Minor piercing damage.
+		$item->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
+	}
+	
+	if ($item->hasEffect('pierce')) {
+		// Minor piercing damage.
+		$item->setTargetDamage(rand(1, 20) + $near_level_power_increase);
+	}
+
+	// Increased damage from damaging effects.
+	if ($item->hasEffect('fire')) {
+		// Major fire damage
+		$item->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
+	}
+} // end of wounds section.
+
+//debug($near_level_power_increase);
+
+// Exclusive speed/slow turn changes.
 if ($item->hasEffect('slow')) {
 	$item->setTurnChange(-1*caltrop_turn_loss($targets_turns, $near_level_power_increase));
-}
-
-if ($item->hasEffect('speed')) {
+} else if ($item->hasEffect('speed')) {
 	$item->setTurnChange($item->getMaxTurnChange());    
 }
 
@@ -158,86 +172,98 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				give_item($username, $target, $item->getName());
 				$alternateResultMessage = "__TARGET__ will receive your {$item->getName()}.";
 			} else {
-				if ($item->getTargetDamage() > 0) { // *** HP Altering ***
-					$result        = "__TARGET__ loses ".$item->getTargetDamage()." HP";
-					$targetObj->vo->health = $victim_alive = subtractHealth($target_id, $item->getTargetDamage());
-				} else if ($item->hasEffect('stealth')) {
-					$targetObj->addStatus(STEALTH);
-					$alternateResultMessage = "__TARGET__ is now stealthed.";
-					$result = false;
-					$victim_alive = true;
-				} else if ($item->hasEffect('death')) {
-					$targetObj->vo->health = setHealth($target_id, 0);
-					$victim_alive = false;
-					$result = "be drained of your life-force and die!";
-					$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
-				} else if ($item->hasEffect('vigor')) {
-					if ($targetObj->hasStatus(STR_UP1)) {
-						$result = "__TARGET__'s body cannot withstand any more Ginseng Root!";
-						$item_used = false;
-					} else {
-						$targetObj->addStatus(STR_UP1);
-						$result = "__TARGET__'s muscles experience a strange tingling.";
-					}
-				} else if ($item->hasEffect('strength')) {
-					if ($targetObj->hasStatus(STR_UP2)) {
-						$result = "__TARGET__'s body cannot withstand any more Tiger Salve!";
-						$item_used = false;
-					} else {
-						$targetObj->addStatus(STR_UP2);
-						$result = "__TARGET__ feels a surge of power!";
-					}
-				} else if ($item->hasEffect('slow')) {
-					$limited_effect = false;
-					if($targetObj->hasStatus(SLOW)){
-						$limited_effect = true; // Already slowed, so decreased effect.
-					} else {
-						if ($targetObj->hasStatus(FAST)) {
-							$targetObj->subtractStatus(FAST);
-						} else {
-							$targetObj->addStatus(SLOW);
-						}
-					}
-					$turns_change = $item->getTurnChange();
-					if($limited_effect){
-						// If the effect is already in play, it will have a decreased effect.
-						$turns_change = ceil($turns_change*0.5); // Decrease to partial effect.
-						$alternateResultMessage = "__TARGET__ is already moving slowly. __TARGET__ loses only $turns_change turns.";
-					}
-					if ($turns_change == 0) {
-					    $alternateResultMessage = "You fail to take any turns from __TARGET__.";
-					}
-
-					$result         = "__TARGET__ loses ".(-1*$turns_change)." turns";
-					changeTurns($target_id, $turns_change);
-					$victim_alive = true;
-				} else if ($item->hasEffect('speed')) {
-					$limited_effect = false;
-					if($targetObj->hasStatus(FAST)){
-						$limited_effect = true;
-					} else {
-						if ($targetObj->hasStatus(SLOW)) {
-							$targetObj->subtractStatus(SLOW);
-						} else {
-							$targetObj->addStatus(FAST);
-						}
-					}
-					$turns_change = $item->getTurnChange();
-					if($limited_effect){
-						// If the effect is already in play, it will have a decreased effect.
-						$turns_change = ceil($turns_change*0.5); // Decrease to partial effect.
-					    $alternateResultMessage = "__TARGET__ is already moving quickly. __TARGET__ gains only $turns_change turns.";
-					}
-					$result         = "gain $turns_change turns.";
-					changeTurns($target_id, $turns_change);
-					$victim_alive = true;
-				}
 				// If it doesn't do damage or have an effect, don't use up the item.
 				if(!$item->isOtherUsable()){
-					$result = '__TARGET__ is uneffected by this item, it remains unused.';
+					$result = 'This item is not usable on __TARGET__, so it remains unused.';
 					$item_used = false;
-				}
-			}
+				} else {
+			
+					if ($item->getTargetDamage() > 0) { // *** HP Altering ***
+						$result        = "__TARGET__ loses ".$item->getTargetDamage()." HP";
+						$targetObj->vo->health = $victim_alive = subtractHealth($target_id, $item->getTargetDamage());
+					}
+					if ($item->hasEffect('stealth')) {
+						$targetObj->addStatus(STEALTH);
+						$alternateResultMessage = "__TARGET__ is now stealthed.";
+						$result = false;
+					}
+					if ($item->hasEffect('vigor')) {
+						if ($targetObj->hasStatus(STR_UP1)) {
+							$result = "__TARGET__'s body cannot become more vigorous!";
+							$item_used = false;
+						} else {
+							$targetObj->addStatus(STR_UP1);
+							$result = "__TARGET__'s muscles experience a strange tingling.";
+						}
+					}
+					if ($item->hasEffect('strength')) {
+						if ($targetObj->hasStatus(STR_UP2)) {
+							$result = "__TARGET__'s body cannot become any stronger!";
+							$item_used = false;
+						} else {
+							$targetObj->addStatus(STR_UP2);
+							$result = "__TARGET__ feels a surge of power!";
+						}
+					}
+					
+					
+					// Slow and speed effects are exclusive.
+					if ($item->hasEffect('slow')) {
+						$limited_effect = false;
+						if($targetObj->hasStatus(SLOW)){
+							$limited_effect = true; // Already slowed, so decreased effect.
+						} else {
+							if ($targetObj->hasStatus(FAST)) {
+								$targetObj->subtractStatus(FAST);
+							} else {
+								$targetObj->addStatus(SLOW);
+							}
+						}
+						$turns_change = $item->getTurnChange();
+						if($limited_effect){
+							// If the effect is already in play, it will have a decreased effect.
+							$turns_change = ceil($turns_change*0.5); // Decrease to partial effect.
+							$alternateResultMessage = "__TARGET__ is already moving slowly. __TARGET__ loses only $turns_change turns.";
+						}
+						if ($turns_change == 0) {
+							$alternateResultMessage = "You fail to take any turns from __TARGET__.";
+						}
+
+						$result         = "__TARGET__ loses ".(-1*$turns_change)." turns";
+						changeTurns($target_id, $turns_change);
+					} else if ($item->hasEffect('speed')) {
+						// Note that speed and slow effects are exclusive.
+						$limited_effect = false;
+						if($targetObj->hasStatus(FAST)){
+							$limited_effect = true;
+						} else {
+							if ($targetObj->hasStatus(SLOW)) {
+								$targetObj->subtractStatus(SLOW);
+							} else {
+								$targetObj->addStatus(FAST);
+							}
+						}
+						$turns_change = $item->getTurnChange();
+						if($limited_effect){
+							// If the effect is already in play, it will have a decreased effect.
+							$turns_change = ceil($turns_change*0.5); // Decrease to partial effect.
+							$alternateResultMessage = "__TARGET__ is already moving quickly. __TARGET__ gains only $turns_change turns.";
+						}
+						$result         = "gain $turns_change turns.";
+						changeTurns($target_id, $turns_change);
+					} 
+					
+					
+					if ($item->hasEffect('death')) {
+						$targetObj->vo->health = setHealth($target_id, 0);
+						$victim_alive = false;
+						$result = "be drained of your life-force and die!";
+						$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
+					}
+					
+					
+				}// End of check that it's usable on someone else.
+			}// End of the item use (as opposed to giving) section.
 
 			if ($result) {
 				// *** Message to display based on item type ***

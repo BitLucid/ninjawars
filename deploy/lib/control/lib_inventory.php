@@ -228,7 +228,7 @@ class Item {
 		$this->m_plural            = $p_data['plural'];
 		$this->m_turnCost          = ($p_data['turn_cost']     ? $p_data['turn_cost']     : 1);
 		$this->m_maxTurnChange     = ($p_data['turn_change']   ? $p_data['turn_change']   : 0);
-		$this->m_maxDamage         = ($p_data['target_damage'] ? $p_data['target_damage'] : null);
+		$this->m_maxDamage = $this->m_targetDamage = $p_data['target_damage'] ? $p_data['target_damage'] : null;
 		$this->m_ignoresStealth	   = ($p_data['ignore_stealth'] == 't');
 		$this->m_covert            = ($p_data['covert']         == 't');
 		$this->m_selfUse           = ($p_data['self_use']       == 't');
@@ -273,6 +273,12 @@ class Item {
 
 	public function getTargetDamage()
 	{ return $this->m_targetDamage; }
+
+	public function getMaxDamage()
+	{ return $this->m_maxDamage; }
+	
+	public function getRandomDamage()
+	{ return rand(0, $this->m_maxDamage); }
 
 	public function getTurnCost()
 	{ return $this->m_turnCost; }
