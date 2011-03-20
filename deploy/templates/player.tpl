@@ -95,7 +95,9 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
                   <input type="submit" value="Use" class="formButton">
                   <select id="item" name="item">
 			{foreach from=$items item="item"}
-                    <option value="{$item.item_id|escape}">{$item.item_display_name|escape} ({$item.amount|escape})</option>
+				{if $item.other_usable}
+                    <option value="{$item.item_id|escape}">{$item.name|escape} ({$item.count|escape})</option>
+                {/if}
 			{/foreach}
                   </select>
 		{/if}

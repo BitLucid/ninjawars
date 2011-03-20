@@ -159,7 +159,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				$alternateResultMessage = "__TARGET__ will receive your {$item->getName()}.";
 			} else {
 				if ($item->getTargetDamage() > 0) { // *** HP Altering ***
-					$result        = "lose ".$item->getTargetDamage()." HP";
+					$result        = "__TARGET__ loses ".$item->getTargetDamage()." HP";
 					$targetObj->vo->health = $victim_alive = subtractHealth($target_id, $item->getTargetDamage());
 				} else if ($item->hasEffect('stealth')) {
 					$targetObj->addStatus(STEALTH);
@@ -188,43 +188,54 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$result = "__TARGET__ feels a surge of power!";
 					}
 				} else if ($item->hasEffect('slow')) {
-					if ($targetObj->hasStatus(SLOW)) {
-						$result = "__TARGET__ is already slowed.";
-						$alternateResultMessage = "__TARGET__ is already slowed.";
-						$item_used = false;
-						$turns_change = 0;
+					$limited_effect = false;
+					if($targetObj->hasStatus(SLOW)){
+						$limited_effect = true; // Already slowed, so decreased effect.
 					} else {
 						if ($targetObj->hasStatus(FAST)) {
 							$targetObj->subtractStatus(FAST);
 						} else {
 							$targetObj->addStatus(SLOW);
 						}
-						$turns_change = $item->getTurnChange();
-
-						if ($turns_change == 0) {
-						    $alternateResultMessage = "You fail to take any turns from __TARGET__.";
-						}
-
-						$result         = "lose ".(-1*$turns_change)." turns";
-						changeTurns($target_id, $turns_change);
-						$victim_alive = true;
 					}
+					$turns_change = $item->getTurnChange();
+					if($limited_effect){
+						// If the effect is already in play, it will have a decreased effect.
+						$turns_change = ceil($turns_change*0.5); // Decrease to partial effect.
+						$alternateResultMessage = "__TARGET__ is already moving slowly. __TARGET__ loses only $turns_change turns.";
+					}
+					if ($turns_change == 0) {
+					    $alternateResultMessage = "You fail to take any turns from __TARGET__.";
+					}
+
+					$result         = "__TARGET__ loses ".(-1*$turns_change)." turns";
+					changeTurns($target_id, $turns_change);
+					$victim_alive = true;
 				} else if ($item->hasEffect('speed')) {
-					if ($targetObj->hasStatus(FAST)) {
-						$turns_change = 0;
-					    $alternateResultMessage = "__TARGET__ is already moving quickly.";
-					    $item_used = false;
+					$limited_effect = false;
+					if($targetObj->hasStatus(FAST)){
+						$limited_effect = true;
 					} else {
 						if ($targetObj->hasStatus(SLOW)) {
 							$targetObj->subtractStatus(SLOW);
 						} else {
 							$targetObj->addStatus(FAST);
 						}
-						$turns_change = $item->getTurnChange();
-						$result         = "gain $turns_change turns";
-						changeTurns($target_id, $turns_change);
-						$victim_alive = true;
 					}
+					$turns_change = $item->getTurnChange();
+					if($limited_effect){
+						// If the effect is already in play, it will have a decreased effect.
+						$turns_change = ceil($turns_change*0.5); // Decrease to partial effect.
+					    $alternateResultMessage = "__TARGET__ is already moving quickly. __TARGET__ gains only $turns_change turns.";
+					}
+					$result         = "gain $turns_change turns.";
+					changeTurns($target_id, $turns_change);
+					$victim_alive = true;
+				}
+				// If it doesn't do damage or have an effect, don't use up the item.
+				if(!$item->isOtherUsable()){
+					$result = '__TARGET__ is uneffected by this item, it remains unused.';
+					$item_used = false;
 				}
 			}
 

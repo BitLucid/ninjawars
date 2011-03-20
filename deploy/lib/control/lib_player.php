@@ -280,17 +280,6 @@ function get_clan_members($p_clanID, $p_limit = 30) {
 	}
 }
 
-/**
- * Runs inventory query on a character id
-**/
-function getInventory($p_characterID) {
-	$sel = "SELECT owner, item_internal_name, item_display_name, item.item_id, amount
-		FROM inventory JOIN item on inventory.item_type = item.item_id
-		WHERE owner = :owner_id
-		AND amount > 0 ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
-	return query($sel, array(':owner_id'=>array((int)$p_characterID, PDO::PARAM_INT)));
-}
-
 // Check whether the player is the leader of their clan.
 function is_clan_leader($player_id) {
 	return (($clan = get_clan_by_player_id($player_id)) && $player_id == $clan->getLeaderID());

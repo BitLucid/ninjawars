@@ -28,7 +28,7 @@ function buildItem($p_data) {
 
 // Return a specific bit of info about an item, or else all the info about an item.
 function item_info($item_id, $specific=null) {
-	$info = query_row('SELECT item_id, item_internal_name, item_display_name, item_cost, image, for_sale, usage, ignore_stealth, covert, turn_cost, target_damage, turn_change, self_use, plural FROM item WHERE item_id = :item_id', array(':item_id'=>array($item_id, PDO::PARAM_INT)));
+	$info = query_row('SELECT item_id, item_internal_name, item_display_name, item_cost, image, for_sale, usage, ignore_stealth, covert, turn_cost, target_damage, turn_change, self_use, other_usable, plural FROM item WHERE item_id = :item_id', array(':item_id'=>array($item_id, PDO::PARAM_INT)));
 
 	if (!$info || ($specific && !isset($info[$specific]))) {
 		return null;
@@ -69,13 +69,17 @@ function item_identity_from_display_name($item_display_name){
 
 // Get the count of how many of an item a player has.
 function item_count($user_id, $item_display_name){
-	$statement = query("SELECT sum(amount) FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :owner AND lower(item_display_name) = lower(:item)", array(':owner'=>array($user_id, PDO::PARAM_INT), ':item'=>strtolower($item_display_name)));
+	$statement = query("SELECT sum(amount) FROM inventory join item on inventory.item_type = item.item_id 
+		WHERE owner = :owner AND lower(item_display_name) = lower(:item)", 
+		array(':owner'=>array($user_id, PDO::PARAM_INT), ':item'=>strtolower($item_display_name)));
 	return $statement->fetchColumn();
 }
 
 // Pull the counts of all items a player has.
 function inventory_counts($char_id){
-	$sql = "SELECT amount AS count, item_display_name AS name, item_type FROM inventory join item on item_type = item.item_id WHERE owner = :owner";
+	$sql = "SELECT amount AS count, item_display_name AS name, item_type, item.item_id, other_usable 
+		FROM inventory join item on item_type = item.item_id 
+		WHERE owner = :owner ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
 	return query_resultset($sql, array(':owner'=>array($char_id, PDO::PARAM_INT)));
 }
 
@@ -171,6 +175,17 @@ function standard_items() {
 	return $res;
 }
 
+// Pull an item's effects.
+function item_effects($item_id){
+	$sel = 'SELECT effect_identity, effect_name, effect_verb, effect_self FROM effects
+		    JOIN item_effects ON _effect_id = effect_id WHERE _item_id = :item_id';
+		$data = query_array($sel, array(':item_id' => array($item_id, PDO::PARAM_INT)));
+		$res = array();
+		foreach ($data as $effect) {
+			$res[$effect['effect_identity']] = $effect;
+		}
+		return $res;
+}
 
 
 // END OF FUNCTIONS
@@ -189,6 +204,7 @@ class Item {
 	protected $m_maxTurnChange;
 	protected $m_covert;
 	protected $m_selfUse;
+	protected $m_otherUsable;
 	protected $m_type;
 	protected $m_identity;
 
@@ -216,6 +232,7 @@ class Item {
 		$this->m_ignoresStealth	   = ($p_data['ignore_stealth'] == 't');
 		$this->m_covert            = ($p_data['covert']         == 't');
 		$this->m_selfUse           = ($p_data['self_use']       == 't');
+		$this->m_otherUsable           = ($p_data['other_usable']       == 't');
 	}
 
 	public function getName()
@@ -237,16 +254,8 @@ class Item {
 
 	// Gets the list of effects that the item does.
 	public function effects() {
-		$sel = 'SELECT effect_identity, effect_name, effect_verb, effect_self FROM effects
-		    JOIN item_effects ON _effect_id = effect_id WHERE _item_id = :item_id';
-		$data = query_array($sel, array(':item_id' => array((int)$this->id(), PDO::PARAM_INT)));
-		$res = array();
-
-		foreach ($data as $effect) {
-			$res[$effect['effect_identity']] = $effect;
-		}
-
-		return $res;
+		// Pull the effects array via the external function.
+		return item_effects($this->id());
 	}
 
 	// Checks whether the item causes a certain effect.
@@ -286,6 +295,10 @@ class Item {
 
 	public function isSelfUsable()
 	{ return $this->m_selfUse;	}
+	
+	// Check whether the item is usable upon others.
+	public function isOtherUsable()
+	{ return $this->m_otherUsable; }
 
 	public function getType()
 	{ return $this->m_type; }
