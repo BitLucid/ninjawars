@@ -13,19 +13,13 @@ function get_score_formula(){
 	return $score;
 }
 
-function delete_old_messages($limit = null) {
-	DatabaseConnection::getInstance();
-	$interval_to_keep = '3 months';
-	$statement = DatabaseConnection::$pdo->prepare("DELETE FROM messages WHERE date < ( now()- :interval::interval)");
-	$statement->bindValue(':interval', $interval_to_keep);
+function delete_old_messages() {
+    $statement = query("delete from messages where date < ( now() - '3 months'::interval)");
 	return $statement->rowCount();
 }
 
-function delete_old_events($limit = null) {
-	DatabaseConnection::getInstance();
-	$interval_to_keep = '4 days';
-	$statement = DatabaseConnection::$pdo->query("DELETE FROM events WHERE date < ( now()- :interval::interval)");
-	$statement->bindValue(':interval', $interval_to_keep);
+function delete_old_events() {
+    $statement = query("delete from events where date < ( now() - '4 days'::interval)");
 	return $statement->rowCount();
 }
 
@@ -178,7 +172,7 @@ function revive_players($params=array()) {
 	}
 
 	$update = DatabaseConnection::$pdo->prepare($up_revive_players);
-	$update->bindValue(':amount', $revive_amount);
+	$update->bindValue(':amount', intval($revive_amount));
 	$update->bindValue(':time', intval($current_time));
 	$update->execute();
 	$truly_revived = $update->rowCount();
