@@ -113,12 +113,13 @@ if ($item->hasEffect('wound')) {
 		$item->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
 	}
 	
-	if ($item->hasEffect('pierce')) {
-		// Minor piercing damage, e.g. 1-50 plus the near level power increase.
+	if ($item->hasEffect('pierce') && $item->getMaxDamage()) {
+		// BUG: For some reason caltrops are doing damage is you don't run the max damage check above.
+		// Minor static piercing damage, e.g. 1-50 plus the near level power increase.
 		$item->setTargetDamage(rand(1, $item->getMaxDamage()) + $near_level_power_increase);
 	}
 
-	// Increased damage from damaging effects.
+	// Increased damage from damaging effects, minimum of 20.
 	if ($item->hasEffect('fire')) {
 		// Major fire damage
 		$item->setTargetDamage(rand(20, $player->getStrength() + 20) + $near_level_power_increase);
@@ -177,11 +178,9 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$result = 'This item is not usable on __TARGET__, so it remains unused.';
 					$item_used = false;
 				} else {
+				
+					// TODO: These result messages are screwed up (e.g. what gets sent to the events mail is wrongly phrased frequently now), and need to be reworked.
 			
-					if ($item->getTargetDamage() > 0) { // *** HP Altering ***
-						$result        = "__TARGET__ loses ".$item->getTargetDamage()." HP";
-						$targetObj->vo->health = $victim_alive = subtractHealth($target_id, $item->getTargetDamage());
-					}
 					if ($item->hasEffect('stealth')) {
 						$targetObj->addStatus(STEALTH);
 						$alternateResultMessage = "__TARGET__ is now stealthed.";
@@ -222,17 +221,18 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$turns_change = $item->getTurnChange();
 						if($limited_effect){
 							// If the effect is already in play, it will have a decreased effect.
-							$turns_change = ceil($turns_change*0.5); // Decrease to partial effect.
-							$alternateResultMessage = "__TARGET__ is already moving slowly. __TARGET__ loses only $turns_change turns.";
+							$turns_change = ceil($turns_change*0.3); // Decrease to partial effect.
+							$alternateResultMessage = "__TARGET__ is already moving slowly.";
 						}
 						if ($turns_change == 0) {
-							$alternateResultMessage = "You fail to take any turns from __TARGET__.";
+							$alternateResultMessage .= "You fail to take any turns from __TARGET__.";
 						}
 
-						$result         = "__TARGET__ loses ".(-1*$turns_change)." turns";
+						$result         = " lose ".abs($turns_change)." turns";
 						changeTurns($target_id, $turns_change);
-					} else if ($item->hasEffect('speed')) {
-						// Note that speed and slow effects are exclusive.
+						
+						
+					} else if ($item->hasEffect('speed')) {	// Note that speed and slow effects are exclusive.
 						$limited_effect = false;
 						if($targetObj->hasStatus(FAST)){
 							$limited_effect = true;
@@ -246,18 +246,23 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$turns_change = $item->getTurnChange();
 						if($limited_effect){
 							// If the effect is already in play, it will have a decreased effect.
-							$turns_change = ceil($turns_change*0.5); // Decrease to partial effect.
-							$alternateResultMessage = "__TARGET__ is already moving quickly. __TARGET__ gains only $turns_change turns.";
+							$turns_change = ceil($turns_change*0.6); // Decrease to partial effect.
+							$alternateResultMessage = "__TARGET__ is already moving quickly.";
 						}
 						$result         = "gain $turns_change turns.";
 						changeTurns($target_id, $turns_change);
-					} 
+					}
+			
+					if ($item->getTargetDamage() > 0) { // *** HP Altering ***
+						$result        .= "__TARGET__ takes ".$item->getTargetDamage()." damage.";
+						$targetObj->vo->health = $victim_alive = subtractHealth($target_id, $item->getTargetDamage());
+					}
 					
 					
 					if ($item->hasEffect('death')) {
 						$targetObj->vo->health = setHealth($target_id, 0);
 						$victim_alive = false;
-						$result = "be drained of your life-force and die!";
+						$result = " be drained of your life-force and die!";
 						$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 					}
 					
@@ -267,19 +272,19 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 			if ($result) {
 				// *** Message to display based on item type ***
-				if ($item->getTargetDamage() > 0) {
-					$resultMessage = "__TARGET__ takes {$item->getTargetDamage()} damage from your attack!";
-				} else if ($item->hasEffect('death')) {
+				if ($item->hasEffect('death')) {
 					$resultMessage = "The life force drains from __TARGET__ and they drop dead before your eyes!.";
-				} else if ($turns_change !== null) {
+				}
+				if ($turns_change !== null) {
+					// Even if $turns_change is set to zero, let them know that.
 					if ($turns_change <= 0) {
-						$resultMessage = "__TARGET__ has lost ".(0-$turns_change)." turns!";
+						$resultMessage .= "__TARGET__ has lost ".abs($turns_change)." turns!";
 
 						if (getTurns($target_id) <= 0) { //Message when a target has no more turns to ice scroll away.
-							$resultMessage .= "__TARGET__ no longer has any turns.";
+							$resultMessage .= "  __TARGET__ no longer has any turns.";
 						}
 					} else if ($turns_change > 0) {
-						$resultMessage = "__TARGET__ has gained $turns_change turns!";
+						$resultMessage .= "__TARGET__ has gained $turns_change turns!";
 					}
 				} else {
 					$resultMessage = $result;
@@ -303,7 +308,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$loot = 0;
 						$suicide = true;
 					}
-
+					
+					// Send mails if the target was killed.
 					send_kill_mails($username, $target, $attacker_id, $article, $item->getName(), $today, $loot);
 
 				} else {

@@ -131,20 +131,20 @@ function nearLevelPowerIncrease($level_difference, $max_increase) {
 function give_item($username, $target, $item){
 	$article = get_indefinite_article($item);
     addItem($target,$item,1);
-    $give_msg = "You have been given $article $item by $username.";
+    $give_msg = "You have been given $article $item by $us$this->m_targetDamage =ername.";
     sendMessage($username,$target,$give_msg);
 }
 
 // Determine the turns for caltrops, which was once ice scrolls.
 function caltrop_turn_loss($targets_turns, $near_level_power_increase){
 	if ($targets_turns>50) {
-		$turns_decrease = rand(1,11)+$near_level_power_increase; // *** 1-11 + 0-10
-	} elseif ($targets_turns>10) {
+		$turns_decrease = rand(1,8)+$near_level_power_increase; // *** 1-11 + 0-10
+	} elseif ($targets_turns>20) {
 		$turns_decrease = rand(1, 5)+$near_level_power_increase;
-	} elseif ($targets_turns>2) {
+	} elseif ($targets_turns>3) {
 		$turns_decrease = rand(1, 2)+($near_level_power_increase? 1 : 0);
 	} else { // *** Players are always left with 1 or two turns.
-		$turns_decrease = '0';
+		$turns_decrease = 0;
 	} // End of turn checks.
 	return $turns_decrease;
 }
@@ -182,7 +182,7 @@ function item_effects($item_id){
 		$data = query_array($sel, array(':item_id' => array($item_id, PDO::PARAM_INT)));
 		$res = array();
 		foreach ($data as $effect) {
-			$res[$effect['effect_identity']] = $effect;
+			$res[strtolower($effect['effect_identity'])] = $effect;
 		}
 		return $res;
 }
@@ -228,7 +228,8 @@ class Item {
 		$this->m_plural            = $p_data['plural'];
 		$this->m_turnCost          = ($p_data['turn_cost']     ? $p_data['turn_cost']     : 1);
 		$this->m_maxTurnChange     = ($p_data['turn_change']   ? $p_data['turn_change']   : 0);
-		$this->m_maxDamage = $this->m_targetDamage = $p_data['target_damage'] ? $p_data['target_damage'] : null;
+		$this->m_targetDamage	   = $p_data['target_damage'] ? $p_data['target_damage'] : null;
+		$this->m_maxDamage 		   = $this->m_targetDamage;
 		$this->m_ignoresStealth	   = ($p_data['ignore_stealth'] == 't');
 		$this->m_covert            = ($p_data['covert']         == 't');
 		$this->m_selfUse           = ($p_data['self_use']       == 't');
@@ -260,7 +261,10 @@ class Item {
 
 	// Checks whether the item causes a certain effect.
 	function hasEffect($effect_identity)
-	{ return (array_key_exists($effect_identity, $this->effects())); }
+	{
+		$effects = $this->effects();
+	 	return ($effect_identity && is_array($effects) && array_key_exists(strtolower($effect_identity), $effects)); 
+	}
 
 	public function setIgnoresStealth($p_ignore)
 	{ $this->m_ignoresStealth = (boolean)$p_ignore; }
@@ -269,10 +273,10 @@ class Item {
 	{ return $this->m_ignoresStealth; }
 
 	public function setTargetDamage($p_damage)
-	{ $this->m_targetDamage = (float)$p_damage; }
+	{ $this->m_targetDamage = (int)$p_damage; }
 
 	public function getTargetDamage()
-	{ return $this->m_targetDamage; }
+	{ return (int)$this->m_targetDamage; }
 
 	public function getMaxDamage()
 	{ return $this->m_maxDamage; }

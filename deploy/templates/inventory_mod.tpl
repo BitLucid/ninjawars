@@ -29,10 +29,6 @@ You receive {$loot|escape} gold from {$target|escape}.<br>
 </p>
 	{/if}
 
-	{if $item_used}
-<br>Removing {$itemName|escape} from your inventory.<br>
-	{/if}
-
 	{if $stealthLost}
 Your actions have revealed you. You are no longer stealthed.<br>
 	{/if}
