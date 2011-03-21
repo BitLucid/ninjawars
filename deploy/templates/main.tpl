@@ -154,7 +154,7 @@ $(document).ready(function () {
 
   <p>
     <span class="brownHeading">I need turns, where can I get them?</span><br>
-    You can <a href='inventory.php'>use speed scrolls</a> once you buy some from the <a href='shop.php'>shop</a> with gold, or wait for the half-hour and you will receive 2 turns per half-hour automatically (3 if you have the <a href='skills.php'>"speed" skill</a>).
+    You can <a href='inventory.php'>use amanita mushrooms</a> once you buy some from the <a href='shop.php'>shop</a> with gold, or wait for the half-hour and you will receive a few turns automatically (more if you have the <a href='skills.php'>"speed" skill</a>).
   </p>
 
   <p>

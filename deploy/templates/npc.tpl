@@ -1,7 +1,7 @@
 <h1>Battle</h1>
 {if $turns lte 0}
 {* These should be real error conditions, not part of the template *}
-You have no turns left today. Buy a speed scroll or wait for your turns to replenish.
+You have no turns left today. Buy a amanita mushroom or wait for your turns to replenish.
 {elseif $attacked == 1}
 <span>Attacking...</span>
 <div>
