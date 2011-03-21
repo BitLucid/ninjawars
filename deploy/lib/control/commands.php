@@ -145,13 +145,14 @@ function get_turns($char_id){
 // ************************************
 
 function addKills($who, $amount) {
+	$amount = (int)abs($amount);
 	update_levelling_log($who, $amount);
 	return change_kills($who, $amount);
 }
 
 function subtractKills($who,$amount) {
 	$amount = (int)abs($amount);
-	update_levelling_log($who, $amount);
+	update_levelling_log($who, -1*($amount));
 	return change_kills($who, -1*($amount));
 }
 
