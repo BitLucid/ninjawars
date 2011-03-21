@@ -107,12 +107,12 @@ function changeTurns($who, $amount) {
 
 // Deprecated.
 function addTurns($who, $amount) {
-	return change_turns($who, $amount);
+	return change_turns($who, abs($amount));
 }
 
 // Deprecated.
 function subtractTurns($who, $amount) {
-	return change_turns($who, ((-1)*$amount));
+	return change_turns($who, ((-1)*abs($amount)));
 }
 
 
@@ -150,9 +150,9 @@ function addKills($who, $amount) {
 }
 
 function subtractKills($who,$amount) {
-	$amount = (int)$amount;
+	$amount = (int)abs($amount);
 	update_levelling_log($who, $amount);
-	return change_kills($who, $amount);
+	return change_kills($who, -1*($amount));
 }
 
 function get_kills($char_id) {
