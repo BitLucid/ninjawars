@@ -78,7 +78,7 @@
             });
             {/literal}
             </script>
-            <div id='category-bar'>
+            <div id='category-bar' class='navigation'>
               <ul>
                 <li id='status-actions' class='self'>
                   <a href='events.php' target='main' title='See messages about whether you were attacked or other events.'>
@@ -97,7 +97,7 @@
                 </li>
               </ul>
             </div>
-            <div id='subcategory-bar'>
+            <div id='subcategory-bar' class='navigation'>
                 <ul id='self-subcategory'>
                   <li><a href="stats.php" target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
                   <li><a href="skills.php" target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
@@ -266,7 +266,7 @@
       
       
       <div id='push'></div>
-      <div id='index-footer'>
+      <div id='index-footer' class='navigation'>
         <span id='nw-catchphrases'>
         {literal}
         <script>

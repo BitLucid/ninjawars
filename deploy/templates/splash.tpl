@@ -20,14 +20,14 @@
 		<div id='logo-placeholder'>
 		  <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
-		<div id='top-bar'>
+		<div id='top-bar' class='navigation'>
 		  <span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
 		</div>
 		<div id='top-logo' style='width:50%;text-align:center;display:inline-block;vertical-align:top;margin-left: 2em;margin-right: 2em;'>
           <a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='' width='200' height='100'></a>
 		</div>
       
-        <div id='subcategory-bar'>
+        <div id='subcategory-bar' class='navigation'>
           <ul id='ninjas-subcategory'>
             <li><a href="list.php" target="main">Ninjas</a></li>
             <li><a href="clan.php" target="main">Clans</a></li>
@@ -60,7 +60,7 @@
         </div><!-- End of mainFrame div -->
       </div> <!-- End of main-column -->      
       
-      <div id='sidebar-column'>
+      <div id='sidebar-column'  class='navigation'>
 		<div id='contact-us' style='margin-top:.5em;margin-bottom:.5em;'>
 		  <a href='staff.php' target='main' class='font-shangrila'>Contact Staff</a>
 		</div>
@@ -79,7 +79,7 @@
       </div><!-- End of left-column -->
 
       <!-- <div id='push'></div> -->
-      <div id='index-footer'>
+      <div id='index-footer'  class='navigation'>
         <span id='nw-catchphrases'>
 {literal}
           <script type="text/javascript">
