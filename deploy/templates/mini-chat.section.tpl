@@ -13,7 +13,7 @@
                 
                 <div id="chat-and-switch">
 {if isset($user_id) and $user_id}
-                  <form class='chat-submit' id="post_msg_js" action="mini_chat.php" method="post" name="post_msg">
+                  <form class='chat-submit' id="post_msg_js" action="chat.php" method="post" name="post_msg">
                   
                     <div style='width:55%;display:inline;margin-top:.5em;margin-bottom:.5em;'>
                         <input type="text" size="20" maxlength="250" name="message" class="textField">
@@ -38,10 +38,7 @@
                     </dl>
                     
                     <noscript>
-                        <iframe frameBorder='0' id="mini_chat" name="mini_chat" src="mini_chat.php">
-                        <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
-                          <a href='mini_chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
-                        </iframe>
+                          <a href='chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
                     </noscript>
 
 

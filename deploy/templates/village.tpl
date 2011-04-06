@@ -1,19 +1,12 @@
-{if isset($not_mini) and $not_mini}
-	{assign var="location" value="mini_chat.php"}
-	{assign var="frame" value='mini_chat'}
-{else}
-	{assign var="location" value="village.php"}
-	{assign var="frame" value='main'}
-{/if}
-
 <h1>Chat Board</h1>
 
 <script type="text/javascript">
-function refreshpage{$frame}() {literal}{{/literal}
-	parent.{$frame}.location = "{$location}";
-{literal}}{/literal}
-setInterval(refreshpage{$frame}, 300*1000);
 {literal}
+function refreshpagechat() {
+	parent.main.location = "village.php";
+}
+setInterval(refreshpagechat, 300*1000); // Periodically refresh the page.
+
 window.onload = function(){
 	$(document.getElementById('message')).focus();
 };
