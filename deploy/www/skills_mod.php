@@ -131,7 +131,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		subtract_gold($target->id(), $gold_decrease); // *** Subtracts whatever positive value is put in.
 
 		$msg = "You have had pick pocket cast on you for $gold_decrease by $attacker_id at $today";
-		send_message($attacker_char_id, $target->id(), $msg);
+		send_event($attacker_char_id, $target->id(), $msg);
 		
 		$generic_skill_result_message = "You have stolen $gold_decrease gold from __TARGET__!";
 	} else if ($command == 'Unstealth') {
@@ -192,7 +192,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
 		$msg = "You have been poisoned by $attacker_id at $today";
-		send_message($attacker_char_id, $target->id(), $msg);
+		send_event($attacker_char_id, $target->id(), $msg);
 	} elseif ($command == 'Fire Bolt') {
 		$target_damage = (5 * (ceil($player->vo->level / 3)) + rand(1, $player->getStrength()));
 
@@ -203,7 +203,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		}
 
 		$msg = "You have had fire bolt cast on you by $attacker_id at $today";
-		send_message($attacker_char_id, $target->id(), $msg);
+		send_event($attacker_char_id, $target->id(), $msg);
 	} else if ($command == 'Heal') {
 	    // Check that the target is not already status healing.
 	    $heal_per_level = 10;
@@ -354,7 +354,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			}
 
 			$target_message = "$attacker_id has killed you with $command on $today and taken $loot gold.";
-			send_message($attacker_char_id, $target->id(), $target_message);
+			send_event($attacker_char_id, $target->id(), $target_message);
 
 			$attacker_message = "You have killed $target with $command on $today and taken $loot gold.";
 			sendMessage($target->vo->uname, $username, $attacker_message);
