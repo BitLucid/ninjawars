@@ -56,12 +56,14 @@ function format_ninja_row($a_player){
 
 // Consolidated from lib_game.php to here.
 
-
+// Pull an array of different activity counts.
 function member_counts() {
-	$counts = query_array("SELECT count(session_id) as c1 FROM ppl_online WHERE member AND activity > (now() - CAST('30 minutes' AS interval)) UNION SELECT count(session_id) as c2 FROM ppl_online WHERE member UNION select count(account_id) as c3 from accounts");
-	$active_row = reset($counts);
-	$online_row = $counts[1];
-	$total_row = end($counts);
+	$counts = query_array("(SELECT count(session_id) FROM ppl_online WHERE member AND activity > (now() - CAST('30 minutes' AS interval))) 
+		UNION ALL (SELECT count(session_id) FROM ppl_online WHERE member) 
+		UNION ALL (select count(player_id) from players where active = 1)");
+	$active_row = array_shift($counts);
+	$online_row = array_shift($counts);
+	$total_row = array_shift($counts);
 	return array('active'=>reset($active_row), 'online'=>reset($online_row), 'total'=>end($total_row));
 }
 
