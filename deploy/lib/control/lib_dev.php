@@ -43,9 +43,12 @@ function var_dump_locals($defined=array()) {
 
 function debug($val) {
     if (DEBUG) {
-        echo "<pre class='debug' style='font-size:12pt;background-color:white;color:black;'>";
-        var_dump($val);
-        echo "</pre>";
+    	$vals = func_get_args();
+    	foreach($vals as $val){
+		    echo "<pre class='debug' style='font-size:12pt;background-color:white;color:black;position:relative;z-index:10'>";
+		    var_dump($val);
+		    echo "</pre>";
+        }
     }
 }
 ?>
