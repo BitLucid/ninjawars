@@ -4,6 +4,11 @@
         DocumentRoot /home/tchalvak/ninjawars/deploy/www/
         php_value session.cookie_domain "nw.local"
 		php_value include_path "/usr/share/php/smarty/"
+		    
+    php_value session.gc_maxlifetime "180000"
+    # allow sessions to last approximately two days
+    php_value session.cookie_lifetime "200000"
+    # allow session cookie to last a little longer than two days.
 </VirtualHost>
 
 <VirtualHost *>

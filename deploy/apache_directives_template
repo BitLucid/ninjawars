@@ -18,6 +18,12 @@ RewriteRule webgame/?(.*) __WWW_ROOT__$1 [L,R=301]
 ErrorDocument 404 /404.php
 php_value session.cookie_domain "__SERVER_NAME__"
 
+    
+php_value session.gc_maxlifetime "400000"
+# allow sessions to last approximately four days
+php_value session.cookie_lifetime "400000"
+# allow session cookie to last a little longer than four days.
+
 <FilesMatch "\.(php)$">
 	php_value auto_prepend_file "__SERVER_ROOT__lib/base.inc.php"
 	php_value auto_append_file "__SERVER_ROOT__lib/cleanup.inc.php"
