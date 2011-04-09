@@ -10,6 +10,6 @@ class PlayerVO {
 		$ki, $karma, $gold, $messages, $kills, $turns, $active,
 	  	$_class_id, $identity, $class_name, $theme,
 	  	$level, $status, $days, $bounty, 
-	  	$created_date, $last_started_attack, $energy, $avatar_type;
+	  	$created_date, $last_started_attack, $energy, $avatar_type, $verification_number;
 }
 ?>
