@@ -94,6 +94,14 @@
 
 {include file="defender_health.tpl" health=$target_ending_health health_percent=$target_ending_health_percent target_name=$target_name}
 
+{if $turn_cost}
+	<div id='turn-cost'> You used {$turn_cost} turn{if $turn_cost > 1}s{/if}.</div>
+{/if}
+
+{if $ki_cost}
+	<div id='ki-cost'> You used {$ki_cost} ki.</div>
+{/if}
+
 </div> {* End of usage mod result div*}
 
 	{if $reuse}

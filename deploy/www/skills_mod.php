@@ -32,6 +32,7 @@ $turn_cost       = $skillListObj->getTurnCost(strtolower($command));
 $ignores_stealth = $skillListObj->getIgnoreStealth($command);
 $self_use        = $skillListObj->getSelfUse($command);
 $use_on_target   = $skillListObj->getUsableOnTarget($command);
+$ki_cost 		 = 0; // Ki taken during use.
 $reuse 			 = true;  // Able to reuse the skill.
 
 // Check whether the user actually has the needed skill.
@@ -72,7 +73,8 @@ if ($player->hasStatus(STEALTH)) {
 
 $use_attack_legal = true;
 
-if ($command == 'Clone Kill') {
+if ($command == 'Clone Kill' || $command == 'Harmonize') {
+	$has_skill = true;
 	$use_attack_legal = false;
 	$attack_allowed = true;
 	$attack_error = null;
@@ -113,7 +115,8 @@ function pull_sight_data($target_id) {
 if (!$attack_error) { // Nothing to prevent the attack from happening.
 	// Initial attack conditions are alright.
 	$result = '';
-
+	
+	
 	if ($command == 'Sight') {
 		$covert = true;
 
@@ -204,21 +207,60 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 		$msg = "You have had fire bolt cast on you by $attacker_id at $today";
 		send_event($attacker_char_id, $target->id(), $msg);
-	} else if ($command == 'Heal') {
-	    // Check that the target is not already status healing.
-	    $heal_per_level = 10;
-	    $healed_by = $player->level()*$heal_per_level;		    
-	    $target_current_health = $target->health();
-	    $target_max_health = $target->max_health();
+	} else if ($command == 'Heal' || $command == 'Harmonize') {
+	
+		// This is the starting template for self-use commands, eventually it'll be all refactored.
+	
+		
+		$harmonize = false;
+		if($command == 'Harmonize'){
+			$harmonize = true;
+		}
+		
+		// Use up some ki to heal yourself.
+		function harmonize_chakra($char_obj){
+			$ki = $char_obj->ki();
+			$healed_by = 0;
+			$hurt = $char_obj->hurt_by();
+			if($hurt > 0){
+				// If there's anything to heal, try.
+				// Heal to whichever is lowest, ki, hurt, or 300.
+				$heal_for = min(300, $hurt, $ki);
+				// Subtract the ki used for healing.
+				$char_obj->subtract_ki($heal_for);
+				$char_obj->heal($heal_for);
+				$healed_by = $heal_for;
+			}
+			return $healed_by;
+		}
+		
+		
 
+
+	 
+	    $hurt = $player->hurt_by();
+	    // Check that the target is not already status healing.
 	    if ($target->hasStatus(HEALING)) {
 	        $turn_cost = 0;
 	        $generic_state_change = '__TARGET__ is already under a healing aura.';
-		} elseif ($target_current_health >= $target_max_health) {
+		} elseif ($hurt < 1) {
 			$turn_cost = 0;
 			$generic_skill_result_message = '__TARGET__ is already fully healed.';
 		} else {
-		    $new_health = $target->heal($healed_by);
+			if(!$harmonize){
+				$heal_per_level = 10; // For standard heal.
+				// Heal at most either: hurt, or heal capacity.
+				$healed_by = min($hurt, $player->level()*$heal_per_level);
+				// Call the heal method on the player object.
+				$new_health = $target->heal($healed_by);
+			} else {
+				$start_health = $player->health();
+				// Harmonize those chakra!
+				$healed_by = harmonize_chakra($player);
+				$new_health = $healed_by + $start_health;
+				$ki_cost = $healed_by;
+			}
+		    
 		    $target->addStatus(HEALING);
 		    $generic_skill_result_message = "__TARGET__ healed by $healed_by to $new_health.";
 
@@ -326,6 +368,9 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			}
 		}
 	}
+	
+	
+	
 
 	if (!$victim_alive) { // Someone died.
 		if ($target->player_id == $player->player_id) { // Attacker killed themself.

@@ -61,6 +61,19 @@
   </div>
 {/if}
 
+{if $harmonize}
+  <div id='harmonize-skill'>
+    <form action="skills_mod.php" method="post">
+      <fieldset>
+      	<legend>Harmonize Chakra</legend>
+      	<div>
+        <input type="submit" name="command" value="Harmonize" class="formButton">
+        </div>
+      </fieldset>
+    </form>
+  </div>
+{/if}
+
 
 
 {if $clone_kill}
