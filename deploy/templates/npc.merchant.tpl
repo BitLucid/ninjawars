@@ -10,7 +10,7 @@ The Merchant has dropped a Fire Scroll. You have a new Fire Scroll in your inven
 	{if $bounty}
 You have slain a member of the village! A bounty of {$bounty} gold has been placed on your head!<br>
 	{/if}
-<a href="attack_npc.php?attacked=1&amp;victim=merchant">Attack Another Merchant</a>
+<a href="attack_npc.php?attacked=1&amp;victim=merchant" class='attack-again'>Attack Another Merchant</a>
 <br>
 {else}
 <p>The Merchant has slain you!</p>
