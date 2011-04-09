@@ -260,8 +260,8 @@ class Player
     // Complex wrapper that allows for robust healing with a limit of the max health.	
 	public function heal($amount) {
 		$hurt = $this->hurt_by();
-		// Heal at most the amount hurt, or the amount requested.
-		$heal = max($hurt, $amount);
+		// Heal at most the amount hurt, or the amount requested, pick whichever is smallest.
+		$heal = min($hurt, $amount);
 	    return $this->addHealth($heal);
 	}
 	
