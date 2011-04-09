@@ -112,7 +112,7 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 			} else {  // Non-standard resurrect costs give a substandard result.
 				$returning_health = $base_health;
 			}
-			$returning_health = max($returning_health, $player->max_health()); // Can't heal above max_health.
+			$returning_health = min($returning_health, $player->max_health()); // Can't heal above max_health.
 			
 			$finalHealth = $player->vo->health = $player->heal($returning_health);
 			$final_turns = $player->vo->turns;
