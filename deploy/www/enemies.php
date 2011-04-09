@@ -106,6 +106,10 @@ function nearby_peers($char_id/*, $limit=5*/) {
 		, ':limit2'=>array($limit, PDO::PARAM_INT)*/
 		)
 	);
+	if(!count($peers)){
+		// Get bottom 10 players if not yet ranked.
+		$peers = query_array('SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id order by rank_id desc limit 10');	
+	}
 
 	$peers = array_map('format_health_percent', $peers);
 	return $peers;
