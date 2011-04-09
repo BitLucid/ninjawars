@@ -21,6 +21,7 @@ function add_enemy($enemy_id) {
 	if (!is_numeric($enemy_id)) {
 		throw new Exception('Enemy id to add must be present to succeed.');
 	}
+	remove_enemy($enemy_id);
 
 	DatabaseConnection::getInstance();
 	$query = 'INSERT INTO enemies (_player_id, _enemy_id) VALUES (:pid, :eid)';
