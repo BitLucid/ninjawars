@@ -11,5 +11,5 @@ You have no turns left today. Buy a amanita mushroom or wait for your turns to r
 {if !$health}
 <p class="ninja-notice">Go to the <a href="shrine.php">shrine</a> to resurrect.</p>
 {else}
-<a href="map.php" class='return-to-location'>Return to the Village</a>
+<a href="map.php" class='return-to-location block'>Return to the Village</a>
 {/if}

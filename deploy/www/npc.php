@@ -146,8 +146,9 @@ if($turns > 0 && !empty($victim)) {
 		$attacker_level = $player->vo->level;
 		$attacker_kills = $player->vo->kills;
 
-		if ($attacker_level < 6 || $attacker_kills < 1) {
+		if ($attacker_level < 2 || $attacker_kills < 1) {
 			$turn_cost = 0;
+			$error = 'You are too weak to attack the samurai.';
 		} else {
 			$turn_cost = 1;
 
@@ -208,7 +209,10 @@ if($turns > 0 && !empty($victim)) {
 		}	// *** End valid turns and kills for the attack. ***
 
 		$npc_template = 'npc.samurai.tpl';
-		$combat_data  = array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills, 'drop'=>$drop, 'drop_display'=>$drop_display);
+		$combat_data = array();
+		if(!$error){
+			$combat_data  = array('samurai_damage_array'=>$samurai_damage_array, 'gold'=>$samurai_gold, 'victory'=>$victory, 'ninja_str'=>$ninja_str, 'level'=>$attacker_level, 'attacker_kills'=>$attacker_kills, 'drop'=>$drop, 'drop_display'=>$drop_display);
+		}
 	} else if ($victim == 'merchant') {
 		$merchant_attack = rand(15, 35);  // *** Merchant Damage ***
 		$added_bounty    = 0;
