@@ -45,7 +45,7 @@
     <ul id='player-info' class='player-info'>
       <li>
         Health:
-        <span style='width:85%;display:inline-block'>
+        <span style='width:85%;display:inline-block' title='Max health: {$player.max_health}'>
           {include file="health_bar.tpl" health=$player.health health_percent=$player.hp_percent}
         </span>
       </li>
