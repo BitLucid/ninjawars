@@ -127,7 +127,8 @@ function inviteChar($p_target, $p_clan, $p_inviter) {
 function send_clan_join_request($user_id, $clan_id) {
 	DatabaseConnection::getInstance();
 	$clan        = get_clan($clan_id);
-	$leader      = $clan->getLeaderInfo();
+	$clan_obj = new Clan($clan_id);
+	$leader      = $clan_obj->getLeaderInfo();
 	$leader_id   = $leader['player_id'];
 	$leader_name = $leader['uname'];
 	$username    = get_username($user_id);

@@ -4,8 +4,11 @@ class Clan
 	private $m_id;
 	private $m_name;
 
-	public function __construct($p_id, $p_name) {
+	public function __construct($p_id, $p_name=null) {
 		$this->setID($p_id);
+		if(!$p_name){
+			$p_name = $this->name_from_id($p_id);
+		}
 		$this->setName($p_name);
 	}
 
@@ -24,6 +27,10 @@ class Clan
 	public function getLeaderID() {
 		$leader_info = $this->getLeaderInfo();
 		return $leader_info['player_id'];
+	}
+	
+	public function name_from_id($id){
+		return query_item('select clan_name from clan where clan_id = :id', array(':id'=>$id));
 	}
 
 	public function getLeaderInfo() {

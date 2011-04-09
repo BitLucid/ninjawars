@@ -253,8 +253,9 @@ if (!$player_id) {
 		if ($clan_id_viewed) {
 			// Provide a link to join any clan that you're currently viewing.
 			$viewed_clan = get_clan($clan_id_viewed);
-			$leader      = $viewed_clan->getLeaderInfo();
-			$viewed_clan_name = $viewed_clan['clan_name'];
+			$clan_obj = new Clan($viewed_clan['clan_id']);
+			$leader      = $clan_obj? $clan_obj->getLeaderInfo() : null;
+			$viewed_clan_name = @$viewed_clan['clan_name'];
 		}	// End of clan_id_viewed as a non-member code.
 	} // End of not-a member code
 }	// End of logged-in code
