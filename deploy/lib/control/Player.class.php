@@ -155,6 +155,14 @@ class Player
 	public function ki() {
 		return $this->vo->ki;
 	}
+	
+	public function add_ki($amount){
+		query('update players set ki = ki + :amount where player_id = :id', array(':amount'=>$amount, ':id'=>$this->id()));
+	}
+	
+	public function subtract_ki($amount){
+		query('update players set ki = case when (ki - :amount) < 1 then 0 else ki - :amount2 end where player_id = :id', array(':amount'=>$amount, ':amount2'=>$amount, ':id'=>$this->id()));
+	}
 
 	public function karma() {
 		return $this->vo->karma;
@@ -251,14 +259,10 @@ class Player
 
     // Complex wrapper that allows for robust healing with a limit of the max health.	
 	public function heal($amount) {
-	    $health = $this->health();
-	    $max_health = $this->max_health();
-	    
-        if (($health+$amount)>$max_health) {
-            $amount = $max_health-$health;
-        }
-
-	    return $this->addHealth($amount);
+		$hurt = $this->hurt_by();
+		// Heal at most the amount hurt, or the amount requested.
+		$heal = max($hurt, $amount);
+	    return $this->addHealth($heal);
 	}
 	
 	// Simple wrapper for changeHealth
@@ -274,7 +278,7 @@ class Player
 	// To subtract just send in a negative integer.
 	public function changeHealth($add_amount) {
     	$amount = (int)$add_amount;
-    	$amount2 = $amount;
+    	// Only change on positive or negative changes, not zero.
     	if (abs($amount) > 0) {
         	$id = $this->id();
             // Set health = 0 when it's less than zero, otherwise modify it.
@@ -282,7 +286,7 @@ class Player
     		   CASE WHEN health + :amount < 0 THEN 0 ELSE health + :amount2 END 
     		   WHERE player_id  = :player_id";
     		query($up, array(':player_id'=>array($id, PDO::PARAM_INT),
-    		    ':amount'=>$amount, ':amount2'=>$amount2));
+    		    ':amount'=>$amount, ':amount2'=>$amount));
     		$this->vo->health = $amount;
     	}
     	return $this->health(); // Return the current health.
@@ -295,8 +299,16 @@ class Player
 		return query_item($sel, array(':id'=>array($id, PDO::PARAM_INT)));
 	}
 	
+	// Return the amount below the max health (or zero).
+	public function hurt_by(){
+		return max(0, 
+			($this->max_health() - $this->health())
+			);
+	}
+	
+	// This char's max health
 	public function max_health() {
-	    return determine_max_health($this->level());
+	    return max_health_by_level($this->level());
 	}
 
 	// Return the current percentage health.

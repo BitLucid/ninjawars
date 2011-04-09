@@ -108,45 +108,50 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 				}
 				
 				// Resurrecting gives health benefits for higher levels.
-				$returning_health = $base_health + ($level-1)*5;
+				$returning_health = $base_health + (($level-1)*5);
 			} else {  // Non-standard resurrect costs give a substandard result.
 				$returning_health = $base_health;
 			}
-
-			$finalHealth = $player->vo->health = setHealth($player->vo->player_id, $returning_health);
+			$returning_health = max($returning_health, $player->max_health()); // Can't heal above max_health.
+			
+			$finalHealth = $player->vo->health = $player->heal($returning_health);
 			$final_turns = $player->vo->turns;
 			$final_kills = $player->vo->kills;
 		}
 	}
 } // *** end of resurrection ***
 
-if ($healed == 1 || $max_heal == 1) {  //If the player wants to heal themselves.
+
+
+if ($healed == 1 || $max_heal == 1) {  //If the player wants to heal themselves
 	$heal_requested = true;
+	
 	//  ***  HEALING SECTION  ***
 
-	// *** Having chi decreases the cost of healing by 50% ***
-	$costOfHealPoint = ($has_chi ? .5 : 1);
+	// *** Having chi decreases the cost of healing by half ***
+	$costOfHealPoint = ($has_chi ? 0.5 : 1);
 
 	if ($max_heal == 1) {
 	    // Sets the heal_points when the heal-all button was hit.
-	    $heal_points = floor($startingGold/$costOfHealPoint);
+	    $heal_points = (int) (2*$startingGold)/(2*$costOfHealPoint);
 	}
 
+	// Check hurt remaining after resurrection.
+	$hurt = $player->hurt_by();
 	$current_health = $player->vo->health;
-	$current_damage = $max_health - $current_health;
-	$heal_points    = min($heal_points, $current_damage); // *** Cannot heal higher than max ***
+	$heal_points    = min($heal_points, $hurt); // *** Cannot heal higher than request or hurt ***
 	$total_cost     = ceil($heal_points*$costOfHealPoint);
 
-	if ($current_health >= $max_health) {
-	    $error = 'You are currently at full health.';
+	if (!$hurt) {
+	    $error = 'You are at full health.';
 	} else {
 		if ($current_health > 0) {  // *** Requires the user to be resurrected first. ***
 			if ($heal_points && $heal_points > 0) {  // *** Requires a heal number, and a positive one. ***
 				if ($total_cost <= $startingGold) {   // *** If there's enough money for the amount that they want to heal. ***
 					subtract_gold($player->id(), $total_cost);
-					$player->vo->health = $finalHealth = addHealth($player->vo->player_id, $heal_points);
+					$player->vo->health = $finalHealth = $player->heal($heal_points);
 
-					$fully_healed = ($finalHealth >= $max_health); // ** Test if user is fully healed. ***
+					$fully_healed = !$player->hurt_by(); // ** Test if user is fully healed. ***
 				} else {
 					$error = 'You do not have enough gold for that much healing.';
 				}
