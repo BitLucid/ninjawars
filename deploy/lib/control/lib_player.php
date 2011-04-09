@@ -34,6 +34,41 @@ function getClass($who) {
 
 
 
+// Categorize ninja ranks by level.
+function level_category($level){
+	$res = '';
+	switch (true) {
+		case($level<2):
+			$res= 'Novice';
+			break;
+		case($level<6):
+			$res= 'Acolyte';
+			break;
+		case($level<31):
+			$res= 'Ninja';
+			break;
+		case($level<51):
+			$res= 'Elder Ninja';
+			break;
+		case($level<101):
+			$res= 'Master Ninja';
+			break;
+		default:
+			$res= 'Shadow Master';
+			break;
+	}
+
+	return array('display' => $res,
+		'css' => strtolower(str_replace(" ", "-", $res)));
+}
+
+/** Calculate a max health by a level, will be used in dojo.php, the player object, and calculating experience.**/
+function max_health_by_level($level) {
+	$health_per_level = 25;
+	return 150 + round($health_per_level*($level-1));
+}
+
+
 // Centralized holding for the maximum level available in the game.
 function maximum_level() {
 	return 300;
@@ -299,7 +334,7 @@ function get_rank($p_charID) {
 
 // Return the current percentage of the maximum health that a character could have.
 function health_percent($health, $level) {
-	return min(100, round(($health/determine_max_health($level))*100));
+	return min(100, round(($health/max_health_by_level($level))*100));
 }
 
 // Format a player data row with health and level and add the data for a health percentage.

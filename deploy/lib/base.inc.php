@@ -24,7 +24,6 @@ if (PROFILE) {
 require_once(LIB_ROOT.'environment/lib_assert.php');
 require_once(LIB_ROOT.'environment/status_defines.php'); // Status constant definitions.
 require_once(LIB_ROOT.'environment/lib_error_reporting.php');
-require_once(LIB_ROOT.'environment/lib_formulas.php');
 require_once(LIB_ROOT.'environment/global_error_handling.php');
 
 // Standalone utilities

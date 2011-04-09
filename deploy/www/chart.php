@@ -7,7 +7,6 @@ if ($error = init($private, $alive)) {
 } else {
 
 require_once(LIB_ROOT."control/lib_player.php"); // To pull the maximum_level();
-require_once(LIB_ROOT."environment/lib_formulas.php");
 
 $level_chart = 1;
 $kills_chart = 0;
