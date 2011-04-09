@@ -108,7 +108,7 @@ if ($restore === 1) {	//  *** RESURRECTION SECTION ***
 				}
 				
 				// Resurrecting gives health benefits for higher levels.
-				$returning_health = $base_health + (($level-1)*5);
+				$returning_health = $base_health + (($level-1)*15);
 			} else {  // Non-standard resurrect costs give a substandard result.
 				$returning_health = $base_health;
 			}
