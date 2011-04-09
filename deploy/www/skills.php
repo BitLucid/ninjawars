@@ -15,6 +15,7 @@ $player = new Player(get_char_id());
 $level = $player->level();
 $class = $player->class_display_name(); // Just to be displayed in the template.
 $starting_turns = $player->turns();
+$starting_ki = $player->ki();
 
 $status_list = get_status_list();
 $no_skills = true;
@@ -36,7 +37,7 @@ $heal             = $skillsListObj->hasSkill('heal');
 $heal_turn_cost     = $skillsListObj->getTurnCost('heal');
 $clone_kill 		= $skillsListObj->hasSkill('clone kill');
 $clone_kill_turn_cost = $skillsListObj->getTurnCost('clone kill');
-$harmonize			= $player->ki();
+$can_harmonize			= $starting_ki;
 
 display_page(
 	'skills.tpl'	// *** Main Template ***

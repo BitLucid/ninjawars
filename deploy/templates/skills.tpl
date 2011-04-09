@@ -3,7 +3,8 @@
 
 <p>You are a level {$level}, {$class} Ninja.</p>
 <p>Your status is: {include file="status_section.tpl" statuses=$status_list}</p>
-<p>You currently {if !$starting_turns}<span class='ninja-notice'>do not have any</span>{else}have {$starting_turns}{/if} turns.</p>
+<p>You currently {if !$starting_turns}<span class='ninja-notice'>do not have any</span>{else}have {$starting_turns}{/if} turn{if $starting_turns > 1}s{/if}.</p>
+<p>You currently {if !$starting_ki}<span class='ninja-notice'>do not have any</span>{else}have {$starting_ki}{/if} ki.</p>
 <div id='skills-list'>
 
 {if $stealth}
@@ -61,11 +62,14 @@
   </div>
 {/if}
 
-{if $harmonize}
+{if $can_harmonize}
   <div id='harmonize-skill'>
     <form action="skills_mod.php" method="post">
       <fieldset>
       	<legend>Harmonize Chakra</legend>
+      	<p>
+          Heal yourself using your ki.
+        </p>
       	<div>
         <input type="submit" name="command" value="Harmonize" class="formButton">
         </div>
@@ -119,6 +123,7 @@
 {/if}
 
 </div>
+<!--
 <div id='search-for-ninja'>
 <p><a href="list.php?hide=dead">Use a Skill on a ninja?</a></p>
 <form action="list.php" method="get">
@@ -129,5 +134,6 @@
   </div>
 </form>
 </div>
+-->
 
 <hr>
