@@ -87,10 +87,10 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
               <form id="inventory_form" action="inventory_mod.php" method="post" name="inventory_form">
                 <div>
                   <input id="target" type="hidden" name="target_id" value="{$target_id|escape}">
-		{if count($items) lt 1}
-                  <select id="item" name="item">
-                    <option value=''>You Have No Items</option>
-                  </select>
+		{if !$valid_items}
+				  <div id='no-items' class='ninja-notice'>
+				  	You have no items.
+				  </div>
 		{else}
                   <input type="submit" value="Use" class="formButton">
                   <select id="item" name="item">

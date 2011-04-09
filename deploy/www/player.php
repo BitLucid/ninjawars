@@ -81,6 +81,8 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 
 			// Pull the items and some necessary data about them.
 			$items = inventory_counts($char_id);
+			
+			$valid_items = rco($items);// row count
 			//debug($items);
 		}	// End of the there-was-no-attack-error section
 
