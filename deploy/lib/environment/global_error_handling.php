@@ -55,6 +55,14 @@ function sendErrorEmail($p_errorMsg) {
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$p_errorMsg .= 'POST_DATA: '.print_r($_POST, true)."\r\n";
 	}
+	
+	if(count($_SESSION)){
+		$p_errorMsg .= 'SESSION: '.json_encode($_SESSION);
+	}
+	
+	if(count($_SERVER)){
+		$p_errorMsg .= 'SERVER: '.json_encode($_SERVER);
+	}
 
 	$headers = "MIME-Version: 1.0\r\n".
 		"Content-Type: text/plain; charset=ISO-8859-15\r\n".
