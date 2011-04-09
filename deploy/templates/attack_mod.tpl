@@ -89,7 +89,7 @@
 
 			!</div>
 
-			{if !$simultaneousKill}
+			{if !$simultaneousKill && $loot}
 				<div>You have taken {$loot} gold from {$target}.</div>
 			{/if}
 		{/if}
@@ -107,7 +107,7 @@
 					Go to the <a href="shrine.php">Shrine</a> to return to the living.
 					</div>
 
-				{if !$simultaneousKill}
+				{if !$simultaneousKill && $loot}
 					<div>{$target} has taken {$loot} gold from you.</div>
 				{/if}
 

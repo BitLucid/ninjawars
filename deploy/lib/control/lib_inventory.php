@@ -131,7 +131,7 @@ function nearLevelPowerIncrease($level_difference, $max_increase) {
 function give_item($username, $target, $item){
 	$article = get_indefinite_article($item);
     addItem($target,$item,1);
-    $give_msg = "You have been given $article $item by $us$this->m_targetDamage =ername.";
+    $give_msg = "You have been given $article $item by $username.";
     sendMessage($username,$target,$give_msg);
 }
 
