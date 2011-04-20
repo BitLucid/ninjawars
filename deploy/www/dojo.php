@@ -18,7 +18,7 @@ $msg            = '';
 $dim_mak_cost     = 70; // In turns.
 $dim_mak_strength_requirement = 50; // Must have at least a strength of 50 to get and use DimMak, usually level 10.
 
-$class_change_cost     = 20; // *** Cost of class change in turns.
+$class_change_cost     = 50; // *** Cost of class change in turns.
 
 $classes = classes_info();
 
