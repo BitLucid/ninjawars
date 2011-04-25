@@ -1,10 +1,33 @@
     <!-- Version {$version|escape} -->
 {literal}
       <script type="text/javascript">
-	if (parent.frames.length != 0) {
-		location.href = "attack_player.php";
-	}
-      </script>
+      $(document).ready(function(){
+		if (parent.frames.length != 0) { // If there is a double-nested index...
+			console.log('Frame present: '+parent.frames.length);
+			//location.href = "main.php"; // ...Display the main page instead.
+		}
+		
+		
+		$('#donation-button').hide().delay('3000').slideDown('slow').delay('20000').slideUp('slow');
+		
+
+		// Hide the subcats initially.
+		var subcats = $('#combat-subcategory, #self-subcategory, #map-subcategory').hide();
+		
+		//delay('2000').slideUp('slow');
+	
+		// Find the trigger areas and show the appropriate subcategory.
+		var triggers = $('#category-bar').find('.combat, .self, .map');
+		if(triggers){
+			triggers.mouseenter(function(){
+				var trigger = $(this);
+				var triggeredSubcat = $("#"+trigger.attr('class')+'-subcategory').show().siblings().hide();
+		    	// When a different trigger area is hovered, hide the other subcats.
+			});
+		}
+	
+	});
+	</script>
     <style type="text/css">
     </style>
       
@@ -59,25 +82,6 @@
 
       <div id='menu-bar' class='header-section'>
         <div id='reactive-panel'>
-            <script type='text/javascript'>
-            {literal}
-            $(document).ready(function(){
-            	// Hide the subcats initially.
-            	$('#combat-subcategory, #self-subcategory, #map-subcategory').hide();
-            	
-            	// Find the trigger areas and show the appropriate subcategory.
-            	var triggers = $('#category-bar').find('.combat, .self, .map');
-            	if(triggers){
-	            	triggers.mouseenter(function(){
-	            		var trigger = $(this);
-	            		var triggeredSubcat = $("#"+trigger.attr('class')+'-subcategory').show().siblings().hide();
-		            	// When a different trigger area is hovered, hide the other subcats.
-	            	});
-            	}
-            	
-            });
-            {/literal}
-            </script>
             <div id='category-bar' class='navigation'>
               <ul>
                 <li id='status-actions' class='self'>
@@ -224,9 +228,10 @@
 
 
 
+
+
           <!-- Recent Events count and target will get put in here via javascript -->
           
-
           <div id='messages' class='boxes active'>
               <div>
                   <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''>
@@ -234,6 +239,21 @@
                   </a>
               </div>
           </div>
+          
+	  
+	  <div id='donation-button'>
+<!-- Beginning of paypal donation button -->
+	  	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" style='border:0' src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/btn/btn_donate_LG.gif" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" style='border:0' src="https://www.paypalobjects.com/WEBSCR-640-20110401-1/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+<!-- End of paypal donation button -->
+
+	  </div>
           
           <div id='recent-events' class="boxes active" style='display:none'>
             <!--<div>
@@ -259,6 +279,7 @@
 		{include file="mini-chat.section.tpl"}
 
 	  </div><!-- End of chat-housing -->
+
 
 
       </div><!-- End of sidebar-column -->  
