@@ -11,8 +11,11 @@ $private    = true;
 $alive      = true;
 
 if ($error = init($private, $alive)) {
-	redirect('list.php');
+	display_error($error);
+	die();
 } else {
+
+
 $link_back  = in('link_back');
 $target_id  = in('target_id');
 $target     = first_value(get_char_name($target_id), in('target'));

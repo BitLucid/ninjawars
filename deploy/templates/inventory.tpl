@@ -3,7 +3,11 @@
 <div class="item-list">
 
 {if $inventory}
+
+
 <div style="margin-bottom: 1em;">Click a linked item to use it on yourself.</div>
+
+
 <table style="width: 25em;height:10em;margin-bottom:2em;">
 	{foreach from=$inventory item="item_info" key="item_name"}
 		{if $item_info.count gt 0}
