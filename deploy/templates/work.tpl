@@ -50,6 +50,10 @@ $(document).ready(function (){
     <input id="workButton" type="submit" value="Turns" name="workButton" class="formButton">
   </div>
 </form>
+<p class='gold-count'>
+  Current gold: {$gold|escape}
+<p>
+
 {else}
 <p>
 To earn pay for your work you must first <a href="signup.php">become a citizen of this village.</a>
