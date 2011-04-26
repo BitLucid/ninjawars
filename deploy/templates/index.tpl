@@ -1,14 +1,18 @@
     <!-- Version {$version|escape} -->
 {literal}
       <script type="text/javascript">
-      $(document).ready(function(){
+
+
 		if (parent.frames.length != 0) { // If there is a double-nested index...
-			console.log('Frame present: '+parent.frames.length);
-			//location.href = "main.php"; // ...Display the main page instead.
-		}
+			location.href = "main.php"; // ...Display the main page instead.
+			// This function must be outside of domready, for some reason.
+		}      
+      
+      $(document).ready(function(){		
 		
 		
 		$('#donation-button').hide().delay('3000').slideDown('slow').delay('20000').slideUp('slow');
+		// Hide, show, and then eventually hide the donation button.
 		
 
 		// Hide the subcats initially.
@@ -25,6 +29,8 @@
 		    	// When a different trigger area is hovered, hide the other subcats.
 			});
 		}
+		
+		
 	
 	});
 	</script>
@@ -237,11 +243,9 @@
                   <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''>
                     <span class='unread-count'>{$unread_message_count}</span>
                   </a>
-              </div>
-          </div>
-          
-	  
-	  <div id='donation-button'>
+                  
+	  {if !$new_player}
+	  <span id='donation-button' style='float:right;width:40%'>
 <!-- Beginning of paypal donation button -->
 	  	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
@@ -252,8 +256,16 @@
 </form>
 
 <!-- End of paypal donation button -->
+	  </span>
+	  {/if}
+              </div>
 
-	  </div>
+
+          
+
+
+          </div>
+
           
           <div id='recent-events' class="boxes active" style='display:none'>
             <!--<div>
