@@ -253,7 +253,7 @@ function harmonize_chakra($char_obj){
 		// Heal to whichever is lowest, ki, hurt, or 300.
 		$heal_for = min(100, $hurt, $ki);
 		// Subtract the ki used for healing.
-		$char_obj->subtract_ki($heal_for);
+		$char_obj->subtract_ki((int)$heal_for);
 		$char_obj->heal($heal_for);
 		$healed_by = $heal_for;
 	}
