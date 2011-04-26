@@ -62,7 +62,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
             <td id='attacking-choices'>
               <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
                 <span id='duel'>
-                  <label>Duel ({getTurnCost skillName="duel"}) <input id="duel" type="checkbox" name="duel"></label>
+                  <label>Duel ({getTurnCost skillName="duel"}) <input id="duel" type="checkbox" {if $duel_checked}checked{/if} name="duel"></label>
                 </span>
 
 		{foreach from=$combat_skills item="skill"}
@@ -70,14 +70,14 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
                   <label>
                     {$skill.skill_display_name|escape}
                     ({getTurnCost skillName=$skill.skill_display_name})
-                    <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}">
+                    <input id="{$skill.skill_internal_name|escape}" type="checkbox" {if $skill.checked}checked{/if} name="{$skill.skill_internal_name|escape}">
                   </label>
                 </span>
 		{/foreach}
 
                 <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
                 <label class='attack-player-trigger'>
-                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$smarty.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'>Attack
+                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$smarty.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'><span style='font-size:2em'>Attack</span>
                 </label>
               </form>
             </td>

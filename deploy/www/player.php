@@ -19,6 +19,8 @@ if($target_player_obj && $target_player_obj->name()){
 	$viewed_name_for_title = $target_player_obj->name();
 }
 
+$combat_toggles = get_setting('combat_toggles');
+
 $char_info = get_player_info();
 
 if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isActive()) {
@@ -78,7 +80,17 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 			$combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level)->fetchAll();
 			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level)->fetchAll();
 		    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
-
+		    
+		    		
+			// Check all the combat toggles to see if they should be checked on the profile page.
+			foreach($combat_skills as &$skill){
+				if(isset($combat_toggles[$skill['skill_internal_name']]) && $combat_toggles[$skill['skill_internal_name']]){
+					$skill['checked'] = 1; // Save the setting associatively back to the original array.
+				}
+			}
+			$duel_checked = !!$combat_toggles['duel']; // Duel isn't in the general combat skills, so it gets set separately.
+		    
+		    
 			// Pull the items and some necessary data about them.
 			$items = inventory_counts($char_id);
 			
@@ -111,10 +123,12 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 			}
 		}
 
+		
+
 		// Send the info to the template.
 
 		$template = 'player.tpl';
-		$parts = get_certain_vars(get_defined_vars(), array('char_info', 'combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan', 'clan_members', 'items'));
+		$parts = get_certain_vars(get_defined_vars(), array('char_info', 'combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan', 'clan_members', 'items', 'duel_checked'));
 	}
 }
 
