@@ -52,7 +52,6 @@ input.shopButton{
 </thead>
 -->
 
-
 <tr>
   <td colspan="4" style="text-align: center;padding: .3em;">
     {if $is_logged_in}
@@ -96,6 +95,11 @@ input.shopButton{
 </form>
 
 <!-- google_ad_section_end -->
+
+
+<p class='gold-count'>
+  Current gold: {$gold|escape}
+<p>
 
 
 <hr>

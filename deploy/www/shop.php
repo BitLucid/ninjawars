@@ -51,8 +51,11 @@ if ($in_purchase == 1 && $item) {
 		add_item($char_id, $item_identity, $quantity);
 		subtract_gold($char_id, $current_item_cost);
 
+		$gold = get_gold($char_id);
+
 	}
 }
+
 
 $parts = array('item_costs'=>$item_costs, 'description'=>$description, 'username'=>$username, 'gold'=>$gold,
     'current_item_cost'=>$current_item_cost, 'quantity'=>$quantity, 'item'=>$item, 'grammar'=>$grammar, 'is_logged_in'=>$is_logged_in,
