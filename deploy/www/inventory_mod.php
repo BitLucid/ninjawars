@@ -21,8 +21,6 @@ $selfTarget = in('selfTarget');
 // *** Item identifier, either it's id or internal name ***
 $item_in = in('item');
 
-set_setting("last_item_used", $item_in); // Save last item used.
-
 $give       = in('give');
 $give       = in_array($give, array('on', 'Give'));
 $target_id  = in('target_id');
@@ -63,6 +61,9 @@ if ($selfTarget) {
 } else if ($target_id) {
 	$targetObj = new Player($target_id);
 	$target = $targetObj->name();
+	
+	set_setting("last_item_used", $item_in); // Save last item used.
+	
 }
 
 if ($targetObj->player_id) {
