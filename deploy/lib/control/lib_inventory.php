@@ -76,10 +76,15 @@ function item_count($user_id, $item_display_name){
 }
 
 // Pull the counts of all items a player has.
-function inventory_counts($char_id){
+function inventory_counts($char_id, $item_id=null){
+	$extra_order = '';
+	if((int)$item_id){
+		// If a specific item_id is sent in, order that itemid to the top.
+		$extra_order = 'item.item_id = '.(int)$item_id.' DESC, ';
+	}
 	$sql = "SELECT amount AS count, item_display_name AS name, item_type, item.item_id, other_usable 
 		FROM inventory join item on item_type = item.item_id 
-		WHERE owner = :owner ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
+		WHERE owner = :owner ORDER BY ".$extra_order." item_internal_name = 'shuriken' DESC, item_display_name";
 	return query_resultset($sql, array(':owner'=>array($char_id, PDO::PARAM_INT)));
 }
 

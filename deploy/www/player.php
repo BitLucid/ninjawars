@@ -19,7 +19,9 @@ if($target_player_obj && $target_player_obj->name()){
 	$viewed_name_for_title = $target_player_obj->name();
 }
 
-$combat_toggles = get_setting('combat_toggles');
+$combat_toggles = get_setting('combat_toggles'); // Pull the attack options toggled on and off.
+
+$last_item_used = get_setting("last_item_used"); // Pull the last item id used, if any.
 
 $char_info = get_player_info();
 
@@ -92,7 +94,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		    
 		    
 			// Pull the items and some necessary data about them.
-			$items = inventory_counts($char_id);
+			$items = inventory_counts($char_id, $last_item_used);
 			
 			$valid_items = rco($items);// row count
 			//debug($items);

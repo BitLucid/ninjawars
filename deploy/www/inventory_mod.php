@@ -21,6 +21,8 @@ $selfTarget = in('selfTarget');
 // *** Item identifier, either it's id or internal name ***
 $item_in = in('item');
 
+set_setting("last_item_used", $item_in); // Save last item used.
+
 $give       = in('give');
 $give       = in_array($give, array('on', 'Give'));
 $target_id  = in('target_id');
@@ -32,6 +34,8 @@ if (is_numeric($item_in)) {
 } elseif (is_string($item_in)) {
 	$item = $item_obj = getItemByIdentity($item_in);
 }
+
+
 
 if (!is_object($item)) {
 	throw new Exception('Invalid item identifier ('.(is_string($item_in) ? $item_in : 'non-string').') sent to page from '.(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '(no referrer)').'.');

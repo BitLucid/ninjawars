@@ -23,6 +23,10 @@
 	{/foreach}
 </table>
 
+  <p class='gold-count'>
+  Current gold: {$gold|escape}
+  <p>
+
   <form id="player_search" action="list_all_players.php" method="get" name="player_search">
     <div>
       <a href="list_all_players.php?hide=dead">Use an Item on a ninja?</a>
@@ -34,11 +38,11 @@
 
 {else}
     You have no items, to buy some, visit the <a href="shop.php">shop</a> or kill <a href='attack_player.php' target='main'>things</a>.
-{/if}
-
-
-</div>
+    
 
   <p class='gold-count'>
   Current gold: {$gold|escape}
   <p>
+{/if}
+
+</div>

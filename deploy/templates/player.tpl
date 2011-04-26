@@ -77,7 +77,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
                 <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
                 <label class='attack-player-trigger'>
-                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$smarty.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'><span style='font-size:2em'>Attack</span>
+                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$smarty.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'><span style='font-size:1.5em;font-weight:bold'>Attack</span>
                 </label>
               </form>
             </td>
