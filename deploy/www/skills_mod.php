@@ -273,7 +273,7 @@ function harmonize_chakra($char_obj){
 		    $generic_skill_result_message = "__TARGET__ healed by $healed_by to $new_health.";
 
 		    if ($target->id() != $player->id())  {
-				send_message($attacker_char_id, $target->id(), "You have been healed by $attacker_id at $today for $healed_by.");
+				send_event($attacker_char_id, $target->id(), "You have been healed by $attacker_id at $today for $healed_by.");
 			}
 		}
 	} else if ($command == 'Ice Bolt') {
@@ -286,7 +286,7 @@ function harmonize_chakra($char_obj){
 				$target->addStatus(SLOW);
 
 				$msg = "Ice bolt cast on you by $attacker_id at $today, your turns have been reduced by $turns_decrease.";
-				send_message($attacker_char_id, $target->id(), $msg);
+				send_event($attacker_char_id, $target->id(), $msg);
 
 				$generic_skill_result_message = "__TARGET__'s turns reduced by $turns_decrease!";
 			} else {
@@ -310,7 +310,7 @@ function harmonize_chakra($char_obj){
 					addTurns($char_id, $turns_decrease);
 
 					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id at $today";
-					send_message($attacker_char_id, $target->id(), $msg);
+					send_event($attacker_char_id, $target->id(), $msg);
 
 					$generic_skill_result_message = "You cast Cold Steal on __TARGET__ and take $turns_decrease turns.";
 				} else {
