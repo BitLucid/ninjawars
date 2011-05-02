@@ -12,7 +12,7 @@ $logMessage = "DEITY_HALFHOUR STARTING: ".date(DATE_RFC1036)."\n";
 $regen_rate           = 2; // Rate is for turns.
 $turn_regen_threshold = 100;
 $maximum_heal         = 200;
-$maxtime              = '6 hours'; // *** Max time a person is kept online without being active.
+$maxtime              = '70 hours'; // *** Max time a person is kept online without being active.
 $score                = get_score_formula();
 
 DatabaseConnection::getInstance();
