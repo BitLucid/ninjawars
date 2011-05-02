@@ -46,7 +46,7 @@ assert($unconfirmed < $maximum_players_to_unconfirm+1);
 $affected_rows['Players Unconfirmed'] = ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
 
 // Delete from inventory where owner is unconfirmed or non-existent.
-$deleted_items = DatabaseConnection::$pdo->query("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE active = 0 OR uname IS NULL GROUP BY owner)");
+$deleted_items = DatabaseConnection::$pdo->query("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE uname IS NULL GROUP BY owner)");
 $affected_rows['deleted items'] = $deleted_items->rowCount();
 
 $deleted_items = DatabaseConnection::$pdo->query("delete from levelling_log where killsdate < (now() - interval '2 months')");
