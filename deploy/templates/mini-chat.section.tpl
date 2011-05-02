@@ -35,7 +35,7 @@
                     <!-- Chat section with template chat author and messages --> 
                     <dl id="mini-chat-display" class="chat-messages" style='display:hidden'>
                        	<dt class='chat-author'>&lt;<a href='player.php?player_id=' target='main'></a>&gt;</dt>
-                       		<dd class='chat-message' title=''><dt>
+                       		<dd class='chat-message' title=''></dd>
                     </dl>
                     
                     <noscript>
