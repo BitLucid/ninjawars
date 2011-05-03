@@ -10,7 +10,7 @@ ServerName __SERVER_NAME__
 # VHOST OR HTACESS DIRECTIVES
 
 RewriteEngine On
-RewriteRule webgame/?(.*) __WWW_ROOT__$1 [L,R=301]
+RewriteRule webgame/?(.*) __WWW_ROOT__/$1 [L,R=301]
 #~RewriteCond %{HTTP_HOST} ^__SHORT_SERVER_NAME__ [NC]
 #~RewriteCond %{REQUEST_URI} !awstats
 #~RewriteRule ^(.*)$ __WWW_ROOT__$1 [L,R=301]
