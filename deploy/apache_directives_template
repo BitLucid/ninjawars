@@ -68,6 +68,6 @@ php_value session.cookie_lifetime "400000"
 #   Header unset Cache-Control
 #</FilesMatch>
 
-CustomLog /var/log/apache2/ninjawars.net.access combined
+CustomLog /var/log/apache2/access.ninjawars.net.log combined
 
 </IfModule>
