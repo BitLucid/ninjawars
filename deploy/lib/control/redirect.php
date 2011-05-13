@@ -18,4 +18,11 @@ function redirect($url){
         exit;
     }
 }
+
+// Permanent 301 redirect instead of just a spot redirect.
+function permanent_redirect($url){
+	header( "HTTP/1.1 301 Moved Permanently" ); 
+	header( "Location: ".$url); 
+	exit();
+}
 ?>
