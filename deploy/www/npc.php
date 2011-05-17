@@ -1,5 +1,6 @@
 <?php
 require_once(LIB_ROOT."control/lib_inventory.php");
+require_once(LIB_ROOT."data/lib_npc.php");
 $alive      = true;
 $private    = true;
 
@@ -19,11 +20,12 @@ $npc_template = $error_template; // Error condition by default.
 $turns = $player->turns();
 
 
-// Add more default options here eventually.
-// TODO: Abstract all the unique npc behaviors into the generic system.
-$npcs = array('spider'=>array('damage'=>10, 'gold'=>10), 'viper'=>array('name'=>'Black Viper', 'damage'=>99, 'status'=>POISON, 'gold'=>30));
+
+
+$npcs = get_npcs();
 
 if($turns > 0 && !empty($victim)) {
+	// Strip stealth when attacking samurai or oni
 	if ($player->hasStatus('stealth') && (strtolower($victim) == 'samurai' || strtolower($victim) == 'oni')) {
 		$player->subtractStatus(STEALTH);
 	}
@@ -32,6 +34,8 @@ if($turns > 0 && !empty($victim)) {
 	$attacker_health = $player->vo->health;
 	$attacker_gold   = $player->vo->gold;
 
+
+	// Perform a random encounter (currently only oni).
 	if ($random_encounter) { // *** ONI, Mothafucka! ***
 
 		// **********************************************************
@@ -73,6 +77,15 @@ if($turns > 0 && !empty($victim)) {
 		$status_effect = whichever(@$npc_stats['status'], null);
 		$reward_gold = first_value(@$npc_stats['gold'], 1);
 		$reward_item = first_value(@$npc_stats['item'], null);
+		$image = @$npc_stats['img'];
+		$image_path = null;
+		if($image && file_exists(SERVER_ROOT.'www/images/characters/'.$image)){
+			// If the image exists, set the path to it for use on the page.
+			$image_path = IMAGE_ROOT.'characters/'.$image;
+		}
+		//debug($image, $image_path, SERVER_ROOT.'www/images/characters/'.$image);die();
+		
+		
 		$statuses = null;
 		$status_classes = null;
 		
@@ -104,7 +117,7 @@ if($turns > 0 && !empty($victim)) {
 		$npc_template = 'npc.abstract.tpl';
 		$combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$attack_damage, 
 			'status_effect'=>$status_effect, 'statuses'=>$statuses, 'received_gold'=>$received_gold,
-			'received_item'=>$received_item, 'victory'=>$victory);
+			'received_item'=>$received_item, 'victory'=>$victory, 'image_path'=>$image_path);
 			
 			
 			

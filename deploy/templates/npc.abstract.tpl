@@ -1,6 +1,11 @@
 	
 	<h2>{$display_name|escape}</h2>
 	
+	{if $image_path}
+		<img src='{$image_path}' alt='Creature'>
+	{/if}
+	
+	
 	<p>The {$display_name|escape} wounds you for {$attack_damage} chakra.</p>
 	{if $statuses}
 	<p>The {$display_name|escape}'s strike leaves you <span class='{$statuses}'>{$statuses}</span>.</p>

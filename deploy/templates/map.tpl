@@ -32,6 +32,9 @@
 {foreach name="person" from=$npcs key="idx" item="npc"}
       <li><a href='npc.php?attacked=1&amp;victim={$npc.identity|escape}' target='main'><img alt='' src='images/characters/{$npc.image|escape:'url'|escape}' style='width:25px;height:46px'> {$npc.name|escape}</a></li>
 {/foreach}
+{foreach name="creatures" from=$other_npcs key="idx" item="npc"}
+      <li><a href='npc.php?attacked=1&amp;victim={$idx|escape}' target='main'><img alt='' src='images/characters/{$npc.img|escape:'url'|escape}' style='width:25px;height:46px'> {$npc.name|escape}</a></li>
+{/foreach}
   </ul>
   
   

@@ -1,4 +1,6 @@
 <?php
+require_once(LIB_ROOT."data/lib_npc.php");
+
 $private = false;
 $alive   = false;
 
@@ -72,6 +74,9 @@ $npcs = array(
 	, array('name'=>'Samurai',         'identity'=>'samurai', 'image'=>'samurai.png')
 );
 
+// Generics.
+$other_npcs = get_npcs();
+
 display_page(
 	'map.tpl'
 	, 'Map'
@@ -79,6 +84,7 @@ display_page(
 		'nodes'		  => $nodes
 //		'locations'   => $locations
 		, 'npcs'      => $npcs
+		, 'other_npcs'=> $other_npcs
 		, 'show_ad'   => rand(1, 20) // Only show the ad in the village 1/10th of the time, enough to make it use appropriate data for the ads.
 	)
 	, array(
