@@ -4,7 +4,9 @@
 	{if $image_path}
 		<img src='{$image_path}' alt='Creature'>
 	{/if}
-	
+	{if $npc_stats.short}
+	<p>The {$display_name|escape} is {$npc_stats.short}.</p>
+	{/if}
 	
 	<p>The {$display_name|escape} wounds you for {$attack_damage} chakra.</p>
 	{if $statuses}

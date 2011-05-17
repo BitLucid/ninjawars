@@ -117,7 +117,7 @@ if($turns > 0 && !empty($victim)) {
 		$npc_template = 'npc.abstract.tpl';
 		$combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$attack_damage, 
 			'status_effect'=>$status_effect, 'statuses'=>$statuses, 'received_gold'=>$received_gold,
-			'received_item'=>$received_item, 'victory'=>$victory, 'image_path'=>$image_path);
+			'received_item'=>$received_item, 'victory'=>$victory, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats);
 			
 			
 			

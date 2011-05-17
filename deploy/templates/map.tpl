@@ -27,7 +27,7 @@
   
   <hr>
   
-  <h3>Attack a citizen:</h3>
+  <h3>Attack a:</h3>
   <ul id='npc-list' style='margin: .5em auto;text-align:center;font-size:1.3em;'>
 {foreach name="person" from=$npcs key="idx" item="npc"}
       <li><a href='npc.php?attacked=1&amp;victim={$npc.identity|escape}' target='main'><img alt='' src='images/characters/{$npc.image|escape:'url'|escape}' style='width:25px;height:46px'> {$npc.name|escape}</a></li>
