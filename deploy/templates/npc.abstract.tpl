@@ -8,7 +8,7 @@
 	<p>The {$display_name|escape} is {$npc_stats.short}.</p>
 	{/if}
 	
-	<p>The {$display_name|escape} wounds you for {$attack_damage} chakra.</p>
+	<p>The {$display_name|escape} wounds you for {$attack_damage} health.</p>
 	{if $statuses}
 	<p>The {$display_name|escape}'s strike leaves you <span class='{$statuses}'>{$statuses}</span>.</p>
 	{/if}

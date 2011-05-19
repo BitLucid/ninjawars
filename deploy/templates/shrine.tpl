@@ -15,11 +15,10 @@ form {
   <div style="margin-bottom: 1.5em;">
     The shrine to the gods is peacefully quiet as you enter. The sound of flowing water soothes your mind.
   </div>
-  <p>A monk looks ready to play a reed flute 
-  <span id='shrine-music' style='width:200px;height:25px;display:inline-block'>
+  <p>A monk looks ready to play a reed flute in one corner of the shrine.</p>
+  <span id='shrine-music' style='margin:0 auto;width:200px;display:block'>
 	{include file='music.tpl'}
-  </span> 
-  in one corner of the shrine.</p>
+  </span>
   
   <div>A monk approaches you quietly and asks, <em class='speech'>Are you in need of healing?</em></div>
 </div>
