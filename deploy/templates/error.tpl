@@ -1,17 +1,19 @@
-<h1>You can't do that</h1>
 {if $error eq 'log_in'}
-    <span class='notice'>
-      You must <a href="login.php">log in</a> to view this section.
-    </span>
+	<h1>Become a ninja first!</h1>
+    <p class='notice'>
+      You must <a href='signup.php'>Become a Ninja</a> or <a href="login.php">log in</a> to view this section.
+    </p>
 {elseif $error eq 'dead'}
-    <span class='ninja-notice'>
+	<h1>You are dead</h1>
+    <p class='ninja-notice'>
       You are a ghost. You must resurrect before you may act again. Go to the <a href='shrine.php' style='font-size:2em'>shrine</a> for the monks to bring you back to life.
-    </span>
+    </p>
 {elseif $error eq 'frozen'}
-    <span class='ninja-notice'>
+	<h1>You are frozen!</h1>
+    <p class='ninja-notice'>
       You are currently <span style='skyBlue'>frozen</span>. You must wait to thaw before you may continue.
-    </span>
+    </p>
 {else}
-    <span class='ninja-notice'>{$error}</span>
+	<h1>You can't do that</h1>
+    <p class='ninja-notice'>{$error}</p>
 {/if}
-</div>

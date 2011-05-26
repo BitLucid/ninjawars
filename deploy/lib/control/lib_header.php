@@ -44,7 +44,7 @@ function globalize_user_info($private=true, $alive=true) {
 		assert('isset($player_id)');
 
 		if ($alive) { // *** That page requires the player to be alive to view it.
-			if (!$player->vo->health) {
+			if (!$player->health()) {
 				$error = 'dead';
 			} else if ($player->hasStatus(FROZEN)) {
 				$error = 'frozen';

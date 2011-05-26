@@ -31,8 +31,9 @@ class NWTemplate extends Smarty {
 	}
 }
 
+// Displays blocking states like not logged in, death, frozen, etc.
 function display_error($p_error) {
-	display_page('error.tpl', 'Error', array('error'=>$p_error));
+	display_page('error.tpl', 'There is an obstacle to your progress...', array('error'=>$p_error));
 }
 
 // Assigns the environmental variables and then returns just a raw template object for manipulation & display.
