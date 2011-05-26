@@ -6,10 +6,10 @@ function get_npcs(){
 	return array(
 		'spider'=>array('name'=>'Spider', 'img'=>'spider_icon.png', 'damage'=>10, 'gold'=>10, 'race'=>'insect', 'strength'=>1, 'stamina'=>1, 'speed'=>1, 'ki'=>1), 
 		'viper'=>array('name'=>'Black Viper', 'race'=>'animal', 'strength'=>'1', 'stamina'=>1, 'speed'=>1, 'ki'=>1, 'damage'=>99, 'status'=>POISON, 'gold'=>30),
-		'fireflies'=>array('name'=>'Fireflies', 'strength'=>0), // Baseline
+		'fireflies'=>array('name'=>'Fireflies', 'strength'=>0, 'damage'=>0), // Baseline weakest mob
 		'monk'=>array('name'=>'Monk', 'race'=>'human'),
 		'geisha'=>array('name'=>'Geisha', 'race'=>'human'),
-		'kappa'=>array('name'=>'Kappa', 'short'=>'a reptilian creature with a scooped-out head', 'race'=>'kappa'),
+		'kappa'=>array('name'=>'Kappa', 'short'=>'a reptilian creature with a scooped-out head', 'race'=>'kappa', 'img'=>'kappa.jpg'),
 		'tengu'=>array('name'=>'Tengu', 'short'=>'a large winged demon', 'race'=>'tengu'),
 		'oni'=>array('name'=>'Oni', 'short'=>'a horned demon', 'race'=>'oni'),
 		'ushioni'=>array('name'=>'Ushi-Oni', 'race'=>'ushioni', 'img'=>'ushioni2.jpg'),
@@ -18,12 +18,11 @@ function get_npcs(){
 		'kamaitachi'=>array('name'=>'Kama-itachi', 'img'=>'kamaitachi.jpg', 'race'=>'yokai'),
 		'nuribotoke'=>array('name'=>'Nuri-Botoke', 'img'=>'nuribotoke.jpg', 'race'=>'yokai'),
 		'hitodama'=>array('name'=>'Hitodama', 'short'=>'a spirit orbs of fire', 'img'=>'hitodama.gif', 'race'=>'kami'),
-		'karakasaobake'=>array('name'=>'﻿Karakasa-obake', 'race'=>'kami', 'img'=>'karakasaobake.jpg'),
-		'kodama'=>array('name'=>'Ko-dama', 'short'=>'Tree spirit', 'race'=>'kami', 'img'=>'kodama.jpg'),
+		'karakasaobake'=>array('name'=>'﻿Karakasa-obake', 'short'=>'a one-legged umbrella spirit', 'race'=>'kami'),
+		'kodama'=>array('name'=>'Ko-dama', 'short'=>'a tree spirit', 'race'=>'kami'),
 		'umibozu'=>array('name'=>'Umi-Bozu', 'short'=>'a bulbous floating jellyfish', 'img'=>'umibozu.jpg'),
-		'shojo'=>array('name'=>'Shojo', 'short'=>'Monkey man', 'race'=>'yokai', 'img'=>'shojo.jpg'),
-		'kamanari'=>array('name'=>'Kamanari', 'short'=>'an iron pot gateway spirit', 'race'=>'kami', 'img'=>'kamanari.jpg'),
-		'ryu'=>array('name'=>'Ryu', 'short'=>'a serpent-dragon', 'race'=>'ryu'),
+		'shojo'=>array('name'=>'Shojo', 'short'=>'Monkey man', 'race'=>'yokai'),
+		'kamanari'=>array('name'=>'Kamanari', 'short'=>'a gateway spirit that inhabits an iron pot', 'race'=>'kami'),
 		'furaribi'=>array('name'=>'Furaribi', 'short'=>'a flame spirit', 'race'=>'kami', 'img'=>'furaribi.jpg'),
 		'jorogumo'=>array('name'=>'Jorogumo', 'short'=>'spider woman', 'race'=>'yokai', 'img'=>'jorogumo.jpg'),
 		'tesso'=>array('name'=>'Tesso', 'short'=>'rat man', 'race'=>'yokai', 'img'=>'tesso.jpg'),
@@ -35,6 +34,9 @@ function get_npcs(){
 		'aobouzu'=>array('name'=>'Ao-bouzu', 'short'=>'a one eyed monk', 'img'=>'aobouzu.jpg', 'race'=>'yokai'),
 		'akashita'=>array('name'=>'Akashita', 'short'=>'a storm demon', 'img'=>'akashita.jpg', 'race'=>'kami'),
 		'kamakiri'=>array('name'=>'Kama-Kiri', 'short'=>'a hair eating beast', 'img'=>'kamakiri.jpg', 'race'=>'yokai'),
+		'hakutaku'=>array('name'=>'Hakutaku', 'short'=>'a winged lion demon', 'img'=>'hakutaku.jpg', 'race'=>'yokai'),
+		'hainu'=>array('name'=>'Hainu', 'short'=>'a winged wolf', 'race'=>'yokai'),
+		'ryu'=>array('name'=>'Ryu', 'short'=>'a serpent-dragon', 'race'=>'ryu'),
 	);
 }
 
