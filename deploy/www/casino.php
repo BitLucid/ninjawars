@@ -1,6 +1,6 @@
 <?php
 require_once(LIB_ROOT.'control/lib_inventory.php');
-$private    = true;
+$private    = false; // Show -something- for the casino even when not logged in.
 $alive      = true;
 
 if ($error = init($private, $alive)) {
@@ -22,9 +22,9 @@ function casino_results($char_id, $incoming_bet){
     $username = get_char_name($char_id);
     set_setting('bet', $bet);
     
-    $current_gold = get_gold($char_id);
+    $current_gold = first_value(get_gold($char_id), 0);
     
-    define('MAX_BET', 1000);
+    define('MAX_BET', 3000);
     $state = CASINO_DEFAULT;
     if ($incoming_bet && $bet && $bet <= MAX_BET) {
     	if ($bet <= $current_gold) {
