@@ -184,7 +184,7 @@ class Player
 	
 	public function isAdmin(){
 	    $name = strtolower($this->name());
-	    if ($name == 'tchalvak' || $name == 'beagle') {
+	    if ($name == 'tchalvak' || $name == 'beagle' || $name == 'suavisimo') {
 	        return true;
 	    }
 
