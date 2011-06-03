@@ -12,9 +12,11 @@ function getItemByID($p_itemID) {
 }
 
 function getItemByIdentity($p_itemIdentity) {
+	
 	return buildItem(item_info_from_identity($p_itemIdentity));
 }
 
+// Wrapper that creates an object when given the row data.
 function buildItem($p_data) {
 	$item = null;
 
@@ -42,7 +44,7 @@ function item_info($item_id, $specific=null) {
 // Find all the info or just a piece from the item's identity.
 function item_info_from_identity($identity, $specific=null) {
 	$item_id = query_item('SELECT item_id FROM item WHERE item_internal_name = :identity', array(':identity'=>$identity));
-
+	// Uses the item_info function once the item_id is determined.
 	return item_info($item_id, $specific);
 }
 
@@ -85,7 +87,7 @@ function inventory_counts($char_id, $item_id=null){
 	$sql = "SELECT amount AS count, item_display_name AS name, item_type, item.item_id, other_usable 
 		FROM inventory join item on item_type = item.item_id 
 		WHERE owner = :owner ORDER BY ".$extra_order." item_internal_name = 'shuriken' DESC, item_display_name";
-	return query_resultset($sql, array(':owner'=>array($char_id, PDO::PARAM_INT)));
+	return query_array($sql, array(':owner'=>array($char_id, PDO::PARAM_INT)));
 }
 
 // Pulls the shop items costs and all.

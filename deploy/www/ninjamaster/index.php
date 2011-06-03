@@ -1,4 +1,6 @@
 <?php
+require_once(LIB_ROOT."control/lib_inventory.php"); // The inventory functions.
+
 // Secure the script
 $char_id = get_char_id();
 $self = null;
@@ -49,15 +51,18 @@ function split_char_infos($ids){
 	// If a request is made to view a character's info, show it.
 	$view_char = in('view');
 	$char_infos = null;
+	$char_inventory = null;
 	if($view_char){
 		$char_infos = split_char_infos($view_char);
+		$char_inventory = inventory_counts($view_char);
+		//debug($char_inventory);
 	}
 
 
 	display_page(
 		'ninjamaster.tpl'	// *** Main Template ***
 		, 'Admin Actions' // *** Page Title ***
-		, array('stats'=>$stats, 'char_infos'=>$char_infos, 'dupes'=>$dupes) // *** Page Variables ***
+		, array('stats'=>$stats, 'char_infos'=>$char_infos, 'dupes'=>$dupes, 'char_inventory'=>$char_inventory) // *** Page Variables ***
 	);
 
 

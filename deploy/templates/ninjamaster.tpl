@@ -11,6 +11,17 @@
 	{/foreach}
 	</tr>
 </table>
+<table>
+	<tr><thead>Inventory for <strong class='char-name'>{$char_info.uname}</strong></thead></tr>
+	{foreach from=$char_inventory key='name' item='item'}
+		<tr style='height:1.3em'>
+		<td>&#9734;</td>
+		{foreach from=$item key='column' item='data'}
+			<td style='border-top:1px brown solid;border-left:1px brown solid'>{$column}</td><td> {$data}</td>
+		{/foreach}
+		</tr>
+	{/foreach}
+</table>
 {/foreach}
 {/if}
 
