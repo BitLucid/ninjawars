@@ -65,9 +65,9 @@ function fet($pdo){
 	return $pdo->fetch(PDO::FETCH_ASSOC);
 }
 
-// Shortcut for row count on a pdo resultset.
-function rco($pdo){
-	return $pdo->rowCount();
+// Shortcut for row count on a data set or pdo resultset.
+function rco($data){
+	return (is_a($data, 'PDOStatement')? $data->rowCount() : count($data));
 }
 
 function fall($pdo){
