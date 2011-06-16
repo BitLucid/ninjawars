@@ -10,7 +10,7 @@
 </div>
 
 {if !is_logged_in()}
-<p>The guards at the door block your way, saying "Stranger, go on your way, you haven't the skill to enter here."</p>
+<p style='text-align:center'>The guards at the door block your way, saying "Stranger, go on your way, you haven't the skill to enter here."</p>
 {else}
 
 	{if !$dim_mak_requirement_error}
@@ -126,8 +126,10 @@
 	{literal}
 	#scroll{
 		margin:0 auto 1em;
+		text-align:center;
 	}
 	.left-scroll-bookend{
+		display:inline-block;
 		background:url(/images/scroll_accent_left.png) no-repeat left;
 		height:100px;
 		padding-left:57px;
