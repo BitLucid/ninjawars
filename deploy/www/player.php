@@ -83,6 +83,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level)->fetchAll();
 		    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
 		    
+		    
 		    		
 			// Check all the combat toggles to see if they should be checked on the profile page.
 			foreach($combat_skills as &$skill){

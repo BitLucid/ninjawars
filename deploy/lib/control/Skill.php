@@ -24,10 +24,12 @@ class Skill
 		'crane' => array(
 			'ice bolt' => array('available'=>1)
 			, 'speed'  => array('available'=>1)
+			, 'kampo' => array('available'=>1, 'level'=>6)
 		)
 		, 'dragon' => array(
 			'chi'    => array('available'=>1)
 			, 'heal' => array('available'=>1)
+			, 'evasion' => array('available'=>1, 'level'=>6)
 		)
 		, 'tiger' => array(
 			'fire bolt' => array('available'=>1)
@@ -37,10 +39,6 @@ class Skill
 			'poison touch'       => array('available'=>1)
 			, 'hidden resurrect' => array('available'=>1)
 		)
-		, 'mantis' => array(
-			'kampo'       => array('available'=>1)
-			, 'evasion'   => array('available'=>1)
-		)
 		, 'all' => array(
 			'attack'          => array('available'=>1)
 			, 'duel'          => array('available'=>1)
@@ -48,8 +46,8 @@ class Skill
 			, 'deflect'       => array('available'=>1, 'level'=>2)
 			, 'stealth'       => array('available'=>1)
 			, 'unstealth'     => array('available'=>1)
-			, 'steal'         => array('available'=>1, 'level'=>2)
-			, 'cold steal'    => array('available'=>1, 'level'=>6)
+			, 'steal'         => array('available'=>1, 'level'=>5)
+			, 'cold steal'    => array('available'=>1, 'level'=>7)
 			, 'midnight heal' => array('available'=>1, 'level'=>20)
 			, 'clone kill'    => array('available'=>1)
 		)
@@ -76,7 +74,6 @@ class Skill
 		if ($char->isAdmin()) { // Admins get access to all skills.
 			$skills = $this->skill_map['crane'] +
 				$this->skill_map['dragon'] +
-				$this->skill_map['mantis'] +
 				$this->skill_map['tiger'] +
 				$this->skill_map['viper'] +
 				$this->skill_map['all'];
