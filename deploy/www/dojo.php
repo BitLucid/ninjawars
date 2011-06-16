@@ -8,9 +8,23 @@ require_once(LIB_ROOT."control/lib_player.php");
 $private    = false;
 $alive      = false;
 
+
+
+$level_chart = 1;
+$kills_chart = 0;
+$str_chart   = 5;
+$speed_chart   = 5;
+$stamina_chart   = 5;
+$hp_chart    = 150;
+$max_level   = maximum_level()+1;
+$max_hp      = max_health_by_level($max_level);
+
+
 if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
+
+
 
 
 $msg            = '';
@@ -27,7 +41,14 @@ $dimmak_sequence     = in('dimmak_sequence', '');
 $classChangeSequence = in('classChangeSequence');
 $current_class_untrusted       = in('current_class'); 
     // Untrusted courtesy check to prevent doubled class change in the event of a refresh.
-$requested_identity     = in('requested_identity'); // Untrusted class identity request.
+$requested_identity     = in('requested_identity$level_chart = 1;
+$kills_chart = 0;
+$str_chart   = 5;
+$speed_chart   = 5;
+$stamina_chart   = 5;
+$hp_chart    = 150;
+$max_level   = maximum_level()+1;
+$max_hp      = max_health_by_level($max_level);'); // Untrusted class identity request.
 
 
 if (is_logged_in()) {

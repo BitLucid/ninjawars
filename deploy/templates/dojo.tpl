@@ -81,8 +81,6 @@
         <!-- End of class changing special event display -->
 	{/if}
 
-<div style='border-bottom: 1px red dashed'><a href="chart.php">View the scroll of kills needed for each Rank</a></div>
-
 <p>Your current level is {$userLevel|escape}. Your current kills are {$userKills|escape}.</p>
 <p>Level {$nextLevel|escape} requires {$required_kills|escape} kills.</p>
 <p>Your current class is <span class='class-name {$possibly_changed_class_theme}'>{$possibly_changed_class_name|escape}</span>.</p>
@@ -120,3 +118,122 @@
 	
 <!-- End of logged in display section -->
 {/if}
+
+
+
+
+<style>
+	{literal}
+	#scroll{
+		margin:0 auto 1em;
+	}
+	.left-scroll-bookend{
+		background:url(/images/scroll_accent_left.png) no-repeat left;
+		height:100px;
+		padding-left:57px;
+		margin:0 auto;
+	}
+	.right-scroll-bookend{
+		vertical-align:middle;
+		background:url(/images/scroll_accent_right.png) no-repeat right;
+		height:100px;
+		min-width:50%;
+		padding-right:57px;
+		display:inline-block;
+		position:relative;
+	}
+	#scroll #scroll-title{
+		height:30px;
+		display:inline-block;
+		padding: 35px .7em 35px;
+		font-size: 1.3em;
+		background:#333;
+	}
+	{/literal}
+</style>
+
+
+
+
+
+
+<div id='scroll'>
+	<div class='left-scroll-bookend'>
+		<div class='right-scroll-bookend'>
+			<strong id='scroll-title'>
+				<a target='#scroll-reveal'>Hanging on the wall of the dojo is a scroll outlining the training requirements for all ninja</a>
+			</strong>
+		</div>
+	</div>
+</div>
+
+<script>
+{literal}
+$().ready(function(){
+	// Show the scroll section on a click of any part of the scroll area.
+	var hidden = $('#scroll-reveal').hide();
+	$('#scroll').click(function(){hidden.toggle();return false;});
+});
+{/literal}
+</script>
+
+<div id='scroll-reveal'>
+
+<h2>Dojo Advancement Chart</h2>
+
+<style>
+{literal}
+	table{
+		width:90%;
+		margin-left:5%;
+		margin-right:5%;
+		margin-bottom:2em;
+	}
+	table .char-title td{
+		font-style:1.5em;
+	}
+{/literal}
+</style>
+<table style='width:80%'>
+
+	<caption colspan='100%' style='text-align:center;padding:.2em;font-size:1.3em;color:chocolate;'>
+		Kills needed to progress to each level and how a ninja's stats change:
+	</caption>
+
+  <thead>
+  <tr class='chart-title'>
+    <td>Level</td>
+    <td>Kills</td>
+    <td>Strength</td>
+    <td>Stamina</td>
+    <td>Speed</td>
+    <td>Max Health</td>
+  </tr>
+  </thead>
+{section name="chart" start=1 loop=$max_level step=1}
+  <tr>
+    <td>{$level_chart|escape}</td>
+    <td>{$kills_chart|escape}</td>
+    <td>{$str_chart|escape}</td>
+    <td>{$stamina_chart|escape}</td>
+    <td>{$speed_chart|escape}</td>
+    <td>{$hp_chart|escape}</td>
+  </tr>
+	{math assign="level_chart" equation="x + 1" x=$level_chart}
+	{math assign="kills_chart" equation="x + 5" x=$kills_chart}
+	{math assign="str_chart" equation="x + 5" x=$str_chart}
+	{math assign="stamina_chart" equation="x + 5" x=$stamina_chart}
+	{math assign="speed_chart" equation="x + 5" x=$speed_chart}
+	{if $hp_chart lte $max_hp}
+		{math assign="hp_chart" equation="x + 25" x=$hp_chart}
+	{/if}
+{/section}
+
+</table>
+<p style='text-align:center'>(Maximum level)</p>
+
+</div>
+
+
+
+
