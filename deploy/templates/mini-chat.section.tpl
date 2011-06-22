@@ -24,7 +24,7 @@
                     </div>
                   </form>
 {/if}
-                  <div id="mini-chat-frame-container" class='chat-collapsed'>
+                  <div id="mini-chat-container" class='chat-collapsed'>
                   
                   
                   
@@ -39,7 +39,7 @@
                     </dl>
                     
                     <noscript>
-                          <a href='chat.php' target='_blank'>Mini Chat</a> unavailable inside this browser window.
+                          <a href='chat.php' target='_blank'>View the chat</a>
                     </noscript>
 
 

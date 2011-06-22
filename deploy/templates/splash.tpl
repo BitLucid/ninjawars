@@ -11,7 +11,7 @@
 {/literal}
     <div id='content' class='wrapper'>
     <!-- Top horizontal bar -->
-    <div class='header'>
+    <header class='header'>
 		<div id="logo-appended">
 		  <a href="/">
 	        <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='108' height='108'>
@@ -20,14 +20,14 @@
 		<div id='logo-placeholder'>
 		  <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
-		<div id='top-bar' class='navigation'>
+		<nav role='navigation' id='top-bar' class='navigation'>
 		  <span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
-		</div>
-		<div id='top-logo' style='width:50%;text-align:center;display:inline-block;vertical-align:top;margin-left: 2em;margin-right: 2em;'>
+		</nav>
+		<nav id='top-logo' style='width:50%;text-align:center;display:inline-block;vertical-align:top;margin-left: 2em;margin-right: 2em;'>
           <a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='' width='200' height='100'></a>
-		</div>
+		</nav>
       
-        <div id='subcategory-bar' class='navigation'>
+        <nav role='navigation' id='subcategory-bar' class='navigation'>
           <ul id='ninjas-subcategory'>
             <li><a href="list.php" target="main">Ninjas</a></li>
             <li><a href="clan.php" target="main">Clans</a></li>
@@ -44,9 +44,9 @@
               <a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt="" style='width:8px;height:8px'></a>
             </li>
           </ul>
-        </div>
+        </nav> <!-- End of subcategory bar -->
       
-	  </div><!-- End of header -->
+	  </header><!-- End of header -->
       
 
       
@@ -60,7 +60,7 @@
         </div><!-- End of mainFrame div -->
       </div> <!-- End of main-column -->      
       
-      <div id='sidebar-column'  class='navigation'>
+      <aside id='sidebar-column'  class='navigation'>
 		<div id='contact-us' style='margin-top:.5em;margin-bottom:.5em;'>
 		  <a href='staff.php' target='main' class='font-shangrila'>Contact Staff</a>
 		</div>
@@ -76,10 +76,11 @@
 
 	  </div><!-- End of chat-housing -->
 
-      </div><!-- End of left-column -->
+      </aside><!-- End of right-aside -->
 
       <!-- <div id='push'></div> -->
-      <div id='index-footer'  class='navigation'>
+      <footer id='index-footer'  class='navigation'>
+      	<div id='footer-top-bar'>
         <span id='nw-catchphrases'>
 {literal}
           <script type="text/javascript">
@@ -108,7 +109,50 @@
         <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
         <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Feedback</a>
-      </div>
+        </div>
+        <style>
+        {literal}
+
+        
+        {/literal}
+        </style>
+        <div id='footer-middle-bar'>
+		    <span id='created-by'>
+		    	<a href='staff.php' target='main'>CREATED BY</a>
+		    </span>
+		    <div id='footer-authors'>
+		    	<span class='author'>
+					<a href='//royronalds.com' class='extLink'>Roy Ronalds</a>
+					<a href='player.php?target=tchalvak'>Ninja: Tchalvak</a>
+					<a href='//twitter.com/tchalvak' class='extLink'>@tchalvak</a>
+		    	</span>
+		    	<span class='author'>
+		    		<a>Al Vazquez</a>
+		    		<a href='player.php?target=beagle'>Ninja: Beagle</a>
+		    	</span>
+		    </div>
+        </div>
+        <div id='footer-bottom-bar'>
+        	<span>
+		    <a href="http://www.w3.org/html/logo/">
+			<img src="http://www.w3.org/html/logo/badge/html5-badge-h-css3-multimedia-performance-semantics.png" width="229" height="64" alt="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics" title="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics">
+			</a>
+			</span>
+        	<script type='text/javascript' src="js/staffPage.js"></script>
+        	<script>
+        	{literal}
+			$(document).ready(function() {
+				loadLastCommitMessage();
+			});
+        	{/literal}
+        	</script>
+			<div id='latest-commit-section'>
+				<p id='latest-commit-title' style='display:none'>Most recent upcoming change to ninjawars:</p>
+				<span id='latest-commit' style='display:none'>
+				</span>
+			</div>
+        </div>
+      </footer>
       
       
     </div> <!-- End of content div -->

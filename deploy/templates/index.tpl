@@ -1,6 +1,7 @@
     <!-- Version {$version|escape} -->
 {literal}
       <script type="text/javascript">
+      // Index-only javascript
 
 
 		if (parent.frames.length != 0) { // If there is a double-nested index...
@@ -15,8 +16,8 @@
 		// Hide, show, and then eventually hide the donation button.
 		
 
-		// Hide the subcats initially.
-		var subcats = $('#combat-subcategory, #self-subcategory, #map-subcategory').hide();
+		// Hide the self and map subcategories initially, leaving the combat subcategory visible
+		var subcats = $('#self-subcategory, #map-subcategory').hide();
 		
 		//delay('2000').slideUp('slow');
 	
@@ -34,8 +35,6 @@
 	
 	});
 	</script>
-    <style type="text/css">
-    </style>
       
 {/literal}
 
@@ -59,7 +58,7 @@
 	  </a>
 	</div>
 
-    <div class='header'>
+    <header class='header'>
 
 	  <div id='logo-placeholder'>
 	    <!-- Spacer div for the main shuriken linkback logo -->
@@ -88,7 +87,7 @@
 
       <div id='menu-bar' class='header-section'>
         <div id='reactive-panel'>
-            <div id='category-bar' class='navigation'>
+            <nav id='category-bar' class='navigation'>
               <ul>
                 <li id='status-actions' class='self'>
                   <a href='events.php' target='main' title='See messages about whether you were attacked or other events.'>
@@ -106,8 +105,8 @@
                   </a>
                 </li>
               </ul>
-            </div>
-            <div id='subcategory-bar' class='navigation'>
+            </nav>
+            <nav id='subcategory-bar' class='navigation'>
                 <ul id='self-subcategory'>
                   <li><a href="stats.php" target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
                   <li><a href="skills.php" target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
@@ -124,14 +123,14 @@
                   <li><a href="work.php" target="main" title='Trade your turns to get money.'>Work</a></li>
                   <li><a href="doshin_office.php" target="main" title='Hunt bounties for money.'>Hunt<img src="images/doshin.png" alt="" style='height:8px;width:8px'></a></li>
                 </ul>
-            </div>
+            </nav>
         </div><!-- End of reactive panel -->
         
       </div><!-- End of menu-bar -->
 
 
             
-	  </div><!-- End of header -->
+	  </header><!-- End of header -->
       
       
       
@@ -150,80 +149,12 @@
 
 
       <!-- SIDEBAR COLUMN STARTS HERE -->
-      <div id='sidebar-column'>
+      <aside id='sidebar-column'>
             <div>
                 <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your ninja information'>
                 	<strong class='char-name'>{$username|escape}</strong>
                 </a>
             </div>
-            
-            {*
-            <div id='logged-in-bar'>
-                <div>
-                  <span id='health-status'> </span>
-                </div>
-            </div>
-            *}
-            
-            {*
-            // This is to be replaced by info bars in the header.
-            
-          <div id="quick-stats" class="boxes">
-            <div class="box-title centered">
-              <a id='show-hide-quickstats' class="show-hide-link"><!-- jQuery show/hide -->
-                Quick Stats
-              </a>
-            </div>
-            <div id="quickstats-and-switch-stats"><!-- Id used by show hide jquery -->
-              <div class="centered quickstats-container">
-                <a href="quickstats.php" target="quickstats" onclick="return !NW.refreshQuickstats('player');">Stats</a> 
-                | <a href="quickstats.php?command=viewinv" target="quickstats" onclick="return !NW.refreshQuickstats('viewinv');">Inventory</a>
-              </div>
-              <div id="quickstats-frame-container"><div></div>
-                <noscript>
-                <iframe frameBorder='0' id="quickstats" src="quickstats.php" name="quickstats">
-                  <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
-                  <a href='quickstats.php' target='_blank'>Quick Stats</a> unavailable inside this browser window.
-                </iframe>
-                </noscript>
-              </div>
-            </div><!-- End of quickstats and switch container -->
-          </div><!-- End of quickstats section. -->
-          *}
-          
-          
-          {*
-          
-          // Actions are no longer needed as such, since they're mostly fulfilled by the generic bars.
-          
-          <div id="actions" class="boxes active">
-            <div class="box-title">
-              <a id='show-hide-actions-menu' class="show-hide-link"><!-- jQuery show/hide -->
-                Actions
-              </a>
-            </div>
-            <ul class="basemenu" id="actions-menu"><!-- Id used by show hide jquery -->
-              <li id='heal-link'>
-                <a href="shrine_mod.php?heal_and_resurrect=1" target="main">
-                    <img src='images/shrine.png' alt=''>Heal
-				</a>
-              </li>
-              <li>
-                <ul class="submenu">
-                  <li>
-                    <a href="inventory_mod.php?item=smokebomb&amp;selfTarget=1"
-                     target="main">Stealth</a>
-                  </li>
-                  <li>
-                    <a href="inventory_mod.php?item=amanita&amp;selfTarget=1" 
-                    target="main">Speed</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          
-          *}
 
 
 {if $new_player}
@@ -294,12 +225,11 @@
 
 
 
-      </div><!-- End of sidebar-column -->  
+      </aside><!-- End of sidebar-column -->  
      
       
-      
-      <div id='push'></div>
-      <div id='index-footer' class='navigation'>
+      <footer id='index-footer' class='navigation'>
+        <div id='footer-top-bar'>
         <span id='nw-catchphrases'>
         {literal}
         <script>
@@ -331,7 +261,8 @@
         <a href="http://ninjawars.pbworks.com/" target="_blank" class="extLink">Wiki</a> |
         <a href="http://forum.ninjawars.net" target="_blank" class="extLink">Forum</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Feedback</a>
-      </div>
+        </div><!-- End of footer-top-bar -->
+      </footer>
       
     
 <!-- Validated as of Oct, 2009 -->

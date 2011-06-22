@@ -1,9 +1,0 @@
-.body-default {
-    background-color: black; /*Transparent if inherited, otherwise black*/
-}
-body {
-    background-color: black;
-}
-iframe {
-    border:none;
-}

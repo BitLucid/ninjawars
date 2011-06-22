@@ -127,9 +127,25 @@
 <script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_thin_badge.js"></script>
 <div id='project-languages' style='background-color:white'><script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_languages.js"></script></div>
 
-<script type="text/javascript">
+  <div id='random-ninja-images'>
+    <h3 class='subtitle'>And now for something completely different:</h3>
+  </div>
+<script type='text/javascript' src="js/staffPage.js"></script>
+<script type='text/javascript'>
 {literal}
-$(document).ready(function(){
+$(document).ready(function() {
+	$('.developer-info').hide();
+	$('.expand-link').click(function () {
+		$('.developer-info').slideDown();
+		$('.expand-link').hide();
+	});
+
+	$('#latest-commit').hide();
+	$('#latest-commit-title').hide();
+
+	loadLastCommitMessage();
+	
+	// Pull from the flickr api for ninja images
 	$.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?tags=ninja&tagmode=any&format=json&jsoncallback=?", function(data){
 		$.each(data.items, function(i,item){
 			$("<img/>").attr("src", item.media.m).appendTo("#random-ninja-images");
@@ -138,9 +154,4 @@ $(document).ready(function(){
 	});
 });
 {/literal}
-  </script>
-
-  <div id='random-ninja-images'>
-    <h3 class='subtitle'>And now for something completely different:</h3>
-  </div>
-<script type='text/javascript' src="js/staffPage.js"></script>
+</script>

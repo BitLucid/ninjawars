@@ -1,13 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
   <head>
-{* // Commented out because it's kinda just annoying when js is turned off.
-{if $smarty.server.SCRIPT_NAME eq '/village.php' or $smarty.server.SCRIPT_NAME eq '/mini_chat.php'}
-    <noscript>
-      <meta http-equiv="refresh" content="90">
-    </noscript>
-{/if}
-*}
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta name="keywords" content="ninjawars, ninja wars, ninjawars web game, ninjas, ninja weapons & techniques, samurai, free online games, {$title|escape}">
     <meta name="author" content="ninjawars.net">
@@ -19,12 +12,13 @@
     <base href="{$smarty.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
     <link rel="stylesheet" type="text/css" href="css/style.css" media="Screen">
     <link rel="stylesheet" href="css/mobile.css" type="text/css" media="handheld">
-    <!--[if lte IE 6]>
-    <link rel="stylesheet" type="text/css" href="css/ie-6.css">
-    <![endif]-->
     <!-- [if gte IE 7]>
     <link rel="stylesheet" type="text/css" href="css/ie.css">
     <![endif]-->
+	<!-- Html5 shim for ie less than 9 -->
+    <!--[if lt IE 9]>
+		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
 
 {if $smarty.const.LOCAL_JS}
     <!-- Local jquery lib -->

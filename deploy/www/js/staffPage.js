@@ -6,23 +6,10 @@ function loadLastCommitMessage(){
         return true;
     })
         // Load latest commit message.
-	$('#latest-commit').html(data.commit.message);
-	$('#latest-commit').append("<div id='commit-author'>--"+data.commit.author.name+"</div>");
-	$('#latest-commit-title').show();        
-	$('#latest-commit').show();    
+    $('#latest-commit')
+    .html(data.commit.message)
+    .append("<div id='commit-author'>--"+data.commit.author.name+"</div>")
+    .show()
+	.find('#latest-commit-title').show();        
     });
-}        
-
-
-$(document).ready(function() {
-	$('.developer-info').hide();
-	$('.expand-link').click(function () {
-		$('.developer-info').slideDown();
-		$('.expand-link').hide();
-	});
-
-	$('#latest-commit').hide();
-	$('#latest-commit-title').hide();
-
-	loadLastCommitMessage();
-});
+}
