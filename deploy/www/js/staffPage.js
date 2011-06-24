@@ -6,10 +6,10 @@ function loadLastCommitMessage(){
         return true;
     })
         // Load latest commit message.
-    $('#latest-commit')
+    $('#latest-commit-section').find('#latest-commit')
     .html(data.commit.message)
     .append("<div id='commit-author'>--"+data.commit.author.name+"</div>")
-    .show()
+    .show().end()
 	.find('#latest-commit-title').show();        
     });
 }

@@ -90,6 +90,17 @@
                 // Choose random index.
                 catchphrases.hide().eq(rand).show();
                 // Hide all, show one at random.
+                
+                var footer = $('#index-footer');
+                //Hide the second two sections.
+                var footerBottoms = footer.find('#footer-middle-bar, #footer-bottom-bar').hide();
+                // When any of the three sections are hovered, show the bottom two.
+        // Only change the display of the bottom sections if another event doesn't over-ride.
+                footer.hover(
+                	function(){footerBottoms.stop(true, true).slideDown()}, 
+                	function(){footerBottoms.stop(true, true).delay(2000).slideUp()}
+                );
+                
             });
           </script>
 {/literal}
@@ -110,12 +121,6 @@
         <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Feedback</a>
         </div>
-        <style>
-        {literal}
-
-        
-        {/literal}
-        </style>
         <div id='footer-middle-bar'>
 		    <span id='created-by'>
 		    	<a href='staff.php' target='main'>CREATED BY</a>
