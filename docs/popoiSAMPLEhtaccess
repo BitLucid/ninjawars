@@ -1,0 +1,14 @@
+# Don't show .git folders publicly
+ErrorDocument 404 /home/kzqai/ninjawars/deploy/www/404.php
+RedirectMatch 404 /\\.git(/|$)
+
+#RewriteCond %{HTTP_HOST} ^ninjawars.net [NC]
+#RewriteRule ^(.*)$ http://www.ninjawars.net/$1 [L,R=301]
+
+#php_value session.cookie_domain "127.0.0.1"
+<FilesMatch "\.(php)$">
+	php_value auto_prepend_file "/home/kzqai/ninjawars/deploy/lib/base.inc.php"
+</FilesMatch>
+
+#Note that the AllowOverride directive in /etc/apache2/sites-available/default
+#cannot equal None, as that will prevent the .htaccess from working.
