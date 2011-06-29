@@ -46,6 +46,34 @@
 
     <script type="text/javascript">
 	NW.loggedIn = {if $logged_in}true{else}false{/if};
+
+{if $is_index}
+{literal}
+	var hash = window.location.hash;
+	if(hash){ // If a hash exists.
+	$().ready(function(){
+		var page = hash.substring(1); // Create a page from the hash.
+		$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
+	});	
+	}
+{/literal}
+{else}
+	// Non index.
+{if $quickstat}
+	{literal}
+	$(document).ready(function() {{/literal}
+		NW.refreshStats({$json_public_char_info});
+		
+	{literal}});{/literal}
+{/if}
+	// Retrieve the current page/script name and put it into the hash for later refreshability.
+	var currentPage = '{$smarty.server.PHP_SELF}'.substring(1);
+	{literal}
+	if(window.parent != window && currentPage != 'main.php'){
+		window.parent.location.hash = currentPage; // Take the /slash off the page name.
+	}
+	{/literal}
+{/if}
     </script>
 
 {if $smarty.const.DEBUG}
@@ -54,13 +82,7 @@
 		NW.debugging = true;
     </script>
 {/if}
-{if $quickstat and not $is_index}
-    <script type="text/javascript">
-	{literal}$(document).ready(function() {{/literal}
-		NW.refreshStats({$json_public_char_info});
-	{literal}});{/literal}
-    </script>
-{/if}
+
   </head>
   <body class="{$body_classes|escape}">
 {if !$is_index}
