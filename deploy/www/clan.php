@@ -28,6 +28,10 @@ $avatar_or_message_change = in('avatar_or_message_change', false);
 $clan_renamed             = false;
 $clan_disbanded           = false;
 
+if($command == 'view' && !$clan_id_viewed){
+	$command = null; // Can't view a clan if one isn't specified.
+}
+
 $action_message = null; // Action or error message for template.
 
 // *** Useful Constants ***
