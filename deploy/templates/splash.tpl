@@ -14,7 +14,7 @@
     <header class='header'>
 		<div id="logo-appended">
 		  <a href="/">
-	        <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='108' height='108'>
+	        <img id='ninjawars-title-image' src='images/halfShuriken.png' title='Home' alt='Ninja Wars' width='108' height='108'>
 		  </a>
 		</div>
 		<div id='logo-placeholder'>

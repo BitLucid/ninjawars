@@ -54,7 +54,7 @@
 
 	<div id="logo-appended">
 	  <a href="/">
-        <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='100' height='100'>
+        <img id='ninjawars-title-image' src='images/halfShuriken.png' title='Home' alt='Ninja Wars' width='100' height='100'>
 	  </a>
 	</div>
 

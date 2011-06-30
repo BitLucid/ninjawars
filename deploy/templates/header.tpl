@@ -89,7 +89,7 @@
 	<div id='solo-page-header'>
 		<div id="logo-appended" style='position:absolute;top:0;left:0'>
 		  <a href="/">
-	        <img id='ninjawars-title-image' src='images/halfShuriken.png' alt='Ninja Wars' width='108' height='108'>
+	        <img id='ninjawars-title-image' src='images/halfShuriken.png' title='Home' alt='Ninja Wars' width='108' height='108'>
 		  </a>
 		</div>
 		<div id='logo-placeholder' style='width:110px;height:75px;display:inline-block;z-index:-1'>
