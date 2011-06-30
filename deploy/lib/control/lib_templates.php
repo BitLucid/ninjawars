@@ -133,9 +133,20 @@ function display_static_page($page, $pages, $vars=array(), $options=array()) {
 			if ($callback && function_exists($callback)) {
 				$vars = array_merge($callback(), $vars); // Call the callback to return the vars.
 			}
+			
 		}
-
+		cache_headers(24); // 24 hour caching.
 		display_page($template, $title, $vars, $options);
 	}
+}
+
+// Put out the headers to allow a few hours of
+function cache_headers($hours = 2, $revalidate=false){
+	// Enable short number-of-hours caching of the index page.
+	// seconds, minutes, hours, days
+	$expires = 60*60*$hours;
+	header("Pragma: public");
+	header("Cache-Control: maxage=".$expires.($revalidate? ", must-revalidate" : ''));
+	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 }
 ?>
