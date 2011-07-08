@@ -39,7 +39,8 @@ if (is_numeric($item_in)) {
 
 
 if (!is_object($item)) {
-	throw new Exception('Invalid item identifier ('.(is_string($item_in) ? $item_in : 'non-string').') sent to page from '.(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '(no referrer)').'.');
+	error_log('Invalid item identifier ('.(is_string($item_in) ? $item_in : 'non-string').') sent to page from '.(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '(no referrer)').'.');
+	redirect(WEB_ROOT.'inventory.php?error=noitem');
 }
 
 $user_id    = get_char_id();
