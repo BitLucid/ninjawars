@@ -99,7 +99,7 @@
   </div>
 </div><!-- End of the two-column arrangement. -->
 
-<div class='switch-to-account notice' style='font-size:1.3em'>
+<div class='switch-to-account notice clearfix' style='font-size:1.3em'>
 	<a href='account.php'>View your account info</a>
 </div>
 
