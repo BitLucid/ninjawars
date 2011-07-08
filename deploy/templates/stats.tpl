@@ -92,14 +92,14 @@
 
     <div id='player-profile-section'>
       Profile Preview:
-      <div id='player-profile'>
+      <div id='player-profile' style='height:8.5em;overflow:scroll'>
         &nbsp;{$profile_editable|escape|replace_urls|markdown|nl2br}&nbsp;
       </div>
     </div>
   </div>
 </div><!-- End of the two-column arrangement. -->
 
-<div class='switch-to-account notice clearfix' style='font-size:1.3em'>
+<div class='switch-to-account notice clearfix' style='font-size:1.3em;margin-top:1em'>
 	<a href='account.php'>View your account info</a>
 </div>
 
