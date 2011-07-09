@@ -80,6 +80,7 @@ http://ryanfait.com/
 
 footer{
 	border-top:#999 dashed 1px;
+         z-index:-1;
 }
 #footer-top-bar{
 	padding:1.5em 0;
