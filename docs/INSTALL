@@ -6,7 +6,7 @@ PHP5, Postgresql8, Perl>=5, Apache2, Perl::Lingua::En::Inflect, postgresql-contr
 
 Via apt-get command line:
 
-sudo apt-get install apache2 php5 postgresql postgresql-contrib libpq-dev
+sudo apt-get install apache2 php5 php5-pgsql postgresql postgresql-contrib libpq-dev
 (Required)
 
 sudo apt-get install perl liblingua-en-inflect-perl
@@ -17,8 +17,11 @@ sudo apt-get install awstats git-core
 
 All Types of Deployment
 ---------------
-1. Copy a live database (probably the easiest) or create a skeleton database and then run the migrations in  /deploy/db/migrations/ on it.
-2. Set permissions in your pg_hba for the database, host, and user to match your configuration
+1. Set up your database if necessary:
+
+-Set permissions in your pg_hba for the database, host, and user to match your configuration
+
+2. Copy a live database (probably the easiest) or create a skeleton database and then run the migrations in  /deploy/db/migrations/ on it. 
 
 Create the postgresql password hashing functions
 ---------------
