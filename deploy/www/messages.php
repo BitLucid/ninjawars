@@ -56,7 +56,7 @@ if ($delete) {
 }
 
 $messages      = get_messages($user_id, $limit, $offset, $type_filter);
-$message_count = message_count();
+$message_count = message_count($type_filter);
 $pages         = ceil($message_count / $limit);  // Total pages.
 $messages      = $messages->fetchAll();
 
