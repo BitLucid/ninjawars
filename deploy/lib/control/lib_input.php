@@ -52,7 +52,7 @@ function sanitize_to_email($dirty) {
 function restrict_to($original, $possibilities=array(), $default=null) {
 	foreach ($possibilities as $possibility) {
 		if ($original == $possibility) {
-			return $original;
+			return $possibility;
 		}
 	}
 

@@ -10,6 +10,8 @@ $events = get_events($user_id, 300);
 
 $events = $events->fetchAll();
 
+$has_clan  = !!get_clan_by_player_id($user_id);
+
 read_events($user_id); // mark events as viewed.
 
 display_page(

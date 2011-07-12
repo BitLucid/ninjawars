@@ -22,6 +22,10 @@ $limit     = 25;
 $offset    = (($page - 1) * $limit);
 $delete    = in('delete');
 
+$type_filter = in('type'); // Clan chat or normal messages.
+$type_filter = restrict_to($type_filter, array(0, 1));
+
+
 $message_sent_to = null; // Names or name to display.
 $message_to = null; // strings clan or individual if sent to those respectively.
 
@@ -34,6 +38,7 @@ if ($message && $messenger) {
 	if ($to_clan && $has_clan) {
 		$message_sent_to = message_to_clan($message);
 		$message_to = 'clan';
+		$type_filter = 1;
 	} elseif (!!$target_id) {
 		send_message($user_id, $target_id, $message);
 		$message_sent_to = $to;
@@ -41,11 +46,16 @@ if ($message && $messenger) {
 	}
 }
 
+//debug($type_filter, $message_to);
+
+$viewed_type = $type_filter === 0? 'individual' : 'clan'; // Viewed message type.
+$current_tab = $type_filter === 0? 'messages' : 'clan'; // Current tab.
+
 if ($delete) {
-	delete_messages();
+	delete_messages($type_filter);
 }
 
-$messages      = get_messages($user_id, $limit, $offset);
+$messages      = get_messages($user_id, $limit, $offset, $type_filter);
 $message_count = message_count();
 $pages         = ceil($message_count / $limit);  // Total pages.
 $messages      = $messages->fetchAll();

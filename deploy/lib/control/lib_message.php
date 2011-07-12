@@ -1,7 +1,9 @@
 <?php
 // For true user-to-user or user-to-clan messages, as opposed to game events.
-function send_message($from_id, $to_id, $msg) {
+function send_message($from_id, $to_id, $msg, $type=0) {
 	$msg = trim($msg);
+	
+	$type = restrict_to($type, array(0, 1)); // 0 = direct, 1 = clan
 
 	if (strlen($msg) > MAX_MSG_LENGTH) {
 		throw new Exception('The message was longer than the maximum message length of '.MAX_MSG_LENGTH.' characters.');
@@ -15,11 +17,12 @@ function send_message($from_id, $to_id, $msg) {
 	);
 
 	if ($prevMsg != $msg) {
-		query("INSERT INTO messages (message_id, send_from, send_to, message, date) VALUES (default, :from, :to, :message, now())"
+		query("INSERT INTO messages (message_id, send_from, send_to, message, type, date) VALUES (default, :from, :to, :message, :type, now())"
 			, array(
 				':from'      => $from_id
 				, ':to'      => $to_id
 				, ':message' => $msg
+				, ':type'    => $type
 			)
 		);
 
@@ -29,7 +32,8 @@ function send_message($from_id, $to_id, $msg) {
 	}
 }
 
-function get_messages($to_id, $limit=25, $offset=0) {
+// Get either direct messages or clan messages.
+function get_messages($to_id, $limit=25, $offset=0, $filter=0) {
 	if (!is_numeric($limit)) {
 		$limit = 25;
 	}
@@ -37,12 +41,15 @@ function get_messages($to_id, $limit=25, $offset=0) {
 	if (!is_numeric($offset)) {
 		$offset = 0;
 	}
-
-	$res = query("SELECT send_from, message, unread, uname AS from FROM messages JOIN players ON send_from = player_id WHERE send_to = :to ORDER BY date DESC LIMIT :limit OFFSET :offset"
+	
+	
+	// Filters only non-clan messages based on the type = 0, which is the default.
+	$res = query("SELECT send_from, message, unread, uname AS from FROM messages JOIN players ON send_from = player_id WHERE send_to = :to and type = :filter ORDER BY date DESC LIMIT :limit OFFSET :offset"
 		, array(
 			':to'       => $to_id
 			, ':limit'  => $limit
 			, ':offset' => $offset
+			, ':filter' => $filter
 		)
 	);
 
@@ -53,9 +60,9 @@ function read_messages($to_id) {
 	query("UPDATE messages SET unread = 0 WHERE send_to = :to", array(':to'=>$to_id));
 }
 
-function delete_messages() {
+function delete_messages($filter_type=0) {
 	$user_id = get_user_id();
-	query("DELETE from messages where send_to = :to", array(':to'=>array($user_id, PDO::PARAM_INT)));
+	query("DELETE from messages where send_to = :to and type = :type", array(':to'=>array($user_id, PDO::PARAM_INT), ':type'=>$filter_type));
 }
 
 function message_count() {
@@ -66,6 +73,7 @@ function unread_message_count() {
 	return query_item("SELECT count(*) from messages where send_to = :to and unread != 0", array(':to'=>get_user_id()));
 }
 
+// Send a message to the clan members.
 function message_to_clan($p_message) {
 	$error    = null;
 	$user_id  = get_user_id();
@@ -81,7 +89,7 @@ function message_to_clan($p_message) {
 	$messaged_to = array();
 
 	foreach ($clan_members as $loop_member) {
-		send_message($user_id, $loop_member['player_id'], "CLAN: ".$p_message);
+		send_message($user_id, $loop_member['player_id'], $p_message, $type=1);
 		$messaged_to[] = $loop_member['uname'];
 	}
 

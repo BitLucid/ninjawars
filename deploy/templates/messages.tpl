@@ -1,14 +1,19 @@
 <h1>Messages</h1>
-
-{include file='message-tabs.tpl' current='messages'}
+{include file='message-tabs.tpl' current=$current_tab}
 
 <script type='text/javascript' src='{$smarty.const.JS_ROOT}messageDeleteConfirm.js'></script>
 
-{if $message_to eq 'individual'}
+{if $message_to eq 'individual' or $message_to eq 'clan'}
 <script type='text/javascript'>
 {literal}
 	$().ready(function(){
-		$('input#message-to-ninja').focus();
+		// Cache the focus point.
+		var focus = '{/literal}{$message_to}{literal}';
+		if(focus == 'clan'){
+			$('input#message-clan').focus();
+		} else {
+			$('input#message-to-ninja').focus();
+		}
 	});
 {/literal}
 </script>
@@ -34,7 +39,7 @@
   <div id='clan-mail-section'>
     <form id='clan_msg' action='messages.php' method='get' name='clan_msg'>
       <div>
-        <input type="text" id='message' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}">
+        <input type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}">
         <input type='hidden' value='toclan' name='toclan'>
         <input type='hidden' value='1' name='messenger'>
         <input type='submit' value='Mail Clan' class='formButton'>
@@ -57,7 +62,7 @@
   -->
 
   <div id='delete-messages'>
-    <a href="messages.php?delete=1">Delete All Messages</a>
+    <a href="messages.php?delete=1&type={$type_filter}" style='text-transform:capitalize'>Delete {$viewed_type} Messages</a>
   </div>
 </div> <!-- End of clan and search div -->
 
