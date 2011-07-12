@@ -18,6 +18,13 @@ function in($var_name, $default_val=null, $filter_callback=null) {
     return $result;
 }
 
+// Return a casting with a result of a positive int, or else zero.
+function non_negative_int($num){
+	return ((int)$num == $num && (int)$num > 0? (int)$num : 0);
+}
+
+
+
 function toInt($dirty) {
 	return sanitize_to_int($dirty);
 }

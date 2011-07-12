@@ -70,6 +70,28 @@
 <div id='message-sent-to' class='ninja-notice'>Message sent to <em class='char-name'>{$message_sent_to|escape}</em>.</div>
 {/if}
 
+<style>
+{literal}
+	dl, dt, dd{
+		margin:0;
+		padding:0;
+	}
+	dl {
+	 width:100%;
+	 overflow:hidden;
+	}
+	dt {
+	 float:left;
+	 width:20%; /* adjust the width; make sure the total of both is 100% */
+	 min-width:160px;
+	}
+	dd {
+	 float:left;
+	 width:70%; /* adjust the width; make sure the total of both is 100% */
+	}
+{/literal}
+</style>
+
 {include file="messages.nav.tpl"}
 
 <dl id='message-list'>

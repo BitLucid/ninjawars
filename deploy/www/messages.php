@@ -17,9 +17,9 @@ $user_id   = get_user_id();
 $username  = get_username();
 $clan      = get_clan_by_player_id($user_id);
 $has_clan  = ($clan ? true : false);
-$page      = in('page', 1, 'toInt');
+$page      = in('page', 1, 'non_negative_int');
 $limit     = 25;
-$offset    = (($page - 1) * $limit);
+$offset    = non_negative_int(($page - 1) * $limit);
 $delete    = in('delete');
 
 $type_filter = in('type'); // Clan chat or normal messages.
