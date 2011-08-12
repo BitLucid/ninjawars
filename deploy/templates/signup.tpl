@@ -91,18 +91,18 @@
      <legend>Login Info</legend>
      <div>
 	 <label for='send_name'>Ninja Name:</label>
-	 <input id="send_name" type="text" name="send_name" maxlength="50" class="textField" value="{$enteredName|escape}">
+	 <input id="send_name" required autofocus type="text" name="send_name" maxlength="50" class="textField" value="{$enteredName|escape}">
 	 </div>
 	 <div>
 	   Your ninja name can only contain letters, numbers and underscores.
 	 </div>
 	 <div>
 	  <label for='key'>Password:</label>
-	  <input id="key" type="password" maxlength="50" name="key" class="textField">
+	  <input id="key" required type="password" maxlength="50" name="key" class="textField">
 	 </div>
 	 <div style='margin-top:1.5em'>
 	  <label for='cpass'>Re-type Password:</label>
-	  <input id="cpass" type="password" maxlength="50" name="cpass" class='textField'>
+	  <input id="cpass" required type="password" maxlength="50" name="cpass" class='textField'>
 	 </div>
 	</fieldset>
 
@@ -130,7 +130,7 @@
 	 <legend>Confirmation Info</legend>
 	  <div>
 	  <label for='send_email'>Email Address:</label>
-	  <input id="send_email" type="text" name="send_email" class="textField" value="{$enteredEmail|escape}">
+	  <input id="send_email" required type="email" name="send_email" class="textField" value="{$enteredEmail|escape}">
 		  <div>
 		  	Please add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to your safe email sender list to make sure you get the confirmation email! <br>
 		    This email address will only be used for confirmation purposes, <strong>never spammed, never shared.</strong>
