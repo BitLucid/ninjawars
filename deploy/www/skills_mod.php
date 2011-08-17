@@ -223,7 +223,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 
 	 
-	    $hurt = $player->hurt_by();
+	    $hurt = $target->hurt_by(); // Check how much the TARGET is hurt (not the originator, necessarily).
 	    // Check that the target is not already status healing.
 	    if ($target->hasStatus(HEALING) && !$player->isAdmin()) {
 	        $turn_cost = 0;
