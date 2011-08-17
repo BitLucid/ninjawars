@@ -22,12 +22,13 @@ $target_id = get_user_id($target);
 
 $amount_in = $amount;
 
-if ($bounty && $ninja && get_user_id($ninja)) {
+if ($bounty && $target_id) {
 	$command = 'Offer Bounty';
 }
 
 $error = 0;
 $success = false;
+
 
 if ($command == 'Offer Bounty') {
 	if (!$target_id) {
@@ -42,7 +43,7 @@ if ($command == 'Offer Bounty') {
 				}
 
 				if (get_gold($char_id) >= $amount) {
-					addBounty($char_id, $amount);
+					addBounty($target_id, $amount); // Add the bounty to the person being bountied upon.  How the hell did this break?
 
 					subtract_gold($char_id, $amount);
 					send_event($char_id, get_char_id($target), "$username has offered $amount gold in reward for your head!");
