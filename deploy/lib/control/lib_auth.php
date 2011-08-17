@@ -263,6 +263,23 @@ function nw_session_start($potential_username = '') {
 
 // Just to mimic the nw_session_start wrapper.
 function nw_session_destroy() {
+	if(!$_SESSION){session_start();}
+	session_regenerate_id();
+	session_unset();
+	// Unset all of the session variables.
+	$_SESSION = array();
+
+	// If it's desired to kill the session, also delete the session cookie.
+	// Note: This will destroy the session, and not just the session data!
+	if (ini_get("session.use_cookies")) {
+		$params = session_get_cookie_params();
+		setcookie(session_name(), '', time() - 42000,
+		    $params["path"], $params["domain"],
+		    $params["secure"], $params["httponly"]
+		);
+	}
+
+	// Finally, destroy the session.
 	session_destroy();
 }
 
@@ -342,7 +359,7 @@ function get_user_id($p_name=null) {
 // Return the char id that corresponds with a char name, or the logged in account, if no other source is available.
 function get_char_id($p_name=null) {
 	static $self_id; // Store the player's own id.
-	if (!$p_name) {
+	if ($p_name === null) {
 		if ($self_id) {
 			return $self_id;
 		} else {
