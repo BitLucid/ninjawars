@@ -353,22 +353,38 @@ function player_name_from_id($player_id) {
 
 // Old named wrapper for get_char_id
 function get_user_id($p_name=null) {
+	if(defined('DEBUG') && DEBUG && $p_name===null){
+		nw_error('Improper call to get_user_id() with a null argument.  For clarity reasons, this is now deprecated, use self_char_id() instead.');
+	}
 	return get_char_id($p_name);
+}
+
+// Check for own id, migrate to this for calls checking for self.
+function self_char_id(){
+	static $self_id;
+	if ($self_id) {
+		return $self_id;
+	} else {
+		$self_id = get_logged_in_char_id();
+		return $self_id;
+	}
 }
 
 // Return the char id that corresponds with a char name, or the logged in account, if no other source is available.
 function get_char_id($p_name=null) {
-	static $self_id; // Store the player's own id.
 	if ($p_name === null) {
-		if ($self_id) {
-			return $self_id;
-		} else {
-			$self_id = get_logged_in_char_id();
-			return $self_id;
+		if(defined('DEBUG') && DEBUG){
+			nw_error('Improper call to get_char_id with a null argument.  For clarity reasons, this is now deprecated, use self_char_id() instead.');
 		}
+		return self_char_id(); // TODO: Remove this use case, it's troublesome.
 	} else {
-		$sql = "SELECT player_id FROM players WHERE lower(uname) = :find";
-		return query_item($sql, array(':find'=>strtolower($p_name)));
+		if($p_name){
+			$sql = "SELECT player_id FROM players WHERE lower(uname) = :find";
+			return query_item($sql, array(':find'=>strtolower($p_name)));
+		} else {
+			return null; // a blank name came in, or a name 
+		}
+		
 	}
 }
 
