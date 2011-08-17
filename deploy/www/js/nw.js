@@ -9,6 +9,7 @@
 
 // TODO: change generated vars to square bracket notation.
 // TODO: Create a fade-out/fadein functionality like the google homepage, so that elements display only when needed/when the main element is moused-off-of.
+"use strict"; // Testing out use of strict mode.
 
 var NW = {};
 
@@ -491,19 +492,22 @@ if (parent.window != window) {
 			if (container) { // check that there is a new chat -to- load.
 				var chats = this.datastore.new_chats.chats;
 				var after = container.insertBefore(document.createTextNode(''), container.firstChild);
-				for (chat_message in chats) {
-					// Jesus.
-					after = container.insertBefore(this.renderChatAuthor(chats[chat_message]), after.nextSibling);
-					after = container.insertBefore(this.renderChatMessage(chats[chat_message]), after.nextSibling);
+				if(chats){
+					var chat_message = null;
+					for (chat_message in chats) {
+						// Jesus.
+						after = container.insertBefore(this.renderChatAuthor(chats[chat_message]), after.nextSibling);
+						after = container.insertBefore(this.renderChatMessage(chats[chat_message]), after.nextSibling);
 
-					if (this.maxMiniChats <= this.currentMiniChats) {
-						if (container.removeChild(container.lastChild).nodeType == 3) {
+						if (this.maxMiniChats <= this.currentMiniChats) {
+							if (container.removeChild(container.lastChild).nodeType == 3) {
+								container.removeChild(container.lastChild);
+							}
+
 							container.removeChild(container.lastChild);
+						} else {
+							++this.currentMiniChats;
 						}
-
-						container.removeChild(container.lastChild);
-					} else {
-						++this.currentMiniChats;
 					}
 				}
 
