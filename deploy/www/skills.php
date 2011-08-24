@@ -11,7 +11,7 @@ require_once(LIB_ROOT."control/Skill.php");
 
 $skillsListObj = new Skill();
 
-$player = new Player(get_char_id());
+$player = new Player(self_char_id());
 $level = $player->level();
 $class = $player->class_display_name(); // Just to be displayed in the template.
 $starting_turns = $player->turns();

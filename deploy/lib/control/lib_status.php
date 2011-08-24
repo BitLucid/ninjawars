@@ -15,7 +15,7 @@
 function get_status_list($target=null) {
 	$states = array();
 	$result = '';
-	$target = (isset($target) && (int)$target == $target ? $target : get_char_id());
+	$target = (isset($target) && (int)$target == $target ? $target : self_char_id());
 
 	// Default to showing own status.
 	$target = new Player($target);

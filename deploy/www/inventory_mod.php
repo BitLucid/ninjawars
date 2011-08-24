@@ -43,7 +43,7 @@ if (!is_object($item)) {
 	redirect(WEB_ROOT.'inventory.php?error=noitem');
 }
 
-$user_id    = get_char_id();
+$user_id    = self_char_id();
 $player     = new Player($user_id);
 
 $victim_alive   = true;

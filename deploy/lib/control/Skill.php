@@ -65,7 +65,7 @@ class Skill
 	**/
 	public function skills($char_id=null) {
 	    if (!$char_id) {
-			$char_id = get_char_id();
+			$char_id = self_char_id();
 		}
 
 	    $char = new Player($char_id);
@@ -98,11 +98,11 @@ class Skill
 		$skill = strtolower($skill);
 
 		if (!$username) {
-			$username = get_username();
+			$char_id = self_char_id();
+		} else {
+			$char_id = get_char_id($username);
 		}
-
-		$char_id = get_char_id($username);
-		$player_info = get_player_info($char_id);
+		$player_info = char_info($char_id);
 		$player_level = $player_info['level'];
 
 		$skills = $this->skills($char_id);

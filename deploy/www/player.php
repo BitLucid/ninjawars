@@ -23,7 +23,7 @@ $combat_toggles = get_setting('combat_toggles'); // Pull the attack options togg
 
 $last_item_used = get_setting("last_item_used"); // Pull the last item id used, if any.
 
-$char_info = get_player_info();
+$char_info = self_info();
 
 if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isActive()) {
 	$template = 'no-player.tpl';
@@ -35,11 +35,11 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		$template = 'no-player.tpl';
 		$parts    = array();
 	} else {
-		$viewing_player_obj = new Player(get_char_id());
+		$viewing_player_obj = new Player(self_char_id());
 
 		//$score = get_score_formula();
 
-		$self        = (get_char_id() && get_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
+		$self        = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
 
 		if ($viewing_player_obj && $viewing_player_obj->vo) {
 			$char_id  = $viewing_player_obj->id();

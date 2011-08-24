@@ -8,8 +8,8 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-$username = get_char_name();
-$user_id = get_char_id();
+$username = self_name();
+$user_id = self_char_id();
 
 $inv_counts = inventory_counts($user_id);
 $inventory = array();

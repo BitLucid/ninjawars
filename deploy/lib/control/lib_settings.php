@@ -33,7 +33,7 @@ function _get_settings($p_userID, $refresh=null) {
 
 // Get all the settings from the database as an assoc array.  refresh refreshes the in-memory static storage.
 function get_settings($refresh=null) {
-	return _get_settings(get_user_id(), $refresh);
+	return _get_settings(self_char_id(), $refresh);
 }
 
 function _get_setting($p_playerID, $name, $refresh=null) {
@@ -43,7 +43,7 @@ function _get_setting($p_playerID, $name, $refresh=null) {
 
 // Get a single setting from the static settings store.
 function get_setting($name) {
-	return _get_setting(get_user_id(), $name);
+	return _get_setting(self_char_id(), $name);
 }
 
 // Add a single setting pair to the current settings, & save the result.
@@ -62,7 +62,7 @@ function set_setting($name, $setting) {
 
 // Save a set of settings & call for a refresh of the static in-memory storage.
 function save_settings($settings) {
-	$user_id = get_user_id();
+	$user_id = self_char_id();
     if($user_id){
     	DatabaseConnection::getInstance();
     	$statement = DatabaseConnection::$pdo->prepare("SELECT count(settings_store) FROM settings WHERE player_id = :player");

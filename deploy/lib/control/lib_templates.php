@@ -48,7 +48,7 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
 	$tpl = new NWTemplate();
 	$tpl->assignArray($local_vars);
 
-    $user_id = get_user_id(); // Character id.
+    $user_id = self_char_id(); // Character id.
     $public_char_info = public_char_info($user_id); // Char info to pass to javascript.
 
 	$tpl->assign('logged_in', $user_id);

@@ -13,8 +13,8 @@ if ($error = init($private, $alive)) {
 $changeprofile = in('changeprofile');
 $newprofile    = trim(in('newprofile', null, null)); // Unfiltered input.
 
-$username = get_username();
-$user_id  = get_user_id();
+$username = self_name();
+$user_id  = self_char_id();
 
 $profile_changed    = false;
 $profile_max_length = 500; // Should match the limit in limitStatChars.js - ajv: No, limitStatChars.js should be dynamically generated with this number from a common location -
@@ -41,7 +41,7 @@ if ($changeprofile == 1) {
 // Password and email changing systems exist in account.php (& account.tpl).
 
 $char_obj         = new Player($user_id);
-$player           = get_player_info();
+$player           = self_info();
 $class_theme      = class_theme($char_obj->class_identity());
 $level_category   = level_category($player['level']);
 $status_list      = get_status_list();

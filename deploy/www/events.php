@@ -5,7 +5,7 @@ $alive      = false;
 if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
-$user_id = get_user_id();
+$user_id = self_char_id();
 $events = get_events($user_id, 300);
 
 $events = $events->fetchAll();

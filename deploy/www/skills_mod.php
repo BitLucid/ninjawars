@@ -41,7 +41,7 @@ $has_skill = $skillListObj->hasSkill($command);
 $starting_turn_cost = $turn_cost;
 assert($turn_cost>=0);
 $turns_to_take = null;  // *** Even on failure take at least one turn.
-$char_id = get_char_id();
+$char_id = self_char_id();
 
 $player = new Player($char_id);
 
@@ -61,7 +61,7 @@ $class           = $player->vo->class;
 $covert          = false;
 $victim_alive    = true;
 $attacker_id     = $username;
-$attacker_char_id = get_char_id();
+$attacker_char_id = self_char_id();
 $starting_turns  = $player->vo->turns;
 $ending_turns    = null;
 
@@ -162,7 +162,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		$covert = true;
 
 		// *** Get Special Items From Inventory ***
-		$user_id = get_user_id();
+		$user_id = self_char_id();
 
 		DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare('SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type');

@@ -2,7 +2,7 @@
 // Licensed under the creative commons license.  See the staff.php page for more detail.
 require_once(LIB_ROOT.'control/lib_player_list.php'); // Used for member_counts()
 
-$char_id = get_char_id();
+$char_id = self_char_id();
 
 if(!$char_id){
 	require_once(SERVER_ROOT.'www/splash.php');
@@ -15,7 +15,7 @@ if(!$char_id){
 	$unread_message_count = 0;
 
 	// Get the actual values of the vars.
-	$player_info = get_player_info();
+	$player_info = self_info();
 	$username = $player_info['uname'];
 	$level = $player_info['level'];
 	$new_player = $level<2;

@@ -11,8 +11,8 @@ require_once(LIB_ROOT."control/lib_player.php");
 
 DatabaseConnection::getInstance();
 
-$username     = get_username();
-$char_id      = get_char_id();
+$username     = self_name();
+$char_id      = self_char_id();
 $searched     = in('searched', null, 'no filter'); // Don't filter the search setting.
 $list_by_rank = ($searched && substr_compare($searched, '#', 0, 1) === 0); // Whether the search is by rank.
 

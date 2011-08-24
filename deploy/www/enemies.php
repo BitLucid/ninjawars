@@ -3,7 +3,7 @@ require_once(LIB_ROOT."control/lib_player_list.php");
 
 // Search for enemies to add.
 function get_enemy_matches($match_string) {
-	$user_id = get_user_id();
+	$user_id = self_char_id();
 	$sel = "SELECT player_id, uname FROM players 
 		WHERE uname ~* :matchString AND active = 1 AND player_id != :user 
 		ORDER BY level LIMIT 11";
@@ -26,7 +26,7 @@ function add_enemy($enemy_id) {
 	DatabaseConnection::getInstance();
 	$query = 'INSERT INTO enemies (_player_id, _enemy_id) VALUES (:pid, :eid)';
 	$statement = DatabaseConnection::$pdo->prepare($query);
-	$statement->bindValue(':pid', get_user_id());
+	$statement->bindValue(':pid', self_char_id());
 	$statement->bindValue(':eid', $enemy_id);
 	$statement->execute();
 }
@@ -40,7 +40,7 @@ function remove_enemy($enemy_id) {
 	DatabaseConnection::getInstance();
 	$query = 'DELETE FROM enemies WHERE _player_id = :pid AND _enemy_id = :eid';
 	$statement = DatabaseConnection::$pdo->prepare($query);
-	$statement->bindValue(':pid', get_user_id());
+	$statement->bindValue(':pid', self_char_id());
 	$statement->bindValue(':eid', $enemy_id);
 	$statement->execute();
 }
@@ -73,7 +73,7 @@ function get_current_enemies() {
 	DatabaseConnection::getInstance();
 
 	$statement = DatabaseConnection::$pdo->prepare($query);
-	$statement->bindValue(':pid', get_user_id());
+	$statement->bindValue(':pid', self_char_id());
 	$statement->execute();
 
 	return $statement;
@@ -86,7 +86,7 @@ function get_recent_attackers() {
 	$statement = DatabaseConnection::$pdo->prepare(
 		'SELECT DISTINCT player_id, send_from, uname, level, health 
 		FROM events JOIN players ON send_from = player_id WHERE send_to = :user AND active = 1 LIMIT 20');
-	$statement->bindValue(':user', get_user_id());
+	$statement->bindValue(':user', self_char_id());
 	$statement->execute();
 
 	return $statement;
@@ -123,13 +123,13 @@ if ($error = init($private, $alive)) {
 	header('Location: list.php');
 } else {
 
-$char_name = get_char_name();
+$char_name = self_name();
 
-$peers = nearby_peers(get_char_id());
+$peers = nearby_peers(self_char_id());
 
 $active_ninjas = get_active_players(5, true); // Get the currently active ninjas
 
-$char_info = get_player_info();
+$char_info = self_info();
 
 $match_string = in('enemy_match', null, 'no filter');
 $add_enemy    = in('add_enemy', null, 'toInt');

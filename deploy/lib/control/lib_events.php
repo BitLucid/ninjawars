@@ -2,15 +2,15 @@
 // Now only a wrapper for the send_event function. 
 function sendMessage($from, $to, $msg, $filter=false) {
 	// Filter argument is deprecated now.
-	$from_id = (int) get_user_id($from);
-	$to_id = get_user_id($to);
+	$from_id = (int) get_char_id($from);
+	$to_id = get_char_id($to);
 	send_event($from_id, $to_id, $msg);
 }
 
 // For events, attacks, kills, invites, etc, and no user-created messages.
 function send_event($from_id, $to_id, $msg) {
 	if (!$to_id) {
-		$to_id = get_user_id();
+		$to_id = self_char_id();
 	}
 
 	if (!is_numeric($from_id) || !is_numeric($to_id)) {

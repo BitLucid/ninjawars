@@ -66,17 +66,17 @@ function delete_messages($filter_type=0) {
 }
 
 function message_count($filter_type=0) {
-	return query_item("SELECT count(*) from messages where send_to = :to and type = :type", array(':to'=>get_user_id(), ':type'=>$filter_type));
+	return query_item("SELECT count(*) from messages where send_to = :to and type = :type", array(':to'=>self_char_id(), ':type'=>$filter_type));
 }
 
 function unread_message_count() {
-	return query_item("SELECT count(*) from messages where send_to = :to and unread != 0", array(':to'=>get_user_id()));
+	return query_item("SELECT count(*) from messages where send_to = :to and unread != 0", array(':to'=>self_char_id()));
 }
 
 // Send a message to the clan members.
 function message_to_clan($p_message) {
 	$error    = null;
-	$user_id  = get_user_id();
+	$user_id  = self_char_id();
 	$username = get_username();
 	$clan_id  = get_clan_by_player_id($user_id)->getID();
 

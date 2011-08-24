@@ -315,26 +315,37 @@ function display_when($state) {
 	}
 }
 
+// Canonical source for own name now.
+function self_name(){
+	static $self;
+	if ($self) {
+		// Self info requested
+		return $self;
+	} else {
+		// Determine & store username.
+		$char_id = get_logged_in_char_id();
+		$sql = "SELECT uname FROM players WHERE player_id = :player";
+		$username = query_item($sql, array(':player'=>$char_id));
+		$self = $username; // Store it for later.
+		return $self;
+	}
+}
+
 // Wrapper to get a char name from a char id.
 function get_username($char_id=null) {
+	if(defined('DEBUG') && DEBUG && $char_id===null){
+		nw_error('Deprecated call to get_char_name(null) with a null argument.  For clarity reasons, this is now deprecated, use self_name() instead.');
+	}
 	return get_char_name($char_id);
 }
 
 // Returns a char name from a char id.
 function get_char_name($char_id=null) {
-	static $self;
-	if (!$char_id) {
-		if ($self) {
-			// Self info requested
-			return $self;
-		} else {
-			// Determine & store username.
-			$char_id = get_logged_in_char_id();
-			$sql = "SELECT uname FROM players WHERE player_id = :player";
-			$username = query_item($sql, array(':player'=>$char_id));
-			$self = $username; // Store it for later.
-			return $self;
+	if ($char_id === null) {
+		if(defined('DEBUG') && DEBUG && $char_id===null){
+			nw_error('Deprecated call to get_char_name(null) with a null argument.  For clarity reasons, this is now deprecated, use self_name() instead.');
 		}
+		return self_name();
 	} else {
 		// Determine some other character's username and return it.
 		$sql = "SELECT uname FROM players WHERE player_id = :player";
@@ -351,14 +362,6 @@ function player_name_from_id($player_id) {
 	return get_username($player_id);
 }
 
-// Old named wrapper for get_char_id
-function get_user_id($p_name=null) {
-	if(defined('DEBUG') && DEBUG && $p_name===null){
-		nw_error('Improper call to get_user_id() with a null argument.  For clarity reasons, this is now deprecated, use self_char_id() instead.');
-	}
-	return get_char_id($p_name);
-}
-
 // Check for own id, migrate to this for calls checking for self.
 function self_char_id(){
 	static $self_id;
@@ -370,9 +373,19 @@ function self_char_id(){
 	}
 }
 
+// DEPRECATED: Old named wrapper for get_char_id
+function get_user_id($p_name=false) {
+	if(defined('DEBUG') && DEBUG && $p_name===false){
+		nw_error('Improper call to get_user_id() with no argument.  For clarity reasons, this is now deprecated, use self_char_id() instead.');
+	}
+	return get_char_id($p_name);
+}
+
+
+
 // Return the char id that corresponds with a char name, or the logged in account, if no other source is available.
-function get_char_id($p_name=null) {
-	if ($p_name === null) {
+function get_char_id($p_name=false) {
+	if ($p_name === false) {
 		if(defined('DEBUG') && DEBUG){
 			nw_error('Improper call to get_char_id with a null argument.  For clarity reasons, this is now deprecated, use self_char_id() instead.');
 		}

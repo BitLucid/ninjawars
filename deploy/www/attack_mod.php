@@ -35,7 +35,7 @@ $evade       = (in('evasion') ? true : NULL);
 set_setting('combat_toggles', array('duel'=>$duel, 'blaze'=>$blaze, 'deflect'=>$deflect, 'evasion'=>$evade)); // Save the combat toggled settings.
 
 
-$attacker_id = get_char_id();
+$attacker_id = self_char_id();
 
 $attacker_obj = new Player($attacker_id);
 $attacker = $attacker_obj->name();

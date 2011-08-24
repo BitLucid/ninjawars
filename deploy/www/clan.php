@@ -40,9 +40,9 @@ $clan_creator_min_level = CLAN_CREATOR_MIN_LEVEL; // For the template.
 
 // *** Used Variables ***
 
-$player_id    = get_char_id();
+$player_id    = self_char_id();
 $player       = ($player_id ? new Player($player_id) : null);
-$char_info    = ($player_id ? get_player_info() : null);
+$char_info    = ($player_id ? self_info() : null);
 $username     = @$char_info['uname'];
 
 if ($clan_id_viewed) {
@@ -169,7 +169,7 @@ if (!$player_id) {
 				//Clan Leader Action Kick a chosen member
 				if ($kicked == '') {
 					// Get the member info for the select dropdown list.
-					$members_and_ids = clan_member_names_and_ids($own_clan_id, get_char_id());
+					$members_and_ids = clan_member_names_and_ids($own_clan_id, self_char_id());
 				} else {	// *** An actual successful kick of a member. ***
 					$kicked_name = get_char_name($kicked);
 					$own_clan_obj->kickMember($kicked);

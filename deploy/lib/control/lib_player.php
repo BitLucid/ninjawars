@@ -395,14 +395,10 @@ function public_char_info($p_id=null) {
 }
 
 /**
- * Returns the state of the player from the database,
- * uses a user_id if one is present, otherwise
- * defaults to the currently logged in player, but can act on any player
- * if another username is passed in.
- * @param $user user_id or username
+ * Returns the state of the current active character from the database.
 **/
-function char_info($p_id = null) {
-	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
+function self_info() {
+	$id = self_char_id();
 	if(!is_numeric($id)){
 		// If there's no id, don't try to get any data.
 		return null;
@@ -420,9 +416,36 @@ function char_info($p_id = null) {
 	return $player_data;
 }
 
-// Deprecated, used in various places.  $p_password param is now simply ignored.
-function get_player_info($p_id = null, $p_password = false) {
-	return char_info($p_id);
+/**
+ * Returns the state of the player from the database,
+ * uses a user_id if one is present, otherwise
+ * defaults to the currently logged in player, but can act on any player
+ * if another username is passed in.
+ * @param $user user_id or username
+**/
+function char_info($p_id = null) {
+	if(!$p_id){
+		if(defined('DEBUG') && DEBUG){
+			nw_error('DEPRECATED: to char_info with a null argument.  For clarity reasons, this is now deprecated, use self_info() instead.');
+		}
+		return self_info();
+	}
+	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
+	if(!is_numeric($id)){
+		// If there's no id, don't try to get any data.
+		return null;
+	}
+	$player = new Player($id); // Constructor uses DAO to get player object.
+	$player_data = array();
+	
+	if ($player instanceof Player && $player->id()) {
+		// Turn the player data vo into a simple array.
+		$player_data = (array) $player->vo;
+		$player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
+		$player_data = add_data_to_player_row($player_data);
+	}
+
+	return $player_data;
 }
 
 

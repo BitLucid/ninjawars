@@ -6,7 +6,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-$player = new Player(get_char_id());
+$player = new Player(self_char_id());
 $freeResLevelLimit = 6;
 $freeResKillLimit  = 25;
 $lostTurns         = 10; // *** Default turns lost when the player has no kills.
