@@ -493,8 +493,7 @@ if (parent.window != window) {
 				var chats = this.datastore.new_chats.chats;
 				var after = container.insertBefore(document.createTextNode(''), container.firstChild);
 				if(chats){
-					var chat_message = null;
-					for (chat_message in chats) {
+					for (var chat_message in chats) {
 						// Jesus.
 						after = container.insertBefore(this.renderChatAuthor(chats[chat_message]), after.nextSibling);
 						after = container.insertBefore(this.renderChatMessage(chats[chat_message]), after.nextSibling);
