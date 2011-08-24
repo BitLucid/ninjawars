@@ -49,7 +49,7 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
 	$tpl->assignArray($local_vars);
 
     $user_id = self_char_id(); // Character id.
-    $public_char_info = public_char_info($user_id); // Char info to pass to javascript.
+    $public_char_info = public_self_info(); // Char info to pass to javascript.
 
 	$tpl->assign('logged_in', $user_id);
 	$tpl->assign('user_id', $user_id);

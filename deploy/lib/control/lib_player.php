@@ -394,6 +394,12 @@ function public_char_info($p_id=null) {
 	return $char_info;
 }
 
+function public_self_info(){
+	$char_info = self_info();
+	unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
+	return $char_info;
+}
+
 /**
  * Returns the state of the current active character from the database.
 **/
@@ -423,10 +429,10 @@ function self_info() {
  * if another username is passed in.
  * @param $user user_id or username
 **/
-function char_info($p_id = null) {
+function char_info($p_id) {
 	if(!$p_id){
 		if(defined('DEBUG') && DEBUG){
-			nw_error('DEPRECATED: to char_info with a null argument.  For clarity reasons, this is now deprecated, use self_info() instead.');
+			nw_error('DEPRECATED: call to char_info with a null argument.  For clarity reasons, this is now deprecated, use self_info() instead. Backtrace: '.print_r(debug_backtrace(), true));
 		}
 		return self_info();
 	}

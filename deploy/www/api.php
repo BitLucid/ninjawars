@@ -74,7 +74,7 @@ function json_latest_event() {
 }
 
 function json_player() {
-	$player = get_player_info();
+	$player = self_char_info();
 	return '{"player":'.json_encode($player).'}';
 }
 
@@ -133,7 +133,7 @@ function json_member_count() {
 }
 
 function json_inventory() {
-	$char_id = (int) get_char_id();
+	$char_id = (int) self_char_id();
 	return '{"inventory":'.json_encode(
 		query_array("SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :char_id ORDER BY item_display_name", array(':char_id'=>$char_id))
 	).'}';
@@ -141,7 +141,7 @@ function json_inventory() {
 
 function json_index() {
 	DatabaseConnection::getInstance();
-	$player   = public_char_info();
+	$player   = public_self_info();
 	$events   = array();
 	$messages = array();
 	$user_id  = $player['player_id'];

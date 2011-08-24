@@ -7,7 +7,7 @@ $login_error = in('error', null); // Error to display after unsuccessful login a
 $stored_username = isset($_COOKIE['username'])? $_COOKIE['username'] : null;
 $referrer        = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
-$is_logged_in = get_char_id();
+$is_logged_in = self_char_id();
 
 init($private=false, $alive=false);
 

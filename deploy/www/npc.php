@@ -13,7 +13,7 @@ $health     = 1;
 $victim     = in('victim');
 $random_encounter = (rand(1, 200) == 200);
 $combat_data = array();
-$char_id = get_char_id();
+$char_id = self_char_id();
 $player     = new Player($char_id);
 $error_template = 'npc.no-one.tpl'; // Error template also used down below.
 $npc_template = $error_template; // Error condition by default.

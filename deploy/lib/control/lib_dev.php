@@ -56,7 +56,8 @@ function debug($val) {
 function nw_error($message, $level=E_USER_NOTICE) {
 	$backtrace = debug_backtrace();
 	$caller = next($backtrace);
-	trigger_error("<div  class='debug' style='font-size:12pt;background-color:white;color:black;position:relative;z-index:10'>".$message.' in <strong>'.$caller['function'].'</strong> called from <strong>'.$caller['file'].'</strong> on line <strong>'.$caller['line'].'</strong>'."\n<br /> error handler</div>", $level);
+	$next_caller = next($backtrace);
+	trigger_error("<div  class='debug' style='font-size:12pt;background-color:white;color:black;position:relative;z-index:10'>".$message.' in <strong>'.$caller['function'].'</strong> called from <strong>'.$caller['file'].'</strong> on line <strong>'.$caller['line'].'</strong>'."called within: ".$next_caller['function']."\n<br /> and finally from the error handler in lib_dev: </div>", $level);
 }
 
 ?>
