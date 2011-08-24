@@ -17,8 +17,9 @@ if ($error = init($private, $alive)) {
 
 
 $link_back  = in('link_back');
-$target_id  = in('target_id');
-$target     = first_value(get_char_name($target_id), in('target'));
+$in_target_id  = in('target_id');
+$target_id = $in_target_id? (int) $in_target_id : self_char_id();
+$target     = first_value($target_id, in('target'));
 $selfTarget = in('selfTarget');
 
 // *** Item identifier, either it's id or internal name ***
@@ -264,7 +265,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			
 					if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 						$result        .= "__TARGET__ takes ".$item->getTargetDamage()." damage.";
-						$targetObj->vo->health = $victim_alive = subtractHealth($target_id, $item->getTargetDamage());
+						$targetObj->vo->health = $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
+						// This is the other location that $victim_alive is set, to determine whether the death proceedings should occur.
 					}
 					
 					
@@ -321,13 +323,13 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					// Send mails if the target was killed.
 					send_kill_mails($username, $target, $attacker_id, $article, $item->getName(), $today, $loot);
 
-				} else {
+				} else { // They weren't killed.
 					$attacker_id = $username;
 				}
 
-				if ($target != $username) {
-					$target_email_msg = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
-					sendMessage($attacker_id, $target, $target_email_msg);
+				if (!$selfTarget && $target != $username) {
+					$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
+					send_message($user_id, $target_id, $target_email_msg);
 				}
 			}
 
