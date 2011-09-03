@@ -19,7 +19,7 @@ $ranked_players = DatabaseConnection::$pdo->query('INSERT INTO player_rank (_pla
 query("update players set ki = ki + 1 where last_started_attack > (now() - interval '6 minutes')");
 DatabaseConnection::$pdo->query('COMMIT');
 
-$params = array('full_max'=>75, 'minor_revive_to'=>50, 'major_revive_percent'=>3);
+$params = array('full_max'=>75, 'minor_revive_to'=>50, 'major_revive_percent'=>2);
 $resurrected = revive_players($params);
 
 $rand = rand(1, 60);
