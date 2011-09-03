@@ -65,8 +65,8 @@ $resurrect_info = revive_appropriate_players($minimum, $maximum, $by_percent, $j
 assert($resurrect_info['revived']<$resurrect_info['target_number']);
 */
 // New system, potentially move to the halfhour, and then half the major_revive_percent?
-$params = array('full_max'=>75, 'minor_revive_to'=>300, 'major_revive_percent'=>15);
-$resurrected = revive_players($params);
+//$params = array('full_max'=>75, 'minor_revive_to'=>300, 'major_revive_percent'=>15);
+//$resurrected = revive_players($params);
 /* @params array('full_max'=>80, 'minor_revive_to'=>100, 'major_revive_percent'=>5,
  *      'just_testing'=>false)
 */

@@ -9,6 +9,26 @@ html, body {
 	min-height:400px;
 }
 
+
+body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
+	font: 90%/1.4 arial, helvetica, sans-serif;
+	/*font: 90%/1.4 'Trebuchet MS', Tahoma, Geneva, sans-serif;*/
+	/*font-family: <ideal>, <alternative>, <common>, <generic>;*/
+	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
+	/*font-family: "Franklin Gothic", Futura, Verdana, Arial, Helvetica, sans-serif;*/
+	/*font-family: Copperplate / Copperplate Gothic Light, sans-serif;*/
+	/*font family: Tahoma, Arial, sans-serif;*/
+	font-size: 80%;
+	color: #CCCCCC;/*#9BA7B2; was whitesmoke was #BDB76B; aka DarkKhaki*/
+	background-color: black;	/* Required for the ie bug */
+	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
+	/*opacity: .9;*/	
+}
+
+dl {
+	line-height:1.1;
+}
+
 img {
 	max-width:100%; /* Allow scaling down of images in smaller containers */
 }
@@ -111,33 +131,7 @@ footer{
 	margin-top:.3em;
 }
 
-.main-body {
-	min-width: 800px;
-	margin-right: 2px;
-	margin-left: 2px;
-}
 
-body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
-	font: 90%/1.4 arial, helvetica, sans-serif;
-	/*font: 90%/1.4 'Trebuchet MS', Tahoma, Geneva, sans-serif;*/
-}
-
-dl {
-	line-height:1.1;
-}
-
-body {
-	/*font-family: <ideal>, <alternative>, <common>, <generic>;*/
-	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
-	/*font-family: "Franklin Gothic", Futura, Verdana, Arial, Helvetica, sans-serif;*/
-	/*font-family: Copperplate / Copperplate Gothic Light, sans-serif;*/
-	/*font family: Tahoma, Arial, sans-serif;*/
-	font-size: 80%;
-	color: #CCCCCC;/*#9BA7B2; was whitesmoke was #BDB76B; aka DarkKhaki*/
-	background-color: black;	/* Required for the ie bug */
-	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
-	/*opacity: .9;*/
-}
 
 p {
 	margin: .5em 0 .5em 0;
@@ -723,12 +717,13 @@ body.solo-page h1 {
 }
 
 .main-body { /* For the index page's background image only. */
-	margin:0;
 	/*background:url("../images/Koi_1_by_Alegion_stock.png"); Commented out until ie background is set */
 	background-color:black;
 	background-repeat: no-repeat;
 	background-position:center;
 	background-attachment:fixed;
+	min-width: 800px;
+	margin:0;
 }
 
 

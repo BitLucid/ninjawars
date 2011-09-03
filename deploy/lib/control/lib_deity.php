@@ -90,7 +90,7 @@ function revive_players($params=array()) {
 	$revive_amount        = 0; // Initial.
 	$major_hour           = 3; // Hour for the major revive.
 
-	/* New schedule should be:
+	/* General idea should be:
 	1: revive to 100
 	2: revive to 100 (probably 0)
 	3: revive 150, (250 total) to a max of 80% of total, ~2500.
