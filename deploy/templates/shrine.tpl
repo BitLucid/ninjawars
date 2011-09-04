@@ -15,7 +15,7 @@ form {
   <div style="margin-bottom: 1.5em;">
     The shrine to the gods is peacefully quiet as you enter. The sound of flowing water soothes your mind.
   </div>
-  <p>A monk looks ready to play a reed flute in one corner of the shrine.</p>
+  <p>A monk with a reed hood over his face looks ready to play a reed flute in one corner of the shrine.</p>
   <span id='shrine-music' style='margin:0 auto;width:200px;display:block'>
 	{include file='music.tpl'}
   </span>
