@@ -1,4 +1,4 @@
-            <object type="audio/x-midi" data="files/music/samsho.mid" id="music-player" style='width:100%'>
+<!--            <object type="audio/x-midi" data="files/music/samsho.mid" id="music-player" style='width:100%'>
               <param name="src" value="files/music/samsho.mid">
               <param name="controller" value="0">
               <param name="autoplay" value="0">
@@ -8,3 +8,13 @@
                 Music <img class="play-button" src="images/bullet_triangle_green.png" alt="&gt;">
               </a>
             </object>
+            
+-->
+            
+            
+<audio loop='loop' controls='controls' autoplay='autoplay'>
+  <source src="/files/music/samsho.wav" type="audio/wav"/>
+              <a href="files/music/samsho.mid">
+                Music <img class="play-button" src="images/bullet_triangle_green.png" alt="&gt;">
+              </a>
+</audio>
