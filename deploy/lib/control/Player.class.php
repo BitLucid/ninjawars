@@ -210,6 +210,10 @@ class Player
 	public function changeTurns($amount) {
 		return change_turns($this->id(), $amount);
 	}
+	
+	public function subtractTurns($amount){
+		return change_turns($this->id(), -1*abs($amount));
+	}
 
 	// Pull the data of the player obj as an array.
 	public function data($specific = null) {

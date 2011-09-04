@@ -7,22 +7,12 @@ html, body {
 	background-color:black; /* To prevent the "white background flash" effect. */
 	height: 96%;
 	min-height:400px;
+	color: #CCCCCC;
+
 }
 
-
-body, td, th, textarea, input, select, h2, h3, h4, h5, h6 {
-	font: 90%/1.4 arial, helvetica, sans-serif;
-	/*font: 90%/1.4 'Trebuchet MS', Tahoma, Geneva, sans-serif;*/
-	/*font-family: <ideal>, <alternative>, <common>, <generic>;*/
-	/*font-family: "Trebuchet MS", "Lucida Sans", Arial, sans-serif*/
-	/*font-family: "Franklin Gothic", Futura, Verdana, Arial, Helvetica, sans-serif;*/
-	/*font-family: Copperplate / Copperplate Gothic Light, sans-serif;*/
-	/*font family: Tahoma, Arial, sans-serif;*/
-	font-size: 80%;
-	color: #CCCCCC;/*#9BA7B2; was whitesmoke was #BDB76B; aka DarkKhaki*/
-	background-color: black;	/* Required for the ie bug */
-	/*Colors:YellowGreen/Aquamarine/CadetBlue/DarkKhaki/Aquamarine*/
-	/*opacity: .9;*/	
+body{
+	font: 90%/1.4 arial, helvetica, sans-serif;	
 }
 
 dl {
@@ -718,7 +708,6 @@ body.solo-page h1 {
 
 .main-body { /* For the index page's background image only. */
 	/*background:url("../images/Koi_1_by_Alegion_stock.png"); Commented out until ie background is set */
-	background-color:black;
 	background-repeat: no-repeat;
 	background-position:center;
 	background-attachment:fixed;

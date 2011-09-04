@@ -263,7 +263,7 @@ function nw_session_start($potential_username = '') {
 
 // Just to mimic the nw_session_start wrapper.
 function nw_session_destroy() {
-	if(!$_SESSION){session_start();}
+	if(!isset($_SESSION)){session_start();}
 	session_regenerate_id();
 	session_unset();
 	// Unset all of the session variables.

@@ -56,11 +56,14 @@ $ending_turns   = null;
 $item_used      = true;
 $turns_change   = null;
 
-$target_id = get_char_id($target);
+// Check whether use on self is occurring.
+$self_use = $selfTarget || $target_id == $user_id;
+
+$target_id = whichever($target_id, get_char_id($target));
 
 $item_count = item_count($user_id, $item);
 
-if ($selfTarget) {
+if ($self_use) {
 	$target = $username;
 	$targetObj = $player;
 } else if ($target_id) {
@@ -71,7 +74,9 @@ if ($selfTarget) {
 	
 }
 
-if ($targetObj->player_id) {
+//debug($target_id, $target, $targetObj);die();
+
+if (($targetObj instanceof Player) && $targetObj->id()) {
 	$targets_turns = $targetObj->vo->turns;
 	$targets_level = $targetObj->vo->level;
 	$target_hp     = $targetObj->vo->health;
@@ -239,7 +244,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						}
 
 						$result         = " lose ".abs($turns_change)." turns";
-						changeTurns($target_id, $turns_change);
+						$targetObj->subtractTurns($turns_change);
 						
 						
 					} else if ($item->hasEffect('speed')) {	// Note that speed and slow effects are exclusive.
@@ -256,11 +261,12 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$turns_change = $item->getTurnChange();
 						if($limited_effect){
 							// If the effect is already in play, it will have a decreased effect.
-							$turns_change = ceil($turns_change*0.6); // Decrease to partial effect.
+							$turns_change = ceil($turns_change*0.5); // Decrease to partial effect.
 							$alternateResultMessage = "__TARGET__ is already moving quickly.";
 						}
+						// Actual turn gain is 1 less because 1 is used each time you use an item.
 						$result         = "gain $turns_change turns.";
-						changeTurns($target_id, $turns_change);
+						$targetObj->changeTurns($turns_change); // Still adding some turns.
 					}
 			
 					if ($item->getTargetDamage() > 0) { // *** HP Altering ***
@@ -286,8 +292,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				if ($item->hasEffect('death')) {
 					$resultMessage = "The life force drains from __TARGET__ and they drop dead before your eyes!.";
 				}
-				if ($turns_change !== null) {
-					// Even if $turns_change is set to zero, let them know that.
+				if ($turns_change !== null) { // Even if $turns_change is set to zero, let them know that.
 					if ($turns_change <= 0) {
 						$resultMessage .= "__TARGET__ has lost ".abs($turns_change)." turns!";
 
@@ -295,7 +300,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 							$resultMessage .= "  __TARGET__ no longer has any turns.";
 						}
 					} else if ($turns_change > 0) {
-						$resultMessage .= "__TARGET__ has gained $turns_change turns!";
+						$resultMessage .= "__TARGET__ has gained back $turns_change turns!";
 					}
 				} else {
 					$resultMessage = $result;
@@ -329,7 +334,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 				if (!$selfTarget && $target != $username) {
 					$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
-					send_message($user_id, $target_id, $target_email_msg);
+					send_message($user_id, $target_id, $message_to_target);
 				}
 			}
 
