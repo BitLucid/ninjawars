@@ -25,7 +25,7 @@ if ($clan && $clan_joiner) {
 	    $joiner_clan = get_clan_by_player_id($clan_joiner);
 	    $joiner_current_clan = ($joiner_clan instanceof Clan ? $clan->getID() : null);
 
-	    $joiner_info = get_player_info($clan_joiner);
+	    $joiner_info = char_info($clan_joiner);
 	    $joiner_confirmation_no = ($joiner_info ? $joiner_info['verification_number'] : null);
 
 		if (empty($joiner_current_clan) && $joiner_confirmation_no && $confirm == $joiner_confirmation_no && $agree > 0) {
