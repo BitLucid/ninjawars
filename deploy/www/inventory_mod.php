@@ -270,7 +270,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					}
 			
 					if ($item->getTargetDamage() > 0) { // *** HP Altering ***
-						$result        .= "__TARGET__ takes ".$item->getTargetDamage()." damage.";
+						$alternateResultMessage .= "__TARGET__ takes ".$item->getTargetDamage()." damage.";
+						$result        .= "You take ".$item->getTargetDamage()." damage.";
 						$targetObj->vo->health = $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
 						// This is the other location that $victim_alive is set, to determine whether the death proceedings should occur.
 					}
@@ -333,8 +334,9 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				}
 
 				if (!$selfTarget && $target != $username) {
+					// Notify targets when they get an item used on them.
 					$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
-					send_message($user_id, $target_id, $message_to_target);
+					send_event($user_id, $target_id, $message_to_target);
 				}
 			}
 
