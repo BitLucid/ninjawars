@@ -32,7 +32,7 @@
   <dt>Do not multiplay.</dt>
   <dd>
     Multiplaying is actively using two or more characters.<br>
-    Players using multiple characters will have their accounts suspended indefinately.
+    Players using multiple characters will have their accounts suspended indefinitely.
     <dl class="penalties">
       <dt>Penalty:</dt>
       <dd>Suspension of all accounts involved in the multiplaying.</dd>
