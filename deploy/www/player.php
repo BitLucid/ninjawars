@@ -11,7 +11,7 @@ require_once(DB_ROOT."SkillDAO.class.php");
 require_once(LIB_ROOT."control/lib_clan.php");
 require_once(LIB_ROOT."control/lib_player.php");
 
-$target        = $player = first_value(in('ninja'), in('player'));
+$target        = $player = first_value(in('ninja'), in('player'), in('find'), in('target'));
 $target_id     = first_value(in('target_id'), in('player_id'), get_char_id($target)); // Find target_id if possible.
 $target_player_obj = new Player($target_id);
 $viewed_name_for_title = null;

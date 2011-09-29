@@ -32,8 +32,9 @@ $passW = in('passw', null); // *** To verify whether there's a password put in.
 $changeprofile = in('changeprofile');
 $newprofile    = trim(in('newprofile', null, null)); // Unfiltered input.
 
-$username = get_username();
-$user_id  = get_user_id();
+$self_info = self_info();
+$username = $self_info['uname'];
+$user_id  = self_char_id();
 
 $confirm_delete     = false;
 $profile_changed    = false;
@@ -117,7 +118,7 @@ if ($deleteAccount) {
 $account_id = account_id();
 $account_info = account_info($account_id);
 
-$player           = get_player_info();
+$player           = self_info();
 $gravatar_url     = generate_gravatar_url($player['player_id']);
 
 // TODO: Lock account info behind password or password reset choice wall?

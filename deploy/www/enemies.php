@@ -60,7 +60,7 @@ function compare_enemy_order($e1, $e2) {
 
 // Get the info for a certain single enemy.
 function expand_enemy_info($enemy_id) {
-	$enemy = get_player_info($enemy_id);
+	$enemy = char_info($enemy_id);
 	$enemy = format_health_percent($enemy);
 	$enemy['enemy_id'] = $enemy_id;
 	return $enemy;

@@ -229,39 +229,10 @@
      
       
       <footer id='index-footer' class='navigation'>
-        <div id='footer-top-bar'>
-        <span id='nw-catchphrases'>
-        {literal}
-        <script>
-            $().ready(function (){
-                var catchphrases = $('#nw-catchphrases span');
-                var rand = Math.floor(Math.random()*catchphrases.size());
-                // Choose random index.
-                catchphrases.hide().eq(rand).show();
-                // Hide all, show one at random.
-            });
-        </script>
-        {/literal}
-        <!-- These catchphrases will be displayed randomly. -->
-        <span style="display:none">There was going to be a NinjaWars2, but NinjaWars1 stabbed it.</span>
-        <span style="display:none">Join a clan, promote multiple stab wounds.</span>
-        <span style="display:none">Annoy the Emperor, kill Samurai.</span>
-        <span style="display:none">Helping ninja stab people since 2003.</span>
-        <span style="display:none">Fact: Ninja can just click faster.</span>
-        <span style="display:none">True ninja do not use IE6.</span>
-        <span style="display:none">Ask a geisha for "full service", get a free chopstick in the eye.</span>
-        <span>Oni are actually quite friendly, if you get to know them.</span>
-        </span>
-        |
-        <a href="tutorial.php" target="main">Help</a> |
-        <a href="rules.php" target="main">Rules</a> |
-        <a href='staff.php' target='main'>Staff</a> |
-        <a href='http://google.com/search?q=site%3Awww.ninjawars.net' target='_blank' class='extLink'>Search</a> |
-        <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
-        <a href="http://ninjawars.pbworks.com/" target="_blank" class="extLink">Wiki</a> |
-        <a href="http://forum.ninjawars.net" target="_blank" class="extLink">Forum</a> |
-        <a href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Feedback</a>
-        </div><!-- End of footer-top-bar -->
+      
+      <!-- Stuff like catchphrases, links, and the author information -->
+      {include file='linkbar_section.tpl'}
+
       </footer>
       
     

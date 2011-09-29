@@ -40,30 +40,39 @@
         <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Feedback</a>
         </div>
-        <style>
-        {literal}
-        	#footer-authors{
-        		display:block;
-        		min-height:3.5em;
-        	}
-        	#footer-authors .author{
-        		display:inline-block;
-        		width:200px;
-        		min-height:80px;
-        		margin-left:10%;
-        		position:relative;
-        	}
-        	#footer-authors avatar{
-        		display:block;
-        	}
-        	#footer-authors .author a{
-        		display:inline-block;
-        	}
-        	#html5-integration{
-        		display:block;
-        	}
-        {/literal}
-        </style>
+<style>
+{literal}
+#footer-authors{
+    display:block;
+    min-height:3.5em;
+	list-style-type:none;
+}
+#footer-authors .author{
+    display:inline-block;
+    width:300px;
+    min-height:80px;
+    margin-left:10%;
+    position:relative;
+}
+#footer-authors .avatar{
+    position:absolute;
+	left:0;
+	top:0;
+	margin:0;
+	width:80px;
+	height:80px;
+}
+#footer-authors .author a{
+    display:inline-block;
+    margin-left:100px;
+    margin-top:0;
+}
+#html5-integration{
+    display:block;
+    margin-top:-1em;
+}
+{/literal}
+</style>
         
         <div id='footer-middle-bar'>
 		    <span id='created-by'>

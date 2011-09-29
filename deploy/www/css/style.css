@@ -69,6 +69,7 @@ http://ryanfait.com/
 	text-align: center;
 	clear: both;
 	width: 100%;
+	padding-top:.5em;
 }
 
 #index-footer a {
@@ -88,13 +89,9 @@ http://ryanfait.com/
 	color:white;
 }
 
-footer{
-	border-top:#999 dashed 1px;
-         z-index:-1;
-}
 #footer-top-bar{
-	padding:1.5em 0;
-	margin-top:.3em;
+	padding:.5em 0;
+	margin-top:.5em;
 	color:#999;
 	background-color:#333;
 }

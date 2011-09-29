@@ -8,7 +8,7 @@ init(true, false); // Initialize the environment.
 $section_only = (in('section_only') === '1'); // Check whether it's an ajax section.
 $command      = in('command');
 $user_id      = get_user_id();
-$info         = get_player_info();
+$info         = self_info();
 $health       = ($user_id ? $info['health'] : 0);
 $strength     = ($user_id ? $info['strength'] : 0);
 $gold         = ($user_id ? $info['gold'] : 0);
