@@ -71,23 +71,21 @@ function login_user($dirty_user, $p_pass) {
 	// Just checks whether the username and password are correct.
 	$data = authenticate($dirty_user, $p_pass);
 
-	if ($data) {
-		if (is_array($data)) {
-			if ((bool)$data['authenticated']) {
-				if ((bool)$data['active']) {
-					_login_user($data['uname'], $data['player_id'], $data['account_id']);
-					// Block by ip list here, if necessary.
-					// *** Set return values ***
-					$success = true;
-					$error = null;
-				} else {	// *** Account was not activated yet ***
-					$success = false;
-					$error = 'You must activate your account before logging in.';
-				}
+	if (is_array($data)) {
+		if ((bool)$data['authenticated']) {
+			if ((bool)$data['active']) {
+				_login_user($data['uname'], $data['player_id'], $data['account_id']);
+				// Block by ip list here, if necessary.
+				// *** Set return values ***
+				$success = true;
+				$error = null;
+			} else {	// *** Account was not activated yet ***
+				$success = false;
+				$error = 'You must activate your account before logging in.';
 			}
-
-			// The LOGIN FAILURE case occurs here, and is the default.
 		}
+
+		// The LOGIN FAILURE case occurs here, and is the default.
 	}
 
 	// *** Return array of return values ***
@@ -96,7 +94,7 @@ function login_user($dirty_user, $p_pass) {
 
 // Sets the last logged in date equal to now.
 function update_last_logged_in($char_id) {
-	$up = "UPDATE accounts SET last_login = now() WHERE account_id IN (SELECT _account_id FROM account_players WHERE _player_id = :char_id)";
+	$up = "UPDATE accounts SET last_login = now() WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :char_id)";
 	return query($up, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
 }
 
@@ -116,6 +114,7 @@ function last_login_failure_was_recent($account_id) {
 function potential_account_id_from_login_username($login) {
 	return query_item('SELECT account_id FROM accounts JOIN account_players ON account_id = _account_id JOIN players ON _player_id = player_id WHERE lower(active_email) = lower(:login1) OR lower(uname) = lower(:login2)', array(':login1'=>$login, ':login2'=>$login));
 }
+
 
 // Simple method to check for player id if you're logged in.
 function get_logged_in_char_id() {
@@ -187,7 +186,6 @@ function is_logged_in() {
  * @return boolean
  **/
 function is_authentic($p_user, $p_pass) {
-	// Note that authenticate is dangerously side-effect-less.
 	$data = authenticate($p_user, $p_pass, false);
 
 	return (isset($data['authenticated']) && (bool)$data['authenticated']);
@@ -406,7 +404,9 @@ function update_activity_log($p_playerID) {
 	// (See update_activity_info in lib_header for the function that updates all the detailed info.)
 	DatabaseConnection::getInstance();
 	$user_ip = $_SERVER['REMOTE_ADDR'];
-	query_resultset("UPDATE players SET days = 0, ip = :ip WHERE player_id = :player", array(':ip'=>$user_ip, ':player'=>$p_playerID));
+	query("UPDATE players SET days = 0, ip = :ip WHERE player_id = :player", array(':ip'=>$user_ip, ':player'=>$p_playerID));
+	query("Update accounts set last_ip = :ip, last_login = now() where account_id = (select _account_id from account_players join players on _player_id = player_id where player_id = :pid)",
+		array(':ip'=>$user_ip, ':pid'=>$p_playerID));
 }
 
 // Simply store whatever authentication info is passed in.
@@ -417,7 +417,11 @@ function store_auth_attempt($info){
 		// Encode all the info from $_SERVER, for now.
 		$additional_info = json_encode($info['additional_info']);
 	}
-	
+	if(!$info['successful']){
+		// Update last login failure.
+		update_last_login_failure(potential_account_id_from_login_username($info['username']));
+	}
+	// Log the login attempt as well.
 	query("insert into login_attempts (username, ua_string, ip, successful, additional_info) values (:username, :user_agent, :ip, :successful, :additional_info)", array(':username'=>$info['username'], ':user_agent'=>$info['user_agent'], ':ip'=>$info['ip'], ':successful'=>$info['successful'], ':additional_info'=>$additional_info));
 }
 

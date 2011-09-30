@@ -133,7 +133,7 @@ function json_member_count() {
 }
 
 function json_inventory() {
-	$char_id = (int) self_char_id();
+	$char_id = (int) self_id();
 	return '{"inventory":'.json_encode(
 		query_array("SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :char_id ORDER BY item_display_name", array(':char_id'=>$char_id))
 	).'}';

@@ -29,7 +29,7 @@ if ($logged_out){
 		$is_logged_in = $logged_in['success'];
 
 		if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
-			store_auth_attempt($login_attempt_info);		
+			store_auth_attempt($login_attempt_info);
 			$login_error = $logged_in['login_error'];
 			redirect("login.php?error=".urlencode($login_error));
 		} else {

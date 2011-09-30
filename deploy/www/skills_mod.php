@@ -10,6 +10,12 @@ require_once(LIB_ROOT.'control/Skill.php');
 $private    = true;
 $alive      = true;
 
+
+
+//$are_clones = characters_are_linked(get_char_id('zig'), get_char_id('zag'));
+//debug($are_clones, account_info(get_char_account_id(get_char_id('zig'))), account_info(get_char_account_id(get_char_id('zag'))));die();
+
+
 if ($error = init($private, $alive)) {
 	display_error($error);
 	die();
@@ -331,11 +337,16 @@ function harmonize_chakra($char_obj){
 			$generic_skill_result_message = '__TARGET__ is already iced.';
 		}
 	} else if ($command == 'Clone Kill') {
+	
 		// Obliterates the turns and the health of similar accounts that get clone killed.
 		$reuse = false; // Don't give a reuse link.
 	
 		$clone1 = in('clone1');
 		$clone2 = in('clone2');
+		
+
+		
+		
 		$clone_1_id = get_char_id($clone1);
 		$clone_2_id = get_char_id($clone2);
 		$clones = false;
