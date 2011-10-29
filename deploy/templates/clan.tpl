@@ -176,7 +176,7 @@ As such, after the leave command, no clan membership display information should 
 <ul>
 				{foreach from=$leaders item="leader_vo"}
       <li>
-        <a target='main' class='clan-join' href="clan.php?command=join&amp;clan_id={$leader_vo.clan_id|escape:'url'|escape}&amp;process=1">Join{$leader_vo.clan_name|escape}</a>.
+        <a target='main' class='clan-join' href="clan.php?command=join&amp;clan_id={$leader_vo.clan_id|escape:'url'|escape}&amp;process=1">Join {$leader_vo.clan_name|escape}</a>.
         Its leader is <a href="player.php?player_id={$leader_vo.player_id|escape:'url'|escape}">{$leader_vo.uname|escape}</a>, level {$leader_vo.level|escape}.
         <a target='main' href="clan.php?command=view&amp;clan_id={$leader_vo.clan_id|escape:'url'|escape}">View This Clan</a>
       </li>
