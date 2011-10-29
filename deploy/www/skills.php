@@ -37,6 +37,7 @@ $heal             = $skillsListObj->hasSkill('heal');
 $heal_turn_cost     = $skillsListObj->getTurnCost('heal');
 $clone_kill 		= $skillsListObj->hasSkill('clone kill');
 $clone_kill_turn_cost = $skillsListObj->getTurnCost('clone kill');
+$wrath	= $skillsListObj->hasSkill('wrath');
 $can_harmonize			= $starting_ki;
 
 display_page(

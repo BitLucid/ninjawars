@@ -92,6 +92,11 @@
 			{if !$simultaneousKill && $loot}
 				<div>You have taken {$loot} gold from {$target}.</div>
 			{/if}
+			
+			{if $wrath_regain}
+				<div class='wrath'>Your victory fuels your wrath, allowing you to retain some of your health.</div>
+			{/if}
+			
 		{/if}
 		
 		{if $rewarded_ki}

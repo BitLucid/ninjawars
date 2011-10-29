@@ -577,6 +577,10 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	padding: 5px;
 	text-align: center;
 }
+.wrath{
+	text-shadow:1px 1px 3px red;
+}
+
 
 #skills-list form {
 	margin-top:.5em;

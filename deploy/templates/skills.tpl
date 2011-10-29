@@ -118,6 +118,11 @@
     <p id='hidden-resurrect-skill'>Hidden Resurrect: When you are resurrected you will return already hidden and stealthed.</p>
 {/if}
 
+
+{if $wrath}
+    <p id='wrath-skill'>Wrath: Gain a small amount of health back per kill when dueling.</p>
+{/if}
+
 {if $no_skills}
 	<p id='no-skills'>You do not have any skills you can use on yourself.</p>
 {/if}

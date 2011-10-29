@@ -50,6 +50,7 @@ class Skill
 			, 'cold steal'    => array('available'=>1, 'level'=>7)
 			, 'midnight heal' => array('available'=>1, 'level'=>20)
 			, 'clone kill'    => array('available'=>1)
+			, 'wrath'	  => array('available'=>1)
 		)
 	);
 
