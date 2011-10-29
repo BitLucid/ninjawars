@@ -68,7 +68,7 @@ class AttackLegal
 
 		if ($attacker_name_or_id) {
 			$this->attacker = new Player($attacker_name_or_id);
-		} elseif ($char_id = self_id()) { // Pull logged in char_id.
+		} elseif ($char_id = self_char_id()) { // Pull logged in char_id.
 			$this->attacker = new Player($char_id);
 		}
 
