@@ -271,7 +271,9 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			
 					if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 						$alternateResultMessage .= "__TARGET__ takes ".$item->getTargetDamage()." damage.";
-						$result        .= "You take ".$item->getTargetDamage()." damage.";
+						if($self_target){
+							$result .= "You take ".$item->getTargetDamage()." damage.";
+						}
 						$targetObj->vo->health = $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
 						// This is the other location that $victim_alive is set, to determine whether the death proceedings should occur.
 					}

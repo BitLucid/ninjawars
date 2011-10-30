@@ -48,7 +48,7 @@ if ($message && $messenger) {
 
 //debug($type_filter, $message_to);
 
-$viewed_type = $type_filter === 0? 'individual' : 'clan'; // Viewed message type.
+$viewed_type = $type_filter === 0? 'personal' : 'clan'; // Viewed message type.
 $current_tab = $type_filter === 0? 'messages' : 'clan'; // Current tab.
 
 if ($delete) {
