@@ -171,8 +171,7 @@
           
           <div id='messages' class='boxes active'>
               <div>
-                  <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='images/messages.png' alt=''>
-                    <span class='unread-count'>{$unread_message_count}</span>
+                  <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='/images/icons/mono/commentblack32.png'  height=16 width=16 alt='' style='vertical-align:top'><span class='unread-count'>{$unread_message_count}</span>
                   </a>
                   
 	  {if !$new_player}
