@@ -2139,7 +2139,7 @@ select option #blue-class-select {
 }
 
 
-@media all and (orientation:landscape) {
+@media all and (max-device-width: 480px), (max-device-width: 854px) and (orientation:landscape) {
    /*Style adjustments for landscape mode goes here */
    #sidebar-column{
    		display:block;

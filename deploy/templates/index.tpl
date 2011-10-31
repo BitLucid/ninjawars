@@ -15,22 +15,23 @@
 		$('#donation-button').hide().delay('3000').slideDown('slow').delay('20000').slideUp('slow');
 		// Hide, show, and then eventually hide the donation button.
 		
-
-		// Hide the self and map subcategories initially, leaving the combat subcategory visible
-		var subcats = $('#self-subcategory, #map-subcategory').hide();
+		var isTouchDevice = 'ontouchstart' in document.documentElement;
+		if(!isTouchDevice){
+			// Hide the self and map subcategories initially, leaving the combat subcategory visible
+			var subcats = $('#self-subcategory, #map-subcategory').hide();
 		
-		//delay('2000').slideUp('slow');
+			//delay('2000').slideUp('slow');
 	
-		// Find the trigger areas and show the appropriate subcategory.
-		var triggers = $('#category-bar').find('.combat, .self, .map');
-		if(triggers){
-			triggers.mouseenter(function(){
-				var trigger = $(this);
-				var triggeredSubcat = $("#"+trigger.attr('class')+'-subcategory').show().siblings().hide();
-		    	// When a different trigger area is hovered, hide the other subcats.
-			});
+			// Find the trigger areas and show the appropriate subcategory.
+			var triggers = $('#category-bar').find('.combat, .self, .map');
+			if(triggers){
+				triggers.mouseenter(function(){
+					var trigger = $(this);
+					var triggeredSubcat = $("#"+trigger.attr('class')+'-subcategory').show().siblings().hide();
+					// When a different trigger area is hovered, hide the other subcats.
+				});
+			}
 		}
-		
 		
 	
 	});
