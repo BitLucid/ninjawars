@@ -2113,6 +2113,7 @@ select option #blue-class-select {
 		}
 	#main-column{
 		width:100%;
+		left:0;
 	}
 	h1, h2, h3, h4, h5, h6 {
 		font-weight: normal;
@@ -2143,5 +2144,6 @@ select option #blue-class-select {
    }
    #main-column{
    		width:60%;
+   		left:0;
    }
 }
