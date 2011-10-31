@@ -1077,11 +1077,12 @@ iframe {
 
 #index-footer {
 	text-align: center;
-	padding-top:.5em;
 	min-height:3%;
 	width:100%;
 	position:absolute;
 	bottom:0;
+	opacity:.96;
+	border-top:1px solid #666;
 }
 
 #index-footer a {
@@ -1103,9 +1104,9 @@ iframe {
 
 #footer-top-bar{
 	padding:.5em 0;
-	margin-top:.5em;
 	color:#999;
 	background-color:#333;
+	border-bottom:1px solid #666;
 }
 #footer-middle-bar{
 	color:#D9D9D9;
