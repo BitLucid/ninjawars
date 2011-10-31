@@ -2108,6 +2108,9 @@ select option #blue-class-select {
 		padding: 3px;
 		margin: 0;
 		}
+	#self-subcategory, #map-subcategory, #combat-subcategory{
+		display:inline-block !important;
+	}
 	#sidebar-column, #index-footer {
 		display: none;
 		}
@@ -2140,10 +2143,10 @@ select option #blue-class-select {
    /*Style adjustments for landscape mode goes here */
    #sidebar-column{
    		display:block;
-   		width:40%;
+   		width:30%;
    }
    #main-column{
-   		width:60%;
+   		width:70%;
    		left:0;
    }
 }
