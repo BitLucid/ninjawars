@@ -40,7 +40,8 @@
         <a href="http://ninjawars.proboards.com" target="_blank" class="extLink">Forum</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank" class="extLink">Feedback</a>
         </div>
-<style>
+<!-- CSS scoped to the containing element -->
+<style scoped>
 {literal}
 #footer-authors{
     display:block;
