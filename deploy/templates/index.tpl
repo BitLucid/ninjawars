@@ -9,7 +9,7 @@
 			// This function must be outside of domready, for some reason.
 		}      
       
-      $(document).ready(function(){		
+      $(function(){		
 		
 		
 		$('#donation-button').hide().delay('3000').slideDown('slow').delay('20000').slideUp('slow');

@@ -38,10 +38,10 @@
 {literal}
 	var hash = window.location.hash;
 	if(hash){ // If a hash exists.
-	$().ready(function(){
-		var page = hash.substring(1); // Create a page from the hash by removing the #.
-		$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
-	});	
+		$(function(){
+			var page = hash.substring(1); // Create a page from the hash by removing the #.
+			$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
+		});	
 	}
 {/literal}
 {else}
@@ -65,11 +65,14 @@
 {literal}
 // For all pages, if a link with a target of the main iframe is clicked
 $(function(){
+	$('html').removeClass('no-js');; // Remove no-js class when js present.
+
 	$('a[target=main]').click(function(){
 		var target = $(this).attr('href');
 		var winToChange = window.parent != window? window.parent : window;
 		winToChange.location.hash = target;
 		// Then update the hash to the source for that link.
+		return true;
 	});
 });
 {/literal}

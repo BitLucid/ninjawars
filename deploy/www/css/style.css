@@ -1986,12 +1986,6 @@ select option #blue-class-select {
 	max-width:98%;
 }
 
-#sidebar {
-	float:left;
-	width:25%;
-	height: 80%;
-}
-
 #nav ul {
 	margin:0;
 	padding:0;
@@ -2118,13 +2112,13 @@ select option #blue-class-select {
 		padding: 3px;
 		margin: 0;
 		}
-	#sidebar, #footer {
+	#sidebar-column, #index-footer {
 		display: none;
 		}
 	h1, h2, h3, h4, h5, h6 {
 		font-weight: normal;
 		}
-	#content img { 
+	img { 
 		max-width: 250px;
 		}
 	.center {
