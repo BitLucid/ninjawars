@@ -2110,6 +2110,7 @@ select option #blue-class-select {
 		}
 	#self-subcategory, #map-subcategory, #combat-subcategory{
 		display:inline-block !important;
+		overflow:hidden;
 	}
 	#sidebar-column, #index-footer {
 		display: none;
@@ -2136,17 +2137,4 @@ select option #blue-class-select {
 		text-decoration: underline;
 		font-weight:bold;
 		}
-}
-
-
-@media all and (max-device-width: 480px), (max-device-width: 854px) and (orientation:landscape) {
-   /*Style adjustments for landscape mode goes here */
-   #sidebar-column{
-   		display:block;
-   		width:30%;
-   }
-   #main-column{
-   		width:70%;
-   		left:0;
-   }
 }
