@@ -6,7 +6,7 @@
       &laquo;First | &lsaquo;Previous {$record_limit}&nbsp; |
 {else}
       <a href="list.php?hide={$hide}&amp;page=1&amp;searched={$searched}">&laquo;First</a> |
-      <a href="list.php?page={math equation="x-1" x=$page}&amp;searched={$searched}&amp;hide={$hide}">&lsaquo;Previous {$record_limit}</a>&nbsp;|
+      <a href="list.php?page={math equation="x-1" x=$page}&amp;searched={$searched}&amp;hide={$hide}" rel='previous'>&lsaquo;Previous {$record_limit}</a>&nbsp;|
 {/if}
 
       <span class='current-page'>
@@ -20,7 +20,7 @@
       | Next {$record_limit}&rsaquo;
       | Last&raquo;
 {else}
-      | <a href='list.php?page={math equation="x+1" x=$page}&amp;searched={$searched}&amp;hide={$hide}'>Next {$record_limit}&rsaquo;</a>
+      | <a href='list.php?page={math equation="x+1" x=$page}&amp;searched={$searched}&amp;hide={$hide}' rel='next'>Next {$record_limit}&rsaquo;</a>
       | <a href='list.php?page={$numofpages}&amp;hide={$hide}&amp;searched={$searched}'>Last&raquo;</a>
 {/if}
     </div>
