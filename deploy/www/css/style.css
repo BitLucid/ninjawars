@@ -2099,10 +2099,6 @@ select option #blue-class-select {
  * These follow after primary styles so they will successfully override.
  */
 
-/*@media all and (orientation:landscape) {
-   Style adjustments for landscape mode goes here 
-
-}*/
 
 /* Grade-A Mobile Browsers (Opera Mobile, Mobile Safari, Android Chrome)
    consider this: www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/ */
@@ -2115,6 +2111,9 @@ select option #blue-class-select {
 	#sidebar-column, #index-footer {
 		display: none;
 		}
+	#main-column{
+		width:100%;
+	}
 	h1, h2, h3, h4, h5, h6 {
 		font-weight: normal;
 		}
@@ -2133,4 +2132,16 @@ select option #blue-class-select {
 		text-decoration: underline;
 		color: #660066;
 		}
+}
+
+
+@media all and (orientation:landscape) {
+   /*Style adjustments for landscape mode goes here */
+   #sidebar-column{
+   		display:block;
+   		width:40%;
+   }
+   #main-column{
+   		width:60%;
+   }
 }
