@@ -227,7 +227,7 @@
       </aside><!-- End of sidebar-column -->  
      
       
-      <footer id='index-footer' class='navigation'>
+      <footer id='index-footer' class='clearfix navigation'>
       
       <!-- Stuff like catchphrases, links, and the author information -->
       {include file='linkbar_section.tpl'}
