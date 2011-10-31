@@ -9,9 +9,8 @@
 	}
       </script>
 {/literal}
-    <div id='content' class='wrapper'>
     <!-- Top horizontal bar -->
-    <header class='header'>
+    <header id='index-header' class='clearfix'>
 		<div id="logo-appended">
 		  <a href="/">
 	        <img id='ninjawars-title-image' src='images/halfShuriken.png' title='Home' alt='Ninja Wars' width='108' height='108'>
@@ -49,16 +48,9 @@
 	  </header><!-- End of header -->
       
 
-      
+      <div id='core' class='clearfix'>
       <!-- MAIN COLUMN STARTS HERE -->
-      <div id='main-column'>
-        <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-          <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src}">
-            <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
-            <a href='{$main_src}' target='_blank'>Main Content</a> Display Section (Frames Not Supported)
-          </iframe>
-        </div><!-- End of mainFrame div -->
-      </div> <!-- End of main-column -->      
+		{include file="core.tpl"}    
       
       <aside id='sidebar-column'  class='navigation'>
 		<div id='contact-us' style='margin-top:.5em;margin-bottom:.5em;'>
@@ -76,7 +68,9 @@
 
 	  </div><!-- End of chat-housing -->
 
-      </aside><!-- End of right-aside -->
+      </aside><!-- End of aside -->
+      
+      </div><!-- End of core -->
 
       <!-- <div id='push'></div> -->
       <footer id='index-footer'  class='navigation'>
@@ -88,8 +82,6 @@
       </footer>
       
       
-    </div> <!-- End of content div -->
-
 <!-- Validated as of Oct, 2009 -->
 
 <!-- Version: {$version} -->

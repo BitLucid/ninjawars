@@ -13,8 +13,8 @@
 
     <title>{$title|escape} - Ninja Wars Web Game</title>
     <base href="{$smarty.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
+    <!-- This css file now contains the mobile and print css files -->
     <link rel="stylesheet" type="text/css" href="css/style.css" media="Screen">
-    <link rel="stylesheet" href="css/mobile.css" type="text/css" media="handheld">
 	<!-- Html5 shim for ie less than 9 -->
     <!--[if lt IE 9]>
 		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -24,23 +24,10 @@
     <!-- Local jquery lib -->
     <script type="text/javascript" src="js/jquery-1.4.3.min.js"></script>
 {else}
-    <!-- Google Analytics -->
-    <script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script>
-    <!-- The google-analytics code that gets run is in nw.js -->
-    <script type="text/javascript">
-    // GOOGLE ANALYTICS
-    /* There's a script include that goes with this, but I just put it in the head directly.*/
-{literal}
-    try {
-        var pageTracker = _gat._getTracker("UA-707264-2");
-        pageTracker._trackPageview();
-    } catch(err) {}
-{/literal}
-    </script>
-
     <!-- Google jquery lib -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 {/if}
+    <!-- Google Analytics moved to the footer.tpl -->
     <!-- All the global ninjawars javascript -->
     <script type="text/javascript" src="js/nw.js"></script>
 
@@ -52,28 +39,40 @@
 	var hash = window.location.hash;
 	if(hash){ // If a hash exists.
 	$().ready(function(){
-		var page = hash.substring(1); // Create a page from the hash.
+		var page = hash.substring(1); // Create a page from the hash by removing the #.
 		$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
 	});	
 	}
 {/literal}
 {else}
 	// Non index.
-{if $quickstat}
+  {if $quickstat}
 	{literal}
 	$(document).ready(function() {{/literal}
 		NW.refreshStats({$json_public_char_info});
 		
 	{literal}});{/literal}
-{/if}
+  {/if}
 	// Retrieve the current page/script name and put it into the hash for later refreshability.
-	var currentPage = '{$smarty.server.PHP_SELF}'.substring(1);
+	//var currentPage = '{$smarty.server.PHP_SELF}'.substring(1); // Take the /slash off the page name.
 	{literal}
-	if(window.parent != window && currentPage != 'main.php'){
-		window.parent.location.hash = currentPage; // Take the /slash off the page name.
-	}
+	//if(window.parent != window && currentPage != 'main.php'){
+	//	window.parent.location.hash = currentPage; 
+	//}
 	{/literal}
 {/if}
+
+{literal}
+// For all pages, if a link with a target of the main iframe is clicked
+$(function(){
+	$('a[target=main]').click(function(){
+		var target = $(this).attr('href');
+		var winToChange = window.parent != window? window.parent : window;
+		winToChange.location.hash = target;
+		// Then update the hash to the source for that link.
+	});
+});
+{/literal}
     </script>
 
 {if $smarty.const.DEBUG}

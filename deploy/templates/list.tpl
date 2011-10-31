@@ -51,7 +51,7 @@
 		<tr class="playerRow {$ninja.alive_class} {$ninja.odd_or_even}">
 		  <td class="playerCell rankCell">{$ninja.player_rank|escape}</td>
 		  <td class="playerCell nameCell">
-		  	<a href="player.php?player_id={$ninja.player_id|escape:"url"}">{$ninja.uname|escape}</a>
+		  	<a href="player.php?player_id={$ninja.player_id|escape:"url"}" target='main'>{$ninja.uname|escape}</a>
 		  </td>
 		  <!-- Level category as a static resource -->
 		  <td class="playerCell levelCell">

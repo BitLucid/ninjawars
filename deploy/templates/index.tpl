@@ -38,27 +38,13 @@
       
 {/literal}
 
-
-<style type='text/css'>
-{literal}
-#logo-appended{
-	position:absolute;
-	top:0;
-	left:0;
-}
-#header{
-	height:20%;
-}
-{/literal}
-</style>
-
 	<div id="logo-appended">
 	  <a href="/">
         <img id='ninjawars-title-image' src='images/halfShuriken.png' title='Home' alt='Ninja Wars' width='100' height='100'>
 	  </a>
 	</div>
 
-    <header class='header'>
+    <header id='index-header' class='clearfix'>
 
 	  <div id='logo-placeholder'>
 	    <!-- Spacer div for the main shuriken linkback logo -->
@@ -90,38 +76,38 @@
             <nav id='category-bar' class='navigation'>
               <ul>
                 <li id='status-actions' class='self'>
-                  <a href='events.php' target='main' title='See messages about whether you were attacked or other events.'>
+                  <a href='events.php' rel='nav' target='main' title='See messages about whether you were attacked or other events.'>
                     <img src='/images/ninja_status_icon_50px.png' alt='' style='width:50px;height:51px'>Watch
                   </a>
                 </li>
                 <li id='combat-actions' class='combat'>
-                  <a href='enemies.php' target='main' title='Check up on your enemies and see who recently attacked you.'>
+                  <a href='enemies.php' rel='nav' target='main' title='Check up on your enemies and see who recently attacked you.'>
                     <img src='images/50pxShuriken.png' alt=''  style='width:50px;height:42px'>Fight
                   </a>
                 </li>
                 <li id='map-actions' class='map'>
-                  <a href='map.php' target='main' title='Travel to different locations on the Map.'>                  
+                  <a href='map.php' rel='nav' target='main' title='Travel to different locations on the Map.'>                  
                     <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Move
                   </a>
                 </li>
               </ul>
             </nav>
-            <nav id='subcategory-bar' class='navigation'>
+            <nav id='subcategory-bar' class='navigation' rel='nav'>
                 <ul id='self-subcategory'>
-                  <li><a href="stats.php" target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
-                  <li><a href="skills.php" target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
-                  <li><a href="inventory.php" target="main" title='Your items and links to use them on yourself.'>Items</a></li>
+                  <li><a href="stats.php" rel='nav' target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
+                  <li><a href="skills.php" rel='nav' target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
+                  <li><a href="inventory.php" rel='nav' target="main" title='Your items and links to use them on yourself.'>Items</a></li>
                   <!-- Profile -->
                   <!-- Settings -->
                 </ul>
                 <ul id='combat-subcategory'>
-                  <li><a href="list.php" target="main" title='Ranked list of ninjas to attack.'>Ninjas</a></li>
-                  <li><a href="clan.php" target="main" title='Clans and your clan options.'>Clans</a></li>
+                  <li><a href="list.php" rel='nav' target="main" title='Ranked list of ninjas to attack.'>Ninjas</a></li>
+                  <li><a href="clan.php" rel='nav' target="main" title='Clans and your clan options.'>Clans</a></li>
                 </ul>
                 <ul id='map-subcategory'>
-                  <li><a href="shop.php" target="main" title='Spend your money to get weapons.'>Buy</a></li>
-                  <li><a href="work.php" target="main" title='Trade your turns to get money.'>Work</a></li>
-                  <li><a href="doshin_office.php" target="main" title='Hunt bounties for money.'>Hunt<img src="images/doshin.png" alt="" style='height:8px;width:8px'></a></li>
+                  <li><a href="shop.php" rel='nav' target="main" title='Spend your money to get weapons.'>Buy</a></li>
+                  <li><a href="work.php" rel='nav' target="main" title='Trade your turns to get money.'>Work</a></li>
+                  <li><a href="doshin_office.php" rel='nav' target="main" title='Hunt bounties for money.'>Hunt<img src="images/doshin.png" alt="" style='height:8px;width:8px'></a></li>
                 </ul>
             </nav>
         </div><!-- End of reactive panel -->
@@ -133,19 +119,9 @@
 	  </header><!-- End of header -->
       
       
-      
+      <div id='core' class='clearfix'>
       <!-- MAIN COLUMN STARTS HERE -->
-      <div id='main-column'>
-
-
-          <div id="main-frame-container"><!-- THE MAIN CONTENT DISPLAY SECTION -->
-            <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src|escape}">
-            <!-- Note the the frameBorder attribute is apparently case sensitive in some versions of ie -->
-              <a href='{$main_src|escape}' target='_blank'>Main Content</a> unavailable inside this browser window.
-            </iframe>
-          </div><!-- End of mainFrame div -->
-          
-      </div> <!-- End of main-column -->
+		{include file="core.tpl"}
 
 
       <!-- SIDEBAR COLUMN STARTS HERE -->
@@ -175,7 +151,7 @@
                   </a>
                   
 	  {if !$new_player}
-	  <span id='donation-button' style='float:right;width:40%'>
+	  <div id='donation-button' style='float:right;width:40%;display:inline-block'>
 <!-- Beginning of paypal donation button -->
 	  	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
@@ -186,7 +162,7 @@
 </form>
 
 <!-- End of paypal donation button -->
-	  </span>
+	  </div>
 	  {/if}
               </div>
 
@@ -226,15 +202,14 @@
 
       </aside><!-- End of sidebar-column -->  
      
+      </div><!-- end of core-->
       
-      <footer id='index-footer' class='clearfix navigation'>
+      
+      <footer id='index-footer' class='navigation'>
       
       <!-- Stuff like catchphrases, links, and the author information -->
       {include file='linkbar_section.tpl'}
 
       </footer>
       
-    
-<!-- Validated as of Oct, 2009 -->
-
 <!-- Version: {$version|escape} -->

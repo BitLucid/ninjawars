@@ -79,7 +79,7 @@
     			
 				<div class='details' style='width:66%;text-align:center;height:2.5em;font-size:1.1em;background-color:black;background-color:rgba(0,0,0,.8);'>
 				
-				  	{if $node.url}<a href='{$node.url|escape:'url'|escape}'>{/if}
+				  	{if $node.url}<a href='{$node.url|escape:'url'|escape}' target='main'>{/if}
 				{if isset($node.image)}
 				      <img src='/images/{$node.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
 				{/if}
