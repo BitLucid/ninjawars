@@ -2112,6 +2112,12 @@ select option #blue-class-select {
 		display:inline-block !important;
 		overflow:hidden;
 	}
+	.subcategory-bar{
+		overflow:hidden;
+	}
+	.subcategory-bar:last-child{
+		font-size:.7em;
+	}
 	#sidebar-column, #index-footer {
 		display: none;
 		}
