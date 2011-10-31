@@ -8,6 +8,7 @@
     <meta name="keywords" content="ninjawars, ninja wars, ninjawars web game, ninjas, ninja weapons & techniques, samurai, free online games, {$title|escape}">
     <meta name="author" content="ninjawars.net">
     <meta name="description" content="Ninjawars: Battle other ninja for your survival.  Create a ninja and use skills or magic to kill samurai, the emperor's guards, or other ninja from rival clans.">
+    <meta name='viewport' content='width=device-width'>
     <meta name="fb:page_id" property="fb:page_id" content="117346421617325" /><!-- Facebook tracker -->
 
 

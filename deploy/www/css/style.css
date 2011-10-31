@@ -2102,7 +2102,7 @@ select option #blue-class-select {
 
 /* Grade-A Mobile Browsers (Opera Mobile, Mobile Safari, Android Chrome)
    consider this: www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/ */
-@media screen and (max-device-width: 480px) {
+@media screen and (max-device-width: 480px), (max-device-width: 854px) {
 	html, body {
 		font: 12px/15px sans-serif;
 		padding: 3px;
@@ -2126,11 +2126,11 @@ select option #blue-class-select {
 		}
 	a:link, a:visited {
 		text-decoration: underline;
-		color: #0000CC;
+		font-weight:bold;
 		}
 	a:hover, a:active {
 		text-decoration: underline;
-		color: #660066;
+		font-weight:bold;
 		}
 }
 
