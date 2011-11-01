@@ -73,7 +73,7 @@ function login_user($dirty_user, $p_pass) {
 
 	if (is_array($data)) {
 		if ((bool)$data['authenticated']) {
-			if ((bool)$data['active']) {
+			if ((bool)$data['confirmed']) {
 				_login_user($data['uname'], $data['player_id'], $data['account_id']);
 				// Block by ip list here, if necessary.
 				// *** Set return values ***
@@ -81,7 +81,7 @@ function login_user($dirty_user, $p_pass) {
 				$error = null;
 			} else {	// *** Account was not activated yet ***
 				$success = false;
-				$error = 'You must activate your account before logging in.';
+				$error = 'You must confirm your account before logging in, check your email.';
 			}
 		}
 
