@@ -5,7 +5,6 @@
     <!-- The google-analytics code that gets run is in nw.js -->
     <script type="text/javascript">
     // GOOGLE ANALYTICS
-    /* There's a script include that goes with this, but I just put it in the head directly.*/
 {literal}
     try {
         var pageTracker = _gat._getTracker("UA-707264-2");

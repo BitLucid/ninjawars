@@ -37,6 +37,7 @@
         </span>
          |
         <a href="tutorial.php" target="main">Help</a> |
+        <a href="staff.php" target="main">Staff</a> |
         <a href="rules.php" target="main">Rules</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?board=ann" target="_blank" class="extLink">News</a> |
         <a href="http://ninjawars.pbwiki.com/" target="_blank" class="extLink">Wiki</a> |
