@@ -52,7 +52,7 @@
     </ul>
 </div>
 
-<div class='char-list ninja-notice'>
+<div class='char-list ninja-notice' class='clearfix'>
 	<a href='stats.php'>View your ninja's info</a>
 </div>
 

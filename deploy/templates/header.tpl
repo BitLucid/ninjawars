@@ -46,21 +46,18 @@
 	}
 {/literal}
 {else}
-	// Non index.
+	// Only execute on non-index.
   {if $quickstat}
 	{literal}
-	$(document).ready(function() {{/literal}
+	$(document).ready(function() {
+	{/literal}
+		// Has to use php so can't be literal.
 		NW.refreshStats({$json_public_char_info});
 		
-	{literal}});{/literal}
-  {/if}
-	// Retrieve the current page/script name and put it into the hash for later refreshability.
-	//var currentPage = '{$smarty.server.PHP_SELF}'.substring(1); // Take the /slash off the page name.
 	{literal}
-	//if(window.parent != window && currentPage != 'main.php'){
-	//	window.parent.location.hash = currentPage; 
-	//}
+	});
 	{/literal}
+  {/if}
 {/if}
 
 {literal}
@@ -68,6 +65,7 @@
 $(function(){
 	$('html').removeClass('no-js');; // Remove no-js class when js present.
 
+	// make iframe links record in the hash.
 	$('a[target=main]').click(function(){
 		var target = $(this).attr('href');
 		var winToChange = window.parent != window? window.parent : window;
