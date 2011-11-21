@@ -52,7 +52,7 @@ if ($searched) {
 		$queryParams[] = $searched.'%';
 	} else if (!$list_by_rank) {
 		$where_clauses[] = " (rankings.uname ~* :param".count($queryParams).") ";
-		$queryParams[] = $searched;
+		$queryParams[] = '"'.$searched.'"';	// *** ~* treats searched as regex so an invalid regex throws exception. quoting searched makes it behave as a literal ***
 	}
 
 	if ($hide == 'dead') {
