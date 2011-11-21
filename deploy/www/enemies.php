@@ -4,6 +4,9 @@ require_once(LIB_ROOT."control/lib_player_list.php");
 // Search for enemies to add.
 function get_enemy_matches($match_string) {
 	$user_id = self_char_id();
+
+	$match_string = '"'.$match_string.'"';	// *** query interprets match_string as regex (~*) and fails if input is invalid regex. Quoting makes match_string a literal ***
+
 	$sel = "SELECT player_id, uname FROM players 
 		WHERE uname ~* :matchString AND active = 1 AND player_id != :user 
 		ORDER BY level LIMIT 11";
