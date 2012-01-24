@@ -7,7 +7,8 @@
 {if $login_error}
 	  <!-- This section only gets displayed in the event of an incorrect login -->
       <div id='login-error' class="error">
-        {$login_error|escape}
+      	{* Unescaped error to allow for links. *}
+        {$login_error}
       </div>
 {/if}
 

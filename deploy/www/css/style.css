@@ -264,12 +264,16 @@ h1, h2, .title {
 	margin-bottom:.1em;
 }
 h2 {
-	margin-left: auto;
-	margin-right: auto;
+	margin: .1em auto .1em;
 	width:50%;
-	background: #9BB02D;
+	background: #548B54;
 	font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
 	letter-spacing:0.1em;
+	font-weight:normal;
+	-moz-transform:rotate(-1deg);
+	-webkit-transform:rotate(-1deg);
+	-o-transform:rotate(-1deg);
+	transform:rotate(-1deg);
 }
 h1, .player-info .player-name {
 	background: #291F16;
@@ -1328,13 +1332,21 @@ iframe {
 }
 
 .notice, .informational {
-	color:Black;
-	background-color:#8AC575;
+	color:#B1B187;
+	/*background-color:#8AC575;*/
+	background-color:#2F2F28;
+	border-top:thin dashed #48442F;
+	border-bottom:thin dashed #48442F;
 	font-family: ‘Lucida Console’, Monaco, monospace;
 	text-align:center;
 	font-weight:bold;
 	font-size:130%;
 	padding: 3px;
+  background: -webkit-linear-gradient(left, black, #2F2F28, black);
+  background: -moz-linear-gradient(left, black, #2F2F28, black);
+  background: -ms-linear-gradient(left, black, #2F2F28, black);
+  background: -o-linear-gradient(left, black, #2F2F28, black);
+
 }
 
 .notice a, .informational a {
@@ -2041,6 +2053,9 @@ select option #blue-class-select {
     font-size: 10px;
 }
 
+.account-issues p, .account-issues form{
+	margin: 0 .5em;
+}
 
 /**
  * Print styles.

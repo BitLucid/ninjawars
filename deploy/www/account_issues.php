@@ -112,6 +112,8 @@ if ($attemptedToSendEmail && !$sent) {
 	$error = 'emailfail';
 }
 
+$body_classes = 'account-issues';
+
 display_page(
 	'account_issues.tpl'
 	, 'Account Problems'
