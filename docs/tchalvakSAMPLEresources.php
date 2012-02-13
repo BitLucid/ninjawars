@@ -15,7 +15,8 @@ define('SUPPORT_EMAIL', "ninjawarsTchalvak@gmail.com");	// *** For public questi
 define('SUPPORT_EMAIL_FORMAL_NAME', "Ninjawars Tchalvak");
 define('SYSTEM_MESSENGER_EMAIL', "noreply@ninjawars.net");
 define('SYSTEM_MESSENGER_NAME', "Automated Ninjawars Messenger");
-
+define('ALERTS_EMAIL', __ALERTS_EMAIL__);
+define('TRAP_ERRORS', __TRAP_ERRORS__); // Whether to use the global error handler & oops page.
 
 // For location-specific derived-or-not constants.
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
