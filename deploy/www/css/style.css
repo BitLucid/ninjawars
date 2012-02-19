@@ -1061,11 +1061,11 @@ iframe {
 
 #core{
 	/* Header height is about 20%, so core should be about 80 */
-	position:relative;width:100%;height:80%;min-width:400px;
+	position:relative;width:100%;height:80%;min-width:400px;min-width:400px;
 }
 
 #main-column{
-	position:absolute;width:60%;height:100%;left:5%;top:0;
+	width:60%;height:100%;left:0;top:0;padding-left:3%;
 }
 
 .main-iframe { /* class for the main iframe */
