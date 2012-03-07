@@ -31,10 +31,6 @@
             <li><a href="list.php" target="main">Ninjas</a></li>
             <li><a href="clan.php" target="main">Clans</a></li>
           </ul>
-          <ul>
-          	<li>&nbsp;</li>
-            <!-- Placeholder to fill space-->
-          </ul>
           <ul id='map-subcategory'>
           	<li><a href='map.php' id='menu-map-head' target='main' title='Travel to different locations on the map' style='font-size:xx-large;margin-right:.5em;'>Map&rarr;</a></li>
             <li><a href="shop.php" target="main">Shop</a></li>
