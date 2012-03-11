@@ -54,6 +54,10 @@
         background-color:rgb(55, 55, 55);
     }
     
+    #map td.bath-house{
+        background-color:rgb(203,66,60);
+    }
+
     {/literal}
     </style>
     
