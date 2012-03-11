@@ -73,10 +73,29 @@ if($turns > 0 && !empty($victim)) {
 	} elseif (array_key_exists($victim, $npcs)){ /**** Abstracted NPCs *****/
 		$npc_stats = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
 		$display_name = first_value(@$npc_stats['name'], ucfirst($victim));
-		$attack_damage = first_value(@$npc_stats['damage'], 1);
+
+
+
+// Initial, naive damage calculcations from npcs.
+function damage_from_npc_stats($stats){
+	// Arbitrarily, damage becomes a base of 10 plus strength * 10 plus the custom damage modifier.
+	return 1 + (@$stats['strength'] * 10) + @$stats['damage'];
+}
+
+// Calculate npc difficulty, naively at the moment.
+function npc_difficulty($stats){
+	// Just add together all the points of the mob, so to speak.
+	return 10 + @$stats['strength'] * 10 + @$stats['damage'];
+}
+
+		$str = whichever(@$npc_stats['strength'], 0);
+		$spd = whichever(@$npc_stats['speed'], 0);
+		$sta = whichever(@$npc_stats['stamina'], 0);
+		$attack_damage = damage_from_npc_stats($npc_stats);
 		$status_effect = whichever(@$npc_stats['status'], null);
-		$reward_gold = first_value(@$npc_stats['gold'], 1);
 		$reward_item = first_value(@$npc_stats['item'], null);
+		$base_gold = npc_difficulty($npc_stats);
+		$reward_gold = !$reward_item? $base_gold : round($base_gold * .9); // Hack a little off reward gold if items received.
 		$image = @$npc_stats['img'];
 		$image_path = null;
 		if($image && file_exists(SERVER_ROOT.'www/images/characters/'.$image)){

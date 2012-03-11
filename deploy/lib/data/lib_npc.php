@@ -1,18 +1,17 @@
 <?php
 
 
+
 // TODO: Abstract all the unique npc behaviors into the generic system.
 function get_npcs(){
 	return array(
-		'spider'=>array('name'=>'Spider', 'img'=>'spider_icon.png', 'damage'=>10, 'gold'=>10, 'race'=>'insect', 'strength'=>1, 'stamina'=>1, 'speed'=>1, 'ki'=>1), 
+		'spider'=>array('name'=>'Spider', 'img'=>'spider_icon.png', 'strength'=>1, 'damage'=>10, 'gold'=>10, 'race'=>'insect', 'strength'=>1, 'stamina'=>1, 'speed'=>1, 'ki'=>1), 
 		'viper'=>array('name'=>'Black Viper', 'race'=>'animal', 'strength'=>'1', 'stamina'=>1, 'speed'=>1, 'ki'=>1, 'damage'=>99, 'status'=>POISON, 'gold'=>30),
 		'fireflies'=>array('name'=>'Fireflies', 'strength'=>0, 'damage'=>0), // Baseline weakest mob
-		'monk'=>array('name'=>'Monk', 'race'=>'human'),
-		'geisha'=>array('name'=>'Geisha', 'race'=>'human'),
+		'monk'=>array('name'=>'Monk', 'strength'=>10, 'stamina'=>10, 'speed'=>10, 'ki'=>30, 'race'=>'human'),
+		'geisha'=>array('name'=>'Geisha', 'strength'=>5, 'stamina'=>5, 'speed'=>15, 'ki'=>10, 'race'=>'human'),
 		'kappa'=>array('name'=>'Kappa', 'short'=>'a reptilian creature with a scooped-out head', 'race'=>'kappa', 'img'=>'kappa.jpg'),
 		'tengu'=>array('name'=>'Tengu', 'short'=>'a large winged demon', 'race'=>'tengu'),
-		'oni'=>array('name'=>'Oni', 'short'=>'a horned demon', 'race'=>'oni'),
-		'ushioni'=>array('name'=>'Ushi-Oni', 'race'=>'ushioni', 'img'=>'ushioni2.jpg'),
 		'nureonna'=>array('name'=>'Nureonna', 'img'=>'nureonna', 'race'=>'yokai', 'img'=>'nureonna.jpg'),
 		'basan'=>array('name'=>'Basan', 'img'=>'basan.jpg'), // Uses default race of: creature.
 		'kamaitachi'=>array('name'=>'Kama-itachi', 'img'=>'kamaitachi.jpg', 'race'=>'yokai'),
@@ -36,7 +35,9 @@ function get_npcs(){
 		'kamakiri'=>array('name'=>'Kama-Kiri', 'short'=>'a hair eating beast', 'img'=>'kamakiri.jpg', 'race'=>'yokai'),
 		'hakutaku'=>array('name'=>'Hakutaku', 'short'=>'a winged lion demon', 'img'=>'hakutaku.jpg', 'race'=>'yokai'),
 		'hainu'=>array('name'=>'Hainu', 'short'=>'a winged wolf', 'race'=>'yokai'),
-		'ryu'=>array('name'=>'Ryu', 'short'=>'a serpent-dragon', 'race'=>'ryu'),
+		'oni'=>array('name'=>'Oni', 'strength'=>5, 'stamina'=>5, 'speed'=>15, 'ki'=>10, 'short'=>'a horned demon', 'race'=>'oni'),
+		'ushioni'=>array('name'=>'Ushi-Oni', 'strength'=>50, 'stamina'=>50, 'speed'=>50, 'race'=>'ushioni', 'img'=>'ushioni2.jpg'),
+		'ryu'=>array('name'=>'Ryu', 'strength'=>100, 'stamina'=>200, 'speed'=>80, 'short'=>'a serpent-dragon', 'race'=>'ryu'),
 	);
 }
 

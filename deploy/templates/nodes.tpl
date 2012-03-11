@@ -28,9 +28,10 @@
     }
     
     #map td.rice-field {
-    	background-image:url(/images/nodes/node-tiles.png);
+    	/*background-image:url(/images/nodes/node-tiles.png);
     	background-position:0px -342px;
-    	background-repeat:no-repeat;
+    	background-repeat:no-repeat;*/
+        background-color:rgb(12,44,44);
     }
     
     #map td.casino {
@@ -48,9 +49,9 @@
     #map td.grass{
     	background-color:rgb(30,60,0);
     }
-    
-    #map td.rice-field{
-    	background-color:rgb(12,44,44);
+
+    #map td.north-south-road{
+        background-color:rgb(55, 55, 55);
     }
     
     {/literal}
@@ -58,10 +59,10 @@
     
     
     <div id='map'>
-    <table style='width:510px;background-color:black'>
+    <table style='width:510px;background-color:black;color:rgb(155, 155, 155)'>
     	<thead>
     	<tr>
-    		<td colspan='5' class='area-name' style='background-color:rgb(55, 10, 10);font-size:1.3em;text-align:center'>The Village</td>
+    		<td colspan='5' class='area-name' style='background-color:rgb(55, 10, 10);font-size:1.3em;text-align:center;text-transform:uppercase;padding:.7em'>The Village</td>
     	</tr>
     	</thead>
     	<!-- <tfoot></tfoot> -->
@@ -70,14 +71,14 @@
 {foreach name='foreach-row' from=$nodes item='row' key='ycoord'}
     	<tr>
 {foreach name='foreach-over-row-of-nodes' from=$row item='node' key='xcoord'}
-    		<td class='node-id-{$node.id} {$node.type}' style='width:100px;height:100px;margin:0;padding:0'>	
+    		<td class='node-id-{$node.id} {$node.type}' style='width:100px;height:100px;margin:0;padding:0;'>	
     			<form action='map.php' method='post'>
     				<input type='hidden' name='ycoord' value='{$ycoord}>
     				<input type='hidden' name='xcoord' value='{$xcoord}>
     				<input type='submit' name='move' value='{if isset($node.name)}{$node.name}{else}Go{/if}'>
     			</form>
     			
-				<div class='details' style='width:66%;text-align:center;height:2.5em;font-size:1.1em;background-color:black;background-color:rgba(0,0,0,.8);'>
+				<div class='details' style='width:66%;text-align:center;min-height:1.2em;font-size:1.1em;line-height:1.1;background-color:black;background-color:rgba(0,0,0,.8);margin-left:17%;margin-top:25%;border-radius:1em;padding:.3em 0 .3em'>
 				
 				  	{if $node.url}<a href='{$node.url|escape:'url'|escape}' target='main'>{/if}
 				{if isset($node.image)}
