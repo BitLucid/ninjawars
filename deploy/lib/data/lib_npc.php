@@ -35,7 +35,7 @@ function get_npcs(){
 		'kamakiri'=>array('name'=>'Kama-Kiri', 'short'=>'a hair eating beast', 'img'=>'kamakiri.jpg', 'race'=>'yokai'),
 		'hakutaku'=>array('name'=>'Hakutaku', 'short'=>'a winged lion demon', 'img'=>'hakutaku.jpg', 'race'=>'yokai'),
 		'hainu'=>array('name'=>'Hainu', 'short'=>'a winged wolf', 'race'=>'yokai'),
-		'oni'=>array('name'=>'Oni', 'strength'=>5, 'stamina'=>5, 'speed'=>15, 'ki'=>10, 'short'=>'a horned demon', 'race'=>'oni'),
+		'oni'=>array('name'=>'Oni', 'strength'=>5, 'stamina'=>5, 'speed'=>15, 'ki'=>10, 'short'=>'a horned demon', 'img'=>'hokusai-oni.jpg', 'race'=>'oni'),
 		'ushioni'=>array('name'=>'Ushi-Oni', 'strength'=>50, 'stamina'=>50, 'speed'=>50, 'race'=>'ushioni', 'img'=>'ushioni2.jpg'),
 		'ryu'=>array('name'=>'Ryu', 'strength'=>100, 'stamina'=>200, 'speed'=>80, 'short'=>'a serpent-dragon',  'img'=>'hokusai-dragon.jpg', 'race'=>'ryu'),
 	);

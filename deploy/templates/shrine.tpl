@@ -11,17 +11,27 @@ form {
 {/literal}
 </style>
 
-<div class="description">
+  
+<section class="description">
+
+  <figure style='display:inline-block;float:right'>
+    <img src='/images/scenes/shrine_pagoda.png' alt='' title='Shrine Pagoda'>
+  </figure>
+
+
   <div style="margin-bottom: 1.5em;">
     The shrine to the gods is peacefully quiet as you enter. The sound of flowing water soothes your mind.
   </div>
   <p>A monk with a reed hood over his face looks ready to play a reed flute in one corner of the shrine.</p>
-  <span id='shrine-music' style='margin:0 auto;width:200px;display:block'>
+  <div id='shrine-music' style='width:40%;'>
 	{include file='music.tpl'}
-  </span>
+  </div>
   
   <div>A monk approaches you quietly and asks, <em class='speech'>Are you in need of healing?</em></div>
-</div>
+</section>
+
+
+<section class='action-area'>
 {if !$username}
 <div id='ninja-notice'>You have no need of healing.</div>
 {else}
@@ -44,7 +54,7 @@ form {
 </form>
 <hr>
 	{elseif $at_max_health}
-<p>You are at full health.</p>
+<p class='fancy-ornamental-font comforting'>You are at full health.</p>
 	{else}
 <form id="max_heal_form" action="shrine_mod.php" method="post" name="max_heal_form" style='margin: .5em auto .5em;text-align:center'>
   <div>
@@ -61,6 +71,8 @@ form {
   </div>
 </form>
 	{/if}
+
+
 	{if $poisoned && $player_health}
 <hr>
 <form action="shrine_mod.php" method="post">
@@ -72,4 +84,7 @@ form {
   </p>
 </form>
 	{/if}
+
+
 {/if}<!-- End of if username block -->
+</section>

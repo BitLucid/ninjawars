@@ -216,6 +216,20 @@ Gazelle is useful for the h1,h2,h3 and player name headers.
 	src: local('GazelleFLF'), local('GazelleFLF'), url('/files/fonts/GazelleFLF.woff') format('woff'), url('/files/fonts/GazelleFLF.ttf') format('truetype'), url('/files/fonts/GazelleFLF.svg#GazelleFLF') format('svg');
 }
 
+
+.font-pisan{
+	font:30px/34px 'PisanNormal',Georgia,Times,serif;
+}
+
+
+.fancy-serif-font{
+	font:30px/34px 'Gazelle',Georgia,Times,serif;
+}
+
+.font-shangrila, .fancy-ornamental-font{
+	font: 27px/36px 'ShangriLaNFRegular', Verdana, sans-serif;
+}
+
 /* Font usage examples:
 h1.fontface-gazelle {font: 60px/68px 'GazelleFLFRegular', Arial, sans-serif;letter-spacing: 0;}
 p.style1 {font: 18px/27px 'GazelleFLFRegular', Arial, sans-serif;}
@@ -272,14 +286,14 @@ h1, h2, .title {
 h2 {
 	margin: .1em auto .1em;
 	width:50%;
-	background: #548B54;
+	background: lightblue;
 	font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
 	letter-spacing:0.1em;
 	font-weight:normal;
-	-moz-transform:rotate(-1deg);
-	-webkit-transform:rotate(-1deg);
-	-o-transform:rotate(-1deg);
-	transform:rotate(-1deg);
+	-moz-transform:rotate(1deg);
+	-webkit-transform:rotate(1deg);
+	-o-transform:rotate(1deg);
+	transform:rotate(1deg);
 }
 h1, .player-info .player-name {
 	background: #291F16;
@@ -630,7 +644,7 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	color: gray;
 	background-color: black;
 }
-
+/* Like, ninja class, not the other kinds */
 .class-name{
 	font-weight:bold;
 	font-style:italic;
@@ -645,6 +659,7 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	-op-border-radius:16px;
 	border-radius:16px;
 }
+
 /* Note that ninja-error is used below as well. */
 
 .your-stats #player-profile-section {
@@ -1292,6 +1307,15 @@ iframe {
 	text-shadow: black 2px 2px 4px;
 }
 
+.shadowed{
+		color:rgba(200, 200, 200, .5);
+		text-shadow:2px 2px 2px gray;
+}
+
+.comforting{
+		color:lightgreen;
+}
+
 .player-status.ninja-notice{
 	color:orange;
 	background-color:#660000;
@@ -1773,13 +1797,6 @@ iframe {
 	width: 100%;
 }
 
-.font-pisan{
-	font:30px/34px 'PisanNormal',Georgia,Times,serif;
-}
-
-.font-shangrila{
-	font: 27px/36px 'ShangriLaNFRegular', Verdana, sans-serif;
-}
 
 /* reactive-panel subparts */
 #category-bar {
@@ -1911,31 +1928,18 @@ select option #blue-class-select {
 	font-weight:bold;
 }
 
+/* =================== Npc related styles =============== */
+
 #npc-list li {
 	white-space: nowrap;
 }
 
-
-/* Class to add to locations that show character names */
-.char-name {
+.npc{
 	font-style:italic;
-	color:#BD7A26;
-	background-color:#1D0F00;
+	text-shadow: rgb(11, 9, 9) 2px 2px 2px;
 }
 
-/* Methods for returning from results pages, large links for easy clickability */
-.block{
-	display:block;
-}
-.return-to-location{
-	font-size: 1.3em;
-	margin-top: 1.7em;
-	margin-bottom; .7em;
-	margin-left: 1em;
-}
-.return-to-location:before{
-	content: '<< ';
-}
+
 /* Use the .speech class for character speech */
 .speech{
 	font-style:none;
@@ -1948,6 +1952,33 @@ select option #blue-class-select {
 	content: '"';
 }
 
+/* ==================== Character related styles ======== */
+
+/* Class to add to locations that show character names */
+.char-name {
+	font-style:italic;
+	color:#BD7A26;
+	background-color:#1D0F00;
+}
+
+/* Methods for returning from results pages, large links for easy clickability */
+.block{
+	display:block;
+}
+
+/* ======================== Location/place styles ====================== */
+
+.return-to-location{
+	font-size: 1.3em;
+	margin-top: 1.7em;
+	margin-bottom; .7em;
+	margin-left: 1em;
+}
+.return-to-location:before{
+	content: '<< ';
+}
+
+
 .attack-again{
 	display:inline-block;
 	padding: .3em;
@@ -1957,10 +1988,7 @@ select option #blue-class-select {
 	border-radius: 5px;
 }
 
-.npc{
-	font-style:italic;
-	text-shadow: rgb(11, 9, 9) 2px 2px 2px;
-}
+/* Mimicing styles */
 
 .link-as-button, .link-to-button{
 	display:inline-block;
@@ -1969,6 +1997,8 @@ select option #blue-class-select {
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 }
+
+/* Back to page level styles */
 
 .unread-count, .unread-count a {
     display:inline-block;
@@ -2037,29 +2067,6 @@ select option #blue-class-select {
 
 .gold, .gold-count {
 	color:goldenrod;
-}
-
-
-/* IE7 specific styles */
-.ie7 .body-default {
-    background-color: black;
-}
-.ie7 body {
-    background-color: black;
-}
-.ie7 iframe{
-    border:none;
-}
-.ie7 #login-bar form #login-button{
-    height:1.5em;
-    font-size:1.1em;
-    vertical-align:middle;
-}
-.ie7 #category-bar{
-    font-size: 30px;
-}
-.ie7 #subcategory-bar a{
-    font-size: 10px;
 }
 
 .account-issues p, .account-issues form{
