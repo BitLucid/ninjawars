@@ -97,6 +97,7 @@
 </div>
 {/if}
 
+<section class='clearfix'>
 {if $enemyCount gt 0}
 <div style='width:55%;float:left;margin-left:0;margin-right:0'>
   <h3>Enemies</h3>
@@ -133,7 +134,7 @@
     <li style='position:relative;margin-bottom:.5em'>
        <a style='width:10em;display:inline-block;' href='player.php?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname}</a>
 		{if $char_info.health}
-       <span style='margin-left:2em;width:6em;display:inline-block;'>
+       <span style='margin-left:2em;width:6.5em;display:inline-block;'>
          {include file="health_bar.tpl" health=$loop_peer.health health_percent=$loop_peer.health_percent}
        </span>
 <!-- (level {$loop_peer.level}) -->
@@ -145,9 +146,11 @@
 {else}
 <p style='width:45%;float:right;margin-left:0;margin-right:0;'>No nearby ninja, <em class='char-name'>{$username|escape}</em>.</p>
 {/if}
+</section><!-- End of clearfix section -->
 
 {if count($recent_attackers) gt 0}
 	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
 {/if}
 
+<!-- Display recently active ninja -->
 {include file="list.active.tpl" active_ninja=$active_ninjas}
