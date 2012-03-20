@@ -20,7 +20,7 @@ $logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
 // TODO: When the message table is created, delete from mail more stringently.
 // TODO: Set up a backup of the players table.
 
-$keep_players_until_over_the_number                   = 2000;
+$keep_players_until_over_the_number                   = 1000;
 $days_players_have_to_be_older_than_to_be_unconfirmed = 60;
 $maximum_players_to_unconfirm                         = 200;
 
