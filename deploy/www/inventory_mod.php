@@ -117,19 +117,28 @@ if ($target_id && ($link_back == "" || $link_back == 'player') && $target_id != 
 
 //$dimMak = $speedScroll = $iceScroll = $fireScroll = $shuriken = $stealthScroll = $kampoFormula = $strangeHerb = null;
 
+/*
+Use this sql to see item damage and effects:
+select item_display_name, target_damage, effects.* from item join item_effects on item_id = _item_id join effects on effect_id = _effect_id;
+
+
+*/
+
 // Exceptions to the rules, using effects.
 
 if ($item->hasEffect('wound')) {
 	// Minor damage by default items.
 	$item->setTargetDamage(rand(1, $item->getMaxDamage())); // DEFAULT, overwritable.
 
+	// e.g. Shuriken slices, for some reason.
 	if ($item->hasEffect('slice')) {
-		// Minor piercing damage.
-		$item->setTargetDamage(rand(1, $player->getStrength()) + $near_level_power_increase);
+		// Minor slicing damage.
+		$item->setTargetDamage(rand(1, max(9, $player->getStrength()-4)) + $near_level_power_increase);
 	}
 	
+	// Piercing weapon, and actually does any damage.
 	if ($item->hasEffect('pierce') && $item->getMaxDamage()) {
-		// BUG: For some reason caltrops are doing damage is you don't run the max damage check above.
+		// BUG: For some reason caltrops are doing damage is you don't run the max damage check above, probably because like an idiot I added pierce effect to them.
 		// Minor static piercing damage, e.g. 1-50 plus the near level power increase.
 		$item->setTargetDamage(rand(1, $item->getMaxDamage()) + $near_level_power_increase);
 	}

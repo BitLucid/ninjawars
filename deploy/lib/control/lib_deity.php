@@ -198,11 +198,12 @@ function revive_players($params=array()) {
 							CASE WHEN level >= coalesce(class_skill_level, skill_level)
 							THEN (150+(level*3))
 							ELSE (100+(level*3)) END
-							FROM (SELECT * FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE skill_id = 5) AS class_skill ';
+							FROM (SELECT * FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE skill_id = 5) 
+								AS class_skill ';
 							// Midnight heal skill id is the 5.
 	}
 
-	$up_revive_players .= " WHERE player_id IN ($select) ";
+	$up_revive_players .= ' WHERE player_id IN ('.$select.') ';
 
 	if (!$just_testing) {
 		$up_revive_players .= ' AND coalesce(class_skill._class_id, players._class_id) = players._class_id';
