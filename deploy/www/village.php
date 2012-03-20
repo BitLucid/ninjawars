@@ -16,7 +16,7 @@ $view_all      = in('view_all');
 $command       = in('command');
 $sentMessage   = in('message');
 $sent          = false;
-$user_id       = get_user_id();
+$user_id       = self_char_id();
 $target        = $_SERVER['PHP_SELF'];
 $channel       = 1;
 
