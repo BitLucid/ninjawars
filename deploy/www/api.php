@@ -54,7 +54,7 @@ function json_char_search($term, $limit) {
 
 function json_latest_message() {
 	DatabaseConnection::getInstance();
-	$user_id = (int) get_user_id();
+	$user_id = (int) self_char_id();
 
 	$statement = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 and unread = 1 ORDER BY date DESC LIMIT 1");
 	$statement->bindValue(':userID1', $user_id);
@@ -67,7 +67,7 @@ function json_latest_message() {
 
 function json_latest_event() {
 	DatabaseConnection::getInstance();
-	$user_id = (int) get_user_id();
+	$user_id = (int) self_char_id();
 
 	$statement = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC LIMIT 1");
 	$statement->bindValue(':userID', $user_id);
@@ -103,8 +103,8 @@ function json_send_chat($msg) {
 	if (is_logged_in()) {
 		require_once(LIB_ROOT."control/lib_chat.php");
 		$msg = trim($msg);
-		$user_id = (int) get_user_id();
-		send_chat(get_user_id(), $msg);
+		$user_id = (int) self_char_id();
+		send_chat($user_id, $msg);
 	}
 }
 

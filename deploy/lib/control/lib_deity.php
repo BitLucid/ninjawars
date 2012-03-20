@@ -73,6 +73,43 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 	return $update->rowCount();
 }
 
+// Take all characters, and heal them one step closer to their maximum base.
+function heal_characters($basic=8, $with_level=true, $maximum_heal='200'){
+	/*
+	Goal:  Faster regen for higher level.
+	See the balance sheet: 
+	https://docs.google.com/spreadsheet/ccc?pli=1&key=0AkoUgtBBP00HdGs0Tmk4bC10TXN0SUJYXzdYMVpFZFE#gid=0
+	*/
+
+
+	$level_add = '+ cast(floor(level/10) AS int)';
+	if(!$with_level){
+		$level_add = '';
+	}
+	// Take level, divide by 10, throw away remainder, and add ten for every whole tenth level.
+	// e.g. 99 / 10 = 9.9 floored = 9 * 10 = 90
+	$level_limit = 'cast((floor(level /10) * 10) AS int)';
+	// Add an amount
+	$s = DatabaseConnection::$pdo->prepare(
+		"UPDATE players SET health = numeric_smaller(
+			(health+:basic ".$level_add."), 
+			cast((:max_heal + ".$level_limit.") AS int)) 
+		WHERE health > 0 AND NOT cast(status&:poison AS bool) AND health < (:max_heal2 + ".$level_limit.")");
+	// Heal a character that is alive, and isn't at their level max yet.
+	$s->bindValue(':basic', $basic);
+	$s->bindValue(':max_heal', $maximum_heal);
+	$s->bindValue(':max_heal2', $maximum_heal);
+	$s->bindValue(':poison', POISON);
+	$s->execute();
+	DatabaseConnection::$pdo->query('COMMIT');
+	// Higher levels now heal faster.
+	// Higher levels should now also heal to a larger maximum, level dependent.  
+	// e.g. level 100 gets +100 in how many hitpoints they'll heal up to,
+	// level 99 gets +90 in how many hitpoints they'll heal up to.
+}
+
+
+
 /**
  * Revive up to a small max in minor hours, and a stable percent on major hours.
  * Defaults
