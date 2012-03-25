@@ -53,6 +53,10 @@
     #map td.north-south-road{
         background-color:rgb(55, 55, 55);
     }
+
+    #map td.west-east-road, #map td.east-west-road{
+        background-color:rgb(65, 65, 65);
+    }
     
     #map td.bath-house{
         background-color:rgb(203,66,60);
