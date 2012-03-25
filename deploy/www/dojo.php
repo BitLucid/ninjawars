@@ -47,7 +47,7 @@ $requested_identity     = in('requested_identity'); // Untrusted class identity 
 if (is_logged_in()) {
 
     // Get the character data.
-    $char_id = get_char_id();
+    $char_id = self_char_id();
 	$char = $player    = new Player($char_id);
 	$userLevel = $player->vo->level;
 	$userKills = $player->vo->kills;

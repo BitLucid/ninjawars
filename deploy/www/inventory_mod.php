@@ -280,7 +280,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			
 					if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 						$alternateResultMessage .= "__TARGET__ takes ".$item->getTargetDamage()." damage.";
-						if($self_target){
+						if($self_use){
 							$result .= "You take ".$item->getTargetDamage()." damage.";
 						}
 						$targetObj->vo->health = $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
