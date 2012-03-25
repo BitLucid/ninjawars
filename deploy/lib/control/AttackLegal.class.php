@@ -138,7 +138,7 @@ class AttackLegal
 		} else if ($attacker->vo->active == 0) {
 		    $this->error = 'You cannot attack when your ninja is retired/inactive.';
 		} else if ($target->health() < 1) {
-			$this->error = 'Your target is a ghost.';
+			$this->error = "They're already dead.";
 		} else if ($target->hasStatus(STEALTH) && !$ignores_stealth) {
 			// Attacks that ignore stealth will skip this.
 			$this->error = 'Your target is stealthed. You can only hit this ninja using certain techniques.';
