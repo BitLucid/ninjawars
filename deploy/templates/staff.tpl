@@ -11,13 +11,15 @@
 <p>
   <a href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' <{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}>?subject=NinjaWars%20question:%20">{$smarty.const.SUPPORT_EMAIL_NAME|escape} &lt;{$smarty.const.SUPPORT_EMAIL|escape}&gt;</a>
 </p>
-<div class='developers'>
+<section id='company'>
+  <h3>Brought to you by</h3>
+  <h4 style='width:50%;margin:.5em auto .5em'><a href='http://bitlucid.com'>BitLucid, Inc.</a></h4>
+</section>
+
+<section class='developers'>
   <h3 class='subtitle'>Developers</h3>
   <div class='developer'>
-    <div class='gtalk-chat'>
-      <iframe src="http://www.google.com/talk/service/badge/Show?tk=z01q6amlq2pc0od9ms6m36jk9p0lncem83qghsqacgi5e1akm10254oogtclbbh96d0c5870tgkb63h2b66ntkg7on0crqn451ui988hbpk53ikv71fhsa3d5f84j2shna8ijsf474r80ut32oql3dio4ov6brdi3cn49bpuvi2j40u91hrrrea806bsnlhnelc&amp;w=200&amp;h=60" frameborder="0" allowtransparency="true" width="200" height="60"></iframe>
-    </div>
-    <a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer
+    <h5><a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer</h5>
     <style type='text/css'>
     	{literal}
     	ul#social-networks{
@@ -34,13 +36,9 @@
     	{/literal}
     </style>
     <ul id='social-networks' style='margin-top:1em'>
-      <li> <a target='_blank' rel='me' href="http://twitter.com/tchalvak"><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> on Twitter</a></li>
-      <li> <a target='_blank' rel='me' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> on Facebook</a> </li>
-
-      
-      <li> on AIM: <em>Tchalvak</em> </li>
-	  <li>or check out my professional programming website</li>
-	  <li><a target='_blank' href='http://royronalds.com' rel='me' class='ext-link'>royronalds.com</a></li>
+      <li> <a target='_blank' rel='me' href="http://twitter.com/tchalvak"><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> @tchalvak on Twitter</a></li>
+      <li> <a target='_blank' rel='me' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> tchalvak on Facebook</a> </li>
+      <li><em> or tchalvak on AIM</em></li>
     </ul>
     <div style='margin-top:1em'><a class='expand-link'>More info &amp; bio <img alt="&gt;&gt;&gt;" src="images/smallArrows.png"></a></div>
     <div class='developer-info'>
@@ -61,14 +59,14 @@
         <a href="http://www.odesk.com/referrals/track/rronalds?redir=http%3A%2F%2Fwww.odesk.com%2Fusers%2F%7E%7E46ddd5d105882453"><img src="http://www.odesk.com/images/banners/banner_provider_468x60.gif" alt="The On Demand Global Workforce - oDesk" width="468" height="60"></a>
       </div>
 
-      <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Ronalds</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" title="Make your own badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Make your own badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Ronalds" style="border: 0px;"></a><!-- Facebook Badge END --></div>
+      <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Ronalds</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" title="Facebook badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Facebook badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Ronalds" style="border: 0px;"></a><!-- Facebook Badge END --></div>
     </div><!-- End of .developer-info -->
   </div>
   <div class='developer'>
-    <span style="color:white">Beagle / Al Vazquez</span> - Programmer and Server Administrator
+    <h5><span style="color:white">Beagle / Al Vazquez</span> - Programmer and Server Administrator</h5>
     <!-- No developer info here. -->
   </div>
-</div><!-- End of the Developers section -->
+</section><!-- End of the Developers section -->
 
 <div class='other-credits'>
   <h3 class='subtitle'>Other Credits</h3>

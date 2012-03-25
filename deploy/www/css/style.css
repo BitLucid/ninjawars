@@ -889,7 +889,7 @@ body.solo-page h1 {
 	text-align: center;
 }
 
-.created-by { /*currently unused */
+.created-by {
 	display:none;
 	margin-top:10px;
 	margin-bottom: 30px;
@@ -1645,7 +1645,12 @@ iframe {
 .q-and-a .answer {
 	text-align: justify;
 }
-
+.developers .developer{
+		margin:1em;
+}
+.developers h5{
+	background-color:transparent;
+}
 .developer {
 	border-left:thin #8B0000 solid;
 	border-top:thin #8B0000 solid;
@@ -1820,7 +1825,6 @@ iframe {
 }
 #category-bar ul {
 	height:100%;
-	display: inline;
 	z-index:3;
 }
 #category-bar li {
@@ -1830,6 +1834,7 @@ iframe {
 	height:100%;
 	float:left;
 	text-align:center;
+	display:inline-block;
 }
 #category-bar a {
 	/*font:30px/34px 'PisanNormal',Georgia,Times,serif;*/
@@ -1873,7 +1878,7 @@ iframe {
 }
 
 #subcategory-bar li {
-	display:inline;
+	display:inline-block;
 	margin: 0;
 }
 #subcategory-bar ul#self-subcategory {
