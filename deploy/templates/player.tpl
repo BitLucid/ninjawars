@@ -18,13 +18,13 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
     <h1 class='player-name'>{$player|escape}</h1>
 
-    <div class='player-ranking-linkback'>
+    <nav class='player-ranking-linkback'>
       <a href='list.php?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none'>
         <img src='{$smarty.const.IMAGE_ROOT}return-triangle.png' alt='&lsaquo;Rank {$rank_spot|escape}' title='&lsaquo;Return to rank {$rank_spot}' style='width:50px;height:50px;float:left;'>
       </a>
-    </div>
+    </nav>
 
-  <div class='player-titles centered'>
+  <article id='player-titles' class='centered'>
 
 	{include file="gravatar.tpl" gurl=$gravatar_url}
 
@@ -45,34 +45,37 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
     </span>
 	{/if}
 
-  </div>
+  </article>
+{literal}
+<style>
+#player-attack{
+
+}
+</style>
+{/literal}
+
 
 {if !$self}
-  <table id='player-profile-table'>
+  <section id='player-interact'>
 	{if $attack_error}
-    <tr>
-      <td><div class='ninja-error centered'>Cannot Attack: {$attack_error}</div></td>
-    </tr>
-  </table>
+    <div class='ninja-error centered'>Cannot Attack: {$attack_error}</div>
+  </section>
 	{else}
-    <tr>
-      <td colspan='2'>
-        <table id='player-profile-attack'>
+    <div id='attacks' style='width:95%;margin:0 auto'>
+        <table id='player-attack'>
           <tr>
             <td id='attacking-choices'>
               <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
-                <span id='duel'>
-                  <label>Duel ({getTurnCost skillName="duel"}) <input id="duel" type="checkbox" {if $duel_checked}checked{/if} name="duel"></label>
-                </span>
+                <label id='duel'>
+                  Duel ({getTurnCost skillName="duel"}) <input id="duel" type="checkbox" {if $duel_checked}checked{/if} name="duel">
+                </label>
 
 		{foreach from=$combat_skills item="skill"}
-                <span id='{$skill.skill_internal_name|escape}'>
-                  <label>
+                <label id='{$skill.skill_internal_name|escape}'>
                     {$skill.skill_display_name|escape}
                     ({getTurnCost skillName=$skill.skill_display_name})
                     <input id="{$skill.skill_internal_name|escape}" type="checkbox" {if $skill.checked}checked{/if} name="{$skill.skill_internal_name|escape}">
-                  </label>
-                </span>
+                </label>
 		{/foreach}
 
                 <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
@@ -110,66 +113,66 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
             </td>
           </tr>
         </table>
-      </td>
-    </tr>
-  </table>
-  <div id='skills-section'>
-		{if count($targeted_skills) gt 0}
-    <form id="skill_use" class="skill_use" action="skills_mod.php" method="post" name="skill_use">
-      <ul id='skills-use-list'>
-			{foreach from=$targeted_skills item="skill"}
-        <li>
-          <input id="command" class="command" type="submit" value="{$skill.skill_display_name}" name="command" class="formButton">
-          <input id="target" class="target" type="hidden" value="{$target|escape}" name="target">
-          ({getTurnCost skillName=$skill.skill_display_name} Turns)
-        </li>
-			{/foreach}
-      </ul>
-    </form>
-		{/if}
-  </div>
+    </div><!-- End of attacking section -->
+
+    <div id='skills-section' style='padding:1em 2em;text-align:left'>
+      {if count($targeted_skills) gt 0}
+      <form id="skill_use" class="skill_use" action="skills_mod.php" method="post" name="skill_use">
+        <ul id='skills-use-list'>
+        {foreach from=$targeted_skills item="skill"}
+          <li>
+            <input id="command" class="command" type="submit" value="{$skill.skill_display_name}" name="command" class="formButton">
+            <input id="target" class="target" type="hidden" value="{$target|escape}" name="target">
+            ({getTurnCost skillName=$skill.skill_display_name} Turns)
+          </li>
+        {/foreach}
+        </ul>
+      </form>
+      {/if}
+    </div>
+
+  </section>
 	{/if} <!-- End of the attacking-had-no-errors section -->
 
 {/if} <!-- End of the "not self" viewing section -->
 
-  <div class='player-stats centered'>
+  <section class='player-stats centered'>
   <!-- Will display as floats horizontally -->
-    <span class='player-last-active'>
+    <small class='player-last-active'>
       Last active
 {if $player_info.days gt 0}
       {$player_info.days} days ago
 {else}
       today
 {/if}
-    </span>
+    </small>
 {if $player_info.bounty gt 0}
-    <span class='player-bounty'><a class='bounty-link' href='doshin_office.php' target='main'>{$player_info.bounty} bounty</a></span>
+    <small class='player-bounty'><a class='bounty-link' href='doshin_office.php' target='main'>{$player_info.bounty} bounty</a></small>
 {/if}
-  </div>
+  </section>
 
 {if is_logged_in() and !$self}
 
-  <div class='player-communications centered'>
+  <section class='player-communications centered'  style='margin-bottom:1.5em'>
 	<div>
       <form id='send_mail' action='player.php' method='get' name='send_mail'>
-        <div>
           <input type='hidden' name='target_id' value='{$player_info.player_id|escape}'>
           <div><input id='messenger' type='hidden' value='1' name='messenger'></div>
           <input type='text' name='message' size='30' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}">
           <input type='submit' value='Send Message' class='formButton'>
-        </div>
       </form>
 	</div>
 
 	<span id='message-ninja'>
-      <a href='messages.php?target_id={$player_info.player_id|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em></a>
+      <a href='messages.php?target_id={$player_info.player_id|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em>
+      </a>
     </span>
-
-  </div>
 
   <div class='set-bounty centered'>
     <a class='set-bounty-link' href='doshin_office.php?target={$player_info.uname|escape:'url'}'>Add bounty</a>
   </div>
+
+  </section>
 
 {/if}
 
@@ -196,32 +199,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
         <span class='subtitle'>Clan:</span>
         <a href='clan.php?command=view&amp;clan_id={$clan_id}'>{$clan_name|escape}</a>
       </p>
-{*
-Clan members are no longer shown on a player's profile, 'cause it just made it too dirty anyway.
-      <div class='clan-members centered'>
 
-{if count($clan_members) > 0}
-        <div class='clan-members'>
-          <h3 class='clan-members-header'>Clan members</h3>
-          <ul>
-	{foreach from=$clan_members item="member"}
-		{if $member.health < 1}
-			{assign var="added_class" value=' injured'}
-		{else}
-			{assign var="added_class" value=''}
-		{/if}
-
-            <li class='clan-member{$added_class}'>
-              <a href='player.php?target_id={$member.player_id|escape:'url'|escape}'>{$member.uname|escape}</a>
-            </li>
-	{/foreach}
-          </ul>
-        </div>
-{/if}
-
-      </div>
-
-*}
     </div>
 {/if}
 

@@ -689,7 +689,7 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	clear:both;
 }
 
-#player-profile-attack .attacking-choices {
+#player-attack .attacking-choices {
 	border:none;
 	padding-left: 5px;
 	padding-right: 5px;
@@ -697,11 +697,11 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	padding-bottom: 5px;
 	text-align: center;
 }
-#player-profile-attack span.duel, #player-profile-attack .blaze, #player-profile-attack .deflect {
+#player-attack span.duel, #player-attack .blaze, #player-attack .deflect {
 	border:none;
 	padding: 1px;
 }
-#player-profile-table #skills-section, #player-profile-table #inventory-items {
+#player-interact #skills-section, #player-interact #inventory-items {
 	border:none;
 	padding: 5px;
 	text-align: center;
@@ -1429,15 +1429,22 @@ iframe {
 .player-info .player-stats, .player-info .player-clan {
 	margin-bottom: 1.5em;
 }
-#player-profile-table {
+.player-info #player-titles{
+	font-size:1.7em;
+}
+
+#player-interact{
 	width:100%;
 	text-align:center;
+	padding:1em;
 }
-#player-profile-attack {
+#player-attack {
 	width:100%;
+	font-size:1.5em;
 	text-align:center;
 	margin:0;
 	padding:0;
+	background-color:none;
 }
 
 .player-info .Dead {
