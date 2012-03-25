@@ -103,9 +103,21 @@
 	<a href='account.php'>View your account info</a>
 </div>
 
+
+
+<footer id='stats-footer' class='navigation'>
+<h3>Assistance</h3>
 <p>
-  If you require account help email: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>
+  If you require account help email: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>, 
+  <br>
+  or just get in touch with one or the other of us via any means on the <a href='staff.php'>staff page</a>.
 </p>
+
+      
+      <!-- Stuff like catchphrases, links, and the author information -->
+      {include file='linkbar_section.tpl'}
+
+</footer>
 
 {literal}
 <!-- Google Code for View self/ninja stats page. Conversion Page -->

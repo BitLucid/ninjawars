@@ -58,6 +58,10 @@
         background-color:rgb(203,66,60);
     }
 
+    #map td.village-square{
+        background-color:teal;
+    }
+
     {/literal}
     </style>
     

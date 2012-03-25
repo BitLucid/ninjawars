@@ -1111,7 +1111,7 @@ iframe {
 	border-top:1px solid #666;
 }
 
-#index-footer a {
+#index-footer a, #stats-footer a {
 	color: gray;
 	text-decoration: underline;
 	font-weight: normal;
@@ -1119,13 +1119,21 @@ iframe {
 	margin:.2em;
 }
 
-#index-footer a:hover {
+#index-footer a:hover , #stats-footer a:hover{
 	-webkit-transition-property: all;
 	-webkit-transition-duration: 900ms;
 	-webkit-transition-timing-function: linear;
 	-webkit-transition-delay: initial;
 	border-color: white;
 	color:white;
+}
+
+#stats-footer{
+	font-size:smaller;
+	margin-top:3em;
+}
+#stats-footer #footer-top-bar{
+	text-align:center;
 }
 
 #footer-top-bar{

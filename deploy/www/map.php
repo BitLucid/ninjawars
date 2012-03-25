@@ -37,7 +37,7 @@ $nodes = array(
 	
 		array('name'=>'Rice Paddy', 'type'=>'wheat-field', 'url'=>'', 'tile_image'=>null, 'xcoord'=>0, 'ycoord'=>2, 'id'=>10)
 		, array('name'=>'Casino', 'type'=>'casino building', 'url'=>'casino.php', 'tile_image'=>'elemental_coin.png', 'xcoord'=>0, 'ycoord'=>2, 'id'=>11)
-		, array('name'=>'Road', 'type'=>'north-south-road', 'tile_image'=>'north-south-road.png', 'xcoord'=>0, 'ycoord'=>2, 'id'=>12)
+		, array('name'=>'Village Square', 'type'=>'village-square', 'url'=>'village.php', 'tile_image'=>null, 'xcoord'=>0, 'ycoord'=>2, 'id'=>12)
 		, array('name'=>'Fields', 'type'=>'rice-field', 'url'=>'work.php', 'tile_image'=>'concentric_field.png', 'xcoord'=>2, 'ycoord'=>13, 'id'=>13)
 		, array('name'=>'Fields', 'type'=>'rice-field', 'url'=>'work.php', 'tile_image'=>'concentric_field.png', 'xcoord'=>2, 'ycoord'=>14, 'id'=>14)
 		// Unnamed node.
