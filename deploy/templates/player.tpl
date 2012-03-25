@@ -24,9 +24,8 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
       </a>
     </nav>
 
-  <article id='player-titles' class='centered'>
+  <article id='player-titles' class='centered' style='font-size:larger'>
 
-	{include file="gravatar.tpl" gurl=$gravatar_url}
 
     <span class='player-class {$target_class_theme|escape}'>
       <img id='class-shuriken' src='{$smarty.const.IMAGE_ROOT}small{$target_class_theme|escape}Shuriken.gif' alt=''>
@@ -45,11 +44,13 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
     </span>
 	{/if}
 
+  {include file="gravatar.tpl" gurl=$gravatar_url}
+
   </article>
 {literal}
 <style>
-#player-attack{
-
+#attacking-choices label{
+  margin-right:.5em;
 }
 </style>
 {/literal}
@@ -61,7 +62,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
     <div class='ninja-error centered'>Cannot Attack: {$attack_error}</div>
   </section>
 	{else}
-    <div id='attacks' style='width:95%;margin:0 auto'>
+    <div id='attacks' style='width:95%;margin:0 auto;font-size:larger;clear:both'>
         <table id='player-attack'>
           <tr>
             <td id='attacking-choices'>
@@ -95,7 +96,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 				  	You have no items.
 				  </div>
 		{else}
-                  <input type="submit" value="Use" class="formButton">
+                  <input type="submit" value="Use Item" class="formButton">
                   <select id="item" name="item">
 			{foreach from=$items item="item"}
 				{if $item.other_usable && $item.count>0}
@@ -136,21 +137,6 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 {/if} <!-- End of the "not self" viewing section -->
 
-  <section class='player-stats centered'>
-  <!-- Will display as floats horizontally -->
-    <small class='player-last-active'>
-      Last active
-{if $player_info.days gt 0}
-      {$player_info.days} days ago
-{else}
-      today
-{/if}
-    </small>
-{if $player_info.bounty gt 0}
-    <small class='player-bounty'><a class='bounty-link' href='doshin_office.php' target='main'>{$player_info.bounty} bounty</a></small>
-{/if}
-  </section>
-
 {if is_logged_in() and !$self}
 
   <section class='player-communications centered'  style='margin-bottom:1.5em'>
@@ -175,6 +161,21 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
   </section>
 
 {/if}
+
+  <section class='player-stats centered'>
+  <!-- Will display as floats horizontally -->
+    <small class='player-last-active'>
+      Last active
+{if $player_info.days gt 0}
+      {$player_info.days} days ago
+{else}
+      today
+{/if}
+    </small>
+{if $player_info.bounty gt 0}
+    <small class='player-bounty'><a class='bounty-link' href='doshin_office.php' target='main'>{$player_info.bounty} bounty</a></small>
+{/if}
+  </section>
 
     <!-- Clan leader options on players in their clan. -->
 {if $clan}

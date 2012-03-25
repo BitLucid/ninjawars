@@ -113,9 +113,10 @@
   or just get in touch with one or the other of us via any means on the <a href='staff.php'>staff page</a>.
 </p>
 
-      
-      <!-- Stuff like catchphrases, links, and the author information -->
-      {include file='linkbar_section.tpl'}
+      <div style='margin:2em 0'>
+        <!-- The catchphrases and links -->
+        {include file='footerlinks.tpl'}
+      </div>
 
 </footer>
 

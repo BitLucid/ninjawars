@@ -132,6 +132,7 @@
 	{/if}
 
 	<hr>
+<nav>
 	{if $target}
 
 		{if $attack_again}
@@ -143,4 +144,4 @@
 	{/if}
 
 	Start your combat <a href="list.php" class='central-location'> from the ninja list.</a>
-
+</nav>

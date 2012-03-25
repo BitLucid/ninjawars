@@ -178,8 +178,7 @@ div:empty {
 input[type="button"],
 input[type="reset"],
 tt,
-big,
-small {
+big{
   border:5px solid orange!important;
 }
 

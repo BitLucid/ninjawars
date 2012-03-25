@@ -577,6 +577,9 @@ legend {
 table {
 	border-collapse:collapse;
 	border:none;
+	font-size: 12px;
+	font-family: arial, helvetica, sans-serif;
+	background-color:#333333;
 }
 .outer-table {
 	border-top: 1px solid DarkKhaki;
@@ -589,23 +592,28 @@ th {
 	vertical-align: baseline;
 }
 td {
-	font-family: arial, helvetica, sans-serif;
-	font-size: 12px;
-	line-height: 0.8;
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 0;
 	padding-bottom:1px;
 }
-tr {
-	background-color:#333333;
-}
+/*
 .odd {
 	background-color:#3D3D3D;
 }
+.even {
+	background-color:#333333;
+}*/
+tr.oddeven:nth-child(odd), .oddeven tr.td:nth-child(odd) {
+	background: rgba(201, 201, 201, .1);
+}
 table.playerTable {
 	width: 100%;
-	background-color: #ccb094;
+	/*background-color: #ccb094;*/
+	line-height: 0.8;
+}
+.playerTable tr:nth-child(odd){
+	background: rgba(201, 201, 201, .1);
 }
 table.playerTable .classCell div {
 	height:100%;
@@ -617,6 +625,11 @@ table.playerTable .classCell img {
 table.playerTable a{
 	text-shadow: black 1px 1px 1px;
 }
+/*
+table.playerTable tr.odd{
+	background-color:#3D3D3D;
+}
+*/
 
 /* Profile and Player list Class Colors */
 .class-name{
@@ -696,6 +709,7 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	padding-top: 5px;
 	padding-bottom: 5px;
 	text-align: center;
+	background-color:transparent;
 }
 #player-attack span.duel, #player-attack .blaze, #player-attack .deflect {
 	border:none;
@@ -721,6 +735,7 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	background-color: #555555;
 	padding-left: .8em;
 	padding-bottom: .4em;
+	padding-top:.3em;
 }
 .playerTable td {
 	line-height: 1.6em;
@@ -814,7 +829,7 @@ td.playerTable {
 	margin-bottom: auto;
 }
 body.solo-page #solo-container {
-	margin: 10px 30px 10px 30px;
+	padding: 10px 30px 10px 30px;
 }
 body.solo-page h1 {
 	margin-bottom:.5em;
@@ -1430,21 +1445,23 @@ iframe {
 	margin-bottom: 1.5em;
 }
 .player-info #player-titles{
-	font-size:1.7em;
+	font-size:1.5em;
 }
+
+/* Player profile page styling */
 
 #player-interact{
 	width:100%;
 	text-align:center;
 	padding:1em;
 }
-#player-attack {
+table#player-attack {
 	width:100%;
 	font-size:1.5em;
 	text-align:center;
 	margin:0;
 	padding:0;
-	background-color:none;
+	background-color:transparent;
 }
 
 .player-info .Dead {

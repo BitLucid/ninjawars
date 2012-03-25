@@ -11,7 +11,7 @@
 <table style="width: 25em;height:10em;margin-bottom:2em;">
 	{foreach from=$inventory item="item_info" key="item_name"}
 		{if $item_info.count gt 0}
-  <tr>
+  <tr class='oddeven'>
     <td style="font-size:1em;padding-bottom:.3em;text-align: right;padding-right:32%">
 			{if isset($item_info.self_use) && $item_info.self_use == 't'}
       <a href="inventory_mod.php?item={$item_info.item_id|escape:'url'|escape}&amp;selfTarget=1&amp;target_id={$char_id|escape:'url'|escape}&amp;link_back=inventory">
