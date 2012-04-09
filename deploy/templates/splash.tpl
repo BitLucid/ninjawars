@@ -23,7 +23,7 @@
 		  <span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
 		</nav>
 		<nav id='top-logo' style='width:50%;text-align:center;display:inline-block;vertical-align:top;margin-left: 2em;margin-right: 2em;'>
-          <a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='' width='200' height='100'></a>
+          <a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='NinjaWars' width='200' height='100'></a>
 		</nav>
       
         <nav role='navigation' id='subcategory-bar' class='navigation'>
