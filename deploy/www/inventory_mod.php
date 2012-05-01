@@ -31,7 +31,7 @@ $target_id  = in('target_id');
 
 $item = null;
 
-if (is_numeric($item_in)) {
+if ($item_in == (int) $item_in && is_numeric($item_in)) {
 	$item = $item_obj = getItemByID($item_in);
 } elseif (is_string($item_in)) {
 	$item = $item_obj = getItemByIdentity($item_in);
