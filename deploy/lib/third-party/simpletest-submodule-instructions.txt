@@ -1,0 +1,17 @@
+cd simpletest
+git submodule init
+git submodule update
+
+
+Whenever you want to pull the latest commit of the submodule:
+cd simpletest
+git submodule update
+
+
+This submodule was added by using (from the root of the repo):
+git submodule add git@github.com:BitLucid/simpletest.git deploy/lib/third-party/simpletest
+and then committing the submodule tracker & the directory:
+git commit -am "  Simpletest: Added simpletest as a submodule."
+
+Further issues?:
+http://git-scm.com/book/en/Git-Tools-Submodules
