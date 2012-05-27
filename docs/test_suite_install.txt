@@ -1,0 +1,17 @@
+
+Installing the test Suite (optional)
+-------------------------
+// Install pear if it's not already installed
+sudo apt-get install php-pear
+sudo pear channel-update pear.php.net
+sudo pear upgrade PEAR
+// Install php unit.
+sudo pear config-set auto_discover 1
+sudo pear install pear.phpunit.de/PHPUnit
+// Install selenium bridge
+sudo pear install phpunit/PHPUnit_Selenium
+// Test to see whether it's installed and working...
+phpunit --version
+
+// Optionally, install xdebug
+sudo apt-get install php5-xdebug
