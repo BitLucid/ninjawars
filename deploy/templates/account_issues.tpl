@@ -5,7 +5,6 @@
 	{elseif $error eq 'nouser'}
       No user with that email exists.
       Please <a href="signup.php">sign up</a> for an account, or <a href="staff.php">contact us</a> if you have other account issues.
-      Please allow a few minutes for the server load to go down, or else <a href="staff.php">contact us</a> if the problem persists.
 	{elseif $error eq 'alreadyconfirmed'}
       That account is already confirmed. If you are having problems logging in, please <a href="staff.php">Contact Us</a>.
 	{elseif $error eq 'emailfail'}
