@@ -2,7 +2,6 @@
 // Require the template engine.
 //require_once(LIB_ROOT.'third-party/template_lite/src/class.template.php');
 // See: http://templatelite.sourceforge.net/docs/index.html for the docs, it's a smarty-like syntax.
-require_once('Smarty.class.php');
 
 class NWTemplate extends Smarty {
 	public function __construct() {

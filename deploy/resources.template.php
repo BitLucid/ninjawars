@@ -9,7 +9,7 @@ define('DATABASE_NAME', __DB_NAME__);		// *** The name of the database to connec
 define('OFFLINE', __OFFLINE__);				// *** Controls if remote or local resources are used
 define('DEBUG', __DEBUG__);					// *** Shorter debugging constant name, set as false on live.
 define('PROFILE', __PROFILE__);				// *** Whether or not to do performance profiling
-define('DEBUG_ALL_ERRORS', __DEBUG_ALL__);	// *** Second debugging level, e.g. email debugging, only on if debug is also on.
+define('DEBUG_ALL_ERRORS', __DEBUG_ALL__);	// *** Second debugging level, e.g. email debugging, only works when debug is also on.
 define('SERVER_ROOT', __SERVER_ROOT__);		// *** The root deployment directory of the game
 define('WEB_ROOT', __WWW_ROOT__);			// *** The base URL used to access the game
 define('ADMIN_EMAIL', __ADMIN_EMAIL__);		// *** For logs/emailed errors.
@@ -20,7 +20,9 @@ define('SYSTEM_EMAIL_NAME', __SYSTEM_EMAIL_NAME__);
 define('ALERTS_EMAIL', __ALERTS_EMAIL__);
 define('TRAP_ERRORS', __TRAP_ERRORS__); // Whether to use the global error handler & oops page.
 
-// For not-in-the-repository constants.
+define('TEMPLATE_LIBRARY_PATH', 'smarty/Smarty.class.php'); // Template path for system install, /usr/share/php/smarty/Smarty.class.php, for example.
+
+// For location-specific, can-be-dynamic-or-not constants.
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
 define('LOGS', SERVER_ROOT.'resources/logs/'); // *** For all custom logging
 define('CONNECTION_STRING', 'pgsql:dbname='.DATABASE_NAME.';user='.DATABASE_USER);
