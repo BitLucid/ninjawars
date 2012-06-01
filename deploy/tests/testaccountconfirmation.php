@@ -1,12 +1,13 @@
 <?php
+require_once(substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'ninjawars')+10).'deploy/resources.php');
 // Core may be autoprepended in ninjawars
 
 $error_level = error_reporting();
-error_reporting(0); // Don't report any errors in the test library code.
+//error_reporting(0); // Don't report any errors in the test library code.
 require_once(LIB_ROOT.'third-party/simpletest/autorun.php'); // Include the testing library.
 error_reporting($error_level); // Return to normal error level.
 
-require_once(LIB_ROOT.'lib_auth.php');
+require_once(LIB_ROOT.'control/lib_auth.php');
 
 /* Account behavior
 
@@ -36,7 +37,7 @@ Login should also update "last logged in" data, but that's probably better in a 
 class TestAccountConfirmation extends UnitTestCase {
 	
 	function testSomething(){
-		$this->t(true);
+		$this->t(false);
 	}
 }
 
