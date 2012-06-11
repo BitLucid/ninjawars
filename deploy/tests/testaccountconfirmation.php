@@ -35,9 +35,27 @@ Login should also update "last logged in" data, but that's probably better in a 
 */
 
 class TestAccountConfirmation extends UnitTestCase {
+
+	function setUp(){
+		// Create test user, unconfirmed, whatever the default is for activity.
+	}
 	
-	function testSomething(){
+	function tearDown(){
+		// Delete test user.
+	}
+	
+	function attemptLoginOfUnconfirmedAccountShouldFail(){
 		$this->t(false);
+	}
+	
+	function confirmAccount(){
+		$this->t(false);
+	}
+	
+	function loginConfirmedAccount(){
+	}
+	
+	function loginConfirmedAccountWithInactivePlayerSucceeds(){
 	}
 }
 
