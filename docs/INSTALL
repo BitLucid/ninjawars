@@ -18,6 +18,10 @@ sudo apt-get install awstats git-core
 All Types of Deployment
 ---------------
 1. Set up your database if necessary:
+Become postgres user & enter database:
+sudo su postgres
+createuser -s kzqaiOrWhateverUsernameIsAppropriate
+createdatabase ninjawars
 
 -Set permissions in your pg_hba for the database, host, and user to match your configuration
 
@@ -25,11 +29,14 @@ All Types of Deployment
 
 Create the postgresql password hashing functions
 ---------------
+Using postgresql 9.1, run create extension pgcrypto from postgresql-contrib, using:
+echo "create extension pgcrypto" | psql -d nw
+For older versions:
 Determine the postgresql user shared folder.
 > pg_config --sharedir
 /usr/share/postgresql/8.4 (example)
 Run the module setup sql in the SHARE_DIRECTORY/contrib/pgcrypto.sql, e.g.
-> psql -d ninjawars -f /usr/share/postgresql/8.4/contrib/pgcrypto.sql
+> psql -d nw -f /usr/share/postgresql/8.4/contrib/pgcrypto.sql
 
 For the pgcrypto functions, see: http://www.postgresql.org/docs/8.3/static/pgcrypto.html
 For contrib install instructions, see: http://www.postgresql.org/docs/8.3/static/contrib.html
@@ -53,7 +60,7 @@ Using your working copy
 2. cp docs/gitignoreSAMPLE .gitignore
 3. cp docs/tchalvakSAMPLEresources.php deploy/resources.php
 4. mkdir -p deploy/resources/logs
-5. configure a virtualhost in apache
+5. configure a virtualhost in apache (e.g. ln -s config/nw.local /etc/apache2/sites-available/nw.local && ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local )
 6. mkdir deploy/templates/compiled
 7. chmod 777 deploy/templates/compiled
 
