@@ -1,0 +1,22 @@
+#!/bin/bash
+# To use this script, give it user execute permissions : sudo chmod u+rwx install
+sudo apt-get install apache2 php5 php5-pgsql postgresql postgresql-contrib libpq-dev
+sudo apt-get install perl liblingua-en-inflect-perl
+
+sudo su postgres
+createuser -s kzqai
+createdb nw
+cd `pg_config --sharedir`
+echo "create extension pgcrypto" | psql -d nw
+
+cd ~/ninjawars
+cp docs/harkSAMPLEhtaccess deploy/www/.htaccess
+ln -s docs/gitignoreSAMPLE .gitignore
+cp docs/tchalvakSAMPLEresources.php deploy/resources.php
+mkdir -p deploy/resources/logs
+mkdir deploy/templates/compiled
+sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local
+echo "Modify deploy/www.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
+restartapache
+
+echo "Finally: Restart apache, edit /etc/apache2/default to delete the 'AllowOverride None' option to allow .htaccess files to override apache configurations, and edit /etc/postgresql/9.1/main/pg_hba.conf to allow trusting of the local user so your app can use the database in a dev environment more simply."
