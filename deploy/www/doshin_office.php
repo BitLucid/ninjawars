@@ -1,5 +1,5 @@
 <?php
-$alive      = false;
+$alive      = true;
 $private    = false;
 
 if ($error = init($private, $alive)) {
