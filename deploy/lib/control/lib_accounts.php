@@ -211,6 +211,7 @@ function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $
 	return $sent;
 }
 
+// Create the account and the initial ninja for that account.
 function create_account_and_ninja($send_name, $params=array()) {
 	$send_email  = $params['send_email'];
 	$send_pass   = $params['send_pass'];
@@ -305,6 +306,7 @@ function validate_signup_phase4($enteredClass) {
 	return (boolean)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', array(':id'=>$enteredClass));
 }
 
+// Make a whole account non-operational, unable to login, and not active.
 function pauseAccount($p_playerID) {
 	$accountActiveQuery = 'UPDATE accounts SET operational = false WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)';
 	$playerConfirmedQuery = 'UPDATE players SET active = 0 WHERE player_id = :pid';
@@ -316,6 +318,11 @@ function pauseAccount($p_playerID) {
 	$statement = DatabaseConnection::$pdo->prepare($accountActiveQuery);
 	$statement->bindValue(':pid', $p_playerID);
 	$statement->execute();
+}
+
+// Render a ninja inactive, until they log in.
+function inactivate_ninja($char_id){
+	query('update players set active = 0 where player_id = :char_id', array(':char_id'=>$char_id)); // Toggle the active bit off until they login.
 }
 
 function changePassword($p_playerID, $p_newPassword) {

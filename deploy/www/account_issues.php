@@ -99,7 +99,7 @@ if (!$email && ($password_request || $confirmation_request)) {
 		$attemptedToSendEmail = true;
 	} else {
 		// Confirmation request.
-		if (!$data['confirmed']) {
+		if ($data['confirmed']) {
 			$error = 'alreadyconfirmed';
 		} else {
 			$attemptedToSendEmail = true;

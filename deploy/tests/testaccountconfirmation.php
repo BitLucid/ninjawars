@@ -1,6 +1,8 @@
 <?php
 require_once(substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'ninjawars')+10).'deploy/resources.php');
 // Core may be autoprepended in ninjawars
+require_once(LIB_ROOT.'base.inc.php');
+require_once(LIB_ROOT.'cleanup.inc.php');
 
 $error_level = error_reporting();
 //error_reporting(0); // Don't report any errors in the test library code.
@@ -8,6 +10,7 @@ require_once(LIB_ROOT.'third-party/simpletest/autorun.php'); // Include the test
 error_reporting($error_level); // Return to normal error level.
 
 require_once(LIB_ROOT.'control/lib_auth.php');
+require_once(LIB_ROOT.'control/lib_accounts.php');
 
 /* Account behavior
 
@@ -34,29 +37,85 @@ Login should also update "last logged in" data, but that's probably better in a 
 
 */
 
+function purge_test_accounts(){
+	$test_ninja_name = 'simpletest_ninja_name';
+	$active_email = 'test@example.com';
+	query('delete from players where player_id in 
+		(select player_id from players join account_players on _player_id = player_id join accounts on _account_id = account_id 
+			where active_email = :active_email or account_identity= :ae2 or uname = :uname)', 
+		array(':active_email'=>$active_email, ':ae2'=>$active_email, ':uname'=>$test_ninja_name)); // Delete the players
+	query('delete from account_players where _account_id in (select account_id from accounts 
+			where active_email = :active_email or account_identity= :ae2)', // Delete the account_players linkage.
+		array(':active_email'=>$active_email, ':ae2'=>$active_email));
+	query('delete from accounts where active_email = :active_email or account_identity= :ae2', array(':active_email'=>$active_email, ':ae2'=>$active_email)); // Finally, delete the test account.
+}
+
 class TestAccountConfirmation extends UnitTestCase {
+	var $test_email = 'text@example.com';
+	var $test_password = 'password';
+	var $test_ninja_name = 'simpletest_ninja_name';
 
 	function setUp(){
 		// Create test user, unconfirmed, whatever the default is for activity.
+		$preconfirm = true;
+		$confirm = rand(1000,9999); //generate confirmation code
+
+		// Use the function from lib_player
+		$player_params = array(
+			'send_email'    => $this->test_email
+			, 'send_pass'   => $this->test_password
+			, 'send_class'  => 'dragon'
+			, 'preconfirm'  => true
+			, 'confirm'     => $confirm
+			, 'referred_by' => 'ninjawars.net'
+		);
+		ob_start(); // Skip extra output
+		if (create_account_and_ninja($this->test_ninja_name, $player_params)) { // Create the player.
+			$error = 'There was a problem with creating a player account. Please contact us as mentioned below: ';
+		}
+		ob_end_clean();
 	}
 	
 	function tearDown(){
 		// Delete test user.
+		purge_test_accounts();
 	}
 	
-	function attemptLoginOfUnconfirmedAccountShouldFail(){
-		$this->t(false);
+	function testAttemptLoginOfUnconfirmedAccountShouldFail(){
+		$res = login_user($this->test_email, $this->test_password);
+		$this->assertFalse($res['success']);
+		$this->assertTrue($res['login_error']);
 	}
 	
-	function confirmAccount(){
-		$this->t(false);
+	function testConfirmAccount(){
+		$confirmed = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+		$this->t($confirmed);
 	}
 	
-	function loginConfirmedAccount(){
+	function testLoginConfirmedAccount(){
+		confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+		$res = login_user($this->test_email, $this->test_password);
+		$this->assertTrue($res['success']);
+		$this->assertFalse($res['login_error']);
 	}
 	
-	function loginConfirmedAccountWithInactivePlayerSucceeds(){
+	function testLoginConfirmedAccountWithInactivePlayerSucceeds(){
+		confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+		inactivate_ninja(get_char_id($this->test_ninja_name)); // Just make them fade off the active lists, inactive, don't pause the account
+		$res = login_user($this->test_email, $this->test_password);
+		$this->assertTrue($res['success']);
+		$this->assertFalse($res['login_error']);
 	}
+	
+	function testPauseAccountAndLoginShouldFail(){
+		confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+		pauseAccount(get_char_id($this->test_ninja_name)); // Fully pause the account, make the operational bit = false
+		$res = login_user($this->test_email, $this->test_password);
+		$this->assertFalse($res['success']);
+		$this->assertTrue($res['login_error']);
+	}
+	
+	// Test that ninja inactivation should make them not-attackable.
 }
 
 ?>

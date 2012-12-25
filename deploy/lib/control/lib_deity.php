@@ -39,6 +39,7 @@ function shorten_chat($message_limit=800) {
 	return (int) $deleted->rowCount();
 }
 
+// This actually toggles the "active" column on players, not the confirm column, and if they log in again, they're instantly active again.
 function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30, $just_testing=true) {
 	$change_confirm_to = ($just_testing ? '1' : '0'); // Only unconfirm players when not testing.
 	$minimum_days = 30;
@@ -49,7 +50,7 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 	$current_players = $sel_cur->fetchColumn();
 
 	if ($current_players < $keep_players) {
-		// *** If we're under the minimum, don't unconfirm anyone.
+		// *** If we're under the minimum, don't inactivate anyone.
 		return false;
 	}
 
