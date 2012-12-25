@@ -7,7 +7,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-$char_id = get_char_id();
+$char_id = self_char_id();
 $incoming_bet = in('bet');
 
 define('CASINO_DEFAULT', 0);
@@ -24,7 +24,7 @@ function casino_results($char_id, $incoming_bet){
     $negative = intval($incoming_bet)<0? true : false;
     
     $reward = "phosphor";// High roller reward.
-    $username = get_char_name($char_id);
+    $username = self_name();
     
     if(!$negative){
 	    set_setting('bet', $bet);

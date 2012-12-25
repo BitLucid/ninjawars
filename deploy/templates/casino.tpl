@@ -1,4 +1,22 @@
 <h1>Casino</h1>
+{literal}
+<style>
+.toss{
+	font-size:5em;
+	display:inline-block;
+}
+#betting #results{
+	display:inline-block;
+	margin:.5em auto;
+	color:black;
+	background-color:ghostwhite;
+	box-shadow: 3px 3px 5px #888;
+	border-radius:.3em;
+	padding:1em;
+}
+
+</style>
+{/literal}
 
 <div class="description" style='border-bottom:1px solid gold'>
   <p>You walk down the alley towards a shadowed door on a low, squat building with golden guilt peeling off of the entranceway. As you enter the small casino, <a href='npc.php?attacked=1&victim=guard'>a guard</a> eyes you with caution.</p>
@@ -15,9 +33,15 @@
 	{elseif $state eq $smarty.const.CASINO_NO_GOLD}
 	<div class='ninja-notice'>You do not have that much gold.</div>
 	{elseif $state eq $smarty.const.CASINO_LOSE}
-	<div>You lose the coin toss!</div>
+	<section id='results'>
+	  <div class='toss'>䷦</div>
+	  <div>You lose the coin toss!</div>
+	</section>
 	{elseif $state eq $smarty.const.CASINO_WIN}
-	<div>You win the coin toss!</div>
+	<section id='results'>
+	  <div class='toss'>䷩</div>
+	  <div>You win the coin toss!</div>
+	</section>
 	{elseif $state eq $smarty.const.CASINO_DEFAULT}
 	<div>The maximum bet at this table is {$smarty.const.MAX_BET} gold.</div>
 	{/if}
