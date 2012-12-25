@@ -1,18 +1,26 @@
 <h1>Casino</h1>
 {literal}
 <style>
-.toss{
-	font-size:5em;
-	display:inline-block;
-}
 #betting #results{
 	display:inline-block;
 	margin:.5em auto;
 	color:black;
-	background-color:ghostwhite;
+	background-color:#EBED7F;
 	box-shadow: 3px 3px 5px #888;
 	border-radius:.3em;
 	padding:1em;
+}
+#results .lose{
+	color:brown;
+	font-weight:bold;
+}
+#results .win{
+	font-weight:bold;
+}
+.toss{
+	font-size:5em;
+	display:inline-block;
+	font-weight:normal;
 }
 
 </style>
@@ -34,13 +42,13 @@
 	<div class='ninja-notice'>You do not have that much gold.</div>
 	{elseif $state eq $smarty.const.CASINO_LOSE}
 	<section id='results'>
-	  <div class='toss'>䷦</div>
-	  <div>You lose the coin toss!</div>
+	  <div class='toss lose'>䷦</div>
+	  <div class='lose'>You lose the coin toss!</div>
 	</section>
 	{elseif $state eq $smarty.const.CASINO_WIN}
 	<section id='results'>
-	  <div class='toss'>䷩</div>
-	  <div>You win the coin toss!</div>
+	  <div class='toss win'>䷩</div>
+	  <div class='win'>You win the coin toss!</div>
 	</section>
 	{elseif $state eq $smarty.const.CASINO_DEFAULT}
 	<div>The maximum bet at this table is {$smarty.const.MAX_BET} gold.</div>
