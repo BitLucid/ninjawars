@@ -88,3 +88,7 @@ form {
 
 {/if}<!-- End of if username block -->
 </section>
+
+<nav>
+	<a href="map.php" class="return-to-location block">Return to the Village</a>
+</nav>
