@@ -20,4 +20,5 @@ sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && sudo ln -s
 echo "Modify deploy/www.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
 sudo apache2ctl graceful
 
-echo "Finally: Restart apache, edit /etc/apache2/default to delete the 'AllowOverride None' option to allow .htaccess files to override apache configurations, and edit /etc/postgresql/9.1/main/pg_hba.conf to allow trusting of the local user so your app can use the database in a dev environment more simply."
+echo "Finally: Restart apache, 
+edit /etc/apache2/sites-available/default to delete the 'AllowOverride None' option in the <Directory /> to allow .htaccess files to override apache configurations, and edit /etc/postgresql/9.1/main/pg_hba.conf to allow trusting of the local user so your app can use the database in a dev environment more simply.  Be aware that you may have to sync up the /etc/apache2/sites-available/nw.local file to use virtualhost *:80 to ensure it syncs with the default."
