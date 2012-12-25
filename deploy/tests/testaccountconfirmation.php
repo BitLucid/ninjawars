@@ -37,17 +37,25 @@ Login should also update "last logged in" data, but that's probably better in a 
 
 */
 
-function purge_test_accounts(){
-	$test_ninja_name = 'simpletest_ninja_name';
+function purge_test_accounts($test=null){
+	$test_ninja_name = $test? $test : 'simpletest_ninja_name';
 	$active_email = 'test@example.com';
+	$aid = get_char_id($test_ninja_name);
 	query('delete from players where player_id in 
 		(select player_id from players join account_players on _player_id = player_id join accounts on _account_id = account_id 
-			where active_email = :active_email or account_identity= :ae2 or uname = :uname)', 
+			where active_email = :active_email or account_identity= :ae2 or players.uname = :uname)', 
 		array(':active_email'=>$active_email, ':ae2'=>$active_email, ':uname'=>$test_ninja_name)); // Delete the players
 	query('delete from account_players where _account_id in (select account_id from accounts 
 			where active_email = :active_email or account_identity= :ae2)', // Delete the account_players linkage.
 		array(':active_email'=>$active_email, ':ae2'=>$active_email));
 	query('delete from accounts where active_email = :active_email or account_identity= :ae2', array(':active_email'=>$active_email, ':ae2'=>$active_email)); // Finally, delete the test account.
+	
+	/*
+	For manual deletion:
+delete from players where player_id in (select player_id from players left join account_players on _player_id = player_id left join accounts on _account_id = account_id where active_email = 'test@example.com' or account_identity='text@example.com');	
+delete from account_players where _account_id in (select account_id from accounts where active_email = 'test@example.com' or account_identity='text@example.com');
+delete from accounts where active_email = 'test@example.com' or account_identity='text@example.com';
+	*/
 }
 
 class TestAccountConfirmation extends UnitTestCase {
@@ -56,6 +64,11 @@ class TestAccountConfirmation extends UnitTestCase {
 	var $test_ninja_name = 'simpletest_ninja_name';
 
 	function setUp(){
+		purge_test_accounts($this->test_ninja_name);
+		$found = get_char_id($this->test_ninja_name);
+		if($found){
+			throw new Exception('Test user already exists');
+		}
 		// Create test user, unconfirmed, whatever the default is for activity.
 		$preconfirm = true;
 		$confirm = rand(1000,9999); //generate confirmation code
@@ -78,7 +91,7 @@ class TestAccountConfirmation extends UnitTestCase {
 	
 	function tearDown(){
 		// Delete test user.
-		purge_test_accounts();
+		purge_test_accounts($this->test_ninja_name);
 	}
 	
 	function testAttemptLoginOfUnconfirmedAccountShouldFail(){
