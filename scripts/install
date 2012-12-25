@@ -10,11 +10,11 @@ cd `pg_config --sharedir`
 echo "create extension pgcrypto" | psql -d nw
 
 cd ~/ninjawars
-cp docs/harkSAMPLEhtaccess deploy/www/.htaccess
 ln -s docs/gitignoreSAMPLE .gitignore
 cp docs/tchalvakSAMPLEresources.php deploy/resources.php
 mkdir -p deploy/resources/logs
 mkdir deploy/templates/compiled
+sudo chown www-data:www-data deploy/templates/compiled
 sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local
 echo "Modify deploy/www.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
 restartapache
