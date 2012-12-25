@@ -93,13 +93,18 @@ function npc_difficulty($stats){
 		$str = whichever(@$npc_stats['strength'], 0);
 		$spd = whichever(@$npc_stats['speed'], 0);
 		$sta = whichever(@$npc_stats['stamina'], 0);
+		$ki = whichever(@$npc_stats['ki'], 0);
 		$attack_damage = damage_from_npc_stats($npc_stats);
 		$percent_damage = null; // Initial percent calculation for display.
 		$status_effect = whichever(@$npc_stats['status'], null);
 		$reward_item = first_value(@$npc_stats['item'], null);
-		$base_gold = npc_difficulty($npc_stats);
-		$reward_gold = !$reward_item? $base_gold : round($base_gold * .9); // Hack a little off reward gold if items received.
-		$causes_bounty = (bool) @$npc_stats['bounty'];
+		$base_gold = npc_difficulty($npc_stats); // Overridden by explicitly setting gold to zero.
+		$npc_gold = (int) @$npc_stats['gold'];
+		$is_perceptive = @$npc_stats['speed']>11? true : false; // Beyond basic speed and they see you coming, so show that message.
+		// If npc explicitly set to 0, then none will be given.
+		$reward_gold = $npc_gold === 0? 0 : 
+			(!$reward_item? $base_gold : round($base_gold * .9)); // Hack a little off reward gold if items received.
+		$bounty_mod = @$npc_stats['bounty'];
 		$image = @$npc_stats['img'];
 		$image_path = null;
 		if($image && file_exists(SERVER_ROOT.'www/images/characters/'.$image)){
@@ -117,16 +122,18 @@ function npc_difficulty($stats){
 		$victory = null;
 		$received_gold = null;
 		$received_item = null;
+		$reward_item_display = null;
 		$added_bounty = null;
+		$is_rewarded = null; // Gets items or gold.
 		
 		// Add bounty where applicable.
-		if($causes_bounty){
+		if((bool)$bounty_mod){
 			$attacker_level = $player->vo->level;
 
 			// *** Bounty or no bounty ***
 			if ($attacker_level > 5) {
 				if ($attacker_level <= 50) { // No bounty after level 20?
-					$added_bounty = floor($attacker_level / 3);
+					$added_bounty = floor($attacker_level / 3 * $bounty_mod);
 					addBounty($char_id, ($added_bounty));
 				}
 			}	// *** End of if > 5 ***
@@ -138,11 +145,14 @@ function npc_difficulty($stats){
 		if($player->vo->health = $victory = subtractHealth($char_id, $attack_damage)) {
 			// Victory occurred, reward the poor sap.
 			add_gold($char_id, $reward_gold);
-			$received_gold = $reward_gold;
-			if($reward_item){
-				add_item($char_id, $reward_item, $quantity = 1);				
+			$received_gold = rand(floor($reward_gold/5), $reward_gold);
+			$reward_item_info = item_info_from_identity($reward_item);
+			$reward_item_display = $reward_item_info['item_display_name'];
+			if($reward_item_info && $reward_item_info['item_internal_name']){
+				add_item($char_id, $reward_item_info['item_internal_name'], $quantity = 1);
 			}
 			$received_item = $reward_item;
+			$is_rewarded = (bool)$received_item || (bool) $reward_gold;
 			if($status_effect){
 				$player->addStatus($status_effect);
 			}
@@ -157,7 +167,7 @@ function npc_difficulty($stats){
 		$npc_template = 'npc.abstract.tpl';
 		$combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$attack_damage, 'percent_damage'=>$percent_damage,
 			'status_effect'=>$status_effect, 'statuses'=>$statuses, 'received_gold'=>$received_gold,
-			'received_item'=>$received_item, 'victory'=>$victory, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats,
+			'received_item'=>$reward_item_display, 'is_rewarded'=>$is_rewarded, 'victory'=>$victory, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats, 'is_perceptive'=>$is_perceptive,
 			'added_bounty'=>$added_bounty);
 			
 			
@@ -385,6 +395,7 @@ function npc_difficulty($stats){
 	subtractTurns($char_id, $turn_cost);
 }
 
+// Add the combat_data into the standard stuff.
 display_page(
 	'npc.tpl'
 	, 'Battle'

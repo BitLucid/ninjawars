@@ -1473,9 +1473,12 @@ table#player-attack {
 	background-color:#202020;
 	color:maroon;
 }
-.status-dead a {
+.status-dead a{
 	background-color:#202020;
 	color:maroon;
+}
+.ninja-notice.death{
+	font-size:1.5em;
 }
 #recent-attackers li {
 	display:inline;

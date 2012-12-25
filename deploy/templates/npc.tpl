@@ -8,7 +8,9 @@ You have no turns left today. Buy a amanita mushroom or wait for your turns to r
 {/if}
 <nav>
 {if !$health}
-<p class="ninja-notice">Go to the <a href="shrine.php" class='shrine-link'>shrine</a> to resurrect.</p>
+    <p class='ninja-notice death'>
+      You are a ghost. You must resurrect before you may act again. Go to the <a href='shrine.php' style='font-size:2em'>shrine</a> for the monks to bring you back to life, or <a href='shrine_mod.php?heal_and_resurrect=1' style='font-size:2em'>heal fully</a>.
+    </p>
 {else}
 <a href="map.php" class='return-to-location block'>Return to the Village</a>
 {/if}
