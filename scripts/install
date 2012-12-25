@@ -8,6 +8,7 @@ createuser -s kzqai
 createdb nw
 cd `pg_config --sharedir`
 echo "create extension pgcrypto" | psql -d nw
+exit
 
 cd ~/ninjawars
 ln -s docs/gitignoreSAMPLE .gitignore
