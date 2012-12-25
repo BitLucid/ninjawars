@@ -25,7 +25,7 @@
             });
           </script>
 {/literal}
-        <!-- These catchphrases will be displayed randomly. -->
+          <!-- These catchphrases will be displayed randomly. Probably good to limit them to about this length ... -->
           <span style="display:none">There was going to be a NinjaWars2, but NinjaWars1 stabbed it.</span>
           <span style="display:none">Join a clan, promote multiple stab wounds.</span>
           <span style="display:none">Annoy the Emperor, kill Samurai.</span>
@@ -38,6 +38,14 @@
           <span style="display:none">Before you embark on a journey of revenge, dig two graves. Samurai are fat.</span>
           <span style="display:none">Shall I teach you about knowledge?  Watch out for that shuriken, first.</span>
           <span style="display:none">They are not better than you, it is simply that they are automatons.</span>
+          <span style="display:none">The purpose of the ninja is to flip out and kill people.</span>
+          <span style="display:none">Oversized aquatic reptiles frequently take all the credit.</span>
+          <span style="display:none">If you make a mistake and do not correct it, kill everyone.</span>
+          <span style="display:none">Always be certain to look up.</span>
+          <span style="display:none">Silence is a true friend who never betrays.</span>
+          <span style="display:none">To subdue the enemy without a fight is the height of skill.</span>
+          <span style="display:none">When you are able to attack, appear unable.  When unable, appear at your strongest.</span>
+          <span style="display:none">The best tactics end the war the soonest.</span>
           <span>Oni are actually quite friendly, if you get to know them.</span>
         </span>
          |
