@@ -720,6 +720,10 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	padding: 5px;
 	text-align: center;
 }
+.obtained-item{
+	font-weight:bold;
+	color:#bee;
+}
 .wrath{
 	text-shadow:1px 1px 3px red;
 }

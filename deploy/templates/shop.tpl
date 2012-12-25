@@ -32,7 +32,7 @@ input.shopButton{
         <p><em class='speech'>The total comes to {$current_item_cost gold},</em> the shopkeeper tells you.</p>
         <p>Unfortunately, you do not have that much gold.</p>
     {else}
-        <p>The shopkeeper hands over {$quantity} {$item}{$grammar}.</p>
+        <p class='obtained-item'>The shopkeeper hands over {$quantity} {$item}{$grammar}.</p>
         <p><em class='speech'>Will you be needing anything else today?</em> he asks you as he puts your gold in a safe.</p>
     {/if}
 {else}

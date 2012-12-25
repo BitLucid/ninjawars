@@ -1,12 +1,12 @@
 {literal}
 <style>
+article#fight{
+	font-size:150%;
+}
 article#fight nav{
 	margin-top:1.5em;
 	margin-left:8%;
 	margin-right:10%;
-}
-.obtained-item{
-	font-style:italic;
 }
 #rewards p{
 	display:inline-block;
