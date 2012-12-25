@@ -18,6 +18,6 @@ mkdir deploy/templates/compiled
 sudo chown www-data:www-data deploy/templates/compiled
 sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local
 echo "Modify deploy/www.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
-restartapache
+sudo apache2ctl graceful
 
 echo "Finally: Restart apache, edit /etc/apache2/default to delete the 'AllowOverride None' option to allow .htaccess files to override apache configurations, and edit /etc/postgresql/9.1/main/pg_hba.conf to allow trusting of the local user so your app can use the database in a dev environment more simply."
