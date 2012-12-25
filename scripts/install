@@ -3,6 +3,9 @@
 sudo apt-get install apache2 php5 php5-pgsql postgresql postgresql-contrib libpq-dev smarty
 sudo apt-get install perl liblingua-en-inflect-perl
 
+#enable rewrite module
+sudo a2enmod rewrite
+
 sudo su postgres
 createuser -s kzqai
 createdb nw
@@ -13,16 +16,22 @@ exit
 cd ~/ninjawars
 ln -s docs/gitignoreSAMPLE .gitignore
 cp docs/tchalvakSAMPLEresources.php deploy/resources.php
-cp docs/SAMPLEhtaccess deploy/www/.htaccess
 mkdir -p deploy/resources/logs
 mkdir deploy/templates/compiled
 sudo chown www-data:www-data deploy/templates/compiled
 sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && sudo ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local
 echo "Modify deploy/www/.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
 sudo apache2ctl graceful
+ssh tchalvak@ninjawars.net 'psql ninjawarsLive > ~/nw_full.sql'
+scp tchalvak@ninjawars.net:~/nw_full.sql ~/nw_full.sql
+psql kzqai < nw_full.sql
+sudo service postgresql restart
 
-echo "Finally: Restart apache, 
-edit /etc/apache2/sites-available/default to delete the 'AllowOverride None' option in the <Directory /> to allow .htaccess files to override apache configurations,
-and edit /etc/postgresql/9.1/main/pg_hba.conf to allow trusting of the local user so your app can use the database in a dev environment more simply.  
-Be aware that you may have to sync up the /etc/apache2/sites-available/nw.local file to use virtualhost *:80 to ensure it syncs with the default.
-Add nw.local to /etc/hosts for 127.0.0.1"
+echo "dump in the database, using psql kzqai < someFullNinjawarsDatabaseDump.sql"
+
+echo "Finally:
+edit /etc/postgresql/9.1/main/pg_hba.conf to allow trusting of the local user (trust local auth instead of peer) so your app can automatically access the database in a dev environment,
+Be aware that you may have to sync up the /etc/apache2/sites-available/nw.local file to use virtualhost *:80 instead of virtualhost * to ensure it syncs with the default, depending on your config.
+Add to /etc/hosts the config: 127.0.0.1 nw.local,
+and finally, Restart Apache [ sudo apache2ctl restart ]
+sudo service postgresql restart"
