@@ -34,7 +34,7 @@ The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bou
     You walk up to the Doshin Office to find the door locked. The Doshin are busy protecting the borders of the village from thieves.
   </p>
   <p>
-    Nailed to the door is an official roster of wanted criminals and the bounties offered for their heads.
+      Nearby on a wall is a notice that <span class='speech'>Non-samurai found carrying swords will be executed.</span> Nailed to the door is an official roster of wanted criminals and the bounties offered for their heads.
   </p>
   <p>
     A few men that do seem to be associated with the doshin doze near the entrance. Every so often someone approaches and slips them something that clinks and jingles.
