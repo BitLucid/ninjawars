@@ -75,27 +75,31 @@ if($turns > 0 && !empty($victim)) {
 		$display_name = first_value(@$npc_stats['name'], ucfirst($victim));
 
 
+	/* ============= STANDARD NPCS ======================= */
 
 // Initial, naive damage calculcations from npcs.
 function damage_from_npc_stats($stats){
-	// Arbitrarily, damage becomes a base of 10 plus strength * 10 plus the custom damage modifier.
-	return 1 + (@$stats['strength'] * 10) + @$stats['damage'];
+	// Formula is:  Start at zero, random integer between zero and strength * 10, add the base damage mod at the end.
+	return rand(0, (1 + (@$stats['strength'] * 2))) + @$stats['damage'];
 }
 
 // Calculate npc difficulty, naively at the moment.
 function npc_difficulty($stats){
 	// Just add together all the points of the mob, so to speak.
-	return 10 + @$stats['strength'] * 10 + @$stats['damage'];
+	$bounty = isset($stats['bounty'])? 1 : 0;
+	return 10 + @$stats['strength'] * 2 + @$stats['damage'] + $bounty;
 }
 
 		$str = whichever(@$npc_stats['strength'], 0);
 		$spd = whichever(@$npc_stats['speed'], 0);
 		$sta = whichever(@$npc_stats['stamina'], 0);
 		$attack_damage = damage_from_npc_stats($npc_stats);
+		$percent_damage = null; // Initial percent calculation for display.
 		$status_effect = whichever(@$npc_stats['status'], null);
 		$reward_item = first_value(@$npc_stats['item'], null);
 		$base_gold = npc_difficulty($npc_stats);
 		$reward_gold = !$reward_item? $base_gold : round($base_gold * .9); // Hack a little off reward gold if items received.
+		$causes_bounty = (bool) @$npc_stats['bounty'];
 		$image = @$npc_stats['img'];
 		$image_path = null;
 		if($image && file_exists(SERVER_ROOT.'www/images/characters/'.$image)){
@@ -105,6 +109,7 @@ function npc_difficulty($stats){
 		//debug($image, $image_path, SERVER_ROOT.'www/images/characters/'.$image);die();
 		
 		
+		
 		$statuses = null;
 		$status_classes = null;
 		
@@ -112,8 +117,24 @@ function npc_difficulty($stats){
 		$victory = null;
 		$received_gold = null;
 		$received_item = null;
+		$added_bounty = null;
 		
-		// Hope for victory.
+		// Add bounty where applicable.
+		if($causes_bounty){
+			$attacker_level = $player->vo->level;
+
+			// *** Bounty or no bounty ***
+			if ($attacker_level > 5) {
+				if ($attacker_level <= 50) { // No bounty after level 20?
+					$added_bounty = floor($attacker_level / 3);
+					addBounty($char_id, ($added_bounty));
+				}
+			}	// *** End of if > 5 ***
+		}
+		
+		// Get percent of total initial health.
+		
+		// ******* FIGHT *********** & Hope for victory.
 		if($player->vo->health = $victory = subtractHealth($char_id, $attack_damage)) {
 			// Victory occurred, reward the poor sap.
 			add_gold($char_id, $reward_gold);
@@ -129,14 +150,15 @@ function npc_difficulty($stats){
 		
 		if($status_effect){
 			$statuses = implode(get_status_list(), ', ');
-			$status_classes = implode(get_status_list(), ' ');
+			$status_classes = implode(get_status_list(), ' '); // TODO: Take healthy out of the list since it's redundant.
 		}
 		
 		// Settings to display results.
 		$npc_template = 'npc.abstract.tpl';
-		$combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$attack_damage, 
+		$combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$attack_damage, 'percent_damage'=>$percent_damage,
 			'status_effect'=>$status_effect, 'statuses'=>$statuses, 'received_gold'=>$received_gold,
-			'received_item'=>$received_item, 'victory'=>$victory, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats);
+			'received_item'=>$received_item, 'victory'=>$victory, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats,
+			'added_bounty'=>$added_bounty);
 			
 			
 			
@@ -155,7 +177,7 @@ function npc_difficulty($stats){
 			$attacker_level = $player->vo->level;
 
 			// *** Bounty or no bounty ***
-			if ($attacker_level > 5) {
+			if ($attacker_level > 1) {
 				if ($attacker_level <= 20) {
 					$added_bounty = floor($attacker_level / 3);
 					addBounty($char_id, ($added_bounty));
@@ -214,7 +236,7 @@ function npc_difficulty($stats){
 				addKills($char_id, 1);
 
 				if ($samurai_damage_array[2] > 100) {	// *** If samurai damage was over 100, but the ninja lived, give some extra rewards. ***
-					if (rand()&1) {
+					if (rand(0, 1)) {
 						$drop = true;
 						$drop_display = 'mushroom powder';
 						add_item($char_id, 'amanita', 1);

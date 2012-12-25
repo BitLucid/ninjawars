@@ -1,16 +1,25 @@
+{literal}
+<style>
+article nav{
+	margin-top:1.5em;
+	margin-left:.5em;
+}
+</style>
+{/literal}
+	
 	
   <article>
 	<h2>{$display_name|escape}</h2>
 	
 	<div style='width:80%;margin:0 10%'>
 	{if $image_path}
-		<div style='margin:.5em auto .5em;text-align:center'>
+		<figure style='margin:.5em auto .5em;text-align:center'>
 		  <img src='{$image_path}' alt='Creature'>
-		</div>
+		</figure>
 	{/if}
 
 	{if $npc_stats.short}
-	<p>The {$display_name|escape} is {$npc_stats.short}.</p>
+	<p>The {$display_name|escape} {$npc_stats.short}.</p>
 	{/if}
 	
 	<p>The {$display_name|escape} wounds you for {$attack_damage} health.</p>
@@ -19,8 +28,14 @@
 	{/if}
 	{if $victory}
 		<p class='ninja-notice'>You slay the {$display_name|escape}!</p>
-		<p>You receive <span class='gold'>{$received_gold} 
+
+		{if $added_bounty}
+		<p class='bounty-notice'>A bounty of {$added_bounty} gold has been placed on your head!</p>
+		{/if}
+
+		<p>You gather <span class='gold'>{$received_gold} 
 			gold</span>{if $received_item} and a {$received_item}{/if}.</p>
+			
 	{else}
 		<div class='ninja-error'>The {$display_name|escape} has killed you!</div>
 	{/if}
