@@ -11,6 +11,7 @@ createuser -s kzqai
 createdb nw
 cd `pg_config --sharedir`
 echo "create extension pgcrypto" | psql -d nw
+echo "create role developers" | psql nw
 exit
 
 cd ~/ninjawars
@@ -22,9 +23,9 @@ sudo chown www-data:www-data deploy/templates/compiled
 sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && sudo ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local
 echo "Modify deploy/www/.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
 sudo apache2ctl graceful
-ssh tchalvak@ninjawars.net 'psql ninjawarsLive > ~/nw_full.sql'
+ssh tchalvak@ninjawars.net 'pg_dump ninjawarsLive > ~/nw_full.sql'
 scp tchalvak@ninjawars.net:~/nw_full.sql ~/nw_full.sql
-psql kzqai < nw_full.sql
+psql nw < ~/nw_full.sql
 sudo service postgresql restart
 
 echo "dump in the database, using psql kzqai < someFullNinjawarsDatabaseDump.sql"
