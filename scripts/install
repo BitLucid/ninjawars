@@ -23,12 +23,11 @@ sudo chown www-data:www-data deploy/templates/compiled
 sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && sudo ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local
 echo "Modify deploy/www/.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
 sudo apache2ctl graceful
-ssh tchalvak@ninjawars.net 'pg_dump ninjawarsLive > ~/nw_full.sql'
+ssh tchalvak@ninjawars.net 'vacuumdb ninjawarsLive;pg_dump ninjawarsLive > ~/nw_full.sql'
 scp tchalvak@ninjawars.net:~/nw_full.sql ~/nw_full.sql
 psql nw < ~/nw_full.sql
 sudo service postgresql restart
-
-echo "dump in the database, using psql kzqai < someFullNinjawarsDatabaseDump.sql"
+echo "If you don't have access to the ssh server, you'll need to psql nw < someOtherFullDatabaseDump.sql"
 
 echo "Finally:
 edit /etc/postgresql/9.1/main/pg_hba.conf to allow trusting of the local user (trust local auth instead of peer) so your app can automatically access the database in a dev environment,
