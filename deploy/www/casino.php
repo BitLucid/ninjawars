@@ -16,6 +16,8 @@ define('CASINO_WIN', 2);
 define('CASINO_LOSE', 3);
 define('CASINO_CHEAT', 4);
 
+// Unicode for IChing options... http://www.fileformat.info/info/unicode/block/yijing_hexagram_symbols/images.htm
+
 
 // Determine the results of a casino bet and reward the char their rewards.
 function casino_results($char_id, $incoming_bet){
