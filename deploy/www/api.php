@@ -45,10 +45,8 @@ function json_char_search($term, $limit) {
 	if (!is_numeric($limit)) {
 		$limit = 10;
 	}
-
-	$term = '"'.$term.'"';	// *** query interprets term as regex (~*) and fails if input is invalid regex. Quoting makes term a literal ***
-
-	$res = query('select player_id, uname from players where uname ~* :term and active=1 order by level desc limit :limit', array(':term'=>$term, ':limit'=>array($limit, PDO::PARAM_INT)));
+	// Should be fine for this to allow regex characters here if it happens.
+	$res = query("select player_id, uname from players where uname ilike :term || '%' and active=1 order by level desc limit :limit", array(':term'=>$term, ':limit'=>array($limit, PDO::PARAM_INT)));
 	return '{"char_matches":'.json_encode($res->fetchAll(PDO::FETCH_ASSOC)).'}';
 }
 

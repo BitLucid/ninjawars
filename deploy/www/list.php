@@ -48,11 +48,11 @@ if ($searched) {
 	$view_type = 'searched';
 
 	if (strlen($searched) == 1) {
-		$where_clauses[] = " (rankings.uname ilike :param".count($queryParams).") ";
-		$queryParams[] = $searched.'%';
+		$where_clauses[] = " (rankings.uname ilike :param".count($queryParams)." || '%') ";
+		$queryParams[] = $searched;
 	} else if (!$list_by_rank) {
-		$where_clauses[] = " (rankings.uname ~* :param".count($queryParams).") ";
-		$queryParams[] = '"'.$searched.'"';	// *** ~* treats searched as regex so an invalid regex throws exception. quoting searched makes it behave as a literal ***
+		$where_clauses[] = " (rankings.uname ilike :param".count($queryParams)." || '%') ";
+		$queryParams[] = $searched;
 	}
 
 	if ($hide == 'dead') {
