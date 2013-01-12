@@ -50,8 +50,8 @@ function validate_email($email) {
 
 function email_is_duplicate($email) {
 	$acc_check = 'SELECT account_identity FROM accounts
-		WHERE lower(:email) IN (account_identity, active_email)';
-	$dupe = query_item($acc_check, array(':email'=>$email));
+		WHERE :email IN (account_identity, active_email)';
+	$dupe = query_item($acc_check, array(':email'=>strtolower($email)));
 
 	return !empty($dupe);
 }
@@ -109,7 +109,7 @@ function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1
 
 function account_of_email($email) {
 	$sel = 'SELECT account_id FROM accounts WHERE active_email = :email';
-	$existing_account = query_item($sel, array(':email'=>$email));
+	$existing_account = query_item($sel, array(':email'=>strtolower($email)));
 
 	return !!$existing_account;
 }
@@ -340,7 +340,7 @@ function changeEmail($p_playerID, $p_newEmail) {
 	$statement = DatabaseConnection::$pdo->prepare($changeEmailQuery1);
 	$statement->bindValue(':pid', $p_playerID);
 	$statement->bindValue(':identity', $p_newEmail);
-	$statement->bindValue(':email', $p_newEmail);
+	$statement->bindValue(':email', strtolower($p_newEmail));
 	$statement->execute();
 }
 ?>

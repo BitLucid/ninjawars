@@ -24,7 +24,7 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 			FROM accounts
 			JOIN account_players ON account_id = _account_id
 			JOIN players ON player_id = _player_id
-			WHERE (lower(active_email) = :login
+			WHERE (active_email = :login
 					OR lower(uname) = :login)";
 
 		$result = query($sql, array(':login'=>$login, ':pass'=>$pass));
@@ -112,7 +112,16 @@ function last_login_failure_was_recent($account_id) {
 
 // Pull the account_id for any possible username part of the login.
 function potential_account_id_from_login_username($login) {
-	return query_item('SELECT account_id FROM accounts JOIN account_players ON account_id = _account_id JOIN players ON _player_id = player_id WHERE lower(active_email) = lower(:login1) OR lower(uname) = lower(:login2)', array(':login1'=>$login, ':login2'=>$login));
+	return query_item(
+		'SELECT account_id FROM accounts WHERE active_email = :login1
+		UNION
+		SELECT _account_id AS account_id FROM players JOIN account_players ON player_id = _player_id WHERE lower(uname) = :login2'
+		,
+		array(
+			':login1'=>strtolower($login),
+			':login2'=>strtolower($login)
+		)
+	);
 }
 
 
