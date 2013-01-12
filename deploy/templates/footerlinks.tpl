@@ -46,6 +46,11 @@
           <span style="display:none">To subdue the enemy without a fight is the height of skill.</span>
           <span style="display:none">When you are able to attack, appear unable.  When unable, appear at your strongest.</span>
           <span style="display:none">The best tactics end the war the soonest.</span>
+          <span style="display:none">Trust a theif to be the first to steal your shiny new shuriken.</span>
+          <span style="display:none">Samurai are surprisingly good at slicing and dicing. Like a chef.</span>
+          <span style="display:none">If you see a Ryu, stop drop, and roll.  Not that that will help.</span>
+          <span style="display:none">In the end, to gain all, you have to risk all. Or more.</span>
+          <span style="display:none">Sometimes only a healer truly knows about death.</span>
           <span>Oni are actually quite friendly, if you get to know them.</span>
         </span>
          |
