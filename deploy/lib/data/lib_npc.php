@@ -6,11 +6,11 @@
 // Note that gold=>0 prevents all gold collection.
 function get_npcs(){
 	return array(
-		'peasant2'=>array('name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>'10', 'stamina'=>10, 'speed'=>10, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1),
+		/*'peasant2'=>array('name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>'10', 'stamina'=>10, 'speed'=>10, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1),
 		'merchant2'=>array('name'=>'Merchant', 'race'=>'human', 'strength'=>'20', 'stamina'=>20, 'speed'=>10, 'ki'=>1, 
 			'damage'=>15, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>3, 'img'=>'merchant.png', 'item'=>'phosphor'),
 		'guard2'=>array('name'=>'Guard', 'race'=>'human', 'strength'=>'30', 'stamina'=>30, 'speed'=>12, 'ki'=>1, 
-			'damage'=>0, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>3, 'img'=>'guard.png', 'item'=>'ginsengroot'),
+        'damage'=>0, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>3, 'img'=>'guard.png', 'item'=>'ginsengroot'),*/
 		'monk'=>array('name'=>'Monk', 'strength'=>10, 'stamina'=>10, 'speed'=>10, 'ki'=>30, 'race'=>'human', 'item'=>'prayerwheel'),
 		'geisha'=>array('name'=>'Geisha', 'strength'=>5, 'stamina'=>10, 'speed'=>15, 'ki'=>10, 'gold'=>20, 'race'=>'human', 'item'=>'tessen'),
 		'fireflies'=>array('name'=>'Fireflies', 'strength'=>0, 'damage'=>0), // Baseline weakest mob
