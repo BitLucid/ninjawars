@@ -37,7 +37,7 @@
         </p>
       <div>
         <input type="submit" name="command" value="Kampo" class="formButton">
-        Turn Cost: {$kampo_turn_cost} to make a Kampo formula.
+        Turn Cost: {$kampo_turn_cost} to make all your ginseng into tiger salves.
       </div>
       </fieldset>
     </form>
