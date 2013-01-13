@@ -5,7 +5,7 @@ You have requested your confirmation code for the account: {$lost_uname}<br><br>
 Use this link to activate your account<br><br>
 <b>Account Info</b><br>
 Username: {$lost_uname}<br><br>
-<a href='{$smarty.const.WEB_ROOT}confirm.php?aid={$account_id|escape:'url'}&amp;confirm={$lost_confirm}'>Activate Account</a><br><br>
+<a href='{$smarty.const.WEB_ROOT}confirm.php?aid={$account_id|escape:'url'}&amp;confirm={$lost_confirm}'> Activate Account </a><br><br>
 
 Or, paste this URL into your browser.<br><br>
 
