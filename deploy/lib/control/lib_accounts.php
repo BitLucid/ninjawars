@@ -61,8 +61,8 @@ function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1
 
 	$newID = query_item("SELECT nextval('accounts_account_id_seq')");
 
-	$ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, operational)
-		VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 8)), :type, :operational)";
+	$ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, operational, verification_number)
+		VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 8)), :type, :operational, :verification_number)";
 
 	$email = strtolower($email);
 
@@ -73,6 +73,7 @@ function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1
 	$statement->bindParam(':password', $password_to_hash);
 	$statement->bindParam(':type', $type, PDO::PARAM_INT);
 	$statement->bindParam(':operational', $active, PDO::PARAM_INT);
+	$statement->bindParam(':verification_number', $temp = rand(1000, 9999));
 	$statement->execute();
 
 /*
