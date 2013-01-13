@@ -16,6 +16,7 @@ define('ADMIN_EMAIL', __ADMIN_EMAIL__);		// *** For logs/emailed errors.
 define('SUPPORT_EMAIL', __SUPPORT_EMAIL__);	// *** For public questions.
 define('SUPPORT_EMAIL_NAME', __SUPPORT_EMAIL_NAME__);
 define('SYSTEM_EMAIL', __SYSTEM_EMAIL__);
+define('SYSTEM_EMAIL_NAME', __SYSTEM_EMAIL_NAME__);
 define('SYSTEM_MESSENGER_EMAIL', __SYSTEM_MESSENGER_EMAIL__);
 define('SYSTEM_EMAIL_NAME', __SYSTEM_EMAIL_NAME__);
 define('ALERTS_EMAIL', __ALERTS_EMAIL__);
