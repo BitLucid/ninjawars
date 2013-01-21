@@ -17,13 +17,12 @@ define('SUPPORT_EMAIL', __SUPPORT_EMAIL__);	// *** For public questions.
 define('SUPPORT_EMAIL_NAME', __SUPPORT_EMAIL_NAME__);
 define('SYSTEM_EMAIL', __SYSTEM_EMAIL__);
 define('SYSTEM_EMAIL_NAME', __SYSTEM_EMAIL_NAME__);
-define('SYSTEM_MESSENGER_EMAIL', __SYSTEM_MESSENGER_EMAIL__);
-define('SYSTEM_EMAIL_NAME', __SYSTEM_EMAIL_NAME__);
+define('SYSTEM_MESSENGER_EMAIL', __SYSTEM_EMAIL__);
 define('SYSTEM_MESSENGER_NAME', __SYSTEM_EMAIL_NAME__);
 define('ALERTS_EMAIL', __ALERTS_EMAIL__);
 define('TRAP_ERRORS', __TRAP_ERRORS__); // Whether to use the global error handler & oops page.
 
-define('TEMPLATE_LIBRARY_PATH', 'smarty/Smarty.class.php'); // Template path for system install, /usr/share/php/smarty/Smarty.class.php, for example.
+define('TEMPLATE_LIBRARY_PATH', '__TEMPLATE_LIBRARY_PATH__/Smarty.class.php'); // Template path for system install, /usr/share/php/smarty/Smarty.class.php, for example.
 
 // For location-specific, can-be-dynamic-or-not constants.
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
