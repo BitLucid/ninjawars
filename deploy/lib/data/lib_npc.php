@@ -1,18 +1,59 @@
 <?php
 
 // Npc matrix planning document: https://docs.google.com/spreadsheet/ccc?key=0AkoUgtBBP00HdGZ1eUhaekhTb1dnZVh3ZlpoRExWdGc#gid=0
+class Npc{
+            private $data;
+            function __construct($data){
+                $this->data = $data;
+                $this->inventory = @$data['inventory'];
+                $this->traits = @$data['traits'];
+                $this->strength = (int) @$data['strength'];
+                $this->speed = (int) @$data['speed'];
+                $this->stamina = (int) @$data['stamina'];
+                $this->damage = (int) @$data['damage'];
+                $this->ki = (int) @$data['ki'];
+                $this->traits_array = null;
+            }
 
+            // Calculcate the max damage of an npc.  Needed for effectiveness calc.
+            function max_damage(){
+                return ((1+ ($this->strength * 2)) + $this->damage);
+            }
+
+            // Calculate the initial naive damage from npcs.
+            function damage(){
+                return rand(0, $this->max_damage());
+            }
+
+            // Calculate difficulty, naively at the moment.
+            function difficulty(){
+                // Just add together all the points of the mob, so to speak.
+                $has_bounty = isset($this->data['bounty']);
+                return 10 + $this->strength * 2 + $this->damage + $has_bounty;
+            }
+
+            // Check for specific traits.
+            function has_trait($trait){
+                if(!$this->traits_array){
+                    // Initialize traits as an array at this point.
+                    $this->traits_array = $this->traits? implode(',', $this->traits) : array();
+                } 
+                return count($this->traits_array) && in_array($traits, $trait);
+            }
+        }
 // TODO: Abstract all the unique npc behaviors into the generic system.
 // Note that gold=>0 prevents all gold collection.
+// This function is just a prelude to getting the info all from the database.
 function get_npcs(){
 	return array(
-		/*'peasant2'=>array('name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>'10', 'stamina'=>10, 'speed'=>10, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1),
+		'peasant2'=>array('name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>'10', 'stamina'=>10, 'speed'=>10, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1, 'traits'=>null),
 		'merchant2'=>array('name'=>'Merchant', 'race'=>'human', 'strength'=>'20', 'stamina'=>20, 'speed'=>10, 'ki'=>1, 
-			'damage'=>15, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>3, 'img'=>'merchant.png', 'item'=>'phosphor'),
+			'damage'=>15, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>3, 'img'=>'merchant.png', 'inventory'=>array('phosphor'=>'.7')),
 		'guard2'=>array('name'=>'Guard', 'race'=>'human', 'strength'=>'30', 'stamina'=>30, 'speed'=>12, 'ki'=>1, 
-        'damage'=>0, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>3, 'img'=>'guard.png', 'item'=>'ginsengroot'),*/
-/*		'monk'=>array('name'=>'Monk', 'strength'=>10, 'stamina'=>10, 'speed'=>10, 'ki'=>30, 'race'=>'human', 'item'=>'prayerwheel'),
-'geisha'=>array('name'=>'Geisha', 'strength'=>5, 'stamina'=>10, 'speed'=>15, 'ki'=>10, 'gold'=>20, 'race'=>'human', 'item'=>'tessen'),*/
+            'damage'=>0, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>3, 'img'=>'guard.png', 'inventory'=>array('ginsengroot'=>'.1'), 'traits'=>'partial_match_strength'),
+    /*
+		'monk'=>array('name'=>'Monk', 'strength'=>10, 'stamina'=>10, 'speed'=>10, 'ki'=>30, 'race'=>'human', 'inventory'=>array('prayerwheel'=>'.2'), 'traits'=>'deflection,defensive,self_heal'),
+		'geisha'=>array('name'=>'Geisha', 'strength'=>5, 'stamina'=>10, 'speed'=>15, 'ki'=>10, 'gold'=>20, 'race'=>'human', 'inventory'=>array('sake'=>'.2', 'mirror'=>'.01', 'kimono'=>'.01', 'tessen'=>'.01'), 'traits'=>'packdynamic,speed,guarded'),
 		'fireflies'=>array('name'=>'Fireflies', 'strength'=>0, 'damage'=>0), // Baseline weakest mob
 /*		'pig'=>array('name'=>'Wild pig', 'short'=>'rolls about in the muck contentedly', 'strength'=>1, 'speed'=>10, 'damage'=>2, 'race'=>'animal'),
 		'chicken'=>array('name'=>'chicken', 'short'=>'saunters around like it owns the place', 'strength'=>1, 'speed'=>5, 'damage'=>0, 'race'=>'bird'),

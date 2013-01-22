@@ -77,28 +77,12 @@ if($turns > 0 && !empty($victim)) {
 
 	/* ============= STANDARD NPCS ======================= */
 
-// Initial, naive damage calculcations from npcs.
-function damage_from_npc_stats($stats){
-	// Formula is:  Start at zero, random integer between zero and strength * 10, add the base damage mod at the end.
-	return rand(0, (1 + (@$stats['strength'] * 2))) + @$stats['damage'];
-}
-
-// Calculate npc difficulty, naively at the moment.
-function npc_difficulty($stats){
-	// Just add together all the points of the mob, so to speak.
-	$bounty = isset($stats['bounty'])? 1 : 0;
-	return 10 + @$stats['strength'] * 2 + @$stats['damage'] + $bounty;
-}
-
-		$str = whichever(@$npc_stats['strength'], 0);
-		$spd = whichever(@$npc_stats['speed'], 0);
-		$sta = whichever(@$npc_stats['stamina'], 0);
-		$ki = whichever(@$npc_stats['ki'], 0);
-		$attack_damage = damage_from_npc_stats($npc_stats);
-		$percent_damage = null; // Initial percent calculation for display.
+        $npco = new Npc($npc_stats); // Construct the npc object.
+        $max_damage = $npco->max_damage();
+		$percent_damage = null; // Percent damage does to the player's health. 
 		$status_effect = whichever(@$npc_stats['status'], null);
 		$reward_item = first_value(@$npc_stats['item'], null);
-		$base_gold = npc_difficulty($npc_stats); // Overridden by explicitly setting gold to zero.
+		$base_gold = $npco->difficulty($npc_stats); // Overridden by explicitly setting gold to zero.
 		$npc_gold = (int) @$npc_stats['gold'];
 		$is_perceptive = @$npc_stats['speed']>11? true : false; // Beyond basic speed and they see you coming, so show that message.
 		// If npc explicitly set to 0, then none will be given.
@@ -142,7 +126,7 @@ function npc_difficulty($stats){
 		// Get percent of total initial health.
 		
 		// ******* FIGHT *********** & Hope for victory.
-		if($player->vo->health = $victory = subtractHealth($char_id, $attack_damage)) {
+		if($player->vo->health = $victory = subtractHealth($char_id, $npco->damage())){
 			// Victory occurred, reward the poor sap.
 			add_gold($char_id, $reward_gold);
 			$received_gold = rand(floor($reward_gold/5), $reward_gold);
@@ -165,7 +149,7 @@ function npc_difficulty($stats){
 		
 		// Settings to display results.
 		$npc_template = 'npc.abstract.tpl';
-		$combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$attack_damage, 'percent_damage'=>$percent_damage,
+		$combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$npco->damage(), 'percent_damage'=>$percent_damage,
 			'status_effect'=>$status_effect, 'statuses'=>$statuses, 'received_gold'=>$received_gold,
 			'received_item'=>$reward_item_display, 'is_rewarded'=>$is_rewarded, 'victory'=>$victory, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats, 'is_perceptive'=>$is_perceptive,
 			'added_bounty'=>$added_bounty);
