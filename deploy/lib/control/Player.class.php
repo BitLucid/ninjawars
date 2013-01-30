@@ -158,7 +158,7 @@ class Player
 		}
 	}
 
-	// Wrapper function name.
+	// Old Wrapper function name.
 	public function getStrength() {
 		return $this->strength();
 	}
@@ -183,16 +183,16 @@ class Player
 		if ($this->hasStatus(SLOW)) {
 			return $speed-(ceil($speed*.25));
 		} else {
-			return $str;
+			return $speed;
 		}
 	}
 
 	public function stamina() {
-		$stat = $this->vo->stamina;
+		$stam = $this->vo->stamina;
 		if ($this->hasStatus(POISON)) {
-			return $stat-(ceil($stat*.25));
+			return $stam-(ceil($stat*.25));
 		} else {
-			return $stat;
+			return $stam;
 		}
 	}
 
