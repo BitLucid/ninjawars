@@ -299,7 +299,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				}// End of check that it's usable on someone else.
 			}// End of the item use (as opposed to giving) section.
 
-			if ($result) {
+			if (!$error) { // Unless there's an error, determine the resultMessages and assign kills and loot.
 				// *** Message to display based on item type ***
 				if ($item->hasEffect('death')) {
 					$resultMessage = "The life force drains from __TARGET__ and they drop dead before your eyes!.";
@@ -319,7 +319,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				}
 
 				if (!$victim_alive) { // Target was killed by the item.
-					if (($target != $username)) {   // *** SUCCESSFUL KILL ***
+					if (!$self_use) {   // *** SUCCESSFUL KILL, not self-use of an item ***
 						$attacker_id = ($player->hasStatus(STEALTH) ? "A Stealthed Ninja" : $username);
 
 						if (!$gold_mod) {
@@ -344,7 +344,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$attacker_id = $username;
 				}
 
-				if (!$selfTarget && $target != $username) {
+				if (!$self_use) {
 					// Notify targets when they get an item used on them.
 					$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
 					send_event($user_id, $target_id, $message_to_target);
@@ -384,9 +384,6 @@ if ($turns_to_take < 1) {
 
 $ending_turns = subtractTurns($user_id, $turns_to_take);
 assert($item->hasEffect('speed') || $ending_turns < $starting_turns || $starting_turns == 0);
-
-// TODO: Add a "this is the target's resulting hitpoints bar at the end here.
-
 
 display_page(
 	'inventory_mod.tpl'
