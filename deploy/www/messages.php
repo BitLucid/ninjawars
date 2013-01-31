@@ -8,11 +8,10 @@ if ($error = init($private, $alive)) {
 
 $to        = in('to'); // The target of the message, if any were specified.
 $to = $to? $to : get_setting('last_messaged');
-set_setting('last_messaged', $to);
 $to_clan   = in('toclan');
 $messenger = in('messenger'); // naive spam detection attempt
 $message   = in('message', null, null); // Unfiltered input for this message.
-$target_id = ($to ? get_user_id($to) : in('target_id'));
+$target_id = (int) in('target_id')? (int) in('target_id') : ($to ? get_user_id($to) : null); // Id takes precedence
 $user_id   = self_char_id();
 $username  = self_name();
 $clan      = get_clan_by_player_id($user_id);
@@ -29,9 +28,10 @@ $type_filter = restrict_to($type_filter, array(0, 1));
 $message_sent_to = null; // Names or name to display.
 $message_to = null; // strings clan or individual if sent to those respectively.
 
-if($target_id && !$to){
+if($target_id){
 	$to = get_char_name($target_id);	
 }
+set_setting('last_messaged', $to);
 
 // Sending mail section.
 if ($message && $messenger) {
@@ -39,7 +39,7 @@ if ($message && $messenger) {
 		$message_sent_to = message_to_clan($message);
 		$message_to = 'clan';
 		$type_filter = 1;
-	} elseif (!!$target_id) {
+	} elseif ((bool)$target_id) {
 		send_message($user_id, $target_id, $message);
 		$message_sent_to = $to;
 		$message_to = 'individual';
