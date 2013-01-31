@@ -11,7 +11,7 @@
 {else}
   <p>
     This account can not be verified or the account was deactivated.  
-    Please contact {$smarty.const.SUPPORT_EMAIL|escape} if you require more information.
+    Please contact <a href='mailto:{$smarty.const.SUPPORT_EMAIL|escape}'>{$smarty.const.SUPPORT_EMAIL|escape}</a> if you require more information.
   </p>
 {/if}
   <div><a target='main' href="tutorial.php">Return to Main?</a></div>

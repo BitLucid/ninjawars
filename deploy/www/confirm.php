@@ -30,6 +30,8 @@ if (rco($data)) {
 	$username  = null;
 }
 
+//debug($data, $confirm, $check, $confirmed);
+
 //debug($check, $confirm);
 
 $confirmation_confirmed = false;

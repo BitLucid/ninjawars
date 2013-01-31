@@ -56,7 +56,7 @@ function email_is_duplicate($email) {
 	return !empty($dupe);
 }
 
-function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1) {
+function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1) {
 	DatabaseConnection::getInstance();
 
 	$newID = query_item("SELECT nextval('accounts_account_id_seq')");
@@ -73,7 +73,7 @@ function create_account($ninja_id, $email, $password_to_hash, $type=0, $active=1
 	$statement->bindParam(':password', $password_to_hash);
 	$statement->bindParam(':type', $type, PDO::PARAM_INT);
 	$statement->bindParam(':operational', $active, PDO::PARAM_INT);
-	$statement->bindParam(':verification_number', $temp = rand(1000, 9999));
+	$statement->bindParam(':verification_number', $confirm);
 	$statement->execute();
 
 /*
@@ -220,12 +220,12 @@ function create_account_and_ninja($send_name, $params=array()) {
 	$confirm     = (int) $params['confirm'];
 	$error       = false;
 	$ninja_id    = create_ninja($send_name, $params);
-	$account_id  = create_account($ninja_id, $send_email, $send_pass);
+	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm);
 
 	if ($account_id) {
 		$sent = send_signup_email($account_id, $send_email, $send_name, $confirm, $class_identity);
 
-		if (!$sent) {
+		if (!$sent && !DEBUG) {
 			$error = 'There was a problem sending your signup to that email address.';
 		}
 	}

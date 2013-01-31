@@ -74,8 +74,10 @@ if ($submitted) {
 								, 'referred_by' => $enteredReferral
 							);
 
-							if (create_account_and_ninja($enteredName, $player_params)) { // Create the player.
-								$error = 'There was a problem with creating a player account. Please contact us as mentioned below: ';
+							if ($error = create_account_and_ninja($enteredName, $player_params)) { // Create the player.
+								if(!$error){
+									$error = 'There was a problem with creating a player account. Please contact us as mentioned below: ';
+								}
 							} else {
 								$submit_successful = true;
 
