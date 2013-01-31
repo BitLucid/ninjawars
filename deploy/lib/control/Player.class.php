@@ -157,6 +157,11 @@ class Player
 			$this->vo->status = null; // *** Ensures that the next call to hasStatus pulls the updated status from the DB ***
 		}
 	}
+	
+	// Standard damage output.
+	public function damage(){
+		return $this->strength() * 5 + $this->speed();
+	}
 
 	// Old Wrapper function name.
 	public function getStrength() {
