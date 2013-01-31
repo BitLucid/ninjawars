@@ -46,4 +46,7 @@
     {/if}
 
 </div> <!-- End of heal-result div -->
-<a href="shrine.php" class='return-to-location'>Return to Shrine?</a>
+<nav>
+	<a href="shrine.php" class='return-to-location block'>Return to Shrine</a><br>
+	<a href="map.php" class="return-to-location">Return to the Village</a>
+</nav>
