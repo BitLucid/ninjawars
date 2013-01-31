@@ -18,7 +18,10 @@ $player     = new Player($char_id);
 $error_template = 'npc.no-one.tpl'; // Error template also used down below.
 $npc_template = $error_template; // Error condition by default.
 $turns = $player->turns();
+$is_villager = false;
 
+$ninja_str               = $player->getStrength();
+$ninja_health            = $player->vo->health;
 
 
 
@@ -72,32 +75,33 @@ if($turns > 0 && !empty($victim)) {
 		
 	} elseif (array_key_exists($victim, $npcs)){ /**** Abstracted NPCs *****/
 		$npc_stats = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
-		$display_name = first_value(@$npc_stats['name'], ucfirst($victim));
 
 
 	/* ============= STANDARD NPCS ======================= */
 
         $npco = new Npc($npc_stats); // Construct the npc object.
+		$display_name = first_value(@$npc_stats['name'], ucfirst($victim));
         $max_damage = $npco->max_damage();
 		$percent_damage = null; // Percent damage does to the player's health. 
 		$status_effect = whichever(@$npc_stats['status'], null);
 		$reward_item = first_value(@$npc_stats['item'], null);
 		$base_gold = $npco->difficulty($npc_stats); // Overridden by explicitly setting gold to zero.
 		$npc_gold = (int) @$npc_stats['gold'];
-		$is_perceptive = @$npc_stats['speed']>11? true : false; // Beyond basic speed and they see you coming, so show that message.
-		// If npc explicitly set to 0, then none will be given.
+		$is_quick = ($npco->speed()>$player->speed())? true : false; // Beyond basic speed and they see you coming, so show that message.
+		// If npc gold explicitly set to 0, then none will be given.
 		$reward_gold = $npc_gold === 0? 0 : 
-			(!$reward_item? $base_gold : round($base_gold * .9)); // Hack a little off reward gold if items received.
+			($reward_item? round($base_gold * .9) : $base_gold); // Hack a little off reward gold if items received.
 		$bounty_mod = @$npc_stats['bounty'];
+        $is_villager = $npco->has_trait('villager'); // Give the villager message with the bounty.
+        $is_weaker = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
+        $is_stronger = ($npco->strength()) > ($player->strength() * 2); // Npc More than twice as strong?
+        //debug($is_villager, $npco->traits, $npco);die();
 		$image = @$npc_stats['img'];
 		$image_path = null;
 		if($image && file_exists(SERVER_ROOT.'www/images/characters/'.$image)){
 			// If the image exists, set the path to it for use on the page.
 			$image_path = IMAGE_ROOT.'characters/'.$image;
 		}
-		//debug($image, $image_path, SERVER_ROOT.'www/images/characters/'.$image);die();
-		
-		
 		
 		$statuses = null;
 		$status_classes = null;
@@ -105,54 +109,64 @@ if($turns > 0 && !empty($victim)) {
 		// Assume defeat...
 		$victory = null;
 		$received_gold = null;
-		$received_item = null;
-		$reward_item_display = null;
+		$received_display_items = null;
 		$added_bounty = null;
 		$is_rewarded = null; // Gets items or gold.
-		
-		// Add bounty where applicable.
-		if((bool)$bounty_mod){
-			$attacker_level = $player->vo->level;
-
-			// *** Bounty or no bounty ***
-			if ($attacker_level > 5) {
-				if ($attacker_level <= 50) { // No bounty after level 20?
-					$added_bounty = floor($attacker_level / 3 * $bounty_mod);
-					addBounty($char_id, ($added_bounty));
-				}
-			}	// *** End of if > 5 ***
-		}
 		
 		// Get percent of total initial health.
 		
 		// ******* FIGHT *********** & Hope for victory.
-		if($player->vo->health = $victory = subtractHealth($char_id, $npco->damage())){
-			// Victory occurred, reward the poor sap.
-			add_gold($char_id, $reward_gold);
+		$victory = false;
+		$survive_fight = $player->vo->health = subtractHealth($char_id, $npco->damage());
+		$armored = $npco->has_trait('armored')? 1 : 0;
+		$kill_npc = ($npco->health() < $player->damage());
+		if($survive_fight){
+			// The ninja survived, they'll get gold.
 			$received_gold = rand(floor($reward_gold/5), $reward_gold);
-			$reward_item_info = item_info_from_identity($reward_item);
-			$reward_item_display = $reward_item_info['item_display_name'];
-			if($reward_item_info && $reward_item_info['item_internal_name']){
-				add_item($char_id, $reward_item_info['item_internal_name'], $quantity = 1);
+			add_gold($char_id, $received_gold);
+			$received_display_items = array();
+			if($kill_npc){
+				$victory = true;
+				// Victory occurred, reward the poor sap.
+				if($npco->inventory()){
+					foreach($npco->inventory() as $l_item=>$avail){
+						$item_info = item_info_from_identity($l_item);
+						$received_display_items[] = $item_info['item_display_name'];
+						add_item($char_id, $item_info['item_internal_name'], 1);
+					}
+				}
+				// Add bounty where applicable.
+				if((bool)$bounty_mod){
+					$attacker_level = $player->vo->level;
+
+					// *** Bounty or no bounty ***
+					if ($attacker_level > 5) {
+						if ($attacker_level <= 50) { // No bounty after this level?
+							$added_bounty = floor($attacker_level / 3 * $bounty_mod);
+							addBounty($char_id, ($added_bounty));
+						}
+					}	// *** End of if > 5 ***
+				}
 			}
-			$received_item = $reward_item;
-			$is_rewarded = (bool)$received_item || (bool) $reward_gold;
-			if($status_effect){
+			$is_rewarded = (bool) $reward_gold || (bool)count($received_display_items);
+			$display_statuses = $display_statuses_classes = null;
+			if($status_effect){ // Only add the status effect
 				$player->addStatus($status_effect);
+				// Get the statuses and status classes for display.
+				$display_statuses = implode(', ', get_status_list());
+				$display_status_classes = implode(' ', get_status_list()); // TODO: Take healthy out of the list since it's redundant.
+				//$display_statuses = $display_statuses_classes = string_status($status_effect); // Get the string of a status.
 			}
 		}
 		
-		if($status_effect){
-			$statuses = implode(get_status_list(), ', ');
-			$status_classes = implode(get_status_list(), ' '); // TODO: Take healthy out of the list since it's redundant.
-		}
 		
 		// Settings to display results.
 		$npc_template = 'npc.abstract.tpl';
 		$combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$npco->damage(), 'percent_damage'=>$percent_damage,
-			'status_effect'=>$status_effect, 'statuses'=>$statuses, 'received_gold'=>$received_gold,
-			'received_item'=>$reward_item_display, 'is_rewarded'=>$is_rewarded, 'victory'=>$victory, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats, 'is_perceptive'=>$is_perceptive,
-			'added_bounty'=>$added_bounty);
+			'status_effect'=>$status_effect, 'display_statuses'=>$display_statuses, 'display_statuses_classes'=>$display_statuses_classes, 'received_gold'=>$received_gold,
+			'received_display_items'=>$received_display_items, 'is_rewarded'=>$is_rewarded, 
+			'victory'=>$victory, 'survive_fight'=>$survive_fight, 'kill_npc'=>$kill_npc, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats, 'is_quick'=>$is_quick,
+			'added_bounty'=>$added_bounty, 'is_villager'=>$is_villager, 'race'=>$npco->race, 'is_weaker'=>$is_weaker, 'is_stronger'=>$is_stronger);
 			
 			
 			
@@ -200,8 +214,6 @@ if($turns > 0 && !empty($victim)) {
 		} else {
 			$turn_cost = 1;
 
-			$ninja_str               = $player->getStrength();
-			$ninja_health            = $player->vo->health;
 			$drop                    = false;
 			$drop_display 			 = null;
 
