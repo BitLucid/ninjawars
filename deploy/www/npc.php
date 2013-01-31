@@ -112,6 +112,7 @@ if($turns > 0 && !empty($victim)) {
 		$received_display_items = null;
 		$added_bounty = null;
 		$is_rewarded = null; // Gets items or gold.
+		$display_statuses = $display_statuses_classes = null;
 		
 		// Get percent of total initial health.
 		
@@ -149,7 +150,6 @@ if($turns > 0 && !empty($victim)) {
 				}
 			}
 			$is_rewarded = (bool) $reward_gold || (bool)count($received_display_items);
-			$display_statuses = $display_statuses_classes = null;
 			if($status_effect){ // Only add the status effect
 				$player->addStatus($status_effect);
 				// Get the statuses and status classes for display.
