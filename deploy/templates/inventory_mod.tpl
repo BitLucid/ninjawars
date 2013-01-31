@@ -19,18 +19,18 @@ You do not have {$article|escape} {$itemName|escape}
   </p>
 
 	{if $kill}
-You have killed {$target|escape} with {$article|escape} {$itemName|escape}!<br>
-You receive {$loot|escape} gold from {$target|escape}.<br>
+	You have killed {$target|escape} with {$article|escape} {$itemName|escape}!<br>
+	You receive {$loot|escape} gold from {$target|escape}.<br>
 	{/if}
 
 	{if $bountyMessage}
-<p>
-  {$bountyMessage}
-</p>
+	<p>
+	  {$bountyMessage}
+	</p>
 	{/if}
 
 	{if $stealthLost}
-Your actions have revealed you. You are no longer stealthed.<br>
+	Your actions have revealed you. You are no longer stealthed.<br>
 	{/if}
 
 	{if not $selfTarget}

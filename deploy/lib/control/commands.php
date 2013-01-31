@@ -144,6 +144,7 @@ function get_turns($char_id){
 // ********** KILLS FUNCTIONS *********
 // ************************************
 
+// Takes in a character id and adds kills to that character.
 function addKills($who, $amount) {
 	$amount = (int)abs($amount);
 	update_levelling_log($who, $amount);
@@ -161,7 +162,7 @@ function get_kills($char_id) {
 		array(':player_id'=>array($char_id, PDO::PARAM_INT)));
 }
 
-// Change the kills amount of a char.
+// Change the kills amount of a char, and levels them up when necessary.
 function change_kills($char_id, $amount, $auto_level_check=true) {
 	$amount = (int)$amount;
 	if (abs($amount) > 0) {
