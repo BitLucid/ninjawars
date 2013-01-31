@@ -87,7 +87,7 @@ class Npc{
 // This function is just a prelude to getting the info all from the database.
 function get_npcs(){
 	return array(
-		'peasant2'=>array('name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>'10', 'stamina'=>10, 'speed'=>10, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1, 'traits'=>'villager,sometimes_disguised_ninja', 'inventory'=>array('kunai'=>'.01')),
+		'peasant2'=>array('name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>'10', 'stamina'=>3, 'speed'=>10, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1, 'traits'=>'villager,sometimes_disguised_ninja', 'inventory'=>array('kunai'=>'.01')),
 		'merchant2'=>array('name'=>'Merchant', 'race'=>'human', 'strength'=>'20', 'stamina'=>20, 'speed'=>10, 'ki'=>1, 
 			'damage'=>15, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>3, 'img'=>'merchant.png', 'inventory'=>array('phosphor'=>'.7'), 'traits'=>'villager'),
 		'guard2'=>array('name'=>'Guard', 'short'=>'is a member of the ashigaru foot soldiers, hired for various tasks', 'race'=>'human', 'strength'=>'30', 'stamina'=>30, 'speed'=>12, 'ki'=>1, 
