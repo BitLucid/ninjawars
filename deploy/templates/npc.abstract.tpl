@@ -64,7 +64,7 @@ article#fight nav{
 			{if $is_weaker}
 			<p class='target-escape'>The {$display_name|escape} flees from you and is able to escape!</p>
 			{else}
-			<p class='you-escape'>You are unable to defeat the {$display_name|escape}, but you get out of the fight alive!</p>
+			<p class='you-escape'>You are unable to kill the {$display_name|escape}, so you escape instead!</p>
 			{/if}
 		{/if}
 		
