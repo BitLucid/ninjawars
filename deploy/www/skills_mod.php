@@ -169,19 +169,12 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 		// *** Get Special Items From Inventory ***
 		$user_id = self_char_id();
-
-		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare('SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type');
-		$statement->bindValue(':owner', $user_id);
-		$statement->execute();
-		
-		$itemCount = $statement->fetchColumn();
-        $itemsConverted = min($itemCount, $starting_turns-1);
-
-		if ($itemsConverted > 0) {	// *** If special item count > 0 ***
-			remove_item($user_id, 'ginsengroot', $itemsConverted);
-			add_item($user_id, 'tigersalve', $itemsConverted);
-			$turn_cost = $itemsConverted;
+        $itemCount = query_item('SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type',
+                array(':owner'=>$user_id));
+        $turn_cost = min($itemCount, $starting_turns-1, 2); // Costs 1 or two depending on the number of items.
+		if ($turn_cost && $itemCount > 0) {	// *** If special item count > 0 ***
+			remove_item($user_id, 'ginsengroot', $itemCount);
+			add_item($user_id, 'tigersalve', $itemCount);
 			
 			$generic_skill_result_message = 'With intense focus you grind the '.$itemsConverted.' herbs into potent formulas.';
 		} else { // *** no special items, give error message ***
