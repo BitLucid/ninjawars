@@ -162,6 +162,7 @@ function characters_are_linked($char_id, $char_2_id){
 	$account_2_id = get_char_account_id($char_2_id);
 	$char_1_info = char_info($char_id);
 	$char_2_info = char_info($char_2_id);
+	$server_ip = $_SERVER['SERVER_ADDR'];
 	if(empty($account_id) || empty($account_2_id) || empty($char_1_info) || empty($char_2_info)){
 		return false;
 	} elseif (isset($char_1_info['active']) && !$char_1_info['active'] ||
@@ -175,7 +176,8 @@ function characters_are_linked($char_id, $char_2_id){
 		}
 		$account_ip = account_info($account_id, 'last_ip');
 		$account_2_ip = account_info($account_2_id, 'last_ip');
-		if(empty($account_ip) || empty($account_2_ip)){
+		if(empty($account_ip) || empty($account_2_ip) || $account_2_ip == $server_ip || $account_id == $server_ip){
+			// When account ips are empty or equal the server ip, then don't clone kill them.
 			return false;
 		} else {
 			error_log('Clone kill performed on accounts ['.$account_id.'] and ['.$account_2_id.'] with ips ['.$account_ip.'] and ['.$account_2_ip.']');
