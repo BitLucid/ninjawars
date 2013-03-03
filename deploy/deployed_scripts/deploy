@@ -42,7 +42,7 @@ ALERTS_EMAIL=''
 TEMPLATE_CACHING=false
 VHOST_LISTEN='*'
 TRAP_ERRORS=true
-TEMPLATE_LIBRARY_PATH=''
+TEMPLATE_LIBRARY_PATH='Smarty.class.php'
 
 source_files=''
 configuration_file=''
