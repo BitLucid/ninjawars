@@ -8,12 +8,11 @@ if ($error = init($private, $alive)) {
 
 // Determines the user information for a certain email.
 function user_having_email($email) {
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare('SELECT uname, accounts.confirmed, accounts.verification_number, account_id, CASE WHEN active::bool THEN 1 ELSE 0 END AS active FROM players JOIN account_players ON _player_id = player_id JOIN accounts ON account_id = _account_id WHERE active_email = :email');
-	$statement->bindValue(':email', $email);
-	$statement->execute();
-
-	return $statement->fetch();
+	$data = query_row('SELECT uname, accounts.confirmed, accounts.verification_number, account_id, CASE WHEN active::bool THEN 1 ELSE 0 END AS active
+		from accounts LEFT JOIN account_players ON account_id = _account_id LEFT JOIN players on _player_id = player_id 
+		WHERE active_email = :email limit 1;',
+			array(':email'=>$email));
+	return $data;
 }
 
 // Sends an email for the user's account data.
