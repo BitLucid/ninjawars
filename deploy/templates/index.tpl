@@ -2,46 +2,6 @@
 <!-- This template is only used after login -->
 
     <!-- Version {$version|escape} -->
-{literal}
-      <script type="text/javascript">
-      // Index-only javascript
-
-
-		if (parent.frames.length != 0) { // If there is a double-nested index...
-			location.href = "main.php"; // ...Display the main page instead.
-			// This function must be outside of domready, for some reason.
-		}      
-      
-      $(function(){		
-		
-		
-		$('#donation-button').hide().delay('3000').slideDown('slow').delay('20000').slideUp('slow');
-		// Hide, show, and then eventually hide the donation button.
-		
-		var isTouchDevice = 'ontouchstart' in document.documentElement;
-		if(!isTouchDevice){
-			// Hide the self and map subcategories initially, leaving the combat subcategory visible
-			var subcats = $('#self-subcategory, #map-subcategory').hide();
-		
-			//delay('2000').slideUp('slow');
-	
-			// Find the trigger areas and show the appropriate subcategory.
-			var triggers = $('#category-bar').find('.combat, .self, .map');
-			if(triggers){
-				triggers.mouseenter(function(){
-					var trigger = $(this);
-					var triggeredSubcat = $("#"+trigger.attr('class')+'-subcategory').show().siblings().hide();
-					// When a different trigger area is hovered, hide the other subcats.
-				});
-			}
-		}
-		
-	
-	});
-	</script>
-      
-{/literal}
-
 	<div id="logo-appended">
 	  <a href="/">
         <img id='ninjawars-title-image' src='images/halfShuriken.png' title='Home' alt='Ninja Wars' width='100' height='100'>

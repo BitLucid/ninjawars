@@ -617,20 +617,43 @@ if (parent.window != window) {
 	 */
 }
 
-/***************************** Execution of code, run at the end to allow all definitions to exist beforehand. ******/
+/***************************** Execution of code, run at the end to allow all function definitions to exist beforehand. ******/
+if(g_isIndex || g_isRoot){
+// This has to be outside of domready for some reason.
+	if (parent.frames.length != 0) { // If there is a double-nested index...
+		location.href = "main.php"; // ...Display the main page instead.
+		// This function must be outside of domready, for some reason.
+	}
+}
+
 $(function() {
 
 	$('html').removeClass('no-js'); // Remove no-js class when js present.
 		
 	// INDEX ONLY CHANGES
 	if (g_isIndex || g_isRoot) {
-	
 		var hash = window.location.hash;
 		if(hash && hash.indexOf(".php") > 0){ // If a hash exists.
 			var page = hash.substring(1); // Create a page from the hash by removing the #.
 			$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
 		}
-
+		$('#donation-button').hide().delay('3000').slideDown('slow').delay('20000').slideUp('slow');
+		// Hide, show, and then eventually hide the donation button.
+		var isTouchDevice = 'ontouchstart' in document.documentElement;
+		if(!isTouchDevice){
+			// Hide the self and map subcategories initially, leaving the combat subcategory visible
+			var subcats = $('#self-subcategory, #map-subcategory').hide();
+			//delay('2000').slideUp('slow');
+			// Find the trigger areas and show the appropriate subcategory.
+			var triggers = $('#category-bar').find('.combat, .self, .map');
+			if(triggers){
+				triggers.mouseenter(function(){
+					var trigger = $(this);
+					var triggeredSubcat = $("#"+trigger.attr('class')+'-subcategory').show().siblings().hide();
+					// When a different trigger area is hovered, hide the other subcats.
+				});
+			}
+		}
 		// For all pages, if a link with a target of the main iframe is clicked
 		// make iframe links record in the hash.
 		$('a[target=main]').click(function(){
@@ -641,24 +664,14 @@ $(function() {
 			return true;
 		});
 	
-		NW.quickDiv = null;
-		//NW.miniChatContainer = null;
-
 		NW.quickDiv = document.getElementById('quickstats-frame-container');
-
 		$('#chat-loading').show();
-
 		NW.chainedUpdate(); // Start the periodic index update.
-
 		$('#skip-to-bottom').click(function(){
 			$(this).hide();
 		});
-
 		var quickstatsLinks = $("a[target='quickstats']");
 		quickstatsLinks.css({'font-style':'italic'}); // Italicize
-
-		//NW.miniChatContainer = document.getElementById('mini-chat-display');
-        //NW.refreshQuickstats('player');// Load the quickstats initially.
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
 		// Update the mini chat section for the first time.
 		NW.checkForNewChats();
@@ -668,9 +681,9 @@ $(function() {
 		// When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
 
 		// Display the chat refresh image when js is present and toggle it if it is clicked.
-		$('#chat-refresh-image').toggle().click(
-			function() { NW.chatRefreshClicked(this); });
-
+		$('#chat-refresh-image').toggle().click(function() { 
+			NW.chatRefreshClicked(this); 
+		});
 
 		NW.activeMembersContainer = document.getElementById('active-members-display');
 		NW.totalMembersContainer = document.getElementById('total-members-display');

@@ -16,6 +16,8 @@
     <base href="{$smarty.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
     <!-- This css file now contains the mobile and print css files -->
     <link rel="stylesheet" type="text/css" href="css/style.css" media="Screen">
+
+
 	<!-- Html5 shim for ie less than 9 -->
     <!--[if lt IE 9]>
 		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -26,25 +28,6 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 {/if}
 	<script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
-    <!-- All the global ninjawars javascript -->
-    <script type="text/javascript" src="js/nw.js"></script>
-
-    <script type="text/javascript">
-	NW.loggedIn = {if $logged_in}true{else}false{/if};
-{if !$is_index && $quickstat}
-// Only execute on non-index pages.
-{literal}
-$(function() {
-{/literal}
-
-	// Has to use php so can't be literal.
-	NW.refreshStats({$json_public_char_info});
-
-{literal}
-});
-{/literal}
-{/if}
-    </script>
 
 {if $smarty.const.DEBUG}
     <link rel="stylesheet" type="text/css" href="css/debugger.css">
@@ -52,6 +35,10 @@ $(function() {
 		NW.debugging = true;
     </script>
 {/if}
+
+    <!-- All the global ninjawars javascript -->
+    <script type="text/javascript" src="js/nw.js"></script>
+
 
   </head>
   <body class="{$body_classes|escape}">
