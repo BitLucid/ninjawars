@@ -1,17 +1,8 @@
 
 {if !$smarty.const.LOCAL_JS}
-    <!-- Google Analytics -->
-    <script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script>
-    <!-- The google-analytics code that gets run is in nw.js -->
-    <script type="text/javascript">
-    // GOOGLE ANALYTICS
-{literal}
-    try {
-        var pageTracker = _gat._getTracker("UA-707264-2");
-        pageTracker._trackPageview();
-    } catch(err) {}
-{/literal}
-    </script>
+    <!-- Google Analytics, just add all the tracking info to an array at once -->
+	<script>var _gaq=[['_setAccount','UA-707264-2'],['_trackPageview']];</script>
+	<script async src='http://www.google-analytics.com/ga.js'></script>
 {/if}
     
     

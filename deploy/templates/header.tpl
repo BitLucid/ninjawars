@@ -21,60 +21,29 @@
 		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 
-{if $smarty.const.LOCAL_JS}
-    <!-- Local jquery lib -->
-    <script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
-{else}
+{if !$smarty.const.LOCAL_JS}
     <!-- Google jquery lib -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 {/if}
-    <!-- Google Analytics moved to the footer.tpl -->
+	<script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
     <!-- All the global ninjawars javascript -->
     <script type="text/javascript" src="js/nw.js"></script>
 
     <script type="text/javascript">
 	NW.loggedIn = {if $logged_in}true{else}false{/if};
-
-{if $is_index}
+{if !$is_index && $quickstat}
+// Only execute on non-index pages.
 {literal}
-	var hash = window.location.hash;
-	if(hash){ // If a hash exists.
-		$(function(){
-			var page = hash.substring(1); // Create a page from the hash by removing the #.
-			$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
-		});	
-	}
+$(function() {
 {/literal}
-{else}
-	// Only execute on non-index.
-  {if $quickstat}
-	{literal}
-	$(document).ready(function() {
-	{/literal}
-		// Has to use php so can't be literal.
-		NW.refreshStats({$json_public_char_info});
-		
-	{literal}
-	});
-	{/literal}
-  {/if}
-{/if}
+
+	// Has to use php so can't be literal.
+	NW.refreshStats({$json_public_char_info});
 
 {literal}
-// For all pages, if a link with a target of the main iframe is clicked
-$(function(){
-	$('html').removeClass('no-js');; // Remove no-js class when js present.
-
-	// make iframe links record in the hash.
-	$('a[target=main]').click(function(){
-		var target = $(this).attr('href');
-		var winToChange = window.parent != window? window.parent : window;
-		winToChange.location.hash = target;
-		// Then update the hash to the source for that link.
-		return true;
-	});
 });
 {/literal}
+{/if}
     </script>
 
 {if $smarty.const.DEBUG}

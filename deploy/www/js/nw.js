@@ -11,7 +11,7 @@
 // TODO: Create a fade-out/fadein functionality like the google homepage, so that elements display only when needed/when the main element is moused-off-of.
 "use strict"; // Testing out use of strict mode.
 
-var NW = {};
+var NW = window.NW || {};
 
 //var $ = jQuery; // jQuery sets itself to use the dollar sign shortcut by default.
 // A different instance of jquery is currently used in the iframe and outside.
@@ -618,9 +618,29 @@ if (parent.window != window) {
 }
 
 /***************************** Execution of code, run at the end to allow all definitions to exist beforehand. ******/
-$(document).ready(function() {
+$(function() {
+
+	$('html').removeClass('no-js'); // Remove no-js class when js present.
+		
 	// INDEX ONLY CHANGES
 	if (g_isIndex || g_isRoot) {
+	
+		var hash = window.location.hash;
+		if(hash && hash.indexOf(".php") > 0){ // If a hash exists.
+			var page = hash.substring(1); // Create a page from the hash by removing the #.
+			$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
+		}
+
+		// For all pages, if a link with a target of the main iframe is clicked
+		// make iframe links record in the hash.
+		$('a[target=main]').click(function(){
+			var target = $(this).attr('href');
+			var winToChange = window.parent != window? window.parent : window;
+			winToChange.location.hash = target;
+			// Then update the hash to the source for that link.
+			return true;
+		});
+	
 		NW.quickDiv = null;
 		//NW.miniChatContainer = null;
 
