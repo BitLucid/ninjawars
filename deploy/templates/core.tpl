@@ -1,5 +1,5 @@
 	  <!-- Main column template section -->
-      <div id='main-column'>
+      <section id='main-column'>
 
 			<!-- THE MAIN CONTENT DISPLAY SECTION -->
             <iframe frameBorder='0' id="main" name="main" class="main-iframe" src="{$main_src|escape}">
@@ -7,4 +7,4 @@
               <a href='{$main_src|escape}' target='_blank'>Main Content</a> unavailable inside this browser window.
             </iframe>
           
-      </div> <!-- End of main-column -->
+      </section> <!-- End of main-column -->

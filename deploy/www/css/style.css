@@ -1103,9 +1103,15 @@ iframe {
 	/* Header height is about 20%, so core should be about 80 */
 	position:relative;width:100%;height:75%;min-width:400px;min-width:400px;
 }
+#left-column{
+	display:inline-block;
+	width:5%;
+	height:100%;
+	background:red;
+}
 
 #main-column{
-	width:60%;height:100%;min-height:30em;left:0;top:0;padding-left:3%;
+	width:57%;height:100%;min-height:30em;left:0;top:0;padding-left:3%;
 }
 
 .main-iframe { /* class for the main iframe */
@@ -1116,16 +1122,38 @@ iframe {
 }
 
 #sidebar-column{
-	position:absolute;width:35%;height:100%;right:0;top:0;
+	position:absolute;width:33%;height:100%;right:0;top:0;
 }
 
+#skip-to-bottom{
+	display:block;
+	padding:.5em;
+	position:absolute;
+	bottom:17%;
+	left:0;
+	background-color:#666;
+	background-color:rgba(100, 100, 100, .3);
+	text-transform:uppercase;
+}
+a#skip-to-bottom{
+	background-color:#666;
+	background-color:rgba(100, 100, 100, .5);
+	text-decoration:none;
+}
+
+#skip-to-bottom::after{
+	display:block;
+	text-align:center;
+	content:'▼';
+	color:#666;
+	font-size:2em;
+	text-decoration:none;
+}
 
 #index-footer {
 	text-align: center;
 	min-height:3%;
 	width:100%;
-	position:absolute;
-	top:95%;
 	opacity:.96;
 	border-top:1px solid #666;
 }

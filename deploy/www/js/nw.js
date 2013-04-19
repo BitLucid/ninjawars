@@ -626,12 +626,13 @@ $(document).ready(function() {
 
 		NW.quickDiv = document.getElementById('quickstats-frame-container');
 
-
-
 		$('#chat-loading').show();
 
 		NW.chainedUpdate(); // Start the periodic index update.
 
+		$('#skip-to-bottom').click(function(){
+			$(this).hide();
+		});
 
 		var quickstatsLinks = $("a[target='quickstats']");
 		quickstatsLinks.css({'font-style':'italic'}); // Italicize

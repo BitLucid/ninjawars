@@ -3,9 +3,7 @@
 {literal}
           <script type="text/javascript">
             $().ready(function (){
-                var footer = $('#index-footer');
                 //Hide the second two sections.
-                var footerBottoms = footer.find('#footer-middle-bar, #footer-bottom-bar').hide();
                 var catchphrases = $('#nw-catchphrases span');
                 var rand = Math.floor(Math.random()*catchphrases.size());
                 // Choose random index.
@@ -13,14 +11,16 @@
                 // Hide all, show one at random.
                 
                 // When any of the three sections are hovered, show the bottom two.
-        // Only change the display of the bottom sections if another event doesn't over-ride.
-                footer.hover(
+				// Only change the display of the bottom sections if another event doesn't over-ride.
+                //var footer = $('#index-footer');
+                //var footerBottoms = footer.find('#footer-middle-bar, #footer-bottom-bar').hide();
+                /*footer.hover(
                 	function(){
                 		footerBottoms.stop(true, true).slideDown()
                 		footer.css({'bottom':'0'}); // Ensure it sticks to the bottom.
                 	}, 
                 	function(){footerBottoms.stop(true, true).delay(2000).slideUp()}
-                );
+                );*/
                 
             });
           </script>

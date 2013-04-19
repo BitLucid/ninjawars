@@ -1,3 +1,6 @@
+
+<!-- This template is only used after login -->
+
     <!-- Version {$version|escape} -->
 {literal}
       <script type="text/javascript">
@@ -120,9 +123,17 @@
 	  </header><!-- End of header -->
       
       
-      <div id='core' class='clearfix'>
+      <section id='core' class='clearfix'>
+      
+      <!-- Test stuff! -->
+      <nav id='left-nav'>
+      	&nbsp;
+      	<a id='skip-to-bottom' href='#index-footer'>skip to<br>bottom</a>
+      </nav>
+      
       <!-- MAIN COLUMN STARTS HERE -->
 		{include file="core.tpl"}
+	  <!-- Core Column ends here -->
 
 
       <!-- SIDEBAR COLUMN STARTS HERE -->
@@ -203,7 +214,7 @@
 
       </aside><!-- End of sidebar-column -->  
      
-      </div><!-- end of core-->
+      </section><!-- end of core-->
       
       
       <footer id='index-footer' class='navigation'>
