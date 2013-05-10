@@ -147,6 +147,7 @@ input:invalid, textarea:invalid {
 body {
 	min-height:96%;
 	background-color:#000004; /* To prevent the "white background flash" effect. */
+	background:url('/images/rebel.png');
 	color:ghostwhite;
 		/* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */
 }
