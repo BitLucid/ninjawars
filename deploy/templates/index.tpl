@@ -31,7 +31,7 @@
 
 		<div id='logout'>
 		    <a href="logout.php">
-		      <img src='{$smarty.const.IMAGE_ROOT|escape}logoutTriangle.png' alt='Logout' title='Leave the game' style='height:60px;width:60px'>
+		      <img src='{$smarty.const.IMAGE_ROOT|escape}logout.png' alt='Logout' title='Logout of the game' style='height:60px;width:60px'>
 		    </a>
 		</div>
 
