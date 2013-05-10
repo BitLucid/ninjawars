@@ -18,6 +18,8 @@ $viewed_name_for_title = null;
 if($target_player_obj && $target_player_obj->name()){
 	$viewed_name_for_title = $target_player_obj->name();
 }
+// Get the player's kills for this date.
+$kills_today = query_item('select count(*) from levelling_log where _player_id = :player_id and killsdate = CURRENT_DATE and killpoints > 0', array(':player_id'=>$target_id));
 
 $combat_toggles = get_setting('combat_toggles'); // Pull the attack options toggled on and off.
 
@@ -131,7 +133,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		// Send the info to the template.
 
 		$template = 'player.tpl';
-		$parts = get_certain_vars(get_defined_vars(), array('char_info', 'combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'level_category', 'gravatar_url', 'status_list', 'clan', 'clan_members', 'items', 'duel_checked'));
+		$parts = get_certain_vars(get_defined_vars(), array('char_info', 'combat_skills', 'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today', 'level_category', 'gravatar_url', 'status_list', 'clan', 'clan_members', 'items', 'duel_checked'));
 	}
 }
 

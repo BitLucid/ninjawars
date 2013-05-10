@@ -164,12 +164,13 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
   <section class='player-stats centered'>
   <!-- Will display as floats horizontally -->
+
     <small class='player-last-active'>
       Last active
 {if $player_info.days gt 0}
       {$player_info.days} days ago
 {else}
-      today
+      today {if $kills_today gt 0}<span>with {$kills_today} kills</span>{/if}
 {/if}
     </small>
 {if $player_info.bounty gt 0}
