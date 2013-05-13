@@ -1936,19 +1936,6 @@ table#player-attack {
 	font-size: 1em;
 }
 
-/*   Attack player page css */
-#attack-player-page li {
-	margin: .2em .3em .2em .2em;
-	display:inline;
-	margin-left: 1em;
-	/*list-style-type:circle;
-	background-color:purple;*/
-}
-#attack-player-page ul {
-	margin:0;
-	padding:0;
-}
-
 #page-404 {
 	background-color: black;
 	color: white;
@@ -2260,8 +2247,23 @@ select option #blue-class-select {
 
 /* =================== Npc related styles =============== */
 
+#npc-list{
+	text-align:left;
+}
+
 #npc-list li {
+	margin: .2em .3em .2em .2em;
+	display:inline;
+	margin-left: 1em;
 	white-space: nowrap;
+	min-height:2em; 
+	min-width:5em;
+	/*list-style-type:circle;
+	background-color:purple;*/
+}
+#npc-list ul {
+	margin:0;
+	padding:0;
 }
 
 .npc{

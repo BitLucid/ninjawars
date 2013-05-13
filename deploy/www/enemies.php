@@ -1,7 +1,7 @@
 <?php
 require_once(LIB_ROOT."control/lib_player_list.php");
 require_once(LIB_ROOT."control/lib_grouping.php");
-
+require_once(LIB_ROOT."data/lib_npc.php");
 
 $private    = true;
 $alive      = false;
@@ -49,10 +49,28 @@ $enemyCount = $enemy_list->rowCount();
 $enemy_list = $enemy_list->fetchAll();
 $recent_attackers = get_recent_attackers()->fetchAll();
 
+// Add enemies at the bottom of the fight page.
+
+// Array that simulates database display information for switching out for an npc database solution.
+$npcs = array(
+	  array('name'=>'Peasant',        'identity'=>'peasant', 'image'=>'fighter.png')
+	, array('name'=>'Thief',          'identity'=>'thief', 'image'=>'thief.png')
+	, array('name'=>'Merchant',       'identity'=>'merchant', 'image'=>'merchant.png')
+	, array('name'=>"Guard", 'identity'=>'guard', 'image'=>'guard.png')
+	, array('name'=>'Samurai',         'identity'=>'samurai', 'image'=>'samurai.png')
+);
+
+
+// Generics.
+$other_npcs = get_npcs();
+
+
+
+
 display_page(
 	'enemies.tpl'	// *** Main template ***
-	, 'Enemy List' // *** Page Title ***
-	, get_certain_vars(get_defined_vars(), array('char_name', 'char_info', 'found_enemies', 'active_ninjas', 'recent_attackers', 'enemy_list', 'peers')) // *** Page Variables ***
+	, 'Fight' // *** Page Title ***
+	, get_certain_vars(get_defined_vars(), array('char_name', 'npcs', 'other_npcs', 'char_info', 'found_enemies', 'active_ninjas', 'recent_attackers', 'enemy_list', 'peers')) // *** Page Variables ***
 	, array( // *** Page Options ***
 		'quickstat' => false
 	)

@@ -72,27 +72,12 @@ $locations = array(
 );
 */
 
-// Array that simulates database display information for switching out for an npc database solution.
-$npcs = array(
-	  array('name'=>'Peasant',        'identity'=>'peasant', 'image'=>'fighter.png')
-	, array('name'=>'Thief',          'identity'=>'thief', 'image'=>'thief.png')
-	, array('name'=>'Merchant',       'identity'=>'merchant', 'image'=>'merchant.png')
-	, array('name'=>"Guard", 'identity'=>'guard', 'image'=>'guard.png')
-	, array('name'=>'Samurai',         'identity'=>'samurai', 'image'=>'samurai.png')
-);
-
-
-// Generics.
-$other_npcs = get_npcs();
-
 display_page(
 	'map.tpl'
 	, 'Map'
 	, array(
 		'nodes'		  => $nodes
 //		'locations'   => $locations
-		, 'npcs'      => $npcs
-		, 'other_npcs'=> $other_npcs
 		, 'show_ad'   => rand(1, 20) // Only show the ad in the village 1/10th of the time, enough to make it use appropriate data for the ads.
 	)
 	, array(

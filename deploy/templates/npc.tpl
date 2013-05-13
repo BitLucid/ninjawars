@@ -12,6 +12,6 @@ You have no turns left today. Buy a amanita mushroom or wait for your turns to r
       You are a ghost. You must resurrect before you may act again. Go to the <a href='shrine.php' style='font-size:2em'>shrine</a> for the monks to bring you back to life, or <a href='shrine_mod.php?heal_and_resurrect=1' style='font-size:2em'>heal fully</a>.
     </p>
 {else}
-<a href="map.php" class='return-to-location block'>Return to the Village</a>
+<a href="enemies.php" class='return-to-location block'>Fight something else</a>
 {/if}
 </nav>
