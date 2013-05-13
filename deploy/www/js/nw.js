@@ -680,11 +680,6 @@ $(function() {
 		$('#post_msg_js').submit(function() {return NW.sendChatContents(this)});
 		// When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
 
-		// Display the chat refresh image when js is present and toggle it if it is clicked.
-		$('#chat-refresh-image').toggle().click(function() { 
-			NW.chatRefreshClicked(this); 
-		});
-
 		NW.activeMembersContainer = document.getElementById('active-members-display');
 		NW.totalMembersContainer = document.getElementById('total-members-display');
 	} else if (g_isSubpage) {
