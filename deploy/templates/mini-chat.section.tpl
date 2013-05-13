@@ -20,7 +20,6 @@
                     </div>
                     <div style='width:40%;display:inline;margin-top:.5em;margin-bottom:.5em;'>
                         <input type="submit" value="Chat" class="formButton" style="display:inline;margin-right:.3em;margin-left:.3em;">
-                        <img src="images/refresh.gif" id='chat-refresh-image' alt="Refresh" style="max-height:24px;max-width:24px;cursor: pointer;display:none;margin-top:.2em">
                     </div>
                   </form>
 {/if}
