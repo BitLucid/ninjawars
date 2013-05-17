@@ -1,7 +1,7 @@
 function loadLastCommitMessage(){
     var login = 'tchalvak' // your username
         
-    $.getJSON('https://api.github.com/repos/tchalvak/ninjawars/commits/master?callback=?', 
+    $.getJSON('https://api.github.com/repos/bitlucid/ninjawars/commits/master?callback=?', 
     	function(data) {
     		if(!data.data){
     			console.log('No github commit api data');
