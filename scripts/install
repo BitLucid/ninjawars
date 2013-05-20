@@ -1,5 +1,6 @@
 #!/bin/bash
-# To use this script, give it user execute permissions : sudo chmod u+rwx install
+# To use this script, give it user execute permissions : sudo chmod u+rwx install, 
+# then run it with the argument of your dev username, e.g. install kzqai
 sudo apt-get install apache2 php5 php5-pgsql postgresql postgresql-contrib libpq-dev smarty
 sudo apt-get install perl liblingua-en-inflect-perl
 
@@ -7,14 +8,14 @@ sudo apt-get install perl liblingua-en-inflect-perl
 sudo a2enmod rewrite
 
 sudo su postgres
-createuser -s kzqai
+createuser -s $1
 createdb nw
 cd `pg_config --sharedir`
 echo "create extension pgcrypto" | psql -d nw
 echo "create role developers" | psql nw
 exit
 
-cd ~/ninjawars
+cd /srv/ninjawars
 ln -s docs/gitignoreSAMPLE .gitignore
 cp docs/tchalvakSAMPLEresources.php deploy/resources.php
 mkdir -p deploy/resources/logs
