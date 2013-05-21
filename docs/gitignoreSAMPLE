@@ -31,12 +31,12 @@ scripts/deployed_scripts
 deploy/db/migrations/scripts_list
 deploy/db/migrations/current_order
 # Propel Auto-generated classes and files
-!deploy/model/.gitkeep
 deploy/model/*
-!deploy/conf/.gitkeep
+!deploy/model/.gitkeep
 deploy/conf/*
-!deploy/sql/.gitkeep
+!deploy/conf/.gitkeep
 deploy/sql/*
+!deploy/sql/.gitkeep
 # Propel build
 build.properties
 buildtime.xml
