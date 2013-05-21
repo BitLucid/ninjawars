@@ -20,4 +20,4 @@ propel.runtime.phpconf-classmap.file = classmap.php
 # Migration setting
 propel.migration.table = propel_migration
 propel.migration.caseInsensitive = true
-propel.migration.dir = ${propel.output.dir}/migrations
+propel.migration.dir = ${propel.output.dir}/db/migrations
