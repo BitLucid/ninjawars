@@ -48,11 +48,11 @@ class News_Test extends PHPUnit_Framework_TestCase {
 	{
 		$news = new model\News();
 
-		$lastNews = $news->createPost($this->testedContent[0], 1);
+		$lastNews = $news->createPost($this->testedContent[0], $this->testedAccountId);
 
 		$author = $lastNews->getAccountss()->getFirst();
 
-		$this->assertEquals(1, $author->getAccountId());
+		$this->assertEquals($this->testedAccountId, $author->getAccountId());
 
 		$this->assertEquals($this->testedContent[0], $lastNews->getContent());
 	}
@@ -61,7 +61,7 @@ class News_Test extends PHPUnit_Framework_TestCase {
 	{
 		$news = new model\News();
 
-		$lastNews = $news->createPost($this->testedContent[0], 1);
+		$lastNews = $news->createPost($this->testedContent[0], $this->testedAccountId);
 
 		$lastNews->setContent($this->testedContent[1]);
 
