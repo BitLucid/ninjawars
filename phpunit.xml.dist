@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <phpunit 
 	bootstrap="deploy/tests/bootstrap.php"
 	colors="true"
@@ -19,9 +18,9 @@
 			<directory suffix=".php">vendor</directory>
 		</blacklist>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">deploy/lib/classes</directory>
+			<directory suffix=".php">deploy/model</directory>
 			<exclude>
-		      <directory suffix=".php">deploy/model</directory>
+				<directory suffix=".php">deploy/model/orm</directory>
 		    </exclude>
 		</whitelist>
 	</filter>
