@@ -32,8 +32,8 @@ scripts/deployed_scripts
 deploy/db/migrations/scripts_list
 deploy/db/migrations/current_order
 # Propel Auto-generated classes and files
-deploy/model/*
-!deploy/model/.gitkeep
+deploy/model/orm/*
+!deploy/model/orm/.gitkeep
 deploy/conf/*
 !deploy/conf/.gitkeep
 deploy/sql/*
