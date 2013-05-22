@@ -11,12 +11,22 @@
 
 // Set any INI options for PHP
 // ---------------------------
-
 $dirname = dirname(__FILE__);
 $autoloaded = false;
 foreach (array($dirname . '/../../', $dirname . '/../../../../../') as $dir) {
     if (file_exists($file = realpath($dir) . '/vendor/autoload.php')) {
         set_include_path($dir . '/vendor/phing/phing/classes' . PATH_SEPARATOR . get_include_path());
+        include_once $file;
+
+        $autoloaded = true;
+        break;
+    }
+}
+
+// Aditional hook for local Phing library
+foreach (array($dirname . '/../../../') as $dir) {
+    if (file_exists($file = realpath($dir) . '/phing/classes/phing/Phing.php')) {
+        set_include_path($dir . '/phing/classes' . PATH_SEPARATOR . get_include_path());
         include_once $file;
 
         $autoloaded = true;
