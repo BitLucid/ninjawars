@@ -25,7 +25,8 @@ foreach (array($dirname . '/../../', $dirname . '/../../../../../') as $dir) {
 
 // Aditional hook for local Phing library
 foreach (array($dirname . '/../../../') as $dir) {
-    if (file_exists($file = realpath($dir) . '/phing/Phing.php')) {
+    if (file_exists($file = realpath($dir) . '/phing/classes/phing/Phing.php')) {
+        set_include_path($dir . '/phing/classes' . PATH_SEPARATOR . get_include_path());
         include_once $file;
 
         $autoloaded = true;
