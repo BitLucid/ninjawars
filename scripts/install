@@ -2,6 +2,11 @@
 # To use this script, give it user execute permissions : sudo chmod u+rwx install, 
 # then run it with the argument of your dev username, e.g. install kzqai
 
+if [ -z "$1" ]
+  then
+    echo "No first Username argument supplied"
+    exit
+fi
 
 # confirm function
 confirm () {
@@ -47,6 +52,9 @@ function copy_over_template_apache_configs(){
 sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && sudo ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local
 echo "Modifying deploy/www/.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
 }
+
+confirm "Copy over the template apache configs into /etc/apache2/sites-available?" && copy_over_template_apache_configs
+
 sudo apache2ctl graceful
 
 function ssh_down_db(){
