@@ -11,6 +11,9 @@
     # allow sessions to last approximately two days
     php_value session.cookie_lifetime "200000"
     # allow session cookie to last a little longer than two days.
+	<FilesMatch "\.(php)$">
+		php_value auto_prepend_file /srv/ninjawars/deploy/lib/base.inc.php
+	</FilesMatch>
 </IfModule>
 
 	# Don't show .git folders publicly
@@ -20,9 +23,6 @@
 	RewriteCond %{HTTP_HOST} ^ninjawars.net [NC]
 	RewriteRule ^(.*)$ http://www.ninjawars.net/$1 [L,R=301]
 
-	<FilesMatch "\.(php)$">
-		php_value auto_prepend_file /srv/ninjawars/deploy/lib/base.inc.php
-	</FilesMatch>
 
 	addType application/x-javascript .js
 	addType image/gif .gif
