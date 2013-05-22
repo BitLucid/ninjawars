@@ -13,5 +13,11 @@ matrix:
 
 before_script:
     - composer install
+    - psql -c 'create database nw;' -U postgres
+    - cp build.properties.tpl build.properties
+    - cp buildtime.xml.tpl buildtime.xml
+    - cp connection.xml.tpl connection.xml
+    - vendor/bin/propel-gen
+    - vendor/bin/propel-gen insert-sql
 
 script: vendor/bin/phpunit
