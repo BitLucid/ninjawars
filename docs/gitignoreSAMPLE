@@ -38,6 +38,7 @@ deploy/conf/*
 !deploy/conf/.gitkeep
 deploy/sql/*
 !deploy/sql/.gitkeep
+deploy/db/migrations/Propel*
 # Propel build
 build.properties
 buildtime.xml
