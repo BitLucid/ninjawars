@@ -1,6 +1,19 @@
 # Ninjawars repository
 The source code dojo for the ninjawars.net web game.
 
+## Install
+
+Clone this repository
+
+	git clone git@github.com:BitLucid/ninjawars.git
+
+Install the depedencies
+
+	curl -s http://getcomposer.org/installer | php
+	php composer.phar install
+
+And you're good to go.
+
 ## Contributing
 You can make web commits on github.com, just search github for "ninjawars".  To contribute on github:
 For simple contribution/collaboration:
