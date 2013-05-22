@@ -1,4 +1,10 @@
 {
+	"autoload": {
+        "psr-0": {
+        	"model": "deploy"
+        }
+    },
+
     "require": {
         "swiftmailer/swiftmailer": "4.1.3",
         "propel/propel1": "1.6.9",
