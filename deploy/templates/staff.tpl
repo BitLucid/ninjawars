@@ -99,7 +99,7 @@
 
   <p>Want to get involved?  You can hack away at the code on github and suggest changes or ask any questions on the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.</p>
   <p> Ninjawars is open source, with the source code downloadable and able to be openly contributed to at:
-    <a class='external' target='_blank' href="http://github.com/tchalvak/ninjawars/tree/master">http://github.com/tchalvak/ninjawars</a>
+    <a class='external' target='_blank' href="http://github.com/BitLucid/ninjawars/tree/master">http://github.com/BitLucid/ninjawars</a>
   </p>
 
     <div id='latest-commit-section'>
