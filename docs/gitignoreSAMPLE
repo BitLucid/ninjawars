@@ -41,3 +41,7 @@ deploy/sql/*
 build.properties
 buildtime.xml
 connection.xml
+# Composer
+composer.phar
+vendor/*
+!vendor/.gitkeep

@@ -1,7 +1,7 @@
-# ------------Ninjawars repository-------------
+# Ninjawars repository
 The source code dojo for the ninjawars.net web game.
 
-## --Contributing--
+## Contributing
 You can make web commits on github.com, just search github for "ninjawars".  To contribute on github:
 For simple contribution/collaboration:
 -Find the file or code that you want to suggest a fix for, and make a comment with the fixed code, or just the general process to acheive the fix.
