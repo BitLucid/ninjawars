@@ -82,7 +82,7 @@
       <unique-column name="_player_id"/>
     </unique>
   </table>
-  <table name="class" phpName="Class" idMethod="native">
+  <table name="class" phpName="NwClass" idMethod="native">
     <column name="class_id" phpName="ClassId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="class_name" phpName="ClassName" type="LONGVARCHAR" required="true"/>
     <column name="class_active" phpName="ClassActive" type="BOOLEAN" required="false" defaultValue="true"/>
