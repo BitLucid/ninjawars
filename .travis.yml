@@ -14,6 +14,7 @@ matrix:
 before_script:
     - composer install
     - psql -c 'create database nw;' -U postgres
+    - cp docs/tchalvakSAMPLEresources.php deploy/resources.php
     - cp build.properties.tpl build.properties
     - cp buildtime.xml.tpl buildtime.xml
     - cp connection.xml.tpl connection.xml
