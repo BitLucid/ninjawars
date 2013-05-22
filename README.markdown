@@ -7,7 +7,12 @@ Clone this repository
 
 	git clone git@github.com:BitLucid/ninjawars.git
 
-Install the depedencies
+Install system dependencies
+
+    sudo chmod u+rwx /srv/ninjawars/scripts/install
+    /srv/ninjawars/scripts/install yourUserNameHere!
+
+Install the php dependencies
 
 	curl -s http://getcomposer.org/installer | php
 	php composer.phar install

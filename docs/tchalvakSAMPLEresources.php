@@ -5,13 +5,14 @@
 * It defines constants used throughout the application.  Constants for tracked files 
 */
 define('DATABASE_HOST', "localhost");		// *** The host to connect to for the database
-define('DATABASE_USER', "tchalvak");		// *** The user that should connect to the database
-define('DATABASE_NAME', "ninjawars");		// *** The name of the database to connect to
+define('DATABASE_USER', "kzqai");		// *** The user that should connect to the database
+define('DATABASE_NAME', "nw");		// *** The name of the database to connect to
 define('OFFLINE', false);				// *** Controls if remote or local resources are used
 define('DEBUG', true);					// *** Shorter debugging constant name, set as false on live.
 define('PROFILE', false);				// *** Whether or not to do performance profiling
 define('DEBUG_ALL_ERRORS', true);	// *** Second debugging level, e.g. email debugging, only works when debug is also on.
 define('SERVER_ROOT', realpath(__DIR__).DIRECTORY_SEPARATOR);		// *** The root deployment directory of the game
+// Generally for the install purposes the SERVER_ROOT should correspond to /srv/ninjawars/deploy 
 define('WEB_ROOT', "http://nw.local/");			// *** The base URL used to access the game
 define('ADMIN_EMAIL', "ninjawarsTchalvak@gmail.com");		// *** For logs/emailed errors.
 define('SUPPORT_EMAIL', "ninjawarsTchalvak@gmail.com");	// *** For public questions.
