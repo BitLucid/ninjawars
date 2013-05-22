@@ -28,6 +28,7 @@ class Setup_Test extends PHPUnit_Framework_TestCase {
 
 		// Derived constants
 		$this->assertTrue(defined('VENDOR_ROOT'));
+		$this->assertTrue(defined('CONF_ROOT'));
 		$this->assertTrue(defined('ROOT'));
 		$this->assertTrue(defined('CSS_ROOT'));
 		$this->assertTrue(defined('JS_ROOT'));
