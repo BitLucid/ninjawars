@@ -1,4 +1,4 @@
-# Ninjawars repository
+# Ninjawars repository [![Build Status](https://travis-ci.org/BitLucid/ninjawars.png?branch=news)](https://travis-ci.org/BitLucid/ninjawars)
 The source code dojo for the ninjawars.net web game.
 
 ## Install
