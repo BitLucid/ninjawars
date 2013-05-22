@@ -1,4 +1,4 @@
-<?php namespace model;
+<?php 
 
 /**
  * Base model class
@@ -8,9 +8,12 @@
  * @author Taufan Aditya<toopay@taufanaditya.com>
  */
 
+namespace model;
+
 use \Propel;
 use \BaseObject;
 use \ModelCriteria;
+use \PropelCollection as Collection;
 
 class Base {
 
@@ -70,5 +73,42 @@ class Base {
 			// flag init state
 			self::$init = true;
 		}
+	}
+
+	/**
+	 * Validate base object
+	 *
+	 * @param mixed Something to assert
+	 * @return bool true if instance of BaseObject
+	 */
+	public function isObject($object = null)
+	{
+		return $object instanceof BaseObject;
+	}
+
+	/**
+	 * Validate collection
+	 *
+	 * @param mixed Something to assert
+	 * @return bool true if instance of Collection
+	 */
+	public function isCollection($object = null)
+	{
+		return $object instanceof Collection;
+	}
+
+	/**
+	 * Wrap object into PropelCollection
+	 *
+	 * @param mixed Something to add into collection
+	 * @return PropelCollection
+	 */
+	public function collection($object = null)
+	{
+		if ($object instanceof Collection) return $object;
+
+		$collectionData = is_array($object) ? $object : array($object);
+
+		return new Collection($collectionData);
 	}
 }

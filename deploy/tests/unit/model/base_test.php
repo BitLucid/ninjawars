@@ -1,30 +1,53 @@
 <?php
 
+use model\Base as ModelBase;
+
 class Base_Test extends PHPUnit_Framework_TestCase {
 
 	public function testContructor() 
 	{
-		$this->assertFalse(model\Base::isInitialized());
+		$this->assertFalse(ModelBase::isInitialized());
 
-		$model = new model\Base();
+		$model = new ModelBase();
 
 		$this->assertInstanceOf('\model\Base', $model);
 
-		$this->assertTrue(model\Base::isInitialized());
+		$this->assertTrue(ModelBase::isInitialized());
 	}
 
 	public function testCreate()
 	{
-		$accountsObject = model\Base::create('Accounts');
+		$accountsObject = ModelBase::create('Accounts');
 
 		$this->assertInstanceOf('\BaseObject', $accountsObject);
 	}
 
 	public function testQuery()
 	{
-		$accountsCriteria = model\Base::query('Accounts');
+		$accountsCriteria = ModelBase::query('Accounts');
 
 		$this->assertInstanceOf('\ModelCriteria', $accountsCriteria);
 	}
 	
+	public function testIsObject()
+	{
+		$model = new ModelBase();
+
+		$this->assertFalse($model->isObject(null));
+
+		$account = ModelBase::create('News');
+
+		$this->assertTrue($model->isObject($account));
+	}
+
+	public function testCollectionAndisCollection()
+	{
+		$model = new ModelBase();
+
+		$this->assertFalse($model->isCollection(null));
+
+		$someCollection = $model->collection(array(1,2,3));
+
+		$this->assertTrue($model->isCollection($someCollection));
+	}
 }
