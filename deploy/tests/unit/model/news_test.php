@@ -2,19 +2,36 @@
 
 class News_Test extends PHPUnit_Framework_TestCase {
 
+	protected $testedAccountId = 0;
 	protected $testedContent = array(
 		'Some awesome news',
 		'Edited news',
 	);
 
+	public function setUp()
+	{
+		$testedAccount = model\Base::create('Accounts');
+
+		$testedAccount->setAccountIdentity('Foo is Bar');
+
+		$testedAccount->setActiveEmail('foo@bar.com');
+
+		$testedAccount->save();
+
+		$this->testedAccountId = $testedAccount->getAccountId();
+	}
+
 	public function tearDown()
 	{
+		if ( ! empty($this->testedAccountId)) {
+			$testedAccount = model\Base::query('Accounts')->findPK($this->testedAccountId);
+			$testedAccount and $testedAccount->delete();
+		}
+
 		foreach ($this->testedContent as $content) {
 			$testedNews = model\Base::query('News')->findByContent($content);
 
-			if ($testedNews) {
-				$testedNews->delete();
-			}
+			$testedNews and $testedNews->delete();
 		}
 	}
 
