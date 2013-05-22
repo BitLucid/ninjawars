@@ -11,7 +11,7 @@ define('OFFLINE', false);				// *** Controls if remote or local resources are us
 define('DEBUG', true);					// *** Shorter debugging constant name, set as false on live.
 define('PROFILE', false);				// *** Whether or not to do performance profiling
 define('DEBUG_ALL_ERRORS', true);	// *** Second debugging level, e.g. email debugging, only works when debug is also on.
-define('SERVER_ROOT', "/home/tchalvak/ninjawars/deploy/");		// *** The root deployment directory of the game
+define('SERVER_ROOT', realpath(__DIR__).DIRECTORY_SEPARATOR);		// *** The root deployment directory of the game
 define('WEB_ROOT', "http://nw.local/");			// *** The base URL used to access the game
 define('ADMIN_EMAIL', "ninjawarsTchalvak@gmail.com");		// *** For logs/emailed errors.
 define('SUPPORT_EMAIL', "ninjawarsTchalvak@gmail.com");	// *** For public questions.
