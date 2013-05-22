@@ -8,6 +8,10 @@
  * @author Taufan Aditya<toopay@taufanaditya.com>
  */
 
+use \Propel;
+use \BaseObject;
+use \ModelCriteria;
+
 class Base {
 
 	/**
@@ -26,6 +30,33 @@ class Base {
 	}
 
 	/**
+	 * Factory method to manufacturing the ORM entities
+	 *
+	 * @param string entity name
+	 * @return BaseObject 
+	 */
+	public static function create($entity = '')
+	{
+		$entityObject = '\\model\\orm\\'.$entity;
+
+		return new $entityObject;
+	}
+
+	/**
+	 * Factory method to manufacturing the entity model criteria
+	 *
+	 * @param string entity name
+	 * @return ModelCriteria 
+	 */
+	public static function query($entity = '')
+	{
+		$modelCriteria = '\\model\\orm\\'.$entity.'Query';
+
+		return new $modelCriteria;
+	}
+
+
+	/**
 	 * Constructor
 	 *
 	 * Initialize the propel connection 
@@ -34,11 +65,10 @@ class Base {
 	{
 		if ( ! self::$init) {
 			// Setup propel
-			\Propel::init(CONF_ROOT . 'connection.php');
+			Propel::init(CONF_ROOT . 'connection.php');
 
 			// flag init state
 			self::$init = true;
 		}
 	}
-	
 }
