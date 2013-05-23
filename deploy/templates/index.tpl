@@ -163,11 +163,13 @@
             
           </div><!-- End of recent events -->
 
+    {if isset($show_news) and $show_news}
     <div id='news-housing' style='height:80px;margin-top:20px;'>
         
     {include file="mini-news.section.tpl"}
 
     </div><!-- End of news-housing -->
+    {/if}
         
       <div id='chat-housing' style='height:250px;'>
         

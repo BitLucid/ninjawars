@@ -15,7 +15,6 @@ $parts = array(
 	, 'version'          => 'NW Version 1.7.5 2010.12.05'
 	, 'members'          => $member_counts['active']
 	, 'membersTotal'     => $member_counts['total']
-	, 'latest_news'      => isset($latest_news) ? $latest_news : false
 );
 
 $parts['body_classes'] = 'main-body splash';

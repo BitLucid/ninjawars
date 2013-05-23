@@ -108,6 +108,8 @@ class News extends Base {
 			return false;
 		}
 
+		if ( ! $last_news instanceof orm\News) return '';
+		
 		$preview = $last_news->getContent();
 
 		return strlen($preview) > $max ? substr($preview, 0, $max).$suffix : $preview;
