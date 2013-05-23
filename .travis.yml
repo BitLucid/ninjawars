@@ -21,4 +21,4 @@ before_script:
     - vendor/bin/propel-gen
     - vendor/bin/propel-gen insert-sql
 
-script: vendor/bin/phpunit --coverage-text
+script: vendor/bin/phpunit
