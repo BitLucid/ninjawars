@@ -15,13 +15,14 @@ class News extends Base {
 	/**
 	 * Create news
 	 *
+	 * @param string Title
 	 * @param string Content
 	 * @param int Account ID
 	 * @param string Tags
 	 * @throws InvalidArgumentException
 	 * @return orm\News
 	 */
-	public function createPost($content = '', $authorId = 0, $tags = '')
+	public function createPost($title = '', $content = '', $authorId = 0, $tags = '')
 	{
 		// Validate the account
 		$creator = self::query('Accounts')->findPK($authorId);
@@ -32,6 +33,7 @@ class News extends Base {
 
 		// Create and save new post
 		$news = self::create('News');
+		$news->setTitle($title);
 		$news->setContent($content);
 		$news->setTags($tags);
 		$news->setAccountss($this->collection($creator));
@@ -109,7 +111,7 @@ class News extends Base {
 		}
 
 		if ( ! $last_news instanceof orm\News) return '';
-		
+
 		$preview = $last_news->getContent();
 
 		return strlen($preview) > $max ? substr($preview, 0, $max).$suffix : $preview;

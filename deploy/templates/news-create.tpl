@@ -4,13 +4,17 @@
 <form class='news-submit' id="post_msg" action="{$target|escape}" method="post" name="post_msg">
   	<fieldset>
   	  <legend>New post</legend>
+      <div>
+        <label for="news_title">Title:</label>
+        <input id="news_title" type="text" size="{$field_size}" maxlength="100" name="news_title" class="textField" placeholder="News title">
+      </div>
+      <div>
+          <label for="tag">Tag:</label>
+        <input id="tag" type="text" size="{$field_size}" maxlength="250" name="tag" class="textField" placeholder="separated with commas for multiple tags">
+      </div>
   	  <div>
 	      <textarea id="news_content" name="news_content" class="textField" cols="{$field_size+10}" rows="10" placeholder="The content..."></textarea>
-	  </div>
-  	  <div>
-  	  	<label for="tag">Tag:</label>
-	    <input id="tag" type="text" size="{$field_size}" maxlength="250" name="tag" class="textField" placeholder="separated with commas for multiple tags">
-	  </div>
+  	  </div>
       <input name='news_submit' type='hidden' value='1'>
       <br/>
       <input type="submit" value="Post" class="formButton" style='padding:.2em .4em;font-size:1.3em;font-weight:bolder'>

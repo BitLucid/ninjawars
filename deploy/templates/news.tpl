@@ -16,10 +16,11 @@
 dl.news dt {
   display: block;
   float: none !important;
-  color: gray;
+  color: red;
   font-weight: bold;
   margin-bottom:5px;
-  font-style:italic;
+  font-style:bold;
+  font-weight:larger;
 }
 
 dl.news dd {
@@ -33,7 +34,7 @@ dl.tags {
 
 dl.tags dt {
   display: inline-block;
-  color: red;
+  color: gray;
   font-weight: normal;
   margin-right: 4px;
 }
@@ -66,11 +67,19 @@ dl.tags dd {
 {foreach from=$all_news key=index_news item=single_news}
 {assign var="news_account" value=$single_news->getAccountss()}
 <dl class="news">
-  <dt>Published at {$single_news->getCreated()}, by <a target="main" href="player.php?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername}</a></dt>
+  <dt>{$single_news->getTitle()}</dt>
   <dd>{$single_news->getContent()}</dd>
   <dl class="tags">
     <dt>Tags:</dt>
     <dd>{$single_news->getTags()|to_tags}</dd>
+    <dt>Published:</dt>
+    {if $single_news->getCreated()}
+    <dd>{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}</dd>
+    {else}
+    <dd>{$smarty.now|date_format:"%A, %B %e, %Y"}</dd>
+    {/if}
+    <dt>Author:</dt>
+    <dd><a target="main" href="player.php?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername}</a></dd>
   </dl>
 </dl>
 {/foreach}

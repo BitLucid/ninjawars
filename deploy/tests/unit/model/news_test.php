@@ -3,6 +3,7 @@
 class News_Test extends PHPUnit_Framework_TestCase {
 
 	protected $testedAccountId = 0;
+	protected $title = 'Dummy News';
 	protected $testedContent = array(
 		'Some awesome news',
 		'Edited news',
@@ -32,11 +33,8 @@ class News_Test extends PHPUnit_Framework_TestCase {
 			$testedAccount and $testedAccount->delete();
 		}
 
-		foreach ($this->testedContent as $content) {
-			$testedNews = model\Base::query('News')->findByContent($content);
-
-			$testedNews and $testedNews->delete();
-		}
+		$testedNews = model\Base::query('News')->findByTitle($this->title);
+		$testedNews and $testedNews->delete();
 	}
 
 	public function testContructor() 
@@ -52,7 +50,7 @@ class News_Test extends PHPUnit_Framework_TestCase {
 	{
 		$news = new model\News();
 
-		$lastNews = $news->createPost($this->testedContent[0], $this->testedAccountId);
+		$lastNews = $news->createPost($this->title, $this->testedContent[0], $this->testedAccountId);
 
 		$author = $lastNews->getAccountss()->getFirst();
 
@@ -65,7 +63,7 @@ class News_Test extends PHPUnit_Framework_TestCase {
 	{
 		$news = new model\News();
 
-		$lastNews = $news->createPost($this->testedContent[0], $this->testedAccountId);
+		$lastNews = $news->createPost($this->title, $this->testedContent[0], $this->testedAccountId);
 
 		$lastFetchedNews = $news->last();
 
@@ -82,7 +80,7 @@ class News_Test extends PHPUnit_Framework_TestCase {
 	{
 		$news = new model\News();
 
-		$lastNews = $news->createPost($this->testedContent[0], $this->testedAccountId);
+		$lastNews = $news->createPost($this->title, $this->testedContent[0], $this->testedAccountId);
 
 		$lastNews->setContent($this->testedContent[1]);
 

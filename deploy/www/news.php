@@ -18,16 +18,17 @@ if ($error = init($private, $alive)) {
 		$view = 'news-create.tpl';
 	} elseif (in('news_submit')) {
 		// Handle POST
-		$content = in('news_content');
+		$news_title = in('news_title');
+		$news_content = in('news_content');
 		$tag = in('tag');
 
 		// Create new post
-		if ( ! empty($content)) {
+		if ( ! empty($news_content)) {
 			try {
 				// News Model
 				$news = new model\News();
 				$me = model\Base::query('Players')->findPK(self_char_id());
-				$news->createPost($content, $me->getAccountss()->getFirst()->getAccountId(), $tag);
+				$news->createPost($news_title, $news_content, $me->getAccountss()->getFirst()->getAccountId(), $tag);
 				$parts['new_successful_submit'] = true;
 			} catch (InvalidArgumentException $e) {
 				$parts['new_successful_submit'] = false;

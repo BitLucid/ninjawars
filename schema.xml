@@ -257,6 +257,7 @@
   </table>
   <table name="news" phpName="News" idMethod="native">
     <column name="news_id" phpName="NewsId" type="INTEGER" autoIncrement="true" required="true" primaryKey="true"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="100" required="true" defaultValue=""/>
     <column name="content" phpName="Content" type="LONGVARCHAR" required="true" defaultValue=""/>
     <column name="created" phpName="Created" type="TIMESTAMP" required="true" defaultExpr="now()"/>
     <column name="updated" phpName="Updated" type="TIMESTAMP" required="true" defaultExpr="now()"/>
