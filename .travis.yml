@@ -15,11 +15,9 @@ before_script:
     - pear channel-discover pear-smarty.googlecode.com/svn
     - pear install smarty/smarty
     - phpenv rehash
-    - sudo chmod u+rwx scripts/install
-    - scripts/install travis
     - composer install
     - psql -c 'create database nw;' -U postgres
-    - cp docs/tchalvakSAMPLEresources.php deploy/resources.php
+    - sed 's/smarty/Smarty/' docs/tchalvakSAMPLEresources.php > deploy/resources.php
     - cp build.properties.tpl build.properties
     - cp buildtime.xml.tpl buildtime.xml
     - cp connection.xml.tpl connection.xml
