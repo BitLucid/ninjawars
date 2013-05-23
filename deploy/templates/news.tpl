@@ -67,7 +67,11 @@ dl.tags dd {
 {foreach from=$all_news key=index_news item=single_news}
 {assign var="news_account" value=$single_news->getAccountss()}
 <dl class="news">
+  {if $single_news->getTitle()}
   <dt>{$single_news->getTitle()}</dt>
+  {else}
+  <dt>Untitled</dt>
+  {/if}
   <dd>{$single_news->getContent()}</dd>
   <dl class="tags">
     <dt>Tags:</dt>
