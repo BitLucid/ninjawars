@@ -10,15 +10,19 @@ class News_Test extends PHPUnit_Framework_TestCase {
 
 	public function setUp()
 	{
-		$testedAccount = model\Base::create('Accounts');
+		$existsAccount = model\Base::query('Accounts')->findByAccountIdentity('Foo is Bar');
+		if ( ! $existsAccount instanceof \PropelCollection || $existsAccount->count() <= 0) {
+			$testedAccount = model\Base::create('Accounts');
+			$testedAccount->setAccountIdentity('Foo is Bar');
+			$testedAccount->setActiveEmail('foo@bar.com');
+			$testedAccount->save();
 
-		$testedAccount->setAccountIdentity('Foo is Bar');
+			$testedAccountId = $testedAccount->getAccountId();
+		} else {
+			$testedAccountId = $existsAccount->getFirst()->getAccountId();
+		}
 
-		$testedAccount->setActiveEmail('foo@bar.com');
-
-		$testedAccount->save();
-
-		$this->testedAccountId = $testedAccount->getAccountId();
+		$this->testedAccountId = $testedAccountId;
 	}
 
 	public function tearDown()
@@ -55,6 +59,23 @@ class News_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->testedAccountId, $author->getAccountId());
 
 		$this->assertEquals($this->testedContent[0], $lastNews->getContent());
+	}
+
+	public function testFetch()
+	{
+		$news = new model\News();
+
+		$lastNews = $news->createPost($this->testedContent[0], $this->testedAccountId);
+
+		$lastFetchedNews = $news->last();
+
+		$allNews = $news->all();
+
+		$this->assertEquals($lastNews,$lastFetchedNews);
+
+		$this->assertTrue($news->isCollection($allNews));
+
+		$this->assertEquals(3,strlen($news->lastPreview(3)));
 	}
 
 	public function testUpdate()

@@ -17,10 +17,11 @@ class News extends Base {
 	 *
 	 * @param string Content
 	 * @param int Account ID
+	 * @param string Tags
 	 * @throws InvalidArgumentException
 	 * @return orm\News
 	 */
-	public function createPost($content = '', $authorId = 0)
+	public function createPost($content = '', $authorId = 0, $tags = '')
 	{
 		// Validate the account
 		$creator = self::query('Accounts')->findPK($authorId);
@@ -32,11 +33,45 @@ class News extends Base {
 		// Create and save new post
 		$news = self::create('News');
 		$news->setContent($content);
+		$news->setTags($tags);
 		$news->setAccountss($this->collection($creator));
 
 		$news->save();
 
 		return $news;
+	}
+
+	/**
+	 * Find based tag
+	 *
+	 * @param string some tag
+	 * @return Collection
+	 */
+	public function findByTag($tag = '')
+	{
+		$news = self::query('News')->orderBy('news_id', 'desc')->filterByTags('%'.$tag.'%')->find();
+
+		if ( ! $this->isCollection($news)) {
+			throw new \InvalidArgumentException('Tagged #'.$tag.' news not found');
+		}
+
+		return $news;
+	}
+
+	/**
+	 * All news
+	 *
+	 * @return Collection
+	 */
+	public function all()
+	{
+		$all_news = self::query('News')->orderBy('news_id', 'desc')->find();
+
+		if ( ! $this->isCollection($all_news)) {
+			throw new \InvalidArgumentException('News is empty');
+		}
+
+		return $all_news;
 	}
 
 	/**
@@ -51,11 +86,31 @@ class News extends Base {
 			->limit(1)
 			->find();
 
-		if ($this->isCollection($news)) {
+		if ( ! $this->isCollection($news)) {
 			throw new \InvalidArgumentException('News not found');
 		}
 
 		return $news->getFirst();
+	}
+
+	/**
+	 * View helper, to display the last news preview content
+	 *
+	 * @param int Max length to display
+	 * @param string Suffix
+	 * @return string
+	 */
+	public function lastPreview($max = 150, $suffix = '')
+	{
+		try {
+			$last_news = $this->last();
+		} catch (\InvalidArgumentException $e) {
+			return false;
+		}
+
+		$preview = $last_news->getContent();
+
+		return strlen($preview) > $max ? substr($preview, 0, $max).$suffix : $preview;
 	}
 
 }
