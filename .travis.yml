@@ -12,7 +12,8 @@ matrix:
     - php: 5.5
 
 before_script:
-    - sudo apt-get install smarty
+    - pear install smarty/smarty
+    - phpenv rehash
     - composer install
     - psql -c 'create database nw;' -U postgres
     - cp docs/tchalvakSAMPLEresources.php deploy/resources.php
