@@ -3,6 +3,8 @@
 require_once(LIB_ROOT.'control/lib_player_list.php'); // Used for member_counts()
 
 $char_id = self_char_id();
+$news = new model\News();
+$latest_news = $news->lastPreview(140, ' .....<a href="news.php" target="main">[more]</a>');
 
 if(!$char_id){
 	require_once(SERVER_ROOT.'www/splash.php');
@@ -41,6 +43,7 @@ if(!$char_id){
 		, 'unread_message_count' => $unread_message_count
 		, 'members'          => $member_counts['active']
 		, 'membersTotal'     => $member_counts['total']
+		, 'latest_news'      => $latest_news
 	);
 	
 	// Logged in display.

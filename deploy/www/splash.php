@@ -2,7 +2,6 @@
 require_once(LIB_ROOT.'control/lib_player_list.php'); // Used for member_counts()
 
 $title       = 'Live by the Sword';
-
 $unread_message_count = 0;
 
 $options = array('is_index'=>true);
@@ -16,6 +15,7 @@ $parts = array(
 	, 'version'          => 'NW Version 1.7.5 2010.12.05'
 	, 'members'          => $member_counts['active']
 	, 'membersTotal'     => $member_counts['total']
+	, 'latest_news'      => isset($latest_news) ? $latest_news : false
 );
 
 $parts['body_classes'] = 'main-body splash';

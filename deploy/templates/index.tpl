@@ -163,6 +163,11 @@
             
           </div><!-- End of recent events -->
 
+    <div id='news-housing' style='height:80px;margin-top:20px;'>
+        
+    {include file="mini-news.section.tpl"}
+
+    </div><!-- End of news-housing -->
         
       <div id='chat-housing' style='height:250px;'>
         
