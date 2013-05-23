@@ -22,7 +22,11 @@ define('SYSTEM_MESSENGER_NAME', "Automated Ninjawars Messenger");
 define('ALERTS_EMAIL', SUPPORT_EMAIL);
 define('TRAP_ERRORS', false); // Whether to use the global error handler & oops page.
 
-define('TEMPLATE_LIBRARY_PATH', 'smarty/Smarty.class.php'); // Template path for system install, /usr/share/php/smarty/Smarty.class.php, for example.
+if (is_file('Smarty/Smarty.class.php')) {
+	define('TEMPLATE_LIBRARY_PATH', 'Smarty/Smarty.class.php'); // Travis need this
+} else {
+	define('TEMPLATE_LIBRARY_PATH', 'smarty/Smarty.class.php'); // Template path for system install, /usr/share/php/smarty/Smarty.class.php, for example.
+}
 
 // For location-specific, can-be-dynamic-or-not constants.
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
