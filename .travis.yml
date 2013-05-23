@@ -15,10 +15,7 @@ before_script:
     - pear channel-discover pear-smarty.googlecode.com/svn
     - pear install smarty/smarty
     - phpenv rehash
-    - sleep 2
-    - phpenv rehash
-    - ls /home/travis/.phpenv/versions/5.3.3/pear
-    - ls /home/travis/.phpenv/versions/5.3.3/share/pyrus/.pear/php
+    - ls /home/travis/.phpenv/versions/5.3.3/pear/Smarty
     - composer install
     - psql -c 'create database nw;' -U postgres
     - cp docs/tchalvakSAMPLEresources.php deploy/resources.php
