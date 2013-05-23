@@ -67,4 +67,7 @@ require_once(LIB_ROOT.'control/lib_attack.php');
 
 // Include the functions abstracted out of the header and footer
 require_once(LIB_ROOT.'control/lib_header.php');
+
+// Bootstrap to vendor
+require_once(VENDOR_ROOT.'autoload.php');
 ?>
