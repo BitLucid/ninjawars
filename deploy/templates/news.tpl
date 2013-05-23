@@ -78,9 +78,9 @@ dl.tags dd {
     <dd>{$single_news->getTags()|to_tags}</dd>
     <dt>Published:</dt>
     {if $single_news->getCreated()}
-    <dd>{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}</dd>
+    <dd><time class='timeago' datetime='{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}' title='{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}'>{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}</time></dd>
     {else}
-    <dd>{$smarty.now|date_format:"%A, %B %e, %Y"}</dd>
+    <dd><time class='timeago' datetime='{$smarty.now|date_format:"%A, %B %e, %Y"}' title='{$smarty.now|date_format:"%A, %B %e, %Y"}'>{$smarty.now|date_format:"%A, %B %e, %Y"}</time></dd>
     {/if}
     <dt>Author:</dt>
     <dd><a target="main" href="player.php?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername}</a></dd>
