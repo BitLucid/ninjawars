@@ -6,6 +6,7 @@ propel.database = pgsql
 # PDO DSN
 propel.database.url = pgsql:dbname=nw;
 propel.database.user = postgres
+propel.database.password = postgres
 
 # Environment
 propel.namespace.autoPackage = true
