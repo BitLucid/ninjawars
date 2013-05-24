@@ -8,7 +8,6 @@ source $_DIR_/functions.sh
 # Emulate current system state...
 say_info "Creating database from dummy data"
 wget https://gist.github.com/toopay/5646031/raw/nw.sql
-sudo su postgres
 createdb nw
 psql nw < nw.sql
 exit
