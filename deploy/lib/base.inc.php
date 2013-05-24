@@ -12,6 +12,11 @@
 
 require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/'))).'resources.php');
 
+// Add some default include path
+foreach (array('/usr/share/php', '/usr/share/php5') as $path) {
+	if (is_dir($path)) set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+}
+
 if (PROFILE) {
 	$mtime = microtime();
 	$mtime = explode(" ",$mtime);
