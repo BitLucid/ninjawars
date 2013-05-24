@@ -10,7 +10,8 @@ say_info "Creating database from dummy data"
 wget https://gist.github.com/toopay/5646031/raw/nw.sql
 psql -c 'create database nw;' -U postgres
 psql -f nw.sql -d nw -U postgres
-psql -c '\d' -d nw -U postgres
+psql -c "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';" -U postgres > .show_tables
+cat show_tables
 sed 's/smarty/smarty/' docs/tchalvakSAMPLEresources.php > deploy/resources.php
 
 # This is only needed in Travis
