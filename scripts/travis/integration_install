@@ -9,7 +9,7 @@ source $_DIR_/functions.sh
 say_info "Creating database from dummy data"
 wget https://gist.github.com/toopay/5646031/raw/nw.sql
 psql -c 'create database nw;' -U postgres
-psql -f nw.sql -U postgres
+psql -f nw.sql -d nw -U postgres
 psql -c '\d' -d nw -U postgres
 sed 's/smarty/smarty/' docs/tchalvakSAMPLEresources.php > deploy/resources.php
 
