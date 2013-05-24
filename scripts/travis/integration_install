@@ -4,4 +4,13 @@
 _TRAVIS_DIR_=`dirname $0`
 _DIR_=`echo $_TRAVIS_DIR_ | sed 's/travis/build/'`
 source $_DIR_/functions.sh
+
+# Emulate current system state...
+say_info "Creating database from dummy data"
+wget https://gist.github.com/toopay/5646031/raw/nw.sql
+psql -c 'create database nw;' -U postgres
+psql nw < nw.sql
+
+say_info "Continue with full-install"
+
 bash $_DIR_/install.sh
