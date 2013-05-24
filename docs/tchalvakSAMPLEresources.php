@@ -16,9 +16,12 @@ define('SERVER_ROOT', realpath(__DIR__).DIRECTORY_SEPARATOR);		// *** The root d
 define('WEB_ROOT', "http://nw.local/");			// *** The base URL used to access the game
 define('ADMIN_EMAIL', "ninjawarsTchalvak@gmail.com");		// *** For logs/emailed errors.
 define('SUPPORT_EMAIL', "ninjawarsTchalvak@gmail.com");	// *** For public questions.
-define('SUPPORT_EMAIL_FORMAL_NAME', "Ninjawars Tchalvak");
+define('SUPPORT_EMAIL_NAME', "Ninjawars Tchalvak");
+define('SUPPORT_EMAIL_FORMAL_NAME', SUPPORT_EMAIL_NAME); // redundancies for now
+define('SYSTEM_EMAIL', "noreply@ninjawars.net");
 define('SYSTEM_MESSENGER_EMAIL', "noreply@ninjawars.net");
-define('SYSTEM_MESSENGER_NAME', "Automated Ninjawars Messenger");
+define('SYSTEM_EMAIL_NAME', "Automated Ninjawars Messenger");
+define('SYSTEM_MESSENGER_NAME', SYSTEM_EMAIL_NAME);
 define('ALERTS_EMAIL', SUPPORT_EMAIL);
 define('TRAP_ERRORS', false); // Whether to use the global error handler & oops page.
 
