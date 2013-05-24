@@ -1,5 +1,5 @@
 <?php
-require_once('/srv/ninjawars/vendor/swiftmailer/swiftmailer/lib/swift_required.php');
+
 /**
  * Wrapper class around the swiftmail mail library.
  *
