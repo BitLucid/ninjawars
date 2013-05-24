@@ -53,7 +53,8 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 function login_user($dirty_user, $p_pass) {
 	// Internal function due to it being insecure otherwise.
 	// Sets up the environment for a logged in user, using vetted data.
-	function _login_user($p_username, $p_player_id, $p_account_id) {
+    if(!function_exists('_login_user')){
+    function _login_user($p_username, $p_player_id, $p_account_id) {
 		SESSION::commence(); // Start a session on a successful login.
 		$_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
 		SESSION::set('username', $p_username); // Actually char name
@@ -62,7 +63,8 @@ function login_user($dirty_user, $p_pass) {
 		update_activity_log($p_player_id);
 		update_last_logged_in($p_player_id);
 		$up = "UPDATE players SET active = 1 WHERE player_id = :char_id";
-		query($up, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
+        query($up, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
+    }
 	}
 
 	$success = false;

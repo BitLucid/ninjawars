@@ -109,7 +109,7 @@ class TestAccountConfirmation extends UnitTestCase {
 		confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
 		$res = login_user($this->test_email, $this->test_password);
 		$this->assertTrue($res['success']);
-		$this->assertFalse($res['login_error']);
+		$this->assertFalse($res['login_error'], 'Login of confirmed and created account failed');
 	}
 	
 	function testLoginConfirmedAccountWithInactivePlayerSucceeds(){
