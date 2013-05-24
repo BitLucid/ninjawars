@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Include functions
+_DIR_=`dirname $0`
+source $_DIR_/functions.sh
+
+# Register sigint handler
+trap quit_gracefully SIGINT
+
+# Full install scripts started...
+say_loud "Checking for system depedencies"
+
+check_package apache2
+check_package php5 
+check_package php5-pgsql
+check_package postgresql
+check_package postgresql-contrib
+check_package libpq-dev
+check_package perl
+check_package liblingua-en-inflect-perl
+#pear channel-discover pear-smarty.googlecode.com/svn
+#pear install smarty/smarty
+#phpenv rehash
+check_package smarty
+
+say_loud "Checking for project depedencies"
+
+curl -s http://getcomposer.org/installer | php
+php composer.phar install
+psql -c 'create database nw;' -U postgres
+sed 's/smarty/Smarty/' docs/tchalvakSAMPLEresources.php > deploy/resources.php
+cp build.properties.tpl build.properties
+cp buildtime.xml.tpl buildtime.xml
+cp connection.xml.tpl connection.xml
+vendor/bin/propel-gen
+vendor/bin/propel-gen insert-sql
+
+say_loud "Complete!"
