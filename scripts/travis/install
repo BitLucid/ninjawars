@@ -18,12 +18,12 @@ check_package postgresql-contrib
 check_package libpq-dev
 check_package perl
 check_package liblingua-en-inflect-perl
-#pear channel-discover pear-smarty.googlecode.com/svn
-#pear install smarty/smarty
 check_package smarty
+check_package libpcre3-dev
 
 say_loud "Checking for project depedencies"
 
+sudo pecl install phar
 curl -s http://getcomposer.org/installer | php
 php composer.phar install
 psql -c 'create database nw;' -U postgres
