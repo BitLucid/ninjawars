@@ -49,3 +49,16 @@ function check_package {
 		say_ok "$1 installed"
 	fi
 }
+
+function ensure_phar {
+	say_info "Checking for Phar module before installing Composer"
+	PHAR_OK=$(php -m|grep "Phar")
+	if [ "" == "$PHAR_OK" ]; then
+		say_warning "Phar is not loaded!"
+		sudo apt-get install php-pear php5-dev 
+		sudo pecl install phar
+		sudo service apache2 restart
+	else
+		say_ok "Phar loaded!"
+	fi
+}
