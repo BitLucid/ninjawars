@@ -1,5 +1,9 @@
 language: php
 
+env:
+  - INSTALL=full_install
+  - INSTALL=integration_install
+
 php:
   - 5.3.3
   - 5.3
@@ -10,6 +14,6 @@ matrix:
     - php: 5.4
 
 before_script:
-    - sudo bash scripts/travis/install
+    - sudo bash scripts/travis/$INSTALL
 
 script: vendor/bin/phpunit
