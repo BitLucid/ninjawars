@@ -53,9 +53,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         
         /*
         For manual deletion:
-    delete from players where player_id in (select player_id from players left join account_players on _player_id = player_id left join accounts on _account_id = account_id where active_email = 'test@example.com' or account_identity='text@example.com');	
-    delete from account_players where _account_id in (select account_id from accounts where active_email = 'test@example.com' or account_identity='text@example.com');
-    delete from accounts where active_email = 'test@example.com' or account_identity='text@example.com';
+    delete from players where player_id in (select player_id from players left join account_players on _player_id = player_id left join accounts on _account_id = account_id where active_email = 'testphpunit@example.com' or account_identity='testphpunit@example.com');	
+    delete from account_players where _account_id in (select account_id from accounts where active_email = 'testphpunit@example.com' or account_identity='testphpunit@example.com');
+    delete from accounts where active_email = 'testphpunit@example.com' or account_identity='testphpunit@example.com';
         */
     }
 
