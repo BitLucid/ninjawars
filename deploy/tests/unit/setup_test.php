@@ -16,7 +16,6 @@ class Setup_Test extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(defined('WEB_ROOT'));
 		$this->assertTrue(defined('ADMIN_EMAIL'));
 		$this->assertTrue(defined('SUPPORT_EMAIL'));
-		$this->assertTrue(defined('SUPPORT_EMAIL_FORMAL_NAME'));
 		$this->assertTrue(defined('SYSTEM_MESSENGER_EMAIL'));
 		$this->assertTrue(defined('SYSTEM_MESSENGER_NAME'));
 		$this->assertTrue(defined('ALERTS_EMAIL'));
