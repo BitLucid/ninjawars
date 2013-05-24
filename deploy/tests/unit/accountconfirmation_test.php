@@ -4,11 +4,6 @@ require_once(substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'ninjawars')
 require_once(LIB_ROOT.'base.inc.php');
 require_once(LIB_ROOT.'cleanup.inc.php'); // Profiling code at the moment.
 
-$error_level = error_reporting();
-//error_reporting(0); // Don't report any errors in the test library code.
-require_once(LIB_ROOT.'third-party/simpletest/autorun.php'); // Include the testing library.
-error_reporting($error_level); // Return to normal error level.
-
 require_once(LIB_ROOT.'control/lib_auth.php');
 require_once(LIB_ROOT.'control/lib_accounts.php');
 
@@ -58,7 +53,7 @@ delete from accounts where active_email = 'test@example.com' or account_identity
 	*/
 }
 
-class TestAccountConfirmation extends UnitTestCase {
+class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	var $test_email = 'text@example.com';
 	var $test_password = 'password';
 	var $test_ninja_name = 'simpletest_ninja_name';
