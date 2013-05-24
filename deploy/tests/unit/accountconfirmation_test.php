@@ -32,36 +32,37 @@ Login should also update "last logged in" data, but that's probably better in a 
 
 */
 
-function purge_test_accounts($test=null){
-	$test_ninja_name = $test? $test : 'simpletest_ninja_name';
-	$active_email = 'test@example.com';
-	$aid = get_char_id($test_ninja_name);
-	query('delete from players where player_id in 
-		(select player_id from players join account_players on _player_id = player_id join accounts on _account_id = account_id 
-			where active_email = :active_email or account_identity= :ae2 or players.uname = :uname)', 
-		array(':active_email'=>$active_email, ':ae2'=>$active_email, ':uname'=>$test_ninja_name)); // Delete the players
-	query('delete from account_players where _account_id in (select account_id from accounts 
-			where active_email = :active_email or account_identity= :ae2)', // Delete the account_players linkage.
-		array(':active_email'=>$active_email, ':ae2'=>$active_email));
-	query('delete from accounts where active_email = :active_email or account_identity= :ae2', array(':active_email'=>$active_email, ':ae2'=>$active_email)); // Finally, delete the test account.
-	
-	/*
-	For manual deletion:
-delete from players where player_id in (select player_id from players left join account_players on _player_id = player_id left join accounts on _account_id = account_id where active_email = 'test@example.com' or account_identity='text@example.com');	
-delete from account_players where _account_id in (select account_id from accounts where active_email = 'test@example.com' or account_identity='text@example.com');
-delete from accounts where active_email = 'test@example.com' or account_identity='text@example.com';
-	*/
-}
-
 class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
-	var $test_email = 'text@example.com';
+	var $test_email = 'testphpunit@example.com';
 	var $test_password = 'password';
-	var $test_ninja_name = 'simpletest_ninja_name';
+	var $test_ninja_name = 'phpunit_ninja_name';
+
+
+    function purge_test_accounts($test=null){
+        $test_ninja_name = $test? $test : 'phpunit_ninja_name';
+        $active_email = 'testphpunit@example.com';
+        $aid = get_char_id($test_ninja_name);
+        query('delete from players where player_id in 
+            (select player_id from players join account_players on _player_id = player_id join accounts on _account_id = account_id 
+                where active_email = :active_email or account_identity= :ae2 or players.uname = :uname)', 
+            array(':active_email'=>$active_email, ':ae2'=>$active_email, ':uname'=>$test_ninja_name)); // Delete the players
+        query('delete from account_players where _account_id in (select account_id from accounts 
+                where active_email = :active_email or account_identity= :ae2)', // Delete the account_players linkage.
+            array(':active_email'=>$active_email, ':ae2'=>$active_email));
+        query('delete from accounts where active_email = :active_email or account_identity= :ae2', array(':active_email'=>$active_email, ':ae2'=>$active_email)); // Finally, delete the test account.
+        
+        /*
+        For manual deletion:
+    delete from players where player_id in (select player_id from players left join account_players on _player_id = player_id left join accounts on _account_id = account_id where active_email = 'test@example.com' or account_identity='text@example.com');	
+    delete from account_players where _account_id in (select account_id from accounts where active_email = 'test@example.com' or account_identity='text@example.com');
+    delete from accounts where active_email = 'test@example.com' or account_identity='text@example.com';
+        */
+    }
 
 	function setUp(){
-		purge_test_accounts($this->test_ninja_name);
+		$this->purge_test_accounts();
 		$found = get_char_id($this->test_ninja_name);
-		if($found){
+        if($found){
 			throw new Exception('Test user already exists');
 		}
 		// Create test user, unconfirmed, whatever the default is for activity.
@@ -86,7 +87,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	
 	function tearDown(){
 		// Delete test user.
-		purge_test_accounts($this->test_ninja_name);
+		$this->purge_test_accounts($this->test_ninja_name);
 	}
 	
 	function testAttemptLoginOfUnconfirmedAccountShouldFail(){
@@ -126,4 +127,3 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	// Test that ninja inactivation should make them not-attackable.
 }
 
-?>
