@@ -44,7 +44,9 @@ dl.tags dd {
   margin-bottom: 0px;
   font-style: italic;
 }
-
+.link-as-button{
+  margin-bottom:.5em;margin-top:1em;float:right;margin-right:1.5em;
+}
 {/literal}
 </style>
 
@@ -55,9 +57,9 @@ dl.tags dd {
   </div>
 {/if}
   
-<a class='link-as-button' style='margin-bottom:.5em;margin-top:1em;float:right;margin-right:1.5em' href="news.php">Refresh</a>
+<a class='link-as-button' href="news.php">Refresh</a>
 {if is_logged_in()}
-<a class='link-as-button' style='margin-bottom:.5em;margin-top:1em;float:right;margin-right:1.5em' href="news.php?new=true">New Post</a>
+<a class='link-as-button' href="news.php?new=true">New Post</a>
 {/if}
 
 {if isset($search_title)}
@@ -78,9 +80,9 @@ dl.tags dd {
     <dd>{$single_news->getTags()|to_tags}</dd>
     <dt>Published:</dt>
     {if $single_news->getCreated()}
-    <dd><time class='timeago' datetime='{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}' title='{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}'>{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}</time></dd>
+    <dd><time class='timeago' datetime='{$single_news->getCreated()}' title='{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}'>{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}</time></dd>
     {else}
-    <dd><time class='timeago' datetime='{$smarty.now|date_format:"%A, %B %e, %Y"}' title='{$smarty.now|date_format:"%A, %B %e, %Y"}'>{$smarty.now|date_format:"%A, %B %e, %Y"}</time></dd>
+    <dd><time class='timeago' datetime='{$smarty.now}' title='{$smarty.now|date_format:"%A, %B %e, %Y"}'>{$smarty.now|date_format:"%A, %B %e, %Y"}</time></dd>
     {/if}
     <dt>Author:</dt>
     <dd><a target="main" href="player.php?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername|escape}</a></dd>
