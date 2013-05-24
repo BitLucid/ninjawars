@@ -45,5 +45,6 @@ buildtime.xml
 connection.xml
 # Composer
 composer.phar
+composer.lock
 vendor/*
 !vendor/.gitkeep
