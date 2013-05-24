@@ -21,7 +21,6 @@ check_package liblingua-en-inflect-perl
 #pear channel-discover pear-smarty.googlecode.com/svn
 #pear install smarty/smarty
 check_package smarty
-phpenv rehash
 
 say_loud "Checking for project depedencies"
 

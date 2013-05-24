@@ -11,5 +11,6 @@ matrix:
 
 before_script:
     - sudo bash scripts/travis/install
+    - phpenv rehash
 
 script: vendor/bin/phpunit
