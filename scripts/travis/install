@@ -28,7 +28,7 @@ say_loud "Checking for project depedencies"
 curl -s http://getcomposer.org/installer | php
 php composer.phar install
 psql -c 'create database nw;' -U postgres
-sed 's/smarty/Smarty/' docs/tchalvakSAMPLEresources.php > deploy/resources.php
+sed 's/smarty/smarty/' docs/tchalvakSAMPLEresources.php > deploy/resources.php
 cp build.properties.tpl build.properties
 cp buildtime.xml.tpl buildtime.xml
 cp connection.xml.tpl connection.xml
