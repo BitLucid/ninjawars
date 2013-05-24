@@ -19,6 +19,10 @@ Install the php dependencies
 
 And you're good to go.
 
+Run the tests 
+
+    vendor/bin/phpunit
+
 ## Contributing
 You can make web commits on github.com, just search github for "ninjawars".  To contribute on github:
 For simple contribution/collaboration:
