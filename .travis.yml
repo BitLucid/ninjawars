@@ -12,5 +12,7 @@ matrix:
 before_script:
     - sudo bash scripts/travis/install
     - phpenv rehash
+    - ls /usr/share/php5
+    - ls /usr/share/php
 
 script: vendor/bin/phpunit
