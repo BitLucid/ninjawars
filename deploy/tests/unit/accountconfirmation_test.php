@@ -98,7 +98,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	
 	function testConfirmAccount(){
 		$confirmed = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
-		$this->t($confirmed);
+		$this->assertTrue($confirmed);
 	}
 	
 	function testLoginConfirmedAccount(){
