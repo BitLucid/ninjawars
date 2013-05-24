@@ -82,7 +82,7 @@ function set_composer {
 }
 
 function set_build {
-	sed 's/postgres/$1/' build.properties.tpl > build.properties
-	sed 's/postgres/$1/' buildtime.xml.tpl > buildtime.xml
-	sed 's/postgres/$1/' connection.xml.tpl > connection.xml
+	sed "s/postgres/$1/" build.properties.tpl > build.properties
+	sed "s/postgres/$1/" buildtime.xml.tpl > buildtime.xml
+	sed "s/postgres/$1/" connection.xml.tpl > connection.xml
 }
