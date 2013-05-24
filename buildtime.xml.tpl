@@ -7,7 +7,6 @@
         <connection>
           <dsn>pgsql:dbname=nw</dsn>
           <user>postgres</user>
-          <password>postgres</password>
         </connection>
       </datasource>
     </datasources>
