@@ -75,3 +75,14 @@ function ensure_phar {
 		say_ok "Phar loaded!"
 	fi
 }
+
+function set_composer {
+	curl -s http://getcomposer.org/installer | php
+	php composer.phar install
+}
+
+function set_build {
+	sed 's/postgres/$1/' build.properties.tpl > build.properties
+	sed 's/postgres/$1/' buildtime.xml.tpl > buildtime.xml
+	sed 's/postgres/$1/' connection.xml.tpl > connection.xml
+}
