@@ -10,6 +10,13 @@ say_info "Creating database from dummy data"
 wget https://gist.github.com/toopay/5646031/raw/nw.sql
 psql -c 'create database nw;' -U postgres
 psql -f nw.sql -U postgres
-psql -c '\d' -d nw-copy -U postgres
+psql -c '\d' -d nw -U postgres
 sed 's/smarty/smarty/' docs/tchalvakSAMPLEresources.php > deploy/resources.php
+
+# This is only needed in Travis
+say_loud "Checking for system depedencies"
+
+ensure_system
+
+# Main synchronize script!
 bash $_DIR_/synchronize.sh postgres

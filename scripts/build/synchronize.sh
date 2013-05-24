@@ -20,11 +20,6 @@ else
 	DBUSER=$1
 fi
 
-# Full install scripts started...
-say_loud "Checking for system depedencies"
-
-ensure_system
-
 say_loud "Checking for project depedencies"
 
 ensure_phar

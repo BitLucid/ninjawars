@@ -31,6 +31,7 @@ psql -c 'create database nw;' -U $DBUSER
 
 say_loud "Checking for project depedencies"
 
+cp docs/tchalvakSAMPLEresources.php deploy/resources.php
 ensure_phar
 set_composer
 set_build $DBUSER
