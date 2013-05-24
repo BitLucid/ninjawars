@@ -68,11 +68,11 @@ dl.tags dd {
 {assign var="news_account" value=$single_news->getAccountss()}
 <dl class="news">
   {if $single_news->getTitle()}
-  <dt>{$single_news->getTitle()}</dt>
+  <dt>{$single_news->getTitle()|escape}</dt>
   {else}
   <dt>Untitled</dt>
   {/if}
-  <dd>{$single_news->getContent()}</dd>
+  <dd>{$single_news->getContent()|escape}</dd>
   <dl class="tags">
     <dt>Tags:</dt>
     <dd>{$single_news->getTags()|to_tags}</dd>
@@ -83,7 +83,7 @@ dl.tags dd {
     <dd><time class='timeago' datetime='{$smarty.now|date_format:"%A, %B %e, %Y"}' title='{$smarty.now|date_format:"%A, %B %e, %Y"}'>{$smarty.now|date_format:"%A, %B %e, %Y"}</time></dd>
     {/if}
     <dt>Author:</dt>
-    <dd><a target="main" href="player.php?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername}</a></dd>
+    <dd><a target="main" href="player.php?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername|escape}</a></dd>
   </dl>
 </dl>
 {/foreach}

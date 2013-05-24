@@ -43,7 +43,7 @@ if ($error = init($private, $alive)) {
 		if (in('tag_query')) {
 			// Search for specific tag
 			$all_news = $news->findByTag(in('tag_query'));
-			$parts['search_title'] = 'Result for #'.in('tag_query');
+			$parts['search_title'] = 'Result for #'.htmlentities(in('tag_query'));
 		} else {
 			$all_news = $news->all();
 		}
@@ -74,7 +74,7 @@ if ($error = init($private, $alive)) {
 			$str_tags = '';
 			foreach ($tags as $tag) {
 				// Build tag anchors
-				$str_tags .= '<a href="news.php?tag_query='.$tag.'" target="main">#'.$tag.'</a> ';
+				$str_tags .= '<a href="news.php?tag_query='.htmlentities($tag).'" target="main">#'.htmlentities($tag).'</a> ';
 			}
 
 			return $str_tags;
