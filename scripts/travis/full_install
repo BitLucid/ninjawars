@@ -4,4 +4,5 @@
 _TRAVIS_DIR_=`dirname $0`
 _DIR_=`echo $_TRAVIS_DIR_ | sed 's/travis/build/'`
 source $_DIR_/functions.sh
+sed 's/smarty/smarty/' docs/tchalvakSAMPLEresources.php > deploy/resources.php
 bash $_DIR_/install.sh

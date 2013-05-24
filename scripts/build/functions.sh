@@ -50,6 +50,19 @@ function check_package {
 	fi
 }
 
+function ensure_system {
+	check_package apache2
+	check_package php5
+	check_package php5-pgsql
+	check_package postgresql
+	check_package postgresql-contrib
+	check_package libpq-dev
+	check_package perl
+	check_package liblingua-en-inflect-perl
+	check_package smarty
+	check_package libpcre3-dev
+}
+
 function ensure_phar {
 	say_info "Checking for Phar module before installing Composer"
 	PHAR_OK=$(php -m|grep "Phar")
