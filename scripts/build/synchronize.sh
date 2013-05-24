@@ -17,9 +17,9 @@ say_loud "Checking for project depedencies"
 ensure_phar
 curl -s http://getcomposer.org/installer | php
 php composer.phar install
-cp build.properties.tpl build.properties
-cp buildtime.xml.tpl buildtime.xml
-cp connection.xml.tpl connection.xml
+sed 's/postgres/$1/' build.properties.tpl > build.properties
+sed 's/postgres/$1/' buildtime.xml.tpl > buildtime.xml
+sed 's/postgres/$1/' connection.xml.tpl > connection.xml
 vendor/bin/propel-gen
 vendor/bin/propel-gen . diff migrate
 

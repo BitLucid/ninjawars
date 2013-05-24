@@ -11,4 +11,4 @@ wget https://gist.github.com/toopay/5646031/raw/nw.sql
 psql -c 'create database nw;' -U postgres
 psql -f nw.sql -U postgres
 sed 's/smarty/smarty/' docs/tchalvakSAMPLEresources.php > deploy/resources.php
-bash $_DIR_/synchronize.sh
+bash $_DIR_/synchronize.sh postgres
