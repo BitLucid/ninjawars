@@ -9,7 +9,7 @@ _DIR_=`dirname $0`
 source $_DIR_/functions.sh
 
 say_loud "Preparing..." "TEST"
-bash $_DIR_/selenium.sh restart
+bash $_DIR_/selenium.sh start
 
 # Idle
 say_loud "Waiting... [20 seconds]" "TEST"
