@@ -24,3 +24,4 @@ bash $_DIR_/integration.sh postgres
 
 # Setup web-config
 set_web_default
+http://127.0.0.1/ninjawars/deploy/www/index.php
