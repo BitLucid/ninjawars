@@ -134,7 +134,6 @@ function set_webserver {
 	sudo a2ensite nw.local
 	sudo a2enmod rewrite
 	sudo service apache2 restart
-	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," "$FULL_SCRIPT_DIR/tpl/resources.php" > "$DIRdeploy/resources.php"
-	say_info $DIR"deploy/resources.php" "DEBUG"
+	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," $FULL_SCRIPT_DIR/tpl/resources.php > $DIR"deploy/resources.php"
 	say_ok "Web-server configured!"
 }
