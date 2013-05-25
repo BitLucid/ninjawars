@@ -20,4 +20,4 @@ say_loud "Checking for system depedencies"
 ensure_system
 
 # Main synchronize script!
-bash $_DIR_/synchronize.sh postgres
+bash $_DIR_/integration.sh postgres
