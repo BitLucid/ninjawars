@@ -131,7 +131,6 @@ function set_build {
 }
 
 function set_web_default {
-	sudo mkdir /var/www/
 	sudo cp deploy/ /var/www/ninjawars/ -r
 	sudo cp vendor/ /var/www/ninjawars/ -r
 	sudo chmod 777 /var/www/ninjawars -R
