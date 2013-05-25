@@ -10,8 +10,22 @@ source $_DIR_/functions.sh
 
 say_loud "Preparing..." "TEST"
 bash $_DIR_/selenium.sh restart
-say_loud "Waiting..." "TEST"
-sleep 20 
+
+# Idle
+say_loud "Waiting... [20 seconds]" "TEST"
+sleep 5 
+ps aux | grep "selenium-server"
+say_loud "Waiting... [15 seconds]" "TEST"
+sleep 5 
+ps aux | grep "selenium-server"
+say_loud "Waiting... [10 seconds]" "TEST"
+sleep 5 
+ps aux | grep "selenium-server"
+say_loud "Waiting... [5 seconds]" "TEST"
+sleep 5 
+ps aux | grep "selenium-server"
+
+# Run
 say_info "Assuming finished." "TEST"
 say_loud "Running test-suite" "TEST"
 vendor/bin/phpunit
