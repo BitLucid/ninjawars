@@ -128,6 +128,7 @@ function set_build {
 function set_webserver {
 	say_info "Setting up web-server"
 	echo '127.0.0.1       nw.local' >> /etc/hosts
+	echo '127.0.0.2       nw.local' >> /etc/hosts
 	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'`
 	sed "s,__DIR__,$DIR," "$FULL_SCRIPT_DIR/tpl/nw.local" > "/etc/apache2/sites-available/nw.local"
