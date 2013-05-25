@@ -66,12 +66,15 @@ case "${1:-''}" in
 		say_loud "Restarting Selenium..." "SELENIUM"
 		if [ "0" != $SELENIUM_PID ]
 			then
+			say_info "Stopping..." "SELENIUM"
 			kill -HUP $SELENIUM_PID
 			sleep 1
 			xvfb-run --auto-servernum java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
 			say_ok "Restarted" "SELENIUM"
 		else
-			say_error "Selenium isn't running..." "SELENIUM"
+			say_info "Selenium isn't running..." "SELENIUM"
+			xvfb-run --auto-servernum java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
+			say_ok "Restarted" "SELENIUM"
 		fi
 		;;
 	*)  # no parameter specified

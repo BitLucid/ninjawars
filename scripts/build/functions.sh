@@ -130,6 +130,10 @@ function set_webserver {
 	echo '127.0.0.1       nw.local' >> /etc/hosts
 	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'`
+	say_info $FULL_SCRIPT_DIR DEBUG
+	say_info $DIR DEBUG
+	say_info $1 DEBUG
+	say_info $2 DEBUG
 	sed "s/__DIR__/$DIR/" "$FULL_SCRIPT_DIR/tpl/nw.local" > "/etc/apache2/sites-available/nw.local"
 	sudo a2ensite nw.local
 	sudo service apache2 restart
