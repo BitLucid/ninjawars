@@ -4,7 +4,7 @@
 # with new architecture
 #
 # Run it :
-# bash scripts/build/integration.sh <current_db_username>
+# bash scripts/build/integration.sh <current_db_username> <current_db_name>
 
 # Include functions
 _DIR_=`dirname $0`

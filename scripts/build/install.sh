@@ -3,7 +3,7 @@
 # to setup fresh-install
 #
 # Run it :
-# bash scripts/build/integration.sh <db_username>
+# bash scripts/build/integration.sh <db_username> <db_name>
 
 # Include functions
 _DIR_=`dirname $0`
