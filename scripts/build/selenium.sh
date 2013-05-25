@@ -26,6 +26,12 @@ else
 	fi;
 fi
 
+# Preparing any necessary files/folder
+mkdir -p /var/log/selenium/
+touch /var/log/selenium/selenium-output.log
+touch /var/log/selenium/selenium-error.log
+touch /tmp/selenium.pid
+
 case "${1:-''}" in
 	'start')
 		say_loud "Starting Selenium..." "SELENIUM"
