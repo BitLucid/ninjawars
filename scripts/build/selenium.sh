@@ -11,7 +11,7 @@ source $_DIR_/functions.sh
 say_loud "Preparing..." "SELENIUM"
 check_package openjdk-6-jre "SELENIUM"
 check_package openjdk-6-jdk "SELENIUM"
-sh -e /etc/init.d/xvfb start
+check_package gtk2-engines-pixbuf "SELENIUM"
 ensure_selenium
 
 # See current process
