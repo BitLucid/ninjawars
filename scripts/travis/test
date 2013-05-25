@@ -5,7 +5,8 @@
 # bash scripts/build/test.sh
 
 # Include functions
-_DIR_=`dirname $0`
+_TRAVIS_DIR_=`dirname $0`
+_DIR_=`echo $_TRAVIS_DIR_ | sed 's/travis/build/'`
 source $_DIR_/functions.sh
 
 say_loud "Preparing..." "TEST"
@@ -22,11 +23,6 @@ say_info "Run selenium server" "DEBUG"
 java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
 
 # Idle
-say_loud "Waiting... [20 seconds]" "TEST"
-sleep 5 
-ps aux | grep "selenium-server"
-say_loud "Waiting... [15 seconds]" "TEST"
-sleep 5 
 ps aux | grep "selenium-server"
 say_loud "Waiting... [10 seconds]" "TEST"
 sleep 5 
