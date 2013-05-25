@@ -28,5 +28,6 @@ set_build $DBUSER
 vendor/bin/propel-gen
 psql -c 'ALTER TABLE "account_players" DROP CONSTRAINT "account_players_pkey";' -d nw -U $DBUSER
 vendor/bin/propel-gen . diff migrate
+vendor/bin/propel-gen . diff migrate
 
 say_loud "Complete!"
