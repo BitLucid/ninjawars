@@ -38,3 +38,10 @@ ps aux | grep "selenium-server"
 say_info "Assuming finished." "TEST"
 say_loud "Running test-suite" "TEST"
 vendor/bin/phpunit
+
+# Analyze
+say_loud "Display selenium logs." "TEST"
+cat /var/log/selenium/selenium-output.log
+cat /var/log/selenium/selenium-error.log
+
+say_ok "Done." "TEST"
