@@ -12,7 +12,8 @@ say_loud "Preparing..." "TEST"
 bash $_DIR_/selenium.sh start
 
 # Debug
-java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar
+say "Run..." "DEBUG"
+java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
 
 # Idle
 say_loud "Waiting... [20 seconds]" "TEST"

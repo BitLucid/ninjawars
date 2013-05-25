@@ -27,10 +27,10 @@ else
 fi
 
 # Preparing any necessary files/folder
-mkdir -p /var/log/selenium/
-touch /var/log/selenium/selenium-output.log
-touch /var/log/selenium/selenium-error.log
-touch /tmp/selenium.pid
+sudo mkdir -p /var/log/selenium
+sudo touch /var/log/selenium/selenium-output.log
+sudo touch /var/log/selenium/selenium-error.log
+sudo touch /tmp/selenium.pid
 
 case "${1:-''}" in
 	'start')
