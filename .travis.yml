@@ -17,4 +17,4 @@ before_script:
     - sudo bash scripts/travis/$INSTALL
     - php -v
 
-script: sudo bash scripts/build/test.sh
+script: sudo bash scripts/travis/test

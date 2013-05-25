@@ -7,7 +7,3 @@ source $_DIR_/functions.sh
 
 # Main install scripts!
 bash $_DIR_/install.sh postgres
-
-# Pre-configured
-export DISPLAY=:99.0
-sh -e /etc/init.d/xvfb start
