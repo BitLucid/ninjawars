@@ -134,9 +134,9 @@ function set_webserver {
 	say_info $DIR DEBUG
 	say_info $1 DEBUG
 	say_info $2 DEBUG
-	sed "s/__DIR__/$DIR/" "$FULL_SCRIPT_DIR/tpl/nw.local" > "/etc/apache2/sites-available/nw.local"
+	sed "s,__DIR__,$DIR," "$FULL_SCRIPT_DIR/tpl/nw.local" > "/etc/apache2/sites-available/nw.local"
 	sudo a2ensite nw.local
 	sudo service apache2 restart
-	sed "s/__DBUSER__/$1/;s/__DBNAME__/$2/" "$FULL_SCRIPT_DIR/tpl/resources.php" > "$DIRdeploy/resources.php"
+	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," "$FULL_SCRIPT_DIR/tpl/resources.php" > "$DIRdeploy/resources.php"
 	say_ok "Web-server configured!"
 }
