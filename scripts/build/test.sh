@@ -11,6 +11,9 @@ source $_DIR_/functions.sh
 say_loud "Preparing..." "TEST"
 bash $_DIR_/selenium.sh start
 
+# Debug
+java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar
+
 # Idle
 say_loud "Waiting... [20 seconds]" "TEST"
 sleep 5 
