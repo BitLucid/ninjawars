@@ -9,7 +9,9 @@ _DIR_=`dirname $0`
 source $_DIR_/functions.sh
 
 say_loud "Preparing..." "TEST"
-bash $_DIR_/selenium.sh start
-sleep 10
+bash $_DIR_/selenium.sh restart
+say_loud "Waiting..." "TEST"
+sleep 20 
+say_info "Assuming finished." "TEST"
 say_loud "Running test-suite" "TEST"
 vendor/bin/phpunit

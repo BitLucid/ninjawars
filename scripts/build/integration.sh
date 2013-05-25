@@ -26,14 +26,22 @@ else
 	DBUSER=$1
 fi
 
+# Capture DB name arg
+if [ "" == "$2" ]
+	then
+	DBNAME="nw"
+else
+	DBNAME=$2
+fi
+
 say_loud "Checking for project depedencies"
 
 ensure_phar
 ensure_curl
 set_composer
-set_build $DBUSER
+set_build $DBUSER $DBNAME
 vendor/bin/propel-gen
-psql -c 'ALTER TABLE "account_players" DROP CONSTRAINT "account_players_pkey";' -d nw -U $DBUSER
+psql -c 'ALTER TABLE "account_players" DROP CONSTRAINT "account_players_pkey";' -d $DBNAME -U $DBUSER
 vendor/bin/propel-gen . diff migrate
 vendor/bin/propel-gen . diff migrate
 

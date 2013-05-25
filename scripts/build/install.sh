@@ -25,6 +25,14 @@ else
 	DBUSER=$1
 fi
 
+# Capture DB name arg
+if [ "" == "$2" ]
+	then
+	DBNAME="nw"
+else
+	DBNAME=$2
+fi
+
 # Full install scripts started...
 say_loud "Checking for system depedencies"
 
@@ -32,15 +40,15 @@ ensure_system
 
 say_loud "Creating database"
 
-psql -c 'create database nw;' -U $DBUSER
+psql -c "create database $DBNAME;" -U $DBUSER
 
 say_loud "Checking for project depedencies"
 
-cp docs/tchalvakSAMPLEresources.php deploy/resources.php
+set_webserver $DBUSER $DBNAME
 ensure_phar
 ensure_curl
 set_composer
-set_build $DBUSER
+set_build $DBUSER $DBNAME
 vendor/bin/propel-gen
 vendor/bin/propel-gen insert-sql
 

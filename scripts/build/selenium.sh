@@ -11,17 +11,31 @@ source $_DIR_/functions.sh
 say_loud "Preparing..." "SELENIUM"
 check_package openjdk-6-jre "SELENIUM"
 check_package openjdk-6-jdk "SELENIUM"
+check_package xvfb
+xhost +
 ensure_selenium
+
+# See current process
+SELENIUM_PID="0"
+SELENIUM_STARTED=$(ps aux | grep "java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar")
+if [ "" == "$SELENIUM_STARTED" ]; then
+	SELENIUM_PID="0"
+else
+	ACTIVE=$(echo $SELENIUM_STARTED | awk '{split($0,array," ")} END{print array[3]}')
+	if [ "0.0" != "$ACTIVE" ]; then
+		SELENIUM_PID=$(echo $SELENIUM_STARTED | awk '{split($0,array," ")} END{print array[2]}')
+	fi;
+fi
 
 case "${1:-''}" in
 	'start')
 		say_loud "Starting Selenium..." "SELENIUM"
 
-		if test -f /tmp/selenium.pid
+		if [ "0" != $SELENIUM_PID ]
 			then
 			say_warning "Selenium is already running." "SELENIUM"
 		else
-			java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
+			xvfb-run --auto-servernum java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
 
 			error=$?
 			if test $error -gt 0
@@ -29,20 +43,17 @@ case "${1:-''}" in
 				say_error "${bon}Error $error! Couldn't start Selenium!${boff}" "SELENIUM"
 			else
 				say_ok "Started" "SELENIUM"
-				ps aux | grep 2.21
 			fi
 		fi
 	;;
 	'stop')
 		say_loud "Stopping Selenium..." "SELENIUM"
-		if test -f /tmp/selenium.pid
+		if [ "0" != $SELENIUM_PID ]
 		then
-			PID=`cat /tmp/selenium.pid`
-			kill -3 $PID
-			if kill -9 $PID ;
+			kill -3 $SELENIUM_PID
+			if kill -9 $SELENIUM_PID;
 				then
 				sleep 2
-				test -f /tmp/selenium.pid && rm -f /tmp/selenium.pid
 				say_ok "Stoped" "SELENIUM"
 			else
 				say_error "Selenium could not be stopped..." "SELENIUM"
@@ -53,12 +64,11 @@ case "${1:-''}" in
 		;;
 	'restart')
 		say_loud "Restarting Selenium..." "SELENIUM"
-		if test -f /tmp/selenium.pid
+		if [ "0" != $SELENIUM_PID ]
 			then
-			kill -HUP `cat /tmp/selenium.pid`
-			test -f /tmp/selenium.pid && rm -f /tmp/selenium.pid
+			kill -HUP $SELENIUM_PID
 			sleep 1
-			java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
+			xvfb-run --auto-servernum java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
 			say_ok "Restarted" "SELENIUM"
 		else
 			say_error "Selenium isn't running..." "SELENIUM"

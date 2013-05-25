@@ -7,7 +7,3 @@ source $_DIR_/functions.sh
 
 # Main install scripts!
 bash $_DIR_/install.sh postgres
-
-# Setup web-config
-set_web_default
-curl -v http://127.0.0.1/ninjawars/deploy/www/index.php

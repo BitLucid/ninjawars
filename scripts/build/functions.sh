@@ -101,11 +101,6 @@ function ensure_curl {
 function ensure_selenium {
 	say_info "Checking for Selenium..." "SELENIUM"
 
-	# Pre-configuration
-	export DISPLAY=:99.0
-	sh -e /etc/init.d/xvfb start
-	sudo apt-get -qq update
-
 	SELENIUM_OK=$(ls /usr/lib/selenium|grep ".jar")
 	if [ "" == "$SELENIUM_OK" ]; then
 		say_warning "Selenium wasn't found!" "SELENIUM"
@@ -125,13 +120,19 @@ function set_composer {
 }
 
 function set_build {
-	sed "s/postgres/$1/" build.properties.tpl > build.properties
-	sed "s/postgres/$1/" buildtime.xml.tpl > buildtime.xml
-	sed "s/postgres/$1/" connection.xml.tpl > connection.xml
+	sed "s/postgres/$1/;s/nw/$2/" build.properties.tpl > build.properties
+	sed "s/postgres/$1/;s/nw/$2/" buildtime.xml.tpl > buildtime.xml
+	sed "s/postgres/$1/;s/nw/$2/" connection.xml.tpl > connection.xml
 }
 
-function set_web_default {
-	sudo cp deploy/ /var/www/ninjawars/ -r
-	sudo cp vendor/ /var/www/ninjawars/ -r
-	sudo chmod 777 /var/www/ninjawars -R
+function set_webserver {
+	say_info "Setting up web-server"
+	echo '127.0.0.1       nw.local' >> /etc/hosts
+	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'`
+	sed "s/__DIR__/$DIR/" $FULL_SCRIPT_DIR/tpl/nw.local > /etc/apache2/sites-available/nw.local
+	sudo a2ensite nw.local
+	sudo service apache2 restart
+	sed "s/__DBUSER__/$1/;s/__DBNAME__/$2/" $FULL_SCRIPT_DIR/tpl/resources.php > "$DIRdeploy/resources.php"
+	say_ok "Web-server configured!"
 }
