@@ -5,8 +5,8 @@
 * It defines constants used throughout the application.  Constants for tracked files 
 */
 define('DATABASE_HOST', "localhost");		// *** The host to connect to for the database
-define('DATABASE_USER', "kzqai");		// *** The user that should connect to the database
-define('DATABASE_NAME', "nw");		// *** The name of the database to connect to
+define('DATABASE_USER', "__DBUSER__");		// *** The user that should connect to the database
+define('DATABASE_NAME', "__DBNAME__");		// *** The name of the database to connect to
 define('OFFLINE', false);				// *** Controls if remote or local resources are used
 define('DEBUG', true);					// *** Shorter debugging constant name, set as false on live.
 define('PROFILE', false);				// *** Whether or not to do performance profiling
