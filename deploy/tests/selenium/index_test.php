@@ -1,6 +1,6 @@
 <?php
 
-class index_test extends PHPUnit_Extensions_Selenium2TestCase {
+class Index_Test extends PHPUnit_Extensions_Selenium2TestCase {
 
 	public function setUp()
 	{

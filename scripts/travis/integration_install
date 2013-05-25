@@ -24,4 +24,3 @@ bash $_DIR_/integration.sh postgres
 
 # Setup web-config
 set_web_default
-bash $_DIR_/selenium.sh start

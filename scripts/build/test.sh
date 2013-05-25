@@ -10,6 +10,6 @@ source $_DIR_/functions.sh
 
 say_loud "Preparing..." "TEST"
 bash $_DIR_/selenium.sh start
-sleep 8
+sleep 10
 say_loud "Running test-suite" "TEST"
 vendor/bin/phpunit
