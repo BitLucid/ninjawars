@@ -84,6 +84,20 @@ function ensure_phar {
 	fi
 }
 
+function ensure_curl {
+	say_info "Checking for cURL module before installing Composer"
+	CURL_OK=$(php -m|grep "curl")
+	if [ "" == "$CURL_OK" ]; then
+		say_warning "cURL is not loaded!"
+		say_info "Installing..."
+		sudo apt-get install php-pear php5-dev php5-curl
+		sudo pecl install curl
+		sudo service apache2 restart
+	else
+		say_ok "cURL loaded!"
+	fi
+}
+
 function ensure_selenium {
 	say_info "Checking for Selenium..." "SELENIUM"
 
@@ -96,6 +110,7 @@ function ensure_selenium {
 	if [ "" == "$SELENIUM_OK" ]; then
 		say_warning "Selenium wasn't found!" "SELENIUM"
 		say_info "Installing..." "SELENIUM"
+		touch /var/log/selenium/selenium-error.log
 		wget http://selenium.googlecode.com/files/selenium-server-standalone-2.21.0.jar
 		sudo mkdir /usr/lib/selenium
 		sudo cp selenium-server-standalone-2.21.0.jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar

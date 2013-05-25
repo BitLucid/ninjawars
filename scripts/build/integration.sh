@@ -29,6 +29,7 @@ fi
 say_loud "Checking for project depedencies"
 
 ensure_phar
+ensure_curl
 set_composer
 set_build $DBUSER
 vendor/bin/propel-gen

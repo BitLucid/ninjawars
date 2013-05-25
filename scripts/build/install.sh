@@ -38,6 +38,7 @@ say_loud "Checking for project depedencies"
 
 cp docs/tchalvakSAMPLEresources.php deploy/resources.php
 ensure_phar
+ensure_curl
 set_composer
 set_build $DBUSER
 vendor/bin/propel-gen
