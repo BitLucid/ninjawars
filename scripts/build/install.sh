@@ -1,4 +1,9 @@
 #!/bin/sh
+# This script is used only ONCE
+# to setup fresh-install
+#
+# Run it :
+# bash scripts/build/integration.sh <db_username>
 
 # Include functions
 _DIR_=`dirname $0`

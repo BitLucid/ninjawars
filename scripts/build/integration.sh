@@ -1,4 +1,10 @@
 #!/bin/sh
+# This script is used only ONCE
+# to integrate current running system
+# with new architecture
+#
+# Run it :
+# bash scripts/build/integration.sh <current_db_username>
 
 # Include functions
 _DIR_=`dirname $0`
