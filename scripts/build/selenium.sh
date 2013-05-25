@@ -11,8 +11,7 @@ source $_DIR_/functions.sh
 say_loud "Preparing..." "SELENIUM"
 check_package openjdk-6-jre "SELENIUM"
 check_package openjdk-6-jdk "SELENIUM"
-check_package xvfb
-xhost +
+sh -e /etc/init.d/xvfb start
 ensure_selenium
 
 # See current process
@@ -21,8 +20,8 @@ SELENIUM_STARTED=$(ps aux | grep "java -jar /usr/lib/selenium/selenium-server-st
 if [ "" == "$SELENIUM_STARTED" ]; then
 	SELENIUM_PID="0"
 else
-	ACTIVE=$(echo $SELENIUM_STARTED | awk '{split($0,array," ")} END{print array[3]}')
-	if [ "0.0" != "$ACTIVE" ]; then
+	ACTIVE=$(echo $SELENIUM_STARTED | awk '{split($0,array," ")} END{print array[8]}')
+	if [ "S" == "$ACTIVE" ] || [ "Sl" == "$ACTIVE" ]; then
 		SELENIUM_PID=$(echo $SELENIUM_STARTED | awk '{split($0,array," ")} END{print array[2]}')
 	fi;
 fi
