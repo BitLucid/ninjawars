@@ -14,11 +14,11 @@ bash $_DIR_/selenium.sh start
 # Idle
 say_loud "Waiting... [20 seconds]" "TEST"
 sleep 5 
-say_loud "Waiting... [15 seconds]" "TEST"
+say_info "Waiting... [15 seconds]" "TEST"
 sleep 5 
-say_loud "Waiting... [10 seconds]" "TEST"
+say_info "Waiting... [10 seconds]" "TEST"
 sleep 5 
-say_loud "Waiting... [5 seconds]" "TEST"
+say_info "Waiting... [5 seconds]" "TEST"
 sleep 5 
 
 # Run
@@ -32,11 +32,11 @@ say_loud "Cleaning up..." "TEST"
 # Idle
 say_loud "Waiting... [20 seconds]" "TEST"
 sleep 5 
-say_loud "Waiting... [15 seconds]" "TEST"
+say_info "Waiting... [15 seconds]" "TEST"
 sleep 5 
-say_loud "Waiting... [10 seconds]" "TEST"
+say_info "Waiting... [10 seconds]" "TEST"
 sleep 5 
-say_loud "Waiting... [5 seconds]" "TEST"
+say_info "Waiting... [5 seconds]" "TEST"
 sleep 5 
 
 # Close selenium

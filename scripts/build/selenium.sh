@@ -9,9 +9,17 @@ _DIR_=`dirname $0`
 source $_DIR_/functions.sh
 
 say_loud "Preparing..." "SELENIUM"
-check_package openjdk-6-jre "SELENIUM"
-check_package openjdk-6-jdk "SELENIUM"
-check_package gtk2-engines-pixbuf "SELENIUM"
+
+# Check java environment
+HAS_JAVA=$(file `which java javac` | grep /usr/bin/java: | awk '{split($0,array," ")} END{print array[1]}')
+if [ "/usr/bin/java:" != $HAS_JAVA ]; then
+	say_warning "Java platform not found, installing..." "SELENIUM"
+	check_package openjdk-6-jre "SELENIUM"
+	check_package openjdk-6-jdk "SELENIUM"
+else
+	say_ok "Java platform in place" "SELENIUM"
+fi
+
 ensure_selenium
 
 # See current process
