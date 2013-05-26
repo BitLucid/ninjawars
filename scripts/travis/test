@@ -25,6 +25,8 @@ bash $_DIR_/selenium.sh stop
 java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
 
 # Idle
+say_loud "Waiting... [25 seconds]" "TEST"
+sleep 5 
 say_loud "Waiting... [20 seconds]" "TEST"
 sleep 5 
 say_loud "Waiting... [15 seconds]" "TEST"
