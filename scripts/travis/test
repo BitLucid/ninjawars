@@ -12,19 +12,18 @@ source $_DIR_/functions.sh
 say_loud "Preparing..." "TEST"
 
 say_info "Requesting http://nw.local" "DEBUG"
-echo '127.0.0.2       nw.local' >> /etc/hosts
 curl -v http://nw.local
 say_info "Displaying apache log" "DEBUG"
 cat /var/log/apache2/error.log
 
 # Pre-configured
-say_info "Export display and run xvfb" "DEBUG"
-export DISPLAY=:99.0
-sh -e /etc/init.d/xvfb start
+# say_info "Export display and run xvfb" "DEBUG"
+# export DISPLAY=:99.0
+# sh -e /etc/init.d/xvfb start
 
-bash $_DIR_/selenium.sh stop
+bash $_DIR_/selenium.sh start
 
-java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
+#java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
 
 # Idle
 say_loud "Waiting... [25 seconds]" "TEST"
