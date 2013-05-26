@@ -10,7 +10,9 @@ _DIR_=`echo $_TRAVIS_DIR_ | sed 's/travis/build/'`
 source $_DIR_/functions.sh
 
 say_loud "Preparing..." "TEST"
+
 say_info "Requesting http://nw.local" "DEBUG"
+echo '127.0.0.1       nw.local' >> /etc/hosts
 curl -v http://nw.local
 say_info "Displaying apache log" "DEBUG"
 cat /var/log/apache2/error.log
