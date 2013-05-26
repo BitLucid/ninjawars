@@ -7,41 +7,17 @@
 # Include functions
 _TRAVIS_DIR_=`dirname $0`
 _DIR_=`echo $_TRAVIS_DIR_ | sed 's/travis/build/'`
-source $_DIR_/functions.sh
 
-say_loud "Preparing..." "TEST"
+say_loud "Travis test..." "TRAVIS_TEST"
 
-say_info "Requesting http://nw.local" "DEBUG"
+say_info "Requesting http://nw.local" "TRAVIS_TEST"
 curl -v http://nw.local -I
 
-# Pre-configured
-export DISPLAY=:99.0
-sed "s,1024x768x16,1024x768x16 -extension RANDR," /etc/init.d/xvfb > xvfb
-mv xvfb /etc/init.d/xvfb
-sh -e /etc/init.d/xvfb start
-
-bash $_DIR_/selenium.sh start
-
-# Idle
-say_loud "Waiting... [25 seconds]" "TEST"
-sleep 5 
-say_info "Waiting... [20 seconds]" "TEST"
-sleep 5 
-say_info "Waiting... [15 seconds]" "TEST"
-sleep 5 
-say_info "Waiting... [10 seconds]" "TEST"
-sleep 5 
-say_info "Waiting... [5 seconds]" "TEST"
-sleep 5 
-ps aux | grep "selenium-server"
-
-# Run
-say_info "Assuming finished." "TEST"
-say_loud "Running test-suite" "TEST"
-vendor/bin/phpunit
+# Hook into main test script
+sudo bash $_DIR_/test.sh
 
 # Analyze
-say_loud "Display selenium logs." "TEST"
+say_loud "Display selenium logs." "TRAVIS_TEST"
 cat /var/log/selenium/selenium-output.log
 
-say_ok "Done." "TEST"
+say_ok "Travis test Done." "TRAVIS_TEST"
