@@ -12,11 +12,11 @@ source $_DIR_/functions.sh
 say_loud "Preparing..." "TEST"
 
 say_info "Requesting http://nw.local" "DEBUG"
-cat /etc/hosts
 curl -v http://nw.local -I
 
 # Pre-configured
-export DISPLAY=:0.0
+# export DISPLAY=:99.0
+cat /etc/init.d/xvfb
 
 bash $_DIR_/selenium.sh start
 
