@@ -21,8 +21,11 @@ if [ "" == "$SELENIUM_STARTED" ]; then
 	SELENIUM_PID="0"
 else
 	ACTIVE=$(echo $SELENIUM_STARTED | awk '{split($0,array," ")} END{print array[8]}')
-	if [ "S" == "$ACTIVE" ] || [ "Sl" == "$ACTIVE" ]; then
-		SELENIUM_PID=$(echo $SELENIUM_STARTED | awk '{split($0,array," ")} END{print array[2]}')
+	if [ "S" == "$ACTIVE" ] || [ "Sl" == "$ACTIVE" ] || [ "S+" == "$ACTIVE" ] || [ "Sl+" == "$ACTIVE" ]; then
+		NOTCURRENT=$(echo $SELENIUM_STARTED | awk '{split($0,array," ")} END{print array[11]}')
+		if [ "grep" != "$NOTCURRENT" ]; then
+			SELENIUM_PID=$(echo $SELENIUM_STARTED | awk '{split($0,array," ")} END{print array[2]}')
+		fi
 	fi;
 fi
 
