@@ -100,7 +100,7 @@ function ensure_curl {
 
 function ensure_selenium {
 	# Used selenium-server
-	SELENIUM="selenium-server-standalone-2.21.0.jar"
+	SELENIUM="selenium-server-standalone-2.33.0.jar"
 
 	# Check java environment
 	say_info "Checking for Java..." "SELENIUM"

@@ -9,7 +9,7 @@ _DIR_=`dirname $0`
 source $_DIR_/functions.sh
 
 # Used selenium-server
-SELENIUM="selenium-server-standalone-2.21.0.jar"
+SELENIUM="selenium-server-standalone-2.33.0.jar"
 
 say_loud "Preparing..." "SELENIUM"
 ensure_selenium
