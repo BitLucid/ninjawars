@@ -10,8 +10,8 @@ _DIR_=`echo $_TRAVIS_DIR_ | sed 's/travis/build/'`
 source $_DIR_/functions.sh
 
 say_loud "Preparing..." "TEST"
-say_info "Requesting http://nw.local" "DEBUG"
-curl -v http://nw.local
+say_info "Requesting http://localhost" "DEBUG"
+curl -v http://localhost
 
 # Pre-configured
 say_info "Export display and run xvfb" "DEBUG"
