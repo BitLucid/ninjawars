@@ -8,23 +8,15 @@
 _DIR_=`dirname $0`
 source $_DIR_/functions.sh
 
+# Used selenium-server
+SELENIUM="selenium-server-standalone-2.21.0.jar"
+
 say_loud "Preparing..." "SELENIUM"
-
-# Check java environment
-HAS_JAVA=$(file `which java javac` | grep /usr/bin/java: | awk '{split($0,array," ")} END{print array[1]}')
-if [ "/usr/bin/java:" != $HAS_JAVA ]; then
-	say_warning "Java platform not found, installing..." "SELENIUM"
-	check_package openjdk-6-jre "SELENIUM"
-	check_package openjdk-6-jdk "SELENIUM"
-else
-	say_ok "Java platform in place" "SELENIUM"
-fi
-
 ensure_selenium
 
 # See current process
 SELENIUM_PID="0"
-SELENIUM_STARTED=$(ps aux | grep "java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar")
+SELENIUM_STARTED=$(ps aux | grep "java -jar /usr/lib/selenium/$SELENIUM")
 if [ "" == "$SELENIUM_STARTED" ]; then
 	SELENIUM_PID="0"
 else
@@ -51,7 +43,7 @@ case "${1:-''}" in
 			then
 			say_warning "Selenium is already running." "SELENIUM"
 		else
-			xvfb-run --auto-servernum java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
+			xvfb-run --auto-servernum java -jar /usr/lib/selenium/$SELENIUM > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
 
 			error=$?
 			if test $error -gt 0
@@ -85,11 +77,11 @@ case "${1:-''}" in
 			say_info "Stopping..." "SELENIUM"
 			kill -HUP $SELENIUM_PID
 			sleep 1
-			xvfb-run --auto-servernum java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
+			xvfb-run --auto-servernum java -jar /usr/lib/selenium/$SELENIUM > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
 			say_ok "Restarted" "SELENIUM"
 		else
 			say_info "Selenium isn't running..." "SELENIUM"
-			xvfb-run --auto-servernum java -jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
+			xvfb-run --auto-servernum java -jar /usr/lib/selenium/$SELENIUM > /var/log/selenium/selenium-output.log 2> /var/log/selenium/selenium-error.log & echo $! > /tmp/selenium.pid
 			say_ok "Restarted" "SELENIUM"
 		fi
 		;;

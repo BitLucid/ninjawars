@@ -99,16 +99,31 @@ function ensure_curl {
 }
 
 function ensure_selenium {
+	# Used selenium-server
+	SELENIUM="selenium-server-standalone-2.21.0.jar"
+
+	# Check java environment
+	say_info "Checking for Java..." "SELENIUM"
+
+	HAS_JAVA=$(file `which java javac` | grep /usr/bin/java: | awk '{split($0,array," ")} END{print array[1]}')
+	if [ "/usr/bin/java:" != $HAS_JAVA ]; then
+		say_warning "Java platform not found, installing..." "SELENIUM"
+		check_package openjdk-6-jre "SELENIUM"
+		check_package openjdk-6-jdk "SELENIUM"
+	else
+		say_ok "Java platform in place" "SELENIUM"
+	fi
+
+	# Check selenium server
 	say_info "Checking for Selenium..." "SELENIUM"
 
-	SELENIUM_OK=$(ls /usr/lib/selenium|grep ".jar")
+	sudo mkdir -p /usr/lib/selenium
+
+	SELENIUM_OK=$(ls /usr/lib/selenium|grep $SELENIUM)
 	if [ "" == "$SELENIUM_OK" ]; then
-		say_warning "Selenium wasn't found!" "SELENIUM"
-		say_info "Installing..." "SELENIUM"
-		touch /var/log/selenium/selenium-error.log
-		wget http://selenium.googlecode.com/files/selenium-server-standalone-2.21.0.jar
-		sudo mkdir /usr/lib/selenium
-		sudo cp selenium-server-standalone-2.21.0.jar /usr/lib/selenium/selenium-server-standalone-2.21.0.jar
+		say_warning "Selenium wasn't found, installing..." "SELENIUM"
+		wget http://selenium.googlecode.com/files/$SELENIUM
+		sudo cp $SELENIUM /usr/lib/selenium/$SELENIUM
 	else
 		say_ok "Selenium in place" "SELENIUM"
 	fi
