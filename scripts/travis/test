@@ -15,8 +15,10 @@ say_info "Requesting http://nw.local" "DEBUG"
 curl -v http://nw.local -I
 
 # Pre-configured
-# export DISPLAY=:99.0
-cat /etc/init.d/xvfb
+export DISPLAY=:99.0
+sed "s,1024x768x16,1024x768x16 -extension RANDR," /etc/init.d/xvfb > xvfb
+mv xvfb /etc/init.d/xvfb
+sudo /etc/init.d/xvfb start
 
 bash $_DIR_/selenium.sh start
 
@@ -41,6 +43,5 @@ vendor/bin/phpunit
 # Analyze
 say_loud "Display selenium logs." "TEST"
 cat /var/log/selenium/selenium-output.log
-cat /var/log/selenium/selenium-error.log
 
 say_ok "Done." "TEST"
