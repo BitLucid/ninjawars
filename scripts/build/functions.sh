@@ -135,5 +135,8 @@ function set_webserver {
 	sudo a2enmod rewrite
 	sudo service apache2 restart
 	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," $FULL_SCRIPT_DIR/tpl/resources.php > $DIR"deploy/resources.php"
+	mkdir -p $DIR"deploy/templates/compiled"
+	sudo chown www-data $DIR"deploy/templates/compiled"
+	sudo chmod 777 $DIR"deploy/templates/compiled"
 	say_ok "Web-server configured!"
 }
