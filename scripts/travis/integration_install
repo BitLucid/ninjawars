@@ -2,7 +2,7 @@
 
 # Include functions
 _TRAVIS_DIR_="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-_DIR_=`echo $_TRAVIS_DIR_ | sed 's/travis/build/'`
+_DIR_=`echo $_TRAVIS_DIR_ | sed 's,scripts/travis,scripts/build,'`
 source $_DIR_/functions.sh
 
 # Emulate current system state...
