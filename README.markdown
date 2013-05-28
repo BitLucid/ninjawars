@@ -8,20 +8,26 @@ Clone this repository
 	git clone git@github.com:BitLucid/ninjawars.git
 
 Install system dependencies
+	cd /srv/ninjawars
+	sudo bash /srv/ninjawars/scripts/build/install.sh
+	
+Update an out-of-date but already installed instance's system/composer libraries:
 
-    sudo chmod u+rwx /srv/ninjawars/scripts/install
-    /srv/ninjawars/scripts/install yourUserNameHere!
+	cd /srv/ninjawars
+	sudo bash /srv/ninjawars/scripts/build/integration.sh
 
-Install the php dependencies
+Sync the database with latest info:
+	cd /srv/ninjawars
+	./scripts/sync
 
-	curl -s http://getcomposer.org/installer | php
-	php composer.phar install
+Install the test environment with:
 
-And you're good to go.
+	cd /srv/ninjawars
+	sudo bash /srv/ninjawars/scripts/build/test.sh
 
-Run the tests 
+Then you can run the tests at any point with:
 
-    vendor/bin/phpunit
+    ./vendor/bin/phpunit
 
 ## Contributing
 You can make web commits on github.com, just search github for "ninjawars".  To contribute on github:
