@@ -5,7 +5,7 @@
 # bash scripts/build/selenium.sh (start|stop|restart)
 
 # Include functions
-_DIR_=`pwd -P`
+_DIR_="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $_DIR_/functions.sh
 
 # Used selenium-server

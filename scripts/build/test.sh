@@ -5,8 +5,10 @@
 # bash scripts/build/test.sh
 
 # Include functions
-_DIR_=`pwd -P`
+_DIR_="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $_DIR_/functions.sh
+echo $0
+exit
 
 say_loud "Preparing..." "TEST"
 bash $_DIR_/selenium.sh start
