@@ -60,6 +60,7 @@ function check_package {
 function ensure_system {
 	check_package apache2
 	check_package php5
+	check_package php5-curl
 	check_package php5-pgsql
 	check_package postgresql
 	check_package postgresql-contrib
@@ -142,10 +143,11 @@ function set_build {
 
 function set_webserver {
 	say_info "Setting up web-server"
-	echo '127.0.0.1       nw.local' >> /etc/hosts
+	echo '127.0.0.1       nw.local' >> sudo tee -a /etc/hosts
 	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'`
-	sed "s,__DIR__,$DIR," "$FULL_SCRIPT_DIR/tpl/nw.local" > "/etc/apache2/sites-available/nw.local"
+	cd /etc/apache2/sites-available
+	sudo sh -c "sed 's,__DIR__,$DIR,' '$FULL_SCRIPT_DIR/tpl/nw.local' > 'nw.local'"
 	sudo a2ensite nw.local
 	sudo a2enmod rewrite
 	sudo service apache2 restart
