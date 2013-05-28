@@ -21,7 +21,3 @@ set_webserver postgres nw
 
 # Main synchronize script!
 bash $_DIR_/integration.sh postgres
-
-# Debug
-say_info "Display the virtualhost config" "DEBUG"
-cat /etc/apache2/sites-availabe/nw.local
