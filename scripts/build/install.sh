@@ -6,7 +6,7 @@
 # bash scripts/build/integration.sh <db_username> <db_name>
 
 # Include functions
-_DIR_=`dirname $0`
+_DIR_=`pwd -P`
 source $_DIR_/functions.sh
 
 # Register sigint handler

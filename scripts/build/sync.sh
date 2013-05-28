@@ -3,7 +3,7 @@
 # everytime we pulled out new commits
 
 # Include functions
-_DIR_=`dirname $0`
+_DIR_=`pwd -P`
 source $_DIR_/functions.sh
 
 # Register sigint handler
