@@ -149,6 +149,7 @@ function set_webserver {
 	cd /etc/apache2/sites-available
 	sudo sh -c "sed 's,__DIR__,$DIR,' '$FULL_SCRIPT_DIR/tpl/nw.local' > 'nw.local'"
 	ls -l
+	cat nw.local
 	sudo a2ensite nw.local
 	sudo a2enmod rewrite
 	sudo service apache2 restart
