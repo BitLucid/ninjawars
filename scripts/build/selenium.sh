@@ -34,6 +34,9 @@ sudo mkdir -p /var/log/selenium
 sudo touch /var/log/selenium/selenium-output.log
 sudo touch /var/log/selenium/selenium-error.log
 sudo touch /tmp/selenium.pid
+sudo chmod 777 /var/log/selenium/selenium-output.log
+sudo chmod 777 /var/log/selenium/selenium-error.log
+sudo chmod 777 /tmp/selenium.pid
 
 case "${1:-''}" in
 	'start')

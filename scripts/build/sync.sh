@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # This script is used as convinient method
 # everytime we pulled out new commits
 

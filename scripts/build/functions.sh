@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 function quit {
 	if [ -z "$1" ]
 		then

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # This script is used only ONCE
 # to integrate current running system
 # with new architecture
