@@ -143,7 +143,7 @@ function set_build {
 
 function set_webserver {
 	say_info "Setting up web-server"
-	sudo "echo '127.0.0.1       nw.local' >> sudo tee -a /etc/hosts"
+	sudo bash -c "echo '127.0.0.1       nw.local' >> /etc/hosts"
 	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'`
 	cd /etc/apache2/sites-available
