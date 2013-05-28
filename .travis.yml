@@ -14,8 +14,8 @@ matrix:
     - php: 5.4
 
 before_script:
-	- chmod ug+rx scripts/build/*.sh
-	- chmod ug+rx scripts/travis/*
+    - chmod ug+rx scripts/build/*.sh
+    - chmod ug+rx scripts/travis/*
     - ./scripts/travis/$INSTALL
     - php -v
 
