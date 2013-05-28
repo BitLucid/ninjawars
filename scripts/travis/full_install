@@ -7,3 +7,7 @@ source $_DIR_/functions.sh
 
 # Main install scripts!
 bash $_DIR_/install.sh postgres
+
+# Debug
+say_info "Display the virtualhost config" "DEBUG"
+cat /etc/apache2/sites-availabe/nw.local
