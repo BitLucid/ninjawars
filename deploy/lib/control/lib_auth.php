@@ -154,8 +154,12 @@ function get_account_ip() {
 
 // Pull the account_ids for a certain character
 function get_char_account_id($char_id){
+	return account_id_by_ninja_id($char_id);
+}
+
+function account_id_by_ninja_id($ninja_id){
 	return query_item('SELECT account_id from accounts JOIN account_players ON account_id = _account_id 
-		where _player_id = :char_id', array(':char_id'=>$char_id));
+		where _player_id = :ninja_id', array(':ninja_id'=>$ninja_id));
 }
 
 // Check whether two characters have similarities, same account, same ip, etc.
@@ -412,6 +416,17 @@ function get_char_id($p_name=false) {
 		}
 		
 	}
+}
+
+// Get the ninja id for a ninja name
+function ninja_id($name){
+	$find = 'select player_id from players where lower(uname) = :name';
+	return query_item($find, array(':name'=>strtolower($name)));
+}
+
+// Get ninja id for currently logged in ninja
+function self_ninja_id(){
+	return get_logged_in_char_id();
 }
 
 // Update activity for a logged in player.
