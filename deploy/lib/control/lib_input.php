@@ -40,6 +40,12 @@ function sanitize_to_int($dirty) {
 	return $res;
 }
 
+// Return a casting with a result of a positive int, or else zero.
+function positive_int($num){
+	// Note that this function will cast strings with leading integers to those integers.  E.g. 555'sql-injection becomes 555
+	return ((int)$num == $num && (int)$num > 0? (int)$num : 0);
+}
+
 // Strip everything except alphanumeric, underscore, and dash
 function sanitize_to_word($dirty) {
 	return preg_replace("[^A-Za-z0-9_\-]", "", (string) $dirty);

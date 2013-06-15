@@ -1,0 +1,24 @@
+#!/bin/bash
+# This script is used to prepare and run the test
+#
+# Run it :
+# bash scripts/build/test.sh
+
+# Include functions
+_TRAVIS_DIR_=`dirname $0`
+_DIR_=`echo $_TRAVIS_DIR_ | sed 's,scripts/travis,scripts/build,'`
+source $_DIR_/functions.sh
+
+say_loud "Travis test..." "TRAVIS_TEST"
+
+say_info "Requesting http://nw.local" "TRAVIS_TEST"
+curl -v http://nw.local -I
+
+# Hook into main test script
+sudo bash $_DIR_/test.sh
+
+# Analyze
+say_loud "Display selenium logs." "TRAVIS_TEST"
+cat /var/log/selenium/selenium-output.log
+
+say_ok "Travis test Done." "TRAVIS_TEST"

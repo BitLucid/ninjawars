@@ -52,20 +52,22 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
  **/
 function login_user($dirty_user, $p_pass) {
 	// Internal function due to it being insecure otherwise.
-	// Sets up the environment for a logged in user, using vetted data.
+
+    // Sets up the environment for a logged in user, using vetted data.
     if(!function_exists('_login_user')){
-    function _login_user($p_username, $p_player_id, $p_account_id) {
-		SESSION::commence(); // Start a session on a successful login.
-		$_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
-		SESSION::set('username', $p_username); // Actually char name
-		SESSION::set('player_id', $p_player_id); // Actually char id.
-		SESSION::set('account_id', $p_account_id);
-		update_activity_log($p_player_id);
-		update_last_logged_in($p_player_id);
-		$up = "UPDATE players SET active = 1 WHERE player_id = :char_id";
-        query($up, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
+        function _login_user($p_username, $p_player_id, $p_account_id) {
+            SESSION::commence(); // Start a session on a successful login.
+            $_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
+            SESSION::set('username', $p_username); // Actually char name
+            SESSION::set('player_id', $p_player_id); // Actually char id.
+            SESSION::set('account_id', $p_account_id);
+            update_activity_log($p_player_id);
+            update_last_logged_in($p_player_id);
+            $up = "UPDATE players SET active = 1 WHERE player_id = :char_id";
+            query($up, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
+        }
     }
-	}
+
 
 	$success = false;
 	$error   = 'That password/username combination was incorrect.';
@@ -154,8 +156,12 @@ function get_account_ip() {
 
 // Pull the account_ids for a certain character
 function get_char_account_id($char_id){
+	return account_id_by_ninja_id($char_id);
+}
+
+function account_id_by_ninja_id($ninja_id){
 	return query_item('SELECT account_id from accounts JOIN account_players ON account_id = _account_id 
-		where _player_id = :char_id', array(':char_id'=>$char_id));
+		where _player_id = :ninja_id', array(':ninja_id'=>$ninja_id));
 }
 
 // Check whether two characters have similarities, same account, same ip, etc.
@@ -412,6 +418,17 @@ function get_char_id($p_name=false) {
 		}
 		
 	}
+}
+
+// Get the ninja id for a ninja name
+function ninja_id($name){
+	$find = 'select player_id from players where lower(uname) = :name';
+	return query_item($find, array(':name'=>strtolower($name)));
+}
+
+// Get ninja id for currently logged in ninja
+function self_ninja_id(){
+	return get_logged_in_char_id();
 }
 
 // Update activity for a logged in player.

@@ -1,12 +1,34 @@
 #!/bin/bash
 # To use this script, give it user execute permissions : sudo chmod u+rwx install, 
 # then run it with the argument of your dev username, e.g. install kzqai
+
+if [ -z "$1" ]
+  then
+    echo "No first Username argument supplied"
+    exit
+fi
+
+# confirm function
+confirm () {
+    # call with a prompt string or use a default
+    read -r -p "${1:-Are you sure? [Y/n]} " response
+    case $response in
+        [yY][eE][sS]|[yY])
+            true
+            ;;
+        *)
+            false
+            ;;
+    esac
+}
+
+
 sudo apt-get install apache2 php5 php5-pgsql postgresql postgresql-contrib libpq-dev smarty
-sudo apt-get install perl liblingua-en-inflect-perl
+sudo apt-get install perl liblingua-en-inflect-perl phpunit
 
 #enable rewrite module
 sudo a2enmod rewrite
-
+function install_postgres(){
 sudo su postgres
 createuser -s $1
 createdb nw
@@ -14,6 +36,10 @@ cd `pg_config --sharedir`
 echo "create extension pgcrypto" | psql -d nw
 echo "create role developers" | psql nw
 exit
+}
+
+confirm "Create postgres superuse, add pgcrypto, bare nw db, and developer role?" && install_postgres
+
 
 cd /srv/ninjawars
 ln -s docs/gitignoreSAMPLE .gitignore
@@ -21,12 +47,29 @@ cp docs/tchalvakSAMPLEresources.php deploy/resources.php
 mkdir -p deploy/resources/logs
 mkdir deploy/templates/compiled
 sudo chown www-data:www-data deploy/templates/compiled
+
+function copy_over_template_apache_configs(){
 sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && sudo ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local
-echo "Modify deploy/www/.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
+echo "Modifying deploy/www/.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
+}
+
+confirm "Copy over the template apache configs into /etc/apache2/sites-available?" && copy_over_template_apache_configs
+
 sudo apache2ctl graceful
-ssh tchalvak@ninjawars.net 'vacuumdb ninjawarsLive;pg_dump ninjawarsLive > ~/nw_full.sql'
-scp tchalvak@ninjawars.net:~/nw_full.sql ~/nw_full.sql
-psql nw < ~/nw_full.sql
+
+function ssh_down_db(){
+ssh tchalvak@ninjawars.net 'vacuumdb ninjawarsLive;pg_dump ninjawarsLive > /srv/ninjawars/nw_full.sql'
+scp tchalvak@ninjawars.net:~/nw_full.sql /srv/ninjawars/nw_full.sql
+}
+
+confirm "Copy down a full copy of the live ninjawars database to /srv/ninjawars/nw_full.sql via ssh?" && ssh_down_db
+
+function copy_full_db_in(){
+psql nw < /srv/ninjawars/nw_full.sql
+}
+
+confirm "Copy /srv/ninjawars/nw_full.sql in to the postgresql database nw ?" && copy_full_db_in
+
 sudo service postgresql restart
 echo "If you don't have access to the ssh server, you'll need to psql nw < someOtherFullDatabaseDump.sql"
 
@@ -35,4 +78,6 @@ edit /etc/postgresql/9.1/main/pg_hba.conf to allow trusting of the local user (t
 Be aware that you may have to sync up the /etc/apache2/sites-available/nw.local file to use virtualhost *:80 instead of virtualhost * to ensure it syncs with the default, depending on your config.
 Add to /etc/hosts the config: 127.0.0.1 nw.local,
 and finally, Restart Apache [ sudo apache2ctl restart ]
-sudo service postgresql restart"
+sudo service postgresql restart
+edit /srv/ninjawars/deploy/resources.php settings as necessary
+"

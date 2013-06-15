@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Include functions
+_TRAVIS_DIR_="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+_DIR_=`echo $_TRAVIS_DIR_ | sed 's,scripts/travis,scripts/build,'`
+source $_DIR_/functions.sh
+
+# Emulate current system state...
+say_info "Creating database from dummy data"
+wget https://gist.github.com/toopay/5646031/raw/nw.sql
+psql -c 'create database nw;' -U postgres
+psql -f nw.sql -d nw -U postgres
+psql -c "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';" -U postgres > .show_tables
+cat .show_tables
+
+# This is only needed in Travis
+say_loud "Checking for system depedencies"
+
+ensure_system
+set_webserver postgres nw
+
+# Main synchronize script!
+bash $_DIR_/integration.sh postgres

@@ -1,0 +1,22 @@
+language: php
+
+env:
+  - INSTALL=full_install
+  - INSTALL=integration_install
+
+php:
+  - 5.3.3
+  - 5.3
+  - 5.4
+
+matrix:
+  allow_failures:
+    - php: 5.4
+
+before_script:
+    - chmod ug+rx scripts/build/*.sh
+    - chmod ug+rx scripts/travis/*
+    - ./scripts/travis/$INSTALL
+    - php -v
+
+script: ./scripts/travis/test

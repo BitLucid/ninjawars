@@ -5,7 +5,7 @@
  * Essentially this acts as the container for the model's data.
  * @var database_fields
  */
-class PlayerVO {
+class PlayerVO extends ValueObject{
 	public $player_id, $uname, $health, $strength, $speed, $stamina,
 		$ki, $karma, $gold, $messages, $kills, $turns, $active,
 	  	$_class_id, $identity, $class_name, $theme,

@@ -12,6 +12,11 @@
 
 require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/'))).'resources.php');
 
+// Add some default include path
+foreach (array('/usr/share/php', '/usr/share/php5') as $path) {
+	if (is_dir($path)) set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+}
+
 if (PROFILE) {
 	$mtime = microtime();
 	$mtime = explode(" ",$mtime);
@@ -57,6 +62,7 @@ require_once(LIB_ROOT.'control/lib_settings.php'); // The player settings system
 require_once(LIB_ROOT.'control/lib_clan.php'); // Clan functionality.
 
 // Game objects
+require_once(LIB_ROOT . 'data/ValueObject.class.php');
 require_once(LIB_ROOT . 'data/PlayerVO.class.php');
 require_once(LIB_ROOT . 'data/PlayerDAO.class.php');
 require_once(LIB_ROOT . 'control/Player.class.php');
@@ -66,4 +72,7 @@ require_once(LIB_ROOT.'control/lib_attack.php');
 
 // Include the functions abstracted out of the header and footer
 require_once(LIB_ROOT.'control/lib_header.php');
+
+// Bootstrap to vendor
+require_once(VENDOR_ROOT.'autoload.php');
 ?>

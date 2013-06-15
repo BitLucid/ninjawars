@@ -1,4 +1,5 @@
 <?php
+require_once(LIB_ROOT.'base.inc.php');
 function test_player_obj() {
 	// in: player_id, out: valid db save
 	DatabaseConnection::getInstance();

@@ -1,7 +1,35 @@
-# ------------Ninjawars repository-------------
+# Ninjawars repository [![Build Status](https://travis-ci.org/BitLucid/ninjawars.png?branch=news)](https://travis-ci.org/BitLucid/ninjawars)
 The source code dojo for the ninjawars.net web game.
 
-## --Contributing--
+## Install
+
+Clone this repository
+
+	git clone git@github.com:BitLucid/ninjawars.git
+
+Install system dependencies
+	cd /srv/ninjawars
+	sudo bash /srv/ninjawars/scripts/build/install.sh
+	
+Update an out-of-date but already installed instance's system/composer libraries:
+
+	cd /srv/ninjawars
+	sudo bash /srv/ninjawars/scripts/build/integration.sh
+
+Sync the database with latest info:
+	cd /srv/ninjawars
+	./scripts/sync
+
+Install the test environment with:
+
+	cd /srv/ninjawars
+	sudo bash /srv/ninjawars/scripts/build/test.sh
+
+Then you can run the tests at any point with:
+
+    ./vendor/bin/phpunit
+
+## Contributing
 You can make web commits on github.com, just search github for "ninjawars".  To contribute on github:
 For simple contribution/collaboration:
 -Find the file or code that you want to suggest a fix for, and make a comment with the fixed code, or just the general process to acheive the fix.

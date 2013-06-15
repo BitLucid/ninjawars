@@ -57,12 +57,21 @@
 		<div id='feedback-link'>
 		  <a style='font-size:2em' class='font-shangrila extLink' href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank">Give Feedback</a>
 		</div>
+
+  {if isset($show_news) and $show_news}
+      <div id='news-housing' style='height:80px;'>
+        
+{include file="mini-news.section.tpl"}
+
+    </div><!-- End of news-housing -->
+  {/if}
         
       <div id='chat-housing' style='height:250px;'>
         
 {include file="mini-chat.section.tpl"}
 
 	  </div><!-- End of chat-housing -->
+
 
       </aside><!-- End of aside -->
       

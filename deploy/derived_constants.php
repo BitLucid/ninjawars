@@ -1,7 +1,10 @@
 <?php
 // These are the derived resource constants, which can be tracked.
 
+define('VENDOR_ROOT', realpath(SERVER_ROOT.'../vendor').DIRECTORY_SEPARATOR); // Composer vendors
+
 define('ROOT', SERVER_ROOT);		// *** Another alias for the root.
+define('CONF_ROOT', SERVER_ROOT.'conf/'); // Configuration root.
 
 define('CSS_ROOT', WEB_ROOT.'css/');
 define('JS_ROOT', WEB_ROOT.'js/');

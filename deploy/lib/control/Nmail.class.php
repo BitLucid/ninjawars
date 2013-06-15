@@ -1,5 +1,5 @@
 <?php
-require_once(LIB_ROOT.'third-party/swift-mailer/lib/swift_required.php');
+
 /**
  * Wrapper class around the swiftmail mail library.
  *

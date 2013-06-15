@@ -2,7 +2,6 @@
 require_once(LIB_ROOT.'control/lib_player_list.php'); // Used for member_counts()
 
 $title       = 'Live by the Sword';
-
 $unread_message_count = 0;
 
 $options = array('is_index'=>true);
