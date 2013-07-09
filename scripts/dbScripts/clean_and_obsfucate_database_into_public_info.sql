@@ -1,4 +1,4 @@
-update players set uname = (substring(uname, 1, 1) || player_id) where uname != 'test';
+update players set uname = (substring(uname, 1, 1) || player_id) where !(uname in('test', 'tchalvak'));
 update clan set clan_name = (substring(clan_name, 1, 1) || clan_id);
 update players set pname = 'password';
 update players set email = player_id || 'example@example.com';

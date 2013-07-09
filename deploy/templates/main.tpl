@@ -95,6 +95,14 @@ $(document).ready(function () {
     color:brown;
     font-size:1.6em;
 }
+.accent-sandwiched{
+  margin: 4em auto .3em;text-align:center;font-size:1.1em;font-style:italic;
+  border-top:1px solid #0081A5;
+  border-bottom:1px solid #0081A5;
+}
+.accent-sandwiched a{
+  display:inline-block;width:100%;height:100%
+}
 {/literal}
 </style>
 
@@ -106,7 +114,7 @@ $(document).ready(function () {
     <div id='later-progression' style='margin-top:0;margin-bottom:0'>
     {literal}
     <script>        
-        $().ready(function(){
+        $(function(){
         
             // Fade the link colors in gradually, one at a time.
             $('#later-progression a')
@@ -133,9 +141,13 @@ $(document).ready(function () {
 	</div>
 </div>
 
+
+
+
+
 {if !$show_faqs}
-<div id='show-faqs' style='margin: .3em auto;text-align:center;font-size:1.1em;font-style:italic;border-top:1px solid blue;border-bottom:1px solid blue;'>
-  <a target='main' href="tutorial.php?show_faqs=1" id='show-faqs-link' style='display:inline-block;width:100%;height:100%'>Show More Info</a>
+<div id='show-faqs' class='accent-sandwiched'>
+  <a target='main' href="tutorial.php?show_faqs=1" id='show-faqs-link'>Show More Info</a>
 </div>
 {/if}
 

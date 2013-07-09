@@ -67,7 +67,7 @@
 	    </label>
 	    <label>
 	      <div class='line'>
-	      <span class='left-side'>Password <a tabindex=4 href='account_issues.php'>(Forgot password?)</a></span>
+	      <span class='left-side'>Password <a tabindex=4 href='account_issues.php'>(Forgot?)</a></span>
 	      <input tabindex=2 name="pass" type="password" class='right-side'>
 	      </div>
 	    </label>

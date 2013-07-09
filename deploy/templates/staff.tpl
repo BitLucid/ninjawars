@@ -1,18 +1,44 @@
+<div id='contact-us-page'>
 <h1>Ninjawars Staff</h1>
 
-<div id='contact-us' style='margin-left:auto;margin-right:auto;'><a href='staff.php' target='main'><img src='images/contact_us.png' style='max-width:200px' alt='Contact Staff'></a></div>
+{literal}
+<style>
+#contact-us-page section{
+  margin-bottom:6em;
+}
+#contact-us-image{
+  display:inline-block;
+  margin:0 auto;
+}
+#contact-us-image-container{
+  display:block;
+  text-align:center;
+}
+#contact-methods{
+  margin:.5em 0 3em;
+}
+</style>
+{/literal}
+
+<section id='contact-methods'>
 <p>
   The preferred method of contacting us with problems, ideas, or bugs with the game
-  is via the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.
+  is via the <a href="http://ninjawars.proboards.com">Ninjawars Forum</a>.
 </p>
 <p>
-  For private issues, including account/confirmation problems, email us at:
+  For private issues, including account/confirmation problems, email us at:   <a href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' <{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}>?subject=NinjaWars%20question:%20">{$smarty.const.SUPPORT_EMAIL_NAME|escape} &lt;{$smarty.const.SUPPORT_EMAIL|escape}&gt;
+  </a>
 </p>
 <p>
-  <a href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' <{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}>?subject=NinjaWars%20question:%20">{$smarty.const.SUPPORT_EMAIL_NAME|escape} &lt;{$smarty.const.SUPPORT_EMAIL|escape}&gt;</a>
+  <a id='contact-us-image-container' href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' <{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}>?subject=NinjaWars%20question:%20">
+  <img id='contact-us-image' src='images/contact_us.png' style='max-width:200px' alt='Contact Staff'>
+  </a>
 </p>
+</section>
+
+
 <section id='company'>
-  <h3>Brought to you by</h3>
+  <h3>Game brought to you by</h3>
   <h4 style='width:50%;margin:.5em auto .5em'><a href='http://bitlucid.com'>BitLucid, Inc.</a></h4>
 </section>
 
@@ -125,9 +151,6 @@
 <script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_thin_badge.js"></script>
 <div id='project-languages' style='background-color:white'><script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_languages.js"></script></div>
 
-  <div id='random-ninja-images'>
-    <h3 class='subtitle'>And now for something completely different:</h3>
-  </div>
 <script type='text/javascript' src="js/staffPage.js"></script>
 <script type='text/javascript'>
 {literal}
@@ -142,14 +165,9 @@ $(document).ready(function() {
 	$('#latest-commit-title').hide();
 
 	loadLastCommitMessage();
-	
-	// Pull from the flickr api for ninja images
-	$.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?tags=ninja&tagmode=any&format=json&jsoncallback=?", function(data){
-		$.each(data.items, function(i,item){
-			$("<img/>").attr("src", item.media.m).appendTo("#random-ninja-images");
-			if (i == 2) return false;
-		});
-	});
 });
 {/literal}
 </script>
+
+
+</div><!-- end of contact-us -->
