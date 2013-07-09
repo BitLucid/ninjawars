@@ -46,14 +46,10 @@
 
 <div class='full-account-info'>
     <ul id='account-info' class='account-info'>
-      <li>Active Email: {$account_info.active_email|escape}</li>
-      <li>Created: {$player.created_date|escape}</li>
-      <li>Last Failed Login Attempt: {$account_info.last_login_failure|escape}</li>
+      <li>Active Email: <strong>{$account_info.active_email|escape}</strong></li>
+      <li>Account Created: <time class='timeago' datetime='{$account_info.created_date|escape}'>{$account_info.created_date|escape}</time></li>
+      <li>Last Failed Login Attempt: <time class='timeago' datetime='{$account_info.last_login_failure|escape}'>{$account_info.last_login_failure|escape}</time></li>
     </ul>
-</div>
-
-<div class='char-list ninja-notice' class='clearfix'>
-	<a href='stats.php'>View your ninja's info</a>
 </div>
 
 <hr>
@@ -71,10 +67,6 @@
   </div>
 </form>
 <hr>
-<p>
-  If you require account help email: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>
-</p>
-<hr>
 
 {if !$delete_attempts}
 <p><span class='error'>WARNING:</span> Clicking on the button below will terminate your account.</p>
@@ -85,6 +77,16 @@
   </div>
 </form>
 {/if}
+
+<div class='char-list ninja-notice' class='clearfix'>
+  <a href='stats.php'>View your ninja's info</a>
+</div>
+
+<p>
+  If you require account help email: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>
+</p>
+
+
 
 {literal}
 <!-- Google Code for View account page Conversion Page -->

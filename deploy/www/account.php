@@ -115,8 +115,7 @@ if ($deleteAccount) {
 	}
 }
 
-$account_id = account_id();
-$account_info = account_info($account_id);
+$account_info = self_account_info();
 
 $player           = self_info();
 $gravatar_url     = generate_gravatar_url($player['player_id']);

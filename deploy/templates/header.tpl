@@ -28,12 +28,17 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 {/if}
 	<script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+    <!-- Plugins go here -->
+    <script type='text/javascript' src='/js/jquery.timeago.js'></script>
 
 {if $smarty.const.DEBUG}
     <link rel="stylesheet" type="text/css" href="css/debugger.css">
+    {literal}
     <script type="text/javascript">
+        var NW = window.NW || {};
 		NW.debugging = true;
     </script>
+    {/literal}
 {/if}
 
     <!-- All the global ninjawars javascript -->
