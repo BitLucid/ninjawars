@@ -17,8 +17,7 @@ class PlayerDAO extends DataAccessObject {
 		$this->_vo_fields = array();
 		$vo = new ReflectionClass(new PlayerVO());
 
-		foreach ($vo->getProperties() AS $reflectionProperty)
-		{
+		foreach ($vo->getProperties() AS $reflectionProperty){
 			$this->_vo_fields[] = $reflectionProperty->name;
 		}
 
@@ -36,4 +35,3 @@ class PlayerDAO extends DataAccessObject {
 		return $vo;
 	}
 }
-?>

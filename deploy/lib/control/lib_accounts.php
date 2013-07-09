@@ -16,6 +16,11 @@ function account_info($account_id, $specific=null){
 	return $res;
 }
 
+// Get own current account info.
+function self_account_info(){
+	return account_info(account_id());
+}
+
 function account_info_by_char_id($char_id){
 	return query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', array(':char_id'=>array($char_id, PDO::PARAM_INT)));
 }
@@ -108,7 +113,7 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	return ($verify_ninja_id != $ninja_id ? false : $newID);
 }
 
-function account_of_email($email) {
+function account_with_email($email) {
 	$sel = 'SELECT account_id FROM accounts WHERE active_email = :email';
 	$existing_account = query_item($sel, array(':email'=>strtolower($email)));
 

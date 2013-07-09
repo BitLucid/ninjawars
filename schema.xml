@@ -284,6 +284,11 @@
     <column name="strength" phpName="Strength" type="INTEGER" required="true" defaultValue="0"/>
     <column name="gold" phpName="Gold" type="INTEGER" required="true" defaultValue="0"/>
     <column name="messages" phpName="Messages" type="LONGVARCHAR" required="true" defaultValue=""/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true" defaultValue=""/>
+    <column name="instincts" phpName="Instincts" type="LONGVARCHAR" required="true" defaultValue=""/>
+    <column name="beliefs" phpName="Beliefs" type="LONGVARCHAR" required="true" defaultValue=""/>
+    <column name="goals" phpName="Goals" type="LONGVARCHAR" required="true" defaultValue=""/>
+    <column name="traits" phpName="Traits" type="LONGVARCHAR" required="true" defaultValue=""/>
     <column name="kills" phpName="Kills" type="INTEGER" required="true" defaultValue="0"/>
     <column name="turns" phpName="Turns" type="INTEGER" required="true" defaultValue="0"/>
     <column name="verification_number" phpName="VerificationNumber" type="INTEGER" required="true" defaultValue="0"/>

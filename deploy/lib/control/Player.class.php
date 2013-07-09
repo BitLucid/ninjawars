@@ -58,6 +58,48 @@ class Player
 		return $this->vo->level;
 	}
 
+	public function description() {
+		return $this->vo->description;
+	}
+
+	public function beliefs() {
+		return $this->vo->beliefs;
+	}
+
+	public function instincts() {
+		return $this->vo->instincts;
+	}
+
+	public function goals() {
+		return $this->vo->goals;
+	}
+
+	// Return simple, comma separated string of traits
+	public function traits() {
+		return $this->vo->traits;
+	}
+
+	// Save new goals
+	public function set_goals($goals){
+		$this->vo->goals = $goals;
+	}
+
+	public function set_description($desc){
+		$this->vo->description = $desc;
+	}
+
+	public function set_instincts($in){
+		$this->vo->instincts = $in;
+	}
+
+	public function set_beliefs($be){
+		$this->vo->beliefs = $be;
+	}
+
+	public function set_traits($traits){
+		$this->vo->traits = $traits;
+	}
+
 	// Save the Player state.
 	public function save() {
 		$dao = new PlayerDAO();
@@ -160,10 +202,12 @@ class Player
 
 	public function add_ki($amount) {
 		query('update players set ki = ki + :amount where player_id = :id', array(':amount'=>$amount, ':id'=>$this->id()));
+		$this->vo->ki = $this->vo->ki + $amount;
 	}
 
 	public function subtract_ki($amount) {
 		query('update players set ki = case when (ki - :amount) < 1 then 0 else ki - :amount2 end where player_id = :id', array(':amount'=>$amount, ':amount2'=>$amount, ':id'=>$this->id()));
+		$this->vo->ki = max(0, $this->vo->ki - $amount); // Change ki, but min out at zero.
 	}
 
 	public function karma() {
@@ -204,7 +248,8 @@ class Player
 	}
 
 	public function turns() {
-		return $this->vo->turns;
+		return get_turns($this->id());
+		//return $this->vo->turns;
 	}
 
 	public function changeTurns($amount) {
@@ -327,5 +372,5 @@ class Player
 	public function ip() {
 		return account_info_by_char_id($this->id(), 'ip');
 	}
+
 }
-?>

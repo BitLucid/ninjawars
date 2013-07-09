@@ -137,4 +137,3 @@ abstract class DataAccessObject {
 		$vo->{$this->_id_field} = $new_id;
 	}
 }
-?>
