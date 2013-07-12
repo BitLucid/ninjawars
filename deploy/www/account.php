@@ -138,4 +138,3 @@ display_page(
 		'quickstat' => 'player'
 	)
 );
-?>
