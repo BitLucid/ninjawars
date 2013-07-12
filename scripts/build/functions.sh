@@ -161,11 +161,13 @@ function set_webserver {
 
 #Have curl hit a url and return error on anything other than 
 function curl_http_ok {
+	#Second argument will prevent exit on fail
 	response=$(curl --write-out %{http_code} --silent --output /dev/null $1)
 	echo "Response http status: ", $response
 	if [ 200 == $response ]; then
 		return 0; #Ok
 	else
-		exit 1; #Error
+		echo $response, " url fails!"
+		return 1; #Error
 	fi
 }
