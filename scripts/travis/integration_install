@@ -17,6 +17,7 @@ cat .show_tables
 say_loud "Checking for system depedencies"
 
 ensure_system
+set_composer
 set_webserver postgres nw
 
 # Main synchronize script!
