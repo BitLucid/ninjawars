@@ -12,7 +12,7 @@ source $_DIR_/functions.sh
 say_loud "Travis test..." "TRAVIS_TEST"
 
 say_info "Requesting http://nw.local" "TRAVIS_TEST"
-curl -v http://nw.local -I
+curl_http_ok http://nw.local
 
 # Hook into main test script
 sudo bash $_DIR_/test.sh

@@ -158,3 +158,14 @@ function set_webserver {
 	sudo chmod 777 $DIR"deploy/templates/compiled"
 	say_ok "Web-server configured!"
 }
+
+#Have curl hit a url and return error on anything other than 
+function curl_http_ok {
+	response=$(curl --write-out %{http_code} --silent --output /dev/null $1)
+	echo "Response http status: ", $response
+	if [ 200 == $response ]; then
+		return 0; #Ok
+	else
+		exit 1; #Error
+	fi
+}
