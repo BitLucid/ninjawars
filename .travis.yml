@@ -12,7 +12,7 @@ php:
 
 matrix:
   allow_failures:
-    - php: 5.4
+    - php: 5.3.3 # Travis-ci doesn't support openssl in php 5.3.3
     - php: 5.5
 
 before_script:
