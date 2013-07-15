@@ -69,6 +69,7 @@ function ensure_system {
 	check_package liblingua-en-inflect-perl
 	check_package smarty
 	check_package libpcre3-dev
+	check_package openssl
 }
 
 function ensure_phar {
