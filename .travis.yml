@@ -22,3 +22,5 @@ before_script:
     - php -v
 
 script: ./scripts/travis/test
+
+after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && apache2 --version
