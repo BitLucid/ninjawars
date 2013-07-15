@@ -58,18 +58,9 @@ function check_package {
 }
 
 function ensure_system {
-	check_package apache2
-	check_package php5
-	check_package php5-curl
-	check_package php5-pgsql
-	check_package postgresql
-	check_package postgresql-contrib
-	check_package libpq-dev
-	check_package perl
-	check_package liblingua-en-inflect-perl
-	check_package smarty
-	check_package libpcre3-dev
-	check_package openssl
+	echo "Installing various packages, apache, php, etc."
+	sudo apt-get install apache2 php5 php5-curl openssl php5-pgsql postgresql postgresql-contrib libpq-dev smarty
+	sudo apt-get install perl liblingua-en-inflect-perl libpcre3-dev
 }
 
 function ensure_phar {

@@ -36,7 +36,7 @@ else
 fi
 
 # Full install scripts started...
-say_loud "Checking for system depedencies"
+say_loud "Checking for system dependencies"
 
 ensure_system
 
@@ -49,7 +49,7 @@ if [ "CREATE DATABASE" != "$DATABASE_CREATED" ]; then
 fi
 
 
-say_loud "Checking for project depedencies"
+say_loud "Checking for project dependencies"
 set -e
 set_webserver $DBUSER $DBNAME
 ensure_phar
