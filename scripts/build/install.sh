@@ -50,7 +50,6 @@ fi
 
 
 say_loud "Checking for project dependencies"
-set -e
 set_webserver $DBUSER $DBNAME
 ensure_phar
 ensure_curl
