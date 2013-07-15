@@ -12,10 +12,10 @@ say_loud "Preparing..." "TEST"
 bash $_DIR_/selenium.sh start
 
 # Idle
-say_loud "Waiting... [20 seconds]" "TEST"
-sleep 5 
-say_info "Waiting... [15 seconds]" "TEST"
-sleep 5 
+#say_loud "Waiting... [20 seconds]" "TEST"
+#sleep 5 
+#say_info "Waiting... [15 seconds]" "TEST"
+#sleep 5 
 say_info "Waiting... [10 seconds]" "TEST"
 sleep 5 
 say_info "Waiting... [5 seconds]" "TEST"
@@ -28,16 +28,19 @@ find . -name phpunit #Find the path to the phpunit file in the travis environmen
 ls #List current directory for debugging purposes.
 ls vendor/
 ls vendor/bin/
+if [ ! -f ./vendor/bin/phpunit ]; then
+    exit 1 #phpunit not present, so force a fail
+fi
 ./vendor/bin/phpunit #This pathing is problematic in the travis build.
 
 # Clean up
 say_loud "Cleaning up..." "TEST"
 
 # Idle
-say_loud "Waiting... [20 seconds]" "TEST"
-sleep 5 
-say_info "Waiting... [15 seconds]" "TEST"
-sleep 5 
+#say_loud "Waiting... [20 seconds]" "TEST"
+#sleep 5 
+#say_info "Waiting... [15 seconds]" "TEST"
+#sleep 5 
 say_info "Waiting... [10 seconds]" "TEST"
 sleep 5 
 say_info "Waiting... [5 seconds]" "TEST"

@@ -65,7 +65,7 @@ case "${1:-''}" in
 			if kill -9 $SELENIUM_PID;
 				then
 				sleep 2
-				say_ok "Stoped" "SELENIUM"
+				say_ok "Stopped" "SELENIUM"
 			else
 				say_error "Selenium could not be stopped..." "SELENIUM"
 			fi
