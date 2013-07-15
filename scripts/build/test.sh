@@ -24,8 +24,10 @@ sleep 5
 # Run
 say_info "Assuming finished." "TEST"
 say_loud "Running test-suite" "TEST"
-ls #List current directory for debugging purposes.
 find . -name phpunit #Find the path to the phpunit file in the travis environment.
+ls #List current directory for debugging purposes.
+ls vendor/
+ls vendor/bin/
 ./vendor/bin/phpunit #This pathing is problematic in the travis build.
 
 # Clean up
