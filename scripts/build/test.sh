@@ -26,11 +26,16 @@ say_info "Assuming finished." "TEST"
 say_loud "Running test-suite" "TEST"
 find . -name phpunit #Find the path to the phpunit file in the travis environment.
 ls #List current directory for debugging purposes.
+echo "Vendor directory:"
 ls vendor/
+echo "Vendor/bin directory:"
 ls vendor/bin/
 if [ ! -f ./vendor/bin/phpunit ]; then
-    exit 1 #phpunit not present, so force a fail
+	say_loud "Phpunit not found." "TEST"
+    exit 1 
+    #phpunit not present, so force a fail
 fi
+say_info "Phpunit found." "TEST"
 ./vendor/bin/phpunit #This pathing is problematic in the travis build.
 
 # Clean up
