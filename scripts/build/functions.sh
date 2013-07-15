@@ -134,6 +134,8 @@ function ensure_selenium {
 function set_composer {
 	curl -s http://getcomposer.org/installer | php
 	php composer.phar install
+	echo "Checking for presence of openssl lines in the php.ini"
+	grep openssl /etc/php5/cli/php.ini
 }
 
 function set_build {

@@ -5,7 +5,6 @@
 # Run it :
 # bash scripts/build/integration.sh <db_username> <db_name>
 
-set -e
 #Exit/Fail on all errors
 
 # Include functions
@@ -51,7 +50,7 @@ fi
 
 
 say_loud "Checking for project depedencies"
-
+set -e
 set_webserver $DBUSER $DBNAME
 ensure_phar
 ensure_curl
