@@ -5,6 +5,9 @@
 # Run it :
 # bash scripts/build/integration.sh <db_username> <db_name>
 
+set -e
+#Exit/Fail on all errors
+
 # Include functions
 _DIR_="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $_DIR_/functions.sh

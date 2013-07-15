@@ -4,6 +4,9 @@
 # Run it :
 # bash scripts/build/test.sh
 
+set -e
+#Exit/Fail on all errors
+
 # Include functions
 _TRAVIS_DIR_=`dirname $0`
 _DIR_=`echo $_TRAVIS_DIR_ | sed 's,scripts/travis,scripts/build,'`

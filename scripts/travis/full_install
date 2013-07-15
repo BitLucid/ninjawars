@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+#Exit/Fail on all errors
+
 # Include functions
 _TRAVIS_DIR_="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 _DIR_=`echo $_TRAVIS_DIR_ | sed 's,scripts/travis,scripts/build,'`
