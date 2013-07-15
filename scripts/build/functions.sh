@@ -124,9 +124,9 @@ function ensure_selenium {
 
 function set_composer {
 	curl -s http://getcomposer.org/installer | php
-	php composer.phar install
 	echo "Checking for presence of openssl lines in the php.ini"
 	grep openssl /etc/php5/cli/php.ini
+	php composer.phar install
 }
 
 function set_build {
@@ -144,6 +144,7 @@ function set_webserver {
 	sudo sh -c "sed 's,__DIR__,$DIR,' '$FULL_SCRIPT_DIR/tpl/nw.local' > 'nw.local'"
 	sudo a2ensite nw.local
 	sudo a2enmod rewrite
+	echo "Restarting apache service..."
 	sudo service apache2 restart
 	cd $DIR
 	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," $FULL_SCRIPT_DIR/tpl/resources.php > $DIR"deploy/resources.php"
