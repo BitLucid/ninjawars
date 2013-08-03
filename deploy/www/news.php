@@ -74,7 +74,8 @@ if ($error = init($private, $alive)) {
 			$str_tags = '';
 			foreach ($tags as $tag) {
 				// Build tag anchors
-				$str_tags .= '<a href="news.php?tag_query='.htmlentities($tag).'" target="main">#'.htmlentities($tag).'</a> ';
+				$tag = trim($tag);
+				$str_tags .= '<a href="news.php?tag_query='.htmlentities(url($tag)).'" target="main">#'.htmlentities($tag).'</a> ';
 			}
 
 			return $str_tags;

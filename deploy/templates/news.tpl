@@ -1,7 +1,7 @@
 <h1>News Board</h1>
 <style type='text/css'>
 {literal}
-.green-border{
+.success-notice{
 	border:green .3em solid;
 	padding:.2em;
 	margin: .3em auto;
@@ -12,48 +12,52 @@
   font-size:smaller;
   color: gray;
 }
-
-dl.news dt {
-  display: block;
-  float: none !important;
-  color: red;
-  font-weight: bold;
-  margin-bottom:5px;
-  font-style:bold;
-  font-weight:larger;
-}
-
-dl.news dd {
-  display: block;
-  margin-bottom: 10px;
-}
-
-dl.tags {
-  margin-bottom: 20px;
-}
-
-dl.tags dt {
-  display: inline-block;
-  color: gray;
-  font-weight: normal;
-  margin-right: 4px;
-}
-
-dl.tags dd {
-  display: inline-block;
-  margin-bottom: 0px;
-  font-style: italic;
-}
 .link-as-button{
   margin-bottom:.5em;margin-top:1em;float:right;margin-right:1.5em;
+}
+.news h3{
+  background:#2D2D2D;
+  color:#FD4326;
+  margin-bottom:1em;
+}
+.news h3:before, .news h3:after{
+  content:"—";
+}
+#news-list article{
+  display:block;
+  background-color:#333;
+  font-size:larger;
+  width:60%;
+  min-width:30em;
+  margin:0 auto;
+}
+#news-list article .post-content{
+  padding:0 5%;
+  width:90%;
+}
+#news-list article .post-content:first-child{
+  padding-top:1em;
+}
+#news-list article + article{
+  margin-top:3em;
+}
+#news-list article footer{
+  color:gray;
+  font-size:smaller;
+  width:90%;
+  padding:1em 5% .5em;
+}
+.news time{
+  font-style:italic;
+  color:grey;
 }
 {/literal}
 </style>
 
-<div id='message-list'>
+<div id='news-list'>
 {if isset($new_successful_submit) and $new_successful_submit}
-  <div class='green-border'>
-    Your news successfully posted!
+  <div class='success-notice'>
+    <strong>Your news successfully posted!</strong>
   </div>
 {/if}
   
@@ -68,25 +72,21 @@ dl.tags dd {
 
 {foreach from=$all_news key=index_news item=single_news}
 {assign var="news_account" value=$single_news->getAccountss()}
-<dl class="news">
+<article class="news">
   {if $single_news->getTitle()}
-  <dt>{$single_news->getTitle()|escape}</dt>
-  {else}
-  <dt>Untitled</dt>
+  <h3>{$single_news->getTitle()|escape}</h3>
   {/if}
-  <dd>{$single_news->getContent()|escape}</dd>
-  <dl class="tags">
-    <dt>Tags:</dt>
-    <dd>{$single_news->getTags()|to_tags}</dd>
-    <dt>Published:</dt>
-    {if $single_news->getCreated()}
-    <dd><time class='timeago' datetime='{$single_news->getCreated()}' title='{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}'>{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}</time></dd>
+  <section class='post-content'>{$single_news->getContent()|escape}</section>
+  <footer>
+    - <span class='tags'> {$single_news->getTags()|to_tags} </span>
+    {if $single_news->getCreated()} <time class='timeago' datetime='{$single_news->getCreated()}' title='{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}'>{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}</time>
     {else}
-    <dd><time class='timeago' datetime='{$smarty.now}' title='{$smarty.now|date_format:"%A, %B %e, %Y"}'>{$smarty.now|date_format:"%A, %B %e, %Y"}</time></dd>
-    {/if}
-    <dt>Author:</dt>
-    <dd><a target="main" href="player.php?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername|escape}</a></dd>
-  </dl>
-</dl>
+    <time class='timeago' datetime='{$smarty.now}' title='{$smarty.now|date_format:"%A, %B %e, %Y"}'>{$smarty.now|date_format:"%A, %B %e, %Y"}</time>
+    {/if} by <a target="main" href="player.php?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername|escape}</a>
+  </footer>
+</article>
 {/foreach}
-</div>
+
+
+
+</div><!-- End of news-list -->
