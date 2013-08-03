@@ -39,7 +39,7 @@ $(document).ready(function () {
 <style>
 {literal}
 #faqs {
-	margin: 1em auto 1em;
+	margin: .5em auto 1em;
 	padding: .2em;
 	width: 90%;
 }
@@ -57,15 +57,16 @@ $(document).ready(function () {
 #faqs .brownHeading{
 	font-variant:small-caps;
 }
+/*
 #scrollable-viewport {
 	overflow:scroll;
 	max-height:13em;
 	overflow-x:hidden;
 	padding:1em;
-}
+}*/
 #progression {
 	text-align:center;
-	margin: .2em 0 .5em 0;
+	margin: 0 0 .5em 0;
 	font-size:1.7em;
 	font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
 	/*font-family: Impact, sans-serif;*/
@@ -96,7 +97,7 @@ $(document).ready(function () {
     font-size:1.6em;
 }
 .accent-sandwiched{
-  margin: 4em auto .3em;text-align:center;font-size:1.1em;font-style:italic;
+  margin: .4em auto .3em;text-align:center;font-size:1.1em;font-style:italic;
   border-top:1px solid #0081A5;
   border-bottom:1px solid #0081A5;
 }
@@ -106,31 +107,33 @@ $(document).ready(function () {
 {/literal}
 </style>
 
+{literal}
+<script>        
+$(function(){
+
+    // Fade the link colors in gradually, one at a time.
+    $('#later-progression a')
+        .each(function(secs, element){
+        setTimeout(function (){
+            $(element).css({'color':'steelBlue'});
+        }, 1000*(secs+1)*5);
+    });
+    $('#join-link').each(function(index, element){
+        setTimeout(function (){
+            $(element).css({'color':'steelBlue', 'font-size':'1.5em'});
+        }, 1000*26);
+    });
+});
+</script>
+{/literal}
+
 <div id='progression'>
 {if !$user_id}
 	<p><a target='main' href='{$smarty.const.WEB_ROOT}signup.php' id='join-link'>Become a Ninja!&shy;</a></p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
 {/if}
-    <div id='later-progression' style='margin-top:0;margin-bottom:0'>
-    {literal}
-    <script>        
-        $(function(){
-        
-            // Fade the link colors in gradually, one at a time.
-            $('#later-progression a')
-                .each(function(secs, element){
-                    setTimeout(function (){
-                        $(element).css({'color':'steelBlue'});
-                    }, 1000*(secs+1)*5);
-                });
-            $('#join-link').each(function(index, element){
-                setTimeout(function (){
-                    $(element).css({'color':'steelBlue', 'font-size':'1.5em'});
-                }, 1000*26);
-            });
-        });
-    </script>
-    {/literal}
+
+<div id='later-progression' style='margin-top:0;margin-bottom:0'>
 	<p>Rob townsfolk in the <a target='main' href='{$smarty.const.WEB_ROOT}attack_player.php'>Village</a>, gather loot</p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
 	<p>Kill other <a target='main' href='{$smarty.const.WEB_ROOT}list.php'>Ninja</a>, get stronger at the <a target='main' href='{$smarty.const.WEB_ROOT}dojo.php'>Dojo</a></p>
