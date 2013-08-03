@@ -60,5 +60,7 @@ function replace_urls($string) {
     return preg_replace("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "<a target='_blank' class='extLink' rel='nofollow' href='$1'>$1</a>", $string);
 }
 
-
-?>
+// Short alias for the raw url encoding function.
+function url($in){
+    return rawurlencode($in);
+}
