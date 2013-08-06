@@ -8,6 +8,7 @@
     php_value include_path "/usr/share/php/"
 		    
     php_value session.gc_maxlifetime "180000"
+    php_value date.timezone "America/New_York"
     # allow sessions to last approximately two days
     php_value session.cookie_lifetime "200000"
     # allow session cookie to last a little longer than two days.
