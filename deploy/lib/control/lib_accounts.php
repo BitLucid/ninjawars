@@ -67,7 +67,7 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	$newID = query_item("SELECT nextval('accounts_account_id_seq')");
 
 	$ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, operational, verification_number)
-		VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 8)), :type, :operational, :verification_number)";
+		VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 10)), :type, :operational, :verification_number)";
 
 	$email = strtolower($email);
 
