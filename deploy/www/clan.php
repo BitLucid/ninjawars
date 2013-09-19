@@ -264,6 +264,7 @@ if (!$player_id) {
 	} // End of not-a member code
 }	// End of logged-in code
 
+$clan_name = null;
 if ($command == 'view') {
 	// *** A view of the member list of any clan ***
 	$clan = get_clan($clan_id_viewed);

@@ -7,5 +7,6 @@ $show_faqs = in('show_faqs');
 
 $page = 'main';
 $pages = array('main'=>array('title'=>'Start Playing Ninjawars', 'template'=>'main.tpl'));
+$vars=array('user_id'=>self_char_id(), 'show_faqs'=>$show_faqs);
 
-display_static_page($page, $pages, $vars=array('user_id'=>self_char_id(), 'show_faqs'=>$show_faqs), $options=array());
+display_static_page($page, $pages, $vars, $options=array());
