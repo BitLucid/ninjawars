@@ -1,17 +1,16 @@
 <style>
 {literal}
 #ninja-matches .even{
-	float:right;
-	clear:right;
+	float:right; clear:right; padding-right:5em;
 }
 #current-enemies-list li em, #peer-chars li em{
-	display:inline-block; border-left:thick solid white; border-right:thick solid white; padding: 0 .2em;text-align:center;width:1.7em;
+	margin-left:.5em;color:#D21;display:inline-block; border-left:thick solid #D21; border-right:thick solid #D21; padding: 0 .2em;text-align:center;width:1.7em;
 }
 #current-enemies-list .enemy-stats-box{
 	display:inline-block;margin-left:1em;width: 6.9em;
 }
 #current-enemies-list li{
-	position:relative;margin-bottom:.2em;
+	position:relative;margin-bottom:.7em;
 }
 #current-enemies-list .enemy-action-box{
 	display:inline-block;width: 13em;
@@ -40,6 +39,9 @@
 #npc-list .creature-image{
 	max-width:50px;max-height:50px;
 }
+#more-matches{
+	clear:both;text-align:center;display:none;
+}
 {/literal}
 </style>
 
@@ -56,16 +58,14 @@
 <!-- Js at bottom -->
 
 
-
-
-<div id='ninja-matches' style=''>
+<div id='ninja-matches' class='cf'>
 	<ul>
 		<li id='sample-enemy-match' class='enemy' style='display:none'>
 			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&target='>Someone</a></strong>
 		</li>
 	</ul>
-	<div id='more-matches' style='clear:both;text-align:center;display:none'>
-		...with more matches...
+	<div id='more-matches'>
+		...with more live matches...
 	</div>
 	<br style='clear:both'>
 </div>
@@ -96,10 +96,10 @@
     <li class="{$status_class}">
       <a href="enemies.php?remove_enemy={$loop_enemy.player_id|escape}"><img src="{$smarty.const.IMAGE_ROOT}icons/mono/stop32.png" height='16' width='16' alt="remove" title='Remove'></a>
       <span class='enemy-action-box'>{$action} <a class='enemy-name' href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
-      <em title='Level {$loop_enemy.level}'>{$loop_enemy.level}</em>
       <span class='enemy-stats-box'>
         {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}
       </span>
+      <em title='Level {$loop_enemy.level}'>{$loop_enemy.level}</em>
     </li>
 		{/if}
 	{/foreach}
@@ -116,13 +116,13 @@
 	{foreach from=$peers item="loop_peer"}
     <li class='peer'>
        <a class='peer-name' href='player.php?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname}</a>
-       <em title='Level {$loop_peer.level}'>{$loop_peer.level}</em>
 		{if $char_info.health}
        <span class='stats-block'>
          {include file="health_bar.tpl" health=$loop_peer.health health_percent=$loop_peer.health_percent}
        </span>
 <!-- (level {$loop_peer.level}) -->
 		{/if}
+       	<em title='Level {$loop_peer.level}'>{$loop_peer.level}</em>
     </li>
     {/foreach}
   </ul>
