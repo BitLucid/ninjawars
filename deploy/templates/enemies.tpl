@@ -3,6 +3,9 @@
 #ninja-matches .even{
 	float:right; clear:right; padding-right:5em;
 }
+#enemies-stuff{
+	background-color:black;
+}
 #current-enemies-list li em, #peer-chars li em{
 	margin-left:.5em;color:#D21;display:inline-block; border-left:thick solid #D21; border-right:thick solid #D21; padding: 0 .2em;text-align:center;width:1.7em;
 }
@@ -79,7 +82,7 @@
 </div>
 {/if}
 
-<section class='clearfix'>
+<section id='enemies-stuff' class='clearfix'>
 {if $enemyCount gt 0}
 <div class='enemies-lefthalf'>
   <h3>Enemies</h3>
@@ -95,7 +98,7 @@
 			{/if}
     <li class="{$status_class}">
       <a href="enemies.php?remove_enemy={$loop_enemy.player_id|escape}"><img src="{$smarty.const.IMAGE_ROOT}icons/mono/stop32.png" height='16' width='16' alt="remove" title='Remove'></a>
-      <span class='enemy-action-box'>{$action} <a class='enemy-name' href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
+      <span class='enemy-action-box'>{$action} <a class='enemy-name' title='View {$loop_enemy.uname|escape} to attack them' href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
       <span class='enemy-stats-box'>
         {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}
       </span>
@@ -115,7 +118,7 @@
   <ul id='peer-chars'>
 	{foreach from=$peers item="loop_peer"}
     <li class='peer'>
-       <a class='peer-name' href='player.php?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname}</a>
+       <a class='peer-name' title='View {$loop_peer.uname|escape} to attack them' href='player.php?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname|escape}</a>
 		{if $char_info.health}
        <span class='stats-block'>
          {include file="health_bar.tpl" health=$loop_peer.health health_percent=$loop_peer.health_percent}
