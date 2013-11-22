@@ -1,3 +1,48 @@
+<style>
+{literal}
+#ninja-matches .even{
+	float:right;
+	clear:right;
+}
+#current-enemies-list li em, #peer-chars li em{
+	display:inline-block; border-left:thick solid white; border-right:thick solid white; padding: 0 .2em;text-align:center;width:1.7em;
+}
+#current-enemies-list .enemy-stats-box{
+	display:inline-block;margin-left:1em;width: 6.9em;
+}
+#current-enemies-list li{
+	position:relative;margin-bottom:.2em;
+}
+#current-enemies-list .enemy-action-box{
+	display:inline-block;width: 13em;
+}
+.enemies-lefthalf{
+	width:55%;float:left;margin-left:0;margin-right:0;
+}
+.enemies-righthalf{
+	width:45%;float:right;margin-left:0;margin-right:0;
+}
+#peer-chars .peer{
+	position:relative;margin-bottom:.5em;
+}
+#peer-chars .peer-name, #current-enemies-list .enemy-name{
+	width:10em;display:inline-block;overflow:hidden;text-overflow:ellipsis;
+}
+#peer-chars .peer-name{
+	width:8.5em;
+}
+#peer-chars .stats-block{
+	margin-left:2em;width:6.5em;display:inline-block;
+}
+#npc-list{
+	margin: .5em auto;text-align:center;font-size:1.3em;
+}
+#npc-list .creature-image{
+	max-width:50px;max-height:50px;
+}
+{/literal}
+</style>
+
 <h1>Combat</h1>
 
 <div id="ninja-enemy">
@@ -7,6 +52,104 @@
     <input type="submit" value="Find Enemies" class="formButton">
   </form>    
 </div>
+
+<!-- Js at bottom -->
+
+
+
+
+<div id='ninja-matches' style=''>
+	<ul>
+		<li id='sample-enemy-match' class='enemy' style='display:none'>
+			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&target='>Someone</a></strong>
+		</li>
+	</ul>
+	<div id='more-matches' style='clear:both;text-align:center;display:none'>
+		...with more matches...
+	</div>
+	<br style='clear:both'>
+</div>
+
+{if $found_enemies && count($found_enemies) gt 0}
+	{include file="enemy-matches.tpl" enemies=$found_enemies}
+{elseif $match_string}
+<div>
+  Your search returned no ninja. maybe you should make an enemy of someone who recently attacked you.
+	{include file="enemy-matches.tpl" enemies=$recent_attackers}
+</div>
+{/if}
+
+<section class='clearfix'>
+{if $enemyCount gt 0}
+<div class='enemies-lefthalf'>
+  <h3>Enemies</h3>
+  <ul id='current-enemies-list'>
+	{foreach from=$enemy_list item="loop_enemy"}
+		{if $loop_enemy.active}
+			{if $loop_enemy.health gt 0}
+				{assign var="status_class" value=""}
+				{assign var="action" value="Attack"}
+			{else}
+				{assign var="status_class" value="enemy-dead"}
+				{assign var="action" value="View"}
+			{/if}
+    <li class="{$status_class}">
+      <a href="enemies.php?remove_enemy={$loop_enemy.player_id|escape}"><img src="{$smarty.const.IMAGE_ROOT}icons/mono/stop32.png" height='16' width='16' alt="remove" title='Remove'></a>
+      <span class='enemy-action-box'>{$action} <a class='enemy-name' href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
+      <em title='Level {$loop_enemy.level}'>{$loop_enemy.level}</em>
+      <span class='enemy-stats-box'>
+        {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}
+      </span>
+    </li>
+		{/if}
+	{/foreach}
+  </ul>
+</div>
+{else}
+<p class='enemies-lefthalf'>You haven't decided who your enemies are yet, <a href="list.php" target="main">find some</a>.</p>
+{/if}
+
+{if count($peers) gt 0}
+<div class='enemies-righthalf'>
+  <h3>Nearby Ninja</h3>
+  <ul id='peer-chars'>
+	{foreach from=$peers item="loop_peer"}
+    <li class='peer'>
+       <a class='peer-name' href='player.php?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname}</a>
+       <em title='Level {$loop_peer.level}'>{$loop_peer.level}</em>
+		{if $char_info.health}
+       <span class='stats-block'>
+         {include file="health_bar.tpl" health=$loop_peer.health health_percent=$loop_peer.health_percent}
+       </span>
+<!-- (level {$loop_peer.level}) -->
+		{/if}
+    </li>
+    {/foreach}
+  </ul>
+</div>
+{else}
+<p class='enemies-righthalf'>No nearby ninja, <em class='char-name'>{$username|escape}</em>.</p>
+{/if}
+</section><!-- End of clearfix section -->
+
+{if count($recent_attackers) gt 0}
+	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
+{/if}
+
+<!-- Display recently active ninja -->
+{include file="list.active.tpl" active_ninja=$active_ninjas}
+
+<section id='npc-list-section'>
+  <h3>Attack a:</h3>
+  <ul id='npc-list'>
+{foreach name="person" from=$npcs key="idx" item="npc"}
+      <li><a href='npc.php?attacked=1&amp;victim={$npc.identity|escape}' target='main'><img alt='' src='images/characters/{$npc.image|escape:'url'|escape}' style='width:25px;height:46px'> {$npc.name|escape}</a></li>
+{/foreach}
+{foreach name="creatures" from=$other_npcs key="idx" item="npc"}
+      <li><a href='npc.php?attacked=1&amp;victim={$idx|escape}' target='main'>{if $npc.img}<img alt='' class='creature-image' src='images/characters/{$npc.img|escape:'url'|escape}'>{else}<span style='width:25px;height:46px'>&#9733;</span>{/if} {$npc.name|escape}</a></li>
+{/foreach}
+  </ul>
+</section>
 
 <script type='text/javascript'>
 {literal}
@@ -65,105 +208,4 @@
 	});
 {/literal}
 </script>
-
-<style type='text/css'>
-{literal}
-#ninja-matches .even{
-	float:right;
-	clear:right;
-}
-{/literal}
-</style>
-
-
-<div id='ninja-matches' style=''>
-	<ul>
-		<li id='sample-enemy-match' class='enemy' style='display:none'>
-			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&target='>Someone</a></strong>
-		</li>
-	</ul>
-	<div id='more-matches' style='clear:both;text-align:center;display:none'>
-		...with more matches...
-	</div>
-	<br style='clear:both'>
-</div>
-
-{if $found_enemies && count($found_enemies) gt 0}
-	{include file="enemy-matches.tpl" enemies=$found_enemies}
-{elseif $match_string}
-<div>
-  Your search returned no ninja. maybe you should make an enemy of someone who recently attacked you.
-	{include file="enemy-matches.tpl" enemies=$recent_attackers}
-</div>
-{/if}
-
-<section class='clearfix'>
-{if $enemyCount gt 0}
-<div style='width:55%;float:left;margin-left:0;margin-right:0'>
-  <h3>Enemies</h3>
-  <ul>
-	{foreach from=$enemy_list item="loop_enemy"}
-		{if $loop_enemy.active}
-			{if $loop_enemy.health gt 0}
-				{assign var="status_class" value=""}
-				{assign var="action" value="Attack"}
-			{else}
-				{assign var="status_class" value="enemy-dead"}
-				{assign var="action" value="View"}
-			{/if}
-    <li class="{$status_class}" style='position:relative;margin-bottom:.2em;'>
-      <a href="enemies.php?remove_enemy={$loop_enemy.player_id|escape}"><img src="{$smarty.const.IMAGE_ROOT}icons/mono/stop32.png" height='16' width='16' alt="remove" title='Remove'></a>
-      <span style='display:inline-block;width: 16em;'>{$action} <a href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
-      <span style='display:inline-block;margin-left:1em;width: 5.9em;'>
-        {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}
-      </span>
-    </li>
-		{/if}
-	{/foreach}
-  </ul>
-</div>
-{else}
-<p style='width:55%;float:left;margin-left:0;margin-right:0'>You haven't decided who your enemies are yet, <a href="list.php" target="main">find some</a>.</p>
-{/if}
-
-{if count($peers) gt 0}
-<div style='width:45%;float:right;margin-left:0;margin-right:0'>
-  <h3>Nearby Ninja</h3>
-  <ul id='peer-chars'>
-	{foreach from=$peers item="loop_peer"}
-    <li style='position:relative;margin-bottom:.5em'>
-       <a style='width:10em;display:inline-block;' href='player.php?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname}</a>
-		{if $char_info.health}
-       <span style='margin-left:2em;width:6.5em;display:inline-block;'>
-         {include file="health_bar.tpl" health=$loop_peer.health health_percent=$loop_peer.health_percent}
-       </span>
-<!-- (level {$loop_peer.level}) -->
-		{/if}
-    </li>
-    {/foreach}
-  </ul>
-</div>
-{else}
-<p style='width:45%;float:right;margin-left:0;margin-right:0;'>No nearby ninja, <em class='char-name'>{$username|escape}</em>.</p>
-{/if}
-</section><!-- End of clearfix section -->
-
-{if count($recent_attackers) gt 0}
-	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
-{/if}
-
-<!-- Display recently active ninja -->
-{include file="list.active.tpl" active_ninja=$active_ninjas}
-
-<section id='npc-list'>
-  <h3>Attack a:</h3>
-  <ul id='npc-list' style='margin: .5em auto;text-align:center;font-size:1.3em;'>
-{foreach name="person" from=$npcs key="idx" item="npc"}
-      <li><a href='npc.php?attacked=1&amp;victim={$npc.identity|escape}' target='main'><img alt='' src='images/characters/{$npc.image|escape:'url'|escape}' style='width:25px;height:46px'> {$npc.name|escape}</a></li>
-{/foreach}
-{foreach name="creatures" from=$other_npcs key="idx" item="npc"}
-      <li><a href='npc.php?attacked=1&amp;victim={$idx|escape}' target='main'>{if $npc.img}<img alt='' src='images/characters/{$npc.img|escape:'url'|escape}' style='max-width:50px;max-height:50px'>{else}<span style='width:25px;height:46px'>&#9733;</span>{/if} {$npc.name|escape}</a></li>
-{/foreach}
-  </ul>
-</section>
 
