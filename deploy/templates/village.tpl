@@ -1,27 +1,26 @@
-<!-- Linkify and autofocus js happen at the bottom -->
-
-<h1>Chat Board</h1>
-<script src="/js/jquery-linkify.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-{literal}
-function refreshpagechat() {
-	if(false == $('#message').val()){ // Refresh only if text not being written.
-		parent.main.location = "village.php";
-	}
-}
-$(function(){
-	$(".chat-messages").linkify();
-	setInterval(refreshpagechat, 300*1000); // Periodically refresh the page.
-});
-{/literal}
-</script>
+<!-- Js at the bottom of this template -->
 {literal}
 <style type='text/css'>
-	#full-chat{
-		font-size:1.1em;
-	}
+#full-chat{
+	font-size:1.1em;
+}
+#full-chat #view-all{
+	display:block;border:1px dashed blue;margin-top:2em;text-align:center;font-size:1.3em;
+}
+#full-chat .link-as-button{
+	margin-bottom:.5em;margin-top:1em;margin-right:1.5em;
+}
+#full-chat .chat-submit input[type=submit]{
+	padding:.2em .4em;font-size:1.3em;font-weight:bolder;
+}
+#full-chat .float-right{
+	float:right;
+}
 </style>
 {/literal}
+
+
+<h1>Chat Board</h1>
 
 <div id='full-chat'>
 {if is_logged_in()}
@@ -30,10 +29,10 @@ $(function(){
       <input id="message" type="text" size="{$field_size}" maxlength="250" name="message" autofocus class="textField">
       <input id="command" type="hidden" value="postnow" name="command">
       <input name='chat_submit' type='hidden' value='1'>
-      <input type="submit" value="Chat" class="formButton" style='padding:.2em .4em;font-size:1.3em;font-weight:bolder'>
+      <input type="submit" value="Chat" class="formButton">
 {/if}
 
-<a class='link-as-button' style='margin-bottom:.5em;margin-top:1em;float:right;margin-right:1.5em' href="village.php?chatlength=100">Refresh</a>
+<a class='link-as-button float-right' href="village.php?chatlength=100">Refresh</a>
 
 
 {if is_logged_in()}
@@ -68,6 +67,26 @@ $(function(){
 {/foreach}
   </dl>
 {if $more_chats_to_see}
-  <a id='view-all' href='village.php?view_all=1' style='display:block;border:1px dashed blue;margin-top:2em;text-align:center;font-size:1.3em'>View All Chat Messages</a>
+  <a id='view-all' href='village.php?view_all=1'>View All Chat Messages</a>
 {/if}
 </div>
+
+<script src="/js/jquery.linkify.js" type="text/javascript"></script>
+<script type="text/javascript">
+{literal}
+function refreshpagechat() {
+	if(false == $('#message').val()){ // Refresh only if text not being written.
+		if(parent && parent.main && parent.main.location){
+			parent.main.location.reload();
+		} else {
+			window.location.reload();
+		}
+	}
+	console.log('chat not refreshed due to typed text');
+}
+$(function(){
+	$(".chat-message").linkify({ target: "_blank" });
+	setInterval(refreshpagechat, 30*1000); // Periodically refresh the page.
+});
+</script>
+{/literal}
