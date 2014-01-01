@@ -75,7 +75,8 @@
 <script type="text/javascript">
 {literal}
 function refreshpagechat() {
-	if(false == $('#message').val()){ // Refresh only if text not being written.
+	var messageInput = $('#message');
+	if(!messageInput.length || false == messageInput.val()){ // Refresh only if text not being written.
 		if(parent && parent.main && parent.main.location){
 			parent.main.location.reload();
 		} else {
