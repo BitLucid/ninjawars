@@ -24,6 +24,7 @@ $channel       = 1;
 if ($user_id) {
 	if ($command == "postnow" && $message) {
 		send_chat($user_id, $message);
+		redirect('/village.php');
 	}
 }
 
@@ -58,5 +59,7 @@ $template->register_function('time_ago', 'get_time_ago');
 
 $template->fullDisplay();
 
-}
-?>
+
+
+} // End of player-is-live so no error block
+

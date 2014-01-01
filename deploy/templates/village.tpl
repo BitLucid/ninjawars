@@ -1,15 +1,18 @@
-<h1>Chat Board</h1>
+<!-- Linkify and autofocus js happen at the bottom -->
 
+<h1>Chat Board</h1>
+<script src="/js/jquery-linkify.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 {literal}
 function refreshpagechat() {
-	parent.main.location = "village.php";
+	if(false == $('#message').val()){ // Refresh only if text not being written.
+		parent.main.location = "village.php";
+	}
 }
-setInterval(refreshpagechat, 300*1000); // Periodically refresh the page.
-
-window.onload = function(){
-	$(document.getElementById('message')).focus();
-};
+$(function(){
+	$(".chat-messages").linkify();
+	setInterval(refreshpagechat, 300*1000); // Periodically refresh the page.
+});
 {/literal}
 </script>
 {literal}
@@ -24,7 +27,7 @@ window.onload = function(){
 {if is_logged_in()}
   <form class='chat-submit' id="post_msg" action="{$target|escape}" method="post" name="post_msg">
     <div>
-      <input id="message" type="text" size="{$field_size}" maxlength="250" name="message" class="textField">
+      <input id="message" type="text" size="{$field_size}" maxlength="250" name="message" autofocus class="textField">
       <input id="command" type="hidden" value="postnow" name="command">
       <input name='chat_submit' type='hidden' value='1'>
       <input type="submit" value="Chat" class="formButton" style='padding:.2em .4em;font-size:1.3em;font-weight:bolder'>
