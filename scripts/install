@@ -43,6 +43,7 @@ confirm "Create postgres superuse, add pgcrypto, bare nw db, and developer role?
 
 cd /srv/ninjawars
 ln -s docs/gitignoreSAMPLE .gitignore
+ln -s .gitmodules.tpl .gitmodules
 cp docs/tchalvakSAMPLEresources.php deploy/resources.php
 mkdir -p deploy/resources/logs
 mkdir deploy/templates/compiled
