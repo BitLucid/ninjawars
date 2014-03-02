@@ -31,7 +31,7 @@
     <h2>Resend Account Information</h2>
     <form action="account_issues.php" method="post">
     <p>Submit your account email and your account information will be sent to it:</p>
-        <input id="email" type="text" maxlength="50" name="email" class="textField">
+        <input id="email" type="email" title="Please enter the email you set your account up with" maxlength="50" name="email" class="textField">
         <input type='hidden' name='password_request' value='1'>
         <button type="submit" value="Resend Account Info" class="formButton">Resend Account Info</button>
     </form>
@@ -39,7 +39,7 @@
 
     <form action="account_issues.php" method="post">
         <p>Submit your email address and we will resend your confirmation email:</p>
-        <input id="email" type="text" maxlength="50" name="email" class="textField">
+        <input id="email" type="email" title="Your account email" maxlength="50" name="email" class="textField">
         <input type='hidden' name='confirmation_request' value='1'>
         <button type="submit" value="Resend Confirm Code" class="formButton">Resend Confirm Code</button>
     </form>
