@@ -10,7 +10,7 @@ $admin_override_pass       = 'WeAllowIt'; // Just a weak passphrase for simply c
 $admin_override_request    = in('admin_override');
 $acceptable_admin_override = ($admin_override_pass === $admin_override_request);
 $confirm                   = in('confirm');
-$aid                       = in('aid');
+$aid                       = positive_int(in('aid'));
 
 $data = query_row('
 	SELECT player_id, uname, accounts.verification_number as verification_number, CASE WHEN active = 1 THEN 1 ELSE 0 END AS active, accounts.active_email, 
