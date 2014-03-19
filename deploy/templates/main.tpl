@@ -12,29 +12,7 @@
 </style>
 <h1 class='main-h1'>Live by the Sword!</h1>
 
-<script type='text/javascript'>
-{if $show_faqs}
-var show_faqs = true;
-{else}
-var show_faqs = false;
-{/if}
-{literal}
-$(document).ready(function () {
-	var showfaqsLink;
-	(showfaqsLink = document.getElementById('show-faqs')).onclick = function(){
-		$(document.getElementById('faqs')).toggle();
-		$(showfaqsLink).toggle();
-		return false;
-	}
 
-	if (show_faqs) {
-		$(showfaqsLink).toggle();
-	} else {
-		$(document.getElementById('faqs')).toggle();
-	}
-});
-{/literal}
-</script>
 
 <style>
 {literal}
@@ -109,21 +87,7 @@ $(document).ready(function () {
 
 {literal}
 <script>        
-$(function(){
 
-    // Fade the link colors in gradually, one at a time.
-    $('#later-progression a')
-        .each(function(secs, element){
-        setTimeout(function (){
-            $(element).css({'color':'steelBlue'});
-        }, 1000*(secs+1)*5);
-    });
-    $('#join-link').each(function(index, element){
-        setTimeout(function (){
-            $(element).css({'color':'steelBlue', 'font-size':'1.5em'});
-        }, 1000*26);
-    });
-});
 </script>
 {/literal}
 
@@ -208,3 +172,42 @@ $(function(){
  </div>
 </div><!-- End of faqs div -->
 
+<script type='text/javascript'>
+var show_faqs = false; // Set faqs hidden by default.
+{if $show_faqs}
+show_faqs = true;
+{/if}
+{literal}
+if(!show_faqs){
+  $('#faqs').hide(); // To avoid flashing of content.
+}
+$(function () {
+  var showfaqsLink;
+  (showfaqsLink = document.getElementById('show-faqs')).onclick = function(){
+    $(document.getElementById('faqs')).toggle();
+    $(showfaqsLink).toggle();
+    return false;
+  }
+
+  if (show_faqs) {
+    $(showfaqsLink).hide();
+  } else {
+    $(document.getElementById('faqs')).hide();
+  }
+});
+$(function(){
+    // Fade the link colors in gradually, one at a time.
+    $('#later-progression a')
+        .each(function(secs, element){
+        setTimeout(function (){
+            $(element).css({'color':'steelBlue'});
+        }, 1000*(secs+1)*5);
+    });
+    $('#join-link').each(function(index, element){
+        setTimeout(function (){
+            $(element).css({'color':'steelBlue', 'font-size':'1.5em'});
+        }, 1000*26);
+    });
+});
+{/literal}
+</script>
