@@ -59,6 +59,8 @@ function check_package {
 
 function ensure_system {
 	echo "Installing various packages, apache, php, etc."
+	sudo apt-get update -qq
+	sudo apt-get install libxml2-dev
 	sudo apt-get install apache2 php5 php5-curl openssl php5-pgsql postgresql postgresql-contrib libpq-dev smarty
 	sudo apt-get install perl liblingua-en-inflect-perl libpcre3-dev
 }
