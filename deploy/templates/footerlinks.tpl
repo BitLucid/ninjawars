@@ -51,6 +51,8 @@
           <span style="display:none">If you see a Ryu, stop drop, and roll.  Not that that will help.</span>
           <span style="display:none">In the end, to gain all, you have to risk all. Or more.</span>
           <span style="display:none">Sometimes only a healer truly knows about death.</span>
+          <span style="display:none">I may not look like much, but I'm an expert at pretending to be a ninja.</span>
+          <span style="display:none">Ninjas can't catch you if you are on fire.</span>
           <span>Oni are actually quite friendly, if you get to know them.</span>
         </span>
          |
