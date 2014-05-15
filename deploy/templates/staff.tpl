@@ -4,7 +4,7 @@
 {literal}
 <style>
 #contact-us-page section{
-  margin-bottom:6em;
+  margin-bottom:3em;
 }
 #contact-us-page p{
   margin-right:1em;margin-left:1em;
@@ -64,7 +64,7 @@ ul#social-networks li:before {
 
 <section class='developers'>
   <h3 class='subtitle'>Developers</h3>
-  <div class='developer well'>
+  <div class='developer'>
     <h5><a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer</h5>
     <ul id='social-networks' class='thick'>
       <li> <a target='_blank' rel='me' href="http://twitter.com/tchalvak"><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> @tchalvak on Twitter</a></li>
@@ -93,7 +93,7 @@ ul#social-networks li:before {
       <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Ronalds</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" title="Facebook badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Facebook badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Ronalds" style="border: 0px;"></a><!-- Facebook Badge END --></div>
     </div><!-- End of .developer-info -->
   </div>
-  <div class='developer well'>
+  <div class='developer'>
     <h5><span class='unadorned-developer'>Beagle / Al Vazquez</span> - Programmer and Server Administrator</h5>
     <!-- No developer info here. -->
   </div>
@@ -129,8 +129,8 @@ ul#social-networks li:before {
   <h3 class='subtitle'>Contributing to Ninjawars</h3>
 
   <p>Want to get involved?  You can hack away at the code on github and suggest changes or ask any questions on the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.</p>
-  <p> Ninjawars is open source, with the source code downloadable and able to be openly contributed to at:
-    <a class='external' target='_blank' href="http://github.com/BitLucid/ninjawars/tree/master">http://github.com/BitLucid/ninjawars</a>
+  <p> Ninjawars is open source, with the source code downloadable and able to be openly contributed to on github at:
+    <a class='external' target='_blank' href="https://github.com/BitLucid/ninjawars/">github.com/BitLucid/ninjawars</a>
   </p>
 
     <div id='latest-commit-section'>
