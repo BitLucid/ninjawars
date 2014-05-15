@@ -553,6 +553,7 @@ h2 {
 }
 h1, .player-info .player-name {
 	background: #291F16;
+	background: rgba(129, 45, 12, 0.5);
 	color: #B3B286;
 	border-bottom: none;
 	padding-left:0;
@@ -780,6 +781,7 @@ input.textField {
 div.description, p.description{
 	text-align: center;
 	border-bottom: thin solid #ccb094;
+	border-bottom: 2px solid rgba(204, 176, 148, 0.3);
 	margin-top: 10px;
 	margin-bottom: 20px;
 }
@@ -2165,7 +2167,7 @@ table#player-attack {
 	top:0;
 }
 #subcategory-bar a {
-	font: 18px/27px 'ShangriLaNFRegular', Verdana, sans-serif;
+	font: 21px/32px 'ShangriLaNFRegular', Verdana, sans-serif;
 }
 #subcategory-bar a:hover {
 	text-decoration:none;
