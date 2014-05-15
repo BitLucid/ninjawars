@@ -25,9 +25,7 @@ $is_logged_in      = is_logged_in();
 $setting_quantity = get_setting('items_quantity');
 
 // Determine the quantity from input, or settings, or as a fallback, default of 1.
-$quantity = (!intval($in_quantity) || intval($in_quantity) < 1) ? 
-        ($setting_quantity? $setting_quantity : 1) : 
-        intval($in_quantity);
+$quantity = whichever(positive_int($in_quantity), $setting_quantity, 1);
 
 set_setting('items_quantity', $quantity);
 
@@ -39,27 +37,32 @@ if ($quantity > 1 && $item != "Shuriken") {
 $item_costs = item_for_sale_costs(); // Pull the item info from the database.
 
 $not_enough_gold = false;
+$no_funny_business = false;
 
+if(0>$quantity){ // Negative quantity requested
+	$current_item_cost = 0;
+	$no_funny_business = true;
+} else { // Positive or zero quantity requested.
+	if ($in_purchase == 1 && $item) {
+		$current_item_cost  = first_value($item_costs[$item_identity]['item_cost'], 0);
+		$current_item_cost = $current_item_cost * $quantity;
 
-if ($in_purchase == 1 && $item) {
-	$current_item_cost  = first_value($item_costs[$item_identity]['item_cost'], 0);
-	$current_item_cost *= $quantity;
-
-	if ($current_item_cost > $gold){ // Not enough gold.
-	    $not_enough_gold = true;
-	} else { // Has enough gold.
-		add_item($char_id, $item_identity, $quantity);
-		subtract_gold($char_id, $current_item_cost);
-
-		$gold = get_gold($char_id);
-
+		if ($current_item_cost > $gold){ // Not enough gold.
+		    $not_enough_gold = true;
+		} elseif(!$char_id || !$item_identity || !$quantity){
+			$no_funny_business = true;
+		} else { // Has enough gold.
+			add_item($char_id, $item_identity, $quantity);
+			subtract_gold($char_id, $current_item_cost);
+			$gold = get_gold($char_id);
+		}
 	}
 }
 
 
 $parts = array('item_costs'=>$item_costs, 'description'=>$description, 'username'=>$username, 'gold'=>$gold,
     'current_item_cost'=>$current_item_cost, 'quantity'=>$quantity, 'item'=>$item, 'grammar'=>$grammar, 'is_logged_in'=>$is_logged_in,
-    'in_purchase'=>$in_purchase, 'not_enough_gold'=>$not_enough_gold);
+    'in_purchase'=>$in_purchase, 'not_enough_gold'=>$not_enough_gold, 'no_funny_business'=>$no_funny_business);
 
 display_page(
 	'shop.tpl'	// *** Main Template ***
@@ -69,5 +72,5 @@ display_page(
 		'quickstat' => 'viewinv'
 	)
 );
-}
-?>
+
+} // End of no display error.

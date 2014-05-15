@@ -1,8 +1,7 @@
 <style>
 {literal}
 table.shop-list{
-    margin-left:0;
-    margin-right:0;
+	border-collapse:separate; border-spacing:.3em;background-color:#333;width:90%;margin:.5em 5%;
 }
 form{
     text-align:center;    
@@ -16,21 +15,28 @@ input.shopButton{
 .shop-list td{
 	font-size:1.1em;
 }
+#shop-description{
+	margin-bottom:0.3em;
+}
 
 {/literal}
 </style>
 
 
-<h1>Shop</h1>
+<h1>Weapons Shop</h1>
 
 <!-- For google ad targetting -->
 <!-- google_ad_section_start -->
 
-<div class='description' style='margin-bottom:.3em'>
+<div class='description' id='shop-description'>
 {if $in_purchase}
-    {if $not_enough_gold}
+    {if $not_enough_gold or $no_funny_business}
+    	{if $no_funny_business}
+    	<p><em class='speech'>No funny business now...</em> the shopkeeper says, eyeing your suspiciously.
+    	{else}
         <p><em class='speech'>The total comes to {$current_item_cost gold},</em> the shopkeeper tells you.</p>
         <p>Unfortunately, you do not have that much gold.</p>
+        {/if}
     {else}
         <p class='obtained-item'>The shopkeeper hands over {$quantity} {$item}{$grammar}.</p>
         <p><em class='speech'>Will you be needing anything else today?</em> he asks you as he puts your gold in a safe.</p>
@@ -44,9 +50,9 @@ input.shopButton{
 <form id="shop_form" action="shop.php" method="post" name="shop_form" {if !$is_logged_in}onsubmit="return false;"{/if}>
 <input id="purchase" type="hidden" value="1" name="purchase">
 
-<table class='shop-list' style='border-collapse:separate; border-spacing:.3em;background-color:#333;width:90%;margin:.5em 5%'>
+<table class='shop-list'>
 
-	<caption colspan='4' style='text-align:center;padding:.2em;font-size:1.3em;color:chocolate;'>
+	<caption colspan='4' class='text-centered slightly-padded accent'>
 		A Shelf of Items
 	</caption>
 	<!--
@@ -58,9 +64,9 @@ input.shopButton{
 	-->
 
 	<tr>
-	  <td colspan="4" style="text-align: center;padding: .3em;">
+	  <td colspan="4" class='text-centered slightly-padded'>
 		{if $is_logged_in}
-		  <em class='speech'>How many of those would you like?</em> <input id="quantity" type="text" size="3" maxlength="5" name="quantity" class="textField" value="{$quantity}">
+		  <em class='speech'>How many of these would you like?</em> <input id="quantity" type="number" min='1' max='99' name="quantity" class="textField" value="{$quantity}">
 		{else}
 		  To purchase the items below you must <a href="signup.php?referrer=">become a ninja</a>.
 		{/if}
@@ -71,19 +77,19 @@ input.shopButton{
 	{foreach from=$item_costs item="item_info" key="item_internal_name"}
 	<tr>
 	  <td>
-		<input name="item" type="submit" value="{$item_info.item_display_name|escape}" class="shopButton">
+		<input name="item" id='item-{$item_internal_name}' type="submit" value="{$item_info.item_display_name|escape}" class="shopButton">
 	  </td>
 
 	  <td>
-		({$item_info.usage})
+		<label for='item-{$item_internal_name}'>({$item_info.usage})</label>
 	  </td>
 
 	  <td class='gold'>
-		${$item_info.item_cost}
+		<label for='item-{$item_internal_name}'>${$item_info.item_cost}</label>
 	  </td>
 
 	  <td>
-		{if !$item_info.image}&nbsp;{else}<img style='max-height:25px;max-width:50px' src="images/items/{$item_info.image}" alt="{$item_info.item_display_name}">{/if}
+		{if !$item_info.image}&nbsp;{else}<label for='item-{$item_internal_name}'><img style='max-height:25px;max-width:50px' src="images/items/{$item_info.image}" alt="{$item_info.item_display_name}"></label>{/if}
 	  </td>
 	</tr>
 	{/foreach}
@@ -102,8 +108,8 @@ input.shopButton{
 <!-- google_ad_section_end -->
 
 
-<p class='gold-count'>
-  Current gold: {$gold|escape}
+<p class='gold-count glassbox'>
+  Your Current gold: {$gold|escape}
 <p>
 
 <div style='margin:.1em auto;text-align:center'>
