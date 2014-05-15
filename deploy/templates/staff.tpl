@@ -6,16 +6,36 @@
 #contact-us-page section{
   margin-bottom:6em;
 }
+#contact-us-page p{
+  margin-right:1em;margin-left:1em;
+}
 #contact-us-image{
   display:inline-block;
-  margin:0 auto;
+  margin:0 auto;max-width:200px;
 }
 #contact-us-image-container{
   display:block;
   text-align:center;
 }
-#contact-methods{
+#contact-us-page #contact-methods{
   margin:.5em 0 3em;
+}
+#contact-us-page section#company h4{
+  width:50%;margin:0.5em auto;
+}
+ul#social-networks{
+  list-style-type:none;
+}
+#social-networks li{
+  display:inline;
+  padding-right:.5em;
+  margin-right:.3em;
+}
+ul#social-networks li:before {
+  content: "\00BB";
+}
+#contact-us-page .unadorned-developer{
+  color:ghostwhite;
 }
 </style>
 {/literal}
@@ -31,7 +51,7 @@
 </p>
 <p>
   <a id='contact-us-image-container' href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' <{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}>?subject=NinjaWars%20question:%20">
-  <img id='contact-us-image' src='images/contact_us.png' style='max-width:200px' alt='Contact Staff'>
+  <img id='contact-us-image' src='images/contact_us.png' alt='Contact Staff'>
   </a>
 </p>
 </section>
@@ -39,34 +59,19 @@
 
 <section id='company'>
   <h3>Game brought to you by</h3>
-  <h4 style='width:50%;margin:.5em auto .5em'><a href='http://bitlucid.com'>BitLucid, Inc.</a></h4>
+  <h4><a href='http://bitlucid.com'>BitLucid, Inc.</a></h4>
 </section>
 
 <section class='developers'>
   <h3 class='subtitle'>Developers</h3>
-  <div class='developer'>
+  <div class='developer well'>
     <h5><a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer</h5>
-    <style type='text/css'>
-    	{literal}
-    	ul#social-networks{
-    		list-style-type:none;
-    	}
-    	#social-networks li{
-    		display:inline;
-    		padding-right:.5em;
-    		margin-right:.3em;
-    	}
-    	ul#social-networks li:before {
-			content: "\00BB";
-		}
-    	{/literal}
-    </style>
-    <ul id='social-networks' style='margin-top:1em'>
+    <ul id='social-networks' class='thick'>
       <li> <a target='_blank' rel='me' href="http://twitter.com/tchalvak"><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> @tchalvak on Twitter</a></li>
       <li> <a target='_blank' rel='me' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> tchalvak on Facebook</a> </li>
       <li><em> or tchalvak on AIM</em></li>
     </ul>
-    <div style='margin-top:1em'><a class='expand-link'>More info &amp; bio <img alt="&gt;&gt;&gt;" src="images/smallArrows.png"></a></div>
+    <div><a class='expand-link'>More info &amp; bio</a></div>
     <div class='developer-info'>
     	<!-- Expanded & contracted section -->
       <p>
@@ -88,8 +93,8 @@
       <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Ronalds</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" title="Facebook badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Facebook badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Ronalds" style="border: 0px;"></a><!-- Facebook Badge END --></div>
     </div><!-- End of .developer-info -->
   </div>
-  <div class='developer'>
-    <h5><span style="color:white">Beagle / Al Vazquez</span> - Programmer and Server Administrator</h5>
+  <div class='developer well'>
+    <h5><span class='unadorned-developer'>Beagle / Al Vazquez</span> - Programmer and Server Administrator</h5>
     <!-- No developer info here. -->
   </div>
 </section><!-- End of the Developers section -->
@@ -138,7 +143,7 @@
 <div class='license'>
   <div class='subtitle'>License</div>
   <p>
-    <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png"></a><br>
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png"></a><br>
     <span>Ninjawars</span>
     by <a href="{$smarty.const.WEB_ROOT}" rel="cc:attributionURL">Ninjawars.net</a>
     is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">
@@ -149,7 +154,9 @@
 </div>
 
 <script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_thin_badge.js"></script>
-<div id='project-languages' style='background-color:white'><script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_languages.js"></script></div>
+<div id='project-languages' class='light-background'>
+  <script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_languages.js"></script>
+</div>
 
 <script type='text/javascript' src="js/staffPage.js"></script>
 <script type='text/javascript'>
