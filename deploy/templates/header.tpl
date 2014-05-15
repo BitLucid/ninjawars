@@ -25,9 +25,9 @@
 
 {if !$smarty.const.LOCAL_JS}
     <!-- Google jquery lib -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {/if}
-	<script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+	<script>window.jQuery || document.write('<script src="js/jquery-2.1.1.min.js"><\/script>')</script>
     <!-- Plugins go here -->
     <script type='text/javascript' src='/js/jquery.timeago.js'></script>
 
