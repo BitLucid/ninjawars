@@ -4,7 +4,7 @@
 
 if [ -z "$1" ]
   then
-    echo "No first Username argument supplied"
+    echo "No first Username argument supplied, e.g. install kzqai"
     exit
 fi
 
@@ -29,16 +29,16 @@ sudo apt-get install perl liblingua-en-inflect-perl phpunit
 #enable rewrite module
 sudo a2enmod rewrite
 function install_postgres(){
-sudo su postgres
-createuser -s $1
-createdb nw
-cd `pg_config --sharedir`
-echo "create extension pgcrypto" | psql -d nw
-echo "create role developers" | psql nw
-exit
+    sudo su postgres
+    createuser -s $1
+    createdb nw
+    cd `pg_config --sharedir`
+    echo "create extension pgcrypto" | psql -d nw
+    echo "create role developers" | psql nw
+    exit
 }
 
-confirm "Create postgres superuse, add pgcrypto, bare nw db, and developer role?" && install_postgres
+confirm "Create postgres superuser, add pgcrypto, bare nw db, and developer role?" && install_postgres
 
 
 cd /srv/ninjawars
@@ -50,8 +50,8 @@ mkdir deploy/templates/compiled
 sudo chown www-data:www-data deploy/templates/compiled
 
 function copy_over_template_apache_configs(){
-sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && sudo ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local
-echo "Modifying deploy/www/.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
+    sudo cp docs/nw.local.apache /etc/apache2/sites-available/nw.local && sudo ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local
+    echo "Modifying deploy/www/.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
 }
 
 confirm "Copy over the template apache configs into /etc/apache2/sites-available?" && copy_over_template_apache_configs
@@ -59,17 +59,24 @@ confirm "Copy over the template apache configs into /etc/apache2/sites-available
 sudo apache2ctl graceful
 
 function ssh_down_db(){
-ssh tchalvak@ninjawars.net 'vacuumdb ninjawarsLive;pg_dump ninjawarsLive > /srv/ninjawars/nw_full.sql'
-scp tchalvak@ninjawars.net:~/nw_full.sql /srv/ninjawars/nw_full.sql
+    ssh tchalvak@ninjawars.net 'vacuumdb ninjawarsLive;pg_dump ninjawarsLive > ~/nw_full.sql'
+    scp tchalvak@ninjawars.net:~/nw_full.sql /srv/ninjawars/nw_full.sql
 }
 
 confirm "Copy down a full copy of the live ninjawars database to /srv/ninjawars/nw_full.sql via ssh?" && ssh_down_db
 
 function copy_full_db_in(){
-psql nw < /srv/ninjawars/nw_full.sql
+    psql nw < /srv/ninjawars/nw_full.sql
 }
 
 confirm "Copy /srv/ninjawars/nw_full.sql in to the postgresql database nw ?" && copy_full_db_in
+
+function install_composer_vendors(){
+    curl -sS https://getcomposer.org/installer | php
+    sudo php composer.phar install
+}
+
+confirm "Install composer vendors?" && install_composer_vendors
 
 sudo service postgresql restart
 echo "If you don't have access to the ssh server, you'll need to psql nw < someOtherFullDatabaseDump.sql"
