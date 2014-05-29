@@ -1,14 +1,18 @@
+<style>
+{literal}
+.splash #top-logo{
+  width:50%;text-align:center;display:inline-block;vertical-align:top;margin-left: 2em;margin-right: 2em;
+}
+.splash #menu-map-head{
+  font-size:xx-large;margin-right:.5em;
+}
+.splash .doshin-image{
+  width:8px;height:8px;
+}
+{/literal}
+</style>
     <!-- Version {$version} -->
-{literal}
-      <script type="text/javascript">
-      // Break out of any outer frames.
-	if (parent.frames.length != 0) {
-{/literal}
-		location.href = "{$main_src}";
-{literal}
-	}
-      </script>
-{/literal}
+
     <!-- Top horizontal bar -->
     <header id='index-header' class='clearfix'>
 		<div id="logo-appended">
@@ -22,7 +26,7 @@
 		<nav role='navigation' id='top-bar' class='navigation'>
 		  <span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
 		</nav>
-		<nav id='top-logo' style='width:50%;text-align:center;display:inline-block;vertical-align:top;margin-left: 2em;margin-right: 2em;'>
+		<nav id='top-logo'>
           <a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='NinjaWars' width='200' height='100'></a>
 		</nav>
       
@@ -32,11 +36,11 @@
             <li><a href="clan.php" target="main">Clans</a></li>
           </ul>
           <ul id='map-subcategory'>
-          	<li><a href='map.php' id='menu-map-head' target='main' title='Travel to different locations on the map' style='font-size:xx-large;margin-right:.5em;'>Map&rarr;</a></li>
+          	<li><a href='map.php' id='menu-map-head' target='main' title='Travel to different locations on the map'>Map&rarr;</a></li>
             <li><a href="shop.php" target="main">Shop</a></li>
             <li><a href="work.php" target="main">Field</a></li>
             <li>
-              <a href="doshin_office.php" target="main">Doshin <img src="images/doshin.png" alt="" style='width:8px;height:8px'></a>
+              <a href="doshin_office.php" target="main">Doshin <img class='doshin-image' src="images/doshin.png" alt=""></a>
             </li>
           </ul>
         </nav> <!-- End of subcategory bar -->
@@ -49,13 +53,13 @@
 		{include file="core.tpl"}    
       
       <aside id='sidebar-column'  class='navigation'>
-		<div id='contact-us' style='margin-top:.5em;margin-bottom:.5em;'>
+		<div id='contact-us' class='thick'>
 		  <a href='staff.php' target='main' class='font-shangrila'>Contact Staff</a>
 		</div>
 		
 
 		<div id='feedback-link'>
-		  <a style='font-size:2em' class='font-shangrila extLink' href="http://ninjawars.proboards.com/index.cgi?action=display&board=suggcomp&thread=1174" target="_blank">Give Feedback</a>
+		  <a style='font-size:2em' class='font-shangrila extLink' href="http://ninjawars.proboards.com/index.cgi?action=display&amp;board=suggcomp&amp;thread=1174" target="_blank">Give Feedback</a>
 		</div>
 
   {if isset($show_news) and $show_news}
@@ -90,3 +94,11 @@
 <!-- Validated as of Oct, 2009 -->
 
 <!-- Version: {$version} -->
+
+{literal}
+<script>
+if (top.location != location) { // Framebreak on the splash page to prevent any issues.
+  top.location.href = document.location.href ;
+}
+</script>
+{/literal}
