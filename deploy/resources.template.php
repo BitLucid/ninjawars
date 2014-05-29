@@ -11,6 +11,7 @@ define('DEBUG', __DEBUG__);					// *** Shorter debugging constant name, set as f
 define('PROFILE', __PROFILE__);				// *** Whether or not to do performance profiling
 define('DEBUG_ALL_ERRORS', __DEBUG_ALL__);	// *** Second debugging level, e.g. email debugging, only works when debug is also on.
 define('SERVER_ROOT', __SERVER_ROOT__);		// *** The root deployment directory of the game
+// Generally for the install purposes the SERVER_ROOT should correspond to /srv/ninjawars/deploy/ 
 define('WEB_ROOT', __WWW_ROOT__);			// *** The base URL used to access the game
 define('ADMIN_EMAIL', __ADMIN_EMAIL__);		// *** For logs/emailed errors.
 define('SUPPORT_EMAIL', __SUPPORT_EMAIL__);	// *** For public questions.
@@ -26,9 +27,10 @@ define('TEMPLATE_LIBRARY_PATH', __TEMPLATE_LIBRARY_PATH__); // Template path for
 
 // For location-specific, can-be-dynamic-or-not constants.
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
+define('TEMPLATE_CACHING_PATH', SERVER_ROOT.'templates/cache/'); // *** This folder must have write permissions.
 define('LOGS', SERVER_ROOT.'resources/logs/'); // *** For all custom logging
 define('CONNECTION_STRING', 'pgsql:dbname='.DATABASE_NAME.';user='.DATABASE_USER);
 
 // Seperate, tracked file for derived constants, that changes as they change.
 require(SERVER_ROOT."derived_constants.php");
-?>
+
