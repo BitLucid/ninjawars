@@ -5,18 +5,24 @@
 
 class NWTemplate extends Smarty {
 	public function __construct() {
-		$this->Smarty();
+		parent::__construct(); // Extending smarty somewhat, not even sure why we do this any more...
 
 		// template directory
-		$this->template_dir = TEMPLATE_PATH;
+		$this->addTemplateDir(TEMPLATE_PATH);
 
 		// compile directory
-		$this->compile_dir = COMPILED_TEMPLATE_PATH;
+		$this->setCompileDir(COMPILED_TEMPLATE_PATH);
+		$this->setCacheDir(COMPILED_TEMPLATE_PATH); // Also keep cached files in the compiled directory.
 
 		// plugin directory
-		$this->plugins_dir[] = TEMPLATE_PLUGIN_PATH;
+		$this->addPluginsDir(TEMPLATE_PLUGIN_PATH);
 
-		$this->caching = false;
+		$this->caching = Smarty::CACHING_LIFETIME_CURRENT;
+		//$this->debugging = defined('DEBUG') && DEBUG? true : false;
+		// Unused config directory
+		//$this->addConfigDir(TEMPLATE_PATH."config/");
+		// No configs directory set, because we don't actually use it.
+		//$this->testInstall();die();
 	}
 
 	public function fullDisplay() {
