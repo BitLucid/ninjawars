@@ -1,4 +1,6 @@
 /*
+https://github.com/roykolak/css-debugger
+
 This is a combination of:
 http://meyerweb.com/eric/thoughts/2007/09/07/diagnostic-styling/
 http://www.nealgrosskopf.com/tech/thread.asp?pid=17
@@ -7,10 +9,10 @@ http://www.nealgrosskopf.com/tech/thread.asp?pid=17
 
 http://snipplr.com/view/6770/css-diagnostics--highlight-deprecated-html-with-css--more/
 lists the appropriate urls.
+
 */
 
 /* Empty Attributes */
-/*img[alt=""],*/
 area[alt=""],
 a[href=""],
 a[title=""],
@@ -23,7 +25,6 @@ label[for=""] {
 /* Empty Elements */
 p:empty,
 a:empty,
-span:empty,
 ul:empty,
 ol:empty,
 li:empty,
