@@ -12,12 +12,12 @@ class NWTemplate extends Smarty {
 
 		// compile directory
 		$this->setCompileDir(COMPILED_TEMPLATE_PATH);
-		$this->setCacheDir(COMPILED_TEMPLATE_PATH); // Also keep cached files in the compiled directory.
+		//$this->setCacheDir(COMPILED_TEMPLATE_PATH); // Also keep cached files in the compiled directory.
 
 		// plugin directory
 		$this->addPluginsDir(TEMPLATE_PLUGIN_PATH);
 
-		$this->caching = Smarty::CACHING_LIFETIME_CURRENT;
+		$this->caching = false; // or Smarty::CACHING_LIFETIME_CURRENT;
 		//$this->debugging = defined('DEBUG') && DEBUG? true : false;
 		// Unused config directory
 		//$this->addConfigDir(TEMPLATE_PATH."config/");
