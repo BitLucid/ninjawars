@@ -47,6 +47,9 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 	}
 }
 
+
+
+
 /**
  * Login the user and delegate the setup if login is valid.
  **/
@@ -94,6 +97,43 @@ function login_user($dirty_user, $p_pass) {
 
 	// *** Return array of return values ***
 	return array('success' => $success, 'login_error' => $error);
+}
+
+// Perform all the login functionality for the login page as requested.
+function perform_login_if_requested($is_logged_in, $login_requested, $settings){
+	// Extract the settings as sent in below.
+	list($logged_out, $username_requested, $pass, $referrer, $stored_username) = $settings;
+	// already logged in/login behaviors
+	if ($logged_out){
+		logout_user(); // Perform logout if requested!
+		$is_logged_in = false;
+	} elseif (!$is_logged_in) { // Perform login if they aren't already logged in.
+		if ($login_requested) { 	// Request to login was made.
+
+			$login_attempt_info = array(
+				'username'=>$username_requested, 
+				'user_agent'=>$_SERVER['HTTP_USER_AGENT'], 
+				'ip'=>$_SERVER['REMOTE_ADDR'], 
+				'successful'=>0, 
+				'additional_info'=>$_SERVER);
+		
+			$logged_in    = login_user($username_requested, $pass);
+			$is_logged_in = $logged_in['success'];
+
+			if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
+				store_auth_attempt($login_attempt_info);
+				$login_error_message = $logged_in['login_error'];
+				redirect("login.php?error=".url($login_error_message));
+			} else {
+				// log a successful login attempt
+				$login_attempt_info['successful']=1;
+				store_auth_attempt($login_attempt_info);
+			
+				redirect("index.php"); // Successful login, go to the main page...
+			}
+		}
+	}
+	return array($is_logged_in, $logged_out, $referrer, $stored_username);
 }
 
 // Sets the last logged in date equal to now.
@@ -521,4 +561,3 @@ function membership_and_combat_stats($update_past_stats=false) {
 	$stats['active_chars'] = query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('15 minutes' AS interval))");
 	return $stats;
 }
-?>

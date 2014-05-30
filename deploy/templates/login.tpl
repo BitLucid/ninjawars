@@ -4,23 +4,23 @@
 <div class='notice'>You logged out! Log in again below if you want.</div>
 {/if}
 
-{if $login_error}
+{if $login_error_message}
 	  <!-- This section only gets displayed in the event of an incorrect login -->
       <div id='login-error' class="error">
       	{* Unescaped error to allow for links. *}
-        {$login_error}
+        {$login_error_message}
       </div>
 {/if}
 
 
 {if $is_logged_in}
-<div>
-  You are already logged in!
+<div class='glassbox'>
+  You are already logged in! <a href='/index.php'>Go Fight!</a>
 </div>
 {else}
 
-<style type='text/css'>
 {literal}
+<style type='text/css'>
 .right-side{
 	display:block;
 	text-align:left;
@@ -51,8 +51,8 @@
 	display:inline-block;
 	border: 5px rgb(10, 10, 10) solid;
 }
-{/literal}
 </style>
+{/literal}
 
 <div class='login-page' style='margin: .3em auto .3em;text-align:center;'>
   <form id="login-form" action="login.php" method="post">
