@@ -1,7 +1,7 @@
 
 <script type="text/javascript">
 NW.loggedIn = {if $logged_in}true{else}false{/if};
-var pub_char_info = '{$json_public_char_info}';
+var pub_char_info = {if $json_public_char_info}{$json_public_char_info}{else}''{/if};
 {if !$is_index && $quickstat}
 {literal} // Only refresh the stats when they're not initially loading and when requested.
 $(function() {
