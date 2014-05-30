@@ -14,8 +14,8 @@ source $_DIR_/functions.sh
 
 say_loud "Travis test..." "TRAVIS_TEST"
 
-say_info "Requesting http://nw.local" "TRAVIS_TEST"
-curl_http_ok http://nw.local
+say_info "Requesting http://nw.local output" "TRAVIS_TEST"
+curl_http_out_warn http://nw.local
 
 # Hook into main test script
 sudo bash $_DIR_/test.sh
@@ -23,5 +23,9 @@ sudo bash $_DIR_/test.sh
 # Analyze
 say_loud "Display selenium logs." "TRAVIS_TEST"
 cat /var/log/selenium/selenium-output.log
+
+
+say_info "Requesting http://nw.local and erroring if it fails" "TRAVIS_TEST"
+curl_http_ok http://nw.local
 
 say_ok "Travis test Done." "TRAVIS_TEST"

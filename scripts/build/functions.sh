@@ -168,3 +168,20 @@ function curl_http_ok {
 		return 1; #Error
 	fi
 }
+
+#Have curl hit a url and return a WARNING on anything other than 200 status
+function curl_http_out_warn {
+	#Second argument will prevent exit on fail
+	# IP=$(curl automation.whatismyip.com/n09230945.asp)
+	code=$(curl --write-out %{http_code} --silent --output /dev/null $1)
+	response=$(curl $1)
+	echo "Response http status: ", $code
+	if [ 200 == $code ]; then
+		return 0; #Ok
+	else
+		echo "url fails, here was the output:\n"
+		echo $response
+		echo "End of Curl output"
+		return 0; #Ok, continue execution even if the whole stack isn't quite there.
+	fi
+}
