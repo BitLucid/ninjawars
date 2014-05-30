@@ -194,20 +194,19 @@ $(function () {
   } else {
     $(document.getElementById('faqs')).hide();
   }
-});
-$(function(){
-    // Fade the link colors in gradually, one at a time.
-    $('#later-progression a')
-        .each(function(secs, element){
-        setTimeout(function (){
-            $(element).css({'color':'steelBlue'});
-        }, 1000*(secs+1)*5);
-    });
-    $('#join-link').each(function(index, element){
-        setTimeout(function (){
-            $(element).css({'color':'steelBlue', 'font-size':'1.5em'});
-        }, 1000*26);
-    });
+
+  // Fade the link colors in gradually, one at a time.
+  $('#later-progression a')
+      .each(function(secs, element){
+      setTimeout(function (){
+          $(element).css({'color':'steelBlue'});
+      }, 1000*(secs+1)*5);
+  });
+  $('#join-link').each(function(index, element){
+      setTimeout(function (){
+          $(element).css({'color':'steelBlue', 'font-size':'1.5em'});
+      }, 1000*26);
+  });
 });
 {/literal}
 </script>
