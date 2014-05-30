@@ -1,16 +1,17 @@
 
-
-    <script type="text/javascript">
-	NW.loggedIn = {if $logged_in}true{else}false{/if};
-	var pub_char_info = {$json_public_char_info};
+<script type="text/javascript">
+NW.loggedIn = {if $logged_in}true{else}false{/if};
+var pub_char_info = '{$json_public_char_info}';
 {if !$is_index && $quickstat}
 {literal} // Only refresh the stats when they're not initially loading and when requested.
 $(function() {
-	NW.refreshStats(pub_char_info); // Refresh the data piped in above.
+	if(pub_char_info){
+		NW.refreshStats(pub_char_info); // Refresh the data piped in above.
+	}
 });
 {/literal}
 {/if}
-    </script>
+</script>
     
 
 
