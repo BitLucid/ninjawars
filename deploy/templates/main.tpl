@@ -178,22 +178,19 @@ var show_faqs = false; // Set faqs hidden by default.
 show_faqs = true;
 {/if}
 {literal}
+var showfaqsLink = $('#show-faqs');
+var faqsArea = $('#faqs');
 if(!show_faqs){
-  $('#faqs').hide(); // To avoid flashing of content.
+  faqsArea.hide(); // To avoid flashing of content hide early on.
+} else {
+  showfaqsLink.hide(); // Otherwise, hide the show-hide link.
 }
 $(function () {
-  var showfaqsLink;
-  (showfaqsLink = document.getElementById('show-faqs')).onclick = function(){
-    $(document.getElementById('faqs')).toggle();
-    $(showfaqsLink).toggle();
+  showfaqsLink.click(function(){
+    faqsArea.toggle();
+    $this.delay('slow').slideToggle();
     return false;
-  }
-
-  if (show_faqs) {
-    $(showfaqsLink).hide();
-  } else {
-    $(document.getElementById('faqs')).hide();
-  }
+  });
 
   // Fade the link colors in gradually, one at a time.
   $('#later-progression a')
@@ -202,6 +199,7 @@ $(function () {
           $(element).css({'color':'steelBlue'});
       }, 1000*(secs+1)*5);
   });
+  // Finally, fade in the join link last.
   $('#join-link').each(function(index, element){
       setTimeout(function (){
           $(element).css({'color':'steelBlue', 'font-size':'1.5em'});
