@@ -152,9 +152,9 @@ $template = prep_page(
 	)
 );
 
-$template->register_function('getTurnCost', 'getTurnCost');
+$template->registerPlugin("function","getTurnCost", "getTurnCost");
+
 
 $template->fullDisplay();
 
-}
-?>
+} // End of no display_error area.

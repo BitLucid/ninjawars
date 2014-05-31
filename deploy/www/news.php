@@ -94,7 +94,9 @@ if ($error = init($private, $alive)) {
 		}
 	}
 
-	$template->register_function('to_playerid', 'to_playername', 'to_tags');
+	$template->registerPlugin("function","to_playerid", "to_playerid");
+	$template->registerPlugin("function","to_playername", "to_playername");
+	$template->registerPlugin("function","to_tags", "to_tags");
 
 	$template->fullDisplay();
 }

@@ -55,7 +55,8 @@ $template = prep_page(
 	)
 );
 
-$template->register_function('time_ago', 'get_time_ago');
+//$template->register_function('time_ago', 'get_time_ago');
+$template->registerPlugin("function","time_ago", "get_time_ago");
 
 $template->fullDisplay();
 
