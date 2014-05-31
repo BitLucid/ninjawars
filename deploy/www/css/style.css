@@ -412,13 +412,11 @@ body {
 	background-color:#000004; /* To prevent the "white background flash" effect. */
 	background:url('/images/rebel.png');
 	color:ghostwhite;
-		/* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */
 }
 
+/* Set your base font here, to apply evenly */
 body, select, input, textarea {
-	/* Set your base font here, to apply evenly */
-	/* font-family: Georgia, serif;  */
-	font: arial, helvetica, sans-serif;	
+	font-family: Arial, Helvetica, sans-serif;	
 }
 select{
 	color:#333;
@@ -1262,8 +1260,7 @@ iframe {
 	border: 0;
 }
 #mini-chat-container { /* div */
-	width:100%;
-	overflow:auto;
+	width:100%; overflow:auto; margin-top:0.5em; margin-bottom:1em;
 }
 .chat-collapsed {
 	max-height: 300px;
@@ -1317,6 +1314,9 @@ iframe {
         margin-left:1em;
 }
 
+#full-chat{
+	margin-left:1em;
+}
 #full-chat .chat-messages {
 	font-size:1em;
 }
