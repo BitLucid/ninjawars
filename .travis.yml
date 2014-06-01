@@ -22,4 +22,4 @@ before_script:
 
 script: ./scripts/travis/test
 
-after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && apache2ctl --version && apache2ctl -S
+after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && apache2ctl --version && apache2ctl -S && tail -10 /var/log/apache2/error.log
