@@ -19,7 +19,8 @@ before_script:
     - chmod ug+rx scripts/travis/*
     - ./scripts/travis/$INSTALL
     - php -v
+    - apache2ctl -S
 
 script: ./scripts/travis/test
 
-after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && apache2 --version
+after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && apache2ctl --version && apache2ctl -S
