@@ -25,8 +25,8 @@ install:
 
 before_script:
     - php -v
-    - apache2ctl -S
+    - sudo apache2ctl -S
 
 script: ./scripts/travis/test
 
-after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && apache2ctl --version && apache2ctl -S && tail -10 /var/log/apache2/error.log
+after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && sudo apache2ctl --version && sudo apache2ctl -S && sudo tail -10 /var/log/apache2/error.log
