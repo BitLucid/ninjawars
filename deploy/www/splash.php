@@ -19,4 +19,3 @@ $parts = array(
 
 $parts['body_classes'] = 'main-body splash';
 display_page('splash.tpl', $title, $parts, $options);
-?>
