@@ -2,7 +2,7 @@
 function quit {
 	if [ -z "$1" ]
 		then
-		msg="Something goes wrong!"
+		msg="Something went wrong!"
 	else
 		msg=$1
 	fi
@@ -26,6 +26,7 @@ function _say {
 	echo -en '\e[0m';
 }
 
+#just wrapper functions
 function say_loud {
 	_say "$1" 5 PHASE "$2"
 }
@@ -57,12 +58,23 @@ function check_package {
 	fi
 }
 
+
 function ensure_system {
-	echo "Installing various packages, apache, php, etc."
+	# Note that travis itself require use of php fpm, annoyingly.
+	echo "Installing various packages, apache, php, etc"
 	sudo apt-get update -qq
-	sudo apt-get install libxml2-dev
-	sudo apt-get install apache2 php5 php5-curl openssl php5-pgsql postgresql postgresql-contrib libpq-dev smarty
-	sudo apt-get install perl liblingua-en-inflect-perl libpcre3-dev
+	sudo apt-get install libxml2-dev apache2 php5 php5-curl openssl php5-pgsql postgresql postgresql-contrib libpq-dev perl liblingua-en-inflect-perl libpcre3-dev
+
+	sudo apt-get install apache2 libapache2-mod-fastcgi
+   # enable php-fpm
+   sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+   sudo a2enmod rewrite actions fastcgi alias
+   echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+   ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+   # configure apache virtual hosts
+   sudo cp -f build/tpl/nw.local.travis.fpm.conf /etc/apache2/sites-available/default
+   sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+   sudo service apache2 restart
 }
 
 function ensure_phar {
@@ -143,9 +155,10 @@ function set_webserver {
 	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'`
 	cd /etc/apache2/sites-available
-	sudo sh -c "sed 's,__DIR__,$DIR,' '$FULL_SCRIPT_DIR/tpl/nw.local' > 'nw.local'"
+	#replace __DIR__ in the apache conf with the appropriate directory.
+	sudo sh -c "sed 's,__DIR__,$DIR,' '$FULL_SCRIPT_DIR/tpl/nw.local.conf' > 'nw.local.conf'"
 	sudo a2ensite nw.local
-	sudo a2enmod rewrite
+	sudo a2enmod rewrite actions fastcgi alias
 	echo "Restarting apache service..."
 	sudo service apache2 restart
 	cd $DIR
@@ -153,6 +166,9 @@ function set_webserver {
 	mkdir -p $DIR"deploy/templates/compiled"
 	sudo chown www-data $DIR"deploy/templates/compiled"
 	sudo chmod 777 $DIR"deploy/templates/compiled"
+	mkdir -p $DIR"deploy/templates/cache"
+	sudo chown www-data $DIR"deploy/templates/cache"
+	sudo chmod 777 $DIR"deploy/templates/cache"
 	say_ok "Web-server configured!"
 }
 
