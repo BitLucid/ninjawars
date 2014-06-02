@@ -462,6 +462,7 @@ if (parent.window != window) {
 	};
 
 	NW.make_checkForNewChats_callback = function() {
+		console.log('checked for new chats');
 		var self = this;
 		return function(data) {
 			// Update global data stores if an update is needed.
@@ -480,91 +481,65 @@ if (parent.window != window) {
 
 	// Check for the latest chat and update if it's different.
 	NW.checkForNewChats = function() {
-		// TODO: Eventually this should just pull the chats and load them into the dom.
 		// Check whether the latest chat doesn't match the latest displayed chat.
 		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
 		if (!NW.chatLocked()) {
-			NW.lockChat();
+			NW.lockChat(); // Will be unlocked when the callback completes.
 			$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatCheck)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
 		}
 	};
 
-	// Load the chat section, or if that's not available & nested iframe, refresh iframe
+	// Update chats listed in the mini-chat
 	NW.refreshMinichat = function() {
-		if (this.datastore.new_chats) {
-			var container = document.getElementById('mini-chat-display');
+		if (this.datastore.new_chats) { // Pull from NW object datastore.
+			var chatContainer = $('#mini-chat-display');
 			var data;
 
-			if (container) { // check that there is a new chat -to- load.
+			if (chatContainer.length) { // check that there is a new chat -to- load.
 				var chats = this.datastore.new_chats.chats;
-				var after = container.insertBefore(document.createTextNode(''), container.firstChild);
+				//var after = container.insertBefore(document.createTextNode(''), container.firstChild);
 				if(chats){
 					for (var chat_message in chats) {
-						// Jesus.
-						after = container.insertBefore(this.renderChatAuthor(chats[chat_message]), after.nextSibling);
-						after = container.insertBefore(this.renderChatMessage(chats[chat_message]), after.nextSibling);
-
-						if (this.maxMiniChats <= this.currentMiniChats) {
-							if (container.removeChild(container.lastChild).nodeType == 3) {
-								container.removeChild(container.lastChild);
-							}
-
-							container.removeChild(container.lastChild);
-						} else {
-							++this.currentMiniChats;
-						}
+						NW.addChatMessage(chatContainer, chats[chat_message]); // Add to the container, using the json data.
 					}
 				}
+				chatContainer.show();
 
 				this.datastore.new_chats = null;
 				return false;
 			}
 		}
+		console.log('mini-chat refreshed');
 	};
-	
-	NW.addChat = function(author, message, timestamp, author_id){
+
+	// use the data to add a new chat to the mini-chat area.
+	NW.addChatMessage = function(chatContainer, p_data){
+		var author, message, timestamp, author_id, playerLink, fullLink;
+		message = p_data.message;
+		author = p_data.uname;
+		timestamp = p_data.date;
+		author_id = p_data.sender_id;
+		playerLink = 'player.php?player_id=';
+		fullLink = playerLink+author_id;
+
+
 		
-	};
+		// Take the container. 
+		var list = $('#mini-chat-display');
 
-	NW.renderChatMessage = function(p_message) {
-		var container = document.createElement('dd');
-		container.className = "chat-message";
-		container.appendChild(document.createTextNode(p_message.message));
-		return container;
-	};
+		// clone the .chat-author template and .chat-message template
+		var authorArea = list.find('.chat-author.template').clone();
+		list.end();
+		var messageArea = list.find('.chat-message.template').clone();
+		list.end();
 
-	/**
-	* Takes in a chat message and returns an HTML node that contains the display for the author of the chat message
-	*/
-	NW.renderChatAuthor = function(p_message) {
-		var container = document.createElement('dt');
-		container.className = "chat-author";
-		container.appendChild(document.createTextNode('<'));
-		var authorLink = document.createElement('a');
-		authorLink.href = "player.php?player_id="+p_message.sender_id;
-		authorLink.target = "main";
-		authorLink.appendChild(document.createTextNode(p_message.uname));
-		container.appendChild(authorLink);
-		container.appendChild(document.createTextNode('>'));
-		return container;
-	};
+		// put the new content into those areas.
+		authorArea.removeClass('template').show().find('a').attr('href', fullLink).text(author).end();
+		messageArea.removeClass('template').show().text(message);
+		// Append 'em.
+		list.append(authorArea, messageArea); 
 
-	/**
-	* Event handler for when the chat refresh button is clicked
-	*/
-	NW.chatRefreshClicked = function(button) {
-		button.onclick = null;
-		$(button).css({'cursor':'default'});
-		//button.style.cursor = 'default'; // This fails in chrome.
-		button.src = 'images/refresh_disabled.gif';
-		setTimeout(function() {
-			button.onclick = function() { NW.chatRefreshClicked(this);};
-			button.src = 'images/refresh.gif';
-			$(button).css({'cursor':'pointer'});
-			//button.style.cursor = 'pointer'; // This fails in chrome.
-		}, this.manualChatLockTime);
-
-		this.checkForNewChats();
+		//console.log(chatContainer, list);
 	};
 
 	// This locking mechanism should probably be migrated to a timewatch pattern instead.
@@ -587,10 +562,17 @@ if (parent.window != window) {
 		this.manualChatLock = false;
 	};
 
+	// Send a chat message to be saved.
+	NW.putChat = function(mess, callback){
+		$.getJSON('api.php?type=send_chat&msg='+encodeURIComponent(mess)+'&jsoncallback=?', callback);
+	}
+
 	// Send the contents of the chat form input box.
 	NW.sendChatContents = function(p_form) {
 		if (p_form.message && p_form.message.value.length > 0) {
-			$.getJSON('api.php?type=send_chat&msg='+encodeURIComponent(p_form.message.value)+'&jsoncallback=?', NW.checkForNewChats);
+			// Send a new chat.
+			NW.putChat(p_form.message.value, NW.checkForNewChats);
+			
 			p_form.reset(); // Clear the chat form.
 		} else if (!NW.manualChatLocked()) {
 			this.lockManualChat();
@@ -629,12 +611,12 @@ if(g_isIndex || g_isRoot){
 $(function() {
 
 	$('html').removeClass('no-js'); // Remove no-js class when js present.
-	$('time.timeago').timeago(); // Set time since whatever areas
+	$('time.timeago').timeago(); // Set time-since-whatever areas
 		
 	// INDEX ONLY CHANGES
 	if (g_isIndex || g_isRoot) {
 		var hash = window.location.hash;
-		if(hash && hash.indexOf(".php") > 0){ // If a hash exists.
+		if(hash && hash.indexOf(".php") > 0){ // If a hash exists and has .php in it...
 			var page = hash.substring(1); // Create a page from the hash by removing the #.
 			$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
 		}
@@ -665,7 +647,7 @@ $(function() {
 			return true;
 		});
 	
-		NW.quickDiv = document.getElementById('quickstats-frame-container');
+		//NW.quickDiv = document.getElementById('quickstats-frame-container');
 		$('#chat-loading').show();
 		NW.chainedUpdate(); // Start the periodic index update.
 		$('#skip-to-bottom').click(function(){

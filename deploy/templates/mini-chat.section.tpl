@@ -33,6 +33,7 @@
                 <div id="chat-and-switch">
 {if isset($user_id) and $user_id}
                   <form class='chat-submit' id="post_msg_js" action="chat.php" method="post" name="post_msg">
+                  <!-- Check for post_msg_js in nw.js for the functionality -->
                   
                     <div id='chat-input'>
                         <input type="text" size="20" maxlength="250" name="message" class="textField">
@@ -45,15 +46,10 @@
                   <div id="mini-chat-container" class='chat-collapsed'>
                   
                   
-                  
-                  
-                  
-                  
-                  
                     <!-- Chat section with template chat author and messages --> 
-                    <dl id="mini-chat-display" class="chat-messages template" style='display:none'>
-                       	<dt class='chat-author'>&lsaquo;<a href='player.php?player_id=' target='main'></a>&rsaquo;</dt>
-                       		<dd class='chat-message' title=''></dd>
+                    <dl id="mini-chat-display" class="chat-messages" style='display:none'>
+                       	<dt class='chat-author template'  style='display:none'>&lsaquo;<a href='player.php?player_id=' target='main'></a>&rsaquo;</dt>
+                       		<dd class='chat-message template' style='display:none'></dd>
                     </dl>
 
 
