@@ -30,3 +30,4 @@ before_script:
 script: ./scripts/travis/test
 
 after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && sudo apache2ctl --version && sudo apache2ctl -S && sudo tail -10 /var/log/apache2/error.log
+after_success: sudo apache2ctl -S && sudo tail -10 /var/log/apache2/error.log
