@@ -23,7 +23,7 @@ define('SYSTEM_MESSENGER_NAME', __SYSTEM_EMAIL_NAME__);
 define('ALERTS_EMAIL', __ALERTS_EMAIL__);
 define('TRAP_ERRORS', __TRAP_ERRORS__); // Whether to use the global error handler & oops page.
 
-define('TEMPLATE_LIBRARY_PATH', __TEMPLATE_LIBRARY_PATH__); // Template path for system install, /usr/share/php/smarty/Smarty.class.php, for example.
+define('TEMPLATE_LIBRARY_PATH', __TEMPLATE_LIBRARY_PATH__); // Path to system install, now in vendors somewhere.
 
 // For location-specific, can-be-dynamic-or-not constants.
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
