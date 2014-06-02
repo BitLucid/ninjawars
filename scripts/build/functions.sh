@@ -61,11 +61,11 @@ function check_package {
 
 function ensure_system {
 	# Note that travis itself require use of php fpm, annoyingly.
-	echo "Installing various packages, apache, php, etc"
+	echo "Installing various packages, apache, php, and php-fpm, etc"
 	sudo apt-get update -qq
-	sudo apt-get install libxml2-dev apache2 php5 php5-curl openssl php5-pgsql postgresql postgresql-contrib libpq-dev perl liblingua-en-inflect-perl libpcre3-dev
+	sudo apt-get install apache2 libapache2-mod-fastcgi php5 php5-curl php5-pgsql postgresql postgresql-contrib 
+	sudo apt-get install libxml2-dev openssl libpq-dev perl liblingua-en-inflect-perl libpcre3-dev
 
-	sudo apt-get install apache2 libapache2-mod-fastcgi
    # enable php-fpm
    sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
    sudo a2enmod rewrite actions fastcgi alias
@@ -156,9 +156,9 @@ function set_webserver {
 	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'`
 	cd /etc/apache2/sites-available
 	#replace __DIR__ in the apache conf with the appropriate directory.
-	sudo sh -c "sed 's,__DIR__,$DIR,' '$FULL_SCRIPT_DIR/tpl/nw.local.conf' > 'nw.local.conf'"
-	sudo a2ensite nw.local
+	sudo sh -c "sed 's,__DIR__,$DIR,' '$FULL_SCRIPT_DIR/tpl/nw.local.travis.fpm.conf' > 'nw.local.conf'"
 	sudo a2enmod rewrite actions fastcgi alias
+	sudo a2ensite nw.local
 	echo "Restarting apache service..."
 	sudo service apache2 restart
 	cd $DIR

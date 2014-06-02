@@ -11,7 +11,7 @@ define('OFFLINE', false);				// *** Controls if remote or local resources are us
 define('DEBUG', true);					// *** Shorter debugging constant name, set as false on live.
 define('PROFILE', false);				// *** Whether or not to do performance profiling
 define('DEBUG_ALL_ERRORS', true);	// *** Second debugging level, e.g. email debugging, only works when debug is also on.
-define('SERVER_ROOT', realpath(__DIR__).DIRECTORY_SEPARATOR);		// *** The root deployment directory of the game
+define('SERVER_ROOT', realpath(__DIR__).DIRECTORY_SEPARATOR);  // *** The /deploy/ directory
 // Generally for the install purposes the SERVER_ROOT should correspond to /srv/ninjawars/deploy 
 define('WEB_ROOT', "http://nw.local/");			// *** The base URL used to access the game
 define('ADMIN_EMAIL', "ninjawarsTchalvak@gmail.com");		// *** For logs/emailed errors.
@@ -25,7 +25,7 @@ define('SYSTEM_MESSENGER_NAME', SYSTEM_EMAIL_NAME);
 define('ALERTS_EMAIL', SUPPORT_EMAIL);
 define('TRAP_ERRORS', false); // Whether to use the global error handler & oops page.
 
-define('TEMPLATE_LIBRARY_PATH', 'smarty/Smarty.class.php'); // Template path for system install, /usr/share/php/smarty/Smarty.class.php, for example.
+define('TEMPLATE_LIBRARY_PATH', SERVER_ROOT.'vendor/smarty/smarty/distribution/libs/Smarty.class.php'); // Template path for system install, /usr/share/php/smarty/Smarty.class.php, for example.
 
 // For location-specific, can-be-dynamic-or-not constants.
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
