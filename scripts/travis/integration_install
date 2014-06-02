@@ -10,9 +10,9 @@ source $_DIR_/functions.sh
 
 # Emulate current system state...
 say_info "Creating database from dummy data"
-wget https://gist.github.com/toopay/5646031/raw/nw.sql
 psql -c 'create database nw;' -U postgres
-psql -f nw.sql -d nw -U postgres
+# Pull sql directly from scripts/build/tpl/nw_testing.sql
+psql -f $_DIR_/tpl/nw_testing.sql -d nw -U postgres
 psql -c "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';" -U postgres > .show_tables
 cat .show_tables
 

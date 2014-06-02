@@ -13,10 +13,17 @@ matrix:
   allow_failures:
     - php: 5.5
 
-before_script:
+before_install:
     - chmod ug+rx scripts/build/*.sh
     - chmod ug+rx scripts/travis/*
+    - git submodule init
+    - git submodule update
+
+install:
     - ./scripts/travis/$INSTALL
+
+
+before_script:
     - php -v
     - apache2ctl -S
 
