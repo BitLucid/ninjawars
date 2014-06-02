@@ -16,8 +16,8 @@ matrix:
 before_install:
     - chmod ug+rx scripts/build/*.sh
     - chmod ug+rx scripts/travis/*
-    - git submodule init
-    - git submodule update
+    #- git submodule init
+    #- git submodule update
 
 install:
     - ./scripts/travis/$INSTALL
