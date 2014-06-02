@@ -39,7 +39,7 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 SET search_path = public, pg_catalog;
 
 --
--- Name: skill_type; Type: TYPE; Schema: public; Owner: kzqai
+-- Name: skill_type; Type: TYPE; Schema: public; Owner: developers
 --
 
 CREATE TYPE skill_type AS ENUM (
@@ -51,7 +51,7 @@ CREATE TYPE skill_type AS ENUM (
 
 
 --
--- Name: array_accum(anyelement); Type: AGGREGATE; Schema: public; Owner: kzqai
+-- Name: array_accum(anyelement); Type: AGGREGATE; Schema: public; Owner: developers
 --
 
 CREATE AGGREGATE array_accum(anyelement) (
@@ -503,7 +503,7 @@ CREATE TABLE levelling_log (
 
 
 --
--- Name: login_attempts; Type: TABLE; Schema: public; Owner: kzqai; Tablespace: 
+-- Name: login_attempts; Type: TABLE; Schema: public; Owner: developers; Tablespace: 
 --
 
 CREATE TABLE login_attempts (
@@ -519,7 +519,7 @@ CREATE TABLE login_attempts (
 
 
 --
--- Name: login_attempts_attempt_id_seq; Type: SEQUENCE; Schema: public; Owner: kzqai
+-- Name: login_attempts_attempt_id_seq; Type: SEQUENCE; Schema: public; Owner: developers
 --
 
 CREATE SEQUENCE login_attempts_attempt_id_seq
@@ -532,7 +532,7 @@ CREATE SEQUENCE login_attempts_attempt_id_seq
 
 
 --
--- Name: login_attempts_attempt_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kzqai
+-- Name: login_attempts_attempt_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: developers
 --
 
 ALTER SEQUENCE login_attempts_attempt_id_seq OWNED BY login_attempts.attempt_id;
@@ -733,7 +733,7 @@ CREATE TABLE ppl_online (
 
 
 --
--- Name: rankings; Type: VIEW; Schema: public; Owner: kzqai
+-- Name: rankings; Type: VIEW; Schema: public; Owner: developers
 --
 
 CREATE VIEW rankings AS
@@ -809,7 +809,7 @@ ALTER SEQUENCE skill_skill_id_seq OWNED BY skill.skill_id;
 
 
 --
--- Name: test; Type: TABLE; Schema: public; Owner: kzqai; Tablespace: 
+-- Name: test; Type: TABLE; Schema: public; Owner: developers; Tablespace: 
 --
 
 CREATE TABLE test (
@@ -901,7 +901,7 @@ ALTER TABLE ONLY item ALTER COLUMN item_id SET DEFAULT nextval('item_item_id_seq
 
 
 --
--- Name: attempt_id; Type: DEFAULT; Schema: public; Owner: kzqai
+-- Name: attempt_id; Type: DEFAULT; Schema: public; Owner: developers
 --
 
 ALTER TABLE ONLY login_attempts ALTER COLUMN attempt_id SET DEFAULT nextval('login_attempts_attempt_id_seq'::regclass);
@@ -1223,7 +1223,7 @@ SELECT pg_catalog.setval('player_rank_rank_id_seq1', 921, true);
 --
 
 COPY players (player_id, uname, pname_backup, health, strength, gold, messages, kills, turns, verification_number, active, email, level, status, member, days, ip, bounty, created_date, resurrection_time, last_started_attack, energy, avatar_type, _class_id, ki, stamina, speed, karma, kills_gained, kills_used) FROM stdin;
-1000	Tchalvak	foobar	3896171	75	40634	I am staff!  It's true, check the staff page.\r\n\r\nEmail me there if you want a prompt response.  Or the official email, ninjawarslivebythesword@gmail.com\r\n\r\nIn the depths of my black little coal of a heart, there is a dying sun that burns on the fuel of my hatred for you.	72	33332247	1414	1	tchalvakspam@gmail.com	15	131074	0	0	127.0.0.1	5000	2009-11-03 12:04:53.223615	12	2013-05-17 12:39:56.863946	1000	1	1	463	75	75	23	126	105
+1000	Tchalvak	foobar	3896171	75	40634	I am staff!  Truth, check the staff page.\r\n\r\nEmail me there if you want a prompt response.  Or the official email, ninjawarslivebythesword@gmail.com\r\n\r\nIn the depths of my black little coal of a heart, there is a dying sun that burns on the fuel of my hatred for you.	72	33332247	1414	1	tchalvakspam@gmail.com	15	131074	0	0	127.0.0.1	5000	2009-11-03 12:04:53.223615	12	2013-05-17 12:39:56.863946	1000	1	1	463	75	75	23	126	105
 \.
 
 
@@ -1283,7 +1283,7 @@ SELECT pg_catalog.setval('skill_skill_id_seq', 16, true);
 
 
 --
--- Data for Name: test; Type: TABLE DATA; Schema: public; Owner: kzqai
+-- Data for Name: test; Type: TABLE DATA; Schema: public; Owner: developers
 --
 
 COPY test (id, value) FROM stdin;
@@ -1580,7 +1580,7 @@ ALTER TABLE ONLY skill
 
 
 --
--- Name: test_pkey; Type: CONSTRAINT; Schema: public; Owner: kzqai; Tablespace: 
+-- Name: test_pkey; Type: CONSTRAINT; Schema: public; Owner: developers; Tablespace: 
 --
 
 ALTER TABLE ONLY test
@@ -1886,14 +1886,14 @@ REVOKE ALL ON TABLE levelling_log FROM PUBLIC;
 
 
 --
--- Name: login_attempts; Type: ACL; Schema: public; Owner: kzqai
+-- Name: login_attempts; Type: ACL; Schema: public; Owner: developers
 --
 
 REVOKE ALL ON TABLE login_attempts FROM PUBLIC;
 
 
 --
--- Name: login_attempts_attempt_id_seq; Type: ACL; Schema: public; Owner: kzqai
+-- Name: login_attempts_attempt_id_seq; Type: ACL; Schema: public; Owner: developers
 --
 
 REVOKE ALL ON SEQUENCE login_attempts_attempt_id_seq FROM PUBLIC;
@@ -1970,7 +1970,7 @@ REVOKE ALL ON TABLE ppl_online FROM PUBLIC;
 
 
 --
--- Name: rankings; Type: ACL; Schema: public; Owner: kzqai
+-- Name: rankings; Type: ACL; Schema: public; Owner: developers
 --
 
 REVOKE ALL ON TABLE rankings FROM PUBLIC;
