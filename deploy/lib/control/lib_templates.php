@@ -46,6 +46,7 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
     // Updates the quickstat via javascript if requested.
     $quickstat = @$options['quickstat'];
     $quickstat = ($quickstat ? $quickstat : @$local_vars['quickstat']);
+    $body_classes = isset($local_vars['body_classes'])? $local_vars['body_classes'] : null;
 
 	$is_index = @$options['is_index'];
 
@@ -62,6 +63,7 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
 	$tpl->assign('quickstat', $quickstat);
 	$tpl->assign('is_index', $is_index);
 	$tpl->assign('json_public_char_info', ($public_char_info ? json_encode($public_char_info) : null));
+	$tpl->assign('body_classes', $body_classes);
 	$tpl->assign('main_template', $template);
 
 	return $tpl;
