@@ -58,7 +58,7 @@
 		  <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
 	{if !$logged_in}
-		<span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
+		<span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span id='solo-page-signup-link'><a href='signup.php' class='link-as-button'>Signup</a></span>
 	{/if}
     </div>
 {/if}{* End of check for index or quickstats to not display the appended logo for those *}

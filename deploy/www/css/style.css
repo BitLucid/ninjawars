@@ -1102,9 +1102,8 @@ td.playerTable {
 #solo-page-header {
 	display:none;
 }
-#solo-page-header #solo-page-login-link {
-	margin-top: auto;
-	margin-bottom: auto;
+#solo-page-login-link, #solo-page-signup-link {
+	margin-top: 1em; display:inline-block;
 }
 body.solo-page #solo-container {
 	padding: 10px 30px 10px 30px;
