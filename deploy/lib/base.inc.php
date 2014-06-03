@@ -6,8 +6,6 @@
  * @subpackage base
 **/
 
-///TODO - require_once is more expensive than require, and if we're smart about it, we could convert all of these to requires. Let's do that ***
-
 // Cut down on the global includes, use specific includes instead.
 
 require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/'))).'resources.php');
@@ -17,7 +15,7 @@ foreach (array('/usr/share/php', '/usr/share/php5') as $path) {
 	if (is_dir($path)) set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 }
 
-if (PROFILE) {
+if (defined('PROFILE') && PROFILE) {
 	$mtime = microtime();
 	$mtime = explode(" ",$mtime);
 	$mtime = $mtime[1] + $mtime[0];
@@ -49,7 +47,7 @@ require_once(TEMPLATE_LIBRARY_PATH); // Require smarty from /usr/share/php/smart
 require_once(LIB_ROOT.'control/lib_templates.php');
 
 // Development includes
-if (DEBUG) {
+if (defined('DEBUG') && DEBUG) {
 	require_once(LIB_ROOT.'control/lib_dev.php');
 }
 
@@ -75,4 +73,3 @@ require_once(LIB_ROOT.'control/lib_header.php');
 
 // Bootstrap to vendor
 require_once(VENDOR_ROOT.'autoload.php');
-?>
