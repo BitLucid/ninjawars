@@ -24,12 +24,16 @@ before_install:
 install:
     - ./scripts/travis/$INSTALL
 
-
-before_script:
+after_install:
     - php -v
     - sudo apache2ctl -S
+    - sudo cat /etc/apache2/sites-enabled/nw.local.conf
+    - sudo cat /etc/apache2/sites-available/nw.local.conf
+    - echo "Getting the title from nw.local"
+    - wget -qO- 'nw.local' | perl -l -0777 -ne 'print $1 if /<title.*?>\s*(.*?)\s*<\/title/si'
+
 
 script: ./scripts/travis/test
 
 after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && sudo apache2ctl --version && sudo apache2ctl -S && sudo tail -10 /var/log/apache2/error.log
-after_success: sudo apache2ctl -S && sudo tail -10 /var/log/apache2/error.log
+after_success: sudo apache2ctl -S && sudo tail -100 /var/log/apache2/error.log

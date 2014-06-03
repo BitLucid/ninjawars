@@ -167,6 +167,8 @@ function set_webserver {
 	mkdir -p $DIR"deploy/templates/compiled" $DIR"deploy/templates/cache"
 	sudo chown www-data $DIR"deploy/templates/compiled" $DIR"deploy/templates/cache"
 	sudo chmod 777 $DIR"deploy/templates/compiled" $DIR"deploy/templates/cache"
+	echo "Outputting the title of the nw.local page if found"
+	wget -qO- 'nw.local' | perl -l -0777 -ne 'print $1 if /<title.*?>\s*(.*?)\s*<\/title/si'
 	say_ok "Web-server configured!"
 }
 
