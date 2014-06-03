@@ -1,7 +1,7 @@
 <?php
 // These are the derived resource constants, which can be tracked.
 
-define('VENDOR_ROOT', realpath(SERVER_ROOT.'../vendor').DIRECTORY_SEPARATOR); // Composer vendors
+define('VENDOR_ROOT', SERVER_ROOT.'vendor/'); // Composer vendors
 
 define('ROOT', SERVER_ROOT);		// *** Another alias for the root.
 define('CONF_ROOT', SERVER_ROOT.'conf/'); // Configuration root.
@@ -30,4 +30,4 @@ define('UNAME_UPPER_LENGTH', 24);
 
 // Defines for avatar options.
 define('GRAVATAR', 1);
-?>
+
