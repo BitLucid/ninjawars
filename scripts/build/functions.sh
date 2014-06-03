@@ -61,20 +61,10 @@ function check_package {
 
 function ensure_system {
 	# Note that travis itself require use of php fpm, annoyingly.
-	echo "Installing various packages, apache, php, and php-fpm, etc"
+	echo "Just installing the various packages needed, apache, php, and php-fpm, etc"
 	sudo apt-get update -qq
 	sudo apt-get install apache2 libapache2-mod-fastcgi php5 php5-curl php5-pgsql postgresql postgresql-contrib 
 	sudo apt-get install libxml2-dev openssl libpq-dev perl liblingua-en-inflect-perl libpcre3-dev
-
-   # enable php-fpm
-   sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-   sudo a2enmod rewrite actions fastcgi alias
-   echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-   ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-   # configure apache virtual hosts
-   sudo cp -f build/tpl/nw.local.travis.fpm.conf /etc/apache2/sites-available/default
-   sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
-   sudo service apache2 restart
 }
 
 function ensure_phar {
@@ -151,17 +141,30 @@ function set_build {
 
 function set_webserver {
 	say_info "Setting up web-server"
-	sudo bash -c "echo '127.0.0.1       nw.local' >> /etc/hosts"
 	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # get current directory of the script, without trailing slash
 	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'` # remove /scripts/build/ to get the repo directory, has trailing slash.
-	echo "FULL_SCRIPT_DIR is found to be:", $FULL_SCRIPT_DIR, "DIR is found to be:", $DIR
-	echo "TRAVIS_BUILD_DIR is found to be:", $TRAVIS_BUILD_DIR
-	# replace %TRAVIS_BUILD_DIR in the template with the actual build directory, and then place that in apache as nw.local.conf
-	sudo sh -c "sed 's,%TRAVIS_BUILD_DIR%,$TRAVIS_BUILD_DIR,' '$TRAVIS_BUILD_DIR/scripts/build/tpl/nw.local.travis.fpm.conf' > '/etc/apache2/sites-available/test.local.conf'"
+	echo "FULL_SCRIPT_DIR is found to be:", $FULL_SCRIPT_DIR # e.g. /home/travis/BitLucid/ninjawars/scripts/build
+	echo "DIR is found to be:", $DIR # e.g. /home/travis/BitLucid/ninjawars/
+	echo "TRAVIS_BUILD_DIR is found to be:", $TRAVIS_BUILD_DIR #e.g. /home/travis/BitLucid/ninjawars
+	sudo bash -c "echo '127.0.0.1       nw.local' >> /etc/hosts"
+	# enable php-fpm
+	sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
 	sudo a2enmod rewrite actions fastcgi alias
-	sudo a2ensite nw.local
+	#cgi isn't usually passed pathinfo, but this allows it to get it.
+	echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+	~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+	# configure apache virtual hosts
+	CONF_FILE="$TRAVIS_BUILD_DIR/scripts/build/tpl/nw.local.travis.fpm.conf"
+	sudo cp -f $CONF_FILE /etc/apache2/sites-available/default
+	sudo sed -e "s,%TRAVIS_BUILD_DIR%,$TRAVIS_BUILD_DIR,g" --in-place /etc/apache2/sites-available/default
+
+
+
+
+	sudo a2ensite default
 	sudo service apache2 restart
 	cd $DIR
+	# Replace user and database name in resources
 	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," $DIRscripts/build/tpl/resources.php > $DIR"deploy/resources.php"
 	# Make the directories and give them all permissions
 	mkdir -p $DIR"deploy/templates/compiled" $DIR"deploy/templates/cache"

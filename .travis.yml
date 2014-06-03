@@ -29,8 +29,10 @@ after_install:
     - sudo apache2ctl -S
     - sudo cat /etc/apache2/sites-enabled/nw.local.conf
     - sudo cat /etc/apache2/sites-available/nw.local.conf
-    - echo "Getting the title from nw.local"
+    - echo "Getting the title from nw.local if possible"
     - wget -qO- 'nw.local' | perl -l -0777 -ne 'print $1 if /<title.*?>\s*(.*?)\s*<\/title/si'
+    - echo "Getting full html from http://nw.local if possible"
+    - curl http://nw.local
 
 
 script: ./scripts/travis/test
