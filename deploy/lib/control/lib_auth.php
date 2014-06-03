@@ -34,11 +34,11 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 			return false;
 		} else {
 			if($result->rowCount()>1){
-		// Just for later reference, check for duplicate usernames via: 
-		//select array_accum(uname), count(*) from players group by lower(trim(uname)) having count(*) > 1;
+			// Just for later reference, check for duplicate usernames via: 
+			//select array_accum(uname), count(*) from players group by lower(trim(uname)) having count(*) > 1;
 				error_log('Case-insensitive duplicate username found: '.$login);
 			}
-			return $result->fetch();
+			return $result->fetch(); // Success, return results.
 		}
 	} else {
 		// Update the last login failure timestamp.

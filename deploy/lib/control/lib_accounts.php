@@ -238,26 +238,40 @@ function create_account_and_ninja($send_name, $params=array()) {
 	return $error;
 }
 
-function confirm_player($player_name, $confirmation=0, $autoconfirm=false) {
+// Confirm a player if they completely match.
+function confirm_player($char_name, $confirmation=0, $autoconfirm=false) {
 	DatabaseConnection::getInstance();
 	// Preconfirmed or the email didn't send, so automatically confirm the player.
-	$require_confirm = ($autoconfirm ? '' : ' AND active = :confirmation ');
-	$up = "UPDATE players SET active = 1, verification_number = 55555 WHERE uname = :player $require_confirm";
-	$statement = DatabaseConnection::$pdo->prepare($up);
-	$statement->bindValue(':player', $player_name);
-	
-	$up = "UPDATE accounts set operational = true where account_id = (select _account_id from account_players join players on player_id = _player_id where uname = :uname)";
-	$statement2 = DatabaseConnection::$pdo->prepare($up);
-	$statement2->bindValue(':uname', $player_name);
-
-	if ($require_confirm) {
-		$statement->bindValue(':confirmation', $confirmation);
+	$require_confirm = ($autoconfirm ? '' : ' AND 
+			(account.verification_number = :confirmation OR players.verification_number = :confirmation2) ');
+	// Get the account_id for a player 
+	$params = array(':char_name'=>$char_name);
+	if($require_confirm){
+		$params[':confirmation'] = $confirmation;
+		$params[':confirmation2'] = $confirmation;
+	}
+	$info = query_row('select account_id, player_id from players 
+		join account_players on _player_id = player_id 
+		join accounts on account_id = _account_id 
+		 where uname = :char_name '.$require_confirm, 
+			$params);
+	if(empty($info)){
+		return false;
+	} else {
+		$account_id = $info['account_id'];
+		$player_id = $info['player_id'];
+		if(!$account_id || !$player_id){
+			return false;
+		}
 	}
 
-	$update_result = $statement->execute();
-	$statement2->execute();
-
-	return ($autoconfirm ? true : $update_result);
+	$up = query('update players set active = 1 where player_id = :player_id',
+		array(':player_id'=>$player_id));
+	
+	$up = "UPDATE accounts set operational = true, confirmed = 1 where account_id = :account_id";
+	$params = array(':account_id'=>$account_id);
+	$result = (bool) rco(query($up, $params));
+	return $result;
 }
 
 // Check for reserved or already in use by another player.
