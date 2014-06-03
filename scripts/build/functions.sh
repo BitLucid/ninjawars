@@ -152,17 +152,16 @@ function set_build {
 function set_webserver {
 	say_info "Setting up web-server"
 	sudo bash -c "echo '127.0.0.1       nw.local' >> /etc/hosts"
-	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'`
-	cd /etc/apache2/sites-available
-	#replace __DIR__ in the apache conf with the appropriate directory.
-	sudo sh -c "sed 's,__DIR__,$DIR,' '$FULL_SCRIPT_DIR/tpl/nw.local.travis.fpm.conf' > 'nw.local.conf'"
+	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # get current directory of the script
+	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'` # remove /scripts/build/ to get the repo directory.
+	#replace __DIR__ in the apache conf with the appropriate directory, then create nw.local.conf from it
+	sudo sh -c "sed 's,__DIR__,$DIR,' '$DIRscripts/build/tpl/nw.local.travis.fpm.conf' > '/etc/apache2/sites-available/nw.local.conf'"
 	sudo a2enmod rewrite actions fastcgi alias
 	sudo a2ensite nw.local
 	echo "Restarting apache service..."
 	sudo service apache2 restart
 	cd $DIR
-	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," $FULL_SCRIPT_DIR/tpl/resources.php > $DIR"deploy/resources.php"
+	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," $DIRscripts/build/tpl/resources.php > $DIR"deploy/resources.php"
 	mkdir -p $DIR"deploy/templates/compiled"
 	sudo chown www-data $DIR"deploy/templates/compiled"
 	sudo chmod 777 $DIR"deploy/templates/compiled"
