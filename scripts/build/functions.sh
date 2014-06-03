@@ -152,14 +152,14 @@ function set_build {
 function set_webserver {
 	say_info "Setting up web-server"
 	sudo bash -c "echo '127.0.0.1       nw.local' >> /etc/hosts"
-	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # get current directory of the script
-	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'` # remove /scripts/build/ to get the repo directory.
-	echo "FULL_SCRIPT_DIR is found to be:", $FULL_SCRIPT_DIR, "DIR is found to be:", $DIR, "TRAVIS_BUILD_DIR is found to be:", $TRAVIS_BUILD_DIR;
-	#replace __DIR__ in the apache conf with the appropriate directory, then create nw.local.conf from it
-	sudo sh -c "sed 's,__DIR__,$DIR,' '$DIRscripts/build/tpl/nw.local.travis.fpm.conf' > '/etc/apache2/sites-available/nw.local.conf'"
+	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # get current directory of the script, without trailing slash
+	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'` # remove /scripts/build/ to get the repo directory, has trailing slash.
+	echo "FULL_SCRIPT_DIR is found to be:", $FULL_SCRIPT_DIR, "DIR is found to be:", $DIR
+	echo "TRAVIS_BUILD_DIR is found to be:", $TRAVIS_BUILD_DIR
+	# replace %TRAVIS_BUILD_DIR in the template with the actual build directory, and then place that in apache as nw.local.conf
+	sudo sh -c "sed 's,%TRAVIS_BUILD_DIR%,$TRAVIS_BUILD_DIR,' '$TRAVIS_BUILD_DIR/scripts/build/tpl/nw.local.travis.fpm.conf' > '/etc/apache2/sites-available/test.local.conf'"
 	sudo a2enmod rewrite actions fastcgi alias
 	sudo a2ensite nw.local
-	echo "Restarting apache service..."
 	sudo service apache2 restart
 	cd $DIR
 	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," $DIRscripts/build/tpl/resources.php > $DIR"deploy/resources.php"
