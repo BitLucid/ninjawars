@@ -102,8 +102,8 @@ function ensure_selenium {
 	# Check java environment
 	say_info "Checking for Java..." "SELENIUM"
 
-	HAS_JAVA=$(file `which java javac` | grep /usr/bin/java: | awk '{split($0,array," ")} END{print array[1]}')
-	if [ "/usr/bin/java:" != $HAS_JAVA ]; then
+	HAS_JAVA=$(file $(which java javac) | grep /usr/bin/java: | awk '{split($0,array," ")} END{print array[1]}')
+	if [ "/usr/bin/java:" != "$HAS_JAVA" ]; then
 		say_warning "Java platform not found, installing..." "SELENIUM"
 		check_package openjdk-6-jre "SELENIUM"
 		check_package openjdk-6-jdk "SELENIUM"
@@ -142,7 +142,7 @@ function set_build {
 function set_webserver {
 	say_info "Setting up web-server"
 	FULL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # get current directory of the script, without trailing slash
-	DIR=`echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//'` # remove /scripts/build/ to get the repo directory, has trailing slash.
+	DIR="$(echo $FULL_SCRIPT_DIR | sed 's/scripts\/build//')" # remove /scripts/build/ to get the repo directory, has trailing slash.
 	echo "FULL_SCRIPT_DIR is found to be:", $FULL_SCRIPT_DIR # e.g. /home/travis/BitLucid/ninjawars/scripts/build
 	echo "DIR is found to be:", $DIR # e.g. /home/travis/BitLucid/ninjawars/
 	echo "TRAVIS_BUILD_DIR is found to be:", $TRAVIS_BUILD_DIR #e.g. /home/travis/BitLucid/ninjawars

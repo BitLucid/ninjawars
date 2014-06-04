@@ -37,5 +37,8 @@ after_install:
 
 script: ./scripts/travis/test
 
+#Just to limit noise in the test area, this is separated
+after_script: cat selenium_log.txt
+
 after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && sudo apache2ctl --version && sudo apache2ctl -S && sudo tail -10 /var/log/apache2/error.log
 after_success: sudo apache2ctl -S && sudo tail -100 /var/log/apache2/error.log
