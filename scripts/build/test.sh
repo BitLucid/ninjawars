@@ -57,4 +57,4 @@ sleep 5
 # Close selenium
 bash $_DIR_/selenium.sh stop
 say_ok "Completed!" "TEST"
-return $PHPUNIT_OUTCOME
+exit $PHPUNIT_OUTCOME
