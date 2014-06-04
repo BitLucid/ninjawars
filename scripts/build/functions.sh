@@ -154,7 +154,7 @@ function set_webserver {
 	echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 	~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 	# configure apache virtual hosts
-	CONF_FILE="$TRAVIS_BUILD_DIR/scripts/build/tpl/nw.local.travis.fpm.conf"
+	CONF_FILE=${TRAVIS_BUILD_DIR}/scripts/build/tpl/nw.local.travis.fpm.conf
 	sudo cp -f $CONF_FILE /etc/apache2/sites-available/default
 	sudo sed -e "s,%TRAVIS_BUILD_DIR%,$TRAVIS_BUILD_DIR,g" --in-place /etc/apache2/sites-available/default
 
@@ -165,11 +165,16 @@ function set_webserver {
 	sudo service apache2 restart
 	cd $DIR
 	# Replace user and database name in resources
-	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," $DIRscripts/build/tpl/resources.php > $DIR"deploy/resources.php"
+	sed "s,__DBUSER__,$1,;s,__DBNAME__,$2," ${DIR}scripts/build/tpl/resources.php > ${DIR}deploy/resources.php
+
+	if [[ ! -f ${DIR}deploy/resources.php ]]; then
+	    echo "Resources file not properly deployed!"
+	fi
+
 	# Make the directories and give them all permissions
-	mkdir -p $DIR"deploy/templates/compiled" $DIR"deploy/templates/cache"
-	sudo chown www-data $DIR"deploy/templates/compiled" $DIR"deploy/templates/cache"
-	sudo chmod 777 $DIR"deploy/templates/compiled" $DIR"deploy/templates/cache"
+	mkdir -p ${DIR}deploy/templates/compiled ${DIR}deploy/templates/cache
+	sudo chown www-data ${DIR}deploy/templates/compiled ${DIR}deploy/templates/cache
+	sudo chmod 777 ${DIR}deploy/templates/compiled ${DIR}deploy/templates/cache
 	echo "Outputting the title of the nw.local page if found"
 	wget -qO- 'nw.local' | perl -l -0777 -ne 'print $1 if /<title.*?>\s*(.*?)\s*<\/title/si'
 	say_ok "Web-server configured!"
