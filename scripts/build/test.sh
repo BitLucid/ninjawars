@@ -36,7 +36,10 @@ if [ ! -f ./vendor/bin/phpunit ]; then
     #phpunit not present, so force a fail
 fi
 say_info "Phpunit found." "TEST"
-./vendor/bin/phpunit #This pathing is problematic in the travis build.
+./vendor/bin/phpunit
+PHPUNIT_OUTCOME=$?
+
+
 
 # Clean up
 say_loud "Cleaning up..." "TEST"
@@ -54,3 +57,4 @@ sleep 5
 # Close selenium
 bash $_DIR_/selenium.sh stop
 say_ok "Completed!" "TEST"
+return $PHPUNIT_OUTCOME
