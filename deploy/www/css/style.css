@@ -1720,8 +1720,8 @@ a#skip-to-bottom{
 	padding-right: 5px;
 }
 .player-list-nav .current-page {
-	color:#1c1;
-	border:thin #1c1 solid;
+	color:gray;
+	border:thin #313 solid;
 }
 .player-list-nav .page-counter {
 	font-family:Verdana,Arial,san-serif;
