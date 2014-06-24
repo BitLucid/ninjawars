@@ -338,6 +338,8 @@ function pauseAccount($p_playerID) {
 	$statement = DatabaseConnection::$pdo->prepare($accountActiveQuery);
 	$statement->bindValue(':pid', $p_playerID);
 	$statement->execute();
+	$count = $statement->rowCount();
+	return ($count>0);
 }
 
 // Render a ninja inactive, until they log in.

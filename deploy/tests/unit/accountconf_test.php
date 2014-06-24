@@ -7,6 +7,9 @@ require_once(LIB_ROOT.'cleanup.inc.php'); // Profiling code at the moment.
 require_once(LIB_ROOT.'control/lib_auth.php');
 require_once(LIB_ROOT.'control/lib_accounts.php');
 
+// Note that this file has to have a suffix of ...test.php to be run.
+
+
 /* Account behavior
 
 When an account is created, it is initially unconfirmed, but "operational" (only used to delete unwanted accounts, spammers, etc)
@@ -120,6 +123,23 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	/**
 	 * group accountconf
 	**/
+    function testMakeSureThatNinjaAccountIsOperationalByDefault(){
+        $ninja_id = ninja_id($this->test_ninja_name);
+        $this->assertTrue(positive_int($ninja_id)>0);
+        $char_id = get_char_id($this->test_ninja_name);
+        $this->assertTrue(positive_int($char_id)>0);
+        $account_id = account_id_by_ninja_id(ninja_id($this->test_ninja_name));
+        $account_operational = query_item('select operational from accounts join account_players on account_id = _account_id
+        		where _player_id = :char_id', array(':char_id'=>$char_id));
+        $this->assertTrue($ninja_id == $char_id);
+        $this->assertTrue($account_id>0);
+        $this->assertTrue(positive_int($account_id)>0);
+        $this->assertTrue($account_operational, 'Account is not being set as operational by default when created');
+    }
+
+	/**
+	 * group accountconf
+	**/
     function testAttemptLoginOfUnconfirmedAccountShouldFail(){
         $char_id = ninja_id($this->test_ninja_name);
 		$res = @login_user($this->test_email, $this->test_password);
@@ -201,11 +221,17 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	 * group accountconf
 	**/
 	function testPauseAccountAndLoginShouldFail(){
-		confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
-		pauseAccount(get_char_id($this->test_ninja_name)); // Fully pause the account, make the operational bit = false
+		$confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+		$this->assertTrue((bool)$confirm_worked);
+		$char_id = get_char_id($this->test_ninja_name);
+		$paused = @pauseAccount($char_id); // Fully pause the account, make the operational bit = false
+		$this->assertTrue((bool)$paused);
+		$account_operational = query_item('select operational from accounts 
+				join account_players on account_id = _account_id where _player_id = :char_id',
+				array(':char_id'=>$char_id));
+		$this->assertFalse($account_operational);
 		$res = @login_user($this->test_email, $this->test_password);
-		debug($res);
-		$this->assertFalse($res['success']);
+		$this->assertFalse($res['success'], 'Login should not be successful when account is paused');
         $this->assertTrue(is_string($res['login_error']));
         $this->assertTrue((bool)$res['login_error']);
 	}

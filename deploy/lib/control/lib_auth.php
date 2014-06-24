@@ -20,7 +20,7 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 
 		$sql = "SELECT account_id, account_identity, uname, player_id, accounts.confirmed as confirmed,
 		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated,
-		    CASE WHEN accounts.operational THEN 1 ELSE 0 END AS active
+		    CASE WHEN accounts.operational THEN 1 ELSE 0 END AS operational
 			FROM accounts
 			JOIN account_players ON account_id = _account_id
 			JOIN players ON player_id = _player_id
@@ -79,7 +79,7 @@ function login_user($dirty_user, $p_pass) {
 	$data = authenticate($dirty_user, $p_pass);
 
 	if (is_array($data)) {
-		if ((bool)$data['authenticated']) {
+		if ((bool)$data['authenticated'] && (bool)$data['operational']) {
 			if ((bool)$data['confirmed']) {
 				_login_user($data['uname'], $data['player_id'], $data['account_id']);
 				// Block by ip list here, if necessary.
@@ -91,10 +91,8 @@ function login_user($dirty_user, $p_pass) {
 				$error = "You must confirm your account before logging in, check your email. <a href='/account_issues.php'>You can request another confirmation email here.</a>";
 			}
 		}
-
 		// The LOGIN FAILURE case occurs here, and is the default.
 	}
-
 	// *** Return array of return values ***
 	return array('success' => $success, 'login_error' => $error);
 }
@@ -209,12 +207,13 @@ function characters_are_linked($char_id, $char_2_id){
 	$account_id = get_char_account_id($char_id);
 	$account_2_id = get_char_account_id($char_2_id);
 	$char_1_info = char_info($char_id);
+	$char_1_active = @$char_1_info['active'];
 	$char_2_info = char_info($char_2_id);
+	$char_21_active = @$char_2_info['active'];
 	$server_ip = $_SERVER['SERVER_ADDR'];
 	if(empty($account_id) || empty($account_2_id) || empty($char_1_info) || empty($char_2_info)){
 		return false;
-	} elseif (isset($char_1_info['active']) && !$char_1_info['active'] ||
-		 isset($char_1_info['active']) && !$char_2_info['active']){
+	} elseif (!$char_1_active || !$char_2_active){
 		 // Not both of the potential clones are active.
 		return false;
 	} else {
