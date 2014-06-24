@@ -92,14 +92,14 @@
     			
 				<div class='details' style='width:66%;text-align:center;min-height:1.2em;font-size:1.1em;line-height:1.1;background-color:black;background-color:rgba(0,0,0,.8);margin-left:17%;margin-top:25%;border-radius:1em;padding:.3em 0 .3em'>
 				
-				  	{if $node.url}<a href='{$node.url|escape:'url'|escape}' target='main'>{/if}
+				  	{if isset($node.url) && $node.url}<a href='{$node.url|escape:'url'|escape}' target='main'>{/if}
 				{if isset($node.image)}
 				      <img src='/images/{$node.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
 				{/if}
 				      {if $node.url}Enter {/if}
 				      {$node.name|escape}
 
-				  	{if $node.url}</a>{/if}
+				  	{if isset($node.url) && $node.url}</a>{/if}
 				
 				</div>
 
@@ -110,25 +110,5 @@
 {/foreach}
 	</tbody>
 	</table>
-    
-
-{*    
-    <ul style='margin: .5em auto;text-align:center;font-size:1.3em;'>
-{foreach name="looploc" from=$locations item="loc" key="idx"}
-      <li style='padding-left:8px'>
-      	<a href='{$loc.url|escape}'>
-	{if isset($loc.tile_image)}
-	    <img src='/images/{$loc.tile_image}' alt='' style='max-width:100px;max-height:100px'>
-	{/if}
-	{if isset($loc.image)}
-          <img src='/images/{$loc.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
-	{/if}
-          {$loc.name|escape}
-      	</a>
-      </li>
-{/foreach}
-    </ul>
-  
-*}
 
 	</div> <!-- End of map div -->
