@@ -16,7 +16,12 @@ Update an out-of-date but already installed instance's system/composer libraries
 	cd /srv/ninjawars
 	sudo bash /srv/ninjawars/scripts/build/integration.sh
 
-Sync the database with latest info:
+Check the differences between your database and the latest schema:
+
+    propel diff
+
+Sync the database to make your version get updated with the latest table:
+
 	cd /srv/ninjawars
 	./scripts/sync
 
