@@ -1,4 +1,6 @@
 <?php
 
 // Test-suite bootstrap
-include_once realpath(dirname(__FILE__).'/../lib/base.inc.php');
+require_once(realpath(__DIR__).'/../resources.php');
+require_once(ROOT.'lib/base.inc.php');
+require_once(ROOT.'tests/test_account_lib.php');

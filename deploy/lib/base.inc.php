@@ -10,7 +10,7 @@
 
 require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/'))).'resources.php');
 
-// Add some default include path
+// Add some default include paths
 foreach (array('/usr/share/php', '/usr/share/php5') as $path) {
 	if (is_dir($path)) set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 }
@@ -43,7 +43,7 @@ require_once(LIB_ROOT.'control/Clan.php');
 require_once(LIB_ROOT.'control/lib_input.php');
 require_once(LIB_ROOT.'control/lib_output.php');
 require_once(LIB_ROOT.'data/lib_db.php');
-require_once(TEMPLATE_LIBRARY_PATH); // Require smarty from /usr/share/php/smarty/
+require_once(TEMPLATE_LIBRARY_PATH); // Require smarty
 require_once(LIB_ROOT.'control/lib_templates.php');
 
 // Development includes

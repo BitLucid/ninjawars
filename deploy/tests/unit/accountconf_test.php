@@ -37,65 +37,30 @@ Login should also update "last logged in" data, but that's probably better in a 
 
 
 class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
-	var $test_email = 'testphpunit@example.com';
-	var $test_password = 'password';
-	var $test_ninja_name = 'phpunit_ninja_name';
+	// These will be initialized in the test setup.
+	public $test_email = null;
+	public $test_password = null;
+	public $test_ninja_name = null;
+	public $previous_server_ip = null;
 
 	/**
 	 * group accountconf
 	**/
     function purge_test_accounts($test=null){
-        $test_ninja_name = $test? $test : 'phpunit_ninja_name';
-        $active_email = 'testphpunit@example.com';
-        $aid = get_char_id($test_ninja_name);
-        query('delete from players where player_id in 
-            (select player_id from players join account_players on _player_id = player_id 
-            	join accounts on _account_id = account_id 
-                where active_email = :active_email or account_identity= :ae2 or players.uname = :uname)', 
-            array(':active_email'=>$active_email, ':ae2'=>$active_email, ':uname'=>$test_ninja_name)); // Delete the players
-        query('delete from account_players where _account_id in (select account_id from accounts 
-                where active_email = :active_email or account_identity= :ae2)', // Delete the account_players linkage.
-            array(':active_email'=>$active_email, ':ae2'=>$active_email));
-        query('delete from accounts where active_email = :active_email or account_identity= :ae2', 
-        	array(':active_email'=>$active_email, ':ae2'=>$active_email)); // Finally, delete the test account.
-        
-        /*
-        For manual deletion:
-    delete from players where player_id in (select player_id from players left join account_players on _player_id = player_id left join accounts on _account_id = account_id where active_email = 'testphpunit@example.com' or account_identity='testphpunit@example.com');	
-    delete from account_players where _account_id in (select account_id from accounts where active_email = 'testphpunit@example.com' or account_identity='testphpunit@example.com');
-    delete from accounts where active_email = 'testphpunit@example.com' or account_identity='testphpunit@example.com';
-        */
+    	TestAccountCreateAndDestroy::purge_test_accounts($test);
+    	// Reusable static lib for use with various tests.
     }
 
 	/**
 	 * group accountconf
 	**/
 	function setUp(){
-		$prev = error_reporting(0);
-		session_start();
-		error_reporting($prev);
+		$this->previous_server_ip = @$_SERVER['REMOTE_ADDR'];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
-		$this->purge_test_accounts();
-		$found = get_char_id($this->test_ninja_name);
-        if($found){
-			throw new Exception('Test user already exists');
-		}
-		// Create test user, unconfirmed, whatever the default is for activity.
-		$preconfirm = true;
-		$confirm = rand(1000,9999); //generate confirmation code
-
-		// Use the function from lib_player
-		$player_params = array(
-			'send_email'    => $this->test_email
-			, 'send_pass'   => $this->test_password
-			, 'send_class'  => 'dragon'
-			, 'preconfirm'  => true
-			, 'confirm'     => $confirm
-			, 'referred_by' => 'ninjawars.net'
-		);
-		ob_start(); // Skip extra output
-		$error = create_account_and_ninja($this->test_ninja_name, $player_params);
-		ob_end_clean();
+		$this->test_email = TestAccountCreateAndDestroy::$test_email;
+		$this->test_password = TestAccountCreateAndDestroy::$test_password;
+		$this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
+		TestAccountCreateAndDestroy::create_testing_account();
 	}
 	
 	/**
@@ -104,6 +69,16 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	function tearDown(){
 		// Delete test user.
 		$this->purge_test_accounts($this->test_ninja_name);
+		$_SERVER['REMOTE_ADDR']=$this->previous_server_ip; // Reset remote addr to whatever it was before, just in case.
+    }
+
+	/**
+	 * group accountconf
+	**/
+    function testThatTestAccountLibActuallyWorksToCreateAndDestroyATestNinja(){
+    	TestAccountCreateAndDestroy::purge_test_accounts();
+    	$test_char_id = TestAccountCreateAndDestroy::create_testing_account();
+    	$this->assertTrue((bool)positive_int($test_char_id));
     }
 
 	/**
