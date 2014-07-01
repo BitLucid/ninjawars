@@ -89,6 +89,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		    		
 			// Check all the combat toggles to see if they should be checked on the profile page.
 			foreach($combat_skills as &$skill){
+				$skill['checked'] = 0;
 				if(isset($combat_toggles[$skill['skill_internal_name']]) && $combat_toggles[$skill['skill_internal_name']]){
 					$skill['checked'] = 1; // Save the setting associatively back to the original array.
 				}

@@ -1,18 +1,27 @@
-{if $message}
-    <div id='message-sent' class='ninja-notice'>Message sent</div>
-{/if}
-
 {literal}
 <style type='text/css'>
 label{
     color:cornflowerblue;
 }
+section.player-communications{
+    margin-bottom:1.5em;
+}
+article#player-titles{
+  font-size:larger;
+}
+#health-bar-container{
+  width:10em;display:inline-block;
+}
+#attacking-choices label{
+  margin-right:.5em;
+}
 </style>
-
-<script type='text/javascript'>
-$().ready(function(){$('#kick_form').submit(function(){return confirm('Are you sure you want to kick this player?');});});
-</script>
 {/literal}
+
+{if $message}
+    <div id='message-sent' class='ninja-notice'>Message sent</div>
+{/if}
+
 
 <div class='player-info'>
 
@@ -24,7 +33,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
       </a>
     </nav>
 
-  <article id='player-titles' class='centered' style='font-size:larger'>
+  <article id='player-titles' class='centered'>
 
 
     <span class='player-class {$target_class_theme|escape}'>
@@ -39,7 +48,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
     {include file="status_section.tpl" statuses=$status_list}
 
 	{if $char_info.health}
-    <span style='width:10em;display:inline-block;'>
+    <span id='health-bar-container'>
       {include file="health_bar.tpl" health=$player_info.health health_percent=$player_info.health_percent}
     </span>
 	{/if}
@@ -47,13 +56,6 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
   {include file="gravatar.tpl" gurl=$gravatar_url}
 
   </article>
-{literal}
-<style>
-#attacking-choices label{
-  margin-right:.5em;
-}
-</style>
-{/literal}
 
 
 {if !$self}
@@ -139,7 +141,7 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 
 {if is_logged_in() and !$self}
 
-  <section class='player-communications centered'  style='margin-bottom:1.5em'>
+  <section class='player-communications centered'>
 	<div>
       <form id='send_mail' action='player.php' method='get' name='send_mail'>
           <input type='hidden' name='target_id' value='{$player_info.player_id|escape}'>
@@ -215,3 +217,12 @@ $().ready(function(){$('#kick_form').submit(function(){return confirm('Are you s
 {/if}
 
   </div><!-- End player-info -->
+
+
+{literal}
+<script type='text/javascript'>
+$(function(){
+  $('#kick_form').submit(function(){return confirm('Are you sure you want to kick this player?');});
+});
+</script>
+{/literal}
