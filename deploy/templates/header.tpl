@@ -12,7 +12,7 @@
     <meta name="fb:page_id" property="fb:page_id" content="117346421617325" /><!-- Facebook tracker -->
 
 
-    <title>{$title|escape} - Ninja Wars Web Game</title>
+    <title>{$title|escape} - The Ninja Wars Ninja Game</title>
     <base href="{$smarty.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
     <!-- This css file now contains the mobile and print css files -->
     <link rel="stylesheet" type="text/css" href="css/style.css" media="Screen">
