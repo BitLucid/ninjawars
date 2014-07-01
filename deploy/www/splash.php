@@ -12,7 +12,7 @@ $member_counts = member_counts();
 $parts = array(
 	'main_src'           => 'main.php'
 	, 'body_classes'     => 'main-body splash'
-	, 'version'          => 'NW Version 1.7.5 2010.12.05'
+	, 'version'          => 'NW Version 1.8.0 2014.06.30'
 	, 'members'          => $member_counts['active']
 	, 'membersTotal'     => $member_counts['total']
 );
