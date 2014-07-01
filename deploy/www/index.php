@@ -11,7 +11,7 @@ if(!$char_id){
 	$username    = null;
 	$player_info = array();
 	$new_player = null;
-	$title       = 'Live by the Sword';
+	$title       = 'Live by the Shuriken';
 	$unread_message_count = 0;
 
 	// Get the actual values of the vars.
