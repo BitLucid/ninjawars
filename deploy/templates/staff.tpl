@@ -43,14 +43,14 @@ ul#social-networks li:before {
 <section id='contact-methods'>
 <p>
   The preferred method of contacting us with problems, ideas, or bugs with the game
-  is via the <a href="http://ninjawars.proboards.com">Ninjawars Forum</a>.
+  is via the <a href="http://ninjawars.proboards.com" rel='nofollow'>Ninjawars Forum</a>.
 </p>
 <p>
-  For private issues, including account/confirmation problems, email us at:   <a href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' <{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}>?subject=NinjaWars%20question:%20">{$smarty.const.SUPPORT_EMAIL_NAME|escape} &lt;{$smarty.const.SUPPORT_EMAIL|escape}&gt;
+  For private issues, including account/confirmation problems, email us at:   <a href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' &lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20" rel='nofollow'>{$smarty.const.SUPPORT_EMAIL_NAME|escape} &lt;{$smarty.const.SUPPORT_EMAIL|escape}&gt;
   </a>
 </p>
 <p>
-  <a id='contact-us-image-container' href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' <{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}>?subject=NinjaWars%20question:%20">
+  <a id='contact-us-image-container' href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' &lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20" rel='nofollow'>
   <img id='contact-us-image' src='images/contact_us.png' alt='Contact Staff'>
   </a>
 </p>
@@ -65,10 +65,10 @@ ul#social-networks li:before {
 <section class='developers'>
   <h3 class='subtitle'>Developers</h3>
   <div class='developer'>
-    <h5><a href="mailto:ninjawarsTchalvak@gmail.com">Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer</h5>
+    <h5><a href="mailto:ninjawarsTchalvak@gmail.com" rel='nofollow'>Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer</h5>
     <ul id='social-networks' class='thick'>
-      <li> <a target='_blank' rel='me' href="http://twitter.com/tchalvak"><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> @tchalvak on Twitter</a></li>
-      <li> <a target='_blank' rel='me' href="http://www.facebook.com/tchalvak"><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> tchalvak on Facebook</a> </li>
+      <li> <a target='_blank' rel='me' href="http://twitter.com/tchalvak" rel='nofollow'><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> @tchalvak on Twitter</a></li>
+      <li> <a target='_blank' rel='me' href="http://www.facebook.com/tchalvak" rel='nofollow'><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> tchalvak on Facebook</a> </li>
       <li><em> or tchalvak on AIM</em></li>
     </ul>
     <div><a class='expand-link'>More info &amp; bio</a></div>
@@ -87,10 +87,10 @@ ul#social-networks li:before {
       <img class='developer-image' alt='tchalvak' src="images/tchalvak-smaller.jpg">
 
       <div>
-        <a href="http://www.odesk.com/referrals/track/rronalds?redir=http%3A%2F%2Fwww.odesk.com%2Fusers%2F%7E%7E46ddd5d105882453"><img src="http://www.odesk.com/images/banners/banner_provider_468x60.gif" alt="The On Demand Global Workforce - oDesk" width="468" height="60"></a>
+        <a href="http://www.odesk.com/referrals/track/rronalds?redir=http%3A%2F%2Fwww.odesk.com%2Fusers%2F%7E%7E46ddd5d105882453" rel='nofollow'><img src="http://www.odesk.com/images/banners/banner_provider_468x60.gif" alt="The On Demand Global Workforce - oDesk" width="468" height="60"></a>
       </div>
 
-      <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Ronalds</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" title="Facebook badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Facebook badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Ronalds" style="border: 0px;"></a><!-- Facebook Badge END --></div>
+      <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" rel='nofollow' title="Roy Ronalds" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Ronalds</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" rel='nofollow' title="Facebook badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Facebook badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Ronalds" style="border: 0px;"></a><!-- Facebook Badge END --></div>
     </div><!-- End of .developer-info -->
   </div>
   <div class='developer'>
@@ -116,10 +116,10 @@ ul#social-networks li:before {
     <li>
       Alegion - the original for the Koi photograph Background - <a href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a>
     </li>
-    <li> Social networking icons by: <a href='http://www.fasticon.com'>FastIcon.com</a></li>
+    <li> Social networking icons by: <a href='http://www.fasticon.com' rel='nofollow'>FastIcon.com</a></li>
     <li>
       DNS services provided by:
-      <a class='external-link' href="http://freedns.afraid.org">Free DNS</a>
+      <a class='external-link' href="http://freedns.afraid.org" rel='nofollow'>Free DNS</a>
       and <a class="external-link" href="http://dns.he.net">Hurricane Electric</a>
     </li>
   </ul>
@@ -128,7 +128,7 @@ ul#social-networks li:before {
 <div id='open-source-repository'>
   <h3 class='subtitle'>Contributing to Ninjawars</h3>
 
-  <p>Want to get involved?  You can hack away at the code on github and suggest changes or ask any questions on the <a href="http://ninjawars.proboards19.com">Ninjawars Forum</a>.</p>
+  <p>Want to get involved?  You can hack away at the code on github and suggest changes or ask any questions on the <a href="http://ninjawars.proboards19.com" rel='nofollow'>Ninjawars Forum</a>.</p>
   <p> Ninjawars is open source, with the source code downloadable and able to be openly contributed to on github at:
     <a class='external' target='_blank' href="https://github.com/BitLucid/ninjawars/">github.com/BitLucid/ninjawars</a>
   </p>
