@@ -9,6 +9,18 @@
 .splash .doshin-image{
   width:8px;height:8px;
 }
+#top-logo h1{
+  margin:0;padding:0;background-color:transparent;
+}
+#feedback-link a{
+  font-size:2em;
+}
+#news-housing{
+  height:80px;
+}
+#chat-housing{
+  height:250px;
+}
 {/literal}
 </style>
     <!-- Version {$version} -->
@@ -27,7 +39,7 @@
 		  <span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
 		</nav>
 		<nav id='top-logo'>
-          <a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='NinjaWars' width='200' height='100'></a>
+          <h1><a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='NinjaWars' width='200' height='100'></a></h1>
 		</nav>
       
         <nav role='navigation' id='subcategory-bar' class='navigation'>
@@ -56,21 +68,20 @@
 		<div id='contact-us' class='thick'>
 		  <a href='staff.php' target='main' class='font-shangrila'>Contact Staff</a>
 		</div>
-		
 
 		<div id='feedback-link'>
-		  <a style='font-size:2em' class='font-shangrila extLink' href="http://ninjawars.proboards.com/index.cgi?action=display&amp;board=suggcomp&amp;thread=1174" target="_blank">Give Feedback</a>
+		  <a class='font-shangrila extLink' rel='nofollow' href="http://ninjawars.proboards.com/index.cgi?action=display&amp;board=suggcomp&amp;thread=1174" target="_blank">Give Feedback</a>
 		</div>
 
   {if isset($show_news) and $show_news}
-      <div id='news-housing' style='height:80px;'>
+      <div id='news-housing'>
         
 {include file="mini-news.section.tpl"}
 
     </div><!-- End of news-housing -->
   {/if}
         
-      <div id='chat-housing' style='height:250px;'>
+      <div id='chat-housing'>
         
 {include file="mini-chat.section.tpl"}
 
