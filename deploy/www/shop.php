@@ -11,9 +11,11 @@ if ($error = init($private, $alive)) {
 $description       = "";
 $in_purchase       = in('purchase');
 $in_quantity       = in('quantity');
-$item              = in('item');
-$item_info        = item_info(item_id_from_display_name($item));
-$item_identity = $item_info['item_internal_name'];
+$dirty_item 	   = in('item');
+$item              = strlen($dirty_item > 2)? $dirty_item : null;
+$item_id 		   = item_id_from_display_name($item);
+$item_info        = positive_int($item_id)? item_info(item_id_from_display_name($item)) : null;
+$item_identity = @$item_info['item_internal_name'];
 $grammar           = "";
 $username          = self_name();
 $char_id           = self_char_id();
@@ -52,8 +54,14 @@ if(0>$quantity){ // Negative quantity requested
 		} elseif(!$char_id || !$item_identity || !$quantity){
 			$no_funny_business = true;
 		} else { // Has enough gold.
+			try{
 			add_item($char_id, $item_identity, $quantity);
 			subtract_gold($char_id, $current_item_cost);
+			} catch (Exception $e){
+				$invalid_item = $e->getMessage();
+				error_log('Invalid Item attempted :'.$invalid_item);
+				$no_funny_business = true;
+			}
 			$gold = get_gold($char_id);
 		}
 	}
