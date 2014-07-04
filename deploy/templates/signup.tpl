@@ -1,10 +1,3 @@
-{if !$submit_successful}
-	<h1>Become a Ninja!</h1>
-{else}
-	<h1>You are almost ready to be a ninja!</h1>
-{/if}
-
-{if $submitted} {* Display theresults of the submitted signup form. *}
 <style type='text/css'>
 {literal}
 .green-border{
@@ -12,9 +5,21 @@
 	padding:.2em;
 	margin: .3em auto;
 }
+.solo-page form#signup{
+	font-size:larger;padding-left:1em; padding-right:1em;
+}
 
 {/literal}
 </style>
+
+{if !$submit_successful}
+	<h1>Become a Ninja!</h1>
+{else}
+	<h1>You are almost ready to be a ninja!</h1>
+{/if}
+
+{if $submitted} {* Display theresults of the submitted signup form. *}
+
 <div id='signup-process'>
 	<span class='green-border' style='display:inline-block;'>Your Choices</span>
     <div class='green-border'>
@@ -144,6 +149,9 @@
 	</form>
 
 	<h3>Problems?</h3>
+
+	<section class='glassbox'>
+
 	<p>
 	Lost Your Password ? <a href="account_issues.php">Resend Account Info Email</a> / Didn't get your confirmation code ? <a href="account_issues.php">Resend Confirmation Email</a>
 	</p>
@@ -154,4 +162,14 @@
 	<p>
 	  Otherwise, just <a href='staff.php'>Contact Us</a>.
 	</p>
+
+	</section>
 {/if}
+
+{literal}
+<script>
+if (top.location != location) { // Framebreak on the signup page as well.
+  top.location.href = document.location.href ;
+}
+</script>
+{/literal}
