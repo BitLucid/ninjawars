@@ -15,9 +15,9 @@ class Page_Tests extends PHPUnit_Extensions_Selenium2TestCase {
 		// Change below url to your servername, eg : $this->url('http://nw.local/');
 		$this->url('http://nw.local/');
 		$title = $this->title();
-		$in_string = (false !== strpos($title, 'Live by the Sword'));
+		$in_string = (false !== strpos($title, 'Live by the Shuriken'));
 		$this->assertNotEmpty($title, 'Title should not be empty');
-		$this->assertTrue($in_string, 'Title should contain live by the sword');
+		$this->assertTrue($in_string, 'Title should contain live by the shuriken');
 	}
 
 	public function testLoginPageLoadsAndHasTitle()
