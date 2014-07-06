@@ -15,17 +15,22 @@
       into your browser.
     </p>
 
+      <h3>Account Info</h3>
     <p>
-      If you require help use the forums at {$smarty.const.WEB_ROOT}forum/<br>
-      or email the site administrators at: {$smarty.const.SUPPORT_EMAIL}
+      Email/Username: <b>{$signup_email}</b><br>
+      Password: <b>***yourpassword***</b>
+    </p>
+
+      <h3>Ninja Info</h3>
+    <p>
+      Ninja Name: <b>{$send_name}</b><br>
+      Ninja Type: <b>{$send_class} Ninja</b><br>
+      Level: 1
     </p>
 
     <p>
-      <b>Account Info</b><br>
-      Username: {$send_name}<br>
-      Level: 1<br>
-      Password: ***yourpassword***<br>
-      Class: {$send_class} Ninja
+      If you require help use the forums at {$smarty.const.WEB_ROOT}forum/<br>
+      or email the site administrators at: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>
     </p>
 
 {include file="email.footer.tpl"}
