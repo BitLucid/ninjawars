@@ -1,69 +1,60 @@
 <style type='text/css'>
 {literal}
 /* Don't display the h1 when housed within the iframe */
-.main-h1{
+.main-h1, .main-h2{
 	display:none;
 }
-.solo-page .main-h1 {
+.solo-page .main-h1, .solo-page .main-h2 {
 	display:block;
 }
-
-{/literal}
-</style>
-<h1 class='main-h1'>Live by the Sword!</h1>
-
-
-
-<style>
-{literal}
 #faqs {
-	margin: .5em auto 1em;
-	padding: .2em;
-	width: 90%;
+  margin: .5em auto 1em;
+  padding: .2em;
+  width: 90%;
 }
 #faqs p{
-	border: 1px solid #7BA9AD;
-	border-bottom-left-radius: 10px 10px;
-	border-bottom-right-radius: 10px 10px;
-	border-top-left-radius: 10px 10px;
-	border-top-right-radius: 10px 10px;
-	padding: 1em;
+  border: 1px solid #7BA9AD;
+  border-bottom-left-radius: 10px 10px;
+  border-bottom-right-radius: 10px 10px;
+  border-top-left-radius: 10px 10px;
+  border-top-right-radius: 10px 10px;
+  padding: 1em;
 }
 #faqs .notice{
-	font-style:italic;
+  font-style:italic;
 }
 #faqs .brownHeading{
-	font-variant:small-caps;
+  font-variant:small-caps;
 }
 /*
 #scrollable-viewport {
-	overflow:scroll;
-	max-height:13em;
-	overflow-x:hidden;
-	padding:1em;
+  overflow:scroll;
+  max-height:13em;
+  overflow-x:hidden;
+  padding:1em;
 }*/
 #progression {
-	text-align:center;
-	margin: 0 0 .5em 0;
-	font-size:1.7em;
-	font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
-	/*font-family: Impact, sans-serif;*/
-	/*font-variant: small-caps;*/
+  text-align:center;
+  margin: 0 0 .5em 0;
+  font-size:1.7em;
+  font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
+  /*font-family: Impact, sans-serif;*/
+  /*font-variant: small-caps;*/
 }
 #progression a {
-	font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
+  font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
 }
 #later-progression a{
     color:whitesmoke;
 }
 #progression .down-arrow {
-	height:35px;
+  height:35px;
 }
 #progression p {
-	margin: 0;
+  margin: 0;
 }
 #progression p:first-child {
-	font-size:larger;
+  font-size:larger;
 }
 #join-link{
     color:#66CCFF;
@@ -85,11 +76,12 @@
 {/literal}
 </style>
 
-{literal}
-<script>        
+<h1 class='main-h1'>The Ninja Game at Ninjawars.net</h1>
+<h2 class='main-h2'>Live by the Shuriken!</h2>
 
-</script>
-{/literal}
+
+
+
 
 <div id='progression'>
 {if !$user_id}
@@ -186,9 +178,9 @@ if(!show_faqs){
   showfaqsLink.hide(); // Otherwise, hide the show-hide link.
 }
 $(function () {
-  showfaqsLink.click(function(){
-    faqsArea.toggle();
-    $this.delay('slow').slideToggle();
+  showfaqsLink.click(function(event){
+    faqsArea.slideToggle('slow');
+    $(event.target).toggle();
     return false;
   });
 
