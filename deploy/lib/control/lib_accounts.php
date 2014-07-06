@@ -21,10 +21,20 @@ function self_account_info(){
 	return account_info(account_id());
 }
 
+// Get the account linked with a character.
 function account_info_by_char_id($char_id){
-	return query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', array(':char_id'=>array($char_id, PDO::PARAM_INT)));
+	return query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', 
+		array(':char_id'=>array($char_id, PDO::PARAM_INT)));
 }
 
+// Get the account linked with an identity email.
+function account_info_by_identity($identity_email){
+	return query_row('select * from accounts where account_identity = :identity_email',
+		array(':identity_email'=>$identity_email));
+}
+
+
+// Check that the account info is acceptably valid.
 function validate_account($ninja_id, $email, $password_to_hash) {
 	return ($ninja_id && $email && $password_to_hash
 			&& is_numeric($type) && get_ninja_name($ninja_id) && !account_by_email($email)
@@ -37,7 +47,6 @@ function email_fits_pattern($p_email) {
 
 function validate_email($email) {
 	$error = null;
-
 	if (FALSE) {
 		// CURRENTLY NO BLOCKED EMAIL SERVICES
 		//strstr($send_email, '@') == '@aol.com' || strstr($send_email, '@') == '@netscape.com' || strstr($send_email, '@') == '@aim.com'
@@ -139,14 +148,14 @@ function preconfirm_some_emails($email) {
 
 	// Blacklist only exists because emails beyond the first might not get through if we don't confirm.
 	foreach ($blacklisted_by AS $loop_domain) {
-		if (strpos(strtolower($email), $loop_domain)) {
-			return 1;
+		if (strpos(strtolower($email), $loop_domain) !== false) {
+			return 0;
 		}
 	}
 
 	foreach ($whitelisted_by AS $loop_domain) {
-		if (strpos(strtolower($email), $loop_domain)) {
-			return 0;
+		if (strpos(strtolower($email), $loop_domain) !== false) {
+			return 1;
 		}
 	}
 
@@ -196,6 +205,7 @@ function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $
 	$_subject = 'NinjaWars Account Sign Up';
 	$_body = render_template('signup_email_body.tpl', array(
 			'send_name'       => $signup_name
+			, 'signup_email'       => $signup_email
 			, 'confirm'       => $confirm
 			, 'send_class'    => $class_display
 			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
@@ -296,14 +306,17 @@ function validate_signup_phase0($enteredName, $enteredEmail, $class_identity, $e
 	return ($enteredName && $enteredPass && $enteredEmail && $class_identity);
 }
 
+/*
+// I just replaced these with their appropriate validate_username() or validate_password calls.
 function validate_signup_phase1($enteredName) {
 	return validate_username($enteredName);
 }
 
+Just replaced this the validate_password function.
 function validate_signup_phase2($enteredPass) {
 	// Validate the password!
-	return (false && validate_password($enteredPass));
-}
+	return validate_password($enteredPass);
+}*/
 
 
 function validate_signup_phase3($enteredName, $enteredEmail) {
@@ -365,4 +378,3 @@ function changeEmail($p_playerID, $p_newEmail) {
 	$statement->bindValue(':email', strtolower($p_newEmail));
 	$statement->execute();
 }
-?>

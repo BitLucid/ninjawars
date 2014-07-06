@@ -38,13 +38,13 @@ if ($submitted) {
 		if (!validate_signup_phase0($enteredName, $enteredEmail, $enteredClass, $enteredPass)) {
 			$error = 'Phase 1 Incomplete: You did not correctly fill out all the necessary information.';
 		} else {
-			$phase1 = validate_signup_phase1($enteredName);
+			$phase1 = validate_username($enteredName);
 			if ($phase1) {
 				$error = $phase1;
 			} else {
 				$completedPhase = 1;
 
-				$phase2 = validate_signup_phase2($enteredPass);
+				$phase2 = validate_password($enteredPass);
 				if ($phase2) {
 					$error = $phase2;
 				} else {
@@ -126,7 +126,9 @@ display_page(
 	, get_certain_vars(get_defined_vars(), array('classes')) // *** Page Variables ***
 	, array( // *** Page Options ***
 		'quickstat' => false
-	)
-);
-}
-?>
+		)
+	);
+
+
+} // End of display error check.
+

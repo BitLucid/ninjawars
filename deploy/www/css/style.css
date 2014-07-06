@@ -815,17 +815,8 @@ form#signup label {
 	text-align:right;
 	display:block;
 	font-weight:bolder;
-	height: 3em;
-	width: 7.5em;
+	min-width: 8em;
 }
-/*
-form#signup input, form#signup select {
-	display:inline-block;
-	margin-right: 1em;
-	margin-left: 1em;
-	color:#66cc66;
-	background-color:black;
-}*/
 form#signup input:focus, form#signup select:focus {
 	color:black;
 	background-color:white;
@@ -2430,11 +2421,9 @@ select option #blue-class-select {
 .text-centered{
   text-align:center;
 }
-.inline-block{
-  display:inline-block;
-}
 .stamp{
-  background-color:honeydew;border:none;border-left:1px dashed gray;border-right:1px dashed gray;border-radius:1em;padding:.3em 1em;
+  background-color:rgba(100, 100, 100, 0.5);color:ghostwhite;border-left:medium dashed gray;border-right:medium dashed gray;border-radius:0.7em;
+  padding:.3em 1em;
 }
 .top-and-bottom-stamp{
   border-top:1px dashed #cccccc; border-bottom:1px dashed #cccccc;padding:.5em;
@@ -2450,18 +2439,6 @@ select option #blue-class-select {
 .overstated-heading{
    font-size:larger;font-weight:bolder; background-color:#633816;color:ghostwhite;
    padding:5px; border-top:1px solid #000000; border-bottom:1px solid #000000;text-align:center;
-}
-.on-sale, .price-flag{
-  color:#3C763D; font-weight:bold;
-}
-.item-sale, .on-sale{
-  font-size:larger; color:crimson; background-color:pink; display:inline-block; border-radius:.3em; padding:0 0.2em;
-}
-#price-note{
-  background-color: #DFF0D8; border-color: #D6E9C6; color: #3C763D; display:inline-block;padding:0 0.2em;border-radius:0.2em;
-}
-.current-price{
-  color:#333; font-weight:bold; text-shadow: 0 0 2px white;
 }
 
 .bold-banner{
@@ -2526,6 +2503,9 @@ hr.edge-fade { /* Gradient transparent - color - transparent */
 
 .block {
   display: block;
+}
+.inline-block{
+  display:inline-block;
 }
 
 .light-background{

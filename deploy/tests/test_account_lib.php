@@ -33,7 +33,7 @@ delete from accounts where active_email = 'testphpunit@example.com' or account_i
 }
 
 // Create a testing account
-public static function create_testing_account(){
+public static function create_testing_account($confirm=false){
 	@session_start();
 	$previous_server = @$_SERVER['REMOTE_ADDR'];
 	$_SERVER['REMOTE_ADDR']='127.0.0.1';
@@ -58,9 +58,19 @@ public static function create_testing_account(){
 	ob_start(); // Skip extra output
 	$error = create_account_and_ninja(TestAccountCreateAndDestroy::$test_ninja_name, $player_params);
 	ob_end_clean();
+	if($confirm){
+		$confirmed = confirm_player(TestAccountCreateAndDestroy::$test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+	}
 	$_SERVER['REMOTE_ADDR']=$previous_server; // Reset remote addr to whatever it was before.
 	$char_id = get_char_id(TestAccountCreateAndDestroy::$test_ninja_name);
 	return $char_id;
+}
+
+// Convenience wrapper for the above, but confirms the account and returns the account id.
+public static function create_complete_test_account_and_return_id(){
+	$char_id = TestAccountCreateAndDestroy::create_testing_account($confirm=true);
+	$account_info = account_info_by_char_id($char_id);
+	return $account_info['account_id'];
 }
 
 }
