@@ -31,6 +31,8 @@
     <column name="account_id" phpName="AccountId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="account_identity" phpName="AccountIdentity" type="LONGVARCHAR" required="true"/>
     <column name="phash" phpName="Phash" type="LONGVARCHAR" required="false"/>
+    <column name="oauth_provider" phpName="OauthProvider" type="VARCHAR" size="100" required="false"/>
+    <column name="oauth_id" phpName="OauthId" type="VARCHAR" size="100" required="false"/>
     <column name="active_email" phpName="ActiveEmail" type="LONGVARCHAR" required="true"/>
     <column name="type" phpName="Type" type="INTEGER" required="false" defaultValue="0"/>
     <column name="operational" phpName="Operational" type="BOOLEAN" required="false" defaultValue="true"/>
@@ -200,7 +202,7 @@
     <column name="self_use" phpName="SelfUse" type="BOOLEAN" required="false" defaultValue="false"/>
     <column name="plural" phpName="Plural" type="VARCHAR" size="20" required="false"/>
     <column name="other_usable" phpName="OtherUsable" type="BOOLEAN" required="false" defaultValue="false"/>
-    <column name="traits" phpName="Traits" type="VARCHAR" size="250" required="false"/>
+    <column name="traits" phpName="Traits" type="VARCHAR" size="250" required="false" defaultValue=""/>
     <unique name="item_item_display_name_key">
       <unique-column name="item_display_name"/>
     </unique>

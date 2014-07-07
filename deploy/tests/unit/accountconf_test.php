@@ -46,20 +46,13 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	/**
 	 * group accountconf
 	**/
-    function purge_test_accounts($test=null){
-    	TestAccountCreateAndDestroy::purge_test_accounts($test);
-    	// Reusable static lib for use with various tests.
-    }
-
-	/**
-	 * group accountconf
-	**/
 	function setUp(){
 		$this->previous_server_ip = @$_SERVER['REMOTE_ADDR'];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
-		$this->test_email = TestAccountCreateAndDestroy::$test_email;
+		$this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com probably
 		$this->test_password = TestAccountCreateAndDestroy::$test_password;
 		$this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
+		TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
 		TestAccountCreateAndDestroy::create_testing_account();
 	}
 	
@@ -68,7 +61,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	**/
 	function tearDown(){
 		// Delete test user.
-		$this->purge_test_accounts($this->test_ninja_name);
+		TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
 		$_SERVER['REMOTE_ADDR']=$this->previous_server_ip; // Reset remote addr to whatever it was before, just in case.
     }
 
@@ -79,6 +72,14 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     	TestAccountCreateAndDestroy::purge_test_accounts();
     	$test_char_id = TestAccountCreateAndDestroy::create_testing_account();
     	$this->assertTrue((bool)positive_int($test_char_id));
+    }
+
+	/**
+	 * group accountconf
+	**/
+    function testCreateFullAccountConfirmAndReturnAccountId(){
+    	$account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
+    	$this->assertTrue((bool)positive_int($account_id));
     }
 
 	/**
@@ -116,8 +117,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	 * group accountconf
 	**/
     function testAttemptLoginOfUnconfirmedAccountShouldFail(){
-        $char_id = ninja_id($this->test_ninja_name);
-		$res = @login_user($this->test_email, $this->test_password);
+    	$email ='noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
+    	$char_id = TestAccountCreateAndDestroy::create_testing_account($confirm=false, $email);
+		$res = @login_user($email, $this->test_password);
 		$this->assertFalse($res['success']);
 		$this->assertTrue(is_string($res['login_error']));
         $this->assertTrue((bool)$res['login_error'], 'No error returned: '.$res['login_error']);
@@ -212,5 +214,20 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	}
 	
 	// Test that ninja inactivation should make them not-attackable.
+
+	/**
+	 * group accountconf
+	**/
+	function testPreconfirmEmailsReturnRightResultForGmailHotmailAndWildcardEmails(){
+		$preconfirm_emails = ['test@gmail.com', 'test@example.com', 'test@russia.com'];
+		$no_preconfirm_emails = ['test@hotmail.com', "O'brian@yahoo.com"];
+		foreach($preconfirm_emails as $email){
+			$this->assertTrue((bool)preconfirm_some_emails($email));
+		}
+		foreach($no_preconfirm_emails as $email){
+			$this->assertFalse((bool)preconfirm_some_emails($email));
+		}
+	}
+
 }
 

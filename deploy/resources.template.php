@@ -21,6 +21,11 @@ define('SYSTEM_EMAIL_NAME', __SYSTEM_EMAIL_NAME__);
 define('SYSTEM_MESSENGER_EMAIL', __SYSTEM_EMAIL__);
 define('SYSTEM_MESSENGER_NAME', __SYSTEM_EMAIL_NAME__);
 define('ALERTS_EMAIL', __ALERTS_EMAIL__);
+
+define('FACEBOOK_APP_ID', __FACEBOOK_APP_ID__); // Non-confidential id for the facebook app
+define('FACEBOOK_APP_SECRET', __FACEBOOK_APP_SECRET__); // Secret string for facebook login auth stuff.
+
+
 define('TRAP_ERRORS', __TRAP_ERRORS__); // Whether to use the global error handler & oops page.
 
 define('TEMPLATE_LIBRARY_PATH', __TEMPLATE_LIBRARY_PATH__); // Path to system install, now in vendors somewhere.

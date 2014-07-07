@@ -134,6 +134,28 @@ function perform_login_if_requested($is_logged_in, $login_requested, $settings){
 	return array($is_logged_in, $logged_out, $referrer, $stored_username);
 }
 
+
+// Get the account that matches an oauth provider.
+function find_account_info_by_oauth($id, $provider='facebook'){
+	$id = positive_int($id);
+	$account_info = query_row('select * from accounts where oauth_id = :id and oauth_provider = :provider 
+		order by operational, type, created_date asc limit 1',
+		array(':id'=>$id, ':provider'=>$provider));
+	if(empty($account_info) || !$account_info['account_id']){
+		return false;
+	} else {
+		return $account_info;
+	}
+}
+
+// Add oauth to an account.
+function add_oauth_to_account($account_id, $oauth_id, $oauth_provider='facebook'){
+	$res = query('update accounts set oauth_id = :oauth_id, oauth_provider = :oauth_provider where account_id = :account_id',
+		array(':oauth_id'=>$oauth_id, ':oauth_provider'=>$oauth_provider, ':account_id'=>$account_id));
+	return ($res->rowCount()>0);
+}
+
+
 // Sets the last logged in date equal to now.
 function update_last_logged_in($char_id) {
 	$up = "UPDATE accounts SET last_login = now() WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :char_id)";
@@ -263,8 +285,8 @@ function logout_user() {
 // Check that the password format fits.
 function validate_password($password_to_hash) {
 	$error = null;
-	if (strlen($password_to_hash) < 7 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
-		$error = 'Phase 2 Incomplete: Passwords must be at least 7 characters long.';
+	if (strlen($password_to_hash) < 3 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
+		$error = 'Phase 2 Incomplete: Passwords must be at least 3 characters long.';
 	}
 
 	return $error;

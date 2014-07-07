@@ -13,8 +13,8 @@ public static function purge_test_accounts($test=null){
     $active_email = 'testphpunit@example.com';
     $aid = get_char_id(TestAccountCreateAndDestroy::$test_ninja_name);
     query('delete from players where player_id in 
-        (select player_id from players join account_players on _player_id = player_id 
-        	join accounts on _account_id = account_id 
+        (select player_id from players left join account_players on _player_id = player_id 
+        	left join accounts on _account_id = account_id 
             where active_email = :active_email or account_identity= :ae2 or players.uname = :uname)', 
         array(':active_email'=>$active_email, ':ae2'=>$active_email, ':uname'=>$test_ninja_name)); // Delete the players
     query('delete from account_players where _account_id in (select account_id from accounts 
@@ -39,8 +39,8 @@ public static function create_testing_account($confirm=false){
 	$_SERVER['REMOTE_ADDR']='127.0.0.1';
 	TestAccountCreateAndDestroy::purge_test_accounts();
 	$found = get_char_id(TestAccountCreateAndDestroy::$test_ninja_name);
-    if($found){
-		throw new Exception('Test user already exists');
+    if((bool)$found){
+		throw new Exception('Test user found ['.$found.'] with name ['.TestAccountCreateAndDestroy::$test_ninja_name.'] already exists');
 	}
 	// Create test user, unconfirmed, whatever the default is for activity.
 	$preconfirm = true;
