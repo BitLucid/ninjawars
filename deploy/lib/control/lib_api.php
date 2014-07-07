@@ -183,12 +183,11 @@ function json_index() {
 
 // Login a user if they're logged in with a linked account on facebook.
 // http://nw.local/api.php?type=facebook_login_sync&jsoncallback=alert&data=666666
-function json_facebook_login_sync($data) {
+function json_facebook_login_sync() {
 	require_once(ROOT.'vendor/facebook/php-sdk/src/facebook.php'); // /vendor is just a symlink to /deploy/vendor
 	$logged_in = false;
 	$error = null;
 	$redirect = null;
-	$fbuser = $data; // FB user ID
 
 	// If logged in, redirect to homepage.
 	if(is_logged_in()){
@@ -213,14 +212,14 @@ function json_facebook_login_sync($data) {
 				// If facebook returns a userid, then check for a match in the accounts table.
 				if($id){
 					// Finally if there is a match in the accounts table, then login as that user.
-					// Login user here.
-					$error = 'Facebook login not set up yet.  UserId is: '.(string)$id;
+					$logged_in_info = login_user_by_oauth($id);
+					$error = null;
+					$redirect = '/';
 				} else {
 					// If there is no match in the accounts table, then return error about needing to sign up first.
 					$error = "Sorry, you don't seem to have an account with us, try signing up first!";
 					$redirect = '/signup.php';
 				}
-
 			} catch (FacebookApiException $e) {
 				error_log('<pre>'.htmlspecialchars(print_r($e, true)).'</pre>');
 				$user = null;
