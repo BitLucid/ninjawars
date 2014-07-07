@@ -148,7 +148,21 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 	/**
 	 * group facebookapi
 	**/
+	function testLoginViaOauthFailsWithRandomOauthThatWontExist(){
+		$fb_user_id = '89999999999994444444';
+		$oauth_id = $fb_user_id;
+		$logged_in_info = login_user_by_oauth($oauth_id);  // Try to login that user with the arbitrary id setting.
+		$this->assertFalse($logged_in_info['success']);
+    	$this->assertTrue((bool)$logged_in_info['login_error']);
+	}
+
+
+	/**
+	 * group facebookapi
+	**/
     function testLoginOfCreatedTestingAccountViaMockFacebookSync(){
+    	$initial_ip = @$_SERVER['REMOTE_ADDR'];
+    	$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 	    // Create test user account.
 	    // Connect test user account to arbitrary oauth_provider and oauth_uid
     	$fb_user_id = '10100268595264896';
@@ -161,8 +175,12 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
     	$added = add_oauth_to_account($account_info['account_id'], $fb_user_id);
     	$this->assertTrue($added);
     	$account_info = account_info_by_identity($email);
-    	$this->assertEquals($account_info['oauth_id'], $fb_user_id);
-    	$this->assertTrue(false); // Try to login that user with the arbitrary settings.
+    	$oauth_id = $account_info['oauth_id'];
+    	$this->assertEquals($oauth_id, $fb_user_id);
+    	$logged_in_info = @login_user_by_oauth($oauth_id);  // Try to login that user with the arbitrary id setting.
+    	$this->assertTrue($logged_in_info['success']);
+    	$this->assertFalse((bool)$logged_in_info['login_error']);
+    	$_SERVER['REMOTE_ADDR'] = $initial_ip;
     }
     
 

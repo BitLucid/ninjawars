@@ -47,7 +47,21 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 	}
 }
 
-
+/**
+ * Actual login!  Performs the login of a user using pre-vetted info!
+ * Creates the cookie and session stuff for the login process.
+**/
+function _login_user($p_username, $p_player_id, $p_account_id) {
+    SESSION::commence(); // Start a session on a successful login.
+    $_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
+    SESSION::set('username', $p_username); // Actually char name
+    SESSION::set('player_id', $p_player_id); // Actually char id.
+    SESSION::set('account_id', $p_account_id);
+    update_activity_log($p_player_id);
+    update_last_logged_in($p_player_id);
+    $up = "UPDATE players SET active = 1 WHERE player_id = :char_id";
+    query($up, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
+}
 
 
 /**
@@ -55,26 +69,12 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
  **/
 function login_user($dirty_user, $p_pass) {
 	// Internal function due to it being insecure otherwise.
-
-    // Sets up the environment for a logged in user, using vetted data.
+    
     if(!function_exists('_login_user')){
-        function _login_user($p_username, $p_player_id, $p_account_id) {
-            SESSION::commence(); // Start a session on a successful login.
-            $_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
-            SESSION::set('username', $p_username); // Actually char name
-            SESSION::set('player_id', $p_player_id); // Actually char id.
-            SESSION::set('account_id', $p_account_id);
-            update_activity_log($p_player_id);
-            update_last_logged_in($p_player_id);
-            $up = "UPDATE players SET active = 1 WHERE player_id = :char_id";
-            query($up, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
-        }
     }
 
-
 	$success = false;
-	$error   = 'That password/username combination was incorrect.';
-
+	$login_error   = 'That password/username combination was incorrect.';
 	// Just checks whether the username and password are correct.
 	$data = authenticate($dirty_user, $p_pass);
 
@@ -85,16 +85,39 @@ function login_user($dirty_user, $p_pass) {
 				// Block by ip list here, if necessary.
 				// *** Set return values ***
 				$success = true;
-				$error = null;
+				$login_error = null;
 			} else {	// *** Account was not activated yet ***
 				$success = false;
-				$error = "You must confirm your account before logging in, check your email. <a href='/account_issues.php'>You can request another confirmation email here.</a>";
+				$login_error = "You must confirm your account before logging in, check your email. <a href='/account_issues.php'>You can request another confirmation email here.</a>";
 			}
 		}
 		// The LOGIN FAILURE case occurs here, and is the default.
 	}
 	// *** Return array of return values ***
-	return array('success' => $success, 'login_error' => $error);
+	return array('success' => $success, 'login_error' => $login_error);
+}
+
+
+/**
+ * Login a user via a pre-authenticated oauth id.
+**/
+function login_user_by_oauth($oauth_id, $oauth_provider='facebook'){
+	$account_info = query_row('select players.player_id, players.uname, accounts.account_id 
+		from players join account_players on players.player_id = account_players._player_id 
+		join accounts on accounts.account_id = account_players._account_id
+		where accounts.oauth_provider = :oauth_provider and accounts.oauth_id = :oauth_id',
+		array(':oauth_provider'=>$oauth_provider, ':oauth_id'=>$oauth_id));
+	$username = $account_info['uname'];
+	$player_id = $account_info['player_id'];
+	$account_id = $account_info['account_id'];
+	$success = false;
+	$login_error = 'Sorry, that '.$oauth_provider.' account is not yet connected to a ninjawars account.';
+	if($username && $player_id && $account_id){
+		_login_user($username, $player_id, $account_id);
+		$success = true;
+		$login_error = null;
+	}
+	return array('success' => $success, 'login_error' => $login_error);
 }
 
 // Perform all the login functionality for the login page as requested.
@@ -107,17 +130,14 @@ function perform_login_if_requested($is_logged_in, $login_requested, $settings){
 		$is_logged_in = false;
 	} elseif (!$is_logged_in) { // Perform login if they aren't already logged in.
 		if ($login_requested) { 	// Request to login was made.
-
 			$login_attempt_info = array(
 				'username'=>$username_requested, 
 				'user_agent'=>$_SERVER['HTTP_USER_AGENT'], 
 				'ip'=>$_SERVER['REMOTE_ADDR'], 
 				'successful'=>0, 
 				'additional_info'=>$_SERVER);
-		
 			$logged_in    = login_user($username_requested, $pass);
 			$is_logged_in = $logged_in['success'];
-
 			if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
 				store_auth_attempt($login_attempt_info);
 				$login_error_message = $logged_in['login_error'];
@@ -126,8 +146,7 @@ function perform_login_if_requested($is_logged_in, $login_requested, $settings){
 				// log a successful login attempt
 				$login_attempt_info['successful']=1;
 				store_auth_attempt($login_attempt_info);
-			
-				redirect("index.php"); // Successful login, go to the main page...
+				redirect("/"); // Successful login, go to the main page...
 			}
 		}
 	}
@@ -179,8 +198,7 @@ function potential_account_id_from_login_username($login) {
 	return query_item(
 		'SELECT account_id FROM accounts WHERE active_email = :login1
 		UNION
-		SELECT _account_id AS account_id FROM players JOIN account_players ON player_id = _player_id WHERE lower(uname) = :login2'
-		,
+		SELECT _account_id AS account_id FROM players JOIN account_players ON player_id = _player_id WHERE lower(uname) = :login2',
 		array(
 			':login1'=>strtolower($login),
 			':login2'=>strtolower($login)
