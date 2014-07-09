@@ -1,21 +1,11 @@
-<script type='text/javascript' src='js/textAreaLimits.js'></script>
-
-<h1>Ninja Stats for {$username|escape}</h1>
-
-<div id='content' class='your-stats'>
-
-{if $error}
-  <p class='error'>{$error|escape}</p>
-{elseif $successMessage}
-  <p class='notice'>{$successMessage|escape}</p>
-{/if}
-
-{if $profile_changed}
-<p class='notice'>Profile has been changed.</p>
-{/if}
-
-<style type="text/css">
 {literal}
+<style type="text/css">
+.ninja-description{
+  padding:0.3em 1em;background-color:rgba(200, 200, 200, 0.1);
+}
+.ninja-traits{
+  font-style:italic;
+}
 .two-column {
   width: 100%;
   clear: both;
@@ -43,7 +33,7 @@ fieldset#details textarea{
   width:100%;
 }
 fieldset#details textarea + textarea{
-	margin-top:1.5em;
+  margin-top:1.5em;
 }
 .your-stats input[type=submit]{
   color:ghostwhite;
@@ -62,35 +52,51 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04667a', end
   padding:.7em 1em;
 }
 .your-stats input[type=submit]:hover, .your-stats input[type=submit]:active{
-	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-	text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
-	color:red;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
+  color:red;
 }
 .two-column ul{
   margin-left:.3em;
   padding-left:.3em;
 }
 #switch-to-account{
-	font-size:1.3em;
-	margin-top:1em
+  font-size:1.3em;
+  margin-top:1em
 }
 #switch-to-account a{
-	color:skyblue;
+  color:skyblue;
 }
 .glass-box{
-	display:block;
-	margin:1em;
+  display:block;
+  margin:1em;
 }
 .turns-count{
-	background-color:#003366;
-	color:ghostwhite;
-	padding:0 1em;
+  background-color:#003366;
+  color:ghostwhite;
+  padding:0 1em;
 }
 .your-stats .turns-count{
-	display:inline-block;
+  display:inline-block;
 }
-{/literal}
 </style>
+{/literal}
+
+
+<h1>Ninja Stats for {$username|escape}</h1>
+
+<div id='content' class='your-stats'>
+
+{if $error}
+  <p class='error'>{$error|escape}</p>
+{elseif $successMessage}
+  <p class='notice'>{$successMessage|escape}</p>
+{/if}
+
+{if $profile_changed}
+<p class='notice'>Profile has been changed.</p>
+{/if}
+
 
 <div class='stats-avatar'>
   Avatar: (change your avatar for your account email at <a href='http://gravatar.com'>gravatar.com</a>) →
@@ -132,20 +138,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04667a', end
 
 <section class='details'>
     <legend>Details</legend>
-    <div>
+    <div class='ninja-description'>
       {$description|escape}
     </div>
 
-    <div>
+    <div class='ninja-goals'>
       {$goals|escape}
     </div>
-    <div>
+    <div class='ninja-instincts'>
       {$instincts|escape}
     </div>
-    <div>
+    <div class='ninja-beliefs'>
       {$beliefs|escape}
     </div>
-    <div>
+    <div class='ninja-traits'>
       {$traits|escape}
     </div>
 
@@ -170,7 +176,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04667a', end
       <textarea id='instincts' title="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if ... then ...)" placeholder="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if ... then ...)">{$instincts|escape}</textarea>
       <textarea id='goals' title="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring" placeholder="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring">{$goals|escape}</textarea>
       <textarea id='beliefs' title="Your ninja's belief, the moral compass that keeps them going." placeholder="Your ninja's belief, the moral compass that keeps them going.">{$beliefs|escape}</textarea>
-      <input type='text' id='traits' value='{$traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40' class='glass-box'>
+      <label class='glass-box'> Traits: <input type='text' id='traits' value='{$traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
       <input type='submit' value='Update' class='formButton'>
     </fieldset>
       <fieldset>
@@ -189,23 +195,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04667a', end
 <div id='switch-to-account' class='notice'>
 	<a href='account.php'>View your account info</a>
 </div>
-
-
-
-<footer id='stats-footer' class='navigation'>
-<h3>Assistance</h3>
-<p>
-  If you require account help email: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>, 
-  <br>
-  or just get in touch with one or the other of us via any means on the <a href='staff.php'>staff page</a>.
-</p>
-
-      <div style='margin:2em 0'>
-        <!-- The catchphrases and links -->
-        {include file='footerlinks.tpl'}
-      </div>
-
-</footer>
 
 {literal}
 <!-- Google Code for View self/ninja stats page. Conversion Page -->
@@ -232,3 +221,5 @@ if (0) {
 {/literal}
 
 </div><!-- End of content div -->
+
+<script type='text/javascript' src='js/textAreaLimits.js'></script>

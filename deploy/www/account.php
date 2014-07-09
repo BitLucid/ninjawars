@@ -117,6 +117,10 @@ if ($deleteAccount) {
 
 $account_info = self_account_info();
 
+// Get the existing oauth info, if any.
+$oauth_provider = $account_info['oauth_provider'];
+$oauth = $oauth_provider && $account_info['oauth_id'];
+
 $player           = self_info();
 $gravatar_url     = generate_gravatar_url($player['player_id']);
 
@@ -128,7 +132,7 @@ $gravatar_url     = generate_gravatar_url($player['player_id']);
 
 // TODO: Choose next active character interface...
 
-$parts = get_certain_vars(get_defined_vars(), array('player', 'account_info'));
+$parts = get_certain_vars(get_defined_vars(), array('player', 'account_info', 'oauth_provider', 'oauth'));
 
 display_page(
 	'account.tpl'

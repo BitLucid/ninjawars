@@ -1,4 +1,18 @@
-<h1>Account Info for {$account_info.account_identity|escape}</h1>
+{literal}
+<style>
+.account-info{
+  margin-right:1em;margin-left:1em;
+}
+h1.account-header{
+  font-family:monospace;
+}
+h1 .account-identity{
+  font-weight:bold;
+}
+</style>
+{/literal}
+
+<h1 class='account-header'>Account Info for <span class='account-identity'>{$account_info.account_identity|escape}</span></h1>
 
 <div id='content' class='account-info'>
 
@@ -49,6 +63,7 @@
       <li>Active Email: <strong>{$account_info.active_email|escape}</strong></li>
       <li>Account Created: <time class='timeago' datetime='{$account_info.created_date|escape}'>{$account_info.created_date|escape}</time></li>
       <li>Last Failed Login Attempt: <time class='timeago' datetime='{$account_info.last_login_failure|escape}'>{$account_info.last_login_failure|escape}</time></li>
+      {if $oauth}<li>Single-Click login connected to: <b>{$oauth_provider|escape}</b></li>{/if}
     </ul>
 </div>
 
@@ -78,15 +93,21 @@
 </form>
 {/if}
 
+</div>
+
 <div class='char-list ninja-notice' class='clearfix'>
   <a href='stats.php'>View your ninja's info</a>
 </div>
 
-<p>
-  If you require account help email: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>
+<footer id='stats-footer' class='navigation'>
+<h3>Assistance</h3>
+<p class='glassbox'>
+  If you require account help email: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>, 
+  <br>
+  or just get in touch with us via any means on the <a href='staff.php'>staff page</a>.
 </p>
 
-
+</footer>
 
 {literal}
 <!-- Google Code for View account page Conversion Page -->
@@ -111,5 +132,3 @@ if (0) {
 </div>
 </noscript>
 {/literal}
-
-</div>
