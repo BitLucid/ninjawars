@@ -46,4 +46,3 @@ if(!$char_id){
 	// Logged in display.
 	display_page('index.tpl', $title, $parts, $options);
 } // End of check for displaying the splash page.
-?>
