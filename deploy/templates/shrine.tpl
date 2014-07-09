@@ -74,7 +74,6 @@ form {
 
 
 	{if $poisoned && $player_health}
-<hr>
 <form action="shrine_mod.php" method="post">
   <span class="brownHeading">Antidote(remove poison)</span>
   <p>
@@ -83,6 +82,7 @@ form {
     <input type="submit" value="Antidote" class="formButton">
   </p>
 </form>
+<hr>
 	{/if}
 
 
