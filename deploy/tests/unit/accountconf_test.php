@@ -219,8 +219,8 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	 * group accountconf
 	**/
 	function testPreconfirmEmailsReturnRightResultForGmailHotmailAndWildcardEmails(){
-		$preconfirm_emails = ['test@gmail.com', 'test@example.com', 'test@russia.com'];
-		$no_preconfirm_emails = ['test@hotmail.com', "O'brian@yahoo.com"];
+		$preconfirm_emails = array('test@gmail.com', 'test@example.com', 'test@russia.com');
+		$no_preconfirm_emails = array('test@hotmail.com', "O'brian@yahoo.com");
 		foreach($preconfirm_emails as $email){
 			$this->assertTrue((bool)preconfirm_some_emails($email));
 		}
