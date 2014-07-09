@@ -52,6 +52,9 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
  * Creates the cookie and session stuff for the login process.
 **/
 function _login_user($p_username, $p_player_id, $p_account_id) {
+	if(!$p_username || !$p_player_id || !$p_account_id){
+		throw new Exception('Request made to _login_user without all of username, player_id, and account_id being set.');
+	}
     SESSION::commence(); // Start a session on a successful login.
     $_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
     SESSION::set('username', $p_username); // Actually char name
@@ -278,7 +281,7 @@ function characters_are_linked($char_id, $char_2_id){
  * @return boolean Check whether someone is logged into their account.
  **/
 function is_logged_in() {
-	return !!get_logged_in_account_id();
+	return (bool) get_logged_in_account_id();
 }
 
 /**

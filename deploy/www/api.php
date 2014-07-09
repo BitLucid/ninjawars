@@ -2,6 +2,7 @@
 require_once(LIB_ROOT.'control/lib_player_list.php');
 require_once(LIB_ROOT.'control/lib_api.php');
 // How to call:  http://nw.local/api.php?type=char_search&jsoncallback=alert&term=tchalvak&limit=10
+// http://nw.local/api.php?type=facebook_login_sync&jsoncallback=alert
 // Can actually just use a scrypt source for this, e.g.: 
 // <script src="/api.php?type=char_search&jsoncallback=alert&term=tchalvak&limit=10"></script>
 
@@ -13,7 +14,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Max-Age: 3628800');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 $type = in('type');
-$dirty_jsoncallback = in('jsoncallback');
+$dirty_jsoncallback = first_value(in('jsoncallback'), in('callback'));
 echo nw_json($type, $dirty_jsoncallback); // Types are whitelisted, the callback is filtered
 
 // Make sure to default to private, just as a security reminder.

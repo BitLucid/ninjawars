@@ -93,6 +93,32 @@ section.login-page{
 	</form>
 </section>
 
+<div id="fb-root"></div>
+
+<!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
+
+<div id='facebook-login' class='glassbox'>
+
+  <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+  </fb:login-button>
+
+  <div id="status">
+  </div>
+
+  <div id='progress'>
+  <progress></progress>
+  </div>
+
+  <p>
+    <small>We never post anything to facebook without your express permission.</small>
+  </p>
+
+</div>
+
 {/if}
 
 
@@ -108,8 +134,10 @@ section.login-page{
 </div>
 
 
-<div id="fb-root"></div>
 
+
+
+{literal}
 <script>
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
@@ -124,13 +152,11 @@ section.login-page{
       syncToNW();
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into ninjawars.';
+      document.getElementById('status').innerHTML = 'Please try again to log into the facebook ninjawars app.';
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into Facebook.';
+      document.getElementById('status').innerHTML = 'Please try again to log into Facebook.';
     }
   }
 
@@ -187,34 +213,26 @@ section.login-page{
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
       document.getElementById('status').innerHTML =
-        "You're logged in, " + response.name + '!';
+        "You're logged in to facebook, " + response.name + ', so we\'re now trying to log you in to this site!';
       // Redirect to homepage after delay.
       console.log(response.id, response.email, response.name);
       console.log(response);
-      /*setTimeout(function() {
-      		window.location.href = "/"; 
-      	}, 5000);
-      */
+      if(response){
+        var url = '/api.php?type=facebook_login_sync&callback=?';
+        $.getJSON(url, function(json){
+          var logged_in = json.logged_in;
+          var error = json.error;
+          var redirect = json.redirect;
+          console.log('Results of JSON call: ', json, logged_in, error, redirect);
+          if(logged_in && !error && redirect){
+            window.location.href = redirect;
+          } else {
+            document.getElementById('status').innerHTML =
+        "Error A77: Sorry, there was a problem logging you in with facebook, please refresh the page. ";
+          }
+        });
+      }
     });
   }
 </script>
-
-<!--
-  Below we include the Login Button social plugin. This button uses
-  the JavaScript SDK to present a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
-
-<div id='facebook-login' class='glassbox'>
-
-	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-	</fb:login-button>
-
-	<div id="status">
-	</div>
-
-	<p>
-		<small>We never post anything to facebook without your express permission.</small>
-	</p>
-
-</div>
+{/literal}

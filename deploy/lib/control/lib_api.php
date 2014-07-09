@@ -2,7 +2,7 @@
 /* The functions used by the json api.
 Test URLs:
 http://nw.local/api.php?type=char_search&jsoncallback=alert&term=tchalvak&limit=10
-http://nw.local/api.php?type=facebook_login_sync&jsoncallback=alert&data=666666
+http://nw.local/api.php?type=facebook_login_sync&jsoncallback=alert
 
  */
 
@@ -182,14 +182,18 @@ function json_index() {
 }
 
 // Login a user if they're logged in with a linked account on facebook.
-// http://nw.local/api.php?type=facebook_login_sync&jsoncallback=alert&data=666666
+// http://nw.local/api.php?type=facebook_login_sync&jsoncallback=alert
 function json_facebook_login_sync() {
 	require_once(ROOT.'vendor/facebook/php-sdk/src/facebook.php'); // /vendor is just a symlink to /deploy/vendor
 	$logged_in = false;
 	$error = null;
 	$redirect = null;
 
-	// If logged in, redirect to homepage.
+	$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+	error_log('Call to api with url: ['.$actual_link.']');
+
+	// If already logged in, redirect to homepage.
 	if(is_logged_in()){
 		$logged_in = true;
 		$redirect = '/';
@@ -213,12 +217,19 @@ function json_facebook_login_sync() {
 				if($id){
 					// Finally if there is a match in the accounts table, then login as that user.
 					$logged_in_info = login_user_by_oauth($id);
-					$error = null;
-					$redirect = '/';
+					$logged_in = $logged_in_info['success'];
+					$error = $logged_in_info['login_error'];
+					if(!$error){
+						$redirect = '/';
+					} else {
+						// If there is no match in the accounts table, then return error about needing to sign up first.
+						$error = "Sorry, you don't seem to have an account with us, try signing up first!";
+						$redirect = '/signup.php';
+					}
 				} else {
 					// If there is no match in the accounts table, then return error about needing to sign up first.
-					$error = "Sorry, you don't seem to have an account with us, try signing up first!";
-					$redirect = '/signup.php';
+					$error = "Sorry, we were unable to sync up with a facebook account, please try logging in to facebook first.";
+					$redirect = '/login.php';
 				}
 			} catch (FacebookApiException $e) {
 				error_log('<pre>'.htmlspecialchars(print_r($e, true)).'</pre>');
