@@ -41,6 +41,8 @@ $(document).ready(function (){
 </div>
 {/if}
 
+<section class='glassbox'>
+
 <p>You can earn money by working in the village fields. Field work will exchange turns for gold.</p>
 <div>The current work pay rate is: <span style='color:turquoise;'>1 Turn</span> = <span class='gold'>{$work_multiplier} Gold</span>.</div>
 {if $is_logged_in}
@@ -54,6 +56,8 @@ $(document).ready(function (){
   Current gold: {$gold|escape}
 <p>
 
+</section>
+
 {else}
 <p>
 To earn pay for your work you must first <a href="signup.php">become a citizen of this village.</a>
@@ -61,6 +65,9 @@ To earn pay for your work you must first <a href="signup.php">become a citizen o
 {/if}
 <hr>
 
+    <div class='inline-block glassbox'>
+    <SCRIPT charset="utf-8" type="text/javascript" src="http://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fprogrammingpi-20%2F8003%2F0e21130c-3468-4f24-bbd7-acaeb7142afc&Operation=GetScriptTemplate"> </SCRIPT> <NOSCRIPT><A HREF="http://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fprogrammingpi-20%2F8003%2F0e21130c-3468-4f24-bbd7-acaeb7142afc&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
+    </div>
 
 
 <!-- Google Ad -->
