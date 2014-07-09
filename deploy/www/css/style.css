@@ -2297,7 +2297,8 @@ select option #blue-class-select {
 	margin-left: 1em;
 }
 .return-to-location:before{
-	content: '<< ';
+	content: '\00AB';
+	margin-right:0.3em;
 }
 
 
