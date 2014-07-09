@@ -1,3 +1,10 @@
+{literal}
+<style>
+.ad-section{
+	max-width:900px;margin-left:auto;margin-right:auto;
+}
+</style>
+{/literal}
 <h1>
 	You have been logged out.
 </h1>
@@ -47,5 +54,5 @@ Want to learn more about ninjas while you're gone? Maybe these books will be of 
 </section>
 
 <footer class='glassbox'>
-	<a href='/'>&lt; Return to the homepage</a>
+	<a href='/' class='return-to-location'>Return to the homepage</a>
 </footer>
