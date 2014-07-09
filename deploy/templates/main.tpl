@@ -104,11 +104,10 @@
 
 
 
-{if !$show_faqs}
 <div id='show-faqs' class='accent-sandwiched'>
   <a target='main' href="tutorial.php?show_faqs=1" id='show-faqs-link'>Show More Info</a>
 </div>
-{/if}
+
 
 <div id='faqs'>
 <div id='scrollable-viewport'>
