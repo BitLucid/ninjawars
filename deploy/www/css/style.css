@@ -1381,7 +1381,7 @@ iframe {
 }
 
 .main-iframe { /* class for the main iframe */
-	 height:95%;/*Iframe height doesn't inherit from its container, it inherits from the page, so must match the core & main-column height defined before it above (and they must be defined above).*/
+	 height:93%;/*Iframe height doesn't inherit from its container, it inherits from the page, so must match the core & main-column height defined before it above (and they must be defined above).*/
 	 min-height:40em;
 	 width:100%;
 	 border:0;
