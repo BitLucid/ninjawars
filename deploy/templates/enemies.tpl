@@ -1,10 +1,16 @@
 <style>
 {literal}
+.solo-page .solo-box{
+	padding:0.3em 1em;
+}
 #ninja-matches .even{
 	float:right; clear:right; padding-right:5em;
 }
+#ninja-matches ul{
+	margin-top:0;margin-bottom:0;
+}
 #enemies-stuff{
-	background-color:black;
+	background-color:rgba(0, 0, 0, 0.5);
 }
 #current-enemies-list li em, #peer-chars li em{
 	margin-left:.5em;color:#D21;display:inline-block; border-left:thick solid #D21; border-right:thick solid #D21; padding: 0 .2em;text-align:center;width:1.7em;
@@ -13,7 +19,7 @@
 	display:inline-block;margin-left:1em;width: 6.9em;
 }
 #current-enemies-list li{
-	position:relative;margin-bottom:.7em;
+	position:relative;margin-bottom:0.1em;
 }
 #current-enemies-list .enemy-action-box{
 	display:inline-block;width: 13em;
@@ -25,7 +31,7 @@
 	width:45%;float:right;margin-left:0;margin-right:0;
 }
 #peer-chars .peer{
-	position:relative;margin-bottom:.5em;
+	position:relative;margin-bottom:0.1em;
 }
 #peer-chars .peer-name, #current-enemies-list .enemy-name{
 	width:10em;display:inline-block;overflow:hidden;text-overflow:ellipsis;
@@ -48,39 +54,7 @@
 {/literal}
 </style>
 
-<h1>Combat</h1>
-
-<div id="ninja-enemy">
-  Search for ninja:
-  <form id="enemy-add" action="enemies.php" method="get" name="enemy_add">
-    <input id='enemy-match' type="text" maxlength="50" name="enemy_match" class="textField">
-    <input type="submit" value="Find Enemies" class="formButton">
-  </form>    
-</div>
-
-<!-- Js at bottom -->
-
-
-<div id='ninja-matches' class='cf'>
-	<ul>
-		<li id='sample-enemy-match' class='enemy' style='display:none'>
-			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&target='>Someone</a></strong>
-		</li>
-	</ul>
-	<div id='more-matches'>
-		...with more live matches...
-	</div>
-	<br style='clear:both'>
-</div>
-
-{if $found_enemies && count($found_enemies) gt 0}
-	{include file="enemy-matches.tpl" enemies=$found_enemies}
-{elseif $match_string}
-<div>
-  Your search returned no ninja. maybe you should make an enemy of someone who recently attacked you.
-	{include file="enemy-matches.tpl" enemies=$recent_attackers}
-</div>
-{/if}
+<h1>Fight</h1>
 
 <section id='enemies-stuff' class='clearfix'>
 {if $enemyCount gt 0}
@@ -134,6 +108,36 @@
 <p class='enemies-righthalf'>No nearby ninja, <em class='char-name'>{$username|escape}</em>.</p>
 {/if}
 </section><!-- End of clearfix section -->
+
+<div id="ninja-enemy" class='solo-box'>
+  Search for ninja:
+  <form id="enemy-add" action="enemies.php" method="get" name="enemy_add">
+    <input id='enemy-match' type="text" maxlength="50" name="enemy_match" class="textField">
+    <input type="submit" value="Find Enemies" class="formButton">
+  </form>    
+</div>
+<!-- Js at bottom -->
+
+
+<section id='ninja-matches' class='cf'>
+	<ul>
+		<li id='sample-enemy-match' class='enemy' style='display:none'>
+			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&target='>Someone</a></strong>
+		</li>
+	</ul>
+	<div id='more-matches'>
+		...with more live matches...
+	</div>
+	<br style='clear:both'>
+{if $found_enemies && count($found_enemies) gt 0}
+	{include file="enemy-matches.tpl" enemies=$found_enemies}
+{elseif $match_string}
+<div>
+  Your search returned no ninja. maybe you should make an enemy of someone who recently attacked you.
+	{include file="enemy-matches.tpl" enemies=$recent_attackers}
+</div>
+{/if}
+</section>
 
 {if count($recent_attackers) gt 0}
 	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
