@@ -1,4 +1,4 @@
-<h1>Battle Status</h1>
+<h1>Battle Outcome</h1>
 
 <hr>
 
@@ -140,8 +140,7 @@
 		{/if}
 
 			<div>Return to <a class='char-name' href="player.php?player={$target|escape:'url'}">{$target|escape}'s Info</a></div>
-			Or
 	{/if}
 
-	Start your combat <a href="list.php" class='central-location'> from the ninja list.</a>
+	<a href='/enemies.php' class='return-to-location'>Return to the Fight</a>
 </nav>
