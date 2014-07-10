@@ -15,6 +15,7 @@ class PlayerDAO extends DataAccessObject {
 		$this->m_dbconn = DatabaseConnection::getInstance();
 		$this->_vo_obj_name = 'PlayerVO';
 		$this->_vo_fields = array();
+		$vo = new PlayerVO();
 		$vo = new ReflectionClass(new PlayerVO());
 
 		foreach ($vo->getProperties() AS $reflectionProperty){
@@ -23,6 +24,7 @@ class PlayerDAO extends DataAccessObject {
 
 		$this->_id_field = 'player_id';
 		$this->_table = 'players JOIN class ON class_id = _class_id';
+		$this->_table_for_saving = 'players';
 	}
 
 	public function get($id) {
@@ -33,5 +35,20 @@ class PlayerDAO extends DataAccessObject {
 		}
 
 		return $vo;
+	}
+
+	/*
+	 * Save the changes made to the data to the database.
+	 */
+	public function save(ValueObject $vo) {
+		if(empty($vo)){
+			return false;
+		}
+		$vo2 = clone $vo; // Make cloned copy of the vo
+		// Have to unset joined class data, though not the _foreign keys, I guess.
+		unset($vo2->identity);
+		unset($vo2->class_name);
+		unset($vo2->theme);
+		parent::save($vo2);
 	}
 }

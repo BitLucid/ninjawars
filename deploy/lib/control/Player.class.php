@@ -8,7 +8,7 @@ require_once(LIB_ROOT . "control/lib_status.php");
 /* Player (actually character) behavior object.
  *
  * This file should make use of a private PlayerVO.class.php and PlayerDAO.class.php
- * to propegate and save its data.
+ * to propagate and save its data.
  *
  * @category    Template
  * @package     char
@@ -79,7 +79,7 @@ class Player
 		return $this->vo->traits;
 	}
 
-	// Save new goals
+	// Store new goals
 	public function set_goals($goals){
 		$this->vo->goals = $goals;
 	}
@@ -195,7 +195,7 @@ class Player
 	public function stamina() {
 		$stam = $this->vo->stamina;
 		if ($this->hasStatus(POISON)) {
-			return $stam-(ceil($stat*.25));
+			return $stam-(ceil($stam*.25));
 		} else {
 			return $stam;
 		}
@@ -314,7 +314,7 @@ class Player
 		return char_class_name($this->id());
 	}
 
-	// Complex wrapper that allows for robust healing with a limit of the max health.	
+	// Dynamic wrapper that allows for robust healing with a limit of the max health.	
 	public function heal($amount) {
 		$hurt = $this->hurt_by();
 		// Heal at most the amount hurt, or the amount requested, pick whichever is smallest.

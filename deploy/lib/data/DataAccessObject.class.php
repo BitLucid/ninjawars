@@ -85,7 +85,7 @@ abstract class DataAccessObject {
 
 	private function _update($vo) {
 		// execute update statement here
-		$up = "UPDATE ".$this->_table." SET ";
+		$up = "UPDATE ".$this->_table_for_saving." SET ";
 
 		foreach ($this->_vo_fields AS $loopField) { // Put in values from vo.
 			$up .= "$loopField = :$loopField, ";
@@ -110,7 +110,7 @@ abstract class DataAccessObject {
 		assert(is_numeric($new_id));
 
 		// *** Make insert statement.
-		$in = "INSERT INTO ".$this->_table." (".implode(", ", $this->_vo_fields).") VALUES (";
+		$in = "INSERT INTO ".$this->_table_for_saving." (".implode(", ", $this->_vo_fields).") VALUES (";
 
 		foreach ($this->_vo_fields AS $loopField) {
 			$in .= " :$loopField,";
