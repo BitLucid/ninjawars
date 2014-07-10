@@ -177,10 +177,10 @@ function create_ninja($send_name, $params=array()) {
 
 	// Create the initial player row.
 	$playerCreationQuery= "INSERT INTO players
-		 (uname, health, strength, gold, messages, kills, turns, verification_number, active,
+		 (uname, health, strength, speed, stamina, gold, messages, kills, turns, verification_number, active,
 		  _class_id, level,  status, member, days, ip, bounty, created_date)
 		 VALUES
-		 (:username, '150', '5', '100', '', '0', '180', :verification_number, :active,
+		 (:username, '150', '5', '5', '5', '100', '', '0', '180', :verification_number, :active,
 		 (SELECT class_id FROM class WHERE identity = :class_identity), '1', '1', '0', '0', '', '0', now())";
 	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 	$statement = DatabaseConnection::$pdo->prepare($playerCreationQuery);
