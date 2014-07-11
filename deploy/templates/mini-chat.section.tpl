@@ -20,7 +20,7 @@
           <div id='index-chat'>
               <div id="village-chat" class="boxes active">
                 <div class="box-title centered">
-                  Chat
+                  Ninja Chat
                 </div>
                 
                 <div class='active-members-count'>
@@ -63,7 +63,7 @@
               
               <div class="chat-switch centered">
                 <a id='full-chat-link' href="village.php" target="main">
-                	View full chat archive<img src="images/chat.png" class='tiny-speech-bubble' alt="">
+                	View ninja chat archive<img src="images/chat.png" class='tiny-speech-bubble' alt="">
                 </a>
               </div>
               
