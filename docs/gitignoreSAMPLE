@@ -48,3 +48,4 @@ composer.phar
 composer.lock
 vendor/*
 !vendor/.gitkeep
+unclean
