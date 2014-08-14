@@ -20,6 +20,8 @@ $user_id       = self_char_id();
 $target        = $_SERVER['PHP_SELF'];
 $channel       = 1;
 
+$chatlength = min(3000, max(30, $chatlength)); // Min 30, max 3000
+
 // Take in a chat and record it to the database.
 if ($user_id) {
 	if ($command == "postnow" && $message) {
