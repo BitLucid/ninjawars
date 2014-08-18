@@ -1,5 +1,5 @@
 <?php
-$login_requested = !empty(in('login_request')); // Login was requested.
+$login_requested = (bool) in('login_request'); // Login was requested.
 $logged_out          = in('logged_out'); // Logout page redirected to this one, so display the message.
 $login_error_message = in('error'); // Error to display after unsuccessful login and redirection.
 
