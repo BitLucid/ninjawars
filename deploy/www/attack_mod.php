@@ -283,7 +283,7 @@ if ($attack_is_legal){
 					}
 				}
 
-				$target_msg = "DEATH: You have been killed by $attacker in combat and lost $loot gold on $today!";
+				$target_msg = "DEATH: You've been killed by $attacker and lost $loot gold on $today!";
 				sendMessage($attacker, $target, $target_msg);
 				
 				// Stopped telling attackers when they win a duel.
@@ -317,7 +317,7 @@ if ($attack_is_legal){
 
 				$target_msg = "You have killed $attacker in combat and taken $loot gold on $today.";
 
-				$attacker_msg = "DEATH: You have been killed by $target in combat and lost $loot gold on $today!";
+				$attacker_msg = "DEATH: You've been killed by $target and lost $loot gold on $today!";
 
 				sendMessage($attacker, $target, $target_msg);
 				sendMessage($target, $attacker, $attacker_msg);
