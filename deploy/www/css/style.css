@@ -2360,6 +2360,9 @@ select option #blue-class-select {
     -moz-border-radius:5px;
     color:black;
 }
+.unread-count:empty{
+	padding:0;
+}
 
 .unread-count.message-unread, .unread-count.message-unread a {
     background-color:#4183c4;
