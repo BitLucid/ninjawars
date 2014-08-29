@@ -1,28 +1,3 @@
-<style>
-{literal}
-.splash #top-logo{
-  width:50%;text-align:center;display:inline-block;vertical-align:top;margin-left: 2em;margin-right: 2em;
-}
-.splash #menu-map-head{
-  font-size:xx-large;margin-right:.5em;
-}
-.splash .doshin-image{
-  width:8px;height:8px;
-}
-#top-logo h1{
-  margin:0;padding:0;background-color:transparent;
-}
-#feedback-link a{
-  font-size:2em;
-}
-#news-housing{
-  height:80px;
-}
-#chat-housing{
-  height:250px;
-}
-{/literal}
-</style>
     <!-- Version {$version} -->
 
     <!-- Top horizontal bar -->
@@ -33,13 +8,16 @@
 		  </a>
 		</div>
 		<div id='logo-placeholder'>
-		  <!-- Spacer div for the main shuriken linkback logo -->
+      <!-- Spacer div for the main shuriken linkback logo -->
+      &nbsp;
 		</div>
 		<nav role='navigation' id='top-bar' class='navigation'>
 		  <span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
 		</nav>
 		<nav id='top-logo'>
-          <h1><a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='NinjaWars' width='200' height='100'></a></h1>
+      <h1>The Ninja Game at </h1>
+      <h1><a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='NinjaWars' width='200' height='100'></a> .net</h1>
+      
 		</nav>
       
         <nav role='navigation' id='subcategory-bar' class='navigation'>
