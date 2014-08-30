@@ -425,9 +425,10 @@ if (parent.window != window) {
 	// JS Update Heartbeat
 	NW.chainedUpdate = function(p_chainCounter) {
 		var chainCounter = (!!p_chainCounter ? p_chainCounter : 1);
-		// Skip the heartbeat the first time through, and skip it if not logged in.
-		// TODO: skip heartbeat entirely when not logged in.
+		
+		// TODO: skip heartbeat entirely when not logged in?
 		if (this.loggedIn && chainCounter != 1) {
+			// Skip the heartbeat if not logged in, and skip it for the first chain counter, since the page will have just loaded.
 			this.checkAPI(); // Check for new information.
 		}
 
@@ -462,7 +463,7 @@ if (parent.window != window) {
 	};
 
 	NW.make_checkForNewChats_callback = function() {
-		console.log('checked for new chats');
+		console.log('callback made to check for new chats');
 		var self = this;
 		return function(data) {
 			// Update global data stores if an update is needed.
@@ -471,6 +472,7 @@ if (parent.window != window) {
 				self.refreshMinichat(null, 50);
 			}
 
+			// Store last updated datetime
 			if (data.new_chats && data.new_chats.datetime) {
 				NW.lastChatCheck = data.new_chats.datetime;
 			}
@@ -672,3 +674,17 @@ $(function() {
 
 	//april1stCheck();
 });
+
+
+// Set up refreshing of the village chat board page (will pause refreshing while someone is writing
+function refreshpagechat() {
+	var messageInput = $('#message');
+	if(!messageInput.length || false == messageInput.val()){ // Refresh only if text not being written.
+		if(parent && parent.main && parent.main.location){
+			parent.main.location.reload();
+		} else {
+			window.location.reload();
+		}
+	}
+	console.log('chat not refreshed due to typed text');
+}

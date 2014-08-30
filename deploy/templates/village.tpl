@@ -74,17 +74,6 @@
 <script src="/js/jquery.linkify.js" type="text/javascript"></script>
 <script type="text/javascript">
 {literal}
-function refreshpagechat() {
-	var messageInput = $('#message');
-	if(!messageInput.length || false == messageInput.val()){ // Refresh only if text not being written.
-		if(parent && parent.main && parent.main.location){
-			parent.main.location.reload();
-		} else {
-			window.location.reload();
-		}
-	}
-	console.log('chat not refreshed due to typed text');
-}
 $(function(){
 	$(".chat-message").linkify({ target: "_blank" });
 	setInterval(refreshpagechat, 30*1000); // Periodically refresh the page.
