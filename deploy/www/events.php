@@ -5,14 +5,17 @@ $alive      = false;
 if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
-$user_id = self_char_id();
-$events = get_events($user_id, 300);
+$char_id = self_char_id();
+$events = get_events($char_id, 300);
 
 $events = $events->fetchAll();
 
-$has_clan  = !!get_clan_by_player_id($user_id);
+$player = new Player($char_id);
 
-read_events($user_id); // mark events as viewed.
+
+$has_clan  = (bool)get_clan_by_player_id($char_id) || $player->isAdmin();
+
+read_events($char_id); // mark events as viewed.
 
 display_page(
 	'events.tpl'
@@ -23,4 +26,3 @@ display_page(
 	)
 );
 }
-?>
