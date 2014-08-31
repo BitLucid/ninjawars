@@ -31,7 +31,7 @@
           <span>Oni are actually quite friendly, if you get to know them.</span>
         </span>
          |
-        <a href="tutorial.php" target="main">Help</a> |
+        <a href="tutorial.php" target="main">Guide</a> |
         <a href="staff.php" target="main">Staff</a> |
         <a href="rules.php" target="main">Rules</a> |
         <a href="news.php" target="main">News</a> |
