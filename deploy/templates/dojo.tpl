@@ -80,7 +80,7 @@ table .char-title td{
     {if $dimmak_sequence eq 1}
     <form id="Buy_DimMak" action="dojo.php?dimmak_sequence=2" method="post" name="buy_dimmak">
       <div style='margin-top: 10px;margin-bottom: 10px;'>
-        Trade your memories of {$dimMakCost|escape} kills for the DimMak Scroll?
+        Give up your memories of {$dimMakCost|escape} kills for the DimMak Scroll?
         <input id="dimmak_sequence" type="hidden" value="2" name="obtainscroll">
         <input type="submit" value="Obtain Dim Mak" class="formButton">
       </div>
@@ -115,7 +115,7 @@ table .char-title td{
           {foreach from=$classes item='class' key='identity'}
         <form id="Buy_classChange" action="dojo.php" method="post" name="changeofclass">
           <div style='margin-top: .3em;margin-bottom: .3em;'>
-            Trade your memories of {$classChangeCost|escape} kills to change your skills to those of the <span class='class-name {$class.theme}'>{$class.class_name|escape}</span> ninja?
+            Give up your memories of {$class_change_cost|escape} kills to learn the skills of the <span class='class-name {$class.theme}'>{$class.class_name|escape}</span> ninja?
             <input id='classchangeSequence' name='classChangeSequence' type='hidden' value='2'>
             <input id='current_class' name='current_class' type='hidden' value='{$userClass|escape}'>
             <input id='requested_identity' name='requested_identity' type='hidden' value='{$identity|escape}'>
@@ -132,9 +132,9 @@ table .char-title td{
         <!-- End of class changing special event display -->
 	{/if}
 
+<p>Your current class is <span class='class-name {$possibly_changed_class_theme}'>{$possibly_changed_class_name|escape}</span>.</p>
 <p>Your current level is {$userLevel|escape}. Your current kills are {$userKills|escape}.</p>
 <p>Level {$nextLevel|escape} requires {$required_kills|escape} kills.</p>
-<p>Your current class is <span class='class-name {$possibly_changed_class_theme}'>{$possibly_changed_class_name|escape}</span>.</p>
 
 	{if $upgrade_requested}
 		{if $userLevel+1 > $max_level}
@@ -156,7 +156,7 @@ table .char-title td{
 	{if $userLevel + 1 gt $max_level}
 <div>You enter the dojo as one of the elite ninja. No trainer has anything left to teach you.</div>
 	{elseif $userKills lt $required_kills}
-<div>Your trainer finds you lacking. You are instructed to prove your might against more ninja before you return.</div>
+<div>Your trainer finds you lacking in experience. You are instructed to prove your might against more ninja before you return.</div>
 	{else}
 <form id="level_up" action="dojo.php" method="post" name="level_up">
   <div style='margin-top: 10px;margin-bottom: 10px;'>
