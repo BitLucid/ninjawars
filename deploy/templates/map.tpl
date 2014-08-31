@@ -4,10 +4,10 @@
 
 {include file='nodes.tpl' nodes=$nodes}
   
-  <hr>
-  
 {if $show_ad eq 1}
 <!-- This particular ad is here mainly to focus the targeting of the advertising to more nw related topics. -->
+
+  <hr>
 
     <!-- Google Ad -->
     <script type="text/javascript"><!--
