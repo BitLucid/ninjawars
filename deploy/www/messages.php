@@ -77,4 +77,4 @@ display_page(
 	)
 );
 }
-?>
+

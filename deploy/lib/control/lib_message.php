@@ -61,8 +61,8 @@ function read_messages($to_id) {
 }
 
 function delete_messages($filter_type=0) {
-	$user_id = get_user_id();
-	query("DELETE from messages where send_to = :to and type = :type", array(':to'=>array($user_id, PDO::PARAM_INT), ':type'=>$filter_type));
+	$char_id = self_char_id();
+	query("DELETE from messages where send_to = :to and type = :type", array(':to'=>array($char_id, PDO::PARAM_INT), ':type'=>$filter_type));
 }
 
 function message_count($filter_type=0) {
