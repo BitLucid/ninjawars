@@ -12,7 +12,7 @@ $description       = "";
 $in_purchase       = in('purchase');
 $in_quantity       = in('quantity');
 $dirty_item 	   = in('item');
-$item              = strlen($dirty_item > 2)? $dirty_item : null;
+$item              = (strlen($dirty_item) > 2)? $dirty_item : null;
 $item_id 		   = item_id_from_display_name($item);
 $item_info        = positive_int($item_id)? item_info(item_id_from_display_name($item)) : null;
 $item_identity = @$item_info['item_internal_name'];
@@ -66,7 +66,6 @@ if(0>$quantity){ // Negative quantity requested
 		}
 	}
 }
-
 
 $parts = array('item_costs'=>$item_costs, 'description'=>$description, 'username'=>$username, 'gold'=>$gold,
     'current_item_cost'=>$current_item_cost, 'quantity'=>$quantity, 'item'=>$item, 'grammar'=>$grammar, 'is_logged_in'=>$is_logged_in,
