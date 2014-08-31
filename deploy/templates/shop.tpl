@@ -112,6 +112,11 @@ input.shopButton{
   Your current gold: <span class='gold-count'>{$gold|escape}</span>
 <p>
 
+
+<nav>
+	<a href="map.php" class="return-to-location block">Return to the Village</a>
+</nav>
+
 <div style='margin:.1em auto;text-align:center'>
 
 <!-- Google Ad -->
@@ -126,7 +131,3 @@ google_ad_height = 250;
 <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 
 </div>
-
-<nav>
-	<a href="map.php" class="return-to-location block">Return to the Village</a>
-</nav>
