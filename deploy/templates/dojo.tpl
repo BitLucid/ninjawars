@@ -1,12 +1,62 @@
+{literal}
+<style>
+#scroll{
+	margin:0 auto 1em;
+	text-align:center;
+}
+.left-scroll-bookend{
+	display:inline-block;
+	background:url(/images/scroll_accent_left.png) no-repeat left;
+	height:100px;
+	padding-left:57px;
+	margin:0 auto;
+}
+.right-scroll-bookend{
+	vertical-align:middle;
+	background:url(/images/scroll_accent_right.png) no-repeat right;
+	height:100px;
+	min-width:50%;
+	padding-right:57px;
+	display:inline-block;
+	position:relative;
+}
+#scroll #scroll-title{
+	height:30px;
+	display:inline-block;
+	padding: 35px .7em 35px;
+	font-size: 1.3em;
+	background:#333;
+}
+table{
+	width:90%;
+	margin-left:5%;
+	margin-right:5%;
+	margin-bottom:2em;
+}
+table .char-title td{
+	font-style:1.5em;
+}
+.black-robed-monk{
+	font-weight:bold;color:gray;
+}
+.white-robed-monk{
+	font-weight:bold;color:#F8F9CF;
+}
+.training-requirements tbody tr:nth-child(odd) {
+   background-color: rgba(100, 100, 100, 0.5);
+}
+</style>
+{/literal}
+
 <h1>Dojo</h1>
 
 <div class="description">
-  <div style="margin-bottom: 10px;">
+  <p>
     You walk up the steps to the grandest building in the village. The dojo trains many respected ninja.
-  </div>
-  <div>
+  </p>
+  <p>
     As you approach, you can hear the sounds of fighting coming from the wooden doors in front of you.
-  </div>
+  </p>
 </div>
 
 {if !is_logged_in()}
@@ -16,12 +66,13 @@
 	{if !$dim_mak_requirement_error}
 	<!-- DIMMAK OBTAINING EVENT REQUESTED -->
     {if $dimmak_sequence neq 2}
-    A black-robed monk stands near the entrance to the dojo.
+    A <span class='black-robed-monk'>black-robed monk</span> stands near the entrance to the dojo.
+    <br>
 
     	{if $dimmak_sequence neq 1} {* Link to start the Dim Mak sequence *}
-    The black monk approaches you and offers to give you <a href="dojo.php?dimmak_sequence=1">power over life and death,</a> at the cost of some of your memories.
+    The <span class='black-robed-monk'>black monk</span> approaches you and offers to give you <a href="dojo.php?dimmak_sequence=1">power over life and death,</a> at the cost of some of your memories.
     	{else} {* Strips the link after it's been clicked. *}
-    The black monk offers to give you power over life and death, at the cost of some of your memories.
+    The <span class='black-robed-monk'>black monk</span> offers to give you power over life and death, at the cost of some of your memories.
     	{/if}
     <br>
     {/if}
@@ -47,10 +98,10 @@
 	{if !$class_change_requirement_error}
         {if $classChangeSequence neq 2}
         <!-- CLASS CHANGING SPECIAL EVENT DISPLAY -->
-        A white-robed monk stands near the entrance to the dojo.
+        A <span class='white-robed-monk'>white-robed monk</span> stands near the entrance to the dojo.
 
         	{if $classChangeSequence neq 1} {* Link to start the Class Change sequence *}
-        <p>The white monk approaches you and offers to give you <a href="dojo.php?classChangeSequence=1">the knowledge of your enemies</a> at the cost of your own memories.</a></p>
+        <p>The <span class='white-robed-monk'>white monk</span> approaches you and offers to give you <a href="dojo.php?classChangeSequence=1">the knowledge of your enemies</a> at the cost of your own memories.</a></p>
         	{else} {* Strips the link after it's been clicked. *}
         <p>The white monk approaches you and offers to give you the knowledge of your enemies at the cost of your own memories.</p>
         	{/if}
@@ -75,7 +126,7 @@
         {elseif $classChangeSequence eq 2}
         <p>
         The monk tosses white powder in your face. You blink at the pain, and when you open your eyes, everything looks different somehow.</p>
-        <p>The white monk grins at you and walks slowly back to the dojo.</p>
+        <p>The white monk smiles at you and walks slowly back to the dojo.</p>
         {/if}
         <hr>
         <!-- End of class changing special event display -->
@@ -109,9 +160,8 @@
 	{else}
 <form id="level_up" action="dojo.php" method="post" name="level_up">
   <div style='margin-top: 10px;margin-bottom: 10px;'>
-    <div>Do you wish to upgrade to level {$nextLevel|escape}?</div>
     <input id="upgrade" type="hidden" value="1" name="upgrade">
-    <input type="submit" value="Upgrade" class="formButton">
+    <div>Do you wish to upgrade to level {$nextLevel|escape}? <input type="submit" value="Level Up" class="formButton"></div>
   </div>
 </form>
 	{/if}
@@ -122,81 +172,25 @@
 
 
 
-<style>
-	{literal}
-	#scroll{
-		margin:0 auto 1em;
-		text-align:center;
-	}
-	.left-scroll-bookend{
-		display:inline-block;
-		background:url(/images/scroll_accent_left.png) no-repeat left;
-		height:100px;
-		padding-left:57px;
-		margin:0 auto;
-	}
-	.right-scroll-bookend{
-		vertical-align:middle;
-		background:url(/images/scroll_accent_right.png) no-repeat right;
-		height:100px;
-		min-width:50%;
-		padding-right:57px;
-		display:inline-block;
-		position:relative;
-	}
-	#scroll #scroll-title{
-		height:30px;
-		display:inline-block;
-		padding: 35px .7em 35px;
-		font-size: 1.3em;
-		background:#333;
-	}
-	{/literal}
-</style>
 
 
 
-
-
-
+<!-- Nesting of divs here to allow for bookending of the scroll images -->
 <div id='scroll'>
 	<div class='left-scroll-bookend'>
 		<div class='right-scroll-bookend'>
 			<strong id='scroll-title'>
-				<a target='#scroll-reveal'>Hanging on the wall of the dojo is a scroll outlining the training requirements for all ninja</a>
+				<a target='#scroll-reveal'>Scroll of training requirements</a>
 			</strong>
 		</div>
 	</div>
 </div>
 
-<script>
-{literal}
-$().ready(function(){
-	// Show the scroll section on a click of any part of the scroll area.
-	var hidden = $('#scroll-reveal').hide();
-	$('#scroll').click(function(){hidden.toggle();return false;});
-});
-{/literal}
-</script>
+<section id='scroll-reveal'>
 
-<div id='scroll-reveal'>
+	<h2>Dojo Advancement Chart</h2>
 
-<h2>Dojo Advancement Chart</h2>
-
-<style>
-{literal}
-	table{
-		width:90%;
-		margin-left:5%;
-		margin-right:5%;
-		margin-bottom:2em;
-	}
-	table .char-title td{
-		font-style:1.5em;
-	}
-{/literal}
-</style>
-<table style='width:80%'>
+<table class='training-requirements' style='width:80%'>
 
 	<caption colspan='100%' style='text-align:center;padding:.2em;font-size:1.3em;color:chocolate;'>
 		Kills needed to progress to each level and how a ninja's stats change:
@@ -232,10 +226,26 @@ $().ready(function(){
 {/section}
 
 </table>
-<p style='text-align:center'>(Maximum level)</p>
+	<p class='text-centered'>(Maximum level)</p>
 
-</div>
-
-
+</section>
 
 
+
+
+<nav>
+	<a href="map.php" class="return-to-location block">Return to the Village</a>
+</nav>
+
+
+
+
+<script>
+{literal}
+$().ready(function(){
+	// Show the scroll section on a click of any part of the scroll area.
+	var hidden = $('#scroll-reveal').hide();
+	$('#scroll').click(function(){hidden.toggle();return false;});
+});
+{/literal}
+</script>
