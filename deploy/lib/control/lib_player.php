@@ -455,4 +455,3 @@ function char_info($p_id) {
 }
 
 
-?>
