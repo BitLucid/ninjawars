@@ -28,7 +28,7 @@
 </table>
 
   <p class='gold-count'>
-  Current gold: {$gold|escape}
+  Current gold: {$gold_display|escape}
   <p>
 
   <form id="player_search" action="list_all_players.php" method="get" name="player_search">
@@ -45,7 +45,7 @@
     
 
   <p class='gold-count'>
-  Current gold: {$gold|escape}
+  Current gold: {$gold_display|escape}
   <p>
 {/if}
 

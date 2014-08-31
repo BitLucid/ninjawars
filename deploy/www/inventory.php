@@ -38,6 +38,7 @@ display_page(
 	, 'Your Inventory'
 	, array(
 		'gold'        => $gold
+		, 'gold_display' => number_format($gold)
 		, 'inventory' => $inventory
 		, 'username'  => $username
 		, 'char_id'   => $user_id

@@ -67,7 +67,9 @@ if(0>$quantity){ // Negative quantity requested
 	}
 }
 
-$parts = array('item_costs'=>$item_costs, 'description'=>$description, 'username'=>$username, 'gold'=>$gold,
+$gold_display = number_format($gold);
+
+$parts = array('item_costs'=>$item_costs, 'description'=>$description, 'username'=>$username, 'gold'=>$gold, 'gold_display'=>$gold_display,
     'current_item_cost'=>$current_item_cost, 'quantity'=>$quantity, 'item'=>$item, 'grammar'=>$grammar, 'is_logged_in'=>$is_logged_in,
     'in_purchase'=>$in_purchase, 'not_enough_gold'=>$not_enough_gold, 'no_funny_business'=>$no_funny_business);
 

@@ -109,7 +109,7 @@ input.shopButton{
 
 
 <p class='glassbox'>
-  Your current gold: <span class='gold-count'>{$gold|escape}</span>
+  Your current gold: <span class='gold-count'>{$gold_display|escape}</span>
 <p>
 
 

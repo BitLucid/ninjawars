@@ -2,10 +2,10 @@
 {literal}
 $(document).ready(function (){
 	$('#attack-peasant-link').click(function () {
-		return confirm('A peasant?  Or a disguised ninja?  Kill one of the peasants?');
+		return confirm('A peasant?  Or a disguised ninja?  Attack one of the peasants?');
 	});
 	$('#attack-samurai-link').click(function () {
-		return confirm('A samurai. Kill him?');
+		return confirm('A samurai. Attack him?');
 	});
 });
 {/literal}
@@ -53,7 +53,7 @@ $(document).ready(function (){
   </div>
 </form>
 <p class='gold-count'>
-  Current gold: {$gold|escape}
+  Current gold: {$gold_display|escape}
 <p>
 
 </section>

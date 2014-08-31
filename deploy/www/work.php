@@ -44,6 +44,7 @@ if ($worked > 0) {
 }
 
 $gold  = get_gold($char_id); // Get the current/final gold.
+$gold_display = number_format($gold);
 
 display_page(
 	'work.tpl' // *** Main Template ***
