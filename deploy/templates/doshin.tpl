@@ -62,23 +62,24 @@ The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bou
 {/if}
 </div>
 
+<section class='bounty-related'>
+
 {if $myBounty gt 0}
-<form id="bribe_form" action="doshin_office.php" method="post" name="bribe_form" style="width:40%;float:left;padding-right: 40px;">
+<form id="bribe_form" action="doshin_office.php" method="post" name="bribe_form" class='half-column'>
   Bribe down your own bounty: <input id="bribe" type="text" size="4" maxlength="6" name="bribe" class="textField">
   <input id="command" type="submit" value="Bribe" name="command" class="formButton">
 </form>
 {/if}
 
-<form action="" style="float:left;width:45%;">
-  Put <input type="text" name="amount" value="{$amount|escape}" size="4" class="textField"> bounty on: <input type="text" name="target" value="{$target|escape}" class="textField">
+<form action="" class='half-column'>
+  Offer <input type="text" name="amount" value="{$amount|escape}" size="4" class="textField"> bounty on: <input type="text" name="target" value="{$target|escape}" class="textField">
   <input id="submit-bounty" type="submit" value="Offer Bounty" name="command" class="formButton">
 </form>
 
 {if count($data) gt 0}
-<p style="clear:both;text-align:center;margin-top:8em;">Total Wanted Ninja: {$data|@count}</p>
-<hr>
+<p class='clear text-centered glassbox'>Total Wanted Ninja: {$data|@count}</p>
 
-<table class="playerTable">
+<table class="playerTable clear">
   <tr class='playerTableHead'>
     <th>
       Name
@@ -121,3 +122,10 @@ The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bou
 {else}
 <p>The Doshin do not currently have any open bounties. Your village is safe.</p>
 {/if}
+
+</section><!-- End of bounty-related -->
+
+
+<nav>
+  <a href="map.php" class="return-to-location block">Return to the Village</a>
+</nav>

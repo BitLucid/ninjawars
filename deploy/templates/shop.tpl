@@ -108,8 +108,8 @@ input.shopButton{
 <!-- google_ad_section_end -->
 
 
-<p class='gold-count glassbox'>
-  Your Current gold: {$gold|escape}
+<p class='glassbox'>
+  Your current gold: <span class='gold-count'>{$gold|escape}</span>
 <p>
 
 <div style='margin:.1em auto;text-align:center'>
@@ -126,3 +126,7 @@ google_ad_height = 250;
 <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 
 </div>
+
+<nav>
+	<a href="map.php" class="return-to-location block">Return to the Village</a>
+</nav>

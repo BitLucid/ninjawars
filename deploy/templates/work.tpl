@@ -63,6 +63,11 @@ $(document).ready(function (){
 To earn pay for your work you must first <a href="signup.php">become a citizen of this village.</a>
 </p>
 {/if}
+
+<nav>
+  <a href="map.php" class="return-to-location block">Return to the Village</a>
+</nav>
+
 <hr>
 
     <div class='inline-block glassbox'>
