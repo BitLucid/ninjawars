@@ -67,9 +67,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04667a', end
 #switch-to-account a{
   color:skyblue;
 }
-.glass-box{
+.secondary .glass-box{
   display:block;
-  margin:1em;
 }
 .turns-count{
   background-color:#003366;
@@ -170,6 +169,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04667a', end
   <div class='secondary'>
     <form id="profile-edit" action="stats.php" method="post">
       <input type='hidden' name='changedetails' value=1>
+      {if $dev}
       <fieldset id='details'>
       <legend>Ninja Details</legend>
       <textarea id='description' title='Visible description of your ninja' placeholder='Visible description of your ninja'>{$description|escape}</textarea>
@@ -179,6 +179,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04667a', end
       <label class='glass-box'> Traits: <input type='text' id='traits' value='{$traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
       <input type='submit' value='Update' class='formButton'>
     </fieldset>
+    {/if}
       <fieldset>
         <legend>Out-of-character Profile</legend>
         <div style='padding-right:83px;width:98%'>

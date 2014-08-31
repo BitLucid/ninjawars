@@ -967,6 +967,87 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	clear:both;
 }
 
+.ninja-description{
+  padding:0.3em 1em;background-color:rgba(200, 200, 200, 0.1);
+}
+.ninja-traits{
+  font-style:italic;
+}
+.two-column {
+  width: 100%;
+  clear: both;
+}
+.two-column .primary {
+  display:inline-block;
+  width: 45%;
+  min-width:20em;
+  padding-left:5%;
+  margin-top:1em;
+  vertical-align:top;
+}
+.two-column .secondary {
+  margin-top:1em;
+  display:inline-block;
+  width:47%;
+  min-width:20em;
+  vertical-align:top;
+}
+#profile-edit, #player-profile-area{
+  width:90%;
+}
+fieldset#details textarea{
+  display:block;
+  width:100%;
+}
+fieldset#details textarea + textarea{
+  margin-top:1.5em;
+}
+.your-stats input[type=submit]{
+  color:ghostwhite;
+  background-color:#617798;
+background: #04667a; /* Old browsers */
+background: -moz-linear-gradient(top, #04667a 0%, #207cca 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#04667a), color-stop(100%,#207cca)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #04667a 0%,#207cca 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #04667a 0%,#207cca 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #04667a 0%,#207cca 100%); /* IE10+ */
+background: linear-gradient(to bottom, #04667a 0%,#207cca 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04667a', endColorstr='#207cca',GradientType=0 ); /* IE6-9 */
+  border-radius:0;
+  border:0;
+  margin-top:1em;
+  padding:.7em 1em;
+}
+.your-stats input[type=submit]:hover, .your-stats input[type=submit]:active{
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
+  color:red;
+}
+.two-column ul{
+  margin-left:.3em;
+  padding-left:.3em;
+}
+#switch-to-account{
+  font-size:1.3em;
+  margin-top:1em
+}
+#switch-to-account a{
+  color:skyblue;
+}
+.secondary .glass-box{
+  display:block;
+}
+.turns-count{
+  background-color:#003366;
+  color:ghostwhite;
+  padding:0 1em;
+}
+.your-stats .turns-count{
+  display:inline-block;
+}
+
+
+
 #player-attack .attacking-choices {
 	border:none;
 	padding-left: 5px;
