@@ -1,10 +1,26 @@
+<style>
+.ki-amount{
+  font-weight:bolder; color:ghostwhite;
+}
+</style>
+
 <h1>Skills</h1>
 
-
-<p>You are a level {$level}, {$class} Ninja.</p>
-<p>Your status is: {include file="status_section.tpl" statuses=$status_list}</p>
-<p>You currently {if !$starting_turns}<span class='ninja-notice'>do not have any</span>{else}have {$starting_turns}{/if} turn{if $starting_turns > 1}s{/if}.</p>
-<p>You currently {if !$starting_ki}<span class='ninja-notice'>do not have any</span>{else}have {$starting_ki}{/if} ki.</p>
+<div class='major-stats'>
+  <ul class='thin'>
+    <li>Your status is {include file="status_section.tpl" statuses=$status_list}</li>
+    {if !$starting_turns}
+    <li>You currently <span class='ninja-notice'>do not have any</span> turns.</li>
+    {else}
+    <li>You currently have have <span class='turns-count'>{$starting_turns}{/if} turn{if $starting_turns > 1}s</span>.</li>
+    {/if}
+    {if !$starting_ki}
+    <li>You currently <span class='ninja-notice'>do not have any</span> ki.</li>
+    {else}
+    <li>You currently have <span class='ki-amount'>{$starting_ki} ki</span>.</li>
+    {/if}
+  </ul>
+</div>
 <div id='skills-list'>
 
 {if $stealth}
