@@ -161,5 +161,5 @@ display_page(
 	, get_defined_vars()
 	, array('quickstat'=>'player')
 );
+
 }
-?>
