@@ -112,22 +112,21 @@ function json_send_chat($msg) {
 	}
 }
 
-function json_new_chats($since, $limit = 100) {
-	$limit = (int)$limit;
-	$since = ($since ? (float)$since : null);
+// Get the newest chats for the mini-chat area.
+function json_new_chats($since) {
+	$since = ($since ? (float)$since : null); // Since is a float?  Weird
 	$now = microtime(true);
 	DatabaseConnection::getInstance();
-
 	if ($since) {
-		$statement = DatabaseConnection::$pdo->prepare(
-		    "SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id WHERE EXTRACT(EPOCH FROM date) > :since ORDER BY date DESC LIMIT :limit"
+		$statement = DatabaseConnection::$pdo->prepare("SELECT chat.*, uname FROM chat 
+			LEFT JOIN players ON player_id = sender_id 
+			WHERE EXTRACT(EPOCH FROM date) > :since ORDER BY date ASC"
 		  );
 		$statement->bindValue(':since', $since);
 	} else {
-		$statement = DatabaseConnection::$pdo->prepare("SELECT chat.*, uname FROM chat LEFT JOIN players ON player_id = sender_id ORDER BY date DESC LIMIT :limit");
+		$statement = DatabaseConnection::$pdo->prepare("SELECT chat.*, uname FROM chat 
+			LEFT JOIN players ON player_id = sender_id ORDER BY date ASC");
 	}
-
-	$statement->bindValue(':limit', $limit);
 	$statement->execute();
 	$chats = $statement->fetchAll();
 

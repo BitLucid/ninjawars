@@ -497,9 +497,8 @@ if (parent.window != window) {
 			var chatContainer = $('#mini-chat-display');
 			var data;
 
-			if (chatContainer.length) { // check that there is a new chat -to- load.
+			if (chatContainer.length) { // check that there is a chat area to load into.
 				var chats = this.datastore.new_chats.chats;
-				//var after = container.insertBefore(document.createTextNode(''), container.firstChild);
 				if(chats){
 					for (var chat_message in chats) {
 						NW.addChatMessage(chatContainer, chats[chat_message]); // Add to the container, using the json data.
@@ -514,7 +513,7 @@ if (parent.window != window) {
 		console.log('mini-chat refreshed');
 	};
 
-	// use the data to add a new chat to the mini-chat area.
+	// use the json data passed to add a new message to the mini-chat
 	NW.addChatMessage = function(chatContainer, p_data){
 		var author, message, timestamp, author_id, playerLink, fullLink;
 		message = p_data.message;
@@ -538,8 +537,8 @@ if (parent.window != window) {
 		// put the new content into those areas.
 		authorArea.removeClass('template').show().find('a').attr('href', fullLink).text(author).end();
 		messageArea.removeClass('template').show().text(message);
-		// Append 'em.
-		list.append(authorArea, messageArea); 
+		// Prepend each entry of the chat 'em.
+		list.prepend(authorArea, messageArea); 
 
 		//console.log(chatContainer, list);
 	};
@@ -658,12 +657,16 @@ $(function() {
 		var quickstatsLinks = $("a[target='quickstats']");
 		quickstatsLinks.css({'font-style':'italic'}); // Italicize
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
-		// Update the mini chat section for the first time.
-		NW.checkForNewChats();
-		NW.startRefreshingMinichat(); // Start refreshing the chat.
+		
+		setTimeout(function(){ // Delay first update of the mini-chat section for a second.
+				console.log('Starting filling out mini-chat after short initial delay');
+				NW.checkForNewChats();
+				NW.startRefreshingMinichat(); // Start refreshing the chat.
+			}, 1*1000);
 
-		$('#post_msg_js').submit(function() {return NW.sendChatContents(this)});
 		// When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
+		$('#post_msg_js').submit(function() {return NW.sendChatContents(this)});
+		
 
 		NW.activeMembersContainer = document.getElementById('active-members-display');
 		NW.totalMembersContainer = document.getElementById('total-members-display');
