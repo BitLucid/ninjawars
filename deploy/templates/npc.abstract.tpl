@@ -40,14 +40,14 @@ article#fight nav{
 		</figure>
 	{/if}
 
-	{if $npc_stats.short}
+	{if isset($npc_stats.short) && $npc_stats.short}
 	<p>The {$display_name|escape} {$npc_stats.short}.</p>
 	{/if}
 	{if $is_quick}
 	The {$race|escape} sees you and prepares to defend!
 	{/if}
 	{if $is_stronger}
-	The {$race|escape} is a menacing presence!
+	The {$race|escape} seems stronger than you!
 	{/if}
 	
 	<p>The {$display_name|escape} wounds you for <span class='damage'>{$attack_damage} health</span>.</p>

@@ -11,7 +11,7 @@ if ($error = init($private, $alive)) {
 $turn_cost  = 1;
 $health     = 1;
 $victim     = in('victim');
-$random_encounter = (rand(1, 200) == 200);
+$random_encounter = (rand(1, 400) == 1);
 $combat_data = array();
 $char_id = self_char_id();
 $player     = new Player($char_id);
@@ -24,10 +24,13 @@ $ninja_str               = $player->getStrength();
 $ninja_health            = $player->vo->health;
 
 
-
+$static_npcs = array('peasant', 'theif', 'merchant', 'guard', 'samurai');
 $npcs = get_npcs();
+$possible_npcs = array_merge(array_keys($npcs), $static_npcs);
+$victim = restrict_to($victim, $possible_npcs); // Filter to only the correct options.
 
 if($turns > 0 && !empty($victim)) {
+
 	// Strip stealth when attacking samurai or oni
 	if ($player->hasStatus('stealth') && (strtolower($victim) == 'samurai' || strtolower($victim) == 'oni')) {
 		$player->subtractStatus(STEALTH);
