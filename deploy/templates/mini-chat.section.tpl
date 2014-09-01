@@ -36,7 +36,7 @@
                   <!-- Check for post_msg_js in nw.js for the functionality -->
                   
                     <div id='chat-input'>
-                        <input type="text" size="20" maxlength="250" name="message" class="textField">
+                        <input type="text" size="20" maxlength="250" name="message" autocomplete='off' class="textField">
                     </div>
                     <div id='chat-button-box'>
                         <input id='chat-button' type="submit" value="Chat" class="formButton">
