@@ -83,7 +83,7 @@
   </ul>
 </div>
 {else}
-<p class='enemies-lefthalf'>You haven't decided who your enemies are yet, <a href="list.php" target="main">find some</a>.</p>
+<p class='enemies-lefthalf'>You haven't decided who your enemies are yet, pick some below.</p>
 {/if}
 
 {if count($peers) gt 0}
@@ -110,9 +110,8 @@
 </section><!-- End of clearfix section -->
 
 <div id="ninja-enemy" class='solo-box'>
-  Search for ninja:
   <form id="enemy-add" action="enemies.php" method="get" name="enemy_add">
-    <input id='enemy-match' type="text" maxlength="50" name="enemy_match" class="textField">
+    <input id='enemy-match' type="text" maxlength="50" name="enemy_match" class="textField" placeholder='Search by ninja name'>
     <input type="submit" value="Find Enemies" class="formButton">
   </form>    
 </div>
