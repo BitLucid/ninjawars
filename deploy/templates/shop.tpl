@@ -32,7 +32,7 @@ input.shopButton{
 {if $in_purchase}
     {if $not_enough_gold or $no_funny_business}
     	{if $no_funny_business}
-    	<p><em class='speech'>No funny business now...</em> the shopkeeper says, eyeing your suspiciously.
+    	<p><em class='speech'>No funny business now...</em> the shopkeeper says, eyeing you suspiciously.
     	{else}
         <p><em class='speech'>The total comes to {$current_item_cost} gold,</em> the shopkeeper tells you.</p>
         <p>Unfortunately, you do not have that much gold.</p>
