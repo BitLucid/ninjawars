@@ -165,7 +165,7 @@
 
 <script type='text/javascript'>
 var show_faqs = false; // Set faqs hidden by default.
-{if $show_faqs}
+{if isset($show_faqs) && $show_faqs}  // Set the template passed var
 show_faqs = true;
 {/if}
 {literal}
