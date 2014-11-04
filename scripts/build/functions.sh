@@ -97,7 +97,7 @@ function ensure_curl {
 
 function ensure_selenium {
 	# Used selenium-server
-	SELENIUM="selenium-server-standalone-2.33.0.jar"
+	SELENIUM="selenium-server-standalone-2.44.0.jar"
 
 	# Check java environment
 	say_info "Checking for Java..." "SELENIUM"
@@ -119,7 +119,7 @@ function ensure_selenium {
 	SELENIUM_OK=$(ls /usr/lib/selenium|grep $SELENIUM)
 	if [ "" == "$SELENIUM_OK" ]; then
 		say_warning "Selenium wasn't found, installing..." "SELENIUM"
-		wget http://selenium.googlecode.com/files/$SELENIUM
+		wget http://selenium-release.storage.googleapis.com/2.44/$SELENIUM
 		sudo cp $SELENIUM /usr/lib/selenium/$SELENIUM
 	else
 		say_ok "Selenium in place" "SELENIUM"
