@@ -45,8 +45,9 @@ if(0>$quantity){ // Negative quantity requested
 	$current_item_cost = 0;
 	$no_funny_business = true;
 } else { // Positive or zero quantity requested.
-	if ($in_purchase == 1 && $item) {
-		$current_item_cost  = first_value($item_costs[$item_identity]['item_cost'], 0);
+	if ($in_purchase == 1 && $item && $item_identity) {
+		$potential_cost = isset($item_identity) && isset($item_costs[$item_identity]) && isset($item_costs[$item_identity]['item_cost'])? $item_costs[$item_identity]['item_cost'] : null;
+		$current_item_cost  = first_value($potential_cost, 0);
 		$current_item_cost = $current_item_cost * $quantity;
 
 		if ($current_item_cost > $gold){ // Not enough gold.
@@ -55,14 +56,14 @@ if(0>$quantity){ // Negative quantity requested
 			$no_funny_business = true;
 		} else { // Has enough gold.
 			try{
-			add_item($char_id, $item_identity, $quantity);
-			subtract_gold($char_id, $current_item_cost);
+				add_item($char_id, $item_identity, $quantity);
+				subtract_gold($char_id, $current_item_cost);
 			} catch (Exception $e){
 				$invalid_item = $e->getMessage();
 				error_log('Invalid Item attempted :'.$invalid_item);
 				$no_funny_business = true;
 			}
-			$gold = get_gold($char_id);
+			$gold = get_gold($char_id); // Refresh the gold amount.
 		}
 	}
 }
