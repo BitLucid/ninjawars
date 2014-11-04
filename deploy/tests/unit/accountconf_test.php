@@ -68,6 +68,31 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	/**
 	 * group accountconf
 	**/
+	function testThatAccountConfirmationProcessAllowsNinjaNamesOfTheRightFormat(){
+/*
+ * Username requirements (from the username_is_valid() function)
+ * A username must start with a lower-case or upper-case letter
+ * A username can contain only letters, numbers, underscores, or dashes.
+ * A username must be from 3 to 24 characters long
+ * A username cannot end in an underscore
+ * A username cannot contain 2 consecutive special characters
+ */
+		$this->assertTrue((bool)username_is_valid('tchalvak')); // This one had better be acceptable
+		$this->assertTrue((bool)username_is_valid('Beagle'));
+		$this->assertTrue((bool)username_is_valid('Kzqai')); // This one had better be acceptable
+
+		$acceptable_names = array('xaz', 'NameWillBeExactly24Lett', 'tchalvak', 'Kzqai', 'Kakashi66', 'name_withunderscore', 'name-withdash',
+			'ninjamaster331', 'Over_Medicated', 'No_One_Important', 'murmkuma', 'XtoxxictantrumX', 'dragon39540lkjhgfdsa', 'SasukeMoNo31',
+			'SASAGAKURE', 'TheBlackPhynix', 'NGkillerdrillNG', 'BOTDFLUVER22', 'TheStripedShirtSlasher', 'sadasdasdasd124123l', 'L4RR3s222',
+			'Dark-Red-EyeZ');
+		foreach($acceptable_names as $name){
+			$this->assertTrue((bool)username_is_valid($name), 'Rejected name was: '.$name);
+		}
+	}
+
+	/**
+	 * group accountconf
+	**/
     function testThatTestAccountLibActuallyWorksToCreateAndDestroyATestNinja(){
     	TestAccountCreateAndDestroy::purge_test_accounts();
     	$test_char_id = TestAccountCreateAndDestroy::create_testing_account();
@@ -226,6 +251,21 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 		}
 		foreach($no_preconfirm_emails as $email){
 			$this->assertFalse((bool)preconfirm_some_emails($email));
+		}
+	}
+
+	// Test that ninja allowed names match and don't match for the choices set
+
+
+
+	/**
+	 * group accountconf
+	**/
+	function testThatAccountConfirmationProcessRejectsNinjaNamesOfTheWrongFormat(){
+		// Same requirements as above, here we test that bad names are rejected.
+		$bad_names = array('xz', 'bo', '69numfirst', 'underscorelast_', 'specialChar##', '@!#$#$^#$@#', 'double__underscore', 'double--dash');
+		foreach($bad_names as $name){
+			$this->assertFalse((bool)username_is_valid($name));
 		}
 	}
 
