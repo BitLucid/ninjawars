@@ -23,7 +23,7 @@ confirm () {
 }
 
 
-sudo apt-get install apache2 php5 php5-pgsql php-apc postgresql postgresql-contrib libpq-dev smarty
+sudo apt-get install apache2 php5 php5-pgsql php-apc postgresql postgresql-contrib libpq-dev
 sudo apt-get install perl liblingua-en-inflect-perl phpunit
 
 #enable rewrite module
