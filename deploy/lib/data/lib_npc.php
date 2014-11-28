@@ -110,6 +110,8 @@ function get_npcs(){
 			'chicken'=>array('name'=>'Chicken', 'short'=>'saunters around like it owns the place', 'strength'=>1, 'speed'=>5, 'damage'=>0, 'race'=>'bird'),
 			'bees'=>array('name'=>'Swarm of Bees', 'short'=>'swarms and buzzes through the air', 'strength'=>17, 'speed'=>70, 'damage'=>50, 'gold'=>0, 'race'=>'insect'),
 			'goat'=>array('name'=>'Goat', 'short'=>'chews on anything it can get to', 'strength'=>10, 'speed'=>25, 'damage'=>3, 'race'=>'animal'),
+            'crow'=>array('name'=>'Crow', 'short'=>'caws out it\'s distain', 'strength'=>3, 'speed'=>25, 'damage'=>3, 'race'=>'bird'),
+            'kingfisher'=>array('name'=>'Kingfisher', 'short'=>'flashes by on it\'s wings', 'strength'=>3, 'speed'=>30, 'damage'=>3, 'race'=>'bird'),
 			'horse'=>array('name'=>'Horse', 'short'=>'', 'strength'=>10, 'speed'=>50, 'stamina'=>30, 'damage'=>10, 'race'=>'animal'),
 			'ox'=>array('name'=>'Ox', 'short'=>'', 'strength'=>50, 'speed'=>20, 'stamina'=>40, 'damage'=>20, 'race'=>'animal'),
 			'dog'=>array('name'=>'Dog', 'short'=>'barks wildly', 'strength'=>20, 'speed'=>20, 'stamina'=>10, 'damage'=>10, 'race'=>'animal'),
