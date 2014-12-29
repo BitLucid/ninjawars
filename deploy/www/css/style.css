@@ -1591,6 +1591,7 @@ a#skip-to-bottom{
     min-height:80px;
     margin-left:10%;
     position:relative;
+    vertical-align:top;
 }
 #footer-authors .avatar{
     position:absolute;
