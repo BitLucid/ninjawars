@@ -1,5 +1,5 @@
 <?php
-if (PROFILE) {
+if (defined('PROFILE') && PROFILE) {
 	$mtime = microtime();
 	$mtime = explode(" ",$mtime);
 	$mtime = $mtime[1] + $mtime[0];
@@ -9,4 +9,3 @@ if (PROFILE) {
 	$totalmemory = @round($totalmemory/pow(1024,($i=floor(log($totalmemory,1024)))),2).' '.$unit[$i];
 	error_log('PROFILE - Script: '.$_SERVER["SCRIPT_NAME"]." - Time: $totaltime - Mem: $totalmemory");
 }
-?>
