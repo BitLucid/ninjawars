@@ -47,8 +47,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	 * group accountconf
 	**/
 	function setUp(){
-		$this->previous_server_ip = @$_SERVER['REMOTE_ADDR'];
-		$_SERVER['REMOTE_ADDR']='127.0.0.1';
+		$_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR'])? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
 		$this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com probably
 		$this->test_password = TestAccountCreateAndDestroy::$test_password;
 		$this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
@@ -62,22 +61,34 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	function tearDown(){
 		// Delete test user.
 		TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
-		$_SERVER['REMOTE_ADDR']=$this->previous_server_ip; // Reset remote addr to whatever it was before, just in case.
+    }
+
+    function testForNinjaNameValidationErrors(){
+    	$this->assertNotEmpty(username_format_validate('tooooooooooooooolonggggggggggggggggggggggggggggggggggg'), 'Username not flagged as too long');
+    	$this->assertNotEmpty(username_format_validate('st')); // Too short
+    	$this->assertNotEmpty(username_format_validate(''));
+    	$this->assertNotEmpty(username_format_validate(' '));
+    	$this->assertNotEmpty(username_format_validate('_underscorestartsit'));
+		$this->assertNotEmpty(username_format_validate('underscore-ends-it_'));
+		$this->assertNotEmpty(username_format_validate('too____mny----l'));
+		$this->assertNotEmpty(username_format_validate('----@#$@#$%@#!$'));
+		$this->assertFalse(username_format_validate('acceptable'), 'Basic lowercase alpha name [acceptable] was rejected');
+    	$this->assertFalse(username_format_validate('ThisIsAcceptable'), 'Basic alpha name [ThisIsAcceptable] was rejected');
     }
 
 	/**
 	 * group accountconf
 	**/
-	function testThatAccountConfirmationProcessAllowsNinjaNamesOfTheRightFormat(){
-/*
- * Username requirements (from the username_is_valid() function)
- * A username must start with a lower-case or upper-case letter
- * A username can contain only letters, numbers, underscores, or dashes.
- * A username must be from 3 to 24 characters long
- * A username cannot end in an underscore
- * A username cannot contain 2 consecutive special characters
- */
-		$this->assertTrue((bool)username_is_valid('tchalvak')); // This one had better be acceptable
+	function testForNinjaThatAccountConfirmationProcessAllowsNinjaNamesOfTheRightFormat(){
+		/*
+		 * Username requirements (from the username_is_valid() function)
+		 * A username must start with a lower-case or upper-case letter
+		 * A username can contain only letters, numbers, underscores, or dashes.
+		 * A username must be from 3 to 24 characters long
+		 * A username cannot end in an underscore
+		 * A username cannot contain 2 consecutive special characters
+		 */
+		$this->assertTrue((bool)username_is_valid('tchalvak'), 'Standard all alpha name tchalvak was rejected'); // This one had better be acceptable
 		$this->assertTrue((bool)username_is_valid('Beagle'));
 		$this->assertTrue((bool)username_is_valid('Kzqai')); // This one had better be acceptable
 
@@ -86,7 +97,8 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 			'SASAGAKURE', 'TheBlackPhynix', 'NGkillerdrillNG', 'BOTDFLUVER22', 'TheStripedShirtSlasher', 'sadasdasdasd124123l', 'L4RR3s222',
 			'Dark-Red-EyeZ');
 		foreach($acceptable_names as $name){
-			$this->assertTrue((bool)username_is_valid($name), 'Rejected name was: '.$name);
+			$error = username_format_validate($name);
+			$this->assertTrue((bool)username_is_valid($name), 'Rejected name was: ['.$name.'] and error was ['.$error.']');
 		}
 	}
 

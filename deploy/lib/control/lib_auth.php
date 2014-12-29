@@ -316,37 +316,62 @@ function validate_password($password_to_hash) {
 // Function for account creation to return the reasons that a username isn't acceptable.
 function validate_username($send_name) {
 	$error = null;
-
-	if (substr($send_name, 0, 1) != 0 || substr($send_name, 0, 1) == "0") {  // Case the first char isn't a letter???
-		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a number.\n";
-	} else if ($send_name[0] == " ") {  //Checks for a white space at the beginning of the name
-		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not start with a space.";
-	} else if (strlen($send_name) < UNAME_LOWER_LENGTH || strlen($send_name) > UNAME_UPPER_LENGTH) {
-		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." must be at least ".UNAME_LOWER_LENGTH." characters and at most ".UNAME_UPPER_LENGTH." characters.";
-	} else if ($send_name != htmlentities($send_name)) {
-		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." may not contain html.";
-	} else if (!username_is_valid($send_name)) {
-		//Checks whether the name is different from the html stripped version, or from url-style version, or matches the filter.
-		$error = "Phase 1 Incomplete: Your ninja name ".$send_name." should only contain letters, numbers, dashes, and underscores.";
+	$format_error = username_format_validate($send_name);
+	if($format_error){
+		$error = 'Phase 1 Incomplete: Ninja name: '.$error;
 	}
-
 	return $error;
 }
 
-/*
- * Username requirements
- * A username must start with a lower-case or upper-case letter
- * A username can contain only letters, numbers, underscores, or dashes.
- * A username must be from 3 to 24 characters long
- * A username cannot end in an underscore
- * A username cannot contain 2 consecutive special characters
- */
+// Just a simple wrapper to turn the presence of a username format error into a boolean check
 function username_is_valid($username) {
-	$internal_lower = UNAME_LOWER_LENGTH-2;
-	$internal_upper = UNAME_UPPER_LENGTH-2;
-	$username = (string)$username;
-	return (!preg_match("#[\-_]{2}#", $username) && !preg_match("#[a-z][\-_][\da-z]#i", $username)
-		&& preg_match("#^[a-z][\da-z_\-]{".$internal_lower.",".$internal_upper."}[a-z\d]$#i", $username));
+	// Check for no error from the username_format_validate function.
+	return !(bool)username_format_validate($username);
+}
+
+// Return the error reason for a username not validating, if it doesn't.
+function username_format_validate($username){
+	/**
+	 * Username requirements (from the username_is_valid() function)
+	 * A username must start with a lower-case or upper-case letter
+	 * A username can contain only letters, numbers, underscores, or dashes.
+	 * A username must be from 3 to 24 characters long
+	 * A username cannot end in an underscore or dash
+	 * A username cannot contain 2 consecutive special characters
+	 */
+	$error = false;
+	$username = (string) $username;
+	if(mb_strlen($username) > UNAME_UPPER_LENGTH){
+		$error = 'Name too long. Must be 3 to 24 characters. ';
+	} elseif(mb_strlen($username) < UNAME_LOWER_LENGTH){
+		$error = 'Name too short. Must be 3 to 24 characters. ';
+	}
+	if(mb_substr($username, 0, 1, 'utf-8') === '_'){
+		$error .= 'Name cannot start with an underscore. ';
+	}
+	if(mb_substr($username, 0, 1, 'utf-8') === ' '){
+		$error .= 'Name cannot start with an space. ';
+	}
+	if(mb_substr($username, -1, null, 'utf-8') === '_'){
+		$error .= 'Name cannot end in an underscore. ';
+	}
+	if(!preg_match("#[a-z]*#i", $username)){
+		$error .= 'Name must start with a letter. ';
+	}
+	if(!preg_match("#[\da-z\-_]*[a-z0-9]$#i", $username)){
+		$error .= 'Name must end with a letter or number. ';
+	}
+	if(preg_match("#[\-_]{2}#", $username)){
+		$error .= 'More than two special characters in a row are not allowed in name. ';
+	}
+	if(!preg_match("#[\da-z\-_]#i", $username)){
+		$error .= 'No special characters except - dash and _ underscore, please. ';
+	}
+	if(!preg_match("#^[a-z]+([\da-z\-_]+[a-z0-9])?$#iD", $username)){
+		$error .= 'Name can only contain letters and numbers, with a dash or underscore or two. ';
+	}
+
+	return $error;
 }
 
 // Takes in a potential login name and saves it over multiple logins.
