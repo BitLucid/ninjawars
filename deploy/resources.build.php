@@ -4,7 +4,7 @@
 * It defines constants used throughout the application.  Constants for tracked files 
 */
 define('DATABASE_HOST', "localhost");		// *** The host to connect to for the database, localhost by default
-define('DATABASE_USER', "__REPLACE_ME_PG_USER__");		// *** The user that should connect to the database
+define('DATABASE_USER', "postgres");		// *** The user that should connect to the database
 define('DATABASE_NAME', "nw");		// *** The name of the database to connect to, nw on dev
 define('OFFLINE', false);				// *** Controls if remote or local resources are used
 define('DEBUG', true);					// *** Shorter debugging constant name, set as false on live.
