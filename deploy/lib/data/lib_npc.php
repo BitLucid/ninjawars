@@ -1,91 +1,12 @@
 <?php
 
 // Npc matrix planning document: https://docs.google.com/spreadsheet/ccc?key=0AkoUgtBBP00HdGZ1eUhaekhTb1dnZVh3ZlpoRExWdGc#gid=0
-class Npc{
-    private $data;
-    function __construct($data){
-        $this->data = $data;
-        $this->inventory_chances = @$data['inventory'];
-        $this->traits = @$data['traits'];
-        $this->strength = (int) @$data['strength'];
-        $this->speed = (int) @$data['speed'];
-        $this->stamina = (int) @$data['stamina'];
-        $this->damage = (int) @$data['damage'];
-        $this->ki = (int) @$data['ki'];
-        $this->race = @$data['race'];
-        $this->traits_array = null;
-        $this->inventory = null; // Initially just null;
-    }
+require_once ROOT.'lib/data/lib_npc.php';
+require_once ROOT.'lib/data/Npc.php';
 
-    // Calculcate the max damage of an npc.  Needed for effectiveness calc.
-    function max_damage(){
-        return ((1+ ($this->strength * 2)) + $this->damage);
-    }
 
-    // Calculate the initial naive damage from npcs.
-    function damage(){
-        return rand(0, $this->max_damage());
-    }
-
-    // Calculate difficulty, naively at the moment.
-    function difficulty(){
-        // Just add together all the points of the mob, so to speak.
-        $has_bounty = (int) isset($this->data['bounty']);
-        $armored = $this->has_trait('armored')? 1 : 0;
-        return 10 + $this->strength * 2 + $this->damage + $has_bounty + $armored * 5;
-    }
-
-    // Check for specific traits.
-    function has_trait($trait){
-        if(!isset($this->traits_array) && isset($this->traits)){
-            // Initialize traits as an array at this point.
-            $this->traits_array = $this->traits? explode(',', $this->traits) : array();
-        }
-        return count($this->traits_array) && in_array($trait, $this->traits_array);
-    }
-
-    function speed(){
-        return $this->speed;
-    }
-    function strength(){
-        return $this->strength;
-    }
-    function stamina(){
-        return $this->stamina;
-    }
-    function ki(){
-        return $this->ki;
-    }
-    
-    function health(){
-    	$armored = $this->has_trait('armored')? 1 : 0;
-    	return $this->stamina * 5 + $this->stamina * 2 * $armored;
-	}
-    
-    // Calculate this npc's inventory from initial chances.
-    function inventory(){
-    	if(!isset($this->inventory) && isset($this->inventory_chances) && $this->inventory_chances){
-    		$inv = array();
-    		foreach($this->inventory_chances as $item=>$chance){
-    			if(rand(1, 1000) < (int) ceil((float)$chance * 1000)){ // Calculate success from a decimal/float.
-    				// Add the item.
-    				$inv[$item] = true;
-    			}
-    		}
-    		$this->inventory = $inv;
-    	}
-    	return $this->inventory;
-    }
-    
-    // Get the npcs inventory and return true if there is an instance of the item in it.
-    function has_item($item){
-    	return isset($this->inventory[$item]);
-    }
-}
-
-// TODO: Abstract all the unique npc behaviors into the generic system.
-// Note that gold=>0 prevents all gold collection.
 // This function is just a prelude to getting the info all from the database.
+// Note that gold=>0 prevents all gold collection.
 function get_npcs(){
 	$npcs = array(
 		'peasant2'=>array('name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>'10', 'stamina'=>3, 'speed'=>10, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1, 'traits'=>'villager,sometimes_disguised_ninja', 'inventory'=>array('kunai'=>'.01')),
@@ -104,6 +25,7 @@ function get_npcs(){
 	);
 	if(defined('DEBUG') && DEBUG){
 		$npcs += array(
+            'firefly'=>array('name'=>'Firefly', 'strength'=>0, 'damage'=>0, 'race'=>'insect', 'gold'=>0),
 			'monk'=>array('name'=>'Monk', 'strength'=>10, 'stamina'=>10, 'speed'=>10, 'ki'=>30, 'race'=>'human', 'inventory'=>array('prayerwheel'=>'.2'), 'traits'=>'deflection,defensive,self_heal'),
             'geisha'=>array('name'=>'Geisha', 'strength'=>5, 'stamina'=>10, 'speed'=>15, 'ki'=>10, 'gold'=>20, 'bounty'=>30, 'race'=>'human', 'inventory'=>array('sake'=>'.2', 'mirror'=>'.01', 'kimono'=>'.01', 'tessen'=>'.01'), 'traits'=>'packdynamic,speed,guarded,villager'),
 			'pig'=>array('name'=>'Wild pig', 'short'=>'rolls about in the muck contentedly', 'strength'=>1, 'speed'=>10, 'damage'=>2, 'race'=>'animal'),
@@ -145,4 +67,3 @@ function get_npcs(){
 	return $npcs;
 }
 
-?>
