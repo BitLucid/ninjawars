@@ -16,16 +16,16 @@ var NW = window.NW || {};
 //var $ = jQuery; // jQuery sets itself to use the dollar sign shortcut by default.
 // A different instance of jquery is currently used in the iframe and outside.
 
-var g_isIndex = (window.location.pathname.substring(1) == 'index.php') || $('body').hasClass('main-body'); // This line requires and makes use of the $ jQuery var!
+var g_isIndex = (window.location.pathname.substring(1) === 'index.php') || $('body').hasClass('main-body'); // This line requires and makes use of the $ jQuery var!
 
-var g_isLive = (window.location.host != 'localhost');
+var g_isLive = (window.location.host !== 'localhost');
 
-var g_isRoot = (window.location.pathname == '/');
+var g_isRoot = (window.location.pathname === '/');
 
 var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent == window));
 
 // Guarantee that there is a console to prevent errors while debugging.
-if (typeof(console) == 'undefined') { console = { log: function() { } }; }
+if (typeof(console) === 'undefined') { console = { log: function() { } }; }
 
 // iepp v2.1pre @jon_neal & @aFarkas github.com/aFarkas/iepp
 // html5shiv @rem remysharp.com/html5-enabling-script
@@ -61,9 +61,9 @@ if (parent.window != window) {
 	})();
 	
 	// Accept a json data array of matches and house them in the interface.
-	NW.displayMatches = function(json_matches){
+	/*NW.displayMatches = function(json_matches){
 		
-	}
+	};*/
 	
 	// Get the chars/ids matching a term and then have the callback run.
 	NW.charMatch = function(term, limit, callback) {
@@ -101,24 +101,24 @@ if (parent.window != window) {
 		.end().find('#turns').find('.bar-number').text(barstats.turns).end().find('.bar').css({'width':barstats.turns_percent+'%'}).end()
 		.end();
 		// Change the percentage of the background bar.
-	}
+	};
 	
 	
 	NW.displayBarstats = function() {
 		$('#barstats').show();
-	}
+	};
 	
 	NW.refreshStats = function(playerInfo) {
 		// Pull health, turns, and kills.
 		var updated = false;
-		if(typeof(NW.barstats) == 'undefined'){
+		if(typeof(NW.barstats) === 'undefined'){
 			// Create the barstats data container if it doesn't already exist.
 			NW.barstats = {};
 			NW.barstats.health = null;
 			NW.barstats.turns = null;
 			NW.barstats.kills = null;
 		}
-		if(playerInfo && typeof(playerInfo.health) != 'undefined'){
+		if(playerInfo && typeof(playerInfo.health) !== 'undefined'){
 			this.datastore.playerInfo = playerInfo;
 		}
 		if (this.datastore.playerInfo) {
@@ -142,7 +142,7 @@ if (parent.window != window) {
 		}
 
 		return updated;
-	}
+	};
 
 	// For refreshing quickstats (now barstats) from inside the main iframe.
 	NW.refreshQuickstats = function(typeOfView) {
@@ -175,7 +175,7 @@ if (parent.window != window) {
 
 			recent.show().click(NW.eventsHide);
 		}
-	}
+	};
 
 	NW.eventsRead = function() {
 		$('#recent-events', top.document).removeClass('message-unread');
@@ -187,7 +187,7 @@ if (parent.window != window) {
 	
 	NW.eventsShow = function() {
 		$('#recent-events', top.document).show();
-	}
+	};
 
 	// Pull the event from the data store and request it be displayed.
 	NW.updateLatestEvent = function() {
@@ -197,7 +197,7 @@ if (parent.window != window) {
 
 		if (!event) {
 			this.feedbackSpeedUp(); // Make the interval to try again shorter.
-		} else if (this.datastore.visibleEventId == event.event_id) {
+		} else if (this.datastore.visibleEventId === event.event_id) {
 			// If the stored data is the same as the latest pulled event...
 			this.datastore.eventUpdateCount = (typeof this.datastore.eventUpdateCount === 'undefined'? 
 					this.datastore.eventUpdateCount = 1 : 
@@ -346,7 +346,7 @@ if (parent.window != window) {
 			if (p_additionalCallback) {
 				p_additionalCallback();
 			}
-		}
+		};
 	};
 
 	// Saves an array of data to the global data storage, only works on array data, with an index.
@@ -367,7 +367,7 @@ if (parent.window != window) {
 	// Return the most up-to-date value, which was stored prior.
 	NW.pullFromDataStore = function(global_store, property_name) {
 		if (this.datastore[global_store]) {
-			if (property_name && typeof(this.datastore[global_store][property_name]) != 'undefined') {
+			if (property_name && typeof(this.datastore[global_store][property_name]) !== 'undefined') {
 				// If a property_name was specified, return the value for that specific property (e.g. event.event_id)...
 				return this.datastore[global_store][property_name];
 			}
@@ -386,7 +386,7 @@ if (parent.window != window) {
 		}
 
 		// Check for a change to the value to store.
-		if ((typeof(this.datastore['array'][name]) != 'undefined') || this.datastore['array'][name] == value) {
+		if ((typeof(this.datastore['array'][name]) !== 'undefined') || this.datastore['array'][name] === value) {
 			// If it exists and differs, store the new one and return true.
 			this.datastore['array'][name] = value;
 			return true;
@@ -397,7 +397,7 @@ if (parent.window != window) {
 
 	// Get a stored hash if available.
 	NW.pullArrayValue = function(name) {
-		return (this.datastore['array'] && typeof(this.datastore['array'][name]) != 'undefined' ? this.datastore['array'][name] : null);
+		return (this.datastore['array'] && typeof(this.datastore['array'][name]) !== 'undefined' ? this.datastore['array'][name] : null);
 	};
 
 	// Determines the update interval,
@@ -427,7 +427,7 @@ if (parent.window != window) {
 		var chainCounter = (!!p_chainCounter ? p_chainCounter : 1);
 		
 		// TODO: skip heartbeat entirely when not logged in?
-		if (this.loggedIn && chainCounter != 1) {
+		if (this.loggedIn && chainCounter !== 1) {
 			// Skip the heartbeat if not logged in, and skip it for the first chain counter, since the page will have just loaded.
 			this.checkAPI(); // Check for new information.
 		}
@@ -463,7 +463,7 @@ if (parent.window != window) {
 	};
 
 	NW.make_checkForNewChats_callback = function() {
-		console.log('callback made to check for new chats');
+		this.debug('callback made to check for new chats');
 		var self = this;
 		return function(data) {
 			// Update global data stores if an update is needed.
@@ -566,7 +566,7 @@ if (parent.window != window) {
 	// Send a chat message to be saved.
 	NW.putChat = function(mess, callback){
 		$.getJSON('api.php?type=send_chat&msg='+encodeURIComponent(mess)+'&jsoncallback=?', callback);
-	}
+	};
 
 	// Send the contents of the chat form input box.
 	NW.sendChatContents = function(p_form) {
@@ -603,7 +603,7 @@ if (parent.window != window) {
 /***************************** Execution of code, run at the end to allow all function definitions to exist beforehand. ******/
 if(g_isIndex || g_isRoot){
 // This has to be outside of domready for some reason.
-	if (parent.frames.length != 0) { // If there is a double-nested index...
+	if (parent.frames.length !== 0) { // If there is a double-nested index...
 		location.href = "main.php"; // ...Display the main page instead.
 		// This function must be outside of domready, for some reason.
 	}
@@ -690,4 +690,4 @@ function refreshpagechat() {
 		}
 	}
 	console.log('chat not refreshed due to typed text');
-}
+};
