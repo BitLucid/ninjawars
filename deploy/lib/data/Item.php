@@ -18,15 +18,6 @@ class Item {
     protected $m_type;
     protected $m_identity;
 
-    /*
-    public function __construct($p_name) {
-        $this->m_ignoresStealth = false;
-        $this->m_name = trim($p_name);
-        $this->m_turnCost = 1;
-        $this->m_turnChange = null;
-        $this->m_type = item_id_from_display_name($p_name);
-    }*/
-
     // Set all the default settings for items, overridden by specified settings.
     public function __construct($dirty_identity=null) {
         if(is_string($dirty_identity) && $dirty_identity != ''){
@@ -49,7 +40,7 @@ class Item {
         $this->m_ignoresStealth	   = ($p_data['ignore_stealth'] == 't');
         $this->m_covert            = ($p_data['covert']         == 't');
         $this->m_selfUse           = ($p_data['self_use']       == 't');
-        $this->m_otherUsable           = ($p_data['other_usable']       == 't');
+        $this->m_otherUsable       = ($p_data['other_usable']   == 't');
     }
 
     // Not the identity, but the display name
