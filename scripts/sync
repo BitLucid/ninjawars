@@ -1,6 +1,6 @@
 #!/bin/bash
 
-vendor/bin/propel-gen convert-conf
+vendor/bin/propel-gen convert-conf #convert config file to array dump for improved performance
 vendor/bin/propel-gen . diff migrate
 vendor/bin/propel-gen om
 vendor/bin/phpunit
