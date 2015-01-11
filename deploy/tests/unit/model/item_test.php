@@ -23,6 +23,39 @@ class Item_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('shuriken', $shuriken->identity());
 	}
 
+	public function testTessenAndKunaiHaveSomeMaxDamage(){
+		$tessen = new Item('tessen');
+		$this->assertGreaterThan(0, $tessen->getMaxDamage());
+		$kunai = new Item('kunai');
+		$this->assertGreaterThan(0, $kunai->getMaxDamage());
+	}
+
+	// Random damage check helper function
+	public function itemRandomDamageSum($item, $iterations=1000){
+		$sum = 0;
+		$i = $iterations;
+		while($i > 0){
+			$sum += $item->getRandomDamage();
+			$i--;
+		}
+		return $sum;
+	}
+
+	public function testKunaiHasSomeRandomDamage(){
+		$kunai = new Item('kunai');
+		$sum = $this->itemRandomDamageSum($kunai);
+		$this->assertGreaterThan(0, $sum);
+	}
+
+	public function weaponsHaveSomeRandomDamage(){
+		// Special cases:  Shuriken...
+		$this->assertGreaterThan(0, $this->itemRandomDamageSum(new Item('kunai')));
+		$this->assertGreaterThan(0, $this->itemRandomDamageSum(new Item('ono')));
+		$this->assertGreaterThan(0, $this->itemRandomDamageSum(new Item('bo')));
+		$this->assertGreaterThan(0, $this->itemRandomDamageSum(new Item('kama')));
+		$this->assertGreaterThan(0, $this->itemRandomDamageSum(new Item('tetsubo')));
+	}
+
 	public function testShurikenHasSomeMaxDamage(){
 		$this->markTestIncomplete();
 		$shuriken = new Item('shuriken');

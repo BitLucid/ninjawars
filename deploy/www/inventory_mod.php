@@ -119,7 +119,7 @@ if ($target_id && ($link_back == "" || $link_back == 'player') && $target_id != 
 
 /*
 Use this sql to see item damage and effects:
-select item_display_name, target_damage, effects.* from item join item_effects on item_id = _item_id join effects on effect_id = _effect_id;
+select item_display_name, target_damage, effects.* from item left join item_effects on item_id = _item_id join effects on effect_id = _effect_id;
 
 
 */
