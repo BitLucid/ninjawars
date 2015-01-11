@@ -91,6 +91,10 @@ class Npc{
 
     function bounty(){
     }
+
+    public function setData($data){
+    	$this->data = $data;
+    }
 }
 
 class InvalidNpcException extends Exception{}
@@ -127,7 +131,7 @@ class NpcFactory{
 	 * Create the meat of an npc from it's data
 	**/
 	public static function fleshOutFromData($data, $npc){
-        $npc->data = $data;
+        $npc->setData($data);
         $npc->inventory_chances = @$data['inventory'];
         $npc->traits = @$data['traits'];
         $npc->strength = (int) @$data['strength'];
