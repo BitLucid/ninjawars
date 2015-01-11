@@ -501,6 +501,7 @@ if (parent.window != window) {
 				var chats = this.datastore.new_chats.chats;
 				if(chats){
 					for (var chat_message in chats) {
+						// TODO: Gotta lock down the for in here.
 						NW.addChatMessage(chatContainer, chats[chat_message]); // Add to the container, using the json data.
 					}
 				}
@@ -510,7 +511,7 @@ if (parent.window != window) {
 				return false;
 			}
 		}
-		console.log('mini-chat refreshed');
+		this.debug('mini-chat refreshed');
 	};
 
 	// use the json data passed to add a new message to the mini-chat
@@ -539,8 +540,6 @@ if (parent.window != window) {
 		messageArea.removeClass('template').show().text(message);
 		// Prepend each entry of the chat 'em.
 		list.prepend(authorArea, messageArea); 
-
-		//console.log(chatContainer, list);
 	};
 
 	// This locking mechanism should probably be migrated to a timewatch pattern instead.
@@ -659,7 +658,7 @@ $(function() {
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
 		
 		setTimeout(function(){ // Delay first update of the mini-chat section for a second.
-				console.log('Starting filling out mini-chat after short initial delay');
+				this.debug('Starting filling out mini-chat after short initial delay');
 				NW.checkForNewChats();
 				NW.startRefreshingMinichat(); // Start refreshing the chat.
 			}, 1*1000);
