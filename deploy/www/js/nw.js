@@ -277,7 +277,7 @@ if (parent.window != window) {
 		var memberCountsUpdated = this.updateMemberCounts(); // Active member count over chat
 
 		// If any changes to data occurred, return true.
-		var res = (!!(messageUpdated || eventUpdated || healthUpdated));
+		var res = (!!(messageUpdated || eventUpdated /*|| healthUpdated*/));
 
 		return res;
 	};
@@ -658,7 +658,7 @@ $(function() {
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
 		
 		setTimeout(function(){ // Delay first update of the mini-chat section for a second.
-				this.debug('Starting filling out mini-chat after short initial delay');
+				NW.debug('Starting filling out mini-chat after short initial delay');
 				NW.checkForNewChats();
 				NW.startRefreshingMinichat(); // Start refreshing the chat.
 			}, 1*1000);
