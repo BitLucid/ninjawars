@@ -535,29 +535,20 @@ h1, h2, .title {
 	margin-bottom:.1em;
 }
 h2 {
-	margin: .1em auto .1em;
-	width:50%;
-	background: lightblue;
+	margin: .1em auto .1em; width:50%; background: rgb(173, 216, 230); 
 	font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
-	letter-spacing:0.1em;
-	font-weight:normal;
+	letter-spacing:0.1em; font-weight:normal;
 	-moz-transform:rotate(1deg);
 	-webkit-transform:rotate(1deg);
 	-o-transform:rotate(1deg);
 	transform:rotate(1deg);
 }
 h1, .player-info .player-name {
-	background: #291F16;
-	background: rgba(129, 45, 12, 0.5);
-	color: #B3B286;
-	border-bottom: none;
-	padding-left:0;
-	padding-right:0;
+	background: #291F16; background: rgba(129, 45, 12, 0.5);
+	color: rgb(255, 156, 42);
+	border-bottom: none; padding-left:0; padding-right:0; 
 	font: 30px/34px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;
-	letter-spacing: 0;
-	width:100%;
-	margin: 0 7em inherit 7em;
-	text-shadow: black 2px 2px 3px;
+	letter-spacing: 0; width:100%; margin: 0 7em inherit 7em; text-shadow: black 2px 2px 3px;
 }
 h3 {
 	font: 18px/24px;

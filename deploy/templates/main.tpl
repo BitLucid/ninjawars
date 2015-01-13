@@ -66,9 +66,9 @@
     font-size:1.6em;
 }
 .accent-sandwiched{
-  margin: .4em auto .3em;text-align:center;font-size:1.1em;font-style:italic;
-  border-top:1px solid #0081A5;
-  border-bottom:1px solid #0081A5;
+  display:inline-block;margin: .4em auto .3em;text-align:center;font-size:1.1em;font-style:italic;
+  padding-left:2em;padding-right:2em;
+  border-top:1px solid rgba(0, 129, 165, 0.4); border-bottom:1px solid rgba(0, 129, 165, 0.4);
 }
 .accent-sandwiched a{
   display:inline-block;width:100%;height:100%
@@ -103,9 +103,10 @@
 
 
 
-
-<div id='show-faqs' class='accent-sandwiched'>
-  <a target='main' href="tutorial.php?show_faqs=1" id='show-faqs-link'>Show More Info</a>
+<div class='centered'>
+  <div id='show-faqs' class='accent-sandwiched'>
+    <a target='main' href="tutorial.php?show_faqs=1" id='show-faqs-link'>Show More Info</a>
+  </div>
 </div>
 
 
