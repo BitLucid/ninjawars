@@ -29,12 +29,14 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateStandardFirefly(){
+		$this->markTestIncomplete();
 		assert(defined('DEBUG') && DEBUG);
 		$firefly = NpcFactory::create('firefly');
 		$this->assertInstanceOf('Npc', $firefly, 'Firefly creation failed');
 	}
 
 	public function testCreateStandardFirefliesPlural(){
+		$this->markTestIncomplete();
 		assert(defined('DEBUG') && DEBUG);
 		$fireflies = NpcFactory::create('fireflies');
 		$this->assertInstanceOf('Npc', $fireflies, 'Fireflies creation failed');
@@ -72,6 +74,7 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 
 	// Npcs have similar races, e.g. a guard and a villager.
 	public function testVariousVillagersHaveSameRace(){
+		$this->markTestIncomplete();
 		$humans = array('peasant2', /*'theif2', */'guard2', 'merchant2');
 		foreach($humans as $human){
 			$this->assertEquals('human', (new Npc($human))->race());
