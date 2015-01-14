@@ -184,7 +184,7 @@ As such, after the leave command, no clan membership display information should 
 </ul>
 			{/if}
 		{/if}
-
+<section class='glassbox'>
 <div>You are a lone ninja, not a member of any clan.</div>
 <div><a href='clan.php?command=join'>View clans available to join</a></div>
 		{if $clan_id_viewed}
@@ -192,11 +192,12 @@ As such, after the leave command, no clan membership display information should 
   <a href='clan.php?command=join&amp;clan_id={$clan_id_viewed|escape}&amp;process=1'>Send a request to join the Clan {$viewed_clan_name|escape}</a>
 </div>
     	{/if}
+</section>
 
 		{if $can_create_a_clan}
-<div><a href='clan.php?command=new'>Start a New Clan</a></div>
+  <div><a href='clan.php?command=new'>Start a New Clan</a></div>
 		{else}
-<div>You can start your own clan when you reach level {$clan_creator_min_level}.</div>
+  <small class='glassbox'>You can start your own clan when you reach level {$clan_creator_min_level}.</small>
 		{/if}
 	{/if} {* End of viewer not part of any clan section *}
 {/if} {* End of logged-in-only display section *}
