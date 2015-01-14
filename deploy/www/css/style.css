@@ -1429,7 +1429,8 @@ iframe {
   width:8px;height:8px;
 }
 .splash #top-logo h1{
-  display:inline-block;width:30%;font:30px/34px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;vertical-align:middle;margin:0;padding:0;background-color:transparent;
+  display:inline-block;width:30%;
+  font:40px/45px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;vertical-align:middle;margin:0;padding:0;background-color:transparent;
   text-align:right;
 }
 .splash #top-logo h1 + h1{
@@ -1946,8 +1947,8 @@ table#player-attack {
 }
 .clan-tag {
 	color: blue;
-	background-color: maroon;
-	background-color:rgba(128, 0, 0, 0.7);
+	background-color: maroon; background-color:rgba(128, 0, 0, 0.7);
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 	float:left;
 	margin: 5px;
 	list-style-type: none;
