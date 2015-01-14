@@ -82,13 +82,22 @@ function get_current_enemies() {
 }
 
 // Pull the recent attackers from the event table.
-function get_recent_attackers() {
-	DatabaseConnection::getInstance();
+function get_recent_attackers($self=null) {
+	// If a self Player object is passed in, exclude them from the "recent attackers" list
+	$id = $self instanceof Player? $self->id() : null;
 
+	$exclude_id = '';
+	if($id>0){
+		$exclude_id = ' AND player_id != :id ';
+	}
+	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare(
 		'SELECT DISTINCT player_id, send_from, uname, level, health 
-		FROM events JOIN players ON send_from = player_id WHERE send_to = :user AND active = 1 LIMIT 20');
+		FROM events JOIN players ON send_from = player_id WHERE send_to = :user AND active = 1 '.$exclude_id.' LIMIT 20');
 	$statement->bindValue(':user', self_char_id());
+	if($id>0){
+		$statement->bindValue(':id', $id, PDO::PARAM_INT);
+	}
 	$statement->execute();
 
 	return $statement;
