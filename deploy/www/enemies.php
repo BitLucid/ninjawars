@@ -17,6 +17,7 @@ $peers = nearby_peers(self_char_id());
 $active_ninjas = get_active_players(5, true); // Get the currently active ninjas
 
 $char_info = self_info();
+$char = new Player(self_char_id());
 
 $match_string = in('enemy_match', null, 'no filter');
 $add_enemy    = in('add_enemy', null, 'toInt');
@@ -47,7 +48,7 @@ if (count($enemy_list) > ($enemy_limit - 1)) {
 $enemy_list = get_current_enemies();
 $enemyCount = $enemy_list->rowCount();
 $enemy_list = $enemy_list->fetchAll();
-$recent_attackers = get_recent_attackers()->fetchAll();
+$recent_attackers = get_recent_attackers($char)->fetchAll();
 
 // Add enemies at the bottom of the fight page.
 
