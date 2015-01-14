@@ -21,6 +21,9 @@ dt {
 dd {
   float:left; width:70%; /* adjust the width; make sure the total of both is 100% */
 }
+#delete-messages a{
+  text-transform:capitalize;
+}
 {/literal}
 </style>
 
@@ -66,8 +69,9 @@ dd {
   
   -->
 
+
   <div class='glassbox' id='delete-messages'>
-    <a href="messages.php?delete=1&type={$type_filter}" style='text-transform:capitalize'>Delete {$viewed_type} Messages</a>
+    <a href="messages.php?delete=1&type={$type_filter}">Delete {$viewed_type} Messages</a>
   </div>
 </div> <!-- End of clan and search div -->
 

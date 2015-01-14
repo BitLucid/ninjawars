@@ -1486,28 +1486,16 @@ iframe {
 }
 
 #skip-to-bottom{
-	display:block;
-	padding:.5em;
-	position:absolute;
-	bottom:17%;
-	left:0;
-	background-color:#666;
-	background-color:rgba(100, 100, 100, .3);
-	text-transform:uppercase;
+	display:block; padding:.5em; position:absolute; bottom:17%; left:0; 
+	background-color:#666; background-color:rgba(100, 100, 100, .3); text-transform:uppercase;
 }
 a#skip-to-bottom{
-	background-color:#666;
-	background-color:rgba(100, 100, 100, .5);
+	background-color:#666; background-color:rgba(100, 100, 100, .5);
 	text-decoration:none;
 }
 
 #skip-to-bottom::after{
-	display:block;
-	text-align:center;
-	content:'▼';
-	color:#666;
-	font-size:2em;
-	text-decoration:none;
+	display:block; text-align:center; content:'▼'; color:#666; font-size:2em; text-decoration:none;
 }
 
 #index-footer {

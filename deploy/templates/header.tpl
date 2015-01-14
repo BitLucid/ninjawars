@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html lang="en-us" class="no-js"> <!--<![endif]-->
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <meta name="keywords" content="ninjawars, ninja wars, the ninja game, ninjawars web game, ninjas, ninja weapons & techniques, samurai, free online games, {$title|escape}">
+    <meta name="keywords" content="ninjawars, ninja wars, the ninja game, ninjawars web game, ninjas, ninja weapons &amp; techniques, samurai, free online games, {$title|escape}">
     <meta name="author" content="ninjawars.net">
     <meta name="description" content="Ninjawars: The ninja game where you battle other ninja for your survival.  Create a ninja and use skills or magic to kill samurai, the emperor's guards, or other ninja from rival clans. {$title|escape} ">
     <meta name='viewport' content='width=device-width'>

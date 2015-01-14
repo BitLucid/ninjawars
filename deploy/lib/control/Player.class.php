@@ -5,7 +5,7 @@ require_once(LIB_ROOT . "control/lib_status.php");
 
 
 
-/* Player (actually character) behavior object.
+/* Ninja (actually character) behavior object.
  *
  * This file should make use of a private PlayerVO.class.php and PlayerDAO.class.php
  * to propagate and save its data.

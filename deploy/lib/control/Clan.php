@@ -1,4 +1,12 @@
 <?php
+/**
+ * who/what/why/where
+ * Ninja clans with their various members
+ *
+ *
+**/
+
+
 class Clan
 {
 	private $m_id;
@@ -75,4 +83,3 @@ class Clan
 	public function promoteMember($p_playerID) {
 	}
 }
-?>
