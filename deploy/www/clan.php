@@ -98,9 +98,7 @@ if ($player_id) {
 	}
 }
 
-if (!$player_id) {
-	$action_message = 'You are not part of any clan.';
-} else {
+if(positive_int($player_id)){ // Logged in player.
 	if ($leader_of_own_clan && $avatar_or_message_change) {
 		$action_message = 'Clan avatar or message changed.';
 
