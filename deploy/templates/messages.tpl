@@ -1,32 +1,37 @@
 <h1>Messages</h1>
+
 {include file='message-tabs.tpl' current=$current_tab}
 
-<script type='text/javascript' src='{$smarty.const.JS_ROOT}messageDeleteConfirm.js'></script>
-
-{if $message_to eq 'individual' or $message_to eq 'clan'}
-<script type='text/javascript'>
+<style>
 {literal}
-	$().ready(function(){
-		// Cache the focus point.
-		var focus = '{/literal}{$message_to}{literal}';
-		if(focus == 'clan'){
-			$('input#message-clan').focus();
-		} else {
-			$('input#message-to-ninja').focus();
-		}
-	});
+#message-ninja{
+  margin-bottom:1em;
+}
+
+dl, dt, dd{
+  margin:0; padding:0;
+}
+dl {
+  width:100%; overflow:hidden;
+}
+dt {
+  float:left; width:20%; /* adjust the width; make sure the total of both is 100% */
+  min-width:160px;
+}
+dd {
+  float:left; width:70%; /* adjust the width; make sure the total of both is 100% */
+}
 {/literal}
-</script>
-{/if}
+</style>
 
 
 <!-- Message an individual ninja-->
-<div id='message-ninja' style='margin-bottom:1em'>
+<div class='glassbox' id='message-ninja'>
   <form action='messages.php' method='post' name='ninja_message'>
     <div>
       <em class='char-name'>@<input class='char-name textField' type='text' size='26' name='to' value='{$to}'></em>
-      <span style='font-weight:bold'>say</span>
-      "<input id='message-to-ninja' type='text' size='30' name='message' class='textField' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}">"
+      <em>say</em>
+      &apos;<input id='message-to-ninja' type='text' size='30' name='message' class='textField' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}">&apos;
       <input type='hidden' name='messenger' value='1'>
       <input type='submit' value='Send' name='ninja_message' class='formButton'>
     </div>
@@ -61,7 +66,7 @@
   
   -->
 
-  <div id='delete-messages'>
+  <div class='glassbox' id='delete-messages'>
     <a href="messages.php?delete=1&type={$type_filter}" style='text-transform:capitalize'>Delete {$viewed_type} Messages</a>
   </div>
 </div> <!-- End of clan and search div -->
@@ -69,28 +74,6 @@
 {if $message_sent_to}
 <div id='message-sent-to' class='ninja-notice'>Message sent to <em class='char-name'>{$message_sent_to|escape}</em>.</div>
 {/if}
-
-<style>
-{literal}
-	dl, dt, dd{
-		margin:0;
-		padding:0;
-	}
-	dl {
-	 width:100%;
-	 overflow:hidden;
-	}
-	dt {
-	 float:left;
-	 width:20%; /* adjust the width; make sure the total of both is 100% */
-	 min-width:160px;
-	}
-	dd {
-	 float:left;
-	 width:70%; /* adjust the width; make sure the total of both is 100% */
-	}
-{/literal}
-</style>
 
 {include file="messages.nav.tpl"}
 
@@ -101,3 +84,21 @@
 </dl>
 
 {include file="messages.nav.tpl"}
+
+<script type='text/javascript' src='{$smarty.const.JS_ROOT}messageDeleteConfirm.js'></script>
+
+{if $message_to eq 'individual' or $message_to eq 'clan'}
+<script type='text/javascript'>
+{literal}
+  $().ready(function(){
+    // Cache the focus point.
+    var focus = '{/literal}{$message_to}{literal}';
+    if(focus == 'clan'){
+      $('input#message-clan').focus();
+    } else {
+      $('input#message-to-ninja').focus();
+    }
+  });
+{/literal}
+</script>
+{/if}

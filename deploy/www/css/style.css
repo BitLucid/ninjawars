@@ -2167,6 +2167,30 @@ table#player-attack {
 	padding:0 0 0 1em;
 }
 
+#tabs.message-tabs{
+	background-color:rgb(30, 30, 30); margin: .2em 0 .7em; font-size:1.5em; font-weight:bold; text-align:center;
+}
+#tabs.message-tabs .current{
+	background-color:black; color:rgb(230, 230, 230);
+}
+#tabs.message-tabs .current a, #tabs.message-tabs .current a:hover{
+	/* Make the current tab look less like a link, since they're already on that tab/page */
+	color:white; font-weight:normal; border-right:3px gray inset; border-left:3px gray inset; border-top:3px gray inset;
+}
+
+
+#tabs.message-tabs ul li {
+	list-style-type:none; display:inline-block; margin-left:2em;
+}
+#tabs.message-tabs ul li a{
+	padding:.3em .7em; color:rgb(30, 40, 240); display:inline-block;
+}
+
+#tabs.message-tabs ul li.first{
+	border-left:none;
+}
+
+
 /* NEW INDEX REWRITE CSS */
 
 
@@ -2782,3 +2806,4 @@ figure.slide-captioned:hover:before {
 		font-weight:bold;
 		}
 }
+
