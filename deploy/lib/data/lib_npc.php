@@ -9,12 +9,8 @@ require_once ROOT.'lib/data/Npc.php';
 // Note that gold=>0 prevents all gold collection.
 function get_npcs(){
 	$npcs = array(
-		'peasant2'=>array('name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>'10', 'stamina'=>3, 'speed'=>10, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1, 'traits'=>'villager,sometimes_disguised_ninja', 'inventory'=>array('kunai'=>'.01')),
-		'merchant2'=>array('name'=>'Merchant', 'race'=>'human', 'strength'=>'20', 'stamina'=>20, 'speed'=>10, 'ki'=>1, 
-			'damage'=>15, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>3, 'img'=>'merchant.png', 'inventory'=>array('phosphor'=>'.7'), 'traits'=>'villager'),
-		'guard2'=>array('name'=>'Guard', 'short'=>'is a member of the ashigaru foot soldiers, hired for various tasks', 'race'=>'human', 'strength'=>'30', 'stamina'=>30, 'speed'=>12, 'ki'=>1, 
-            'damage'=>0, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>0, 'img'=>'guard.png', 'inventory'=>array('ginsengroot'=>'.1'), 'traits'=>'partial_match_strength'),
-		'fireflies'=>array('name'=>'Fireflies', 'strength'=>0, 'damage'=>0, 'race'=>'insect'), // Baseline weakest mob
+        'firefly'=>array('name'=>'Firefly', 'strength'=>0, 'stamina'=>1, 'damage'=>0, 'race'=>'insect', 'gold'=>0),
+		'fireflies'=>array('name'=>'Fireflies', 'strength'=>0, 'stamina'=>1, 'damage'=>0, 'race'=>'insect'), // Baseline weakest mob
 		'spider'=>array('name'=>'Spider', 'img'=>'spider_icon.png', 'strength'=>1, 'damage'=>10, 'gold'=>10, 'race'=>'insect', 'strength'=>1, 'stamina'=>1, 'speed'=>1, 'ki'=>1), 
 		'viper'=>array('name'=>'Black Viper', 'race'=>'animal', 'strength'=>'1', 'stamina'=>1, 'speed'=>1, 'ki'=>1, 'damage'=>99, 'status'=>POISON, 'gold'=>30),
 		'kappa'=>array('name'=>'Kappa', 'strength'=>30, 'speed'=>10, 'stamina'=>80, 'short'=>'is a reptilian creature with a scooped-out head', 'race'=>'kappa', 'img'=>'kappa.jpg', 'inventory'=>array('shell'=>'.5'), 'traits'=>'armored'),
@@ -25,10 +21,14 @@ function get_npcs(){
 	);
 	if(defined('DEBUG') && DEBUG){
 		$npcs += array(
-            'firefly'=>array('name'=>'Firefly', 'strength'=>0, 'damage'=>0, 'race'=>'insect', 'gold'=>0),
+			'peasant2'=>array('name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>'10', 'stamina'=>3, 'speed'=>10, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1, 'traits'=>'villager,sometimes_disguised_ninja', 'inventory'=>array('kunai'=>'.01')),
+			'merchant2'=>array('name'=>'Merchant', 'race'=>'human', 'strength'=>'20', 'stamina'=>20, 'speed'=>10, 'ki'=>1, 
+				'damage'=>15, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>3, 'img'=>'merchant.png', 'inventory'=>array('phosphor'=>'.7'), 'traits'=>'villager'),
+			'guard2'=>array('name'=>'Guard', 'short'=>'is a member of the ashigaru foot soldiers, hired for various tasks', 'race'=>'human', 'strength'=>'30', 'stamina'=>30, 'speed'=>12, 'ki'=>1, 
+            'damage'=>0, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>0, 'img'=>'guard.png', 'inventory'=>array('ginsengroot'=>'.1'), 'traits'=>'partial_match_strength'),
 			'monk'=>array('name'=>'Monk', 'strength'=>10, 'stamina'=>10, 'speed'=>10, 'ki'=>30, 'race'=>'human', 'inventory'=>array('prayerwheel'=>'.2'), 'traits'=>'deflection,defensive,self_heal'),
             'geisha'=>array('name'=>'Geisha', 'strength'=>5, 'stamina'=>10, 'speed'=>15, 'ki'=>10, 'gold'=>20, 'bounty'=>30, 'race'=>'human', 'inventory'=>array('sake'=>'.2', 'mirror'=>'.01', 'kimono'=>'.01', 'tessen'=>'.01'), 'traits'=>'packdynamic,speed,guarded,villager'),
-			'pig'=>array('name'=>'Wild pig', 'short'=>'rolls about in the muck contentedly', 'strength'=>1, 'speed'=>10, 'damage'=>2, 'race'=>'animal'),
+			'pig'=>array('name'=>'Wild pig', 'short'=>'rolls about in the muck contentedly', 'stamina'=>3, 'strength'=>1, 'speed'=>10, 'damage'=>2, 'race'=>'animal'),
 			'chicken'=>array('name'=>'Chicken', 'short'=>'saunters around like it owns the place', 'strength'=>1, 'speed'=>5, 'damage'=>0, 'race'=>'bird'),
 			'bees'=>array('name'=>'Swarm of Bees', 'short'=>'swarms and buzzes through the air', 'strength'=>17, 'speed'=>70, 'damage'=>50, 'gold'=>0, 'race'=>'insect'),
 			'goat'=>array('name'=>'Goat', 'short'=>'chews on anything it can get to', 'strength'=>10, 'speed'=>25, 'damage'=>3, 'race'=>'animal'),

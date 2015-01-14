@@ -19,6 +19,14 @@ class Npc{
     	}
     }
 
+    public function name(){
+        return $this->name;
+    }
+
+    public function identity(){
+        return $this->name;
+    }
+
     // Calculcate the max damage of an npc.  Needed for effectiveness calc.
     function max_damage(){
         return ((1+ ($this->strength * 2)) + $this->damage);
@@ -58,18 +66,28 @@ class Npc{
     function ki(){
         return $this->ki;
     }
+
+    public function health(){
+        return $this->max_health(); // For now, since there aren't npc instances currently.
+    }
     
-    function health(){
+    // Get their starting health, minimum of 1.
+    function max_health(){
     	$armored = $this->has_trait('armored')? 1 : 0;
-    	return $this->stamina * 5 + $this->stamina * 2 * $armored;
+    	return 1 + ($this->stamina * 5) + ($this->stamina * 2 * $armored);
 	}
     
+    // Instantiate a random chance of the inventory item being present.
+    private function inventory_present($chance){
+        return rand(1, 1000) < (int) ceil((float)$chance * 1000);
+    }
+
     // Calculate this npc's inventory from initial chances.
     function inventory(){
     	if(!isset($this->inventory) && isset($this->inventory_chances) && $this->inventory_chances){
     		$inv = array();
     		foreach($this->inventory_chances as $item=>$chance){
-    			if(rand(1, 1000) < (int) ceil((float)$chance * 1000)){ // Calculate success from a decimal/float.
+    			if($this->inventory_present($chance)){ // Calculate success from a decimal/float.
     				// Add the item.
     				$inv[$item] = true;
     			}
@@ -107,6 +125,7 @@ class InvalidNpcException extends Exception{}
 class NpcFactory{
 	// Returns a fleshed out npc object
 	public static function create($identity){
+        $identity = mb_strtolower($identity);
 		$npcs = NpcFactory::npcsData();
 		$npc = null;
 		if($identity && in_array($identity, $npcs)){
@@ -123,7 +142,7 @@ class NpcFactory{
 		if(in_array($identity, $npcs_data) && !empty($npcs_data[$identity])){
 			NpcFactory::fleshOutFromData($npcs_data[$identity]);
 		} else {
-			throw new InvalidNpcException('No such npc found to create!');
+			throw new InvalidNpcException('No such npc ['.$identity.'] found to create!');
 		}
 	}
 
@@ -132,6 +151,7 @@ class NpcFactory{
 	**/
 	public static function fleshOutFromData($data, $npc){
         $npc->setData($data);
+        $npc->name = @$data['name'];
         $npc->inventory_chances = @$data['inventory'];
         $npc->traits = @$data['traits'];
         $npc->strength = (int) @$data['strength'];
