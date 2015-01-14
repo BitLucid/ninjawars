@@ -70,7 +70,7 @@
 
 <section id='ninja-matches' class='cf'>
 	<ul>
-		<li id='sample-enemy-match' class='enemy' style='display:none'>
+		<li id='sample-enemy-match' class='enemy' class='hidden'>
 			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&amp;target='>Someone</a></strong>
 		</li>
 	</ul>
@@ -81,10 +81,10 @@
 {if $found_enemies && count($found_enemies) gt 0}
 	{include file="enemy-matches.tpl" enemies=$found_enemies}
 {elseif $match_string}
-<div>
-  Your search returned no ninja. maybe you should make an enemy of someone who recently attacked you.
-	{include file="enemy-matches.tpl" enemies=$recent_attackers}
-</div>
+	<div class='hidden'>
+	  Your search returned no ninja. maybe you should make an enemy of someone who recently attacked you.
+		{include file="enemy-matches.tpl" enemies=$recent_attackers}
+	</div>
 {/if}
 </section>
 
@@ -93,7 +93,7 @@
   <div class='centered'>
   <ul id='npc-list'>
 {foreach name="person" from=$npcs key="idx" item="npc"}
-      <li><a href='npc.php?attacked=1&amp;victim={$npc.identity|escape}' target='main'><img alt='' src='images/characters/{$npc.image|escape:'url'|escape}' style='width:25px;height:46px'> {$npc.name|escape}</a></li>
+      <li class='person'><a href='npc.php?attacked=1&amp;victim={$npc.identity|escape}' target='main'><img alt='' src='images/characters/{$npc.image|escape:'url'|escape}'> {$npc.name|escape}</a></li>
 {/foreach}
 {foreach name="creatures" from=$other_npcs key="idx" item="npc"}
       <li><a href='npc.php?attacked=1&amp;victim={$idx|escape}' target='main'>
@@ -110,70 +110,5 @@
 <!-- Display recently active ninja -->
 {* {include file="list.active.tpl" active_ninja=$active_ninjas} *}
 
-<script type='text/javascript'>
-{literal}
-	$(document).ready(function(){
-	
-		// Function to display the matches.
-		NW.displayMatches = function(json_matches){
-			var sample = $('#sample-enemy-match');
-			var moreMatches = $('#more-matches');
-			//NW.debug(json_matches);
-			if(typeof(json_matches.char_matches) != 'undefined'){
-				// Remove all li's not preceded by an li.
-				$('#ninja-matches li+li').remove();
-				// Take the matches, extract them into individuals.
-				var inc = 0;
-				for(var i in json_matches.char_matches){
-					if(inc>9){
-						break;
-					}
-					var clone = sample.clone().attr('id', 'enemy-match-'+i);
-					if(i%2 == 1){ // Classify the even entries (here 0, 2, 4, etc)
-						clone.addClass('even');
-					}
-					var match = json_matches.char_matches[i];
-					//NW.debug(match);
-					var link = clone.find('a');
-					//NW.debug(sample);
-					// For each individual, extend the default link to make an attack link.
-					var newlink = link.attr('href')+match.uname;
-					// Add the new ones back on after the sample.
-					sample.after(link.attr('href',newlink).text(match.uname).end().show());
-					inc++;
-				}
-				if(json_matches.char_matches.length > 9){
-					moreMatches.show(); // Show the "with more matches" section.
-				} else {
-					moreMatches.hide();
-				}
-			}
-		};
 
-		// Only show the matches section when needed.
-		$ninjaMatches = $('#ninja-matches').hide();
-		$('#enemy-add').focus(function(){
-			NW.debug('Enemy form focused');
-			if($ninjaMatches.is(':hidden')){
-				$ninjaMatches.show();
-			}
-		});
-		
-		
-		var searchbox = $('#enemy-match');
-		searchbox.keyup(function () {
-			NW.typewatch(function () {
-				// executed only 500 ms after the last keyup event.
-				var term = $('#enemy-match').val();
-				var limit = 11; // Limit to 11, and only display 10.
-				if(term && term.length>2){
-					// Only search after a few characters are typed out
-					NW.charMatch(term, limit, NW.displayMatches);
-				}
-			}, 500);
-		});
-		
-	});
-{/literal}
-</script>
-
+<script src='js/enemies.js'></script>
