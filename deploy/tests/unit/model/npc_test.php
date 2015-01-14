@@ -22,10 +22,20 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($npc instanceof Npc);
 	}
 
-	public function testCreateStandardFireflyAndFireflies(){
+	public function testBlankNpcHasZeroStrengthPositiveHealth(){
+		$npc = new Npc($data=array());
+		$this->assertEquals(0, $npc->strength());
+		$this->assertGreaterThan(0, $npc->health()); // All npcs should actually get some health!
+	}
+
+	public function testCreateStandardFirefly(){
 		assert(defined('DEBUG') && DEBUG);
 		$firefly = NpcFactory::create('firefly');
 		$this->assertInstanceOf('Npc', $firefly, 'Firefly creation failed');
+	}
+
+	public function testCreateStandardFirefliesPlural(){
+		assert(defined('DEBUG') && DEBUG);
 		$fireflies = NpcFactory::create('fireflies');
 		$this->assertInstanceOf('Npc', $fireflies, 'Fireflies creation failed');
 	}
