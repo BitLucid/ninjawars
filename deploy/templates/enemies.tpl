@@ -1,60 +1,10 @@
-<style>
-{literal}
-.solo-page .solo-box{
-	padding:0.3em 1em;
-}
-#ninja-matches .even{
-	float:right; clear:right; padding-right:5em;
-}
-#ninja-matches ul{
-	margin-top:0;margin-bottom:0;
-}
-#enemies-stuff{
-	background-color:rgba(0, 0, 0, 0.5);
-}
-#current-enemies-list li em, #peer-chars li em{
-	margin-left:.5em;color:#D21;display:inline-block; border-left:thick solid #D21; border-right:thick solid #D21; padding: 0 .2em;text-align:center;width:1.7em;
-}
-#current-enemies-list .enemy-stats-box{
-	display:inline-block;margin-left:1em;width: 6.9em;
-}
-#current-enemies-list li{
-	position:relative;margin-bottom:0.1em;
-}
-#current-enemies-list .enemy-action-box{
-	display:inline-block;width: 13em;
-}
-.enemies-lefthalf{
-	width:55%;float:left;margin-left:0;margin-right:0;
-}
-.enemies-righthalf{
-	width:45%;float:right;margin-left:0;margin-right:0;
-}
-#peer-chars .peer{
-	position:relative;margin-bottom:0.1em;
-}
-#peer-chars .peer-name, #current-enemies-list .enemy-name{
-	width:10em;display:inline-block;overflow:hidden;text-overflow:ellipsis;
-}
-#peer-chars .peer-name{
-	width:8.5em;
-}
-#peer-chars .stats-block{
-	margin-left:2em;width:6.5em;display:inline-block;
-}
-#npc-list{
-	margin: .5em auto;text-align:center;font-size:1.3em;
-}
-#npc-list .creature-image{
-	max-width:50px;max-height:50px;
-}
-#more-matches{
-	clear:both;text-align:center;display:none;
-}
-{/literal}
-</style>
+<link rel="stylesheet" type="text/css" href="css/enemies.css" media="Screen">
 
 <h1>Fight</h1>
+
+{if count($recent_attackers) gt 0}
+	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
+{/if}
 
 <section id='enemies-stuff' class='clearfix'>
 {if $enemyCount gt 0}
@@ -72,7 +22,7 @@
 			{/if}
     <li class="{$status_class}">
       <a href="enemies.php?remove_enemy={$loop_enemy.player_id|escape}"><img src="{$smarty.const.IMAGE_ROOT}icons/mono/stop32.png" height='16' width='16' alt="remove" title='Remove'></a>
-      <span class='enemy-action-box'>{$action} <a class='enemy-name' title='View {$loop_enemy.uname|escape} to attack them' href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
+      <span class='enemy-action-box'>{$action} <a class='enemy-name' title="View {$loop_enemy.uname|escape}'s info" href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
       <span class='enemy-stats-box'>
         {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}
       </span>
@@ -121,10 +71,10 @@
 <section id='ninja-matches' class='cf'>
 	<ul>
 		<li id='sample-enemy-match' class='enemy' style='display:none'>
-			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&target='>Someone</a></strong>
+			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&amp;target='>Someone</a></strong>
 		</li>
 	</ul>
-	<div id='more-matches'>
+	<div id='more-matches' class='hidden'>
 		...with more live matches...
 	</div>
 	<br style='clear:both'>
@@ -138,15 +88,9 @@
 {/if}
 </section>
 
-{if count($recent_attackers) gt 0}
-	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
-{/if}
-
-<!-- Display recently active ninja -->
-{include file="list.active.tpl" active_ninja=$active_ninjas}
-
 <section id='npc-list-section'>
   <h3>Attack a:</h3>
+  <div class='centered'>
   <ul id='npc-list'>
 {foreach name="person" from=$npcs key="idx" item="npc"}
       <li><a href='npc.php?attacked=1&amp;victim={$npc.identity|escape}' target='main'><img alt='' src='images/characters/{$npc.image|escape:'url'|escape}' style='width:25px;height:46px'> {$npc.name|escape}</a></li>
@@ -160,7 +104,11 @@
       	{$npc.name|escape}</a></li>
 {/foreach}
   </ul>
+  </div>
 </section>
+
+<!-- Display recently active ninja -->
+{* {include file="list.active.tpl" active_ninja=$active_ninjas} *}
 
 <script type='text/javascript'>
 {literal}
@@ -201,6 +149,15 @@
 				}
 			}
 		};
+
+		// Only show the matches section when needed.
+		$ninjaMatches = $('#ninja-matches').hide();
+		$('#enemy-add').focus(function(){
+			NW.debug('Enemy form focused');
+			if($ninjaMatches.is(':hidden')){
+				$ninjaMatches.show();
+			}
+		});
 		
 		
 		var searchbox = $('#enemy-match');
