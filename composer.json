@@ -6,6 +6,7 @@
     },
 
     "require": {
+        "ircmaxell/password-compat": "@stable",
         "facebook/php-sdk": "@stable",
         "swiftmailer/swiftmailer": "v4.3.0",
         "propel/propel1": "1.6.9",
