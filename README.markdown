@@ -18,7 +18,7 @@ Update an out-of-date but already installed instance's system/composer libraries
 
 Check the differences between your database and the latest schema:
 
-    propel diff
+    vendor/bin/propel-gen diff
 
 Sync the database to make your version get updated with the latest table:
 
