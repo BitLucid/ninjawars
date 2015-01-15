@@ -35,11 +35,9 @@ Then you can run the tests at any point with:
 
     ./vendor/bin/phpunit
 
-## Contributing
-You can make web commits on github.com, just search github for "ninjawars".  
+## To Contribute
 
-To contribute
-==============
+You can make web commits on github.com, just search github for "ninjawars".  
 
 ### For simple contribution/collaboration:
 
