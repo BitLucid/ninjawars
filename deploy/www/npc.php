@@ -25,7 +25,7 @@ $ninja_health            = $player->vo->health;
 
 
 $static_npcs = array('peasant', 'theif', 'merchant', 'guard', 'samurai');
-$npcs = get_npcs();
+$npcs = NpcFactory::npcsData();
 $possible_npcs = array_merge(array_keys($npcs), $static_npcs);
 $victim = restrict_to($victim, $possible_npcs); // Filter to only the correct options.
 

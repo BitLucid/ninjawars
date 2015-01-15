@@ -62,8 +62,8 @@ $npcs = array(
 );
 
 
-// Generics.
-$other_npcs = get_npcs();
+// Generic/abstracted npcs
+$other_npcs = NpcFactory::npcsData();
 
 
 

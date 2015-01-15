@@ -66,10 +66,10 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 
 	// Some npcs should cause bounty, generally weaker village peeps
 	public function testWeaklingsCauseBounty(){
-		$villager = new Npc('peasant2');
-		$this->assertGreaterThan(0, $villager->bounty());
 		$merchant = new Npc('merchant2');
 		$this->assertGreaterThan(0, $merchant->bounty());
+		$villager = new Npc('peasant2');
+		$this->assertGreaterThan(0, $villager->bounty());
 	}
 
 	// Npcs have similar races, e.g. a guard and a villager.

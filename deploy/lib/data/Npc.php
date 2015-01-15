@@ -12,8 +12,9 @@ require_once ROOT.'lib/data/NpcFactory.php';
 **/
 class Npc{
     private $data;
-    function __construct($content){
-    	if(is_string($content) && $content){
+
+    public function __construct($content){
+    	if(is_string($content) && trim($content)){
     		NpcFactory::fleshOut($content, $this);
     	} else {
     		NpcFactory::fleshOutFromData($content, $this);
@@ -29,17 +30,17 @@ class Npc{
     }
 
     // Calculcate the max damage of an npc.  Needed for effectiveness calc.
-    function max_damage(){
+    public function max_damage(){
         return ((1+ ($this->strength * 2)) + $this->damage);
     }
 
     // Calculate the initial naive damage from npcs.
-    function damage(){
+    public function damage(){
         return rand(0, $this->max_damage());
     }
 
     // Calculate difficulty, naively at the moment.
-    function difficulty(){
+    public function difficulty(){
         // Just add together all the points of the mob, so to speak.
         $has_bounty = (int) isset($this->data['bounty']);
         $armored = $this->has_trait('armored')? 1 : 0;
@@ -47,7 +48,7 @@ class Npc{
     }
 
     // Check for specific traits.
-    function has_trait($trait){
+    public function has_trait($trait){
         if(!isset($this->traits_array) && isset($this->traits)){
             // Initialize traits as an array at this point.
             $this->traits_array = $this->traits? explode(',', $this->traits) : array();
@@ -55,16 +56,16 @@ class Npc{
         return count($this->traits_array) && in_array($trait, $this->traits_array);
     }
 
-    function speed(){
+    public function speed(){
         return $this->speed;
     }
-    function strength(){
+    public function strength(){
         return $this->strength;
     }
-    function stamina(){
+    public function stamina(){
         return $this->stamina;
     }
-    function ki(){
+    public function ki(){
         return $this->ki;
     }
 
@@ -73,7 +74,7 @@ class Npc{
     }
     
     // Get their starting health, minimum of 1.
-    function max_health(){
+    public function max_health(){
     	$armored = $this->has_trait('armored')? 1 : 0;
     	return 1 + ($this->stamina * 5) + ($this->stamina * 2 * $armored);
 	}
@@ -84,7 +85,7 @@ class Npc{
     }
 
     // Calculate this npc's inventory from initial chances.
-    function inventory(){
+    public function inventory(){
     	if(!isset($this->inventory) && isset($this->inventory_chances) && $this->inventory_chances){
     		$inv = array();
     		foreach($this->inventory_chances as $item=>$chance){
@@ -99,16 +100,15 @@ class Npc{
     }
     
     // Get the npcs inventory and return true if there is an instance of the item in it.
-    function has_item($item){
+    public function has_item($item){
     	return isset($this->inventory[$item]);
     }
 
     // Get the race of the npc.
-    function race(){
-
+    public function race(){
     }
 
-    function bounty(){
+    public function bounty(){
     }
 
     public function setData($data){
