@@ -106,9 +106,11 @@ class Npc{
 
     // Get the race of the npc.
     public function race(){
+        return $this->race;
     }
 
     public function bounty(){
+        return $this->bounty;
     }
 
     public function setData($data){

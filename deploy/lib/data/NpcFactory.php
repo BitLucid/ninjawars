@@ -1,3 +1,4 @@
+
 <?php
 
 
@@ -14,7 +15,7 @@ class NpcFactory{
         $identity = mb_strtolower($identity);
 		$npcs = NpcFactory::npcsData();
 		$npc = null;
-		if($identity && in_array($identity, $npcs)){
+		if($identity && array_key_exists($identity, $npcs)){
 			$npc = new Npc($npcs[$identity]);
 		}
 		return $npc;
@@ -25,8 +26,8 @@ class NpcFactory{
 	**/
 	public static function fleshOut($identity, $npc){
 		$npcs_data = NpcFactory::npcsData();
-		if(in_array($identity, $npcs_data) && !empty($npcs_data[$identity])){
-			NpcFactory::fleshOutFromData($npcs_data[$identity]);
+		if(array_key_exists($identity, $npcs_data) && !empty($npcs_data[$identity])){
+			NpcFactory::fleshOutFromData($npcs_data[$identity], $npc);
 		} else {
 			throw new InvalidNpcException('No such npc ['.$identity.'] found to create!');
 		}
@@ -46,6 +47,7 @@ class NpcFactory{
         $npc->damage = (int) @$data['damage'];
         $npc->ki = (int) @$data['ki'];
         $npc->race = @$data['race'];
+        $npc->bounty = @$data['bounty'];
         $npc->traits_array = null;
         $npc->inventory = null; // Initially just null;
 	}

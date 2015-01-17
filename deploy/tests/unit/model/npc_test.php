@@ -28,15 +28,23 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		$this->assertGreaterThan(0, $npc->health()); // All npcs should actually get some health!
 	}
 
+	public function testForPresenceOfSomeNPCData(){
+		$this->assertTrue(array_key_exists('fireflies', NpcFactory::npcsData()), 'Fireflies not present in npcs data array for some reason');
+		$this->assertTrue(array_key_exists('firefly', NpcFactory::npcsData()), 'Firefly not present in npcs data array for some reason');
+		$this->assertTrue(array_key_exists('pig', NpcFactory::npcsData()));
+		$this->assertTrue(array_key_exists('merchant2', NpcFactory::npcsData()));
+		$this->assertTrue(array_key_exists('peasant2', NpcFactory::npcsData()));
+	}
+
 	public function testCreateStandardFirefly(){
-		$this->markTestIncomplete();
+		//$this->markTestIncomplete();
 		assert(defined('DEBUG') && DEBUG);
 		$firefly = NpcFactory::create('firefly');
 		$this->assertInstanceOf('Npc', $firefly, 'Firefly creation failed');
 	}
 
 	public function testCreateStandardFirefliesPlural(){
-		$this->markTestIncomplete();
+		//$this->markTestIncomplete();
 		assert(defined('DEBUG') && DEBUG);
 		$fireflies = NpcFactory::create('fireflies');
 		$this->assertInstanceOf('Npc', $fireflies, 'Fireflies creation failed');
@@ -66,6 +74,7 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 
 	// Some npcs should cause bounty, generally weaker village peeps
 	public function testWeaklingsCauseBounty(){
+		//var_dump(NpcFactory::npcs());
 		$merchant = new Npc('merchant2');
 		$this->assertGreaterThan(0, $merchant->bounty());
 		$villager = new Npc('peasant2');
@@ -74,7 +83,7 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 
 	// Npcs have similar races, e.g. a guard and a villager.
 	public function testVariousVillagersHaveSameRace(){
-		$this->markTestIncomplete();
+		//$this->markTestIncomplete();
 		$humans = array('peasant2', /*'theif2', */'guard2', 'merchant2');
 		foreach($humans as $human){
 			$this->assertEquals('human', (new Npc($human))->race());
