@@ -22,5 +22,3 @@ define('SLOW',  1<<16);
 define('FAST',  1<<17);
 define('WEAKENED',  1<<18);
 
-
-?>
