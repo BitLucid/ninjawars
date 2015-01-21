@@ -67,7 +67,6 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
     	$speed = $char->speed();
     	$stamina = $char->stamina();
     	$char->addStatus(SLOW);
-    	//debug($char);
     	$this->assertNotEquals($char->speed(), $speed, 'Speed should be different due to slow status.');
     	$this->assertTrue($char->speed() < $speed, 'Speed should be less due to slow status, but isn\'t.');
     	$char->addStatus(POISON);

@@ -3,7 +3,7 @@
  * Mob npcs and their combat behavior for simple attacking on the npc page
  *
 **/
-
+require_once(realpath(__DIR__.'/../../../').'/resources.php');
 require_once(ROOT.'core/data/Npc.php');
 
 class Npc_Test extends PHPUnit_Framework_TestCase {
@@ -37,14 +37,12 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateStandardFirefly(){
-		//$this->markTestIncomplete();
 		assert(defined('DEBUG') && DEBUG);
 		$firefly = NpcFactory::create('firefly');
 		$this->assertInstanceOf('Npc', $firefly, 'Firefly creation failed');
 	}
 
 	public function testCreateStandardFirefliesPlural(){
-		//$this->markTestIncomplete();
 		assert(defined('DEBUG') && DEBUG);
 		$fireflies = NpcFactory::create('fireflies');
 		$this->assertInstanceOf('Npc', $fireflies, 'Fireflies creation failed');
@@ -74,7 +72,6 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 
 	// Some npcs should cause bounty, generally weaker village peeps
 	public function testWeaklingsCauseBounty(){
-		//var_dump(NpcFactory::npcs());
 		$merchant = new Npc('merchant2');
 		$this->assertGreaterThan(0, $merchant->bounty());
 		$villager = new Npc('peasant2');
@@ -83,7 +80,6 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 
 	// Npcs have similar races, e.g. a guard and a villager.
 	public function testVariousVillagersHaveSameRace(){
-		//$this->markTestIncomplete();
 		$humans = array('peasant2', /*'theif2', */'guard2', 'merchant2');
 		foreach($humans as $human){
 			$this->assertEquals('human', (new Npc($human))->race());
