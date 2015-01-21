@@ -57,8 +57,8 @@ $npcs = array(
 	  array('name'=>'Peasant',        'identity'=>'peasant', 'image'=>'fighter.png')
 	, array('name'=>'Thief',          'identity'=>'thief', 'image'=>'thief.png')
 	, array('name'=>'Merchant',       'identity'=>'merchant', 'image'=>'merchant.png')
-	, array('name'=>"Guard", 'identity'=>'guard', 'image'=>'guard.png')
-	, array('name'=>'Samurai',         'identity'=>'samurai', 'image'=>'samurai.png')
+	, array('name'=>"Guard",          'identity'=>'guard', 'image'=>'guard.png')
+	, array('name'=>'Samurai',        'identity'=>'samurai', 'image'=>'samurai.png')
 );
 
 
