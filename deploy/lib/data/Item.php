@@ -19,9 +19,10 @@ class Item {
     protected $m_identity;
 
     // Set all the default settings for items, overridden by specified settings.
-    public function __construct($dirty_identity=null) {
-        if(is_string($dirty_identity) && $dirty_identity != ''){
-            $data = item_info_from_identity($dirty_identity);
+    public function __construct($dirty_content=null) {
+        // Potentially, an identity string is what's being passed in.
+        if(is_string($dirty_content) && trim($dirty_content) !== ''){
+            $data = item_info_from_identity($dirty_content);
             $this->buildFromArray($data);
         }
     }
@@ -37,10 +38,10 @@ class Item {
         $this->m_maxTurnChange     = ($p_data['turn_change']   ? $p_data['turn_change']   : 0);
         $this->m_targetDamage	   = $p_data['target_damage'] ? $p_data['target_damage'] : null;
         $this->m_maxDamage 		   = $this->m_targetDamage;
-        $this->m_ignoresStealth	   = ($p_data['ignore_stealth'] == 't');
-        $this->m_covert            = ($p_data['covert']         == 't');
-        $this->m_selfUse           = ($p_data['self_use']       == 't');
-        $this->m_otherUsable       = ($p_data['other_usable']   == 't');
+        $this->m_ignoresStealth	   = ($p_data['ignore_stealth'] === 't');
+        $this->m_covert            = ($p_data['covert']         === 't');
+        $this->m_selfUse           = ($p_data['self_use']       === 't');
+        $this->m_otherUsable       = ($p_data['other_usable']   === 't');
     }
 
     // Not the identity, but the display name
@@ -115,8 +116,19 @@ class Item {
     public function getTargetDamage()
     { return (int)$this->m_targetDamage; }
 
-    public function getMaxDamage()
-    { return $this->m_maxDamage; }
+    public function getMaxDamage(Player $c=null)
+    {
+        // Optionally Inject a Player object, and if it's needed, use it to calculate damage stuff..
+        if($c instanceof Player && $this->hasDynamicDamage()){
+            return max(9, floor($c->strength() * 2/3)-4); // Better of 9 or 2/3rd of the player's strength -4.
+        }
+        return $this->m_maxDamage;
+    }
+
+    // If the Item calculates damage dynamically based on strength.
+    private function hasDynamicDamage(){
+        return $this->hasEffect('slice'); // Currently just slicing weapons have this trait.
+    }
 
     public function getRandomDamage()
     { return rand(0, $this->m_maxDamage); }

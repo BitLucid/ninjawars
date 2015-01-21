@@ -1,4 +1,6 @@
 <?php
+require_once(realpath(__DIR__.'/../../../').'/resources.php');
+require_once(ROOT.'core/base.inc.php');
 require_once(ROOT.'core/data/Item.php');
 
 class Item_Test extends PHPUnit_Framework_TestCase {
@@ -57,9 +59,8 @@ class Item_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testShurikenHasSomeMaxDamage(){
-		$this->markTestIncomplete();
 		$shuriken = new Item('shuriken');
-		$this->assertGreaterThan(0, $shuriken->getMaxDamage());
+		$this->assertGreaterThan(0, $shuriken->getMaxDamage(new Player()));
 	}
 
 
