@@ -1,10 +1,10 @@
-{include file="email.header.tpl" title='Ninjawars Account Password Request' subtitle=''}
+{include file="email.header.tpl" title='Ninjawars Account Info Request' subtitle=''}
 
-You have requested your password for the account: {$lost_uname}.<br><br>
+You have requested your account info for the account: {$lost_uname}.<br><br>
            
            <b>Account Info</b><br>
            Username: {$lost_uname}<br>
-           Password: {$lost_pname}<br><br>
+           Password: ***your password***<br>
            {if !$confirmed}
            
            Your account has not yet been confirmed, request a reconfirmation email at:
