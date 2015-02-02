@@ -123,6 +123,7 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
     function testSyncAccountToFacebookOauthId(){
     	$fb_user_id = '10100268595264896';
     	$account_info = account_info_by_identity($identity_email='tchalvak@gmail.com');
+    	$this->assertNotEmpty($account_info);
     	$this->assertTrue((bool)positive_int($account_info['account_id']));
     	$added = add_oauth_to_account($account_info['account_id'], $fb_user_id);
     	$this->assertTrue($added);
