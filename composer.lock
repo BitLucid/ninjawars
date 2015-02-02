@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f24efdfc4ebf9211c6669451d7411221",
+    "hash": "8964b46a107e09e23dd1f2e9dee0ad20",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -665,24 +665,21 @@
         },
         {
             "name": "propel/propel1",
-            "version": "1.7.1",
+            "version": "1.6.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/propelorm/Propel.git",
-                "reference": "af527736586388c21a5a0a5f97914e7264fe580c"
+                "reference": "8b6a304acddafe83b7ae780a7860601a08a1e252"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/propelorm/Propel/zipball/af527736586388c21a5a0a5f97914e7264fe580c",
-                "reference": "af527736586388c21a5a0a5f97914e7264fe580c",
+                "url": "https://api.github.com/repos/propelorm/Propel/zipball/8b6a304acddafe83b7ae780a7860601a08a1e252",
+                "reference": "8b6a304acddafe83b7ae780a7860601a08a1e252",
                 "shasum": ""
             },
             "require": {
                 "phing/phing": "~2.4",
                 "php": ">=5.2.4"
-            },
-            "require-dev": {
-                "pear-pear.php.net/pear_packagefilemanager2": "@stable"
             },
             "bin": [
                 "generator/bin/propel-gen",
@@ -691,7 +688,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -724,7 +721,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2014-02-25 09:13:58"
+            "time": "2013-03-31 17:25:18"
         },
         {
             "name": "sebastian/comparator",
@@ -1259,7 +1256,6 @@
         "ircmaxell/password-compat": 0,
         "facebook/php-sdk": 0,
         "swiftmailer/swiftmailer": 0,
-        "propel/propel1": 0,
         "phpunit/phpunit": 0,
         "phpunit/phpunit-selenium": 0
     },

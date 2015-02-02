@@ -8,8 +8,8 @@
     "require": {
         "ircmaxell/password-compat": "@stable",
         "facebook/php-sdk": "@stable",
+        "propel/propel1": "1.6.9",
         "swiftmailer/swiftmailer": "@stable",
-        "propel/propel1": "@stable",
         "phpunit/phpunit": "@stable",
         "phpunit/phpunit-selenium": "@stable",
         "smarty/smarty": "v3.1.21"
