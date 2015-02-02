@@ -5,6 +5,7 @@ require_once(LIB_ROOT.'base.inc.php');
 
 require_once(LIB_ROOT.'control/lib_auth.php');
 require_once(LIB_ROOT.'control/lib_accounts.php');
+require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
 
 // Note that this file has to have a suffix of ...test.php to be run.
 
@@ -63,7 +64,8 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     }
 
     function testForNinjaNameValidationErrors(){
-    	$this->assertNotEmpty(username_format_validate('tooooooooooooooolonggggggggggggggggggggggggggggggggggg'), 'Username not flagged as too long');
+    	$this->assertNotEmpty(username_format_validate('tooooooooooooooolongggggggggggggggggggggggggggggg'),
+    		 'Username not flagged as too long');
     	$this->assertNotEmpty(username_format_validate('st')); // Too short
     	$this->assertNotEmpty(username_format_validate(''));
     	$this->assertNotEmpty(username_format_validate(' '));
