@@ -81,8 +81,7 @@ function showErrorPage() {
 	}
 }
 
-if (TRAP_ERRORS) {
+if (defined('TRAP_ERRORS') && TRAP_ERRORS) {
 	set_exception_handler('globalExceptionHandler');
 	set_error_handler('globalErrorHandler', E_USER_ERROR);
 }
-?>
