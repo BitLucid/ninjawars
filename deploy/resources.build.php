@@ -1,14 +1,14 @@
 <?php
 /*
-* resources.php template. The live version of this file must be included whenever a script is run. 
+* resources.php build defaults. Used in CI builds, not live, not local dev
 * It defines constants used throughout the application.  Constants for tracked files 
 */
-define('DATABASE_USE_PASSWORD', true); // *** Whether to specify password to pdo at all. Generally true only on live
-define('DATABASE_USE_PORT', true); // *** Whether to specify port to pdo at all. Generally true only on live
-define('DATABASE_HOST', "servo");		// *** The host to connect to for the database, localhost by default
-define('DATABASE_PORT', "xxxy");		// *** The port number to connect on.
-define('DATABASE_USER', "__DB_USER__");		// *** The user that should connect to the database
-define('DATABASE_PASSWORD', "__DB_PASS__");		// *** The password for the database connection, trust on dev
+define('DATABASE_USE_PASSWORD', false); // *** Whether to specify password to pdo at all. Generally true only on live
+define('DATABASE_USE_PORT', false); // *** Whether to specify port to pdo at all. Generally true only on live
+define('DATABASE_HOST', "localhost");		// *** The host to connect to for the database, localhost by default
+define('DATABASE_PORT', "5432");		// *** The port number to connect on.
+define('DATABASE_USER', "postgres");		// *** The user that should connect to the database
+define('DATABASE_PASSWORD', "unused_in_build");		// *** The password for the database connection, trust on dev
 define('DATABASE_NAME', "nw");		// *** The name of the database to connect to, nw on dev
 define('OFFLINE', false);				// *** Controls if remote or local resources are used
 define('DEBUG', false);					// *** Shorter debugging constant name, set as false on live.
@@ -31,7 +31,7 @@ define('FACEBOOK_APP_SECRET', 'mooMooIAmACow'); // Secret! string for facebook l
 
 define('TRAP_ERRORS', true); // Whether to use the global error handler & oops page, true on live.
 
-define('TEMPLATE_LIBRARY_PATH', SERVER_ROOT.'vendor/smarty/smarty/distribution/libs/Smarty.class.php'); // Path to Smarty 3
+define('TEMPLATE_LIBRARY_PATH', SERVER_ROOT.'vendor/smarty/smarty/libs/Smarty.class.php'); // Path to Smarty 3
 
 // For location-specific, can-be-dynamic-or-not constants.
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
