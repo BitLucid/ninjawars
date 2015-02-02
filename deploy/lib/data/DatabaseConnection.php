@@ -39,4 +39,3 @@ class DatabaseConnection
 		return $this->pdo->fetchColumn("SELECT nextval('".$table."_".$id_field."_seq')");
 	}
 }
-?>
