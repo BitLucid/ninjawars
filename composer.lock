@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "65bf6e51749707ad1744a0c1906eca11",
+    "hash": "000deaac93d88503abae744fbe73e68c",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -774,21 +774,24 @@
         },
         {
             "name": "propel/propel1",
-            "version": "1.6.9",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/propelorm/Propel.git",
-                "reference": "8b6a304acddafe83b7ae780a7860601a08a1e252"
+                "reference": "af527736586388c21a5a0a5f97914e7264fe580c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/propelorm/Propel/zipball/8b6a304acddafe83b7ae780a7860601a08a1e252",
-                "reference": "8b6a304acddafe83b7ae780a7860601a08a1e252",
+                "url": "https://api.github.com/repos/propelorm/Propel/zipball/af527736586388c21a5a0a5f97914e7264fe580c",
+                "reference": "af527736586388c21a5a0a5f97914e7264fe580c",
                 "shasum": ""
             },
             "require": {
                 "phing/phing": "~2.4",
                 "php": ">=5.2.4"
+            },
+            "require-dev": {
+                "pear-pear.php.net/pear_packagefilemanager2": "@stable"
             },
             "bin": [
                 "generator/bin/propel-gen",
@@ -797,7 +800,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6-dev"
+                    "dev-master": "1.7-dev"
                 }
             },
             "autoload": {
@@ -830,7 +833,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2013-03-31 17:25:18"
+            "time": "2014-02-25 09:13:58"
         },
         {
             "name": "sebastian/comparator",

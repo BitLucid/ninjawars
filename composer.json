@@ -9,7 +9,7 @@
         "php": ">=5.4.0",
         "ircmaxell/password-compat": "@stable",
         "facebook/php-sdk": "@stable",
-        "propel/propel1": "1.6.9",
+        "propel/propel1": "~1.6",
         "swiftmailer/swiftmailer": "@stable",
         "phpunit/phpunit": "@stable",
         "phpunit/phpunit-selenium": "@stable",
