@@ -2,6 +2,7 @@
 // Licensed under the creative commons license.  See the staff.php page for more detail.
 require_once(LIB_ROOT.'control/lib_player_list.php'); // Used for member_counts()
 
+// Tag: megaman
 $char_id = self_char_id();
 
 if(!$char_id){
