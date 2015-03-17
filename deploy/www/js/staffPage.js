@@ -1,7 +1,8 @@
 function loadLastCommitMessage(){
     var owner = 'BitLucid';
     var repo = 'ninjawars';
-    var githubUrl = 'https://api.github.com/repos/'+owner+'/'+repo+'/commits/HEAD?callback=?&limit=2';
+    var oauthToken = '76392ebba585c4be3f63e8a4b7d2704ca00e71bf'; // Public url read access.
+    var githubUrl = 'https://api.github.com/repos/'+owner+'/'+repo+'/commits/HEAD?access_token='+oauthToken+'&callback=?';
     var placeCommit = function(data) {
         if(!data.data || !data.data.commit){
             console.log('No github commit api data');
@@ -17,7 +18,6 @@ function loadLastCommitMessage(){
     };
 
     function setHeader(xhr) {
-        var oauthToken = ''; // Public url read access.
         xhr.setRequestHeader('Authorization', 'token '+oauthToken);
       };
 
