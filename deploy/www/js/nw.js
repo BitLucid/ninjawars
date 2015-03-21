@@ -58,9 +58,6 @@ if (parent.window != window) {
 
 	NW.datastore = {};
 	NW.lastChatCheck = '';
-	NW.chatLock = false;
-	NW.manualChatLock = false;
-	NW.manualChatLockTime = 3*1000;
 	NW.maxMiniChats = 250;
 	NW.currentMiniChats = 0;
 
@@ -81,18 +78,6 @@ if (parent.window != window) {
 	// Get the chars/ids matching a term and then have the callback run.
 	NW.charMatch = function(term, limit, callback) {
 		$.getJSON('api.php?type=char_search&term='+term+'&limit='+limit+'&jsoncallback=?', callback);
-	};
-
-	NW.chatLocked = function() {
-		return NW.chatLock;
-	};
-
-	NW.lockChat = function() {
-		NW.chatLock = true;
-	};
-
-	NW.unlockChat = function() {
-		NW.chatLock = false;
 	};
 
 	NW.sendChat = function(p_inputField) {
@@ -491,11 +476,7 @@ if (parent.window != window) {
 				if(data.new_chats.length){ // Only update if something was actually available to update.
 					NW.lastChatsUpdated = data.new_chats.datetime;
 				}
-			} else {
-				console.log('No new_chats datetime found to sore a since for');
 			}
-
-			NW.unlockChat();
 		}
 	};
 
@@ -503,11 +484,7 @@ if (parent.window != window) {
 	NW.checkForNewChats = function() {
 		// Check whether the latest chat doesn't match the latest displayed chat.
 		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
-		if (!NW.chatLocked()) {
-			NW.lockChat(); // Will be unlocked when the callback completes.
-			$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatsUpdated)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
-			console.log('Last chat check was: ['+NW.lastChatCheck+']');
-		}
+		$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatsUpdated)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
 	};
 
 	// Update chats listed in the mini-chat
@@ -561,25 +538,9 @@ if (parent.window != window) {
 		list.prepend(authorArea, messageArea); 
 	};
 
-	// This locking mechanism should probably be migrated to a timewatch pattern instead.
+	// Chat requests should get a timewatch pattern instead of a lock
 	//So that 234 immediately consecutive spammings of enter to refresh the chat results in a delay until the last spamming comes through +3
 	// Instead of preventing anything from happening for a time, only refresh the chat on the -last- request.
-
-	/**
-	* Returns whether or not manual chat refresh (as opposed to automatic chat refresh) is currently locked (because a manual refresh is ongoing)
-	*/
-	NW.manualChatLocked = function() {
-		return this.manualChatLock;
-	};
-
-	NW.lockManualChat = function() {
-		this.manualChatLock = true;
-		setTimeout(function() { NW.unlockManualChat(); }, this.manualChatLockTime);
-	};
-
-	NW.unlockManualChat = function() {
-		this.manualChatLock = false;
-	};
 
 	// Send a chat message to be saved.
 	NW.putChat = function(mess, callback){
@@ -593,8 +554,7 @@ if (parent.window != window) {
 			NW.putChat(p_form.message.value, NW.checkForNewChats);
 			
 			p_form.reset(); // Clear the chat form.
-		} else if (!NW.manualChatLocked()) {
-			this.lockManualChat();
+		} else {
 			this.checkForNewChats();
 		}
 
