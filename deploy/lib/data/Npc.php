@@ -1,16 +1,16 @@
 <?php
-
+require_once(ROOT . "core/control/Character.php");
 require_once ROOT.'lib/data/lib_npc.php'; // Temporarily for the database mocking info.
 require_once ROOT.'lib/data/NpcFactory.php';
 // TODO: Abstract all the unique npc behaviors into the generic system.
 
 /**
- *   who/what/why/where The various generic npcs that can be fought or interacted with
+ *  who/what/why/where The various generic npcs that can be fought or interacted with
  *  villager npcs could have bounties
  *  npcs can have shared traits that provide special abilities
  *  Generally they are interacted with from the /enemies page
 **/
-class Npc{
+class Npc implements Character{
     private $data;
 
     public function __construct($content){
@@ -38,8 +38,14 @@ class Npc{
     }
 
     // Calculcate the max damage of an npc.  Needed for effectiveness calc.
-    public function max_damage(){
-        return ((1+ ($this->strength * 2)) + $this->damage);
+    public function max_damage(Character $enemy=null){
+        $dam = ((1+ ($this->strength * 2)) + $this->damage);
+        // Mirror some of their enemy's strength
+        if($this->has_trait('partial_match_strength') && $enemy instanceof Character){
+            $add = max(1, floor($enemy->strength() / 3)); // Enemy str/3 or at minimum 1
+            $dam = $dam + $add;
+        }
+        return $dam;
     }
 
     // Calculate the initial naive damage from npcs.
@@ -53,6 +59,7 @@ class Npc{
         $has_bounty = (int) isset($this->data['bounty']);
         $armored = $this->has_trait('armored')? 1 : 0;
         $complex = count($this->traits());
+        $matches_strength = $this->has_trait('partial_match_strength')? 1 : 0;
         return 0
             + $this->strength * 2 
             + $this->damage 
@@ -61,6 +68,7 @@ class Npc{
             + $has_bounty 
             + $armored * 5
             + $complex * 3
+			+ $matches_strength * 5
             ;
     }
 

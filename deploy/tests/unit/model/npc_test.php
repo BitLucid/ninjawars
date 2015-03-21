@@ -109,6 +109,7 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		}
 	}
 
+<<<<<<< HEAD
 	public function testPeasant2AbstractNpcIsSimilarToOriginal(){
 		if(!DEBUG){
 			$this->markTestSkipped();
@@ -171,4 +172,19 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 
 
 
+=======
+	function testGuardsThatMatchStrengthTakeEnemyStrength(){
+		$pc = new Player();
+		$pc->vo->strength = 100;
+		$guard = new Npc('guard2');
+		$guard_strength = $guard->strength();
+		$guard_max_damage = $guard->max_damage();
+		$guard_with_enemy = new Npc('guard2');
+		$improved_dam = $guard_with_enemy->max_damage($pc);
+		$this->assertTrue($guard->has_trait('partial_match_strength'));
+		$this->assertGreaterThan(0, $guard_max_damage);
+		$this->assertGreaterThan($guard_max_damage, $improved_dam, 'Guard damage should be higher with an enemy that has any strength');
+	}
+
+>>>>>>>   Guard: Partial_match_strength trait now in play.
 }

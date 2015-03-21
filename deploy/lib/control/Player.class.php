@@ -1,9 +1,8 @@
 <?php
+require_once(ROOT . "core/control/Character.php");
 require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
 require_once(LIB_ROOT . "control/lib_status.php");
-
-
 
 /* Ninja (actually character) behavior object.
  *
@@ -18,8 +17,7 @@ require_once(LIB_ROOT . "control/lib_status.php");
  * @link        http://ninjawars.net/player.php?player=tchalvak
 */
 
-class Player
-{
+class Player implements Character {
 	public $player_id;
 	public $vo;
 	public $status;
@@ -153,8 +151,13 @@ class Player
 	}
 	
 	// Standard damage output.
-	public function damage(){
-		return $this->strength() * 5 + $this->speed();
+	public function damage(Character $enemy=null){
+		return rand(1, $this->max_damage);
+	}
+
+	public function max_damage(Character $enemy=null){
+		$dam = $this->strength() * 5 + $this->speed();
+		return $dam;
 	}
 
 	// The maximum damage.
