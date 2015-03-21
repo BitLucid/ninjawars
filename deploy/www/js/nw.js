@@ -485,9 +485,14 @@ if (parent.window != window) {
 				self.refreshMinichat(null, 50);
 			}
 
-			// Store last updated datetime
+			// Update the "since" time, only if new data is available.
 			if (data.new_chats && data.new_chats.datetime) {
 				NW.lastChatCheck = data.new_chats.datetime;
+				if(data.new_chats.length){ // Only update if something was actually available to update.
+					NW.lastChatsUpdated = data.new_chats.datetime;
+				}
+			} else {
+				console.log('No new_chats datetime found to sore a since for');
 			}
 
 			NW.unlockChat();
@@ -500,7 +505,7 @@ if (parent.window != window) {
 		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
 		if (!NW.chatLocked()) {
 			NW.lockChat(); // Will be unlocked when the callback completes.
-			$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatCheck)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
+			$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatsUpdated)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
 			console.log('Last chat check was: ['+NW.lastChatCheck+']');
 		}
 	};
