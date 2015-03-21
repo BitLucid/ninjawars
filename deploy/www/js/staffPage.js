@@ -17,18 +17,6 @@ function loadLastCommitMessage(){
             .find('#latest-commit-title').show();        
     };
 
-    function setHeader(xhr) {
-        xhr.setRequestHeader('Authorization', 'token '+oauthToken);
-      };
-
     // https://api.github.com/repos/BitLucid/ninjawars/commits/HEAD
-    $.ajax({
-          url: githubUrl,
-          type: 'GET',
-          dataType: 'json',
-          success: placeCommit,
-          error: $.noop,
-          beforeSend: setHeader
-        }
-    );
+    $.getJSON(githubUrl, placeCommit);
 }
