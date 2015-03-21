@@ -7,9 +7,7 @@
 // http://yuiblog.com/blog/2007/06/12/module-pattern/
 // http://www.javascripttoolbox.com/bestpractices/
 
-// TODO: change generated vars to square bracket notation.
-// TODO: Create a fade-out/fadein functionality like the google homepage, so that elements display only when needed/when the main element is moused-off-of.
-"use strict"; // Testing out use of strict mode.
+"use strict"; // Strict checking.
 
 var NW = window.NW || {};
 
@@ -503,6 +501,7 @@ if (parent.window != window) {
 		if (!NW.chatLocked()) {
 			NW.lockChat(); // Will be unlocked when the callback completes.
 			$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatCheck)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
+			console.log('Last chat check was: ['+NW.lastChatCheck+']');
 		}
 	};
 
@@ -672,11 +671,11 @@ $(function() {
 		quickstatsLinks.css({'font-style':'italic'}); // Italicize
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
 		
-		setTimeout(function(){ // Delay first update of the mini-chat section for a second.
+		$(window).load(function(){ // Delay load of mini-chat until all other assets have loaded.
 				NW.debug('Starting filling out mini-chat after short initial delay');
 				NW.checkForNewChats();
 				NW.startRefreshingMinichat(); // Start refreshing the chat.
-			}, 1*1000);
+		});
 
 		// When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
 		$('#post_msg_js').submit(function() {return NW.sendChatContents(this)});
