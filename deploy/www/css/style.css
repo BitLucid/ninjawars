@@ -1494,10 +1494,6 @@ a#skip-to-bottom{
 	text-decoration:none;
 }
 
-#skip-to-bottom::after{
-	display:block; text-align:center; content:'▼'; color:#666; font-size:2em; text-decoration:none;
-}
-
 #index-footer {
 	text-align: center;
 	min-height:3%;

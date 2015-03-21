@@ -88,7 +88,7 @@
       <!-- Test stuff! -->
       <nav id='left-nav'>
       	&nbsp;
-      	<a id='skip-to-bottom' href='#index-footer'>skip to<br>bottom</a>
+      	<a id='skip-to-bottom' href='#index-footer'>&#x25bc;</a>
       </nav>
       
       <!-- MAIN COLUMN STARTS HERE -->
