@@ -30,7 +30,7 @@
         
         	
         	<!-- Script to display commits -->
-        	<script type='text/javascript' src="js/staffPage.js"></script>
+        	<script type='text/javascript' src="js/repo.js"></script>
         	<script>
         	{literal}
 			$(document).ready(function() {
@@ -39,7 +39,7 @@
         	{/literal}
         	</script>
 			<div id='latest-commit-section'>
-				<p id='latest-commit-title' style='display:none'>Most recent upcoming change to ninjawars:</p>
+				<p id='latest-commit-title' style='display:none'>Most upcoming change to ninjawars:</p>
 				<span id='latest-commit' style='display:none'>
 				</span>
 			</div>

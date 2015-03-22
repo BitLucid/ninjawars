@@ -134,8 +134,8 @@ ul#social-networks li:before {
   </p>
 
     <div id='latest-commit-section'>
-    <p id='latest-commit-title'>The latest commit to the main ninjawars code was:</p>
-    <span id='latest-commit'>
+    <p id='latest-commit-title' style='display:none'>The latest commit to the main ninjawars code was:</p>
+    <span id='latest-commit' style='display:none'>
     </span>
     </div>
 </div>
@@ -158,7 +158,7 @@ ul#social-networks li:before {
   <script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_languages.js"></script>
 </div>
 
-<script type='text/javascript' src="js/staffPage.js"></script>
+<script type='text/javascript' src="js/repo.js"></script>
 <script type='text/javascript'>
 {literal}
 $(document).ready(function() {
@@ -168,8 +168,6 @@ $(document).ready(function() {
 		$('.expand-link').hide();
 	});
 
-	$('#latest-commit').hide();
-	$('#latest-commit-title').hide();
 
 	loadLastCommitMessage();
 });
