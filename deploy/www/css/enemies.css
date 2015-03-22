@@ -41,7 +41,7 @@
 	margin-left:2em;width:6.5em;display:inline-block;
 }
 #npc-list{
-	margin: .5em auto;text-align:center;font-size:1.3em;
+	margin: .5em auto;padding:0;text-align:left;font-size:1.3em;
 }
 #npc-list .creature-image{
 	max-width:50px;max-height:50px;
