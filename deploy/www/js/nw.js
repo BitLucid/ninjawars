@@ -61,7 +61,17 @@ if (parent.window != window) {
 	NW.maxMiniChats = 250;
 	NW.currentMiniChats = 0;
 
-	// Create the typewatch var and store it for later.
+
+	// Typewatch functionality, can be used for other triggered delays as well.
+	/*
+	Typewatch Signature:
+	$(selector).keyup(function () {
+	  typewatch(function () {
+	    // do stuff here, executed only 500 ms after the last keyup event.
+	  }, 500);
+	});
+	*/
+	// Create the typewatch and store it for later.
 	NW.typewatch = (function(){
 	  var timer = 0;
 	  return function(callback, ms){
@@ -332,11 +342,11 @@ if (parent.window != window) {
 
 	// Pull in the new info, update display only on changes.
 	NW.checkAPI = function(p_additionalCallback) {
-		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
+		// NOTE THAT THIS CALLBACK IS DELAYED ASYNC
 		$.getJSON('api.php?type=index&jsoncallback=?', this.make_checkAPI_callback(p_additionalCallback));
 	};
 	
-	// No-one knows what the fuck this does.
+	// Chained check of the api for new index info.
 	NW.make_checkAPI_callback = function(p_additionalCallback) {
 		var self = this;
 		return function(data) {
@@ -403,7 +413,7 @@ if (parent.window != window) {
 	NW.getUpdateInterval = function(feedback) {
 		var maxInt = 180;
 		var min = 20; // Changes push the interval to this minimum.
-		var first = 1;  // The very first interval to run the update for.
+		var first = 10;  // The very first interval to run the update for.
 		var first_interval = false;
 
 		if (!this.updateInterval) {
@@ -424,14 +434,13 @@ if (parent.window != window) {
 	NW.chainedUpdate = function(p_chainCounter) {
 		var chainCounter = (!!p_chainCounter ? p_chainCounter : 1);
 		
-		// TODO: skip heartbeat entirely when not logged in?
 		if (this.loggedIn && chainCounter !== 1) {
 			// Skip the heartbeat if not logged in, and skip it for the first chain counter, since the page will have just loaded.
 			this.checkAPI(); // Check for new information.
 		}
 
 		var furtherIntervals = this.getUpdateInterval(this.feedback());
-		this.debug("Next Update will be in:"+furtherIntervals);
+		this.debug("Updated. The next update will be in:"+furtherIntervals);
 		chainCounter++;
 
 		var self = this;
@@ -460,8 +469,9 @@ if (parent.window != window) {
 		}, secs*1000);
 	};
 
+	// Returns chainable behavior to check for new chats.
 	NW.make_checkForNewChats_callback = function() {
-		this.debug('callback made to check for new chats');
+		this.debug('callback made to check for new chats on date/time: ['+new Date()+']');
 		var self = this;
 		return function(data) {
 			// Update global data stores if an update is needed.
@@ -481,10 +491,15 @@ if (parent.window != window) {
 	};
 
 	// Check for the latest chat and update if it's different.
-	NW.checkForNewChats = function() {
+	NW.checkForNewChats = function(speed) {
+		if(!speed){
+			speed = 500;
+		}
 		// Check whether the latest chat doesn't match the latest displayed chat.
 		// NOTE THAT THIS CALLBACK DOES NOT TRIGGER IMMEDIATELY.
-		$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatsUpdated)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
+		NW.typewatch(function () {
+    		$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(NW.lastChatsUpdated)+'&jsoncallback=?', NW.make_checkForNewChats_callback());
+  		}, speed); // some ms after the -last- call, perform the behavior.
 	};
 
 	// Update chats listed in the mini-chat
@@ -551,7 +566,7 @@ if (parent.window != window) {
 	NW.sendChatContents = function(p_form) {
 		if (p_form.message && p_form.message.value.length > 0) {
 			// Send a new chat.
-			NW.putChat(p_form.message.value, NW.checkForNewChats);
+			NW.putChat(p_form.message.value, function(){ NW.checkForNewChats(50); });
 			
 			p_form.reset(); // Clear the chat form.
 		} else {
@@ -560,22 +575,6 @@ if (parent.window != window) {
 
 		return false;
 	};
-
-	// Just for fun.
-	/*
-	   function april1stCheck() {
-	   if (g_isIndex) {
-	   var currentTime = new Date();
-	   var day = currentTime.getDate();
-	   var month = currentTime.getMonth();
-	   var randomnumber=Math.floor(Math.random()*(10+1));
-	   var random2 = Math.floor(Math.random()*(10+1));
-	   if (randomnumber == 10 && ((NW.debug() && random2 == 10) || (day == 0 && month == 3))) {
-	   $('body').css({'-webkit-transform':'rotate(20deg)','-moz-transform':'rotate(20deg)', 'transform':'rotate(20deg)'});
-	   }
-	   }
-	   }
-	 */
 }
 
 /***************************** Execution of code, run at the end to allow all function definitions to exist beforehand. ******/
@@ -637,12 +636,12 @@ $(function() {
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
 		
 		$(window).load(function(){ // Delay load of mini-chat until all other assets have loaded.
-				NW.debug('Starting filling out mini-chat after short initial delay');
+				NW.debug('Mini-chat initialized after all other assets have loaded.');
 				NW.checkForNewChats();
 				NW.startRefreshingMinichat(); // Start refreshing the chat.
 		});
 
-		// When chat form is submitted, send the message, load() the chat section and then clear the textbox text.
+		// Submit a chat message when the input box is used.
 		$('#post_msg_js').submit(function() {return NW.sendChatContents(this)});
 		
 
