@@ -132,7 +132,7 @@ class NpcFactory{
 		];
 		if(defined('DEBUG') && DEBUG){
 			$npcs += [
-				'peasant2'=>['name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>5, 'stamina'=>5, 'speed'=>5, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1, 'traits'=>'villager,sometimes_disguised_ninja', 'inventory'=>['kunai'=>'.01']],
+				'peasant2'=>['name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>5, 'stamina'=>5, 'speed'=>5, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1, 'traits'=>'villager,sometimes_disguised_ninja', 'inventory'=>['kunai'=>'.01', 'shuriken'=>'.01']],
 				'merchant2'=>['name'=>'Merchant', 'race'=>'human', 'strength'=>10, 'stamina'=>20, 'speed'=>10, 'ki'=>1, 
 						'damage'=>15, 'gold'=>50, 'bounty'=>5, 'img'=>'merchant.png', 'inventory'=>['phosphor'=>'.3'], 'traits'=>'villager'],
 				'guard2'=>['name'=>'Guard', 'short'=>'is a member of the ashigaru foot soldiers, hired for various tasks', 'race'=>'human', 'strength'=>'30', 'stamina'=>30, 'speed'=>12, 'ki'=>1, 
