@@ -43,6 +43,7 @@
 
     <!-- All the global ninjawars javascript -->
     <script type="text/javascript" src="js/nw.js"></script>
+    <script type="text/javascript" src="js/chat.js"></script>
 
 <style>
 #logo-appended{

@@ -19,6 +19,7 @@
 </style>
 {/literal}
 
+<script type="text/javascript" src="js/chat.js"></script>
 
 <h1>Chat Board</h1>
 
