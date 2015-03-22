@@ -152,7 +152,7 @@ class Player implements Character {
 	
 	// Standard damage output.
 	public function damage(Character $enemy=null){
-		return rand(1, $this->max_damage);
+		return rand(1, $this->max_damage($enemy));
 	}
 
 	public function max_damage(Character $enemy=null){

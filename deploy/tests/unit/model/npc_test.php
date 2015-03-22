@@ -172,7 +172,6 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 
 
 
-=======
 	function testGuardsThatMatchStrengthTakeEnemyStrength(){
 		$pc = new Player();
 		$pc->vo->strength = 100;
@@ -186,5 +185,16 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		$this->assertGreaterThan($guard_max_damage, $improved_dam, 'Guard damage should be higher with an enemy that has any strength');
 	}
 
->>>>>>>   Guard: Partial_match_strength trait now in play.
+	function testDifficultiesOfDifferentMobsIncreases(){
+		$this->assertGreaterThan(0, (new Npc('guard2'))->difficulty(), 'zero vs guard2 difficulty mismatch');
+		$this->assertGreaterThan((new Npc('firefly'))->difficulty(), (new Npc('spider'))->difficulty(), 'firefly vs spider difficulty mismatch');
+		$this->assertGreaterThan((new Npc('firefly'))->difficulty(), (new Npc('guard2'))->difficulty(), 'firefly vs guard2 difficulty mismatch');
+		$this->assertGreaterThan((new Npc('firefly'))->difficulty(), (new Npc('peasant2'))->difficulty(), 'firefly vs peasant2 difficulty mismatch');
+		$this->assertGreaterThan((new Npc('pig'))->difficulty(), (new Npc('ox'))->difficulty(), 'pig vs ox difficulty mismatch');
+		$this->assertGreaterThan((new Npc('firefly'))->difficulty(), (new Npc('tiger'))->difficulty(), 'firefly vs tiger difficulty mismatch');
+		//$this->assertGreaterThan((new Npc('tiger'))->difficulty(), (new Npc('oni'))->difficulty(), 'tiger vs oni difficulty mismatch');
+		$this->assertGreaterThan((new Npc('oni'))->difficulty(), (new Npc('ryu'))->difficulty(), 'oni vs ryu difficulty mismatch');
+		$this->assertGreaterThan((new Npc('tiger'))->difficulty(), (new Npc('ryu'))->difficulty(), 'tiger vs ryu difficulty mismatch');
+	}
+
 }
