@@ -26,6 +26,12 @@ article#fight nav{
     color:gold;
     color:rgba(255,215,0,.7);
 }
+.npc-fight{
+	width:80%;margin:0 10%;
+}
+#fight .npc-avatar{
+	margin:.5em auto .5em;text-align:center;
+}
 </style>
 {/literal}
 	
@@ -33,9 +39,9 @@ article#fight nav{
   <article id='fight'>
 	<h2>{$display_name|escape}</h2>
 	
-	<div style='width:80%;margin:0 10%'>
+	<section class='npc-fight'>
 	{if $image_path}
-		<figure style='margin:.5em auto .5em;text-align:center'>
+		<figure class='npc-avatar'>
 		  <img src='{$image_path}' alt='Creature'>
 		</figure>
 	{/if}
@@ -78,7 +84,7 @@ article#fight nav{
 		<div class='ninja-error'>The {$display_name|escape} has killed you!</div>
 	{/if}
 
-	</div>
+	</section><!-- end of .npc-fight -->
 	<nav>
 		<a href='npc.php?victim={$victim|escape|escape:'url'}' class='attack-again'>Attack another {$display_name|escape}</a>
 	</nav>
