@@ -43,7 +43,9 @@
 
     <!-- All the global ninjawars javascript -->
     <script type="text/javascript" src="js/nw.js"></script>
+{if $is_index}
     <script type="text/javascript" src="js/chat.js"></script>
+{/if}
 
 <style>
 #logo-appended{
