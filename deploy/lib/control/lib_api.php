@@ -108,7 +108,13 @@ function json_send_chat($msg) {
 		require_once(LIB_ROOT."control/lib_chat.php");
 		$msg = trim($msg);
 		$user_id = (int) self_char_id();
-		send_chat($user_id, $msg);
+		$info = self_char_info();
+		$success = send_chat($user_id, $msg);
+		if(!$success){
+			return false;
+		} else {
+			return '{"message":"'.$msg.'","sender_id":"'.$user_id.'","uname":"'.$info['uname'].'"}';
+		}
 	}
 }
 

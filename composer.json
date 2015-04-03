@@ -1,7 +1,8 @@
 {
 	"autoload": {
         "psr-0": {
-        	"model": "deploy"
+        	"model": "deploy",
+            "MyApp": "src"
         }
     },
 
@@ -13,6 +14,7 @@
         "phpunit/phpunit": "@stable",
         "phpunit/phpunit-selenium": "@stable",
         "smarty/smarty": "v3.1.21",
-		"doctrine/orm": "~2.5"
+		"doctrine/orm": "~2.5",
+        "cboden/ratchet": "0.3.*"
     }
 }

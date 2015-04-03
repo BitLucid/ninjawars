@@ -499,6 +499,11 @@ function self_char_id(){
 	}
 }
 
+// Get own character info
+function self_char_info(){
+	return char_info(self_char_id());
+}
+
 // DEPRECATED: Old named wrapper for get_char_id
 function get_user_id($p_name=false) {
 	if(defined('DEBUG') && DEBUG && $p_name===false){
