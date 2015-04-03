@@ -35,10 +35,15 @@ Chat.getExistingChatMessages = function(){
 				$.each(data.new_chats.chats, function(key, val){
 					Chat.renderChatMessage(val);
 				});
+				Chat.displayMessages();
 			}
 		});
-}
+};
 
+// Display at least the messages area when there are some messages in it.
+Chat.displayMessages = function(){
+	$('#mini-chat-display').show();
+};
 
 /* use the json data passed to add a new message to the mini-chat
 Sample call:
@@ -51,7 +56,6 @@ Chat.renderChatMessage = function(p_data){
 		return false;
 	}
 	var fullLink = 'player.php?player_id='+p_data.sender_id;
-	// Take the container. 
 	var list = $('#mini-chat-display'); // The outer container.
 
 	// clone the .chat-author template and .chat-message template
@@ -63,7 +67,7 @@ Chat.renderChatMessage = function(p_data){
 		console.log('Chat list, author area or messageArea not found to place chats in!');
 	}
 
-	// put the new content into those areas.
+	// put the new content into the author and message areas
 	authorArea.removeClass('template').show().find('a').attr('href', fullLink).text(p_data.uname).end();
 	messageArea.removeClass('template').show().text(p_data.message);
 	list.prepend(authorArea, messageArea);	// Prepend each message and author of a new chat.
@@ -81,8 +85,7 @@ Chat.sendChatContents = function(p_form) {
 				function(echoed){ 
 					// Place the chat in the interface on success.
 					Chat.renderChatMessage(echoed);
-					Chat.send(echoed);
-					console.log('Chat send happened successfully');
+					var succeeded = Chat.send(echoed);
 				}).fail(function(){
 					console.log('Error: Failed to send the chat to server.');
 				});
@@ -92,35 +95,23 @@ Chat.sendChatContents = function(p_form) {
 	return false;
 };
 
-// Send a message, and allow for optional callbacks on success/fail.
-Chat.send = function(messageData, successcall, failcall){
-	messageData.timestamp = Date.now();
+// Send a messageData object to the websockets chat
+Chat.send = function(messageData){
 	messageData.userAgent = navigator.userAgent;
 	var passfail = true;
 	try{
-		// Turn the data into a json object to pass.
-		conn.send(JSON.stringify(messageData));
+		conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
 	} catch(ex){ // Maybe the connection send didn't work out.
 		console.log(ex.message);
-		if(failcall instanceof Function){
-			failcall();
-		}
 		passfail = false;
 	}
-	if(passfail && successcall instanceof Function){
-		successcall();
-	}
 	return passfail;
-}
-
-Chat.counter = 1;
+};
 
 // Once the chat is ready, initialize the ability to actually send chats.
 function chatReady(){
 	$('#post_msg_js, #mini-chat-display').show(); // Show the areas needed.
-	console.log('Chat connected and read');
-	var username = Chat.username || 'anon';
-	Chat.counter = Chat.counter + 1;
+	console.log('Chat connected and ready');
 }
 
 var conn = new WebSocket('ws://localhost:8080');
@@ -133,8 +124,6 @@ conn.onopen = function(e) {
 conn.onmessage = function(e) {
 	if(e && 'undefined' !== typeof(e.data)){
 		Chat.renderChatMessage(JSON.parse(e.data)); // Add the message to the interface when present!
-		console.log('Chat entity from websocket was:');
-		console.log(JSON.parse(e.data));
 	}
 };
 
