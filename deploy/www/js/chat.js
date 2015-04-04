@@ -2,6 +2,37 @@ if('undefined' !== typeof(NW) && 'undefined' !== typeof(NW.debug) && NW.debug){
 	"use strict";
 }
 
+(function ($) {
+    $.fn.shake = function (options) {
+        // defaults
+        var settings = {
+            'shakes': 2,
+            'distance': 10,
+            'duration': 400
+        };
+        // merge options
+        if (options) {
+            $.extend(settings, options);
+        }
+        // make it so
+        var pos;
+        return this.each(function () {
+            $this = $(this);
+            // position if necessary
+            pos = $this.css('position');
+            if (!pos || pos === 'static') {
+                $this.css('position', 'relative');
+            }
+            // shake it
+            for (var x = 1; x <= settings.shakes; x++) {
+                $this.animate({ left: settings.distance * -1 }, (settings.duration / settings.shakes) / 4)
+                    .animate({ left: settings.distance }, (settings.duration / settings.shakes) / 2)
+                    .animate({ left: 0 }, (settings.duration / settings.shakes) / 4);
+            }
+        });
+    };
+}(jQuery));
+
 // Create chat object.
 // Initialize maximum mini-chat listings...  it should be pretty damn high, actually.
 // store the chat data locally, don't even have to cache this, it should pretty much be a js var
@@ -78,26 +109,35 @@ Chat.renderChatMessage = function(p_data){
 // Send the contents of the chat form input box.
 // Sample url: http://nw.local/api.php?type=send_chat&msg=test&jsoncallback=alert
 Chat.sendChatContents = function(p_form) {
+	var success = false;
 	if (p_form.message && p_form.message.value.length > 0) {
 		message = p_form.message.value;
 		// Send a new chat.
 		$.getJSON('api.php?type=send_chat&msg='+encodeURIComponent(message)+'&jsoncallback=?', 
 				function(echoed){ 
+					if(!echoed){
+						return success;
+					}
 					// Place the chat in the interface on success.
 					Chat.renderChatMessage(echoed);
-					var succeeded = Chat.send(echoed);
+					success = Chat.send(echoed);
 				}).fail(function(){
 					console.log('Error: Failed to send the chat to server.');
+					return success;
 				});
-		
-		p_form.reset(); // Clear the chat form.
+		if(success){
+			p_form.reset(); // Clear the chat form.
+		} else {
+			Chat.submissionArea().shake(); // Shake the submission area to show a failed send of a chat.
+		}
+		return success;
 	}
 	return false;
 };
 
 // Send a messageData object to the websockets chat
 Chat.send = function(messageData){
-	messageData.userAgent = navigator.userAgent;
+	//messageData.userAgent = navigator.userAgent;
 	var passfail = true;
 	try{
 		conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
@@ -108,9 +148,20 @@ Chat.send = function(messageData){
 	return passfail;
 };
 
+// Get the area that handles chat submission.
+Chat.submissionArea = function(){
+	return $('#post_msg_js');
+}
+
 // Once the chat is ready, initialize the ability to actually send chats.
 function chatReady(){
-	$('#post_msg_js, #mini-chat-display').show(); // Show the areas needed.
+	Chat.displayMessages(); // Will display the whole messages area.
+	var $submitter = Chat.submissionArea();
+	if($submitter.data('logged-in')){
+		$submitter.show();
+	} else {
+		$submitter.hide();
+	}
 	console.log('Chat connected and ready');
 }
 
@@ -131,8 +182,13 @@ conn.onmessage = function(e) {
 $(function(){
 	$('#chat-loading').show(); // Show the chat loading area.
 	// Submit a chat message when the input box is used.
-	$('#post_msg_js').hide().submit(function() {
-		return Chat.sendChatContents(this);
+	var $submitArea = Chat.submissionArea();
+	$submitArea.hide().submit(function(e) {
+		e.preventDefault();
+		var success = Chat.sendChatContents(this);
+		if(!success){
+
+		}
 	});
 	Chat.getExistingChatMessages();
 });

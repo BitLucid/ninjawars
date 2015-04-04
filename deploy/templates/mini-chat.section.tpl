@@ -31,9 +31,9 @@
                 </div>
                 
                 <div id="chat-and-switch">
-{if isset($user_id) and $user_id}
-                  <form class='chat-submit' id="post_msg_js" action="chat.php" method="post" name="post_msg">
-                  <!-- Check for post_msg_js in nw.js for the functionality -->
+
+                  <form id="post_msg_js" class='chat-submit' name="post_msg" {if isset($user_id) and $user_id}data=logged-in{/if} action="chat.php" method="post">
+                  <!-- Check for post_msg_js in chat.js for the functionality -->
                   
                     <div id='chat-input'>
                         <input type="text" size="20" maxlength="250" name="message" autocomplete='off' class="textField">
@@ -42,7 +42,7 @@
                         <input id='chat-button' type="submit" value="Chat" class="formButton">
                     </div>
                   </form>
-{/if}
+
                   <div id="mini-chat-container" class='chat-collapsed'>
                   
                   
