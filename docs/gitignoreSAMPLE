@@ -47,5 +47,6 @@ connection.xml
 composer.phar
 composer.lock
 vendor/*
+deploy/vendor/*
 !vendor/.gitkeep
 unclean
