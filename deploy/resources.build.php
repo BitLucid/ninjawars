@@ -31,7 +31,7 @@ define('FACEBOOK_APP_SECRET', 'mooMooIAmACow'); // Secret! string for facebook l
 
 define('TRAP_ERRORS', true); // Whether to use the global error handler & oops page, true on live.
 
-define('TEMPLATE_LIBRARY_PATH', SERVER_ROOT.'vendor/smarty/smarty/libs/Smarty.class.php'); // Path to Smarty 3
+define('TEMPLATE_LIBRARY_PATH', SERVER_ROOT.'vendor/smarty/smarty/distribution/libs/Smarty.class.php'); // Path to Smarty 3
 
 // For location-specific, can-be-dynamic-or-not constants.
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
