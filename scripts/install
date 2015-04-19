@@ -23,8 +23,8 @@ confirm () {
 }
 
 
-sudo apt-get install apache2 php5 php5-pgsql php-apc postgresql postgresql-contrib libpq-dev
-sudo apt-get install perl liblingua-en-inflect-perl phpunit
+sudo apt-get install nginx php5-cli php5 php5-pgsql php-apc postgresql postgresql-contrib libpq-dev
+sudo apt-get install perl liblingua-en-inflect-perl
 
 #enable rewrite module
 sudo a2enmod rewrite
@@ -54,9 +54,8 @@ function copy_over_template_apache_configs(){
     echo "Modifying deploy/www/.htaccess, deploy/resources.php, and /etc/apache2/sites-available/nw.local"
 }
 
-confirm "Copy over the template apache configs into /etc/apache2/sites-available?" && copy_over_template_apache_configs
+#confirm "Copy over the template apache configs into /etc/apache2/sites-available?" && copy_over_template_apache_configs
 
-sudo apache2ctl graceful
 
 function ssh_down_db(){
     ssh tchalvak@ninjawars.net 'vacuumdb ninjawarsLive;pg_dump ninjawarsLive > ~/nw_full.sql'
