@@ -100,12 +100,6 @@ class Player
 		$this->vo->traits = $traits;
 	}
 
-	// Save the Player state.
-	public function save() {
-		$dao = new PlayerDAO();
-		$dao->save($this->vo);
-	}
-
 	// Actively pulls the latest status data from the db.
 	protected function queryStatus() {
 		$id = $this->id();
@@ -162,6 +156,16 @@ class Player
 	public function damage(){
 		return $this->strength() * 5 + $this->speed();
 	}
+
+	// The maximum damage.
+	public function maxDamage(){
+		return $this->damage(); // Currently they're the same, though they probably shouldn't be.
+	}
+
+	/*
+	public function isArmored(){
+		return false;
+	}*/
 
 	// Old Wrapper function name.
 	public function getStrength() {
@@ -376,6 +380,10 @@ class Player
 
 	public function ip() {
 		return account_info_by_char_id($this->id(), 'ip');
+	}
+
+	public function difficulty(){
+		return 10 + $this->strength() * 2 + $this->maxDamage()/* + $this->isArmored() * 5*/;
 	}
 
 }

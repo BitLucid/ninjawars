@@ -63,9 +63,12 @@ if($changedetails){
 		$$type = $char->vo->$type; // Default to current values.
 	}
 
+	/*
+	//TODO: Implement player object saving.
 	if($changed){
-		$char->save(); // Ha, Ha, Ha
-	}
+		$player_factory = new PlayerDAO();
+		$player_factory->save($char->vo);
+	}*/
 }
 if(DEBUG){
 	$description = 'This is a description here and all';

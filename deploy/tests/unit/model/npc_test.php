@@ -86,4 +86,15 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		}
 	}
 
+	// Npcs have different difficulties
+	function testNpcDifficultiesAreDifferent(){
+		$ff = new Npc('fireflies');
+		$peasant = new Npc('peasant2');
+		$this->assertGreaterThan($ff->difficulty(), $peasant->difficulty());
+	}
+
+
+
+
+
 }

@@ -58,6 +58,14 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 		$this->assertTrue((bool)positive_int($char->damage()));
     }
 
+    /**
+     * group char
+    **/
+    function testCharacterHasADifficultyRating(){
+    	$char = new Player($this->char_id);
+    	$this->assertGreaterThan(0, $char->difficulty());
+    }
+
 	/**
 	 * group char
 	**/
@@ -84,11 +92,12 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 	 * group char
 	**/
     function testCreatePlayerObjectCanSaveChanges(){
-    	$this->markTestIncomplete('Player objects not yet self-saving');
     	$char = new Player($this->char_id);
     	$ki = $char->ki();
     	$char->add_ki(55);
-    	$char->save();
+    	$player_factory = new PlayerDAO();
+    	$this->markTestIncomplete('Player objects not yet self-saving');
+    	$player_factory->save($char->vo);
     	$char_copy = new Player($this->char_id);
     	$this->assertEquals($char_copy->ki(), $ki+55);
     }    
