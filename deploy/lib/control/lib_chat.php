@@ -39,6 +39,7 @@ function send_chat($user_id, $msg) {
 
 // Get all the chat messages info.
 function get_chats($chatlength=null) {
+	$chatlength = positive_int($chatlength); // Prevent negatives.
 	$limit = ($chatlength ? 'LIMIT :limit' : '');
 	$bindings = array();
 	if ($limit) {
