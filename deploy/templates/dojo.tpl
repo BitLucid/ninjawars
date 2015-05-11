@@ -186,27 +186,36 @@ table .char-title td{
 	</div>
 </div>
 
+<style>
+.training-requirements{
+  width:80%;
+}
+.training-requirements caption{
+   text-align:center;padding:.2em;font-size:1.3em;color:chocolate;
+}
+</style>
+
 <section id='scroll-reveal'>
 
 	<h2>Dojo Advancement Chart</h2>
 
 <table class='training-requirements' style='width:80%'>
 
-	<caption colspan='100%' style='text-align:center;padding:.2em;font-size:1.3em;color:chocolate;'>
+	<caption colspan='100%'>
 		Kills needed to progress to each level and how a ninja's stats change:
 	</caption>
 
   <thead>
   <tr class='chart-title'>
     <td>Level</td>
-    <td>Kills</td>
+    <td>Kills Needed</td>
     <td>Strength</td>
     <td>Stamina</td>
     <td>Speed</td>
     <td>Max Health</td>
   </tr>
   </thead>
-{section name="chart" start=1 loop=$max_level step=1}
+{section name="chart" start=1 loop=$max_level+1 step=1}
   <tr>
     <td>{$level_chart|escape}</td>
     <td>{$kills_chart|escape}</td>

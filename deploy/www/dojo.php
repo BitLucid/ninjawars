@@ -16,8 +16,8 @@ $str_chart   = 5;
 $speed_chart   = 5;
 $stamina_chart   = 5;
 $hp_chart    = 150;
-$max_level   = maximum_level()+1;
-$max_hp      = max_health_by_level($max_level);
+$max_level = maximum_level(); // For non-logged in loop through stats.
+$max_hp      = max_health_by_level(maximum_level()+1);
 
 
 if ($error = init($private, $alive)) {

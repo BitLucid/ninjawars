@@ -71,7 +71,7 @@ function max_health_by_level($level) {
 
 // Centralized holding for the maximum level available in the game.
 function maximum_level() {
-	return 301;
+	return MAX_PLAYER_LEVEL;
 }
 
 // Get a character's level, necessary when a character's level gets changed.
