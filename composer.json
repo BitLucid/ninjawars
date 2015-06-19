@@ -1,20 +1,21 @@
 {
 	"autoload": {
-        "psr-0": {
-        	"model": "deploy",
-            "MyApp": "src"
+        "psr-4": {
+        	"model\\": "deploy",
+            "ChatApp\\": "deploy/lib/control/ChatApp",
+            "NwApp\\Control\\": "deploy/lib/control"
         }
     },
 
     "require": {
         "php": ">=5.4.0",
         "ircmaxell/password-compat": "@stable",
-        "facebook/php-sdk": "@stable",
+        "facebook/php-sdk": "^3.2",
         "swiftmailer/swiftmailer": "@stable",
         "phpunit/phpunit": "@stable",
         "phpunit/phpunit-selenium": "@stable",
         "smarty/smarty": "v3.1.21",
 		"doctrine/orm": "~2.5",
-        "cboden/ratchet": "0.3.*"
+        "cboden/ratchet": "~0.3.0"
     }
 }

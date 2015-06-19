@@ -33,6 +33,11 @@ if('undefined' !== typeof(NW) && 'undefined' !== typeof(NW.debug) && NW.debug){
     };
 }(jQuery));
 
+/**
+ * Websockets tutorial: http://socketo.me/docs/hello-world
+ * Run the chat server via: php bin/chat-server.php
+ */
+
 // Create chat object.
 // Initialize maximum mini-chat listings...  it should be pretty damn high, actually.
 // store the chat data locally, don't even have to cache this, it should pretty much be a js var
@@ -58,7 +63,7 @@ Chat.getExistingChatMessages = function(){
 	var since = '1424019122';
 	$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(since)+'&jsoncallback=?', 
 		function(data){
-			console.log('Existing chats data:');
+			console.log('Existing chats data found:');
 			console.log(data);
 			window.storeChats = data;
 			if(data && data.new_chats && data.new_chats.chats){
@@ -68,7 +73,8 @@ Chat.getExistingChatMessages = function(){
 				});
 				Chat.displayMessages();
 			}
-		});
+		}
+	);
 };
 
 // Display at least the messages area when there are some messages in it.
@@ -77,8 +83,11 @@ Chat.displayMessages = function(){
 };
 
 /* use the json data passed to add a new message to the mini-chat
-Sample call:
-Chat.renderChatMessage({'message':'Hi! I am chatting!','uname':'tchalvak','date':Date.now(),'sender_id':'128274'});
+ * Sample call:
+ * Chat.renderChatMessage({'message':'Hi! I am chatting!',
+ *							'uname':'tchalvak',
+ *							'date':Date.now(),
+ *							'sender_id':'128274'});
 */
 Chat.renderChatMessage = function(p_data){
 	if(!p_data.message){
@@ -86,6 +95,7 @@ Chat.renderChatMessage = function(p_data){
 		console.log(p_data);
 		return false;
 	}
+	area = null;
 	var fullLink = 'player.php?player_id='+p_data.sender_id;
 	var list = $('#mini-chat-display'); // The outer container.
 
@@ -94,8 +104,15 @@ Chat.renderChatMessage = function(p_data){
 	list.end();
 	var messageArea = list.find('.chat-message.template').clone();
 	list.end();
-	if(!list.length || !authorArea.length || !messageArea.length){
-		console.log('Chat list, author area or messageArea not found to place chats in!');
+	if(!list.length){
+		area = 'list';
+	} else if(!authorArea.length){
+		area = 'authorArea';
+	} else if(!messageArea.length){
+		area = 'messageArea';
+	}
+	if(area){
+		console.log('Chat '+area+' not found to place chats in!');
 	}
 
 	// put the new content into the author and message areas
@@ -109,38 +126,45 @@ Chat.renderChatMessage = function(p_data){
 // Send the contents of the chat form input box.
 // Sample url: http://nw.local/api.php?type=send_chat&msg=test&jsoncallback=alert
 Chat.sendChatContents = function(p_form) {
-	var success = false;
 	if (p_form.message && p_form.message.value.length > 0) {
 		message = p_form.message.value;
-		// Send a new chat.
+		// Send a new chat.  // ASYNC
 		$.getJSON('api.php?type=send_chat&msg='+encodeURIComponent(message)+'&jsoncallback=?', 
 				function(echoed){ 
 					if(!echoed){
-						return success;
+						Chat.rejected();
+						return false;
 					}
 					// Place the chat in the interface on success.
 					Chat.renderChatMessage(echoed);
 					success = Chat.send(echoed);
-				}).fail(function(){
-					console.log('Error: Failed to send the chat to server.');
-					return success;
-				});
-		if(success){
-			p_form.reset(); // Clear the chat form.
-		} else {
-			Chat.submissionArea().shake(); // Shake the submission area to show a failed send of a chat.
-		}
-		return success;
+					p_form.reset(); // Clear the chat form.
+				}
+		).fail(
+			function(){
+				Chat.rejected();
+				return success;
+			}
+		);
 	}
-	return false;
+};
+
+// Notify the user when a chat send was rejected.
+Chat.rejected = function(){
+	console.log('Error: Failed to send the chat to server.');
+	Chat.submissionArea().shake(); // Shake the submission area to show a failed send of a chat.
 };
 
 // Send a messageData object to the websockets chat
 Chat.send = function(messageData){
+	if(!Chat.canSend()){
+		return false;
+	}
 	//messageData.userAgent = navigator.userAgent;
 	var passfail = true;
 	try{
 		conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
+		console.log('Chat message sent.');
 	} catch(ex){ // Maybe the connection send didn't work out.
 		console.log(ex.message);
 		passfail = false;
@@ -154,32 +178,52 @@ Chat.submissionArea = function(){
 }
 
 // Once the chat is ready, initialize the ability to actually send chats.
-function chatReady(){
+Chat.chatReady = function(){
 	Chat.displayMessages(); // Will display the whole messages area.
 	var $submitter = Chat.submissionArea();
-	if($submitter.data('logged-in')){
+	if(Chat.canSend()){
 		$submitter.show();
 	} else {
 		$submitter.hide();
+		console.log('Warning: Not logged in to be able to send messages.');
 	}
 	console.log('Chat connected and ready');
 }
 
-var conn = new WebSocket('ws://localhost:8080');
-conn.onopen = function(e) {
-    console.log("Websocket Connection established!");
-    chatReady();
+// Check whether logged in for chat sending
+Chat.canSend = function(){
+	$area = Chat.submissionArea();
+	return Boolean($area.data('logged-in'));
 };
 
-// Output information comes out here.
-conn.onmessage = function(e) {
-	if(e && 'undefined' !== typeof(e.data)){
-		Chat.renderChatMessage(JSON.parse(e.data)); // Add the message to the interface when present!
-	}
-};
+var config = {'server':'chatapi.ninjawars.net',
+			  'port':'8080'};
 
 
 $(function(){
+
+	if("WebSocket" in window){ // Browser is compatible.
+		var connectionString = 'ws://'+config.server+':'+config.port;
+		console.log('Connecting to '+connectionString);
+		window.conn = new WebSocket(connectionString);
+		conn.onopen = function(e) {
+		    console.log("Websocket Connection established!");
+		    Chat.chatReady();
+		};
+
+		// Output information comes out here.
+		conn.onmessage = function(e) {
+			if(e && 'undefined' !== typeof(e.data)){
+				Chat.renderChatMessage(JSON.parse(e.data)); // Add the message to the interface when present!
+			}
+		};
+
+
+	} else {
+		console.log('Browser not compatible with websockets');
+	}
+
+
 	$('#chat-loading').show(); // Show the chat loading area.
 	// Submit a chat message when the input box is used.
 	var $submitArea = Chat.submissionArea();
@@ -190,6 +234,7 @@ $(function(){
 
 		}
 	});
+
 	Chat.getExistingChatMessages();
 });
 
