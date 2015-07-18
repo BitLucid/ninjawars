@@ -50,3 +50,4 @@ vendor/*
 deploy/vendor/*
 !vendor/.gitkeep
 unclean
+deploy/resources/logs/deity.log
