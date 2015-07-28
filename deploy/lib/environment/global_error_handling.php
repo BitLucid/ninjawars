@@ -49,7 +49,7 @@ function sendErrorEmail($p_errorMsg) {
 	}
 
 	$p_errorMsg .= 'REQUEST_URI: '.$_SERVER['REQUEST_URI']."\r\n";
-	$p_errorMsg .= 'REFERER: '.$_SERVER['HTTP_REFERER']."\r\n";
+	$p_errorMsg .= 'REFERER: '.(isset($_SERVER['HTTP_REFERER'])? $_SERVER['HTTP_REFERER'] : null)."\r\n";
 	$p_errorMsg .= 'METHOD: '.$_SERVER['REQUEST_METHOD']."\r\n";
 
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
