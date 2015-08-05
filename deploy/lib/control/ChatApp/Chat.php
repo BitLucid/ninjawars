@@ -3,6 +3,8 @@ namespace ChatApp;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
+// Run the chat server via: php bin/chat-server.php
+
 class Chat implements MessageComponentInterface {
     protected $clients;
 
