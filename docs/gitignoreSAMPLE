@@ -36,7 +36,8 @@ deploy/model/orm/*
 !deploy/model/orm/.gitkeep
 deploy/conf/*
 !deploy/conf/.gitkeep
-deploy/sql/*
+#deploy/sql/*
+deploy/sql/migrations
 !deploy/sql/.gitkeep
 deploy/db/migrations/Propel*
 # Propel build

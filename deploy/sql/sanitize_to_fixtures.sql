@@ -1,0 +1,17 @@
+delete from players where player_id not in(select player_id from accounts left join account_players on _account_id = account_id left join players on _player_id = player_id where active_email like 'tchal%' or active_email like '%lvak%' or (uname = 'Tchalvak' or uname ='Beagle' or uname = 'RobertoSuave'));
+delete from accounts where account_id not in(select account_id from accounts left join account_players on _account_id = account_id left join players on _player_id = player_id where active_email like 'tchal%' or active_email like '%lvak%' or (uname = 'Tchalvak' or uname = 'Beagle' or uname = 'RobertoSuave'));
+delete from players where player_id not in(select player_id from players where uname = 'Tchalvak' or uname = 'Beagle' or uname = 'RobertoSuave');
+update players set pname_backup = md5(player_id::text);
+update players set goals = '', beliefs = '';
+update players set email = '' where email != 'tchalvakspam@gmail.com';
+update clan set clan_name = 'clan_fixture_test'||clan_id;
+update clan set description = 'fixtures_test';
+update clan set clan_founder = 'Tchalvak';
+truncate dueling_log;
+truncate levelling_log;
+truncate messages;
+truncate enemies;
+truncate events;
+truncate inventory;
+truncate settings;
+truncate login_attempts;
