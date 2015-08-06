@@ -19,6 +19,14 @@ class Item_Test extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($item instanceof Item);
 	}
 
+	public function testSomeItemsExist(){
+		$shuriken = new Item('shuriken');
+		$kunai = new Item('kunai');
+		$tessen = new Item('kunai');
+		$this->assertTrue((bool) $shuriken->identity() || (bool)$kunai->identity() || (bool) $tessen->identity(), 
+				'Neither shuriken, kunai, or tessen exist to be instantiated!');
+	}
+
 	public function testRetrievingAShuriken(){
 		$shuriken = new Item('shuriken');
 		$this->assertTrue($shuriken instanceof Item);

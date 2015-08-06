@@ -49,7 +49,8 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testNpcListHasMoreThan10(){
-		$this->assertGreaterThan(10, count(NpcFactory::npcs()));
+		$min_npcs = defined('DEBUG') && DEBUG? 15 : 9;
+		$this->assertGreaterThan($min_npcs, count(NpcFactory::npcs()));
 	}
 
 	// Npcs should have damage, assuming they're combat npcs, which most are
@@ -72,25 +73,34 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 
 	// Some npcs should cause bounty, generally weaker village peeps
 	public function testWeaklingsCauseBounty(){
-		$merchant = new Npc('merchant2');
-		$this->assertGreaterThan(0, $merchant->bounty());
-		$villager = new Npc('peasant2');
-		$this->assertGreaterThan(0, $villager->bounty());
+		if(!(defined('DEBUG') && DEBUG)){
+			$this->markTestSkipped(); // No merchant2 in non-debug scenarios for now.
+		} else {
+			$merchant = new Npc('merchant2');
+			$this->assertGreaterThan(0, $merchant->bounty());
+			$villager = new Npc('peasant2');
+			$this->assertGreaterThan(0, $villager->bounty());
+		}
 	}
 
 	// Npcs have similar races, e.g. a guard and a villager.
 	public function testVariousVillagersHaveSameRace(){
-		$humans = array('peasant2', /*'theif2', */'guard2', 'merchant2');
-		foreach($humans as $human){
-			$this->assertEquals('human', (new Npc($human))->race());
+		if(!(defined('DEBUG') && DEBUG)){
+			$this->markTestSkipped();
+		} else {
+			$humans = array('peasant2', /*'theif2', */'guard2', 'merchant2');
+			foreach($humans as $human){
+				$this->assertEquals('human', (new Npc($human))->race());
+			}
 		}
 	}
 
 	// Npcs have different difficulties
 	function testNpcDifficultiesAreDifferent(){
 		$ff = new Npc('fireflies');
-		$peasant = new Npc('peasant2');
-		$this->assertGreaterThan($ff->difficulty(), $peasant->difficulty());
+		$tengu = new Npc('tengu');
+		$this->assertGreaterThan(0, $tengu->difficulty());
+		$this->assertGreaterThan($ff->difficulty(), $tengu->difficulty());
 	}
 
 
