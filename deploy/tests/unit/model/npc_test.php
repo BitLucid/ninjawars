@@ -31,9 +31,14 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 	public function testForPresenceOfSomeNPCData(){
 		$this->assertTrue(array_key_exists('fireflies', NpcFactory::npcsData()), 'Fireflies not present in npcs data array for some reason');
 		$this->assertTrue(array_key_exists('firefly', NpcFactory::npcsData()), 'Firefly not present in npcs data array for some reason');
-		$this->assertTrue(array_key_exists('pig', NpcFactory::npcsData()));
-		$this->assertTrue(array_key_exists('merchant2', NpcFactory::npcsData()));
-		$this->assertTrue(array_key_exists('peasant2', NpcFactory::npcsData()));
+		$this->assertTrue(array_key_exists('spider', NpcFactory::npcsData()));
+		$this->assertTrue(array_key_exists('kappa', NpcFactory::npcsData()));
+		$this->assertTrue(array_key_exists('tengu', NpcFactory::npcsData()));
+		if(defined('DEBUG') && DEBUG){
+			$this->assertTrue(array_key_exists('pig', NpcFactory::npcsData()));
+			$this->assertTrue(array_key_exists('merchant2', NpcFactory::npcsData()));
+			$this->assertTrue(array_key_exists('peasant2', NpcFactory::npcsData()));
+		}
 	}
 
 	public function testCreateStandardFirefly(){
