@@ -49,7 +49,7 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testNpcListHasMoreThan10(){
-		$min_npcs = defined('DEBUG') && DEBUG? 15 : 9;
+		$min_npcs = defined('DEBUG') && DEBUG? 15 : 8;
 		$this->assertGreaterThan($min_npcs, count(NpcFactory::npcs()));
 	}
 
