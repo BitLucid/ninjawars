@@ -348,7 +348,10 @@ function format_health_percent($player_row) {
 /**
  * Gets player data for multiple players, no option for password
 */
-function get_players_info($p_ids) {
+function get_players_info($p_ids=null) {
+	if(empty($p_ids)){
+		return array();
+	}
 	$dbconn = DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM players WHERE player_id IN (:id".join(', :id', array_keys($p_ids)).")");
 	//Log of Dueling information.
