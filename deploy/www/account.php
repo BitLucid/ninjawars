@@ -60,19 +60,6 @@ if ($deleteAccount) {
     	    $confirm_delete = true;
     	}
 	}
-} else if ($changeprofile == 1) {
-    // Limit the profile length.
-	if ($newprofile != '') {
-		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET messages = :profile WHERE player_id = :player');
-		$statement->bindValue(':profile', $newprofile);
-		$statement->bindValue(':player', $user_id);
-		$statement->execute();	// todo - test for success
-
-		$profile_changed = true;
-	} else {
-		$error = 'Cannot enter a blank profile.';
-	}
 } else if ($change_email) {
 	if ($change_email == 2) {
 		$verify = is_authentic($username, $passW);
