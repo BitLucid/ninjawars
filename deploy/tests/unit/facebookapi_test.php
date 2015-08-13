@@ -2,11 +2,14 @@
 require_once(substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'ninjawars')+10).'deploy/resources.php');
 // Core may be autoprepended in ninjawars
 require_once(LIB_ROOT.'base.inc.php');
+require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
 
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 
 
 class TestFacebookAPI extends PHPUnit_Framework_TestCase {
+
+	var facebookAccountId = 8889999777777;
 
 
 	/**
@@ -20,6 +23,7 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 		  die('Vendor directory for facebook API not found, Please run composer install.');
 		}
 		@session_start(); // Session won't exactly work for cli phpunit, but worth a try.
+		$account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
 
 	}
 	
@@ -28,6 +32,7 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 	**/
 	function tearDown(){
 		session_destroy();
+		TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
 	/**
