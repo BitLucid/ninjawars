@@ -3,6 +3,7 @@
  * Account creation and validation.
 **/
 
+
 // Pull account data in a * like manner.
 function account_info($account_id, $specific=null){
 	$res = query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
@@ -122,6 +123,9 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	return ($verify_ninja_id != $ninja_id ? false : $newID);
 }
 
+/**
+ * Check whether an account already exists for a certain email.
+ */
 function account_with_email($email) {
 	$sel = 'SELECT account_id FROM accounts WHERE active_email = :email';
 	$existing_account = query_item($sel, array(':email'=>strtolower($email)));
@@ -286,7 +290,7 @@ function confirm_player($char_name, $confirmation=0, $autoconfirm=false) {
 
 // Check for reserved or already in use by another player.
 function ninja_name_available($ninja_name) {
-	$reserved = array('SysMsg', 'NewUserList', 'Admin', 'Administrator', 'A Stealthed Ninja');
+	$reserved = array('SysMsg', 'NewUserList', 'Admin', 'Administrator', 'A Stealthed Ninja', 'Tchalvak', 'Beagle');
 
 	foreach ($reserved as $l_names) {
 		if (strtolower($ninja_name) == strtolower($l_names)) {
