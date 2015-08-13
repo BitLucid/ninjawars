@@ -111,7 +111,7 @@
 
 
 <div id='switch-to-account' class='notice'>
-	<a href='account.php'>View your account info</a>
+	<a href='account.php' target='main'>View your account info</a>
 </div>
 
 {literal}
