@@ -34,6 +34,9 @@ class AccountFactory{
 
 	public static function findAccountByOauthId($id, $provider='facebook'){
 		$account_info = find_account_info_by_oauth($id, $provider);
+		if(!$account_info['account_id']){
+			return false;
+		}
 		return new Account($account_info['account_id']);
 	}
 
