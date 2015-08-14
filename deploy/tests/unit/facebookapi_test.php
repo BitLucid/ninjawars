@@ -1,15 +1,17 @@
 <?php
-require_once(substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'ninjawars')+10).'deploy/resources.php');
 // Core may be autoprepended in ninjawars
 require_once(LIB_ROOT.'base.inc.php');
 require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
+require_once(ROOT.'core/data/AccountFactory.php');
+require_once(ROOT.'core/data/Account.php');
 
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 
 
 class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 
-	var facebookAccountId = 8889999777777;
+	var $facebookAccountId = 8889999777;
+	var $accountId;
 
 
 	/**
@@ -24,7 +26,7 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 		}
 		@session_start(); // Session won't exactly work for cli phpunit, but worth a try.
 		$account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
-
+		$this->accountId = $account_id;
 	}
 	
 	/**
@@ -32,7 +34,7 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 	**/
 	function tearDown(){
 		session_destroy();
-		TestAccountCreateAndDestroy::purge_test_accounts();
+		//TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
 	/**
@@ -116,62 +118,52 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 	 * group facebookapi
 	**/
     function testFindAccountByStaticFacebookId(){
-    	$fb_user_id = '10100268595264896';
-    	$account_info = find_account_info_by_oauth($fb_user_id, $provider='facebook');
-    	$this->assertNotEmpty($account_info);
-    	$this->assertTrue((bool)positive_int($account_info['account_id']));
-    }
-
-	/**
-	 * group facebookapi
-	**/
-    function testSyncAccountToFacebookOauthId(){
-    	$fb_user_id = '10100268595264896';
-    	$account_info = account_info_by_identity($identity_email='tchalvak@gmail.com');
-    	$this->assertNotEmpty($account_info);
-    	$this->assertTrue((bool)positive_int($account_info['account_id']));
-    	$added = add_oauth_to_account($account_info['account_id'], $fb_user_id);
-    	$this->assertTrue($added);
-    }
-
-	/**
-	 * group facebookapi
-	**/
-    function testSyncOfSimpleForTestingAccount(){
-	    // Create test user account.
-	    // Connect test user account to arbitrary oauth_provider and oauth_uid
-    	$fb_user_id = '10100268595264896';
+    	$fake_fb_id = 4499445555666666;
     	$account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
-    	$this->assertTrue((bool)positive_int($account_id));
-    	$email = TestAccountCreateAndDestroy::$test_email;
-    	$this->assertTrue((bool)$email);
-    	$account_info = account_info_by_identity($identity_email=$email);
-    	$this->assertTrue((bool)positive_int($account_info['account_id']));
-    	$added = add_oauth_to_account($account_info['account_id'], $fb_user_id);
-    	$this->assertTrue($added);
+    	$account = new Account($account_id);
+    	$account->setOauthId($fake_fb_id);
+    	AccountFactory::save($account);
+    	$updated_account = AccountFactory::findAccountByOauthId($fake_fb_id);
+    	$this->assertTrue($updated_account instanceof Account, 'Test Account should be found by the AccountFactory');
+    	$this->assertEquals($fake_fb_id, $updated_account->getOauthId('facebook'));
     }
 
-	/**
-	 * group facebookapi
-	**/
+    function testSyncAccountToFacebookOauthId(){
+    	$fb_user_id = 444446664443333;
+    	$account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
+    	$account = new Account($account_id);
+    	$account->setOauthId($fb_user_id);
+    	$account->setOauthProvider('facebook');
+    	AccountFactory::save($account);
+    	$account_updated = AccountFactory::findAccountByOauthId($fb_user_id);
+    	$this->assertEquals($fb_user_id, $account_updated->getOauthId('facebook'));
+    }
+
 	function testLoginViaOauthFailsWithRandomOauthThatWontExist(){
-		$fb_user_id = '89999999999994444444';
+		$fb_user_id = 8999999994444444;
 		$oauth_id = $fb_user_id;
 		$logged_in_info = login_user_by_oauth($oauth_id);  // Try to login that user with the arbitrary id setting.
 		$this->assertFalse($logged_in_info['success']);
     	$this->assertTrue((bool)$logged_in_info['login_error']);
 	}
 
+	function testLoginViaCorrectOauth(){
+		$fb_user_id = 8999994444444;
+		$account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
+		$account = AccountFactory::find($account_id);
+		$account->setOauthId($fb_user_id, 'facebook');
+		AccountFactory::save($account);
+		$oauth_id = $fb_user_id;
+		$logged_in_info = login_user_by_oauth($oauth_id);
+		$this->assertTrue($logged_in_info['success']);
+	}
 
-	/**
-	 * group facebookapi
-	**/
     function testLoginOfCreatedTestingAccountViaMockFacebookSync(){
     	$initial_ip = @$_SERVER['REMOTE_ADDR'];
     	$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 	    // Create test user account.
 	    // Connect test user account to arbitrary oauth_provider and oauth_uid
-    	$fb_user_id = '10100268595264896';
+    	$fb_user_id = 77775555555555;
     	$account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
     	$this->assertTrue((bool)positive_int($account_id));
     	$email = TestAccountCreateAndDestroy::$test_email;
