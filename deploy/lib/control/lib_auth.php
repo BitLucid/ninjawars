@@ -104,7 +104,7 @@ function login_user($dirty_user, $p_pass) {
 /**
  * Login a user via a pre-authenticated oauth id.
 **/
-function login_user_by_oauth($oauth_id, $oauth_provider='facebook'){
+function login_user_by_oauth($oauth_id, $oauth_provider){
 	$account_info = query_row('select players.player_id, players.uname, accounts.account_id 
 		from players left join account_players on players.player_id = account_players._player_id 
 		left join accounts on accounts.account_id = account_players._account_id

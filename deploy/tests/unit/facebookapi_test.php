@@ -150,21 +150,20 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 	function testLoginViaOauthFailsWithRandomOauthThatWontExist(){
 		$fb_user_id = 8999999994444444;
 		$oauth_id = $fb_user_id;
-		$logged_in_info = login_user_by_oauth($oauth_id);  // Try to login that user with the arbitrary id setting.
+		$logged_in_info = login_user_by_oauth($oauth_id, 'facebook');  // Try to login that user with the arbitrary id setting.
 		$this->assertFalse($logged_in_info['success']);
     	$this->assertTrue((bool)$logged_in_info['login_error']);
 	}
 
 	function testLoginViaCorrectOauth(){
-		$fb_user_id = 8999994444444;
+		$fb_user_id = 23422333333333333;
 		$account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
-		$account = AccountFactory::find($account_id);
+		$account = new Account($account_id);
 		$account->setOauthId($fb_user_id, 'facebook');
 		AccountFactory::save($account);
-		$oauth_id = $fb_user_id;
-		$logged_in_info = login_user_by_oauth($oauth_id);
+		$logged_in_info = login_user_by_oauth($fb_user_id, 'facebook');
 		$this->assertNull($logged_in_info['login_error']);
-		$this->assertTrue($logged_in_info['success'], 'No login success indicator was found for oauth login!');
+		$this->assertTrue($logged_in_info['success']);
 	}
 
     function testLoginOfCreatedTestingAccountViaMockFacebookSync(){
@@ -184,7 +183,7 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
     	$account_info = account_info_by_identity($email);
     	$oauth_id = $account_info['oauth_id'];
     	$this->assertEquals($oauth_id, $fb_user_id);
-    	$logged_in_info = @login_user_by_oauth($oauth_id);  // Try to login that user with the arbitrary id setting.
+    	$logged_in_info = @login_user_by_oauth($oauth_id, 'facebook');  // Try to login that user with the arbitrary id setting.
     	$this->assertTrue($logged_in_info['success']);
     	$this->assertFalse((bool)$logged_in_info['login_error']);
     	$_SERVER['REMOTE_ADDR'] = $initial_ip;

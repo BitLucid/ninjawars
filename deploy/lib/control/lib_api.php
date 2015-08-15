@@ -221,7 +221,7 @@ function json_facebook_login_sync() {
 				// If facebook returns a userid, then check for a match in the accounts table.
 				if($id){
 					// Finally if there is a match in the accounts table, then login as that user.
-					$logged_in_info = login_user_by_oauth($id);
+					$logged_in_info = login_user_by_oauth($id, 'facebook');
 					$logged_in = $logged_in_info['success'];
 					$error = $logged_in_info['login_error'];
 					if(!$error){
