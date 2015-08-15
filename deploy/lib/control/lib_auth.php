@@ -106,9 +106,9 @@ function login_user($dirty_user, $p_pass) {
 **/
 function login_user_by_oauth($oauth_id, $oauth_provider='facebook'){
 	$account_info = query_row('select players.player_id, players.uname, accounts.account_id 
-		from players join account_players on players.player_id = account_players._player_id 
-		join accounts on accounts.account_id = account_players._account_id
-		where accounts.oauth_provider = :oauth_provider and accounts.oauth_id = :oauth_id',
+		from players left join account_players on players.player_id = account_players._player_id 
+		left join accounts on accounts.account_id = account_players._account_id
+		where accounts.oauth_provider = :oauth_provider and accounts.oauth_id = :oauth_id and accounts.operational limit 1',
 		array(':oauth_provider'=>$oauth_provider, ':oauth_id'=>$oauth_id));
 	$username = $account_info['uname'];
 	$player_id = $account_info['player_id'];
@@ -160,7 +160,7 @@ function perform_login_if_requested($is_logged_in, $login_requested, $settings){
 // Get the account that matches an oauth provider.
 function find_account_info_by_oauth($id, $provider='facebook'){
 	$id = positive_int($id);
-	$account_info = query_row('select * from accounts where oauth_id = :id and oauth_provider = :provider 
+	$account_info = query_row('select * from accounts where ( oauth_id = :id and oauth_provider = :provider ) 
 		order by operational, type, created_date asc limit 1',
 		array(':id'=>$id, ':provider'=>$provider));
 	if(empty($account_info) || !$account_info['account_id']){

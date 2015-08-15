@@ -47,6 +47,9 @@ class Account{
 
 	public function setOauthId($id, $provider='facebook'){
 		$this->oauth_id = $id;
+		if($provider){
+			$this->oauth_provider = $provider;
+		}
 		return true;
 	}
 
@@ -59,7 +62,6 @@ class Account{
 	}
 
 	public function setOauthProvider($provider){
-		$this->oauth_provider = $provider;
-		return $this->oauth_provider;
+		return ($this->oauth_provider = $provider);
 	}
 }

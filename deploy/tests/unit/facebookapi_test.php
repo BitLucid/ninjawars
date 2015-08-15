@@ -34,7 +34,7 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 	**/
 	function tearDown(){
 		session_destroy();
-		//TestAccountCreateAndDestroy::purge_test_accounts();
+		TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
 	/**
@@ -117,14 +117,21 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 	/**
 	 * group facebookapi
 	**/
-    function testFindAccountByStaticFacebookId(){
-    	$fake_fb_id = 4499445555666666;
+    function testFindAccountByStaticFacebookOauthId(){
+    	$fake_fb_id = 44994455666;
     	$account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
     	$account = new Account($account_id);
     	$account->setOauthId($fake_fb_id);
-    	AccountFactory::save($account);
+    	$account->setOauthProvider('facebook');
+    	$was_updated = AccountFactory::save($account);
+    	$this->assertGreaterThan(0, $was_updated);
+    	$saved_account = AccountFactory::findById($account_id);
+    	$this->assertGreaterThan(0, $saved_account->getOauthId());
     	$updated_account = AccountFactory::findAccountByOauthId($fake_fb_id);
-    	$this->assertTrue($updated_account instanceof Account, 'Test Account should be found by the AccountFactory');
+    	$this->assertNotEmpty(find_account_info_by_oauth($fake_fb_id), 'Unable to find account via function oauth match');
+    	$this->assertTrue($saved_account instanceof Account && (bool) $saved_account->getIdentity(), 'Test Account does not seem to be creating successfully.');
+    	$this->assertTrue($updated_account instanceof Account, 'Account oauth not finding account match.');
+    	$this->assertTrue((bool)$updated_account->getIdentity(), 'Updated Account saved has no valid identity.');
     	$this->assertEquals($fake_fb_id, $updated_account->getOauthId('facebook'));
     }
 
@@ -134,6 +141,7 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
     	$account = new Account($account_id);
     	$account->setOauthId($fb_user_id);
     	$account->setOauthProvider('facebook');
+    	$this->assertEquals('facebook', $account->getOauthProvider());
     	AccountFactory::save($account);
     	$account_updated = AccountFactory::findAccountByOauthId($fb_user_id);
     	$this->assertEquals($fb_user_id, $account_updated->getOauthId('facebook'));
@@ -155,7 +163,8 @@ class TestFacebookAPI extends PHPUnit_Framework_TestCase {
 		AccountFactory::save($account);
 		$oauth_id = $fb_user_id;
 		$logged_in_info = login_user_by_oauth($oauth_id);
-		$this->assertTrue($logged_in_info['success']);
+		$this->assertNull($logged_in_info['login_error']);
+		$this->assertTrue($logged_in_info['success'], 'No login success indicator was found for oauth login!');
 	}
 
     function testLoginOfCreatedTestingAccountViaMockFacebookSync(){

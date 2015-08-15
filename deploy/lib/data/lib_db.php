@@ -48,6 +48,19 @@ function query_array($sql_query, $bindings=array()) {
 	return query($sql_query, $bindings, false); // Set return_resultset to false to return the array.
 }
 
+// Insert sql, returns the id insert by default.
+function insert_query($insert_query, $bindings=array()){
+	query($insert_query, $bindings, true); // Don't try to return data in the initial query.
+	$id = DatabaseConnection::$pdo->lastInsertId();
+	return $id;
+}
+
+// Update query wrapper, returns the number of rows updated.
+function update_query($update_query, $bindings=array()){
+	$updates = query($update_query, $bindings, true); // Return the resultset
+	return $updates->rowCount();
+}
+
 // Run to just get the first row, for 1 row queries.
 function query_row($sql, $bindings=array()) {
     $resultset = query_resultset($sql, $bindings);

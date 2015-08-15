@@ -27,6 +27,16 @@ class AccountFactory{
 		return new Account($account_info['account_id']);
 	}
 
+	public static function findById($id){
+		$account = new Account($id);
+		if(!$account->getIdentity()){
+			return false;
+		} else {
+			return $account;
+		}
+
+	}
+
 	public static function findByIdentity($identity_email){
 		$info = account_info_by_identity($identity_email);
 		return new Account($info['account_id']);
@@ -42,10 +52,12 @@ class AccountFactory{
 
 	public static function save($account){
 		$params = [':identity'=>$account->getIdentity(), ':active_email'=>$account->getActiveEmail(), ':type'=>$account->getType(),
-			':oauth_id'=>$account->getOauthId(), ':oauth_provider'=>$account->getOauthProvider(), ':account_id'=>$account->getId()
+			':oauth_provider'=>$account->getOauthProvider(), ':oauth_id'=>(string)$account->getOauthId($account->getOauthProvider()), 
+			':account_id'=>$account->getId()
 			];
-		$updated = query('update accounts set 
-				account_identity = :identity, active_email = :active_email, type = :type, oauth_id = :oauth_id, oauth_provider = :oauth_provider 
+		$updated = update_query('update accounts set 
+				account_identity = :identity, active_email = :active_email, type = :type, oauth_provider = :oauth_provider,
+				oauth_id = :oauth_id				
 				where account_id = :account_id', $params);
 		return $updated;
 	}
