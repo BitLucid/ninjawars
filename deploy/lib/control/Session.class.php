@@ -10,7 +10,7 @@ class SESSION
 	// *** Starts the session whenever a method is called for. ***
 	public static function commence()
 	{
-		if (!isset($_SESSION ['ready']))
+		if (session_id() == '')
 		{
 			session_start();
 			$_SESSION['ready'] = TRUE;

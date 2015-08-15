@@ -65,6 +65,9 @@ class AttackLegal
 		$this->target   = null;
 		$this->params   = $params;
 		$this->error    = null;
+		if(!isset($this->params['required_turns']) || $this->params['required_turns'] === null){
+			throw new Exception('Error: AttackLegal required turns not specified.');
+		}
 
 		if ($attacker_name_or_id) {
 			$this->attacker = new Player($attacker_name_or_id);
@@ -157,4 +160,4 @@ class AttackLegal
 } // End Class AttackLegal
 
 // *** Put any internal classes or other classes for this file's library here.
-?>
+
