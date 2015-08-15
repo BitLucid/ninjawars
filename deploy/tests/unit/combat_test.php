@@ -24,7 +24,7 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
     public function testAttackLegalCantAttackSelf(){
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
     	$legal = new AttackLegal($char_id, $char_id, ['required_turns'=>1, 'ignores_stealth'=>true]);
-    	$this->assertFalse($legal->check());
+    	$this->assertFalse($legal->check($update_timer=false));
     }
 
     public function testAttackLegalCantAttackSelfEvenIfUsingSelfIdVsSelfUsername(){
@@ -32,7 +32,7 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
         $info = char_info($char_id);
         $this->assertTrue((bool)$info['uname'], 'Character uname not found to check attacklegal with');
         $legal = new AttackLegal($char_id, $info['uname'], ['required_turns'=>1, 'ignores_stealth'=>true]);
-        $this->assertFalse($legal->check());
+        $this->assertFalse($legal->check($update_timer=false));
     }
 
     // Test that you can attack as two separate characters.
@@ -41,7 +41,7 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
     	$char_id = TestAccountCreateAndDestroy::create_testing_account($confirm);
         $char_2_id = TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
         $legal = new AttackLegal($char_id, $char_2_id, ['required_turns'=>1, 'ignores_stealth'=>true]);
-        $checked = $legal->check();
+        $checked = $legal->check($update_timer=false);
         $this->assertEquals(null, $legal->getError(), 'There was an attack error message when there shouldn\'t be one.');
         $this->assertTrue($checked);
     }
@@ -52,7 +52,7 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
         $char_2_id = TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
         $char2 = new Player($char_2_id);
         $legal = new AttackLegal($char_id, $char2->name(), ['required_turns'=>1, 'ignores_stealth'=>true]);
-        $checked = $legal->check();
+        $checked = $legal->check($update_timer=false);
         $this->assertEquals(null, $legal->getError(), 'There was an attack error message when there shouldn\'t be one.');
         $this->assertTrue($checked);
     }
@@ -65,7 +65,7 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
         $char_2_id = TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
         $char = new Player($char_2_id);
         $legal = new AttackLegal($char_id, $char->name(), ['required_turns'=>4000000000, 'ignores_stealth'=>true]);
-        $this->assertFalse($legal->check());
+        $this->assertFalse($legal->check($update_timer=false));
     }
 
 
