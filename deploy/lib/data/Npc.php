@@ -44,7 +44,16 @@ class Npc{
         // Just add together all the points of the mob, so to speak.
         $has_bounty = (int) isset($this->data['bounty']);
         $armored = $this->has_trait('armored')? 1 : 0;
-        return 10 + $this->strength * 2 + $this->damage + $has_bounty + $armored * 5;
+        $complex = count($this->traits());
+        return 0
+            + $this->strength * 2 
+            + $this->damage 
+            + floor($this->max_health() / 10)
+            + (int) ($this->max_health() > 1) // Have more than 1 health, so not totally devoid of content
+            + $has_bounty 
+            + $armored * 5
+            + $complex * 3
+            ;
     }
 
     // Check for specific traits.
@@ -54,6 +63,10 @@ class Npc{
             $this->traits_array = $this->traits? explode(',', $this->traits) : array();
         }
         return count($this->traits_array) && in_array($trait, $this->traits_array);
+    }
+
+    public function traits(){
+        return $this->traits_array;
     }
 
     public function speed(){
@@ -106,11 +119,33 @@ class Npc{
 
     // Get the race of the npc.
     public function race(){
-        return $this->race;
+        if(!$this->race){
+            return 'creature';
+        } else {
+            return $this->race;
+        }
     }
 
+    /**
+     * Technically, this is the MAX bounty.
+    **/
     public function bounty(){
         return $this->bounty;
+    }
+
+    public function dynamicBounty(Player $char){
+        if($char->level() <= 2){
+            return 0;
+        } else {
+            return $this->bounty();
+        }
+    }
+
+    /**
+     * Presumably this is modified gold.
+    **/
+    public function gold(){
+        return $this->gold;
     }
 
     public function setData($data){
