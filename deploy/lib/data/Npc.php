@@ -29,6 +29,10 @@ class Npc{
         return $this->name;
     }
 
+    public function image(){
+        return $this->image;
+    }
+
     // Calculcate the max damage of an npc.  Needed for effectiveness calc.
     public function max_damage(){
         return ((1+ ($this->strength * 2)) + $this->damage);
@@ -146,9 +150,5 @@ class Npc{
     **/
     public function gold(){
         return $this->gold;
-    }
-
-    public function setData($data){
-    	$this->data = $data;
     }
 }
