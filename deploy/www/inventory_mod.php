@@ -345,6 +345,11 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				}
 
 				if (!$self_use) {
+					if(!$result){
+						$debug_info = 'Debugging: An attack was made using an item, but no result message section was set. Request info: ';
+						$debug_info .= print_r($_SERVER, true);
+						error_log($debug_info);
+					}
 					// Notify targets when they get an item used on them.
 					$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
 					send_event($user_id, $target_id, $message_to_target);
