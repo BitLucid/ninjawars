@@ -1,5 +1,7 @@
 <?php
-require_once(LIB_ROOT."control/lib_inventory.php"); // The inventory functions.
+require_once(LIB_ROOT."control/lib_inventory.php");
+require_once(LIB_ROOT."data/NpcFactory.php");
+require_once(LIB_ROOT."data/Npc.php");
 
 class AdminViews{
 
@@ -63,8 +65,11 @@ if($self instanceof Player && $self->isAdmin()){
 
 	$stats = AdminViews::high_rollers();
 
+	$npcs = NpcFactory::allNonTrivialNpcs();
+
+	$trivial_npcs = NpcFactory::allTrivialNpcs();
+
 	$char_name = in('char-name');
-	debug($char_name, $_REQUEST);
 
 	if(is_string($char_name) && trim($char_name)){
 		$view_char = get_char_id_by_name($char_name);
@@ -85,7 +90,7 @@ if($self instanceof Player && $self->isAdmin()){
 		'ninjamaster.tpl'	// *** Main Template ***
 		, 'Admin Actions' // *** Page Title ***
 		, ['stats'=>$stats, 'char_infos'=>$char_infos, 'dupes'=>$dupes, 'char_inventory'=>$char_inventory,
-			'char_name'=>$char_name, 'message'=>$message] // *** Page Variables ***
+			'char_name'=>$char_name, 'npcs'=>$npcs, 'trivial_npcs'=>$trivial_npcs, 'message'=>$message] // *** Page Variables ***
 	);
 
 
