@@ -88,7 +88,7 @@ if($turns > 0 && !empty($victim)) {
 		$percent_damage = null; // Percent damage does to the player's health. 
 		$status_effect = whichever(@$npc_stats['status'], null);
 		$reward_item = first_value(@$npc_stats['item'], null);
-		$base_gold = $npco->difficulty($npc_stats); // Overridden by explicitly setting gold to zero.
+		$base_gold = $npco->gold();
 		$npc_gold = (int) @$npc_stats['gold'];
 		$is_quick = ($npco->speed()>$player->speed())? true : false; // Beyond basic speed and they see you coming, so show that message.
 		// If npc gold explicitly set to 0, then none will be given.
