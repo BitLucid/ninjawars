@@ -21,11 +21,12 @@ class AdminViews{
 	}
 
 	public static function duped_ips(){
-		return query_array('select uname, player_id, ip from players where ip in (SELECT ip FROM players WHERE active = 1 GROUP  BY ip HAVING count(*) > 1 ORDER BY count(*) ASC limit 30) order by ip');
+		return query_array('select uname, player_id, ip from players where ip in (SELECT ip FROM players 
+				WHERE active = 1 GROUP  BY ip HAVING count(*) > 1 ORDER BY count(*) ASC limit 30) order by ip');
 	}
 
 
-	// Return one or many
+	// Reformat the character info sets.
 	public static function split_char_infos($ids){
 		if(is_numeric($ids)){
 			return array(char_info($ids));
@@ -42,15 +43,7 @@ class AdminViews{
 	public static function char_inventory($char_id){
 		return inventory_counts($char_id);
 	}
-
-
 }
-
-
-
-
-
-
 
 // Redirect for any non-admins.
 $char_id = self_char_id();
@@ -59,30 +52,30 @@ if(positive_int($char_id)){
 	$self = new Player($char_id);
 }
 if($self instanceof Player && $self->isAdmin()){
-// Admin possibilities start here.
+	// Admin possibilities start here.
+
+	$view_char = null;
 
 	$dupes = AdminViews::duped_ips();
-
 	$stats = AdminViews::high_rollers();
 
 	$npcs = NpcFactory::allNonTrivialNpcs();
-
 	$trivial_npcs = NpcFactory::allTrivialNpcs();
 
-	$char_name = in('char-name');
+	$char_name = in('char_name');
 
 	if(is_string($char_name) && trim($char_name)){
-		$view_char = get_char_id_by_name($char_name);
+		$view_char = get_char_id($char_name);
 	}
 
 	// If a request is made to view a character's info, show it.
-	$view_char = in('view')? in('view') : @$view_char;
+	$view_char = $view_char? $view_char : in('view');
 	$char_infos = $char_inventory = $message = null;
 	if($view_char){
 		$char_infos = AdminViews::split_char_infos($view_char);
 		$char_inventory = AdminViews::char_inventory($view_char);
-		$message = $char_infos['messages'];
-		unset($char_infos['messages']);
+		$message = $char_infos[0]['messages']; // Split the message out as a separate var for space reasons
+		unset($char_infos[0]['messages']);
 	}
 
 
