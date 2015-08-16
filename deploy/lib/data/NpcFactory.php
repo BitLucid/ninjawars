@@ -136,7 +136,7 @@ class NpcFactory{
 				'merchant2'=>['name'=>'Merchant', 'race'=>'human', 'strength'=>10, 'stamina'=>20, 'speed'=>10, 'ki'=>1, 
 						'damage'=>15, 'gold'=>50, 'bounty'=>5, 'img'=>'merchant.png', 'inventory'=>['phosphor'=>'.3'], 'traits'=>'villager'],
 				'guard2'=>['name'=>'Guard', 'short'=>'is a member of the ashigaru foot soldiers, hired for various tasks', 'race'=>'human', 'strength'=>'30', 'stamina'=>30, 'speed'=>12, 'ki'=>1, 
-	            	'damage'=>0, 'gold'=>50, 'inventory'=>'phosphor', 'bounty'=>10, 'img'=>'guard.png', 'inventory'=>['ginsengroot'=>'.1'], 'traits'=>'partial_match_strength'],
+	            	'damage'=>0, 'gold'=>50, 'bounty'=>10, 'img'=>'guard.png', 'inventory'=>['ginsengroot'=>'.2'], 'traits'=>'partial_match_strength'],
 				'monk'=>['name'=>'Monk', 'strength'=>10, 'stamina'=>10, 'speed'=>10, 'ki'=>30, 'race'=>'human', 'inventory'=>['prayerwheel'=>'.2'], 'traits'=>'deflection,defensive,self_heal'],
 	            'geisha'=>['name'=>'Geisha', 'strength'=>5, 'stamina'=>10, 'speed'=>15, 'ki'=>10, 'gold'=>20, 'bounty'=>30, 'race'=>'human', 'inventory'=>['sake'=>'.2', 'mirror'=>'.01', 'kimono'=>'.01', 'tessen'=>'.01'], 'traits'=>'packdynamic,guarded,villager'],
 		        'koi'=>['name'=>'Koi', 'short'=>'swims through the water', 'img'=>'koi.jpg', 'strength'=>0, 'speed'=>5, 'stamina'=>2, 'damage'=>1, 'race'=>'fish', 'inventory'=>['sushi'=>'.5']],
