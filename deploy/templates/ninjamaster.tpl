@@ -15,13 +15,16 @@
 	text-align:center;
 }
 .npc-box.tiled{
-	display:inline-block; max-width:50em;
+	display:inline-block; max-width:50em;vertical-align:top;
 }
 .npc-box.tiled h2{
 	width:100%;margin:0;padding:0;transform:none;
 }
 .npc-box .npc-icon{
 	max-width:48em;height:5em;
+}
+.npc-box figcaption{
+	color:gray;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;max-width:10em;width:100%;
 }
 </style>
 
@@ -96,10 +99,10 @@
 		  <h2>{$npc->identity()}</h2>
 		  <figure>
 		  	<img src='/images/characters/{$npc->image()}' class='npc-icon' alt='no-image'>
+		  	<figcaption>{$npc->shortDesc()}</figcaption>
 		  </figure>
 		  <dl>
 			<dt>Name</dt><dd>{$npc->name()}</dd>
-			<dt>Identity</dt><dd>{$npc->identity()}</dd>
 			<dt>Race</dt><dd>{$npc->race()}</dd>
 			<dt>Difficulty</dt><dd>{$npc->difficulty()}</dd>
 			<dt>Max Damage</dt><dd>{$npc->max_damage()}</dd>
@@ -119,10 +122,10 @@
 		  <h2>{$npc->identity()}</h2>
 		  <figure>
 		  	<img src='/images/characters/{$npc->image()}' class='npc-icon' alt='no-image'>
+		  	<figcaption>{$npc->shortDesc()}</figcaption>
 		  </figure>
 		  <dl>
 			<dt>Name</dt><dd>{$npc->name()}</dd>
-			<dt>Identity</dt><dd>{$npc->identity()}</dd>
 			<dt>Race</dt><dd>{$npc->race()}</dd>
 			<dt>Difficulty</dt><dd>{$npc->difficulty()}</dd>
 			<dt>Max Damage</dt><dd>{$npc->max_damage()}</dd>

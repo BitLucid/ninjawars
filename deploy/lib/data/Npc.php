@@ -33,6 +33,10 @@ class Npc{
         return $this->image;
     }
 
+    public function shortDesc(){
+        return $this->short_desc;
+    }
+
     // Calculcate the max damage of an npc.  Needed for effectiveness calc.
     public function max_damage(){
         return ((1+ ($this->strength * 2)) + $this->damage);
