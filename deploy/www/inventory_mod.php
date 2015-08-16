@@ -136,9 +136,8 @@ if ($item->hasEffect('wound')) {
 		$item->setTargetDamage(rand(1, max(9, $player->getStrength()-4)) + $near_level_power_increase);
 	}
 	
-	// Piercing weapon, and actually does any damage.
-	if ($item->hasEffect('pierce') && $item->getMaxDamage()) {
-		// BUG: For some reason caltrops are doing damage is you don't run the max damage check above, probably because like an idiot I added pierce effect to them.
+	// Piercing weapon, and actually does any static damage.
+	if ($item->hasEffect('pierce')) {
 		// Minor static piercing damage, e.g. 1-50 plus the near level power increase.
 		$item->setTargetDamage(rand(1, $item->getMaxDamage()) + $near_level_power_increase);
 	}
@@ -249,7 +248,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 							$alternateResultMessage = "__TARGET__ is already moving slowly.";
 						}
 						if ($turns_change == 0) {
-							$alternateResultMessage .= "You fail to take any turns from __TARGET__.";
+							$alternateResultMessage .= " You fail to take any turns from __TARGET__.";
 						}
 
 						$result         = " lose ".abs($turns_change)." turns";
@@ -279,7 +278,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					}
 			
 					if ($item->getTargetDamage() > 0) { // *** HP Altering ***
-						$alternateResultMessage .= "__TARGET__ takes ".$item->getTargetDamage()." damage.";
+						$alternateResultMessage .= " __TARGET__ takes ".$item->getTargetDamage()." damage.";
 						if($self_use){
 							$result .= "You take ".$item->getTargetDamage()." damage.";
 						}
@@ -306,7 +305,11 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				}
 				if ($turns_change !== null) { // Even if $turns_change is set to zero, let them know that.
 					if ($turns_change <= 0) {
-						$resultMessage .= "__TARGET__ has lost ".abs($turns_change)." turns!";
+						if($turns_change == 0){
+							$resultMessage .= "__TARGET__ did not lose any turns!";
+						} else {
+							$resultMessage .= "__TARGET__ has lost ".abs($turns_change)." turns!";
+						}
 
 						if (getTurns($target_id) <= 0) { //Message when a target has no more turns to ice scroll away.
 							$resultMessage .= "  __TARGET__ no longer has any turns.";

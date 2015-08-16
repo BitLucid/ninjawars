@@ -33,7 +33,9 @@ function buildItem($p_data) {
 
 // Return a specific bit of info about an item, or else all the info about an item.
 function item_info($item_id, $specific=null) {
-	$info = query_row('SELECT item_id, item_internal_name, item_display_name, item_cost, image, for_sale, usage, ignore_stealth, covert, turn_cost, target_damage, turn_change, self_use, other_usable, plural FROM item WHERE item_id = :item_id', array(':item_id'=>array($item_id, PDO::PARAM_INT)));
+	$info = query_row('SELECT item_id, item_internal_name, item_display_name, item_cost, image, for_sale, usage, 
+			ignore_stealth, covert, turn_cost, target_damage, turn_change, self_use, other_usable, plural 
+			FROM item WHERE item_id = :item_id', array(':item_id'=>array($item_id, PDO::PARAM_INT)));
 
 	if (!$info || ($specific && !isset($info[$specific]))) {
 		return null;

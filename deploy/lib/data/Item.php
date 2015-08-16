@@ -38,10 +38,10 @@ class Item {
         $this->m_maxTurnChange     = ($p_data['turn_change']   ? $p_data['turn_change']   : 0);
         $this->m_targetDamage	   = $p_data['target_damage'] ? $p_data['target_damage'] : null;
         $this->m_maxDamage 		   = $this->m_targetDamage;
-        $this->m_ignoresStealth	   = ($p_data['ignore_stealth'] === 't');
-        $this->m_covert            = ($p_data['covert']         === 't');
-        $this->m_selfUse           = ($p_data['self_use']       === 't');
-        $this->m_otherUsable       = ($p_data['other_usable']   === 't');
+        $this->m_ignoresStealth	   = ($p_data['ignore_stealth']);
+        $this->m_covert            = ($p_data['covert']);
+        $this->m_selfUse           = ($p_data['self_use']);
+        $this->m_otherUsable       = ($p_data['other_usable']);
     }
 
     // Not the identity, but the display name
@@ -113,9 +113,17 @@ class Item {
     public function setTargetDamage($p_damage)
     { $this->m_targetDamage = (int)$p_damage; }
 
+    /**
+     * If an item has inherent, non-effects based damage.
+     * A shuriken, for example, relies exclusively on the slice effect for it's damage.
+     **/
     public function getTargetDamage()
     { return (int)$this->m_targetDamage; }
 
+    /**
+     * Get the maximum numeric damage of an object.
+     *  Note that some effects based objects (e.g. shuriken, phosphor powder) will not actually have a pre-known maxDamage
+    **/
     public function getMaxDamage(Player $c=null)
     {
         // Optionally Inject a Player object, and if it's needed, use it to calculate damage stuff..
