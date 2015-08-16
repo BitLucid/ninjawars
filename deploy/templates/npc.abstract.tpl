@@ -1,7 +1,7 @@
 {literal}
 <style>
 article#fight{
-	font-size:150%;
+	font-size:110%;
 }
 article#fight nav{
 	margin-top:1.5em;
@@ -16,7 +16,7 @@ article#fight nav{
 	margin-left:3em;
 }
 .damage{
-	background-color:rgba(100, 0, 0, .5);
+	background-color:rgba(130, 0, 0, .5);
 	border-radius:.5em;
 	display:inline-block;
 	padding:0 .3em;

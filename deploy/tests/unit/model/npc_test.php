@@ -139,7 +139,7 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		Damage 15 - 35
 		Gold 20 - 70
 		?? 70% chance of phosphor powder drop?
-		// Some bounty from killing
+		// 20 gold bounty (ish) from killing
 
 
 		*/
@@ -148,6 +148,7 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		$this->assertLessThan(70, $merchant2->gold());
 		$this->assertGreaterThan(20, $merchant2->gold());
 		$this->assertGreaterThan(0, $merchant2->bounty());
+		$this->assertLessThan(25, $merchant2->bounty());
 	}
 
 	// Npcs have different difficulties

@@ -3,8 +3,7 @@
 {* These should be real error conditions, not part of the template *}
 You have no turns left today. Buy a amanita mushroom or wait for your turns to replenish.
 {elseif $attacked == 1}
-<em class='fancy-ornamental-font'>Attacking...</em>
-{include file=$npc_template}
+	{include file=$npc_template}
 {/if}
 <nav>
 {if !$health}
