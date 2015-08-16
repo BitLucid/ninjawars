@@ -110,6 +110,9 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testPeasant2AbstractNpcIsSimilarToOriginal(){
+		if(!DEBUG){
+			$this->markTestSkipped();
+		}
 		// Peasant damage is 0-10
 		// Peasant gold is between 0 and 20.
 		// 1 in 20 chance of being disguised ninja.
@@ -127,6 +130,9 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testMerchant2AbstractNpcIsSimilarToOriginal(){
+		if(!DEBUG){
+			$this->markTestSkipped();
+		}
 		$merchant2 = new Npc('merchant2');
 		/*
 		Merchant1:
@@ -154,6 +160,9 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 
 
 	function testDefaultRaceForBasanIsCreature(){
+		if(!DEBUG){
+			$this->markTestSkipped();
+		}
 		$npc = new Npc('basan');
 		$this->assertEquals('creature', $npc->race());
 	}
