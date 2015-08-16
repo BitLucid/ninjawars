@@ -98,6 +98,9 @@ function inventory_counts($char_id, $item_id=null){
 // Pulls the shop items costs and all.
 function item_for_sale_costs(){
 	$sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item where for_sale = TRUE order by image asc, item_cost asc';
+	if(defined('DEBUG') && DEBUG){
+		$sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item order by image asc, item_cost asc';
+	}
 	$items_data = query_resultset($sel);
 	// Rearrange the array to use the internal identity as indexes.
 	$item_costs = array();

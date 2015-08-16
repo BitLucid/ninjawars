@@ -19,6 +19,10 @@ input.shopButton{
 	margin-bottom:0.3em;
 }
 
+.shop-list .item-desc{
+	color:#808177;
+}
+
 {/literal}
 </style>
 
@@ -81,7 +85,7 @@ input.shopButton{
 	  </td>
 
 	  <td>
-		<label for='item-{$item_internal_name}'>({$item_info.usage})</label>
+		<label for='item-{$item_internal_name}'><small class='item-desc'>{$item_info.usage}</small></label>
 	  </td>
 
 	  <td class='gold'>
