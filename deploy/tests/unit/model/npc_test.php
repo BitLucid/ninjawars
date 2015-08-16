@@ -168,10 +168,10 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('creature', $npc->race());
 	}
 
-
-
-
 	function testGuardsThatMatchStrengthTakeEnemyStrength(){
+		if(!DEBUG){
+			$this->markTestSkipped();
+		}
 		$pc = new Player();
 		$pc->vo->strength = 100;
 		$guard = new Npc('guard2');
@@ -185,6 +185,9 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	function testDifficultiesOfDifferentMobsIncreases(){
+		if(!DEBUG){
+			$this->markTestSkipped();
+		}
 		$this->assertGreaterThan(0, (new Npc('guard2'))->difficulty(), 'zero vs guard2 difficulty mismatch');
 		$this->assertGreaterThan((new Npc('firefly'))->difficulty(), (new Npc('spider'))->difficulty(), 'firefly vs spider difficulty mismatch');
 		$this->assertGreaterThan((new Npc('firefly'))->difficulty(), (new Npc('guard2'))->difficulty(), 'firefly vs guard2 difficulty mismatch');
