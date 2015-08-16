@@ -169,7 +169,7 @@ if($turns > 0 && !empty($victim)) {
 			'status_effect'=>$status_effect, 'display_statuses'=>$display_statuses, 'display_statuses_classes'=>$display_statuses_classes, 'received_gold'=>$received_gold,
 			'received_display_items'=>$received_display_items, 'is_rewarded'=>$is_rewarded, 
 			'victory'=>$victory, 'survive_fight'=>$survive_fight, 'kill_npc'=>$kill_npc, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats, 'is_quick'=>$is_quick,
-			'added_bounty'=>$added_bounty, 'is_villager'=>$is_villager, 'race'=>$npco->race, 'is_weaker'=>$is_weaker, 'is_stronger'=>$is_stronger);
+			'added_bounty'=>$added_bounty, 'is_villager'=>$is_villager, 'race'=>$npco->race(), 'is_weaker'=>$is_weaker, 'is_stronger'=>$is_stronger);
 			
 			
 			
