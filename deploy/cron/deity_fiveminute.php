@@ -20,7 +20,7 @@ query("update players set ki = ki + 1 where last_started_attack > (now() - inter
 DatabaseConnection::$pdo->query('COMMIT');
 
 // Err on the side of low revives for this five minute tick.
-$params = array('full_max'=>90, 'minor_revive_to'=>70, 'major_revive_percent'=>2);
+$params = array('full_max'=>90, 'minor_revive_to'=>70, 'major_revive_percent'=>5);
 $resurrected = revive_players($params);
 
 $rand = rand(1, 60);
@@ -46,4 +46,3 @@ if ($rand == 1) {
 	fwrite($log, $logMessage);
 	fclose($log);
 }
-?>
