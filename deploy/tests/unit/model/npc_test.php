@@ -53,9 +53,18 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf('Npc', $fireflies, 'Fireflies creation failed');
 	}
 
-	public function testNpcListHasMoreThan10(){
+	public function testNpcListHasLotsOfNpcs(){
 		$min_npcs = defined('DEBUG') && DEBUG? 15 : 8;
 		$this->assertGreaterThan($min_npcs, count(NpcFactory::npcs()));
+	}
+
+	public function testNpcListSortedByDifficultyGetsEasyNpcLast(){
+		$npcs_by_diff = NpcFactory::allSortedByDifficulty();
+		$first_npc = reset($npcs_by_diff);
+		$last_npc = array_pop($npcs_by_diff);
+		$this->assertLessThan(10, $first_npc->difficulty());
+		$this->assertEquals('Ryu', $last_npc->identity()); // For now ryu will be the testable top npc.
+		$this->assertGreaterThan(300, $last_npc->difficulty());
 	}
 
 	// Npcs should have damage, assuming they're combat npcs, which most are
@@ -100,6 +109,41 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function testPeasant2AbstractNpcIsSimilarToOriginal(){
+		// Peasant damage is 0-10
+		// Peasant gold is between 0 and 20.
+		// 1 in 20 chance of being disguised ninja.
+		// Has added bounty if attacker is below level 21, and greater than 1.
+		// added bounty is 1/3rd of attacker's level.
+		// If they were a disguised ninja, they should drop the max inventory.
+		$peasant = new Npc('peasant2');
+		$this->assertLessThan(13, $peasant->max_damage());
+		$this->assertGreaterThan(0, $peasant->max_damage());
+		$this->assertLessThan(21, $peasant->gold());
+		$mock_pc = new Player();
+		$mock_pc->vo->level = 10;
+		$this->assertEquals(10, $mock_pc->level());
+		$this->assertGreaterThan(0, $peasant->dynamicBounty($mock_pc));
+	}
+
+	public function testMerchant2AbstractNpcIsSimilarToOriginal(){
+		$merchant2 = new Npc('merchant2');
+		/*
+		Merchant1:
+		Damage 15 - 35
+		Gold 20 - 70
+		?? 70% chance of phosphor powder drop?
+		// Some bounty from killing
+
+
+		*/
+		$this->assertLessThan(37, $merchant2->max_damage());
+		$this->assertGreaterThan(15, $merchant2->max_damage());
+		$this->assertLessThan(70, $merchant2->gold());
+		$this->assertGreaterThan(20, $merchant2->gold());
+		$this->assertGreaterThan(0, $merchant2->bounty());
+	}
+
 	// Npcs have different difficulties
 	function testNpcDifficultiesAreDifferent(){
 		$ff = new Npc('fireflies');
@@ -108,6 +152,11 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		$this->assertGreaterThan($ff->difficulty(), $tengu->difficulty());
 	}
 
+
+	function testDefaultRaceForBasanIsCreature(){
+		$npc = new Npc('basan');
+		$this->assertEquals('creature', $npc->race());
+	}
 
 
 
