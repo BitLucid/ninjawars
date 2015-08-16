@@ -109,7 +109,6 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		}
 	}
 
-<<<<<<< HEAD
 	public function testPeasant2AbstractNpcIsSimilarToOriginal(){
 		if(!DEBUG){
 			$this->markTestSkipped();

@@ -49,7 +49,7 @@ class Npc implements Character{
     }
 
     // Calculate the initial naive damage from npcs.
-    public function damage(){
+    public function damage(Character $char = null){
         return rand(0, $this->max_damage());
     }
 
