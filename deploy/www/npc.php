@@ -24,9 +24,9 @@ $ninja_str               = $player->getStrength();
 $ninja_health            = $player->vo->health;
 
 
-$static_npcs = array('peasant', 'theif', 'merchant', 'guard', 'samurai');
+$static_npcs = array('peasant', 'thief', 'merchant', 'guard', 'samurai');
 $npcs = NpcFactory::npcsData();
-$possible_npcs = array_merge(array_keys($npcs), $static_npcs);
+$possible_npcs = array_merge($static_npcs, array_keys($npcs));
 $victim = restrict_to($victim, $possible_npcs); // Filter to only the correct options.
 
 if($turns > 0 && !empty($victim)) {
