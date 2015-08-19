@@ -330,6 +330,7 @@ function harmonize_chakra($char_obj){
 			$generic_skill_result_message = '__TARGET__ is already iced.';
 		}
 	} else if ($command == 'Clone Kill') {
+
 	
 		// Obliterates the turns and the health of similar accounts that get clone killed.
 		$reuse = false; // Don't give a reuse link.

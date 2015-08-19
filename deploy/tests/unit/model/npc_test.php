@@ -151,6 +151,32 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
 		$this->assertLessThan(25, $merchant2->bounty());
 	}
 
+	public function testGuard2AbstractNpcIsSimilarToGuard1(){
+		if(!DEBUG){
+			$this->markTestSkipped();
+		}
+		$guard2 = new Npc('guard2');
+		/*
+		Guard1:
+		Dam: 1 to attacker_str + 40
+		Gold: 1 to attacker_str + 40
+		Bounty: 10 + 1-10
+		1 in 9 chance of ginseng root
+
+		Guard2: Strength is about 30, which is multiplied by 2, + 1 point during damage calc.
+			Gold doesn't get boosted by strength
+		*/
+		$mock_pc = new Player();
+		$mock_pc->setStrength(30);
+		$dam = $guard2->max_damage($mock_pc); // partial_match_strength should add about 1/3rd of the enemies' strength as dam.
+		$this->assertGreaterThan(40, $dam);
+		$this->assertLessThan(80, $dam); // Dam is strength * 2 + 1
+		$this->assertLessThan(61, $guard2->gold());
+		$this->assertGreaterThan(40, $guard2->gold());
+	}
+
+
+
 	// Npcs have different difficulties
 	function testNpcDifficultiesAreDifferent(){
 		$ff = new Npc('fireflies');

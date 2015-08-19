@@ -104,4 +104,18 @@ class TestAccountCreateAndDestroy{
 		return $account_info['account_id'];
 	}
 
+	// Alias for create_testing_account but clearer.
+	public static function char_id($confirm=false){
+		return TestAccountCreateAndDestroy::create_testing_account($confirm);
+	}
+
+	public static function char_id_2($confirm=false){
+		return TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
+	}
+
+	// Alias to get an account id
+	public static function account_id(){
+		return TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
+	}
+
 }

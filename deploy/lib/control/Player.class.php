@@ -178,14 +178,18 @@ class Player implements Character {
 	public function strength() {
 		$str = $this->vo->strength;
 		if ($this->hasStatus(WEAKENED)) {
-			return $str-(ceil($str*.25));
+			return max(1, $str-(ceil($str*.25))); // 75%
 		} elseif ($this->hasStatus(STR_UP2)) {
-			return $str+(ceil($str*.25));
+			return $str+(ceil($str*.25)); // 125%
 		} elseif ($this->hasStatus(STR_UP1)) {
-			return $str+(ceil($str*.12));
+			return $str+(ceil($str*.12)); //112%
 		} else {
 			return $str;
 		}
+	}
+	
+	public function setStrength($str){
+		$this->vo->strength = $str;
 	}
 
 

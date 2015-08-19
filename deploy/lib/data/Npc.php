@@ -42,7 +42,7 @@ class Npc implements Character{
         $dam = ((1+ ($this->strength * 2)) + $this->damage);
         // Mirror some of their enemy's strength
         if($this->has_trait('partial_match_strength') && $enemy instanceof Character){
-            $add = max(1, floor($enemy->strength() / 3)); // Enemy str/3 or at minimum 1
+            $add = max(0, floor($enemy->strength() / 3)); // Enemy str/3 or at minimum 0
             $dam = $dam + $add;
         }
         return $dam;
@@ -50,7 +50,7 @@ class Npc implements Character{
 
     // Calculate the initial naive damage from npcs.
     public function damage(Character $char = null){
-        return rand(0, $this->max_damage());
+        return rand(0, $this->max_damage($char));
     }
 
     // Calculate difficulty, naively at the moment.
