@@ -3,6 +3,7 @@ require_once(ROOT . "core/control/Character.php");
 require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
 require_once(LIB_ROOT . "control/lib_status.php");
+require_once(ROOT.'core/data/AccountFactory.php');
 
 /* Ninja (actually character) behavior object.
  *
@@ -386,7 +387,8 @@ class Player implements Character {
 
 
 	public function ip() {
-		return account_info_by_char_id($this->id(), 'ip');
+		$ip = account_info_by_char_id($this->id(), 'last_ip');
+		return $ip;
 	}
 
 	public function difficulty(){

@@ -23,9 +23,17 @@ function self_account_info(){
 }
 
 // Get the account linked with a character.
-function account_info_by_char_id($char_id){
-	return query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', 
+function account_info_by_char_id($char_id, $specific=null){
+	$res = query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', 
 		array(':char_id'=>array($char_id, PDO::PARAM_INT)));
+	if($specific){
+		if(isset($res[$specific])){
+			$res = $res[$specific];
+		} else {
+			$res = null;
+		}
+	}
+	return $res;
 }
 
 // Get the account linked with an identity email.
@@ -71,13 +79,14 @@ function email_is_duplicate($email) {
 	return !empty($dupe);
 }
 
-function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1) {
+function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1, array $data=null) {
+	$ip = $data['ip']?:null;
 	DatabaseConnection::getInstance();
 
 	$newID = query_item("SELECT nextval('accounts_account_id_seq')");
 
-	$ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, operational, verification_number)
-		VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 10)), :type, :operational, :verification_number)";
+	$ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, operational, verification_number, last_ip)
+		VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 10)), :type, :operational, :verification_number, :ip)";
 
 	$email = strtolower($email);
 
@@ -89,6 +98,7 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	$statement->bindParam(':type', $type, PDO::PARAM_INT);
 	$statement->bindParam(':operational', $active, PDO::PARAM_INT);
 	$statement->bindParam(':verification_number', $confirm);
+	$statement->bindParam(':ip', $ip);
 	$statement->execute();
 
 /*
@@ -239,7 +249,8 @@ function create_account_and_ninja($send_name, $params=array()) {
 	$confirm     = (int) $params['confirm'];
 	$error       = false;
 	$ninja_id    = create_ninja($send_name, $params);
-	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm);
+	$data['ip'] = isset($params['ip'])? $params['ip'] : null;
+	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm, $type=0, $active=1, $data);
 
 	if ($account_id) {
 		$sent = send_signup_email($account_id, $send_email, $send_name, $confirm, $class_identity);

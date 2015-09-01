@@ -9,6 +9,7 @@ require_once(LIB_ROOT.'base.inc.php');
 class TestCharacter extends PHPUnit_Framework_TestCase {
 	private $previous_server_ip = '';
 	private $char_id;
+    private $mock_ip = '127.0.0.199';
 
 
 	/**
@@ -17,7 +18,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 	function setUp(){
 		require_once(ROOT.'core/control/Player.class.php');
 		$this->previous_server_ip = @$_SERVER['REMOTE_ADDR'];
-		$_SERVER['REMOTE_ADDR']='127.0.0.1';
+		$_SERVER['REMOTE_ADDR']=$this->mock_ip;
 		$this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com probably
 		$this->test_password = TestAccountCreateAndDestroy::$test_password;
 		$this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
@@ -85,6 +86,11 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
     	$this->assertEquals($char->strength(), $str);
     	$char->addStatus(STR_UP2);
     	$this->assertTrue($char->strength() > $str);
+    }
+
+    function testPlayerObjectCAnReturnAnIPCorrectly(){
+        $char = new Player($this->char_id);
+        $this->assertEquals($this->mock_ip, $char->ip());
     }
 
 

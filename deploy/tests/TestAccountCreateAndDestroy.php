@@ -39,7 +39,7 @@ class TestAccountCreateAndDestroy{
 	public static function create_testing_account($confirm=false){
 		@session_start();
 		$previous_server = @$_SERVER['REMOTE_ADDR'];
-		$_SERVER['REMOTE_ADDR']='127.0.0.1';
+		$_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR']? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
 		TestAccountCreateAndDestroy::purge_test_accounts();
 		$found = get_char_id(TestAccountCreateAndDestroy::$test_ninja_name);
 	    if((bool)$found){
@@ -57,6 +57,7 @@ class TestAccountCreateAndDestroy{
 			, 'preconfirm'  => true
 			, 'confirm'     => $confirm
 			, 'referred_by' => 'ninjawars.net'
+			, 'ip'			=> $_SERVER['REMOTE_ADDR']
 		);
 		ob_start(); // Skip extra output
 		$error = create_account_and_ninja(TestAccountCreateAndDestroy::$test_ninja_name, $player_params);
