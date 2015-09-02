@@ -53,3 +53,4 @@ deploy/vendor/*
 unclean
 deploy/resources/logs/deity.log
 tags
+archive
