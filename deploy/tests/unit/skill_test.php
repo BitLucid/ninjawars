@@ -93,8 +93,9 @@ class TestSkill extends PHPUnit_Framework_TestCase {
 
     public function testYouCantCloneKillWithAnyNonActiveChar(){
         $char_id = TestAccountCreateAndDestroy::char_id();
-        $this->inactivate($char_id);
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+        $this->syncIps('222.222.222.222', $char_id, $char_id_2);
+        $this->inactivate($char_id);
         $this->assertFalse(CloneKill::canKill($char_id_2, $char_id));
     }
 
