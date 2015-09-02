@@ -18,5 +18,8 @@
 		"doctrine/orm": "~2.5",
         "cboden/ratchet": "~0.3.0",
 		"propel/propel1": "1.7.*@dev"
-    }
+    },
+	"require-dev": {
+		"symfony/http-foundation": "^2.7"
+	}
 }
