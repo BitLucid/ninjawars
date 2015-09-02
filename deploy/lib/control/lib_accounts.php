@@ -188,6 +188,7 @@ function create_ninja($send_name, $params=array()) {
 	$preconfirm  = (int) $params['preconfirm'];
 	$confirm     = (int) $params['confirm'];
 	$referred_by = $params['referred_by'];
+	$ip = isset($params['ip'])?$params['ip'] : null;
 
 	// Create the initial player row.
 	$playerCreationQuery= "INSERT INTO players
@@ -195,13 +196,14 @@ function create_ninja($send_name, $params=array()) {
 		  _class_id, level,  status, member, days, ip, bounty, created_date)
 		 VALUES
 		 (:username, '150', '5', '5', '5', '100', '', '0', '180', :verification_number, :active,
-		 (SELECT class_id FROM class WHERE identity = :class_identity), '1', '1', '0', '0', '', '0', now())";
+		 (SELECT class_id FROM class WHERE identity = :class_identity), '1', '1', '0', '0', :ip, '0', now())";
 	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 	$statement = DatabaseConnection::$pdo->prepare($playerCreationQuery);
 	$statement->bindValue(':username', $send_name);
 	$statement->bindValue(':verification_number', $confirm);
 	$statement->bindValue(':active', $preconfirm);
 	$statement->bindValue(':class_identity', $class_identity);
+	$statement->bindValue(':ip', $ip);
 	$statement->execute();
 	return get_char_id($send_name);
 }
@@ -248,8 +250,8 @@ function create_account_and_ninja($send_name, $params=array()) {
 	$class_identity  = $params['send_class'];
 	$confirm     = (int) $params['confirm'];
 	$error       = false;
-	$ninja_id    = create_ninja($send_name, $params);
 	$data['ip'] = isset($params['ip'])? $params['ip'] : null;
+	$ninja_id    = create_ninja($send_name, $params);
 	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm, $type=0, $active=1, $data);
 
 	if ($account_id) {

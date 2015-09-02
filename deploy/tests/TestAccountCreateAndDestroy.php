@@ -87,6 +87,7 @@ class TestAccountCreateAndDestroy{
 			, 'preconfirm'  => true
 			, 'confirm'     => $confirm
 			, 'referred_by' => 'ninjawars.net'
+			, 'ip'			=> $_SERVER['REMOTE_ADDR']
 		);
 		ob_start(); // Skip extra output
 		$error = create_account_and_ninja(TestAccountCreateAndDestroy::$alt_test_ninja_name, $player_params);

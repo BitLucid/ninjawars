@@ -1,41 +1,9 @@
 <?php
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
+require_once(ROOT.'core/control/CloneKill.class.php');
 
-
-class CloneKill{
-
-    public static function kill($clone1, $clone2){
-        // Input is transformed into 
-        $id1 = $id2 = null;
-        if($clone1 instanceof Player){
-            $id1 = $clone1->id();
-        } elseif ($clone1 == positive_int($clone1)){
-            $id1 = $clone1;
-        } elseif (is_string($clone1)){
-            $id1 = get_char_id($clone1);
-        }
-        if($clone2 instanceof Player){
-            $id2 = $clone2->id();
-        } elseif ($clone2 == positive_int($clone2)){
-            $id2 = $clone2;
-        } elseif (is_string($clone2)){
-            $id2 = get_char_id($clone2);
-        }
-        // Reject same character
-        if($id1 == $id2){
-            return false;
-        }
-        // Reject inactive characters
-        // Reject inoperative characters
-        // If characters have the same joint account, and have been logged in recently...
-
-        
-
-    }
-}
 
 class TestSkill extends PHPUnit_Framework_TestCase {
-
 
 	/**
 	 * group char
@@ -51,34 +19,117 @@ class TestSkill extends PHPUnit_Framework_TestCase {
 		TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
-    public function testCloneKillDoesNotAllowYouToCloneKillYourself(){
-        $char_id = TestAccountCreateAndDestroy::char_id();
-        $this->assertFalse(CloneKill::kill($char_id, $char_id));
+    private function inactivate($char_id){
+        query('update players set active = 0 where player_id = :char_id', [':char_id'=>$char_id]);
+    }
+
+    private function syncIps($ip, $char_id, $char_id_2){
+        query('update players set ip = :ip 
+                where player_id = :char_id',
+                [':ip'=>$ip, ':char_id'=>$char_id]);
+        query('update accounts set last_ip = :ip from accounts b join account_players on b.account_id = _account_id where _player_id = :pid',
+            [':pid'=>$char_id, ':ip'=>$ip]);
+        query('update players set ip = :ip 
+                where player_id = :char_id_2',
+                [':ip'=>$ip, ':char_id_2'=>$char_id_2]);
+        query('update accounts set last_ip = :ip from accounts b join account_players on b.account_id = _account_id where _player_id = :pid',
+            [':pid'=>$char_id_2, ':ip'=>$ip]);
     }
 
     public function testYouCantCloneKillXAndX(){
-        $this->markTestIncomplete();
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        $this->assertFalse(CloneKill::canKill($char_id, $char_id));
     }
 
     public function testYouCantCloneKillEmpties(){
-        $this->markTestIncomplete();
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        $this->assertFalse(CloneKill::canKill(34534534, 234234235));
+        $this->assertFalse(CloneKill::canKill(34534534, $char_id));
+    }
+
+    public function testSyncIpWorks(){
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+        $this->syncIps('222.222.222.250', $char_id, $char_id_2);
+        $p1 = new Player($char_id);
+        $p2 = new Player($char_id_2);
+        $this->assertNotEmpty($p1->ip());
+        $this->assertEquals($p1->ip(), $p2->ip());
+    }
+
+    public function testCanSyncIpOfCharactersToBlanks(){
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+        $this->syncIps('', $char_id, $char_id_2);
+        $p1 = new Player($char_id);
+        $p2 = new Player($char_id_2);
+        $this->assertEquals('', $p1->ip());
+        $this->assertEquals('', $p2->ip());
+    }
+
+    public function testCantCloneKillSimilarCharactersEvenIfBothHaveIpOf127001(){
+        $previous = $_SERVER['REMOTE_ADDR'];
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.11';
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+        $_SERVER['REMOTE_ADDR'] = $previous;
+        $this->syncIps('127.0.0.1', $char_id, $char_id_2); // Must be 127.0.0.1 for this test.
+        $p1 = new Player($char_id);
+        $p2 = new Player($char_id_2);
+        $this->assertEquals('127.0.0.1', $p1->ip());
+        $this->assertEquals('127.0.0.1', $p2->ip());
+        $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
+    }
+
+    public function testCantCloneKillTwoSimilarCharactersBecauseOfTheirBlankIps(){
+        $previous = $_SERVER['REMOTE_ADDR'];
+        $_SERVER['REMOTE_ADDR'] = '';
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+        $this->syncIps('', $char_id, $char_id_2);
+        $_SERVER['REMOTE_ADDR'] = $previous;
+        $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
     }
 
     public function testYouCantCloneKillWithAnyNonActiveChar(){
-        $this->markTestIncomplete();
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        $this->inactivate($char_id);
+        $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+        $this->assertFalse(CloneKill::canKill($char_id_2, $char_id));
+    }
+
+    public function testCloneKillOnCharsWithSameIp(){
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        $charO = new Player($char_id);
+        $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+        $charO_2 = new Player($char_id_2);
+        // Will create characters with 127.0.0.1 ip, but that shouldn't be clone kill able.
+        $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
+        $this->syncIps('222.244.244.222', $char_id, $char_id_2);
+        $this->assertTrue(CloneKill::canKill($char_id, $char_id_2), 'Should be able to clone kill similar and same ip characters!');
+    }
+
+    public function testCloneKillDoesNotAllowYouToCloneKillYourself(){
+        $this->markTestIncomplete('Rejection of Clone killing self not yet implemented.');
     }
 
     public function testYouCantCloneKillWithAnyNonConfirmedAccounts(){
+        $this->markTestIncomplete();
     }
 
     public function testYouCantCloneKillWithAnyNonOperationalAccounts(){
+        $this->markTestIncomplete();
     }
 
     public function testCloneKillOnCharsOfSameAccountSameIpWorks(){
         $this->markTestIncomplete();
     }
 
-    public function testCloneKillOnCharsOfSameAccountDifferentIpWorks(){
+    public function testCloneKillOnActiveCharsOfSameAccountDifferentIpWorks(){
+        $this->markTestIncomplete();
+    }
+
+    public function testCloneKillKillingWipesHealthAndTurns(){
         $this->markTestIncomplete();
     }
 

@@ -25,7 +25,7 @@ class Player implements Character {
 
 	public function __construct($player_id_or_username=null) {
 		if (!empty($player_id_or_username)) {
-			if (!is_numeric($player_id_or_username)) {
+			if (!is_numeric($player_id_or_username) && is_string($player_id_or_username)) {
 				$sel = "SELECT player_id FROM players WHERE uname = :uname LIMIT 1";
 				$this->player_id = query_item($sel, array(':uname'=>array($player_id_or_username, PDO::PARAM_INT)));
 			} else {
