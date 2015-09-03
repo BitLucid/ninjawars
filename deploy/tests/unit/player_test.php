@@ -93,6 +93,27 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $this->assertEquals($this->mock_ip, $char->ip());
     }
 
+    function testPlayerObjectCanSaveDetails(){
+        $bel = 'Believes in the mirror goddess.';
+        $traits = 'Weird,Blue';
+        $desc = 'Some description for testing';
+        $goals = 'Test: to rule the world';
+        $instincts = 'Kill Samurai';
+        $char = new Player($this->char_id);
+        $char->set_traits($traits);
+        $char->set_beliefs($bel);
+        $char->set_description($desc);
+        $char->set_goals($goals);
+        $char->set_instincts($instincts);
+        PlayerDAO::saveDetails($char);
+        $char = new Player($this->char_id); // Create a new player copy.
+        $this->assertEquals($desc, $char->description());
+        $this->assertEquals($traits, $char->traits());
+        $this->assertEquals($bel, $char->beliefs());
+        $this->assertEquals($goals, $char->goals());
+        $this->assertEquals($instincts, $char->instincts());
+    }
+
 
 	/**
 	 * group char

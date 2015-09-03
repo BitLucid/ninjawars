@@ -1,3 +1,24 @@
+<style>
+.your-stats textarea, .your-stats input{
+  color:#A1A1A7;
+}
+.player-info{
+  color:#A1A1A7;
+}
+.player-info .physical{
+  display:inline-block;margin-right:5%;color:ghostwhite;font-weight:bold;
+}
+.details div + div{
+  margin-top:0.7em;
+}
+#profile-edit .right-padded{
+  padding-right:83px;width:98%;
+}
+#profile-edit #player-profile-area{
+  width:100%;height:10em;
+}
+</style>
+
 
 <h1>Ninja Stats for {$username|escape}</h1>
 
@@ -13,6 +34,13 @@
 <p class='notice'>Profile has been changed.</p>
 {/if}
 
+{if $saved}
+<p class='notice'>Ninja Details have been saved.</p>
+{/if}
+
+<div id='switch-to-account' class='notice'>
+  <a href='account.php' target='main'>View your account info</a>
+</div>
 
 <div class='stats-avatar'>
   Avatar: (change your avatar for your account email at <a href='http://gravatar.com'>gravatar.com</a>) →
@@ -29,7 +57,7 @@
           {$level_category.display|escape} [{$player.level|escape}]
         </span>
       </li>
-      <li>Strength: {$player.strength|escape} Speed: {$player.speed|escape} Stamina: {$player.stamina|escape}</li>
+      <li><span class='physical'>Strength: {$player.strength|escape}</span><span class='physical'>Speed: {$player.speed|escape}</span><span class='physical'>Stamina: {$player.stamina|escape}</span></li>
       <li>Ki: {$player.ki|escape}</li>
       <li>Karma: {$player.karma|escape}</li>
       <li>
@@ -55,52 +83,50 @@
 <section class='details'>
     <legend>Details</legend>
     <div class='ninja-description'>
-      {$description|escape}
+      {$player.uname|escape} {if !$description}is.{else}{$description|escape}{/if}
     </div>
 
+    {if $goals}
     <div class='ninja-goals'>
-      {$goals|escape}
+      Goals: {$goals|escape}
     </div>
+    {/if}
+    {if $instincts}
     <div class='ninja-instincts'>
-      {$instincts|escape}
+      Instinctually: {$instincts|escape}
     </div>
+    {/if}
+    {if $beliefs}
     <div class='ninja-beliefs'>
-      {$beliefs|escape}
+      Believes that: {$beliefs|escape}
     </div>
+    {/if}
+    {if $traits}
     <div class='ninja-traits'>
-      {$traits|escape}
+      Traits: {$traits|escape}
     </div>
+    {/if}
 
-    <div id='player-profile-section'>
-      OOC Profile Preview:
-      <div id='player-profile' style='height:8.5em;overflow:scroll'>
-        &nbsp;{$profile_editable|escape|replace_urls|markdown|nl2br}&nbsp;
-      </div>
-    </div>
 </section>
 
   </div><!-- End of primary -->
 
-  <!-- Scripts with actual content are hated with smarty-like templates -->
-
   <div class='secondary'>
-    <form id="profile-edit" action="stats.php" method="post">
+    <form id="profile-edit" name='profile-edit' action="stats.php" method="post">
       <input type='hidden' name='changedetails' value=1>
-      {if $dev}
       <fieldset id='details'>
       <legend>Ninja Details</legend>
-      <textarea id='description' title='Visible description of your ninja' placeholder='Visible description of your ninja'>{$description|escape}</textarea>
-      <textarea id='instincts' title="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if ... then ...)" placeholder="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if ... then ...)">{$instincts|escape}</textarea>
-      <textarea id='goals' title="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring" placeholder="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring">{$goals|escape}</textarea>
-      <textarea id='beliefs' title="Your ninja's belief, the moral compass that keeps them going." placeholder="Your ninja's belief, the moral compass that keeps them going.">{$beliefs|escape}</textarea>
-      <label class='glass-box'> Traits: <input type='text' id='traits' value='{$traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
+      <textarea name='description' id='description' title='Visible description of your ninja' placeholder='Visible description of your ninja'>{$description|escape}</textarea>
+      <textarea name='instincts' id='instincts' title="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if ... then ...)" placeholder="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if I see Samurai, then I automatically attack.)">{$instincts|escape}</textarea>
+      <textarea name='goals' id='goals' title="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring" placeholder="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring">{$goals|escape}</textarea>
+      <textarea name='beliefs' id='beliefs' title="Your ninja's belief, the moral compass that keeps them going." placeholder="Your ninja's belief, the moral compass that keeps them going.">{$beliefs|escape}</textarea>
+      <label class='glass-box'> Traits: <input name='traits' id='traits' type='text' value='{$traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
       <input type='submit' value='Update' class='formButton'>
     </fieldset>
-    {/if}
       <fieldset>
         <legend>Out-of-character Profile</legend>
-        <div style='padding-right:83px;width:98%'>
-          <textarea id='player-profile-area' name='newprofile' style='width:100%;height:10em;' class='textField'>{$profile_editable|escape}</textarea>
+        <div class='right-padded'>
+          <textarea id='player-profile-area' name='newprofile' class='textField'>{$profile_editable|escape}</textarea>
         </div>
         <input type='submit' value='Update' class='formButton'> (<span id='characters-left'>{$profile_max_length} Character Limit</span>)
       </fieldset>
@@ -108,11 +134,6 @@
 
   </div>
 </section><!-- End of the two-column arrangement. -->
-
-
-<div id='switch-to-account' class='notice'>
-	<a href='account.php' target='main'>View your account info</a>
-</div>
 
 {literal}
 <!-- Google Code for View self/ninja stats page. Conversion Page -->
