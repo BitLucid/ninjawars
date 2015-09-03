@@ -23,6 +23,12 @@ class CloneKill{
         } else {
             $char2 = $clone2;
         }
+
+        // Reject invalid/ninexistent characters
+        if($char1->id() === null || $char2->id() === null){
+            return false;
+        }
+
         // Reject same character
         if($char1->id() == $char2->id()){
             return false;
@@ -40,10 +46,13 @@ class CloneKill{
         // TODO: Reject inoperative characters
         // TODO: You can't clone kill yourself..
 
-        $fair_ips = ['127.0.0.1', $_SERVER['REMOTE_ADDR'], '', null];
+        $host= gethostname();
+        $server_ip = gethostbyname($host);
+
+        $untouchable_ips = ['127.0.0.1', '173.203.99.229', $server_ip, '', null];
 
         // Reject invalid custom ips
-        if(in_array($char1->ip(), $fair_ips) || in_array($char2->ip(), $fair_ips)){
+        if(in_array($char1->ip(), $untouchable_ips) || in_array($char2->ip(), $untouchable_ips)){
             return false;
         }
 
@@ -55,26 +64,28 @@ class CloneKill{
         return false;
     }
 
-    private static function kill(Player $clone1, Player $clone2){
-
-
-            if ($are_clones) {
-                $clone_char = new Player($clone_1_id);
-                $clone_char_2 = new Player($clone_2_id);
-                $clone_char_health = $clone_char->health();
-                $clone_char_2_health = $clone_char_2->health();
-                $clone_char_turns = $clone_char->turns();
-                $clone_char_2_turns = $clone_char_2->turns();
-                $clone_char->death();
-                $clone_char->changeTurns(-1*$clone_char->turns());
-                $clone_char_2->death();
-                $clone_char_2->changeTurns(-1*$clone_char_2->turns());
-                $generic_skill_result_message = "You obliterate the clone {$clone_char->name()} for $clone_char_health health, $clone_char_turns turns
-                     and the clone {$clone_char_2->name()} for $clone_char_2_health health, $clone_char_2_turns turns.";
-                send_event($char_id, $clone_1_id, "You and {$clone_char_2->name()} were Clone Killed at $today.");
-                send_event($char_id, $clone_2_id, "You and {$clone_char->name()} were Clone Killed at $today.");
+    /**
+     * Perform the effects of a clonekill.
+     * @return string outcome or false
+    **/
+    public static function kill(Player $self, Player $clone1, Player $clone2){
+            if(self::canKill($clone1, $clone2)){
+                $today = date("F j, Y, g:i a");
+                $clone1_health = $clone1->health();
+                $clone2_health = $clone2->health();
+                $clone1_turns = $clone1->turns();
+                $clone2_turns = $clone2->turns();
+                $clone1->changeTurns(-1*$clone1->turns());
+                $clone1->death();
+                $clone2->changeTurns(-1*$clone2->turns());
+                $clone2->death();
+                $result_message = "You obliterate the clone {$clone1->name()} for $clone1_health health, $clone1_turns turns
+                     and the clone {$clone2->name()} for $clone2_health health, $clone2_turns turns.";
+                send_event($self->id(), $clone1->id(), "You and {$clone2->name()} were Clone Killed at $today.");
+                send_event($self->id(), $clone2->id(), "You and {$clone1->name()} were Clone Killed at $today.");
+                return $result_message;
             } else {
-                $generic_skill_result_message = "Those two ninja don't seem to be clones.";
+                return false;
             }
     }
 }

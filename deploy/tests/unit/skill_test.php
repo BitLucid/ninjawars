@@ -131,7 +131,21 @@ class TestSkill extends PHPUnit_Framework_TestCase {
     }
 
     public function testCloneKillKillingWipesHealthAndTurns(){
-        $this->markTestIncomplete();
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        $charObj = new Player($char_id);
+        $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+        $charObj_2 = new Player($char_id_2);
+        // Will create characters with 127.0.0.1 ip, but that shouldn't be clone kill able.
+        $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
+        $this->syncIps('222.244.244.222', $char_id, $char_id_2);
+        $this->assertTrue(CloneKill::canKill($char_id, $char_id_2), 'Should be able to clone kill similar and same ip characters!');
+        CloneKill::kill($charObj, $charObj, $charObj_2); // Obliterate them.
+        $pc1 = new Player($char_id);
+        $pc2 = new Player($char_id_2);
+        $this->assertEquals(0, $pc1->health());
+        $this->assertEquals(0, $pc2->health());
+        $this->assertEquals(0, $pc1->turns());
+        $this->assertEquals(0, $pc2->turns());
     }
 
 

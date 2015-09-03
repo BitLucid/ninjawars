@@ -391,9 +391,11 @@ function add_data_to_player_row($player_data, $kill_password=true){
 }
 
 // Return the data that should be publicly readable to javascript or the api while the player is logged in.
-function public_char_info($p_id=null) {
+function public_char_info($p_id=null, $admin_info=false) {
 	$char_info = char_info($p_id);
-	unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
+	if($admin_info !== true){
+		unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
+	}
 	return $char_info;
 }
 

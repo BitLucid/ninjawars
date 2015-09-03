@@ -1,6 +1,7 @@
 <?php
 require_once(LIB_ROOT.'control/lib_inventory.php');
 require_once(LIB_ROOT.'control/Skill.php');
+require_once(LIB_ROOT.'control/CloneKill.class.php');
 /*
  * Deals with the skill based attacks, and status effects.
  *
@@ -40,6 +41,7 @@ $self_use        = $skillListObj->getSelfUse($command);
 $use_on_target   = $skillListObj->getUsableOnTarget($command);
 $ki_cost 		 = 0; // Ki taken during use.
 $reuse 			 = true;  // Able to reuse the skill.
+$today = date("F j, Y, g:i a");
 
 // Check whether the user actually has the needed skill.
 $has_skill = $skillListObj->hasSkill($command);
@@ -338,9 +340,6 @@ function harmonize_chakra($char_obj){
 		$clone1 = in('clone1');
 		$clone2 = in('clone2');
 		
-
-		
-		
 		$clone_1_id = get_char_id($clone1);
 		$clone_2_id = get_char_id($clone2);
 		$clones = false;
@@ -358,7 +357,14 @@ function harmonize_chakra($char_obj){
 		} elseif ($clone_1_id == $char_id || $clone_2_id == $char_id) {
 			$generic_skill_result_message = 'You cannot clone kill yourself.';
 		} else {
-			// The check for multiplaying traits.
+			// The two potential clones will be obliterated immediately if the criteria are met in CloneKill.
+			$kill_or_fail = CloneKill::kill($player, new Player($clone_1_id), new Player($clone_2_id));
+			if($kill_or_fail !== false){
+				$generic_skill_result_message = $kill_or_fail;
+			} else {
+				$generic_skill_result_message = "Those two ninja don't seem to be clones.";
+			}
+			/*
 			$are_clones = characters_are_linked($clone_1_id, $clone_2_id);
 
 			if ($are_clones) {
@@ -379,6 +385,7 @@ function harmonize_chakra($char_obj){
 			} else {
 				$generic_skill_result_message = "Those two ninja don't seem to be clones.";
 			}
+			*/
 		}
 	}
 	
@@ -443,4 +450,3 @@ display_page(
 		'quickstat' => 'player'
 	)
 );
-?>
