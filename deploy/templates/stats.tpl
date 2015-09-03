@@ -31,11 +31,11 @@
 {/if}
 
 {if $profile_changed}
-<p class='notice'>Profile has been changed.</p>
+  <p class='notice'>Profile has been changed.</p>
 {/if}
 
-{if $saved}
-<p class='notice'>Ninja Details have been saved.</p>
+{if $changed}
+  <p class='notice'>Ninja details have been changed.</p>
 {/if}
 
 <div id='switch-to-account' class='notice'>

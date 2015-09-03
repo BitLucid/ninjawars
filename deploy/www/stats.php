@@ -12,12 +12,8 @@ if ($error = init($private, $alive)) {
 
 $changedetails = in('changedetails');
 $newprofile    = trim(in('newprofile', null, null)); // Unfiltered input.
-$description = post('description');
-$goals = post('goals');
-$instincts = post('instincts');
-$beliefs = post('beliefs');
-$traits = post('traits');
-$saved = in('saved');
+$profile_changed    = (bool) in('profile_changed');
+$changed = (bool) in('changed');
 
 $dev = (bool) DEBUG;
 
@@ -40,11 +36,16 @@ $char_id  = self_char_id();
 
 $char         = new Player($char_id);
 
-$profile_changed    = (bool) in('profile_changed');
-$changed = (bool) in('changed');
 $profile_max_length = 500; // Should match the limit in limitStatChars.js - ajv: No, limitStatChars.js should be dynamically generated with this number from a common location -
-
 $successMessage = null;
+
+$description = post('description', $char->description());
+$goals = post('goals', $char->goals());
+$instincts = post('instincts', $char->instincts());
+$beliefs = post('beliefs', $char->beliefs());
+$traits = post('traits', $char->traits());
+
+
 if ($changedetails) {
     // Limit the profile length.
 	if ($newprofile != '') {
@@ -61,7 +62,7 @@ if ($changedetails) {
 	$char->set_instincts($instincts);
 	$char->set_beliefs($beliefs);
 	$char->set_traits($traits);
-	
+
 	/*
 	foreach(['description', 'goals', 'instincts', 'beliefs', 'traits'] as $type){
 		if($$type && isset($char->vo)){
@@ -72,9 +73,9 @@ if ($changedetails) {
 		$$type = $char->$type(); // Default to current values.
 	}*/
 
-	$saved = PlayerDAO::saveDetails($char);
+	$changed = PlayerDAO::saveDetails($char);
 
-	redirect('/stats.php?changed=1'.($profile_changed?'&profile_changed=1':''));
+	redirect('/stats.php?changed='.(int)$changed.($profile_changed?'&profile_changed=1':''));
 }
 /*
 if(false && DEBUG){
@@ -97,7 +98,7 @@ $profile_editable = $player['messages'];
 
 $parts = get_certain_vars(get_defined_vars(), 
 		['player', 'level_category', 'status_list', 'description', 'goals', 'beliefs', 'instincts', 'traits', 'dev',
-		'saved']);
+		'changed']);
 
 // Set the parts array's player clan if any is found.
 if ($parts['player_clan'] = get_clan_by_player_id($char_id)) {
