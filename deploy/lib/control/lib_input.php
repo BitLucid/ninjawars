@@ -18,6 +18,13 @@ function in($var_name, $default_val=null, $filter_callback=null) {
     return $result;
 }
 
+/**
+ *  Wrapper around the post variables as a clean way to get input.
+ **/
+function post($key, $default_val=null){
+	return isset($_POST[$key])? $_POST[$key] : $default_val;
+}
+
 // Return a casting with a result of a positive int, or else zero.
 function non_negative_int($num){
 	return ((int)$num == $num && (int)$num > 0? (int)$num : 0);
