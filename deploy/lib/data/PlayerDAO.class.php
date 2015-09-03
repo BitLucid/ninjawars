@@ -51,4 +51,14 @@ class PlayerDAO extends DataAccessObject {
 		unset($vo2->theme);
 		parent::save($vo2);
 	}
+
+	/**
+	 * Static details saving workaround for now.
+	 **/
+	public static function saveDetails(Player $pc){
+		$updated = update_query('update players set description = :desc, goals = :goals, instincts = :instincts, beliefs = :beliefs, traits = :traits where player_id = :id',
+				[':id'=>$pc->id(), ':desc'=>$pc->description(), ':goals'=>$pc->goals(), ':instincts'=>$pc->instincts(), ':beliefs'=>$pc->beliefs(), ':traits'=>$pc->traits()]);
+		return (bool)$updated;
+
+	}
 }
