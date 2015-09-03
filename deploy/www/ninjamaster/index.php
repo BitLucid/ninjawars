@@ -21,20 +21,22 @@ class AdminViews{
 	}
 
 	public static function duped_ips(){
+		$host= gethostname();
+		$server_ip = gethostbyname($host);
 		return query_array('select uname, player_id, ip from players where ip in (SELECT ip FROM players 
-				WHERE active = 1 GROUP  BY ip HAVING count(*) > 1 ORDER BY count(*) ASC limit 30) order by ip');
+				WHERE active = 1 and ip != \'\' and ip != \'127.0.0.1\' and ip != \''.$server_ip.'\' GROUP  BY ip HAVING count(*) > 1 ORDER BY count(*) ASC limit 30) order by ip');
 	}
 
 
 	// Reformat the character info sets.
 	public static function split_char_infos($ids){
-		if(is_numeric($ids)){
-			return array(char_info($ids));
-		} else {
+		if(is_numeric($ids)){ // Single id, so return a single data set
+			return array(char_info($ids, $admin_info=true));
+		} else { // Get the info for multiple ninjas
 			$res = array();
 			$ids = explode(',', $ids);
 			foreach($ids as $id){
-				$res[$id] = char_info($id);
+				$res[$id] = char_info($id, $admin_info=true);
 			}
 			return $res;
 		}
