@@ -25,18 +25,18 @@ h1 .account-identity{
 <div id='content' class='account-info'>
 
 {if $error}
-<p class='error'>{$error}</p>
+  <p class='error'>{$error}</p>
 {elseif $successMessage}
-<p class='notice'>{$successMessage|escape}</p>
+  <p class='notice'>{$successMessage|escape}</p>
 {elseif $confirm_delete}
-<p>Please provide your password to confirm.</p>
-<form method="post" action="account.php" onsubmit="return confirm('Are you sure you want to delete your account?');">
-  <div>
-    <input id="passw" type="password" maxlength="50" name="passw" class="textField">
-    <input type="hidden" name="deleteaccount" value="2">
-    <input type="submit" value="Confirm Delete" class="formButton">
-  </div>
-</form>
+  <p>Please provide your password to confirm.</p>
+  <form method="post" action="account.php" onsubmit="return confirm('Are you sure you want to delete your account?');">
+    <div>
+      <input id="passw" type="password" maxlength="50" name="passw" class="textField">
+      <input type="hidden" name="deleteaccount" value="2">
+      <input type="submit" value="Confirm Delete" class="formButton">
+    </div>
+  </form>
 {/if}
 
 {if $change_pass}
