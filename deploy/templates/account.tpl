@@ -9,10 +9,18 @@ h1.account-header{
 h1 .account-identity{
   font-weight:bold;
 }
+.char-list.ninja-notice a{
+  font:30px/34px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;
+}
 </style>
 {/literal}
 
 <h1 class='account-header'>Account Info for <span class='account-identity'>{$account_info.account_identity|escape}</span></h1>
+
+
+<div class='char-list ninja-notice clearfix'>
+  <a href='stats.php'>View your ninja's info</a>
+</div>
 
 <div id='content' class='account-info'>
 
@@ -95,9 +103,6 @@ h1 .account-identity{
 
 </div>
 
-<div class='char-list ninja-notice' class='clearfix'>
-  <a href='stats.php'>View your ninja's info</a>
-</div>
 
 <footer id='stats-footer' class='navigation'>
 <h3>Assistance</h3>
