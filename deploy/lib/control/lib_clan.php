@@ -275,7 +275,7 @@ function clans_ranked() {
 	$res = array();
 
 	// sum the levels of the players (minus days of inactivity) for each clan
-	$counts = query('SELECT sum(round(((level+4)/5+8)-(days/3))) AS sum, sum(active) as member_count, clan_name, clan_id
+	$counts = query('SELECT sum(round(((level+4)/5+8)-least((days/3), 50))) AS sum, sum(active) as member_count, clan_name, clan_id
 	    FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id
 	    WHERE active = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC');
 
