@@ -80,7 +80,7 @@ table .char-title td{
     {if $dimmak_sequence eq 1}
     <form id="Buy_DimMak" action="dojo.php?dimmak_sequence=2" method="post" name="buy_dimmak">
       <div style='margin-top: 10px;margin-bottom: 10px;'>
-        Give up your memories of {$dimMakCost|escape} kills for the DimMak Scroll?
+        Give up your memories of {$dim_mak_cost|escape} kills for the DimMak Scroll?
         <input id="dimmak_sequence" type="hidden" value="2" name="obtainscroll">
         <input type="submit" value="Obtain Dim Mak" class="formButton">
       </div>
