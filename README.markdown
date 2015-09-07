@@ -31,6 +31,13 @@ Install the test environment with:
 	cd /srv/ninjawars
 	sudo bash /srv/ninjawars/scripts/build/test.sh
 
+Start up the chat server with your modified version of these commands:
+
+	sudo touch /var/log/nginx/ninjawars.chat-server.log
+	sudo chown kzqai:dev /var/log/nginx/ninjawars.chat-server.log
+	cd /srv/ninjawars/
+	nohup php bin/chat-server.php > /var/log/nginx/ninjawars.chat-server.log 2>&1 &
+
 Then you can run the tests at any point with:
 
     ./vendor/bin/phpunit
