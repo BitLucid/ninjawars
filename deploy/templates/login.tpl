@@ -139,10 +139,9 @@ section.login-page{
 
 
 
-
-{literal}
 <script>
 var debug = {if $debug}true{else}false{/if};
+{literal}
 
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
