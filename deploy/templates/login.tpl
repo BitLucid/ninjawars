@@ -93,13 +93,14 @@ section.login-page{
 	</form>
 </section>
 
-<div id="fb-root"></div>
-
 <!--
   Below we include the Login Button social plugin. This button uses
   the JavaScript SDK to present a graphical Login button that triggers
   the FB.login() function when clicked.
 -->
+{if $debug}
+
+<div id="fb-root"></div>
 
 <div id='facebook-login' class='glassbox'>
 
@@ -121,6 +122,8 @@ section.login-page{
 
 {/if}
 
+{/if}
+
 
 <div id='login-bottom-bar-container'>
 	<div id="login-problems">
@@ -139,37 +142,39 @@ section.login-page{
 
 {literal}
 <script>
-  // This is called with the results from from FB.getLoginStatus().
-  function statusChangeCallback(response) {
-    console.log('statusChangeCallback');
-    console.log(response);
-    // The response object is returned with a status field that lets the
-    // app know the current login status of the person.
-    // Full docs on the response object can be found in the documentation
-    // for FB.getLoginStatus().
-    if (response.status === 'connected') {
-      // Logged into your app and Facebook.
-      syncToNW();
-    } else if (response.status === 'not_authorized') {
-      // The person is logged into Facebook, but not your app.
-      document.getElementById('status').innerHTML = 'Please try again to log into the facebook ninjawars app.';
-    } else {
-      // The person is not logged into Facebook, so we're not sure if
-      // they are logged into this app or not.
-      document.getElementById('status').innerHTML = 'Please try again to log into Facebook.';
-    }
-  }
+var debug = {if $debug}true{else}false{/if};
 
-  // This function is called when someone finishes with the Login
-  // Button.  See the onlogin handler attached to it in the sample
-  // code below.
-  function checkLoginState() {
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-    });
+// This is called with the results from from FB.getLoginStatus().
+function statusChangeCallback(response) {
+  console.log('statusChangeCallback');
+  console.log(response);
+  // The response object is returned with a status field that lets the
+  // app know the current login status of the person.
+  // Full docs on the response object can be found in the documentation
+  // for FB.getLoginStatus().
+  if (response.status === 'connected') {
+    // Logged into your app and Facebook.
+    syncToNW();
+  } else if (response.status === 'not_authorized') {
+    // The person is logged into Facebook, but not your app.
+    document.getElementById('status').innerHTML = 'Please try again to log into the facebook ninjawars app.';
+  } else {
+    // The person is not logged into Facebook, so we're not sure if
+    // they are logged into this app or not.
+    document.getElementById('status').innerHTML = 'Please try again to log into Facebook.';
   }
+}
 
-  window.fbAsyncInit = function() {
+// This function is called when someone finishes with the Login
+// Button.  See the onlogin handler attached to it in the sample
+// code below.
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+}
+
+window.fbAsyncInit = function() {
   FB.init({
     appId      : '30479872633',
     cookie     : true,  // enable cookies to allow the server to access 
@@ -189,13 +194,12 @@ section.login-page{
   //    your app or not.
   //
   // These three cases are handled in the callback function.
-
   FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
   });
+};
 
-  };
-
+if(debug){
   // Load the SDK asynchronously
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -204,35 +208,36 @@ section.login-page{
     js.src = "//connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
+}
 
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
-  // Logged in to the other services, so try to sync up via facebook account id as well.
-  function syncToNW() {
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response.name);
-      document.getElementById('status').innerHTML =
-        "You're logged in to facebook, " + response.name + ', so we\'re now trying to log you in to this site!';
-      // Redirect to homepage after delay.
-      console.log(response.id, response.email, response.name);
-      console.log(response);
-      if(response){
-        var url = '/api.php?type=facebook_login_sync&callback=?';
-        $.getJSON(url, function(json){
-          var logged_in = json.logged_in;
-          var error = json.error;
-          var redirect = json.redirect;
-          console.log('Results of JSON call: ', json, logged_in, error, redirect);
-          if(logged_in && !error && redirect){
-            window.location.href = redirect;
-          } else {
-            document.getElementById('status').innerHTML =
-        "Error A77: Sorry, there was a problem logging you in with facebook, please refresh the page. ";
-          }
-        });
-      }
-    });
-  }
+// Here we run a very simple test of the Graph API after login is
+// successful.  See statusChangeCallback() for when this call is made.
+// Logged in to the other services, so try to sync up via facebook account id as well.
+function syncToNW() {
+  console.log('Welcome!  Fetching your information.... ');
+  FB.api('/me', function(response) {
+    console.log('Successful login for: ' + response.name);
+    document.getElementById('status').innerHTML =
+      "You're logged in to facebook, " + response.name + ', so we\'re now trying to log you in to this site!';
+    // Redirect to homepage after delay.
+    console.log(response.id, response.email, response.name);
+    console.log(response);
+    if(response){
+      var url = '/api.php?type=facebook_login_sync&callback=?';
+      $.getJSON(url, function(json){
+        var logged_in = json.logged_in;
+        var error = json.error;
+        var redirect = json.redirect;
+        console.log('Results of JSON call: ', json, logged_in, error, redirect);
+        if(logged_in && !error && redirect){
+          window.location.href = redirect;
+        } else {
+          document.getElementById('status').innerHTML =
+      "Error A77: Sorry, there was a problem logging you in with facebook, please refresh the page. ";
+        }
+      });
+    }
+  });
+}
 </script>
 {/literal}

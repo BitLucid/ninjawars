@@ -33,6 +33,7 @@ display_static_page($page, $pages,
 		'login_error_message'=>$login_error_message, 
 		'logged_out'=>$logged_out, 
 		'referrer'=>$referrer, 
-		'stored_username'=>$stored_username
+		'stored_username'=>$stored_username,
+		'debug'=>DEBUG,
 		)
 	);
