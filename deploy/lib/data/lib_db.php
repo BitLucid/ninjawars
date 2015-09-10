@@ -49,9 +49,9 @@ function query_array($sql_query, $bindings=array()) {
 }
 
 // Insert sql, returns the id insert by default.
-function insert_query($insert_query, $bindings=array()){
+function insert_query($insert_query, $bindings=array(), $sequence_name){
 	query($insert_query, $bindings, true); // Don't try to return data in the initial query.
-	$id = DatabaseConnection::$pdo->lastInsertId();
+	$id = DatabaseConnection::$pdo->lastInsertId($sequence_name);
 	return $id;
 }
 
