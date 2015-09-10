@@ -1,5 +1,4 @@
 <?php
-require_once(substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'ninjawars')+10).'deploy/resources.php');
 // Core may be autoprepended in ninjawars
 require_once(LIB_ROOT.'base.inc.php');
 
