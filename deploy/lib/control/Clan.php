@@ -63,32 +63,30 @@ class Clan
     }
 
     public function name_from_id($id){
-        return query_item('select clan_name from clan where clan_id = :id', array(':id'=>[$id, PDO::PARAM_INT]));
+        return query_item('select clan_name from clan where clan_id = :id', [':id'=>[$id, PDO::PARAM_INT]]);
     }
 
     public function getLeaderInfo() {
         return get_clan_leader_info($this->getID());
     }
 
-    public function addMember(Player $player){
+    public function addMember(Player $ninja, Player $adder){
     	// Not an insert_query because there is no sequence involved or needed.
-    	query('insert into clan_player (_clan_id, _player_id) values (:c, :p)', [':c'=>$this->id(), ':p'=>$player->id()]);
+    	query('insert into clan_player (_clan_id, _player_id) values (:c, :p)', [':c'=>$this->id(), ':p'=>$ninja->id()]);
+    	query('update players set verification_number = :new_num where player_id = :id', [':new_num'=>rand(1, 9999), ':id'=>$ninja->id()]);
+    	send_message($adder->id(), $ninja->id(),"CLAN: You have been accepted into ".$this->getName());
     	return true;
     }
 
 
-    public function kickMember($p_playerID) {
+    public function kickMember($p_playerID, Player $kicker) {
         global $today;
+        query("DELETE FROM clan_player WHERE _player_id = :player AND _clan_id = :clan",
+        	[':player'=>$p_playerID, ':clan'=>$this->getID()]);
 
-        DatabaseConnection::getInstance();
-        $statement = DatabaseConnection::$pdo->prepare("DELETE FROM clan_player WHERE _player_id = :player AND _clan_id = :clan");
-        $statement->bindValue(':player', $p_playerID);
-        $statement->bindValue(':clan', $this->getID());
-        $statement->execute();
+        $msg = "You have been kicked out of ".$this->getName()." by ".$kicker->name()." on $today.";
+        send_message($kicker->id(), $p_playerID, $msg);
 
-        $msg = "You have been kicked out of ".$this->getName()." by ".get_username()." on $today.";
-
-        send_message(get_user_id(), $p_playerID, $msg);
         return true;
     }
 
@@ -136,6 +134,8 @@ class Clan
         $statement->execute();
     }
 
-    /*public function promoteMember($p_playerID) {
-    }*/
+    public function promoteMember($ninja_id) {
+    	$updated = update_query('update clan_player set member_level = (member_level + 1) where _player_id = :pid', [':pid'=>$ninja_id]);
+    	return (bool)$updated;
+    }
 }

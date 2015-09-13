@@ -36,6 +36,21 @@ class ClanFactory{
 	}
 
 	/**
+	 * Get the clan that a member has, if any
+	 * @return Clan|null
+	 **/
+	public static function clanOfMember($pc_or_id){
+		if($pc_or_id instanceof Player){
+			$id = $pc_or_id->id();
+		} else {
+			$id = $pc_or_id;
+		}
+		$clan_id = query_item('select _clan_id from clan_player where _player_id = :cid', [':cid'=>$id]);
+		$clan = $clan_id? new Clan($clan_id) : null;
+		return $clan;
+	}
+
+	/**
 	 * Create the flesh of an npc from it's data
 	**/
 	public static function fleshOutFromData($data, Clan $clan){

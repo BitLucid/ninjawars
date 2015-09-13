@@ -46,36 +46,65 @@ class TestClan extends PHPUnit_Framework_TestCase {
     }
 
     function testClanAddMembers(){
+        $p1 = new Player($this->char_id); 
         $clan = ClanFactory::find($this->clan_id);
-        $this->assertTrue($clan->addMember($p1 = new Player($this->char_id)));
-        $this->assertTrue($clan->addMember($p2 = new Player($this->char_id_2)));
+        $this->assertTrue($clan->addMember($p1, $p1));
+        $this->assertTrue($clan->addMember($p2 = new Player($this->char_id_2), $p1));
     }
 
     function testClanGetMembers(){
+        $p1 = new Player($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
-        $this->assertTrue($clan->addMember($p1 = new Player($this->char_id)));
-        $this->assertTrue($clan->addMember($p2 = new Player($this->char_id_2)));
+        $this->assertTrue($clan->addMember($p1, $p1));
+        $this->assertTrue($clan->addMember($p2 = new Player($this->char_id_2), $p1));
         $member_ids = $clan->getMemberIds();
         $this->assertEquals(2, rco($member_ids));
         $this->assertTrue($clan->hasMember($p1->id()));
         $this->assertTrue($clan->hasMember($p2->id()));
     }
 
-    function testKickClanMember(){
+    function testGetClanForANinjaThatDoesntHaveAClanAtAllShouldYieldNull(){
+        $p1 = new Player($this->char_id);
+        $clan_final = ClanFactory::clanOfMember($p1);
+        $this->assertEmpty($clan_final);
+    }
+
+    function testGetClanThatAMemberBelongsTo(){
+        $p1 = new Player($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
-        $this->assertTrue($clan->addMember($p1 = new Player($this->char_id)));
-        $this->assertTrue($clan->addMember($p2 = new Player($this->char_id_2)));
+        $this->assertTrue($clan->addMember($p1, $p1));
+        $clan_final = ClanFactory::clanOfMember($p1);
+        $this->assertTrue($clan_final->hasMember($p1->id()));
+    }
+
+    function testKickClanMember(){
+        $p1 = new Player($this->char_id);
+        $clan = ClanFactory::find($this->clan_id);
+        $this->assertTrue($clan->addMember($p1, $p1));
+        $this->assertTrue($clan->addMember($p2 = new Player($this->char_id_2), $p1));
         $this->assertTrue($clan->hasMember($p2->id()));
         $this->assertTrue($clan->hasMember($p1->id()));
-        $clan->kickMember($p1->id());
+        $clan->kickMember($p1->id(), $p2);
         $this->assertFalse($clan->hasMember($p1->id()));
+    }
+
+    function testPromoteClanMember(){
+        $p1 = new Player($this->char_id);
+        $clan = ClanFactory::find($this->clan_id);
+        $this->assertTrue($clan->addMember($p1, $p1));
+        $this->assertTrue($clan->promoteMember($p1->id()));
+    }
+
+    function testInviteCharacterToYourClan(){
+        $this->markTestIncomplete('Inviting a ninja from the clan object is not yet implemented.');
     }
 
     function testGetClanObjectNumericRating(){
         $this->markTestIncomplete('Clan rating is not yet implemented');
+        $p1 = new Player($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
-        $this->assertTrue($clan->addMember($p1 = new Player($this->char_id)));
-        $this->assertTrue($clan->addMember($p2 = new Player($this->char_id_2)));
+        $this->assertTrue($clan->addMember($p1, $p1));
+        $this->assertTrue($clan->addMember($p2 = new Player($this->char_id_2), $p1));
         $this->assertTrue($clan->rating());
     }
 
