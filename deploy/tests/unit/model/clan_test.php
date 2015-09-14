@@ -25,9 +25,14 @@ class TestClan extends PHPUnit_Framework_TestCase {
     private function deleteClan($id){
         query('delete from clan where clan_id = :id', [':id'=>$id]);
     }
+
+    private function deleteClanByIdentity($identity){
+        query('delete from clan where clan_name = :identity', [':identity'=>$identity]);
+    }
 	
 	function tearDown(){
         $this->deleteClan($this->clan_id);
+        $this->deleteClanByIdentity('someTestClan');
         TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
@@ -93,6 +98,32 @@ class TestClan extends PHPUnit_Framework_TestCase {
         $clan = ClanFactory::find($this->clan_id);
         $this->assertTrue($clan->addMember($p1, $p1));
         $this->assertTrue($clan->promoteMember($p1->id()));
+    }
+
+    function testGetRankedClanMembersOfAClan(){
+        $p1 = new Player($this->char_id);
+        $clan = ClanFactory::find($this->clan_id);
+        $this->assertTrue($clan->addMember($p1, $p1));
+        $this->assertEquals(1, rco($clan->getMembers()));
+    }
+
+    function testGetTheClanAvatarUrl(){
+        $clan = ClanFactory::find($this->clan_id);
+        $clan->setAvatarUrl($g = 'http://google.com/someimage.jpg');
+        $this->assertEquals($g, $clan->getAvatarUrl());
+    }
+
+    function testSavingTheClanViaTheFactory(){
+        $clan = ClanFactory::create('someTestClan', ['founder'=>'noone', 'clan_avatar_url'=>'http://example.com/img.png', 'description'=>'SomeDesc']);
+        $clan->setDescription($d = 'a new description');
+        $clan->setFounder($f = 'newFounder');
+        $clan->setAvatarUrl($url = 'http://example.com/avatar.png');
+        $was_saved = ClanFactory::save($clan);
+        $this->assertTrue($was_saved);
+        $saved = ClanFactory::find($clan->id());
+        $this->assertEquals($d, $saved->getDescription());
+        $this->assertEquals($f, $saved->getFounder());
+        $this->assertEquals($url, $saved->getAvatarUrl());
     }
 
     function testInviteCharacterToYourClan(){

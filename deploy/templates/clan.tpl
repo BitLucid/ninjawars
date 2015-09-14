@@ -203,7 +203,7 @@ As such, after the leave command, no clan membership display information should 
 {/if} {* End of logged-in-only display section *}
 
 {if $command == "view"} {* A view of the member list of any clan *}
-{include file='clan.info.tpl' members_array=$members clan_name=$clan_name avatar_url=$clan.clan_avatar_url clan_name=$clan.clan_name clan_description=$clan.description}
+{include file='clan.info.tpl' members_array=$members clan_name=$clan_name avatar_url=$clan->getAvatarUrl() clan_name=$clan->getName() clan_description=$clan->getDescription()}
 
     {if $leader_of_viewed_clan}
 <div class='ninja-notice'>You are the leader of this clan.</div>

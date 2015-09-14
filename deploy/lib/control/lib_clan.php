@@ -273,35 +273,6 @@ function clans_ranked() {
 }
 
 
-function get_ranked_clan_members($p_clan_id) {
-	$members_array = query_array('SELECT uname, accounts.active_email as email, clan_name, level, days, clan_founder, player_id, member_level
-			FROM clan
-			JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-			JOIN players ON player_id = clan_player._player_id join account_players on player_id = account_players._player_id join accounts on account_id = _account_id AND active = 1 ORDER BY level, health DESC',
-			array(':clan_id'=>$p_clan_id));
-
-	$max = query_item('SELECT max(level) AS max
-		FROM clan
-		JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
-		JOIN players ON player_id = _player_id AND active = 1',
-		array(':clan_id'=>$p_clan_id));
-
-	// Modify the members by reference
-	foreach ($members_array as &$member) {
-		$member['leader'] = false;
-		$member['size'] = floor( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
-
-		// Calc the member display size based on their level relative to the max.
-		if ($member['member_level'] == 1) {
-		    $member['leader'] = true;
-			$member['size'] = max($member['size'] + 2, 3);
-		}
-
-		$member['gravatar_url'] = generate_gravatar_url($member['player_id']);
-	}
-
-	return $members_array;
-}
 
 // Get clan member names & ids other than self, useful for lists & messaging
 function clan_member_names_and_ids($clan_id, $self_char_id) {
@@ -311,4 +282,3 @@ function clan_member_names_and_ids($clan_id, $self_char_id) {
 	$members_and_ids = query_array($member_select, array(':clan_id'=>$clan_id, ':player_id'=>$self_char_id));
 	return $members_and_ids;
 }
-?>

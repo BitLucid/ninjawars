@@ -12,12 +12,17 @@ class Clan
     private $m_id;
     private $m_name;
 
-    public function __construct($p_id=null, $p_name=null) {
+    public function __construct($p_id=null, $p_name=null, $data=null) {
         $this->setID($p_id);
         if(!$p_name){
             $p_name = $this->name_from_id($p_id);
         }
         $this->setName($p_name);
+        if($data){
+        	$this->setAvatarUrl($data['clan_avatar_url']);
+        	$this->setDescription($data['description']);
+        	$this->setFounder($data['clan_founder']);
+        }
     }
 
     public function getID()
@@ -62,6 +67,16 @@ class Clan
         $this->founder = $founder;
     }
 
+    public function getAvatarUrl(){
+    	return $this->avatarUrl;
+    }
+
+    public function setAvatarUrl($url){
+    	$this->avatarUrl = $url;
+    }
+
+    // End of getters and setters.
+
     public function name_from_id($id){
         return query_item('select clan_name from clan where clan_id = :id', [':id'=>[$id, PDO::PARAM_INT]]);
     }
@@ -78,13 +93,20 @@ class Clan
     	return true;
     }
 
+    public function leave(Player $ninja){
+    	$this->kickMember($ninja->id(), $ninja, $self_leave=true);
+    }
 
-    public function kickMember($p_playerID, Player $kicker) {
+
+    public function kickMember($p_playerID, Player $kicker, $self_leave=false) {
         global $today;
         query("DELETE FROM clan_player WHERE _player_id = :player AND _clan_id = :clan",
         	[':player'=>$p_playerID, ':clan'=>$this->getID()]);
-
-        $msg = "You have been kicked out of ".$this->getName()." by ".$kicker->name()." on $today.";
+        if($self_leave){
+        	$msg = "You have been kicked out of ".$this->getName()." by ".$kicker->name()." on $today.";
+        } else {
+        	$msg = "You have left clan ".$this->getName()." on $today.";
+        }
         send_message($kicker->id(), $p_playerID, $msg);
 
         return true;
@@ -137,5 +159,39 @@ class Clan
     public function promoteMember($ninja_id) {
     	$updated = update_query('update clan_player set member_level = (member_level + 1) where _player_id = :pid', [':pid'=>$ninja_id]);
     	return (bool)$updated;
+    }
+
+    /**
+     * Get the members of a clan, 
+     **/
+    public function getMembers(){
+    	$members_array = query_array(
+	    		'SELECT uname, accounts.active_email as email, clan_name, level, days, clan_founder, player_id, member_level
+				FROM clan JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id JOIN players ON player_id = clan_player._player_id 
+				join account_players on player_id = account_players._player_id join accounts on account_id = _account_id 
+				AND active = 1 ORDER BY level, health DESC',
+				[':clan_id'=>$this->id()]
+			);
+
+		$max = query_item('SELECT max(level) AS max
+			FROM clan
+			JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id
+			JOIN players ON player_id = _player_id AND active = 1',
+			[':clan_id'=>$this->id()]);
+
+		// Modify the members by reference
+		foreach ($members_array as &$member) {
+			$member['leader'] = false;
+			$member['size'] = floor( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
+
+			// Calc the member display size based on their level relative to the max.
+			if ($member['member_level'] >= 1) {
+			    $member['leader'] = true;
+				$member['size'] = max($member['size'] + 2, 3);
+			}
+			$member['gravatar_url'] = generate_gravatar_url($member['player_id']);
+		}
+
+		return $members_array;
     }
 }

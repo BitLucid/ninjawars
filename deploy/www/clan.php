@@ -1,5 +1,6 @@
 <?php
 require_once(LIB_ROOT.'control/lib_clan.php');
+require_once(CORE.'data/ClanFactory.php');
 $alive      = false;
 $private    = false;
 
@@ -40,9 +41,9 @@ $clan_creator_min_level = CLAN_CREATOR_MIN_LEVEL; // For the template.
 
 // *** Used Variables ***
 
-$player_id    = self_char_id();
-$player       = ($player_id ? new Player($player_id) : null);
-$char_info    = ($player_id ? self_info() : null);
+$ninja_id    = self_char_id();
+$ninja       = ($ninja_id ? new Player($ninja_id) : null);
+$char_info    = ($ninja_id ? self_info() : null);
 $username     = @$char_info['uname'];
 
 if ($clan_id_viewed) {
@@ -76,19 +77,20 @@ $led_clan_id           = null;
 $self_is_leader        = null;
 $leader_of_viewed_clan = null;
 
-if ($player_id) {
+if ($ninja_id && $ninja) {
+	$ninja_id = $ninja->id();
 	// ***** A LOGGED IN CHARACTER *****
-	$viewer_level = $player->vo->level;
+	$viewer_level = $ninja->vo->level;
 	$can_create_a_clan = ($viewer_level >= CLAN_CREATOR_MIN_LEVEL);
 
-	$own_clan_id = clan_id($player_id);
+	$own_clan_id = clan_id($ninja->id());
 
 	if ($own_clan_id) {
 		// Is a member of a clan.
 		$own_clan_info = clan_info($own_clan_id);
 		$own_clan_name = $own_clan_info['clan_name'];
-		$own_clan_obj  = get_clan_by_player_id($player_id); // Own clan.
-		$led_clan_info = clan_char_is_leader_of($player_id);
+		$own_clan_obj  = get_clan_by_player_id($ninja_id); // Own clan.
+		$led_clan_info = clan_char_is_leader_of($ninja_id);
 		$leader_of_own_clan = !empty($led_clan_info);
 
 		if ($leader_of_own_clan) {
@@ -98,7 +100,7 @@ if ($player_id) {
 	}
 }
 
-if(positive_int($player_id)){ // Logged in player.
+if(positive_int($ninja_id)){ // Logged in player.
 	if ($leader_of_own_clan && $avatar_or_message_change) {
 		$action_message = 'Clan avatar or message changed.';
 
@@ -125,7 +127,7 @@ if(positive_int($player_id)){ // Logged in player.
 				$default_clan_name = $default_clan_name.rand(1,999);
 			}
 
-			$clan              = createClan($player_id, $default_clan_name);
+			$clan              = createClan($ninja_id, $default_clan_name);
 			$command           = 'rename'; // *** Shortcut to rename after. ***
 			$action_message    = 'You have created a new clan!';
 
@@ -197,7 +199,7 @@ if(positive_int($player_id)){ // Logged in player.
 			} else if ($command == 'invite') {	// *** Clan Leader Invite Input ***
 				if ($person_invited) {
 					// *** Clan leader Invite Action ***
-					$invite_failure_message = inviteChar(new Player($person_invited), $own_clan_obj, $player);
+					$invite_failure_message = inviteChar(new Player($person_invited), $own_clan_obj, $ninja);
 				}
 			} // End of invite command.
 
@@ -210,11 +212,7 @@ if(positive_int($player_id)){ // Logged in player.
 			// ***  NON LEADER CLAN MEMBER OPTIONS ***
 
 			if ($command == 'leave') {
-				// *** Clan Member Action to Leave their Clan ***
-				$query = 'DELETE FROM clan_player WHERE _player_id = :playerID';
-				$statement = DatabaseConnection::$pdo->prepare($query);
-				$statement->bindValue(':playerID', $player_id);
-				$statement->execute();
+				$clan->leave($ninja); // *** Clan Member Action to Leave their Clan ***
 
 				$clan_id = $clan = null;
 
@@ -231,7 +229,7 @@ if(positive_int($player_id)){ // Logged in player.
 		// ****** NOT-MEMBER OF ANY CLAN *******
 		if ($command == 'join') {	// *** Clan Joining Action ***
 			if ($process == 1) {
-				send_clan_join_request($player_id, $clan_id_viewed);
+				send_clan_join_request($ninja_id, $clan_id_viewed);
 			} else {
 				$clan_leaders = get_clan_leaders(null, true);
 				$leader_ids = array();
@@ -265,9 +263,9 @@ if(positive_int($player_id)){ // Logged in player.
 $clan_name = null;
 if ($command == 'view') {
 	// *** A view of the member list of any clan ***
-	$clan = get_clan($clan_id_viewed);
-	$clan_name = $clan['clan_name'];
-	$members = get_ranked_clan_members($clan_id_viewed);
+	$clan = ClanFactory::find($clan_id_viewed);
+	$clan_name = $clan->getName();
+	$members = $clan->getMembers();
 }
 
 $clans = clans_ranked();
