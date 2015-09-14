@@ -5,6 +5,7 @@ define('VENDOR_ROOT', SERVER_ROOT.'vendor/'); // Composer vendors
 
 define('ROOT', SERVER_ROOT);		// *** Another alias for the root.
 define('CONF_ROOT', SERVER_ROOT.'conf/'); // Configuration root.
+define('CORE', SERVER_ROOT.'lib/');
 
 define('CSS_ROOT', WEB_ROOT.'css/');
 define('JS_ROOT', WEB_ROOT.'js/');
