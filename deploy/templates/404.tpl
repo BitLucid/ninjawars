@@ -28,7 +28,7 @@
       <!-- Haiku-ish?  The english syllable-centric version that misses the point, but close enough, just for fun -->
     </div>
   <div class='glassbox'>
-    <div class='thick'>Return to <a href="index.php">Ninjawars.net</a></div>
+    <div class='thick'>Return to <a href="/">Ninjawars.net</a></div>
     <form action="http://www.google.com/search" name="searchbox" method="get" id='404-search'> 
       <input type="hidden" name="hl" value="en"> 
       <input type="hidden" name="ie" value="ISO-8859-1"> 
