@@ -270,4 +270,4 @@ if ($command == 'view') {
 
 $clans = clans_ranked();
 $title = $clan_name? 'Clan '.$clan_name : 'Clans';
-display_page('clan.tpl', $title, get_defined_vars(array('leaders', 'members', 'clan')), array('quickstat'=>false));
+display_page('clan.tpl', $title, get_defined_vars(array('leaders', 'members', 'clan', 'ninja_id')), array('quickstat'=>false));

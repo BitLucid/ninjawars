@@ -16,7 +16,7 @@
 	{/if}
 {/if}
 
-{if $player_id}
+{if $ninja_id}
 	{if $own_clan_id }
 		{if $leader_of_own_clan}
 			{if $command == 'rename'} {* Clan Leader Clan renaming *}
@@ -90,17 +90,6 @@ Name of potential clan member:<br>
     <a class='show-hide' href='#show-leader-options'>Show leader options</a>
   </div>
   <div id='leader-options' style='margin: 0 inherit 0'>
-    <script type="text/javascript">
-	        {literal}
-        $().ready(function (){
-            $('#leader-panel-title, #show-leader-options').click(function(){
-                $('#leader-options, #show-leader-options').toggle();
-                return false;
-            });
-			$('#leader-options, #show-leader-options').toggle();
-        });
-	        {/literal}
-    </script>
     <ul id='leader-options-list'>
       <li><a href='clan.php?command=invite'>Recruit for your Clan</a></li>
       <li><a href='clan.php?command=rename'>Rename Clan</a></li>
@@ -111,7 +100,7 @@ Name of potential clan member:<br>
     <div>
       <div><strong>Change Clan Image</strong></div>
       To create a clan avatar, upload an image to <a href='http://www.imageshack.com' target='_blank' class='extLink'>imageshack.com</a>
-      Then put the image's full url here:
+      Then paste the image's full url here:
       <form action='clan.php' name='avatar_and_message'>
         <input type='hidden' name='command' value='view'>
         <input type='hidden' name='avatar_or_message_change' value='1'>
@@ -213,3 +202,15 @@ As such, after the leave command, no clan membership display information should 
 <!-- *** Display all the clans in their tag list. *** -->
 
 {include file="clan.list.tpl" clans=$clans}
+
+<script type="text/javascript">
+{literal}
+$().ready(function (){
+  $('#leader-panel-title, #show-leader-options').click(function(){
+      $('#leader-options, #show-leader-options').toggle();
+      return false;
+  });
+$('#leader-options, #show-leader-options').toggle();
+});
+{/literal}
+</script>
