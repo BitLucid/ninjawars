@@ -2345,7 +2345,7 @@ select option #blue-class-select {
 }
 
 #npc-list li {
-	padding: .2em .3em .2em .2em;
+	padding: 0.2em 0.3em 0 0.2em;
 	display:inline-block;
 	margin-left: 1em;
 	white-space: nowrap;

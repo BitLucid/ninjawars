@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="css/enemies.css" media="Screen">
+<link rel="stylesheet" type="text/css" href="css/enemies.css" media="Screen" />
 
 <h1>Fight</h1>
 
