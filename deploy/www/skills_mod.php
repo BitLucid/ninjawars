@@ -171,17 +171,18 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 		// *** Get Special Items From Inventory ***
 		$user_id = self_char_id();
-        $itemCount = query_item('SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = 7 GROUP BY item_type',
-                array(':owner'=>$user_id));
+		$root_item_type = 7;
+        $itemCount = query_item('SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = :type GROUP BY item_type',
+                array(':owner'=>$user_id, ':type'=>$herb_item_type));
         $turn_cost = min($itemCount, $starting_turns-1, 2); // Costs 1 or two depending on the number of items.
 		if ($turn_cost && $itemCount > 0) {	// *** If special item count > 0 ***
 			remove_item($user_id, 'ginsengroot', $itemCount);
 			add_item($user_id, 'tigersalve', $itemCount);
 			
-			$generic_skill_result_message = 'With intense focus you grind the '.$itemsConverted.' herbs into potent formulas.';
+			$generic_skill_result_message = 'With intense focus you grind the '.$itemsCount.' roots into potent formulas.';
 		} else { // *** no special items, give error message ***
 			$turn_cost = 0;
-			$generic_skill_result_message = 'You do not have the necessary ingredients or time for any Kampo formulas.';
+			$generic_skill_result_message = 'You do not have the necessary ginsengroots or energy to create any Kampo formulas.';
 		}
 	} else if ($command == 'Poison Touch') {
 		$covert = true;
