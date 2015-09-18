@@ -42,17 +42,17 @@ class PasswordResetRequest{
 
 	/**
 	 * Reset a password forcibly.  Validation must be done separately.
+	 * @return boolean
 	**/
 	public static function reset($account_id, $new_pass){
 		$account_exists = query_item('select 1 from accounts where account_id = :account_id',
 			[':account_id'=>$account_id]);
-		var_dump($account_exists);
-		if(!$account_exists){
+		if(!$account_exists || $new_pass === null || $new_pass === ''){
 			return false;
 		}
 		$updated = update_query("update accounts set phash = crypt(:password, gen_salt('bf', 10)) where account_id = :account_id",
 			[':account_id'=>$account_id, ':password'=>$new_pass]);
-		return $updated;
+		return (bool) $updated;
 	}
 
 
