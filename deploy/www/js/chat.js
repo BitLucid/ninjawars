@@ -143,7 +143,7 @@ Chat.sendChatContents = function(p_form) {
 		).fail(
 			function(){
 				Chat.rejected();
-				return success;
+				return false;
 			}
 		);
 	}
