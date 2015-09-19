@@ -63,10 +63,6 @@ class PasswordResetRequest{
 	 * Check for matching token.
 	**/
 	public static function match($token){
-		if(defined('DEBUG') && DEBUG){
-			$data = ['request_id'=>1, '_account_id'=>1, 'nonce'=>$token,
-				'requested_on_datetime'=>'2015-09-16 15:22:37.931326-04', 'used'=>false];
-		}
 		$data = query_row('select request_id, _account_id, nonce, requested_on_datetime, used 
 			from password_reset_requests where nonce = :nonce', [':nonce'=>$token]);
 		return $data;
@@ -76,11 +72,6 @@ class PasswordResetRequest{
 	 * Retrieve an individual request with it's data.
 	**/
 	public static function retrieve($request_id){
-		if(defined('DEBUG') && DEBUG){
-			// While debugging, always return mock data: 
-			$data = ['request_id'=>$request_id, '_account_id'=>1, 'nonce'=>'130fad31f318e36990db6feaf438a6f998db9881664a653155bd0c3316b9651ba772dab4758a4f3c0fa790d7d976bdd1856e6e3db92481e75a3bb5213bd6a231',
-			'requested_on_datetime'=>'2015-09-16 15:22:37.931326-04', 'used'=>false];
-		}
 		$data = query_row('select request_id, _account_id, nonce, requested_on_datetime, used 
 				from password_reset_requests where request_id = :request_id', [':request_id'=>$request_id]);
 
