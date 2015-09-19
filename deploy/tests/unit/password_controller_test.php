@@ -46,6 +46,7 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         $req->query->set('email', $this->account_info['active_email']);
         // Pass to controller
         $controller = new PasswordController();
+        $this->markTestIncomplete();
         $controller->postEmail($req);
         // reset entry should be created
         $this->assertTrue(PasswordResetRequest::match($token));
@@ -70,9 +71,10 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         $req->query->set('token', '666666');
         $req->query->set('account_id', '666666');
         $req->query->set('password', 'fuNnewPasswordTime432');
+        // get a response, response should be a redirect
+        $this->markTestIncomplete();
         $controller = new PasswordController();
         $response = $controller->postReset();
-        // get a response, response should be a redirect
         // password should be changed
         $this->markTestIncomplete();
     }
