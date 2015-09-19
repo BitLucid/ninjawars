@@ -42,12 +42,19 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
         $this->assertFalse(PasswordResetRequest::reset($account_id, null));
     }
 
-    // Reset their password with valid parameters
+    // Reject resets that don't have a valid account_id
+    public function testRejectionOfResetsThatDontHaveAValidAccountId(){
+        $this->assertFalse(PasswordResetRequest::reset(1234567890, 'some_valid_password'));
+    }
+
     public function testResetOfpasswordWhenCorrectDataGiven(){
         $account_id = TestAccountCreateAndDestroy::account_id();
-        //var_dump($account_id, account_info($account_id), query_item('select * from accounts where account_id = :id', [':id'=>$this->account_id]));
-        //$this->markTestIncomplete('Resetting not yet working quite right!');
         $this->assertTrue(PasswordResetRequest::reset($account_id, 'some_password%FW@G'));
+    }
+
+    public function testResetOfpasswordWhenCorrectDataGivenWithAlternatePasswordUsage(){
+        $account_id = TestAccountCreateAndDestroy::account_id();
+        $this->assertTrue(PasswordResetRequest::reset($account_id, 'SDGAERHQEW$$%Y$%'));
     }
 
 
