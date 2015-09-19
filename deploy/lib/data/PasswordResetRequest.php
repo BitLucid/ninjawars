@@ -35,8 +35,11 @@ class PasswordResetRequest{
 				$where = ' where uname = :ninja_name ';
 			}
 
-			return (int)query_item('select account_id from accounts left join account_players on account_id = _account_id left join players on player_id = _player_id
-				'.$where, $params);
+			$account_id = query_item('select account_id from accounts 
+					left join account_players on account_id = _account_id 
+					left join players on player_id = _player_id
+					'.$where, $params);
+			return $account_id;
 		}
 	}
 
@@ -57,15 +60,15 @@ class PasswordResetRequest{
 
 
 	/**
-	 * Check for matching nonces.
+	 * Check for matching token.
 	**/
-	public static function match($nonce){
+	public static function match($token){
 		if(defined('DEBUG') && DEBUG){
-			$data = ['request_id'=>1, '_account_id'=>1, 'nonce'=>$nonce,
+			$data = ['request_id'=>1, '_account_id'=>1, 'nonce'=>$token,
 				'requested_on_datetime'=>'2015-09-16 15:22:37.931326-04', 'used'=>false];
 		}
 		$data = query_row('select request_id, _account_id, nonce, requested_on_datetime, used 
-			from password_reset_requests where nonce = :nonce', [':nonce'=>$nonce]);
+			from password_reset_requests where nonce = :nonce', [':nonce'=>$token]);
 		return $data;
 	}
 
