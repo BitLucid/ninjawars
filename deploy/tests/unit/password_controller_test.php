@@ -54,9 +54,7 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         // Pass to controller
         $controller = new PasswordController();
         //$this->markTestIncomplete();
-        ob_start(); // Avoid the redirect issue.
-        $controller->postEmail($req);
-        ob_end_clean();
+        $response = $controller->postEmail($req);
         // reset entry should be created
         $data = PasswordResetRequest::match($token);
         $this->markTestIncomplete();
