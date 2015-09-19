@@ -2,7 +2,6 @@
 require_once(ROOT . "core/control/Character.php");
 require_once(ROOT . "core/data/Account.php");
 
-
 /**
  * Create account objects via Factory(ok, actually Repository) object
  *
