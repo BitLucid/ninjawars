@@ -44,6 +44,15 @@ class PasswordResetRequest{
 	}
 
 	/**
+	 * Send out the password reset email to a requested account's email.
+	**/
+	public static function send($token, $email){
+		// Email body contents will be: Click here to reset your password: {{ url('password/reset/'.$token) }}
+		// nmail() function perhaps?
+		throw new Exception('Not yet implemented!');
+	}
+
+	/**
 	 * Reset a password forcibly.  Validation must be done separately.
 	 * @return boolean
 	**/
@@ -60,11 +69,11 @@ class PasswordResetRequest{
 
 
 	/**
-	 * Check for matching token.
+	 * Check for matching token, and a matching interval period
 	**/
-	public static function match($token){
+	public static function match($token, $interval='4 hours'){
 		$data = query_row('select request_id, _account_id, nonce, requested_on_datetime, used 
-			from password_reset_requests where nonce = :nonce', [':nonce'=>$token]);
+			from password_reset_requests where nonce = :nonce and (requested_on_datetime > (now()- interval \''.$interval.'\'))', [':nonce'=>$token]);
 		return $data;
 	}
 

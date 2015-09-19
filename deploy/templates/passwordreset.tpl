@@ -1,12 +1,10 @@
-<!-- resources/views/auth/reset.blade.php -->
-
 <form method="POST" action="/password/reset">
-    {!! csrf_field() !!}
-    <input type="hidden" name="token" value="{ $token }">
+    {* {!! csrf_field() !!} *}
+    <input type="hidden" name="token" value="{$token}">
 
     <div>
-        Email
-        <input type="email" name="email" value="{{ old('email') }}">
+        Resetting password for account with email: {$email}
+        {* <input type="email" name="email" value="{{ old('email') }}"> *}
     </div>
 
     <div>

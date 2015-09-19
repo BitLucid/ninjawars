@@ -22,6 +22,11 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         query("delete from password_reset_requests where nonce = '777777'");
     }
 
+    private function checkTestPasswordMatches($pass){
+        $phash = query_item('select phash from accounts where account_id = :id', [':id'=>$this->account_id]);
+        return password_verify($pass, $phash);
+    }
+
     public function testRedirectPathReturnsAPath(){
         // Redirect path should return a relative-to-root path
         $controller = new PasswordController();
@@ -34,49 +39,53 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         $req = Request::create('/passwordreset');
         // Get a Response
         $controller = new PasswordController();
-        $path = $controller->getEmail($req);
+        $response = $controller->getEmail($req);
         // Response should contain a form
+
+
     }
 
     public function testPostEmailCreatesAPasswordResetRequest(){
         // Craft Post Request
-        $req = Request::create('/passwordreset');
+        $req = Request::create('/password/email');
         $req->setMethod('POST');
         $req->query->set('token', $token='666666');
         $req->query->set('email', $this->account_info['active_email']);
         // Pass to controller
         $controller = new PasswordController();
-        $this->markTestIncomplete();
+        //$this->markTestIncomplete();
+        ob_start(); // Avoid the redirect issue.
         $controller->postEmail($req);
+        ob_end_clean();
         // reset entry should be created
-        $this->assertTrue(PasswordResetRequest::match($token));
+        $data = PasswordResetRequest::match($token);
+        $this->markTestIncomplete();
+        $this->assertTrue($data['request_id']);
     }
 
     public function testGetResetWithATokenDisplaysAFilledInPasswordResetForm(){
-        // specify request with token
-        $req = Request::create('/passwordreset');
-        $req->query->set('token', '444444');
+        $token = '444444';
         // get a response
         $controller = new PasswordController();
-        $response = $controller->getReset($req);
+        $response = $controller->getReset($token);
         // Response should contain a form
         $content = $response->getContent();
         $this->assertTrue(strpos($content, '444444') !== false);
     }
 
     public function testPostResetYeildsARedirectAndAChangedPassword(){
+        $pass = 'fuNnewPasswordTime432';
         // craft post request with account_id, token, and password
         $req = Request::create('/passwordreset');
         $req->setMethod('POST');
         $req->query->set('token', '666666');
-        $req->query->set('account_id', '666666');
-        $req->query->set('password', 'fuNnewPasswordTime432');
+        $req->query->set('account_id', $this->account_id);
+        $req->query->set('password', $pass);
         // get a response, response should be a redirect
-        $this->markTestIncomplete();
         $controller = new PasswordController();
-        $response = $controller->postReset();
+        $response = $controller->postReset($req);
         // password should be changed
-        $this->markTestIncomplete();
+        $this->checkTestPasswordMatches($pass);
     }
 
 

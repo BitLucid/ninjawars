@@ -4,6 +4,7 @@ require_once(CORE.'control/lib_crypto.php'); // For the nonce.
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 class PasswordController{
@@ -14,7 +15,7 @@ class PasswordController{
 	public function getEmail(){
 		// TODO: Generates a csrf
 		// Stores csrf to the cookie I guess.
-		$content = render_template('reset_email_request');
+		$content = render_template('request_password_reset.tpl');
 
 		$response = new Response();
 		$response->setContent($content);
@@ -37,7 +38,7 @@ class PasswordController{
 			$mess = 'Email sent!';
 		}
 		// TODO: Authenticate the csrf, which must match, from the session.
-		redirect('/password'.'?'
+		return new RedirectResponse('/password'.'?'
 			.($mess? 'message='.url($mess).'&' : '')
 			.($error? 'error='.url($error) : '')
 			);
@@ -46,10 +47,11 @@ class PasswordController{
 	/**
 	 *  Display the password reset view for the given token.
 	**/
-	public function getReset(string $token = null){
+	public function getReset($token = null){
 		$data = PasswordResetRequest::match($token);
+		$account = AccountFactory::find($data['_account_id']);
 
-		$content = render_template('passwordreset', ['token'=>$token]);
+		$content = render_template('passwordreset.tpl', ['token'=>$token, 'email'=>$account->email()]);
 		$response = new Response();
 		$response->setContent($content);
 		//$response->setStatusCode(200);
@@ -66,13 +68,13 @@ class PasswordController{
 		$new_pass = $request->get('new_password');
 		$pass_confirm = $request->get('confirm_password');
 		if(!$new_pass || $pass_confirm !== $new_pass){
-			redirect('/password'.'?password_match_error=1');
+			return new RedirectResponse('/password'.'?password_match_error=1');
 		}
 		if(!$token){
 			return false;
 		} else {
 			PasswordResetRequest::reset($account_id, $new_pass);
-			redirect('/password'.'?message=password%20reset!');
+			return new RedirectResponse('/password'.'?message=password%20reset!');
 		}
 	}
 
