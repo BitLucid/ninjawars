@@ -26,12 +26,12 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
 
     // Make sure a user can make a request
     public function testCreatePasswordResetEntry(){
-        $this->assertTrue(PasswordResetRequest::request(1));
+        $this->assertTrue(PasswordResetRequest::request($this->account_id));
     }
 
     // Retrieve the password request with the appropriate nonce data
     public function testRetrieveCreatedPasswordReset(){
-        $this->assertTrue(PasswordResetRequest::request(1, $nonce='777777'));
+        $this->assertTrue(PasswordResetRequest::request($this->account_id, $nonce='777777'));
         $req = PasswordResetRequest::match($nonce);
         $this->assertEquals($nonce, $req['nonce']);
     }
