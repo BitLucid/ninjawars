@@ -8,9 +8,11 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
 
 	function setUp(){
         $this->account_id = TestAccountCreateAndDestroy::account_id();
-        assert($this->account_id>0);
+        assert($this->account_id && ($this->account_id>0));
+        assert(query_item('select account_id from accounts where account_id = :id limit 1', [':id'=>$this->account_id]));
         $this->account_info = account_info($this->account_id);
-        $this->ninja_info = new Player(TestAccountCreateAndDestroy::char_id());
+        assert(!empty($this->account_id));
+        $this->ninja = new Player(TestAccountCreateAndDestroy::char_id());
 	}
 	
 	function tearDown(){
@@ -19,20 +21,24 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
     }
 
     public function testFindAccountForMakingResetAccountHasToExist(){
-        $this->assertGreaterThan(0, PasswordResetRequest::findAccount($this->account_info['active_email'], null));
+        $account_id = PasswordResetRequest::findAccount($this->account_info['active_email'], null);
+        $this->assertGreaterThan(0, $account_id);
+        $this->assertTrue(is_numeric($account_id));
         //$this->assertTrue(PasswordResetRequest::findAccount(null, $this->account_info['active_email']));
-        $this->assertGreaterThan(0, PasswordResetRequest::findAccount(null, $this->ninja_info->name()));
+        $this->assertGreaterThan(0, PasswordResetRequest::findAccount(null, $this->ninja->name()));
     }
 
     // Make sure a user can make a request
     public function testCreatePasswordResetEntry(){
-        $this->assertTrue(PasswordResetRequest::request($this->account_id));
+        //var_dump($this->account_id);
+        //var_dump(query_item('select account_id from accounts where account_id = :id', [':id'=>$this->account_id]));
+        $this->assertTrue(PasswordResetRequest::request(query_item('select account_id from accounts limit 1')));
     }
 
     // Retrieve the password request with the appropriate nonce data
     public function testRetrieveCreatedPasswordReset(){
-        $this->assertTrue(PasswordResetRequest::request($this->account_id, $nonce='777777'));
-        $req = PasswordResetRequest::match($nonce);
+        $this->assertTrue(PasswordResetRequest::request(query_item('select account_id from accounts limit 1'), $nonce='777777')); // Create
+        $req = PasswordResetRequest::match($nonce); // Match
         $this->assertEquals($nonce, $req['nonce']);
     }
 

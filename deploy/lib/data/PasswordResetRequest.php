@@ -93,8 +93,9 @@ class PasswordResetRequest{
 	**/
 	public static function request($account_id, $nonce=null){
 		$nonce = $nonce? $nonce : nonce();
+		// Deactivate any previous requests.
 		update_query('update password_reset_requests set used = true where _account_id = :account_id',
-			[':account_id'=>$account_id]); // Deactivate any previous requests.
+			[':account_id'=>$account_id]);
 		insert_query('insert into password_reset_requests 
 			(_account_id, nonce, requested_on_datetime, used) values 
 			(:account_id, :nonce, now(), false)', [':account_id'=>$account_id, ':nonce'=>$nonce], 'password_reset_requests_request_id_seq');
