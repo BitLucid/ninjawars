@@ -46,6 +46,9 @@ if('undefined' !== typeof(NW) && 'undefined' !== typeof(NW.debug) && NW.debug){
 // Update the datastore with the latest chat info.
 // Pass a chained callback using setTimeout
 
+function getDomainName(hostName){
+    return hostName.substring(hostName.lastIndexOf(".", hostName.lastIndexOf(".") - 1) + 1);
+};
 
 var Chat = Chat || {};
 
@@ -175,7 +178,7 @@ Chat.send = function(messageData){
 // Get the area that handles chat submission.
 Chat.submissionArea = function(){
 	return $('#post_msg_js');
-}
+};
 
 // Once the chat is ready, initialize the ability to actually send chats.
 Chat.chatReady = function(){
@@ -192,11 +195,23 @@ Chat.chatReady = function(){
 
 // Check whether logged in for chat sending
 Chat.canSend = function(){
-	$area = Chat.submissionArea();
+	var $area = Chat.submissionArea();
 	return Boolean($area.data('logged-in'));
 };
 
-var config = {'server':'chatapi.ninjawars.net',
+Chat.domain = function(url){
+	var domain = getDomainName(url);
+	
+	if(domain.indexOf(".local") > -1 ){
+		return 'chatapi.'+domain;
+	} else {
+		return 'chatapi.ninjawars.net';
+	}
+};
+
+var chatApiDomain = Chat.domain(window.location.host);
+
+var config = {'server': chatApiDomain,
 			  'port':'8080'};
 
 
