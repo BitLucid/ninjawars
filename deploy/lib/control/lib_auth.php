@@ -225,16 +225,6 @@ function account_id(){
 	return SESSION::get('account_id');
 }
 
-// Abstraction for getting the account's ip.
-function get_account_ip() {
-	static $ip;
-	if ($ip) {
-		return $ip;
-	} else {
-		return account_info(account_id(), 'ip');
-	}
-}
-
 // Pull the account_ids for a certain character
 function get_char_account_id($char_id){
 	return account_id_by_ninja_id($char_id);

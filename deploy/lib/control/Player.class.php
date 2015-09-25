@@ -22,6 +22,7 @@ class Player implements Character {
 	public $player_id;
 	public $vo;
 	public $status;
+	public $ip;
 
 	public function __construct($player_id_or_username=null) {
 		if (!empty($player_id_or_username)) {
@@ -387,8 +388,8 @@ class Player implements Character {
 
 
 	public function ip() {
-		$ip = account_info_by_char_id($this->id(), 'last_ip');
-		return $ip;
+		$this->ip = $this->ip?: account_info_by_char_id($this->id(), 'last_ip');
+		return $this->ip;
 	}
 
 	public function difficulty(){

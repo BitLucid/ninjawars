@@ -64,7 +64,6 @@ if ($target != '' && $target != $player->player_id) {
 	$target_id = null;
 }
 
-$user_ip         = get_account_ip();
 $class           = $player->vo->class;
 $covert          = false;
 $victim_alive    = true;

@@ -86,6 +86,23 @@ class AttackLegal
 	}
 
 	/**
+	 * Return true on matching ip characteristics.
+	 * @return boolean
+	**/
+	public function sameDomain(Player $target, Player $self){
+		// Get all the various ips that shouldn't be matches, and prevent them from being a problem.
+		$server_addr = isset($_SERVER['SERVER_ADDR'])? $_SERVER['SERVER_ADDR'] : null;
+		$host= gethostname(); 
+		$active_ip = gethostbyname($host);
+		$allowable = ['127.0.0.1', $server_addr, $active_ip];
+		$self_ip = $self->ip();
+		if(!$self_ip || in_array($self_ip, $allowable) ){
+			return false;  // Don't have to obtain the target's ip at all if these are the case!
+		}
+		return $self_ip === $target->ip();
+	}
+
+	/**
 	 * Checks whether an attack is legal or not.
 	 *
 	 * @return boolean
@@ -122,8 +139,6 @@ class AttackLegal
 			update_last_attack_time($attacker->id());
 			// updates the timestamp of the last_attacked column to slow excessive attacks.
 		}
-		
-		$account_ip = get_account_ip();
 
 		//  *** START OF ILLEGAL ATTACK ERROR LIST  ***
 		if (!$attack_later_than_limit) {
@@ -134,7 +149,7 @@ class AttackLegal
 			$this->error = 'Commiting suicide is a tactic reserved for samurai.';
 		} else if ($attacker->vo->turns < $required_turns) {
 			$this->error = 'You don\'t have enough turns for that, wait for the half hour or use amanita mushrooms to gain more turns.';
-		} else if (isset($_SESSION) && ($target->ip() == $account_ip) && ($account_ip != '127.0.0.1') && !$self_use) {
+		} else if (!$self_use && $this->sameDomain($target, $attacker)) {
 			$this->error = 'You can not attack a ninja from the same domain.';
 		} else if ($target->vo->active == 0) {
 			$this->error = 'You can not attack an inactive ninja.';

@@ -54,6 +54,8 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
         $this->assertTrue($checked);
     }
 
+    // TODO: Need to be able to mock ips and ensure ability to attack even when both players have the server ip, somehow.
+
     public function testCanAttackAsOneCharByIdAndAnotherByName(){
         $confirm = true;
         $char_id = TestAccountCreateAndDestroy::create_testing_account($confirm);
