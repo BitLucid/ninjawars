@@ -87,13 +87,13 @@ Name of potential clan member:<br>
     {$own_clan_name|escape} Clan Leader Actions
   </div>
   <div id='show-leader-options' style='display:none'>
-    <a class='show-hide' href='#show-leader-options'>Show leader options</a>
+    <a class='show-hide' href='#show-leader-options'>Show leader options▼</a>
   </div>
   <div id='leader-options' style='margin: 0 inherit 0'>
     <ul id='leader-options-list'>
       <li><a href='clan.php?command=invite'>Recruit for your Clan</a></li>
       <li><a href='clan.php?command=rename'>Rename Clan</a></li>
-      <li><a href='clan.php?command=disband'>Disband Your Clan</a></li>
+      <li><a href='clan.php?command=disband'><button>Disband Your Clan</button></a></li>
       <li><a href='clan.php?command=kick'>Kick a Clan Member</a></li>
     </ul>
 
@@ -184,7 +184,7 @@ As such, after the leave command, no clan membership display information should 
 </section>
 
 		{if $can_create_a_clan}
-  <div><a href='clan.php?command=new'>Start a New Clan</a></div>
+  <div><a href='clan.php?command=new'><button>Start a New Clan</button></a></div>
 		{else}
   <small class='glassbox'>You can start your own clan when you reach level {$clan_creator_min_level}.</small>
 		{/if}
