@@ -1,4 +1,8 @@
 <?php
+
+use Symfony\Component\HttpFoundation\Request;
+
+
 /*
  * This file is used for players signing up to ninjawars.
  *
@@ -63,6 +67,9 @@ if ($submitted) {
 
 							$preconfirm = preconfirm_some_emails($enteredEmail);
 							$confirm = rand(1000,9999); //generate confirmation code
+							Request::setTrustedProxies(Constants::$trusted_proxies);
+							$request = Request::createFromGlobals();
+							$ip = $request->getClientIp();
 							
 							$player_params = array(
 								'send_email'    => $enteredEmail
@@ -71,7 +78,7 @@ if ($submitted) {
 								, 'preconfirm'  => $preconfirm
 								, 'confirm'     => $confirm
 								, 'referred_by' => $enteredReferral
-								, 'ip'			=> isset($_SERVER['REMOTE_ADDR'])? $_SERVER['REMOTE_ADDR'] : ''
+								, 'ip'			=> $ip
 							);
 
 							if ($error = create_account_and_ninja($enteredName, $player_params)) { // Create the player.
