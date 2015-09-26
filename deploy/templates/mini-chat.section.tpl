@@ -23,13 +23,6 @@
                   Ninja Chat
                 </div>
                 
-                <div class='active-members-count'>
-                  Ninjas:
-                  <span id="active-members-display">{$members|default:'-'}</span> Active
-                  /
-                  <span id="total-members-display">{$membersTotal|default:'-'}</span> Total
-                </div>
-                
                 <div id="chat-and-switch">
 
                   <form id="post_msg_js" class='chat-submit' name="post_msg" {if isset($user_id) and $user_id}data-logged-in='true'{/if} action="chat.php" method="post">

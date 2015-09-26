@@ -32,11 +32,6 @@ if ($user_id) {
 
 // Output section.
 
-$stats        = membership_and_combat_stats();
-$total_chars  = $stats['player_count'];
-$chars_online = $stats['players_online'];
-$active_chars = $stats['active_chars'];
-
 $message_count = get_chat_count();
 $chats = get_chats(($view_all? null : $chatlength)); // Limit by chatlength unless a request to view all came in.
 $chats = $chats->fetchAll();

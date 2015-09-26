@@ -41,9 +41,6 @@
   </form>
 {/if}
 
-  <div class='active-members-count'>
-    Ninjas: {$active_chars} Active / {$chars_online} Online / {$total_chars} Total
-  </div>
   <dl class='chat-messages'>
 {assign var="previous_ago" value=''}
 {assign var="previous_date" value=''}
