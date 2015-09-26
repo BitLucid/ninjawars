@@ -1,6 +1,8 @@
 <?php
 // lib_auth.php
 
+use Symfony\Component\HttpFoundation\Request;
+
 // Check for whether a login and pass match uname/active_email and hash, respectively.
 function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 	$login = strtolower(sanitize_to_text((string)$dirty_login));
@@ -125,6 +127,9 @@ function login_user_by_oauth($oauth_id, $oauth_provider){
 
 // Perform all the login functionality for the login page as requested.
 function perform_login_if_requested($is_logged_in, $login_requested, $settings){
+	Request::setTrustedProxies(Constants::$trusted_proxies);
+	$request = Request::createFromGlobals();
+	$user_agent = isset($_SERVER['HTTP_USER_AGENT'])? $_SERVER['HTTP_USER_AGENT'] : null;
 	// Extract the settings as sent in below.
 	list($logged_out, $username_requested, $pass, $referrer, $stored_username) = $settings;
 	// already logged in/login behaviors
@@ -135,8 +140,8 @@ function perform_login_if_requested($is_logged_in, $login_requested, $settings){
 		if ($login_requested) { 	// Request to login was made.
 			$login_attempt_info = array(
 				'username'=>$username_requested, 
-				'user_agent'=>$_SERVER['HTTP_USER_AGENT'], 
-				'ip'=>$_SERVER['REMOTE_ADDR'], 
+				'user_agent'=>$user_agent, 
+				'ip'=>$request->getClientIp(),
 				'successful'=>0, 
 				'additional_info'=>$_SERVER);
 			$logged_in    = login_user($username_requested, $pass);
@@ -251,7 +256,7 @@ function characters_are_linked($char_id, $char_2_id){
 		return false;
 	} else {
 		if ($account_id == $account_2_id){
-			error_log('Clone kill performed on accounts ['.$account_id.'] and ['.$account_2_id.']');
+			error_log('Two accounts were linked ['.$account_id.'] and ['.$account_2_id.']');
 			return true;
 		}
 		$account_ip = account_info($account_id, 'last_ip');
@@ -260,7 +265,7 @@ function characters_are_linked($char_id, $char_2_id){
 			// When account ips are empty or equal the server ip, then don't clone kill them.
 			return false;
 		} else {
-			error_log('Clone kill performed on accounts ['.$account_id.'] and ['.$account_2_id.'] with ips ['.$account_ip.'] and ['.$account_2_ip.']');
+			error_log('Two accounts were linked ['.$account_id.'] and ['.$account_2_id.'] with ips ['.$account_ip.'] and ['.$account_2_ip.']');
 			return ($account_ip == $account_2_ip);
 			// If none of the other stuff matched, then the accounts count as not linked.
 		}
@@ -537,7 +542,9 @@ function self_ninja_id(){
 function update_activity_log($p_playerID) {
 	// (See update_activity_info in lib_header for the function that updates all the detailed info.)
 	DatabaseConnection::getInstance();
-	$user_ip = $_SERVER['REMOTE_ADDR'];
+	Request::setTrustedProxies(Constants::$trusted_proxies);
+	$request = Request::createFromGlobals();
+	$user_ip = $request->getClientIp();
 	query("UPDATE players SET days = 0, ip = :ip WHERE player_id = :player", array(':ip'=>$user_ip, ':player'=>$p_playerID));
 	query("Update accounts set last_ip = :ip, last_login = now() where account_id = (select _account_id from account_players join players on _player_id = player_id where player_id = :pid)",
 		array(':ip'=>$user_ip, ':pid'=>$p_playerID));

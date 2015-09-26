@@ -94,7 +94,7 @@ class AttackLegal
 		$server_addr = isset($_SERVER['SERVER_ADDR'])? $_SERVER['SERVER_ADDR'] : null;
 		$host= gethostname(); 
 		$active_ip = gethostbyname($host);
-		$allowable = ['127.0.0.1', $server_addr, $active_ip];
+		$allowable = array_merge(['127.0.0.1', $server_addr, $active_ip], Constants::$trusted_proxies);
 		$self_ip = $self->ip();
 		if(!$self_ip || in_array($self_ip, $allowable) ){
 			return false;  // Don't have to obtain the target's ip at all if these are the case!

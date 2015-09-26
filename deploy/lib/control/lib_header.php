@@ -1,4 +1,6 @@
 <?php
+use Symfony\Component\HttpFoundation\Request;
+
 /**
   *  Creates all the environmental variables, with no outputting.
 **/
@@ -60,7 +62,9 @@ function globalize_user_info($private=true, $alive=true) {
 **/
 function update_activity_info() {
 	// ******************** Usage Information of the browser *********************
-	$remoteAddress = (isset($_SERVER['REMOTE_ADDR'])     ? $_SERVER['REMOTE_ADDR']                     : NULL);
+	Request::setTrustedProxies(Constants::$trusted_proxies);
+	$request = Request::createFromGlobals();
+	$remoteAddress = $request->getClientIp();
 	$userAgent     = (isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 250) : NULL); // Truncated at 250 char.
 	$referer       = (isset($_SERVER['HTTP_REFERER'])    ? substr($_SERVER['HTTP_REFERER'], 0, 250)    : '');   // Truncated at 250 char.
 
