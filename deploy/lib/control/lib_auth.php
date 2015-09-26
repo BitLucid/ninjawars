@@ -249,6 +249,7 @@ function characters_are_linked($char_id, $char_2_id){
 	$char_2_info = char_info($char_2_id);
 	$char_21_active = @$char_2_info['active'];
 	$server_ip = $_SERVER['SERVER_ADDR'];
+	$allowed_ips = array_merge(['127.0.0.1', $server_ip], Constants::$trusted_proxies);
 	if(empty($account_id) || empty($account_2_id) || empty($char_1_info) || empty($char_2_info)){
 		return false;
 	} elseif (!$char_1_active || !$char_2_active){
@@ -261,7 +262,7 @@ function characters_are_linked($char_id, $char_2_id){
 		}
 		$account_ip = account_info($account_id, 'last_ip');
 		$account_2_ip = account_info($account_2_id, 'last_ip');
-		if(empty($account_ip) || empty($account_2_ip) || $account_2_ip == $server_ip || $account_id == $server_ip){
+		if(empty($account_ip) || empty($account_2_ip) || in_array($account_ip, $allowed_ips) || in_array($account_2_ip, $allowed_ips)){
 			// When account ips are empty or equal the server ip, then don't clone kill them.
 			return false;
 		} else {
