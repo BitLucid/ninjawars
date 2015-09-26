@@ -38,8 +38,9 @@ class TestAccountCreateAndDestroy{
 	// Create a testing account
 	public static function create_testing_account($confirm=false){
 		@session_start();
-		$previous_server = @$_SERVER['REMOTE_ADDR'];
-		$_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR']? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+		$ip = isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+		//$previous_server = @$_SERVER['REMOTE_ADDR'];
+		//$_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR']? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
 		TestAccountCreateAndDestroy::purge_test_accounts();
 		$found = get_char_id(TestAccountCreateAndDestroy::$test_ninja_name);
 	    if((bool)$found){
@@ -57,7 +58,7 @@ class TestAccountCreateAndDestroy{
 			, 'preconfirm'  => true
 			, 'confirm'     => $confirm
 			, 'referred_by' => 'ninjawars.net'
-			, 'ip'			=> $_SERVER['REMOTE_ADDR']
+			, 'ip'			=> $ip
 		);
 		ob_start(); // Skip extra output
 		$error = create_account_and_ninja(TestAccountCreateAndDestroy::$test_ninja_name, $player_params);
@@ -65,13 +66,14 @@ class TestAccountCreateAndDestroy{
 		if($confirm){
 			$confirmed = confirm_player(TestAccountCreateAndDestroy::$test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
 		}
-		$_SERVER['REMOTE_ADDR']=$previous_server; // Reset remote addr to whatever it was before.
+		//$_SERVER['REMOTE_ADDR']=$previous_server; // Reset remote addr to whatever it was before.
 		$char_id = get_char_id(TestAccountCreateAndDestroy::$test_ninja_name);
 		return $char_id;
 	}
 
 	// Create a separate, second testing account
 	public static function create_alternate_testing_account($confirm=false){
+		$ip = isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
 		if((bool)get_char_id(TestAccountCreateAndDestroy::$alt_test_ninja_name)){
 			throw new Exception('Test user found ['.$found.'] with name ['.TestAccountCreateAndDestroy::$alt_test_ninja_name.'] already exists');
 		}
@@ -87,7 +89,7 @@ class TestAccountCreateAndDestroy{
 			, 'preconfirm'  => true
 			, 'confirm'     => $confirm
 			, 'referred_by' => 'ninjawars.net'
-			, 'ip'			=> $_SERVER['REMOTE_ADDR']
+			, 'ip'			=> $ip
 		);
 		ob_start(); // Skip extra output
 		$error = create_account_and_ninja(TestAccountCreateAndDestroy::$alt_test_ninja_name, $player_params);

@@ -41,7 +41,6 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	public $test_email = null;
 	public $test_password = null;
 	public $test_ninja_name = null;
-	public $previous_server_ip = null;
 
 	/**
 	 * group accountconf

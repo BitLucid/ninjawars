@@ -13,7 +13,7 @@ class Account_Test extends PHPUnit_Framework_TestCase {
 		$this->test_password = TestAccountCreateAndDestroy::$test_password;
 		$this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
 		TestAccountCreateAndDestroy::purge_test_accounts(TestAccountCreateAndDestroy::$test_ninja_name);
-		$this->testAccountId = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
+		$this->testAccountId = TestAccountCreateAndDestroy::account_id();
 	}
 
 	public function tearDown(){
