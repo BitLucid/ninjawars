@@ -5,6 +5,7 @@
 */
 define('DATABASE_USE_PASSWORD', true); // *** Whether to specify password to pdo at all. Generally true only on live
 define('DATABASE_USE_PORT', true); // *** Whether to specify port to pdo at all. Generally true only on live
+define('DATABASE_USE_HOST', false); // *** Whether to specify HOST to pdo at all. Generally true only on live
 define('DATABASE_HOST', __DB_HOST__);		// *** The host to connect to for the database
 define('DATABASE_PORT', __DB_PORT__);		// *** The port number to connect on.
 define('DATABASE_USER', __DB_USER__);		// *** The user that should connect to the database
@@ -37,8 +38,13 @@ define('TEMPLATE_LIBRARY_PATH', SERVER_ROOT.'vendor/smarty/smarty/libs/Smarty.cl
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
 define('TEMPLATE_CACHING_PATH', SERVER_ROOT.'templates/cache/'); // *** This folder must have write permissions.
 define('LOGS', SERVER_ROOT.'resources/logs/'); // *** For all custom logging
-define('CONNECTION_STRING', 'pgsql:host='.DATABASE_HOST.';dbname='.DATABASE_NAME.';user='.DATABASE_USER.
+define('CONNECTION_STRING', 'pgsql:'.(DATABASE_USE_HOST? 'host='.DATABASE_HOST : '').';dbname='.DATABASE_NAME.';user='.DATABASE_USER.
 	(DATABASE_USE_PORT?';port='.DATABASE_PORT:'').(DATABASE_USE_PASSWORD?';password='.DATABASE_PASSWORD:''));
+
+// Can't use constants as arrays until php 7, so static class info instead.
+class Constants {
+    public static $trusted_proxies = ['104.130.111.36', '10.189.245.10'];
+}
 
 // Seperate, tracked file for derived constants, that changes as they change.
 require(SERVER_ROOT."derived_constants.php");
