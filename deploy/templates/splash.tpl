@@ -8,32 +8,30 @@
 		  </a>
 		</div>
 		<div id='logo-placeholder'>
-      <!-- Spacer div for the main shuriken linkback logo -->
-      &nbsp;
+      &nbsp; <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
 		<nav role='navigation' id='top-bar' class='navigation'>
 		  <span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
 		</nav>
 		<nav id='top-logo'>
       <h1>The Ninja Game at </h1>
-      <h1><a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='NinjaWars' width='200' height='100'></a> .net</h1>
-      
+      <h1 class='title-box'><a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='NinjaWars' width='200' height='100'></a>.net</h1>
 		</nav>
       
-        <nav role='navigation' id='subcategory-bar' class='navigation'>
-          <ul id='ninjas-subcategory'>
-            <li><a href="list.php" target="main">Ninjas</a></li>
-            <li><a href="clan.php" target="main">Clans</a></li>
-          </ul>
-          <ul id='map-subcategory'>
-          	<li><a href='map.php' id='menu-map-head' target='main' title='Travel to different locations on the map'>Map&rarr;</a></li>
-            <li><a href="shop.php" target="main">Shop</a></li>
-            <li><a href="work.php" target="main">Field</a></li>
-            <li>
-              <a href="doshin_office.php" target="main">Doshin <img class='doshin-image' src="images/doshin.png" alt=""></a>
-            </li>
-          </ul>
-        </nav> <!-- End of subcategory bar -->
+    <nav role='navigation' id='subcategory-bar' class='navigation'>
+      <ul id='ninjas-subcategory'>
+        <li><a href="list.php" target="main">Ninjas</a></li>
+        <li><a href="clan.php" target="main">Clans</a></li>
+      </ul>
+      <ul id='map-subcategory'>
+      	<li><a href='map.php' id='menu-map-head' target='main' title='Travel to different locations on the map'>Map&rarr;</a></li>
+        <li><a href="shop.php" target="main">Shop</a></li>
+        <li><a href="work.php" target="main">Field</a></li>
+        <li>
+          <a href="doshin_office.php" target="main">Doshin <img class='doshin-image' src="images/doshin.png" alt=""></a>
+        </li>
+      </ul>
+    </nav> <!-- End of subcategory bar -->
       
 	  </header><!-- End of header -->
       

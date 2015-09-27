@@ -20,6 +20,7 @@ if(!$char_id){
 	$username = $player_info['uname'];
 	$level = $player_info['level'];
 	$new_player = $level<2;
+	$gravatar_url     = generate_gravatar_url($player_info['player_id']);
 
 	$unread_message_count = unread_message_count();
 	
@@ -39,6 +40,7 @@ if(!$char_id){
 		, 'new_player'		 => $new_player
 		, 'user_id'          => $char_id
 		, 'player_info'      => $player_info
+		, 'gravatar_url'	 => $gravatar_url
 		, 'unread_message_count' => $unread_message_count
 		, 'members'          => $member_counts['active']
 		, 'membersTotal'     => $member_counts['total']

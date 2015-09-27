@@ -693,6 +693,9 @@ a:link {} a:visited {} a:active {}
 	width:80px;
 	height:80px;
 }
+#index-header .avatar img {
+	width:72px;height:72px;
+}
 
 .member-info span {
 	display: block;
@@ -1259,6 +1262,9 @@ body.solo-page h1 {
 .splash .boxes {
 	padding: 0;
 }
+.splash .title-box{
+	display:inline-block;white-space:nowrap;
+}
 .boxes .box-title {
 	background: #006633;color:gainsboro;font-weight:bold;font-variant:small-caps;
 	text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
@@ -1420,7 +1426,7 @@ iframe {
 /* Splash page specific stuff */
 
 .splash #top-logo{
-  width:50%;text-align:center;display:inline-block;vertical-align:top;line-height:40px;margin-left: 2em;margin-right: 2em;
+  width:56%;text-align:center;display:inline-block;vertical-align:top;line-height:40px;margin-left:1em;margin-right:1em;
 }
 .splash #menu-map-head{
   font-size:xx-large;margin-right:.5em;
@@ -1429,12 +1435,8 @@ iframe {
   width:8px;height:8px;
 }
 .splash #top-logo h1{
-  display:inline-block;width:30%;
+  display:inline-block;
   font:40px/45px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;vertical-align:middle;margin:0;padding:0;background-color:transparent;
-  text-align:right;
-}
-.splash #top-logo h1 + h1{
-	width:60%;text-align:left;
 }
 .splash #feedback-link a{
   font-size:2em;
@@ -1479,6 +1481,54 @@ iframe {
 	 min-height:40em;
 	 width:100%;
 	 border:0;
+}
+
+#index-header > .parent{
+  display:inline-block;text-align:center;
+}
+#index-header .bars-container{
+  width:50%;
+}
+#health-and-turns{
+  width:100%;max-width:30em;
+}
+#index-header .child{
+  display:inline-block;text-align:left;
+}
+
+#ninja-box{
+  display:inline-block;width:165px;height:80px;padding-right:4px;padding-top:4px;
+  position:relative;float:right;
+}
+#ninja-box .text-info{
+  display:inline-block;width:80px;height:80px;vertical-align:top;
+  overflow:hidden;
+}
+#ninja-dropdown{
+  display:none;position:absolute;top:105%;width:85%;background-color:ghostwhite;color:#333;z-index:11;padding:0.7em 3% 0.7em;margin-left:1%;margin-right:1%;
+  border:medium solid #333;
+}
+#ninja-dropdown a:hover{
+	color:teal;
+}
+#index-avatar{
+  display:inline-block;width:80px;height:80px;
+}
+#health-and-turns{
+  display:inline-block;vertical-align:top;
+}
+#barstats{
+  width:100%;display:none;height:100%;font-size:.9em;
+}
+#barstats #health, #barstats #turns, #barstats #kills{
+  height:33%;
+}
+#sidebar-column #news-housing{
+  height:80px;margin-top:20px;
+}
+#sidebar-column #chat-housing{
+  height:93%;
+  min-height:40em;
 }
 
 #sidebar-column{
@@ -1566,6 +1616,7 @@ a#skip-to-bottom{
     width:300px;
     min-height:80px;
     margin-left:10%;
+    margin-bottom:0.5%;
     position:relative;
     vertical-align:top;
 }
@@ -1581,10 +1632,10 @@ a#skip-to-bottom{
     display:inline-block;
     margin-left:100px;
     margin-top:0;
+    margin-bottom:0;
 }
 #html5-integration{
     display:block;
-    margin-top:-1em;
 }
 
 
@@ -2196,11 +2247,6 @@ table#player-attack {
 	position:relative;
 }
 
-#logout {
-	float:right;
-	margin-right: 4px;
-}
-
 #logout a {
 	font-variant:small-caps;
 	height: 100%;
@@ -2222,6 +2268,7 @@ table#player-attack {
 }
 #category-bar ul {
 	height:100%;
+	margin:0;padding:0;
 	z-index:3;
 }
 #category-bar li {
@@ -2602,6 +2649,12 @@ hr.edge-fade { /* Gradient transparent - color - transparent */
 .slightly-padded{
   padding:0.1em;
 }
+.parent{
+	text-align:center;
+}
+.child{
+	display:inline-block;text-align:left;
+}
 
 .nice-notice, .hazy-pop{
   background:pink; color:brown; border:1px solid crimson;text-align:center;font-size:1.5em;
@@ -2610,6 +2663,29 @@ hr.edge-fade { /* Gradient transparent - color - transparent */
 }
 .nice-notice a,.hazy-pop a{
   font-weight:bold;
+}
+
+.bubble {
+	position: relative;
+	padding: 0px;
+	background: ghostwhite;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	z-index:4;
+}
+
+.bubble:after {
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-width: 0 15px 15px;
+	border-color: ghostwhite transparent;
+	display: block;
+	width: 0;
+	z-index: 5;
+	top: -15px;
+	left: 60%;
 }
  
 .antialiased {

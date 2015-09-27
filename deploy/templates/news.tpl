@@ -1,10 +1,18 @@
 <h1>News Board</h1>
 <style type='text/css'>
 {literal}
+#news-list .parent{
+  text-align:center;
+}
+#news-list .child{
+  display:inline-block;text-align:left;
+}
 .success-notice{
-	border:green .3em solid;
-	padding:.2em;
-	margin: .3em auto;
+  border-color:#00806C;
+  border-style:solid;
+  border-width:0.3em;
+	padding:0.4em 0.7em 0.3em;
+	margin: 0.1em auto 0.3em;
 }
 .search_title {
   margin-bottom:20px;
@@ -56,8 +64,10 @@
 
 <div id='news-list'>
 {if isset($new_successful_submit) and $new_successful_submit}
-  <div class='success-notice'>
-    <strong>Your news successfully posted!</strong>
+  <div class='parent'>
+    <div class='success-notice child'>
+      <strong>Your news successfully posted!</strong>
+    </div>
   </div>
 {/if}
   

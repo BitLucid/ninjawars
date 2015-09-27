@@ -1,4 +1,3 @@
-
 <!-- This template is only used after login -->
 
     <!-- Version {$version|escape} -->
@@ -14,33 +13,89 @@
 	    <!-- Spacer div for the main shuriken linkback logo -->
 	    &nbsp;
 	  </div>
-	  <div id='health-and-turns' class='various-bars' style='width:46%;display:inline-block;vertical-align:top;margin:.3% 15% .1em;'>
-	  	<div id='barstats' style='width:100%;display:none;height:100%;font-size:.9em'>
-		  	<!-- Display the number bars for various char stats-->
-		  	<div id='health' style='height:33%'>
-			  {include file="generic_bar.tpl" bar_percent=$player_info.hp_percent number=$player_info.health zero_word='Dead' number_of='Health' bar_color='#660000' title='Heal Yourself' action='shrine_mod.php?heal_and_resurrect=1'}<!-- #ee2520 -->
-		  	</div>
-		  	<div id='turns' style='height:33%'>
-			  {include file="generic_bar.tpl" bar_percent=$player_info.turns_percent number=$player_info.turns zero_word='No Turns' number_of='Turns' bar_color='#003366' title='Speed Up' action='inventory_mod.php?item=amanita&amp;selfTarget=1'}	
-		  	</div>
-		  	<div id='kills' style='height:33%'>
-			  {include file="generic_bar.tpl" bar_percent=$player_info.exp_percent number=$player_info.kills zero_word='No Kills' number_of='Kills' bar_color='#330066' title='View Stats' action='stats.php'}<!-- #6612ee -->
-		  	</div>
-	  	</div>
-	  </div>
+    <div class='bars-container parent'>
+  	  <div id='health-and-turns' class='various-bars child'>
+  	  	<div id='barstats'>
+  		  	<!-- Display the number bars for various char stats-->
+  		  	<div id='health'>
+  			  {include file="generic_bar.tpl" bar_percent=$player_info.hp_percent number=$player_info.health zero_word='Dead' number_of='Health' bar_color='#660000' title='Heal Yourself' action='shrine_mod.php?heal_and_resurrect=1'}<!-- #ee2520 -->
+  		  	</div>
+  		  	<div id='turns'>
+  			  {include file="generic_bar.tpl" bar_percent=$player_info.turns_percent number=$player_info.turns zero_word='No Turns' number_of='Turns' bar_color='#003366' title='Speed Up' action='inventory_mod.php?item=amanita&amp;selfTarget=1'}	
+  		  	</div>
+  		  	<div id='kills'>
+  			  {include file="generic_bar.tpl" bar_percent=$player_info.exp_percent number=$player_info.kills zero_word='No Kills' number_of='Kills' bar_color='#330066' title='View Stats' action='stats.php'}<!-- #6612ee -->
+  		  	</div>
+  	  	</div>
+  	  </div>
+    </div>
 
-		<div id='logout'>
-		    <a href="logout.php">
-		      <img src='{$smarty.const.IMAGE_ROOT|escape}logout.png' alt='Logout' title='Logout of the game' style='height:60px;width:60px'>
-		    </a>
-		</div>
+    <div id='ninja-box'>
+      <div class='text-info'>
+        <div id='messages'>
+            <div>
+                <a target="main" id='message-inbox' href="messages.php"><img id='messages-icon' src='/images/icons/mono/commentblack32.png'  height=16 width=16 alt='' style='vertical-align:top'><span class='unread-count' style='vertical-align:top'>{$unread_message_count}</span>
+                </a>
+            </div>
+            <div>
+              <a target='main' href='events.php'>
+                <img src='/images/icons/mono/star32.png'  height=16 width=16 alt=''>
+              </a>
+            </div>
+        </div>
+      </div>
+      <div id='index-avatar'>
+        {include file="gravatar.tpl" gurl=$gravatar_url}
+      </div>
+
+      <div id='ninja-dropdown' class='bubble'>
+        <div class='ninja-name'>
+            <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your ninja information'>
+              <strong class='char-name'>{$username|escape}</strong>
+            </a>
+        </div>
+        {if $new_player}
+        <div id='helpful-info'>
+          <a target='main' href='tutorial.php'>Helpful Info</a>
+        </div>
+        {/if}
+        <div class='ninja-info'>
+          <a href='stats.php' target='main' title='Your ninja stats, level, info, etc.'><img src="/images/icons/mono/heart32.png" height="16" width="16" alt="">Ninja Stats</a>
+        </div>
+        <div class='account-info'>
+          <a href="account.php" target="main" title='Your player account info, email, password, etc.'><img src="/images/icons/mono/gear32.png" height="16" width="16" alt="">Account Info</a>
+        </div>
+        <!-- Recent Events count and target will get put in here via javascript -->
+        <div id='recent-events' class="boxes active" style='display:none'>
+          <div>
+              <a target='main' id='recent-event-attacked-by' href='events.php' title='View events'>
+                    You weren't recently in combat
+              </a> with 
+              <a id='view-event-char' target='main' href='#' title="View a player's profile">
+                anyone
+              </a>.
+          </div>
+        </div><!-- End of recent events -->
+        <div class='parent'>
+          <div id='logout' class='child'>
+              <a href="logout.php">
+                <button type='button'>Logout</button>
+              </a>
+          </div>
+        </div>
+      </div> <!-- end of #ninja-dropdown -->
+
+    </div><!-- end of #ninja-box -->
+
+
+
 
       <div id='menu-bar' class='header-section'>
         <div id='reactive-panel'>
             <nav id='category-bar' class='navigation'>
               <ul>
                 <li id='status-actions' class='self'>
-                  <a href='events.php' rel='nav' target='main' title='See messages about whether you were attacked or other events.'>
+                  <a href='events.php' rel='nav' target='main' >
                     <img src='/images/ninja_status_icon_50px.png' alt='' style='width:50px;height:51px'>Watch
                   </a>
                 </li>
@@ -58,7 +113,9 @@
             </nav>
             <nav id='subcategory-bar' class='navigation' rel='nav'>
                 <ul id='self-subcategory'>
+                  <!--
                   <li><a href="stats.php" rel='nav' target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
+                  -->
                   <li><a href="skills.php" rel='nav' target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
                   <li><a href="inventory.php" rel='nav' target="main" title='Your items and links to use them on yourself.'>Items</a></li>
                   <!-- Profile -->
@@ -84,7 +141,6 @@
       
       
       <section id='core' class='clearfix'>
-      
       <!-- Test stuff! -->
       <nav id='left-nav'>
       	&nbsp;
@@ -92,88 +148,30 @@
       </nav>
       
       <!-- MAIN COLUMN STARTS HERE -->
-		{include file="core.tpl"}
-	  <!-- Core Column ends here -->
+		  {include file="core.tpl"}
+      <!-- Core Column ends here -->
 
 
       <!-- SIDEBAR COLUMN STARTS HERE -->
       <aside id='sidebar-column'>
-            <div>
-                <a target="main" href="player.php?player_id={$user_id|escape:'url'|escape}" title='Display your ninja information'>
-                	<strong class='char-name'>{$username|escape}</strong>
-                </a>
-            </div>
 
-
-{if $new_player}
-          <div id='helpful-info'>
-            <a target='main' href='tutorial.php'>Helpful Info</a>
-          </div>
-{/if}
-
-
-
-
-
-          <!-- Recent Events count and target will get put in here via javascript -->
+        {if isset($show_news) and $show_news}
+        <div id='news-housing'>
+          {include file="mini-news.section.tpl"}
+        </div><!-- End of news-housing -->
+        {/if}
           
-          <div id='messages' class='boxes active'>
-              <div>
-                  <a target="main" id='message-inbox' href="messages.php">Messages<img id='messages-icon' src='/images/icons/mono/commentblack32.png'  height=16 width=16 alt='' style='vertical-align:top'><span class='unread-count'>{$unread_message_count}</span>
-                  </a>
-              </div>
+        <div id='chat-housing'>
+          {include file="mini-chat.section.tpl"}
+        </div><!-- End of chat-housing -->
 
-
-          
-
-
-          </div>
-
-          
-          <div id='recent-events' class="boxes active" style='display:none'>
-            <!--<div>
-                <a id='view-events' target='main' href='events.php' title='View events'>
-                  Unread Events <span class='unread-events-count unread-count'>0</span>
-                </a>
-            </div>-->
-              
-            <div>
-                <a target='main' id='recent-event-attacked-by' href='events.php' title='View events'>
-                      You weren't recently in combat
-                </a> with 
-                <a id='view-event-char' target='main' href='#' title="View a player's profile">
-                  anyone
-                </a>.
-            </div>
-            
-          </div><!-- End of recent events -->
-
-    {if isset($show_news) and $show_news}
-    <div id='news-housing' style='height:80px;margin-top:20px;'>
-        
-    {include file="mini-news.section.tpl"}
-
-    </div><!-- End of news-housing -->
-    {/if}
-        
-      <div id='chat-housing' style='height:250px;'>
-        
-		{include file="mini-chat.section.tpl"}
-
-	  </div><!-- End of chat-housing -->
-
-
-
-      </aside><!-- End of sidebar-column -->  
-     
+      </aside><!-- End of sidebar-column -->       
       </section><!-- end of core-->
       
       
       <footer id='index-footer' class='navigation'>
-      
-      <!-- Stuff like catchphrases, links, and the author information -->
-      {include file='linkbar_section.tpl'}
-
+        <!-- Stuff like catchphrases, links, and the author information -->
+        {include file='linkbar_section.tpl'}
       </footer>
       
 <!-- Version: {$version|escape} -->

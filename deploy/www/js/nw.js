@@ -237,7 +237,7 @@ if (parent.window != window) {
 		return updated;
 	};
 
-	NW.updateMemberCounts = function() {
+/*	NW.updateMemberCounts = function() {
 		var activeCount = this.pullFromDataStore('member_counts', 'active');
 		var totalCount = this.pullFromDataStore('member_counts', 'total');
 
@@ -245,7 +245,7 @@ if (parent.window != window) {
 		NW.totalMembersContainer.textContent = totalCount;
 
 		return true;
-	};
+	};*/
 
 	// Update the number of unread messages, displayed on index.
 	NW.unreadMessageCount = function(messageCount) {
@@ -273,7 +273,7 @@ if (parent.window != window) {
 		var messageUpdated      = this.updateMessageCount();
 		var eventUpdated        = this.updateLatestEvent();
 		//var healthUpdated       = this.getAndUpdateHealth(); // health bar.
-		var memberCountsUpdated = this.updateMemberCounts(); // Active member count over chat
+		//var memberCountsUpdated = this.updateMemberCounts(); // Active member count over chat
 
 		// If any changes to data occurred, return true.
 		var res = (!!(messageUpdated || eventUpdated /*|| healthUpdated*/));
@@ -508,9 +508,10 @@ $(function() {
 		quickstatsLinks.css({'font-style':'italic'}); // Italicize
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
 
+		$('#index-avatar').click(function(){
+    		$('#ninja-dropdown').toggle();
+  		});
 
-		NW.activeMembersContainer = document.getElementById('active-members-display');
-		NW.totalMembersContainer = document.getElementById('total-members-display');
 	} else if (g_isSubpage) {
 		$('body').addClass('solo-page'); // Add class to solo-page bodies.
 		// Displays the link back to main page for any lone subpages not in iframes.
