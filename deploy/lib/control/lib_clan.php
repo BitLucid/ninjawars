@@ -69,6 +69,7 @@ function rename_clan($p_clanID, $p_newName) {
 // TODO: Simplify this invite system.
 
 // Send a message and change the status of a player so that they are in an "invited" state.
+/*
 function inviteChar($p_target, $p_clan, $p_inviter) {
 	$failure_reason = null;
 	DatabaseConnection::getInstance();
@@ -103,7 +104,7 @@ function inviteChar($p_target, $p_clan, $p_inviter) {
 	}
 
 	return $failure_error;
-}
+}*/
 
 function send_clan_join_request($user_id, $clan_id) {
 	DatabaseConnection::getInstance();

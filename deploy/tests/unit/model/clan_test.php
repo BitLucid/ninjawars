@@ -127,7 +127,9 @@ class TestClan extends PHPUnit_Framework_TestCase {
     }
 
     function testInviteCharacterToYourClan(){
-        $this->markTestIncomplete('Inviting a ninja from the clan object is not yet implemented.');
+        $clan = ClanFactory::create('someTestClan', ['founder'=>'noone', 'clan_avatar_url'=>'http://example.com/img.png', 'description'=>'SomeDesc']);
+        $error = $clan->invite(new Player($this->char_id), new Player($this->char_id_2));
+        $this->assertFalse((bool)$error);
     }
 
     function testGetClanObjectNumericRating(){

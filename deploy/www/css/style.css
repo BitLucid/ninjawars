@@ -756,7 +756,7 @@ ol.aboutLower {
 	margin-left: 0;
 }
 
-.formbutton, .formButton, input[type=submit] {
+.formbutton, .formButton, input[type=submit], button{
 	background:black;
 	color:SkyBlue;
 	font-weight:bold;
@@ -1926,30 +1926,62 @@ table#player-attack {
 	cursor: pointer;
 }
 
+/* Clan page styling */
+#clan-page-section{
+  margin-left:0.7em;margin-right:0.7em;
+}
+#clan-page-section hr{
+  margin-bottom:1em;margin-top:0.7em;
+}
+.icon:before{
+  content: "\00a0";
+}
+.icon {
+    display: inline-block;
+    font-size: 32px;
+    width:1em;
+    height:1em;
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing:antialiased;
+}
+.icon.users{
+  background-image:url('/images/icons/mono/users32.png');
+}
+
 /* Clan leader options */
 #leader-panel {
 	width: 40%;
 	float:left;
 	text-align: center;
-	border: thin solid white;
-	padding-bottom: 5px;
+	border: thin dotted rgba(200, 200, 200, 0.5);
+	border-top:none;
+	padding:0 0 0.3em;
 }
 #leader-panel ul {
 	list-style-type: none;
 	margin: 3px;
-	height: 2.3em;
+	margin-top:0;
+	padding-top:0;
+}
+#leader-panel h1,#leader-panel h2,#leader-panel h3,#leader-panel h4{
+	margin-left:0;margin-right:0;width:100%;
 }
 #leader-panel li {
 	width: 49%;
 	float: left;
 }
+#leader-panel ul + h3{
+	clear:both;
+}
 #leader-options {
 	padding: 5px;
 	width: 100%;
-}
-#leader-panel-title {
-	font-weight: bold;
-	text-align: center;
 }
 #clan-options {
 	width: 50%;
@@ -2602,6 +2634,9 @@ select option #blue-class-select {
   padding: 0 .3em; font-style:italic; font-size:1.1em;
 }
 
+.de-em{
+	color:gray;
+}
 
 .understated-heading{
   padding:5px; border-top:1px solid #000000; border-bottom:1px solid #000000;text-align:center; background-color:#b8bee0;

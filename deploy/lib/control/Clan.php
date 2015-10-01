@@ -86,11 +86,40 @@ class Clan
     }
 
     public function addMember(Player $ninja, Player $adder){
+        if($this->hasMember($ninja->id())){
+            return 'That ninja is already a member of the clan.';
+        }
     	// Not an insert_query because there is no sequence involved or needed.
     	query('insert into clan_player (_clan_id, _player_id) values (:c, :p)', [':c'=>$this->id(), ':p'=>$ninja->id()]);
-    	query('update players set verification_number = :new_num where player_id = :id', [':new_num'=>rand(1, 9999), ':id'=>$ninja->id()]);
+    	query('update players set verification_number = :new_num where player_id = :id', [':new_num'=>rand(1, 999999), ':id'=>$ninja->id()]);
     	send_message($adder->id(), $ninja->id(),"CLAN: You have been accepted into ".$this->getName());
     	return true;
+    }
+
+    /**
+     * Passively invite a character to a clan with a message and link.
+     * @return string
+    **/
+    public function invite(Player $p_target, Player $p_inviter) {
+        $failure_reason = null;
+
+        if (!$p_target || empty($p_target)) {
+            return $failure_reason = 'No such ninja.';
+        }
+
+        $active = $p_target->isActive();
+
+        if (!$active) {
+            $failure_error = 'That ninja is not active.';
+        } else {
+            $invite_msg = $p_inviter->name().' has invited you into their clan, '.$this->getName().'. '
+            .'To accept, choose their clan '.$this->getName().' on the '
+            .message_url('clan.php?command=join&clan_id='.$this->getID(), 'clan joining page').'.';
+
+            send_message($p_inviter->id(), $p_target->id(), $invite_msg);
+            $failure_error = null;
+        }
+        return $failure_error;
     }
 
     public function leave(Player $ninja){

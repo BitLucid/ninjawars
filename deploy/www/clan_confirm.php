@@ -1,4 +1,6 @@
 <?php
+require_once(CORE.'data/ClanFactory.php');
+
 $alive      = false;
 $private    = false;
 
@@ -8,39 +10,41 @@ if ($error = init($private, $alive)) {
 
 require_once(LIB_ROOT.'control/lib_clan.php');
 
-$confirm     = in('confirm');
-$username    = get_username();
-$user_id     = get_user_id();
-$clan        = get_clan_by_player_id($user_id);
-$clan_joiner = in('clan_joiner');
-$clan_joiner_name = get_username($clan_joiner);
+$confirm     = (int) in('confirm');
+$ninja = new Player(self_char_id());
+$ninja_id     = $ninja->id();
+
+$clan        = ClanFactory::clanOfMember($ninja_id);
+$clan_name = null;
+$clan_id = null;
+$potential_clan_joiner = in('clan_joiner');
+$joining_ninja = new Player($potential_clan_joiner);
+$join_requester_name = $joining_ninja->name();
 $agree       = in('agree');
 $random      = rand(1001, 9990);
-$ninja = new Player($clan_joiner);
+$ninja_added = null;
+$join_requester_id = null;
 
-if ($clan && $clan_joiner) {
+if($clan){
 	$clan_id = $clan->getID();
 	$clan_name = $clan->getName();
 
-	if(!$ninja->name()){
+	if(!$joining_ninja->name()){
 		$error = 'No such ninja to bring into the clan.';
 	} else {
-		if ($agree) {
-		    $joiner_clan = get_clan_by_player_id($clan_joiner);
-		    $joiner_current_clan = ($joiner_clan instanceof Clan ? $clan->getID() : null);
-
-		    $joiner_info = char_info($clan_joiner);
-		    $joiner_confirmation_no = ($joiner_info ? $joiner_info['verification_number'] : null);
-
-			if (empty($joiner_current_clan) && $joiner_confirmation_no && $confirm == $joiner_confirmation_no && $agree > 0) {
-				$clan_id = $clan->getID();
-
+		$join_requester_id = $joining_ninja->id();
+		if ($agree && $agree > 0) {
+			// Allow joining as long as the verification number is correct.
+			if($confirm && $confirm === $joining_ninja->getVerificationNumber()){
 				// Add the ninja to the clan, sourced by the current char.
-				$clan->addMember($ninja, new Player($user_id));
+				$error = $clan->addMember($joining_ninja, $ninja); // addMember also randomizes the verification number.
+				$ninja_added = !(bool)$error;
+			} else {
+				$error = 'That request was old or invalid, please try inviting that ninja again.';
 			}
 		}
 	}
-}	// End of else (when clan_name is available).
+}
 
 display_page(
 	'clan_confirm.tpl'
@@ -50,5 +54,7 @@ display_page(
 		'quickstat' => false
 	)
 );
+
+
 }
-?>
+

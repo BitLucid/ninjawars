@@ -66,6 +66,11 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
     	$this->assertGreaterThan(0, $char->difficulty());
     }
 
+    function testCharacterHasAVerificationNumber(){
+        $char = new Player($this->char_id);
+        $this->assertGreaterThan(0, $char->getVerificationNumber());
+    }
+
 	/**
 	 * group char
 	**/

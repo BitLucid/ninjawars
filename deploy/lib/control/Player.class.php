@@ -4,6 +4,7 @@ require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
 require_once(LIB_ROOT . "control/lib_status.php");
 require_once(ROOT.'core/data/AccountFactory.php');
+require_once(ROOT.'core/data/ClanFactory.php');
 
 /* Ninja (actually character) behavior object.
  *
@@ -27,7 +28,7 @@ class Player implements Character {
 	public function __construct($player_id_or_username=null) {
 		if (!empty($player_id_or_username)) {
 			if (!is_numeric($player_id_or_username) && is_string($player_id_or_username)) {
-				$sel = "SELECT player_id FROM players WHERE uname = :uname LIMIT 1";
+				$sel = "SELECT player_id FROM players WHERE lower(uname) = lower(:uname) LIMIT 1";
 				$this->player_id = query_item($sel, array(':uname'=>array($player_id_or_username, PDO::PARAM_INT)));
 			} else {
 				$this->player_id = (int) $player_id_or_username;
@@ -112,7 +113,7 @@ class Player implements Character {
 	}
 
 	protected function getStatus() {
-		return ($this->vo->status === null ? $this->queryStatus() : $this->vo->status);
+		return $this->queryStatus();
 	}
 
 	public function addStatus($p_status) {
@@ -302,19 +303,7 @@ class Player implements Character {
 	}
 
 	public function getClan() {
-		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name 
-			FROM clan 
-			JOIN clan_player ON clan_id = _clan_id 
-			WHERE _player_id = :player");
-		$statement->bindValue(':player', $this->player_id);
-		$statement->execute();
-		if ($data = $statement->fetch()) {
-			$clan = new Clan($data['clan_id'], $data['clan_name']);
-			return $clan;
-		} else {
-			return null;
-		}
+		return ClanFactory::clanOfMember($this->id());
 	}
 
 	// Pull the class identity for a character.
@@ -394,6 +383,10 @@ class Player implements Character {
 
 	public function difficulty(){
 		return 10 + $this->strength() * 2 + $this->maxDamage()/* + $this->isArmored() * 5*/;
+	}
+
+	public function getVerificationNumber(){
+		return $this->vo->verification_number;
 	}
 
 }

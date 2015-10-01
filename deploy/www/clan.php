@@ -20,7 +20,7 @@ $clan_id_viewed           = (int) in('clan_id', null); // View that clan
 $new_clan_name            = trim(in('new_clan_name', ''));
 $sure                     = in('sure', '');
 $kicked                   = in('kicked', '');
-$person_invited           = in('person_invited', '');
+$search_person_invited    = in('person_invited', ''); // A search string
 $message                  = in('message', null, null); // Don't filter messages sent in.
 $message_sent             = false;
 $new_clan_avatar_url      = in('clan-avatar-url');
@@ -108,7 +108,7 @@ if(positive_int($ninja_id)){ // Logged in player.
 		if (clan_avatar_is_valid($new_clan_avatar_url)) {
 			save_clan_avatar_url($new_clan_avatar_url, $own_clan_id);
 		} else {
-			$action_message = 'That avatar url is not valid.';
+			$error = 'That avatar url is not valid.';
 		}
 
 		if ($new_clan_description) {
@@ -138,14 +138,14 @@ if(positive_int($ninja_id)){ // Logged in player.
 			$led_clan_info = $own_clan_id;
 			$leader_of_own_clan = true;
 		} else {	// *** Level req wasn't met. ***
-			$action_message = 'You do not have enough renown to create a clan. You must be at least level '.CLAN_CREATOR_MIN_LEVEL.'.';
+			$error = 'You do not have enough renown to create a clan. You must be at least level '.CLAN_CREATOR_MIN_LEVEL.'.';
 		}
 	}
 
 	if ($message) {
 		message_to_clan($message);
 		$message_sent = true;
-		$action_message = 'Message sent.';
+		$action_message = 'Message sent to clan.';
 	}
 
 	if ($own_clan_id) {
@@ -160,19 +160,19 @@ if(positive_int($ninja_id)){ // Logged in player.
 
 						$own_clan_obj->setName($new_clan_name); // Store the renamed value for the rest of this document.
 					} else {
-						$action_message = 'That clan name is already in use!';
+						$error = 'That clan name is already in use!';
 					}
 				} else {
-
+					$error = 'Sorry, too many special symbols in your clan name.';
 				}
 			} else if ($command == 'kick') {
 				//Clan Leader Action Kick a chosen member
-				if ($kicked == '') {
+				if (!$kicked) {
 					// Get the member info for the select dropdown list.
 					$members_and_ids = clan_member_names_and_ids($own_clan_id, self_char_id());
 				} else {	// *** An actual successful kick of a member. ***
 					$kicked_name = get_char_name($kicked);
-					$own_clan_obj->kickMember($kicked);
+					$own_clan_obj->kickMember($kicked, $ninja);
 					$kick_success = true;
 				}
 			} else if ($command == 'disband') {	// *** Clan Leader Confirmation of Disbanding of the Clan ***
@@ -197,9 +197,15 @@ if(positive_int($ninja_id)){ // Logged in player.
 
 				}
 			} else if ($command == 'invite') {	// *** Clan Leader Invite Input ***
-				if ($person_invited) {
+				$person_to_invite = new Player($search_person_invited);
+				if ($person_to_invite->id()) {
 					// *** Clan leader Invite Action ***
-					$invite_failure_message = inviteChar(new Player($person_invited), $own_clan_obj, $ninja);
+					$error = $own_clan_obj->invite($person_to_invite, $ninja);
+					if($error === null){
+						$action_message = 'Invited '.$person_to_invite->name().' to your clan.';
+					}
+				} elseif($search_person_invited) {
+					$error = 'Sorry, unable to find a ninja to invite by that name.';
 				}
 			} // End of invite command.
 
@@ -212,9 +218,9 @@ if(positive_int($ninja_id)){ // Logged in player.
 			// ***  NON LEADER CLAN MEMBER OPTIONS ***
 
 			if ($command == 'leave') {
-				$clan->leave($ninja); // *** Clan Member Action to Leave their Clan ***
+				$own_clan_obj->leave($ninja); // *** Clan Member Action to Leave their Clan ***
 
-				$clan_id = $clan = null;
+				$clan_id = $clan = $own_clan_obj = null;
 
 				$action_message = 'You have left your clan.';
 
@@ -270,4 +276,4 @@ if ($command == 'view') {
 
 $clans = clans_ranked();
 $title = $clan_name? 'Clan '.$clan_name : 'Clans';
-display_page('clan.tpl', $title, get_defined_vars(array('leaders', 'members', 'clan', 'ninja_id')), array('quickstat'=>false));
+display_page('clan.tpl', $title, get_defined_vars(array('leaders', 'members', 'clan', 'ninja_id', 'error', 'action_message')), array('quickstat'=>false));

@@ -1,8 +1,13 @@
-    <script type="text/javascript" src="/js/clan.js"></script>
+<!-- Clan js at bottom -->
 
-    <h1 id='clan-page-title'>Clan Panel</h1>
+<h1 id='clan-page-title'>Clan Panel</h1>
 
-{if $action_message}
+<section id='clan-page-section' class='clan'>
+{if $error}
+  <div class='parent'>
+    <div class='error child'>{$error|escape}</div>
+  </div>
+{elseif $action_message}
 <div class='ninja-notice'>{$action_message}</div>
 {elseif isset($kick_success) and $kick_success}
 <div class='ninja-notice'>You have removed {$kicked_name|escape} from your clan.</div>
@@ -82,23 +87,23 @@ Name of potential clan member:<br>
 			{/if}
 
             {if $leader_of_own_clan} {* Checks whether the viewer is the leader to display these sections. *}
-<div id='leader-panel'>
-  <div id='leader-panel-title' title='Show or hide the clan leader options'>
-    {$own_clan_name|escape} Clan Leader Actions
-  </div>
+<section id='leader-panel'>
+  <h2 id='leader-panel-title' title='Show or hide the clan leader options'>
+    {$own_clan_name|escape} Leader Actions
+  </h2>
   <div id='show-leader-options' style='display:none'>
     <a class='show-hide' href='#show-leader-options'>Show leader options▼</a>
   </div>
   <div id='leader-options' style='margin: 0 inherit 0'>
-    <ul id='leader-options-list'>
+    <ul id='leader-options-list' class='clearfix'>
       <li><a href='clan.php?command=invite'>Recruit for your Clan</a></li>
       <li><a href='clan.php?command=rename'>Rename Clan</a></li>
       <li><a href='clan.php?command=disband'><button type='button'>Disband Your Clan</button></a></li>
       <li><a href='clan.php?command=kick'>Kick a Clan Member</a></li>
     </ul>
 
-    <div>
-      <div><strong>Change Clan Image</strong></div>
+    <div class='glassbox'>
+      <h3>Change Clan Image</h3>
       To create a clan avatar, upload an image to <a href='http://www.imageshack.com' target='_blank' class='extLink'>imageshack.com</a>
       Then paste the image's full url here:
       <form action='clan.php' name='avatar_and_message'>
@@ -107,20 +112,20 @@ Name of potential clan member:<br>
         <input type='hidden' name='clan_id' value='{$own_clan_id|escape}'>
         <input name='clan-avatar-url' type='text' value='{$clan_avatar_current|escape}'>
         (Image can be .jpg or .png)
-        <div><strong>Change Clan Message</strong></div>
+        <h3>Change Clan Message</h3>
         Change your clan description below (max of 500 characters):
         <textarea name='clan-description'>{$clan_description_current|escape}</textarea>
         <input type='submit' value='Save Changes'>
       </form>
     </div>
   </div>  <!-- End of leader-options div -->
-</div>  <!-- End of leader-panel options -->
+</section>  <!-- End of leader-panel options -->
             {/if}
 		{else} {* Part of a clan, but not the leader - NON LEADER CLAN MEMBER OPTIONS *}
 			{if $command != 'leave'} {* Clan Member Action to Leave their Clan *}
-<p>You are currently a member of the {$own_clan_name|escape} Clan.</p>
-<p style='margin-top:1.2em; margin-bottom:1.2em;'>
-  <a href='clan.php?command=leave' onclick='leave_clan(); return false;'>Leave Current Clan</a>
+<p>You are currently a member of the <strong class='clan-name'>{$own_clan_name|escape}</strong> Clan.</p>
+<p class='glassbox'>
+  <a href='clan.php?command=leave' id='leave-clan'><button type='button'>Leave Current Clan</button></a>
 </p>
 			{/if}
 {* If the clan member left their clan, the command -was- leave, and they
@@ -142,24 +147,24 @@ As such, after the leave command, no clan membership display information should 
 
 {* Note that these should not display after a clan "leave" option occurs. *}
 <ul id='clan-options'>
+  <li><a href='clan.php?command=view&amp;clan_id={$own_clan_id|escape:'url'}'><span class='icon users'></span> View Your Clan</a></li>
   <li>
     <!--  *** Clan Member Input for Messaging their Entire Clan *** -->
     <form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
       <div>
-        Message clan: <input id='message' type='text' size='30' maxlength='{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}' name='message' class='textField'>
-        <input type='submit' value='Send This Message' class='formButton'>
+        Message all of clan: <input id='message' type='text' size='30' maxlength='{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}' name='message' class='textField'>
+        <input type='submit' value='Send' class='formButton'>
       </div>
     </form>
   </li>
-  <li><a href='clan.php?command=view&amp;clan_id={$own_clan_id|escape:'url'}'>View Your Clan</a></li>
 </ul>
 		{/if}
 	{else} {* VIEWER NOT YET PART OF ANY CLAN *}
 		{if $command == "join"} {* Clan Joining Action *}
 			{if $process == 1}
-<div id='clan-join-request-sent' class='ninja-notice'>
-  Your request to join {$viewed_clan.clan_name|escape} has been sent to {$leader.uname|escape}
-</div>
+      <div id='clan-join-request-sent' class='ninja-notice'>
+        Your request to join {$viewed_clan.clan_name|escape} has been sent to {$leader.uname|escape}
+      </div>
 			{else}
 <h2>Clans Available to Join</h2>
 <ul>
@@ -174,19 +179,19 @@ As such, after the leave command, no clan membership display information should 
 			{/if}
 		{/if}
 <section class='glassbox'>
-<div>You are a lone ninja, not a member of any clan.</div>
-<div><a href='clan.php?command=join'>View clans available to join</a></div>
+  <div>You are a lone ninja, not a member of any clan.</div>
+  <div><a href='clan.php?command=join'>View clans available to join</a></div>
 		{if $clan_id_viewed}
-<div>
-  <a href='clan.php?command=join&amp;clan_id={$clan_id_viewed|escape}&amp;process=1'>Send a request to join the Clan {$viewed_clan_name|escape}</a>
-</div>
+  <div>
+    <a href='clan.php?command=join&amp;clan_id={$clan_id_viewed|escape}&amp;process=1'>Send a request to join the Clan {$viewed_clan_name|escape}</a>
+  </div>
     	{/if}
 </section>
 
 		{if $can_create_a_clan}
   <div><a href='clan.php?command=new'><button type='button'>Start a New Clan</button></a></div>
 		{else}
-  <small class='glassbox'>You can start your own clan when you reach level {$clan_creator_min_level}.</small>
+  <small class='glassbox de-em'>You can start your own clan when you reach level {$clan_creator_min_level}.</small>
 		{/if}
 	{/if} {* End of viewer not part of any clan section *}
 {/if} {* End of logged-in-only display section *}
@@ -199,9 +204,13 @@ As such, after the leave command, no clan membership display information should 
     {/if}
 {/if}
 
+</section>
+
 <!-- *** Display all the clans in their tag list. *** -->
 
 {include file="clan.list.tpl" clans=$clans}
+
+<script type="text/javascript" src="/js/clan.js"></script>
 
 <script type="text/javascript">
 {literal}
@@ -210,7 +219,11 @@ $().ready(function (){
       $('#leader-options, #show-leader-options').toggle();
       return false;
   });
-$('#leader-options, #show-leader-options').toggle();
+  $('#leader-options, #show-leader-options').toggle();
+  $('#leave-clan').click(function(){
+    leave_clan(); 
+    return false;
+  })
 });
 {/literal}
 </script>
