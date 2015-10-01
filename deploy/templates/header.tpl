@@ -15,7 +15,7 @@
     <title>{$title|escape} - The Ninja Wars Ninja Game</title>
     <base href="{$smarty.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
     <!-- This css file now contains the mobile and print css files -->
-    <link rel="stylesheet" type="text/css" href="css/style.css" media="Screen">
+    <link rel="stylesheet" type="text/css" href="css/style.css?version=2015-10-01" media="Screen">
 
 
 	<!-- Html5 shim for ie less than 9 -->
