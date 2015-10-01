@@ -346,10 +346,10 @@ function rewardBounty($bounty_to, $bounty_on) {
 function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 	$user_id = get_user_id($username);
 	$defender_id = get_user_id($defender);
-	// *** Bounty Increase equation: (attacker's level - defender's level) / 5, rounded down, times 25 gold per point ***
-	$levelRatio     = floor((getLevel($user_id) - getLevel($defender_id)) / 5);
+	// *** Bounty Increase equation: (attacker's level - defender's level) / an increment, rounded down ***
+	$levelRatio     = floor((getLevel($user_id) - getLevel($defender_id)) / 10);
 
-	$bountyIncrease = ($levelRatio > 0 ? $levelRatio * 25 : 0);	//Avoids negative increases.
+	$bountyIncrease = min(25, max($levelRatio * 25, 0));	//Avoids negative increases, max of 30 gold, min of 0
 
 	$bountyForAttacker = rewardBounty($user_id, $defender_id); //returns a value if bounty rewarded.
 	if ($bountyForAttacker) {
@@ -360,7 +360,7 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 	} else if ($bountyIncrease > 0) {
 		// *** If Defender has no bounty and there was a level difference. ***
 		addBounty($user_id, $bountyIncrease);
-		return "Your victim was much weaker than you. The townsfolk are angered. A bounty of  $bountyIncrease gold has been placed on your head!";
+		return "Your victim was much weaker than you. The townsfolk are angered. A bounty of $bountyIncrease gold has been placed on your head!";
 	} else {
 		return null;
 	}
