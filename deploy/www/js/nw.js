@@ -508,8 +508,9 @@ $(function() {
 		quickstatsLinks.css({'font-style':'italic'}); // Italicize
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
 
-		$('#index-avatar').click(function(){
+		$('#index-avatar').on('click touchstart', function(){ // Touchstart required for mobile to be aware of the menu
     		$('#ninja-dropdown').toggle();
+    		return false;
   		});
 
 	} else if (g_isSubpage) {
