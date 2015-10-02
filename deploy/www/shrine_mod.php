@@ -166,7 +166,7 @@ if ($healed == 1 || $max_heal == 1) {  //If the player wants to heal themselves
 	$poison_cure_requested = true;
 
 	if ($player->health() > 0) {
-		$cost = 100;  //  the cost of curing poison is set here.
+		$cost = 100;  //  the cost of curing poison also has to be changed in the shrine template!
 
 		if ($startingGold >= $cost) {
 			if ($player->hasStatus(POISON)) {

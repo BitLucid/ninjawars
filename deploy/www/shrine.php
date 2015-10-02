@@ -33,4 +33,3 @@ display_page(
 	)
 ); 
 }
-?>

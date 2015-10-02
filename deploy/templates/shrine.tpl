@@ -46,16 +46,16 @@
   <p class='btn btn-success child'>You are at full health.</p>
 </div>
 	{else}
-<form id="max_heal_form" action="shrine_mod.php" method="post" name="max_heal_form" style='margin: .5em auto .5em;text-align:center'>
+<form id="max_heal_form" action="shrine_mod.php" method="post" name="max_heal_form" class='thick centered'>
   <div>
     <div><em class='speech'>How much healing do you need?</em></div>
     <input id="max_heal" type="hidden" value="1" name="max_heal">
-    <input type="submit" value="Full Heal" class="formButton" style='width:90%'>
+    <input type="submit" value="Full Heal" class="btn btn-primary" style='min-width:90%'>
   </div>
 </form>
 <form id="heal_form" action="shrine_mod.php" method="post" name="heal_form">
-  <div style="margin-top: 10px;">
-    <input type="submit" value="Heal" class="formButton">
+  <div class='thick'>
+    <input type="submit" value="Heal" class="btn btn-default">
     <input id="heal_points" type="text" size="3" maxlength="4" name="heal_points" class="textField" style='font-size:1.1em'> HP
     <input id="healed" type="hidden" value="1" name="healed">
   </div>
@@ -65,11 +65,10 @@
 
 	{if $poisoned && $player_health}
 <form action="shrine_mod.php" method="post">
-  <span class="brownHeading">Antidote(remove poison)</span>
   <p>
-    Cure Poison effect, Cost: 50 gold.
+    Cure Poison effect, Cost: 100 gold.
     <input type="hidden" name="poisoned" value="1">
-    <input type="submit" value="Antidote" class="formButton">
+    <input type="submit" value="Get Antidote" class="btn btn-primary">
   </p>
 </form>
 <hr>
