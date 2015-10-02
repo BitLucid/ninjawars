@@ -122,10 +122,14 @@ Name of potential clan member:<br>
             {/if}
 		{else} {* Part of a clan, but not the leader - NON LEADER CLAN MEMBER OPTIONS *}
 			{if $command != 'leave'} {* Clan Member Action to Leave their Clan *}
-<p>You are currently a member of the <strong class='clan-name'>{$own_clan_name|escape}</strong> Clan.</p>
-<p class='glassbox'>
-  <a href='clan.php?command=leave' id='leave-clan'><button type='button'>Leave Current Clan</button></a>
-</p>
+      <div class='parent'>
+        <div class='child'>
+          <p>You are currently a member of the <strong class='clan-name'>{$own_clan_name|escape}</strong> Clan.</p>
+          <p class='glassbox parent'>
+            <a href='clan.php?command=leave' id='leave-clan' class='btn btn-danger child'>Leave Current Clan</a>
+          </p>
+        </div>
+      </div>
 			{/if}
 {* If the clan member left their clan, the command -was- leave, and they
 should have had their clan, clan_id and such membership variables revoked.
