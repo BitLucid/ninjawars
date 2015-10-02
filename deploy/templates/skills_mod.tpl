@@ -1,3 +1,4 @@
+
 <h1>Skill Effect</h1>
 
 {if $attack_error}
@@ -7,40 +8,8 @@
 <div class='usage-mod-result'>
 
 	{if $display_sight_table}
-	
-	<style type='text/css'>
-	{literal}
-	table#sight-info {
-		width:100%;
-		text-align:center;
-		font-size:1.3em;
-		margin-bottom:2em;	
-	}
-	
-	#sight-info thead {
-		border:none;
-		border-bottom: 2px dashed rgb(100, 30, 30);
-		font-weight:bold;
-	}
-	
-	#sight-info td, #sight-info thead th{
-		padding: .2em;
-		font-size: 1.1em;
-		text-align:center;
-	}
-	#sight-info td {
-		text-shadow:black 2px 2px 2px;
-		padding:.7em;
-	}
-	
-	#sight-info td:hover {
-		background-color:rgb(80, 30, 30);
-	}
-	{/literal}
-	</style>
-   		
-   		
-  <table id='sight-info' style='width:100%;'>
+	  		
+  <table id='sight-info' class='full-width'>
   	<thead>
 		<tr>   
 		{foreach from=$sight_data item="loop_data" key="loop_header"}
@@ -106,7 +75,7 @@
 
 	{if $reuse}
 <div class="skillReload">
-	<a class='link-as-button' href="skills_mod.php?command={$command|escape:'url'}{if $target_id}&amp;target={$target_id|escape:'url'}{/if}">
+	<a class='btn btn-primary attack-again thick' href="skills_mod.php?command={$command|escape:'url'}{if $target_id}&amp;target={$target_id|escape:'url'}{/if}">
 		Use {$command} again
 	</a>
 </div>

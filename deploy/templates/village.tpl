@@ -7,12 +7,10 @@
 #full-chat #view-all{
 	display:block;border:1px dashed blue;margin-top:2em;text-align:center;font-size:1.3em;
 }
-#full-chat .link-as-button{
-	margin-bottom:.5em;margin-top:1em;margin-right:1.5em;
-}
+/*
 #full-chat .chat-submit input[type=submit]{
 	padding:.2em .4em;font-size:1.3em;font-weight:bolder;
-}
+}*/
 #full-chat .float-right{
 	float:right;
 }
@@ -30,10 +28,10 @@
       <input id="message" type="text" size="{$field_size}" maxlength="250" name="message" required autofocus autocomplete='off' class="textField" title='Chat message should not be empty.'>
       <input id="command" type="hidden" value="postnow" name="command">
       <input name='chat_submit' type='hidden' value='1'>
-      <input type="submit" value="Chat" class="formButton">
+      <input type="submit" value="Chat" class="btn btn-primary">
 {/if}
 
-<a class='link-as-button float-right' href="village.php?chatlength=100">Refresh</a>
+<a class='btn btn-default float-right glassbox' href="village.php?chatlength=100">Refresh</a>
 
 
 {if is_logged_in()}

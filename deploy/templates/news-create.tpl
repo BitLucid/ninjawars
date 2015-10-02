@@ -5,7 +5,7 @@
 .news-submit #post-submit{
     padding:.2em .4em;font-size:1.3em;font-weight:bolder;
 }
-.link-as-button{
+#back-to-news{
     margin-bottom:.5em;margin-top:1em;float:right;margin-right:1.5em;
 }
 #full-news .parent{
@@ -47,5 +47,7 @@
   </div>
 </div>
 {/if}
-<a class='link-as-button' href="news.php">Back</a>
+<nav>
+  <a id='back-to-news' class='btn btn-default' href="news.php">Back</a>
+</nav>
 </div>

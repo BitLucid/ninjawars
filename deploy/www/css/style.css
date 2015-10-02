@@ -1942,6 +1942,32 @@ table#player-attack {
 .skill_use {
 	margin-top: .5em;
 }
+table#sight-info {
+	width:100%;
+	text-align:center;
+	font-size:1.3em;
+	margin-bottom:2em;	
+}
+
+#sight-info thead {
+	border:none;
+	border-bottom: 2px dashed rgb(100, 30, 30);
+	font-weight:bold;
+}
+
+#sight-info td, #sight-info thead th{
+	padding: .2em;
+	font-size: 1.1em;
+	text-align:center;
+}
+#sight-info td {
+	text-shadow:black 2px 2px 2px;
+	padding:.7em;
+}
+
+#sight-info td:hover {
+	background-color:rgb(80, 30, 30);
+}
 .attack-player-trigger {
 	display:block;
 	margin-top: 1em;
@@ -2495,8 +2521,9 @@ select option #blue-class-select {
 /* ======================== Location/place styles ====================== */
 
 .return-to-location{
+	display:inline-block;
 	font-size: 1.3em;
-	margin-top: 1.7em;
+	margin-top: 2.5em;
 	margin-bottom; .7em;
 	margin-left: 1em;
 }
@@ -2510,9 +2537,12 @@ select option #blue-class-select {
 	display:inline-block;
 	padding: .3em;
 	border: 2px rgb(20, 30, 100) solid;
-	text-shadow: rgb(34, 27, 20) 2px 2px 2px;
+	text-shadow: rgb(34, 27, 20) 0 0 2px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
+}
+.attack-again.thick{
+	margin-top:2em;margin-bottom:2em;
 }
 
 /* Mimicing styles */

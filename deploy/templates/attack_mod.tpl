@@ -1,14 +1,14 @@
-<h1>Battle Outcome</h1>
+<section id='attack-outcome'>
+	<h1>Battle Outcome</h1>
 
-<hr>
+	<hr>
 
 	{if $attack_error}
 	<div class='ninja-error centered'>{$attack_error}</div>
 	{else}
 
 		{if $stealthed_attack}
-			<div>You are striking from the shadows, you quickly strike your victim!</div>
-			<div>Your attack has revealed you from the shadows! You are no longer stealthed.</div>
+			<div>You reveal yourself with a a surprise strike from the shadows!</div>
 		{/if}
 
 		{if $stealth_damage}
@@ -130,17 +130,14 @@
 		{include file="defender_health.tpl" health=$target_ending_health health_percent=$target_ending_health_percent target_name=$target_name}
 
 	{/if}
-
 	<hr>
-<nav>
-	{if $target}
-
-		{if $attack_again}
-			<div><a href="attack_mod.php?attacked=1&amp;target={$target|escape:'url'}" class='attack-again'>Attack Again?</a></div>
+	<nav>
+		{if $target}
+			{if $attack_again}
+				<div><a href="attack_mod.php?attacked=1&amp;target={$target|escape:'url'}" class='attack-again thick btn btn-primary'>Attack Again?</a></div>
+			{/if}
+				<div>Return to <a class='char-name' href="player.php?player={$target|escape:'url'}">{$target|escape}'s Info</a></div>
 		{/if}
-
-			<div>Return to <a class='char-name' href="player.php?player={$target|escape:'url'}">{$target|escape}'s Info</a></div>
-	{/if}
-
-	<a href='/enemies.php' class='return-to-location'>Return to the Fight</a>
-</nav>
+		<a href='/enemies.php' class='return-to-location'>Return to the Fight</a>
+	</nav>
+</section>

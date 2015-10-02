@@ -38,7 +38,7 @@
 		{/if}
 		{if !$fully_healed}
 			<div>
-				<a class='link-to-button' href='shrine_mod.php?max_heal=1'>Heal Fully</a>
+				<a class='btn btn-default' href='shrine_mod.php?max_heal=1'>Heal Fully</a>
 			</div>
 		{/if}
     {elseif isset($poison_cure_requested) and $poison_cure_requested and $cured}
