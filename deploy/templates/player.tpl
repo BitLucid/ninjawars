@@ -15,6 +15,22 @@ article#player-titles{
 #attacking-choices label{
   margin-right:.5em;
 }
+#attacking-choices .btn-vital{
+  text-transform:none;
+}
+#attacking-choices #attack-text{
+  font-size:1.5em;font-weight:bold;vertical-align:text-bottom;
+}
+#skills-use-list{
+  margin-left:0;
+  padding-left:0;
+}
+#skills-use-list li{
+  display:inline-block;margin-right:2em;
+}
+.player-info blockquote{
+  max-height:3.5em;overflow:auto;
+}
 </style>
 {/literal}
 
@@ -47,7 +63,7 @@ article#player-titles{
 
     {include file="status_section.tpl" statuses=$status_list}
 
-	{if $char_info.health}
+	{if $player_info.health}
     <span id='health-bar-container'>
       {include file="health_bar.tpl" health=$player_info.health health_percent=$player_info.health_percent}
     </span>
@@ -56,6 +72,10 @@ article#player-titles{
   {include file="gravatar.tpl" gurl=$gravatar_url}
 
   </article>
+
+  {if $player_info.description}
+      <blockquote>{$player_info.uname|escape} {$player_info.description|escape}</blockquote>
+  {/if}
 
 
 {if !$self}
@@ -69,21 +89,19 @@ article#player-titles{
           <tr>
             <td id='attacking-choices'>
               <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
-                <label id='duel'>
-                  Duel ({getTurnCost skillName="duel"}) <input id="duel" type="checkbox" {if $duel_checked}checked{/if} name="duel">
+                <label id='duel' title='Multi-attack duel for an additional {getTurnCost skillName="duel"} turns.'>
+                  <input id="duel" type="checkbox" {if $duel_checked}checked{/if} name="duel"> Duel
                 </label>
 
 		{foreach from=$combat_skills item="skill"}
-                <label id='{$skill.skill_internal_name|escape}'>
-                    {$skill.skill_display_name|escape}
-                    ({getTurnCost skillName=$skill.skill_display_name})
-                    <input id="{$skill.skill_internal_name|escape}" type="checkbox" {if $skill.checked}checked{/if} name="{$skill.skill_internal_name|escape}">
+                <label id='{$skill.skill_internal_name|escape}' title='{$skill.skill_internal_name|escape} while attacking for {getTurnCost skillName=$skill.skill_display_name} turns more'>
+                    <input id="{$skill.skill_internal_name|escape}" type="checkbox" {if $skill.checked}checked{/if} name="{$skill.skill_internal_name|escape}"> {$skill.skill_display_name|escape}
                 </label>
 		{/foreach}
 
                 <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
-                <label class='attack-player-trigger'>
-                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$smarty.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'><span style='font-size:1.5em;font-weight:bold'>Attack</span>
+                <label class='attack-player-trigger btn btn-vital'>
+                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$smarty.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'><span id='attack-text'>Attack</span>
                 </label>
               </form>
             </td>
@@ -98,7 +116,7 @@ article#player-titles{
 				  	You have no items.
 				  </div>
 		{else}
-                  <input type="submit" value="Use Item" class="formButton">
+                  <input type="submit" value="Use Item" class="btn btn-primary">
                   <select id="item" name="item">
 			{foreach from=$items item="item"}
 				{if $item.other_usable && $item.count>0}
@@ -109,7 +127,7 @@ article#player-titles{
 		{/if}
 
 		{if $same_clan}
-                  <input id="give" type="submit" value="Give" name="give" class="formButton">
+                  <input id="give" type="submit" value="Give" name="give" class="btn btn-default">
 		{/if}
                 </div>
               </form>
@@ -121,15 +139,16 @@ article#player-titles{
     <div id='skills-section' style='padding:1em 2em;text-align:left'>
       {if count($targeted_skills) gt 0}
       <form id="skill_use" class="skill_use" action="skills_mod.php" method="post" name="skill_use">
-        <ul id='skills-use-list'>
-        {foreach from=$targeted_skills item="skill"}
-          <li>
-            <input id="command" class="command" type="submit" value="{$skill.skill_display_name}" name="command" class="formButton">
-            <input id="target" class="target" type="hidden" value="{$target|escape}" name="target">
-            ({getTurnCost skillName=$skill.skill_display_name} Turns)
-          </li>
-        {/foreach}
-        </ul>
+        <div class='parent'>
+          <ul id='skills-use-list' class='child'>
+          {foreach from=$targeted_skills item="skill"}
+            <li>
+              <input id="command-{$skill.skill_internal_name}" class="command btn btn-primary" type="submit" value="{$skill.skill_display_name}" name="command" title='Use the {$skill.skill_display_name} skill for a cost of {getTurnCost skillName=$skill.skill_display_name} turns'>
+              <input id="target" class="target" type="hidden" value="{$target|escape}" name="target">
+            </li>
+          {/foreach}
+          </ul>
+        </div>
       </form>
       {/if}
     </div>
@@ -142,6 +161,7 @@ article#player-titles{
 {if is_logged_in() and !$self}
 
   <section class='player-communications centered'>
+  <!--
 	<div>
       <form id='send_mail' action='player.php' method='get' name='send_mail'>
           <input type='hidden' name='target_id' value='{$player_info.player_id|escape}'>
@@ -150,6 +170,7 @@ article#player-titles{
           <input type='submit' value='Send Message' class='formButton'>
       </form>
 	</div>
+  -->
 
 	<span id='message-ninja'>
       <a href='messages.php?target_id={$player_info.player_id|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em>
@@ -167,32 +188,21 @@ article#player-titles{
   <section class='player-stats centered'>
   <!-- Will display as floats horizontally -->
 
-    <small class='player-last-active'>
+    <small class='player-last-active de-em'>
       Last active
-{if $player_info.days gt 0}
-      {$player_info.days} days ago
-{else}
-      today {if $kills_today gt 0}<span>with {$kills_today} kills</span>{/if}
-{/if}
+      {if $player_info.days gt 0}
+        {$player_info.days} days ago
+      {else}
+        today {if $kills_today gt 0}<span>with {$kills_today} kills</span>{/if}
+      {/if}
     </small>
-{if $player_info.bounty gt 0}
-    <small class='player-bounty'><a class='bounty-link' href='doshin_office.php' target='main'>{$player_info.bounty} bounty</a></small>
-{/if}
+    {if $player_info.bounty gt 0}
+      <small class='player-bounty'><a class='bounty-link' href='doshin_office.php' target='main'>{$player_info.bounty} bounty</a></small>
+    {/if}
   </section>
 
     <!-- Clan leader options on players in their clan. -->
 {if $clan}
-	{if $display_clan_options}
-    <div class='clan-leader-options centered'>
-      <form id="kick_form" action="clan.php" method="get" name="kick_form">
-        <div>
-          <input id="kicked" type="hidden" value="{$player_info.player_id}" name="kicked">
-          <input id="command" type="hidden" value="kick" name="command">
-          <input type="submit" value="Kick This Ninja From Your Clan" class="formButton">
-        </div>
-      </form>
-    </div>
-	{/if}
 
     <!-- Player clan and clan members -->
     <div class='player-clan'>
@@ -203,6 +213,17 @@ article#player-titles{
         <span class='subtitle'>Clan:</span>
         <a href='clan.php?command=view&amp;clan_id={$clan_id}'>{$clan_name|escape}</a>
       </p>
+  {if $display_clan_options}
+    <div class='clan-leader-options centered'>
+      <form id="kick_form" action="clan.php" method="get" name="kick_form">
+        <div>
+          <input id="kicked" type="hidden" value="{$player_info.player_id}" name="kicked">
+          <input id="command" type="hidden" value="kick" name="command">
+          <input type="submit" value="Kick This Ninja From Your Clan" class="formButton">
+        </div>
+      </form>
+    </div>
+  {/if}
 
     </div>
 {/if}
