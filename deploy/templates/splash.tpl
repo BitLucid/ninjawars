@@ -11,7 +11,7 @@
       &nbsp; <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
 		<nav role='navigation' id='top-bar' class='navigation'>
-		  <span id='solo-page-login-link'><a href='login.php' class='link-as-button'>Log in</a></span> | <span><a href='signup.php' class='link-as-button'>Signup</a></span>
+		  <a id='solo-page-login-link' href='login.php' class='btn btn-vital'>Log in</a> <a id='solo-page-signup-link' href='signup.php' class='btn btn-vital'>Signup</a>
 		</nav>
 		<nav id='top-logo'>
       <h1>The Ninja Game at </h1>

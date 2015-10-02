@@ -59,10 +59,10 @@
           <a target='main' href='tutorial.php'>Helpful Info</a>
         </div>
         {/if}
-        <div class='ninja-info'>
+        <div class='ninja-info thick'>
           <a href='stats.php' target='main' title='Your ninja stats, level, info, etc.'><img src="/images/icons/mono/heart32.png" height="16" width="16" alt="">Ninja Stats</a>
         </div>
-        <div class='account-info'>
+        <div class='account-info thick'>
           <a href="account.php" target="main" title='Your player account info, email, password, etc.'><img src="/images/icons/mono/gear32.png" height="16" width="16" alt="">Account Info</a>
         </div>
         <!-- Recent Events count and target will get put in here via javascript -->
@@ -77,9 +77,9 @@
           </div>
         </div><!-- End of recent events -->
         <div class='parent'>
-          <div id='logout' class='child'>
-              <a href="logout.php">
-                <button type='button'>Logout</button>
+          <div id='logout' class='child thick'>
+              <a href="logout.php" class='btn btn-default'>
+                Logout
               </a>
           </div>
         </div>

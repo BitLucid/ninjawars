@@ -36,7 +36,7 @@ section.login-page{
 }
 
 #request-login{
-	font-size:2em;width:100%;
+	font-size:larger;width:100%;
 }
 #login-bottom-bar-container{
 	margin: 5em auto .5em;width:96%;padding:.2em;border: 1px solid #993300;
@@ -86,7 +86,7 @@ section.login-page{
 	      </div>
 	    </label>
 	    <div class='left-side'>
-		    <input tabindex=3 name="login_request" id='request-login' type="submit" value="Login">
+		    <input tabindex=3 name="login_request" id='request-login' class='btn btn-vital' type="submit" value="Login">
 		</div>
 	    </div>
 	    </div>

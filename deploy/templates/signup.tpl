@@ -163,7 +163,7 @@ form#signup .ninja-info section + section{
 	</fieldset>
 
       <section>
-	    <input id='become-a-ninja' type="submit" name="submit" value="Become a Ninja!" class="formButton">
+	    <input id='become-a-ninja' type="submit" name="submit" value="Become a Ninja!" class="btn btn-vital">
 	    <div>
 	    	<small>Please add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to your safe email sender list to make sure you get the confirmation email! </small>
 	    </div>
