@@ -8,7 +8,11 @@
 	margin-top:0;margin-bottom:0;
 }
 #enemies-stuff{
-	background-color:rgba(0, 0, 0, 0.5);
+	background-color:rgba(0, 0, 0, 0.5);box-sizing:border-box;
+}
+#enemies-stuff ul{
+	margin-left:0;
+	padding-left:0;
 }
 #current-enemies-list li em, #peer-chars li em{
 	margin-left:.5em;color:#D21;display:inline-block; border-left:thick solid #D21; border-right:thick solid #D21; padding: 0 .2em;text-align:center;width:1.7em;
@@ -22,12 +26,12 @@
 #current-enemies-list .enemy-action-box{
 	display:inline-block;width: 13em;
 }
-.enemies-lefthalf{
-	width:55%;float:left;margin-left:0;margin-right:0;
+.enemies-lefthalf, .enemies-righthalf{
+	width:100%;margin-left:0;margin-right:0;
 }
-.enemies-righthalf{
-	width:45%;float:right;margin-left:0;margin-right:0;
-}
+
+/* enemies halves get floated in the main large screen media query */
+
 #peer-chars .peer{
 	position:relative;margin-bottom:0.1em;
 }

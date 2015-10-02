@@ -3668,3 +3668,14 @@ input[type="button"].btn-block {
 	}
 }
 
+/* Large screen modifications */
+@media screen and (min-device-width: 1000px) {
+
+	.enemies-lefthalf{
+		width:55% !important;float:left !important;
+	}
+	.enemies-righthalf{
+		width:45% !important;float:right !important;
+	}
+
+}
