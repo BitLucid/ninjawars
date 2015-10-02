@@ -162,7 +162,7 @@ if(positive_int($ninja_id)){ // Logged in player.
 					} else {
 						$error = 'That clan name is already in use!';
 					}
-				} else {
+				} elseif($new_clan_name) {
 					$error = 'Sorry, too many special symbols in your clan name.';
 				}
 			} else if ($command == 'kick') {

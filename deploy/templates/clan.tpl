@@ -29,13 +29,12 @@
 				{if $clan_renamed}
 <p>Your new clan name is <strong>{$new_clan_name|escape}</strong>.</p>
 				{else}
-<div class='notice'>
-  Clan names must be from 3 to 24 characters, and can only contain letters, numbers, spaces, underscores, or dashes, although you can request exceptions if they're fun.
-</div>
 <form id='clan_rename' action='clan.php' name='clan_rename'>
   <div>
     <input id='command' type='hidden' value='rename' name='command'>
-    <input id='new_clan_name' type='text' name='new_clan_name' class='textField'>
+    {literal}
+    <input id='new_clan_name' type='text' name='new_clan_name' class='textField' title='Clan names must be from 3 to 24 characters, and can only contain letters, numbers, spaces, underscores, or dashes, although you can request exceptions if they are fun.' pattern='[A-Za-z0-9_- ]{3,24}' required placeholder='Ninja clan name here'>
+    {/literal}
     <input type='submit' class='formButton' value='Rename Clan'>
   </div>
 </form>
@@ -133,31 +132,27 @@ should have had their clan, clan_id and such membership variables revoked.
 As such, after the leave command, no clan membership display information should occur. *}
 		{/if} {* End of options for clan-members *}
 
-		{if $own_clan_id} {* OPTIONS FOR ALL IN-CLAN PLAYERS *}
+		{if $own_clan_id} 
+    <!-- OPTIONS FOR ALL PLAYERS THAT ARE IN A CLAN -->
 		    {if $message_sent}
-<!-- When a message is sent, refocus on the text input section -->
-<script type='text/javascript'>
-		    	{literal}
-   	$().ready(function(){
-   		$('input#message').focus();
-   	});
-		    	{/literal}
-</script>
+          <span id='message-sent' hidden>1</span>
 		    {/if}
 
 {* Note that these should not display after a clan "leave" option occurs. *}
-<ul id='clan-options'>
+<section id='clan-options'>
+<ul>
   <li><a href='clan.php?command=view&amp;clan_id={$own_clan_id|escape:'url'}'><span class='icon users'></span> View Your Clan</a></li>
   <li>
     <!--  *** Clan Member Input for Messaging their Entire Clan *** -->
     <form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
       <div>
-        Message all of clan: <input id='message' type='text' size='30' maxlength='{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}' name='message' class='textField'>
+        <input id='message' type='text' maxlength='{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}' name='message' class='textField' placeholder='Send message to clan'>
         <input type='submit' value='Send' class='formButton'>
       </div>
     </form>
   </li>
 </ul>
+</section>
 		{/if}
 	{else} {* VIEWER NOT YET PART OF ANY CLAN *}
 		{if $command == "join"} {* Clan Joining Action *}
@@ -214,7 +209,7 @@ As such, after the leave command, no clan membership display information should 
 
 <script type="text/javascript">
 {literal}
-$().ready(function (){
+$(function (){
   $('#leader-panel-title, #show-leader-options').click(function(){
       $('#leader-options, #show-leader-options').toggle();
       return false;
@@ -223,7 +218,10 @@ $().ready(function (){
   $('#leave-clan').click(function(){
     leave_clan(); 
     return false;
-  })
+  });
+  if($('#message-sent').length){
+    $('input#message').focus();
+  }
 });
 {/literal}
 </script>

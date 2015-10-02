@@ -2000,8 +2000,7 @@ table#sight-info {
 
 /* Clan leader options */
 #leader-panel {
-	width: 40%;
-	float:left;
+	box-sizing:border-box;
 	text-align: center;
 	border: thin dotted rgba(200, 200, 200, 0.5);
 	border-top:none;
@@ -2009,9 +2008,7 @@ table#sight-info {
 }
 #leader-panel ul {
 	list-style-type: none;
-	margin: 3px;
-	margin-top:0;
-	padding-top:0;
+	margin:0;padding:0;
 }
 #leader-panel h1,#leader-panel h2,#leader-panel h3,#leader-panel h4{
 	margin-left:0;margin-right:0;width:100%;
@@ -2028,11 +2025,12 @@ table#sight-info {
 	width: 100%;
 }
 #clan-options {
-	width: 50%;
-	float: right;
-	list-style-type: none;
+	box-sizing:border-box;
 }
-
+#clan-options ul,ul#clan-options{
+	list-style-type: none;
+	margin:0;padding:0;
+}
 /* Player tags */
 #player-tags .player-tag {
 	float:left;
@@ -3672,6 +3670,16 @@ input[type="button"].btn-block {
 	}
 	.enemies-righthalf{
 		width:45% !important;float:right !important;
+	}
+
+	#leader-panel{
+		box-sizing:border-box;
+		width: 50%;	float:left;
+	}
+
+	#clan-options{
+		box-sizing:border-box;
+		width: 50%;	float: right; padding-left:1em;
 	}
 
 }
