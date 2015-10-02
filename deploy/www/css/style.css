@@ -3669,7 +3669,7 @@ input[type="button"].btn-block {
 }
 
 /* Large screen modifications */
-@media screen and (min-device-width: 1000px) {
+@media screen and (min-width: 800px) {
 
 	.enemies-lefthalf{
 		width:55% !important;float:left !important;

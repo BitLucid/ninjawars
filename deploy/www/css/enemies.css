@@ -7,6 +7,9 @@
 #ninja-matches ul{
 	margin-top:0;margin-bottom:0;
 }
+ul#recent-attackers{
+	padding-left:0;
+}
 #enemies-stuff{
 	background-color:rgba(0, 0, 0, 0.5);box-sizing:border-box;
 }
@@ -24,7 +27,7 @@
 	position:relative;margin-bottom:0.1em;white-space:nowrap;
 }
 #current-enemies-list .enemy-action-box{
-	display:inline-block;width: 13em;
+	display:inline-block;width: 10em;
 }
 .enemies-lefthalf, .enemies-righthalf{
 	width:100%;margin-left:0;margin-right:0;
