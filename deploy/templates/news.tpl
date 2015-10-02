@@ -20,7 +20,7 @@
   font-size:smaller;
   color: gray;
 }
-.link-as-button{
+#make-news-post{
   margin-bottom:.5em;margin-top:1em;float:right;margin-right:1.5em;
 }
 .news h3{
@@ -29,7 +29,8 @@
   margin-bottom:1em;
 }
 .news h3:before, .news h3:after{
-  content:"—";
+  content: "\00a0"; display:inline-block; font-size:32px; height:32px;width:32px;margin:0 0.3em;
+  background-image:url('/images/icons/mono/article32.png');
 }
 #news-list article{
   display:block;
@@ -71,9 +72,10 @@
   </div>
 {/if}
   
-<a class='link-as-button' href="news.php">Refresh</a>
 {if is_logged_in()}
-<a class='link-as-button' href="news.php?new=true">New Post</a>
+	<div id='make-news-post'>
+		<a class='btn btn-primary' href="news.php?new=true">Post News</a>
+	</div>
 {/if}
 
 {if isset($search_title)}
