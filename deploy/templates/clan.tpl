@@ -65,7 +65,7 @@
 Are you sure you want to continue? This will remove all members from your clan.<br>
 <form id='disband' method='get' action='clan.php' name='disband'>
   <div>
-    <input type='submit' value='Disband' class='formButton'>
+    <input type='submit' value='Disband' class='btn btn-warning'>
     <input id='command' type='hidden' value='disband' name='command'>
     <input id='sure' type='hidden' value='yes' name='sure'>
   </div>
@@ -97,7 +97,7 @@ Name of potential clan member:<br>
     <ul id='leader-options-list' class='clearfix'>
       <li><a href='clan.php?command=invite'>Recruit for your Clan</a></li>
       <li><a href='clan.php?command=rename'>Rename Clan</a></li>
-      <li><a href='clan.php?command=disband'><button type='button'>Disband Your Clan</button></a></li>
+      <li><form action='clan.php?command=disband' method='post'><input class='btn btn-warning' type='submit' value='Disband Your Clan'></form></li>
       <li><a href='clan.php?command=kick'>Kick a Clan Member</a></li>
     </ul>
 
@@ -140,18 +140,20 @@ As such, after the leave command, no clan membership display information should 
 
 {* Note that these should not display after a clan "leave" option occurs. *}
 <section id='clan-options'>
-<ul>
-  <li><a href='clan.php?command=view&amp;clan_id={$own_clan_id|escape:'url'}'><span class='icon users'></span> View Your Clan</a></li>
-  <li>
-    <!--  *** Clan Member Input for Messaging their Entire Clan *** -->
-    <form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
-      <div>
-        <input id='message' type='text' maxlength='{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}' name='message' class='textField' placeholder='Send message to clan'>
-        <input type='submit' value='Send' class='formButton'>
-      </div>
-    </form>
-  </li>
-</ul>
+  <div class='parent'>
+    <ul class='child'>
+      <li><a href='clan.php?command=view&amp;clan_id={$own_clan_id|escape:'url'}'><span class='icon users'></span> View Your Clan</a></li>
+      <li>
+        <!--  *** Clan Member Input for Messaging their Entire Clan *** -->
+        <form id='msg_clan' action='clan.php' method='get' name='msg_clan'>
+          <div>
+            <input id='message' type='text' maxlength='{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}' name='message' class='textField' placeholder='Message to clan' autocomplete='off'>
+            <input type='submit' value='Send' class='formButton'>
+          </div>
+        </form>
+      </li>
+    </ul>
+  </div>
 </section>
 		{/if}
 	{else} {* VIEWER NOT YET PART OF ANY CLAN *}

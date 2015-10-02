@@ -77,7 +77,6 @@ function unread_message_count() {
 function message_to_clan($p_message) {
 	$error    = null;
 	$user_id  = self_char_id();
-	$username = get_username();
 	$clan_id  = get_clan_by_player_id($user_id)->getID();
 
 	$clan_members = query_resultset("SELECT player_id, uname
@@ -95,4 +94,3 @@ function message_to_clan($p_message) {
 
 	return implode(', ', $messaged_to);
 }
-?>

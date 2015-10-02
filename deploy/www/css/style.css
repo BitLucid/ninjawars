@@ -2014,8 +2014,7 @@ table#sight-info {
 	margin-left:0;margin-right:0;width:100%;
 }
 #leader-panel li {
-	width: 49%;
-	float: left;
+	display:inline-block; margin-right:1.5em;
 }
 #leader-panel ul + h3{
 	clear:both;
@@ -3662,7 +3661,7 @@ input[type="button"].btn-block {
 	}
 }
 
-/* Large screen modifications */
+/* Medium and Large screen modifications */
 @media screen and (min-width: 800px) {
 
 	.enemies-lefthalf{
@@ -3672,6 +3671,7 @@ input[type="button"].btn-block {
 		width:45% !important;float:right !important;
 	}
 
+	/*
 	#leader-panel{
 		box-sizing:border-box;
 		width: 50%;	float:left;
@@ -3681,5 +3681,7 @@ input[type="button"].btn-block {
 		box-sizing:border-box;
 		width: 50%;	float: right; padding-left:1em;
 	}
+	*/
 
 }
+
