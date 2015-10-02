@@ -18,7 +18,7 @@ ul#recent-attackers{
 	padding-left:0;
 }
 #current-enemies-list li em, #peer-chars li em{
-	margin-left:.5em;color:#D21;display:inline-block; border-left:thick solid #D21; border-right:thick solid #D21; padding: 0 .2em;text-align:center;width:1.7em;
+	font-weight:bold;color:brown;margin-left:0.1em;display:inline-block;padding: 0 .2em;text-align:center;width:1.7em;
 }
 #current-enemies-list .enemy-stats-box{
 	display:inline-block;margin-left:1em;width: 6.9em;
@@ -28,6 +28,9 @@ ul#recent-attackers{
 }
 #current-enemies-list .enemy-action-box{
 	display:inline-block;width: 10em;
+}
+#current-enemies-list .enemy-dead a.enemy-name{
+	text-decoration:line-through;color:#800000;
 }
 .enemies-lefthalf, .enemies-righthalf{
 	width:100%;margin-left:0;margin-right:0;
