@@ -118,7 +118,7 @@ form#signup .ninja-info section + section{
      	<label for='send_email'>Email Address:</label>
 		<input id="send_email" required type="email" name="send_email" class="textField" placeholder='you@example.com' value="{$enteredEmail|escape}">
 		  <small>
-		    This email address will only be used for account &amp; confirmation purposes, <strong>never spammed, never shared.</strong>
+		    (email never spammed, never shared)
 		  </small>
 	 </div>
 	 <div>
@@ -141,7 +141,7 @@ form#signup .ninja-info section + section{
 	 	title='Your ninja name can only contain letters, numbers and underscores, and must be from 2 to 24 characters long.'
 	 	name="send_name" maxlength="50" class="textField" value="{$enteredName|escape}">
 	 	<small>
-	   	Your ninja name can only contain letters, numbers and underscores.
+	   	(letters, numbers and underscores only)
 	   </small>
 	 </section>
 	 <section>
@@ -157,7 +157,7 @@ form#signup .ninja-info section + section{
   	{/foreach}
       </div>
 	  <div class='glassbox'>
-	  	<small>Change type easily within the game, or click the "wiki" link below for more information.</small>
+	  	<small>Change type easily in-game, or check the "wiki" below.</small>
 	  </div>
 	  </section>
 	</fieldset>
@@ -165,7 +165,7 @@ form#signup .ninja-info section + section{
       <section>
 	    <input id='become-a-ninja' type="submit" name="submit" value="Become a Ninja!" class="btn btn-vital">
 	    <div>
-	    	<small>Please add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to your safe email sender list to make sure you get the confirmation email! </small>
+	    	<small>Add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to your safe email list ensure you get your confirmation email! </small>
 	    </div>
 
 
@@ -179,14 +179,16 @@ form#signup .ninja-info section + section{
 	<section class='glassbox'>
 
 	<p>
-	Lost Your Password ? <a href="account_issues.php">Resend Account Info Email</a> / Didn't get your confirmation code ? <a href="account_issues.php">Resend Confirmation Email</a>
+	Lost Your Password? <a href="account_issues.php">Resend Account Info Email</a> 
+	</p>
+	<p>Didn't get your confirmation code? <a href="account_issues.php">Resend Confirmation Email</a>
 	</p>
 	<small>
-	More information on the ninja classes and their skills can be found on
-	    <a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>the Wiki</a> or on the "skills" page once you begin playing.
+	Game &amp; Ninja type info:
+	    <a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>the Wiki</a>.
 	</small>
 	<p>
-	  For any other questions, just <a href='staff.php'>Contact Us</a>.
+	  Or <a href='staff.php'>Contact Us</a>.
 	</p>
 
 	</section>
