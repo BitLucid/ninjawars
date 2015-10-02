@@ -2,7 +2,6 @@
  NW styles: normalize.css comes first, then standard nw css
  */
 
-
 /*! normalize.css v2.1.2 | MIT License | git.io/normalize */
 
 /* ==========================================================================
@@ -1156,6 +1155,9 @@ td.playerTable {
 .DeadRow a {
 	color: rgb(40, 40, 160); /*Darken links to dead players */
 }
+.DeadRow .nameCell a{
+	text-decoration:line-through;
+}
 
 /* COLUMNS */
 #leftColumn {
@@ -1779,10 +1781,6 @@ a#skip-to-bottom{
 		text-shadow:2px 2px 2px gray;
 }
 
-.comforting{
-		color:lightgreen;
-}
-
 .player-status.ninja-notice{
 	color:orange;
 	background-color:#660000;
@@ -1909,15 +1907,13 @@ table#player-attack {
 .player-info .Dead {
 	background-color:maroon;
 	color:red;
+	text-transform:uppercase;
 }
 
-.enemy-list .enemy-dead, .status-dead {
+.status-dead, .status-dead a{
 	background-color:#202020;
 	color:maroon;
-}
-.status-dead a{
-	background-color:#202020;
-	color:maroon;
+	text-decoration:line-through;
 }
 .ninja-notice.death{
 	font-size:1.5em;
