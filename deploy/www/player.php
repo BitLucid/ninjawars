@@ -18,8 +18,6 @@ $viewed_name_for_title = null;
 if($target_player_obj && $target_player_obj->name()){
 	$viewed_name_for_title = $target_player_obj->name();
 }
-// Get the player's kills for this date.
-$kills_today = query_item('select sum(killpoints) from levelling_log where _player_id = :player_id and killsdate = CURRENT_DATE and killpoints > 0', array(':player_id'=>$target_id));
 
 $combat_toggles = get_setting('combat_toggles'); // Pull the attack options toggled on and off.
 
@@ -59,6 +57,9 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		    send_message($char_id, $target_id, $message);
 		    // "message sent" notice will be displayed by the template itself.
 		}
+
+		// Get the player's kills for this date.
+		$kills_today = query_item('select sum(killpoints) from levelling_log where _player_id = :player_id and killsdate = CURRENT_DATE and killpoints > 0', array(':player_id'=>$target_id));
 
 		$viewers_clan       = ($viewing_player_obj instanceof Player && $viewing_player_obj->vo ? get_clan_by_player_id($viewing_player_obj->vo->player_id) : null);
 
