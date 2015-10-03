@@ -1,4 +1,4 @@
-<h1>News Board</h1>
+<h1>News</h1>
 <style type='text/css'>
 {literal}
 #news-list .parent{
