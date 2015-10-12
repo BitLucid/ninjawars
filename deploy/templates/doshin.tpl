@@ -19,12 +19,14 @@
 The Doshin ignore your ill-funded attempt to bribe them.
 {/if}
 
-{if $amount_in neq $amount}
-The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bounty.<br>
-{/if}
+{if $command eq 'offer'}
+	{if $amount_in neq $amount}
+	The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bounty.<br>
+	{/if}
 
-{if $success}
-<div class='ninja-notice'>You have offered {$amount|escape} gold towards bringing {$target|escape} to justice.</div>
+	{if $success}
+	<div class='ninja-notice'>You have offered {$amount|escape} gold towards bringing {$target|escape} to justice.</div>
+	{/if}
 {/if}
 
 
@@ -72,7 +74,7 @@ The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bou
 {/if}
 
 <form action="" class='half-column'>
-  Offer <input type="text" name="amount" value="{$amount|escape}" size="4" class="textField"> bounty on: <input type="text" name="target" value="{$target|escape}" class="textField">
+  Offer <input type="text" name="amount" value="{$amount|default:0|escape}" size="4" class="textField"> bounty on: <input type="text" name="target" value="{$target|default:''|escape}" class="textField">
   <input id="submit-bounty" type="submit" value="Offer Bounty" name="command" class="formButton">
 </form>
 
