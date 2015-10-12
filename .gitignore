@@ -1,3 +1,6 @@
+# ignore project specific files
+deploy/resources.php
+
 # ignore composer installed files
 vendor/
 composer.phar
