@@ -1,6 +1,0 @@
-#http://www.tools.dynamicdrive.com/password/ for generation
-AuthName "Restricted Area" 
-AuthType Basic 
-AuthUserFile /home/ninjawars/.htpasswd 
-AuthGroupFile /dev/null 
-require valid-user
