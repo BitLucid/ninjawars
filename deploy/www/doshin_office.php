@@ -32,6 +32,7 @@ class DoshinController { //extends controller
 		$amount_in = $amount;
 		$error     = 0;
 		$quickstat = false;
+		$success   = false;
 
 		if (!$target_id) {
 			$error = 1;
