@@ -15,12 +15,15 @@ class DoshinController { //extends controller
 	}
 
 	public function index() {
+		$target = in('target');
+
 		$this->render(
 			[
 				'quickstat' => false,
 				'location'  => 0,
 				'error'     => 0,
 				'command'   => 'index',
+				'target'    => $target,
 			]
 		);
 	}
