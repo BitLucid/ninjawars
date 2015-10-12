@@ -415,7 +415,7 @@ body {
 
 /* Set your base font here, to apply evenly */
 body, select, input, textarea {
-	font-family: Arial, Helvetica, sans-serif;	
+	font-family: Arial, Helvetica, sans-serif;
 }
 select{
 	color:#333;
@@ -551,18 +551,14 @@ h1, h2, .title {
 	margin-bottom:.1em;
 }
 h2 {
-	margin: .1em auto .1em; width:50%; background: rgb(173, 216, 230); 
+	margin: .1em auto .1em; width:50%; background: rgb(173, 216, 230);
 	font-family: "univers bold condensed", impact, haettenschweiler, sans-serif;
 	letter-spacing:0.1em; font-weight:normal;
-	-moz-transform:rotate(1deg);
-	-webkit-transform:rotate(1deg);
-	-o-transform:rotate(1deg);
-	transform:rotate(1deg);
 }
 h1, .player-info .player-name {
 	background: #291F16; background: rgba(129, 45, 12, 0.5);
 	color: rgb(255, 156, 42);
-	border-bottom: none; padding-left:0; padding-right:0; 
+	border-bottom: none; padding-left:0; padding-right:0;
 	font: 30px/34px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;
 	letter-spacing: 0; width:100%; margin: 0 7em inherit 7em; text-shadow: black 2px 2px 3px;
 }
@@ -1560,7 +1556,7 @@ iframe {
 }
 
 #skip-to-bottom{
-	display:block; padding:.5em; position:absolute; bottom:17%; left:0; 
+	display:block; padding:.5em; position:absolute; bottom:17%; left:0;
 	background-color:#666; background-color:rgba(100, 100, 100, .3); text-transform:uppercase;
 }
 a#skip-to-bottom{
@@ -1942,7 +1938,7 @@ table#sight-info {
 	width:100%;
 	text-align:center;
 	font-size:1.3em;
-	margin-bottom:2em;	
+	margin-bottom:2em;
 }
 
 #sight-info thead {
@@ -2160,7 +2156,7 @@ table#sight-info {
 	background-color:transparent;
 }
 .developer {
-	border-left:thin #8B0000 solid; border-top:thin #8B0000 solid; 
+	border-left:thin #8B0000 solid; border-top:thin #8B0000 solid;
 	border-left:thin rgba(139, 0, 0, 0.8) solid; border-top:thin rgba(139, 0, 0, 0.8) solid;
 	margin: .5em 0 .5em 0; padding: .3em 0 .5em .2em;
 }
@@ -2367,7 +2363,7 @@ table#sight-info {
 	width:100%;
 	text-align:center;
 	text-transform:uppercase;
-	background-color:#330000;	
+	background-color:#330000;
 	color:white;
 	padding: 0 0 .5em;
 	position:relative;
@@ -2469,7 +2465,7 @@ select option #blue-class-select {
 	display:inline-block;
 	margin-left: 1em;
 	white-space: nowrap;
-	min-height:2em; 
+	min-height:2em;
 	min-width:7em;
 	/*list-style-type:circle;
 	background-color:purple;*/
@@ -2699,12 +2695,12 @@ select option #blue-class-select {
 	color: #E97451;	font-style:normal;
 }
 
-hr.edge-fade { /* Gradient transparent - color - transparent */ 
-	border: 0; height: 1px; 
-	background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(134,8,8,0.75), rgba(0,0,0,0)); 
-	background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(134,8,8,0.75), rgba(0,0,0,0)); 
-	background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(134,8,8,0.75), rgba(0,0,0,0)); 
-	background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(134,8,8,0.75), rgba(0,0,0,0)); 
+hr.edge-fade { /* Gradient transparent - color - transparent */
+	border: 0; height: 1px;
+	background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(134,8,8,0.75), rgba(0,0,0,0));
+	background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(134,8,8,0.75), rgba(0,0,0,0));
+	background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(134,8,8,0.75), rgba(0,0,0,0));
+	background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(134,8,8,0.75), rgba(0,0,0,0));
 }
 
 .bottom-shadow {
@@ -2758,7 +2754,7 @@ hr.edge-fade { /* Gradient transparent - color - transparent */
 	top: -15px;
 	left: 60%;
 }
- 
+
 .antialiased {
   text-shadow:0 0 2px rgba(0, 0, 0, 0.6);
 }
@@ -2802,8 +2798,8 @@ figure.slide-captioned {
   float: left; overflow: hidden; margin: 0 20px 2px 0;
 }
 .slide-captioned figcaption {
-  position: absolute; background: black; background: rgba(0,0,0,0.75); color: white; padding: 2px 4px; opacity: 0; 
-  -webkit-transition: all 0.6s ease; 
+  position: absolute; background: black; background: rgba(0,0,0,0.75); color: white; padding: 2px 4px; opacity: 0;
+  -webkit-transition: all 0.6s ease;
   -moz-transition:    all 0.6s ease;
   -o-transition:      all 0.6s ease;
 }
@@ -3641,7 +3637,7 @@ input[type="button"].btn-block {
 	h1, h2, h3, h4, h5, h6 {
 		font-weight: normal;
 	}
-	img { 
+	img {
 		max-width: 250px;
 	}
 	.center {
