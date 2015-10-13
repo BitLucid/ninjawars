@@ -6,6 +6,7 @@
 class NWTemplate extends Smarty {
 	public function __construct() {
 		parent::__construct(); // Extending smarty somewhat, not even sure why we do this any more...
+		$this->caching = false; // or Smarty::CACHING_LIFETIME_CURRENT;
 
 		// template directory
 		$this->addTemplateDir(TEMPLATE_PATH);
@@ -17,12 +18,10 @@ class NWTemplate extends Smarty {
 		// plugin directory
 		$this->addPluginsDir(TEMPLATE_PLUGIN_PATH);
 
-		$this->caching = false; // or Smarty::CACHING_LIFETIME_CURRENT;
+
 		//$this->debugging = defined('DEBUG') && DEBUG? true : false;
-		// Unused config directory
 		//$this->addConfigDir(TEMPLATE_PATH."config/");
 		// No configs directory set, because we don't actually use it.
-		//$this->testInstall();die();
 	}
 
 	public function fullDisplay() {
@@ -156,4 +155,4 @@ function cache_headers($hours = 2, $revalidate=false){
 	header("Cache-Control: maxage=".$expires.($revalidate? ", must-revalidate" : ''));
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 }
-?>
+
