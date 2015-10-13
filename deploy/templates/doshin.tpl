@@ -7,16 +7,20 @@
 {/if}
 <h1>{$locationLabel}</h1>
 
-{if $error eq 1}
-<div class='ninja-error'>No such ninja to put bounty on.</div>
-{elseif $error eq 2}
-<div class='ninja-error'>You do not have that much gold.</div>
-{elseif $error eq 3}
-<div class='ninja-error'>You did not offer a valid amount of gold.</div>
-{elseif $error eq 4}
-<div class='ninja-notice'>The bounty on {$target|escape} may go no higher.</div>
-{elseif $error eq 5}
-<div class='ninja-notice'>The Doshin ignore your ill-funded attempt to bribe them.</div>
+{if $error}
+  <div class='parent'>
+  {if $error eq 1}
+  <div class='ninja-error child'>No such ninja to put bounty on.</div>
+  {elseif $error eq 2}
+  <div class='ninja-error child'>You do not have that much gold.</div>
+  {elseif $error eq 3}
+  <div class='ninja-error child'>You did not offer a valid amount of gold.</div>
+  {elseif $error eq 4}
+  <div class='ninja-notice child'>The bounty on {$target|escape} may go no higher.</div>
+  {elseif $error eq 5}
+  <div class='ninja-notice child'>The Doshin ignore your ill-funded attempt to bribe them.</div>
+  {/if}
+  </div>
 {/if}
 
 {if $command eq 'offer'}
