@@ -1,6 +1,7 @@
 <?php
 namespace app\Controller;
 
+use \Item as Item;
 
 class ShopController { // extends Controller
 	public static $alive   = true;  // *** must be alive to access the shop ***
@@ -44,6 +45,7 @@ class ShopController { // extends Controller
 		$item_text 	       = null;
 
 		if ($item instanceof Item) {
+
 			$item_text = ($quantity > 1 ? $item->getPluralName() : $item->getName());
 			$purchaseOrder = new PurchaseOrder();
 

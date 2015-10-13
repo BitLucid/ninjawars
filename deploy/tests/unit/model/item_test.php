@@ -119,4 +119,15 @@ class Item_Test extends PHPUnit_Framework_TestCase {
 		$amanita = new Item('amanita');
 		$this->assertGreaterThan(0, $amanita->getMaxTurnChange());
 	}
+
+	public function testItemPluralNameExists(){
+		$caltrop = new Item('caltrops');
+		$shuriken = new Item('shuriken');
+		$this->assertInstanceOf('\Item', $caltrop);
+		$this->assertInstanceOf('\Item', $shuriken);
+		$this->assertEquals('Shuriken', $shuriken->getName());
+		$this->assertEquals('Shuriken', $shuriken->getPluralName());
+		$this->assertEquals('Caltrops', $caltrop->getName());
+		$this->assertEquals('Caltrops', $caltrop->getPluralName());
+	}
 }
