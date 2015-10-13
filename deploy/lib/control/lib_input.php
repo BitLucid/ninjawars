@@ -12,8 +12,8 @@ use app\environment\RequestWrapper;
 // To not filter some input, you have to explicitly pass in null for the third parameter,
 // e.g. in('some_url_parameter', null, null)
 function in($var_name, $default_val=null, $filter_callback=null) {
-	$get = RequestWrapper::get($var_name);
-	$result = isset($get)? $get: $default_val;
+	$req = RequestWrapper::getPostOrGet($var_name);
+	$result = isset($req)? $req: $default_val;
 	// Check that the filter function sent in exists.
 	if ($filter_callback && function_exists($filter_callback)) {
 		$result = $filter_callback($result);

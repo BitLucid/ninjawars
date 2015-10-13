@@ -37,4 +37,12 @@ class RequestWrapper{
 		static::init();
 		return static::$request->request->get($val);
 	}
+
+	// Equivalent to $_REQUEST
+	public static function getPostOrGet($val){
+		return first_value(static::getPost($val), static::get($val));
+	}
+
+	// Request parameter by key
+
 }
