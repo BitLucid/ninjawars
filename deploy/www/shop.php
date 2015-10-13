@@ -9,7 +9,7 @@ if ($error = init(ShopController::$private, ShopController::$alive)) {
 } else {
 	$shop = new ShopController();
 
-	if ($_SERVER['REQUEST_METHOD'] === 'POST' && in('purchase') == '1') {
+	if (post('purchase') == '1') {
 		$shop->buy();
 	} else {
 		$shop->index();
