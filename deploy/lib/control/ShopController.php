@@ -40,12 +40,15 @@ class ShopController { // extends Controller
 		// Pull the item info from the database
 		$item_costs        = item_for_sale_costs();
 		$item              = getItemByID(item_id_from_display_name($in_item));
+		$quantity 		   = whichever(positive_int($in_quantity), $this->sessionData['quantity_setting'], 1);
+		$item_text 	       = null;
 
-		if ($item) {
+		if ($item instanceof Item) {
+			$item_text = ($quantity > 1 ? $item->getPluralName() : $item->getName());
 			$purchaseOrder = new PurchaseOrder();
 
 			// Determine the quantity from input, or settings, or as a fallback, default of 1.
-			$purchaseOrder->quantity = whichever(positive_int($in_quantity), $this->sessionData['quantity_setting'], 1);
+			$purchaseOrder->quantity = $quantity;
 			$purchaseOrder->item     = $item;
 
 			$potential_cost    = (isset($item_costs[$purchaseOrder->item->identity()]['item_cost']) ? $item_costs[$purchaseOrder->item->identity()]['item_cost'] : null);
@@ -66,12 +69,12 @@ class ShopController { // extends Controller
 			}
 		}
 
-		set_setting('items_quantity', $purchaseOrder->quantity);
+		set_setting('items_quantity', $quantity);
 
 		$parts = array(
 			'current_item_cost' => $current_item_cost,
-			'quantity'          => $purchaseOrder->quantity,
-			'item_text'         => ($purchaseOrder->quantity > 1 ? $item->getPluralName() : $item->getName()),
+			'quantity'          => $quantity,
+			'item_text'         => $item_text,
 			'no_funny_business' => $no_funny_business,
 			'view_part'         => 'buy',
 		);
