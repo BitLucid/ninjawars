@@ -37,6 +37,8 @@ require_once(LIB_ROOT.'data/DatabaseConnection.php');
 require_once(LIB_ROOT.'control/Nmail.class.php');
 require_once(LIB_ROOT.'control/Cookie.class.php');
 require_once(LIB_ROOT.'control/Session.class.php');
+require_once(LIB_ROOT.'environment/RequestWrapper.php');
+
 require_once(LIB_ROOT.'control/Clan.php');
 
 // *** Include all common function includes here.
