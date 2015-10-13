@@ -1,15 +1,19 @@
 <?php
+require_once(CORE.'environment/RequestWrapper.php');
 /*
  * Deals with getting and filtering user input (just from request).
  *
  * @package input
  */
 
+use app\environment\RequestWrapper;
+
 // Input function that by default LEAVES INPUT COMPLETELY UNFILTERED
 // To not filter some input, you have to explicitly pass in null for the third parameter,
 // e.g. in('some_url_parameter', null, null)
 function in($var_name, $default_val=null, $filter_callback=null) {
-	$result = (isset($_REQUEST[$var_name]) ? $_REQUEST[$var_name] : $default_val);
+	$get = RequestWrapper::get($var_name);
+	$result = isset($get)? $get: $default_val;
 	// Check that the filter function sent in exists.
 	if ($filter_callback && function_exists($filter_callback)) {
 		$result = $filter_callback($result);
@@ -22,7 +26,8 @@ function in($var_name, $default_val=null, $filter_callback=null) {
  *  Wrapper around the post variables as a clean way to get input.
  **/
 function post($key, $default_val=null){
-	return isset($_POST[$key])? $_POST[$key] : $default_val;
+	$post = RequestWrapper::getPost($key);
+	return isset($post)? $post: $default_val;
 }
 
 // Return a casting with a result of a positive int, or else zero.
@@ -78,4 +83,3 @@ function restrict_to($original, $possibilities=array(), $default=null) {
 
 	return $default;  // If the original doesn't match, just return the default.
 }
-?>
