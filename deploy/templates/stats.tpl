@@ -1,7 +1,4 @@
 <style>
-.your-stats textarea, .your-stats input{
-  color:#A1A1A7;
-}
 .player-info{
   color:#A1A1A7;
 }
