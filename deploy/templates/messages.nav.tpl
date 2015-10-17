@@ -1,15 +1,15 @@
 {if $pages gt 1}
 <div class="message-nav">
 	{if $current_page > 1}
-  <a href="messages.php?page={math equation="x-1" x=$current_page}&type={$type_filter}">Prev</a>
+  		<a class='prev' href="messages.php?page={math equation="x-1" x=$current_page}&amp;type={$type_filter}">&#9664;</a>
 	{else}
-  Prev
+  		<span class='prev inactive'>&#9664;</span>
 	{/if}
-  - {$current_page} / {$pages} -
+  		<span class='current-page-location'>{$current_page}/{$pages}</span>
 	{if $current_page < $pages}
-  <a href="messages.php?page={math equation="x+1" x=$current_page}&type={$type_filter}">Next</a>
+  		<a class='next' href="messages.php?page={math equation="x+1" x=$current_page}&amp;type={$type_filter}">&#9654;</a>
 	{else}
-  Next
+  		<span class='next inactive'>&#9654;</span>
 	{/if}
 </div>
 {/if}

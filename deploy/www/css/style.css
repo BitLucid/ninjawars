@@ -1373,10 +1373,18 @@ iframe {
 	margin-top:0;
 	list-style-type:none;
 }
-.chat-messages dt, #message-list dt {
+.chat-messages dt, #message-list dt, #event-list dt {
 	clear:left;
 	float:left;
 	margin-right: .5em;
+	text-align:right;
+}
+#event-list dd{
+	float:left;clear:right;display:inline-block;
+}
+#event-list dt{
+  float:left; width:20%; /* adjust the width; make sure the total of both is 100% */
+  min-width:160px;
 }
 .chat-messages .chat-message a {
 	font-size:smaller;
@@ -1391,7 +1399,7 @@ iframe {
 	font-style:italic;
 	color: gray;
 	display:inline-block;
-        margin-left:1em;
+    margin-left:1em;
 }
 
 #full-chat{
@@ -2194,7 +2202,7 @@ table#sight-info {
 
 .message-unread, .event-unread {
 	font-weight:bold;
-	background-color:DarkSlateBlue;
+	background-color:rgba(72, 61, 139, 0.5);
 	color:white;
 }
 #messages-icon {
@@ -2211,6 +2219,15 @@ table#sight-info {
 	margin-left:auto;
 	margin-right:auto;
 	float: left;
+}
+
+.message-sender:before{
+	content:'\003c';
+	color:ghostwhite;
+}
+.message-sender:after{
+	content:'\003e';
+	color:ghostwhite;
 }
 
 .messages #ninja-search {
@@ -2244,8 +2261,42 @@ table#sight-info {
 	clear:both;
 }
 
+#message-ninja{
+  margin-bottom:1em;
+}
+.message-list dl, .message-list dt, .message-list dd{
+  margin:0; padding:0;
+}
+.message-list dl {
+  width:100%; overflow:hidden;
+}
+.message-list dt {
+  float:left; width:20%; /* adjust the width; make sure the total of both is 100% */
+  min-width:160px;
+}
+.message-list dd {
+  float:left; width:70%; /* adjust the width; make sure the total of both is 100% */
+}
+#delete-messages a{
+  text-transform:capitalize;
+}
+
 .message-nav {
-	margin-top:1em;
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+	clear:both;
+}
+.message-nav .inactive{
+	color:gray;
+}
+.message-nav .current-page-location{
+	font-weight:bold; color:#F8F9F1;
+}
+.message-nav .next,.message-nav .prev{
+	font-weight:bold;font-size:x-large;
+}
+
+#message-sent-to {
 	clear:both;
 }
 
@@ -2258,10 +2309,6 @@ table#sight-info {
 	width:50%;
 	height:3em;
 	margin-left:1em;
-}
-
-#message-sent-to {
-	clear:both;
 }
 
 .player-communications .FormButton {
@@ -2287,7 +2334,7 @@ table#sight-info {
 	list-style-type:none; display:inline-block; margin-left:2em;
 }
 #tabs.message-tabs ul li a{
-	padding:.3em .7em; color:rgb(30, 40, 240); display:inline-block;
+	padding:.3em .7em; display:inline-block;
 }
 
 #tabs.message-tabs ul li.first{
