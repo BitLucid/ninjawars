@@ -32,11 +32,23 @@
 .npc-box dl strong{
 	color:teal;
 }
+nav.admin-nav > div{
+	background-color:rgba(129, 45, 12, 0.5);padding:0.5em 2em;
+}
+nav.admin-nav a{
+	display:inline-block;margin-left:2em;
+}
 </style>
 
 <div id='admin-actions'>
 
 <h1>Admin Actions</h1>
+
+<nav class='admin-nav parent'>
+	<div class='child'>
+		<a class='btn btn-info' href='/ninjamaster/#npc-list'>Npc List</a><a class='btn btn-info' href='/ninjamaster/#char-list'>Character List<a class='btn btn-info' href='/ninjamaster/tools.php'>Validation Tools</a>
+	</div>
+</nav>
 
 <section class='centered glassbox'>
 	<form name='char-search' action='' method='post'>
@@ -80,14 +92,16 @@
 {/foreach}
 {/if}
 
-{foreach from=$stats item='stat' key='stat_name'}
-<h2>Most {$stat_name}:</h2>
-<div class='glassbox'>
-{foreach from=$stat item='char'}
-	<a href='/ninjamaster/?view={$char.player_id}' class='char-name'>{$char.uname|escape}</a> :: {$char.$stat_name}<br>
-{/foreach}
+<div id='char-list'>
+	{foreach from=$stats item='stat' key='stat_name'}
+	<h2>Most {$stat_name}:</h2>
+	<div class='glassbox'>
+	{foreach from=$stat item='char'}
+		<a href='/ninjamaster/?view={$char.player_id}' class='char-name'>{$char.uname|escape}</a> :: {$char.$stat_name}<br>
+	{/foreach}
+	</div>
+	{/foreach}
 </div>
-{/foreach}
 
 
 {if $dupes}
@@ -99,7 +113,7 @@
 {/if}
 
 <section class='special-info'>
-	<h1>Npc list raw info</h1>
+	<h1 id='npc-list'>Npc list raw info</h1>
 	<div class='npc-raw-info'>
 			{foreach from=$npcs item='npc'}
 		<div class='npc-box tiled'>
