@@ -47,9 +47,7 @@ class PasswordController{
 
 	// Send an email directly to the user with the reset instructions.
 	public function sendEmail(Account $account){
-		debug('tOTALLY SENDING THE EMAIL, YEAH MAN!');
-		die();
-
+		echo 'PLACEholder: i AM TOTALLY SENDING THE EMAIL, DON\'T EVEN DOUBT IT.';
 	}
 
 	/**
@@ -59,7 +57,7 @@ class PasswordController{
 		$data = PasswordResetRequest::match($token);
 		$account = AccountFactory::find($data['_account_id']);
 
-		$content = render_template('passwordreset.tpl', ['token'=>$token, 'email'=>$account->email()]);
+		$content = render_template('resetpassword.tpl', ['token'=>$token, 'email'=>$account->email()]);
 		$response = new Response();
 		$response->setContent($content);
 		//$response->setStatusCode(200);

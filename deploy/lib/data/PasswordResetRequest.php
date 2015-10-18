@@ -39,7 +39,7 @@ class PasswordResetRequest{
 					left join account_players on account_id = _account_id 
 					left join players on player_id = _player_id
 					'.$where, $params);
-			return $account_id;
+			return AccountFactory::findById($account_id);
 		}
 	}
 
