@@ -33,15 +33,23 @@ class PasswordController{
 			$error = 'You must specify either an email or a ninja name!';
 			$mess = null;
 		} else {
-			$account_id = PasswordResetRequest::findAccount($email, $ninja_name);
+			$account = PasswordResetRequest::findAccount($email, $ninja_name);
 			$error = null;
 			$mess = 'Email sent!';
+			$this->sendEmail($account);
 		}
 		// TODO: Authenticate the csrf, which must match, from the session.
 		return new RedirectResponse('/password'.'?'
 			.($mess? 'message='.url($mess).'&' : '')
 			.($error? 'error='.url($error) : '')
 			);
+	}
+
+	// Send an email directly to the user with the reset instructions.
+	public function sendEmail(Account $account){
+		debug('tOTALLY SENDING THE EMAIL, YEAH MAN!');
+		die();
+
 	}
 
 	/**
