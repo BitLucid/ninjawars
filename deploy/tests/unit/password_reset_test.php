@@ -21,11 +21,12 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
     }
 
     public function testFindAccountForMakingResetAccountHasToExist(){
-        $account_id = PasswordResetRequest::findAccount($this->account_info['active_email'], null);
-        $this->assertGreaterThan(0, $account_id);
-        $this->assertTrue(is_numeric($account_id));
+        $account = PasswordResetRequest::findAccount($this->account_info['active_email'], null);
+        $this->assertGreaterThan(0, $account->getId());
+        $this->assertTrue(is_numeric($account->getId()));
         //$this->assertTrue(PasswordResetRequest::findAccount(null, $this->account_info['active_email']));
-        $this->assertGreaterThan(0, PasswordResetRequest::findAccount(null, $this->ninja->name()));
+        $final_account = PasswordResetRequest::findAccount(null, $this->ninja->name());
+        $this->assertGreaterThan(0, $final_account->getId());
     }
 
     // Make sure a user can make a request
