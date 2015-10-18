@@ -365,7 +365,7 @@ class ClanController { //extends Controller
 				$myClan = ClanFactory::clanOfMember($player);
 
 				$parts = [
-					'clan'           => $clan,
+					'clan'           => $myClan,
 					'title'          => 'Your clan',
 					'action_message' => 'Message sent to your clan.',
 					'pageParts'      => [
@@ -373,7 +373,7 @@ class ClanController { //extends Controller
 					],
 				];
 
-				if ($this->playerIsLeader($player, $clan)) {
+				if ($this->playerIsLeader($player, $myClan)) {
 					array_unshift($parts['pageParts'], 'manage');
 				} else {
 					array_unshift($parts['pageParts'], 'reminder-member');

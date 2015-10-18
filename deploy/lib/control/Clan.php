@@ -11,6 +11,9 @@ class Clan
 {
     private $m_id;
     private $m_name;
+	private $avatarUrl;
+	private $description;
+	private $founder;
 
     public function __construct($p_id=null, $p_name=null, $data=null) {
         $this->setID($p_id);

@@ -7,25 +7,29 @@
 **/
 class ClanFactory{
 	// Returns a fleshed out clan object, or a mostly blank one if no existing data found
-	public static function create($identity, $data=null){
-		$founder = $data['founder']? $data['founder'] : null;
-		$desc = $data['description']? $data['description'] : null;
-		$name = $identity;
-		$url = isset($data['clan_avatar_url'])? $data['clan_avatar_url'] : null;
+	public static function create($identity, $data=null) {
+		$founder = ($data['founder'] ? $data['founder'] : null);
+		$desc    = ($data['description'] ? $data['description'] : '');
+		$url     = (isset($data['clan_avatar_url']) ? $data['clan_avatar_url'] : null);
+		$name    = $identity;
+
 		$new_clan_id = insert_query('insert into clan (clan_name, clan_avatar_url, clan_founder, description) values (:name, :url, :founder, :desc)',
 			[':name'=>$name, ':url'=>$url, ':founder'=>$founder, ':desc'=>$desc], 'clan_clan_id_seq');
-		if(!positive_int($new_clan_id)){
+
+		if (!positive_int($new_clan_id)) {
 			throw new Exception('Clan not inserted into database properly!');
 		}
+
 		return ClanFactory::find($new_clan_id);
 	}
 
 	// Get a clan by identity.
-	public static function find($identity){
+	public static function find($identity) {
 		$clan_info = query_row('select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan
 				where clan_id = :id',
 				[':id'=>$identity]);
-		if(empty($clan_info)){
+
+		if (empty($clan_info)) {
 			return null;
 		} else {
 			$clan = new Clan($clan_info['clan_id']);
@@ -42,14 +46,24 @@ class ClanFactory{
 	 * @return Clan|null
 	 **/
 	public static function clanOfMember($pc_or_id){
-		if($pc_or_id instanceof Player){
-			$id = $pc_or_id->id();
+		if ($pc_or_id instanceof Player) {
+			$playerID = $pc_or_id->id();
 		} else {
-			$id = $pc_or_id;
+			$playerID = $pc_or_id;
 		}
-		$clan_id = query_item('select _clan_id from clan_player where _player_id = :cid', [':cid'=>$id]);
-		$clan = $clan_id? new Clan($clan_id) : null;
-		return $clan;
+
+		$clan_info = query_row('select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan JOIN clan_player ON clan_id = _clan_id where _player_id = :pid', [':pid'=>$playerID]);
+
+		if (empty($clan_info)) {
+			return null;
+		} else {
+			$clan = new Clan($clan_info['clan_id']);
+			$clan->setFounder($clan_info['clan_founder']);
+			$clan->setDescription($clan_info['description']);
+			$clan->setName($clan_info['clan_name']);
+			$clan->setAvatarUrl($clan_info['clan_avatar_url']);
+			return $clan;
+		}
 	}
 
 	/**
@@ -92,6 +106,4 @@ class ClanFactory{
 				':avatar_url'=>$clan->getAvatarUrl(), ':desc'=>$clan->getDescription(), ':id'=>$clan->id()]);
 		return (bool)$updated;
 	}
-
-
 }
