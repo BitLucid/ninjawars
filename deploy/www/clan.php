@@ -66,7 +66,7 @@ class ClanController { //extends Controller
 		$player = new Player(self_char_id());
 		$myClan = ClanFactory::clanOfMember($player);
 
-		if ($player &&$myClan) {
+		if ($player && $myClan) {
 			return $this->view();
 		} else {
 			return $this->listClans();
@@ -95,24 +95,6 @@ class ClanController { //extends Controller
 					'member-list',
 				],
 			];
-
-			$player = new Player(self_char_id());
-
-			if ($player) {
-				$myClan = ClanFactory::clanOfMember($player);
-
-				if ($myClan) {
-					if ($myClan->id() != $clan->id()) {
-						array_unshift($parts['pageParts'], 'reminder-member');
-					} else if ($this->playerIsLeader($player, $clan)) {
-						array_unshift($parts['pageParts'], 'manage');
-					} else {
-						array_unshift($parts['pageParts'], 'reminder-member');
-					}
-				} else {
-					array_unshift($parts['pageParts'], 'reminder-no-clan');
-				}
-			}
 		} else {
 			$parts = [
 				'title'     => 'Clan Not Found',
@@ -122,6 +104,28 @@ class ClanController { //extends Controller
 					'list',
 				],
 			];
+		}
+
+		$player = new Player(self_char_id());
+
+		if ($player) {
+			$myClan = ClanFactory::clanOfMember($player);
+
+			if ($myClan) {
+				if ($clan) {
+					if ($this->playerIsLeader($player, $clan)) {
+						array_unshift($parts['pageParts'], 'manage');
+					} else if ($myClan->id() === $clan->id()) {
+						array_unshift($parts['pageParts'], 'non-leader-panel');
+					} else {
+						array_unshift($parts['pageParts'], 'reminder-member');
+					}
+				} else {
+					array_unshift($parts['pageParts'], 'reminder-member');
+				}
+			} else {
+				array_unshift($parts['pageParts'], 'reminder-no-clan');
+			}
 		}
 
 		return $this->render($parts);
@@ -135,14 +139,15 @@ class ClanController { //extends Controller
 			throw new Exception('You must be a clan leader to invite new members');
 		}
 
-		$person_invited = in('person_invited', ''); // A search string
-		$person_to_invite = new Player($person_invited);
+		$person_to_invite = new Player(in('person_invited', ''));
 
 		$parts = [
 			'clan'      => $clan,
+			'title'     => 'Invite players to your clan',
 			'pageParts' => [
-				'manage',
+				'edit',
 				'info',
+				'member-list',
 			],
 		];
 
@@ -166,15 +171,17 @@ class ClanController { //extends Controller
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if ($this->playerIsLeader($player, $clan)) {
-			throw new Exception('You are the only leader of your clan. You must be disband your clan if you wish to leave.');
+			throw new Exception('You are the only leader of your clan. You must disband your clan if you wish to leave.');
 		}
 
 		$clan->leave($player);
 
 		return $this->render([
 			'action_message' => 'You have left your clan.',
+			'title'          => 'You have left your clan.',
 			'clans'          => clans_ranked(),
 			'pageParts'      => [
+				'reminder-no-clan',
 				'list',
 			]
 		]);
@@ -194,15 +201,18 @@ class ClanController { //extends Controller
 
 			$parts = [
 				'action_message' => 'You have created a new clan!',
+				'title'          => 'Clan '.$clan->getName(),
 				'clan'           => $clan,
 				'pageParts'      => [
 					'manage',
 					'info',
+					'member-list',
 				],
 			];
 		} else {
 			$parts = [
 				'error'     => 'You do not have enough renown to create a clan. You must be at least level '.ClanController::CLAN_CREATOR_MIN_LEVEL.'.',
+				'title'     => 'You cannot create a clan yet',
 				'clans'     => clans_ranked(),
 				'pageParts' => [
 					'list',
@@ -240,13 +250,16 @@ class ClanController { //extends Controller
 
 			$parts = [
 				'action_message' => 'Your clan has been disbanded.',
+				'title'          => 'Clan disbanded',
 				'clans'          => clans_ranked(),
 				'pageParts'      => [
+					'reminder-no-clan',
 					'list',
 				],
 			];
 		} else {
 			$parts = [
+				'title'     => 'Confirm disbanding of your clan',
 				'pageParts' => [
 					'confirm-disband',
 				],
@@ -272,7 +285,9 @@ class ClanController { //extends Controller
 			'action_message' => "You have removed $kicked_name from your clan",
 			'clan'           => $clan,
 			'pageParts'      => [
-				'info'
+				'manage',
+				'info',
+				'member-list',
 			]
 		]);
 	}
@@ -370,13 +385,14 @@ class ClanController { //extends Controller
 					'action_message' => 'Message sent to your clan.',
 					'pageParts'      => [
 						'info',
+						'member-list',
 					],
 				];
 
 				if ($this->playerIsLeader($player, $myClan)) {
 					array_unshift($parts['pageParts'], 'manage');
 				} else {
-					array_unshift($parts['pageParts'], 'reminder-member');
+					array_unshift($parts['pageParts'], 'non-leader-panel');
 				}
 
 				return $this->render($parts);
@@ -449,5 +465,4 @@ class ClanController { //extends Controller
 
 		return false;
 	}
-
 }

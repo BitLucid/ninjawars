@@ -4,9 +4,29 @@
   </h2>
   <div id="leader-options" style="margin: 0 inherit 0;">
     <ul id="leader-options-list" class="clearfix">
-      <li><a href="clan.php?command=invite">Recruit for your Clan</a></li>
+      <li>
+		  <!--<a href="clan.php?command=invite">Recruit for your Clan</a>-->
+{include file="clan.invite.tpl"}
+	  </li>
       <li><form action="clan.php?command=disband" method="post"><input class="btn btn-warning" type="submit" value="Disband Your Clan"></form></li>
-      <li><a href="clan.php?command=kick">Kick a Clan Member</a></li>
+      <li>
+		  <!--<a href="clan.php?command=kick">Kick a Clan Member</a>-->
+		  <form id='kick_form' action='clan.php' method='get' name='kick_form'>
+			<div>
+				<input type='submit' value='Kick' class='formButton'><br>
+				<select id='kicked' name='kicked'>
+					<option value=''>--Pick a Member--</option>
+{assign var="members" value=$clan->getMembers()}
+{foreach from=$members item="member"}
+	{if $member.player_id neq $player->id()}
+					<option value='{$member.player_id|escape}'>{$member.uname|escape}</option>
+	{/if}
+{/foreach}
+				</select>
+				<input id='command' type='hidden' value='kick' name='command'>
+			</div>
+		</form>
+	  </li>
     </ul>
 
     <div class="glassbox" style="text-align: left;">

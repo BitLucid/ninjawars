@@ -1,5 +1,3 @@
-{if !$clan_disbanded}
-
 Are you sure you want to continue? This will remove all members from your clan.<br>
 <form id='disband' method='get' action='clan.php' name='disband'>
 	<div>
@@ -8,5 +6,3 @@ Are you sure you want to continue? This will remove all members from your clan.<
 		<input id='sure' type='hidden' value='yes' name='sure'>
 	</div>
 </form>
-{/if}
-<!-- Otherwise the clan was disbanded, and that will show in the action message section. -->
