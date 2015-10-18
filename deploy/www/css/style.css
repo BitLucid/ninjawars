@@ -1457,7 +1457,7 @@ iframe {
 /* Splash page specific stuff */
 
 .splash #top-logo{
-  width:56%;text-align:center;display:inline-block;vertical-align:top;line-height:40px;margin-left:1em;margin-right:1em;
+	box-sizing:border-box;width:50%;text-align:center;display:inline-block;vertical-align:top;line-height:40px;margin-left:1em;margin-right:1em;
 }
 .splash #menu-map-head{
   font-size:xx-large;margin-right:.5em;
