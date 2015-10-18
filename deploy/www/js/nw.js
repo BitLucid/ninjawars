@@ -20,7 +20,7 @@ var g_isLive = (window.location.host !== 'localhost');
 
 var g_isRoot = (window.location.pathname === '/');
 
-var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent == window));
+var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
 
 // Guarantee that there is a console to prevent errors while debugging.
 if (typeof(console) === 'undefined') { console = { log: function() { } }; }
@@ -47,7 +47,7 @@ var character = {
 */
 
 /*  GLOBAL SETTINGS & VARS */
-if (parent.window != window) {
+if (parent.window !== window) {
 	// If the interior page of an iframe, use the already-defined globals from the index.
 	//$ = parent.$;
 	NW = parent.NW;
@@ -57,7 +57,7 @@ if (parent.window != window) {
 	NW = {};
 
 	NW.datastore = {};
-	
+
 
 
 	// Typewatch functionality, can be used for other triggered delays as well.
@@ -75,14 +75,14 @@ if (parent.window != window) {
 	  return function(callback, ms){
 		clearTimeout (timer);
 		timer = setTimeout(callback, ms);
-	  }  
+	  };
 	})();
-	
+
 	// Accept a json data array of matches and house them in the interface.
 	/*NW.displayMatches = function(json_matches){
-		
+
 	};*/
-	
+
 	// Get the chars/ids matching a term and then have the callback run.
 	NW.charMatch = function(term, limit, callback) {
 		$.getJSON('api.php?type=char_search&term='+term+'&limit='+limit+'&jsoncallback=?', callback);
@@ -101,12 +101,12 @@ if (parent.window != window) {
 		.end();
 		// Change the percentage of the background bar.
 	};
-	
-	
+
+
 	NW.displayBarstats = function() {
 		$('#barstats').show();
 	};
-	
+
 	NW.refreshStats = function(playerInfo) {
 		// Pull health, turns, and kills.
 		var updated = false;
@@ -145,16 +145,16 @@ if (parent.window != window) {
 
 	// For refreshing quickstats (now barstats) from inside the main iframe.
 	NW.refreshQuickstats = function(typeOfView) {
-		NW.refreshStats(); // Just call the function to refresh stats.
+		NW.refreshStats(typeOfView); // Just call the function to refresh stats.
 	};
-
 
 	// Returns true when debug bit set or localhost path used.
 	NW.debug = function(arg) {
-		if (this.debugging || !this.isLive) {
+		if (this.debugging || !g_isLive) {
 			if (console) {console.log(arg);}
 			return true;
 		}
+
 		return false;
 	};
 
@@ -179,11 +179,11 @@ if (parent.window != window) {
 	NW.eventsRead = function() {
 		$('#recent-events', top.document).removeClass('message-unread');
 	};
-	
+
 	NW.eventsHide = function() {
 		$('#recent-events', top.document).hide();
 	};
-	
+
 	NW.eventsShow = function() {
 		$('#recent-events', top.document).show();
 	};
@@ -198,8 +198,8 @@ if (parent.window != window) {
 			this.feedbackSpeedUp(); // Make the interval to try again shorter.
 		} else if (this.datastore.visibleEventId === event.event_id) {
 			// If the stored data is the same as the latest pulled event...
-			this.datastore.eventUpdateCount = (typeof this.datastore.eventUpdateCount === 'undefined'? 
-					this.datastore.eventUpdateCount = 1 : 
+			this.datastore.eventUpdateCount = (typeof this.datastore.eventUpdateCount === 'undefined'?
+					this.datastore.eventUpdateCount = 1 :
 					this.datastore.eventUpdateCount + 1 ) ;
 			if(this.datastore.eventUpdateCount > hideEventsAfter){
 				NW.eventsHide();
@@ -336,7 +336,7 @@ if (parent.window != window) {
 		// NOTE THAT THIS CALLBACK IS DELAYED ASYNC
 		$.getJSON('api.php?type=index&jsoncallback=?', this.make_checkAPI_callback(p_additionalCallback));
 	};
-	
+
 	// Chained check of the api for new index info.
 	NW.make_checkAPI_callback = function(p_additionalCallback) {
 		var self = this;
@@ -424,7 +424,7 @@ if (parent.window != window) {
 	// JS Update Heartbeat
 	NW.chainedUpdate = function(p_chainCounter) {
 		var chainCounter = (!!p_chainCounter ? p_chainCounter : 1);
-		
+
 		if (this.loggedIn && chainCounter !== 1) {
 			// Skip the heartbeat if not logged in, and skip it for the first chain counter, since the page will have just loaded.
 			this.checkAPI(); // Check for new information.
@@ -465,7 +465,7 @@ $(function() {
 
 	$('html').removeClass('no-js'); // Remove no-js class when js present.
 	$('time.timeago').timeago(); // Set time-since-whatever areas
-		
+
 	// INDEX ONLY CHANGES
 	if (g_isIndex || g_isRoot) {
 		var hash = window.location.hash;
@@ -478,14 +478,14 @@ $(function() {
 		var isTouchDevice = 'ontouchstart' in document.documentElement;
 		if(!isTouchDevice){
 			// Hide the self and map subcategories initially, leaving the combat subcategory visible
-			var subcats = $('#self-subcategory, #map-subcategory').hide();
+			$('#self-subcategory, #map-subcategory').hide();
 			//delay('2000').slideUp('slow');
 			// Find the trigger areas and show the appropriate subcategory.
 			var triggers = $('#category-bar').find('.combat, .self, .map');
 			if(triggers){
 				triggers.mouseenter(function(){
 					var trigger = $(this);
-					var triggeredSubcat = $("#"+trigger.attr('class')+'-subcategory').show().siblings().hide();
+					$("#"+trigger.attr('class')+'-subcategory').show().siblings().hide();
 					// When a different trigger area is hovered, hide the other subcats.
 				});
 			}
@@ -494,12 +494,12 @@ $(function() {
 		// make iframe links record in the hash.
 		$('a[target=main]').click(function(){
 			var target = $(this).attr('href');
-			var winToChange = window.parent != window? window.parent : window;
+			var winToChange = (window.parent !== window ? window.parent : window);
 			winToChange.location.hash = target;
 			// Then update the hash to the source for that link.
 			return true;
 		});
-	
+
 		NW.chainedUpdate(); // Start the periodic index update.
 		$('#skip-to-bottom').click(function(){
 			$(this).hide();
