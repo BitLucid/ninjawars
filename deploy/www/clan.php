@@ -1,279 +1,453 @@
 <?php
 require_once(LIB_ROOT.'control/lib_clan.php');
 require_once(CORE.'data/ClanFactory.php');
-$alive      = false;
-$private    = false;
 
-if ($error = init($private, $alive)) {
+if ($error = init(ClanController::PRIV, ClanController::ALIVE)) {
 	display_error($error);
 	die();
 }
 
-$dbconn = DatabaseConnection::getInstance();
+$command = (string)in('command');
 
-// *** Possible Input Values ***
+$clanController = new ClanController();
 
-$command                  = in('command');
-$process                  = in('process');
-$clan_name_viewed         = in('clan_name', ''); // View that clan name.
-$clan_id_viewed           = (int) in('clan_id', null); // View that clan
-$new_clan_name            = trim(in('new_clan_name', ''));
-$sure                     = in('sure', '');
-$kicked                   = in('kicked', '');
-$search_person_invited    = in('person_invited', ''); // A search string
-$message                  = in('message', null, null); // Don't filter messages sent in.
-$message_sent             = false;
-$new_clan_avatar_url      = in('clan-avatar-url');
-$new_clan_description     = in('clan-description');
-$avatar_or_message_change = in('avatar_or_message_change', false);
-$clan_renamed             = false;
-$clan_disbanded           = false;
-
-if($command == 'view' && !$clan_id_viewed){
-	$command = null; // Can't view a clan if one isn't specified.
+switch ($command) {
+	case 'view':
+		$response = $clanController->view();
+		break;
+	case 'message':
+		$response = $clanController->message();
+		break;
+	case 'update':
+		$response = $clanController->update();
+		break;
+	case 'edit':
+		$response = $clanController->edit();
+		break;
+	case 'new':
+		$response = $clanController->create();
+		break;
+	case 'leave':
+		$response = $clanController->leave();
+		break;
+	case 'kick':
+		$response = $clanController->kick();
+		break;
+	case 'join':
+		$response = $clanController->join();
+		break;
+	case 'invite':
+		$response = $clanController->invite();
+		break;
+	case 'disband':
+		$response = $clanController->disband();
+		break;
+	case 'list':
+		$response = $clanController->listClans();
+		break;
+	default:
+		$response = $clanController->index();
+		break;
 }
 
-$action_message = null; // Action or error message for template.
+display_page(
+	$response['template'],
+	$response['title'],
+	$response['parts'],
+	$response['options']
+);
 
-// *** Useful Constants ***
-define('CLAN_CREATOR_MIN_LEVEL', 20);
-$clan_creator_min_level = CLAN_CREATOR_MIN_LEVEL; // For the template.
+class ClanController { //extends Controller
+	const CLAN_CREATOR_MIN_LEVEL = 20;
+	const ALIVE                  = false;
+	const PRIV                   = false;
 
-// *** Used Variables ***
+	public function index() {
+		$player = new Player(self_char_id());
+		$myClan = ClanFactory::clanOfMember($player);
 
-$ninja_id    = self_char_id();
-$ninja       = ($ninja_id ? new Player($ninja_id) : null);
-$char_info    = ($ninja_id ? self_info() : null);
-$username     = @$char_info['uname'];
-
-if ($clan_id_viewed) {
-	$viewed_clan_data = get_clan($clan_id_viewed);
-}
-
-$own_clan_id = null;
-
-// Truncate at 500 chars if necessary.
-$truncated_clan_desc = substr((string)$new_clan_description, 0, 500);
-if ($truncated_clan_desc != (string) $new_clan_description) {
-	$new_clan_description = $truncated_clan_desc;
-}
-
-// Logical cascade: No player id? Display error message.
-// No clan? Display no clan message, clan list, join link, creation limit
-// Clan member not leader? Display clan list, view clan link, msg link, leave clan link.
-// Clan leader -> Display leader options (make expand/contract), view clan, msg, disband.
-
-// TODO: Made the clan tags list hidden&toggleable when leader or view options are being displayed.
-// TODO: Make leader options hidden&toggle-displayable.
-
-$own_clan_id   = null;
-$own_clan_info = null;
-$own_clan_name = null;
-$own_clan_obj  = null;
-
-$led_clan_info         = null;
-$leader_of_own_clan    = null;
-$led_clan_id           = null;
-$self_is_leader        = null;
-$leader_of_viewed_clan = null;
-
-if ($ninja_id && $ninja) {
-	$ninja_id = $ninja->id();
-	// ***** A LOGGED IN CHARACTER *****
-	$viewer_level = $ninja->vo->level;
-	$can_create_a_clan = ($viewer_level >= CLAN_CREATOR_MIN_LEVEL);
-
-	$own_clan_id = clan_id($ninja->id());
-
-	if ($own_clan_id) {
-		// Is a member of a clan.
-		$own_clan_info = clan_info($own_clan_id);
-		$own_clan_name = $own_clan_info['clan_name'];
-		$own_clan_obj  = get_clan_by_player_id($ninja_id); // Own clan.
-		$led_clan_info = clan_char_is_leader_of($ninja_id);
-		$leader_of_own_clan = !empty($led_clan_info);
-
-		if ($leader_of_own_clan) {
-			$led_clan_id = whichever($led_clan_info['clan_id'], null);
-			$leader_of_viewed_clan = ($clan_id_viewed && !empty($led_clan_info) && $clan_id_viewed == $led_clan_info['clan_id']);
-		}
-	}
-}
-
-if(positive_int($ninja_id)){ // Logged in player.
-	if ($leader_of_own_clan && $avatar_or_message_change) {
-		$action_message = 'Clan avatar or message changed.';
-
-		// Saving incoming changes to clan leader edits.
-		if (clan_avatar_is_valid($new_clan_avatar_url)) {
-			save_clan_avatar_url($new_clan_avatar_url, $own_clan_id);
+		if ($player &&$myClan) {
+			return $this->view();
 		} else {
-			$error = 'That avatar url is not valid.';
-		}
-
-		if ($new_clan_description) {
-			save_clan_description($new_clan_description, $own_clan_id);
+			return $this->listClans();
 		}
 	}
 
-	// *** Commands Section ***
+	public function view() {
+		$clanID = (int)in('clan_id', null);
 
-	if ($command == 'new') {
-		// *** Clan Creation Action ***
-		if ($can_create_a_clan) {
-			$default_clan_name = 'Clan '.$username;
+		if (!$clanID) {
+			$player = new Player(self_char_id());
+
+			if ($player) {
+				$clan = ClanFactory::clanOfMember($player);
+			}
+		} else {
+			$clan = ClanFactory::find($clanID);
+		}
+
+		if ($clan) {
+			$parts = [
+				'title'     => $clan->getName(),
+				'clan'      => $clan,
+				'pageParts' => [
+					'info',
+					'member-list',
+				],
+			];
+
+			$player = new Player(self_char_id());
+
+			if ($player) {
+				$myClan = ClanFactory::clanOfMember($player);
+
+				if ($myClan) {
+					if ($myClan->id() != $clan->id()) {
+						array_unshift($parts['pageParts'], 'reminder-member');
+					} else if ($this->playerIsLeader($player, $clan)) {
+						array_unshift($parts['pageParts'], 'manage');
+					} else {
+						array_unshift($parts['pageParts'], 'reminder-member');
+					}
+				} else {
+					array_unshift($parts['pageParts'], 'reminder-no-clan');
+				}
+			}
+		} else {
+			$parts = [
+				'title'     => 'Clan Not Found',
+				'clans'     => clans_ranked(),
+				'error'     => 'The clan you requested does not exist. Pick one from the list below',
+				'pageParts' => [
+					'list',
+				],
+			];
+		}
+
+		return $this->render($parts);
+	}
+
+	public function invite() {
+		$player = new Player(self_char_id());
+		$clan   = ClanFactory::clanOfMember($player);
+
+		if (!$this->playerIsLeader($player, $clan)) {
+			throw new Exception('You must be a clan leader to invite new members');
+		}
+
+		$person_invited = in('person_invited', ''); // A search string
+		$person_to_invite = new Player($person_invited);
+
+		$parts = [
+			'clan'      => $clan,
+			'pageParts' => [
+				'manage',
+				'info',
+			],
+		];
+
+		if ($person_to_invite) {
+			$error = $clan->invite($person_to_invite, $player);
+
+			if ($error === null) {
+				$parts['action_message'] = 'Invited '.$person_to_invite->name().' to your clan.';
+			} else {
+				$parts['error'] = $error;
+			}
+		} else {
+			$parts['error'] = 'Sorry, unable to find a ninja to invite by that name.';
+		}
+
+		return $this->render($parts);
+	}
+
+	public function leave() {
+		$player = new Player(self_char_id());
+		$clan   = ClanFactory::clanOfMember($player);
+
+		if ($this->playerIsLeader($player, $clan)) {
+			throw new Exception('You are the only leader of your clan. You must be disband your clan if you wish to leave.');
+		}
+
+		$clan->leave($player);
+
+		return $this->render([
+			'action_message' => 'You have left your clan.',
+			'clans'          => clans_ranked(),
+			'pageParts'      => [
+				'list',
+			]
+		]);
+	}
+
+	public function create() {
+		$player = new Player(self_char_id());
+
+		if ($player->level() >= ClanController::CLAN_CREATOR_MIN_LEVEL) {
+			$default_clan_name = 'Clan '.$player->name();
 
 			while (!is_unique_clan_name($default_clan_name)) {
 				$default_clan_name = $default_clan_name.rand(1,999);
 			}
 
-			$clan              = createClan($ninja_id, $default_clan_name);
-			$command           = 'rename'; // *** Shortcut to rename after. ***
-			$action_message    = 'You have created a new clan!';
+			$clan = createClan($player->id(), $default_clan_name);
 
-			$own_clan_id   = $clan->getID();
-			$own_clan_info = clan_info($own_clan_id);
-			$own_clan_name = $own_clan_info['clan_name'];
-			$own_clan_obj  = $clan;
-			$led_clan_info = $own_clan_id;
-			$leader_of_own_clan = true;
-		} else {	// *** Level req wasn't met. ***
-			$error = 'You do not have enough renown to create a clan. You must be at least level '.CLAN_CREATOR_MIN_LEVEL.'.';
+			$parts = [
+				'action_message' => 'You have created a new clan!',
+				'clan'           => $clan,
+				'pageParts'      => [
+					'manage',
+					'info',
+				],
+			];
+		} else {
+			$parts = [
+				'error'     => 'You do not have enough renown to create a clan. You must be at least level '.ClanController::CLAN_CREATOR_MIN_LEVEL.'.',
+				'clans'     => clans_ranked(),
+				'pageParts' => [
+					'list',
+				],
+			];
+		}
+
+		return $this->render($parts);
+	}
+
+	public function join() {
+		$clan_id_viewed = (int) in('clan_id', null);
+		send_clan_join_request(self_char_id(), $clan_id_viewed);
+
+		return $this->render([
+			'action_message' => 'Request to join sent.',
+			'clan'           => ClanFactory::find($clan_id_viewed),
+			'pageParts'      => [
+				'info',
+			],
+		]);
+	}
+
+	public function disband() {
+		$player = new Player(self_char_id());
+		$clan   = ClanFactory::clanOfMember($player);
+		$sure   = in('sure', '');
+
+		if (!$this->playerIsLeader($player, $clan)) {
+			throw new Exception('You may not disband a clan you are not a leader of.');
+		}
+
+		if ($sure === 'yes') {
+			$clan->disband();
+
+			$parts = [
+				'action_message' => 'Your clan has been disbanded.',
+				'clans'          => clans_ranked(),
+				'pageParts'      => [
+					'list',
+				],
+			];
+		} else {
+			$parts = [
+				'pageParts' => [
+					'confirm-disband',
+				],
+			];
+		}
+
+		return $this->render($parts);
+	}
+
+	public function kick() {
+		$kicker = new Player(self_char_id());
+		$clan   = ClanFactory::clanOfMember($kicker);
+		$kicked = in('kicked', '');
+		$kicked_name = get_char_name($kicked);
+
+		if (!$this->playerIsLeader($kicker, $clan)) {
+			throw new Exception('You may not kick members from a clan you are not a leader of.');
+		}
+
+		$clan->kickMember($kicked, $kicker);
+
+		return $this->render([
+			'action_message' => "You have removed $kicked_name from your clan",
+			'clan'           => $clan,
+			'pageParts'      => [
+				'info'
+			]
+		]);
+	}
+
+	public function update() {
+		$player = new Player(self_char_id());
+		$clan   = ClanFactory::clanOfMember($player);
+
+		if (!$this->playerIsLeader($player, $clan)) {
+			throw new Exception('You may not update a clan you are not a leader of.');
+		}
+
+		$new_clan_avatar_url  = in('clan-avatar-url');
+		$new_clan_description = in('clan-description');
+		$new_clan_name        = trim(in('new_clan_name', ''));
+		$error                = null;
+
+		if ($new_clan_name != $clan->getName()) {
+			if (is_valid_clan_name($new_clan_name)) {
+				if (is_unique_clan_name($new_clan_name)) {
+					// *** Rename the clan if it is valid.
+					$new_clan_name = rename_clan($clan->getID(), $new_clan_name);
+					$clan->setName($new_clan_name);
+				} else {
+					$error = 'That clan name is already in use!';
+				}
+			} elseif ($new_clan_name) {
+				$error = 'Sorry, too many special symbols in your clan name.';
+			}
+		}
+
+		// Saving incoming changes to clan leader edits.
+		if (clan_avatar_is_valid($new_clan_avatar_url)) {
+			save_clan_avatar_url($new_clan_avatar_url, $clan->getID());
+			$clan->setAvatarUrl($new_clan_avatar_url);
+		} else {
+			$error = 'That avatar url is not valid.';
+		}
+
+		// Truncate at 500 chars if necessary.
+		$truncated_clan_desc = substr((string)$new_clan_description, 0, 500);
+		if ($truncated_clan_desc != (string) $new_clan_description) {
+			$new_clan_description = $truncated_clan_desc;
+		}
+
+		if ($new_clan_description) {
+			save_clan_description($new_clan_description, $clan->getID());
+			$clan->setDescription($new_clan_description);
+		}
+
+		///TODO accumulate error messages
+		return $this->render([
+			'action_message' => 'Your clan has been updated.',
+			'title'          => 'Edit your clan',
+			'clan'           => $clan,
+			'error'          => $error,
+			'pageParts'      => [
+				'manage',
+				'info',
+				'member-list',
+			],
+		]);
+	}
+
+	public function edit() {
+		$player = new Player(self_char_id());
+		$clan   = ClanFactory::clanOfMember($player);
+
+		return $this->render([
+			'clan'      => $clan,
+			'title'     => 'Edit your clan',
+			'pageParts' => [
+				'edit',
+				'info',
+			],
+		]);
+	}
+
+	public function message() {
+		$player = new Player(self_char_id());
+
+		if ($player) {
+			$myClan = ClanFactory::clanOfMember($player);
+
+			if ($myClan) {
+				$message = in('message', null, null); // Don't filter messages
+
+				message_to_clan($message);
+
+				$myClan = ClanFactory::clanOfMember($player);
+
+				$parts = [
+					'clan'           => $clan,
+					'title'          => 'Your clan',
+					'action_message' => 'Message sent to your clan.',
+					'pageParts'      => [
+						'info',
+					],
+				];
+
+				if ($this->playerIsLeader($player, $clan)) {
+					array_unshift($parts['pageParts'], 'manage');
+				} else {
+					array_unshift($parts['pageParts'], 'reminder-member');
+				}
+
+				return $this->render($parts);
+			} else {
+				return $this->listClans();
+			}
+		} else {
+			return $this->listClans();
 		}
 	}
 
-	if ($message) {
-		message_to_clan($message);
-		$message_sent = true;
-		$action_message = 'Message sent to clan.';
+	public function listClans() {
+		$parts = [
+			'title'     => 'Clan List',
+			'clans'     => clans_ranked(),
+			'pageParts' => ['list'],
+		];
+
+		$player = new Player(self_char_id());
+
+		if ($player) {
+			$clan = ClanFactory::clanOfMember($player);
+
+			if ($clan) {
+				array_unshift($parts['pageParts'], 'reminder-member');
+			} else {
+				array_unshift($parts['pageParts'], 'reminder-no-clan');
+			}
+		}
+
+		return $this->render($parts);
 	}
 
-	if ($own_clan_id) {
-		if ($leader_of_own_clan) {
-			if ($command == 'rename') {
-				//Clan Leader Action Rename
-				if (is_valid_clan_name($new_clan_name)) {
-					if (is_unique_clan_name($new_clan_name)) {
-						// *** Rename the clan if it is valid.
-						$clan_renamed = true;
-						$new_clan_name = rename_clan($own_clan_obj->getID(), $new_clan_name);
+	private function render($p_parts) {
+		if (!isset($p_parts['pageParts'])) {
+			$p_parts['pageParts'] = [];
+		}
 
-						$own_clan_obj->setName($new_clan_name); // Store the renamed value for the rest of this document.
-					} else {
-						$error = 'That clan name is already in use!';
-					}
-				} elseif($new_clan_name) {
-					$error = 'Sorry, too many special symbols in your clan name.';
-				}
-			} else if ($command == 'kick') {
-				//Clan Leader Action Kick a chosen member
-				if (!$kicked) {
-					// Get the member info for the select dropdown list.
-					$members_and_ids = clan_member_names_and_ids($own_clan_id, self_char_id());
-				} else {	// *** An actual successful kick of a member. ***
-					$kicked_name = get_char_name($kicked);
-					$own_clan_obj->kickMember($kicked, $ninja);
-					$kick_success = true;
-				}
-			} else if ($command == 'disband') {	// *** Clan Leader Confirmation of Disbanding of the Clan ***
-				if (!$sure) {
-					$display_disband_form = true;
+		if (!isset($p_parts['error'])) {
+			$p_parts['error'] = null;
+		}
 
-				} elseif ($sure == 'yes' && $leader_of_own_clan) {	// **** Clan Leader Action Disbanding of the Clan ***
-					$own_clan_obj->disband();
-					$clan_disbanded = true;
-					$action_message = 'Your clan has been disbanded.';
+		if (!isset($p_parts['action_message'])) {
+			$p_parts['action_message'] = null;
+		}
 
-					$own_clan_id   = null;
-					$own_clan_info = null;
-					$own_clan_name = null;
-					$own_clan_obj  = null;
+		$p_parts['player'] = new Player(self_char_id());
+		$p_parts['myClan'] = ($p_parts['player'] ? ClanFactory::clanOfMember($p_parts['player']) : null);
 
-					$led_clan_info         = null;
-					$leader_of_own_clan    = null;
-					$led_clan_id           = null;
-					$self_is_leader        = null;
-					$leader_of_viewed_clan = null;
+		$p_parts['clan_creator_min_level'] = ClanController::CLAN_CREATOR_MIN_LEVEL;
 
-				}
-			} else if ($command == 'invite') {	// *** Clan Leader Invite Input ***
-				$person_to_invite = new Player($search_person_invited);
-				if ($person_to_invite->id()) {
-					// *** Clan leader Invite Action ***
-					$error = $own_clan_obj->invite($person_to_invite, $ninja);
-					if($error === null){
-						$action_message = 'Invited '.$person_to_invite->name().' to your clan.';
-					}
-				} elseif($search_person_invited) {
-					$error = 'Sorry, unable to find a ninja to invite by that name.';
-				}
-			} // End of invite command.
+		return [
+			'template' => 'clan.tpl',
+			'title'    => $p_parts['title'],
+			'parts'    => $p_parts,
+			'options'  => [
+				'quickstat' => false,
+			],
+		];
+	}
 
-			if ($leader_of_own_clan) {
-				// ******* CLAN LEADER OPTIONS ******
-				$clan_avatar_current = whichever($new_clan_avatar_url, @$own_clan_info['clan_avatar_url']);
-				$clan_description_current = whichever($new_clan_description, @$own_clan_info['description']);
+	private function playerIsLeader($p_objPlayer, $p_objClan) {
+		$records = get_clan_leaders($p_objClan->id(), true);
+
+		foreach ($records AS $record) {
+			if ($record['player_id'] == $p_objPlayer->id()) {
+				return true;
 			}
-		} else {
-			// ***  NON LEADER CLAN MEMBER OPTIONS ***
+		}
 
-			if ($command == 'leave') {
-				$own_clan_obj->leave($ninja); // *** Clan Member Action to Leave their Clan ***
+		return false;
+	}
 
-				$clan_id = $clan = $own_clan_obj = null;
-
-				$action_message = 'You have left your clan.';
-
-				// *** Zero all the clan vars so that the rest of this page displays as if in no clan. ***
-				$own_clan_id   = null;
-				$own_clan_info = null;
-				$own_clan_name = null;
-				$own_clan_obj  = null;
-			}
-		} // End of non-leader clan options.
-	} else {
-		// ****** NOT-MEMBER OF ANY CLAN *******
-		if ($command == 'join') {	// *** Clan Joining Action ***
-			if ($process == 1) {
-				send_clan_join_request($ninja_id, $clan_id_viewed);
-			} else {
-				$clan_leaders = get_clan_leaders(null, true);
-				$leader_ids = array();
-
-				$clan_leaders = $clan_leaders->fetchAll();
-
-				foreach ($clan_leaders AS $leader) {
-					$leader_ids[] = $leader['player_id'];
-				}
-
-				$leaders_data = get_players_info($leader_ids);
-
-				$leaders = array();
-
-				foreach ($clan_leaders AS $leader) {
-					$leaders[] = $leaders_data[$leader['player_id']]->vo + $leader;
-				}
-			}
-		} // End of join command code.
-
-		if ($clan_id_viewed) {
-			// Provide a link to join any clan that you're currently viewing.
-			$viewed_clan = get_clan($clan_id_viewed);
-			$clan_obj = new Clan($viewed_clan['clan_id']);
-			$leader      = $clan_obj? $clan_obj->getLeaderInfo() : null;
-			$viewed_clan_name = @$viewed_clan['clan_name'];
-		}	// End of clan_id_viewed as a non-member code.
-	} // End of not-a member code
-}	// End of logged-in code
-
-$clan_name = null;
-if ($command == 'view') {
-	// *** A view of the member list of any clan ***
-	$clan = ClanFactory::find($clan_id_viewed);
-	$clan_name = $clan->getName();
-	$members = $clan->getMembers();
 }
-
-$clans = clans_ranked();
-$title = $clan_name? 'Clan '.$clan_name : 'Clans';
-display_page('clan.tpl', $title, get_defined_vars(array('leaders', 'members', 'clan', 'ninja_id', 'error', 'action_message')), array('quickstat'=>false));
