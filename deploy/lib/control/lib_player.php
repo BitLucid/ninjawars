@@ -437,7 +437,7 @@ function self_info() {
 function char_info($p_id) {
 	if(!$p_id){
 		if(defined('DEBUG') && DEBUG){
-			nw_error('DEPRECATED: call to char_info with a null argument.  For clarity reasons, this is now deprecated, use self_info() instead. Backtrace: '.print_r(debug_backtrace(), true));
+			nw_error('DEPRECATED: call to char_info with a null argument.  For clarity reasons, this is now deprecated, use the player object instead. Backtrace: '.print_r(debug_backtrace(), true));
 		}
 		return self_info();
 	}
