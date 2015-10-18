@@ -1,4 +1,4 @@
-if('undefined' !== typeof(NW) && 'undefined' !== typeof(NW.debug) && NW.debug){
+if ('undefined' !== typeof(NW) && 'undefined' !== typeof(NW.debug) && NW.debug) {
 	"use strict";
 }
 
@@ -10,19 +10,25 @@ if('undefined' !== typeof(NW) && 'undefined' !== typeof(NW.debug) && NW.debug){
             'distance': 10,
             'duration': 400
         };
+
         // merge options
         if (options) {
             $.extend(settings, options);
         }
+
         // make it so
         var pos;
+
         return this.each(function () {
             $this = $(this);
+
             // position if necessary
             pos = $this.css('position');
+
             if (!pos || pos === 'static') {
                 $this.css('position', 'relative');
             }
+
             // shake it
             for (var x = 1; x <= settings.shakes; x++) {
                 $this.animate({ left: settings.distance * -1 }, (settings.duration / settings.shakes) / 4)
@@ -46,34 +52,40 @@ if('undefined' !== typeof(NW) && 'undefined' !== typeof(NW.debug) && NW.debug){
 // Update the datastore with the latest chat info.
 // Pass a chained callback using setTimeout
 
-function getDomainName(hostName){
+function getDomainName(hostName) {
     return hostName.substring(hostName.lastIndexOf(".", hostName.lastIndexOf(".") - 1) + 1);
-};
+}
 
 var Chat = Chat || {};
 
-Chat.typewatch = (function(){
+Chat.typewatch = (function() {
   var timer = 0;
-  return function(callback, ms){
+
+  return function(callback, ms) {
 	clearTimeout (timer);
 	timer = setTimeout(callback, ms);
-  }  
+  };
 })();
 
 // Get all the initial chat messages and render them.
-Chat.getExistingChatMessages = function(){
+Chat.getExistingChatMessages = function() {
 	console.log('Existing chat messages requested');
 	var since = '1424019122';
-	$.getJSON('api.php?type=new_chats&since='+encodeURIComponent(since)+'&jsoncallback=?', 
-		function(data){
+
+	$.getJSON(
+		'api.php?type=new_chats&since='+encodeURIComponent(since)+'&jsoncallback=?',
+		function(data) {
 			console.log('Existing chats data found:');
 			console.log(data);
 			window.storeChats = data;
-			if(data && data.new_chats && data.new_chats.chats){
+
+			if (data && data.new_chats && data.new_chats.chats) {
 				console.log('Rendering pre-existing chat messages.');
-				$.each(data.new_chats.chats, function(key, val){
+
+				$.each(data.new_chats.chats, function(key, val) {
 					Chat.renderChatMessage(val);
 				});
+
 				Chat.displayMessages();
 			}
 		}
@@ -81,7 +93,7 @@ Chat.getExistingChatMessages = function(){
 };
 
 // Display at least the messages area when there are some messages in it.
-Chat.displayMessages = function(){
+Chat.displayMessages = function() {
 	$('#mini-chat-display').show();
 };
 
@@ -92,12 +104,13 @@ Chat.displayMessages = function(){
  *							'date':Date.now(),
  *							'sender_id':'128274'});
 */
-Chat.renderChatMessage = function(p_data){
-	if(!p_data.message){
+Chat.renderChatMessage = function(p_data) {
+	if (!p_data.message) {
 		console.log('Error: Bad data sent in to renderChatMessage to be rendered');
 		console.log(p_data);
 		return false;
 	}
+
 	area = null;
 	var fullLink = 'player.php?player_id='+p_data.sender_id;
 	var list = $('#mini-chat-display'); // The outer container.
@@ -107,14 +120,16 @@ Chat.renderChatMessage = function(p_data){
 	list.end();
 	var messageArea = list.find('.chat-message.template').clone();
 	list.end();
-	if(!list.length){
+
+	if (!list.length) {
 		area = 'list';
-	} else if(!authorArea.length){
+	} else if (!authorArea.length) {
 		area = 'authorArea';
-	} else if(!messageArea.length){
+	} else if (!messageArea.length) {
 		area = 'messageArea';
 	}
-	if(area){
+
+	if (area) {
 		console.log('Chat '+area+' not found to place chats in!');
 	}
 
@@ -122,9 +137,9 @@ Chat.renderChatMessage = function(p_data){
 	authorArea.removeClass('template').show().find('a').attr('href', fullLink).text(p_data.uname).end();
 	messageArea.removeClass('template').show().text(p_data.message);
 	list.prepend(authorArea, messageArea);	// Prepend each message and author of a new chat.
+
 	return true;
 };
-
 
 // Send the contents of the chat form input box.
 // Sample url: http://nw.local/api.php?type=send_chat&msg=test&jsoncallback=alert
@@ -132,11 +147,12 @@ Chat.sendChatContents = function(p_form) {
 	if (p_form.message && p_form.message.value.length > 0) {
 		message = p_form.message.value;
 		// Send a new chat.  // ASYNC
-		$.getJSON('api.php?type=send_chat&msg='+encodeURIComponent(message)+'&jsoncallback=?', 
-				function(echoed){ 
-					if(!echoed){
+		$.getJSON('api.php?type=send_chat&msg='+encodeURIComponent(message)+'&jsoncallback=?',
+				function(echoed) {
+					if (!echoed) {
 						Chat.rejected();
 						return false;
+
 					}
 					// Place the chat in the interface on success.
 					Chat.renderChatMessage(echoed);
@@ -144,7 +160,7 @@ Chat.sendChatContents = function(p_form) {
 					p_form.reset(); // Clear the chat form.
 				}
 		).fail(
-			function(){
+			function() {
 				Chat.rejected();
 				return false;
 			}
@@ -153,56 +169,61 @@ Chat.sendChatContents = function(p_form) {
 };
 
 // Notify the user when a chat send was rejected.
-Chat.rejected = function(){
+Chat.rejected = function() {
 	console.log('Error: Failed to send the chat to server.');
 	Chat.submissionArea().shake(); // Shake the submission area to show a failed send of a chat.
 };
 
 // Send a messageData object to the websockets chat
-Chat.send = function(messageData){
-	if(!Chat.canSend()){
+Chat.send = function(messageData) {
+	if (!Chat.canSend()) {
 		return false;
 	}
+
 	//messageData.userAgent = navigator.userAgent;
+
 	var passfail = true;
-	try{
+	try {
 		conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
 		console.log('Chat message sent.');
-	} catch(ex){ // Maybe the connection send didn't work out.
+	} catch(ex) { // Maybe the connection send didn't work out.
 		console.log(ex.message);
 		passfail = false;
 	}
+
 	return passfail;
 };
 
 // Get the area that handles chat submission.
-Chat.submissionArea = function(){
+Chat.submissionArea = function() {
 	return $('#post_msg_js');
 };
 
 // Once the chat is ready, initialize the ability to actually send chats.
-Chat.chatReady = function(){
+Chat.chatReady = function() {
 	Chat.displayMessages(); // Will display the whole messages area.
 	var $submitter = Chat.submissionArea();
-	if(Chat.canSend()){
+
+	if (Chat.canSend()) {
 		$submitter.show();
 	} else {
 		$submitter.hide();
 		console.log('Warning: Not logged in to be able to send messages.');
 	}
+
 	console.log('Chat connected and ready');
-}
+};
 
 // Check whether logged in for chat sending
-Chat.canSend = function(){
+Chat.canSend = function() {
 	var $area = Chat.submissionArea();
 	return Boolean($area.data('logged-in'));
 };
 
-Chat.domain = function(url){
+Chat.domain = function(url) {
 	var domain = getDomainName(url);
-	
-	if(domain.indexOf(".local") > -1 ){
+
+	if (domain.indexOf(".local") > -1 ) {
 		return 'chatapi.'+domain;
 	} else {
 		return 'chatapi.ninjawars.net';
@@ -211,15 +232,16 @@ Chat.domain = function(url){
 
 var chatApiDomain = Chat.domain(window.location.host);
 
-var config = {'server': chatApiDomain,
-			  'port':'8080'};
+var config = {
+	'server': chatApiDomain,
+	'port':'8080'
+};
 
-
-$(function(){
-
-	if("WebSocket" in window){ // Browser is compatible.
+$(function() {
+	if ("WebSocket" in window) { // Browser is compatible.
 		var connectionString = 'ws://'+config.server+':'+config.port;
 		console.log('Connecting to '+connectionString);
+
 		window.conn = new WebSocket(connectionString);
 		conn.onopen = function(e) {
 		    console.log("Websocket Connection established!");
@@ -228,25 +250,23 @@ $(function(){
 
 		// Output information comes out here.
 		conn.onmessage = function(e) {
-			if(e && 'undefined' !== typeof(e.data)){
+			if (e && 'undefined' !== typeof(e.data)) {
 				Chat.renderChatMessage(JSON.parse(e.data)); // Add the message to the interface when present!
 			}
 		};
-
-
 	} else {
 		console.log('Browser not compatible with websockets');
 	}
 
-
 	$('#chat-loading').show(); // Show the chat loading area.
+
 	// Submit a chat message when the input box is used.
 	var $submitArea = Chat.submissionArea();
 	$submitArea.hide().submit(function(e) {
 		e.preventDefault();
 		var success = Chat.sendChatContents(this);
-		if(!success){
-
+		if (!success) {
+			///TODO handle failure
 		}
 	});
 
@@ -258,14 +278,14 @@ $(function(){
 function refreshpagechat() {
 	console.log('Village chat board refreshed');
 	var messageInput = $('#message');
-	if(!messageInput.length || false == messageInput.val()){ // Refresh only if text not being written.
-		if(parent && parent.main && parent.main.location){
+
+	if (!messageInput.length || false == messageInput.val()) { // Refresh only if text not being written.
+		if (parent && parent.main && parent.main.location) {
 			parent.main.location.reload();
 		} else {
 			window.location.reload();
 		}
 	}
+
 	console.log('chat not refreshed due to typed text');
-};
-
-
+}
