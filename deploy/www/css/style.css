@@ -1867,9 +1867,20 @@ a#skip-to-bottom{
 	list-style-type: none;
 	padding-right: 5px;
 }
+.player-list-nav {
+	box-sizing:border-box;
+	margin:0;
+	padding:0.1em 0.5em;
+	font-weight:bold;
+	font-family:sans-serif;
+}
+.player-list-nav a{
+	font-weight:bold;
+	font-family:sans-serif;
+}
 .player-list-nav .current-page {
-	color:gray;
-	border:thin #313 solid;
+	display:inline-block;color:gray; text-align:center;
+	border:medium #313 solid;
 }
 .player-list-nav .page-counter {
 	font-family:Verdana,Arial,san-serif;
@@ -1878,12 +1889,6 @@ a#skip-to-bottom{
 }
 .player-list-nav a {
 	text-decoration:none;
-}
-.player-list-nav form {
-	margin:0;
-	padding:0;
-	text-align:center;
-	font-weight:bold;
 }
 .player-info .clan-members {
 	text-align:center;
