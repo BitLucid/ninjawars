@@ -22,4 +22,3 @@ function check_for_resurrection($echo=FALSE) {
 		echo "Number of healed/resurrected players: ".$healedPlayers;
 	}
 }
-?>

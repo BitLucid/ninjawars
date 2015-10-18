@@ -173,4 +173,3 @@ class Nmail {
 		return $this->success;
 	}
 }
-?>

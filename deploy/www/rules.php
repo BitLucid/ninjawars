@@ -12,4 +12,3 @@ display_page(
 	, false
 );
 }
-?>

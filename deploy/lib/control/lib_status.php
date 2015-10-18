@@ -67,4 +67,3 @@ function string_status($status){
 		return false;
 	}
 }
-?>

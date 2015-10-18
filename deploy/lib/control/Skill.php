@@ -205,4 +205,3 @@ class Skill
 	//8 => 'stealth', 9 => 'unstealth', 10 => 'steal', 11 => 'heal');
 	// *** Eventually, should be able to get the skill ID from the database, not from that array above.
 }
-?>

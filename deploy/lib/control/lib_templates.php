@@ -155,4 +155,3 @@ function cache_headers($hours = 2, $revalidate=false){
 	header("Cache-Control: maxage=".$expires.($revalidate? ", must-revalidate" : ''));
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 }
-

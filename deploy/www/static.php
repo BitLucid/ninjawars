@@ -13,4 +13,3 @@ $options = array();
 /* END OF CALLBACK FUNCTIONS */
 
 display_static_page($page, $pages, $vars, $options);
-?>

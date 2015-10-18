@@ -78,4 +78,3 @@ display_page(
 );
 
 }
-?>

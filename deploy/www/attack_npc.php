@@ -4,5 +4,3 @@ error_log('Deprecated linking to attack_npc url performed from referrer: '.$_SER
 $query = $_SERVER['QUERY_STRING'];
 $new_url = 'npc.php?'.$query;
 permanent_redirect($new_url);
-
-?>

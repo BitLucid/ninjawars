@@ -41,4 +41,3 @@ display_page(
 		'quickstat'=>false
 	)
 );
-?>

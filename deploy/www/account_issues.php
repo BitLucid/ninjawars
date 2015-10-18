@@ -123,4 +123,3 @@ display_page(
 );
 
 }
-?>

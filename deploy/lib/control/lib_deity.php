@@ -231,4 +231,3 @@ function update_most_vicious_killer_stat() {
 	}
 }
 
-?>

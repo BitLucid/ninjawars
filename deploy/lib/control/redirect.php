@@ -25,4 +25,3 @@ function permanent_redirect($url){
 	header( "Location: ".$url); 
 	exit();
 }
-?>

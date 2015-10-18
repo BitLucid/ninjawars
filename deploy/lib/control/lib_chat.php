@@ -132,4 +132,3 @@ function ago_string($time_array) {
 
 	return '('.$res.' ago)';
 }
-?>

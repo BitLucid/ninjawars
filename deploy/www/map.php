@@ -85,4 +85,3 @@ display_page(
 	)
 );
 }
-?>

@@ -67,4 +67,3 @@ function member_counts() {
 	return array('active'=>reset($active_row), 'online'=>reset($online_row), 'total'=>end($total_row));
 }
 
-?>

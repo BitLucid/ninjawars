@@ -4,4 +4,3 @@ error_log('Deprecated linking to list_all_players.php url performed '. (isset($_
 $query = $_SERVER['QUERY_STRING'];
 $new_url = 'list.php?'.$query;
 permanent_redirect($new_url);
-?>

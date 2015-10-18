@@ -47,4 +47,3 @@ function read_events($user_id) {
 	$statement->bindValue(':to', $user_id);
 	$statement->execute();
 }
-?>

@@ -10,4 +10,3 @@ if (DEBUG && DEBUG_ALL_ERRORS) {
 	error_reporting(E_ALL | E_STRICT);	// *** Completely everything ***
 	//error_reporting(E_ALL); // *** Most errors ***
 }
-?>

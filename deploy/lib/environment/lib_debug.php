@@ -12,7 +12,6 @@
 // *** This function call turns on or off debugging.
 check_for_debug();
 
-
 function check_for_debug(){
     $dbg = in('debug');
 	if ($dbg == 'on'){
@@ -33,6 +32,3 @@ function nw_debug(){
 	}
 	return $result;
 }
-
-
-?>

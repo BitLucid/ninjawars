@@ -79,4 +79,3 @@ class SkillDAO extends DataAccessObject {
 		return $statement;
 	}
 }
-?>

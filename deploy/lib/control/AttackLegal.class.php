@@ -175,4 +175,3 @@ class AttackLegal
 } // End Class AttackLegal
 
 // *** Put any internal classes or other classes for this file's library here.
-

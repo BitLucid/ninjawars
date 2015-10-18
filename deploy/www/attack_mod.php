@@ -365,4 +365,3 @@ $target_ending_health_percent = $target_player->health_percent();
 $target_name = $target_player->name();
 
 display_page('attack_mod.tpl', 'Battle Status', get_defined_vars());
-?>

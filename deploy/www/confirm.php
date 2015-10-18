@@ -59,4 +59,3 @@ display_page(
 );
 
 }
-?>

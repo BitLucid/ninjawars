@@ -48,4 +48,3 @@ display_page(
 	)
 );
 }
-?>

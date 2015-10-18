@@ -85,4 +85,3 @@ function save_settings($settings) {
     }
 	return get_settings($refresh=true); // This refreshes the static, saved settings variable.
 }
-?>

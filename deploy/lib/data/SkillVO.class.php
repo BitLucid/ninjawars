@@ -8,4 +8,3 @@
 class SkillVO {
 	public $skill_id, $skill_level, $skill_is_active, $skill_display_name, $skill_internal_name, $skill_type;
 }
-?>

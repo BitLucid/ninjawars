@@ -84,4 +84,3 @@ $parts = array('quest'=>$quest, 'quests'=>$quests, 'quest_accepted'=>$quest_acce
 $options = array('quickstat'=>'player');
 
 display_page($tpl, 'Quests', $parts, $options);
-?>

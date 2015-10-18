@@ -31,4 +31,3 @@ function killpointsFromDueling() { //  *** Multiple Killpoints from Dueling ***
 
 	$killpoints = 1+$levelDifferenceMultiplier;
 }
-?>

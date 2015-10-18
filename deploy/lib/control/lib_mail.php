@@ -5,7 +5,6 @@
 function delete_mail($ids, $all=false) {
 	DatabaseConnection::getInstance();
 
-	$deleted = 0;
 	$user_id = get_user_id();
 
 	if ($all) { // Delete all a user's mail.
@@ -27,4 +26,3 @@ function delete_mail($ids, $all=false) {
 
 	return $statement->rowCount();
 }
-?>

@@ -27,4 +27,3 @@ function whichever() {
 
 	return null;
 }
-?>

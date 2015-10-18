@@ -454,5 +454,3 @@ function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
 	$statement->bindValue(':killpoints', $killpoints);
 	$statement->execute();
 }
-
-?>

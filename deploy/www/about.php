@@ -14,4 +14,3 @@ if ($error = init($private, $alive)) {
 		)
 	);
 }
-?>

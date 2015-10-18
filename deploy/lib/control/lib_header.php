@@ -120,4 +120,3 @@ EOT;
 
 hash_page_name($page_title);
 */
-?>

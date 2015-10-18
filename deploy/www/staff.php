@@ -15,4 +15,3 @@ display_page(
 	)
 );
 }
-?>

@@ -62,4 +62,3 @@ class C0OKIE
 		return isset($_COOKIE[$field]);
    }
 }
-?>

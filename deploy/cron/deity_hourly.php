@@ -114,4 +114,3 @@ $logMessage .= "DEITY_HOURLY ENDING: ".date(DATE_RFC1036)."\n";
 $log = fopen(LOGS.'deity.log', 'a');
 fwrite($log, $logMessage);
 fclose($log);
-?>

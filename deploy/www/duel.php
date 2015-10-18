@@ -21,4 +21,3 @@ display_page(
 	)
 );
 }
-?>

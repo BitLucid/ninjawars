@@ -97,4 +97,3 @@ function calculate_average_dmg($level) {
 
 
 run_the_numbers($argv);
-?>
