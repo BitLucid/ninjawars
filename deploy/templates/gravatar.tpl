@@ -1,1 +1,1 @@
-<span class="avatar"><img alt="" src="{$gurl|escape}"></span>
+<span class="avatar"><img class='focus' alt="" src="{$gurl|escape}"></span>
