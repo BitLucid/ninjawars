@@ -21,7 +21,7 @@ function nw_json($type, $dirty_jsoncallback) {
 	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 
 		'latest_message'=>'json_latest_message', 'index'=>'json_index', 'latest_chat_id'=>'json_latest_chat_id', 
 		'inventory'=>'json_inventory', 'new_chats'=>'json_new_chats', 'send_chat'=>'json_send_chat', 
-		'char_search'=>'json_char_search', 'facebook_login_sync'=>'json_facebook_login_sync');
+		'char_search'=>'json_char_search');
 	$res = null;
 	$data = in('data');
 
@@ -184,69 +184,4 @@ function json_index() {
 				"inventory":{"inv":1,"items":'.json_encode(query_array("SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :user_id ORDER BY item_display_name", array(':user_id'=>$user_id))).',"hash":"'.md5(strtotime("now")).'"},
 				"unread_events_count":'.json_encode($unread_events).',
 				"event":'.json_encode(!empty($events) ? $events->fetch() : null).'}';
-}
-
-// Login a user if they're logged in with a linked account on facebook.
-// http://nw.local/api.php?type=facebook_login_sync&jsoncallback=alert
-function json_facebook_login_sync() {
-	require_once(ROOT.'vendor/facebook/php-sdk/src/facebook.php'); // /vendor is just a symlink to /deploy/vendor
-	$logged_in = false;
-	$error = null;
-	$redirect = null;
-
-	$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-
-	error_log('Call to api with url: ['.$actual_link.']');
-
-	// If already logged in, redirect to homepage.
-	if(is_logged_in()){
-		$logged_in = true;
-		$redirect = '/';
-	} else {
-	// If not logged in, check facebook api to poll facebook for a logged in userid.
-		$facebook = new Facebook(array(
-		  'appId'  => FACEBOOK_APP_ID,
-		  'secret' => FACEBOOK_APP_SECRET,
-		));
-
-		// Get User ID
-		$user = $facebook->getUser();
-		if ($user) {
-			try {
-				// Proceed knowing you have a logged in user who's authenticated.
-				$user_profile = $facebook->api('/me');
-				$name = @$user_profile['name'];
-				$id = @$user_profile['id'];
-				$email = @$user_profile['email'];
-				// If facebook returns a userid, then check for a match in the accounts table.
-				if($id){
-					// Finally if there is a match in the accounts table, then login as that user.
-					$logged_in_info = login_user_by_oauth($id, 'facebook');
-					$logged_in = $logged_in_info['success'];
-					$error = $logged_in_info['login_error'];
-					if(!$error){
-						$redirect = '/';
-					} else {
-						// If there is no match in the accounts table, then return error about needing to sign up first.
-						$error = "Sorry, you don't seem to have an account with us, try signing up first!";
-						$redirect = '/signup.php';
-					}
-				} else {
-					// If there is no match in the accounts table, then return error about needing to sign up first.
-					$error = "Sorry, we were unable to sync up with a facebook account, please try logging in to facebook first.";
-					$redirect = '/login.php';
-				}
-			} catch (FacebookApiException $e) {
-				error_log('<pre>'.htmlspecialchars(print_r($e, true)).'</pre>');
-				$user = null;
-				$error = 'There was a problem getting your user info from facebook.  Please try again shortly.';
-			}
-		} else { // Not logged in to facebook.
-			$error = 'Not logged in to facebook!  Try to login again';
-			// If facebook says not logged in, well, just give an error message.
-		}
-	}
-	return "{'logged_in':".json_encode($logged_in).", 
-			'error':".json_encode($error).", 
-			'redirect':".json_encode($redirect)."}"; // Should redirect if logged in is true.
 }

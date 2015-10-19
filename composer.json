@@ -10,7 +10,6 @@
     "require": {
         "php": ">=5.4.0",
         "ircmaxell/password-compat": "@stable",
-        "facebook/php-sdk": "^3.2",
         "swiftmailer/swiftmailer": "@stable",
         "phpunit/phpunit": "@stable",
         "phpunit/phpunit-selenium": "@stable",
