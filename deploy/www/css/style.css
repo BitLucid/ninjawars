@@ -3783,3 +3783,8 @@ input[type="button"].btn-block {
 #clan-members-list .clan-leader .member {
 	background-color: rgb(60,60,120);
 }
+
+button.disabled {
+	color: gray;
+	cursor: not-allowed;
+}

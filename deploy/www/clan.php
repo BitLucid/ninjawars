@@ -66,7 +66,7 @@ class ClanController { //extends Controller
 		$player = new Player(self_char_id());
 		$myClan = ClanFactory::clanOfMember($player);
 
-		if ($player && $myClan) {
+		if ($player->id() && $myClan) {
 			return $this->view();
 		} else {
 			return $this->listClans();
@@ -79,7 +79,7 @@ class ClanController { //extends Controller
 		if (!$clanID) {
 			$player = new Player(self_char_id());
 
-			if ($player) {
+			if ($player->id()) {
 				$clan = ClanFactory::clanOfMember($player);
 			}
 		} else {
@@ -108,7 +108,7 @@ class ClanController { //extends Controller
 
 		$player = new Player(self_char_id());
 
-		if ($player) {
+		if ($player->id()) {
 			$myClan = ClanFactory::clanOfMember($player);
 
 			if ($myClan) {
@@ -124,6 +124,7 @@ class ClanController { //extends Controller
 					array_unshift($parts['pageParts'], 'reminder-member');
 				}
 			} else {
+				array_unshift($parts['pageParts'], 'join');
 				array_unshift($parts['pageParts'], 'reminder-no-clan');
 			}
 		}
@@ -224,14 +225,21 @@ class ClanController { //extends Controller
 	}
 
 	public function join() {
-		$clan_id_viewed = (int) in('clan_id', null);
-		send_clan_join_request(self_char_id(), $clan_id_viewed);
+		$clanID = (int) in('clan_id', null);
+		$clan   = ClanFactory::find($clanID);
+
+		send_clan_join_request(self_char_id(), $clanID);
+
+		$leader = $clan->getLeaderInfo();
 
 		return $this->render([
-			'action_message' => 'Request to join sent.',
-			'clan'           => ClanFactory::find($clan_id_viewed),
+			'action_message' => "Your request to join {$clan->getName()} has been sent to $leader[uname]",
+			'title'          => 'Viewing a clan',
+			'clan'           => $clan,
 			'pageParts'      => [
+				'reminder-no-clan',
 				'info',
+				'member-list',
 			],
 		]);
 	}
@@ -283,6 +291,7 @@ class ClanController { //extends Controller
 
 		return $this->render([
 			'action_message' => "You have removed $kicked_name from your clan",
+			'title'          => 'Manage your clan',
 			'clan'           => $clan,
 			'pageParts'      => [
 				'manage',
@@ -369,7 +378,7 @@ class ClanController { //extends Controller
 	public function message() {
 		$player = new Player(self_char_id());
 
-		if ($player) {
+		if ($player->id()) {
 			$myClan = ClanFactory::clanOfMember($player);
 
 			if ($myClan) {
@@ -413,7 +422,7 @@ class ClanController { //extends Controller
 
 		$player = new Player(self_char_id());
 
-		if ($player) {
+		if ($player->id()) {
 			$clan = ClanFactory::clanOfMember($player);
 
 			if ($clan) {
