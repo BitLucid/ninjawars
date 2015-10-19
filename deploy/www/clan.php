@@ -43,10 +43,8 @@ switch ($command) {
 		$response = $clanController->disband();
 		break;
 	case 'list':
-		$response = $clanController->listClans();
-		break;
 	default:
-		$response = $clanController->index();
+		$response = $clanController->listClans();
 		break;
 }
 
@@ -61,17 +59,6 @@ class ClanController { //extends Controller
 	const CLAN_CREATOR_MIN_LEVEL = 20;
 	const ALIVE                  = false;
 	const PRIV                   = false;
-
-	public function index() {
-		$player = new Player(self_char_id());
-		$myClan = ClanFactory::clanOfMember($player);
-
-		if ($player->id() && $myClan) {
-			return $this->view();
-		} else {
-			return $this->listClans();
-		}
-	}
 
 	public function view() {
 		$clanID = (int)in('clan_id', null);
