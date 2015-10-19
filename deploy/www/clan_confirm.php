@@ -24,6 +24,7 @@ $agree       = in('agree');
 $random      = rand(1001, 9990);
 $ninja_added = null;
 $join_requester_id = null;
+$error = null;
 
 if($clan){
 	$clan_id = $clan->getID();
@@ -37,7 +38,10 @@ if($clan){
 			// Allow joining as long as the verification number is correct.
 			if($confirm && $confirm === $joining_ninja->getVerificationNumber()){
 				// Add the ninja to the clan, sourced by the current char.
-				$error = $clan->addMember($joining_ninja, $ninja); // addMember also randomizes the verification number.
+				$result = $clan->addMember($joining_ninja, $ninja); // This will randomize the verification number as well.
+				if($result !== true && $error){
+					$error = $result;
+				}
 				$ninja_added = !(bool)$error;
 			} else {
 				$error = 'That request was old or invalid, please try inviting that ninja again.';
