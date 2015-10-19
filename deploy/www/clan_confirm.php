@@ -39,10 +39,11 @@ if($clan){
 			if($confirm && $confirm === $joining_ninja->getVerificationNumber()){
 				// Add the ninja to the clan, sourced by the current char.
 				$result = $clan->addMember($joining_ninja, $ninja); // This will randomize the verification number as well.
-				if($result !== true && $error){
-					$error = $result;
+				if($result !== true){
+					$error = is_string($result)? $result : 'Unable to add member, please try again later.';
+				} else{
+					$ninja_added = true;
 				}
-				$ninja_added = !(bool)$error;
 			} else {
 				$error = 'That request was old or invalid, please try inviting that ninja again.';
 			}
