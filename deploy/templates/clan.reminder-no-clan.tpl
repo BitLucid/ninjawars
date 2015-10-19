@@ -8,10 +8,10 @@
       <button type='button'{if $player->level() lt $clan_creator_min_level} class="disabled"{/if}>Start a New Clan</button>
 {if $player->level() gte $clan_creator_min_level}
     </a>
-{/if}
-    </div>
-
+{else}
     <small class='glassbox de-em'>
       You can start your own clan when you reach level {$clan_creator_min_level|escape}.
     </small>
+{/if}
+    </div>
 </section>

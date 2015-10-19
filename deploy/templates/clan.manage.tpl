@@ -1,4 +1,9 @@
+<div style="float: left;margin-right: 20px;text-align: center;">
 {include file="clan.message-box.tpl"}
-<a href="clan.php?command=edit">
-	<button>Manage Your Clan</button>
-</a>
+</div>
+
+<div>
+	<a href="clan.php?command=edit">
+		<button style="height: 75px;display: inline-block;">Manage Your Clan</button>
+	</a>
+</div>
