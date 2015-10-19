@@ -188,13 +188,11 @@ class ClanController { //extends Controller
 			$clan = createClan($player->id(), $default_clan_name);
 
 			$parts = [
-				'action_message' => 'You have created a new clan!',
+				'action_message' => 'Your clan was created with the default name: '.$clan->getName().'. Change it below.',
 				'title'          => 'Clan '.$clan->getName(),
 				'clan'           => $clan,
 				'pageParts'      => [
-					'manage',
-					'info',
-					'member-list',
+					'edit',
 				],
 			];
 		} else {
