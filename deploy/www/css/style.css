@@ -3792,8 +3792,6 @@ button.disabled {
 nav.navigation ul.menu {
 	margin: 0 0 8px 0;
 	padding: 0;
-	border: 0 solid white;
-	border-bottom-width: 1px;
 }
 
 nav.navigation ul.menu li {
@@ -3802,9 +3800,6 @@ nav.navigation ul.menu li {
 	padding-left: 6px;
 	padding-bottom: 4px;
 	margin: 0;
-	border: 0 solid white;
-	border-width: 0 1px 0 1px;
-	border-collapse: collapse;
 }
 
 #clan-page-title {
