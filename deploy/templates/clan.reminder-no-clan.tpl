@@ -5,7 +5,7 @@
 {if $player->level() gte $clan_creator_min_level}
     <a href='clan.php?command=new'>
 {/if}
-      <button type='button'{if $player->level() lt $clan_creator_min_level} class="disabled"{/if}>Start a New Clan</button>
+      <button type='button' class='btn btn-default' {if $player->level() lt $clan_creator_min_level}disabled=disabled{/if}>Start a New Clan</button>
 {if $player->level() gte $clan_creator_min_level}
     </a>
 {else}
