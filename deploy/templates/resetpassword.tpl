@@ -1,25 +1,35 @@
-<form method="POST" action="/password/reset">
-    {* {!! csrf_field() !!} *}
-    <input type="hidden" name="token" value="{$token}">
+<section class='glassbox'>
 
-    <div>
-        Resetting password for account with email: {$email}
-        {* <input type="email" name="email" value="{{ old('email') }}"> *}
+{if $error}
+    <div class='parent'>
+        <div class='child error'>{$error}</div>
     </div>
+{/if}
 
-    <div>
-        Password
-        <input type="password" name="password">
-    </div>
+    <form name='new_password_form' method="POST" action="">
+        {* // TODO needs csrf field *}
+        <input type="hidden" name="token" value="{$token}">
+        <!-- Presence of this token when submitted acts as a request to change -->
 
-    <div>
-        Confirm Password
-        <input type="password" name="password_confirmation">
-    </div>
+        <div>
+            Resetting password for account with email: <strong>{$verified_email}</strong>
+        </div>
 
-    <div>
-        <button type="submit">
-            Reset Password
-        </button>
-    </div>
-</form>
+        <div>
+            <label>Password
+            <input type="password" name="new_password" value='{$new_password}' required=required minlength=4 title='At least 4 characters' placeholder='Your new password' >
+            </label>
+        </div>
+
+        <div>
+            <label>Confirm Password
+            <input type="password" name="password_confirmation" value='{$password_confirmation}' required=required minlength=4 title='At least 4 characters' placeholder='Repeat new password'>
+            </label>
+        </div>
+
+        <div>
+            <input type='submit' name='reset-password' class='btn btn-primary' value='Reset Password'>
+        </div>
+    </form>
+</section>
+<script src='/js/passwords.js'></script>
