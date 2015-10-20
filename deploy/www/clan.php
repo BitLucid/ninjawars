@@ -339,7 +339,7 @@ class ClanController { //extends Controller
 			'clan'           => $clan,
 			'error'          => $error,
 			'pageParts'      => [
-				'manage',
+				'edit',
 				'info',
 				'member-list',
 			],
