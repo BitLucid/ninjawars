@@ -28,21 +28,34 @@
       Please add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to the safe email senders list 
       of your email account before resending these email requests, to ensure they won't be caught as spam.
     </p>
-    <h2>Resend Account Information</h2>
-    <form action="account_issues.php" method="post">
-    <p>Submit your account email and your account information will be sent to it:</p>
-        <input id="email" type="email" title="Please enter the email you set your account up with" maxlength="50" name="email" class="textField">
-        <input type='hidden' name='password_request' value='1'>
-        <button type="submit" value="Resend Account Info" class="formButton">Resend Account Info</button>
-    </form>
-    <h2>Resend Confirmation Email</h2>
 
-    <form action="account_issues.php" method="post">
-        <p>Submit your email address and we will resend your confirmation email:</p>
-        <input id="email" type="email" title="Your account email" maxlength="50" name="email" class="textField">
-        <input type='hidden' name='confirmation_request' value='1'>
-        <button type="submit" value="Resend Confirm Code" class="formButton">Resend Confirm Code</button>
-    </form>
+    <h2>Resend Account Information</h2>
+    <div class='parent'>
+        <form class='child' action="account_issues.php" method="post">
+            <p>Submit your account email and your ninja name, class, and level information will be sent to it:</p>
+            <input id="email" type="email" title="Please enter the email you set your account up with" maxlength="50" name="email" class="textField">
+            <input type='hidden' name='password_request' value='1'>
+            <button type="submit" value="Resend Account Info" class="formButton">Resend Account Info</button>
+        </form>
+    </div>
+
+
+    <h2>Resend Confirmation Email</h2>
+    <div class='parent'>
+        <form class='child' action="account_issues.php" method="post">
+            <p>Submit your email address and we will resend your confirmation email:</p>
+            <input id="email" type="email" title="Your account email" maxlength="50" name="email" class="textField">
+            <input type='hidden' name='confirmation_request' value='1'>
+            <button type="submit" value="Resend Confirm Code" class="formButton">Resend Confirm Code</button>
+        </form>
+    </div>
+
+    <div class='parent'>
+        <h2>Need your password reset?</h2>
+        <div class='child'>
+            <a href='/resetpassword.php' class='btn btn-primary'>Request A Password Reset</a>
+        </div>
+    </div>
 
 {/if}
 

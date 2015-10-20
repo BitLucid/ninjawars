@@ -1,4 +1,5 @@
 <section class='glassbox'>
+<h1>Reset your password</h1>
 
 {if $error}
     <div class='parent'>
