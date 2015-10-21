@@ -37,26 +37,26 @@
 		  <p>
 		    <strong>Clan Name:</strong> <input id="new_clan_name" type="text" name="new_clan_name" class="textField" {literal}pattern="[A-Za-z0-9_- ]{3,24}"{/literal} required value="{$clan->getName()|escape}">
 		  </p>
-		  <p>
+		  <small class='de-em'>
 		    Clan names must be from 3 to 24 characters, and can only contain letters, numbers, spaces, underscores, or dashes, although you can request exceptions if they are fun.
-		  </p>
+		  </small>
 		</div>
 		<div>
 		  <p>
             <strong>Clan Avatar:</strong> <input name="clan-avatar-url" type="text" value="{$clan->getAvatarUrl()|escape}">
 		  </p>
-		  <p>
+		  <small class='de-em'>
 		    To create a clan avatar, upload an image to <a href="http://www.imageshack.com" target="_blank" class="extLink">imageshack.com</a>
 		    Then paste the image's full url here. Image can be .jpg or .png
-		  </p>
+		  </small>
 		</div>
 		<div>
 		  <p>
             <strong>Clan Description:</strong> <textarea name="clan-description">{$clan->getDescription()|escape}</textarea>
 	      </p>
-		  <p>
+		  <small class='de-em'>
             (500 character limit)
-		  </p>
+		  </small>
 		</div>
         <input type="submit" value="Save Changes">
       </form>
