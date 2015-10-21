@@ -13,7 +13,7 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
 	function setUp(){
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         assert($this->account_id>0);
-        $this->account_info = account_info($this->account_id);
+        $this->account = AccountFactory::findById($this->account_id);
         $this->ninja_info = new Player(TestAccountCreateAndDestroy::char_id());
 	}
 	
@@ -34,25 +34,32 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($path);
     }
 
-    public function testGetEmailDisplaysAFormToBeAbleToEmailAPasswordReset(){
+    public function testRequestFormRenders(){
         // Specify email request
-        $req = Request::create('/passwordreset');
+        $req = Request::create('/resetpassword.php');
+        /*$req->query->set('error', null);
+        $req->request->set('email', null);
+        $req->request->set('ninja_name', null);
+        $req->query->set('message', 'Some message here');*/
         // Get a Response
         $controller = new PasswordController();
-        $response = $controller->getEmail($req);
+        $controller->debug_emails = false; // Don't debug emails.
+        $response = $controller->getRequestForm($req);
         // Response should contain a form
-
-
+        $content = $response->getContent();
+        $this->assertTrue(strpos($content, '<form') !== false);
+        /*$this->assertTrue(strpos($content, 'Some message here') !== false);*/
     }
 
     public function testPostEmailCreatesAPasswordResetRequest(){
         // Craft Post Request
-        $req = Request::create('/password/email');
+        $req = Request::create('/resetpassword.php');
         $req->setMethod('POST');
         $req->query->set('token', $token='666666');
-        $req->query->set('email', $this->account_info['active_email']);
+        $req->query->set('email', $this->account->getActiveEmail());
         // Pass to controller
         $controller = new PasswordController();
+        $controller->debug_emails = false; // Don't debug emails.
         //$this->markTestIncomplete();
         $response = $controller->postEmail($req);
         // reset entry should be created
@@ -72,18 +79,19 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
     }
 
     public function testPostResetYeildsARedirectAndAChangedPassword(){
+        $account = PasswordResetRequest::request($this->account_id);
+        throw new Exception('Have to fix this more fully.');
         $pass = 'fuNnewPasswordTime432';
         // craft post request with account_id, token, and password
         $req = Request::create('/passwordreset');
         $req->setMethod('POST');
-        $req->query->set('token', '666666');
-        $req->query->set('account_id', $this->account_id);
-        $req->query->set('password', $pass);
+        $req->request->set('token', '666666');
+        $req->request->set('password', $pass);
         // get a response, response should be a redirect
         $controller = new PasswordController();
         $response = $controller->postReset($req);
         // password should be changed
-        $this->checkTestPasswordMatches($pass);
+        $this->assertTrue($this->checkTestPasswordMatches($pass));
     }
 
 

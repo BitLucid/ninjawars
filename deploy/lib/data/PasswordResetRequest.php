@@ -4,14 +4,6 @@
  * Model that manipulates the data for a password reset request.
 **/
 class PasswordResetRequest{
-	function __construct($request_id=null, Array $request_data=null){
-		if($request_id){
-			$data = PasswordResetRequest::retrieve($request_id);
-		} else {
-			$data = $request_data;
-		}
-		$this->data = $data;
-	}
 
 	/**
 	 * Get account info that matches for resetting.
@@ -46,16 +38,16 @@ class PasswordResetRequest{
 	/**
 	 * Send out the password reset email to a requested account's email.
 	**/
-	public static function send($token, $email){
+	public static function send($token, $email, $debug_allowed=true){
 		// Email body contents will be: Click here to reset your password: {{ url('password/reset/'.$token) }}
 		$url = WEB_ROOT.'resetpassword.php?token='.url($token);
 		$rendered = render_template('email.password_reset_request.tpl', ['url'=>$url]);
 		// Construct the email with Nmail, and then just send it.
 		$nmail = new Nmail($email, $subject='NinjaWars: Your password reset request', $rendered, SUPPORT_EMAIL);
-		if(defined('DEBUG') && DEBUG && defined('DEBUG_ALL_ERRORS') && DEBUG_ALL_ERRORS) {
-			$nmail->dump = true;
-			$nmail->die_after_dump = true;
-			$nmail->try_to_send = false;
+		if($debug_allowed && defined('DEBUG')) {
+			$nmail->dump = DEBUG;
+			$nmail->die_after_dump = DEBUG_ALL_ERRORS;
+			$nmail->try_to_send = !DEBUG_ALL_ERRORS;
 		}
 		$passfail = $nmail->send();
 		return $passfail;
@@ -80,10 +72,10 @@ class PasswordResetRequest{
 		Your password was reset.  Please contact '.SUPPORT_EMAIL_NAME.' via '.SUPPORT_EMAIL.' if this was an error.
 		';
 		$nmail = new Nmail($account->getActiveEmail(), $subject='NinjaWars: Your password was reset.', $body, SUPPORT_EMAIL);
-		if($debug_allowed && defined('DEBUG') && DEBUG && defined('DEBUG_ALL_ERRORS') && DEBUG_ALL_ERRORS) {
-			$nmail->dump = true;
-			$nmail->die_after_dump = true;
-			$nmail->try_to_send = false;
+		if($debug_allowed && defined('DEBUG')) {
+			$nmail->dump = DEBUG;
+			$nmail->die_after_dump = DEBUG_ALL_ERRORS;
+			$nmail->try_to_send = !DEBUG_ALL_ERRORS;
 		}
 		$succeeded = $nmail->send();
 		return (bool) $succeeded;

@@ -8,14 +8,19 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 class PasswordController{
+	public $debug_emails = true;
 
 	/**
 	 * Display the form to request a password reset link
 	 **/
-	public function getRequestForm(){
-		// TODO: Generates a csrf
-		// Stores csrf to the cookie I guess.
-		$content = render_template('request_password_reset.tpl');
+	public function getRequestForm(Request $request){
+		// TODO: Generate a csrf
+		$error = $request->query->get('error');
+		$message = $request->query->get('message');
+		$email = $request->query->get('email');
+		$ninja_name = $request->query->get('ninja_name');
+		
+		$content = render_template('request_password_reset.tpl', ['error'=>$error, 'message'=>$message, 'email'=>$email, 'ninja_name'=>$ninja_name]);
 
 		$response = new Response();
 		$response->setContent($content);
@@ -66,7 +71,7 @@ class PasswordController{
 
 	// Send an email directly to the user with the reset instructions.
 	public function sendEmail($token, Account $account){
-		$passfail = PasswordResetRequest::send($token, $account->getActiveEmail());
+		$passfail = PasswordResetRequest::send($token, $account->getActiveEmail(), $this->debug_emails);
 		return $passfail;
 	}
 
@@ -108,7 +113,8 @@ class PasswordController{
 			$account_id = isset($data['account_id'])? $data['account_id'] : null;
 			if(!empty($data) && $account_id){
 				if(strlen(trim($new_password)) > 3 && $new_password === $password_confirmation){
-					PasswordResetRequest::reset(new Account($account_id), $new_password); // Will also send email.
+					PasswordResetRequest::reset(new Account($account_id), $new_password, $this->debug_emails);
+					// The reset will also send an email if DEBUG_ALL_ERRORS isn't on (aka false)
 					return new RedirectResponse('/resetpassword.php'.'?message='.url('Password reset!'));
 				} else {
 					return new RedirectResponse('/resetpassword.php'.'?token='.url($token).'&error='.url('Password not long enough or does not match password confirm!'));

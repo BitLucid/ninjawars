@@ -36,7 +36,7 @@ if($token !== null){ // A potentially valid reset is requested
 	$response = $controller->postEmail($request);
 	$response->send();
 } else{
-	$controller->getRequestForm(); // The default, displays the initial form
+	$response = $controller->getRequestForm(Request::createFromGlobals()); // The default, renders the initial form
 	$page = 'request_password_reset';
 }
 
