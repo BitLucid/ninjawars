@@ -11,6 +11,8 @@ Install system dependencies
 
 	cd /srv/ninjawars
 	sudo bash /srv/ninjawars/scripts/build/install.sh
+	ln -s .gitmodules.tpl .gitmodules
+	git submodule update --init --recursive
 	
 Update an out-of-date but already installed instance's system/composer libraries:
 
