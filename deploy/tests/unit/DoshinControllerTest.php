@@ -13,11 +13,10 @@ class TestShopController extends PHPUnit_Framework_TestCase {
         // Mock the post request.
         $request = new Request($get=[], $post=['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
         RequestWrapper::inject($request);
-        SESSION::inject([]); // Just initialize as an injected session, with no data at the moment, no mock login
 	}
 	
 	function tearDown(){
-        SESSION::destroy();
+        RequestWrapper::inject(new Request([]));
     }
 
     public function testInstantiateShopController(){
