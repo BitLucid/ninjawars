@@ -1,4 +1,5 @@
 <?php
+require_once(SERVER_ROOT.'resources.php');
 
 class Page_Tests extends PHPUnit_Extensions_Selenium2TestCase {
 
@@ -12,8 +13,6 @@ class Page_Tests extends PHPUnit_Extensions_Selenium2TestCase {
 	
 	public function testTitlePresent()
 	{
-		// Change below url to your servername, eg : $this->url('http://nw.local/');
-		$this->url('http://nw.local/');
 		$title = $this->title();
 		$in_string = (false !== strpos($title, 'Live by the Shuriken'));
 		$this->assertNotEmpty($title, 'Title should not be empty');
