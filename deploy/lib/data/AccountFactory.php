@@ -29,6 +29,9 @@ class AccountFactory{
 		return new Account($account_info['account_id']);
 	}
 
+	/**
+	 * Get the account object by id, or false
+	**/
 	public static function findById($id){
 		$account = new Account($id);
 		if(!$account->getIdentity()){
@@ -50,17 +53,23 @@ class AccountFactory{
 		return new Account($account_id);
 	}
 
+	/**
+	 * Account identity, so whatever email was ORIGINALLY signed up with
+	**/
 	public static function findByIdentity($identity_email){
 		$info = self::account_info_by_identity($identity_email);
 		return new Account($info['account_id']);
 	}
 
+	/**
+	 *  Find account by active_email (as opposed to identity)
+	 * @return Account|false
+	**/
 	public static function findByEmail($email){
 		$normalized_email = strtolower(trim($email));
 		if($normalized_email === ''){
 			return false;
 		}
-		// TODO: this should just create the account object from the data! For now it doesn't
 		$account_id = query_item('select account_id from accounts 
 			where lower(active_email) = lower(:email) limit 1', [':email'=>$normalized_email]);
 		return new Account($account_id);
@@ -70,7 +79,6 @@ class AccountFactory{
 	 * Get the Account by a ninja name (aka player.uname).
 	**/
 	public static function findByNinjaName($ninja_name){
-		// TODO: this should just create the account object from the data! For now it doesn't
 		$account_id = query_item('select account_id from accounts 
 			join account_players on account_id = _account_id
 			join players on player_id = _player_id 
@@ -78,6 +86,10 @@ class AccountFactory{
 		return new Account($account_id);
 	}
 
+	/**
+	 * Get the account that matches an oauth id.
+	 * @return Account|false
+	**/
 	public static function findAccountByOauthId($id, $provider='facebook'){
 		$account_info = self::find_account_info_by_oauth($id, $provider);
 		if(!$account_info['account_id']){

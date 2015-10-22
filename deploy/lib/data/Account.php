@@ -106,4 +106,16 @@ class Account{
 	public function isConfirmed(){
 		return (bool) ($this->info['confirmed'] === 1);
 	}
+
+	/**
+	 * Change the account password
+	 * TODO: For user-side functions, an alternate function that requires the user password could be used instead.
+	**/
+	public function changePassword($new_password){
+		$updated = update_query("update accounts set phash = crypt(:password, gen_salt('bf', 10)) 
+				where account_id = :account_id",
+			[':account_id'=>$this->getId(), ':password'=>$new_password]);
+		return $updated;
+	}
+	
 }
