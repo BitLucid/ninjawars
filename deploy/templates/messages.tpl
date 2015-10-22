@@ -55,7 +55,7 @@
 
 <script type='text/javascript' src='{$smarty.const.JS_ROOT}messageDeleteConfirm.js'></script>
 
-{if $message_to eq 'individual' or $message_to eq 'clan'}
+{if $individual_or_clan}
 <script type='text/javascript'>
 {literal}
   $().ready(function(){
