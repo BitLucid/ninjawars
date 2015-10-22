@@ -1,9 +1,47 @@
 <?php
 
+namespace app\data;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Color extends Model{
+	protected $primaryKey = 'ColorId';
+	//protected $table = 'Colors'; // Automatically mapped to plural of classname
+	//protected $dates = ['DateCreated', 'DateStatus'];
+    //public $timestamps = false;
+    const CREATED_AT = 'DateCreated';
+    const UPDATED_AT = 'DateStatus';
+    // The overridden database column updated_at/created_at settings.
+    // Set fields that can be mass specified upon ::create()
+    protected $fillable = array('Code', 'Name', 'ColorGroup', 'Descr', 'ImageURL', 'DisplayOrder', 'FlagStatus');
+    // Excludes the date and primary key fields above
+
+    /**
+     * Special case method to get the id regardless of what it's actually called in the database
+    **/
+    public function id(){
+    	return $this->ColorId;
+    }
+
+    /**
+     * Compare whether the entity is current set to active.
+    **/
+    public function isActive(){
+    	return $this->FlagStatus === 'A';
+    }
+
+	/**
+	 * Raw array collection of all color info.
+	**/
+	public static function allRaw(){
+		return query_array('select ColorId, Code, Name, ColorGroup, Descr, ImageURL, DisplayOrder, FlagStatus, FlagStatus = \'A\' as active, DateCreated, DateStatus from colors order by flagstatus = "A" desc, displayorder');
+	}
+}
+
 /**
  * Model that manipulates the data for a password reset request.
 **/
-class PasswordResetRequest{
+class PasswordResetRequest extends Model{
 
 	/**
 	 * Get account info that matches for resetting.

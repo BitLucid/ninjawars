@@ -6,6 +6,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+class PasswordResponse{
+	public $title;
+	public $template;
+	public $parts;
+	public $options;
+}
 
 class PasswordController{
 	public $debug_emails = true;
@@ -13,7 +19,7 @@ class PasswordController{
 	/**
 	 * Display the form to request a password reset link
 	 **/
-	public function getRequestForm(Request $request){
+	public function getEmail(Request $request){
 		// TODO: Generate a csrf
 		$error = $request->query->get('error');
 		$message = $request->query->get('message');
@@ -39,7 +45,12 @@ class PasswordController{
 			$error = 'You must specify either an email or a ninja name!';
 			$mess = null;
 		} else {
-			$account = PasswordResetRequest::findAccount($email, $ninja_name);
+			if($email){
+				$account = AccountFactory::findByEmail($email);
+			}
+			if(!$account){
+				$account = AccountFactory::findByNinjaName($ninja_name);
+			}
 			if(!$account){
 				$error = 'Unable to find a matching account!';
 			} else {
@@ -54,14 +65,14 @@ class PasswordController{
 			}
 		}
 		// TODO: Authenticate the csrf, which must match, from the session.
-		return new RedirectResponse('/resetpassword.php'.'?'
+		return new RedirectResponse('/resetpassword.php?'
 			.($mess? 'message='.url($mess).'&' : '')
 			.($error? 'error='.url($error) : '')
 			);
 	}
 
 	// Get the email associated with a token.
-	public function getEmailForToken($token){
+	private function getEmailForToken($token){
 		$data = PasswordResetRequest::match($token);
 		$email = isset($data['email'])? $data['email'] : null;
 		$container = new stdClass;
@@ -82,7 +93,7 @@ class PasswordController{
 		$data = PasswordResetRequest::match($token);
 		if(empty($data) || !$token){
 			$error = 'No match for your password reset found or time expired, please request again.';
-			return new RedirectResponse('/resetpassword.php'.'?'
+			return new RedirectResponse('/resetpassword.php?command=reset&'
 			.($error? 'error='.url($error) : ''));
 		}
 		$account = AccountFactory::find($data['account_id']);
@@ -104,10 +115,10 @@ class PasswordController{
 		$new_password = $request->request->get('new_password');
 		$password_confirmation = $request->request->get('password_confirmation');
 		if($password_confirmation === null || $password_confirmation !== $new_password){
-			return new RedirectResponse('/resetpassword.php'.'?token='.url($token).'&error='.url('Password Confirm did not match'));
+			return new RedirectResponse('/resetpassword.php?command=reset&token='.url($token).'&error='.url('Password Confirm did not match'));
 		}
 		if(!$token){
-			return new RedirectResponse('/resetpassword.php'.'?token='.url($token).'&error='.url('No Valid Token to allow for password reset! Try again.'));
+			return new RedirectResponse('/resetpassword.php?command=reset&token='.url($token).'&error='.url('No Valid Token to allow for password reset! Try again.'));
 		} else {
 			$data = PasswordResetRequest::match($token);
 			$account_id = isset($data['account_id'])? $data['account_id'] : null;
@@ -115,21 +126,14 @@ class PasswordController{
 				if(strlen(trim($new_password)) > 3 && $new_password === $password_confirmation){
 					PasswordResetRequest::reset(new Account($account_id), $new_password, $this->debug_emails);
 					// The reset will also send an email if DEBUG_ALL_ERRORS isn't on (aka false)
-					return new RedirectResponse('/resetpassword.php'.'?message='.url('Password reset!'));
+					return new RedirectResponse('/resetpassword.php?message='.url('Password reset!'));
 				} else {
-					return new RedirectResponse('/resetpassword.php'.'?token='.url($token).'&error='.url('Password not long enough or does not match password confirm!'));
+					return new RedirectResponse('/resetpassword.php?command=reset&token='.url($token).'&error='.url('Password not long enough or does not match password confirm!'));
 				}
 			} else {
-				return new RedirectResponse('/resetpassword.php'.'?token='.url($token).'&error='.url('Token was invalid or expired! Please reset again.'));
+				return new RedirectResponse('/resetpassword.php'.'?command=reset&token='.url($token).'&error='.url('Token was invalid or expired! Please reset again.'));
 			}
 		}
-	}
-
-	/**
-	 * Get the path for redirection after success/failure.
-	**/
-	function redirectPath(){
-		return '/';
 	}
 
 }

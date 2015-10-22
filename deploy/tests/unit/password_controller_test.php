@@ -27,13 +27,6 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         return password_verify($pass, $phash);
     }
 
-    public function testRedirectPathReturnsAPath(){
-        // Redirect path should return a relative-to-root path
-        $controller = new PasswordController();
-        $path = $controller->redirectPath();
-        $this->assertNotEmpty($path);
-    }
-
     public function testRequestFormRenders(){
         // Specify email request
         $req = Request::create('/resetpassword.php');
@@ -44,7 +37,7 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         // Get a Response
         $controller = new PasswordController();
         $controller->debug_emails = false; // Don't debug emails.
-        $response = $controller->getRequestForm($req);
+        $response = $controller->index($req);
         // Response should contain a form
         $content = $response->getContent();
         $this->assertTrue(strpos($content, '<form') !== false);

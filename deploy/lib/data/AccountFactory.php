@@ -55,6 +55,29 @@ class AccountFactory{
 		return new Account($info['account_id']);
 	}
 
+	public static function findByEmail($email){
+		$normalized_email = strtolower(trim($email));
+		if($normalized_email === ''){
+			return false;
+		}
+		// TODO: this should just create the account object from the data! For now it doesn't
+		$account_id = query_item('select account_id from accounts 
+			where lower(active_email) = lower(:email) limit 1', [':email'=>$normalized_email]);
+		return new Account($account_id);
+	}
+
+	/**
+	 * Get the Account by a ninja name (aka player.uname).
+	**/
+	public static function findByNinjaName($ninja_name){
+		// TODO: this should just create the account object from the data! For now it doesn't
+		$account_id = query_item('select account_id from accounts 
+			join account_players on account_id = _account_id
+			join players on player_id = _player_id 
+			where lower(uname) = lower(:ninja_name) limit 1', [':ninja_name'=>$ninja_name]);
+		return new Account($account_id);
+	}
+
 	public static function findAccountByOauthId($id, $provider='facebook'){
 		$account_info = self::find_account_info_by_oauth($id, $provider);
 		if(!$account_info['account_id']){

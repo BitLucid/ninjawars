@@ -4,6 +4,25 @@ require_once(CORE.'control/PasswordController.php');
 
 use Symfony\Component\HttpFoundation\Request;
 
+$command = (string) in('command');
+
+$controller = new PasswordController();
+
+switch (true) {
+	case ($command == 'reset' && !empty($_POST)):
+		$response = $controller->postReset();
+	break;
+	case ($command == 'reset'):
+		$response = $controller->getReset();
+	break;
+	case ($command == 'index' && !empty($_POST)):
+		$response = $controller->postEmail();
+	break;
+	default:
+		$command == 'index';
+		$response = $controller->getEmail();
+	break;
+}
 
 $token = in('token');
 $email = post('email');
@@ -17,10 +36,11 @@ $vars=['token'=>$token, 'email'=>$email, 'ninja_name'=>$ninja_name,
 	'new_password'=>$new_password, 'password_confirmation'=>$password_confirmation, 
 	'error'=>$error, 'message'=>$message];
 
-$controller = new PasswordController();
+
 
 if($token !== null){ // A potentially valid reset is requested
 	if($new_password === null){
+
 		$controller->getReset($token);
 		$page = 'resetpassword';
 		$container = $controller->getEmailForToken($token);
@@ -40,11 +60,9 @@ if($token !== null){ // A potentially valid reset is requested
 	$page = 'request_password_reset';
 }
 
-$page = isset($page)? $page : 'password_reset_request';
-$pages = ['resetpassword'=>
-	['title'=>'Reset your password', 'template'=>'resetpassword.tpl'],
-	'request_password_reset'=>
-	['title'=>'Request A Password Reset Email', 'template'=>'request_password_reset.tpl']
-	];
-
-display_static_page($page, $pages, $vars, $options=array());
+display_page(
+	$response->template,
+	$response->title,
+	$response->parts,
+	isset($response->options)? $response->options : [];
+);
