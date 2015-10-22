@@ -6,7 +6,7 @@ use app\environment\RequestWrapper;
 use app\Controller\DoshinController as DoshinController;
 
 
-class TestShopController extends PHPUnit_Framework_TestCase {
+class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 
 
 	function setUp(){
@@ -19,7 +19,7 @@ class TestShopController extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject(new Request([]));
     }
 
-    public function testInstantiateShopController(){
+    public function testInstantiateDoshinController(){
         $doshin = new DoshinController();
         $this->assertInstanceOf('app\Controller\DoshinController', $doshin);
     }

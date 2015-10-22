@@ -7,7 +7,7 @@ use app\environment\RequestWrapper;
 use app\Controller\ShopController as ShopController;
 
 
-class TestShopController extends PHPUnit_Framework_TestCase {
+class ShopControllerTest extends PHPUnit_Framework_TestCase {
 
 
 	function setUp(){
