@@ -35,6 +35,13 @@ class TestAccountCreateAndDestroy{
 	    */
 	}
 
+	/**
+	 * More memorable wrapper to the purge_test_accounts functionality.
+	**/
+	public static function destroy($test=null){
+		static::purge_test_accounts($test);
+	}
+
 	// Create a testing account
 	public static function create_testing_account($confirm=false){
 		@session_start();
