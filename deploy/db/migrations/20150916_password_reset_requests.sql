@@ -2,7 +2,7 @@ create table password_reset_requests(
 	request_id serial,
 	_account_id int not null,
 	nonce varchar(130),
-	requested_on_datetime timestamp with time zone default CURRENT_DATE,
+	created_at timestamp with time zone default CURRENT_DATE,
 	used boolean,
 	CONSTRAINT fk__account_id FOREIGN KEY (_account_id)
       REFERENCES accounts (account_id) MATCH SIMPLE

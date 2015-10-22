@@ -24,6 +24,13 @@ class Account{
 		return $this->account_id;
 	}
 
+	/**
+	 * Alias for getId();
+	**/
+	public function id(){
+		return $this->account_id;
+	}
+
 	// Simple wrapper function for getting email from accounts.
 	public function email(){
 		return $this->getActiveEmail();

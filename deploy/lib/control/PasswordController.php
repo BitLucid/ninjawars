@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+use app\data\PasswordResetRequest;
+
 class PasswordResponse{
 	public $title;
 	public $template;
@@ -15,6 +17,38 @@ class PasswordResponse{
 
 class PasswordController{
 	public $debug_emails = true;
+
+
+	/**
+	 * Send out the password reset email to a requested account's email.
+	**/
+	private function sendEmail($token, $account, $debug_allowed=true){
+		$email = $account->getActiveEmail();
+		if(!$email){
+			return false;
+		}
+		// Email body contents will be: Click here to reset your password: {{ url('password/reset/'.$token) }}
+		$url = WEB_ROOT.'resetpassword.php?token='.url($token);
+		$rendered = render_template('email.password_reset_request.tpl', ['url'=>$url]);
+		// Construct the email with Nmail, and then just send it.
+		$nmail = new Nmail($email, $subject='NinjaWars: Your password reset request', $rendered, SUPPORT_EMAIL);
+		if($debug_allowed && defined('DEBUG')) {
+			$nmail->dump = DEBUG;
+			$nmail->die_after_dump = DEBUG_ALL_ERRORS;
+			$nmail->try_to_send = !DEBUG_ALL_ERRORS;
+		}
+		$passfail = $nmail->send();
+		return $passfail;
+	}
+
+	// Get the email associated with a token.
+	private function getEmailForToken($token){
+		$request = PasswordResetRequest::match($token);
+		$email = isset($request->email)? $data['email'] : null;
+		$container = new stdClass;
+		$container->verified_email = $email;
+		return $container;
+	}
 
 	/**
 	 * Display the form to request a password reset link
@@ -26,10 +60,8 @@ class PasswordController{
 		$email = $request->query->get('email');
 		$ninja_name = $request->query->get('ninja_name');
 		
-		$content = render_template('request_password_reset.tpl', ['error'=>$error, 'message'=>$message, 'email'=>$email, 'ninja_name'=>$ninja_name]);
-
-		$response = new Response();
-		$response->setContent($content);
+		$parts = ['error'=>$error, 'message'=>$message, 'email'=>$email, 'ninja_name'=>$ninja_name];
+		$response = ['title'=>'Request a password reset', 'template'=>'request_password_reset.tpl', $parts, 'options'=>[]];
 		return $response;
 	}
 
@@ -51,11 +83,11 @@ class PasswordController{
 			if(!$account){
 				$account = AccountFactory::findByNinjaName($ninja_name);
 			}
-			if(!$account){
+			if(!$account->id()){
 				$error = 'Unable to find a matching account!';
 			} else {
-				$token = PasswordResetRequest::request($account->getId()); // Nonce will be created automatically.
-				$passfail = $this->sendEmail($token, $account);
+				$request = PasswordResetRequest::generate($account->getId()); // Nonce will be created automatically.
+				$passfail = $this->sendEmail($request->nonce, $account);
 				if($passfail){
 					$error = null;
 					$mess = 'Reset Email sent!';
@@ -71,21 +103,6 @@ class PasswordController{
 			);
 	}
 
-	// Get the email associated with a token.
-	private function getEmailForToken($token){
-		$data = PasswordResetRequest::match($token);
-		$email = isset($data['email'])? $data['email'] : null;
-		$container = new stdClass;
-		$container->verified_email = $email;
-		return $container;
-	}
-
-	// Send an email directly to the user with the reset instructions.
-	public function sendEmail($token, Account $account){
-		$passfail = PasswordResetRequest::send($token, $account->getActiveEmail(), $this->debug_emails);
-		return $passfail;
-	}
-
 	/**
 	 *  Display the password reset view for the given token.
 	**/
@@ -98,12 +115,10 @@ class PasswordController{
 		}
 		$account = AccountFactory::find($data['account_id']);
 
-		$content = render_template('resetpassword.tpl', ['token'=>$token, 'email'=>$account->getActiveEmail()]);
-		$response = new Response();
-		$response->setContent($content);
-		//$response->setStatusCode(200);
-		// configure the HTTP cache headers
-		$response->setMaxAge(600); // Seconds, so 10 minutes
+		$parts = ['token'=>$token, 'email'=>$account->getActiveEmail()];
+
+		$reponse = ['title'=>'Request a password reset', 'template'=>'request_password_reset.tpl', $parts, 'options'=>[]];
+		// TODO: Need a way to set the max age on the response that the form will display
 		return $response;
 	}
 

@@ -7,6 +7,8 @@ require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use app\data\PasswordResetRequest;
+
 
 class TestPasswordController extends PHPUnit_Framework_TestCase {
 
@@ -37,11 +39,8 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         // Get a Response
         $controller = new PasswordController();
         $controller->debug_emails = false; // Don't debug emails.
-        $response = $controller->index($req);
-        // Response should contain a form
-        $content = $response->getContent();
-        $this->assertTrue(strpos($content, '<form') !== false);
-        /*$this->assertTrue(strpos($content, 'Some message here') !== false);*/
+        $response = $controller->getEmail($req);
+        $this->assertEquals('request_password_reset.tpl', $response['template']);
     }
 
     public function testPostEmailCreatesAPasswordResetRequest(){

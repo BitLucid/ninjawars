@@ -4,6 +4,9 @@ require_once(CORE.'data/PasswordResetRequest.php');
 require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
 
 
+use app\data\PasswordResetRequest;
+
+
 class TestPasswordReset extends PHPUnit_Framework_TestCase {
 
 	function setUp(){
@@ -20,43 +23,47 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
         query("delete from password_reset_requests where nonce = '777777'");
     }
 
-    public function testFindAccountForMakingResetAccountHasToExist(){
-        $account = PasswordResetRequest::findAccount($this->account_info['active_email'], null);
-        $this->assertGreaterThan(0, $account->getId());
-        $this->assertTrue(is_numeric($account->getId()));
-        //$this->assertTrue(PasswordResetRequest::findAccount(null, $this->account_info['active_email']));
-        $final_account = PasswordResetRequest::findAccount(null, $this->ninja->name());
-        $this->assertGreaterThan(0, $final_account->getId());
-    }
-
     // Make sure a user can make a request
+    /**
+     * @group early
+     */
     public function testCreatePasswordResetEntry(){
-        //var_dump($this->account_id);
-        //var_dump(query_item('select account_id from accounts where account_id = :id', [':id'=>$this->account_id]));
-        $token = PasswordResetRequest::request(query_item('select account_id from accounts limit 1'));
+        $token = PasswordResetRequest::generate(query_item('select account_id from accounts limit 1'));
         $this->assertTrue((bool)$token);
     }
 
     // Retrieve the password request with the appropriate nonce data
+    /**
+     * @group early
+     */
     public function testRetrieveCreatedPasswordReset(){
-        $token = PasswordResetRequest::request(query_item('select account_id from accounts limit 1'), $nonce='777777');
+        $token = PasswordResetRequest::generate(query_item('select account_id from accounts limit 1'), $nonce='777777');
         $this->assertEquals($nonce, $token); // Create
         $req = PasswordResetRequest::match($nonce); // Match
         $this->assertEquals($nonce, $req['nonce']);
     }
 
     // Reject resets that don't contain a new password
+    /**
+     * @group early
+     */
     public function testRejectionOfResetsThatDontHaveANewPassword(){
         $account_id = TestAccountCreateAndDestroy::account_id();
         $this->assertFalse(PasswordResetRequest::reset(new Account($account_id), null));
     }
 
     // Reject resets that don't have a valid account_id
+    /**
+     * @group early
+     */
     public function testRejectionOfResetsThatDontHaveAValidAccountId(){
         // Turns off debugging of the email
         $this->assertFalse(PasswordResetRequest::reset(new Account(1234567890), 'some_valid_password', $debug_email=false));
     }
 
+    /**
+     * @group early
+     */
     public function testResetOfpasswordWhenCorrectDataGiven(){
         $account_id = TestAccountCreateAndDestroy::account_id();
         $this->assertTrue(PasswordResetRequest::reset(new Account($account_id), 'some_password%FW@G', $debug_email=false));
@@ -80,7 +87,7 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
     public function testMatchingARequestGetsYouAMatchingEmail(){
         $account_id = TestAccountCreateAndDestroy::account_id();
         $account = AccountFactory::findById($account_id);
-        $reset = PasswordResetRequest::request($account->getId(), $nonce='777777', $debug_email=false);
+        $reset = PasswordResetRequest::generate($account->getId(), $nonce='777777', $debug_email=false);
         $req = PasswordResetRequest::match($nonce);
         $this->assertNotEmpty($req['email']);
         $this->assertEquals($account->getActiveEmail(), $req['email']);
@@ -89,7 +96,7 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
     public function testSendingAnEmailForARequestDoesntError(){
         $account_id = TestAccountCreateAndDestroy::account_id();
         $account = AccountFactory::findById($account_id);
-        $reset = PasswordResetRequest::request($account->getId(), $nonce='777777', $debug_email=false);
+        $reset = PasswordResetRequest::generate($account->getId(), $nonce='777777', $debug_email=false);
         $req = PasswordResetRequest::match($nonce);
         $this->assertEquals($account->getActiveEmail(), $req['email']);
     }
