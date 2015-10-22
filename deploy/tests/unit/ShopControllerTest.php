@@ -14,6 +14,7 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
         // Mock the post request.
         $request = new Request($get=[], $post=['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
         RequestWrapper::inject($request);
+        $this->markTestIncomplete('Session has to be dealt with on the CLI to allow for controller tests.');
 	}
 	
 	function tearDown(){
