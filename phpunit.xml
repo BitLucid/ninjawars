@@ -12,9 +12,6 @@
 	<testsuites>
 		<testsuite name="Ninja Wars Test Suite">
 			<directory suffix=".php">deploy/tests/unit</directory>
-			<directory suffix=".php">deploy/tests/unit/controller</directory>
-			<directory suffix=".php">deploy/tests/unit/model</directory>
-			<!-- <directory suffix="test.php">deploy/tests/selenium</directory> -->
 		</testsuite>
 	</testsuites>
 	<filter>
