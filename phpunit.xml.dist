@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit 
+<phpunit
 	bootstrap="deploy/tests/bootstrap.php"
 	colors="true"
 	convertNoticesToExceptions="true"
@@ -18,14 +18,22 @@
 		</testsuite>
 	</testsuites>
 	<filter>
-        <blacklist>
-			<directory suffix=".php">vendor</directory>
-		</blacklist>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">deploy/model</directory>
+			<directory suffix=".php">deploy/</directory>
 			<exclude>
-				<directory suffix=".php">deploy/model/orm</directory>
-		    </exclude>
+				<directory>vendor</directory>
+				<directory>deploy/vendor</directory>
+				<directory>deploy/tests/</directory>
+				<directory>deploy/model/orm</directory>
+				<directory>deploy/db/migrations/</directory>
+				<directory>deploy/templates/compiled</directory>
+				<directory>deploy/www/</directory>
+				<file>deploy/resources.build.php</file>
+				<file>deploy/resources.template.php</file>
+			</exclude>
 		</whitelist>
 	</filter>
+	<logging>
+		<log type="coverage-html" target="./cc/"/>
+	</logging>
 </phpunit>
