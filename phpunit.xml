@@ -11,7 +11,7 @@
 	stopOnSkipped="false">
 	<testsuites>
 		<testsuite name="Ninja Wars Test Suite">
-			<directory suffix="t.php">deploy/tests/unit</directory>
+			<directory suffix=".php">deploy/tests/unit</directory>
 			<directory suffix=".php">deploy/tests/unit/controller</directory>
 			<directory suffix=".php">deploy/tests/unit/model</directory>
 			<!-- <directory suffix="test.php">deploy/tests/selenium</directory> -->
@@ -23,6 +23,7 @@
 			<exclude>
 				<directory>vendor</directory>
 				<directory>deploy/vendor</directory>
+				<directory>deploy/cron</directory>
 				<directory>deploy/tests/</directory>
 				<directory>deploy/model/orm</directory>
 				<directory>deploy/db/migrations/</directory>
