@@ -6,9 +6,9 @@
 <div class='glassbox' id='message-ninja'>
   <form action='messages.php' method='post' name='ninja_message'>
     <div>
-      <em class='char-name'>@<input class='char-name textField' type='text' size='26' name='to' value='{$to}'></em>
+      <em class='char-name'>@<input class='char-name textField' type='text' size='26' name='to' value='{$to}' required=required></em>
       <em>say</em>
-      &apos;<input id='message-to-ninja' type='text' size='30' name='message' class='textField' autocomplete='off' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}">&apos;
+      &apos;<input id='message-to-ninja' type='text' size='30' name='message' class='textField' autocomplete='off' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}" required=required>&apos;
       <input type='hidden' name='messenger' value='1'>
       <input type='submit' value='Send' name='ninja_message' class='formButton'>
     </div>

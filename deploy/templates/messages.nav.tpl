@@ -1,5 +1,5 @@
 {if $pages gt 1}
-<div class="message-nav">
+<nav class="message-nav">
 	{if $current_page > 1}
   		<a class='prev' href="messages.php?page={math equation="x-1" x=$current_page}&amp;type={$type_filter}">&#9664;</a>
 	{else}
@@ -11,5 +11,5 @@
 	{else}
   		<span class='next inactive'>&#9654;</span>
 	{/if}
-</div>
+</nav>
 {/if}
