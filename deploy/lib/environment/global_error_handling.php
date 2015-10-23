@@ -48,20 +48,12 @@ function sendErrorEmail($p_errorMsg) {
 		$p_errorMsg .= "Error Occured for playerID ".$_SESSION['player_id']."\r\n";
 	}
 
-	$p_errorMsg .= 'REQUEST_URI: '.$_SERVER['REQUEST_URI']."\r\n";
+	$p_errorMsg .= 'REQUEST_URI: '.(isset($_SERVER['REQUEST_URI'])? $_SERVER['REQUEST_URI'] : null)."\r\n";
 	$p_errorMsg .= 'REFERER: '.(isset($_SERVER['HTTP_REFERER'])? $_SERVER['HTTP_REFERER'] : null)."\r\n";
-	$p_errorMsg .= 'METHOD: '.$_SERVER['REQUEST_METHOD']."\r\n";
+	$p_errorMsg .= 'METHOD: '.(isset($_SERVER['REQUEST_METHOD'])? $_SERVER['REQUEST_METHOD'] : null)."\r\n";
 
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 		$p_errorMsg .= 'POST_DATA: '.print_r($_POST, true)."\r\n";
-	}
-	
-	if(count($_SESSION)){
-		$p_errorMsg .= 'SESSION: '.json_encode($_SESSION);
-	}
-	
-	if(count($_SERVER)){
-		$p_errorMsg .= 'SERVER: '.json_encode($_SERVER);
 	}
 
 	$headers = "MIME-Version: 1.0\r\n".
