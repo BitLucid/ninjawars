@@ -26,6 +26,7 @@
 				<directory>deploy/db/migrations/</directory>
 				<directory>deploy/templates/compiled</directory>
 				<directory>deploy/www/</directory>
+				<file>deploy/lib/cleanup.inc.php</file>
 				<file>deploy/resources.build.php</file>
 				<file>deploy/resources.template.php</file>
 			</exclude>
