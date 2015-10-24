@@ -262,12 +262,10 @@ function clans_ranked() {
 	    WHERE active = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC');
 
 	foreach($counts as $clan_info){
-		if($clan_info['member_count']>1){
-			$max       = isset($max)? $max : $clan_info['sum'];
-			// *** make percentage of highest, multiply by 10 and round to give a 1-10 size ***
-			$res[$clan_info['clan_id']]['name'] = $clan_info['clan_name'];
-			$res[$clan_info['clan_id']]['score'] = floor(( (($clan_info['sum'] - 1 < 1 ? 0 : $clan_info['sum'] - 1)) / $max) * 10) + 1;
-		}
+		$max       = isset($max)? $max : $clan_info['sum'];
+		// *** make percentage of highest, multiply by 10 and round to give a 1-10 size ***
+		$res[$clan_info['clan_id']]['name'] = $clan_info['clan_name'];
+		$res[$clan_info['clan_id']]['score'] = floor(( (($clan_info['sum'] - 1 < 1 ? 0 : $clan_info['sum'] - 1)) / $max) * 10) + 1;
 	}
 
 	return $res;
@@ -279,7 +277,7 @@ function clans_ranked() {
 function clan_member_names_and_ids($clan_id, $self_char_id) {
 	$member_select = 'SELECT uname, player_id 
 		FROM players JOIN clan_player ON player_id = _player_id
-        WHERE _clan_id = :clan_id AND player_id <> :player_id';
-	$members_and_ids = query_array($member_select, array(':clan_id'=>$clan_id, ':player_id'=>$self_char_id));
-	return $members_and_ids;
+		WHERE _clan_id = :clan_id AND player_id <> :player_id';
+$members_and_ids = query_array($member_select, array(':clan_id'=>$clan_id, ':player_id'=>$self_char_id));
+return $members_and_ids;
 }
