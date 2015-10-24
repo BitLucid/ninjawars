@@ -117,7 +117,7 @@ class Clan
         } else {
             $invite_msg = $p_inviter->name().' has invited you into their clan, '.$this->getName().'. '
             .'To accept, choose their clan '.$this->getName().' on the '
-            .message_url('clan.php?command=join&clan_id='.$this->getID(), 'clan joining page').'.';
+            .message_url('clan.php?command=view&clan_id='.$this->getID(), 'clan joining page').'.';
 
             send_message($p_inviter->id(), $p_target->id(), $invite_msg);
             $failure_error = null;
