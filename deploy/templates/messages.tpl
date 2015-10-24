@@ -2,6 +2,8 @@
 
 {include file='message-tabs.tpl' current=$current_tab}
 
+{if $informational}<div class='notice'>{$informational}</div>{/if}
+
 {if $current_tab != 'clan'}
 <!-- Message an individual ninja-->
 <div class='glassbox' id='message-ninja'>
@@ -34,7 +36,12 @@
 
 
   <div class='glassbox' id='delete-messages'>
-    <a href="messages.php?delete=1&amp;type={$type}">Delete {$messages_type} Messages</a>
+    <form method='post' action=''>
+      <input type='hidden' name='delete' value='1'>
+      <input type='hidden' name='command' value='delete'>
+      <input type='hidden' name='type' value='{$type}'>
+      <input class='btn btn-warning' type='submit' name='submit' value='Delete {$messages_type} Messages'>
+    </form>
   </div>
 </div> <!-- End of clan and search div -->
 
@@ -55,20 +62,10 @@
   {include file="messages.nav.tpl"}
 </div>
 
-<script type='text/javascript' src='{$smarty.const.JS_ROOT}messageDeleteConfirm.js'></script>
-
-{if $individual_or_clan}
-<script type='text/javascript'>
-{literal}
-  $().ready(function(){
-    // Cache the focus point.
-    var focus = '{/literal}{$message_to}{literal}';
-    if(focus == 'clan'){
-      $('input#message-clan').focus();
-    } else {
-      $('input#message-to-ninja').focus();
-    }
-  });
-{/literal}
+<script>
+// Set the need to refocus on the messaging areas if necessary.
+var refocus = {if $individual_or_clan}true{else}false{/if};
+var focus = '{$message_to}';
 </script>
-{/if}
+<!-- Confirmation requirements and refocus setup -->
+<script src='{$smarty.const.JS_ROOT}talk.js'></script>

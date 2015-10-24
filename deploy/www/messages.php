@@ -25,6 +25,7 @@ $page      = in('page', 1, 'non_negative_int');
 $limit     = 25;
 $offset    = non_negative_int(($page - 1) * $limit);
 $delete    = in('delete');
+$informational = in('informational');
 
 $type = in('type'); // Clan chat or normal messages.
 $type = restrict_to($type, array(0, 1));
@@ -38,7 +39,6 @@ if($target_id){
 set_setting('last_messaged', $to);
 
 
-// Currently there are only the two types of messages.
 switch(true){
 	case($command == 'clan' && $_POST):
 		$messages_type = 'clan';
@@ -55,6 +55,18 @@ switch(true){
 		$messages_type = 'personal';
 		$current_tab = 'messages';
 		$type = 0;
+	break;
+	case($command == 'delete' && $_POST):
+		if ($delete) {
+			Message::deleteByReceiver($ninja, $type);
+			$type = in('type');
+			if($type == 1){
+				$command = 'clan';
+			} else {
+				$command = 'personal';
+			}
+			redirect('/messages.php?command='.$command.'&informational='.url('Messages deleted'));
+		}
 	break;
 	default:
 		$command = 'personal';
@@ -79,10 +91,6 @@ if ($message && $messenger) {
 	}
 }
 
-if ($delete) {
-	Message::deleteByReceiver($ninja, $type);
-}
-
 $messages = Message::findByReceiver($ninja, $type, $limit, $offset);
 
 $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
@@ -95,7 +103,7 @@ Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
 
 $individual_or_clan = ($message_to == 'individual' || $message_to == 'clan');
 $parts = compact('command', 'message_sent_to', 'messages', 'current_tab', 'to', 'has_clan', 
-	'type_filter', 'messages_type', 'individual_or_clan', 'pages', 'current_page', 'message_to');
+	'type_filter', 'type', 'messages_type', 'individual_or_clan', 'pages', 'current_page', 'message_to', 'informational');
 
 display_page(
 	'messages.tpl'
