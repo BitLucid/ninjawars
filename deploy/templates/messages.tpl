@@ -2,6 +2,7 @@
 
 {include file='message-tabs.tpl' current=$current_tab}
 
+{if $current_tab != 'clan'}
 <!-- Message an individual ninja-->
 <div class='glassbox' id='message-ninja'>
   <form action='messages.php' method='post' name='ninja_message'>
@@ -14,15 +15,16 @@
     </div>
   </form>
 </div>
+{/if}
 
 <div id='clan-and-search'>
-
-{if $has_clan}
+{if $has_clan && $current_tab == 'clan'}
   <div id='clan-mail-section' class='glassbox'>
     <form id='clan_msg' action='messages.php' method='get' name='clan_msg'>
       <div>
-        <input type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}" autocomplete='off'>
-        <input type='hidden' value='toclan' name='toclan'>
+        <input type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}" autocomplete='off' required=required>
+        <input type='hidden' name='toclan' value='1'>
+        <input type='hidden' name='command' value='clan'>
         <input type='hidden' value='1' name='messenger'>
         <input type='submit' value='Mail Clan' class='formButton'>
       </div>
@@ -32,7 +34,7 @@
 
 
   <div class='glassbox' id='delete-messages'>
-    <a href="messages.php?delete=1&amp;type={$type_filter}">Delete {$messages_type} Messages</a>
+    <a href="messages.php?delete=1&amp;type={$type}">Delete {$messages_type} Messages</a>
   </div>
 </div> <!-- End of clan and search div -->
 
@@ -46,7 +48,7 @@
 
   <dl id='message-list' class='message-list'>
   {foreach from=$messages item="loop_message"}
-  	{include file='single_message.tpl' message=$loop_message}
+  	{include file='message.single.tpl' message=$loop_message}
   {/foreach}
   </dl>
 

@@ -41,8 +41,11 @@ class Message extends Model{
     /**
      * Get messages to a receiver.
     **/ 
-    public static function findByReceiver(Player $char, $type=0, $limit, $offset){
-        return Message::where(['send_to'=>$char->id(), 'type'=>$type])->limit($limit)->offset($offset)->get();
+    public static function findByReceiver(Player $char, $type=0, $limit=null, $offset=null){
+        return Message::where(['send_to'=>$char->id(), 'type'=>$type])->leftJoin('players', function($join) {
+            $join->on('messages.send_from', '=', 'players.player_id');
+        })->orderBy('date', 'DESC')->limit($limit)->offset($offset)->get(['players.uname as sender', 'messages.type', 'messages.send_to', 
+            'messages.send_from', 'messages.message', 'messages.unread', 'messages.date']);
     }
 
     /**
@@ -55,15 +58,14 @@ class Message extends Model{
     /**
      * Delete personal messages to a receiver.
     **/
-    public static function deleteByReceiver(Player $char){
-        return Message::where(['send_to'=>$char->id(), 'type'=>0])->delete();
+    public static function deleteByReceiver(Player $char, $type){
+        return Message::where(['send_to'=>$char->id(), 'type'=>$type])->delete();
     }
 
     /**
-     * Delete clan messages to receiver.
+     * mark
     **/
-    public static function deleteClanMessagesByReceiver(Player $char){
-        return Message::where(['send_to'=>$char->id(), 'type'=>1])->delete();
+    public static function markAsRead(Player $char, $type){
+        return Message::where(['send_to'=>$char->id(), 'type'=>$type])->update(['unread' => 0]);
     }
-
 }
