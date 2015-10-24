@@ -29,6 +29,15 @@ $delete    = in('delete');
 $type = in('type'); // Clan chat or normal messages.
 $type = restrict_to($type, array(0, 1));
 
+$message_sent_to = null; // Names or name to display.
+$message_to = null; // strings clan or individual if sent to those respectively.
+
+if($target_id){
+	$to = get_char_name($target_id);	
+}
+set_setting('last_messaged', $to);
+
+
 // Currently there are only the two types of messages.
 switch(true){
 	case($command == 'clan' && $_POST):
@@ -54,23 +63,16 @@ switch(true){
 		$type = 0;
 }
 
-
-$message_sent_to = null; // Names or name to display.
-$message_to = null; // strings clan or individual if sent to those respectively.
-
-if($target_id){
-	$to = get_char_name($target_id);	
-}
-set_setting('last_messaged', $to);
-
 // Sending mail section.
 if ($message && $messenger) {
 	if ($to_clan && $has_clan) {
-		$message_sent_to = message_to_clan($message);
+		$target_id_list = $clan->getMemberIds();
+		$passfail = Message::sendToGroup($ninja, $target_id_list, $message, $type);
+		$message_sent_to = 'your clan';
 		$message_to = 'clan';
 		$type = 1;
 	} elseif ((bool)$target_id) {
-		send_message($ninja->id(), $target_id, $message);
+		Message::send($ninja, $target_id, $message, $type);
 		$message_sent_to = $to;
 		$message_to = 'individual';
 		$type = 0;
@@ -83,10 +85,8 @@ if ($delete) {
 
 $messages = Message::findByReceiver($ninja, $type, $limit, $offset);
 
-//$messages      = Message::finget_messages($ninja->id(), $limit, $offset, $type);
 $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
 $pages         = ceil($message_count / $limit);  // Total pages.
-
 $current_page = $page;
 
 Message::markAsRead($ninja, $type); // mark messages as read for next viewing.

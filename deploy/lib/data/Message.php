@@ -39,6 +39,27 @@ class Message extends Model{
     }
 
     /**
+     * Send a message of a certain type, to a target, essentially just wraps ::create
+     * Does not fully instantiate a target object to avoid the overhead.
+    **/
+    public static function send(Player $sender, $target_id, $message, $type){
+        Message::create(['message'=>$message, 'send_to'=>$target_id, 
+                'send_from'=>$sender->id(), 'type'=>$type]);
+        return true;
+    }
+
+    /**
+     * Send the message to a group of target ids
+    **/
+    public static function sendToGroup(Player $sender, $groupTargets, $message, $type){
+        foreach($groupTargets as $target_id){
+            Message::create(['message'=>$message, 'send_to'=>$target_id, 
+                    'send_from'=>$sender->id(), 'type'=>$type]);
+        }
+        return true;
+    }
+
+    /**
      * Get messages to a receiver.
     **/ 
     public static function findByReceiver(Player $char, $type=0, $limit=null, $offset=null){
