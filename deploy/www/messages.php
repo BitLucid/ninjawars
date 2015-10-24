@@ -30,12 +30,13 @@ $type_filter = restrict_to($type_filter, array(0, 1));
 // Currently there are only the two types of messages, but if types are added in the future...
 switch($type_filter){
 	case(1):
-		$viewed_type = 'clan';
+		$messages_type = 'clan';
 		$current_tab = 'clan';
 	break;
 	default:
-		$viewed_type = 'personal';
+		$messages_type = 'personal';
 		$current_tab = 'messages';
+		$type_filter = 0;
 	break;
 }
 
@@ -62,14 +63,18 @@ if ($message && $messenger) {
 }
 
 if ($delete) {
-	delete_messages($type_filter);
+	if($messages_type === 'personal'){
+		Message::deleteByReceiver($ninja);
+	} elseif ($messages_type === 'clan'){
+		Message::deleteClanMessagesByReceiver($ninja);
+	}
 }
 
+$messages = Message::findByReceiver($ninja, $type_filter, $limit, $offset);
+
 $messages      = get_messages($ninja->id(), $limit, $offset, $type_filter);
-$message_count = message_count($type_filter);
+$message_count = Message::countByReceiver($ninja, $type_filter);
 $pages         = ceil($message_count / $limit);  // Total pages.
-$messages      = $messages->fetchAll();
-$focus_clan = $message_to;
 
 $current_page = $page;
 
@@ -79,7 +84,7 @@ read_messages($ninja->id()); // mark messages as read for next viewing.
 
 $individual_or_clan = ($message_to == 'individual' || $message_to == 'clan');
 $parts = compact('message_sent_to', 'messages', 'current_tab', 'to', 'has_clan', 
-	'type_filter', 'viewed_type', 'individual_or_clan', 'pages', 'current_page');
+	'type_filter', 'messages_type', 'individual_or_clan', 'pages', 'current_page', 'message_to');
 
 display_page(
 	'messages.tpl'

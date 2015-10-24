@@ -21,7 +21,7 @@
   <div id='clan-mail-section' class='glassbox'>
     <form id='clan_msg' action='messages.php' method='get' name='clan_msg'>
       <div>
-        <input type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}">
+        <input type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}" autocomplete='off'>
         <input type='hidden' value='toclan' name='toclan'>
         <input type='hidden' value='1' name='messenger'>
         <input type='submit' value='Mail Clan' class='formButton'>
@@ -32,7 +32,7 @@
 
 
   <div class='glassbox' id='delete-messages'>
-    <a href="messages.php?delete=1&amp;type={$type_filter}">Delete {$viewed_type} Messages</a>
+    <a href="messages.php?delete=1&amp;type={$type_filter}">Delete {$messages_type} Messages</a>
   </div>
 </div> <!-- End of clan and search div -->
 

@@ -37,6 +37,19 @@ class TestMessage extends PHPUnit_Framework_TestCase {
     	$this->assertEquals($text, $retrieved_text);
     }
 
+    public function testFindPrivateMessagesForACertainChar(){
+        $i = 4;
+        while($i--){
+            Message::create(['message'=>'Random phpunit test message'.$i, 'send_to'=>$this->char_id, 
+                'send_from'=>$this->char_id_2, 'unread'=>1]);
+        }
+        $messages = Message::findByReceiver(new Player($this->char_id));
+        $this->assertEquals(4, count($messages));
+        $this->assertEquals(
+
+
+    }
+
 
 }
 
