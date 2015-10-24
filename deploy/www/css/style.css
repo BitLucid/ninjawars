@@ -2254,15 +2254,12 @@ table#sight-info {
 	margin: 0 0 5px 0;
 }
 
-.messages #clan-and-search {
-	margin: 0;
-	padding: 0;
-	clear: both;
-}
-
-.messages #delete-messages {
-	float:left;
-	width:20%;
+.messages #delete-messages, #delete-messages {
+	display:inline-block;
+	float:right;
+	margin-right:3em;
+	font-size:smaller;
+	line-height:0.7;
 }
 
 .messages #message-list {

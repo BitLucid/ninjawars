@@ -1,7 +1,7 @@
 
 <!-- message tabs css section in the main css file -->
 
-<section class='message-tabs' id='tabs'>
+<nav class='message-tabs' id='tabs'>
 
 	<ul>
 		<li class='{if $current == 'status'}current{/if} first'>
@@ -17,4 +17,4 @@
 		{/if}
 	</ul>
 
-</section>
+</nav>
