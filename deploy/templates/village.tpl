@@ -7,21 +7,20 @@
 #full-chat #view-all{
 	display:block;border:1px dashed blue;margin-top:2em;text-align:center;font-size:1.3em;
 }
-/*
-#full-chat .chat-submit input[type=submit]{
-	padding:.2em .4em;font-size:1.3em;font-weight:bolder;
-}*/
 #full-chat .float-right{
 	float:right;
+}
+#full-chat .chat-submit #message{
+	max-width:50%;
 }
 </style>
 {/literal}
 
-<script type="text/javascript" src="js/chat.js"></script>
+<section id='full-chat' class='dont-break-out'>
+	<h1>Chat Board</h1>
 
-<h1>Chat Board</h1>
+  <a class='btn btn-default float-right' href="village.php?chatlength=100">Refresh</a>
 
-<div id='full-chat'>
 {if is_logged_in()}
   <form class='chat-submit' id="post_msg" action="{$target|escape}" method="post" name="post_msg">
     <div>
@@ -29,12 +28,6 @@
       <input id="command" type="hidden" value="postnow" name="command">
       <input name='chat_submit' type='hidden' value='1'>
       <input type="submit" value="Chat" class="btn btn-primary">
-{/if}
-
-<a class='btn btn-default float-right glassbox' href="village.php?chatlength=100">Refresh</a>
-
-
-{if is_logged_in()}
     </div>
   </form>
 {/if}
@@ -65,8 +58,9 @@
 {if $more_chats_to_see}
   <a id='view-all' href='village.php?view_all=1'>View All Chat Messages</a>
 {/if}
-</div>
+</section>
 
+<script type="text/javascript" src="js/chat.js"></script>
 <script src="/js/jquery.linkify.js" type="text/javascript"></script>
 <script type="text/javascript">
 {literal}
