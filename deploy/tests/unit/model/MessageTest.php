@@ -27,14 +27,15 @@ class TestMessage extends PHPUnit_Framework_TestCase {
 
     public function testMessageCanBeSent(){
         $text = 'This is some kind of random message';
-        $mess = Message::send(new Player($this->char_id), $this->char_id_2, $text, $type=0);
+        $char = new Player($this->char_id);
+        $mess = Message::create(['send_from'=>$char->id(), 'send_to'=>$this->char_id_2, 'message'=>$text, 'type'=>0]);
         $this->assertEquals($text, $mess->message);
     }
 
     public function testMessageCanBeReceived(){
         $text = 'This is some kind of random message';
         $char = new Player($this->char_id);
-        $mess = Message::send($char, $this->char_id_2, $text, $type=0);
+        $mess = Message::create(['send_from'=>$char->id(), 'send_to'=>$this->char_id_2, 'message'=>$text, 'type'=>0]);
         $messages = Message::findByReceiver(new Player($this->char_id_2))->all();
         $first_message = Message::find($mess->id());
         $this->assertEquals($text, $first_message->message);
@@ -42,8 +43,9 @@ class TestMessage extends PHPUnit_Framework_TestCase {
 
     public function testMessageCanBeSentToGroup(){
         $text = 'Text of a group message to clan or whatever';
-        $sent = Message::sendToGroup(new Player($this->char_id), [$this->char_id_2, $this->char_id], $text, $type=1);
-        $this->assertTrue($sent);
+        $char = new Player($this->char_id);
+        $mess = Message::create(['send_from'=>$char->id(), 'send_to'=>$this->char_id_2, 'message'=>$text, 'type'=>1]);
+        $this->assertTrue($mess instanceof Message);
         $messages = Message::findByReceiver(new Player($this->char_id_2), $type=1);
         $this->assertGreaterThan(0, count($messages), 'Message array should have some elements');
         $first_message = $messages->first();
@@ -53,7 +55,7 @@ class TestMessage extends PHPUnit_Framework_TestCase {
 
     public function testMessageHasARobustSender(){
         $rec = new Player($this->char_id);
-        Message::send($rec, $this->char_id_2, 'Random phpunit test message of some content', $type=0);
+        Message::create(['send_from'=>$rec->id(), 'send_to'=>$this->char_id_2, 'message'=>'Random phpunit test message of some content', 'type'=>0]);
         $messages = Message::findByReceiver(new Player($this->char_id_2), $type=0, $limit=1000, $offset=0);
         $this->assertGreaterThan(0, count($messages), 'Collection has no results found');
         $first_message = $messages->first();

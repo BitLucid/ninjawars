@@ -84,7 +84,7 @@ if ($message && $messenger) {
 		$message_sent_to = 'your clan';
 		$message_to = 'clan';
 	} elseif ((bool)$target_id) {
-		Message::send($ninja, $target_id, $message, $type);
+		Message::create(['send_from'=>$ninja->id(), 'send_to'=>$target_id, 'message'=>$message, 'type'=>$type]);
 		$message_sent_to = $to;
 		$message_to = 'individual';
 		$type = 0;
