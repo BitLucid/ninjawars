@@ -44,7 +44,6 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 	$change_confirm_to = ($just_testing ? '1' : '0'); // Only unconfirm players when not testing.
 	$minimum_days = 30;
 	$max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30);
-	$players_unconfirmed = null;
 	DatabaseConnection::getInstance();
 	$sel_cur = DatabaseConnection::$pdo->query("SELECT count(*) FROM players WHERE active = 1");
 	$current_players = $sel_cur->fetchColumn();
@@ -115,13 +114,12 @@ function heal_characters($basic=8, $with_level=true, $maximum_heal='200'){
  * Revive up to a small max in minor hours, and a stable percent on major hours.
  * Defaults
  * sample_use: revive_players(array('just_testing'=>true));
- * @params array('full_max'=>80, 'minor_revive_to'=>100, 'major_revive_percent'=>5,
+ * @params array('minor_revive_to'=>100, 'major_revive_percent'=>5,
  *      'just_testing'=>false)
 **/
 function revive_players($params=array()) {
 	// Previous min/max was 2-4% always, ~3000 players, so 60-120 each time.
 
-	$full_max             = (isset($params['full_max']) ? $params['full_max'] : 80); // In: full_max, default 80%
 	$minor_revive_to      = (isset($params['minor_revive_to']) ? $params['minor_revive_to'] : 100); // minor_revive_to, default 100
 	$major_revive_percent = (isset($params['major_revive_percent']) ? $params['major_revive_percent'] : 5); // major_revive_percent, default 5%
 	$just_testing         = isset($params['just_testing']);
@@ -180,7 +178,7 @@ function revive_players($params=array()) {
 			$revive_amount = $percent_int;
 		}
 	}
-	//die();
+
 	assert(isset($revive_amount));
 	assert(isset($current_time));
 	assert(isset($just_testing));
@@ -199,7 +197,7 @@ function revive_players($params=array()) {
 							CASE WHEN level >= coalesce(class_skill_level, skill_level)
 							THEN (150+(level*3))
 							ELSE (100+(level*3)) END
-							FROM (SELECT * FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE skill_id = 5) 
+							FROM (SELECT * FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE skill_id = 5)
 								AS class_skill ';
 							// Midnight heal skill id is the 5.
 	}

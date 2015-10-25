@@ -11,21 +11,34 @@ DatabaseConnection::getInstance();
 DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
 DatabaseConnection::$pdo->query('TRUNCATE player_rank');
 DatabaseConnection::$pdo->query("SELECT setval('player_rank_rank_id_seq1', 1, false)");
-$ranked_players = DatabaseConnection::$pdo->query('INSERT INTO player_rank (_player_id, score) SELECT player_id, ((level*5000) + floor(gold/200) + (CASE WHEN kills > (5*level) THEN 3000 + least(floor((kills - (5*level)) * .3), 2000) ELSE ((kills/(5*level))*3000) END) - (days*200)) AS score FROM players WHERE active = 1 ORDER BY score DESC');
+
+$ranked_players = DatabaseConnection::$pdo->prepare('INSERT INTO player_rank (_player_id, score) SELECT player_id, ((level*:level_weight) + floor(gold/:gold_weight) + (CASE WHEN kills > (5*level) THEN 3000 + least(floor((kills - (5*level)) * .3), 2000) ELSE ((kills/(5*level))*3000) END) - (days*:inactivity_weight)) AS score FROM players WHERE active = 1 ORDER BY score DESC');
+$ranked_players->bindValue(':level_weight', RANK_WEIGHT_LEVEL);
+$ranked_players->bindValue(':gold_weight', RANK_WEIGHT_GOLD);
+$ranked_players->bindValue(':inactivity_weight', RANK_WEIGHT_INACTIVITY);
+$ranked_players->execute();
 
 // *** Running from a cron script, we don't want any output unless we have an error ***
 
 // Add 1 to player's ki when they've been active in the last 5 minutes.
-query("update players set ki = ki + 1 where last_started_attack > (now() - interval '6 minutes')");
+$s = DatabaseConnection::$pdo->prepare("update players set ki = ki + :regen_rate where last_started_attack > (now() - :interval::interval)");
+$s->bindValue(':interval', KI_REGEN_TIMEOUT);
+$s->bindValue(':regen_rate', KI_REGEN_PER_TICK);
+$s->execute();
+
 DatabaseConnection::$pdo->query('COMMIT');
 
 // Err on the side of low revives for this five minute tick.
-$params = array('full_max'=>95, 'minor_revive_to'=>70, 'major_revive_percent'=>7);
+$params = [
+	'minor_revive_to'      => MINOR_REVIVE_THRESHOLDMAJOR_REVIVE_PERCENT,
+	'major_revive_percent' => MINOR_REVIVE_THRESHOLDMAJOR_REVIVE_PERCENT
+];
+
 $resurrected = revive_players($params);
 
-$rand = rand(1, 60);
+$rand = rand(1, DEITY_LOG_CHANCE_DIVISOR);
 
-if ($rand == 1) {
+if ($rand === 1) {
 	// Only log fiveminute log output randomly about once every 6 hours to cut down on
 	// spam in the log.  This log message isn't very important anyway.
 
