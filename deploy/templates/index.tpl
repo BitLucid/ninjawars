@@ -14,6 +14,17 @@
 	    &nbsp;
 	  </div>
     <div class='bars-container parent'>
+	  <div class="box">
+	    <div class="class">
+		  Class: {$player_info.class|escape}
+	    </div>
+	    <div class="level">
+		  Level: {$player_info.level|escape}
+	    </div>
+	    <div class="gold">
+		  Gold: {$player_info.gold|escape}
+	    </div>
+	  </div>
   	  <div id='health-and-turns' class='various-bars child'>
   	  	<div id='barstats'>
   		  	<!-- Display the number bars for various char stats-->
@@ -21,7 +32,7 @@
   			  {include file="generic_bar.tpl" bar_percent=$player_info.hp_percent number=$player_info.health zero_word='Dead' number_of='Health' bar_color='#660000' title='Heal Yourself' action='shrine_mod.php?heal_and_resurrect=1'}<!-- #ee2520 -->
   		  	</div>
   		  	<div id='turns'>
-  			  {include file="generic_bar.tpl" bar_percent=$player_info.turns_percent number=$player_info.turns zero_word='No Turns' number_of='Turns' bar_color='#003366' title='Speed Up' action='inventory_mod.php?item=amanita&amp;selfTarget=1'}	
+  			  {include file="generic_bar.tpl" bar_percent=$player_info.turns_percent number=$player_info.turns zero_word='No Turns' number_of='Turns' bar_color='#003366' title='Speed Up' action='inventory_mod.php?item=amanita&amp;selfTarget=1'}
   		  	</div>
   		  	<div id='kills'>
   			  {include file="generic_bar.tpl" bar_percent=$player_info.exp_percent number=$player_info.kills zero_word='No Kills' number_of='Kills' bar_color='#330066' title='View Stats' action='stats.php'}<!-- #6612ee -->
@@ -70,7 +81,7 @@
           <div>
               <a target='main' id='recent-event-attacked-by' href='events.php' title='View events'>
                     You weren't recently in combat
-              </a> with 
+              </a> with
               <a id='view-event-char' target='main' href='#' title="View a player's profile">
                 anyone
               </a>.
@@ -105,7 +116,7 @@
                   </a>
                 </li>
                 <li id='map-actions' class='map'>
-                  <a href='map.php' rel='nav' target='main' title='Travel to different locations on the Map.'>                  
+                  <a href='map.php' rel='nav' target='main' title='Travel to different locations on the Map.'>
                     <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Move
                   </a>
                 </li>
@@ -132,20 +143,20 @@
                 </ul>
             </nav>
         </div><!-- End of reactive panel -->
-        
+
       </div><!-- End of menu-bar -->
 
 
-            
+
 	  </header><!-- End of header -->
-      
-      
+
+
       <section id='core' class='clearfix'>
       <!-- Test stuff! -->
       <nav id='left-nav'>
       	<a id='skip-to-bottom' href='#index-footer'>&#x25bc;</a>
       </nav>
-      
+
       <!-- MAIN COLUMN STARTS HERE -->
 		  {include file="core.tpl"}
       <!-- Core Column ends here -->
@@ -159,18 +170,18 @@
           {include file="mini-news.section.tpl"}
         </div><!-- End of news-housing -->
         {/if}
-          
+
         <div id='chat-housing'>
           {include file="mini-chat.section.tpl"}
         </div><!-- End of chat-housing -->
 
-      </aside><!-- End of sidebar-column -->       
+      </aside><!-- End of sidebar-column -->
       </section><!-- end of core-->
-      
-      
+
+
       <footer id='index-footer' class='navigation'>
         <!-- Stuff like catchphrases, links, and the author information -->
         {include file='linkbar_section.tpl'}
       </footer>
-      
+
 <!-- Version: {$version|escape} -->
