@@ -3,6 +3,9 @@ namespace app\Controller;
 
 use \Item as Item;
 
+/**
+ * Handles all user actions related to the in-game Shop
+ */
 class ShopController { // extends Controller
 	public static $alive   = true;  // *** must be alive to access the shop ***
 	public static $private = false; // *** do not need to be logged in ***
@@ -10,6 +13,12 @@ class ShopController { // extends Controller
 	protected $itemCosts   = [];
 	protected $sessionData = [];
 
+	/**
+	 * Grabs data from external state for other methods to us
+	 *
+	 * @return ShopController
+	 * @see item_for_sale_costs
+	 */
 	public function __construct() {
 		$this->itemCosts   = item_for_sale_costs();
 		$this->sessionData = [
@@ -20,15 +29,27 @@ class ShopController { // extends Controller
 		];
 	}
 
+	/**
+	 * Display the initial shop view
+	 *
+	 * @return Array
+	 */
 	public function index() {
 		$parts = array(
 			'quantity'  => $this->sessionData['quantity_setting'],
 			'view_part' => 'index',
 		);
 
-		$this->render($parts);
+		return $this->render($parts);
 	}
 
+	/**
+	 * Command for current user to purchase a quantity of a specific item
+	 *
+	 * @param quantity int The quantity of the item to purchase
+	 * @param item string The identity of the item to purchase
+	 * @return Array
+	 */
 	public function buy() {
 		$in_quantity       = in('quantity');
 		$in_item           = in('item');
@@ -81,25 +102,32 @@ class ShopController { // extends Controller
 			'view_part'         => 'buy',
 		);
 
-		$this->render($parts);
+		return $this->render($parts);
 	}
 
-	public function render($p_parts) {
+	/**
+	 * Generates the view spec hash for displaying a template
+	 *
+	 * @param p_parts Array Name/Value pairings to pass to the view
+	 * @return Array
+	 */
+	private function render($p_parts) {
 		$p_parts['gold']         = get_gold($this->sessionData['char_id']);
 		$p_parts['item_costs']   = $this->itemCosts;
 		$p_parts['is_logged_in'] = $this->sessionData['is_logged_in'];
 
-		display_page(
-			'shop.tpl' // *** Main Template ***
-			, 'Shop'          // *** Page Title ***
-			, $p_parts        // *** Page Variables ***
-			, array(          // *** Page Options ***
-				'quickstat' => 'viewinv'
-			)
-		);
+		return [
+			'template' => 'shop.tpl',
+			'title'    => 'Shop',
+			'parts'    => $p_parts,
+			'options'  => [ 'quickstat' => 'viewinv' ],
+		];
 	}
 }
 
+/**
+ * A game-level representation of a request to buy something
+ */
 class PurchaseOrder {
 	public $quantity;
 	public $item;
