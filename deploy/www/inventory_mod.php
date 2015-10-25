@@ -15,7 +15,6 @@ if ($error = init($private, $alive)) {
 	die();
 } else {
 
-
 $link_back  = in('link_back');
 $in_target_id  = in('target_id');
 $target_id = $in_target_id? (int) $in_target_id : self_char_id();
@@ -36,8 +35,6 @@ if ($item_in == (int) $item_in && is_numeric($item_in)) { // Can be cast to an i
 } elseif (is_string($item_in)) {
 	$item = $item_obj = getItemByIdentity($item_in);
 }
-
-
 
 if (!is_object($item)) {
 	error_log('Invalid item identifier ('.(is_string($item_in) ? $item_in : 'non-string').') sent to page from '.(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '(no referrer)').'.');
@@ -69,12 +66,9 @@ if ($self_use) {
 } else if ($target_id) {
 	$targetObj = new Player($target_id);
 	$target = $targetObj->name();
-	
-	set_setting("last_item_used", $item_in); // Save last item used.
-	
-}
 
-//debug($target_id, $target, $targetObj);die();
+	set_setting("last_item_used", $item_in); // Save last item used.
+}
 
 if (($targetObj instanceof Player) && $targetObj->id()) {
 	$targets_turns = $targetObj->vo->turns;
@@ -89,9 +83,6 @@ if (($targetObj instanceof Player) && $targetObj->id()) {
 $targetName = '';
 $targetHealth = '';
 $targetHealthPercent = '';
-
-//debug($item->effects());
-//debug($item_obj);
 
 $gold_mod		= NULL;
 $result			= NULL;
@@ -120,8 +111,6 @@ if ($target_id && ($link_back == "" || $link_back == 'player') && $target_id != 
 /*
 Use this sql to see item damage and effects:
 select item_display_name, target_damage, effects.* from item left join item_effects on item_id = _item_id join effects on effect_id = _effect_id;
-
-
 */
 
 // Exceptions to the rules, using effects.
@@ -135,7 +124,7 @@ if ($item->hasEffect('wound')) {
 		// Minor slicing damage.
 		$item->setTargetDamage(rand(1, max(9, $player->getStrength()-4)) + $near_level_power_increase);
 	}
-	
+
 	// Piercing weapon, and actually does any static damage.
 	if ($item->hasEffect('pierce')) {
 		// Minor static piercing damage, e.g. 1-50 plus the near level power increase.
@@ -149,13 +138,11 @@ if ($item->hasEffect('wound')) {
 	}
 } // end of wounds section.
 
-//debug($near_level_power_increase);
-
 // Exclusive speed/slow turn changes.
 if ($item->hasEffect('slow')) {
 	$item->setTurnChange(-1*caltrop_turn_loss($targets_turns, $near_level_power_increase));
 } else if ($item->hasEffect('speed')) {
-	$item->setTurnChange($item->getMaxTurnChange());    
+	$item->setTurnChange($item->getMaxTurnChange());
 }
 
 $turn_change = $item_obj->getTurnChange();
@@ -171,7 +158,13 @@ if ($using_item) {
 
 // Attack Legal section
 $attacker = $username;
-$params   = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$item_obj->ignoresStealth(), 'self_use'=>$item->isSelfUsable());
+
+$params   = [
+	'required_turns'  => $turn_cost,
+	'ignores_stealth' => $item_obj->ignoresStealth(),
+	'self_use'        => $item->isSelfUsable(),
+];
+
 assert(!!$selfTarget || $attacker != $target);
 
 $AttackLegal    = new AttackLegal($attacker, $target, $params);
@@ -201,14 +194,15 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$result = 'This item is not usable on __TARGET__, so it remains unused.';
 					$item_used = false;
 				} else {
-				
+
 					// TODO: These result messages are screwed up (e.g. what gets sent to the events mail is wrongly phrased frequently now), and need to be reworked.
-			
+
 					if ($item->hasEffect('stealth')) {
 						$targetObj->addStatus(STEALTH);
 						$alternateResultMessage = "__TARGET__ is now stealthed.";
 						$result = false;
 					}
+
 					if ($item->hasEffect('vigor')) {
 						if ($targetObj->hasStatus(STR_UP1)) {
 							$result = "__TARGET__'s body cannot become more vigorous!";
@@ -218,6 +212,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 							$result = "__TARGET__'s muscles experience a strange tingling.";
 						}
 					}
+
 					if ($item->hasEffect('strength')) {
 						if ($targetObj->hasStatus(STR_UP2)) {
 							$result = "__TARGET__'s body cannot become any stronger!";
@@ -227,11 +222,11 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 							$result = "__TARGET__ feels a surge of power!";
 						}
 					}
-					
-					
+
 					// Slow and speed effects are exclusive.
 					if ($item->hasEffect('slow')) {
 						$limited_effect = false;
+
 						if($targetObj->hasStatus(SLOW)){
 							$limited_effect = true; // Already slowed, so decreased effect.
 						} else {
@@ -241,22 +236,24 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 								$targetObj->addStatus(SLOW);
 							}
 						}
+
 						$turns_change = $item->getTurnChange();
+
 						if($limited_effect){
 							// If the effect is already in play, it will have a decreased effect.
 							$turns_change = ceil($turns_change*0.3); // Decrease to partial effect.
 							$alternateResultMessage = "__TARGET__ is already moving slowly.";
 						}
+
 						if ($turns_change == 0) {
 							$alternateResultMessage .= " You fail to take any turns from __TARGET__.";
 						}
 
 						$result         = " lose ".abs($turns_change)." turns";
 						$targetObj->subtractTurns($turns_change);
-						
-						
 					} else if ($item->hasEffect('speed')) {	// Note that speed and slow effects are exclusive.
 						$limited_effect = false;
+
 						if($targetObj->hasStatus(FAST)){
 							$limited_effect = true;
 						} else {
@@ -266,35 +263,39 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 								$targetObj->addStatus(FAST);
 							}
 						}
+
 						$turns_change = $item->getTurnChange();
+
 						if($limited_effect){
 							// If the effect is already in play, it will have a decreased effect.
 							$turns_change = ceil($turns_change*0.5); // Decrease to partial effect.
 							$alternateResultMessage = "__TARGET__ is already moving quickly.";
 						}
+
 						// Actual turn gain is 1 less because 1 is used each time you use an item.
 						$result         = "gain $turns_change turns.";
 						$targetObj->changeTurns($turns_change); // Still adding some turns.
 					}
-			
+
 					if ($item->getTargetDamage() > 0) { // *** HP Altering ***
 						$alternateResultMessage .= " __TARGET__ takes ".$item->getTargetDamage()." damage.";
-						if($self_use){
-							$result .= "You take ".$item->getTargetDamage()." damage.";
+
+						if ($self_use) {
+							$result .= "You take ".$item->getTargetDamage()." damage!";
+						} else {
+							$result = " take ".$item->getTargetDamage()." damage!";
 						}
+
 						$targetObj->vo->health = $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
 						// This is the other location that $victim_alive is set, to determine whether the death proceedings should occur.
 					}
-					
-					
+
 					if ($item->hasEffect('death')) {
 						$targetObj->vo->health = setHealth($target_id, 0);
 						$victim_alive = false;
 						$result = " be drained of your life-force and die!";
 						$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 					}
-					
-					
 				}// End of check that it's usable on someone else.
 			}// End of the item use (as opposed to giving) section.
 
@@ -303,6 +304,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				if ($item->hasEffect('death')) {
 					$resultMessage = "The life force drains from __TARGET__ and they drop dead before your eyes!.";
 				}
+
 				if ($turns_change !== null) { // Even if $turns_change is set to zero, let them know that.
 					if ($turns_change <= 0) {
 						if($turns_change == 0){
@@ -339,10 +341,9 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$loot = 0;
 						$suicide = true;
 					}
-					
+
 					// Send mails if the target was killed.
 					send_kill_mails($username, $target, $attacker_id, $article, $item->getName(), $today, $loot);
-
 				} else { // They weren't killed.
 					$attacker_id = $username;
 				}
@@ -353,6 +354,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						$debug_info .= print_r($_SERVER, true);
 						error_log($debug_info);
 					}
+
 					// Notify targets when they get an item used on them.
 					$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
 					send_event($user_id, $target_id, $message_to_target);
