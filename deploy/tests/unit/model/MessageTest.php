@@ -25,8 +25,46 @@ class TestMessage extends PHPUnit_Framework_TestCase {
         $this->assertTrue($mess instanceof Message);
     }
 
+    public function testMessageCanBeSent(){
+        $text = 'This is some kind of random message';
+        $mess = Message::send(new Player($this->char_id), $this->char_id_2, $text, $type=0);
+        $this->assertEquals($text, $mess->message);
+    }
+
+    public function testMessageCanBeReceived(){
+        $text = 'This is some kind of random message';
+        $char = new Player($this->char_id);
+        $mess = Message::send($char, $this->char_id_2, $text, $type=0);
+        $messages = Message::findByReceiver(new Player($this->char_id_2))->all();
+        $first_message = Message::find($mess->id());
+        $this->assertEquals($text, $first_message->message);
+    }
+
+    public function testMessageCanBeSentToGroup(){
+        $text = 'Text of a group message to clan or whatever';
+        $sent = Message::sendToGroup(new Player($this->char_id), [$this->char_id_2, $this->char_id], $text, $type=1);
+        $this->assertTrue($sent);
+        $messages = Message::findByReceiver(new Player($this->char_id_2), $type=1);
+        $this->assertGreaterThan(0, count($messages), 'Message array should have some elements');
+        $first_message = $messages->first();
+        $this->assertTrue($first_message instanceof Message);
+        $this->assertEquals($text, $first_message->message);
+    }
+
+    public function testMessageHasARobustSender(){
+        $rec = new Player($this->char_id);
+        Message::send($rec, $this->char_id_2, 'Random phpunit test message of some content', $type=0);
+        $messages = Message::findByReceiver(new Player($this->char_id_2), $type=0, $limit=1000, $offset=0);
+        $this->assertGreaterThan(0, count($messages), 'Collection has no results found');
+        $first_message = $messages->first();
+        $this->assertTrue($first_message instanceof Message, 'First message not a valid message model');
+        $this->assertNotEmpty($first_message->sender);
+        $this->assertGreaterThan(0, strlen($first_message->sender));
+    }
+
     public function testCreateMessageViaMassAssignment(){
-    	$mess = Message::create(['message'=>'Random phpunit test message', 'send_to'=>$this->char_id, 'send_from'=>$this->char_id_2, 'unread'=>1]);
+    	$mess = Message::create(['message'=>'Random phpunit test message', 'send_to'=>$this->char_id, 
+                'send_from'=>$this->char_id_2, 'unread'=>1]);
     	$text = 'Updated phpunit test message';
     	$mess->message = $text;
     	$mess->save(); // Save the newly updated message
@@ -44,22 +82,11 @@ class TestMessage extends PHPUnit_Framework_TestCase {
                 'send_from'=>$this->char_id_2, 'unread'=>1]);
         }
         $char = new Player($this->char_id);
-        $messages = Message::findByReceiver($char);
+        $messages = Message::findByReceiver($char)->all();
         $this->assertEquals(4, count($messages));
         Message::deleteByReceiver($char, $type=0);
         $this->assertEquals(0, Message::countByReceiver($char));
     }
-
-    public function testMessageHasASender(){
-        $rec = new Player($this->char_id);
-        Message::create(['message'=>'Random phpunit test message', 'send_to'=>$rec->id(), 
-                'send_from'=>$this->char_id_2, 'unread'=>1]);
-        $messages = Message::findByReceiver($rec);
-        debug($messages);
-        $first_message = reset($messages);
-        $this->assertNotEmpty($first_message->sender);
-    }
-
 
 }
 

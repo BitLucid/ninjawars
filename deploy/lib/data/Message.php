@@ -43,18 +43,21 @@ class Message extends Model{
      * Does not fully instantiate a target object to avoid the overhead.
     **/
     public static function send(Player $sender, $target_id, $message, $type){
-        Message::create(['message'=>$message, 'send_to'=>$target_id, 
+        return Message::create(['message'=>$message, 'send_to'=>$target_id, 
                 'send_from'=>$sender->id(), 'type'=>$type]);
-        return true;
     }
 
     /**
      * Send the message to a group of target ids
     **/
-    public static function sendToGroup(Player $sender, $groupTargets, $message, $type){
+    public static function sendToGroup(Player $sender, array $groupTargets, $message, $type){
+        if(!$sender || !$sender->id()){
+            throw new Exception('Error: Message sender not set.');
+        }
+        $id = $sender->id();
         foreach($groupTargets as $target_id){
             Message::create(['message'=>$message, 'send_to'=>$target_id, 
-                    'send_from'=>$sender->id(), 'type'=>$type]);
+                    'send_from'=>$id, 'type'=>$type]);
         }
         return true;
     }
@@ -62,11 +65,20 @@ class Message extends Model{
     /**
      * Get messages to a receiver.
     **/ 
-    public static function findByReceiver(Player $char, $type=0, $limit=null, $offset=null){
-        return Message::where(['send_to'=>$char->id(), 'type'=>$type])->leftJoin('players', function($join) {
-            $join->on('messages.send_from', '=', 'players.player_id');
-        })->orderBy('date', 'DESC')->limit($limit)->offset($offset)->get(['players.uname as sender', 'messages.type', 'messages.send_to', 
-            'messages.send_from', 'messages.message', 'messages.unread', 'messages.date']);
+    public static function findByReceiver(Player $sender, $type=0, $limit=null, $offset=null){
+        if($limit && $offset){
+            return Message::where(['send_to'=>$sender->id(), 'type'=>$type])->leftJoin('players', function($join) {
+                        $join->on('messages.send_from', '=', 'players.player_id');
+                    })->orderBy('date', 'DESC')->limit($limit)->offset($offset)->get(
+                        ['players.uname as sender', 'messages.type', 'messages.send_to', 
+                        'messages.send_from', 'messages.message', 'messages.unread', 'messages.date']);
+        } else {
+            return Message::where(['send_to'=>$sender->id(), 'type'=>$type])->leftJoin('players', function($join) {
+                $join->on('messages.send_from', '=', 'players.player_id');
+            })->orderBy('date', 'DESC')->get(
+                ['players.uname as sender', 'messages.type', 'messages.send_to', 
+                'messages.send_from', 'messages.message', 'messages.unread', 'messages.date']);
+        }
     }
 
     /**
@@ -84,7 +96,7 @@ class Message extends Model{
     }
 
     /**
-     * mark
+     * mark all messages of a type for a ninja as read
     **/
     public static function markAsRead(Player $char, $type){
         return Message::where(['send_to'=>$char->id(), 'type'=>$type])->update(['unread' => 0]);

@@ -78,11 +78,11 @@ switch(true){
 // Sending mail section.
 if ($message && $messenger) {
 	if ($to_clan && $has_clan) {
+		$type = 1;
 		$target_id_list = $clan->getMemberIds();
 		$passfail = Message::sendToGroup($ninja, $target_id_list, $message, $type);
 		$message_sent_to = 'your clan';
 		$message_to = 'clan';
-		$type = 1;
 	} elseif ((bool)$target_id) {
 		Message::send($ninja, $target_id, $message, $type);
 		$message_sent_to = $to;
@@ -91,6 +91,7 @@ if ($message && $messenger) {
 	}
 }
 
+// An illuminate collection object.
 $messages = Message::findByReceiver($ninja, $type, $limit, $offset);
 
 $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
