@@ -1515,14 +1515,19 @@ iframe {
 }
 
 #index-header > .parent{
-  display:inline-block;text-align:center;
+  display:inline-block;
+  text-align:center;
 }
+
 #index-header .bars-container{
   width:50%;
 }
+
 #health-and-turns{
-  width:100%;max-width:30em;
+  width:100%;
+  max-width:30em;
 }
+
 #index-header .child{
   display:inline-block;text-align:left;
 }
@@ -3824,4 +3829,11 @@ nav.navigation ul.menu li {
 
 #clan-page-title {
 	margin: 0;
+}
+
+.bars-container .box {
+	height: 20px;
+	width: 200px;
+	float: right;
+	background-color: black;
 }
