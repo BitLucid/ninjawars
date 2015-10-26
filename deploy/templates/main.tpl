@@ -1,12 +1,5 @@
 <style type='text/css'>
 {literal}
-/* Don't display the h1 when housed within the iframe */
-.main-h1, .main-h2{
-	display:none;
-}
-.solo-page .main-h1, .solo-page .main-h2 {
-	display:block;
-}
 #faqs {
   margin: .5em auto 1em;
   padding: .2em;
@@ -26,16 +19,9 @@
 #faqs .brownHeading{
   font-variant:small-caps;
 }
-/*
-#scrollable-viewport {
-  overflow:scroll;
-  max-height:13em;
-  overflow-x:hidden;
-  padding:1em;
-}*/
 #progression {
   text-align:center;
-  margin: 0 0 .5em 0;
+  margin: 3em 0 0.5em 0;
   font-size:1.7em;
   font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
   /*font-family: Impact, sans-serif;*/
@@ -48,7 +34,7 @@
     color:whitesmoke;
 }
 #progression .down-arrow {
-  height:35px;
+  height:35px;margin-top:0.5em;
 }
 #progression p {
   margin: 0;
@@ -73,11 +59,21 @@
 .accent-sandwiched a{
   display:inline-block;width:100%;height:100%
 }
+/* Don't display the h1 when housed within the iframe */
+#main-page-headings{
+  display:none;
+}
+.solo-page #main-page-headings{
+  display:inherit;
+}
 {/literal}
 </style>
 
-<h1 class='main-h1'>The Ninja Game at Ninjawars.net</h1>
-<h2 class='main-h2'>Live by the Shuriken!</h2>
+<div id='main-page-headings'>
+
+  <h1>The Ninja Game at Ninjawars.net</h1>
+  <h2>Live by the Shuriken!</h2>
+</div>
 
 
 
@@ -90,7 +86,7 @@
 {/if}
 
 <div id='later-progression' style='margin-top:0;margin-bottom:0'>
-	<p>Rob townsfolk in the <a target='main' href='{$smarty.const.WEB_ROOT}attack_player.php'>Village</a>, gather loot</p>
+	<p>Explore the <a target='main' href='{$smarty.const.WEB_ROOT}village.php'>village</a> and <a href='{$smarty.const.WEB_ROOT}enemies.php'>attack monsters</a>, gather loot</p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
 	<p>Kill other <a target='main' href='{$smarty.const.WEB_ROOT}list.php'>Ninja</a>, get stronger at the <a target='main' href='{$smarty.const.WEB_ROOT}dojo.php'>Dojo</a></p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
@@ -120,7 +116,7 @@
 
   <p>
     <span class="brownHeading">How do I attack another ninja?</span><br>
-    You can attack another ninja by selecting <a href="enemies.php">combat</a> from the main page menu then putting a ninja's name into the search, or viewing the <a href="list_all_players.php">list of ninjas</a> on the "player list", then click their name and attack them from their profile page.
+    You can attack another ninja by selecting <a href="enemies.php">fight</a> from the main page menu then putting a ninja's name into the search, or viewing the <a href="list_all_players.php">list of ninjas</a> on the "player list", then click their name and attack them from their profile page.
   </p>
 
   <p>
@@ -130,12 +126,12 @@
 
   <p>
     <span class="brownHeading">I need gold, where can I get it?</span><br>
-    You can get a percentage of gold from <a href='attack_player.php'>NPCs</a>, <a href='enemies.php'>killing other ninja</a>, or <a href="work.php">Working</a> in fields near the <a href='attack_player.php'>Village</a>, which will let you trade your time/turns for gold. Also, the <a href="doshin_office.php">Doshin Office</a> keeps a list of ninjas with bounties on their heads. Killing those ninja will get you the bounty as a reward.
+    You can get a percentage of gold from <a href='enemies.php'>NPCs</a>, <a href='enemies.php'>killing other ninja</a>, or <a href="work.php">Working</a> in fields on the <a href='map.php'>Map</a>, which will let you trade your time/turns for gold. Also, the <a href="doshin_office.php">Doshin Office</a> keeps a list of ninjas with bounties on their heads. Killing those ninja will get you the bounty as a reward.
   </p>
   
   <p>
     <span class="brownHeading">How do I attack an NPC?</span><br>
-    Choose the <a href="attack_player.php">Village</a> link from the main page, then click an NPC's link.  Most NPCs only give items and gold, not kill points, with the exception of the Samurai, who is very difficult to kill.
+    Choose the <a href="enemies.php">Fight</a> link from the main page, then click an NPC's link.  Most NPCs only give items and gold, not kill points, with the exception of the Samurai, who is very difficult to kill.
   </p>
 
   <p>
