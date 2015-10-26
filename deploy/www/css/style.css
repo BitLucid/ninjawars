@@ -1527,7 +1527,7 @@ iframe {
 }
 
 #ninja-box{
-  display:inline-block;width:185px;height:100px;padding-right:4px;padding-top:4px;
+  display:inline-block;width:185px;height:71px;padding-right:4px;padding-top:4px;
   position:relative;float:right;
 }
 #ninja-box .text-info{
