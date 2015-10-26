@@ -14,13 +14,20 @@ if ($error = init(DoshinController::$private, DoshinController::$alive)) {
 
 	switch ($command) {
 		case 'Offer Bounty':
-			$doshin->offerBounty();
+			$response = $doshin->offerBounty();
 			break;
 		case 'Bribe':
-			$doshin->bribe();
+			$response = $doshin->bribe();
 			break;
 		default:
-			$doshin->index();
+			$response = $doshin->index();
 			break;
 	}
+
+	display_page(
+		$response['template'],
+		$response['title'],
+		$response['parts'],
+		$response['options']
+	);
 }

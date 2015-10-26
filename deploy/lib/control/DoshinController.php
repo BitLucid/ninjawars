@@ -2,12 +2,20 @@
 
 namespace app\Controller;
 
+/**
+ * Handles all user requests for the in-game Doshin Office
+ */
 class DoshinController { //extends controller
 	public static $alive = true;
 	public static $private = false;
 
 	protected $sessionData = [];
 
+	/**
+	 * Gathers data from session and makes it available to internal methods
+	 *
+	 * @return DoshinController
+	 */
 	public function __construct() {
 		$this->sessionData = [
 			'username' => self_name(),
@@ -15,10 +23,16 @@ class DoshinController { //extends controller
 		];
 	}
 
+	/**
+	 * Displays the initial Doshin Office view
+	 *
+	 * @param target String (Optional) Pre-load the bounty form with the specified target
+	 * @return Array
+	 */
 	public function index() {
 		$target = in('target');
 
-		$this->render(
+		return $this->render(
 			[
 				'quickstat' => false,
 				'location'  => 0,
@@ -29,6 +43,15 @@ class DoshinController { //extends controller
 		);
 	}
 
+	/**
+	 * Command for the current user to offer their money as bounty on another player
+	 *
+	 * @param target String The username of the player to offer a bounty on
+	 * @param amount int The amount of gold to spend on offering the bounty
+	 * @return Array
+	 *
+	 * @TODO simplify the conditional branching
+	 */
 	public function offerBounty() {
 		$target    = in('target');
 		$target_id = get_char_id($target); // Will be the enemy to put the bounty on.
@@ -68,7 +91,7 @@ class DoshinController { //extends controller
 			}
 		}
 
-		$this->render(
+		return $this->render(
 			[
 				'error'     => $error,
 				'success'   => $success,
@@ -82,6 +105,12 @@ class DoshinController { //extends controller
 		);
 	}
 
+	/**
+	 * Command for a user to reduce their bounty by paying their own gold
+	 *
+	 * @param bribe int The amount to spend on reducing bounty
+	 * @return Array
+	 */
 	public function bribe() {
 		$bribe = intval(in('bribe'));
 		$error = 0;
@@ -110,7 +139,7 @@ class DoshinController { //extends controller
 			$error = 5;
 		}
 
-		$this->render(
+		return $this->render(
 			[
 				'error'     => $error,
 				'quickstat' => $quickstat,
@@ -120,7 +149,13 @@ class DoshinController { //extends controller
 		);
 	}
 
-	public function render($p_data) {
+	/**
+	 * Returns a view spec hash for rendering a template
+	 *
+	 * @param p_data Array Hash of variables to pass to the view
+	 * @return Array
+	 */
+	private function render($p_data) {
 		$myBounty = getBounty($this->sessionData['char_id']);
 
 		// Pulling the bounties.
@@ -131,13 +166,13 @@ class DoshinController { //extends controller
 		$p_data['data'] = $data;
 		$p_data['myBounty'] = $myBounty;
 
-		display_page(
-			'doshin.tpl'
-			, 'Doshin Office'
-			, $p_data
-			, [
+		return [
+			'template' => 'doshin.tpl',
+			'title'    => 'Doshin Office',
+			'parts'    => $p_data,
+			'options'  => [
 				'quickstat' => $p_data['quickstat'],
-			]
-		);
+			],
+		];
 	}
 }
