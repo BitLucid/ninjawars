@@ -10,10 +10,15 @@ if ($error = init(ShopController::$private, ShopController::$alive)) {
 	$shop = new ShopController();
 
 	if (post('purchase') == '1') {
-		$shop->buy();
+		$response = $shop->buy();
 	} else {
-		$shop->index();
+		$response = $shop->index();
 	}
+
+	display_page(
+		$response['template'],
+		$response['title'],
+		$response['parts'],
+		$response['options']
+	);
 } // End of no display error.
-
-
