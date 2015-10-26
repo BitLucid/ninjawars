@@ -141,5 +141,14 @@ class TestClan extends PHPUnit_Framework_TestCase {
         $this->assertTrue($clan->rating());
     }
 
+	function testClanNamePositiveValidation() {
+		$clanName = 'Clan Beagle';
+		$this->assertTrue((boolean)is_valid_clan_name($clanName));
+	}
+
+	function testClanNameNegativeValidation() {
+		$clanName = 'Ù�Ø³ Ø§Ù�Ù�Ø·Ø';
+		$this->assertFalse((boolean)is_valid_clan_name($clanName));
+	}
 }
 
