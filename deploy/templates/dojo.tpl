@@ -134,7 +134,9 @@ table .char-title td{
 
 <p>Your current class is <span class='class-name {$possibly_changed_class_theme}'>{$possibly_changed_class_name|escape}</span>.</p>
 <p>Your current level is {$userLevel|escape}. Your current kills are {$userKills|escape}.</p>
+{if $userLevel < $max_level}
 <p>Level {$nextLevel|escape} requires {$required_kills|escape} kills.</p>
+{/if}
 
 	{if $upgrade_requested}
 		{if $userLevel+1 > $max_level}

@@ -124,7 +124,7 @@ function level_up_if_possible($char_id, $auto_level=false) {
 			$required_kills = required_kills_to_level($char_level);
 			// Have to be under the max level and have enough kills.
 			$level_up_possible = (
-				($nextLevel < $max_level) &&
+				($nextLevel <= $max_level) &&
 				($char_kills >= $required_kills) );
 
 			if ($level_up_possible) {
