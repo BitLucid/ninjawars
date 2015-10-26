@@ -108,11 +108,9 @@ function inviteChar($p_target, $p_clan, $p_inviter) {
 
 function send_clan_join_request($user_id, $clan_id) {
 	DatabaseConnection::getInstance();
-	$clan        = get_clan($clan_id);
 	$clan_obj = new Clan($clan_id);
 	$leader      = $clan_obj->getLeaderInfo();
 	$leader_id   = $leader['player_id'];
-	$leader_name = $leader['uname'];
 	$username    = get_username($user_id);
 
 	$confirmStatement = DatabaseConnection::$pdo->prepare('SELECT verification_number FROM players WHERE player_id = :user');
@@ -121,7 +119,7 @@ function send_clan_join_request($user_id, $clan_id) {
 	$confirm = $confirmStatement->fetchColumn();
 
 	// These ampersands get encoded later.
-	$url = message_url('clan_confirm.php?clan_joiner='.$user_id."&agree=1&confirm=$confirm&clan_id=".urlencode($clan_id), 'Confirm Request');
+	$url = message_url("clan.php?joiner=$user_id&command=review&confirmation=$confirm", 'Confirm Request');
 
 	$join_request_message = 'CLAN JOIN REQUEST: '.htmlentities($username)." has sent a request to join your clan.
 		If you wish to allow this ninja into your clan click the following link:
