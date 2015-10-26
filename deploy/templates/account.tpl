@@ -71,6 +71,7 @@ h1 .account-identity{
       <li>Active Email: <strong>{$account_info.active_email|escape}</strong></li>
       <li>Account Created: <time class='timeago' datetime='{$account_info.created_date|escape}'>{$account_info.created_date|escape}</time></li>
       <li>Last Failed Login Attempt: <time class='timeago' datetime='{$account_info.last_login_failure|escape}'>{$account_info.last_login_failure|escape}</time></li>
+      <li>Last IP: {$account_info.last_ip|escape}</li>
       {if $oauth}<li>Single-Click login connected to: <b>{$oauth_provider|escape}</b></li>{/if}
     </ul>
 </div>
