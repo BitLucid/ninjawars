@@ -147,7 +147,7 @@ function dim_mak_reqs($char_obj, $turn_req, $str_req){
 	    $char_data = $char->data();
 	    
 	    // Get the info for the next level, especially if that has changed.
-	    $nextLevel = $userLevel+1;
+	    $nextLevel = min($userLevel+1, $max_level);
 	    $userKills = char_kills($char_id);
     	$required_kills = required_kills_to_level($userLevel);
 	}
