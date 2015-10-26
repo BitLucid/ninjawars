@@ -30,8 +30,8 @@ DatabaseConnection::$pdo->query('COMMIT');
 
 // Err on the side of low revives for this five minute tick.
 $params = [
-	'minor_revive_to'      => MINOR_REVIVE_THRESHOLDMAJOR_REVIVE_PERCENT,
-	'major_revive_percent' => MINOR_REVIVE_THRESHOLDMAJOR_REVIVE_PERCENT
+	'minor_revive_to'      => MINOR_REVIVE_THRESHOLD,
+	'major_revive_percent' => MAJOR_REVIVE_PERCENT,
 ];
 
 $resurrected = revive_players($params);
