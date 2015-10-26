@@ -9,10 +9,6 @@ require_once(LIB_ROOT."control/lib_deity.php"); // Deity-specific functions
 
 $logMessage = "DEITY_HALFHOUR STARTING: ".date(DATE_RFC1036)."\n";
 
-$regen_rate           = 2; // Rate is for turns.
-$turn_regen_threshold = 100;
-$maximum_heal         = 200;
-$maxtime              = '70 hours'; // *** Max time a person is kept online without being active.
 $score                = get_score_formula();
 
 DatabaseConnection::getInstance();
@@ -20,14 +16,14 @@ DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
 DatabaseConnection::$pdo->query("UPDATE players SET turns = 0 WHERE turns < 0"); // if anyone has less than 0 turns, set it to 0
 
 $s = DatabaseConnection::$pdo->prepare("UPDATE players SET turns = turns+:rate WHERE turns < :threshold");  // add turns at the regen rate for anyone below the threshold
-$s->bindValue(':rate', $regen_rate);
-$s->bindValue(':threshold', $turn_regen_threshold);
+$s->bindValue(':rate', TURN_REGEN_PER_TICK);
+$s->bindValue(':threshold', TURN_REGEN_THRESHOLD);
 $s->execute();
 
 DatabaseConnection::$pdo->query("UPDATE players SET bounty = 0 WHERE bounty < 0"); // if anyone has negative bounty, set it to 0
 
 $inactivity = DatabaseConnection::$pdo->prepare("DELETE FROM ppl_online WHERE activity < (now() - :maxtime::interval)");
-$inactivity->bindValue(':maxtime', $maxtime);
+$inactivity->bindValue(':maxtime', ONLINE_TIMEOUT);
 $inactivity->execute();
 
 $out_display['Inactive Browsers Deactivated'] = $inactivity->rowCount();

@@ -34,3 +34,25 @@ define('MAX_PLAYER_LEVEL', 350);
 // Defines for avatar options.
 define('GRAVATAR', 1);
 
+// Constants for deity scripts
+define('MIN_PLAYERS_FOR_UNCONFIRM', 1000);
+define('MIN_DAYS_FOR_UNCONFIRM',    60);
+define('MAX_PLAYERS_TO_UNCONFIRM',  200);
+define('POISON_DAMAGE',             50);
+define('MAX_TURNS',                 300); // Turn # beyond which you will drop back down to, though normal turn increase stops earlier.
+define('ONLINE_TIMEOUT',            '70 hours'); // Max time a person is kept online without being active.
+define('TURN_REGEN_PER_TICK',       2);
+define('TURN_REGEN_THRESHOLD',      100);
+define('HEALTH_REGEN_THRESHOLD',    200);
+define('HEALTH_REGEN_PER_TICK',     8);
+define('KI_REGEN_PER_TICK',         1);
+define('KI_REGEN_TIMEOUT',          '6 minutes');
+
+define('MINOR_REVIVE_THRESHOLD',    70);
+define('MAJOR_REVIVE_PERCENT',      7);
+
+define('DEITY_LOG_CHANCE_DIVISOR',  60);
+
+define('RANK_WEIGHT_LEVEL',      5000);
+define('RANK_WEIGHT_GOLD',       200);
+define('RANK_WEIGHT_INACTIVITY', 200);
