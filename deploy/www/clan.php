@@ -44,6 +44,12 @@ switch ($command) {
 	case 'disband':
 		$response = $clanController->disband();
 		break;
+	case 'accept':
+		$response = $clanController->accept();
+		break;
+	case 'review':
+		$response = $clanController->review();
+		break;
 	case 'list':
 	default:
 		$response = $clanController->listClans();

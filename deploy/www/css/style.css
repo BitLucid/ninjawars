@@ -3825,3 +3825,10 @@ nav.navigation ul.menu li {
 #clan-page-title {
 	margin: 0;
 }
+
+.boxed-in {
+	border: 1px solid #000000;
+	font-weight: bold;
+	margin-left: 1em;
+	margin-right: 1em;
+}

@@ -371,6 +371,93 @@ class ClanController { //extends Controller
 		return $this->render($parts);
 	}
 
+	/**
+	 * Review a requet to join a clan
+	 *
+	 * @param joiner int the id of the player object to accept into the clan
+	 * @return Array
+	 */
+	public function review() {
+		$ninja = new Player(self_char_id());
+		$clan  = ClanFactory::clanOfMember($ninja->id());
+
+		$joiner = new Player(in('joiner'));
+		$confirmation = (int) in('confirmation');
+
+		$parts = [
+			'title' => 'Accept a New Clan Member',
+		];
+
+		if ($clan && $this->playerIsLeader($ninja, $clan)) {
+			if ($joiner->id()) {
+				$parts['pageParts'] = [
+					'reminder-join-request',
+					'form-confirm-join',
+				];
+
+				$parts['joiner'] = $joiner;
+				$parts['confirmation'] = $confirmation;
+			} else {
+				$parts['error'] = 'No such ninja to bring into the clan.';
+			}
+		} else {
+			$parts['error'] = 'You are not the leader of your clan.';
+		}
+
+		return $this->render($parts);
+	}
+
+	/**
+	 * Accept a player as a new member of a clan
+	 *
+	 * @param joiner int the id of the player object to accept into the clan
+	 * @param confirmation int A nonce that prevents clan leaders from adding unwilling members
+	 * @return Array
+	 *
+	 * @par Preconditions:
+	 * Active player must be leader of a clan
+	 */
+	public function accept() {
+		$ninja = new Player(self_char_id());
+		$clan  = ClanFactory::clanOfMember($ninja->id());
+
+		$joiner = new Player(in('joiner'));
+		$confirmation = (int) in('confirmation');
+
+		$parts = [
+			'title' => 'Accept a New Clan Member',
+		];
+
+		if ($clan && $this->playerIsLeader($ninja, $clan)) {
+			if ($joiner->id()) {
+				$parts['pageParts'] = [
+					'reminder-join-request',
+				];
+
+				$parts['joiner'] = $joiner;
+
+				// Allow joining as long as the verification number is correct.
+				if ($confirmation === $joiner->getVerificationNumber()) {
+					$result = $clan->addMember($joiner, $ninja);
+
+					if ($result === true) {
+						$parts['pageParts'][] = 'result-join';
+					} else {
+						$parts['error'] = (is_string($result) ? $result : 'Unable to add member, please try again later.');
+					}
+				} else {
+					$parts['error'] = 'That request was old or invalid, please try inviting that ninja again.';
+				}
+			} else {
+				$parts['error'] = 'No such ninja to bring into the clan.';
+			}
+		} else {
+			$parts['error'] = 'You are not the leader of your clan.';
+		}
+
+		return $this->render($parts);
+	}
+
 	private function render($p_parts) {
 		if (!isset($p_parts['pageParts'])) {
 			$p_parts['pageParts'] = [];
