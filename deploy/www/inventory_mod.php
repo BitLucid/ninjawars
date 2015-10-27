@@ -86,6 +86,7 @@ $targetHealthPercent = '';
 
 $gold_mod		= NULL;
 $result			= NULL;
+$targetResult   = NULL; // result message to send to target of item use
 
 $max_power_increase        = 10;
 $level_difference          = $targets_level - $username_level;
@@ -200,7 +201,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					if ($item->hasEffect('stealth')) {
 						$targetObj->addStatus(STEALTH);
 						$alternateResultMessage = "__TARGET__ is now stealthed.";
-						$result = false;
+						$targetResult = ' to be shrouded in smoke';
 					}
 
 					if ($item->hasEffect('vigor')) {
@@ -249,7 +250,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 							$alternateResultMessage .= " You fail to take any turns from __TARGET__.";
 						}
 
-						$result         = " lose ".abs($turns_change)." turns";
+						$targetResult         = " lose ".abs($turns_change)." turns";
 						$targetObj->subtractTurns($turns_change);
 					} else if ($item->hasEffect('speed')) {	// Note that speed and slow effects are exclusive.
 						$limited_effect = false;
@@ -273,7 +274,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						}
 
 						// Actual turn gain is 1 less because 1 is used each time you use an item.
-						$result         = "gain $turns_change turns.";
+						$targetResult         = "gain $turns_change turns.";
 						$targetObj->changeTurns($turns_change); // Still adding some turns.
 					}
 
@@ -283,7 +284,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 						if ($self_use) {
 							$result .= "You take ".$item->getTargetDamage()." damage!";
 						} else {
-							$result = " take ".$item->getTargetDamage()." damage!";
+							$targetResult = " take ".$item->getTargetDamage()." damage!";
 						}
 
 						$targetObj->vo->health = $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
@@ -293,7 +294,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					if ($item->hasEffect('death')) {
 						$targetObj->vo->health = setHealth($target_id, 0);
 						$victim_alive = false;
-						$result = " be drained of your life-force and die!";
+						$targetResult = " be drained of your life-force and die!";
 						$gold_mod = 0.25;          //The Dim Mak takes away 25% of a targets' gold.
 					}
 				}// End of check that it's usable on someone else.
@@ -319,7 +320,9 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					} else if ($turns_change > 0) {
 						$resultMessage .= "__TARGET__ has gained back $turns_change turns!";
 					}
-				} else {
+				}
+
+				if (empty($resultMessage) && !empty($result)) {
 					$resultMessage = $result;
 				}
 
@@ -349,14 +352,12 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				}
 
 				if (!$self_use) {
-					if(!$result){
-						$debug_info = 'Debugging: An attack was made using an item, but no result message section was set. Request info: ';
-						$debug_info .= print_r($_SERVER, true);
-						error_log($debug_info);
+					if (!$targetResult) {
+						error_log('Debug: Issue 226 - An attack was made using '.$item->getName().', but no targetResult message was set.');
 					}
 
 					// Notify targets when they get an item used on them.
-					$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $result.";
+					$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $targetResult.";
 					send_event($user_id, $target_id, $message_to_target);
 				}
 			}
