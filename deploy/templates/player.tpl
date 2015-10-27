@@ -237,6 +237,10 @@ article#player-titles{
     </div>
 {/if}
 
+  {if $viewing_player_obj->isAdmin()}
+    <div class='admin-view centered'><small class='de-em'>IP Address: {$target_player_obj->ip()}</small></div>
+  {/if}
+
   </div><!-- End player-info -->
 
 
