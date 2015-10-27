@@ -104,7 +104,7 @@ Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
 
 $individual_or_clan = ($message_to == 'individual' || $message_to == 'clan');
 $parts = compact('command', 'message_sent_to', 'messages', 'current_tab', 'to', 'has_clan', 
-	'type_filter', 'type', 'messages_type', 'individual_or_clan', 'pages', 'current_page', 'message_to', 'informational');
+	'type', 'messages_type', 'individual_or_clan', 'pages', 'current_page', 'message_to', 'informational');
 
 display_page(
 	'messages.tpl'
