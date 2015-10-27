@@ -50,7 +50,7 @@
 	{/if}
 
 	{if $bounty > 0}
-  <p>You have received the $bounty gold bounty on $target's head for your deeds!</p>
+  <p>You have received the {$bounty} gold bounty on {$target}'s head for your deeds!</p>
 	{/if}
 
 	{if $suicided}
