@@ -1,7 +1,0 @@
-#
-# robots.txt 
-# Please, we do NOT allow nonauthorized robots any longer.
-#
-User-agent: *
-Disallow: /~tchalvak/
-Disallow: /admin/
