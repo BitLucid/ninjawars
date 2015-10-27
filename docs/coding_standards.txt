@@ -1,4 +1,4 @@
-FOLLOW THESE OR BE RIDICULED:
+FOLLOW THESE NINJAWARS CODING STANDARDS OR BE RIDICULED:
 
 * If statements must look like this:
 
@@ -33,8 +33,8 @@ FOLLOW THESE OR BE RIDICULED:
 
 * Class names capitalized with underscores:
 
-      $foo = new Foo_Bar_Baz(); // Good
-      $foo = new FooBarBaz();   // BAD
+      $foo = new FooBarBaz(); // Good
+      $foo = new Foo_Bar_Baz();   // BAD
       $foo = new foo_bar_baz(); // BAD
 
 * Class methods should be camelCase:
@@ -46,18 +46,14 @@ FOLLOW THESE OR BE RIDICULED:
       $foo = bar($baz, $qux);   // Good
       $foo = bar ( $baz,$qux ); // BAD
 
-*   A simple summary comment per function is a MINIMUM STARTING POINT.
+*   A simple summary comment per function and method is a MINIMUM STARTING POINT.
 
   Comment anything that does not adhere to conventions. Things that are done
-  idiomatically or by convention probably do not need comments. Prefer adding
-  to general-purpose documentation rather than documenting an individual,
-  isolated example (e.g., document a base class instead of every extended
-  class).
+  idiomatically or by convention probably do not need comments.
   
   Add comments to document WHY something is done, not WHAT is done -- provide
-  context. Assume the reader is a competent programmer and can understand
-  the local code, unless it is extremely complex. API docs for libraries
-  are the exception and should have meaningful summaries.
+  context. If in doubt as to what to write, be a reporter and try to answer 
+  Who/What/Why/Where in general terms.
 
 * Put closing parenthesis on the same line as the last line of code. E.g.,
   
@@ -65,6 +61,7 @@ FOLLOW THESE OR BE RIDICULED:
           "username" => $this->in['username'],
           "password" => $this->in['password'],
           "account_status" => 1));
+  NO, NEVER MIND THIS, DO WHATEVER YOU HAVE TO MAKE NESTED STRUCTURES READABLE.
 
 * Do not abuse the ternary operator. Keep it simple and readable. Use temporary variables.
   Here is an example of simple proper usage, with only a single ternary on a line:
@@ -73,12 +70,12 @@ FOLLOW THESE OR BE RIDICULED:
 
   AND NOT
   
-      $recorded = 
+      $recorded = ($old_record ? $old_record->values() : ($no_record? 'Default' : ($new_record? $new_record : 'somethingElSe')));
 
 
 * Database
 
-    Name the database tables with plural terms (e.g. Classes, Messages, Players, Octopi instead of Class, Message, Player, Octopus), by convention.
+    Name the database tables with plural, lowercase terms (e.g. classes, messages, players, octopi instead of Class, Message, Player, Octopus), by convention.
 
 * Legacy Code:
 
