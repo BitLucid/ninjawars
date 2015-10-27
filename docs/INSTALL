@@ -6,14 +6,15 @@ PHP5, Postgresql8, Perl>=5, Apache2, Perl::Lingua::En::Inflect, postgresql-contr
 
 Via apt-get command line:
 
-sudo apt-get install apache2 php5 php5-pgsql postgresql postgresql-contrib libpq-dev smarty
 (Required)
+sudo apt-get install apache2 php5 php5-pgsql postgresql postgresql-contrib libpq-dev smarty
 
-sudo apt-get install perl liblingua-en-inflect-perl
 (Recommended, but not completely required for local development)
+sudo apt-get install perl liblingua-en-inflect-perl
 
-sudo apt-get install awstats git-core
 (Totally optional)
+sudo apt-get install awstats git-core
+
 
 All Types of Deployment
 ---------------
@@ -26,8 +27,6 @@ createdatabase ninjawars
 -Set permissions in your pg_hba for the database, host, and user to match your configuration
 
 2. Copy a live database (probably the easiest) or create a skeleton database and then run the migrations in  /deploy/db/migrations/ on it.
-For instance, scp down the latest version:
-scp userNaMeHeRe@ninjawars.net:~/backups/nw_backups/nw-backup-2012-11-04-Time-11-01.sql nw-backup-2012-11-04-Time-11-01.sql 
 echo "create role developers;
 GRANT ALL ON nw.* TO GROUP developers;
 GRANT ALL ON DATABASE nw to group developers;
@@ -63,24 +62,8 @@ Using /scripts/deploy
 
 Using your working copy
 -----------------------
-1. cp docs/harkSAMPLEhtaccess deploy/www/.htaccess
-2. cp docs/gitignoreSAMPLE .gitignore
-3. cp docs/tchalvakSAMPLEresources.php deploy/resources.php
+3. cp deploy/resources.build.php deploy/resources.php
 4. mkdir -p deploy/resources/logs
-5. configure a virtualhost in apache (e.g. ln -s docs/nw.local.apache /etc/apache2/sites-available/nw.local && ln -s /etc/apache2/sites-available/nw.local /etc/apache2/sites-enabled/nw.local )
+5. configure your virtualhost (nw.local or nw.localhost recommended!)
 6. mkdir deploy/templates/compiled
 7. chmod uga+rX,ug+wx deploy/templates/compiled
-
-
-!!! IMPORTANT NOTES !!!
-------------------------
-
-If you are using a .htaccess file
----------------------------------
-In apache, the "AllowOverride" directive in /etc/apache2/sites-available/default cannot equal None, as that will prevent the .htaccess from being used correctly.
-
-If you are changing apache directives
--------------------------------------
-If you are making changes to the apache config (as opposed to in the .htaccess), you will need to restart apache:
-sudo /etc/init.d/apache2 restart
-
