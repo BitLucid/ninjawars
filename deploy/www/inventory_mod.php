@@ -223,8 +223,10 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				$alternateResultMessage = "__TARGET__ is already moving slowly.";
 			} else if ($targetObj->hasStatus(FAST)) {
 				$targetObj->subtractStatus(FAST);
+				$alternateResultMessage = "__TARGET__ is no longer moving quickly.";
 			} else {
 				$targetObj->addStatus(SLOW);
+				$alternateResultMessage = "__TARGET__ begins to move slowly...";
 			}
 
 			if ($turns_change == 0) {
@@ -242,8 +244,10 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				$alternateResultMessage = "__TARGET__ is already moving quickly.";
 			} else if ($targetObj->hasStatus(SLOW)) {
 				$targetObj->subtractStatus(SLOW);
+				$alternateResultMessage = "__TARGET__ is no longer moving slowly.";
 			} else {
 				$targetObj->addStatus(FAST);
+				$alternateResultMessage = "__TARGET__ begins to move quickly!";
 			}
 
 			// Actual turn gain is 1 less because 1 is used each time you use an item.
