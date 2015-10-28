@@ -261,7 +261,11 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			if ($self_use) {
 				$result .= "You take ".$item->getTargetDamage()." damage!";
 			} else {
-				$targetResult = " take ".$item->getTargetDamage()." damage!";
+
+				if(strlen($targetResult) > 0){
+					$targetResult .= " You also"; // Join multiple targetResult messages.
+				}
+				$targetResult .= " take ".$item->getTargetDamage()." damage!";
 			}
 
 			$targetObj->vo->health = $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
