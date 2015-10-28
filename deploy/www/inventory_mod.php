@@ -147,7 +147,7 @@ $itemType = $item->getType();
 $article = get_indefinite_article($item_obj->getName());
 
 if ($give) {
-	$turn_cost  = 0;
+	$turn_cost  = 1;
 	$using_item = false;
 } else {
 	$turn_cost  = $item->getTurnCost();
