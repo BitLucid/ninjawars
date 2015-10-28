@@ -324,7 +324,12 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			}
 
 			// Notify targets when they get an item used on them.
-			$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today and caused you to $targetResult";
+			$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today";
+			if($targetResult){ 
+				$message_to_target .= " and caused you to $targetResult"; 
+			} else {
+				$message_to_target .= '.';
+			}
 			send_event($user_id, $target_id, str_replace('  ', ' ', $message_to_target));
 		}
 
