@@ -182,10 +182,10 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 		$alternateResultMessage = "__TARGET__ will receive your {$item->getName()}.";
 	} else if (!$item->isOtherUsable()) {
 		// If it doesn't do damage or have an effect, don't use up the item.
-		$result    = 'This item is not usable on __TARGET__, so it remains unused.';
+		$resultMessage = $result    = 'This item is not usable on __TARGET__, so it remains unused.';
 		$item_used = false;
+		$using_item = false;
 	} else {
-		// TODO: These result messages are screwed up (e.g. what gets sent to the events mail is wrongly phrased frequently now), and need to be reworked.
 
 		if ($item->hasEffect('stealth')) {
 			$targetObj->addStatus(STEALTH);
@@ -197,6 +197,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			if ($targetObj->hasStatus(STR_UP1)) {
 				$result = "__TARGET__'s body cannot become more vigorous!";
 				$item_used = false;
+				$using_item = false;
 			} else {
 				$targetObj->addStatus(STR_UP1);
 				$result = "__TARGET__'s muscles experience a strange tingling.";
@@ -207,6 +208,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			if ($targetObj->hasStatus(STR_UP2)) {
 				$result = "__TARGET__'s body cannot become any stronger!";
 				$item_used = false;
+				$using_item = false;
 			} else {
 				$targetObj->addStatus(STR_UP2);
 				$result = "__TARGET__ feels a surge of power!";
@@ -261,7 +263,6 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			if ($self_use) {
 				$result .= "You take ".$item->getTargetDamage()." damage!";
 			} else {
-
 				if(strlen($targetResult) > 0){
 					$targetResult .= " You also"; // Join multiple targetResult messages.
 				}
@@ -291,7 +292,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$resultMessage .= "__TARGET__ has lost ".abs($turns_change)." turns!";
 				}
 
-				if (getTurns($target_id) <= 0) { //Message when a target has no more turns to ice scroll away.
+				if (getTurns($target_id) <= 0) { //Message when a target has no more turns to remove.
 					$resultMessage .= "  __TARGET__ no longer has any turns.";
 				}
 			}
@@ -366,7 +367,6 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 }
 
 // *** Take away at least one turn even on attacks that fail to prevent page reload spamming ***
-// TODO: Once attack attempt limiting works, this can be removed.
 if ($turns_to_take < 1) {
 	$turns_to_take = 1;
 }
