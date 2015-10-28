@@ -322,7 +322,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			$attacker_id = $username;
 		}
 
-		if (!$self_use) {
+		if (!$self_use && $item_used) {
 			if (!$targetResult) {
 				error_log('Debug: Issue 226 - An attack was made using '.$item->getName().', but no targetResult message was set.');
 			}
