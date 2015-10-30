@@ -1,1 +1,1 @@
-<p>What once was dead shall rise again.</p>
+<p>Your ghost once again inhabits a corporeal shell.</p>
