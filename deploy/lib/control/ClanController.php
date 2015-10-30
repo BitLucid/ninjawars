@@ -481,6 +481,7 @@ class ClanController { //extends Controller
 			'title'    => $p_parts['title'],
 			'parts'    => $p_parts,
 			'options'  => [
+				'body_classes' => 'clan',
 				'quickstat' => false,
 			],
 		];
