@@ -137,8 +137,8 @@ if ($attack_is_legal){
 			$gold_mod     = .1;
 			$loot         = round($gold_mod * get_gold($target_id));
 
-			$target_msg   = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold on $today!";
-			$attacker_msg = "You have killed $target in combat and taken $loot gold on $today.";
+			$target_msg   = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold!";
+			$attacker_msg = "You have killed $target in combat and taken $loot gold.";
 
 			$target_player->death();
 			sendMessage("A Stealthed Ninja", $target, $target_msg);
@@ -236,9 +236,9 @@ if ($attack_is_legal){
 		$attackerHealthRemaining = subtractHealth($attacker_id, $total_target_damage);
 
 		if ($defenderHealthRemaining && $attackerHealthRemaining) {
-			$combat_msg = "You have been $attack_label by $attacker at $today for $total_attacker_damage, but they got away before you could kill them!";
+			$combat_msg = "You have been $attack_label by $attacker for $total_attacker_damage, but they got away before you could kill them!";
 		} else {
-			$combat_msg = "You have been $attack_label by $attacker at $today for $total_attacker_damage!";
+			$combat_msg = "You have been $attack_label by $attacker for $total_attacker_damage!";
 		}
 
 		sendMessage($attacker, $target, $combat_msg);
@@ -257,7 +257,7 @@ if ($attack_is_legal){
 
 				if ($duel) {
 					killpointsFromDueling();	// *** Changes killpoints amount by dueling equation. ***
-					$duel_log_msg     = "$attacker has dueled $target and won $killpoints killpoints at $today.";
+					$duel_log_msg     = "$attacker has dueled $target and won $killpoints killpoints.";
 					if($killpoints>1 || $killpoints<0){
 						// Only log duels if they're better than 1 or if they're a failure.
 						sendLogOfDuel($attacker, $target, 1, $killpoints);	// *** Makes a WIN record in the dueling log. ***
@@ -283,7 +283,7 @@ if ($attack_is_legal){
 					}
 				}
 
-				$target_msg = "DEATH: You've been killed by $attacker and lost $loot gold on $today!";
+				$target_msg = "DEATH: You've been killed by $attacker and lost $loot gold!";
 				sendMessage($attacker, $target, $target_msg);
 				
 				// Stopped telling attackers when they win a duel.
@@ -315,9 +315,9 @@ if ($attack_is_legal){
 					$loot = round($gold_mod * get_gold($attacker_id));//Loot for defender if he lives.
 				}
 
-				$target_msg = "You have killed $attacker in combat and taken $loot gold on $today.";
+				$target_msg = "You have killed $attacker in combat and taken $loot gold.";
 
-				$attacker_msg = "DEATH: You've been killed by $target and lost $loot gold on $today!";
+				$attacker_msg = "DEATH: You've been killed by $target and lost $loot gold!";
 
 				sendMessage($attacker, $target, $target_msg);
 				sendMessage($target, $attacker, $attacker_msg);
