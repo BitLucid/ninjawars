@@ -140,7 +140,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		add_gold($char_id, $gold_decrease); // *** This one actually adds the value.
 		subtract_gold($target->id(), $gold_decrease); // *** Subtracts whatever positive value is put in.
 
-		$msg = "You have had pick pocket cast on you for $gold_decrease by $attacker_id at $today";
+		$msg = "You have had pick pocket cast on you for $gold_decrease by $attacker_id";
 		send_event($attacker_char_id, $target->id(), $msg);
 		
 		$generic_skill_result_message = "You have stolen $gold_decrease gold from __TARGET__!";
@@ -195,7 +195,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		$generic_state_change = "__TARGET__ has been poisoned!";
 		$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
-		$msg = "You have been poisoned by $attacker_id at $today";
+		$msg = "You have been poisoned by $attacker_id";
 		send_event($attacker_char_id, $target->id(), $msg);
 	} elseif ($command == 'Fire Bolt') {
 		$target_damage = (5 * (ceil($player->vo->level / 3)) + rand(1, $player->getStrength()));
@@ -206,7 +206,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			$attacker_id  = $username;
 		}
 
-		$msg = "You have had fire bolt cast on you by $attacker_id at $today";
+		$msg = "You have had fire bolt cast on you by $attacker_id";
 		send_event($attacker_char_id, $target->id(), $msg);
 	} else if ($command == 'Heal' || $command == 'Harmonize') {
 	
@@ -274,7 +274,7 @@ function harmonize_chakra($char_obj){
 		    $generic_skill_result_message = "__TARGET__ healed by $healed_by to $new_health.";
 
 		    if ($target->id() != $player->id())  {
-				send_event($attacker_char_id, $target->id(), "You have been healed by $attacker_id at $today for $healed_by.");
+				send_event($attacker_char_id, $target->id(), "You have been healed by $attacker_id for $healed_by.");
 			}
 		}
 	} else if ($command == 'Ice Bolt') {
@@ -286,7 +286,7 @@ function harmonize_chakra($char_obj){
 				$target->subtractStatus(STEALTH);
 				$target->addStatus(SLOW);
 
-				$msg = "Ice bolt cast on you by $attacker_id at $today, your turns have been reduced by $turns_decrease.";
+				$msg = "Ice bolt cast on you by $attacker_id, your turns have been reduced by $turns_decrease.";
 				send_event($attacker_char_id, $target->id(), $msg);
 
 				$generic_skill_result_message = "__TARGET__'s turns reduced by $turns_decrease!";
@@ -310,7 +310,7 @@ function harmonize_chakra($char_obj){
 					$target->addStatus(SLOW);
 					addTurns($char_id, $turns_decrease);
 
-					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id at $today";
+					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id";
 					send_event($attacker_char_id, $target->id(), $msg);
 
 					$generic_skill_result_message = "You cast Cold Steal on __TARGET__ and take $turns_decrease turns.";
@@ -323,7 +323,7 @@ function harmonize_chakra($char_obj){
 
 				$unfreeze_time = date('F j, Y, g:i a', mktime(date('G')+1, 0, 0, date('m'), date('d'), date('Y')));
 
-				$failure_msg = "You have experienced a critical failure while using Cold Steal on $today. You will be unfrozen on $unfreeze_time";
+				$failure_msg = "You have experienced a critical failure while using Cold Steal. You will be unfrozen on $unfreeze_time";
 				sendMessage("SysMsg", $username, $failure_msg);
 				$generic_skill_result_message = "Cold Steal has backfired! You are frozen until $unfreeze_time!";
 			}
@@ -380,8 +380,8 @@ function harmonize_chakra($char_obj){
 				$clone_char_2->changeTurns(-1*$clone_char_2->turns());
 				$generic_skill_result_message = "You obliterate the clone {$clone_char->name()} for $clone_char_health health, $clone_char_turns turns
 					 and the clone {$clone_char_2->name()} for $clone_char_2_health health, $clone_char_2_turns turns.";
-				send_event($char_id, $clone_1_id, "You and {$clone_char_2->name()} were Clone Killed at $today.");
-				send_event($char_id, $clone_2_id, "You and {$clone_char->name()} were Clone Killed at $today.");
+				send_event($char_id, $clone_1_id, "You and {$clone_char_2->name()} were Clone Killed.");
+				send_event($char_id, $clone_2_id, "You and {$clone_char->name()} were Clone Killed.");
 			} else {
 				$generic_skill_result_message = "Those two ninja don't seem to be clones.";
 			}
@@ -418,10 +418,10 @@ function harmonize_chakra($char_obj){
 				}
 			}
 
-			$target_message = "$attacker_id has killed you with $command on $today and taken $loot gold.";
+			$target_message = "$attacker_id has killed you with $command and taken $loot gold.";
 			send_event($attacker_char_id, $target->id(), $target_message);
 
-			$attacker_message = "You have killed $target with $command on $today and taken $loot gold.";
+			$attacker_message = "You have killed $target with $command and taken $loot gold.";
 			sendMessage($target->vo->uname, $username, $attacker_message);
 		}
 	}
