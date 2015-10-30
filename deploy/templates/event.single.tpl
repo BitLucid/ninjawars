@@ -1,8 +1,8 @@
-    <dt class='user {if isset($last_user_message) && $last_user_message eq $message.send_from}repeated{/if}'>
-    	<a target='main' class='message-sender' href='player.php?player_id={$message.send_from|escape:'url'}'>{$message.from|escape}</a> 
+    <dt class='user {if isset($last_user_event) && $last_user_event eq $event.send_from}repeated{/if}'>
+    	<a target='main' class='event-sender' href='player.php?player_id={$event.send_from|escape:'url'}'>{$event.from|escape}</a> 
     </dt>
-    <dd class='user-message{if $message.unread} message-unread{/if}'>
-    	{$message.message|escape|replace_urls|markdown}
+    <dd class='user-message{if $event.unread} message-unread{/if}'>
+    	{$event.message|escape|replace_urls|markdown}<time class="event-time timeago" datetime="{$event.date}" title="{$event.date}">{$event.date}</time>
     </dd>
     
-    {assign var='last_user_message' value=$message.send_from}
+    {assign var='last_user_event' value=$event.send_from}

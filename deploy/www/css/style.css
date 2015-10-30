@@ -1395,7 +1395,7 @@ iframe {
 	font-size:1em;
 	font-size:smaller;
 }
-.chat-messages .chat-time, #message-list .message-time {
+#event-list .event-time, .chat-messages .chat-time, #message-list .message-time {
 	font-family: Trebuchet MS1, Helvetica, sans-serif;
 	font-size: .8em;
 	font-style:italic;

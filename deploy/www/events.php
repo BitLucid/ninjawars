@@ -8,9 +8,8 @@ if ($error = init($private, $alive)) {
 	$char = new Player(self_char_id());
 	$events = get_events($char->id(), 300);
 
-	$events = $events->fetchAll();
-
-	$has_clan  = (bool)get_clan_by_player_id($char->id());;
+	// Check for clan to use it in the nav tabs.
+	$has_clan  = (bool)get_clan_by_player_id($char->id());
 
 	read_events($char_id); // mark events as viewed.
 

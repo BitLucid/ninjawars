@@ -27,18 +27,13 @@ function send_event($from_id, $to_id, $msg) {
 }
 
 function get_events($user_id, $limit=null) {
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT send_from, message, unread, uname AS from FROM events 
-        JOIN players ON send_from = player_id WHERE send_to = :to ORDER BY date DESC ".($limit ? "LIMIT :limit" : '')."");
-	$statement->bindValue(':to', $user_id);
-
-	if ($limit) {
-		$statement->bindValue(':limit', $limit);
+	$params = [':to'=>$user_id];
+	if($limit){
+		$params[':limit'] = $limit;
 	}
-
-	$statement->execute();
-
-	return $statement;
+	return query("SELECT send_from, message, unread, date, uname AS from FROM events 
+        JOIN players ON send_from = player_id WHERE send_to = :to ORDER BY date DESC 
+        ".($limit ? "LIMIT :limit" : ''), $params);
 }
 
 function read_events($user_id) {
