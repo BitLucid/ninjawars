@@ -2363,6 +2363,13 @@ table#sight-info {
 	border-left:none;
 }
 
+/*  Map location page styles */
+
+.shrine .action-area{
+	padding-left:2em;
+	padding-right:2em;
+}
+
 
 /* NEW INDEX REWRITE CSS */
 

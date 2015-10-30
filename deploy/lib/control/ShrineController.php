@@ -459,6 +459,7 @@ class ShrineController { //extends controller
 				'action_message' => null,
 				'error'          => null,
 				'options'        => [
+					'body_classes' => 'shrine',
 					'quickstat'  => 'player',
 				],
 			],
