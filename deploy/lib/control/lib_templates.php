@@ -45,7 +45,8 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
     // Updates the quickstat via javascript if requested.
     $quickstat = @$options['quickstat'];
     $quickstat = ($quickstat ? $quickstat : @$local_vars['quickstat']);
-    $body_classes = isset($local_vars['body_classes'])? $local_vars['body_classes'] : null;
+    $body_classes = isset($options['body_classes'])? $options['body_classes'] : 
+    	(isset($local_vars['body_classes'])? $local_vars['body_classes'] : null);
 
 	$is_index = @$options['is_index'];
 

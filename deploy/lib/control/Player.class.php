@@ -47,6 +47,10 @@ class Player implements Character {
 		return $this->vo->uname;
 	}
 
+	public function __get($name) {
+		return $this->vo->$name;
+	}
+
 	public function name() {
 		return $this->vo->uname;
 	}
