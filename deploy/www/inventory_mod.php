@@ -322,7 +322,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			}
 
 			// Send mails if the target was killed.
-			send_kill_mails($username, $target, $attacker_id, $article, $item->getName(), $today, $loot);
+			send_kill_mails($username, $target, $attacker_id, $article, $item->getName(), $today=null, $loot);
 		} else { // They weren't killed.
 			$attacker_id = $username;
 		}
@@ -333,7 +333,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			}
 
 			// Notify targets when they get an item used on them.
-			$message_to_target = "$attacker_id has used $article {$item->getName()} on you at $today";
+			$message_to_target = "$attacker_id has used $article {$item->getName()} on you";
 			if($targetResult){ 
 				$message_to_target .= " and caused you to $targetResult"; 
 			} else {

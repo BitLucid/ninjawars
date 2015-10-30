@@ -166,11 +166,11 @@ function caltrop_turn_loss($targets_turns, $near_level_power_increase){
 
 
 // Send out the killed messages.
-function send_kill_mails($username, $target, $attacker_id, $article, $item, $today, $loot){
-	$target_email_msg   = "You have been killed by $attacker_id with $article $item at $today and lost $loot gold.";
+function send_kill_mails($username, $target, $attacker_id, $article, $item, $today=null, $loot){
+	$target_email_msg   = "You have been killed by $attacker_id with $article $item and lost $loot gold.";
 	sendMessage($attacker_id,$target,$target_email_msg);
 
-	$user_email_msg     = "You have killed $target with $article $item at $today and received $loot gold.";
+	$user_email_msg     = "You have killed $target with $article $item and received $loot gold.";
 	sendMessage($target,$username,$user_email_msg);
 }
 
