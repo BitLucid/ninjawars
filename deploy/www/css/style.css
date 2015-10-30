@@ -2370,6 +2370,11 @@ table#sight-info {
 	padding-right:2em;
 }
 
+.shrine .action-area .health-bar-container{
+	width:10em;display:inline-block;
+	max-width:100%;
+}
+
 
 /* NEW INDEX REWRITE CSS */
 
