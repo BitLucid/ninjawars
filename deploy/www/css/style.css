@@ -1781,6 +1781,24 @@ a#skip-to-bottom{
 	border-color: rgba(0, 0, 0, 1);
 	text-shadow: black 2px 2px 4px;
 }
+.ninja-success{
+	background-color:#DFF2BF;
+	color:#4F8A10;
+	padding:5px;
+}
+.ninja-success:before{
+	content:"";
+	display:inline-block;
+	background-image:url('/images/icons/mono/check32.png');
+	background-repeat:no-repeat;
+	background-size: 16px 16px;
+    width: 16px; 
+    height: 16px;
+    padding-right:0.5em;
+}
+p.ninja-success,span.ninja-success{
+	padding:15px;
+}
 
 .shadowed{
 		color:rgba(200, 200, 200, .5);
