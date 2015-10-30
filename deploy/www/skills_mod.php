@@ -140,7 +140,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		add_gold($char_id, $gold_decrease); // *** This one actually adds the value.
 		subtract_gold($target->id(), $gold_decrease); // *** Subtracts whatever positive value is put in.
 
-		$msg = "You have had pick pocket cast on you for $gold_decrease by $attacker_id";
+		$msg = "$attacker_id stole $gold_decrease gold from you.";
 		send_event($attacker_char_id, $target->id(), $msg);
 		
 		$generic_skill_result_message = "You have stolen $gold_decrease gold from __TARGET__!";
