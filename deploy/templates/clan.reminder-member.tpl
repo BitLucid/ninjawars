@@ -1,1 +1,1 @@
-<p>You are currently a member of <a href="clan.php?command=view&amp;clan_id={$myClan->getID()|escape:'url'}"><strong class='clan-name'>{$myClan->getName()|escape}</strong></a>.</p>
+<p>You are a member of <a class='clan-name' href="clan.php?command=view&amp;clan_id={$myClan->getID()|escape:'url'}">{$myClan->getName()|escape}</a>.</p>

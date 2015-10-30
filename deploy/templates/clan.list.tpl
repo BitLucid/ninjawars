@@ -1,4 +1,4 @@
-<div id='clan-tags'>
+<section id='clan-tags'>
 	<h4 id='clan-tags-title'>All Clans</h4>
 	<ul>
 {foreach from=$clans key=clan_id item=clan}
@@ -7,4 +7,4 @@
 		</li>
 {/foreach}
 	</ul>
-</div>
+</section>

@@ -2065,7 +2065,16 @@ table#sight-info {
 	margin-right: 1em;
 }
 
-/* Clan info section */
+/* Clan stylings */
+.clan .clan-name{
+	color:#4682B4;
+	background-color: maroon; background-color:rgba(128, 0, 0, 0.7);
+}
+.clan .clan-name:hover{
+	color:ghostwhite;
+	text-shadow: #FFF 1px 1px 2px;
+}
+
 #clan-avatar-section {
 	max-height:110px;
 	max-width:650px;
@@ -2080,13 +2089,16 @@ table#sight-info {
 /*  Clan tags section */
 #clan-tags {
 	clear: both;
-	padding-top: 3px;
+	padding:0.5em 0;
+}
+#clan-tags ul{
+	margin:0;padding:0;
 }
 .clan-tag {
-	color: blue;
+	color:#4682B4;
 	background-color: maroon; background-color:rgba(128, 0, 0, 0.7);
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-	float:left;
+	display:inline-block;
 	margin: 5px;
 	list-style-type: none;
 	padding: 0px 8px 0 8px;
