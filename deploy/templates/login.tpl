@@ -76,13 +76,13 @@ section.login-page{
 	    <label>
 	      <div class='line'>
 	      <span class='left-side'>Email or Ninja Name</span>
-	      <input tabindex=1 name="user" type="text" value='{$stored_username|escape}' class='right-side'>
+	      <input tabindex=1 name="user" required type="text" value='{$stored_username|escape}' class='right-side'>
 		  </div>
 	    </label>
 	    <label>
 	      <div class='line'>
 	      <span class='left-side'>Password <a tabindex=4 href='account_issues.php'>(Forgot?)</a></span>
-	      <input tabindex=2 name="pass" type="password" class='right-side'>
+	      <input tabindex=2 name="pass" required type="password" class='right-side'>
 	      </div>
 	    </label>
 	    <div class='left-side'>
