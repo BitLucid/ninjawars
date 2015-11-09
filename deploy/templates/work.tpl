@@ -50,6 +50,7 @@ $(document).ready(function (){
   <div>
     Work in the fields for: <input id="worked" type="text" size="3" maxlength="3" name="worked" class="textField" value='{$recommended_to_work}'>
     <input id="workButton" type="submit" value="Turns" name="workButton" class="formButton">
+    <input type='hidden' name='command' value='request_work'>
   </div>
 </form>
 <p class='gold-count'>
