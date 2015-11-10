@@ -10,7 +10,7 @@ class WorkController {
 	const PRIV                   = false;
 
 	const WORK_MULTIPLIER               = 30;
-	const DEFAULT_RECOMMENDED_TO_WORK   = 30;
+	const DEFAULT_RECOMMENDED_TO_WORK   = 10;
 
 	/**
 	* Take in a url parameter of work and try to convert it to gold
