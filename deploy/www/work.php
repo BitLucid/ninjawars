@@ -15,7 +15,7 @@ $controller = new WorkController();
 
 // Switch between the different controller methods.
 switch(true){
-	case($_SERVER['REQUEST_METHOD'] == 'POST' && $command='request_work'):
+	case($_SERVER['REQUEST_METHOD'] == 'POST' && $command=='request_work'):
 		$response = $controller->requestWork();
 	break;
 	case($command = 'index'):
