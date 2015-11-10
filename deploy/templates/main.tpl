@@ -86,7 +86,7 @@
 {/if}
 
 <div id='later-progression' style='margin-top:0;margin-bottom:0'>
-	<p>Explore the <a target='main' href='{$smarty.const.WEB_ROOT}map.php'>map</a> and <a href='{$smarty.const.WEB_ROOT}enemies.php'>attack monsters</a>, gather loot</p>
+	<p>Explore the <a target='main' href='{$smarty.const.WEB_ROOT}map.php'>map</a> and <a target='main' href='{$smarty.const.WEB_ROOT}enemies.php'>attack monsters</a>, gather loot</p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
 	<p>Kill other <a target='main' href='{$smarty.const.WEB_ROOT}list.php'>Ninja</a>, get stronger at the <a target='main' href='{$smarty.const.WEB_ROOT}dojo.php'>Dojo</a></p>
 	<img class='down-arrow' src='images/Down_Arrow_Icon.png' alt='then'>
