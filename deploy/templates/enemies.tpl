@@ -7,7 +7,7 @@
 {/if}
 
 <section id='enemies-stuff' class='clearfix'>
-{if $enemyCount gt 0}
+{if $enemy_count gt 0}
 <div class='enemies-lefthalf'>
   <h3>Enemies</h3>
   <ul id='current-enemies-list'>
@@ -21,19 +21,26 @@
 				{assign var="action" value="View"}
 			{/if}
     <li class="{$status_class}">
-      <a href="enemies.php?remove_enemy={$loop_enemy.player_id|escape}"><img src="{$smarty.const.IMAGE_ROOT}icons/mono/stop32.png" height='16' width='16' alt="remove" title='Remove'></a>
       <span class='enemy-action-box'>{$action}&nbsp;<a class='enemy-name' title="View {$loop_enemy.uname|escape}'s info" href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
       <span class='enemy-stats-box'>
         {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}
       </span>
       <em title='Level {$loop_enemy.level}'>{$loop_enemy.level}</em>
+      <form name='remove-enemy-form' id='remove-enemy-form' action="enemies.php" method='POST'>
+        <input type='hidden' name='command' value='delete'>
+        <input type='hidden' name='remove_enemy' value='{$loop_enemy.player_id|escape}'>
+          <button type='submit' class='remove-enemy-button'>
+            <img src="{$smarty.const.IMAGE_ROOT}icons/mono/stop32.png" height='16' width='16' alt="remove" 
+              title='Remove {$loop_enemy.uname|escape} from your hitlist'>
+          </button>
+      </form>
     </li>
 		{/if}
 	{/foreach}
   </ul>
 </div>
 {else}
-<p class='enemies-lefthalf'>You haven't decided who your enemies are yet, pick some below.</p>
+<p class='enemies-lefthalf'>You haven't decided who your enemies are yet{if $logged_in}, pick some below.{else}, become a ninja to get some enemies.{/if}</p>
 {/if}
 
 {if count($peers) gt 0}
@@ -59,28 +66,33 @@
 {/if}
 </section><!-- End of clearfix section -->
 
+{if $logged_in}
+
 <div id="ninja-enemy" class='solo-box'>
   <form id="enemy-add" action="enemies.php" method="get" name="enemy_add">
-    <input id='enemy-match' type="text" maxlength="50" name="enemy_match" class="textField" placeholder='Search by ninja name'>
+    <input type='hidden' name='command' value='search'>
+    <input id='enemy-match' required=required type="text" maxlength="50" name="enemy_match" class="textField" placeholder='Search by ninja name' value='{if isset($enemy_match)}{$enemy_match}{/if}'>
     <input type="submit" value="Find Enemies" class="formButton">
   </form>    
 </div>
-<!-- Js at bottom -->
+<!-- This hooks into quick-match js at bottom -->
+
+{/if}
 
 
 <section id='ninja-matches' class='cf'>
 	<ul>
-		<li id='sample-enemy-match' class='enemy' class='hidden'>
-			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&amp;target='>Someone</a></strong>
+		<li id='sample-enemy-match' class='enemy' hidden>
+			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&amp;target='>...</a></strong>
 		</li>
 	</ul>
 	<div id='more-matches' class='hidden'>
 		...with more live matches...
 	</div>
 	<br style='clear:both'>
-{if $found_enemies && count($found_enemies) gt 0}
+{if isset($found_enemies) && count($found_enemies) gt 0}
 	{include file="enemy-matches.tpl" enemies=$found_enemies}
-{elseif $match_string}
+{elseif isset($enemy_match) && $enemy_match}
 	<div class='hidden'>
 	  Your search returned no ninja. maybe you should make an enemy of someone who recently attacked you.
 		{include file="enemy-matches.tpl" enemies=$recent_attackers}
@@ -110,5 +122,6 @@
 <!-- Display recently active ninja -->
 {* {include file="list.active.tpl" active_ninja=$active_ninjas} *}
 
-
+<!--  Deactivating this functionality for now.
 <script src='js/enemies.js'></script>
+-->

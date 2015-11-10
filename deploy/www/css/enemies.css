@@ -42,7 +42,7 @@ ul#recent-attackers{
 	position:relative;margin-bottom:0.1em;
 }
 #peer-chars .peer-name, #current-enemies-list .enemy-name{
-	width:10em;display:inline-block;overflow:hidden;text-overflow:ellipsis;
+	width:8.4em;display:inline-block;overflow:hidden;text-overflow:ellipsis;
 }
 #peer-chars .peer-name{
 	width:8.5em;
@@ -51,7 +51,7 @@ ul#recent-attackers{
 	margin-left:2em;width:6.5em;display:inline-block;
 }
 #npc-list{
-	margin: .5em auto;padding:0;text-align:left;font-size:1.3em;
+	margin: .5em auto 10em;padding:0;text-align:left;font-size:1.3em;
 }
 #npc-list .creature-image{
 	max-width:50px;max-height:50px;
@@ -61,4 +61,10 @@ ul#recent-attackers{
 }
 #more-matches{
 	clear:both;text-align:center;
+}
+#current-enemies-list #remove-enemy-form{
+	display:inline;
+}
+.remove-enemy-button{
+	padding:0;border:0;background:none;font-weight:normal;
 }
