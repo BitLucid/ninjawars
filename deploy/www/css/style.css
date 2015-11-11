@@ -2363,12 +2363,15 @@ table#sight-info {
 	color:white; font-weight:normal; border-right:3px gray inset; border-left:3px gray inset; border-top:3px gray inset;
 }
 
+#tabs.message-tabs ul{
+	display:inline-block;margin:0.3em auto 0;
+}
 
 #tabs.message-tabs ul li {
-	list-style-type:none; display:inline-block; margin-left:2em;
+	list-style-type:none; display:inline-block; margin-left:0.2em;
 }
 #tabs.message-tabs ul li a{
-	padding:.3em .7em; display:inline-block;
+	padding:0.3em 0.2em; display:inline-block;
 }
 
 #tabs.message-tabs ul li.first{
@@ -3829,6 +3832,13 @@ input[type="button"].btn-block {
 	}
 	.enemies-righthalf{
 		width:45% !important;float:right !important;
+	}
+
+	#tabs.message-tabs ul li {
+		margin-left:2em;
+	}
+	#tabs.message-tabs ul li a{
+		padding:0.3em 0.7em;
 	}
 
 	/*

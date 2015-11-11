@@ -2,14 +2,16 @@
 
 {include file='message-tabs.tpl' current=$current_tab}
 
-{if $informational}<div class='notice'>{$informational}</div>{/if}
+{if $informational}<div class='ninja-notice'>{$informational}</div>{/if}
+
+{if $error}<div class='ninja-error'>{$error}</div>{/if}
 
 <section>
 
   <div id='delete-messages'>
     <form method='post' action=''>
       <input type='hidden' name='delete' value='1'>
-      <input type='hidden' name='command' value='delete'>
+      <input type='hidden' name='command' value='delete_{$current_tab}'>
       <input type='hidden' name='type' value='{$type}'>
       <input class='btn btn-warning' type='submit' name='submit' value='Delete {$messages_type} Messages'>
     </form>
@@ -22,8 +24,9 @@
       <div>
         <em class='char-name'>@<input class='char-name textField' type='text' size='26' name='to' value='{$to}' required=required></em>
         <em>say</em>
-        &apos;<input id='message-to-ninja' type='text' size='30' name='message' class='textField' autocomplete='off' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}" required=required>&apos;
+        &apos;<input id='message-to-ninja' type='text' size='30' name='message' class='textField' autocomplete='off' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}" required=required autofocus=autofocus>&apos;
         <input type='hidden' name='messenger' value='1'>
+        <input type='hidden' name='command' value='personal'>
         <input type='submit' value='Send' name='ninja_message' class='formButton'>
       </div>
     </form>
@@ -33,9 +36,9 @@
 
 {if $has_clan && $current_tab == 'clan'}
   <div id='clan-mail-section' class='glassbox'>
-    <form id='clan_msg' action='messages.php' method='get' name='clan_msg'>
+    <form id='clan_msg' action='messages.php' method='post' name='clan_msg'>
       <div>
-        <input type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}" autocomplete='off' required=required>
+        <input type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}" autocomplete='off' required=required autofocus=autofocus>
         <input type='hidden' name='toclan' value='1'>
         <input type='hidden' name='command' value='clan'>
         <input type='hidden' value='1' name='messenger'>

@@ -12,7 +12,7 @@
 		</li>
 		{if $has_clan}
 		<li class='{if $current == 'clan'}current{/if}'>
-			<a href='messages.php?command=clan&amp;type=1'>Clan-Chat</a>
+			<a href='messages.php?command=clan'>Clan-Chat</a>
 		</li>
 		{/if}
 	</ul>
