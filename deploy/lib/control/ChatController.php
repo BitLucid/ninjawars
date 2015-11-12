@@ -1,12 +1,13 @@
 <?php
 namespace app\Controller;
-
 require_once(LIB_ROOT."control/lib_chat.php"); // Require all the chat helper and rendering functions.
+
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
 * The controller for effects of a village request and the default index display of the page
 **/
-class VillageController {
+class ChatController {
 
 	const ALIVE                  = false;
 	const PRIV                   = false;
@@ -18,27 +19,34 @@ class VillageController {
 	* Take in a chat and record it to the database.
 	*
 	**/
-	public function postnow(){
-		$user_id       = self_char_id();
+	public function receive(){
+		$char_id       = self_char_id();
 		$message       = in('message', null, 'no filter'); // Essentially no filtering.
+		$error = null;
 
-		if (!empty($message)) {
-			send_chat($user_id, $message);
+		if (!empty($message)){
+			if($char_id) {
+				send_chat($char_id, $message);
+			} else {
+				$error = 'You must be logged in to chat.';
+			}
 		}
 
-		redirect('/village.php');
+		return new RedirectResponse('/village.php'.($error? '?error='.url($error) : ''));
 	}
 
 	/**
-	* Get the last turns worked by a pc, and pass it to display the default page with form
+	* Pull & display the chats and a chat send if logged in
 	**/
 	public function index(){
+		$char_id = self_char_id();
 		// Initialize variables to pass to the template.
 		$field_size    = self::FIELD_SIZE;
 		$target        = $_SERVER['PHP_SELF'];
 		$message_count = get_chat_count();
 
 		$view_all      = in('view_all');
+		$error 		   = in('error');
 		$chatlength    = in('chatlength', self::DEFAULT_LIMIT, 'toInt');
 		$chatlength    = min(3000, max(30, $chatlength)); // Min 30, max 3000
 
@@ -51,6 +59,7 @@ class VillageController {
 			'field_size' => $field_size,
 			'target' 	 => $target,
 			'chats'  	 => $chats,
+			'error'      => $error,
 			'more_chats_to_see' => $more_chats_to_see,
 		];
 

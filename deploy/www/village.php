@@ -1,40 +1,41 @@
 <?php
-require_once(CORE.'control/VillageController.php');
+require_once(CORE.'control/ChatController.php');
 
-use app\Controller\VillageController;
+use app\Controller\ChatController;
 
-if ($error = init(VillageController::PRIV, VillageController::ALIVE)) {
+if ($error = init(ChatController::PRIV, ChatController::ALIVE)) {
 	display_error($error);
 	die();
 }
 
 $command = in('command');
-$controller = new VillageController();
+$controller = new ChatController();
 
 // Switch between the different controller me/**thods.
 switch(true){
-	case($_SERVER['REQUEST_METHOD'] == 'POST' && self_char_id()
-		&& $command=='postnow'):
-		$controller->postnow();
-		exit();
-		break;
+	case($_SERVER['REQUEST_METHOD'] == 'POST' && $command=='receive'):
+		$response = $controller->receive();
 	case($command = 'index'):
 	default:
 		$command = 'index';
 		$response = $controller->index();
 		break;
 }
+if($response instanceof RedirectResponse){
+	$response->send();
+} else {
 
-// TODO: register plugin time_ago globally and call display_page function instead?
-$template = prep_page($response['template'], $response['title'], $response['parts'], $response['options']);
+	// TODO: register plugin time_ago globally and call display_page function instead?
+	$template = prep_page($response['template'], $response['title'], $response['parts'], $response['options']);
 
-function get_time_ago($p_params, &$tpl) {
-	return time_ago($p_params['ago'], $p_params['previous_date']);
+	function get_time_ago($p_params, &$tpl) {
+		return time_ago($p_params['ago'], $p_params['previous_date']);
+	}
+
+	//$template->register_function('time_ago', 'get_time_ago');
+	$template->registerPlugin("function","time_ago", "get_time_ago");
+
+	$template->fullDisplay();
 }
-
-//$template->register_function('time_ago', 'get_time_ago');
-$template->registerPlugin("function","time_ago", "get_time_ago");
-
-$template->fullDisplay();
 
 
