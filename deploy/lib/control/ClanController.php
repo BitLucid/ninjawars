@@ -3,6 +3,7 @@ namespace app\Controller;
 
 require_once(CORE.'data/ClanFactory.php'); ///TODO autoload this
 
+use Exception;
 use \Player as Player;
 use \ClanFactory as ClanFactory;
 
