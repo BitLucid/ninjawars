@@ -43,7 +43,7 @@ class ChatController {
 		// Initialize variables to pass to the template.
 		$field_size    = self::FIELD_SIZE;
 		$target        = $_SERVER['PHP_SELF'];
-		$message_count = get_chat_count();
+		$all_chats_count = get_chat_count();
 
 		$view_all      = in('view_all');
 		$error 		   = in('error');
@@ -52,8 +52,7 @@ class ChatController {
 
 		// Output section.
 		$chats = get_chats(($view_all? null : $chatlength)); // Limit by chatlength unless a request to view all came in.
-		$chats = $chats->fetchAll();
-		$more_chats_to_see = (count($chats)<$message_count? true : null);
+		$more_chats_to_see = (rco($chats)<$all_chats_count? true : null);
 
 		$parts = [
 			'field_size' => $field_size,
