@@ -1,131 +1,42 @@
 <?php
-require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
-require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.
+require_once(CORE.'control/AccountController.php');
 
-$private    = true;
-$alive      = false;
+use app\Controller\AccountController;
 
-if ($error = init($private, $alive)) {
+if ($error = init(AccountController::PRIV, AccountController::ALIVE)) {
 	display_error($error);
 	die();
 }
 
-// *** To verify that the delete request was made.
-$in_delete_account = in('deleteaccount');
-$deleteAccount     = (in_array($in_delete_account, array(1,2)) ? $in_delete_account : null); // Stage of delete process.
+$controller = new AccountController;
+$command = in('command');
 
-$in_changePass = in('changepass');
-$change_pass   = (in_array($in_changePass, array(1,2)) ? $in_changePass : null); // Stage of password change process
-
-$in_oldPass     = in('oldpassw');
-$in_newPass     = trim(in('newpassw'));
-$in_confirmPass = trim(in('confirmpassw'));
-
-$in_changeEmail = in('changeemail');
-$change_email   = (in_array($in_changeEmail, array(1,2)) ? $in_changeEmail : null); // Stage of email change process
-
-$in_newEmail     = trim(in('newemail'));
-$in_confirmEmail = trim(in('confirmemail'));
-
-$passW = in('passw', null); // *** To verify whether there's a password put in.
-
-$changeprofile = in('changeprofile');
-$newprofile    = trim(in('newprofile', null, null)); // Unfiltered input.
-
-$self_info = self_info();
-$username = $self_info['uname'];
-$user_id  = self_char_id();
-
-$confirm_delete     = false;
-$profile_changed    = false;
-$profile_max_length = 500; // Should match the limit in limitStatChars.js - ajv: No, limitStatChars.js should be dynamically generated with this number from a common location -
-
-$delete_attempts = (SESSION::is_set('delete_attempts') ? SESSION::get('delete_attempts') : null);
-
-$successMessage = null;
-
-if ($deleteAccount) {
-	$verify = false;
-	$verify = is_authentic($username, $passW);
-
-	if ($verify && !$delete_attempts) {
-	    // *** Username & password matched, on the first attempt.
-		pauseAccount($user_id); // This may redirect and stuff?
-		logout_user();
-	} else {
-	    if ($deleteAccount == 2) {
-	        SESSION::set('delete_attempts', 1);
-	        $error = 'Deleting of account failed, please email '.SUPPORT_EMAIL;
-	    } else {
-    	    $confirm_delete = true;
-    	}
-	}
-} else if ($change_email) {
-	if ($change_email == 2) {
-		$verify = is_authentic($username, $passW);
-
-		if ($verify) {
-			if ($in_newEmail === $in_confirmEmail) {
-				if (!email_is_duplicate($in_newEmail)) {
-					if (email_fits_pattern($in_newEmail)) {
-						changeEmail($user_id, $in_newEmail);
-						$change_email = 0;
-						$successMessage = 'Your email has been updated.';
-					} else {
-						$error = 'Your email must be a valid email address containing a domain name and no spaces.';
-					}
-				} else {
-					$error = 'The email you provided is already in use.';
-				}
-			} else {
-				$error = 'Your new emails did not match.';
-			}
-		} else {
-			$error = 'You did not provide the correct current password.';
-		}
-	}
-} else if ($change_pass) {
-	if ($change_pass == 2) {
-		$verify = is_authentic($username, $passW);
-
-		if ($verify) {
-			if ($in_newPass === $in_confirmPass) {
-				changePassword($user_id, $in_newPass);
-				$change_pass = 0;
-				$successMessage = 'Your password has been updated.';
-			} else {
-				$error = 'Your new passwords did not match.';
-			}
-		} else {
-			$error = 'You did not provide the correct current password.';
-		}
-	}
+// Switch between the different controller methods.
+switch(true){
+	case($command=='show_change_email_form'):
+		$response = $controller->showChangeEmailForm();
+		break;
+	case($command=='change_email'):
+		$response = $controller->changeEmail();
+		break;
+	case($command=='show_change_password_form'):
+		$response = $controller->showChangePasswordForm();
+		break;
+	case($command=='change_password'):
+		$response = $controller->changePassword();
+		break;
+	case($command=='show_confirm_delete_form'):
+		$response = $controller->deleteAccountConfirmation();
+		break;
+	case($command=='delete_account'):
+		$response = $controller->deleteAccount();
+		break;
+	case($command = 'index'):
+	default:
+		$command = 'index';
+		$response = $controller->index();
+		break;
 }
 
-$account_info = self_account_info();
-
-// Get the existing oauth info, if any.
-$oauth_provider = $account_info['oauth_provider'];
-$oauth = $oauth_provider && $account_info['oauth_id'];
-
-$player           = self_info();
-$gravatar_url     = generate_gravatar_url($player['player_id']);
-
-// TODO: Lock account info behind password or password reset choice wall?
-
-// TODO: Current account's characters list.
-
-// TODO: Create another character interface...
-
-// TODO: Choose next active character interface...
-
-$parts = get_certain_vars(get_defined_vars(), array('player', 'account_info', 'oauth_provider', 'oauth'));
-
-display_page(
-	'account.tpl'
-	, 'Your Account'
-	, $parts
-	, array(
-		'quickstat' => 'player'
-	)
-);
+// Display the page with the template, title or header vars, template parts, and page options
+display_page($response['template'], $response['title'], $response['parts'], $response['options']);
