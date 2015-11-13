@@ -28,34 +28,34 @@ h1 .account-identity{
   <p class='error'>{$error}</p>
 {elseif $successMessage}
   <p class='notice'>{$successMessage|escape}</p>
-{elseif $confirm_delete}
+{/if}
+
+{if $command == 'show_confirm_delete_form'}
   <p>Please provide your password to confirm.</p>
   <form method="post" action="account.php" onsubmit="return confirm('Are you sure you want to delete your account?');">
     <div>
       <input id="passw" type="password" maxlength="50" name="passw" class="textField">
-      <input type="hidden" name="deleteaccount" value="2">
+      <input type="hidden" name="command" value="delete_account">
       <input type="submit" value="Confirm Delete" class="formButton">
     </div>
   </form>
-{/if}
-
-{if $change_pass}
+{elseif $command == 'show_change_password_form'}
 <form method="post" action="account.php">
   <div>
     <div>Current Password: <input type="password" maxlength="50" name="passw" class="textField"></div>
     <div>New Password: <input type="password" maxlength="50" name="newpassw" class="textField"></div>
     <div>Confirm New Password: <input type="password" maxlength="50" name="confirmpassw" class="textField"></div>
-    <input type="hidden" name="changepass" value="2">
+    <input type="hidden" name="command" value="change_password">
     <input type="submit" value="Change Password" class="formButton">
   </div>
 </form>
-{elseif $change_email}
+{elseif $command == 'show_change_email_form'}
 <form method="post" action="account.php">
   <div>
     <div>Current Password: <input id="passw" type="password" maxlength="50" name="passw" class="textField"></div>
     <div>New Email: <input type="text" maxlength="500" name="newemail" class="textField"></div>
     <div>Confirm New Email: <input type="text" maxlength="500" name="confirmemail" class="textField"></div>
-    <input type="hidden" name="changeemail" value="2">
+    <input type="hidden" name="command" value="change_email">
     <input type="submit" value="Change Email" class="formButton">
   </div>
 </form>
@@ -79,14 +79,14 @@ h1 .account-identity{
 <hr>
 <form action='account.php' method='post'>
   <div>
-    <input type='hidden' name='changepass' value='1'>
+    <input type='hidden' name='command' value='show_change_password_form'>
     <input type='submit' value='Change Your Password' class='formButton'>
   </div>
 </form>
 <hr>
 <form action='account.php' method='post'>
   <div>
-    <input type='hidden' name='changeemail' value='1'>
+    <input type='hidden' name='command' value='show_change_email_form'>
     <input type='submit' value='Change Your Email' class='formButton'>
   </div>
 </form>
@@ -96,7 +96,7 @@ h1 .account-identity{
 <p><span class='error'>WARNING:</span> Clicking on the button below will terminate your account.</p>
 <form action='account.php' method='post'>
   <div>
-    <input type='hidden' name='deleteaccount' value='1'>
+    <input type='hidden' name='command' value='show_confirm_delete_form'>
     <input type='submit' value='Permanently Remove Your Account' class='formButton'>
   </div>
 </form>
