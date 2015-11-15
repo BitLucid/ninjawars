@@ -26,8 +26,8 @@ class LoginController{
 
 		$is_logged_in = is_logged_in();
 
-		$pass = in('pass');
-		$username_requested = in('user');
+		$pass = post('pass');
+		$username_requested = post('user');
 		if($username_requested === null || $pass === null){
 			return new RedirectResponse('/login.php?error='.url('No username or no password specified'));
 		}
