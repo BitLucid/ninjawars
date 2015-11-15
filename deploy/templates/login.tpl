@@ -69,7 +69,7 @@ section.login-page{
 
 
 <section class='login-page'>
-  <form id="login-form" action="login.php" method="post">
+  <form id="login-form" action="/login.php" method="post">
 	  <input type="hidden" name="ref" value="{$referrer|escape}">
 	    <div class='outer-outer-box'>
 	  	<div class='outer-box'>
@@ -86,6 +86,7 @@ section.login-page{
 	      </div>
 	    </label>
 	    <div class='left-side'>
+	    	<input type='hidden' name='command' value='login_request'>
 		    <input tabindex=3 name="login_request" id='request-login' class='btn btn-vital' type="submit" value="Login">
 		</div>
 	    </div>
