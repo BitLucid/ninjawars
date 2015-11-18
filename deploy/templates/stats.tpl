@@ -110,7 +110,7 @@
 
   <div class='secondary'>
     <form id="profile-edit" name='profile-edit' action="stats.php" method="post">
-      <input type='hidden' name='changedetails' value=1>
+      <input type='hidden' name='command' value='change_details'>
       <fieldset id='details'>
       <legend>Ninja Details</legend>
       <textarea name='description' id='description' title='Visible description of your ninja' placeholder='Visible description of your ninja'>{$description|escape}</textarea>
@@ -120,7 +120,10 @@
       <label class='glass-box'> Traits: <input name='traits' id='traits' type='text' value='{$traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
       <input type='submit' value='Update' class='formButton'>
     </fieldset>
-      <fieldset>
+    </form>
+    <form id="profile-edit" name='profile-edit' action="stats.php" method="post">
+        <input type='hidden' name='command' value='update_profile'>
+        <fieldset>
         <legend>Out-of-character Profile</legend>
         <div class='right-padded'>
           <textarea id='player-profile-area' name='newprofile' class='textField'>{$profile_editable|escape}</textarea>
