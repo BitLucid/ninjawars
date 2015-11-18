@@ -111,19 +111,19 @@
   <div class='secondary'>
     <form id="profile-edit" name='profile-edit' action="stats.php" method="post">
       <input type='hidden' name='command' value='change_details'>
-      <fieldset id='details'>
-      <legend>Ninja Details</legend>
-      <textarea name='description' id='description' title='Visible description of your ninja' placeholder='Visible description of your ninja'>{$description|escape}</textarea>
-      <textarea name='instincts' id='instincts' title="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if ... then ...)" placeholder="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if I see Samurai, then I automatically attack.)">{$instincts|escape}</textarea>
-      <textarea name='goals' id='goals' title="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring" placeholder="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring">{$goals|escape}</textarea>
-      <textarea name='beliefs' id='beliefs' title="Your ninja's belief, the moral compass that keeps them going." placeholder="Your ninja's belief, the moral compass that keeps them going.">{$beliefs|escape}</textarea>
-      <label class='glass-box'> Traits: <input name='traits' id='traits' type='text' value='{$traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
-      <input type='submit' value='Update' class='formButton'>
-    </fieldset>
+        <fieldset id='details'>
+        <legend>Ninja Details</legend>
+        <textarea name='description' id='description' title='Visible description of your ninja' placeholder='Visible description of your ninja'>{$description|escape}</textarea>
+        <textarea name='instincts' id='instincts' title="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if ... then ...)" placeholder="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if I see Samurai, then I automatically attack.)">{$instincts|escape}</textarea>
+        <textarea name='goals' id='goals' title="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring" placeholder="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring">{$goals|escape}</textarea>
+        <textarea name='beliefs' id='beliefs' title="Your ninja's belief, the moral compass that keeps them going." placeholder="Your ninja's belief, the moral compass that keeps them going.">{$beliefs|escape}</textarea>
+        <label class='glass-box'> Traits: <input name='traits' id='traits' type='text' value='{$traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
+        <input type='submit' value='Update' class='formButton'>
+      </fieldset>
     </form>
     <form id="profile-edit" name='profile-edit' action="stats.php" method="post">
-        <input type='hidden' name='command' value='update_profile'>
-        <fieldset>
+      <input type='hidden' name='command' value='update_profile'>
+      <fieldset>
         <legend>Out-of-character Profile</legend>
         <div class='right-padded'>
           <textarea id='player-profile-area' name='newprofile' class='textField'>{$profile_editable|escape}</textarea>
@@ -131,7 +131,6 @@
         <input type='submit' value='Update' class='formButton'> (<span id='characters-left'>{$profile_max_length} Character Limit</span>)
       </fieldset>
     </form>
-
   </div>
 </section><!-- End of the two-column arrangement. -->
 
