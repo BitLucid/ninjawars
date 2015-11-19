@@ -52,6 +52,7 @@ class StatsController {
 		$char_id			= self_char_id();
 		$new_profile		= trim(in('newprofile', null, null)); // Unfiltered input.
 		$profile_changed	= false;
+		$error				= '';
 
 		if (!empty($new_profile)) {
 			DatabaseConnection::getInstance();
@@ -61,13 +62,14 @@ class StatsController {
 			$statement->execute();
 			$profile_changed = true;
 		} else {
-			// TODO error variable is unused
-			// $error = 'Cannot enter a blank profile.';
+			$error = 'Cannot enter a blank profile.';
 		}
 
 		$query_str = [];
 		if ($profile_changed) {
 			$query_str['profile_changed'] = 1;
+		} else {
+			$query_str['error'] = $error;
 		}
 
 		$raw_query_str = count($query_str) ? '?'.http_build_query($query_str, null, '&') : null;
@@ -113,7 +115,7 @@ class StatsController {
 			'gravatar_url' 		=> generate_gravatar_url($player['player_id']),
 			'profile_max_length' => self::PROFILE_MAX_LENGTH,
 
-			'error' 			=> '',
+			'error' 			=> in('error'),
 			'successMessage' 	=> '',
 			'profile_changed' 	=> (bool) in('profile_changed'),
 			'changed' 			=> (bool) in('changed'),
