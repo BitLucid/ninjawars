@@ -23,14 +23,14 @@ class StatsController {
 	const PROFILE_MAX_LENGTH = 500;
 
 	public function changeDetails() {
-		$char_id  = self_char_id();
-		$char     = new Player($char_id);
+		$char_id	= self_char_id();
+		$char		= new Player($char_id);
 
-		$description 	= post('description', $char->description());
-		$goals 			= post('goals', $char->goals());
-		$instincts 		= post('instincts', $char->instincts());
-		$beliefs 		= post('beliefs', $char->beliefs());
-		$traits 		= post('traits', $char->traits());
+		$description	= post('description', $char->description());
+		$goals			= post('goals', $char->goals());
+		$instincts		= post('instincts', $char->instincts());
+		$beliefs		= post('beliefs', $char->beliefs());
+		$traits			= post('traits', $char->traits());
 
 		assert((bool)$description);
 		assert((bool)$goals);
@@ -85,47 +85,47 @@ class StatsController {
 
 	private function render($parts) {
 		// default parts
-		$char_id  		  = self_char_id();
-		$char         	  = new Player($char_id);
-		$player           = self_info();
-		$player_clan 	  = get_clan_by_player_id($char_id);
+		$char_id		= self_char_id();
+		$char			= new Player($char_id);
+		$player			= self_info();
+		$player_clan	= get_clan_by_player_id($char_id);
 		// $player['created_date']=$player['created_date']? date("c", strtotime($player['created_date'])) : null;
-		$class_theme      = class_theme($char->class_identity());
-		$level_category   = level_category($player['level']);
+		$class_theme	= class_theme($char->class_identity());
+		$level_category	= level_category($player['level']);
 
 		$parts = array_merge([
-			'player' 	=> $player,
-			'player_clan' => $player_clan,
-			'clan_id' 	=> $player_clan ? $player_clan->getID() : false,
-			'clan_name' => $player_clan ? $player_clan->getName() : false,
+			'player'		=> $player,
+			'player_clan'	=> $player_clan,
+			'clan_id'		=> $player_clan ? $player_clan->getID() : false,
+			'clan_name'		=> $player_clan ? $player_clan->getName() : false,
 
-			'status_list' 		=> get_status_list(),
-			'profile_editable' 	=> $player['messages'],
-			'rank_display' 		=> get_rank($char_id),
+			'status_list'		=> get_status_list(),
+			'profile_editable'	=> $player['messages'],
+			'rank_display'		=> get_rank($char_id),
 
-			'traits' 	=> $char->traits(),
-			'beliefs' 	=> $char->beliefs(),
-			'instincts' => $char->instincts(),
-			'goals' 	=> $char->goals(),
-			'description' 		=> $char->description(),
+			'traits'		=> $char->traits(),
+			'beliefs'		=> $char->beliefs(),
+			'instincts'		=> $char->instincts(),
+			'goals'			=> $char->goals(),
+			'description'	=> $char->description(),
 
-			'username' 			=> self_name(),
-			'level_category' 	=> $level_category,
-			'class_theme' 		=> $class_theme,
-			'gravatar_url' 		=> generate_gravatar_url($player['player_id']),
-			'profile_max_length' => self::PROFILE_MAX_LENGTH,
+			'username'				=> self_name(),
+			'level_category'		=> $level_category,
+			'class_theme'			=> $class_theme,
+			'gravatar_url'			=> generate_gravatar_url($player['player_id']),
+			'profile_max_length'	=> self::PROFILE_MAX_LENGTH,
 
-			'error' 			=> in('error'),
-			'successMessage' 	=> '',
-			'profile_changed' 	=> (bool) in('profile_changed'),
-			'changed' 			=> (bool) in('changed'),
+			'error'				=> in('error'),
+			'successMessage'	=> '',
+			'profile_changed'	=> (bool) in('profile_changed'),
+			'changed'			=> (bool) in('changed'),
 		], $parts);
 
 		return [
-			'template' => 'stats.tpl',
-			'title'    => 'Ninja Stats',
-			'parts'    => $parts,
-			'options'  => [
+			'template'	=> 'stats.tpl',
+			'title'		=> 'Ninja Stats',
+			'parts'		=> $parts,
+			'options'	=> [
 				'quickstat' => 'player',
 			],
 		];
