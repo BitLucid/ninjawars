@@ -1,6 +1,7 @@
 <?php
 require_once(CORE.'control/StatsController.php'); // Player info display pieces.
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use app\Controller\StatsController;
 
 if ($error = init(StatsController::PRIV, StatsController::ALIVE)) {
@@ -14,12 +15,10 @@ $command = in('command');
 // Switch between the different controller methods.
 switch($command){
 	case 'change_details':
-		$controller->changeDetails();
-		exit();
+		$response = $controller->changeDetails();
 		break;
 	case 'update_profile':
-		$controller->updateProfile();
-		exit();
+		$response = $controller->updateProfile();
 		break;
 	case 'index':
 	default:
@@ -28,5 +27,9 @@ switch($command){
 		break;
 }
 
-// Display the page with the template, title or header vars, template parts, and page options
-display_page($response['template'], $response['title'], $response['parts'], $response['options']);
+if ($response instanceof RedirectResponse) {
+	$response->send();
+} else {
+	// Display the page with the template, title or header vars, template parts, and page options
+	display_page($response['template'], $response['title'], $response['parts'], $response['options']);
+}

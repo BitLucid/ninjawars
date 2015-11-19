@@ -1,6 +1,7 @@
 <?php
 namespace app\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use DatabaseConnection;
 use Player;
 use PlayerDAO;
@@ -42,14 +43,15 @@ class StatsController {
 		$char->set_traits($traits);
 
 		$changed = PlayerDAO::saveDetails($char);
-		redirect('/stats.php?changed='.(int)$changed);
+
+		return new RedirectResponse('/stats.php?changed='.(int)$changed);
 	}
 
 	public function updateProfile()
 	{
-		$char_id  		 = self_char_id();
-		$new_profile     = trim(in('newprofile', null, null)); // Unfiltered input.
-		$profile_changed = false;
+		$char_id			= self_char_id();
+		$new_profile		= trim(in('newprofile', null, null)); // Unfiltered input.
+		$profile_changed	= false;
 
 		if (!empty($new_profile)) {
 			DatabaseConnection::getInstance();
@@ -63,7 +65,13 @@ class StatsController {
 			// $error = 'Cannot enter a blank profile.';
 		}
 
-		redirect('/stats.php'.($profile_changed?'?profile_changed=1':''));
+		$query_str = [];
+		if ($profile_changed) {
+			$query_str['profile_changed'] = 1;
+		}
+
+		$raw_query_str = count($query_str) ? '?'.http_build_query($query_str, null, '&') : null;
+		return new RedirectResponse('/stats.php'.$raw_query_str);
 	}
 
 	/**
