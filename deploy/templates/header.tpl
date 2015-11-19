@@ -47,18 +47,9 @@
     <script type="text/javascript" src="js/chat.js"></script>
 {/if}
 
-<style>
-#logo-appended{
-    position:absolute;top:0;left:0;
-}
-#logo-placeholder{
-    width:110px;height:75px;display:inline-block;z-index:-1;
-}
-</style>
-
   </head>
   <body class="{$body_classes|escape}">
-{if !$is_index}
+{if !$is_index}{* Only display appended logo on solo pages *}
 	<div id='solo-page-header'>
 		<div id="logo-appended">
 		  <a href="/">
@@ -72,4 +63,4 @@
 		<a id='solo-page-login-link' href='login.php' class='btn btn-vital'>Log in</a> <a id='solo-page-signup-link' href='signup.php' class='btn btn-vital'>Signup</a>
 	{/if}
     </div>
-{/if}{* End of check for index or quickstats to not display the appended logo for those *}
+{/if}{* End of solo-page check *}

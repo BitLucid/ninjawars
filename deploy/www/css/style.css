@@ -1183,7 +1183,7 @@ td.playerTable {
 	height:42px;
 }
 #logo-appended {
-	display:inline-block;
+	display:inline-block;position:absolute;top:0;left:0;
 }
 #solo-page-header {
 	display:none;
@@ -1693,6 +1693,55 @@ a#skip-to-bottom{
 	background-color:black;
 	color:white;
 }
+
+/* =============== Login Page ================= */
+
+section.login-page{
+	margin:0.3em auto 0.3em;text-align:center;
+}
+.login-page .right-side{
+	display:block;
+	text-align:left;
+}
+.login-page .left-side{
+	display:block;
+	text-align:left;
+}
+.login-page .central{
+	text-align:center;
+}
+.login-page .left-side a{
+	font-size:.8em;
+}
+.login-page .line{
+	margin-bottom: .5em;
+	font-size: 1.4em;
+}
+.login-page .outer-box{
+	display:inline-block;
+	margin-left:auto;
+	margin-right:auto;
+	border: 10px rgb(20, 20, 20) solid;
+	background-color:rgb(50, 50, 50);
+	padding:1em 4em;
+}
+.login-page .outer-outer-box{
+	display:inline-block;
+	border: 5px rgb(10, 10, 10) solid;
+}
+
+#request-login{
+	font-size:larger;width:100%;
+}
+#login-bottom-bar-container{
+	margin: 5em auto .5em;width:96%;padding:.2em;border: 1px solid #993300;
+}
+#login-bottom-bar-container #login-problems-resources{
+	padding: 0 auto 0;text-align:center;background-color: rgba(30, 30, 30, 0.70);
+}
+
+
+/* =============== End of Login Page ========== */
 
 /* Login menu and login-bar config */
 .login-menu { /* See also the #menu entry */
@@ -2686,12 +2735,8 @@ select option #blue-class-select {
 	padding:0;
 }
 
-#logo-placeholder {
-	width:100px;
-	height:60px;
-	display:inline-block;
-	vertical-align:top;
-	z-index:-1;
+#logo-placeholder{
+    width:110px;height:75px;display:inline-block;z-index:-1;vertical-align:top;
 }
 
 #nw-catchphrases span {

@@ -1,52 +1,3 @@
-{literal}
-<style type='text/css'>
-.right-side{
-	display:block;
-	text-align:left;
-}
-.left-side{
-	display:block;
-	text-align:left;
-}
-.central{
-	text-align:center;
-}
-.left-side a{
-	font-size:.8em;
-}
-.line{
-	margin-bottom: .5em;
-	font-size: 1.4em;
-}
-.outer-box{
-	display:inline-block;
-	margin-left:auto;
-	margin-right:auto;
-	border: 10px rgb(20, 20, 20) solid;
-	background-color:rgb(50, 50, 50);
-	padding:1em 4em;
-}
-.outer-outer-box{
-	display:inline-block;
-	border: 5px rgb(10, 10, 10) solid;
-}
-
-section.login-page{
-	margin:0.3em auto 0.3em;text-align:center;
-}
-
-#request-login{
-	font-size:larger;width:100%;
-}
-#login-bottom-bar-container{
-	margin: 5em auto .5em;width:96%;padding:.2em;border: 1px solid #993300;
-}
-#login-problems{
-	padding: 0 auto 0;text-align:center;background-color: rgba(30, 30, 30, 0.70);
-}
-</style>
-{/literal}
-
 <h1>Login</h1>
 
 {if $logged_out}
@@ -103,7 +54,7 @@ section.login-page{
 
 
 <div id='login-bottom-bar-container'>
-	<div id="login-problems">
+	<div id="login-problems-resources">
 	  <span class="signup-link">
 		<a target="main" href="signup.php?referrer={$referrer|escape}">Become a Ninja!</a> |
 	  </span>
