@@ -22,6 +22,9 @@ class StatsController {
 	 */
 	const PROFILE_MAX_LENGTH = 500;
 
+	/**
+	* Change account details
+	*/
 	public function changeDetails() {
 		$char_id	= self_char_id();
 		$char		= new Player($char_id);
@@ -47,6 +50,9 @@ class StatsController {
 		return new RedirectResponse('/stats.php?changed='.(int)$changed);
 	}
 
+	/**
+	* Update profile
+	*/
 	public function updateProfile()
 	{
 		$char_id			= self_char_id();
