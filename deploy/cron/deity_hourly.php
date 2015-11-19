@@ -53,10 +53,6 @@ $s->bindValue(':poison', POISON);
 $s->execute();
 
 DatabaseConnection::$pdo->query("UPDATE players SET health = 0 WHERE health < 0"); // *** zeros negative health totals.
-$s = DatabaseConnection::$pdo->prepare("UPDATE players SET turns = :max_turns WHERE turns > :max_turns2"); // max turn limiter gets run from the constants section.
-$s->bindValue(':max_turns', MAX_TURNS);
-$s->bindValue(':max_turns2', MAX_TURNS);
-$s->execute();
 
 assert(FROZEN != 'FROZEN'); // These constants should be numeric.
 assert(STEALTH != 'STEALTH');
