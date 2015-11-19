@@ -2,6 +2,8 @@
 
 <h1>Fight</h1>
 
+{if $logged_in}
+
 {if count($recent_attackers) gt 0}
 	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
 {/if}
@@ -65,8 +67,6 @@
 <p class='enemies-righthalf'>No nearby ninja, <em class='char-name'>{$username|escape}</em>.</p>
 {/if}
 </section><!-- End of clearfix section -->
-
-{if $logged_in}
 
 <div id="ninja-enemy" class='solo-box'>
   <form id="enemy-add" action="enemies.php" method="get" name="enemy_add">
