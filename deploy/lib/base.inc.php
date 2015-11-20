@@ -36,7 +36,6 @@ require_once(LIB_ROOT.'data/DatabaseConnection.php');
 require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
 //require_once(OBJ_ROOT.'Sanitize.php');
 require_once(LIB_ROOT.'control/Nmail.class.php');
-require_once(LIB_ROOT.'control/Cookie.class.php');
 require_once(LIB_ROOT.'control/Session.class.php');
 require_once(LIB_ROOT.'environment/RequestWrapper.php');
 
