@@ -8,15 +8,20 @@ You didn't choose an item/victim.
 You do not have {$article|escape} {$itemName|escape}
 {else}
 <div class='usage-mod-result'>
+  <a href="player.php?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$targetObj->avatarUrl()}</a> 
 	{assign var="charName" value=$target|escape}
 	{assign var="charName" value="<strong class=\"char-name\">$charName</strong>"}
 	{* This is kinda an abomination. *}
+  {if $alternateResultMessage}
   <p>
     {$alternateResultMessage|replace:'__TARGET__':$charName}
   </p>
+  {/if}
+  {if $resultMessage}
   <p>
     {$resultMessage|replace:'__TARGET__':$charName}
   </p>
+  {/if}
 
 	{if $kill}
 	You have killed {$target|escape} with {$article|escape} {$itemName|escape}!<br>
@@ -52,13 +57,14 @@ You have comitted suicide!<br>
 </div>
 {/if}
 
-<p>
+
+<div class='LinkBack glassbox'>
   Return to
 {if $return_to eq 'player'}
-  <a href="player.php?player_id={$target_id|escape:'url'}" class='return-to-location'>Ninja Detail</a>
+  <a href="player.php?player_id={$target_id|escape:'url'}" class='return-to-location'>view {$charName}</a>
 {elseif $return_to eq 'inventory'}
   <a href="inventory.php" class='return-to-location'>Inventory</a>
 {else}
   <a href='combat.php' class='return-to-location'>Combat</a>
 {/if}
-</p>
+</div>

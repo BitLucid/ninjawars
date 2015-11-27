@@ -2020,7 +2020,7 @@ table#sight-info {
 	width:100%;
 	text-align:center;
 	font-size:1.3em;
-	margin-bottom:2em;
+	margin-bottom:0.5em;
 }
 
 #sight-info thead {
@@ -2587,7 +2587,7 @@ select option #blue-class-select {
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 10px;
-	border: 1px solid gray;
+	border: 1px solid rgb(50, 50, 50);
 	padding: 10px;
 }
 

@@ -93,9 +93,6 @@ $AttackLegal = new AttackLegal($attacker, $target, $params);
 $attack_is_legal = $AttackLegal->check();
 $attack_error = $AttackLegal->getError();
 
-
-// *** There's a same-domain problem with this attack-legal now that it's been modified for skills ***
-
 $target_player    = new Player($target_id);
 $attacking_player = new Player($attacker_id);
 

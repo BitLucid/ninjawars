@@ -1,11 +1,16 @@
 
-<h1>Skill Effect</h1>
+<section>
+	<h1>Skill Effect</h1>
 
 {if $attack_error}
 <div class='ninja-notice'>{$attack_error}</div>
 {else}
 
 <div class='usage-mod-result'>
+
+	<div>
+		<a href="player.php?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$target->avatarUrl()}</a>
+	</div>
 
 	{if $display_sight_table}
 	  		
@@ -71,21 +76,24 @@
 	<div id='ki-cost'> You used {$ki_cost} ki.</div>
 {/if}
 
-</div> {* End of usage mod result div*}
-
 	{if $reuse}
-<div class="skillReload">
-	<a class='btn btn-primary attack-again thick' href="skills_mod.php?command={$command|escape:'url'}{if $target_id}&amp;target={$target_id|escape:'url'}{/if}">
+<div class="skillReload glassbox">
+	<a class='attack-again thick btn btn-primary' href="skills_mod.php?command={$command|escape:'url'}{if $target_id}&amp;target={$target_id|escape:'url'}{/if}">
 		Use {$command} again
 	</a>
 </div>
 	{/if}
+
+</div> {* End of usage mod result div*}
+
 {/if}{* End of there was no attack-error block. *}
 
-<div class="LinkBack">
+</section>
+
+<div class="LinkBack glassbox">
   Return to
 {if $return_to_target}
-  <a class='return-to-location' href='player.php?player_id={$target_id|escape}'>Ninja Detail</a>
+  <a href="player.php?player_id={$target_id|escape:'url'}" class='return-to-location'>view {$charName}</a>
 {else}
   <a class='return-to-location' href="skills.php">Skills</a>
 {/if}

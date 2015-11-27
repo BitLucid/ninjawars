@@ -1,6 +1,10 @@
 <section id='attack-outcome'>
 	<h1>Battle Outcome</h1>
 
+	<div>
+		<a href="player.php?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$target_player->avatarUrl()}</a>
+	</div>
+
 	<hr>
 
 	{if $attack_error}
