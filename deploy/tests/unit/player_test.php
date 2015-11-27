@@ -119,6 +119,13 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
     }
 
 
+
+    function testPCCanObtainAGravatarUrl(){
+        $char = new Player($this->char_id);
+        $this->assertNotEmpty($char->avatarUrl());
+        $this->assertTrue(strpos($char->avatarUrl(), 'avatar') !== false);
+    }
+
 	/**
 	 * group char
 	**/
@@ -131,8 +138,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
     	$player_factory->save($char->vo);
     	$char_copy = new Player($this->char_id);
     	$this->assertEquals($char_copy->ki(), $ki+55);
-    }    
-
+    }
 
 }
 

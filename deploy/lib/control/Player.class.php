@@ -3,6 +3,7 @@ require_once(ROOT . "core/control/Character.php");
 require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
 require_once(LIB_ROOT . "control/lib_status.php");
+require_once(CORE . "control/lib_player.php");
 require_once(ROOT.'core/data/AccountFactory.php');
 require_once(ROOT.'core/data/ClanFactory.php');
 
@@ -391,6 +392,13 @@ class Player implements Character {
 
 	public function getVerificationNumber(){
 		return $this->vo->verification_number;
+	}
+
+	/**
+	 * Get the gravatar url for a pc
+	**/
+	public function avatarUrl(){
+		return generate_gravatar_url($this);
 	}
 
 }
