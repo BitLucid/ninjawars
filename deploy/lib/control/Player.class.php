@@ -38,9 +38,11 @@ class Player implements Character {
 			$dao = new PlayerDAO();
 			if (!($this->vo = $dao->get($this->player_id))) {
 				$this->vo = new PlayerVO();
+				$this->avatar_url = null;
 			}
 		} else {
 			$this->vo = new PlayerVO();
+			$this->avatar_url = null;
 		}
 	}
 
@@ -395,10 +397,13 @@ class Player implements Character {
 	}
 
 	/**
-	 * Get the gravatar url for a pc
+	 * Get the avatar url for a pc
 	**/
 	public function avatarUrl(){
-		return generate_gravatar_url($this);
+		if(!isset($this->avatar_url) || $this->avatar_url === null){
+			$this->avatar_url = generate_gravatar_url($this);
+		}
+		return $this->avatar_url;
 	}
 
 }
