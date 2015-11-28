@@ -24,14 +24,8 @@ class TestSkill extends PHPUnit_Framework_TestCase {
     }
 
     private function syncIps($ip, $char_id, $char_id_2){
-        query('update players set ip = :ip 
-                where player_id = :char_id',
-                [':ip'=>$ip, ':char_id'=>$char_id]);
         query('update accounts set last_ip = :ip from accounts b join account_players on b.account_id = _account_id where _player_id = :pid',
             [':pid'=>$char_id, ':ip'=>$ip]);
-        query('update players set ip = :ip 
-                where player_id = :char_id_2',
-                [':ip'=>$ip, ':char_id_2'=>$char_id_2]);
         query('update accounts set last_ip = :ip from accounts b join account_players on b.account_id = _account_id where _player_id = :pid',
             [':pid'=>$char_id_2, ':ip'=>$ip]);
     }

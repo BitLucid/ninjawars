@@ -546,7 +546,7 @@ function update_activity_log($p_playerID) {
 	Request::setTrustedProxies(Constants::$trusted_proxies);
 	$request = Request::createFromGlobals();
 	$user_ip = $request->getClientIp();
-	query("UPDATE players SET days = 0, ip = :ip WHERE player_id = :player", array(':ip'=>$user_ip, ':player'=>$p_playerID));
+	query("UPDATE players SET days = 0 WHERE player_id = :player", [':player'=>$p_playerID]);
 	query("Update accounts set last_ip = :ip, last_login = now() where account_id = (select _account_id from account_players join players on _player_id = player_id where player_id = :pid)",
 		array(':ip'=>$user_ip, ':pid'=>$p_playerID));
 }
