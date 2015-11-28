@@ -25,6 +25,7 @@ class Player implements Character {
 	public $vo;
 	public $status;
 	public $ip;
+	public $avatar_url;
 
 	public function __construct($player_id_or_username=null) {
 		if (!empty($player_id_or_username)) {
