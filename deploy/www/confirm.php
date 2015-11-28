@@ -13,8 +13,9 @@ $confirm                   = in('confirm');
 $aid                       = positive_int(in('aid'));
 
 $data = query_row('
-	SELECT player_id, uname, accounts.verification_number as verification_number, CASE WHEN active = 1 THEN 1 ELSE 0 END AS active, accounts.active_email, 
-	CASE WHEN accounts.confirmed = 1 THEN 1 ELSE 0 END as confirmed, status, member, days, ip, players.created_date 
+	SELECT player_id, uname, accounts.verification_number as verification_number, 
+	CASE WHEN active = 1 THEN 1 ELSE 0 END AS active, accounts.active_email, 
+	CASE WHEN accounts.confirmed = 1 THEN 1 ELSE 0 END as confirmed, status, member, days, players.created_date 
 	FROM accounts JOIN account_players ON _account_id = account_id JOIN players ON _player_id = player_id 
 	WHERE account_id = :acctId', array(':acctId'=>$aid));
 
