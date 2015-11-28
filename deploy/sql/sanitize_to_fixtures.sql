@@ -7,6 +7,7 @@ update players set pname_backup = md5(player_id::text); -- Redundant
 update players set goals = '', beliefs = '';
 update players set email = '' where email != 'tchalvakspam@gmail.com';
 update accounts set active_email = 'test'||account_id||'@example.com', account_identity = 'test'||account_id||'@example.com' where active_email not like 'tchal%';
+update accounts set last_ip = concat('33.', trunc(random()*55 + 1), '.', trunc(random()*250 + 1), '.33');
 update clan set clan_name = 'clan_fixture_test'||clan_id;
 update clan set description = 'fixtures_test';
 update clan set clan_founder = 'Tchalvak';
