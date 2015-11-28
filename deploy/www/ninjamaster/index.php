@@ -23,8 +23,16 @@ class AdminViews{
 	public static function duped_ips(){
 		$host= gethostname();
 		$server_ip = gethostbyname($host);
-		return query_array('select uname, player_id, ip from players where ip in (SELECT ip FROM players 
-				WHERE active = 1 and ip != \'\' and ip != \'127.0.0.1\' and ip != \''.$server_ip.'\' GROUP  BY ip HAVING count(*) > 1 ORDER BY count(*) ASC limit 30) order by ip');
+		// Get name, id, and ip from players, grouped by ip matches
+		return query('select uname, player_id, days, last_ip from players left join account_players on player_id = _player_id
+			left join accounts on _account_id = account_id where uname is not null 
+			and last_ip in 
+			(SELECT last_ip FROM accounts 
+				WHERE (operational = true and confirmed = 1) 
+					and (last_ip != \'\' and last_ip != \'127.0.0.1\' and last_ip != :server_ip) 
+				GROUP  BY last_ip HAVING count(*) > 1 ORDER BY count(*) DESC limit 30)
+			 order by last_ip, days ASC limit 300',
+			 [':server_ip'=>$server_ip]);
 	}
 
 

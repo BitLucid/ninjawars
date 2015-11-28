@@ -38,6 +38,9 @@ nav.admin-nav > div{
 nav.admin-nav a{
 	display:inline-block;margin-left:2em;
 }
+#duplicate-ips .ip{
+	font-family:monospace;color:#C2E;
+}
 </style>
 
 <div id='admin-actions'>
@@ -105,10 +108,10 @@ nav.admin-nav a{
 
 
 {if $dupes}
-<div class='glassbox'>
+<div id='duplicate-ips' class='glassbox'>
 	<h3>Duplicate Ips</h3>
 	{foreach from=$dupes item='dupe'}
-	<a href='/ninjamaster/?view={$dupe.player_id}' class='char-name'>{$dupe.uname|escape}</a> :: IP {$dupe.ip}<br>
+	<a href='/ninjamaster/?view={$dupe.player_id}' class='char-name'>{$dupe.uname|escape}</a> :: IP <strong class='ip'>{$dupe.last_ip}</strong> :: days {$dupe.days}<br>
 	{/foreach}
 {/if}
 
