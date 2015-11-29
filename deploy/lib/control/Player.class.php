@@ -71,6 +71,13 @@ class Player implements Character {
 		return $this->vo->description;
 	}
 
+	/**
+	 * Get out of character message
+	**/
+	public function message() {
+		return $this->vo->messages;
+	}
+
 	public function beliefs() {
 		return $this->vo->beliefs;
 	}
@@ -95,6 +102,13 @@ class Player implements Character {
 
 	public function set_description($desc){
 		$this->vo->description = $desc;
+	}
+
+	/**
+	 * Out of character message
+	**/
+	public function set_message($message){
+		$this->vo->messages = $message;
 	}
 
 	public function set_instincts($in){
