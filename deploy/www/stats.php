@@ -1,117 +1,35 @@
 <?php
-require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
-require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.
+require_once(CORE.'control/StatsController.php'); // Player info display pieces.
 
-$private    = true;
-$alive      = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use app\Controller\StatsController;
 
-if ($error = init($private, $alive)) {
+if ($error = init(StatsController::PRIV, StatsController::ALIVE)) {
 	display_error($error);
 	die();
 }
 
-$changedetails = in('changedetails');
-$newprofile    = trim(in('newprofile', null, null)); // Unfiltered input.
-$profile_changed    = (bool) in('profile_changed');
-$changed = (bool) in('changed');
+$controller = new StatsController;
+$command = in('command');
 
-$dev = (bool) DEBUG;
-
-
-// Update a player's OOC profile
-function update_profile($char_id, $new_profile){
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET messages = :profile WHERE player_id = :char_id');
-	$statement->bindValue(':profile', $new_profile);
-	$statement->bindValue(':char_id', $char_id);
-	$statement->execute();
-	return true;
+// Switch between the different controller methods.
+switch($command){
+	case 'change_details':
+		$response = $controller->changeDetails();
+		break;
+	case 'update_profile':
+		$response = $controller->updateProfile();
+		break;
+	case 'index':
+	default:
+		$command = 'index';
+		$response = $controller->index();
+		break;
 }
 
-
-$username = self_name();
-$char_id  = self_char_id();
-
-// Password and email changing systems exist in account.php (& account.tpl).
-
-$char         = new Player($char_id);
-
-$profile_max_length = 500; // Should match the limit in limitStatChars.js - ajv: No, limitStatChars.js should be dynamically generated with this number from a common location -
-$successMessage = null;
-
-$description = post('description', $char->description());
-$goals = post('goals', $char->goals());
-$instincts = post('instincts', $char->instincts());
-$beliefs = post('beliefs', $char->beliefs());
-$traits = post('traits', $char->traits());
-
-
-if ($changedetails) {
-    // Limit the profile length.
-	if ($newprofile != '') {
-		$profile_changed = update_profile($char_id, $newprofile);
-	} else {
-		$error = 'Cannot enter a blank profile.';
-	}
-
-	assert((bool)$description);
-	assert((bool)$goals);
-	// Check that the text features don't differ
-	$char->set_description($description);
-	$char->set_goals($goals);
-	$char->set_instincts($instincts);
-	$char->set_beliefs($beliefs);
-	$char->set_traits($traits);
-
-	/*
-	foreach(['description', 'goals', 'instincts', 'beliefs', 'traits'] as $type){
-		if($$type && isset($char->vo)){
-			$method = 'set_'.$type;
-			$char->$method($$type); // Set the various details in the Player obj
-			$changed = true;
-		}
-		$$type = $char->$type(); // Default to current values.
-	}*/
-
-	$changed = PlayerDAO::saveDetails($char);
-
-	redirect('/stats.php?changed='.(int)$changed.($profile_changed?'&profile_changed=1':''));
+if ($response instanceof RedirectResponse) {
+	$response->send();
+} else {
+	// Display the page with the template, title or header vars, template parts, and page options
+	display_page($response['template'], $response['title'], $response['parts'], $response['options']);
 }
-/*
-if(false && DEBUG){
-	$description = 'This is a description here and all';
-	$goals = 'Kill ninja of the ramen clan';
-	$beliefs = 'I believe in a one true ninja god';
-	$instincts = 'When I hear whistling, I duck';
-	$traits = 'Hardy, nervous, meaty, silent';
-}
-*/
-$player           = self_info();
-//$player['created_date']=$player['created_date']? date("c", strtotime($player['created_date'])) : null;
-$class_theme      = class_theme($char->class_identity());
-$level_category   = level_category($player['level']);
-$status_list      = get_status_list();
-$gravatar_url     = generate_gravatar_url($player['player_id']);
-$gurl             = $gravatar_url;
-$rank_display     = get_rank($char_id); // rank display.
-$profile_editable = $player['messages'];
-
-$parts = get_certain_vars(get_defined_vars(), 
-		['player', 'level_category', 'status_list', 'description', 'goals', 'beliefs', 'instincts', 'traits', 'dev',
-		'changed']);
-
-// Set the parts array's player clan if any is found.
-if ($parts['player_clan'] = get_clan_by_player_id($char_id)) {
-    // Set the char clan name and id for later usage.
-	$parts['clan_name'] = $parts['player_clan']->getName();
-	$parts['clan_id']   = $parts['player_clan']->getID();
-}
-
-display_page(
-	'stats.tpl'
-	, 'Ninja Stats'
-	, $parts
-	, array(
-		'quickstat' => 'player'
-	)
-);
