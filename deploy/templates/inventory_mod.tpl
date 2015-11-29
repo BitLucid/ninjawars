@@ -61,7 +61,7 @@ You have comitted suicide!<br>
 <div class='LinkBack glassbox'>
   Return to
 {if $return_to eq 'player'}
-  <a href="player.php?player_id={$target_id|escape:'url'}" class='return-to-location'>view {$charName}</a>
+  <a href="player.php?player_id={$target_id|escape:'url'}" class='return-to-location'>{if isset($charName)}view {$charName}{else}view ninja{/if}</a>
 {elseif $return_to eq 'inventory'}
   <a href="inventory.php" class='return-to-location'>Inventory</a>
 {else}
