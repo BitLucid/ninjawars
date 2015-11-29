@@ -25,7 +25,7 @@ class ClanController { //extends Controller
 			$clan = ClanFactory::find($clanID);
 		}
 
-		if ($clan) {
+		if (isset($clan) && $clan instanceof Clan) {
 			$parts = [
 				'title'     => $clan->getName(),
 				'clan'      => $clan,
