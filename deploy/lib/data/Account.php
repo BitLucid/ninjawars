@@ -28,6 +28,29 @@ class Account{
 		return $this->active_email;
 	}
 
+	public function getLastLogin(){
+		return $this->info['last_login'];
+	}
+
+	public function getLastLoginFailure(){
+		return $this->info['last_login_failure'];
+	}
+
+	public function getKarmaTotal(){
+		return $this->info['karma_total'];
+	}
+
+	public function getLastIp(){
+		return $this->info['last_ip'];
+	}
+
+	/**
+	 * Identity wrapper.
+	**/
+	public function identity(){
+		return $this->getIdentity();
+	}
+
 	public function getIdentity(){
 		return $this->account_identity;
 	}
@@ -63,5 +86,19 @@ class Account{
 
 	public function setOauthProvider($provider){
 		return ($this->oauth_provider = $provider);
+	}
+
+	/**
+	 * Check operational status of account
+	**/
+	public function isOperational(){
+		return (bool) ($this->info['operational'] === true);
+	}
+
+	/**
+	 * Check whether an account is confirmed.
+	**/
+	public function isConfirmed(){
+		return (bool) ($this->info['confirmed'] === 1);
 	}
 }
