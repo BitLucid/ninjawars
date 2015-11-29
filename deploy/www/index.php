@@ -9,18 +9,12 @@ if(!$char_id){
 	require_once(SERVER_ROOT.'www/splash.php');
 } else {
 	// Initialize page display vars.
-	$username    = null;
 	$player_info = array();
-	$new_player = null;
-	$title       = 'Live by the Shuriken';
 	$unread_message_count = 0;
 
 	// Get the actual values of the vars.
 	$player_info = self_info();
-	$username = $player_info['uname'];
-	$level = $player_info['level'];
-	$new_player = $level<2;
-	$gravatar_url     = generate_gravatar_url($player_info['player_id']);
+	$ninja = new Player(self_char_id());
 
 	$unread_message_count = unread_message_count();
 	
@@ -34,18 +28,14 @@ if(!$char_id){
 		'main_src'           => 'main.php'
 		, 'body_classes'     => 'main-body'
 		, 'version'          => 'NW Version 1.7.5 2010.12.05'
-		, 'logged_in'        => (bool)$char_id
-		, 'is_not_logged_in' => !$char_id
-		, 'username'         => $username
-		, 'new_player'		 => $new_player
-		, 'user_id'          => $char_id
+		, 'ninja'			 => $ninja
 		, 'player_info'      => $player_info
-		, 'gravatar_url'	 => $gravatar_url
 		, 'unread_message_count' => $unread_message_count
 		, 'members'          => $member_counts['active']
 		, 'membersTotal'     => $member_counts['total']
 	);
 	
-	// Logged in display.
+	// Logged-in only.
+	$title       = 'Live by the Shuriken';
 	display_page('index.tpl', $title, $parts, $options);
 } // End of check for displaying the splash page.
