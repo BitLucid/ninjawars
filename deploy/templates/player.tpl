@@ -70,6 +70,7 @@ article#player-titles{
 	{/if}
 
   {include file="gravatar.tpl" gurl=$gravatar_url}
+  {if $viewing_player_obj->isAdmin()}<a style='font-size:small;float:right;' href='{$smarty.const.WEB_ROOT}ninjamaster/?view={$player_info.player_id|escape}'>Admin View</a>{/if}
 
   </article>
 

@@ -99,7 +99,6 @@ if($self instanceof Player && $self->isAdmin()){
 		$char_inventory = AdminViews::char_inventory($view_char);
 		$first_message = $first_char->message();
 		$first_description = $first_char->description();
-		debug($char_infos);
 	}
 
 
