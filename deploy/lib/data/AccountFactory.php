@@ -1,4 +1,7 @@
 <?php
+require_once(ROOT . "core/control/Character.php");
+require_once(ROOT . "core/data/Account.php");
+
 
 /**
  * Create account objects via Factory(ok, actually Repository) object
@@ -35,6 +38,17 @@ class AccountFactory{
 			return $account;
 		}
 
+	}
+
+	/**
+	 * Get an account for a char
+	**/
+	public static function findByChar(Character $char){
+		$account_id = query_item('select account_id from accounts
+			join account_players on _account_id = account_id join players on _player_id = player_id
+			where players.player_id = :pid',
+			[':pid'=>$char->id()]);
+		return new Account($account_id);
 	}
 
 	public static function findByIdentity($identity_email){
