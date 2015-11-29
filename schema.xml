@@ -295,12 +295,10 @@
     <column name="turns" phpName="Turns" type="INTEGER" required="true" defaultValue="0"/>
     <column name="verification_number" phpName="VerificationNumber" type="INTEGER" required="true" defaultValue="0"/>
     <column name="active" phpName="Active" type="INTEGER" required="true" defaultValue="0"/>
-    <column name="email" phpName="Email" type="VARCHAR" size="100" required="true" defaultValue=""/>
     <column name="level" phpName="Level" type="INTEGER" required="true" defaultValue="0"/>
     <column name="status" phpName="Status" type="INTEGER" required="true" defaultValue="0"/>
     <column name="member" phpName="Member" type="INTEGER" required="true" defaultValue="0"/>
     <column name="days" phpName="Days" type="INTEGER" required="true" defaultValue="0"/>
-    <column name="ip" phpName="Ip" type="VARCHAR" size="100" required="true" defaultValue=""/>
     <column name="bounty" phpName="Bounty" type="INTEGER" required="true" defaultValue="0"/>
     <column name="created_date" phpName="CreatedDate" type="TIMESTAMP" required="false" defaultExpr="now()"/>
     <column name="resurrection_time" phpName="ResurrectionTime" type="INTEGER" required="true" defaultValue="(round((random() * (7)::double precision)) * (3)::double precision)"/>
