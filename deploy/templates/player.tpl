@@ -174,7 +174,7 @@ article#player-titles{
   -->
 
 	<span id='message-ninja'>
-      <a href='messages.php?target_id={$player_info.player_id|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em>
+      <a href='messages.php?to={$player_info.uname|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em>
       </a>
     </span>
 
