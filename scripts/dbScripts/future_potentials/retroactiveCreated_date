@@ -1,8 +1,0 @@
-alter table players drop created_date
-alter table players add created_date DATETIME
-
-CHANGE THE -129 VALUE
-update players set created_date=DATE_ADD(CURRENT_TIMESTAMP, INTERVAL player_ID-'129' DAY)
-
-
-select uname, created_date, player_ID from players order by created_date
