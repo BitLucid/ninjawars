@@ -16,18 +16,7 @@ SET search_path = public, pg_catalog;
 --
 
 COPY accounts (account_id, account_identity, phash, active_email, type, operational, created_date, last_login, last_login_failure, karma_total, last_ip, confirmed, verification_number, oauth_provider, oauth_id) FROM stdin;
-25408	test25408@example.com	$2a$10$px1bJUritGXpe1r6jlina./sz06xld.a8BbN7Sn4fF37/FDTDYnUS	test25408@example.com	0	t	2013-01-30 22:21:01.473443	\N	\N	0	\N	1	4837	\N	\N
-19862	test19862@example.com	$2a$10$eNhwKUwwaf.JN3LIQT1dj.P6huTfzXXvZy4syAlnS/2tu31ky1zmK	test19862@example.com	0	t	2011-12-29 15:33:11.724898	2011-12-29 15:34:57.372882	\N	0	67.247.177.65	1	337849	\N	\N
-26013	tchalvakspam+test@gmail.com	$2a$10$mIEWQIu3l1Sv79SnOZe7BeDfGjtCcEGqLZq9.je9h2OeCHSRayBJW	tchalvakspam+test@gmail.com	0	t	2013-05-28 16:08:59.643674	\N	\N	0	\N	0	5951	\N	\N
-45	tchalvak.spam@gmail.com	$2a$10$YYdPkK3O2qRITsmusAZ1MeueQEp0TX/W/jmr9AXBpUj4IBBggPfeS	tchalvak.spam@gmail.com	0	t	2007-12-02 00:24:12.858532	2015-07-30 07:51:02.674386	2012-12-17 21:32:19.902503	12	127.0.0.1	1	6270	\N	\N
-13684	test13684@example.com	$2a$10$k0pP9O2GFzCdSellMjp5kOxW/UOaz/bgteeOQkVSn.z8n2uAP.RWG	test13684@example.com	0	t	2011-02-24 16:28:48.741047	\N	\N	0	\N	1	817673	\N	\N
-2948	test2948@example.com	$2a$10$u29BLJG5sQd/XbXX.RFJ4urOnbykByZUTc2ugUzalKWMPpH7QkZfq	test2948@example.com	0	t	2010-02-18 14:20:17.319739	2013-05-13 20:01:42.763911	2012-04-01 17:11:03.366223	8	173.203.99.229	1	419826	\N	\N
-27385	test27385@example.com	$2a$10$fwSG84ULD.2bxlFSkJFJJeKYXpN5/opzwoDa/K6KUhITAFHZhvCWa	test27385@example.com	0	t	2014-10-07 03:05:36.22196	2014-11-20 14:22:57.445818	2014-10-07 03:06:07.221651	0	173.203.99.229	1	2733	\N	\N
-27323	tchalvakspa.m@gmail.com	$2a$10$KdLbzj0mDOIgXwi7.tGDKexjbKH.svQE36bHZMZCMzaywI/6fHBlK	tchalvakspa.m@gmail.com	0	t	2014-09-04 21:42:03.965945	2014-09-04 21:50:05.889621	\N	0	173.203.99.229	1	5453	\N	\N
-26910	tchalvak.s.pam@gmail.com	$2a$10$P7B4JgG7i0qrP6eE/RD6v.XqKvm6rKmZC3wnV8rcCvtMRJFboA1ie	tchalvak.s.pam@gmail.com	0	t	2014-02-17 12:39:37.21166	\N	\N	0	\N	1	2014	\N	\N
-26720	tchal.v.a.k.spam@gmail.com	$2a$10$MFrjwv2e2O64PlDVvCqL9eNa4yM2mX4YICqKSzfTGngk/F1qwHzfe	tchal.v.a.k.spam@gmail.com	0	t	2013-11-28 20:10:45.997622	\N	2013-11-28 20:11:21.34459	0	\N	0	7419	\N	\N
-27049	test27049@example.com	$2a$10$rd2ZHI6A9BjO57FHfuPAc.mE7V5aCGAGiqDmyF43u09bAXXO.Yp2y	test27049@example.com	0	t	2014-05-10 12:16:47.96945	2014-06-02 10:18:32.3908	2014-05-10 12:17:08.908476	0	173.203.99.229	1	8240	\N	\N
-19863	tchalvakspam@gmail.com	$2a$10$gnZND6YfKvyBxO8SNxObj.gUV//pv8S8c2C7KqNT13hyWj6m3mn3S	tchalvakspam@gmail.com	0	t	2011-12-29 15:37:03.665663	2011-12-29 15:37:39.999563	2014-05-10 12:14:29.894835	0	67.247.177.65	1	878066	\N	\N
+2948	beagle@example.com	$2a$10$u29BLJG5sQd/XbXX.RFJ4urOnbykByZUTc2ugUzalKWMPpH7QkZfq	beagle@example.com	0	t	2010-02-18 14:20:17.319739	2013-05-13 20:01:42.763911	2012-04-01 17:11:03.366223	8	173.203.99.229	1	419826	\N	\N
 5442	tchalvak@gmail.com	$2a$10$flGAKaD0M9y.P6Z.eqaSDOycEiGROR8j7uMzZbRBR7UOiOlKLGidG	tchalvak@gmail.com	0	t	2009-11-03 12:04:53.223615	2015-08-05 22:31:56.826541	2015-07-30 07:53:32.800106	7	127.0.0.1	1	2345234	\N	\N
 \.
 
@@ -55,9 +44,8 @@ COPY account_news (_account_id, _news_id, created_date) FROM stdin;
 COPY class (class_id, class_name, class_active, class_note, class_tier, class_desc, class_icon, theme, identity) FROM stdin;
 1	Viper	t	Poison	1	\N	\N	Black	viper
 2	Crane	t	Speed	1	\N	\N	Blue	crane
-4	Dragon	t	Healing	1	\N	\N	White	dragon
 3	Tiger	t	Strength	1	\N	\N	Red	tiger
-5	Mantis	f	Smoke	1	\N	\N	Gray	mantis
+4	Dragon	t	Healing	1	\N	\N	White	dragon
 \.
 
 
@@ -65,8 +53,8 @@ COPY class (class_id, class_name, class_active, class_note, class_tier, class_de
 -- Data for Name: players; Type: TABLE DATA; Schema: public; Owner: developers
 --
 
-COPY players (player_id, uname, pname_backup, health, strength, gold, messages, kills, turns, verification_number, active, level, status, member, days, ip, bounty, created_date, resurrection_time, last_started_attack, energy, avatar_type, _class_id, ki, stamina, speed, karma, kills_gained, kills_used, description, instincts, beliefs, goals, traits) FROM stdin;
-134853	Beagle	e08ca8642e12087150900c4e2f417b1a	0	40	0	Kill me, I'm an admin.	82	101	9897	1	8	0	0	16	0	2010-02-18 14:20:17.319739	18	2013-01-31 20:05:48.999044	1000	1	3	3	40	40	8	175	140					
+COPY players (player_id, uname, pname_backup, health, strength, gold, messages, kills, turns, verification_number, active, level, status, member, days, bounty, created_date, resurrection_time, last_started_attack, energy, avatar_type, _class_id, ki, stamina, speed, karma, kills_gained, kills_used, description, instincts, beliefs, goals, traits) FROM stdin;
+134853	Beagle	428c2c8b862f70f211388065e410d19f	0	40	0	Kill me, Im an admin.	82	101	9897	1	8	0	0	16	0	2010-02-18 14:20:17.319739	18	2013-01-31 20:05:48.999044	1000	1	3	3	40	40	8	175	140					
 128274	Tchalvak	428c2c8b862f70f211388065e410d19f	0	90	4678	Contact me via the staff page, or use the official email, ninjawarslivebythesword@gmail.com\r\n\r\nDang\r\nBat\r\nCrazy\r\nDevil	394	63	3259	1	18	0	0	0	0	2009-11-03 12:04:53.223615	12	2015-08-05 18:31:20.799019	1000	1	1	803	90	90	29	126	105					
 \.
 
@@ -94,20 +82,6 @@ SELECT pg_catalog.setval('accounts_account_id_seq', 28065, true);
 
 COPY chat (chat_id, sender_id, message, date) FROM stdin;
 \.
-
-
---
--- Name: chat_chat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: developers
---
-
-SELECT pg_catalog.setval('chat_chat_id_seq', 208783, true);
-
-
---
--- Name: chat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: developers
---
-
-SELECT pg_catalog.setval('chat_id_seq', 485905, true);
 
 
 --
@@ -443,7 +417,6 @@ SELECT pg_catalog.setval('levelling_log_id_seq', 4272480, true);
 --
 
 COPY login_attempts (attempt_id, username, ua_string, ip, successful, additional_info, attempt_date) FROM stdin;
-67351	tchalvak	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.89 Safari/537.36	127.0.0.1	1	{"USER":"www-data","HOME":"\\/var\\/www","FCGI_ROLE":"RESPONDER","PHP_VALUE":"auto_prepend_file=\\/srv\\/ninjawars\\/deploy\\/lib\\/base.inc.php \\n session.cookie_domain=nw.local \\n date.timezone=America\\/New_York \\n default_charset=UTF-8 \\n","SCRIPT_FILENAME":"\\/srv\\/ninjawars\\/deploy\\/www\\/login.php","QUERY_STRING":"","REQUEST_METHOD":"POST","CONTENT_TYPE":"application\\/x-www-form-urlencoded","CONTENT_LENGTH":"82","SCRIPT_NAME":"\\/login.php","REQUEST_URI":"\\/login.php","DOCUMENT_URI":"\\/login.php","DOCUMENT_ROOT":"\\/srv\\/ninjawars\\/deploy\\/www","SERVER_PROTOCOL":"HTTP\\/1.1","GATEWAY_INTERFACE":"CGI\\/1.1","SERVER_SOFTWARE":"nginx\\/1.8.0","REMOTE_ADDR":"127.0.0.1","REMOTE_PORT":"40191","SERVER_ADDR":"127.0.0.1","SERVER_PORT":"80","SERVER_NAME":"nw.local","REDIRECT_STATUS":"200","HTTP_HOST":"nw.local","HTTP_CONNECTION":"keep-alive","HTTP_CONTENT_LENGTH":"82","HTTP_CACHE_CONTROL":"max-age=0","HTTP_ACCEPT":"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/webp,*\\/*;q=0.8","HTTP_ORIGIN":"http:\\/\\/nw.local","HTTP_USER_AGENT":"Mozilla\\/5.0 (X11; Linux x86_64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/44.0.2403.89 Safari\\/537.36","HTTP_HTTPS":"1","HTTP_CONTENT_TYPE":"application\\/x-www-form-urlencoded","HTTP_REFERER":"http:\\/\\/nw.local\\/login.php","HTTP_ACCEPT_ENCODING":"gzip, deflate","HTTP_ACCEPT_LANGUAGE":"en-US,en;q=0.8","HTTP_COOKIE":"fbm_30479872633=base_domain=.nw.local; PHPSESSID=cqeifma0eh88gj3bvivtpfg5u5; fbsr_30479872633=mIy5M7Hu3a47khInk9t92sUq268f2rA8syuhXQlJBAk.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImNvZGUiOiJBUURWUEt5UTk0ZE1VM0J4N3VJX2E5MnhETmNNTFpSWmVLcTltNjhTN21PYlJ3ZmxmOUtvQ1VFd2hLMHFXSmpGRk1lZlRtcGYxNEdjckhhSmNzX2VoZFNZTXVfNEJ1MWp0YkI0NE9SNGhOVUZ2OUppTHJlUlF5QmREMFNtWUhseVVKdFdIbHY0RnRyZ290UHZicVUyR3A5QmFKam5tTHNEZnl5aTVxQUk3cENuaFBLLS1wVEoyVXpEcTZPWGpFRlNiRVFkZUx3RFhLMDg5UTVYeVA2RElKUVVYYWNsN0JXdFBqN2dBNmZ3eXZIVVhreU5CaVdtUXRtVTVJeXV3OURNbVQ4aDNUNlBfTkJaMElqWEJTcGVVX21RbGZ2MFpscXJCbTVmSHhIdGdTNXpxWWZ6ZXBOWlJ3RmhEd21nTVM0OFB5dExKUlVaZjBZYkxRSnhCS0V2SW5abyIsImlzc3VlZF9hdCI6MTQzODgyODMxNCwidXNlcl9pZCI6IjEwMTAwMjY4NTk1MjY0ODk2In0","PHP_SELF":"\\/login.php","REQUEST_TIME_FLOAT":1438828316.578,"REQUEST_TIME":1438828316}	2015-08-05 22:31:56.843319
 \.
 
 
@@ -506,20 +479,6 @@ COPY player_rank (rank_id, _player_id, score) FROM stdin;
 
 
 --
--- Name: player_rank_rank_id_seq; Type: SEQUENCE SET; Schema: public; Owner: developers
---
-
-SELECT pg_catalog.setval('player_rank_rank_id_seq', 1, false);
-
-
---
--- Name: player_rank_rank_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: developers
---
-
-SELECT pg_catalog.setval('player_rank_rank_id_seq1', 457, true);
-
-
---
 -- Data for Name: players_flagged; Type: TABLE DATA; Schema: public; Owner: developers
 --
 
@@ -571,13 +530,6 @@ SELECT pg_catalog.setval('settings_setting_id_seq', 8827, true);
 
 SELECT pg_catalog.setval('skill_skill_id_seq', 16, true);
 
-
---
--- Data for Name: test; Type: TABLE DATA; Schema: public; Owner: kzqai
---
-
-COPY test (id, value) FROM stdin;
-\.
 
 
 --
