@@ -41,6 +41,7 @@
   margin:0 auto;
 }
 #news-list article .post-content{
+  white-space:pre-wrap;
   padding:0 5%;
   width:90%;
 }
