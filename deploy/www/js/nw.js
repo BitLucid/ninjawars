@@ -143,7 +143,7 @@ if (parent.window !== window) {
 		return updated;
 	};
 
-	// For refreshing quickstats (now barstats) from inside the main iframe.
+	// For refreshing barstats from inside the main iframe.
 	NW.refreshQuickstats = function(typeOfView) {
 		NW.refreshStats(typeOfView); // Just call the function to refresh stats.
 	};
@@ -504,8 +504,6 @@ $(function() {
 		$('#skip-to-bottom').click(function(){
 			$(this).hide();
 		});
-		var quickstatsLinks = $("a[target='quickstats']");
-		quickstatsLinks.css({'font-style':'italic'}); // Italicize
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
 
 		$('#index-avatar').on('click touchstart', function(){ // Touchstart required for mobile to be aware of the menu
