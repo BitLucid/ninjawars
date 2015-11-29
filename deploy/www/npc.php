@@ -97,7 +97,7 @@ if($turns > 0 && !empty($victim)) {
 		$bounty_mod = isset($npc_stats['bounty'])? $npc_stats['bounty'] : null;
         $is_villager = $npco->has_trait('villager'); // Give the villager message with the bounty.
         $is_weaker = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
-        $is_stronger = ($npco->strength()) > ($player->strength() * 2); // Npc More than twice as strong?
+        $is_stronger = ($npco->strength()) > ($player->strength() * 3); // Npc More than twice as strong?
 		$image = isset($npc_stats['img'])? $npc_stats['img'] : null;
 		$image_path = null;
 		if($image && file_exists(SERVER_ROOT.'www/images/characters/'.$image)){
