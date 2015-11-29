@@ -100,7 +100,7 @@
 {/if}
 </section>
 
-<section id='npc-list-section'>
+<section id='npcs'>
   <h3>Attack a:</h3>
   <div class='centered'>
   <ul id='npc-list'>
