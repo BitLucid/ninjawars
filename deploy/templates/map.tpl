@@ -3,7 +3,11 @@
 <div id='attack-player-page'>
 
 {include file='nodes.tpl' nodes=$nodes}
-  
+
+<nav class='centered thick'>
+    <a href='/enemies.php' class='start-fight'>Fight!</a>
+</nav>
+
 {if $show_ad eq 1}
 <!-- This particular ad is here mainly to focus the targeting of the advertising to more nw related topics. -->
 
