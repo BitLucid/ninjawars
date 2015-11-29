@@ -122,7 +122,7 @@ nav.admin-nav a{
 		<div class='npc-box tiled'>
 		  <h2>{$npc->identity()}</h2>
 		  <figure>
-		  	<img src='/images/characters/{$npc->image()}' class='npc-icon' alt='no-image'>
+		  	<img {if $npc->image()}src='/images/characters/{$npc->image()}'{/if} class='npc-icon' alt='no-image'>
 		  	<figcaption>{$npc->shortDesc()}&nbsp;</figcaption>
 		  </figure>
 		  <dl>
