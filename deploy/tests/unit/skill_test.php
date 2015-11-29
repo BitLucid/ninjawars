@@ -24,10 +24,11 @@ class TestSkill extends PHPUnit_Framework_TestCase {
     }
 
     private function syncIps($ip, $char_id, $char_id_2){
-        query('update accounts set last_ip = :ip from accounts b join account_players on b.account_id = _account_id where _player_id = :pid',
-            [':pid'=>$char_id, ':ip'=>$ip]);
-        query('update accounts set last_ip = :ip from accounts b join account_players on b.account_id = _account_id where _player_id = :pid',
-            [':pid'=>$char_id_2, ':ip'=>$ip]);
+        query('update accounts set last_ip = :ip where account_id in (select account_id from accounts b 
+                left join account_players on b.account_id = _account_id 
+                where _player_id is not null and (_player_id = :pid or _player_id = :pid2)
+                )',
+            [':pid'=>$char_id, ':pid2'=>$char_id_2, ':ip'=>$ip]);
     }
 
     public function testYouCantCloneKillXAndX(){
@@ -88,7 +89,7 @@ class TestSkill extends PHPUnit_Framework_TestCase {
     public function testYouCantCloneKillWithAnyNonActiveChar(){
         $char_id = TestAccountCreateAndDestroy::char_id();
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
-        $this->syncIps('222.222.222.222', $char_id, $char_id_2);
+        $this->syncIps('999.888.777.666', $char_id, $char_id_2);
         $this->inactivate($char_id);
         $this->assertFalse(CloneKill::canKill($char_id_2, $char_id));
     }
@@ -100,7 +101,7 @@ class TestSkill extends PHPUnit_Framework_TestCase {
         $charO_2 = new Player($char_id_2);
         // Will create characters with 127.0.0.1 ip, but that shouldn't be clone kill able.
         $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
-        $this->syncIps('222.244.244.222', $char_id, $char_id_2);
+        $this->syncIps('888.777.666.555', $char_id, $char_id_2);
         $this->assertTrue(CloneKill::canKill($char_id, $char_id_2), 'Should be able to clone kill similar and same ip characters!');
     }
 
@@ -131,7 +132,7 @@ class TestSkill extends PHPUnit_Framework_TestCase {
         $charObj_2 = new Player($char_id_2);
         // Will create characters with 127.0.0.1 ip, but that shouldn't be clone kill able.
         $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
-        $this->syncIps('222.244.244.222', $char_id, $char_id_2);
+        $this->syncIps('555.66.77.88', $char_id, $char_id_2);
         $this->assertTrue(CloneKill::canKill($char_id, $char_id_2), 'Should be able to clone kill similar and same ip characters!');
         CloneKill::kill($charObj, $charObj, $charObj_2); // Obliterate them.
         $pc1 = new Player($char_id);
