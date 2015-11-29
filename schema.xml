@@ -354,10 +354,6 @@
       <unique-column name="skill_internal_name"/>
     </unique>
   </table>
-  <table name="test" phpName="Test" idMethod="native">
-    <column name="id" phpName="Id" type="LONGVARCHAR" primaryKey="true" required="true" defaultValue="encode(gen_random_bytes(32), hex"/>
-    <column name="value" phpName="Value" type="LONGVARCHAR" required="false"/>
-  </table>
   <table name="time" phpName="Time" idMethod="native">
     <column name="time_id" phpName="TimeId" type="INTEGER" autoIncrement="true" required="true" primaryKey="true"/>
     <column name="time_label" phpName="TimeLabel" type="VARCHAR" required="true"/>
