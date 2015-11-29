@@ -1,69 +1,80 @@
 Dependencies
 -------------
-Linux, Debian-based, highly recommended, you're on your own on windows.
-
-PHP5, Postgresql8, Perl>=5, Apache2, Perl::Lingua::En::Inflect, postgresql-contrib & libpq-dev (for password hashing)
-
-Via apt-get command line:
-
-(Required)
-sudo apt-get install apache2 php5 php5-pgsql postgresql postgresql-contrib libpq-dev smarty
-
-(Recommended, but not completely required for local development)
-sudo apt-get install perl liblingua-en-inflect-perl
-
-(Totally optional)
-sudo apt-get install awstats git-core
+Need LINUX!  Ubuntu, debian, whatever.  If you try to use windows, you're totally reliant on your own competence!
+The project doesn't run on windows out of the box, and we don't support it for developers!
+(for example, you'll immediately run into a problem where linux symlinks for folders aren't supported in windows).
+You'll also need Git, of course.
 
 
-All Types of Deployment
----------------
-1. Set up your database if necessary:
-Become postgres user & enter database:
-sudo su postgres
-createuser -s kzqaiOrWhateverUsernameIsAppropriate
-createdatabase ninjawars
+As far as the linux install:
+First, ask Roy about a Vagrant virtualmachine.  It might make things much simpler.  Barring that, see below.
 
--Set permissions in your pg_hba for the database, host, and user to match your configuration
+Configure Your Web Server On Your Own
+=======================================
 
-2. Copy a live database (probably the easiest) or create a skeleton database and then run the migrations in  /deploy/db/migrations/ on it.
-echo "create role developers;
-GRANT ALL ON nw.* TO GROUP developers;
-GRANT ALL ON DATABASE nw to group developers;
-create role kzqai SUPERUSER LOGIN in group developers;" | psql nw
-psql nw < nw-backup-2012-11-04-Time-11-01.sql 
+Create a web server, with a fake local domain, e.g. "http://nw.local"
+In general, you can use whatever web server you want, nginx/php5-fpm is in use.
 
-Create the postgresql password hashing functions
----------------
-Using postgresql 9.1, run create extension pgcrypto from postgresql-contrib, using:
-echo "create extension pgcrypto" | psql -d nw
-For older versions:
-Determine the postgresql user shared folder.
-> pg_config --sharedir
-/usr/share/postgresql/8.4 (example)
-Run the module setup sql in the SHARE_DIRECTORY/contrib/pgcrypto.sql, e.g.
-> psql -d nw -f /usr/share/postgresql/8.4/contrib/pgcrypto.sql
+Configure Your Postgresql Database On Your Own
+==============================================
+You'll need postgresql installed and set up, you'll need to be able to log in to postgres, create a blank database (e.g. nw),
+and create the developers role, something like this:
 
-For the pgcrypto functions, see: http://www.postgresql.org/docs/8.3/static/pgcrypto.html
-For contrib install instructions, see: http://www.postgresql.org/docs/8.3/static/contrib.html
+	createdb nw
+    echo "create role developers;
+    GRANT ALL ON nw.* TO GROUP developers;
+    GRANT ALL ON DATABASE nw to group developers;
+    create role kzqai SUPERUSER LOGIN in group developers;" | psql nw
+
+You'll also need to install postgresql-contrib for bcrypt password hashing.
+
+    sudo apt-get install postgresql postgresql-contrib php5-pgsql
+    echo "create extension pgcrypto" | psql -d nw
+    * http://stackoverflow.com/questions/2647158/how-can-i-hash-passwords-in-postgresql
+
+Now you might want to request an up-to-date dev database dump, or you can copy in the basic schema and figures:
+
+    psql nw < deploy/sql/schema.sql
+    psql nw < deploy/sql/fixtures.sql
+
+Composer Install
+=================================
+
+    composer install
 
 
-Optional install of Test suite
------------
-See docs/test_suite_install for procecure for installing the test suite.
+Create Directories
+==================================
+Make some of your directories
+	mkdir -p deploy/resources/logs
+	mkdir deploy/templates/compiled
+	chmod uga+rX,ug+wx deploy/templates/compiled
 
-Using /scripts/deploy
----------------------
-1. Create a uniquely named configuration file for your deployment from the template in /master.conf
-2. Run `scripts/deploy -c=yourfile.conf deploy`
-3. If you have not already done so, create an apache virtualhost for your deployment with the first 2 lines outputted regarding apache
-4. If your apache config is not writable, create a file in your deployment at www/.htaccess with the contents echoed to the terminal
-5. If your cron.d config is not writable, add the cron lines echoed to the terminal to your crontab with `crontab -e`
 
-Using your working copy
------------------------
-3. cp deploy/resources.build.php deploy/resources.php
-4. mkdir -p deploy/resources/logs
-5. configure your virtualhost (nw.local or nw.localhost recommended!)
-6. mkdir deploy/templates/compiled
-7. chmod uga+rX,ug+wx deploy/templates/compiled
+Copy Config Files
+======================
+Copy the config files:
+
+	cp deploy/resources.build.php deploy/resources.php
+	cp build.properties.tpl build.properties
+	cp buildtime.xml.tpl buildtime.xml
+	cp connection.xml.tpl connection.xml
+
+
+Now edit all of those with your database name, and change whatever info you need to!
+
+Run Your Tests!
+=======================
+
+    ./vendor/bin/phpunit
+
+Will tell you how close you are to complete!
+
+
+Cron Scripts Are Available
+==================================
+Finally, be aware that you can manually run:
+
+    php deploy/cron/deity_fiveminute.php
+
+Cron scripts to make time pass, heal characters, etc etc.
