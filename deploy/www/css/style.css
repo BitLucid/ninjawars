@@ -1269,6 +1269,14 @@ body.solo-page h1 {
 	text-align: center;
 }
 
+.left-aligned{
+	text-align:left;
+}
+
+.right-aligned{
+	text-align:right;
+}
+
 .created-by {
 	display:none;
 	margin-top:10px;

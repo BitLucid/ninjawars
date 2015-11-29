@@ -1,6 +1,7 @@
 <?php
 require_once(LIB_ROOT."control/lib_inventory.php");
 require_once(LIB_ROOT."data/NpcFactory.php");
+require_once(ROOT.'core/data/AccountFactory.php');
 require_once(LIB_ROOT."data/Npc.php");
 
 class AdminViews{
@@ -38,16 +39,21 @@ class AdminViews{
 
 	// Reformat the character info sets.
 	public static function split_char_infos($ids){
-		if(is_numeric($ids)){ // Single id, so return a single data set
-			return array(char_info($ids, $admin_info=true));
+		if(is_numeric($ids)){
+			$ids = [$ids]; // Wrap it in an array.
 		} else { // Get the info for multiple ninjas
 			$res = array();
 			$ids = explode(',', $ids);
-			foreach($ids as $id){
-				$res[$id] = char_info($id, $admin_info=true);
-			}
-			return $res;
 		}
+		$first = true;
+		foreach($ids as $id){
+			$res[$id] = char_info($id, $admin_info=true);
+			$res[$id]['first'] = $first;
+			unset($res[$id]['messages']); // Exclude the messages for length reasons.
+			unset($res[$id]['description']); // Ditto
+			$first = false;
+		}
+		return $res;
 	}
 
 	public static function char_inventory($char_id){
@@ -80,20 +86,30 @@ if($self instanceof Player && $self->isAdmin()){
 
 	// If a request is made to view a character's info, show it.
 	$view_char = $view_char? $view_char : in('view');
-	$char_infos = $char_inventory = $message = null;
+	$char_infos = $char_inventory = $first_message = null;
+	$first_char = null;
+	$first_account = null;
+	$first_description = null;
 	if($view_char){
+		$ids = explode(',', $view_char);
+		$first_char_id = reset($ids);
+		$first_char = new Player($first_char_id);
+		$first_account = AccountFactory::findByChar($first_char);
 		$char_infos = AdminViews::split_char_infos($view_char);
 		$char_inventory = AdminViews::char_inventory($view_char);
-		$message = $char_infos[0]['messages']; // Split the message out as a separate var for space reasons
-		unset($char_infos[0]['messages']);
+		$first_message = $first_char->message();
+		$first_description = $first_char->description();
+		debug($char_infos);
 	}
 
 
 	display_page(
 		'ninjamaster.tpl'	// *** Main Template ***
 		, 'Admin Actions' // *** Page Title ***
-		, ['stats'=>$stats, 'char_infos'=>$char_infos, 'dupes'=>$dupes, 'char_inventory'=>$char_inventory,
-			'char_name'=>$char_name, 'npcs'=>$npcs, 'trivial_npcs'=>$trivial_npcs, 'message'=>$message] // *** Page Variables ***
+		, ['stats'=>$stats, 'first_char'=>$first_char, 'first_description'=>$first_description, 'first_message'=>$first_message,
+			'first_account'=>$first_account, 'char_infos'=>$char_infos, 
+			'dupes'=>$dupes, 'char_inventory'=>$char_inventory, 'char_name'=>$char_name, 'npcs'=>$npcs, 
+			'trivial_npcs'=>$trivial_npcs] // *** Page Variables ***
 	);
 
 

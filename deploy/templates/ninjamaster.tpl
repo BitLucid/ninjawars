@@ -12,7 +12,7 @@
 	border-bottom:1px brown solid;color:#ADD8E6;
 }
 #admin-actions table caption{
-	text-align:center;
+	text-align:left;padding-left:10%;
 }
 .npc-box.tiled{
 	display:inline-block; max-width:50em;vertical-align:top;
@@ -41,6 +41,13 @@ nav.admin-nav a{
 #duplicate-ips .ip{
 	font-family:monospace;color:#C2E;
 }
+#admin-actions .account-info time{
+	color:gray;
+}
+#admin-actions .half-width{
+	width:49%;vertical-align:top;
+}
+
 </style>
 
 <div id='admin-actions'>
@@ -63,12 +70,15 @@ nav.admin-nav a{
 {if $char_infos}
 <!-- View the details of some ninja -->
 {foreach from=$char_infos item='char_info'}
-<div id='clear' class='float-right block button-mimic'>
+<div id='clear' class='float-right block button-mimic glassbox'>
 	<a href='/ninjamaster'>Clear</a>
 </div>
 <section class='char-info-area glassbox'>
 	<h2>Viewing {$char_info.uname|escape}</h2>
-	<table>
+	<div id='view-public' class='float-right'>
+		<a href='/player.php?player_id={$char_info.player_id|escape}'>view public</a>
+	</div>
+	<table id='char-info-table'>
 		<caption>Specific Character's info for <strong class='char-name'>{$char_info.uname|escape}</strong></caption>
 		<thead>
 			{foreach from=$char_info key='name' item='stat'}<th class='char-info-header'>{$name}</th>{/foreach}
@@ -79,18 +89,39 @@ nav.admin-nav a{
 		{/foreach}
 		</tr>
 	</table>
-	<div class='char-profile'>Out-of-Character profile: {$message}</div>
-	<table class='char-inventory'>
-		<caption>Inventory for <strong class='char-name'>{$char_info.uname|escape}</strong>:</caption>
-		{foreach from=$char_inventory key='name' item='item'}
-			<tr class='info'>
-			<td>&#9734;</td>
-			{foreach from=$item key='column' item='data'}
-				<td class='headed'>{$column}</td><td> {$data}</td>
+	{if $char_info.first}
+	<div class='char-profile'>Out-of-Character profile: {$first_message}</div>
+	<div class='char-description'>Char Description: {$first_description}</div>
+	{if $first_account}
+	<section class='account-info inline-block half-width centered'>
+		<div class='inline-block left-aligned'>
+		<h3>Account Info</h3>
+		<dl>
+			<dt>Account Identity</dt><dd>{$first_account->identity()}</dd>
+			<dt>Active Email</dt><dd>{$first_account->getActiveEmail()}</dd>
+			<dt>Karma Total</dt><dd>{$first_account->getKarmaTotal()}</dd>
+			<dt>Last Login</dt><dd><time class='timeago' datetime='{$first_account->getLastLogin()|escape}'>{$first_account->getLastLogin()|escape}</time></dd>
+			<dt>Last Login Failure</dt><dd><time class='timeago' datetime='{$first_account->getLastLoginFailure()|escape}'>{$first_account->getLastLoginFailure()|escape}</time></dd>
+			<dt>Operational</dt><dd>{if $first_account->isOperational()}true{else}false{/if}</dd>
+			<dt>Confirmed</dt><dd>{if $first_account->isConfirmed()}1{else}0{/if}</dd>
+		</dl>
+		</div>
+	</section>
+	{/if}
+	{/if}
+	<section class='char-inventory-area inline-block half-width'>
+		<h3>Inventory for <strong class='char-name'>{$char_info.uname|escape}</strong></h3>
+		<table class='char-inventory'>
+			{foreach from=$char_inventory key='name' item='item'}
+				<tr class='info'>
+				<td>&#9734;</td>
+				{foreach from=$item key='column' item='data'}
+					<td class='headed'>{$column}</td><td> {$data}</td>
+				{/foreach}
+				</tr>
 			{/foreach}
-			</tr>
-		{/foreach}
-	</table>
+		</table>
+	</section>
 </section>
 {/foreach}
 {/if}
