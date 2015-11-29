@@ -83,23 +83,22 @@ if($turns > 0 && !empty($victim)) {
 	/* ============= STANDARD NPCS ======================= */
 
         $npco = new Npc($npc_stats); // Construct the npc object.
-		$display_name = first_value(@$npc_stats['name'], ucfirst($victim));
+		$display_name = first_value((isset($npc_stats['name'])? $npc_stats['name'] : null), ucfirst($victim));
         $max_damage = $npco->max_damage();
 		$percent_damage = null; // Percent damage does to the player's health. 
-		$status_effect = whichever(@$npc_stats['status'], null);
-		$reward_item = first_value(@$npc_stats['item'], null);
+		$status_effect = isset($npc_stats['status'])? $npc_stats['status'] : null;
+		$reward_item = isset($npc_stats['item']) && $npc_stats['item']? $npc_stats['item'] : null;
 		$base_gold = $npco->gold();
-		$npc_gold = (int) @$npc_stats['gold'];
+		$npc_gold = (int) isset($npc_stats['gold'])? $npc_stats['gold'] : 0 ;
 		$is_quick = ($npco->speed()>$player->speed())? true : false; // Beyond basic speed and they see you coming, so show that message.
 		// If npc gold explicitly set to 0, then none will be given.
 		$reward_gold = $npc_gold === 0? 0 : 
 			($reward_item? round($base_gold * .9) : $base_gold); // Hack a little off reward gold if items received.
-		$bounty_mod = @$npc_stats['bounty'];
+		$bounty_mod = isset($npc_stats['bounty'])? $npc_stats['bounty'] : null;
         $is_villager = $npco->has_trait('villager'); // Give the villager message with the bounty.
         $is_weaker = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
         $is_stronger = ($npco->strength()) > ($player->strength() * 2); // Npc More than twice as strong?
-        //debug($is_villager, $npco->traits, $npco);die();
-		$image = @$npc_stats['img'];
+		$image = isset($npc_stats['img'])? $npc_stats['img'] : null;
 		$image_path = null;
 		if($image && file_exists(SERVER_ROOT.'www/images/characters/'.$image)){
 			// If the image exists, set the path to it for use on the page.
