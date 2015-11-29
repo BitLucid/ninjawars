@@ -43,7 +43,7 @@ if ($error = init($private, $alive)) {
 			  $response['template']
 			, $response['title']
 			, $response['parts']
-			, ['quickstat' => false]
+			, $response['options']
 		);
 	}
 
