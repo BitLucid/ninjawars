@@ -64,6 +64,9 @@ class AccountFactory{
 		return new Account($account_info['account_id']);
 	}
 
+	/**
+	 * A partial save of account information.
+	**/ 
 	public static function save($account){
 		$params = [':identity'=>$account->getIdentity(), ':active_email'=>$account->getActiveEmail(), ':type'=>$account->getType(),
 			':oauth_provider'=>$account->getOauthProvider(), ':oauth_id'=>(string)$account->getOauthId($account->getOauthProvider()), 
