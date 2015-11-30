@@ -6,44 +6,49 @@
 }
 
 #map td{
-	background-color:black;
+	background-color:rgb(61, 24, 4);
 }
 
 #map td.doshin {
 	background-image:url(/images/nodes/node-tiles.png);
 	background-position:0px 0px;
 	background-repeat:no-repeat;
+    background-color:rgb(34, 59, 96);
 }
 
 #map td.dojo {
 	background-image:url(/images/nodes/node-tiles.png);
 	background-position:0px -111px;
 	background-repeat:no-repeat;
+    background-color:teal;
 }
 
 #map td.shrine {
 	background-image:url(/images/nodes/node-tiles.png);
 	background-position:0px -227px;
 	background-repeat:no-repeat;
+    background-color:rgb(87, 10, 91);
 }
 
 #map td.rice-field {
 	/*background-image:url(/images/nodes/node-tiles.png);
 	background-position:0px -342px;
 	background-repeat:no-repeat;*/
-    background-color:rgb(12,44,44);
+    background-color:rgb(27, 43, 31);
 }
 
 #map td.casino {
 	background-image:url(/images/nodes/node-tiles.png);
 	background-position:0px -444px;
 	background-repeat:no-repeat;
+    background-color:rgb(181, 157, 85);
 }
 
 #map td.weapons-shop {
 	background-image:url(/images/nodes/node-tiles.png);
 	background-position:0px -558px;
 	background-repeat:no-repeat;
+    background-color:goldenrod;
 }
 
 #map td.grass{
@@ -59,7 +64,7 @@
 }
 
 #map td.bath-house{
-    background-color:rgb(203,66,60);
+    background-color:rgb(60, 11, 37);
 }
 
 #map td.village-square{
@@ -84,11 +89,6 @@
     
     <div id='map'>
     <table class='map-grid'>
-    	<thead>
-    	<tr>
-    		<td colspan='5' class='area-name'>The Village</td>
-    	</tr>
-    	</thead>
     	<!-- <tfoot></tfoot> -->
     	<tbody>
 
