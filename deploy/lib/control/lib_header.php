@@ -29,7 +29,6 @@ function globalize_user_info($private=true, $alive=true) {
 	global $char_id;
 	$error = null;
 	$char_id = self_char_id(); // Will default to null.
-	//$username = get_username(); // Will default to null.
 
 	if ((!is_logged_in() || !$char_id) && $private) {
 		$error = 'log_in';

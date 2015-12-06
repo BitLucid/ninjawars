@@ -341,16 +341,6 @@ function self_name(){
 }
 
 /**
- * Wrapper to get a char name from a char id.
- */
-function get_username($char_id=null) {
-	if(defined('DEBUG') && DEBUG && $char_id===null){
-		nw_error('Deprecated call to get_char_name(null) with a null argument.  For clarity reasons, this is now deprecated, use self_name() instead.');
-	}
-	return get_char_name($char_id);
-}
-
-/**
  * Returns a char name from a char id.
  */
 function get_char_name($char_id=null) {
