@@ -126,39 +126,33 @@ function login_user_by_oauth($oauth_id, $oauth_provider){
 /**
  * Perform all the login functionality for the login page as requested.
  */
-function perform_login_if_requested($is_logged_in, $login_requested, $settings){
+function perform_login_if_requested($username_requested, $pass) {
 	Request::setTrustedProxies(Constants::$trusted_proxies);
 	$request = Request::createFromGlobals();
-	$user_agent = isset($_SERVER['HTTP_USER_AGENT'])? $_SERVER['HTTP_USER_AGENT'] : null;
-	// Extract the settings as sent in below.
-	list($logged_out, $username_requested, $pass, $referrer, $stored_username) = $settings;
-	// already logged in/login behaviors
-	if ($logged_out){
-		logout_user(); // Perform logout if requested!
-		$is_logged_in = false;
-	} elseif (!$is_logged_in) { // Perform login if they aren't already logged in.
-		if ($login_requested) { 	// Request to login was made.
-			$login_attempt_info = array(
-				'username'=>$username_requested,
-				'user_agent'=>$user_agent,
-				'ip'=>$request->getClientIp(),
-				'successful'=>0,
-				'additional_info'=>$_SERVER);
-			$logged_in    = login_user($username_requested, $pass);
-			$is_logged_in = $logged_in['success'];
-			if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
-				store_auth_attempt($login_attempt_info);
-				$login_error_message = $logged_in['login_error'];
-				redirect("login.php?error=".url($login_error_message));
-			} else {
-				// log a successful login attempt
-				$login_attempt_info['successful']=1;
-				store_auth_attempt($login_attempt_info);
-				redirect("/"); // Successful login, go to the main page...
-			}
-		}
+
+	$user_agent = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
+
+	$login_attempt_info = array(
+		'username'        => $username_requested,
+		'user_agent'      => $user_agent,
+		'ip'              => $request->getClientIp(),
+		'successful'      => 0,
+		'additional_info' => $_SERVER
+	);
+
+	$logged_in    = login_user($username_requested, $pass);
+	$is_logged_in = $logged_in['success'];
+
+	if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
+		store_auth_attempt($login_attempt_info);
+		$login_error_message = $logged_in['login_error'];
+		return $login_error_message;
+	} else {
+		// log a successful login attempt
+		$login_attempt_info['successful'] = 1;
+		store_auth_attempt($login_attempt_info);
+		return '';
 	}
-	return array($is_logged_in, $logged_out, $referrer, $stored_username);
 }
 
 /**
@@ -168,12 +162,12 @@ function find_account_info_by_oauth($id, $provider='facebook'){
 	$id = positive_int($id);
 	$account_info = query_row('select * from accounts where ( oauth_id = :id and oauth_provider = :provider )
 		order by operational, type, created_date asc limit 1',
-		array(':id'=>$id, ':provider'=>$provider));
-	if(empty($account_info) || !$account_info['account_id']){
-		return false;
-	} else {
-		return $account_info;
-	}
+array(':id'=>$id, ':provider'=>$provider));
+if(empty($account_info) || !$account_info['account_id']){
+	return false;
+} else {
+	return $account_info;
+}
 }
 
 /**

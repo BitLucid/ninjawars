@@ -2,7 +2,9 @@
 namespace app\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use \RunTimeException;
+use \Constants;
 
 class LoginController{
 
@@ -14,30 +16,31 @@ class LoginController{
 
 	/**
 	 * Try to perform a login, perform_login_if_requested will redirect as necessary
-	**/
-	public function requestLogin(){
-		$login_requested = true;
-		
+	 */
+	public function requestLogin() {
 		$logged_out          = in('logged_out'); // Logout page redirected to this one, so display the message.
 		$login_error_message = in('error'); // Error to display after unsuccessful login and redirection.
-
-		$stored_username = isset($_COOKIE['username'])? $_COOKIE['username'] : null;
-		$referrer        = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
 		$is_logged_in = is_logged_in();
 
 		$pass = post('pass');
 		$username_requested = post('user');
-		if($username_requested === null || $pass === null){
-			return new RedirectResponse('/login.php?error='.url('No username or no password specified'));
+
+		if ($logged_out) {
+			logout_user(); // Perform logout if requested!
+		} else if ($username_requested === null || $pass === null) {
+			$login_error_message = 'No username or no password specified';
 		}
 
-		if(!$login_error_message){
-			perform_login_if_requested($is_logged_in, $login_requested, 
-				[$logged_out, $username_requested, $pass, $referrer, $stored_username]); // Array order must sync
-			// This function redirects internally as required.
+		if (!$login_error_message && !$is_logged_in) {
+			$login_error_message = perform_login_if_requested($username_requested, $pass);
 		}
-		return new RedirectResponse('/login.php?error='.url($login_error_message));
+
+		if ($login_error_message) {
+			return new RedirectResponse('/login.php?error='.url($login_error_message));
+		} else { // Successful login, go to the main page
+			return new RedirectResponse('/');
+		}
 	}
 
 	/**
