@@ -17,7 +17,7 @@ $alive      = true;
 
 
 //$are_clones = characters_are_linked(get_char_id('zig'), get_char_id('zag'));
-//debug($are_clones, account_info(get_char_account_id(get_char_id('zig'))), account_info(get_char_account_id(get_char_id('zag'))));die();
+//debug($are_clones, account_info(account_id_by_ninja_id(get_char_id('zig'))), account_info(account_id_by_ninja_id(get_char_id('zag'))));die();
 
 
 if ($error = init($private, $alive)) {

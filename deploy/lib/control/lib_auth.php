@@ -220,21 +220,12 @@ function get_logged_in_char_id() {
 	return SESSION::get('player_id');
 }
 
-// Wrapper for the account_id function.
-function get_logged_in_account_id() {
-	return account_id();
-}
-
 // Get the account_id as logged in.
 function account_id(){
 	return SESSION::get('account_id');
 }
 
 // Pull the account_ids for a certain character
-function get_char_account_id($char_id){
-	return account_id_by_ninja_id($char_id);
-}
-
 function account_id_by_ninja_id($ninja_id){
 	return query_item('SELECT account_id from accounts JOIN account_players ON account_id = _account_id 
 		where _player_id = :ninja_id', array(':ninja_id'=>$ninja_id));
@@ -242,8 +233,8 @@ function account_id_by_ninja_id($ninja_id){
 
 // Check whether two characters have similarities, same account, same ip, etc.
 function characters_are_linked($char_id, $char_2_id){
-	$account_id = get_char_account_id($char_id);
-	$account_2_id = get_char_account_id($char_2_id);
+	$account_id = account_id_by_ninja_id($char_id);
+	$account_2_id = account_id_by_ninja_id($char_2_id);
 	$char_1_info = char_info($char_id);
 	$char_1_active = @$char_1_info['active'];
 	$char_2_info = char_info($char_2_id);
@@ -277,7 +268,7 @@ function characters_are_linked($char_id, $char_2_id){
  * @return boolean Check whether someone is logged into their account.
  **/
 function is_logged_in() {
-	return (bool) get_logged_in_account_id();
+	return (bool) account_id();
 }
 
 /**
@@ -370,19 +361,6 @@ function username_format_validate($username){
 	return $error;
 }
 
-// Takes in a potential login name and saves it over multiple logins.
-function nw_session_start($potential_username = '') {
-	$result = array('cookie_created' => false, 'session_existed' => false, 'cookie_existed'=> false);
-	if (!isset($_COOKIE['user_cookie']) || $_COOKIE['user_cookie'] != $potential_username) {
-		// Refresh cookie if the username isn't set in it yet.
-		$result['cookie_created'] = createCookie("user_cookie", $potential_username, (time()+60*60*24*365), "/", WEB_ROOT); // *** 365 days ***
-	} else {
-		$result['cookie_existed'] = true;
-	}
-
-	return $result;
-}
-
 // Just to mimic the nw_session_start wrapper.
 function nw_session_destroy() {
 	if(!isset($_SESSION)){session_start();}
@@ -403,38 +381,6 @@ function nw_session_destroy() {
 
 	// Finally, destroy the session.
 	session_destroy();
-}
-
-/**
- * Returns display:none style information depending on the current state.
- * Used primarily on the index page.
- **/
-function display_when($state) {
-	$on  = '';
-	$off = "style='display: none;'";
-	switch ($state) {
-		case 'logged_in':
-			return (is_logged_in() ? $on : $off);
-			break;
-		case 'logged_out':
-			return (is_logged_in() ? $off : $on);
-			break;
-		case 'logout_occurs':
-			$logout = in('logout');
-			return (isset($logout) ? $on : $off);
-			break;
-		case 'login_failed':
-			return (in('action') == 'login' && !is_logged_in() ? $on : $off);
-			break;
-		default:
-			if (DEBUG) {
-				throw Exception('improper display_when() argument');
-			} else {
-				error_log('improper display_when() argument');
-			}
-			return $off;
-			break;
-	}
 }
 
 // Canonical source for own name now.
@@ -473,15 +419,6 @@ function get_char_name($char_id=null) {
 		$sql = "SELECT uname FROM players WHERE player_id = :player";
 		return query_item($sql, array(':player'=>$char_id));
 	}
-}
-
-// Requires a player id, throwing an exception otherwise.
-function player_name_from_id($player_id) {
-	if (!$player_id) {
-		throw new Exception('Blank player ID to find the username of requested.');
-	}
-
-	return get_username($player_id);
 }
 
 // Check for own id, migrate to this for calls checking for self.
@@ -534,11 +471,6 @@ function ninja_id($name){
 	return query_item($find, array(':name'=>strtolower($name)));
 }
 
-// Get ninja id for currently logged in ninja
-function self_ninja_id(){
-	return get_logged_in_char_id();
-}
-
 // Update activity for a logged in player.
 function update_activity_log($p_playerID) {
 	// (See update_activity_info in lib_header for the function that updates all the detailed info.)
@@ -565,52 +497,6 @@ function store_auth_attempt($info){
 	}
 	// Log the login attempt as well.
 	query("insert into login_attempts (username, ua_string, ip, successful, additional_info) values (:username, :user_agent, :ip, :successful, :additional_info)", array(':username'=>$info['username'], ':user_agent'=>$info['user_agent'], ':ip'=>$info['ip'], ':successful'=>$info['successful'], ':additional_info'=>$additional_info));
-}
-
-/**
- * A better alternative (RFC 2109 compatible) to the php setcookie() function
- *
- * @param string Name of the cookie
- * @param string Value of the cookie
- * @param int Lifetime of the cookie
- * @param string Path where the cookie can be used
- * @param string Domain which can read the cookie
- * @param bool Secure mode?
- * @param bool Only allow HTTP usage?
- * @return bool True or false whether the method has successfully run
- */
-function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure=false, $HTTPOnly=false) {
-	$ob = ini_get('output_buffering');
-	// Abort the method if headers have already been sent, except when output buffering has been enabled
-	if (headers_sent() && (bool) $ob === false || strtolower($ob) == 'off' ) {
-		assert("(false) && ('Headers were sent before the cookie was reached, which should not happen.')");
-		return false;
-	}
-
-	if (!empty($domain)) {
-		// Cut off leading http:// or www
-		if (strtolower(substr($domain, 0, 7)) == 'http://') $domain = substr($domain, 7);
-		// Truncate the domain to accept domains with and without 'www.'.
-		if (strtolower(substr($domain, 0, 4)) == 'www.') $domain = substr($domain, 4);
-		// Add the dot prefix to ensure compatibility with subdomains
-		if (substr($domain, 0, 1) != '.') $domain = '.'.$domain;
-
-		// Remove port information.
-		$port = strpos($domain, ':');
-
-		if ($port !== false) $domain = substr($domain, 0, $port);
-	}
-	// Prevent "headers already sent" error with utf8 support (BOM)
-	//if ( utf8_support ) header('Content-Type: text/html; charset=utf-8');
-	$header_string = 'Set-Cookie: '.rawurlencode($name).'='.rawurlencode($value)
-		.(empty($domain) ? '' : '; Domain='.$domain)
-		.(empty($maxage) ? '' : '; Max-Age='.$maxage)
-		.(empty($path)   ? '' : '; Path='.$path)
-		.(!$secure       ? '' : '; Secure')
-		.(!$HTTPOnly     ? '' : '; HttpOnly');
-	header($header_string, false);
-	assert(isset($domain));
-	return true;
 }
 
 /*
