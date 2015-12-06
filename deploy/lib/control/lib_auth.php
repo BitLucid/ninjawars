@@ -6,14 +6,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 	$login = strtolower(sanitize_to_text((string)$dirty_login));
-	$last_login_failure_was_recent = false;
+	$recent_login_failure = false;
 	$pass  = (string)$p_pass;
 
 	if ($limit_login_attempts) {
-		$last_login_failure_was_recent = last_login_failure_was_recent(potential_account_id_from_login_username($login));
+		$recent_login_failure = last_login_failure_was_recent(potential_account_id_from_login_username($login));
 	}
 
-	if ($login != '' && $pass != '' && !$last_login_failure_was_recent) {
+	if ($login != '' && $pass != '' && !$recent_login_failure) {
 		// Allow login via username or email.
 
 		// Pull the account data regardless of whether the password matches, but create an int about whether it does match or not.
@@ -64,8 +64,8 @@ function _login_user($p_username, $p_player_id, $p_account_id) {
     SESSION::set('account_id', $p_account_id);
     update_activity_log($p_player_id);
     update_last_logged_in($p_player_id);
-    $up = "UPDATE players SET active = 1 WHERE player_id = :char_id";
-    query($up, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
+    $update = "UPDATE players SET active = 1 WHERE player_id = :char_id";
+    query($update, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
 }
 
 /**
@@ -158,11 +158,11 @@ function perform_login_if_requested($username_requested, $pass) {
 /**
  * Get the account that matches an oauth provider.
  */
-function find_account_info_by_oauth($id, $provider='facebook'){
-	$id = positive_int($id);
+function find_account_info_by_oauth($accountId, $provider='facebook'){
+	$accountId = positive_int($accountId);
 	$account_info = query_row('select * from accounts where ( oauth_id = :id and oauth_provider = :provider )
 		order by operational, type, created_date asc limit 1',
-array(':id'=>$id, ':provider'=>$provider));
+array(':id'=>$accountId, ':provider'=>$provider));
 if(empty($account_info) || !$account_info['account_id']){
 	return false;
 } else {
@@ -183,16 +183,16 @@ function add_oauth_to_account($account_id, $oauth_id, $oauth_provider='facebook'
  * Sets the last logged in date equal to now.
  */
 function update_last_logged_in($char_id) {
-	$up = "UPDATE accounts SET last_login = now() WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :char_id)";
-	return query($up, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
+	$update = "UPDATE accounts SET last_login = now() WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :char_id)";
+	return query($update, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
 }
 
 /**
  * Sets the last failed login date to now()
  */
 function update_last_login_failure($account_id) {
-	$up = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";
-	return query($up, array(':account_id'=>array($account_id, PDO::PARAM_INT)));
+	$update = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";
+	return query($update, array(':account_id'=>array($account_id, PDO::PARAM_INT)));
 }
 
 /**
@@ -536,15 +536,15 @@ function store_auth_attempt($info){
  */
 function membership_and_combat_stats() {
 	DatabaseConnection::getInstance();
-	$vk = DatabaseConnection::$pdo->query('SELECT stat_result from past_stats where id = 4');
-	$todaysViciousKiller = $vk->fetchColumn();
+	$viciousResult = DatabaseConnection::$pdo->query('SELECT stat_result from past_stats where id = 4');
+	$todaysViciousKiller = $viciousResult->fetchColumn();
 
 	$stats['vicious_killer'] = $todaysViciousKiller;
-	$pc = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE active = 1");
-	$stats['player_count'] = $pc->fetchColumn();
+	$playerCount = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE active = 1");
+	$stats['player_count'] = $playerCount->fetchColumn();
 
-	$po = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true");
-	$stats['players_online'] = $po->fetchColumn();
+	$peopleOnline = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true");
+	$stats['players_online'] = $peopleOnline->fetchColumn();
 
 	$stats['active_chars'] = query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('15 minutes' AS interval))");
 	return $stats;
