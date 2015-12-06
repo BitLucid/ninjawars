@@ -84,7 +84,7 @@ function json_latest_event() {
 }
 
 function json_player() {
-	$player = self_char_info();
+	$player = char_info(self_char_id());
 	return '{"player":'.json_encode($player).'}';
 }
 
@@ -111,7 +111,7 @@ function json_send_chat($msg) {
 		require_once(LIB_ROOT."control/lib_chat.php");
 		$msg = trim($msg);
 		$user_id = (int) self_char_id();
-		$info = self_char_info();
+		$info = char_info($user_id);
 		$success = send_chat($user_id, $msg);
 		if(!$success){
 			return false;
