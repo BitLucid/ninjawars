@@ -247,7 +247,7 @@ function characters_are_linked($char_id, $char_2_id){
 	$char_1_info = char_info($char_id);
 	$char_1_active = @$char_1_info['active'];
 	$char_2_info = char_info($char_2_id);
-	$char_21_active = @$char_2_info['active'];
+	$char_2_active = @$char_2_info['active'];
 	$server_ip = $_SERVER['SERVER_ADDR'];
 	$allowed_ips = array_merge(['127.0.0.1', $server_ip], Constants::$trusted_proxies);
 	if(empty($account_id) || empty($account_2_id) || empty($char_1_info) || empty($char_2_info)){
@@ -616,7 +616,7 @@ function createCookie($name, $value='', $maxage=0, $path='', $domain='', $secure
 /*
  * Stats on recent activity and other aggregate counts/information.
  */
-function membership_and_combat_stats($update_past_stats=false) {
+function membership_and_combat_stats() {
 	DatabaseConnection::getInstance();
 	$vk = DatabaseConnection::$pdo->query('SELECT stat_result from past_stats where id = 4');
 	$todaysViciousKiller = $vk->fetchColumn();
