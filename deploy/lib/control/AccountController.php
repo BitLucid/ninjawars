@@ -186,7 +186,7 @@ class AccountController {
 		$command 	= in('command');
 		$delete_attempts = SESSION::is_set('delete_attempts') ? SESSION::get('delete_attempts') : 0;
 
-		$verify = is_authentic($username, $passW);
+		$verify = self::is_authentic($username, $passW);
 
 		if ($verify && empty($delete_attempts)) {
 			// only allow account deletion on first attempt
@@ -265,4 +265,16 @@ class AccountController {
 			],
 		];
 	}
+
+	/**
+	 * Just do a check whether the input username and password is valid
+	 *
+	 * @return boolean
+	 */
+	public static function is_authentic($p_user, $p_pass) {
+		$data = authenticate($p_user, $p_pass, false);
+
+		return (isset($data['authenticated']) && (bool)$data['authenticated']);
+	}
+
 }

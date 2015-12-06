@@ -57,7 +57,7 @@ class AccountFactory{
 	}
 
 	public static function findAccountByOauthId($id, $provider='facebook'){
-		$account_info = find_account_info_by_oauth($id, $provider);
+		$account_info = self::find_account_info_by_oauth($id, $provider);
 		if(!$account_info['account_id']){
 			return false;
 		}
@@ -83,5 +83,20 @@ class AccountFactory{
 	public static function account_info_by_identity($identity_email) {
 		return query_row('select * from accounts where account_identity = :identity_email',
 			array(':identity_email'=>$identity_email));
+	}
+
+	/**
+	 * Get the account that matches an oauth provider.
+	 */
+	public static function find_account_info_by_oauth($accountId, $provider='facebook') {
+		$accountId = positive_int($accountId);
+		$account_info = query_row('select * from accounts where ( oauth_id = :id and oauth_provider = :provider )
+			order by operational, type, created_date asc limit 1', array(':id'=>$accountId, ':provider'=>$provider));
+
+		if (empty($account_info) || !$account_info['account_id']) {
+			return false;
+		} else {
+			return $account_info;
+		}
 	}
 }

@@ -295,3 +295,26 @@ function inactivate_ninja($char_id){
 	query('update players set active = 0 where player_id = :char_id', array(':char_id'=>$char_id)); // Toggle the active bit off until they login.
 }
 
+/**
+ * Check that the password format fits.
+ */
+function validate_password($password_to_hash) {
+	$error = null;
+	if (strlen($password_to_hash) < 3 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
+		$error = 'Phase 2 Incomplete: Passwords must be at least 3 characters long.';
+	}
+
+	return $error;
+}
+
+/**
+ * Function for account creation to return the reasons that a username isn't acceptable.
+ */
+function validate_username($send_name) {
+	$error = null;
+	$format_error = username_format_validate($send_name);
+	if($format_error){
+		$error = 'Phase 1 Incomplete: Ninja name: '.$error;
+	}
+	return $error;
+}

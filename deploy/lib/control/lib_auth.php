@@ -124,53 +124,6 @@ function login_user_by_oauth($oauth_id, $oauth_provider){
 }
 
 /**
- * Perform all the login functionality for the login page as requested.
- */
-function perform_login_if_requested($username_requested, $pass) {
-	Request::setTrustedProxies(Constants::$trusted_proxies);
-	$request = Request::createFromGlobals();
-
-	$user_agent = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
-
-	$login_attempt_info = array(
-		'username'        => $username_requested,
-		'user_agent'      => $user_agent,
-		'ip'              => $request->getClientIp(),
-		'successful'      => 0,
-		'additional_info' => $_SERVER
-	);
-
-	$logged_in    = login_user($username_requested, $pass);
-	$is_logged_in = $logged_in['success'];
-
-	if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
-		store_auth_attempt($login_attempt_info);
-		$login_error_message = $logged_in['login_error'];
-		return $login_error_message;
-	} else {
-		// log a successful login attempt
-		$login_attempt_info['successful'] = 1;
-		store_auth_attempt($login_attempt_info);
-		return '';
-	}
-}
-
-/**
- * Get the account that matches an oauth provider.
- */
-function find_account_info_by_oauth($accountId, $provider='facebook'){
-	$accountId = positive_int($accountId);
-	$account_info = query_row('select * from accounts where ( oauth_id = :id and oauth_provider = :provider )
-		order by operational, type, created_date asc limit 1',
-array(':id'=>$accountId, ':provider'=>$provider));
-if(empty($account_info) || !$account_info['account_id']){
-	return false;
-} else {
-	return $account_info;
-}
-}
-
-/**
  * Add oauth to an account.
  */
 function add_oauth_to_account($account_id, $oauth_id, $oauth_provider='facebook'){
@@ -285,45 +238,10 @@ function is_logged_in() {
 }
 
 /**
- * Just do a check whether the input username and password is valid
- *
- * @return boolean
- */
-function is_authentic($p_user, $p_pass) {
-	$data = authenticate($p_user, $p_pass, false);
-
-	return (isset($data['authenticated']) && (bool)$data['authenticated']);
-}
-
-/**
  * Logout function.
  */
 function logout_user() {
 	nw_session_destroy();
-}
-
-/**
- * Check that the password format fits.
- */
-function validate_password($password_to_hash) {
-	$error = null;
-	if (strlen($password_to_hash) < 3 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
-		$error = 'Phase 2 Incomplete: Passwords must be at least 3 characters long.';
-	}
-
-	return $error;
-}
-
-/**
- * Function for account creation to return the reasons that a username isn't acceptable.
- */
-function validate_username($send_name) {
-	$error = null;
-	$format_error = username_format_validate($send_name);
-	if($format_error){
-		$error = 'Phase 1 Incomplete: Ninja name: '.$error;
-	}
-	return $error;
 }
 
 /**
@@ -511,24 +429,6 @@ function update_activity_log($p_playerID) {
 	query("UPDATE players SET days = 0 WHERE player_id = :player", [':player'=>$p_playerID]);
 	query("Update accounts set last_ip = :ip, last_login = now() where account_id = (select _account_id from account_players join players on _player_id = player_id where player_id = :pid)",
 		array(':ip'=>$user_ip, ':pid'=>$p_playerID));
-}
-
-/**
- * Simply store whatever authentication info is passed in.
- */
-function store_auth_attempt($info){
-	// Simply log the attempts in the database.
-	$additional_info = null;
-	if($info['additional_info']){
-		// Encode all the info from $_SERVER, for now.
-		$additional_info = json_encode($info['additional_info']);
-	}
-	if(!$info['successful']){
-		// Update last login failure.
-		update_last_login_failure(potential_account_id_from_login_username($info['username']));
-	}
-	// Log the login attempt as well.
-	query("insert into login_attempts (username, ua_string, ip, successful, additional_info) values (:username, :user_agent, :ip, :successful, :additional_info)", array(':username'=>$info['username'], ':user_agent'=>$info['user_agent'], ':ip'=>$info['ip'], ':successful'=>$info['successful'], ':additional_info'=>$additional_info));
 }
 
 /**
