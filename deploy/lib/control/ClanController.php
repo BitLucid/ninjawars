@@ -7,11 +7,22 @@ use Exception;
 use \Player as Player;
 use \ClanFactory as ClanFactory;
 
+/**
+ * Controller for all actions involving clan
+ */
 class ClanController { //extends Controller
 	const CLAN_CREATOR_MIN_LEVEL = 20;
 	const ALIVE                  = false;
 	const PRIV                   = false;
 
+	/**
+	 * View information about a clan
+	 *
+	 * @param clan_id int (optional) The id of the clan to view
+	 * @return Array The viewspec
+	 * @note
+	 * If a clan_id is not specified, the clan of the current user will be used
+	 */
 	public function view() {
 		$clanID = (int)in('clan_id', null);
 
@@ -71,6 +82,13 @@ class ClanController { //extends Controller
 		return $this->render($parts);
 	}
 
+	/**
+	 * Send an invitation to a character that will ask them to join your clan
+	 *
+	 * @param person_invited int The id of the character to invite
+	 * @return Array The viewspec
+	 * @throws Exception You cannot use this function if you are not the leader of a clan
+	 */
 	public function invite() {
 		$player = new Player(self_char_id());
 		$clan   = ClanFactory::clanOfMember($player);
@@ -106,6 +124,12 @@ class ClanController { //extends Controller
 		return $this->render($parts);
 	}
 
+	/**
+	 * Removes the active player from the clan they are in
+	 *
+	 * @return Array The viewspec
+	 * @throws Exception If you are the only leader of your clan, you cannot leave, you must disband
+	 */
 	public function leave() {
 		$player = new Player(self_char_id());
 		$clan   = ClanFactory::clanOfMember($player);
@@ -127,6 +151,15 @@ class ClanController { //extends Controller
 		]);
 	}
 
+	/**
+	 * Creates a new clan with the current user as the leader
+	 *
+	 * @return Array The viewspec
+	 * @note
+	 * Player must be high enough level to create a clan
+	 *
+	 * @see CLAN_CREATOR_MIN_LEVEL
+	 */
 	public function create() {
 		$player = new Player(self_char_id());
 
@@ -161,6 +194,11 @@ class ClanController { //extends Controller
 		return $this->render($parts);
 	}
 
+	/**
+	 * Sends a request to a clan leader for the current user to join a clan
+	 *
+	 * @return Array The viewspec
+	 */
 	public function join() {
 		$clanID = (int) in('clan_id', null);
 		$clan   = ClanFactory::find($clanID);
@@ -181,6 +219,12 @@ class ClanController { //extends Controller
 		]);
 	}
 
+	/**
+	 * Deletes a clan and messages all members that it has been disbanded
+	 *
+	 * @return Array The viewspec
+	 * @throws Exception The player disbanding must be the leader of the clan
+	 */
 	public function disband() {
 		$player = new Player(self_char_id());
 		$clan   = ClanFactory::clanOfMember($player);
@@ -214,6 +258,13 @@ class ClanController { //extends Controller
 		return $this->render($parts);
 	}
 
+	/**
+	 * Removes a player from a clan
+	 *
+	 * @param kicked int The id of the player to kick
+	 * @return Array The viewspec
+	 * @throws Exception The player must be the leader of the clan to kick a member
+	 */
 	public function kick() {
 		$kicker = new Player(self_char_id());
 		$clan   = ClanFactory::clanOfMember($kicker);
@@ -238,6 +289,17 @@ class ClanController { //extends Controller
 		]);
 	}
 
+	/**
+	 * Edits clan metadata
+	 *
+	 * @param clan-avatar-url String A url to an image to use as the clan icon
+	 * @param clan-description String A single paragraph describing the clan
+	 * @param new_clan_name String The desired new name of the clan
+	 * @return Array The viewspec
+	 * @throws Exception Only leaders can update clan details
+	 * @note
+	 * All parameters are options
+	 */
 	public function update() {
 		$player = new Player(self_char_id());
 		$clan   = ClanFactory::clanOfMember($player);
@@ -298,6 +360,12 @@ class ClanController { //extends Controller
 		]);
 	}
 
+	/**
+	 * Shows a form for editing clan metadata
+	 *
+	 * @return Array The viewspec
+	 * @see update()
+	 */
 	public function edit() {
 		$player = new Player(self_char_id());
 		$clan   = ClanFactory::clanOfMember($player);
@@ -312,6 +380,12 @@ class ClanController { //extends Controller
 		]);
 	}
 
+	/**
+	 * Sends a message to all members of the clan of the current player
+	 *
+	 * @param message String The message to send to all clan members
+	 * @return Array The view spec
+	 */
 	public function message() {
 		$player = new Player(self_char_id());
 
@@ -350,6 +424,11 @@ class ClanController { //extends Controller
 		}
 	}
 
+	/**
+	 * Shows a ranked list of all clans in the game
+	 *
+	 * @return Array The viewspec
+	 */
 	public function listClans() {
 		$parts = [
 			'title'     => 'Clan List',
@@ -375,8 +454,9 @@ class ClanController { //extends Controller
 	/**
 	 * Review a requet to join a clan
 	 *
-	 * @param joiner int the id of the player object to accept into the clan
-	 * @return Array
+	 * @param joiner int The id of the player object to accept into the clan
+	 * @param confirmation int The nonce of clan invitation created by the request to join
+	 * @return Array The viewspec
 	 */
 	public function review() {
 		$ninja = new Player(self_char_id());
@@ -413,7 +493,7 @@ class ClanController { //extends Controller
 	 *
 	 * @param joiner int the id of the player object to accept into the clan
 	 * @param confirmation int A nonce that prevents clan leaders from adding unwilling members
-	 * @return Array
+	 * @return Array The viewspec
 	 *
 	 * @par Preconditions:
 	 * Active player must be leader of a clan
@@ -459,6 +539,12 @@ class ClanController { //extends Controller
 		return $this->render($parts);
 	}
 
+	/**
+	 * Generates a viewspec for rendering pages
+	 *
+	 * @param p_parts Array Name-Value pairs of values to send to the view
+	 * @return Array A viewspec for rendering
+	 */
 	private function render($p_parts) {
 		if (!isset($p_parts['pageParts'])) {
 			$p_parts['pageParts'] = [];
@@ -488,6 +574,13 @@ class ClanController { //extends Controller
 		];
 	}
 
+	/**
+	 * Tests whether the specified player is a leader of the specified clan
+	 *
+	 * @param p_objPlayer The player in question
+	 * @param p_objClan The clan to check against
+	 * @return boolean
+	 */
 	private function playerIsLeader($p_objPlayer, $p_objClan) {
 		$records = get_clan_leaders($p_objClan->id(), true);
 
