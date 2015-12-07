@@ -6,7 +6,7 @@
 }
 
 #map td{
-	background-color:rgb(61, 24, 4);
+	background-color:#807F6F;
 }
 
 #map td.doshin {
@@ -31,10 +31,9 @@
 }
 
 #map td.rice-field {
-	/*background-image:url(/images/nodes/node-tiles.png);
-	background-position:0px -342px;
-	background-repeat:no-repeat;*/
     background-color:rgb(27, 43, 31);
+    background-image:url(/images/nodes/lightdirt.jpg);
+    background-size:100% 100%;
 }
 
 #map td.casino {
@@ -53,14 +52,20 @@
 
 #map td.grass{
 	background-color:rgb(30,60,0);
+    background-image:url(/images/nodes/grass.jpg);
+    background-size:100% 100%;
 }
 
 #map td.north-south-road{
     background-color:rgb(55, 55, 55);
+    background-image:url(/images/nodes/darkgranite.jpg);
+    background-size:100% 100%;
 }
 
 #map td.west-east-road, #map td.east-west-road{
     background-color:rgb(65, 65, 65);
+    background-image:url(/images/nodes/darkgranite.jpg);
+    background-size:100% 100%;
 }
 
 #map td.bath-house{
@@ -68,7 +73,7 @@
 }
 
 #map td.village-square{
-    background-color:teal;
+    background-color:#FF4573;
 }
 #map .area-name{
     background-color:rgb(55, 10, 10);font-size:1.3em;text-align:center;text-transform:uppercase;padding:.7em;
