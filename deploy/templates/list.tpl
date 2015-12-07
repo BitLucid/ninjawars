@@ -1,3 +1,8 @@
+<style>
+.list-all-players-search[type=search]{
+	font-family:Verdana, Arial;font-size:xx-small;
+}
+</style>
 <h1>Ninja List</h1>
 
 {if $searched}
@@ -16,7 +21,7 @@
   <div class='list-all-players-search centered'>
     <form action="list.php" method="get">
       <div>
-        <input type="text" name="searched" class='textField' style="font-family:Verdana, Arial;font-size:xx-small;">
+        <input type="search" name="searched" class='textField' required=required>
         <input type="hidden" name="hide" value="{$hide|escape}">
         <button type='submit' class='formButton' value='1'>Search for Ninja</button>
 
