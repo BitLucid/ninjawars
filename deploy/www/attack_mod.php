@@ -3,6 +3,9 @@ require_once(LIB_ROOT."control/Player.class.php");
 require_once(LIB_ROOT."control/lib_attack.php");
 require_once(LIB_ROOT."control/Skill.php");
 require_once(LIB_ROOT."control/lib_inventory.php");
+require_once(CORE.'control/AttackLegal.php');
+
+use app\combat\AttackLegal;
 /*
  * Deals with the non-skill based attacks and stealthed attacks.
  *
@@ -85,9 +88,9 @@ $params = array(
 	, 'ignores_stealth' => $ignores_stealth
 );
 
-$AttackLegal = new AttackLegal($attacker, $target, $params);
-$attack_is_legal = $AttackLegal->check();
-$attack_error = $AttackLegal->getError();
+$attack_legal = new AttackLegal($attacker, $target, $params);
+$attack_is_legal = $attack_legal->check();
+$attack_error = $attack_legal->getError();
 
 $target_player    = new Player($target_id);
 $attacking_player = new Player($attacker_id);
@@ -348,7 +351,7 @@ $attack_again = false;
 if (isset($target)) {
     $attacker_health_snapshot = getHealth($attacker_id);
     $defender_health_snapshot = getHealth($target_id);
-	if ($AttackLegal && $attacker_health_snapshot > 0 && $defender_health_snapshot > 0) {	// *** After any partial attack. ***
+	if ($attack_is_legal && $attacker_health_snapshot > 0 && $defender_health_snapshot > 0) {	// *** After any partial attack. ***
 		$attack_again = true;
 	}
 }

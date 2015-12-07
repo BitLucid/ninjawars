@@ -1,5 +1,9 @@
 <?php
 require_once(LIB_ROOT.'control/lib_inventory.php');
+require_once(CORE.'control/AttackLegal.php');
+
+use app\combat\AttackLegal;
+
 $private   = false;
 $alive     = false;
 

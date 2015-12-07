@@ -1,6 +1,8 @@
 <?php
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
-require_once(ROOT.'core/control/AttackLegal.class.php');
+require_once(ROOT.'core/control/AttackLegal.php');
+
+use app\combat\AttackLegal;
 
 
 class TestAttackLegal extends PHPUnit_Framework_TestCase {
