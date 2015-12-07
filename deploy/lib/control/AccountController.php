@@ -80,6 +80,10 @@ class AccountController {
 		return $this->render($parts);
 	}
 
+	/**
+	 * Internal method to update account_identity in the database.
+	 * @todo Make this done by the model
+	**/
 	private function _changeEmail($p_playerID, $p_newEmail) {
 		$changeEmailQuery1 = "UPDATE accounts SET account_identity = :identity, active_email = :email WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
 
@@ -141,6 +145,10 @@ class AccountController {
 		return $this->render($parts);
 	}
 
+	/**
+	 * Internal method to update an account crypt hash in the database
+	 * @todo Maybe make functionality in the model to have this done.
+	**/
 	private function _changePassword($p_playerID, $p_newPassword) {
 		$changePasswordQuery = "UPDATE accounts SET phash = crypt(:password, gen_salt('bf', 8)) WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
 
