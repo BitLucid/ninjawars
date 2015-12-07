@@ -1,6 +1,4 @@
 <?php
-//require_once(DB_ROOT . "PlayerVO.class.php");
-//require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(LIB_ROOT."control/Player.class.php");
 require_once(LIB_ROOT."control/lib_attack.php");
 require_once(LIB_ROOT."control/Skill.php");
@@ -21,8 +19,6 @@ if ($error = init($private, $alive)) {
 	die();
 }
 
-
-// TODO: Turn this page/system into a function to be rendered.
 
 // *** ********* GET VARS FROM POST - OR GET ************* ***
 $target      = whichever(in('target'), in('attackee'));

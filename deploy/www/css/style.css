@@ -2050,10 +2050,20 @@ table#sight-info {
 #sight-info td:hover {
 	background-color:rgb(80, 30, 30);
 }
+
+/* Attacking / combat styles */
+
 .attack-player-trigger {
 	display:block;
 	margin-top: 1em;
 	cursor: pointer;
+}
+
+.solo-page .padded-area{
+	padding-left:2em;padding-right:2em;
+}
+.solo-page nav.attack-nav{
+	padding-left:1em;padding-right:1em;
 }
 
 /* Clan page styling */
