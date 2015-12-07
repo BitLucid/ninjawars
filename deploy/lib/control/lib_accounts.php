@@ -43,13 +43,6 @@ function account_info_by_identity($identity_email){
 }
 
 
-// Check that the account info is acceptably valid.
-function validate_account($ninja_id, $email, $password_to_hash) {
-	return ($ninja_id && $email && $password_to_hash
-			&& is_numeric($type) && get_ninja_name($ninja_id) && !account_by_email($email)
-			&& validate_password($password_to_hash) && validate_email($email));
-}
-
 function email_fits_pattern($p_email) {
 	return preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", $p_email);
 }
@@ -131,16 +124,6 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	$verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($newID, PDO::PARAM_INT)));
 
 	return ($verify_ninja_id != $ninja_id ? false : $newID);
-}
-
-/**
- * Check whether an account already exists for a certain email.
- */
-function account_with_email($email) {
-	$sel = 'SELECT account_id FROM accounts WHERE active_email = :email';
-	$existing_account = query_item($sel, array(':email'=>strtolower($email)));
-
-	return !!$existing_account;
 }
 
 // Gives the blacklisted emails, should eventually be from a table.
@@ -320,18 +303,6 @@ function class_display_name_from_identity($identity) {
 function validate_signup_phase0($enteredName, $enteredEmail, $class_identity, $enteredPass) {
 	return ($enteredName && $enteredPass && $enteredEmail && $class_identity);
 }
-
-/*
-// I just replaced these with their appropriate validate_username() or validate_password calls.
-function validate_signup_phase1($enteredName) {
-	return validate_username($enteredName);
-}
-
-Just replaced this the validate_password function.
-function validate_signup_phase2($enteredPass) {
-	// Validate the password!
-	return validate_password($enteredPass);
-}*/
 
 
 function validate_signup_phase3($enteredName, $enteredEmail) {
