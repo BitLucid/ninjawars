@@ -6,6 +6,7 @@ require_once(CORE.'data/ClanFactory.php'); ///TODO autoload this
 use Exception;
 use \Player as Player;
 use \ClanFactory as ClanFactory;
+use \Clan as Clan;
 
 /**
  * Controller for all actions involving clan
