@@ -26,7 +26,7 @@ class AccountFactory{
 	}*/
 
 	public static function find($email_identity){
-		$account_info = account_info_by_identity($email_identity);
+		$account_info = self::account_info_by_identity($email_identity);
 		return new Account($account_info['account_id']);
 	}
 
@@ -52,7 +52,7 @@ class AccountFactory{
 	}
 
 	public static function findByIdentity($identity_email){
-		$info = account_info_by_identity($identity_email);
+		$info = self::account_info_by_identity($identity_email);
 		return new Account($info['account_id']);
 	}
 
@@ -77,5 +77,11 @@ class AccountFactory{
 				oauth_id = :oauth_id				
 				where account_id = :account_id', $params);
 		return $updated;
+	}
+
+	// Get the account linked with an identity email.
+	public static function account_info_by_identity($identity_email) {
+		return query_row('select * from accounts where account_identity = :identity_email',
+			array(':identity_email'=>$identity_email));
 	}
 }

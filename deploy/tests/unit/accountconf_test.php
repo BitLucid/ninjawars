@@ -5,7 +5,10 @@ require_once(LIB_ROOT.'base.inc.php');
 
 require_once(LIB_ROOT.'control/lib_auth.php');
 require_once(LIB_ROOT.'control/lib_accounts.php');
+require_once(LIB_ROOT.'control/AccountController.php');
 require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
+
+use app\Controller\AccountController;
 
 // Note that this file has to have a suffix of ...test.php to be run.
 
@@ -155,7 +158,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	**/
     function testAttemptLoginOfUnconfirmedAccountShouldFail(){
     	$email ='noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
-    	$char_id = TestAccountCreateAndDestroy::create_testing_account($confirm=false, $email);
+    	TestAccountCreateAndDestroy::create_testing_account(false, $email);
 		$res = @login_user($email, $this->test_password);
 		$this->assertFalse($res['success']);
 		$this->assertTrue(is_string($res['login_error']));
@@ -188,7 +191,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	**/
 	function testAuthenticateConfirmedAccountByName(){
 		$confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
-		$res = authenticate($this->test_ninja_name, $this->test_password, $limit_login_times=false);
+		$res = authenticate($this->test_ninja_name, $this->test_password, false);
 		$this->assertTrue($confirm_worked);
 		$this->assertNotEmpty($res); // Should return account_id, 
 		$this->assertNotEmpty($res['account_id']);
@@ -235,10 +238,11 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	 * group accountconf
 	**/
 	function testPauseAccountAndLoginShouldFail(){
+		$accountController = new AccountController();
 		$confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
 		$this->assertTrue((bool)$confirm_worked);
 		$char_id = get_char_id($this->test_ninja_name);
-		$paused = @pauseAccount($char_id); // Fully pause the account, make the operational bit = false
+		$paused = $accountController->pauseAccount($char_id); // Fully pause the account, make the operational bit = false
 		$this->assertTrue((bool)$paused);
 		$account_operational = query_item('select operational from accounts 
 				join account_players on account_id = _account_id where _player_id = :char_id',
