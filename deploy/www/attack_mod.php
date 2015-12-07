@@ -1,11 +1,12 @@
 <?php
 require_once(LIB_ROOT."control/Player.class.php");
-require_once(LIB_ROOT."control/lib_attack.php");
 require_once(LIB_ROOT."control/Skill.php");
 require_once(LIB_ROOT."control/lib_inventory.php");
 require_once(CORE.'control/AttackLegal.php');
+require_once(CORE.'control/Combat.php');
 
 use app\combat\AttackLegal;
+use app\combat\Combat;
 /*
  * Deals with the non-skill based attacks and stealthed attacks.
  *
@@ -252,7 +253,7 @@ if ($attack_is_legal){
 				$killpoints = 1; // *** Changes killpoints from zero to one. ***
 
 				if ($duel) {
-					killpointsFromDueling();	// *** Changes killpoints amount by dueling equation. ***
+					$killpoints = Combat::killpointsFromDueling($attacking_player, $target_player);	// *** Changes killpoints amount by dueling equation. ***
 					$duel_log_msg     = "$attacker has dueled $target and won $killpoints killpoints.";
 					if($killpoints>1 || $killpoints<0){
 						// Only log duels if they're better than 1 or if they're a failure.

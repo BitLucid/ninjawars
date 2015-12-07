@@ -67,7 +67,6 @@ require_once(LIB_ROOT . 'data/PlayerVO.class.php');
 require_once(LIB_ROOT . 'data/PlayerDAO.class.php');
 require_once(LIB_ROOT . 'control/Player.class.php');
 require_once(LIB_ROOT . 'control/lib_status.php');
-require_once(LIB_ROOT.'control/lib_attack.php');
 
 // Include the functions abstracted out of the header and footer
 require_once(LIB_ROOT.'control/lib_header.php');

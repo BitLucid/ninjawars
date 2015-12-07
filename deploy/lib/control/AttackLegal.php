@@ -132,9 +132,10 @@ class AttackLegal
 	 * Just update the last attack attempt of a player in the database.
 	**/
 	private function updateLastAttack(Player $attacker){
-		update_last_attack_time($attacker->id());
 		// updates the timestamp of the last_attacked column to slow excessive attacks.
-		return true;
+		$update_last_attacked = "UPDATE players SET last_started_attack = now() WHERE player_id = :pid";
+		$updated = update_query($update_last_attacked, [':pid'=>$attacker->id()]);
+		return (bool) $updated;
 	}
 
 	/**
