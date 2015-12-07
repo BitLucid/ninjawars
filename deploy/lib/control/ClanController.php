@@ -18,7 +18,7 @@ class ClanController { //extends Controller
 	/**
 	 * View information about a clan
 	 *
-	 * @param clan_id int (optional) The id of the clan to view
+	 * @param int $clan_id (optional) The id of the clan to view
 	 * @return Array The viewspec
 	 * @note
 	 * If a clan_id is not specified, the clan of the current user will be used
@@ -85,7 +85,7 @@ class ClanController { //extends Controller
 	/**
 	 * Send an invitation to a character that will ask them to join your clan
 	 *
-	 * @param person_invited int The id of the character to invite
+	 * @param int $person_invited The id of the character to invite
 	 * @return Array The viewspec
 	 * @throws Exception You cannot use this function if you are not the leader of a clan
 	 */
@@ -261,7 +261,7 @@ class ClanController { //extends Controller
 	/**
 	 * Removes a player from a clan
 	 *
-	 * @param kicked int The id of the player to kick
+	 * @param int $kicked The id of the player to kick
 	 * @return Array The viewspec
 	 * @throws Exception The player must be the leader of the clan to kick a member
 	 */
@@ -292,9 +292,9 @@ class ClanController { //extends Controller
 	/**
 	 * Edits clan metadata
 	 *
-	 * @param clan-avatar-url String A url to an image to use as the clan icon
-	 * @param clan-description String A single paragraph describing the clan
-	 * @param new_clan_name String The desired new name of the clan
+	 * @param string $clan-avatar-url A url to an image to use as the clan icon
+	 * @param string $clan-description A single paragraph describing the clan
+	 * @param string $new_clan_name The desired new name of the clan
 	 * @return Array The viewspec
 	 * @throws Exception Only leaders can update clan details
 	 * @note
@@ -383,7 +383,7 @@ class ClanController { //extends Controller
 	/**
 	 * Sends a message to all members of the clan of the current player
 	 *
-	 * @param message String The message to send to all clan members
+	 * @param string $message The message to send to all clan members
 	 * @return Array The view spec
 	 */
 	public function message() {
@@ -452,10 +452,10 @@ class ClanController { //extends Controller
 	}
 
 	/**
-	 * Review a requet to join a clan
+	 * Review a request to join a clan
 	 *
-	 * @param joiner int The id of the player object to accept into the clan
-	 * @param confirmation int The nonce of clan invitation created by the request to join
+	 * @param int $joiner The id of the player object to accept into the clan
+	 * @param int $confirmation The nonce of clan invitation created by the request to join
 	 * @return Array The viewspec
 	 */
 	public function review() {
@@ -491,8 +491,8 @@ class ClanController { //extends Controller
 	/**
 	 * Accept a player as a new member of a clan
 	 *
-	 * @param joiner int the id of the player object to accept into the clan
-	 * @param confirmation int A nonce that prevents clan leaders from adding unwilling members
+	 * @param int $joiner the id of the player object to accept into the clan
+	 * @param int $confirmation A nonce that prevents clan leaders from adding unwilling members
 	 * @return Array The viewspec
 	 *
 	 * @par Preconditions:
@@ -542,7 +542,7 @@ class ClanController { //extends Controller
 	/**
 	 * Generates a viewspec for rendering pages
 	 *
-	 * @param p_parts Array Name-Value pairs of values to send to the view
+	 * @param Array $p_parts Name-Value pairs of values to send to the view
 	 * @return Array A viewspec for rendering
 	 */
 	private function render($p_parts) {
@@ -577,11 +577,11 @@ class ClanController { //extends Controller
 	/**
 	 * Tests whether the specified player is a leader of the specified clan
 	 *
-	 * @param p_objPlayer The player in question
-	 * @param p_objClan The clan to check against
+	 * @param Player $p_objPlayer The player in question
+	 * @param Clan $p_objClan The clan to check against
 	 * @return boolean
 	 */
-	private function playerIsLeader($p_objPlayer, $p_objClan) {
+	private function playerIsLeader(Player $p_objPlayer, Clan $p_objClan) {
 		$records = get_clan_leaders($p_objClan->id(), true);
 
 		foreach ($records AS $record) {
