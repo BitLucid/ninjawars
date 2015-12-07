@@ -2,6 +2,7 @@
 namespace app\Controller;
 
 use SESSION;
+use DatabaseConnection;
 
 require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
 require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.
@@ -56,7 +57,7 @@ class AccountController {
 			if ($in_newEmail === $in_confirmEmail) {
 				if (!email_is_duplicate($in_newEmail)) {
 					if (email_fits_pattern($in_newEmail)) {
-						changeEmail($user_id, $in_newEmail);
+						$this->_changeEmail($user_id, $in_newEmail);
 						$successMessage = 'Your email has been updated.';
 					} else {
 						$error = 'Your email must be a valid email address containing a domain name and no spaces.';
@@ -77,6 +78,20 @@ class AccountController {
 		];
 
 		return $this->render($parts);
+	}
+
+	/**
+	 * Internal method to update account_identity in the database.
+	 * @todo Make this done by the model
+	**/
+	private function _changeEmail($p_playerID, $p_newEmail) {
+		$changeEmailQuery1 = "UPDATE accounts SET account_identity = :identity, active_email = :email WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
+
+		$statement = DatabaseConnection::$pdo->prepare($changeEmailQuery1);
+		$statement->bindValue(':pid', $p_playerID);
+		$statement->bindValue(':identity', $p_newEmail);
+		$statement->bindValue(':email', strtolower($p_newEmail));
+		$statement->execute();
 	}
 
 	/**
@@ -113,7 +128,7 @@ class AccountController {
 
 		if ($verify) {
 			if ($in_newPass === $in_confirmPass) {
-				changePassword($user_id, $in_newPass);
+				$this->_changePassword($user_id, $in_newPass);
 				$successMessage = 'Your password has been updated.';
 			} else {
 				$error = 'Your new passwords did not match.';
@@ -128,6 +143,19 @@ class AccountController {
 		];
 
 		return $this->render($parts);
+	}
+
+	/**
+	 * Internal method to update an account crypt hash in the database
+	 * @todo Maybe make functionality in the model to have this done.
+	**/
+	private function _changePassword($p_playerID, $p_newPassword) {
+		$changePasswordQuery = "UPDATE accounts SET phash = crypt(:password, gen_salt('bf', 8)) WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
+
+		$statement = DatabaseConnection::$pdo->prepare($changePasswordQuery);
+		$statement->bindValue(':pid', $p_playerID);
+		$statement->bindValue(':password', $p_newPassword);
+		$statement->execute();
 	}
 
 	/**
@@ -162,7 +190,7 @@ class AccountController {
 
 		if ($verify && empty($delete_attempts)) {
 			// only allow account deletion on first attempt
-			pauseAccount($user_id); // This may redirect and stuff?
+			$this->pauseAccount($user_id); // This may redirect and stuff?
 			logout_user();
 		} else {
 			SESSION::set('delete_attempts', $delete_attempts+1);
@@ -179,16 +207,33 @@ class AccountController {
 		return $this->render($parts);
 	}
 
+	// Make a whole account non-operational, unable to login, and not active.
+	public function pauseAccount($p_playerID) {
+		$accountActiveQuery = 'UPDATE accounts SET operational = false WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)';
+		$playerConfirmedQuery = 'UPDATE players SET active = 0 WHERE player_id = :pid';
+
+		$statement = DatabaseConnection::$pdo->prepare($playerConfirmedQuery);
+		$statement->bindValue(':pid', $p_playerID);
+		$statement->execute();
+
+		$statement = DatabaseConnection::$pdo->prepare($accountActiveQuery);
+		$statement->bindValue(':pid', $p_playerID);
+		$statement->execute();
+		$count = $statement->rowCount();
+
+		return ($count > 0);
+	}
+
 	/**
-	* Display the default account page
-	**/
+	 * Display the default account page
+	 **/
 	public function index() {
 		return $this->render([]);
 	}
 
 	private function render($parts) {
 		// default parts
-		$account_info = self_account_info();
+		$account_info = account_info(account_id());
 
 		// Get the existing oauth info, if any.
 		$oauth_provider = $account_info['oauth_provider'];

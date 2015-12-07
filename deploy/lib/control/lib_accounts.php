@@ -3,7 +3,6 @@
  * Account creation and validation.
 **/
 
-
 // Pull account data in a * like manner.
 function account_info($account_id, $specific=null){
 	$res = query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
@@ -15,11 +14,6 @@ function account_info($account_id, $specific=null){
 		}
 	}
 	return $res;
-}
-
-// Get own current account info.
-function self_account_info(){
-	return account_info(account_id());
 }
 
 // Get the account linked with a character.
@@ -34,20 +28,6 @@ function account_info_by_char_id($char_id, $specific=null){
 		}
 	}
 	return $res;
-}
-
-// Get the account linked with an identity email.
-function account_info_by_identity($identity_email){
-	return query_row('select * from accounts where account_identity = :identity_email',
-		array(':identity_email'=>$identity_email));
-}
-
-
-// Check that the account info is acceptably valid.
-function validate_account($ninja_id, $email, $password_to_hash) {
-	return ($ninja_id && $email && $password_to_hash
-			&& is_numeric($type) && get_ninja_name($ninja_id) && !account_by_email($email)
-			&& validate_password($password_to_hash) && validate_email($email));
 }
 
 function email_fits_pattern($p_email) {
@@ -101,28 +81,14 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	$statement->bindParam(':ip', $ip);
 	$statement->execute();
 
-/*
-	query($ins, array(
-			':email'      => strtolower($email)
-			, ':password' => $password_to_hash
-			, ':type'     => array($type, PDO::PARAM_INT)
-			, ':active'   => array($active, PDO::PARAM_INT)
-		)
-	);
-*/
-
 	// Create the link between account and player.
 	$link_ninja = 'INSERT INTO account_players (_account_id, _player_id, last_login) VALUES (:acc_id, :ninja_id, default)';
-
-	//query($link_ninja, array(":acc_id"=>array($acc_id, PDO::PARAM_INT), ":ninja_id"=>array($ninja_id, PDO::PARAM_INT)));
 
 	$statement = DatabaseConnection::$pdo->prepare($link_ninja);
 	$statement->bindParam(':acc_id', $newID, PDO::PARAM_INT);
 	$statement->bindParam(':ninja_id', $ninja_id, PDO::PARAM_INT);
 	$statement->execute();
 
-	//$ins = "insert into account_players (_account_id, _player_id) values (:acc_id, :ninja_id)";
-	//query($ins, array(':acc_id'=>array($acc_id, PDO::PARAM_INT), ':ninja_id'=>array($ninja_id, PDO::PARAM_INT)));
 	$sel_ninja_id = 'SELECT player_id FROM players
 		JOIN account_players ON player_id = _player_id
 		JOIN accounts ON _account_id = account_id
@@ -131,16 +97,6 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	$verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($newID, PDO::PARAM_INT)));
 
 	return ($verify_ninja_id != $ninja_id ? false : $newID);
-}
-
-/**
- * Check whether an account already exists for a certain email.
- */
-function account_with_email($email) {
-	$sel = 'SELECT account_id FROM accounts WHERE active_email = :email';
-	$existing_account = query_item($sel, array(':email'=>strtolower($email)));
-
-	return !!$existing_account;
 }
 
 // Gives the blacklisted emails, should eventually be from a table.
@@ -182,12 +138,9 @@ function preconfirm_some_emails($email) {
 function create_ninja($send_name, $params=array()) {
 	DatabaseConnection::getInstance();
 
-	$send_email  = $params['send_email'];
-	$send_pass   = $params['send_pass'];
 	$class_identity  = $params['send_class'];
 	$preconfirm  = (int) $params['preconfirm'];
 	$confirm     = (int) $params['confirm'];
-	$referred_by = $params['referred_by'];
 
 	// Create the initial player row.
 	$playerCreationQuery= "INSERT INTO players
@@ -207,10 +160,6 @@ function create_ninja($send_name, $params=array()) {
 }
 
 function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
-	/*$headers  = "MIME-Version: 1.0\r\n";
-	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
-	$headers .= "From: ".SYSTEM_EMAIL_NAME." <".SYSTEM__EMAIL.">\r\n";
-	$headers .= "Reply-To: ".SUPPORT_EMAIL_NAME." <".SUPPORT_EMAIL.">\r\n";*/
 	//  ***  Sends out the confirmation email to the chosen email address.  ***
 
 	$class_display = class_display_name_from_identity($class_identity);
@@ -250,7 +199,7 @@ function create_account_and_ninja($send_name, $params=array()) {
 	$error       = false;
 	$data['ip'] = isset($params['ip'])? $params['ip'] : null;
 	$ninja_id    = create_ninja($send_name, $params);
-	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm, $type=0, $active=1, $data);
+	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm, 0, 1, $data);
 
 	if ($account_id) {
 		$sent = send_signup_email($account_id, $send_email, $send_name, $confirm, $class_identity);
@@ -321,19 +270,6 @@ function validate_signup_phase0($enteredName, $enteredEmail, $class_identity, $e
 	return ($enteredName && $enteredPass && $enteredEmail && $class_identity);
 }
 
-/*
-// I just replaced these with their appropriate validate_username() or validate_password calls.
-function validate_signup_phase1($enteredName) {
-	return validate_username($enteredName);
-}
-
-Just replaced this the validate_password function.
-function validate_signup_phase2($enteredPass) {
-	// Validate the password!
-	return validate_password($enteredPass);
-}*/
-
-
 function validate_signup_phase3($enteredName, $enteredEmail) {
 	$name_available  = ninja_name_available($enteredName);
 	$duplicate_email = email_is_duplicate($enteredEmail);
@@ -354,42 +290,8 @@ function validate_signup_phase4($enteredClass) {
 	return (boolean)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', array(':id'=>$enteredClass));
 }
 
-// Make a whole account non-operational, unable to login, and not active.
-function pauseAccount($p_playerID) {
-	$accountActiveQuery = 'UPDATE accounts SET operational = false WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)';
-	$playerConfirmedQuery = 'UPDATE players SET active = 0 WHERE player_id = :pid';
-
-	$statement = DatabaseConnection::$pdo->prepare($playerConfirmedQuery);
-	$statement->bindValue(':pid', $p_playerID);
-	$statement->execute();
-
-	$statement = DatabaseConnection::$pdo->prepare($accountActiveQuery);
-	$statement->bindValue(':pid', $p_playerID);
-	$statement->execute();
-	$count = $statement->rowCount();
-	return ($count>0);
-}
-
 // Render a ninja inactive, until they log in.
 function inactivate_ninja($char_id){
 	query('update players set active = 0 where player_id = :char_id', array(':char_id'=>$char_id)); // Toggle the active bit off until they login.
 }
 
-function changePassword($p_playerID, $p_newPassword) {
-	$changePasswordQuery = "UPDATE accounts SET phash = crypt(:password, gen_salt('bf', 8)) WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
-
-	$statement = DatabaseConnection::$pdo->prepare($changePasswordQuery);
-	$statement->bindValue(':pid', $p_playerID);
-	$statement->bindValue(':password', $p_newPassword);
-	$statement->execute();
-}
-
-function changeEmail($p_playerID, $p_newEmail) {
-	$changeEmailQuery1 = "UPDATE accounts SET account_identity = :identity, active_email = :email WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
-
-	$statement = DatabaseConnection::$pdo->prepare($changeEmailQuery1);
-	$statement->bindValue(':pid', $p_playerID);
-	$statement->bindValue(':identity', $p_newEmail);
-	$statement->bindValue(':email', strtolower($p_newEmail));
-	$statement->execute();
-}
