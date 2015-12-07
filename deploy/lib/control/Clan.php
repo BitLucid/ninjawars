@@ -46,11 +46,17 @@ class Clan
     public function setName($p_name)
     { $this->m_name = trim($p_name); }
 
+    /**
+     * @return int
+    **/
     public function getLeaderID() {
         $leader_info = $this->getLeaderInfo();
         return $leader_info['player_id'];
     }
 
+    /**
+     * @return string
+    **/
     public function getFounder(){
         if(!$this->founder){
             $this->founder = query_item('select clan_founder from clan where clan_id = :id', [':id'=>$this->getId()]);
@@ -59,7 +65,7 @@ class Clan
     }
 
     public function setDescription($desc){
-    	$this->description = $desc;
+    	$this->description = (string) $desc;
     }
 
     public function getDescription(){
@@ -70,6 +76,9 @@ class Clan
         $this->founder = $founder;
     }
 
+    /**
+     * @return string
+    **/
     public function getAvatarUrl(){
     	return $this->avatarUrl;
     }
@@ -125,13 +134,19 @@ class Clan
         return $failure_error;
     }
 
+    /**
+     * For when a player chooses to leave their clan
+     * of their own volition.
+    **/
     public function leave(Player $ninja){
     	$this->kickMember($ninja->id(), $ninja, $self_leave=true);
     }
 
-
+    /**
+     * When a leader removes a member without choice.
+    **/
     public function kickMember($p_playerID, Player $kicker, $self_leave=false) {
-        global $today;
+        $today = date("F j, Y, g:i a");
         query("DELETE FROM clan_player WHERE _player_id = :player AND _clan_id = :clan",
         	[':player'=>$p_playerID, ':clan'=>$this->getID()]);
         if($self_leave){
