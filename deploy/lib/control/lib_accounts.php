@@ -165,12 +165,9 @@ function preconfirm_some_emails($email) {
 function create_ninja($send_name, $params=array()) {
 	DatabaseConnection::getInstance();
 
-	$send_email  = $params['send_email'];
-	$send_pass   = $params['send_pass'];
 	$class_identity  = $params['send_class'];
 	$preconfirm  = (int) $params['preconfirm'];
 	$confirm     = (int) $params['confirm'];
-	$referred_by = $params['referred_by'];
 
 	// Create the initial player row.
 	$playerCreationQuery= "INSERT INTO players
@@ -233,7 +230,7 @@ function create_account_and_ninja($send_name, $params=array()) {
 	$error       = false;
 	$data['ip'] = isset($params['ip'])? $params['ip'] : null;
 	$ninja_id    = create_ninja($send_name, $params);
-	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm, $type=0, $active=1, $data);
+	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm, 0, 1, $data);
 
 	if ($account_id) {
 		$sent = send_signup_email($account_id, $send_email, $send_name, $confirm, $class_identity);
