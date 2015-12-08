@@ -601,7 +601,7 @@ h6 {
 }
 .ninjawars-staff #latest-commit-section {
 	width: 97%;
-	height: 7em
+	height: 7em;
 	border: 1px solid white;
 	resize: vertical;
 	overflow: auto;
