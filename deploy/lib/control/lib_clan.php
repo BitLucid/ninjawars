@@ -18,7 +18,7 @@ function createClan($p_leaderID, $p_clanName) {
 	$statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (:clanID, :clanName, :leader)');
 	$statement->bindValue(':clanID', $newClanID);
 	$statement->bindValue(':clanName', $p_clanName);
-	$statement->bindValue(':leader', get_username($p_leaderID));
+	$statement->bindValue(':leader', get_char_name($p_leaderID));
 	$statement->execute();
 
 	$statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 2)');
@@ -111,7 +111,7 @@ function send_clan_join_request($user_id, $clan_id) {
 	$clan_obj = new Clan($clan_id);
 	$leader      = $clan_obj->getLeaderInfo();
 	$leader_id   = $leader['player_id'];
-	$username    = get_username($user_id);
+	$username    = get_char_name($user_id);
 
 	$confirmStatement = DatabaseConnection::$pdo->prepare('SELECT verification_number FROM players WHERE player_id = :user');
 	$confirmStatement->bindValue(':user', $user_id);
