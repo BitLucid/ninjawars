@@ -940,10 +940,7 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	margin: 0 auto 0;
 	display:inline-block;
 	border: 1px solid #BDB76B;/*DarkKhaki*/
-	-webkit-border-radius:16px;
-	-moz-border-radius:16px;
-	-op-border-radius:16px;
-	border-radius:16px;
+	border-radius:0.1em;
 }
 
 /* Note that ninja-error is used below as well. */
@@ -1403,11 +1400,13 @@ iframe {
 	font-size:1em;
 	font-size:smaller;
 }
+time{
+	color:gray;
+	font-style:italic;
+}
 #event-list .event-time, .chat-messages .chat-time, #message-list .message-time {
 	font-family: Trebuchet MS1, Helvetica, sans-serif;
 	font-size: .8em;
-	font-style:italic;
-	color: gray;
 	display:inline-block;
     margin-left:1em;
 }
@@ -1815,12 +1814,11 @@ section.login-page{
 /* Errors and Notices and the Like */
 
 .ninja-error {/* Note that ninja-error is used above as well. */
-	color:#F4A83D;
-	background-color:#660000;
-	border-bottom:1px solid #D6800C;
+    color: #a94442;
+    background-color: #fcf8e3;
+    border-color: #ebccd1;
 	font-family: ‘Trebuchet MS’, Helvetica, sans-serif;
 	font-weight:bold;
-	font-variant:small-caps;
 	font-size:120%;
 	padding: 3px;
 }
@@ -1831,9 +1829,8 @@ section.login-page{
 	font-family: Tahoma, Geneva, sans-serif;
 	text-align:center;
 	font-weight:bold;
-	padding: 3px;
-	border-top-right-radius: 20px 20px;
-	border-bottom-left-radius: 20px 20px;
+	padding: 3px 5px 3px 3px;
+	border-radius:3px 3px;
 	border-color: rgb(0, 0, 0);
 	border-color: rgba(0, 0, 0, 1);
 	text-shadow: black 2px 2px 4px;
