@@ -46,21 +46,4 @@ Then you can run the tests to check your progress with:
 
 ## To Contribute
 
-We welcome pull requests on github!  
-https://github.com/BitLucid/ninjawars
-
-You can make web commits on github.com, just search github for "ninjawars".
-<ninjawarslivebythesword@gmail.com>
-
-## Resources
-
-For licensing information (Creative Commons License) read the `ninjawars/deploy/www/staff.php html` file or browse to `/staff.php`.
-
-Talk about development on the forum at: 
-[The ninjawars development forum](http://ninjawars.proboards.com/index.cgi?board=Devel1)
-
-The live game:
-http://www.ninjawars.net
-
-Ninjawars on Code Climate:
-https://codeclimate.com/github/BitLucid/ninjawars
+See CONTRIBUTING.md
