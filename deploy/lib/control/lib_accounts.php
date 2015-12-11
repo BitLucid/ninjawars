@@ -4,6 +4,9 @@
 **/
 
 // Pull account data in a * like manner.
+/**
+ * @param string $specific
+ */
 function account_info($account_id, $specific=null){
 	$res = query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
 	if($specific){
@@ -17,6 +20,9 @@ function account_info($account_id, $specific=null){
 }
 
 // Get the account linked with a character.
+/**
+ * @param string $specific
+ */
 function account_info_by_char_id($char_id, $specific=null){
 	$res = query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', 
 		array(':char_id'=>array($char_id, PDO::PARAM_INT)));
@@ -59,6 +65,9 @@ function email_is_duplicate($email) {
 	return !empty($dupe);
 }
 
+/**
+ * @param integer $confirm
+ */
 function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1, array $data=null) {
 	$ip = $data['ip']?:null;
 	DatabaseConnection::getInstance();
@@ -159,6 +168,9 @@ function create_ninja($send_name, $params=array()) {
 	return get_char_id($send_name);
 }
 
+/**
+ * @param integer $confirm
+ */
 function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
 	//  ***  Sends out the confirmation email to the chosen email address.  ***
 
