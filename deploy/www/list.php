@@ -11,12 +11,13 @@ require_once(LIB_ROOT."control/lib_player.php");
 
 DatabaseConnection::getInstance();
 
+$session      = nw\SessionFactory::getSession();
 $username     = self_name();
 $char_id      = self_char_id();
 $searched     = in('searched', null, 'no filter'); // Don't filter the search setting.
 $list_by_rank = ($searched && substr_compare($searched, '#', 0, 1) === 0); // Whether the search is by rank.
 
-$hide_setting = (!$searched && SESSION::is_set('hide_dead') ? SESSION::get('hide_dead') : 'dead'); // Defaults to hiding dead via session.
+$hide_setting = (!$searched && $session->has('hide_dead') ? $session->get('hide_dead') : 'dead'); // Defaults to hiding dead via session.
 $hide         = ($searched ? 'none' : in('hide', $hide_setting)); // search override > get setting > session setting
 
 $alive_only   = ($hide == 'dead');
@@ -30,7 +31,7 @@ $dead_count = query_item("SELECT count(player_id) FROM rankings WHERE alive = fa
 
 $page 		 = in('page');
 
-if (!$searched && $hide_setting != $hide) { SESSION::set('hide_dead', $hide); } // Save the toggled state for later.
+if (!$searched && $hide_setting != $hide) { $session->set('hide_dead', $hide); } // Save the toggled state for later.
 
 // Display the clear search and create the where clause for searching.
 

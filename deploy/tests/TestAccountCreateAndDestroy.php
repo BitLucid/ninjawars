@@ -44,7 +44,6 @@ class TestAccountCreateAndDestroy{
 
 	// Create a testing account
 	public static function create_testing_account($confirm=false){
-		@session_start();
 		$ip = isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
 		//$previous_server = @$_SERVER['REMOTE_ADDR'];
 		//$_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR']? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';

@@ -8,6 +8,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
+$session    = nw\SessionFactory::getSession();
 $turn_cost  = 1;
 $health     = 1;
 $victim     = in('victim');
@@ -327,18 +328,14 @@ if($turns > 0 && !empty($victim)) {
 		$combat_data  = array('attack'=>$guard_attack, 'gold'=>$guard_gold, 'bounty'=>$added_bounty, 'victory'=>$victory, 'herb'=>$herb);
 	} else if ($victim == 'thief') {
 		// Check the counter to see whether they've attacked a thief multiple times in a row.
-		if (SESSION::is_set('counter')) {
-			$counter = SESSION::get('counter');
-		} else {
-			$counter = 1;
-		}
+		$counter = $session->get('counter', 1);
 
 		$counter = $counter + 1;
-		SESSION::set('counter', $counter); // Save the current state of the counter.
+		$session->set('counter', $counter); // Save the current state of the counter.
 
 		if ($counter > 20 && rand(1, 3) == 3) {
 			// Only after many attacks do you have the chance to be attacked back by the group of theives.
-			SESSION::set('counter', 0); // Reset the counter to zero.
+			$session->set('counter', 0); // Reset the counter to zero.
 			$group_attack= rand(50, 150);
 
 			if ($player->vo->health = $victory = subtractHealth($char_id, $group_attack)) {	// The den of thieves didn't accomplish their goal

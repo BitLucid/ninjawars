@@ -1,6 +1,7 @@
 <?php
 require_once(LIB_ROOT."control/lib_status.php");
 require_once(LIB_ROOT."control/lib_accounts.php");
+
 // lib_player.php
 
 // Define for GRAVATAR OPTIONS moved to the tracked constant file.
@@ -441,7 +442,11 @@ function char_info($p_id) {
 		}
 		return self_info();
 	}
-	$id = whichever($p_id, SESSION::get('player_id')); // *** Default to current player. ***
+
+	$session = nw\SessionFactory::getSession();
+
+	$id = whichever($p_id, $session->get('player_id')); // *** Default to current player. ***
+
 	if(!is_numeric($id)){
 		// If there's no id, don't try to get any data.
 		return null;

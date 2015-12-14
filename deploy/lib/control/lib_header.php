@@ -71,12 +71,14 @@ function update_activity_info() {
 
 	$dbconn = DatabaseConnection::getInstance();
 
-	if (!SESSION::is_set('online')) {	// *** Completely new session, update latest activity log. ***
+	$session = nw\SessionFactory::getSession();
+
+	if (!$session->has('online')) {	// *** Completely new session, update latest activity log. ***
 		if ($remoteAddress) {	// *** Delete prior to trying to re-insert into the people online. ***
 			$statement = DatabaseConnection::$pdo->prepare('DELETE FROM ppl_online WHERE ip_address = :ip OR session_id = :sessionID');
 
 			$statement->bindValue(':ip',        $remoteAddress);
-			$statement->bindValue(':sessionID', session_id());
+			$statement->bindValue(':sessionID', $session->getId());
 
 			$statement->execute();
 		}
@@ -84,17 +86,17 @@ function update_activity_info() {
 		// *** Update viewer data. ***
 		$statement = DatabaseConnection::$pdo->prepare('INSERT INTO ppl_online (session_id, activity, ip_address, refurl, user_agent) VALUES (:sessionID, now(), :ip, :referer, :userAgent)');
 
-		$statement->bindValue(':sessionID', session_id());
+		$statement->bindValue(':sessionID', $session->getId());
 		$statement->bindValue(':ip',        $remoteAddress);
 		$statement->bindValue(':referer',   $referer);
 		$statement->bindValue(':userAgent', $userAgent);
 
 		$statement->execute();
 
-		SESSION::set('online', true);
+		$session->set('online', true);
 	} else {	// *** An already existing session. ***
 		$statement = DatabaseConnection::$pdo->prepare('UPDATE ppl_online SET activity = now(), member = :member WHERE session_id = :sessionID');
-		$statement->bindValue(':sessionID', session_id());
+		$statement->bindValue(':sessionID', $session->getId());
 		$statement->bindValue(':member', is_logged_in(), PDO::PARAM_BOOL);
 		$statement->execute();
 	}
