@@ -12,6 +12,7 @@
 	<testsuites>
 		<testsuite name="Ninja Wars Test Suite">
 			<directory suffix=".php">deploy/tests/unit</directory>
+			<directory suffix=".php">deploy/tests/integration</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
