@@ -34,7 +34,7 @@ class DoshinController { //extends controller
 
 		return $this->render(
 			[
-				'quickstat' => false,
+				'quickstat' => true,
 				'location'  => 0,
 				'error'     => 0,
 				'command'   => 'index',

@@ -18,7 +18,7 @@ if ($error = init($private, $alive)) {
 		, 'Events'
 		, ['events'=>$events, 'has_clan'=>$has_clan, 'char'=>$char]
 		, array(
-			'quickstat' => false
+			'quickstat' => true
 		)
 	);
 }

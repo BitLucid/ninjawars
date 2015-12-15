@@ -138,7 +138,7 @@ display_page(
 	, 'Ninja List'		// *** Page Title ***
 	, $parts			// *** Page Variables ***
 	, array(			// *** Page Options ***
-		'quickstat' => false
+		'quickstat' => true
 	)
 );
 }

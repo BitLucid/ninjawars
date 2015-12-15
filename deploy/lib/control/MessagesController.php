@@ -198,7 +198,7 @@ class MessagesController{
 			  'template'=>'messages.tpl'
 			, 'title'=>$title?: 'Messages'
 			, 'parts'=>$parts
-			, 'options'=>['quickstat' => false]
+			, 'options'=>['quickstat' => true]
 		];
 	}
 }
