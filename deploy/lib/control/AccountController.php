@@ -1,7 +1,6 @@
 <?php
 namespace app\Controller;
 
-use SESSION;
 use DatabaseConnection;
 
 require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
@@ -177,6 +176,7 @@ class AccountController {
 	* Make account non-operational
 	*/
 	public function deleteAccount(){
+		$session    = nw\SessionFactory::getSession();
 		$self_info 	= self_info();
 		$user_id  	= self_char_id();
 		$passW 		= in('passw', null);
@@ -184,7 +184,7 @@ class AccountController {
 
 		$error 		= '';
 		$command 	= in('command');
-		$delete_attempts = SESSION::is_set('delete_attempts') ? SESSION::get('delete_attempts') : 0;
+		$delete_attempts = $session->get('delete_attempts', 0);
 
 		$verify = self::is_authentic($username, $passW);
 
@@ -193,7 +193,7 @@ class AccountController {
 			$this->pauseAccount($user_id); // This may redirect and stuff?
 			logout_user();
 		} else {
-			SESSION::set('delete_attempts', $delete_attempts+1);
+			$session->set('delete_attempts', $delete_attempts+1);
 			$error = 'Deleting of account failed, please email '.SUPPORT_EMAIL;
 		}
 

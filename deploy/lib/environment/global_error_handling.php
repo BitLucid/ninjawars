@@ -40,12 +40,14 @@ function globalErrorHandler($errno, $errstr, $errfile, $errline) {
 }
 
 function sendErrorEmail($p_errorMsg) {
-	if (isset($_SESSION['account_id'])) {
-		$p_errorMsg .= "Error Occured for accountID ".$_SESSION['account_id']."\r\n";
+	$session = nw\SessionFactory::getSession();
+
+	if ($session->has('account_id')) {
+		$p_errorMsg .= "Error Occured for accountID ".$session->get('account_id')."\r\n";
 	}
 
-	if (isset($_SESSION['player_id'])) {
-		$p_errorMsg .= "Error Occured for playerID ".$_SESSION['player_id']."\r\n";
+	if ($session->has('player_id')) {
+		$p_errorMsg .= "Error Occured for playerID ".$session->get('player_id')."\r\n";
 	}
 
 	$p_errorMsg .= 'REQUEST_URI: '.(isset($_SERVER['REQUEST_URI'])? $_SERVER['REQUEST_URI'] : null)."\r\n";

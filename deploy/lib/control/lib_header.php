@@ -10,18 +10,11 @@ function init($private, $alive) {
 	// ******************** Declared variables *****************************
 	$today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
 	// Page viewing settings usually set before the header.
-	$error = null; // Logged in or alive error.
 
 	update_activity_info(); // *** Updates the activity of the page viewer in the database.
 
 	return globalize_user_info($private, $alive); // Sticks lots of user info into the global namespace for backwards compat.
 }
-
-/** The breakdown function reversing initialize, should we ever need it.
-**
-function finalize(){
-}*/
-
 
 // Places much of the user info into the global namespace.
 function globalize_user_info($private=true, $alive=true) {
@@ -69,14 +62,16 @@ function update_activity_info() {
 
 	// ************** Setting anonymous and player usage information
 
-	$dbconn = DatabaseConnection::getInstance();
+	DatabaseConnection::getInstance();
 
-	if (!SESSION::is_set('online')) {	// *** Completely new session, update latest activity log. ***
+	$session = nw\SessionFactory::getSession();
+
+	if (!$session->has('online')) {	// *** Completely new session, update latest activity log. ***
 		if ($remoteAddress) {	// *** Delete prior to trying to re-insert into the people online. ***
 			$statement = DatabaseConnection::$pdo->prepare('DELETE FROM ppl_online WHERE ip_address = :ip OR session_id = :sessionID');
 
 			$statement->bindValue(':ip',        $remoteAddress);
-			$statement->bindValue(':sessionID', session_id());
+			$statement->bindValue(':sessionID', $session->getId());
 
 			$statement->execute();
 		}
@@ -84,38 +79,18 @@ function update_activity_info() {
 		// *** Update viewer data. ***
 		$statement = DatabaseConnection::$pdo->prepare('INSERT INTO ppl_online (session_id, activity, ip_address, refurl, user_agent) VALUES (:sessionID, now(), :ip, :referer, :userAgent)');
 
-		$statement->bindValue(':sessionID', session_id());
+		$statement->bindValue(':sessionID', $session->getId());
 		$statement->bindValue(':ip',        $remoteAddress);
 		$statement->bindValue(':referer',   $referer);
 		$statement->bindValue(':userAgent', $userAgent);
 
 		$statement->execute();
 
-		SESSION::set('online', true);
+		$session->set('online', true);
 	} else {	// *** An already existing session. ***
 		$statement = DatabaseConnection::$pdo->prepare('UPDATE ppl_online SET activity = now(), member = :member WHERE session_id = :sessionID');
-		$statement->bindValue(':sessionID', session_id());
+		$statement->bindValue(':sessionID', $session->getId());
 		$statement->bindValue(':member', is_logged_in(), PDO::PARAM_BOOL);
 		$statement->execute();
 	}
 }
-
-/* Potential solution for hash-based in-iframe navigation.
-function hash_page_name($page_title=null){
-	$page = basename(__FILE__, ".php");
-	if ($page && file_exists($page)){
-	$page = urlencode($page);
-	var_dump($page);
-	echo
-	<<< EOT
-	 <script type="text/javascript">
-			if(document.location.hash){
-				document.location.hash = '$page';
-			}
-			</script>
-EOT;
-	}
-}
-
-hash_page_name($page_title);
-*/

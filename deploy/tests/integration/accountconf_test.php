@@ -1,4 +1,6 @@
 <?php
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+
 require_once(substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'ninjawars')+10).'deploy/resources.php');
 // Core may be autoprepended in ninjawars
 require_once(LIB_ROOT.'base.inc.php');
@@ -55,6 +57,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 		$this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
 		TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
 		TestAccountCreateAndDestroy::create_testing_account();
+		nw\SessionFactory::init(new MockArraySessionStorage());
 	}
 	
 	/**
@@ -159,7 +162,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     function testAttemptLoginOfUnconfirmedAccountShouldFail(){
     	$email ='noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
     	TestAccountCreateAndDestroy::create_testing_account(false, $email);
-		$res = @login_user($email, $this->test_password);
+		$res = login_user($email, $this->test_password);
 		$this->assertFalse($res['success']);
 		$this->assertTrue(is_string($res['login_error']));
         $this->assertTrue((bool)$res['login_error'], 'No error returned: '.$res['login_error']);
@@ -205,7 +208,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	**/
 	function testLoginConfirmedAccountByName(){
 		$confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
-		$res = @login_user($this->test_ninja_name, $this->test_password);
+		$res = login_user($this->test_ninja_name, $this->test_password);
 		$this->assertTrue($confirm_worked);
 		$this->assertTrue($res['success'], 'Login by ninja name failed for ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res['login_error'].']');
 		$this->assertFalse((bool)$res['login_error']);
@@ -216,7 +219,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	**/
 	function testLoginConfirmedAccountByEmail(){
 		$confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
-		$res = @login_user($this->test_email, $this->test_password);
+		$res = login_user($this->test_email, $this->test_password);
 		$this->assertTrue($confirm_worked);
 		$this->assertTrue($res['success'], 'Login by email failed for confirmed player ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res['login_error'].']');
 		$this->assertFalse((bool)$res['login_error']);
@@ -228,7 +231,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 	function testLoginConfirmedAccountWithInactivePlayerSucceeds(){
 		$confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
 		inactivate_ninja(get_char_id($this->test_ninja_name)); // Just make them fade off the active lists, inactive, don't pause the account
-		$res = @login_user($this->test_email, $this->test_password);
+		$res = login_user($this->test_email, $this->test_password);
 		$this->assertTrue($confirm_worked);
 		$this->assertTrue($res['success'], 'Faded-to-inactive player unable to login');
         $this->assertFalse((bool)$res['login_error']);
@@ -248,7 +251,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 				join account_players on account_id = _account_id where _player_id = :char_id',
 				array(':char_id'=>$char_id));
 		$this->assertFalse($account_operational);
-		$res = @login_user($this->test_email, $this->test_password);
+		$res = login_user($this->test_email, $this->test_password);
 		$this->assertFalse($res['success'], 'Login should not be successful when account is paused');
         $this->assertTrue(is_string($res['login_error']));
         $this->assertTrue((bool)$res['login_error']);
