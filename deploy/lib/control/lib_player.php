@@ -2,38 +2,7 @@
 require_once(LIB_ROOT."control/lib_status.php");
 require_once(LIB_ROOT."control/lib_accounts.php");
 
-// lib_player.php
-
 // Define for GRAVATAR OPTIONS moved to the tracked constant file.
-
-/***********************   Refactor these class functions from commands.php  ********************************/
-
-
-// ************************************
-// ********** CLASS FUNCTIONS *********
-// ************************************
-
-// Wrapper functions for the old usages.
-// DEPRECATED
-function setClass($who, $new_class) {
-	$char_id = get_char_id($who);
-	return set_class($char_id, $new_class);
-}
-
-// Wrapper functions for the old usages.
-// DEPRECATED
-function getClass($who) {
-	$char_id = get_char_id($who);
-	return char_class_identity($char_id);
-	// Note that classes now have identity/name(for display)/theme, so this function should be deprecated.
-}
-
-
-	// ************************************
-	// ************************************
-
-
-
 
 // Categorize ninja ranks by level.
 function level_category($level){
@@ -75,18 +44,11 @@ function maximum_level() {
 	return MAX_PLAYER_LEVEL;
 }
 
-// Get a character's level, necessary when a character's level gets changed.
-function char_level($char_id) {
-	$info = char_info($char_id);
-	return $info['level'];
-}
-
 // The number of kills needed to level up to the next level.
 function required_kills_to_level($current_level) {
 	$levelling_cost_multiplier = 5; // 5 more kills in cost for every level you go up.
 	$required_kills = ($current_level)*$levelling_cost_multiplier;
 	return $required_kills;
-
 }
 
 // Get a character's current kills, necessary when a character's level changes.
@@ -103,7 +65,7 @@ function level_up_if_possible($char_id, $auto_level=false) {
 	$health_to_add = 100;
 	$turns_to_give = 50;
 	$stat_value_to_add = 5;
-	
+
 	$char_kills = get_kills($char_id);
 
 	if($char_kills<0){
@@ -111,15 +73,14 @@ function level_up_if_possible($char_id, $auto_level=false) {
 		return false;
 	} else {
 		$char_obj = new Player($char_id);
-		$username = $char_obj->name();
 		$char_level = $char_obj->level();
-	
+
 		if($auto_level && $char_obj->isAdmin()){
 			// If the character is an admin, do not auto-level them.
 			return false;
 		} else {
 			// For normal characters, do auto-level them.
-		
+
 			// Check required values:
 			$nextLevel  = $char_level + 1;
 			$required_kills = required_kills_to_level($char_level);
@@ -131,7 +92,7 @@ function level_up_if_possible($char_id, $auto_level=false) {
 			if ($level_up_possible) {
 				// ****** Perform the level up actions ****** //
 				// Explicitly call for the special case of kill changing to prevent an infinite loop.
-				$userKills = change_kills($char_id, -1*$required_kills, $auto_level_check=false);
+				change_kills($char_id, -1*$required_kills, false);
 				$userLevel = addLevel($char_id, 1);
 				change_strength($char_id, $stat_value_to_add);
 				change_speed($char_id, $stat_value_to_add);
@@ -141,7 +102,7 @@ function level_up_if_possible($char_id, $auto_level=false) {
 				addHealth($char_id, $health_to_add);
 				addTurns($char_id, $turns_to_give);
 				// Send a level-up message, for those times when auto-levelling happens.
-				send_event($char_id, $char_id, 
+				send_event($char_id, $char_id,
 					"You levelled up!  Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by 1, and your Ki raised 50!  You gained some health and turns as well!  You are now a level $userLevel ninja!  Go kill some stuff.");
 				return true;
 			} else {
@@ -266,10 +227,9 @@ function create_avatar_url($player, $size=null) {
 	// If the avatar_type is 0, return '';
     if (!$player->vo || !$player->vo->avatar_type || !$player->email()) {
         return '';
-    } else {	// Otherwise, user the player info for creating a gravatar.
+    } else {	// Otherwise, use the player info for creating a gravatar.
 		$email       = $player->email();
-		$avatar_type = $player->vo->avatar_type;
-		return create_gravatar_url_from_email($email, $avatar_type, $size);
+		return create_gravatar_url_from_email($email, $size);
 	}
 }
 
@@ -282,7 +242,7 @@ function generate_gravatar_url($player) {
 }
 
 // Use the email information to return the gravatar image url.
-function create_gravatar_url_from_email($email, $avatar_type=null, $size=null) {
+function create_gravatar_url_from_email($email, $size=null) {
 	$def         = 'monsterid'; // Default image or image class.
 	// other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
 	$base        = "http://www.gravatar.com/avatar/";
@@ -346,35 +306,6 @@ function format_health_percent($player_row) {
 }
 
 
-/**
- * Gets player data for multiple players, no option for password
-*/
-function get_players_info($p_ids=null) {
-	if(empty($p_ids)){
-		return array();
-	}
-	$dbconn = DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM players WHERE player_id IN (:id".join(', :id', array_keys($p_ids)).")");
-	//Log of Dueling information.
-	foreach ($p_ids AS $key=>$value) {
-		$statement->bindValue(':id'.$key, $value);
-	}
-
-	$statement->execute();
-
-	$players = array();
-
-	foreach ($statement AS $player) {
-		$p = new Player();
-		$p->player_id = $player['player_id'];
-		$p->vo = $player;
-		$players[$p->player_id] = $p;
-	}
-
-	return $players;
-}
-
-
 // Add data to the info you get from a player row.
 function add_data_to_player_row($player_data, $kill_password=true){
     if($kill_password){
@@ -392,14 +323,6 @@ function add_data_to_player_row($player_data, $kill_password=true){
 }
 
 // Return the data that should be publicly readable to javascript or the api while the player is logged in.
-function public_char_info($p_id=null, $admin_info=false) {
-	$char_info = char_info($p_id);
-	if($admin_info !== true){
-		unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
-	}
-	return $char_info;
-}
-
 function public_self_info(){
 	$char_info = self_info();
 	unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
@@ -417,7 +340,7 @@ function self_info() {
 	}
 	$player = new Player($id); // Constructor uses DAO to get player object.
 	$player_data = array();
-	
+
 	if ($player instanceof Player && $player->id()) {
 		// Turn the player data vo into a simple array.
 		$player_data = (array) $player->vo;
@@ -453,7 +376,7 @@ function char_info($p_id) {
 	}
 	$player = new Player($id); // Constructor uses DAO to get player object.
 	$player_data = array();
-	
+
 	if ($player instanceof Player && $player->id()) {
 		// Turn the player data vo into a simple array.
 		$player_data = (array) $player->vo;
@@ -463,5 +386,3 @@ function char_info($p_id) {
 
 	return $player_data;
 }
-
-
