@@ -10,18 +10,11 @@ function init($private, $alive) {
 	// ******************** Declared variables *****************************
 	$today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
 	// Page viewing settings usually set before the header.
-	$error = null; // Logged in or alive error.
 
 	update_activity_info(); // *** Updates the activity of the page viewer in the database.
 
 	return globalize_user_info($private, $alive); // Sticks lots of user info into the global namespace for backwards compat.
 }
-
-/** The breakdown function reversing initialize, should we ever need it.
-**
-function finalize(){
-}*/
-
 
 // Places much of the user info into the global namespace.
 function globalize_user_info($private=true, $alive=true) {
@@ -69,7 +62,7 @@ function update_activity_info() {
 
 	// ************** Setting anonymous and player usage information
 
-	$dbconn = DatabaseConnection::getInstance();
+	DatabaseConnection::getInstance();
 
 	$session = nw\SessionFactory::getSession();
 
@@ -101,23 +94,3 @@ function update_activity_info() {
 		$statement->execute();
 	}
 }
-
-/* Potential solution for hash-based in-iframe navigation.
-function hash_page_name($page_title=null){
-	$page = basename(__FILE__, ".php");
-	if ($page && file_exists($page)){
-	$page = urlencode($page);
-	var_dump($page);
-	echo
-	<<< EOT
-	 <script type="text/javascript">
-			if(document.location.hash){
-				document.location.hash = '$page';
-			}
-			</script>
-EOT;
-	}
-}
-
-hash_page_name($page_title);
-*/
