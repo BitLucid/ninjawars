@@ -29,6 +29,9 @@ class NWTemplate extends Smarty {
 	}
 
 	public function assignArray($p_vars) {
+		if($p_vars === null){
+			return;
+		}
 		foreach ($p_vars as $lname => $lvalue) { // *** loop over the vars, assigning each to the template ***
 			$this->assign($lname, $lvalue);
 		}
