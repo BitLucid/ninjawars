@@ -2,10 +2,10 @@
 require_once(LIB_ROOT."control/lib_status.php");
 require_once(LIB_ROOT."control/lib_accounts.php");
 
-// Define for GRAVATAR OPTIONS moved to the tracked constant file.
-
-// Categorize ninja ranks by level.
-function level_category($level){
+/**
+ * Categorize ninja ranks by level.
+ */
+function level_category($level) {
 	$res = '';
 	switch (true) {
 		case($level<2):
@@ -28,37 +28,47 @@ function level_category($level){
 			break;
 	}
 
-	return array('display' => $res,
-		'css' => strtolower(str_replace(" ", "-", $res)));
+	return [
+		'display' => $res,
+		'css' => strtolower(str_replace(" ", "-", $res))
+	];
 }
 
-/** Calculate a max health by a level, will be used in dojo.php, the player object, and calculating experience.**/
+/**
+ * Calculate a max health by a level, will be used in dojo.php, the player object, and calculating experience.
+ */
 function max_health_by_level($level) {
 	$health_per_level = 25;
 	return 150 + round($health_per_level*($level-1));
 }
 
-
-// Centralized holding for the maximum level available in the game.
+/**
+ * Centralized holding for the maximum level available in the game.
+ */
 function maximum_level() {
 	return MAX_PLAYER_LEVEL;
 }
 
-// The number of kills needed to level up to the next level.
+/**
+ * The number of kills needed to level up to the next level.
+ */
 function required_kills_to_level($current_level) {
 	$levelling_cost_multiplier = 5; // 5 more kills in cost for every level you go up.
 	$required_kills = ($current_level)*$levelling_cost_multiplier;
 	return $required_kills;
 }
 
-// Get a character's current kills, necessary when a character's level changes.
+/**
+ * Get a character's current kills, necessary when a character's level changes.
+ */
 function char_kills($char_id) {
 	$info = char_info($char_id);
 	return $info['kills'];
 }
 
-
-// ******** Leveling up Function *************************
+/**
+ * Leveling up Function
+ */
 function level_up_if_possible($char_id, $auto_level=false) {
 	// Setup values:
 	$max_level = maximum_level();
@@ -112,10 +122,6 @@ function level_up_if_possible($char_id, $auto_level=false) {
 	}
 }
 
-// ************************************
-// ********* STAT changing functions *******
-// ************************************
-
 function change_strength($char_id, $amount){
 	$amount = (int) $amount;
 	if(abs($amount) > 0){
@@ -124,7 +130,6 @@ function change_strength($char_id, $amount){
 	}
 }
 
-
 function change_speed($char_id, $amount){
 	$amount = (int) $amount;
 	if(abs($amount) > 0){
@@ -132,7 +137,6 @@ function change_speed($char_id, $amount){
 		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
 	}
 }
-
 
 function change_stamina($char_id, $amount){
 	$amount = (int) $amount;
@@ -162,14 +166,17 @@ function change_ki($char_id, $amount){
 	}
 }
 
-// Pull the information about the classes.
+/**
+ * Pull the information about the classes.
+ */
 function classes_info(){
 	$classes = query('select class_id, identity, class_name, class_note, class_tier, class_desc, class_icon, theme from class where class_active = true');
 	return array_identity_associate($classes, 'identity');
 }
 
-
-// Check that a class matches against the class identities available in the database.
+/**
+ * Check that a class matches against the class identities available in the database.
+ */
 function is_valid_class($potential_class_identity) {
 	$sel = "select identity from class";
 	$classes = query_array($sel);
@@ -178,10 +185,13 @@ function is_valid_class($potential_class_identity) {
 			return true;
 		}
 	}
+
 	return false;
 }
 
-// Set the character's class, using the identity.
+/**
+ * Set the character's class, using the identity.
+ */
 function set_class($char_id, $new_class) {
 	if (!is_valid_class(strtolower($new_class))) {
 		return "That class was not an option to change into.";
@@ -193,28 +203,33 @@ function set_class($char_id, $new_class) {
 	}
 }
 
-
-// Get the character class display name info.
+/**
+ * Get the character class display name info.
+ */
 function char_class_name($char_id) {
 	return query_item("SELECT class.class_name FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
 		array(':char_id'=>$char_id));
 }
 
-
-// Get the character class information.
+/**
+ * Get the character class information.
+ */
 function char_class_identity($char_id) {
 	return query_item("SELECT class.identity FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
 		array(':char_id'=>$char_id));
 }
 
-
-// Get the character class theme string.
+/**
+ * Get the character class theme string.
+ */
 function char_class_theme($char_id) {
 	return query_item("SELECT class.theme FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
 		array(':char_id'=>$char_id));
 }
 
-// Pull the class theme by identity.
+/**
+ * Pull the class theme by identity.
+ */
 function class_theme($class_identity) {
 	return query_item('SELECT theme FROM class WHERE identity = :class_identity',
 		array(':class_identity'=>$class_identity));
@@ -222,7 +237,7 @@ function class_theme($class_identity) {
 
 /**
  * Pull out the url for the player's avatar
-**/
+ */
 function create_avatar_url($player, $size=null) {
 	// If the avatar_type is 0, return '';
     if (!$player->vo || !$player->vo->avatar_type || !$player->email()) {
@@ -233,6 +248,8 @@ function create_avatar_url($player, $size=null) {
 	}
 }
 
+/**
+ */
 function generate_gravatar_url($player) {
 	if (!is_object($player)) {
 		$player = new Player($player);
@@ -241,7 +258,9 @@ function generate_gravatar_url($player) {
 	return (OFFLINE ? IMAGE_ROOT.'default_avatar.png' : create_avatar_url($player));
 }
 
-// Use the email information to return the gravatar image url.
+/**
+ * Use the email information to return the gravatar image url.
+ */
 function create_gravatar_url_from_email($email, $size=null) {
 	$def         = 'monsterid'; // Default image or image class.
 	// other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
@@ -255,8 +274,11 @@ function create_gravatar_url_from_email($email, $size=null) {
 	return $res;
 }
 
-// *** Get list of clan members from clan ***
-/// TODO - Should be moved to clan stuff
+/**
+ * Get list of clan members from clan
+ *
+ * @TODO Should be moved to clan stuff
+ */
 function get_clan_members($p_clanID, $p_limit = 30) {
 	if ((int)$p_clanID == $p_clanID && $p_clanID > 0) {
 		$sel = "SELECT uname, player_id, health FROM clan_player JOIN players ON player_id = _player_id AND _clan_id = :clanID AND active = 1 ORDER BY health DESC, level DESC ".(!is_null($p_limit) && $p_limit > 0 ? "LIMIT :limit" : '');
@@ -276,12 +298,16 @@ function get_clan_members($p_clanID, $p_limit = 30) {
 	}
 }
 
-// Check whether the player is the leader of their clan.
+/**
+ * Check whether the player is the leader of their clan.
+ */
 function is_clan_leader($player_id) {
 	return (($clan = get_clan_by_player_id($player_id)) && $player_id == $clan->getLeaderID());
 }
 
-// Get the rank integer for a certain character.
+/**
+ * Get the rank integer for a certain character.
+ */
 function get_rank($p_charID) {
 	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE player_id = :player");
@@ -293,24 +319,30 @@ function get_rank($p_charID) {
 	return ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
 }
 
-// Return the current percentage of the maximum health that a character could have.
+/**
+ * Return the current percentage of the maximum health that a character could have.
+ */
 function health_percent($health, $level) {
 	return min(100, round(($health/max_health_by_level($level))*100));
 }
 
-// Format a player data row with health and level and add the data for a health percentage.
+/**
+ * Format a player data row with health and level and add the data for a health percentage.
+ */
 function format_health_percent($player_row) {
 	$percent = health_percent($player_row['health'], $player_row['level']);
 	$player_row['health_percent'] = $percent;
 	return $player_row;
 }
 
-
-// Add data to the info you get from a player row.
+/**
+ * Add data to the info you get from a player row.
+ */
 function add_data_to_player_row($player_data, $kill_password=true){
     if($kill_password){
         unset($player_data['pname']);
     }
+
     $player_data['max_health'] = max_health_by_level($player_data['level']);
 	$player_data['hp_percent'] = min(100, round(($player_data['health']/$player_data['max_health'])*100));
 	$player_data['max_turns'] = 100;
@@ -319,19 +351,23 @@ function add_data_to_player_row($player_data, $kill_password=true){
 	$player_data['exp_percent'] = min(100, round(($player_data['kills']/$player_data['next_level'])*100));
 	$player_data['status_list'] = implode(', ', get_status_list($player_data['player_id']));
 	$player_data['hash'] = md5(implode($player_data));
+
 	return $player_data;
 }
 
-// Return the data that should be publicly readable to javascript or the api while the player is logged in.
+/**
+ * Return the data that should be publicly readable to javascript or the api while the player is logged in.
+ */
 function public_self_info(){
 	$char_info = self_info();
 	unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
+
 	return $char_info;
 }
 
 /**
  * Returns the state of the current active character from the database.
-**/
+ */
 function self_info() {
 	$id = self_char_id();
 	if(!is_numeric($id)){
@@ -353,11 +389,13 @@ function self_info() {
 
 /**
  * Returns the state of the player from the database,
- * uses a user_id if one is present, otherwise
- * defaults to the currently logged in player, but can act on any player
- * if another username is passed in.
+ *
+ * uses a user_id if one is present, otherwise defaults to the currently logged
+ * in player, but can act on any player if another username is passed in.
+ *
  * @param $user user_id or username
-**/
+ * @todo consider dropping the use of whichever() inside this function
+ */
 function char_info($p_id) {
 	if(!$p_id){
 		if(defined('DEBUG') && DEBUG){
