@@ -91,7 +91,7 @@ class PasswordResetRequest extends Model{
 	**/
 	public static function match($token){ 
 		$request = PasswordResetRequest::where('nonce', '=', $token)->first();
-		if($request->isActive()){
+		if($request instanceof PasswordResetRequest && $request->isActive()){
 			return $request;
 		} else {
 			return null;

@@ -16,12 +16,12 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         assert($this->account_id>0);
         $this->account = AccountFactory::findById($this->account_id);
-        $this->ninja_info = new Player(TestAccountCreateAndDestroy::char_id());
+        $this->nonce = null;
 	}
 	
 	function tearDown(){
+        query("delete from password_reset_requests where nonce = '777777' or nonce = :nonce", [':nonce'=>$this->nonce]);
         TestAccountCreateAndDestroy::purge_test_accounts();
-        query("delete from password_reset_requests where nonce = '777777'");
     }
 
     private function checkTestPasswordMatches($pass){

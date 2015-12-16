@@ -61,7 +61,7 @@ class PasswordController{
 		$ninja_name = $request->query->get('ninja_name');
 		
 		$parts = ['error'=>$error, 'message'=>$message, 'email'=>$email, 'ninja_name'=>$ninja_name];
-		$response = ['title'=>'Request a password reset', 'template'=>'request_password_reset.tpl', $parts, 'options'=>[]];
+		$response = ['title'=>'Request a password reset', 'template'=>'request_password_reset.tpl', 'parts'=>$parts, 'options'=>[]];
 		return $response;
 	}
 
@@ -86,7 +86,8 @@ class PasswordController{
 			if(!$account->id()){
 				$error = 'Unable to find a matching account!';
 			} else {
-				$request = PasswordResetRequest::generate($account->getId()); // Nonce will be created automatically.
+				// Nonce will be created automatically.
+				$request = PasswordResetRequest::generate($account);
 				$passfail = $this->sendEmail($request->nonce, $account);
 				if($passfail){
 					$error = null;
@@ -117,7 +118,7 @@ class PasswordController{
 
 		$parts = ['token'=>$token, 'email'=>$account->getActiveEmail()];
 
-		$reponse = ['title'=>'Request a password reset', 'template'=>'request_password_reset.tpl', $parts, 'options'=>[]];
+		$reponse = ['title'=>'Request a password reset', 'template'=>'request_password_reset.tpl', 'parts'=>$parts, 'options'=>[]];
 		// TODO: Need a way to set the max age on the response that the form will display
 		return $response;
 	}

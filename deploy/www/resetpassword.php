@@ -31,6 +31,6 @@ if($response instanceof RedirectResponse){
 		$response['template'],
 		$response['title'],
 		$response['parts'],
-		isset($response['options'])? $response['options'] : [];
+		(isset($response['options'])? $response['options'] : [])
 	);
 }
