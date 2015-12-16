@@ -272,7 +272,7 @@
     <column name="request_id" phpName="RequestId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="_account_id" phpName="AccountId" type="INTEGER" required="true"/>
     <column name="nonce" phpName="Nonce" type="VARCHAR" size="130" required="true"/>
-    <column name="requested_on_datetime" phpName="RequestedOnDatetime" type="TIMESTAMP" required="true" defaultExpr="CURRENT_DATE"/>
+    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="true" defaultExpr="CURRENT_DATE"/>
     <column name="used" phpName="Used" type="BOOLEAN" required="false" defaultValue="false"/>
     <foreign-key foreignTable="accounts" name="account__account_id_fkey" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="_account_id" foreign="account_id"/>
