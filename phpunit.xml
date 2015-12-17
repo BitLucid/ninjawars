@@ -10,8 +10,10 @@
 	stopOnIncomplete="false"
 	stopOnSkipped="false">
 	<testsuites>
-		<testsuite name="Ninja Wars Test Suite">
+		<testsuite name="Unit">
 			<directory suffix=".php">deploy/tests/unit</directory>
+		</testsuite>
+		<testsuite name="Integration">
 			<directory suffix=".php">deploy/tests/integration</directory>
 		</testsuite>
 	</testsuites>
