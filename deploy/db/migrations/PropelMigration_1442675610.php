@@ -48,7 +48,7 @@ CREATE TABLE "password_reset_requests"
     PRIMARY KEY ("request_id")
 );
 
-ALTER TABLE "password_reset_requests" ADD CONSTRAINT "account__account_id_fkey"
+ALTER TABLE "password_reset_requests" ADD CONSTRAINT "password_reset__account_id_fkey"
     FOREIGN KEY ("_account_id")
     REFERENCES "accounts" ("account_id")
     ON UPDATE CASCADE
