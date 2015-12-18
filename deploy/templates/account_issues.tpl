@@ -1,3 +1,4 @@
+<section>
 {if $error}
     <p class="error">
 	{if $error eq 'invalidemail'}
@@ -61,3 +62,5 @@
 
     <h3>For Other Issues</h3>
         <p>For other issues, please <a href='{$smarty.const.WEB_ROOT}staff.php'>contact us</a>.<p>
+
+</section>
