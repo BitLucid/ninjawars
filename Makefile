@@ -1,10 +1,10 @@
 .PHONY: test test-integration test-unit
 
 test:
-	@./vendor/bin/phpunit
+	@./vendor/bin/phpunit --coverage-html ./deploy/tests/cc
 
 test-unit:
-	@./vendor/bin/phpunit --testsuite Unit
+	@./vendor/bin/phpunit --coverage-html ./deploy/tests/cc --testsuite Unit
 
 test-integration:
-	@./vendor/bin/phpunit --testsuite Integration
+	@./vendor/bin/phpunit --coverage-html ./deploy/tests/cc --testsuite Integration
