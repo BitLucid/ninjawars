@@ -8,19 +8,22 @@ $command = (string) in('command');
 
 $controller = new PasswordController();
 
+$request = Request::createFromGlobals();
+$method = isset($_SERVER['REQUEST_METHOD'])? $_SERVER['REQUEST_METHOD'] : null;
+
 switch (true) {
-	case ($command == 'reset' && !empty($_POST)):
-		$response = $controller->postReset(Request::createFromGlobals());
+	case ($command == 'reset' && $method === 'POST'):
+		$response = $controller->postReset($request);
 	break;
 	case ($command == 'reset'):
-		$response = $controller->getReset(Request::createFromGlobals());
+		$response = $controller->getReset($request);
 	break;
-	case ($command == 'index' && !empty($_POST)):
-		$response = $controller->postEmail(Request::createFromGlobals());
+	case ($command == 'email' && $method === 'POST'):
+		$response = $controller->postEmail($request);
 	break;
 	default:
 		$command == 'index';
-		$response = $controller->getEmail(Request::createFromGlobals());
+		$response = $controller->getEmail($request);
 	break;
 }
 
@@ -31,6 +34,6 @@ if($response instanceof RedirectResponse){
 		$response['template'],
 		$response['title'],
 		$response['parts'],
-		(isset($response['options'])? $response['options'] : [])
+		$response['options']
 	);
 }
