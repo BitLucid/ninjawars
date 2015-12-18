@@ -11,10 +11,9 @@ scripts/deployed_scripts
 deploy/templates/compiled/
 deploy/model/orm/*
 !deploy/model/orm/.gitkeep
-deploy/sql/migrations
-deploy/sql/schema.sql
 !deploy/sql/.gitkeep
-deploy/db/migrations/Propel*
+deploy/
+
 # Propel build
 build.properties
 buildtime.xml
