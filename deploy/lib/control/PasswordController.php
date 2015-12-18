@@ -28,7 +28,7 @@ class PasswordController{
 			return false;
 		}
 		// Email body contents will be: Click here to reset your password: {{ url('password/reset/'.$token) }}
-		$url = WEB_ROOT.'resetpassword.php?token='.url($token);
+		$url = WEB_ROOT.'resetpassword.php?command=reset&token='.url($token);
 		$rendered = render_template('email.password_reset_request.tpl', ['url'=>$url]);
 		// Construct the email with Nmail, and then just send it.
 		$nmail = new Nmail($email, $subject='NinjaWars: Your password reset request', $rendered, SUPPORT_EMAIL);
@@ -41,7 +41,9 @@ class PasswordController{
 		return $passfail;
 	}
 
-	// Get the email associated with a token.
+	/**
+	 * Get the email associated with a token.
+	**/
 	private function getEmailForToken($token){
 		$request = PasswordResetRequest::match($token);
 		$email = isset($request->email)? $data['email'] : null;
@@ -52,6 +54,7 @@ class PasswordController{
 
 	/**
 	 * Display the form to request a password reset link
+	 * @param Request $request
 	 **/
 	public function getEmail(Request $request){
 		// TODO: Generate a csrf
@@ -67,6 +70,7 @@ class PasswordController{
 
 	/**
 	 * Send a reset link to a given user.
+	 * @param Request $request
 	**/
 	public function postEmail(Request $request){
 		$error = null;
@@ -84,14 +88,14 @@ class PasswordController{
 				$account = AccountFactory::findByNinjaName($ninja_name);
 			}
 			if(!$account->id()){
-				$error = 'Unable to find a matching account!';
+				$error = 'Sorry, unable to find a matching account!';
 			} else {
 				// Nonce will be created automatically.
 				$request = PasswordResetRequest::generate($account);
 				$passfail = $this->sendEmail($request->nonce, $account);
 				if($passfail){
 					$error = null;
-					$mess = 'Reset Email sent!';
+					$mess = 'Your reset email was sent!';
 				} else {
 					$error = 'Sorry, there was a problem sending to your account!  Please contact support.';
 				}
@@ -106,25 +110,36 @@ class PasswordController{
 
 	/**
 	 *  Display the password reset view for the given token.
+	 * @param Request $request
 	**/
-	public function getReset($token){
+	public function getReset(Request $request){
+		$token = $request->request->get('token');
 		$data = PasswordResetRequest::match($token);
-		if(empty($data) || !$token){
+		if(!$token || empty($data)){
 			$error = 'No match for your password reset found or time expired, please request again.';
 			return new RedirectResponse('/resetpassword.php?command=reset&'
 			.($error? 'error='.url($error) : ''));
 		}
 		$account = AccountFactory::find($data['account_id']);
 
-		$parts = ['token'=>$token, 'email'=>$account->getActiveEmail()];
+		$parts = [
+			'token'=>$token, 
+			'email'=>$account->getActiveEmail()
+			];
 
-		$reponse = ['title'=>'Request a password reset', 'template'=>'request_password_reset.tpl', 'parts'=>$parts, 'options'=>[]];
+		$reponse = [
+			'title'=>'Reset your password', 
+			'template'=>'resetpassword.tpl', 
+			'parts'=>$parts, 
+			'options'=>[]
+			];
 		// TODO: Need a way to set the max age on the response that the form will display
 		return $response;
 	}
 
 	/**
 	 * Reset the given user's password.
+	 * @param Request $request
 	**/
 	public function postReset(Request $request){
 		$token = $request->request->get('token', null);
@@ -147,7 +162,7 @@ class PasswordController{
 					return new RedirectResponse('/resetpassword.php?command=reset&token='.url($token).'&error='.url('Password not long enough or does not match password confirm!'));
 				}
 			} else {
-				return new RedirectResponse('/resetpassword.php'.'?command=reset&token='.url($token).'&error='.url('Token was invalid or expired! Please reset again.'));
+				return new RedirectResponse('/resetpassword.php?command=reset&token='.url($token).'&error='.url('Token was invalid or expired! Please reset again.'));
 			}
 		}
 	}
