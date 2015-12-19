@@ -12,7 +12,6 @@ deploy/templates/compiled/
 deploy/model/orm/*
 !deploy/model/orm/.gitkeep
 !deploy/sql/.gitkeep
-deploy/
 
 #ignore developer specific GNU make configuration for this project
 CONFIG
