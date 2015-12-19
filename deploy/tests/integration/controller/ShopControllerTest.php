@@ -2,63 +2,49 @@
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 require_once(CORE.'control/ShopController.php');
 require_once(CORE."control/lib_inventory.php");
+
 use Symfony\Component\HttpFoundation\Request;
 use app\environment\RequestWrapper;
 use app\Controller\ShopController as ShopController;
-
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class ShopControllerTest extends PHPUnit_Framework_TestCase {
-
-
-	function setUp(){
+	function setUp() {
         // Mock the post request.
-        $request = new Request($get=[], $post=['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
+        $request = new Request([], ['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
         RequestWrapper::inject($request);
-        $this->markTestIncomplete('Session has to be dealt with on the CLI to allow for controller tests.');
+		nw\SessionFactory::init(new MockArraySessionStorage());
 	}
-	
-	function tearDown(){
+
+	function tearDown() {
         RequestWrapper::inject(new Request([]));
     }
 
-    public function testShopControllerCanBeInstantiatedWithoutError(){
+    public function testShopControllerCanBeInstantiatedWithoutError() {
         $shop = new ShopController();
         $this->assertInstanceOf('app\Controller\ShopController', $shop);
     }
 
-    public function testShopIndexDoesNotError(){
+    public function testShopIndexDoesNotError() {
         $shop = new ShopController();
-        ob_start();
-        $shop->index();
-        $shop_outcome = ob_get_contents();
-        ob_end_clean();
+        $shop_outcome = $shop->index();
         $this->assertNotEmpty($shop_outcome);
     }
 
-    public function testShopPurchaseDoesNotError(){
+    public function testShopPurchaseDoesNotError() {
         // Inject post request.
         $request = new Request([], ['quantity'=>5, 'item'=>'shuriken']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
-        ob_start();
-        $shop->buy();
-        $shop_outcome = ob_get_contents();
-        ob_end_clean();
+        $shop_outcome = $shop->buy();
         $this->assertNotEmpty($shop_outcome);
     }
 
-    public function testShopPurchaseHandlesNoItemNoQuantity(){
+    public function testShopPurchaseHandlesNoItemNoQuantity() {
         // Inject post request.
-        $request = new Request([], []);
-        RequestWrapper::inject($request);
+        RequestWrapper::inject(new Request([], []));
         $shop = new ShopController();
-        ob_start();
-        $shop->buy();
-        $shop_outcome = ob_get_contents();
-        ob_end_clean();
+        $shop_outcome = $shop->buy();
         $this->assertNotEmpty($shop_outcome);
     }
-
-
 }
-
