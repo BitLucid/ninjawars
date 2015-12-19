@@ -1,11 +1,12 @@
 .PHONY: test test-integration test-unit
 
 CC_DIR=./cc
+CC_FLAG=--coverage-html $(CC_DIR)
+
+-include CONFIG
 
 ifdef NOCOVER
 CC_FLAG=
-else
-CC_FLAG=--coverage-html $(CC_DIR)
 endif
 
 test:

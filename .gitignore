@@ -13,8 +13,12 @@ deploy/model/orm/*
 !deploy/model/orm/.gitkeep
 !deploy/sql/.gitkeep
 deploy/
-# Ignore codecoverage reports
-deploy/tests/cc
+
+#ignore developer specific GNU make configuration for this project
+CONFIG
+
+# Ignore codecoverage reports wherever they reside
+/cc/
 
 # Propel build
 build.properties
