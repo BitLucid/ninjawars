@@ -341,13 +341,8 @@ function get_char_name($char_id=null) {
  * Check for own id, migrate to this for calls checking for self.
  */
 function self_char_id(){
-	static $self_id;
-	if ($self_id) {
-		return $self_id;
-	} else {
-		$self_id = get_logged_in_char_id();
-		return $self_id;
-	}
+	// Needs to respect logout, so don't cache as a static
+	return get_logged_in_char_id();
 }
 
 /**
