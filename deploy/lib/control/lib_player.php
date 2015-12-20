@@ -397,19 +397,14 @@ function self_info() {
  * @todo consider dropping the use of whichever() inside this function
  */
 function char_info($p_id) {
-	if(!$p_id){
-		throw new InvalidArgumentException('Call to char_info with a null player_id argument.');
+	if($p_id === null){
+		throw new InvalidArgumentException('Call to char_info with no valid player_id argument.');
 	}
 
-	$session = nw\SessionFactory::getSession();
-
-	$id = whichever($p_id, $session->get('player_id')); // *** Default to current player. ***
-
-	if(!is_numeric($id)){
-		// If there's no id, don't try to get any data.
-		return null;
+	if(!is_numeric($p_id) || !positive_int($p_id)){
+		return null; // p_id must be positive & numeric.
 	}
-	$player = new Player($id); // Constructor uses DAO to get player object.
+	$player = new Player($p_id); // Constructor uses DAO to get player object.
 	$player_data = array();
 
 	if ($player instanceof Player && $player->id()) {
