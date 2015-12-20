@@ -390,29 +390,25 @@ function self_info() {
 /**
  * Returns the state of the player from the database,
  *
- * uses a user_id if one is present, otherwise defaults to the currently logged
- * in player, but can act on any player if another username is passed in.
- *
- * @param $user user_id or username
- * @todo consider dropping the use of whichever() inside this function
+ * @param int $p_id
  */
 function char_info($p_id) {
-	if($p_id === null){
-		throw new InvalidArgumentException('Call to char_info with no valid player_id argument.');
-	}
+		if($p_id === null){
+			throw new InvalidArgumentException('Call to char_info with no valid player_id argument.');
+		}
 
-	if(!is_numeric($p_id) || !positive_int($p_id)){
-		return null; // p_id must be positive & numeric.
-	}
-	$player = new Player($p_id); // Constructor uses DAO to get player object.
-	$player_data = array();
+		if(!is_numeric($p_id) || !positive_int($p_id)){
+			return null; // p_id must be positive & numeric.
+		}
+		$player = new Player($p_id); // Constructor uses DAO to get player object.
+		$player_data = array();
 
-	if ($player instanceof Player && $player->id()) {
-		// Turn the player data vo into a simple array.
-		$player_data = (array) $player->vo;
-		$player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
-		$player_data = add_data_to_player_row($player_data);
-	}
+		if ($player instanceof Player && $player->id()) {
+			// Turn the player data vo into a simple array.
+			$player_data = (array) $player->vo;
+			$player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
+			$player_data = add_data_to_player_row($player_data);
+		}
 
-	return $player_data;
+		return $player_data;
 }
