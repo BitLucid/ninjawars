@@ -264,9 +264,11 @@ class Player implements Character {
 		}
 	}
 
+	/**
+	 * Checks whether the character is still active.
+	**/
 	public function isActive() {
-		// Set to make active the primary indicator, lets deity fully determine who to make inactive or not.
-		return !!$this->vo->active;
+		return (bool) $this->vo->active;
 	}
 
 	public function isAdmin() {
@@ -306,7 +308,7 @@ class Player implements Character {
 		static $data;
 		if (!$data) {
 			$data = add_data_to_player_row($this->as_array());
-			// Cache this data over the live of the player object.
+			// Cache this data over the life of the player object.
 		}
 
 		if ($specific) {
