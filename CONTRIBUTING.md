@@ -6,7 +6,7 @@
 * Commit just the modifications, do not mess with the composer.json files.
 * Ensure that all tests pass.
 * Send the pull request.
-* Check that the Test CI build passes. If not, rinse and repeat.
+* Check that the Test CI build passes (check the badges/checks). If not, rinse and repeat.
 
 
 ## Resources
