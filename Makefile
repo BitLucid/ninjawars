@@ -1,4 +1,4 @@
-.PHONY: test test-integration test-unit
+.PHONY: test test-integration test-unit clean dep
 
 CC_DIR=./cc
 CC_FLAG=--coverage-html $(CC_DIR)
@@ -17,3 +17,11 @@ test-unit:
 
 test-integration:
 	@./vendor/bin/phpunit $(CC_FLAG) --testsuite Integration
+
+clean:
+	@rm -rf ./deploy/templates/compiled
+	@rm -rf ./vendor/*
+	@rm -rf ./cc/
+
+dep:
+	@./composer.phar install
