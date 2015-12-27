@@ -2,6 +2,7 @@
 
 CC_DIR=./cc
 CC_FLAG=--coverage-html $(CC_DIR)
+TEST_RUNNER=php -d zend_extension=xdebug.so ./vendor/bin/phpunit
 
 -include CONFIG
 
@@ -10,13 +11,13 @@ CC_FLAG=
 endif
 
 test:
-	@./vendor/bin/phpunit $(CC_FLAG)
+	@$(TEST_RUNNER) $(CC_FLAG)
 
 test-unit:
-	@./vendor/bin/phpunit $(CC_FLAG) --testsuite Unit
+	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
 test-integration:
-	@./vendor/bin/phpunit $(CC_FLAG) --testsuite Integration
+	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
 
 clean:
 	@rm -rf ./deploy/templates/compiled
