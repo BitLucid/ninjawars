@@ -107,4 +107,12 @@ class TestInput extends PHPUnit_Framework_TestCase {
 	public function testRestrictToDefault() {
 		$this->assertEquals('grace', restrict_to('bob',['joe','john','jake'],'grace'));
 	}
+
+	public function testWhicheverPositive() {
+		$this->assertEquals('grace', whichever('', null, 'grace'));
+	}
+
+	public function testWhicheverNegative() {
+		$this->assertNull(whichever('', null, false));
+	}
 }
