@@ -20,10 +20,14 @@ class TestMessage extends PHPUnit_Framework_TestCase {
             'unread'    => 1,
             'type'      => 0
         ];
+        $this->message_id = null;
     }
 
     function tearDown() {
         TestAccountCreateAndDestroy::destroy();
+        if($this->message_id !== null){
+            query('delete from messages where message_id = :id', [':id'=>$this->message_id]);
+        }
     }
 
     public function testMessageCanInstantiate() {
@@ -33,11 +37,13 @@ class TestMessage extends PHPUnit_Framework_TestCase {
 
     public function testMessageCanBeSent() {
         $mess = Message::create($this->messageData);
+        $this->message_id = $mess->id();
         $this->assertEquals($this->messageData['message'], $mess->message);
     }
 
     public function testMessageCanBeReceived() {
         $mess = Message::create($this->messageData);
+        $this->message_id = $mess->id();
         $first_message = Message::find($mess->id());
         $this->assertEquals($this->messageData['message'], $first_message->message);
     }
@@ -46,6 +52,7 @@ class TestMessage extends PHPUnit_Framework_TestCase {
         $this->messageData['type'] = 1;
 
         $mess = Message::create($this->messageData);
+        $this->message_id = $mess->id();
         $messages = Message::findByReceiver(new Player($this->char_id_2), 1);
         $first_message = $messages->first();
 
@@ -56,7 +63,8 @@ class TestMessage extends PHPUnit_Framework_TestCase {
     }
 
     public function testMessageHasARobustSender() {
-        Message::create($this->messageData);
+        $mess = Message::create($this->messageData);
+        $this->message_id = $mess->id();
         $messages = Message::findByReceiver(new Player($this->char_id_2), 0, 1000, 0);
         $first_message = $messages->first();
 
@@ -71,6 +79,7 @@ class TestMessage extends PHPUnit_Framework_TestCase {
         $this->messageData['send_from'] = $this->char_id_2;
 
         $mess = Message::create($this->messageData);
+        $this->message_id = $mess->id();
 
         $text = 'Updated phpunit test message';
         $mess->message = $text;
@@ -90,7 +99,7 @@ class TestMessage extends PHPUnit_Framework_TestCase {
 
         for ($count = 0; $count < $messageCount; $count++) {
             $this->messageData['message'] = 'Random phpunit test message'.$count;
-            Message::create($this->messageData);
+            Message::create($this->messageData); // Test deletes these
         }
 
         $char = new Player($this->char_id);
