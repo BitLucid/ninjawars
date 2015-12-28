@@ -7,7 +7,7 @@ $pages = array(
 	,'tutorial'=>array('title'=>'Helpful Info', 'template'=>'page.tutorial.tpl')
 );
 
-$vars = array('user_id'=>get_user_id());
+$vars = array('user_id'=>self_char_id());
 $options = array();
 
 /* END OF CALLBACK FUNCTIONS */
