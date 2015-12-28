@@ -110,13 +110,13 @@
 <div id='scrollable-viewport'>
   <p>
     <span class="brownHeading">How do I level up ?</span><br>
-    By <a href='list_all_players.php'>killing other Ninja</a>.
+    By <a href='list.php'>killing other Ninja</a>.
     Once you have enough kill points, you may increase your level by visiting the <a href="dojo.php">Dojo</a> in the village, which will make you do more damage and make your abilities stronger.
   </p>
 
   <p>
     <span class="brownHeading">How do I attack another ninja?</span><br>
-    You can attack another ninja by selecting <a href="enemies.php">fight</a> from the main page menu then putting a ninja's name into the search, or viewing the <a href="list_all_players.php">list of ninjas</a> on the "player list", then click their name and attack them from their profile page.
+    You can attack another ninja by selecting <a href="enemies.php">fight</a> from the main page menu then putting a ninja's name into the search, or viewing the <a href="list.php">list of ninjas</a> on the "player list", then click their name and attack them from their profile page.
   </p>
 
   <p>

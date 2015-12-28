@@ -44,9 +44,9 @@
   Current gold: {$gold_display|escape}
   <p>
 
-  <form id="player_search" action="list_all_players.php" method="get" name="player_search">
+  <form id="player_search" action="list.php" method="get" name="player_search">
     <div>
-      <a href="list_all_players.php?hide=dead">Use an Item on a ninja?</a>
+      <a href="list.php?hide=dead">Use an Item on a ninja?</a>
       <input id="searched" type="text" maxlength="50" name="searched" class="textField">
       <input id="hide" type="hidden" name="hide" value="dead">
       <input type="submit" value="Search for Ninja" class="formButton">
