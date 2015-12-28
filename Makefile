@@ -20,7 +20,7 @@ test-integration:
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
 
 clean:
-	@rm -rf ./deploy/templates/compiled
+	@rm -rf ./deploy/templates/compiled/*
 	@rm -rf ./vendor/*
 	@rm -rf ./cc/
 
