@@ -5,8 +5,8 @@
 
 class RatchetTest extends PHPUnit_Framework_TestCase {
 
-	const MAX_WWW_SCRIPTS = 51;
-	const MAX_NINJAMASTER_SCRIPTS = 2;
+	const MAX_WWW_SCRIPTS = 46;
+	const MAX_NINJAMASTER_SCRIPTS = 3;
 
 	function before() {
 	}
