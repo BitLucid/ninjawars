@@ -56,7 +56,10 @@ nav.admin-nav a{
 
 <nav class='admin-nav parent'>
 	<div class='child'>
-		<a class='btn btn-info' href='/ninjamaster/#npc-list'>Npc List</a><a class='btn btn-info' href='/ninjamaster/#char-list'>Character List<a class='btn btn-info' href='/ninjamaster/tools.php'>Validation Tools</a>
+		<a class='btn btn-info' href='/ninjamaster/#npc-list'>Npc List</a>
+		<a class='btn btn-info' href='/ninjamaster/#char-list'>Character List</a>
+		<a class='btn btn-info' href='/ninjamaster/tools.php'>Validation Tools</a>
+		<a class='btn btn-info' href='/ninjamaster/player_tags.php'>Character Tag List</a>
 	</div>
 </nav>
 
