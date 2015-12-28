@@ -64,7 +64,7 @@ class Message extends Model {
      * Get messages to a receiver.
      */
     public static function findByReceiver(Player $sender, $type=0, $limit=null, $offset=null) {
-        if ($limit && $offset) {
+        if ($limit !== null && $offset !== null) {
             return Message::where([
                 'send_to' => $sender->id(),
                 'type'    => $type
