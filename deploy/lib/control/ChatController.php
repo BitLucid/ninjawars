@@ -39,7 +39,6 @@ class ChatController {
 	* Pull & display the chats and a chat send if logged in
 	**/
 	public function index(){
-		$char_id = self_char_id();
 		// Initialize variables to pass to the template.
 		$field_size    = self::FIELD_SIZE;
 		$target        = $_SERVER['PHP_SELF'];
