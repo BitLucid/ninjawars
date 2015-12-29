@@ -10,12 +10,13 @@ if ($error = init(ChatController::PRIV, ChatController::ALIVE)) {
 
 $command = in('command');
 $controller = new ChatController();
+$method = $_SERVER['REQUEST_METHOD']; 
 
-// Switch between the different controller me/**thods.
+// Switch between the different controller methods.
 switch(true){
-	case($_SERVER['REQUEST_METHOD'] == 'POST' && $command=='receive'):
+	case( $method === 'POST' && $command==='receive'):
 		$response = $controller->receive();
-	case($command = 'index'):
+	case($command === 'index'):
 	default:
 		$command = 'index';
 		$response = $controller->index();
@@ -25,7 +26,7 @@ if($response instanceof RedirectResponse){
 	$response->send();
 } else {
 
-	// TODO: register plugin time_ago globally and call display_page function instead?
+	// TODO: register plugin time_ago globally and call display_page function instead.
 	$template = prep_page($response['template'], $response['title'], $response['parts'], $response['options']);
 
 	function get_time_ago($p_params, &$tpl) {
