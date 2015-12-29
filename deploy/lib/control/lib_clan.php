@@ -165,15 +165,6 @@ function clan_info($clan_id) {
 	);
 }
 
-// Gets the clan founder, though they may be dead and unconfirmed now.
-function get_clan_founders() {
-	DatabaseConnection::getInstance();
-	$founders_statement = DatabaseConnection::$pdo->query(
-	    'SELECT clan_founder, clan_name, uname, player_id, active
-		FROM clan LEFT JOIN players ON lower(clan_founder) = lower(uname)');
-	return $founder_statement;
-}
-
 // Return only the single clan leader and their information.
 function get_clan_leader_info($clan_id) {
 	$clans = get_clan_leaders($clan_id, false);
