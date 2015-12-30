@@ -1,6 +1,9 @@
 <?php
 // Licensed under the creative commons license.  See the staff.php page for more detail.
 require_once(LIB_ROOT.'control/lib_player_list.php'); // Used for member_counts()
+require_once(LIB_ROOT.'data/Message.php');
+
+use app\data\Message;
 
 // Tag: megaman
 $char_id = self_char_id();
@@ -16,7 +19,10 @@ if(!$char_id){
 	$player_info = self_info();
 	$ninja = new Player(self_char_id());
 
-	$unread_message_count = unread_message_count();
+	$unread_message_count = Message::where([
+            'send_to' => $char_id,
+            'unread'  => 1,
+        ])->count();
 	
 	$member_counts = member_counts();
 	

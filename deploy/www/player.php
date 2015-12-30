@@ -1,7 +1,9 @@
 <?php
 require_once(LIB_ROOT.'control/lib_inventory.php');
 require_once(CORE.'control/AttackLegal.php');
+require_once(LIB_ROOT.'data/Message.php');
 
+use app\data\Message;
 use app\combat\AttackLegal;
 
 $private   = false;
@@ -58,7 +60,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
     	$target_class_theme = char_class_theme($target_id);
 
 		if ($message) {
-		    send_message($char_id, $target_id, $message);
+			Message::create(['send_from'=>$char_id, 'send_to'=>$target_id, 'message'=>$message, 'type'=>0]);
 		    // "message sent" notice will be displayed by the template itself.
 		}
 
