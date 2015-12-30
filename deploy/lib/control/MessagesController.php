@@ -38,15 +38,14 @@ class MessagesController{
 		return new RedirectResponse('/messages.php?command=personal&individual_or_clan=1&message_sent_to='.url($to).'&informational='.url('Message sent to '.$to.'.'));
 	}
 
-	public function sendClan(){
+	public function sendClan() {
 		$message = in('message');
 		$type = 1;
-		$ninja = new Player(self_char_id());
-		$clan = ClanFactory::clanOfMember($ninja);
+		$sender = new Player(self_char_id());
+		$clan = ClanFactory::clanOfMember($sender);
 		$target_id_list = $clan->getMemberIds();
-		$passfail = Message::sendToGroup($ninja, $target_id_list, $message, $type);
-		$message_sent_to = 'your clan';
-		$message_to = 'clan';
+		Message::sendToGroup($sender, $target_id_list, $message, $type);
+
 		return new RedirectResponse('/messages.php?command=clan&individual_or_clan=1&informational='.url('Message sent to clan.'));
 	}
 

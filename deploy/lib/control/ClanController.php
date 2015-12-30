@@ -389,16 +389,15 @@ class ClanController { //extends Controller
 	 */
 	public function message() {
 		$player = new Player(self_char_id());
+		$message = in('message', null, null); // Don't filter messages
 
 		if ($player->id()) {
 			$myClan = ClanFactory::clanOfMember($player);
 
 			if ($myClan) {
-				$message = in('message', null, null); // Don't filter messages
+				$target_id_list = $myClan->getMemberIds();
 
-				message_to_clan($message);
-
-				$myClan = ClanFactory::clanOfMember($player);
+				Message::sendToGroup($player, $target_id_list, $message, 1);
 
 				$parts = [
 					'clan'           => $myClan,
