@@ -1,14 +1,14 @@
 <?php
+require_once(LIB_ROOT.'data/Message.php');
+
+use app\data\Message;
+
 /**
  * who/what/why/where
+ *
  * Ninja clans with their various members
- *
- *
- **/
-
-
-class Clan
-{
+ */
+class Clan {
     private $m_id;
     private $m_name;
 	private $avatarUrl;
@@ -97,21 +97,31 @@ class Clan
         return get_clan_leader_info($this->getID());
     }
 
-    public function addMember(Player $ninja, Player $adder){
-        if($this->hasMember($ninja->id())){
+    /**
+     */
+    public function addMember(Player $ninja, Player $adder) {
+        if ($this->hasMember($ninja->id())) {
             return 'That ninja is already a member of the clan.';
         }
+
     	// Not an insert_query because there is no sequence involved or needed.
     	query('insert into clan_player (_clan_id, _player_id) values (:c, :p)', [':c'=>$this->id(), ':p'=>$ninja->id()]);
     	query('update players set verification_number = :new_num where player_id = :id', [':new_num'=>rand(1, 999999), ':id'=>$ninja->id()]);
-    	send_message($adder->id(), $ninja->id(),"CLAN: You have been accepted into ".$this->getName());
+
+        Message::create([
+            'send_from' => $adder->id(),
+            'send_to'   => $ninja->id(),
+            'message'   => "CLAN: You have been accepted into ".$this->getName(),
+            'type'      => 0
+        ]);
+
     	return true;
     }
 
     /**
      * Passively invite a character to a clan with a message and link.
      * @return string
-    **/
+     */
     public function invite(Player $p_target, Player $p_inviter) {
         $failure_reason = null;
 
@@ -128,33 +138,47 @@ class Clan
             .'To accept, choose their clan '.$this->getName().' on the '
             .message_url('clan.php?command=view&clan_id='.$this->getID(), 'clan joining page').'.';
 
-            send_message($p_inviter->id(), $p_target->id(), $invite_msg);
+            Message::create([
+                'send_from' => $p_inviter->id(),
+                'send_to'   => $p_target->id(),
+                'message'   => $invite_msg,
+                'type'      => 0
+            ]);
+
             $failure_error = null;
         }
+
         return $failure_error;
     }
 
     /**
      * For when a player chooses to leave their clan
      * of their own volition.
-    **/
+     */
     public function leave(Player $ninja){
-    	$this->kickMember($ninja->id(), $ninja, $self_leave=true);
+    	$this->kickMember($ninja->id(), $ninja, true);
     }
 
     /**
      * When a leader removes a member without choice.
-    **/
+     */
     public function kickMember($p_playerID, Player $kicker, $self_leave=false) {
         $today = date("F j, Y, g:i a");
         query("DELETE FROM clan_player WHERE _player_id = :player AND _clan_id = :clan",
         	[':player'=>$p_playerID, ':clan'=>$this->getID()]);
-        if($self_leave){
+
+        if ($self_leave) {
         	$msg = "You have been kicked out of ".$this->getName()." by ".$kicker->name()." on $today.";
         } else {
         	$msg = "You have left clan ".$this->getName()." on $today.";
         }
-        send_message($kicker->id(), $p_playerID, $msg);
+
+        Message::create([
+            'send_from' => $kicker->id(),
+            'send_to'   => $p_playerID,
+            'message'   => $msg,
+            'type'      => 0
+        ]);
 
         return true;
     }
@@ -180,7 +204,7 @@ class Clan
 
     /**
      * Delete a clan after sending a message to all clan members.
-     **/
+     */
     public function disband() {
         DatabaseConnection::getInstance();
         $leader = $this->getLeaderID();
@@ -194,10 +218,15 @@ class Clan
         while ($data = $statement->fetch()) {
             $member_id = $data[0];
 
-            send_message($leader, $member_id, $message);
+            Message::create([
+                'send_from' => $leader,
+                'send_to'   => $member_id,
+                'message'   => $message,
+                'type'      => 0
+            ]);
         }
-        // Deletion of the clan_player connections should cascade from the deletion of the clan, at least ideally.
 
+        // Deletion of the clan_player connections should cascade from the deletion of the clan, at least ideally.
         $statement = DatabaseConnection::$pdo->prepare("DELETE FROM clan WHERE clan_id = :clan");
         $statement->bindValue(':clan', $this->getID());
         $statement->execute();

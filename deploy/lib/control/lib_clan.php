@@ -1,5 +1,8 @@
 <?php
 require_once(LIB_ROOT.'control/lib_player.php');
+require_once(LIB_ROOT.'data/Message.php');
+
+use app\data\Message;
 
 // ************************************
 // ********** CLAN FUNCTIONS **********
@@ -68,44 +71,6 @@ function rename_clan($p_clanID, $p_newName) {
 
 // TODO: Simplify this invite system.
 
-// Send a message and change the status of a player so that they are in an "invited" state.
-/*
-function inviteChar($p_target, $p_clan, $p_inviter) {
-	$failure_reason = null;
-	DatabaseConnection::getInstance();
-
-	if (!$p_target) {
-		return $failure_reason = 'No such ninja.';
-	}
-
-	$statement = DatabaseConnection::$pdo->prepare(
-		'SELECT active, _clan_id FROM players LEFT JOIN clan_player ON player_id = _player_id WHERE player_id = :target');
-	$statement->bindValue(':target', $p_target->id());
-	$statement->execute();
-	$data = $statement->fetch();
-
-	$current_clan        = $data['_clan_id'];
-	$player_is_confirmed = $data['active'];
-
-	if (!$player_is_confirmed) {
-		$failure_error = 'That player name does not exist.';
-	} else if (!empty($current_clan)) {
-		$failure_error = 'That player is already in a clan.';
-	} else if ($p_target->hasStatus(INVITED)) {
-		$failure_error = 'That player has already been invited into a clan.';
-	} else {
-		$invite_msg = $p_inviter->name().' has invited you into their clan, '.$p_clan->getName().'. '
-		.'To accept, choose their clan '.$p_clan->getName().' on the '
-		.message_url('clan.php?command=join&clan_id='.$p_clan->getID(), 'clan joining page').'.';
-
-		send_message($p_inviter->id(), $p_target->id(), $invite_msg);
-		$p_target->addStatus(INVITED);
-		$failure_error = null;
-	}
-
-	return $failure_error;
-}*/
-
 function send_clan_join_request($user_id, $clan_id) {
 	DatabaseConnection::getInstance();
 	$clan_obj = new Clan($clan_id);
@@ -124,7 +89,8 @@ function send_clan_join_request($user_id, $clan_id) {
 	$join_request_message = 'CLAN JOIN REQUEST: '.htmlentities($username)." has sent a request to join your clan.
 		If you wish to allow this ninja into your clan click the following link:
 		$url";
-	send_message($user_id, $leader_id, $join_request_message);
+
+	Message::create(['send_from'=>$user_id, 'send_to'=>$leader_id, 'message'=>$join_request_message, 'type'=>0]);
 }
 
 // Gets the clan_id of a character/player.
