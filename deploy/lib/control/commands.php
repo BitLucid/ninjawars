@@ -46,10 +46,6 @@ function changeHealth($who, $amount) {
 	return getHealth($who);
 }
 
-function addHealth($who, $amount) {
-	return changeHealth($who, $amount);
-}
-
 function subtractHealth($who, $amount) {
 	return changeHealth($who, ((-1)*$amount));
 }
@@ -61,27 +57,10 @@ function subtractHealth($who, $amount) {
 // ********** TURNS FUNCTIONS *********
 // ************************************
 
-
-// Deprecated.
-function getTurns($who) {
-	return get_turns($who);
-}
-
-// Deprecated.
-function changeTurns($who, $amount) {
-	return change_turns($who, $amount);
-}
-
-// Deprecated.
-function addTurns($who, $amount) {
-	return change_turns($who, abs($amount));
-}
-
 // Deprecated.
 function subtractTurns($who, $amount) {
 	return change_turns($who, ((-1)*abs($amount)));
 }
-
 
 // Add or subtract from a players turns (zeroed-out).
 function change_turns($char_id, $amount){
@@ -98,9 +77,6 @@ function change_turns($char_id, $amount){
 function get_turns($char_id){
 	return query_item("select turns from players where player_id = :char_id", array(':char_id'=>$char_id));
 }
-
-
-
 
 // ************************************
 // ************************************

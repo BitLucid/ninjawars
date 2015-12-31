@@ -296,7 +296,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 					$resultMessage .= "__TARGET__ has lost ".abs($turns_change)." turns!";
 				}
 
-				if (getTurns($target_id) <= 0) { //Message when a target has no more turns to remove.
+				if (get_turns($target_id) <= 0) { //Message when a target has no more turns to remove.
 					$resultMessage .= "  __TARGET__ no longer has any turns.";
 				}
 			}

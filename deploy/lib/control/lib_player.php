@@ -109,8 +109,8 @@ function level_up_if_possible($char_id, $auto_level=false) {
 				change_stamina($char_id, $stat_value_to_add);
 				change_karma($char_id, 1); // Only add 1 to karma via levelling.
 				change_ki($char_id, 50); // Add 50 ki points via levelling.
-				addHealth($char_id, $health_to_add);
-				addTurns($char_id, $turns_to_give);
+				changeHealth($char_id, $health_to_add);
+				change_turns($char_id, $turns_to_give);
 				// Send a level-up message, for those times when auto-levelling happens.
 				send_event($char_id, $char_id,
 					"You levelled up!  Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by 1, and your Ki raised 50!  You gained some health and turns as well!  You are now a level $userLevel ninja!  Go kill some stuff.");

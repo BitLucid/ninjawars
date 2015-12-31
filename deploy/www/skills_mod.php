@@ -311,7 +311,7 @@ function harmonize_chakra($char_obj){
 
 					subtractTurns($target->vo->player_id, $turns_decrease);
 					$target->addStatus(SLOW);
-					addTurns($char_id, $turns_decrease);
+					change_turns($char_id, abs($turns_decrease));
 
 					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id";
 					send_event($attacker_char_id, $target->id(), $msg);
@@ -439,7 +439,7 @@ function harmonize_chakra($char_obj){
 	
 } // End of the skill use SUCCESS block.
 
-$ending_turns = changeTurns($attacker_char_id, $turns_to_take); // Take the skill use cost.
+$ending_turns = change_turns($attacker_char_id, $turns_to_take); // Take the skill use cost.
 
 $target_ending_health = $target->health();
 $target_ending_health_percent = $target->health_percent();
