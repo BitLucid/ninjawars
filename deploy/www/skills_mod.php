@@ -178,7 +178,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
                 array(':owner'=>$user_id, ':type'=>$herb_item_type));
         $turn_cost = min($itemCount, $starting_turns-1, 2); // Costs 1 or two depending on the number of items.
 		if ($turn_cost && $itemCount > 0) {	// *** If special item count > 0 ***
-			remove_item($user_id, 'ginsengroot', $itemCount);
+			removeItem($user_id, 'ginsengroot', $itemCount);
 			add_item($user_id, 'tigersalve', $itemCount);
 			
 			$generic_skill_result_message = 'With intense focus you grind the '.$itemsCount.' roots into potent formulas.';

@@ -227,26 +227,9 @@ function add_item($char_id, $identity, $quantity = 1) {
 	}
 }
 
-function remove_item($char_id, $identity, $quantity = 1) {
-	$quantity = (int)$quantity;
-	if ($quantity > 0 && !empty($identity)) {
-	    query_resultset(
-			'UPDATE inventory SET amount = greatest(0, amount - :quantity)
-	            WHERE owner = :char AND item_type = (SELECT item_id FROM item WHERE item_internal_name = :identity)'
-	        , array(
-				':quantity'   => $quantity
-				, ':char'     => $char_id
-				, ':identity' => $identity
-			)
-		);
-	} else {
-	    throw new Exception('Invalid item to remove from inventory.');
-	}
-}
-
 function removeItem($who, $item, $quantity=1) {
 	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = amount - :quantity WHERE owner = :user AND item_type = (select item_id from item where lower(item_display_name) = lower(:item)) AND amount > 0");
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = greatest(0, amount - :quantity) WHERE owner = :user AND item_type = (SELECT item_id FROM item WHERE lower(item_display_name) = lower(:item)) AND amount > 0");
 	$statement->bindValue(':user', $who);
 	$statement->bindValue(':item', $item);
 	$statement->bindValue(':quantity', $quantity);
