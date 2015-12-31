@@ -103,7 +103,7 @@ function level_up_if_possible($char_id, $auto_level=false) {
 				// ****** Perform the level up actions ****** //
 				// Explicitly call for the special case of kill changing to prevent an infinite loop.
 				change_kills($char_id, -1*$required_kills, false);
-				$userLevel = addLevel($char_id, 1);
+				$userLevel = changeLevel($char_id, 1);
 				change_strength($char_id, $stat_value_to_add);
 				change_speed($char_id, $stat_value_to_add);
 				change_stamina($char_id, $stat_value_to_add);

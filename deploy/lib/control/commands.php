@@ -11,7 +11,7 @@
 // ************************************
 
 function setHealth($who, $new_health) {
-	$dbconn = DatabaseConnection::getInstance();
+	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET health = :health WHERE player_id = :user");
 	$statement->bindValue(':health', $new_health);
 	$statement->bindValue(':user', $who);
@@ -21,7 +21,7 @@ function setHealth($who, $new_health) {
 }
 
 function getHealth($who) {
-	$dbconn = DatabaseConnection::getInstance();
+	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("SELECT health FROM players WHERE player_id = :user");
 	$statement->bindValue(':user', $who);
 	$statement->execute();
@@ -33,7 +33,7 @@ function changeHealth($who, $amount) {
 	$amount = (int)$amount;
 
 	if (abs($amount) > 0) {
-		$dbconn = DatabaseConnection::getInstance();
+		DatabaseConnection::getInstance();
 		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET health = health + ".
 		   "CASE WHEN health + :amount < 0 THEN health*(-1) ELSE :amount2 END ".
 		   "WHERE player_id = :user");
@@ -136,7 +136,7 @@ function change_kills($char_id, $amount, $auto_level_check=true) {
 		// Ignore changes that amount to zero.
 		if($amount > 0 && $auto_level_check) {
 			// For positive kill changes, check whether levelling occurs.
-			level_up_if_possible($char_id, $auto_levelling=true);
+			level_up_if_possible($char_id, true);
 		}
 
 		query("UPDATE players SET kills = kills + 
@@ -238,10 +238,6 @@ function changeLevel($who, $amount) {
 	}
 
 	return getLevel($who);
-}
-
-function addLevel($who, $amount) {
-	return changeLevel($who, $amount);
 }
 
 // ************************************
@@ -366,7 +362,7 @@ function add_item($char_id, $identity, $quantity = 1) {
 	    $rows = $up_res->rowCount();
 
 		if (!$rows) { // No entry was present, insert one.
-		    $ins_res = query_resultset("INSERT INTO inventory (owner, item_type, amount) 
+		    query_resultset("INSERT INTO inventory (owner, item_type, amount) 
 		        VALUES (:char, (SELECT item_id FROM item WHERE item_internal_name = :identity), :quantity)",
 		        array(':char'=>$char_id,
 		            ':identity'=>$identity,
@@ -380,7 +376,7 @@ function add_item($char_id, $identity, $quantity = 1) {
 function remove_item($char_id, $identity, $quantity = 1) {
 	$quantity = (int)$quantity;
 	if ($quantity > 0 && !empty($identity)) {
-	    $up_res = query_resultset(
+	    query_resultset(
 			'UPDATE inventory SET amount = greatest(0, amount - :quantity)
 	            WHERE owner = :char AND item_type = (SELECT item_id FROM item WHERE item_internal_name = :identity)'
 	        , array(
@@ -411,7 +407,7 @@ function removeItem($who, $item, $quantity=1) {
 function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
 	$killpoints = (int)$killpoints;
 
-	$dbconn = DatabaseConnection::getInstance();
+	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO dueling_log values 
         (default, :attacker, :defender, :won, :killpoints, now())");
         //Log of Dueling information.
