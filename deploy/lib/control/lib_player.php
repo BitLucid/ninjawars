@@ -412,3 +412,37 @@ function char_info($p_id) {
 
 		return $player_data;
 }
+
+function changeLevel($who, $amount) {
+	$amount = (int)$amount;
+	if (abs($amount) > 0) {
+		DatabaseConnection::getInstance();
+
+		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET level = level+:amount WHERE player_id = :player");
+		$statement->bindValue(':player', $who);
+		$statement->bindValue(':amount', $amount);
+		$statement->execute();
+
+		// *** UPDATE THE LEVEL INCREASE LOG *** //
+		$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE _player_id = :player AND killsdate = now()");
+		$statement->bindValue(':player', $who);
+		$statement->execute();
+
+		$notYetANewDay = $statement->fetch();  //Throws back a row result if there is a pre-existing record.
+
+		if ($notYetANewDay != NULL) {
+			//if record already exists.
+			$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET levelling=levelling + :amount WHERE _player_id = :player AND killsdate=now() LIMIT 1");
+			$statement->bindValue(':amount', $amount);
+			$statement->bindValue(':player', $who);
+		} else {	// if no prior record exists, create a new one.
+			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (_player_id, killpoints, levelling, killsdate) VALUES (:player, '0', :amount, now())");  //inserts all except the autoincrement ones
+			$statement->bindValue(':amount', $amount);
+			$statement->bindValue(':player', $who);
+		}
+
+		$statement->execute();
+	}
+
+	return getLevel($who);
+}
