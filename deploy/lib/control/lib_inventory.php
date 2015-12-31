@@ -53,16 +53,6 @@ function item_info_from_identity($identity, $specific=null) {
 	return item_info($item_id, $specific);
 }
 
-// Wrapper functions to return certain aspects of items.
-
-function item_identity($item_id){
-	return item_info($item_id, 'item_internal_name');
-}
-
-function item_display_name($item_id){
-	return item_info($item_id, 'item_display_name');
-}
-
 // Necessary reversal function for older uses of display names in the code.
 function item_id_from_display_name($item_display_name){
 	return query_item('select item_id from item where item_display_name = :item_display_name', array(':item_display_name'=> array($item_display_name, PDO::PARAM_INT)));
