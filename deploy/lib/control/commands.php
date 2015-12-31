@@ -57,39 +57,6 @@ function subtractHealth($who, $amount) {
 // ************************************
 // ************************************
 
-
-
-// ************************************
-// ********** GOLD FUNCTIONS **********
-// ************************************
-
-function getGold($who) {
-	if(DEBUG){
-		throw new Exception('Use of deprecated function "getGold" from commands.php, should be replaced with get_gold($char_id)');
-	}
-	return get_gold(get_char_id($who));
-}
-
-function changeGold($who, $amount) {
-	if(DEBUG){
-		throw new Exception('Use of deprecated function "changeGold" from commands.php, should be replaced with add_gold($char_id, $amount)');
-	}
-	return add_gold(get_char_id($who), $amount);
-}
-
-function addGold($who, $amount) {
-	return changeGold($who, $amount);
-}
-
-function subtractGold($who, $amount) {
-	return changeGold($who, ((-1)*$amount));
-}
-
-// ************************************
-// ************************************
-
-
-
 // ************************************
 // ********** TURNS FUNCTIONS *********
 // ************************************

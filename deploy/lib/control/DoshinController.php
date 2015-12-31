@@ -129,7 +129,7 @@ class DoshinController { //extends controller
 				subtractBounty($this->sessionData['char_id'], $bountyReduction);
 			}
 
-			subtractGold($this->sessionData['username'], floor(getGold($this->sessionData['username']) *.8));  //Takes away 80% of the players gold.
+			subtract_gold($this->sessionData['char_id'], floor(get_gold($this->sessionData['char_id']) *.8));  //Takes away 80% of the players gold.
 
 			$location = 2;
 
