@@ -3,7 +3,7 @@ deploy/resources.php
 vendor/*
 deploy/vendor/*
 !vendor/.gitkeep
-deploy/resources/logs/deity.log
+deploy/resources/logs/*.log
 deploy/cron/deity.log
 deploy/conf/classmap.php
 deploy/conf/connection.php
