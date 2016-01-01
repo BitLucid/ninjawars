@@ -1,0 +1,26 @@
+server {
+  listen 80;
+  server_name nw.local;
+
+  root /srv/ninjawars/deploy/www;
+  charset utf-8;
+  #error_page 404 /404.html;
+  error_page 404 /404.php;
+  log_not_found on;
+  autoindex on;
+
+  index index.php;
+
+  location / {
+    try_files $uri $uri/ =404; # /index.php?$args;
+  }
+
+  location ~ \.php$ {
+    fastcgi_param PHP_VALUE "auto_prepend_file=/srv/ninjawars/deploy/lib/base.inc.php \n session.cookie_domain=nw.local \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
+    try_files $uri /index.php$is_args$args =404;
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include fastcgi_params;
+  }
+}
