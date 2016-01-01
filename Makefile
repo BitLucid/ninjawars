@@ -1,5 +1,6 @@
 .PHONY: test test-integration test-unit clean dep
 
+COMPOSER=./composer.phar
 CC_DIR=./cc
 CC_FLAG=--coverage-html $(CC_DIR)
 TEST_RUNNER=php -d zend_extension=xdebug.so ./vendor/bin/phpunit
@@ -25,4 +26,4 @@ clean:
 	@rm -rf ./cc/
 
 dep:
-	@./composer.phar install
+	@$(COMPOSER) install

@@ -1,3 +1,16 @@
 #!/usr/bin/env bash
 
 echo "CC_DIR=./cc/" > CONFIG
+
+if [ -f ./composer.phar ]
+then
+	echo "COMPOSER=./composer.phar" >> CONFIG
+elif [ -f ./composer ]
+then
+	echo "COMPOSER=./composer" >> CONFIG
+elif [ `which composer` ]
+then
+	echo "COMPOSER=`which composer`" >> CONFIG
+else
+	>&2 echo "No suitable candidate found for COMPOSER"
+fi
