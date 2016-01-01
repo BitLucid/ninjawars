@@ -11,11 +11,11 @@
         "php": ">=5.4.0",
         "ircmaxell/password-compat": "@stable",
         "swiftmailer/swiftmailer": "@stable",
-        "smarty/smarty": "v3.1.21",
-        "cboden/ratchet": "~0.3.0",
+        "smarty/smarty": "v3.1.29",
+        "cboden/ratchet": "~0.3.4",
 		"propel/propel1": "1.7.*@dev",
-		"illuminate/database": "^5.1",
-		"symfony/http-foundation": "^2.7"
+		"illuminate/database": "^5.2",
+		"symfony/http-foundation": "^3.0.1"
     },
 	"require-dev": {
         "phpunit/phpunit": "@stable",
