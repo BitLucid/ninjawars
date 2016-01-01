@@ -8,7 +8,7 @@
     },
 
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.0",
         "ircmaxell/password-compat": "@stable",
         "swiftmailer/swiftmailer": "@stable",
         "smarty/smarty": "v3.1.29",
