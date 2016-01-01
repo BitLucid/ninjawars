@@ -1,0 +1,42 @@
+server{
+	listen 80;
+	server_name ninjawars.net;
+    return 301          http://www.ninjawars.net$request_uri;
+}
+
+server {
+	listen 80;
+	server_name www.ninjawars.net staging.ninjawars.net nw.local nw.remote;
+
+	root /srv/nw/deploy/www;
+	
+    error_page 404 /404.php;
+
+    # redirect server error pages to the static page /50x.html
+    error_page 500 502 503 504 /50x.html;
+
+    # Just use generic nginx error pages for now
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+
+	index index.php;
+
+	location / {
+		try_files $uri $uri/ =404; # /index.php?$args;
+	}
+
+	location ~ /webgame(/*) {
+  		rewrite ^ / permanent;
+	}
+
+	location ~ \.php$ {
+		# fastcgi param stuff now set by [HOST=] sections in php.ini.
+		try_files $uri =404;
+		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		include fastcgi_params;
+	}
+}
+
