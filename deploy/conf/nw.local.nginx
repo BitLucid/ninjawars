@@ -31,7 +31,7 @@ server {
 	}
 
 	location ~ /tutorial\.php {
-	    return 301 /main.php$is_args$args;
+	    return 302 /main.php$is_args$args;
 	}
 
 	location ~ /webgame(/*) {
