@@ -1,10 +1,13 @@
 <?php
+require_once(CORE.'Router.php');
 require_once(LIB_ROOT.'control/lib_clan.php');
 require_once(LIB_ROOT."control/lib_inventory.php");
 require_once(CORE.'control/ClanController.php');
 require_once(CORE."control/ShopController.php");
 require_once(CORE."control/CasinoController.php");
 require_once(CORE.'control/WorkController.php');
+
+use app\Core\Router;
 
 use app\Controller\ShopController;
 use app\Controller\ClanController;
@@ -19,23 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
  * put an entry here. Adding a default entry helps for when the action is not
  * found or not provided, otherwise an error probably occurs.
  */
-$routes = [
-	'clan' => [
-		'new'     => 'create',
-		'default' => 'listClans',
-	],
-	'shop' => [
-		'default'  => 'index',
-		'purchase' => 'buy',
-	],
-	'casino' => [
-		'default'  => 'index',
-	],
-	'work' => [
-		'request_work'=>'requestWork',
-		'default'  => 'index',
-	],
-];
+$router = new Router();
+$routes = $router->all();
 
 // get the request information to parse the route
 $request = Request::createFromGlobals();
