@@ -5,7 +5,7 @@
 
 class RatchetTest extends PHPUnit_Framework_TestCase {
 
-	const MAX_WWW_SCRIPTS = 46;
+	const MAX_WWW_SCRIPTS = 40;
 	const MAX_NINJAMASTER_SCRIPTS = 3;
 
 	function before() {
@@ -22,5 +22,4 @@ class RatchetTest extends PHPUnit_Framework_TestCase {
 		$this->assertLessThanOrEqual(static::MAX_NINJAMASTER_SCRIPTS, iterator_count($it));
 		$this->assertGreaterThanOrEqual(static::MAX_NINJAMASTER_SCRIPTS, iterator_count($it)); // Change ratchet if this trips
 	}
-	
 }
