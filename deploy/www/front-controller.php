@@ -39,7 +39,7 @@ if ($routeSegments[0] === '') {
 	include('index.php');
 	exit();
 } else if (stripos($routeSegments[0], '.php') === (strlen($routeSegments[0]) - 4)) {
-	if (file_exists($routeSegments[0])) {
+	if (file_exists($routeSegments[0]) && realpath($routeSegments[0]) === __DIR__.'/'.$routeSegments[0]) {
 		include($routeSegments[0]);
 		exit();
 	}
