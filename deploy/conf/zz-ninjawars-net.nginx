@@ -25,7 +25,7 @@ server {
 
 	location / {
 		#everything else block
-		try_files $uri $uri/ =404; # /index.php?$args;
+		try_files $uri $uri/ @php;
 	}
 
 	location ~ /webgame(/*) {
@@ -40,5 +40,13 @@ server {
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
-}
 
+	location @php {
+		# fastcgi param stuff now set by [HOST=] sections in php.ini.
+		#fastcgi_param PHP_VALUE "auto_prepend_file=/srv/nw/deploy/lib/base.inc.php \n session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
+		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
+		include fastcgi_params;
+	}
+}
