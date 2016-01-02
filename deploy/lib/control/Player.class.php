@@ -255,6 +255,10 @@ class Player implements Character {
 		return $this->vo->karma;
 	}
 
+	public function gold() {
+		return $this->vo->gold;
+	}
+
 	public function hasStatus($p_status) {
 		$status = valid_status($p_status);
 		if ($status) {

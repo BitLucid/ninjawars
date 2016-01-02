@@ -8,13 +8,14 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
+$self_char_id = self_char_id();
+$char = new Player($self_char_id);
+
 $username = self_name();
-$user_id = self_char_id();
 
-$inv_counts = inventory_counts($user_id);
+
+$inv_counts = inventory_counts($char->id());
 $inventory = array();
-
-$gold = get_gold($char_id);
 
 if ($inv_counts) {
     // Standard item info.
@@ -37,11 +38,11 @@ display_page(
 	'inventory.tpl'
 	, 'Your Inventory'
 	, array(
-		'gold'        => $gold
-		, 'gold_display' => number_format($gold)
+		'gold'        => $char->gold()
+		, 'gold_display' => number_format($char->gold())
 		, 'inventory' => $inventory
-		, 'username'  => $username
-		, 'char_id'   => $user_id
+		, 'username'  => $char->name()
+		, 'char_id'   => $char->id()
 	)
 	, array(
 		'quickstat' => 'viewinv'
