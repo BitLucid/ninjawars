@@ -30,7 +30,7 @@ $request = Request::createFromGlobals();
 $pathInfo = $request->getPathInfo();
 
 // split the requested path by slash
-$routeSegments = split('/', trim($pathInfo, '/'));
+$routeSegments = explode('/', trim($pathInfo, '/'));
 
 // dynamically define the controller classname
 $controllerClass = "app\\Controller\\".ucfirst($routeSegments[0])."Controller";
