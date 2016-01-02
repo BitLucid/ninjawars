@@ -50,6 +50,11 @@ if ($routeSegments[0] === '') {
 // dynamically define the controller classname
 $controllerClass = "app\\Controller\\".ucfirst($routeSegments[0])."Controller";
 
+if (!class_exists($controllerClass) || !isset($routes[$routeSegments[0]])) {
+	include('404.php');
+	exit();
+}
+
 // if there are 2 route segments use the second one, else use the command param
 if (isset($routeSegments[1])) {
 	$command = $routeSegments[1];
