@@ -3,6 +3,7 @@ namespace app\Controller;
 
 require_once(CORE.'data/ClanFactory.php'); ///TODO autoload this
 require_once(LIB_ROOT.'data/Message.php');
+require_once(LIB_ROOT.'control/lib_clan.php');
 
 use app\data\Message;
 use Exception;

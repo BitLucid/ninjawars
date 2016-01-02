@@ -32,21 +32,12 @@ server {
   		rewrite ^ / permanent;
 	}
 
-	location /clan {
-		rewrite ^.*$ /front-controller.php?$args;
-	}
-
-	location /shop {
-		rewrite ^.*$ /front-controller.php?$args;
-	}
-
 	location ~ \.php$ {
 		# fastcgi param stuff now set by [HOST=] sections in php.ini.
 		#fastcgi_param PHP_VALUE "auto_prepend_file=/srv/nw/deploy/lib/base.inc.php \n session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		try_files $uri =404;
 		fastcgi_pass unix:/var/run/php5-fpm.sock;
 		fastcgi_index index.php;
-		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
 }

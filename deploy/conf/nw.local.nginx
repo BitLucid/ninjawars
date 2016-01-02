@@ -35,20 +35,10 @@ server {
 	}
 
 	location ~ \.php$ {
-
-		#special cases of higher precedence for now
-		location ~ clan\.php {
-			set $uri '/clan';
-		}
-		location ~ shop\.php {
-			set $uri '/shop';
-		}
-
 		fastcgi_param PHP_VALUE "auto_prepend_file=/srv/ninjawars/deploy/lib/base.inc.php \n session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		try_files $uri /front-controller.php$is_args$args;
 		fastcgi_pass unix:/var/run/php5-fpm.sock;
 		fastcgi_index index.php;
-		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
 
