@@ -20,8 +20,8 @@ class Router{
 				'default'  => 'index',
 			],
 			'messages' => [
-				'delete_clan'=>'delete_clan',
-				'delete_messages'=>'deleteMessages',
+				'delete_clan'=>'deleteClan',
+				'delete_messages'=>'deletePersonal',
 				'send_clan'=>'sendClan',
 				'send_personal'=>'sendPersonal',
 				'clan'=>'viewClan',
