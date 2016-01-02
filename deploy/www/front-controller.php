@@ -4,10 +4,12 @@ require_once(LIB_ROOT."control/lib_inventory.php");
 require_once(CORE.'control/ClanController.php');
 require_once(CORE."control/ShopController.php");
 require_once(CORE."control/CasinoController.php");
+require_once(CORE.'control/WorkController.php');
 
 use app\Controller\ShopController;
 use app\Controller\ClanController;
 use app\Controller\CasinoController;
+use app\Controller\WorkController;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,6 +29,10 @@ $routes = [
 		'purchase' => 'buy',
 	],
 	'casino' => [
+		'default'  => 'index',
+	],
+	'work' => [
+		'request_work'=>'requestWork',
 		'default'  => 'index',
 	],
 ];
