@@ -1,8 +1,9 @@
 <?php
-require_once(CORE.'Router.php');
+namespace NinjaWars;
 
-use app\Core\Router;
+require_once('../core/base.inc.php');
 
+use NinjaWars\core\Router;
 use Symfony\Component\HttpFoundation\Request;
 
 try {

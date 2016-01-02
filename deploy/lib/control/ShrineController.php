@@ -1,5 +1,5 @@
 <?php
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
 require_once(CORE.'control/Skill.php');
 require_once(CORE.'control/lib_inventory.php');

@@ -1,20 +1,14 @@
 <?php
-namespace app\Core;
+namespace NinjaWars\core;
 
 require_once(LIB_ROOT."control/lib_inventory.php");
-require_once(CORE.'control/ClanController.php');
-require_once(CORE."control/ShopController.php");
-require_once(CORE."control/CasinoController.php");
-require_once(CORE.'control/WorkController.php');
-require_once(CORE.'control/MessagesController.php');
-require_once(CORE.'control/ShrineController.php');
 
-use app\Controller\ShopController;
-use app\Controller\ClanController;
-use app\Controller\CasinoController;
-use app\Controller\WorkController;
-use app\Controller\MessagesController;
-use app\Controller\ShrineController;
+use NinjaWars\core\control\ShopController;
+use NinjaWars\core\control\ClanController;
+use NinjaWars\core\control\CasinoController;
+use NinjaWars\core\control\WorkController;
+use NinjaWars\core\control\MessagesController;
+use NinjaWars\core\control\ShrineController;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -98,7 +92,7 @@ class Router {
      * @return string A fully qualified controller classname
      */
     public static function buildClassName($p_main) {
-        return "app\\Controller\\".ucfirst($p_main)."Controller";
+        return "NinjaWars\\core\\control\\".ucfirst($p_main)."Controller";
     }
 
     /**

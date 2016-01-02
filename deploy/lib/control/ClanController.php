@@ -1,5 +1,5 @@
 <?php
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
 require_once(CORE.'data/ClanFactory.php'); ///TODO autoload this
 require_once(LIB_ROOT.'data/Message.php');

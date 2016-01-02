@@ -1,5 +1,5 @@
 <?php
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
 use \Item as Item;
 
