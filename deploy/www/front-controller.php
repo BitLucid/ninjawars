@@ -6,6 +6,7 @@ require_once(CORE.'control/ClanController.php');
 require_once(CORE."control/ShopController.php");
 require_once(CORE."control/CasinoController.php");
 require_once(CORE.'control/WorkController.php');
+require_once(CORE.'control/MessagesController.php');
 
 use app\Core\Router;
 
@@ -13,8 +14,10 @@ use app\Controller\ShopController;
 use app\Controller\ClanController;
 use app\Controller\CasinoController;
 use app\Controller\WorkController;
+use app\Controller\MessagesController;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /*
  * this is for custom routes. The default is to map /controller/action to
@@ -67,10 +70,14 @@ if ($error = init($priv, $alive)) {
 
 	$response = $controller->$action();
 
-	display_page(
-		$response['template'],
-		$response['title'],
-		$response['parts'],
-		$response['options']
-	);
+	if($response instanceof RedirectResponse){
+		$response->send();
+	} else {
+		display_page(
+			$response['template'],
+			$response['title'],
+			$response['parts'],
+			$response['options']
+		);
+	}
 }

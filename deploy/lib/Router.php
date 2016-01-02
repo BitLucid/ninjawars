@@ -19,6 +19,14 @@ class Router{
 				'request_work'=>'requestWork',
 				'default'  => 'index',
 			],
+			'messages' => [
+				'delete_clan'=>'delete_clan',
+				'delete_messages'=>'deleteMessages',
+				'send_clan'=>'sendClan',
+				'send_personal'=>'sendPersonal',
+				'clan'=>'viewClan',
+				'default'  => 'viewPersonal',
+			],
 		];
 		return $routes;
 	}

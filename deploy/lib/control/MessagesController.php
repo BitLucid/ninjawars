@@ -10,6 +10,8 @@ use \Player;
 use \ClanFactory;
 
 class MessagesController{
+	const PRIV = true;
+	const ALIVE = false;
 	public function __construct(){
 	}
 
@@ -19,7 +21,7 @@ class MessagesController{
 		$to = $to? $to : get_setting('last_messaged');	// Text @username
 		$message   = in('message', null, null); // Unfiltered input for this message.
 		$target_id = (int) in('target_id')? (int) in('target_id') : ($to ? get_user_id($to) : null); // Id takes precedence
-		$message = in('message');
+		$messaged = in('messaged');
 		$type = 0;
 		$message_sent_to = null;
 		$current_tab = 'messages';

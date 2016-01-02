@@ -26,7 +26,7 @@
         <em>say</em>
         &apos;<input id='message-to-ninja' type='text' size='30' name='message' class='textField' autocomplete='off' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}" required=required autofocus=autofocus>&apos;
         <input type='hidden' name='messenger' value='1'>
-        <input type='hidden' name='command' value='personal'>
+        <input type='hidden' name='command' value='send_personal'>
         <input type='submit' value='Send' name='ninja_message' class='formButton'>
       </div>
     </form>
@@ -40,7 +40,7 @@
       <div>
         <input type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}" autocomplete='off' required=required autofocus=autofocus>
         <input type='hidden' name='toclan' value='1'>
-        <input type='hidden' name='command' value='clan'>
+        <input type='hidden' name='command' value='send_clan'>
         <input type='hidden' value='1' name='messenger'>
         <input type='submit' value='Mail Clan' class='formButton'>
       </div>
