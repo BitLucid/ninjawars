@@ -97,9 +97,9 @@
     	<!-- <tfoot></tfoot> -->
     	<tbody>
 
-{foreach name='foreach-row' from=$nodes item='row' key='ycoord'}
+{foreach name='foreach_row' from=$nodes item='row' key='ycoord'}
     	<tr>
-{foreach name='foreach-over-row-of-nodes' from=$row item='node' key='xcoord'}
+{foreach name='foreach_over_row_of_nodes' from=$row item='node' key='xcoord'}
     		<td class='node-id-{$node.id} {$node.type} point'>	
     			<form action='map.php' method='post'>
     				<input type='hidden' name='ycoord' value='{$ycoord}>
