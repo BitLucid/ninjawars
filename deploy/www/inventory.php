@@ -8,11 +8,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-$self_char_id = self_char_id();
-$char = new Player($self_char_id);
-
-$username = self_name();
-
+$char = new Player(self_char_id());
 
 $inv_counts = inventory_counts($char->id());
 $inventory = array();
