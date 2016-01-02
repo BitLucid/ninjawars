@@ -7,8 +7,8 @@ use \Item as Item;
  * Handles all user actions related to the in-game Shop
  */
 class ShopController { // extends Controller
-	public static $alive   = true;  // *** must be alive to access the shop ***
-	public static $private = false; // *** do not need to be logged in ***
+	const ALIVE = true;  // *** must be alive to access the shop ***
+	const PRIV  = false; // *** do not need to be logged in ***
 
 	protected $itemCosts   = [];
 	protected $sessionData = [];

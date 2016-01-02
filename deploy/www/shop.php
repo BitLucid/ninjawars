@@ -4,12 +4,12 @@ require_once(LIB_ROOT."control/ShopController.php");
 
 use app\Controller\ShopController;
 
-if ($error = init(ShopController::$private, ShopController::$alive)) {
+if ($error = init(ShopController::PRIV, ShopController::ALIVE)) {
 	display_error($error);
 } else {
 	$shop = new ShopController();
 
-	if (post('purchase') == '1') {
+	if (in('command') === 'purchase') {
 		$response = $shop->buy();
 	} else {
 		$response = $shop->index();

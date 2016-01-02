@@ -9,7 +9,7 @@ server {
 	server_name www.ninjawars.net nw.remote;
 
 	root /srv/nw/deploy/www;
-	
+
     error_page 404 /404.php;
 
     # redirect server error pages to the static page /50x.html
@@ -28,6 +28,14 @@ server {
 
 	location ~ /webgame(/*) {
   		rewrite ^ / permanent;
+	}
+
+	location /clan {
+		rewrite ^.*$ /front-controller.php?$args;
+	}
+
+	location /shop {
+		rewrite ^.*$ /front-controller.php?$args;
 	}
 
 	location ~ \.php$ {
