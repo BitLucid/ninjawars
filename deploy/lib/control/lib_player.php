@@ -396,7 +396,7 @@ function self_info() {
  */
 function char_info($p_id) {
 		if($p_id === null){
-			throw new InvalidArgumentException('Call to char_info with no valid player_id argument.');
+			throw new \InvalidArgumentException('Call to char_info with no valid player_id argument.');
 		}
 
 		if(!is_numeric($p_id) || !positive_int($p_id)){

@@ -16,7 +16,7 @@ function send_event($from_id, $to_id, $msg) {
 	}
 
 	if (!is_numeric($from_id) || !is_numeric($to_id)) {
-		throw new Exception('A player id wasn\'t sent in to the send_event function.');
+		throw new \Exception('A player id wasn\'t sent in to the send_event function.');
 	}
 
 	DatabaseConnection::getInstance();

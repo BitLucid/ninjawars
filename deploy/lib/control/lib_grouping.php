@@ -23,7 +23,7 @@ function get_enemy_matches($match_string) {
 // Add a certain enemy to the enemy list.
 function add_enemy($enemy_id) {
 	if (!is_numeric($enemy_id)) {
-		throw new Exception('Enemy id to add must be present to succeed.');
+		throw new \Exception('Enemy id to add must be present to succeed.');
 	}
 	remove_enemy($enemy_id);
 
@@ -38,7 +38,7 @@ function add_enemy($enemy_id) {
 // Drop a certain enemy from the list.
 function remove_enemy($enemy_id) {
 	if (!is_numeric($enemy_id)) {
-		throw new Exception('Enemy id to remove must be present to succeed.');
+		throw new \Exception('Enemy id to remove must be present to succeed.');
 	}
 
 	DatabaseConnection::getInstance();

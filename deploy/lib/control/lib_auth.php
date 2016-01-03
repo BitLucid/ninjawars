@@ -56,7 +56,7 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
  */
 function _login_user($p_username, $p_player_id, $p_account_id) {
 	if (!$p_username || !$p_player_id || !$p_account_id) {
-		throw new Exception('Request made to _login_user without all of username, player_id, and account_id being set.');
+		throw new \Exception('Request made to _login_user without all of username, player_id, and account_id being set.');
 	}
 
     $_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
