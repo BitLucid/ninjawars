@@ -1,4 +1,4 @@
-.PHONY: test test-integration test-unit clean dep
+.PHONY: test test-integration test-unit clean dep build
 
 COMPOSER=./composer.phar
 CC_DIR=./cc
@@ -11,6 +11,9 @@ ifdef NOCOVER
 CC_FLAG=
 endif
 
+build: dep
+	@echo "building..."
+
 test:
 	@$(TEST_RUNNER) $(CC_FLAG)
 
@@ -22,8 +25,14 @@ test-integration:
 
 clean:
 	@rm -rf ./deploy/templates/compiled/*
-	@rm -rf ./vendor/*
 	@rm -rf ./cc/
 
-dep:
+dep: vendor
+	@echo "building dependencies..."
+
+vendor:
 	@$(COMPOSER) install
+
+dist-clean:
+	@rm -rf ./vendor/*
+	@rm -rf ./deploy/resources/logs/*
