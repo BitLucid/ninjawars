@@ -1,27 +1,21 @@
 <?php
-require_once(CORE.'control/LoginController.php');
-
-use app\Controller\LoginController;
+use NinjaWars\core\control\LoginController;
 
 class LoginControllerTest extends PHPUnit_Framework_TestCase {
-
-
-	public function setUp(){
+	public function setUp() {
 	}
-	
-	public function tearDown(){
+
+	public function tearDown() {
     }
 
-    public function testLoginControllerCanBeInstantiatedWithoutError(){
+    public function testLoginControllerCanBeInstantiatedWithoutError() {
         $controller = new LoginController();
-        $this->assertInstanceOf('app\Controller\LoginController', $controller);
+        $this->assertInstanceOf('NinjaWars\core\control\LoginController', $controller);
     }
 
-    public function testLoginWithGibberishFails(){
+    public function testLoginWithGibberishFails() {
         $controller = new LoginController();
         $error_message = $controller->perform_login_if_requested($username_requested='gibber', $pass='ish');
         $this->assertNotEmpty($error_message);
     }
-
 }
-
