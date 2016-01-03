@@ -1,5 +1,5 @@
 <?php
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
 use \Item as Item;
 
@@ -7,8 +7,8 @@ use \Item as Item;
  * Handles all user actions related to the in-game Shop
  */
 class ShopController { // extends Controller
-	public static $alive   = true;  // *** must be alive to access the shop ***
-	public static $private = false; // *** do not need to be logged in ***
+	const ALIVE = true;  // *** must be alive to access the shop ***
+	const PRIV  = false; // *** do not need to be logged in ***
 
 	protected $itemCosts   = [];
 	protected $sessionData = [];
@@ -84,7 +84,7 @@ class ShopController { // extends Controller
 				try {
 					add_item($this->sessionData['char_id'], $purchaseOrder->item->identity(), $purchaseOrder->quantity);
 					subtract_gold($this->sessionData['char_id'], $current_item_cost);
-				} catch (Exception $e) {
+				} catch (\Exception $e) {
 					$invalid_item = $e->getMessage();
 					error_log('Invalid Item attempted :'.$invalid_item);
 					$no_funny_business = true;

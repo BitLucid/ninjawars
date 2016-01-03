@@ -101,7 +101,7 @@
 
 <div class='centered'>
   <div id='show-faqs' class='accent-sandwiched'>
-    <a target='main' href="tutorial.php?show_faqs=1" id='show-faqs-link'>Show More Info</a>
+    <a target='main' href="main.php?show_faqs=1" id='show-faqs-link'>Show More Info</a>
   </div>
 </div>
 

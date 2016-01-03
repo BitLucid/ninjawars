@@ -5,6 +5,8 @@
  * @package db
  */
 
+use NinjaWars\core\data\DatabaseConnection;
+
 /**
  * Run bound queries on the database.
  *

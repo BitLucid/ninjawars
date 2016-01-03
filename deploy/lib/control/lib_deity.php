@@ -5,7 +5,8 @@
  * @package deity
  * @subpackage deity_lib
  */
- 
+
+use NinjaWars\core\data\DatabaseConnection;
 
 // Determine the score for ranking.
 function get_score_formula(){

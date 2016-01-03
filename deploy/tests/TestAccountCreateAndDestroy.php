@@ -80,7 +80,8 @@ class TestAccountCreateAndDestroy{
 	// Create a separate, second testing account
 	public static function create_alternate_testing_account($confirm=false){
 		$ip = isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
-		if((bool)get_char_id(TestAccountCreateAndDestroy::$alt_test_ninja_name)){
+		$found = get_char_id(TestAccountCreateAndDestroy::$alt_test_ninja_name);
+		if((bool)$found){
 			throw new Exception('Test user found ['.$found.'] with name ['.TestAccountCreateAndDestroy::$alt_test_ninja_name.'] already exists');
 		}
 		// Create test user, unconfirmed, whatever the default is for activity.

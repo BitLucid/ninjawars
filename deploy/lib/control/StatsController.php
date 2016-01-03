@@ -1,10 +1,10 @@
 <?php
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use DatabaseConnection;
-use Player;
-use PlayerDAO;
+use NinjaWars\core\data\DatabaseConnection;
+use \Player;
+use \PlayerDAO;
 
 require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
 require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.

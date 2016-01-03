@@ -1,7 +1,8 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
 /**
  * Account creation and validation.
-**/
+ */
 
 // Pull account data in a * like manner.
 function account_info($account_id, $specific=null){

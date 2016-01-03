@@ -1,9 +1,8 @@
 <?php
 require_once(LIB_ROOT.'control/lib_inventory.php');
 require_once(CORE.'control/AttackLegal.php');
-require_once(LIB_ROOT.'data/Message.php');
 
-use app\data\Message;
+use NinjaWars\core\data\Message;
 use app\combat\AttackLegal;
 
 $private   = false;

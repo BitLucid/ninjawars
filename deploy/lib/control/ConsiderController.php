@@ -3,11 +3,9 @@ namespace app\combat;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-
-
 /**
  * Display ninja & monsters to potentially pick fights with
-**/
+ */
 class ConsiderController{
 
 	const ENEMY_LIMIT = 20;

@@ -62,7 +62,7 @@ class Account{
 	public function setType($type){
 		$cast_type = positive_int($type);
 		if($cast_type != $type){
-			throw new Exception('Account: The account type set was inappropriate.');
+			throw new \Exception('Account: The account type set was inappropriate.');
 		}
 		$this->type = $cast_type;
 		return $this->type;

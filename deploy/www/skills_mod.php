@@ -14,19 +14,13 @@ use app\combat\AttackLegal;
 $private    = true;
 $alive      = true;
 
-
-
-//$are_clones = characters_are_linked(get_char_id('zig'), get_char_id('zag'));
-//debug($are_clones, account_info(account_id_by_ninja_id(get_char_id('zig'))), account_info(account_id_by_ninja_id(get_char_id('zag'))));die();
-
-
 if ($error = init($private, $alive)) {
 	display_error($error);
 	die();
 }
 
 // Template vars.
-$display_sight_table = $generic_skill_result_message = $generic_state_change = $killed_target = 
+$display_sight_table = $generic_skill_result_message = $generic_state_change = $killed_target =
 	$loot = $added_bounty = $bounty = $suicided = $destealthed = null;
 
 //Get filtered info from input.
@@ -70,7 +64,7 @@ if ($target != '' && $target != $player->player_id) {
 $class           = $player->vo->class;
 $covert          = false;
 $victim_alive    = true;
-$attacker_id     = $username;
+$attacker_id     = $player->name();
 $attacker_char_id = self_char_id();
 $starting_turns  = $player->vo->turns;
 $ending_turns    = null;
@@ -114,7 +108,7 @@ function pull_sight_data($target_id) {
 	$allowed = array('Name'=>'uname', 'Class'=>'class', 'Level'=>'level', 'Turns'=>'turns', 'Strength'=>'strength', 'Speed'=>'speed', 'Stamina'=>'stamina', 'Ki'=>'ki', 'Gold'=>'gold', 'Kills'=>'kills');
 	$res = array();
 
-	
+
 	foreach ($allowed as $header => $field) {
 		$res[$header] = $data[$field];
 	}
@@ -125,13 +119,13 @@ function pull_sight_data($target_id) {
 if (!$attack_error) { // Nothing to prevent the attack from happening.
 	// Initial attack conditions are alright.
 	$result = '';
-	
-	
+
+
 	if ($command == 'Sight') {
 		$covert = true;
 
 		$sight_data = pull_sight_data($target_id);
-			
+
 		$display_sight_table = true;
 	} elseif ($command == 'Steal') {
 		$covert = true;
@@ -145,7 +139,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 		$msg = "$attacker_id stole $gold_decrease gold from you.";
 		send_event($attacker_char_id, $target->id(), $msg);
-		
+
 		$generic_skill_result_message = "You have stolen $gold_decrease gold from __TARGET__!";
 	} else if ($command == 'Unstealth') {
 		$state = 'unstealthed';
@@ -175,12 +169,12 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		$user_id = self_char_id();
 		$root_item_type = 7;
         $itemCount = query_item('SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = :type GROUP BY item_type',
-                array(':owner'=>$user_id, ':type'=>$herb_item_type));
+                array(':owner'=>$user_id, ':type'=>$root_item_type));
         $turn_cost = min($itemCount, $starting_turns-1, 2); // Costs 1 or two depending on the number of items.
 		if ($turn_cost && $itemCount > 0) {	// *** If special item count > 0 ***
 			removeItem($user_id, 'ginsengroot', $itemCount);
 			add_item($user_id, 'tigersalve', $itemCount);
-			
+
 			$generic_skill_result_message = 'With intense focus you grind the '.$itemsCount.' roots into potent formulas.';
 		} else { // *** no special items, give error message ***
 			$turn_cost = 0;
@@ -206,27 +200,19 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
 		if ($victim_alive = subtractHealth($target->vo->player_id, $target_damage)) {
-			$attacker_id  = $username;
+			$attacker_id  = $player->name();
 		}
 
 		$msg = "You have had fire bolt cast on you by $attacker_id";
 		send_event($attacker_char_id, $target->id(), $msg);
 	} else if ($command == 'Heal' || $command == 'Harmonize') {
-	
 		// This is the starting template for self-use commands, eventually it'll be all refactored.
-	
-		
 		$harmonize = false;
-		if($command == 'Harmonize'){
+
+		if ($command == 'Harmonize') {
 			$harmonize = true;
 		}
-		
 
-		
-		
-
-
-	 
 	    $hurt = $target->hurt_by(); // Check how much the TARGET is hurt (not the originator, necessarily).
 	    // Check that the target is not already status healing.
 	    if ($target->hasStatus(HEALING) && !$player->isAdmin()) {
@@ -245,26 +231,22 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			} else {
 				// Harmonize some chakra!
 
-
-
-// Use up some ki to heal yourself.
-function harmonize_chakra($char_obj){
-	$ki = $char_obj->ki();
-	$healed_by = 0;
-	$hurt = $char_obj->hurt_by();
-	if($hurt > 0){
-		// If there's anything to heal, try.
-		// Heal to whichever is lowest, ki, hurt, or 300.
-		$heal_for = min(100, $hurt, $ki);
-		// Subtract the ki used for healing.
-		$char_obj->subtract_ki((int)$heal_for);
-		$char_obj->heal($heal_for);
-		$healed_by = $heal_for;
-	}
-	return $healed_by;
-}
-
-
+				// Use up some ki to heal yourself.
+				function harmonize_chakra($char_obj){
+					$ki = $char_obj->ki();
+					$healed_by = 0;
+					$hurt = $char_obj->hurt_by();
+					if($hurt > 0){
+						// If there's anything to heal, try.
+						// Heal to whichever is lowest, ki, hurt, or 300.
+						$heal_for = min(100, $hurt, $ki);
+						// Subtract the ki used for healing.
+						$char_obj->subtract_ki((int)$heal_for);
+						$char_obj->heal($heal_for);
+						$healed_by = $heal_for;
+					}
+					return $healed_by;
+				}
 
 				$start_health = $player->health();
 				// Harmonize those chakra!
@@ -272,7 +254,7 @@ function harmonize_chakra($char_obj){
 				$new_health = $healed_by + $start_health;
 				$ki_cost = $healed_by;
 			}
-		    
+
 		    $target->addStatus(HEALING);
 		    $generic_skill_result_message = "__TARGET__ healed by $healed_by to $new_health.";
 
@@ -327,7 +309,7 @@ function harmonize_chakra($char_obj){
 				$unfreeze_time = date('F j, Y, g:i a', mktime(date('G')+1, 0, 0, date('m'), date('d'), date('Y')));
 
 				$failure_msg = "You have experienced a critical failure while using Cold Steal. You will be unfrozen on $unfreeze_time";
-				sendMessage("SysMsg", $username, $failure_msg);
+				sendMessage("SysMsg", $player->name(), $failure_msg);
 				$generic_skill_result_message = "Cold Steal has backfired! You are frozen until $unfreeze_time!";
 			}
 		} else {
@@ -336,13 +318,13 @@ function harmonize_chakra($char_obj){
 		}
 	} else if ($command == 'Clone Kill') {
 
-	
+
 		// Obliterates the turns and the health of similar accounts that get clone killed.
 		$reuse = false; // Don't give a reuse link.
-	
+
 		$clone1 = in('clone1');
 		$clone2 = in('clone2');
-		
+
 		$clone_1_id = get_char_id($clone1);
 		$clone_2_id = get_char_id($clone2);
 		$clones = false;
@@ -367,33 +349,8 @@ function harmonize_chakra($char_obj){
 			} else {
 				$generic_skill_result_message = "Those two ninja don't seem to be clones.";
 			}
-			/*
-			$are_clones = characters_are_linked($clone_1_id, $clone_2_id);
-
-			if ($are_clones) {
-				$clone_char = new Player($clone_1_id);
-				$clone_char_2 = new Player($clone_2_id);
-				$clone_char_health = $clone_char->health();
-				$clone_char_2_health = $clone_char_2->health();
-				$clone_char_turns = $clone_char->turns();
-				$clone_char_2_turns = $clone_char_2->turns();
-				$clone_char->death();
-				$clone_char->changeTurns(-1*$clone_char->turns());
-				$clone_char_2->death();
-				$clone_char_2->changeTurns(-1*$clone_char_2->turns());
-				$generic_skill_result_message = "You obliterate the clone {$clone_char->name()} for $clone_char_health health, $clone_char_turns turns
-					 and the clone {$clone_char_2->name()} for $clone_char_2_health health, $clone_char_2_turns turns.";
-				send_event($char_id, $clone_1_id, "You and {$clone_char_2->name()} were Clone Killed.");
-				send_event($char_id, $clone_2_id, "You and {$clone_char->name()} were Clone Killed.");
-			} else {
-				$generic_skill_result_message = "Those two ninja don't seem to be clones.";
-			}
-			*/
 		}
 	}
-	
-	
-	
 
 	if (!$victim_alive) { // Someone died.
 		if ($target->player_id == $player->player_id) { // Attacker killed themself.
@@ -417,7 +374,7 @@ function harmonize_chakra($char_obj){
 				if ($bounty = rewardBounty($char_id, $target->vo->player_id)) {
 
 					$bounty_msg = "You have valiantly slain the wanted criminal, $target! For your efforts, you have been awarded $bounty gold!";
-					sendMessage('Village Doshin', $username, $bounty_msg);
+					sendMessage('Village Doshin', $player->name(), $bounty_msg);
 				}
 			}
 
@@ -425,7 +382,7 @@ function harmonize_chakra($char_obj){
 			send_event($attacker_char_id, $target->id(), $target_message);
 
 			$attacker_message = "You have killed $target with $command and taken $loot gold.";
-			sendMessage($target->vo->uname, $username, $attacker_message);
+			sendMessage($target->vo->uname, $player->name(), $attacker_message);
 		}
 	}
 
@@ -435,8 +392,6 @@ function harmonize_chakra($char_obj){
 		$player->subtractStatus(STEALTH);
 		$destealthed = true;
 	}
-	
-	
 } // End of the skill use SUCCESS block.
 
 $ending_turns = change_turns($attacker_char_id, $turns_to_take); // Take the skill use cost.

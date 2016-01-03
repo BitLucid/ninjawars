@@ -23,5 +23,5 @@
     Please contact <a href='mailto:{$smarty.const.SUPPORT_EMAIL|escape}'>{$smarty.const.SUPPORT_EMAIL|escape}</a> if you require more information.
   </p>
 {/if}
-	<nav><a target='main' href="tutorial.php">Return to Main?</a></nav>
+	<nav><a target='main' href="main.php">Return to Main?</a></nav>
 </div>

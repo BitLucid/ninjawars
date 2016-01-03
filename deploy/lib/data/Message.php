@@ -1,5 +1,5 @@
 <?php
-namespace app\data;
+namespace NinjaWars\core\data;
 
 require_once(CORE.'data/database.php');
 
@@ -43,7 +43,7 @@ class Message extends Model {
      */
     public static function sendToGroup(Player $sender, array $groupTargets, $message, $type) {
         if (!$sender || !$sender->id()) {
-            throw new Exception('Error: Message sender not set.');
+            throw new \Exception('Error: Message sender not set.');
         }
 
         $id = $sender->id();

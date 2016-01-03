@@ -43,7 +43,7 @@ input.shopButton {
 </div>
 
 <form id="shop_form" action="shop.php" method="post" name="shop_form" {if !$is_logged_in}onsubmit="return false;"{/if}>
-	<input id="purchase" type="hidden" value="1" name="purchase">
+	<input id="command" type="hidden" value="purchase" name="command">
 
 	<table class='shop-list'>
 		<caption colspan='4' class='text-centered slightly-padded accent'>

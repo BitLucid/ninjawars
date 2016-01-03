@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
+
 require_once(DB_ROOT . "DataAccessObject.class.php");
 require_once(DB_ROOT . "SkillVO.class.php");
 

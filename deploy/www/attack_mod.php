@@ -7,6 +7,9 @@ require_once(CORE.'control/Combat.php');
 
 use app\combat\AttackLegal;
 use app\combat\Combat;
+
+$today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
+
 /*
  * Deals with the non-skill based attacks and stealthed attacks.
  *

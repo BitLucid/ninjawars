@@ -1,5 +1,5 @@
 <?php
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
 require_once(CORE.'control/Skill.php');
 require_once(CORE.'control/lib_inventory.php');
@@ -452,19 +452,21 @@ class ShrineController { //extends controller
 	 * @return Array
 	 */
 	private function render($p_parts) {
-		return array_merge(
-			[
-				'template'       => 'shrine.tpl',
-				'title'          => 'Shrine',
-				'action_message' => null,
-				'error'          => null,
-				'options'        => [
-					'body_classes' => 'shrine',
-					'quickstat'  => 'player',
-				],
-			],
-			$p_parts
-		);
+        return [
+            'template'       => 'shrine.tpl',
+            'title'          => 'Shrine',
+            'options'        => [
+                'body_classes' => 'shrine',
+                'quickstat'  => 'player',
+            ],
+            'parts'          => array_merge(
+                $p_parts,
+                [
+                    'action_message' => null,
+                    'error'          => null,
+                ]
+            ),
+        ];
 	}
 
 	/**
@@ -477,11 +479,14 @@ class ShrineController { //extends controller
 		$pageParts = $this->servicesNeeded($p_player);
 		array_unshift($pageParts, 'entrance');
 
-		return $this->render([
-			'template'  => 'shrine.tpl',
-			'error'     => $p_message,
-			'pageParts' => $pageParts,
-			'player'    => $p_player,
-		]);
-	}
+        return array_merge(
+            $this->render([
+                'pageParts' => $pageParts,
+                'player'    => $p_player,
+            ]),
+            [
+                'error'     => $p_message,
+            ]
+        );
+    }
 }

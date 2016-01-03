@@ -27,16 +27,12 @@ require_once(LIB_ROOT.'environment/lib_error_reporting.php');
 require_once(LIB_ROOT.'environment/global_error_handling.php');
 
 // Standalone utilities
-require_once(LIB_ROOT.'control/SessionFactory.php');
 require_once(LIB_ROOT.'control/assignment_functions.php');
 require_once(LIB_ROOT.'control/redirect.php');
-require_once(LIB_ROOT.'data/DatabaseConnection.php');
 require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
 //require_once(OBJ_ROOT.'Sanitize.php');
 require_once(LIB_ROOT.'control/Nmail.class.php');
 require_once(LIB_ROOT.'environment/RequestWrapper.php');
-
-require_once(LIB_ROOT.'control/Clan.php');
 
 // *** Include all common function includes here.
 require_once(LIB_ROOT.'control/lib_input.php');

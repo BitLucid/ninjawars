@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\control\SessionFactory;
+
 function globalExceptionHandler($e) {
 	$msg = "Exception message: ".$e."\r\n\r\n";
 
@@ -40,7 +42,7 @@ function globalErrorHandler($errno, $errstr, $errfile, $errline) {
 }
 
 function sendErrorEmail($p_errorMsg) {
-	$session = nw\SessionFactory::getSession();
+	$session = SessionFactory::getSession();
 
 	if ($session->has('account_id')) {
 		$p_errorMsg .= "Error Occured for accountID ".$session->get('account_id')."\r\n";

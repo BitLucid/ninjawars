@@ -1,4 +1,5 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
 
 // ********************* STATUS DEFINES MOVED TO STATUS_DEFINES.PHP FILE ******** //
 
@@ -199,7 +200,7 @@ function addItem($who, $item, $quantity = 1) {
 	if ((int)$quantity > 0 && !empty($item) && $item_identity) {
 		add_item(get_char_id($who), $item_identity, $quantity);
 	} else {
-		throw new Exception('Improper deprecated item addition request made.');
+		throw new \Exception('Improper deprecated item addition request made.');
 	}
 }
 
@@ -223,7 +224,7 @@ function add_item($char_id, $identity, $quantity = 1) {
 		            ':quantity'=>$quantity));
 		}
 	} else {
-	    throw new Exception('Invalid item to add to inventory.');
+	    throw new \Exception('Invalid item to add to inventory.');
 	}
 }
 

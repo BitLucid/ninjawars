@@ -2,7 +2,7 @@
 require_once ROOT.'lib/environment/status_defines.php';
 
 
-class InvalidNpcException extends Exception{}
+class InvalidNpcException extends \Exception{}
 
 /**
  * Who/what/why/where
@@ -29,7 +29,7 @@ class NpcFactory{
 		if(array_key_exists($identity, $npcs_data) && !empty($npcs_data[$identity])){
 			NpcFactory::fleshOutFromData($npcs_data[$identity], $npc);
 		} else {
-			throw new InvalidNpcException('No such npc ['.$identity.'] found to create!');
+			throw new \InvalidNpcException('No such npc ['.$identity.'] found to create!');
 		}
 	}
 

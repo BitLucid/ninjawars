@@ -1,8 +1,9 @@
 <?php
 require_once(LIB_ROOT.'control/lib_player.php');
-require_once(LIB_ROOT.'data/Message.php');
 
-use app\data\Message;
+use NinjaWars\core\data\Message;
+use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\control\Clan;
 
 // ************************************
 // ********** CLAN FUNCTIONS **********

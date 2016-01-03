@@ -1,11 +1,15 @@
 <?php
+namespace NinjaWars\core\data;
+
+use NinjaWars\core\control\Clan;
+use \Player;
 
 /**
  * Who/what/why/where
  *  Create a clan for leaders and members to manage membership and eventually clan structures.
  *
-**/
-class ClanFactory{
+ */
+class ClanFactory {
 	// Returns a fleshed out clan object, or a mostly blank one if no existing data found
 	public static function create($identity, $data=null) {
 		$founder = ($data['founder'] ? $data['founder'] : null);
@@ -17,7 +21,7 @@ class ClanFactory{
 			[':name'=>$name, ':url'=>$url, ':founder'=>$founder, ':desc'=>$desc], 'clan_clan_id_seq');
 
 		if (!positive_int($new_clan_id)) {
-			throw new Exception('Clan not inserted into database properly!');
+			throw new \Exception('Clan not inserted into database properly!');
 		}
 
 		return ClanFactory::find($new_clan_id);
@@ -99,9 +103,9 @@ class ClanFactory{
 	 **/
 	public static function save(Clan $clan){
 		if(!$clan->id()){
-			throw new Exception('Clan cannot be saved as it does not yet have an id.');
+			throw new \Exception('Clan cannot be saved as it does not yet have an id.');
 		}
-		$updated = update_query('update clan set clan_name = :name, clan_founder = :founder, clan_avatar_url = :avatar_url, description = :desc 
+		$updated = update_query('update clan set clan_name = :name, clan_founder = :founder, clan_avatar_url = :avatar_url, description = :desc
 				where clan_id = :id', [':name'=>$clan->getName(), ':founder'=>$clan->getFounder(), 
 				':avatar_url'=>$clan->getAvatarUrl(), ':desc'=>$clan->getDescription(), ':id'=>$clan->id()]);
 		return (bool)$updated;

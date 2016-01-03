@@ -9,7 +9,7 @@
         </div>
         {if $ninja->level() < 5}
         <div id='helpful-info'>
-          <a target='main' href='tutorial.php'>Helpful Info</a>
+          <a target='main' href='main.php'>Helpful Info</a>
         </div>
         {/if}
         <div class='ninja-info thick'>

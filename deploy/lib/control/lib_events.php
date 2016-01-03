@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
+
 // Now only a wrapper for the send_event function. 
 function sendMessage($from, $to, $msg, $filter=false) {
 	// Filter argument is deprecated now.
@@ -14,7 +16,7 @@ function send_event($from_id, $to_id, $msg) {
 	}
 
 	if (!is_numeric($from_id) || !is_numeric($to_id)) {
-		throw new Exception('A player id wasn\'t sent in to the send_event function.');
+		throw new \Exception('A player id wasn\'t sent in to the send_event function.');
 	}
 
 	DatabaseConnection::getInstance();

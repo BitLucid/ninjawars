@@ -1,13 +1,12 @@
 <?php
-
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
 /**
  * Handles all user requests for the in-game Doshin Office
  */
 class DoshinController { //extends controller
-	public static $alive = true;
-	public static $private = false;
+	const ALIVE = true;
+	const PRIV  = false;
 
 	protected $sessionData = [];
 

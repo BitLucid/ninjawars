@@ -3,14 +3,13 @@ namespace app\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use \RunTimeException;
 use \Constants;
 
 class LoginController{
 
 	const ALIVE                  = false;
 	const PRIV                   = false;
-	
+
 	public function __construct(){
 	}
 

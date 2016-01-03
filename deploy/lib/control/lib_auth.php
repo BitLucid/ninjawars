@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\control\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -55,7 +57,7 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
  */
 function _login_user($p_username, $p_player_id, $p_account_id) {
 	if (!$p_username || !$p_player_id || !$p_account_id) {
-		throw new Exception('Request made to _login_user without all of username, player_id, and account_id being set.');
+		throw new \Exception('Request made to _login_user without all of username, player_id, and account_id being set.');
 	}
 
     $_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
@@ -65,7 +67,7 @@ function _login_user($p_username, $p_player_id, $p_account_id) {
     $update = "UPDATE players SET active = 1 WHERE player_id = :char_id";
     query($update, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
 
-	$session = nw\SessionFactory::getSession();
+	$session = SessionFactory::getSession();
     $session->set('username', $p_username); // Actually char name
     $session->set('player_id', $p_player_id); // Actually char id.
     $session->set('account_id', $p_account_id);
@@ -178,14 +180,14 @@ function potential_account_id_from_login_username($login) {
  * Simple method to check for player id if you're logged in.
  */
 function get_logged_in_char_id() {
-	return nw\SessionFactory::getSession()->get('player_id');
+	return SessionFactory::getSession()->get('player_id');
 }
 
 /**
  * Get the account_id as logged in.
  */
 function account_id() {
-	return nw\SessionFactory::getSession()->get('account_id');
+	return SessionFactory::getSession()->get('account_id');
 }
 
 /**
@@ -244,7 +246,7 @@ function is_logged_in() {
  * Logout function.
  */
 function logout_user() {
-	$session = nw\SessionFactory::getSession();
+	$session = SessionFactory::getSession();
 	$session->clear();
 	$session->invalidate();
 }

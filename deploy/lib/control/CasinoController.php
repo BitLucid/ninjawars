@@ -1,5 +1,5 @@
 <?php
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
 require_once(LIB_ROOT.'control/lib_inventory.php');
 
@@ -38,7 +38,8 @@ class CasinoController { //extends controller
 	 * @return Array
 	 *
 	 * @note
-	 * If the player bets within ~1% of the maximum bet, they will receive a reward item
+     * If the player bets within ~1% of the maximum bet, they will receive a
+     * reward item
 	 */
 	public function bet() {
 		$player = new Player(self_char_id());

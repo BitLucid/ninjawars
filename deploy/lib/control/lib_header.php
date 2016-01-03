@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\control\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -64,7 +66,7 @@ function update_activity_info() {
 
 	DatabaseConnection::getInstance();
 
-	$session = nw\SessionFactory::getSession();
+	$session = SessionFactory::getSession();
 
 	if (!$session->has('online')) {	// *** Completely new session, update latest activity log. ***
 		if ($remoteAddress) {	// *** Delete prior to trying to re-insert into the people online. ***

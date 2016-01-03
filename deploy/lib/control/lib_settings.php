@@ -1,4 +1,5 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
 // Get and set/save a changable array of a player's settings.
 
 // TODO: Change this into a simple object.

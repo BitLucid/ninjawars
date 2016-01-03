@@ -2,6 +2,8 @@
 require_once(DB_ROOT . "DataAccessObject.class.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
 
+use NinjaWars\core\data\DatabaseConnection;
+
 /*
  * Creates the player value objects.
  * Essentially it acts as the model (creator) if Model-View-Controller were in play.

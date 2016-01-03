@@ -1,7 +1,8 @@
 <?php
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
-use DatabaseConnection;
+use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\control\SessionFactory;
 
 require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
 require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.
@@ -176,7 +177,7 @@ class AccountController {
 	* Make account non-operational
 	*/
 	public function deleteAccount(){
-		$session    = nw\SessionFactory::getSession();
+		$session    = SessionFactory::getSession();
 		$self_info 	= self_info();
 		$user_id  	= self_char_id();
 		$passW 		= in('passw', null);

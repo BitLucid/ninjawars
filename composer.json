@@ -3,7 +3,7 @@
         "psr-4": {
         	"model\\": "deploy/model",
             "ChatApp\\": "deploy/lib/control/ChatApp",
-            "NwApp\\Control\\": "deploy/lib/control"
+            "NinjaWars\\": "deploy/"
         }
     },
 
