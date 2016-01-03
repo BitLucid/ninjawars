@@ -13,32 +13,29 @@ class MessagesController {
     const ALIVE = false;
 
     public function sendPersonal() {
-        $char_id         = self_char_id();
-        $to              = in('to'); // The target of the message, if any were specified.
-        $to              = ($to ? $to : get_setting('last_messaged')); // Text @username
-        $message         = in('message', null, null); // Unfiltered input for this message.
-        $target_id       = ((int) in('target_id') ? (int) in('target_id') : ($to ? get_user_id($to) : null)); // Id takes precedence
-        $type            = 0;
-        $message_sent_to = null;
+        if ((int) in('target_id')) {
+            $target_id = (int) in('target_id');
+        } else if (in('to')) {
+            $target_id = get_user_id(in('to'));
+        } else if (get_setting('last_messaged')) {
+            $target_id = get_user_id(get_setting('last_messaged'));
+        } else {
+            $target_id = null;
+        }
 
         if ($target_id) {
-            if ($target_id) {
-                Message::create([
-                    'send_from' => $char_id,
-                    'send_to'   => $target_id,
-                    'message'   => $message,
-                    'type'      => $type,
-                ]);
+            Message::create([
+                'send_from' => self_char_id(),
+                'send_to'   => $target_id,
+                'message'   => in('message', null, null),
+                'type'      => 0,
+            ]);
 
-                $message_sent_to = $to;
-                $type            = 0;
-            }
+            $recipient = get_char_name($target_id);
 
-            $to = get_char_name($target_id);
+            set_setting('last_messaged', $recipient);
 
-            set_setting('last_messaged', $to);
-
-            return new RedirectResponse('/messages.php?command=personal&individual_or_clan=1&message_sent_to='.url($to).'&informational='.url('Message sent to '.$to.'.'));
+            return new RedirectResponse('/messages.php?command=personal&individual_or_clan=1&message_sent_to='.url($recipient).'&informational='.url('Message sent to '.$recipient.'.'));
         } else {
             return new RedirectResponse('/messages.php?command=personal&error='.url('No such ninja to message.'));
         }
@@ -56,64 +53,52 @@ class MessagesController {
     }
 
     public function viewPersonal() {
-        $to                 = in('to'); // This can come from locations like the pc profile
-        $message            = in('message', null, null); // Unfiltered input for this message.
-        $to                 = ($to ? $to : get_setting('last_messaged'));
         $type               = 0;
         $page               = in('page', 1, 'non_negative_int');
         $limit              = 25;
         $offset             = non_negative_int(($page - 1) * $limit);
         $ninja              = new Player(self_char_id());
-        $clan               = ClanFactory::clanOfMember($ninja);
-        $has_clan           = (boolean)$clan;
-        $current_tab        = 'messages';
-        $individual_or_clan = in('individual_or_clan');
-        $informational      = in('informational');
-        $messages           = Message::findByReceiver($ninja, $type, $limit, $offset);
         $message_count      = Message::countByReceiver($ninja, $type); // To count all the messages
-        $pages              = ceil($message_count / $limit);  // Total pages.
-        $current_page       = $page;
-
-        Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
-
-        $parts = compact('messages', 'current_tab', 'has_clan', 'to', 'type', 'messages_type',
-            'pages', 'current_page', 'informational');
-
-        $parts = array_merge($this->configure(), $parts);
-
-        return $this->render($parts);
-    }
-
-    public function viewClan() {
-        $current_tab        = 'clan';
-        $ninja              = new Player(self_char_id());
-        $clan               = ClanFactory::clanOfMember($ninja);
-        $has_clan           = (boolean)$clan;
-        $page               = in('page', 1, 'non_negative_int');
-        $limit              = 25;
-        $offset             = non_negative_int(($page - 1) * $limit);
-
-        $type = 1; // Clan chat or normal messages.
-
-        $messages = Message::findByReceiver($ninja, $type, $limit, $offset);
-
-        $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
-        $pages         = ceil($message_count / $limit);  // Total pages.
-        $current_page = $page;
 
         Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
 
         $parts = array_merge(
             $this->configure(),
             [
-                'messages'      => $messages,
-                'message_count' => $message_count,
-                'pages'         => $pages,
-                'current_page'  => $current_page,
-                'current_tab'   => $current_tab,
-                'has_clan'      => $has_clan,
+                'to'            => (in('to') ? in('to') : get_setting('last_messaged')),
+                'informational' => in('informational'),
+                'has_clan'      => (boolean)ClanFactory::clanOfMember($ninja),
+                'current_tab'   => 'message',
+                'messages'      => Message::findByReceiver($ninja, $type, $limit, $offset),
+                'current_page'  => $page,
+                'pages'         => ceil($message_count / $limit),
             ]
-            );
+        );
+
+        return $this->render($parts);
+    }
+
+    public function viewClan() {
+        $ninja         = new Player(self_char_id());
+        $page          = in('page', 1, 'non_negative_int');
+        $limit         = 25;
+        $offset        = non_negative_int(($page - 1) * $limit);
+        $type          = 1; // Clan chat or normal messages.
+        $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
+
+        Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
+
+        $parts = array_merge(
+            $this->configure(),
+            [
+                'messages'      => Message::findByReceiver($ninja, $type, $limit, $offset),
+                'message_count' => $message_count,
+                'pages'         => ceil($message_count / $limit),
+                'current_page'  => $page,
+                'current_tab'   => 'clan',
+                'has_clan'      => (boolean)ClanFactory::clanOfMember($ninja),
+            ]
+        );
 
         return $this->render($parts, 'Clan Messages');
     }
