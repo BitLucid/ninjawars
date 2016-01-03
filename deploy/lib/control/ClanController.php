@@ -7,7 +7,6 @@ use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\control\Clan;
 use \Player as Player;
-use Exception;
 
 /**
  * Controller for all actions involving clan
@@ -96,7 +95,7 @@ class ClanController { //extends Controller
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if (!$this->playerIsLeader($player, $clan)) {
-			throw new Exception('You must be a clan leader to invite new members');
+			throw new \Exception('You must be a clan leader to invite new members');
 		}
 
 		$person_to_invite = new Player(in('person_invited', ''));
@@ -137,7 +136,7 @@ class ClanController { //extends Controller
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if ($this->playerIsLeader($player, $clan)) {
-			throw new Exception('You are the only leader of your clan. You must disband your clan if you wish to leave.');
+			throw new \Exception('You are the only leader of your clan. You must disband your clan if you wish to leave.');
 		}
 
 		$clan->leave($player);
@@ -225,7 +224,7 @@ class ClanController { //extends Controller
 	 * Deletes a clan and messages all members that it has been disbanded
 	 *
 	 * @return Array The viewspec
-	 * @throws Exception The player disbanding must be the leader of the clan
+	 * @throws \Exception The player disbanding must be the leader of the clan
 	 */
 	public function disband() {
 		$player = new Player(self_char_id());
@@ -233,7 +232,7 @@ class ClanController { //extends Controller
 		$sure   = in('sure', '');
 
 		if (!$this->playerIsLeader($player, $clan)) {
-			throw new Exception('You may not disband a clan you are not a leader of.');
+			throw new \Exception('You may not disband a clan you are not a leader of.');
 		}
 
 		if ($sure === 'yes') {
@@ -274,7 +273,7 @@ class ClanController { //extends Controller
 		$kicked_name = get_char_name($kicked);
 
 		if (!$this->playerIsLeader($kicker, $clan)) {
-			throw new Exception('You may not kick members from a clan you are not a leader of.');
+			throw new \Exception('You may not kick members from a clan you are not a leader of.');
 		}
 
 		$clan->kickMember($kicked, $kicker);
@@ -307,7 +306,7 @@ class ClanController { //extends Controller
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if (!$this->playerIsLeader($player, $clan)) {
-			throw new Exception('You may not update a clan you are not a leader of.');
+			throw new \Exception('You may not update a clan you are not a leader of.');
 		}
 
 		$new_clan_avatar_url  = in('clan-avatar-url');

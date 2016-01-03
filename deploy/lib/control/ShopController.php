@@ -84,7 +84,7 @@ class ShopController { // extends Controller
 				try {
 					add_item($this->sessionData['char_id'], $purchaseOrder->item->identity(), $purchaseOrder->quantity);
 					subtract_gold($this->sessionData['char_id'], $current_item_cost);
-				} catch (Exception $e) {
+				} catch (\Exception $e) {
 					$invalid_item = $e->getMessage();
 					error_log('Invalid Item attempted :'.$invalid_item);
 					$no_funny_business = true;
