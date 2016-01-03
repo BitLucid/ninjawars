@@ -30,22 +30,15 @@ class Router {
             'default' => 'listClans',
         ],
         'shop' => [
-            'default'  => 'index',
             'purchase' => 'buy',
-        ],
-        'casino' => [
-            'default'  => 'index',
         ],
         'work' => [
             'request_work' => 'requestWork',
-            'default'      => 'index',
         ],
         'shrine' => [
             'heal_and_resurrect' => 'healAndResurrect',
-            'default'            => 'index',
         ],
 		'doshin' => [
-			'default'      => 'index',
 			'Bribe'        => 'bribe',
 			'Offer Bounty' => 'offerBounty',
 		],
@@ -87,6 +80,10 @@ class Router {
         if (empty($routeSegments[0])) {
             $routeSegments[0] = 'index.php';
         }
+
+		if (empty($routeSegments[1])) {
+            $routeSegments[1] = 'index';
+		}
 
         return $routeSegments;
     }
