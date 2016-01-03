@@ -48,8 +48,10 @@ class Router {
         'messages' => [
             'delete_clan'     => 'deleteClan',
             'delete_messages' => 'deletePersonal',
+            'delete_message'  => 'deletePersonal',
             'send_clan'       => 'sendClan',
             'send_personal'   => 'sendPersonal',
+            'personal'        => 'viewPersonal',
             'clan'            => 'viewClan',
             'default'         => 'viewPersonal',
         ],
@@ -180,8 +182,11 @@ class Router {
             $action = $p_command;
         } else if (isset(self::$routes[$p_main][$p_command])) {
             $action = self::$routes[$p_main][$p_command];
+
+            if (!method_exists($controller, $action)) {
+                throw new \RuntimeException();
+            }
         } else {
-			error_log($p_main."\\".$p_command);
             throw new \RuntimeException();
         }
 
