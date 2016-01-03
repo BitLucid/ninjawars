@@ -8,6 +8,7 @@ use NinjaWars\core\control\ClanController;
 use NinjaWars\core\control\CasinoController;
 use NinjaWars\core\control\WorkController;
 use NinjaWars\core\control\MessagesController;
+use NinjaWars\core\control\DoshinController;
 use NinjaWars\core\control\ShrineController;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,6 +44,11 @@ class Router {
             'heal_and_resurrect' => 'healAndResurrect',
             'default'            => 'index',
         ],
+		'doshin' => [
+			'default'      => 'index',
+			'Bribe'        => 'bribe',
+			'Offer Bounty' => 'offerBounty',
+		],
         'messages' => [
             'delete_clan'     => 'deleteClan',
             'delete_messages' => 'deletePersonal',
@@ -105,6 +111,10 @@ class Router {
         if (stripos($p_main, '.php') === (strlen($p_main) - 4)) {
             $p_main = substr($p_main, 0, -4);
         }
+
+		if ($p_main === 'doshin_office') {
+			$p_main = 'doshin';
+		}
 
         return $p_main;
     }
