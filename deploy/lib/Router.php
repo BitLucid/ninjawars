@@ -100,8 +100,9 @@ class Router {
         }
 
 		if (empty($routeSegments[1])) {
-			if (isset(self::$routes[$routeSegments[0]][self::DEFAULT_COMMAND])) {
-				$routeSegments[1] = self::$routes[$routeSegments[0]][self::DEFAULT_COMMAND];
+			$mainRoute = self::sanitizeMainRoute($routeSegments[0]);
+			if (isset(self::$routes[$mainRoute][self::DEFAULT_COMMAND])) {
+				$routeSegments[1] = self::$routes[$mainRoute][self::DEFAULT_COMMAND];
 			} else {
 				$routeSegments[1] = self::DEFAULT_ACTION;
 			}
@@ -161,10 +162,8 @@ class Router {
      * @throws RuntimeException No public method could be found for $p_command
      */
     public static function execute($p_main, $p_command) {
-        $mainRoute = self::sanitizeMainRoute($p_main);
-
         // dynamically define the controller classname
-        $controllerClass = self::buildClassName($mainRoute);
+        $controllerClass = self::buildClassName($p_main);
 
         if (!class_exists($controllerClass)) {
             throw new \RuntimeException();
@@ -179,16 +178,14 @@ class Router {
          */
         if (method_exists($controller, $p_command)) {
             $action = $p_command;
-        } else if (isset(self::$routes[$mainRoute][$p_command])) {
-            $action = self::$routes[$mainRoute][$p_command];
+        } else if (isset(self::$routes[$p_main][$p_command])) {
+            $action = self::$routes[$p_main][$p_command];
         } else {
+			error_log($p_main."\\".$p_command);
             throw new \RuntimeException();
         }
 
-        $priv  = $controllerClass::PRIV;
-        $alive = $controllerClass::ALIVE;
-
-        if ($error = init($priv, $alive)) {
+		if ($error = init($controllerClass::PRIV, $controllerClass::ALIVE)) {
             return [
                 'template' => 'error.tpl',
                 'title'    => 'There is an obstacle to your progress...',
@@ -221,6 +218,7 @@ class Router {
         ) {
             include($mainRoute);
         } else {
+			$mainRoute = self::sanitizeMainRoute($mainRoute);
             $response = self::execute($mainRoute, $command);
 
             if ($response instanceof RedirectResponse) {
