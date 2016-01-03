@@ -139,6 +139,9 @@ class Router {
                 $p_main = 'consider';
                 break;
 		}
+        if ($p_main === 'village') {
+            $p_main = 'chat';
+        }
 
         return $p_main;
     }
