@@ -1,5 +1,6 @@
 <?php
-namespace app\Controller;
+namespace NinjaWars\core\control;
+
 require_once(LIB_ROOT."control/lib_chat.php"); // Require all the chat helper and rendering functions.
 
 use Symfony\Component\HttpFoundation\RedirectResponse;

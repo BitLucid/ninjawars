@@ -64,6 +64,9 @@ class Router {
         'consider' => [
             'add'    => 'addEnemy',
             'delete' => 'deleteEnemy',
+		],
+        'chat' => [
+            'receive' => 'receive'
         ],
     ];
 
