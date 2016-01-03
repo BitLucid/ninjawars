@@ -4,6 +4,8 @@ require_once(LIB_ROOT."data/lib_npc.php");
 $alive      = true;
 $private    = true;
 
+$today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
+
 if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
@@ -74,9 +76,9 @@ if($turns > 0 && !empty($victim)) {
 
 		$npc_template = 'npc.oni.tpl';
 		$combat_data = array('victory'=>$oni_killed);
-		
-		
-		
+
+
+
 	} elseif (array_key_exists($victim, $npcs)){ /**** Abstracted NPCs *****/
 		$npc_stats = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
 
@@ -86,14 +88,14 @@ if($turns > 0 && !empty($victim)) {
         $npco = new Npc($npc_stats); // Construct the npc object.
 		$display_name = first_value((isset($npc_stats['name'])? $npc_stats['name'] : null), ucfirst($victim));
         $max_damage = $npco->max_damage();
-		$percent_damage = null; // Percent damage does to the player's health. 
+		$percent_damage = null; // Percent damage does to the player's health.
 		$status_effect = isset($npc_stats['status'])? $npc_stats['status'] : null;
 		$reward_item = isset($npc_stats['item']) && $npc_stats['item']? $npc_stats['item'] : null;
 		$base_gold = $npco->gold();
 		$npc_gold = (int) isset($npc_stats['gold'])? $npc_stats['gold'] : 0 ;
 		$is_quick = ($npco->speed()>$player->speed())? true : false; // Beyond basic speed and they see you coming, so show that message.
 		// If npc gold explicitly set to 0, then none will be given.
-		$reward_gold = $npc_gold === 0? 0 : 
+		$reward_gold = $npc_gold === 0? 0 :
 			($reward_item? round($base_gold * .9) : $base_gold); // Hack a little off reward gold if items received.
 		$bounty_mod = isset($npc_stats['bounty'])? $npc_stats['bounty'] : null;
         $is_villager = $npco->has_trait('villager'); // Give the villager message with the bounty.
@@ -105,10 +107,10 @@ if($turns > 0 && !empty($victim)) {
 			// If the image exists, set the path to it for use on the page.
 			$image_path = IMAGE_ROOT.'characters/'.$image;
 		}
-		
+
 		$statuses = null;
 		$status_classes = null;
-		
+
 		// Assume defeat...
 		$victory = null;
 		$received_gold = null;
@@ -116,9 +118,9 @@ if($turns > 0 && !empty($victim)) {
 		$added_bounty = null;
 		$is_rewarded = null; // Gets items or gold.
 		$display_statuses = $display_statuses_classes = null;
-		
+
 		// Get percent of total initial health.
-		
+
 		// ******* FIGHT *********** & Hope for victory.
 		$victory = false;
 		$survive_fight = $player->vo->health = subtractHealth($char_id, $npco->damage());
@@ -161,21 +163,21 @@ if($turns > 0 && !empty($victim)) {
 				//$display_statuses = $display_statuses_classes = string_status($status_effect); // Get the string of a status.
 			}
 		}
-		
-		
+
+
 		// Settings to display results.
 		$npc_template = 'npc.abstract.tpl';
 		$combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$npco->damage(), 'percent_damage'=>$percent_damage,
 			'status_effect'=>$status_effect, 'display_statuses'=>$display_statuses, 'display_statuses_classes'=>$display_statuses_classes, 'received_gold'=>$received_gold,
-			'received_display_items'=>$received_display_items, 'is_rewarded'=>$is_rewarded, 
+			'received_display_items'=>$received_display_items, 'is_rewarded'=>$is_rewarded,
 			'victory'=>$victory, 'survive_fight'=>$survive_fight, 'kill_npc'=>$kill_npc, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats, 'is_quick'=>$is_quick,
 			'added_bounty'=>$added_bounty, 'is_villager'=>$is_villager, 'race'=>$npco->race(), 'is_weaker'=>$is_weaker, 'is_stronger'=>$is_stronger);
-			
-			
-			
-			
+
+
+
+
 	// ******************** START of logic for specific npcs ************************
-	
+
 	} else if ($victim == 'peasant') { // *** PEASANT, was VILLAGER ***
 		$villager_attack = rand(0, 10); // *** Villager Damage ***
 		$just_villager = rand(0, 20);
@@ -205,7 +207,7 @@ if($turns > 0 && !empty($victim)) {
 		}
 
 		$npc_template = 'npc.peasant.tpl';
-		$combat_data = array('just_villager'=>$just_villager, 'attack'=>$villager_attack, 
+		$combat_data = array('just_villager'=>$just_villager, 'attack'=>$villager_attack,
 			'gold'=>$villager_gold, 'level'=>$attacker_level, 'bounty'=>$added_bounty, 'victory'=>$victory);
 	} else if ($victim == "samurai") {
 		$attacker_level = $player->vo->level;
@@ -373,19 +375,19 @@ if($turns > 0 && !empty($victim)) {
 			$combat_data = array('attack'=>$thief_attack, 'gold'=>$thief_gold, 'victory'=>$victory);
 		}
 	}
-	
+
 	// ************ End of specific npc logic *******************
-	
-	
-	
+
+
+
 
 	// ************ FINAL CHECK FOR DEATH ***********************
 	if ($player->health() <= 0) {
 		$health = false;
-		sendMessage("SysMsg", $username, "DEATH: You have been killed by a ".$victim." on $today");
+		sendMessage("SysMsg", $player->name(), "DEATH: You have been killed by a ".$victim." on $today");
 	}
-	
-	
+
+
 	// Subtract the turn cost for attacking an npc, almost always going to be 1 apart from perhaps oni or group-of-thieves
 	subtractTurns($char_id, $turn_cost);
 }

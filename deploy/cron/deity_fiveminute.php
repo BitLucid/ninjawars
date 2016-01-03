@@ -7,6 +7,8 @@ require_once(LIB_ROOT.'environment/lib_error_reporting.php');
 require_once(LIB_ROOT.'data/lib_db.php');
 require_once(LIB_ROOT."control/lib_deity.php"); // Deity-specific functions
 
+use NinjaWars\core\data\DatabaseConnection;
+
 DatabaseConnection::getInstance();
 DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
 DatabaseConnection::$pdo->query('TRUNCATE player_rank');

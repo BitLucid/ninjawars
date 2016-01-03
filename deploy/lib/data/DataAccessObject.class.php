@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
+
 abstract class DataAccessObject {
 	protected $m_dbconn; // *** DatabaseConnection object.
 

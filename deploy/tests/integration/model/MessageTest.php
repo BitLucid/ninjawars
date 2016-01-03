@@ -1,8 +1,7 @@
 <?php
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
-require_once(CORE.'data/Message.php');
 
-use app\data\Message;
+use NinjaWars\core\data\Message;
 
 class TestMessage extends PHPUnit_Framework_TestCase {
     private $char_id;

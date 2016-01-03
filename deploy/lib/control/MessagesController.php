@@ -1,14 +1,12 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(CORE.'data/Message.php');
-require_once(CORE.'data/ClanFactory.php');
 require_once(CORE.'control/Player.class.php');
 
-use app\data\Message;
+use NinjaWars\core\data\Message;
+use NinjaWars\core\data\ClanFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Player;
-use \ClanFactory;
 
 class MessagesController {
     const PRIV  = true;

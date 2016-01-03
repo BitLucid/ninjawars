@@ -3,9 +3,8 @@ namespace app\combat;
 require_once(DB_ROOT . 'PlayerVO.class.php');
 require_once(DB_ROOT . 'PlayerDAO.class.php');
 require_once(LIB_ROOT . 'control/Player.class.php');
-require_once(CORE.'control/Clan.php');
 
-use \Clan;
+use NinjaWars\core\control\Clan;
 use \Player;
 use \Constants;
 

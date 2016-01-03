@@ -1,16 +1,10 @@
 <?php
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-
-require_once(substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'ninjawars')+10).'deploy/resources.php');
-// Core may be autoprepended in ninjawars
-require_once(LIB_ROOT.'base.inc.php');
+use NinjaWars\core\control\AccountController;
 
 require_once(LIB_ROOT.'control/lib_auth.php');
 require_once(LIB_ROOT.'control/lib_accounts.php');
-require_once(LIB_ROOT.'control/AccountController.php');
 require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
-
-use app\Controller\AccountController;
 
 // Note that this file has to have a suffix of ...test.php to be run.
 

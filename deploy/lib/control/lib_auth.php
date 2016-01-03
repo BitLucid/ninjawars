@@ -1,4 +1,5 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

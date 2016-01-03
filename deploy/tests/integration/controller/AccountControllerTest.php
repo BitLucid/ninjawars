@@ -1,10 +1,8 @@
 <?php
-require_once(CORE.'control/AccountController.php');
-
 use Symfony\Component\HttpFoundation\Request;
-use app\environment\RequestWrapper;
-use app\Controller\AccountController as AccountController;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use NinjaWars\core\control\AccountController;
+use app\environment\RequestWrapper;
 
 class AccountControllerTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
@@ -18,7 +16,7 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testAccountControllerCanInstantiateWithoutError() {
         $controller = new AccountController();
-        $this->assertInstanceOf('app\Controller\AccountController', $controller);
+        $this->assertInstanceOf('NinjaWars\core\control\AccountController', $controller);
     }
 
     public function testAccountControllerIndexRuns() {

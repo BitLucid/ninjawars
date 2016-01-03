@@ -1,4 +1,6 @@
-<?php 
+<?php
+use NinjaWars\core\data\DatabaseConnection;
+
 // Ninja grouping functionalities, including enemies/friends, eventually groups, node listings, etc.
 
 

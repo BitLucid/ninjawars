@@ -1,5 +1,5 @@
 <?php
-namespace app\data;
+namespace NinjaWars\core\data;
 
 require_once(CORE.'data/database.php');
 

@@ -2,7 +2,7 @@
 namespace app\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use DatabaseConnection;
+use NinjaWars\core\data\DatabaseConnection;
 use Player;
 use PlayerDAO;
 

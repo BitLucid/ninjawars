@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
+
 /* The functions used by the json api.
 Test URLs:
 http://nw.local/api.php?type=char_search&jsoncallback=alert&term=tchalvak&limit=10

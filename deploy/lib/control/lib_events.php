@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
+
 // Now only a wrapper for the send_event function. 
 function sendMessage($from, $to, $msg, $filter=false) {
 	// Filter argument is deprecated now.

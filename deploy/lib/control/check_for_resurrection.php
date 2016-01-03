@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
+
 // *** Run the resurrection script.
 function check_for_resurrection($echo=FALSE) {
 	DatabaseConnection::getInstance();

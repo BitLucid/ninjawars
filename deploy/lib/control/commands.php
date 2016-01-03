@@ -1,4 +1,5 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
 
 // ********************* STATUS DEFINES MOVED TO STATUS_DEFINES.PHP FILE ******** //
 

@@ -76,7 +76,7 @@ $item_count = item_count($user_id, $item);
 $self_use = ($selfTarget || ($target_id === $user_id));
 
 if ($self_use) {
-	$target    = $username;
+	$target    = $player->name();
 	$targetObj = $player;
 } else if ($target_id) {
 	$targetObj = new Player($target_id);
@@ -158,7 +158,7 @@ if ($give) {
 }
 
 // Attack Legal section
-$attacker = $username;
+$attacker = $player->name();
 
 $params = [
 	'required_turns'  => $turn_cost,
@@ -182,7 +182,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 } else {
 	/**** MAIN SUCCESSFUL USE ****/
 	if ($give) {
-		give_item($username, $target, $item->getName());
+		give_item($player->name(), $target, $item->getName());
 		$alternateResultMessage = "__TARGET__ will receive your {$item->getName()}.";
 	} else if (!$item->isOtherUsable()) {
 		// If it doesn't do damage or have an effect, don't use up the item.
@@ -308,7 +308,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 		if (!$victim_alive) { // Target was killed by the item.
 			if (!$self_use) {   // *** SUCCESSFUL KILL, not self-use of an item ***
-				$attacker_id = ($player->hasStatus(STEALTH) ? "A Stealthed Ninja" : $username);
+				$attacker_id = ($player->hasStatus(STEALTH) ? "A Stealthed Ninja" : $player->name());
 
 				if (!$gold_mod) {
 					$gold_mod = 0.15;
@@ -316,19 +316,19 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 				$loot = round($gold_mod * get_gold($target_id));
 				subtract_gold($target_id, $loot);
-				add_gold($char_id, $loot);
-				addKills($char_id, 1);
+				add_gold($user_id, $loot);
+				addKills($user_id, 1);
 				$kill = true;
-				$bountyMessage = runBountyExchange($username, $target);  //Rewards or increases bounty.
+				$bountyMessage = runBountyExchange($player->name(), $target);  //Rewards or increases bounty.
 			} else {
 				$loot = 0;
 				$suicide = true;
 			}
 
 			// Send mails if the target was killed.
-			send_kill_mails($username, $target, $attacker_id, $article, $item->getName(), $today=null, $loot);
+			send_kill_mails($player->name(), $target, $attacker_id, $article, $item->getName(), $today=null, $loot);
 		} else { // They weren't killed.
-			$attacker_id = $username;
+			$attacker_id = $player->name();
 		}
 
 		if (!$self_use && $item_used) {
@@ -338,8 +338,8 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 
 			// Notify targets when they get an item used on them.
 			$message_to_target = "$attacker_id has used $article {$item->getName()} on you";
-			if($targetResult){ 
-				$message_to_target .= " and caused you to $targetResult"; 
+			if($targetResult){
+				$message_to_target .= " and caused you to $targetResult";
 			} else {
 				$message_to_target .= '.';
 			}

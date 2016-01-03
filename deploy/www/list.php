@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
+
 $private = false;
 $alive   = false;
 

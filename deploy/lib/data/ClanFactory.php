@@ -1,11 +1,15 @@
 <?php
+namespace NinjaWars\core\data;
+
+use NinjaWars\core\control\Clan;
+use \Player;
 
 /**
  * Who/what/why/where
  *  Create a clan for leaders and members to manage membership and eventually clan structures.
  *
-**/
-class ClanFactory{
+ */
+class ClanFactory {
 	// Returns a fleshed out clan object, or a mostly blank one if no existing data found
 	public static function create($identity, $data=null) {
 		$founder = ($data['founder'] ? $data['founder'] : null);

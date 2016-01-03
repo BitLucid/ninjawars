@@ -1,7 +1,10 @@
 <?php
-require_once(LIB_ROOT.'data/Message.php');
+namespace NinjaWars\core\control;
 
-use app\data\Message;
+use NinjaWars\core\data\Message;
+use NinjaWars\core\data\DatabaseConnection;
+use \PDO;
+use \Player;
 
 /**
  * who/what/why/where

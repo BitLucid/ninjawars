@@ -1,7 +1,7 @@
 <?php
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
-use DatabaseConnection;
+use NinjaWars\core\data\DatabaseConnection;
 
 require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
 require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.

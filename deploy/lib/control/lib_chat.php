@@ -6,6 +6,7 @@
  * @subpackage chat
  */
 
+use NinjaWars\core\data\DatabaseConnection;
 
 // ************************************
 // ******** CHAT FUNCTIONS ************

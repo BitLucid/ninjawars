@@ -1,15 +1,13 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(CORE.'data/ClanFactory.php'); ///TODO autoload this
-require_once(LIB_ROOT.'data/Message.php');
 require_once(LIB_ROOT.'control/lib_clan.php');
 
-use app\data\Message;
-use Exception;
+use NinjaWars\core\data\ClanFactory;
+use NinjaWars\core\data\Message;
+use NinjaWars\core\control\Clan;
 use \Player as Player;
-use \ClanFactory as ClanFactory;
-use \Clan as Clan;
+use Exception;
 
 /**
  * Controller for all actions involving clan

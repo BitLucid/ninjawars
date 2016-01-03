@@ -1,4 +1,5 @@
 <?php
+use NinjaWars\core\data\DatabaseConnection;
 
 // TODO: Oh god, these functions need templates.
 

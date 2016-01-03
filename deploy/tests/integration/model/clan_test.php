@@ -1,7 +1,6 @@
 <?php
-// Core may be autoprepended in ninjawars
-require_once(LIB_ROOT.'base.inc.php');
-require_once(LIB_ROOT.'data/ClanFactory.php');
+use NinjaWars\core\data\ClanFactory;
+use NinjaWars\core\control\Clan;
 
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 
@@ -65,7 +64,7 @@ class TestClan extends PHPUnit_Framework_TestCase {
 
     function testFindClanObject() {
         $clan = ClanFactory::find($this->clan_id);
-        $this->assertInstanceOf('Clan', $clan);
+        $this->assertInstanceOf('NinjaWars\core\control\Clan', $clan);
         $this->assertEquals($this->clan_id, $clan->getId());
     }
 

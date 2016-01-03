@@ -1,7 +1,5 @@
 <?php
-require_once(CORE.'control/AccountController.php');
-
-use app\Controller\AccountController;
+use NinjaWars\core\control\AccountController;
 
 if ($error = init(AccountController::PRIV, AccountController::ALIVE)) {
 	display_error($error);

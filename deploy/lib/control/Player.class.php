@@ -1,11 +1,14 @@
 <?php
-require_once(ROOT . "core/control/Character.php");
+require_once(CORE . "control/Character.php");
+require_once(CORE . "control/lib_status.php");
+require_once(CORE . "control/lib_player.php");
+require_once(CORE . "data/AccountFactory.php");
 require_once(DB_ROOT . "PlayerDAO.class.php");
 require_once(DB_ROOT . "PlayerVO.class.php");
-require_once(LIB_ROOT . "control/lib_status.php");
-require_once(CORE . "control/lib_player.php");
-require_once(ROOT.'core/data/AccountFactory.php');
-require_once(ROOT.'core/data/ClanFactory.php');
+
+use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\ClanFactory;
+use NinjaWars\core\data\Clan;
 
 /* Ninja (actually character) behavior object.
  *

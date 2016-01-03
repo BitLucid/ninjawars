@@ -83,7 +83,7 @@
 </ol>
 
 <p>
-  For Frequently Asked Questions see: <a href="tutorial.php">the FAQ Page</a>
+  For Frequently Asked Questions see: <a href="main.php">the FAQ Page</a>
 </p>
 
 <hr>
