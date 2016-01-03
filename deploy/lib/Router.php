@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core;
 
-require_once(LIB_ROOT."control/lib_inventory.php");
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -12,6 +10,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * Controller->action(). Overrides are defined here in the $routes member.
  */
 class Router {
+	const CONTROLLER_NS   = 'NinjaWars\core\control';
+	const DEFAULT_ACTION  = 'index';
+	const DEFAULT_COMMAND = 'default';
+	const DEFAULT_ROUTE   = 'index.php';
+	const COMMAND_PARAM   = 'command';
+
     /*
      * Adding a default entry helps for when the action is not found or not
      * provided, otherwise a 404 will occur.
@@ -81,18 +85,18 @@ class Router {
 
         // if there are 2 route segments use the second one
         if (!isset($routeSegments[1])) {
-            $routeSegments[1] = (string)in('command');
+            $routeSegments[1] = (string)in(self::COMMAND_PARAM);
         }
 
         if (empty($routeSegments[0])) {
-            $routeSegments[0] = 'index.php';
+            $routeSegments[0] = self::DEFAULT_ROUTE;
         }
 
 		if (empty($routeSegments[1])) {
-			if (isset(self::$routes[$routeSegments[0]]['default'])) {
-				$routeSegments[1] = self::$routes[$routeSegments[0]]['default'];
+			if (isset(self::$routes[$routeSegments[0]][self::DEFAULT_COMMAND])) {
+				$routeSegments[1] = self::$routes[$routeSegments[0]][self::DEFAULT_COMMAND];
 			} else {
-				$routeSegments[1] = 'index';
+				$routeSegments[1] = self::DEFAULT_ACTION;
 			}
 		}
 
@@ -106,7 +110,7 @@ class Router {
      * @return string A fully qualified controller classname
      */
     public static function buildClassName($p_main) {
-        return "NinjaWars\\core\\control\\".ucfirst($p_main)."Controller";
+        return self::CONTROLLER_NS.'\\'.ucfirst($p_main)."Controller";
     }
 
     /**
