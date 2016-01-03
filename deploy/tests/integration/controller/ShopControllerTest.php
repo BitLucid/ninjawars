@@ -1,12 +1,11 @@
 <?php
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
-require_once(CORE.'control/ShopController.php');
 require_once(CORE."control/lib_inventory.php");
 
 use Symfony\Component\HttpFoundation\Request;
-use app\environment\RequestWrapper;
-use app\Controller\ShopController as ShopController;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use app\environment\RequestWrapper;
+use NinjaWars\core\control\ShopController;
 
 class ShopControllerTest extends PHPUnit_Framework_TestCase {
 	function setUp() {
@@ -22,7 +21,7 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testShopControllerCanBeInstantiatedWithoutError() {
         $shop = new ShopController();
-        $this->assertInstanceOf('app\Controller\ShopController', $shop);
+        $this->assertInstanceOf('NinjaWars\core\control\ShopController', $shop);
     }
 
     public function testShopIndexDoesNotError() {

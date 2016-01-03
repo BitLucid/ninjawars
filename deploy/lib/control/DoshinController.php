@@ -1,6 +1,5 @@
 <?php
-
-namespace app\Controller;
+namespace NinjaWars\core\control;
 
 /**
  * Handles all user requests for the in-game Doshin Office

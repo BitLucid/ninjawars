@@ -8,6 +8,7 @@ class TestMessage extends PHPUnit_Framework_TestCase {
     private $char_id;
     private $char_id_2;
     private $messageData;
+	private $message_id;
 
     function setUp() {
         $this->char_id = TestAccountCreateAndDestroy::char_id(true);
@@ -20,12 +21,13 @@ class TestMessage extends PHPUnit_Framework_TestCase {
             'unread'    => 1,
             'type'      => 0
         ];
+
         $this->message_id = null;
     }
 
     function tearDown() {
         TestAccountCreateAndDestroy::destroy();
-        if($this->message_id !== null){
+        if ($this->message_id !== null) {
             query('delete from messages where message_id = :id', [':id'=>$this->message_id]);
         }
     }

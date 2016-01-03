@@ -1,11 +1,9 @@
 <?php
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
-require_once(CORE.'control/DoshinController.php');
-
 use Symfony\Component\HttpFoundation\Request;
-use app\environment\RequestWrapper;
-use app\Controller\DoshinController as DoshinController;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use app\environment\RequestWrapper;
+use NinjaWars\core\control\DoshinController;
 
 class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 	function setUp() {
@@ -21,7 +19,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testInstantiateDoshinController() {
         $doshin = new DoshinController();
-        $this->assertInstanceOf('app\Controller\DoshinController', $doshin);
+        $this->assertInstanceOf('NinjaWars\core\control\DoshinController', $doshin);
     }
 
     public function testDoshinIndex() {
