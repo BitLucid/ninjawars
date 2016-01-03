@@ -60,7 +60,11 @@ class Router {
 			'change_password'           => 'changePassword',
 			'show_confirm_delete_form'  => 'deleteAccountConfirmation',
 			'delete_account'            => 'deleteAccount',
-		]
+        ],
+        'consider' => [
+            'add'    => 'addEnemy',
+            'delete' => 'deleteEnemy',
+        ],
     ];
 
     /**
@@ -124,8 +128,13 @@ class Router {
             $p_main = substr($p_main, 0, -4);
         }
 
-		if ($p_main === 'doshin_office') {
-			$p_main = 'doshin';
+        switch ($p_main) {
+            case 'doshin_office':
+                $p_main = 'doshin';
+                break;
+            case 'enemies':
+                $p_main = 'consider';
+                break;
 		}
 
         return $p_main;
