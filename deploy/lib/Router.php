@@ -17,6 +17,9 @@ class Router {
      * provided, otherwise a 404 will occur.
      */
     public static $routes = [
+		'login' => [
+			'login_request' => 'requestLogin',
+		],
         'clan' => [
             'new'     => 'create',
             'default' => 'listClans',
