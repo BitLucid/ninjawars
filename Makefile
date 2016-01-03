@@ -27,10 +27,7 @@ clean:
 	@rm -rf ./deploy/templates/compiled/*
 	@rm -rf ./cc/
 
-dep: vendor
-	@echo "building dependencies..."
-
-vendor:
+dep:
 	@$(COMPOSER) install
 
 dist-clean:
