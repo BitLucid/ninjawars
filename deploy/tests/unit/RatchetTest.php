@@ -5,7 +5,7 @@
 
 class RatchetTest extends PHPUnit_Framework_TestCase {
 
-	const MAX_WWW_SCRIPTS = 40;
+	const MAX_WWW_SCRIPTS = 37;
 	const MAX_NINJAMASTER_SCRIPTS = 3;
 
 	function before() {
@@ -14,7 +14,7 @@ class RatchetTest extends PHPUnit_Framework_TestCase {
 	public function testWwwScriptsLimit(){
 		$it = new RegexIterator(new DirectoryIterator(ROOT.'www/'), "/\\.php\$/i");
 		$this->assertLessThanOrEqual(static::MAX_WWW_SCRIPTS, iterator_count($it));
-		$this->assertGreaterThanOrEqual(round(static::MAX_WWW_SCRIPTS*0.95), iterator_count($it)); // Change ratchet if this trips
+		$this->assertGreaterThanOrEqual(round(static::MAX_WWW_SCRIPTS*0.80), iterator_count($it)); // Change ratchet if this trips
 	}
 
 	public function testNinjamasterScriptsLimit(){
