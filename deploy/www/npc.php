@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\control\SessionFactory;
+
 require_once(LIB_ROOT."control/lib_inventory.php");
 require_once(LIB_ROOT."data/lib_npc.php");
 $alive      = true;
@@ -10,7 +12,7 @@ if ($error = init($private, $alive)) {
 	display_error($error);
 } else {
 
-$session    = nw\SessionFactory::getSession();
+$session    = SessionFactory::getSession();
 $turn_cost  = 1;
 $health     = 1;
 $victim     = in('victim');
@@ -25,7 +27,6 @@ $is_villager = false;
 
 $ninja_str               = $player->getStrength();
 $ninja_health            = $player->vo->health;
-
 
 $static_npcs = array('peasant', 'thief', 'merchant', 'guard', 'samurai');
 $npcs = NpcFactory::npcsData();

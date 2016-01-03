@@ -1,6 +1,7 @@
 <?php
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\control\AccountController;
+use NinjaWars\core\control\SessionFactory;
 
 require_once(LIB_ROOT.'control/lib_auth.php');
 require_once(LIB_ROOT.'control/lib_accounts.php');
@@ -51,9 +52,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 		$this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
 		TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
 		TestAccountCreateAndDestroy::create_testing_account();
-		nw\SessionFactory::init(new MockArraySessionStorage());
+		SessionFactory::init(new MockArraySessionStorage());
 	}
-	
+
 	/**
 	 * group accountconf
 	**/

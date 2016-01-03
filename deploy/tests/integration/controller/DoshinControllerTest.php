@@ -4,13 +4,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use app\environment\RequestWrapper;
 use NinjaWars\core\control\DoshinController;
+use NinjaWars\core\control\SessionFactory;
 
 class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 	function setUp() {
         // Mock the post request.
         $request = new Request([], []);
         RequestWrapper::inject($request);
-		nw\SessionFactory::init(new MockArraySessionStorage());
+		SessionFactory::init(new MockArraySessionStorage());
 	}
 
 	function tearDown() {

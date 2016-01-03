@@ -1,5 +1,5 @@
 <?php
-namespace nw;
+namespace NinjaWars\core\control;
 
 use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
 

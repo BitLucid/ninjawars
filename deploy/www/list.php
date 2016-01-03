@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\control\SessionFactory;
 
 $private = false;
 $alive   = false;
@@ -13,7 +14,7 @@ require_once(LIB_ROOT."control/lib_player.php");
 
 DatabaseConnection::getInstance();
 
-$session      = nw\SessionFactory::getSession();
+$session      = SessionFactory::getSession();
 $username     = self_name();
 $char_id      = self_char_id();
 $searched     = in('searched', null, 'no filter'); // Don't filter the search setting.
