@@ -25,18 +25,7 @@ switch(true){
 if($response instanceof RedirectResponse){
 	$response->send();
 } else {
-
-	// TODO: register plugin time_ago globally and call display_page function instead.
-	$template = prep_page($response['template'], $response['title'], $response['parts'], $response['options']);
-
-	function get_time_ago($p_params, &$tpl) {
-		return time_ago($p_params['ago'], $p_params['previous_date']);
-	}
-
-	//$template->register_function('time_ago', 'get_time_ago');
-	$template->registerPlugin("function","time_ago", "get_time_ago");
-
-	$template->fullDisplay();
+	display_page($response['template'], $response['title'], $response['parts'], $response['options']);
 }
 
 
