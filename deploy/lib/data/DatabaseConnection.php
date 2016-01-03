@@ -18,11 +18,11 @@ class DatabaseConnection {
 			// *** SINGLE TIME CONNECTION TO THE DATABASE ***
 			self::$pdo = new PDO(CONNECTION_STRING);
 			self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		} catch (Exception $e) {   // *** We catch this error to keep the exception from throwing back essential connection data.
+		} catch (\Exception $e) {   // *** We catch this error to keep the exception from throwing back essential connection data.
 			if(DEBUG){
 				throw $e;
 			}
-			throw new Exception('The Database connection failed.');
+			throw new \Exception('The Database connection failed.');
 		}
 	}
 
