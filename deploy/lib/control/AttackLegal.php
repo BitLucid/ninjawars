@@ -74,7 +74,7 @@ class AttackLegal
 		$defaults = ['required_turns'=>null, 'ignores_stealth'=>null, 'self_use'=>null, 'clan_forbidden'=>null];
 		$this->params = array_merge($defaults, $params);
 		if($this->params['required_turns'] === null){
-			throw new Exception('Error: AttackLegal required turns not specified.');
+			throw new \Exception('Error: AttackLegal required turns not specified.');
 		}
 
 		if ($attacker_name_or_id) {
