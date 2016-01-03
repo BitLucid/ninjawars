@@ -46,6 +46,14 @@ class Router {
             'clan'            => 'viewClan',
             'default'         => 'viewPersonal',
         ],
+		'account' => [
+			'show_change_email_form'    => 'showChangeEmailForm',
+			'change_email'              => 'changeEmail',
+			'show_change_password_form' => 'showChangePasswordForm',
+			'change_password'           => 'changePassword',
+			'show_confirm_delete_form'  => 'deleteAccountConfirmation',
+			'delete_account'            => 'deleteAccount',
+		]
     ];
 
     /**
