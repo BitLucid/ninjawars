@@ -86,7 +86,11 @@ class Router {
         }
 
 		if (empty($routeSegments[1])) {
-            $routeSegments[1] = 'index';
+			if (isset(self::$routes[$routeSegments[0]]['default'])) {
+				$routeSegments[1] = self::$routes[$routeSegments[0]]['default'];
+			} else {
+				$routeSegments[1] = 'index';
+			}
 		}
 
         return $routeSegments;
@@ -155,8 +159,6 @@ class Router {
             $action = $p_command;
         } else if (isset(self::$routes[$mainRoute][$p_command])) {
             $action = self::$routes[$mainRoute][$p_command];
-        } else if (isset(self::$routes[$mainRoute]['default'])) {
-            $action = self::$routes[$mainRoute]['default'];
         } else {
             throw new \RuntimeException();
         }
