@@ -3,14 +3,6 @@ namespace NinjaWars\core;
 
 require_once(LIB_ROOT."control/lib_inventory.php");
 
-use NinjaWars\core\control\ShopController;
-use NinjaWars\core\control\ClanController;
-use NinjaWars\core\control\CasinoController;
-use NinjaWars\core\control\WorkController;
-use NinjaWars\core\control\MessagesController;
-use NinjaWars\core\control\DoshinController;
-use NinjaWars\core\control\ShrineController;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -41,6 +33,10 @@ class Router {
 		'doshin' => [
 			'Bribe'        => 'bribe',
 			'Offer Bounty' => 'offerBounty',
+		],
+		'stats' => [
+			'change_details' => 'changeDetails',
+			'update_profile' => 'updateProfile',
 		],
         'messages' => [
             'delete_clan'     => 'deleteClan',
