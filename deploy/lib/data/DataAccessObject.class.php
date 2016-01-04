@@ -18,12 +18,13 @@ abstract class DataAccessObject {
 		$this->m_dbconn = DatabaseConnection::getInstance();
 	}
 
+
 	/*
 	 * Save the changes made to the data to the database.
 	 */
 	public function save(ValueObject $vo) {
 		// *** Check the ID of the value object to see whether it was pre-existing.
-		if ($vo->{$this->_id_field} == 0) {
+		if ($vo->{$this->_id_field} === null) {
 			$this->_insert($vo);
 			$this->_last_saved_or_updated = 'saved';
 		} else {
@@ -86,7 +87,11 @@ abstract class DataAccessObject {
 		// execute update statement here
 		$up = "UPDATE ".$this->_table_for_saving." SET ";
 
+		$excludes = ['identity', 'class_name', 'theme'];
 		foreach ($this->_vo_fields AS $loopField) { // Put in values from vo.
+			if(in_array($loopField, $excludes)){
+				continue;
+			}
 			$up .= "$loopField = :$loopField, ";
 		}
 
@@ -94,8 +99,10 @@ abstract class DataAccessObject {
 		$up .= " WHERE ".$this->_id_field." = :id";
 
 		$statement = DatabaseConnection::$pdo->prepare($up);
-
 		foreach ($this->_vo_fields AS $loopField) { // Put in values from vo.
+			if(in_array($loopField, $excludes)){
+				continue;
+			}
 			$statement->bindValue(":$loopField", $vo->$loopField);
 		}
 

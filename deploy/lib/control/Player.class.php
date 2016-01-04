@@ -244,14 +244,8 @@ class Player implements Character {
 		return $this->vo->ki;
 	}
 
-	public function add_ki($amount) {
-		query('update players set ki = ki + :amount where player_id = :id', array(':amount'=>$amount, ':id'=>$this->id()));
-		$this->vo->ki = $this->vo->ki + $amount;
-	}
-
-	public function subtract_ki($amount) {
-		query('update players set ki = case when (ki - :amount) < 1 then 0 else ki - :amount2 end where player_id = :id', array(':amount'=>$amount, ':amount2'=>$amount, ':id'=>$this->id()));
-		$this->vo->ki = max(0, $this->vo->ki - $amount); // Change ki, but min out at zero.
+	public function set_ki($ki){
+		return $this->vo->ki = $ki;
 	}
 
 	public function karma() {
@@ -260,6 +254,10 @@ class Player implements Character {
 
 	public function gold() {
 		return $this->vo->gold;
+	}
+
+	public function set_gold($gold) {
+		return $this->vo->gold = $gold;
 	}
 
 	public function hasStatus($p_status) {
@@ -298,8 +296,11 @@ class Player implements Character {
 	}
 
 	public function turns() {
-		return get_turns($this->id());
-		//return $this->vo->turns;
+		return $this->vo->turns;
+	}
+
+	public function set_turns($turns){
+		return $this->vo->turns = $turns;
 	}
 
 	public function changeTurns($amount) {
@@ -428,6 +429,19 @@ class Player implements Character {
 			$this->avatar_url = generate_gravatar_url($this);
 		}
 		return $this->avatar_url;
+	}
+
+	/**
+	 * Save information
+	 * Saves:
+	 * gold
+	 * turns
+	 * all non-foreign key data in vo
+	 * @return bool
+	 */
+	public function save(){
+		$factory = new PlayerDAO();
+		return $factory->save($this->vo);
 	}
 
 }
