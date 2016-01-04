@@ -1,6 +1,8 @@
 <?php
 namespace NinjaWars\core\control;
 
+require_once(CORE.'/control/lib_inventory.php');
+
 /**
  * Handles all user requests for the in-game Doshin Office
  */
@@ -61,32 +63,12 @@ class DoshinController { //extends controller
         $target_id = get_char_id($target); // Will be the enemy to put the bounty on.
         $amount    = intval(in('amount'));
         $amount_in = $amount;
-        $error     = 0;
         $quickstat = false;
         $success   = false;
 
-        if (!$target_id) { // Test that target exists
-            $error = 1;
-        } else {
-            $target_bounty = getBounty($target_id);
+        $error = $this->validateBountyOffer($this->sessionData['char_id'], $target_id, $amount);
 
-            // Cap possible bounty amount
-            if (($target_bounty + $amount) > self::MAX_BOUNTY) {
-                $amount = (self::MAX_BOUNTY - $target_bounty);
-            }
-
-            if (get_gold($this->sessionData['char_id']) < $amount) {
-                $error = 2;
-            }
-
-            if ($amount <= 0) {
-                $error = 3;
-            }
-
-            if ($target_bounty >= 5000) {
-                $error = 4;
-            }
-        }
+        $amount = self::calculateMaxOffer(getBounty($target_id), $amount);
 
         if ($error === 0) {
             addBounty($target_id, $amount); // Add the bounty to the person being bountied upon.  How the hell did this break?
@@ -113,6 +95,47 @@ class DoshinController { //extends controller
     }
 
     /**
+     */
+    public static function calculateMaxOffer($p_currentBounty, $p_offer) {
+        // Cap possible bounty amount
+        if (($p_currentBounty + $p_offer) > self::MAX_BOUNTY) {
+            $amount = (self::MAX_BOUNTY - $p_currentBounty);
+        } else {
+            $amount = $p_offer;
+        }
+
+        return $amount;
+    }
+
+    /**
+     */
+    private function validateBountyOffer($p_providerId, $p_targetId, $p_amount) {
+        $error = 0;
+
+        if (!$p_targetId) { // Test that target exists
+            $error = 1;
+        } else {
+            $target_bounty = getBounty($p_targetId);
+
+            $amount = self::calculateMaxOffer($target_bounty, $p_amount);
+
+            if (get_gold($p_providerId) < $amount) {
+                $error = 2;
+            }
+
+            if ($amount <= 0) {
+                $error = 3;
+            }
+
+            if ($target_bounty >= 5000) {
+                $error = 4;
+            }
+        }
+
+        return $error;
+    }
+
+    /**
      * Command for a user to reduce their bounty by paying their own gold
      *
      * @param bribe int The amount to spend on reducing bounty
@@ -129,7 +152,7 @@ class DoshinController { //extends controller
             $location = 1;
             $quickstat = 'player';
         } else if ($bribe < self::MIN_BRIBE) {
-            $this->doshinAttack($this->SessionData['char_id']);
+            $this->doshinAttack($this->sessionData['char_id']);
             $location = 2;
             $quickstat = 'player';
         } else {
