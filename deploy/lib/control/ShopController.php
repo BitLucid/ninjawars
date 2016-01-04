@@ -1,6 +1,8 @@
 <?php
 namespace NinjaWars\core\control;
 
+require_once(CORE.'/control/lib_inventory.php');
+
 use \Item as Item;
 
 /**
