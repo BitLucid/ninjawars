@@ -4,6 +4,10 @@ COMPOSER=./composer.phar
 CC_DIR=./cc
 CC_FLAG=--coverage-html $(CC_DIR)
 TEST_RUNNER=php -d zend_extension=xdebug.so ./vendor/bin/phpunit
+RELATIVE_COMPONENTS=../components/
+SRC=./deploy/
+COMPONENTS=$(SRC)components/
+JS=$(SRC)www/js/
 
 -include CONFIG
 
@@ -11,8 +15,12 @@ ifdef NOCOVER
 CC_FLAG=
 endif
 
-build: dep
-	@echo "building..."
+build:
+	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
+	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
+	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
+	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
+	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery-linkify.min.js" "$(JS)"
 
 test:
 	@$(TEST_RUNNER) $(CC_FLAG)
@@ -24,12 +32,18 @@ test-integration:
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
 
 clean:
-	@rm -rf ./deploy/templates/compiled/*
-	@rm -rf ./cc/
+	@rm -rf "$(SRC)templates/"compiled/*
+	@rm -rf "$(CC_DIR)"
+	@rm -f "$(JS)jquery.min.js"
+	@rm -f "$(JS)jquery.min.map"
+	@rm -f "$(JS)jquery.timeago.js"
+	@rm -f "$(JS)jquery.linkify.js"
+	@rm -f "$(JS)jquery-linkify.min.js"
 
 dep:
 	@$(COMPOSER) install
 
 dist-clean:
 	@rm -rf ./vendor/*
-	@rm -rf ./deploy/resources/logs/*
+	@rm -rf "$(COMPONENTS)"
+	@rm -rf "$(SRC)resources/"logs/*

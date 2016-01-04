@@ -2,6 +2,8 @@
 deploy/resources.php
 vendor/*
 deploy/vendor/*
+deploy/www/js/jquery*
+deploy/www/components/
 !vendor/.gitkeep
 deploy/resources/logs/*.log
 deploy/cron/deity.log

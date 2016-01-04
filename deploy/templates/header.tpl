@@ -1,7 +1,7 @@
-<!DOCTYPE html> 
-<!--[if lt IE 7]> <html lang="en-us" class="no-js ie6"> <![endif]--> 
-<!--[if IE 7]>    <html lang="en-us" class="no-js ie7"> <![endif]--> 
-<!--[if IE 8]>    <html lang="en-us" class="no-js ie8"> <![endif]--> 
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html lang="en-us" class="no-js ie6"> <![endif]-->
+<!--[if IE 7]>    <html lang="en-us" class="no-js ie7"> <![endif]-->
+<!--[if IE 8]>    <html lang="en-us" class="no-js ie8"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en-us" class="no-js"> <!--<![endif]-->
   <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
     <!-- Google jquery lib -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {/if}
-	<script>window.jQuery || document.write('<script src="js/jquery-2.1.1.min.js"><\/script>')</script>
+	<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
     <!-- Plugins go here -->
     <script type='text/javascript' src='/js/jquery.timeago.js'></script>
 
