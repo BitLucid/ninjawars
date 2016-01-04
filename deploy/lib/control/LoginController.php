@@ -56,9 +56,6 @@ class LoginController {
             return new RedirectResponse(WEB_ROOT);
         }
 
-        $pass = in('pass');
-        $username_requested = in('user');
-
         $parts = [
             'is_logged_in'        => $is_logged_in,
             'login_error_message' => $login_error_message,

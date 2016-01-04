@@ -17,7 +17,6 @@ class PlayerDAO extends DataAccessObject {
 		$this->m_dbconn = DatabaseConnection::getInstance();
 		$this->_vo_obj_name = 'PlayerVO';
 		$this->_vo_fields = array();
-		$vo = new PlayerVO();
 		$vo = new ReflectionClass(new PlayerVO());
 
 		foreach ($vo->getProperties() AS $reflectionProperty){

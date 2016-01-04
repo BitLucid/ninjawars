@@ -1,9 +1,7 @@
 <?php
 require_once(LIB_ROOT."control/lib_player.php");
 
-
-class Skill
-{
+class Skill {
 	// *** Constructor should eventually get a specific skill's stats from the database.
 
 	/**
@@ -70,7 +68,6 @@ class Skill
 		}
 
 	    $char = new Player($char_id);
-		$char_name = $char->name();
 
 		if ($char->isAdmin()) { // Admins get access to all skills.
 			$skills = $this->skill_map['crane'] +

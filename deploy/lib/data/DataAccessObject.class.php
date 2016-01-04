@@ -33,8 +33,6 @@ abstract class DataAccessObject {
 	}
 
 	public function get($id) {
-		$vo = null;
-
 		if (!is_numeric($id)) {
 			return false;
 		}
@@ -65,7 +63,6 @@ abstract class DataAccessObject {
 	}
 
 	public function delete(ValueObject $vo) {
-		$success = null;
 		$statement = DatabaseConnection::$pdo->prepare("DELETE FROM ".$this->_table." WHERE ".$this->_id_field." = :id");
 		$statement->bindValue(':id', intval($vo->{$this->_id_field}));
 
