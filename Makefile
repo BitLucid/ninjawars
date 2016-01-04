@@ -1,4 +1,4 @@
-.PHONY: test test-integration test-unit clean dep build
+.PHONY: test test-integration test-unit clean dep build dist-clean
 
 COMPOSER=./composer.phar
 CC_DIR=./cc
@@ -43,7 +43,7 @@ clean:
 dep:
 	@$(COMPOSER) install
 
-dist-clean:
+dist-clean: clean
 	@rm -rf ./vendor/*
 	@rm -rf "$(COMPONENTS)"
 	@rm -rf "$(SRC)resources/"logs/*
