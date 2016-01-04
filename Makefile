@@ -6,8 +6,9 @@ CC_FLAG=--coverage-html $(CC_DIR)
 TEST_RUNNER=php -d zend_extension=xdebug.so ./vendor/bin/phpunit
 RELATIVE_COMPONENTS=../components/
 SRC=./deploy/
-COMPONENTS=$(SRC)components/
-JS=$(SRC)www/js/
+WWW=$(SRC)www/
+COMPONENTS=$(WWW)components/
+JS=$(WWW)js/
 
 -include CONFIG
 
