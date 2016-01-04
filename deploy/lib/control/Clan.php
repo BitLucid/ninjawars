@@ -126,10 +126,8 @@ class Clan {
      * @return string
      */
     public function invite(Player $p_target, Player $p_inviter) {
-        $failure_reason = null;
-
         if (!$p_target || empty($p_target)) {
-            return $failure_reason = 'No such ninja.';
+            return 'No such ninja.';
         }
 
         $active = $p_target->isActive();

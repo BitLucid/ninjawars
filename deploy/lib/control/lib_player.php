@@ -8,7 +8,6 @@ require_once(LIB_ROOT."control/lib_accounts.php");
  * Categorize ninja ranks by level.
  */
 function level_category($level) {
-	$res = '';
 	switch (true) {
 		case($level<2):
 			$res= 'Novice';
@@ -512,10 +511,8 @@ function update_levelling_log($who, $amount) {
         return;
     } else if ($amount > 0) {
         $record_check = '>';
-        $add = false;
     } else {
         $record_check = '<';
-        $add = true;
     }
 
     // *** UPDATE THE KILLS LOG ***

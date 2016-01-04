@@ -1,10 +1,10 @@
 <?php
-
-
-class CloneKill{
-    public static function canKill($clone1, $clone2){
-        // Input is transformed into 
-        $id1 = $id2 = null;
+/**
+ * Class to house static methods for killing characters of players with multis
+ */
+class CloneKill {
+    public static function canKill($clone1, $clone2) {
+        // Input is transformed into
         if(!$clone1 instanceof Player){
             if($clone1 == positive_int($clone1)){
                 $char1 = new Player($clone1);
@@ -67,8 +67,8 @@ class CloneKill{
     /**
      * Perform the effects of a clonekill.
      * @return string outcome or false
-    **/
-    public static function kill(Player $self, Player $clone1, Player $clone2){
+     */
+    public static function kill(Player $self, Player $clone1, Player $clone2) {
             if(self::canKill($clone1, $clone2)){
                 $today = date("F j, Y, g:i a");
                 $clone1_health = $clone1->health();

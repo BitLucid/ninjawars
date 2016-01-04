@@ -19,7 +19,7 @@ function nw_json($type, $dirty_jsoncallback) {
 		header('Content-Type: application/json; charset=utf8');
 		return json_encode(false);
 	}
-	$res = false;
+
 	//  Whitelist of valid callbacks.
 	$valid_type_map = array('player'=>'json_player','latest_event'=>'json_latest_event', 'chats'=>'json_chats', 
 		'latest_message'=>'json_latest_message', 'index'=>'json_index', 'latest_chat_id'=>'json_latest_chat_id', 

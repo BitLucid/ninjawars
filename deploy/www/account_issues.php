@@ -39,21 +39,13 @@ function send_account_email($email, $data) {
 	$mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
 	if (DEBUG) { $mail_obj->dump = true; }
 
-	$sent = false;
-	$sent = $mail_obj->send();
-
-	return $sent;
+	return $mail_obj->send();
 }
 
 // Sends the account confirmation email.
 function send_confirmation_email($email, $data) {
 	$lost_confirm = $data['verification_number'];
 	$lost_uname   = $data['uname'];
-	$confirmed    = $data['confirmed'];
-
-	/*$headers  = "MIME-Version: 1.0\r\n";
-	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
-	$headers .= 'Reply-To: '.SUPPORT_EMAIL."\r\n";*/
 
 	$_from = array(SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME);
 	$_to = array("$email"=>$data['uname']);
@@ -70,10 +62,7 @@ function send_confirmation_email($email, $data) {
 
 	if (DEBUG) { $mail_obj->dump = true; }
 
-	$sent = false;
-	$sent = $mail_obj->send();
-
-	return $sent;
+	return $mail_obj->send();
 }
 
 $email = in('email', null, 'sanitize_to_email'); // The default filter allows standard emails.

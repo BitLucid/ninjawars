@@ -30,7 +30,6 @@ require_once(LIB_ROOT.'environment/global_error_handling.php');
 require_once(LIB_ROOT.'control/assignment_functions.php');
 require_once(LIB_ROOT.'control/redirect.php');
 require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
-//require_once(OBJ_ROOT.'Sanitize.php');
 require_once(LIB_ROOT.'control/Nmail.class.php');
 
 // *** Include all common function includes here.

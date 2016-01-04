@@ -185,10 +185,7 @@ function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $
 	// *** Set replyto address. ***
 	$message->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
 	if (DEBUG) {$message->dump = true;}
-	$sent = false; // By default, assume failure.
-	$sent = $message->send();
-
-	return $sent;
+	return $message->send();
 }
 
 // Create the account and the initial ninja for that account.
@@ -240,13 +237,12 @@ function confirm_player($char_name, $confirmation=0, $autoconfirm=false) {
 		}
 	}
 
-	$up = query('update players set active = 1 where player_id = :player_id',
+	query('update players set active = 1 where player_id = :player_id',
 		array(':player_id'=>$player_id));
-	
+
 	$up = "UPDATE accounts set operational = true, confirmed = 1 where account_id = :account_id";
 	$params = array(':account_id'=>$account_id);
-	$result = (bool) rco(query($up, $params));
-	return $result;
+	return (bool) rco(query($up, $params));
 }
 
 // Check for reserved or already in use by another player.

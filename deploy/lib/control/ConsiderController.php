@@ -32,8 +32,6 @@ class ConsiderController {
             ['name'=>'Samurai',  'identity'=>'samurai',  'image'=>'samurai.png'],
         ];
 
-        $char_name = $char->name();
-
         $peers = nearby_peers($char->id());
 
         $active_ninjas = get_active_players(5, true); // Get the currently active ninjas
@@ -47,10 +45,6 @@ class ConsiderController {
         $enemy_count = rco($enemy_list);
         $recent_attackers = get_recent_attackers($char);
 
-        if (self::ENEMY_LIMIT <= $enemy_count) {
-            $max_enemies = true;
-        }
-
         return [
             'logged_in'        => (bool)$char->id(),
             'enemy_list'       => $enemy_list,
@@ -63,6 +57,7 @@ class ConsiderController {
             'recent_attackers' => $recent_attackers,
             'enemy_list'       => $enemy_list,
             'peers'            => $peers,
+            'max_enemies'      => (self::ENEMY_LIMIT <= $enemy_count),
         ];
     }
 
