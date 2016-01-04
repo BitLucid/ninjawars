@@ -4,7 +4,7 @@
  *
  * @package lib
  * @subpackage base
-**/
+ */
 
 // Cut down on the global includes, use specific includes instead.
 
@@ -32,7 +32,6 @@ require_once(LIB_ROOT.'control/redirect.php');
 require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
 //require_once(OBJ_ROOT.'Sanitize.php');
 require_once(LIB_ROOT.'control/Nmail.class.php');
-require_once(LIB_ROOT.'environment/RequestWrapper.php');
 
 // *** Include all common function includes here.
 require_once(LIB_ROOT.'control/lib_input.php');

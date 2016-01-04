@@ -1,12 +1,11 @@
 <?php
-require_once(CORE.'environment/RequestWrapper.php');
 /*
  * Deals with getting and filtering user input (just from request).
  *
  * @package input
  */
 
-use app\environment\RequestWrapper;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Input function that by default LEAVES INPUT COMPLETELY UNFILTERED

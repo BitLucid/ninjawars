@@ -2,7 +2,7 @@
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use app\environment\RequestWrapper;
+use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\DoshinController;
 use NinjaWars\core\control\SessionFactory;
 

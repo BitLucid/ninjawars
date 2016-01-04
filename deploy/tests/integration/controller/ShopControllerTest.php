@@ -4,7 +4,7 @@ require_once(CORE."control/lib_inventory.php");
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use app\environment\RequestWrapper;
+use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\ShopController;
 use NinjaWars\core\control\SessionFactory;
 

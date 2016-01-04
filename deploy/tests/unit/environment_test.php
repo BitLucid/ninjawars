@@ -2,8 +2,7 @@
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 
 use Symfony\Component\HttpFoundation\Request; // Just for request created below.
-use app\environment\RequestWrapper;
-
+use NinjaWars\core\environment\RequestWrapper;
 
 class TestInput extends PHPUnit_Framework_TestCase {
 	protected function setUp() {
