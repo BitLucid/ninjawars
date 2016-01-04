@@ -1,6 +1,8 @@
 <?php
 namespace NinjaWars\core\control;
 
+use \Player;
+
 /**
  * The controller for effects of a work request and the default index display
  * of the page and initial form
@@ -70,12 +72,12 @@ class WorkController {
         $not_enough_energy      = null;
         $use_second_description = null;
         $is_logged_in           = is_logged_in();
-        $char_id                = self_char_id();
+        $char                   = new Player(self_char_id());
 
         // Fill out some of the variables.
         $last_worked = get_setting('turns_worked');
         $recommended_to_work = ($last_worked ? $last_worked : self::DEFAULT_RECOMMENDED_TO_WORK);
-        $gold_display = number_format(get_gold($char_id));
+        $gold_display = number_format($char->gold());
 
         $parts = [
             'recommended_to_work'    => $recommended_to_work,
