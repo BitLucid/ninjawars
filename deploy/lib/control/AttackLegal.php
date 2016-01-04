@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(DB_ROOT . 'PlayerVO.class.php');
-require_once(DB_ROOT . 'PlayerDAO.class.php');
 require_once(LIB_ROOT . 'control/Player.class.php');
 
 use NinjaWars\core\control\Clan;
