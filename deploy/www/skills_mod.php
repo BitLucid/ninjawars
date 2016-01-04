@@ -1,10 +1,9 @@
 <?php
 require_once(LIB_ROOT.'control/lib_inventory.php');
 require_once(LIB_ROOT.'control/Skill.php');
-require_once(CORE.'control/AttackLegal.php');
 require_once(LIB_ROOT.'control/CloneKill.class.php');
 
-use app\combat\AttackLegal;
+use NinjaWars\core\control\AttackLegal;
 /*
  * Deals with the skill based attacks, and status effects.
  *

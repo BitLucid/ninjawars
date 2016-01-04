@@ -1,8 +1,7 @@
 <?php
-require_once(CORE.'control/AttackLegal.php');
 require_once(LIB_ROOT."control/lib_inventory.php");
 
-use app\combat\AttackLegal;
+use NinjaWars\core\control\AttackLegal;
 
 /*
  * Submission page from inventory.php to process results of item use.

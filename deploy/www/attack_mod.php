@@ -2,11 +2,9 @@
 require_once(LIB_ROOT."control/Player.class.php");
 require_once(LIB_ROOT."control/Skill.php");
 require_once(LIB_ROOT."control/lib_inventory.php");
-require_once(CORE.'control/AttackLegal.php');
-require_once(CORE.'control/Combat.php');
 
-use app\combat\AttackLegal;
-use app\combat\Combat;
+use NinjaWars\core\control\AttackLegal;
+use NinjaWars\core\control\Combat;
 
 $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
 
@@ -34,9 +32,7 @@ $blaze       = (in('blaze')   ? true : NULL);
 $deflect     = (in('deflect') ? true : NULL);
 $evade       = (in('evasion') ? true : NULL);
 
-
 set_setting('combat_toggles', array('duel'=>$duel, 'blaze'=>$blaze, 'deflect'=>$deflect, 'evasion'=>$evade)); // Save the combat toggled settings.
-
 
 $attacker_id = self_char_id();
 
@@ -50,14 +46,14 @@ $stealthed_attack = $stealth_damage = $stealth_lost = $pre_battle_stats = $round
 	$combat_final_results = $killed_target = $attacker_died = $bounty_result = $rewarded_ki  = $wrath_regain = false;
 
 // *** Attack System Initialization ***
-$killpoints               = 0; // *** Starting state for killpoints. ***
-$attack_turns             = 1; // *** Default cost, will go to zero if an error prevents combat. ***
-$required_turns           = 0;
-$what                     = ""; // *** This will be the attack type string, e.g. "duel". ***
-$loot                     = 0;
-$simultaneousKill         = NULL; // *** Not simultaneous by default. ***
-$turns_to_take            = null; // *** Even on failure take at least one turn. ***
-$attack_type              = array();
+$killpoints       = 0; // *** Starting state for killpoints. ***
+$attack_turns     = 1; // *** Default cost, will go to zero if an error prevents combat. ***
+$required_turns   = 0;
+$what             = ""; // *** This will be the attack type string, e.g. "duel". ***
+$loot             = 0;
+$simultaneousKill = NULL; // *** Not simultaneous by default. ***
+$turns_to_take    = null; // *** Even on failure take at least one turn. ***
+$attack_type      = array();
 
 if ($blaze) {
     $attack_type['blaze'] = 'blaze';
@@ -81,7 +77,7 @@ $skillListObj = new Skill();
 
 $ignores_stealth = false;
 
-foreach ($attack_type as $type){
+foreach ($attack_type as $type) {
 	$ignores_stealth = $ignores_stealth||$skillListObj->getIgnoreStealth($type);
 	$required_turns += $skillListObj->getTurnCost($type);
 }
@@ -99,25 +95,24 @@ $attack_error = $attack_legal->getError();
 $target_player    = new Player($target_id);
 $attacking_player = new Player($attacker_id);
 
-
 // ***  MAIN BATTLE ALGORITHM  ***
-if ($attack_is_legal){
+if ($attack_is_legal) {
 	// *** Target's stats. ***
-	$target_health    = $target_player->vo->health;
-	$target_level     = $target_player->vo->level;
-	$target_str       = $target_player->getStrength();
+	$target_health = $target_player->vo->health;
+	$target_level  = $target_player->vo->level;
+	$target_str    = $target_player->getStrength();
 
 	// *** Attacker's stats. ***
-	$attacker_health     = $attacking_player->vo->health;
-	$attacker_level      = $attacking_player->vo->level;
-	$attacker_turns      = $attacking_player->vo->turns;
-	$attacker_str        = $attacking_player->getStrength();
-	$class               = $attacking_player->vo->class;
+	$attacker_health = $attacking_player->vo->health;
+	$attacker_level  = $attacking_player->vo->level;
+	$attacker_turns  = $attacking_player->vo->turns;
+	$attacker_str    = $attacking_player->getStrength();
+	$class           = $attacking_player->vo->class;
 
-	$starting_target_health   = $target_health;
-	$starting_turns           = $attacker_turns;
-	$stealthAttackDamage      = $attacker_str;
-	$level_check              = $attacker_level - $target_level;
+	$starting_target_health = $target_health;
+	$starting_turns         = $attacker_turns;
+	$stealthAttackDamage    = $attacker_str;
+	$level_check            = $attacker_level - $target_level;
 
 	$loot   = 0;
 	$victor = null;
@@ -147,29 +142,26 @@ if ($attack_is_legal){
 
 			$stealth_kill = true;
 		} else {	// *** if damage from stealth only hurts the target. ***
-		
 			$stealth_damage = true;
 
 			sendMessage($attacker, $target, "$attacker has attacked you from the shadows for $stealthAttackDamage damage.");
 		}
 	} else {	// *** If the attacker is purely dueling or attacking, even if stealthed, though stealth is broken by dueling. ***
        // *** MAIN DUELING SECTION ***
-       
 
 		if ($attacking_player->hasStatus(STEALTH)) { // *** Remove their stealth if they duel instead of preventing dueling.
 		    $attacking_player->subtractStatus(STEALTH);
-		    
 		    $stealth_lost = true;
 		}
 
 		// *** PRE-BATTLE STATS - Template Vars ***
-		$pre_battle_stats = true;
+		$pre_battle_stats  = true;
 		$pbs_attacker_name = $attacking_player->name();
-		$pbs_attacker_str = $attacking_player->getStrength();
-		$pbs_attacker_hp = $attacking_player->health();
-		$pbs_target_name = $target_player->name();
-		$pbs_target_str = $target_player->getStrength();
-		$pbs_target_hp = $target_player->health();
+		$pbs_attacker_str  = $attacking_player->getStrength();
+		$pbs_attacker_hp   = $attacking_player->health();
+		$pbs_target_name   = $target_player->name();
+		$pbs_target_str    = $target_player->getStrength();
+		$pbs_target_hp     = $target_player->health();
 
 		// *** BEGINNING OF MAIN BATTLE ALGORITHM ***
 
@@ -211,7 +203,6 @@ if ($attack_is_legal){
 				}
 			}
 		}
-		
 
 		// *** END OF MAIN BATTLE ALGORITHM ***
 
@@ -244,8 +235,9 @@ if ($attack_is_legal){
 		sendMessage($attacker, $target, $combat_msg);
 
 		if ($defenderHealthRemaining < 1 || $attackerHealthRemaining < 1) { // A kill occurred.
-			if ($defenderHealthRemaining < 1) { //***  ATTACKER KILLS DEFENDER! ***
-				if ($simultaneousKill = ($attackerHealthRemaining < 1)) { // *** If both died at the same time. ***
+			if ($defenderHealthRemaining < 1) { // ATTACKER KILLS DEFENDER!
+                if ($simultaneousKill = ($attackerHealthRemaining < 1)) {
+                    // *** If both died at the same time. ***
 				} else {
 					$victor = $attacker;
 					$loser  = $target;
@@ -253,53 +245,56 @@ if ($attack_is_legal){
 
 				$killed_target = true;
 
-				$killpoints = 1; // *** Changes killpoints from zero to one. ***
+				$killpoints = 1; // Changes killpoints from zero to one.
 
 				if ($duel) {
-					$killpoints = Combat::killpointsFromDueling($attacking_player, $target_player);	// *** Changes killpoints amount by dueling equation. ***
-					$duel_log_msg     = "$attacker has dueled $target and won $killpoints killpoints.";
-					if($killpoints>1 || $killpoints<0){
-						// Only log duels if they're better than 1 or if they're a failure.
-						sendLogOfDuel($attacker, $target, 1, $killpoints);	// *** Makes a WIN record in the dueling log. ***
+                    // Changes killpoints amount by dueling equation.
+                    $killpoints = Combat::killpointsFromDueling($attacking_player, $target_player);
+
+					$duel_log_msg = "$attacker has dueled $target and won $killpoints killpoints.";
+
+                    // Only log duels if they're better than 1 or if they're a failure.
+					if ($killpoints > 1 || $killpoints < 0) {
+                        // Make a WIN record in the dueling log.
+                        sendLogOfDuel($attacker, $target, 1, $killpoints);
 					}
-					if($skillListObj->hasSkill('wrath')){
-						$wrath_regain = 10; // They'll retain 10 health for the kill, at the end.
+
+					if ($skillListObj->hasSkill('wrath')) {
+                        // They'll retain 10 health for the kill, at the end.
+                        $wrath_regain = 10;
 					}
 				}
 
-				addKills($attacker_id, $killpoints); // *** Attacker gains their killpoints. ***
+				addKills($attacker_id, $killpoints); // Attacker gains their killpoints.
 				$target_player->death();
-
-				
-				
 
 				if (!$simultaneousKill)	{
 					// This stuff only happens if you don't die also.
-				
 					$loot = round($gold_mod * get_gold($target_id));
+
 					// Add the wrath health regain to the attacker.
-					if(isset($wrath_regain)){
+					if (isset($wrath_regain)) {
 						$attacking_player->changeHealth($wrath_regain);
 					}
 				}
 
 				$target_msg = "DEATH: You've been killed by $attacker and lost $loot gold!";
 				sendMessage($attacker, $target, $target_msg);
-				
 				// Stopped telling attackers when they win a duel.
 
 				$bounty_result = runBountyExchange($attacker, $target);	// *** Determines bounty for dueling. ***
 			}
 
 			if ($attackerHealthRemaining < 1) { // *** DEFENDER KILLS ATTACKER! ***
-				if ($simultaneousKill = ($attackerHealthRemaining < 1)) { // *** If both died at the same time. ***
+                if ($simultaneousKill = ($attackerHealthRemaining < 1)) {
+                    // *** If both died at the same time. ***
 				} else {
 					$victor = $target;
 					$loser  = $attacker;
 				}
-				
+
 				$attacker_died = true;
-				
+
 				$defenderKillpoints = 1;
 
 				if ($duel) {	// *** if they were dueling when they died ***
@@ -332,14 +327,12 @@ if ($attack_is_legal){
 		add_gold(get_char_id($victor), $loot);
 		subtract_gold(get_char_id($loser), $loot);
 	}
-	
 
-	if($rounds>4){
+	if ($rounds > 4) {
 		// Even matched battle!  Reward some ki to the attacker, even if they die.
 		change_ki($attacker_id, 1); // Award Ki.
 		$rewarded_ki = 1;
 	}
-	
 }
 
 // *** Take away at least one turn even on attacks that fail. ***
@@ -355,6 +348,7 @@ $attack_again = false;
 if (isset($target)) {
     $attacker_health_snapshot = getHealth($attacker_id);
     $defender_health_snapshot = getHealth($target_id);
+
 	if ($attack_is_legal && $attacker_health_snapshot > 0 && $defender_health_snapshot > 0) {	// *** After any partial attack. ***
 		$attack_again = true;
 	}

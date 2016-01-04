@@ -1,9 +1,8 @@
 <?php
 require_once(LIB_ROOT.'control/lib_inventory.php');
-require_once(CORE.'control/AttackLegal.php');
 
 use NinjaWars\core\data\Message;
-use app\combat\AttackLegal;
+use NinjaWars\core\control\AttackLegal;
 
 $private   = false;
 $alive     = false;
@@ -20,7 +19,7 @@ $target        = $player = first_value(in('ninja'), in('player'), in('find'), in
 $target_id     = first_value(in('target_id'), in('player_id'), get_char_id($target)); // Find target_id if possible.
 $target_player_obj = new Player($target_id);
 $viewed_name_for_title = null;
-if($target_player_obj && $target_player_obj->name()){
+if ($target_player_obj && $target_player_obj->name()) {
 	$viewed_name_for_title = $target_player_obj->name();
 }
 
@@ -41,8 +40,6 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		$parts    = array();
 	} else {
 		$viewing_player_obj = new Player(self_char_id());
-
-		//$score = get_score_formula();
 
 		$self        = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
 
@@ -90,24 +87,21 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 			$combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level)->fetchAll();
 			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level)->fetchAll();
 		    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
-		    
-		    
-		    		
+
 			// Check all the combat toggles to see if they should be checked on the profile page.
-			foreach($combat_skills as &$skill){
+			foreach ($combat_skills as &$skill) {
 				$skill['checked'] = 0;
 				if(isset($combat_toggles[$skill['skill_internal_name']]) && $combat_toggles[$skill['skill_internal_name']]){
 					$skill['checked'] = 1; // Save the setting associatively back to the original array.
 				}
 			}
+
 			$duel_checked = !!$combat_toggles['duel']; // Duel isn't in the general combat skills, so it gets set separately.
-		    
-		    
+
 			// Pull the items and some necessary data about them.
 			$items = inventory_counts($char_id, $last_item_used);
-			
+
 			$valid_items = rco($items);// row count
-			//debug($items);
 		}	// End of the there-was-no-attack-error section
 
 		$set_bounty_section     = '';
@@ -135,13 +129,11 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 			}
 		}
 
-		
-
 		// Send the info to the template.
 
 		$template = 'player.tpl';
-		$parts = get_certain_vars(get_defined_vars(), array('char_info', 'viewing_player_obj', 'target_player_obj', 'combat_skills', 
-			'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today', 'level_category', 
+		$parts = get_certain_vars(get_defined_vars(), array('char_info', 'viewing_player_obj', 'target_player_obj', 'combat_skills',
+			'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today', 'level_category',
 			'gravatar_url', 'status_list', 'clan', 'clan_members', 'items', 'duel_checked'));
 	}
 }
