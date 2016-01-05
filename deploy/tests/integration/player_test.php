@@ -126,6 +126,48 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $this->assertEquals($instincts, $char->instincts());
     }
 
+    function testNegativeKiRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->set_ki(-643);
+    }
+
+    function testNegativeTurnsRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->set_turns(-345);
+    }
+
+    function testNegativeStrengthRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->setStrength(-6);
+    }
+
+    function testNegativeSpeedRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->setSpeed(-556);
+    }
+
+    function testNegativeStaminaRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->setStamina(-34);
+    }
+
+    function testNegativeHealthRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->set_health(-6);
+    }
+
+    function testNegativeGoldRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->set_gold(-45);
+    }
+
 
 
     function testPCCanObtainAGravatarUrl(){

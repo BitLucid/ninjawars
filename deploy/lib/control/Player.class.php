@@ -217,6 +217,9 @@ class Player implements Character {
 	}
 	
 	public function setStrength($str){
+		if($str < 0){
+			throw new \InvalidArgumentException('Strength cannot be set as a negative.');
+		}
 		$this->vo->strength = $str;
 	}
 
@@ -231,6 +234,13 @@ class Player implements Character {
 		}
 	}
 
+	public function setSpeed($speed){
+		if($speed < 0){
+			throw new \InvalidArgumentException('Speed cannot be set as a negative.');
+		}
+		$this->vo->speed = $speed;
+	}
+
 	public function stamina() {
 		$stam = $this->vo->stamina;
 		if ($this->hasStatus(POISON)) {
@@ -240,11 +250,21 @@ class Player implements Character {
 		}
 	}
 
+	public function setStamina($stamina){
+		if($stamina < 0){
+			throw new \InvalidArgumentException('Stamina cannot be set as a negative.');
+		}
+		$this->vo->stamina = $stamina;
+	}
+
 	public function ki() {
 		return $this->vo->ki;
 	}
 
 	public function set_ki($ki){
+		if($ki < 0){
+			throw new \InvalidArgumentException('Ki cannot be negative.');
+		}
 		return $this->vo->ki = max($ki, 0); // no negative ki
 	}
 
@@ -257,6 +277,9 @@ class Player implements Character {
 	}
 
 	public function set_gold($gold) {
+		if($gold < 0){
+			throw new \InvalidArgumentException('Gold cannot be made negative.');
+		}
 		return $this->vo->gold = $gold;
 	}
 
@@ -300,6 +323,9 @@ class Player implements Character {
 	}
 
 	public function set_turns($turns){
+		if($turns < 0){
+			throw new \InvalidArgumentException('Turns cannot be made negative.');
+		}
 		return $this->vo->turns = $turns;
 	}
 
@@ -388,6 +414,13 @@ class Player implements Character {
 		$id = $this->id();
 		$sel = "SELECT health from players where player_id = :id";
 		return query_item($sel, array(':id'=>array($id, PDO::PARAM_INT)));
+	}
+
+	public function set_health($health){
+		if($health < 0){
+			throw new \InvalidArgumentException('Health cannot be made negative.');
+		}
+		return $this->vo->health = $health;
 	}
 
 	// Return the amount below the max health (or zero).
