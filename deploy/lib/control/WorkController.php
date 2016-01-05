@@ -67,7 +67,6 @@ class WorkController {
         $worked                 = null;
         $earned_gold               = null;
         $not_enough_energy      = null;
-        $use_second_description = null;
         $is_logged_in           = is_logged_in();
         $char                   = new Player(self_char_id());
 
