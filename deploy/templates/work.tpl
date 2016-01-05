@@ -17,7 +17,7 @@ $(document).ready(function (){
     		<p class='ninja-notice'>You don't have the energy in turns to do {if $worked} {$worked} turns of work.{else} that much work.{/if}</p>
 {/if}
 
-{if !$new_gold}
+{if !$earned_gold}
 <div class="description">
 <!-- For google ad targetting -->
 <!-- google_ad_section_start -->
@@ -36,7 +36,7 @@ $(document).ready(function (){
     <p>The samurai foreman hands you a small pouch of gold as he says
     <em class='speech'>Care to put a little more work in? I'll pay the same rate.</em></p>
     
-    <p class='ninja-notice'>You have worked for {$worked} {if $worked eq 1}turn{else}turns{/if} and earned {$new_gold} gold.</p>
+    <p class='ninja-notice'>You have worked for {$worked} {if $worked eq 1}turn{else}turns{/if} and earned {$earned_gold} gold.</p>
     
 </div>
 {/if}

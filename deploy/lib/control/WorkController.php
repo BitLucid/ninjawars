@@ -40,11 +40,9 @@ class WorkController {
             $char->set_gold($gold+$earned_gold);
             $char->set_turns($turns-$worked);
             $char->save();
-
-            $use_second_description = true;
         }
 
-        $gold_display = number_format(get_gold($char_id));
+        $gold_display = number_format($char->gold());
 
         $parts = [
             'recommended_to_work'    => $recommended_to_work,
@@ -52,9 +50,8 @@ class WorkController {
             'is_logged_in'           => $is_logged_in,
             'gold_display'           => $gold_display,
             'worked'                 => $worked,
-            'new_gold'               => $new_gold,
+            'earned_gold'            => $earned_gold,
             'not_enough_energy'      => $not_enough_energy,
-            'use_second_description' => $use_second_description,
         ];
 
         return $this->render($parts);
