@@ -124,7 +124,6 @@ function revive_players($params=array()) {
 	$minor_revive_to      = (isset($params['minor_revive_to']) ? $params['minor_revive_to'] : 100); // minor_revive_to, default 100
 	$major_revive_percent = (isset($params['major_revive_percent']) ? $params['major_revive_percent'] : 5); // major_revive_percent, default 5%
 	$just_testing         = isset($params['just_testing']);
-	$revive_amount        = 0; // Initial.
 	$major_hour           = 3; // Hour for the major revive.
 
 	/* General idea should be:

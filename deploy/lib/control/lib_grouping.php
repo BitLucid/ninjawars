@@ -102,25 +102,25 @@ function get_recent_attackers($self=null) {
 }
 
 // Select characters right nearby in ranking score, up and down.
-function nearby_peers($char_id/*, $limit=5*/) {
+function nearby_peers($char_id) {
 	$sel =
 		"(SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id WHERE score >
             (SELECT score FROM player_rank WHERE _player_id = :char_id) AND active = 1 AND health > 0 ORDER BY score ASC LIMIT 5)
         UNION
         (SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id WHERE score <
             (SELECT score FROM player_rank WHERE _player_id = :char_id2) AND active = 1 AND health > 0 ORDER BY score DESC LIMIT 5)";
+
 	$peers = query_array($sel, array(
 		':char_id'=>array($char_id, PDO::PARAM_INT)
 		, ':char_id2'=>array($char_id, PDO::PARAM_INT)
-		/*, ':limit'=>array($limit, PDO::PARAM_INT)
-		, ':limit2'=>array($limit, PDO::PARAM_INT)*/
 		)
 	);
+
 	if(!count($peers)){
 		// Get bottom 10 players if not yet ranked.
-		$peers = query_array('SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id 
+		$peers = query_array('SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id
 			where active = 1 and health > 0
-			order by rank_id desc limit 10');	
+			order by rank_id desc limit 10');
 	}
 
 	$peers = array_map('format_health_percent', $peers);

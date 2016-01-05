@@ -95,7 +95,6 @@ class StatsController {
 		$char			= new Player($char_id);
 		$player			= self_info();
 		$player_clan	= get_clan_by_player_id($char_id);
-		// $player['created_date']=$player['created_date']? date("c", strtotime($player['created_date'])) : null;
 		$class_theme	= class_theme($char->class_identity());
 		$level_category	= level_category($player['level']);
 

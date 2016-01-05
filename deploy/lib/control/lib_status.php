@@ -14,7 +14,6 @@
  */
 function get_status_list($target=null) {
 	$states = array();
-	$result = '';
 	$target = (isset($target) && (int)$target == $target ? $target : self_char_id());
 
 	// Default to showing own status.
@@ -35,14 +34,13 @@ function get_status_list($target=null) {
 		if ($target->hasStatus(FROZEN)) { $states[] = 'Frozen'; }
 		if ($target->hasStatus(STR_UP1)) { $states[] = 'Buff'; }
 		if ($target->hasStatus(STR_UP2)) { $states[] = 'Strength+'; }
-		
+
 		// If any of the shield skills are up, show a single status state for any.
 		if($target->hasStatus(FIRE_RESISTING) || $target->hasStatus(INSULATED) || $target->hasStatus(GROUNDED)
 		    || $target->hasStatus(BLESSED) || $target->hasStatus(IMMUNIZED)
 		    || $target->hasStatus(ACID_RESISTING)){
 		    $states[] = 'Shielded';
-		}	
-		
+		}
 	}
 
 	return $states;

@@ -17,10 +17,6 @@ function user_having_email($email) {
 
 // Sends an email for the user's account data.
 function send_account_email($email, $data) {
-	/*$headers  = "MIME-Version: 1.0\r\n";
-	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
-	$headers .= 'Reply-To: '.SUPPORT_EMAIL."\r\n";*/
-
 	$_from = array(SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME);
 
 	/* additional headers */

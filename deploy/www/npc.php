@@ -34,7 +34,6 @@ $possible_npcs = array_merge($static_npcs, array_keys($npcs));
 $victim = restrict_to($victim, $possible_npcs); // Filter to only the correct options.
 
 if($turns > 0 && !empty($victim)) {
-
 	// Strip stealth when attacking samurai or oni
 	if ($player->hasStatus('stealth') && (strtolower($victim) == 'samurai' || strtolower($victim) == 'oni')) {
 		$player->subtractStatus(STEALTH);
@@ -43,7 +42,6 @@ if($turns > 0 && !empty($victim)) {
 	$attacker_str    = $player->getStrength();
 	$attacker_health = $player->vo->health;
 	$attacker_gold   = $player->vo->gold;
-
 
 	// Perform a random encounter (currently only oni).
 	if ($random_encounter) { // *** ONI, Mothafucka! ***
@@ -77,9 +75,6 @@ if($turns > 0 && !empty($victim)) {
 
 		$npc_template = 'npc.oni.tpl';
 		$combat_data = array('victory'=>$oni_killed);
-
-
-
 	} elseif (array_key_exists($victim, $npcs)){ /**** Abstracted NPCs *****/
 		$npc_stats = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
 
@@ -161,7 +156,6 @@ if($turns > 0 && !empty($victim)) {
 				// Get the statuses and status classes for display.
 				$display_statuses = implode(', ', get_status_list());
 				$display_status_classes = implode(' ', get_status_list()); // TODO: Take healthy out of the list since it's redundant.
-				//$display_statuses = $display_statuses_classes = string_status($status_effect); // Get the string of a status.
 			}
 		}
 
