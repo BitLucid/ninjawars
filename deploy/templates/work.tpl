@@ -1,16 +1,3 @@
-<script type='text/javascript'>
-{literal}
-$(document).ready(function (){
-	$('#attack-peasant-link').click(function () {
-		return confirm('A peasant?  Or a disguised ninja?  Attack one of the peasants?');
-	});
-	$('#attack-samurai-link').click(function () {
-		return confirm('A samurai. Attack him?');
-	});
-});
-{/literal}
-</script>
-
 <h1>Working in the Village</h1>
 
 {if $not_enough_energy}
@@ -21,8 +8,8 @@ $(document).ready(function (){
 <div class="description">
 <!-- For google ad targetting -->
 <!-- google_ad_section_start -->
-    <p>On your way to the foreman's office, you pass by several <a href='npc.php?attacked=1&victim=peasant' target='main' id='attack-peasant-link' title='A peasant?  Or a disguised ninja?  Kill one of the peasants.' class='npc'>peasants</a> drenched in sweat from working in the sun all day.</p>
-    <p><a href='npc.php?attacked=1&victim=samurai' target='main' title='A samurai?  Kill him.' id='attack-samurai-link' class='npc'>A foreman in samurai armor</a> barely looks up at you as he busies himself with paperwork and a cigarette. </p>
+    <p>On your way to the foreman's office, you pass by several <a href='npc.php?attacked=1&victim=peasant' target='main' id='attack-peasant-link' title='A peasant?  Or a disguised ninja?  Kill one of the peasants.' class='npc click-message'>peasants</a> drenched in sweat from working in the sun all day.</p>
+    <p><a href='npc.php?attacked=1&victim=samurai' target='main' title='A samurai?  Kill him.' id='attack-samurai-link' class='npc click-message'>A foreman in samurai armor</a> barely looks up at you as he busies himself with paperwork and a cigarette. </p>
     <p class='speech'>So, how much work can we expect from you?</p>
 <!-- google_ad_section_end -->
 </div>
@@ -88,3 +75,15 @@ google_ad_height = 250;
 <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 
+<script type='text/javascript'>
+{literal}
+$(document).ready(function (){
+    $('#attack-peasant-link').click(function () {
+        return confirm('A peasant?  Or a disguised ninja?  Attack one of the peasants?');
+    });
+    $('#attack-samurai-link').click(function () {
+        return confirm('A samurai. Attack him?');
+    });
+});
+{/literal}
+</script>

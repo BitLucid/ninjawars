@@ -65,7 +65,7 @@ class WorkController {
         // Initialize variables to pass to the template.
         $work_multiplier        = self::WORK_MULTIPLIER;
         $worked                 = null;
-        $new_gold               = null;
+        $earned_gold               = null;
         $not_enough_energy      = null;
         $use_second_description = null;
         $is_logged_in           = is_logged_in();
@@ -82,9 +82,8 @@ class WorkController {
             'is_logged_in'           => $is_logged_in,
             'gold_display'           => $gold_display,
             'worked'                 => $worked,
-            'new_gold'               => $new_gold,
+            'earned_gold'            => $earned_gold,
             'not_enough_energy'      => $not_enough_energy,
-            'use_second_description' => $use_second_description,
         ];
 
         return $this->render($parts);
