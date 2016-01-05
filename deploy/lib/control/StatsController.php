@@ -45,7 +45,7 @@ class StatsController {
 		$char->set_beliefs($beliefs);
 		$char->set_traits($traits);
 
-		$changed = PlayerDAO::saveDetails($char);
+		$char->save();
 
 		return new RedirectResponse('/stats.php?changed='.(int)$changed);
 	}

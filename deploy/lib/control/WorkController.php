@@ -1,6 +1,8 @@
 <?php
 namespace NinjaWars\core\control;
 
+use \Player;
+
 /**
  * The controller for effects of a work request and the default index display
  * of the page and initial form
@@ -19,23 +21,25 @@ class WorkController {
         // Initialize variables to pass to the template.
         $work_multiplier        = self::WORK_MULTIPLIER;
         $worked                 = intval(in('worked'));
-        $new_gold               = null;
+        $earned_gold            = null;
         $not_enough_energy      = null;
         $use_second_description = null;
         $recommended_to_work    = $worked;
         $is_logged_in           = is_logged_in();
         $char_id                = self_char_id();
-        $turns                  = get_turns($char_id);
+        $char                   = new Player($char_id);
+        $turns                  = $char->turns();
+        $gold                   = $char->gold();
 
         set_setting('turns_worked', $worked);
 
         if ($worked > $turns) {
             $not_enough_energy = true;
         } else {
-            $new_gold  = $worked * $work_multiplier; // calc amount worked
-
-            add_gold($char_id, $new_gold);
-            subtractTurns($char_id, $worked);
+            $earned_gold  = $worked * $work_multiplier; // calc amount worked
+            $char->set_gold($gold+$earned_gold);
+            $char->set_turns($turns-$worked);
+            $char->save();
 
             $use_second_description = true;
         }
@@ -68,12 +72,12 @@ class WorkController {
         $not_enough_energy      = null;
         $use_second_description = null;
         $is_logged_in           = is_logged_in();
-        $char_id                = self_char_id();
+        $char                   = new Player(self_char_id());
 
         // Fill out some of the variables.
         $last_worked = get_setting('turns_worked');
         $recommended_to_work = ($last_worked ? $last_worked : self::DEFAULT_RECOMMENDED_TO_WORK);
-        $gold_display = number_format(get_gold($char_id));
+        $gold_display = number_format($char->gold());
 
         $parts = [
             'recommended_to_work'    => $recommended_to_work,

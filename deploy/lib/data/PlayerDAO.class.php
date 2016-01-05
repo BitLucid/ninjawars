@@ -4,6 +4,9 @@ require_once(DB_ROOT . "PlayerVO.class.php");
 
 use NinjaWars\core\data\DatabaseConnection;
 
+class UnableToSaveException extends \Exception{
+}
+
 /*
  * Creates the player value objects.
  * Essentially it acts as the model (creator) if Model-View-Controller were in play.
@@ -43,7 +46,7 @@ class PlayerDAO extends DataAccessObject {
 	 */
 	public function save(ValueObject $vo) {
 		if(empty($vo)){
-			return false;
+			return \UnableToSaveException('Uninitialized character is unable to be saved.');
 		}
 		$vo2 = clone $vo; // Make cloned copy of the vo
 		// Have to unset joined class data, though not the _foreign keys, I guess.

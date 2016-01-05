@@ -58,6 +58,14 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 		$this->assertTrue((bool)positive_int($char->damage()));
     }
 
+    public function testPCHasVariousAttributesAndCanSetSome(){
+        $char = new Player($this->char_id);
+        $this->assertTrue(is_int($char->gold()));
+        $this->assertTrue(is_int($char->turns()));
+        $this->assertTrue(is_int($char->set_gold(45)));
+        $this->assertTrue(is_int($char->set_turns(32)));
+    }
+
     /**
      * group char
     **/
@@ -109,13 +117,55 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $char->set_description($desc);
         $char->set_goals($goals);
         $char->set_instincts($instincts);
-        PlayerDAO::saveDetails($char);
+        $char->save();
         $char = new Player($this->char_id); // Create a new player copy.
         $this->assertEquals($desc, $char->description());
         $this->assertEquals($traits, $char->traits());
         $this->assertEquals($bel, $char->beliefs());
         $this->assertEquals($goals, $char->goals());
         $this->assertEquals($instincts, $char->instincts());
+    }
+
+    function testNegativeKiRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->set_ki(-643);
+    }
+
+    function testNegativeTurnsRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->set_turns(-345);
+    }
+
+    function testNegativeStrengthRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->setStrength(-6);
+    }
+
+    function testNegativeSpeedRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->setSpeed(-556);
+    }
+
+    function testNegativeStaminaRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->setStamina(-34);
+    }
+
+    function testNegativeHealthRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->set_health(-6);
+    }
+
+    function testNegativeGoldRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->set_gold(-45);
     }
 
 
@@ -126,18 +176,15 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $this->assertTrue(strpos($char->avatarUrl(), 'avatar') !== false);
     }
 
-	/**
-	 * group char
-	**/
     function testCreatePlayerObjectCanSaveChanges(){
     	$char = new Player($this->char_id);
     	$ki = $char->ki();
-    	$char->add_ki(55);
-    	$player_factory = new PlayerDAO();
-    	$this->markTestIncomplete('Player objects not yet self-saving');
-    	$player_factory->save($char->vo);
+    	$char->set_ki($ki+55);
+        $char->set_gold(343);
+        $char->save();
     	$char_copy = new Player($this->char_id);
     	$this->assertEquals($char_copy->ki(), $ki+55);
+        $this->assertEquals($char_copy->gold(), 343);
     }
 
 }

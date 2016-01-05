@@ -217,6 +217,9 @@ class Player implements Character {
 	}
 	
 	public function setStrength($str){
+		if($str < 0){
+			throw new \InvalidArgumentException('Strength cannot be set as a negative.');
+		}
 		$this->vo->strength = $str;
 	}
 
@@ -231,6 +234,13 @@ class Player implements Character {
 		}
 	}
 
+	public function setSpeed($speed){
+		if($speed < 0){
+			throw new \InvalidArgumentException('Speed cannot be set as a negative.');
+		}
+		$this->vo->speed = $speed;
+	}
+
 	public function stamina() {
 		$stam = $this->vo->stamina;
 		if ($this->hasStatus(POISON)) {
@@ -240,18 +250,22 @@ class Player implements Character {
 		}
 	}
 
+	public function setStamina($stamina){
+		if($stamina < 0){
+			throw new \InvalidArgumentException('Stamina cannot be set as a negative.');
+		}
+		$this->vo->stamina = $stamina;
+	}
+
 	public function ki() {
 		return $this->vo->ki;
 	}
 
-	public function add_ki($amount) {
-		query('update players set ki = ki + :amount where player_id = :id', array(':amount'=>$amount, ':id'=>$this->id()));
-		$this->vo->ki = $this->vo->ki + $amount;
-	}
-
-	public function subtract_ki($amount) {
-		query('update players set ki = case when (ki - :amount) < 1 then 0 else ki - :amount2 end where player_id = :id', array(':amount'=>$amount, ':amount2'=>$amount, ':id'=>$this->id()));
-		$this->vo->ki = max(0, $this->vo->ki - $amount); // Change ki, but min out at zero.
+	public function set_ki($ki){
+		if($ki < 0){
+			throw new \InvalidArgumentException('Ki cannot be negative.');
+		}
+		return $this->vo->ki = max($ki, 0); // no negative ki
 	}
 
 	public function karma() {
@@ -260,6 +274,13 @@ class Player implements Character {
 
 	public function gold() {
 		return $this->vo->gold;
+	}
+
+	public function set_gold($gold) {
+		if($gold < 0){
+			throw new \InvalidArgumentException('Gold cannot be made negative.');
+		}
+		return $this->vo->gold = $gold;
 	}
 
 	public function hasStatus($p_status) {
@@ -298,8 +319,14 @@ class Player implements Character {
 	}
 
 	public function turns() {
-		return get_turns($this->id());
-		//return $this->vo->turns;
+		return $this->vo->turns;
+	}
+
+	public function set_turns($turns){
+		if($turns < 0){
+			throw new \InvalidArgumentException('Turns cannot be made negative.');
+		}
+		return $this->vo->turns = $turns;
 	}
 
 	public function changeTurns($amount) {
@@ -389,6 +416,13 @@ class Player implements Character {
 		return query_item($sel, array(':id'=>array($id, PDO::PARAM_INT)));
 	}
 
+	public function set_health($health){
+		if($health < 0){
+			throw new \InvalidArgumentException('Health cannot be made negative.');
+		}
+		return $this->vo->health = $health;
+	}
+
 	// Return the amount below the max health (or zero).
 	public function hurt_by() {
 		return max(0, 
@@ -428,6 +462,19 @@ class Player implements Character {
 			$this->avatar_url = generate_gravatar_url($this);
 		}
 		return $this->avatar_url;
+	}
+
+	/**
+	 * Save information
+	 * Saves:
+	 * gold
+	 * turns
+	 * all non-foreign key data in vo
+	 * @return bool
+	 */
+	public function save(){
+		$factory = new PlayerDAO();
+		return $factory->save($this->vo);
 	}
 
 }
