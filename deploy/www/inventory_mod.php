@@ -325,7 +325,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			}
 
 			// Send mails if the target was killed.
-			send_kill_mails($player->name(), $target, $attacker_id, $article, $item->getName(), $today=null, $loot);
+			send_kill_mails($player->name(), $target, $attacker_id, $article, $item->getName(), $loot);
 		} else { // They weren't killed.
 			$attacker_id = $player->name();
 		}

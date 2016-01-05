@@ -5,10 +5,6 @@ require_once(ROOT.'core/data/Item.php'); // Require the item object.
 
 // FUNCTIONS
 
-function items_info($item_id=null) {
-	return query('select * from item');
-}
-
 function getItemByID($p_itemID) {
 	return buildItem(item_info($p_itemID));
 }
@@ -156,7 +152,7 @@ function caltrop_turn_loss($targets_turns, $near_level_power_increase){
 
 
 // Send out the killed messages.
-function send_kill_mails($username, $target, $attacker_id, $article, $item, $today=null, $loot){
+function send_kill_mails($username, $target, $attacker_id, $article, $item, $loot) {
 	$target_email_msg   = "You have been killed by $attacker_id with $article $item and lost $loot gold.";
 	sendMessage($attacker_id,$target,$target_email_msg);
 
@@ -168,7 +164,7 @@ function send_kill_mails($username, $target, $attacker_id, $article, $item, $tod
 function standard_items() {
 	// Codename means it can have a link to be used, apparently...
 	// Pull this from the database.
-	$it = items_info();
+	$it = query('select * from item');
 
 	$res = array();
 	// Format the items for display on the inventory.
@@ -177,6 +173,7 @@ function standard_items() {
 		$item['display'] = $item['item_display_name'].$item['plural'];
 		$res[$item['item_id']] = $item;
 	}
+
 	return $res;
 }
 
