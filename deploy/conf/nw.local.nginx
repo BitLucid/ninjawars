@@ -39,7 +39,7 @@ server {
 	}
 
 	location ~ \.php$ {
-		fastcgi_param PHP_VALUE "auto_prepend_file=/srv/ninjawars/deploy/lib/base.inc.php \n session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
+		fastcgi_param PHP_VALUE "auto_prepend_file=/srv/ninjawars/deploy/lib/base.inc.php \n session.cookie_domain=nw.local \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
 		fastcgi_pass unix:/var/run/php5-fpm.sock;
 		fastcgi_index index.php;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
@@ -47,7 +47,7 @@ server {
 	}
 
 	location @php {
-		fastcgi_param PHP_VALUE "auto_prepend_file=/srv/ninjawars/deploy/lib/base.inc.php \n session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
+		fastcgi_param PHP_VALUE "auto_prepend_file=/srv/ninjawars/deploy/lib/base.inc.php \n session.cookie_domain=nw.local \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
 		fastcgi_pass unix:/var/run/php5-fpm.sock;
 		fastcgi_index index.php;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
