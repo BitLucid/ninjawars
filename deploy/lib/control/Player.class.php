@@ -245,7 +245,7 @@ class Player implements Character {
 	}
 
 	public function set_ki($ki){
-		return $this->vo->ki = $ki;
+		return $this->vo->ki = max($ki, 0); // no negative ki
 	}
 
 	public function karma() {
