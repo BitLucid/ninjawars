@@ -15,8 +15,9 @@ require_once(LIB_ROOT."control/lib_player.php");
 DatabaseConnection::getInstance();
 
 $session      = SessionFactory::getSession();
-$username     = self_name();
-$char_id      = self_char_id();
+$char = new Player(self_char_id());
+$username     = $char->name();
+$char_id      = $char->id();
 $searched     = in('searched', null, 'no filter'); // Don't filter the search setting.
 $list_by_rank = ($searched && substr_compare($searched, '#', 0, 1) === 0); // Whether the search is by rank.
 
@@ -28,7 +29,7 @@ $page         = in('page', 1); // Page will get changed down below.
 $alive_count  = 0;
 $record_limit = 20; // *** The number of players that gets shown per page.
 $view_type    = in('view_type');
-$rank         = get_rank($char_id);
+$rank         = get_rank($char->id());
 
 $dead_count = query_item("SELECT count(player_id) FROM rankings WHERE alive = false");
 
