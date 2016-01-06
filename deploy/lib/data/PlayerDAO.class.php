@@ -53,7 +53,7 @@ class PlayerDAO extends DataAccessObject {
 		unset($vo2->identity);
 		unset($vo2->class_name);
 		unset($vo2->theme);
-		parent::save($vo2);
+		return parent::save($vo2);
 	}
 
 	/**

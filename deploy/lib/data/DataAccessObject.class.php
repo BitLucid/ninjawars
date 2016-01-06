@@ -25,12 +25,13 @@ abstract class DataAccessObject {
 	public function save(ValueObject $vo) {
 		// *** Check the ID of the value object to see whether it was pre-existing.
 		if ($vo->{$this->_id_field} === null) {
-			$this->_insert($vo);
+			$outcome = $this->_insert($vo);
 			$this->_last_saved_or_updated = 'saved';
 		} else {
-			$this->_update($vo);
+			$outcome = (bool) $this->_update($vo);
 			$this->_last_saved_or_updated = 'updated';
 		}
+		return $outcome;
 	}
 
 	public function get($id) {
@@ -108,6 +109,7 @@ abstract class DataAccessObject {
 
 		$statement->bindValue(':id', intval($vo->{$this->_id_field}));
 		$statement->execute();
+		return $statement->rowCount();
 	}
 
 	private function _insert($vo) {
@@ -141,5 +143,6 @@ abstract class DataAccessObject {
 		// The new id is set at the beginning of the function.
 		// set id on vo
 		$vo->{$this->_id_field} = $new_id;
+		return $new_id;
 	}
 }
