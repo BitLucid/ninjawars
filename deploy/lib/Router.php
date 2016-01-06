@@ -295,7 +295,7 @@ class Router {
             if (self::isServableFile($mainRoute)) {
                 include($mainRoute);
             } else {
-                if (self::$routes[$mainRoute]['type'] === 'simple') {
+                if (isset(self::$routes[$mainRoute]) && self::$routes[$mainRoute]['type'] === 'simple') {
                     $response = [
                         'template' => "$mainRoute.tpl",
                         'title'    => self::$routes[$mainRoute]['title'],
