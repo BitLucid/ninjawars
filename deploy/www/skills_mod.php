@@ -129,9 +129,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 	} elseif ($command == 'Steal') {
 		$covert = true;
 
-		$gold_decrease = rand(1, 50);
-		$target_gold   = $target->vo->gold;
-		$gold_decrease = ($target_gold < $gold_decrease ? $target_gold : $gold_decrease);
+		$gold_decrease = min($target->gold(), rand(5, 50));
 
 		add_gold($char_id, $gold_decrease); // *** This one actually adds the value.
 		subtract_gold($target->id(), $gold_decrease); // *** Subtracts whatever positive value is put in.
@@ -358,10 +356,11 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		} else { // Attacker killed someone else.
 			$killed_target = true;
 			$gold_mod = 0.15;
-			$loot     = round($gold_mod * get_gold($target->id()));
-
-			subtract_gold($target->id(), $loot);
-			add_gold($char_id, $loot);
+			$loot     = floor($gold_mod * $target->gold());
+			$player->set_gold($player->gold()+$loot);
+			$target->set_gold($target->gold()-$loot);
+			$player->save();
+			$target->save();
 
 			addKills($char_id, 1);
 

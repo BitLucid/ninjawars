@@ -474,7 +474,8 @@ class Player implements Character {
 	 */
 	public function save(){
 		$factory = new PlayerDAO();
-		return $factory->save($this->vo);
+		$updated = $factory->save($this->vo);
+		return $this;
 	}
 
 }

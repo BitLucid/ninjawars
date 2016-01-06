@@ -26,8 +26,7 @@ class StatsController {
 	* Change account details
 	*/
 	public function changeDetails() {
-		$char_id	= self_char_id();
-		$char		= new Player($char_id);
+		$char		= new Player(self_char_id());
 
 		$description	= post('description', $char->description());
 		$goals			= post('goals', $char->goals());
@@ -45,9 +44,9 @@ class StatsController {
 		$char->set_beliefs($beliefs);
 		$char->set_traits($traits);
 
-		$char->save();
+		$char = $char->save();
 
-		return new RedirectResponse('/stats.php?changed='.(int)$changed);
+		return new RedirectResponse('/stats.php?changed=1');
 	}
 
 	/**
@@ -55,7 +54,7 @@ class StatsController {
 	*/
 	public function updateProfile()
 	{
-		$char_id			= self_char_id();
+		$char               = new Player(self_char_id());
 		$new_profile		= trim(in('newprofile', null, null)); // Unfiltered input.
 		$profile_changed	= false;
 		$error				= '';
@@ -64,7 +63,7 @@ class StatsController {
 			DatabaseConnection::getInstance();
 			$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET messages = :profile WHERE player_id = :char_id');
 			$statement->bindValue(':profile', $new_profile);
-			$statement->bindValue(':char_id', $char_id);
+			$statement->bindValue(':char_id', $char->id());
 			$statement->execute();
 			$profile_changed = true;
 		} else {
@@ -86,20 +85,17 @@ class StatsController {
 	* Display the default stats page
 	**/
 	public function index() {
-		return $this->render([]);
-	}
-
-	private function render($parts) {
 		// default parts
 		$char_id		= self_char_id();
-		$char			= new Player($char_id);
+		$char			= new Player(self_char_id());
 		$player			= self_info();
 		$player_clan	= get_clan_by_player_id($char_id);
 		$class_theme	= class_theme($char->class_identity());
 		$level_category	= level_category($player['level']);
 
-		$parts = array_merge([
+		$parts = [
 			'player'		=> $player,
+			'char'			=> $char,
 			'player_clan'	=> $player_clan,
 			'clan_id'		=> $player_clan ? $player_clan->getID() : false,
 			'clan_name'		=> $player_clan ? $player_clan->getName() : false,
@@ -114,7 +110,9 @@ class StatsController {
 			'goals'			=> $char->goals(),
 			'description'	=> $char->description(),
 
-			'username'				=> self_name(),
+			'gold_display'    => number_format($char->gold()),
+			'bounty_display'  => number_format($char->vo->bounty),
+
 			'level_category'		=> $level_category,
 			'class_theme'			=> $class_theme,
 			'gravatar_url'			=> generate_gravatar_url($player['player_id']),
@@ -124,7 +122,12 @@ class StatsController {
 			'successMessage'	=> '',
 			'profile_changed'	=> (bool) in('profile_changed'),
 			'changed'			=> (bool) in('changed'),
-		], $parts);
+		];
+
+		return $this->render($parts);
+	}
+
+	private function render($parts) {
 
 		return [
 			'template'	=> 'stats.tpl',

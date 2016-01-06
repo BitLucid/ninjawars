@@ -1,4 +1,7 @@
 
+{assign var="charName" value=$target->name()|escape}
+{assign var="charName" value="<strong class=\"char-name\">$charName</strong>"}
+
 <section>
 	<h1>Skill Effect</h1>
 
@@ -32,8 +35,7 @@
   </table>
 	{/if}
 
-	{assign var="charName" value=$target|escape}
-	{assign var="charName" value="<strong class=\"char-name\">$charName</strong>"}
+
 
 	{if $generic_skill_result_message}
   {$generic_skill_result_message|replace:'__TARGET__':$charName}

@@ -312,10 +312,12 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				if (!$gold_mod) {
 					$gold_mod = 0.15;
 				}
-
-				$loot = round($gold_mod * get_gold($target_id));
-				subtract_gold($target_id, $loot);
-				add_gold($user_id, $loot);
+				$initial_gold = $targetObj->gold();
+				$loot = floor($gold_mod * $initial_gold);
+				$targetObj->set_gold($initial_gold-$loot);
+				$player->set_gold($player->gold()+$loot);
+				$player->save();
+				$targetObj->save();
 				addKills($user_id, 1);
 				$kill = true;
 				$bountyMessage = runBountyExchange($player->name(), $target);  //Rewards or increases bounty.

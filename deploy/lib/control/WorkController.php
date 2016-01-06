@@ -50,7 +50,7 @@ class WorkController {
             'is_logged_in'           => $is_logged_in,
             'gold_display'           => $gold_display,
             'worked'                 => $worked,
-            'earned_gold'            => $earned_gold,
+            'earned_gold'            => number_format($earned_gold),
             'not_enough_energy'      => $not_enough_energy,
         ];
 
@@ -81,7 +81,7 @@ class WorkController {
             'is_logged_in'           => $is_logged_in,
             'gold_display'           => $gold_display,
             'worked'                 => $worked,
-            'earned_gold'            => $earned_gold,
+            'earned_gold'            => number_format($earned_gold),
             'not_enough_energy'      => $not_enough_energy,
         ];
 
