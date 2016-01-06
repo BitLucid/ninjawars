@@ -17,7 +17,7 @@
 </style>
 
 
-<h1>Ninja Stats for {$username|escape}</h1>
+<h1>Ninja Stats for {$char->name()|escape}</h1>
 
 <div id='content' class='your-stats'>
 
@@ -65,10 +65,10 @@
       </li>
       <li>Turns: <span class='turns-count'>{$player.turns|escape}</span></li>
       <li>Kills: {$player.kills|escape}</li>
-      <li class='gold-count'>Gold: {$player.gold|escape}</li>
+      <li class='gold-count'>Gold: {$gold_display|escape}</li>
       <li>Created: <time class='timeago' datetime='{$player.created_date|escape}'>{$player.created_date|escape}</time></li>
       <li>Rank: {$rank_display|escape}</li>
-      <li>Bounty: <span class='gold-count'>{$player.bounty|escape} gold</span></li>
+      <li>Bounty: <span class='gold-count'>{$bounty_display|escape} gold</span></li>
         {if $player_clan}
       <li>
         Clan:
