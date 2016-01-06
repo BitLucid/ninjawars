@@ -6,8 +6,6 @@ require_once(LIB_ROOT."control/lib_inventory.php");
 use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\control\Combat;
 
-$today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
-
 /*
  * Deals with the non-skill based attacks and stealthed attacks.
  *
@@ -120,17 +118,20 @@ if ($attack_is_legal) {
 
 	// *** ATTACKING + STEALTHED SECTION  ***
 	if (!$duel && $attacking_player->hasStatus(STEALTH)) { // *** Not dueling, and attacking from stealth ***
+		// TODO: This area seems to be the area that contains the broken stealth-kill-without-reporting bug
+		// https://github.com/BitLucid/ninjawars/issues/273
 		$attacking_player->subtractStatus(STEALTH);
 		$turns_to_take = 1;
 
 		$stealthed_attack = true;
+		$target_health = subtractHealth($target_id, $stealthAttackDamage);
 
-		if (!subtractHealth($target_id, $stealthAttackDamage)) { // *** if Stealth attack of whatever damage kills target. ***
+		if (0 > $target_health) { // *** if Stealth attack of whatever damage kills target. ***
 			$victor = $attacker;
 			$loser  = $target;
 
 			$gold_mod     = .1;
-			$loot         = round($gold_mod * get_gold($target_id));
+			$loot         = floor($gold_mod * $target_player->gold());
 
 			$target_msg   = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold!";
 			$attacker_msg = "You have killed $target in combat and taken $loot gold.";
@@ -186,7 +187,7 @@ if ($attack_is_legal) {
 			}
 
 			if ($deflect) {
-				$target_damage = round($target_damage/2);
+				$target_damage = floor($target_damage/2);
 			}
 
 			$total_target_damage   += $target_damage;
@@ -270,7 +271,7 @@ if ($attack_is_legal) {
 
 				if (!$simultaneousKill)	{
 					// This stuff only happens if you don't die also.
-					$loot = round($gold_mod * get_gold($target_id));
+					$loot = floor($gold_mod * $target_player->gold());
 
 					// Add the wrath health regain to the attacker.
 					if (isset($wrath_regain)) {
@@ -298,7 +299,7 @@ if ($attack_is_legal) {
 				$defenderKillpoints = 1;
 
 				if ($duel) {	// *** if they were dueling when they died ***
-					$duel_log_msg     = "$attacker has dueled $target and lost at $today.";
+					$duel_log_msg     = "$attacker has dueled $target and lost at ".date("F j, Y, g:i a");
 					sendMessage("SysMsg", "SysMsg", $duel_log_msg);
 					sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
 				}
@@ -307,7 +308,7 @@ if ($attack_is_legal) {
 				$attacking_player->death();
 
 				if (!$simultaneousKill) {
-					$loot = round($gold_mod * get_gold($attacker_id));//Loot for defender if he lives.
+					$loot = floor($gold_mod * $attacking_player->gold()); //Loot for defender if he lives.
 				}
 
 				$target_msg = "You have killed $attacker in combat and taken $loot gold.";
