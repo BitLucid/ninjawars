@@ -10,66 +10,125 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * Controller->action(). Overrides are defined here in the $routes member.
  */
 class Router {
-	const CONTROLLER_NS   = 'NinjaWars\core\control';
-	const DEFAULT_ACTION  = 'index';
-	const DEFAULT_COMMAND = 'default';
-	const DEFAULT_ROUTE   = 'index.php';
-	const COMMAND_PARAM   = 'command';
+    const CONTROLLER_NS   = 'NinjaWars\core\control';
+    const DEFAULT_ACTION  = 'index';
+    const DEFAULT_COMMAND = 'default';
+    const DEFAULT_ROUTE   = 'index.php';
+    const COMMAND_PARAM   = 'command';
 
     /*
      * Adding a default entry helps for when the action is not found or not
      * provided, otherwise a 404 will occur.
      */
     public static $routes = [
-		'login' => [
-			'login_request' => 'requestLogin',
-		],
+        'login' => [
+            'type'    => 'controller',
+            'actions' => [
+                'login_request' => 'requestLogin',
+            ],
+        ],
         'clan' => [
-            'new'     => 'create',
-            'default' => 'listClans',
+            'type'    => 'controller',
+            'actions' => [
+                'new'     => 'create',
+                'default' => 'listClans',
+            ],
         ],
         'shop' => [
-            'purchase' => 'buy',
+            'type'    => 'controller',
+            'actions' => [
+                'purchase' => 'buy',
+            ],
         ],
         'work' => [
-            'request_work' => 'requestWork',
+            'type'    => 'controller',
+            'actions' => [
+                'request_work' => 'requestWork',
+            ],
         ],
         'shrine' => [
-            'heal_and_resurrect' => 'healAndResurrect',
+            'type'    => 'controller',
+            'actions' => [
+                'heal_and_resurrect' => 'healAndResurrect',
+            ],
         ],
-		'doshin' => [
-			'Bribe'        => 'bribe',
-			'Offer Bounty' => 'offerBounty',
-		],
-		'stats' => [
-			'change_details' => 'changeDetails',
-			'update_profile' => 'updateProfile',
-		],
+        'doshin' => [
+            'type'    => 'controller',
+            'actions' => [
+                'Bribe'        => 'bribe',
+                'Offer Bounty' => 'offerBounty',
+            ],
+        ],
+        'stats' => [
+            'type'    => 'controller',
+            'actions' => [
+                'change_details' => 'changeDetails',
+                'update_profile' => 'updateProfile',
+            ],
+        ],
         'messages' => [
-            'delete_clan'     => 'deleteClan',
-            'delete_messages' => 'deletePersonal',
-            'delete_message'  => 'deletePersonal',
-            'send_clan'       => 'sendClan',
-            'send_personal'   => 'sendPersonal',
-            'personal'        => 'viewPersonal',
-            'clan'            => 'viewClan',
-            'default'         => 'viewPersonal',
+            'type'    => 'controller',
+            'actions' => [
+                'delete_clan'     => 'deleteClan',
+                'delete_messages' => 'deletePersonal',
+                'delete_message'  => 'deletePersonal',
+                'send_clan'       => 'sendClan',
+                'send_personal'   => 'sendPersonal',
+                'personal'        => 'viewPersonal',
+                'clan'            => 'viewClan',
+                'default'         => 'viewPersonal',
+            ],
         ],
-		'account' => [
-			'show_change_email_form'    => 'showChangeEmailForm',
-			'change_email'              => 'changeEmail',
-			'show_change_password_form' => 'showChangePasswordForm',
-			'change_password'           => 'changePassword',
-			'show_confirm_delete_form'  => 'deleteAccountConfirmation',
-			'delete_account'            => 'deleteAccount',
+        'account' => [
+            'type'    => 'controller',
+            'actions' => [
+                'show_change_email_form'    => 'showChangeEmailForm',
+                'change_email'              => 'changeEmail',
+                'show_change_password_form' => 'showChangePasswordForm',
+                'change_password'           => 'changePassword',
+                'show_confirm_delete_form'  => 'deleteAccountConfirmation',
+                'delete_account'            => 'deleteAccount',
+            ],
         ],
         'consider' => [
-            'add'    => 'addEnemy',
-            'delete' => 'deleteEnemy',
-		],
-        'chat' => [
-            'receive' => 'receive'
+            'type'    => 'controller',
+            'actions' => [
+                'add'    => 'addEnemy',
+                'delete' => 'deleteEnemy',
+            ],
         ],
+        'chat' => [
+            'type'    => 'controller',
+            'actions' => [
+                'receive' => 'receive',
+            ],
+        ],
+        'rules' => [
+            'type'  => 'simple',
+            'title' => 'rules',
+        ],
+        'staff' => [
+            'type'  => 'simple',
+            'title' => 'NinjaWars Staff',
+        ],
+        'public' => [
+            'type'  => 'simple',
+            'title' => 'Public Discussion',
+        ],
+        'interview' => [
+            'type'  => 'simple',
+            'title' => 'Interview with John Facey',
+        ],
+        'about' => [
+            'type'  => 'simple',
+            'title' => 'About NinjaWars',
+        ],
+    ];
+
+    public static $controllerAliases = [
+        'doshin_office' => 'doshin',
+        'village'       => 'chat',
+        'enemies'       => 'consider',
     ];
 
     /**
@@ -86,31 +145,33 @@ class Router {
      * @todo remove the call to in() and replace with something from request
      * @todo stop supporting ?command=action
      */
-    public static function parseRoute($p_request) {
-        $pathInfo = $p_request->getPathInfo();
+    public static function parseRoute($p_routeSegments, $p_request) {
+        $p_request = $p_request;
 
-        // split the requested path by slash
-        $routeSegments = explode('/', trim($pathInfo, '/'));
+        if (empty($p_routeSegments[0])) {
+            $mainRoute = self::DEFAULT_ROUTE;
+        } else {
+            $mainRoute = self::translateRoute(
+                self::sanitizeRoute($p_routeSegments[0])
+            );
+        }
 
         // if there are 2 route segments use the second one
-        if (!isset($routeSegments[1])) {
-            $routeSegments[1] = (string)in(self::COMMAND_PARAM);
+        if (isset($p_routeSegments[1]) && !empty($p_routeSegments[1])) {
+            $command = $p_routeSegments[1];
+        } else {
+            $command = (string)in(self::COMMAND_PARAM);
         }
 
-        if (empty($routeSegments[0])) {
-            $routeSegments[0] = self::DEFAULT_ROUTE;
+        if (empty($command)) {
+            if (isset(self::$routes[$mainRoute]['actions'][self::DEFAULT_COMMAND])) {
+                $command = self::$routes[$mainRoute]['actions'][self::DEFAULT_COMMAND];
+            } else {
+                $command = self::DEFAULT_ACTION;
+            }
         }
 
-		if (empty($routeSegments[1])) {
-			$mainRoute = self::sanitizeMainRoute($routeSegments[0]);
-			if (isset(self::$routes[$mainRoute][self::DEFAULT_COMMAND])) {
-				$routeSegments[1] = self::$routes[$mainRoute][self::DEFAULT_COMMAND];
-			} else {
-				$routeSegments[1] = self::DEFAULT_ACTION;
-			}
-		}
-
-        return $routeSegments;
+        return [$mainRoute, $command];
     }
 
     /**
@@ -129,21 +190,23 @@ class Router {
      * @param string $p_main
      * @return string
      */
-    public static function sanitizeMainRoute($p_main) {
+    public static function sanitizeRoute($p_main) {
         if (stripos($p_main, '.php') === (strlen($p_main) - 4)) {
             $p_main = substr($p_main, 0, -4);
         }
 
-        switch ($p_main) {
-            case 'doshin_office':
-                $p_main = 'doshin';
-                break;
-            case 'enemies':
-                $p_main = 'consider';
-                break;
-		}
-        if ($p_main === 'village') {
-            $p_main = 'chat';
+        return $p_main;
+    }
+
+    /**
+     * Dereferences the inputted string if an alias exists for it
+     *
+     * @param string $p_main
+     * @return string
+     */
+    public static function translateRoute($p_main) {
+        if (isset(self::$controllerAliases[$p_main])) {
+            $p_main = self::$controllerAliases[$p_main];
         }
 
         return $p_main;
@@ -180,8 +243,8 @@ class Router {
          */
         if (method_exists($controller, $p_command)) {
             $action = $p_command;
-        } else if (isset(self::$routes[$p_main][$p_command])) {
-            $action = self::$routes[$p_main][$p_command];
+        } else if (isset(self::$routes[$p_main]['actions'][$p_command])) {
+            $action = self::$routes[$p_main]['actions'][$p_command];
 
             if (!method_exists($controller, $action)) {
                 throw new \RuntimeException();
@@ -190,7 +253,7 @@ class Router {
             throw new \RuntimeException();
         }
 
-		if ($error = init($controllerClass::PRIV, $controllerClass::ALIVE)) {
+        if ($error = init($controllerClass::PRIV, $controllerClass::ALIVE)) {
             return [
                 'template' => 'error.tpl',
                 'title'    => 'There is an obstacle to your progress...',
@@ -200,6 +263,10 @@ class Router {
         } else {
             return $controller->$action();
         }
+    }
+
+    public static function isServableFile($p_route) {
+        return (file_exists($p_route) && realpath($p_route) === getcwd().'/'.$p_route);
     }
 
     /**
@@ -212,29 +279,44 @@ class Router {
      * This method generates output
      */
     public static function route($p_request) {
-        $routeSegments = self::parseRoute($p_request);
+        $pathInfo = $p_request->getPathInfo();
 
-        $mainRoute = array_shift($routeSegments);
-        $command = array_shift($routeSegments);
+        // split the requested path by slash
+        $routeSegments = explode('/', trim($pathInfo, '/'));
 
-        if (
-            (stripos($mainRoute, '.php') === (strlen($mainRoute) - 4)) &&
-            (file_exists($mainRoute) && realpath($mainRoute) === getcwd().'/'.$mainRoute)
-        ) {
+        $mainRoute = current($routeSegments);
+
+        if (self::isServableFile($mainRoute)) {
             include($mainRoute);
         } else {
-			$mainRoute = self::sanitizeMainRoute($mainRoute);
-            $response = self::execute($mainRoute, $command);
+            $routeSegments = self::parseRoute($routeSegments, $p_request);
+            $mainRoute = array_shift($routeSegments);
 
-            if ($response instanceof RedirectResponse) {
-                $response->send();
+            if (self::isServableFile($mainRoute)) {
+                include($mainRoute);
             } else {
-                display_page(
-                    $response['template'],
-                    $response['title'],
-                    $response['parts'],
-                    $response['options']
-                );
+                if (self::$routes[$mainRoute]['type'] === 'simple') {
+                    $response = [
+                        'template' => "$mainRoute.tpl",
+                        'title'    => self::$routes[$mainRoute]['title'],
+                        'parts'    => [],
+                        'options'  => false,
+                    ];
+                } else {
+                    $command   = array_shift($routeSegments);
+                    $response  = self::execute($mainRoute, $command);
+                }
+
+                if ($response instanceof RedirectResponse) {
+                    $response->send();
+                } else {
+                    display_page(
+                        $response['template'],
+                        $response['title'],
+                        $response['parts'],
+                        $response['options']
+                    );
+                }
             }
         }
     }
