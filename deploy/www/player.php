@@ -23,10 +23,6 @@ if ($target_player_obj && $target_player_obj->name()) {
 	$viewed_name_for_title = $target_player_obj->name();
 }
 
-$combat_toggles = get_setting('combat_toggles'); // Pull the attack options toggled on and off.
-
-$last_item_used = get_setting("last_item_used"); // Pull the last item id used, if any.
-
 $char_info = self_info();
 
 if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isActive()) {
@@ -88,18 +84,15 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level)->fetchAll();
 		    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
 
-			// Check all the combat toggles to see if they should be checked on the profile page.
+            ///TODO remove this loop when template is updated
 			foreach ($combat_skills as &$skill) {
 				$skill['checked'] = 0;
-				if(isset($combat_toggles[$skill['skill_internal_name']]) && $combat_toggles[$skill['skill_internal_name']]){
-					$skill['checked'] = 1; // Save the setting associatively back to the original array.
-				}
 			}
 
-			$duel_checked = !!$combat_toggles['duel']; // Duel isn't in the general combat skills, so it gets set separately.
+			$duel_checked = false; ///TODO remove this variable when template is updated
 
 			// Pull the items and some necessary data about them.
-			$items = inventory_counts($char_id, $last_item_used);
+			$items = inventory_counts($char_id);
 
 			$valid_items = rco($items);// row count
 		}	// End of the there-was-no-attack-error section

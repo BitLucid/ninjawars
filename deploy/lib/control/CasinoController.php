@@ -26,7 +26,7 @@ class CasinoController { //extends controller
 			[
 				'pageParts' => [],
 				'player'    => $player,
-				'bet'       => get_setting('bet'),
+				'bet'       => 1,
 			]
 		);
 	}
@@ -46,8 +46,6 @@ class CasinoController { //extends controller
 		$bet    = intval(in('bet'));
 
 		$negative = ($bet < 0);
-
-		set_setting('bet', max(0, $bet));
 
 		$pageParts = ['reminder-max-bet'];
 
@@ -76,7 +74,7 @@ class CasinoController { //extends controller
 			[
 				'pageParts' => $pageParts,
 				'player'    => $player,
-				'bet'       => get_setting('bet'),
+				'bet'       => $bet,
 			]
 		);
 	}

@@ -23,15 +23,12 @@ class WorkController {
         $worked                 = intval(in('worked'));
         $earned_gold            = null;
         $not_enough_energy      = null;
-        $use_second_description = null;
         $recommended_to_work    = $worked;
         $is_logged_in           = is_logged_in();
         $char_id                = self_char_id();
         $char                   = new Player($char_id);
         $turns                  = $char->turns();
         $gold                   = $char->gold();
-
-        set_setting('turns_worked', $worked);
 
         if ($worked > $turns) {
             $not_enough_energy = true;
@@ -71,8 +68,7 @@ class WorkController {
         $char                   = new Player(self_char_id());
 
         // Fill out some of the variables.
-        $last_worked = get_setting('turns_worked');
-        $recommended_to_work = ($last_worked ? $last_worked : self::DEFAULT_RECOMMENDED_TO_WORK);
+        $recommended_to_work = self::DEFAULT_RECOMMENDED_TO_WORK;
         $gold_display = number_format($char->gold());
 
         $parts = [

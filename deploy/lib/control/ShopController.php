@@ -27,7 +27,6 @@ class ShopController { // extends Controller
 			'username'         => self_name(),
 			'char_id'          => self_char_id(),
 			'is_logged_in'     => is_logged_in(),
-			'quantity_setting' => get_setting('items_quantity'),
 		];
 	}
 
@@ -38,7 +37,7 @@ class ShopController { // extends Controller
 	 */
 	public function index() {
 		$parts = array(
-			'quantity'  => $this->sessionData['quantity_setting'],
+            'quantity'  => 1,
 			'view_part' => 'index',
 		);
 
@@ -64,7 +63,7 @@ class ShopController { // extends Controller
 		// Pull the item info from the database
 		$item_costs        = item_for_sale_costs();
 		$item              = getItemByID(item_id_from_display_name($in_item));
-		$quantity 		   = whichever(positive_int($in_quantity), $this->sessionData['quantity_setting'], 1);
+		$quantity 		   = whichever(positive_int($in_quantity), 1);
 		$item_text 	       = null;
 
 		if ($item instanceof Item) {
@@ -72,7 +71,7 @@ class ShopController { // extends Controller
 			$item_text = ($quantity > 1 ? $item->getPluralName() : $item->getName());
 			$purchaseOrder = new PurchaseOrder();
 
-			// Determine the quantity from input, or settings, or as a fallback, default of 1.
+			// Determine the quantity from input or as a fallback, default of 1.
 			$purchaseOrder->quantity = $quantity;
 			$purchaseOrder->item     = $item;
 
@@ -93,8 +92,6 @@ class ShopController { // extends Controller
 				}
 			}
 		}
-
-		set_setting('items_quantity', $quantity);
 
 		$parts = array(
 			'current_item_cost' => $current_item_cost,
