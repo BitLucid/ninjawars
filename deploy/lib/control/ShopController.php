@@ -37,7 +37,6 @@ class ShopController { // extends Controller
 	 */
 	public function index() {
 		$parts = array(
-            'quantity'  => 1,
 			'view_part' => 'index',
 		);
 
