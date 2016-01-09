@@ -1,3 +1,18 @@
+<script>
+{literal}
+$(document).ready(function() {
+    if ($("#send-to").val() === '') {
+        $("#send-to").val(NW.storage.appState.get("last_messaged", ''));
+    }
+
+    $("#message-form").submit(function() {
+        NW.storage.appState.set("last_messaged", $("#send-to").val());
+        return true;
+    });
+});
+{/literal}
+</script>
+
 <h1>{if $current_tab === 'clan'}Clan {/if}Messages</h1>
 
 {include file='message-tabs.tpl' current=$current_tab}
@@ -20,11 +35,11 @@
   {if $current_tab != 'clan'}
   <!-- Message an individual ninja-->
   <div class='glassbox' id='message-ninja'>
-    <form action='messages.php' method='post' name='ninja_message'>
+    <form action='messages.php' method='post' name='ninja_message' id='message-form'>
       <div>
-        <em class='char-name'>@<input class='char-name textField' type='text' size='26' name='to' value='{$to}' required=required></em>
+        <em class='char-name'>@<input class='char-name textField' type='text' size='26' id='send-to' name='to' value='{$to}' required='required'></em>
         <em>say</em>
-        &apos;<input id='message-to-ninja' type='text' size='30' name='message' class='textField' autocomplete='off' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}" required=required autofocus=autofocus>&apos;
+        &apos;<input id='message-to-ninja' type='text' size='30' name='message' class='textField' autocomplete='off' maxlength='{$smarty.const.MAX_MSG_LENGTH|escape}' required='required' autofocus='autofocus'>&apos;
         <input type='hidden' name='messenger' value='1'>
         <input type='hidden' name='command' value='send_personal'>
         <input type='submit' value='Send' name='ninja_message' class='formButton'>
@@ -32,7 +47,6 @@
     </form>
   </div>
   {/if}
-
 
 {if $has_clan && $current_tab == 'clan'}
   <div id='clan-mail-section' class='glassbox'>
@@ -48,14 +62,11 @@
   </div>
 {/if}
 
-
-
 </section>
 
 {if $message_sent_to}
   <div id='message-sent-to' class='ninja-notice'>Message sent to <em class='char-name'>{$message_sent_to|escape}</em>.</div>
 {/if}
-
 
 <section class='glassbox'><!-- Message list area -->
   {include file="messages.nav.tpl"}
