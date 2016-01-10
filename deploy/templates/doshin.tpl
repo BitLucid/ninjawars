@@ -70,11 +70,16 @@
     Bruised and battered, you find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.
   </p>
 {/if}
+
 </div>
 
 <section class='bounty-related'>
 
 {if $myBounty gt 0}
+  <div class='parent thick'>
+    <div class='ninja-info'>You have a {$myBounty} gold bounty on your head.</div>
+  </div>
+
 <form id="bribe_form" action="doshin_office.php" method="post" name="bribe_form" class='half-column'>
   Bribe down your own bounty: <input id="bribe" type="text" size="4" maxlength="6" name="bribe" class="textField" required=required>
   <input id="command" type="submit" value="Bribe" name="command" class="formButton">
@@ -82,7 +87,7 @@
 {/if}
 
 <form action="" class='half-column'>
-  Offer <input type="text" name="amount" value="{$amount|escape}" size="4" class="textField" required=required> bounty on: <input type="text" name="target" value="{$target->name()|escape}" class="textField">
+  Offer <input type="text" name="amount" value="{$amount|default:''|escape}" size="4" class="textField" required=required> bounty on: <input type="text" name="target" value="{$target|default:''|escape}" class="textField">
   <input id="submit-bounty" type="submit" value="Offer Bounty" name="command" class="formButton" required=required>
 </form>
 
