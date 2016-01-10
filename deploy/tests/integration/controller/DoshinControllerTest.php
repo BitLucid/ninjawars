@@ -4,7 +4,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\SessionFactory;
 use NinjaWars\core\control\DoshinController;
-use NinjaWars\core\control\Doshin;
 
 class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
