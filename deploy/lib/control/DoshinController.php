@@ -73,6 +73,8 @@ class DoshinController { //extends controller
 
         if(!$target->id()){
             $error = 1; // Target not found
+        } elseif ($target->id() === $char->id()){
+            $error = 6; // Can't put a bounty on yourself.
         } else {
             $error = $this->validateBountyOffer($char, $target->id(), $amount);
 
@@ -80,7 +82,8 @@ class DoshinController { //extends controller
 
             if ($error === null) {
                 $char->set_gold($char->gold() - $amount); // Subtract the gold.
-                addBounty($target->id(), $amount); // Add the bounty to the person being bountied upon.  How the hell did this break?
+                $target->set_bounty($target->bounty() + $amount);
+                $target->save();
                 $char = $char->save();
 
                 send_event($char->id(), $target->id(), $char->name()." has offered ".$amount." gold in reward for your head!");

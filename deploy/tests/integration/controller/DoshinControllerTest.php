@@ -43,9 +43,6 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($output);
     }
 
-    public function testDoshinAttack(){
-    }
-
     public function testDoshinOfferSomeBountyOnATestPlayer() {
         $target_id = TestAccountCreateAndDestroy::char_id_2();
         $this->char->set_gold(434343);

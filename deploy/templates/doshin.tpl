@@ -19,6 +19,8 @@
   <div class='ninja-notice child'>The bounty on {$target|escape} may go no higher.</div>
   {elseif $error eq 5}
   <div class='ninja-notice child'>The Doshin ignore your ill-funded attempt to bribe them.</div>
+  {elseif $error eq 6}
+  <div class='ninja-notice child'>You cannot but a bounty on yourself.</div>
   {/if}
   </div>
 {/if}
@@ -74,14 +76,14 @@
 
 {if $myBounty gt 0}
 <form id="bribe_form" action="doshin_office.php" method="post" name="bribe_form" class='half-column'>
-  Bribe down your own bounty: <input id="bribe" type="text" size="4" maxlength="6" name="bribe" class="textField">
+  Bribe down your own bounty: <input id="bribe" type="text" size="4" maxlength="6" name="bribe" class="textField" required=required>
   <input id="command" type="submit" value="Bribe" name="command" class="formButton">
 </form>
 {/if}
 
 <form action="" class='half-column'>
-  Offer <input type="text" name="amount" value="{$amount|default:0|escape}" size="4" class="textField"> bounty on: <input type="text" name="target" value="{$target|default:''|escape}" class="textField">
-  <input id="submit-bounty" type="submit" value="Offer Bounty" name="command" class="formButton">
+  Offer <input type="text" name="amount" value="{$amount|escape}" size="4" class="textField" required=required> bounty on: <input type="text" name="target" value="{$target->name()|escape}" class="textField">
+  <input id="submit-bounty" type="submit" value="Offer Bounty" name="command" class="formButton" required=required>
 </form>
 
 {if count($bounties) gt 0}
