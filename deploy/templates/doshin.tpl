@@ -25,7 +25,9 @@
 
 {if $command eq 'offer'}
 	{if $amount_in neq $amount}
-	The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bounty.<br>
+  <div class='parent'>
+	 <div class='ninja-error child'>The doshin will only accept {$amount|escape} gold towards {$target|escape}'s bounty.</div>
+  </div>
 	{/if}
 
 	{if $success}
@@ -40,21 +42,21 @@
     You walk up to the Doshin Office to find the door locked. The Doshin are busy protecting the borders of the village from thieves.
   </p>
   <p>
-      Nearby on a wall is a notice that <span class='speech'>Non-samurai found carrying swords will be executed.</span> Nailed to the door is an official roster of wanted criminals and the bounties offered for their heads.
+      Nearby on a wall is a notice that <span class='speech'>Commoners found carring katana will be imprisoned.</span> Nailed to the door is an official roster of wanted criminals and the bounties offered for their heads.
   </p>
   <p>
     A few men that do seem to be associated with the doshin doze near the entrance. Every so often someone approaches and slips them something that clinks and jingles.
   </p>
 {elseif $location eq 1}
   <p>
-    <span class="speech">"We'll see what we can do,"</span> one of the Doshin tells you as you hand off your gold. He then directs you out through a back alley.
+    <span class="speech">This black mist weather we have today makes it hard to see some things.</span> one of the Doshin tells you as he palms your gold. He then directs you out through a back alley.
   </p>
   <p>
     You find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.
   </p>
 {elseif $location eq 2}
   <p>
-    <span class="speech">"Trying to steal from the Doshin, eh!"</span> one of the men growls.
+    <span class="speech">Trying to steal from the Doshin, eh!</span> one of the men growls.
   </p>
   <p>
     Where before there were only relaxing men idly ignoring their duties there are now unsheathed katanas and glaring eyes.
@@ -82,8 +84,7 @@
   <input id="submit-bounty" type="submit" value="Offer Bounty" name="command" class="formButton">
 </form>
 
-{if count($data) gt 0}
-<p class='clear text-centered glassbox'>Total Wanted Ninja: {$data|@count}</p>
+{if count($bounties) gt 0}
 
 <table class="playerTable clear">
   <tr class='playerTableHead'>
@@ -103,7 +104,7 @@
       Clan
     </th>
   </tr>
-	{foreach from=$data item="row"}
+	{foreach from=$bounties item="row"}
   <tr class='playerRow'>
     <td class='playerCell'>
       <a href="player.php?player_id={$row.player_id|escape:'url'}">{$row.uname|escape}</a>
@@ -125,8 +126,17 @@
   </tr>
 	{/foreach}
 </table>
+<div class='centered glassbox'>
+  <small class='de-em'>Total Wanted Ninja: {$bounties|@count}</small>
+</div>
 {else}
 <p>The Doshin do not currently have any open bounties. Your village is safe.</p>
+{/if}
+
+{if $display_gold}
+<div class='gold thick'>
+  You have {$display_gold} gold.
+</div>
 {/if}
 
 </section><!-- End of bounty-related -->

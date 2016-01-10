@@ -3,6 +3,8 @@ namespace NinjaWars\core\control;
 
 require_once(CORE.'/control/lib_inventory.php');
 
+use \Player as Player;
+
 /**
  * Handles all user requests for the in-game Doshin Office
  */
@@ -14,18 +16,20 @@ class DoshinController { //extends controller
     const DOSHIN_CUT     = .8;
     const SAFE_WEALTH    = 1000;
     const RICH_REDUCTION = .7;
+    const BRIBERY_DIVISOR = 2;
+    const FAILED_BRIBERY_PAIN = .2;
 
-    protected $sessionData = [];
+    protected $data = [];
 
     /**
      * Gathers data from session and makes it available to internal methods
      *
      * @return DoshinController
      */
-    public function __construct() {
-        $this->sessionData = [
-            'username' => self_name(),
-            'char_id'  => self_char_id(),
+    public function __construct($char=null) {
+        $char = $char instanceof Player? $char : new Player(self_char_id());
+        $this->data = [
+            'char'     => $char
         ];
     }
 
@@ -59,25 +63,31 @@ class DoshinController { //extends controller
      * @TODO simplify the conditional branching
      */
     public function offerBounty() {
-        $target    = in('target');
-        $target_id = get_char_id($target); // Will be the enemy to put the bounty on.
-        $amount    = intval(in('amount'));
-        $amount_in = $amount;
+        $target_in    = in('target');
+        $char = $this->data['char'];
+        $target = new Player($target_in);
+        $amount_in = in('amount');
+        $amount    = intval($amount_in) !== 0? intval($amount_in) : null;
         $quickstat = false;
         $success   = false;
 
-        $error = $this->validateBountyOffer($this->sessionData['char_id'], $target_id, $amount);
+        if(!$target->id()){
+            $error = 1; // Target not found
+        } else {
+            $error = $this->validateBountyOffer($char, $target->id(), $amount);
 
-        $amount = self::calculateMaxOffer(getBounty($target_id), $amount);
+            $amount = self::calculateMaxOffer(getBounty($target->id()), $amount);
 
-        if ($error === 0) {
-            addBounty($target_id, $amount); // Add the bounty to the person being bountied upon.  How the hell did this break?
+            if ($error === null) {
+                $char->set_gold($char->gold() - $amount); // Subtract the gold.
+                addBounty($target->id(), $amount); // Add the bounty to the person being bountied upon.  How the hell did this break?
+                $char = $char->save();
 
-            subtract_gold($this->sessionData['char_id'], $amount);
-            send_event($this->sessionData['char_id'], $target_id, $this->sessionData['username']." has offered $amount gold in reward for your head!");
+                send_event($char->id(), $target->id(), $char->name()." has offered ".$amount." gold in reward for your head!");
 
-            $success = true;
-            $quickstat = 'player';
+                $success = true;
+                $quickstat = 'player';
+            }
         }
 
         return $this->render(
@@ -108,9 +118,10 @@ class DoshinController { //extends controller
     }
 
     /**
+     * Make sure a bounty offer is valid, constrain it by allowable bounty and available gold
      */
-    private function validateBountyOffer($p_providerId, $p_targetId, $p_amount) {
-        $error = 0;
+    private function validateBountyOffer(Player $char, $p_targetId, $p_amount) {
+        $error = null;
 
         if (!$p_targetId) { // Test that target exists
             $error = 1;
@@ -119,7 +130,7 @@ class DoshinController { //extends controller
 
             $amount = self::calculateMaxOffer($target_bounty, $p_amount);
 
-            if (get_gold($p_providerId) < $amount) {
+            if ($char->gold() < $amount) {
                 $error = 2;
             }
 
@@ -143,16 +154,17 @@ class DoshinController { //extends controller
      */
     public function bribe() {
         $bribe = intval(in('bribe'));
+        $char = $this->data['char'];
         $error = 0;
         $quickstat = false;
 
-        if ($bribe <= get_gold($this->sessionData['char_id']) && $bribe > 0) {
-            subtract_gold($this->sessionData['char_id'], $bribe);
-            subtractBounty($this->sessionData['char_id'], ($bribe/2));
+        if ($bribe <= $char->gold() && $bribe > 0) {
+            $char->set_gold($char->gold() - $bribe);
+            subtractBounty($char->id(), floor($bribe/self::BRIBERY_DIVISOR));
             $location = 1;
-            $quickstat = 'player';
+            $quickstat = 'viewinv';
         } else if ($bribe < self::MIN_BRIBE) {
-            $this->doshinAttack($this->sessionData['char_id']);
+            $this->data['char'] = $this->doshinAttack($char);
             $location = 2;
             $quickstat = 'player';
         } else {
@@ -171,19 +183,33 @@ class DoshinController { //extends controller
     }
 
     /**
-     * Was a bug, now the doshin beats you up! Yay!
-     *
+     * If you try to bribe with a negative bounty, the doshin beat you up and take your money!
+     * @return Player
      * @note
-     * If player has enough gold, their bounty will be mostly removed
-     * by this event.
+     * If the player loses a substantial enough amount, the doshin will actually decrease the bounty.
      */
-    private function doshinAttack($p_characterId) {
-        if (get_gold($p_characterId) > self::SAFE_WEALTH) {
-            $bountyReduction = (getBounty($p_characterId) * self::RICH_REDUCTION);
-            subtractBounty($p_characterId, $bountyReduction);
+    private function doshinAttack(Player $char) {
+        $current_bounty = $char->bounty();
+        $doshin_takes = floor($char->gold() * self::DOSHIN_CUT);
+        // If the doshin take a lot of money, they'll
+        // actually reduce the bounty somewhat.
+
+        $bounty_reduction = (int) min($current_bounty, 
+            (($doshin_takes > self::SAFE_WEALTH)? $doshin_takes/self::BRIBERY_DIVISOR : 0)
+            );
+        if(0 < $bounty_reduction){
+            $char->set_bounty($char->bounty() - $bounty_reduction);
         }
 
-        subtract_gold($p_characterId, floor(get_gold($p_characterId) * self::DOSHIN_CUT));
+        // Do fractional damage to the char
+        $char->set_health(
+                $char->health() - 
+                floor($char->health()*self::FAILED_BRIBERY_PAIN)
+            );
+
+        // Regardless, you lose some gold.
+        $char->set_gold($char->gold() - $doshin_takes);
+        return $char->save();
     }
 
     /**
@@ -192,23 +218,29 @@ class DoshinController { //extends controller
      * @param p_data Array Hash of variables to pass to the view
      * @return Array
      */
-    private function render($p_data) {
-        $myBounty = getBounty($this->sessionData['char_id']);
+    private function render($parts) {
+        $char = $this->data['char'];
+        $char_id = $char->id();
+        $myBounty = getBounty($char_id);
 
         // Pulling the bounties.
-        $data = query_array("SELECT player_id, uname, bounty, class_name AS class, level, clan_id, clan_name 
+        $bounties = query_array("SELECT player_id, uname, bounty, class_name AS class, level, clan_id, clan_name 
             FROM players JOIN class ON class_id = _class_id LEFT JOIN clan_player ON player_id = _player_id 
             LEFT JOIN clan ON clan_id = _clan_id WHERE bounty > 0 AND active = 1 and health > 0 ORDER BY bounty DESC");
 
-        $p_data['data'] = $data;
-        $p_data['myBounty'] = $myBounty;
+        $parts['bounties'] = $bounties;
+        $parts['myBounty'] = $myBounty;
+        $parts['char']     = $char;
+        $parts['display_gold'] = number_format($char->gold());
+
+        $quickstat = $parts['quickstat'];
 
         return [
             'template' => 'doshin.tpl',
             'title'    => 'Doshin Office',
-            'parts'    => $p_data,
+            'parts'    => $parts,
             'options'  => [
-                'quickstat' => $p_data['quickstat'],
+                'quickstat' => $quickstat,
             ],
         ];
     }
