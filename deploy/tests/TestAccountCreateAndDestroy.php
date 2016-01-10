@@ -115,6 +115,13 @@ class TestAccountCreateAndDestroy{
 		return $account_info['account_id'];
 	}
 
+	/**
+	 * Just return a character wholesale
+	 */
+	public static function char(){
+		return new Player(TestAccountCreateAndDestroy::char_id());
+	}
+
 	// Alias for create_testing_account but clearer.
 	public static function char_id($confirm=false){
 		return TestAccountCreateAndDestroy::create_testing_account($confirm);
