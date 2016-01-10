@@ -84,13 +84,6 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level)->fetchAll();
 		    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
 
-            ///TODO remove this loop when template is updated
-			foreach ($combat_skills as &$skill) {
-				$skill['checked'] = 0;
-			}
-
-			$duel_checked = false; ///TODO remove this variable when template is updated
-
 			// Pull the items and some necessary data about them.
 			$items = inventory_counts($char_id);
 
@@ -127,7 +120,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		$template = 'player.tpl';
 		$parts = get_certain_vars(get_defined_vars(), array('char_info', 'viewing_player_obj', 'target_player_obj', 'combat_skills',
 			'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today', 'level_category',
-			'gravatar_url', 'status_list', 'clan', 'clan_members', 'items', 'duel_checked'));
+			'gravatar_url', 'status_list', 'clan', 'clan_members', 'items'));
 	}
 }
 

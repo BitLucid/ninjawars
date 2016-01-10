@@ -38,7 +38,6 @@ article#player-titles{
     <div id='message-sent' class='ninja-notice'>Message sent</div>
 {/if}
 
-
 <div class='player-info'>
 
     <h1 class='player-name'>{$player|escape}</h1>
@@ -85,18 +84,65 @@ article#player-titles{
     <div class='ninja-error centered'>Cannot Attack: {$attack_error}</div>
   </section>
 	{else}
+    <script type='text/javascript'>
+{literal}
+    $(document).ready(function() {
+{/literal}
+        var combat_skills = {$combat_skills|@json_encode};
+{literal}
+        /*
+           because some browsers store all values as strings, we need to store
+           booleans as string representations of 1 and 0. We then need to get
+           the int value upon retrieval
+        */
+        $("#duel").prop('checked', parseInt(NW.storage.appState.get("duel_checked", false)));
+
+        for (i = 0; i < combat_skills.length; i++) {
+            $("#"+combat_skills[i].skill_internal_name).prop('checked',
+                parseInt(NW.storage.appState.get(combat_skills[i].skill_internal_name+"_checked", false))
+            );
+        }
+
+        var lastItemUsed = NW.storage.appState.get("last_item_used");
+
+        if ($("#item option[value='"+lastItemUsed+"']").length) {
+            $("#item").val(lastItemUsed);
+        } else {
+            $("#item").val($("#item option:first-child").val());
+        }
+
+        $("#attack_player").submit(function() {
+            // the unary + operator converts the boolean to an int
+            NW.storage.appState.set("duel_checked", +$("#duel").prop('checked'));
+
+            for (i = 0; i < combat_skills.length; i++) {
+                NW.storage.appState.set(
+                    combat_skills[i].skill_internal_name+"_checked",
+                    +$("#"+combat_skills[i].skill_internal_name).prop('checked')
+                );
+            }
+
+            return true;
+        });
+
+        $("#inventory_form").submit(function() {
+            NW.storage.appState.set("last_item_used", $("#item").val());
+        });
+    });
+{/literal}
+    </script>
     <div id='attacks' style='width:95%;margin:0 auto;font-size:larger;clear:both'>
         <table id='player-attack'>
           <tr>
             <td id='attacking-choices'>
               <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
-                <label id='duel' title='Multi-attack duel for an additional {getTurnCost skillName="duel"} turns.'>
-                  <input id="duel" type="checkbox" {if $duel_checked}checked{/if} name="duel"> Duel
+                <label for='duel' title='Multi-attack duel for an additional {getTurnCost skillName="duel"} turns.'>
+                  <input id="duel" type="checkbox" name="duel" value="1"> Duel
                 </label>
 
 		{foreach from=$combat_skills item="skill"}
-                <label id='{$skill.skill_internal_name|escape}' title='{$skill.skill_internal_name|escape} while attacking for {getTurnCost skillName=$skill.skill_display_name} turns more'>
-                    <input id="{$skill.skill_internal_name|escape}" type="checkbox" {if $skill.checked}checked{/if} name="{$skill.skill_internal_name|escape}"> {$skill.skill_display_name|escape}
+                <label for='{$skill.skill_internal_name|escape}' title='{$skill.skill_internal_name|escape} while attacking for {getTurnCost skillName=$skill.skill_display_name} turns more'>
+                    <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}" value="1"> {$skill.skill_display_name|escape}
                 </label>
 		{/foreach}
 
@@ -162,16 +208,6 @@ article#player-titles{
 {if is_logged_in() and !$self}
 
   <section class='player-communications centered'>
-  <!--
-	<div>
-      <form id='send_mail' action='player.php' method='get' name='send_mail'>
-          <input type='hidden' name='target_id' value='{$player_info.player_id|escape}'>
-          <div><input id='messenger' type='hidden' value='1' name='messenger'></div>
-          <input type='text' name='message' size='30' maxlength="{$smarty.const.MAX_MSG_LENGTH|escape}">
-          <input type='submit' value='Send Message' class='formButton'>
-      </form>
-	</div>
-  -->
 
 	<span id='message-ninja'>
       <a href='messages.php?to={$player_info.uname|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em>
