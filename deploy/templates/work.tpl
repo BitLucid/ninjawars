@@ -16,15 +16,14 @@
 {else}
 <div class="description">
     <p>
-        On your way back from the fields, you pass by a few young children 
+        On your way back from the fields, you pass by a few young children
         chasing grasshoppers in the tall grass.</p>
     <p>You see a <a href='npc.php?victim=viper' class='npc'>Viper</a> in the tall grass.</p>
-    
+
     <p>The samurai foreman hands you a small pouch of gold as he says
     <em class='speech'>Care to put a little more work in? I'll pay the same rate.</em></p>
-    
+
     <p class='ninja-notice'>You have worked for {$worked} {if $worked eq 1}turn{else}turns{/if} and earned {$earned_gold} gold.</p>
-    
 </div>
 {/if}
 
@@ -35,7 +34,7 @@
 {if $is_logged_in}
 <form id="work" action="work.php" method="post" name="work">
   <div>
-    Work in the fields for: <input id="worked" type="text" size="3" maxlength="3" name="worked" class="textField" value='{$recommended_to_work}'>
+    Work in the fields for: <input id="worked" type="text" size="3" maxlength="3" name="worked" class="textField">
     <input id="workButton" type="submit" value="Turns" name="workButton" class="formButton">
     <input type='hidden' name='command' value='request_work'>
   </div>
@@ -77,13 +76,27 @@ google_ad_height = 250;
 
 <script type='text/javascript'>
 {literal}
-$(document).ready(function (){
+$(document).ready(function () {
     $('#attack-peasant-link').click(function () {
         return confirm('A peasant?  Or a disguised ninja?  Attack one of the peasants?');
     });
+
     $('#attack-samurai-link').click(function () {
         return confirm('A samurai. Attack him?');
     });
+
+{/literal}
+{if $is_logged_in}
+    $("#worked").val(NW.storage.appState.get("worked", {$recommended_to_work}));
+
+{literal}
+    $("#work").submit(function() {
+        NW.storage.appState.set("worked", $("#worked").val());
+        return true;
+    });
+{/literal}
+{/if}
+{literal}
 });
 {/literal}
 </script>

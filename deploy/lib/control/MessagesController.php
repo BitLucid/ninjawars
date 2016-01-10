@@ -17,8 +17,6 @@ class MessagesController {
             $target_id = (int) in('target_id');
         } else if (in('to')) {
             $target_id = get_user_id(in('to'));
-        } else if (get_setting('last_messaged')) {
-            $target_id = get_user_id(get_setting('last_messaged'));
         } else {
             $target_id = null;
         }
@@ -32,8 +30,6 @@ class MessagesController {
             ]);
 
             $recipient = get_char_name($target_id);
-
-            set_setting('last_messaged', $recipient);
 
             return new RedirectResponse('/messages.php?command=personal&individual_or_clan=1&message_sent_to='.url($recipient).'&informational='.url('Message sent to '.$recipient.'.'));
         } else {
@@ -65,7 +61,7 @@ class MessagesController {
         $parts = array_merge(
             $this->configure(),
             [
-                'to'            => (in('to') ? in('to') : get_setting('last_messaged')),
+                'to'            => (in('to') ? in('to') : ''),
                 'informational' => in('informational'),
                 'has_clan'      => (boolean)ClanFactory::clanOfMember($ninja),
                 'current_tab'   => 'message',

@@ -449,7 +449,23 @@ if (parent.window !== window) {
 		});
 	};
 
+    if (typeof(Storage) !== "undefined") {
+        NW.storageSetter = function(p_key, p_value) {
+            localStorage.setItem(p_key, p_value);
+        }
 
+        NW.storageGetter = function(p_key, p_defaultValue) {
+            return (localStorage.getItem(p_key) ? localStorage.getItem(p_key) : p_defaultValue);
+        }
+    } else {
+        NW.storageSetter = function() {};
+        NW.storageGetter = function() {};
+    }
+
+    NW.storage = {};
+    NW.storage.appState = {};
+    NW.storage.appState.set = NW.storageSetter;
+    NW.storage.appState.get = NW.storageGetter;
 }
 
 /***************************** Execution of code, run at the end to allow all function definitions to exist beforehand. ******/

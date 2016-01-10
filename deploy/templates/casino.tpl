@@ -26,6 +26,19 @@
 }
 </style>
 {/literal}
+<script>
+{literal}
+$(document).ready(function() {
+    $("#bet").val(NW.storage.appState.get("bet", 1));
+
+    $("#coin_flip").submit(function() {
+        NW.storage.appState.set("bet", $("#bet").val());
+        return true;
+    });
+});
+{/literal}
+</script>
+
 
 
 <h1>Casino</h1>
@@ -46,7 +59,7 @@
 	<form id="coin_flip" action="casino.php" method="post" name="coin_flip">
 	  <div>
 	    <input type="hidden" name="command" value="bet">
-		Bet: <input id="bet" type="text" value='{$bet|escape}' size="3" maxlength="4" name="bet" class="textField">
+		Bet: <input id="bet" type="text" size="3" maxlength="4" name="bet" class="textField">
 		&nbsp;&nbsp;<input type="submit" value="Place bet" class="formButton">
 	  </div>
 	</form>

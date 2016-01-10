@@ -8,11 +8,12 @@ use \Player as Player;
 /**
  * Handles all user commands for the in-game Casino
  */
-class CasinoController { //extends controller
-	const PRIV           = false;
-	const ALIVE          = true;
-	const REWARD         = 'phosphor';
-	const MAX_BET        = 3000;
+class CasinoController {
+	const PRIV      = false;
+	const ALIVE     = true;
+	const REWARD    = 'phosphor';
+	const MAX_BET   = 3000;
+    const CHEAT_DMG = 99;
 
 	/**
 	 * Displays the initial casino view
@@ -26,7 +27,6 @@ class CasinoController { //extends controller
 			[
 				'pageParts' => [],
 				'player'    => $player,
-				'bet'       => get_setting('bet'),
 			]
 		);
 	}
@@ -42,18 +42,14 @@ class CasinoController { //extends controller
      * reward item
 	 */
 	public function bet() {
-		$player = new Player(self_char_id());
-		$bet    = intval(in('bet'));
-
-		$negative = ($bet < 0);
-
-		set_setting('bet', max(0, $bet));
+		$player   = new Player(self_char_id());
+		$bet      = intval(in('bet'));
 
 		$pageParts = ['reminder-max-bet'];
 
-		if ($negative) {
+		if ($bet < 0) {
 			$pageParts = ['result-cheat'];
-			$player->vo->health = subtractHealth($player->id(), 99);
+			$player->vo->health = subtractHealth($player->id(), self::CHEAT_DMG);
 		} else if ($bet > $player->vo->gold) {
 			$pageParts = ['result-no-gold'];
 		} else if ($bet > 0 && $bet <= self::MAX_BET) {
@@ -70,13 +66,12 @@ class CasinoController { //extends controller
 				$player->vo->gold = subtract_gold($player->id(), $bet);
 				$pageParts = ['result-lose'];
 			}
-		} // End of not cheating check.
+		}
 
 		return $this->render(
 			[
 				'pageParts' => $pageParts,
 				'player'    => $player,
-				'bet'       => get_setting('bet'),
 			]
 		);
 	}

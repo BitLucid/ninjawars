@@ -48,7 +48,6 @@ if (defined('DEBUG') && DEBUG) {
 require_once(LIB_ROOT.'control/commands.php');
 require_once(LIB_ROOT.'control/lib_events.php');
 require_once(LIB_ROOT.'control/lib_auth.php'); // Authentication and activity.
-require_once(LIB_ROOT.'control/lib_settings.php'); // The player settings system.
 require_once(LIB_ROOT.'control/lib_clan.php'); // Clan functionality.
 
 // Game objects

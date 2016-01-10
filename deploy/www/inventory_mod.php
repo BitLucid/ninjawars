@@ -80,8 +80,6 @@ if ($self_use) {
 } else if ($target_id) {
 	$targetObj = new Player($target_id);
 	$target    = $targetObj->name();
-
-	set_setting("last_item_used", $item_in); // Save last item used.
 }
 
 $starting_turns = $player->vo->turns;

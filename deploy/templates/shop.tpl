@@ -32,6 +32,21 @@ input.shopButton {
 }
 {/literal}
 </style>
+<script>
+{literal}
+$(document).ready(function() {
+    $("#quantity").val(NW.storage.appState.get("quantity", 1));
+
+    $("#shop_form").submit(function() {
+{/literal}
+        {if !$is_logged_in}return false;{/if}
+{literal}
+        NW.storage.appState.set("quantity", $("#quantity").val());
+        return true;
+    });
+});
+{/literal}
+</script>
 
 <h1>Weapons Shop</h1>
 
@@ -42,25 +57,18 @@ input.shopButton {
 {include file="shop.$view_part.tpl"}
 </div>
 
-<form id="shop_form" action="shop.php" method="post" name="shop_form" {if !$is_logged_in}onsubmit="return false;"{/if}>
+<form id="shop_form" action="shop.php" method="post" name="shop_form">
 	<input id="command" type="hidden" value="purchase" name="command">
 
 	<table class='shop-list'>
 		<caption colspan='4' class='text-centered slightly-padded accent'>
 			A Shelf of Items
 		</caption>
-<!--
-		<thead>
-		<tr>
-		  <td>  Item  </td>  <td>  Description  </td>  <td>  Cost  </td>  <td>  Picture  </td>
-		</tr>
-		</thead>
--->
 
 		<tr>
 		  <td colspan="4" class='text-centered slightly-padded'>
 			{if $is_logged_in}
-			  <em class='speech'>How many of these would you like?</em> <input id="quantity" type="number" min='1' max='99' name="quantity" class="textField" value="{$quantity}">
+			  <em class='speech'>How many of these would you like?</em> <input id="quantity" type="number" min='1' max='99' name="quantity" class="textField">
 			{else}
 			  To purchase the items below you must <a href="signup.php?referrer=">become a ninja</a>.
 			{/if}
