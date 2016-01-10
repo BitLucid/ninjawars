@@ -51,7 +51,7 @@ class Player implements Character {
 	}
 
 	public function __toString() {
-		return $this->vo->uname;
+		return $this->name();
 	}
 
 	public function __get($name) {
