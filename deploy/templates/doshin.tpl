@@ -20,7 +20,7 @@
   {elseif $error eq 5}
   <div class='ninja-notice child'>The Doshin ignore your ill-funded attempt to bribe them.</div>
   {elseif $error eq 6}
-  <div class='ninja-notice child'>You cannot but a bounty on yourself.</div>
+  <div class='ninja-notice child'>You cannot put a bounty on yourself.</div>
   {/if}
   </div>
 {/if}
