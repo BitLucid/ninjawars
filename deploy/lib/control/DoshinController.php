@@ -76,7 +76,7 @@ class DoshinController { //extends controller
         } else {
             $error = $this->validateBountyOffer($char, $target->id(), $amount);
 
-            $amount = self::calculateMaxOffer(getBounty($target->id()), $amount);
+            $amount = self::calculateMaxOffer($target->bounty(), $amount);
 
             if ($error === null) {
                 $char->set_gold($char->gold() - $amount); // Subtract the gold.
