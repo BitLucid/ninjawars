@@ -124,6 +124,10 @@ function getBounty($who) {
 	return $statement->fetchColumn();
 }
 
+/**
+ * Change a bounty 
+ * @param int $who A character id to change the bounty of
+ */
 function changeBounty($who, $amount) {
 	$amount = (int)$amount;
 
@@ -144,6 +148,9 @@ function changeBounty($who, $amount) {
 	return getBounty($who);
 }
 
+/**
+ * @param int $who A character id to change the bounty of
+ */
 function addBounty($who, $amount) {
 	return changeBounty($who, $amount);
 }

@@ -64,6 +64,12 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $this->assertTrue(is_int($char->turns()));
         $this->assertTrue(is_int($char->set_gold(45)));
         $this->assertTrue(is_int($char->set_turns(32)));
+        $this->assertEquals(444, $char->set_bounty(444));
+        $char->save();
+        $char_dup = new Player($this->char_id);
+        $this->assertEquals(444, $char_dup->bounty());
+        $this->assertEquals(32, $char_dup->turns());
+        $this->assertEquals(45, $char_dup->gold());
     }
 
     /**
@@ -166,6 +172,12 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $this->setExpectedException('InvalidArgumentException');
         $char = new Player($this->char_id);
         $char->set_gold(-45);
+    }
+
+    function testNegativeBountyRejected(){
+        $this->setExpectedException('InvalidArgumentException');
+        $char = new Player($this->char_id);
+        $char->set_bounty(-45);
     }
 
 

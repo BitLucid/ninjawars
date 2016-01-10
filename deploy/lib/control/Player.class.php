@@ -51,7 +51,7 @@ class Player implements Character {
 	}
 
 	public function __toString() {
-		return $this->vo->uname;
+		return $this->name();
 	}
 
 	public function __get($name) {
@@ -265,7 +265,7 @@ class Player implements Character {
 		if($ki < 0){
 			throw new \InvalidArgumentException('Ki cannot be negative.');
 		}
-		return $this->vo->ki = max($ki, 0); // no negative ki
+		return $this->vo->ki = $ki;
 	}
 
 	public function karma() {
@@ -280,7 +280,24 @@ class Player implements Character {
 		if($gold < 0){
 			throw new \InvalidArgumentException('Gold cannot be made negative.');
 		}
+		if((int) $gold != $gold){
+			throw new \InvalidArgumentException('Gold must be a whole number [not '.(string)$gold.'].');
+		}
 		return $this->vo->gold = $gold;
+	}
+
+	public function bounty() {
+		return $this->vo->bounty;
+	}
+
+	public function set_bounty($bounty) {
+		if($bounty < 0){
+			throw new \InvalidArgumentException('Bounty cannot be made negative ['.(string)$bounty.'].');
+		}
+		if((int) $bounty != $bounty){
+			throw new \InvalidArgumentException('Bounty must be a whole number [not '.(string)$bounty.'].');
+		}
+		return $this->vo->bounty = $bounty;
 	}
 
 	public function hasStatus($p_status) {
@@ -411,19 +428,24 @@ class Player implements Character {
 
 	// Pull the current health.	
 	public function health() {
-		$id = $this->id();
 		$sel = "SELECT health from players where player_id = :id";
-		return query_item($sel, array(':id'=>array($id, PDO::PARAM_INT)));
+		return query_item($sel, [':id'=>[$this->id(), PDO::PARAM_INT]]);
 	}
 
 	public function set_health($health){
 		if($health < 0){
 			throw new \InvalidArgumentException('Health cannot be made negative.');
 		}
+		if((int) $health != $health){
+			throw new \InvalidArgumentException('Health must be a whole number.');
+		}
 		return $this->vo->health = $health;
 	}
 
-	// Return the amount below the max health (or zero).
+	/** 
+	 * Return the amount below the max health (or zero).
+	 * @return int
+	 */
 	public function hurt_by() {
 		return max(0, 
 			($this->max_health() - $this->health())

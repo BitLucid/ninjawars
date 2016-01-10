@@ -1835,6 +1835,9 @@ section.login-page{
 	border-color: rgba(0, 0, 0, 1);
 	text-shadow: black 2px 2px 4px;
 }
+.ninja-info{
+	color:#3498db;font-weight:bold;
+}
 .ninja-success{
 	background-color:#DFF2BF;
 	color:#4F8A10;
