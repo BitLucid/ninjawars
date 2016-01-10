@@ -125,13 +125,12 @@ class DoshinController { //extends controller
      */
     private function validateBountyOffer(Player $char, $p_targetId, $p_amount) {
         $error = null;
+        $target = new Player($p_targetId);
 
-        if (!$p_targetId) { // Test that target exists
+        if (!$target->id()) { // Test that target exists
             $error = 1;
         } else {
-            $target_bounty = getBounty($p_targetId);
-
-            $amount = self::calculateMaxOffer($target_bounty, $p_amount);
+            $amount = self::calculateMaxOffer($target->bounty(), $p_amount);
 
             if ($char->gold() < $amount) {
                 $error = 2;
@@ -141,7 +140,7 @@ class DoshinController { //extends controller
                 $error = 3;
             }
 
-            if ($target_bounty >= 5000) {
+            if ($target->bounty() >= 5000) {
                 $error = 4;
             }
         }
@@ -163,7 +162,11 @@ class DoshinController { //extends controller
 
         if ($bribe <= $char->gold() && $bribe > 0) {
             $char->set_gold($char->gold() - $bribe);
-            subtractBounty($char->id(), floor($bribe/self::BRIBERY_DIVISOR));
+            $char->set_bounty(max(
+                0, 
+                ($char->bounty() - floor($bribe/self::BRIBERY_DIVISOR))
+                ));
+            $char->save();
             $location = 1;
             $quickstat = 'viewinv';
         } else if ($bribe < self::MIN_BRIBE) {
@@ -224,7 +227,7 @@ class DoshinController { //extends controller
     private function render($parts) {
         $char = $this->data['char'];
         $char_id = $char->id();
-        $myBounty = getBounty($char_id);
+        $myBounty = $this->data['char']->bounty();
 
         // Pulling the bounties.
         $bounties = query_array("SELECT player_id, uname, bounty, class_name AS class, level, clan_id, clan_name 

@@ -56,20 +56,23 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 
         $doshin = new DoshinController($this->char);
         $response = $doshin->offerBounty();
-        $new_bounty = getBounty($target->id());
+        $new_bounty = (new Player($target->id()))->bounty();
         TestAccountCreateAndDestroy::destroy();
 
         $this->assertEquals(600, $new_bounty);
     }
 
     public function testBribeDownABounty() {
+        $char_id = $this->char->id();
         $target_id = TestAccountCreateAndDestroy::char_id_2();
         $this->char->set_gold(434343);
         $this->char->save();
         $target = new Player($target_id);
 
-        addBounty($this->char->id(), 400);
-        $this->assertEquals(400, getBounty($this->char->id()));
+        $this->char->set_bounty(400);
+        $this->char->save();
+        $this->char = new Player($char_id);
+        $this->assertEquals(400, $this->char->bounty());
 
         $request = new Request([
             'bribe'=>300
@@ -79,7 +82,9 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $doshin = new DoshinController($this->char);
         $response = $doshin->bribe();
 
-        $current_bounty = getBounty($this->char->id());
+        $pulled_char = new Player($char_id);
+
+        $current_bounty = $pulled_char->bounty();
 
         // Bounty should be less now
 
@@ -100,10 +105,11 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 
         $doshin = new DoshinController($this->char);
         $response = $doshin->bribe();
+        $final_char = new Player($this->char->id());
         $parts = $response['parts'];
         $char = $parts['char'];
-        $this->assertLessThan(7777, $this->char->gold());
-        $modified_bounty = getBounty($this->char->id());
+        $this->assertLessThan(7777, $final_char->gold());
+        $modified_bounty = $final_char->bounty();
         $this->assertLessThan($bounty_set, $modified_bounty);
         $this->assertGreaterThan(0, $modified_bounty);
     }
