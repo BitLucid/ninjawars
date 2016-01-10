@@ -799,6 +799,9 @@ div.description, p.description{
 	margin-top: 10px;
 	margin-bottom: 20px;
 }
+div.description.clean, p.description.clean{
+	border-bottom:none;
+}
 form input#become-a-ninja {
 	margin-left:auto;
 	margin-right:auto;
@@ -1836,7 +1839,8 @@ section.login-page{
 	text-shadow: black 2px 2px 4px;
 }
 .ninja-info{
-	color:#3498db;font-weight:bold;
+	background-color:#d9edf7;color:#222;
+	font-weight:bold;padding:15px;margin:0 0 10px;
 }
 .ninja-success{
 	background-color:#DFF2BF;

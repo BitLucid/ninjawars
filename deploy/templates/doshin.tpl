@@ -5,6 +5,7 @@
 {elseif $location eq 2}
 	{assign var="locationLabel" value="The Rat-infested Alley behind the Doshin Office"}
 {/if}
+
 <h1>{$locationLabel}</h1>
 
 {if $error}
@@ -38,7 +39,7 @@
 {/if}
 
 
-<div class="description">
+<div class="description{if $myBounty gt 0} clean{/if}">
 {if $location eq 0}
   <p>
     You walk up to the Doshin Office to find the door locked. The Doshin are busy protecting the borders of the village from thieves.
