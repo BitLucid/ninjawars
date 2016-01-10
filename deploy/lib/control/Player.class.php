@@ -283,6 +283,17 @@ class Player implements Character {
 		return $this->vo->gold = $gold;
 	}
 
+	public function bounty() {
+		return $this->vo->bounty;
+	}
+
+	public function set_bounty($bounty) {
+		if($bounty < 0){
+			throw new \InvalidArgumentException('Bounty cannot be made negative ['.(string)$bounty.'].');
+		}
+		return $this->vo->bounty = $bounty;
+	}
+
 	public function hasStatus($p_status) {
 		$status = valid_status($p_status);
 		if ($status) {
@@ -423,7 +434,10 @@ class Player implements Character {
 		return $this->vo->health = $health;
 	}
 
-	// Return the amount below the max health (or zero).
+	/** 
+	 * Return the amount below the max health (or zero).
+	 * @return int
+	 */
 	public function hurt_by() {
 		return max(0, 
 			($this->max_health() - $this->health())
