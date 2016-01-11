@@ -12,12 +12,12 @@
     {if !$starting_turns}
     <li>You currently <span class='ninja-notice'>do not have any</span> turns.</li>
     {else}
-    <li>You currently have have <span class='turns-count'>{$starting_turns}{/if} turn{if $starting_turns > 1}s</span>.</li>
+    <li>You currently have have <span class='turns-count'>{$starting_turns|number_format:0|escape}{/if} turn{if $starting_turns > 1}s</span>.</li>
     {/if}
     {if !$starting_ki}
     <li>You currently <span class='ninja-notice'>do not have any</span> ki.</li>
     {else}
-    <li>You currently have <span class='ki-amount'>{$starting_ki} ki</span>.</li>
+    <li>You currently have <span class='ki-amount'>{$starting_ki|number_format:0|escape} ki</span>.</li>
     {/if}
   </ul>
 </div>
