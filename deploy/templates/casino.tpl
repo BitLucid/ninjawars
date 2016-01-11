@@ -64,7 +64,7 @@ $(document).ready(function() {
 	  </div>
 	</form>
 
-	<div class='gold-count'>Current Gold: {$player->vo->gold|escape}</div>
+	<div class='gold-count'>Current Gold: {$player->vo->gold|number_format:0|escape}</div>
 </div><!-- End of betting div -->
 
 
