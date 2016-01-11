@@ -55,15 +55,15 @@
         </span>
       </li>
       <li><span class='physical'>Strength: {$player.strength|escape}</span><span class='physical'>Speed: {$player.speed|escape}</span><span class='physical'>Stamina: {$player.stamina|escape}</span></li>
-      <li>Ki: {$player.ki|escape}</li>
-      <li>Karma: {$player.karma|escape}</li>
+      <li>Ki: {$player.ki|number_format:0|escape}</li>
+      <li>Karma: {$player.karma|number_format:0|escape}</li>
       <li>
         Health:
         <span style='width:10em;display:inline-block' title='Max health: {$player.max_health}'>
           {include file="health_bar.tpl" health=$player.health health_percent=$player.hp_percent}
         </span>
       </li>
-      <li>Turns: <span class='turns-count'>{$player.turns|escape}</span></li>
+      <li>Turns: <span class='turns-count'>{$player.turns|number_format:0|escape}</span></li>
       <li>Kills: {$player.kills|escape}</li>
       <li class='gold-count'>Gold: {$gold_display|escape}</li>
       <li>Created: <time class='timeago' datetime='{$player.created_date|escape}'>{$player.created_date|escape}</time></li>
