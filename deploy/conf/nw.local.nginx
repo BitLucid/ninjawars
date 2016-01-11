@@ -23,7 +23,17 @@ server {
 	rewrite_log on;
 	add_header X-uri "$uri";
 
+	location /js {
+		try_files $uri =404;
+	}
 
+	location /css {
+		try_files $uri =404;
+	}
+
+	location /images {
+		try_files $uri =404;
+	}
 
 	location / {
 		#default fallback of everything else block
