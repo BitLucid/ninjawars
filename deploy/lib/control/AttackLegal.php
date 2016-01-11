@@ -7,30 +7,12 @@ use NinjaWars\core\control\Clan;
 use \Player;
 use \Constants;
 
-/* PHP Attack Legal Check
- *
- * NAMING SCHEME: _ before private variables/functions, and not public.
- *
- * @category    Combat
- * @package     Attacks
- * @author      Roy Ronalds <roy.ronalds@gmail.com>
- * @author
- * @link        http://ninjawars.net/attack_mod.php
- */
-
-/* Requires and require_onces.
- */
-
-/*
- * Constant defines.
- */
-
 /**
  * Checks that all the requirements for attacking are in a legal state.
  *
  * Simple example:
  * <code>
- * $AttackLegal = new AttackLegal($attacker_name_or_id, $target_name_or_id, $params);
+ * $AttackLegal = new AttackLegal($attackerObj, $target_name_or_id, $params);
  * $attack_check = $AttackLegal->check();
  * $attack_error = $AttackLegal->getError();
  * </code>
@@ -39,7 +21,6 @@ use \Constants;
  * @package     Attack
  * @author      Roy Ronalds <roy.ronalds@gmail.com>
  */
-
 class AttackLegal {
     /**#@+
      * @access private
@@ -59,14 +40,12 @@ class AttackLegal {
      * Constructor
      *
      * Sets up the parameters for a attack legal check.
-     * @param    Player|int $attacker_name_or_id The attacker
-     * @param    Player|int $target_name_or_id The target
-     * @param    array $params The further conditions of the attack.
-     * @access public
+     * @param Player $p_attacker The attacker
+     * @param Player $p_target The target
+     * @param array $params The further conditions of the attack.
      * @todo Soon this should dependency-inject the attacker only
      */
-    public function __construct($attacker_name_or_id = null, $target_name_or_id, $params = array()) {
-        $this->attacker = null;
+    public function __construct($p_attacker, $p_target, $params = array()) {
         $this->target   = null;
         $this->error    = null;
         $defaults = ['required_turns'=>null, 'ignores_stealth'=>null, 'self_use'=>null, 'clan_forbidden'=>null];
@@ -76,15 +55,17 @@ class AttackLegal {
             throw new \Exception('Error: AttackLegal required turns not specified.');
         }
 
-        if ($attacker_name_or_id) {
-            $this->attacker = new Player($attacker_name_or_id);
-        } elseif ($char_id = self_char_id()) { // Pull logged in char_id.
-            $this->attacker = new Player($char_id);
+        if (!($p_attacker instanceof Player)) {
+            throw new \InvalidArgumentException('$p_attacker must be a Player object');
         }
 
-        if ($target_name_or_id) {
-            $this->target = new Player($target_name_or_id);
+        if (!($p_target instanceof Player)) {
+            throw new \InvalidArgumentException('$p_target must be a Player object');
         }
+
+
+        $this->attacker = $p_attacker;
+        $this->target = $p_target;
     }
 
     /**

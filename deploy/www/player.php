@@ -63,7 +63,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 
 		// Attack Legal section
 		$params          = array('required_turns'=>0, 'ignores_stealth'=>true); // 0 for unstealth.
-		$AttackLegal     = new AttackLegal($username, $target, $params);
+		$AttackLegal     = new AttackLegal($viewing_player_obj, $target_player_obj, $params);
 		$attack_allowed  = $AttackLegal->check(false);
 		$attack_error    = $AttackLegal->getError();
 

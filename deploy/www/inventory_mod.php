@@ -32,8 +32,7 @@ $target_id = whichever($target_id, get_char_id($target));
 
 $give      = in_array($give, array('on', 'Give'));
 
-$user_id   = self_char_id();
-$player    = new Player($user_id);
+$player    = new Player(self_char_id());
 
 $victim_alive           = true;
 $using_item             = true;
@@ -69,10 +68,10 @@ if (!is_object($item)) {
 	redirect(WEB_ROOT.'inventory.php?error=noitem');
 }
 
-$item_count = item_count($user_id, $item);
+$item_count = item_count($player->id(), $item);
 
 // Check whether use on self is occurring.
-$self_use = ($selfTarget || ($target_id === $user_id));
+$self_use = ($selfTarget || ($target_id === $player->id()));
 
 if ($self_use) {
 	$target    = $player->name();
@@ -102,7 +101,7 @@ $level_check               = $username_level - $targets_level;
 $near_level_power_increase = nearLevelPowerIncrease($level_difference, $max_power_increase);
 
 // Sets the page to link back to.
-if ($target_id && ($link_back == "" || $link_back == 'player') && $target_id != $user_id) {
+if ($target_id && ($link_back == "" || $link_back == 'player') && $target_id != $player->id()) {
 	$return_to = 'player';
 } else {
 	$return_to = 'inventory';
@@ -165,7 +164,7 @@ $params = [
 
 assert(!!$selfTarget || $attacker != $target);
 
-$AttackLegal    = new AttackLegal($attacker, $target, $params);
+$AttackLegal    = new AttackLegal($player, $targetObj, $params);
 $attack_allowed = $AttackLegal->check();
 $attack_error   = $AttackLegal->getError();
 
@@ -316,7 +315,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 				$player->set_gold($player->gold()+$loot);
 				$player->save();
 				$targetObj->save();
-				addKills($user_id, 1);
+				addKills($player->id(), 1);
 				$kill = true;
 				$bountyMessage = runBountyExchange($player->name(), $target);  //Rewards or increases bounty.
 			} else {
@@ -342,7 +341,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 			} else {
 				$message_to_target .= '.';
 			}
-			send_event($user_id, $target_id, str_replace('  ', ' ', $message_to_target));
+			send_event($player->id(), $target_id, str_replace('  ', ' ', $message_to_target));
 		}
 
 		// Unstealth
@@ -361,7 +360,7 @@ if (!$attack_allowed) { //Checks for error conditions before starting.
 	$turns_to_take = 1;
 
 	if ($item_used) { // *** remove Item ***
-		removeItem($user_id, $item->getName(), 1); // *** Decreases the item amount by 1.
+		removeItem($player->id(), $item->getName(), 1); // *** Decreases the item amount by 1.
 	}
 
 	if ($victim_alive && $using_item) {
@@ -374,15 +373,15 @@ if ($turns_to_take < 1) {
 	$turns_to_take = 1;
 }
 
-$ending_turns = subtractTurns($user_id, $turns_to_take);
+$ending_turns = subtractTurns($player->id(), $turns_to_take);
 assert($item->hasEffect('speed') || $ending_turns < $starting_turns || $starting_turns == 0);
 
 display_page(
-	'inventory_mod.tpl'
-	, 'Item Usage'
-	, get_defined_vars()
-	, array(
-		'quickstat' => 'player'
-	)
+	'inventory_mod.tpl',
+	'Item Usage',
+	get_defined_vars(),
+	[
+		'quickstat' => 'player',
+	]
 );
 }

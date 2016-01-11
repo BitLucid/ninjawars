@@ -31,16 +31,17 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
     public function testAttackLegalCantAttackSelf() {
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
         $this->oldify_character_last_attack($char_id);
-        $legal = new AttackLegal($char_id, $char_id, ['required_turns'=>1, 'ignores_stealth'=>true]);
+        $legal = new AttackLegal(new Player($char_id), new Player($char_id), ['required_turns'=>1, 'ignores_stealth'=>true]);
         $this->assertFalse($legal->check(false));
     }
 
     public function testAttackLegalCantAttackSelfEvenIfUsingSelfIdVsSelfUsername() {
+        $this->setExpectedException('InvalidArgumentException');
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
         $this->oldify_character_last_attack($char_id);
         $info = char_info($char_id);
         $this->assertTrue((bool)$info['uname'], 'Character uname not found to check attacklegal with');
-        $legal = new AttackLegal($char_id, $info['uname'], ['required_turns'=>1, 'ignores_stealth'=>true]);
+        $legal = new AttackLegal(new Player($char_id), $info['uname'], ['required_turns'=>1, 'ignores_stealth'=>true]);
         $this->assertFalse($legal->check(false));
     }
 
@@ -53,25 +54,11 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
         $this->oldify_character_last_attack($char_id);
         $char_2_id = TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
         $this->oldify_character_last_attack($char_2_id);
-        $legal = new AttackLegal($char_id, $char_2_id, ['required_turns'=>1, 'ignores_stealth'=>true]);
+        $legal = new AttackLegal(new Player($char_id), new Player($char_2_id), ['required_turns'=>1, 'ignores_stealth'=>true]);
         $checked = $legal->check(false);
         $this->assertEquals(null, $legal->getError(), 'There was an attack error message when there shouldn\'t be one.');
         $this->assertTrue($checked);
     }
-
-    public function testCanAttackAsOneCharByIdAndAnotherByName(){
-        $confirm = true;
-        $char_id = TestAccountCreateAndDestroy::create_testing_account($confirm);
-        $this->oldify_character_last_attack($char_id);
-        $char_2_id = TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
-        $this->oldify_character_last_attack($char_2_id);
-        $char2 = new Player($char_2_id);
-        $legal = new AttackLegal($char_id, $char2->name(), ['required_turns'=>1, 'ignores_stealth'=>true]);
-        $checked = $legal->check(false);
-        $this->assertEquals(null, $legal->getError(), 'There was an attack error message when there shouldn\'t be one.');
-        $this->assertTrue($checked);
-    }
-
 
     /**
      * Test that you can't attack if an excessive amount of turns is required
@@ -83,7 +70,7 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
         $char_2_id = TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
         $this->oldify_character_last_attack($char_2_id);
         $char = new Player($char_2_id);
-        $legal = new AttackLegal($char_id, $char->name(), ['required_turns'=>4000000000, 'ignores_stealth'=>true]);
+        $legal = new AttackLegal(new Player($char_id), $char, ['required_turns'=>4000000000, 'ignores_stealth'=>true]);
         $this->assertFalse($legal->check(false));
     }
 }
