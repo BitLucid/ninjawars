@@ -26,18 +26,7 @@
 }
 </style>
 {/literal}
-<script>
-{literal}
-$(document).ready(function() {
-    $("#bet").val(NW.storage.appState.get("bet", 1));
 
-    $("#coin_flip").submit(function() {
-        NW.storage.appState.set("bet", $("#bet").val());
-        return true;
-    });
-});
-{/literal}
-</script>
 
 
 
@@ -56,7 +45,7 @@ $(document).ready(function() {
 	{include file="casino.$part.tpl"}
 {/foreach}
 
-	<form id="coin_flip" action="casino.php" method="post" name="coin_flip">
+	<form id="coin_flip" class='js-hooked' action="casino.php" method="post" name="coin_flip">
 	  <div>
 	    <input type="hidden" name="command" value="bet">
 		Bet: <input id="bet" type="text" size="3" maxlength="4" name="bet" class="textField">
@@ -71,3 +60,4 @@ $(document).ready(function() {
 <nav>
   <a href="map.php" class="return-to-location block">Return to the Village</a>
 </nav>
+<script src='/js/casino.js?version=2016-01-10'></script>

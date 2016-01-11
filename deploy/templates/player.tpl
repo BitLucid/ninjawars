@@ -83,54 +83,17 @@ article#player-titles{
 	{if $attack_error}
     <div class='ninja-error centered'>Cannot Attack: {$attack_error}</div>
   </section>
+
+<script>
+  var attacking_possible = false;
+</script>
+
 	{else}
-    <script type='text/javascript'>
-{literal}
-    $(document).ready(function() {
-{/literal}
-        var combat_skills = {$combat_skills|@json_encode};
-{literal}
-        /*
-           because some browsers store all values as strings, we need to store
-           booleans as string representations of 1 and 0. We then need to get
-           the int value upon retrieval
-        */
-        $("#duel").prop('checked', parseInt(NW.storage.appState.get("duel_checked", false)));
+<script>
+  var attacking_possible = true;
+  var combat_skills = {$combat_skills|@json_encode};
+</script>
 
-        for (i = 0; i < combat_skills.length; i++) {
-            $("#"+combat_skills[i].skill_internal_name).prop('checked',
-                parseInt(NW.storage.appState.get(combat_skills[i].skill_internal_name+"_checked", false))
-            );
-        }
-
-        var lastItemUsed = NW.storage.appState.get("last_item_used");
-
-        if ($("#item option[value='"+lastItemUsed+"']").length) {
-            $("#item").val(lastItemUsed);
-        } else {
-            $("#item").val($("#item option:first-child").val());
-        }
-
-        $("#attack_player").submit(function() {
-            // the unary + operator converts the boolean to an int
-            NW.storage.appState.set("duel_checked", +$("#duel").prop('checked'));
-
-            for (i = 0; i < combat_skills.length; i++) {
-                NW.storage.appState.set(
-                    combat_skills[i].skill_internal_name+"_checked",
-                    +$("#"+combat_skills[i].skill_internal_name).prop('checked')
-                );
-            }
-
-            return true;
-        });
-
-        $("#inventory_form").submit(function() {
-            NW.storage.appState.set("last_item_used", $("#item").val());
-        });
-    });
-{/literal}
-    </script>
     <div id='attacks' style='width:95%;margin:0 auto;font-size:larger;clear:both'>
         <table id='player-attack'>
           <tr>
@@ -252,7 +215,7 @@ article#player-titles{
       </p>
   {if $display_clan_options}
     <div class='clan-leader-options centered'>
-      <form id="kick_form" action="clan.php" method="get" name="kick_form">
+      <form id="kick_form" class='js-hooked' action="clan.php" method="get" name="kick_form">
         <div>
           <input id="kicked" type="hidden" value="{$player_info.player_id}" name="kicked">
           <input id="command" type="hidden" value="kick" name="command">
@@ -280,11 +243,4 @@ article#player-titles{
 
   </div><!-- End player-info -->
 
-
-{literal}
-<script type='text/javascript'>
-$(function(){
-  $('#kick_form').submit(function(){return confirm('Are you sure you want to kick this player?');});
-});
-</script>
-{/literal}
+<script src='/js/disagreement.js'></script>
