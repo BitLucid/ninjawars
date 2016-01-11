@@ -39,7 +39,7 @@
           </a>
     			{/if}
         </td>
-        <td class='item-count'>{$item_info.count|escape}</td>
+        <td class='item-count'>{$item_info.count|number_format:0|escape}</td>
       </tr>
     		{/if}
     	{/foreach}
