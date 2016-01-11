@@ -22,20 +22,12 @@ if ($error = init($private, $alive)) {
 	die();
 }
 
-
 // *** ********* GET VARS FROM POST - OR GET ************* ***
 $target      = whichever(in('target'), in('attackee'));
 $duel        = (in('duel')    ? true : NULL);
 $blaze       = (in('blaze')   ? true : NULL);
 $deflect     = (in('deflect') ? true : NULL);
 $evade       = (in('evasion') ? true : NULL);
-
-$attacker_id = self_char_id();
-
-$attacker_obj = new Player($attacker_id);
-$attacker = $attacker_obj->name();
-
-$target_id   = get_char_id($target);
 
 // Template vars.
 $stealthed_attack = $stealth_damage = $stealth_lost = $pre_battle_stats = $rounds =
@@ -69,6 +61,10 @@ if ($duel) {
 	$attack_type['attack'] = 'attack';
 }
 
+$target_player    = new Player($target);
+$attacking_player = new Player(self_char_id());
+$attacker  = $attacking_player->name();
+
 $skillListObj = new Skill();
 
 $ignores_stealth = false;
@@ -84,12 +80,9 @@ $params = array(
 	, 'ignores_stealth' => $ignores_stealth
 );
 
-$attack_legal = new AttackLegal($attacker, $target, $params);
+$attack_legal = new AttackLegal($attacking_player, $target_player, $params);
 $attack_is_legal = $attack_legal->check();
 $attack_error = $attack_legal->getError();
-
-$target_player    = new Player($target_id);
-$attacking_player = new Player($attacker_id);
 
 // ***  MAIN BATTLE ALGORITHM  ***
 if ($attack_is_legal) {
@@ -122,7 +115,7 @@ if ($attack_is_legal) {
 		$turns_to_take = 1;
 
 		$stealthed_attack = true;
-		$target_health = subtractHealth($target_id, $stealthAttackDamage);
+		$target_health = subtractHealth($target_player->id(), $stealthAttackDamage);
 
 		if (0 > $target_health) { // *** if Stealth attack of whatever damage kills target. ***
 			$victor = $attacker;
@@ -136,14 +129,14 @@ if ($attack_is_legal) {
 
 			$target_player->death();
 			sendMessage("A Stealthed Ninja", $target, $target_msg);
-			sendMessage($target, $attacker, $attacker_msg);
-			$bounty_result = runBountyExchange($attacker, $target); // *** Determines the bounty for normal attacking. ***
+			sendMessage($target, $attacking_player->name(), $attacker_msg);
+			$bounty_result = runBountyExchange($attacker_player->name(), $target); // *** Determines the bounty for normal attacking. ***
 
 			$stealth_kill = true;
 		} else {	// *** if damage from stealth only hurts the target. ***
 			$stealth_damage = true;
 
-			sendMessage($attacker, $target, "$attacker has attacked you from the shadows for $stealthAttackDamage damage.");
+			sendMessage($attacking_player->name(), $target, "$attacker has attacked you from the shadows for $stealthAttackDamage damage.");
 		}
 	} else {	// *** If the attacker is purely dueling or attacking, even if stealthed, though stealth is broken by dueling. ***
        // *** MAIN DUELING SECTION ***
@@ -222,8 +215,8 @@ if ($attack_is_legal) {
 		//  *** Let the victim know who hit them ***
 		$attack_label = ($duel ? 'dueled' : 'attacked');
 
-		$defenderHealthRemaining = subtractHealth($target_id, $total_attacker_damage);
-		$attackerHealthRemaining = subtractHealth($attacker_id, $total_target_damage);
+		$defenderHealthRemaining = subtractHealth($target_player->id(), $total_attacker_damage);
+		$attackerHealthRemaining = subtractHealth($attacking_player->id(), $total_target_damage);
 
 		if ($defenderHealthRemaining && $attackerHealthRemaining) {
 			$combat_msg = "You have been $attack_label by $attacker for $total_attacker_damage, but they got away before you could kill them!";
@@ -264,7 +257,7 @@ if ($attack_is_legal) {
 					}
 				}
 
-				addKills($attacker_id, $killpoints); // Attacker gains their killpoints.
+				addKills($attacking_player->id(), $killpoints); // Attacker gains their killpoints.
 				$target_player->death();
 
 				if (!$simultaneousKill)	{
@@ -302,7 +295,7 @@ if ($attack_is_legal) {
 					sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
 				}
 
-				addKills($target_id, $defenderKillpoints);	// *** Adds a kill for the defender. ***
+				addKills($target_player->id(), $defenderKillpoints);	// *** Adds a kill for the defender. ***
 				$attacking_player->death();
 
 				if (!$simultaneousKill) {
@@ -329,7 +322,7 @@ if ($attack_is_legal) {
 
 	if ($rounds > 4) {
 		// Even matched battle!  Reward some ki to the attacker, even if they die.
-		change_ki($attacker_id, 1); // Award Ki.
+		change_ki($attacking_player->id(), 1); // Award Ki.
 		$rewarded_ki = 1;
 	}
 }
@@ -339,14 +332,14 @@ if ($turns_to_take < 1) {
 	$turns_to_take = 1;
 }
 
-$ending_turns = subtractTurns($attacker_id, $turns_to_take);
+$ending_turns = subtractTurns($attacking_player->id(), $turns_to_take);
 
 //  ***  START ACTION OVER AGAIN SECTION ***
 
 $attack_again = false;
 if (isset($target)) {
-    $attacker_health_snapshot = getHealth($attacker_id);
-    $defender_health_snapshot = getHealth($target_id);
+    $attacker_health_snapshot = getHealth($attacking_player->id());
+    $defender_health_snapshot = getHealth($target_player->id());
 
 	if ($attack_is_legal && $attacker_health_snapshot > 0 && $defender_health_snapshot > 0) {	// *** After any partial attack. ***
 		$attack_again = true;
@@ -356,5 +349,6 @@ if (isset($target)) {
 $target_ending_health = $target_player->health();
 $target_ending_health_percent = $target_player->health_percent();
 $target_name = $target_player->name();
+$target_id = $target_player->id();
 
 display_page('attack_mod.tpl', 'Battle Status', get_defined_vars());

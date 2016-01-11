@@ -85,7 +85,7 @@ if ($command == 'Clone Kill' || $command == 'Harmonize') {
 } else {
 	// *** Checks the skill use legality, as long as the target isn't self.
 	$params         = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$ignores_stealth, 'self_use'=>$self_use);
-	$AttackLegal    = new AttackLegal($player->player_id, $target->player_id, $params);
+	$AttackLegal    = new AttackLegal($player, $target, $params);
 	$attack_allowed = $AttackLegal->check();
 	$attack_error   = $AttackLegal->getError();
 }
