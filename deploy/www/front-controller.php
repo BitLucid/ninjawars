@@ -1,5 +1,5 @@
 <?php
-require_once('../core/base.inc.php');
+require_once(dirname(__DIR__.'..').'/core/base.inc.php');
 
 use NinjaWars\core\Router;
 use Symfony\Component\HttpFoundation\Request;
