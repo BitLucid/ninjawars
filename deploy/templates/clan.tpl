@@ -19,4 +19,4 @@
 
 </section>
 
-<script type="text/javascript" src="/js/clan.js"></script>
+<script type="text/javascript" src="{cachebust file="/js/clan.js"}"></script>

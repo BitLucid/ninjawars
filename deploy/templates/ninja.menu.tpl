@@ -13,11 +13,11 @@
         </div>
         {/if}
         <div class='ninja-info thick'>
-          <a href='stats.php' target='main' title='Your ninja stats, level, info, etc.'><img src="/images/icons/mono/heart32.png" height="16" width="16" alt="">Ninja Stats</a>
+          <a href='stats.php' target='main' title='Your ninja stats, level, info, etc.'><img src="{cachebust file="/images/icons/mono/heart32.png"}" height="16" width="16" alt="">Ninja Stats</a>
         </div>
         {/if}
         <div class='account-info thick'>
-          <a href="account.php" target="main" title='Your player account info, email, password, etc.'><img src="/images/icons/mono/gear32.png" height="16" width="16" alt="">Account Info</a>
+          <a href="account.php" target="main" title='Your player account info, email, password, etc.'><img src="{cachebust file="/images/icons/mono/gear32.png"}" height="16" width="16" alt="">Account Info</a>
         </div>
         <!-- Recent Events count and target will get put in here via javascript -->
         <div id='recent-events' class="boxes active" style='display:none'>

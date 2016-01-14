@@ -4,5 +4,5 @@
     <dd class='user-message{if $message->unread} message-unread{/if}'>
     	{$message->message|escape|replace_urls|markdown}<time class="message-time timeago" datetime="{$message->date}" title="{$message->date}">{$message->date}</time>
     </dd>
-    
+
     {assign var='last_user_message' value=$message->send_from}

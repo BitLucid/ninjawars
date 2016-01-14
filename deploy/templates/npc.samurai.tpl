@@ -1,4 +1,4 @@
-<img src="images/characters/samurai.png" alt="Samurai">
+<img src="{cachebust file="/images/characters/samurai.png"}" alt="Samurai">
 {if $level lt 6}
 You are too weak to take on the Samurai.<br>
 {elseif $attacker_kills lt 1}

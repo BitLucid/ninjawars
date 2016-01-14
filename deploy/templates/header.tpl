@@ -12,8 +12,7 @@
     <title>{$title|escape} - The Ninja Wars Ninja Game</title>
     <base href="{$smarty.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
     <!-- This css file now contains the mobile and print css files -->
-    <link rel="stylesheet" type="text/css" href="css/style.css?version=2016-01-10" media="Screen">
-
+    <link rel="stylesheet" type="text/css" href="{cachebust file="/css/style.css"}" media="Screen">
 
 	<!-- Html5 shim for ie less than 9 -->
     <!--[if lt IE 9]>
@@ -24,12 +23,12 @@
     <!-- Google jquery lib -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {/if}
-	<script>window.jQuery || document.write('<script src="js/jquery.min.js?version=2.1.1"><\/script>')</script>
+	<script>window.jQuery || document.write('<script src="{cachebust file="/js/jquery.min.js"}"><\/script>')</script>
     <!-- Plugins go here -->
-    <script type='text/javascript' src='/js/jquery.timeago.js?version=2016-01-10'></script>
+    <script type='text/javascript' src='{cachebust file="/js/jquery.timeago.js"}'></script>
 
 {if $smarty.const.DEBUG}
-    <link rel="stylesheet" type="text/css" href="css/debugger.css">
+    <link rel="stylesheet" type="text/css" href="{cachebust file="/css/debugger.css"}">
     {literal}
     <script type="text/javascript">
         var NW = window.NW || {};
@@ -39,9 +38,9 @@
 {/if}
 
     <!-- All the global ninjawars javascript -->
-    <script type="text/javascript" src="/js/nw.js?version=2016-01-10"></script>
+    <script type="text/javascript" src="{cachebust file="/js/nw.js"}"></script>
 {if $is_index}
-    <script type="text/javascript" src="/js/chat.js?version=2016-01-10"></script>
+    <script type="text/javascript" src="{cachebust file="/js/chat.js"}"></script>
 {/if}
 
   </head>
@@ -50,7 +49,7 @@
 	<div id='solo-page-header'>
 		<div id="logo-appended">
 		  <a href="/">
-	        <img id='ninjawars-title-image' src='images/halfShuriken.png' title='Home' alt='Ninja Wars' width='108' height='108'>
+	        <img id='ninjawars-title-image' src='{cachebust file="/images/halfShuriken.png"}' title='Home' alt='Ninja Wars' width='108' height='108'>
 		  </a>
 		</div>
 		<div id='logo-placeholder'>

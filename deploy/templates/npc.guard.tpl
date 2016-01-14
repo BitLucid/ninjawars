@@ -1,5 +1,5 @@
 The Guard sees you and prepares to defend!<br><br>
-<img src="images/characters/guard.png" alt="Guard">
+<img src="{cachebust file="/images/characters/guard.png"}" alt="Guard">
 {if $victory}
 The guard is defeated!<br>
 Guard does {$attack} points of damage.<br>

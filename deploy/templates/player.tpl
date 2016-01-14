@@ -44,7 +44,7 @@ article#player-titles{
 
     <nav class='player-ranking-linkback'>
       <a href='list.php?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none'>
-        <img src='{$smarty.const.IMAGE_ROOT}return-triangle.png' alt='&lsaquo;Rank {$rank_spot|escape}' title='&lsaquo;Return to rank {$rank_spot}' style='width:50px;height:50px;float:left;'>
+        <img src='{cachebust file="/images/return-triangle.png"}' alt='&lsaquo;Rank {$rank_spot|escape}' title='&lsaquo;Return to rank {$rank_spot}' style='width:50px;height:50px;float:left;'>
       </a>
     </nav>
 
@@ -111,7 +111,7 @@ article#player-titles{
 
                 <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
                 <label class='attack-player-trigger btn btn-vital'>
-                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{$smarty.const.IMAGE_ROOT}50pxShuriken.png' alt='Attack' title='Attack'><span id='attack-text'>Attack</span>
+                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{cachebust file="/images/50pxShuriken.png"}' alt='Attack' title='Attack'><span id='attack-text'>Attack</span>
                 </label>
               </form>
             </td>
@@ -243,4 +243,4 @@ article#player-titles{
 
   </div><!-- End player-info -->
 
-<script src='/js/disagreement.js'></script>
+<script src='{cachebust file="/js/disagreement.js"}'></script>

@@ -1,7 +1,7 @@
-              
+
       {include file='footerlinks.tpl'}
 
-      
+
         <div id='footer-middle-bar'>
 		    <h3 id='created-by'>
 		    	<a href='http://bitlucid.com' target='_blank'>CREATED BY BitLucid, Inc.</a>
@@ -27,10 +27,10 @@
 			<img src="//www.w3.org/html/logo/badge/html5-badge-h-css3-multimedia-performance-semantics.png" width="229" height="64" alt="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics" title="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics">
 			</a>
 			</span>
-        
-        	
+
+
         	<!-- Script to display commits -->
-        	<script type='text/javascript' src="js/repo.js"></script>
+        	<script type='text/javascript' src="{cachebust file="/js/repo.js"}"></script>
         	<script>
         	{literal}
 			$(document).ready(function() {
