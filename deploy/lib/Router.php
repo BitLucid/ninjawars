@@ -107,8 +107,8 @@ class Router {
         }
 
         // if there are 2 route segments use the second one as the command
-        if (isset($p_routeSegments[1]) && !empty($p_routeSegments[1])) {
-            $command = $p_routeSegments[1];
+        if (isset($routeSegments[1]) && !empty($routeSegments[1])) {
+            $command = $routeSegments[1];
         } else { // without a 2nd route segment, look for command in the input
             $command = (string)in(self::COMMAND_PARAM);
         }
