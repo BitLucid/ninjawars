@@ -6,6 +6,9 @@ namespace NinjaWars\core;
  * provided, otherwise a 404 will occur.
  */
 Router::$routes = [
+    'signup' => [
+        'type'    => 'controller',
+    ],
     'login' => [
         'type'    => 'controller',
         'actions' => [
