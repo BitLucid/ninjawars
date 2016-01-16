@@ -1,4 +1,4 @@
-<img src='images/scenes/KunitsunaTrainingWithTengu.jpg' alt='' style='width:1000px'>
+<img src='{cachebust file="/images/scenes/KunitsunaTrainingWithTengu.jpg"}' alt='' style='width:1000px'>
 <p>A group of tengu thieves is waiting for you. </p><p class='speech'>You'll pay for attacking our brethren.</p>
 
 {if $victory}

@@ -34,15 +34,15 @@ article#fight nav{
 }
 </style>
 {/literal}
-	
-	
+
+
   <article id='fight'>
 	<h2>{$display_name|escape}</h2>
-	
+
 	<section class='npc-fight'>
 	{if $image_path}
 		<figure class='npc-avatar'>
-		  <img src='{$image_path}' alt='Creature'>
+		  <img src='{cachebust file=$image_path}' alt='Creature'>
 		</figure>
 	{/if}
 
@@ -55,7 +55,7 @@ article#fight nav{
 	{if $is_stronger}
 	The {$race|escape} seems stronger than you!
 	{/if}
-	
+
 	<p>The {$display_name|escape} wounds you for <span class='damage'>{$attack_damage} health</span>.</p>
 	{if $display_statuses}
 	<p>The {$display_name|escape}'s strike leaves you <span class='{$display_statuses_classes}'>{$display_statuses}</span>.</p>
@@ -78,14 +78,14 @@ article#fight nav{
 			{/if}
 
 		{/if}
-		
+
 		<section id='rewards'>
 		{if $received_gold}<p>You gather <span class='gold'>{$received_gold} gold</span>.</p>{/if}
 		{foreach from=$received_display_items item=display_item}<p>You obtained <span class='obtained-item'>{$display_item}</span>!</p>{/foreach}
 		&nbsp;
 		</section>
-		
-			
+
+
 	{else}
 		<div class='ninja-error'>The {$display_name|escape} has killed you!</div>
 	{/if}

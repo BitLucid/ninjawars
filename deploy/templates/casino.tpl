@@ -60,4 +60,4 @@
 <nav>
   <a href="map.php" class="return-to-location block">Return to the Village</a>
 </nav>
-<script src='/js/casino.js?version=2016-01-10'></script>
+<script src='{cachebust file="/js/casino.js"}'></script>

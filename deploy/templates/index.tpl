@@ -3,7 +3,7 @@
     <!-- Version {$version|escape} -->
 	<div id="logo-appended">
 	  <a href="/">
-        <img id='ninjawars-title-image' src='images/halfShuriken.png' title='Home' alt='Ninja Wars' width='100' height='100'>
+        <img id='ninjawars-title-image' src='{cachebust file="/images/halfShuriken.png"}' title='Home' alt='Ninja Wars' width='100' height='100'>
 	  </a>
 	</div>
 
@@ -34,12 +34,12 @@
       <div class='text-info'>
         <div id='messages'>
             <div>
-                <a target="main" id='message-inbox' href="messages.php"><img id='messages-icon' src='/images/icons/mono/commentblack32.png'  height=16 width=16 alt='' style='vertical-align:top'><span class='unread-count' style='vertical-align:top'>{$unread_message_count}</span>
+                <a target="main" id='message-inbox' href="messages.php"><img id='messages-icon' src='{cachebust file="/images/icons/mono/commentblack32.png"}'  height=16 width=16 alt='' style='vertical-align:top'><span class='unread-count' style='vertical-align:top'>{$unread_message_count}</span>
                 </a>
             </div>
             <div>
               <a target='main' href='events.php'>
-                <img src='/images/icons/mono/star32.png'  height=16 width=16 alt=''>
+                <img src='{cachebust file="/images/icons/mono/star32.png"}'  height=16 width=16 alt=''>
               </a>
             </div>
         </div>
@@ -63,17 +63,17 @@
               <ul>
                 <li id='status-actions' class='self'>
                   <a href='events.php' rel='nav' target='main' >
-                    <img src='/images/ninja_status_icon_50px.png' alt='' style='width:50px;height:51px'>Watch
+                    <img src='{cachebust file="/images/ninja_status_icon_50px.png"}' alt='' style='width:50px;height:51px'>Watch
                   </a>
                 </li>
                 <li id='combat-actions' class='combat'>
                   <a href='enemies.php' rel='nav' target='main' title='Check up on your enemies and see who recently attacked you.'>
-                    <img src='images/50pxShuriken.png' alt=''  style='width:50px;height:42px'>Fight
+                    <img src='{cachebust file="/images/50pxShuriken.png"}' alt=''  style='width:50px;height:42px'>Fight
                   </a>
                 </li>
                 <li id='map-actions' class='map'>
                   <a href='map.php' rel='nav' target='main' title='Travel to different locations on the Map.'>
-                    <img src='images/pagodaIcon_60px.png' alt=''  style='width:60px;height:52px'>Move
+                    <img src='{cachebust file="/images/pagodaIcon_60px.png"}' alt=''  style='width:60px;height:52px'>Move
                   </a>
                 </li>
               </ul>
@@ -95,7 +95,7 @@
                 <ul id='map-subcategory'>
                   <li><a href="shop.php" rel='nav' target="main" title='Spend your money to get weapons.'>Buy</a></li>
                   <li><a href="work.php" rel='nav' target="main" title='Trade your turns to get money.'>Work</a></li>
-                  <li><a href="doshin_office.php" rel='nav' target="main" title='Hunt bounties for money.'>Hunt<img src="images/doshin.png" alt="" style='height:8px;width:8px'></a></li>
+                  <li><a href="doshin_office.php" rel='nav' target="main" title='Hunt bounties for money.'>Hunt<img src="{cachebust file="/images/doshin.png"}" alt="" style='height:8px;width:8px'></a></li>
                 </ul>
             </nav>
         </div><!-- End of reactive panel -->

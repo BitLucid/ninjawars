@@ -160,4 +160,4 @@ if (0) {
 
 </div><!-- End of content div -->
 
-<script type='text/javascript' src='js/textAreaLimits.js'></script>
+<script type='text/javascript' src='{cachebust file="/js/textAreaLimits.js"}'></script>

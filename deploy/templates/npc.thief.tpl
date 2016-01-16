@@ -1,5 +1,5 @@
 Thief sees you and prepares to defend!<br><br>
-<img src="images/characters/thief.png" alt="Thief">
+<img src="{cachebust file="/images/characters/thief.png"}" alt="Thief">
 {if $victory}
 	{if $attack gt 30}
 Thief escaped and stole {$gold} pieces of your gold!

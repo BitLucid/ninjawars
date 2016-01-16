@@ -23,6 +23,11 @@ server {
 
 	index index.php;
 
+	location ~ /(js|css|images|files) {
+		rewrite ^/(.*)\.[\d]+\.(.*)$ /$1.$2;
+		try_files $uri =404;
+	}
+
 	location / {
 		#everything else block
 		try_files $uri $uri/ @php;

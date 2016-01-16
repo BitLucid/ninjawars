@@ -4,7 +4,7 @@
     <header id='index-header' class='clearfix'>
 		<div id="logo-appended">
 		  <a href="/">
-	        <img id='ninjawars-title-image' src='images/halfShuriken.png' title='Home' alt='Ninja Wars' width='108' height='108'>
+	        <img id='ninjawars-title-image' src='{cachebust file="/images/halfShuriken.png"}' title='Home' alt='Ninja Wars' width='108' height='108'>
 		  </a>
 		</div>
 		<div id='logo-placeholder'>
@@ -15,9 +15,9 @@
 		</nav>
 		<nav id='top-logo'>
       <h1>The Ninja Game at </h1>
-      <h1 class='title-box'><a href='main.php' target='main'><img src='images/nw_bamboo_logo_soft.png' alt='NinjaWars' width='200' height='100'></a>.net</h1>
+      <h1 class='title-box'><a href='main.php' target='main'><img src='{cachebust file="/images/nw_bamboo_logo_soft.png"}' alt='NinjaWars' width='200' height='100'></a>.net</h1>
 		</nav>
-      
+
     <nav role='navigation' id='subcategory-bar' class='navigation'>
       <ul id='ninjas-subcategory'>
         <li><a href="list.php" target="main">Ninjas</a></li>
@@ -28,18 +28,18 @@
         <li><a href="shop.php" target="main">Shop</a></li>
         <li><a href="work.php" target="main">Field</a></li>
         <li>
-          <a href="doshin_office.php" target="main">Doshin <img class='doshin-image' src="images/doshin.png" alt=""></a>
+          <a href="doshin_office.php" target="main">Doshin <img class='doshin-image' src="{cachebust file="/images/doshin.png"}" alt=""></a>
         </li>
       </ul>
     </nav> <!-- End of subcategory bar -->
-      
+
 	  </header><!-- End of header -->
-      
+
 
       <div id='core' class='clearfix'>
       <!-- MAIN COLUMN STARTS HERE -->
-		{include file="core.tpl"}    
-      
+		{include file="core.tpl"}
+
       <aside id='sidebar-column'  class='navigation'>
 		<div id='contact-us' class='thick'>
 		  <a href='staff.php' target='main' class='font-shangrila'>Contact Staff</a>
@@ -51,33 +51,33 @@
 
   {if isset($show_news) and $show_news}
       <div id='news-housing'>
-        
+
 {include file="mini-news.section.tpl"}
 
     </div><!-- End of news-housing -->
   {/if}
-        
+
       <div id='chat-housing'>
-        
+
 {include file="mini-chat.section.tpl"}
 
 	  </div><!-- End of chat-housing -->
 
 
       </aside><!-- End of aside -->
-      
+
       </div><!-- End of core -->
 
       <!-- <div id='push'></div> -->
       <footer id='index-footer'  class='navigation'>
-      
+
             <!-- Stuff like catchphrases, links, and the author information -->
       {include file='linkbar_section.tpl'}
 
-        
+
       </footer>
-      
-      
+
+
 <!-- Validated as of Oct, 2009 -->
 
 <!-- Version: {$version} -->

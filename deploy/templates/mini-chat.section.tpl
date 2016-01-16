@@ -22,12 +22,12 @@
                 <div class="box-title centered">
                   Ninja Chat
                 </div>
-                
+
                 <div id="chat-and-switch">
 
                   <form id="post_msg_js" class='chat-submit' name="post_msg" {if isset($user_id) and $user_id}data-logged-in='true'{/if} action="chat.php" method="post">
                   <!-- Check for post_msg_js in chat.js for the functionality -->
-                  
+
                     <div id='chat-input'>
                         <input type="text" size="20" maxlength="250" name="message" autocomplete='off' class="textField">
                     </div>
@@ -37,9 +37,9 @@
                   </form>
 
                   <div id="mini-chat-container" class='chat-collapsed'>
-                  
-                  
-                    <!-- Chat section with template chat author and messages --> 
+
+
+                    <!-- Chat section with template chat author and messages -->
                     <dl id="mini-chat-display" class="chat-messages" style='display:none'>
                        	<dt class='chat-author template'  style='display:none'>&lsaquo;<a href='player.php?player_id=' target='main'></a>&rsaquo;</dt>
                        		<dd class='chat-message template' style='display:none'></dd>
@@ -49,11 +49,11 @@
                   </div><!-- End of chat-collapsed -->
                 </div>
               </div>
-              
+
               <div class="chat-switch centered">
                 <a id='full-chat-link' href="village.php" target="main">
-                	View ninja chat archive<img src="images/chat.png" class='tiny-speech-bubble' alt="">
+                	View ninja chat archive<img src="{cachebust file="/images/chat.png"}" class='tiny-speech-bubble' alt="">
                 </a>
               </div>
-              
-          </div> <!-- End of index-chat --> 
+
+          </div> <!-- End of index-chat -->

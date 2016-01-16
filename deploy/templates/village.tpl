@@ -49,8 +49,8 @@
 {/if}
 </section>
 
-<script type="text/javascript" src="js/chat.js"></script>
-<script src="/js/jquery.linkify.js" type="text/javascript"></script>
+<script type="text/javascript" src="{cachebust file="/js/chat.js"}"></script>
+<script src="{cachebust file="/js/jquery.linkify.js"}" type="text/javascript"></script>
 <script type="text/javascript">
 {literal}
 $(function(){

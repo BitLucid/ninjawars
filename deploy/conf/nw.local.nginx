@@ -23,15 +23,8 @@ server {
 	rewrite_log on;
 	add_header X-uri "$uri";
 
-	location /js {
-		try_files $uri =404;
-	}
-
-	location /css {
-		try_files $uri =404;
-	}
-
-	location /images {
+	location ~ /(js|css|images|files) {
+		rewrite "^/(.*)\.[\d]{10,12}\.(.*)$" /$1.$2;
 		try_files $uri =404;
 	}
 

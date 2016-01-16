@@ -5,7 +5,7 @@
       Ninja Wars - 404 - Page Not Found
     </title>
     <base href="{$smarty.const.WEB_ROOT}"><!--[if lte IE 6]></base><![endif]-->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{cachebust file="/css/style.css"}">
     <style>
     #404-search{
       margin-left: 2em;
@@ -25,7 +25,7 @@
   	<h1>NinjaWars :: 404 Page Not Found</h1>
     <div class='parent'>
       <div class='glassbox child'>
-      	<img src='images/NinjaMeditationSilhouette_200.png' alt=''>
+      	<img src='{cachebust file="/images/NinjaMeditationSilhouette_200.png"}' alt=''>
         <p>
           Pool of still water;
         </p>

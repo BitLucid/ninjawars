@@ -71,4 +71,4 @@ var refocus = {if $individual_or_clan}true{else}false{/if};
 var focus = '{$message_to}';
 </script>
 <!-- Confirmation requirements and refocus setup -->
-<script src='{$smarty.const.JS_ROOT}talk.js?version=2016-01-10'></script>
+<script src='{cachebust file="/js/talk.js"}'></script>

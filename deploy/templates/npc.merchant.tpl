@@ -1,5 +1,5 @@
 Merchant sees you and prepares to defend!<br><br>
-<img src="images/characters/merchant.png" alt="Merchant">
+<img src="{cachebust file="/images/characters/merchant.png"}" alt="Merchant">
 {if $victory}
 The merchant is defeated.<br>
 The Merchant did {$attack} points of damage.<br>

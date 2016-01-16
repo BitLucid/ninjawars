@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="css/enemies.css" media="Screen" />
+<link rel="stylesheet" type="text/css" href="{cachebust file="/css/enemies.css"}" media="Screen" />
 
 <h1>Fight</h1>
 
@@ -32,7 +32,7 @@
         <input type='hidden' name='command' value='delete'>
         <input type='hidden' name='remove_enemy' value='{$loop_enemy.player_id|escape}'>
           <button type='submit' class='remove-enemy-button'>
-            <img src="{$smarty.const.IMAGE_ROOT}icons/mono/stop32.png" height='16' width='16' alt="remove" 
+            <img src="{cachebust file="/images/icons/mono/stop32.png"}" height='16' width='16' alt="remove"
               title='Remove {$loop_enemy.uname|escape} from your hitlist'>
           </button>
       </form>
@@ -73,7 +73,7 @@
     <input type='hidden' name='command' value='search'>
     <input id='enemy-match' required=required type="text" maxlength="50" name="enemy_match" class="textField" placeholder='Search by ninja name' value='{if isset($enemy_match)}{$enemy_match}{/if}'>
     <input type="submit" value="Find Enemies" class="formButton">
-  </form>    
+  </form>
 </div>
 <!-- This hooks into quick-match js at bottom -->
 
@@ -112,7 +112,7 @@
       	{if isset($npc.img) && $npc.img}
       	<img alt='' class='creature-image' src='images/characters/{$npc.img|escape:'url'|escape}'>
       	{else}<span style='width:25px;height:46px'>&#9733;</span>
-      	{/if} 
+      	{/if}
       	{$npc.name|escape}</a></li>
 {/foreach}
   </ul>
@@ -123,5 +123,5 @@
 {* {include file="list.active.tpl" active_ninja=$active_ninjas} *}
 
 <!--  Deactivating this functionality for now.
-<script src='js/enemies.js'></script>
+<script src='{cachebust file="/js/enemies.js"}'></script>
 -->

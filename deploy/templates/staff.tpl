@@ -51,7 +51,7 @@ ul#social-networks li:before {
 </p>
 <p>
   <a id='contact-us-image-container' href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' &lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20" rel='nofollow'>
-  <img id='contact-us-image' src='images/contact_us.png' alt='Contact Staff'>
+  <img id='contact-us-image' src='{cachebust file="/images/contact_us.png"}' alt='Contact Staff'>
   </a>
 </p>
 </section>
@@ -67,8 +67,8 @@ ul#social-networks li:before {
   <div class='developer'>
     <h5><a href="mailto:ninjawarsTchalvak@gmail.com" rel='nofollow'>Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer</h5>
     <ul id='social-networks' class='thick'>
-      <li> <a target='_blank' rel='me' href="http://twitter.com/tchalvak" rel='nofollow'><img alt="T" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/Twitter_24x24.png'> @tchalvak on Twitter</a></li>
-      <li> <a target='_blank' rel='me' href="http://www.facebook.com/tchalvak" rel='nofollow'><img alt="FB" src='{$smarty.const.IMAGE_ROOT}icons/fasticons/FaceBook_24x24.png'> tchalvak on Facebook</a> </li>
+      <li> <a target='_blank' rel='me' href="http://twitter.com/tchalvak" rel='nofollow'><img alt="T" src='{cachebust file="/images/icons/fasticons/Twitter_24x24.png"}'> @tchalvak on Twitter</a></li>
+      <li> <a target='_blank' rel='me' href="http://www.facebook.com/tchalvak" rel='nofollow'><img alt="FB" src='{cachebust file="/images/icons/fasticons/FaceBook_24x24.png"}'> tchalvak on Facebook</a> </li>
       <li><em> or tchalvak on AIM</em></li>
     </ul>
     <div><a class='expand-link'>More info &amp; bio</a></div>
@@ -84,7 +84,7 @@ ul#social-networks li:before {
         When he's able to overcome his attachment to instantaneous communication and exchange of ideas (i.e. the internet), he truly enjoys swimming and walking dogs, even if they are someone else's dogs.
       </p>
 
-      <img class='developer-image' alt='tchalvak' src="images/tchalvak-smaller.jpg">
+      <img class='developer-image' alt='tchalvak' src="{cachebust file="/images/tchalvak-smaller.jpg"}">
 
       <div>
         <a href="http://www.odesk.com/referrals/track/rronalds?redir=http%3A%2F%2Fwww.odesk.com%2Fusers%2F%7E%7E46ddd5d105882453" rel='nofollow'><img src="http://www.odesk.com/images/banners/banner_provider_468x60.gif" alt="The On Demand Global Workforce - oDesk" width="468" height="60"></a>
@@ -158,7 +158,7 @@ ul#social-networks li:before {
   <script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_languages.js"></script>
 </div>
 
-<script type='text/javascript' src="js/repo.js"></script>
+<script type='text/javascript' src="{cachebust file="/js/repo.js"}"></script>
 <script type='text/javascript'>
 {literal}
 $(document).ready(function() {
