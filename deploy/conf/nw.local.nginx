@@ -24,7 +24,7 @@ server {
 	add_header X-uri "$uri";
 
 	location ~ /(js|css|images|files) {
-		rewrite ^/(.*)\.[\d]+\.(.*)$ /$1.$2;
+		rewrite "^/(.*)\.[\d]{10,12}\.(.*)$" /$1.$2;
 		try_files $uri =404;
 	}
 
