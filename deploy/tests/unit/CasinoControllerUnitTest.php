@@ -13,6 +13,7 @@ class CasinoControllerUnitTest extends PHPUnit_Framework_TestCase {
     }
 
 	protected function setUp() {
+        $this->markTestIncomplete('Casino index relies on DB to get player');
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);
@@ -23,7 +24,6 @@ class CasinoControllerUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testIndex() {
-        $this->markTestIncomplete('Casino index relies on DB to get player');
         $response = $this->controller->index();
 
         $this->assertArrayHasKey('template', $response);
