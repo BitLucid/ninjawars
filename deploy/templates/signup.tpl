@@ -16,7 +16,7 @@ form#signup .failure{
 form#signup label.class-desc{
 	display:block;font-weight:normal;padding:0;margin:0;
 }
-form#signup .ninja-info .inline-block{
+form#signup .ninja-char-creation .inline-block{
 	vertical-align:top;
 }
 form#signup small{
@@ -30,7 +30,7 @@ form#signup small{
 	display:inline-block;margin:0.5em auto 0.3em;
 }
 
-form#signup .ninja-info section + section{
+form#signup .ninja-char-creation section + section{
 	margin-top:1em;
 }
 
@@ -133,7 +133,7 @@ form#signup .ninja-info section + section{
 
 
 
-	<fieldset class='ninja-info'>
+	<fieldset class='ninja-char-creation'>
 	 <legend>Ninja Info</legend>
 	 <section>
 		<label for='send_name'>Ninja Name:</label>
