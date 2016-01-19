@@ -17,6 +17,7 @@ Router::$routes = [
         'actions' => [
             'new'     => 'create',
             'default' => 'listClans',
+            'list'    => 'listClans',
         ],
     ],
     'shop' => [
