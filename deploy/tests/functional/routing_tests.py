@@ -55,5 +55,5 @@ class RoutingTests:
 routing = RoutingTests('http://nw.local/')
 
 routing.run_all_tests()
-
+print("\nLatest test error was:")
 exit(routing.outcome())

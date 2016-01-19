@@ -32,6 +32,9 @@ test-unit:
 test-integration:
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
 
+test-functional:
+	python3 deploy/tests/functional/routing_tests.py
+
 clean:
 	@rm -rf "$(SRC)templates/"compiled/*
 	@rm -rf "$(CC_DIR)"
