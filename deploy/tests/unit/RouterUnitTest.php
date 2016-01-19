@@ -12,7 +12,7 @@ class RouterUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testParseRouteControllerDefault() {
-        $request = Request::create('/shop/', 'GET', []);
+        $request = Request::create('/work/', 'GET', []);
         $result = Router::parseRoute($request);
         $this->assertInternalType('array', $result);
         $this->assertGreaterThan(1, count($result));
@@ -40,7 +40,7 @@ class RouterUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testSanitizeRoutePHP() {
-        $this->assertEquals(Router::sanitizeRoute('shop.php'), 'shop');
+        $this->assertEquals(Router::sanitizeRoute('work.php'), 'work');
     }
 
     public function testIsServableFilePositive() {
@@ -71,7 +71,7 @@ class RouterUnitTest extends PHPUnit_Framework_TestCase {
 
     public function testExecuteBadCommand() {
         $this->setExpectedException('\RuntimeException');
-        Router::execute('shop', 'junkola');
+        Router::execute('work', 'junkola');
     }
 
     public function testRouteBadClassname() {
