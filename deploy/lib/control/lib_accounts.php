@@ -100,39 +100,6 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	return ($verify_ninja_id != $ninja_id ? false : $newID);
 }
 
-// Gives the blacklisted emails, should eventually be from a table.
-function get_blacklisted_emails() {
-	return array('@hotmail.com', '@hotmail.co.uk', '@msn.com', '@live.com', '@aol.com', '@aim.com', '@yahoo.com', '@yahoo.co.uk');
-}
-
-// Gives whitelisted emails, make a table eventually.
-function get_whitelisted_emails() {
-	return array('@gmail.com');
-}
-
-// Return 1 if the email is a blacklisted email, 0 otherwise.
-function preconfirm_some_emails($email) {
-	// Made the default be to auto-confirm players.
-	$res = 1;
-	$blacklisted_by = get_blacklisted_emails();
-	$whitelisted_by = get_whitelisted_emails();
-
-	// Blacklist only exists because emails beyond the first might not get through if we don't confirm.
-	foreach ($blacklisted_by AS $loop_domain) {
-		if (strpos(strtolower($email), $loop_domain) !== false) {
-			return 0;
-		}
-	}
-
-	foreach ($whitelisted_by AS $loop_domain) {
-		if (strpos(strtolower($email), $loop_domain) !== false) {
-			return 1;
-		}
-	}
-
-	return $res;
-}
-
 // Ninja and account creation functions.
 
 // Create a ninja
@@ -263,55 +230,8 @@ function class_display_name_from_identity($identity) {
 	return query_item('SELECT class_name from class where identity = :identity', array(':identity'=>$identity));
 }
 
-function validate_signup_phase0($enteredName, $enteredEmail, $class_identity, $enteredPass) {
-	return ($enteredName && $enteredPass && $enteredEmail && $class_identity);
-}
-
-function validate_signup_phase3($enteredName, $enteredEmail) {
-	$name_available  = ninja_name_available($enteredName);
-	$duplicate_email = email_is_duplicate($enteredEmail);
-	$email_error     = validate_email($enteredEmail);
-
-	if ($email_error) {
-		return $email_error;
-	} elseif (!$name_available) {
-		return 'Phase 3 Incomplete: That ninja name is already in use.';
-	} elseif ($duplicate_email) {
-		return 'Phase 3 Incomplete: That account email is already in use. You can send a password reset request below if that email is your correct email.';
-	} else {
-		return null;
-	}
-}
-
-function validate_signup_phase4($enteredClass) {
-	return (boolean)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', array(':id'=>$enteredClass));
-}
-
 // Render a ninja inactive, until they log in.
 function inactivate_ninja($char_id){
 	query('update players set active = 0 where player_id = :char_id', array(':char_id'=>$char_id)); // Toggle the active bit off until they login.
 }
 
-/**
- * Check that the password format fits.
- */
-function validate_password($password_to_hash) {
-	$error = null;
-	if (strlen($password_to_hash) < 3 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
-		$error = 'Phase 2 Incomplete: Passwords must be at least 3 characters long.';
-	}
-
-	return $error;
-}
-
-/**
- * Function for account creation to return the reasons that a username isn't acceptable.
- */
-function validate_username($send_name) {
-	$error = null;
-	$format_error = username_format_validate($send_name);
-	if($format_error){
-		$error = 'Phase 1 Incomplete: Ninja name: '.$error;
-	}
-	return $error;
-}

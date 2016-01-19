@@ -49,12 +49,12 @@ form#signup .ninja-char-creation section + section{
 <section id='signup-process' class='glassbox'>
 	<h3>Your Choices</h3>
     <div class='stamp'>
-      Email - <strong><em>{$enteredEmail|escape}</em></strong><br>
-	  Password - {if $enteredPass}<span class='success'>***yourpassword***</span>{else}<span class='failure'>NO PASSWORD</span>{/if}<br>
-	  Ninja Name - <strong class='char-name'>{$enteredName|escape}</strong><br>
+      Email - <strong><em>{$signupRequest->enteredEmail|escape}</em></strong><br>
+	  Password - {if $signupRequest->enteredPass}<span class='success'>***yourpassword***</span>{else}<span class='failure'>NO PASSWORD</span>{/if}<br>
+	  Ninja Name - <strong class='char-name'>{$signupRequest->enteredName|escape}</strong><br>
 	  Ninja Type - {$class_display|escape}<br>
     </div>
-  
+
 {if isset($completedPhase)}
 	<div class='completion-steps thick' style='clear:both'>
 	{if $completedPhase gte 1}
@@ -76,16 +76,16 @@ form#signup .ninja-char-creation section + section{
 
 	{if $submit_successful}
 		{if $confirmed}
-		  <p>Account with the login email "{$enteredEmail|escape}" is now confirmed! <strong>You can now <a href='login.php'>login!</a></strong></p>
+		  <p>Account with the login email "{$signupRequest->enteredEmail|escape}" is now confirmed! <strong>You can now <a href='login.php'>login!</a></strong></p>
 		{else}
 		  Phase 5: When you receive an email from ninjawars ({$smarty.const.SYSTEM_EMAIL}), click the confirmation link to activate your account.
 		  <br><br>
-		  Confirmation email has been sent to <strong>{$enteredEmail|escape}</strong>.
+		  Confirmation email has been sent to <strong>{$signupRequest->enteredEmail|escape}</strong>.
 		  <br>
 		  Be sure to also check for the email in any "Junk Mail" or "Spam" folders. Delivery typically takes less than 15 minutes.
 		{/if}
 	</div><!-- End of .completion-steps -->
-		
+
 	{/if}
 
 	{if !$error}
@@ -111,35 +111,32 @@ form#signup .ninja-char-creation section + section{
 {if !$submit_successful}
 	<form id='signup' action="signup.php" method="post">
 
-
     <fieldset>
      <legend>Login Info</legend>
      <div>
      	<label for='send_email'>Email Address:</label>
-		<input id="send_email" required type="email" name="send_email" class="textField" placeholder='you@example.com' value="{$enteredEmail|escape}">
+		<input id="send_email" required type="email" name="send_email" class="textField" placeholder='you@example.com' value="{$signupRequest->enteredEmail|escape}">
 		  <small>
 		    (email never spammed, never shared)
 		  </small>
 	 </div>
 	 <div>
 	  <label for='key'>Password:</label>
-	  <input id="key" required type="password" maxlength="50" name="key" class="textField" value='{$enteredPass|escape}'>
+	  <input id="key" required type="password" maxlength="50" name="key" class="textField" value='{$signupRequest->enteredPass|escape}'>
 	 </div>
 	 <div>
 	  <label for='cpass'>Confirm&nbsp;Pass:</label>
-	  <input id="cpass" required type="password" maxlength="50" name="cpass" class='textField' value='{$enteredCPass|escape}'>
+	  <input id="cpass" required type="password" maxlength="50" name="cpass" class='textField' value='{$signupRequest->enteredCPass|escape}'>
 	 </div>
 	</fieldset>
-
-
 
 	<fieldset class='ninja-char-creation'>
 	 <legend>Ninja Info</legend>
 	 <section>
 		<label for='send_name'>Ninja Name:</label>
-	 	<input id="send_name" required autofocus type="text" pattern='{literal}^[a-zA-Z][a-zA-Z0-9-_\.]{1,23}${/literal}' 
+	 	<input id="send_name" required autofocus type="text" pattern='{literal}^[a-zA-Z][a-zA-Z0-9-_\.]{1,23}${/literal}'
 	 	title='Your ninja name can only contain letters, numbers and underscores, and must be from 2 to 24 characters long.'
-	 	name="send_name" maxlength="50" class="textField" value="{$enteredName|escape}">
+	 	name="send_name" maxlength="50" class="textField" value="{$signupRequest->enteredName|escape}">
 	 	<small>
 	   	(letters, numbers and underscores only)
 	   </small>
@@ -151,8 +148,8 @@ form#signup .ninja-char-creation section + section{
 	  <div class='inline-block'>
   	{foreach from=$classes item='class' key='identity'}
 		<label class='class-desc block'>
-			<input type='radio' name='send_class' value='{$identity}' 
-				{if $enteredClass eq $identity}checked='checked'{/if}> {$class.name} - {$class.expertise}
+			<input type='radio' name='send_class' value='{$identity}'
+				{if $signupRequest->enteredClass eq $identity}checked='checked'{/if}> {$class.name} - {$class.expertise}
 		</label>
   	{/foreach}
       </div>
@@ -164,6 +161,7 @@ form#signup .ninja-char-creation section + section{
 
       <section>
 	    <input id='become-a-ninja' type="submit" name="submit" value="Become a Ninja!" class="btn btn-vital">
+	    <input type="hidden" name="command" value="signup">
 	    <div>
 	    	<small>Add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to your safe email list ensure you get your confirmation email! </small>
 	    </div>
@@ -179,7 +177,7 @@ form#signup .ninja-char-creation section + section{
 	<section class='glassbox'>
 
 	<p>
-	Lost Your Password? <a href="account_issues.php">Resend Account Info Email</a> 
+	Lost Your Password? <a href="account_issues.php">Resend Account Info Email</a>
 	</p>
 	<p>Didn't get your confirmation code? <a href="account_issues.php">Resend Confirmation Email</a>
 	</p>
