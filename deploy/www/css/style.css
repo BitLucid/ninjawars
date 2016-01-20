@@ -633,6 +633,9 @@ h6 {
 	-webkit-column-count: 3;
 	-webkit-column-gap: 1em;
 	-webkit-column-rule: 1px solid #333;
+	column-count: 3;
+	column-gap: 1em;
+	column-rule: 1px solid #333;
 	padding-bottom:.5em;
 }
 
@@ -872,13 +875,6 @@ td {
 	padding-top: 0;
 	padding-bottom:1px;
 }
-/*
-.odd {
-	background-color:#3D3D3D;
-}
-.even {
-	background-color:#333333;
-}*/
 tr.oddeven:nth-child(odd), .oddeven tr.td:nth-child(odd) {
 	background: rgba(201, 201, 201, 0.1);
 }
@@ -900,11 +896,6 @@ table.playerTable .classCell img {
 table.playerTable a{
 	text-shadow: black 1px 1px 1px;
 }
-/*
-table.playerTable tr.odd{
-	background-color:#3D3D3D;
-}
-*/
 
 /* Profile and Player list Class Colors */
 .class-name{
@@ -1161,7 +1152,6 @@ td.playerTable {
 #leftColumn {
 	 width:20%;
 	 float:left;
-	 /*padding-left:10px;*/
 }
 #centerColumn {
 	 width:80%;
@@ -1171,7 +1161,6 @@ td.playerTable {
 }
 
 #logo {
-	 /*width:10%;*/
 	 text-align:center;
 	 display:block;
 	 margin-top:10px;
@@ -1227,7 +1216,6 @@ body.solo-page h1 {
 	width:100%;
 	height:40px;
 	line-height: 40px;
-	/*font-size:12px;*/
 	padding:0;
 	margin: 0;
 	text-align:center;
@@ -1803,8 +1791,6 @@ section.login-page{
 	padding: .1em .2em .1em;
 }
 #login-bar div.text {
-	/*color:#707E77;*/
-	/*color:lightGreen;*/
 	font-size:15px;
 	line-height:30px;
 	vertical-align:middle;
@@ -1861,8 +1847,8 @@ p.ninja-success,span.ninja-success{
 }
 
 .shadowed{
-		color:rgba(200, 200, 200, .5);
-		text-shadow:2px 2px 2px gray;
+	color:rgba(200, 200, 200, .5);
+	text-shadow:2px 2px 2px gray;
 }
 
 .player-status.ninja-notice{
@@ -1878,10 +1864,7 @@ p.ninja-success,span.ninja-success{
 	background-color:#c75600;
 	border: 1px solid #c75600;
 }
-/*
-.player-clan .subtitle {
-	background-color:white;
-}*/
+
 .clan-members .injured {
 	background-color:maroon;
 	color:black;
@@ -2199,13 +2182,6 @@ table#sight-info {
 	float:left;
 	margin:5px;
 }
-/*
-#clan-members .member {
-	color: #F1D98C;
-	background-color: #712800;
-	padding-left: .3em;
-	padding-right: .3em;
-}*/
 
 /*  End of Clan Tags section */
 
@@ -2496,7 +2472,6 @@ table#sight-info {
 	width: 100%;
 	font-size: 1.7em;
 	font: 27px/36px 'ShangriLaNFRegular', Verdana, sans-serif;
-	/*font:30px/34px 'PisanNormal',Georgia,Times,serif;*/
 	letter-spacing: 0;
 	text-transform:uppercase;
 	padding-bottom:.2em;
@@ -2516,7 +2491,6 @@ table#sight-info {
 	display:inline-block;
 }
 #category-bar a {
-	/*font:30px/34px 'PisanNormal',Georgia,Times,serif;*/
 	font: 33px/44px 'ShangriLaNFRegular', Verdana, sans-serif;
 	letter-spacing: 0;
 }
