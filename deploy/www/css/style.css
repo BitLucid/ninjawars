@@ -539,7 +539,6 @@ h1, h2, h3, h4, h5, h6, .subtitle, .title {
 	color:#cccccc;
 }
 h1, h2, .title {
-	color:black;
 	background-color:#BDB76B;/*DarkKhaki*/
 	color:#000000;
 	font-weight:bolder;
@@ -584,14 +583,14 @@ h6 {
 .ninjawars-staff h3 {
 	border-radius: 5px;
 	padding: 5px 5px 5px 15px;
-	box-shadow: -10px -10px 0px #666;
+	box-shadow: -10px -10px 0 #666;
 }
 
 .ninjawars-staff #open-source-repository h3 {
 	background-color: hsla(0,100%,50%,0.3);
 	border: none;
 	border-image: url(/images/border.png) 27 27 27 27 stretch stretch;
-	text-shadow: white 0px 0px 4px, #FF3 0px -5px 4px, #FD3 2px -10px 6px, #F80 -2px -15px 11px, #F20 2px -25px 18px;
+	text-shadow: white 0 0 4px, #FF3 0 -5px 4px, #FD3 2px -10px 6px, #F80 -2px -15px 11px, #F20 2px -25px 18px;
 	font-size: 30px;
 }
 
@@ -2172,7 +2171,7 @@ table#sight-info {
 	display:inline-block;
 	margin: 5px;
 	list-style-type: none;
-	padding: 0px 8px 0 8px;
+	padding: 0 8px 0 8px;
 }
 
 /* Clan member tags styles */
@@ -2690,7 +2689,7 @@ select option #blue-class-select {
 	display:inline-block;
 	font-size: 1.3em;
 	margin-top: 2.5em;
-	margin-bottom; .7em;
+	margin-bottom: .7em;
 	margin-left: 1em;
 }
 .return-to-location:before{
@@ -2946,7 +2945,7 @@ hr.edge-fade { /* Gradient transparent - color - transparent */
 
 .bubble {
 	position: relative;
-	padding: 0px;
+	padding: 0;
 	background: ghostwhite;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
