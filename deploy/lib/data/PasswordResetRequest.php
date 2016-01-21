@@ -5,6 +5,7 @@ namespace app\data;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use \Account as Account;
+use \AccountFactory;
 use \Nmail as Nmail;
 
 /**
@@ -33,6 +34,14 @@ class PasswordResetRequest extends Model{
     **/
     public function id(){
     	return $this->request_id;
+    }
+
+    /**
+     * Get the account in a reliable manner.
+     */
+    public function account(){
+    	assert($this->_account_id);
+    	return AccountFactory::findById($this->_account_id);
     }
 
     /**

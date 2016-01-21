@@ -104,17 +104,17 @@ class PasswordController{
 	/**
 	 *  Obtain token, get matching request
 	 * @param Request $request
-	 * @return array
+	 * @return array|RedirectResponse
 	**/
 	public function getReset(Request $request){
-		$token = $request->request->get('token');
+		$token = $request->query->get('token');
 		$req = $token? PasswordResetRequest::match($token) : null;
 		if(!$req){
 			$error = 'No match for your password reset found or time expired, please request again.';
 			return new RedirectResponse('/resetpassword.php?command=reset&'
 			.($error? 'error='.url($error) : ''));
 		} else {
-			$account = AccountFactory::find($req->account_id);
+			$account = $req->account();
 			if(!$account || !$account->getActiveEmail()){
 				throw new Exception('No account found for password reset request');
 			}
@@ -145,14 +145,13 @@ class PasswordController{
 		$new_password = $request->request->get('new_password');
 		$password_confirmation = $request->request->get('password_confirmation');
 		if($password_confirmation === null || $password_confirmation !== $new_password){
-			return new RedirectResponse('/resetpassword.php?command=reset&token='.url($token).'&error='.url('Password Confirm did not match'));
+			return new RedirectResponse('/resetpassword.php?command=reset&token='.url($token).'&error='.url('Password Confirmation did not match.'));
 		}
 		if(!$token){
 			return new RedirectResponse('/resetpassword.php?command=reset&token='.url($token).'&error='.url('No Valid Token to allow for password reset! Try again.'));
 		} else {
 			$req = PasswordResetRequest::match($token);
-			$account_id = $req instanceof PasswordResetRequest? $req->account_id : null;
-			$account = new Account($account_id);
+			$account = $req instanceof PasswordResetRequest? $req->account() : null;
 			if($account->id()){
 				if(strlen(trim($new_password)) > 3 && $new_password === $password_confirmation){
 					PasswordResetRequest::reset($account, $new_password, $this->debug_emails);

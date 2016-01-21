@@ -69,16 +69,15 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         $matched_req = PasswordResetRequest::match($token);
         $this->assertNotEmpty($matched_req);
         // Symfony Request
-        $req = Request::create('/resetpassword.php');
-        $req->setMethod('POST');
-        $req->query->set('token', $token);
-        $req->query->set('email', $this->account->getActiveEmail());
+        $request = Request::create('/resetpassword.php');
+        $request->setMethod('POST');
+        $request->query->set('token', $token);
 
         // get a response
         $controller = new PasswordController();
-        $response = $controller->getReset($req);
+        $response = $controller->getReset($request);
         // Response should contain an array with the token in the parts.
-        $this->assertFalse($response instanceof RedirectResponse, 'Redirection to the url ['.$response->getTargetUrl().'] was the invalid result of password reset.');
+        $this->assertFalse($response instanceof RedirectResponse, 'Redirection to the url ['.($response instanceof RedirectResponse? $response->getTargetUrl() : null).'] was the invalid result of password reset.');
         $this->assertTrue(is_array($response), 'Response was not a ViewSpec Array');
         $this->assertNotEmpty($response['parts']);
         $this->assertEquals($response['parts']['token'], $token);
@@ -93,22 +92,23 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         // and with the token already in the database.
 
         // Symfony Request
-        $req = Request::create('/resetpassword.php');
-        $req->setMethod('POST');
-        $req->query->set('token', $token);
+        $request = Request::create('/resetpassword.php');
+        $request->setMethod('POST');
+        $request->request->set('token', $token);
 
         $password = 'new_temp_password';
 
-        $req->query->set('new_password', $password);
-        $req->query->set('confirm_password', $password);
-        $req->query->set('email', $this->account->getActiveEmail());
+        $request->request->set('new_password', $password);
+        $request->request->set('password_confirmation', $password);
+        $request->request->set('email', $this->account->getActiveEmail());
 
         // Now run the controller method to reset!
         $controller = new PasswordController();
-        $response = $controller->postReset($req);
+        $response = $controller->postReset($request);
 
         // Response should be a successful redirect
         $this->assertTrue($response instanceof RedirectResponse, 'Successful redirect after password resetting was not triggered!');
+        $this->assertTrue(stripos($response->getTargetUrl(), 'message=Password') !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected message=Password url.');
 
         // Password should be changed.
 

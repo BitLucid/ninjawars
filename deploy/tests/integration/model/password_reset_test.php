@@ -103,7 +103,7 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
         $account = AccountFactory::findById($account_id);
         $reset = PasswordResetRequest::generate($account, $this->nonce='7778987777', $debug_email=false);
         $req = PasswordResetRequest::match($this->nonce);
-        $final_account = new Account($req->_account_id);
+        $final_account = $req->account();
         $this->assertNotEmpty($final_account->getActiveEmail());
         $this->assertEquals($account->getActiveEmail(), $final_account->getActiveEmail());
     }
@@ -113,7 +113,7 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
         $account = AccountFactory::findById($account_id);
         $reset = PasswordResetRequest::generate($account, $this->nonce='7778987777', $debug_email=false);
         $req = PasswordResetRequest::match($this->nonce);
-        $final_account = new Account($req->_account_id);
+        $final_account = $req->account();
         $this->assertNotEmpty($final_account->getActiveEmail());
         $sent = PasswordResetRequest::sendResetNotification($final_account->getActiveEmail(), $debug_allowed=false);
         $this->assertTrue($sent);
