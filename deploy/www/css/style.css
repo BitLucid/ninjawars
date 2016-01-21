@@ -1933,6 +1933,17 @@ p.ninja-success,span.ninja-success{
 	font-family: ‘Lucida Console’, Monaco, monospace;
 }
 
+.text-success{
+  color: #3c763d;
+}
+
+.bg-success{
+  color: #333333;
+  background-color: #dff0d8;
+  border-color: #18bc9c;
+  padding:15px;
+}
+
 /*List all players and player profile styles*/
 .active-players ul, .clan-members ul {
 	margin:0;

@@ -29,6 +29,7 @@
         </div>
 
         <div>
+            <input type='hidden' name='command' value='post_reset'>
             <input type='submit' name='reset-password' class='btn btn-primary' value='Reset Password'>
         </div>
     </form>

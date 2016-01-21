@@ -1,4 +1,6 @@
 <?php
+namespace NinjaWars\core\control;
+
 require_once(CORE.'data/PasswordResetRequest.php');
 require_once(CORE.'control/lib_crypto.php'); // For the nonce.
 
@@ -7,13 +9,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use app\data\PasswordResetRequest;
+use \AccountFactory;
+use \Nmail;
 
 class PasswordController{
+    const PRIV           = false;
+    const ALIVE          = false;
 	public $debug_emails = false;
 
 
 	/**
 	 * Private functionality to send out the reset email.
+	 * @param bool $debug_allowed Only this + DEBUG allow email debugging.
 	 * @return bool
 	**/
 	private function sendEmail($token, $account, $debug_allowed=false){
@@ -25,8 +32,9 @@ class PasswordController{
 		$url = WEB_ROOT.'resetpassword.php?command=reset&token='.url($token);
 		$rendered = render_template('email.password_reset_request.tpl', ['url'=>$url]);
 		// Construct the email with Nmail, and then just send it.
-		$nmail = new Nmail($email, $subject='NinjaWars: Your password reset request', $rendered, SUPPORT_EMAIL);
-		if($debug_allowed && defined('DEBUG')) {
+		$subject='NinjaWars: Your password reset request';
+		$nmail = new Nmail($email, $subject, $rendered, SUPPORT_EMAIL);
+		if($debug_allowed && defined('DEBUG')) { // Then turn on debugging.
 			$nmail->dump = DEBUG;
 			$nmail->die_after_dump = DEBUG_ALL_ERRORS;
 			$nmail->try_to_send = !DEBUG_ALL_ERRORS;
@@ -40,17 +48,22 @@ class PasswordController{
 	 * @param Request $request
 	 * @return array
 	 **/
-	public function getEmail(Request $request){
+	public function index(Request $request){
 		// TODO: Generate a csrf
 		$error = $request->query->get('error');
 		$message = $request->query->get('message');
 		$email = $request->query->get('email');
 		$ninja_name = $request->query->get('ninja_name');
 		
-		$parts = ['error'=>$error, 'message'=>$message, 'email'=>$email, 'ninja_name'=>$ninja_name];
+		$parts = [
+			'error'=>$error, 
+			'message'=>$message, 
+			'email'=>$email, 
+			'ninja_name'=>$ninja_name
+			];
 		$response = [
 			'title'=>'Request a password reset', 
-			'template'=>'request_password_reset.tpl', 
+			'template'=>'reset.password.request.tpl', 
 			'parts'=>$parts, 
 			'options'=>[]
 			];
@@ -64,12 +77,11 @@ class PasswordController{
 	**/
 	public function postEmail(Request $request){
 		$error = null;
-		$mess = null;
+		$message = null;
 		$email = $request->get('email');
 		$ninja_name = $request->get('ninja_name');
 		if(!$email && !$ninja_name){
 			$error = 'You must specify either an email or a ninja name!';
-			$mess = null;
 		} else {
 			if($email){
 				$account = AccountFactory::findByEmail($email);
@@ -85,10 +97,9 @@ class PasswordController{
 				if(empty($request)){
 					throw new \RuntimeException('Password reset not created properly');
 				}
-				$passfail = $this->sendEmail($request->nonce, $account);
+				$passfail = $this->sendEmail($request->nonce, $account, $this->debug_email);
 				if($passfail){
-					$error = null;
-					$mess = 'Your reset email was sent!';
+					$message = 'Your reset email was sent!';
 				} else {
 					$error = 'Sorry, there was a problem sending to your account!  Please contact support.';
 				}
@@ -96,7 +107,7 @@ class PasswordController{
 		}
 		// TODO: Authenticate the csrf, which must match, from the session.
 		return new RedirectResponse('/resetpassword.php?'
-			.($mess? 'message='.url($mess).'&' : '')
+			.($message? 'message='.url($message).'&' : '')
 			.($error? 'error='.url($error) : '')
 			);
 	}
@@ -126,7 +137,7 @@ class PasswordController{
 
 			$response = [
 				'title'=>'Reset your password', 
-				'template'=>'resetpassword.tpl', 
+				'template'=>'reset.password.tpl', 
 				'parts'=>$parts, 
 				'options'=>[]
 				];

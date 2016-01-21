@@ -1,35 +1,48 @@
 <?php
 require_once(CORE.'data/PasswordResetRequest.php');
-require_once(CORE.'control/PasswordController.php');
+//require_once(CORE.'control/PasswordController.php');
 
+/*
+Eventual route definitions
+    'resetpassword' => [
+        'type'    => 'controller',
+        'actions' => [
+            'email'      => 'postEmail',
+            'reset'      => 'getReset',
+            'post_reset' => 'postReset',
+        ],
+    ],
+*/
+
+use NinjaWars\core\control\PasswordController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 $command = (string) in('command');
 
 $controller = new PasswordController();
+$controller->debug_emails = true;
 
 $request = Request::createFromGlobals();
-$method = isset($_SERVER['REQUEST_METHOD'])? $_SERVER['REQUEST_METHOD'] : null;
 
 switch (true) {
-	case ($command == 'reset' && $method === 'POST'):
+	case ($command == 'post_reset'):
 		$response = $controller->postReset($request);
 	break;
 	case ($command == 'reset'):
 		$response = $controller->getReset($request);
 	break;
-	case ($command == 'email' && $method === 'POST'):
+	case ($command == 'email'):
 		$response = $controller->postEmail($request);
 	break;
 	default:
 		$command == 'index';
-		$response = $controller->getEmail($request);
+		$response = $controller->index($request);
 	break;
 }
 
 if($response instanceof RedirectResponse){
-	$reponse->send();
+	$response->send();
 } else {
 	display_page(
 		$response['template'],

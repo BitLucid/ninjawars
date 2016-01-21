@@ -1,9 +1,10 @@
 <?php
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 require_once(CORE.'data/PasswordResetRequest.php');
-require_once(CORE.'control/PasswordController.php');
+//require_once(CORE.'control/PasswordController.php');
 require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
 
+use NinjaWars\core\control\PasswordController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,7 +41,7 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         // Get a Response
         $controller = new PasswordController();
         $controller->debug_emails = false; // Don't debug emails.
-        $response = $controller->getEmail($req);
+        $response = $controller->index($req);
         $this->assertEquals('request_password_reset.tpl', $response['template']);
     }
 
