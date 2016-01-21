@@ -13,9 +13,9 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
 
 	function setUp(){
         $this->account_id = TestAccountCreateAndDestroy::account_id();
-        assert($this->account_id && ($this->account_id>0));
+        //assert($this->account_id && ($this->account_id>0));
         // Just hack direct queries in the test setup and teardown.
-        assert(0<query_item('select account_id from accounts where account_id = :id limit 1', [':id'=>$this->account_id]));
+        //assert(0<query_item('select account_id from accounts where account_id = :id limit 1', [':id'=>$this->account_id]));
         $this->account = new Account($this->account_id);
         $this->nonce = null;
 	}
@@ -23,10 +23,10 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
 	function tearDown(){
         // Don't use naked queries outside of a model layer elsewhere.
         query("delete from password_reset_requests where nonce = '777777' or nonce = '77778877' or nonce = '7777777' or nonce = :nonce or _account_id = :id", 
-                [':nonce'=>($this->nonce? $this->nonce : null), ':id'=>$this->account_id]);
+                [':nonce'=>(isset($this->nonce)? $this->nonce : null), ':id'=>$this->account_id]);
         TestAccountCreateAndDestroy::purge_test_accounts();
         query("delete from password_reset_requests where nonce = '777777' or nonce = '77778877' or nonce = '7777777' or nonce = :nonce or _account_id = :id", 
-                [':nonce'=>($this->nonce? $this->nonce : null), ':id'=>$this->account_id]);
+                [':nonce'=>(isset($this->nonce)? $this->nonce : null), ':id'=>$this->account_id]);
     }
 
     /**
