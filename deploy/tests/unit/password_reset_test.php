@@ -62,6 +62,12 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
         $this->assertEquals($this->nonce, $req->nonce);
     }
 
+    public function testGeneratedResetCanBeFoundByAccount(){
+        $req = PasswordResetRequest::generate($this->account);
+        $req_dup = PasswordResetRequest::where('_account_id', '=', $this->account->id())->first();
+        $this->assertEquals($req->id(), $req_dup->id());
+    }
+
     // Reject resets that don't contain a new password
     /**
      * @group early
