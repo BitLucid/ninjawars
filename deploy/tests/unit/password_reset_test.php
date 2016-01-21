@@ -22,9 +22,11 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
 	
 	function tearDown(){
         // Don't use naked queries outside of a model layer elsewhere.
-        query("delete from password_reset_requests where nonce = '777777' or nonce = '77778877' or nonce = '7777777' or nonce = :nonce or _account_id = :id", [':nonce'=>$this->nonce, ':id'=>$this->account_id]);
+        query("delete from password_reset_requests where nonce = '777777' or nonce = '77778877' or nonce = '7777777' or nonce = :nonce or _account_id = :id", 
+                [':nonce'=>($this->nonce? $this->nonce : null), ':id'=>$this->account_id]);
         TestAccountCreateAndDestroy::purge_test_accounts();
-        query("delete from password_reset_requests where nonce = '777777' or nonce = '77778877' or nonce = '7777777' or nonce = :nonce or _account_id = :id", [':nonce'=>$this->nonce, ':id'=>$this->account_id]);
+        query("delete from password_reset_requests where nonce = '777777' or nonce = '77778877' or nonce = '7777777' or nonce = :nonce or _account_id = :id", 
+                [':nonce'=>($this->nonce? $this->nonce : null), ':id'=>$this->account_id]);
     }
 
     /**
