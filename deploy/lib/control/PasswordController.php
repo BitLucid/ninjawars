@@ -8,13 +8,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use app\data\PasswordResetRequest;
 
-class PasswordResponse{
-	public $title;
-	public $template;
-	public $parts;
-	public $options;
-}
-
 class PasswordController{
 	public $debug_emails = true;
 
@@ -22,7 +15,7 @@ class PasswordController{
 	/**
 	 * Send out the password reset email to a requested account's email.
 	**/
-	private function sendEmail($token, $account, $debug_allowed=true){
+	private function sendEmail($token, $account, $debug_allowed=false){
 		$email = $account->getActiveEmail();
 		if(!$email){
 			return false;
@@ -42,7 +35,7 @@ class PasswordController{
 	}
 
 	/**
-	 * Get the email associated with a token.
+	 * Private subfunction to get the email associated with a token.
 	**/
 	private function getEmailForToken($token){
 		$request = PasswordResetRequest::match($token);
@@ -64,7 +57,12 @@ class PasswordController{
 		$ninja_name = $request->query->get('ninja_name');
 		
 		$parts = ['error'=>$error, 'message'=>$message, 'email'=>$email, 'ninja_name'=>$ninja_name];
-		$response = ['title'=>'Request a password reset', 'template'=>'request_password_reset.tpl', 'parts'=>$parts, 'options'=>[]];
+		$response = [
+			'title'=>'Request a password reset', 
+			'template'=>'request_password_reset.tpl', 
+			'parts'=>$parts, 
+			'options'=>[]
+			];
 		return $response;
 	}
 

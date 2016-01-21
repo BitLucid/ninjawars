@@ -44,7 +44,7 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
     }
 
     public function testPostEmailCreatesAPasswordResetRequest(){
-        // Craft Post Request
+        // Craft Post Symfony Request
         $req = Request::create('/resetpassword.php');
         $req->setMethod('POST');
         $req->query->set('token', $token='666666');
@@ -61,29 +61,48 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
     }
 
     public function testGetResetWithATokenDisplaysAFilledInPasswordResetForm(){
-        $token = '444444';
+        $token = '4447744';
+        // Symfony Request
+        $req = Request::create('/resetpassword.php');
+        $req->setMethod('POST');
+        $req->query->set('token', $token);
+        $req->query->set('email', $this->account->getActiveEmail());
+
         // get a response
         $controller = new PasswordController();
-        $response = $controller->getReset($token);
-        // Response should contain a form
+        $response = $controller->getReset($req);
+        // Response should contain a form with the token as a part of it
         $content = $response->getContent();
-        $this->assertTrue(strpos($content, '444444') !== false);
+        $this->assertTrue(strpos($content, '4447744') !== false);
     }
 
     public function testPostResetYeildsARedirectAndAChangedPassword(){
-        $account = PasswordResetRequest::request($this->account_id);
-        throw new Exception('Have to fix this more fully.');
-        $pass = 'fuNnewPasswordTime432';
-        // craft post request with account_id, token, and password
-        $req = Request::create('/passwordreset');
+        $token = '444555666';
+        // Generate a password reset req to be matched!
+        PasswordResetRequest::generate($this->account, $nonce=$token);
+
+        // Create a symfony post with the right info
+        // and with the token already in the database.
+
+        // Symfony Request
+        $req = Request::create('/resetpassword.php');
         $req->setMethod('POST');
-        $req->request->set('token', '666666');
-        $req->request->set('password', $pass);
-        // get a response, response should be a redirect
+        $req->query->set('token', $token);
+        
+        $req->query->set('new_password', $password);
+        $req->query->set('confirm_password', $password);
+        $req->query->set('email', $this->account->getActiveEmail());
+
+        // Now run the controller method to reset!
         $controller = new PasswordController();
         $response = $controller->postReset($req);
-        // password should be changed
-        $this->assertTrue($this->checkTestPasswordMatches($pass));
+
+        // Response should be a redirect
+        $this->assertTrue($response instanceof RedirectResponse);
+
+        // Password should be changed.
+
+        $this->assertTrue($this->checkTestPasswordMatches($password));
     }
 
 
