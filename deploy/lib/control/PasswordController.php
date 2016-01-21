@@ -35,17 +35,6 @@ class PasswordController{
 	}
 
 	/**
-	 * Private subfunction to get the email associated with a token.
-	**/
-	private function getEmailForToken($token){
-		$request = PasswordResetRequest::match($token);
-		$email = isset($request->email)? $data['email'] : null;
-		$container = new stdClass;
-		$container->verified_email = $email;
-		return $container;
-	}
-
-	/**
 	 * Display the form to request a password reset link
 	 * @param Request $request
 	 **/
@@ -82,7 +71,7 @@ class PasswordController{
 			if($email){
 				$account = AccountFactory::findByEmail($email);
 			}
-			if(!$account){
+			if(!isset($account)){
 				$account = AccountFactory::findByNinjaName($ninja_name);
 			}
 			if(!$account->id()){
@@ -109,6 +98,7 @@ class PasswordController{
 	/**
 	 *  Display the password reset view for the given token.
 	 * @param Request $request
+	 * @return array
 	**/
 	public function getReset(Request $request){
 		$token = $request->request->get('token');
@@ -125,7 +115,7 @@ class PasswordController{
 			'email'=>$account->getActiveEmail()
 			];
 
-		$reponse = [
+		$response = [
 			'title'=>'Reset your password', 
 			'template'=>'resetpassword.tpl', 
 			'parts'=>$parts, 
