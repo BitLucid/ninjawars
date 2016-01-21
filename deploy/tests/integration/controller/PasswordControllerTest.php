@@ -58,8 +58,8 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         
         $this->assertNotEmpty($req, 'No matching password reset request was found');
         $this->assertTrue($req instanceof PasswordResetRequest, "Request wasn't found to become a PasswordResetRequest.");
-        $this->assertTrue($req->id());
-        $this->assertNotEmpty($req->token, 'Token was blank or didn\'t come back.');
+        $this->assertGreaterThan(0, $req->id());
+        $this->assertNotEmpty($req->nonce, 'Nonce/Token was blank or didn\'t come back.');
     }
 
     public function testGetResetWithAValidTokenDisplaysAFilledInPasswordResetForm(){
