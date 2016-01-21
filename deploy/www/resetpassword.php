@@ -3,6 +3,7 @@ require_once(CORE.'data/PasswordResetRequest.php');
 require_once(CORE.'control/PasswordController.php');
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 $command = (string) in('command');
 

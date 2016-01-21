@@ -14,12 +14,14 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
 	function setUp(){
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         assert($this->account_id && ($this->account_id>0));
+        // Just hack direct queries in the test setup and teardown.
         assert(0<query_item('select account_id from accounts where account_id = :id limit 1', [':id'=>$this->account_id]));
         $this->account = new Account($this->account_id);
         $this->nonce = null;
 	}
 	
 	function tearDown(){
+        // Don't use naked queries outside of a model layer elsewhere.
         query("delete from password_reset_requests where nonce = '777777' or nonce = '77778877' or nonce = '7777777' or nonce = :nonce or _account_id = :id", [':nonce'=>$this->nonce, ':id'=>$this->account_id]);
         TestAccountCreateAndDestroy::purge_test_accounts();
         query("delete from password_reset_requests where nonce = '777777' or nonce = '77778877' or nonce = '7777777' or nonce = :nonce or _account_id = :id", [':nonce'=>$this->nonce, ':id'=>$this->account_id]);
@@ -80,7 +82,7 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
      */
     public function testResetOfPasswordWhenCorrectDataGiven(){
         PasswordResetRequest::generate($this->account, $this->nonce='77766557777');
-        $this->assertTrue(PasswordResetRequest::reset($this->account, 'some_password%FW@G', $debug_email=false));
+        $this->assertTrue(PasswordResetRequest::reset($this->account, 'some_password%##$@#', $debug_email=false));
     }
 
     public function testResetOfPasswordWhenCorrectDataGivenWithAlternatePasswordUsage(){
@@ -98,8 +100,15 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
         $this->assertEquals($account->getActiveEmail(), $final_account->getActiveEmail());
     }
 
-    public function testSendingAnEmailForARequestDoesntError(){
-        $this->markTestIncomplete();
+    public function testSendingOfANotificationAfterResetOccurrs(){
+        $account_id = TestAccountCreateAndDestroy::account_id();
+        $account = AccountFactory::findById($account_id);
+        $reset = PasswordResetRequest::generate($account, $this->nonce='7778987777', $debug_email=false);
+        $req = PasswordResetRequest::match($this->nonce);
+        $final_account = new Account($req->_account_id);
+        $this->assertNotEmpty($final_account->getActiveEmail());
+        $sent = PasswordResetRequest::sendResetNotification($final_account->getActiveEmail(), $debug_allowed=false);
+        $this->assertTrue($sent);
     }
 
 

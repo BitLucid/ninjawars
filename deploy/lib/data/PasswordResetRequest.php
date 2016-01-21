@@ -70,7 +70,7 @@ class PasswordResetRequest extends Model{
 	 * Send a notice that a password was reset.
 	 * @return boolean
 	**/ 
-	private static function sendResetNotification($email, $debug_allowed=false){
+	public static function sendResetNotification($email, $debug_allowed=false){
 		$body = '
 			Your password on ninjawars.net was reset.  Please contact '.SUPPORT_EMAIL_NAME.' via '.SUPPORT_EMAIL.' if this was an error.
 		';
