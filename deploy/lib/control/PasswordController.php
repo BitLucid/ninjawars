@@ -97,7 +97,7 @@ class PasswordController{
 				if(empty($request)){
 					throw new \RuntimeException('Password reset not created properly');
 				}
-				$passfail = $this->sendEmail($request->nonce, $account, $this->debug_email);
+				$passfail = $this->sendEmail($request->nonce, $account, $this->debug_emails);
 				if($passfail){
 					$message = 'Your reset email was sent!';
 				} else {

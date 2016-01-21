@@ -42,7 +42,7 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         $controller = new PasswordController();
         $controller->debug_emails = false; // Don't debug emails.
         $response = $controller->index($req);
-        $this->assertEquals('request_password_reset.tpl', $response['template']);
+        $this->assertEquals('reset.password.request.tpl', $response['template']);
     }
 
     public function testPostEmailCreatesAPasswordResetRequest(){
