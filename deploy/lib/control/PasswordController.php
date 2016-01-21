@@ -120,6 +120,7 @@ class PasswordController{
 	public function getReset(Request $request){
 		$token = $request->query->get('token');
 		$req = $token? PasswordResetRequest::match($token) : null;
+		$error = null;
 		if(!$req){
 			$error = 'No match for your password reset found or time expired, please request again.';
 			return new RedirectResponse('/resetpassword.php?command=reset&'
@@ -132,7 +133,8 @@ class PasswordController{
 
 			$parts = [
 				'token'=>$token, 
-				'email'=>$account->getActiveEmail(),
+				'verified_email'=>$account->getActiveEmail(),
+				'error'=>$error
 				];
 
 			$response = [
