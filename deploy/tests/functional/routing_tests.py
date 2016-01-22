@@ -5,7 +5,8 @@ import requests
 class RoutingTests:
 
     def __init__(self, root):
-        self.fail = True
+        self.fail = 'no tests run'
+        #Initial state is to fail and return a failing exit code
         self.root = root
 
     def outcome(self):
@@ -14,6 +15,10 @@ class RoutingTests:
     def assert_true(self, outcome, fail_message=''):
         if outcome == True:
             print('.', end='')
+            # Make self.fail valid if tests continue to only pass.
+            if self.fail == 'no tests run' or self.fail == 0:
+                self.fail = 0
+
         else:
             print(fail_message)
             self.fail = fail_message
@@ -36,7 +41,7 @@ class RoutingTests:
             '', 'staff.php', 'events.php', 'skills.php', 'inventory.php', 'enemies.php', 'list.php', 
             'clan.php', 'map.php', 'shop.php', 'work.php', 'doshin_office.php', 'dojo.php', 'shrine.php',
             'duel.php', 'clan.php?command=list', 'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
-            'clan.php?command=view', 'npc', 'npc/attack/peasant/', 'npc/attack/guard/'
+            'clan.php?command=view', 'npc', 'npc/attack/peasant/', 'npc/attack/guard/',
             ];
         [self.assert_true(200 == self.status_code(self.root+url), 'Url did not 200: ['+url+']') for url in urls]
 
