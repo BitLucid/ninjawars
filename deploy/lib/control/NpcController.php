@@ -14,7 +14,7 @@ use \Player as Player;
  * Handles displaying npcs and attacking specific npcs
  */
 class NpcController { //extends controller
-    const ALIVE          = false;
+    const ALIVE          = true;
     const PRIV           = false;
 
     /**
@@ -435,7 +435,7 @@ if($turns > 0 && !empty($victim)) {
             , 'health'           => $health        
         ];
         $parts = $parts + $combat_data; // Merge in combat data.
-        $options = ['quickstats'=>'player'];
+        $options = ['quickstat'=>'player'];
         return ['template'=>$template, 'title'=>$title, 'parts'=>$parts, 'options'=>$options];
     }
 
