@@ -36,7 +36,7 @@ class RoutingTests:
             '', 'staff.php', 'events.php', 'skills.php', 'inventory.php', 'enemies.php', 'list.php', 
             'clan.php', 'map.php', 'shop.php', 'work.php', 'doshin_office.php', 'dojo.php', 'shrine.php',
             'duel.php', 'clan.php?command=list', 'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
-            'clan.php?command=view'
+            'clan.php?command=view', 'npc', 'npc/attack/peasant/', 'npc/attack/guard/'
             ];
         [self.assert_true(200 == self.status_code(self.root+url), 'Url did not 200: ['+url+']') for url in urls]
 
