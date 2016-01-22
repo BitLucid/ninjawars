@@ -10,7 +10,7 @@ The guard was carrying a ginseng root good luck charm!<br>
 	{if $bounty}
 You have slain a member of the military! A bounty of {$bounty} gold has been placed on your head!<br>
 	{/if}
-<a href="npc.php?attacked=1&amp;victim=guard" class='attack-again'>Attack Another Guard</a>
+<a href="/npc/attack/guard/" class='attack-again'>Attack Another Guard</a>
 <br>
 {else}
 The Guard has slain you!<br>

@@ -19,7 +19,7 @@ You have unjustly slain a commoner! A bounty of {$bounty} gold has been placed o
 	{if !$just_villager}
 <p>The peasant dropped a Shuriken.</p>
 	{/if}
-<a href="npc.php?attacked=1&amp;victim=peasant" class='attack-again'>Attack Another Peasant</a>
+<a href="/npc/attack/peasant/" class='attack-again'>Attack Another Peasant</a>
 <br>
 {else}
 <p>The peasant has slain you!</p>

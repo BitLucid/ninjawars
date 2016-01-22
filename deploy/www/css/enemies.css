@@ -50,15 +50,6 @@ ul#recent-attackers{
 #peer-chars .stats-block{
 	margin-left:2em;width:6.5em;display:inline-block;
 }
-#npc-list{
-	margin: .5em auto 10em;padding:0;text-align:left;font-size:1.3em;
-}
-#npc-list .creature-image{
-	max-width:50px;max-height:50px;
-}
-#npc-list .person img{
-	width:25px;height:46px;
-}
 #more-matches{
 	clear:both;text-align:center;
 }

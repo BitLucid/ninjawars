@@ -92,6 +92,6 @@ article#fight nav{
 
 	</section><!-- end of .npc-fight -->
 	<nav>
-		<a href='npc.php?victim={$victim|escape|escape:'url'}' class='attack-again'>Attack another {$display_name|escape}</a>
+		<a href='/npc/attack/{$victim|escape|escape:'url'}' class='attack-again'>Attack another {$display_name|escape}</a>
 	</nav>
   </article>

@@ -33,6 +33,10 @@ server {
 		try_files $uri $uri/ @php;
 	}
 
+	location ~ /npc\.php {
+	    return 302 /npc/;
+	}
+
 	location ~ /tutorial\.php {
 	    return 302 /main.php$is_args$args;
 	}

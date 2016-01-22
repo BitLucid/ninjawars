@@ -15,7 +15,7 @@ You gain a kill point.<br>
 		{if $drop}
 			<p>You quickly snatch a small pouch containing {$drop_display} from the dead samurai's neck before vanishing.</p>
 		{/if}
-<a href="npc.php?attacked=1&amp;victim=samurai" class='attack-again'>Attack Another Samurai</a>
+<a href="/npc/attack/samurai" class='attack-again'>Attack Another Samurai</a>
 <br>
 	{else}
 <br>The Samurai has slain you!<br>

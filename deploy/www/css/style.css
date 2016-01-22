@@ -2647,6 +2647,16 @@ select option #blue-class-select {
 	text-shadow: rgb(11, 9, 9) 2px 2px 2px;
 }
 
+#npc-list{
+	margin: .5em auto 10em;padding:0;text-align:left;font-size:1.3em;
+}
+#npc-list .creature-image{
+	max-width:50px;max-height:50px;
+}
+#npc-list .person img{
+	width:25px;height:46px;
+}
+
 
 /* Use the .speech class for character speech */
 .speech{
