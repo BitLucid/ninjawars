@@ -110,6 +110,12 @@ Router::$routes = [
             'receive' => 'receive',
         ],
     ],
+    'map' => [
+        'type'    => 'controller',
+        'actions' => [
+            'view' => 'index'
+        ],
+    ],
     'rules' => [
         'type'  => 'simple',
         'title' => 'rules',

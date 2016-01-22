@@ -1,12 +1,16 @@
 <?php
-require_once(LIB_ROOT."data/lib_npc.php");
+namespace NinjaWars\core\control;
 
-$private = false;
-$alive   = false;
 
-if ($error = init($private, $alive)) {
-	display_error($error);
-} else {
+class MapController {
+    const PRIV  = false;
+    const ALIVE = false;
+
+    /**
+     * Get the various nodes of the map and pass them to the template
+     *
+     */
+    public function index(){
 
 // Here is where the node locations are defined, and their order is allocated.
 $nodes = array(
@@ -54,15 +58,14 @@ $nodes = array(
     )
 );
 
-display_page(
-    'map.tpl',
-    'Map',
-    [
-        'nodes'   => $nodes,
-        'show_ad' => rand(1, 20) // show the ad in the village 10% of the time
-    ],
-    [
-        'quickstat' => 'player'
-    ]
-);
+
+		$parts = [
+		        'nodes'   => $nodes,
+		        'show_ad' => rand(1, 20) // show the ad in the village 10% of the time
+		    ];
+    	$options = ['quickstat'=>'player'];
+		return ['template'=>'map.tpl', 'title'=>'Map', 'parts'=>$parts, 'options'=>$options];
+
+    }
+
 }
