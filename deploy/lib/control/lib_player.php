@@ -168,14 +168,6 @@ function change_ki($char_id, $amount){
 }
 
 /**
- * Pull the information about the classes.
- */
-function classes_info(){
-	$classes = query('select class_id, identity, class_name, class_note, class_tier, class_desc, class_icon, theme from class where class_active = true');
-	return array_identity_associate($classes, 'identity');
-}
-
-/**
  * Check that a class matches against the class identities available in the database.
  */
 function is_valid_class($potential_class_identity) {
