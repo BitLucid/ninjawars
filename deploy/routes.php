@@ -48,6 +48,11 @@ Router::$routes = [
             'Offer Bounty' => 'offerBounty',
         ],
     ],
+    'duel' => [
+        'type'    => 'controller',
+        'actions' => [
+        ],
+    ],
     'stats' => [
         'type'    => 'controller',
         'actions' => [
@@ -142,4 +147,5 @@ Router::$controllerAliases = [
     'doshin_office' => 'doshin',
     'village'       => 'chat',
     'enemies'       => 'consider',
+    'duel'          => 'rumor',
 ];
