@@ -8,6 +8,7 @@ use \Npc;
 use \NpcFactory;
 use NinjaWars\core\control\SessionFactory;
 use \Player as Player;
+use \Item as Item;
 
 
 /**
@@ -21,6 +22,47 @@ class NpcController { //extends controller
      * 
      */
     public function __construct() {
+    }
+
+
+    /**
+     * Run the random encounter
+     */
+    private function randomEncounter(Player $player){
+
+        // **********************************************************
+        // *** Currently only random enc. is an Oni attack! Yay!  ***
+        // *** They take turns and a kill and do a little damage. ***
+        // **********************************************************
+
+        $victim          = 'Oni';
+        $oni_turn_loss   = 10;
+        $oni_health_loss = rand(1, 20);
+        $oni_kill_loss   = 1;
+        $player_turns    = subtractTurns($player->id(), $oni_turn_loss);
+        $attacker_health = $player->vo->health = subtractHealth($player->id(), $oni_health_loss);
+        $attacker_kills  = subtractKills($player->id(), $oni_kill_loss);
+        $multiple_rewards = false;
+        $oni_killed = false;
+
+        $item = null;
+
+        if ($attacker_health > 0) { // *** if you survive ***
+            if ($player_turns > 50) { // *** And your turns are high/you are energetic, you can kill them. ***
+                $oni_killed = true;
+                $item = new Item('dimmak');
+                add_item($player->id(), $item->identity(), 1);
+            } else if ($player_turns > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
+                $oni_killed = true;
+                $item = new Item('ginsengroot');
+                $multiple_rewards = true;
+                add_item($player->id(), $item->identity(), 4);
+            }
+        }
+
+        $npc_template = 'npc.oni.tpl';
+        $combat_data = array('victory'=>$oni_killed, 'item'=>$item, 'multiple_rewards'=>$multiple_rewards);
+        return [$npc_template, $combat_data];
     }
 
     /**
@@ -52,7 +94,6 @@ $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
 $session    = SessionFactory::getSession();
 $turn_cost  = 1;
 $health     = 1;
-$random_encounter = (rand(1, 400) == 1);
 $combat_data = array();
 $char_id = self_char_id();
 $player     = new Player($char_id);
@@ -79,38 +120,8 @@ if($turns > 0 && !empty($victim)) {
     $attacker_health = $player->vo->health;
     $attacker_gold   = $player->vo->gold;
 
-    // Perform a random encounter (currently only oni).
-    if ($random_encounter) { // *** ONI, Mothafucka! ***
-
-        // **********************************************************
-        // *** Oni attack! Yay!                                   ***
-        // *** They take turns and a kill and do a little damage. ***
-        // **********************************************************
-
-        $victim          = 'Oni';
-        $oni_turn_loss   = 10;
-        $oni_health_loss = rand(1, 20);
-        $oni_kill_loss   = 1;
-        $player_turns    = subtractTurns($char_id, $oni_turn_loss);
-        $attacker_health = $player->vo->health = subtractHealth($char_id, $oni_health_loss);
-        $attacker_kills  = subtractKills($char_id, $oni_kill_loss);
-
-        if ($attacker_health > 0) { // *** if you survive ***
-            if ($player_turns > 50) { // *** And youir turns are high/you are energetic, you can kill them. ***
-                $oni_killed = true;
-                add_item($char_id, 'dimmak', 1);
-            } else if ($player_turns > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
-                $oni_killed = true;
-                add_item($char_id, 'ginsengroot', 4);
-            } else {
-                $oni_killed = false;
-            }
-        } else {
-            $oni_killed = false;
-        }
-
-        $npc_template = 'npc.oni.tpl';
-        $combat_data = array('victory'=>$oni_killed);
+    if ((bool) (rand(1, 400) == 1)) { // Random encounter!
+        list($npc_template, $combat_data) = $this->randomEncounter($player);
     } elseif (array_key_exists($victim, $npcs)){ /**** Abstracted NPCs *****/
         $npc_stats = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
 
@@ -431,7 +442,6 @@ if($turns > 0 && !empty($victim)) {
             'npc_template'       => $npc_template
             , 'attacked'         => 1
             , 'turns'            => $turns
-            , 'random_encounter' => $random_encounter
             , 'health'           => $health        
         ];
         $parts = $parts + $combat_data; // Merge in combat data.
