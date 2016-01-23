@@ -44,7 +44,7 @@ class Nmail {
 	/**
 	 * During debugging, can be turned on to dump the mail contents instead of
 	 * trying to send them,
-	 * use if(DEBUG) {$Zmail->dump = true; } //to dump email.
+	 * use if(DEBUG) {$Nmail->dump = true; } //to dump email.
 	 * @var boolean
 	 */
 	public $dump = false;
