@@ -1,16 +1,11 @@
 <?php
-// Note that the file has to have a file ending of ...test.php to be run by phpunit
-require_once(CORE.'data/PasswordResetRequest.php');
-//require_once(CORE.'control/PasswordController.php');
 require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
 
 use NinjaWars\core\control\PasswordController;
+use NinjaWars\core\data\PasswordResetRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use app\data\PasswordResetRequest;
-
 
 class TestPasswordController extends PHPUnit_Framework_TestCase {
 

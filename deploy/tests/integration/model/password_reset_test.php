@@ -1,13 +1,8 @@
 <?php
-// Note that the file has to have a file ending of ...test.php to be run by phpunit
-require_once(CORE.'data/PasswordResetRequest.php');
 require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
-require_once(CORE.'data/Account.php');
 
-
-use app\data\PasswordResetRequest;
+use NinjaWars\core\data\PasswordResetRequest;
 use \Account as Account;
-
 
 class TestPasswordReset extends PHPUnit_Framework_TestCase {
 
@@ -34,7 +29,7 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
     **/
     public function testModelCreateARequestWithTheRawModelFunctionality(){
         $req = PasswordResetRequest::create(['_account_id'=>$this->account_id, 'nonce'=>'777666888']);
-        $this->assertInstanceOf('app\data\PasswordResetRequest', $req);
+        $this->assertInstanceOf('NinjaWars\core\data\PasswordResetRequest', $req);
         $this->assertGreaterThan(0, (int) $req->nonce);
     }
 

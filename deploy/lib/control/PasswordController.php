@@ -1,14 +1,10 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(CORE.'data/PasswordResetRequest.php');
-require_once(CORE.'control/lib_crypto.php'); // For the nonce.
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use app\data\PasswordResetRequest;
+use NinjaWars\core\data\PasswordResetRequest;
 use \AccountFactory;
 use \Nmail;
 

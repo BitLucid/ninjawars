@@ -1,5 +1,5 @@
 <?php
-namespace app\data;
+namespace NinjaWars\core\data;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;

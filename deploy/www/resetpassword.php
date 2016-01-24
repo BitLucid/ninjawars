@@ -1,7 +1,4 @@
 <?php
-require_once(CORE.'data/PasswordResetRequest.php');
-//require_once(CORE.'control/PasswordController.php');
-
 /*
 Eventual route definitions
     'resetpassword' => [
@@ -12,9 +9,10 @@ Eventual route definitions
             'post_reset' => 'postReset',
         ],
     ],
-*/
+ */
 
 use NinjaWars\core\control\PasswordController;
+use NinjaWars\core\data\PasswordResetRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
