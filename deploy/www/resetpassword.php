@@ -24,28 +24,28 @@ $controller->debug_emails = true;
 $request = Request::createFromGlobals();
 
 switch (true) {
-	case ($command == 'post_reset'):
-		$response = $controller->postReset($request);
-	break;
-	case ($command == 'reset'):
-		$response = $controller->getReset($request);
-	break;
-	case ($command == 'email'):
-		$response = $controller->postEmail($request);
-	break;
-	default:
-		$command == 'index';
-		$response = $controller->index($request);
-	break;
+        case ($command == 'post_reset'):
+        $response = $controller->postReset($request);
+        break;
+    case ($command == 'reset'):
+        $response = $controller->getReset($request);
+        break;
+    case ($command == 'email'):
+        $response = $controller->postEmail($request);
+        break;
+    default:
+        $command == 'index';
+        $response = $controller->index($request);
+        break;
 }
 
-if($response instanceof RedirectResponse){
-	$response->send();
+if ($response instanceof RedirectResponse) {
+    $response->send();
 } else {
-	display_page(
-		$response['template'],
-		$response['title'],
-		$response['parts'],
-		$response['options']
-	);
+    display_page(
+        $response['template'],
+        $response['title'],
+        $response['parts'],
+        $response['options']
+    );
 }
