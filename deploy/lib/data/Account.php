@@ -20,9 +20,9 @@ class Account{
 		return $this->info;
 	}
 
-	public function getId(){
-		return $this->account_id;
-	}
+    public function getId() {
+        return $this->account_id;
+    }
 
     /**
      * Simple wrapper function for getting email from accounts
@@ -31,6 +31,15 @@ class Account{
      */
     public function email() {
         return $this->getActiveEmail();
+    }
+
+    /**
+     * Alias for getId()
+     *
+     * @return int
+     */
+    public function id() {
+        return $this->getId();
     }
 
 	public function getActiveEmail(){
