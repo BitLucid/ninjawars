@@ -65,6 +65,11 @@ Router::$routes = [
         'actions' => [
         ],
     ],
+    'events' => [
+        'type'    => 'controller',
+        'actions' => [
+        ],
+    ],
     'messages' => [
         'type'    => 'controller',
         'actions' => [

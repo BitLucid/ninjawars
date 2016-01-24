@@ -62,7 +62,7 @@
             <nav id='category-bar' class='navigation'>
               <ul>
                 <li id='status-actions' class='self'>
-                  <a href='events.php' rel='nav' target='main' >
+                  <a href='events/' rel='nav' target='main' >
                     <img src='{cachebust file="/images/ninja_status_icon_50px.png"}' alt='' style='width:50px;height:51px'>Watch
                   </a>
                 </li>
