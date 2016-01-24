@@ -147,7 +147,17 @@ while ($a_player = $ninja_info->fetch()) {
     $ninja_count++;
 }
 
-$parts = get_certain_vars(get_defined_vars(), $whitelist=array('ninja_rows', 'active_ninjas'));
+    $parts = [
+        'searched'=>$searched,
+        'ninja_count'=>$ninja_count,
+        'dead_count'=>$dead_count,
+        'active_ninjas'=>$active_ninjas,
+        'hide'=>$hide,
+        'page'=>$page,
+        'numofpages'=>$numofpages,
+        'last_page'=>$last_page,
+        'ninja_rows'=>$ninja_rows,
+        ];
 
     $options = ['quickstat'=>true];
     $title = 'Ninja List';
