@@ -3,7 +3,7 @@
  * Ratchets for improving codebase simplicity/quality
  */
 class RatchetTest extends PHPUnit_Framework_TestCase {
-	const MAX_WWW_SCRIPTS = 26;
+	const MAX_WWW_SCRIPTS = 20;
     const MAX_WWW_SCRIPTS_RATCHET = .8;
 	const MAX_NINJAMASTER_SCRIPTS = 3;
 
