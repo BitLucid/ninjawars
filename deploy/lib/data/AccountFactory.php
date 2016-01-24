@@ -2,7 +2,6 @@
 require_once(ROOT . "core/control/Character.php");
 require_once(ROOT . "core/data/Account.php");
 
-
 /**
  * Create account objects via Factory(ok, actually Repository) object
  *
@@ -30,32 +29,88 @@ class AccountFactory{
 		return new Account($account_info['account_id']);
 	}
 
-	public static function findById($id){
-		$account = new Account($id);
-		if(!$account->getIdentity()){
-			return false;
-		} else {
-			return $account;
-		}
+    /**
+     * Get the account object by id, or false
+     *
+     * @param int $id
+     * @return Account|false
+     */
+    public static function findById($id) {
+        $account = new Account($id);
 
-	}
+        if (!$account->getIdentity()) {
+            return false;
+        } else {
+            return $account;
+        }
+    }
 
-	/**
-	 * Get an account for a char
-	**/
-	public static function findByChar(Character $char){
-		$account_id = query_item('select account_id from accounts
-			join account_players on _account_id = account_id join players on _player_id = player_id
-			where players.player_id = :pid',
-			[':pid'=>$char->id()]);
-		return new Account($account_id);
-	}
+    /**
+     * Get an account for a character
+     *
+     * @param Character $char
+     * @return Account
+     */
+    public static function findByChar(Character $char) {
+        $query = 'SELECT account_id FROM accounts
+            JOIN account_players ON _account_id = account_id
+            JOIN players ON _player_id = player_id
+            WHERE players.player_id = :pid';
 
-	public static function findByIdentity($identity_email){
-		$info = self::account_info_by_identity($identity_email);
-		return new Account($info['account_id']);
-	}
+        return new Account(query_item($query, [':pid' => $char->id()]));
+    }
 
+    /**
+     * Account identity, so whatever email was ORIGINALLY signed up with
+     *
+     * @param String $identity_email
+     * @return Account
+     */
+    public static function findByIdentity($identity_email) {
+        $info = self::account_info_by_identity($identity_email);
+        return new Account($info['account_id']);
+    }
+
+    /**
+     * Find account by active_email (as opposed to identity)
+     *
+     * @param String $email
+     * @return Account|false
+     */
+    public static function findByEmail($email) {
+        $normalized_email = strtolower(trim($email));
+
+        if ($normalized_email === '') {
+            return false;
+        }
+
+        $query = 'SELECT account_id FROM accounts WHERE lower(active_email) = lower(:email) LIMIT 1';
+
+        return new Account(query_item($query, [':email' => $normalized_email]));
+    }
+
+    /**
+     * Get the Account by a ninja name (aka player.uname).
+     *
+     * @param String $ninja_name
+     * @return Account
+     */
+    public static function findByNinjaName($ninja_name){
+        $query = 'SELECT account_id FROM accounts
+            JOIN account_players ON account_id = _account_id
+            JOIN players ON player_id = _player_id
+            WHERE lower(uname) = lower(:ninja_name) LIMIT 1';
+
+        return new Account(query_item($query, [':ninja_name'=>$ninja_name]));
+    }
+
+    /**
+     * Get the account that matches an oauth id.
+     *
+     * @param int $id
+     * @param String $provider (optional) Defaults to facebook
+     * @return Account|false
+     */
 	public static function findAccountByOauthId($id, $provider='facebook'){
 		$account_info = self::find_account_info_by_oauth($id, $provider);
 		if(!$account_info['account_id']){
