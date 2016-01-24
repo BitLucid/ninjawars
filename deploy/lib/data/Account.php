@@ -110,4 +110,22 @@ class Account{
 	public function isConfirmed(){
 		return (bool) ($this->info['confirmed'] === 1);
 	}
+
+    /**
+     * Change the account password
+     *
+     * @param String $newPassword
+     * @return int Number of rows updated
+     */
+    public function changePassword($newPassword) {
+        $query = "UPDATE accounts SET phash = crypt(:password, gen_salt('bf', 10)) WHERE account_id = :account_id";
+
+        return update_query(
+            $query,
+            [
+                ':account_id' => $this->getId(),
+                ':password'   => $newPassword,
+            ]
+        );
+    }
 }
