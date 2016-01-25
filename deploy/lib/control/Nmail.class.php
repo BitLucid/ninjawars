@@ -112,7 +112,7 @@ class Nmail {
         }
 
         if (defined('DEBUG') && DEBUG) {
-            error_log($this->message.PHP_EOL, 3, LOGS."/emails.log");
+            error_log($this->message.PHP_EOL, 3, LOGS."emails.log");
         }
 
         // Send the message along.
