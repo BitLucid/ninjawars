@@ -49,7 +49,7 @@ class AccountController {
         $error = '';
         $successMessage = '';
 
-        $verify = is_authentic($username, $passW);
+        $verify = self::is_authentic($username, $passW);
 
         if ($verify) {
             if ($in_newEmail === $in_confirmEmail) {
@@ -121,7 +121,7 @@ class AccountController {
         $error = '';
         $successMessage = '';
 
-        $verify = is_authentic($username, $passW);
+        $verify = self::is_authentic($username, $passW);
 
         if ($verify) {
             if ($in_newPass === $in_confirmPass) {
