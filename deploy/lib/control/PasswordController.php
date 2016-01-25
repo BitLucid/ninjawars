@@ -127,7 +127,7 @@ class PasswordController {
 
         if (!$req) {
             $error = 'No match for your password reset found or time expired, please request again.';
-            return new RedirectResponse('/resetpassword.php?command=reset&'.($error? 'error='.url($error) : ''));
+            return new RedirectResponse('/resetpassword.php?'.($error? 'error='.url($error) : ''));
         } else {
             $account = $req->account();
 
@@ -188,6 +188,6 @@ class PasswordController {
     }
 
     private function renderError($p_error, $p_token) {
-        return new RedirectResponse('/resetpassword.php?command=reset&token='.url($p_token).'&error='.url($p_error));
+        return new RedirectResponse('/resetpassword.php?token='.url($p_token).'&error='.url($p_error));
     }
 }
