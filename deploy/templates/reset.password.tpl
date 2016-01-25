@@ -18,13 +18,13 @@
 
         <div>
             <label>Password
-            <input type="password" name="new_password" value='{$new_password}' required=required minlength=4 title='At least 4 characters' placeholder='Your new password' >
+            <input type="password" name="new_password" value='{$new_password|default:''}' required=required minlength=4 title='At least 4 characters' placeholder='Your new password' >
             </label>
         </div>
 
         <div>
             <label>Confirm Password
-            <input type="password" name="password_confirmation" value='{$password_confirmation}' required=required minlength=4 title='At least 4 characters' placeholder='Repeat new password'>
+            <input type="password" name="password_confirmation" value='{$password_confirmation|default:''}' required=required minlength=4 title='At least 4 characters' placeholder='Repeat new password'>
             </label>
         </div>
 
