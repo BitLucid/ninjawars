@@ -49,10 +49,11 @@ class PasswordResetRequest extends Model {
         $fourHours = Carbon::now()->subHour(4);
         $id = PasswordResetRequest::select('request_id')
             ->where('created_at', '>', $fourHours)
-            ->where('request_id', '=', $this->id())
+            ->where('request_id', $this->id())
+            ->where('used', false)
             ->lists('request_id');
 
-        return (!$this->used && (bool) $id);
+        return (bool) $id;
     }
 
     /**
@@ -74,7 +75,7 @@ class PasswordResetRequest extends Model {
             return false;
         } else {
             // Mark all prior requests as "used"
-            PasswordResetRequest::where('_account_id', '=', $account->id())->update(['used' => 1]);
+            PasswordResetRequest::where('_account_id', '=', $account->id())->update(['used' => true]);
             return static::sendResetNotification($account->getActiveEmail());
         }
     }
@@ -100,7 +101,9 @@ class PasswordResetRequest extends Model {
      * @return PasswordResetRequest
      */
     public static function match($token) {
-        $request = PasswordResetRequest::where('nonce', '=', $token)->first();
+        $request = PasswordResetRequest::where('nonce', $token)
+            ->where('used', false)
+            ->first();
 
         if ($request instanceof PasswordResetRequest && $request->isActive()) {
             return $request;
