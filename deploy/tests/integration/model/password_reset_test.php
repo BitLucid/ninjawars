@@ -112,4 +112,13 @@ class TestPasswordReset extends PHPUnit_Framework_TestCase {
         $sent = PasswordResetRequest::sendResetNotification($final_account->getActiveEmail(), false);
         $this->assertTrue($sent);
     }
+
+    public function testPerformingAResetInvalidatesUsedRequest(){
+        $account_id = TestAccountCreateAndDestroy::account_id();
+        $account = AccountFactory::findById($account_id);
+        PasswordResetRequest::generate($account, $this->nonce='77warkwark', false);
+        PasswordResetRequest::reset($account, 'new_pass34532');
+        $req = PasswordResetRequest::match($this->nonce);
+        $this->assertEmpty($req); // Request shouldn't match because it should already be used.
+    }
 }
