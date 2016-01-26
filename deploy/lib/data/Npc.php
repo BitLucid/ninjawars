@@ -73,6 +73,10 @@ class Npc implements Character{
     }
 
     // Check for specific traits.
+
+    /**
+     * @param string $trait
+     */
     public function has_trait($trait){
         if(!isset($this->traits_array) && isset($this->traits)){
             // Initialize traits as an array at this point.
