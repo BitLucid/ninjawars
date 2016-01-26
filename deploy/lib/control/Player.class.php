@@ -396,7 +396,7 @@ class Player implements Character {
 		$hurt = $this->hurt_by();
 		// Heal at most the amount hurt, or the amount requested, pick whichever is smallest.
 		$heal = min($hurt, $amount);
-		return $this->addHealth($heal);
+		return $this->changeHealth($heal);
 	}
 
 	// Simple wrapper for changeHealth
@@ -421,7 +421,7 @@ class Player implements Character {
 				WHERE player_id  = :player_id";
 			query($up, array(':player_id'=>array($id, PDO::PARAM_INT),
 				':amount'=>$amount, ':amount2'=>$amount));
-			$this->vo->health = $amount;
+			$this->vo->health = $this->vo->health + $amount;
 		}
 		return $this->health(); // Return the current health.
 	}
