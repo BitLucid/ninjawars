@@ -180,6 +180,20 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $char->set_bounty(-45);
     }
 
+    function testPlayerHealChangesVOHealth(){
+        $char = new Player($this->char_id);
+        $half_health = floor($char->health()/2);
+        $char->set_health($half_health);
+        $char->save();
+        $char = new Player($this->char_id);
+        $this->assertEquals($half_health, $char->health());
+        $this->assertLessThan($char->max_health(), $char->health());
+        $char->heal($char->max_health()); // Heal by max_health, so up to 
+        $char->save();
+        $this->assertEquals($char->vo->health, $char->max_health());
+        $this->assertEquals($char->health(), $char->max_health());
+    }
+
 
 
     function testPCCanObtainAGravatarUrl(){
