@@ -32,7 +32,7 @@ class PasswordController {
         $subject = 'NinjaWars: Your password reset request';
         $nmail = new Nmail($email, $subject, $rendered, SUPPORT_EMAIL);
 
-        return $nmail->send();
+        return (bool) $nmail->send();
     }
 
     /**
@@ -174,15 +174,15 @@ class PasswordController {
             $req = PasswordResetRequest::match($token);
             $account = ($req instanceof PasswordResetRequest ? $req->account() : null);
 
-            if ($account->id()) {
-                if (strlen(trim($newPassword)) > 3 && $newPassword === $passwordConfirmation) {
-                    PasswordResetRequest::reset($account, $newPassword);
-                    return new RedirectResponse('/resetpassword.php?message='.url('Password reset!'));
-                } else {
-                    return $this->renderError('Password not long enough or does not match password confirmation!', $token);
-                }
-            } else {
+            if(!$account || !$account->id()){
                 return $this->renderError('Token was invalid or expired! Please reset again.', $token);
+            } else {
+                if (strlen(trim($newPassword)) < 4 || $newPassword !== $passwordConfirmation) {
+                    return $this->renderError('Password not long enough or does not match password confirmation!', $token);
+                } else {
+                    PasswordResetRequest::reset($account, $newPassword);
+                    return new RedirectResponse('/resetpassword.php?message='.url('Password reset!'));                    
+                }
             }
         }
     }
