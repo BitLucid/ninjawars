@@ -24,7 +24,6 @@ class DoshinController { //extends controller
     /**
      * Gathers data from session and makes it available to internal methods
      *
-     * @return DoshinController
      */
     public function __construct($char=null) {
         $char = $char instanceof Player? $char : new Player(self_char_id());
