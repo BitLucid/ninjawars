@@ -9,6 +9,10 @@ use \Nmail as Nmail;
 
 /**
  * Model that manipulates the data for a password reset request.
+ * @property $nonce
+ * @property $request_id
+ * @property $_account_id
+ * @property $used
  */
 class PasswordResetRequest extends Model {
     protected $primaryKey = 'request_id';
