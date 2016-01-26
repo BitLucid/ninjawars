@@ -69,6 +69,18 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         $this->assertTrue(strpos($response->getTargetUrl(), url('email or a ninja name')) !== false, 'Url Redirection did not contain expected error string');
     }
 
+    public function testPostEmailReturnsErrorOnUnmatchableEmailAndNinjaName(){
+        $req = Request::create('/resetpassword.php');
+        $req->setMethod('POST');
+        $req->query->set('email', 'unmatchable@'.nonce().'com');
+        $req->query->set('ninja_name', 'nomatch'.nonce());
+
+        $controller = new PasswordController();
+        $response = $controller->postEmail($req);
+        $this->assertTrue($response instanceof RedirectResponse);
+        $this->assertTrue(strpos($response->getTargetUrl(), url('unable to find a matching account')) !== false, 'Url Redirection did not contain expected error string');
+    }    
+
     public function testPostEmailCanGetAnAccountUsingANinjaName(){
         $req = Request::create('/resetpassword.php');
         $req->setMethod('POST');
@@ -158,5 +170,35 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
 
         // Password should be changed.
         $this->assertTrue($this->checkTestPasswordMatches($password), 'Password was not changed!');
+    }
+
+    public function testPostResetWithBadPasswordYeildsAnError() {
+        $token = '444555666';
+
+        // Generate a password reset req to be matched!
+        PasswordResetRequest::generate($this->account, $token);
+
+        // Create a symfony post with the right info
+        // and with the token already in the database.
+
+        // Symfony Request
+        $request = Request::create('/resetpassword.php');
+        $request->setMethod('POST');
+        $request->request->set('token', $token);
+
+        $password = 'sh'; // Too short of a password!
+
+        $request->request->set('new_password', $password);
+        $request->request->set('password_confirmation', $password);
+        $request->request->set('email', $this->account->getActiveEmail());
+
+        // Now run the controller method to reset!
+        $controller = new PasswordController();
+        $response = $controller->postReset($request);
+
+        $this->assertTrue(stripos($response->getTargetUrl(), url('not long enough')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
+
+        // Password should be changed.
+        $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
     }
 }

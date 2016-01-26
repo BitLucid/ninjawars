@@ -75,8 +75,10 @@ class PasswordController {
     public function postEmail(Request $request) {
         $error      = null;
         $message    = null;
+        $account = null;
         $email      = $request->get('email');
         $ninja_name = $request->get('ninja_name');
+
 
         if (!$email && !$ninja_name) {
             $error = 'You must specify either an email or a ninja name!';
@@ -89,7 +91,7 @@ class PasswordController {
                 $account = AccountFactory::findByNinjaName($ninja_name);
             }
 
-            if (!$account->id()) {
+            if ($account === null || !$account->id()) {
                 $error = 'Sorry, unable to find a matching account!';
             } else {
                 // PWR created with default nonce
