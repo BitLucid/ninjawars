@@ -1,11 +1,9 @@
 <?php
 /**
- * Wrapper class around the swiftmail mail library.
+ * Wrapper class for nw to send out mail, currently wraps the swiftmail mail library.
  *
  * @category Mail
- * @package obj
  * @subpackage mail
- * @link  http://ninjawars.net/signup.php/
  */
 class Nmail {
     /**
@@ -39,7 +37,7 @@ class Nmail {
      * @param $from string or array of email-indexed from addresses
      * @access public
      */
-    function __construct($to=null, $subject=null, $body=null, $from=null) {
+    public function __construct($to=null, $subject=null, $body=null, $from=null) {
         $this->to      = $to;
         $this->subject = $subject;
         $this->body    = $body;
@@ -49,10 +47,9 @@ class Nmail {
     /**
      * Replace the mail settings with completely new ones, reusing the constructor.
      *
-     * B
      * @return void
      */
-    function replace($to=null, $subject=null, $body=null, $from=null) {
+    public function replace($to=null, $subject=null, $body=null, $from=null) {
         $this->__construct($to, $subject, $body, $from);
         // *** Replace the current Nmail parameters with a new mailing.
     }
@@ -61,14 +58,14 @@ class Nmail {
      * Run checks to make sure that the mail is ready to be sent out.
      * @return boolean
      */
-    function valid() {
+    public function valid() {
         return !($this->to == null || $this->subject == null || $this->body == null || $this->from == null);
     }
 
     /**
      * Direct mapping to allow the setting of the reply to address.
      */
-    function setReplyTo($email_or_array) {
+    public function setReplyTo($email_or_array) {
         $this->reply_to = $email_or_array;
     }
 
@@ -77,7 +74,7 @@ class Nmail {
      *
      * @return boolean whether the mail function accepted the inputs.
      */
-    function send() {
+    public function send() {
         // Create the Transport
         if (!(self::$transport instanceof Swift_Transport)) {
             self::$transport = Swift_MailTransport::newInstance();
@@ -116,6 +113,6 @@ class Nmail {
         }
 
         // Send the message along.
-        return $mailer->send($this->message);
+        return (bool) $mailer->send($this->message);
     }
 }

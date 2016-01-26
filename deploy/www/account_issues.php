@@ -33,7 +33,6 @@ function send_account_email($email, $data) {
 
 	// *** Set the custom replyto email. ***
 	$mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
-	if (DEBUG) { $mail_obj->dump = true; }
 
 	return $mail_obj->send();
 }
@@ -55,8 +54,6 @@ function send_confirmation_email($email, $data) {
 
 	$mail_obj = new Nmail($_to, $_subject, $_body, $_from);
 	$mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
-
-	if (DEBUG) { $mail_obj->dump = true; }
 
 	return $mail_obj->send();
 }
