@@ -65,12 +65,10 @@ class PasswordResetRequest extends Model {
      *
      * @return boolean
      */
-    public static function reset(\Account $account, $new_pass) {
+    public static function reset(Account $account, $new_pass) {
         if (!$account->id() || !$account->isOperational() || $new_pass === null || $new_pass === '') {
             return false;
         }
-
-        $account->changePassword($new_pass);
 
         // Get request by account id.
         $request = PasswordResetRequest::where('_account_id', '=', $account->id())->first();
@@ -78,6 +76,7 @@ class PasswordResetRequest extends Model {
         if (!($request instanceof PasswordResetRequest) || !$request->isActive()) {
             return false;
         } else {
+            $account->changePassword($new_pass);
             // Mark all prior requests as "used"
             PasswordResetRequest::where('_account_id', '=', $account->id())->update(['used' => true]);
             return static::sendResetNotification($account->getActiveEmail());
@@ -91,7 +90,8 @@ class PasswordResetRequest extends Model {
      */
     public static function sendResetNotification($email) {
         $body = '
-            Your password on ninjawars.net was reset.  Please contact '.SUPPORT_EMAIL_NAME.' via '.SUPPORT_EMAIL.' if this was an error.
+            Your password on ninjawars.net was reset.  
+            Please contact '.SUPPORT_EMAIL_NAME.' via '.SUPPORT_EMAIL.' if this was an error.
         ';
 
         $nmail = new Nmail($email, 'NinjaWars.net: Your password was reset.', $body, SUPPORT_EMAIL);

@@ -36,7 +36,6 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
 
         // Get a Response
         $controller = new PasswordController();
-        $controller->debug_emails = false; // Don't debug emails.
         $response = $controller->index($req);
         $this->assertEquals('reset.password.request.tpl', $response['template']);
     }
@@ -49,16 +48,59 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
 
         // Pass to controller
         $controller = new PasswordController();
-        $controller->debug_emails = false; // Don't debug emails.
         $controller->postEmail($req);
 
         // reset entry should be created
         $req = PasswordResetRequest::where('_account_id', '=', $this->account->id())->first();
 
-        $this->assertNotEmpty($req, 'No matching password reset request was found');
+        $this->assertNotEmpty($req, 'Fail: Unable to find a matching password reset request.');
         $this->assertTrue($req instanceof PasswordResetRequest, "Request wasn't found to become a PasswordResetRequest.");
         $this->assertGreaterThan(0, $req->id());
         $this->assertNotEmpty($req->nonce, "Nonce/Token was blank or didn't come back.");
+    }
+
+    public function testPostEmailReturnsErrorWhenNoEmailOrNinjaName(){
+        $req = Request::create('/resetpassword.php');
+        $req->setMethod('POST');
+
+        $controller = new PasswordController();
+        $response = $controller->postEmail($req);
+        $this->assertTrue($response instanceof RedirectResponse);
+        $this->assertTrue(strpos($response->getTargetUrl(), url('email or a ninja name')) !== false, 'Url Redirection did not contain expected error string');
+    }
+
+    public function testPostEmailCanGetAnAccountUsingANinjaName(){
+        $req = Request::create('/resetpassword.php');
+        $req->setMethod('POST');
+        $char = TestAccountCreateAndDestroy::char();
+        $ninja_name = $char->name();
+        $req->query->set('ninja_name', $ninja_name);
+
+        $account = AccountFactory::findByNinjaName($ninja_name);
+
+
+        $controller = new PasswordController();
+        $response = $controller->postEmail($req);
+        // Check for a matching request for the appropriate account.
+        $req = PasswordResetRequest::where('_account_id', '=', $account->id())->first();
+
+        $this->assertNotEmpty($req, 'Fail: Unable to find a matching password reset request.');
+    }
+
+    public function testGetResetWithARandomTokenErrorRedirects(){
+        $token = 'asdlfkjjklkasdfjkl';
+
+        // Symfony Request
+        $request = Request::create('/resetpassword.php');
+        $request->setMethod('POST');
+        $request->query->set('token', $token);
+
+        // get a response
+        $controller = new PasswordController();
+        $response = $controller->getReset($request);
+
+        // Response should contain an array with the token in the parts.
+        $this->assertTrue($response instanceof RedirectResponse, 'Error! getReset matched a garbage token!');        
     }
 
     public function testGetResetWithAValidTokenDisplaysAFilledInPasswordResetForm() {

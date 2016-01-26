@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 $command = (string) in('command');
 
 $controller = new PasswordController();
-$controller->debug_emails = true;
 
 $request = Request::createFromGlobals();
 
