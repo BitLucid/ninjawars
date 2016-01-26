@@ -44,7 +44,7 @@ CREATE TABLE "password_reset_requests"
     "_account_id" INTEGER NOT NULL,
     "nonce" VARCHAR(130) NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_DATE NOT NULL,
-    "used" BOOLEAN DEFAULT \'f\',
+    "used" BOOLEAN DEFAULT \'f\' NOT NULL,
     PRIMARY KEY ("request_id")
 );
 
