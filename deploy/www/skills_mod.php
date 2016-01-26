@@ -229,31 +229,31 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 				// Harmonize some chakra!
 
 				// Use up some ki to heal yourself.
-				function harmonize_chakra($char_obj){
-					$ki = $char_obj->ki();
-					$healed_by = 0;
-					$hurt = $char_obj->hurt_by();
-					if($hurt > 0){
+				function harmonize_chakra(Player $char){
+					// Heal at most 100 or ki available or hurt by AND at least 0
+					$heal_for = (int) max(0, min(100, $char->hurt_by(), $char->ki()));
+					if($heal_for > 0){
 						// If there's anything to heal, try.
-						// Heal to whichever is lowest, ki, hurt, or 300.
-						$heal_for = min(100, $hurt, $ki);
+
+
+						
 						// Subtract the ki used for healing.
-						$char_obj->subtract_ki((int)$heal_for);
-						$char_obj->heal($heal_for);
-						$healed_by = $heal_for;
+						$char->heal($heal_for);
+						$char->set_ki($char->ki() - $heal_for);
+						$char->save();
 					}
-					return $healed_by;
+					return $char;
 				}
 
 				$start_health = $player->health();
 				// Harmonize those chakra!
-				$healed_by = harmonize_chakra($player);
-				$new_health = $healed_by + $start_health;
+				$player = harmonize_chakra($player);
+				$healed_by = $player->health() - $start_health;
 				$ki_cost = $healed_by;
 			}
 
 		    $target->addStatus(HEALING);
-		    $generic_skill_result_message = "__TARGET__ healed by $healed_by to $new_health.";
+		    $generic_skill_result_message = "__TARGET__ healed by $healed_by to ".$player->health().".";
 
 		    if ($target->id() != $player->id())  {
 				send_event($attacker_char_id, $target->id(), "You have been healed by $attacker_id for $healed_by.");
