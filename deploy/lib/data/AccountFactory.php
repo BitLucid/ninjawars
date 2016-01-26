@@ -33,13 +33,13 @@ class AccountFactory{
      * Get the account object by id, or false
      *
      * @param int $id
-     * @return Account|false
+     * @return Account|null
      */
     public static function findById($id) {
         $account = new Account($id);
 
         if (!$account->getIdentity()) {
-            return false;
+            return null;
         } else {
             return $account;
         }
@@ -75,13 +75,13 @@ class AccountFactory{
      * Find account by active_email (as opposed to identity)
      *
      * @param String $email
-     * @return Account|false
+     * @return Account|null
      */
     public static function findByEmail($email) {
         $normalized_email = strtolower(trim($email));
 
         if ($normalized_email === '') {
-            return false;
+            return null;
         }
 
         $query = 'SELECT account_id FROM accounts WHERE lower(active_email) = lower(:email) LIMIT 1';
@@ -109,12 +109,12 @@ class AccountFactory{
      *
      * @param int $id
      * @param String $provider (optional) Defaults to facebook
-     * @return Account|false
+     * @return Account|null
      */
 	public static function findAccountByOauthId($id, $provider='facebook'){
 		$account_info = self::find_account_info_by_oauth($id, $provider);
 		if(!$account_info['account_id']){
-			return false;
+			return null;
 		}
 		return new Account($account_info['account_id']);
 	}
@@ -142,6 +142,7 @@ class AccountFactory{
 
 	/**
 	 * Get the account that matches an oauth provider.
+     * @return array|null
 	 */
 	public static function find_account_info_by_oauth($accountId, $provider='facebook') {
 		$accountId = positive_int($accountId);
@@ -149,7 +150,7 @@ class AccountFactory{
 			order by operational, type, created_date asc limit 1', array(':id'=>$accountId, ':provider'=>$provider));
 
 		if (empty($account_info) || !$account_info['account_id']) {
-			return false;
+			return null;
 		} else {
 			return $account_info;
 		}
