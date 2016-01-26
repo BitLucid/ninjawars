@@ -39,20 +39,21 @@ class NpcController { //extends controller
         $oni_turn_loss   = 10;
         $oni_health_loss = rand(1, 20);
         $oni_kill_loss   = 1;
-        $player_turns    = subtractTurns($player->id(), $oni_turn_loss);
-        $attacker_health = $player->vo->health = subtractHealth($player->id(), $oni_health_loss);
+        $turns    = subtractTurns($player->id(), $oni_turn_loss);
+        $player->set_turns($turns);
+        $player->vo->health = subtractHealth($player->id(), $oni_health_loss);
         $attacker_kills  = subtractKills($player->id(), $oni_kill_loss);
         $multiple_rewards = false;
         $oni_killed = false;
 
         $item = null;
 
-        if ($attacker_health > 0) { // *** if you survive ***
-            if ($player_turns > 50) { // *** And your turns are high/you are energetic, you can kill them. ***
+        if ($player->health() > 0) { // *** if you survive ***
+            if ($player->turns() > 50) { // *** And your turns are high/you are energetic, you can kill them. ***
                 $oni_killed = true;
                 $item = new Item('dimmak');
                 add_item($player->id(), $item->identity(), 1);
-            } else if ($player_turns > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
+            } else if ($player->turns() > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
                 $oni_killed = true;
                 $item = new Item('ginsengroot');
                 $multiple_rewards = true;
@@ -110,10 +111,11 @@ class NpcController { //extends controller
 
         // ******* FIGHT *********** & Hope for victory.
         $victory = false;
-        $survive_fight = $player->vo->health = subtractHealth($player->id(), $npco->damage());
+        $npc_damage = $npco->damage(); // An instance of damage.
+        $survive_fight = $player->vo->health = subtractHealth($player->id(), $npc_damage);
         $armored = $npco->has_trait('armored')? 1 : 0;
         $kill_npc = ($npco->health() < $player->damage());
-        if($survive_fight){
+        if($survive_fight>0){
             // The ninja survived, they'll get gold.
             $received_gold = rand(floor($reward_gold/5), $reward_gold);
             add_gold($player->id(), $received_gold);
@@ -153,7 +155,7 @@ class NpcController { //extends controller
 
         // Settings to display results.
         $npc_template = 'npc.abstract.tpl';
-        $combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$npco->damage(), 'percent_damage'=>$percent_damage,
+        $combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$npc_damage, 'percent_damage'=>$percent_damage,
             'status_effect'=>$status_effect, 'display_statuses'=>$display_statuses, 'display_statuses_classes'=>$display_statuses_classes, 'received_gold'=>$received_gold,
             'received_display_items'=>$received_display_items, 'is_rewarded'=>$is_rewarded,
             'victory'=>$victory, 'survive_fight'=>$survive_fight, 'kill_npc'=>$kill_npc, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats, 'is_quick'=>$is_quick,
@@ -196,26 +198,19 @@ $char_id = self_char_id();
 $player     = new Player($char_id);
 $error_template = 'npc.no-one.tpl'; // Error template also used down below.
 $npc_template = $error_template; // Error condition by default.
-$turns = $player->turns();
-$is_villager = false;
 
 $ninja_str               = $player->getStrength();
-$ninja_health            = $player->vo->health;
 
 $static_npcs = array('peasant', 'thief', 'merchant', 'guard', 'samurai');
 $npcs = NpcFactory::npcsData();
 $possible_npcs = array_merge($static_npcs, array_keys($npcs));
 $victim = restrict_to($victim, $possible_npcs); // Filter to only the correct options.
 
-if($turns > 0 && !empty($victim)) {
+if($player->turns() > 0 && !empty($victim)) {
     // Strip stealth when attacking samurai or oni
     if ($player->hasStatus('stealth') && (strtolower($victim) == 'samurai' || strtolower($victim) == 'oni')) {
         $player->subtractStatus(STEALTH);
     }
-
-    $attacker_str    = $player->getStrength();
-    $attacker_health = $player->vo->health;
-    $attacker_gold   = $player->vo->gold;
 
     if ((bool) (rand(1, 400) === 1)) { // Random encounter!
         list($npc_template, $combat_data) = $this->randomEncounter($player);
@@ -271,16 +266,17 @@ if($turns > 0 && !empty($victim)) {
 
             $samurai_damage_array    = array();
 
-            $samurai_damage_array[0] = rand(1, $ninja_str);
-            $samurai_damage_array[1] = rand(10, 10 + round($ninja_str * 1.2));
+            $samurai_damage_array[0] = rand(1, $player->strength());
+            $samurai_damage_array[1] = rand(10, 10 + round($player->strength() * 1.2));
             $does_ninja_succeed      = rand(0, 1);
 
             if ($does_ninja_succeed) {
-                $samurai_damage_array[2] = rand(30 + round($ninja_str * 0.2), 30 + round($ninja_str * 1.7));
+                $samurai_damage_array[2] = rand(30 + round($player->strength() * 0.2), 30 + round($player->strength() * 1.7));
             } else {
-                $samurai_damage_array[2] = abs($ninja_health - $samurai_damage_array[0] - $samurai_damage_array[1]);  //Instant death.
+                $samurai_damage_array[2] = abs($player->health() - $samurai_damage_array[0] - $samurai_damage_array[1]);  //Instant death.
             }
 
+            $ninja_health = $player->health(); // Get starting value and iterate it down.
             for ($i = 0; $i < 3 && $ninja_health > 0; ++$i) {
                 $ninja_health = $ninja_health - $samurai_damage_array[$i];
             }
@@ -305,7 +301,7 @@ if($turns > 0 && !empty($victim)) {
                     }
                 }
 
-                if ($samurai_damage_array[2] == $ninja_str * 3) {   // *** If the final damage was the exact max damage... ***
+                if ($samurai_damage_array[2] == $player->strength() * 3) {   // *** If the final damage was the exact max damage... ***
                     $drop = true;
                     $drop_display = 'a black scroll';
                     add_item($char_id, "dimmak", 1);
@@ -348,12 +344,12 @@ if($turns > 0 && !empty($victim)) {
         $npc_template = 'npc.merchant.tpl';
         $combat_data  = array('attack'=>$merchant_attack, 'gold'=>$merchant_gold, 'bounty'=>$added_bounty, 'victory'=>$victory);
     } else if ($victim == 'guard') {    // *** The Player attacks the guard ***
-        $guard_attack = rand(1, $attacker_str + 10);  // *** Guard Damage ***
+        $guard_attack = rand(1, $player->strength() + 10);  // *** Guard Damage ***
         $herb         = false;
         $added_bounty = 0;
 
         if ($player->vo->health = $victory = subtractHealth($char_id, $guard_attack)) {
-            $guard_gold = rand(1, $attacker_str + 40);  // *** Guard Gold ***
+            $guard_gold = rand(1, $player->strength() + 40);  // *** Guard Gold ***
             add_gold($char_id, $guard_gold);
 
             if ($player->vo->level > 15) {
@@ -436,7 +432,8 @@ if($turns > 0 && !empty($victim)) {
 
 
     // Subtract the turn cost for attacking an npc, almost always going to be 1 apart from perhaps oni or group-of-thieves
-    subtractTurns($player->id(), $turn_cost);
+    $turns = subtractTurns($player->id(), $turn_cost);
+    $player->set_turns($turns);
 }
 
         $template = 'npc.tpl';
@@ -445,7 +442,7 @@ if($turns > 0 && !empty($victim)) {
         $parts = [
             'npc_template'       => $npc_template
             , 'attacked'         => 1
-            , 'turns'            => $turns
+            , 'turns'            => $player->turns()
             , 'health'           => $health        
         ];
         $parts = $parts + $combat_data; // Merge in combat data.
