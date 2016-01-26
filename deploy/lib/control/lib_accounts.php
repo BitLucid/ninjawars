@@ -151,7 +151,6 @@ function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $
 
 	// *** Set replyto address. ***
 	$message->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
-	if (DEBUG) {$message->dump = true;}
 	return $message->send();
 }
 
