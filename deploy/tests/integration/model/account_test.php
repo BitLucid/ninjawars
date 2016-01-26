@@ -75,6 +75,12 @@ class Account_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($oauth_id, $account_dupe->getOauthId());
 	}
 
+	public function testAccountPasswordCanBeChanged(){
+		$account = AccountFactory::make($this->testAccountId);
+		$updated = $account->changePassword('whatever gibberish');
+		$this->assertTrue((bool)$updated);
+	}
+
 
 
 }

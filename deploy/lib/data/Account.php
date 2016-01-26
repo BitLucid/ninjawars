@@ -20,9 +20,27 @@ class Account{
 		return $this->info;
 	}
 
-	public function getId(){
-		return $this->account_id;
-	}
+    public function getId() {
+        return $this->account_id;
+    }
+
+    /**
+     * Simple wrapper function for getting email from accounts
+     *
+     * @return String email of the account
+     */
+    public function email() {
+        return $this->getActiveEmail();
+    }
+
+    /**
+     * Alias for getId()
+     *
+     * @return int
+     */
+    public function id() {
+        return $this->getId();
+    }
 
 	public function getActiveEmail(){
 		return $this->active_email;
@@ -101,4 +119,22 @@ class Account{
 	public function isConfirmed(){
 		return (bool) ($this->info['confirmed'] === 1);
 	}
+
+    /**
+     * Change the account password
+     *
+     * @param String $newPassword
+     * @return int Number of rows updated
+     */
+    public function changePassword($newPassword) {
+        $query = "UPDATE accounts SET phash = crypt(:password, gen_salt('bf', 10)) WHERE account_id = :account_id";
+
+        return update_query(
+            $query,
+            [
+                ':account_id' => $this->getId(),
+                ':password'   => $newPassword,
+            ]
+        );
+    }
 }
