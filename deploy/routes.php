@@ -23,6 +23,11 @@ Router::$routes = [
             'list'    => 'listClans',
         ],
     ],
+    'list' => [
+        'type'    => 'controller',
+        'actions' => [
+        ],
+    ],
     'shop' => [
         'type'    => 'controller',
         'actions' => [

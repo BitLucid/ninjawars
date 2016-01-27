@@ -45,6 +45,10 @@ server {
 	    return 302 /main.php$is_args$args;
 	}
 
+	location ~ /list_all_players\.php {
+	    return 302 /list$is_args$args;
+	}
+
 	location ~ /webgame(/*) {
 		rewrite ^ / permanent;
 	}
