@@ -97,10 +97,6 @@ class PasswordController {
                 // PWR created with default nonce
                 $request = PasswordResetRequest::generate($account);
 
-                if (empty($request)) {
-                    throw new \RuntimeException('Password reset not created properly');
-                }
-
                 if ($this->sendEmail($request->nonce, $account)) {
                     $message = 'Your reset email was sent!';
                 } else {
@@ -132,10 +128,6 @@ class PasswordController {
             return new RedirectResponse('/resetpassword.php?'.($error? 'error='.url($error) : ''));
         } else {
             $account = $req->account();
-
-            if (!$account || !$account->getActiveEmail()) {
-                throw new Exception('No account found for password reset request');
-            }
 
             $parts = [
                 'token'          => $token,

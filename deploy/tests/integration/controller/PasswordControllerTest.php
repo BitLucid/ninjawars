@@ -201,4 +201,34 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         // Password should be changed.
         $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
     }
+
+    public function testPostResetWithNoTokenYeildsAnError() {
+        $token = null;
+
+        // Generate a password reset req to be matched!
+        PasswordResetRequest::generate($this->account, $token);
+
+        // Create a symfony post with the right info
+        // and with the token already in the database.
+
+        // Symfony Request
+        $request = Request::create('/resetpassword.php');
+        $request->setMethod('POST');
+        $request->request->set('token', $token);
+
+        $password = 'some_new_pass';
+
+        $request->request->set('new_password', $password);
+        $request->request->set('password_confirmation', $password);
+        $request->request->set('email', $this->account->getActiveEmail());
+
+        // Now run the controller method to reset!
+        $controller = new PasswordController();
+        $response = $controller->postReset($request);
+
+        $this->assertTrue(stripos($response->getTargetUrl(), url('No Valid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
+
+        // Password should be changed.
+        $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
+    }
 }
