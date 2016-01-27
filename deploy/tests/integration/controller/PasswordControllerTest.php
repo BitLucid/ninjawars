@@ -202,6 +202,35 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
     }
 
+    public function testPostResetWithMismatchedPasswordsYeildsError() {
+        $token = '34838383838';
+
+        // Generate a password reset req to be matched!
+        PasswordResetRequest::generate($this->account, $token);
+
+        // Create a symfony post with the right info
+        // and with the token already in the database.
+
+        // Symfony Request
+        $request = Request::create('/resetpassword.php');
+        $request->setMethod('POST');
+        $request->request->set('token', $token);
+
+        $password = 'legit_password_yo';
+        $request->request->set('new_password', $password);
+        $request->request->set('password_confirmation', $password.'mismatch');
+        $request->request->set('email', $this->account->getActiveEmail());
+
+        // Now run the controller method to reset!
+        $controller = new PasswordController();
+        $response = $controller->postReset($request);
+
+        $this->assertTrue(stripos($response->getTargetUrl(), url('Password Confirmation did not match')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
+
+        // Password should be changed.
+        $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
+    }
+
     public function testPostResetWithNoTokenYeildsAnError() {
         $token = null;
 
@@ -227,6 +256,30 @@ class TestPasswordController extends PHPUnit_Framework_TestCase {
         $response = $controller->postReset($request);
 
         $this->assertTrue(stripos($response->getTargetUrl(), url('No Valid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
+
+        // Password should be changed.
+        $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
+    }
+
+    public function testPostResetWithInvalidatedTokenYeildsError() {
+        $token = '34838383838';
+        PasswordResetRequest::generate($this->account, $token);
+        $request = Request::create('/resetpassword.php');
+        $request->setMethod('POST');
+        $request->request->set('token', $token);
+        $password = 'legit_password_yo';
+        $request->request->set('new_password', $password);
+        $request->request->set('password_confirmation', $password);
+        $request->request->set('email', $this->account->getActiveEmail());
+
+        // Invalidate the token
+        PasswordResetRequest::where('_account_id', '=', $this->account->id())->update(['used' => true]);
+
+        // Now run the controller method to reset!
+        $controller = new PasswordController();
+        $response = $controller->postReset($request);
+
+        $this->assertTrue(stripos($response->getTargetUrl(), url('Token was invalid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
         // Password should be changed.
         $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
