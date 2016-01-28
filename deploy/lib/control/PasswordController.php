@@ -32,7 +32,7 @@ class PasswordController {
         $subject = 'NinjaWars: Your password reset request';
         $nmail = new Nmail($email, $subject, $rendered, SUPPORT_EMAIL);
 
-        return $nmail->send();
+        return (bool) $nmail->send();
     }
 
     /**
@@ -75,8 +75,10 @@ class PasswordController {
     public function postEmail(Request $request) {
         $error      = null;
         $message    = null;
+        $account = null;
         $email      = $request->get('email');
         $ninja_name = $request->get('ninja_name');
+
 
         if (!$email && !$ninja_name) {
             $error = 'You must specify either an email or a ninja name!';
@@ -89,15 +91,11 @@ class PasswordController {
                 $account = AccountFactory::findByNinjaName($ninja_name);
             }
 
-            if (!$account->id()) {
+            if ($account === null || !$account->id()) {
                 $error = 'Sorry, unable to find a matching account!';
             } else {
                 // PWR created with default nonce
                 $request = PasswordResetRequest::generate($account);
-
-                if (empty($request)) {
-                    throw new \RuntimeException('Password reset not created properly');
-                }
 
                 if ($this->sendEmail($request->nonce, $account)) {
                     $message = 'Your reset email was sent!';
@@ -130,10 +128,6 @@ class PasswordController {
             return new RedirectResponse('/resetpassword.php?'.($error? 'error='.url($error) : ''));
         } else {
             $account = $req->account();
-
-            if (!$account || !$account->getActiveEmail()) {
-                throw new Exception('No account found for password reset request');
-            }
 
             $parts = [
                 'token'          => $token,
@@ -174,15 +168,15 @@ class PasswordController {
             $req = PasswordResetRequest::match($token);
             $account = ($req instanceof PasswordResetRequest ? $req->account() : null);
 
-            if ($account->id()) {
-                if (strlen(trim($newPassword)) > 3 && $newPassword === $passwordConfirmation) {
-                    PasswordResetRequest::reset($account, $newPassword);
-                    return new RedirectResponse('/resetpassword.php?message='.url('Password reset!'));
-                } else {
-                    return $this->renderError('Password not long enough or does not match password confirmation!', $token);
-                }
-            } else {
+            if(!$account || !$account->id()){
                 return $this->renderError('Token was invalid or expired! Please reset again.', $token);
+            } else {
+                if (strlen(trim($newPassword)) < 4 || $newPassword !== $passwordConfirmation) {
+                    return $this->renderError('Password not long enough or does not match password confirmation!', $token);
+                } else {
+                    PasswordResetRequest::reset($account, $newPassword);
+                    return new RedirectResponse('/resetpassword.php?message='.url('Password reset!'));                    
+                }
             }
         }
     }

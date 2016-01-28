@@ -1,9 +1,9 @@
 create table password_reset_requests(
 	request_id serial,
 	_account_id int not null,
-	nonce varchar(130),
-	created_at timestamp with time zone default CURRENT_DATE,
-	used boolean,
+	nonce varchar(130) not null,
+	created_at timestamp with time zone default CURRENT_DATE not null,
+	used boolean default false not null,
 	CONSTRAINT fk__account_id FOREIGN KEY (_account_id)
       REFERENCES accounts (account_id) MATCH SIMPLE
       ON UPDATE CASCADE ON DELETE CASCADE
