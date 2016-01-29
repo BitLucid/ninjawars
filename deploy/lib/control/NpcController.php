@@ -74,17 +74,16 @@ class NpcController { //extends controller
 
         $npco = new Npc($npc_stats); // Construct the npc object.
         $display_name = first_value((isset($npc_stats['name'])? $npc_stats['name'] : null), ucfirst($victim));
-        $percent_damage = null; // Percent damage does to the player's health.
         $status_effect = isset($npc_stats['status'])? $npc_stats['status'] : null;
+        // TODO: Calculate and display damage verbs
         $reward_item = isset($npc_stats['item']) && $npc_stats['item']? $npc_stats['item'] : null;
         $base_gold = $npco->gold();
         $npc_gold = (int) isset($npc_stats['gold'])? $npc_stats['gold'] : 0 ;
         $is_quick = ($npco->speed()>$player->speed())? true : false; // Beyond basic speed and they see you coming, so show that message.
         // If npc gold explicitly set to 0, then none will be given.
         $reward_gold = $npc_gold === 0? 0 :
-            ($reward_item? round($base_gold * .9) : $base_gold); // Hack a little off reward gold if items received.
+            ($reward_item? floor($base_gold * .9) : $base_gold); // Hack a little off reward gold if items received.
         $bounty_mod = isset($npc_stats['bounty'])? $npc_stats['bounty'] : null;
-        $is_villager = $npco->has_trait('villager'); // Give the villager message with the bounty.
         $is_weaker = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
         $is_stronger = ($npco->strength()) > ($player->strength() * 3); // Npc More than twice as strong?
         $image = isset($npc_stats['img'])? $npc_stats['img'] : null;
@@ -104,7 +103,7 @@ class NpcController { //extends controller
 
         // Get percent of total initial health.
 
-        // ******* FIGHT *********** & Hope for victory.
+        // ******* FIGHT Logic ***********
         $npc_damage = $npco->damage(); // An instance of damage.
         $survive_fight = $player->vo->health = subtractHealth($player->id(), $npc_damage);
         // TODO: make $armored = $npco->has_trait('armored')? 1 : 0;
@@ -138,8 +137,8 @@ class NpcController { //extends controller
                 }
             }
             $is_rewarded = (bool) $reward_gold || (bool)count($received_display_items);
-            if($status_effect){ // Only add the status effect
-                $player->addStatus($status_effect);
+            if(isset($npc_stats['status']) && null !== $npc_stats['status']){
+                $player->addStatus($npc_stats['status']);
                 // Get the statuses and status classes for display.
                 $display_statuses = implode(', ', get_status_list());
                 $display_statuses_classes = implode(' ', get_status_list()); // TODO: Take healthy out of the list since it's redundant.
@@ -149,11 +148,11 @@ class NpcController { //extends controller
 
         // Settings to display results.
         $npc_template = 'npc.abstract.tpl';
-        $combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$npc_damage, 'percent_damage'=>$percent_damage,
+        $combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$npc_damage,
             'status_effect'=>$status_effect, 'display_statuses'=>$display_statuses, 'display_statuses_classes'=>$display_statuses_classes, 'received_gold'=>$received_gold,
             'received_display_items'=>$received_display_items, 'is_rewarded'=>$is_rewarded,
             'victory'=>$victory, 'survive_fight'=>$survive_fight, 'kill_npc'=>$kill_npc, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats, 'is_quick'=>$is_quick,
-            'added_bounty'=>$added_bounty, 'is_villager'=>$is_villager, 'race'=>$npco->race(), 'is_weaker'=>$is_weaker, 'is_stronger'=>$is_stronger);
+            'added_bounty'=>$added_bounty, 'is_villager'=>$npco->has_trait('villager'), 'race'=>$npco->race(), 'is_weaker'=>$is_weaker, 'is_stronger'=>$is_stronger);
         return [$npc_template, $combat_data];
 
     }
