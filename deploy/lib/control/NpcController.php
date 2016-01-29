@@ -35,14 +35,13 @@ class NpcController { //extends controller
         // *** They take turns and a kill and do a little damage. ***
         // **********************************************************
 
-        $victim          = 'Oni';
         $oni_turn_loss   = 10;
         $oni_health_loss = rand(1, 20);
         $oni_kill_loss   = 1;
         $turns    = subtractTurns($player->id(), $oni_turn_loss);
         $player->set_turns($turns);
         $player->vo->health = subtractHealth($player->id(), $oni_health_loss);
-        $attacker_kills  = subtractKills($player->id(), $oni_kill_loss);
+        subtractKills($player->id(), $oni_kill_loss);
         $multiple_rewards = false;
         $oni_killed = false;
 
@@ -68,14 +67,13 @@ class NpcController { //extends controller
 
     /**
      * Handle Standard Abstract Npcs
-     * @return [$npc_template, $combat_data]
+     * @return array with [$npc_template, $combat_data]
      */
     private function attackAbstractNpc($victim, $player, $npcs){
         $npc_stats = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
 
         $npco = new Npc($npc_stats); // Construct the npc object.
         $display_name = first_value((isset($npc_stats['name'])? $npc_stats['name'] : null), ucfirst($victim));
-        $max_damage = $npco->max_damage();
         $percent_damage = null; // Percent damage does to the player's health.
         $status_effect = isset($npc_stats['status'])? $npc_stats['status'] : null;
         $reward_item = isset($npc_stats['item']) && $npc_stats['item']? $npc_stats['item'] : null;
@@ -96,11 +94,8 @@ class NpcController { //extends controller
             $image_path = IMAGE_ROOT.'characters/'.$image;
         }
 
-        $statuses = null;
-        $status_classes = null;
-
         // Assume defeat...
-        $victory = null;
+        $victory = false;
         $received_gold = null;
         $received_display_items = null;
         $added_bounty = null;
@@ -110,10 +105,9 @@ class NpcController { //extends controller
         // Get percent of total initial health.
 
         // ******* FIGHT *********** & Hope for victory.
-        $victory = false;
         $npc_damage = $npco->damage(); // An instance of damage.
         $survive_fight = $player->vo->health = subtractHealth($player->id(), $npc_damage);
-        $armored = $npco->has_trait('armored')? 1 : 0;
+        // TODO: make $armored = $npco->has_trait('armored')? 1 : 0;
         $kill_npc = ($npco->health() < $player->damage());
         if($survive_fight>0){
             // The ninja survived, they'll get gold.
@@ -148,7 +142,7 @@ class NpcController { //extends controller
                 $player->addStatus($status_effect);
                 // Get the statuses and status classes for display.
                 $display_statuses = implode(', ', get_status_list());
-                $display_status_classes = implode(' ', get_status_list()); // TODO: Take healthy out of the list since it's redundant.
+                $display_statuses_classes = implode(' ', get_status_list()); // TODO: Take healthy out of the list since it's redundant.
             }
         }
 
@@ -173,7 +167,7 @@ class NpcController { //extends controller
      */
     public function attack(){
 
-        //$victim     = in('victim');
+        // This used to pull directly from $victim get param
 
         $url_part = $_SERVER['REQUEST_URI'];
 
@@ -253,16 +247,19 @@ if($player->turns() > 0 && !empty($victim)) {
     } else if ($victim == "samurai") {
         $attacker_level = $player->vo->level;
         $attacker_kills = $player->vo->kills;
-        $weakness_error = null;
+        $weakness_error = false;
+        $samurai_damage_array = null;
+        $samurai_gold = null;
+        $victory = false;
+        $drop = null;
+        $drop_display = null;
+        $turn_cost = 1;
 
         if ($attacker_level < 2 || $attacker_kills < 1) {
             $turn_cost = 0;
             $weakness_error = 'You are too weak to attack the samurai.';
         } else {
-            $turn_cost = 1;
 
-            $drop                    = false;
-            $drop_display            = null;
 
             $samurai_damage_array    = array();
 
