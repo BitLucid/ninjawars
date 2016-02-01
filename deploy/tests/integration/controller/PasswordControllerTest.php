@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class TestPasswordController extends PHPUnit_Framework_TestCase {
+class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     function setUp() {
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         $this->account = AccountFactory::findById($this->account_id);
