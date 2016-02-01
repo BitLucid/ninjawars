@@ -17,6 +17,9 @@ use \Item as Item;
 class NpcController { //extends controller
     const ALIVE          = true;
     const PRIV           = false;
+    const HIGH_TURNS     = 50;
+    const ITEM_DECREASES_GOLD_FACTOR = 0.9;
+    const ONI_DAMAGE_CAP     = 20;
 
     /**
      * 
@@ -36,7 +39,7 @@ class NpcController { //extends controller
         // **********************************************************
 
         $oni_turn_loss   = 10;
-        $oni_health_loss = rand(1, 20);
+        $oni_health_loss = rand(1, self::ONI_DAMAGE_CAP);
         $oni_kill_loss   = 1;
         $turns    = subtractTurns($player->id(), $oni_turn_loss);
         $player->set_turns($turns);
@@ -48,11 +51,11 @@ class NpcController { //extends controller
         $item = null;
 
         if ($player->health() > 0) { // *** if you survive ***
-            if ($player->turns() > 50) { // *** And your turns are high/you are energetic, you can kill them. ***
+            if ($player->turns() > self::HIGH_TURNS) { // *** And your turns are high/you are energetic, you can kill them. ***
                 $oni_killed = true;
                 $item = new Item('dimmak');
                 add_item($player->id(), $item->identity(), 1);
-            } else if ($player->turns() > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
+            } else if ($player->turns() > floor(self::HIGH_TURNS/2) && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
                 $oni_killed = true;
                 $item = new Item('ginsengroot');
                 $multiple_rewards = true;
@@ -63,6 +66,15 @@ class NpcController { //extends controller
         $npc_template = 'npc.oni.tpl';
         $combat_data = array('victory'=>$oni_killed, 'item'=>$item, 'multiple_rewards'=>$multiple_rewards);
         return [$npc_template, $combat_data];
+    }
+
+    /**
+     * The reward for defeating an npc, less if items popped
+     */
+    private function calcRewardGold(Npc $npco, $reward_item){
+        // If npc gold explicitly set to 0, then reward gold will be totally skipped.
+        // Hack a little off reward gold if items received.
+        return $npco->gold() === 0? 0 : ((bool)$reward_item? floor($npco->gold() * self::ITEM_DECREASES_GOLD_FACTOR) : $npco->gold()); 
     }
 
     /**
@@ -77,12 +89,10 @@ class NpcController { //extends controller
         $status_effect = isset($npc_stats['status'])? $npc_stats['status'] : null;
         // TODO: Calculate and display damage verbs
         $reward_item = isset($npc_stats['item']) && $npc_stats['item']? $npc_stats['item'] : null;
-        $base_gold = $npco->gold();
-        $npc_gold = (int) isset($npc_stats['gold'])? $npc_stats['gold'] : 0 ;
+        $npc_gold = (int) (isset($npc_stats['gold'])? $npc_stats['gold'] : 0 );
         $is_quick = ($npco->speed()>$player->speed())? true : false; // Beyond basic speed and they see you coming, so show that message.
-        // If npc gold explicitly set to 0, then none will be given.
-        $reward_gold = $npc_gold === 0? 0 :
-            ($reward_item? floor($base_gold * .9) : $base_gold); // Hack a little off reward gold if items received.
+
+        $reward_gold = $this->calcRewardGold($npco, (bool) $reward_item);
         $bounty_mod = isset($npc_stats['bounty'])? $npc_stats['bounty'] : null;
         $is_weaker = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
         $is_stronger = ($npco->strength()) > ($player->strength() * 3); // Npc More than twice as strong?
@@ -185,7 +195,7 @@ $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
 
 $session    = SessionFactory::getSession();
 $turn_cost  = 1;
-$health     = 1;
+$health     = true;
 $combat_data = array();
 $char_id = self_char_id();
 $player     = new Player($char_id);
