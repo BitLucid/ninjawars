@@ -27,8 +27,8 @@
         </div><!-- End of recent events -->
         <div class='parent'>
           <div id='logout' class='child thick'>
-              <a href="logout.php" class='btn btn-default'>
-                Logout
-              </a>
+            <form method='post' action='/logout'>
+              <input type='submit' name ='logout' value='Logout' class='btn btn-default'>
+            </form>
           </div>
         </div>
