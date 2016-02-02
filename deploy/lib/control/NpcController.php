@@ -15,16 +15,31 @@ use \Item as Item;
  * Handles displaying npcs and attacking specific npcs
  */
 class NpcController { //extends controller
+    private $char_id = null;
+    private $randomness = null;
     const ALIVE          = true;
     const PRIV           = false;
     const HIGH_TURNS     = 50;
     const ITEM_DECREASES_GOLD_FACTOR = 0.9;
     const ONI_DAMAGE_CAP     = 20;
+    const RANDOM_ENCOUNTER_DIVISOR = 400;
 
     /**
      * 
      */
-    public function __construct() {
+    public function __construct($options=[]) {
+        $session = isset($options['session'])? $options['session'] : null;
+        if($session === null){
+            $this->session    = SessionFactory::getSession();
+            $this->char_id = self_char_id();
+            $this->randomness = function(){
+                return mt_rand() / mt_getrandmax();
+            };
+        } else {
+            $this->session = $session;
+            $this->char_id = $options['char_id'];
+            $this->randomness = $options['randomness'];
+        }
     }
 
 
@@ -66,6 +81,19 @@ class NpcController { //extends controller
         $npc_template = 'npc.oni.tpl';
         $combat_data = array('victory'=>$oni_killed, 'item'=>$item, 'multiple_rewards'=>$multiple_rewards);
         return [$npc_template, $combat_data];
+    }
+
+    /**
+     * Wrapper for session storage of thief attacking
+     */
+    private function getThiefCounter(){
+        $sess = $this->session; // Parentheses wouldn't work, had to use a temp variable for some reason
+        return $sess->get('thief_counter', 1);
+    }
+
+    private function setThiefCounter($num){
+        $sess = $this->session;
+        $sess->set('thief_counter', $num);
     }
 
     /**
@@ -167,6 +195,16 @@ class NpcController { //extends controller
 
     }
 
+
+    /**
+     * Injectable randomness.
+     */
+    private function startRandomEncounter(){
+        // Used to be rand(1, 400) === 1
+        $randomness = $this->randomness;
+        return (ceil($randomness() * self::RANDOM_ENCOUNTER_DIVISOR) == self::RANDOM_ENCOUNTER_DIVISOR);
+    }
+
     /**
      * Attack a specific npc
      * For examples:
@@ -193,12 +231,12 @@ class NpcController { //extends controller
 
 $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
 
-$session    = SessionFactory::getSession();
+
 $turn_cost  = 1;
 $health     = true;
 $combat_data = array();
-$char_id = self_char_id();
-$player     = new Player($char_id);
+$player     = new Player($this->char_id);
+$char_id = $player->id();
 $error_template = 'npc.no-one.tpl'; // Error template also used down below.
 $npc_template = $error_template; // Error condition by default.
 
@@ -215,7 +253,7 @@ if($player->turns() > 0 && !empty($victim)) {
         $player->subtractStatus(STEALTH);
     }
 
-    if ((bool) (rand(1, 400) === 1)) { // Random encounter!
+    if ((bool) $this->startRandomEncounter()) { // Random encounter!
         list($npc_template, $combat_data) = $this->randomEncounter($player);
     } elseif (array_key_exists($victim, $npcs)){ 
         /**** Abstracted NPCs *****/
@@ -379,14 +417,13 @@ if($player->turns() > 0 && !empty($victim)) {
         $combat_data  = array('attack'=>$guard_attack, 'gold'=>$guard_gold, 'bounty'=>$added_bounty, 'victory'=>$victory, 'herb'=>$herb);
     } else if ($victim == 'thief') {
         // Check the counter to see whether they've attacked a thief multiple times in a row.
-        $counter = $session->get('counter', 1);
+        $counter = $this->getThiefCounter();
 
-        $counter = $counter + 1;
-        $session->set('counter', $counter); // Save the current state of the counter.
+        $this->setThiefCounter($counter+1); // Incremement the current state of the counter.
 
         if ($counter > 20 && rand(1, 3) == 3) {
             // Only after many attacks do you have the chance to be attacked back by the group of theives.
-            $session->set('counter', 0); // Reset the counter to zero.
+            $this->setThiefCounter(0); // Reset the counter to zero.
             $group_attack= rand(50, 150);
 
             if ($player->vo->health = $victory = subtractHealth($char_id, $group_attack)) { // The den of thieves didn't accomplish their goal
@@ -490,9 +527,9 @@ if($player->turns() > 0 && !empty($victim)) {
     /**
      * View an npc
      */
-    public function view(){
+    /*public function view(){
 
-    }
+    }*/
 
 
 }
