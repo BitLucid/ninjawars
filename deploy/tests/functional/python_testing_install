@@ -1,2 +1,4 @@
 sudo apt-get install python3-pip
-sudo pip3 install nose2
+# Obviously eventually these could benefit from using a virtualenv
+sudo pip3 install -U pytest
+echo "To run pytest: python3 -m pytest "
