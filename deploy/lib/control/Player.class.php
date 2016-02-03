@@ -410,7 +410,6 @@ class Player implements Character {
 	 * @note for now this immediately hits the database
 	 */
 	public function harm($damage) {
-		$health = $this->health();
 		// Do at most the current health in damage
 		$actual_damage = min($this->health(), $damage);
 		return $this->subtractHealth($actual_damage);
