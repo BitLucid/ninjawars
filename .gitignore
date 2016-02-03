@@ -40,6 +40,21 @@ Session.vim
 .netrwhist
 *~
 
+# Ignore python stuff
+__pycache__/
+*.py[cod]
+*$py.class
+.python-version
+# Python Distribution / packaging
+.Python
+env/
+lib/
+var/
+#Ignore pytest stuff
+tests/.cache/
+/tests/tests/
+.cache/
+
 # Ignore tags created by etags, ctags, gtags (GNU global) and cscope
 TAGS
 .TAGS
