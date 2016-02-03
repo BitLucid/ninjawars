@@ -220,11 +220,11 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			$generic_skill_result_message = '__TARGET__ is already fully healed.';
 		} else {
 			if(!$harmonize){
+				$original_health = $target->health();
 				$heal_per_level = 10; // For standard heal.
-				// Heal at most either: hurt, or heal capacity.
-				$healed_by = min($hurt, $player->level()*$heal_per_level);
-				// Call the heal method on the targetted player object.
-				$new_health = $target->heal($healed_by);
+				$heal_points = $player->level()*$heal_per_level;
+				$new_health = $target->heal($heal_points); // Won't heal more than possible
+				$healed_by = $new_health - $original_health;
 			} else {
 				// Harmonize some chakra!
 
@@ -253,7 +253,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			}
 
 		    $target->addStatus(HEALING);
-		    $generic_skill_result_message = "__TARGET__ healed by $healed_by to ".$player->health().".";
+		    $generic_skill_result_message = "__TARGET__ healed by $healed_by to ".$target->health().".";
 
 		    if ($target->id() != $player->id())  {
 				send_event($attacker_char_id, $target->id(), "You have been healed by $attacker_id for $healed_by.");
