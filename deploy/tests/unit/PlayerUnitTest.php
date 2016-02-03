@@ -39,7 +39,7 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($this->player->level(), $this->data->level);
     }
 
-    public function testHurtBy() {
+    public function testIsHurtBy() {
         $this->markTestIncomplete('Player::health() currently hits DB');
         //$this->assertGreaterThanOrEqual(0, $this->player->is_hurt_by());
     }
@@ -47,6 +47,18 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
     public function testHealthPercent() {
         $this->markTestIncomplete('Player::health() currently hits DB');
         //$this->assertLessThanOrEqual(100, $this->player->health_percent());
+    }
+
+    public function testHealAPlayer(){
+        $this->markTestIncomplete('Player::heal() currently hits DB');
+        $this->player->heal(20);
+        $this->assertEquals(40, $this->player->health());
+    }
+
+    public function testHarmAPlayer(){
+        $this->markTestIncomplete('Player::harm() currently hits DB');
+        $this->player->harm(7);
+        $this->assertEquals(13, $this->player->health());
     }
 
     public function testAsVO() {
