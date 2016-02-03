@@ -192,16 +192,14 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		$msg = "You have been poisoned by $attacker_id";
 		send_event($attacker_char_id, $target->id(), $msg);
 	} elseif ($command == 'Fire Bolt') {
-		$target_damage = (5 * (ceil($player->vo->level / 3)) + rand(1, $player->getStrength()));
+		$target_damage = (5 * (ceil($player->level() / 3)) + rand(1, $player->getStrength()));
 
 		$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
-		if ($victim_alive = subtractHealth($target->vo->player_id, $target_damage)) {
-			$attacker_id  = $player->name();
-		}
+		$victim_alive = $target->subtractHealth($target_damage);
 
-		$msg = "You have had fire bolt cast on you by $attacker_id";
-		send_event($attacker_char_id, $target->id(), $msg);
+		$msg = "You have had fire bolt cast on you by ".$player->name();
+		send_event($player->id(), $target->id(), $msg);
 	} else if ($command == 'Heal' || $command == 'Harmonize') {
 		// This is the starting template for self-use commands, eventually it'll be all refactored.
 		$harmonize = false;
