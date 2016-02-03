@@ -81,9 +81,13 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 
 			$skillDAO = new SkillDAO();
 
-			$combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level, $viewing_player_obj->isAdmin());
-			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level, $viewing_player_obj->isAdmin());
-		    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
+			if(!$viewing_player_obj->isAdmin()){
+				$combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level);
+				$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level);
+			} else {
+				$combat_skills = $skillDAO->all('combat');
+				$targeted_skills = $skillDAO->all('targeted');
+			}
 
 			// Pull the items and some necessary data about them.
 			$items = inventory_counts($char_id);
