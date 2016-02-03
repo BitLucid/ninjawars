@@ -347,11 +347,15 @@ class Player implements Character {
 	}
 
 	public function changeTurns($amount) {
+		$diff = $amount;
+		$this->set_turns($this->turns() + $diff);
 		return change_turns($this->id(), $amount);
 	}
 	
 	public function subtractTurns($amount){
-		return change_turns($this->id(), -1*abs($amount));
+		$diff = -1*abs($amount);
+		$this->set_turns($this->turns() + $diff);
+		return change_turns($this->id(), $diff);
 	}
 
 	// Pull the data of the player obj as an array.
@@ -391,12 +395,25 @@ class Player implements Character {
 		return char_class_name($this->id());
 	}
 
-	// Dynamic wrapper that allows for robust healing with a limit of the max health.	
+	/**
+	 * Heal the char with in the limits of their max
+	 */
 	public function heal($amount) {
-		$hurt = $this->hurt_by();
+		$hurt = $this->is_hurt_by();
 		// Heal at most the amount hurt, or the amount requested, pick whichever is smallest.
 		$heal = min($hurt, $amount);
 		return $this->changeHealth($heal);
+	}
+
+	/**
+	 * Do some damage to the character
+	 * @note for now this immediately hits the database
+	 */
+	public function harm($damage) {
+		$health = $this->health();
+		// Do at most the current health in damage
+		$actual_damage = min($this->health(), $damage);
+		return $this->subtractHealth($actual_damage);
 	}
 
 	// Simple wrapper for changeHealth
@@ -446,9 +463,9 @@ class Player implements Character {
 	 * Return the amount below the max health (or zero).
 	 * @return int
 	 */
-	public function hurt_by() {
+	public function is_hurt_by() {
 		return max(0, 
-			($this->max_health() - $this->health())
+			(int) ($this->max_health() - $this->health())
 		);
 	}
 

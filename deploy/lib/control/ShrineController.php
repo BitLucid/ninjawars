@@ -78,7 +78,7 @@ class ShrineController { //extends controller
 
 			$healAmount = $this->calculateMaxHeal($player);
 
-			if ($healAmount > 0 && $player->hurt_by() > 0) {
+			if ($healAmount > 0 && $player->is_hurt_by() > 0) {
 				$this->_heal($player, $healAmount);
 				$pageParts[] = 'result-heal';
 			}
@@ -397,11 +397,11 @@ class ShrineController { //extends controller
 			throw new \InvalidArgumentException('Invalid input for heal amount.');
 		} else if ($p_player->health() <= 0) {
 			throw new \RuntimeException('You must resurrect before you can heal.');
-		} else if ($p_player->hurt_by() <= 0) {
+		} else if ($p_player->is_hurt_by() <= 0) {
 			throw new \RuntimeException('You are at full health.');
 		}
 
-		$amount = min($p_amount, $p_player->hurt_by());
+		$amount = min($p_amount, $p_player->is_hurt_by());
 
 		$totalCost = ceil($amount * $this->calculateHealCost($p_player));
 

@@ -210,7 +210,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			$harmonize = true;
 		}
 
-	    $hurt = $target->hurt_by(); // Check how much the TARGET is hurt (not the originator, necessarily).
+	    $hurt = $target->is_hurt_by(); // Check how much the TARGET is hurt (not the originator, necessarily).
 	    // Check that the target is not already status healing.
 	    if ($target->hasStatus(HEALING) && !$player->isAdmin()) {
 	        $turn_cost = 0;
@@ -231,7 +231,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 				// Use up some ki to heal yourself.
 				function harmonize_chakra(Player $char){
 					// Heal at most 100 or ki available or hurt by AND at least 0
-					$heal_for = (int) max(0, min(100, $char->hurt_by(), $char->ki()));
+					$heal_for = (int) max(0, min(100, $char->is_hurt_by(), $char->ki()));
 					if($heal_for > 0){
 						// If there's anything to heal, try.
 

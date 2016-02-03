@@ -14,7 +14,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 	/**
 	 * group char
 	**/
-	function setUp(){
+	public function setUp(){
 		require_once(ROOT.'core/control/Player.class.php');
 		$this->previous_server_ip = @$_SERVER['REMOTE_ADDR'];
 		$_SERVER['REMOTE_ADDR']=$this->mock_ip;
@@ -29,7 +29,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 	/**
 	 * group char
 	**/
-	function tearDown(){
+	public function tearDown(){
 		// Delete test user.
 		TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
 		$_SERVER['REMOTE_ADDR']=$this->previous_server_ip; // Reset remote addr to whatever it was before, just in case.
@@ -38,7 +38,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 	/**
 	 * group char
 	**/
-    function testCreatePlayerObject(){
+    public function testCreatePlayerObject(){
     	$char = new Player($this->char_id);
     	$this->assertTrue((bool)positive_int($char->id()));
     }
@@ -47,7 +47,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 	/**
 	 * group char
 	**/
-    function testCreatePlayerObjectHasUsefulInfo(){
+    public function testCreatePlayerObjectHasUsefulInfo(){
     	$char = new Player($this->char_id);
     	$this->assertTrue((bool)positive_int($char->health()));
 		$this->assertTrue((bool)positive_int($char->speed()));
@@ -75,12 +75,12 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
     /**
      * group char
     **/
-    function testCharacterHasADifficultyRating(){
+    public function testCharacterHasADifficultyRating(){
     	$char = new Player($this->char_id);
     	$this->assertGreaterThan(0, $char->difficulty());
     }
 
-    function testCharacterHasAVerificationNumber(){
+    public function testCharacterHasAVerificationNumber(){
         $char = new Player($this->char_id);
         $this->assertGreaterThan(0, $char->getVerificationNumber());
     }
@@ -88,7 +88,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 	/**
 	 * group char
 	**/
-    function testPlayerStatusesChangeStatCalcs(){
+    public function testPlayerStatusesChangeStatCalcs(){
     	$char = new Player($this->char_id);
     	$str = $char->strength();
     	$speed = $char->speed();
@@ -106,12 +106,12 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
     	$this->assertTrue($char->strength() > $str);
     }
 
-    function testPlayerObjectCAnReturnAnIPCorrectly(){
+    public function testPlayerObjectCAnReturnAnIPCorrectly(){
         $char = new Player($this->char_id);
         $this->assertEquals($this->mock_ip, $char->ip());
     }
 
-    function testPlayerObjectCanSaveDetails(){
+    public function testPlayerObjectCanSaveDetails(){
         $bel = 'Believes in the mirror goddess.';
         $traits = 'Weird,Blue';
         $desc = 'Some description for testing';
@@ -132,55 +132,55 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $this->assertEquals($instincts, $char->instincts());
     }
 
-    function testNegativeKiRejected(){
+    public function testNegativeKiRejected(){
         $this->setExpectedException('InvalidArgumentException');
         $char = new Player($this->char_id);
         $char->set_ki(-643);
     }
 
-    function testNegativeTurnsRejected(){
+    public function testNegativeTurnsRejected(){
         $this->setExpectedException('InvalidArgumentException');
         $char = new Player($this->char_id);
         $char->set_turns(-345);
     }
 
-    function testNegativeStrengthRejected(){
+    public function testNegativeStrengthRejected(){
         $this->setExpectedException('InvalidArgumentException');
         $char = new Player($this->char_id);
         $char->setStrength(-6);
     }
 
-    function testNegativeSpeedRejected(){
+    public function testNegativeSpeedRejected(){
         $this->setExpectedException('InvalidArgumentException');
         $char = new Player($this->char_id);
         $char->setSpeed(-556);
     }
 
-    function testNegativeStaminaRejected(){
+    public function testNegativeStaminaRejected(){
         $this->setExpectedException('InvalidArgumentException');
         $char = new Player($this->char_id);
         $char->setStamina(-34);
     }
 
-    function testNegativeHealthRejected(){
+    public function testNegativeHealthRejected(){
         $this->setExpectedException('InvalidArgumentException');
         $char = new Player($this->char_id);
         $char->set_health(-6);
     }
 
-    function testNegativeGoldRejected(){
+    public function testNegativeGoldRejected(){
         $this->setExpectedException('InvalidArgumentException');
         $char = new Player($this->char_id);
         $char->set_gold(-45);
     }
 
-    function testNegativeBountyRejected(){
+    public function testNegativeBountyRejected(){
         $this->setExpectedException('InvalidArgumentException');
         $char = new Player($this->char_id);
         $char->set_bounty(-45);
     }
 
-    function testPlayerHealChangesVOHealth(){
+    public function testPlayerHealChangesVOHealth(){
         $char = new Player($this->char_id);
         $half_health = floor($char->health()/2);
         $char->set_health($half_health);
@@ -196,13 +196,13 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 
 
 
-    function testPCCanObtainAGravatarUrl(){
+    public function testPCCanObtainAGravatarUrl(){
         $char = new Player($this->char_id);
         $this->assertNotEmpty($char->avatarUrl());
         $this->assertTrue(strpos($char->avatarUrl(), 'avatar') !== false);
     }
 
-    function testCreatePlayerObjectCanSaveChanges(){
+    public function testCreatePlayerObjectCanSaveChanges(){
     	$char = new Player($this->char_id);
     	$ki = $char->ki();
     	$char->set_ki($ki+55);
@@ -211,6 +211,37 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
     	$char_copy = new Player($this->char_id);
     	$this->assertEquals($char_copy->ki(), $ki+55);
         $this->assertEquals($char_copy->gold(), 343);
+    }
+
+    public function testPlayerObjectReportDamageCorrectly(){
+        $char = new Player($this->char_id);
+        $damage = floor($char->health()/2);
+        $char->set_health($char->health() - $damage);
+        $char->save();
+        $char = new Player($this->char_id);
+        $this->assertEquals($damage, $char->is_hurt_by());
+    }
+
+    public function testPlayerObjectHarmWorksCorrectly(){
+        $char = new Player($this->char_id);
+        $damage = floor($char->health()/2);
+        $char->harm($damage);
+        //$char->save();
+        $char = new Player($this->char_id);
+        $this->assertEquals($damage, $char->is_hurt_by());
+    }
+
+    public function testKillCharByHarmingWithTheirFullHealth(){
+        $char = new Player($this->char_id);
+        $char->harm($char->health());
+        $this->assertEquals(0, $char->vo->health);
+        $this->assertEquals(0, $char->health());
+    }
+
+    public function testCauseDeath(){
+        $char = new Player($this->char_id);
+        $char->death();
+        $this->assertEquals(0, $char->health());
     }
 
 }
