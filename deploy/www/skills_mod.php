@@ -196,7 +196,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 		$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
-		$victim_alive = $target->subtractHealth($target_damage);
+		$victim_alive = $target->harm($target_damage);
 
 		$msg = "You have had fire bolt cast on you by ".$player->name();
 		send_event($player->id(), $target->id(), $msg);
