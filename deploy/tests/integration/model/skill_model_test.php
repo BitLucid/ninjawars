@@ -21,6 +21,12 @@ class TestSkillObj extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($skill_list->all());
     }
 
+    public function testPullOfSkillsByType(){
+        $skill_list = new SkillDAO();
+        $this->assertNotEmpty($skill_list->all('targeted'));
+        $this->assertNotEmpty($skill_list->all('combat'));
+    }
+
 
     public function testAdminPlayerGetsFireBoltSkill(){
         $skills = new Skill();
