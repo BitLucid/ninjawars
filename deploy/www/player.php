@@ -1,4 +1,5 @@
 <?php
+require_once(dirname(__DIR__.'/../../').'/core/base.inc.php');
 require_once(LIB_ROOT.'control/lib_inventory.php');
 
 use NinjaWars\core\data\Message;
@@ -75,19 +76,20 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		$level_category       = level_category($player_info['level']);
 		$gurl = $gravatar_url = generate_gravatar_url($target_player_obj);
 
-		if ($char_id && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
+		if ($viewing_player_obj->id() && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
 			// Attack or Duel
 
 			$skillDAO = new SkillDAO();
 
-			$combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level)->fetchAll();
-			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level)->fetchAll();
+			$combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level, $viewing_player_obj->isAdmin());
+			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level, $viewing_player_obj->isAdmin());
 		    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
 
 			// Pull the items and some necessary data about them.
 			$items = inventory_counts($char_id);
 
 			$valid_items = rco($items);// row count
+
 		}	// End of the there-was-no-attack-error section
 
 		$set_bounty_section     = '';
@@ -109,7 +111,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 
 			if ($viewer_clan) {
 				$same_clan = ($clan->getID() == $viewer_clan->getID());
-				$display_clan_options = ($username && !$self && $same_clan && is_clan_leader($viewing_player_obj->vo->player_id));
+				$display_clan_options = ($viewing_player_obj->name() && !$self && $same_clan && is_clan_leader($viewing_player_obj->vo->player_id));
 			} else {
 				$same_clan = $display_clan_options = false;
 			}
