@@ -34,7 +34,7 @@ class TestRouting:
             'clan.php?command=view', 'npc', 'npc/attack/peasant/', 'npc/attack/guard/',
             ];
         for url in urls:
-            assert (200 == self.status_code(str(self.root())+url))
+            assert (str(self.root())+url is not None and 200 == self.status_code(str(self.root())+url))
 
     def test_urls_should_404(self):
         urls = ['thisshould404', 'shoppinginthesudan', 'js/doesnotexist.js', 'shop/willneverexist', 'shopbobby\'-tables']
