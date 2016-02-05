@@ -34,10 +34,14 @@ class TestRouting:
         assert self.root() is not None and len(str(self.root())) > 5
 
     def test_root_url_loads(self):
-        assert 200 == self.status_code(self.root())
+        assert self.root() and (200 == self.status_code(self.root()))
 
     def test_root_url_has_right_title(self):
         assert self.page_title(self.root()) == 'Live by the Shuriken - The Ninja Wars Ninja Game'
+
+    def test_root_url_has_right_title_without_trailing_slash(self):
+        url = self.root() 
+        assert self.page_title(url[:-1]) == 'Live by the Shuriken - The Ninja Wars Ninja Game'
 
     def test_urls_should_200(self):
         urls = [
@@ -74,4 +78,4 @@ class TestRouting:
         'shop.php':'Shop', 'work.php':'Work', 'doshin_office.php':'Doshin Office',
         }
         for url,title in pages.items():
-            assert title in self.page_title(root+url)
+            assert bool(title) and bool(url) and title in self.page_title(root+url)
