@@ -30,17 +30,23 @@ server {
 	}
 
 	location / {
-		#everything else block
-		try_files $uri $uri/ @php;
+		#default fallback of everything else block
+		try_files $uri @php;
 	}
 
 	location ~ /npc\.php {
 	    return 302 /npc/;
 	}
 
-    location ~ /tutorial\.php {
-        return 302 /main.php$is_args$args;
+    location = /ninjamaster/ {
+    	# the admin area of the site
+    	#index index.php;
+        try_files $uri/ /ninjamaster/index.php last;
     }
+
+	location ~ /(tutorial\.php|main\.php) {
+	    return 302 /intro$is_args$args;
+	}
 
 	location ~ /list_all_players\.php {
 	    return 302 /list$is_args$args;
