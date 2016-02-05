@@ -13,7 +13,7 @@ class Router {
     const CONTROLLER_NS   = 'NinjaWars\core\control'; /// Namespace for controllers
     const DEFAULT_ACTION  = 'index';
     const DEFAULT_COMMAND = 'default';
-    const DEFAULT_ROUTE   = 'index.php';
+    const DEFAULT_ROUTE   = 'homepage';
     const COMMAND_PARAM   = 'command';
 
     /** Set during bootstapping by the file routes.php. Routes are defined as a

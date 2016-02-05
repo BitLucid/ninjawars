@@ -8,7 +8,7 @@ class RouterUnitTest extends PHPUnit_Framework_TestCase {
         $result = Router::parseRoute($request);
         $this->assertInternalType('array', $result);
         $this->assertGreaterThan(1, count($result));
-        $this->assertContains('index', $result[0]);
+        $this->assertContains('homepage', $result[0]);
     }
 
     public function testParseRouteControllerDefault() {
