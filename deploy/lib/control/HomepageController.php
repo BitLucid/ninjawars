@@ -56,7 +56,7 @@ class HomepageController {
 
 		// Assign these vars to the template.
 		$parts = array(
-			'main_src'           => 'main.php'
+			'main_src'           => '/intro'
 			, 'body_classes'     => 'main-body'
 			, 'version'          => 'NW Version 1.7.5 2010.12.05'
 			, 'ninja'			 => $ninja
@@ -87,7 +87,7 @@ class HomepageController {
 
 		// Assign these vars to the template.
 		$parts = array(
-			'main_src'           => 'main.php'
+			'main_src'           => '/intro'
 			, 'body_classes'     => 'main-body splash'
 			, 'version'          => 'NW Version 1.8.0 2014.06.30'
 			, 'members'          => $member_counts['active']

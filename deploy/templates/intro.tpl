@@ -75,15 +75,11 @@
   <h2>Live by the Shuriken!</h2>
 </div>
 
-
-
-
-
 <div id='progression'>
-{if !$user_id}
-	<p><a target='main' href='{$smarty.const.WEB_ROOT}signup.php' id='join-link'>Become a Ninja!&shy;</a></p>
-	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-{/if}
+  <div class='not-user js-target'>
+  	<p><a target='main' href='{$smarty.const.WEB_ROOT}signup.php' id='join-link'>Become a Ninja!&shy;</a></p>
+  	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
+  </div>
 
 <div id='later-progression' style='margin-top:0;margin-bottom:0'>
 	<p>Explore the <a target='main' href='{$smarty.const.WEB_ROOT}map.php'>map</a> and <a target='main' href='{$smarty.const.WEB_ROOT}enemies.php#npcs'>attack monsters</a>, gather loot</p>
@@ -161,19 +157,19 @@
 </div><!-- End of faqs div -->
 
 <script type='text/javascript'>
-var show_faqs = false; // Set faqs hidden by default.
-{if isset($show_faqs) && $show_faqs}  // Set the template passed var
-show_faqs = true;
-{/if}
 {literal}
-var showfaqsLink = $('#show-faqs');
-var faqsArea = $('#faqs');
-if(!show_faqs){
-  faqsArea.hide(); // To avoid flashing of content hide early on.
-} else {
-  showfaqsLink.hide(); // Otherwise, hide the show-hide link.
-}
 $(function () {
+  if(NW && NW.loggedIn){ // Is this a race condition?
+    $('.not-user').hide();
+  }
+  var show_faqs = false; // Set faqs hidden by default.
+  var showfaqsLink = $('#show-faqs');
+  var faqsArea = $('#faqs');
+  if(!show_faqs){
+    faqsArea.hide(); // To avoid flashing of content hide early on.
+  } else {
+    showfaqsLink.hide(); // Otherwise, hide the show-hide link.
+  }
   showfaqsLink.click(function(event){
     faqsArea.slideToggle('slow');
     $(event.target).toggle();

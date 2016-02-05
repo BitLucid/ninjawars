@@ -151,6 +151,10 @@ Router::$routes = [
         'type'  => 'simple',
         'title' => 'About NinjaWars',
     ],
+    'intro' => [
+        'type'  => 'simple',
+        'title' => 'Intro to NinjaWars'
+    ],
 ];
 
 Router::$controllerAliases = [
