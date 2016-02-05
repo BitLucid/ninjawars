@@ -36,6 +36,16 @@ class TestRouting:
         for url in urls:
             assert (str(self.root())+url is not None and 200 == self.status_code(str(self.root())+url))
 
+    def test_urls_that_should_redirect(self):
+        urls = [
+            'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php', 'webgame/'
+            ];
+        for url in urls:
+            full_uri = str(self.root())+url
+            assert str(self.root())+url is not None 
+            assert isinstance(self.status_code(full_uri), int)
+            assert 301 == self.status_code(str(self.root())+url) or 302 == self.status_code(str(self.root())+url)
+
     def test_urls_should_404(self):
         urls = ['thisshould404', 'shoppinginthesudan', 'js/doesnotexist.js', 'shop/willneverexist', 'shopbobby\'-tables']
         for url in urls:
