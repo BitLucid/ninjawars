@@ -42,11 +42,6 @@ server {
 	    return 302 /npc/;
 	}
 
-    location = / {
-    	#Exactly only the root of the site, e.g. www.ninjawars.net/
-        try_files $uri @php last;
-    }
-
     location = /ninjamaster/ {
     	# the admin area of the site
     	#index index.php;
