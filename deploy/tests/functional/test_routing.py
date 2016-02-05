@@ -62,7 +62,7 @@ class TestRouting:
             full_uri = str(self.root())+url
             assert str(self.root())+url is not None 
             assert isinstance(self.status_code(full_uri), int)
-            assert 301 == self.status_code(str(self.root())+url) or 302 == self.status_code(str(self.root())+url)
+            assert url and (301 == self.status_code(str(self.root())+url) or 302 == self.status_code(str(self.root())+url))
 
     def test_urls_should_404(self):
         urls = ['thisshould404', 'shoppinginthesudan', 'js/doesnotexist.js', 'shop/willneverexist', 'shopbobby\'-tables']
