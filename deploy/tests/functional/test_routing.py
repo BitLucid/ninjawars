@@ -30,13 +30,18 @@ class TestRouting:
         res = self.status_code("http://stackoverflow.com");
         assert res == 200
 
-    def test_root_url_works(self):
+    def test_root_url_config_works(self):
         assert self.root() is not None and len(str(self.root())) > 5
 
+    def test_root_url_loads(self):
+        assert 200 == self.status_code(self.root())
+
+    def test_root_url_has_right_title(self):
+        assert self.page_title(self.root()) == 'Live by the Shuriken - The Ninja Wars Ninja Game'
 
     def test_urls_should_200(self):
         urls = [
-            '', 'intro', 'staff.php', 'events.php', 'skills.php', 'inventory.php', 'enemies.php', 'list.php', 
+            'intro', 'staff.php', 'events.php', 'skills.php', 'inventory.php', 'enemies.php', 'list.php', 
             'clan.php', 'map.php', 'shop.php', 'work.php', 'doshin_office.php', 'dojo.php', 'shrine.php',
             'duel.php', 'clan.php?command=list', 'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
             'clan.php?command=view', 'npc', 'npc/attack/peasant/', 'npc/attack/guard/',
@@ -59,9 +64,6 @@ class TestRouting:
         urls = ['thisshould404', 'shoppinginthesudan', 'js/doesnotexist.js', 'shop/willneverexist', 'shopbobby\'-tables']
         for url in urls:
             assert (404 == self.status_code(str(self.root())+url))
-
-    def test_root_url_has_right_title(self):
-        assert self.page_title(self.root()) == 'Live by the Shuriken - The Ninja Wars Ninja Game'
 
     def test_urls_by_title(self):
         root = self.root()
