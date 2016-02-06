@@ -45,7 +45,7 @@ server {
     }
 
 	location ~ /(tutorial\.php|main\.php) {
-	    return 302 /intro$is_args$args;
+	    return 302 /intro;
 	}
 
 	location ~ /list_all_players\.php {
