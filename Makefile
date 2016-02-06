@@ -25,6 +25,7 @@ build: dep
 
 test:
 	@$(TEST_RUNNER) $(CC_FLAG)
+	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
 test-unit:
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
