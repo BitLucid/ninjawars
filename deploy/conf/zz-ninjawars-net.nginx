@@ -24,7 +24,7 @@ server {
 	index index.php;
 
 	location ~ /(js|css|images|files) {
-		rewrite ^/(.*)\.[\d]+\.(.*)$ /$1.$2;
+		rewrite "^/(.*)\.[\d]{10,12}\.(.*)$" /$1.$2;
 		expires 365d;
 		try_files $uri =404;
 	}
@@ -38,13 +38,8 @@ server {
 	    return 302 /npc/;
 	}
 
-    location = /ninjamaster/ {
-    	# the admin area of the site
-    	#index index.php;
-        try_files $uri/ /ninjamaster/index.php last;
-    }
 
-	location ~ /(tutorial\.php|main\.php) {
+	location ~ /(main\.php|tutorial\.php) {
 	    return 302 /intro;
 	}
 
@@ -53,23 +48,21 @@ server {
 	}
 
 	location ~ /webgame(/*) {
-  		rewrite ^ / permanent;
+		rewrite ^ / permanent;
 	}
 
 	location ~ \.php$ {
 		# fastcgi param stuff now set by [HOST=] sections in php.ini.
-		#fastcgi_param PHP_VALUE "auto_prepend_file=/srv/ninjawars/deploy/lib/base.inc.php \n session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
+		#fastcgi_param PHP_VALUE "session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
 		fastcgi_pass unix:/var/run/php5-fpm.sock;
-		fastcgi_index index.php;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
 
 	location @php {
 		# fastcgi param stuff now set by [HOST=] sections in php.ini.
-		#fastcgi_param PHP_VALUE "auto_prepend_file=/srv/ninjawars/deploy/lib/base.inc.php \n session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
+		#fastcgi_param PHP_VALUE "session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
 		fastcgi_pass unix:/var/run/php5-fpm.sock;
-		fastcgi_index index.php;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
