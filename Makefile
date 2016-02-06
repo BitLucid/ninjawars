@@ -25,6 +25,7 @@ build: dep
 
 test:
 	@$(TEST_RUNNER) $(CC_FLAG)
+	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
 test-unit:
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
@@ -33,7 +34,7 @@ test-integration:
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
 
 test-functional:
-	python3 -m pytest deploy/tests/functional/test_routing.py
+	python3 -m pytest deploy/tests/functional/
 
 clean:
 	@rm -rf "$(SRC)templates/"compiled/*

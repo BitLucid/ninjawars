@@ -1,4 +1,4 @@
 sudo apt-get install python3-pip
-# Obviously eventually these could benefit from using a virtualenv
+# Unfortunately, this breaks: sudo apt-get install python3-pytest
 sudo pip3 install -U pytest
-echo "To run pytest: python3 -m pytest "
+echo "To run pytest: python3 -m pytest ./directory/"
