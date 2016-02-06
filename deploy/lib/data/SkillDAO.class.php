@@ -67,7 +67,7 @@ class SkillDAO extends DataAccessObject {
 			$query .= ' AND COALESCE(class_skill_level, skill_level) <= :level';
 		}
 
-		$statement = DatabaseConnection::$pdo->prepare($query.' ORDER BY _class_id');
+		$statement = DatabaseConnection::$pdo->prepare($query.' ORDER BY _class_id, skill_display_name');
 		$statement->bindValue(':classID1', $p_classID);
 		$statement->bindValue(':classID2', $p_classID);
 		$statement->bindValue(':type', $p_type);
@@ -79,5 +79,21 @@ class SkillDAO extends DataAccessObject {
 		$statement->execute();
 
 		return $statement;
+	}
+
+	/**
+	 * Get all skills for a listing
+	 */
+	public function all($type=null){
+		$params = [];
+		$type_where = '';
+		if($type !== null){
+			$type_where = 'AND skill_type = :type';
+			$params[':type'] = $type;
+		}
+		$query = 'SELECT skill_id, skill_display_name, skill_internal_name, skill_type 
+			FROM skill WHERE skill_is_active '.$type_where.' 
+			ORDER BY skill_type, skill_display_name';
+		return query($query, $params);
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+require_once(dirname(__DIR__.'/../../').'/core/base.inc.php');
 require_once(LIB_ROOT.'control/lib_inventory.php');
 
 use NinjaWars\core\data\Message;
@@ -17,15 +18,15 @@ require_once(LIB_ROOT."control/lib_player.php");
 
 $target        = $player = first_value(in('ninja'), in('player'), in('find'), in('target'));
 $target_id     = first_value(in('target_id'), in('player_id'), get_char_id($target)); // Find target_id if possible.
-$target_player_obj = new Player($target_id);
+$target_player_obj = Player::find($target_id);
 $viewed_name_for_title = null;
-if ($target_player_obj && $target_player_obj->name()) {
+if ($target_player_obj !== null) {
 	$viewed_name_for_title = $target_player_obj->name();
 }
 
 $char_info = self_info();
 
-if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isActive()) {
+if ($target_player_obj === null) {
 	$template = 'no-player.tpl';
 	$parts    = array();
 } else {
@@ -35,11 +36,11 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		$template = 'no-player.tpl';
 		$parts    = array();
 	} else {
-		$viewing_player_obj = new Player(self_char_id());
+		$viewing_player_obj = Player::find(self_char_id());
 
 		$self        = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
 
-		if ($viewing_player_obj && $viewing_player_obj->vo) {
+		if ($viewing_player_obj !== null && $viewing_player_obj->vo) {
 			$char_id  = $viewing_player_obj->id();
 			$username = $viewing_player_obj->name();
 		}
@@ -59,7 +60,7 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		// Get the player's kills for this date.
 		$kills_today = query_item('select sum(killpoints) from levelling_log where _player_id = :player_id and killsdate = CURRENT_DATE and killpoints > 0', array(':player_id'=>$target_id));
 
-		$viewers_clan       = ($viewing_player_obj instanceof Player && $viewing_player_obj->vo ? get_clan_by_player_id($viewing_player_obj->vo->player_id) : null);
+		$viewers_clan       = ($viewing_player_obj !== null ? get_clan_by_player_id($viewing_player_obj->id()) : null);
 
 		// Attack Legal section
 		$params          = array('required_turns'=>0, 'ignores_stealth'=>true); // 0 for unstealth.
@@ -75,19 +76,24 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		$level_category       = level_category($player_info['level']);
 		$gurl = $gravatar_url = generate_gravatar_url($target_player_obj);
 
-		if ($char_id && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
+		if ($viewing_player_obj !== null && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
 			// Attack or Duel
 
 			$skillDAO = new SkillDAO();
 
-			$combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level)->fetchAll();
-			$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level)->fetchAll();
-		    // *** todo When Smarty3 is released, remove fetch all and change template to new foreach-as syntax ***
+			if(!$viewing_player_obj->isAdmin()){
+				$combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level);
+				$targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level);
+			} else {
+				$combat_skills = $skillDAO->all('combat');
+				$targeted_skills = $skillDAO->all('targeted');
+			}
 
 			// Pull the items and some necessary data about them.
 			$items = inventory_counts($char_id);
 
 			$valid_items = rco($items);// row count
+
 		}	// End of the there-was-no-attack-error section
 
 		$set_bounty_section     = '';
@@ -102,14 +108,14 @@ if (!$target_player_obj || !$target_player_obj->id() || !$target_player_obj->isA
 		// Player clan and clan members
 
 		if ($clan) {
-			$viewer_clan  = (is_logged_in() ? get_clan_by_player_id($viewing_player_obj->vo->player_id) : null);
+			$viewer_clan  = $viewing_player_obj ? get_clan_by_player_id($viewing_player_obj->id()) : null;
 			$clan_members = get_clan_members($clan->getID())->fetchAll(); // TODO - When we switch to Smarty 3, remove fetchAll for foreach
 			$clan_id      = $clan->getID();
 			$clan_name    = $clan->getName();
 
 			if ($viewer_clan) {
 				$same_clan = ($clan->getID() == $viewer_clan->getID());
-				$display_clan_options = ($username && !$self && $same_clan && is_clan_leader($viewing_player_obj->vo->player_id));
+				$display_clan_options = $viewing_player_obj && !$self && $same_clan && is_clan_leader($viewing_player_obj->id());
 			} else {
 				$same_clan = $display_clan_options = false;
 			}

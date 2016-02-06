@@ -58,7 +58,7 @@ function update_activity_info() {
 	// ******************** Usage Information of the browser *********************
 	Request::setTrustedProxies(Constants::$trusted_proxies);
 	$request = Request::createFromGlobals();
-	$remoteAddress = $request->getClientIp();
+	$remoteAddress = ''.$request->getClientIp();
 	$userAgent     = (isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 250) : NULL); // Truncated at 250 char.
 	$referer       = (isset($_SERVER['HTTP_REFERER'])    ? substr($_SERVER['HTTP_REFERER'], 0, 250)    : '');   // Truncated at 250 char.
 

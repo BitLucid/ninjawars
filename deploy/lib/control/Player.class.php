@@ -516,4 +516,23 @@ class Player implements Character {
 		return $this;
 	}
 
+	/**
+	 * Find a player by primary key
+	 * @return Player
+	 */
+	public static function find($id){
+		if(!is_numeric($id) || !(int) $id){
+			return null;
+		}
+		$id = (int) $id;
+		$dao = new PlayerDAO();
+		$data = $dao->get($id);
+		if(!isset($data->player_id) || !$data->player_id){
+			return null;
+		}
+		$player = new Player();
+		$player->vo = $data;
+		return $player;
+	}
+
 }

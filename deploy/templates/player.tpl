@@ -21,6 +21,9 @@ article#player-titles{
 #attacking-choices #attack-text{
   font-size:1.5em;font-weight:bold;vertical-align:text-bottom;
 }
+#attacks{
+   width:95%;margin:0 auto;font-size:larger;clear:both;
+}
 #skills-use-list{
   margin-left:0;
   padding-left:0;
@@ -85,16 +88,17 @@ article#player-titles{
   </section>
 
 <script>
-  var attacking_possible = false;
+var attacking_possible = false;
 </script>
 
 	{else}
 <script>
-  var attacking_possible = true;
-  var combat_skills = {$combat_skills|@json_encode};
+var attacking_possible = true;
+var combat_skills = {$combat_skills|@json_encode};
+// Store to allow settings to get cached on the front end.
 </script>
 
-    <div id='attacks' style='width:95%;margin:0 auto;font-size:larger;clear:both'>
+    <div id='attacks'>
         <table id='player-attack'>
           <tr>
             <td id='attacking-choices'>
