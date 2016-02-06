@@ -42,11 +42,6 @@ server {
 	    return 302 /npc/;
 	}
 
-    location = /ninjamaster/ {
-    	# the admin area of the site
-    	#index index.php;
-        try_files $uri/ /ninjamaster/index.php last;
-    }
 
 	location ~ /(main\.php|tutorial\.php) {
 	    return 302 /intro;
