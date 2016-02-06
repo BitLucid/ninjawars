@@ -33,7 +33,9 @@ class DojoController {
     }
 
     /**
+     * Action to request the Dim Mak form AND execute the purchase
      *
+     * @todo split form request (GET) and purchase (POST) into separate funcs
      * @return ViewSpec
      */
     public function buyDimMak() {
@@ -44,7 +46,7 @@ class DojoController {
 
 
             if (Request::createFromGlobals()->isMethod('POST')) {
-                $error = $this->dim_mak_reqs($player, self::DIM_MAK_COST, self::DIM_MAK_STRENGTH_MIN);
+                $error = $this->dimMakReqs($player, self::DIM_MAK_COST, self::DIM_MAK_STRENGTH_MIN);
 
                 if (!$error) {
                     $player->changeTurns((-1)*self::DIM_MAK_COST);
@@ -66,27 +68,28 @@ class DojoController {
     }
 
     /**
+     * Action to request class change form AND execute class change
      *
+     * @todo split form request and execute into separate funcs
      * @return ViewSpec
      */
     public function changeClass() {
         if (is_logged_in()) {
             $player            = new Player(self_char_id());
-            $classes           = $this->classes_info();
+            $classes           = $this->classesInfo();
             $requestedIdentity = in('requested_identity');
             $currentClass      = $player->class_identity();
             $showMonks         = false;
             $parts             = [];
 
             if (isset($classes[$requestedIdentity])) {
-                $error = $this->class_change_reqs($player, self::CLASS_CHANGE_COST);
+                $error = $this->classChangeReqs($player, self::CLASS_CHANGE_COST);
 
                 if ($currentClass != $requestedIdentity && !$error) {
                     $error = $this->changePlayerClass($player, $requestedIdentity);
                 }
 
                 $currentClass = $player->class_identity();
-                $currentClassName = $player->class_display_name();
 
                 if (!$error) {
                     $pageParts = [
@@ -117,12 +120,14 @@ class DojoController {
     /**
      * Returns an error if there's an obstacle to changing classes.
      *
+     * @param Player $p_player
+     * @param int $p_requiredTurns
      * @return string|null
      */
-    private function class_change_reqs($char_obj, $turn_req) {
+    private function classChangeReqs($p_player, $p_requiredTurns) {
         $error = null;
 
-        if ($char_obj->turns() < $turn_req) {
+        if ($p_player->turns() < $p_requiredTurns) {
             // Check the turns, return the error if it's too below.
             $error = "You don't have enough turns to change your class.";
         }
@@ -136,28 +141,31 @@ class DojoController {
      * @return string
      */
     private function changePlayerClass($p_player, $p_class) {
-        $class_change_error = set_class($p_player->id(), $p_class);
+        $error = set_class($p_player->id(), $p_class);
 
-        if (!$class_change_error) {
+        if (!$error) {
             $p_player->changeTurns((-1)*self::CLASS_CHANGE_COST);
         }
 
-        return $class_change_error;
+        return $error;
     }
 
     /**
      * Returns an error if the requirements for getting a dim mak aren't met.
      *
+     * @param Player $p_player
+     * @param int $p_requiredTurns
+     * @param int $p_requiredStrength
      * @return string|null
      */
-    private function dim_mak_reqs($char_obj, $turn_req, $str_req) {
+    private function dimMakReqs($p_player, $p_requiredTurns, $p_requiredStrength) {
         $error = null;
 
-        if ($char_obj->turns() < $turn_req) {
+        if ($player->turns() < $p_requiredTurns) {
             $error = "You don't have enough turns to get a Dim Mak.";
         }
 
-        if ($char_obj->strength() < $str_req) {
+        if ($p_player->strength() < $p_requiredStrength) {
             $error = "You don't have enough strength to get a Dim Mak.";
         }
 
@@ -169,20 +177,27 @@ class DojoController {
      *
      * @return array
      */
-    private function classes_info() {
+    private function classesInfo() {
         $classes = query('select class_id, identity, class_name, class_note, class_tier, class_desc, class_icon, theme from class where class_active = true');
         return array_identity_associate($classes, 'identity');
     }
 
     /**
+     * Multiple actions currently check logged in status and deny access
+     *
+     * @todo remove this by abstracting login checks throughout this controller
+     * @return ViewSpec
      */
     private function accessDenied() {
         $this->render();
     }
 
     /**
-     * Render
+     * Create the ViewSpec to render
      *
+     * @param Array $p_parts Array that gets bound to view
+     * @param Player $p_player The player requesting the action
+     * @param boolean $p_renderMonks Flag to render links to actions
      * @return ViewSpec
      */
     private function render($p_parts = [], $p_player = null, $p_renderMonks = true) {
@@ -190,7 +205,7 @@ class DojoController {
         $p_parts['max_hp']            = max_health_by_level(maximum_level()+1);
         $p_parts['class_change_cost'] = self::CLASS_CHANGE_COST;
         $p_parts['player']            = $p_player;
-        $p_parts['classes']           = $this->classes_info();
+        $p_parts['classes']           = $this->classesInfo();
 
         if (!isset($p_parts['pageParts'])) {
             $p_parts['pageParts'] = [];
@@ -200,11 +215,11 @@ class DojoController {
             array_unshift($p_parts['pageParts'], 'access-denied');
         } else {
             if ($p_renderMonks) {
-                if (!$this->dim_mak_reqs($p_player, self::DIM_MAK_COST, self::DIM_MAK_STRENGTH_MIN)) {
+                if (!$this->dimMakReqs($p_player, self::DIM_MAK_COST, self::DIM_MAK_STRENGTH_MIN)) {
                     $p_parts['pageParts'][] = 'reminder-dim-mak';
                 }
 
-                if (!$this->class_change_reqs($p_player, self::CLASS_CHANGE_COST)) {
+                if (!$this->classChangeReqs($p_player, self::CLASS_CHANGE_COST)) {
                     $p_parts['pageParts'][] = 'reminder-class-change';
                 }
             }
