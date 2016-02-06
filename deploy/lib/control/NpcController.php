@@ -10,7 +10,6 @@ use NinjaWars\core\control\SessionFactory;
 use \Player as Player;
 use \Item as Item;
 
-
 /**
  * Handles displaying npcs and attacking specific npcs
  */
@@ -25,23 +24,20 @@ class NpcController { //extends controller
     const RANDOM_ENCOUNTER_DIVISOR = 400;
 
     /**
-     * 
+     *
      */
     public function __construct($options=[]) {
-        $session = isset($options['session'])? $options['session'] : null;
-        if($session === null){
-            $this->session    = SessionFactory::getSession();
-            $this->char_id = self_char_id();
-            $this->randomness = function(){
+        $this->session = SessionFactory::getSession();
+        $this->char_id = self_char_id();
+
+        if (isset($options['randomness']) && is_callable($options['randomness'])) {
+            $this->randomness = $options['randomness'];
+        } else {
+            $this->randomness = function() {
                 return mt_rand() / mt_getrandmax();
             };
-        } else {
-            $this->session = $session;
-            $this->char_id = $options['char_id'];
-            $this->randomness = $options['randomness'];
         }
     }
-
 
     /**
      * Run the random encounter
@@ -102,7 +98,7 @@ class NpcController { //extends controller
     private function calcRewardGold(Npc $npco, $reward_item){
         // If npc gold explicitly set to 0, then reward gold will be totally skipped.
         // Hack a little off reward gold if items received.
-        return $npco->gold() === 0? 0 : ((bool)$reward_item? floor($npco->gold() * self::ITEM_DECREASES_GOLD_FACTOR) : $npco->gold()); 
+        return $npco->gold() === 0? 0 : ((bool)$reward_item? floor($npco->gold() * self::ITEM_DECREASES_GOLD_FACTOR) : $npco->gold());
     }
 
     /**
@@ -183,7 +179,6 @@ class NpcController { //extends controller
             }
         }
 
-
         // Settings to display results.
         $npc_template = 'npc.abstract.tpl';
         $combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$npc_damage,
@@ -194,7 +189,6 @@ class NpcController { //extends controller
         return [$npc_template, $combat_data];
 
     }
-
 
     /**
      * Injectable randomness.
@@ -210,7 +204,7 @@ class NpcController { //extends controller
      * For examples:
      * http://nw.local/npc/attack/villager
      * http://nw.local/npc/attack/guard/
-     * 
+     *
      */
     public function attack(){
 
@@ -222,7 +216,7 @@ class NpcController { //extends controller
 
         if(preg_match('#\/(\w+)(\/)?$#',$url_part,$matches)){
             $victim=$matches[1];
-        } else { 
+        } else {
             $victim = null; // No match, victim is null.
         }
 
@@ -255,7 +249,7 @@ if($player->turns() > 0 && !empty($victim)) {
 
     if ((bool) $this->startRandomEncounter()) { // Random encounter!
         list($npc_template, $combat_data) = $this->randomEncounter($player);
-    } elseif (array_key_exists($victim, $npcs)){ 
+    } elseif (array_key_exists($victim, $npcs)){
         /**** Abstracted NPCs *****/
         list($npc_template, $combat_data) = $this->attackAbstractNpc($victim, $player, $npcs);
 
@@ -486,7 +480,7 @@ if($player->turns() > 0 && !empty($victim)) {
             'npc_template'       => $npc_template
             , 'attacked'         => 1
             , 'turns'            => $player->turns()
-            , 'health'           => $health        
+            , 'health'           => $health
         ];
         $parts = $parts + $combat_data; // Merge in combat data.
         $options = ['quickstat'=>'player'];
@@ -530,6 +524,4 @@ if($player->turns() > 0 && !empty($victim)) {
     /*public function view(){
 
     }*/
-
-
 }
