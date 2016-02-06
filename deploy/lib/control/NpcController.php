@@ -10,20 +10,34 @@ use NinjaWars\core\control\SessionFactory;
 use \Player as Player;
 use \Item as Item;
 
-
 /**
  * Handles displaying npcs and attacking specific npcs
  */
 class NpcController { //extends controller
+    private $char_id = null;
+    private $randomness = null;
     const ALIVE          = true;
     const PRIV           = false;
+    const HIGH_TURNS     = 50;
+    const ITEM_DECREASES_GOLD_FACTOR = 0.9;
+    const ONI_DAMAGE_CAP     = 20;
+    const RANDOM_ENCOUNTER_DIVISOR = 400;
 
     /**
-     * 
+     *
      */
-    public function __construct() {
-    }
+    public function __construct($options=[]) {
+        $this->session = SessionFactory::getSession();
+        $this->char_id = self_char_id();
 
+        if (isset($options['randomness']) && is_callable($options['randomness'])) {
+            $this->randomness = $options['randomness'];
+        } else {
+            $this->randomness = function() {
+                return mt_rand() / mt_getrandmax();
+            };
+        }
+    }
 
     /**
      * Run the random encounter
@@ -35,25 +49,24 @@ class NpcController { //extends controller
         // *** They take turns and a kill and do a little damage. ***
         // **********************************************************
 
-        $victim          = 'Oni';
         $oni_turn_loss   = 10;
-        $oni_health_loss = rand(1, 20);
+        $oni_health_loss = rand(1, self::ONI_DAMAGE_CAP);
         $oni_kill_loss   = 1;
         $turns    = subtractTurns($player->id(), $oni_turn_loss);
         $player->set_turns($turns);
         $player->vo->health = subtractHealth($player->id(), $oni_health_loss);
-        $attacker_kills  = subtractKills($player->id(), $oni_kill_loss);
+        subtractKills($player->id(), $oni_kill_loss);
         $multiple_rewards = false;
         $oni_killed = false;
 
         $item = null;
 
         if ($player->health() > 0) { // *** if you survive ***
-            if ($player->turns() > 50) { // *** And your turns are high/you are energetic, you can kill them. ***
+            if ($player->turns() > self::HIGH_TURNS) { // *** And your turns are high/you are energetic, you can kill them. ***
                 $oni_killed = true;
                 $item = new Item('dimmak');
                 add_item($player->id(), $item->identity(), 1);
-            } else if ($player->turns() > 25 && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
+            } else if ($player->turns() > floor(self::HIGH_TURNS/2) && rand()&1) { // *** If your turns are somewhat high/you have some energy, 50/50 chance you can kill them. ***
                 $oni_killed = true;
                 $item = new Item('ginsengroot');
                 $multiple_rewards = true;
@@ -67,26 +80,44 @@ class NpcController { //extends controller
     }
 
     /**
+     * Wrapper for session storage of thief attacking
+     */
+    private function getThiefCounter(){
+        $sess = $this->session; // Parentheses wouldn't work, had to use a temp variable for some reason
+        return $sess->get('thief_counter', 1);
+    }
+
+    private function setThiefCounter($num){
+        $sess = $this->session;
+        $sess->set('thief_counter', $num);
+    }
+
+    /**
+     * The reward for defeating an npc, less if items popped
+     */
+    private function calcRewardGold(Npc $npco, $reward_item){
+        // If npc gold explicitly set to 0, then reward gold will be totally skipped.
+        // Hack a little off reward gold if items received.
+        return $npco->gold() === 0? 0 : ((bool)$reward_item? floor($npco->gold() * self::ITEM_DECREASES_GOLD_FACTOR) : $npco->gold());
+    }
+
+    /**
      * Handle Standard Abstract Npcs
-     * @return [$npc_template, $combat_data]
+     * @return array with [$npc_template, $combat_data]
      */
     private function attackAbstractNpc($victim, $player, $npcs){
         $npc_stats = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
 
         $npco = new Npc($npc_stats); // Construct the npc object.
         $display_name = first_value((isset($npc_stats['name'])? $npc_stats['name'] : null), ucfirst($victim));
-        $max_damage = $npco->max_damage();
-        $percent_damage = null; // Percent damage does to the player's health.
         $status_effect = isset($npc_stats['status'])? $npc_stats['status'] : null;
+        // TODO: Calculate and display damage verbs
         $reward_item = isset($npc_stats['item']) && $npc_stats['item']? $npc_stats['item'] : null;
-        $base_gold = $npco->gold();
-        $npc_gold = (int) isset($npc_stats['gold'])? $npc_stats['gold'] : 0 ;
+        $npc_gold = (int) (isset($npc_stats['gold'])? $npc_stats['gold'] : 0 );
         $is_quick = ($npco->speed()>$player->speed())? true : false; // Beyond basic speed and they see you coming, so show that message.
-        // If npc gold explicitly set to 0, then none will be given.
-        $reward_gold = $npc_gold === 0? 0 :
-            ($reward_item? round($base_gold * .9) : $base_gold); // Hack a little off reward gold if items received.
+
+        $reward_gold = $this->calcRewardGold($npco, (bool) $reward_item);
         $bounty_mod = isset($npc_stats['bounty'])? $npc_stats['bounty'] : null;
-        $is_villager = $npco->has_trait('villager'); // Give the villager message with the bounty.
         $is_weaker = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
         $is_stronger = ($npco->strength()) > ($player->strength() * 3); // Npc More than twice as strong?
         $image = isset($npc_stats['img'])? $npc_stats['img'] : null;
@@ -96,11 +127,8 @@ class NpcController { //extends controller
             $image_path = IMAGE_ROOT.'characters/'.$image;
         }
 
-        $statuses = null;
-        $status_classes = null;
-
         // Assume defeat...
-        $victory = null;
+        $victory = false;
         $received_gold = null;
         $received_display_items = null;
         $added_bounty = null;
@@ -109,11 +137,10 @@ class NpcController { //extends controller
 
         // Get percent of total initial health.
 
-        // ******* FIGHT *********** & Hope for victory.
-        $victory = false;
+        // ******* FIGHT Logic ***********
         $npc_damage = $npco->damage(); // An instance of damage.
         $survive_fight = $player->vo->health = subtractHealth($player->id(), $npc_damage);
-        $armored = $npco->has_trait('armored')? 1 : 0;
+        // TODO: make $armored = $npco->has_trait('armored')? 1 : 0;
         $kill_npc = ($npco->health() < $player->damage());
         if($survive_fight>0){
             // The ninja survived, they'll get gold.
@@ -144,24 +171,32 @@ class NpcController { //extends controller
                 }
             }
             $is_rewarded = (bool) $reward_gold || (bool)count($received_display_items);
-            if($status_effect){ // Only add the status effect
-                $player->addStatus($status_effect);
+            if(isset($npc_stats['status']) && null !== $npc_stats['status']){
+                $player->addStatus($npc_stats['status']);
                 // Get the statuses and status classes for display.
                 $display_statuses = implode(', ', get_status_list());
-                $display_status_classes = implode(' ', get_status_list()); // TODO: Take healthy out of the list since it's redundant.
+                $display_statuses_classes = implode(' ', get_status_list()); // TODO: Take healthy out of the list since it's redundant.
             }
         }
 
-
         // Settings to display results.
         $npc_template = 'npc.abstract.tpl';
-        $combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$npc_damage, 'percent_damage'=>$percent_damage,
+        $combat_data = array('victim'=>$victim, 'display_name'=>$display_name, 'attack_damage'=>$npc_damage,
             'status_effect'=>$status_effect, 'display_statuses'=>$display_statuses, 'display_statuses_classes'=>$display_statuses_classes, 'received_gold'=>$received_gold,
             'received_display_items'=>$received_display_items, 'is_rewarded'=>$is_rewarded,
             'victory'=>$victory, 'survive_fight'=>$survive_fight, 'kill_npc'=>$kill_npc, 'image_path'=>$image_path, 'npc_stats'=>$npc_stats, 'is_quick'=>$is_quick,
-            'added_bounty'=>$added_bounty, 'is_villager'=>$is_villager, 'race'=>$npco->race(), 'is_weaker'=>$is_weaker, 'is_stronger'=>$is_stronger);
+            'added_bounty'=>$added_bounty, 'is_villager'=>$npco->has_trait('villager'), 'race'=>$npco->race(), 'is_weaker'=>$is_weaker, 'is_stronger'=>$is_stronger);
         return [$npc_template, $combat_data];
 
+    }
+
+    /**
+     * Injectable randomness.
+     */
+    private function startRandomEncounter(){
+        // Used to be rand(1, 400) === 1
+        $randomness = $this->randomness;
+        return (ceil($randomness() * self::RANDOM_ENCOUNTER_DIVISOR) == self::RANDOM_ENCOUNTER_DIVISOR);
     }
 
     /**
@@ -169,11 +204,11 @@ class NpcController { //extends controller
      * For examples:
      * http://nw.local/npc/attack/villager
      * http://nw.local/npc/attack/guard/
-     * 
+     *
      */
     public function attack(){
 
-        //$victim     = in('victim');
+        // This used to pull directly from $victim get param
 
         $url_part = $_SERVER['REQUEST_URI'];
 
@@ -181,7 +216,7 @@ class NpcController { //extends controller
 
         if(preg_match('#\/(\w+)(\/)?$#',$url_part,$matches)){
             $victim=$matches[1];
-        } else { 
+        } else {
             $victim = null; // No match, victim is null.
         }
 
@@ -190,12 +225,12 @@ class NpcController { //extends controller
 
 $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
 
-$session    = SessionFactory::getSession();
+
 $turn_cost  = 1;
-$health     = 1;
+$health     = true;
 $combat_data = array();
-$char_id = self_char_id();
-$player     = new Player($char_id);
+$player     = new Player($this->char_id);
+$char_id = $player->id();
 $error_template = 'npc.no-one.tpl'; // Error template also used down below.
 $npc_template = $error_template; // Error condition by default.
 
@@ -212,9 +247,9 @@ if($player->turns() > 0 && !empty($victim)) {
         $player->subtractStatus(STEALTH);
     }
 
-    if ((bool) (rand(1, 400) === 1)) { // Random encounter!
+    if ((bool) $this->startRandomEncounter()) { // Random encounter!
         list($npc_template, $combat_data) = $this->randomEncounter($player);
-    } elseif (array_key_exists($victim, $npcs)){ 
+    } elseif (array_key_exists($victim, $npcs)){
         /**** Abstracted NPCs *****/
         list($npc_template, $combat_data) = $this->attackAbstractNpc($victim, $player, $npcs);
 
@@ -253,16 +288,19 @@ if($player->turns() > 0 && !empty($victim)) {
     } else if ($victim == "samurai") {
         $attacker_level = $player->vo->level;
         $attacker_kills = $player->vo->kills;
-        $weakness_error = null;
+        $weakness_error = false;
+        $samurai_damage_array = null;
+        $samurai_gold = null;
+        $victory = false;
+        $drop = null;
+        $drop_display = null;
+        $turn_cost = 1;
 
         if ($attacker_level < 2 || $attacker_kills < 1) {
             $turn_cost = 0;
             $weakness_error = 'You are too weak to attack the samurai.';
         } else {
-            $turn_cost = 1;
 
-            $drop                    = false;
-            $drop_display            = null;
 
             $samurai_damage_array    = array();
 
@@ -373,14 +411,13 @@ if($player->turns() > 0 && !empty($victim)) {
         $combat_data  = array('attack'=>$guard_attack, 'gold'=>$guard_gold, 'bounty'=>$added_bounty, 'victory'=>$victory, 'herb'=>$herb);
     } else if ($victim == 'thief') {
         // Check the counter to see whether they've attacked a thief multiple times in a row.
-        $counter = $session->get('counter', 1);
+        $counter = $this->getThiefCounter();
 
-        $counter = $counter + 1;
-        $session->set('counter', $counter); // Save the current state of the counter.
+        $this->setThiefCounter($counter+1); // Incremement the current state of the counter.
 
         if ($counter > 20 && rand(1, 3) == 3) {
             // Only after many attacks do you have the chance to be attacked back by the group of theives.
-            $session->set('counter', 0); // Reset the counter to zero.
+            $this->setThiefCounter(0); // Reset the counter to zero.
             $group_attack= rand(50, 150);
 
             if ($player->vo->health = $victory = subtractHealth($char_id, $group_attack)) { // The den of thieves didn't accomplish their goal
@@ -443,7 +480,7 @@ if($player->turns() > 0 && !empty($victim)) {
             'npc_template'       => $npc_template
             , 'attacked'         => 1
             , 'turns'            => $player->turns()
-            , 'health'           => $health        
+            , 'health'           => $health
         ];
         $parts = $parts + $combat_data; // Merge in combat data.
         $options = ['quickstat'=>'player'];
@@ -484,9 +521,7 @@ if($player->turns() > 0 && !empty($victim)) {
     /**
      * View an npc
      */
-    public function view(){
+    /*public function view(){
 
-    }
-
-
+    }*/
 }
