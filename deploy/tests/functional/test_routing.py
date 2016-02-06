@@ -56,7 +56,8 @@ class TestRouting:
 
     def test_urls_that_should_redirect(self):
         urls = [
-            'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php', 'webgame/'
+            'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php', 'webgame/',
+            'ninjamaster', 'ninjamaster/tools', 'ninjamaster/player_tags'
             ];
         for url in urls:
             full_uri = str(self.root())+url
