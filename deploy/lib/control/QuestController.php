@@ -40,12 +40,6 @@ function format_quests($quests_data){
     return $quests_data;
 }
 
-function save_quest($quest){
-}
-
-function create_quest($quest){
-}
-
 // Get the questors 
 function get_questors($quest_id){
     $sel = "SELECT p.player_id, p.uname 
