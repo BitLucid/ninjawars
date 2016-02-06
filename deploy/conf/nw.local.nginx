@@ -19,7 +19,7 @@ server {
 
 	# Debugging on settings
 	log_not_found on;
-	autoindex on;
+	#autoindex on;
 	rewrite_log on;
 	add_header X-uri "$uri";
 
@@ -35,7 +35,7 @@ server {
 
 	location / {
 		#default fallback of everything else block
-		try_files $uri $uri/ @php;
+		try_files $uri @php;
 	}
 
 	location ~ /npc\.php {
