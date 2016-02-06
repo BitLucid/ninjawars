@@ -33,7 +33,7 @@ test-integration:
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
 
 test-functional:
-	python3 -m pytest deploy/tests/functional/test_routing.py
+	python3 -m pytest deploy/tests/functional/
 
 clean:
 	@rm -rf "$(SRC)templates/"compiled/*
