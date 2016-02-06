@@ -7,7 +7,7 @@ import os, os.path, fnmatch
 class TestRatchets:
     ''' Rough file counts in pertinent directories '''
     control_php = 50
-    www_php = 20
+    www_php = 10
     plus_minus = 6
 
     '''Hack to obtain the web directory path'''
