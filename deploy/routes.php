@@ -88,19 +88,6 @@ Router::$routes = [
             'default'         => 'viewPersonal',
         ],
     ],
-    'messages' => [
-        'type'    => 'controller',
-        'actions' => [
-            'delete_clan'     => 'deleteClan',
-            'delete_messages' => 'deletePersonal',
-            'delete_message'  => 'deletePersonal',
-            'send_clan'       => 'sendClan',
-            'send_personal'   => 'sendPersonal',
-            'personal'        => 'viewPersonal',
-            'clan'            => 'viewClan',
-            'default'         => 'viewPersonal',
-        ],
-    ],
     'account' => [
         'type'    => 'controller',
         'actions' => [
