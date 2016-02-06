@@ -1,4 +1,4 @@
-import os, os.path, fnmatch
+import os, os.path, fnmatch, re, subprocess
 
 
 ''' Checks the ratchets for the /www/ directory number of scripts,
@@ -9,6 +9,8 @@ class TestRatchets:
     control_php = 50
     www_php = 10
     plus_minus = 6
+
+    COMMANDS_LINES = 200
 
     '''Hack to obtain the web directory path'''
     def deploy_dir(self):
@@ -39,3 +41,18 @@ class TestRatchets:
             TestRatchets.www_php-TestRatchets.plus_minus < self.count_php_in_dir(www_dir) and
             TestRatchets.www_php+TestRatchets.plus_minus > self.count_php_in_dir(www_dir)
             )
+
+    ''' Test the lines of code in certain directories, rounded, so that if they change drastically
+      we have control of it and notice. '''
+    def test_lines_of_code(self):
+        '''find /apps/projects/reallycoolapp -type f -iname '*.py' ! -path '*/lib/*' ! -path '*/frameworks/*' | xargs wc -l'''
+
+    ''' Return the lines of code in a directory or file result '''
+    def parse_lines(self, path):
+        out = subprocess.check_output(['wc', '-l', path])
+        matches = re.findall('\d+', str(out))
+        return int(next(iter(matches), None))
+
+    ''' The lines in command.php should only decrease '''
+    def test_lines_in_command_php(self):
+        assert TestRatchets.COMMANDS_LINES-20 < self.parse_lines(self.deploy_dir()+'core/control/commands.php') < TestRatchets.COMMANDS_LINES+20
