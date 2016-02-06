@@ -274,12 +274,13 @@
     <column name="nonce" phpName="Nonce" type="VARCHAR" size="130" required="true"/>
     <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="true" defaultExpr="now()"/>
     <column name="used" phpName="Used" type="BOOLEAN" required="true" defaultValue="false"/>
-    <foreign-key foreignTable="accounts" name="account__account_id_fkey" onDelete="CASCADE" onUpdate="CASCADE">
+    <foreign-key foreignTable="accounts" name="pwrr__account_id_fkey" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="_account_id" foreign="account_id"/>
     </foreign-key>
   </table>
   <table name="quests" phpName="Quests" idMethod="native">
     <column name="quest_id" phpName="QuestId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="200" required="true" defaultValue=""/>
     <column name="_player_id" phpName="PlayerId" type="INTEGER" required="true"/>
     <column name="description" phpName="Description" type="LONGVARCHAR" required="true" defaultValue=""/>
     <column name="tags" phpName="Tags" type="LONGVARCHAR" required="true" defaultValue=""/>
@@ -289,12 +290,18 @@
     <column name="proof" phpName="Proof" type="LONGVARCHAR" required="true" defaultValue=""/>
     <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="true" defaultExpr="now()"/>
     <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="true" defaultExpr="now()"/>
-    <column name="expires_at" phpName="ExpiresAt" type="TIMESTAMP" required="true" defaultExpr="now()"/>
-    <column name="type" phpName="Type" type="INTEGER" defaultValue="false"/>
-    <column name="difficulty" phpName="Difficulty" type="INTEGER" defaultValue="false"/>
-    <foreign-key foreignTable="players" name="player__player_id_fkey" onDelete="CASCADE" onUpdate="CASCADE">
+    <column name="expires_at" phpName="ExpiresAt" type="TIMESTAMP" required="true" defaultExpr="now() + interval ' 1 mon '"/>
+    <column name="type" phpName="Type" type="INTEGER"/>
+    <column name="difficulty" phpName="Difficulty" type="INTEGER"/>
+    <foreign-key foreignTable="players" name="quests__player_id_fkey" onUpdate="CASCADE">
       <reference local="_player_id" foreign="player_id"/>
     </foreign-key>
+    <index name="quest_created_at_index">
+      <index-column name="created_at"/>
+    </index>
+    <index name="quest_title_index">
+      <index-column name="title"/>
+    </index>
   </table>
   <table name="past_stats" phpName="PastStats" idMethod="native">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
