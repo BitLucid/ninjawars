@@ -5,7 +5,6 @@
 class RatchetTest extends PHPUnit_Framework_TestCase {
 	const MAX_WWW_SCRIPTS = 23;
     const MAX_WWW_SCRIPTS_RATCHET = .6;
-	const MAX_NINJAMASTER_SCRIPTS = 3;
 
 	function before() {
 	}
@@ -20,19 +19,6 @@ class RatchetTest extends PHPUnit_Framework_TestCase {
         $this->assertGreaterThanOrEqual(
             round(static::MAX_WWW_SCRIPTS*static::MAX_WWW_SCRIPTS_RATCHET), $scriptCount,
             "Reduce MAX_WWW_SCRIPTS to $scriptCount to tighten the ratchet"
-        );
-	}
-
-	public function testNinjamasterScriptsLimit(){
-		$scriptList = new RegexIterator(new DirectoryIterator(ROOT.'www/ninjamaster/'), "/\\.php\$/i");
-        $scriptCount = iterator_count($scriptList);
-
-		$this->assertLessThanOrEqual(static::MAX_NINJAMASTER_SCRIPTS, $scriptCount);
-
-        // RATCHET
-        $this->assertGreaterThanOrEqual(
-            static::MAX_NINJAMASTER_SCRIPTS, $scriptCount,
-            "Reduce MAX_NINJAMASTER_SCRIPTS to $scriptCount to tighten the ratchet"
         );
 	}
 }
