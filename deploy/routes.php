@@ -112,6 +112,11 @@ Router::$routes = [
             'delete_account'            => 'deleteAccount',
         ],
     ],
+    'quest' => [
+        'type'  => 'controller',
+        'actions' => [
+        ],
+    ],
     'consider' => [
         'type'    => 'controller',
         'actions' => [
