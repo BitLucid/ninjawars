@@ -49,7 +49,7 @@ class TestRouting:
             'clan.php', 'map.php', 'shop.php', 'work.php', 'doshin_office.php', 'dojo.php', 'shrine.php',
             'duel.php', 'clan.php?command=list', 'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
             'clan.php?command=view', 'npc', 'npc/attack/peasant/', 'npc/attack/guard/',
-            'stats.php', 'account.php',
+            'stats.php', 'account.php', 'quest', 'quest/view/1',
             ];
         for url in urls:
             assert (str(self.root())+url is not None and 200 == self.status_code(str(self.root())+url))
