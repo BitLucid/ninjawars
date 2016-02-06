@@ -58,13 +58,13 @@ nav.admin-nav a{
 	<div class='child'>
 		<a class='btn btn-info' href='/ninjamaster/#npc-list'>Npc List</a>
 		<a class='btn btn-info' href='/ninjamaster/#char-list'>Character List</a>
-		<a class='btn btn-info' href='/ninjamaster/tools.php'>Validation Tools</a>
-		<a class='btn btn-info' href='/ninjamaster/player_tags.php'>Character Tag List</a>
+		<a class='btn btn-info' href='/ninjamaster/tools'>Validation Tools</a>
+		<a class='btn btn-info' href='/ninjamaster/player_tags'>Character Tag List</a>
 	</div>
 </nav>
 
 <section class='centered glassbox'>
-	<form name='char-search' action='' method='post'>
+	<form name='char-search' action='/ninjamaster' method='post'>
 		View character @<input id='char-name' name='char_name' type='text' placeholder='character' value='{$char_name}' required=required>
 		<div><input type='Submit' value='Find'></div>
 	</form>
