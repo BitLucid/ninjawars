@@ -44,6 +44,21 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
     }
 
 
+    public function testPlayerCanBeFoundStatically() {
+        $char = Player::find($this->char_id);
+        $this->assertTrue((bool)positive_int($char->id()));
+        $this->assertTrue((bool)$char->name());
+    }
+
+
+    public function testNonexistentPlayerReturnsNullViaStaticFind() {
+        $id = query_item('select max(player_id) from players');
+        $bad_id = $id + 100;
+        $char = Player::find($bad_id);
+        $this->assertEquals(null, $char);
+    }
+
+
 	/**
 	 * group char
 	**/
