@@ -1,16 +1,16 @@
-<h1>Quest: {$quest.title}</h1>
+<article>
+	<header>
+		<h1>Quest: {$quest.title}</h1>
+	</header>
 
-{$quest.title} via {$quest.giver}
-{$quest.tags}
-Description: {$quest.description}
-Rewards: {$quest.rewards}
+	<h2>{$quest.title} from <a href='/player.php?player_id={$quest.player_id}'>{$quest.giver}</a></h2>
+	Tags: {$quest.tags}
+	Description: {$quest.description}
+	Rewards: {$quest.rewards}
+	Obstacles: {$quest.obstacles}
+	Expiration: {$quest.expiration}
+	Proof Required: {$quest.proof}
+</article>
 
-<!--  quest_id, title, player_id, tags, description, rewards, obstacles, expiration, proof -->
-
-<form action='quest_submit'>
-</form>
-Quests:  
-<ol>
-<li>Quest via <a target='main' href='player.php?user_id={$quest.player_id}'>{$quest.giver}</a>: {$quest.description} <a target='main' href='quests.php?quest_id={$quest.quest_id}'>View Quest</a></li>
-</ol>
+<nav class='glassbox'><a href='/quest/'>View All Quests</a></nav>
 

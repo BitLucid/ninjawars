@@ -681,3 +681,127 @@ ALTER TABLE "players" ADD CONSTRAINT "players__class_id_fkey"
     FOREIGN KEY ("_class_id")
     REFERENCES "class" ("class_id")
     ON UPDATE CASCADE;
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: quests; Type: TABLE; Schema: public; Owner: kzqai; Tablespace: 
+--
+
+CREATE TABLE quests (
+    quest_id integer NOT NULL,
+    title character varying(200) DEFAULT ''::character varying NOT NULL,
+    description text DEFAULT ''::text NOT NULL,
+    _player_id integer NOT NULL,
+    tags text DEFAULT ''::text,
+    karma integer DEFAULT 0 NOT NULL,
+    rewards text DEFAULT ''::text NOT NULL,
+    obstacles text DEFAULT ''::text NOT NULL,
+    proof text DEFAULT ''::text NOT NULL,
+    expires_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    type integer,
+    difficulty integer
+);
+
+
+ALTER TABLE public.quests OWNER TO kzqai;
+
+--
+-- Name: quests_quest_id_seq; Type: SEQUENCE; Schema: public; Owner: kzqai
+--
+
+CREATE SEQUENCE quests_quest_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.quests_quest_id_seq OWNER TO kzqai;
+
+--
+-- Name: quests_quest_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kzqai
+--
+
+ALTER SEQUENCE quests_quest_id_seq OWNED BY quests.quest_id;
+
+
+--
+-- Name: quest_id; Type: DEFAULT; Schema: public; Owner: kzqai
+--
+
+ALTER TABLE ONLY quests ALTER COLUMN quest_id SET DEFAULT nextval('quests_quest_id_seq'::regclass);
+
+
+
+--
+-- Name: quests_pkey; Type: CONSTRAINT; Schema: public; Owner: kzqai; Tablespace: 
+--
+
+ALTER TABLE ONLY quests
+    ADD CONSTRAINT quests_pkey PRIMARY KEY (quest_id);
+
+
+--
+-- Name: quest_created_at_index; Type: INDEX; Schema: public; Owner: kzqai; Tablespace: 
+--
+
+CREATE INDEX quest_created_at_index ON quests USING btree (created_at);
+
+
+--
+-- Name: quest_title_index; Type: INDEX; Schema: public; Owner: kzqai; Tablespace: 
+--
+
+CREATE INDEX quest_title_index ON quests USING btree (title);
+
+
+--
+-- Name: quests__player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kzqai
+--
+
+ALTER TABLE ONLY quests
+    ADD CONSTRAINT quests__player_id_fkey FOREIGN KEY (_player_id) REFERENCES players(player_id) ON UPDATE CASCADE;
+
+
+--
+-- Name: quests; Type: ACL; Schema: public; Owner: kzqai
+--
+
+REVOKE ALL ON TABLE quests FROM PUBLIC;
+REVOKE ALL ON TABLE quests FROM kzqai;
+GRANT ALL ON TABLE quests TO kzqai;
+GRANT ALL ON TABLE quests TO ninjamaster;
+
+
+--
+-- Name: quests_quest_id_seq; Type: ACL; Schema: public; Owner: kzqai
+--
+
+REVOKE ALL ON SEQUENCE quests_quest_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE quests_quest_id_seq FROM kzqai;
+GRANT ALL ON SEQUENCE quests_quest_id_seq TO kzqai;
+GRANT ALL ON SEQUENCE quests_quest_id_seq TO ninjamaster;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

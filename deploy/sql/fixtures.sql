@@ -552,3 +552,19 @@ SELECT pg_catalog.setval('time_time_id_seq', 1, true);
 -- PostgreSQL database dump complete
 --
 
+
+--
+-- Data for Name: quests; Type: TABLE DATA; Schema: public; Owner: kzqai
+--
+
+COPY quests (quest_id, title, description, _player_id, tags, karma, rewards, obstacles, proof, expires_at, created_at, updated_at, type, difficulty) FROM stdin;
+5   Some title  a desc  10  whatever,tags,ya    45  rwardify    obstacle    proof that I am great   2018-02-06 00:34:35.160892-05   2016-02-06 00:34:35.160892-05   2016-02-06 00:34:35.160892-05   \N  \N
+\.
+
+
+--
+-- Name: quests_quest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kzqai
+--
+
+SELECT pg_catalog.setval('quests_quest_id_seq', 2, true);
+
