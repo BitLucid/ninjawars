@@ -57,9 +57,7 @@ $(document).ready(function() {
 {include file="shop.$view_part.tpl"}
 </div>
 
-<form id="shop_form" action="shop.php" method="post" name="shop_form">
-	<input id="command" type="hidden" value="purchase" name="command">
-
+<form id="shop_form" action="/shop/purchase" method="post" name="shop_form">
 	<table class='shop-list'>
 		<caption colspan='4' class='text-centered slightly-padded accent'>
 			A Shelf of Items
