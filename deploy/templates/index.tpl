@@ -67,7 +67,7 @@
                   </a>
                 </li>
                 <li id='combat-actions' class='combat'>
-                  <a href='enemies.php' rel='nav' target='main' title='Check up on your enemies and see who recently attacked you.'>
+                  <a href='/enemies' rel='nav' target='main' title='Check up on your enemies and see who recently attacked you.'>
                     <img src='{cachebust file="/images/50pxShuriken.png"}' alt=''  style='width:50px;height:42px'>Fight
                   </a>
                 </li>
@@ -84,7 +84,7 @@
                   <li><a href="stats.php" rel='nav' target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
                   -->
                   <li><a href="skills.php" rel='nav' target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
-                  <li><a href="inventory.php" rel='nav' target="main" title='Your items and links to use them on yourself.'>Items</a></li>
+                  <li><a href="/inventory" rel='nav' target="main" title='Your items and links to use them on yourself.'>Items</a></li>
                   <!-- Profile -->
                   <!-- Settings -->
                 </ul>
