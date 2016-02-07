@@ -39,7 +39,7 @@ class ClanController { //extends Controller
 
 		if (isset($clan) && $clan instanceof Clan) {
 			$parts = [
-				'title'     => $clan->getName(),
+				'title'     => $clan->getName().' Clan',
 				'clan'      => $clan,
 				'pageParts' => [
 					'info',
