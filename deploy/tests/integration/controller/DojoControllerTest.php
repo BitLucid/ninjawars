@@ -30,4 +30,16 @@ class DojoControllerTest extends PHPUnit_Framework_TestCase {
         $dojo_outcome = $dojo->index();
         $this->assertNotEmpty($dojo_outcome);
     }
+
+    public function testDojoBuyDimMakDoesNotError() {
+        $dojo = new DojoController();
+        $dojo_outcome = $dojo->buyDimMak();
+        $this->assertNotEmpty($dojo_outcome);
+    }
+
+    public function testDojoChangeClassDoesNotError() {
+        $dojo = new DojoController();
+        $dojo_outcome = $dojo->changeClass();
+        $this->assertNotEmpty($dojo_outcome);
+    }
 }
