@@ -491,23 +491,8 @@ $(function() {
 		}
 		$('#donation-button').hide().delay('3000').slideDown('slow').delay('20000').slideUp('slow');
 		// Hide, show, and then eventually hide the donation button.
-		var isTouchDevice = 'ontouchstart' in document.documentElement;
-		if(!isTouchDevice){
-			// Hide the self and map subcategories initially, leaving the combat subcategory visible
-			$('#self-subcategory, #map-subcategory').hide();
-			//delay('2000').slideUp('slow');
-			// Find the trigger areas and show the appropriate subcategory.
-			var triggers = $('#category-bar').find('.combat, .self, .map');
-			if(triggers){
-				triggers.mouseenter(function(){
-					var trigger = $(this);
-					$("#"+trigger.attr('class')+'-subcategory').show().siblings().hide();
-					// When a different trigger area is hovered, hide the other subcats.
-				});
-			}
-		}
-		// For all pages, if a link with a target of the main iframe is clicked
-		// make iframe links record in the hash.
+		// For all pages, if a link with a target of the main iframe is clicked...
+		// ...make iframe links record in the hash.
 		$('a[target=main]').click(function(){
 			var target = $(this).attr('href');
 			var winToChange = (window.parent !== window ? window.parent : window);
