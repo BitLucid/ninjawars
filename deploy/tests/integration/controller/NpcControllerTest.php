@@ -23,6 +23,8 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     function tearDown() {
         TestAccountCreateAndDestroy::destroy();
+        $session = SessionFactory::getSession();
+        $session->invalidate();
     }
 
     function testControllerIndexDoesntError() {

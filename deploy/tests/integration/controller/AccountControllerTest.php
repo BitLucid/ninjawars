@@ -13,6 +13,8 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function tearDown() {
+        $session = SessionFactory::getSession();
+        $session->invalidate();
     }
 
     public function testAccountControllerCanInstantiateWithoutError() {

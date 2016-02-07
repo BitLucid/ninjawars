@@ -9,37 +9,50 @@ use NinjaWars\core\control\DojoController;
 use NinjaWars\core\control\SessionFactory;
 
 class DojoControllerTest extends PHPUnit_Framework_TestCase {
-	function setUp() {
+    private $controller;
+
+    public function __construct() {
+        $this->controller = new DojoController();
+    }
+
+    /**
+     */
+	protected function setUp() {
         // Mock the post request.
         $request = new Request([], []);
         RequestWrapper::inject($request);
 		SessionFactory::init(new MockArraySessionStorage());
 	}
 
-	function tearDown() {
+    /**
+     */
+	protected function tearDown() {
         RequestWrapper::inject(new Request([]));
+        $session = SessionFactory::getSession();
+        $session->invalidate();
     }
 
+    /**
+     */
     public function testDojoControllerCanBeInstantiatedWithoutError() {
-        $dojo = new DojoController();
-        $this->assertInstanceOf('NinjaWars\core\control\DojoController', $dojo);
+        $this->assertInstanceOf('NinjaWars\core\control\DojoController', $this->controller);
     }
 
+    /**
+     */
     public function testDojoIndexDoesNotError() {
-        $dojo = new DojoController();
-        $dojo_outcome = $dojo->index();
-        $this->assertNotEmpty($dojo_outcome);
+        $this->assertNotEmpty($this->controller->index());
     }
 
+    /**
+     */
     public function testDojoBuyDimMakDoesNotError() {
-        $dojo = new DojoController();
-        $dojo_outcome = $dojo->buyDimMak();
-        $this->assertNotEmpty($dojo_outcome);
+        $this->assertNotEmpty($this->controller->buyDimMak());
     }
 
+    /**
+     */
     public function testDojoChangeClassDoesNotError() {
-        $dojo = new DojoController();
-        $dojo_outcome = $dojo->changeClass();
-        $this->assertNotEmpty($dojo_outcome);
+        $this->assertNotEmpty($this->controller->changeClass());
     }
 }

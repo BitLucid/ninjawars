@@ -13,6 +13,8 @@ class NinjamasterControllerTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function tearDown() {
+        $session = SessionFactory::getSession();
+        $session->invalidate();
     }
 
     public function testNinjamasterControllerCanBeInstantiatedWithoutError() {

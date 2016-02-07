@@ -18,6 +18,8 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
     public function tearDown() {
         RequestWrapper::inject(new Request([]));
         TestAccountCreateAndDestroy::purge_test_accounts();
+        $session = SessionFactory::getSession();
+        $session->invalidate();
     }
 
     public function testInstantiateDoshinController() {
