@@ -45,9 +45,8 @@
 	{include file="casino.$part.tpl"}
 {/foreach}
 
-	<form id="coin_flip" class='js-hooked' action="casino.php" method="post" name="coin_flip">
+	<form id="coin_flip" class='js-hooked' action="/casino/bet" method="post" name="coin_flip">
 	  <div>
-	    <input type="hidden" name="command" value="bet">
 		Bet: <input id="bet" type="text" size="3" maxlength="4" name="bet" class="textField">
 		&nbsp;&nbsp;<input type="submit" value="Place bet" class="formButton">
 	  </div>
@@ -58,6 +57,6 @@
 
 
 <nav>
-  <a href="map.php" class="return-to-location block">Return to the Village</a>
+  <a href="/map" class="return-to-location block">Return to the Village</a>
 </nav>
 <script src='{cachebust file="/js/casino.js"}'></script>
