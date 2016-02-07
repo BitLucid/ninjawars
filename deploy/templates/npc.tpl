@@ -17,9 +17,9 @@ You have no turns left today. Buy a amanita mushroom or wait for your turns to r
 <nav class='npcs'>
 {if !$health}
     <p class='ninja-notice death'>
-      You are a ghost. You must resurrect before you may act again. Go to the <a href='shrine.php' class='large'>shrine</a> for the monks to bring you back to life, or <a href='shrine.php?command=heal_and_resurrect' class='large'>heal fully</a>.
+      You are a ghost. You must resurrect before you may act again. Go to the <a href='/shrine' class='large'>shrine</a> for the monks to bring you back to life, or <a href='/shrine/heal_and_resurrect' class='large'>heal fully</a>.
     </p>
 {else}
-	<a href="enemies.php" class='return-to-location block'>Fight something else</a>
+	<a href="/enemies" class='return-to-location block'>Fight something else</a>
 {/if}
 </nav>
