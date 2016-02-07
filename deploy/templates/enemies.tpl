@@ -28,7 +28,7 @@
         {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}
       </span>
       <em title='Level {$loop_enemy.level}'>{$loop_enemy.level}</em>
-      <form name='remove-enemy-form' id='remove-enemy-form' action="enemies.php" method='POST'>
+      <form name='remove-enemy-form' id='remove-enemy-form' action="/enemies" method='POST'>
         <input type='hidden' name='command' value='delete'>
         <input type='hidden' name='remove_enemy' value='{$loop_enemy.player_id|escape}'>
           <button type='submit' class='remove-enemy-button'>
@@ -69,7 +69,7 @@
 </section><!-- End of clearfix section -->
 
 <div id="ninja-enemy" class='solo-box'>
-  <form id="enemy-add" action="enemies.php" method="get" name="enemy_add">
+  <form id="enemy-add" action="/enemies" method="get" name="enemy_add">
     <input type='hidden' name='command' value='search'>
     <input id='enemy-match' required=required type="text" maxlength="50" name="enemy_match" class="textField" placeholder='Search by ninja name' value='{if isset($enemy_match)}{$enemy_match}{/if}'>
     <input type="submit" value="Find Enemies" class="formButton">

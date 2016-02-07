@@ -67,7 +67,7 @@
                   </a>
                 </li>
                 <li id='combat-actions' class='combat'>
-                  <a href='enemies.php' rel='nav' target='main' title='Check up on your enemies and see who recently attacked you.'>
+                  <a href='/enemies' rel='nav' target='main' title='Check up on your enemies and see who recently attacked you.'>
                     <img src='{cachebust file="/images/50pxShuriken.png"}' alt=''  style='width:50px;height:42px'>Fight
                   </a>
                 </li>
