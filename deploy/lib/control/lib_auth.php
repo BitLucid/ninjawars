@@ -5,6 +5,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Check for whether a login and pass match uname/active_email and hash, respectively.
+ *
+ * @return Array|boolean
  */
 function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 	$login = strtolower(sanitize_to_text((string)$dirty_login));
@@ -31,17 +33,18 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 			WHERE (active_email = :login
 					OR lower(uname) = :login)";
 
-		$result = query($sql, array(':login'=>$login, ':pass'=>$pass));
+		$result = query($sql, [':login' => $login, ':pass' => $pass]);
 
 		if ($result->rowCount() < 1) {	// *** No record was found, user does not exist ***
 			update_last_login_failure(potential_account_id_from_login_username($login));
 			return false;
 		} else {
-			if($result->rowCount()>1){
-			// Just for later reference, check for duplicate usernames via:
-			//select array_accum(uname), count(*) from players group by lower(trim(uname)) having count(*) > 1;
+			if ($result->rowCount() > 1) {
+                // Just for later reference, check for duplicate usernames via:
+                //select array_accum(uname), count(*) from players group by lower(trim(uname)) having count(*) > 1;
 				error_log('Case-insensitive duplicate username found: '.$login);
 			}
+
 			return $result->fetch(); // Success, return results.
 		}
 	} else {
@@ -54,6 +57,8 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 /**
  * Actual login!  Performs the login of a user using pre-vetted info!
  * Creates the cookie and session stuff for the login process.
+ *
+ * @return void
  */
 function _login_user($p_username, $p_player_id, $p_account_id) {
 	if (!$p_username || !$p_player_id || !$p_account_id) {
@@ -75,6 +80,8 @@ function _login_user($p_username, $p_player_id, $p_account_id) {
 
 /**
  * Login the user and delegate the setup if login is valid.
+ *
+ * @return array
  */
 function login_user($dirty_user, $p_pass) {
 	// Internal function due to it being insecure otherwise.
@@ -83,7 +90,7 @@ function login_user($dirty_user, $p_pass) {
     }
 
 	$success = false;
-	$login_error   = 'That password/username combination was incorrect.';
+	$login_error = 'That password/username combination was incorrect.';
 	// Just checks whether the username and password are correct.
 	$data = authenticate($dirty_user, $p_pass);
 
@@ -102,12 +109,15 @@ function login_user($dirty_user, $p_pass) {
 		}
 		// The LOGIN FAILURE case occurs here, and is the default.
 	}
+
 	// *** Return array of return values ***
-	return array('success' => $success, 'login_error' => $login_error);
+	return ['success' => $success, 'login_error' => $login_error];
 }
 
 /**
  * Login a user via a pre-authenticated oauth id.
+ *
+ * @return array
  */
 function login_user_by_oauth($oauth_id, $oauth_provider){
 	$account_info = query_row('select players.player_id, players.uname, accounts.account_id
@@ -115,30 +125,44 @@ function login_user_by_oauth($oauth_id, $oauth_provider){
 		left join accounts on accounts.account_id = account_players._account_id
 		where accounts.oauth_provider = :oauth_provider and accounts.oauth_id = :oauth_id and accounts.operational limit 1',
 		array(':oauth_provider'=>$oauth_provider, ':oauth_id'=>$oauth_id));
-	$username = $account_info['uname'];
-	$player_id = $account_info['player_id'];
-	$account_id = $account_info['account_id'];
-	$success = false;
-	$login_error = 'Sorry, that '.$oauth_provider.' account is not yet connected to a ninjawars account.';
-	if($username && $player_id && $account_id){
+
+	$username    = $account_info['uname'];
+	$player_id   = $account_info['player_id'];
+	$account_id  = $account_info['account_id'];
+	$success     = false;
+	$login_error = "Sorry, that $oauth_provider account is not yet connected to a ninjawars account.";
+
+	if ($username && $player_id && $account_id) {
 		_login_user($username, $player_id, $account_id);
-		$success = true;
+		$success     = true;
 		$login_error = null;
 	}
-	return array('success' => $success, 'login_error' => $login_error);
+
+	return ['success' => $success, 'login_error' => $login_error];
 }
 
 /**
  * Add oauth to an account.
+ *
+ * @return boolean
  */
-function add_oauth_to_account($account_id, $oauth_id, $oauth_provider='facebook'){
-	$res = query('update accounts set oauth_id = :oauth_id, oauth_provider = :oauth_provider where account_id = :account_id',
-		array(':oauth_id'=>$oauth_id, ':oauth_provider'=>$oauth_provider, ':account_id'=>$account_id));
-	return ($res->rowCount()>0);
+function add_oauth_to_account($account_id, $oauth_id, $oauth_provider='facebook') {
+    $res = query(
+        'update accounts set oauth_id = :oauth_id, oauth_provider = :oauth_provider where account_id = :account_id',
+        [
+            ':oauth_id'       => $oauth_id,
+            ':oauth_provider' => $oauth_provider,
+            ':account_id'     => $account_id
+        ]
+    );
+
+	return ($res->rowCount() > 0);
 }
 
 /**
  * Sets the last logged in date equal to now.
+ *
+ * @return int
  */
 function update_last_logged_in($char_id) {
 	$update = "UPDATE accounts SET last_login = now() WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :char_id)";
@@ -147,6 +171,8 @@ function update_last_logged_in($char_id) {
 
 /**
  * Sets the last failed login date to now()
+ *
+ * @return int
  */
 function update_last_login_failure($account_id) {
 	$update = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";
@@ -155,6 +181,8 @@ function update_last_login_failure($account_id) {
 
 /**
  * Makes sure that the last login failure was't under a second ago.
+ *
+ * @return boolean
  */
 function last_login_failure_was_recent($account_id) {
 	$query_res = query_item("SELECT CASE WHEN (now() - last_login_failure) < interval '1 second' THEN 1 ELSE 0 END FROM accounts WHERE account_id = :account_id", array(':account_id'=>array($account_id, PDO::PARAM_INT)));
@@ -163,6 +191,8 @@ function last_login_failure_was_recent($account_id) {
 
 /**
  * Pull the account_id for any possible username part of the login.
+ *
+ * @return int
  */
 function potential_account_id_from_login_username($login) {
 	return query_item(
@@ -178,6 +208,8 @@ function potential_account_id_from_login_username($login) {
 
 /**
  * Simple method to check for player id if you're logged in.
+ *
+ * @return int
  */
 function get_logged_in_char_id() {
 	return SessionFactory::getSession()->get('player_id');
@@ -185,6 +217,8 @@ function get_logged_in_char_id() {
 
 /**
  * Get the account_id as logged in.
+ *
+ * @return int
  */
 function account_id() {
 	return SessionFactory::getSession()->get('account_id');
@@ -192,6 +226,8 @@ function account_id() {
 
 /**
  * Pull the account_ids for a certain character
+ *
+ * @return int
  */
 function account_id_by_ninja_id($ninja_id){
 	return query_item('SELECT account_id from accounts JOIN account_players ON account_id = _account_id
@@ -200,29 +236,34 @@ function account_id_by_ninja_id($ninja_id){
 
 /**
  * Check whether two characters have similarities, same account, same ip, etc.
+ *
+ * @return boolean
  */
-function characters_are_linked($char_id, $char_2_id){
-	$account_id = account_id_by_ninja_id($char_id);
-	$account_2_id = account_id_by_ninja_id($char_2_id);
-	$char_1_info = char_info($char_id);
+function characters_are_linked($char_id, $char_2_id) {
+	$account_id    = account_id_by_ninja_id($char_id);
+	$account_2_id  = account_id_by_ninja_id($char_2_id);
+	$char_1_info   = char_info($char_id);
 	$char_1_active = @$char_1_info['active'];
-	$char_2_info = char_info($char_2_id);
+	$char_2_info   = char_info($char_2_id);
 	$char_2_active = @$char_2_info['active'];
-	$server_ip = $_SERVER['SERVER_ADDR'];
-	$allowed_ips = array_merge(['127.0.0.1', $server_ip], Constants::$trusted_proxies);
-	if(empty($account_id) || empty($account_2_id) || empty($char_1_info) || empty($char_2_info)){
+	$server_ip     = $_SERVER['SERVER_ADDR'];
+	$allowed_ips   = array_merge(['127.0.0.1', $server_ip], Constants::$trusted_proxies);
+
+	if (empty($account_id) || empty($account_2_id) || empty($char_1_info) || empty($char_2_info)) {
 		return false;
-	} elseif (!$char_1_active || !$char_2_active){
+	} elseif (!$char_1_active || !$char_2_active) {
 		 // Not both of the potential clones are active.
 		return false;
 	} else {
-		if ($account_id == $account_2_id){
+		if ($account_id == $account_2_id) {
 			error_log('Two accounts were linked ['.$account_id.'] and ['.$account_2_id.']');
 			return true;
 		}
+
 		$account_ip = account_info($account_id, 'last_ip');
 		$account_2_ip = account_info($account_2_id, 'last_ip');
-		if(empty($account_ip) || empty($account_2_ip) || in_array($account_ip, $allowed_ips) || in_array($account_2_ip, $allowed_ips)){
+
+		if (empty($account_ip) || empty($account_2_ip) || in_array($account_ip, $allowed_ips) || in_array($account_2_ip, $allowed_ips)) {
 			// When account ips are empty or equal the server ip, then don't clone kill them.
 			return false;
 		} else {
@@ -244,6 +285,8 @@ function is_logged_in() {
 
 /**
  * Logout function.
+ *
+ * @return void
  */
 function logout_user() {
 	$session = SessionFactory::getSession();
@@ -253,6 +296,8 @@ function logout_user() {
 
 /**
  * Just a simple wrapper to turn the presence of a username format error into a boolean check
+ *
+ * @return boolean
  */
 function username_is_valid($username) {
 	// Check for no error from the username_format_validate function.
@@ -268,10 +313,13 @@ function username_is_valid($username) {
  * A username must be from 3 to 24 characters long
  * A username cannot end in an underscore or dash
  * A username cannot contain 2 consecutive special characters
+ *
+ * @return string|boolean
  */
-function username_format_validate($username){
+function username_format_validate($username) {
 	$error = false;
 	$username = (string) $username;
+
 	if(mb_strlen($username) > UNAME_UPPER_LENGTH){
 		$error = 'Name too long. Must be 3 to 24 characters. ';
 	} elseif(mb_strlen($username) < UNAME_LOWER_LENGTH){
@@ -307,9 +355,12 @@ function username_format_validate($username){
 
 /**
  * Canonical source for own name now.
+ *
+ * @return string
  */
-function self_name(){
+function self_name() {
 	static $self;
+
 	if ($self) {
 		// Self info requested
 		return $self;
@@ -325,12 +376,15 @@ function self_name(){
 
 /**
  * Returns a char name from a char id.
+ *
+ * @return string
  */
 function get_char_name($char_id=null) {
 	if ($char_id === null) {
-		if(defined('DEBUG') && DEBUG && $char_id===null){
+		if (defined('DEBUG') && DEBUG && $char_id === null) {
 			nw_error('Deprecated call to get_char_name(null) with a null argument.  For clarity reasons, this is now deprecated, use self_name() instead.');
 		}
+
 		return self_name();
 	} else {
 		// Determine some other character's username and return it.
@@ -341,44 +395,53 @@ function get_char_name($char_id=null) {
 
 /**
  * Check for own id, migrate to this for calls checking for self.
+ *
+ * @return int
  */
-function self_char_id(){
+function self_char_id() {
 	// Needs to respect logout, so don't cache as a static
 	return get_logged_in_char_id();
 }
 
 /**
  * DEPRECATED: Old named wrapper for get_char_id
+ *
+ * @return int
  */
 function get_user_id($p_name=false) {
-	if(defined('DEBUG') && DEBUG && $p_name===false){
+	if (defined('DEBUG') && DEBUG && $p_name === false) {
 		nw_error('Improper call to get_user_id() with no argument.  For clarity reasons, this is now deprecated, use self_char_id() instead.');
 	}
+
 	return get_char_id($p_name);
 }
 
 /**
  * Return the char id that corresponds with a char name, or the logged in account, if no other source is available.
+ *
+ * @return int|null
  */
 function get_char_id($p_name=false) {
 	if ($p_name === false) {
-		if(defined('DEBUG') && DEBUG){
+		if (defined('DEBUG') && DEBUG){
 			nw_error('Improper call to get_char_id with a null argument.  For clarity reasons, this is now deprecated, use self_char_id() instead.');
+
 		}
 		return self_char_id(); // TODO: Remove this use case, it's troublesome.
 	} else {
-		if($p_name){
+		if ($p_name) {
 			$sql = "SELECT player_id FROM players WHERE lower(uname) = :find";
 			return query_item($sql, array(':find'=>strtolower($p_name)));
 		} else {
 			return null; // a blank name came in, or a name
 		}
-
 	}
 }
 
 /**
  * Get the ninja id for a ninja name
+ *
+ * @return int
  */
 function ninja_id($name){
 	$find = 'select player_id from players where lower(uname) = :name';
@@ -387,6 +450,8 @@ function ninja_id($name){
 
 /**
  * Update activity for a logged in player.
+ *
+ * @return void
  */
 function update_activity_log($p_playerID) {
 	// (See update_activity_info in lib_header for the function that updates all the detailed info.)
@@ -401,6 +466,8 @@ function update_activity_log($p_playerID) {
 
 /**
  * Stats on recent activity and other aggregate counts/information.
+ *
+ * @return array
  */
 function membership_and_combat_stats() {
 	DatabaseConnection::getInstance();
