@@ -161,7 +161,7 @@ class DojoController {
     private function dimMakReqs($p_player, $p_requiredTurns, $p_requiredStrength) {
         $error = null;
 
-        if ($player->turns() < $p_requiredTurns) {
+        if ($p_player->turns() < $p_requiredTurns) {
             $error = "You don't have enough turns to get a Dim Mak.";
         }
 
