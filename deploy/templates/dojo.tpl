@@ -76,5 +76,5 @@ table .char-title td{
 {/foreach}
 
 <nav>
-	<a href="map.php" class="return-to-location block">Return to the Village</a>
+	<a href="/map" class="return-to-location block">Return to the Village</a>
 </nav>
