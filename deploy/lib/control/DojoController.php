@@ -189,7 +189,7 @@ class DojoController {
      * @return ViewSpec
      */
     private function accessDenied() {
-        $this->render();
+        return $this->render();
     }
 
     /**
