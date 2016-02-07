@@ -25,8 +25,8 @@ class NpcController { //extends controller
     const ONI_KILL_LOSS              = 1;
     const MIN_LEVEL_FOR_BOUNTY       = 5;
     const MAX_LEVEL_FOR_BOUNTY       = 50;
-    const STATIC_NPCS                = ['peasant', 'thief', 'merchant', 'guard', 'samurai'];
-    const STEALTH_REMOVING_NPCS      = ['samurai', 'oni'];
+    public static $STATIC_NPCS                = ['peasant', 'thief', 'merchant', 'guard', 'samurai'];
+    public static $STEALTH_REMOVING_NPCS      = ['samurai', 'oni'];
 
     private $randomness = null;
 
@@ -272,12 +272,12 @@ class NpcController { //extends controller
         $npc_template   = $error_template; // Error condition by default.
         $ninja_str      = $player->getStrength();
         $npcs           = NpcFactory::npcsData();
-        $possible_npcs  = array_merge(self::STATIC_NPCS, array_keys($npcs));
+        $possible_npcs  = array_merge(self::$STATIC_NPCS, array_keys($npcs));
         $victim         = restrict_to($victim, $possible_npcs); // Filter to only the correct options.
 
         if ($player->turns() > 0 && !empty($victim)) {
             // Strip stealth when attacking special NPCs
-            if ($player->hasStatus('stealth') && in_array(strtolower($victim), self::STEALTH_REMOVING_NPCS)) {
+            if ($player->hasStatus('stealth') && in_array(strtolower($victim), self::$STEALTH_REMOVING_NPCS)) {
                 $player->subtractStatus(STEALTH);
             }
 
