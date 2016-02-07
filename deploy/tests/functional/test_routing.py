@@ -45,8 +45,10 @@ class TestRouting:
 
     def test_urls_should_200(self):
         urls = [
-            'intro', 'staff.php', 'events.php', 'skills.php', 'inventory.php', 'enemies.php', 'list.php', 
-            'clan.php', 'map.php', 'shop.php', 'work.php', 'doshin_office.php', 'dojo.php', 'shrine.php',
+            'intro', 'login.php', 'signup.php', 'player.php', 'village.php', 
+            'interview.php', 'news.php', 'staff.php', 'list.php', 'rules.php', 
+            'shop.php', 'events.php', 'skills.php', 'inventory.php', 'enemies.php',
+            'clan.php', 'map.php', 'work.php', 'doshin_office.php', 'dojo.php', 'shrine.php',
             'duel.php', 'clan.php?command=list', 'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
             'clan.php?command=view', 'npc', 'npc/attack/peasant/', 'npc/attack/guard/',
             'stats.php', 'account.php', 'quest', 'quest/view/1',
