@@ -52,7 +52,7 @@
   </p>
 {elseif $location eq 1}
   <p>
-    <span class="speech">This black mist weather we have today makes it hard to see some things.</span> one of the Doshin tells you as he palms your gold. He then directs you out through a back alley.
+    <span class="speech">This black mist weather we have today makes it hard to see some things,</span> one of the Doshin tells you as he palms your gold. He then directs you out through a back alley.
   </p>
   <p>
     You find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.
@@ -81,15 +81,15 @@
     <div class='ninja-info'>You have a {$myBounty|number_format:0|escape} gold bounty on your head.</div>
   </div>
 
-<form id="bribe_form" action="doshin_office.php" method="post" name="bribe_form" class='half-column'>
-  Bribe down your own bounty: <input id="bribe" type="text" size="4" maxlength="6" name="bribe" class="textField" required=required>
-  <input id="command" type="submit" value="Bribe" name="command" class="formButton">
+<form id="bribe_form" action="/doshin/bribe" method="post" name="bribe_form" class='half-column'>
+  Bribe down your own bounty: <input id="bribe" type="text" size="4" maxlength="6" name="bribe" class="textField" required="required">
+  <input id="command" type="submit" value="Bribe" class="formButton">
 </form>
 {/if}
 
-<form action="" class='half-column'>
-  Offer <input type="text" name="amount" value="{$amount|default:''|escape}" size="4" class="textField" required=required> bounty on: <input type="text" name="target" value="{$target|default:''|escape}" class="textField">
-  <input id="submit-bounty" type="submit" value="Offer Bounty" name="command" class="formButton" required=required>
+<form action="/doshin/offerBounty" class='half-column'>
+  Offer <input type="text" name="amount" value="{$amount|default:''|escape}" size="4" class="textField" required="required"> bounty on: <input type="text" name="target" value="{$target|default:''|escape}" class="textField">
+  <input id="submit-bounty" type="submit" value="Offer Bounty" class="formButton" required="required">
 </form>
 
 {if count($bounties) gt 0}
