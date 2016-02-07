@@ -117,7 +117,7 @@
 
   <p>
     <span class="brownHeading">I need turns, where can I get them?</span><br>
-    You can <a href='/inventory'>use amanita mushrooms</a> once you buy some from the <a href='shop.php'>shop</a> with gold, or wait for the half-hour and you will receive a few turns automatically (more if you have the <a href='skills.php'>"speed" skill</a>).
+    You can <a href='/inventory'>use amanita mushrooms</a> once you buy some from the <a href='shop.php'>shop</a> with gold, or wait for the half-hour and you will receive a few turns automatically (more if you have the <a href='skill'>"speed" skill</a>).
   </p>
 
   <p>
@@ -137,7 +137,7 @@
 
   <p>
     <span class="brownHeading">How do I use my skills?</span><br>
-    Different Ninjas have different <a href="skills.php">skills</a> based on your ninja color (red, white, blue, black, and gray).  Either click the <a href='skills.php'>Skills</a> link from the menu for any skills that you can use on yourself, or find an enemy ninja's profile page and click a skill to use it on them.
+    Different Ninjas have different <a href="/skill">skills</a> based on your ninja color (red, white, blue, black, and gray).  Either click the <a href='/skill'>Skills</a> link from the menu for any skills that you can use on yourself, or find an enemy ninja's profile page and click a skill to use it on them.
   </p>
 
   <p>

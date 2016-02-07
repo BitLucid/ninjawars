@@ -97,6 +97,6 @@
 {if $return_to_target}
   <a href="player.php?player_id={$target_id|escape:'url'}" class='return-to-location'>view {$charName}</a>
 {else}
-  <a class='return-to-location' href="skills.php">Skills</a>
+  <a class='return-to-location' href="/skill">Skills</a>
 {/if}
 </div>

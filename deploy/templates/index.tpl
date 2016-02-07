@@ -83,7 +83,7 @@
                   <!--
                   <li><a href="stats.php" rel='nav' target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
                   -->
-                  <li><a href="skills.php" rel='nav' target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
+                  <li><a href="/skill" rel='nav' target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
                   <li><a href="/inventory" rel='nav' target="main" title='Your items and links to use them on yourself.'>Items</a></li>
                   <!-- Profile -->
                   <!-- Settings -->
