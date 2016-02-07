@@ -4,9 +4,9 @@
 
 	<nav class="navigation" rel="nav">
 	<ul class="menu">
-		<li><a href="clan.php?command=list">Clan List</a></li>
+		<li><a href="/clan/list">Clan List</a></li>
 	{if $myClan}
-		<li><a href="clan.php?command=view&amp;clan_id={$myClan->getID()|escape}">My Clan</a></li>
+		<li><a href="/clan/view?clan_id={$myClan->getID()|escape}">My Clan</a></li>
 	{/if}
 	</ul>
 	</nav>
