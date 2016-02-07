@@ -78,6 +78,7 @@ class AttackLegal {
     /**
      * Return true on matching ip characteristics.
      *
+     * @todo cleanup the allowable IP addresses logic
      * @return boolean
      */
     public function sameDomain(Player $target, Player $self) {

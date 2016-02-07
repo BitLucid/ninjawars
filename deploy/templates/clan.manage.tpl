@@ -3,7 +3,7 @@
 </div>
 
 <div>
-	<a href="clan.php?command=edit">
+	<a href="/clan/edit">
 		<button style="height: 75px;display: inline-block;">Manage Your Clan</button>
 	</a>
 </div>

@@ -18,6 +18,8 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
 
 	function tearDown() {
         RequestWrapper::inject(new Request([]));
+        $session = SessionFactory::getSession();
+        $session->invalidate();
     }
 
     public function testShopControllerCanBeInstantiatedWithoutError() {

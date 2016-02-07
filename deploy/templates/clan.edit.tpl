@@ -5,13 +5,11 @@
   <div id="leader-options" style="margin: 0 inherit 0;">
     <ul id="leader-options-list" class="clearfix">
       <li>
-		  <!--<a href="clan.php?command=invite">Recruit for your Clan</a>-->
 {include file="clan.invite.tpl"}
 	  </li>
-      <li><form action="clan.php?command=disband" method="post"><input class="btn btn-warning" type="submit" value="Disband Your Clan"></form></li>
+      <li><form action="/clan/disband" method="post"><input class="btn btn-warning" type="submit" value="Disband Your Clan"></form></li>
       <li>
-		  <!--<a href="clan.php?command=kick">Kick a Clan Member</a>-->
-		  <form id='kick_form' action='clan.php' method='get' name='kick_form'>
+		  <form id='kick_form' action='/clan/kick' method='get' name='kick_form'>
 			<div>
 				<input type='submit' value='Kick' class='formButton'><br>
 				<select id='kicked' name='kicked'>
@@ -23,7 +21,6 @@
 	{/if}
 {/foreach}
 				</select>
-				<input id='command' type='hidden' value='kick' name='command'>
 			</div>
 		</form>
 	  </li>
@@ -31,8 +28,7 @@
 
     <div class="glassbox" style="text-align: left;">
       <h3>Change Clan Details</h3>
-      <form action="clan.php" name="avatar_and_message">
-        <input type="hidden" name="command" value="update">
+      <form action="/clan/update" name="avatar_and_message">
 		<div>
 		  <p>
 		    <strong>Clan Name:</strong> <input id="new_clan_name" type="text" name="new_clan_name" class="textField" {literal}pattern="[A-Za-z0-9_- ]{3,24}"{/literal} required value="{$clan->getName()|escape}">

@@ -72,6 +72,8 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     function tearDown() {
         // Delete test user.
         TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
+        $session = SessionFactory::getSession();
+        $session->invalidate();
     }
 
     /**

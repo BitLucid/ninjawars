@@ -164,7 +164,7 @@ class ClanController { //extends Controller
 	public function create() {
 		$player = new Player(self_char_id());
 
-		if ($player->level() >= ClanController::CLAN_CREATOR_MIN_LEVEL) {
+		if ($player->level() >= self::CLAN_CREATOR_MIN_LEVEL) {
 			$default_clan_name = 'Clan '.$player->name();
 
 			while (!is_unique_clan_name($default_clan_name)) {
@@ -183,7 +183,7 @@ class ClanController { //extends Controller
 			];
 		} else {
 			$parts = [
-				'error'     => 'You do not have enough renown to create a clan. You must be at least level '.ClanController::CLAN_CREATOR_MIN_LEVEL.'.',
+				'error'     => 'You do not have enough renown to create a clan. You must be at least level '.self::CLAN_CREATOR_MIN_LEVEL.'.',
 				'title'     => 'You cannot create a clan yet',
 				'clans'     => clans_ranked(),
 				'pageParts' => [
@@ -293,6 +293,7 @@ class ClanController { //extends Controller
 	/**
 	 * Edits clan metadata
 	 *
+     * @todo accumulate error messages
 	 * @param string $clan-avatar-url A url to an image to use as the clan icon
 	 * @param string $clan-description A single paragraph describing the clan
 	 * @param string $new_clan_name The desired new name of the clan
@@ -347,7 +348,6 @@ class ClanController { //extends Controller
 			$clan->setDescription($new_clan_description);
 		}
 
-		///TODO accumulate error messages
 		return $this->render([
 			'action_message' => 'Your clan has been updated.',
 			'title'          => 'Edit your clan',
@@ -561,7 +561,7 @@ class ClanController { //extends Controller
 		$p_parts['player'] = new Player(self_char_id());
 		$p_parts['myClan'] = ($p_parts['player'] ? ClanFactory::clanOfMember($p_parts['player']) : null);
 
-		$p_parts['clan_creator_min_level'] = ClanController::CLAN_CREATOR_MIN_LEVEL;
+		$p_parts['clan_creator_min_level'] = self::CLAN_CREATOR_MIN_LEVEL;
 
 		return [
 			'template' => 'clan.tpl',

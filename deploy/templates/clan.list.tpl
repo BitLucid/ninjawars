@@ -3,7 +3,7 @@
 	<ul>
 {foreach from=$clans key=clan_id item=clan}
 		<li class='clan-tag size{$clan.score}'>
-			<a href='clan.php?command=view&amp;clan_id={$clan_id|escape:'url'}'>{$clan.name|escape}</a>
+			<a href='/clan/view?clan_id={$clan_id|escape:'url'}'>{$clan.name|escape}</a>
 		</li>
 {/foreach}
 	</ul>

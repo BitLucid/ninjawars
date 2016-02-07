@@ -6,17 +6,20 @@ use NinjaWars\core\control\SessionFactory;
 use NinjaWars\core\control\DoshinController;
 
 class DoshinControllerTest extends PHPUnit_Framework_TestCase {
-	public function setUp() {
+    public function setUp() {
         // Mock the post request.
         $request = new Request([], []);
         RequestWrapper::inject($request);
-		SessionFactory::init(new MockArraySessionStorage());
+        $session = SessionFactory::init(new MockArraySessionStorage());
         $this->char = TestAccountCreateAndDestroy::char();
-	}
+        $session->set('player_id', $this->char->id());
+    }
 
-	public function tearDown() {
+    public function tearDown() {
         RequestWrapper::inject(new Request([]));
         TestAccountCreateAndDestroy::purge_test_accounts();
+        $session = SessionFactory::getSession();
+        $session->invalidate();
     }
 
     public function testInstantiateDoshinController() {
@@ -43,17 +46,19 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testDoshinOfferSomeBountyOnATestPlayer() {
-        $target_id = TestAccountCreateAndDestroy::char_id_2();
+        $target_id = TestAccountCreateAndDestroy::create_alternate_testing_account(true);
         $this->char->set_gold(434343);
         $this->char->save();
         $target = new Player($target_id);
+
         $request = new Request([
-            'target'=>$target->name(),
-            'amount'=>600
-            ]);
+            'target' => $target->name(),
+            'amount' => 600
+        ]);
+
         RequestWrapper::inject($request);
 
-        $doshin = new DoshinController($this->char);
+        $doshin = new DoshinController();
         $response = $doshin->offerBounty();
         $new_bounty = (new Player($target->id()))->bounty();
         TestAccountCreateAndDestroy::destroy();
@@ -75,10 +80,10 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 
         $request = new Request([
             'bribe'=>300
-            ]);
+        ]);
         RequestWrapper::inject($request);
 
-        $doshin = new DoshinController($this->char);
+        $doshin = new DoshinController();
         $response = $doshin->bribe();
 
         $pulled_char = new Player($char_id);
@@ -91,7 +96,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertGreaterThan(0, $current_bounty);
     }
 
-    public function testOfferOfBadNegativeBribe(){
+    public function testOfferOfBadNegativeBribe() {
         $request = new Request(['bribe'=>-40]);
         RequestWrapper::inject($request);
 
@@ -102,7 +107,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $initial_health = $this->char->health();
         $this->char->save();
 
-        $doshin = new DoshinController($this->char);
+        $doshin = new DoshinController();
         $response = $doshin->bribe();
         $final_char = new Player($this->char->id());
         $parts = $response['parts'];
@@ -112,5 +117,4 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertLessThan($bounty_set, $modified_bounty);
         $this->assertGreaterThan(0, $modified_bounty);
     }
-
 }

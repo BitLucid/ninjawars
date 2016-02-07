@@ -3,5 +3,5 @@
 </div>
 
 <div>
-	<a href='clan.php?command=leave' id='leave-clan' class='btn btn-danger child'>Leave Current Clan</a>
+	<a href='/clan/leave' id='leave-clan' class='btn btn-danger child'>Leave Current Clan</a>
 </div>

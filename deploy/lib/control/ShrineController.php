@@ -92,8 +92,8 @@ class ShrineController { //extends controller
 			return $this->render([
 				'player'         => $player,
 				'pageParts'      => $pageParts,
-				'killCost'       => ShrineController::RES_COST_KILLS,
-				'turnCost'       => ShrineController::RES_COST_TURNS,
+				'killCost'       => self::RES_COST_KILLS,
+				'turnCost'       => self::RES_COST_TURNS,
 				'has_chi'        => $skillController->hasSkill('Chi', $player->name()),
 			]);
 		} catch (\RuntimeException $e) {
@@ -126,8 +126,8 @@ class ShrineController { //extends controller
 			return $this->render([
 				'pageParts' => $pageParts,
 				'player'    => $player,
-				'killCost'  => ShrineController::RES_COST_KILLS,
-				'turnCost'  => ShrineController::RES_COST_TURNS,
+				'killCost'  => self::RES_COST_KILLS,
+				'turnCost'  => self::RES_COST_TURNS,
 			]);
 		} catch (\RuntimeException $e) {
 			return $this->renderError($e->getMessage(), $player);
@@ -183,13 +183,13 @@ class ShrineController { //extends controller
 
 		if ($player->health() <= 0) {
 			return $this->renderError('You must resurrect before you can heal.', $player);
-		} else if ($player->gold < ShrineController::CURE_COST_GOLD) {
+		} else if ($player->gold < self::CURE_COST_GOLD) {
 			return $this->renderError('You need more gold to remove poison.', $player);
 		} else if (!$player->hasStatus(POISON)) {
 			return $this->renderError('You are not ill.', $player);
 		} else {
 			$player->subtractStatus(POISON);
-			$player->vo->gold = subtract_gold($player->id(), ShrineController::CURE_COST_GOLD);
+			$player->vo->gold = subtract_gold($player->id(), self::CURE_COST_GOLD);
 
 			$pageParts = [
 				'chant',
@@ -267,9 +267,9 @@ class ShrineController { //extends controller
 			}
 
 			if ($costType === self::RES_COST_TYPE_KILL) {
-				$p_player->vo->kills = subtractKills($p_player->id(), ShrineController::RES_COST_KILLS);
+				$p_player->vo->kills = subtractKills($p_player->id(), self::RES_COST_KILLS);
 			} else if ($costType === self::RES_COST_TYPE_TURN) {
-				$p_player->vo->turns = subtractTurns($p_player->id(), min(ShrineController::RES_COST_TURNS, $p_player->turns));
+				$p_player->vo->turns = subtractTurns($p_player->id(), min(self::RES_COST_TURNS, $p_player->turns));
 			}
 
 			return $costType;
@@ -364,9 +364,9 @@ class ShrineController { //extends controller
 	 */
 	private function isResurrectFree($p_player) {
 		return (
-			$p_player->level < ShrineController::FREE_RES_LEVEL_LIMIT
+			$p_player->level < self::FREE_RES_LEVEL_LIMIT
 			&&
-			$p_player->kills < ShrineController::FREE_RES_KILL_LIMIT
+			$p_player->kills < self::FREE_RES_KILL_LIMIT
 		);
 	}
 
@@ -437,9 +437,9 @@ class ShrineController { //extends controller
 		$skillController = new Skill();
 
 		if ($skillController->hasSkill('Chi', $p_player->name())) {
-			$costOfHealPoint = ShrineController::HEAL_POINT_COST/2;
+			$costOfHealPoint = self::HEAL_POINT_COST/2;
 		} else {
-			$costOfHealPoint = ShrineController::HEAL_POINT_COST;
+			$costOfHealPoint = self::HEAL_POINT_COST;
 		}
 
 		return $costOfHealPoint;

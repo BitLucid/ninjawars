@@ -1,4 +1,4 @@
-<form action="clan.php?command=accept&amp;joiner={$joiner->id()|escape:'url'}" method="post">
+<form action="/clan/accept?joiner={$joiner->id()|escape:'url'}" method="post">
   <div>
     <input id="agree" type="hidden" name="agree" value="1">
     <input name="confirmation" type="hidden" value="{$confirmation|escape}">

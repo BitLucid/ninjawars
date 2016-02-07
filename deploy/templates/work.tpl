@@ -32,11 +32,10 @@
 <p>You can earn money by working in the village fields. Field work will exchange turns for gold.</p>
 <div>The current work pay rate is: <span style='color:turquoise;'>1 Turn</span> = <span class='gold'>{$work_multiplier} Gold</span>.</div>
 {if $is_logged_in}
-<form id="work" action="work.php" method="post" name="work">
+<form id="work" action="/work/request_work" method="post" name="work">
   <div>
     Work in the fields for: <input id="worked" type="text" size="3" maxlength="3" name="worked" class="textField">
     <input id="workButton" type="submit" value="Turns" name="workButton" class="formButton">
-    <input type='hidden' name='command' value='request_work'>
   </div>
 </form>
 <p class='gold-count'>
@@ -47,12 +46,12 @@
 
 {else}
 <p>
-To earn pay for your work you must first <a href="signup.php">become a citizen of this village.</a>
+To earn pay for your work you must first <a href="/signup">become a citizen of this village.</a>
 </p>
 {/if}
 
 <nav>
-  <a href="map.php" class="return-to-location block">Return to the Village</a>
+  <a href="/map" class="return-to-location block">Return to the Village</a>
 </nav>
 
 <hr>
