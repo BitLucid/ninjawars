@@ -117,7 +117,7 @@
 
   <p>
     <span class="brownHeading">I need turns, where can I get them?</span><br>
-    You can <a href='inventory.php'>use amanita mushrooms</a> once you buy some from the <a href='shop.php'>shop</a> with gold, or wait for the half-hour and you will receive a few turns automatically (more if you have the <a href='skills.php'>"speed" skill</a>).
+    You can <a href='/inventory'>use amanita mushrooms</a> once you buy some from the <a href='shop.php'>shop</a> with gold, or wait for the half-hour and you will receive a few turns automatically (more if you have the <a href='skills.php'>"speed" skill</a>).
   </p>
 
   <p>
@@ -132,7 +132,7 @@
 
   <p>
     <span class="brownHeading">How do I use items?</span><br>
-    There are two ways.  Either go to your own <a href="inventory.php">Inventory</a>, where you can use stealth scrolls and speed scrolls on you-rself, or go to another ninja's page from the ninja list and then click on the item to use it on them.
+    There are two ways.  Either go to your own <a href="/inventory">Inventory</a>, where you can use stealth scrolls and speed scrolls on you-rself, or go to another ninja's page from the ninja list and then click on the item to use it on them.
   </p>
 
   <p>
