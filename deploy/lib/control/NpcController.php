@@ -479,7 +479,7 @@ class NpcController { //extends controller
                 $this->setThiefCounter($counter+1); // Incremement the current state of the counter.
 
                 if ($counter > 20 && rand(1, 3) == 3) {
-                    // Only after many attacks do you have the chance to be attacked back by the group of theives.
+                    // Only after many attacks do you have the chance to be attacked back by the group of thieves.
                     $this->setThiefCounter(0); // Reset the counter to zero.
                     $group_attack= rand(50, 150);
 
@@ -546,6 +546,7 @@ class NpcController { //extends controller
 
         // Uses a sub-template inside for specific npcs.
         $parts = [
+            'victim'       => $victim, // merge may override in theory
             'npc_template' => $npc_template,
             'attacked'     => 1,
             'turns'        => $player->turns(),
