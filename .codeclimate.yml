@@ -19,6 +19,8 @@ engines:
     checks:
         CleanCode/ElseExpression:
             enabled: false
+        Controversial:
+            enabled: false
   radon:
     enabled: true
 ratings:
