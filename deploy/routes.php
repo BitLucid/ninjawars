@@ -123,6 +123,10 @@ Router::$routes = [
             'view' => 'index'
         ],
     ],
+    'player' => [
+        'type'    => 'controller',
+        'actions' => [],
+    ],
     'rules' => [
         'type'  => 'simple',
         'title' => 'rules',

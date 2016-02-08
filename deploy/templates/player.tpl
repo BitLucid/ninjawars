@@ -37,10 +37,6 @@ article#player-titles{
 </style>
 {/literal}
 
-{if $message}
-    <div id='message-sent' class='ninja-notice'>Message sent</div>
-{/if}
-
 <div class='player-info'>
 
     <h1 class='player-name'>{$player|escape}</h1>
@@ -219,10 +215,9 @@ var combat_skills = {$combat_skills|@json_encode};
       </p>
   {if $display_clan_options}
     <div class='clan-leader-options centered'>
-      <form id="kick_form" class='js-hooked' action="clan.php" method="get" name="kick_form">
+      <form id="kick_form" class='js-hooked' action="/clan/kick" method="get" name="kick_form">
         <div>
           <input id="kicked" type="hidden" value="{$player_info.player_id}" name="kicked">
-          <input id="command" type="hidden" value="kick" name="command">
           <input type="submit" value="Kick This Ninja From Your Clan" class="formButton">
         </div>
       </form>
