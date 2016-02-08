@@ -2,9 +2,9 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\DatabaseConnection;
-use NinjaWars\core\control\SessionFactory;
+use NinjaWars\core\extensions\SessionFactory;
 
-require_once(LIB_ROOT.'control/lib_player.php'); 
+require_once(LIB_ROOT.'control/lib_player.php');
 require_once(LIB_ROOT.'control/lib_status.php');
 
 /**

@@ -2,7 +2,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\control\AccountController;
-use NinjaWars\core\control\SessionFactory;
+use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\environment\RequestWrapper;
 
 class AccountControllerTest extends PHPUnit_Framework_TestCase {

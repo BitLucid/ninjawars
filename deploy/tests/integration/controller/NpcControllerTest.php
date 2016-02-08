@@ -2,7 +2,7 @@
 namespace tests\integration\controller;
 
 use NinjaWars\core\control\NpcController;
-use NinjaWars\core\control\SessionFactory;
+use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;

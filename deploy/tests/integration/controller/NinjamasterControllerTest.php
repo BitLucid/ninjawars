@@ -4,7 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\control\NinjamasterController;
-use NinjaWars\core\control\SessionFactory;
+use NinjaWars\core\extensions\SessionFactory;
 
 class NinjamasterControllerTest extends PHPUnit_Framework_TestCase {
 	function setUp() {
