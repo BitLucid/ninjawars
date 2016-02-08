@@ -185,9 +185,47 @@ function item_effects($item_id){
 }
 
 
-// END OF FUNCTIONS
+// DEPRECATED
+// Add an item using the old display name
+function addItem($who, $item, $quantity = 1) {
+	$item_identity = item_identity_from_display_name($item);
 
+	if ((int)$quantity > 0 && !empty($item) && $item_identity) {
+		add_item(get_char_id($who), $item_identity, $quantity);
+	} else {
+		throw new \Exception('Improper deprecated item addition request made.');
+	}
+}
 
+// Add an item using it's database identity.
+function add_item($char_id, $identity, $quantity = 1) {
+	$quantity = (int)$quantity;
+	if ($quantity > 0 && !empty($identity)) {
+	    $up_res = query_resultset(
+	        "UPDATE inventory SET amount = amount + :quantity
+	            WHERE owner = :char AND item_type = (select item_id from item where item_internal_name = :identity)",
+	        array(':quantity'=>$quantity,
+	            ':char'=>$char_id,
+	            ':identity'=>$identity));
+	    $rows = $up_res->rowCount();
 
+		if (!$rows) { // No entry was present, insert one.
+		    query_resultset("INSERT INTO inventory (owner, item_type, amount)
+		        VALUES (:char, (SELECT item_id FROM item WHERE item_internal_name = :identity), :quantity)",
+		        array(':char'=>$char_id,
+		            ':identity'=>$identity,
+		            ':quantity'=>$quantity));
+		}
+	} else {
+	    throw new \Exception('Invalid item to add to inventory.');
+	}
+}
 
-// Default could be an error later.
+function removeItem($who, $item, $quantity=1) {
+	DatabaseConnection::getInstance();
+	$statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = greatest(0, amount - :quantity) WHERE owner = :user AND item_type = (SELECT item_id FROM item WHERE lower(item_display_name) = lower(:item)) AND amount > 0");
+	$statement->bindValue(':user', $who);
+	$statement->bindValue(':item', $item);
+	$statement->bindValue(':quantity', $quantity);
+	$statement->execute();
+}
