@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\PlayerVO;
+
 class PlayerUnitTest extends PHPUnit_Framework_TestCase {
     private $player;
     private $data;
@@ -62,7 +64,7 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testAsVO() {
-        $this->assertInstanceOf('\PlayerVO', $this->player->as_vo());
+        $this->assertInstanceOf('NinjaWars\core\data\PlayerVO', $this->player->as_vo());
     }
 
     public function testAsArray() {

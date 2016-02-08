@@ -1,5 +1,8 @@
 <?php
+namespace NinjaWars\core\data;
+
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\ValueObject;
 
 abstract class DataAccessObject {
 	protected $m_dbconn; // *** DatabaseConnection object.
@@ -55,7 +58,8 @@ abstract class DataAccessObject {
 		}
 
 		// create new vo and call getFromResult
-		$vo = new $this->_vo_obj_name();
+        $classname = 'NinjaWars\core\data\\'.$this->_vo_obj_name;
+        $vo = new $classname();
 		assert(isset($vo));
 
 		$this->_getFromResult($vo, $data);

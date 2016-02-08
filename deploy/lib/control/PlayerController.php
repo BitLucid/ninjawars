@@ -3,12 +3,12 @@ namespace NinjaWars\core\control;
 
 require_once(LIB_ROOT.'control/lib_inventory.php');
 require_once(LIB_ROOT."control/Skill.php");
-require_once(DB_ROOT."SkillDAO.class.php");
 require_once(LIB_ROOT."control/lib_clan.php");
 require_once(LIB_ROOT."control/lib_player.php");
 
-use NinjaWars\core\data\Message;
 use NinjaWars\core\control\AttackLegal;
+use NinjaWars\core\data\Message;
+use NinjaWars\core\data\SkillDAO;
 use \Player;
 
 class PlayerController {

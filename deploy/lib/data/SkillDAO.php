@@ -1,8 +1,9 @@
 <?php
-use NinjaWars\core\data\DatabaseConnection;
+namespace NinjaWars\core\data;
 
-require_once(DB_ROOT . "DataAccessObject.class.php");
-require_once(DB_ROOT . "SkillVO.class.php");
+use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\DatabaseAccessObject;
+use NinjaWars\core\data\SkillVO;
 
 /*
  * Creates the skill value objects.
@@ -17,7 +18,7 @@ class SkillDAO extends DataAccessObject {
 		$this->m_dbconn = DatabaseConnection::getInstance();
 		$this->_vo_obj_name = 'SkillVO';
 		$this->_vo_fields = array();
-		$vo = new ReflectionClass(new SkillVO());
+		$vo = new \ReflectionClass(new SkillVO());
 		$vo = $vo->getProperties();
 
 		foreach ($vo AS $reflectionProperty)

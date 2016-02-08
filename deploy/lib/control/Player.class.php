@@ -3,12 +3,12 @@ require_once(CORE . "control/Character.php");
 require_once(CORE . "control/lib_status.php");
 require_once(CORE . "control/lib_player.php");
 require_once(CORE . "data/AccountFactory.php");
-require_once(DB_ROOT . "PlayerDAO.class.php");
-require_once(DB_ROOT . "PlayerVO.class.php");
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Clan;
+use NinjaWars\core\data\PlayerDAO;
+use NinjaWars\core\data\PlayerVO;
 
 /* Ninja (actually character) behavior object.
  *

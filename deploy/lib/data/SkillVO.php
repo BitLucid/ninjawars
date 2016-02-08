@@ -1,4 +1,6 @@
 <?php
+namespace NinjaWars\core\data;
+
 /*
  * Value object for holding a skills's data from the database.
  * Fields have to be added here and in the SkillDAO.

@@ -1,4 +1,8 @@
 <?php
+namespace NinjaWars\core\data;
+
+use NinjaWars\core\data\ValueObject;
+
 /*
  * Value object for holding a player's data from the database.
  * Fields have to be added here and in the PlayerDAO.
