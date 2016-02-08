@@ -1,7 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
-use NinjaWars\core\control\SessionFactory;
+use NinjaWars\core\extensions\SessionFactory;
 use \RuntimeException;
 
 // get the quest model shortly

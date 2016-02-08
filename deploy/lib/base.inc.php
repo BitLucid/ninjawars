@@ -31,14 +31,14 @@ require_once(LIB_ROOT.'environment/global_error_handling.php');
 require_once(LIB_ROOT.'control/assignment_functions.php');
 require_once(LIB_ROOT.'control/redirect.php');
 require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
-require_once(LIB_ROOT.'control/Nmail.class.php');
+require_once(LIB_ROOT.'extensions/Nmail.class.php');
 
 // *** Include all common function includes here.
 require_once(LIB_ROOT.'control/lib_input.php');
 require_once(LIB_ROOT.'control/lib_output.php');
 require_once(LIB_ROOT.'data/lib_db.php');
 require_once(TEMPLATE_LIBRARY_PATH); // Require smarty
-require_once(LIB_ROOT.'control/lib_templates.php');
+require_once(LIB_ROOT.'extensions/lib_templates.php');
 
 // Development includes
 if (defined('DEBUG') && DEBUG) {

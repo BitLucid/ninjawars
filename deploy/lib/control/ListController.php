@@ -1,7 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
-use NinjaWars\core\control\SessionFactory;
+use NinjaWars\core\extensions\SessionFactory;
 use \Player as Player;
 
 require_once(LIB_ROOT."control/lib_player_list.php");

@@ -1,6 +1,6 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
-use NinjaWars\core\control\SessionFactory;
+use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

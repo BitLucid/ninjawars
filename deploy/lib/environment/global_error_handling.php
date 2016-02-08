@@ -1,5 +1,5 @@
 <?php
-use NinjaWars\core\control\SessionFactory;
+use NinjaWars\core\extensions\SessionFactory;
 
 function globalExceptionHandler($e) {
 	$msg = "Exception message: ".$e."\r\n\r\n";

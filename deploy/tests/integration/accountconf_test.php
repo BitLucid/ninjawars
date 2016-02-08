@@ -1,7 +1,7 @@
 <?php
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\control\AccountController;
-use NinjaWars\core\control\SessionFactory;
+use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\SignupController;
 
 require_once(LIB_ROOT.'control/lib_auth.php');
