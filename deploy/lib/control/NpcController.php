@@ -17,7 +17,7 @@ class NpcController { //extends controller
     const ALIVE                      = true;
     const PRIV                       = false;
     const HIGH_TURNS                 = 50;
-    const ITEM_DECREASES_GOLD_FACTOR = 0.9;
+    const ITEM_DECREASES_GOLD_DIVISOR = 1.11;
     const ONI_DAMAGE_CAP             = 20;
     const RANDOM_ENCOUNTER_DIVISOR   = 400;
     const SAMURAI_REWARD_DMG         = 100;
@@ -110,14 +110,22 @@ class NpcController { //extends controller
      * The reward for defeating an npc, less if items popped
      *
      * @param Npc $npco
-     * @param boolean $reward_gold
+     * @param boolean $reward_item Any items were rewarded.
      * @return int
      * @note
      * If npc gold explicitly set to 0, reward gold will be totally skipped
+     * "rich" npcs will have a higher gold minimum
      */
-    private function calcRewardGold(Npc $npco, $reward_item) {
-        // Hack a little off reward gold if items received.
-        return ($npco->gold() === 0 ? 0 : ((bool)$reward_item ? floor($npco->gold() * self::ITEM_DECREASES_GOLD_FACTOR) : $npco->gold()));
+    private function calcReceivedGold(Npc $npco, $reward_item) {
+        if($npco->gold() === 0){ // These npcs simply don't give gold.
+            return 0;
+        }
+        // Hack a little off max gold if items received.
+        $divisor = 1;
+        if($reward_item){
+            $divisor = self::ITEM_DECREASES_GOLD_FACTOR;
+        }
+        return rand($npco->min_gold(), floor($npco->gold()/$divisor));
     }
 
     /**
@@ -128,16 +136,14 @@ class NpcController { //extends controller
      * @param Array $npcs
      * @return array [$npc_template, $combat_data]
      */
-    private function attackAbstractNpc($victim, $player, $npcs) {
+    private function attackAbstractNpc($victim, Player $player, $npcs) {
         $npc_stats              = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
         $npco                   = new Npc($npc_stats); // Construct the npc object.
         $display_name           = first_value((isset($npc_stats['name']) ? $npc_stats['name'] : null), ucfirst($victim));
         $status_effect          = (isset($npc_stats['status']) ? $npc_stats['status'] : null);
         // TODO: Calculate and display damage verbs
         $reward_item            = (isset($npc_stats['item']) && $npc_stats['item'] ? $npc_stats['item'] : null);
-        $npc_gold               = (int) (isset($npc_stats['gold']) ? $npc_stats['gold'] : 0);
         $is_quick               = (boolean) ($npco->speed() > $player->speed()); // Beyond basic speed and they see you coming, so show that message.
-        $reward_gold            = $this->calcRewardGold($npco, (bool) $reward_item);
         $bounty_mod             = (isset($npc_stats['bounty']) ? $npc_stats['bounty'] : null);
         $is_weaker              = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
         $is_stronger            = ($npco->strength()) > ($player->strength() * 3); // Npc More than twice as strong?
@@ -161,12 +167,11 @@ class NpcController { //extends controller
         // ******* FIGHT Logic ***********
         $npc_damage = $npco->damage(); // An instance of damage.
         $survive_fight = $player->vo->health = subtractHealth($player->id(), $npc_damage);
-        // TODO: make $armored = $npco->has_trait('armored')? 1 : 0;
         $kill_npc = ($npco->health() < $player->damage());
 
         if ($survive_fight > 0) {
-            // The ninja survived, they'll get gold.
-            $received_gold = rand(floor($reward_gold/5), $reward_gold);
+            // The ninja survived, they get any gold the npc has.
+            $received_gold = $this->calcReceivedGold($npco, (bool) $reward_item);
             add_gold($player->id(), $received_gold);
             $received_display_items = array();
 
@@ -186,12 +191,12 @@ class NpcController { //extends controller
                     $player->vo->level > self::MIN_LEVEL_FOR_BOUNTY &&
                     $player->vo->level <= self::MAX_LEVEL_FOR_BOUNTY
                 ) {
-                    $added_bounty = floor($attacker_level / 3 * $bounty_mod);
+                    $added_bounty = floor($player->level() / 3 * $bounty_mod);
                     addBounty($player->id(), ($added_bounty));
                 }
             }
 
-            $is_rewarded = (bool) $reward_gold || (bool)count($received_display_items);
+            $is_rewarded = (bool) $received_gold || (bool)count($received_display_items);
 
             if (isset($npc_stats['status']) && null !== $npc_stats['status']) {
                 $player->addStatus($npc_stats['status']);
@@ -480,7 +485,7 @@ class NpcController { //extends controller
                 $this->setThiefCounter($counter+1); // Incremement the current state of the counter.
 
                 if ($counter > 20 && rand(1, 3) == 3) {
-                    // Only after many attacks do you have the chance to be attacked back by the group of theives.
+                    // Only after many attacks do you have the chance to be attacked back by the group of thieves.
                     $this->setThiefCounter(0); // Reset the counter to zero.
                     $group_attack= rand(50, 150);
 
@@ -547,6 +552,7 @@ class NpcController { //extends controller
 
         // Uses a sub-template inside for specific npcs.
         $parts = [
+            'victim'       => $victim, // merge may override in theory
             'npc_template' => $npc_template,
             'attacked'     => 1,
             'turns'        => $player->turns(),
