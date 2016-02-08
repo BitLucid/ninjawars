@@ -29,7 +29,6 @@ require_once(LIB_ROOT.'environment/global_error_handling.php');
 
 // Standalone utilities
 require_once(LIB_ROOT.'control/assignment_functions.php');
-require_once(LIB_ROOT.'control/redirect.php');
 require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
 require_once(LIB_ROOT.'extensions/Nmail.class.php');
 
