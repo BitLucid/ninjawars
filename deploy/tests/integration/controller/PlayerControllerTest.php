@@ -29,8 +29,19 @@ class PlayerControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($player_outcome);
     }
 
-    public function testViewSelfPlayerProfile() {
+    public function testViewOtherPlayerProfile() {
         $viewing_char_id = TestAccountCreateAndDestroy::char_id_2();
+        $request = new Request(['player_id'=>$viewing_char_id]);
+        RequestWrapper::inject($request);
+        $sess = SessionFactory::getSession();
+        $sess->set('player_id', $this->char->id());
+        $player = new PlayerController();
+        $player_outcome = $player->index();
+        $this->assertNotEmpty($player_outcome);
+    }
+
+    public function testViewingOfPlayerProfileMyselfViewingOwnProfile() {
+        $viewing_char_id = $this->char->id();
         $request = new Request(['player_id'=>$viewing_char_id]);
         RequestWrapper::inject($request);
         $sess = SessionFactory::getSession();
