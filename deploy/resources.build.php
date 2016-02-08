@@ -12,7 +12,7 @@ define('DATABASE_USER', "postgres");		// *** The user that should connect to the
 define('DATABASE_PASSWORD', "unused_in_build");		// *** The password for the database connection, trust on dev
 define('DATABASE_NAME', "nw");		// *** The name of the database to connect to, nw on dev
 define('OFFLINE', false);				// *** Controls if remote or local resources are used
-define('DEBUG', false);					// *** Shorter debugging constant name, set as false on live.
+define('DEBUG', true);					// *** Shorter debugging constant name, set as false on live.
 define('PROFILE', false);				// *** Whether or not to do performance profiling
 define('DEBUG_ALL_ERRORS', false);	// *** Second debugging level, e.g. email debugging, only works when debug is also on.
 define('SERVER_ROOT', realpath(__DIR__).'/');		// *** The root deployment directory of the game
