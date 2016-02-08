@@ -155,10 +155,6 @@ function addBounty($who, $amount) {
 	return changeBounty($who, $amount);
 }
 
-function subtractBounty($who, $amount) {
-	return changeBounty($who, ((-1)*$amount));
-}
-
 function rewardBounty($bounty_to, $bounty_on) {
 	$bounty = getBounty($bounty_on);
 
