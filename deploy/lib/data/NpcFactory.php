@@ -174,14 +174,14 @@ class NpcFactory {
             'nureonna'=>['name'=>'Nureonna', 'strength'=>30, 'speed'=>50, 'stamina'=>40, 'img'=>'nureonna', 'race'=>'yokai', 'img'=>'nureonna.jpg', 'status'=>POISON, 'inventory'=>['charcoal'=>1], 'traits'=>'poisonous'],
             'tengu'=>['name'=>'Tengu', 'short'=>'is a large winged demon', 'strength'=>70, 'speed'=>20, 'stamina'=>100, 'race'=>'tengu', 'inventory'=>['tetsubo'=>'.05']],
             'ushioni'=>['name'=>'Ushi-Oni', 'strength'=>90, 'stamina'=>130, 'speed'=>50, 'race'=>'ushioni', 'img'=>'ushioni2.jpg'],
-            'ryu'=>['name'=>'Ryu', 'strength'=>150, 'stamina'=>200, 'speed'=>190, 'short'=>'is a serpent-dragon, with the gleam of intelligence in it\'s eyes and the glint of death on it\'s claws',  'img'=>'hokusai-dragon.jpg', 'race'=>'ryu', 'traits'=>'armored'],
+			'ryu'=>['name'=>'Ryu', 'strength'=>150, 'stamina'=>200, 'speed'=>190, 'short'=>'is a serpent-dragon, with the gleam of intelligence in it\'s eyes and the glint of death on it\'s claws',  'img'=>'hokusai-dragon.jpg', 'race'=>'ryu', 'traits'=>'armored,rich'],
         ];
 
         if (defined('DEBUG') && DEBUG) {
             $npcs += [
                 'peasant2'=>['name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>5, 'stamina'=>5, 'speed'=>5, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1, 'traits'=>'villager,sometimes_disguised_ninja', 'inventory'=>['kunai'=>'.01', 'shuriken'=>'.01']],
                 'merchant2'=>['name'=>'Merchant', 'race'=>'human', 'strength'=>10, 'stamina'=>20, 'speed'=>10, 'ki'=>1,
-                'damage'=>15, 'gold'=>50, 'bounty'=>5, 'img'=>'merchant.png', 'inventory'=>['phosphor'=>'.3'], 'traits'=>'villager'],
+                'damage'=>15, 'gold'=>50, 'bounty'=>5, 'img'=>'merchant.png', 'inventory'=>['phosphor'=>'.3'], 'traits'=>'villager,rich'],
                 'guard2'=>['name'=>'Guard', 'short'=>'is a member of the ashigaru foot soldiers, hired for various tasks', 'race'=>'human', 'strength'=>'30', 'stamina'=>30, 'speed'=>12, 'ki'=>1,
                 'damage'=>0, 'gold'=>50, 'bounty'=>10, 'img'=>'guard.png', 'inventory'=>['ginsengroot'=>'.2'], 'traits'=>'partial_match_strength'],
                 'monk'=>['name'=>'Monk', 'strength'=>10, 'stamina'=>10, 'speed'=>10, 'ki'=>30, 'race'=>'human', 'inventory'=>['prayerwheel'=>'.2'], 'traits'=>'deflection,defensive,self_heal'],
@@ -196,7 +196,7 @@ class NpcFactory {
                 'ox'=>['name'=>'Ox', 'short'=>'', 'strength'=>50, 'speed'=>20, 'stamina'=>40, 'damage'=>20, 'race'=>'animal'],
                 'dog'=>['name'=>'Dog', 'short'=>'barks wildly', 'strength'=>20, 'speed'=>20, 'stamina'=>10, 'damage'=>10, 'race'=>'animal'],
                 'tiger'=>['name'=>'Tiger', 'short'=>'circles in for the kill', 'strength'=>60, 'speed'=>60, 'stamina'=>60, 'damage'=>60, 'race'=>'animal'],
-                'basan'=>['name'=>'Basan', 'img'=>'basan.jpg', 'strength'=>1, 'stamina'=>1, 'speed'=>1], // Uses default race of: creature.
+				'basan'=>['name'=>'Basan', 'img'=>'basan.jpg', 'strength'=>1, 'stamina'=>1, 'speed'=>1, 'traits'=>'poisonous'], // Uses default race of: creature.
                 'kamaitachi'=>['name'=>'Kama-itachi', 'img'=>'kamaitachi.jpg', 'race'=>'yokai'],
                 'nuribotoke'=>['name'=>'Nuri-Botoke', 'img'=>'nuribotoke.jpg', 'race'=>'yokai'],
                 'hitodama'=>['name'=>'Hitodama', 'short'=>'are spirit orbs of fire', 'img'=>'hitodama.gif', 'race'=>'kami', 'traits'=>'whispy'],

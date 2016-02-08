@@ -16,6 +16,8 @@ require_once(ROOT . "core/control/Character.php");
  */
 class Npc implements Character{
     private $data;
+    const RICH_MIN_GOLD_DIVISOR = 1.3;
+    const MIN_GOLD = 0; // Could become data driven later
 
     public function __construct($content){
     	if(is_string($content) && trim($content)){
@@ -166,9 +168,16 @@ class Npc implements Character{
     }
 
     /**
-     * Presumably this is modified gold.
-    **/
-    public function gold(){
+     * Max gold
+     */
+    public function gold() {
         return $this->gold;
+    }
+
+    /**
+     * Get min gold for an npc.
+     */
+    public function min_gold() {
+        return (int) ($this->has_trait('rich') ? floor($this->gold()/self::RICH_MIN_GOLD_DIVISOR) : self::MIN_GOLD);
     }
 }
