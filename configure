@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 echo "CC_DIR=./cc/" > CONFIG
+echo "DBNAME=nwdev" >> CONFIG
 
 if [ -f ./composer.phar ]
 then
