@@ -11,7 +11,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     function setUp() {
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         $this->account = AccountFactory::findById($this->account_id);
-        $this->nonce = null;
+        $this->nonce = nonce();
     }
 
     function tearDown() {
