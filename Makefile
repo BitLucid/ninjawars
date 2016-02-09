@@ -54,12 +54,31 @@ dist-clean: clean
 	@rm -rf "$(SRC)resources/"logs/*
 
 db:
+	# Fail on existing database
+	createdb $(DBNAME)
+	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
+	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
 	vendor/bin/propel-gen
 	vendor/bin/propel-gen convert-conf
 	vendor/bin/propel-gen insert-sql
 	vendor/bin/propel-gen . diff migrate
 	vendor/bin/propel-gen . diff migrate
 	vendor/bin/propel-gen om
-	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
-	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
+
+
+db-fixtures:
 	psql $(DBNAME) < ./deploy/sql/fixtures.sql
+
+migration:
+	vendor/bin/propel-gen
+	vendor/bin/propel-gen convert-conf
+	vendor/bin/propel-gen . diff migrate
+	vendor/bin/propel-gen . diff migrate
+	vendor/bin/propel-gen om
+
+python-build:
+	#Switch from python2 to python3
+	rm -rf ${HOME}/.virtualenv
+	virtualenv -p $(which python3) "${HOME}/.virtualenv"
+	# Install python deps with pip
+	pip install -r ./deploy/requirements.txt
