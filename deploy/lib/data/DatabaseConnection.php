@@ -36,6 +36,6 @@ class DatabaseConnection {
 	}
 
 	public function nextSequenceValue($id_field, $table) {
-		return $this->pdo->fetchColumn("SELECT nextval('".$table."_".$id_field."_seq')");
+		return self::$pdo->query("SELECT nextval('".$table."_".$id_field."_seq')")->fetchColumn();
 	}
 }
