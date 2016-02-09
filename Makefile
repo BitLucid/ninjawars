@@ -24,6 +24,9 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery-linkify.min.js" "$(JS)"
 
 test:
+	php deploy/check.php
+	find ./deploy/core/ -iname "*.php" -exec php -l {} \;
+	find ./deploy/www/ -iname "*.php" -exec php -l {} \;
 	@$(TEST_RUNNER) $(CC_FLAG)
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
@@ -90,3 +93,7 @@ python-build:
 	virtualenv -p $(which python3) "${HOME}/.virtualenv"
 	# Install python deps with pip
 	pip install -r ./deploy/requirements.txt
+
+post-test:
+	find ./deploy/cron/ -iname "*.php" -exec php -l {} \;
+	find ./deploy/tests/ -iname "*.php" -exec php -l {} \;
