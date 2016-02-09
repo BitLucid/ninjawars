@@ -76,6 +76,14 @@ migration:
 	vendor/bin/propel-gen . diff migrate
 	vendor/bin/propel-gen om
 
+ci-install: python-build
+	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
+	phpenv local 5.5
+	#precache composer for ci
+	composer install --prefer-source --no-interaction
+
+
+
 python-build:
 	#Switch from python2 to python3
 	rm -rf ${HOME}/.virtualenv
