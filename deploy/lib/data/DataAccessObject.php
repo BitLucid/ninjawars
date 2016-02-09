@@ -118,7 +118,7 @@ abstract class DataAccessObject {
 
 	private function _insert($vo) {
 		// generate id using sequence
-		$new_id = $this->m_dbconn->nextSequenceValue($this->_id_field, $this->_table);
+		$new_id = $this->m_dbconn->nextSequenceValue($this->_id_field, $this->_table_for_saving);
 		assert(is_numeric($new_id));
 
 		// *** Make insert statement.
