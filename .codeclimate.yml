@@ -19,7 +19,7 @@ engines:
     checks:
         CleanCode/ElseExpression:
             enabled: false
-        Controversial:
+        Controversial/CamelCaseParameterName:
             enabled: false
   radon:
     enabled: true
