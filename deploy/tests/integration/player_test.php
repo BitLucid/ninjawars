@@ -259,5 +259,16 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $this->assertEquals(0, $char->health());
     }
 
+
+    public function testNewPlayerSave() {
+        $player = new Player();
+
+        try {
+            $player->save();
+            $this->assertTrue(false, 'Player with no data saved successfully! Bad!');
+        } catch (\PDOException $e) {
+            $this->assertContains('Not null violation', $e->getMessage());
+        }
+    }
 }
 
