@@ -23,21 +23,33 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery-linkify.min.js" "$(JS)"
 
-test:
+
+pre-test:
 	php deploy/check.php
+	# Check for presence of database
+	psql -lqt | cut -d \| -f 1 | grep -qw $(DBNAME)
+
+test:
 	@find ./deploy/core/ -iname "*.php" -exec php -l {} \;
 	@find ./deploy/www/ -iname "*.php" -exec php -l {} \;
 	@$(TEST_RUNNER) $(CC_FLAG)
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
 test-unit:
+	@find ./deploy/core/ -iname "*.php" -exec php -l {} \;
+	@find ./deploy/www/ -iname "*.php" -exec php -l {} \;
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
-test-integration:
+test-integration: pre-test
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
 
 test-functional:
 	python3 -m pytest deploy/tests/functional/
+
+post-test:
+	find ./deploy/cron/ -iname "*.php" -exec php -l {} \;
+	php deploy/cron/*.php
+	find ./deploy/tests/ -iname "*.php" -exec php -l {} \;
 
 clean:
 	@rm -rf "$(SRC)templates/"compiled/*
@@ -105,7 +117,3 @@ python-build:
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
 	# Install python3 deps with pip
 	pip install -r ./deploy/requirements.txt
-
-post-test:
-	find ./deploy/cron/ -iname "*.php" -exec php -l {} \;
-	find ./deploy/tests/ -iname "*.php" -exec php -l {} \;

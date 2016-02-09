@@ -13,8 +13,9 @@ ob_end_clean();
 // How about some includes
 require(SERVER_ROOT.'core/base.inc.php');
 require_once(VENDOR_ROOT.'autoload.php');
+$connected = query_item('select 1 from players limit 1');
 // Reverse return values
-if($out){
+if($out && $connected){
     return 1;
 } else {
     echo "Success";
