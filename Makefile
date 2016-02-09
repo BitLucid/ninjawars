@@ -86,7 +86,7 @@ ci-install: python-build
 	composer install --prefer-source --no-interaction
 	# Set up the resources file, replacing first occurance of strings with their build values
 	sed -i "0,/postgres/{s/postgres/${PG_USER}/}" deploy/resources.build.php
-	sed -i "0,/nwdev/{s/nwdev/${DBNAME}/}" deploy/resources.build.php
+	sed -i "0,/nwdev/{s/nwdev/${DBNAME}/}" CONFIG
 	#eventually that sed should be made to match only the first hit
 	ln -s resources.build.php deploy/resources.php
 	# Set up selenium and web server for browser tests
