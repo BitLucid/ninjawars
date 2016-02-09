@@ -25,8 +25,8 @@ build: dep
 
 test:
 	php deploy/check.php
-	find ./deploy/core/ -iname "*.php" -exec php -l {} \;
-	find ./deploy/www/ -iname "*.php" -exec php -l {} \;
+	@find ./deploy/core/ -iname "*.php" -exec php -l {} \;
+	@find ./deploy/www/ -iname "*.php" -exec php -l {} \;
 	@$(TEST_RUNNER) $(CC_FLAG)
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
@@ -90,8 +90,9 @@ ci-install: python-build
 python-build:
 	#Switch from python2 to python3
 	rm -rf ${HOME}/.virtualenv
-	virtualenv -p $(which python3) "${HOME}/.virtualenv"
-	# Install python deps with pip
+	which python3
+	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
+	# Install python3 deps with pip
 	pip install -r ./deploy/requirements.txt
 
 post-test:
