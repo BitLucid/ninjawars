@@ -84,6 +84,17 @@ ci-install: python-build
 	phpenv local 5.5
 	#precache composer for ci
 	composer install --prefer-source --no-interaction
+	# Set up the resources file, replacing first occurance of strings with their build values
+	sed -i "0,/postgres/{s/postgres/${PG_USER}/}" deploy/resources.build.php
+	sed -i "0,/nwdev/{s/nwdev/${DBNAME}/}" deploy/resources.build.php
+	#eventually that sed should be made to match only the first hit
+	ln -s resources.build.php deploy/resources.php
+	# Set up selenium and web server for browser tests
+	#wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
+	#java -jar selenium-server-standalone-2.42.2.jar > selenium_server_output 2>&1 &
+	ln -s build.properties.tpl build.properties
+	ln -s buildtime.xml.tpl buildtime.xml
+	ln -s connection.xml.tpl connection.xml
 
 
 
