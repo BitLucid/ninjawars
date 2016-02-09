@@ -13,7 +13,7 @@ JS=$(WWW)js/
 -include CONFIG
 
 ifdef NOCOVER
-CC_FLAG=
+	CC_FLAG=
 endif
 
 build: dep
@@ -52,3 +52,14 @@ dist-clean: clean
 	@rm -rf ./vendor/*
 	@rm -rf "$(COMPONENTS)"
 	@rm -rf "$(SRC)resources/"logs/*
+
+db:
+	vendor/bin/propel-gen
+	vendor/bin/propel-gen convert-conf
+	vendor/bin/propel-gen insert-sql
+	vendor/bin/propel-gen . diff migrate
+	vendor/bin/propel-gen . diff migrate
+	vendor/bin/propel-gen om
+	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
+	psql $(DBNAME) < ./deploy/sql/fixtures.sql
+	psql $(DBNAME) < ./rankings-view.sql

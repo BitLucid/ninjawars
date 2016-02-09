@@ -29,7 +29,6 @@ require_once(LIB_ROOT.'environment/global_error_handling.php');
 
 // Standalone utilities
 require_once(LIB_ROOT.'control/assignment_functions.php');
-require_once(LIB_ROOT.'control/redirect.php');
 require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
 require_once(LIB_ROOT.'extensions/Nmail.class.php');
 
@@ -53,9 +52,6 @@ require_once(LIB_ROOT.'control/lib_auth.php'); // Authentication and activity.
 require_once(LIB_ROOT.'control/lib_clan.php'); // Clan functionality.
 
 // Game objects
-require_once(LIB_ROOT . 'data/ValueObject.class.php');
-require_once(LIB_ROOT . 'data/PlayerVO.class.php');
-require_once(LIB_ROOT . 'data/PlayerDAO.class.php');
 require_once(LIB_ROOT . 'control/Player.class.php');
 require_once(LIB_ROOT . 'control/lib_status.php');
 

@@ -1,8 +1,10 @@
 <?php
-require_once(DB_ROOT . "DataAccessObject.class.php");
-require_once(DB_ROOT . "PlayerVO.class.php");
+namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\DataAccessObject;
+use NinjaWars\core\data\PlayerVO;
+use NinjaWars\core\data\ValueObject;
 
 class UnableToSaveException extends \Exception{
 }
@@ -20,7 +22,7 @@ class PlayerDAO extends DataAccessObject {
 		$this->m_dbconn = DatabaseConnection::getInstance();
 		$this->_vo_obj_name = 'PlayerVO';
 		$this->_vo_fields = array();
-		$vo = new ReflectionClass(new PlayerVO());
+		$vo = new \ReflectionClass(new PlayerVO());
 
 		foreach ($vo->getProperties() AS $reflectionProperty){
 			$this->_vo_fields[] = $reflectionProperty->name;

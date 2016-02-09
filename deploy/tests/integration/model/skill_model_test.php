@@ -1,8 +1,7 @@
 <?php
 require_once(ROOT.'core/control/Skill.php');
-require_once(ROOT.'core/data/SkillDAO.class.php');
 
-
+use NinjaWars\core\data\SkillDAO;
 use \Skill as Skill;
 
 

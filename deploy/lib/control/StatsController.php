@@ -3,8 +3,8 @@ namespace NinjaWars\core\control;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\PlayerDAO;
 use \Player;
-use \PlayerDAO;
 
 require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
 require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.
