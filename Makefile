@@ -1,4 +1,4 @@
-.PHONY: test test-integration test-unit clean dep build dist-clean
+.PHONY: install pre-test test test-integration test-unit test-functional post-test clean dep build dist-clean db db-fixtures migration
 
 COMPOSER=./composer.phar
 CC_DIR=./cc
@@ -15,6 +15,8 @@ JS=$(WWW)js/
 ifdef NOCOVER
 	CC_FLAG=
 endif
+
+install: build test-unit db test test-functional
 
 build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
@@ -67,10 +69,13 @@ dist-clean: clean
 	@rm -rf ./vendor/*
 	@rm -rf "$(COMPONENTS)"
 	@rm -rf "$(SRC)resources/"logs/*
+	@echo "Done"
+	@echo "You'll have to dropdb nw yourself."
 
 db:
 	# Fail on existing database
 	createdb $(DBNAME)
+	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO developers;"
 	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
 	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
 	vendor/bin/propel-gen
@@ -91,7 +96,7 @@ migration:
 	vendor/bin/propel-gen . diff migrate
 	vendor/bin/propel-gen om
 
-ci-install: python-build
+ci-pre-configuration: python-build
 	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
 	phpenv local 5.5
 	#precache composer for ci
@@ -108,12 +113,14 @@ ci-install: python-build
 	ln -s buildtime.xml.tpl buildtime.xml
 	ln -s connection.xml.tpl connection.xml
 
-
+ci-install: ci-pre-configuration python-install test-unit db db-fixtures
 
 python-build:
 	#Switch from python2 to python3
 	rm -rf ${HOME}/.virtualenv
 	which python3
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
+
+python-install:
 	# Install python3 deps with pip
 	pip install -r ./deploy/requirements.txt
