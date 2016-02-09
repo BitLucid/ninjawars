@@ -61,5 +61,5 @@ db:
 	vendor/bin/propel-gen . diff migrate
 	vendor/bin/propel-gen om
 	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
+	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
 	psql $(DBNAME) < ./deploy/sql/fixtures.sql
-	psql $(DBNAME) < ./rankings-view.sql
