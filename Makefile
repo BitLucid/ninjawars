@@ -33,14 +33,14 @@ pre-test:
 	psql -lqt | cut -d \| -f 1 | grep -qw $(DBNAME)
 
 test:
-	@find ./deploy/core/ -name "*.php" -exec php -l {} \;
-	@find ./deploy/www/ -name "*.php" -exec php -l {} \;
+	@find ./deploy/core/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+	@find ./deploy/www/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@$(TEST_RUNNER) $(CC_FLAG)
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
 test-unit:
-	@find "./deploy/core/" -name "*.php" -exec php -l {} \;
-	@find "./deploy/www/" -name "*.php" -exec php -l {} \;
+	@find "./deploy/core/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
 test-integration: pre-test
@@ -50,10 +50,10 @@ test-functional:
 	python3 -m pytest deploy/tests/functional/
 
 post-test:
-	find ./deploy/cron/ -iname "*.php" -exec php -l {} \;
+	find ./deploy/cron/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@echo "Running all the deity files, aren't you lucky.";
 	php deploy/cron/*.php
-	find ./deploy/tests/ -iname "*.php" -exec php -l {} \;
+	find ./deploy/tests/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 
 clean:
 	@rm -rf "$(SRC)templates/"compiled/*
