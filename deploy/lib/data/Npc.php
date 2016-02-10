@@ -1,7 +1,9 @@
 <?php
+
+use NinjaWars\core\data\NpcFactory;
+
 require_once(ROOT . "core/control/Character.php");
 require_once ROOT.'lib/data/lib_npc.php'; // Temporarily for the database mocking info.
-require_once ROOT.'lib/data/NpcFactory.php';
 // TODO: Abstract all the unique npc behaviors into the generic system.
 
 /**

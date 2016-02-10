@@ -7,7 +7,7 @@ require_once(LIB_ROOT."data/lib_npc.php");
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
 use \Player;
-use \NpcFactory;
+use NinjaWars\core\data\NpcFactory;
 use \PDO;
 
 /**

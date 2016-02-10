@@ -5,7 +5,7 @@ require_once(LIB_ROOT."control/lib_inventory.php");
 require_once(LIB_ROOT."data/lib_npc.php");
 
 use \Npc;
-use \NpcFactory;
+use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\extensions\SessionFactory;
 use \Player as Player;
 use \Item as Item;

@@ -1,6 +1,9 @@
 <?php
+namespace NinjaWars\core\data;
+
 require_once ROOT.'lib/environment/status_defines.php';
 
+use \Npc;
 
 class InvalidNpcException extends \Exception{}
 
@@ -29,7 +32,7 @@ class NpcFactory{
 		if(array_key_exists($identity, $npcs_data) && !empty($npcs_data[$identity])){
 			NpcFactory::fleshOutFromData($npcs_data[$identity], $npc);
 		} else {
-			throw new \InvalidNpcException('No such npc ['.$identity.'] found to create!');
+			throw new InvalidNpcException('No such npc ['.$identity.'] found to create!');
 		}
 	}
 

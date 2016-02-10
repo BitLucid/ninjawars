@@ -4,6 +4,8 @@
  */
 require_once(ROOT.'core/data/Npc.php');
 
+use NinjaWars\core\data\NpcFactory;
+
 class Npc_Test extends PHPUnit_Framework_TestCase {
     public function testInstantiatingABlankNpc() {
         $npc = new Npc(array());
@@ -261,7 +263,7 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
     }
 
     public function testFleshOutFailure() {
-        $this->setExpectedException('\InvalidNpcException');
+        $this->setExpectedException('NinjaWars\core\data\InvalidNpcException');
         NpcFactory::fleshOut('NotARealNPCByAnyMeans', null);
     }
 }
