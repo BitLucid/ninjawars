@@ -1,5 +1,5 @@
 <?php
-namespace NinjaWars\core\control;
+namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\DatabaseConnection;

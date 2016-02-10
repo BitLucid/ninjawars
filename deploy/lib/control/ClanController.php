@@ -5,7 +5,7 @@ require_once(LIB_ROOT.'control/lib_clan.php');
 
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Message;
-use NinjaWars\core\control\Clan;
+use NinjaWars\core\data\Clan;
 use \Player as Player;
 
 /**

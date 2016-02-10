@@ -3,7 +3,7 @@ require_once(LIB_ROOT.'control/lib_player.php');
 
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\DatabaseConnection;
-use NinjaWars\core\control\Clan;
+use NinjaWars\core\data\Clan;
 
 // ************************************
 // ********** CLAN FUNCTIONS **********
