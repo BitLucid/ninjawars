@@ -25,6 +25,11 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery-linkify.min.js" "$(JS)"
 
+install:
+	touch ./deploy/resources/logs/emails.log
+	chown www-data:adm ./deploy/resources/logs/emails.log
+
+
 all: build test-unit db python-build test test-functional
 
 pre-test:
