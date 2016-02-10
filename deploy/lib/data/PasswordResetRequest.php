@@ -3,8 +3,8 @@ namespace NinjaWars\core\data;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use \Account as Account;
-use \AccountFactory;
+use NinjaWars\core\data\Account;
+use NinjaWars\core\data\AccountFactory;
 use \Nmail as Nmail;
 
 /**

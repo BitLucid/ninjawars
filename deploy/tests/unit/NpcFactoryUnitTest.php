@@ -2,7 +2,9 @@
 /**
  * Mob npcs and their combat behavior for simple attacking on the npc page
  */
-require_once(ROOT.'core/data/Npc.php');
+
+use NinjaWars\core\data\NpcFactory;
+use NinjaWars\core\data\Npc;
 
 class Npc_Test extends PHPUnit_Framework_TestCase {
     public function testInstantiatingABlankNpc() {
@@ -33,13 +35,13 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
     public function testCreateStandardFirefly() {
         assert(defined('DEBUG') && DEBUG);
         $firefly = NpcFactory::create('firefly');
-        $this->assertInstanceOf('Npc', $firefly, 'Firefly creation failed');
+        $this->assertInstanceOf('NinjaWars\core\data\Npc', $firefly, 'Firefly creation failed');
     }
 
     public function testCreateStandardFirefliesPlural() {
         assert(defined('DEBUG') && DEBUG);
         $fireflies = NpcFactory::create('fireflies');
-        $this->assertInstanceOf('Npc', $fireflies, 'Fireflies creation failed');
+        $this->assertInstanceOf('NinjaWars\core\data\Npc', $fireflies, 'Fireflies creation failed');
     }
 
     public function testNpcListHasLotsOfNpcs() {
@@ -261,7 +263,7 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
     }
 
     public function testFleshOutFailure() {
-        $this->setExpectedException('\InvalidNpcException');
+        $this->setExpectedException('NinjaWars\core\data\InvalidNpcException');
         NpcFactory::fleshOut('NotARealNPCByAnyMeans', null);
     }
 }

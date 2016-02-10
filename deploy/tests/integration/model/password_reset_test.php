@@ -2,7 +2,8 @@
 require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
 
 use NinjaWars\core\data\PasswordResetRequest;
-use \Account as Account;
+use NinjaWars\core\data\AccountFactory;
+use NinjaWars\core\data\Account;
 
 class TestPasswordReset extends PHPUnit_Framework_TestCase {
     function setUp() {

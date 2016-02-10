@@ -1,7 +1,7 @@
 <?php
 namespace NinjaWars\core\data;
 
-use NinjaWars\core\control\Clan;
+use NinjaWars\core\data\Clan;
 use \Player;
 
 /**

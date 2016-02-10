@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\PasswordResetRequest;
-use \AccountFactory;
+use NinjaWars\core\data\AccountFactory;
 use \Nmail;
 
 class PasswordController {

@@ -1,7 +1,8 @@
 <?php
 require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
-require_once(ROOT.'core/data/AccountFactory.php');
-require_once(ROOT.'core/data/Account.php');
+
+use NinjaWars\core\data\AccountFactory;
+use NinjaWars\core\data\Account;
 
 class Account_Test extends PHPUnit_Framework_TestCase {
 
@@ -80,7 +81,4 @@ class Account_Test extends PHPUnit_Framework_TestCase {
 		$updated = $account->changePassword('whatever gibberish');
 		$this->assertTrue((bool)$updated);
 	}
-
-
-
 }

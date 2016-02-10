@@ -1,6 +1,6 @@
 <?php
 use NinjaWars\core\data\ClanFactory;
-use NinjaWars\core\control\Clan;
+use NinjaWars\core\data\Clan;
 
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 
@@ -64,7 +64,7 @@ class TestClan extends PHPUnit_Framework_TestCase {
 
     function testFindClanObject() {
         $clan = ClanFactory::find($this->clan_id);
-        $this->assertInstanceOf('NinjaWars\core\control\Clan', $clan);
+        $this->assertInstanceOf('NinjaWars\core\data\Clan', $clan);
         $this->assertEquals($this->clan_id, $clan->getId());
     }
 

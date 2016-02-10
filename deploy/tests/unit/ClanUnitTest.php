@@ -1,5 +1,5 @@
 <?php
-use NinjaWars\core\control\Clan;
+use NinjaWars\core\data\Clan;
 
 class ClanUnitTest extends PHPUnit_Framework_TestCase {
     private $clan;
@@ -24,7 +24,7 @@ class ClanUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testClanConstructor() {
-        $this->assertInstanceOf('NinjaWars\core\control\Clan', $this->clan);
+        $this->assertInstanceOf('NinjaWars\core\data\Clan', $this->clan);
     }
 
     public function testGetFounder() {

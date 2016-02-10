@@ -2,7 +2,6 @@
 require_once(CORE . "control/Character.php");
 require_once(CORE . "control/lib_status.php");
 require_once(CORE . "control/lib_player.php");
-require_once(CORE . "data/AccountFactory.php");
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
