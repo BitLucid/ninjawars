@@ -16,8 +16,6 @@ ifdef NOCOVER
 	CC_FLAG=
 endif
 
-all: build test-unit db python-build test test-functional
-
 build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
@@ -25,6 +23,7 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery-linkify.min.js" "$(JS)"
 
+all: build test-unit db python-build test test-functional
 
 pre-test:
 	php deploy/check.php
@@ -73,14 +72,18 @@ dist-clean: clean
 	@echo "Done"
 	@echo "You'll have to dropdb nw yourself."	
 
-db:
+db-init:
 	# Fail on existing database
 	createdb $(DBNAME)
+	createuser $(DBUSER)
+	psql $(DBNAME) -c "CREATE ROLE developers;"
+	psql $(DBNAME) -c "GRANT ROLE developers to ${DBUSER}"
+
+db:
 	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO developers;"
 	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
 	#psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO developers;"
-	psql $(DBNAME) -c "\d"
 	vendor/bin/propel-gen
 	vendor/bin/propel-gen convert-conf
 	vendor/bin/propel-gen insert-sql
@@ -126,6 +129,6 @@ python-install:
 	# Install python3 deps with pip
 	pip install -r ./deploy/requirements.txt
 
-ci: ci-pre-configure python-install test-unit db db-fixtures
+ci: build ci-pre-configure python-install test-unit db-init db db-fixtures
 
 ci-test: pre-test test post-test
