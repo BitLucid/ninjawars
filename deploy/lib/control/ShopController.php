@@ -3,7 +3,7 @@ namespace NinjaWars\core\control;
 
 require_once(CORE.'/control/lib_inventory.php');
 
-use \Item as Item;
+use NinjaWars\core\data\Item;
 
 /**
  * Handles all user actions related to the in-game Shop

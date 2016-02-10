@@ -1,6 +1,10 @@
 <?php
+namespace NinjaWars\core\data;
 
 require_once ROOT.'core/control/lib_inventory.php';
+
+use \Player;
+use \PDO;
 
 // Managing items like shuriken, dimmak
 class Item {

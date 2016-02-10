@@ -1,7 +1,5 @@
 <?php
-// lib_inventory.php
-
-require_once(ROOT.'core/data/Item.php'); // Require the item object.
+use NinjaWars\core\data\Item;
 
 use NinjaWars\core\data\DatabaseConnection;
 
