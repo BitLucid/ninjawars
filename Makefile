@@ -139,6 +139,6 @@ python-install:
 	# Install python3 deps with pip
 	pip install -r ./deploy/requirements.txt
 
-ci: build ci-pre-configure python-install test-unit db-init db db-fixtures
+ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
 
 ci-test: pre-test test post-test
