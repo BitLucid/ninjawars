@@ -1,4 +1,4 @@
-.PHONY: install pre-test test test-integration test-unit test-functional post-test clean dep build dist-clean db db-fixtures migration
+.PHONY: all ci pre-test test test-integration test-unit test-functional post-test clean dep build dist-clean db db-fixtures migration
 
 COMPOSER=./composer.phar
 CC_DIR=./cc
@@ -16,7 +16,7 @@ ifdef NOCOVER
 	CC_FLAG=
 endif
 
-install: build test-unit db test test-functional
+all: build test-unit db python-build test test-functional
 
 build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
@@ -32,14 +32,14 @@ pre-test:
 	psql -lqt | cut -d \| -f 1 | grep -qw $(DBNAME)
 
 test:
-	@find ./deploy/core/ -iname "*.php" -exec php -l {} \;
-	@find ./deploy/www/ -iname "*.php" -exec php -l {} \;
+	@find ./deploy/core/ -name "*.php" -exec php -l {} \;
+	@find ./deploy/www/ -name "*.php" -exec php -l {} \;
 	@$(TEST_RUNNER) $(CC_FLAG)
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
 test-unit:
-	@find ./deploy/core/ -iname "*.php" -exec php -l {} \;
-	@find ./deploy/www/ -iname "*.php" -exec php -l {} \;
+	@find "./deploy/core/" -name "*.php" -exec php -l {} \;
+	@find "./deploy/www/" -name "*.php" -exec php -l {} \;
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
 test-integration: pre-test
@@ -50,6 +50,7 @@ test-functional:
 
 post-test:
 	find ./deploy/cron/ -iname "*.php" -exec php -l {} \;
+	@echo "Running all the deity files, aren't you lucky.";
 	php deploy/cron/*.php
 	find ./deploy/tests/ -iname "*.php" -exec php -l {} \;
 
@@ -70,20 +71,25 @@ dist-clean: clean
 	@rm -rf "$(COMPONENTS)"
 	@rm -rf "$(SRC)resources/"logs/*
 	@echo "Done"
-	@echo "You'll have to dropdb nw yourself."
+	@echo "You'll have to dropdb nw yourself."	
 
 db:
 	# Fail on existing database
 	createdb $(DBNAME)
 	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO developers;"
 	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
-	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
+	#psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
+	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO developers;"
+	psql $(DBNAME) -c "\d"
 	vendor/bin/propel-gen
 	vendor/bin/propel-gen convert-conf
 	vendor/bin/propel-gen insert-sql
 	vendor/bin/propel-gen . diff migrate
 	vendor/bin/propel-gen . diff migrate
 	vendor/bin/propel-gen om
+	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
+	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO developers;"
+	psql $(DBNAME) -c "\d" | head -30
 
 
 db-fixtures:
@@ -96,14 +102,13 @@ migration:
 	vendor/bin/propel-gen . diff migrate
 	vendor/bin/propel-gen om
 
-ci-pre-configuration: python-build
+ci-pre-configure:
 	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
 	phpenv local 5.5
 	#precache composer for ci
 	composer install --prefer-source --no-interaction
 	# Set up the resources file, replacing first occurance of strings with their build values
 	sed -i "0,/postgres/{s/postgres/${PG_USER}/}" deploy/resources.build.php
-	sed -i "0,/nwdev/{s/nwdev/${DBNAME}/}" CONFIG
 	#eventually that sed should be made to match only the first hit
 	ln -s resources.build.php deploy/resources.php
 	# Set up selenium and web server for browser tests
@@ -112,10 +117,6 @@ ci-pre-configuration: python-build
 	ln -s build.properties.tpl build.properties
 	ln -s buildtime.xml.tpl buildtime.xml
 	ln -s connection.xml.tpl connection.xml
-
-ci-install: ci-pre-configuration python-install test-unit db db-fixtures
-
-python-build:
 	#Switch from python2 to python3
 	rm -rf ${HOME}/.virtualenv
 	which python3
@@ -124,3 +125,7 @@ python-build:
 python-install:
 	# Install python3 deps with pip
 	pip install -r ./deploy/requirements.txt
+
+ci: ci-pre-configure python-install test-unit db db-fixtures
+
+ci-test: pre-test test post-test

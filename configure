@@ -2,6 +2,8 @@
 
 echo "CC_DIR=./cc/" > CONFIG
 echo "DBNAME=nwdev" >> CONFIG
+echo "DBUSER=ninjamaster" >> CONFIG
+echo "DBCREATINGUSER=kzqai" >> CONFIG
 
 if [ -f ./composer.phar ]
 then

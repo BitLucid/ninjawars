@@ -115,17 +115,6 @@
     <column name="player_id" phpName="PlayerId" type="INTEGER" required="true"/>
     <column name="settings_store" phpName="SettingsStore" type="LONGVARCHAR" required="false"/>
   </table>
-  <table name="class_skill" phpName="ClassSkill" idMethod="native">
-    <column name="_class_id" phpName="ClassId" type="INTEGER" primaryKey="true" required="true"/>
-    <column name="_skill_id" phpName="SkillId" type="INTEGER" primaryKey="true" required="true"/>
-    <column name="class_skill_level" phpName="ClassSkillLevel" type="INTEGER" required="false"/>
-    <foreign-key foreignTable="class" name="class_skill__class_id_fkey" onDelete="CASCADE" onUpdate="CASCADE">
-      <reference local="_class_id" foreign="class_id"/>
-    </foreign-key>
-    <foreign-key foreignTable="skill" name="class_skill__skill_id_fkey" onDelete="CASCADE" onUpdate="CASCADE">
-      <reference local="_skill_id" foreign="skill_id"/>
-    </foreign-key>
-  </table>
   <table name="skill" phpName="Skill" idMethod="native">
     <column name="skill_id" phpName="SkillId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="skill_level" phpName="SkillLevel" type="INTEGER" required="true" defaultValue="1"/>
@@ -139,6 +128,17 @@
     <unique name="skill_skill_internal_name_key">
       <unique-column name="skill_internal_name"/>
     </unique>
+  </table>
+  <table name="class_skill" phpName="ClassSkill" idMethod="native">
+    <column name="_class_id" phpName="ClassId" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="_skill_id" phpName="SkillId" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="class_skill_level" phpName="ClassSkillLevel" type="INTEGER" required="false"/>
+    <foreign-key foreignTable="class" name="class_skill__class_id_fkey" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="_class_id" foreign="class_id"/>
+    </foreign-key>
+    <foreign-key foreignTable="skill" name="class_skill__skill_id_fkey" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="_skill_id" foreign="skill_id"/>
+    </foreign-key>
   </table>
   <table name="news" phpName="News" idMethod="native">
     <column name="news_id" phpName="NewsId" type="INTEGER" autoIncrement="true" required="true" primaryKey="true"/>
