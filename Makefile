@@ -133,6 +133,7 @@ ci-pre-configure:
 	rm -rf ${HOME}/.virtualenv
 	which python3
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
+	composer config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
 
 python-install:
 	# Install python3 deps with pip
