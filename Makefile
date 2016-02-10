@@ -28,6 +28,9 @@ build: dep
 install:
 	touch ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/emails.log
+	touch /var/log/nginx/ninjawars.chat-server.log
+	chown www-data:adm /var/log/nginx/ninjawars.chat-server.log
+	nohup php bin/chat-server.php > /var/log/nginx/ninjawars.chat-server.log 2>&1 &
 
 
 all: build test-unit db python-build test test-functional
