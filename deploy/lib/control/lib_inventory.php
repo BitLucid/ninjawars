@@ -3,6 +3,8 @@
 
 require_once(ROOT.'core/data/Item.php'); // Require the item object.
 
+use NinjaWars\core\data\DatabaseConnection;
+
 // FUNCTIONS
 
 function getItemByID($p_itemID) {
