@@ -1,6 +1,11 @@
 <?php
+namespace NinjaWars\core\data;
+
 require_once(ROOT . "core/control/Character.php");
 require_once(ROOT . "core/data/Account.php");
+
+use \Account;
+use \Character;
 
 /**
  * Create account objects via Factory(ok, actually Repository) object

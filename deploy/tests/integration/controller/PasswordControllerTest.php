@@ -3,6 +3,7 @@ require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
 
 use NinjaWars\core\control\PasswordController;
 use NinjaWars\core\data\PasswordResetRequest;
+use NinjaWars\core\data\AccountFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;

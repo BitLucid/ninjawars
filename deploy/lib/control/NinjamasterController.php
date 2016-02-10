@@ -1,14 +1,13 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT.'data/AccountFactory.php');
 require_once(LIB_ROOT.'control/lib_player_list.php');
 require_once(LIB_ROOT.'control/lib_player.php'); // For player tags
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Player;
 use NinjaWars\core\data\NpcFactory;
-use \AccountFactory;
+use NinjaWars\core\data\AccountFactory;
 use NinjaWars\core\data\AdminViews;
 
 /**
