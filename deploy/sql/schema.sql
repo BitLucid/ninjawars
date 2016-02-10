@@ -1,5 +1,4 @@
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -31,28 +30,6 @@ CREATE TABLE "accounts"
     PRIMARY KEY ("account_id"),
     CONSTRAINT "accounts_account_identity_key" UNIQUE ("account_identity"),
     CONSTRAINT "accounts_active_email_key" UNIQUE ("active_email")
-);
-
-
------------------------------------------------------------------------
--- class
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "class" CASCADE;
-
-CREATE TABLE "class"
-(
-    "class_id" serial NOT NULL,
-    "class_name" TEXT NOT NULL,
-    "class_active" BOOLEAN DEFAULT 't',
-    "class_note" TEXT,
-    "class_tier" INTEGER DEFAULT 1 NOT NULL,
-    "class_desc" TEXT,
-    "class_icon" TEXT,
-    "theme" VARCHAR(255),
-    "identity" VARCHAR(255),
-    PRIMARY KEY ("class_id"),
-    CONSTRAINT "class_class_name_key" UNIQUE ("class_name")
 );
 
 -----------------------------------------------------------------------
@@ -100,6 +77,26 @@ CREATE TABLE "players"
     CONSTRAINT "players_uname_key" UNIQUE ("uname")
 );
 
+-----------------------------------------------------------------------
+-- class
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "class" CASCADE;
+
+CREATE TABLE "class"
+(
+    "class_id" serial NOT NULL,
+    "class_name" TEXT NOT NULL,
+    "class_active" BOOLEAN DEFAULT 't',
+    "class_note" TEXT,
+    "class_tier" INTEGER DEFAULT 1 NOT NULL,
+    "class_desc" TEXT,
+    "class_icon" TEXT,
+    "theme" VARCHAR(255),
+    "identity" VARCHAR(255),
+    PRIMARY KEY ("class_id"),
+    CONSTRAINT "class_class_name_key" UNIQUE ("class_name")
+);
 
 -----------------------------------------------------------------------
 -- account_players
@@ -117,12 +114,139 @@ CREATE TABLE "account_players"
     CONSTRAINT "account_players__player_id_key" UNIQUE ("_player_id")
 );
 
+-----------------------------------------------------------------------
+-- players_flagged
+-----------------------------------------------------------------------
 
+DROP TABLE IF EXISTS "players_flagged" CASCADE;
+
+CREATE TABLE "players_flagged"
+(
+    "players_flagged_id" serial NOT NULL,
+    "player_id" INTEGER,
+    "flag_id" INTEGER,
+    "timestamp" DATE DEFAULT now(),
+    "originating_page" VARCHAR(50),
+    "extra_notes" VARCHAR(100),
+    PRIMARY KEY ("players_flagged_id")
+);
+
+-----------------------------------------------------------------------
+-- ppl_online
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "ppl_online" CASCADE;
+
+CREATE TABLE "ppl_online"
+(
+    "session_id" VARCHAR(255) NOT NULL,
+    "activity" TIMESTAMP DEFAULT now() NOT NULL,
+    "member" BOOLEAN DEFAULT 'f' NOT NULL,
+    "ip_address" VARCHAR(255) DEFAULT '' NOT NULL,
+    "refurl" VARCHAR(255) DEFAULT '' NOT NULL,
+    "user_agent" VARCHAR(255),
+    PRIMARY KEY ("session_id")
+);
+
+-----------------------------------------------------------------------
+-- settings
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "settings" CASCADE;
+
+CREATE TABLE "settings"
+(
+    "setting_id" serial NOT NULL,
+    "player_id" INTEGER NOT NULL,
+    "settings_store" TEXT,
+    PRIMARY KEY ("setting_id")
+);
+
+-----------------------------------------------------------------------
+-- skill
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "skill" CASCADE;
+
+CREATE TABLE "skill"
+(
+    "skill_id" serial NOT NULL,
+    "skill_level" INTEGER DEFAULT 1 NOT NULL,
+    "skill_is_active" BOOLEAN DEFAULT 't',
+    "skill_display_name" TEXT NOT NULL,
+    "skill_internal_name" TEXT NOT NULL,
+    "skill_type" VARCHAR NOT NULL,
+    PRIMARY KEY ("skill_id"),
+    CONSTRAINT "skill_skill_display_name_key" UNIQUE ("skill_display_name"),
+    CONSTRAINT "skill_skill_internal_name_key" UNIQUE ("skill_internal_name")
+);
+
+-----------------------------------------------------------------------
+-- class_skill
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "class_skill" CASCADE;
+
+CREATE TABLE "class_skill"
+(
+    "_class_id" INTEGER NOT NULL,
+    "_skill_id" INTEGER NOT NULL,
+    "class_skill_level" INTEGER,
+    PRIMARY KEY ("_class_id","_skill_id")
+);
+
+-----------------------------------------------------------------------
+-- news
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "news" CASCADE;
+
+CREATE TABLE "news"
+(
+    "news_id" serial NOT NULL,
+    "title" VARCHAR(100) DEFAULT '' NOT NULL,
+    "content" TEXT DEFAULT '' NOT NULL,
+    "created" TIMESTAMP DEFAULT now() NOT NULL,
+    "updated" TIMESTAMP DEFAULT now() NOT NULL,
+    "tags" TEXT DEFAULT '',
+    PRIMARY KEY ("news_id")
+);
+
+CREATE INDEX "news_created_index" ON "news" ("created");
+
+-----------------------------------------------------------------------
+-- password_reset_requests
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "password_reset_requests" CASCADE;
+
+CREATE TABLE "password_reset_requests"
+(
+    "request_id" serial NOT NULL,
+    "_account_id" INTEGER NOT NULL,
+    "nonce" VARCHAR(130) NOT NULL,
+    "created_at" TIMESTAMP DEFAULT now() NOT NULL,
+    "used" BOOLEAN DEFAULT 'f' NOT NULL,
+    PRIMARY KEY ("request_id")
+);
+
+-----------------------------------------------------------------------
+-- account_news
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS "account_news" CASCADE;
+
+CREATE TABLE "account_news"
+(
+    "_account_id" INTEGER NOT NULL,
+    "_news_id" INTEGER NOT NULL,
+    "created_date" TIMESTAMP DEFAULT now() NOT NULL,
+    PRIMARY KEY ("_account_id","_news_id")
+);
 
 -----------------------------------------------------------------------
 -- chat
 -----------------------------------------------------------------------
-
 
 DROP TABLE IF EXISTS "chat" CASCADE;
 
@@ -168,20 +292,6 @@ CREATE TABLE "clan_player"
     "member_level" INTEGER DEFAULT 0 NOT NULL,
     PRIMARY KEY ("_clan_id","_player_id"),
     CONSTRAINT "clan_player__player_id_key" UNIQUE ("_player_id")
-);
-
------------------------------------------------------------------------
--- class_skill
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "class_skill" CASCADE;
-
-CREATE TABLE "class_skill"
-(
-    "_class_id" INTEGER NOT NULL,
-    "_skill_id" INTEGER NOT NULL,
-    "class_skill_level" INTEGER,
-    PRIMARY KEY ("_class_id","_skill_id")
 );
 
 -----------------------------------------------------------------------
@@ -402,38 +512,33 @@ CREATE TABLE "messages"
 CREATE INDEX "messages_date_index" ON "messages" ("date");
 
 -----------------------------------------------------------------------
--- news
+-- quests
 -----------------------------------------------------------------------
 
-DROP TABLE IF EXISTS "news" CASCADE;
+DROP TABLE IF EXISTS "quests" CASCADE;
 
-CREATE TABLE "news"
+CREATE TABLE "quests"
 (
-    "news_id" serial NOT NULL,
-    "title" VARCHAR(100) DEFAULT '' NOT NULL,
-    "content" TEXT DEFAULT '' NOT NULL,
-    "created" TIMESTAMP DEFAULT now() NOT NULL,
-    "updated" TIMESTAMP DEFAULT now() NOT NULL,
-    "tags" TEXT DEFAULT '',
-    PRIMARY KEY ("news_id")
+    "quest_id" serial NOT NULL,
+    "title" VARCHAR(200) DEFAULT '' NOT NULL,
+    "_player_id" INTEGER NOT NULL,
+    "description" TEXT DEFAULT '' NOT NULL,
+    "tags" TEXT DEFAULT '' NOT NULL,
+    "karma" INTEGER DEFAULT 0 NOT NULL,
+    "rewards" TEXT DEFAULT '' NOT NULL,
+    "obstacles" TEXT DEFAULT '' NOT NULL,
+    "proof" TEXT DEFAULT '' NOT NULL,
+    "created_at" TIMESTAMP DEFAULT now() NOT NULL,
+    "updated_at" TIMESTAMP DEFAULT now() NOT NULL,
+    "expires_at" TIMESTAMP DEFAULT now() + interval ' 1 mon ' NOT NULL,
+    "type" INTEGER,
+    "difficulty" INTEGER,
+    PRIMARY KEY ("quest_id")
 );
 
-CREATE INDEX "news_created_index" ON "news" ("created");
+CREATE INDEX "quest_created_at_index" ON "quests" ("created_at");
 
-
------------------------------------------------------------------------
--- account_news
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "account_news" CASCADE;
-
-CREATE TABLE "account_news"
-(
-    "_account_id" INTEGER NOT NULL,
-    "_news_id" INTEGER NOT NULL,
-    "created_date" TIMESTAMP DEFAULT now() NOT NULL,
-    PRIMARY KEY ("_account_id","_news_id")
-);
+CREATE INDEX "quest_title_index" ON "quests" ("title");
 
 -----------------------------------------------------------------------
 -- past_stats
@@ -463,74 +568,6 @@ CREATE TABLE "player_rank"
     PRIMARY KEY ("rank_id")
 );
 
-
------------------------------------------------------------------------
--- players_flagged
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "players_flagged" CASCADE;
-
-CREATE TABLE "players_flagged"
-(
-    "players_flagged_id" serial NOT NULL,
-    "player_id" INTEGER,
-    "flag_id" INTEGER,
-    "timestamp" DATE DEFAULT now(),
-    "originating_page" VARCHAR(50),
-    "extra_notes" VARCHAR(100),
-    PRIMARY KEY ("players_flagged_id")
-);
-
------------------------------------------------------------------------
--- ppl_online
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "ppl_online" CASCADE;
-
-CREATE TABLE "ppl_online"
-(
-    "session_id" VARCHAR(255) NOT NULL,
-    "activity" TIMESTAMP DEFAULT now() NOT NULL,
-    "member" BOOLEAN DEFAULT 'f' NOT NULL,
-    "ip_address" VARCHAR(255) DEFAULT '' NOT NULL,
-    "refurl" VARCHAR(255) DEFAULT '' NOT NULL,
-    "user_agent" VARCHAR(255),
-    PRIMARY KEY ("session_id")
-);
-
------------------------------------------------------------------------
--- settings
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "settings" CASCADE;
-
-CREATE TABLE "settings"
-(
-    "setting_id" serial NOT NULL,
-    "player_id" INTEGER NOT NULL,
-    "settings_store" TEXT,
-    PRIMARY KEY ("setting_id")
-);
-
------------------------------------------------------------------------
--- skill
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "skill" CASCADE;
-
-CREATE TABLE "skill"
-(
-    "skill_id" serial NOT NULL,
-    "skill_level" INTEGER DEFAULT 1 NOT NULL,
-    "skill_is_active" BOOLEAN DEFAULT 't',
-    "skill_display_name" TEXT NOT NULL,
-    "skill_internal_name" TEXT NOT NULL,
-    "skill_type" VARCHAR NOT NULL,
-    PRIMARY KEY ("skill_id"),
-    CONSTRAINT "skill_skill_display_name_key" UNIQUE ("skill_display_name"),
-    CONSTRAINT "skill_skill_internal_name_key" UNIQUE ("skill_internal_name")
-);
-
 -----------------------------------------------------------------------
 -- time
 -----------------------------------------------------------------------
@@ -545,41 +582,10 @@ CREATE TABLE "time"
     PRIMARY KEY ("time_id")
 );
 
-
---
--- Name: rankings; Type: VIEW; Schema: public; Owner: developers
---
-
-CREATE VIEW rankings AS
- SELECT player_rank.rank_id,
-    players.player_id,
-    player_rank.score,
-    players.uname,
-    class.class_name,
-    players.level,
-    (
-        CASE
-            WHEN (players.health = 0) THEN 0
-            ELSE 1
-        END)::boolean AS alive,
-    players.days
-   FROM ((player_rank
-     JOIN players ON ((players.player_id = player_rank._player_id)))
-     JOIN class ON ((class.class_id = players._class_id)))
-  WHERE (players.active = 1)
-  ORDER BY player_rank.rank_id;
-
-
-ALTER TABLE public.rankings OWNER TO developers;
-
---
--- Name: rankings; Type: ACL; Schema: public; Owner: developers
---
-
-REVOKE ALL ON TABLE rankings FROM PUBLIC;
-REVOKE ALL ON TABLE rankings FROM developers;
-GRANT ALL ON TABLE rankings TO developers;
-
+ALTER TABLE "players" ADD CONSTRAINT "players__class_id_fkey"
+    FOREIGN KEY ("_class_id")
+    REFERENCES "class" ("class_id")
+    ON UPDATE CASCADE;
 
 ALTER TABLE "account_players" ADD CONSTRAINT "account_players__account_id_fkey"
     FOREIGN KEY ("_account_id")
@@ -590,6 +596,24 @@ ALTER TABLE "account_players" ADD CONSTRAINT "account_players__account_id_fkey"
 ALTER TABLE "account_players" ADD CONSTRAINT "account_players__player_id_fkey"
     FOREIGN KEY ("_player_id")
     REFERENCES "players" ("player_id")
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+ALTER TABLE "class_skill" ADD CONSTRAINT "class_skill__class_id_fkey"
+    FOREIGN KEY ("_class_id")
+    REFERENCES "class" ("class_id")
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+ALTER TABLE "class_skill" ADD CONSTRAINT "class_skill__skill_id_fkey"
+    FOREIGN KEY ("_skill_id")
+    REFERENCES "skill" ("skill_id")
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+ALTER TABLE "password_reset_requests" ADD CONSTRAINT "pwrr__account_id_fkey"
+    FOREIGN KEY ("_account_id")
+    REFERENCES "accounts" ("account_id")
     ON UPDATE CASCADE
     ON DELETE CASCADE;
 
@@ -614,18 +638,6 @@ ALTER TABLE "clan_player" ADD CONSTRAINT "clan_player__clan_id_fkey"
 ALTER TABLE "clan_player" ADD CONSTRAINT "clan_player__player_id_fkey"
     FOREIGN KEY ("_player_id")
     REFERENCES "players" ("player_id")
-    ON UPDATE CASCADE
-    ON DELETE CASCADE;
-
-ALTER TABLE "class_skill" ADD CONSTRAINT "class_skill__class_id_fkey"
-    FOREIGN KEY ("_class_id")
-    REFERENCES "class" ("class_id")
-    ON UPDATE CASCADE
-    ON DELETE CASCADE;
-
-ALTER TABLE "class_skill" ADD CONSTRAINT "class_skill__skill_id_fkey"
-    FOREIGN KEY ("_skill_id")
-    REFERENCES "skill" ("skill_id")
     ON UPDATE CASCADE
     ON DELETE CASCADE;
 
@@ -677,131 +689,7 @@ ALTER TABLE "messages" ADD CONSTRAINT "messages_send_to_fkey"
     ON UPDATE CASCADE
     ON DELETE CASCADE;
 
-ALTER TABLE "players" ADD CONSTRAINT "players__class_id_fkey"
-    FOREIGN KEY ("_class_id")
-    REFERENCES "class" ("class_id")
+ALTER TABLE "quests" ADD CONSTRAINT "quests__player_id_fkey"
+    FOREIGN KEY ("_player_id")
+    REFERENCES "players" ("player_id")
     ON UPDATE CASCADE;
---
--- PostgreSQL database dump
---
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-
-SET search_path = public, pg_catalog;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- Name: quests; Type: TABLE; Schema: public; Owner: kzqai; Tablespace: 
---
-
-CREATE TABLE quests (
-    quest_id integer NOT NULL,
-    title character varying(200) DEFAULT ''::character varying NOT NULL,
-    description text DEFAULT ''::text NOT NULL,
-    _player_id integer NOT NULL,
-    tags text DEFAULT ''::text,
-    karma integer DEFAULT 0 NOT NULL,
-    rewards text DEFAULT ''::text NOT NULL,
-    obstacles text DEFAULT ''::text NOT NULL,
-    proof text DEFAULT ''::text NOT NULL,
-    expires_at timestamp with time zone NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    type integer,
-    difficulty integer
-);
-
-
-ALTER TABLE public.quests OWNER TO kzqai;
-
---
--- Name: quests_quest_id_seq; Type: SEQUENCE; Schema: public; Owner: kzqai
---
-
-CREATE SEQUENCE quests_quest_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.quests_quest_id_seq OWNER TO kzqai;
-
---
--- Name: quests_quest_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kzqai
---
-
-ALTER SEQUENCE quests_quest_id_seq OWNED BY quests.quest_id;
-
-
---
--- Name: quest_id; Type: DEFAULT; Schema: public; Owner: kzqai
---
-
-ALTER TABLE ONLY quests ALTER COLUMN quest_id SET DEFAULT nextval('quests_quest_id_seq'::regclass);
-
-
-
---
--- Name: quests_pkey; Type: CONSTRAINT; Schema: public; Owner: kzqai; Tablespace: 
---
-
-ALTER TABLE ONLY quests
-    ADD CONSTRAINT quests_pkey PRIMARY KEY (quest_id);
-
-
---
--- Name: quest_created_at_index; Type: INDEX; Schema: public; Owner: kzqai; Tablespace: 
---
-
-CREATE INDEX quest_created_at_index ON quests USING btree (created_at);
-
-
---
--- Name: quest_title_index; Type: INDEX; Schema: public; Owner: kzqai; Tablespace: 
---
-
-CREATE INDEX quest_title_index ON quests USING btree (title);
-
-
---
--- Name: quests__player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kzqai
---
-
-ALTER TABLE ONLY quests
-    ADD CONSTRAINT quests__player_id_fkey FOREIGN KEY (_player_id) REFERENCES players(player_id) ON UPDATE CASCADE;
-
-
---
--- Name: quests; Type: ACL; Schema: public; Owner: kzqai
---
-
-REVOKE ALL ON TABLE quests FROM PUBLIC;
-REVOKE ALL ON TABLE quests FROM kzqai;
-GRANT ALL ON TABLE quests TO kzqai;
-GRANT ALL ON TABLE quests TO ninjamaster;
-
-
---
--- Name: quests_quest_id_seq; Type: ACL; Schema: public; Owner: kzqai
---
-
-REVOKE ALL ON SEQUENCE quests_quest_id_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE quests_quest_id_seq FROM kzqai;
-GRANT ALL ON SEQUENCE quests_quest_id_seq TO kzqai;
-GRANT ALL ON SEQUENCE quests_quest_id_seq TO ninjamaster;
-
-
---
--- PostgreSQL database dump complete
---
-
