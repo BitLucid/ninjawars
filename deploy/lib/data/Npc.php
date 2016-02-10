@@ -1,9 +1,11 @@
 <?php
+namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\NpcFactory;
+use \Character;
+use \Player;
 
 require_once(ROOT . "core/control/Character.php");
-require_once ROOT.'lib/data/lib_npc.php'; // Temporarily for the database mocking info.
 // TODO: Abstract all the unique npc behaviors into the generic system.
 
 /**
@@ -11,7 +13,7 @@ require_once ROOT.'lib/data/lib_npc.php'; // Temporarily for the database mockin
  *  villager npcs could have bounties
  *  npcs can have shared traits that provide special abilities
  *  Generally they are interacted with from the /enemies page
-**/
+ */
 class Npc implements Character{
     private $data;
 
