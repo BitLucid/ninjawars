@@ -77,20 +77,19 @@ db-init:
 	createdb $(DBNAME)
 	createuser $(DBUSER)
 	psql $(DBNAME) -c "CREATE ROLE developers;"
-	psql $(DBNAME) -c "GRANT ROLE developers to ${DBUSER}"
+	psql $(DBNAME) -c "GRANT developers to ${DBUSER}"
+	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO developers;"
 
 db:
 	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO developers;"
 	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
-	#psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
-	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO developers;"
+	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO developers;" 
 	vendor/bin/propel-gen
 	vendor/bin/propel-gen convert-conf
 	vendor/bin/propel-gen insert-sql
-	vendor/bin/propel-gen . diff migrate
-	vendor/bin/propel-gen . diff migrate
-	vendor/bin/propel-gen om
+	vendor/bin/propel-gen . migrate
 	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
+	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO developers;"
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO developers;"
 	psql $(DBNAME) -c "\d" | head -30
 
@@ -109,9 +108,9 @@ ci-pre-configure:
 	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
 	phpenv local 5.5
 	#precache composer for ci
-	composer install --prefer-source --no-interaction
+	composer install --prefer-dist --no-interaction
 	# Set up the resources file, replacing first occurance of strings with their build values
-	sed -i "0,/postgres/{s/postgres/${PG_USER}/}" deploy/resources.build.php
+	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
 	#eventually that sed should be made to match only the first hit
 	ln -s resources.build.php deploy/resources.php
 	# Set up selenium and web server for browser tests

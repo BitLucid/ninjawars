@@ -6,7 +6,7 @@
         <adapter>pgsql</adapter>
         <connection>
           <dsn>pgsql:dbname=nw</dsn>
-          <user>postgres</user>
+          <user>ninjamaster</user>
         </connection>
       </datasource>
     </datasources>
