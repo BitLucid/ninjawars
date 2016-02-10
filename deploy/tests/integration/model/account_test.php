@@ -1,8 +1,8 @@
 <?php
 require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
-require_once(ROOT.'core/data/Account.php');
 
 use NinjaWars\core\data\AccountFactory;
+use NinjaWars\core\data\Account;
 
 class Account_Test extends PHPUnit_Framework_TestCase {
 

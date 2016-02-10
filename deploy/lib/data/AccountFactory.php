@@ -2,9 +2,8 @@
 namespace NinjaWars\core\data;
 
 require_once(ROOT . "core/control/Character.php");
-require_once(ROOT . "core/data/Account.php");
 
-use \Account;
+use NinjaWars\core\data\Account;
 use \Character;
 
 /**

@@ -1,4 +1,5 @@
 <?php
+namespace NinjaWars\core\data;
 
 /**
  * Player Accounts and their info
