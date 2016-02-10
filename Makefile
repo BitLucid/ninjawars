@@ -9,6 +9,8 @@ SRC=./deploy/
 WWW=$(SRC)www/
 COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
+DBROLE=developers
+PROPEL=./vendor/bin/propel-gen
 
 -include CONFIG
 
@@ -70,27 +72,27 @@ dist-clean: clean
 	@rm -rf "$(COMPONENTS)"
 	@rm -rf "$(SRC)resources/"logs/*
 	@echo "Done"
-	@echo "You'll have to dropdb nw yourself."	
+	@echo "You'll have to dropdb $(DBNAME) yourself."
 
 db-init:
 	# Fail on existing database
 	createdb $(DBNAME)
 	createuser $(DBUSER)
-	psql $(DBNAME) -c "CREATE ROLE developers;"
-	psql $(DBNAME) -c "GRANT developers to ${DBUSER}"
-	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO developers;"
+	psql $(DBNAME) -c "CREATE ROLE $(DBROLE);"
+	psql $(DBNAME) -c "GRANT $(DBROLE) to ${DBUSER}"
+	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO $(DBROLE);"
 
 db:
-	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO developers;"
+	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO $(DBROLE);"
 	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
-	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO developers;" 
-	vendor/bin/propel-gen
-	vendor/bin/propel-gen convert-conf
-	vendor/bin/propel-gen insert-sql
-	vendor/bin/propel-gen . migrate
+	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
+	$(PROPEL)
+	$(PROPEL) convert-conf
+	$(PROPEL) insert-sql
+	$(PROPEL) . migrate
 	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
-	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO developers;"
-	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO developers;"
+	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
+	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO $(DBROLE);"
 	psql $(DBNAME) -c "\d" | head -30
 
 
@@ -98,11 +100,11 @@ db-fixtures:
 	psql $(DBNAME) < ./deploy/sql/fixtures.sql
 
 migration:
-	vendor/bin/propel-gen
-	vendor/bin/propel-gen convert-conf
-	vendor/bin/propel-gen . diff migrate
-	vendor/bin/propel-gen . diff migrate
-	vendor/bin/propel-gen om
+	$(PROPEL)
+	$(PROPEL) convert-conf
+	$(PROPEL) . diff migrate
+	$(PROPEL) . diff migrate
+	$(PROPEL) om
 
 ci-pre-configure:
 	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
