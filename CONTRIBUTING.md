@@ -11,7 +11,10 @@
 
 ## Resources
 
-For licensing information (Creative Commons License) read [the ninjawars staff and licensing page](http://www.ninjawars.net/staff.php).
+See our coding style standards doc at:
+https://github.com/BitLucid/ninjawars/blob/master/docs/CODING_STANDARDS
+
+For licensing info (Creative Commons License) read [the ninjawars staff and licensing page](http://www.ninjawars.net/staff.php).
 
 Talk about development on the forum at: 
 [The ninjawars development forum](http://ninjawars.proboards.com/index.cgi?board=Devel1)
