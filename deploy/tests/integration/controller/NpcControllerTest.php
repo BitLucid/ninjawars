@@ -1,6 +1,7 @@
 <?php
 namespace tests\integration\controller;
 
+use \Npc;
 use NinjaWars\core\control\NpcController;
 use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,11 +52,8 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $initial_health = $this->char->health();
         $response = $this->controller->attack();
         $final_char = Player::find($this->char->id());
-        $final_health = $final_char->health();
         $this->assertNotEmpty($response);
         $this->assertEquals('peasant', $response['parts']['victim']);
-        $this->assertGreaterThan(0, $final_health);
-        $this->assertLessThan($initial_health, $final_health);
     }
 
     public function testAttackPeasantWithABountableHighLevelCharacter() {
@@ -74,11 +72,9 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $initial_health = $this->char->health();
         $response = $this->controller->attack();
         $final_char = Player::find($this->char->id());
-        $final_health = $final_char->health();
         $this->assertNotEmpty($response);
         $this->assertEquals('peasant2', $response['parts']['victim']);
-        $this->assertGreaterThan(0, $final_health);
-        $this->assertLessThan($initial_health, $final_health);
+        $this->assertGreaterThan(0, $final_char->health());
     }
 
     public function testControllerAttackAsIfAgainstAMerchant() {
@@ -89,9 +85,14 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testControllerAttackAsIfAgainstAMerchant2() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/merchant2';
+        $init_gold = $this->char->gold();
+        $npco = new Npc('merchant2');
         $response = $this->controller->attack();
+        $final_char = Player::find($this->char->id());
         $this->assertNotEmpty($response);
         $this->assertEquals('merchant2', $response['parts']['victim']);
+        $this->assertGreaterThan(0, $npco->min_gold());
+        $this->assertGreaterThan($init_gold, $final_char->gold());
     }
 
     public function testControllerAttackAsIfAgainstAGuard() {
