@@ -26,18 +26,18 @@ FOLLOW THESE NINJAWARS CODING STANDARDS OR BE RIDICULED:
 
   Use line returns sparingly inside functions, it tends to make the code less readable instead of more readable.
 
-* Variables, functions, and filenames use underscores:
+* Variables, and functions use underscores in snake_case:
 
       $foo_bar = "baz"; // Good
       $fooBar = "baz";  // BAD
 
-* Class names in SnakeCase:
+* Class names in Upper CamelCase:
 
       $foo = new FooBarBaz(); // Good
       $foo = new Foo_Bar_Baz();   // BAD
       $foo = new foo_bar_baz(); // BAD
 
-* Class methods should be camelCase:
+* Class methods should be lower camelCase:
 
       $out = $inst->someMethodName();
 
