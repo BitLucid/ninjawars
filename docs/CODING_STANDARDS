@@ -41,10 +41,17 @@ FOLLOW THESE NINJAWARS CODING STANDARDS OR BE RIDICULED:
 
       $out = $inst->someMethodName();
 
+
 * Function calls:
 
       $foo = bar($baz, $qux);   // Good
       $foo = bar ( $baz,$qux ); // BAD
+
+* Constant defines in SCREAMING_SNAKE_CASE
+
+    const SOME_CLASS_CONSTANT = null; // Good
+    self::SOME_CLASS_CONSTANT * 5; // Good
+    define('MY_BEST_FRIEND', 'alcohol'); // Good
 
 *   A simple summary comment per function and method is a MINIMUM STARTING POINT.
 
