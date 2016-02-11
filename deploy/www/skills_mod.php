@@ -172,7 +172,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			removeItem($user_id, 'ginsengroot', $itemCount);
 			add_item($user_id, 'tigersalve', $itemCount);
 
-			$generic_skill_result_message = 'With intense focus you grind the '.$itemsCount.' roots into potent formulas.';
+			$generic_skill_result_message = 'With intense focus you grind the '.$itemCount.' roots into potent formulas.';
 		} else { // *** no special items, give error message ***
 			$turn_cost = 0;
 			$generic_skill_result_message = 'You do not have the necessary ginsengroots or energy to create any Kampo formulas.';
