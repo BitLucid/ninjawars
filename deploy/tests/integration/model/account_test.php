@@ -1,6 +1,4 @@
 <?php
-require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
-
 use NinjaWars\core\data\AccountFactory;
 use NinjaWars\core\data\Account;
 

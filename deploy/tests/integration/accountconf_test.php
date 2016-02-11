@@ -6,7 +6,6 @@ use NinjaWars\core\control\SignupController;
 
 require_once(LIB_ROOT.'control/lib_auth.php');
 require_once(LIB_ROOT.'control/lib_accounts.php');
-require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
 
 // Note that this file has to have a suffix of ...test.php to be run.
 

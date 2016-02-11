@@ -1,7 +1,4 @@
 <?php
-require_once(realpath(__DIR__.'/../../../').'/resources.php');
-require_once(ROOT.'core/base.inc.php');
-
 use NinjaWars\core\data\Item;
 
 class Item_Test extends PHPUnit_Framework_TestCase {
