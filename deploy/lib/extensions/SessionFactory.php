@@ -32,4 +32,12 @@ class SessionFactory {
 	public static function getSession() {
 		return self::init();
 	}
+
+    public static function annihilate() {
+        if (self::$self) {
+            self::$self->invalidate();
+        }
+
+        self::$self = null;
+    }
 }

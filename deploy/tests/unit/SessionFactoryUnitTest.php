@@ -5,20 +5,16 @@ use NinjaWars\core\extensions\SessionFactory;
 class SessionFactoryUnitTest extends PHPUnit_Framework_TestCase {
     private $session;
 
-    public function setUp() {
-        $this->session = SessionFactory::init(new MockArraySessionStorage());
-    }
-
-    public function tearDown() {
-        $session = SessionFactory::getSession();
-        $session->invalidate();
-    }
-
     public function testInit() {
+        SessionFactory::annihilate();
+        $this->session = SessionFactory::init(new MockArraySessionStorage());
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Session\Session', $this->session);
+        $this->session->invalidate();
     }
 
     public function testGetSession() {
+        $this->session = SessionFactory::init(new MockArraySessionStorage());
         $this->assertSame($this->session, SessionFactory::getSession());
+        $this->session->invalidate();
     }
 }
