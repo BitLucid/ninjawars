@@ -6,7 +6,6 @@ engines:
     enabled: true
     config:
       languages:
-      - ruby
       - javascript
       - python
       - php
@@ -16,11 +15,9 @@ engines:
     enabled: true
   phpmd:
     enabled: true
-    checks:
-        CleanCode/ElseExpression:
-            enabled: false
-        Controversial/CamelCaseParameterName:
-            enabled: false
+    config: "phpmd.xml"
+  pep8:
+    enabled: true
   radon:
     enabled: true
 ratings:
@@ -32,6 +29,5 @@ ratings:
   - "**.module"
   - "**.php"
   - "**.py"
-  - "**.rb"
 exclude_paths:
 - vendor/
