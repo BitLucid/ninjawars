@@ -3,12 +3,12 @@ namespace NinjaWars\core\control;
 
 require_once(LIB_ROOT.'control/lib_inventory.php');
 require_once(LIB_ROOT."control/Skill.php");
-require_once(LIB_ROOT."control/lib_clan.php");
 require_once(LIB_ROOT."control/lib_player.php");
 
 use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\SkillDAO;
+use NinjaWars\core\data\ClanFactory;
 use \Player;
 
 class PlayerController {
@@ -54,7 +54,7 @@ class PlayerController {
                 // Get the player's kills for this date.
                 $kills_today = query_item('select sum(killpoints) from levelling_log where _player_id = :player_id and killsdate = CURRENT_DATE and killpoints > 0', array(':player_id'=>$target_id));
 
-                $viewers_clan       = ($viewing_player_obj !== null ? get_clan_by_player_id($viewing_player_obj->id()) : null);
+                $viewers_clan       = ($viewing_player_obj !== null ? ClanFactory::clanOfMember($viewing_player_obj) : null);
 
                 // Attack Legal section
                 $params          = array('required_turns'=>0, 'ignores_stealth'=>true); // 0 for unstealth.
@@ -94,7 +94,7 @@ class PlayerController {
                 $communication_section  = '';
                 $player_clan_section    = '';
 
-                $clan = get_clan_by_player_id($player_info['player_id']);
+                $clan = ClanFactory::clanOfMember($player_info['player_id']);
                 $same_clan = false;
 
                 $player_info = format_health_percent($player_info);
@@ -102,7 +102,7 @@ class PlayerController {
                 // Player clan and clan members
 
                 if ($clan) {
-                    $viewer_clan  = $viewing_player_obj ? get_clan_by_player_id($viewing_player_obj->id()) : null;
+                    $viewer_clan  = $viewing_player_obj ? ClanFactory::clanOfMember($viewing_player_obj) : null;
                     $clan_members = get_clan_members($clan->getID())->fetchAll(); // TODO - When we switch to Smarty 3, remove fetchAll for foreach
                     $clan_id      = $clan->getID();
                     $clan_name    = $clan->getName();

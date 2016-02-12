@@ -49,7 +49,6 @@ require_once(LIB_ROOT.'control/commands.php');
 require_once(LIB_ROOT.'control/lib_events.php');
 require_once(LIB_ROOT.'control/lib_crypto.php');
 require_once(LIB_ROOT.'control/lib_auth.php'); // Authentication and activity.
-require_once(LIB_ROOT.'control/lib_clan.php'); // Clan functionality.
 
 // Game objects
 require_once(LIB_ROOT . 'control/Player.class.php');

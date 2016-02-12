@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\ClanFactory;
 
 require_once(LIB_ROOT."control/lib_status.php");
 require_once(LIB_ROOT."control/lib_accounts.php");
@@ -295,7 +296,7 @@ function get_clan_members($p_clanID, $p_limit = 30) {
  * Check whether the player is the leader of their clan.
  */
 function is_clan_leader($player_id) {
-	return (($clan = get_clan_by_player_id($player_id)) && $player_id == $clan->getLeaderID());
+	return (($clan = ClanFactory::clanOfMember($player_id)) && $player_id == $clan->getLeaderID());
 }
 
 /**

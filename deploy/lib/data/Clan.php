@@ -105,8 +105,35 @@ class Clan {
         );
     }
 
+    /**
+     * Return only the single clan leader and their information.
+     *
+     * @return array
+     */
     public function getLeaderInfo() {
-        return get_clan_leader_info($this->getID());
+        $clans = $this->getClanLeaders(false);
+        return $clans->fetch();
+    }
+
+    /**
+     * Get the current clan leader or leaders.
+     *
+     * @param int $clan_id
+     * @param boolean $all
+     * @return PDOStatement
+     */
+    public function getClanLeaders($all=false) {
+        $limit = ($all ? '' : ' LIMIT 1');
+        DatabaseConnection::getInstance();
+        $clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
+            FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id = _player_id
+            WHERE active = 1 AND member_level > 0 AND clan_id = :clan ORDER BY member_level DESC, level DESC $limit");
+
+        $clans->bindValue(':clan', $this->getID());
+
+        $clans->execute();
+
+        return $clans;
     }
 
     /**
@@ -302,5 +329,128 @@ class Clan {
         }
 
         return $membersArray;
+    }
+
+    /**
+     * checks that an avatar url is valid
+     *
+     * @param string $dirty_url
+     * @return boolean
+     */
+    public static function clanAvatarIsValid($dirty_url) {
+        if ($dirty_url === '' || $dirty_url === null) {
+            return true;  // Allows for no clan avatar.
+        }
+
+        $is_url = ($dirty_url == filter_var($dirty_url, FILTER_VALIDATE_URL));
+
+        if (!$is_url) {
+            return false;
+        } else {
+            // TODO: Allow ninjawars as a host, and imgur.com as a host as well.
+            $parts = @parse_url($dirty_url);
+            return !!preg_match('#[\w\d]*\.imageshack\.[\w\d]*#i', $parts['host']);
+        }
+    }
+
+    /**
+     * Save the url of the clan avatar to the database.
+     *
+     * @param String $url
+     * @param int $clan_id
+     * @return void
+     */
+    public static function saveClanAvatarUrl($url, $clan_id) {
+        $update = 'UPDATE clan SET clan_avatar_url = :url WHERE clan_id = :clan_id';
+        query_resultset($update, array(':url'=>$url, ':clan_id'=>$clan_id));
+    }
+
+    /**
+     * Save the clan description to the database.
+     *
+     * @return string $desc
+     * @return int $clan_id
+     * @return void
+     */
+    public static function saveClanDescription($desc, $clan_id) {
+        $update = 'UPDATE clan SET description = :desc WHERE clan_id = :clan_id';
+        query_resultset($update, array(':desc'=>$desc, ':clan_id'=>$clan_id));
+    }
+
+    /**
+     *
+     * @param int $p_leaderID
+     * @param String $p_clanName
+     * @return Clan
+     */
+    public static function createClan($p_leaderID, $p_clanName) {
+        DatabaseConnection::getInstance();
+
+        $p_clanName = trim($p_clanName);
+
+        $result = DatabaseConnection::$pdo->query("SELECT nextval('clan_clan_id_seq')");
+        $newClanID = $result->fetchColumn();
+
+        $statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (:clanID, :clanName, :leader)');
+        $statement->bindValue(':clanID', $newClanID);
+        $statement->bindValue(':clanName', $p_clanName);
+        $statement->bindValue(':leader', get_char_name($p_leaderID));
+        $statement->execute();
+
+        $statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 2)');
+        $statement->bindValue(':clanID', $newClanID);
+        $statement->bindValue(':leader', $p_leaderID);
+        $statement->execute();
+
+        return new Clan($newClanID, $p_clanName);
+    }
+
+    /**
+     * Rename a clan
+     *
+     * @param int $p_clanID
+     * @param String $p_newName
+     * @return String
+     * @note
+     * Does not check for validity, simply renames the clan to the new name.
+     */
+    public static function renameClan($p_clanID, $p_newName) {
+        DatabaseConnection::getInstance();
+
+        $statement = DatabaseConnection::$pdo->prepare('UPDATE clan SET clan_name = :name WHERE clan_id = :clan');
+        $statement->bindValue(':name', $p_newName);
+        $statement->bindValue(':clan', $p_clanID);
+        $statement->execute();
+
+        return $p_newName;
+    }
+
+    /**
+     * Unique clan name check, ignores whitespace
+     *
+     * @param String $p_potential
+     * @return boolean
+     */
+    public static function isUniqueClanName($p_potential) {
+        return !(bool)query_row(
+            "SELECT clan_name FROM clan WHERE regexp_replace(clan_name, '[[:space:]]', '', 'g') ~~* regexp_replace(:testName, '[[:space:]]', '', 'g')",
+            [':testName' => $p_potential]
+        );
+    }
+
+    /**
+     * Validates a clan name
+     *
+     * @param String $potential
+     * @return int
+     * @note
+     * Clan name requirements:
+     * Must be at least 3 characters to a max of 24, can only contain:
+     * letters, numbers, non-consecutive spaces, underscores, or dashes.
+     * Must begin and end with non-whitespace characters.
+     */
+    public static function isValidClanName($potential) {
+        $potential = (string)$potential;
+        return preg_match("#^[\da-z_\-]([\da-z_\-]| [\da-z_\-]){2,25}$#i", $potential);
     }
 }

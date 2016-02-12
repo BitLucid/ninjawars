@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT.'control/lib_clan.php');
-
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;
@@ -49,7 +47,7 @@ class ClanController { //extends Controller
 		} else {
 			$parts = [
 				'title'     => 'Clan Not Found',
-				'clans'     => clans_ranked(),
+				'clans'     => ClanFactory::clansRanked(),
 				'error'     => 'The clan you requested does not exist. Pick one from the list below',
 				'pageParts' => [
 					'list',
@@ -144,7 +142,7 @@ class ClanController { //extends Controller
 		return $this->render([
 			'action_message' => 'You have left your clan.',
 			'title'          => 'You have left your clan.',
-			'clans'          => clans_ranked(),
+			'clans'          => ClanFactory::clansRanked(),
 			'pageParts'      => [
 				'reminder-no-clan',
 				'list',
@@ -167,11 +165,11 @@ class ClanController { //extends Controller
 		if ($player->level() >= self::CLAN_CREATOR_MIN_LEVEL) {
 			$default_clan_name = 'Clan '.$player->name();
 
-			while (!is_unique_clan_name($default_clan_name)) {
+			while (!Clan::isUniqueClanName($default_clan_name)) {
 				$default_clan_name = $default_clan_name.rand(1,999);
 			}
 
-			$clan = createClan($player->id(), $default_clan_name);
+			$clan = Clan::createClan($player->id(), $default_clan_name);
 
 			$parts = [
 				'action_message' => 'Your clan was created with the default name: '.$clan->getName().'. Change it below.',
@@ -185,7 +183,7 @@ class ClanController { //extends Controller
 			$parts = [
 				'error'     => 'You do not have enough renown to create a clan. You must be at least level '.self::CLAN_CREATOR_MIN_LEVEL.'.',
 				'title'     => 'You cannot create a clan yet',
-				'clans'     => clans_ranked(),
+				'clans'     => ClanFactory::clansRanked(),
 				'pageParts' => [
 					'list',
 				],
@@ -204,7 +202,7 @@ class ClanController { //extends Controller
 		$clanID = (int) in('clan_id', null);
 		$clan   = ClanFactory::find($clanID);
 
-		send_clan_join_request(self_char_id(), $clanID);
+		$this->sendClanJoinRequest(self_char_id(), $clanID);
 
 		$leader = $clan->getLeaderInfo();
 
@@ -241,7 +239,7 @@ class ClanController { //extends Controller
 			$parts = [
 				'action_message' => 'Your clan has been disbanded.',
 				'title'          => 'Clan disbanded',
-				'clans'          => clans_ranked(),
+				'clans'          => ClanFactory::clansRanked(),
 				'pageParts'      => [
 					'reminder-no-clan',
 					'list',
@@ -316,10 +314,10 @@ class ClanController { //extends Controller
 		$error                = null;
 
 		if ($new_clan_name != $clan->getName()) {
-			if (is_valid_clan_name($new_clan_name)) {
-				if (is_unique_clan_name($new_clan_name)) {
+			if (Clan::isValidClanName($new_clan_name)) {
+				if (Clan::isUniqueClanName($new_clan_name)) {
 					// *** Rename the clan if it is valid.
-					$new_clan_name = rename_clan($clan->getID(), $new_clan_name);
+					$new_clan_name = Clan::renameClan($clan->getID(), $new_clan_name);
 					$clan->setName($new_clan_name);
 				} else {
 					$error = 'That clan name is already in use!';
@@ -330,8 +328,8 @@ class ClanController { //extends Controller
 		}
 
 		// Saving incoming changes to clan leader edits.
-		if (clan_avatar_is_valid($new_clan_avatar_url)) {
-			save_clan_avatar_url($new_clan_avatar_url, $clan->getID());
+		if (Clan::clanAvatarIsValid($new_clan_avatar_url)) {
+			Clan::saveClanAvatarUrl($new_clan_avatar_url, $clan->getID());
 			$clan->setAvatarUrl($new_clan_avatar_url);
 		} else {
 			$error = 'That avatar url is not valid.';
@@ -344,7 +342,7 @@ class ClanController { //extends Controller
 		}
 
 		if ($new_clan_description) {
-			save_clan_description($new_clan_description, $clan->getID());
+			Clan::saveClanDescription($new_clan_description, $clan->getID());
 			$clan->setDescription($new_clan_description);
 		}
 
@@ -432,7 +430,7 @@ class ClanController { //extends Controller
 	public function listClans() {
 		$parts = [
 			'title'     => 'Clan List',
-			'clans'     => clans_ranked(),
+			'clans'     => ClanFactory::clansRanked(),
 			'pageParts' => ['list'],
 		];
 
@@ -582,7 +580,7 @@ class ClanController { //extends Controller
 	 * @return boolean
 	 */
 	private function playerIsLeader(Player $p_objPlayer, Clan $p_objClan) {
-		$records = get_clan_leaders($p_objClan->id(), true);
+		$records = $p_objClan->getClanLeaders(true);
 
 		foreach ($records AS $record) {
 			if ($record['player_id'] == $p_objPlayer->id()) {
@@ -592,4 +590,40 @@ class ClanController { //extends Controller
 
 		return false;
 	}
+
+    /**
+     * ????
+     *
+     * @todo Simplify this invite system.
+     * @param int $user_id
+     * @param int $clan_id
+     * @return void
+     */
+    private function sendClanJoinRequest($user_id, $clan_id) {
+        DatabaseConnection::getInstance();
+        $clan_obj  = new Clan($clan_id);
+        $leader    = $clan_obj->getLeaderInfo();
+        $leader_id = $leader['player_id'];
+        $username  = get_char_name($user_id);
+
+        $confirmStatement = DatabaseConnection::$pdo->prepare('SELECT verification_number FROM players WHERE player_id = :user');
+        $confirmStatement->bindValue(':user', $user_id);
+        $confirmStatement->execute();
+        $confirm = $confirmStatement->fetchColumn();
+
+        // These ampersands get encoded later.
+        $url = message_url("clan.php?joiner=$user_id&command=review&confirmation=$confirm", 'Confirm Request');
+
+        $join_request_message = 'CLAN JOIN REQUEST: '.htmlentities($username)." has sent a request to join your clan.
+            If you wish to allow this ninja into your clan click the following link:
+                $url";
+
+Message::create([
+    'send_from' => $user_id,
+    'send_to'   => $leader_id,
+    'message'   => $join_request_message,
+    'type'      => 0,
+]);
+    }
+
 }
