@@ -172,18 +172,6 @@ function standard_items() {
 	return $res;
 }
 
-// Pull an item's effects.
-function item_effects($item_id){
-	$sel = 'SELECT effect_identity, effect_name, effect_verb, effect_self FROM effects
-		    JOIN item_effects ON _effect_id = effect_id WHERE _item_id = :item_id';
-		$data = query_array($sel, array(':item_id' => array($item_id, PDO::PARAM_INT)));
-		$res = array();
-		foreach ($data as $effect) {
-			$res[strtolower($effect['effect_identity'])] = $effect;
-		}
-		return $res;
-}
-
 
 // DEPRECATED
 // Add an item using the old display name
