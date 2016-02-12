@@ -580,10 +580,10 @@ class ClanController { //extends Controller
 	 * @return boolean
 	 */
 	private function playerIsLeader(Player $p_objPlayer, Clan $p_objClan) {
-		$records = $p_objClan->getClanLeaders(true);
+		$leaders = $p_objClan->getAllClanLeaders();
 
-		foreach ($records AS $record) {
-			if ($record['player_id'] == $p_objPlayer->id()) {
+		foreach ($leaders AS $leader) {
+			if ($leader['player_id'] == $p_objPlayer->id()) {
 				return true;
 			}
 		}

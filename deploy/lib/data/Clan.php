@@ -111,29 +111,23 @@ class Clan {
      * @return array
      */
     public function getLeaderInfo() {
-        $clans = $this->getClanLeaders(false);
-        return $clans->fetch();
+        return $this->getAllClanLeaders()->fetch();
     }
 
     /**
-     * Get the current clan leader or leaders.
+     * Get the current clan leaders.
      *
-     * @param int $clan_id
-     * @param boolean $all
      * @return PDOStatement
      */
-    public function getClanLeaders($all=false) {
-        $limit = ($all ? '' : ' LIMIT 1');
+    public function getAllClanLeaders() {
         DatabaseConnection::getInstance();
-        $clans = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
+        $leaders = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
             FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id = _player_id
-            WHERE active = 1 AND member_level > 0 AND clan_id = :clan ORDER BY member_level DESC, level DESC $limit");
+            WHERE active = 1 AND member_level > 0 AND clan_id = :clan ORDER BY member_level DESC, level DESC");
+        $leaders->bindValue(':clan', $this->getID());
+        $leaders->execute();
 
-        $clans->bindValue(':clan', $this->getID());
-
-        $clans->execute();
-
-        return $clans;
+        return $leaders;
     }
 
     /**
