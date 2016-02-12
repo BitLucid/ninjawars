@@ -31,12 +31,9 @@ class SkillController {
 	 * @return Array
 	 */
 	public function index() {
-
 		$skillsListObj = new Skill();
 
 		$player = $this->player;
-		$level = $player->level();
-		$class = $player->class_display_name(); // Just to be displayed in the template.
 		$starting_turns = $player->turns();
 		$starting_ki = $player->ki();
 
