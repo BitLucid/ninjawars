@@ -63,7 +63,7 @@ function char_kills($char_id) {
 /**
  * Leveling up Function
  */
-function level_up_if_possible($char_id, $auto_level=false) {
+function level_up_if_possible($char_id) {
 	// Setup values:
 	$max_level = MAX_PLAYER_LEVEL;
 	$health_to_add = 100;
@@ -72,14 +72,14 @@ function level_up_if_possible($char_id, $auto_level=false) {
 
 	$char_kills = get_kills($char_id);
 
-	if($char_kills<0){
+	if ($char_kills < 0) {
 		// If the character doesn't have any kills, shortcut the levelling process.
 		return false;
 	} else {
 		$char_obj = new Player($char_id);
 		$char_level = $char_obj->level();
 
-		if($auto_level && $char_obj->isAdmin()){
+		if ($char_obj->isAdmin()) {
 			// If the character is an admin, do not auto-level them.
 			return false;
 		} else {
@@ -463,7 +463,7 @@ function change_kills($char_id, $amount, $auto_level_check=true) {
         // Ignore changes that amount to zero.
         if ($amount > 0 && $auto_level_check) {
             // For positive kill changes, check whether levelling occurs.
-            level_up_if_possible($char_id, true);
+            level_up_if_possible($char_id);
         }
 
         $query = <<<EOT
