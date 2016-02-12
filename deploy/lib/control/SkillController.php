@@ -33,54 +33,54 @@ class SkillController {
 	public function index() {
 		$skillsListObj = new Skill();
 
-		$player = $this->player;
+		$player         = $this->player;
 		$starting_turns = $player->turns();
-		$starting_ki = $player->ki();
+		$starting_ki    = $player->ki();
 
 		$status_list = get_status_list();
-		$no_skills = true;
-		$stealth   = $skillsListObj->hasSkill('Stealth');
+		$no_skills   = true;
+		$stealth     = $skillsListObj->hasSkill('Stealth');
 
 		if ($stealth) {
 			$no_skills = false;
 		}
 
-		$stealth_turn_cost   = $skillsListObj->getTurnCost('Stealth');
-		$unstealth_turn_cost = $skillsListObj->getTurnCost('Unstealth');
-		$chi                 = $skillsListObj->hasSkill('Chi');
-		$speed               = $skillsListObj->hasSkill('speed');
-		$hidden_resurrect    = $skillsListObj->hasSkill('hidden resurrect');
-		$midnight_heal       = $skillsListObj->hasSkill('midnight heal');
-		$kampo_turn_cost     = $skillsListObj->getTurnCost('Kampo');
-		$kampo               = $skillsListObj->hasSkill('kampo');
-		$heal             = $skillsListObj->hasSkill('heal');
-		$heal_turn_cost     = $skillsListObj->getTurnCost('heal');
-		$clone_kill 		= $skillsListObj->hasSkill('clone kill');
+		$stealth_turn_cost    = $skillsListObj->getTurnCost('Stealth');
+		$unstealth_turn_cost  = $skillsListObj->getTurnCost('Unstealth');
+		$chi                  = $skillsListObj->hasSkill('Chi');
+		$speed                = $skillsListObj->hasSkill('speed');
+		$hidden_resurrect     = $skillsListObj->hasSkill('hidden resurrect');
+		$midnight_heal        = $skillsListObj->hasSkill('midnight heal');
+		$kampo_turn_cost      = $skillsListObj->getTurnCost('Kampo');
+		$kampo                = $skillsListObj->hasSkill('kampo');
+		$heal                 = $skillsListObj->hasSkill('heal');
+		$heal_turn_cost       = $skillsListObj->getTurnCost('heal');
+		$clone_kill           = $skillsListObj->hasSkill('clone kill');
 		$clone_kill_turn_cost = $skillsListObj->getTurnCost('clone kill');
-		$wrath	= $skillsListObj->hasSkill('wrath');
-		$can_harmonize			= $starting_ki;
+		$wrath                = $skillsListObj->hasSkill('wrath');
+		$can_harmonize        = $starting_ki;
 
 		$parts = [
-			'status_list'=>$status_list,
-			'player'=>$player,
-			'no_skills'=>$no_skills,
-			'starting_turns'=>$starting_turns,
-			'starting_ki'=>$starting_ki,
-			'stealth'=>$stealth,
-			'stealth_turn_cost'=>$stealth_turn_cost,
-			'unstealth_turn_cost'=>$unstealth_turn_cost,
-			'chi'=>$chi,
-			'speed'=>$speed,
-			'hidden_resurrect'=>$hidden_resurrect,
-			'midnight_heal'=>$midnight_heal,
-			'kampo_turn_cost'=>$kampo_turn_cost,
-			'kampo'=>$kampo,
-			'heal'=>$heal,
-			'heal_turn_cost'=>$heal_turn_cost,
-			'clone_kill'=>$clone_kill,
-			'clone_kill_turn_cost'=>$clone_kill_turn_cost,
-			'wrath'=>$wrath,
-			'can_harmonize'=>$can_harmonize,
+			'status_list'          => $status_list,
+			'player'               => $player,
+			'no_skills'            => $no_skills,
+			'starting_turns'       => $starting_turns,
+			'starting_ki'          => $starting_ki,
+			'stealth'              => $stealth,
+			'stealth_turn_cost'    => $stealth_turn_cost,
+			'unstealth_turn_cost'  => $unstealth_turn_cost,
+			'chi'                  => $chi,
+			'speed'                => $speed,
+			'hidden_resurrect'     => $hidden_resurrect,
+			'midnight_heal'        => $midnight_heal,
+			'kampo_turn_cost'      => $kampo_turn_cost,
+			'kampo'                => $kampo,
+			'heal'                 => $heal,
+			'heal_turn_cost'       => $heal_turn_cost,
+			'clone_kill'           => $clone_kill,
+			'clone_kill_turn_cost' => $clone_kill_turn_cost,
+			'wrath'                => $wrath,
+			'can_harmonize'        => $can_harmonize,
 		];
 
 		return [
