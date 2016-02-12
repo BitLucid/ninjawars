@@ -503,15 +503,18 @@ class Player implements Character {
 
 	/**
 	 * Save information
+     *
 	 * Saves:
 	 * gold
 	 * turns
 	 * all non-foreign key data in vo
-	 * @return bool
+     *
+	 * @return Player
 	 */
-	public function save(){
+	public function save() {
 		$factory = new PlayerDAO();
-		$updated = $factory->save($this->vo);
+		$factory->save($this->vo);
+
 		return $this;
 	}
 
