@@ -163,16 +163,11 @@ function change_ki($char_id, $amount){
 /**
  * Check that a class matches against the class identities available in the database.
  */
-function is_valid_class($potential_class_identity) {
-	$sel = "select identity from class";
-	$classes = query_array($sel);
-	foreach ($classes as $l_class) {
-		if ($l_class['identity'] == $potential_class_identity) {
-			return true;
-		}
-	}
-
-	return false;
+function is_valid_class($candidate_identity) {
+    return (boolean) query_item(
+        "SELECT identity FROM class WHERE identity = :candidate",
+        [':candidate'=>$candidate_identity]
+    );
 }
 
 /**
