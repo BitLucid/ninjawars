@@ -44,13 +44,6 @@ function max_health_by_level($level) {
 }
 
 /**
- * Centralized holding for the maximum level available in the game.
- */
-function maximum_level() {
-	return MAX_PLAYER_LEVEL;
-}
-
-/**
  * The number of kills needed to level up to the next level.
  */
 function required_kills_to_level($current_level) {
@@ -72,7 +65,7 @@ function char_kills($char_id) {
  */
 function level_up_if_possible($char_id, $auto_level=false) {
 	// Setup values:
-	$max_level = maximum_level();
+	$max_level = MAX_PLAYER_LEVEL;
 	$health_to_add = 100;
 	$turns_to_give = 50;
 	$stat_value_to_add = 5;
