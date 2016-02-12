@@ -15,7 +15,8 @@ engines:
     enabled: true
   phpmd:
     enabled: true
-    config: "phpmd.xml"
+    config:
+      rulesets: "phpmd.xml"
   pep8:
     enabled: true
   radon:
