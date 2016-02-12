@@ -21,7 +21,6 @@ class ListController {
      */
     public function index() {
         $session      = SessionFactory::getSession();
-        $char         = new Player(self_char_id());
         $searched     = in('searched', null, 'no filter'); // Don't filter the search setting
         $list_by_rank = ($searched && substr_compare($searched, '#', 0, 1) === 0); // Whether the search is by rank
         $hide_setting = (!$searched && $session->has('hide_dead') ? $session->get('hide_dead') : 'dead'); // Defaults to hiding dead via session
