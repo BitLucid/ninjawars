@@ -1,7 +1,7 @@
 <?php
 namespace tests\integration\controller;
 
-use \Npc;
+use NinjaWars\core\data\Npc;
 use NinjaWars\core\control\NpcController;
 use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
