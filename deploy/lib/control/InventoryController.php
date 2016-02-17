@@ -85,7 +85,9 @@ class InventoryController {
 		$path = parse_url($url_part, PHP_URL_PATH);
 		$slugs = explode('/', trim($path, '/'));
 		$selfTarget = whichever(in('selfTarget'), $self_use);
-		$link_back = in('link_back');
+		$link_back = whichever(in('link_back'), 
+				($selfTarget? 'inventory' : null)
+				);
 		$item_in = $slugs[2];
 		$in_target = isset($slugs[3])? $slugs[3] : null;
 		return [
