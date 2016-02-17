@@ -27,7 +27,7 @@ $target  = in('target');
 $command = in('command');
 $stealth = in('stealth');
 
-$skillListObj = new Skill();
+$skillListObj    = new Skill();
 $poisonMaximum   = 100; // *** Before level-based addition.
 $poisonMinimum   = 1;
 $poisonTurnCost  = $skillListObj->getTurnCost('poison touch'); // wut
@@ -37,7 +37,7 @@ $self_use        = $skillListObj->getSelfUse($command);
 $use_on_target   = $skillListObj->getUsableOnTarget($command);
 $ki_cost 		 = 0; // Ki taken during use.
 $reuse 			 = true;  // Able to reuse the skill.
-$today = date("F j, Y, g:i a");
+$today           = date("F j, Y, g:i a");
 
 // Check whether the user actually has the needed skill.
 $has_skill = $skillListObj->hasSkill($command);
@@ -60,13 +60,12 @@ if ($target != '' && $target != $player->player_id) {
 	$target_id = null;
 }
 
-$class           = $player->vo->class;
-$covert          = false;
-$victim_alive    = true;
-$attacker_id     = $player->name();
+$covert           = false;
+$victim_alive     = true;
+$attacker_id      = $player->name();
 $attacker_char_id = self_char_id();
-$starting_turns  = $player->vo->turns;
-$ending_turns    = null;
+$starting_turns   = $player->vo->turns;
+$ending_turns     = null;
 
 $level_check  = $player->vo->level - $target->vo->level;
 
@@ -77,21 +76,26 @@ if ($player->hasStatus(STEALTH)) {
 $use_attack_legal = true;
 
 if ($command == 'Clone Kill' || $command == 'Harmonize') {
-	$has_skill = true;
+	$has_skill        = true;
 	$use_attack_legal = false;
-	$attack_allowed = true;
-	$attack_error = null;
-	$covert = true;
+	$attack_allowed   = true;
+	$attack_error     = null;
+	$covert           = true;
 } else {
 	// *** Checks the skill use legality, as long as the target isn't self.
-	$params         = array('required_turns'=>$turn_cost, 'ignores_stealth'=>$ignores_stealth, 'self_use'=>$self_use);
+    $params = [
+        'required_turns'  => $turn_cost,
+        'ignores_stealth' => $ignores_stealth,
+        'self_use'        => $self_use
+    ];
+
 	$AttackLegal    = new AttackLegal($player, $target, $params);
 	$attack_allowed = $AttackLegal->check();
 	$attack_error   = $AttackLegal->getError();
 }
 
 if (!$attack_error) { // Only bother to check for other errors if there aren't some already.
-	if (!$has_skill || $class == '' || $command == '') {
+	if (!$has_skill || $command == '') {
 		// Set the attack error to display that that skill wasn't available.
 		$attack_error = 'You do not have the requested skill.';
 	} elseif ($starting_turns < $turn_cost) {
@@ -104,9 +108,20 @@ if (!$attack_error) { // Only bother to check for other errors if there aren't s
 function pull_sight_data($target_id) {
 	$data = char_info($target_id);
 	// Strip all fields but those allowed.
-	$allowed = array('Name'=>'uname', 'Class'=>'class', 'Level'=>'level', 'Turns'=>'turns', 'Strength'=>'strength', 'Speed'=>'speed', 'Stamina'=>'stamina', 'Ki'=>'ki', 'Gold'=>'gold', 'Kills'=>'kills');
-	$res = array();
+    $allowed = [
+        'Name'     => 'uname',
+        'Class'    => 'class',
+        'Level'    => 'level',
+        'Turns'    => 'turns',
+        'Strength' => 'strength',
+        'Speed'    => 'speed',
+        'Stamina'  => 'stamina',
+        'Ki'       => 'ki',
+        'Gold'     => 'gold',
+        'Kills'    => 'kills',
+    ];
 
+	$res = array();
 
 	foreach ($allowed as $header => $field) {
 		$res[$header] = $data[$field];
@@ -118,7 +133,6 @@ function pull_sight_data($target_id) {
 if (!$attack_error) { // Nothing to prevent the attack from happening.
 	// Initial attack conditions are alright.
 	$result = '';
-
 
 	if ($command == 'Sight') {
 		$covert = true;

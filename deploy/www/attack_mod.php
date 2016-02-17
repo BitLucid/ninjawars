@@ -96,7 +96,6 @@ if ($attack_is_legal) {
 	$attacker_level  = $attacking_player->vo->level;
 	$attacker_turns  = $attacking_player->vo->turns;
 	$attacker_str    = $attacking_player->getStrength();
-	$class           = $attacking_player->vo->class;
 
 	$starting_target_health = $target_health;
 	$starting_turns         = $attacker_turns;

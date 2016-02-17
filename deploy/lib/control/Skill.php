@@ -61,14 +61,8 @@ class Skill {
 
 	/**
 	 * Returns the list fo all skills available to a ninja.
-	**/
-	public function skills($char_id=null) {
-	    if (!$char_id) {
-			$char_id = self_char_id();
-		}
-
-	    $char = new Player($char_id);
-
+	 */
+	private function skills(Player $char) {
 		if ($char->isAdmin()) { // Admins get access to all skills.
 			$skills = $this->skill_map['crane'] +
 				$this->skill_map['dragon'] +
@@ -79,7 +73,7 @@ class Skill {
 			return $skills;
 		}
 
-		$class = char_class_identity($char_id);
+		$class = $char->class_identity();
 		$class_skills = array();
 
 		if ($class) {
@@ -93,20 +87,18 @@ class Skill {
 	 * Check whether the player has the skill.
 	**/
 	public function hasSkill($skill, $username=null) {
-		$skill = strtolower($skill);
-
 		if (!$username) {
-			$char_id = self_char_id();
+			$charId = self_char_id();
 		} else {
-			$char_id = get_char_id($username);
+			$charId = get_char_id($username);
 		}
-		$player_info = char_info($char_id);
-		$player_level = $player_info['level'];
 
-		$skills = $this->skills($char_id);
-		$level_req = (isset($skills[$skill]['level']) ? $skills[$skill]['level'] : 1);
+        $player    = new Player($charId);
+		$skills    = $this->skills($player);
+		$skill     = strtolower($skill);
+		$levelReq = (isset($skills[$skill]['level']) ? $skills[$skill]['level'] : 1);
 
-		return (isset($skills[$skill]['available']) && ($player_level >= $level_req));
+		return (isset($skills[$skill]['available']) && ($player->level() >= $levelReq));
 	}
 
 	/**
