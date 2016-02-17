@@ -1,16 +1,19 @@
 import requests
 from lxml.html import fromstring
 
-''' Handles the routing tests and assertion as well as the global pass/fail state 
- the methods with test_ in their names will be run automatically.
-'''
-class TestRouting:
 
-    '''Hack to get the root url initially'''
+class TestRouting:
+    ''' Handles the routing tests and assertion
+        as well as the global pass/fail state
+        the methods with test_ in their names will be run automatically.
+    '''
+
     def root(self):
+        '''Hack to get the root url initially'''
         return 'http://nw.local/'
 
     def status_code(self, url):
+        ''' Gets http status codes of pages/urls '''
         try:
             r = requests.head(url)
             return r.status_code
@@ -18,6 +21,7 @@ class TestRouting:
             return None
 
     def page_title(self, url):
+        ''' Get the lexed title from the html '''
         try:
             r = requests.get(url)
             tree = fromstring(r.content)
@@ -25,60 +29,71 @@ class TestRouting:
         except requests.ConnectionError:
             return None
 
-
-    def test_basic(self):
-        res = self.status_code("http://stackoverflow.com");
-        assert res == 200
-
     def test_root_url_config_works(self):
-        assert self.root() is not None and len(str(self.root())) > 5
+        ''' Ensure root is configured '''
+        assert (self.root() is not None and
+                len(str(self.root())) > 5)
 
     def test_root_url_loads(self):
-        assert self.root() and (200 == self.status_code(self.root()))
+        assert (self.root() and
+                (200 == self.status_code(self.root())))
 
     def test_root_url_has_right_title(self):
-        assert self.page_title(self.root()) == 'Live by the Shuriken - The Ninja Wars Ninja Game'
+        title = 'Live by the Shuriken - The Ninja Wars Ninja Game'
+        assert (self.page_title(self.root()) == title)
 
     def test_root_url_has_right_title_without_trailing_slash(self):
-        url = self.root() 
-        assert self.page_title(url[:-1]) == 'Live by the Shuriken - The Ninja Wars Ninja Game'
+        url = self.root()
+        title = 'Live by the Shuriken - The Ninja Wars Ninja Game'
+        assert (self.page_title(url[:-1]) == title)
 
     def test_urls_should_200(self):
         urls = [
-            'intro', 'login.php', 'signup.php', 'player.php', 'village.php', 
-            'interview.php', 'news.php', 'staff.php', 'list.php', 'rules.php', 
+            'intro', 'login.php', 'signup.php', 'player.php', 'village.php',
+            'interview.php', 'news.php', 'staff.php', 'list.php', 'rules.php',
             'shop.php', 'events.php', 'skill', 'inventory.php', 'enemies.php',
-            'clan.php', 'map.php', 'work.php', 'doshin_office.php', 'dojo.php', 'shrine.php',
-            'duel.php', 'clan.php?command=list', 'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
-            'clan.php?command=view', 'npc', 'npc/attack/peasant/', 'npc/attack/guard/',
-            'stats.php', 'account.php', 'quest', 'quest/view/1',
-            ];
+            'clan.php', 'map.php', 'work.php', 'doshin_office.php',
+            'dojo.php', 'shrine.php', 'duel.php', 'clan.php?command=list',
+            'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
+            'clan.php?command=view', 'npc', 'npc/attack/peasant/',
+            'npc/attack/guard/', 'stats.php', 'account.php', 'quest',
+            'quest/view/1',
+        ]
         for url in urls:
-            assert (str(self.root())+url is not None and 200 == self.status_code(str(self.root())+url))
+            assert (str(self.root()) + url is not None and 200 ==
+                    self.status_code(str(self.root()) + url))
 
     def test_urls_that_should_redirect(self):
         urls = [
-            'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php', 'webgame/',
-            'ninjamaster', 'ninjamaster/tools', 'ninjamaster/player_tags'
-            ];
+            'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php',
+            'webgame/', 'ninjamaster', 'ninjamaster/tools',
+            'ninjamaster/player_tags'
+        ]
         for url in urls:
-            full_uri = str(self.root())+url
-            assert str(self.root())+url is not None 
+            full_uri = str(self.root()) + url
+            assert str(self.root()) + url is not None
             assert isinstance(self.status_code(full_uri), int)
-            assert url and (301 == self.status_code(str(self.root())+url) or 302 == self.status_code(str(self.root())+url))
+            assert url and (
+                301 == self.status_code(str(self.root()) + url) or
+                302 == self.status_code(str(self.root()) + url))
 
     def test_urls_should_404(self):
-        urls = ['thisshould404', 'shoppinginthesudan', 'js/doesnotexist.js', 'shop/willneverexist', 'shopbobby\'-tables']
+        urls = ['thisshould404', 'shoppinginthesudan',
+                'js/doesnotexist.js', 'shop/willneverexist',
+                'shopbobby\'-tables']
         for url in urls:
-            assert (404 == self.status_code(str(self.root())+url))
+            assert (404 == self.status_code(str(self.root()) + url))
 
     def test_urls_by_title(self):
         root = self.root()
         assert root is not None
-        pages = {'signup':'Become a Ninja', 'login':'Login', 
-        "clan":"Clan List", "list":"Ninja List", 
-        'map.php':'Map', 'staff.php':'Staff', 'village.php':'Chat', 'enemies.php':'Fight',
-        'shop.php':'Shop', 'work.php':'Work', 'doshin_office.php':'Doshin Office',
-        }
-        for url,title in pages.items():
-            assert bool(title) and bool(url) and title in self.page_title(root+url)
+        pages = {'signup': 'Become a Ninja', 'login': 'Login',
+                 "clan": "Clan List", "list": "Ninja List",
+                 'map.php': 'Map', 'staff.php': 'Staff',
+                 'village.php': 'Chat', 'enemies.php': 'Fight',
+                 'shop.php': 'Shop', 'work.php': 'Work',
+                 'doshin_office.php': 'Doshin Office',
+                 }
+        for url, title in pages.items():
+            assert (bool(title) and bool(url) and
+                    title in self.page_title(root + url))
