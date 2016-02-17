@@ -161,11 +161,11 @@ class TestClan extends PHPUnit_Framework_TestCase {
 
 	function testClanNamePositiveValidation() {
 		$clanName = 'Clan Beagle';
-		$this->assertTrue((boolean)is_valid_clan_name($clanName));
+		$this->assertTrue((boolean)Clan::isValidClanName($clanName));
 	}
 
 	function testClanNameNegativeValidation() {
 		$clanName = 'Ù�Ø³ Ø§Ù�Ù�Ø·Ø';
-		$this->assertFalse((boolean)is_valid_clan_name($clanName));
+		$this->assertFalse((boolean)Clan::isValidClanName($clanName));
 	}
 }

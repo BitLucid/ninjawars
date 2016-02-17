@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\PlayerDAO;
 use \Player;
 
@@ -89,7 +90,7 @@ class StatsController {
 		$char_id		= self_char_id();
 		$char			= new Player(self_char_id());
 		$player			= self_info();
-		$player_clan	= get_clan_by_player_id($char_id);
+		$player_clan	= ClanFactory::clanOfMember($char);
 		$class_theme	= class_theme($char->class_identity());
 		$level_category	= level_category($player['level']);
 

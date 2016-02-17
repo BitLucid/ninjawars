@@ -1,14 +1,13 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\data\ClanFactory;
 use \Player as Player;
-
-
 
 /**
  * Handle the listing of events
  */
-class EventsController { 
+class EventsController {
     const ALIVE          = false;
     const PRIV           = true;
 
@@ -23,7 +22,7 @@ class EventsController {
 		$events = get_events($char->id(), 300);
 
 		// Check for clan to use it in the nav tabs.
-		$has_clan  = (bool)get_clan_by_player_id($char->id());
+		$has_clan  = (bool)ClanFactory::clanOfMember($char);
 
 		read_events($char->id()); // mark events as viewed.
 
