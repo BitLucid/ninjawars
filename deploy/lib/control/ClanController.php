@@ -5,6 +5,7 @@ use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;
 use \Player as Player;
+use NinjaWars\core\data\DatabaseConnection as DatabaseConnection;
 
 /**
  * Controller for all actions involving clan
