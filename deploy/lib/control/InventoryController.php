@@ -113,6 +113,7 @@ class InventoryController {
 
 		$slugs = $this->parse_slugs($give, $self_use);
 
+		// Pull the parsed slugs
 	    $link_back  = $slugs['link_back'];
 	    $selfTarget = $slugs['selfTarget'];
 	    $item_in = $slugs['item_in']; // Item identifier, either it's id or internal name
@@ -160,7 +161,7 @@ class InventoryController {
 	    }
 
 	    if (!is_object($item)) {
-	    	return new RedirectResponse(WEB_ROOT.'inventory.php?error=noitem');
+	    	return new RedirectResponse(WEB_ROOT.'inventory?error=noitem');
 	    } else {
 	        $item_count = item_count($player->id(), $item);
 
