@@ -1,7 +1,4 @@
 <?php
-require_once(__DIR__.'/../resources.php');
-require_once(LIB_ROOT.'base.inc.php');
-
 class TestAccountCreateAndDestroy{
 	public static $test_email = 'testphpunit@example.com';
 	public static $alt_test_email = 'testphpunit2@example.com';

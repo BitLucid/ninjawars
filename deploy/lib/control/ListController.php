@@ -21,9 +21,6 @@ class ListController {
      */
     public function index() {
         $session      = SessionFactory::getSession();
-        $char         = new Player(self_char_id());
-        $username     = $char->name();
-        $char_id      = $char->id();
         $searched     = in('searched', null, 'no filter'); // Don't filter the search setting
         $list_by_rank = ($searched && substr_compare($searched, '#', 0, 1) === 0); // Whether the search is by rank
         $hide_setting = (!$searched && $session->has('hide_dead') ? $session->get('hide_dead') : 'dead'); // Defaults to hiding dead via session
@@ -32,8 +29,6 @@ class ListController {
         $page         = in('page', 1); // Page will get changed down below
         $view_type    = in('view_type');
         $page         = in('page');
-        $rank         = get_rank($char->id());
-        $alive_count  = 0;
         $record_limit = 20; // The number of players that gets shown per page
 
         if (!$searched && $hide_setting != $hide) { // Save the toggled state for later
@@ -52,7 +47,7 @@ class ListController {
             }
 
             if ($hide == 'dead') {
-                $where_clause[] = " alive = true";
+                $where_clauses[] = " alive = true";
             }
         } else if ($hide == 'dead') {
             $where_clauses[] = " alive";

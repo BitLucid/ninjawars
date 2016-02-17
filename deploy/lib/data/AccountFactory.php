@@ -1,16 +1,12 @@
 <?php
 namespace NinjaWars\core\data;
 
-require_once(ROOT . "core/control/Character.php");
-
 use NinjaWars\core\data\Account;
-use \Character;
+use NinjaWars\core\data\Character;
 
 /**
  * Create account objects via Factory(ok, actually Repository) object
- *
- *
-**/
+ */
 class AccountFactory{
 
 	public static function make($account_id){

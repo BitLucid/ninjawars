@@ -1,10 +1,4 @@
 <?php
-// Core may be autoprepended in ninjawars
-require_once(LIB_ROOT.'base.inc.php');
-
-// Note that the file has to have a file ending of ...test.php to be run by phpunit
-
-
 class TestCharacter extends PHPUnit_Framework_TestCase {
 	private $previous_server_ip = '';
 	private $char_id;
@@ -271,4 +265,3 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         }
     }
 }
-

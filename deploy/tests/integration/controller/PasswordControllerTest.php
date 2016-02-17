@@ -1,6 +1,4 @@
 <?php
-require_once(ROOT.'tests/TestAccountCreateAndDestroy.php');
-
 use NinjaWars\core\control\PasswordController;
 use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\AccountFactory;

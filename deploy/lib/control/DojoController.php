@@ -201,8 +201,8 @@ class DojoController {
      * @return ViewSpec
      */
     private function render($p_parts = [], $p_player = null, $p_renderMonks = true) {
-        $p_parts['max_level']         = maximum_level(); // For non-logged in loop through stats.
-        $p_parts['max_hp']            = max_health_by_level(maximum_level()+1);
+        $p_parts['max_level']         = MAX_PLAYER_LEVEL; // For non-logged in loop through stats.
+        $p_parts['max_hp']            = max_health_by_level(MAX_PLAYER_LEVEL+1);
         $p_parts['class_change_cost'] = self::CLASS_CHANGE_COST;
         $p_parts['player']            = $p_player;
         $p_parts['classes']           = $this->classesInfo();
@@ -227,7 +227,7 @@ class DojoController {
             $p_parts['pageParts'][] = 'reminder-class';
             $p_parts['pageParts'][] = 'reminder-level';
 
-            if ($p_player->level() < maximum_level()) {
+            if ($p_player->level() < MAX_PLAYER_LEVEL) {
                 $p_parts['required_kills'] = required_kills_to_level($p_player->level());
                 $p_parts['pageParts'][] = 'reminder-next-level';
             }

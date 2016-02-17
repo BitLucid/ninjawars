@@ -1,7 +1,5 @@
 <?php
-require_once(realpath(__DIR__.'/../../../').'/resources.php');
-require_once(ROOT.'core/base.inc.php');
-require_once(ROOT.'core/data/Item.php');
+use NinjaWars\core\data\Item;
 
 class Item_Test extends PHPUnit_Framework_TestCase {
 
@@ -123,8 +121,8 @@ class Item_Test extends PHPUnit_Framework_TestCase {
 	public function testItemPluralNameExists(){
 		$caltrop = new Item('caltrops');
 		$shuriken = new Item('shuriken');
-		$this->assertInstanceOf('\Item', $caltrop);
-		$this->assertInstanceOf('\Item', $shuriken);
+		$this->assertInstanceOf('NinjaWars\core\data\Item', $caltrop);
+		$this->assertInstanceOf('NinjaWars\core\data\Item', $shuriken);
 		$this->assertEquals('Shuriken', $shuriken->getName());
 		$this->assertEquals('Shuriken', $shuriken->getPluralName());
 		$this->assertEquals('Caltrops', $caltrop->getName());

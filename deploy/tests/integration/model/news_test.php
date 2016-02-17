@@ -1,5 +1,4 @@
 <?php
-
 class News_Test extends PHPUnit_Framework_TestCase {
 
 	protected $testedAccountId = 0;

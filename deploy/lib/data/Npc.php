@@ -2,10 +2,9 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\NpcFactory;
-use \Character;
+use NinjaWars\core\data\Character;
 use \Player;
 
-require_once(ROOT . "core/control/Character.php");
 // TODO: Abstract all the unique npc behaviors into the generic system.
 
 /**

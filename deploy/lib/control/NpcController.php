@@ -7,7 +7,7 @@ use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\extensions\SessionFactory;
 use \Player as Player;
-use \Item as Item;
+use NinjaWars\core\data\Item;
 
 /**
  * Handles displaying npcs and attacking specific npcs

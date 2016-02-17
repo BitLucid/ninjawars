@@ -44,13 +44,6 @@ function max_health_by_level($level) {
 }
 
 /**
- * Centralized holding for the maximum level available in the game.
- */
-function maximum_level() {
-	return MAX_PLAYER_LEVEL;
-}
-
-/**
  * The number of kills needed to level up to the next level.
  */
 function required_kills_to_level($current_level) {
@@ -70,23 +63,23 @@ function char_kills($char_id) {
 /**
  * Leveling up Function
  */
-function level_up_if_possible($char_id, $auto_level=false) {
+function level_up_if_possible($char_id) {
 	// Setup values:
-	$max_level = maximum_level();
+	$max_level = MAX_PLAYER_LEVEL;
 	$health_to_add = 100;
 	$turns_to_give = 50;
 	$stat_value_to_add = 5;
 
 	$char_kills = get_kills($char_id);
 
-	if($char_kills<0){
+	if ($char_kills < 0) {
 		// If the character doesn't have any kills, shortcut the levelling process.
 		return false;
 	} else {
 		$char_obj = new Player($char_id);
 		$char_level = $char_obj->level();
 
-		if($auto_level && $char_obj->isAdmin()){
+		if ($char_obj->isAdmin()) {
 			// If the character is an admin, do not auto-level them.
 			return false;
 		} else {
@@ -170,16 +163,11 @@ function change_ki($char_id, $amount){
 /**
  * Check that a class matches against the class identities available in the database.
  */
-function is_valid_class($potential_class_identity) {
-	$sel = "select identity from class";
-	$classes = query_array($sel);
-	foreach ($classes as $l_class) {
-		if ($l_class['identity'] == $potential_class_identity) {
-			return true;
-		}
-	}
-
-	return false;
+function is_valid_class($candidate_identity) {
+    return (boolean) query_item(
+        "SELECT identity FROM class WHERE identity = :candidate",
+        [':candidate'=>$candidate_identity]
+    );
 }
 
 /**
@@ -331,19 +319,17 @@ function format_health_percent($player_row) {
 /**
  * Add data to the info you get from a player row.
  */
-function add_data_to_player_row($player_data, $kill_password=true){
-    if($kill_password){
-        unset($player_data['pname']);
-    }
+function add_data_to_player_row($player_data) {
+    unset($player_data['pname']);
 
-    $player_data['max_health'] = max_health_by_level($player_data['level']);
-	$player_data['hp_percent'] = min(100, round(($player_data['health']/$player_data['max_health'])*100));
-	$player_data['max_turns'] = 100;
+    $player_data['max_health']    = max_health_by_level($player_data['level']);
+	$player_data['hp_percent']    = min(100, round(($player_data['health']/$player_data['max_health'])*100));
+	$player_data['max_turns']     = 100;
 	$player_data['turns_percent'] = min(100, round($player_data['turns']/$player_data['max_turns']*100));
-	$player_data['next_level'] = required_kills_to_level($player_data['level']);
-	$player_data['exp_percent'] = min(100, round(($player_data['kills']/$player_data['next_level'])*100));
-	$player_data['status_list'] = implode(', ', get_status_list($player_data['player_id']));
-	$player_data['hash'] = md5(implode($player_data));
+	$player_data['next_level']    = required_kills_to_level($player_data['level']);
+	$player_data['exp_percent']   = min(100, round(($player_data['kills']/$player_data['next_level'])*100));
+	$player_data['status_list']   = implode(', ', get_status_list($player_data['player_id']));
+	$player_data['hash']          = md5(implode($player_data));
 
 	return $player_data;
 }
@@ -470,7 +456,7 @@ function change_kills($char_id, $amount, $auto_level_check=true) {
         // Ignore changes that amount to zero.
         if ($amount > 0 && $auto_level_check) {
             // For positive kill changes, check whether levelling occurs.
-            level_up_if_possible($char_id, true);
+            level_up_if_possible($char_id);
         }
 
         $query = <<<EOT

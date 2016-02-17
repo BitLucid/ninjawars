@@ -1,5 +1,4 @@
 <?php
-require_once(CORE . "control/Character.php");
 require_once(CORE . "control/lib_status.php");
 require_once(CORE . "control/lib_player.php");
 
@@ -8,6 +7,7 @@ use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\PlayerVO;
+use NinjaWars\core\data\Character;
 
 /* Ninja (actually character) behavior object.
  *
@@ -503,15 +503,18 @@ class Player implements Character {
 
 	/**
 	 * Save information
+     *
 	 * Saves:
 	 * gold
 	 * turns
 	 * all non-foreign key data in vo
-	 * @return bool
+     *
+	 * @return Player
 	 */
-	public function save(){
+	public function save() {
 		$factory = new PlayerDAO();
-		$updated = $factory->save($this->vo);
+		$factory->save($this->vo);
+
 		return $this;
 	}
 

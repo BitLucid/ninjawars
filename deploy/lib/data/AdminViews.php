@@ -37,22 +37,30 @@ class AdminViews{
     }
 
 
-    // Reformat the character info sets.
-    public static function split_char_infos($ids){
-        if(is_numeric($ids)){
+    /**
+     * Reformat the character info sets.
+     *
+     * @return Array
+     */
+    public static function split_char_infos($ids) {
+        $res = [];
+
+        if (is_numeric($ids)) {
             $ids = [$ids]; // Wrap it in an array.
         } else { // Get the info for multiple ninjas
-            $res = array();
             $ids = explode(',', $ids);
         }
+
         $first = true;
-        foreach($ids as $id){
-            $res[$id] = char_info($id, $admin_info=true);
+
+        foreach ($ids as $id) {
+            $res[$id] = char_info($id, true);
             $res[$id]['first'] = $first;
             unset($res[$id]['messages']); // Exclude the messages for length reasons.
             unset($res[$id]['description']); // Ditto
             $first = false;
         }
+
         return $res;
     }
 
