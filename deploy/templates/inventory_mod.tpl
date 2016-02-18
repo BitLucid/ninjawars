@@ -48,7 +48,7 @@ You have comitted suicide!<br>
 
 	{if $repeat}
 <br>
-	<a class='attack-again thick btn btn-primary' href="inventory_mod.php?item={$itemType|escape:'url'|escape}&amp;target_id={$target_id|escape:'url'|escape}&amp;link_back={$return_to|escape:'url'|escape}{if $selfTarget}&amp;selfTarget=1{/if}">
+	<a class='attack-again thick btn btn-primary' href="/item/use/{$itemType|escape:'url'|escape}/{$target_id|escape:'url'|escape}/?link_back={$return_to|escape:'url'|escape}{if $selfTarget}&amp;selfTarget=1{/if}">
 		Use {$itemName|escape} again?
 	</a>
 	<br>

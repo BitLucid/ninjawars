@@ -5,6 +5,7 @@ require_once(LIB_ROOT.'control/lib_inventory.php');
 require_once(LIB_ROOT."control/Skill.php");
 require_once(LIB_ROOT."control/lib_player.php");
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\SkillDAO;
@@ -132,5 +133,20 @@ class PlayerController {
                 'quickstat' => 'player',
             ],
         ];
+    }
+
+    /**
+     * Wrapper to redirect item use via html form to proper pretty url
+     * like a final url of /item/use/shuriken/tchalvak
+     * from a starting url of http://nw.local/player/use_item/?item=shuriken&target=tchalvak
+     */
+    public function use_item(){
+        $target = in('target_id');
+        $item_in = in('item');
+        $give = in('give');
+        $method = $give? 'give' : 'use';
+        $url = 'item/'.$method.'/'.$item_in.'/'.$target;
+        // TODO: Need to double check that this doesn't allow for redirect injection
+        return new RedirectResponse(WEB_ROOT.$url);
     }
 }

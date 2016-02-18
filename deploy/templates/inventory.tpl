@@ -32,7 +32,7 @@
       <tr class='oddeven'>
         <td class='item-name'>
     			{if isset($item_info.self_use) && $item_info.self_use == 't'}
-          <a href="inventory_mod.php?item={$item_info.item_id|escape:'url'|escape}&amp;selfTarget=1&amp;target_id={$char_id|escape:'url'|escape}&amp;link_back=inventory">
+          <a href="/item/self_use/{$item_info.item_id|escape:'url'|escape}">
     			{/if}
           {$item_info.display|escape}
     			{if isset($item_info.self_use) && $item_info.self_use == 't'}

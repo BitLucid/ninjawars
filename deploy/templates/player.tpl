@@ -118,7 +118,7 @@ var combat_skills = {$combat_skills|@json_encode};
 
             <!-- Inventory Items -->
             <td id='inventory-items'>
-              <form id="inventory_form" action="inventory_mod.php" method="post" name="inventory_form">
+              <form id="inventory_form" action="/player/use_item/" method="post" name="inventory_form">
                 <div>
                   <input id="target" type="hidden" name="target_id" value="{$target_id|escape}">
 		{if !$valid_items}

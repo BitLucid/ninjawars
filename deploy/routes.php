@@ -99,6 +99,12 @@ Router::$routes = [
             'delete_account'            => 'deleteAccount',
         ],
     ],
+    'inventory' => [
+        'type'    => 'controller',
+        'actions' => [
+            'use'    => 'useItem',
+        ],
+    ],
     'quest' => [
         'type'  => 'controller',
         'actions' => [
@@ -158,4 +164,5 @@ Router::$controllerAliases = [
     'village'       => 'chat',
     'enemies'       => 'consider',
     'duel'          => 'rumor',
+    'item'          => 'inventory',
 ];
