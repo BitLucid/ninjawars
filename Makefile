@@ -1,4 +1,4 @@
-.PHONY: all ci pre-test test test-integration test-unit test-functional post-test clean dep build dist-clean db db-fixtures migration
+.PHONY: all ci pre-test test test-integration test-unit test-functional post-test clean dep build install dist-clean db db-fixtures migration
 
 COMPOSER=./composer.phar
 CC_DIR=./cc
@@ -25,12 +25,14 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery-linkify.min.js" "$(JS)"
 
-install:
+install: build
+	apt-get install python3-dev python3-lxml
 	touch ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/emails.log
 	touch /var/log/nginx/ninjawars.chat-server.log
 	chown www-data:adm /var/log/nginx/ninjawars.chat-server.log
 	nohup php bin/chat-server.php > /var/log/nginx/ninjawars.chat-server.log 2>&1 &
+	@echo "Don't forget to update webserver configs as necessary."
 
 
 all: build test-unit db python-build test test-functional
@@ -137,7 +139,8 @@ ci-pre-configure:
 
 python-install:
 	# Install python3 deps with pip
-	pip install -r ./deploy/requirements.txt
+	pip3 install virtualenv
+	pip3 install -r ./deploy/requirements.txt
 
 ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
 
