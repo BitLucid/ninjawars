@@ -241,13 +241,6 @@ function get_clan_members($p_clanID, $p_limit = 30) {
 }
 
 /**
- * Check whether the player is the leader of their clan.
- */
-function is_clan_leader($player_id) {
-	return (($clan = ClanFactory::clanOfMember($player_id)) && $player_id == $clan->getLeaderID());
-}
-
-/**
  * Return the current percentage of the maximum health that a character could have.
  */
 function health_percent($health, $level) {

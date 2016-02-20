@@ -120,7 +120,7 @@ class PlayerController {
 
                     if ($viewer_clan) {
                         $same_clan = ($clan->getID() == $viewer_clan->getID());
-                        $display_clan_options = $viewing_player_obj && !$self && $same_clan && is_clan_leader($viewing_player_obj->id());
+                        $display_clan_options = $viewing_player_obj && !$self && $same_clan && $viewing_player_obj->isClanLeader();
                     } else {
                         $same_clan = $display_clan_options = false;
                     }

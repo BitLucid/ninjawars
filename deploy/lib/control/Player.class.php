@@ -547,4 +547,10 @@ class Player implements Character {
 		return $player;
 	}
 
+    /**
+     * Check whether the player is the leader of their clan.
+     */
+    public function isClanLeader() {
+        return (($clan = ClanFactory::clanOfMember($this->id())) && $this->id() == $clan->getLeaderID());
+    }
 }
