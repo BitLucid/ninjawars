@@ -54,14 +54,6 @@ function required_kills_to_level($current_level) {
 }
 
 /**
- * Get a character's current kills, necessary when a character's level changes.
- */
-function char_kills($char_id) {
-	$info = char_info($char_id);
-	return $info['kills'];
-}
-
-/**
  * Leveling up Function
  */
 function level_up_if_possible($char_id) {
