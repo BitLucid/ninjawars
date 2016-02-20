@@ -68,7 +68,7 @@ article#player-titles{
 	{/if}
 
   {include file="gravatar.tpl" gurl=$gravatar_url}
-  {if $viewing_player_obj->isAdmin()}<a style='font-size:small;float:right;' href='{$smarty.const.WEB_ROOT}ninjamaster/?view={$player_info.player_id|escape}'>Admin View</a>{/if}
+  {if $viewing_player_obj && $viewing_player_obj->isAdmin()}<a style='font-size:small;float:right;' href='{$smarty.const.WEB_ROOT}ninjamaster/?view={$player_info.player_id|escape}'>Admin View</a>{/if}
 
   </article>
 
@@ -236,7 +236,7 @@ var combat_skills = {$combat_skills|@json_encode};
     </div>
 {/if}
 
-  {if $viewing_player_obj->isAdmin()}
+  {if $viewing_player_obj && $viewing_player_obj->isAdmin()}
     <div class='admin-view centered'><small class='de-em'>IP Address: {$target_player_obj->ip()}</small></div>
   {/if}
 

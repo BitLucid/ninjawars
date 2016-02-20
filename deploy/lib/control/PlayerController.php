@@ -27,6 +27,7 @@ class PlayerController {
 
         $char_info = self_info();
 
+
         if ($target_player_obj === null) {
             $template = 'no-player.tpl';
             $parts    = array();
@@ -58,9 +59,13 @@ class PlayerController {
 
                 // Attack Legal section
                 $params          = array('required_turns'=>0, 'ignores_stealth'=>true); // 0 for unstealth.
-                $AttackLegal     = new AttackLegal($viewing_player_obj, $target_player_obj, $params);
-                $attack_allowed  = $AttackLegal->check(false);
-                $attack_error    = $AttackLegal->getError();
+                $attack_error = 'You must become a ninja first.';
+                $attack_allowed = false;
+                if(null !== $viewing_player_obj){
+                    $AttackLegal     = new AttackLegal($viewing_player_obj, $target_player_obj, $params);
+                    $attack_allowed  = $AttackLegal->check(false);
+                    $attack_error    = $AttackLegal->getError();
+                }
 
                 $sel_rank_spot = "SELECT rank_id FROM rankings WHERE player_id = :char_id limit 1";
                 $rank_spot = query_item($sel_rank_spot, array(':char_id'=>$player_info['player_id']));
@@ -75,7 +80,12 @@ class PlayerController {
 
                     $skillDAO = new SkillDAO();
 
-                    if(!$viewing_player_obj->isAdmin()){
+                    $is_admin = false;
+                    if($viewing_player_obj){
+                        $is_admin = $viewing_player_obj->isAdmin();
+                    }
+
+                    if(!$is_admin){
                         $combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level);
                         $targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level);
                     } else {
