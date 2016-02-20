@@ -58,99 +58,61 @@ function required_kills_to_level($current_level) {
  */
 function level_up_if_possible($char_id) {
 	// Setup values:
-	$max_level = MAX_PLAYER_LEVEL;
-	$health_to_add = 100;
-	$turns_to_give = 50;
+	$health_to_add     = 100;
+	$turns_to_give     = 50;
+	$ki_to_give        = 50;
 	$stat_value_to_add = 5;
+	$karma_to_give     = 1;
 
-	$char_kills = get_kills($char_id);
+    $char = new Player($char_id);
 
-	if ($char_kills < 0) {
-		// If the character doesn't have any kills, shortcut the levelling process.
-		return false;
-	} else {
-		$char_obj = new Player($char_id);
-		$char_level = $char_obj->level();
+    if ($char->isAdmin()) { // If the character is an admin, do not auto-level
+        return false;
+    } else { // For normal characters, do auto-level
+        $required_kills = required_kills_to_level($char->level());
 
-		if ($char_obj->isAdmin()) {
-			// If the character is an admin, do not auto-level them.
-			return false;
-		} else {
-			// For normal characters, do auto-level them.
+        // Have to be under the max level and have enough kills.
+        $level_up_possible = (
+            ($char->level() + 1 <= MAX_PLAYER_LEVEL) &&
+            ($char->kills >= $required_kills)
+        );
 
-			// Check required values:
-			$nextLevel  = $char_level + 1;
-			$required_kills = required_kills_to_level($char_level);
-			// Have to be under the max level and have enough kills.
-			$level_up_possible = (
-				($nextLevel <= $max_level) &&
-				($char_kills >= $required_kills) );
+        if ($level_up_possible) { // Perform the level up actions
+            $char->set_health($char->health() + $health_to_add);
+            $char->set_turns($char->turns()   + $turns_to_give);
+            $char->set_ki($char->ki()         + $ki_to_give);
 
-			if ($level_up_possible) {
-				// ****** Perform the level up actions ****** //
-				// Explicitly call for the special case of kill changing to prevent an infinite loop.
-				change_kills($char_id, -1*$required_kills, false);
-				$userLevel = changeLevel($char_id, 1);
-				change_strength($char_id, $stat_value_to_add);
-				change_speed($char_id, $stat_value_to_add);
-				change_stamina($char_id, $stat_value_to_add);
-				change_karma($char_id, 1); // Only add 1 to karma via levelling.
-				change_ki($char_id, 50); // Add 50 ki points via levelling.
-				changeHealth($char_id, $health_to_add);
-				change_turns($char_id, $turns_to_give);
-				// Send a level-up message, for those times when auto-levelling happens.
-				send_event($char_id, $char_id,
-					"You levelled up!  Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by 1, and your Ki raised 50!  You gained some health and turns as well!  You are now a level $userLevel ninja!  Go kill some stuff.");
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
+            // Must read from VO for these as accessors return modified values
+            $char->setStamina($char->vo->stamina   + $stat_value_to_add);
+            $char->setStrength($char->vo->strength + $stat_value_to_add);
+            $char->setSpeed($char->vo->speed       + $stat_value_to_add);
+
+            // no mutator for these yet
+            $char->vo->kills = max(0, $char->kills - $required_kills);
+            $char->vo->karma = ($char->karma() + $karma_to_give);
+            $char->vo->level = ($char->level() + 1);
+
+            $char->save();
+
+            recordLevelUp($char->id());
+            changeAccountKarma($char_id, $karma_to_give);
+
+            // Send a level-up message, for those times when auto-levelling happens.
+            send_event($char->id(), $char->id(),
+                "You levelled up! Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by $karma_to_give, and your Ki raised $ki_to_give! You gained some health and turns, as well! You are now a level {$char->level()} ninja! Go kill some stuff.");
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
-function change_strength($char_id, $amount){
-	$amount = (int) $amount;
-	if(abs($amount) > 0){
-		$up = "UPDATE players set strength = (strength+:amount) where player_id = :player_id";
-		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
-	}
-}
-
-function change_speed($char_id, $amount){
-	$amount = (int) $amount;
-	if(abs($amount) > 0){
-		$up = "UPDATE players set speed = (speed+:amount) where player_id = :player_id";
-		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
-	}
-}
-
-function change_stamina($char_id, $amount){
-	$amount = (int) $amount;
-	if(abs($amount) > 0){
-		$up = "UPDATE players set stamina = (stamina+:amount) where player_id = :player_id";
-		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
-	}
-}
-
-function change_karma($char_id, $amount){
-	$amount = (int) $amount;
-	if(abs($amount) > 0){
-		$up = "UPDATE players set karma = (karma+:amount) where player_id = :player_id";
-		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
-		// Change the total karma tracked in the account at the same time as the character karma changes.
-		$up2 = "UPDATE accounts set karma_total = (karma_total+:amount) where account_id = 
-			(select _account_id from account_players where _player_id = :player_id)";
-		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
-	}
-}
-
-function change_ki($char_id, $amount){
-	$amount = (int) $amount;
-	if(abs($amount) > 0){
-		$up = "UPDATE players set ki = (ki+:amount) where player_id = :player_id";
-		query($up, array(':amount'=>$amount, ':player_id'=>array($char_id, PDO::PARAM_INT)));
-	}
+function changeAccountKarma($char_id, $amount) {
+    $query = "UPDATE accounts SET karma_total = (karma_total+:amount) WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :player_id)";
+    query($query, [
+        ':amount'    => (int) $amount,
+        ':player_id' => [$char_id, PDO::PARAM_INT]
+    ]);
 }
 
 /**
@@ -294,69 +256,50 @@ function char_info($p_id) {
 		return $player_data;
 }
 
-function changeLevel($who, $amount) {
-	$amount = (int)$amount;
-	if (abs($amount) > 0) {
-		DatabaseConnection::getInstance();
+function recordLevelUp($who) {
+    $amount = 1;
 
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET level = level+:amount WHERE player_id = :player");
-		$statement->bindValue(':player', $who);
-		$statement->bindValue(':amount', $amount);
-		$statement->execute();
+    DatabaseConnection::getInstance();
 
-		// *** UPDATE THE LEVEL INCREASE LOG *** //
-		$statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE _player_id = :player AND killsdate = now()");
-		$statement->bindValue(':player', $who);
-		$statement->execute();
+    // *** UPDATE THE LEVEL INCREASE LOG *** //
+    $statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE _player_id = :player AND killsdate = now()");
+    $statement->bindValue(':player', $who);
+    $statement->execute();
 
-		$notYetANewDay = $statement->fetch();  //Throws back a row result if there is a pre-existing record.
+    $notYetANewDay = $statement->fetch();  //Throws back a row result if there is a pre-existing record.
 
-		if ($notYetANewDay != NULL) {
-			//if record already exists.
-			$statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET levelling=levelling + :amount WHERE _player_id = :player AND killsdate=now() LIMIT 1");
-			$statement->bindValue(':amount', $amount);
-			$statement->bindValue(':player', $who);
-		} else {	// if no prior record exists, create a new one.
-			$statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (_player_id, killpoints, levelling, killsdate) VALUES (:player, '0', :amount, now())");  //inserts all except the autoincrement ones
-			$statement->bindValue(':amount', $amount);
-			$statement->bindValue(':player', $who);
-		}
+    if ($notYetANewDay != NULL) {
+        //if record already exists.
+        $statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET levelling=levelling + :amount WHERE _player_id = :player AND killsdate=now() LIMIT 1");
+        $statement->bindValue(':amount', $amount);
+        $statement->bindValue(':player', $who);
+    } else {	// if no prior record exists, create a new one.
+        $statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (_player_id, killpoints, levelling, killsdate) VALUES (:player, '0', :amount, now())");  //inserts all except the autoincrement ones
+        $statement->bindValue(':amount', $amount);
+        $statement->bindValue(':player', $who);
+    }
 
-		$statement->execute();
-	}
-
-	return getLevel($who);
+    $statement->execute();
 }
 
 // Takes in a character id and adds kills to that character.
 function addKills($who, $amount) {
-    $amount = (int)abs($amount);
-    update_levelling_log($who, $amount);
-    return change_kills($who, $amount);
+    return change_kills($who, (int)abs($amount));
 }
 
 function subtractKills($who, $amount) {
-    $amount = (int)abs($amount);
-    update_levelling_log($who, -1*($amount));
-    return change_kills($who, -1*($amount));
-}
-
-function get_kills($char_id) {
-    return query_item(
-        "SELECT kills FROM players WHERE player_id = :player_id",
-        [
-            ':player_id' => [$char_id, PDO::PARAM_INT]
-        ]
-    );
+    return change_kills($who, -1*((int)abs($amount)));
 }
 
 // Change the kills amount of a char, and levels them up when necessary.
-function change_kills($char_id, $amount, $auto_level_check=true) {
+function change_kills($char_id, $amount) {
+    update_levelling_log($who, $amount);
+
     $amount = (int)$amount;
 
     if (abs($amount) > 0) {
         // Ignore changes that amount to zero.
-        if ($amount > 0 && $auto_level_check) {
+        if ($amount > 0) {
             // For positive kill changes, check whether levelling occurs.
             level_up_if_possible($char_id);
         }
@@ -377,7 +320,12 @@ EOT;
         );
     }
 
-    return get_kills($char_id);
+    return query_item(
+        "SELECT kills FROM players WHERE player_id = :player_id",
+        [
+            ':player_id' => [$char_id, PDO::PARAM_INT]
+        ]
+    );
 }
 
 // Update the levelling log with the increased kills.
