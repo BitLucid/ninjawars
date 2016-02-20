@@ -178,30 +178,6 @@ function set_class($char_id, $new_class) {
 }
 
 /**
- * Get the character class display name info.
- */
-function char_class_name($char_id) {
-	return query_item("SELECT class.class_name FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
-		array(':char_id'=>$char_id));
-}
-
-/**
- * Get the character class information.
- */
-function char_class_identity($char_id) {
-	return query_item("SELECT class.identity FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
-		array(':char_id'=>$char_id));
-}
-
-/**
- * Get the character class theme string.
- */
-function char_class_theme($char_id) {
-	return query_item("SELECT class.theme FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
-		array(':char_id'=>$char_id));
-}
-
-/**
  * Pull the class theme by identity.
  */
 function class_theme($class_identity) {

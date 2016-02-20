@@ -91,7 +91,7 @@ class StatsController {
 		$char			= new Player(self_char_id());
 		$player			= self_info();
 		$player_clan	= ClanFactory::clanOfMember($char);
-		$class_theme	= class_theme($char->class_identity());
+		$class_theme	= $char->getClassTheme();
 		$level_category	= level_category($player['level']);
 
 		$parts = [
