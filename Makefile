@@ -18,6 +18,10 @@ ifdef NOCOVER
 	CC_FLAG=
 endif
 
+ifndef TESTFILE
+	TESTFILE=
+endif
+
 build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
@@ -36,6 +40,9 @@ install: build
 
 
 all: build test-unit db python-build test test-functional
+
+test-one:
+	$(TEST_RUNNER) $(CC_FLAG) $(TESTFILE)
 
 pre-test:
 	php deploy/check.php
