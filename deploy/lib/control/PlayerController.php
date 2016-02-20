@@ -114,7 +114,6 @@ class PlayerController {
 
                 if ($clan) {
                     $viewer_clan  = $viewing_player_obj ? ClanFactory::clanOfMember($viewing_player_obj) : null;
-                    $clan_members = get_clan_members($clan->getID())->fetchAll(); // TODO - When we switch to Smarty 3, remove fetchAll for foreach
                     $clan_id      = $clan->getID();
                     $clan_name    = $clan->getName();
 
@@ -131,7 +130,7 @@ class PlayerController {
                 $template = 'player.tpl';
                 $parts = get_certain_vars(get_defined_vars(), array('char_info', 'viewing_player_obj', 'target_player_obj', 'combat_skills',
                     'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today', 'level_category',
-                    'gravatar_url', 'status_list', 'clan', 'clan_members', 'items'));
+                    'gravatar_url', 'status_list', 'clan', 'items'));
             }
         }
 

@@ -217,30 +217,6 @@ function create_gravatar_url_from_email($email, $size=null) {
 }
 
 /**
- * Get list of clan members from clan
- *
- * @TODO Should be moved to clan stuff
- */
-function get_clan_members($p_clanID, $p_limit = 30) {
-	if ((int)$p_clanID == $p_clanID && $p_clanID > 0) {
-		$sel = "SELECT uname, player_id, health FROM clan_player JOIN players ON player_id = _player_id AND _clan_id = :clanID AND active = 1 ORDER BY health DESC, level DESC ".(!is_null($p_limit) && $p_limit > 0 ? "LIMIT :limit" : '');
-		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare($sel);
-		$statement->bindValue(':clanID', $p_clanID);
-
-		if (!is_null($p_limit) && $p_limit > 0) {
-			$statement->bindValue(':limit', $p_limit);
-		}
-
-		$statement->execute();
-
-		return $statement;
-	} else {
-		return null;
-	}
-}
-
-/**
  * Return the current percentage of the maximum health that a character could have.
  */
 function health_percent($health, $level) {
