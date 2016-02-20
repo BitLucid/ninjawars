@@ -1,5 +1,4 @@
 <?php
-require_once(__DIR__.'/../base.inc.php');
 use NinjaWars\core\data\DatabaseConnection;
 
 /* The functions used by the json api.
