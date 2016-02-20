@@ -82,61 +82,73 @@ class StatsController {
 		return new RedirectResponse('/stats.php'.$raw_query_str);
 	}
 
-	/**
-	* Display the default stats page
-	**/
-	public function index() {
-		// default parts
-		$char_id		= self_char_id();
-		$char			= new Player(self_char_id());
-		$player			= self_info();
-		$player_clan	= ClanFactory::clanOfMember($char);
-		$class_theme	= $char->getClassTheme();
-		$level_category	= level_category($player['level']);
+    /**
+     * Display the default stats page
+     */
+    public function index() {
+        // default parts
+        $char			= new Player(self_char_id());
+        $player			= self_info();
+        $player_clan	= ClanFactory::clanOfMember($char);
+        $class_theme	= $char->getClassTheme();
+        $level_category	= level_category($player['level']);
 
-		$parts = [
-			'player'		=> $player,
-			'char'			=> $char,
-			'player_clan'	=> $player_clan,
-			'clan_id'		=> $player_clan ? $player_clan->getID() : false,
-			'clan_name'		=> $player_clan ? $player_clan->getName() : false,
+        $parts             = [
+            'player'      => $player,
+            'char'        => $char,
+            'player_clan' => $player_clan,
+            'clan_id'     => $player_clan ? $player_clan->getID() : false,
+            'clan_name'   => $player_clan ? $player_clan->getName() : false,
 
-			'status_list'		=> get_status_list(),
-			'profile_editable'	=> $player['messages'],
-			'rank_display'		=> get_rank($char_id),
+            'status_list'      => get_status_list(),
+            'profile_editable' => $player['messages'],
+            'rank_display'     => $this->getRank($char->id()),
 
-			'traits'		=> $char->traits(),
-			'beliefs'		=> $char->beliefs(),
-			'instincts'		=> $char->instincts(),
-			'goals'			=> $char->goals(),
-			'description'	=> $char->description(),
+            'traits'      => $char->traits(),
+            'beliefs'     => $char->beliefs(),
+            'instincts'   => $char->instincts(),
+            'goals'       => $char->goals(),
+            'description' => $char->description(),
 
-			'gold_display'    => number_format($char->gold()),
-			'bounty_display'  => number_format($char->vo->bounty),
+            'gold_display'   => number_format($char->gold()),
+            'bounty_display' => number_format($char->vo->bounty),
 
-			'level_category'		=> $level_category,
-			'class_theme'			=> $class_theme,
-			'gravatar_url'			=> generate_gravatar_url($player['player_id']),
-			'profile_max_length'	=> self::PROFILE_MAX_LENGTH,
+            'level_category'     => $level_category,
+            'class_theme'        => $class_theme,
+            'gravatar_url'       => generate_gravatar_url($player['player_id']),
+            'profile_max_length' => self::PROFILE_MAX_LENGTH,
 
-			'error'				=> in('error'),
-			'successMessage'	=> '',
-			'profile_changed'	=> (bool) in('profile_changed'),
-			'changed'			=> (bool) in('changed'),
-		];
+            'error'           => in('error'),
+            'successMessage'  => '',
+            'profile_changed' => (bool) in('profile_changed'),
+            'changed'         => (bool) in('changed'),
+        ];
 
-		return $this->render($parts);
-	}
+        return $this->render($parts);
+    }
 
-	private function render($parts) {
+    private function render($parts) {
+        return [
+            'template'	=> 'stats.tpl',
+            'title'		=> 'Ninja Stats',
+            'parts'		=> $parts,
+            'options'	=> [
+                'quickstat' => 'player',
+            ],
+        ];
+    }
 
-		return [
-			'template'	=> 'stats.tpl',
-			'title'		=> 'Ninja Stats',
-			'parts'		=> $parts,
-			'options'	=> [
-				'quickstat' => 'player',
-			],
-		];
-	}
+    /**
+     * Get the rank integer for a certain character.
+     */
+    private function getRank($p_char_id) {
+        DatabaseConnection::getInstance();
+        $statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE player_id = :player");
+        $statement->bindValue(':player', $p_char_id);
+        $statement->execute();
+
+        $rank = $statement->fetchColumn();
+
+        return ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
+    }
 }

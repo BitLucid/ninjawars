@@ -178,14 +178,6 @@ function set_class($char_id, $new_class) {
 }
 
 /**
- * Pull the class theme by identity.
- */
-function class_theme($class_identity) {
-	return query_item('SELECT theme FROM class WHERE identity = :class_identity',
-		array(':class_identity'=>$class_identity));
-}
-
-/**
  * Pull out the url for the player's avatar
  */
 function create_avatar_url($player, $size=null) {
@@ -253,20 +245,6 @@ function get_clan_members($p_clanID, $p_limit = 30) {
  */
 function is_clan_leader($player_id) {
 	return (($clan = ClanFactory::clanOfMember($player_id)) && $player_id == $clan->getLeaderID());
-}
-
-/**
- * Get the rank integer for a certain character.
- */
-function get_rank($p_charID) {
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE player_id = :player");
-	$statement->bindValue(':player', $p_charID);
-	$statement->execute();
-
-	$rank = $statement->fetchColumn();
-
-	return ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
 }
 
 /**
