@@ -59,6 +59,8 @@ class TestRouting:
             'clan.php?command=view', 'npc', 'npc/attack/peasant/',
             'npc/attack/guard/', 'stats.php', 'account.php', 'quest',
             'quest/view/1', 'account_issues.php', 'resetpassword.php',
+            'player.php?target_id=777777',
+            'player.php?target=tchalvak',
         ]
         for url in urls:
             assert (str(self.root()) + url is not None and 200 ==
@@ -96,7 +98,11 @@ class TestRouting:
                  'doshin_office.php': 'Doshin Office',
                  'account_issues.php' : 'Account Problems',
                  'resetpassword.php' : 'Request a password reset',
+                 'player.php' : 'Ninja Profile',
+                 'player.php?target=tchalvak' : 'Ninja: Tchalvak'
                  }
         for url, title in pages.items():
+            assert (bool(title) and bool(url) and
+                    None is not self.page_title(root + url))
             assert (bool(title) and bool(url) and
                     title in self.page_title(root + url))
