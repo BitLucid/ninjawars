@@ -157,36 +157,47 @@ function json_inventory() {
 }
 
 function json_index() {
-	DatabaseConnection::getInstance();
-	$player   = public_self_info();
-	$events   = array();
-	$messages = array();
-	$user_id  = $player['player_id'];
-	$unread_messages = null;
-	$unread_events = null;
+    DatabaseConnection::getInstance();
 
-	if ($user_id) {
-		$events = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC");
-		$events->bindValue(':userID', $user_id);
+    $player          = public_self_info();
+    $events          = [];
+    $messages        = [];
+    $user_id         = $player['player_id'];
+    $unread_messages = null;
+    $unread_events   = null;
+    $item            = [];
 
-		$events->execute();
-		
-		$unread_events = $events->rowCount();
+    if ($user_id) {
+        $events = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC");
+        $events->bindValue(':userID', $user_id);
+        $events->execute();
 
-		$messages = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 and unread = 1 ORDER BY date DESC");
-		$messages->bindValue(':userID1', $user_id);
-		$messages->bindValue(':userID2', $user_id);
+        $unread_events = $events->rowCount();
 
-		$messages->execute();
-		
-		$unread_messages = $messages->rowCount();
-	}
+        $messages = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 and unread = 1 ORDER BY date DESC");
+        $messages->bindValue(':userID1', $user_id);
+        $messages->bindValue(':userID2', $user_id);
+        $messages->execute();
 
-	return '{"player":'.json_encode($player).',
-				"member_counts":'.json_member_count().',
-	            "unread_messages_count":'.json_encode($unread_messages).',
-				"message":'.json_encode(!empty($messages) ? $messages->fetch() : null).',
-				"inventory":{"inv":1,"items":'.json_encode(query_array("SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :user_id ORDER BY item_display_name", array(':user_id'=>$user_id))).',"hash":"'.md5(strtotime("now")).'"},
-				"unread_events_count":'.json_encode($unread_events).',
-				"event":'.json_encode(!empty($events) ? $events->fetch() : null).'}';
+        $unread_messages = $messages->rowCount();
+
+        $items = query_array(
+            'SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :user_id ORDER BY item_display_name',
+            [':user_id' => $user_id]
+        );
+    }
+
+    return json_encode([
+        'player'                => $player,
+        'member_counts'         => member_counts(),
+        'unread_messages_count' => $unread_messages,
+        'message'               => (!empty($messages) ? $messages->fetch() : null),
+        'inventory'             => [
+            'inv'   => 1,
+            'items' => $items,
+            'hash'  => md5(strtotime("now")),
+        ],
+        'unread_events_count'   => $unread_events,
+        'event'                 => (!empty($events) ? $events->fetch() : null),
+    ]);
 }
