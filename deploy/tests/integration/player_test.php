@@ -264,4 +264,59 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
             $this->assertContains('Not null violation', $e->getMessage());
         }
     }
+
+    /**
+     * test that levelUp fails if not enough kills
+     */
+    public function testLevelUpKillsFail() {
+        $this->assertFalse(level_up_if_possible($this->char_id));
+    }
+
+    /**
+     * test that levelUp succeeds if enough kills
+     */
+    public function testLevelUpSucceeds() {
+        $char = new Player($this->char_id);
+        $char->vo->kills = 100;
+        $char->save();
+
+        $this->assertTrue(level_up_if_possible($char->id()));
+    }
+
+    /**
+     * test that levelUp changes player stats
+     */
+    public function testLevelUpChangesStats() {
+        $char = new Player($this->char_id);
+        $char->vo->kills = 100;
+        $char->save();
+
+        level_up_if_possible($char->id());
+
+        $levelled_char = new Player($this->char_id);
+
+        $this->assertGreaterThan($char->strength, $levelled_char->strength);
+        $this->assertGreaterThan($char->health, $levelled_char->health);
+        $this->assertGreaterThan($char->turns, $levelled_char->turns);
+        $this->assertGreaterThan($char->stamina, $levelled_char->stamina);
+        $this->assertGreaterThan($char->ki, $levelled_char->ki);
+        $this->assertGreaterThan($char->speed, $levelled_char->speed);
+        $this->assertGreaterThan($char->karma, $levelled_char->karma);
+        $this->assertGreaterThan($char->level, $levelled_char->level);
+    }
+
+    /**
+     * test that levelUp removes kill
+     */
+    public function testLevelUpRemovesKills() {
+        $char = new Player($this->char_id);
+        $char->vo->kills = 100;
+        $char->save();
+
+        level_up_if_possible($char->id());
+
+        $levelled_char = new Player($this->char_id);
+
+        $this->assertLessThan($char->kills, $levelled_char->kills);
+    }
 }
