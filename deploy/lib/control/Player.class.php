@@ -558,7 +558,7 @@ class Player implements Character {
      * Set the character's class, using the identity.
      */
     public function setClass($new_class) {
-        if (!is_valid_class(strtolower($new_class))) {
+        if (!$this->isValidClass(strtolower($new_class))) {
             return "That class was not an option to change into.";
         } else {
             $up = "UPDATE players SET _class_id = (select class_id FROM class WHERE class.identity = :class) WHERE player_id = :char_id";
@@ -566,5 +566,17 @@ class Player implements Character {
 
             return null;
         }
+    }
+
+    /**
+     * Check that a class matches against the class identities available in the database.
+     *
+     * @return boolean
+     */
+    private function isValidClass($candidate_identity) {
+        return (boolean) query_item(
+            "SELECT identity FROM class WHERE identity = :candidate",
+            [':candidate' => $candidate_identity]
+        );
     }
 }

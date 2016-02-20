@@ -116,16 +116,6 @@ function changeAccountKarma($char_id, $amount) {
 }
 
 /**
- * Check that a class matches against the class identities available in the database.
- */
-function is_valid_class($candidate_identity) {
-    return (boolean) query_item(
-        "SELECT identity FROM class WHERE identity = :candidate",
-        [':candidate'=>$candidate_identity]
-    );
-}
-
-/**
  * Pull out the url for the player's avatar
  */
 function create_avatar_url($player, $size=null) {
