@@ -49,15 +49,16 @@ class TestRouting:
 
     def test_urls_should_200(self):
         urls = [
-            'intro', 'login.php', 'signup.php', 'player.php', 'village.php',
-            'interview.php', 'news.php', 'staff.php', 'list.php', 'rules.php',
-            'shop.php', 'events.php', 'skill', 'inventory.php', 'enemies.php',
+            'intro', 'login', 'login.php', 'signup', 'signup.php', 
+            'player.php', 'village.php', 'interview.php', 'news.php', 
+            'staff.php', 'list.php', 'rules.php', 'shop.php', 'events.php', 
+            'skill', 'inventory.php', 'enemies.php',
             'clan.php', 'map.php', 'work.php', 'doshin_office.php',
             'dojo.php', 'shrine.php', 'duel.php', 'clan.php?command=list',
             'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
             'clan.php?command=view', 'npc', 'npc/attack/peasant/',
             'npc/attack/guard/', 'stats.php', 'account.php', 'quest',
-            'quest/view/1',
+            'quest/view/1', 'account_issues.php', 'resetpassword.php',
         ]
         for url in urls:
             assert (str(self.root()) + url is not None and 200 ==
@@ -93,6 +94,8 @@ class TestRouting:
                  'village.php': 'Chat', 'enemies.php': 'Fight',
                  'shop.php': 'Shop', 'work.php': 'Work',
                  'doshin_office.php': 'Doshin Office',
+                 'account_issues.php' : 'Account Problems',
+                 'resetpassword.php' : 'Request a password reset',
                  }
         for url, title in pages.items():
             assert (bool(title) and bool(url) and
