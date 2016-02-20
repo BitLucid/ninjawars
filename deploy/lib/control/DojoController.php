@@ -141,7 +141,7 @@ class DojoController {
      * @return string
      */
     private function changePlayerClass($p_player, $p_class) {
-        $error = set_class($p_player->id(), $p_class);
+        $error = $p_player->setClass($p_class);
 
         if (!$error) {
             $p_player->changeTurns((-1)*self::CLASS_CHANGE_COST);

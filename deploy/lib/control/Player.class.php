@@ -547,10 +547,24 @@ class Player implements Character {
 		return $player;
 	}
 
-    /**
+     /**
      * Check whether the player is the leader of their clan.
      */
     public function isClanLeader() {
         return (($clan = ClanFactory::clanOfMember($this->id())) && $this->id() == $clan->getLeaderID());
+    }
+
+    /**
+     * Set the character's class, using the identity.
+     */
+    public function setClass($new_class) {
+        if (!is_valid_class(strtolower($new_class))) {
+            return "That class was not an option to change into.";
+        } else {
+            $up = "UPDATE players SET _class_id = (select class_id FROM class WHERE class.identity = :class) WHERE player_id = :char_id";
+            query($up, array(':class'=>strtolower($new_class), ':char_id'=>$this->id()));
+
+            return null;
+        }
     }
 }

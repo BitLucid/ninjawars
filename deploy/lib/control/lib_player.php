@@ -164,20 +164,6 @@ function is_valid_class($candidate_identity) {
 }
 
 /**
- * Set the character's class, using the identity.
- */
-function set_class($char_id, $new_class) {
-	if (!is_valid_class(strtolower($new_class))) {
-		return "That class was not an option to change into.";
-	} else {
-		$up = "UPDATE players SET _class_id = (select class_id FROM class WHERE class.identity = :class) WHERE player_id = :char_id";
-		query($up, array(':class'=>strtolower($new_class), ':char_id'=>$char_id));
-
-		return null;
-	}
-}
-
-/**
  * Pull out the url for the player's avatar
  */
 function create_avatar_url($player, $size=null) {
