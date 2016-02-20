@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT."control/lib_player_list.php");
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
 use \Player;

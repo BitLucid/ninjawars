@@ -4,9 +4,6 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\extensions\SessionFactory;
 use \Player as Player;
 
-require_once(LIB_ROOT."control/lib_player_list.php");
-require_once(LIB_ROOT."control/lib_player.php");
-
 /**
  * Display the ninja list as a whole
  */

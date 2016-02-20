@@ -1,9 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT.'control/lib_player_list.php');
-require_once(LIB_ROOT.'control/lib_player.php'); // For player tags
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Player;
 use NinjaWars\core\data\NpcFactory;
@@ -165,7 +162,7 @@ class NinjamasterController {
             // make percentage of highest, multiply by 10 and round to give a 1-10 size
             $res[$player_info['uname']] = [
                 'player_id' => $player_info['player_id'],
-                'size'      => $this->calculatePlayerSize($player_info['sum', $max),
+                'size'      => $this->calculatePlayerSize($player_info['sum'], $max),
             ];
         } while ($player_info = $statement->fetch());
 
@@ -178,6 +175,6 @@ class NinjamasterController {
      * @return int
      */
     private function calaculatePlayerSize($p_rank, $p_max) {
-        return floor(( (($p_rank-1 < 1 ? 0 : $p_rank-1)) / $p_max)*10)+1
+        return floor(( (($p_rank-1 < 1 ? 0 : $p_rank-1)) / $p_max)*10)+1;
     }
 }
