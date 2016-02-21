@@ -4,9 +4,8 @@ namespace NinjaWars\core\data;
 /**
  * Player Accounts and their info
  */
-class Account{
-
-	public function __construct($account_id){
+class Account {
+	public function __construct($account_id) {
 		$this->account_id = $account_id;
 		$this->info = account_info($account_id);
 		$this->oauth_id = $this->info['oauth_id'];
@@ -15,7 +14,6 @@ class Account{
 		$this->account_identity = $this->info['account_identity'];
 		$this->type = $this->info['type'];
 	}
-
 
 	public function info(){
 		return $this->info;
@@ -58,6 +56,10 @@ class Account{
 	public function getKarmaTotal(){
 		return $this->info['karma_total'];
 	}
+
+    public function setKarmaTotal($p_amount) {
+        $this->info['karma_total'] = (int) $p_amount;
+    }
 
 	public function getLastIp(){
 		return $this->info['last_ip'];
@@ -138,4 +140,5 @@ class Account{
             ]
         );
     }
+
 }

@@ -1,6 +1,7 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
+use NinjaWars\core\data\AccountFactory;
 
 require_once(LIB_ROOT."control/lib_status.php");
 require_once(LIB_ROOT."control/lib_accounts.php");
@@ -95,7 +96,10 @@ function level_up_if_possible($char_id) {
             $char->save();
 
             recordLevelUp($char->id());
-            changeAccountKarma($char_id, $karma_to_give);
+
+            $account = AccountFactory::findByChar($char);
+            $account->setKarmaTotal($account->getKarmaTotal() + $karma_to_give);
+            AccountFactory::save($account);
 
             // Send a level-up message, for those times when auto-levelling happens.
             send_event($char->id(), $char->id(),
@@ -105,14 +109,6 @@ function level_up_if_possible($char_id) {
             return false;
         }
     }
-}
-
-function changeAccountKarma($char_id, $amount) {
-    $query = "UPDATE accounts SET karma_total = (karma_total+:amount) WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :player_id)";
-    query($query, [
-        ':amount'    => (int) $amount,
-        ':player_id' => [$char_id, PDO::PARAM_INT]
-    ]);
 }
 
 /**
