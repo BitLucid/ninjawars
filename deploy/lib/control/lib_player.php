@@ -1,44 +1,4 @@
 <?php
-use NinjaWars\core\data\DatabaseConnection;
-use NinjaWars\core\data\ClanFactory;
-use NinjaWars\core\data\AccountFactory;
-use NinjaWars\core\data\GameLog;
-
-require_once(LIB_ROOT."control/lib_status.php");
-require_once(LIB_ROOT."control/lib_accounts.php");
-
-/**
- * Return the data that should be publicly readable to javascript or the api while the player is logged in.
- */
-function public_self_info() {
-    $char_info = char_info(self_char_id());
-    unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
-
-    return $char_info;
-}
-
-/**
- * Returns the state of the player from the database,
- *
- * @param int $p_id
- */
-function char_info($p_id) {
-    if (!is_numeric($p_id) || !positive_int($p_id)) {
-        return null;
-    }
-
-    $player = new Player($p_id); // Constructor uses DAO to get player object.
-    $player_data = array();
-
-    if ($player instanceof Player && $player->id()) {
-        // Turn the player data vo into a simple array.
-        $player_data = $player->data();
-        $player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
-    }
-
-    return $player_data;
-}
-
 /**
  * Return the current percentage of the maximum health that a character could have.
  */

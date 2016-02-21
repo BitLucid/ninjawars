@@ -1,6 +1,7 @@
 <?php
 require_once(CORE . "control/lib_status.php");
 require_once(CORE . "control/lib_player.php");
+require_once(CORE . "control/lib_accounts.php");
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
@@ -376,6 +377,26 @@ class Player implements Character {
 	}
 
     /**
+     * Returns the state of the player from the database,
+     */
+    public function dataWithClan() {
+        $player_data = $this->data();
+        $player_data['clan_id'] = ($this->getClan() ? $this->getClan()->getID() : null);
+
+        return $player_data;
+    }
+
+    /**
+     * Return the data that should be publicly readable to javascript or the api while the player is logged in.
+     */
+    public function publicData() {
+        $char_info = $this->dataWithClan();
+        unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
+
+        return $char_info;
+    }
+
+    /**
      * Add data to the info you get from a player row.
      */
     private function addExtendedData($p_data) {
@@ -392,25 +413,25 @@ class Player implements Character {
         return $p_data;
     }
 
-	public function as_vo() {
-		return $this->vo;
-	}
+    public function as_vo() {
+        return $this->vo;
+    }
 
-	public function as_array() {
-		return (array) $this->vo;
-	}
+    public function as_array() {
+        return (array) $this->vo;
+    }
 
-	public function getClan() {
-		return ClanFactory::clanOfMember($this->id());
-	}
+    public function getClan() {
+        return ClanFactory::clanOfMember($this->id());
+    }
 
-	// Pull the class identity for a character.
-	public function class_identity() {
+    // Pull the class identity for a character.
+    public function class_identity() {
         return query_item("SELECT class.identity FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
             array(':char_id'=>$this->id()));
-	}
+    }
 
-	// Pull the class display name for a character.
+    // Pull the class display name for a character.
 	public function class_display_name() {
         return query_item("SELECT class.class_name FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
             array(':char_id'=>$this->id()));

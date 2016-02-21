@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\DatabaseConnection;
 use \PDO;
+use \Player;
 
 class ApiController {
     /**
@@ -102,8 +103,8 @@ class ApiController {
     }
 
     private function json_player() {
-        $player = char_info(self_char_id());
-        return ['player' => $player];
+        $player = new Player(self_char_id());
+        return ['player' => $player->dataWithClan()];
     }
 
     private function json_chats($limit = 20) {
@@ -129,7 +130,8 @@ class ApiController {
             require_once(LIB_ROOT."control/lib_chat.php");
             $msg     = trim($msg);
             $user_id = (int) self_char_id();
-            $info    = char_info($user_id);
+            $player  = new Player($user_id);
+            $info    = $player->dataWithClan();
             $success = send_chat($user_id, $msg);
 
             if (!$success) {
@@ -187,10 +189,10 @@ class ApiController {
     private function json_index() {
         DatabaseConnection::getInstance();
 
-        $player          = public_self_info();
+        $user_id         = self_char_id();
+        $player          = new Player($user_id);
         $events          = [];
         $messages        = [];
-        $user_id         = $player['player_id'];
         $unread_messages = null;
         $unread_events   = null;
         $item            = [];
@@ -216,7 +218,7 @@ class ApiController {
         }
 
         return [
-            'player'                => $player,
+            'player'                => ($player ? $player->publicData() : []),
             'member_counts'         => member_counts(),
             'unread_messages_count' => $unread_messages,
             'message'               => (!empty($messages) ? $messages->fetch() : null),

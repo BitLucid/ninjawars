@@ -105,8 +105,8 @@ if (!$attack_error) { // Only bother to check for other errors if there aren't s
 }
 
 // Strip down the player info to get the sight data.
-function pull_sight_data($target_id) {
-	$data = char_info($target_id);
+function pull_sight_data($target) {
+	$data = $target->dataWithClan();
 	// Strip all fields but those allowed.
     $allowed = [
         'Name'     => 'uname',
@@ -137,7 +137,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 	if ($command == 'Sight') {
 		$covert = true;
 
-		$sight_data = pull_sight_data($target_id);
+		$sight_data = pull_sight_data($target);
 
 		$display_sight_table = true;
 	} elseif ($command == 'Steal') {

@@ -82,7 +82,7 @@ class ConsiderController {
 
         $active_ninjas = get_active_players(5, true); // Get the currently active ninjas
 
-        $char_info = char_info($char->id());
+        $char_info = $char->dataWithClan();
 
         // Generic/abstracted npcs
         $other_npcs = NpcFactory::npcsData();

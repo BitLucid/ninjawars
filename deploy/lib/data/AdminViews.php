@@ -1,8 +1,9 @@
 <?php
 namespace NinjaWars\core\data;
 
-require_once(LIB_ROOT."control/lib_inventory.php");
+use \Player;
 
+require_once(LIB_ROOT."control/lib_inventory.php");
 
 class AdminViews{
 
@@ -54,7 +55,8 @@ class AdminViews{
         $first = true;
 
         foreach ($ids as $id) {
-            $res[$id] = char_info($id, true);
+            $player = new Player($id);
+            $res[$id] = $player->dataWithClan();
             $res[$id]['first'] = $first;
             unset($res[$id]['messages']); // Exclude the messages for length reasons.
             unset($res[$id]['description']); // Ditto

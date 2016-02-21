@@ -38,13 +38,14 @@ class PlayerController {
             } else {
                 $viewing_player_obj = Player::find(self_char_id());
 
-                $char_info = char_info($viewing_player_obj->id());
-
                 $self = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
 
                 if ($viewing_player_obj !== null && $viewing_player_obj->vo) {
+                    $char_info = $viewing_player_obj->dataWithClan();
                     $char_id  = $viewing_player_obj->id();
                     $username = $viewing_player_obj->name();
+                } else {
+                    $char_info = [];
                 }
 
                 $player      = $target = $player_info['uname']; // reset the target and target_id vars.
