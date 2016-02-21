@@ -105,8 +105,6 @@ class PlayerController {
                 $clan = ClanFactory::clanOfMember($player_info['player_id']);
                 $same_clan = false;
 
-                $player_info = format_health_percent($player_info);
-
                 // Player clan and clan members
 
                 if ($clan) {

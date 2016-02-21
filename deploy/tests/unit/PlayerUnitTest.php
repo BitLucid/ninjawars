@@ -48,7 +48,6 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
 
     public function testHealthPercent() {
         $this->markTestIncomplete('Player::health() currently hits DB');
-        //$this->assertLessThanOrEqual(100, $this->player->health_percent());
     }
 
     public function testHealAPlayer(){

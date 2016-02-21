@@ -147,7 +147,6 @@ class InventoryController {
 	    $targetResult           = NULL; // result message to send to target of item use
 	    $targetName             = '';
 	    $targetHealth           = '';
-	    $targetHealthPercent    = '';
 	    $bountyMessage          = '';
 	    $resultMessage          = '';
 	    $alternateResultMessage = '';
@@ -450,7 +449,6 @@ class InventoryController {
 
 	            $targetName          = $targetObj->vo->uname;
 	            $targetHealth        = $targetObj->vo->health;
-	            $targetHealthPercent = $targetObj->health_percent();
 
 	            $turns_to_take = 1;
 

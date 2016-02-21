@@ -150,8 +150,7 @@ class ConsiderController {
      * @return resulset
      */
     private function getCurrentEnemies($p_playerId) {
-        $query = 'SELECT player_id, active, level, uname, health, least(100,floor((health / (150 + ((level-1)*25))::float)*100))
-            AS health_percent FROM players JOIN enemies ON _enemy_id = player_id AND _player_id = :pid
+        $query = 'SELECT player_id, active, level, uname, health FROM players JOIN enemies ON _enemy_id = player_id AND _player_id = :pid
             WHERE active = 1 ORDER BY health DESC, level DESC';
         return query_resultset($query, [':pid'=>$p_playerId]);
     }
@@ -207,7 +206,7 @@ class ConsiderController {
                 order by rank_id desc limit 10');
         }
 
-        return array_map('format_health_percent', $peers);
+        return $peers;
     }
 
     /**

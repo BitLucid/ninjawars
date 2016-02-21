@@ -357,6 +357,13 @@ class Player implements Character {
 	}
 
     /**
+     * @return int
+     */
+    public function getMaxHealth() {
+        return self::maxHealthByLevel($this->level);
+    }
+
+    /**
      * Pull the data of the player obj as an array.
      *
      * @note
@@ -365,23 +372,24 @@ class Player implements Character {
 	public function data($specific = null) {
 		if (!$this->data) {
             $this->data = $this->as_array();
-            $this->data['next_level'] = $this->killsRequiredForNextLevel();
-            $this->data = $this->addExtendedData($this->data);
-		}
+            $this->data['next_level']    = $this->killsRequiredForNextLevel();
+            $this->data['max_health']    = $this->getMaxHealth();
+            $this->data['hp_percent']    = $this->health_percent();
+            $this->data['max_turns']     = 100;
+            $this->data['turns_percent'] = min(100, round($this->data['turns']/$this->data['max_turns']*100));
+            $this->data['exp_percent']   = min(100, round(($this->data['kills']/$this->data['next_level'])*100));
+            $this->data['status_list']   = implode(', ', get_status_list($this->data['player_id']));
+            $this->data['hash']          = md5(implode($this->data));
 
-		if ($specific) {
+            unset($this->data['pname']);
+        }
+
+        if ($specific) {
 			return $this->data[$specific];
 		} else {
 			return $this->data;
 		}
 	}
-
-    /**
-     * @return int
-     */
-    public function getMaxHealth() {
-        return self::maxHealthByLevel($this->level);
-    }
 
     /**
      * Returns the state of the player from the database,
@@ -401,23 +409,6 @@ class Player implements Character {
         unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
 
         return $char_info;
-    }
-
-    /**
-     * Add data to the info you get from a player row.
-     */
-    private function addExtendedData($p_data) {
-        unset($p_data['pname']);
-
-        $p_data['max_health']    = self::maxHealthByLevel($p_data['level']);
-        $p_data['hp_percent']    = min(100, round(($p_data['health']/$p_data['max_health'])*100));
-        $p_data['max_turns']     = 100;
-        $p_data['turns_percent'] = min(100, round($p_data['turns']/$p_data['max_turns']*100));
-        $p_data['exp_percent']   = min(100, round(($p_data['kills']/$p_data['next_level'])*100));
-        $p_data['status_list']   = implode(', ', get_status_list($p_data['player_id']));
-        $p_data['hash']          = md5(implode($p_data));
-
-        return $p_data;
     }
 
     public function as_vo() {
@@ -510,9 +501,11 @@ class Player implements Character {
 		return self::maxHealthByLevel($this->level());
 	}
 
-	// Return the current percentage health.
+    /**
+     * Return the current percentage of the maximum health that a character could have.
+     */
 	public function health_percent() {
-		return health_percent($this->health(), $this->level());
+        return min(100, round(($this->health/$this->getMaxHealth())*100));
 	}
 
 	public function ip() {

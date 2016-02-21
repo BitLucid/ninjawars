@@ -52,7 +52,7 @@ article#player-titles{
 
     <span class='player-class {$player_info.theme|escape}'>
       <img id='class-shuriken' src='{$smarty.const.IMAGE_ROOT}small{$player_info.theme|escape}Shuriken.gif' alt=''>
-      {$player_info.class|escape}
+      {$player_info.class_name|escape}
     </span>
 
     <span class='player-level-category {$player_info.level|level_label|css_classify}'>
@@ -61,9 +61,9 @@ article#player-titles{
 
     {include file="status_section.tpl" statuses=$status_list}
 
-	{if $player_info.health}
+	{if $target_player_obj}
     <span id='health-bar-container'>
-      {include file="health_bar.tpl" health=$player_info.health health_percent=$player_info.health_percent}
+      {include file="health_bar.tpl" health=$target_player_obj->health level=$target_player_obj->level}
     </span>
 	{/if}
 

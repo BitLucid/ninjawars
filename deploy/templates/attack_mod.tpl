@@ -97,13 +97,13 @@
 				{if !$simultaneousKill && $loot}
 					<div>You have taken <span class='gold-count'>{$loot} gold</span> from {$target}.</div>
 				{/if}
-				
+
 				{if $wrath_regain}
 					<div class='wrath'>Your victory fuels your wrath, allowing you to retain some of your health.</div>
 				{/if}
-				
+
 			{/if}
-			
+
 			{if $rewarded_ki}
 				<div>Your ki lifeforce has increased.</div>
 			{/if}
@@ -117,7 +117,7 @@
 
 		{if $target_ending_health}
 
-			{include file="defender_health.tpl" health=$target_ending_health health_percent=$target_ending_health_percent target_name=$target_name}
+			{include file="defender_health.tpl" health=$target_ending_health level=$target_player->level target_name=$target_name}
 
 		{/if}
 		{if $attacker_died}

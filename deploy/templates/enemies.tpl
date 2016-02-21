@@ -23,9 +23,9 @@
 				{assign var="action" value="View"}
 			{/if}
     <li class="{$status_class}">
-      <span class='enemy-action-box'>{$action}&nbsp;<a class='enemy-name' title="View {$loop_enemy.uname|escape}'s info" href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
+      <span class='enemy-action-box'>{$action}&nbsp;<a class='enemy-name' title="View {$loop_enemy.uname|escape}'s info" href="/player?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
       <span class='enemy-stats-box'>
-        {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}
+        {include file="health_bar.tpl" health=$loop_enemy.health level=$loop_enemy.level}
       </span>
       <em title='Level {$loop_enemy.level}'>{$loop_enemy.level}</em>
       <form name='remove-enemy-form' id='remove-enemy-form' action="/enemies" method='POST'>
@@ -51,10 +51,10 @@
   <ul id='peer-chars'>
 	{foreach from=$peers item="loop_peer"}
     <li class='peer'>
-       <a class='peer-name' title='View {$loop_peer.uname|escape} to attack them' href='player.php?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname|escape}</a>
+       <a class='peer-name' title='View {$loop_peer.uname|escape} to attack them' href='/player?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname|escape}</a>
 		{if $char_info.health}
        <span class='stats-block'>
-         {include file="health_bar.tpl" health=$loop_peer.health health_percent=$loop_peer.health_percent}
+         {include file="health_bar.tpl" health=$loop_peer.health level=$loop_peer.level}
        </span>
 <!-- (level {$loop_peer.level}) -->
 		{/if}

@@ -60,7 +60,7 @@
       <li>
         Health:
         <span style='width:10em;display:inline-block' title='Max health: {$char->getMaxHealth()|escape}'>
-          {include file="health_bar.tpl" health=$char->health health_percent=$char->health_percent()}
+          {include file="health_bar.tpl" health=$char->health level=$char->level}
         </span>
       </li>
       <li>Turns: <span class='turns-count'>{$char->turns|number_format:0|escape}</span></li>

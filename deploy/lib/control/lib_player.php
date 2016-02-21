@@ -1,21 +1,5 @@
 <?php
 /**
- * Return the current percentage of the maximum health that a character could have.
- */
-function health_percent($health, $level) {
-    return min(100, round(($health/Player::maxHealthByLevel($level))*100));
-}
-
-/**
- * Format a player data row with health and level and add the data for a health percentage.
- */
-function format_health_percent($player_row) {
-    $percent = health_percent($player_row['health'], $player_row['level']);
-    $player_row['health_percent'] = $percent;
-    return $player_row;
-}
-
-/**
  * query the recently active players
  */
 function get_active_players($limit=5, $alive_only=true) {

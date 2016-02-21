@@ -407,7 +407,6 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 $ending_turns = change_turns($attacker_char_id, $turns_to_take); // Take the skill use cost.
 
 $target_ending_health = $target->health();
-$target_ending_health_percent = $target->health_percent();
 $target_name = $target->name();
 
 display_page(

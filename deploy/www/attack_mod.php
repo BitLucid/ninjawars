@@ -346,7 +346,6 @@ if (isset($target)) {
 }
 
 $target_ending_health = $target_player->health();
-$target_ending_health_percent = $target_player->health_percent();
 $target_name = $target_player->name();
 $target_id = $target_player->id();
 
