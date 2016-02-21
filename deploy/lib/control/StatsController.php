@@ -44,7 +44,7 @@ class StatsController {
 
 		$char = $char->save();
 
-		return new RedirectResponse('/stats.php?changed=1');
+		return new RedirectResponse('/stats?changed=1');
 	}
 
 	/**
@@ -76,7 +76,7 @@ class StatsController {
 		}
 
 		$raw_query_str = count($query_str) ? '?'.http_build_query($query_str, null, '&') : null;
-		return new RedirectResponse('/stats.php'.$raw_query_str);
+		return new RedirectResponse('/stats'.$raw_query_str);
 	}
 
     /**
