@@ -374,7 +374,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			$player->save();
 			$target->save();
 
-			addKills($char_id, 1);
+			$player->addKills(1);
 
 			$added_bounty = floor($level_check / 5);
 

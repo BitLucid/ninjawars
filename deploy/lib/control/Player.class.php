@@ -635,4 +635,49 @@ class Player implements Character {
     public function killsRequiredForNextLevel() {
        return $this->level()*5;
     }
+
+    /**
+     * Takes in a Character and adds kills to that character.
+     */
+    public function addKills($amount) {
+        return $this->changeKills((int)abs($amount));
+    }
+
+    /**
+     * Takes in a Character and removes kills from that character.
+     */
+    public function subtractKills($amount) {
+        return $this->changeKills(-1*((int)abs($amount)));
+    }
+
+    /**
+     * Change the kills amount of a char, and levels them up when necessary.
+     */
+    private function changeKills($amount) {
+        $amount = (int)$amount;
+
+        update_levelling_log($this->id(), $amount);
+
+        if ($amount !== 0) { // Ignore changes that amount to zero.
+            if ($amount > 0) { // when adding kills, check if levelling occurs
+                level_up_if_possible($this);
+            }
+
+            query(
+                "UPDATE players SET kills = kills + CASE WHEN kills + :amount1 < 0 THEN kills*(-1) ELSE :amount2 END WHERE player_id = :player_id",
+                [
+                    ':amount1'   => [$amount, PDO::PARAM_INT],
+                    ':amount2'   => [$amount, PDO::PARAM_INT],
+                    ':player_id' => $this->id()
+                ]
+            );
+        }
+
+        return query_item(
+            "SELECT kills FROM players WHERE player_id = :player_id",
+            [
+                ':player_id' => [$this->id(), PDO::PARAM_INT]
+            ]
+        );
+    }
 }

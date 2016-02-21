@@ -256,7 +256,7 @@ if ($attack_is_legal) {
 					}
 				}
 
-				addKills($attacking_player->id(), $killpoints); // Attacker gains their killpoints.
+				$attacking_player->addKills($killpoints); // Attacker gains their killpoints.
 				$target_player->death();
 
 				if (!$simultaneousKill)	{
@@ -294,7 +294,7 @@ if ($attack_is_legal) {
 					sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
 				}
 
-				addKills($target_player->id(), $defenderKillpoints);	// *** Adds a kill for the defender. ***
+				$target_player->addKills($defenderKillpoints); // Adds a kill for the defender
 				$attacking_player->death();
 
 				if (!$simultaneousKill) {

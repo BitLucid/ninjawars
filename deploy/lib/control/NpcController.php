@@ -58,7 +58,7 @@ class NpcController { //extends controller
 
         $player->set_turns($turns);
         $player->vo->health = subtractHealth($player->id(), $oni_health_loss);
-        subtractKills($player->id(), self::ONI_KILL_LOSS);
+        $player->subtractKills(self::ONI_KILL_LOSS);
 
         if ($player->health() > 0) { // if you survive
             if ($player->turns() > self::HIGH_TURNS) { // And your turns are high/you are energetic, you can kill them.
@@ -368,7 +368,7 @@ class NpcController { //extends controller
                         $samurai_gold = rand(50, 50 + $samurai_damage_array[2] + $samurai_damage_array[1]);
 
                         add_gold($char_id, $samurai_gold);
-                        addKills($char_id, 1);
+                        $player->addKills(1);
 
                         // If samurai dmg high, but ninja lived, give rewards
                         if ($samurai_damage_array[2] > self::SAMURAI_REWARD_DMG) {
@@ -492,7 +492,7 @@ class NpcController { //extends controller
                         $group_gold = rand(100, 300);
 
                         if ($group_attack > 120) { // Powerful attack gives an additional disadvantage
-                            subtractKills($char_id, 1);
+                            $player->subtractKills(1);
                         }
 
                         add_gold($char_id, $group_gold);

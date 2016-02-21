@@ -7,6 +7,54 @@ require_once(LIB_ROOT."control/lib_status.php");
 require_once(LIB_ROOT."control/lib_accounts.php");
 
 /**
+ * Return the data that should be publicly readable to javascript or the api while the player is logged in.
+ */
+function public_self_info() {
+    $char_info = char_info(self_char_id());
+    unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
+
+    return $char_info;
+}
+
+/**
+ * Returns the state of the player from the database,
+ *
+ * @param int $p_id
+ */
+function char_info($p_id) {
+    if (!is_numeric($p_id) || !positive_int($p_id)) {
+        return null;
+    }
+
+    $player = new Player($p_id); // Constructor uses DAO to get player object.
+    $player_data = array();
+
+    if ($player instanceof Player && $player->id()) {
+        // Turn the player data vo into a simple array.
+        $player_data = $player->data();
+        $player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
+    }
+
+    return $player_data;
+}
+
+/**
+ * Return the current percentage of the maximum health that a character could have.
+ */
+function health_percent($health, $level) {
+    return min(100, round(($health/Player::maxHealthByLevel($level))*100));
+}
+
+/**
+ * Format a player data row with health and level and add the data for a health percentage.
+ */
+function format_health_percent($player_row) {
+    $percent = health_percent($player_row['health'], $player_row['level']);
+    $player_row['health_percent'] = $percent;
+    return $player_row;
+}
+
+/**
  * Categorize ninja ranks by level.
  */
 function level_category($level) {
@@ -90,54 +138,6 @@ function level_up_if_possible($char) {
     }
 }
 
-/**
- * Return the current percentage of the maximum health that a character could have.
- */
-function health_percent($health, $level) {
-	return min(100, round(($health/Player::maxHealthByLevel($level))*100));
-}
-
-/**
- * Format a player data row with health and level and add the data for a health percentage.
- */
-function format_health_percent($player_row) {
-    $percent = health_percent($player_row['health'], $player_row['level']);
-    $player_row['health_percent'] = $percent;
-    return $player_row;
-}
-
-/**
- * Return the data that should be publicly readable to javascript or the api while the player is logged in.
- */
-function public_self_info() {
-    $char_info = char_info(self_char_id());
-    unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
-
-    return $char_info;
-}
-
-/**
- * Returns the state of the player from the database,
- *
- * @param int $p_id
- */
-function char_info($p_id) {
-    if (!is_numeric($p_id) || !positive_int($p_id)) {
-        return null;
-    }
-
-    $player = new Player($p_id); // Constructor uses DAO to get player object.
-    $player_data = array();
-
-    if ($player instanceof Player && $player->id()) {
-        // Turn the player data vo into a simple array.
-        $player_data = $player->data();
-        $player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
-    }
-
-    return $player_data;
-}
-
 function recordLevelUp($who) {
     $amount = 1;
 
@@ -164,54 +164,9 @@ function recordLevelUp($who) {
     $statement->execute();
 }
 
-// Takes in a character id and adds kills to that character.
-function addKills($who, $amount) {
-    return change_kills($who, (int)abs($amount));
-}
-
-function subtractKills($who, $amount) {
-    return change_kills($who, -1*((int)abs($amount)));
-}
-
-// Change the kills amount of a char, and levels them up when necessary.
-function change_kills($char_id, $amount) {
-    update_levelling_log($who, $amount);
-
-    $amount = (int)$amount;
-
-    if (abs($amount) > 0) {
-        // Ignore changes that amount to zero.
-        if ($amount > 0) {
-            // For positive kill changes, check whether levelling occurs.
-            $char = new Player($char_id);
-            level_up_if_possible($char);
-        }
-
-        $query = <<<EOT
-UPDATE players
-SET kills = kills +
-CASE WHEN kills + :amount1 < 0 THEN kills*(-1) ELSE :amount2 END
-WHERE player_id = :player_id
-EOT;
-
-        query($query,
-            [
-                ':amount1'   => [$amount, PDO::PARAM_INT],
-                ':amount2'   => [$amount, PDO::PARAM_INT],
-                ':player_id' => $char_id
-            ]
-        );
-    }
-
-    return query_item(
-        "SELECT kills FROM players WHERE player_id = :player_id",
-        [
-            ':player_id' => [$char_id, PDO::PARAM_INT]
-        ]
-    );
-}
-
-// Update the levelling log with the increased kills.
+/**
+ * Update the levelling log with the increased kills.
+ */
 function update_levelling_log($who, $amount) {
     // TODO: This should be deprecated once we have only upwards kills_total increases, but for now I'm just refactoring.
     DatabaseConnection::getInstance();

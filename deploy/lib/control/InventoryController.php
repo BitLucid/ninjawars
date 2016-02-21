@@ -410,7 +410,7 @@ class InventoryController {
 	                        $player->set_gold($player->gold()+$loot);
 	                        $player->save();
 	                        $targetObj->save();
-	                        addKills($player->id(), 1);
+	                        $player->addKills(1);
 	                        $kill = true;
 	                        $bountyMessage = runBountyExchange($player->name(), $target);  //Rewards or increases bounty.
 	                    } else {
