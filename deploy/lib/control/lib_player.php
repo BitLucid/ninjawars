@@ -38,14 +38,6 @@ function level_category($level) {
 }
 
 /**
- * Calculate a max health by a level, will be used in dojo.php, the player object, and calculating experience.
- */
-function max_health_by_level($level) {
-	$health_per_level = 25;
-	return 150 + round($health_per_level*($level-1));
-}
-
-/**
  * The number of kills needed to level up to the next level.
  */
 function required_kills_to_level($current_level) {
@@ -154,7 +146,7 @@ function create_gravatar_url_from_email($email, $size=null) {
  * Return the current percentage of the maximum health that a character could have.
  */
 function health_percent($health, $level) {
-	return min(100, round(($health/max_health_by_level($level))*100));
+	return min(100, round(($health/Player::maxHealthByLevel($level))*100));
 }
 
 /**
@@ -172,7 +164,7 @@ function format_health_percent($player_row) {
 function add_data_to_player_row($player_data) {
     unset($player_data['pname']);
 
-    $player_data['max_health']    = max_health_by_level($player_data['level']);
+    $player_data['max_health']    = Player::maxHealthByLevel($player_data['level']);
 	$player_data['hp_percent']    = min(100, round(($player_data['health']/$player_data['max_health'])*100));
 	$player_data['max_turns']     = 100;
 	$player_data['turns_percent'] = min(100, round($player_data['turns']/$player_data['max_turns']*100));

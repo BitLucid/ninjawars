@@ -202,7 +202,7 @@ class DojoController {
      */
     private function render($p_parts = [], $p_player = null, $p_renderMonks = true) {
         $p_parts['max_level']         = MAX_PLAYER_LEVEL; // For non-logged in loop through stats.
-        $p_parts['max_hp']            = max_health_by_level(MAX_PLAYER_LEVEL+1);
+        $p_parts['max_hp']            = Player::maxHealthByLevel(MAX_PLAYER_LEVEL+1);
         $p_parts['class_change_cost'] = self::CLASS_CHANGE_COST;
         $p_parts['player']            = $p_player;
         $p_parts['classes']           = $this->classesInfo();

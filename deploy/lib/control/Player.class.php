@@ -479,7 +479,7 @@ class Player implements Character {
 
 	// This char's max health
 	public function max_health() {
-		return max_health_by_level($this->level());
+		return self::maxHealthByLevel($this->level());
 	}
 
 	// Return the current percentage health.
@@ -578,5 +578,13 @@ class Player implements Character {
             "SELECT identity FROM class WHERE identity = :candidate",
             [':candidate' => $candidate_identity]
         );
+    }
+
+    /**
+     * Calculate a max health by a level
+     */
+    public static function maxHealthByLevel($level) {
+        $health_per_level = 25;
+        return 150 + round($health_per_level*($level-1));
     }
 }
