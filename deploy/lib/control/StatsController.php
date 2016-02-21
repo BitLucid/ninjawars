@@ -115,7 +115,7 @@ class StatsController {
 
             'level_category'     => $level_category,
             'class_theme'        => $class_theme,
-            'gravatar_url'       => generate_gravatar_url($player['player_id']),
+            'gravatar_url'       => $char->avatarUrl(),
             'profile_max_length' => self::PROFILE_MAX_LENGTH,
 
             'error'           => in('error'),

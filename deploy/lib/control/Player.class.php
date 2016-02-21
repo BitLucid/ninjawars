@@ -451,7 +451,7 @@ class Player implements Character {
 		return $this->health(); // Return the current health.
 	}
 
-	// Pull the current health.	
+	// Pull the current health.
 	public function health() {
 		$sel = "SELECT health from players where player_id = :id";
 		return query_item($sel, [':id'=>[$this->id(), PDO::PARAM_INT]]);
@@ -501,14 +501,36 @@ class Player implements Character {
 		return $this->vo->verification_number;
 	}
 
-	/**
-	 * Get the avatar url for a pc
-	**/
-	public function avatarUrl(){
-		if(!isset($this->avatar_url) || $this->avatar_url === null){
-			$this->avatar_url = generate_gravatar_url($this);
-		}
-		return $this->avatar_url;
+    /**
+     * Get the avatar url for a pc
+     */
+    public function avatarUrl() {
+        if (!isset($this->avatar_url) || $this->avatar_url === null) {
+            $this->avatar_url = $this->generateGravatarUrl();
+        }
+
+        return $this->avatar_url;
+    }
+
+    private function generateGravatarUrl() {
+        if (OFFLINE) {
+            return IMAGE_ROOT.'default_avatar.png';
+        } else if (!$this->vo || !$this->vo->avatar_type || !$this->email()) {
+            return '';
+        } else {	// Otherwise, use the player info for creating a gravatar.
+            $email       = $this->email();
+
+            $def         = 'monsterid'; // Default image or image class.
+            // other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
+            $base        = "http://www.gravatar.com/avatar/";
+            $hash        = md5(trim(strtolower($email)));
+            $no_gravatar = "d=".urlencode($def);
+            $size        = 80;
+            $rating      = "r=x";
+            $res         = $base.$hash."?".implode('&', [$no_gravatar, $size, $rating]);
+
+            return $res;
+        }
 	}
 
 	/**

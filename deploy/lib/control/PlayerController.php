@@ -73,7 +73,7 @@ class PlayerController {
                 // Display the player info.
                 $status_list          = get_status_list($player);
                 $level_category       = level_category($player_info['level']);
-                $gurl = $gravatar_url = generate_gravatar_url($target_player_obj);
+                $gurl = $gravatar_url = $target_player_obj->avatarUrl();
 
                 if ($viewing_player_obj !== null && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
                     // Attack or Duel

@@ -319,7 +319,7 @@ class Clan {
                 $member['size']   = max($member['size'] + 2, 3);
             }
 
-            $member['gravatar_url'] = generate_gravatar_url($member['player_id']);
+            $member['gravatar_url'] = (new Player($member['player_id']))->avatarUrl();
         }
 
         return $membersArray;

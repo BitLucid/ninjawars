@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\SessionFactory;
+use \Player;
 
 require_once(LIB_ROOT.'control/lib_player.php');
 require_once(LIB_ROOT.'control/lib_status.php');
@@ -235,7 +236,7 @@ class AccountController {
         $oauth = $oauth_provider && $account_info['oauth_id'];
 
         $player           = char_info(self_char_id());
-        $gravatar_url     = generate_gravatar_url($player['player_id']);
+        $gravatar_url     = (new Player($player['player_id']))->avatarUrl();
 
         $parts = array_merge([
             'gravatar_url'    => $gravatar_url,

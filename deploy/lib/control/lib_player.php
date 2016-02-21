@@ -104,45 +104,6 @@ function level_up_if_possible($char_id) {
 }
 
 /**
- * Pull out the url for the player's avatar
- */
-function create_avatar_url($player, $size=null) {
-	// If the avatar_type is 0, return '';
-    if (!$player->vo || !$player->vo->avatar_type || !$player->email()) {
-        return '';
-    } else {	// Otherwise, use the player info for creating a gravatar.
-		$email       = $player->email();
-		return create_gravatar_url_from_email($email, $size);
-	}
-}
-
-/**
- */
-function generate_gravatar_url($player) {
-	if (!is_object($player)) {
-		$player = new Player($player);
-	}
-
-	return (OFFLINE ? IMAGE_ROOT.'default_avatar.png' : create_avatar_url($player));
-}
-
-/**
- * Use the email information to return the gravatar image url.
- */
-function create_gravatar_url_from_email($email, $size=null) {
-	$def         = 'monsterid'; // Default image or image class.
-	// other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
-	$base        = "http://www.gravatar.com/avatar/";
-	$hash        = md5(trim(strtolower($email)));
-	$no_gravatar = "d=".urlencode($def);
-	$size        = whichever($size, 80);
-	$rating      = "r=x";
-	$res         = $base.$hash."?".implode('&', array($no_gravatar, $size, $rating));
-
-	return $res;
-}
-
-/**
  * Return the current percentage of the maximum health that a character could have.
  */
 function health_percent($health, $level) {
@@ -153,9 +114,9 @@ function health_percent($health, $level) {
  * Format a player data row with health and level and add the data for a health percentage.
  */
 function format_health_percent($player_row) {
-	$percent = health_percent($player_row['health'], $player_row['level']);
-	$player_row['health_percent'] = $percent;
-	return $player_row;
+    $percent = health_percent($player_row['health'], $player_row['level']);
+    $player_row['health_percent'] = $percent;
+    return $player_row;
 }
 
 /**
@@ -171,19 +132,19 @@ function add_data_to_player_row($player_data) {
 	$player_data['next_level']    = required_kills_to_level($player_data['level']);
 	$player_data['exp_percent']   = min(100, round(($player_data['kills']/$player_data['next_level'])*100));
 	$player_data['status_list']   = implode(', ', get_status_list($player_data['player_id']));
-	$player_data['hash']          = md5(implode($player_data));
+    $player_data['hash']          = md5(implode($player_data));
 
-	return $player_data;
+    return $player_data;
 }
 
 /**
  * Return the data that should be publicly readable to javascript or the api while the player is logged in.
  */
 function public_self_info() {
-	$char_info = char_info(self_char_id());
-	unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
+    $char_info = char_info(self_char_id());
+    unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
 
-	return $char_info;
+    return $char_info;
 }
 
 /**
