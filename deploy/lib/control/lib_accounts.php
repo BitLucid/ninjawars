@@ -35,23 +35,6 @@ function email_fits_pattern($p_email) {
 	return preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", $p_email);
 }
 
-function validate_email($email) {
-	$error = null;
-	if (FALSE) {
-		// CURRENTLY NO BLOCKED EMAIL SERVICES
-		//strstr($send_email, '@') == '@aol.com' || strstr($send_email, '@') == '@netscape.com' || strstr($send_email, '@') == '@aim.com'
-		//Throws error if email from blocked domain.
-		$error = 'Phase 3 Incomplete: We cannot currently accept @aol.com, @netscape.com, or @aim.com email addresses.';
-	} elseif (!email_fits_pattern($email)) {
-		$error = 'Phase 3 Incomplete: The email address ('
-				.htmlentities($email).') must not contain spaces and must contain an @ symbol and a domain name to be valid.';
-	} elseif (email_is_duplicate($email)) {
-		$error = 'Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.';
-	}
-
-	return $error;
-}
-
 function email_is_duplicate($email) {
 	$acc_check = 'SELECT account_identity FROM accounts
 		WHERE :email IN (account_identity, active_email)';
