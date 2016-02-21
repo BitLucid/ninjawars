@@ -51,8 +51,6 @@ class PlayerController {
                 $player      = $target = $player_info['uname']; // reset the target and target_id vars.
                 $target_id   = $player_info['player_id'];
 
-                $target_class_theme = $target_player_obj->getClassTheme();
-
                 // Get the player's kills for this date.
                 $kills_today = query_item('select sum(killpoints) from levelling_log where _player_id = :player_id and killsdate = CURRENT_DATE and killpoints > 0', array(':player_id'=>$target_id));
 

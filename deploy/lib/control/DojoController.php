@@ -78,7 +78,7 @@ class DojoController {
             $player            = new Player(self_char_id());
             $classes           = $this->classesInfo();
             $requestedIdentity = in('requested_identity');
-            $currentClass      = $player->class_identity();
+            $currentClass      = $player->identity;
             $showMonks         = false;
             $parts             = [];
 
@@ -89,7 +89,7 @@ class DojoController {
                     $error = $this->changePlayerClass($player, $requestedIdentity);
                 }
 
-                $currentClass = $player->class_identity();
+                $currentClass = $player->identity;
 
                 if (!$error) {
                     $pageParts = [

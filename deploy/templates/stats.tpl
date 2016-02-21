@@ -41,38 +41,38 @@
 
 <div class='stats-avatar'>
   Avatar: (change your avatar for your account email at <a href='http://gravatar.com'>gravatar.com</a>) →
-  {include file="gravatar.tpl" gurl=$gravatar_url}
+  {include file="gravatar.tpl" gurl=$char->avatarUrl()}
 </div>
 <section class='two-column'>
   <div class='primary'>
     {include file="status_section.tpl" statuses=$status_list}
     <ul id='player-info' class='player-info'>
-      <li>Class: <span class='class-name {$class_theme}'>{$player.class|escape}</span></li>
+      <li>Class: <span class='class-name {$char->theme|escape}'>{$char->class_name|escape}</span></li>
       <li>
         Level:
-        <span class='player-level-category {$player.level|level_label|css_classify}'>
-          {$player.level|level_label} [{$player.level|escape}]
+        <span class='player-level-category {$char->level|level_label|css_classify}'>
+          {$char->level|level_label} [{$char->level|escape}]
         </span>
       </li>
-      <li><span class='physical'>Strength: {$player.strength|escape}</span><span class='physical'>Speed: {$player.speed|escape}</span><span class='physical'>Stamina: {$player.stamina|escape}</span></li>
-      <li>Ki: {$player.ki|number_format:0|escape}</li>
-      <li>Karma: {$player.karma|number_format:0|escape}</li>
+      <li><span class='physical'>Strength: {$char->strength|escape}</span><span class='physical'>Speed: {$char->speed|escape}</span><span class='physical'>Stamina: {$char->stamina|escape}</span></li>
+      <li>Ki: {$char->ki|number_format:0|escape}</li>
+      <li>Karma: {$char->karma|number_format:0|escape}</li>
       <li>
         Health:
-        <span style='width:10em;display:inline-block' title='Max health: {$player.max_health}'>
-          {include file="health_bar.tpl" health=$player.health health_percent=$player.hp_percent}
+        <span style='width:10em;display:inline-block' title='Max health: {$char->getMaxHealth()|escape}'>
+          {include file="health_bar.tpl" health=$char->health health_percent=$char->health_percent()}
         </span>
       </li>
-      <li>Turns: <span class='turns-count'>{$player.turns|number_format:0|escape}</span></li>
-      <li>Kills: {$player.kills|escape}</li>
-      <li class='gold-count'>Gold: {$gold_display|escape}</li>
-      <li>Created: <time class='timeago' datetime='{$player.created_date|escape}'>{$player.created_date|escape}</time></li>
+      <li>Turns: <span class='turns-count'>{$char->turns|number_format:0|escape}</span></li>
+      <li>Kills: {$char->kills|escape}</li>
+      <li class='gold-count'>Gold: {$char->gold()|number_format|escape}</li>
+      <li>Created: <time class='timeago' datetime='{$char->created_date|escape}'>{$char->created_date|escape}</time></li>
       <li>Rank: {$rank_display|escape}</li>
-      <li>Bounty: <span class='gold-count'>{$bounty_display|escape} gold</span></li>
-        {if $player_clan}
+      <li>Bounty: <span class='gold-count'>{$char->bounty|number_format|escape} gold</span></li>
+        {if $clan}
       <li>
         Clan:
-        <a href='clan.php?command=view&amp;clan_id={$clan_id|escape:'url'}'>{$clan_name|escape}</a>
+        <a href='/clan/view?clan_id={$clan->getID()|escape:'url'}'>{$clan->getName()|escape}</a>
       </li>
         {/if}
     </ul>
@@ -80,27 +80,27 @@
 <section class='details'>
     <legend>Details</legend>
     <div class='ninja-description'>
-      {$player.uname|escape} {if !$description}is.{else}{$description|escape}{/if}
+      {$char->uname|escape} {if !$char->description}is.{else}{$char->description|escape}{/if}
     </div>
 
-    {if $goals}
+    {if $char->goals}
     <div class='ninja-goals'>
-      Goals: {$goals|escape}
+      Goals: {$char->goals|escape}
     </div>
     {/if}
-    {if $instincts}
+    {if $char->instincts}
     <div class='ninja-instincts'>
-      Instinctually: {$instincts|escape}
+      Instinctually: {$char->instincts|escape}
     </div>
     {/if}
-    {if $beliefs}
+    {if $char->beliefs}
     <div class='ninja-beliefs'>
-      Believes that: {$beliefs|escape}
+      Believes that: {$char->beliefs|escape}
     </div>
     {/if}
-    {if $traits}
+    {if $char->traits}
     <div class='ninja-traits'>
-      Traits: {$traits|escape}
+      Traits: {$char->traits|escape}
     </div>
     {/if}
 
@@ -109,24 +109,22 @@
   </div><!-- End of primary -->
 
   <div class='secondary'>
-    <form id="profile-edit" name='profile-edit' action="stats.php" method="post">
-      <input type='hidden' name='command' value='change_details'>
+    <form id="profile-edit" name='profile-edit' action="/stats/change_details" method="post">
         <fieldset id='details'>
         <legend>Ninja Details</legend>
-        <textarea name='description' id='description' title='Visible description of your ninja' placeholder='Visible description of your ninja'>{$description|escape}</textarea>
-        <textarea name='instincts' id='instincts' title="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if ... then ...)" placeholder="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if I see Samurai, then I automatically attack.)">{$instincts|escape}</textarea>
-        <textarea name='goals' id='goals' title="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring" placeholder="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring">{$goals|escape}</textarea>
-        <textarea name='beliefs' id='beliefs' title="Your ninja's belief, the moral compass that keeps them going." placeholder="Your ninja's belief, the moral compass that keeps them going.">{$beliefs|escape}</textarea>
-        <label class='glass-box'> Traits: <input name='traits' id='traits' type='text' value='{$traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
+        <textarea name='description' id='description' title='Visible description of your ninja' placeholder='Visible description of your ninja'>{$char->description|escape}</textarea>
+        <textarea name='instincts' id='instincts' title="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if ... then ...)" placeholder="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if I see Samurai, then I automatically attack.)">{$char->instincts|escape}</textarea>
+        <textarea name='goals' id='goals' title="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring" placeholder="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring">{$char->goals|escape}</textarea>
+        <textarea name='beliefs' id='beliefs' title="Your ninja's belief, the moral compass that keeps them going." placeholder="Your ninja's belief, the moral compass that keeps them going.">{$char->beliefs|escape}</textarea>
+        <label class='glass-box'> Traits: <input name='traits' id='traits' type='text' value='{$char->traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
         <input type='submit' value='Update' class='formButton'>
       </fieldset>
     </form>
-    <form id="profile-edit" name='profile-edit' action="stats.php" method="post">
-      <input type='hidden' name='command' value='update_profile'>
+    <form id="profile-edit" name='profile-edit' action="/stats/update_profile" method="post">
       <fieldset>
         <legend>Out-of-character Profile</legend>
         <div class='right-padded'>
-          <textarea id='player-profile-area' name='newprofile' class='textField'>{$profile_editable|escape}</textarea>
+          <textarea id='player-profile-area' name='newprofile' class='textField'>{$char->messages|escape}</textarea>
         </div>
         <input type='submit' value='Update' class='formButton'> (<span id='characters-left'>{$profile_max_length} Character Limit</span>)
       </fieldset>

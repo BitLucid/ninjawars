@@ -73,7 +73,7 @@ class Skill {
 			return $skills;
 		}
 
-		$class = $char->class_identity();
+		$class = $char->identity;
 		$class_skills = array();
 
 		if ($class) {

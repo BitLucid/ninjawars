@@ -14,9 +14,8 @@ require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.
  * Handle updates for changing details and profile details
  */
 class StatsController {
-
-	const ALIVE                  = false;
-	const PRIV                   = true;
+	const ALIVE = false;
+	const PRIV  = true;
 
 	/**
 	 * 	Should match the limit in limitStatChars.js - ajv: No, limitStatChars.js should be dynamically generated with this number from a common location -
@@ -83,40 +82,18 @@ class StatsController {
      * Display the default stats page
      */
     public function index() {
-        // default parts
-        $char			= new Player(self_char_id());
-        $player			= $char->dataWithClan();
-        $player_clan	= ClanFactory::clanOfMember($char);
-        $class_theme	= $char->getClassTheme();
+        $char = new Player(self_char_id());
 
-        $parts             = [
-            'player'      => $player,
-            'char'        => $char,
-            'player_clan' => $player_clan,
-            'clan_id'     => $player_clan ? $player_clan->getID() : false,
-            'clan_name'   => $player_clan ? $player_clan->getName() : false,
-
-            'status_list'      => get_status_list(),
-            'profile_editable' => $player['messages'],
-            'rank_display'     => $this->getRank($char->id()),
-
-            'traits'      => $char->traits(),
-            'beliefs'     => $char->beliefs(),
-            'instincts'   => $char->instincts(),
-            'goals'       => $char->goals(),
-            'description' => $char->description(),
-
-            'gold_display'   => number_format($char->gold()),
-            'bounty_display' => number_format($char->vo->bounty),
-
-            'class_theme'        => $class_theme,
-            'gravatar_url'       => $char->avatarUrl(),
+        $parts = [
+            'char'               => $char,
+            'clan'               => ClanFactory::clanOfMember($char),
+            'status_list'        => get_status_list(),
+            'rank_display'       => $this->getRank($char->id()),
             'profile_max_length' => self::PROFILE_MAX_LENGTH,
-
-            'error'           => in('error'),
-            'successMessage'  => '',
-            'profile_changed' => (bool) in('profile_changed'),
-            'changed'         => (bool) in('changed'),
+            'error'              => in('error'),
+            'successMessage'     => '',
+            'profile_changed'    => (bool) in('profile_changed'),
+            'changed'            => (bool) in('changed'),
         ];
 
         return $this->render($parts);

@@ -377,6 +377,13 @@ class Player implements Character {
 	}
 
     /**
+     * @return int
+     */
+    public function getMaxHealth() {
+        return self::maxHealthByLevel($this->level);
+    }
+
+    /**
      * Returns the state of the player from the database,
      */
     public function dataWithClan() {
@@ -423,26 +430,6 @@ class Player implements Character {
 
     public function getClan() {
         return ClanFactory::clanOfMember($this->id());
-    }
-
-    // Pull the class identity for a character.
-    public function class_identity() {
-        return query_item("SELECT class.identity FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
-            array(':char_id'=>$this->id()));
-    }
-
-    // Pull the class display name for a character.
-	public function class_display_name() {
-        return query_item("SELECT class.class_name FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
-            array(':char_id'=>$this->id()));
-	}
-
-    /**
-     * Get the character class theme string.
-     */
-    public function getClassTheme() {
-        return query_item("SELECT class.theme FROM players JOIN class ON class_id = _class_id WHERE player_id = :char_id",
-            array(':char_id'=>$this->id()));
     }
 
 	/**

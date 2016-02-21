@@ -1,1 +1,1 @@
-<p>Your current class is <span class='class-name {$classes[$player->class_identity()]['theme']}'>{$player->class_display_name()|escape}</span>.</p>
+<p>Your current class is <span class='class-name {$player->theme|escape}'>{$player->class_name|escape}</span>.</p>

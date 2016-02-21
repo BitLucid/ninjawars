@@ -50,8 +50,8 @@ article#player-titles{
   <article id='player-titles' class='centered'>
 
 
-    <span class='player-class {$target_class_theme|escape}'>
-      <img id='class-shuriken' src='{$smarty.const.IMAGE_ROOT}small{$target_class_theme|escape}Shuriken.gif' alt=''>
+    <span class='player-class {$player_info.theme|escape}'>
+      <img id='class-shuriken' src='{$smarty.const.IMAGE_ROOT}small{$player_info.theme|escape}Shuriken.gif' alt=''>
       {$player_info.class|escape}
     </span>
 
