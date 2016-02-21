@@ -35,9 +35,6 @@ class StatsController {
 		$beliefs		= post('beliefs', $char->beliefs());
 		$traits			= post('traits', $char->traits());
 
-		assert((bool)$description);
-		assert((bool)$goals);
-
 		// Check that the text features don't differ
 		$char->set_description($description);
 		$char->set_goals($goals);
