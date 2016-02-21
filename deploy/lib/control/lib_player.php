@@ -40,15 +40,13 @@ function level_category($level) {
 /**
  * Leveling up Function
  */
-function level_up_if_possible($char_id) {
+function level_up_if_possible($char) {
 	// Setup values:
 	$health_to_add     = 100;
 	$turns_to_give     = 50;
 	$ki_to_give        = 50;
 	$stat_value_to_add = 5;
 	$karma_to_give     = 1;
-
-    $char = new Player($char_id);
 
     if ($char->isAdmin()) { // If the character is an admin, do not auto-level
         return false;
@@ -185,7 +183,8 @@ function change_kills($char_id, $amount) {
         // Ignore changes that amount to zero.
         if ($amount > 0) {
             // For positive kill changes, check whether levelling occurs.
-            level_up_if_possible($char_id);
+            $char = new Player($char_id);
+            level_up_if_possible($char);
         }
 
         $query = <<<EOT

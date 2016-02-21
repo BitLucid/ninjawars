@@ -19,7 +19,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 		$char_id = TestAccountCreateAndDestroy::create_testing_account();
 		$this->char_id = $char_id;
 	}
-	
+
 	/**
 	 * group char
 	**/
@@ -269,7 +269,11 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
      * test that levelUp fails if not enough kills
      */
     public function testLevelUpKillsFail() {
-        $this->assertFalse(level_up_if_possible($this->char_id));
+        $char = new Player($this->char_id);
+        $char->vo->kills = 0;
+        $char->save();
+
+        $this->assertFalse(level_up_if_possible($char));
     }
 
     /**
@@ -280,43 +284,43 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $char->vo->kills = 100;
         $char->save();
 
-        $this->assertTrue(level_up_if_possible($char->id()));
+        $this->assertTrue(level_up_if_possible($char));
     }
 
     /**
      * test that levelUp changes player stats
      */
     public function testLevelUpChangesStats() {
+        $original_char = new Player($this->char_id);
+        $original_char->vo->kills = 100;
+        $original_char->save();
+
         $char = new Player($this->char_id);
-        $char->vo->kills = 100;
-        $char->save();
 
-        level_up_if_possible($char->id());
+        level_up_if_possible($char);
 
-        $levelled_char = new Player($this->char_id);
-
-        $this->assertGreaterThan($char->strength, $levelled_char->strength);
-        $this->assertGreaterThan($char->health, $levelled_char->health);
-        $this->assertGreaterThan($char->turns, $levelled_char->turns);
-        $this->assertGreaterThan($char->stamina, $levelled_char->stamina);
-        $this->assertGreaterThan($char->ki, $levelled_char->ki);
-        $this->assertGreaterThan($char->speed, $levelled_char->speed);
-        $this->assertGreaterThan($char->karma, $levelled_char->karma);
-        $this->assertGreaterThan($char->level, $levelled_char->level);
+        $this->assertGreaterThan($original_char->strength, $char->strength);
+        $this->assertGreaterThan($original_char->health, $char->health);
+        $this->assertGreaterThan($original_char->turns, $char->turns);
+        $this->assertGreaterThan($original_char->stamina, $char->stamina);
+        $this->assertGreaterThan($original_char->ki, $char->ki);
+        $this->assertGreaterThan($original_char->speed, $char->speed);
+        $this->assertGreaterThan($original_char->karma, $char->karma);
+        $this->assertGreaterThan($original_char->level, $char->level);
     }
 
     /**
      * test that levelUp removes kill
      */
     public function testLevelUpRemovesKills() {
+        $original_char = new Player($this->char_id);
+        $original_char->vo->kills = 100;
+        $original_char->save();
+
         $char = new Player($this->char_id);
-        $char->vo->kills = 100;
-        $char->save();
 
-        level_up_if_possible($char->id());
+        level_up_if_possible($char);
 
-        $levelled_char = new Player($this->char_id);
-
-        $this->assertLessThan($char->kills, $levelled_char->kills);
+        $this->assertLessThan($original_char->kills, $char->kills);
     }
 }
