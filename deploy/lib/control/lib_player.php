@@ -120,24 +120,6 @@ function format_health_percent($player_row) {
 }
 
 /**
- * Add data to the info you get from a player row.
- */
-function add_data_to_player_row($player_data) {
-    unset($player_data['pname']);
-
-    $player_data['max_health']    = Player::maxHealthByLevel($player_data['level']);
-	$player_data['hp_percent']    = min(100, round(($player_data['health']/$player_data['max_health'])*100));
-	$player_data['max_turns']     = 100;
-	$player_data['turns_percent'] = min(100, round($player_data['turns']/$player_data['max_turns']*100));
-	$player_data['next_level']    = required_kills_to_level($player_data['level']);
-	$player_data['exp_percent']   = min(100, round(($player_data['kills']/$player_data['next_level'])*100));
-	$player_data['status_list']   = implode(', ', get_status_list($player_data['player_id']));
-    $player_data['hash']          = md5(implode($player_data));
-
-    return $player_data;
-}
-
-/**
  * Return the data that should be publicly readable to javascript or the api while the player is logged in.
  */
 function public_self_info() {
@@ -162,9 +144,8 @@ function char_info($p_id) {
 
     if ($player instanceof Player && $player->id()) {
         // Turn the player data vo into a simple array.
-        $player_data = (array) $player->vo;
+        $player_data = $player->data();
         $player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
-        $player_data = add_data_to_player_row($player_data);
     }
 
     return $player_data;

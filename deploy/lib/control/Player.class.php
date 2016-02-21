@@ -28,6 +28,7 @@ class Player implements Character {
 	public $status;
 	public $ip;
 	public $avatar_url;
+    private $data;
 
 	public function __construct($player_id_or_username=null) {
 		if (!empty($player_id_or_username)) {
@@ -359,18 +360,35 @@ class Player implements Character {
 
 	// Pull the data of the player obj as an array.
 	public function data($specific = null) {
-		static $data;
-		if (!$data) {
-			$data = add_data_to_player_row($this->as_array());
+		if (!$this->data) {
+			$this->data = $this->addExtendedData($this->as_array());
 			// Cache this data over the life of the player object.
 		}
 
 		if ($specific) {
-			return $data[$specific];
+			return $this->data[$specific];
 		} else {
-			return $data;
+			return $this->data;
 		}
 	}
+
+    /**
+     * Add data to the info you get from a player row.
+     */
+    private function addExtendedData($p_data) {
+        unset($p_data['pname']);
+
+        $p_data['max_health']    = self::maxHealthByLevel($p_data['level']);
+        $p_data['hp_percent']    = min(100, round(($p_data['health']/$p_data['max_health'])*100));
+        $p_data['max_turns']     = 100;
+        $p_data['turns_percent'] = min(100, round($p_data['turns']/$p_data['max_turns']*100));
+        $p_data['next_level']    = required_kills_to_level($p_data['level']);
+        $p_data['exp_percent']   = min(100, round(($p_data['kills']/$p_data['next_level'])*100));
+        $p_data['status_list']   = implode(', ', get_status_list($p_data['player_id']));
+        $p_data['hash']          = md5(implode($p_data));
+
+        return $p_data;
+    }
 
 	public function as_vo() {
 		return $this->vo;
@@ -467,12 +485,12 @@ class Player implements Character {
 		return $this->vo->health = $health;
 	}
 
-	/** 
+	/**
 	 * Return the amount below the max health (or zero).
 	 * @return int
 	 */
 	public function is_hurt_by() {
-		return max(0, 
+		return max(0,
 			(int) ($this->max_health() - $this->health())
 		);
 	}
