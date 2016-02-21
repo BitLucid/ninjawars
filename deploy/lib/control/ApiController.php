@@ -174,7 +174,7 @@ class ApiController {
     }
 
     private function json_member_count() {
-        return member_counts();
+        return $this->memberCounts();
     }
 
     private function json_inventory() {
@@ -219,7 +219,7 @@ class ApiController {
 
         return [
             'player'                => ($player ? $player->publicData() : []),
-            'member_counts'         => member_counts(),
+            'member_counts'         => $this->memberCounts(),
             'unread_messages_count' => $unread_messages,
             'message'               => (!empty($messages) ? $messages->fetch() : null),
             'inventory'             => [
@@ -238,5 +238,18 @@ class ApiController {
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Max-Age: 3628800');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+    }
+
+    /**
+     * Pull an array of different activity counts.
+     */
+    private function memberCounts() {
+        $counts = query_array("(SELECT count(session_id) FROM ppl_online WHERE member AND activity > (now() - CAST('30 minutes' AS interval)))
+            UNION ALL (SELECT count(session_id) FROM ppl_online WHERE member)
+            UNION ALL (select count(player_id) from players where active = 1)");
+        $active_row = array_shift($counts);
+        $online_row = array_shift($counts);
+        $total_row = array_shift($counts);
+        return array('active'=>reset($active_row), 'online'=>reset($online_row), 'total'=>end($total_row));
     }
 }

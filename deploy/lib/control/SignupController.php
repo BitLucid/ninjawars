@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(CORE.'/control/lib_player.php');
-
 use Symfony\Component\HttpFoundation\Request;
 use \Constants;
 

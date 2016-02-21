@@ -3,7 +3,6 @@ namespace NinjaWars\core\control;
 
 require_once(LIB_ROOT.'control/lib_inventory.php');
 require_once(LIB_ROOT."control/Skill.php");
-require_once(LIB_ROOT."control/lib_player.php");
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\control\AttackLegal;

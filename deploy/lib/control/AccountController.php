@@ -5,7 +5,6 @@ use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\SessionFactory;
 use \Player;
 
-require_once(LIB_ROOT.'control/lib_player.php');
 require_once(LIB_ROOT.'control/lib_status.php');
 
 /**

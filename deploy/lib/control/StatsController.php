@@ -7,7 +7,6 @@ use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\PlayerDAO;
 use \Player;
 
-require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
 require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.
 
 /**
