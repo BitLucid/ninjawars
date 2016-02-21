@@ -50,8 +50,8 @@
       <li>Class: <span class='class-name {$class_theme}'>{$player.class|escape}</span></li>
       <li>
         Level:
-        <span class='player-level-category {$level_category.css|escape}'>
-          {$level_category.display|escape} [{$player.level|escape}]
+        <span class='player-level-category {$player.level|level_label|css_classify}'>
+          {$player.level|level_label} [{$player.level|escape}]
         </span>
       </li>
       <li><span class='physical'>Strength: {$player.strength|escape}</span><span class='physical'>Speed: {$player.speed|escape}</span><span class='physical'>Stamina: {$player.stamina|escape}</span></li>

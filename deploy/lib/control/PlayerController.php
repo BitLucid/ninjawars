@@ -73,7 +73,6 @@ class PlayerController {
 
                 // Display the player info.
                 $status_list          = get_status_list($player);
-                $level_category       = level_category($player_info['level']);
                 $gurl = $gravatar_url = $target_player_obj->avatarUrl();
 
                 if ($viewing_player_obj !== null && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
@@ -129,7 +128,7 @@ class PlayerController {
 
                 $template = 'player.tpl';
                 $parts = get_certain_vars(get_defined_vars(), array('char_info', 'viewing_player_obj', 'target_player_obj', 'combat_skills',
-                    'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today', 'level_category',
+                    'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today',
                     'gravatar_url', 'status_list', 'clan', 'items'));
             }
         }

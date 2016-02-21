@@ -55,8 +55,8 @@ article#player-titles{
       {$player_info.class|escape}
     </span>
 
-    <span class='player-level-category {$level_category.css|escape}'>
-      {$level_category.display|escape} [{$player_info.level|escape}]
+    <span class='player-level-category {$player_info.level|level_label|css_classify}'>
+      {$player_info.level|level_label} [{$player_info.level|escape}]
     </span>
 
     {include file="status_section.tpl" statuses=$status_list}

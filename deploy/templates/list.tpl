@@ -60,7 +60,7 @@
 		  </td>
 		  <!-- Level category as a static resource -->
 		  <td class="playerCell levelCell">
-		  	<span class='{$ninja.level_cat_css}'>{$ninja.level_cat|escape} [{$ninja.level|escape}]</span>
+		  	<span class='{$ninja.level|level_label|css_classify}'>{$ninja.level|level_label} [{$ninja.level|escape}]</span>
 		  </td>
 		  <td class="playerCell classCell">
 		    <!-- Display an image of the right colored shuriken. -->

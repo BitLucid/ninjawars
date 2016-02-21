@@ -88,7 +88,6 @@ class StatsController {
         $player			= $char->dataWithClan();
         $player_clan	= ClanFactory::clanOfMember($char);
         $class_theme	= $char->getClassTheme();
-        $level_category	= level_category($player['level']);
 
         $parts             = [
             'player'      => $player,
@@ -110,7 +109,6 @@ class StatsController {
             'gold_display'   => number_format($char->gold()),
             'bounty_display' => number_format($char->vo->bounty),
 
-            'level_category'     => $level_category,
             'class_theme'        => $class_theme,
             'gravatar_url'       => $char->avatarUrl(),
             'profile_max_length' => self::PROFILE_MAX_LENGTH,

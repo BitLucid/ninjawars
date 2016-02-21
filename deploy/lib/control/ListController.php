@@ -146,15 +146,11 @@ class ListController {
      * format a row of the player list
      */
     private function formatNinjaRow($a_player) {
-        $level_cat = level_category($a_player['level']);
-
         return [
             'alive_class'   => ($a_player['alive'] == 1 ? "AliveRow" : "DeadRow"),
             'player_rank'   => $a_player['rank_id'],
             'player_id'     => $a_player['player_id'],
             'uname'         => $a_player['uname'],
-            'level_cat_css' => $level_cat['css'],
-            'level_cat'     => $level_cat['display'],
             'level'         => $a_player['level'],
             'class'         => $a_player['class'],
             'class_theme'   => $a_player['class_theme'],

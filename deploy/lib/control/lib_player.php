@@ -16,37 +16,6 @@ function format_health_percent($player_row) {
 }
 
 /**
- * Categorize ninja ranks by level.
- */
-function level_category($level) {
-	switch (true) {
-		case($level<2):
-			$res= 'Novice';
-			break;
-		case($level<6):
-			$res= 'Acolyte';
-			break;
-		case($level<31):
-			$res= 'Ninja';
-			break;
-		case($level<51):
-			$res= 'Elder Ninja';
-			break;
-		case($level<101):
-			$res= 'Master Ninja';
-			break;
-		default:
-			$res= 'Shadow Master';
-			break;
-	}
-
-	return [
-		'display' => $res,
-		'css' => strtolower(str_replace(" ", "-", $res))
-	];
-}
-
-/**
  * query the recently active players
  */
 function get_active_players($limit=5, $alive_only=true) {
