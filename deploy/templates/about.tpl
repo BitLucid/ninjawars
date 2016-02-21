@@ -1,6 +1,6 @@
 <h1>Ninja Wars Topics</h1>
 
-    <base href="{$smarty.const.WEB_ROOT}about.php"><!--[if lte IE 6]></base><![endif]-->
+    <base href="/about"><!--[if lte IE 6]></base><![endif]-->
 
 <p>
   The game is mainly one of fighting against other ninja. Once you are a ninja, you can:
@@ -83,7 +83,7 @@
 </ol>
 
 <p>
-  For Frequently Asked Questions see: <a href="main.php">the FAQ Page</a>
+  For Frequently Asked Questions see: <a href="/">the FAQ Page</a>
 </p>
 
 <hr>
@@ -95,7 +95,7 @@
     Ninja Wars is an online web-based roleplaying game where players from all over the world can battle. You (the player) will take on the role of ancient ninja to battle for the #1 position. Use items on your foes, learn ninja tactics, cast spells, and battle all who oppose you.  Built in-game messaging, mini-games, thousands of players and new features arriving all the time.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -105,7 +105,7 @@
     To play the game, you create an account and then log in. Once logged in you will be able to do a number of things by clicking links: attack other ninja (from the "ninjas" list, you click on their name and then click "attack"), attack npcs (click "combat" and then click "Theif" to attack a theif, for example), gamble your money away at the casino, or come back from the dead at the monk's shrine.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -115,7 +115,7 @@
     Turns are the life force of this game, you need turns to perform certain actions. Your turns will replenish at a rate of 2 per hour.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -125,7 +125,7 @@
     Working allows your Ninja to have a day job. This allows you to trade Turns for Gold. An easy, direct way to make gold as opposed to attacking NPCs.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -135,7 +135,7 @@
     Combat plays the largest role in Ninja Wars, as most of your time will be spent battling other players, NPCs, fighting in quests and utilizing an onslaught of offensive and defensive items and spells.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -145,7 +145,7 @@
     To attack another player, click on combat from the menu, then choose your intended victim by selecting their name from the list of players and clicking attack.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -155,7 +155,7 @@
     Quests will be a part of Ninja Wars 2, allowing you to battle in more hostile enviroments against much larger foes and with worse odds.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -165,7 +165,7 @@
     To attack an NPC, click on combat from the menu, then choose your intended victim by selecting their type from the list and clicking attack.  If you defeat them, they will give you gold and sometimes items.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -175,7 +175,7 @@
     By selecting to duel attack, at least one person in the attack must die, as the two ninja will continue to battle until there is a victor or both are dead.  The ninja that initates the duel will lose 5 turns from the effort it takes to keep another ninja from escaping.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -187,7 +187,7 @@
     For example, to use a Shuriken on Ninjalord, you would click the Ninjalord's name on the "player list" to view his page then click on the "shuriken" link.  This will cause a shuriken from your inventory to be used on 'ninjalord', which will reduce his hp.  You can also find a ninja's page by putting their name into the search box.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -197,7 +197,7 @@
     To purchase an item, click on 'Shop'. Once in the shop you can buy any item that you have enough gold for.  Some items are not sold at the shop.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -207,7 +207,7 @@
     Use the Casino to place a bet, and try your luck at scoring free money!
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -217,7 +217,7 @@
     When you are weakened from battle you will need to heal yourself. You can do this by clicking on the 'Shrine'. Healing will cost 1 gold per point of life.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -227,7 +227,7 @@
     If you have died, you must come back to life to continue the game. You must visit the 'Shrine' and use the Resurrection feature. NOTE: For every time you resurrect, you will lose one kill point from your ranking, unless you don't have any kills or are not yet higher than level 5.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -237,7 +237,7 @@
     Poison skill(black ninja):  Reduces a target's health every hour.  You can cure poison at the shrine.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -247,7 +247,7 @@
     If you ever wish to send a message to another player you may do so from the send mail feature. New mail sent to you will be in your inbox. System messages are sent from Deity, such as when another player has killed you or attacked you.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -257,7 +257,7 @@
     Clicking on stats shows you information like your strength (damage that you'll do), health, etc.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -267,7 +267,7 @@
     If you wish to change your password, type your new password in the change password box that can be found on the 'Stats' page.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -277,7 +277,7 @@
     At the Dojo you can train your Ninja. Doing so will increase your damage and the benefits of your abilities.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -287,7 +287,7 @@
     When you defeat a Ninja with a bounty, you will receive part of the slain Ninja's gold along with the full bounty (price on their head).
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -297,7 +297,7 @@
     From the clan page you will be able to join and leave clans or send messages to your clan if you have one.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -307,7 +307,7 @@
     Each new Ninja in the game will be given the opportunity to choose a ninja class. This along with your level will give you special built in abilities similar to the scrolls you can buy.
   </p>
 
-  <a href="about.php">Return to Contents</a>
+  <a href="/about">Return to Contents</a>
 
   <hr>
 
@@ -315,7 +315,7 @@
 
   <p class="answer">
     <hr>
-    
+
     All Ninja<br>
     Attack - A simple, quick attack, where you and your opponent both fight for a moment.<br>
     Duel - A long attack that ends only when you or your opponent are dead.<br>
@@ -325,8 +325,8 @@
     Deflect - Double your damage while dueling.<br>
     Steal - Steal gold from an opponent.<br>
     Cold Steal - Steal turns from an opponent, taking some of them for yourself.<br>
-  
-  
+
+
     <hr>
 
     Dragon Ninja<br>
@@ -335,7 +335,7 @@
 
     <hr>
 
-    <a href="about.php">Return to Contents</a>
+    <a href="/about">Return to Contents</a>
 
     <hr>
 
@@ -345,7 +345,7 @@
 
     <hr>
 
-    <a href="about.php">Return to Contents</a>
+    <a href="/about">Return to Contents</a>
 
     <hr>
 
@@ -355,7 +355,7 @@
 
     <hr>
 
-    <a href="about.php">Return to Contents</a>
+    <a href="/about">Return to Contents</a>
 
     <hr>
 
@@ -365,7 +365,7 @@
 
     <hr>
 
-    <a href="about.php">Return to Contents</a>
+    <a href="/about">Return to Contents</a>
 
     <hr>
 
@@ -375,7 +375,7 @@
 
     <hr>
 
-    <a href="about.php">Return to Contents</a>
+    <a href="/about">Return to Contents</a>
 
     <hr>
 

@@ -36,7 +36,7 @@
 {/if}
 
 <div id='switch-to-account' class='notice'>
-  <a href='account.php' target='main'>View your account info</a>
+  <a href='/account' target='main'>View your account info</a>
 </div>
 
 <div class='stats-avatar'>

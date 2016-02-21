@@ -42,7 +42,7 @@ article#player-titles{
     <h1 class='player-name'>{$player|escape}</h1>
 
     <nav class='player-ranking-linkback'>
-      <a href='list.php?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none'>
+      <a href='/list?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none'>
         <img src='{cachebust file="/images/return-triangle.png"}' alt='&lsaquo;Rank {$rank_spot|escape}' title='&lsaquo;Return to rank {$rank_spot}' style='width:50px;height:50px;float:left;'>
       </a>
     </nav>
@@ -68,7 +68,7 @@ article#player-titles{
 	{/if}
 
   {include file="gravatar.tpl" gurl=$gravatar_url}
-  {if $viewing_player_obj && $viewing_player_obj->isAdmin()}<a style='font-size:small;float:right;' href='{$smarty.const.WEB_ROOT}ninjamaster/?view={$player_info.player_id|escape}'>Admin View</a>{/if}
+  {if $viewing_player_obj && $viewing_player_obj->isAdmin()}<a style='font-size:small;float:right;' href='/ninjamaster/?view={$player_info.player_id|escape}'>Admin View</a>{/if}
 
   </article>
 
@@ -173,12 +173,12 @@ var combat_skills = {$combat_skills|@json_encode};
   <section class='player-communications centered'>
 
 	<span id='message-ninja'>
-      <a href='messages.php?to={$player_info.uname|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em>
+      <a href='/messages?to={$player_info.uname|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em>
       </a>
     </span>
 
   <div class='set-bounty centered'>
-    <a class='set-bounty-link' href='doshin_office.php?target={$player_info.uname|escape:'url'}'>Add bounty</a>
+    <a class='set-bounty-link' href='/doshin?target={$player_info.uname|escape:'url'}'>Add bounty</a>
   </div>
 
   </section>
@@ -197,7 +197,7 @@ var combat_skills = {$combat_skills|@json_encode};
       {/if}
     </small>
     {if $player_info.bounty gt 0}
-      <small class='player-bounty'><a class='bounty-link' href='doshin_office.php' target='main'>{$player_info.bounty} bounty</a></small>
+      <small class='player-bounty'><a class='bounty-link' href='/doshin' target='main'>{$player_info.bounty} bounty</a></small>
     {/if}
   </section>
 
@@ -211,7 +211,7 @@ var combat_skills = {$combat_skills|@json_encode};
 	{/if}
       <p class='clan-link centered'>
         <span class='subtitle'>Clan:</span>
-        <a href='clan.php?command=view&amp;clan_id={$clan_id}'>{$clan_name|escape}</a>
+        <a href='/clan/view?clan_id={$clan_id}'>{$clan_name|escape}</a>
       </p>
   {if $display_clan_options}
     <div class='clan-leader-options centered'>

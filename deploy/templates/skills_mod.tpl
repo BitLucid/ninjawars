@@ -12,7 +12,7 @@
 <div class='usage-mod-result'>
 
 	<div>
-		<a href="player.php?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$target->avatarUrl()}</a>
+		<a href="/player?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$target->avatarUrl()}</a>
 	</div>
 
 	{if $display_sight_table}
@@ -95,7 +95,7 @@
 <div class="LinkBack glassbox">
   Return to
 {if $return_to_target}
-  <a href="player.php?player_id={$target_id|escape:'url'}" class='return-to-location'>view {$charName}</a>
+  <a href="/player?player_id={$target_id|escape:'url'}" class='return-to-location'>view {$charName}</a>
 {else}
   <a class='return-to-location' href="/skill">Skills</a>
 {/if}

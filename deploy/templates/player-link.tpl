@@ -1,1 +1,1 @@
-<a href="player.php?player_id={$id|escape:'url'|escape}">{$username|escape}</a>
+<a href="/player?player_id={$id|escape:'url'|escape}">{$username|escape}</a>

@@ -7,7 +7,7 @@
 
 {if $searched}
 <div>
-  Searching for: {$searched|escape} <a href="{$smarty.const.WEB_ROOT}list.php">(Clear Search)</a>
+  Searching for: {$searched|escape} <a href="/list">(Clear Search)</a>
 </div>
 {/if}
 
@@ -15,18 +15,18 @@
 {if $ninja_count eq 0}
   <!-- Search found nothing to display -->
   <p class='notice'>No ninja to display.</p>
-  <p><a href="list.php?hide={$hide|escape:'url'}">Back to Ninja List</a></p>
+  <p><a href="/list?hide={$hide|escape:'url'}">Back to Ninja List</a></p>
 {/if}
 
   <div class='list-all-players-search centered'>
-    <form action="list.php" method="get">
+    <form action="/list" method="get">
       <div>
         <input type="search" name="searched" class='textField' required=required>
         <input type="hidden" name="hide" value="{$hide|escape}">
         <button type='submit' class='formButton' value='1'>Search for Ninja</button>
 
 {if !$searched}
-       <a href="list.php?page={$page|escape:'url'}&amp;hide={if $hide == "dead"}none{else}dead{/if}&amp;searched={$searched|escape:'url'}">
+       <a href="/list?page={$page|escape:'url'}&amp;hide={if $hide == "dead"}none{else}dead{/if}&amp;searched={$searched|escape:'url'}">
          ({if $hide == "dead"}Show{else}Hide{/if} {$dead_count} dead ninja)
        </a>
 {/if}
@@ -56,7 +56,7 @@
 		<tr class="playerRow {$ninja.alive_class} {$ninja.odd_or_even}">
 		  <td class="playerCell rankCell">{$ninja.player_rank|escape}</td>
 		  <td class="playerCell nameCell">
-		  	<a href="player.php?player_id={$ninja.player_id|escape:"url"}" target='main'>{$ninja.uname|escape}</a>
+		  	<a href="/player?player_id={$ninja.player_id|escape:"url"}" target='main'>{$ninja.uname|escape}</a>
 		  </td>
 		  <!-- Level category as a static resource -->
 		  <td class="playerCell levelCell">
@@ -69,7 +69,7 @@
 		    </span>
 		  </td>
 		  <td class="playerCell clanCell">
-		    {if $ninja.clan_id}<a href='clan.php?command=view&amp;clan_id={$ninja.clan_id|escape:"url"}'>{/if}{$ninja.clan_name|escape}{if $ninja.clan_id}</a>{/if}
+		    {if $ninja.clan_id}<a href='/clan/view?clan_id={$ninja.clan_id|escape:"url"}'>{/if}{$ninja.clan_name|escape}{if $ninja.clan_id}</a>{/if}
 		  </td>
 		</tr>
 {/foreach}

@@ -18,13 +18,13 @@
   	  	<div id='barstats'>
   		  	<!-- Display the number bars for various char stats-->
   		  	<div id='health'>
-  			  {include file="generic_bar.tpl" bar_percent=$player_info.hp_percent number=$player_info.health zero_word='Dead' number_of='Health' bar_color='#660000' title='Heal Yourself' action='shrine.php?command=heal_and_resurrect'}<!-- #ee2520 -->
+  			  {include file="generic_bar.tpl" bar_percent=$player_info.hp_percent number=$player_info.health zero_word='Dead' number_of='Health' bar_color='#660000' title='Heal Yourself' action='/shrine/heal_and_resurrect'}<!-- #ee2520 -->
   		  	</div>
   		  	<div id='turns'>
   			  {include file="generic_bar.tpl" bar_percent=$player_info.turns_percent number=$player_info.turns zero_word='No Turns' number_of='Turns' bar_color='#003366' title='Speed Up' action='/item/self_use/amanita'}
   		  	</div>
   		  	<div id='kills'>
-  			  {include file="generic_bar.tpl" bar_percent=$player_info.exp_percent number=$player_info.kills zero_word='No Kills' number_of='Kills' bar_color='#330066' title='View Stats' action='stats.php'}<!-- #6612ee -->
+  			  {include file="generic_bar.tpl" bar_percent=$player_info.exp_percent number=$player_info.kills zero_word='No Kills' number_of='Kills' bar_color='#330066' title='View Stats' action='/stats'}<!-- #6612ee -->
   		  	</div>
   	  	</div>
   	  </div>
@@ -34,11 +34,11 @@
       <div class='text-info'>
         <div id='messages'>
             <div>
-                <a target="main" id='message-inbox' href="messages.php"><img id='messages-icon' src='{cachebust file="/images/icons/mono/commentblack32.png"}'  height=16 width=16 alt='' style='vertical-align:top'><span class='unread-count' style='vertical-align:top'>{$unread_message_count}</span>
+                <a target="main" id='message-inbox' href="/messages"><img id='messages-icon' src='{cachebust file="/images/icons/mono/commentblack32.png"}'  height=16 width=16 alt='' style='vertical-align:top'><span class='unread-count' style='vertical-align:top'>{$unread_message_count}</span>
                 </a>
             </div>
             <div>
-              <a target='main' href='events.php'>
+              <a target='main' href='/events'>
                 <img src='{cachebust file="/images/icons/mono/star32.png"}'  height=16 width=16 alt=''>
               </a>
             </div>
@@ -62,7 +62,7 @@
             <nav id='category-bar' class='navigation'>
               <ul>
                 <li id='status-actions' class='self'>
-                  <a href='events/' rel='nav' target='main' >
+                  <a href='/events' rel='nav' target='main' >
                     <img src='{cachebust file="/images/ninja_status_icon_50px.png"}' alt='' style='width:50px;height:51px'>Watch
                   </a>
                 </li>
@@ -72,7 +72,7 @@
                   </a>
                 </li>
                 <li id='map-actions' class='map'>
-                  <a href='map.php' rel='nav' target='main' title='Travel to different locations on the Map.'>
+                  <a href='/map' rel='nav' target='main' title='Travel to different locations on the Map.'>
                     <img src='{cachebust file="/images/pagodaIcon_60px.png"}' alt=''  style='width:60px;height:52px'>Move
                   </a>
                 </li>
@@ -81,7 +81,7 @@
             <nav id='subcategory-bar' class='navigation' rel='nav'>
                 <ul id='self-subcategory'>
                   <!--
-                  <li><a href="stats.php" rel='nav' target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
+                  <li><a href="/stats" rel='nav' target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
                   -->
                   <li><a href="/skill" rel='nav' target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
                   <li><a href="/inventory" rel='nav' target="main" title='Your items and links to use them on yourself.'>Items</a></li>
@@ -89,13 +89,13 @@
                   <!-- Settings -->
                 </ul>
                 <ul id='combat-subcategory'>
-                  <li><a href="list.php" rel='nav' target="main" title='Ranked list of ninjas to attack.'>Ninjas</a></li>
-                  <li><a href="clan.php" rel='nav' target="main" title='Clans and your clan options.'>Clans</a></li>
+                  <li><a href="/list" rel='nav' target="main" title='Ranked list of ninjas to attack.'>Ninjas</a></li>
+                  <li><a href="/clan" rel='nav' target="main" title='Clans and your clan options.'>Clans</a></li>
                 </ul>
                 <ul id='map-subcategory'>
-                  <li><a href="shop.php" rel='nav' target="main" title='Spend your money to get weapons.'>Buy</a></li>
-                  <li><a href="work.php" rel='nav' target="main" title='Trade your turns to get money.'>Work</a></li>
-                  <li><a href="doshin_office.php" rel='nav' target="main" title='Hunt bounties for money.'>Hunt<img src="{cachebust file="/images/doshin.png"}" alt="" style='height:8px;width:8px'></a></li>
+                  <li><a href="/shop" rel='nav' target="main" title='Spend your money to get weapons.'>Buy</a></li>
+                  <li><a href="/work" rel='nav' target="main" title='Trade your turns to get money.'>Work</a></li>
+                  <li><a href="/doshin" rel='nav' target="main" title='Hunt bounties for money.'>Hunt<img src="{cachebust file="/images/doshin.png"}" alt="" style='height:8px;width:8px'></a></li>
                 </ul>
             </nav>
         </div><!-- End of reactive panel -->

@@ -1,15 +1,15 @@
 <h1>Bath House</h1>
 
 <div class='description'>
-You enter the steaming confines of the bath house.  
+You enter the steaming confines of the bath house.
 A Geisha takes your clothes and concealed weaponry with a knowing smile.
 Shedding your clothes, you ease into a large copper tub that is filled with steaming water and exotic bath salts.
 <p>While your tensions melt away, you listen to the conversations around you that carry through the paper thin walls, telling of legendary exploits and dark deeds.</p>
 </div>
 
 <div id='vicious-killer'>
-    Current Fastest Killer: 
-    <a id='vicious-killer-menu' href='player.php?player={$vicious_killer|escape:'url'|escape}'>
+    Current Fastest Killer:
+    <a id='vicious-killer-menu' href='/player?player={$vicious_killer|escape:'url'|escape}'>
     	{$vicious_killer|escape}
     </a>
 </div>
@@ -29,5 +29,5 @@ Shedding your clothes, you ease into a large copper tub that is filled with stea
 {/if}
 
 <nav>
-  <a href="map.php" class="return-to-location block">Return to the Village</a>
+  <a href="/map" class="return-to-location block">Return to the Village</a>
 </nav>

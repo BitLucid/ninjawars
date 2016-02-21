@@ -19,7 +19,7 @@ h1 .account-identity{
 
 
 <div class='char-list ninja-notice clearfix'>
-  <a href='stats.php'>View your ninja's info</a>
+  <a href='/stats'>View your ninja's info</a>
 </div>
 
 <div id='content' class='account-info'>
@@ -32,30 +32,27 @@ h1 .account-identity{
 
 {if $command == 'show_confirm_delete_form'}
   <p>Please provide your password to confirm.</p>
-  <form method="post" action="account.php" onsubmit="return confirm('Are you sure you want to delete your account?');">
+  <form method="post" action="/account/delete_account" onsubmit="return confirm('Are you sure you want to delete your account?');">
     <div>
       <input id="passw" type="password" maxlength="50" name="passw" class="textField">
-      <input type="hidden" name="command" value="delete_account">
       <input type="submit" value="Confirm Delete" class="formButton">
     </div>
   </form>
 {elseif $command == 'show_change_password_form'}
-<form method="post" action="account.php">
+<form method="post" action="/account/change_password">
   <div>
     <div>Current Password: <input type="password" maxlength="50" name="passw" class="textField"></div>
     <div>New Password: <input type="password" maxlength="50" name="newpassw" class="textField"></div>
     <div>Confirm New Password: <input type="password" maxlength="50" name="confirmpassw" class="textField"></div>
-    <input type="hidden" name="command" value="change_password">
     <input type="submit" value="Change Password" class="formButton">
   </div>
 </form>
 {elseif $command == 'show_change_email_form'}
-<form method="post" action="account.php">
+<form method="post" action="/account/change_email">
   <div>
     <div>Current Password: <input id="passw" type="password" maxlength="50" name="passw" class="textField"></div>
     <div>New Email: <input type="text" maxlength="500" name="newemail" class="textField"></div>
     <div>Confirm New Email: <input type="text" maxlength="500" name="confirmemail" class="textField"></div>
-    <input type="hidden" name="command" value="change_email">
     <input type="submit" value="Change Email" class="formButton">
   </div>
 </form>
@@ -77,16 +74,14 @@ h1 .account-identity{
 </div>
 
 <hr>
-<form action='account.php' method='post'>
+<form action='/account/show_change_password_form' method='post'>
   <div>
-    <input type='hidden' name='command' value='show_change_password_form'>
     <input type='submit' value='Change Your Password' class='formButton'>
   </div>
 </form>
 <hr>
-<form action='account.php' method='post'>
+<form action='/account/show_change_email_form' method='post'>
   <div>
-    <input type='hidden' name='command' value='show_change_email_form'>
     <input type='submit' value='Change Your Email' class='formButton'>
   </div>
 </form>
@@ -94,9 +89,8 @@ h1 .account-identity{
 
 {if !$delete_attempts}
 <p><span class='error'>WARNING:</span> Clicking on the button below will terminate your account.</p>
-<form action='account.php' method='post'>
+<form action='/account/show_confirm_delete_form' method='post'>
   <div>
-    <input type='hidden' name='command' value='show_confirm_delete_form'>
     <input type='submit' value='Permanently Remove Your Account' class='formButton'>
   </div>
 </form>
@@ -108,9 +102,9 @@ h1 .account-identity{
 <footer id='stats-footer' class='navigation'>
 <h3>Assistance</h3>
 <p class='glassbox'>
-  If you require account help email: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>, 
+  If you require account help email: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>,
   <br>
-  or just get in touch with us via any means on the <a href='staff.php'>staff page</a>.
+  or just get in touch with us via any means on the <a href='/staff'>staff page</a>.
 </p>
 
 </footer>

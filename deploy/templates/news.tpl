@@ -72,7 +72,7 @@
     </div>
   </div>
 {/if}
-  
+
 {if is_logged_in()}
 	<div id='make-news-post'>
 		<a class='btn btn-primary' href="news.php?new=true">Post News</a>
@@ -95,7 +95,7 @@
     {if $single_news->getCreated()} <time class='timeago' datetime='{$single_news->getCreated()}' title='{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}'>{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}</time>
     {else}
     <time class='timeago' datetime='{$smarty.now}' title='{$smarty.now|date_format:"%A, %B %e, %Y"}'>{$smarty.now|date_format:"%A, %B %e, %Y"}</time>
-    {/if} by <a target="main" href="player.php?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername|escape}</a>
+    {/if} by <a target="main" href="/player?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername|escape}</a>
   </footer>
 </article>
 {/foreach}

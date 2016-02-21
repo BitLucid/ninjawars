@@ -77,18 +77,18 @@
 
 <div id='progression'>
   <div class='not-user js-target'>
-  	<p><a target='main' href='{$smarty.const.WEB_ROOT}signup.php' id='join-link'>Become a Ninja!&shy;</a></p>
+  	<p><a target='main' href='/signup' id='join-link'>Become a Ninja!&shy;</a></p>
   	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
   </div>
 
 <div id='later-progression' style='margin-top:0;margin-bottom:0'>
-	<p>Explore the <a target='main' href='{$smarty.const.WEB_ROOT}map.php'>map</a> and <a target='main' href='{$smarty.const.WEB_ROOT}enemies.php#npcs'>attack monsters</a>, gather loot</p>
+	<p>Explore the <a target='main' href='/map'>map</a> and <a target='main' href='/enemies#npcs'>attack monsters</a>, gather loot</p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Kill other <a target='main' href='{$smarty.const.WEB_ROOT}list.php'>Ninja</a>, get stronger at the <a target='main' href='{$smarty.const.WEB_ROOT}dojo.php'>Dojo</a></p>
+	<p>Kill other <a target='main' href='/list'>Ninja</a>, get stronger at the <a target='main' href='/dojo'>Dojo</a></p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Join a <a target='main' href='{$smarty.const.WEB_ROOT}clan.php'>Clan</a>, wage war on other ninja clans</p>
+	<p>Join a <a target='main' href='/clan'>Clan</a>, wage war on other ninja clans</p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Live by the Sword, and <a target='main' href='{$smarty.const.WEB_ROOT}shrine.php'>avoid death</a> if you can!</p>
+	<p>Live by the Sword, and <a target='main' href='/shrine'>avoid death</a> if you can!</p>
 	</div>
 </div>
 
@@ -97,7 +97,7 @@
 
 <div class='centered'>
   <div id='show-faqs' class='accent-sandwiched'>
-    <a target='main' href="main.php?show_faqs=1" id='show-faqs-link'>Show More Info</a>
+    <a target='main' href="/intro?show_faqs=1" id='show-faqs-link'>Show More Info</a>
   </div>
 </div>
 
@@ -106,28 +106,28 @@
 <div id='scrollable-viewport'>
   <p>
     <span class="brownHeading">How do I level up ?</span><br>
-    By <a href='list.php'>killing other Ninja</a>.
-    Once you have enough kill points, you may increase your level by visiting the <a href="dojo.php">Dojo</a> in the village, which will make you do more damage and make your abilities stronger.
+    By <a href='/list'>killing other Ninja</a>.
+    Once you have enough kill points, you may increase your level by visiting the <a href="/dojo">Dojo</a> in the village, which will make you do more damage and make your abilities stronger.
   </p>
 
   <p>
     <span class="brownHeading">How do I attack another ninja?</span><br>
-    You can attack another ninja by selecting <a href="enemies.php">fight</a> from the main page menu then putting a ninja's name into the search, or viewing the <a href="list.php">list of ninjas</a> on the "player list", then click their name and attack them from their profile page.
+    You can attack another ninja by selecting <a href="/enemies">fight</a> from the main page menu then putting a ninja's name into the search, or viewing the <a href="/list">list of ninjas</a> on the "player list", then click their name and attack them from their profile page.
   </p>
 
   <p>
     <span class="brownHeading">I need turns, where can I get them?</span><br>
-    You can <a href='/inventory'>use amanita mushrooms</a> once you buy some from the <a href='shop.php'>shop</a> with gold, or wait for the half-hour and you will receive a few turns automatically (more if you have the <a href='skill'>"speed" skill</a>).
+    You can <a href='/inventory'>use amanita mushrooms</a> once you buy some from the <a href='/shop'>shop</a> with gold, or wait for the half-hour and you will receive a few turns automatically (more if you have the <a href='/skill'>"speed" skill</a>).
   </p>
 
   <p>
     <span class="brownHeading">I need gold, where can I get it?</span><br>
-    You can get a percentage of gold from <a href='enemies.php'>NPCs</a>, <a href='enemies.php'>killing other ninja</a>, or <a href="work.php">Working</a> in fields on the <a href='map.php'>Map</a>, which will let you trade your time/turns for gold. Also, the <a href="doshin_office.php">Doshin Office</a> keeps a list of ninjas with bounties on their heads. Killing those ninja will get you the bounty as a reward.
+    You can get a percentage of gold from <a href='/enemies'>NPCs</a>, <a href='/enemies'>killing other ninja</a>, or <a href="/work">Working</a> in fields on the <a href='/map'>Map</a>, which will let you trade your time/turns for gold. Also, the <a href="/doshin">Doshin Office</a> keeps a list of ninjas with bounties on their heads. Killing those ninja will get you the bounty as a reward.
   </p>
-  
+
   <p>
     <span class="brownHeading">How do I attack an NPC?</span><br>
-    Choose the <a href="enemies.php">Fight</a> link from the main page, then click an NPC's link.  Most NPCs only give items and gold, not kill points, with the exception of the Samurai, who is very difficult to kill.
+    Choose the <a href="/enemies">Fight</a> link from the main page, then click an NPC's link.  Most NPCs only give items and gold, not kill points, with the exception of the Samurai, who is very difficult to kill.
   </p>
 
   <p>
@@ -142,7 +142,7 @@
 
   <p>
     <span class="brownHeading">How can I communicate with other players?</span><br>
-    You can message players from their profile, send a message to all your clan members from the <a href='clan.php'>Clan</a> link if you are part of a clan, or post public chats to all players on the <a href='village.php'>full chat</a> board.  To check for messages sent directly to you, click the <a href='messages.php'>Messages</a> link on the main page.
+    You can message players from their profile, send a message to all your clan members from the <a href='/clan'>Clan</a> link if you are part of a clan, or post public chats to all players on the <a href='/village'>full chat</a> board.  To check for messages sent directly to you, click the <a href='/messages'>Messages</a> link on the main page.
   </p>
 
   <p>

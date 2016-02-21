@@ -79,7 +79,7 @@ nav.admin-nav a{
 <section class='char-info-area glassbox'>
 	<h2>Viewing {$char_info.uname|escape}</h2>
 	<div id='view-public' class='float-right'>
-		<a href='/player.php?player_id={$char_info.player_id|escape}'>public view</a>
+		<a href='/player?player_id={$char_info.player_id|escape}'>public view</a>
 	</div>
 	<table id='char-info-table'>
 		<caption>Specific Character's info for <strong class='char-name'>{$char_info.uname|escape}</strong></caption>

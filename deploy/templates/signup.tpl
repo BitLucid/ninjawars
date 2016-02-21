@@ -76,7 +76,7 @@ form#signup .ninja-char-creation section + section{
 
 	{if $submit_successful}
 		{if $confirmed}
-		  <p>Account with the login email "{$signupRequest->enteredEmail|escape}" is now confirmed! <strong>You can now <a href='login.php'>login!</a></strong></p>
+		  <p>Account with the login email "{$signupRequest->enteredEmail|escape}" is now confirmed! <strong>You can now <a href='/login'>login!</a></strong></p>
 		{else}
 		  Phase 5: When you receive an email from ninjawars ({$smarty.const.SYSTEM_EMAIL}), click the confirmation link to activate your account.
 		  <br><br>
@@ -109,7 +109,7 @@ form#signup .ninja-char-creation section + section{
 
 
 {if !$submit_successful}
-	<form id='signup' action="signup.php" method="post">
+	<form id='signup' action="/signup/signup" method="post">
 
     <fieldset>
      <legend>Login Info</legend>
@@ -161,7 +161,6 @@ form#signup .ninja-char-creation section + section{
 
       <section>
 	    <input id='become-a-ninja' type="submit" name="submit" value="Become a Ninja!" class="btn btn-vital">
-	    <input type="hidden" name="command" value="signup">
 	    <div>
 	    	<small>Add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to your safe email list ensure you get your confirmation email! </small>
 	    </div>
@@ -186,7 +185,7 @@ form#signup .ninja-char-creation section + section{
 	    <a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>the Wiki</a>.
 	</small>
 	<p>
-	  Or <a href='staff.php'>Contact Us</a>.
+	  Or <a href='/staff'>Contact Us</a>.
 	</p>
 
 	</section>

@@ -25,7 +25,7 @@
 
                 <div id="chat-and-switch">
 
-                  <form id="post_msg_js" class='chat-submit' name="post_msg" {if isset($user_id) and $user_id}data-logged-in='true'{/if} action="chat.php" method="post">
+                  <form id="post_msg_js" class='chat-submit' name="post_msg" {if isset($user_id) and $user_id}data-logged-in='true'{/if} action="/chat" method="post">
                   <!-- Check for post_msg_js in chat.js for the functionality -->
 
                     <div id='chat-input'>
@@ -41,7 +41,7 @@
 
                     <!-- Chat section with template chat author and messages -->
                     <dl id="mini-chat-display" class="chat-messages" style='display:none'>
-                       	<dt class='chat-author template'  style='display:none'>&lsaquo;<a href='player.php?player_id=' target='main'></a>&rsaquo;</dt>
+                       	<dt class='chat-author template'  style='display:none'>&lsaquo;<a href='/player?player_id=' target='main'></a>&rsaquo;</dt>
                        		<dd class='chat-message template' style='display:none'></dd>
                     </dl>
 
@@ -51,7 +51,7 @@
               </div>
 
               <div class="chat-switch centered">
-                <a id='full-chat-link' href="village.php" target="main">
+                <a id='full-chat-link' href="/village" target="main">
                 	View ninja chat archive<img src="{cachebust file="/images/chat.png"}" class='tiny-speech-bubble' alt="">
                 </a>
               </div>

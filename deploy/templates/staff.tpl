@@ -104,7 +104,7 @@ ul#social-networks li:before {
   <ul>
     <li>
       NinjaLord / John Facey, II - Founder &amp; Original Developer of NinjaWars -
-      <a href="interview.php">Archived interview with John by www.bbgdev.com</a>
+      <a href="/interview">Archived interview with John by www.bbgdev.com</a>
     </li>
     <li>
       Other developers &amp; planners at various points:
@@ -145,11 +145,11 @@ ul#social-networks li:before {
   <p>
     <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png"></a><br>
     <span>Ninjawars</span>
-    by <a href="{$smarty.const.WEB_ROOT}" rel="cc:attributionURL">Ninjawars.net</a>
+    by <a href="/" rel="cc:attributionURL">Ninjawars.net</a>
     is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">
     Creative Commons Attribution-Share Alike 3.0 United States License</a>.<br>
     Permissions beyond the scope of this license may be available from the contact information at:
-    <a href="staff.php" rel="cc:morePermissions">{$smarty.const.WEB_ROOT}staff.php</a>.
+    <a href="/staff" rel="cc:morePermissions">{$smarty.const.WEB_ROOT}staff</a>.
   </p>
 </div>
 

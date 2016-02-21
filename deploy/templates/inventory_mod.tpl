@@ -8,7 +8,7 @@ You didn't choose an item/victim.
 You do not have {$article|escape} {$itemName|escape}
 {else}
 <div class='usage-mod-result'>
-  <a href="player.php?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$targetObj->avatarUrl()}</a>
+  <a href="/player?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$targetObj->avatarUrl()}</a>
 	{assign var="charName" value=$target|escape}
 	{assign var="charName" value="<strong class=\"char-name\">$charName</strong>"}
 	{* This is kinda an abomination. *}
@@ -61,10 +61,10 @@ You have comitted suicide!<br>
 <div class='LinkBack glassbox'>
   Return to
 {if $return_to eq 'player'}
-  <a href="player.php?player_id={$target_id|escape:'url'}" class='return-to-location'>{if isset($charName)}view {$charName}{else}view ninja{/if}</a>
+  <a href="/player?player_id={$target_id|escape:'url'}" class='return-to-location'>{if isset($charName)}view {$charName}{else}view ninja{/if}</a>
 {elseif $return_to eq 'inventory'}
   <a href="/inventory" class='return-to-location'>Inventory</a>
 {else}
-  <a href='combat.php' class='return-to-location'>Combat</a>
+  <a href='/enemies' class='return-to-location'>Combat</a>
 {/if}
 </div>

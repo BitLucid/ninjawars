@@ -115,7 +115,7 @@
 	{foreach from=$bounties item="row"}
   <tr class='playerRow'>
     <td class='playerCell'>
-      <a href="player.php?player_id={$row.player_id|escape:'url'}">{$row.uname|escape}</a>
+      <a href="/player?player_id={$row.player_id|escape:'url'}">{$row.uname|escape}</a>
     </td>
     <td class='playerCell'>
       {$row.bounty|escape}
@@ -128,7 +128,7 @@
     </td>
     <td class='playerCell'>
 		{if $row.clan_id}
-      <a href="clan.php?command=view&amp;clan_id={$row.clan_id|escape:'url'}">{$row.clan_name|escape}</a>
+      <a href="/clan/view?clan_id={$row.clan_id|escape:'url'}">{$row.clan_name|escape}</a>
 		{/if}
     </td>
   </tr>
@@ -151,5 +151,5 @@
 
 
 <nav>
-  <a href="map.php" class="return-to-location block">Return to the Village</a>
+  <a href="/map" class="return-to-location block">Return to the Village</a>
 </nav>

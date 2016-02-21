@@ -90,8 +90,7 @@
 
 {/literal}
 </style>
-    
-    
+
     <div id='map'>
     <table class='map-grid'>
     	<!-- <tfoot></tfoot> -->
@@ -100,15 +99,15 @@
 {foreach name='foreach_row' from=$nodes item='row' key='ycoord'}
     	<tr>
 {foreach name='foreach_over_row_of_nodes' from=$row item='node' key='xcoord'}
-    		<td class='node-id-{$node.id} {$node.type} point'>	
-    			<form action='map.php' method='post'>
+    		<td class='node-id-{$node.id} {$node.type} point'>
+    			<form action='/map' method='post'>
     				<input type='hidden' name='ycoord' value='{$ycoord}>
     				<input type='hidden' name='xcoord' value='{$xcoord}>
     				<input type='submit' name='move' value='{if isset($node.name)}{$node.name}{else}Go{/if}'>
     			</form>
-    			
+
 				<div class='details'>
-				
+
 				  	{if isset($node.url) && $node.url}<a href='{$node.url|escape:'url'|escape}' target='main'>{/if}
 				    {if isset($node.image)}
 				      <img src='/images/{$node.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
@@ -116,10 +115,9 @@
 				      {if $node.url}Enter {/if}
 				      {$node.name|escape}
                     {if isset($node.url) && $node.url}</a>{/if}
-				
+
 				</div>
 
-    		
     		</td>
 {/foreach}
     	</tr>

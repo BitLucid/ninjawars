@@ -109,6 +109,6 @@
 <hr>
 
 <nav class='glassbox'>
-	<a href='/staff.php'>Ninjawars Staff</a>
+	<a href='/staff'>Ninjawars Staff</a>
 	<a href='/signup'>Join the game</a>
 </nav>

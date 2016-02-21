@@ -56,7 +56,7 @@
 		  <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
 	{if !$logged_in}
-		<a id='solo-page-login-link' href='login.php' class='btn btn-vital'>Log in</a> <a id='solo-page-signup-link' href='signup.php' class='btn btn-vital'>Signup</a>
+		<a id='solo-page-login-link' href='/login' class='btn btn-vital'>Log in</a> <a id='solo-page-signup-link' href='/signup' class='btn btn-vital'>Signup</a>
 	{/if}
     </div>
 {/if}{* End of solo-page check *}

@@ -5,9 +5,9 @@
       The submitted email was invalid.
 	{elseif $error eq 'nouser'}
       No user with that email exists.
-      Please <a href="signup.php">sign up</a> for an account, or <a href="staff.php">contact us</a> if you have other account issues.
+      Please <a href="/signup">sign up</a> for an account, or <a href="/staff">contact us</a> if you have other account issues.
 	{elseif $error eq 'alreadyconfirmed'}
-      That account is already confirmed. If you are having problems logging in, please <a href="staff.php">Contact Us</a>.
+      That account is already confirmed. If you are having problems logging in, please <a href="/staff">Contact Us</a>.
 	{elseif $error eq 'emailfail'}
       There was a problem sending to that email.
 	{/if}
@@ -16,17 +16,17 @@
         <h1>Resending Account Information Email</h1>
         <p>Your account information has been resent to your email.</p>
     <hr>
-    <a href="main.php">Return to the Ninjawars Intro</a>
+    <a href="/">Return to the Ninjawars Intro</a>
 {elseif $confirmation_request}
         <h1>Resending Confirmation Email</h1>
-        <p>A confirmation email for {$username} has been resent to your email address.</p>        
+        <p>A confirmation email for {$username} has been resent to your email address.</p>
     <hr>
-    <a href="main.php">Return to the Ninjawars Intro</a>
+    <a href="/">Return to the Ninjawars Intro</a>
 {else}
     <h1>Account Issues</h1>
 
     <p class='notice'>
-      Please add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to the safe email senders list 
+      Please add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to the safe email senders list
       of your email account before resending these email requests, to ensure they won't be caught as spam.
     </p>
 
@@ -61,6 +61,6 @@
 {/if}
 
     <h3>For Other Issues</h3>
-        <p>For other issues, please <a href='{$smarty.const.WEB_ROOT}staff.php'>contact us</a>.<p>
+        <p>For other issues, please <a href='/staff'>contact us</a>.<p>
 
 </section>
