@@ -7,12 +7,13 @@ use NinjaWars\core\control\ApiController;
 
 class ApiControllerTest extends PHPUnit_Framework_TestCase {
     const CALLBACK = 'callback';
-    const PAYLOAD_RE = '/^'.self::CALLBACK.'\((.*)\)$/';
+    private $PAYLOAD_RE;
 
     private $controller;
 
     public function __construct() {
         $this->controller = new ApiController();
+        $this->PAYLOAD_RE = '/^'.(self::CALLBACK).'\((.*)\)$/';
     }
 
     public function setUp() {
@@ -101,7 +102,7 @@ class ApiControllerTest extends PHPUnit_Framework_TestCase {
 
     private function extractPayload($p_response) {
         $matches = [];
-        preg_match(self::PAYLOAD_RE, $p_response, $matches);
+        preg_match($this->PAYLOAD_RE, $p_response, $matches);
         return json_decode($matches[1]);
     }
 }
