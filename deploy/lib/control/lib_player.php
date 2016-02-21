@@ -87,59 +87,6 @@ function level_category($level) {
 }
 
 /**
- * Leveling up Function
- */
-function level_up_if_possible($char) {
-	// Setup values:
-	$health_to_add     = 100;
-	$turns_to_give     = 50;
-	$ki_to_give        = 50;
-	$stat_value_to_add = 5;
-	$karma_to_give     = 1;
-
-    if ($char->isAdmin()) { // If the character is an admin, do not auto-level
-        return false;
-    } else { // For normal characters, do auto-level
-        // Have to be under the max level and have enough kills.
-        $level_up_possible = (
-            ($char->level() + 1 <= MAX_PLAYER_LEVEL) &&
-            ($char->kills >= $char->killsRequiredForNextLevel())
-        );
-
-        if ($level_up_possible) { // Perform the level up actions
-            $char->set_health($char->health() + $health_to_add);
-            $char->set_turns($char->turns()   + $turns_to_give);
-            $char->set_ki($char->ki()         + $ki_to_give);
-
-            // Must read from VO for these as accessors return modified values
-            $char->setStamina($char->vo->stamina   + $stat_value_to_add);
-            $char->setStrength($char->vo->strength + $stat_value_to_add);
-            $char->setSpeed($char->vo->speed       + $stat_value_to_add);
-
-            // no mutator for these yet
-            $char->vo->kills = max(0, $char->kills - $char->killsRequiredForNextLevel());
-            $char->vo->karma = ($char->karma() + $karma_to_give);
-            $char->vo->level = ($char->level() + 1);
-
-            $char->save();
-
-            GameLog::recordLevelUp($char->id());
-
-            $account = AccountFactory::findByChar($char);
-            $account->setKarmaTotal($account->getKarmaTotal() + $karma_to_give);
-            AccountFactory::save($account);
-
-            // Send a level-up message, for those times when auto-levelling happens.
-            send_event($char->id(), $char->id(),
-                "You levelled up! Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by $karma_to_give, and your Ki raised $ki_to_give! You gained some health and turns, as well! You are now a level {$char->level()} ninja! Go kill some stuff.");
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-
-/**
  * query the recently active players
  */
 function get_active_players($limit=5, $alive_only=true) {

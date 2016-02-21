@@ -9,6 +9,7 @@ use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\PlayerVO;
 use NinjaWars\core\data\Character;
 use NinjaWars\core\data\GameLog;
+use NinjaWars\core\data\AccountFactory;
 
 /* Ninja (actually character) behavior object.
  *
@@ -661,7 +662,7 @@ class Player implements Character {
 
         if ($amount !== 0) { // Ignore changes that amount to zero.
             if ($amount > 0) { // when adding kills, check if levelling occurs
-                level_up_if_possible($this);
+                $this->levelUp();
             }
 
             query(
@@ -680,5 +681,58 @@ class Player implements Character {
                 ':player_id' => [$this->id(), PDO::PARAM_INT]
             ]
         );
+    }
+
+    /**
+     * Leveling up Function
+     */
+    public function levelUp() {
+        // Setup values:
+        $health_to_add     = 100;
+        $turns_to_give     = 50;
+        $ki_to_give        = 50;
+        $stat_value_to_add = 5;
+        $karma_to_give     = 1;
+
+        if ($this->isAdmin()) { // If the character is an admin, do not auto-level
+            return false;
+        } else { // For normal characters, do auto-level
+            // Have to be under the max level and have enough kills.
+            $level_up_possible = (
+                ($this->level() + 1 <= MAX_PLAYER_LEVEL) &&
+                ($this->kills >= $this->killsRequiredForNextLevel())
+            );
+
+            if ($level_up_possible) { // Perform the level up actions
+                $this->set_health($this->health() + $health_to_add);
+                $this->set_turns($this->turns()   + $turns_to_give);
+                $this->set_ki($this->ki()         + $ki_to_give);
+
+                // Must read from VO for these as accessors return modified values
+                $this->setStamina($this->vo->stamina   + $stat_value_to_add);
+                $this->setStrength($this->vo->strength + $stat_value_to_add);
+                $this->setSpeed($this->vo->speed       + $stat_value_to_add);
+
+                // no mutator for these yet
+                $this->vo->kills = max(0, $this->kills - $this->killsRequiredForNextLevel());
+                $this->vo->karma = ($this->karma() + $karma_to_give);
+                $this->vo->level = ($this->level() + 1);
+
+                $this->save();
+
+                GameLog::recordLevelUp($this->id());
+
+                $account = AccountFactory::findByChar($this);
+                $account->setKarmaTotal($account->getKarmaTotal() + $karma_to_give);
+                AccountFactory::save($account);
+
+                // Send a level-up message, for those times when auto-levelling happens.
+                send_event($this->id(), $this->id(),
+                    "You levelled up! Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by $karma_to_give, and your Ki raised $ki_to_give! You gained some health and turns, as well! You are now a level {$this->level()} ninja! Go kill some stuff.");
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }

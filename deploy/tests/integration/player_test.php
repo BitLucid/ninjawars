@@ -273,7 +273,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $char->vo->kills = 0;
         $char->save();
 
-        $this->assertFalse(level_up_if_possible($char));
+        $this->assertFalse($char->levelUp());
     }
 
     /**
@@ -284,7 +284,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         $char->vo->kills = 100;
         $char->save();
 
-        $this->assertTrue(level_up_if_possible($char));
+        $this->assertTrue($char->levelUp());
     }
 
     /**
@@ -297,7 +297,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 
         $char = new Player($this->char_id);
 
-        level_up_if_possible($char);
+        $char->levelUp();
 
         $this->assertGreaterThan($original_char->strength, $char->strength);
         $this->assertGreaterThan($original_char->health, $char->health);
@@ -319,7 +319,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 
         $char = new Player($this->char_id);
 
-        level_up_if_possible($char);
+        $char->levelUp();
 
         $this->assertLessThan($original_char->kills, $char->kills);
     }
