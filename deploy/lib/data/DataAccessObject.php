@@ -9,6 +9,8 @@ abstract class DataAccessObject {
 
 	protected $_vo_obj_name;
 	protected $_vo_fields;
+	private $_readonly_fields;
+	private $_writable_fields;
 
 	protected $_id_field;
 	protected $_table;
@@ -44,10 +46,6 @@ abstract class DataAccessObject {
 
 		// execute select statement
 		$sel = "SELECT ".implode(", ", $this->_vo_fields)." FROM ".$this->_table." WHERE ".$this->_id_field." = :id";
-
-		// both of these asserts are kind of assinine
-		assert(isset($id));
-		assert(isset($sel));
 
 		$statement = DatabaseConnection::$pdo->prepare($sel);
 		$statement->bindValue(':id', intval($id));
@@ -92,11 +90,7 @@ abstract class DataAccessObject {
 		// execute update statement here
 		$up = "UPDATE ".$this->_table_for_saving." SET ";
 
-		$excludes = ['identity', 'class_name', 'theme'];
-		foreach ($this->_vo_fields AS $loopField) { // Put in values from vo.
-			if(in_array($loopField, $excludes)){
-				continue;
-			}
+		foreach ($this->getWritableFields() AS $loopField) { // Put in values from vo.
 			$up .= "$loopField = :$loopField, ";
 		}
 
@@ -104,10 +98,7 @@ abstract class DataAccessObject {
 		$up .= " WHERE ".$this->_id_field." = :id";
 
 		$statement = DatabaseConnection::$pdo->prepare($up);
-		foreach ($this->_vo_fields AS $loopField) { // Put in values from vo.
-			if(in_array($loopField, $excludes)){
-				continue;
-			}
+		foreach ($this->getWritableFields() AS $loopField) { // Put in values from vo.
 			$statement->bindValue(":$loopField", $vo->$loopField);
 		}
 
@@ -122,9 +113,9 @@ abstract class DataAccessObject {
 		assert(is_numeric($new_id));
 
 		// *** Make insert statement.
-		$in = "INSERT INTO ".$this->_table_for_saving." (".implode(", ", $this->_vo_fields).") VALUES (";
+		$in = "INSERT INTO ".$this->_table_for_saving." (".implode(", ", $this->getWritableFields()).") VALUES (";
 
-		foreach ($this->_vo_fields AS $loopField) {
+		foreach ($this->getWritableFields() AS $loopField) {
 			$in .= " :$loopField,";
 		}
 
@@ -134,7 +125,7 @@ abstract class DataAccessObject {
 		// insert record into db
 		$statement = DatabaseConnection::$pdo->prepare($in);
 
-		foreach ($this->_vo_fields AS $loopField) {
+		foreach ($this->getWritableFields() AS $loopField) {
 			if ($loopField == $this->_id_field) {
 				$statement->bindValue(":$loopField", $new_id); // *** Insert ID as new_id.
 			} else {
@@ -149,4 +140,23 @@ abstract class DataAccessObject {
 		$vo->{$this->_id_field} = $new_id;
 		return $new_id;
 	}
+
+    /**
+     * @param String[]
+     */
+    protected function setReadOnlyFields($p_fields) {
+        $this->_readonly_fields = $p_fields;
+        $this->_writable_fields = null;
+    }
+
+    /**
+     * @return String[]
+     */
+    protected function getWritableFields() {
+        if (null === $this->_writable_fields) {
+            $this->_writable_fields = array_diff($this->_vo_fields, $this->_readonly_fields);
+        }
+
+        return $this->_writable_fields;
+    }
 }

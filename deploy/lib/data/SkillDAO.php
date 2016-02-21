@@ -30,16 +30,6 @@ class SkillDAO extends DataAccessObject {
 		$this->_table = 'skill';
 	}
 
-	public function get($id) {
-		$vo = parent::get($id);
-
-		if (is_object($vo)) {
-			$vo->class = $vo->class_name;
-		}
-
-		return $vo;
-	}
-
 	public function getSkillsByClass($p_classID, $p_level = 0) {
 		$query = 'SELECT skill_id, skill_display_name, skill_internal_name, skill_type FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE COALESCE(_class_id, :classID1) = :classID2 AND skill_is_active ';
 

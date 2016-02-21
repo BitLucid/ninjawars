@@ -9,11 +9,38 @@ use NinjaWars\core\data\ValueObject;
  * Essentially this acts as the container for the model's data.
  * @var database_fields
  */
-class PlayerVO extends ValueObject{
-	public $player_id, $identity, $uname, $health, $strength, $speed, $stamina,
-		$ki, $karma, $gold, $messages, $kills, $turns, $active,
-	  	$_class_id, $class_name, $theme,
-	  	$level, $status, $days, $bounty, 
-	  	$created_date, $last_started_attack, $energy, $avatar_type, $verification_number, 
-	  	$description, $beliefs, $goals, $instincts, $traits;
+class PlayerVO extends ValueObject {
+    public $player_id;
+    public $uname;
+    public $health;
+    public $strength;
+    public $speed;
+    public $stamina;
+    public $ki;
+    public $karma;
+    public $gold;
+    public $messages;
+    public $kills;
+    public $turns;
+    public $active;
+    public $_class_id;
+    public $level;
+    public $status;
+    public $days;
+    public $bounty;
+    public $created_date;
+    public $last_started_attack;
+    public $energy;
+    public $avatar_type;
+    public $verification_number;
+    public $description;
+    public $beliefs;
+    public $goals;
+    public $instincts;
+    public $traits;
+
+    // fields from class table
+    public $identity;
+    public $class_name;
+    public $theme;
 }
