@@ -33,8 +33,8 @@ class AccountController {
      */
     public function changeEmail() {
         // confirm_delete
-        $self_info 	= self_info();
         $user_id  	= self_char_id();
+        $self_info 	= char_info($user_id);
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
 
@@ -105,8 +105,8 @@ class AccountController {
      * Change account password
      */
     public function changePassword() {
-        $self_info 	= self_info();
         $user_id  	= self_char_id();
+        $self_info 	= char_info($user_id);
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
 
@@ -169,8 +169,8 @@ class AccountController {
      */
     public function deleteAccount() {
         $session    = SessionFactory::getSession();
-        $self_info 	= self_info();
         $user_id  	= self_char_id();
+        $self_info 	= char_info($user_id);
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
 
@@ -234,7 +234,7 @@ class AccountController {
         $oauth_provider = $account_info['oauth_provider'];
         $oauth = $oauth_provider && $account_info['oauth_id'];
 
-        $player           = self_info();
+        $player           = char_info(self_char_id());
         $gravatar_url     = generate_gravatar_url($player['player_id']);
 
         $parts = array_merge([

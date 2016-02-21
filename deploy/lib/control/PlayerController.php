@@ -26,9 +26,6 @@ class PlayerController {
             $viewed_name_for_title = $target_player_obj->name();
         }
 
-        $char_info = self_info();
-
-
         if ($target_player_obj === null) {
             $template = 'no-player.tpl';
             $parts    = array();
@@ -41,7 +38,9 @@ class PlayerController {
             } else {
                 $viewing_player_obj = Player::find(self_char_id());
 
-                $self        = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
+                $char_info = char_info($viewing_player_obj->id());
+
+                $self = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
 
                 if ($viewing_player_obj !== null && $viewing_player_obj->vo) {
                     $char_id  = $viewing_player_obj->id();

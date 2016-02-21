@@ -179,33 +179,11 @@ function add_data_to_player_row($player_data) {
 /**
  * Return the data that should be publicly readable to javascript or the api while the player is logged in.
  */
-function public_self_info(){
-	$char_info = self_info();
+function public_self_info() {
+	$char_info = char_info(self_char_id());
 	unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
 
 	return $char_info;
-}
-
-/**
- * Returns the state of the current active character from the database.
- */
-function self_info() {
-	$id = self_char_id();
-	if(!is_numeric($id)){
-		// If there's no id, don't try to get any data.
-		return null;
-	}
-	$player = new Player($id); // Constructor uses DAO to get player object.
-	$player_data = array();
-
-	if ($player instanceof Player && $player->id()) {
-		// Turn the player data vo into a simple array.
-		$player_data = (array) $player->vo;
-		$player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
-		$player_data = add_data_to_player_row($player_data);
-	}
-
-	return $player_data;
 }
 
 /**
@@ -214,24 +192,21 @@ function self_info() {
  * @param int $p_id
  */
 function char_info($p_id) {
-		if($p_id === null){
-			throw new \InvalidArgumentException('Call to char_info with no valid player_id argument.');
-		}
+    if (!is_numeric($p_id) || !positive_int($p_id)) {
+        return null;
+    }
 
-		if(!is_numeric($p_id) || !positive_int($p_id)){
-			return null; // p_id must be positive & numeric.
-		}
-		$player = new Player($p_id); // Constructor uses DAO to get player object.
-		$player_data = array();
+    $player = new Player($p_id); // Constructor uses DAO to get player object.
+    $player_data = array();
 
-		if ($player instanceof Player && $player->id()) {
-			// Turn the player data vo into a simple array.
-			$player_data = (array) $player->vo;
-			$player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
-			$player_data = add_data_to_player_row($player_data);
-		}
+    if ($player instanceof Player && $player->id()) {
+        // Turn the player data vo into a simple array.
+        $player_data = (array) $player->vo;
+        $player_data['clan_id'] = ($player->getClan() ? $player->getClan()->getID() : null);
+        $player_data = add_data_to_player_row($player_data);
+    }
 
-		return $player_data;
+    return $player_data;
 }
 
 function recordLevelUp($who) {
