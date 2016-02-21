@@ -1,15 +1,5 @@
 <?php
 /**
- * query the recently active players
- */
-function get_active_players($limit=5, $alive_only=true) {
-	$where_cond = ($alive_only ? ' AND health > 0' : '');
-	$sel = "SELECT uname, player_id FROM players WHERE active = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
-	$active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
-	return $active_ninjas;
-}
-
-/**
  * Pull an array of different activity counts.
  */
 function member_counts() {

@@ -589,6 +589,16 @@ class Player implements Character {
 		return $player;
 	}
 
+    /**
+     * query the recently active players
+     */
+    public static function findActive($limit=5, $alive_only=true) {
+        $where_cond = ($alive_only ? ' AND health > 0' : '');
+        $sel = "SELECT uname, player_id FROM players WHERE active = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
+        $active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
+        return $active_ninjas;
+    }
+
      /**
      * Check whether the player is the leader of their clan.
      */
@@ -736,4 +746,5 @@ class Player implements Character {
             }
         }
     }
+
 }

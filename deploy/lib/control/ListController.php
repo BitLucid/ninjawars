@@ -82,7 +82,7 @@ class ListController {
 
         $active_ninjas = null;
         if (!$searched) { // Will not display active ninja on a search page.
-            $active_ninjas = get_active_players(5, $alive_only); // get  the currently active ninjas
+            $active_ninjas = Player::findActive(5, $alive_only); // get  the currently active ninjas
         }
 
         $dead_count = query_item("SELECT count(player_id) FROM rankings WHERE alive = false");

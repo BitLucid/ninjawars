@@ -80,7 +80,7 @@ class ConsiderController {
 
         $peers = ($char ? $this->getNearbyPeers($char->id()) : []);
 
-        $active_ninjas = get_active_players(5, true); // Get the currently active ninjas
+        $active_ninjas = Player::findActive(5, true);
 
         $char_info = ($char ? $char->dataWithClan() : []);
 
