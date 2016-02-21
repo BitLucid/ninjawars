@@ -8,6 +8,7 @@ use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\PlayerVO;
 use NinjaWars\core\data\Character;
+use NinjaWars\core\data\GameLog;
 
 /* Ninja (actually character) behavior object.
  *
@@ -656,7 +657,7 @@ class Player implements Character {
     private function changeKills($amount) {
         $amount = (int)$amount;
 
-        update_levelling_log($this->id(), $amount);
+        GameLog::updateLevellingLog($this->id(), $amount);
 
         if ($amount !== 0) { // Ignore changes that amount to zero.
             if ($amount > 0) { // when adding kills, check if levelling occurs
