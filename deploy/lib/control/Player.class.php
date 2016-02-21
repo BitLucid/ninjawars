@@ -168,7 +168,7 @@ class Player implements Character {
 	}
 
 	public function subtractStatus($p_status) {
-		$status = valid_status($p_status); // Filter it.
+		$status = self::validStatus($p_status); // Filter it.
 		if ((int)$status == $status && $status > 0) {
 			$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = status-:status1 WHERE player_id = :player AND status&:status2 <> 0');
 			$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
@@ -179,7 +179,7 @@ class Player implements Character {
 			$this->vo->status = null; // *** Ensures that the next call to hasStatus pulls the updated status from the DB ***
 		}
 	}
-	
+
 	// Standard damage output.
 	public function damage(Character $enemy=null){
 		return rand(1, $this->max_damage($enemy));
@@ -298,7 +298,7 @@ class Player implements Character {
 	}
 
 	public function hasStatus($p_status) {
-		$status = valid_status($p_status);
+		$status = self::validStatus($p_status);
 		if ($status) {
 			return (bool)($this->getStatus()&$status);
 		} else {
@@ -746,4 +746,20 @@ class Player implements Character {
         }
     }
 
+
+    public static function validStatus($dirty) {
+        if ((int)$dirty == $dirty) {
+            return (int) $dirty;
+        } elseif (is_string($dirty)) {
+            $status = strtoupper($dirty);
+
+            if (defined($status)) {
+                return constant($status);
+            } else {
+                return false;
+            }
+        } else {
+            return null;
+        }
+    }
 }
