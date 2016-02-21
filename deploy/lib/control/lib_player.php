@@ -38,15 +38,6 @@ function level_category($level) {
 }
 
 /**
- * The number of kills needed to level up to the next level.
- */
-function required_kills_to_level($current_level) {
-	$levelling_cost_multiplier = 5; // 5 more kills in cost for every level you go up.
-	$required_kills = ($current_level)*$levelling_cost_multiplier;
-	return $required_kills;
-}
-
-/**
  * Leveling up Function
  */
 function level_up_if_possible($char_id) {
@@ -62,12 +53,10 @@ function level_up_if_possible($char_id) {
     if ($char->isAdmin()) { // If the character is an admin, do not auto-level
         return false;
     } else { // For normal characters, do auto-level
-        $required_kills = required_kills_to_level($char->level());
-
         // Have to be under the max level and have enough kills.
         $level_up_possible = (
             ($char->level() + 1 <= MAX_PLAYER_LEVEL) &&
-            ($char->kills >= $required_kills)
+            ($char->kills >= $char->killsRequiredForNextLevel())
         );
 
         if ($level_up_possible) { // Perform the level up actions
@@ -81,7 +70,7 @@ function level_up_if_possible($char_id) {
             $char->setSpeed($char->vo->speed       + $stat_value_to_add);
 
             // no mutator for these yet
-            $char->vo->kills = max(0, $char->kills - $required_kills);
+            $char->vo->kills = max(0, $char->kills - $char->killsRequiredForNextLevel());
             $char->vo->karma = ($char->karma() + $karma_to_give);
             $char->vo->level = ($char->level() + 1);
 

@@ -228,7 +228,7 @@ class DojoController {
             $p_parts['pageParts'][] = 'reminder-level';
 
             if ($p_player->level() < MAX_PLAYER_LEVEL) {
-                $p_parts['required_kills'] = required_kills_to_level($p_player->level());
+                $p_parts['required_kills'] = $p_player->killsRequiredForNextLevel();
                 $p_parts['pageParts'][] = 'reminder-next-level';
             }
         }

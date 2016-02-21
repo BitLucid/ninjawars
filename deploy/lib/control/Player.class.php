@@ -193,12 +193,9 @@ class Player implements Character {
 		return $this->damage(); // Currently they're the same, though they probably shouldn't be.
 	}
 
-	/*
-	public function isArmored(){
-		return false;
-	}*/
-
-	// Old Wrapper function name.
+    /**
+     * Old Wrapper function name
+     */
 	public function getStrength() {
 		return $this->strength();
 	}
@@ -222,8 +219,6 @@ class Player implements Character {
 		}
 		$this->vo->strength = $str;
 	}
-
-
 
 	public function speed() {
 		$speed = $this->vo->speed;
@@ -358,11 +353,17 @@ class Player implements Character {
 		return change_turns($this->id(), $diff);
 	}
 
-	// Pull the data of the player obj as an array.
+    /**
+     * Pull the data of the player obj as an array.
+     *
+     * @note
+     * This function lazy loads the data only once per instance
+     */
 	public function data($specific = null) {
 		if (!$this->data) {
-			$this->data = $this->addExtendedData($this->as_array());
-			// Cache this data over the life of the player object.
+            $this->data = $this->as_array();
+            $this->data['next_level'] = $this->killsRequiredForNextLevel();
+            $this->data = $this->addExtendedData($this->data);
 		}
 
 		if ($specific) {
@@ -382,7 +383,6 @@ class Player implements Character {
         $p_data['hp_percent']    = min(100, round(($p_data['health']/$p_data['max_health'])*100));
         $p_data['max_turns']     = 100;
         $p_data['turns_percent'] = min(100, round($p_data['turns']/$p_data['max_turns']*100));
-        $p_data['next_level']    = required_kills_to_level($p_data['level']);
         $p_data['exp_percent']   = min(100, round(($p_data['kills']/$p_data['next_level'])*100));
         $p_data['status_list']   = implode(', ', get_status_list($p_data['player_id']));
         $p_data['hash']          = md5(implode($p_data));
@@ -505,7 +505,6 @@ class Player implements Character {
 		return health_percent($this->health(), $this->level());
 	}
 
-
 	public function ip() {
 		$this->ip = isset($this->ip) && $this->ip? $this->ip : account_info_by_char_id($this->id(), 'last_ip');
 		return $this->ip;
@@ -626,5 +625,14 @@ class Player implements Character {
     public static function maxHealthByLevel($level) {
         $health_per_level = 25;
         return 150 + round($health_per_level*($level-1));
+    }
+
+    /**
+     * The number of kills needed to level up to the next level.
+     *
+     * 5 more kills in cost for every level you go up.
+     */
+    public function killsRequiredForNextLevel() {
+       return $this->level()*5;
     }
 }
