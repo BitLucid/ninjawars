@@ -178,7 +178,7 @@ class NpcController { //extends controller
                 $victory = true;
                 // Victory occurred, reward the poor sap.
                 if ($npco->inventory()) {
-                    foreach ($npco->inventory() as $l_item=>$avail) {
+                    foreach (array_keys($npco->inventory()) as $l_item) {
                         $item_info = item_info_from_identity($l_item);
                         $received_display_items[] = $item_info['item_display_name'];
                         add_item($player->id(), $item_info['item_internal_name'], 1);
