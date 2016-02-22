@@ -746,7 +746,6 @@ class Player implements Character {
         }
     }
 
-
     public static function validStatus($dirty) {
         if ((int)$dirty == $dirty) {
             return (int) $dirty;
