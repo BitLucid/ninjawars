@@ -34,7 +34,7 @@
 {if $is_logged_in}
 <form id="work" action="/work/request_work" method="post" name="work">
   <div>
-    Work in the fields for: <input id="worked" type="text" size="3" maxlength="3" name="worked" class="textField">
+    Work in the fields for: <input id="worked" type="number" size="3" maxlength="3" min=1 max=999 name="worked" class="textField">
     <input id="workButton" type="submit" value="Turns" name="workButton" class="formButton">
   </div>
 </form>

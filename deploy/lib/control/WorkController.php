@@ -20,7 +20,7 @@ class WorkController {
     public function requestWork() {
         // Initialize variables to pass to the template.
         $work_multiplier        = self::WORK_MULTIPLIER;
-        $worked                 = intval(in('worked'));
+        $worked                 = positive_int(in('worked')); // No negative work.
         $earned_gold            = null;
         $not_enough_energy      = null;
         $recommended_to_work    = $worked;
