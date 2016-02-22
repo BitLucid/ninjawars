@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use \Player;
+use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -45,7 +46,7 @@ class DojoController {
             $parts = [];
 
 
-            if (Request::createFromGlobals()->isMethod('POST')) {
+            if (RequestWrapper::$request->isMethod('POST')) {
                 $error = $this->dimMakReqs($player, self::DIM_MAK_COST, self::DIM_MAK_STRENGTH_MIN);
 
                 if (!$error) {
@@ -92,23 +93,18 @@ class DojoController {
                 $currentClass = $player->identity;
 
                 if (!$error) {
-                    $pageParts = [
-                        'success-class-change',
-                    ];
+                    $parts['pageParts'] = ['success-class-change'];
 
                     $showMonks = true;
                 } else {
                     $parts['error'] = $error;
                 }
             } else {
-                $pageParts = [
-                    'form-class-change',
-                ];
+                $parts['pageParts'] = ['form-class-change'];
             }
 
             unset($classes[$currentClass]);
 
-            $parts['pageParts']    = $pageParts;
             $parts['classOptions'] = $classes;
 
             return $this->render($parts, $player, $showMonks);
