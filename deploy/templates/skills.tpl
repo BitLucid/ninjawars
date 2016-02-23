@@ -103,7 +103,7 @@
         <legend>Clone Kill</legend>
     <p>Obliterate two ninja if they are clones.</p>
       <div>
-      	Possible Clones: <input type='text' name='clone1' class='char-name'> and 
+      	Possible Clones: <input type='text' name='clone1' class='char-name'> and
       	<input type='text' name='clone2' class='char-name'>
       	<input type='submit' name='command' value='Clone Kill' class='formButton'>
         Turn Cost: {$clone_kill_turn_cost}
@@ -146,8 +146,8 @@
 </div>
 <!--
 <div id='search-for-ninja'>
-<p><a href="list.php?hide=dead">Use a Skill on a ninja?</a></p>
-<form action="list.php" method="get">
+<p><a href="/list?hide=dead">Use a Skill on a ninja?</a></p>
+<form action="/list" method="get">
   <div>
     <input id="searched" type="text" maxlength="50" name="searched" class="textField">
     <input type="hidden" name="hide" value="dead">

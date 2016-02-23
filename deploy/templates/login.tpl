@@ -14,13 +14,13 @@
 
 {if $is_logged_in}
 <div class='glassbox'>
-  You are already logged in! <a href='/index.php'>Go Fight!</a>
+  You are already logged in! <a href='/'>Go Fight!</a>
 </div>
 {else}
 
 
 <section class='login-page'>
-  <form id="login-form" action="/login.php" method="post">
+  <form id="login-form" action="/login/login_request" method="post">
 	  <input type="hidden" name="ref" value="{$referrer|escape}">
 	    <div class='outer-outer-box'>
 	  	<div class='outer-box'>
@@ -37,7 +37,6 @@
 	      </div>
 	    </label>
 	    <div class='left-side'>
-	    	<input type='hidden' name='command' value='login_request'>
 		    <input tabindex=3 name="login_request" id='request-login' class='btn btn-vital' type="submit" value="Login">
 		</div>
 	    </div>
@@ -56,7 +55,7 @@
 <div id='login-bottom-bar-container'>
 	<div id="login-problems-resources">
 	  <span class="signup-link">
-		<a target="main" href="signup.php?referrer={$referrer|escape}">Become a Ninja!</a> |
+		<a target="main" href="/signup?referrer={$referrer|escape}">Become a Ninja!</a> |
 	  </span>
 	  <span>
 		<a href="account_issues.php" target="main" class="blend side">Login or Signup Problems?</a>

@@ -3,8 +3,8 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\SessionFactory;
+use \Player;
 
-require_once(LIB_ROOT.'control/lib_player.php');
 require_once(LIB_ROOT.'control/lib_status.php');
 
 /**
@@ -33,8 +33,8 @@ class AccountController {
      */
     public function changeEmail() {
         // confirm_delete
-        $self_info 	= self_info();
-        $user_id  	= self_char_id();
+        $player     = new Player(self_char_id());
+        $self_info 	= $player->dataWithClan();
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
 
@@ -50,7 +50,7 @@ class AccountController {
             if ($in_newEmail === $in_confirmEmail) {
                 if (!email_is_duplicate($in_newEmail)) {
                     if (email_fits_pattern($in_newEmail)) {
-                        $this->_changeEmail($user_id, $in_newEmail);
+                        $this->_changeEmail($player->id(), $in_newEmail);
                         $successMessage = 'Your email has been updated.';
                     } else {
                         $error = 'Your email must be a valid email address containing a domain name and no spaces.';
@@ -105,8 +105,8 @@ class AccountController {
      * Change account password
      */
     public function changePassword() {
-        $self_info 	= self_info();
-        $user_id  	= self_char_id();
+        $player     = new Player(self_char_id());
+        $self_info 	= $player->dataWithClan();
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
 
@@ -120,7 +120,7 @@ class AccountController {
 
         if ($verify) {
             if ($in_newPass === $in_confirmPass) {
-                $this->_changePassword($user_id, $in_newPass);
+                $this->_changePassword($player->id(), $in_newPass);
                 $successMessage = 'Your password has been updated.';
             } else {
                 $error = 'Your new passwords did not match.';
@@ -169,8 +169,8 @@ class AccountController {
      */
     public function deleteAccount() {
         $session    = SessionFactory::getSession();
-        $self_info 	= self_info();
-        $user_id  	= self_char_id();
+        $player     = new Player(self_char_id());
+        $self_info 	= $player->dataWithClan();
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
 
@@ -182,8 +182,8 @@ class AccountController {
 
         if ($verify && empty($delete_attempts)) {
             // only allow account deletion on first attempt
-            $this->pauseAccount($user_id); // This may redirect and stuff?
-            logout_user();
+            $this->pauseAccount($player->id());
+            logout_user(); // This may redirect and stuff?
         } else {
             $session->set('delete_attempts', $delete_attempts+1);
             $error = 'Deleting of account failed, please email '.SUPPORT_EMAIL;
@@ -234,12 +234,13 @@ class AccountController {
         $oauth_provider = $account_info['oauth_provider'];
         $oauth = $oauth_provider && $account_info['oauth_id'];
 
-        $player           = self_info();
-        $gravatar_url     = generate_gravatar_url($player['player_id']);
+        $player       = new Player(self_char_id());
+        $self_info    = $player->dataWithClan();
+        $gravatar_url = $player->avatarUrl();
 
         $parts = array_merge([
             'gravatar_url'    => $gravatar_url,
-            'player'          => $player,
+            'player'          => $self_info,
             'account_info'    => $account_info,
             'oauth_provider'  => $oauth_provider,
             'oauth'           => $oauth,

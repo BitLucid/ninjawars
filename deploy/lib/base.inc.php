@@ -56,3 +56,4 @@ require_once(LIB_ROOT . 'control/lib_status.php');
 
 // Include the functions abstracted out of the header and footer
 require_once(LIB_ROOT.'control/lib_header.php');
+require_once(LIB_ROOT.'control/lib_inventory.php');

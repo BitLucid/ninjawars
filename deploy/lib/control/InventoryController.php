@@ -147,7 +147,6 @@ class InventoryController {
 	    $targetResult           = NULL; // result message to send to target of item use
 	    $targetName             = '';
 	    $targetHealth           = '';
-	    $targetHealthPercent    = '';
 	    $bountyMessage          = '';
 	    $resultMessage          = '';
 	    $alternateResultMessage = '';
@@ -410,7 +409,7 @@ class InventoryController {
 	                        $player->set_gold($player->gold()+$loot);
 	                        $player->save();
 	                        $targetObj->save();
-	                        addKills($player->id(), 1);
+	                        $player->addKills(1);
 	                        $kill = true;
 	                        $bountyMessage = runBountyExchange($player->name(), $target);  //Rewards or increases bounty.
 	                    } else {
@@ -450,7 +449,6 @@ class InventoryController {
 
 	            $targetName          = $targetObj->vo->uname;
 	            $targetHealth        = $targetObj->vo->health;
-	            $targetHealthPercent = $targetObj->health_percent();
 
 	            $turns_to_take = 1;
 

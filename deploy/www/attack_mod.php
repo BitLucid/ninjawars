@@ -256,7 +256,7 @@ if ($attack_is_legal) {
 					}
 				}
 
-				addKills($attacking_player->id(), $killpoints); // Attacker gains their killpoints.
+				$attacking_player->addKills($killpoints); // Attacker gains their killpoints.
 				$target_player->death();
 
 				if (!$simultaneousKill)	{
@@ -294,7 +294,7 @@ if ($attack_is_legal) {
 					sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
 				}
 
-				addKills($target_player->id(), $defenderKillpoints);	// *** Adds a kill for the defender. ***
+				$target_player->addKills($defenderKillpoints); // Adds a kill for the defender
 				$attacking_player->death();
 
 				if (!$simultaneousKill) {
@@ -319,10 +319,21 @@ if ($attack_is_legal) {
 		subtract_gold(get_char_id($loser), $loot);
 	}
 
-	if ($rounds > 4) {
-		// Even matched battle!  Reward some ki to the attacker, even if they die.
-		change_ki($attacking_player->id(), 1); // Award Ki.
+    /**
+     * HACK(ajv) Because the player obj is modified throughout the above code
+     * we can't really keep track of what happened to safely use the
+     * ActiveRecord pattern. Therefore, we pull another copy of the player
+     * from the data layer, modify it, and save it down here, then transfer
+     * the updated data to the existing object to keep everything in sync
+     */
+	if ($rounds > 4) { // Evenly matched battle! Reward some ki to the attacker, even if they die
 		$rewarded_ki = 1;
+
+        $hack_player = Player::find($attacking_player->id());
+        $hack_player->set_ki($hack_player->ki() + $rewarded_ki);
+        $hack_player->save();
+
+        $attacking_player->ki = $hack_player->ki;
 	}
 }
 
@@ -346,7 +357,6 @@ if (isset($target)) {
 }
 
 $target_ending_health = $target_player->health();
-$target_ending_health_percent = $target_player->health_percent();
 $target_name = $target_player->name();
 $target_id = $target_player->id();
 

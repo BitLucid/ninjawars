@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT."control/lib_player_list.php");
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
 use \Player;
@@ -70,7 +68,7 @@ class ConsiderController {
      * @TODO Document me!
      */
     private function configure() {
-        $char = new Player(self_char_id());
+        $char = Player::find(self_char_id());
         // Array that simulates database display information for switching out for an npc database solution.
         $npcs = [
             ['name'=>'Peasant',  'identity'=>'peasant',  'image'=>'fighter.png'],
@@ -80,24 +78,24 @@ class ConsiderController {
             ['name'=>'Samurai',  'identity'=>'samurai',  'image'=>'samurai.png'],
         ];
 
-        $peers = $this->getNearbyPeers($char->id());
+        $peers = ($char ? $this->getNearbyPeers($char->id()) : []);
 
-        $active_ninjas = get_active_players(5, true); // Get the currently active ninjas
+        $active_ninjas = Player::findActive(5, true);
 
-        $char_info = self_info();
+        $char_info = ($char ? $char->dataWithClan() : []);
 
         // Generic/abstracted npcs
         $other_npcs = NpcFactory::npcsData();
 
-        $enemy_list = $this->getCurrentEnemies($char->id());
+        $enemy_list = ($char ? $this->getCurrentEnemies($char->id()) : []);
         $enemy_count = rco($enemy_list);
-        $recent_attackers = $this->getRecentAttackers($char);
+        $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
 
         return [
-            'logged_in'        => (bool)$char->id(),
+            'logged_in'        => (bool)$char,
             'enemy_list'       => $enemy_list,
             'enemy_count'      => $enemy_count,
-            'char_name'        => $char->name(),
+            'char_name'        => ($char ? $char->name() : ''),
             'npcs'             => $npcs,
             'other_npcs'       => $other_npcs,
             'char_info'        => $char_info,
@@ -152,8 +150,7 @@ class ConsiderController {
      * @return resulset
      */
     private function getCurrentEnemies($p_playerId) {
-        $query = 'SELECT player_id, active, level, uname, health, least(100,floor((health / (150 + ((level-1)*25))::float)*100))
-            AS health_percent FROM players JOIN enemies ON _enemy_id = player_id AND _player_id = :pid
+        $query = 'SELECT player_id, active, level, uname, health FROM players JOIN enemies ON _enemy_id = player_id AND _player_id = :pid
             WHERE active = 1 ORDER BY health DESC, level DESC';
         return query_resultset($query, [':pid'=>$p_playerId]);
     }
@@ -209,7 +206,7 @@ class ConsiderController {
                 order by rank_id desc limit 10');
         }
 
-        return array_map('format_health_percent', $peers);
+        return $peers;
     }
 
     /**

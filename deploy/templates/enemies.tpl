@@ -23,13 +23,12 @@
 				{assign var="action" value="View"}
 			{/if}
     <li class="{$status_class}">
-      <span class='enemy-action-box'>{$action}&nbsp;<a class='enemy-name' title="View {$loop_enemy.uname|escape}'s info" href="player.php?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
+      <span class='enemy-action-box'>{$action}&nbsp;<a class='enemy-name' title="View {$loop_enemy.uname|escape}'s info" href="/player?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
       <span class='enemy-stats-box'>
-        {include file="health_bar.tpl" health=$loop_enemy.health health_percent=$loop_enemy.health_percent}
+        {include file="health_bar.tpl" health=$loop_enemy.health level=$loop_enemy.level}
       </span>
       <em title='Level {$loop_enemy.level}'>{$loop_enemy.level}</em>
-      <form name='remove-enemy-form' id='remove-enemy-form' action="/enemies" method='POST'>
-        <input type='hidden' name='command' value='delete'>
+      <form name='remove-enemy-form' id='remove-enemy-form' action="/enemies/delete" method='POST'>
         <input type='hidden' name='remove_enemy' value='{$loop_enemy.player_id|escape}'>
           <button type='submit' class='remove-enemy-button'>
             <img src="{cachebust file="/images/icons/mono/stop32.png"}" height='16' width='16' alt="remove"
@@ -51,10 +50,10 @@
   <ul id='peer-chars'>
 	{foreach from=$peers item="loop_peer"}
     <li class='peer'>
-       <a class='peer-name' title='View {$loop_peer.uname|escape} to attack them' href='player.php?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname|escape}</a>
+       <a class='peer-name' title='View {$loop_peer.uname|escape} to attack them' href='/player?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname|escape}</a>
 		{if $char_info.health}
        <span class='stats-block'>
-         {include file="health_bar.tpl" health=$loop_peer.health health_percent=$loop_peer.health_percent}
+         {include file="health_bar.tpl" health=$loop_peer.health level=$loop_peer.level}
        </span>
 <!-- (level {$loop_peer.level}) -->
 		{/if}
@@ -69,8 +68,7 @@
 </section><!-- End of clearfix section -->
 
 <div id="ninja-enemy" class='solo-box'>
-  <form id="enemy-add" action="/enemies" method="get" name="enemy_add">
-    <input type='hidden' name='command' value='search'>
+  <form id="enemy-add" action="/enemies/search" method="get" name="enemy_add">
     <input id='enemy-match' required=required type="text" maxlength="50" name="enemy_match" class="textField" placeholder='Search by ninja name' value='{if isset($enemy_match)}{$enemy_match}{/if}'>
     <input type="submit" value="Find Enemies" class="formButton">
   </form>

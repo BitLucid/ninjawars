@@ -25,11 +25,10 @@ class ClanController { //extends Controller
 	 */
 	public function view() {
 		$clanID = (int)in('clan_id', null);
+        $player = Player::find(self_char_id());
 
 		if (!$clanID) {
-			$player = new Player(self_char_id());
-
-			if ($player->id()) {
+			if ($player) {
 				$clan = ClanFactory::clanOfMember($player);
 			}
 		} else {
@@ -56,9 +55,7 @@ class ClanController { //extends Controller
 			];
 		}
 
-		$player = new Player(self_char_id());
-
-		if ($player->id()) {
+		if ($player) {
 			$myClan = ClanFactory::clanOfMember($player);
 
 			if ($myClan) {
@@ -435,9 +432,9 @@ class ClanController { //extends Controller
 			'pageParts' => ['list'],
 		];
 
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 
-		if ($player->id()) {
+		if ($player) {
 			$clan = ClanFactory::clanOfMember($player);
 
 			if ($clan) {
@@ -557,7 +554,7 @@ class ClanController { //extends Controller
 			$p_parts['action_message'] = null;
 		}
 
-		$p_parts['player'] = new Player(self_char_id());
+		$p_parts['player'] = Player::find(self_char_id());
 		$p_parts['myClan'] = ($p_parts['player'] ? ClanFactory::clanOfMember($p_parts['player']) : null);
 
 		$p_parts['clan_creator_min_level'] = self::CLAN_CREATOR_MIN_LEVEL;

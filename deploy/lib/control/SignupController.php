@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(CORE.'/control/lib_player.php');
-
 use Symfony\Component\HttpFoundation\Request;
 use \Constants;
 
@@ -249,7 +247,7 @@ class SignupController {
     private function validate_signup_phase3($enteredName, $enteredEmail) {
         $name_available  = ninja_name_available($enteredName);
         $duplicate_email = email_is_duplicate($enteredEmail);
-        $email_error     = validate_email($enteredEmail);
+        $email_error     = $this->validateEmail($enteredEmail);
 
         if ($email_error) {
             return $email_error;
@@ -356,5 +354,22 @@ class SignupController {
             '@yahoo.com',
             '@yahoo.co.uk'
         ];
+    }
+
+    private function validateEmail($email) {
+        $error = null;
+        if (FALSE) {
+            // CURRENTLY NO BLOCKED EMAIL SERVICES
+            //strstr($send_email, '@') == '@aol.com' || strstr($send_email, '@') == '@netscape.com' || strstr($send_email, '@') == '@aim.com'
+            //Throws error if email from blocked domain.
+            $error = 'Phase 3 Incomplete: We cannot currently accept @aol.com, @netscape.com, or @aim.com email addresses.';
+        } elseif (!email_fits_pattern($email)) {
+            $error = 'Phase 3 Incomplete: The email address ('
+                .htmlentities($email).') must not contain spaces and must contain an @ symbol and a domain name to be valid.';
+        } elseif (email_is_duplicate($email)) {
+            $error = 'Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.';
+        }
+
+        return $error;
     }
 }

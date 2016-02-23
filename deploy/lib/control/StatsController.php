@@ -7,16 +7,14 @@ use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\PlayerDAO;
 use \Player;
 
-require_once(LIB_ROOT.'control/lib_player.php'); // Player info display pieces.
 require_once(LIB_ROOT.'control/lib_status.php'); // Status alterations.
 
 /**
  * Handle updates for changing details and profile details
  */
 class StatsController {
-
-	const ALIVE                  = false;
-	const PRIV                   = true;
+	const ALIVE = false;
+	const PRIV  = true;
 
 	/**
 	 * 	Should match the limit in limitStatChars.js - ajv: No, limitStatChars.js should be dynamically generated with this number from a common location -
@@ -35,9 +33,6 @@ class StatsController {
 		$beliefs		= post('beliefs', $char->beliefs());
 		$traits			= post('traits', $char->traits());
 
-		assert((bool)$description);
-		assert((bool)$goals);
-
 		// Check that the text features don't differ
 		$char->set_description($description);
 		$char->set_goals($goals);
@@ -47,7 +42,7 @@ class StatsController {
 
 		$char = $char->save();
 
-		return new RedirectResponse('/stats.php?changed=1');
+		return new RedirectResponse('/stats?changed=1');
 	}
 
 	/**
@@ -79,64 +74,52 @@ class StatsController {
 		}
 
 		$raw_query_str = count($query_str) ? '?'.http_build_query($query_str, null, '&') : null;
-		return new RedirectResponse('/stats.php'.$raw_query_str);
+		return new RedirectResponse('/stats'.$raw_query_str);
 	}
 
-	/**
-	* Display the default stats page
-	**/
-	public function index() {
-		// default parts
-		$char_id		= self_char_id();
-		$char			= new Player(self_char_id());
-		$player			= self_info();
-		$player_clan	= ClanFactory::clanOfMember($char);
-		$class_theme	= class_theme($char->class_identity());
-		$level_category	= level_category($player['level']);
+    /**
+     * Display the default stats page
+     */
+    public function index() {
+        $char = new Player(self_char_id());
 
-		$parts = [
-			'player'		=> $player,
-			'char'			=> $char,
-			'player_clan'	=> $player_clan,
-			'clan_id'		=> $player_clan ? $player_clan->getID() : false,
-			'clan_name'		=> $player_clan ? $player_clan->getName() : false,
+        $parts = [
+            'char'               => $char,
+            'clan'               => ClanFactory::clanOfMember($char),
+            'status_list'        => get_status_list(),
+            'rank_display'       => $this->getRank($char->id()),
+            'profile_max_length' => self::PROFILE_MAX_LENGTH,
+            'error'              => in('error'),
+            'successMessage'     => '',
+            'profile_changed'    => (bool) in('profile_changed'),
+            'changed'            => (bool) in('changed'),
+        ];
 
-			'status_list'		=> get_status_list(),
-			'profile_editable'	=> $player['messages'],
-			'rank_display'		=> get_rank($char_id),
+        return $this->render($parts);
+    }
 
-			'traits'		=> $char->traits(),
-			'beliefs'		=> $char->beliefs(),
-			'instincts'		=> $char->instincts(),
-			'goals'			=> $char->goals(),
-			'description'	=> $char->description(),
+    private function render($parts) {
+        return [
+            'template'	=> 'stats.tpl',
+            'title'		=> 'Ninja Stats',
+            'parts'		=> $parts,
+            'options'	=> [
+                'quickstat' => 'player',
+            ],
+        ];
+    }
 
-			'gold_display'    => number_format($char->gold()),
-			'bounty_display'  => number_format($char->vo->bounty),
+    /**
+     * Get the rank integer for a certain character.
+     */
+    private function getRank($p_char_id) {
+        DatabaseConnection::getInstance();
+        $statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE player_id = :player");
+        $statement->bindValue(':player', $p_char_id);
+        $statement->execute();
 
-			'level_category'		=> $level_category,
-			'class_theme'			=> $class_theme,
-			'gravatar_url'			=> generate_gravatar_url($player['player_id']),
-			'profile_max_length'	=> self::PROFILE_MAX_LENGTH,
+        $rank = $statement->fetchColumn();
 
-			'error'				=> in('error'),
-			'successMessage'	=> '',
-			'profile_changed'	=> (bool) in('profile_changed'),
-			'changed'			=> (bool) in('changed'),
-		];
-
-		return $this->render($parts);
-	}
-
-	private function render($parts) {
-
-		return [
-			'template'	=> 'stats.tpl',
-			'title'		=> 'Ninja Stats',
-			'parts'		=> $parts,
-			'options'	=> [
-				'quickstat' => 'player',
-			],
-		];
-	}
+        return ($rank > 0 ? $rank : 1); // Make rank default to 1 if no valid ones are found.
+    }
 }

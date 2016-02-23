@@ -3,7 +3,7 @@
 
 	<div class='padded-area'>
 		<div>
-			<a href="player.php?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$target_player->avatarUrl()}</a>
+			<a href="/player?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$target_player->avatarUrl()}</a>
 		</div>
 
 		<hr>
@@ -97,13 +97,13 @@
 				{if !$simultaneousKill && $loot}
 					<div>You have taken <span class='gold-count'>{$loot} gold</span> from {$target}.</div>
 				{/if}
-				
+
 				{if $wrath_regain}
 					<div class='wrath'>Your victory fuels your wrath, allowing you to retain some of your health.</div>
 				{/if}
-				
+
 			{/if}
-			
+
 			{if $rewarded_ki}
 				<div>Your ki lifeforce has increased.</div>
 			{/if}
@@ -117,7 +117,7 @@
 
 		{if $target_ending_health}
 
-			{include file="defender_health.tpl" health=$target_ending_health health_percent=$target_ending_health_percent target_name=$target_name}
+			{include file="defender_health.tpl" health=$target_ending_health level=$target_player->level target_name=$target_name}
 
 		{/if}
 		{if $attacker_died}
@@ -127,7 +127,7 @@
 				<div>{$target} has taken {$loot} gold from you.</div>
 			{/if}
 		<div class='ninja-notice thick'>
-			Go to the <a href="shrine.php">Shrine</a> to return to the living.
+			Go to the <a href="/shrine">Shrine</a> to return to the living.
 		</div>
 		{/if}
 	</div><!-- End of inset-area -->
@@ -136,8 +136,8 @@
 			{if $attack_again}
 				<div><a href="attack_mod.php?attacked=1&amp;target={$target|escape:'url'}" class='attack-again thick btn btn-primary'>Attack Again?</a></div>
 			{/if}
-				<div><a href='player.php?player={$target|escape:'url'}'><< Return to <span class='char-name'>{$target|escape}'s Info</span></a></div>
+				<div><a href='/player?player={$target|escape:'url'}'><< Return to <span class='char-name'>{$target|escape}'s Info</span></a></div>
 		{/if}
-		<a href='/enemies.php' class='return-to-location'>Return to the Fight</a>
+		<a href='/enemies' class='return-to-location'>Return to the Fight</a>
 	</nav>
 </section>

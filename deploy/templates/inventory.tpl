@@ -49,9 +49,9 @@
     Current gold: {$gold_display|escape}
     <p>
 
-    <form id="player_search" action="list.php" method="get" name="player_search">
+    <form id="player_search" action="/list" method="get" name="player_search">
       <div>
-        <a href="list.php?hide=dead">Use an Item on a ninja?</a>
+        <a href="/list?hide=dead">Use an Item on a ninja?</a>
         <input id="searched" type="text" maxlength="50" name="searched" class="textField">
         <input id="hide" type="hidden" name="hide" value="dead">
         <input type="submit" value="Search for Ninja" class="formButton">
@@ -61,8 +61,8 @@
   <div>
 
 {else}
-    <div class=''>You have no items, to buy some, visit the <a href="shop.php">shop</a> or kill <a href='enemies.php' target='main'>things</a>.</div>
-    
+    <div class=''>You have no items, to buy some, visit the <a href="/shop">shop</a> or kill <a href='/enemies' target='main'>things</a>.</div>
+
 
   <p class='gold-count'>
   Current gold: {$gold_display|escape}

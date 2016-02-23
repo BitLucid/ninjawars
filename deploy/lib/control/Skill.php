@@ -1,6 +1,4 @@
 <?php
-require_once(LIB_ROOT."control/lib_player.php");
-
 class Skill {
 	// *** Constructor should eventually get a specific skill's stats from the database.
 
@@ -73,7 +71,7 @@ class Skill {
 			return $skills;
 		}
 
-		$class = $char->class_identity();
+		$class = $char->identity;
 		$class_skills = array();
 
 		if ($class) {

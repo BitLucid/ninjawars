@@ -14,4 +14,4 @@
                   </a>
                 </div>
               </div>
-          </div> <!-- End of index-news --> 
+          </div> <!-- End of index-news -->

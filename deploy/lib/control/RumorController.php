@@ -1,13 +1,10 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT."control/lib_player.php");
-
-
 /**
  * Handles the rumors and info displayed by the bathhouse.
  */
-class RumorController { 
+class RumorController {
     const ALIVE          = false;
     const PRIV           = false;
 

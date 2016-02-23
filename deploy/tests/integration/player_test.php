@@ -19,7 +19,7 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
 		$char_id = TestAccountCreateAndDestroy::create_testing_account();
 		$this->char_id = $char_id;
 	}
-	
+
 	/**
 	 * group char
 	**/
@@ -263,5 +263,64 @@ class TestCharacter extends PHPUnit_Framework_TestCase {
         } catch (\PDOException $e) {
             $this->assertContains('Not null violation', $e->getMessage());
         }
+    }
+
+    /**
+     * test that levelUp fails if not enough kills
+     */
+    public function testLevelUpKillsFail() {
+        $char = new Player($this->char_id);
+        $char->vo->kills = 0;
+        $char->save();
+
+        $this->assertFalse($char->levelUp());
+    }
+
+    /**
+     * test that levelUp succeeds if enough kills
+     */
+    public function testLevelUpSucceeds() {
+        $char = new Player($this->char_id);
+        $char->vo->kills = 100;
+        $char->save();
+
+        $this->assertTrue($char->levelUp());
+    }
+
+    /**
+     * test that levelUp changes player stats
+     */
+    public function testLevelUpChangesStats() {
+        $original_char = new Player($this->char_id);
+        $original_char->vo->kills = 100;
+        $original_char->save();
+
+        $char = new Player($this->char_id);
+
+        $char->levelUp();
+
+        $this->assertGreaterThan($original_char->strength, $char->strength);
+        $this->assertGreaterThan($original_char->health, $char->health);
+        $this->assertGreaterThan($original_char->turns, $char->turns);
+        $this->assertGreaterThan($original_char->stamina, $char->stamina);
+        $this->assertGreaterThan($original_char->ki, $char->ki);
+        $this->assertGreaterThan($original_char->speed, $char->speed);
+        $this->assertGreaterThan($original_char->karma, $char->karma);
+        $this->assertGreaterThan($original_char->level, $char->level);
+    }
+
+    /**
+     * test that levelUp removes kill
+     */
+    public function testLevelUpRemovesKills() {
+        $original_char = new Player($this->char_id);
+        $original_char->vo->kills = 100;
+        $original_char->save();
+
+        $char = new Player($this->char_id);
+
+        $char->levelUp();
+
+        $this->assertLessThan($original_char->kills, $char->kills);
     }
 }

@@ -39,9 +39,10 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
         $this->setExpectedException('InvalidArgumentException');
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
         $this->oldify_character_last_attack($char_id);
-        $info = char_info($char_id);
+        $player = new Player($char_id);
+        $info = $player->dataWithClan();
         $this->assertTrue((bool)$info['uname'], 'Character uname not found to check attacklegal with');
-        $legal = new AttackLegal(new Player($char_id), $info['uname'], ['required_turns'=>1, 'ignores_stealth'=>true]);
+        $legal = new AttackLegal($player, $info['uname'], ['required_turns'=>1, 'ignores_stealth'=>true]);
         $this->assertFalse($legal->check(false));
     }
 

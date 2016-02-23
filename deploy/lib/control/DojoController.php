@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use \Player;
+use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -45,7 +46,7 @@ class DojoController {
             $parts = [];
 
 
-            if (Request::createFromGlobals()->isMethod('POST')) {
+            if (RequestWrapper::$request->isMethod('POST')) {
                 $error = $this->dimMakReqs($player, self::DIM_MAK_COST, self::DIM_MAK_STRENGTH_MIN);
 
                 if (!$error) {
@@ -78,7 +79,7 @@ class DojoController {
             $player            = new Player(self_char_id());
             $classes           = $this->classesInfo();
             $requestedIdentity = in('requested_identity');
-            $currentClass      = $player->class_identity();
+            $currentClass      = $player->identity;
             $showMonks         = false;
             $parts             = [];
 
@@ -89,26 +90,21 @@ class DojoController {
                     $error = $this->changePlayerClass($player, $requestedIdentity);
                 }
 
-                $currentClass = $player->class_identity();
+                $currentClass = $player->identity;
 
                 if (!$error) {
-                    $pageParts = [
-                        'success-class-change',
-                    ];
+                    $parts['pageParts'] = ['success-class-change'];
 
                     $showMonks = true;
                 } else {
                     $parts['error'] = $error;
                 }
             } else {
-                $pageParts = [
-                    'form-class-change',
-                ];
+                $parts['pageParts'] = ['form-class-change'];
             }
 
             unset($classes[$currentClass]);
 
-            $parts['pageParts']    = $pageParts;
             $parts['classOptions'] = $classes;
 
             return $this->render($parts, $player, $showMonks);
@@ -141,7 +137,7 @@ class DojoController {
      * @return string
      */
     private function changePlayerClass($p_player, $p_class) {
-        $error = set_class($p_player->id(), $p_class);
+        $error = $p_player->setClass($p_class);
 
         if (!$error) {
             $p_player->changeTurns((-1)*self::CLASS_CHANGE_COST);
@@ -202,7 +198,7 @@ class DojoController {
      */
     private function render($p_parts = [], $p_player = null, $p_renderMonks = true) {
         $p_parts['max_level']         = MAX_PLAYER_LEVEL; // For non-logged in loop through stats.
-        $p_parts['max_hp']            = max_health_by_level(MAX_PLAYER_LEVEL+1);
+        $p_parts['max_hp']            = Player::maxHealthByLevel(MAX_PLAYER_LEVEL+1);
         $p_parts['class_change_cost'] = self::CLASS_CHANGE_COST;
         $p_parts['player']            = $p_player;
         $p_parts['classes']           = $this->classesInfo();
@@ -228,7 +224,7 @@ class DojoController {
             $p_parts['pageParts'][] = 'reminder-level';
 
             if ($p_player->level() < MAX_PLAYER_LEVEL) {
-                $p_parts['required_kills'] = required_kills_to_level($p_player->level());
+                $p_parts['required_kills'] = $p_player->killsRequiredForNextLevel();
                 $p_parts['pageParts'][] = 'reminder-next-level';
             }
         }

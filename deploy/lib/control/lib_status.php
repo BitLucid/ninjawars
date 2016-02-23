@@ -45,23 +45,3 @@ function get_status_list($target=null) {
 
 	return $states;
 }
-
-function valid_status($dirty){
-	if((int)$dirty == $dirty){
-		return (int) $dirty;
-	} elseif (is_string($dirty)){
-		return string_status($dirty);
-	} else {
-		return null;
-	}
-}
-
-// Return the value of a defined status constant (or any constant, technically) if it exists.
-function string_status($status){
-	$status = is_string($status)? strtoupper($status) : null;
-	if(defined($status)){
-		return constant($status);
-	} else {
-		return false;
-	}
-}

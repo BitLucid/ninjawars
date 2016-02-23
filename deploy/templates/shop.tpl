@@ -68,7 +68,7 @@ $(document).ready(function() {
 			{if $is_logged_in}
 			  <em class='speech'>How many of these would you like?</em> <input id="quantity" type="number" min='1' max='99' name="quantity" class="textField">
 			{else}
-			  To purchase the items below you must <a href="signup.php?referrer=">become a ninja</a>.
+			  To purchase the items below you must <a href="/signup?referrer=">become a ninja</a>.
 			{/if}
 		  </td>
 		</tr>
@@ -111,7 +111,7 @@ $(document).ready(function() {
 <p>
 
 <nav>
-	<a href="map.php" class="return-to-location block">Return to the Village</a>
+	<a href="/map" class="return-to-location block">Return to the Village</a>
 </nav>
 
 <div style='margin:.1em auto;text-align:center'>

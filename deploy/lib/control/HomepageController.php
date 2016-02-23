@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT.'control/lib_player_list.php'); // Used for member_counts
-
 use NinjaWars\core\data\Message;
 use \Player as Player;
 
@@ -37,15 +35,13 @@ class HomepageController {
      */
     private function game() {
         // Get the actual values of the vars.
-        $playerInfo = self_info();
         $ninja = new Player(self_char_id());
+        $playerInfo = $ninja->dataWithClan();
 
         $unreadCount = Message::where([
             'send_to' => $ninja->id(),
             'unread'  => 1,
         ])->count();
-
-        $memberCounts = member_counts();
 
         // Assign these vars to the template.
         $parts = [
@@ -55,8 +51,6 @@ class HomepageController {
             'ninja'                => $ninja,
             'player_info'          => $playerInfo,
             'unread_message_count' => $unreadCount,
-            'members'              => $memberCounts['active'],
-            'membersTotal'         => $memberCounts['total'],
         ];
 
         return [
@@ -74,15 +68,11 @@ class HomepageController {
      * @return ViewSpec
      */
     private function splash() {
-        $memberCounts = member_counts();
-
         // Assign these vars to the template.
         $parts = [
             'main_src'     => '/intro',
             'body_classes' => 'main-body splash',
             'version'      => 'NW Version 1.8.0 2014.06.30',
-            'members'      => $memberCounts['active'],
-            'membersTotal' => $memberCounts['total'],
         ];
 
         return [

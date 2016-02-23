@@ -10,14 +10,14 @@
 		    	<li class='author'>
 		    		<img class='avatar' alt='' src="//www.gravatar.com/avatar/68dd1255208cbf50f2c42615bbbd8f46?d=monsterid&amp;80&amp;r=x">
 					<a href='//royronalds.com' class='extLink'>Roy Ronalds</a>
-					<a href='player.php?target=tchalvak'>Ninja: Tchalvak</a>
+					<a href='/player?target=tchalvak'>Ninja: Tchalvak</a>
 					<a href='//twitter.com/tchalvak' rel='nofollow' class='extLink'>@tchalvak</a>
           <a rel="author external me" href="https://plus.google.com/104798509386141979631/">On Google Plus</a>
 		    	</li>
 		    	<li class='author'>
 		    		<img class='avatar' alt="" src="//www.gravatar.com/avatar/01b8df4923c0559d3ff56e6922e35011?d=monsterid&amp;80&amp;r=x">
 		    		<a style='cursor:pointer;text-decoration:none'>Al Vazquez</a>
-		    		<a href='player.php?target=beagle'>Ninja: Beagle</a>
+		    		<a href='/player?target=beagle'>Ninja: Beagle</a>
 		    	</li>
 		    </ul>
         </div>

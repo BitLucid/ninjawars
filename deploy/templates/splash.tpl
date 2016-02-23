@@ -11,24 +11,24 @@
       &nbsp; <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
 		<nav role='navigation' id='top-bar' class='navigation'>
-		  <a id='solo-page-login-link' href='login.php' class='btn btn-vital'>Log in</a> <a id='solo-page-signup-link' href='signup.php' class='btn btn-vital'>Signup</a>
+		  <a id='solo-page-login-link' href='/login' class='btn btn-vital'>Log in</a> <a id='solo-page-signup-link' href='/signup' class='btn btn-vital'>Signup</a>
 		</nav>
 		<nav id='top-logo'>
       <h1>The Ninja Game at </h1>
-      <h1 class='title-box'><a href='main.php' target='main'><img src='{cachebust file="/images/nw_bamboo_logo_soft.png"}' alt='NinjaWars' width='200' height='100'></a>.net</h1>
+      <h1 class='title-box'><a href='/intro' target='main'><img src='{cachebust file="/images/nw_bamboo_logo_soft.png"}' alt='NinjaWars' width='200' height='100'></a>.net</h1>
 		</nav>
 
     <nav role='navigation' id='subcategory-bar' class='navigation'>
       <ul id='ninjas-subcategory'>
-        <li><a href="list.php" target="main">Ninjas</a></li>
-        <li><a href="clan.php" target="main">Clans</a></li>
+        <li><a href="/list" target="main">Ninjas</a></li>
+        <li><a href="/clan" target="main">Clans</a></li>
       </ul>
       <ul id='map-subcategory'>
-      	<li><a href='map.php' id='menu-map-head' target='main' title='Travel to different locations on the map'>Map&rarr;</a></li>
-        <li><a href="shop.php" target="main">Shop</a></li>
-        <li><a href="work.php" target="main">Field</a></li>
+      	<li><a href='/map' id='menu-map-head' target='main' title='Travel to different locations on the map'>Map&rarr;</a></li>
+        <li><a href="/shop" target="main">Shop</a></li>
+        <li><a href="/work" target="main">Field</a></li>
         <li>
-          <a href="doshin_office.php" target="main">Doshin <img class='doshin-image' src="{cachebust file="/images/doshin.png"}" alt=""></a>
+          <a href="/doshin" target="main">Doshin <img class='doshin-image' src="{cachebust file="/images/doshin.png"}" alt=""></a>
         </li>
       </ul>
     </nav> <!-- End of subcategory bar -->
@@ -42,7 +42,7 @@
 
       <aside id='sidebar-column'  class='navigation'>
 		<div id='contact-us' class='thick'>
-		  <a href='staff.php' target='main' class='font-shangrila'>Contact Staff</a>
+		  <a href='/staff' target='main' class='font-shangrila'>Contact Staff</a>
 		</div>
 
 		<div id='feedback-link'>

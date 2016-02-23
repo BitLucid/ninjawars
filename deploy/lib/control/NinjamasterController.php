@@ -1,9 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT.'control/lib_player_list.php');
-require_once(LIB_ROOT.'control/lib_player.php'); // For player tags
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Player;
 use NinjaWars\core\data\NpcFactory;
@@ -143,9 +140,41 @@ class NinjamasterController {
         return [
             'title'    => 'Player Character Tags',
             'template' => 'player-tags.tpl',
-            'parts'    => [ 'player_size' => player_size() ],
+            'parts'    => [ 'player_size' => $this->playerSize() ],
             'options'  => [ 'quickstat' => false ],
         ];
     }
 
+    /**
+     * @return Array
+     */
+    private function playerSize() {
+        $res = [];
+        DatabaseConnection::getInstance();
+        $sel = "SELECT (level-3-round(days/5)) AS sum, player_id, uname FROM players WHERE active = 1 AND health > 0 ORDER BY sum DESC";
+        $statement = DatabaseConnection::$pdo->query($sel);
+
+        $player_info = $statement->fetch();
+
+        $max = $player_info['sum'];
+
+        do {
+            // make percentage of highest, multiply by 10 and round to give a 1-10 size
+            $res[$player_info['uname']] = [
+                'player_id' => $player_info['player_id'],
+                'size'      => $this->calculatePlayerSize($player_info['sum'], $max),
+            ];
+        } while ($player_info = $statement->fetch());
+
+        return $res;
+    }
+
+    /**
+     * @param int $p_rank
+     * @param int $p_max
+     * @return int
+     */
+    private function calaculatePlayerSize($p_rank, $p_max) {
+        return floor(( (($p_rank-1 < 1 ? 0 : $p_rank-1)) / $p_max)*10)+1;
+    }
 }

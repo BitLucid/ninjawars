@@ -42,34 +42,3 @@ function send_event($fromId, $toId, $msg) {
     $statement->execute();
 }
 
-/**
- * Retrieve events by user
- *
- * @param int $userId
- * @param String $limit
- * @return Resultset
- */
-function get_events($userId, $limit=null) {
-    $params = [':to' => $userId];
-
-    if ($limit) {
-        $params[':limit'] = $limit;
-    }
-
-    return query("SELECT send_from, message, unread, date, uname AS from FROM events
-        JOIN players ON send_from = player_id WHERE send_to = :to ORDER BY date DESC
-        ".($limit ? "LIMIT :limit" : ''), $params);
-}
-
-/**
- * Mark events as read for a given user
- *
- * @param int $userId
- * @return void
- */
-function read_events($userId) {
-    DatabaseConnection::getInstance();
-    $statement = DatabaseConnection::$pdo->prepare("UPDATE events SET unread = 0 WHERE send_to = :to");
-    $statement->bindValue(':to', $userId);
-    $statement->execute();
-}

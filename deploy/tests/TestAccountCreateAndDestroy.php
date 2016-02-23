@@ -53,7 +53,6 @@ class TestAccountCreateAndDestroy{
 		$preconfirm = true;
 		$confirm = rand(1000,9999); //generate confirmation code
 
-		// Use the function from lib_player
 		$player_params = array(
 			'send_email'    => TestAccountCreateAndDestroy::$test_email
 			, 'send_pass'   => TestAccountCreateAndDestroy::$test_password
@@ -85,7 +84,6 @@ class TestAccountCreateAndDestroy{
 		$preconfirm = true;
 		$confirm = rand(1000,9999); //generate confirmation code
 
-		// Use the function from lib_player
 		$player_params = array(
 			'send_email'    => TestAccountCreateAndDestroy::$alt_test_email
 			, 'send_pass'   => TestAccountCreateAndDestroy::$test_password

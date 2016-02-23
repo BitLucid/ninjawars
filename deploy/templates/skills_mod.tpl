@@ -12,14 +12,14 @@
 <div class='usage-mod-result'>
 
 	<div>
-		<a href="player.php?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$target->avatarUrl()}</a>
+		<a href="/player?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$target->avatarUrl()}</a>
 	</div>
 
 	{if $display_sight_table}
-	  		
+
   <table id='sight-info' class='full-width'>
   	<thead>
-		<tr>   
+		<tr>
 		{foreach from=$sight_data item="loop_data" key="loop_header"}
       <th>{$loop_header}</th>
 		{/foreach}
@@ -68,7 +68,7 @@
   <p>Your actions have revealed you. You are no longer stealthed.</p>
 	{/if}
 
-{include file="defender_health.tpl" health=$target_ending_health health_percent=$target_ending_health_percent target_name=$target_name}
+{include file="defender_health.tpl" health=$target_ending_health level=$target->level target_name=$target_name}
 
 {if $turn_cost}
 	<div id='turn-cost'> You used {$turn_cost} turn{if $turn_cost > 1}s{/if}.</div>
@@ -95,7 +95,7 @@
 <div class="LinkBack glassbox">
   Return to
 {if $return_to_target}
-  <a href="player.php?player_id={$target_id|escape:'url'}" class='return-to-location'>view {$charName}</a>
+  <a href="/player?player_id={$target_id|escape:'url'}" class='return-to-location'>view {$charName}</a>
 {else}
   <a class='return-to-location' href="/skill">Skills</a>
 {/if}

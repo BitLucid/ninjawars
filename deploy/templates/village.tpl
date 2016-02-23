@@ -22,7 +22,7 @@
 
 	{if $error}<div class='error'>{$error}</div>{/if}
 
-  <a class='btn btn-default float-right' href="village.php?chatlength=100">Refresh</a>
+  <a class='btn btn-default float-right' href="/village?chatlength=100">Refresh</a>
 
 {if is_logged_in()}
   <form class='chat-submit' id="post_msg" action="{$target|escape}" method="post" name="post_msg">
@@ -45,7 +45,7 @@
 {/foreach}
   </dl>
 {if $more_chats_to_see}
-  <a id='view-all' href='village.php?view_all=1'>View All Chat Messages</a>
+  <a id='view-all' href='/village?view_all=1'>View All Chat Messages</a>
 {/if}
 </section>
 

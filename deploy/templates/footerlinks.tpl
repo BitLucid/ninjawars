@@ -31,9 +31,9 @@
           <span>Oni are actually quite friendly, if you get to know them.</span>
         </span>
          |
-        <a href="main.php" target="main">Guide</a> |
-        <a href="staff.php" target="main">Staff</a> |
-        <a href="rules.php" target="main">Rules</a> |
+        <a href="/" target="main">Guide</a> |
+        <a href="/staff" target="main">Staff</a> |
+        <a href="/rules" target="main">Rules</a> |
         <a href="news.php" target="main">News</a> |
         <a href="http://ninjawars.pbwiki.com/" rel='nofollow' target="_blank" class="extLink">Wiki</a> |
         <a href="http://ninjawars.proboards.com" rel='nofollow' target="_blank" class="extLink">Forum</a> |
@@ -49,7 +49,7 @@
                 // Choose random index.
                 catchphrases.hide().eq(rand).show();
                 // Hide all, show one at random.
-                
+
                 // When any of the three sections are hovered, show the bottom two.
         // Only change the display of the bottom sections if another event doesn't over-ride.
                 //var footer = $('#index-footer');
@@ -58,10 +58,10 @@
                   function(){
                     footerBottoms.stop(true, true).slideDown()
                     footer.css({'bottom':'0'}); // Ensure it sticks to the bottom.
-                  }, 
+                  },
                   function(){footerBottoms.stop(true, true).delay(2000).slideUp()}
                 );*/
-                
+
             });
           </script>
 {/literal}

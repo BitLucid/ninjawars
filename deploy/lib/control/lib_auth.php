@@ -242,9 +242,11 @@ function account_id_by_ninja_id($ninja_id){
 function characters_are_linked($char_id, $char_2_id) {
 	$account_id    = account_id_by_ninja_id($char_id);
 	$account_2_id  = account_id_by_ninja_id($char_2_id);
-	$char_1_info   = char_info($char_id);
+    $char_1        = new Player($char_id);
+	$char_1_info   = $char_1->dataWithClan();
 	$char_1_active = @$char_1_info['active'];
-	$char_2_info   = char_info($char_2_id);
+    $char_2        = new Player($char_2_id);
+	$char_2_info   = $char_2->dataWithClan();
 	$char_2_active = @$char_2_info['active'];
 	$server_ip     = $_SERVER['SERVER_ADDR'];
 	$allowed_ips   = array_merge(['127.0.0.1', $server_ip], Constants::$trusted_proxies);

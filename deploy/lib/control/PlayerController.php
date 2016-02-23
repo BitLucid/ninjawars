@@ -3,7 +3,6 @@ namespace NinjaWars\core\control;
 
 require_once(LIB_ROOT.'control/lib_inventory.php');
 require_once(LIB_ROOT."control/Skill.php");
-require_once(LIB_ROOT."control/lib_player.php");
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\control\AttackLegal;
@@ -26,9 +25,6 @@ class PlayerController {
             $viewed_name_for_title = $target_player_obj->name();
         }
 
-        $char_info = self_info();
-
-
         if ($target_player_obj === null) {
             $template = 'no-player.tpl';
             $parts    = array();
@@ -41,17 +37,18 @@ class PlayerController {
             } else {
                 $viewing_player_obj = Player::find(self_char_id());
 
-                $self        = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
+                $self = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
 
                 if ($viewing_player_obj !== null && $viewing_player_obj->vo) {
+                    $char_info = $viewing_player_obj->dataWithClan();
                     $char_id  = $viewing_player_obj->id();
                     $username = $viewing_player_obj->name();
+                } else {
+                    $char_info = [];
                 }
 
                 $player      = $target = $player_info['uname']; // reset the target and target_id vars.
                 $target_id   = $player_info['player_id'];
-
-                $target_class_theme = char_class_theme($target_id);
 
                 // Get the player's kills for this date.
                 $kills_today = query_item('select sum(killpoints) from levelling_log where _player_id = :player_id and killsdate = CURRENT_DATE and killpoints > 0', array(':player_id'=>$target_id));
@@ -73,8 +70,7 @@ class PlayerController {
 
                 // Display the player info.
                 $status_list          = get_status_list($player);
-                $level_category       = level_category($player_info['level']);
-                $gurl = $gravatar_url = generate_gravatar_url($target_player_obj);
+                $gurl = $gravatar_url = $target_player_obj->avatarUrl();
 
                 if ($viewing_player_obj !== null && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
                     // Attack or Duel
@@ -108,19 +104,16 @@ class PlayerController {
                 $clan = ClanFactory::clanOfMember($player_info['player_id']);
                 $same_clan = false;
 
-                $player_info = format_health_percent($player_info);
-
                 // Player clan and clan members
 
                 if ($clan) {
                     $viewer_clan  = $viewing_player_obj ? ClanFactory::clanOfMember($viewing_player_obj) : null;
-                    $clan_members = get_clan_members($clan->getID())->fetchAll(); // TODO - When we switch to Smarty 3, remove fetchAll for foreach
                     $clan_id      = $clan->getID();
                     $clan_name    = $clan->getName();
 
                     if ($viewer_clan) {
                         $same_clan = ($clan->getID() == $viewer_clan->getID());
-                        $display_clan_options = $viewing_player_obj && !$self && $same_clan && is_clan_leader($viewing_player_obj->id());
+                        $display_clan_options = $viewing_player_obj && !$self && $same_clan && $viewing_player_obj->isClanLeader();
                     } else {
                         $same_clan = $display_clan_options = false;
                     }
@@ -130,8 +123,8 @@ class PlayerController {
 
                 $template = 'player.tpl';
                 $parts = get_certain_vars(get_defined_vars(), array('char_info', 'viewing_player_obj', 'target_player_obj', 'combat_skills',
-                    'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today', 'level_category',
-                    'gravatar_url', 'status_list', 'clan', 'clan_members', 'items'));
+                    'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today',
+                    'gravatar_url', 'status_list', 'clan', 'items'));
             }
         }
 
@@ -159,4 +152,5 @@ class PlayerController {
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
     }
+
 }

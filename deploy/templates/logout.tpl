@@ -31,7 +31,7 @@
 <section class='glassbox centered thick'>
 	<p class='lead'>
 		Sorry to see you go!  Come back soon!
-		You can return to <a href='/'>the homepage</a> or <a class='btn btn-primary' href='/login.php'>log in again.</a>
+		You can return to <a href='/'>the homepage</a> or <a class='btn btn-primary' href='/login'>log in again.</a>
 	</p>
 </section>
 <section id='logout-ads' class='ad-sectionglassbox'>
