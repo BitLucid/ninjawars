@@ -154,7 +154,8 @@ class Player implements Character {
 				$statement->bindValue(':status2', $p_status, PDO::PARAM_INT);
 				$statement->execute();
 
-				$this->vo->status = null; // *** Ensures that the next call to hasStatus pulls the updated status from the DB ***
+                // Fixes problem with saving object after adding status
+				$this->vo->status += $p_status;
 			}
 		}
 	}
