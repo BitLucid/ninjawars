@@ -1,6 +1,4 @@
 <?php
-require_once(ROOT.'resources.php');
-require_once(ROOT.'vendor/autoload.php');
 
 /**
  * Start up the illuminate database connection, using the database connection info in resources.php
