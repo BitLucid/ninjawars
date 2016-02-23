@@ -1,7 +1,4 @@
 <?php
-// Note that the file has to have a file ending of ...test.php to be run by phpunit
-require_once(CORE."control/lib_inventory.php");
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
