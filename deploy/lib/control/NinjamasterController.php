@@ -174,7 +174,7 @@ class NinjamasterController {
      * @param int $p_max
      * @return int
      */
-    private function calaculatePlayerSize($p_rank, $p_max) {
+    private function calculatePlayerSize($p_rank, $p_max) {
         return floor(( (($p_rank-1 < 1 ? 0 : $p_rank-1)) / $p_max)*10)+1;
     }
 }
