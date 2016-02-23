@@ -78,7 +78,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $response = $controller->postEmail($req);
         $this->assertTrue($response instanceof RedirectResponse);
         $this->assertTrue(strpos($response->getTargetUrl(), url('unable to find a matching account')) !== false, 'Url Redirection did not contain expected error string');
-    }    
+    }
 
     public function testPostEmailCanGetAnAccountUsingANinjaName(){
         $req = Request::create('/resetpassword.php');
@@ -91,7 +91,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
 
         $controller = new PasswordController();
-        $response = $controller->postEmail($req);
+        $controller->postEmail($req);
         // Check for a matching request for the appropriate account.
         $req = PasswordResetRequest::where('_account_id', '=', $account->id())->first();
 
@@ -111,7 +111,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $response = $controller->getReset($request);
 
         // Response should contain an array with the token in the parts.
-        $this->assertTrue($response instanceof RedirectResponse, 'Error! getReset matched a garbage token!');        
+        $this->assertTrue($response instanceof RedirectResponse, 'Error! getReset matched a garbage token!');
     }
 
     public function testGetResetWithAValidTokenDisplaysAFilledInPasswordResetForm() {

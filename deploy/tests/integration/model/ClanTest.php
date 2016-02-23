@@ -2,9 +2,7 @@
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Clan;
 
-// Note that the file has to have a file ending of ...test.php to be run by phpunit
-
-class TestClan extends PHPUnit_Framework_TestCase {
+class ClanTest extends PHPUnit_Framework_TestCase {
     private $clan_id;
     private $char_id;
     private $char_id_2;

@@ -2,7 +2,7 @@
 use NinjaWars\core\data\AccountFactory;
 use NinjaWars\core\data\Account;
 
-class Account_Test extends PHPUnit_Framework_TestCase {
+class AccountTest extends PHPUnit_Framework_TestCase {
 
 	var $testAccountId;
 

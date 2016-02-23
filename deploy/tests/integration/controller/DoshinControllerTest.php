@@ -59,7 +59,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
 
         $doshin = new DoshinController();
-        $response = $doshin->offerBounty();
+        $doshin->offerBounty();
         $new_bounty = (new Player($target->id()))->bounty();
         TestAccountCreateAndDestroy::destroy();
 
@@ -84,7 +84,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
 
         $doshin = new DoshinController();
-        $response = $doshin->bribe();
+        $doshin->bribe();
 
         $pulled_char = new Player($char_id);
 
@@ -104,14 +104,11 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $initial_gold = 7777;
         $this->char->set_bounty($bounty_set);
         $this->char->set_gold($initial_gold);
-        $initial_health = $this->char->health();
         $this->char->save();
 
         $doshin = new DoshinController();
-        $response = $doshin->bribe();
+        $doshin->bribe();
         $final_char = new Player($this->char->id());
-        $parts = $response['parts'];
-        $char = $parts['char'];
         $this->assertLessThan(7777, $final_char->gold());
         $modified_bounty = $final_char->bounty();
         $this->assertLessThan($bounty_set, $modified_bounty);

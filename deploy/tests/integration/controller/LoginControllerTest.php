@@ -15,7 +15,7 @@ class LoginControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testLoginWithGibberishFails() {
         $controller = new LoginController();
-        $error_message = $controller->perform_login_if_requested($username_requested='gibber', $pass='ish');
+        $error_message = $controller->perform_login_if_requested('gibber', 'ish');
         $this->assertNotEmpty($error_message);
     }
 }
