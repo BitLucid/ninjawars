@@ -1,6 +1,6 @@
 server {
-	listen 80;
 	server_name nw.local;
+	listen 80;
 
 	root /srv/ninjawars/deploy/www;
 	charset utf-8;
