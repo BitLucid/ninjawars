@@ -1,8 +1,7 @@
 <?php
-
 use model\Base as ModelBase;
 
-class Base_Test extends PHPUnit_Framework_TestCase {
+class BaseTest extends PHPUnit_Framework_TestCase {
 
 	public function testContructor() 
 	{

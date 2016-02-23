@@ -3,7 +3,7 @@ use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\AccountFactory;
 use NinjaWars\core\data\Account;
 
-class TestPasswordReset extends PHPUnit_Framework_TestCase {
+class PasswordResetTest extends PHPUnit_Framework_TestCase {
     function setUp() {
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         $this->account = new Account($this->account_id);

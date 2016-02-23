@@ -1,7 +1,7 @@
 <?php
 use NinjaWars\core\data\Item;
 
-class Item_Test extends PHPUnit_Framework_TestCase {
+class ItemTest extends PHPUnit_Framework_TestCase {
 
 
 	public function setUp()

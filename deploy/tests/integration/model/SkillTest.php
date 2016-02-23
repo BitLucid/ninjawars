@@ -1,15 +1,11 @@
 <?php
-require_once(ROOT.'core/control/Skill.php');
-
 use NinjaWars\core\data\SkillDAO;
 use \Skill as Skill;
 
-
-class TestSkillObj extends PHPUnit_Framework_TestCase {
-
+class SkillTest extends PHPUnit_Framework_TestCase {
 	public function setUp(){
 	}
-	
+
 	public function tearDown(){
 		// Delete test users created in body of test functions
 		TestAccountCreateAndDestroy::purge_test_accounts();
@@ -26,12 +22,9 @@ class TestSkillObj extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($skill_list->all('combat'));
     }
 
-
     public function testAdminPlayerGetsFireBoltSkill(){
         $skills = new Skill();
         $passfail = $skills->hasSkill('Fire Bolt', 'tchalvak');
         $this->assertTrue($passfail);
     }
-
 }
-
