@@ -47,6 +47,10 @@ server {
 	    return 302 /intro;
 	}
 
+	location ~ /index\.php {
+		return 302 /;
+	}
+
 	location ~ /list_all_players\.php {
 	    return 302 /list$is_args$args;
 	}
