@@ -47,7 +47,7 @@
     <column name="days" phpName="Days" type="INTEGER" required="true" defaultValue="0"/>
     <column name="bounty" phpName="Bounty" type="INTEGER" required="true" defaultValue="0"/>
     <column name="created_date" phpName="CreatedDate" type="TIMESTAMP" required="false" defaultExpr="now()"/>
-    <column name="resurrection_time" phpName="ResurrectionTime" type="INTEGER" required="true" defaultValue="(round((random() * (7)::double precision)) * (3)::double precision)"/>
+    <column name="resurrection_time" phpName="ResurrectionTime" type="INTEGER" required="true" defaultValue="(round(random() * (23)::double precision))"/>
     <column name="last_started_attack" phpName="LastStartedAttack" type="TIMESTAMP" required="false" defaultExpr="now()"/>
     <column name="energy" phpName="Energy" type="INTEGER" required="true" defaultValue="0"/>
     <column name="avatar_type" phpName="AvatarType" type="INTEGER" required="true" defaultValue="1"/>
