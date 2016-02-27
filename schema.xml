@@ -98,7 +98,7 @@
     <column name="players_flagged_id" phpName="PlayersFlaggedId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="player_id" phpName="PlayerId" type="INTEGER" required="false"/>
     <column name="flag_id" phpName="FlagId" type="INTEGER" required="false"/>
-    <column name="timestamp" phpName="Timestamp" type="DATE" required="false" defaultExpr="now()"/>
+    <column name="date" phpName="Date" type="DATE" required="false" defaultExpr="now()"/>
     <column name="originating_page" phpName="OriginatingPage" type="VARCHAR" size="50" required="false"/>
     <column name="extra_notes" phpName="ExtraNotes" type="VARCHAR" size="100" required="false"/>
   </table>
@@ -218,20 +218,6 @@
       <index-column name="date"/>
     </index>
   </table>
-  <table name="duped_unames" phpName="DupedUnames" idMethod="native">
-    <column name="uname" phpName="Uname" type="LONGVARCHAR" required="true"/>
-    <column name="email" phpName="Email" type="LONGVARCHAR" required="true"/>
-    <column name="created_date" phpName="CreatedDate" type="TIMESTAMP" required="true"/>
-    <column name="relative_age" phpName="RelativeAge" type="SMALLINT" required="true"/>
-    <column name="player_id" phpName="PlayerId" type="INTEGER" primaryKey="true" required="true"/>
-    <column name="locked" phpName="Locked" type="BOOLEAN" required="true" defaultValue="false"/>
-    <index name="duped_unames_email_key">
-      <index-column name="email"/>
-    </index>
-    <index name="duped_unames_uname_key">
-      <index-column name="uname"/>
-    </index>
-  </table>
   <table name="effects" phpName="Effects" idMethod="native">
     <column name="effect_id" phpName="EffectId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="effect_identity" phpName="EffectIdentity" type="VARCHAR" size="500" required="true"/>
@@ -279,7 +265,6 @@
     <column name="amount" phpName="Amount" type="INTEGER" required="false" defaultValue="1"/>
     <column name="owner" phpName="Owner" type="INTEGER" required="true"/>
     <column name="item_type" phpName="ItemType" type="INTEGER" required="false"/>
-    <column name="item_type_string_backup" phpName="ItemTypeStringBackup" type="VARCHAR" required="false"/>
     <foreign-key foreignTable="players" name="inventory_owner_fkey" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="owner" foreign="player_id"/>
     </foreign-key>
