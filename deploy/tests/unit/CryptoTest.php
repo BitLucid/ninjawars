@@ -1,5 +1,5 @@
 <?php
-class TestCrypto extends PHPUnit_Framework_TestCase {
+class CryptoTest extends PHPUnit_Framework_TestCase {
     public function testRandomStringDoesntEverMatch() {
         $this->assertNotEmpty(make_random_string());
         $i = 30;
@@ -10,7 +10,7 @@ class TestCrypto extends PHPUnit_Framework_TestCase {
     }
 
     public function testNonceDoesntEverMatch() {
-        $nonce = nonce();
+        nonce();
         $this->assertNotEmpty(nonce());
         $i = 30;
 
