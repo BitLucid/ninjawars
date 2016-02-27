@@ -1,8 +1,3 @@
-SET statement_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
 
 -----------------------------------------------------------------------
 -- accounts
@@ -20,9 +15,9 @@ CREATE TABLE "accounts"
     "active_email" TEXT NOT NULL,
     "type" INTEGER DEFAULT 0,
     "operational" BOOLEAN DEFAULT 't',
-    "created_date" TIMESTAMP DEFAULT now() NOT NULL,
-    "last_login" TIMESTAMP,
-    "last_login_failure" TIMESTAMP,
+    "created_date" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    "last_login" TIMESTAMP WITH TIME ZONE,
+    "last_login_failure" TIMESTAMP WITH TIME ZONE,
     "karma_total" INTEGER DEFAULT 0 NOT NULL,
     "last_ip" VARCHAR(100),
     "confirmed" INTEGER DEFAULT 0 NOT NULL,
@@ -61,9 +56,9 @@ CREATE TABLE "players"
     "member" INTEGER DEFAULT 0 NOT NULL,
     "days" INTEGER DEFAULT 0 NOT NULL,
     "bounty" INTEGER DEFAULT 0 NOT NULL,
-    "created_date" TIMESTAMP DEFAULT now(),
+    "created_date" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     "resurrection_time" INTEGER DEFAULT (round((random() * (7)::double precision)) * (3)::double precision) NOT NULL,
-    "last_started_attack" TIMESTAMP DEFAULT now(),
+    "last_started_attack" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     "energy" INTEGER DEFAULT 0 NOT NULL,
     "avatar_type" INTEGER DEFAULT 1 NOT NULL,
     "_class_id" INTEGER NOT NULL,
@@ -108,8 +103,8 @@ CREATE TABLE "account_players"
 (
     "_account_id" INTEGER NOT NULL,
     "_player_id" INTEGER NOT NULL,
-    "last_login" TIMESTAMP DEFAULT now() NOT NULL,
-    "created_date" TIMESTAMP DEFAULT now() NOT NULL,
+    "last_login" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    "created_date" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     PRIMARY KEY ("_account_id","_player_id"),
     CONSTRAINT "account_players__player_id_key" UNIQUE ("_player_id")
 );
@@ -125,7 +120,7 @@ CREATE TABLE "players_flagged"
     "players_flagged_id" serial NOT NULL,
     "player_id" INTEGER,
     "flag_id" INTEGER,
-    "timestamp" DATE DEFAULT now(),
+    "date" DATE DEFAULT now(),
     "originating_page" VARCHAR(50),
     "extra_notes" VARCHAR(100),
     PRIMARY KEY ("players_flagged_id")
@@ -140,7 +135,7 @@ DROP TABLE IF EXISTS "ppl_online" CASCADE;
 CREATE TABLE "ppl_online"
 (
     "session_id" VARCHAR(255) NOT NULL,
-    "activity" TIMESTAMP DEFAULT now() NOT NULL,
+    "activity" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     "member" BOOLEAN DEFAULT 'f' NOT NULL,
     "ip_address" VARCHAR(255) DEFAULT '' NOT NULL,
     "refurl" VARCHAR(255) DEFAULT '' NOT NULL,
@@ -206,8 +201,8 @@ CREATE TABLE "news"
     "news_id" serial NOT NULL,
     "title" VARCHAR(100) DEFAULT '' NOT NULL,
     "content" TEXT DEFAULT '' NOT NULL,
-    "created" TIMESTAMP DEFAULT now() NOT NULL,
-    "updated" TIMESTAMP DEFAULT now() NOT NULL,
+    "created" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    "updated" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     "tags" TEXT DEFAULT '',
     PRIMARY KEY ("news_id")
 );
@@ -225,7 +220,7 @@ CREATE TABLE "password_reset_requests"
     "request_id" serial NOT NULL,
     "_account_id" INTEGER NOT NULL,
     "nonce" VARCHAR(130) NOT NULL,
-    "created_at" TIMESTAMP DEFAULT now() NOT NULL,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     "used" BOOLEAN DEFAULT 'f' NOT NULL,
     PRIMARY KEY ("request_id")
 );
@@ -240,7 +235,7 @@ CREATE TABLE "account_news"
 (
     "_account_id" INTEGER NOT NULL,
     "_news_id" INTEGER NOT NULL,
-    "created_date" TIMESTAMP DEFAULT now() NOT NULL,
+    "created_date" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     PRIMARY KEY ("_account_id","_news_id")
 );
 
@@ -255,7 +250,7 @@ CREATE TABLE "chat"
     "chat_id" serial NOT NULL,
     "sender_id" INTEGER DEFAULT 0,
     "message" VARCHAR(255) NOT NULL,
-    "date" TIMESTAMP DEFAULT now() NOT NULL,
+    "date" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     PRIMARY KEY ("chat_id")
 );
 
@@ -271,7 +266,7 @@ CREATE TABLE "clan"
 (
     "clan_id" serial NOT NULL,
     "clan_name" VARCHAR(255) NOT NULL,
-    "clan_created_date" TIMESTAMP DEFAULT now() NOT NULL,
+    "clan_created_date" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     "clan_founder" TEXT,
     "clan_avatar_url" TEXT,
     "description" TEXT,
@@ -323,7 +318,7 @@ CREATE TABLE "duped_unames"
 (
     "uname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "created_date" TIMESTAMP NOT NULL,
+    "created_date" TIMESTAMP WITH TIME ZONE NOT NULL,
     "relative_age" INT2 NOT NULL,
     "player_id" INTEGER NOT NULL,
     "locked" BOOLEAN DEFAULT 'f' NOT NULL,
@@ -378,7 +373,7 @@ CREATE TABLE "events"
     "send_from" INTEGER DEFAULT 0,
     "message" TEXT NOT NULL,
     "unread" INTEGER DEFAULT 1 NOT NULL,
-    "date" TIMESTAMP DEFAULT now() NOT NULL,
+    "date" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     PRIMARY KEY ("event_id")
 );
 
@@ -487,7 +482,7 @@ CREATE TABLE "login_attempts"
     "ip" TEXT,
     "successful" INTEGER,
     "additional_info" TEXT,
-    "attempt_date" TIMESTAMP DEFAULT now(),
+    "attempt_date" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     PRIMARY KEY ("attempt_id")
 );
 
@@ -501,7 +496,7 @@ CREATE TABLE "messages"
 (
     "message_id" serial NOT NULL,
     "message" TEXT NOT NULL,
-    "date" TIMESTAMP DEFAULT now() NOT NULL,
+    "date" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     "send_to" INTEGER,
     "send_from" INTEGER,
     "unread" INTEGER DEFAULT 1,
@@ -528,9 +523,9 @@ CREATE TABLE "quests"
     "rewards" TEXT DEFAULT '' NOT NULL,
     "obstacles" TEXT DEFAULT '' NOT NULL,
     "proof" TEXT DEFAULT '' NOT NULL,
-    "created_at" TIMESTAMP DEFAULT now() NOT NULL,
-    "updated_at" TIMESTAMP DEFAULT now() NOT NULL,
-    "expires_at" TIMESTAMP DEFAULT now() + interval ' 1 mon ' NOT NULL,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    "expires_at" TIMESTAMP WITH TIME ZONE DEFAULT now() + interval ' 1 mon ' NOT NULL,
     "type" INTEGER,
     "difficulty" INTEGER,
     PRIMARY KEY ("quest_id")
