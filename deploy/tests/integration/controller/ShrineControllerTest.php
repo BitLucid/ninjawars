@@ -6,6 +6,8 @@ use NinjaWars\core\control\ShrineController;
 use NinjaWars\core\extensions\SessionFactory;
 
 class ShrineControllerTest extends PHPUnit_Framework_TestCase {
+    private $char;
+
 	function setUp() {
         $this->char = TestAccountCreateAndDestroy::char();
         $request = new Request([], []);
@@ -62,6 +64,25 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($initial_health+10, $final_char->health());
     }
 
+    /**
+     * Test max heal of player
+     */
+    public function testShrineMaxHeal(){
+        $request = new Request(['heal_points'=>'max'], []);
+        RequestWrapper::inject($request);
+        $this->char->harm(30); // Have to be wounded first.
+        $initial_health = $this->char->health();
+        $initial_gold = $this->char->gold;
+        $this->char->setClass('viper'); // ensure no chi
+        $this->char->save();
+
+        $cont = new ShrineController();
+        $result = $cont->heal();
+        $this->assertTrue(in_array('result-heal', $result['parts']['pageParts']));
+        $final_char = Player::find($this->char->id());
+        $this->assertEquals(min($initial_health+$initial_gold, $final_char->getMaxHealth()), $final_char->health());
+    }
+
     public function testPartialHealWithZeroGoldGivesErrorInPageParts(){
         $request = new Request(['heal_points'=>999], []);
         RequestWrapper::inject($request);
@@ -101,4 +122,85 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($final_char->hasStatus(POISON));
     }
 
+    public function testFreeResurrectWithChi() {
+        $this->char->death();
+        $this->char->setClass('dragon'); // dragon class has chi skill
+        $this->char->save();
+
+        $cont = new ShrineController();
+        $result = $cont->resurrect();
+        $final_char = Player::find($this->char->id());
+        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $this->assertGreaterThan(50, $final_char->health());
+    }
+
+    public function testKillCostResurrectWithChi() {
+        $this->char->death();
+        $this->char->setClass('dragon'); // dragon class has chi skill
+        $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
+        $this->char->vo->kills = ShrineController::FREE_RES_KILL_LIMIT;
+        $this->char->save();
+
+        $cont = new ShrineController();
+        $result = $cont->resurrect();
+        $final_char = Player::find($this->char->id());
+        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $this->assertGreaterThan($this->char->level*10, $final_char->health());
+    }
+
+    public function testKillCostResurrectWithStealth() {
+        $this->char->death();
+        $this->char->setClass('viper'); // viper class has stealth
+        $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
+        $this->char->vo->kills = ShrineController::FREE_RES_KILL_LIMIT;
+        $this->char->save();
+
+        $cont = new ShrineController();
+        $result = $cont->resurrect();
+        $final_char = Player::find($this->char->id());
+
+        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $this->assertTrue($final_char->hasStatus(STEALTH));
+    }
+
+    public function testTurnCostResurrectWithChi() {
+        $turns = 50;
+        $this->char->death();
+        $this->char->setClass('dragon'); // dragon class has chi skill
+        $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
+        $this->char->vo->turns = $turns;
+        $this->char->save();
+
+        $cont = new ShrineController();
+        $result = $cont->resurrect();
+        $final_char = Player::find($this->char->id());
+        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $this->assertLessThan($final_char->health(), $this->char->level*10);
+        $this->assertLessThan($turns, $final_char->turns);
+    }
+
+    public function testResurrectOnEmpty() {
+        $this->char->death();
+        $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
+        $this->char->vo->turns = 0;
+        $this->char->vo->kills = 0;
+        $this->char->save();
+
+        $cont = new ShrineController();
+        $result = $cont->resurrect();
+        $final_char = Player::find($this->char->id());
+        $this->assertFalse(in_array('result-resurrect', $result['parts']['pageParts']));
+    }
+
+    public function testResurrectWhileAlive() {
+        $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
+        $this->char->vo->turns = 0;
+        $this->char->vo->kills = 0;
+        $this->char->save();
+
+        $cont = new ShrineController();
+        $result = $cont->resurrect();
+        $final_char = Player::find($this->char->id());
+        $this->assertFalse(in_array('result-resurrect', $result['parts']['pageParts']));
+    }
 }
