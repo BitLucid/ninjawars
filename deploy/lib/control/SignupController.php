@@ -245,7 +245,7 @@ class SignupController {
      * @return String|null
      */
     private function validate_signup_phase3($enteredName, $enteredEmail) {
-        $name_available  = ninja_name_available($enteredName);
+        $name_available  = $this->ninjaNameAvailable($enteredName);
         $duplicate_email = email_is_duplicate($enteredEmail);
         $email_error     = $this->validateEmail($enteredEmail);
 
@@ -371,5 +371,20 @@ class SignupController {
         }
 
         return $error;
+    }
+
+    /**
+     * Check for reserved or already in use by another player.
+     */
+    private function ninjaNameAvailable($ninja_name) {
+        $reserved = array('SysMsg', 'NewUserList', 'Admin', 'Administrator', 'A Stealthed Ninja', 'Tchalvak', 'Beagle');
+
+        foreach ($reserved as $l_names) {
+            if (strtolower($ninja_name) == strtolower($l_names)) {
+                return false;
+            }
+        }
+
+        return (!get_user_id($ninja_name));
     }
 }
