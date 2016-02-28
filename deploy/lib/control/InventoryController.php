@@ -52,7 +52,7 @@ class InventoryController {
 		return $this->render($parts);
 	}
 
-	public function render($parts) {
+	private function render($parts) {
 		return [
 			'template' => 'inventory.tpl',
 			'title'    => 'Your Inventory',
