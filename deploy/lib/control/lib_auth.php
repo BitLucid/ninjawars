@@ -235,48 +235,6 @@ function account_id_by_ninja_id($ninja_id){
 }
 
 /**
- * Check whether two characters have similarities, same account, same ip, etc.
- *
- * @return boolean
- */
-function characters_are_linked($char_id, $char_2_id) {
-	$account_id    = account_id_by_ninja_id($char_id);
-	$account_2_id  = account_id_by_ninja_id($char_2_id);
-    $char_1        = new Player($char_id);
-	$char_1_info   = $char_1->dataWithClan();
-	$char_1_active = @$char_1_info['active'];
-    $char_2        = new Player($char_2_id);
-	$char_2_info   = $char_2->dataWithClan();
-	$char_2_active = @$char_2_info['active'];
-	$server_ip     = $_SERVER['SERVER_ADDR'];
-	$allowed_ips   = array_merge(['127.0.0.1', $server_ip], Constants::$trusted_proxies);
-
-	if (empty($account_id) || empty($account_2_id) || empty($char_1_info) || empty($char_2_info)) {
-		return false;
-	} elseif (!$char_1_active || !$char_2_active) {
-		 // Not both of the potential clones are active.
-		return false;
-	} else {
-		if ($account_id == $account_2_id) {
-			error_log('Two accounts were linked ['.$account_id.'] and ['.$account_2_id.']');
-			return true;
-		}
-
-		$account_ip = account_info($account_id, 'last_ip');
-		$account_2_ip = account_info($account_2_id, 'last_ip');
-
-		if (empty($account_ip) || empty($account_2_ip) || in_array($account_ip, $allowed_ips) || in_array($account_2_ip, $allowed_ips)) {
-			// When account ips are empty or equal the server ip, then don't clone kill them.
-			return false;
-		} else {
-			error_log('Two accounts were linked ['.$account_id.'] and ['.$account_2_id.'] with ips ['.$account_ip.'] and ['.$account_2_ip.']');
-			return ($account_ip == $account_2_ip);
-			// If none of the other stuff matched, then the accounts count as not linked.
-		}
-	}
-}
-
-/**
  * Check whether someone is logged into their account.
  *
  * @return boolean
@@ -466,23 +424,3 @@ function update_activity_log($p_playerID) {
 		array(':ip'=>$user_ip, ':pid'=>$p_playerID));
 }
 
-/**
- * Stats on recent activity and other aggregate counts/information.
- *
- * @return array
- */
-function membership_and_combat_stats() {
-	DatabaseConnection::getInstance();
-	$viciousResult = DatabaseConnection::$pdo->query('SELECT stat_result from past_stats where id = 4');
-	$todaysViciousKiller = $viciousResult->fetchColumn();
-
-	$stats['vicious_killer'] = $todaysViciousKiller;
-	$playerCount = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE active = 1");
-	$stats['player_count'] = $playerCount->fetchColumn();
-
-	$peopleOnline = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true");
-	$stats['players_online'] = $peopleOnline->fetchColumn();
-
-	$stats['active_chars'] = query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('15 minutes' AS interval))");
-	return $stats;
-}
