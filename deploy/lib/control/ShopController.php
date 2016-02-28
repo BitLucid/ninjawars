@@ -19,10 +19,9 @@ class ShopController { // extends Controller
 	 * Grabs data from external state for other methods to us
 	 *
 	 * @return ShopController
-	 * @see item_for_sale_costs
 	 */
 	public function __construct() {
-		$this->itemCosts   = item_for_sale_costs();
+		$this->itemCosts   = $this->itemForSaleCosts();
 		$this->sessionData = [
 			'username'         => self_name(),
 			'char_id'          => self_char_id(),
@@ -60,7 +59,7 @@ class ShopController { // extends Controller
 		$no_funny_business = false;
 
 		// Pull the item info from the database
-		$item_costs        = item_for_sale_costs();
+		$item_costs        = $this->itemForSaleCosts();
 		$item              = getItemByID(item_id_from_display_name($in_item));
 		$quantity 		   = whichever(positive_int($in_quantity), 1);
 		$item_text 	       = null;
@@ -123,12 +122,33 @@ class ShopController { // extends Controller
 			'options'  => [ 'quickstat' => 'viewinv' ],
 		];
 	}
+
+    /**
+     * Pulls the shop items costs and all.
+     */
+    private function itemForSaleCosts() {
+        $sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item where for_sale = TRUE order by image asc, item_cost asc';
+
+        if (defined('DEBUG') && DEBUG) {
+            $sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item order by image asc, item_cost asc';
+        }
+
+        $items_data = query_resultset($sel);
+        // Rearrange the array to use the internal identity as indexes.
+        $item_costs = array();
+
+        foreach ($items_data as $item_data) {
+            $item_costs[$item_data['item_internal_name']] = $item_data;
+        }
+
+        return $item_costs;
+    }
 }
 
 /**
  * A game-level representation of a request to buy something
  */
 class PurchaseOrder {
-	public $quantity;
-	public $item;
+    public $quantity;
+    public $item;
 }
