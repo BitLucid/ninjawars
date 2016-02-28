@@ -195,6 +195,7 @@ class ApiController {
         $messages        = [];
         $unread_messages = null;
         $unread_events   = null;
+        $items = null;
 
         if ($user_id) {
             $events = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC");
