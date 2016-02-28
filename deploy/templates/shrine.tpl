@@ -1,6 +1,6 @@
 <h1>Shrine</h1>
 
-{include file="clan.flash-message.tpl"}
+{include file="flash-message.tpl"}
 
 <section class='action-area'>
 {foreach from=$pageParts item="part"}

@@ -11,7 +11,7 @@
 	</ul>
 	</nav>
 
-	{include file="clan.flash-message.tpl"}
+	{include file="flash-message.tpl"}
 
 	{foreach from=$pageParts item="part"}
 		{include file="clan.$part.tpl"}
