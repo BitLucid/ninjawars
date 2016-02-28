@@ -460,11 +460,11 @@ class ShrineController { //extends controller
                 'quickstat'  => 'player',
             ],
             'parts'          => array_merge(
-                $p_parts,
                 [
                     'action_message' => null,
                     'error'          => null,
-                ]
+                ],
+                $p_parts
             ),
         ];
 	}
@@ -475,18 +475,14 @@ class ShrineController { //extends controller
 	 * @param p_player Player The player object to pass to the view for rendering
 	 * @return Array
 	 */
-	private function renderError($p_message, $p_player) {
+	private function renderError($p_message, Player $p_player) {
 		$pageParts = $this->servicesNeeded($p_player);
 		array_unshift($pageParts, 'entrance');
 
-        return array_merge(
-            $this->render([
+        return $this->render([
                 'pageParts' => $pageParts,
                 'player'    => $p_player,
-            ]),
-            [
                 'error'     => $p_message,
-            ]
-        );
+            ]);
     }
 }

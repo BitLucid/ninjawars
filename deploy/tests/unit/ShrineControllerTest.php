@@ -33,11 +33,9 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($cont_outcome);
     }
 
-    // Test shrine can heal and resurrect dead player
-    // Test shrine heal_and_resurrect heals hurt player
-    // Test partial heal of player heals them some
-    // Test you get an error when trying to partial heal with 0 gold
-
+    /**
+     * Test partial heal of player heals them some
+     */
     public function testShrinePartialHeal(){
         $request = new Request(['heal_points'=>10], []);
         RequestWrapper::inject($request);
@@ -51,5 +49,24 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(in_array('result-heal', $result['parts']['pageParts']));
         $final_char = Player::find($this->char->id());
         $this->assertEquals($initial_health+10, $final_char->health());
+    }
+
+    // Test shrine can heal and resurrect dead player
+    // Test shrine heal_and_resurrect heals hurt player
+
+    public function testPartialHealWithZeroGoldGivesErrorInPageParts(){
+        $request = new Request(['heal_points'=>999], []);
+        RequestWrapper::inject($request);
+        $this->char->harm(30); // Have to be wounded first.
+        $this->char->set_gold(0);
+        $initial_health = $this->char->health();
+        $this->char->save();
+        $this->char->setClass('viper'); // Default dragon class has chi skill
+
+        $cont = new ShrineController();
+        $result = $cont->heal();
+        $final_char = Player::find($this->char->id());
+        $this->assertNotEmpty($result['parts']['error']);
+        $this->assertEquals($initial_health, $final_char->health());
     }
 }
