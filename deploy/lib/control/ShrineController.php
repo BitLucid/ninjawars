@@ -228,9 +228,13 @@ class ShrineController { //extends controller
 			} else {
 				$services[] = 'form-resurrect';
 
-				if ($this->calculateResurrectionCost($p_player)) {
-					$services[] = 'reminder-resurrect-cost';
-				}
+                try {
+                    if ($this->calculateResurrectionCost($p_player)) {
+                        $services[] = 'reminder-resurrect-cost';
+                    }
+                } catch (\RuntimeException $e) {
+                    // intentionally squash validation exception -ajv-
+                }
 			}
 		}
 
