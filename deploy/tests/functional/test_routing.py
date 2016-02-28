@@ -60,7 +60,8 @@ class TestRouting:
             'npc/attack/guard/', 'stats.php', 'account.php', 'quest',
             'quest/view/1', 'account_issues.php', 'resetpassword.php',
             'player.php?target_id=777777',
-            'player.php?target=tchalvak',
+            'player.php?target=tchalvak', 'item/self_use/amanita',
+            'item/use/shuriken/tchalvak', 'dojo/buyDimMak',
         ]
         for url in urls:
             assert (str(self.root()) + url is not None and 200 ==
