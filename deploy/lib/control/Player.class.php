@@ -613,8 +613,20 @@ class Player implements Character {
         if (!$this->isValidClass(strtolower($new_class))) {
             return "That class was not an option to change into.";
         } else {
-            $up = "UPDATE players SET _class_id = (select class_id FROM class WHERE class.identity = :class) WHERE player_id = :char_id";
-            query($up, array(':class'=>strtolower($new_class), ':char_id'=>$this->id()));
+            $class_id = query_item(
+                "SELECT class_id FROM class WHERE class.identity = :class",
+                [':class' => strtolower($new_class)]
+            );
+
+            $up = "UPDATE players SET _class_id = :class_id WHERE player_id = :char_id";
+
+            query($up, [
+                ':class_id' => $class_id,
+                ':char_id'  => $this->id(),
+            ]);
+
+            $this->vo->identity  = $new_class;
+            $this->vo->_class_id = $class_id;
 
             return null;
         }

@@ -56,7 +56,7 @@ class TestAccountCreateAndDestroy{
 		$player_params = array(
 			'send_email'    => TestAccountCreateAndDestroy::$test_email
 			, 'send_pass'   => TestAccountCreateAndDestroy::$test_password
-			, 'send_class'  => 'dragon'
+			, 'send_class'  => 'tiger'
 			, 'preconfirm'  => true
 			, 'confirm'     => $confirm
 			, 'referred_by' => 'ninjawars.net'
