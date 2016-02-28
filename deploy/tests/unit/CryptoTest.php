@@ -10,7 +10,6 @@ class CryptoTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testNonceDoesntEverMatch() {
-        nonce();
         $this->assertNotEmpty(nonce());
         $i = 30;
 
