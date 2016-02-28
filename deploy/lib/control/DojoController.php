@@ -46,7 +46,7 @@ class DojoController {
             $parts = [];
 
 
-            if (RequestWrapper::$request->isMethod('POST')) {
+            if (RequestWrapper::$request && RequestWrapper::$request->isMethod('POST')) {
                 $error = $this->dimMakReqs($player, self::DIM_MAK_COST, self::DIM_MAK_STRENGTH_MIN);
 
                 if (!$error) {
