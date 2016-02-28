@@ -11,8 +11,7 @@ use NinjaWars\core\data\DatabaseConnection;
 
 DatabaseConnection::getInstance();
 DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
-DatabaseConnection::$pdo->query('TRUNCATE player_rank');
-DatabaseConnection::$pdo->query("SELECT setval('player_rank_rank_id_seq', 1, false)");
+DatabaseConnection::$pdo->query('TRUNCATE player_rank RESTART IDENTITY');
 
 $ranked_players = DatabaseConnection::$pdo->prepare('INSERT INTO player_rank (_player_id, score) SELECT player_id, ((level*:level_weight) + floor(gold/:gold_weight) + (CASE WHEN kills > (5*level) THEN 3000 + least(floor((kills - (5*level)) * .3), 2000) ELSE ((kills/(5*level))*3000) END) - (days*:inactivity_weight)) AS score FROM players WHERE active = 1 ORDER BY score DESC');
 $ranked_players->bindValue(':level_weight', RANK_WEIGHT_LEVEL);

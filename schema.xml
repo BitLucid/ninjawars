@@ -374,6 +374,9 @@
     <column name="rank_id" phpName="RankId" type="INTEGER" autoIncrement="true" required="true" primaryKey="true"/>
     <column name="_player_id" phpName="PlayerId" type="INTEGER" required="true"/>
     <column name="score" phpName="Score" type="INTEGER" required="false"/>
+    <foreign-key foreignTable="players" name="player_rank__player_id_fkey" onUpdate="CASCADE">
+      <reference local="_player_id" foreign="player_id"/>
+    </foreign-key>
   </table>
   <table name="time" phpName="Time" idMethod="native">
     <column name="time_id" phpName="TimeId" type="INTEGER" autoIncrement="true" required="true" primaryKey="true"/>
