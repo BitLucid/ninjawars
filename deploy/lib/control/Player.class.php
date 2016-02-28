@@ -1,5 +1,4 @@
 <?php
-require_once(CORE . "control/lib_status.php");
 require_once(CORE . "control/lib_accounts.php");
 
 use NinjaWars\core\data\DatabaseConnection;

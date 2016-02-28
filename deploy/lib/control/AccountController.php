@@ -5,8 +5,6 @@ use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\SessionFactory;
 use \Player;
 
-require_once(LIB_ROOT.'control/lib_status.php');
-
 /**
  * Handle updates for changing account password, changing account email and showing the account page
  */

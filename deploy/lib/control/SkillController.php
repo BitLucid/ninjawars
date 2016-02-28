@@ -1,7 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT."control/lib_status.php"); // statuses for quickstats
 require_once(LIB_ROOT."control/Skill.php");
 
 use \Player;
@@ -96,4 +95,3 @@ class SkillController {
 	}
 
 }
-
