@@ -4,6 +4,8 @@ FOLLOW THESE NINJAWARS CODING STANDARDS OR BE RIDICULED:
 
       if(true){
           ...
+      } else {
+          ...
       }
   
   NOT like this:
@@ -12,6 +14,10 @@ FOLLOW THESE NINJAWARS CODING STANDARDS OR BE RIDICULED:
       if (true)
       {
           ...
+      }
+      else
+      {
+          ....
       }
   
   or this:
@@ -24,7 +30,8 @@ FOLLOW THESE NINJAWARS CODING STANDARDS OR BE RIDICULED:
     Essentially, a starting base of One True Brace style:  
     http://en.wikipedia.org/wiki/Indent_style#Variant:_1TBS
 
-  Use line returns sparingly inside functions, it tends to make the code less readable instead of more readable.
+  Use line returns sparingly inside functions, making your code less compact tends to make it 
+  less readable instead of more readable.
 
 * Variables, and functions use underscores in snake_case:
 
@@ -44,8 +51,8 @@ FOLLOW THESE NINJAWARS CODING STANDARDS OR BE RIDICULED:
 
 * Function calls:
 
-      $foo = bar($baz, $qux);   // Good
-      $foo = bar ( $baz,$qux ); // BAD
+      $position = calculate_stuff($radius, $diameter);   // Good
+      $position = calculate_stuff ( $radius,$diameter ); // BAD
 
 * Constant defines in SCREAMING_SNAKE_CASE
 
@@ -68,7 +75,7 @@ FOLLOW THESE NINJAWARS CODING STANDARDS OR BE RIDICULED:
           "username" => $this->in['username'],
           "password" => $this->in['password'],
           "account_status" => 1));
-  NO, NEVER MIND THIS, DO WHATEVER YOU HAVE TO MAKE NESTED STRUCTURES READABLE.
+  EDIT: NO, NEVER MIND THIS, DO WHATEVER YOU HAVE TO MAKE NESTED STRUCTURES READABLE.
 
 * Do not abuse the ternary operator. Keep it simple and readable. Use temporary variables.
   Here is an example of simple proper usage, with only a single ternary on a line:
