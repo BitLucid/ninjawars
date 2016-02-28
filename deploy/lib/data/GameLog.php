@@ -71,4 +71,18 @@ class GameLog {
         $statement->bindValue(':player', $who);
         $statement->execute();
     }
+
+    public static function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
+        $killpoints = (int)$killpoints;
+
+        DatabaseConnection::getInstance();
+        $statement = DatabaseConnection::$pdo->prepare("INSERT INTO dueling_log values (default, :attacker, :defender, :won, :killpoints, now())");
+
+        //Log of Dueling information.
+        $statement->bindValue(':attacker', $attacker);
+        $statement->bindValue(':defender', $defender);
+        $statement->bindValue(':won', $won);
+        $statement->bindValue(':killpoints', $killpoints);
+        $statement->execute();
+    }
 }
