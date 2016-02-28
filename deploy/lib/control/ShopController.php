@@ -90,6 +90,8 @@ class ShopController { // extends Controller
 					$no_funny_business = true;
 				}
 			}
+		} else {
+			$no_funny_business = true;
 		}
 
 		$parts = array(
