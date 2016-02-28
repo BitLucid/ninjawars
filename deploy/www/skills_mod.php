@@ -248,7 +248,6 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 						// If there's anything to heal, try.
 
 
-						
 						// Subtract the ki used for healing.
 						$char->heal($heal_for);
 						$char->set_ki($char->ki() - $heal_for);
@@ -275,7 +274,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		if (!$target->hasStatus(SLOW)) {
 			if ($target->vo->turns >= 10) {
 				$turns_decrease = rand(1, 5);
-				subtractTurns($target->vo->player_id, $turns_decrease);
+				$target->subtractTurns($turns_decrease);
 				// Changed ice bolt to kill stealth.
 				$target->subtractStatus(STEALTH);
 				$target->addStatus(SLOW);
@@ -300,9 +299,9 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 				if ($target->vo->turns >= 10) {
 					$turns_decrease = rand(2, 7);
 
-					subtractTurns($target->vo->player_id, $turns_decrease);
+					$target->subtractTurns($turns_decrease);
 					$target->addStatus(SLOW);
-					change_turns($char_id, abs($turns_decrease));
+					$player->changeTurns(abs($turns_decrease));
 
 					$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id";
 					send_event($attacker_char_id, $target->id(), $msg);
@@ -404,7 +403,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 	}
 } // End of the skill use SUCCESS block.
 
-$ending_turns = change_turns($attacker_char_id, $turns_to_take); // Take the skill use cost.
+$ending_turns = $player->changeTurns($turns_to_take); // Take the skill use cost.
 
 $target_ending_health = $target->health();
 $target_name = $target->name();

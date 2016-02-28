@@ -387,7 +387,7 @@ class InventoryController {
 	                            $resultMessage .= "__TARGET__ has lost ".abs($turns_change)." turns!";
 	                        }
 
-	                        if (get_turns($target_id) <= 0) { //Message when a target has no more turns to remove.
+	                        if ($targetObj->get_turns() <= 0) { //Message when a target has no more turns to remove.
 	                            $resultMessage .= "  __TARGET__ no longer has any turns.";
 	                        }
 	                    }
@@ -467,7 +467,7 @@ class InventoryController {
 	            $turns_to_take = 1;
 	        }
 
-	        $ending_turns = subtractTurns($player->id(), $turns_to_take);
+	        $ending_turns = $player->subtractTurns($turns_to_take);
 	        assert($item->hasEffect('speed') || $ending_turns < $starting_turns || $starting_turns == 0);
 
 			return [

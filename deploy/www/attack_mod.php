@@ -343,7 +343,7 @@ if ($turns_to_take < 1) {
 	$turns_to_take = 1;
 }
 
-$ending_turns = subtractTurns($attacking_player->id(), $turns_to_take);
+$ending_turns = $attacking_player->subtractTurns($turns_to_take);
 
 //  ***  START ACTION OVER AGAIN SECTION ***
 

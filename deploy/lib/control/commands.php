@@ -1,12 +1,6 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
 
-// ********************* STATUS DEFINES MOVED TO STATUS_DEFINES.PHP FILE ******** //
-
-
-// ********************* CLASS FUNCTIONS MOVED TO PLAYER OBJECT ******* //
-
-
 // ************************************
 // ********* HEALTH FUNCTIONS *********
 // ************************************
@@ -49,34 +43,6 @@ function changeHealth($who, $amount) {
 
 function subtractHealth($who, $amount) {
 	return changeHealth($who, ((-1)*$amount));
-}
-
-// ************************************
-// ************************************
-
-// ************************************
-// ********** TURNS FUNCTIONS *********
-// ************************************
-
-// Deprecated.
-function subtractTurns($who, $amount) {
-	return change_turns($who, ((-1)*abs($amount)));
-}
-
-// Add or subtract from a players turns (zeroed-out).
-function change_turns($char_id, $amount){
-	$amount = (int) $amount;
-	if($amount){ // Ignore zero
-		// These PDO parameters must be split into amount1 and amount2 because otherwise PDO gets confused.  See github issue 147.
-		query("UPDATE players set turns = (CASE WHEN turns + :amount < 0 THEN 0 ELSE turns + :amount2 END) where player_id = :char_id",
-			array(':amount'=>array($amount, PDO::PARAM_INT), ':amount2'=>array($amount, PDO::PARAM_INT), ':char_id'=>$char_id));
-	}
-	return get_turns($char_id);
-}
-
-// Pull a character's turns.
-function get_turns($char_id){
-	return query_item("select turns from players where player_id = :char_id", array(':char_id'=>$char_id));
 }
 
 // ************************************
