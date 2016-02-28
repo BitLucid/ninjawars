@@ -33,6 +33,17 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($cont_outcome);
     }
 
+    public function testHealAndResurrectOfDeadPlayer(){
+        $this->char->death();
+        $this->char->save();
+
+        $cont = new ShrineController();
+        $result = $cont->healAndResurrect();
+        $final_char = Player::find($this->char->id());
+        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $this->assertEquals($final_char->max_health(), $final_char->health());
+    }
+
     /**
      * Test partial heal of player heals them some
      */
@@ -51,9 +62,6 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($initial_health+10, $final_char->health());
     }
 
-    // Test shrine can heal and resurrect dead player
-    // Test shrine heal_and_resurrect heals hurt player
-
     public function testPartialHealWithZeroGoldGivesErrorInPageParts(){
         $request = new Request(['heal_points'=>999], []);
         RequestWrapper::inject($request);
@@ -69,4 +77,28 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($result['parts']['error']);
         $this->assertEquals($initial_health, $final_char->health());
     }
+
+
+    public function testResurrectOfPlayerByShrine(){
+        $this->char->death();
+        $this->char->save();
+
+        $cont = new ShrineController();
+        $result = $cont->resurrect();
+        $final_char = Player::find($this->char->id());
+        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $this->assertGreaterThan(50, $final_char->health());
+    }
+
+    public function testAntidoteUnpoisoningOfPoisonedCharacter(){
+        $this->char->addStatus(POISON);
+        $this->char->save();
+        $this->assertTrue($this->char->hasStatus(POISON));
+
+        $cont = new ShrineController();
+        $result = $cont->cure();
+        $final_char = Player::find($this->char->id());
+        $this->assertFalse($final_char->hasStatus(POISON));
+    }
+
 }
