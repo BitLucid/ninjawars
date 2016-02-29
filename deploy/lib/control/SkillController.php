@@ -22,7 +22,6 @@ class SkillController {
 	 */
 	public function __construct() {
 		$this->player = Player::find(self_char_id());
-
 	}
 
 	/**
