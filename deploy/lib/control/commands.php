@@ -81,17 +81,8 @@ function setBounty($who, $new_bounty) {
 	return $new_bounty;
 }
 
-function getBounty($who) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT bounty FROM players WHERE player_id = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	return $statement->fetchColumn();
-}
-
 /**
- * Change a bounty 
+ * Change a bounty
  * @param int $who A character id to change the bounty of
  */
 function changeBounty($who, $amount) {
@@ -111,7 +102,9 @@ function changeBounty($who, $amount) {
 		$statement->execute();
 	}
 
-	return getBounty($who);
+    $char = Player::find($who);
+
+	return $char->bounty();
 }
 
 /**
@@ -122,7 +115,8 @@ function addBounty($who, $amount) {
 }
 
 function rewardBounty($bounty_to, $bounty_on) {
-	$bounty = getBounty($bounty_on);
+    $char = Player::find($bounty_on);
+	$bounty = $char->bounty();
 
 	setBounty($bounty_on, 0);  //Sets bounty to zero.
 	add_gold($bounty_to, $bounty);
