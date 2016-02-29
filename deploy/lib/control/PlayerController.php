@@ -160,7 +160,7 @@ class PlayerController {
     public function use_skill(){
         $target = in('target');
         $act = in('act');
-        $url = 'skill/go/'.url($act).'/'.url($target);
+        $url = 'skill/use/'.url($act).'/'.url($target);
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
     }

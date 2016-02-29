@@ -129,7 +129,7 @@ class SkillController {
 	/**
 	 * Use, the skills_mod equivalent
 	 * @note Test with urls like: 
-	 * http://nw.local/skill/use/firebolt/10
+	 * http://nw.local/skill/use/Fire%20Bolt/10
 	 * http://nw.local/skill/self_use/unstealth/
 	 * http://nw.local/skill/self_use/heal/
 	 */
@@ -146,8 +146,22 @@ class SkillController {
 		$target = isset($slugs[4])? $slugs[4] : null;
 		$target2 = isset($slugs[5])? $slugs[5] : null;
 
-		if($self_use){
-			$target = self_char_id();
+		if(!positive_int($target)){
+			if($self_use){
+				$target = self_char_id();
+			} else {
+				if($target !== null){
+					$targetObj = Player::findByName($target);
+					$target = $targetObj? $targetObj->id() : null;
+				} else {
+					$target = null;
+				}
+			}
+		}
+
+		if($target2 && !positive_int($target2)){
+			$target2Obj = Player::findByName($target2);
+			$target2 = $target2Obj? $target2Obj->id() : null;
 		}
 
 
@@ -162,7 +176,7 @@ class SkillController {
 		$poisonTurnCost  = $skillListObj->getTurnCost('poison touch'); // wut
 		$turn_cost       = $skillListObj->getTurnCost(strtolower($act));
 		$ignores_stealth = $skillListObj->getIgnoreStealth($act);
-		$self_use        = $skillListObj->getSelfUse($act);
+		$self_usable        = $skillListObj->getSelfUse($act);
 		$use_on_target   = $skillListObj->getUsableOnTarget($act);
 		$ki_cost 		 = 0; // Ki taken during use.
 		$reuse 			 = true;  // Able to reuse the skill.
@@ -178,15 +192,17 @@ class SkillController {
 
 		$player = new Player($char_id);
 
-		if ($target != '' && $target != $player->player_id) {
-			$target = new Player($target);
-			$target_id = $target->id();
-			$return_to_target = true;
-		} else {
+		if($self_use){
 			// Use the skill on himself.
 			$return_to_target = false;
 			$target    = $player;
 			$target_id = null;
+		} else if ($target != '' && $target != $player->player_id){
+			$target = new Player($target);
+			$target_id = $target->id();
+			$return_to_target = true;
+		} else {
+			return new RedirectResponse(WEB_ROOT.'skill/?error='.url('Invalid Target for skill.'));
 		}
 
 		$covert           = false;
