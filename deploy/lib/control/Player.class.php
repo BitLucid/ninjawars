@@ -129,7 +129,7 @@ class Player implements Character {
 	protected function queryStatus() {
 		$id = $this->id();
 		if ($id) {
-			return query_item("SELECT status FROM players WHERE player_id = :player_id", 
+			return (int) query_item("SELECT status FROM players WHERE player_id = :player_id", 
 				array(':player_id'=>array($id, PDO::PARAM_INT)));
 		} else {
 			return null;
@@ -146,7 +146,7 @@ class Player implements Character {
 				return $this->subtractStatus(abs($p_status));
 			} else {
 				$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = status+:status1 WHERE player_id = :player AND status&:status2 = 0');
-				$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
+				$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
 				$statement->bindValue(':status1', $p_status, PDO::PARAM_INT);
 				$statement->bindValue(':status2', $p_status, PDO::PARAM_INT);
 				$statement->execute();
@@ -159,7 +159,7 @@ class Player implements Character {
 
 	public function resetStatus() {
 		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = 0 WHERE player_id = :player');
-		$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
+		$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
 		$statement->execute();
 
 		$this->vo->status = 0;
@@ -169,7 +169,7 @@ class Player implements Character {
 		$status = self::validStatus($p_status); // Filter it.
 		if ((int)$status == $status && $status > 0) {
 			$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = status-:status1 WHERE player_id = :player AND status&:status2 <> 0');
-			$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
+			$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
 			$statement->bindValue(':status1', $status, PDO::PARAM_INT);
 			$statement->bindValue(':status2', $status, PDO::PARAM_INT);
 			$statement->execute();
@@ -389,7 +389,7 @@ class Player implements Character {
             $this->data['max_turns']     = 100;
             $this->data['turns_percent'] = min(100, round($this->data['turns']/$this->data['max_turns']*100));
             $this->data['exp_percent']   = min(100, round(($this->data['kills']/$this->data['next_level'])*100));
-            $this->data['status_list']   = implode(', ', get_status_list($this->data['player_id']));
+            $this->data['status_list']   = implode(', ', get_status_list($this->id()));
             $this->data['hash']          = md5(implode($this->data));
 
             unset($this->data['pname']);
