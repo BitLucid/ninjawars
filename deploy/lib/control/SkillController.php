@@ -31,6 +31,7 @@ class SkillController {
 	 * @return Array
 	 */
 	public function index() {
+		$error = in('error');
 		$skillsListObj = new Skill();
 
 		$player         = $this->player;
@@ -61,6 +62,7 @@ class SkillController {
 		$can_harmonize        = $starting_ki;
 
 		$parts = [
+			'error'                => $error,
 			'status_list'          => $status_list,
 			'player'               => $player,
 			'no_skills'            => $no_skills,

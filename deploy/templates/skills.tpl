@@ -6,6 +6,8 @@
 
 <h1>Skills</h1>
 
+{include file='flash-message.tpl'}
+
 <div class='major-stats'>
   <ul class='thin'>
     <li>Your status is {include file="status_section.tpl" statuses=$status_list}</li>
