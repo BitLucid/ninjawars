@@ -14,7 +14,7 @@ class TestRatchets:
     plus_minus = 6
     ''' Rough file counts in pertinent directories '''
 
-    COMMANDS_LINES = 200
+    COMMANDS_LINES = 180
 
     def deploy_dir(self):
         '''Hack to obtain the web directory path for now '''

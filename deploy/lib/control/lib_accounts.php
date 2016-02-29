@@ -194,19 +194,6 @@ function confirm_player($char_name, $confirmation=0, $autoconfirm=false) {
 	return (bool) rco(query($up, $params));
 }
 
-// Check for reserved or already in use by another player.
-function ninja_name_available($ninja_name) {
-	$reserved = array('SysMsg', 'NewUserList', 'Admin', 'Administrator', 'A Stealthed Ninja', 'Tchalvak', 'Beagle');
-
-	foreach ($reserved as $l_names) {
-		if (strtolower($ninja_name) == strtolower($l_names)) {
-			return false;
-		}
-	}
-
-	return (!get_user_id($ninja_name));
-}
-
 // Get the display name from the identity.
 function class_display_name_from_identity($identity) {
 	return query_item('SELECT class_name from class where identity = :identity', array(':identity'=>$identity));

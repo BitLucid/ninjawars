@@ -1,5 +1,4 @@
 <?php
-require_once(CORE . "control/lib_status.php");
 require_once(CORE . "control/lib_accounts.php");
 
 use NinjaWars\core\data\DatabaseConnection;
@@ -11,19 +10,17 @@ use NinjaWars\core\data\Character;
 use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\AccountFactory;
 
-/* Ninja (actually character) behavior object.
+/**
+ * Ninja (actually character) behavior object.
  *
  * This file should make use of a private PlayerVO.class.php and PlayerDAO.class.php
  * to propagate and save its data.
  *
- * @category    Template
  * @package     char
  * @subpackage	player
  * @author      Tchalvak <ninjawarsTchalvak@gmail.com>
- * @author
  * @link        http://ninjawars.net/player.php?player=tchalvak
-*/
-
+ */
 class Player implements Character {
 	public $player_id;
 	public $vo;
@@ -132,7 +129,7 @@ class Player implements Character {
 	protected function queryStatus() {
 		$id = $this->id();
 		if ($id) {
-			return query_item("SELECT status FROM players WHERE player_id = :player_id", 
+			return (int) query_item("SELECT status FROM players WHERE player_id = :player_id", 
 				array(':player_id'=>array($id, PDO::PARAM_INT)));
 		} else {
 			return null;
@@ -149,7 +146,7 @@ class Player implements Character {
 				return $this->subtractStatus(abs($p_status));
 			} else {
 				$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = status+:status1 WHERE player_id = :player AND status&:status2 = 0');
-				$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
+				$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
 				$statement->bindValue(':status1', $p_status, PDO::PARAM_INT);
 				$statement->bindValue(':status2', $p_status, PDO::PARAM_INT);
 				$statement->execute();
@@ -162,7 +159,7 @@ class Player implements Character {
 
 	public function resetStatus() {
 		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = 0 WHERE player_id = :player');
-		$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
+		$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
 		$statement->execute();
 
 		$this->vo->status = 0;
@@ -172,7 +169,7 @@ class Player implements Character {
 		$status = self::validStatus($p_status); // Filter it.
 		if ((int)$status == $status && $status > 0) {
 			$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = status-:status1 WHERE player_id = :player AND status&:status2 <> 0');
-			$statement->bindValue(':player', $this->player_id, PDO::PARAM_INT);
+			$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
 			$statement->bindValue(':status1', $status, PDO::PARAM_INT);
 			$statement->bindValue(':status2', $status, PDO::PARAM_INT);
 			$statement->execute();
@@ -347,14 +344,28 @@ class Player implements Character {
 	public function changeTurns($amount) {
 		$diff = $amount;
 		$this->set_turns($this->turns() + $diff);
-		return change_turns($this->id(), $amount);
-	}
-	
-	public function subtractTurns($amount){
+
+        $amount = (int) $amount;
+        if($amount){ // Ignore zero
+            // These PDO parameters must be split into amount1 and amount2 because otherwise PDO gets confused.  See github issue 147.
+            query("UPDATE players set turns = (CASE WHEN turns + :amount < 0 THEN 0 ELSE turns + :amount2 END) where player_id = :char_id",
+                array(':amount'=>array($amount, PDO::PARAM_INT), ':amount2'=>array($amount, PDO::PARAM_INT), ':char_id'=>$this->id()));
+        }
+
+        return $this->get_turns();
+    }
+
+	public function subtractTurns($amount) {
 		$diff = -1*abs($amount);
-		$this->set_turns($this->turns() + $diff);
-		return change_turns($this->id(), $diff);
+		return $this->changeTurns($diff);
 	}
+
+    /**
+     * Pull a character's turns.
+     */
+    public function get_turns() {
+        return query_item("select turns from players where player_id = :char_id", array(':char_id'=>$this->id()));
+    }
 
     /**
      * @return int
@@ -378,7 +389,7 @@ class Player implements Character {
             $this->data['max_turns']     = 100;
             $this->data['turns_percent'] = min(100, round($this->data['turns']/$this->data['max_turns']*100));
             $this->data['exp_percent']   = min(100, round(($this->data['kills']/$this->data['next_level'])*100));
-            $this->data['status_list']   = implode(', ', get_status_list($this->data['player_id']));
+            $this->data['status_list']   = implode(', ', get_status_list($this->id()));
             $this->data['hash']          = md5(implode($this->data));
 
             unset($this->data['pname']);

@@ -6,6 +6,14 @@ use \PDO;
 use \Player;
 
 class ApiController {
+    public function sendHeaders() {
+        // Json P headers
+        header('Content-Type: text/javascript; charset=utf8');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Max-Age: 3628800');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+    }
+
     /**
      * Determine which function to call to get the json for.
      */
@@ -19,16 +27,16 @@ class ApiController {
 
         //  Whitelist of valid callbacks.
         $valid_type_map = [
-            'player'         => 'json_player',
-            'latest_event'   => 'json_latest_event',
-            'chats'          => 'json_chats',
-            'latest_message' => 'json_latest_message',
-            'index'          => 'json_index',
-            'latest_chat_id' => 'json_latest_chat_id',
-            'inventory'      => 'json_inventory',
-            'new_chats'      => 'json_new_chats',
-            'send_chat'      => 'json_send_chat',
-            'char_search'    => 'json_char_search',
+            'player'         => 'jsonPlayer',
+            'latest_event'   => 'jsonLatestEvent',
+            'chats'          => 'jsonChats',
+            'latest_message' => 'jsonLatestMessage',
+            'index'          => 'jsonIndex',
+            'latest_chat_id' => 'jsonLatestChatId',
+            'inventory'      => 'jsonInventory',
+            'new_chats'      => 'jsonNewChats',
+            'send_chat'      => 'jsonSendChat',
+            'char_search'    => 'jsonCharSearch',
         ];
 
         $res = null;
@@ -36,16 +44,16 @@ class ApiController {
 
         if (isset($valid_type_map[$type])) {
             if ($type == 'send_chat') {
-                $result = $this->json_send_chat(in('msg'));
+                $result = $this->jsonSendChat(in('msg'));
             } else if ($type == 'new_chats') {
                 $chat_since = in('since', null);
                 $chat_limit = in('chat_limit', 100);
-                $result = $this->json_new_chats($chat_since, $chat_limit);
+                $result = $this->jsonNewChats($chat_since, $chat_limit);
             } elseif ($type == 'chats') {
                 $chat_limit = in('chat_limit', 20);
-                $result = $this->json_chats($chat_limit);
+                $result = $this->jsonChats($chat_limit);
             } elseif ($type == 'char_search') {
-                $result = $this->json_char_search(in('term'), in('limit'));
+                $result = $this->jsonCharSearch(in('term'), in('limit'));
             } elseif (!empty($data)){ // If data param is present, pass data to the function
                 $result = $this->$valid_type_map[$type]($data);
             } else { // No data present, just call the function with no arguments.
@@ -61,7 +69,7 @@ class ApiController {
     /**
      * Search through characters by text, returning multiple matches.
      */
-    private function json_char_search($term, $limit) {
+    private function jsonCharSearch($term, $limit) {
         if (!is_numeric($limit)) {
             $limit = 10;
         }
@@ -78,7 +86,7 @@ class ApiController {
         return ['char_matches' => $res->fetchAll(PDO::FETCH_ASSOC)];
     }
 
-    private function json_latest_message() {
+    private function jsonLatestMessage() {
         DatabaseConnection::getInstance();
         $user_id = (int) self_char_id();
 
@@ -91,7 +99,7 @@ class ApiController {
         return ['message' => $statement->fetch()];
     }
 
-    private function json_latest_event() {
+    private function jsonLatestEvent() {
         DatabaseConnection::getInstance();
         $user_id = (int) self_char_id();
 
@@ -102,12 +110,12 @@ class ApiController {
         return ['event' => $statement->fetch()];
     }
 
-    private function json_player() {
+    private function jsonPlayer() {
         $player = new Player(self_char_id());
         return ['player' => $player->dataWithClan()];
     }
 
-    private function json_chats($limit = 20) {
+    private function jsonChats($limit = 20) {
         $limit = (int)$limit;
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare("SELECT * FROM chat ORDER BY date DESC LIMIT :limit");
@@ -118,14 +126,14 @@ class ApiController {
         return ['chats' => $chats];
     }
 
-    private function json_latest_chat_id() {
+    private function jsonLatestChatId() {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->query("SELECT chat_id FROM chat ORDER BY date DESC LIMIT 1");
 
         return ['latest_chat_id' => $statement->fetch()];
     }
 
-    private function json_send_chat($msg) {
+    private function jsonSendChat($msg) {
         if (is_logged_in()) {
             require_once(LIB_ROOT."control/lib_chat.php");
             $msg     = trim($msg);
@@ -149,7 +157,7 @@ class ApiController {
     /**
      * Get the newest chats for the mini-chat area.
      */
-    private function json_new_chats($since) {
+    private function jsonNewChats($since) {
         $since = ($since ? (float)$since : null); // Since is a float?  Weird
         $now = microtime(true);
         DatabaseConnection::getInstance();
@@ -173,11 +181,11 @@ class ApiController {
         ];
     }
 
-    private function json_member_count() {
+    private function jsonMemberCount() {
         return $this->memberCounts();
     }
 
-    private function json_inventory() {
+    private function jsonInventory() {
         $items = query_array(
             "SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :char_id ORDER BY item_display_name",
             [':char_id'=> self_id()]
@@ -186,7 +194,7 @@ class ApiController {
         return ['inventory' => $items];
     }
 
-    private function json_index() {
+    private function jsonIndex() {
         DatabaseConnection::getInstance();
 
         $user_id         = self_char_id();
@@ -230,14 +238,6 @@ class ApiController {
             'unread_events_count'   => $unread_events,
             'event'                 => (!empty($events) ? $events->fetch() : null),
         ];
-    }
-
-    public function sendHeaders() {
-        // Json P headers
-        header('Content-Type: text/javascript; charset=utf8');
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Max-Age: 3628800');
-        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
     }
 
     /**

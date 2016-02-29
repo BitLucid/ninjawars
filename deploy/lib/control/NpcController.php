@@ -51,7 +51,7 @@ class NpcController { //extends controller
      */
     private function randomEncounter(Player $player) {
         $oni_health_loss  = rand(1, self::ONI_DAMAGE_CAP);
-        $turns            = subtractTurns($player->id(), self::ONI_TURN_LOSS);
+        $turns            = $player->subtractTurns(self::ONI_TURN_LOSS);
         $multiple_rewards = false;
         $oni_killed       = false;
         $item             = null;
@@ -542,7 +542,7 @@ class NpcController { //extends controller
 
             // Subtract the turn cost for attacking an npc
             // almost always 1 apart from perhaps oni or group-of-thieves
-            $turns = subtractTurns($player->id(), $turn_cost);
+            $turns = $player->subtractTurns($turn_cost);
             $player->set_turns($turns);
         }
 

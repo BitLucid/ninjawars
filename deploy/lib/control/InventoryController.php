@@ -4,7 +4,8 @@ namespace NinjaWars\core\control;
 require_once(LIB_ROOT."control/lib_inventory.php");
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use \Player as Player;
+use \Player;
+use \PDO;
 
 /**
  * Control the display of items and gold (and maybe some day armor) for a char
@@ -24,7 +25,7 @@ class InventoryController {
 
 		if ($inv_counts) {
 			// Standard item info.
-			$standard_items = standard_items();
+			$standard_items = $this->standardItems();
 			// Make the information into a single, trivially usable, array.
 			foreach ($inv_counts as $item_info) {
 				$l_id    = $item_info['item_type'];
@@ -51,7 +52,7 @@ class InventoryController {
 		return $this->render($parts);
 	}
 
-	public function render($parts) {
+	private function render($parts) {
 		return [
 			'template' => 'inventory.tpl',
 			'title'    => 'Your Inventory',
@@ -77,7 +78,7 @@ class InventoryController {
 		return $this->useItem(false, true); // Wrap standard use
 	}
 
-	/** 
+	/**
 	 * Get the slugs and parameters values.
 	 */
 	private function parse_slugs($give=false, $self_use = false){
@@ -85,7 +86,7 @@ class InventoryController {
 		$path = parse_url($url_part, PHP_URL_PATH);
 		$slugs = explode('/', trim($path, '/'));
 		$selfTarget = whichever(in('selfTarget'), $self_use);
-		$link_back = whichever(in('link_back'), 
+		$link_back = whichever(in('link_back'),
 				($selfTarget? 'inventory' : null)
 				);
 		$item_in = $slugs[2];
@@ -154,7 +155,7 @@ class InventoryController {
 	    if ($item_in == (int) $item_in && is_numeric($item_in)) { // Can be cast to an id.
 	        $item = $item_obj = getItemByID($item_in);
 	    } elseif (is_string($item_in)) {
-	        $item = $item_obj = getItemByIdentity($item_in);
+	        $item = $item_obj = $this->getItemByIdentity($item_in);
 	    } else {
 	        $item = null;
 	    }
@@ -162,7 +163,7 @@ class InventoryController {
 	    if (!is_object($item)) {
 	    	return new RedirectResponse(WEB_ROOT.'inventory?error=noitem');
 	    } else {
-	        $item_count = item_count($player->id(), $item);
+	        $item_count = $this->itemCount($player->id(), $item);
 
 	        // Check whether use on self is occurring.
 	        $self_use = ($selfTarget || ($target_id === $player->id()));
@@ -192,7 +193,7 @@ class InventoryController {
 	        $max_power_increase        = 10;
 	        $level_difference          = $targets_level - $username_level;
 	        $level_check               = $username_level - $targets_level;
-	        $near_level_power_increase = nearLevelPowerIncrease($level_difference, $max_power_increase);
+	        $near_level_power_increase = $this->nearLevelPowerIncrease($level_difference, $max_power_increase);
 
 	        // Sets the page to link back to.
 	        if ($target_id && ($link_back == "" || $link_back == 'player') && $target_id != $player->id()) {
@@ -228,7 +229,7 @@ class InventoryController {
 
 	        // Exclusive speed/slow turn changes.
 	        if ($item->hasEffect('slow')) {
-	            $item->setTurnChange(-1*caltrop_turn_loss($targets_turns, $near_level_power_increase));
+	            $item->setTurnChange(-1*$this->caltropTurnLoss($targets_turns, $near_level_power_increase));
 	        } else if ($item->hasEffect('speed')) {
 	            $item->setTurnChange($item->getMaxTurnChange());
 	        }
@@ -272,7 +273,7 @@ class InventoryController {
 	        } else {
 	            /**** MAIN SUCCESSFUL USE ****/
 	            if ($give) {
-	                give_item($player->name(), $target, $item->getName());
+	                $this->giveItem($player->name(), $target, $item->getName());
 	                $alternateResultMessage = "__TARGET__ will receive your {$item->getName()}.";
 	            } else if (!$item->isOtherUsable()) {
 	                // If it doesn't do damage or have an effect, don't use up the item.
@@ -386,7 +387,7 @@ class InventoryController {
 	                            $resultMessage .= "__TARGET__ has lost ".abs($turns_change)." turns!";
 	                        }
 
-	                        if (get_turns($target_id) <= 0) { //Message when a target has no more turns to remove.
+	                        if ($targetObj->get_turns() <= 0) { //Message when a target has no more turns to remove.
 	                            $resultMessage .= "  __TARGET__ no longer has any turns.";
 	                        }
 	                    }
@@ -418,7 +419,7 @@ class InventoryController {
 	                    }
 
 	                    // Send mails if the target was killed.
-	                    send_kill_mails($player->name(), $target, $attacker_id, $article, $item->getName(), $loot);
+	                    $this->sendKillMails($player->name(), $target, $attacker_id, $article, $item->getName(), $loot);
 	                } else { // They weren't killed.
 	                    $attacker_id = $player->name();
 	                }
@@ -466,7 +467,7 @@ class InventoryController {
 	            $turns_to_take = 1;
 	        }
 
-	        $ending_turns = subtractTurns($player->id(), $turns_to_take);
+	        $ending_turns = $player->subtractTurns($turns_to_take);
 	        assert($item->hasEffect('speed') || $ending_turns < $starting_turns || $starting_turns == 0);
 
 			return [
@@ -481,5 +482,109 @@ class InventoryController {
 		} // Item was not valid object
 	}
 
+    /**
+     * Send out the killed messages.
+     */
+    private function sendKillMails($username, $target, $attacker_id, $article, $item, $loot) {
+        $target_email_msg   = "You have been killed by $attacker_id with $article $item and lost $loot gold.";
+        sendMessage($attacker_id,$target,$target_email_msg);
 
+        $user_email_msg     = "You have killed $target with $article $item and received $loot gold.";
+        sendMessage($target,$username,$user_email_msg);
+    }
+
+    /**
+     * Item data for the inventory.
+     */
+    private function standardItems() {
+        // Codename means it can have a link to be used, apparently...
+        // Pull this from the database.
+        $it = query('select * from item');
+
+        $res = array();
+        // Format the items for display on the inventory.
+        foreach ($it as $item) {
+            $item['codename'] = $item['item_display_name'];
+            $item['display'] = $item['item_display_name'].$item['plural'];
+            $res[$item['item_id']] = $item;
+        }
+
+        return $res;
+    }
+
+    /**
+     * Get an item by it's item identity
+     */
+    private function getItemByIdentity($p_itemIdentity) {
+        return buildItem(item_info_from_identity($p_itemIdentity));
+    }
+
+    /**
+     * Get the count of how many of an item a player has.
+     */
+    private function itemCount($user_id, $item_display_name) {
+        $statement = query("SELECT sum(amount) FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :owner AND lower(item_display_name) = lower(:item)",
+            array(':owner'=>array($user_id, PDO::PARAM_INT), ':item'=>strtolower($item_display_name)));
+        return $statement->fetchColumn();
+    }
+
+    /**
+     * Benefits for near-equivalent levels.
+     */
+    private function nearLevelPowerIncrease($level_difference, $max_increase) {
+        $res = 0;
+        $coeff = abs($level_difference);
+        if ($coeff < $max_increase) {
+            $res = $max_increase-$coeff;
+        }
+
+        return $res;
+    }
+
+    /**
+     * Give the item and return a message to show the user.
+     */
+    private function giveItem($username, $target, $item) {
+        $article = get_indefinite_article($item);
+        $this->addItem($target,$item,1);
+        $give_msg = "You have been given $article $item by $username.";
+        sendMessage($username,$target,$give_msg);
+    }
+
+    /**
+     * Determine the turns for caltrops, which was once ice scrolls.
+     */
+    private function caltropTurnLoss($targets_turns, $near_level_power_increase) {
+        if ($targets_turns>50) {
+            $turns_decrease = rand(1,8)+$near_level_power_increase; // *** 1-11 + 0-10
+        } elseif ($targets_turns>20) {
+            $turns_decrease = rand(1, 5)+$near_level_power_increase;
+        } elseif ($targets_turns>3) {
+            $turns_decrease = rand(1, 2)+($near_level_power_increase? 1 : 0);
+        } else { // *** Players are always left with 1 or two turns.
+            $turns_decrease = 0;
+        }
+
+        return $turns_decrease;
+    }
+
+    /**
+     * Add an item using the old display name
+     */
+    private function addItem($who, $item, $quantity = 1) {
+        $item_identity = $this->itemIdentityFromDisplayName($item);
+
+        if ((int)$quantity > 0 && !empty($item) && $item_identity) {
+            add_item(get_char_id($who), $item_identity, $quantity);
+        } else {
+            throw new \Exception('Improper deprecated item addition request made.');
+        }
+    }
+
+    /**
+     * Get an input display name and turn it into the internal name for use in the actual script.
+     */
+    private function itemIdentityFromDisplayName($item_display_name){
+        return item_info(item_id_from_display_name($item_display_name), 'item_internal_name');
+    }
 }

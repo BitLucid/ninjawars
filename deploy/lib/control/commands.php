@@ -1,12 +1,6 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
 
-// ********************* STATUS DEFINES MOVED TO STATUS_DEFINES.PHP FILE ******** //
-
-
-// ********************* CLASS FUNCTIONS MOVED TO PLAYER OBJECT ******* //
-
-
 // ************************************
 // ********* HEALTH FUNCTIONS *********
 // ************************************
@@ -55,51 +49,6 @@ function subtractHealth($who, $amount) {
 // ************************************
 
 // ************************************
-// ********** TURNS FUNCTIONS *********
-// ************************************
-
-// Deprecated.
-function subtractTurns($who, $amount) {
-	return change_turns($who, ((-1)*abs($amount)));
-}
-
-// Add or subtract from a players turns (zeroed-out).
-function change_turns($char_id, $amount){
-	$amount = (int) $amount;
-	if($amount){ // Ignore zero
-		// These PDO parameters must be split into amount1 and amount2 because otherwise PDO gets confused.  See github issue 147.
-		query("UPDATE players set turns = (CASE WHEN turns + :amount < 0 THEN 0 ELSE turns + :amount2 END) where player_id = :char_id",
-			array(':amount'=>array($amount, PDO::PARAM_INT), ':amount2'=>array($amount, PDO::PARAM_INT), ':char_id'=>$char_id));
-	}
-	return get_turns($char_id);
-}
-
-// Pull a character's turns.
-function get_turns($char_id){
-	return query_item("select turns from players where player_id = :char_id", array(':char_id'=>$char_id));
-}
-
-// ************************************
-// ************************************
-
-// ************************************
-// ********** LEVEL FUNCTIONS *********
-// ************************************
-
-function getLevel($who) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT level FROM players WHERE player_id = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	return $statement->fetchColumn();
-}
-
-// ************************************
-// ************************************
-
-
-// ************************************
 // ********* BOUNTY FUNCTIONS *********
 // ************************************
 
@@ -115,17 +64,8 @@ function setBounty($who, $new_bounty) {
 	return $new_bounty;
 }
 
-function getBounty($who) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT bounty FROM players WHERE player_id = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	return $statement->fetchColumn();
-}
-
 /**
- * Change a bounty 
+ * Change a bounty
  * @param int $who A character id to change the bounty of
  */
 function changeBounty($who, $amount) {
@@ -145,7 +85,9 @@ function changeBounty($who, $amount) {
 		$statement->execute();
 	}
 
-	return getBounty($who);
+    $char = Player::find($who);
+
+	return $char->bounty();
 }
 
 /**
@@ -156,7 +98,8 @@ function addBounty($who, $amount) {
 }
 
 function rewardBounty($bounty_to, $bounty_on) {
-	$bounty = getBounty($bounty_on);
+    $char = Player::find($bounty_on);
+	$bounty = $char->bounty();
 
 	setBounty($bounty_on, 0);  //Sets bounty to zero.
 	add_gold($bounty_to, $bounty);
@@ -167,8 +110,12 @@ function rewardBounty($bounty_to, $bounty_on) {
 function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 	$user_id = get_user_id($username);
 	$defender_id = get_user_id($defender);
+
+    $user = Player::find($user_id);
+    $defender = Player::find($defender_id);
+
 	// *** Bounty Increase equation: (attacker's level - defender's level) / an increment, rounded down ***
-	$levelRatio     = floor((getLevel($user_id) - getLevel($defender_id)) / 10);
+	$levelRatio     = floor(($user->level - $defender->level) / 10);
 
 	$bountyIncrease = min(25, max($levelRatio * 25, 0));	//Avoids negative increases, max of 30 gold, min of 0
 
@@ -190,22 +137,43 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 // ************************************
 // ************************************
 
+/*
+ * Returns a comma-seperated string of states based on the statuses of the target.
+ * @param array $statuses status array
+ * @param string $target the target, username if self targetting.
+ * @return string
+ *
+ */
+function get_status_list($target=null) {
+	$states = array();
+	$target = (isset($target) && (int)$target == $target ? $target : self_char_id());
 
-// ************************************
-// ******** LOGGING FUNCTIONS *******
-// ************************************
+	// Default to showing own status.
+	$target = new Player($target);
 
+	if ($target->vo->health < 1) {
+		$states[] = 'Dead';
+	} else { // *** Other statuses only display if not dead.
+		if ($target->vo->health < 80) {
+			$states[] = 'Injured';
+		} else {
+			$states[] = 'Healthy';
+		}
+        // The visibly viewable statuses.
+		if ($target->hasStatus(STEALTH)) { $states[] = 'Stealthed'; }
+		if ($target->hasStatus(POISON)) { $states[] = 'Poisoned'; }
+		if ($target->hasStatus(WEAKENED)) { $states[] = 'Weakened'; }
+		if ($target->hasStatus(FROZEN)) { $states[] = 'Frozen'; }
+		if ($target->hasStatus(STR_UP1)) { $states[] = 'Buff'; }
+		if ($target->hasStatus(STR_UP2)) { $states[] = 'Strength+'; }
 
-function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
-	$killpoints = (int)$killpoints;
+		// If any of the shield skills are up, show a single status state for any.
+		if($target->hasStatus(FIRE_RESISTING) || $target->hasStatus(INSULATED) || $target->hasStatus(GROUNDED)
+		    || $target->hasStatus(BLESSED) || $target->hasStatus(IMMUNIZED)
+		    || $target->hasStatus(ACID_RESISTING)){
+		    $states[] = 'Shielded';
+		}
+	}
 
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("INSERT INTO dueling_log values 
-        (default, :attacker, :defender, :won, :killpoints, now())");
-        //Log of Dueling information.
-	$statement->bindValue(':attacker', $attacker);
-	$statement->bindValue(':defender', $defender);
-	$statement->bindValue(':won', $won);
-	$statement->bindValue(':killpoints', $killpoints);
-	$statement->execute();
+	return $states;
 }

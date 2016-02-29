@@ -1,18 +1,11 @@
 <?php
 use NinjaWars\core\data\Item;
-
 use NinjaWars\core\data\DatabaseConnection;
 
 // FUNCTIONS
 
 function getItemByID($p_itemID) {
 	return buildItem(item_info($p_itemID));
-}
-
-// Get an item by it's item identity
-function getItemByIdentity($p_itemIdentity) {
-	
-	return buildItem(item_info_from_identity($p_itemIdentity));
 }
 
 // Wrapper that creates an object when given the row data.
@@ -54,19 +47,6 @@ function item_id_from_display_name($item_display_name){
 	return query_item('select item_id from item where item_display_name = :item_display_name', array(':item_display_name'=> array($item_display_name, PDO::PARAM_INT)));
 }
 
-// Get an input display name and turn it into the internal name for use in the actual script.
-function item_identity_from_display_name($item_display_name){
-	return item_info(item_id_from_display_name($item_display_name), 'item_internal_name');
-}
-
-
-// Get the count of how many of an item a player has.
-function item_count($user_id, $item_display_name){
-	$statement = query("SELECT sum(amount) FROM inventory join item on inventory.item_type = item.item_id 
-		WHERE owner = :owner AND lower(item_display_name) = lower(:item)", 
-		array(':owner'=>array($user_id, PDO::PARAM_INT), ':item'=>strtolower($item_display_name)));
-	return $statement->fetchColumn();
-}
 
 // Pull the counts of all items a player has.
 function inventory_counts($char_id){
@@ -74,21 +54,6 @@ function inventory_counts($char_id){
 		FROM inventory join item on item_type = item.item_id
 		WHERE owner = :owner ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
 	return query_array($sql, array(':owner'=>array($char_id, PDO::PARAM_INT)));
-}
-
-// Pulls the shop items costs and all.
-function item_for_sale_costs(){
-	$sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item where for_sale = TRUE order by image asc, item_cost asc';
-	if(defined('DEBUG') && DEBUG){
-		$sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item order by image asc, item_cost asc';
-	}
-	$items_data = query_resultset($sel);
-	// Rearrange the array to use the internal identity as indexes.
-	$item_costs = array();
-	foreach($items_data as $item_data){
-		$item_costs[$item_data['item_internal_name']] = $item_data;
-	}
-	return $item_costs;
 }
 
 // Pull the gold a user has.
@@ -112,79 +77,7 @@ function subtract_gold($char_id, $amount){
 	return add_gold($char_id, $amount*-1);
 }
 
-// Benefits for near-equivalent levels.
-function nearLevelPowerIncrease($level_difference, $max_increase) {
-	$res = 0;
-	$coeff = abs($level_difference);
-	if ($coeff<$max_increase) {
-		$res = $max_increase-$coeff;
-	}
-	return $res;
-}
-
-
-// Give the item and return a message to show the user.
-function give_item($username, $target, $item){
-	$article = get_indefinite_article($item);
-    addItem($target,$item,1);
-    $give_msg = "You have been given $article $item by $username.";
-    sendMessage($username,$target,$give_msg);
-}
-
-// Determine the turns for caltrops, which was once ice scrolls.
-function caltrop_turn_loss($targets_turns, $near_level_power_increase){
-	if ($targets_turns>50) {
-		$turns_decrease = rand(1,8)+$near_level_power_increase; // *** 1-11 + 0-10
-	} elseif ($targets_turns>20) {
-		$turns_decrease = rand(1, 5)+$near_level_power_increase;
-	} elseif ($targets_turns>3) {
-		$turns_decrease = rand(1, 2)+($near_level_power_increase? 1 : 0);
-	} else { // *** Players are always left with 1 or two turns.
-		$turns_decrease = 0;
-	} // End of turn checks.
-	return $turns_decrease;
-}
-
-
-// Send out the killed messages.
-function send_kill_mails($username, $target, $attacker_id, $article, $item, $loot) {
-	$target_email_msg   = "You have been killed by $attacker_id with $article $item and lost $loot gold.";
-	sendMessage($attacker_id,$target,$target_email_msg);
-
-	$user_email_msg     = "You have killed $target with $article $item and received $loot gold.";
-	sendMessage($target,$username,$user_email_msg);
-}
-
-// Item data for the inventory.
-function standard_items() {
-	// Codename means it can have a link to be used, apparently...
-	// Pull this from the database.
-	$it = query('select * from item');
-
-	$res = array();
-	// Format the items for display on the inventory.
-	foreach($it as $item){
-		$item['codename'] = $item['item_display_name'];
-		$item['display'] = $item['item_display_name'].$item['plural'];
-		$res[$item['item_id']] = $item;
-	}
-
-	return $res;
-}
-
-
 // DEPRECATED
-// Add an item using the old display name
-function addItem($who, $item, $quantity = 1) {
-	$item_identity = item_identity_from_display_name($item);
-
-	if ((int)$quantity > 0 && !empty($item) && $item_identity) {
-		add_item(get_char_id($who), $item_identity, $quantity);
-	} else {
-		throw new \Exception('Improper deprecated item addition request made.');
-	}
-}
-
 // Add an item using it's database identity.
 function add_item($char_id, $identity, $quantity = 1) {
 	$quantity = (int)$quantity;

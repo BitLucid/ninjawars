@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
-use \PHPUnit_Framework_TestCase as PHPUnit_Framework_TestCase;
+use \TestAccountCreateAndDestroy;
+use \PHPUnit_Framework_TestCase;
 use \Player;
 
 class NpcControllerTest extends PHPUnit_Framework_TestCase {
@@ -120,9 +120,19 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('theif2', $response['parts']['victim']);
     }
 
-    public function testControllerAttackAsIfAgainstASamura() {
+    public function testControllerAttackAsIfAgainstASamurai() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/samurai';
         $response = $this->controller->attack();
         $this->assertEquals('samurai', $response['parts']['victim']);
+    }
+
+    public function testRandomEncounter() {
+        $this->controller = new NpcController([
+            'randomness' => function(){ return 1; }
+        ]);
+
+        $_SERVER['REQUEST_URI'] = '/npc/attack/peasant';
+        $response = $this->controller->attack();
+        $this->assertNotEmpty($response);
     }
 }

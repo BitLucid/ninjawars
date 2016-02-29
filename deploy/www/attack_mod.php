@@ -5,6 +5,7 @@ require_once(LIB_ROOT."control/lib_inventory.php");
 
 use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\control\Combat;
+use NinjaWars\core\data\GameLog;
 
 /*
  * Deals with the non-skill based attacks and stealthed attacks.
@@ -247,7 +248,7 @@ if ($attack_is_legal) {
                     // Only log duels if they're better than 1 or if they're a failure.
 					if ($killpoints > 1 || $killpoints < 0) {
                         // Make a WIN record in the dueling log.
-                        sendLogOfDuel($attacker, $target, 1, $killpoints);
+                        GameLog::sendLogOfDuel($attacker, $target, 1, $killpoints);
 					}
 
 					if ($skillListObj->hasSkill('wrath')) {
@@ -291,7 +292,7 @@ if ($attack_is_legal) {
 				if ($duel) {	// *** if they were dueling when they died ***
 					$duel_log_msg     = "$attacker has dueled $target and lost at ".date("F j, Y, g:i a");
 					sendMessage("SysMsg", "SysMsg", $duel_log_msg);
-					sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
+					GameLog::sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
 				}
 
 				$target_player->addKills($defenderKillpoints); // Adds a kill for the defender
@@ -342,7 +343,7 @@ if ($turns_to_take < 1) {
 	$turns_to_take = 1;
 }
 
-$ending_turns = subtractTurns($attacking_player->id(), $turns_to_take);
+$ending_turns = $attacking_player->subtractTurns($turns_to_take);
 
 //  ***  START ACTION OVER AGAIN SECTION ***
 

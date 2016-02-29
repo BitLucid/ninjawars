@@ -52,7 +52,6 @@ require_once(LIB_ROOT.'control/lib_auth.php'); // Authentication and activity.
 
 // Game objects
 require_once(LIB_ROOT . 'control/Player.class.php');
-require_once(LIB_ROOT . 'control/lib_status.php');
 
 // Include the functions abstracted out of the header and footer
 require_once(LIB_ROOT.'control/lib_header.php');
