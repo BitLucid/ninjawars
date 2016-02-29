@@ -49,23 +49,6 @@ function subtractHealth($who, $amount) {
 // ************************************
 
 // ************************************
-// ********** LEVEL FUNCTIONS *********
-// ************************************
-
-function getLevel($who) {
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("SELECT level FROM players WHERE player_id = :player");
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-	return $statement->fetchColumn();
-}
-
-// ************************************
-// ************************************
-
-
-// ************************************
 // ********* BOUNTY FUNCTIONS *********
 // ************************************
 
@@ -127,8 +110,12 @@ function rewardBounty($bounty_to, $bounty_on) {
 function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 	$user_id = get_user_id($username);
 	$defender_id = get_user_id($defender);
+
+    $user = Player::find($user_id);
+    $defender = Player::find($defender_id);
+
 	// *** Bounty Increase equation: (attacker's level - defender's level) / an increment, rounded down ***
-	$levelRatio     = floor((getLevel($user_id) - getLevel($defender_id)) / 10);
+	$levelRatio     = floor(($user->level - $defender->level) / 10);
 
 	$bountyIncrease = min(25, max($levelRatio * 25, 0));	//Avoids negative increases, max of 30 gold, min of 0
 
