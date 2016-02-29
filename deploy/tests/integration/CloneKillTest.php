@@ -106,7 +106,7 @@ class ClanKillTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testCloneKillDoesNotAllowYouToCloneKillYourself() {
-        $this->markTestIncomplete('Rejection of Clone killing self is implemented at the skills_mod level currently.');
+        $this->markTestIncomplete('Rejection of Clone killing self is implemented at the skills controller level currently.');
     }
 
     public function testYouCantCloneKillWithAnyNonConfirmedAccounts() {
