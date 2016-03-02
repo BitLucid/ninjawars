@@ -120,7 +120,19 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('theif2', $response['parts']['victim']);
     }
 
-    public function testControllerAttackAsIfAgainstASamurai() {
+    public function testControllerAttackAgainstSamurai() {
+        $this->char->vo->kills = 40;
+        $this->char->vo->level = 5;
+        $this->char->vo->strength = 25;
+        $this->char->addStatus(STEALTH);
+        $this->char->save();
+
+        $_SERVER['REQUEST_URI'] = '/npc/attack/samurai';
+        $response = $this->controller->attack();
+        $this->assertEquals('samurai', $response['parts']['victim']);
+    }
+
+    public function testControllerFailedAttackAgainstSamurai() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/samurai';
         $response = $this->controller->attack();
         $this->assertEquals('samurai', $response['parts']['victim']);

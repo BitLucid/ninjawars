@@ -52,18 +52,6 @@ function subtractHealth($who, $amount) {
 // ********* BOUNTY FUNCTIONS *********
 // ************************************
 
-function setBounty($who, $new_bounty) {
-	$new_bounty = (int)$new_bounty;
-	DatabaseConnection::getInstance();
-
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET bounty = :bounty WHERE player_id = :player");
-	$statement->bindValue(':bounty', $new_bounty);
-	$statement->bindValue(':player', $who);
-	$statement->execute();
-
-	return $new_bounty;
-}
-
 /**
  * Change a bounty
  * @param int $who A character id to change the bounty of
@@ -101,7 +89,9 @@ function rewardBounty($bounty_to, $bounty_on) {
     $char = Player::find($bounty_on);
 	$bounty = $char->bounty();
 
-	setBounty($bounty_on, 0);  //Sets bounty to zero.
+    $char->set_bounty(0);
+    $char->save();
+
 	add_gold($bounty_to, $bounty);
 
 	return $bounty;
