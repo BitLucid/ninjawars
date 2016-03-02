@@ -601,6 +601,27 @@ class Player implements Character {
 	}
 
     /**
+     * Find player by name
+     * @return Player
+     *
+     */
+    public static function findByName($name){
+        $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
+        if(!$id){
+            return null;
+        } else {
+            $dao = new PlayerDAO();
+            $data = $dao->get($id);
+            if(!isset($data->player_id) || !$data->player_id){
+                return null;
+            }
+            $player = new Player();
+            $player->vo = $data;
+            return $player;
+        }
+    }
+
+    /**
      * query the recently active players
      */
     public static function findActive($limit=5, $alive_only=true) {
