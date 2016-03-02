@@ -6,8 +6,8 @@ require_once(LIB_ROOT."control/Skill.php");
 
 use \Player;
 use \Skill;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Handles both skill listing and displaying, and their usage
@@ -128,6 +128,34 @@ class SkillController {
 	}
 
 	/**
+	 * Pull a stripped down set of player data to display to the skill user.
+	 **/
+	private function pullSightData(Player $target){
+		$data = $target->dataWithClan();
+		// Strip all fields but those allowed.
+		$allowed = [
+		    'Name'     => 'uname',
+		    'Class'    => 'class_name',
+		    'Level'    => 'level',
+		    'Turns'    => 'turns',
+		    'Strength' => 'strength',
+		    'Speed'    => 'speed',
+		    'Stamina'  => 'stamina',
+		    'Ki'       => 'ki',
+		    'Gold'     => 'gold',
+		    'Kills'    => 'kills',
+		];
+
+		$res = array();
+
+		foreach ($allowed as $header => $field) {
+			$res[$header] = $data[$field];
+		}
+
+		return $res;
+	}
+
+	/**
 	 * Use, the skills_mod equivalent
 	 * @note Test with urls like: 
 	 * http://nw.local/skill/use/Fire%20Bolt/10
@@ -138,9 +166,9 @@ class SkillController {
 		// Template vars.
 		$display_sight_table = $generic_skill_result_message = $generic_state_change = $killed_target =
 			$loot = $added_bounty = $bounty = $suicided = $destealthed = null;
+		$error = null;
 
-		$request = Request::createFromGlobals();
-		$path = $request->getPathInfo();
+		$path = RequestWrapper::getPathInfo();
 		$slugs = $this->parseSlugs($path);
 		// (fullpath0) /skill1/go2/firebolt3/tchalvak4/(beagle5/)
 		$act = isset($slugs[3])? $slugs[3] : null;
@@ -203,6 +231,8 @@ class SkillController {
 			$target_id = $target->id();
 			$return_to_target = true;
 		} else {
+			// For target that doesn't exist, e.g. http://nw.local/skill/use/Sight/zigzlklkj
+			error_log('Info: Attempt to use a skill on a target that did not exist.');
 			return new RedirectResponse(WEB_ROOT.'skill/?error='.url('Invalid Target for skill.'));
 		}
 
@@ -250,32 +280,6 @@ class SkillController {
 			}
 		}
 
-		// Strip down the player info to get the sight data.
-		function pull_sight_data($target) {
-			$data = $target->dataWithClan();
-			// Strip all fields but those allowed.
-		    $allowed = [
-		        'Name'     => 'uname',
-		        'Class'    => 'class',
-		        'Level'    => 'level',
-		        'Turns'    => 'turns',
-		        'Strength' => 'strength',
-		        'Speed'    => 'speed',
-		        'Stamina'  => 'stamina',
-		        'Ki'       => 'ki',
-		        'Gold'     => 'gold',
-		        'Kills'    => 'kills',
-		    ];
-
-			$res = array();
-
-			foreach ($allowed as $header => $field) {
-				$res[$header] = $data[$field];
-			}
-
-			return $res;
-		}
-
 		if (!$attack_error) { // Nothing to prevent the attack from happening.
 			// Initial attack conditions are alright.
 			$result = '';
@@ -283,7 +287,7 @@ class SkillController {
 			if ($act == 'Sight') {
 				$covert = true;
 
-				$sight_data = pull_sight_data($target);
+				$sight_data = $this->pullSightData($target);
 
 				$display_sight_table = true;
 			} elseif ($act == 'Steal') {
