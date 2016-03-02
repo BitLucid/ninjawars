@@ -42,6 +42,14 @@ class RequestWrapper{
     }
 
     /**
+     * Get the all the path info after the / of the domain
+    **/
+    public static function getPathInfo(){
+        static::init();
+        return static::$request->getPathInfo();
+    }
+
+    /**
      * Post parameter by key
      */
     public static function getPost($val) {

@@ -1,6 +1,7 @@
 <?php
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpFoundation\RedirectResponse as RedirectResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\SkillController;
 use NinjaWars\core\extensions\SessionFactory;
@@ -35,29 +36,60 @@ class SkillControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testUseFireboltOnAnotherChar(){
-        $passfail = $this->char->setClass('tiger');
-        $this->assertNull($passfail);
+        $error = $this->char->setClass('tiger');
+        $this->assertNull($error);
         $initial_health = $this->char2->health();
-        $request = Request::create('/skill/use/Fire%20Bolt/'.url($this->char2->name()).'/');
+        $name = $this->char2->name();
+        $this->assertNotEmpty($name);
+        $this->assertNotEmpty(url($name));
+        $skillList = new Skill();
+        $this->assertTrue($skillList->hasSkill('Fire Bolt'));
+        $request = Request::create('/skill/use/Fire%20Bolt/'.url($name).'/');
         RequestWrapper::inject($request);
-        $final_defender = Player::find($this->char2->id());
         $skill = new SkillController();
         $skill_outcome = $skill->go();
+        $final_defender = Player::find($this->char2->id());
+        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
+                'A redirect was requested for the url: '
+                .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
+        $this->assertNull($skill_outcome['parts']['error']);
         $this->assertLessThan($initial_health, $final_defender->health());
     }
 
+    public function testUseSightOnAnotherChar(){
+        $error = $this->char->setClass('dragon');
+        $this->assertNull($error);
+        $this->char->save();
+        $name = $this->char2->name();
+        $this->assertNotEmpty($name);
+        $this->assertNotEmpty(url($name));
+        $skillList = new Skill();
+        $this->assertTrue($skillList->hasSkill('Sight'));
+        $request = Request::create('/skill/use/Sight/'.url($name).'/');
+        RequestWrapper::inject($request);
+        $skill = new SkillController();
+        $skill_outcome = $skill->go();
+        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
+                'A redirect was requested for the url: '
+                .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
+        $this->assertNull($skill_outcome['parts']['error']);
+    }
+
+
     public function testUseHealOnSelfAsDragon(){
-        $passfail = $this->char->setClass('dragon');
-        $this->assertNull($passfail);
+        $error = $this->char->setClass('dragon');
+        $this->assertNull($error);
+        $this->char->harm(50); // Make some healable damage
         $this->char->save();
 
-        $initial_health = $this->char2->health();
+        $initial_health = $this->char->health();
 
         $request = Request::create('/skill/self_use/Heal/');
         RequestWrapper::inject($request);
-        $final_defender = Player::find($this->char2->id());
         $skill = new SkillController();
         $skill_outcome = $skill->selfUse();
-        $this->assertLessThan($initial_health, $final_defender->health());
+        $final_pc = Player::find($this->char->id());
+        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome);
+        $this->assertLessThan($initial_health, $final_pc->health());
     }
 }
