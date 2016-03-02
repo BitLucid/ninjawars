@@ -4,6 +4,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\SkillController;
 use NinjaWars\core\extensions\SessionFactory;
+use \Player as Player;
 
 class SkillControllerTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
