@@ -685,6 +685,27 @@ class Player implements Character {
     }
 
     /**
+     * Calculate a base str by level
+     */
+    public static function baseStrengthByLevel($level) {
+        return 5 * $level;
+    }
+
+    /**
+     * Calculate a base speed by level
+     */
+    public static function baseSpeedByLevel($level) {
+        return 5 * $level;
+    }
+
+    /**
+     * Calculate a base stamina by level
+     */
+    public static function baseStaminaByLevel($level) {
+        return 5 * $level;
+    }
+
+    /**
      * The number of kills needed to level up to the next level.
      *
      * 5 more kills in cost for every level you go up.
