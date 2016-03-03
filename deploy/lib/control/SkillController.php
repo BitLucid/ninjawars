@@ -16,6 +16,8 @@ class SkillController {
 	const ALIVE = true;
 	const PRIV  = true;
 
+	const HEAL_PER_LEVEL = 10;
+
 	/**
 	 * Initialize with any external state if necessary
 	 *
@@ -383,8 +385,7 @@ class SkillController {
 				} else {
 					if(!$harmonize){
 						$original_health = $target->health();
-						$heal_per_level = 10; // For standard heal.
-						$heal_points = $player->level()*$heal_per_level;
+						$heal_points = $player->level()*self::HEAL_PER_LEVEL;
 						$new_health = $target->heal($heal_points); // Won't heal more than possible
 						$healed_by = $new_health - $original_health;
 					} else {
@@ -557,7 +558,7 @@ class SkillController {
 
 		$target_ending_health = $target->health();
 		$target_name = $target->name();
-		$parts = get_defined_vars();
+		$parts = get_defined_vars(); // include $act for testing
 		$options = ['quickstat'=>'player'];
 		return [
 				'title'=>'Skill Effect', 
