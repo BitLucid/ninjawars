@@ -54,7 +54,7 @@
           {$char->level|level_label} [{$char->level|escape}]
         </span>
       </li>
-      <li><span class='physical'>Strength: {$char->strength|escape}</span><span class='physical'>Speed: {$char->speed|escape}</span><span class='physical'>Stamina: {$char->stamina|escape}</span></li>
+      <li><span class='physical'>Strength: {$char->strength()|escape}</span><span class='physical'>Speed: {$char->speed()|escape}</span><span class='physical'>Stamina: {$char->stamina()|escape}</span></li>
       <li>Ki: {$char->ki|number_format:0|escape}</li>
       <li>Karma: {$char->karma|number_format:0|escape}</li>
       <li>
