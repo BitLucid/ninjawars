@@ -108,7 +108,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $result = $cont->resurrect();
         $final_char = Player::find($this->char->id());
         $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
-        $this->assertGreaterThan(50, $final_char->health());
+        $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level())/2), $final_char->health());
     }
 
     public function testAntidoteUnpoisoningOfPoisonedCharacter(){
@@ -131,7 +131,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $result = $cont->resurrect();
         $final_char = Player::find($this->char->id());
         $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
-        $this->assertGreaterThan(50, $final_char->health());
+        $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level())/2), $final_char->health());
     }
 
     public function testKillCostResurrectWithChi() {
