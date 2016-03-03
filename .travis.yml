@@ -5,17 +5,16 @@ env:
   - INSTALL=integration_install
 
 php:
-  - 5.3
-  - 5.4
-  - 5.5
+  - 5.6
+  - 7.0
 
 matrix:
   allow_failures:
-    - php: 5.4
-    - php: 5.5
+    - php: 7.0
   fast_finish: true
 
 before_install:
+
     - chmod ug+rx scripts/build/*.sh
     - chmod ug+rx scripts/travis/*
     #- git submodule init
@@ -23,6 +22,10 @@ before_install:
 
 install:
     - ./scripts/travis/$INSTALL
+    - echo -e "CC_DIR=./cc/\nDBNAME=nw\nCOMPOSER=composer\nDBUSER=ninjamaster\nDBCREATINGUSER=ninjamaster" > CONFIG
+    - make ci
+    - readlink -f deploy/resources.php
+    - cat deploy/resources.php
 
 after_install:
     - php -v
@@ -35,10 +38,10 @@ after_install:
     - curl http://nw.local
 
 
-script: ./scripts/travis/test
+script: make ci-test
 
 #Just to limit noise in the test area, this is separated
-after_script: cat selenium_log.txt
+after_script:
 
 after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && sudo apache2ctl --version && sudo apache2ctl -S && sudo tail -10 /var/log/apache2/error.log
 after_success: sudo apache2ctl -S && sudo tail -100 /var/log/apache2/error.log
