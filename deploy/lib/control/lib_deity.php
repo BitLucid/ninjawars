@@ -7,6 +7,7 @@
  */
 
 use NinjaWars\core\data\DatabaseConnection;
+use \Player as Player;
 
 // Determine the score for ranking.
 function get_score_formula(){
@@ -75,12 +76,14 @@ function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_da
 }
 
 // Take all characters, and heal them one step closer to their maximum base.
-function heal_characters($basic=8, $with_level=true, $maximum_heal='200'){
+function heal_characters($basic=8, $with_level=true){
+	$maximum_heal = Player::maxHealthByLevel(3);
 	/*
 	Goal:  Faster regen for higher level.
 	See the balance sheet: 
 	https://docs.google.com/spreadsheet/ccc?pli=1&key=0AkoUgtBBP00HdGs0Tmk4bC10TXN0SUJYXzdYMVpFZFE#gid=0
 	*/
+	$max_hp = Player::maxHealthByLevel(MAX_PLAYER_LEVEL);
 
 
 	$level_add = '+ cast(floor(level/10) AS int)';
