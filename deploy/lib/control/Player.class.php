@@ -687,21 +687,21 @@ class Player implements Character {
      * Calculate a base str by level
      */
     public static function baseStrengthByLevel($level) {
-        return LEVEL_UP_STAT_RAISE * $level;
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 
     /**
      * Calculate a base speed by level
      */
     public static function baseSpeedByLevel($level) {
-        return LEVEL_UP_STAT_RAISE * $level;
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 
     /**
      * Calculate a base stamina by level
      */
     public static function baseStaminaByLevel($level) {
-        return LEVEL_UP_STAT_RAISE * $level;
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 
     /**
