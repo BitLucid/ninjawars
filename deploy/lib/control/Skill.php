@@ -182,6 +182,7 @@ class Skill {
 			, 'unstealth'    => true
 			, 'ice bolt'     => true
 			, 'fire bolt'    => true
+            , 'kampo'        => true
 		);
 		// Fire bolt probably shouldn't break stealth now.
 		return (isset($skillsThatIgnoreStealth[$type]));
