@@ -23,7 +23,7 @@ server {
 
 	index index.php;
 
-	location ~ /(js|css|images|files) {
+	location ~ ^/(js|css|images|files) {
 		rewrite "^/(.*)\.[\d]{10,12}\.(.*)$" /$1.$2;
 		expires 365d;
 		try_files $uri =404;
@@ -34,20 +34,24 @@ server {
 		try_files $uri @php;
 	}
 
-	location ~ /npc\.php {
+	location = /npc.php {
 	    return 302 /npc/;
 	}
 
 
-	location ~ /(main\.php|tutorial\.php) {
+	location ~ ^/(main\.php|tutorial\.php) {
 	    return 302 /intro;
 	}
 
-	location ~ /list_all_players\.php {
+	location = /index.php {
+		return 302 /;
+	}
+
+	location = /list_all_players.php {
 	    return 302 /list$is_args$args;
 	}
 
-	location ~ /webgame(/*) {
+	location ^~ /webgame {
 		rewrite ^ / permanent;
 	}
 
