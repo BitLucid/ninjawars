@@ -92,12 +92,16 @@ class Player implements Character {
 		return $this->vo->goals;
 	}
 
-	// Return simple, comma separated string of traits
+    /**
+     * Return simple, comma separated string of traits
+     */
 	public function traits() {
 		return $this->vo->traits;
 	}
 
-	// Store new goals
+    /**
+     * Store new goals
+     */
 	public function set_goals($goals){
 		$this->vo->goals = $goals;
 	}
@@ -125,7 +129,9 @@ class Player implements Character {
 		$this->vo->traits = $traits;
 	}
 
-	// Actively pulls the latest status data from the db.
+    /**
+     * Actively pulls the latest status data from the db.
+     */
 	protected function queryStatus() {
 		$id = $this->id();
 		if ($id) {
@@ -178,7 +184,9 @@ class Player implements Character {
 		}
 	}
 
-	// Standard damage output.
+    /**
+     * Standard damage output.
+     */
 	public function damage(Character $enemy=null){
 		return rand(1, $this->max_damage($enemy));
 	}
@@ -188,8 +196,10 @@ class Player implements Character {
 		return $dam;
 	}
 
-	// The maximum damage.
-	public function maxDamage(){
+    /**
+     * The maximum damage.
+     */
+	public function maxDamage() {
 		return $this->damage(); // Currently they're the same, though they probably shouldn't be.
 	}
 
@@ -323,6 +333,8 @@ class Player implements Character {
 	public function death() {
 		$this->resetStatus();
 		$this->subtractHealth($this->health());
+        $this->set_health(0);
+        $this->save();
 	}
 
 	public function email() {
@@ -334,19 +346,20 @@ class Player implements Character {
 		return $this->vo->turns;
 	}
 
-	public function set_turns($turns){
-		if($turns < 0){
-			throw new \InvalidArgumentException('Turns cannot be made negative.');
-		}
-		return $this->vo->turns = $turns;
-	}
+    public function set_turns($turns) {
+        if ($turns < 0) {
+            throw new \InvalidArgumentException('Turns cannot be made negative.');
+        }
 
-	public function changeTurns($amount) {
-		$diff = $amount;
-		$this->set_turns($this->turns() + $diff);
+        return $this->vo->turns = $turns;
+    }
 
+    public function changeTurns($amount) {
         $amount = (int) $amount;
-        if($amount){ // Ignore zero
+
+        $this->set_turns($this->turns() + $amount);
+
+        if ($amount) { // Ignore zero
             // These PDO parameters must be split into amount1 and amount2 because otherwise PDO gets confused.  See github issue 147.
             query("UPDATE players set turns = (CASE WHEN turns + :amount < 0 THEN 0 ELSE turns + :amount2 END) where player_id = :char_id",
                 array(':amount'=>array($amount, PDO::PARAM_INT), ':amount2'=>array($amount, PDO::PARAM_INT), ':char_id'=>$this->id()));
@@ -355,10 +368,11 @@ class Player implements Character {
         return $this->get_turns();
     }
 
-	public function subtractTurns($amount) {
-		$diff = -1*abs($amount);
-		return $this->changeTurns($diff);
-	}
+    public function subtractTurns($amount) {
+        $diff = -1*abs($amount);
+
+        return $this->changeTurns($diff);
+    }
 
     /**
      * Pull a character's turns.
@@ -454,47 +468,59 @@ class Player implements Character {
 		return $this->subtractHealth($actual_damage);
 	}
 
-	// Simple wrapper for changeHealth
+    /**
+     * Simple wrapper for changeHealth
+     */
 	public function addHealth($amount) {
 		return $this->changeHealth($amount);
 	}
 
-	// Simple wrapper for subtractive action.
+    /**
+     * Simple wrapper for subtractive action.
+     */
 	public function subtractHealth($amount) {
 		return $this->changeHealth((-1*(int)$amount));
 	}
 
-	// To subtract just send in a negative integer.
-	public function changeHealth($add_amount) {
-		$amount = (int)$add_amount;
-		// Only change on positive or negative changes, not zero.
-		if (abs($amount) > 0) {
-			$id = $this->id();
-			// Set health = 0 when it's less than zero, otherwise modify it.
-			$up = "UPDATE players SET health = 
-				CASE WHEN health + :amount < 0 THEN 0 ELSE health + :amount2 END 
-				WHERE player_id  = :player_id";
-			query($up, array(':player_id'=>array($id, PDO::PARAM_INT),
-				':amount'=>$amount, ':amount2'=>$amount));
-			$this->vo->health = $this->vo->health + $amount;
-		}
-		return $this->health(); // Return the current health.
-	}
+    /**
+     * To subtract just send in a negative integer
+     */
+	public function changeHealth($delta) {
+		$amount = (int)$delta;
 
-	// Pull the current health.
+		if (abs($amount) > 0) { // Only change on non-zero input
+			$this->vo->health = max(0, $this->vo->health + $amount);
+
+            query(
+                "UPDATE players SET health = :amount WHERE player_id  = :player_id",
+                [
+                    ':player_id' => [$this->id(), PDO::PARAM_INT],
+                    ':amount'    => $this->vo->health,
+                ]
+            );
+        }
+
+        return $this->vo->health;
+    }
+
+    /**
+     * Pull the current health.
+     */
 	public function health() {
 		$sel = "SELECT health from players where player_id = :id";
-		return query_item($sel, [':id'=>[$this->id(), PDO::PARAM_INT]]);
+		return max(0, query_item($sel, [':id'=>[$this->id(), PDO::PARAM_INT]]));
 	}
 
-	public function set_health($health){
-		if($health < 0){
+	public function set_health($health) {
+		if ($health < 0) {
 			throw new \InvalidArgumentException('Health cannot be made negative.');
 		}
-		if((int) $health != $health){
+
+		if ((int) $health != $health) {
 			throw new \InvalidArgumentException('Health must be a whole number.');
 		}
-		return $this->vo->health = $health;
+
+		return $this->vo->health = max(0, $health);
 	}
 
 	/**
@@ -507,7 +533,9 @@ class Player implements Character {
 		);
 	}
 
-	// This char's max health
+    /**
+     * This char's max health
+     */
 	public function max_health() {
 		return self::maxHealthByLevel($this->level());
 	}
@@ -725,24 +753,25 @@ class Player implements Character {
                 [
                     ':amount1'   => [$amount, PDO::PARAM_INT],
                     ':amount2'   => [$amount, PDO::PARAM_INT],
-                    ':player_id' => $this->id()
+                    ':player_id' => $this->id(),
                 ]
             );
         }
 
-        return query_item(
+        return $this->vo->kills = query_item(
             "SELECT kills FROM players WHERE player_id = :player_id",
             [
-                ':player_id' => [$this->id(), PDO::PARAM_INT]
+                ':player_id' => [$this->id(), PDO::PARAM_INT],
             ]
         );
     }
 
     /**
      * Leveling up Function
+     *
+     * @return boolean
      */
     public function levelUp() {
-        // Setup values:
         $health_to_add     = 100;
         $turns_to_give     = 50;
         $ki_to_give        = 50;

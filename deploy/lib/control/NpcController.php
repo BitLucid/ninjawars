@@ -6,8 +6,8 @@ require_once(LIB_ROOT."control/lib_inventory.php");
 use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\extensions\SessionFactory;
-use \Player as Player;
 use NinjaWars\core\data\Item;
+use \Player as Player;
 
 /**
  * Handles displaying npcs and attacking specific npcs
@@ -24,6 +24,7 @@ class NpcController { //extends controller
     const ONI_KILL_LOSS              = 1;
     const MIN_LEVEL_FOR_BOUNTY       = 5;
     const MAX_LEVEL_FOR_BOUNTY       = 50;
+
     public static $STATIC_NPCS                = ['peasant', 'thief', 'merchant', 'guard', 'samurai'];
     public static $STEALTH_REMOVING_NPCS      = ['samurai', 'oni'];
 
@@ -51,13 +52,12 @@ class NpcController { //extends controller
      */
     private function randomEncounter(Player $player) {
         $oni_health_loss  = rand(1, self::ONI_DAMAGE_CAP);
-        $turns            = $player->subtractTurns(self::ONI_TURN_LOSS);
         $multiple_rewards = false;
         $oni_killed       = false;
         $item             = null;
 
-        $player->set_turns($turns);
-        $player->vo->health = subtractHealth($player->id(), $oni_health_loss);
+        $player->subtractTurns(self::ONI_TURN_LOSS);
+        $player->subtractHealth($oni_health_loss);
         $player->subtractKills(self::ONI_KILL_LOSS);
 
         if ($player->health() > 0) { // if you survive
@@ -75,15 +75,16 @@ class NpcController { //extends controller
             }
         }
 
-        $npc_template = 'npc.oni.tpl';
+        $player->save();
 
-        $combat_data = [
-            'victory'          => $oni_killed,
-            'item'             => $item,
-            'multiple_rewards' => $multiple_rewards,
+        return [
+            'npc.oni.tpl',
+            [
+                'victory'          => $oni_killed,
+                'item'             => $item,
+                'multiple_rewards' => $multiple_rewards,
+            ],
         ];
-
-        return [$npc_template, $combat_data];
     }
 
     /**
@@ -156,22 +157,20 @@ class NpcController { //extends controller
         $display_statuses       = $display_statuses_classes = null;
         $image_path             = null;
 
+        // If the image exists, set the path to it for use on the page.
         if ($image && file_exists(SERVER_ROOT.'www/images/characters/'.$image)) {
-            // If the image exists, set the path to it for use on the page.
             $image_path = IMAGE_ROOT.'characters/'.$image;
         }
 
-        // Get percent of total initial health.
-
         // ******* FIGHT Logic ***********
-        $npc_damage = $npco->damage(); // An instance of damage.
-        $survive_fight = $player->vo->health = subtractHealth($player->id(), $npc_damage);
+        $npc_damage = $npco->damage();
+        $survive_fight = $player->subtractHealth($npc_damage);
         $kill_npc = ($npco->health() < $player->damage());
 
         if ($survive_fight > 0) {
             // The ninja survived, they get any gold the npc has.
             $received_gold = $this->calcReceivedGold($npco, (bool) $reward_item);
-            add_gold($player->id(), $received_gold);
+            $player->set_gold($player->gold() + $received_gold);
             $received_display_items = array();
 
             if ($kill_npc) {
@@ -187,11 +186,11 @@ class NpcController { //extends controller
 
                 // Add bounty where applicable.
                 if ((bool)$bounty_mod &&
-                    $player->vo->level > self::MIN_LEVEL_FOR_BOUNTY &&
-                    $player->vo->level <= self::MAX_LEVEL_FOR_BOUNTY
+                    $player->level() > self::MIN_LEVEL_FOR_BOUNTY &&
+                    $player->level() <= self::MAX_LEVEL_FOR_BOUNTY
                 ) {
                     $added_bounty = floor($player->level() / 3 * $bounty_mod);
-                    addBounty($player->id(), ($added_bounty));
+                    $player->set_bounty($player->bounty() + $added_bounty);
                 }
             }
 
@@ -205,32 +204,33 @@ class NpcController { //extends controller
             }
         }
 
-        // Settings to display results.
-        $npc_template = 'npc.abstract.tpl';
-        $combat_data = [
-            'victim'                   => $victim,
-            'display_name'             => $display_name,
-            'attack_damage'            => $npc_damage,
-            'status_effect'            => $status_effect,
-            'display_statuses'         => $display_statuses,
-            'display_statuses_classes' => $display_statuses_classes,
-            'received_gold'            => $received_gold,
-            'received_display_items'   => $received_display_items,
-            'is_rewarded'              => $is_rewarded,
-            'victory'                  => $victory,
-            'survive_fight'            => $survive_fight,
-            'kill_npc'                 => $kill_npc,
-            'image_path'               => $image_path,
-            'npc_stats'                => $npc_stats,
-            'is_quick'                 => $is_quick,
-            'added_bounty'             => $added_bounty,
-            'is_villager'              => $npco->has_trait('villager'),
-            'race'                     => $npco->race(),
-            'is_weaker'                => $is_weaker,
-            'is_stronger'              => $is_stronger,
-        ];
+        $player->save();
 
-        return [$npc_template, $combat_data];
+        return [
+            'npc.abstract.tpl',
+            [
+                'victim'                   => $victim,
+                'display_name'             => $display_name,
+                'attack_damage'            => $npc_damage,
+                'status_effect'            => $status_effect,
+                'display_statuses'         => $display_statuses,
+                'display_statuses_classes' => $display_statuses_classes,
+                'received_gold'            => $received_gold,
+                'received_display_items'   => $received_display_items,
+                'is_rewarded'              => $is_rewarded,
+                'victory'                  => $victory,
+                'survive_fight'            => $survive_fight,
+                'kill_npc'                 => $kill_npc,
+                'image_path'               => $image_path,
+                'npc_stats'                => $npc_stats,
+                'is_quick'                 => $is_quick,
+                'added_bounty'             => $added_bounty,
+                'is_villager'              => $npco->has_trait('villager'),
+                'race'                     => $npco->race(),
+                'is_weaker'                => $is_weaker,
+                'is_stronger'              => $is_stronger,
+            ]
+        ];
     }
 
     /**
@@ -257,8 +257,6 @@ class NpcController { //extends controller
 
         $url_part = $_SERVER['REQUEST_URI'];
 
-        // Test urls:
-
         if (preg_match('#\/(\w+)(\/)?$#', $url_part, $matches)) {
             $victim = $matches[1];
         } else {
@@ -270,14 +268,20 @@ class NpcController { //extends controller
         $turn_cost      = 1;
         $health         = true;
         $combat_data    = [];
-        $player         = new Player(self_char_id());
-        $char_id        = $player->id();
+        $player         = Player::find(self_char_id());
         $error_template = 'npc.no-one.tpl'; // Error template also used down below.
         $npc_template   = $error_template; // Error condition by default.
-        $ninja_str      = $player->getStrength();
         $npcs           = NpcFactory::npcsData();
         $possible_npcs  = array_merge(self::$STATIC_NPCS, array_keys($npcs));
         $victim         = restrict_to($victim, $possible_npcs); // Filter to only the correct options.
+
+        $standard_npcs  = [
+            'peasant'  => 'attackVillager',
+            'merchant' => 'attackMerchant',
+            'guard'    => 'attackGuard',
+        ];
+
+        $method = null;
 
         if ($player->turns() > 0 && !empty($victim)) {
             // Strip stealth when attacking special NPCs
@@ -286,197 +290,19 @@ class NpcController { //extends controller
             }
 
             if ($this->startRandomEncounter()) {
-                list($npc_template, $combat_data) = $this->randomEncounter($player);
+                $method = 'randomEncounter';
             } elseif (array_key_exists($victim, $npcs)) {
-                /**** Abstracted NPCs *****/
                 list($npc_template, $combat_data) = $this->attackAbstractNpc($victim, $player, $npcs);
-
-                // ******************** START of logic for specific npcs ************************
-            } else if ($victim == 'peasant') { // *** PEASANT, was VILLAGER ***
-                $villager_attack = rand(0, 10); // *** Villager Damage ***
-                $just_villager   = rand(0, 20);
-                $added_bounty    = 0;
-
-                if ($player->vo->health = $victory = subtractHealth($char_id, $villager_attack)) {  // *** Player defeated villager ***
-                    $villager_gold = rand(0, 20);   // *** Vilager Gold ***
-                    add_gold($char_id, $villager_gold);
-
-                    $attacker_level = $player->vo->level;
-
-                    // *** Bounty or no bounty ***
-                    if ($attacker_level > 1) {
-                        if ($attacker_level <= 20) {
-                            $added_bounty = floor($attacker_level / 3);
-                            addBounty($char_id, ($added_bounty));
-                        }
-                    }   // *** End of if > 5 ***
-
-                    if (!$just_villager) {
-                        // Something beyond just a villager, drop a shuriken
-                        add_item($char_id, 'shuriken', 1);
-                    }
-                } else {    // *** Player lost against villager ***
-                    $villager_gold = $attacker_level = $added_bounty = 0;
-                }
-
-                $npc_template = 'npc.peasant.tpl';
-                $combat_data = [
-                    'just_villager' => $just_villager,
-                    'attack'        => $villager_attack,
-                    'gold'          => $villager_gold,
-                    'level'         => $attacker_level,
-                    'bounty'        => $added_bounty,
-                    'victory'       => $victory,
-                ];
+            } else if (array_key_exists($victim, $standard_npcs)) {
+                $method = $standard_npcs[$victim];
             } else if ($victim == "samurai") {
-                $attacker_level       = $player->vo->level;
-                $attacker_kills       = $player->vo->kills;
-                $weakness_error       = false;
-                $samurai_damage_array = null;
-                $samurai_gold         = null;
-                $victory              = false;
-                $drop                 = null;
-                $drop_display         = null;
-                $turn_cost            = 1;
-
-                if ($attacker_level < 2 || $attacker_kills < 1) {
+                if ($player->level() < 2 || $player->kills < 1) {
                     $turn_cost = 0;
                     $weakness_error = 'You are too weak to attack the samurai.';
+                    $npc_template = 'npc.samurai.tpl';
                 } else {
-                    $samurai_damage_array = [
-                        rand(1, $player->strength()),
-                        rand(10, 10 + round($player->strength() * 1.2)),
-                    ];
-
-                    $does_ninja_succeed = rand(0, 1);
-
-                    if ($does_ninja_succeed) {
-                        $samurai_damage_array[] = rand(30 + round($player->strength() * 0.2), 30 + round($player->strength() * 1.7));
-                    } else {
-                        $samurai_damage_array[] = abs($player->health() - $samurai_damage_array[0] - $samurai_damage_array[1]);  //Instant death.
-                    }
-
-                    $ninja_health = $player->health(); // Get starting value and iterate it down.
-
-                    for ($i = 0; $i < 3 && $ninja_health > 0; ++$i) {
-                        $ninja_health = $ninja_health - $samurai_damage_array[$i];
-                    }
-
-                    if ($ninja_health > 0) { // Ninja still has health after all three attacks
-                        $victory = true;
-
-                        $samurai_gold = rand(50, 50 + $samurai_damage_array[2] + $samurai_damage_array[1]);
-
-                        add_gold($char_id, $samurai_gold);
-                        $player->addKills(1);
-
-                        // If samurai dmg high, but ninja lived, give rewards
-                        if ($samurai_damage_array[2] > self::SAMURAI_REWARD_DMG) {
-                            $drop = true;
-
-                            if (rand(0, 1)) {
-                                $drop_display = 'mushroom powder';
-                                $dropItem = 'amanita';
-                            } else {
-                                $drop_display = 'a strange herb';
-                                $dropItem = 'ginsengroot';
-                            }
-
-                            add_item($char_id, $dropItem, 1);
-                        }
-
-                        // If the final damage was the exact max damage
-                        if ($samurai_damage_array[2] == $player->strength() * 3) {
-                            $drop         = true;
-                            $drop_display = 'a black scroll';
-                            add_item($char_id, "dimmak", 1);
-                        }
-
-                        $player->vo->health = setHealth($char_id, $ninja_health);
-                    } else {
-                        $player->vo->health = setHealth($char_id, 0);
-
-                        $victory   = false;
-                        $ninja_str = $samurai_gold = 0;
-                    }
-                }   // *** End valid turns and kills for the attack. ***
-
-                $npc_template = 'npc.samurai.tpl';
-                $combat_data = [];
-
-                if (!$weakness_error) {
-                    $combat_data = [
-                        'samurai_damage_array' => $samurai_damage_array,
-                        'gold'                 => $samurai_gold,
-                        'victory'              => $victory,
-                        'ninja_str'            => $ninja_str,
-                        'level'                => $attacker_level,
-                        'attacker_kills'       => $attacker_kills,
-                        'drop'                 => $drop,
-                        'drop_display'         => $drop_display,
-                    ];
+                    $method = 'attackSamurai';
                 }
-            } else if ($victim == 'merchant') {
-                $merchant_attack = rand(15, 35);  // Merchant Damage
-                $added_bounty    = 0;
-
-                // Player killed merchant
-                if ($player->vo->health = $victory = subtractHealth($char_id, $merchant_attack)) {
-                    $merchant_gold = rand(20, 70);  // Merchant Gold
-                    add_gold($char_id, $merchant_gold);
-
-                    if ($merchant_attack > 34) {
-                        add_item($char_id, 'phosphor', 1);
-                    }
-
-                    if ($player->vo->level > 10) {
-                        $added_bounty = 5 * floor(($player->vo->level - 5) / 3);
-                        addBounty($char_id, $added_bounty);
-                    }
-                } else { // Merchant killed player
-                    $merchant_attack = $merchant_gold = 0;
-                }
-
-                $npc_template = 'npc.merchant.tpl';
-                $combat_data  = [
-                    'attack'  => $merchant_attack,
-                    'gold'    => $merchant_gold,
-                    'bounty'  => $added_bounty,
-                    'victory' => $victory,
-                ];
-            } else if ($victim == 'guard') { // The Player attacks the guard
-                $guard_attack = rand(1, $player->strength() + 10); // Guard Damage
-                $herb         = false;
-                $added_bounty = 0;
-
-                if ($player->vo->health = $victory = subtractHealth($char_id, $guard_attack)) {
-                    $guard_gold = rand(1, $player->strength() + 40);  // Guard Gold
-                    add_gold($char_id, $guard_gold);
-
-                    if ($player->vo->level > 15) {
-                        $added_bounty = 10 * floor(($player->vo->level - 10) / 5);
-                        addBounty($char_id, $added_bounty);
-                    }
-
-                    // 1/9 chance of getting an herb for Kampo
-                    if (rand(1, 9) == 9) {
-                        $herb = true;
-                        add_item($char_id, 'ginsengroot', 1);
-                    } else {
-                        $herb = false;
-                    }
-                } else {    // *** The Guard kills the player ***
-                    $guard_attack = $guard_gold = $added_bounty = 0;
-                }
-
-                $npc_template = 'npc.guard.tpl';
-                $combat_data  = [
-                    'attack'  => $guard_attack,
-                    'gold'    => $guard_gold,
-                    'bounty'  => $added_bounty,
-                    'victory' => $victory,
-                    'herb'    => $herb,
-                ];
             } else if ($victim == 'thief') {
                 // Check the counter to see whether they've attacked a thief multiple times in a row.
                 $counter = $this->getThiefCounter();
@@ -486,68 +312,28 @@ class NpcController { //extends controller
                 if ($counter > 20 && rand(1, 3) == 3) {
                     // Only after many attacks do you have the chance to be attacked back by the group of thieves.
                     $this->setThiefCounter(0); // Reset the counter to zero.
-                    $group_attack= rand(50, 150);
-
-                    if ($player->vo->health = $victory = subtractHealth($char_id, $group_attack)) { // The den of thieves didn't accomplish their goal
-                        $group_gold = rand(100, 300);
-
-                        if ($group_attack > 120) { // Powerful attack gives an additional disadvantage
-                            $player->subtractKills(1);
-                        }
-
-                        add_gold($char_id, $group_gold);
-                        add_item($char_id, 'phosphor', 1);
-                    } else {    // If the den of theives killed the attacker.
-                        $group_gold = 0;
-                    }
-
-                    $npc_template = 'npc.thief-group.tpl';
-                    $combat_data = [
-                        'attack'  => $group_attack,
-                        'gold'    => $group_gold,
-                        'victory' => $victory,
-                    ];
-                } else { // Normal attack on a single thief.
-                    $thief_attack = rand(0, 35);  // *** Thief Damage  ***
-
-                    if ($player->vo->health = $victory = subtractHealth($char_id, $thief_attack)) {
-                        $thief_gold = rand(0, 40);  // *** Thief Gold ***
-
-                        if ($thief_attack > 30) {
-                            subtract_gold($char_id, $thief_gold);
-                        } else if ($thief_attack < 30) {
-                            add_gold($char_id, $thief_gold);
-                            add_item($char_id, 'shuriken', 1);
-                        }
-                    } else {
-                        $thief_gold = 0;
-                    }
-
-                    $npc_template = 'npc.thief.tpl';
-                    $combat_data = [
-                        'attack'  => $thief_attack,
-                        'gold'    => $thief_gold,
-                        'victory' => $victory,
-                    ];
+                    $method = 'attackGroupOfThieves';
+                } else {
+                    $method = 'attackNormalThief';
                 }
             }
 
-            // ************ End of specific npc logic *******************
+            if ($method) {
+                list($npc_template, $combat_data) = $this->$method($player);
+            }
 
-            // ************ FINAL CHECK FOR DEATH ***********************
-            if ($player->health() <= 0) {
+            if ($player->health() <= 0) { // FINAL CHECK FOR DEATH
+                $player->death();
                 $health = false;
                 sendMessage("SysMsg", $player->name(), "DEATH: You have been killed by a $victim on $today");
             }
 
             // Subtract the turn cost for attacking an npc
             // almost always 1 apart from perhaps oni or group-of-thieves
-            $turns = $player->subtractTurns($turn_cost);
-            $player->set_turns($turns);
-        }
+            $player->subtractTurns($turn_cost);
 
-        $template = 'npc.tpl';
-        $title    = 'Battle';
+            $player->save();
+        }
 
         // Uses a sub-template inside for specific npcs.
         $parts = [
@@ -558,14 +344,249 @@ class NpcController { //extends controller
             'health'       => $health,
         ];
 
-        $parts = $parts + $combat_data; // Merge in combat data.
-        $options = ['quickstat' => 'player'];
+        return [
+            'template' => 'npc.tpl',
+            'title'    => 'Battle',
+            'parts'    => $parts + $combat_data, // Merge in combat data
+            'options'  => ['quickstat' => 'player'],
+        ];
+    }
+
+    private function attackGuard(Player $player) {
+        $damage = rand(1, $player->strength() + 10);
+        $herb   = false;
+        $gold   = 0;
+        $bounty = 0;
+
+        if ($victory = $player->subtractHealth($damage)) {
+            $gold = rand(1, $player->strength() + 40);  // Guard Gold
+            $player->set_gold($player->gold() + $gold);
+
+            if ($player->level() > 15) {
+                $bounty = 10 * floor(($player->level() - 10) / 5);
+                $player->set_bounty($player->bounty() + $bounty);
+            }
+
+            // 1/9 chance of getting an herb for Kampo
+            if (rand(1, 9) == 9) {
+                $herb = true;
+                add_item($player->id(), 'ginsengroot', 1);
+            }
+        } else {
+            $damage = 0;
+        }
 
         return [
-            'template' => $template,
-            'title'    => $title,
-            'parts'    => $parts,
-            'options'  => $options,
+           'npc.guard.tpl',
+           [
+               'attack'  => $damage,
+               'gold'    => $gold,
+               'bounty'  => $bounty,
+               'victory' => $victory,
+               'herb'    => $herb,
+           ],
+       ];
+    }
+
+    private function attackVillager(Player $player) {
+        $damage        = rand(0, 10);
+        $just_villager = rand(0, 20);
+        $bounty        = 0;
+        $gold          = 0;
+
+        if ($victory = $player->subtractHealth($damage)) {
+            $gold = rand(0, 20);
+            $player->set_gold($player->gold() + $gold);
+
+            // *** Bounty or no bounty ***
+            if ($player->level() > 1 && $player->level() <= 20) {
+                $bounty = floor($player->level() / 3);
+                $player->set_bounty($player->bounty() + $bounty);
+            }
+
+            if (!$just_villager) {
+                // Something beyond just a villager, drop a shuriken
+                add_item($player->id(), 'shuriken', 1);
+            }
+        }
+
+        $player->save();
+
+        return [
+            'npc.peasant.tpl',
+            [
+                'just_villager' => $just_villager,
+                'attack'        => $damage,
+                'gold'          => $gold,
+                'level'         => $player->level(),
+                'bounty'        => $bounty,
+                'victory'       => $victory,
+            ],
+        ];
+    }
+
+    private function attackSamurai(Player $player) {
+        $gold         = 0;
+        $victory      = false;
+        $drop         = false;
+        $drop_display = null;
+
+        $damage = [
+            rand(1, $player->strength()),
+            rand(10, 10 + round($player->strength() * 1.2)),
+        ];
+
+        if (rand(0, 1)) {
+            $damage[] = rand(30 + round($player->strength() * 0.2), 30 + round($player->strength() * 1.7));
+        } else { //Instant death.
+            $damage[] = abs($player->health - $damage[0] - $damage[1]);
+        }
+
+        for ($i = 0; $i < count($damage) && $player->health > 0; ++$i) {
+            $player->set_health($player->health - $damage[$i]);
+        }
+
+        if ($player->health > 0) { // Ninja still has health after all attacks
+            $victory = true;
+
+            $gold = rand(50, 50 + $damage[2] + $damage[1]);
+
+            $player->addKills(1);
+            $player->set_gold($player->gold() + $gold);
+
+            // If samurai dmg high, but ninja lived, give rewards
+            if ($damage[2] > self::SAMURAI_REWARD_DMG) {
+                $drop = true;
+
+                if (rand(0, 1)) {
+                    $drop_display = 'mushroom powder';
+                    $dropItem = 'amanita';
+                } else {
+                    $drop_display = 'a strange herb';
+                    $dropItem = 'ginsengroot';
+                }
+
+                add_item($player->id(), $dropItem, 1);
+            }
+
+            // If the final damage was the exact max damage
+            if ($damage[2] == $player->strength() * 3) {
+                $drop         = true;
+                $drop_display = 'a black scroll';
+                add_item($player->id(), "dimmak", 1);
+            }
+        }
+
+        $player->save();
+
+        return [
+            'npc.samurai.tpl',
+            [
+                'samurai_damage_array' => $damage,
+                'gold'                 => $gold,
+                'victory'              => $victory,
+                'ninja_str'            => $player->strength(),
+                'level'                => $player->level(),
+                'attacker_kills'       => $player->kills,
+                'drop'                 => $drop,
+                'drop_display'         => $drop_display,
+            ],
+        ];
+    }
+
+    private function attackGroupOfThieves(Player $player) {
+        $damage = rand(50, 150);
+
+        if ($victory = $player->subtractHealth($damage)) {
+            // The den of thieves didn't accomplish their goal
+            $gold = rand(100, 300);
+
+            if ($damage > 120) { // Powerful attack gives an additional disadvantage
+                $player->subtractKills(1);
+            }
+
+            $player->set_gold($player->gold + $gold);
+            add_item($player->id(), 'phosphor', 1);
+        } else {    // If the den of theives killed the attacker.
+            $gold = 0;
+        }
+
+        $player->save();
+
+        return [
+            'npc.thief-group.tpl',
+            [
+                'attack'  => $damage,
+                'gold'    => $gold,
+                'victory' => $victory,
+            ],
+        ];
+    }
+
+    /**
+     * Attack merchant
+     */
+    private function attackMerchant($player) {
+        $damage = rand(15, 35);
+        $bounty = 0;
+
+        // Player killed NPC
+        if ($victory = $player->subtractHealth($damage)) {
+            $gold = rand(20, 70);
+            $player->set_gold($player->gold + $gold);
+
+            if ($damage > 34) {
+                add_item($player->id(), 'phosphor', 1);
+            }
+
+            if ($player->level() > 10) {
+                $bounty = 5 * floor(($player->level() - 5) / 3);
+                $player->set_bounty($player->bounty + $bounty);
+            }
+        } else { // NPC killed player
+            $damage = $gold = 0;
+        }
+
+        $player->save();
+
+        return [
+            'npc.merchant.tpl',
+            [
+                'attack'  => $damage,
+                'gold'    => $gold,
+                'bounty'  => $bounty,
+                'victory' => $victory,
+            ],
+        ];
+    }
+
+    /**
+     * Normal attack on a single thief.
+     */
+    private function attackNormalThief(Player $player) {
+        $damage = rand(0, 35);  // Damage done
+        $gold   = 0;
+
+        if ($victory = $player->subtractHealth($damage)) {
+            $gold = rand(0, 40);  // Gold in question
+
+            if ($damage > 30) { // Steal gold
+                $player->set_gold(max(0, $player->gold - $gold));
+            } else if ($damage < 30) { // award gold and item
+                $player->set_gold($player->gold + $gold);
+                add_item($player->id(), 'shuriken', 1);
+            }
+        }
+
+        $player->save();
+
+        return [
+            'npc.thief.tpl',
+            [
+                'attack'  => $damage,
+                'gold'    => $gold,
+                'victory' => $victory,
+            ],
         ];
     }
 
