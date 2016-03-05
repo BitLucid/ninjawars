@@ -115,7 +115,7 @@ if ($attack_is_legal) {
 		$turns_to_take = 1;
 
 		$stealthed_attack = true;
-		$target_health = subtractHealth($target_player->id(), $stealthAttackDamage);
+		$target_health = $target_player->harm($stealthAttackDamage);
 
 		if (0 > $target_health) { // *** if Stealth attack of whatever damage kills target. ***
 			$victor = $attacker;
@@ -215,8 +215,8 @@ if ($attack_is_legal) {
 		//  *** Let the victim know who hit them ***
 		$attack_label = ($duel ? 'dueled' : 'attacked');
 
-		$defenderHealthRemaining = subtractHealth($target_player->id(), $total_attacker_damage);
-		$attackerHealthRemaining = subtractHealth($attacking_player->id(), $total_target_damage);
+		$defenderHealthRemaining = $target_player->harm($total_attacker_damage);
+		$attackerHealthRemaining = $attacking_player->harm($total_target_damage);
 
 		if ($defenderHealthRemaining && $attackerHealthRemaining) {
 			$combat_msg = "You have been $attack_label by $attacker for $total_attacker_damage, but they got away before you could kill them!";
@@ -349,8 +349,8 @@ $ending_turns = $attacking_player->subtractTurns($turns_to_take);
 
 $attack_again = false;
 if (isset($target)) {
-    $attacker_health_snapshot = getHealth($attacking_player->id());
-    $defender_health_snapshot = getHealth($target_player->id());
+    $attacker_health_snapshot = $attacking_player->health();
+    $defender_health_snapshot = $target_player->health();
 
 	if ($attack_is_legal && $attacker_health_snapshot > 0 && $defender_health_snapshot > 0) {	// *** After any partial attack. ***
 		$attack_again = true;

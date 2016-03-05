@@ -1,57 +1,6 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
 
-// ************************************
-// ********* HEALTH FUNCTIONS *********
-// ************************************
-
-function setHealth($who, $new_health) {
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET health = :health WHERE player_id = :user");
-	$statement->bindValue(':health', $new_health);
-	$statement->bindValue(':user', $who);
-	$statement->execute();
-
-	return $new_health;
-}
-
-function getHealth($who) {
-	DatabaseConnection::getInstance();
-	$statement = DatabaseConnection::$pdo->prepare("SELECT health FROM players WHERE player_id = :user");
-	$statement->bindValue(':user', $who);
-	$statement->execute();
-
-	return $statement->fetchColumn();
-}
-
-function changeHealth($who, $amount) {
-	$amount = (int)$amount;
-
-	if (abs($amount) > 0) {
-		DatabaseConnection::getInstance();
-		$statement = DatabaseConnection::$pdo->prepare("UPDATE players SET health = health + ".
-		   "CASE WHEN health + :amount < 0 THEN health*(-1) ELSE :amount2 END ".
-		   "WHERE player_id = :user");
-		$statement->bindValue(':user', $who);
-		$statement->bindValue(':amount', $amount);
-		$statement->bindValue(':amount2', $amount);
-		$statement->execute();
-	}
-
-	return getHealth($who);
-}
-
-function subtractHealth($who, $amount) {
-	return changeHealth($who, ((-1)*$amount));
-}
-
-// ************************************
-// ************************************
-
-// ************************************
-// ********* BOUNTY FUNCTIONS *********
-// ************************************
-
 /**
  * Change a bounty
  * @param int $who A character id to change the bounty of
@@ -124,9 +73,6 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 	}
 }
 
-// ************************************
-// ************************************
-
 /*
  * Returns a comma-seperated string of states based on the statuses of the target.
  * @param array $statuses status array
@@ -149,6 +95,7 @@ function get_status_list($target=null) {
 		} else {
 			$states[] = 'Healthy';
 		}
+
         // The visibly viewable statuses.
 		if ($target->hasStatus(STEALTH)) { $states[] = 'Stealthed'; }
 		if ($target->hasStatus(POISON)) { $states[] = 'Poisoned'; }
@@ -158,9 +105,9 @@ function get_status_list($target=null) {
 		if ($target->hasStatus(STR_UP2)) { $states[] = 'Strength+'; }
 
 		// If any of the shield skills are up, show a single status state for any.
-		if($target->hasStatus(FIRE_RESISTING) || $target->hasStatus(INSULATED) || $target->hasStatus(GROUNDED)
+		if ($target->hasStatus(FIRE_RESISTING) || $target->hasStatus(INSULATED) || $target->hasStatus(GROUNDED)
 		    || $target->hasStatus(BLESSED) || $target->hasStatus(IMMUNIZED)
-		    || $target->hasStatus(ACID_RESISTING)){
+		    || $target->hasStatus(ACID_RESISTING)) {
 		    $states[] = 'Shielded';
 		}
 	}

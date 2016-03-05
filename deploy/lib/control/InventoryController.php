@@ -369,7 +369,7 @@ class InventoryController {
 	                }
 
 	                if ($item->hasEffect('death')) {
-	                    $targetObj->vo->health = setHealth($target_id, 0);
+	                    $targetObj->death();
 
 	                    $resultMessage = "The life force drains from __TARGET__ and they drop dead before your eyes!";
 	                    $victim_alive  = false;
