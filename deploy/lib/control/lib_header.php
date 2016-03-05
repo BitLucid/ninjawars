@@ -4,10 +4,14 @@ use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
-  *  Creates all the environmental variables, with no outputting.
-**/
+ * Creates all the environmental variables, with no outputting.
+ *
+ * Places much of the user info into the global namespace.
+ */
 function init($private, $alive) {
 	global $today;
+	global $username;
+	global $char_id;
 
 	// ******************** Declared variables *****************************
 	$today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
@@ -15,13 +19,6 @@ function init($private, $alive) {
 
 	update_activity_info(); // *** Updates the activity of the page viewer in the database.
 
-	return globalize_user_info($private, $alive); // Sticks lots of user info into the global namespace for backwards compat.
-}
-
-// Places much of the user info into the global namespace.
-function globalize_user_info($private=true, $alive=true) {
-	global $username;
-	global $char_id;
 	$error = null;
 	$char_id = self_char_id(); // Will default to null.
 
@@ -37,9 +34,7 @@ function globalize_user_info($private=true, $alive=true) {
 		$username = $player->name(); // Set the global username.
 		$player_id = $player->player_id;
 
-		assert('isset($player_id)');
-
-		if ($alive) { // *** That page requires the player to be alive to view it.
+		if ($alive) { // That page requires the player to be alive to view it
 			if (!$player->health()) {
 				$error = 'dead';
 			} else if ($player->hasStatus(FROZEN)) {
@@ -53,7 +48,7 @@ function globalize_user_info($private=true, $alive=true) {
 
 /**
  * Update the information of a viewing observer, or player.
-**/
+ */
 function update_activity_info() {
 	// ******************** Usage Information of the browser *********************
 	Request::setTrustedProxies(Constants::$trusted_proxies);

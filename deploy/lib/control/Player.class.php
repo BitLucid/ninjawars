@@ -92,12 +92,16 @@ class Player implements Character {
 		return $this->vo->goals;
 	}
 
-	// Return simple, comma separated string of traits
+    /**
+     * Return simple, comma separated string of traits
+     */
 	public function traits() {
 		return $this->vo->traits;
 	}
 
-	// Store new goals
+    /**
+     * Store new goals
+     */
 	public function set_goals($goals){
 		$this->vo->goals = $goals;
 	}
@@ -125,7 +129,9 @@ class Player implements Character {
 		$this->vo->traits = $traits;
 	}
 
-	// Actively pulls the latest status data from the db.
+    /**
+     * Actively pulls the latest status data from the db.
+     */
 	protected function queryStatus() {
 		$id = $this->id();
 		if ($id) {
@@ -178,7 +184,9 @@ class Player implements Character {
 		}
 	}
 
-	// Standard damage output.
+    /**
+     * Standard damage output.
+     */
 	public function damage(Character $enemy=null){
 		return rand(1, $this->max_damage($enemy));
 	}
@@ -188,8 +196,10 @@ class Player implements Character {
 		return $dam;
 	}
 
-	// The maximum damage.
-	public function maxDamage(){
+    /**
+     * The maximum damage.
+     */
+	public function maxDamage() {
 		return $this->damage(); // Currently they're the same, though they probably shouldn't be.
 	}
 
@@ -458,12 +468,16 @@ class Player implements Character {
 		return $this->subtractHealth($actual_damage);
 	}
 
-	// Simple wrapper for changeHealth
+    /**
+     * Simple wrapper for changeHealth
+     */
 	public function addHealth($amount) {
 		return $this->changeHealth($amount);
 	}
 
-	// Simple wrapper for subtractive action.
+    /**
+     * Simple wrapper for subtractive action.
+     */
 	public function subtractHealth($amount) {
 		return $this->changeHealth((-1*(int)$amount));
 	}
@@ -489,17 +503,20 @@ class Player implements Character {
         return $this->vo->health;
     }
 
-	// Pull the current health.
+    /**
+     * Pull the current health.
+     */
 	public function health() {
 		$sel = "SELECT health from players where player_id = :id";
-		return query_item($sel, [':id'=>[$this->id(), PDO::PARAM_INT]]);
+		return max(0, query_item($sel, [':id'=>[$this->id(), PDO::PARAM_INT]]));
 	}
 
-	public function set_health($health){
-		if($health < 0){
+	public function set_health($health) {
+		if ($health < 0) {
 			throw new \InvalidArgumentException('Health cannot be made negative.');
 		}
-		if((int) $health != $health){
+
+		if ((int) $health != $health) {
 			throw new \InvalidArgumentException('Health must be a whole number.');
 		}
 
@@ -516,7 +533,9 @@ class Player implements Character {
 		);
 	}
 
-	// This char's max health
+    /**
+     * This char's max health
+     */
 	public function max_health() {
 		return self::maxHealthByLevel($this->level());
 	}
