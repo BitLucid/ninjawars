@@ -4,6 +4,7 @@ require_once(LIB_ROOT.'control/Skill.php');
 require_once(LIB_ROOT.'control/CloneKill.class.php');
 
 use NinjaWars\core\control\AttackLegal;
+
 /*
  * Deals with the skill based attacks, and status effects.
  *
@@ -378,7 +379,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			$added_bounty = floor($level_check / 5);
 
 			if ($added_bounty > 0) {
-				addBounty($char_id, ($added_bounty * 25));
+				changeBounty($char_id, ($added_bounty * 25));
 			} else { // Can only receive bounty if you're not getting it on your own head.
 				if ($bounty = rewardBounty($char_id, $target->vo->player_id)) {
 

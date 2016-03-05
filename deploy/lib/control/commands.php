@@ -27,13 +27,6 @@ function changeBounty($who, $amount) {
 	return $char->bounty();
 }
 
-/**
- * @param int $who A character id to change the bounty of
- */
-function addBounty($who, $amount) {
-	return changeBounty($who, $amount);
-}
-
 function rewardBounty($bounty_to, $bounty_on) {
     $char = Player::find($bounty_on);
 	$bounty = $char->bounty();
@@ -66,7 +59,7 @@ function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
 		sendMessage("Village Doshin", $username, $bounty_msg);
 	} else if ($bountyIncrease > 0) {
 		// *** If Defender has no bounty and there was a level difference. ***
-		addBounty($user_id, $bountyIncrease);
+		changeBounty($user_id, $bountyIncrease);
 		return "Your victim was much weaker than you. The townsfolk are angered. A bounty of $bountyIncrease gold has been placed on your head!";
 	} else {
 		return null;
