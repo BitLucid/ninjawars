@@ -323,6 +323,7 @@ class NpcController { //extends controller
             }
 
             if ($player->health() <= 0) { // FINAL CHECK FOR DEATH
+                $player->death();
                 $health = false;
                 sendMessage("SysMsg", $player->name(), "DEATH: You have been killed by a $victim on $today");
             }

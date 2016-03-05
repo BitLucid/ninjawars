@@ -323,6 +323,8 @@ class Player implements Character {
 	public function death() {
 		$this->resetStatus();
 		$this->subtractHealth($this->health());
+        $this->set_health(0);
+        $this->save();
 	}
 
 	public function email() {
@@ -466,22 +468,26 @@ class Player implements Character {
 		return $this->changeHealth((-1*(int)$amount));
 	}
 
-	// To subtract just send in a negative integer.
-	public function changeHealth($add_amount) {
-		$amount = (int)$add_amount;
-		// Only change on positive or negative changes, not zero.
-		if (abs($amount) > 0) {
-			$id = $this->id();
-			// Set health = 0 when it's less than zero, otherwise modify it.
-			$up = "UPDATE players SET health = 
-				CASE WHEN health + :amount < 0 THEN 0 ELSE health + :amount2 END 
-				WHERE player_id  = :player_id";
-			query($up, array(':player_id'=>array($id, PDO::PARAM_INT),
-				':amount'=>$amount, ':amount2'=>$amount));
-			$this->vo->health = $this->vo->health + $amount;
-		}
-		return $this->health(); // Return the current health.
-	}
+    /**
+     * To subtract just send in a negative integer
+     */
+	public function changeHealth($delta) {
+		$amount = (int)$delta;
+
+		if (abs($amount) > 0) { // Only change on non-zero input
+			$this->vo->health = max(0, $this->vo->health + $amount);
+
+            query(
+                "UPDATE players SET health = :amount WHERE player_id  = :player_id",
+                [
+                    ':player_id' => [$this->id(), PDO::PARAM_INT],
+                    ':amount'    => $this->vo->health,
+                ]
+            );
+        }
+
+        return $this->vo->health;
+    }
 
 	// Pull the current health.
 	public function health() {
@@ -496,7 +502,8 @@ class Player implements Character {
 		if((int) $health != $health){
 			throw new \InvalidArgumentException('Health must be a whole number.');
 		}
-		return $this->vo->health = $health;
+
+		return $this->vo->health = max(0, $health);
 	}
 
 	/**
