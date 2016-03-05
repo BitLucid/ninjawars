@@ -20,6 +20,9 @@ use NinjaWars\core\data\AccountFactory;
  * @subpackage	player
  * @author      Tchalvak <ninjawarsTchalvak@gmail.com>
  * @link        http://ninjawars.net/player.php?player=tchalvak
+ * @property-read int health
+ * @property-read int kills
+ * @property-read int gold
  */
 class Player implements Character {
 	public $player_id;
@@ -61,6 +64,9 @@ class Player implements Character {
 		return $this->vo->uname;
 	}
 
+    /**
+     * @return int Player_id
+     */
 	public function id() {
 		return $this->vo->player_id;
 	}
@@ -94,6 +100,7 @@ class Player implements Character {
 
     /**
      * Return simple, comma separated string of traits
+     * @return array
      */
 	public function traits() {
 		return $this->vo->traits;
@@ -106,6 +113,9 @@ class Player implements Character {
 		$this->vo->goals = $goals;
 	}
 
+    /**
+     * In-character char description
+     */
 	public function set_description($desc){
 		$this->vo->description = $desc;
 	}
@@ -204,7 +214,6 @@ class Player implements Character {
 	}
 
     /**
-     * Old Wrapper function name
      */
 	public function getStrength() {
 		return $this->strength();
@@ -316,11 +325,17 @@ class Player implements Character {
 
 	/**
 	 * Checks whether the character is still active.
+     * @return boolean
 	**/
 	public function isActive() {
 		return (bool) $this->vo->active;
 	}
 
+    /**
+     * @return boolean
+     * hardcoded hack at the moment
+     * @note To be replaced by an in-database account toggle eventually
+     */
 	public function isAdmin() {
 		$name = strtolower($this->name());
 		if ($name == 'tchalvak' || $name == 'beagle' || $name == 'suavisimo') {
@@ -330,13 +345,19 @@ class Player implements Character {
 		return false;
 	}
 
+    /**
+     *
+     * Cleanup player to death state
+     */
 	public function death() {
 		$this->resetStatus();
-		$this->subtractHealth($this->health());
         $this->set_health(0);
         $this->save();
 	}
 
+    /**
+     * @deprecated email for account of player
+     */
 	public function email() {
 		$account = account_info_by_char_id($this->id());
 		return $account['active_email'];
@@ -450,6 +471,7 @@ class Player implements Character {
 
 	/**
 	 * Heal the char with in the limits of their max
+     * @return int
 	 */
 	public function heal($amount) {
 		$hurt = $this->is_hurt_by();
@@ -461,6 +483,7 @@ class Player implements Character {
 	/**
 	 * Do some damage to the character
 	 * @note for now this immediately hits the database
+     * @return int
 	 */
 	public function harm($damage) {
 		// Do at most the current health in damage
@@ -470,6 +493,7 @@ class Player implements Character {
 
     /**
      * Simple wrapper for changeHealth
+     * @return int
      */
 	public function addHealth($amount) {
 		return $this->changeHealth($amount);
@@ -477,6 +501,7 @@ class Player implements Character {
 
     /**
      * Simple wrapper for subtractive action.
+     * @return int
      */
 	public function subtractHealth($amount) {
 		return $this->changeHealth((-1*(int)$amount));
@@ -484,6 +509,8 @@ class Player implements Character {
 
     /**
      * To subtract just send in a negative integer
+     * @deprecated use set_health instead
+     * @return int
      */
 	public function changeHealth($delta) {
 		$amount = (int)$delta;
@@ -505,12 +532,16 @@ class Player implements Character {
 
     /**
      * Pull the current health.
+     * @return int
      */
 	public function health() {
 		$sel = "SELECT health from players where player_id = :id";
 		return max(0, query_item($sel, [':id'=>[$this->id(), PDO::PARAM_INT]]));
 	}
 
+    /**
+     * @return int
+     */
 	public function set_health($health) {
 		if ($health < 0) {
 			throw new \InvalidArgumentException('Health cannot be made negative.');
@@ -535,6 +566,7 @@ class Player implements Character {
 
     /**
      * This char's max health
+     * @return int
      */
 	public function max_health() {
 		return self::maxHealthByLevel($this->level());
@@ -552,16 +584,22 @@ class Player implements Character {
 		return $this->ip;
 	}
 
+    /**
+     * @return int difficulty rating
+     */
 	public function difficulty(){
 		return 10 + $this->strength() * 2 + $this->maxDamage()/* + $this->isArmored() * 5*/;
 	}
 
+    /**
+     * @return int random private number unique to character
+     */
 	public function getVerificationNumber(){
 		return $this->vo->verification_number;
 	}
 
     /**
-     * Get the avatar url for a pc
+     * @return string url for the gravatar of pc
      */
     public function avatarUrl() {
         if (!isset($this->avatar_url) || $this->avatar_url === null) {
@@ -661,6 +699,7 @@ class Player implements Character {
 
      /**
      * Check whether the player is the leader of their clan.
+     * @return boolean
      */
     public function isClanLeader() {
         return (($clan = ClanFactory::clanOfMember($this->id())) && $this->id() == $clan->getLeaderID());
@@ -668,6 +707,7 @@ class Player implements Character {
 
     /**
      * Set the character's class, using the identity.
+     * @return string|null error string if fails
      */
     public function setClass($new_class) {
         if (!$this->isValidClass(strtolower($new_class))) {
