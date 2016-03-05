@@ -52,6 +52,9 @@ class Player implements Character {
 		}
 	}
 
+    /**
+     * @return string
+     */
 	public function __toString() {
 		return $this->name();
 	}
@@ -60,6 +63,9 @@ class Player implements Character {
 		return $this->vo->$name;
 	}
 
+    /**
+     * @return string
+     */
 	public function name() {
 		return $this->vo->uname;
 	}
@@ -71,29 +77,45 @@ class Player implements Character {
 		return $this->vo->player_id;
 	}
 
+    /**
+     * @return int level
+     */
 	public function level() {
 		return $this->vo->level;
 	}
 
+    /**
+     * @return int string
+     */
 	public function description() {
 		return $this->vo->description;
 	}
 
 	/**
 	 * Get out of character message
+     * @return string
 	**/
 	public function message() {
 		return $this->vo->messages;
 	}
 
+    /**
+     * @return string
+     */
 	public function beliefs() {
 		return $this->vo->beliefs;
 	}
 
+    /**
+     * @return string
+     */
 	public function instincts() {
 		return $this->vo->instincts;
 	}
 
+    /**
+     * @return string
+     */
 	public function goals() {
 		return $this->vo->goals;
 	}
@@ -127,14 +149,23 @@ class Player implements Character {
 		$this->vo->messages = $message;
 	}
 
+    /**
+     *
+     */
 	public function set_instincts($in){
 		$this->vo->instincts = $in;
 	}
 
+    /**
+     *
+     */
 	public function set_beliefs($be){
 		$this->vo->beliefs = $be;
 	}
 
+    /**
+     * Pass in traits as a raw comma separated string
+     */
 	public function set_traits($traits){
 		$this->vo->traits = $traits;
 	}
@@ -156,6 +187,9 @@ class Player implements Character {
 		return $this->queryStatus();
 	}
 
+    /**
+     * Adds a defined numeric status constant to the binary string of statuses
+     */
 	public function addStatus($p_status) {
 		if ((int)$p_status == $p_status && $p_status != 0) {
 			if ($p_status < 0) {
@@ -173,6 +207,9 @@ class Player implements Character {
 		}
 	}
 
+    /**
+     * Resets the binary status info to 0/none
+     */
 	public function resetStatus() {
 		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = 0 WHERE player_id = :player');
 		$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
@@ -181,6 +218,9 @@ class Player implements Character {
 		$this->vo->status = 0;
 	}
 
+    /**
+     * Remove a numeric status from the binary string of status toggles.
+     */
 	public function subtractStatus($p_status) {
 		$status = self::validStatus($p_status); // Filter it.
 		if ((int)$status == $status && $status > 0) {
@@ -190,17 +230,23 @@ class Player implements Character {
 			$statement->bindValue(':status2', $status, PDO::PARAM_INT);
 			$statement->execute();
 
-			$this->vo->status = null; // *** Ensures that the next call to hasStatus pulls the updated status from the DB ***
+			$this->vo->status = null; 
+            // *** Ensures that the next call to hasStatus pulls the updated status from the DB ***
 		}
 	}
 
     /**
-     * Standard damage output.
+     * Standard damage output from 1 to max
+     * @return int
      */
 	public function damage(Character $enemy=null){
 		return rand(1, $this->max_damage($enemy));
 	}
 
+    /**
+     * Max damage capability of a character
+     * @return int
+     */
 	public function max_damage(Character $enemy=null){
 		$dam = $this->strength() * 5 + $this->speed();
 		return $dam;
@@ -208,17 +254,22 @@ class Player implements Character {
 
     /**
      * The maximum damage.
+     * @todo this is bad, 'cause damage is random, whereas maxDamage should not be.
      */
 	public function maxDamage() {
 		return $this->damage(); // Currently they're the same, though they probably shouldn't be.
 	}
 
     /**
+     * @return int
      */
 	public function getStrength() {
 		return $this->strength();
 	}
 
+    /**
+     * @return int
+     */
 	public function strength() {
 		$str = $this->vo->strength;
 		if ($this->hasStatus(WEAKENED)) {
@@ -375,6 +426,9 @@ class Player implements Character {
         return $this->vo->turns = $turns;
     }
 
+    /** 
+     * @deprecated
+     */
     public function changeTurns($amount) {
         $amount = (int) $amount;
 
@@ -389,6 +443,9 @@ class Player implements Character {
         return $this->get_turns();
     }
 
+    /** 
+     * @deprecated
+     */
     public function subtractTurns($amount) {
         $diff = -1*abs($amount);
 
@@ -397,6 +454,7 @@ class Player implements Character {
 
     /**
      * Pull a character's turns.
+     * @deprecated
      */
     public function get_turns() {
         return query_item("select turns from players where player_id = :char_id", array(':char_id'=>$this->id()));
@@ -465,6 +523,9 @@ class Player implements Character {
         return (array) $this->vo;
     }
 
+    /**
+     * @return Clan
+     */
     public function getClan() {
         return ClanFactory::clanOfMember($this->id());
     }
@@ -494,6 +555,7 @@ class Player implements Character {
     /**
      * Simple wrapper for changeHealth
      * @return int
+     * @deprecated use set_health instead
      */
 	public function addHealth($amount) {
 		return $this->changeHealth($amount);
@@ -502,6 +564,7 @@ class Player implements Character {
     /**
      * Simple wrapper for subtractive action.
      * @return int
+     * @deprecated use set_health instead
      */
 	public function subtractHealth($amount) {
 		return $this->changeHealth((-1*(int)$amount));
@@ -649,7 +712,7 @@ class Player implements Character {
 
 	/**
 	 * Find a player by primary key
-	 * @return Player
+	 * @return Player|null
 	 */
 	public static function find($id){
 		if(!is_numeric($id) || !(int) $id){
@@ -668,7 +731,7 @@ class Player implements Character {
 
     /**
      * Find player by name
-     * @return Player
+     * @return Player|null
      *
      */
     public static function findByName($name){
@@ -689,6 +752,7 @@ class Player implements Character {
 
     /**
      * query the recently active players
+     * @return array
      */
     public static function findActive($limit=5, $alive_only=true) {
         $where_cond = ($alive_only ? ' AND health > 0' : '');
@@ -746,6 +810,7 @@ class Player implements Character {
 
     /**
      * Calculate a max health by a level
+     * @return int
      */
     public static function maxHealthByLevel($level) {
         $health_per_level = 25;
@@ -756,6 +821,7 @@ class Player implements Character {
      * The number of kills needed to level up to the next level.
      *
      * 5 more kills in cost for every level you go up.
+     * @return int
      */
     public function killsRequiredForNextLevel() {
        return $this->level()*5;
@@ -763,6 +829,7 @@ class Player implements Character {
 
     /**
      * Takes in a Character and adds kills to that character.
+     * @return int
      */
     public function addKills($amount) {
         return $this->changeKills((int)abs($amount));
@@ -770,6 +837,7 @@ class Player implements Character {
 
     /**
      * Takes in a Character and removes kills from that character.
+     * @return int
      */
     public function subtractKills($amount) {
         return $this->changeKills(-1*((int)abs($amount)));
@@ -777,6 +845,7 @@ class Player implements Character {
 
     /**
      * Change the kills amount of a char, and levels them up when necessary.
+     * @return int
      */
     private function changeKills($amount) {
         $amount = (int)$amount;
@@ -860,6 +929,10 @@ class Player implements Character {
         }
     }
 
+    /**
+     * @return boolean|int
+     * @todo abstract this to only use a single return type
+     */
     public static function validStatus($dirty) {
         if ((int)$dirty == $dirty) {
             return (int) $dirty;
