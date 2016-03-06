@@ -180,16 +180,6 @@ function account_id() {
 }
 
 /**
- * Pull the account_ids for a certain character
- *
- * @return int
- */
-function account_id_by_ninja_id($ninja_id){
-	return query_item('SELECT account_id from accounts JOIN account_players ON account_id = _account_id
-		where _player_id = :ninja_id', array(':ninja_id'=>$ninja_id));
-}
-
-/**
  * Check whether someone is logged into their account.
  *
  * @return boolean

@@ -161,12 +161,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     function testGetNinjaByName() {
         $ninja_id = ninja_id($this->test_ninja_name);
         $char_id = get_char_id($this->test_ninja_name);
-        $account_id = account_id_by_ninja_id(ninja_id($this->test_ninja_name));
         $this->assertTrue(positive_int($ninja_id)>0);
         $this->assertTrue(positive_int($char_id)>0);
         $this->assertTrue($ninja_id == $char_id);
-        $this->assertTrue($account_id>0);
-        $this->assertTrue(positive_int($account_id)>0);
     }
 
     /**
@@ -177,15 +174,12 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertTrue(positive_int($ninja_id)>0);
         $char_id = get_char_id($this->test_ninja_name);
         $this->assertTrue(positive_int($char_id)>0);
-        $account_id = account_id_by_ninja_id(ninja_id($this->test_ninja_name));
         $account_operational = query_item(
             'SELECT operational FROM accounts JOIN account_players ON account_id = _account_id WHERE _player_id = :char_id',
             [':char_id'=>$char_id]
         );
 
         $this->assertTrue($ninja_id == $char_id);
-        $this->assertTrue($account_id>0);
-        $this->assertTrue(positive_int($account_id)>0);
         $this->assertTrue($account_operational, 'Account is not being set as operational by default when created');
     }
 
