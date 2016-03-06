@@ -44,15 +44,9 @@ if (defined('DEBUG') && DEBUG) {
 	require_once(LIB_ROOT.'control/lib_dev.php');
 }
 
-// Include all the commands, which eventually should be broken up.
-require_once(LIB_ROOT.'control/commands.php');
+require_once(LIB_ROOT.'control/lib_header.php');
 require_once(LIB_ROOT.'control/lib_events.php');
 require_once(LIB_ROOT.'control/lib_crypto.php');
-require_once(LIB_ROOT.'control/lib_auth.php'); // Authentication and activity.
-
-// Game objects
-require_once(LIB_ROOT . 'control/Player.class.php');
-
-// Include the functions abstracted out of the header and footer
-require_once(LIB_ROOT.'control/lib_header.php');
+require_once(LIB_ROOT.'control/lib_auth.php');
 require_once(LIB_ROOT.'control/lib_inventory.php');
+require_once(LIB_ROOT.'control/Player.class.php');

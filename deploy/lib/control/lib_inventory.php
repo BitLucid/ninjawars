@@ -110,3 +110,77 @@ function removeItem($who, $item, $quantity=1) {
 	$statement->bindValue(':quantity', $quantity);
 	$statement->execute();
 }
+
+function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
+    $user = Player::findByName($user_id);
+    $defender = Player::findByName($defender_id);
+
+	if ($defender->bounty > 0) {
+        $user->set_gold($user->gold + $defender->bounty);
+        $user->save();
+
+        $defender->set_bounty(0);
+        $defender->save();
+
+		// *** Reward bounty whenever available. ***
+		return "You have received the {$defender->bounty} gold bounty on $defender's head for your deeds!";
+		$bounty_msg = "You have valiantly slain the wanted criminal, $defender! For your efforts, you have been awarded {$defender->bounty} gold!";
+		sendMessage("Village Doshin", $username, $bounty_msg);
+    } else {
+        // *** Bounty Increase equation: (attacker's level - defender's level) / an increment, rounded down ***
+        $levelRatio     = floor(($user->level - $defender->level) / 10);
+        $bountyIncrease = min(25, max($levelRatio * 25, 0));	//Avoids negative increases, max of 30 gold, min of 0
+
+        if ($bountyIncrease > 0) {
+		// *** If Defender has no bounty and there was a level difference. ***
+		$user->set_bounty($user->bounty + $bountyIncrease);
+        $user->save();
+
+		return "Your victim was much weaker than you. The townsfolk are angered. A bounty of $bountyIncrease gold has been placed on your head!";
+        } else {
+            return null;
+        }
+    }
+}
+
+/*
+ * Returns a comma-seperated string of states based on the statuses of the target.
+ * @param array $statuses status array
+ * @param string $target the target, username if self targetting.
+ * @return string
+ *
+ */
+function get_status_list($target=null) {
+	$states = array();
+	$target = (isset($target) && (int)$target == $target ? $target : self_char_id());
+
+	// Default to showing own status.
+	$target = new Player($target);
+
+	if ($target->vo->health < 1) {
+		$states[] = 'Dead';
+	} else { // *** Other statuses only display if not dead.
+		if ($target->vo->health < 80) {
+			$states[] = 'Injured';
+		} else {
+			$states[] = 'Healthy';
+		}
+
+        // The visibly viewable statuses.
+		if ($target->hasStatus(STEALTH)) { $states[] = 'Stealthed'; }
+		if ($target->hasStatus(POISON)) { $states[] = 'Poisoned'; }
+		if ($target->hasStatus(WEAKENED)) { $states[] = 'Weakened'; }
+		if ($target->hasStatus(FROZEN)) { $states[] = 'Frozen'; }
+		if ($target->hasStatus(STR_UP1)) { $states[] = 'Buff'; }
+		if ($target->hasStatus(STR_UP2)) { $states[] = 'Strength+'; }
+
+		// If any of the shield skills are up, show a single status state for any.
+		if ($target->hasStatus(FIRE_RESISTING) || $target->hasStatus(INSULATED) || $target->hasStatus(GROUNDED)
+		    || $target->hasStatus(BLESSED) || $target->hasStatus(IMMUNIZED)
+		    || $target->hasStatus(ACID_RESISTING)) {
+		    $states[] = 'Shielded';
+		}
+	}
+
+	return $states;
+}
