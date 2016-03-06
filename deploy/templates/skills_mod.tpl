@@ -80,7 +80,7 @@
 
 	{if $reuse}
 <div class="skillReload glassbox">
-	<a class='attack-again thick btn btn-primary' href="/skill/use/{$act|escape:'url'}/{if $target_id}{$target_id|escape:'url'}/{/if}">
+	<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $target_id}{$target_id|escape:'url'}/{/if}">
 		Use {$act} again
 	</a>
 </div>
