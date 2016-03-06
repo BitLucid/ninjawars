@@ -17,6 +17,7 @@ class SkillController {
 	const PRIV  = true;
 
 	const HEAL_PER_LEVEL = 10;
+	const MAX_HARMONIZE = 100;
 
 	/**
 	 * Initialize with any external state if necessary
@@ -157,6 +158,24 @@ class SkillController {
 		return $res;
 	}
 
+	/** 
+	 * Use up some ki to heal yourself.
+	 */
+	private function harmonizeChakra(Player $char){
+		// Heal at most 100 or ki available or hurt by AND at least 0
+		$heal_for = (int) max(0, min(self::MAX_HARMONIZE, $char->is_hurt_by(), $char->ki()));
+		if($heal_for > 0){
+			// If there's anything to heal, try.
+
+
+			// Subtract the ki used for healing.
+			$char->heal($heal_for);
+			$char->set_ki($char->ki() - $heal_for);
+			$char->save();
+		}
+		return $char;
+	}
+
 	/**
 	 * Use, the skills_mod equivalent
 	 * @note Test with urls like: 
@@ -235,7 +254,7 @@ class SkillController {
 		} else {
 			// For target that doesn't exist, e.g. http://nw.local/skill/use/Sight/zigzlklkj
 			error_log('Info: Attempt to use a skill on a target that did not exist.');
-			return new RedirectResponse(WEB_ROOT.'skill/?error='.url('Invalid Target for skill.'));
+			return new RedirectResponse(WEB_ROOT.'skill/?error='.url('Invalid target for skill ['.url($act).'].'));
 		}
 
 		$covert           = false;
@@ -389,27 +408,9 @@ class SkillController {
 						$new_health = $target->heal($heal_points); // Won't heal more than possible
 						$healed_by = $new_health - $original_health;
 					} else {
-						// Harmonize some chakra!
-
-						// Use up some ki to heal yourself.
-						function harmonize_chakra(Player $char){
-							// Heal at most 100 or ki available or hurt by AND at least 0
-							$heal_for = (int) max(0, min(100, $char->is_hurt_by(), $char->ki()));
-							if($heal_for > 0){
-								// If there's anything to heal, try.
-
-
-								// Subtract the ki used for healing.
-								$char->heal($heal_for);
-								$char->set_ki($char->ki() - $heal_for);
-								$char->save();
-							}
-							return $char;
-						}
-
 						$start_health = $player->health();
 						// Harmonize those chakra!
-						$player = harmonize_chakra($player);
+						$player = $this->harmonizeChakra($player);
 						$healed_by = $player->health() - $start_health;
 						$ki_cost = $healed_by;
 					}
