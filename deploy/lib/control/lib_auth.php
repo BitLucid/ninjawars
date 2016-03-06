@@ -115,51 +115,6 @@ function login_user($dirty_user, $p_pass) {
 }
 
 /**
- * Login a user via a pre-authenticated oauth id.
- *
- * @return array
- */
-function login_user_by_oauth($oauth_id, $oauth_provider){
-	$account_info = query_row('select players.player_id, players.uname, accounts.account_id
-		from players left join account_players on players.player_id = account_players._player_id
-		left join accounts on accounts.account_id = account_players._account_id
-		where accounts.oauth_provider = :oauth_provider and accounts.oauth_id = :oauth_id and accounts.operational limit 1',
-		array(':oauth_provider'=>$oauth_provider, ':oauth_id'=>$oauth_id));
-
-	$username    = $account_info['uname'];
-	$player_id   = $account_info['player_id'];
-	$account_id  = $account_info['account_id'];
-	$success     = false;
-	$login_error = "Sorry, that $oauth_provider account is not yet connected to a ninjawars account.";
-
-	if ($username && $player_id && $account_id) {
-		_login_user($username, $player_id, $account_id);
-		$success     = true;
-		$login_error = null;
-	}
-
-	return ['success' => $success, 'login_error' => $login_error];
-}
-
-/**
- * Add oauth to an account.
- *
- * @return boolean
- */
-function add_oauth_to_account($account_id, $oauth_id, $oauth_provider='facebook') {
-    $res = query(
-        'update accounts set oauth_id = :oauth_id, oauth_provider = :oauth_provider where account_id = :account_id',
-        [
-            ':oauth_id'       => $oauth_id,
-            ':oauth_provider' => $oauth_provider,
-            ':account_id'     => $account_id
-        ]
-    );
-
-	return ($res->rowCount() > 0);
-}
-
-/**
  * Sets the last logged in date equal to now.
  *
  * @return int
