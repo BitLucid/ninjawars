@@ -326,31 +326,9 @@ function get_user_id($p_name=false) {
  *
  * @return int|null
  */
-function get_char_id($p_name=false) {
-	if ($p_name === false) {
-		if (defined('DEBUG') && DEBUG){
-			nw_error('Improper call to get_char_id with a null argument.  For clarity reasons, this is now deprecated, use self_char_id() instead.');
-
-		}
-		return self_char_id(); // TODO: Remove this use case, it's troublesome.
-	} else {
-		if ($p_name) {
-			$sql = "SELECT player_id FROM players WHERE lower(uname) = :find";
-			return query_item($sql, array(':find'=>strtolower($p_name)));
-		} else {
-			return null; // a blank name came in, or a name
-		}
-	}
-}
-
-/**
- * Get the ninja id for a ninja name
- *
- * @return int
- */
-function ninja_id($name){
-	$find = 'select player_id from players where lower(uname) = :name';
-	return query_item($find, array(':name'=>strtolower($name)));
+function get_char_id($p_name) {
+    $sql = "SELECT player_id FROM players WHERE lower(uname) = :find";
+    return query_item($sql, array(':find'=>strtolower($p_name)));
 }
 
 /**
@@ -359,13 +337,13 @@ function ninja_id($name){
  * @return void
  */
 function update_activity_log($p_playerID) {
-	// (See update_activity_info in lib_header for the function that updates all the detailed info.)
-	DatabaseConnection::getInstance();
-	Request::setTrustedProxies(Constants::$trusted_proxies);
-	$request = Request::createFromGlobals();
-	$user_ip = $request->getClientIp();
-	query("UPDATE players SET days = 0 WHERE player_id = :player", [':player'=>$p_playerID]);
-	query("Update accounts set last_ip = :ip, last_login = now() where account_id = (select _account_id from account_players join players on _player_id = player_id where player_id = :pid)",
-		array(':ip'=>$user_ip, ':pid'=>$p_playerID));
+    // (See update_activity_info in lib_header for the function that updates all the detailed info.)
+    DatabaseConnection::getInstance();
+    Request::setTrustedProxies(Constants::$trusted_proxies);
+    $request = Request::createFromGlobals();
+    $user_ip = $request->getClientIp();
+    query("UPDATE players SET days = 0 WHERE player_id = :player", [':player'=>$p_playerID]);
+    query("Update accounts set last_ip = :ip, last_login = now() where account_id = (select _account_id from account_players join players on _player_id = player_id where player_id = :pid)",
+        array(':ip'=>$user_ip, ':pid'=>$p_playerID));
 }
 
