@@ -610,7 +610,7 @@ class ClanController { //extends Controller
         $confirm = $confirmStatement->fetchColumn();
 
         // These ampersands get encoded later.
-        $url = message_url("clan.php?joiner=$user_id&command=review&confirmation=$confirm", 'Confirm Request');
+        $url = "[href:clan/review/?joiner=$user_id&confirmation=$confirm|Confirm Request]";
 
         $join_request_message = 'CLAN JOIN REQUEST: '.htmlentities($username)." has sent a request to join your clan.
             If you wish to allow this ninja into your clan click the following link:

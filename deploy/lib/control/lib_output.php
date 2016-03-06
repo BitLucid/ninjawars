@@ -40,11 +40,6 @@ function markdown($p_input)
 	return preg_replace_callback($pattern, "markdownCallback", $p_input);
 }
 
-function message_url($url, $text){
-    // Might should exclude external urls here, and potentially handle url encoding.
-    return "[href:".$url."|".$text."]";
-}
-
 // Change this to default to toHtml.
 
 // Replaces occurances of http://whatever with links (in blank tab).
