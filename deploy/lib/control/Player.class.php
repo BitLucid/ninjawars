@@ -709,8 +709,28 @@ class Player implements Character {
      * Calculate a max health by a level
      */
     public static function maxHealthByLevel($level) {
-        $health_per_level = 25;
-        return 150 + round($health_per_level*($level-1));
+        return NEW_PLAYER_INITIAL_HEALTH + round(LEVEL_UP_HP_RAISE*($level-1));
+    }
+
+    /**
+     * Calculate a base str by level
+     */
+    public static function baseStrengthByLevel($level) {
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+    }
+
+    /**
+     * Calculate a base speed by level
+     */
+    public static function baseSpeedByLevel($level) {
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+    }
+
+    /**
+     * Calculate a base stamina by level
+     */
+    public static function baseStaminaByLevel($level) {
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 
     /**

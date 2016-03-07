@@ -34,6 +34,11 @@ define('MAX_PLAYER_LEVEL', 350);
 // Defines for avatar options.
 define('GRAVATAR', 1);
 
+define('NEW_PLAYER_INITIAL_STATS', 5);
+define('NEW_PLAYER_INITIAL_HEALTH', 150);
+define('LEVEL_UP_STAT_RAISE', 5);
+define('LEVEL_UP_HP_RAISE', 25);
+
 // Constants for deity scripts
 define('MIN_PLAYERS_FOR_UNCONFIRM', 1000);
 define('MIN_DAYS_FOR_UNCONFIRM',    60);

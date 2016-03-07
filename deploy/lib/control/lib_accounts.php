@@ -93,12 +93,17 @@ function create_ninja($send_name, $params=array()) {
 	$preconfirm  = (int) $params['preconfirm'];
 	$confirm     = (int) $params['confirm'];
 
+	$initial_hp = Player::maxHealthByLevel(1);
+	$initial_strength = Player::baseStrengthByLevel(1);
+	$initial_speed = Player::baseSpeedByLevel(1);
+	$initial_stamina = Player::baseStaminaByLevel(1);
+
 	// Create the initial player row.
 	$playerCreationQuery= "INSERT INTO players
 		 (uname, health, strength, speed, stamina, gold, messages, kills, turns, verification_number, active,
 		  _class_id, level,  status, member, days, bounty, created_date)
 		 VALUES
-		 (:username, '150', '5', '5', '5', '100', '', '0', '180', :verification_number, :active,
+		 (:username, :initial_hp, :initial_strength, :initial_speed, :initial_stamina, '100', '', '0', '180', :verification_number, :active,
 		 (SELECT class_id FROM class WHERE identity = :class_identity), '1', '1', '0', '0', '0', now())";
 	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
 	$statement = DatabaseConnection::$pdo->prepare($playerCreationQuery);
@@ -106,6 +111,10 @@ function create_ninja($send_name, $params=array()) {
 	$statement->bindValue(':verification_number', $confirm);
 	$statement->bindValue(':active', $preconfirm);
 	$statement->bindValue(':class_identity', $class_identity);
+	$statement->bindValue(':initial_hp', $initial_hp);
+	$statement->bindValue(':initial_strength', $initial_strength);
+	$statement->bindValue(':initial_speed', $initial_speed);
+	$statement->bindValue(':initial_stamina', $initial_stamina);
 	$statement->execute();
 	return get_char_id($send_name);
 }
