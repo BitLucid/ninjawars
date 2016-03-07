@@ -406,6 +406,7 @@ class Player implements Character {
             $this->data['exp_percent']   = min(100, round(($this->data['kills']/$this->data['next_level'])*100));
             $this->data['status_list']   = implode(', ', get_status_list($this->id()));
             $this->data['hash']          = md5(implode($this->data));
+            $this->data['class_name']    = $this->data['identity'];
 
             unset($this->data['pname']);
         }
@@ -691,6 +692,13 @@ class Player implements Character {
 
             return null;
         }
+    }
+
+    /**
+     * Get the ninja's class's name.
+     */
+    public function getClassName() {
+        return $this->vo->identity;
     }
 
     /**

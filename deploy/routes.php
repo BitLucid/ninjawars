@@ -105,6 +105,15 @@ Router::$routes = [
             'use'    => 'useItem',
         ],
     ],
+    'skill' => [
+        'type'    => 'controller',
+        'actions' => [
+            'use'      => 'go',
+            'self_use' => 'selfUse',
+            'post_use' => 'postUse',
+            'post_self_use' => 'postSelfUse'
+        ],
+    ],
     'quest' => [
         'type'  => 'controller',
         'actions' => [
