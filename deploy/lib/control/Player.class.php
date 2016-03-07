@@ -20,6 +20,9 @@ use NinjaWars\core\data\AccountFactory;
  * @subpackage	player
  * @author      Tchalvak <ninjawarsTchalvak@gmail.com>
  * @link        http://ninjawars.net/player.php?player=tchalvak
+ * @property-read int health
+ * @property-read int kills
+ * @property-read int gold
  */
 class Player implements Character {
 	public $player_id;
@@ -49,6 +52,9 @@ class Player implements Character {
 		}
 	}
 
+    /**
+     * @return string
+     */
 	public function __toString() {
 		return $this->name();
 	}
@@ -57,43 +63,66 @@ class Player implements Character {
 		return $this->vo->$name;
 	}
 
+    /**
+     * @return string
+     */
 	public function name() {
 		return $this->vo->uname;
 	}
 
+    /**
+     * @return int
+     */
 	public function id() {
 		return $this->vo->player_id;
 	}
 
+    /**
+     * @return int
+     */
 	public function level() {
 		return $this->vo->level;
 	}
 
+    /**
+     * @return int
+     */
 	public function description() {
 		return $this->vo->description;
 	}
 
 	/**
 	 * Get out of character message
+     * @return string
 	**/
 	public function message() {
 		return $this->vo->messages;
 	}
 
+    /**
+     * @return string
+     */
 	public function beliefs() {
 		return $this->vo->beliefs;
 	}
 
+    /**
+     * @return string
+     */
 	public function instincts() {
 		return $this->vo->instincts;
 	}
 
+    /**
+     * @return string
+     */
 	public function goals() {
 		return $this->vo->goals;
 	}
 
     /**
      * Return simple, comma separated string of traits
+     * @return string
      */
 	public function traits() {
 		return $this->vo->traits;
@@ -106,6 +135,9 @@ class Player implements Character {
 		$this->vo->goals = $goals;
 	}
 
+    /**
+     * In-character char description
+     */
 	public function set_description($desc){
 		$this->vo->description = $desc;
 	}
@@ -117,14 +149,23 @@ class Player implements Character {
 		$this->vo->messages = $message;
 	}
 
+    /**
+     *
+     */
 	public function set_instincts($in){
 		$this->vo->instincts = $in;
 	}
 
+    /**
+     *
+     */
 	public function set_beliefs($be){
 		$this->vo->beliefs = $be;
 	}
 
+    /**
+     * Pass in traits as a raw comma separated string
+     */
 	public function set_traits($traits){
 		$this->vo->traits = $traits;
 	}
@@ -146,6 +187,9 @@ class Player implements Character {
 		return $this->queryStatus();
 	}
 
+    /**
+     * Adds a defined numeric status constant to the binary string of statuses
+     */
 	public function addStatus($p_status) {
 		if ((int)$p_status == $p_status && $p_status != 0) {
 			if ($p_status < 0) {
@@ -163,6 +207,9 @@ class Player implements Character {
 		}
 	}
 
+    /**
+     * Resets the binary status info to 0/none
+     */
 	public function resetStatus() {
 		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = 0 WHERE player_id = :player');
 		$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
@@ -171,6 +218,9 @@ class Player implements Character {
 		$this->vo->status = 0;
 	}
 
+    /**
+     * Remove a numeric status from the binary string of status toggles.
+     */
 	public function subtractStatus($p_status) {
 		$status = self::validStatus($p_status); // Filter it.
 		if ((int)$status == $status && $status > 0) {
@@ -180,17 +230,23 @@ class Player implements Character {
 			$statement->bindValue(':status2', $status, PDO::PARAM_INT);
 			$statement->execute();
 
-			$this->vo->status = null; // *** Ensures that the next call to hasStatus pulls the updated status from the DB ***
+			$this->vo->status = null; 
+            // *** Ensures that the next call to hasStatus pulls the updated status from the DB ***
 		}
 	}
 
     /**
-     * Standard damage output.
+     * Standard damage output from 1 to max
+     * @return int
      */
 	public function damage(Character $enemy=null){
 		return rand(1, $this->max_damage($enemy));
 	}
 
+    /**
+     * Max damage capability of a character
+     * @return int
+     */
 	public function max_damage(Character $enemy=null){
 		$dam = $this->strength() * 5 + $this->speed();
 		return $dam;
@@ -198,18 +254,22 @@ class Player implements Character {
 
     /**
      * The maximum damage.
+     * @todo this is bad, 'cause damage is random, whereas maxDamage should not be.
      */
 	public function maxDamage() {
 		return $this->damage(); // Currently they're the same, though they probably shouldn't be.
 	}
 
     /**
-     * Old Wrapper function name
+     * @return int
      */
 	public function getStrength() {
 		return $this->strength();
 	}
 
+    /**
+     * @return int
+     */
 	public function strength() {
 		$str = $this->vo->strength;
 		if ($this->hasStatus(WEAKENED)) {
@@ -318,11 +378,17 @@ class Player implements Character {
 
 	/**
 	 * Checks whether the character is still active.
+     * @return boolean
 	**/
 	public function isActive() {
 		return (bool) $this->vo->active;
 	}
 
+    /**
+     * @return boolean
+     * hardcoded hack at the moment
+     * @note To be replaced by an in-database account toggle eventually
+     */
 	public function isAdmin() {
 		$name = strtolower($this->name());
 		if ($name == 'tchalvak' || $name == 'beagle' || $name == 'suavisimo') {
@@ -332,12 +398,19 @@ class Player implements Character {
 		return false;
 	}
 
+    /**
+     *
+     * Cleanup player to death state
+     */
 	public function death() {
 		$this->resetStatus();
         $this->set_health(0);
         $this->save();
 	}
 
+    /**
+     * @deprecated email for account of player
+     */
 	public function email() {
 		$account = account_info_by_char_id($this->id());
 		return $account['active_email'];
@@ -355,6 +428,9 @@ class Player implements Character {
         return $this->vo->turns = $turns;
     }
 
+    /** 
+     * @deprecated
+     */
     public function changeTurns($amount) {
         $amount = (int) $amount;
 
@@ -369,6 +445,9 @@ class Player implements Character {
         return $this->get_turns();
     }
 
+    /** 
+     * @deprecated
+     */
     public function subtractTurns($amount) {
         $diff = -1*abs($amount);
 
@@ -377,6 +456,7 @@ class Player implements Character {
 
     /**
      * Pull a character's turns.
+     * @deprecated
      */
     public function get_turns() {
         return query_item("select turns from players where player_id = :char_id", array(':char_id'=>$this->id()));
@@ -445,12 +525,16 @@ class Player implements Character {
         return (array) $this->vo;
     }
 
+    /**
+     * @return Clan
+     */
     public function getClan() {
         return ClanFactory::clanOfMember($this->id());
     }
 
 	/**
 	 * Heal the char with in the limits of their max
+     * @return int
 	 */
 	public function heal($amount) {
 		$hurt = $this->is_hurt_by();
@@ -462,6 +546,7 @@ class Player implements Character {
 	/**
 	 * Do some damage to the character
 	 * @note for now this immediately hits the database
+     * @return int
 	 */
 	public function harm($damage) {
 		// Do at most the current health in damage
@@ -471,6 +556,8 @@ class Player implements Character {
 
     /**
      * Simple wrapper for changeHealth
+     * @return int
+     * @deprecated use set_health instead
      */
 	public function addHealth($amount) {
 		return $this->changeHealth($amount);
@@ -478,6 +565,8 @@ class Player implements Character {
 
     /**
      * Simple wrapper for subtractive action.
+     * @return int
+     * @deprecated use Player::harm() instead
      */
 	public function subtractHealth($amount) {
 		return $this->changeHealth((-1*(int)$amount));
@@ -485,6 +574,8 @@ class Player implements Character {
 
     /**
      * To subtract just send in a negative integer
+     * @deprecated use set_health instead
+     * @return int
      */
 	public function changeHealth($delta) {
 		$amount = (int)$delta;
@@ -506,12 +597,16 @@ class Player implements Character {
 
     /**
      * Pull the current health.
+     * @return int
      */
 	public function health() {
 		$sel = "SELECT health from players where player_id = :id";
 		return max(0, query_item($sel, [':id'=>[$this->id(), PDO::PARAM_INT]]));
 	}
 
+    /**
+     * @return int
+     */
 	public function set_health($health) {
 		if ($health < 0) {
 			throw new \InvalidArgumentException('Health cannot be made negative.');
@@ -536,6 +631,7 @@ class Player implements Character {
 
     /**
      * This char's max health
+     * @return int
      */
 	public function max_health() {
 		return self::maxHealthByLevel($this->level());
@@ -543,6 +639,7 @@ class Player implements Character {
 
     /**
      * Return the current percentage of the maximum health that a character could have.
+     * @return int
      */
 	public function health_percent() {
         return min(100, round(($this->health/$this->getMaxHealth())*100));
@@ -553,16 +650,22 @@ class Player implements Character {
 		return $this->ip;
 	}
 
+    /**
+     * @return int difficulty rating
+     */
 	public function difficulty(){
 		return 10 + $this->strength() * 2 + $this->maxDamage()/* + $this->isArmored() * 5*/;
 	}
 
+    /**
+     * @return int random private number unique to character
+     */
 	public function getVerificationNumber(){
 		return $this->vo->verification_number;
 	}
 
     /**
-     * Get the avatar url for a pc
+     * @return string url for the gravatar of pc
      */
     public function avatarUrl() {
         if (!isset($this->avatar_url) || $this->avatar_url === null) {
@@ -612,7 +715,7 @@ class Player implements Character {
 
 	/**
 	 * Find a player by primary key
-	 * @return Player
+	 * @return Player|null
 	 */
 	public static function find($id){
 		if(!is_numeric($id) || !(int) $id){
@@ -631,7 +734,7 @@ class Player implements Character {
 
     /**
      * Find player by name
-     * @return Player
+     * @return Player|null
      *
      */
     public static function findByName($name){
@@ -652,6 +755,7 @@ class Player implements Character {
 
     /**
      * query the recently active players
+     * @return array
      */
     public static function findActive($limit=5, $alive_only=true) {
         $where_cond = ($alive_only ? ' AND health > 0' : '');
@@ -662,6 +766,7 @@ class Player implements Character {
 
      /**
      * Check whether the player is the leader of their clan.
+     * @return boolean
      */
     public function isClanLeader() {
         return (($clan = ClanFactory::clanOfMember($this->id())) && $this->id() == $clan->getLeaderID());
@@ -669,6 +774,7 @@ class Player implements Character {
 
     /**
      * Set the character's class, using the identity.
+     * @return string|null error string if fails
      */
     public function setClass($new_class) {
         if (!$this->isValidClass(strtolower($new_class))) {
@@ -707,6 +813,7 @@ class Player implements Character {
 
     /**
      * Calculate a max health by a level
+     * @return int
      */
     public static function maxHealthByLevel($level) {
         return NEW_PLAYER_INITIAL_HEALTH + round(LEVEL_UP_HP_RAISE*($level-1));
@@ -737,6 +844,7 @@ class Player implements Character {
      * The number of kills needed to level up to the next level.
      *
      * 5 more kills in cost for every level you go up.
+     * @return int
      */
     public function killsRequiredForNextLevel() {
        return $this->level()*5;
@@ -744,6 +852,7 @@ class Player implements Character {
 
     /**
      * Takes in a Character and adds kills to that character.
+     * @return int
      */
     public function addKills($amount) {
         return $this->changeKills((int)abs($amount));
@@ -751,6 +860,7 @@ class Player implements Character {
 
     /**
      * Takes in a Character and removes kills from that character.
+     * @return int
      */
     public function subtractKills($amount) {
         return $this->changeKills(-1*((int)abs($amount)));
@@ -758,6 +868,7 @@ class Player implements Character {
 
     /**
      * Change the kills amount of a char, and levels them up when necessary.
+     * @return int
      */
     private function changeKills($amount) {
         $amount = (int)$amount;
@@ -841,6 +952,10 @@ class Player implements Character {
         }
     }
 
+    /**
+     * @return boolean|int
+     * @todo abstract this to only use a single return type
+     */
     public static function validStatus($dirty) {
         if ((int)$dirty == $dirty) {
             return (int) $dirty;

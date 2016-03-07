@@ -318,7 +318,7 @@ class NpcController { //extends controller
                 }
             }
 
-            if ($method) {
+            if (is_callable([$this, $method], false)) {
                 list($npc_template, $combat_data) = $this->$method($player);
             }
 
