@@ -71,21 +71,21 @@ class Player implements Character {
 	}
 
     /**
-     * @return int Player_id
+     * @return int
      */
 	public function id() {
 		return $this->vo->player_id;
 	}
 
     /**
-     * @return int level
+     * @return int
      */
 	public function level() {
 		return $this->vo->level;
 	}
 
     /**
-     * @return int string
+     * @return int
      */
 	public function description() {
 		return $this->vo->description;
@@ -122,7 +122,7 @@ class Player implements Character {
 
     /**
      * Return simple, comma separated string of traits
-     * @return array
+     * @return string
      */
 	public function traits() {
 		return $this->vo->traits;
@@ -564,7 +564,7 @@ class Player implements Character {
     /**
      * Simple wrapper for subtractive action.
      * @return int
-     * @deprecated use set_health instead
+     * @deprecated use Player::harm() instead
      */
 	public function subtractHealth($amount) {
 		return $this->changeHealth((-1*(int)$amount));
@@ -637,6 +637,7 @@ class Player implements Character {
 
     /**
      * Return the current percentage of the maximum health that a character could have.
+     * @return int
      */
 	public function health_percent() {
         return min(100, round(($this->health/$this->getMaxHealth())*100));
