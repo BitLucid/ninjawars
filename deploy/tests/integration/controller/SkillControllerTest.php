@@ -1,15 +1,19 @@
 <?php
+//namespace NinjaWars\test;
+
+use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\RedirectResponse as RedirectResponse;
 use NinjaWars\core\environment\RequestWrapper;
-use NinjaWars\core\control\SkillController;
+use NinjaWars\core\control\SkillController as SkillController;
 use NinjaWars\core\extensions\SessionFactory;
 use \Player as Player;
+use \Skill as Skill;
 
-class SkillControllerTest extends PHPUnit_Framework_TestCase {
+class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 	public function setUp() {
-        $this->char = TestAccountCreateAndDestroy::char();
+        $this->char = Player::find(TestAccountCreateAndDestroy::char_id());
         $this->char2 = Player::find(TestAccountCreateAndDestroy::char_id_2());
         SessionFactory::init(new MockArraySessionStorage());
         $session = SessionFactory::getSession();
@@ -37,13 +41,15 @@ class SkillControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testUseFireboltOnAnotherChar(){
         $error = $this->char->setClass('tiger');
+        $this->char->set_turns(300);
+        $this->char->vo->level = 20;
         $this->assertNull($error);
         $initial_health = $this->char2->health();
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
         $this->assertNotEmpty(url($name));
         $skillList = new Skill();
-        $this->assertTrue($skillList->hasSkill('Fire Bolt'));
+        $this->assertTrue($skillList->hasSkill('Fire Bolt', $this->char));
         $request = Request::create('/skill/use/Fire%20Bolt/'.url($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
@@ -56,15 +62,35 @@ class SkillControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertLessThan($initial_health, $final_defender->health());
     }
 
+    public function testUseUnstealthOnSelf(){
+        $this->char->setClass('viper');
+        $this->char->set_turns(300);
+        $this->char->vo->level = 20;
+        $this->char->save();
+
+        $request = Request::create('/skill/self_use/Unstealth/');
+        RequestWrapper::inject($request);
+        $controller = new SkillController();
+        $controller_outcome = $controller->selfUse();
+
+        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $controller_outcome, 
+                'A redirect was the outcome for the url: '
+                .($controller_outcome instanceof RedirectResponse? $controller_outcome->getTargetUrl() : ''));
+        $this->assertEquals('Unstealth', $controller_outcome['parts']['act']);
+    }
+
+
     public function testUsePoisonTouchOnAnotherChar(){
         $error = $this->char->setClass('viper');
+        $this->char->set_turns(300);
+        $this->char->vo->level = 20;
         $this->assertNull($error);
         $initial_health = $this->char2->health();
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
         $this->assertNotEmpty(url($name));
         $skillList = new Skill();
-        $this->assertTrue($skillList->hasSkill('Poison Touch'));
+        $this->assertTrue($skillList->hasSkill('Poison Touch', $this->char));
         $request = Request::create('/skill/use/Poison%20Touch/'.url($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
@@ -79,17 +105,17 @@ class SkillControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertLessThan($initial_health, $final_defender->health());
     }
 
-    // TODO: Add Poison Touch Test
-
     public function testUseSightOnAnotherChar(){
         $error = $this->char->setClass('dragon');
+        $this->char->set_turns(300);
+        $this->char->vo->level = 20;
         $this->assertNull($error);
         $this->char->save();
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
         $this->assertNotEmpty(url($name));
-        $skillList = new Skill();
-        $this->assertTrue($skillList->hasSkill('Sight'));
+        $skillList = new \Skill();
+        $this->assertTrue($skillList->hasSkill('Sight', $this->char));
         $request = Request::create('/skill/use/Sight/'.url($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
@@ -102,49 +128,28 @@ class SkillControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('Sight', $skill_outcome['parts']['act']);
     }
 
-    public function testUseHealOnAnother(){
-        $error = $this->char->setClass('dragon');
-        $this->assertNull($error);
-        $this->char2->harm(90);
-        $initial_health = $this->char2->health();
-        $name = $this->char2->name();
-        $this->char2->save();
-        $skillList = new Skill();
-        $this->assertTrue($skillList->hasSkill('Heal'));
-        $request = Request::create('/skill/use/Heal/'.url($name).'/');
-        RequestWrapper::inject($request);
-        $skill = new SkillController();
-        $skill_outcome = $skill->go();
+    // TODO: test that self_use of things like Steal error or whatever the right behavior should be?
+    // TODO: test that use of skills that aren't part of the users skillset error
 
-        $final_defender = Player::find($this->char2->id());
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
-                'A redirect was the outcome for the url: '
-                .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
-        $this->assertNull($skill_outcome['parts']['error']);
-        $this->assertEquals('Heal', $skill_outcome['parts']['act']);
-        $this->assertGreaterThan($initial_health, $final_defender->health());
-    }
-
-
-    public function testUseHealOnSelfAsHealer(){
-        $error = $this->char->setClass('dragon');
-        $this->assertNull($error);
-        $this->char->harm(50); // Make some healable damage
-        $this->char->save();
-        $this->assertLessThan($this->char->max_health(), $this->char->health());
-
+    public function testUseHealOnSelfAsAHealingCharacter(){
+        $this->char->setClass('dragon');
+        $this->char->set_turns(300);
+        $this->char->vo->level = 20;
+        $this->char->set_health(floor($this->char->getMaxHealth()/2));
         $initial_health = $this->char->health();
+        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
+        $this->char->save();
 
         $request = Request::create('/skill/self_use/Heal/');
         RequestWrapper::inject($request);
-        $skill = new SkillController();
-        $skill_outcome = $skill->selfUse();
-        
-        $final_pc = Player::find($this->char->id());
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
-                'An error redirect was sent to redirect to: '
-                .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
-        $this->assertNull($skill_outcome['parts']['error']);
-        $this->assertGreaterThan($initial_health, $final_pc->health());
+        $controller = new SkillController();
+        $controller_outcome = $controller->selfUse();
+
+        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $controller_outcome, 
+                'A redirect was the outcome for the url: '
+                .($controller_outcome instanceof RedirectResponse? $controller_outcome->getTargetUrl() : ''));
+        $this->assertEquals('Heal', $controller_outcome['parts']['act']);
+        $final_char = Player::find($this->char->id());
+        $this->assertGreaterThan($initial_health, $final_char->health());
     }
 }

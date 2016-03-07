@@ -131,57 +131,11 @@ class SkillController {
 	}
 
 	/**
-	 * Pull a stripped down set of player data to display to the skill user.
-	 **/
-	private function pullSightData(Player $target){
-		$data = $target->dataWithClan();
-		// Strip all fields but those allowed.
-		$allowed = [
-		    'Name'     => 'uname',
-		    'Class'    => 'class_name',
-		    'Level'    => 'level',
-		    'Turns'    => 'turns',
-		    'Strength' => 'strength',
-		    'Speed'    => 'speed',
-		    'Stamina'  => 'stamina',
-		    'Ki'       => 'ki',
-		    'Gold'     => 'gold',
-		    'Kills'    => 'kills',
-		];
-
-		$res = array();
-
-		foreach ($allowed as $header => $field) {
-			$res[$header] = $data[$field];
-		}
-
-		return $res;
-	}
-
-	/** 
-	 * Use up some ki to heal yourself.
-	 */
-	private function harmonizeChakra(Player $char){
-		// Heal at most 100 or ki available or hurt by AND at least 0
-		$heal_for = (int) max(0, min(self::MAX_HARMONIZE, $char->is_hurt_by(), $char->ki()));
-		if($heal_for > 0){
-			// If there's anything to heal, try.
-
-
-			// Subtract the ki used for healing.
-			$char->heal($heal_for);
-			$char->set_ki($char->ki() - $heal_for);
-			$char->save();
-		}
-		return $char;
-	}
-
-	/**
 	 * Use, the skills_mod equivalent
 	 * @note Test with urls like: 
 	 * http://nw.local/skill/use/Fire%20Bolt/10
-	 * http://nw.local/skill/self_use/unstealth/
-	 * http://nw.local/skill/self_use/heal/
+	 * http://nw.local/skill/self_use/Unstealth/
+	 * http://nw.local/skill/self_use/Heal/
 	 */
 	public function go($self_use=false){
 		// Template vars.
@@ -567,6 +521,52 @@ class SkillController {
 				'parts'=>$parts,
 				'options'=>$options,
 			];
+	}
+
+	/**
+	 * Pull a stripped down set of player data to display to the skill user.
+	 **/
+	private function pullSightData(Player $target){
+		$data = $target->dataWithClan();
+		// Strip all fields but those allowed.
+		$allowed = [
+		    'Name'     => 'uname',
+		    'Class'    => 'class_name',
+		    'Level'    => 'level',
+		    'Turns'    => 'turns',
+		    'Strength' => 'strength',
+		    'Speed'    => 'speed',
+		    'Stamina'  => 'stamina',
+		    'Ki'       => 'ki',
+		    'Gold'     => 'gold',
+		    'Kills'    => 'kills',
+		];
+
+		$res = array();
+
+		foreach ($allowed as $header => $field) {
+			$res[$header] = $data[$field];
+		}
+
+		return $res;
+	}
+
+	/** 
+	 * Use up some ki to heal yourself.
+	 */
+	private function harmonizeChakra(Player $char){
+		// Heal at most 100 or ki available or hurt by AND at least 0
+		$heal_for = (int) max(0, min(self::MAX_HARMONIZE, $char->is_hurt_by(), $char->ki()));
+		if($heal_for > 0){
+			// If there's anything to heal, try.
+
+
+			// Subtract the ki used for healing.
+			$char->heal($heal_for);
+			$char->set_ki($char->ki() - $heal_for);
+			$char->save();
+		}
+		return $char;
 	}
 
 
