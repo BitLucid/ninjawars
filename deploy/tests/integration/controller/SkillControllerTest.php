@@ -62,7 +62,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->assertLessThan($initial_health, $final_defender->health());
     }
 
-    public function testWhenIFireBoltACharacterAndKillIShouldGetBounty(){
+    public function testWhenIFireBoltACharacterAndKillIShouldReceiveBounty(){
         $error = $this->char->setClass('tiger');
         $bounty = 300;
         $self_gold = $this->char->gold();
@@ -74,6 +74,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->char2->set_gold(0); // No gold
         $this->char2->set_bounty($bounty); // Only bounty
         $this->char2->save();
+        $this->char->save();
         $initial_health = $this->char2->health();
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
@@ -93,6 +94,38 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(0, $final_defender->health());
         $this->assertEquals(0, $final_defender->bounty());
         $this->assertEquals($self_gold+$bounty, $final_attacker->gold());
+    }
+
+    public function testIShouldGetBountyOnMyHeadWhenIFireBoltKillALowLevel(){
+        $this->char->setClass('tiger');
+        $self_gold = $this->char->gold();
+        $this->char->set_turns(300);
+        $this->char->vo->level = 200;
+        $this->char->set_bounty(0);
+        $this->char2->set_health(1);
+        $this->char2->vo->level = 2; // Ensure a lower level
+        $this->char2->set_gold(0); // No gold to get from target
+        $this->char2->save();
+        $this->char->save();
+        $initial_bounty = $this->char->bounty();
+        $initial_health = $this->char2->health();
+        $name = $this->char2->name();
+        $this->assertNotEmpty($name);
+        $this->assertNotEmpty(url($name));
+        $skillList = new Skill();
+        $this->assertTrue($skillList->hasSkill('Fire Bolt', $this->char));
+        $request = Request::create('/skill/use/Fire%20Bolt/'.url($name).'/');
+        RequestWrapper::inject($request);
+        $skill = new SkillController();
+        $skill_outcome = $skill->go();
+        $final_defender = Player::find($this->char2->id());
+        $final_attacker = Player::find($this->char->id());
+        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
+                'A redirect was the outcome for the url: '
+                .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
+        $this->assertNull($skill_outcome['parts']['error']);
+        $this->assertEquals(0, $final_defender->health());
+        $this->assertGreaterThan($initial_bounty, $final_attacker->bounty());
     }
 
     public function testUseUnstealthOnSelf(){

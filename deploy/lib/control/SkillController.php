@@ -466,6 +466,8 @@ class SkillController {
 				}
 			}
 
+			// ************************** Section applies to all skills ******************************
+
 			if (!$victim_alive) { // Someone died.
 				if ($target->player_id == $player->player_id) { // Attacker killed themself.
 					$loot = 0;
@@ -476,21 +478,17 @@ class SkillController {
 					$loot     = floor($gold_mod * $target->gold());
 					$player->set_gold($player->gold()+$loot);
 					$target->set_gold($target->gold()-$loot);
-					$player->save();
-					$target->save();
 
 					$player->addKills(1);
 
 					$added_bounty = floor($level_check / 5);
 
 					if ($added_bounty > 0) {
-						addBounty($char_id, ($added_bounty * 25));
-					} else { // Can only receive bounty if you're not getting it on your own head.
-						if ($bounty = rewardBounty($char_id, $target->vo->player_id)) {
-
-							$bounty_msg = "You have valiantly slain the wanted criminal, $target! For your efforts, you have been awarded $bounty gold!";
-							sendMessage('Village Doshin', $player->name(), $bounty_msg);
-						}
+						$player->set_bounty($player->bounty()+($added_bounty * 25));
+					} else if ($target->bounty() > 0 && $target->id() !== $player->id()) {
+						 // No suicide bounty, No bounty when your bounty getting ++ed.
+						$player->set_gold($player->gold()+$target->bounty()); // Reward the bounty
+						$target->set_bounty(0); // Wipe the bounty
 					}
 
 					$target_message = "$attacker_id has killed you with $act and taken $loot gold.";
@@ -500,8 +498,9 @@ class SkillController {
 					sendMessage($target->vo->uname, $player->name(), $attacker_message);
 				}
 			}
-
 			$turns_to_take = $turns_to_take - $turn_cost;
+			$player->save();
+			$target->save();
 
 			if (!$covert && $player->hasStatus(STEALTH)) {
 				$player->subtractStatus(STEALTH);
