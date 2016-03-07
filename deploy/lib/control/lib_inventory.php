@@ -112,8 +112,8 @@ function removeItem($who, $item, $quantity=1) {
 }
 
 function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
-    $user = Player::findByName($user_id);
-    $defender = Player::findByName($defender_id);
+    $user = Player::findByName($username);
+    $defender = Player::findByName($defender);
 
 	if ($defender->bounty > 0) {
         $user->set_gold($user->gold + $defender->bounty);
