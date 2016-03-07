@@ -148,12 +148,12 @@ var combat_skills = {$combat_skills|@json_encode};
 
     <div id='skills-section' style='padding:1em 2em;text-align:left'>
       {if count($targeted_skills) gt 0}
-      <form id="skill_use" class="skill_use" action="skills_mod.php" method="post" name="skill_use">
+      <form id="skill_use" class="skill_use" action="/player/use_skill/" method="post" name="skill_use">
         <div class='parent'>
           <ul id='skills-use-list' class='child'>
           {foreach from=$targeted_skills item="skill"}
             <li>
-              <input id="command-{$skill.skill_internal_name}" class="command btn btn-primary" type="submit" value="{$skill.skill_display_name}" name="command" title='Use the {$skill.skill_display_name} skill for a cost of {getTurnCost skillName=$skill.skill_display_name} turns'>
+              <input id="act-{$skill.skill_internal_name}" class="act btn btn-primary" type="submit" value="{$skill.skill_display_name}" name="act" title='Use the {$skill.skill_display_name} skill for a cost of {getTurnCost skillName=$skill.skill_display_name} turns'>
               <input id="target" class="target" type="hidden" value="{$target|escape}" name="target">
             </li>
           {/foreach}
