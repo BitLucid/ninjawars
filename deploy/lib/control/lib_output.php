@@ -1,9 +1,6 @@
 <?php
 // See also: the lib_input functions for filter methods.
 
-function get_indefinite_article($p_noun) {
-	return str_replace(' '.$p_noun, '', shell_exec('perl '.LIB_ROOT.'third-party/lingua-a.pl "'.escapeshellcmd($p_noun).'"'));
-}
 // Need to cover out to html, and out to database in here somewhere, I think.
 
 
@@ -41,11 +38,6 @@ function markdown($p_input)
 {
 	$pattern = "/\[href:([^\[\]]+)\|([^\[\]]+)\]/";
 	return preg_replace_callback($pattern, "markdownCallback", $p_input);
-}
-
-function message_url($url, $text){
-    // Might should exclude external urls here, and potentially handle url encoding.
-    return "[href:".$url."|".$text."]";
 }
 
 // Change this to default to toHtml.

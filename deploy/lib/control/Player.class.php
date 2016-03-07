@@ -282,12 +282,14 @@ class Player implements Character {
 	}
 
 	public function set_gold($gold) {
-		if($gold < 0){
+		if ($gold < 0) {
 			throw new \InvalidArgumentException('Gold cannot be made negative.');
 		}
-		if((int) $gold != $gold){
+
+		if ((int) $gold != $gold) {
 			throw new \InvalidArgumentException('Gold must be a whole number [not '.(string)$gold.'].');
 		}
+
 		return $this->vo->gold = $gold;
 	}
 
@@ -332,7 +334,6 @@ class Player implements Character {
 
 	public function death() {
 		$this->resetStatus();
-		$this->subtractHealth($this->health());
         $this->set_health(0);
         $this->save();
 	}

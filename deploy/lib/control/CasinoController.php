@@ -42,31 +42,33 @@ class CasinoController {
      * reward item
 	 */
 	public function bet() {
-		$player   = new Player(self_char_id());
+		$player   = Player::find(self_char_id());
 		$bet      = intval(in('bet'));
 
 		$pageParts = ['reminder-max-bet'];
 
 		if ($bet < 0) {
 			$pageParts = ['result-cheat'];
-			$player->vo->health = subtractHealth($player->id(), self::CHEAT_DMG);
-		} else if ($bet > $player->vo->gold) {
+			$player->harm(self::CHEAT_DMG);
+		} else if ($bet > $player->gold) {
 			$pageParts = ['result-no-gold'];
 		} else if ($bet > 0 && $bet <= self::MAX_BET) {
 			if (rand(0, 1) === 1) {
 				$pageParts = ['result-win'];
 
-				$player->vo->gold = add_gold($player->id(), $bet);
+				$player->set_gold($player->gold + $bet);
 
 				if ($bet >= round(self::MAX_BET*0.99)) {
 					// within about 1% of the max bet & you win, you get a reward item.
 					add_item($player->id(), self::REWARD, 1);
 				}
 			} else {
-				$player->vo->gold = subtract_gold($player->id(), $bet);
+				$player->set_gold($player->gold - $bet);
 				$pageParts = ['result-lose'];
 			}
 		}
+
+        $player->save();
 
 		return $this->render(
 			[

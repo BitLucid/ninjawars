@@ -239,7 +239,7 @@ class InventoryController {
 	        $itemName = $item->getName();
 	        $itemType = $item->getType();
 
-	        $article = get_indefinite_article($item_obj->getName());
+	        $article = self::getIndefiniteArticle($item_obj->getName());
 
 	        if ($give) {
 	            $turn_cost  = 1;
@@ -369,7 +369,7 @@ class InventoryController {
 	                }
 
 	                if ($item->hasEffect('death')) {
-	                    $targetObj->vo->health = setHealth($target_id, 0);
+	                    $targetObj->death();
 
 	                    $resultMessage = "The life force drains from __TARGET__ and they drop dead before your eyes!";
 	                    $victim_alive  = false;
@@ -545,7 +545,7 @@ class InventoryController {
      * Give the item and return a message to show the user.
      */
     private function giveItem($username, $target, $item) {
-        $article = get_indefinite_article($item);
+        $article = self::getIndefiniteArticle($item);
         $this->addItem($target,$item,1);
         $give_msg = "You have been given $article $item by $username.";
         sendMessage($username,$target,$give_msg);
@@ -586,5 +586,9 @@ class InventoryController {
      */
     private function itemIdentityFromDisplayName($item_display_name){
         return item_info(item_id_from_display_name($item_display_name), 'item_internal_name');
+    }
+
+    public static function getIndefiniteArticle($p_noun) {
+        return str_replace(' '.$p_noun, '', shell_exec('perl '.LIB_ROOT.'third-party/lingua-a.pl "'.escapeshellcmd($p_noun).'"'));
     }
 }

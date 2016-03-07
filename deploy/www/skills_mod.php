@@ -4,6 +4,7 @@ require_once(LIB_ROOT.'control/Skill.php');
 require_once(LIB_ROOT.'control/CloneKill.class.php');
 
 use NinjaWars\core\control\AttackLegal;
+
 /*
  * Deals with the skill based attacks, and status effects.
  *
@@ -368,23 +369,23 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			$killed_target = true;
 			$gold_mod = 0.15;
 			$loot     = floor($gold_mod * $target->gold());
-			$player->set_gold($player->gold()+$loot);
-			$target->set_gold($target->gold()-$loot);
-			$player->save();
-			$target->save();
+
+			$player->set_gold($player->gold() + $loot);
+			$target->set_gold($target->gold() - $loot);
 
 			$player->addKills(1);
 
 			$added_bounty = floor($level_check / 5);
 
+            // Can only receive bounty if you're not getting it on your own head
 			if ($added_bounty > 0) {
-				addBounty($char_id, ($added_bounty * 25));
-			} else { // Can only receive bounty if you're not getting it on your own head.
-				if ($bounty = rewardBounty($char_id, $target->vo->player_id)) {
+				$player->set_bounty($player->bounty + ($added_bounty * 25));
+            } else if ($target->bounty > 0) {
+                $player->set_gold($player->gold + $target->bounty);
+                $target->set_bounty(0);
 
-					$bounty_msg = "You have valiantly slain the wanted criminal, $target! For your efforts, you have been awarded $bounty gold!";
-					sendMessage('Village Doshin', $player->name(), $bounty_msg);
-				}
+                $bounty_msg = "You have valiantly slain the wanted criminal, $target! For your efforts, you have been awarded $bounty gold!";
+                sendMessage('Village Doshin', $player->name(), $bounty_msg);
 			}
 
 			$target_message = "$attacker_id has killed you with $command and taken $loot gold.";
@@ -392,6 +393,9 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 
 			$attacker_message = "You have killed $target with $command and taken $loot gold.";
 			sendMessage($target->vo->uname, $player->name(), $attacker_message);
+
+			$target->save();
+			$player->save();
 		}
 	}
 

@@ -51,6 +51,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     public $test_email = null;
     public $test_password = null;
     public $test_ninja_name = null;
+    public $test_ninja_id = null;
 
     /**
      * group accountconf
@@ -61,7 +62,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->test_password = TestAccountCreateAndDestroy::$test_password;
         $this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
         TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
-        TestAccountCreateAndDestroy::create_testing_account();
+        $this->test_ninja_id = TestAccountCreateAndDestroy::create_testing_account();
         SessionFactory::init(new MockArraySessionStorage());
     }
 
@@ -159,33 +160,27 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      * group accountconf
      */
     function testGetNinjaByName() {
-        $ninja_id = ninja_id($this->test_ninja_name);
+        $ninja_id = $this->test_ninja_id;
         $char_id = get_char_id($this->test_ninja_name);
-        $account_id = account_id_by_ninja_id(ninja_id($this->test_ninja_name));
         $this->assertTrue(positive_int($ninja_id)>0);
         $this->assertTrue(positive_int($char_id)>0);
         $this->assertTrue($ninja_id == $char_id);
-        $this->assertTrue($account_id>0);
-        $this->assertTrue(positive_int($account_id)>0);
     }
 
     /**
      * group accountconf
      */
     function testMakeSureThatNinjaAccountIsOperationalByDefault() {
-        $ninja_id = ninja_id($this->test_ninja_name);
+        $ninja_id = $this->test_ninja_id;
         $this->assertTrue(positive_int($ninja_id)>0);
         $char_id = get_char_id($this->test_ninja_name);
         $this->assertTrue(positive_int($char_id)>0);
-        $account_id = account_id_by_ninja_id(ninja_id($this->test_ninja_name));
         $account_operational = query_item(
             'SELECT operational FROM accounts JOIN account_players ON account_id = _account_id WHERE _player_id = :char_id',
             [':char_id'=>$char_id]
         );
 
         $this->assertTrue($ninja_id == $char_id);
-        $this->assertTrue($account_id>0);
-        $this->assertTrue(positive_int($account_id)>0);
         $this->assertTrue($account_operational, 'Account is not being set as operational by default when created');
     }
 
@@ -335,4 +330,5 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
             $this->assertFalse((bool)username_is_valid($name));
         }
     }
+
 }

@@ -169,7 +169,7 @@ class Clan {
         } else {
             $inviteMsg = $p_inviter->name().' has invited you into their clan, '.$this->getName().'. '
                 .'To accept, choose their clan '.$this->getName().' on the '
-                .message_url('clan.php?command=view&clan_id='.$this->getID(), 'clan joining page').'.';
+                .'[href:/clan/view?clan_id='.$this->getID().'|clan joining page].';
 
             Message::create([
                 'send_from' => $p_inviter->id(),

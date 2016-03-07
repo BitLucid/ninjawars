@@ -14,8 +14,6 @@ class TestRatchets:
     plus_minus = 6
     ''' Rough file counts in pertinent directories '''
 
-    COMMANDS_LINES = 180
-
     def deploy_dir(self):
         '''Hack to obtain the web directory path for now '''
         dirname, filename = os.path.split(os.path.abspath(__file__))
@@ -59,15 +57,6 @@ class TestRatchets:
         out = subprocess.check_output(['wc', '-l', path])
         matches = re.findall('\d+', str(out))
         return int(next(iter(matches), None))
-
-    def test_lines_in_command_php(self):
-        ''' The lines in command.php should only decrease '''
-        subpath = 'core/control/commands.php'
-        assert (
-                TestRatchets.COMMANDS_LINES - 20 <
-                self.parse_lines(self.deploy_dir() + subpath) <
-                TestRatchets.COMMANDS_LINES + 20
-                )
 
 '''
     def test_lines_of_code(self):

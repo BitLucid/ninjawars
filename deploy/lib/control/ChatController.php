@@ -43,7 +43,7 @@ class ChatController {
 		// Initialize variables to pass to the template.
 		$field_size    = self::FIELD_SIZE;
 		$target        = $_SERVER['PHP_SELF'];
-		$all_chats_count = get_chat_count();
+		$all_chats_count = $this->getChatCount();
 
 		$view_all      = in('view_all');
 		$error 		   = in('error');
@@ -51,7 +51,7 @@ class ChatController {
 		$chatlength    = min(3000, max(30, $chatlength)); // Min 30, max 3000
 
 		// Output section.
-		$chats = get_chats(($view_all? null : $chatlength)); // Limit by chatlength unless a request to view all came in.
+		$chats = $this->getChats(($view_all? null : $chatlength)); // Limit by chatlength unless a request to view all came in.
 		$more_chats_to_see = (rco($chats)<$all_chats_count? true : null);
 
 		$parts = [
@@ -75,4 +75,29 @@ class ChatController {
 			],
 		];
 	}
+
+    /**
+     * Get all the chat messages info.
+     */
+    private function getChats($chatlength=null) {
+        $chatlength = positive_int($chatlength); // Prevent negatives.
+        $limit = ($chatlength ? 'LIMIT :limit' : '');
+        $bindings = array();
+        if ($limit) {
+            $bindings[':limit'] = $chatlength;
+        }
+
+        $chats = query_resultset("SELECT sender_id, uname, message, date, age(now(), date) AS ago FROM chat
+            JOIN players ON chat.sender_id = player_id ORDER BY chat_id DESC ".$limit, $bindings);
+
+        return $chats;
+    }
+
+    /**
+     * Total number of chats available.
+     */
+    private function getChatCount() {
+        return query_item("SELECT count(*) FROM chat");
+    }
+
 }
