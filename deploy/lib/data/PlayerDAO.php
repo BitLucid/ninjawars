@@ -39,24 +39,12 @@ class PlayerDAO extends DataAccessObject {
 	 */
 	public function save(ValueObject $vo) {
 		if (empty($vo)) {
-			return \UnableToSaveException('Uninitialized character is unable to be saved.');
+			throw new \UnableToSaveException('Uninitialized character is unable to be saved.');
 
 		}
 
 		$vo2 = clone $vo; // Make cloned copy of the vo
 
 		return parent::save($vo2);
-	}
-
-	/**
-	 * Static details saving workaround for now.
-     *
-     * @todo delete this
-	 */
-	public static function saveDetails(Player $pc){
-		$updated = update_query('update players set description = :desc, goals = :goals, instincts = :instincts, beliefs = :beliefs, traits = :traits where player_id = :id',
-				[':id'=>$pc->id(), ':desc'=>$pc->description(), ':goals'=>$pc->goals(), ':instincts'=>$pc->instincts(), ':beliefs'=>$pc->beliefs(), ':traits'=>$pc->traits()]);
-		return (bool)$updated;
-
 	}
 }
