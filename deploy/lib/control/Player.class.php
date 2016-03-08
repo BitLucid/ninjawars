@@ -547,15 +547,6 @@ class Player implements Character {
 	}
 
     /**
-     * Simple wrapper for changeHealth
-     * @return int
-     * @deprecated use set_health instead
-     */
-	public function addHealth($amount) {
-		return $this->changeHealth($amount);
-	}
-
-    /**
      * Simple wrapper for subtractive action.
      * @return int
      * @deprecated use Player::harm() instead
