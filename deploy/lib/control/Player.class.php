@@ -428,7 +428,7 @@ class Player implements Character {
         return $this->vo->turns = $turns;
     }
 
-    /** 
+    /**
      * @deprecated
      */
     public function changeTurns($amount) {
@@ -442,24 +442,16 @@ class Player implements Character {
                 array(':amount'=>array($amount, PDO::PARAM_INT), ':amount2'=>array($amount, PDO::PARAM_INT), ':char_id'=>$this->id()));
         }
 
-        return $this->get_turns();
+        return $this->turns;
     }
 
-    /** 
+    /**
      * @deprecated
      */
     public function subtractTurns($amount) {
         $diff = -1*abs($amount);
 
         return $this->changeTurns($diff);
-    }
-
-    /**
-     * Pull a character's turns.
-     * @deprecated
-     */
-    public function get_turns() {
-        return query_item("select turns from players where player_id = :char_id", array(':char_id'=>$this->id()));
     }
 
     /**

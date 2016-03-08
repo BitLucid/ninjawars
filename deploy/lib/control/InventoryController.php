@@ -387,7 +387,8 @@ class InventoryController {
 	                            $resultMessage .= "__TARGET__ has lost ".abs($turns_change)." turns!";
 	                        }
 
-	                        if ($targetObj->get_turns() <= 0) { //Message when a target has no more turns to remove.
+                            if ($targetObj->turns <= 0) {
+                                // Message when a target has no more turns to remove.
 	                            $resultMessage .= "  __TARGET__ no longer has any turns.";
 	                        }
 	                    }
