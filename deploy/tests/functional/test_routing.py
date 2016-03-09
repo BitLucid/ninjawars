@@ -100,7 +100,8 @@ class TestRouting:
                  'account_issues.php' : 'Account Problems',
                  'resetpassword.php' : 'Request a password reset',
                  'player.php' : 'Ninja Profile',
-                 'player.php?target=tchalvak' : 'Ninja: Tchalvak'
+                 'player.php?target=tchalvak' : 'Ninja: Tchalvak',
+                 'npc/attack/peasant' : 'Battle'
                  }
         for url, title in pages.items():
             assert (bool(title) and bool(url) and
