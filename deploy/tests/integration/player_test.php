@@ -199,7 +199,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $char->set_bounty(45.43);
     }
 
-    public function testPlayerHealChangesVOHealth() {
+    public function testPlayerHealChangesHealth() {
         $char = new Player($this->char_id);
         $half_health = floor($char->health()/2);
         $char->set_health($half_health);
@@ -209,7 +209,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertLessThan($char->max_health(), $char->health());
         $char->heal($char->max_health()); // Heal by max_health, so up to
         $char->save();
-        $this->assertEquals($char->vo->health, $char->max_health());
+        $this->assertEquals($char->health, $char->max_health());
         $this->assertEquals($char->health(), $char->max_health());
     }
 
@@ -251,7 +251,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
     public function testKillCharByHarmingWithTheirFullHealth() {
         $char = new Player($this->char_id);
         $char->harm($char->health());
-        $this->assertEquals(0, $char->vo->health);
+        $this->assertEquals(0, $char->health);
         $this->assertEquals(0, $char->health());
     }
 
@@ -347,7 +347,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($char->identity, $updated_char->identity);
     }
 
-    public function testRetrievingSpecificVOField() {
+    public function testRetrievingSpecificProperty() {
         $char = Player::find($this->char_id);
         $this->assertEquals(100, $char->data('max_turns'));
     }

@@ -174,14 +174,14 @@ class InventoryController {
 	            $target    = $targetObj->name();
 	        }
 
-	        $starting_turns = $player->vo->turns;
+	        $starting_turns = $player->turns;
 	        $username_turns = $starting_turns;
-	        $username_level = $player->vo->level;
+	        $username_level = $player->level;
 
 	        if (($targetObj instanceof Player) && $targetObj->id()) {
-	            $targets_turns = $targetObj->vo->turns;
-	            $targets_level = $targetObj->vo->level;
-	            $target_hp     = $targetObj->vo->health;
+	            $targets_turns = $targetObj->turns;
+	            $targets_level = $targetObj->level;
+	            $target_hp     = $targetObj->health;
 	        } else {
 	            $targets_turns =
 	                $targets_level =
@@ -362,7 +362,7 @@ class InventoryController {
 	                        $targetResult .= " take ".$item->getTargetDamage()." damage!";
 	                    }
 
-	                    $targetObj->vo->health = $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
+	                    $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
 	                    // This is the other location that $victim_alive is set, to determine whether the death proceedings should occur.
 	                }
 
@@ -447,8 +447,8 @@ class InventoryController {
 	                }
 	            }
 
-	            $targetName          = $targetObj->vo->uname;
-	            $targetHealth        = $targetObj->vo->health;
+	            $targetName          = $targetObj->uname;
+	            $targetHealth        = $targetObj->health;
 
 	            $turns_to_take = 1;
 

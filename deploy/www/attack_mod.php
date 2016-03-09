@@ -88,14 +88,14 @@ $attack_error = $attack_legal->getError();
 // ***  MAIN BATTLE ALGORITHM  ***
 if ($attack_is_legal) {
 	// *** Target's stats. ***
-	$target_health = $target_player->vo->health;
-	$target_level  = $target_player->vo->level;
+	$target_health = $target_player->health;
+	$target_level  = $target_player->level;
 	$target_str    = $target_player->getStrength();
 
 	// *** Attacker's stats. ***
-	$attacker_health = $attacking_player->vo->health;
-	$attacker_level  = $attacking_player->vo->level;
-	$attacker_turns  = $attacking_player->vo->turns;
+	$attacker_health = $attacking_player->health;
+	$attacker_level  = $attacking_player->level;
+	$attacker_turns  = $attacking_player->turns;
 	$attacker_str    = $attacking_player->getStrength();
 
 	$starting_target_health = $target_health;

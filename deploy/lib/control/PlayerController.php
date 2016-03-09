@@ -38,7 +38,7 @@ class PlayerController {
 
                 $self = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
 
-                if ($viewing_player_obj !== null && $viewing_player_obj->vo) {
+                if ($viewing_player_obj !== null) {
                     $char_info = $viewing_player_obj->dataWithClan();
                     $char_id  = $viewing_player_obj->id();
                     $username = $viewing_player_obj->name();
@@ -82,8 +82,8 @@ class PlayerController {
                     }
 
                     if(!$is_admin){
-                        $combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'combat', $viewing_player_obj->vo->level);
-                        $targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->vo->_class_id, 'targeted', $viewing_player_obj->vo->level);
+                        $combat_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->_class_id, 'combat', $viewing_player_obj->level);
+                        $targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->_class_id, 'targeted', $viewing_player_obj->level);
                     } else {
                         $combat_skills = $skillDAO->all('combat');
                         $targeted_skills = $skillDAO->all('targeted');

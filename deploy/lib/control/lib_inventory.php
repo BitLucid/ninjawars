@@ -157,10 +157,10 @@ function get_status_list($target=null) {
 	// Default to showing own status.
 	$target = new Player($target);
 
-	if ($target->vo->health < 1) {
+	if ($target->health < 1) {
 		$states[] = 'Dead';
 	} else { // *** Other statuses only display if not dead.
-		if ($target->vo->health < 80) {
+		if ($target->health < 80) {
 			$states[] = 'Injured';
 		} else {
 			$states[] = 'Healthy';
