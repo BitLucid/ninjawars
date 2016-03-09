@@ -37,7 +37,7 @@ class SkillController {
 		$skillsListObj = new Skill();
 
 		$player         = $this->player;
-		$starting_turns = $player->turns();
+		$starting_turns = $player->turns;
 		$starting_ki    = $player->ki();
 
 		$status_list = get_status_list();
@@ -331,7 +331,7 @@ class SkillController {
 				$msg = "You have been poisoned by $attacker_id";
 				send_event($attacker_char_id, $target->id(), $msg);
 			} elseif ($act == 'Fire Bolt') {
-				$target_damage = (5 * (ceil($player->level() / 3)) + rand(1, $player->getStrength()));
+				$target_damage = (5 * (ceil($player->level / 3)) + rand(1, $player->getStrength()));
 
 				$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
@@ -357,20 +357,20 @@ class SkillController {
 					$generic_skill_result_message = '__TARGET__ is already fully healed.';
 				} else {
 					if(!$harmonize){
-						$original_health = $target->health();
-						$heal_points = $player->level()*self::HEAL_PER_LEVEL;
+						$original_health = $target->health;
+						$heal_points = $player->level*self::HEAL_PER_LEVEL;
 						$new_health = $target->heal($heal_points); // Won't heal more than possible
 						$healed_by = $new_health - $original_health;
 					} else {
-						$start_health = $player->health();
+						$start_health = $player->health;
 						// Harmonize those chakra!
 						$player = $this->harmonizeChakra($player);
-						$healed_by = $player->health() - $start_health;
+						$healed_by = $player->health - $start_health;
 						$ki_cost = $healed_by;
 					}
 
 				    $target->addStatus(HEALING);
-				    $generic_skill_result_message = "__TARGET__ healed by $healed_by to ".$target->health().".";
+				    $generic_skill_result_message = "__TARGET__ healed by $healed_by to ".$target->health.".";
 
 				    if ($target->id() != $player->id())  {
 						send_event($attacker_char_id, $target->id(), "You have been healed by $attacker_id for $healed_by.");
@@ -510,7 +510,7 @@ class SkillController {
 
 		$ending_turns = $player->changeTurns($turns_to_take); // Take the skill use cost.
 
-		$target_ending_health = $target->health();
+		$target_ending_health = $target->health;
 		$target_name = $target->name();
 		$parts = get_defined_vars(); // include $act for testing
 		$options = ['quickstat'=>'player'];
