@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\data;
 
-require_once(ROOT.'lib/environment/status_defines.php');
-
 use NinjaWars\core\data\Npc;
 
 class InvalidNpcException extends \Exception{}
