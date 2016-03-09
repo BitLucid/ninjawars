@@ -4,11 +4,6 @@ use NinjaWars\core\control\AccountController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\SignupController;
 
-require_once(LIB_ROOT.'control/lib_auth.php');
-require_once(LIB_ROOT.'control/lib_accounts.php');
-
-// Note that this file has to have a suffix of ...test.php to be run.
-
 /** Account behavior
  *
  * When an account is created, it is initially unconfirmed, but "operational"

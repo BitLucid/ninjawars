@@ -1,9 +1,8 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT."control/lib_inventory.php");
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use NinjaWars\core\control\Combat;
 use \Player;
 use \PDO;
 
@@ -176,14 +175,14 @@ class InventoryController {
 	            $target    = $targetObj->name();
 	        }
 
-	        $starting_turns = $player->vo->turns;
+	        $starting_turns = $player->turns;
 	        $username_turns = $starting_turns;
-	        $username_level = $player->vo->level;
+	        $username_level = $player->level;
 
 	        if (($targetObj instanceof Player) && $targetObj->id()) {
-	            $targets_turns = $targetObj->vo->turns;
-	            $targets_level = $targetObj->vo->level;
-	            $target_hp     = $targetObj->vo->health;
+	            $targets_turns = $targetObj->turns;
+	            $targets_level = $targetObj->level;
+	            $target_hp     = $targetObj->health;
 	        } else {
 	            $targets_turns =
 	                $targets_level =
@@ -364,7 +363,7 @@ class InventoryController {
 	                        $targetResult .= " take ".$item->getTargetDamage()." damage!";
 	                    }
 
-	                    $targetObj->vo->health = $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
+	                    $victim_alive = $targetObj->subtractHealth($item->getTargetDamage());
 	                    // This is the other location that $victim_alive is set, to determine whether the death proceedings should occur.
 	                }
 
@@ -387,7 +386,8 @@ class InventoryController {
 	                            $resultMessage .= "__TARGET__ has lost ".abs($turns_change)." turns!";
 	                        }
 
-	                        if ($targetObj->get_turns() <= 0) { //Message when a target has no more turns to remove.
+                            if ($targetObj->turns <= 0) {
+                                // Message when a target has no more turns to remove.
 	                            $resultMessage .= "  __TARGET__ no longer has any turns.";
 	                        }
 	                    }
@@ -412,7 +412,7 @@ class InventoryController {
 	                        $targetObj->save();
 	                        $player->addKills(1);
 	                        $kill = true;
-	                        $bountyMessage = runBountyExchange($player->name(), $target);  //Rewards or increases bounty.
+	                        $bountyMessage = Combat::runBountyExchange($player->name(), $target);  //Rewards or increases bounty.
 	                    } else {
 	                        $loot = 0;
 	                        $suicide = true;
@@ -448,8 +448,8 @@ class InventoryController {
 	                }
 	            }
 
-	            $targetName          = $targetObj->vo->uname;
-	            $targetHealth        = $targetObj->vo->health;
+	            $targetName          = $targetObj->uname;
+	            $targetHealth        = $targetObj->health;
 
 	            $turns_to_take = 1;
 

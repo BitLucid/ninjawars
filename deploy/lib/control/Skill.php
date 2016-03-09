@@ -96,7 +96,7 @@ class Skill {
 		$skill     = strtolower($skill);
 		$levelReq = (isset($skills[$skill]['level']) ? $skills[$skill]['level'] : 1);
 
-		return (isset($skills[$skill]['available']) && ($player->level() >= $levelReq));
+		return (isset($skills[$skill]['available']) && ($player->level >= $levelReq));
 	}
 
 	/**

@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT."control/lib_inventory.php");
-
 use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\extensions\SessionFactory;
@@ -186,10 +184,10 @@ class NpcController { //extends controller
 
                 // Add bounty where applicable.
                 if ((bool)$bounty_mod &&
-                    $player->level() > self::MIN_LEVEL_FOR_BOUNTY &&
-                    $player->level() <= self::MAX_LEVEL_FOR_BOUNTY
+                    $player->level > self::MIN_LEVEL_FOR_BOUNTY &&
+                    $player->level <= self::MAX_LEVEL_FOR_BOUNTY
                 ) {
-                    $added_bounty = floor($player->level() / 3 * $bounty_mod);
+                    $added_bounty = floor($player->level / 3 * $bounty_mod);
                     $player->set_bounty($player->bounty() + $added_bounty);
                 }
             }
@@ -296,7 +294,7 @@ class NpcController { //extends controller
             } else if (array_key_exists($victim, $standard_npcs)) {
                 $method = $standard_npcs[$victim];
             } else if ($victim == "samurai") {
-                if ($player->level() < 2 || $player->kills < 1) {
+                if ($player->level < 2 || $player->kills < 1) {
                     $turn_cost = 0;
                     $weakness_error = 'You are too weak to attack the samurai.';
                     $npc_template = 'npc.samurai.tpl';
@@ -362,8 +360,8 @@ class NpcController { //extends controller
             $gold = rand(1, $player->strength() + 40);  // Guard Gold
             $player->set_gold($player->gold() + $gold);
 
-            if ($player->level() > 15) {
-                $bounty = 10 * floor(($player->level() - 10) / 5);
+            if ($player->level > 15) {
+                $bounty = 10 * floor(($player->level - 10) / 5);
                 $player->set_bounty($player->bounty() + $bounty);
             }
 
@@ -399,8 +397,8 @@ class NpcController { //extends controller
             $player->set_gold($player->gold() + $gold);
 
             // *** Bounty or no bounty ***
-            if ($player->level() > 1 && $player->level() <= 20) {
-                $bounty = floor($player->level() / 3);
+            if ($player->level > 1 && $player->level <= 20) {
+                $bounty = floor($player->level / 3);
                 $player->set_bounty($player->bounty() + $bounty);
             }
 
@@ -418,7 +416,7 @@ class NpcController { //extends controller
                 'just_villager' => $just_villager,
                 'attack'        => $damage,
                 'gold'          => $gold,
-                'level'         => $player->level(),
+                'level'         => $player->level,
                 'bounty'        => $bounty,
                 'victory'       => $victory,
             ],
@@ -486,7 +484,7 @@ class NpcController { //extends controller
                 'gold'                 => $gold,
                 'victory'              => $victory,
                 'ninja_str'            => $player->strength(),
-                'level'                => $player->level(),
+                'level'                => $player->level,
                 'attacker_kills'       => $player->kills,
                 'drop'                 => $drop,
                 'drop_display'         => $drop_display,
@@ -539,8 +537,8 @@ class NpcController { //extends controller
                 add_item($player->id(), 'phosphor', 1);
             }
 
-            if ($player->level() > 10) {
-                $bounty = 5 * floor(($player->level() - 5) / 3);
+            if ($player->level > 10) {
+                $bounty = 5 * floor(($player->level - 5) / 3);
                 $player->set_bounty($player->bounty + $bounty);
             }
         } else { // NPC killed player

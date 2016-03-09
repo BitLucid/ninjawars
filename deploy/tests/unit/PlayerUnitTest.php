@@ -38,7 +38,7 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testAccessor_level() {
-        $this->assertEquals($this->player->level(), $this->data->level);
+        $this->assertEquals($this->player->level, $this->data->level);
     }
 
     public function testIsHurtBy() {
@@ -60,10 +60,6 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
         $this->markTestIncomplete('Player::harm() currently hits DB');
         $this->player->harm(7);
         $this->assertEquals(13, $this->player->health());
-    }
-
-    public function testAsVO() {
-        $this->assertInstanceOf('NinjaWars\core\data\PlayerVO', $this->player->as_vo());
     }
 
     public function testAsArray() {

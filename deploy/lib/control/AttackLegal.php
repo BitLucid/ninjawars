@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT . 'control/Player.class.php');
-
 use NinjaWars\core\data\Clan;
 use \Player;
 use \Constants;
@@ -157,17 +155,17 @@ class AttackLegal {
         //  *** START OF ILLEGAL ATTACK ERROR LIST  ***
         if (!$timing_allowed) {
             $this->error = 'Even the fastest ninja cannot act more than four times a second.';
-        } else if (empty($target->vo->uname)) {
+        } else if (empty($target->uname)) {
             $this->error = 'Your target does not exist.';
         } else if (($target->id() == $attacker->id()) && !$this->params['self_use']) {
             $this->error = 'Commiting suicide is a tactic reserved for samurai.';
-        } else if ($attacker->vo->turns < $this->params['required_turns']) {
+        } else if ($attacker->turns < $this->params['required_turns']) {
             $this->error = 'You don\'t have enough turns for that, wait for the half hour or use amanita mushrooms to gain more turns.';
         } else if (!$this->params['self_use'] && $this->sameDomain($target, $attacker)) {
             $this->error = 'You can not attack a ninja from the same domain.';
-        } else if ($target->vo->active == 0) {
+        } else if ($target->active == 0) {
             $this->error = 'You can not attack an inactive ninja.';
-        } else if ($attacker->vo->active == 0) {
+        } else if ($attacker->active == 0) {
             $this->error = 'You cannot attack when your ninja is retired/inactive.';
         } else if ($target->health() < 1) {
             $this->error = "They're already dead.";

@@ -5,9 +5,9 @@
             </a>
         </div>
         <div class='ninja-level'>
-          Level {$ninja->level()|escape}
+          Level {$ninja->level|escape}
         </div>
-        {if $ninja->level() < 5}
+        {if $ninja->level < 5}
         <div id='helpful-info'>
           <a target='main' href='/intro'>Helpful Info</a>
         </div>

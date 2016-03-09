@@ -159,7 +159,7 @@ class Npc implements Character{
     }
 
     public function dynamicBounty(Player $char){
-        if($char->level() <= 2){
+        if($char->level <= 2){
             return 0;
         } else {
             return $this->bounty();

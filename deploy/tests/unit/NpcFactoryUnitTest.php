@@ -129,7 +129,7 @@ class Npc_Test extends PHPUnit_Framework_TestCase {
         $this->assertLessThan(21, $peasant->gold());
         $mock_pc = new Player();
         $mock_pc->vo->level = 10;
-        $this->assertEquals(10, $mock_pc->level());
+        $this->assertEquals(10, $mock_pc->level);
         $this->assertGreaterThan(0, $peasant->dynamicBounty($mock_pc));
     }
 

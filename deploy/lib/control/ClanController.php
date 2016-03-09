@@ -160,7 +160,7 @@ class ClanController { //extends Controller
 	public function create() {
 		$player = new Player(self_char_id());
 
-		if ($player->level() >= self::CLAN_CREATOR_MIN_LEVEL) {
+		if ($player->level >= self::CLAN_CREATOR_MIN_LEVEL) {
 			$default_clan_name = 'Clan '.$player->name();
 
 			while (!Clan::isUniqueClanName($default_clan_name)) {

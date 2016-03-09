@@ -1,9 +1,6 @@
 <?php
 namespace NinjaWars\core\data;
 
-require_once(CORE.'control/Player.class.php');
-require_once(CORE.'data/database.php');
-
 use Illuminate\Database\Eloquent\Model;
 use \Player;
 
