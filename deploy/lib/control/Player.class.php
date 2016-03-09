@@ -21,6 +21,8 @@ use NinjaWars\core\data\AccountFactory;
  * @property-read int health
  * @property-read int kills
  * @property-read int gold
+ * @property-read int karma
+ * @property-read int level
  */
 class Player implements Character {
 	public $player_id;
@@ -61,12 +63,22 @@ class Player implements Character {
 	}
 
     /**
-     * Magic function to provide for properties like ->health, ->gold, ->kills, etc.
+     * Magic method to provide accessors for properties
+     *
      * @return mixed
      */
 	public function __get($member_field) {
 		return $this->vo->$member_field;
 	}
+
+    /**
+     * Magic method to handle isset() and empty() calls against properties
+     *
+     * @return boolean
+     */
+    public function __isset($member_field) {
+        return isset($this->vo->$member_field);
+    }
 
     /**
      * @return string
