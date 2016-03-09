@@ -62,6 +62,7 @@ class Player implements Character {
 
     /**
      * Magic function to provide for properties like ->health, ->gold, ->kills, etc.
+     * @return mixed
      */
 	public function __get($member_field) {
 		return $this->vo->$member_field;
@@ -195,7 +196,7 @@ class Player implements Character {
      */
 	public function addStatus($p_status) {
         $status = self::validStatus($p_status); // Filter it.
-        if($status !== false){
+        if($status !== null){
             // Binary add to current status, doing nothing if already set, e.g. 000 | 010 = 010
             $this->vo->status = $this->vo->status | $status;
             if(gettype($this->vo->status) !== 'integer'){
@@ -215,7 +216,7 @@ class Player implements Character {
      */
     public function subtractStatus($p_status) {
         $status = self::validStatus($p_status); // Filter it.
-        if ($status !== false) {
+        if ($status !== null) {
             // Remove current status from binary representation, e.g. 111 & ~010 = 101
             $current = $this->vo->status & ~$status;
             $this->vo->status = $current; // Store as int.
@@ -455,10 +456,17 @@ class Player implements Character {
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMaxHealth() {
         return self::maxHealthByLevel($this->level);
+    }
+
+    /**
+     * @return integer
+     */
+    public function max_health() {
+        return self::maxHealthByLevel($this->level());
     }
 
     /**
@@ -606,14 +614,6 @@ class Player implements Character {
 		return max(0,
 			(int) ($this->max_health() - $this->health())
 		);
-	}
-
-    /**
-     * This char's max health
-     * @return int
-     */
-	public function max_health() {
-		return self::maxHealthByLevel($this->level());
 	}
 
     /**
@@ -792,7 +792,7 @@ class Player implements Character {
 
     /**
      * Calculate a max health by a level
-     * @return int
+     * @return integer
      */
     public static function maxHealthByLevel($level) {
         return (int) NEW_PLAYER_INITIAL_HEALTH + round(LEVEL_UP_HP_RAISE*($level-1));
@@ -932,8 +932,7 @@ class Player implements Character {
     }
 
     /**
-     * @return boolean|int
-     * @todo abstract this to only use a single return type
+     * @return integer|null
      * @note this needs review overall, as nonexistent high int statuses will false positive
      */
     public static function validStatus($dirty) {
@@ -945,7 +944,7 @@ class Player implements Character {
             if (defined($status)) {
                 return (int) constant($status);
             } else {
-                return false;
+                return null;
             }
         } else {
             return null;
