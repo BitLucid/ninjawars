@@ -281,7 +281,7 @@ class NpcController { //extends controller
 
         $method = null;
 
-        if ($player->turns() > 0 && !empty($victim)) {
+        if ($player && $player->turns() > 0 && !empty($victim)) {
             // Strip stealth when attacking special NPCs
             if ($player->hasStatus('stealth') && in_array(strtolower($victim), self::$STEALTH_REMOVING_NPCS)) {
                 $player->subtractStatus(STEALTH);
@@ -338,7 +338,7 @@ class NpcController { //extends controller
             'victim'       => $victim, // merge may override in theory
             'npc_template' => $npc_template,
             'attacked'     => 1,
-            'turns'        => $player->turns(),
+            'turns'        => $player? $player->turns() : null,
             'health'       => $health,
         ];
 
