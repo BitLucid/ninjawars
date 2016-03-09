@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(CORE.'control/Player.class.php');
-
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\ClanFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;

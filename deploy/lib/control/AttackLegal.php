@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT . 'control/Player.class.php');
-
 use NinjaWars\core\data\Clan;
 use \Player;
 use \Constants;
