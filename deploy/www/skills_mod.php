@@ -207,7 +207,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 		$msg = "You have been poisoned by $attacker_id";
 		send_event($attacker_char_id, $target->id(), $msg);
 	} elseif ($command == 'Fire Bolt') {
-		$target_damage = (5 * (ceil($player->level() / 3)) + rand(1, $player->getStrength()));
+		$target_damage = (5 * (ceil($player->level / 3)) + rand(1, $player->getStrength()));
 
 		$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
@@ -235,7 +235,7 @@ if (!$attack_error) { // Nothing to prevent the attack from happening.
 			if(!$harmonize){
 				$original_health = $target->health();
 				$heal_per_level = 10; // For standard heal.
-				$heal_points = $player->level()*$heal_per_level;
+				$heal_points = $player->level*$heal_per_level;
 				$new_health = $target->heal($heal_points); // Won't heal more than possible
 				$healed_by = $new_health - $original_health;
 			} else {
