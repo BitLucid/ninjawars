@@ -339,10 +339,6 @@ class Player implements Character {
 		return $this->vo->ki = $ki;
 	}
 
-	public function karma() {
-		return $this->vo->karma;
-	}
-
 	public function gold() {
 		return $this->vo->gold;
 	}
@@ -920,7 +916,7 @@ class Player implements Character {
 
                 // no mutator for these yet
                 $this->vo->kills = max(0, $this->kills - $this->killsRequiredForNextLevel());
-                $this->vo->karma = ($this->karma() + $karma_to_give);
+                $this->vo->karma = ($this->karma + $karma_to_give);
                 $this->vo->level = ($this->level() + 1);
 
                 $this->save();
