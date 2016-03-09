@@ -55,7 +55,7 @@ class NpcController { //extends controller
         $item             = null;
 
         $player->subtractTurns(self::ONI_TURN_LOSS);
-        $player->subtractHealth($oni_health_loss);
+        $player->harm($oni_health_loss);
         $player->subtractKills(self::ONI_KILL_LOSS);
 
         if ($player->health() > 0) { // if you survive
@@ -162,7 +162,7 @@ class NpcController { //extends controller
 
         // ******* FIGHT Logic ***********
         $npc_damage = $npco->damage();
-        $survive_fight = $player->subtractHealth($npc_damage);
+        $survive_fight = $player->harm($npc_damage);
         $kill_npc = ($npco->health() < $player->damage());
 
         if ($survive_fight > 0) {
@@ -356,7 +356,7 @@ class NpcController { //extends controller
         $gold   = 0;
         $bounty = 0;
 
-        if ($victory = $player->subtractHealth($damage)) {
+        if ($victory = $player->harm($damage)) {
             $gold = rand(1, $player->strength() + 40);  // Guard Gold
             $player->set_gold($player->gold() + $gold);
 
@@ -392,7 +392,7 @@ class NpcController { //extends controller
         $bounty        = 0;
         $gold          = 0;
 
-        if ($victory = $player->subtractHealth($damage)) {
+        if ($victory = $player->harm($damage)) {
             $gold = rand(0, 20);
             $player->set_gold($player->gold() + $gold);
 
@@ -441,7 +441,7 @@ class NpcController { //extends controller
         }
 
         for ($i = 0; $i < count($damage) && $player->health > 0; ++$i) {
-            $player->set_health($player->health - $damage[$i]);
+            $player->harm($damage[$i]);
         }
 
         if ($player->health > 0) { // Ninja still has health after all attacks
@@ -495,7 +495,7 @@ class NpcController { //extends controller
     private function attackGroupOfThieves(Player $player) {
         $damage = rand(50, 150);
 
-        if ($victory = $player->subtractHealth($damage)) {
+        if ($victory = $player->harm($damage)) {
             // The den of thieves didn't accomplish their goal
             $gold = rand(100, 300);
 
@@ -529,7 +529,7 @@ class NpcController { //extends controller
         $bounty = 0;
 
         // Player killed NPC
-        if ($victory = $player->subtractHealth($damage)) {
+        if ($victory = $player->harm($damage)) {
             $gold = rand(20, 70);
             $player->set_gold($player->gold + $gold);
 
@@ -565,7 +565,7 @@ class NpcController { //extends controller
         $damage = rand(0, 35);  // Damage done
         $gold   = 0;
 
-        if ($victory = $player->subtractHealth($damage)) {
+        if ($victory = $player->harm($damage)) {
             $gold = rand(0, 40);  // Gold in question
 
             if ($damage > 30) { // Steal gold
