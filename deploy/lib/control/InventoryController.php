@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use NinjaWars\core\control\Combat;
 use \Player;
 use \PDO;
 
@@ -411,7 +412,7 @@ class InventoryController {
 	                        $targetObj->save();
 	                        $player->addKills(1);
 	                        $kill = true;
-	                        $bountyMessage = runBountyExchange($player->name(), $target);  //Rewards or increases bounty.
+	                        $bountyMessage = Combat::runBountyExchange($player->name(), $target);  //Rewards or increases bounty.
 	                    } else {
 	                        $loot = 0;
 	                        $suicide = true;

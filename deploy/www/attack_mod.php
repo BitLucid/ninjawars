@@ -130,7 +130,7 @@ if ($attack_is_legal) {
 			$target_player->death();
 			sendMessage("A Stealthed Ninja", $target, $target_msg);
 			sendMessage($target, $attacking_player->name(), $attacker_msg);
-			$bounty_result = runBountyExchange($attacker_player->name(), $target); // *** Determines the bounty for normal attacking. ***
+			$bounty_result = Combat::runBountyExchange($attacker_player->name(), $target); // *** Determines the bounty for normal attacking. ***
 
 			$stealth_kill = true;
 		} else {	// *** if damage from stealth only hurts the target. ***
@@ -274,7 +274,7 @@ if ($attack_is_legal) {
 				sendMessage($attacker, $target, $target_msg);
 				// Stopped telling attackers when they win a duel.
 
-				$bounty_result = runBountyExchange($attacker, $target);	// *** Determines bounty for dueling. ***
+				$bounty_result = Combat::runBountyExchange($attacker, $target);	// *** Determines bounty for dueling. ***
 			}
 
 			if ($attackerHealthRemaining < 1) { // *** DEFENDER KILLS ATTACKER! ***
