@@ -2,7 +2,6 @@
 namespace NinjaWars\core\control;
 
 require_once(CORE.'control/Skill.php');
-require_once(CORE.'control/lib_inventory.php');
 
 use \Player as Player;
 use \Skill as Skill;

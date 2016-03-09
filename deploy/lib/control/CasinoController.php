@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT.'control/lib_inventory.php');
-
 use \Player as Player;
 
 /**

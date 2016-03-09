@@ -3,8 +3,6 @@ namespace NinjaWars\core\data;
 
 use \Player;
 
-require_once(LIB_ROOT."control/lib_inventory.php");
-
 class AdminViews{
 
     public static function high_rollers(){
