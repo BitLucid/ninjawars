@@ -17,7 +17,6 @@ class DojoController {
     const ALIVE                = false;
     const PRIV                 = false;
     const DIM_MAK_COST         = 70; // Cost of acquiring DimMak In turns
-    const DIM_MAK_STRENGTH_MIN = 50; // Must have enough strength to get DimMak
     const CLASS_CHANGE_COST    = 50; // Cost of class change in turns
 
     /**
@@ -45,9 +44,11 @@ class DojoController {
             $showMonks = false;
             $parts = [];
 
+            RequestWrapper::init();
+
 
             if (RequestWrapper::$request && RequestWrapper::$request->isMethod('POST')) {
-                $error = $this->dimMakReqs($player, self::DIM_MAK_COST, self::DIM_MAK_STRENGTH_MIN);
+                $error = $this->dimMakReqs($player, self::DIM_MAK_COST);
 
                 if (!$error) {
                     $player->changeTurns((-1)*self::DIM_MAK_COST);
@@ -154,15 +155,11 @@ class DojoController {
      * @param int $p_requiredStrength
      * @return string|null
      */
-    private function dimMakReqs($p_player, $p_requiredTurns, $p_requiredStrength) {
+    private function dimMakReqs(Player $p_player, $p_requiredTurns) {
         $error = null;
 
         if ($p_player->turns() < $p_requiredTurns) {
             $error = "You don't have enough turns to get a Dim Mak.";
-        }
-
-        if ($p_player->strength() < $p_requiredStrength) {
-            $error = "You don't have enough strength to get a Dim Mak.";
         }
 
         return $error;
@@ -211,7 +208,7 @@ class DojoController {
             array_unshift($p_parts['pageParts'], 'access-denied');
         } else {
             if ($p_renderMonks) {
-                if (!$this->dimMakReqs($p_player, self::DIM_MAK_COST, self::DIM_MAK_STRENGTH_MIN)) {
+                if (!$this->dimMakReqs($p_player, self::DIM_MAK_COST)) {
                     $p_parts['pageParts'][] = 'reminder-dim-mak';
                 }
 
