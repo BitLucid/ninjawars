@@ -100,7 +100,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($char->hasStatus(SLOW));
         $char->addStatus(SLOW);
         $this->assertTrue($char->hasStatus(SLOW));
-        $char->addStatus(-1*SLOW);
+        $char->subtractStatus(SLOW);
         $this->assertFalse($char->hasStatus(SLOW));
     }
 
