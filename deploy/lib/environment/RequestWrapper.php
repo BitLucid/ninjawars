@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Creates an API for using a repeatable request and other globals
  */
 class RequestWrapper{
-    static $request = null;
+    public static $request = null;
 
     /**
      */
