@@ -45,7 +45,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue((bool)positive_int($char->speed()));
         $this->assertTrue((bool)positive_int($char->stamina()));
         $this->assertTrue((bool)positive_int($char->strength()));
-        $this->assertTrue((bool)positive_int($char->level()));
+        $this->assertTrue((bool)positive_int($char->level));
         $this->assertNotEmpty($char->name());
         $this->assertTrue((bool)positive_int($char->damage()));
     }

@@ -97,13 +97,6 @@ class Player implements Character {
     /**
      * @return int
      */
-	public function level() {
-		return $this->vo->level;
-	}
-
-    /**
-     * @return int
-     */
 	public function description() {
 		return $this->vo->description;
 	}
@@ -478,7 +471,7 @@ class Player implements Character {
      * @return integer
      */
     public function max_health() {
-        return self::maxHealthByLevel($this->level());
+        return self::maxHealthByLevel($this->level);
     }
 
     /**
@@ -838,7 +831,7 @@ class Player implements Character {
      * @return int
      */
     public function killsRequiredForNextLevel() {
-       return $this->level()*5;
+       return $this->level*5;
     }
 
     /**
@@ -906,7 +899,7 @@ class Player implements Character {
         } else { // For normal characters, do auto-level
             // Have to be under the max level and have enough kills.
             $level_up_possible = (
-                ($this->level() + 1 <= MAX_PLAYER_LEVEL) &&
+                ($this->level + 1 <= MAX_PLAYER_LEVEL) &&
                 ($this->kills >= $this->killsRequiredForNextLevel())
             );
 
@@ -923,7 +916,7 @@ class Player implements Character {
                 // no mutator for these yet
                 $this->vo->kills = max(0, $this->kills - $this->killsRequiredForNextLevel());
                 $this->vo->karma = ($this->karma + $karma_to_give);
-                $this->vo->level = ($this->level() + 1);
+                $this->vo->level = ($this->level + 1);
 
                 $this->save();
 
@@ -935,7 +928,7 @@ class Player implements Character {
 
                 // Send a level-up message, for those times when auto-levelling happens.
                 send_event($this->id(), $this->id(),
-                    "You levelled up! Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by $karma_to_give, and your Ki raised $ki_to_give! You gained some health and turns, as well! You are now a level {$this->level()} ninja! Go kill some stuff.");
+                    "You levelled up! Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by $karma_to_give, and your Ki raised $ki_to_give! You gained some health and turns, as well! You are now a level {$this->level} ninja! Go kill some stuff.");
                 return true;
             } else {
                 return false;

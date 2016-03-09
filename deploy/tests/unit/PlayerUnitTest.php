@@ -38,7 +38,7 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testAccessor_level() {
-        $this->assertEquals($this->player->level(), $this->data->level);
+        $this->assertEquals($this->player->level, $this->data->level);
     }
 
     public function testIsHurtBy() {
