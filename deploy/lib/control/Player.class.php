@@ -1,6 +1,4 @@
 <?php
-require_once(CORE . "control/lib_accounts.php");
-
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Clan;
