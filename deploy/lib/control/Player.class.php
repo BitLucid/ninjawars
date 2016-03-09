@@ -509,10 +509,6 @@ class Player implements Character {
         return $char_info;
     }
 
-    public function as_vo() {
-        return $this->vo;
-    }
-
     public function as_array() {
         return (array) $this->vo;
     }

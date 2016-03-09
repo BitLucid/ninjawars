@@ -62,10 +62,6 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(13, $this->player->health());
     }
 
-    public function testAsVO() {
-        $this->assertInstanceOf('NinjaWars\core\data\PlayerVO', $this->player->as_vo());
-    }
-
     public function testAsArray() {
         $this->assertInternalType('array', $this->player->as_array());
         $this->assertNotEmpty($this->player->as_array());
