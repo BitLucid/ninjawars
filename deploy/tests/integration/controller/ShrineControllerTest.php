@@ -54,6 +54,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $this->char->harm(30); // Have to be wounded first.
         $initial_health = $this->char->health();
+        $this->assertGreaterThan(0, $initial_health);
         $this->char->save();
         $this->char->setClass('viper'); // Default dragon class has chi skill
 
@@ -89,6 +90,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->harm(30); // Have to be wounded first.
         $this->char->set_gold(0);
         $initial_health = $this->char->health();
+        $this->assertGreaterThan(0, $initial_health);
         $this->char->save();
         $this->char->setClass('viper'); // Default dragon class has chi skill
 
