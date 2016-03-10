@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT."control/Skill.php");
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\data\Message;
