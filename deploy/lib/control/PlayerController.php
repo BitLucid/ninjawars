@@ -147,7 +147,20 @@ class PlayerController {
         $item_in = in('item');
         $give = in('give');
         $method = $give? 'give' : 'use';
-        $url = 'item/'.$method.'/'.$item_in.'/'.$target;
+        $url = 'item/'.url($method).'/'.url($item_in).'/'.url($target);
+        // TODO: Need to double check that this doesn't allow for redirect injection
+        return new RedirectResponse(WEB_ROOT.$url);
+    }
+
+    /**
+     * Wrapper to redirect skill use into pretty urls
+     * like a final url of /skill/go/firebolt/tchalvak
+     * from a starting url of http://nw.local/player/use_skill/?act=firebolt&target=tchalvak
+     */
+    public function use_skill(){
+        $target = in('target');
+        $act = in('act');
+        $url = 'skill/use/'.url($act).'/'.url($target);
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
     }

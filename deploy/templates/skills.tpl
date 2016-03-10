@@ -6,6 +6,8 @@
 
 <h1>Skills</h1>
 
+{include file='flash-message.tpl'}
+
 <div class='major-stats'>
   <ul class='thin'>
     <li>Your status is {include file="status_section.tpl" statuses=$status_list}</li>
@@ -25,17 +27,17 @@
 
 {if $stealth}
   <div id='stealth-skills'>
-    <form action="skills_mod.php" method="post">
+    <form action="/skill/post_self_use/" method="post">
       <fieldset>
         <legend>Stealth</legend>
     <p>By stealthing you will keep to the shadows where enemies cannot directly duel, for about the next half hour.</p>
       <div>
-        <input type="submit" name="command" value="Stealth" class="formButton">
+        <input type="submit" name="act" value="Stealth" class="formButton">
         Turn Cost: {$stealth_turn_cost} to Stealth.
       </div>
 
       <div>
-        <input type="submit" name="command" value="Unstealth" class="formButton">
+        <input type="submit" name="act" value="Unstealth" class="formButton">
         Turn Cost: {$unstealth_turn_cost} to Unstealth.
       </div>
       </fieldset>
@@ -45,14 +47,14 @@
 
 {if $kampo}
   <div id='kampo-skill'>
-    <form action="skills_mod.php" method="post">
+    <form action="/skill/post_self_use/" method="post">
       <fieldset>
         <legend>Kampo</legend>
         <p>
           The ancient and mystical art of herbal medicine. Your knowledge of Kampo allows you to convert various herbs into potent medicines.
         </p>
       <div>
-        <input type="submit" name="command" value="Kampo" class="formButton">
+        <input type="submit" name="act" value="Kampo" class="formButton">
         Turn Cost: {$kampo_turn_cost} to make all your ginseng into tiger salves.
       </div>
       </fieldset>
@@ -63,14 +65,14 @@
 
 {if $heal}
   <div id='heal-skill'>
-    <form action="skills_mod.php" method="post">
+    <form action="/skill/post_self_use/" method="post">
       <fieldset>
         <legend>Heal</legend>
         <p>
           You can heal your wounds or another's wounds.
         </p>
       <div>
-        <input type="submit" name="command" value="Heal" class="formButton">
+        <input type="submit" name="act" value="Heal" class="formButton">
         Turn Cost: {$heal_turn_cost} to heal yourself (or another).
       </div>
       </fieldset>
@@ -80,14 +82,14 @@
 
 {if $can_harmonize}
   <div id='harmonize-skill'>
-    <form action="skills_mod.php" method="post">
+    <form action="/skill/post_self_use/" method="post">
       <fieldset>
       	<legend>Harmonize Chakra</legend>
       	<p>
           Heal yourself using your ki.
         </p>
       	<div>
-        <input type="submit" name="command" value="Harmonize" class="formButton">
+        <input type="submit" name="act" value="Harmonize" class="formButton">
         </div>
       </fieldset>
     </form>
@@ -98,14 +100,14 @@
 
 {if $clone_kill}
   <div id='clone-kill'>
-    <form action="skills_mod.php" method="post">
+    <form action="/skill/post_use/" method="post">
       <fieldset>
         <legend>Clone Kill</legend>
     <p>Obliterate two ninja if they are clones.</p>
       <div>
-      	Possible Clones: <input type='text' name='clone1' class='char-name'> and
-      	<input type='text' name='clone2' class='char-name'>
-      	<input type='submit' name='command' value='Clone Kill' class='formButton'>
+      	Possible Clones: <input type='text' name='target1' class='char-name'> and
+      	<input type='text' name='target2' class='char-name'>
+      	<input type='submit' name='act' value='Clone Kill' class='formButton'>
         Turn Cost: {$clone_kill_turn_cost}
       </div>
       </fieldset>
@@ -144,17 +146,3 @@
 {/if}
 
 </div>
-<!--
-<div id='search-for-ninja'>
-<p><a href="/list?hide=dead">Use a Skill on a ninja?</a></p>
-<form action="/list" method="get">
-  <div>
-    <input id="searched" type="text" maxlength="50" name="searched" class="textField">
-    <input type="hidden" name="hide" value="dead">
-    <button type="submit" value="1" class="formButton">Search for Ninja</button>
-  </div>
-</form>
-</div>
--->
-
-<hr>
