@@ -1,11 +1,8 @@
 <?php
-require_once(LIB_ROOT."control/Player.class.php");
-require_once(LIB_ROOT."control/Skill.php");
-require_once(LIB_ROOT."control/lib_inventory.php");
-
 use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\GameLog;
+use NinjaWars\core\data\Skill;
 
 /*
  * Deals with the non-skill based attacks and stealthed attacks.

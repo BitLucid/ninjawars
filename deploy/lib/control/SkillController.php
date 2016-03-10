@@ -1,13 +1,10 @@
 <?php
 namespace NinjaWars\core\control;
 
-
-require_once(LIB_ROOT."control/Skill.php");
-
 use \Player;
-use \Skill;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\environment\RequestWrapper;
+use NinjaWars\core\data\Skill;
 
 /**
  * Handles both skill listing and displaying, and their usage

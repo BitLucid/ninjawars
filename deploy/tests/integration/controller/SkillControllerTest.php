@@ -1,15 +1,13 @@
 <?php
-//namespace NinjaWars\test;
-
-use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\HttpFoundation\RedirectResponse as RedirectResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\environment\RequestWrapper;
-use NinjaWars\core\control\SkillController as SkillController;
+use NinjaWars\core\control\SkillController;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\data\Skill;
+use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 use \Player as Player;
-use \Skill as Skill;
 
 class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 	public function setUp() {
@@ -180,7 +178,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
         $this->assertNotEmpty(url($name));
-        $skillList = new \Skill();
+        $skillList = new Skill();
         $this->assertTrue($skillList->hasSkill('Sight', $this->char));
         $request = Request::create('/skill/use/Sight/'.url($name).'/');
         RequestWrapper::inject($request);

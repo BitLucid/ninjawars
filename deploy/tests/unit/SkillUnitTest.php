@@ -1,5 +1,5 @@
 <?php
-require_once(CORE.'/control/Skill.php');
+use NinjaWars\core\data\Skill;
 
 class SkillUnitTest extends PHPUnit_Framework_TestCase {
     private $skill;

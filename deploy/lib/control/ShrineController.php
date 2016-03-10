@@ -1,10 +1,8 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(CORE.'control/Skill.php');
-
+use NinjaWars\core\data\Skill;
 use \Player as Player;
-use \Skill as Skill;
 
 /**
  * Controller for actions taken in the Healing Shrine

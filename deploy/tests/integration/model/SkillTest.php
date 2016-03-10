@@ -1,6 +1,6 @@
 <?php
 use NinjaWars\core\data\SkillDAO;
-use \Skill as Skill;
+use NinjaWars\core\data\Skill;
 
 class SkillTest extends PHPUnit_Framework_TestCase {
 	public function setUp(){
