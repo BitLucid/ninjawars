@@ -1,12 +1,8 @@
 <?php
-/**
- * Mob npcs and their combat behavior for simple attacking on the npc page
- */
-
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Npc;
 
-class Npc_Test extends PHPUnit_Framework_TestCase {
+class NpcFactoryUnitTest extends PHPUnit_Framework_TestCase {
     public function testInstantiatingABlankNpc() {
         $npc = new Npc(array());
         $this->assertTrue($npc instanceof Npc);
