@@ -202,7 +202,7 @@ class InventoryController {
         } else if ($this->itemCount($player, $item) < 1) {
             $error = 3;
         } else if ($target->id() === $player->id()) {
-            return $this->self_use();
+            return $this->selfUse();
         } else {
             $params = [
                 'required_turns'  => $item->getTurnCost(),
