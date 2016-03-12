@@ -121,6 +121,7 @@ class InventoryController {
         $turns_to_take   = 1; // Take away one turn even on attacks that fail to prevent page reload spamming
         $display_message = 'This item cannot be used on yourself!';
         $error           = 1;
+        $extra_message   = null;
 
         try {
             $item = $this->findItem($slugs['item_in']);
@@ -132,20 +133,32 @@ class InventoryController {
         if ($this->itemCount($player, $item) < 1) {
             $error = 3;
         } else if ($item->isSelfUsable()) {
-            $error  = null;
-            $result = $this->applyItemEffects($player, $player, $item);
+            $params = [
+                'required_turns'  => $item->getTurnCost(),
+                'ignores_stealth' => $item->ignoresStealth(),
+                'self_use'        => true,
+            ];
 
+            $attack_legal = new AttackLegal($player, $target, $params);
 
-            if ($result['success']) {
-                removeItem($player->id(), $item->getName(), 1);
+            if (!$attack_legal->check()) {
+                $error           = 1;
+                $display_message = $attack_legal->getError();
+            } else {
+                $error  = null;
+                $result = $this->applyItemEffects($player, $player, $item);
 
-                if ($player->health() <= 0) {
-                    $this->sendKillMails($player->name(), $player->name(), $player->name(), $article, $item->getName(), 0);
+                if ($result['success']) {
+                    removeItem($player->id(), $item->getName(), 1);
+
+                    if ($player->health() <= 0) {
+                        $this->sendKillMails($player->name(), $player->name(), $player->name(), $article, $item->getName(), 0);
+                    }
                 }
-            }
 
-            $display_message = $result['message'];
-            $extra_message   = $result['extra_message'];
+                $display_message = $result['message'];
+                $extra_message   = $result['extra_message'];
+            }
         }
 
         $player->subtractTurns($turns_to_take);
