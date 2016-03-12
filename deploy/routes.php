@@ -102,7 +102,8 @@ Router::$routes = [
     'inventory' => [
         'type'    => 'controller',
         'actions' => [
-            'use'    => 'useItem',
+            'use'      => 'useItem',
+            'self_use' => 'selfUse',
         ],
     ],
     'skill' => [
