@@ -144,8 +144,8 @@ class InventoryController {
                 }
             }
 
-            $display_message        = $result['message'];
-            $alternateResultMessage = $result['extra_message'];
+            $display_message = $result['message'];
+            $extra_message   = $result['extra_message'];
         }
 
         $player->subtractTurns($turns_to_take);
@@ -155,7 +155,7 @@ class InventoryController {
             'error'                  => $error,
             'target'                 => $player,
             'resultMessage'          => $display_message,
-            'alternateResultMessage' => null,
+            'alternateResultMessage' => $extra_message,
             'stealthLost'            => $had_stealth && !$player->hasStatus(STEALTH),
             'repeat'                 => ($player->health() > 0),
             'return_to'              => 'inventory',
@@ -177,18 +177,18 @@ class InventoryController {
      * /use/ is aliased to useItem externally because use is a php reserved keyword
 	 */
     public function useItem() {
-        $slugs                  = $this->parseSlugs();
-        $target                 = $this->findPlayer($slugs['in_target']);
-        $player                 = Player::find(self_char_id());
-        $had_stealth            = $player->hasStatus(STEALTH);
-        $error                  = false;
-        $turns_to_take          = 1; // Take away one turn even on attacks that fail to prevent page reload spamming
-        $result                 = null;
-        $bountyMessage          = '';
-        $display_message        = '';
-        $alternateResultMessage = '';
-        $attacker_id            = $player->name();
-        $loot                   = null;
+        $slugs           = $this->parseSlugs();
+        $target          = $this->findPlayer($slugs['in_target']);
+        $player          = Player::find(self_char_id());
+        $had_stealth     = $player->hasStatus(STEALTH);
+        $error           = false;
+        $turns_to_take   = 1; // Take away one turn even on attacks that fail to prevent page reload spamming
+        $result          = null;
+        $bounty_message  = '';
+        $display_message = '';
+        $extra_message   = '';
+        $attacker_id     = $player->name();
+        $loot            = null;
 
         try {
             $item    = $this->findItem($slugs['item_in']);
@@ -236,14 +236,14 @@ class InventoryController {
                         $player->set_gold($player->gold + $loot);
                         $player->addKills(1);
 
-                        $bountyMessage = Combat::runBountyExchange($player->name(), $target->name());  //Rewards or increases bounty.
+                        $bounty_message = Combat::runBountyExchange($player->name(), $target->name());  //Rewards or increases bounty.
 
                         $this->sendKillMails($player->name(), $target->name(), $attacker_id, $article, $item->getName(), $loot);
                     }
                 }
 
-                $display_message        = $result['message'];
-                $alternateResultMessage = $result['extra_message'];
+                $display_message = $result['message'];
+                $extra_message   = $result['extra_message'];
             }
 
             $player->subtractTurns($turns_to_take);
@@ -258,11 +258,11 @@ class InventoryController {
             'error'                  => $error,
             'target'                 => $target,
             'resultMessage'          => $display_message,
-            'alternateResultMessage' => $alternateResultMessage,
+            'alternateResultMessage' => $extra_message,
             'stealthLost'            => ($had_stealth && $player->hasStatus(STEALTH)),
             'repeat'                 => (($target->health() > 0) && empty($error)),
             'item'                   => $item,
-            'bountyMessage'          => $bountyMessage,
+            'bountyMessage'          => $bounty_message,
             'article'                => $article,
             'loot'                   => $loot,
         ]);
