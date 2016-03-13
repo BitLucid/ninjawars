@@ -949,7 +949,7 @@ class Player implements Character {
      * @note this needs review overall, as nonexistent high int statuses will false positive
      */
     public static function validStatus($dirty) {
-        if ((int)$dirty == $dirty) {
+        if (is_numeric($dirty) && (int)$dirty == $dirty) {
             return (int) $dirty;
         } elseif (is_string($dirty)) {
             $status = strtoupper($dirty);

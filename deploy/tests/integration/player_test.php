@@ -32,6 +32,11 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue((bool)$char->name());
     }
 
+    public function testFindByNameNegative() {
+        $char = Player::findByName('BANANA_IS_FAKE$$$NOTREAL=;m"');
+        $this->assertNull($char);
+    }
+
     public function testNonexistentPlayerReturnsNullViaStaticFind() {
         $id = query_item('select max(player_id) from players');
         $bad_id = $id + 100;
@@ -219,6 +224,12 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(strpos($char->avatarUrl(), 'avatar') !== false);
     }
 
+    public function testGravatarURLWithoutAvatarType() {
+        $char = Player::find($this->char_id);
+        $char->vo->avatar_type = null;
+        $this->assertEquals('', $char->avatarUrl());
+    }
+
     public function testCreatePlayerObjectCanSaveChanges() {
         $char = new Player($this->char_id);
         $ki = $char->ki();
@@ -347,8 +358,45 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($char->identity, $updated_char->identity);
     }
 
+    public function testSetClassNegative() {
+        $char = Player::find($this->char_id);
+        $class = $char->getClassName();
+        $return = $char->setClass('BANANA');
+
+        $this->assertEquals($class, $char->getClassName());
+    }
+
     public function testRetrievingSpecificProperty() {
         $char = Player::find($this->char_id);
         $this->assertEquals(100, $char->data('max_turns'));
+    }
+
+    public function testClassStringValidationPositive() {
+        $return = Player::validStatus('STEALTH');
+        $this->assertInternalType('int', $return);
+    }
+
+    public function testClassStringValidationInvalidValue() {
+        $return = Player::validStatus('BANANA_IS_FAKE');
+        $this->assertEquals(0, $return);
+    }
+
+    public function testClassStringValidationInvalidType() {
+        $return = Player::validStatus([]);
+        $this->assertNull($return);
+    }
+
+    public function testFindActive() {
+        $result = Player::findActive(5, false);
+        $active = true;
+        $count = 0;
+
+        foreach ($result AS $record) {
+            $active = $active && Player::find($record['player_id'])->active;
+            $count++;
+        }
+
+        $this->assertTrue($active);
+        $this->assertLessThan(6, $count);
     }
 }
