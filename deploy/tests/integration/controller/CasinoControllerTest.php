@@ -5,7 +5,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\CasinoController;
 
-class CasinoControllerUnitTest extends PHPUnit_Framework_TestCase {
+class CasinoControllerTest extends PHPUnit_Framework_TestCase {
     private $controller;
 
     public function __construct() {
@@ -13,7 +13,6 @@ class CasinoControllerUnitTest extends PHPUnit_Framework_TestCase {
     }
 
 	protected function setUp() {
-        $this->markTestIncomplete('Casino index relies on DB to get player');
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);
