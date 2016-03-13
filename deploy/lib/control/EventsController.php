@@ -12,9 +12,6 @@ class EventsController {
     const ALIVE          = false;
     const PRIV           = true;
 
-    public function __construct(){
-    }
-
     /**
      * Display the combat/action events and mark them as read when displayed.
      */
