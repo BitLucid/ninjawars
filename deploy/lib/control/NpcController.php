@@ -296,7 +296,6 @@ class NpcController { //extends controller
             } else if ($victim == "samurai") {
                 if ($player->level < 2 || $player->kills < 1) {
                     $turn_cost = 0;
-                    $weakness_error = 'You are too weak to attack the samurai.';
                     $npc_template = 'npc.samurai.tpl';
                 } else {
                     $method = 'attackSamurai';
