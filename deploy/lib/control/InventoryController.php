@@ -139,7 +139,7 @@ class InventoryController {
                 'self_use'        => true,
             ];
 
-            $attack_legal = new AttackLegal($player, $target, $params);
+            $attack_legal = new AttackLegal($player, $player, $params);
 
             if (!$attack_legal->check()) {
                 $error           = 1;
