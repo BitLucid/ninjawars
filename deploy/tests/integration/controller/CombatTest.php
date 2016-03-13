@@ -1,7 +1,7 @@
 <?php
 use NinjaWars\core\control\Combat;
 
-class CombatUnitTest extends PHPUnit_Framework_TestCase {
+class CombatTest extends PHPUnit_Framework_TestCase {
     public function testKillPointCalculation() {
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 
