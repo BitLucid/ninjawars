@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT.'core/control/CloneKill.class.php');
 
-class ClanKillTest extends PHPUnit_Framework_TestCase {
+class CloneKillTest extends PHPUnit_Framework_TestCase {
     /**
      *
      */
