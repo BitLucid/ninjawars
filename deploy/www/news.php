@@ -59,44 +59,5 @@ if ($error = init($private, $alive)) {
 		, array ()
 	);
 
-	function to_tags($str_tags) {
-		$tags = array();
-
-		if (strpos($str_tags, ',') !== false) {
-			$tags = explode(',', $str_tags);
-		} elseif ( ! empty($str_tags)) {
-			$tags = array($str_tags);
-		}
-
-		if (empty($tags)) {
-			return '-';
-		} else {
-			$str_tags = '';
-			foreach ($tags as $tag) {
-				// Build tag anchors
-				$tag = trim($tag);
-				$str_tags .= '<a href="news.php?tag_query='.htmlentities(url($tag)).'" target="main">#'.htmlentities($tag).'</a> ';
-			}
-
-			return $str_tags;
-		}
-	}
-
-	function to_playerid($account) {
-		if ($account instanceof \model\orm\Accounts) {
-			return $account->getPlayerss()->getFirst()->getPlayerId();
-		}
-	}
-
-	function to_playername($account) {
-		if ($account instanceof \model\orm\Accounts) {
-			return $account->getPlayerss()->getFirst()->getUname();
-		}
-	}
-
-	$template->registerPlugin("function","to_playerid", "to_playerid");
-	$template->registerPlugin("function","to_playername", "to_playername");
-	$template->registerPlugin("function","to_tags", "to_tags");
-
 	$template->fullDisplay();
 }
