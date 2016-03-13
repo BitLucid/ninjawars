@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\PlayerVO;
+use NinjaWars\core\data\Player;
 
 class PlayerUnitTest extends PHPUnit_Framework_TestCase {
     private $player;
@@ -22,7 +23,7 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testPlayerConstructor() {
-        $this->assertInstanceOf('\Player', $this->player);
+        $this->assertInstanceOf('NinjaWars\core\data\Player', $this->player);
     }
 
     public function testToString() {

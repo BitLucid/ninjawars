@@ -3,7 +3,7 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Character;
-use \Player;
+use NinjaWars\core\data\Player;
 
 // TODO: Abstract all the unique npc behaviors into the generic system.
 

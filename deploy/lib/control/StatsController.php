@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\PlayerDAO;
-use \Player;
+use NinjaWars\core\data\Player;
 
 /**
  * Handle updates for changing details and profile details

@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\control\Combat;
+use NinjaWars\core\data\Player;
 
 class CombatTest extends PHPUnit_Framework_TestCase {
     public function testKillPointCalculation() {

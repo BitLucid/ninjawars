@@ -2,6 +2,7 @@
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 
 use NinjaWars\core\control\AttackLegal;
+use NinjaWars\core\data\Player;
 
 /**
  * @TODO: Need to be able to mock ips and ensure ability to attack even when both players have the server ip, somehow.

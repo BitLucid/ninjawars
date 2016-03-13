@@ -1,7 +1,7 @@
 <?php
 namespace NinjaWars\core\data;
 
-use \Player;
+use NinjaWars\core\data\Player;
 
 class Skill {
 	// *** Constructor should eventually get a specific skill's stats from the database.

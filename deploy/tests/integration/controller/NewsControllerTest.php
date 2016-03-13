@@ -5,8 +5,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\NewsController;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\data\Player;
 use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
-use \Player as Player;
 
 class NewsControllerTest extends \PHPUnit_Framework_TestCase {
 	public function setUp() {

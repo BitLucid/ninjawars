@@ -1,12 +1,13 @@
 <?php
 namespace NinjaWars\core\control;
+
 use \model\News as News;
 use \model\Base;
 use \InvalidArgumentException;
 use \ErrorException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use \Player;
-use \NinjaWars\core\data\AccountFactory;
+use NinjaWars\core\data\Player;
+use NinjaWars\core\data\AccountFactory;
 
 /**
  * Allows creation of news and displaying of news by admins

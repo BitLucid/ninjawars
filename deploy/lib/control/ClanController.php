@@ -4,7 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;
-use \Player as Player;
+use NinjaWars\core\data\Player;
 use NinjaWars\core\data\DatabaseConnection as DatabaseConnection;
 
 /**

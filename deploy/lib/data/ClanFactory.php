@@ -2,7 +2,7 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Clan;
-use \Player;
+use NinjaWars\core\data\Player;
 
 /**
  * Who/what/why/where

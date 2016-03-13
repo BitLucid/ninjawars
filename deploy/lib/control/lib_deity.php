@@ -7,7 +7,7 @@
  */
 
 use NinjaWars\core\data\DatabaseConnection;
-use \Player as Player;
+use NinjaWars\core\data\Player;
 
 function delete_old_messages() {
     $statement = query("delete from messages where date < ( now() - '3 months'::interval)");

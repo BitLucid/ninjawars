@@ -2,7 +2,7 @@
 namespace NinjaWars\core\data;
 
 use Illuminate\Database\Eloquent\Model;
-use \Player;
+use NinjaWars\core\data\Player;
 
 class Message extends Model {
     protected $primaryKey = 'message_id'; // Anything other than id

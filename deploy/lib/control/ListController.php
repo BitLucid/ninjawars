@@ -2,7 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\extensions\SessionFactory;
-use \Player as Player;
+use NinjaWars\core\data\Player;
 
 /**
  * Display the ninja list as a whole

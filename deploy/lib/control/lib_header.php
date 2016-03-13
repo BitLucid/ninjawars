@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
 

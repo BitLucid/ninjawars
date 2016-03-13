@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\Player;
+
 /**
  * Class to house static methods for killing characters of players with multis
  */

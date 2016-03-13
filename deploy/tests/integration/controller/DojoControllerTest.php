@@ -3,6 +3,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\DojoController;
+use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 
 class DojoControllerTest extends PHPUnit_Framework_TestCase {

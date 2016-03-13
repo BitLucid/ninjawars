@@ -4,7 +4,7 @@ namespace NinjaWars\core\control;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\control\Combat;
-use \Player;
+use NinjaWars\core\data\Player;
 use \PDO;
 
 /**

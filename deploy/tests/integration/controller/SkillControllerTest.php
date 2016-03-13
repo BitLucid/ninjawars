@@ -6,8 +6,8 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\SkillController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Skill;
+use NinjaWars\core\data\Player;
 use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
-use \Player as Player;
 
 class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 	public function setUp() {

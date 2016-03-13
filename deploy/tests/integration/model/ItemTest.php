@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\Item;
+use NinjaWars\core\data\Player;
 
 class ItemTest extends PHPUnit_Framework_TestCase {
 

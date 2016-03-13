@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\Quest;
+use NinjaWars\core\data\Player;
 
 class TestQuest extends PHPUnit_Framework_TestCase {
 
@@ -46,7 +47,7 @@ class TestQuest extends PHPUnit_Framework_TestCase {
         $id = $this->quest->id();
         $this->quest->save();
         $copiedq = Quest::find($id);
-        $this->assertInstanceOf('\Player', $copiedq->player());
+        $this->assertInstanceOf('NinjaWars\core\data\Player', $copiedq->player());
     }
 
 }

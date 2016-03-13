@@ -1,6 +1,7 @@
 <?php
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Clan;
+use NinjaWars\core\data\Player;
 
 class ClanTest extends PHPUnit_Framework_TestCase {
     private $clan_id;

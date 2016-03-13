@@ -3,8 +3,8 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\ClanFactory;
+use NinjaWars\core\data\Player;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use \Player;
 
 class MessagesController {
     const PRIV  = true;

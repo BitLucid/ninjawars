@@ -1,7 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
-use \Player;
+use NinjaWars\core\data\Player;
 
 /**
  * The controller for effects of a work request and the default index display

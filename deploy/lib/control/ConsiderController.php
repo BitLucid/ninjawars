@@ -3,7 +3,7 @@ namespace NinjaWars\core\control;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
-use \Player;
+use NinjaWars\core\data\Player;
 use NinjaWars\core\data\NpcFactory;
 use \PDO;
 

@@ -4,7 +4,7 @@
  */
 namespace NinjaWars\core\control;
 
-use \Player;
+use NinjaWars\core\data\Player;
 
 class Combat {
     /**
