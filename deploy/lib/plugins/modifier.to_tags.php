@@ -1,4 +1,8 @@
 <?php
+/**
+ * Parse some comma separated string tags into links
+ * @return string
+ */
 function smarty_modifier_to_tags($str_tags) {
     $tags = array();
 
