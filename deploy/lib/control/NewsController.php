@@ -3,6 +3,9 @@ namespace NinjaWars\core\control;
 use \model\News as News;
 use \model\Base;
 use \InvalidArgumentException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use \Player;
+use \NinjaWars\core\data\AccountFactory;
 
 /**
  * Allows creation of news and displaying of news by admins
@@ -15,17 +18,21 @@ class NewsController {
     }
 
     public function index(){
+        $pc = Player::find(self_char_id());
+        $account = $pc? AccountFactory::findByChar($pc) : null;
         $view = 'news.tpl';
         $parts = array(
-            'target' => 'news.php',
+            'target' => '/news',
             'field_size' => '40',
         );
+        $create_successful = (bool) in('create_successful');
+        $parts['create_successful'] = $create_successful;
 
         // Route the request
-        if (in('new') && self_char_id()) {
+        if (in('new') && $account) {
             // Display submit form
             $view = 'news-create.tpl';
-        } elseif (in('news_submit')) {
+        } elseif (in('news_submit') && $account) {
             // Handle POST
             $news_title = in('news_title');
             $news_content = in('news_content');
@@ -36,11 +43,10 @@ class NewsController {
                 try {
                     // News Model
                     $news = new News();
-                    $me = Base::query('Players')->findPK(self_char_id());
-                    $news->createPost($news_title, $news_content, $me->getAccountss()->getFirst()->getAccountId(), $tag);
-                    $parts['new_successful_submit'] = true;
+                    $news->createPost($news_title, $news_content, $account->id(), $tag);
+                    return new RedirectResponse('/news/?create_successful=1');
                 } catch (InvalidArgumentException $e) {
-                    $parts['new_successful_submit'] = false;
+                    return new RedirectResponse('/news/');
                 }
             }
         }

@@ -65,7 +65,7 @@
 </style>
 
 <div id='news-list'>
-{if isset($new_successful_submit) and $new_successful_submit}
+{if isset($create_successful) and $create_successful}
   <div class='parent'>
     <div class='success-notice child'>
       <strong>Your news successfully posted!</strong>
