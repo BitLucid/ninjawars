@@ -42,6 +42,10 @@ server {
 	    return 302 /npc/;
 	}
 
+	location = /news.php {
+	    return 301 /news/;
+	}
+
 
 	location ~ ^/(main\.php|tutorial\.php) {
 	    return 302 /intro;

@@ -50,7 +50,7 @@ class TestRouting:
     def test_urls_should_200(self):
         urls = [
             'intro', 'login', 'login.php', 'signup', 'signup.php', 
-            'player.php', 'village.php', 'interview.php', 'news', 
+            'player.php', 'village.php', 'interview.php', 'news/', 
             'staff.php', 'list.php', 'rules.php', 'shop.php', 'events.php', 
             'skill', 'inventory.php', 'enemies.php',
             'clan.php', 'map.php', 'work.php', 'doshin_office.php',
