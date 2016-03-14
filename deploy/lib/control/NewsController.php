@@ -21,6 +21,9 @@ class NewsController {
     }
 
     private function hasCreateRole(Player $pc){
+        if(!($pc instanceof Player)){
+            throw new InvalidArgumentException("Can't check the role of a nonexistent player.");
+        }
         return $pc->isAdmin();
     }
 
@@ -34,7 +37,7 @@ class NewsController {
             'create_successful'=>$create_successful,
             'all_news'=>[],
             'error'=>in('error'),
-            'create_role'=>$this->hasCreateRole($this->pc),
+            'create_role'=>$this->pc? $this->hasCreateRole($this->pc) : null,
         ];
 
         // Fetch all the posts
@@ -49,7 +52,7 @@ class NewsController {
                 $parts['all_news'] = $news->all();
             }
         } catch (InvalidArgumentException $e) {
-            $error = 'Unable to find any news like that';
+            $parts['error'] = 'Unable to find any news like that';
         }
 
         return [
@@ -84,6 +87,7 @@ class NewsController {
 
     /**
      * Try to store a posted post, and redirect on successes or errors.
+     * @return RedirectResponse
      */
     public function store(){
         if($this->pc === null || !$this->hasCreateRole($this->pc)){
@@ -107,7 +111,7 @@ class NewsController {
                 return new RedirectResponse('/news/');
             }
         } else {
-            return new RedirectResponse('/news/create/?error=1');
+            return new RedirectResponse('/news/create/?error='.url('Unable to create news post'));
         }
     }
 }
