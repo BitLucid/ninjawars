@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 use \model\News as News;
 use \model\Base;
+use \InvalidArgumentException;
 
 /**
  * Allows creation of news and displaying of news by admins

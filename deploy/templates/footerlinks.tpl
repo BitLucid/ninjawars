@@ -34,7 +34,7 @@
         <a href="/" target="main">Guide</a> |
         <a href="/staff" target="main">Staff</a> |
         <a href="/rules" target="main">Rules</a> |
-        <a href="news.php" target="main">News</a> |
+        <a href="/news" target="main">News</a> |
         <a href="http://ninjawars.pbwiki.com/" rel='nofollow' target="_blank" class="extLink">Wiki</a> |
         <a href="http://ninjawars.proboards.com" rel='nofollow' target="_blank" class="extLink">Forum</a> |
         <a href="http://ninjawars.proboards.com/index.cgi?action=display&amp;board=suggcomp&amp;thread=1174" rel='nofollow' target="_blank" class="extLink">Feedback</a>

@@ -48,6 +48,6 @@
 </div>
 {/if}
 <nav>
-  <a id='back-to-news' class='btn btn-default' href="news.php">Back</a>
+  <a id='back-to-news' class='btn btn-default' href="/news">Back</a>
 </nav>
 </div>
