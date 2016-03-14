@@ -1,25 +1,4 @@
-<style>
-{literal}
-.news-submit #post-submit{
-    padding:.2em .4em;font-size:1.3em;font-weight:bolder;
-}
-#back-to-news{
-    margin-bottom:.5em;margin-top:1em;float:right;margin-right:1.5em;
-}
-#full-news .parent{
-  text-align:center;
-}
-#full-news .child{
-  display:inline-block;text-align:left;
-}
-#full-news fieldset{
-  padding:0.7em 1.3em;
-}
-#full-news fieldset > div{
-  margin-bottom:1em;
-}
-{/literal}
-</style>
+<link rel="stylesheet" type="text/css" href="{cachebust file="/css/news.css"}">
 <section id='full-news'>
   <h1>{$heading}</h1>
   {include file="flash-message.tpl"}
