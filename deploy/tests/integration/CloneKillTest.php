@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT.'core/control/CloneKill.class.php');
+require_once(ROOT.'lib/control/CloneKill.class.php');
 
 class CloneKillTest extends PHPUnit_Framework_TestCase {
     /**

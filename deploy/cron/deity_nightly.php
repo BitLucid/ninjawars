@@ -6,7 +6,7 @@
  * @subpackage deity_lib
  */
 require_once(substr(__FILE__, 0, (strpos(__FILE__, 'cron/'))).'resources.php');
-require_once(dirname(__DIR__.'..').'/core/base.inc.php');
+require_once(dirname(__DIR__.'..').'/lib/base.inc.php');
 require_once(LIB_ROOT.'data/DatabaseConnection.php');
 require_once(LIB_ROOT.'environment/lib_assert.php');
 require_once(LIB_ROOT.'environment/status_defines.php'); // Status constant definitions.

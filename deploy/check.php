@@ -12,7 +12,7 @@ $out = ob_get_contents();
 ob_end_clean();
 echo $out;
 // How about some includes
-require(SERVER_ROOT.'core/base.inc.php');
+require(SERVER_ROOT.'lib/base.inc.php');
 require_once(VENDOR_ROOT.'autoload.php');
 $connected = (bool) query_item('select 1 from players limit 1');
 $is_superuser = (bool) query_item('select usesuper from pg_user where usename = CURRENT_USER;') === true;

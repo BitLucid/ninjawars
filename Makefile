@@ -50,13 +50,13 @@ pre-test:
 	psql -lqt | cut -d \| -f 1 | grep -qw $(DBNAME)
 
 test:
-	@find ./deploy/core/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+	@find ./deploy/lib/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find ./deploy/www/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@$(TEST_RUNNER) $(CC_FLAG)
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
 test-unit:
-	@find "./deploy/core/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+	@find "./deploy/lib/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
