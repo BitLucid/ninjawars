@@ -1,4 +1,3 @@
-<h1>News</h1>
 <style type='text/css'>
 {literal}
 #news-list .parent{
@@ -64,7 +63,8 @@
 {/literal}
 </style>
 
-<div id='news-list'>
+<section id='news-list'>
+  <h1>News</h1>
 {if isset($create_successful) and $create_successful}
   <div class='parent'>
     <div class='success-notice child'>
@@ -72,10 +72,11 @@
     </div>
   </div>
 {/if}
+  {include file="flash-message.tpl"}
 
 {if is_logged_in()}
 	<div id='make-news-post'>
-		<a class='btn btn-primary' href="/news?new=true">Post News</a>
+		<a class='btn btn-primary' href="/news/create/">Post News</a>
 	</div>
 {/if}
 
@@ -102,4 +103,4 @@
 
 
 
-</div><!-- End of news-list -->
+</section><!-- End of news-list -->

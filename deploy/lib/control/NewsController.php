@@ -18,21 +18,61 @@ class NewsController {
     }
 
     public function index(){
-        $pc = Player::find(self_char_id());
-        $account = $pc? AccountFactory::findByChar($pc) : null;
         $view = 'news.tpl';
-        $parts = array(
-            'target' => '/news',
-            'field_size' => '40',
-        );
+        $parts = [];
         $create_successful = (bool) in('create_successful');
         $parts['create_successful'] = $create_successful;
+        $parts['all_news'] = [];
+        $parts['error'] = in('error');
 
-        // Route the request
-        if (in('new') && $account) {
-            // Display submit form
-            $view = 'news-create.tpl';
-        } elseif (in('news_submit') && $account) {
+        // Fetch the news
+        try {
+            $news = new News();
+
+            if ($tag = in('tag_query')) {
+                // Search for specific tag
+                $parts['all_news'] = $news->findByTag($tag);
+                $parts['search_title'] = 'Result for #'.htmlentities(in('tag_query'));
+            } else {
+                $parts['all_news'] = $news->all();
+            }
+        } catch (InvalidArgumentException $e) {
+            $error = 'Unable to find any news like that';
+        }
+
+        return [
+            'title'=>'News Board',
+            'template'=>$view,
+            'parts'=>$parts,
+            'options'=>[],
+            ];
+    }
+
+    /**
+     * post creation
+     */
+    public function create(){
+        $title = 'Make New Post';
+        $error = (bool) in('error');
+        $parts = array(
+            'error'=>$error,
+            'heading'=>$title,
+        );
+
+        return [
+            'title'=>$title,
+            'template'=>'news-create.tpl',
+            'parts'=>$parts,
+            'options'=>[],
+            ];
+    }
+
+    /**
+     * Try to store a posted post, and redirect on successes or errors.
+     */
+    public function store(){
+            $pc = Player::find(self_char_id());
+            $account = $pc? AccountFactory::findByChar($pc) : null;
             // Handle POST
             $news_title = in('news_title');
             $news_content = in('news_content');
@@ -48,36 +88,8 @@ class NewsController {
                 } catch (InvalidArgumentException $e) {
                     return new RedirectResponse('/news/');
                 }
-            }
-        }
-
-        // Fetch the news
-        try {
-            $news = new News();
-
-            if (in('tag_query')) {
-                // Search for specific tag
-                $all_news = $news->findByTag(in('tag_query'));
-                $parts['search_title'] = 'Result for #'.htmlentities(in('tag_query'));
             } else {
-                $all_news = $news->all();
+                return new RedirectResponse('/news/create/?error=1');
             }
-        } catch (InvalidArgumentException $e) {
-            $all_news = array();
-        }
-        $parts['all_news'] = $all_news;
-        return [
-            'title'=>'News Board',
-            'template'=>$view,
-            'parts'=>$parts,
-            'options'=>[],
-            ];
-    }
-
-    public function create(){
-
-    }
-
-    public function store(){
     }
 }
