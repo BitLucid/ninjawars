@@ -3,7 +3,8 @@
 		"psr-4": {
 			"model\\": "deploy/model",
 			"ChatApp\\": "deploy/lib/control/ChatApp",
-			"NinjaWars\\": "deploy/"
+			"NinjaWars\\": "deploy/",
+			"NinjaWars\\core\\": "deploy/lib/"
 		}
 	},
 	"require": {
