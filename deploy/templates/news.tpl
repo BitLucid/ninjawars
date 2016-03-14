@@ -75,7 +75,7 @@
 
 {if is_logged_in()}
 	<div id='make-news-post'>
-		<a class='btn btn-primary' href="news.php?new=true">Post News</a>
+		<a class='btn btn-primary' href="/news?new=true">Post News</a>
 	</div>
 {/if}
 
