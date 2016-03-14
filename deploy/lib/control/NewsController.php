@@ -14,18 +14,30 @@ class NewsController {
     const ALIVE = false;
     const PRIV  = false;
 
+    protected $pc = null;
+
     public function __construct(){
+        $this->pc = Player::find(self_char_id());
     }
 
+    private function hasCreateRole(Player $pc){
+        return $pc->isAdmin();
+    }
+
+    /**
+     * Display listing of posts
+     */
     public function index(){
         $view = 'news.tpl';
-        $parts = [];
         $create_successful = (bool) in('create_successful');
-        $parts['create_successful'] = $create_successful;
-        $parts['all_news'] = [];
-        $parts['error'] = in('error');
+        $parts = [
+            'create_successful'=>$create_successful,
+            'all_news'=>[],
+            'error'=>in('error'),
+            'create_role'=>$this->hasCreateRole($this->pc),
+        ];
 
-        // Fetch the news
+        // Fetch all the posts
         try {
             $news = new News();
 
@@ -49,9 +61,12 @@ class NewsController {
     }
 
     /**
-     * post creation
+     * Create new post
      */
     public function create(){
+        if($this->pc === null || !$this->hasCreateRole($this->pc)){
+            return new RedirectResponse('/news/?error='.url("Sorry, you can't create a news post"));
+        }
         $title = 'Make New Post';
         $error = (bool) in('error');
         $parts = array(
@@ -71,25 +86,28 @@ class NewsController {
      * Try to store a posted post, and redirect on successes or errors.
      */
     public function store(){
-            $pc = Player::find(self_char_id());
-            $account = $pc? AccountFactory::findByChar($pc) : null;
-            // Handle POST
-            $news_title = in('news_title');
-            $news_content = in('news_content');
-            $tag = in('tag');
+        if($this->pc === null || !$this->hasCreateRole($this->pc)){
+            return RedirectResponse('/news/?error='.url("Sorry, you don't have permission to create a news post."));
+        }
+        $pc = Player::find(self_char_id());
+        $account = $pc? AccountFactory::findByChar($pc) : null;
+        // Handle POST
+        $news_title = in('news_title');
+        $news_content = in('news_content');
+        $tag = in('tag');
 
-            // Create new post
-            if ( ! empty($news_content)) {
-                try {
-                    // News Model
-                    $news = new News();
-                    $news->createPost($news_title, $news_content, $account->id(), $tag);
-                    return new RedirectResponse('/news/?create_successful=1');
-                } catch (InvalidArgumentException $e) {
-                    return new RedirectResponse('/news/');
-                }
-            } else {
-                return new RedirectResponse('/news/create/?error=1');
+        // Create new post
+        if ( ! empty($news_content)) {
+            try {
+                // News Model
+                $news = new News();
+                $news->createPost($news_title, $news_content, $account->id(), $tag);
+                return new RedirectResponse('/news/?create_successful=1');
+            } catch (InvalidArgumentException $e) {
+                return new RedirectResponse('/news/');
             }
+        } else {
+            return new RedirectResponse('/news/create/?error=1');
+        }
     }
 }

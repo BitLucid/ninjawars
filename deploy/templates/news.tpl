@@ -10,7 +10,7 @@
 {/if}
   {include file="flash-message.tpl"}
 
-{if is_logged_in()}
+{if $create_role}
 	<div id='make-news-post'>
 		<a class='btn btn-primary' href="/news/create/">Post News</a>
 	</div>
