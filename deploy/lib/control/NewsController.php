@@ -79,7 +79,7 @@ class NewsController {
 
         return [
             'title'=>$title,
-            'template'=>'news-create.tpl',
+            'template'=>'news.create.tpl',
             'parts'=>$parts,
             'options'=>[],
             ];
@@ -91,7 +91,7 @@ class NewsController {
      */
     public function store(){
         if($this->pc === null || !$this->hasCreateRole($this->pc)){
-            return RedirectResponse('/news/?error='.url("Sorry, you don't have permission to create a news post."));
+            return new RedirectResponse('/news/?error='.url("Sorry, you don't have permission to create a news post."));
         }
         $pc = Player::find(self_char_id());
         $account = $pc? AccountFactory::findByChar($pc) : null;
