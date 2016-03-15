@@ -21,7 +21,7 @@ class Deity{
             case 60:
                 self::major();
             break;
-            case 1440;
+            case 1440:
                 self::daily();
             break;
         }
@@ -55,15 +55,18 @@ class Deity{
             'major_revive_percent' => MAJOR_REVIVE_PERCENT,
         ];
 
-        $resurrected = revive_players($params);
+        list($revived, $dead_count) = revive_players($params);
 
         $rand = rand(1, DEITY_LOG_CHANCE_DIVISOR);
 
-        if ($rand === 1 || DEBUG) {
+        if (DEBUG || $rand === 1) {
+            $out_display = [];
             // Only log fiveminute log output randomly about once every 6 hours to cut down on
             // spam in the log.  This log message isn't very important anyway.
 
             $out_display['Ranked Players'] = $ranked_players->rowCount();
+            $out_display['Players who are/were dead'] = $dead_count;
+            $out_display['Players Revived'] = $revived;
 
             // ***********
             // Log output:
@@ -71,7 +74,7 @@ class Deity{
             $logMessage = 'DEITY_FIVEMINUTE STARTING: '.date(DATE_RFC1036)."\n";
 
             foreach ($out_display AS $loopKey => $loopRowResult) {
-                $logMessage .= "DEITY_FIVEMINUTE: Result type: $loopKey yeilded result number: $loopRowResult \n";
+                $logMessage .= "DEITY_FIVEMINUTE: Result type: ".$loopKey." yeilded result number: ".$loopRowResult." \n";
             }
 
             $logMessage .= 'DEITY_FIVEMINUTE ENDING: '.date(DATE_RFC1036)."\n";
@@ -81,9 +84,8 @@ class Deity{
     }
 
     private static function minor(){
+        $out_display = [];
         $logMessage = "DEITY_HALFHOUR STARTING: ".date(DATE_RFC1036)."\n";
-
-        $score                = get_score_formula();
 
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
@@ -104,7 +106,7 @@ class Deity{
 
         // *** HEAL Characters a certain amount ***
 
-        heal_characters(); // Just use the defaults here.
+        heal_characters(); // Just use the defaults, function does not return anything at the moment.
 
         // **************
         // Visual output:
@@ -119,10 +121,8 @@ class Deity{
     }
 
     private static function major(){
-
+        $out_display = [];
         $logMessage = "DEITY_HOURLY STARTING: ".date(DATE_RFC1036)."\n";
-
-        $score = get_score_formula();
 
         // Note that this script should not be web-accessible.
         DatabaseConnection::getInstance();
@@ -193,6 +193,7 @@ class Deity{
     }
 
     private static function daily(){
+        $out_display = [];
         $logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
 
         // TODO: Profile the slowdown point(s) of this script.

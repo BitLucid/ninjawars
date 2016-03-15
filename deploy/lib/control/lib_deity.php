@@ -9,12 +9,6 @@
 use NinjaWars\core\data\DatabaseConnection;
 use \Player as Player;
 
-// Determine the score for ranking.
-function get_score_formula(){
-	$score = '(level*1000 + gold/100 + kills*3 - days*5)';
-	return $score;
-}
-
 function delete_old_messages() {
     $statement = query("delete from messages where date < ( now() - '3 months'::interval)");
 	return $statement->rowCount();
