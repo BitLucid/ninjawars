@@ -67,7 +67,6 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testControllerAttackAsIfAgainstAPeasant2() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/peasant2';
-        $initial_health = $this->char->health();
         $response = $this->controller->attack();
         $final_char = Player::find($this->char->id());
         $this->assertNotEmpty($response);

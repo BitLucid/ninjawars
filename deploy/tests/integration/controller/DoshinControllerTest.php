@@ -71,7 +71,6 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $target_id = TestAccountCreateAndDestroy::char_id_2();
         $this->char->set_gold(434343);
         $this->char->save();
-        $target = new Player($target_id);
 
         $this->char->set_bounty(400);
         $this->char->save();

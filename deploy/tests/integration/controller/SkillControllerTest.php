@@ -73,7 +73,6 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->char2->set_bounty($bounty); // Only bounty
         $this->char2->save();
         $this->char->save();
-        $initial_health = $this->char2->health();
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
         $this->assertNotEmpty(url($name));
@@ -96,7 +95,6 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testIShouldGetBountyOnMyHeadWhenIFireBoltKillALowLevel(){
         $this->char->setClass('tiger');
-        $self_gold = $this->char->gold();
         $this->char->set_turns(300);
         $this->char->vo->level = 200;
         $this->char->set_bounty(0);
@@ -106,7 +104,6 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->char2->save();
         $this->char->save();
         $initial_bounty = $this->char->bounty();
-        $initial_health = $this->char2->health();
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
         $this->assertNotEmpty(url($name));
