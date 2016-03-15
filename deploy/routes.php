@@ -142,6 +142,10 @@ Router::$routes = [
         'type'    => 'controller',
         'actions' => [],
     ],
+    'news' => [
+        'type'    => 'controller',
+        'actions' => [],
+    ],
     'rules' => [
         'type'  => 'simple',
         'title' => 'rules',

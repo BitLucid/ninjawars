@@ -9,7 +9,7 @@
                 <p>There is no news</p>
                 {/if}
                 <div class="news-switch centered">
-                  <a id='full-news-link' href="news.php" target="main">
+                  <a id='full-news-link' href="/news" target="main">
                     View all news
                   </a>
                 </div>

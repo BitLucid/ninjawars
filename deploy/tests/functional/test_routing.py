@@ -50,7 +50,7 @@ class TestRouting:
     def test_urls_should_200(self):
         urls = [
             'intro', 'login', 'login.php', 'signup', 'signup.php', 
-            'player.php', 'village.php', 'interview.php', 'news.php', 
+            'player.php', 'village.php', 'interview.php', 'news/', 
             'staff.php', 'list.php', 'rules.php', 'shop.php', 'events.php', 
             'skill', 'inventory.php', 'enemies.php',
             'clan.php', 'map.php', 'work.php', 'doshin_office.php',
@@ -101,7 +101,8 @@ class TestRouting:
                  'resetpassword.php' : 'Request a password reset',
                  'player.php' : 'Ninja Profile',
                  'player.php?target=tchalvak' : 'Ninja: Tchalvak',
-                 'npc/attack/peasant' : 'Battle'
+                 'npc/attack/peasant' : 'Battle',
+                 'news' : 'News Board'
                  }
         for url, title in pages.items():
             assert (bool(title) and bool(url) and
