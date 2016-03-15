@@ -127,8 +127,6 @@ class Deity{
         // Note that this script should not be web-accessible.
         DatabaseConnection::getInstance();
 
-        $out_display = array();
-
         // ******************* END OF CONSTANTS ***********************
 
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
@@ -144,8 +142,6 @@ class Deity{
         $s->bindValue(':threshold', TURN_REGEN_THRESHOLD);
         $s->bindValue(':regen_rate', TURN_REGEN_PER_TICK);
         $s->execute();
-
-        //Skip error logging this for now. $out_display['Inactive Browsers Deactivated'] = $inactivity->rowCount();
 
         // *** HEAL ***
         $s = DatabaseConnection::$pdo->prepare(
@@ -193,13 +189,10 @@ class Deity{
     }
 
     private static function daily(){
-        $out_display = [];
         $logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
 
         // TODO: Profile the slowdown point(s) of this script.
         // TODO: Need a levelling log deletion.
-        // TODO: When the message table is created, delete from mail more stringently.
-        // TODO: Set up a backup of the players table.
 
         $keep_players_until_over_the_number                   = MIN_PLAYERS_FOR_UNCONFIRM;
         $days_players_have_to_be_older_than_to_be_unconfirmed = MIN_DAYS_FOR_UNCONFIRM;
@@ -209,9 +202,9 @@ class Deity{
 
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
+        $affected_rows = [];
         $affected_rows['Increase Days Of Players'] = update_days();
 
-        //DatabaseConnection::$pdo->query("UPDATE players SET status = status-".POISON." WHERE status&".POISON);  // Black Poison Fix
         $status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  // Hmmm, gets rid of all status effects, we may want to make that not have that limitation, some day.
         $affected_rows['Statuses Removed'] = $status_removal->rowCount();
 
@@ -236,6 +229,7 @@ class Deity{
         $deleted_mail = delete_old_messages(); // As per the mail function in lib_deity.
         $deleted_events = delete_old_events();
         $affected_rows['Old Messages Deletion'] = $deleted_mail;
+        $affected_rows['Old Events Deletion'] = $deleted_events;
 
         $level_log_delete = DatabaseConnection::$pdo->query("delete from levelling_log where killsdate < now()- interval '3 months'");
         $affected_rows['levelling log deletion'] = $level_log_delete->rowCount(); // Keep only the last 3 months of logs.
