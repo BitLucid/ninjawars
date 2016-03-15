@@ -28,11 +28,13 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery-linkify.min.js" "$(JS)"
+	touch ./deploy/resources/logs/deity.log
+	touch ./deploy/resources/logs/emails.log
 
 install: build
 	apt-get install python3-dev python3-lxml
-	touch ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/emails.log
+	chown www-data:adm ./deploy/resources/logs/deity.log
 	touch /var/log/nginx/ninjawars.chat-server.log
 	chown www-data:adm /var/log/nginx/ninjawars.chat-server.log
 	nohup php bin/chat-server.php > /var/log/nginx/ninjawars.chat-server.log 2>&1 &
