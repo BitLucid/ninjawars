@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 use \model\News as News;
 use \model\Base;
 use \InvalidArgumentException;
+use \ErrorException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Player;
 use \NinjaWars\core\data\AccountFactory;
@@ -109,8 +110,10 @@ class NewsController {
             $this->hasCreateRole($this->pc);
             $account = $this->pc? AccountFactory::findByChar($this->pc) : null;
             $account_id = $account->id();
+        } catch(InvalidArgumentException $e){
+            $error = "Sorry, you must be logged in to try to save a news post.";
+            return new RedirectResponse('/news/?error='.url($error));            
         } catch(ErrorException $e){
-            $create_role = false;
             $error = "Sorry, you don't have permission to save a news post.";
             return new RedirectResponse('/news/?error='.url($error));
         }
