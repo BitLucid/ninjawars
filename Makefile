@@ -1,4 +1,4 @@
-.PHONY: all ci pre-test test test-integration test-unit test-functional post-test clean dep build install dist-clean db db-fixtures migration
+.PHONY: all ci pre-test test test-integration test-unit test-functional test-cron post-test clean dep build install dist-clean db db-fixtures migration
 
 COMPOSER=./composer.phar
 CC_DIR=./cc
@@ -62,6 +62,9 @@ test-unit:
 
 test-integration: pre-test
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
+
+test-cron:
+	php ./deploy/cron/deity*.php
 
 test-functional:
 	python3 -m pytest deploy/tests/functional/
@@ -151,4 +154,4 @@ python-install:
 
 ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
 
-ci-test: pre-test test post-test
+ci-test: pre-test test post-test test-cron
