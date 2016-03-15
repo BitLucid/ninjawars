@@ -1,4 +1,4 @@
-.PHONY: all ci pre-test test test-integration test-unit test-functional post-test clean dep build install dist-clean db db-fixtures migration
+.PHONY: all ci pre-test test test-integration test-unit test-functional test-cron post-test clean dep build install dist-clean db db-fixtures migration
 
 COMPOSER=./composer.phar
 CC_DIR=./cc
@@ -28,11 +28,13 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery-linkify.min.js" "$(JS)"
+	touch ./deploy/resources/logs/deity.log
+	touch ./deploy/resources/logs/emails.log
 
 install: build
 	apt-get install python3-dev python3-lxml
-	touch ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/emails.log
+	chown www-data:adm ./deploy/resources/logs/deity.log
 	touch /var/log/nginx/ninjawars.chat-server.log
 	chown www-data:adm /var/log/nginx/ninjawars.chat-server.log
 	nohup php bin/chat-server.php > /var/log/nginx/ninjawars.chat-server.log 2>&1 &
@@ -62,6 +64,12 @@ test-unit:
 
 test-integration: pre-test
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
+
+test-cron:
+	php ./deploy/cron/deity_fiveminute.php
+	php ./deploy/cron/deity_halfhour.php
+	php ./deploy/cron/deity_hourly.php
+	php ./deploy/cron/deity_nightly.php
 
 test-functional:
 	python3 -m pytest deploy/tests/functional/
@@ -151,4 +159,4 @@ python-install:
 
 ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
 
-ci-test: pre-test test post-test
+ci-test: pre-test test post-test test-cron
