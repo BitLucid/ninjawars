@@ -34,6 +34,12 @@ class NewsControllerTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('News Board', $res['title']);
     }
 
+    public function testCreateRedirectsForNonAdmin(){
+        $cont = new NewsController();
+        $res = $cont->create();
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $res);
+    }
+
     public function testCreateLoadsForAdminPlayer(){
         $this->markTestIncomplete();
         $this->char->vo->uname = 'Tchalvak'; // HARDCODED STRING HACK

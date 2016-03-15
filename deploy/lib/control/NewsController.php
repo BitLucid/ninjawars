@@ -20,11 +20,15 @@ class NewsController {
         $this->pc = Player::find(self_char_id());
     }
 
+    /**
+     * Check whether a player has the necessary create role
+     * @return boolean
+     */
     private function hasCreateRole(Player $pc){
         if(!($pc instanceof Player)){
-            throw new InvalidArgumentException("Can't check the role of a nonexistent player.");
+            throw new InvalidArgumentException('No account permissions');
         }
-        return $pc->isAdmin();
+        return (bool) $pc->isAdmin();
     }
 
     /**
@@ -33,26 +37,30 @@ class NewsController {
     public function index(){
         $view = 'news.tpl';
         $create_successful = (bool) in('create_successful');
+        try{
+            $create_role = $this->hasCreateRole($this->pc);
+        } catch(InvalidArgumentException $e){
+            $create_role = false;
+        }
         $parts = [
             'create_successful'=>$create_successful,
             'all_news'=>[],
             'error'=>in('error'),
-            'create_role'=>$this->pc? $this->hasCreateRole($this->pc) : null,
+            'create_role'=>$create_role,
+            'search_title'=>null
         ];
 
         // Fetch all the posts
+        $news = new News();
         try {
-            $news = new News();
-
-            if ($tag = in('tag_query')) {
-                // Search for specific tag
+            if ($tag = in('tag_query')) { // Search for specific tag matches
                 $parts['all_news'] = $news->findByTag($tag);
                 $parts['search_title'] = 'Result for #'.htmlentities(in('tag_query'));
             } else {
                 $parts['all_news'] = $news->all();
             }
         } catch (InvalidArgumentException $e) {
-            $parts['error'] = 'Unable to find any news like that';
+            $parts['error'] = 'Unable to find any matching news.';
         }
 
         return [
@@ -67,8 +75,15 @@ class NewsController {
      * Create new post
      */
     public function create(){
-        if($this->pc === null || !$this->hasCreateRole($this->pc)){
-            return new RedirectResponse('/news/?error='.url("Sorry, you can't create a news post"));
+        try{
+            $create_role = $this->hasCreateRole($this->pc);
+        } catch(InvalidArgumentException $e){
+            $error = "Sorry, you must be logged in to create a news post.";
+            return new RedirectResponse('/news/?error='.url($error));
+        }
+        if(!$create_role){
+            $error = 'Sorry, you do not have permission to create a news post.';
+            return new RedirectResponse('/news/?error='.url($error));
         }
         $title = 'Make New Post';
         $error = (bool) in('error');
@@ -90,11 +105,15 @@ class NewsController {
      * @return RedirectResponse
      */
     public function store(){
-        if($this->pc === null || !$this->hasCreateRole($this->pc)){
-            return new RedirectResponse('/news/?error='.url("Sorry, you don't have permission to create a news post."));
+        try{
+            $this->hasCreateRole($this->pc);
+            $account = $this->pc? AccountFactory::findByChar($this->pc) : null;
+            $account_id = $account->id();
+        } catch(ErrorException $e){
+            $create_role = false;
+            $error = "Sorry, you don't have permission to save a news post.";
+            return new RedirectResponse('/news/?error='.url($error));
         }
-        $pc = Player::find(self_char_id());
-        $account = $pc? AccountFactory::findByChar($pc) : null;
         // Handle POST
         $news_title = in('news_title');
         $news_content = in('news_content');
@@ -105,13 +124,13 @@ class NewsController {
             try {
                 // News Model
                 $news = new News();
-                $news->createPost($news_title, $news_content, $account->id(), $tag);
+                $news->createPost($news_title, $news_content, $account_id, $tag);
                 return new RedirectResponse('/news/?create_successful=1');
             } catch (InvalidArgumentException $e) {
-                return new RedirectResponse('/news/');
+                return new RedirectResponse('/news/?error='.url('Unable to create news post.'));
             }
         } else {
-            return new RedirectResponse('/news/create/?error='.url('Unable to create news post'));
+            return new RedirectResponse('/news/create/?error='.url('A News post must have a body.'));
         }
     }
 }
