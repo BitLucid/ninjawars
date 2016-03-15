@@ -361,7 +361,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
     public function testSetClassNegative() {
         $char = Player::find($this->char_id);
         $class = $char->getClassName();
-        $return = $char->setClass('BANANA');
+        $char->setClass('BANANA');
 
         $this->assertEquals($class, $char->getClassName());
     }

@@ -111,10 +111,10 @@ class TestAccountCreateAndDestroy {
         ob_end_clean();
 
         if ($confirm) {
-            $confirmed = confirm_player(TestAccountCreateAndDestroy::$test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+            confirm_player(TestAccountCreateAndDestroy::$test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
         }
 
-        return $char_id = get_char_id(TestAccountCreateAndDestroy::$test_ninja_name);
+        return get_char_id(TestAccountCreateAndDestroy::$test_ninja_name);
     }
 
     /**
@@ -146,7 +146,7 @@ class TestAccountCreateAndDestroy {
         ob_end_clean();
 
         if ($confirm) {
-            $confirmed = confirm_player(TestAccountCreateAndDestroy::$alt_test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+            confirm_player(TestAccountCreateAndDestroy::$alt_test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
         }
 
         return get_char_id(TestAccountCreateAndDestroy::$alt_test_ninja_name);

@@ -21,7 +21,6 @@ class PageTest extends PHPUnit_Extensions_Selenium2TestCase {
         $title = $this->title();
         $this->assertNotEmpty($title);
         $this->assertTrue((false !== strpos($title, 'Login')));
-        $this->assertTrue((false !== strpos($pageH1, 'Login')));
     }
 
     public function testSignupPageLoadsAndHasTitle() {

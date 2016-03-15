@@ -119,7 +119,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($this->char->hasStatus(POISON));
 
         $cont = new ShrineController();
-        $result = $cont->cure();
+        $cont->cure();
         $final_char = Player::find($this->char->id());
         $this->assertFalse($final_char->hasStatus(POISON));
     }
@@ -190,7 +190,6 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
 
         $cont = new ShrineController();
         $result = $cont->resurrect();
-        $final_char = Player::find($this->char->id());
         $this->assertFalse(in_array('result-resurrect', $result['parts']['pageParts']));
     }
 
@@ -202,7 +201,6 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
 
         $cont = new ShrineController();
         $result = $cont->resurrect();
-        $final_char = Player::find($this->char->id());
         $this->assertFalse(in_array('result-resurrect', $result['parts']['pageParts']));
     }
 }
