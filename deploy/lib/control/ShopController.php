@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Item;
+use \NinjaWars\core\data\PurchaseOrder;
 use \Player;
 
 /**
@@ -16,8 +17,6 @@ class ShopController { // extends Controller
 
 	/**
 	 * Grabs data from external state for other methods to us
-	 *
-	 * @return ShopController
 	 */
 	public function __construct() {
 		$this->itemCosts   = $this->itemForSaleCosts();
@@ -146,12 +145,4 @@ class ShopController { // extends Controller
 
         return $item_costs;
     }
-}
-
-/**
- * A game-level representation of a request to buy something
- */
-class PurchaseOrder {
-    public $quantity;
-    public $item;
 }
