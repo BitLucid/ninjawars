@@ -52,7 +52,7 @@ class TestRouting:
             'intro', 'login', 'login.php', 'signup', 'signup.php', 
             'player.php', 'village.php', 'interview.php', 'news/', 
             'staff.php', 'list.php', 'rules.php', 'shop.php', 'events.php', 
-            'skill', 'inventory.php', 'enemies.php',
+            'skill', 'inventory.php', 'inventory', 'enemies.php',
             'clan.php', 'map.php', 'work.php', 'doshin_office.php',
             'dojo.php', 'shrine.php', 'duel.php', 'clan.php?command=list',
             'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
@@ -61,8 +61,11 @@ class TestRouting:
             'quest/view/1', 'account_issues.php', 'resetpassword.php',
             'player.php?target_id=777777',
             'player.php?target=tchalvak', 'item/self_use/amanita',
+            'skill/use/Fire%20Bolt/tchalvak', 'skill/self_use/Heal',
+            'item/self_use/3', 'item/self_use/1',
             'item/use/shuriken/tchalvak', 'dojo/buyDimMak',
         ]
+        #Eventually some of these urls should be tested on logged in user.
         for url in urls:
             assert (str(self.root()) + url is not None and 200 ==
                     self.status_code(str(self.root()) + url))
