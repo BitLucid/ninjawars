@@ -1,0 +1,1 @@
+update item set self_use = false where other_usable = false;
