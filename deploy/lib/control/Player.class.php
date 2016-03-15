@@ -352,7 +352,7 @@ class Player implements Character {
 			throw new \InvalidArgumentException('Gold cannot be made negative.');
 		}
 
-		if ((int) $gold != $gold) {
+		if (is_numeric($gold) && (int) $gold != $gold) {
 			throw new \InvalidArgumentException('Gold must be a whole number [not '.(string)$gold.'].');
 		}
 

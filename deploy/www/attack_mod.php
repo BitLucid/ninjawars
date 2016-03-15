@@ -115,8 +115,8 @@ if ($attack_is_legal) {
 		$target_health = $target_player->harm($stealthAttackDamage);
 
 		if (0 > $target_health) { // *** if Stealth attack of whatever damage kills target. ***
-			$victor = $attacker;
-			$loser  = $target;
+			$victor = $attacking_player;
+			$loser  = $target_player;
 
 			$gold_mod     = .1;
 			$loot         = floor($gold_mod * $target_player->gold());
@@ -228,8 +228,8 @@ if ($attack_is_legal) {
                 if ($simultaneousKill = ($attackerHealthRemaining < 1)) {
                     // *** If both died at the same time. ***
 				} else {
-					$victor = $attacker;
-					$loser  = $target;
+					$victor = $attacking_player;
+					$loser  = $target_player;
 				}
 
 				$killed_target = true;
@@ -278,8 +278,8 @@ if ($attack_is_legal) {
                 if ($simultaneousKill = ($attackerHealthRemaining < 1)) {
                     // *** If both died at the same time. ***
 				} else {
-					$victor = $target;
-					$loser  = $attacker;
+					$victor = $target_player;
+					$loser  = $attacking_player;
 				}
 
 				$attacker_died = true;
@@ -312,11 +312,6 @@ if ($attack_is_legal) {
 		// *** END MAIN ATTACK AND DUELING SECTION ***
 	}
 
-	if ($loot) {
-		add_gold(get_char_id($victor), $loot);
-		subtract_gold(get_char_id($loser), $loot);
-	}
-
     /**
      * HACK(ajv) Because the player obj is modified throughout the above code
      * we can't really keep track of what happened to safely use the
@@ -324,6 +319,17 @@ if ($attack_is_legal) {
      * from the data layer, modify it, and save it down here, then transfer
      * the updated data to the existing object to keep everything in sync
      */
+
+	if ($loot) {
+        $hack_victor = Player::find($victor->id());
+        $hack_victor->set_gold($hack_victor->gold + $loot);
+        $hack_victor->save();
+
+        $hack_loser = Player::find($loser->id());
+        $hack_loser->set_gold($hack_loser->gold - $loot);
+        $hack_loser->save();
+	}
+
 	if ($rounds > 4) { // Evenly matched battle! Reward some ki to the attacker, even if they die
 		$rewarded_ki = 1;
 
