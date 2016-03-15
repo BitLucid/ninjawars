@@ -1,6 +1,6 @@
 <?php
+use NinjaWars\core\data\Skill;
 
-use \NinjaWars\core\data\Skill;
 /**
  * Smarty plugin to determine turn cost of a skill
  *
