@@ -1,12 +1,17 @@
 <?php
 namespace NinjaWars\core\data;
 
+require_once(LIB_ROOT."control/lib_deity.php");
+
 use NinjaWars\core\data\DatabaseConnection;
 
 class Deity{
 
-    public static function tick($time){
-        switch($time){
+    /**
+     * @param int $minutes Minute interval of tick.
+     */
+    public static function tick($minutes){
+        switch($minutes){
             case 5:
                 self::tiny();
             break;
@@ -54,7 +59,7 @@ class Deity{
 
         $rand = rand(1, DEITY_LOG_CHANCE_DIVISOR);
 
-        if ($rand === 1) {
+        if ($rand === 1 || DEBUG) {
             // Only log fiveminute log output randomly about once every 6 hours to cut down on
             // spam in the log.  This log message isn't very important anyway.
 
@@ -71,13 +76,11 @@ class Deity{
 
             $logMessage .= 'DEITY_FIVEMINUTE ENDING: '.date(DATE_RFC1036)."\n";
 
-            $log = fopen(LOGS.'deity.log', 'a');
-            fwrite($log, $logMessage);
-            fclose($log);
+            self::logStuff($logMessage);
         }
     }
 
-    private function minor(){
+    private static function minor(){
         $logMessage = "DEITY_HALFHOUR STARTING: ".date(DATE_RFC1036)."\n";
 
         $score                = get_score_formula();
@@ -112,12 +115,10 @@ class Deity{
 
         $logMessage .= "DEITY_HALFHOUR ENDING: ".date(DATE_RFC1036)."\n";
 
-        $log = fopen(LOGS.'deity.log', 'a');
-        fwrite($log, $logMessage);
-        fclose($log);
+        self::logStuff($logMessage);
     }
 
-    private function major(){
+    private static function major(){
 
         $logMessage = "DEITY_HOURLY STARTING: ".date(DATE_RFC1036)."\n";
 
@@ -188,12 +189,10 @@ class Deity{
 
         $logMessage .= "DEITY_HOURLY ENDING: ".date(DATE_RFC1036)."\n";
 
-        $log = fopen(LOGS.'deity.log', 'a');
-        fwrite($log, $logMessage);
-        fclose($log);
+        self::logStuff($logMessage);
     }
 
-    private function daily(){
+    private static function daily(){
         $logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
 
         // TODO: Profile the slowdown point(s) of this script.
@@ -263,13 +262,14 @@ class Deity{
 
         $logMessage .= "DEITY_NIGHTLY ENDING: ---- ".date(DATE_RFC1036)." ---- \n";
 
-        $log = fopen(LOGS.'deity.log', 'a');
-        fwrite($log, $logMessage);
-        fclose($log);
+        self::logStuff($logMessage);
 
     }
 
+    private static function logStuff($logMessage){
+        $log = fopen(LOGS.'deity.log', 'a');
+        fwrite($log, $logMessage);
+        fclose($log);
+    }
 
-
-    
 }

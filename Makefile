@@ -64,7 +64,10 @@ test-integration: pre-test
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
 
 test-cron:
-	php ./deploy/cron/deity*.php
+	php ./deploy/cron/deity_fiveminute.php
+	php ./deploy/cron/deity_halfhour.php
+	php ./deploy/cron/deity_hourly.php
+	php ./deploy/cron/deity_nightly.php
 
 test-functional:
 	python3 -m pytest deploy/tests/functional/
