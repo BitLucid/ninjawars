@@ -265,10 +265,13 @@ class SkillController {
 			} elseif ($act == 'Steal') {
 				$covert = true;
 
-				$gold_decrease = min($target->gold(), rand(5, 50));
+				$gold_decrease = min($target->gold, rand(5, 50));
 
-				add_gold($char_id, $gold_decrease); // *** This one actually adds the value.
-				subtract_gold($target->id(), $gold_decrease); // *** Subtracts whatever positive value is put in.
+				$player->set_gold($player->gold + $gold_decrease);
+                $player->save();
+
+                $target->set_gold($target->gold - $gold_decrease);
+                $target->save();
 
 				$msg = "$attacker_id stole $gold_decrease gold from you.";
 				send_event($attacker_char_id, $target->id(), $msg);

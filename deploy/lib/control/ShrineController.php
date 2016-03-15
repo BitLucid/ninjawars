@@ -176,7 +176,7 @@ class ShrineController { //extends controller
 	 * On success, gold attribute of $p_player is modified in memory and database
 	 */
 	public function cure() {
-		$player = new Player(self_char_id()); // get current player
+		$player = Player::find(self_char_id());
 
 		if ($player->health() <= 0) {
 			return $this->renderError('You must resurrect before you can heal.', $player);
@@ -186,7 +186,8 @@ class ShrineController { //extends controller
 			return $this->renderError('You are not ill.', $player);
 		} else {
 			$player->subtractStatus(POISON);
-			$player->vo->gold = subtract_gold($player->id(), self::CURE_COST_GOLD);
+			$player->set_gold($player->gold - self::CURE_COST_GOLD);
+            $player->save();
 
 			$pageParts = [
 				'chant',
@@ -410,9 +411,9 @@ class ShrineController { //extends controller
 			throw new \RuntimeException('You do not have enough gold for that much healing');
 		}
 
-		$p_player->vo->gold = subtract_gold($p_player->id(), $totalCost);
-
+		$p_player->set_gold($p_player->gold - $totalCost);
 		$p_player->heal($amount);
+        $p_player->save();
 	}
 
 	/**

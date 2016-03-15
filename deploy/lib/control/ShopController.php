@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Item;
+use \Player;
 
 /**
  * Handles all user actions related to the in-game Shop
@@ -48,10 +49,11 @@ class ShopController { // extends Controller
 	 * @return Array
 	 */
 	public function buy() {
-		$in_quantity       = in('quantity');
-		$in_item           = in('item');
+		$in_quantity  = in('quantity');
+		$in_item      = in('item');
+        $player       = Player::find($this->sessionData['char_id']);
 
-		$gold = get_gold($this->sessionData['char_id']);
+		$gold = ($player ? $player->gold : null);
 
 		$current_item_cost = 0;
 		$no_funny_business = false;
@@ -80,7 +82,8 @@ class ShopController { // extends Controller
 			} else if ($gold >= $current_item_cost) { // Has enough gold.
 				try {
 					add_item($this->sessionData['char_id'], $purchaseOrder->item->identity(), $purchaseOrder->quantity);
-					subtract_gold($this->sessionData['char_id'], $current_item_cost);
+                    $player->set_gold($player->gold - $current_item_cost);
+                    $player->save();
 				} catch (\Exception $e) {
 					$invalid_item = $e->getMessage();
 					error_log('Invalid Item attempted :'.$invalid_item);
@@ -109,7 +112,9 @@ class ShopController { // extends Controller
 	 * @return Array
 	 */
 	private function render($p_parts) {
-		$p_parts['gold']         = get_gold($this->sessionData['char_id']);
+        $player = Player::find($this->sessionData['char_id']);
+
+		$p_parts['gold']         = ($player ? $player->gold : 0);
 		$p_parts['item_costs']   = $this->itemCosts;
 		$p_parts['is_logged_in'] = $this->sessionData['is_logged_in'];
 

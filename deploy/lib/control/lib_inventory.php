@@ -56,26 +56,6 @@ function inventory_counts($char_id){
 	return query_array($sql, array(':owner'=>array($char_id, PDO::PARAM_INT)));
 }
 
-// Pull the gold a user has.
-function get_gold($char_id){
-	return (int) query_item('SELECT gold FROM players WHERE player_id = :char_id', array(':char_id'=>$char_id));
-}
-
-// Add to the gold of a user.
-function add_gold($char_id, $amount){
-	$amount = (int)$amount;
-	if ($amount != 0) { // Only update anything if it's a non-null non-zero value.
-		query('UPDATE players SET 
-			gold = gold + CASE WHEN gold + :amount1 < 0 THEN gold*(-1) ELSE :amount2 END where player_id = :char_id', 
-				array(':char_id'=>$char_id, ':amount1'=>array($amount, PDO::PARAM_INT), ':amount2'=>array($amount, PDO::PARAM_INT)));
-	}
-	return get_gold($char_id);
-}
-
-// Negative brother of the add_gold function.
-function subtract_gold($char_id, $amount){
-	return add_gold($char_id, $amount*-1);
-}
 
 // DEPRECATED
 // Add an item using it's database identity.
