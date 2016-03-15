@@ -5,7 +5,6 @@ class BaseTest extends PHPUnit_Framework_TestCase {
 
 	public function testContructor() 
 	{
-		$this->assertFalse(ModelBase::isInitialized());
 
 		$model = new ModelBase();
 
