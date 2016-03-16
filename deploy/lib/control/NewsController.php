@@ -26,7 +26,7 @@ class NewsController {
      * Check whether a player has the necessary create role
      * @return boolean
      */
-    private function hasCreateRole(Player $pc){
+    private function hasCreateRole($pc){
         if(!($pc instanceof Player)){
             throw new InvalidArgumentException('No account permissions');
         }
