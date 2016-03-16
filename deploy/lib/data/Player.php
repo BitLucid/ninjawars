@@ -21,11 +21,16 @@ use \PDO;
  * @subpackage	player
  * @author      Tchalvak <ninjawarsTchalvak@gmail.com>
  * @link        http://ninjawars.net/player.php?player=tchalvak
- * @property-read int health
+ * @property-read int health 
  * @property-read int kills
  * @property-read int gold
- * @property-read int karma
  * @property-read int level
+ * @property-read int turns
+ * @property-read int bounty
+ * @property-read int karma Use ->karma() instead.
+ * @property-read string identity Actually class identity
+ * @property-read string uname Deprecated in favor of ->name() method
+ * @property-read int active Deprecated in favor of ->isActive() method
  */
 class Player implements Character {
 	public $player_id;
