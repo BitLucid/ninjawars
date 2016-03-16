@@ -86,6 +86,15 @@ class Player implements Character {
 	}
 
     /**
+     * Magic method to provide mutators for properties
+     *
+     * @return mixed
+     */
+	public function __set($member_field, $value) {
+		return $this->vo->$member_field = $value;
+	}
+
+    /**
      * Magic method to handle isset() and empty() calls against properties
      *
      * @return boolean
@@ -106,48 +115,6 @@ class Player implements Character {
      */
 	public function id() {
 		return $this->vo->player_id;
-	}
-
-    /**
-     * Store new goals
-     */
-	public function set_goals($goals){
-		$this->vo->goals = $goals;
-	}
-
-    /**
-     * In-character char description
-     */
-	public function set_description($desc){
-		$this->vo->description = $desc;
-	}
-
-	/**
-	 * Out of character message
-	**/
-	public function set_message($message){
-		$this->vo->messages = $message;
-	}
-
-    /**
-     * In-character instincts
-     */
-	public function set_instincts($in){
-		$this->vo->instincts = $in;
-	}
-
-    /**
-     * In-character beliefs
-     */
-	public function set_beliefs($be){
-		$this->vo->beliefs = $be;
-	}
-
-    /**
-     * Pass in traits as a raw comma separated string
-     */
-	public function set_traits($traits){
-		$this->vo->traits = $traits;
 	}
 
     /**

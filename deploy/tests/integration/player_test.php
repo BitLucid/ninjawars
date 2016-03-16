@@ -124,12 +124,12 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $instincts = 'Kill Samurai';
         $ooc = 'I like cheese';
         $char = new Player($this->char_id);
-        $char->set_traits($traits);
-        $char->set_beliefs($bel);
-        $char->set_description($desc);
-        $char->set_goals($goals);
-        $char->set_instincts($instincts);
-        $char->set_message($ooc);
+        $char->traits      = $traits;
+        $char->beliefs     = $bel;
+        $char->description = $desc;
+        $char->goals       = $goals;
+        $char->instincts   = $instincts;
+        $char->messages    = $ooc;
         $char->save();
         $char = new Player($this->char_id); // Create a new player copy.
         $this->assertEquals($desc, $char->description);
