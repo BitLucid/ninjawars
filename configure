@@ -28,7 +28,7 @@ if [ -z "$NGINX_EXISTS" ] || [ ! -d "./nginx-1.9.12/" ]; then
     cd nginx-1.9.12/
     ./configure
     make
-    echo "NGINX_PATH=`readlink -f nginx-1*/objs/nginx`" >> CONFIG
+    echo "NGINX_PATH:=`readlink -f nginx-1*/objs/nginx`" >> CONFIG
 else
-    echo "NGINX_PATH=`which nginx`" >> CONFIG
+    echo "NGINX_PATH:=`which nginx`" >> CONFIG
 fi

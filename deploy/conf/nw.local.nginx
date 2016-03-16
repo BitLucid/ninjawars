@@ -1,9 +1,8 @@
 server {
 	server_name nw.local localhost;
-	listen 80;
 	listen 8775;
 
-	root /srv/ninjawars/deploy/www;
+	root /tmp/www;
 	charset utf-8;
 	#error_page 404 /404.html;
 	error_page 404 /404.php;
@@ -65,14 +64,14 @@ server {
 	}
 
 	location ~ \.php$ {
-		fastcgi_param PHP_VALUE "session.cookie_domain=nw.local \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
+		fastcgi_param PHP_VALUE "session.cookie_domain= \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
 		fastcgi_pass unix:/var/run/php5-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
 
 	location @php {
-		fastcgi_param PHP_VALUE "session.cookie_domain=nw.local \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
+		fastcgi_param PHP_VALUE "session.cookie_domain= \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
 		fastcgi_pass unix:/var/run/php5-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
