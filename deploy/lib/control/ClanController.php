@@ -24,16 +24,15 @@ class ClanController { //extends Controller
 	 * If a clan_id is not specified, the clan of the current user will be used
 	 */
 	public function view() {
-		$clanID = (int)in('clan_id', null);
+        $in_id = in('clan_id');
+		$clanID = ((int) $in_id > 0)? (int) $in_id : null;
         $player = Player::find(self_char_id());
 
-		if (!$clanID) {
-			if ($player) {
-				$clan = ClanFactory::clanOfMember($player);
-			}
-		} else {
-			$clan = ClanFactory::find($clanID);
-		}
+        if($clanID === null && $player instanceof Player){
+            $clan = ClanFactory::clanOfMember($player);
+        } else {
+            $clan = positive_int($clanID)? ClanFactory::find($clanID) : null;
+        }
 
 		if (isset($clan) && $clan instanceof Clan) {
 			$parts = [
