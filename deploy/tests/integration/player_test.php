@@ -59,16 +59,16 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testPCHasVariousAttributesAndCanSetSome() {
         $char = new Player($this->char_id);
-        $this->assertTrue(is_int($char->gold()));
-        $this->assertTrue(is_int($char->turns()));
+        $this->assertTrue(is_int($char->gold));
+        $this->assertTrue(is_int($char->turns));
         $this->assertTrue(is_int($char->set_gold(45)));
         $this->assertTrue(is_int($char->set_turns(32)));
         $this->assertEquals(444, $char->set_bounty(444));
         $char->save();
         $char_dup = new Player($this->char_id);
-        $this->assertEquals(444, $char_dup->bounty());
-        $this->assertEquals(32, $char_dup->turns());
-        $this->assertEquals(45, $char_dup->gold());
+        $this->assertEquals(444, $char_dup->bounty);
+        $this->assertEquals(32, $char_dup->turns);
+        $this->assertEquals(45, $char_dup->gold);
     }
 
     public function testCharacterHasADifficultyRating() {
@@ -132,12 +132,12 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $char->set_message($ooc);
         $char->save();
         $char = new Player($this->char_id); // Create a new player copy.
-        $this->assertEquals($desc, $char->description());
-        $this->assertEquals($traits, $char->traits());
-        $this->assertEquals($bel, $char->beliefs());
-        $this->assertEquals($goals, $char->goals());
-        $this->assertEquals($instincts, $char->instincts());
-        $this->assertEquals($ooc, $char->message());
+        $this->assertEquals($desc, $char->description);
+        $this->assertEquals($traits, $char->traits);
+        $this->assertEquals($bel, $char->beliefs);
+        $this->assertEquals($goals, $char->goals);
+        $this->assertEquals($instincts, $char->instincts);
+        $this->assertEquals($ooc, $char->messages);
     }
 
     public function testNegativeKiRejected() {
@@ -234,13 +234,13 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testCreatePlayerObjectCanSaveChanges() {
         $char = new Player($this->char_id);
-        $ki = $char->ki();
+        $ki = $char->ki;
         $char->set_ki($ki+55);
         $char->set_gold(343);
         $char->save();
         $char_copy = new Player($this->char_id);
-        $this->assertEquals($char_copy->ki(), $ki+55);
-        $this->assertEquals($char_copy->gold(), 343);
+        $this->assertEquals($char_copy->ki, $ki+55);
+        $this->assertEquals($char_copy->gold, 343);
     }
 
     public function testPlayerObjectReportDamageCorrectly() {

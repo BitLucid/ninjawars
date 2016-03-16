@@ -119,7 +119,7 @@ if ($attack_is_legal) {
 			$loser  = $target_player;
 
 			$gold_mod     = .1;
-			$loot         = floor($gold_mod * $target_player->gold());
+			$loot         = floor($gold_mod * $target_player->gold);
 
 			$target_msg   = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold!";
 			$attacker_msg = "You have killed $target in combat and taken $loot gold.";
@@ -259,7 +259,7 @@ if ($attack_is_legal) {
 
 				if (!$simultaneousKill)	{
 					// This stuff only happens if you don't die also.
-					$loot = floor($gold_mod * $target_player->gold());
+					$loot = floor($gold_mod * $target_player->gold);
 
 					// Add the wrath health regain to the attacker.
 					if (isset($wrath_regain)) {
@@ -296,7 +296,7 @@ if ($attack_is_legal) {
 				$attacking_player->death();
 
 				if (!$simultaneousKill) {
-					$loot = floor($gold_mod * $attacking_player->gold()); //Loot for defender if he lives.
+					$loot = floor($gold_mod * $attacking_player->gold); //Loot for defender if he lives.
 				}
 
 				$target_msg = "You have killed $attacker in combat and taken $loot gold.";
@@ -334,7 +334,7 @@ if ($attack_is_legal) {
 		$rewarded_ki = 1;
 
         $hack_player = Player::find($attacking_player->id());
-        $hack_player->set_ki($hack_player->ki() + $rewarded_ki);
+        $hack_player->set_ki($hack_player->ki + $rewarded_ki);
         $hack_player->save();
 
         $attacking_player->ki = $hack_player->ki;

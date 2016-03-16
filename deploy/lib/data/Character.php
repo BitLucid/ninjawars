@@ -11,5 +11,4 @@ interface Character {
     function max_damage(Character $char=null);
     function damage(Character $char=null);
     function health();
-    function gold();
 }

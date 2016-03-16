@@ -21,16 +21,22 @@ use \PDO;
  * @subpackage	player
  * @author      Tchalvak <ninjawarsTchalvak@gmail.com>
  * @link        http://ninjawars.net/player.php?player=tchalvak
- * @property-read int health 
+ * @property-read int health
  * @property-read int kills
  * @property-read int gold
  * @property-read int level
  * @property-read int turns
  * @property-read int bounty
- * @property-read int karma Use ->karma() instead.
- * @property-read string identity Actually class identity
+ * @property-read int ki
+ * @property-read int karma
+ * @property-read string identity Identity of the character class
+ * @property-read string goals
+ * @property-read string description
+ * @property-read string messages
+ * @property-read string instincts
+ * @property-read string beliefs
+ * @property-read string traits
  * @property-read string uname Deprecated in favor of ->name() method
- * @property-read int active Deprecated in favor of ->isActive() method
  */
 class Player implements Character {
 	public $player_id;
@@ -100,50 +106,6 @@ class Player implements Character {
      */
 	public function id() {
 		return $this->vo->player_id;
-	}
-
-    /**
-     * @return int
-     */
-	public function description() {
-		return $this->vo->description;
-	}
-
-	/**
-	 * Get out of character message
-     * @return string
-	**/
-	public function message() {
-		return $this->vo->messages;
-	}
-
-    /**
-     * @return string
-     */
-	public function beliefs() {
-		return $this->vo->beliefs;
-	}
-
-    /**
-     * @return string
-     */
-	public function instincts() {
-		return $this->vo->instincts;
-	}
-
-    /**
-     * @return string
-     */
-	public function goals() {
-		return $this->vo->goals;
-	}
-
-    /**
-     * Return simple, comma separated string of traits
-     * @return string
-     */
-	public function traits() {
-		return $this->vo->traits;
 	}
 
     /**
@@ -340,19 +302,11 @@ class Player implements Character {
 		$this->vo->stamina = $stamina;
 	}
 
-	public function ki() {
-		return $this->vo->ki;
-	}
-
 	public function set_ki($ki){
 		if($ki < 0){
 			throw new \InvalidArgumentException('Ki cannot be negative.');
 		}
 		return $this->vo->ki = $ki;
-	}
-
-	public function gold() {
-		return $this->vo->gold;
 	}
 
 	public function set_gold($gold) {
@@ -365,10 +319,6 @@ class Player implements Character {
 		}
 
 		return $this->vo->gold = $gold;
-	}
-
-	public function bounty() {
-		return $this->vo->bounty;
 	}
 
 	public function set_bounty($bounty) {
@@ -430,10 +380,6 @@ class Player implements Character {
 		return $account['active_email'];
 	}
 
-	public function turns() {
-		return $this->vo->turns;
-	}
-
     public function set_turns($turns) {
         if ($turns < 0) {
             throw new \InvalidArgumentException('Turns cannot be made negative.');
@@ -448,7 +394,7 @@ class Player implements Character {
     public function changeTurns($amount) {
         $amount = (int) $amount;
 
-        $this->set_turns($this->turns() + $amount);
+        $this->set_turns($this->turns + $amount);
 
         if ($amount) { // Ignore zero
             // These PDO parameters must be split into amount1 and amount2 because otherwise PDO gets confused.  See github issue 147.
@@ -922,8 +868,8 @@ class Player implements Character {
 
             if ($level_up_possible) { // Perform the level up actions
                 $this->set_health($this->health() + $health_to_add);
-                $this->set_turns($this->turns()   + $turns_to_give);
-                $this->set_ki($this->ki()         + $ki_to_give);
+                $this->set_turns($this->turns   + $turns_to_give);
+                $this->set_ki($this->ki         + $ki_to_give);
 
                 // Must read from VO for these as accessors return modified values
                 $this->setStamina($this->vo->stamina   + $stat_value_to_add);

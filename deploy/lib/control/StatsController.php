@@ -25,11 +25,11 @@ class StatsController {
 	public function changeDetails() {
 		$char		= new Player(self_char_id());
 
-		$description	= post('description', $char->description());
-		$goals			= post('goals', $char->goals());
-		$instincts		= post('instincts', $char->instincts());
-		$beliefs		= post('beliefs', $char->beliefs());
-		$traits			= post('traits', $char->traits());
+		$description	= post('description', $char->description);
+		$goals			= post('goals', $char->goals);
+		$instincts		= post('instincts', $char->instincts);
+		$beliefs		= post('beliefs', $char->beliefs);
+		$traits			= post('traits', $char->traits);
 
 		// Check that the text features don't differ
 		$char->set_description($description);

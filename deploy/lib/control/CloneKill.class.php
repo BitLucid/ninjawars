@@ -75,11 +75,11 @@ class CloneKill {
                 $today = date("F j, Y, g:i a");
                 $clone1_health = $clone1->health();
                 $clone2_health = $clone2->health();
-                $clone1_turns = $clone1->turns();
-                $clone2_turns = $clone2->turns();
-                $clone1->changeTurns(-1*$clone1->turns());
+                $clone1_turns = $clone1->turns;
+                $clone2_turns = $clone2->turns;
+                $clone1->changeTurns(-1*$clone1->turns);
                 $clone1->death();
-                $clone2->changeTurns(-1*$clone2->turns());
+                $clone2->changeTurns(-1*$clone2->turns);
                 $clone2->death();
                 $result_message = "You obliterate the clone {$clone1->name()} for $clone1_health health, $clone1_turns turns
                      and the clone {$clone2->name()} for $clone2_health health, $clone2_turns turns.";

@@ -124,7 +124,7 @@ class DojoController {
     private function classChangeReqs($p_player, $p_requiredTurns) {
         $error = null;
 
-        if ($p_player->turns() < $p_requiredTurns) {
+        if ($p_player->turns < $p_requiredTurns) {
             // Check the turns, return the error if it's too below.
             $error = "You don't have enough turns to change your class.";
         }
@@ -158,7 +158,7 @@ class DojoController {
     private function dimMakReqs(Player $p_player, $p_requiredTurns) {
         $error = null;
 
-        if ($p_player->turns() < $p_requiredTurns) {
+        if ($p_player->turns < $p_requiredTurns) {
             $error = "You don't have enough turns to get a Dim Mak.";
         }
 

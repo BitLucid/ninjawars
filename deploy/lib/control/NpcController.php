@@ -59,12 +59,12 @@ class NpcController { //extends controller
         $player->subtractKills(self::ONI_KILL_LOSS);
 
         if ($player->health() > 0) { // if you survive
-            if ($player->turns() > self::HIGH_TURNS) { // And your turns are high/you are energetic, you can kill them.
+            if ($player->turns > self::HIGH_TURNS) { // And your turns are high/you are energetic, you can kill them.
                 $oni_killed       = true;
                 $item             = new Item('dimmak');
                 $quantity         = 1;
                 add_item($player->id(), $item->identity(), $quantity);
-            } else if ($player->turns() > floor(self::HIGH_TURNS/2) && rand()&1) { // If your turns are somewhat high/you have some energy, 50/50 chance you can kill them.
+            } else if ($player->turns > floor(self::HIGH_TURNS/2) && rand()&1) { // If your turns are somewhat high/you have some energy, 50/50 chance you can kill them.
                 $oni_killed       = true;
                 $item             = new Item('ginsengroot');
                 $multiple_rewards = true;
@@ -168,7 +168,7 @@ class NpcController { //extends controller
         if ($survive_fight > 0) {
             // The ninja survived, they get any gold the npc has.
             $received_gold = $this->calcReceivedGold($npco, (bool) $reward_item);
-            $player->set_gold($player->gold() + $received_gold);
+            $player->set_gold($player->gold + $received_gold);
             $received_display_items = array();
 
             if ($kill_npc) {
@@ -188,7 +188,7 @@ class NpcController { //extends controller
                     $player->level <= self::MAX_LEVEL_FOR_BOUNTY
                 ) {
                     $added_bounty = floor($player->level / 3 * $bounty_mod);
-                    $player->set_bounty($player->bounty() + $added_bounty);
+                    $player->set_bounty($player->bounty + $added_bounty);
                 }
             }
 
@@ -281,7 +281,7 @@ class NpcController { //extends controller
 
         $method = null;
 
-        if ($player && $player->turns() > 0 && !empty($victim)) {
+        if ($player && $player->turns > 0 && !empty($victim)) {
             // Strip stealth when attacking special NPCs
             if ($player->hasStatus('stealth') && in_array(strtolower($victim), self::$STEALTH_REMOVING_NPCS)) {
                 $player->subtractStatus(STEALTH);
@@ -337,7 +337,7 @@ class NpcController { //extends controller
             'victim'       => $victim, // merge may override in theory
             'npc_template' => $npc_template,
             'attacked'     => 1,
-            'turns'        => $player? $player->turns() : null,
+            'turns'        => $player? $player->turns : null,
             'health'       => $health,
         ];
 
@@ -357,11 +357,11 @@ class NpcController { //extends controller
 
         if ($victory = $player->harm($damage)) {
             $gold = rand(1, $player->strength() + 40);  // Guard Gold
-            $player->set_gold($player->gold() + $gold);
+            $player->set_gold($player->gold + $gold);
 
             if ($player->level > 15) {
                 $bounty = 10 * floor(($player->level - 10) / 5);
-                $player->set_bounty($player->bounty() + $bounty);
+                $player->set_bounty($player->bounty + $bounty);
             }
 
             // 1/9 chance of getting an herb for Kampo
@@ -393,12 +393,12 @@ class NpcController { //extends controller
 
         if ($victory = $player->harm($damage)) {
             $gold = rand(0, 20);
-            $player->set_gold($player->gold() + $gold);
+            $player->set_gold($player->gold + $gold);
 
             // *** Bounty or no bounty ***
             if ($player->level > 1 && $player->level <= 20) {
                 $bounty = floor($player->level / 3);
-                $player->set_bounty($player->bounty() + $bounty);
+                $player->set_bounty($player->bounty + $bounty);
             }
 
             if (!$just_villager) {
@@ -449,7 +449,7 @@ class NpcController { //extends controller
             $gold = rand(50, 50 + $damage[2] + $damage[1]);
 
             $player->addKills(1);
-            $player->set_gold($player->gold() + $gold);
+            $player->set_gold($player->gold + $gold);
 
             // If samurai dmg high, but ninja lived, give rewards
             if ($damage[2] > self::SAMURAI_REWARD_DMG) {

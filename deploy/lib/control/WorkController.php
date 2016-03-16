@@ -27,8 +27,8 @@ class WorkController {
         $is_logged_in           = is_logged_in();
         $char_id                = self_char_id();
         $char                   = new Player($char_id);
-        $turns                  = $char->turns();
-        $gold                   = $char->gold();
+        $turns                  = $char->turns;
+        $gold                   = $char->gold;
 
         if ($worked > $turns) {
             $not_enough_energy = true;
@@ -39,7 +39,7 @@ class WorkController {
             $char->save();
         }
 
-        $gold_display = number_format($char->gold());
+        $gold_display = number_format($char->gold);
 
         $parts = [
             'recommended_to_work'    => $recommended_to_work,
@@ -69,7 +69,7 @@ class WorkController {
 
         // Fill out some of the variables.
         $recommended_to_work = self::DEFAULT_RECOMMENDED_TO_WORK;
-        $gold_display = number_format($char->gold());
+        $gold_display = number_format($char->gold);
 
         $parts = [
             'recommended_to_work'    => $recommended_to_work,
