@@ -1,4 +1,4 @@
-.PHONY: all ci pre-test test test-integration test-unit test-functional test-cron post-test clean dep build install dist-clean db db-fixtures migration
+.PHONY: all ci pre-test test test-main test-integration test-unit test-functional post-test clean dep build install dist-clean db db-fixtures migration
 
 COMPOSER=./composer.phar
 CC_DIR=./cc
@@ -41,21 +41,24 @@ install: build
 	@echo "Don't forget to update webserver configs as necessary."
 
 
-all: build test-unit db python-build test test-functional
+all: build test-unit db python-build test
 
 test-one:
 	$(TEST_RUNNER) $(CC_FLAG) $(TESTFILE)
 
 pre-test:
+	@find ./deploy/lib/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+	@find ./deploy/www/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+	@find ./deploy/tests/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+	@find ./deploy/cron/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	php deploy/check.php
 	# Check for presence of database
 	psql -lqt | cut -d \| -f 1 | grep -qw $(DBNAME)
 
-test:
-	@find ./deploy/lib/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
-	@find ./deploy/www/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+test: pre-test test-main test-functional post-test
+
+test-main:
 	@$(TEST_RUNNER) $(CC_FLAG)
-	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
 test-unit:
 	@find "./deploy/lib/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
@@ -65,7 +68,8 @@ test-unit:
 test-integration: pre-test
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
 
-test-cron:
+test-cron-run:
+	@echo "Running all the deity files, aren't you lucky.";
 	php ./deploy/cron/deity_fiveminute.php
 	php ./deploy/cron/deity_halfhour.php
 	php ./deploy/cron/deity_hourly.php
@@ -74,11 +78,12 @@ test-cron:
 test-functional:
 	python3 -m pytest deploy/tests/functional/
 
+test-ratchets:
+	#split out for ci for now
+	python3 -m pytest deploy/tests/functional/test_ratchets.py
+
 post-test:
-	find ./deploy/cron/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
-	@echo "Running all the deity files, aren't you lucky.";
-	php deploy/cron/*.php
-	find ./deploy/tests/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+	#noop for now
 
 clean:
 	@rm -rf "$(SRC)templates/"compiled/*
@@ -159,4 +164,4 @@ python-install:
 
 ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
 
-ci-test: pre-test test post-test test-cron
+ci-test: pre-test test-main test-cron-run test-ratchets post-test
