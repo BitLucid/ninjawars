@@ -1,5 +1,6 @@
 .PHONY: all ci pre-test test test-main test-integration test-unit test-functional post-test clean dep build install dist-clean db db-fixtures migration
 
+DOMAIN=http://nw.local/
 COMPOSER=./composer.phar
 CC_DIR=./cc
 CC_FLAG=--coverage-html $(CC_DIR)
@@ -11,6 +12,7 @@ COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
 DBROLE=developers
 PROPEL=./vendor/bin/propel-gen
+NGINX_PATH=`readlink -f nginx-1*/objs/nginx`
 
 -include CONFIG
 
@@ -135,6 +137,22 @@ migration:
 	$(PROPEL) . diff migrate
 	$(PROPEL) . diff migrate
 	$(PROPEL) om
+
+web-serve:
+	#Symlink /tmp/www/ in place of /var/www/
+	rm /tmp/www
+	ln -s `pwd`/deploy/www /tmp/www
+	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf
+	ps waux | grep nginx
+	# server may be up and running now
+
+web-stop:
+	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf -s stop
+	ps waux | grep nginx
+
+web-reload:
+	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf -s reload
+	ps waux | grep nginx
 
 ci-pre-configure:
 	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
