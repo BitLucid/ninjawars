@@ -141,7 +141,7 @@ class CloneKillTest extends PHPUnit_Framework_TestCase {
         $pc2 = new Player($char_id_2);
         $this->assertEquals(0, $pc1->health());
         $this->assertEquals(0, $pc2->health());
-        $this->assertEquals(0, $pc1->turns());
-        $this->assertEquals(0, $pc2->turns());
+        $this->assertEquals(0, $pc1->turns);
+        $this->assertEquals(0, $pc2->turns);
     }
 }

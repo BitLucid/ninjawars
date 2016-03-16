@@ -46,8 +46,8 @@ class InventoryController {
 		}
 
 		$parts = [
-			'gold'         => $char->gold(),
-			'gold_display' => number_format($char->gold()),
+			'gold'         => $char->gold,
+			'gold_display' => number_format($char->gold),
 			'inventory'    => $inventory,
 			'username'     => $char->name(),
 			'char_id'      => $char->id(),

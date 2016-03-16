@@ -61,7 +61,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 
         $doshin = new DoshinController();
         $doshin->offerBounty();
-        $new_bounty = (new Player($target->id()))->bounty();
+        $new_bounty = (new Player($target->id()))->bounty;
         TestAccountCreateAndDestroy::destroy();
 
         $this->assertEquals(600, $new_bounty);
@@ -76,7 +76,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->set_bounty(400);
         $this->char->save();
         $this->char = new Player($char_id);
-        $this->assertEquals(400, $this->char->bounty());
+        $this->assertEquals(400, $this->char->bounty);
 
         $request = new Request([
             'bribe'=>300
@@ -88,7 +88,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 
         $pulled_char = new Player($char_id);
 
-        $current_bounty = $pulled_char->bounty();
+        $current_bounty = $pulled_char->bounty;
 
         // Bounty should be less now
 
@@ -109,8 +109,8 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $doshin = new DoshinController();
         $doshin->bribe();
         $final_char = new Player($this->char->id());
-        $this->assertLessThan(7777, $final_char->gold());
-        $modified_bounty = $final_char->bounty();
+        $this->assertLessThan(7777, $final_char->gold);
+        $modified_bounty = $final_char->bounty;
         $this->assertLessThan($bounty_set, $modified_bounty);
         $this->assertGreaterThan(0, $modified_bounty);
     }

@@ -62,7 +62,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $response = $this->controller->attack();
         $this->assertNotEmpty($response);
         $final_char = Player::find($this->char->id());
-        $this->assertGreaterThan(0, $final_char->bounty());
+        $this->assertGreaterThan(0, $final_char->bounty);
     }
 
     public function testControllerAttackAsIfAgainstAPeasant2() {
@@ -82,14 +82,14 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testControllerAttackAsIfAgainstAMerchant2() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/merchant2';
-        $init_gold = $this->char->gold();
+        $init_gold = $this->char->gold;
         $npco = new Npc('merchant2');
         $response = $this->controller->attack();
         $final_char = Player::find($this->char->id());
         $this->assertNotEmpty($response);
         $this->assertEquals('merchant2', $response['parts']['victim']);
         $this->assertGreaterThan(0, $npco->min_gold());
-        $this->assertGreaterThan($init_gold, $final_char->gold());
+        $this->assertGreaterThan($init_gold, $final_char->gold);
     }
 
     public function testControllerAttackAsIfAgainstAGuard() {

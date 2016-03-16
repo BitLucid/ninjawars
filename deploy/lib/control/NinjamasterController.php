@@ -79,8 +79,8 @@ class NinjamasterController {
             $firstAccount     = AccountFactory::findByChar($firstChar);
             $charInfos        = AdminViews::split_char_infos($viewChar);
             $charInventory    = AdminViews::char_inventory($viewChar);
-            $firstMessage     = $firstChar->message();
-            $firstDescription = $firstChar->description();
+            $firstMessage     = $firstChar->messages;
+            $firstDescription = $firstChar->description;
         }
 
         $parts = [

@@ -65,7 +65,7 @@
       </li>
       <li>Turns: <span class='turns-count'>{$char->turns|number_format:0|escape}</span></li>
       <li>Kills: {$char->kills|escape}</li>
-      <li class='gold-count'>Gold: {$char->gold()|number_format|escape}</li>
+      <li class='gold-count'>Gold: {$char->gold|number_format|escape}</li>
       <li>Created: <time class='timeago' datetime='{$char->created_date|escape}'>{$char->created_date|escape}</time></li>
       <li>Rank: {$rank_display|escape}</li>
       <li>Bounty: <span class='gold-count'>{$char->bounty|number_format|escape} gold</span></li>

@@ -35,7 +35,7 @@ class SkillController {
 
 		$player         = $this->player;
 		$starting_turns = $player->turns;
-		$starting_ki    = $player->ki();
+		$starting_ki    = $player->ki;
 
 		$status_list = get_status_list();
 		$no_skills   = true;
@@ -475,19 +475,19 @@ class SkillController {
 				} else { // Attacker killed someone else.
 					$killed_target = true;
 					$gold_mod = 0.15;
-					$loot     = floor($gold_mod * $target->gold());
-					$player->set_gold($player->gold()+$loot);
-					$target->set_gold($target->gold()-$loot);
+					$loot     = floor($gold_mod * $target->gold);
+					$player->set_gold($player->gold+$loot);
+					$target->set_gold($target->gold-$loot);
 
 					$player->addKills(1);
 
 					$added_bounty = floor($level_check / 5);
 
 					if ($added_bounty > 0) {
-						$player->set_bounty($player->bounty()+($added_bounty * 25));
-					} else if ($target->bounty() > 0 && $target->id() !== $player->id()) {
+						$player->set_bounty($player->bounty+($added_bounty * 25));
+					} else if ($target->bounty > 0 && $target->id() !== $player->id()) {
 						 // No suicide bounty, No bounty when your bounty getting ++ed.
-						$player->set_gold($player->gold()+$target->bounty()); // Reward the bounty
+						$player->set_gold($player->gold+$target->bounty); // Reward the bounty
 						$target->set_bounty(0); // Wipe the bounty
 					}
 
@@ -555,14 +555,14 @@ class SkillController {
 	 */
 	private function harmonizeChakra(Player $char){
 		// Heal at most 100 or ki available or hurt by AND at least 0
-		$heal_for = (int) max(0, min(self::MAX_HARMONIZE, $char->is_hurt_by(), $char->ki()));
+		$heal_for = (int) max(0, min(self::MAX_HARMONIZE, $char->is_hurt_by(), $char->ki));
 		if($heal_for > 0){
 			// If there's anything to heal, try.
 
 
 			// Subtract the ki used for healing.
 			$char->heal($heal_for);
-			$char->set_ki($char->ki() - $heal_for);
+			$char->set_ki($char->ki - $heal_for);
 			$char->save();
 		}
 		return $char;

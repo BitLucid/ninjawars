@@ -62,11 +62,11 @@ class DoshinController { //extends controller
         } else {
             $error = $this->validateBountyOffer($char, $target->id(), $amount);
 
-            $amount = self::calculateMaxOffer($target->bounty(), $amount);
+            $amount = self::calculateMaxOffer($target->bounty, $amount);
 
             if (!$error) {
-                $char->set_gold($char->gold() - $amount); // Subtract the gold.
-                $target->set_bounty($target->bounty() + $amount);
+                $char->set_gold($char->gold - $amount); // Subtract the gold.
+                $target->set_bounty($target->bounty + $amount);
                 $target->save();
                 $char = $char->save();
 
@@ -124,9 +124,9 @@ class DoshinController { //extends controller
         if (!$target->id()) { // Test that target exists
             $error = 1;
         } else {
-            $amount = self::calculateMaxOffer($target->bounty(), $p_amount);
+            $amount = self::calculateMaxOffer($target->bounty, $p_amount);
 
-            if ($char->gold() < $amount) {
+            if ($char->gold < $amount) {
                 $error = 2;
             }
 
@@ -134,7 +134,7 @@ class DoshinController { //extends controller
                 $error = 3;
             }
 
-            if ($target->bounty() >= 5000) {
+            if ($target->bounty >= 5000) {
                 $error = 4;
             }
         }
@@ -154,11 +154,11 @@ class DoshinController { //extends controller
         $error     = 0;
         $quickstat = false;
 
-        if ($bribe <= $char->gold() && $bribe > 0) {
-            $char->set_gold($char->gold() - $bribe);
+        if ($bribe <= $char->gold && $bribe > 0) {
+            $char->set_gold($char->gold - $bribe);
             $char->set_bounty(max(
                 0,
-                ($char->bounty() - floor($bribe/self::BRIBERY_DIVISOR))
+                ($char->bounty - floor($bribe/self::BRIBERY_DIVISOR))
             ));
             $char->save();
             $location = 1;
@@ -191,8 +191,8 @@ class DoshinController { //extends controller
      * If the player loses a substantial enough amount, the doshin will actually decrease the bounty.
      */
     private function doshinAttack(Player $char) {
-        $current_bounty = $char->bounty();
-        $doshin_takes = floor($char->gold() * self::DOSHIN_CUT);
+        $current_bounty = $char->bounty;
+        $doshin_takes = floor($char->gold * self::DOSHIN_CUT);
         // If the doshin take a lot of money, they'll
         // actually reduce the bounty somewhat.
 
@@ -201,7 +201,7 @@ class DoshinController { //extends controller
         );
 
         if (0 < $bounty_reduction) {
-            $char->set_bounty($char->bounty() - $bounty_reduction);
+            $char->set_bounty($char->bounty - $bounty_reduction);
         }
 
         // Do fractional damage to the char
@@ -211,7 +211,7 @@ class DoshinController { //extends controller
         );
 
         // Regardless, you lose some gold.
-        $char->set_gold($char->gold() - $doshin_takes);
+        $char->set_gold($char->gold - $doshin_takes);
         return $char->save();
     }
 
@@ -223,7 +223,7 @@ class DoshinController { //extends controller
      */
     private function render($parts) {
         $char     = new Player(self_char_id());
-        $myBounty = $char->bounty();
+        $myBounty = $char->bounty;
 
         // Pulling the bounties.
         $bounties = query_array("SELECT player_id, uname, bounty, class_name AS class, level, clan_id, clan_name
@@ -233,7 +233,7 @@ class DoshinController { //extends controller
         $parts['bounties']     = $bounties;
         $parts['myBounty']     = $myBounty;
         $parts['char']         = $char;
-        $parts['display_gold'] = number_format($char->gold());
+        $parts['display_gold'] = number_format($char->gold);
 
         $quickstat = $parts['quickstat'];
 
