@@ -3,7 +3,7 @@
 echo "DOMAIN=http://localhost:8775/" > CONFIG
 echo "DBNAME=nw" >> CONFIG
 echo "DBUSER=ninjamaster" >> CONFIG
-echo "DBCREATINGUSER=postgresql" >> CONFIG
+echo "DBCREATINGUSER=postgres" >> CONFIG
 echo "CC_DIR=./cc/" >> CONFIG
 NGINX_EXISTS=`command -v nginx`
 NGINX_EXISTS=

@@ -6,13 +6,13 @@ CC_DIR=./cc
 CC_FLAG=--coverage-html $(CC_DIR)
 TEST_RUNNER=php -d zend_extension=xdebug.so ./vendor/bin/phpunit
 RELATIVE_COMPONENTS=../components/
-SRC=./deploy/
+SRC:=`pwd`/deploy/
 WWW=$(SRC)www/
 COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
 DBROLE=developers
 PROPEL=./vendor/bin/propel-gen
-NGINX_PATH=`readlink -f nginx-1*/objs/nginx`
+NGINX_PATH:=`readlink -f nginx-1.9.12/objs/nginx`
 
 -include CONFIG
 
@@ -25,6 +25,7 @@ ifndef TESTFILE
 endif
 
 build: dep
+	mkdir $(JS)
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
@@ -142,9 +143,8 @@ migration:
 
 web-start:
 	#Symlink /tmp/www/ in place of /var/www/
-	rm -f /tmp/www /tmp/conf
-	ln -s `pwd`/deploy/www /tmp/www
-	ln -s `pwd`/deploy/conf /tmp/conf
+	rm -rf /tmp/root/
+	ln -s $(SRC) /tmp/root
 	#permission error is normal and recoverable
 	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf
 	sleep 0.5
