@@ -2,10 +2,10 @@
 namespace NinjaWars\core\control;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use \Player;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\AccountFactory;
 use NinjaWars\core\data\AdminViews;
+use NinjaWars\core\data\Player;
 
 /**
  * The ninjamaster/admin info

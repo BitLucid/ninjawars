@@ -2,8 +2,8 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\Player;
 use \PDO;
-use \Player;
 
 class ApiController {
     public function sendHeaders() {

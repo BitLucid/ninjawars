@@ -2,7 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Clan;
-use \Player;
+use NinjaWars\core\data\Player;
 use \Constants;
 
 /**

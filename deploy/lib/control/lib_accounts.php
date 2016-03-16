@@ -1,5 +1,7 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\Player;
+
 /**
  * Account creation and validation.
  */

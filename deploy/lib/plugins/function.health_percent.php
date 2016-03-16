@@ -1,5 +1,5 @@
 <?php
-use \Player as Player;
+use NinjaWars\core\data\Player;
 
 function smarty_function_health_percent($p_params) {
     $health = $p_params['health'];

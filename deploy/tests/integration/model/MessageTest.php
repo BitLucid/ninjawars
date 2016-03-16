@@ -2,6 +2,7 @@
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 
 use NinjaWars\core\data\Message;
+use NinjaWars\core\data\Player;
 
 class TestMessage extends PHPUnit_Framework_TestCase {
     private $char_id;

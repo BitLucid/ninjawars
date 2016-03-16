@@ -1,7 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
-use \Player as Player;
+use NinjaWars\core\data\Player;
 
 /**
  * Handles all user commands for the in-game Casino

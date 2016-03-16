@@ -2,7 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Skill;
-use \Player as Player;
+use NinjaWars\core\data\Player;
 
 /**
  * Controller for actions taken in the Healing Shrine

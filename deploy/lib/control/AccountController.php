@@ -2,8 +2,8 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
-use \Player;
 
 /**
  * Handle updates for changing account password, changing account email and showing the account page

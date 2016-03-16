@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\Player;
+
 /**
  * Library for creating and destroying test-only accounts, for use in their various ways in testing.
  */

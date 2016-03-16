@@ -1,6 +1,8 @@
 <?php
 require_once(ROOT.'lib/control/CloneKill.class.php');
 
+use NinjaWars\core\data\Player;
+
 class CloneKillTest extends PHPUnit_Framework_TestCase {
     /**
      *

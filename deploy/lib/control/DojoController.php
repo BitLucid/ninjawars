@@ -1,7 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
-use \Player;
+use NinjaWars\core\data\Player;
 use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 

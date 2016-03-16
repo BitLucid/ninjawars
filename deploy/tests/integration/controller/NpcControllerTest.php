@@ -2,6 +2,7 @@
 namespace tests\integration\controller;
 
 use NinjaWars\core\data\Npc;
+use NinjaWars\core\data\Player;
 use NinjaWars\core\control\NpcController;
 use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +11,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use \TestAccountCreateAndDestroy;
 use \PHPUnit_Framework_TestCase;
-use \Player;
 
 class NpcControllerTest extends PHPUnit_Framework_TestCase {
     protected function setUp() {

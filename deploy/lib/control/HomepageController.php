@@ -2,7 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Message;
-use \Player as Player;
+use NinjaWars\core\data\Player;
 
 /**
  * display the standard homepage, and maybe eventually the splash page

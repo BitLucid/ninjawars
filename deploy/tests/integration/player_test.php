@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\data\Player;
+
 class CharacterTest extends PHPUnit_Framework_TestCase {
     private $previous_server_ip = '';
     private $char_id;

@@ -3,7 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
-use \Player as Player;
+use NinjaWars\core\data\Player;
 
 /**
  * Handle the listing of events

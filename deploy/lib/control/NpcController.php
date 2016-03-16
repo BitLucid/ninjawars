@@ -3,9 +3,9 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\NpcFactory;
-use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Item;
-use \Player as Player;
+use NinjaWars\core\data\Player;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * Handles displaying npcs and attacking specific npcs

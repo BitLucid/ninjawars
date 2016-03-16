@@ -6,7 +6,7 @@ use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\SkillDAO;
 use NinjaWars\core\data\ClanFactory;
-use \Player;
+use NinjaWars\core\data\Player;
 
 class PlayerController {
     const PRIV  = false;

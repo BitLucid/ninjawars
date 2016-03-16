@@ -2,7 +2,7 @@
 namespace NinjaWars\core\data;
 
 use Illuminate\Database\Eloquent\Model;
-use \Player;
+use NinjaWars\core\data\Player;
 
     /**
     Currently:

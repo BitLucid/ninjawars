@@ -1,7 +1,7 @@
 <?php
 namespace NinjaWars\core\data;
 
-use \Player;
+use NinjaWars\core\data\Player;
 
 class AdminViews{
 

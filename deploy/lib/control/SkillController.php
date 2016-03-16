@@ -1,10 +1,10 @@
 <?php
 namespace NinjaWars\core\control;
 
-use \Player;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\Skill;
+use NinjaWars\core\data\Player;
 
 /**
  * Handles both skill listing and displaying, and their usage

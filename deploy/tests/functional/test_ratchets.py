@@ -9,7 +9,7 @@ class TestRatchets:
     ''' Checks the ratchets for the /www/ directory number of scripts,
      and checks the overall SLOC of the project
     '''
-    control_php = 49
+    control_php = 47
     www_php = 9
     plus_minus = 6
     ''' Rough file counts in pertinent directories '''

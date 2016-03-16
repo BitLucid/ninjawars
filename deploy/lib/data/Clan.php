@@ -3,8 +3,8 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\Player;
 use \PDO;
-use \Player;
 
 /**
  * who/what/why/where

@@ -1,4 +1,6 @@
 <?php
+namespace NinjaWars\core\data;
+
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Clan;
@@ -7,6 +9,7 @@ use NinjaWars\core\data\PlayerVO;
 use NinjaWars\core\data\Character;
 use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\AccountFactory;
+use \PDO;
 
 /**
  * Ninja (actually character) behavior object.
@@ -205,7 +208,7 @@ class Player implements Character {
             // Binary add to current status, doing nothing if already set, e.g. 000 | 010 = 010
             $this->vo->status = $this->vo->status | $status;
             if(gettype($this->vo->status) !== 'integer'){
-                throw new Exception('invalid type for status');
+                throw new \Exception('invalid type for status');
             }
             update_query('UPDATE players SET status = :status WHERE player_id = :player_id',
                     [
