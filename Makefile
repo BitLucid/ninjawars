@@ -142,7 +142,7 @@ migration:
 
 web-start:
 	#Symlink /tmp/www/ in place of /var/www/
-	rm /tmp/www /tmp/conf
+	rm -f /tmp/www /tmp/conf
 	ln -s `pwd`/deploy/www /tmp/www
 	ln -s `pwd`/deploy/conf /tmp/conf
 	#permission error is normal and recoverable
