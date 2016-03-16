@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-echo "DOMAIN=http://nw.local/" > CONFIG
-echo "DBNAME=nwdev" >> CONFIG
+echo "DOMAIN=http://localhost:8775/" > CONFIG
+echo "DBNAME=nw" >> CONFIG
 echo "DBUSER=ninjamaster" >> CONFIG
-echo "DBCREATINGUSER=kzqai" >> CONFIG
+echo "DBCREATINGUSER=postgresql" >> CONFIG
 echo "CC_DIR=./cc/" >> CONFIG
 NGINX_EXISTS=`command -v nginx`
+NGINX_EXISTS=
 
 if [ -f ./composer.phar ]
 then
@@ -22,13 +23,13 @@ fi
 
 
 
-if [ -z "$NGINX_EXISTS" ] || [ ! -d "./nginx-1.9.12/" ]; then
+if [ -z "$NGINX_EXISTS" ] && [ ! -d "./nginx-1.9.12/" ]; then
     wget -N http://nginx.org/download/nginx-1.9.12.tar.gz
     tar -xvf nginx-1.9.12.tar.gz
     cd nginx-1.9.12/
     ./configure
     make
-    echo "NGINX_PATH:=`readlink -f nginx-1*/objs/nginx`" >> CONFIG
+    echo "NGINX_PATH=`readlink -f nginx-1*/objs/nginx`" >> CONFIG
 else
-    echo "NGINX_PATH:=`which nginx`" >> CONFIG
+    echo "NGINX_PATH=`which nginx`" >> CONFIG
 fi

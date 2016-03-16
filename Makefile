@@ -89,6 +89,8 @@ post-test:
 
 clean:
 	@rm -rf "$(SRC)templates/"compiled/*
+	@rm -rf "$(SRC)nginx-1.9.12/"
+	@rm -rf "$(SRC)nginx-1.9.12.tar.gz"
 	@rm -rf "$(CC_DIR)"
 	@rm -f "$(JS)jquery.min.js"
 	@rm -f "$(JS)jquery.min.map"
@@ -143,11 +145,12 @@ web-start:
 	rm /tmp/www /tmp/conf
 	ln -s `pwd`/deploy/www /tmp/www
 	ln -s `pwd`/deploy/conf /tmp/conf
+	#permission error is normal and recoverable
 	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf
 	sleep 0.5
 	ps waux | grep nginx
 	# server may be up and running now
-	# on http://localhost:8775 or the like
+	# on http://localhost:8775/ or the like
 
 web-stop:
 	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf -s stop
@@ -160,7 +163,7 @@ web-reload:
 	sleep 0.5
 	ps waux | grep nginx
 	# server may be reloaded now
-	# on http://localhost:8775 or the like
+	# on http://localhost:8775/ or the like
 
 ci-pre-configure:
 	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
