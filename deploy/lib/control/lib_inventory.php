@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\Item;
+use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\DatabaseConnection;
 
@@ -54,29 +55,12 @@ function inventory_counts($char_id){
 }
 
 
-// DEPRECATED
-// Add an item using it's database identity.
+/**
+ * Add an item using it's database identity.
+ * @deprecated
+ */ 
 function add_item($char_id, $identity, $quantity = 1) {
-	$quantity = (int)$quantity;
-	if ($quantity > 0 && !empty($identity)) {
-	    $up_res = query_resultset(
-	        "UPDATE inventory SET amount = amount + :quantity
-	            WHERE owner = :char AND item_type = (select item_id from item where item_internal_name = :identity)",
-	        array(':quantity'=>$quantity,
-	            ':char'=>$char_id,
-	            ':identity'=>$identity));
-	    $rows = $up_res->rowCount();
-
-		if (!$rows) { // No entry was present, insert one.
-		    query_resultset("INSERT INTO inventory (owner, item_type, amount)
-		        VALUES (:char, (SELECT item_id FROM item WHERE item_internal_name = :identity), :quantity)",
-		        array(':char'=>$char_id,
-		            ':identity'=>$identity,
-		            ':quantity'=>$quantity));
-		}
-	} else {
-	    throw new \Exception('Invalid item to add to inventory.');
-	}
+	Inventory::add(new Player($char_id), $identity, $quantity);
 }
 
 function removeItem($who, $item, $quantity=1) {
