@@ -12,25 +12,27 @@ class AttackController {
     const PRIV  = true;
 
     public function index() {
-        $target      = whichever(in('target'), in('attackee'));
-        $duel        = (in('duel')    ? true : NULL);
-        $blaze       = (in('blaze')   ? true : NULL);
-        $deflect     = (in('deflect') ? true : NULL);
-        $evade       = (in('evasion') ? true : NULL);
+        $target  = whichever(in('target'), in('attackee'));
+        $duel    = (in('duel')    ? true : NULL);
+        $blaze   = (in('blaze')   ? true : NULL);
+        $deflect = (in('deflect') ? true : NULL);
+        $evade   = (in('evasion') ? true : NULL);
 
         // Template vars.
-        $stealthed_attack = $stealth_damage = $stealth_lost = $pre_battle_stats = $rounds =
-            $combat_final_results = $killed_target = $attacker_died = $bounty_result = $rewarded_ki  = $wrath_regain = false;
+        $stealthed_attack = $stealth_damage = $stealth_lost =
+            $pre_battle_stats = $rounds = $combat_final_results =
+            $killed_target = $attacker_died = $bounty_result = $rewarded_ki =
+            $wrath_regain = false;
 
         // *** Attack System Initialization ***
-        $killpoints       = 0; // *** Starting state for killpoints. ***
-        $attack_turns     = 1; // *** Default cost, will go to zero if an error prevents combat. ***
+        $killpoints       = 0; // Starting state for killpoints
+        $attack_turns     = 1; // Default cost, will go to zero if an error prevents combat
         $required_turns   = 0;
-        $what             = ""; // *** This will be the attack type string, e.g. "duel". ***
+        $what             = ''; // This will be the attack type string, e.g. "duel"
         $loot             = 0;
-        $simultaneousKill = NULL; // *** Not simultaneous by default. ***
-        $turns_to_take    = null; // *** Even on failure take at least one turn. ***
-        $attack_type      = array();
+        $simultaneousKill = NULL; // Not simultaneous by default
+        $turns_to_take    = NULL; // Even on failure take at least one turn
+        $attack_type      = [];
 
         if ($blaze) {
             $attack_type['blaze'] = 'blaze';
@@ -50,9 +52,8 @@ class AttackController {
             $attack_type['attack'] = 'attack';
         }
 
-        $target_player    = new Player($target);
-        $attacking_player = new Player(self_char_id());
-        $attacker  = $attacking_player->name();
+        $target_player    = Player::find($target);
+        $attacking_player = Player::find(self_char_id());
 
         $skillListObj = new Skill();
 
@@ -64,10 +65,10 @@ class AttackController {
         }
 
         // *** Attack Legal section ***
-        $params = array(
-            'required_turns'    => $required_turns
-            , 'ignores_stealth' => $ignores_stealth
-        );
+        $params = [
+            'required_turns'  => $required_turns,
+            'ignores_stealth' => $ignores_stealth,
+        ];
 
         $attack_legal = new AttackLegal($attacking_player, $target_player, $params);
         $attack_is_legal = $attack_legal->check();
@@ -113,22 +114,21 @@ class AttackController {
                     $loot         = floor($gold_mod * $target_player->gold);
 
                     $target_msg   = "DEATH: You have been killed by a stealthed ninja in combat and lost $loot gold!";
-                    $attacker_msg = "You have killed $target in combat and taken $loot gold.";
+                    $attacker_msg = "You have killed {$target_player->name()} in combat and taken $loot gold.";
 
                     $target_player->death();
-                    sendMessage("A Stealthed Ninja", $target, $target_msg);
-                    sendMessage($target, $attacking_player->name(), $attacker_msg);
-                    $bounty_result = Combat::runBountyExchange($attacker_player->name(), $target); // *** Determines the bounty for normal attacking. ***
+                    $bounty_result = Combat::runBountyExchange($attacking_player->name(), $target); // *** Determines the bounty for normal attacking. ***
+                    sendMessage("A Stealthed Ninja", $target_player->name(), $target_msg);
+                    sendMessage($target_player->name(), $attacking_player->name(), $attacker_msg);
 
                     $stealth_kill = true;
                 } else {	// *** if damage from stealth only hurts the target. ***
                     $stealth_damage = true;
 
-                    sendMessage($attacking_player->name(), $target, "$attacker has attacked you from the shadows for $stealthAttackDamage damage.");
+                    sendMessage($attacking_player->name(), $target_player->name(), $attacking_player->name()." has attacked you from the shadows for $stealthAttackDamage damage.");
                 }
             } else {	// *** If the attacker is purely dueling or attacking, even if stealthed, though stealth is broken by dueling. ***
                 // *** MAIN DUELING SECTION ***
-
                 if ($attacking_player->hasStatus(STEALTH)) { // *** Remove their stealth if they duel instead of preventing dueling.
                     $attacking_player->subtractStatus(STEALTH);
                     $stealth_lost = true;
@@ -136,10 +136,8 @@ class AttackController {
 
                 // *** PRE-BATTLE STATS - Template Vars ***
                 $pre_battle_stats  = true;
-                $pbs_attacker_name = $attacking_player->name();
                 $pbs_attacker_str  = $attacking_player->getStrength();
                 $pbs_attacker_hp   = $attacking_player->health();
-                $pbs_target_name   = $target_player->name();
                 $pbs_target_str    = $target_player->getStrength();
                 $pbs_target_hp     = $target_player->health();
 
@@ -207,12 +205,12 @@ class AttackController {
                 $attackerHealthRemaining = $attacking_player->harm($total_target_damage);
 
                 if ($defenderHealthRemaining && $attackerHealthRemaining) {
-                    $combat_msg = "You have been $attack_label by $attacker for $total_attacker_damage, but they got away before you could kill them!";
+                    $combat_msg = "You have been $attack_label by {$attacking_player->name()} for $total_attacker_damage, but they got away before you could kill them!";
                 } else {
-                    $combat_msg = "You have been $attack_label by $attacker for $total_attacker_damage!";
+                    $combat_msg = "You have been $attack_label by {$attacking_player->name()} for $total_attacker_damage!";
                 }
 
-                sendMessage($attacker, $target, $combat_msg);
+                sendMessage($attacking_player->name(), $target_player->name(), $combat_msg);
 
                 if ($defenderHealthRemaining < 1 || $attackerHealthRemaining < 1) { // A kill occurred.
                     if ($defenderHealthRemaining < 1) { // ATTACKER KILLS DEFENDER!
@@ -231,12 +229,12 @@ class AttackController {
                             // Changes killpoints amount by dueling equation.
                             $killpoints = Combat::killpointsFromDueling($attacking_player, $target_player);
 
-                            $duel_log_msg = "$attacker has dueled $target and won $killpoints killpoints.";
+                            $duel_log_msg = $attacking_player->name()." has dueled {$target_player->name()} and won $killpoints killpoints.";
 
                             // Only log duels if they're better than 1 or if they're a failure.
                             if ($killpoints > 1 || $killpoints < 0) {
                                 // Make a WIN record in the dueling log.
-                                GameLog::sendLogOfDuel($attacker, $target, 1, $killpoints);
+                                GameLog::sendLogOfDuel($attacking_player->name(), $target_player->name(), 1, $killpoints);
                             }
 
                             if ($skillListObj->hasSkill('wrath')) {
@@ -258,11 +256,11 @@ class AttackController {
                             }
                         }
 
-                        $target_msg = "DEATH: You've been killed by $attacker and lost $loot gold!";
-                        sendMessage($attacker, $target, $target_msg);
+                        $target_msg = "DEATH: You've been killed by {$attacking_player->name()} and lost $loot gold!";
+                        sendMessage($attacking_player->name(), $target_player->name(), $target_msg);
                         // Stopped telling attackers when they win a duel.
 
-                        $bounty_result = Combat::runBountyExchange($attacker, $target);	// *** Determines bounty for dueling. ***
+                        $bounty_result = Combat::runBountyExchange($attacking_player->name(), $target);	// *** Determines bounty for dueling. ***
                     }
 
                     if ($attackerHealthRemaining < 1) { // *** DEFENDER KILLS ATTACKER! ***
@@ -277,10 +275,10 @@ class AttackController {
 
                         $defenderKillpoints = 1;
 
-                        if ($duel) {	// *** if they were dueling when they died ***
-                            $duel_log_msg     = "$attacker has dueled $target and lost at ".date("F j, Y, g:i a");
+                        if ($duel) { // *** if they were dueling when they died ***
+                            $duel_log_msg = $attacking_player->name()." has dueled {$target_player->name()} and lost at ".date("F j, Y, g:i a");
                             sendMessage("SysMsg", "SysMsg", $duel_log_msg);
-                            GameLog::sendLogOfDuel($attacker, $target, 0, $killpoints);	// *** Makes a loss in the duel log. ***
+                            GameLog::sendLogOfDuel($attacking_player->name(), $target_player->name(), 0, $killpoints);	// *** Makes a loss in the duel log. ***
                         }
 
                         $target_player->addKills($defenderKillpoints); // Adds a kill for the defender
@@ -290,13 +288,12 @@ class AttackController {
                             $loot = floor($gold_mod * $attacking_player->gold); //Loot for defender if he lives.
                         }
 
-                        $target_msg = "You have killed $attacker in combat and taken $loot gold.";
+                        $target_msg = "You have killed {$attacking_player->name()} in combat and taken $loot gold.";
 
-                        $attacker_msg = "DEATH: You've been killed by $target and lost $loot gold!";
+                        $attacker_msg = "DEATH: You've been killed by {$target_player->name()} and lost $loot gold!";
 
-                        sendMessage($attacker, $target, $target_msg);
-                        sendMessage($target, $attacker, $attacker_msg);
-
+                        sendMessage($attacking_player->name(), $target_player->name(), $target_msg);
+                        sendMessage($target_player->name(), $attacking_player->name(), $attacker_msg);
                     }
                 }
 
@@ -341,19 +338,11 @@ class AttackController {
 
         //  ***  START ACTION OVER AGAIN SECTION ***
 
-        $attack_again = false;
-        if (isset($target)) {
-            $attacker_health_snapshot = $attacking_player->health();
-            $defender_health_snapshot = $target_player->health();
-
-            if ($attack_is_legal && $attacker_health_snapshot > 0 && $defender_health_snapshot > 0) {	// *** After any partial attack. ***
-                $attack_again = true;
-            }
-        }
+        // *** After any partial attack. ***
+        $attack_again = (isset($target_player) && $attack_is_legal && $attacking_player->health() > 0 && $target_player->health() > 0);
 
         $target_ending_health = $target_player->health();
-        $target_name = $target_player->name();
-        $target_id = $target_player->id();
+
         return [
             'template' => 'attack_mod.tpl',
             'title'    => 'Battle Status',

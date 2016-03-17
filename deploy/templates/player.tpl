@@ -109,7 +109,7 @@ var combat_skills = {$combat_skills|@json_encode};
                 </label>
 		{/foreach}
 
-                <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
+                <input id="target" type="hidden" value="{$target_player_obj->id()|escape}" name="target" title='Attack or Duel this ninja'>
                 <label class='attack-player-trigger btn btn-vital'>
                   	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{cachebust file="/images/50pxShuriken.png"}' alt='Attack' title='Attack'><span id='attack-text'>Attack</span>
                 </label>
