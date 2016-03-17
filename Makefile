@@ -192,6 +192,6 @@ python-install:
 	pip3 install virtualenv
 	pip3 install -r ./deploy/requirements.txt
 
-ci: ci-pre-configure build python-install test-unit db-init db db-fixtures web-start
+ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
 
-ci-test: pre-test test-main test-cron-run test-functional post-test
+ci-test: pre-test test-main test-cron-run test-ratchets post-test
