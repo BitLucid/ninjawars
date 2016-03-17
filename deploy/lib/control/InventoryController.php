@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Item;
+use NinjaWars\core\data\Inventory;
 use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\Player;
 use \PDO;
@@ -24,25 +25,14 @@ class InventoryController {
 	 */
 	public function index() {
 		$char       = Player::find(self_char_id());
-		$inv_counts = inventory_counts($char->id());
+		$inv = Inventory::of($char, 'self');
+		//$inv_counts = inventory_counts($char->id());
 		$inventory  = [];
-
-		if ($inv_counts) {
-			$standard_items = $this->standardItems(); // Get items from DB
-
-			// Make the information into a single, trivially usable, array.
-			foreach ($inv_counts as $item_info) {
-				$l_id    = $item_info['item_type'];
-				$l_name  = $item_info['name'];
-				$l_count = $item_info['count'];
-
-				if (isset($standard_items[$l_id]) && isset($l_count)) {
-					// If a type of item exists and has a non-zero count, join the array of it's count with it's standard info.
-					$inventory[$l_name] = ['count' => $l_count] + $standard_items[$l_id];
-				}
-			}
-		} else {
-			$inventory = false;
+		foreach($inv as $item){
+			// Special format for display and looping
+			$item['display'] = $item['item_display_name'].$item['plural'];
+			$item['self_use'] = (bool) $item['self_use'];
+			$inventory[$item['item_id']] = $item;
 		}
 
 		$parts = [
@@ -479,25 +469,6 @@ class InventoryController {
 
         $user_email_msg = "You have killed $target with $article $item and received $loot gold.";
         sendMessage($target, $username, $user_email_msg);
-    }
-
-    /**
-     * Item data for the inventory.
-     *
-     * @return Array
-     */
-    private function standardItems() {
-        $it  = query('SELECT * FROM item'); // Pull items from the database.
-        $res = [];
-
-        foreach ($it as $item) { // Format the items for display
-            // Codename means it can have a link to be used, apparently
-            $item['codename']      = $item['item_display_name'];
-            $item['display']       = $item['item_display_name'].$item['plural'];
-            $res[$item['item_id']] = $item;
-        }
-
-        return $res;
     }
 
     /**
