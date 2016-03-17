@@ -285,6 +285,7 @@ CREATE TABLE "clan_player"
     "_clan_id" INTEGER NOT NULL,
     "_player_id" INTEGER NOT NULL,
     "member_level" INTEGER DEFAULT 0 NOT NULL,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     PRIMARY KEY ("_clan_id","_player_id"),
     CONSTRAINT "clan_player__player_id_key" UNIQUE ("_player_id")
 );
@@ -390,6 +391,7 @@ CREATE TABLE "flags"
     "flag_id" serial NOT NULL,
     "flag" VARCHAR(100) NOT NULL,
     "flag_type" INTEGER NOT NULL,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     PRIMARY KEY ("flag_id"),
     CONSTRAINT "flags_flag_key" UNIQUE ("flag")
 );

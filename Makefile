@@ -37,6 +37,7 @@ build: dep
 
 install: build
 	apt-get install python3-dev python3-lxml
+	apt-get install postgresql nginx php5-fpm
 	chown www-data:adm ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/deity.log
 	touch /var/log/nginx/ninjawars.chat-server.log
