@@ -25,10 +25,7 @@ class Combat {
         return 1+$multiplier;
     }
 
-    public static function runBountyExchange($username, $defender) {  //  *** BOUNTY EQUATION ***
-        $user = Player::findByName($username);
-        $defender = Player::findByName($defender);
-
+    public static function runBountyExchange(Player $user, Player $defender) {  //  *** BOUNTY EQUATION ***
         if ($defender->bounty > 0) {
             $user->set_gold($user->gold + $defender->bounty);
             $user->save();

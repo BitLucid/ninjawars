@@ -117,9 +117,9 @@ class AttackController {
                     $attacker_msg = "You have killed {$target_player->name()} in combat and taken $loot gold.";
 
                     $target_player->death();
-                    $bounty_result = Combat::runBountyExchange($attacking_player->name(), $target); // *** Determines the bounty for normal attacking. ***
                     sendMessage("A Stealthed Ninja", $target_player->name(), $target_msg);
                     sendMessage($target_player->name(), $attacking_player->name(), $attacker_msg);
+                    $bounty_result = Combat::runBountyExchange($attacking_player, $target_player); // *** Determines the bounty for normal attacking. ***
 
                     $stealth_kill = true;
                 } else {	// *** if damage from stealth only hurts the target. ***
@@ -260,7 +260,7 @@ class AttackController {
                         sendMessage($attacking_player->name(), $target_player->name(), $target_msg);
                         // Stopped telling attackers when they win a duel.
 
-                        $bounty_result = Combat::runBountyExchange($attacking_player->name(), $target);	// *** Determines bounty for dueling. ***
+                        $bounty_result = Combat::runBountyExchange($attacking_player, $target_player);	// *** Determines bounty for dueling. ***
                     }
 
                     if ($attackerHealthRemaining < 1) { // *** DEFENDER KILLS ATTACKER! ***
@@ -300,32 +300,15 @@ class AttackController {
                 // *** END MAIN ATTACK AND DUELING SECTION ***
             }
 
-            /**
-             * HACK(ajv) Because the player obj is modified throughout the above code
-             * we can't really keep track of what happened to safely use the
-             * ActiveRecord pattern. Therefore, we pull another copy of the player
-             * from the data layer, modify it, and save it down here, then transfer
-             * the updated data to the existing object to keep everything in sync
-             */
-
             if ($loot) {
-                $hack_victor = Player::find($victor->id());
-                $hack_victor->set_gold($hack_victor->gold + $loot);
-                $hack_victor->save();
-
-                $hack_loser = Player::find($loser->id());
-                $hack_loser->set_gold($hack_loser->gold - $loot);
-                $hack_loser->save();
+                $victor->set_gold($victor->gold + $loot);
+                $loser->set_gold($loser->gold - $loot);
             }
 
             if ($rounds > 4) { // Evenly matched battle! Reward some ki to the attacker, even if they die
                 $rewarded_ki = 1;
 
-                $hack_player = Player::find($attacking_player->id());
-                $hack_player->set_ki($hack_player->ki + $rewarded_ki);
-                $hack_player->save();
-
-                $attacking_player->ki = $hack_player->ki;
+                $attacking_player->set_ki($attacking_player->ki + $rewarded_ki);
             }
         }
 
@@ -342,6 +325,10 @@ class AttackController {
         $attack_again = (isset($target_player) && $attack_is_legal && $attacking_player->health() > 0 && $target_player->health() > 0);
 
         $target_ending_health = $target_player->health();
+
+
+        $target_player->save();
+        $attacking_player->save();
 
         return [
             'template' => 'attack_mod.tpl',

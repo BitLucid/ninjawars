@@ -249,7 +249,7 @@ class InventoryController {
                         $player->set_gold($player->gold + $loot);
                         $player->addKills(1);
 
-                        $bounty_message = Combat::runBountyExchange($player->name(), $target->name());  //Rewards or increases bounty.
+                        $bounty_message = Combat::runBountyExchange($player, $target);  //Rewards or increases bounty.
 
                         $this->sendKillMails($player->name(), $target->name(), $attacker_id, $article, $item->getName(), $loot);
                     }
