@@ -81,7 +81,7 @@
 <section id='ninja-matches' class='cf'>
 	<ul>
 		<li id='sample-enemy-match' class='enemy' hidden>
-			Duel <strong class='char-name'><a class='char-name-link' href='/attack_mod.php?duel=1&amp;target='>...</a></strong>
+			Duel <strong class='char-name'><a class='char-name-link' href='/attack?duel=1&amp;target='>...</a></strong>
 		</li>
 	</ul>
 	<div id='more-matches' class='hidden'>

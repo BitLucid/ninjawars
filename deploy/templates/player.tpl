@@ -98,7 +98,7 @@ var combat_skills = {$combat_skills|@json_encode};
         <table id='player-attack'>
           <tr>
             <td id='attacking-choices'>
-              <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
+              <form id='attack_player' action='/attack' method='post' name='attack_player'>
                 <label for='duel' title='Multi-attack duel for an additional {getTurnCost skillName="duel"} turns.'>
                   <input id="duel" type="checkbox" name="duel" value="1"> Duel
                 </label>

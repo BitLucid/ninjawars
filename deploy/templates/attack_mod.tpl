@@ -134,7 +134,7 @@
 	<nav class='attack-nav'>
 		{if $target}
 			{if $attack_again}
-				<div><a href="attack_mod.php?attacked=1&amp;target={$target|escape:'url'}" class='attack-again thick btn btn-primary'>Attack Again?</a></div>
+				<div><a href="/attack?attacked=1&amp;target={$target|escape:'url'}" class='attack-again thick btn btn-primary'>Attack Again?</a></div>
 			{/if}
 				<div><a href='/player?player={$target|escape:'url'}'><< Return to <span class='char-name'>{$target|escape}'s Info</span></a></div>
 		{/if}
