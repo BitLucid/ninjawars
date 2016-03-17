@@ -50,8 +50,8 @@ class CloneKillTest extends PHPUnit_Framework_TestCase {
         $char_id = TestAccountCreateAndDestroy::char_id();
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
         $this->syncIps('222.222.222.250', $char_id, $char_id_2);
-        $p1 = new Player($char_id);
-        $p2 = new Player($char_id_2);
+        $p1 = Player::find($char_id);
+        $p2 = Player::find($char_id_2);
         $this->assertNotEmpty($p1->ip());
         $this->assertEquals($p1->ip(), $p2->ip());
     }
@@ -60,8 +60,8 @@ class CloneKillTest extends PHPUnit_Framework_TestCase {
         $char_id = TestAccountCreateAndDestroy::char_id();
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
         $this->syncIps('', $char_id, $char_id_2);
-        $p1 = new Player($char_id);
-        $p2 = new Player($char_id_2);
+        $p1 = Player::find($char_id);
+        $p2 = Player::find($char_id_2);
         $this->assertEquals('', $p1->ip());
         $this->assertEquals('', $p2->ip());
     }
@@ -73,8 +73,8 @@ class CloneKillTest extends PHPUnit_Framework_TestCase {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
         $_SERVER['REMOTE_ADDR'] = $previous;
         $this->syncIps('127.0.0.1', $char_id, $char_id_2); // Must be 127.0.0.1 for this test.
-        $p1 = new Player($char_id);
-        $p2 = new Player($char_id_2);
+        $p1 = Player::find($char_id);
+        $p2 = Player::find($char_id_2);
         $this->assertEquals('127.0.0.1', $p1->ip());
         $this->assertEquals('127.0.0.1', $p2->ip());
         $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
@@ -129,16 +129,16 @@ class CloneKillTest extends PHPUnit_Framework_TestCase {
 
     public function testCloneKillKillingWipesHealthAndTurns() {
         $char_id = TestAccountCreateAndDestroy::char_id();
-        $charObj = new Player($char_id);
+        $charObj = Player::find($char_id);
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
-        $charObj_2 = new Player($char_id_2);
+        $charObj_2 = Player::find($char_id_2);
         // Will create characters with 127.0.0.1 ip, but that shouldn't be clone kill able.
         $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
         $this->syncIps('555.66.77.88', $char_id, $char_id_2);
         $this->assertTrue(CloneKill::canKill($char_id, $char_id_2), 'Should be able to clone kill similar and same ip characters!');
         CloneKill::kill($charObj, $charObj, $charObj_2); // Obliterate them.
-        $pc1 = new Player($char_id);
-        $pc2 = new Player($char_id_2);
+        $pc1 = Player::find($char_id);
+        $pc2 = Player::find($char_id_2);
         $this->assertEquals(0, $pc1->health());
         $this->assertEquals(0, $pc2->health());
         $this->assertEquals(0, $pc1->turns);
