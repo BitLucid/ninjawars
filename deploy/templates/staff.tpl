@@ -113,6 +113,7 @@ ul#social-networks li:before {
     <li> Certain NPCs and other code contributions: DeathDepiction </li>
     <li> Evolym Fragile/Davinel - the Flash Banner </li>
     <li> Magatsu - the Shop Graphics </li>
+    <li> Some pixel art by Roy Ronalds </li>
     <li>
       Alegion - the original for the Koi photograph Background - <a href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a>
     </li>
