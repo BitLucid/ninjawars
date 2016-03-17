@@ -60,7 +60,8 @@ function inventory_counts($char_id){
  * @deprecated
  */ 
 function add_item($char_id, $identity, $quantity = 1) {
-	Inventory::add(new Player($char_id), $identity, $quantity);
+	$inventory = new Inventory(Player::find($char_id));
+	$inventory->add($identity, $quantity);
 }
 
 function removeItem($who, $item, $quantity=1) {

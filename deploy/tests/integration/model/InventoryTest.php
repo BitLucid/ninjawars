@@ -15,7 +15,8 @@ class InventoryTest extends PHPUnit_Framework_TestCase {
 	}
 
     public function testAddShouldIncreaseItemCount(){
-        Inventory::add($this->char, 'shuriken', 10);
+        $inventory = new Inventory($this->char);
+        $inventory->add('shuriken', 10);
         $count = query_item('select amount from inventory join item on item.item_id = inventory.item_type where owner = :id', 
                 [':id'=>$this->char->id()]
                 );
@@ -23,16 +24,29 @@ class InventoryTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testInventoryToArrayGetsArrayOfItems(){
-        Inventory::add($this->char, 'shuriken', 10);
-        $inv = new Inventory($this->char);
-        $this->assertNotEmpty($inv->toArray());
+        $inventory = new Inventory($this->char);
+        $inventory->add('shuriken', 10);
+        $inventory->add('amanita', 40);
+        $this->assertNotEmpty($inventory->toArray());
+    }
+
+    public function testInventorySortBySelfUse(){
+        $inventory = new Inventory($this->char);
+        $inventory->add('shuriken', 10);
+        $inventory->add('amanita', 40);
+        $sorted_inv = Inventory::of($this->char, $sort='self');
+        // Foreach over the inventory to get the first item out.
+        foreach($sorted_inv as $item){
+            break;
+        }
+        $this->assertEquals($item['name'], 'Amanita Mushroom');
     }
 
     public function testShouldObtainInventory(){
-        Inventory::add($this->char, 'shuriken', 10);
-        $inv = new Inventory($this->char);
+        $inventory = new Inventory($this->char);
+        $inventory->add('shuriken', 10);
         $shurikens = null;
-        foreach($inv as $itemz){
+        foreach($inventory as $itemz){
             if($itemz['item_internal_name'] === 'shuriken'){
                 $shurikens = $itemz;
             }
