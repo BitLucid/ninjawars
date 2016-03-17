@@ -129,7 +129,8 @@ db:
 	$(PROPEL) . migrate
 	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
-	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO $(DBROLE);"
+	psql $(DBNAME) -c "\d" | head -30
+	#psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO $(DBROLE);"
 	psql $(DBNAME) -c "\d" | head -30
 
 
