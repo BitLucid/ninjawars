@@ -1,16 +1,18 @@
 .PHONY: all ci pre-test test test-main test-integration test-unit test-functional post-test clean dep build install dist-clean db db-fixtures migration
 
+DOMAIN=http://nw.local/
 COMPOSER=./composer.phar
 CC_DIR=./cc
 CC_FLAG=--coverage-html $(CC_DIR)
 TEST_RUNNER=php -d zend_extension=xdebug.so ./vendor/bin/phpunit
 RELATIVE_COMPONENTS=../components/
-SRC=./deploy/
+SRC:=`pwd`/deploy/
 WWW=$(SRC)www/
 COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
 DBROLE=developers
 PROPEL=./vendor/bin/propel-gen
+NGINX_PATH:=`readlink -f nginx-1.9.12/objs/nginx`
 
 -include CONFIG
 
@@ -23,16 +25,19 @@ ifndef TESTFILE
 endif
 
 build: dep
+	mkdir -p $(JS)
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery-linkify.min.js" "$(JS)"
+	mkdir -p ./deploy/resources/logs/
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
 
 install: build
 	apt-get install python3-dev python3-lxml
+	apt-get install postgresql nginx php5-fpm
 	chown www-data:adm ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/deity.log
 	touch /var/log/nginx/ninjawars.chat-server.log
@@ -87,6 +92,8 @@ post-test:
 
 clean:
 	@rm -rf "$(SRC)templates/"compiled/*
+	@rm -rf "$(SRC)nginx-1.9.12/"
+	@rm -rf "$(SRC)nginx-1.9.12.tar.gz"
 	@rm -rf "$(CC_DIR)"
 	@rm -f "$(JS)jquery.min.js"
 	@rm -f "$(JS)jquery.min.map"
@@ -122,7 +129,8 @@ db:
 	$(PROPEL) . migrate
 	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
-	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO $(DBROLE);"
+	psql $(DBNAME) -c "\d" | head -30
+	#psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO $(DBROLE);"
 	psql $(DBNAME) -c "\d" | head -30
 
 
@@ -135,6 +143,30 @@ migration:
 	$(PROPEL) . diff migrate
 	$(PROPEL) . diff migrate
 	$(PROPEL) om
+
+web-start:
+	#Symlink /tmp/www/ in place of /var/www/
+	rm -rf /tmp/root/
+	ln -s $(SRC) /tmp/root
+	#permission error is normal and recoverable
+	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf
+	sleep 0.5
+	ps waux | grep nginx
+	# server may be up and running now
+	# on http://localhost:8775/ or the like
+
+web-stop:
+	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf -s stop
+	sleep 0.5
+	ps waux | grep nginx
+	# server may be stopped now
+
+web-reload:
+	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf -s reload
+	sleep 0.5
+	ps waux | grep nginx
+	# server may be reloaded now
+	# on http://localhost:8775/ or the like
 
 ci-pre-configure:
 	# Set php version through phpenv. 5.3, 5.4 and 5.5 available

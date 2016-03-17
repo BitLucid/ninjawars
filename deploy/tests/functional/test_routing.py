@@ -1,5 +1,13 @@
 import requests
+import configparser
 from lxml.html import fromstring
+
+CONFIG_PATH = r'./CONFIG'
+
+with open(CONFIG_PATH, 'r') as f:
+    config_string = '[nw-config]\n' + f.read()
+config = configparser.ConfigParser()
+config.read_string(config_string)
 
 
 class TestRouting:
@@ -10,7 +18,7 @@ class TestRouting:
 
     def root(self):
         '''Hack to get the root url initially'''
-        return 'http://nw.local/'
+        return config.get('nw-config', 'DOMAIN')
 
     def status_code(self, url):
         ''' Gets http status codes of pages/urls '''

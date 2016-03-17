@@ -197,6 +197,7 @@
     <column name="_clan_id" phpName="ClanId" type="INTEGER" required="true" primaryKey="true"/>
     <column name="_player_id" phpName="PlayerId" type="INTEGER" required="true" primaryKey="true"/>
     <column name="member_level" phpName="MemberLevel" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="true" defaultExpr="now()"/>
     <foreign-key foreignTable="clan" name="clan_player__clan_id_fkey" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="_clan_id" foreign="clan_id"/>
     </foreign-key>
@@ -256,6 +257,7 @@
     <column name="flag_id" phpName="FlagId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="flag" phpName="Flag" type="VARCHAR" size="100" required="true"/>
     <column name="flag_type" phpName="FlagType" type="INTEGER" required="true"/>
+    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="true" defaultExpr="now()"/>
     <unique name="flags_flag_key">
       <unique-column name="flag"/>
     </unique>
