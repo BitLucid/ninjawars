@@ -25,12 +25,13 @@ class InventoryController {
 	 */
 	public function index() {
 		$char       = Player::find(self_char_id());
-		$inv = Inventory::of($char);
+		$inv = Inventory::of($char, 'self');
 		//$inv_counts = inventory_counts($char->id());
 		$inventory  = [];
 		foreach($inv as $item){
 			// Special format for display and looping
 			$item['display'] = $item['item_display_name'].$item['plural'];
+			$item['self_use'] = (bool) $item['self_use'];
 			$inventory[$item['item_id']] = $item;
 		}
 
