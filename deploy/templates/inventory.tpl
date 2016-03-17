@@ -20,6 +20,9 @@
 #inventory-content .usage{
   color:gray;cursor:help;
 }
+#inventory-content .item-icon{
+  max-width:1.5em;max-height:1.5em;
+}
 </style>
 
 
@@ -44,7 +47,7 @@
     			{if $item_info.self_use}
           <a title='Use a {$item_info.item_display_name|escape}' class='btn btn-primary' href="/item/self_use/{$item_info.item_id|escape:'url'|escape}">
     			{/if}
-          {$item_info.display|escape}
+          {$item_info.display|escape}{if $item_info.image} <img class='item-icon' src='/images/items/{$item_info.image}'>{/if}
     			{if $item_info.self_use}
           </a>
     			{/if}
