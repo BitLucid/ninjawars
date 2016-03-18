@@ -2,6 +2,13 @@
 require_once(CORE.'/plugins/function.cachebust.php');
 require_once(CORE.'/plugins/modifier.replace_urls.php');
 require_once(CORE.'/plugins/modifier.markdown.php');
+require_once(CORE.'/plugins/function.getTurnCost.php');
+require_once(CORE.'/plugins/function.health_percent.php');
+require_once(CORE.'/plugins/modifier.css_classify.php');
+require_once(CORE.'/plugins/modifier.level_label.php');
+require_once(CORE.'/plugins/modifier.to_playerid.php');
+require_once(CORE.'/plugins/modifier.to_playername.php');
+require_once(CORE.'/plugins/modifier.to_tags.php');
 
 class SmartyPluginUnitTest extends PHPUnit_Framework_TestCase {
     const EXISTING_FILE = '/js/nw.js';
@@ -42,4 +49,20 @@ class SmartyPluginUnitTest extends PHPUnit_Framework_TestCase {
     public function testReplaceUrlsNegative() {
         $this->assertEquals(self::PLAIN_TEXT, smarty_modifier_replace_urls(self::PLAIN_TEXT));
     }
+    public function testTurnCostIsInt() {
+        $this->assertInternalType('int', smarty_function_getTurnCost(['skillName'=>'kampo']));
+    }
+
+    public function testCSSClassifyIsString() {
+        $this->assertInternalType('string', smarty_modifier_css_classify('skillName'));
+    }
+
+    public function testLevelLabeIsString() {
+        $this->assertInternalType('string', smarty_modifier_level_label(4));
+    }
+
+    public function testHealthPercentIsFloat() {
+        $this->assertInternalType('float', smarty_function_health_percent(['level'=>10, 'health'=>10]));
+    }
+
 }
