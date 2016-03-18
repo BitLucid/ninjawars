@@ -98,7 +98,7 @@ var combat_skills = {$combat_skills|@json_encode};
         <table id='player-attack'>
           <tr>
             <td id='attacking-choices'>
-              <form id='attack_player' action='attack_mod.php' method='post' name='attack_player'>
+              <form id='attack_player' action='/attack' method='post' name='attack_player'>
                 <label for='duel' title='Multi-attack duel for an additional {getTurnCost skillName="duel"} turns.'>
                   <input id="duel" type="checkbox" name="duel" value="1"> Duel
                 </label>
@@ -109,7 +109,7 @@ var combat_skills = {$combat_skills|@json_encode};
                 </label>
 		{/foreach}
 
-                <input id="target" type="hidden" value="{$target|escape}" name="target" title='Attack or Duel this ninja'>
+                <input id="target" type="hidden" value="{$target_player_obj->id()|escape}" name="target" title='Attack or Duel this ninja'>
                 <label class='attack-player-trigger btn btn-vital'>
                   	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{cachebust file="/images/50pxShuriken.png"}' alt='Attack' title='Attack'><span id='attack-text'>Attack</span>
                 </label>

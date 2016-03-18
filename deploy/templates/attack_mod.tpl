@@ -3,7 +3,7 @@
 
 	<div class='padded-area'>
 		<div>
-			<a href="/player?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$target_player->avatarUrl()}</a>
+			<a href="/player?player_id={$target_player->id()|escape:'url'}">{include file="gravatar.tpl" gurl=$target_player->avatarUrl()}</a>
 		</div>
 
 		<hr>
@@ -17,7 +17,7 @@
 			{/if}
 
 			{if $stealth_damage}
-				<div>{$target} has lost {$stealthAttackDamage} health.</div>
+				<div>{$target_player->name()} has lost {$stealthAttackDamage} health.</div>
 			{/if}
 
 			{if $stealth_lost}
@@ -39,7 +39,7 @@
 			{/if}
 
 			{if $pre_battle_stats}
-				{include file="combat-prebattle-stats.tpl" attacker_name=$pbs_attacker_name attacker_str=$pbs_attacker_str attacker_hp=$pbs_attacker_hp target_name=$pbs_target_name target_str=$pbs_target_str target_hp=$pbs_target_hp}
+				{include file="combat-prebattle-stats.tpl" attacker_name=$attacking_player->name() attacker_str=$pbs_attacker_str attacker_hp=$pbs_attacker_hp target_name=$target_player->name() target_str=$pbs_target_str target_hp=$pbs_target_hp}
 			{/if}
 
 			{if $blaze}
@@ -79,13 +79,10 @@
 				<div>You spent two extra turns preparing your escape routes.</div>
 			{/if}
 
-
-
-
 			{if $killed_target}
-				<div>{$attacker} has killed {$target}!</div>
+				<div>{$attacking_player->name()} has killed {$target_player->name()}!</div>
 				<div class='ninja-notice'>
-					{$target} is dead, you have proven your might
+					{$target_player->name()} is dead, you have proven your might
 				{if $killpoints == 2}
 					twice over
 				{elseif $killpoints > 2}
@@ -95,7 +92,7 @@
 				!</div>
 
 				{if !$simultaneousKill && $loot}
-					<div>You have taken <span class='gold-count'>{$loot} gold</span> from {$target}.</div>
+					<div>You have taken <span class='gold-count'>{$loot} gold</span> from {$target_player->name()}.</div>
 				{/if}
 
 				{if $wrath_regain}
@@ -112,19 +109,17 @@
 				{$bounty_result}
 			{/if}
 
-
 		{/if}{* End of no attack error section *}
 
 		{if $target_ending_health}
-
-			{include file="defender_health.tpl" health=$target_ending_health level=$target_player->level target_name=$target_name}
-
+			{include file="defender_health.tpl" health=$target_ending_health level=$target_player->level target_name=$target_player->name()}
 		{/if}
+
 		{if $attacker_died}
-			<div class='ninja-error thick'>{$target} has killed you!</div>
+			<div class='ninja-error thick'>{$target_player->name()} has killed you!</div>
 
 			{if !$simultaneousKill && $loot}
-				<div>{$target} has taken {$loot} gold from you.</div>
+				<div>{$target_player->name()} has taken {$loot} gold from you.</div>
 			{/if}
 		<div class='ninja-notice thick'>
 			Go to the <a href="/shrine">Shrine</a> to return to the living.
@@ -132,11 +127,11 @@
 		{/if}
 	</div><!-- End of inset-area -->
 	<nav class='attack-nav'>
-		{if $target}
+		{if $target_player}
 			{if $attack_again}
-				<div><a href="attack_mod.php?attacked=1&amp;target={$target|escape:'url'}" class='attack-again thick btn btn-primary'>Attack Again?</a></div>
+				<div><a href="/attack?attacked=1&amp;target={$target_player->id()|escape:'url'}" class='attack-again thick btn btn-primary'>Attack Again?</a></div>
 			{/if}
-				<div><a href='/player?player={$target|escape:'url'}'><< Return to <span class='char-name'>{$target|escape}'s Info</span></a></div>
+				<div><a href='/player?player_id={$target_player->id()|escape:'url'}'><< Return to <span class='char-name'>{$target_player->name()|escape}'s Info</span></a></div>
 		{/if}
 		<a href='/enemies' class='return-to-location'>Return to the Fight</a>
 	</nav>
