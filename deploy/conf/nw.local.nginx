@@ -2,7 +2,7 @@ server {
 	server_name nw.local localhost;
 	listen 8775;
 
-	root /tmp/www;
+	root /tmp/root/deploy/www;
 	charset utf-8;
 	#error_page 404 /404.html;
 	error_page 404 /404.php;
