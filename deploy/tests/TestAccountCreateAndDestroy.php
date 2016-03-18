@@ -167,7 +167,7 @@ class TestAccountCreateAndDestroy {
      * Just return a character wholesale
      */
     public static function char() {
-        return new Player(TestAccountCreateAndDestroy::char_id());
+        return Player::find(TestAccountCreateAndDestroy::char_id());
     }
 
     /**

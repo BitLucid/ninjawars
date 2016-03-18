@@ -68,17 +68,17 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     }
 
     function testClanAddMembers(){
-        $player1 = new Player($this->char_id);
+        $player1 = Player::find($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
-        $this->assertTrue($clan->addMember(new Player($this->char_id_2), $player1));
+        $this->assertTrue($clan->addMember(Player::find($this->char_id_2), $player1));
     }
 
     function testClanGetMembers(){
-        $player1 = new Player($this->char_id);
+        $player1 = Player::find($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
-        $this->assertTrue($clan->addMember($player2 = new Player($this->char_id_2), $player1));
+        $this->assertTrue($clan->addMember($player2 = Player::find($this->char_id_2), $player1));
         $member_ids = $clan->getMemberIds();
         $this->assertEquals(2, rco($member_ids));
         $this->assertTrue($clan->hasMember($player1->id()));
@@ -86,13 +86,13 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     }
 
     function testGetClanForANinjaThatDoesntHaveAClanAtAllShouldYieldNull(){
-        $player1 = new Player($this->char_id);
+        $player1 = Player::find($this->char_id);
         $clan_final = ClanFactory::clanOfMember($player1);
         $this->assertEmpty($clan_final);
     }
 
     function testGetClanThatAMemberBelongsTo(){
-        $player1 = new Player($this->char_id);
+        $player1 = Player::find($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
         $clan_final = ClanFactory::clanOfMember($player1);
@@ -100,10 +100,10 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     }
 
     function testKickClanMember(){
-        $player1 = new Player($this->char_id);
+        $player1 = Player::find($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
-        $this->assertTrue($clan->addMember($player2 = new Player($this->char_id_2), $player1));
+        $this->assertTrue($clan->addMember($player2 = Player::find($this->char_id_2), $player1));
         $this->assertTrue($clan->hasMember($player2->id()));
         $this->assertTrue($clan->hasMember($player1->id()));
         $clan->kickMember($player1->id(), $player2);
@@ -111,14 +111,14 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     }
 
     function testPromoteClanMember(){
-        $player1 = new Player($this->char_id);
+        $player1 = Player::find($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
         $this->assertTrue($clan->promoteMember($player1->id()));
     }
 
     function testGetRankedClanMembersOfAClan(){
-        $player1 = new Player($this->char_id);
+        $player1 = Player::find($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
         $this->assertEquals(1, rco($clan->getMembers()));
@@ -145,16 +145,16 @@ class ClanTest extends PHPUnit_Framework_TestCase {
 
     function testInviteCharacterToYourClan(){
         $clan = ClanFactory::create('someTestClan', ['founder'=>'noone', 'clan_avatar_url'=>'http://example.com/img.png', 'description'=>'SomeDesc']);
-        $error = $clan->invite(new Player($this->char_id), new Player($this->char_id_2));
+        $error = $clan->invite(Player::find($this->char_id), Player::find($this->char_id_2));
         $this->assertFalse((bool)$error);
     }
 
     function testGetClanObjectNumericRating(){
         $this->markTestIncomplete('Clan rating is not yet implemented');
-        $player1 = new Player($this->char_id);
+        $player1 = Player::find($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
-        $this->assertTrue($clan->addMember(new Player($this->char_id_2), $player1));
+        $this->assertTrue($clan->addMember(Player::find($this->char_id_2), $player1));
         $this->assertTrue($clan->rating());
     }
 

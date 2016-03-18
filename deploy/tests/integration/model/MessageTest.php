@@ -55,7 +55,7 @@ class TestMessage extends PHPUnit_Framework_TestCase {
 
         $mess = Message::create($this->messageData);
         $this->message_id = $mess->id();
-        $messages = Message::findByReceiver(new Player($this->char_id_2), 1);
+        $messages = Message::findByReceiver(Player::find($this->char_id_2), 1);
         $first_message = $messages->first();
 
         $this->assertTrue($mess instanceof Message);
@@ -67,7 +67,7 @@ class TestMessage extends PHPUnit_Framework_TestCase {
     public function testMessageHasARobustSender() {
         $mess = Message::create($this->messageData);
         $this->message_id = $mess->id();
-        $messages = Message::findByReceiver(new Player($this->char_id_2), 0, 1000, 0);
+        $messages = Message::findByReceiver(Player::find($this->char_id_2), 0, 1000, 0);
         $first_message = $messages->first();
 
         $this->assertGreaterThan(0, count($messages), 'Collection has no results found');
@@ -104,7 +104,7 @@ class TestMessage extends PHPUnit_Framework_TestCase {
             Message::create($this->messageData); // Test deletes these
         }
 
-        $char = new Player($this->char_id);
+        $char = Player::find($this->char_id);
 
         $messages = Message::findByReceiver($char)->all();
         $this->assertEquals($messageCount, count($messages));

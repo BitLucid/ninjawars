@@ -50,7 +50,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $target_id = TestAccountCreateAndDestroy::create_alternate_testing_account(true);
         $this->char->set_gold(434343);
         $this->char->save();
-        $target = new Player($target_id);
+        $target = Player::find($target_id);
 
         $request = new Request([
             'target' => $target->name(),
@@ -61,7 +61,8 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 
         $doshin = new DoshinController();
         $doshin->offerBounty();
-        $new_bounty = (new Player($target->id()))->bounty;
+        $player = Player::find($target->id());
+        $new_bounty = $player->bounty;
         TestAccountCreateAndDestroy::destroy();
 
         $this->assertEquals(600, $new_bounty);
@@ -75,7 +76,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 
         $this->char->set_bounty(400);
         $this->char->save();
-        $this->char = new Player($char_id);
+        $this->char = Player::find($char_id);
         $this->assertEquals(400, $this->char->bounty);
 
         $request = new Request([
@@ -86,7 +87,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
         $doshin = new DoshinController();
         $doshin->bribe();
 
-        $pulled_char = new Player($char_id);
+        $pulled_char = Player::find($char_id);
 
         $current_bounty = $pulled_char->bounty;
 
@@ -108,7 +109,7 @@ class DoshinControllerTest extends PHPUnit_Framework_TestCase {
 
         $doshin = new DoshinController();
         $doshin->bribe();
-        $final_char = new Player($this->char->id());
+        $final_char = Player::find($this->char->id());
         $this->assertLessThan(7777, $final_char->gold);
         $modified_bounty = $final_char->bounty;
         $this->assertLessThan($bounty_set, $modified_bounty);
