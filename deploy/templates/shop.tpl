@@ -85,7 +85,7 @@ $(document).ready(function() {
 		  </td>
 
 		  <td class='gold'>
-			<label for='item-{$item_internal_name}'>${$item_info.item_cost}</label>
+			<label for='item-{$item_internal_name}'>石{$item_info.item_cost}</label>
 		  </td>
 
 		  <td>
@@ -107,7 +107,7 @@ $(document).ready(function() {
 <!-- google_ad_section_end -->
 
 <p class='glassbox'>
-	Your current gold: <span class='gold-count'>{$gold|number_format|escape}</span>
+	Your current gold: <span class='gold-count'>石{$gold|number_format|escape}</span>
 <p>
 
 <nav>
