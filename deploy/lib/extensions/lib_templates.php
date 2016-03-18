@@ -28,45 +28,19 @@ class NWTemplate extends Smarty {
     }
 }
 
-// Displays blocking states like not logged in, death, frozen, etc.
+/**
+ * Displays blocking states like not logged in, death, frozen, etc.
+ * @todo move to template class or the like
+ */
 function display_error($p_error) {
     display_page('error.tpl', 'There is an obstacle to your progress...', array('error'=>$p_error));
-}
-
-// Assigns the environmental variables and then returns just a raw template object for manipulation & display.
-function prep_page($template, $title=null, $local_vars=array(), $options=null) {
-    // Updates the quickstat via javascript if requested.
-    $quickstat = @$options['quickstat'];
-    $quickstat = ($quickstat ? $quickstat : @$local_vars['quickstat']);
-    $body_classes = isset($options['body_classes'])? $options['body_classes'] : 
-        (isset($local_vars['body_classes'])? $local_vars['body_classes'] : null);
-
-    $is_index = @$options['is_index'];
-
-    // *** Initialize the template object ***
-    $tpl = new NWTemplate();
-    $tpl->assignArray($local_vars);
-
-    $user_id = self_char_id(); // Character id.
-    $player = Player::find($user_id);
-    $public_char_info = ($player ? $player->publicData() : []); // Char info to pass to javascript.
-
-    $tpl->assign('logged_in', $user_id);
-    $tpl->assign('user_id', $user_id);
-    $tpl->assign('title', $title);
-    $tpl->assign('quickstat', $quickstat);
-    $tpl->assign('is_index', $is_index);
-    $tpl->assign('json_public_char_info', ($public_char_info ? json_encode($public_char_info) : null));
-    $tpl->assign('body_classes', $body_classes);
-    $tpl->assign('main_template', $template);
-
-    return $tpl;
 }
 
 /** Displays a template wrapped in the header and footer as needed.
  *
  * Example use:
  * display_page('add.tpl', 'Homepage', get_current_vars(get_defined_vars()), array());
+ * @todo move to template class
  */
 function display_page($template, $title=null, $local_vars=array(), $options=null) {
     prep_page($template, $title, $local_vars, $options)->fullDisplay();
@@ -75,6 +49,7 @@ function display_page($template, $title=null, $local_vars=array(), $options=null
 /** Will return the rendered content of the template.
  * Example use: $parts = get_certain_vars(get_defined_vars(), array('whitelisted_object');
  * echo render_template('account_issues.tpl', $parts);
+ * @todo move to template class
  */
 function render_template($template_name, $assign_vars=array()) {
     // Initialize the template object.
@@ -85,19 +60,11 @@ function render_template($template_name, $assign_vars=array()) {
     return $tpl->fetch($template_name);
 }
 
-function display_template($template_name, $assign_vars=array()) {
-    // Initialize the template object.
-    $tpl = new NWTemplate();
-    $tpl->assignArray($assign_vars);
-
-    // display the template
-    return $tpl->display($template_name);
-}
-
 /*
  * Pulls out standard vars except arrays and objects.
  * $var_list is get_defined_vars()
  * $whitelist is an array with string names of arrays/objects to allow.
+ * @deprecated in favor of passing specific vars to template
  */
 function get_certain_vars($var_list, $whitelist=array()) {
     $non_arrays = array();
@@ -113,34 +80,10 @@ function get_certain_vars($var_list, $whitelist=array()) {
     return $non_arrays;
 }
 
-function display_static_page($page, $pages, $vars=array(), $options=array()) {
-    if (!isset($pages[$page])) {
-        // Unlisted page requested.
-        error_log('  Invalid page ('.$page.') requested on page.php.');
-        display_page('404.tpl', '404');
-    } else {
-        if (!is_array($pages[$page])) {
-            $template = "page.".$page.".tpl";
-            $title = $page; // Display_page will prepend with 'Ninja Wars: '
-        } else {
-            $page_info = $pages[$page];
-            $template = first_value(@$page_info['template'], "page.".$page.".tpl");
-            $title = $page_info['title'];
-
-            $callback = @$page_info['callback'];
-
-            // TODO: Merge the vars array instead of overwriting.
-            if ($callback && function_exists($callback)) {
-                $vars = array_merge($callback(), $vars); // Call the callback to return the vars.
-            }
-        }
-
-        cache_headers(24); // 24 hour caching.
-        display_page($template, $title, $vars, $options);
-    }
-}
-
-// Put out the headers to allow a few hours of
+/** 
+ * Put out the headers to allow a few hours of caching
+ * @todo move to template class
+ */
 function cache_headers($hours = 2, $revalidate=false) {
     // Enable short number-of-hours caching of the index page.
     // seconds, minutes, hours, days
