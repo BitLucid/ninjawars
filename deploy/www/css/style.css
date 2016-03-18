@@ -2063,6 +2063,16 @@ table#sight-info {
 	padding-left:1em;padding-right:1em;
 }
 
+#attack-outcome .died{
+    background-image:url(/images/combat/blood_splatter.png);
+    background-repeat:no-repeat;
+    background-position: center center;
+    height:100px;
+}
+#attack-outcome .died .ninja-error{
+    margin-top:2.5em;
+}
+
 /* Clan page styling */
 #clan-page-section{
   margin-left:0.7em;margin-right:0.7em;
