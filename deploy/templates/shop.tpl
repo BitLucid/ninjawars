@@ -85,7 +85,7 @@ $(document).ready(function() {
 		  </td>
 
 		  <td class='gold'>
-			<label for='item-{$item_internal_name}'>${$item_info.item_cost}</label>
+			<label for='item-{$item_internal_name}'>石{$item_info.item_cost}</label>
 		  </td>
 
 		  <td>
