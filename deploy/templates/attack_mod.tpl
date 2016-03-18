@@ -116,7 +116,9 @@
 		{/if}
 
 		{if $attacker_died}
-			<div class='ninja-error thick'>{$target_player->name()} has killed you!</div>
+			<div class='parent died'>
+				<div class='child ninja-error thick'>{$target_player->name()} has killed you!</div>
+			</div>
 
 			{if !$simultaneousKill && $loot}
 				<div>{$target_player->name()} has taken {$loot} gold from you.</div>
