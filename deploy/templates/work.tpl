@@ -23,14 +23,14 @@
     <p>The samurai foreman hands you a small pouch of gold as he says
     <em class='speech'>Care to put a little more work in? I'll pay the same rate.</em></p>
 
-    <p class='ninja-notice'>You have worked for {$worked} {if $worked eq 1}turn{else}turns{/if} and earned {$earned_gold} gold.</p>
+    <p class='ninja-notice'>You have worked for {$worked} {if $worked eq 1}turn{else}turns{/if} and earned 石{$earned_gold}.</p>
 </div>
 {/if}
 
 <section class='glassbox'>
 
 <p>You can earn money by working in the village fields. Field work will exchange turns for gold.</p>
-<div>The current work pay rate is: <span style='color:turquoise;'>1 Turn</span> = <span class='gold'>{$work_multiplier} Gold</span>.</div>
+<div>The current work pay rate is: <span style='color:turquoise;'>1 Turn</span> = <span class='gold'>石{$work_multiplier}</span>.</div>
 {if $is_logged_in}
 <form id="work" action="/work/request_work" method="post" name="work">
   <div>
@@ -39,7 +39,7 @@
   </div>
 </form>
 <p class='gold-count'>
-  Current gold: {$gold_display|escape}
+  Current gold: 石{$gold_display|escape}
 <p>
 
 </section>

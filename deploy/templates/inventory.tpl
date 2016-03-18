@@ -34,7 +34,7 @@
   <div class='inventory-actions'>
 
     <p class='gold-count'>
-      Current gold: {$gold_display|escape}
+      Current gold: 石{$gold_display|escape}
     <p>
 
     <small class='de-em'>Click a linked item to use it on yourself.</small>

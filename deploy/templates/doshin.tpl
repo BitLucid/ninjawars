@@ -78,7 +78,7 @@
 
 {if $myBounty gt 0}
   <div class='parent thick'>
-    <div class='ninja-info'>You have a {$myBounty|number_format:0|escape} gold bounty on your head.</div>
+    <div class='ninja-info'>You have a 石{$myBounty|number_format:0|escape} bounty on your head.</div>
   </div>
 
 <form id="bribe_form" action="/doshin/bribe" method="post" name="bribe_form" class='half-column'>
@@ -143,7 +143,7 @@
 
 {if $display_gold}
 <div class='gold thick'>
-  You have {$display_gold} gold.
+  You have 石{$display_gold}.
 </div>
 {/if}
 

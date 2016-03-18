@@ -52,7 +52,7 @@
 	  </div>
 	</form>
 
-	<div class='gold-count'>Current Gold: {$player->gold|number_format:0|escape}</div>
+	<div class='gold-count'>Current Gold: 石{$player->gold|number_format:0|escape}</div>
 </div><!-- End of betting div -->
 
 

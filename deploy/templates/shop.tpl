@@ -107,7 +107,7 @@ $(document).ready(function() {
 <!-- google_ad_section_end -->
 
 <p class='glassbox'>
-	Your current gold: <span class='gold-count'>{$gold|number_format|escape}</span>
+	Your current gold: <span class='gold-count'>石{$gold|number_format|escape}</span>
 <p>
 
 <nav>
