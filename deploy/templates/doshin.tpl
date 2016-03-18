@@ -118,7 +118,7 @@
       <a href="/player?player_id={$row.player_id|escape:'url'}">{$row.uname|escape}</a>
     </td>
     <td class='playerCell'>
-      {$row.bounty|escape}
+      石{$row.bounty|number_format:0|escape}
     </td>
     <td class='playerCell'>
       {$row.level|escape}
