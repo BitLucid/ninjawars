@@ -190,14 +190,15 @@ class Router {
          * call it. Otherwise, look up the action in the routes map. If it's
          * not there try the default route. If none specified, throw.
          */
-        if (method_exists($controller, $p_command)) {
+        if (is_callable([$controller, $p_command])) {
             $action = $p_command;
         } else if (isset(self::$routes[$p_main]['actions'][$p_command])) {
             $action = self::$routes[$p_main]['actions'][$p_command];
 
             // If the action in the routes map still doesn't exist, throw
-            if (!method_exists($controller, $action)) {
+            if (!is_callable([$controller, $action])) {
                 throw new \RuntimeException();
+            } else {
             }
         } else {
             throw new \RuntimeException();
