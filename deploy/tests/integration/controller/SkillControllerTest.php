@@ -38,11 +38,11 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testUseFireboltOnAnotherChar(){
-        $error = $this->char->setClass('tiger');
         $this->char->set_turns(300);
         $this->char->vo->level = 20;
-        $this->assertNull($error);
         $initial_health = $this->char2->health();
+        $error = $this->char->setClass('tiger');
+        $this->assertNull($error);
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
         $this->assertNotEmpty(url($name));
@@ -88,9 +88,9 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
                 'A redirect was the outcome for the url: '
                 .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
         $this->assertNull($skill_outcome['parts']['error']);
-        $this->assertEquals(0, $final_defender->health());
-        $this->assertEquals(0, $final_defender->bounty);
-        $this->assertEquals($self_gold+$bounty, $final_attacker->gold);
+        $this->assertEquals(0, $final_defender->health(), "Health not 0");
+        $this->assertEquals(0, $final_defender->bounty, "Bounty not 0");
+        $this->assertEquals($self_gold+$bounty, $final_attacker->gold, "Gold not updated");
     }
 
     public function testIShouldGetBountyOnMyHeadWhenIFireBoltKillALowLevel(){
