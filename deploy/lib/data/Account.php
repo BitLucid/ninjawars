@@ -1,6 +1,8 @@
 <?php
 namespace NinjaWars\core\data;
 
+use \PDO;
+
 /**
  * Player Accounts and their info
  */
@@ -38,7 +40,7 @@ class Account {
      * @return Account|null
      */
     public static function findById($account_id) {
-        $data = account_info($account_id);
+        $data = self::accountInfo($account_id);
 
         if (isset($data['account_identity']) && !empty($data['account_identity'])) {
             return new Account($data);
@@ -130,6 +132,22 @@ class Account {
             WHERE lower(uname) = lower(:ninja_name) LIMIT 1';
 
         return self::findById(query_item($query, [':ninja_name'=>$ninja_name]));
+    }
+
+    /**
+     * Pull account data in a * like manner.
+     */
+    public static function accountInfo($account_id, $specific=null) {
+        $res = query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
+        if ($specific) {
+            if (isset($res[$specific])) {
+                $res = $res[$specific];
+            } else {
+                $res = null;
+            }
+        }
+
+        return $res;
     }
 
 	public function info() {

@@ -2,23 +2,6 @@
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 
-/**
- * Account creation and validation.
- */
-
-// Pull account data in a * like manner.
-function account_info($account_id, $specific=null){
-	$res = query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
-	if($specific){
-		if(isset($res[$specific])){
-			$res = $res[$specific];
-		} else {
-			$res = null;
-		}
-	}
-	return $res;
-}
-
 // Get the account linked with a character.
 function account_info_by_char_id($char_id, $specific=null){
 	$res = query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', 
