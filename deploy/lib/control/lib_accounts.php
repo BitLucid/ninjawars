@@ -68,41 +68,6 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	return ($verify_ninja_id != $ninja_id ? false : $newID);
 }
 
-// Ninja and account creation functions.
-
-// Create a ninja
-function create_ninja($send_name, $params=array()) {
-	DatabaseConnection::getInstance();
-
-	$class_identity  = $params['send_class'];
-	$preconfirm  = (int) $params['preconfirm'];
-	$confirm     = (int) $params['confirm'];
-
-	$initial_hp = Player::maxHealthByLevel(1);
-	$initial_strength = Player::baseStrengthByLevel(1);
-	$initial_speed = Player::baseSpeedByLevel(1);
-	$initial_stamina = Player::baseStaminaByLevel(1);
-
-	// Create the initial player row.
-	$playerCreationQuery= "INSERT INTO players
-		 (uname, health, strength, speed, stamina, gold, messages, kills, turns, verification_number, active,
-		  _class_id, level,  status, member, days, bounty, created_date)
-		 VALUES
-		 (:username, :initial_hp, :initial_strength, :initial_speed, :initial_stamina, '100', '', '0', '180', :verification_number, :active,
-		 (SELECT class_id FROM class WHERE identity = :class_identity), '1', '1', '0', '0', '0', now())";
-	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
-	$statement = DatabaseConnection::$pdo->prepare($playerCreationQuery);
-	$statement->bindValue(':username', $send_name);
-	$statement->bindValue(':verification_number', $confirm);
-	$statement->bindValue(':active', $preconfirm);
-	$statement->bindValue(':class_identity', $class_identity);
-	$statement->bindValue(':initial_hp', $initial_hp);
-	$statement->bindValue(':initial_strength', $initial_strength);
-	$statement->bindValue(':initial_speed', $initial_speed);
-	$statement->bindValue(':initial_stamina', $initial_stamina);
-	$statement->execute();
-	return get_char_id($send_name);
-}
 
 function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
 	//  ***  Sends out the confirmation email to the chosen email address.  ***
@@ -138,8 +103,21 @@ function create_account_and_ninja($send_name, $params=array()) {
 	$class_identity  = $params['send_class'];
 	$confirm     = (int) $params['confirm'];
 	$error       = false;
-	$data['ip'] = isset($params['ip'])? $params['ip'] : null;
-	$ninja_id    = create_ninja($send_name, $params);
+	$data['ip'] = (isset($params['ip'])? $params['ip'] : null);
+
+    $class_id = query_item(
+        'SELECT class_id FROM class WHERE identity = :class_identity',
+        [ ':class_identity' => $params['send_class'] ]
+    );
+
+    $ninja = new Player();
+    $ninja->uname               = $send_name;
+    $ninja->verification_number = (int) $params['confirm'];
+    $ninja->active              = (int) $params['preconfirm'];
+    $ninja->_class_id           = $class_id;
+    $ninja->save();
+
+    $ninja_id = $ninja->id();
 	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm, 0, 1, $data);
 
 	if ($account_id) {

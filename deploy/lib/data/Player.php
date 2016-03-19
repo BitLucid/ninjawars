@@ -62,35 +62,61 @@ class Player implements Character {
 				$this->avatar_url = null;
 			}
 		} else {
-			$this->vo = new PlayerVO();
-			$this->avatar_url = null;
-		}
-	}
+            $level = 1;
+
+			$this->vo                  = new PlayerVO();
+            $this->avatar_url          = null;
+            $this->uname               = null;
+            $this->health              = Player::maxHealthByLevel($level);
+            $this->strength            = Player::baseStrengthByLevel($level);
+            $this->speed               = Player::baseSpeedByLevel($level);
+            $this->stamina             = Player::baseStaminaByLevel($level);
+            $this->level               = $level;
+            $this->gold                = 100;
+            $this->turns               = 180;
+            $this->kills               = 0;
+            $this->status              = 0;
+            $this->member              = 0;
+            $this->days                = 0;
+            $this->bounty              = 0;
+            $this->energy              = 0;
+            $this->ki                  = 0;
+            $this->karma               = 0;
+            $this->avatar_type         = 1;
+            $this->messages            = '';
+            $this->description         = '';
+            $this->instincts           = '';
+            $this->traits              = '';
+            $this->beliefs             = '';
+            $this->goals               = '';
+            $this->last_started_attack = '2016-01-01';
+        }
+    }
 
     /**
      * @return string
      */
-	public function __toString() {
-		return $this->name();
-	}
+    public function __toString() {
+        return $this->name();
+    }
 
     /**
      * Magic method to provide accessors for properties
      *
      * @return mixed
      */
-	public function __get($member_field) {
-		return $this->vo->$member_field;
-	}
+    public function __get($member_field) {
+        return $this->vo->$member_field;
+    }
 
     /**
      * Magic method to provide mutators for properties
      *
      * @return mixed
      */
-	public function __set($member_field, $value) {
-		return $this->vo->$member_field = $value;
-	}
+    public function __set($member_field, $value) {
+        return $this->vo->$member_field = $value;
+    }
 
     /**
      * Magic method to handle isset() and empty() calls against properties
@@ -104,9 +130,9 @@ class Player implements Character {
     /**
      * @return string
      */
-	public function name() {
-		return $this->vo->uname;
-	}
+    public function name() {
+        return $this->vo->uname;
+    }
 
     /**
      * @return int
