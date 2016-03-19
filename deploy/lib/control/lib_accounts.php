@@ -193,8 +193,3 @@ function class_display_name_from_identity($identity) {
 	return query_item('SELECT class_name from class where identity = :identity', array(':identity'=>$identity));
 }
 
-// Render a ninja inactive, until they log in.
-function inactivate_ninja($char_id){
-	query('update players set active = 0 where player_id = :char_id', array(':char_id'=>$char_id)); // Toggle the active bit off until they login.
-}
-

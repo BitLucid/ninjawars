@@ -480,6 +480,7 @@ class Player implements Character {
 
     /**
      * Simple wrapper for subtractive action.
+     *
      * @return int
      * @deprecated use Player::harm() instead
      */

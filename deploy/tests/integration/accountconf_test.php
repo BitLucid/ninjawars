@@ -1,8 +1,9 @@
 <?php
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use NinjaWars\core\control\AccountController;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\control\AccountController;
 use NinjaWars\core\control\SignupController;
+use NinjaWars\core\data\Player;
 
 /** Account behavior
  *
@@ -255,7 +256,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      */
     function testLoginConfirmedAccountWithInactivePlayerSucceeds(){
         $confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
-        inactivate_ninja(get_char_id($this->test_ninja_name)); // Just make them fade off the active lists, inactive, don't pause the account
+        $player = Player::findByName($this->test_ninja_name);
+        $player->active = 0;
+        $player->save();
         $res = login_user($this->test_email, $this->test_password);
         $this->assertTrue($confirm_worked);
         $this->assertTrue($res['success'], 'Faded-to-inactive player unable to login');
