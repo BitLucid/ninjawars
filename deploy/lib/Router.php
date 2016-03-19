@@ -2,7 +2,7 @@
 namespace NinjaWars\core;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-//use \NinjaWars\core\RouteNotFoundException;
+use \NinjaWars\core\RouteNotFoundException;
 
 /**
  * Router/front-controller for NinjaWars

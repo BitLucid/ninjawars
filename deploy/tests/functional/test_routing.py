@@ -99,6 +99,11 @@ class TestRouting:
         for url in urls:
             assert (404 == self.status_code(str(self.root()) + url))
 
+    def test_urls_should_500(self):
+        urls = ['error']
+        for url in urls:
+            assert (500 == self.status_code(str(self.root()) + url))
+
     def test_urls_by_title(self):
         root = self.root()
         assert root is not None

@@ -8,6 +8,6 @@ use NinjaWars\core\RouteNotFoundException;
 try {
 	// get the request information to parse the route
 	Router::route(Request::createFromGlobals());
-} catch (\RouteNotFoundException $e) {
-	include(WEB_ROOT.'404.php');
+} catch (RouteNotFoundException $e) {
+	include(SERVER_ROOT.'www/404.php');
 }
