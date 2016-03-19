@@ -68,41 +68,12 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	return ($verify_ninja_id != $ninja_id ? false : $newID);
 }
 
-
-function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
-	//  ***  Sends out the confirmation email to the chosen email address.  ***
-
-	$class_display = class_display_name_from_identity($class_identity);
-
-	$_to = array("$signup_email"=>$signup_name);
-	$_subject = 'NinjaWars Account Sign Up';
-	$_body = render_template('signup_email_body.tpl', array(
-			'send_name'       => $signup_name
-			, 'signup_email'       => $signup_email
-			, 'confirm'       => $confirm
-			, 'send_class'    => $class_display
-			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
-			, 'account_id'    => $account_id
-		)
-	);
-
-	$_from = array(SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME);
-
-	// *** Create message object. ***
-	$message = new Nmail($_to, $_subject, $_body, $_from);
-
-	// *** Set replyto address. ***
-	$message->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
-	return $message->send();
-}
-
 // Create the account and the initial ninja for that account.
 function create_account_and_ninja($send_name, $params=array()) {
 	$send_email  = $params['send_email'];
 	$send_pass   = $params['send_pass'];
 	$class_identity  = $params['send_class'];
 	$confirm     = (int) $params['confirm'];
-	$error       = false;
 	$data['ip'] = (isset($params['ip'])? $params['ip'] : null);
 
     $class_id = query_item(
@@ -118,17 +89,7 @@ function create_account_and_ninja($send_name, $params=array()) {
     $ninja->save();
 
     $ninja_id = $ninja->id();
-	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm, 0, 1, $data);
-
-	if ($account_id) {
-		$sent = send_signup_email($account_id, $send_email, $send_name, $confirm, $class_identity);
-
-		if (!$sent && !DEBUG) {
-			$error = 'There was a problem sending your signup to that email address.';
-		}
-	}
-
-	return $error;
+	return create_account($ninja_id, $send_email, $send_pass, $confirm, 0, 1, $data);
 }
 
 // Confirm a player if they completely match.

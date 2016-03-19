@@ -90,8 +90,16 @@ class SignupController {
         ];
 
         // Create the player
-        if ($error = create_account_and_ninja($p_request->enteredName, $player_params)) {
-            throw new \RuntimeException($error, 4);
+        $account_id = create_account_and_ninja($p_request->enteredName, $player_params);
+
+        if ($account_id) {
+            $sent = $this->sendSignupEmail($account_id, $p_request->enteredEmail, $p_request->enteredName, $confirm, $p_request->enteredClass);
+
+            if (!$sent && !DEBUG) {
+                throw new \RuntimeException('There was a problem sending your signup to that email address.', 4);
+            }
+        } else {
+            throw new \RuntimeException('No account_id came back from creation', 4);
         }
 
         if ($preconfirm) {
@@ -386,5 +394,35 @@ class SignupController {
         }
 
         return (!get_user_id($ninja_name));
+    }
+
+    /**
+     * Sends out the confirmation email to the chosen email address.
+     */
+    private function sendSignupEmail($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
+        $class_display = class_display_name_from_identity($class_identity);
+        $_to           = [$signup_email => $signup_name];
+        $_subject      = 'NinjaWars Account Sign Up';
+        $_body         = render_template(
+            'signup_email_body.tpl',
+            [
+                'send_name'     => $signup_name,
+                'signup_email'  => $signup_email,
+                'confirm'       => $confirm,
+                'send_class'    => $class_display,
+                'SUPPORT_EMAIL' => SUPPORT_EMAIL,
+                'account_id'    => $account_id,
+            ]
+        );
+
+        $_from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
+
+        // *** Create message object. ***
+        $message = new Nmail($_to, $_subject, $_body, $_from);
+
+        // *** Set replyto address. ***
+        $message->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);
+
+        return $message->send();
     }
 }
