@@ -5,7 +5,7 @@ use NinjaWars\core\data\Account;
 class PasswordResetTest extends PHPUnit_Framework_TestCase {
     function setUp() {
         $this->account_id = TestAccountCreateAndDestroy::account_id();
-        $this->account = new Account($this->account_id);
+        $this->account = Account::findById($this->account_id);
         $this->nonce = null;
     }
 
@@ -46,7 +46,7 @@ class PasswordResetTest extends PHPUnit_Framework_TestCase {
         $account_id = query_item('select account_id from accounts limit 1');
         $this->assertGreaterThan(0, $account_id);
         $this->nonce='777777';
-        $req = PasswordResetRequest::generate(new Account($account_id), $this->nonce);
+        $req = PasswordResetRequest::generate(Account::findById($account_id), $this->nonce);
         $this->assertEquals($this->nonce, $req->nonce); // Create
         $req = PasswordResetRequest::match($this->nonce); // Match
         $this->assertEquals($this->nonce, $req->nonce);
@@ -73,7 +73,7 @@ class PasswordResetTest extends PHPUnit_Framework_TestCase {
      * @group early
      */
     public function testRejectionOfResetsThatDontHaveAValidAccountId() {
-        $account = new Account(1234567890);
+        $account = new Account([]);
         $this->assertFalse(PasswordResetRequest::reset($account, 'some_valid_password', false));
     }
 

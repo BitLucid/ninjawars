@@ -5,30 +5,131 @@ namespace NinjaWars\core\data;
  * Player Accounts and their info
  */
 class Account {
-	public function __construct($account_id) {
-		$this->account_id = $account_id;
-		$this->info = account_info($account_id);
-		$this->oauth_id = $this->info['oauth_id'];
-		$this->oauth_provider = $this->info['oauth_provider'];
-		$this->active_email = $this->info['active_email'];
-		$this->account_identity = $this->info['account_identity'];
-		$this->type = $this->info['type'];
+    public static $fields = [
+        'account_id',
+        'account_identity',
+        'phash',
+        'active_email',
+        'type',
+        'operational',
+        'created_data',
+        'last_login',
+        'last_login_failure',
+        'karma_total',
+        'last_ip',
+        'confirmed',
+        'verification_number',
+        'oauth_provider',
+        'oauth_id',
+    ];
+
+	public function __construct($data = []) {
+        $this->info = $data;
+
+        foreach (self::$fields AS $field) {
+            $this->$field = (isset($data[$field]) ? $data[$field] : null);
+        }
 	}
 
     /**
-     * Get the account object by id, or false
+     * Get an account object by id
      *
-     * @param int $id
+     * @param int $account_id
      * @return Account|null
      */
-    public static function findById($id) {
-        $account = new Account($id);
+    public static function findById($account_id) {
+        $data = account_info($account_id);
 
-        if (!$account->getIdentity()) {
-            return null;
+        if (isset($data['account_identity']) && !empty($data['account_identity'])) {
+            return new Account($data);
         } else {
-            return $account;
+            return null;
         }
+    }
+
+    /**
+     * Get an account object by email
+     *
+     * @param String $email_identity
+     * @return Account|null
+     */
+	public static function find($email_identity) {
+        $account_info = query_row('select * from accounts where account_identity = :identity_email',
+            [':identity_email'=>$email_identity]
+        );
+
+		return self::findById($account_info['account_id']);
+	}
+
+    /**
+     * Get the account that matches an oauth id.
+     *
+     * @param int $oauth_id
+     * @param String $provider (optional) Defaults to facebook
+     * @return Account|null
+     */
+	public static function findAccountByOauthId($oauth_id, $provider='facebook'){
+        $account_info = query_row(
+            'SELECT * FROM accounts WHERE (oauth_id = :id AND oauth_provider = :provider) ORDER BY operational, type, created_date ASC LIMIT 1',
+            [
+                ':id'       => positive_int($accountId),
+                ':provider' => $provider,
+            ]
+        );
+
+		if (empty($account_info) || !$account_info['account_id']) {
+			return null;
+		} else {
+            return self::findById($account_info['account_id']);
+		}
+	}
+
+    /**
+     * Get an account for a character
+     *
+     * @param Character $char
+     * @return Account
+     */
+    public static function findByChar(Character $char) {
+        $query = 'SELECT account_id FROM accounts
+            JOIN account_players ON _account_id = account_id
+            JOIN players ON _player_id = player_id
+            WHERE players.player_id = :pid';
+
+        return self::findById(query_item($query, [':pid' => $char->id()]));
+    }
+
+    /**
+     * Find account by active_email (as opposed to identity)
+     *
+     * @param String $email
+     * @return Account|null
+     */
+    public static function findByEmail($email) {
+        $normalized_email = strtolower(trim($email));
+
+        if ($normalized_email === '') {
+            return null;
+        }
+
+        $query = 'SELECT account_id FROM accounts WHERE lower(active_email) = lower(:email) LIMIT 1';
+
+        return self::findById(query_item($query, [':email' => $normalized_email]));
+    }
+
+    /**
+     * Get the Account by a ninja name (aka player.uname).
+     *
+     * @param String $ninja_name
+     * @return Account
+     */
+    public static function findByNinjaName($ninja_name) {
+        $query = 'SELECT account_id FROM accounts
+            JOIN account_players ON account_id = _account_id
+            JOIN players ON player_id = _player_id
+            WHERE lower(uname) = lower(:ninja_name) LIMIT 1';
+
+        return self::findById(query_item($query, [':ninja_name'=>$ninja_name]));
     }
 
 	public function info() {

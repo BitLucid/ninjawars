@@ -852,7 +852,7 @@ class Player implements Character {
 
                 GameLog::recordLevelUp($this->id());
 
-                $account = AccountFactory::findByChar($this);
+                $account = Account::findByChar($this);
                 $account->setKarmaTotal($account->getKarmaTotal() + $karma_to_give);
                 AccountFactory::save($account);
 
