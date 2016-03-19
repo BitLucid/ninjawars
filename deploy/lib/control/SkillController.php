@@ -191,15 +191,15 @@ class SkillController {
 		$turns_to_take = null;  // *** Even on failure take at least one turn.
 		$char_id = self_char_id();
 
-		$player = new Player($char_id);
+		$player = Player::find($char_id);
 
-		if($self_use){
+		if ($self_use) {
 			// Use the skill on himself.
 			$return_to_target = false;
 			$target    = $player;
 			$target_id = null;
-		} else if ($target != '' && $target != $player->player_id){
-			$target = new Player($target);
+		} else if ($target != '' && $target != $player->player_id) {
+			$target = Player::find($target);
 			$target_id = $target->id();
 			$return_to_target = true;
 		} else {
@@ -250,7 +250,7 @@ class SkillController {
 				$turn_cost = 0;
 				$attack_error = "You do not have enough turns to use $act.";
 			}
-		}
+        }
 
 		if (!$attack_error) { // Nothing to prevent the attack from happening.
 			// Initial attack conditions are alright.
@@ -489,7 +489,7 @@ class SkillController {
 						 // No suicide bounty, No bounty when your bounty getting ++ed.
 						$player->set_gold($player->gold+$target->bounty); // Reward the bounty
 						$target->set_bounty(0); // Wipe the bounty
-					}
+                    }
 
 					$target_message = "$attacker_id has killed you with $act and taken $loot gold.";
 					send_event($attacker_char_id, $target->id(), $target_message);
@@ -498,6 +498,7 @@ class SkillController {
 					sendMessage($target->vo->uname, $player->name(), $attacker_message);
 				}
 			}
+
 			$turns_to_take = $turns_to_take - $turn_cost;
 			$player->save();
 			$target->save();
