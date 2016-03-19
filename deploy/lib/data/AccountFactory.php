@@ -18,32 +18,10 @@ class AccountFactory{
 		return new Account($account_id);
 	}
 
-	/*
-	public static function create($email, $type){
-		// Create a new account.
-		$account_id = create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1)
-	}*/
-
 	public static function find($email_identity){
 		$account_info = self::account_info_by_identity($email_identity);
 		return new Account($account_info['account_id']);
 	}
-
-    /**
-     * Get the account object by id, or false
-     *
-     * @param int $id
-     * @return Account|null
-     */
-    public static function findById($id) {
-        $account = new Account($id);
-
-        if (!$account->getIdentity()) {
-            return null;
-        } else {
-            return $account;
-        }
-    }
 
     /**
      * Get an account for a character

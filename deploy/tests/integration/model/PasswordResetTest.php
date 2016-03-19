@@ -1,6 +1,5 @@
 <?php
 use NinjaWars\core\data\PasswordResetRequest;
-use NinjaWars\core\data\AccountFactory;
 use NinjaWars\core\data\Account;
 
 class PasswordResetTest extends PHPUnit_Framework_TestCase {
@@ -93,7 +92,7 @@ class PasswordResetTest extends PHPUnit_Framework_TestCase {
 
     public function testMatchingARequestGetsYouAMatchingEmail() {
         $account_id = TestAccountCreateAndDestroy::account_id();
-        $account = AccountFactory::findById($account_id);
+        $account = Account::findById($account_id);
         PasswordResetRequest::generate($account, $this->nonce='7778987777', false);
         $req = PasswordResetRequest::match($this->nonce);
         $final_account = $req->account();
@@ -103,7 +102,7 @@ class PasswordResetTest extends PHPUnit_Framework_TestCase {
 
     public function testSendingOfANotificationAfterResetOccurrs() {
         $account_id = TestAccountCreateAndDestroy::account_id();
-        $account = AccountFactory::findById($account_id);
+        $account = Account::findById($account_id);
         PasswordResetRequest::generate($account, $this->nonce='7778987777', false);
         $req = PasswordResetRequest::match($this->nonce);
         $final_account = $req->account();
@@ -114,7 +113,7 @@ class PasswordResetTest extends PHPUnit_Framework_TestCase {
 
     public function testPerformingAResetInvalidatesUsedRequest(){
         $account_id = TestAccountCreateAndDestroy::account_id();
-        $account = AccountFactory::findById($account_id);
+        $account = Account::findById($account_id);
         PasswordResetRequest::generate($account, $this->nonce='77warkwark', false);
         PasswordResetRequest::reset($account, 'new_pass34532');
         $req = PasswordResetRequest::match($this->nonce);

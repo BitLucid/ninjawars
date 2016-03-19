@@ -4,7 +4,6 @@ namespace NinjaWars\core\data;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use NinjaWars\core\data\Account;
-use NinjaWars\core\data\AccountFactory;
 use \Nmail as Nmail;
 
 /**
@@ -43,7 +42,7 @@ class PasswordResetRequest extends Model {
      */
     public function account() {
         assert($this->_account_id);
-        return AccountFactory::findById($this->_account_id);
+        return Account::findById($this->_account_id);
     }
 
     /**

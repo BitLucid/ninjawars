@@ -15,6 +15,22 @@ class Account {
 		$this->type = $this->info['type'];
 	}
 
+    /**
+     * Get the account object by id, or false
+     *
+     * @param int $id
+     * @return Account|null
+     */
+    public static function findById($id) {
+        $account = new Account($id);
+
+        if (!$account->getIdentity()) {
+            return null;
+        } else {
+            return $account;
+        }
+    }
+
 	public function info() {
 		return $this->info;
 	}

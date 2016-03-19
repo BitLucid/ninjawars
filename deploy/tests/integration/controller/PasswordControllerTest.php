@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     function setUp() {
         $this->account_id = TestAccountCreateAndDestroy::account_id();
-        $this->account = AccountFactory::findById($this->account_id);
+        $this->account = Account::findById($this->account_id);
         $this->nonce = nonce();
     }
 
