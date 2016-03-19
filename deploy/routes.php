@@ -147,6 +147,10 @@ Router::$routes = [
         'type'    => 'controller',
         'actions' => [],
     ],
+    'error' => [
+        'type'    => 'controller',
+        'action' => [],
+    ],
     'rules' => [
         'type'  => 'simple',
         'title' => 'rules',
