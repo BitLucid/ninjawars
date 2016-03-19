@@ -261,4 +261,25 @@ class Account {
         );
     }
 
+	/**
+	 * A partial save of account information.
+	 */
+    public function save() {
+        $params = [
+            ':identity'       => $this->getIdentity(),
+            ':active_email'   => $this->getActiveEmail(),
+            ':type'           => $this->getType(),
+            ':oauth_provider' => $this->getOauthProvider(),
+            ':oauth_id'       => (string)$this->getOauthId($this->getOauthProvider()),
+            ':account_id'     => $this->getId(),
+            ':karma_total'    => $this->getKarmaTotal(),
+        ];
+
+        $updated = update_query('update accounts set
+            account_identity = :identity, active_email = :active_email, type = :type, oauth_provider = :oauth_provider,
+            oauth_id = :oauth_id, karma_total = :karma_total
+            where account_id = :account_id', $params);
+
+        return $updated;
+    }
 }

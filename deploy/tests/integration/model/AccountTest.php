@@ -1,5 +1,4 @@
 <?php
-use NinjaWars\core\data\AccountFactory;
 use NinjaWars\core\data\Account;
 
 class AccountTest extends PHPUnit_Framework_TestCase {
@@ -41,13 +40,13 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 		$this->assertGreaterThan(0, $account->getId());
 	}
 
-	public function testAccountFactoryReturnsAccount(){
+	public function testAccountReturnsAccount(){
 		$account = Account::findById($this->testAccountId);
 		$this->assertTrue($account instanceof Account);
 		$this->assertNotEmpty($account->getIdentity());
 	}
 
-	public function testAccountFactoryReturnsAccountWithMatchingIdentity(){
+	public function testAccountReturnsAccountWithMatchingIdentity(){
 		$identity = $this->test_email;
 		$acc = Account::find($identity);
 		$this->assertEquals($identity, $acc->getIdentity());
@@ -69,7 +68,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 		$account = Account::findById($this->testAccountId);
 		$oauth_id = 88888888888888;
 		$account->setOauthId($oauth_id, 'facebook');
-		AccountFactory::save($account);
+		$account->save();
 		$account_dupe = Account::findById($this->testAccountId);
 		$this->assertEquals($oauth_id, $account_dupe->getOauthId());
 	}

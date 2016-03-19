@@ -8,7 +8,7 @@ use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\PlayerVO;
 use NinjaWars\core\data\Character;
 use NinjaWars\core\data\GameLog;
-use NinjaWars\core\data\AccountFactory;
+use NinjaWars\core\data\Account;
 use \PDO;
 
 /**
@@ -854,7 +854,7 @@ class Player implements Character {
 
                 $account = Account::findByChar($this);
                 $account->setKarmaTotal($account->getKarmaTotal() + $karma_to_give);
-                AccountFactory::save($account);
+                $account->save();
 
                 // Send a level-up message, for those times when auto-levelling happens.
                 send_event($this->id(), $this->id(),
