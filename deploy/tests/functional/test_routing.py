@@ -58,11 +58,11 @@ class TestRouting:
     def test_urls_should_200(self):
         urls = [
             'intro', 'login', 'login.php', 'signup', 'signup.php', 
-            'player.php', 'village.php', 'interview.php', 'news/', 
+            'player.php', 'village', 'interview.php', 'news/', 
             'staff.php', 'list.php', 'rules.php', 'shop.php', 'events.php', 
             'skill', 'inventory.php', 'inventory', 'enemies.php',
             'clan.php', 'map.php', 'work.php', 'doshin_office.php',
-            'dojo.php', 'shrine.php', 'duel.php', 'clan.php?command=list',
+            'dojo.php', 'shrine.php', 'duel', 'clan.php?command=list',
             'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
             'clan.php?command=view', 'npc', 'npc/attack/peasant/',
             'npc/attack/guard/', 'stats.php', 'account.php', 'quest',
@@ -72,6 +72,7 @@ class TestRouting:
             'skill/use/Fire%20Bolt/tchalvak', 'skill/self_use/Heal',
             'item/self_use/3', 'item/self_use/1',
             'item/use/shuriken/tchalvak', 'dojo/buyDimMak',
+            'casino', 'player'
         ]
         #Eventually some of these urls should be tested on logged in user.
         for url in urls:
