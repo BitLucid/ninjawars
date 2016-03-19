@@ -1,12 +1,10 @@
 <?php
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Player;
-use \TestAccountCreateAndDestroy;
+use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 
 class InventoryTest extends PHPUnit_Framework_TestCase {
-
-
-	public function setUp(){
+	public function setUp() {
         $this->char = TestAccountCreateAndDestroy::char();
 	}
 
