@@ -39,9 +39,7 @@ use \PDO;
  * @property-read string uname Deprecated in favor of ->name() method
  */
 class Player implements Character {
-	public $player_id;
 	public $vo;
-	public $status;
 	public $ip;
 	public $avatar_url;
     private $data;
@@ -53,13 +51,13 @@ class Player implements Character {
 		if (!empty($player_id_or_username)) {
 			if (!is_numeric($player_id_or_username) && is_string($player_id_or_username)) {
 				$sel = "SELECT player_id FROM players WHERE lower(uname) = lower(:uname) LIMIT 1";
-				$this->player_id = query_item($sel, array(':uname'=>array($player_id_or_username, PDO::PARAM_INT)));
+				$player_id = query_item($sel, array(':uname'=>array($player_id_or_username, PDO::PARAM_INT)));
 			} else {
-				$this->player_id = (int) $player_id_or_username;
+				$player_id = (int) $player_id_or_username;
 			}
 
 			$dao = new PlayerDAO();
-			if (!($this->vo = $dao->get($this->player_id))) {
+			if (!($this->vo = $dao->get($player_id))) {
 				$this->vo = new PlayerVO();
 				$this->avatar_url = null;
 			}
@@ -605,12 +603,7 @@ class Player implements Character {
 	}
 
 	/**
-	 * Save information
-     *
-	 * Saves:
-	 * gold
-	 * turns
-	 * all non-foreign key data in vo
+	 * Persist object to database
      *
 	 * @return Player
 	 */
