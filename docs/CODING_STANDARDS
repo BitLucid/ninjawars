@@ -91,6 +91,17 @@ FOLLOW THESE NINJAWARS CODING STANDARDS OR BE RIDICULED:
 
     Name the database tables with plural, lowercase terms (e.g. classes, messages, players, octopi instead of Class, Message, Player, Octopus), by convention.  It's great to have created_at and updated_at fields on tables as well.
 
+* Namespacing
+
+    When pulling in global classes into namespaces, please try to put a use statement at the top of the file. It'll save us work later.
+    DO:
+
+      use \RunTimeException;
+
+    NOT:
+
+      throw new \RunTimeException;
+
 * Legacy Code:
 
     Apply Campfire coding practices: Don't rewrite older code to match the coding standards unless you're actually 
