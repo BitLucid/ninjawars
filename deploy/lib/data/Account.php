@@ -15,7 +15,7 @@ class Account {
 		$this->type = $this->info['type'];
 	}
 
-	public function info(){
+	public function info() {
 		return $this->info;
 	}
 
@@ -41,19 +41,19 @@ class Account {
         return $this->getId();
     }
 
-	public function getActiveEmail(){
+	public function getActiveEmail() {
 		return $this->active_email;
 	}
 
-	public function getLastLogin(){
+	public function getLastLogin() {
 		return $this->info['last_login'];
 	}
 
-	public function getLastLoginFailure(){
+	public function getLastLoginFailure() {
 		return $this->info['last_login_failure'];
 	}
 
-	public function getKarmaTotal(){
+	public function getKarmaTotal() {
 		return $this->info['karma_total'];
 	}
 
@@ -61,35 +61,38 @@ class Account {
         $this->info['karma_total'] = (int) $p_amount;
     }
 
-	public function getLastIp(){
+	public function getLastIp() {
 		return $this->info['last_ip'];
 	}
 
 	/**
 	 * Identity wrapper.
-	**/
-	public function identity(){
+	 */
+	public function identity() {
 		return $this->getIdentity();
 	}
 
-	public function getIdentity(){
+	public function getIdentity() {
 		return $this->account_identity;
 	}
 
-	public function getType(){
+	public function getType() {
 		return $this->type;
 	}
 
-	public function setType($type){
+	public function setType($type) {
 		$cast_type = positive_int($type);
-		if($cast_type != $type){
+
+		if ($cast_type != $type) {
 			throw new \Exception('Account: The account type set was inappropriate.');
 		}
+
 		$this->type = $cast_type;
+
 		return $this->type;
 	}
 
-	public function setOauthId($id, $provider='facebook'){
+	public function setOauthId($id, $provider='facebook') {
 		$this->oauth_id = $id;
 		if($provider){
 			$this->oauth_provider = $provider;
@@ -97,29 +100,29 @@ class Account {
 		return true;
 	}
 
-	public function getOauthId($provider='facebook'){
+	public function getOauthId($provider='facebook') {
 		return $this->oauth_id;
 	}
 
-	public function getOauthProvider(){
+	public function getOauthProvider() {
 		return $this->oauth_provider;
 	}
 
-	public function setOauthProvider($provider){
+	public function setOauthProvider($provider) {
 		return ($this->oauth_provider = $provider);
 	}
 
 	/**
 	 * Check operational status of account
-	**/
-	public function isOperational(){
+	 */
+	public function isOperational() {
 		return (bool) ($this->info['operational'] === true);
 	}
 
 	/**
 	 * Check whether an account is confirmed.
-	**/
-	public function isConfirmed(){
+	 */
+	public function isConfirmed() {
 		return (bool) ($this->info['confirmed'] === 1);
 	}
 
@@ -129,14 +132,14 @@ class Account {
      * @param String $newPassword
      * @return int Number of rows updated
      */
-    public function changePassword($newPassword) {
+    public function changePassword($new_password) {
         $query = "UPDATE accounts SET phash = crypt(:password, gen_salt('bf', 10)) WHERE account_id = :account_id";
 
         return update_query(
             $query,
             [
                 ':account_id' => $this->getId(),
-                ':password'   => $newPassword,
+                ':password'   => $new_password,
             ]
         );
     }
