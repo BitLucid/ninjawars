@@ -1,9 +1,11 @@
 <?php
+namespace NinjaWars\tests\integration\model;
+
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Player;
 use \TestAccountCreateAndDestroy;
 
-class InventoryTest extends PHPUnit_Framework_TestCase {
+class InventoryTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function setUp(){
