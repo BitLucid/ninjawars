@@ -254,6 +254,10 @@ class Account {
 		return (bool) ($this->info['operational'] === true);
 	}
 
+    public function setOperational($p_operational) {
+        $this->info['operational'] = (bool) $p_operational;
+    }
+
 	/**
 	 * Check whether an account is confirmed.
 	 */
@@ -291,11 +295,12 @@ class Account {
             ':oauth_id'       => (string)$this->getOauthId($this->getOauthProvider()),
             ':account_id'     => $this->getId(),
             ':karma_total'    => $this->getKarmaTotal(),
+            ':operational'    => [$this->isOperational(), \PDO::PARAM_BOOL],
         ];
 
         $updated = update_query('update accounts set
             account_identity = :identity, active_email = :active_email, type = :type, oauth_provider = :oauth_provider,
-            oauth_id = :oauth_id, karma_total = :karma_total
+            oauth_id = :oauth_id, karma_total = :karma_total, operational = :operational
             where account_id = :account_id', $params);
 
         return $updated;

@@ -181,7 +181,14 @@ class AccountController {
 
         if ($verify && empty($delete_attempts)) {
             // only allow account deletion on first attempt
-            $this->pauseAccount($player->id());
+            $player = Player::find($player->id());
+            $player->active = 0;
+            $player->save();
+
+            $account = Account::findByChar($player);
+            $account->setOperational(false);
+            $account->save();
+
             logout_user(); // This may redirect and stuff?
         } else {
             $session->set('delete_attempts', $delete_attempts+1);
@@ -195,25 +202,6 @@ class AccountController {
         ];
 
         return $this->render($parts);
-    }
-
-    /**
-     * Make a whole account non-operational, unable to login, and not active.
-     */
-    public function pauseAccount($p_playerID) {
-        $accountActiveQuery = 'UPDATE accounts SET operational = false WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)';
-        $playerConfirmedQuery = 'UPDATE players SET active = 0 WHERE player_id = :pid';
-
-        $statement = DatabaseConnection::$pdo->prepare($playerConfirmedQuery);
-        $statement->bindValue(':pid', $p_playerID);
-        $statement->execute();
-
-        $statement = DatabaseConnection::$pdo->prepare($accountActiveQuery);
-        $statement->bindValue(':pid', $p_playerID);
-        $statement->execute();
-        $count = $statement->rowCount();
-
-        return ($count > 0);
     }
 
     /**
