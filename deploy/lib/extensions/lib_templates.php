@@ -1,32 +1,6 @@
 <?php
 use NinjaWars\core\data\Player;
-
-class NWTemplate extends Smarty {
-    public function __construct() {
-        parent::__construct();
-        $this->caching = false; // or Smarty::CACHING_LIFETIME_CURRENT;
-
-        $this->addTemplateDir(TEMPLATE_PATH);
-
-        $this->setCompileDir(COMPILED_TEMPLATE_PATH);
-
-        $this->addPluginsDir(TEMPLATE_PLUGIN_PATH);
-    }
-
-    public function fullDisplay() {
-        $this->display('full_template.tpl');
-    }
-
-    public function assignArray($p_vars) {
-        if ($p_vars === null) {
-            return;
-        }
-
-        foreach ($p_vars as $lname => $lvalue) { // pass each var to the view
-            $this->assign($lname, $lvalue);
-        }
-    }
-}
+use NinjaWars\core\extensions\NWTemplate;
 
 /**
  * Displays blocking states like not logged in, death, frozen, etc.
@@ -127,3 +101,4 @@ function cache_headers($hours = 2, $revalidate=false) {
     header("Cache-Control: maxage=".$expires.($revalidate? ", must-revalidate" : ''));
     header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 }
+
