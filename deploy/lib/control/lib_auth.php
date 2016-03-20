@@ -104,7 +104,7 @@ function login_user($dirty_user, $p_pass) {
 				$login_error = null;
 			} else {	// *** Account was not activated yet ***
 				$success = false;
-				$login_error = "You must confirm your account before logging in, check your email. <a href='/account_issues.php'>You can request another confirmation email here.</a>";
+				$login_error = "You must confirm your account before logging in, check your email. <a href='/assistance'>You can request another confirmation email here.</a>";
 			}
 		}
 		// The LOGIN FAILURE case occurs here, and is the default.

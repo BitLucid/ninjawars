@@ -66,8 +66,8 @@ class TestRouting:
             'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
             'clan.php?command=view', 'npc', 'npc/attack/peasant/',
             'npc/attack/guard/', 'stats.php', 'account.php', 'quest',
-            'quest/view/1', 'account_issues.php', 'resetpassword.php',
-            'player.php?target_id=777777',
+            'quest/view/1', 'assistance', 'assistance/confirm',
+            'resetpassword.php', 'player.php?target_id=777777',
             'player.php?target=tchalvak', 'item/self_use/amanita',
             'skill/use/Fire%20Bolt/tchalvak', 'skill/self_use/Heal',
             'item/self_use/3', 'item/self_use/1',
@@ -83,7 +83,7 @@ class TestRouting:
         urls = [
             'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php',
             'webgame/', 'ninjamaster', 'ninjamaster/tools',
-            'ninjamaster/player_tags'
+            'ninjamaster/player_tags', 'account_issues.php', 'confirm.php',
         ]
         for url in urls:
             full_uri = str(self.root()) + url
@@ -114,7 +114,7 @@ class TestRouting:
                  'village.php': 'Chat', 'enemies.php': 'Fight',
                  'shop.php': 'Shop', 'work.php': 'Work',
                  'doshin_office.php': 'Doshin Office',
-                 'account_issues.php' : 'Account Problems',
+                 'assistance' : 'Account Assistance',
                  'resetpassword.php' : 'Request a password reset',
                  'player.php' : 'Ninja Profile',
                  'player.php?target=tchalvak' : 'Ninja: Tchalvak',

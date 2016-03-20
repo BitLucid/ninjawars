@@ -127,6 +127,11 @@ Router::$routes = [
             'delete' => 'deleteEnemy',
         ],
     ],
+    'assistance' => [
+        'type'    => 'controller',
+        'actions' => [
+        ],
+    ],
     'chat' => [
         'type'    => 'controller',
         'actions' => [

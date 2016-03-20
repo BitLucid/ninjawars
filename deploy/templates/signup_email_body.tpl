@@ -9,9 +9,9 @@
 
     <p>
       Please click on the link below to confirm your account if it isn't confirmed already:<br>
-      <a href='{$smarty.const.WEB_ROOT}confirm.php?aid={$account_id|escape:'url'}&amp;confirm={$confirm}'>Confirm Account</a><br>
+      <a href='{$smarty.const.WEB_ROOT}assistance/confirm/?aid={$account_id|escape:'url'}&amp;confirm={$confirm}'>Confirm Account</a><br>
       Or paste this link:<br>
-      {$smarty.const.WEB_ROOT}confirm.php?aid={$account_id|escape:'url'}&confirm={$confirm} <br>
+      {$smarty.const.WEB_ROOT}assistance/confirm/?aid={$account_id|escape:'url'}&confirm={$confirm} <br>
       into your browser.
     </p>
 

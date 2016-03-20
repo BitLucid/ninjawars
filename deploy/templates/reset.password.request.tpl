@@ -31,6 +31,6 @@ footer.password-reset{
 <footer class='password-reset'>
 	<ul>
 		<li><a href='/staff'>Contact Support</a></li>
-		<li><a href='/account_issues.php'>Other Account Issues</a></li>
+		<li><a href='/assistance'>Other Account Issues</a></li>
 	</ul>
 </footer>
