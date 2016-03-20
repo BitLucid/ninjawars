@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use \Constants;
+use \Nmail;
 
 /**
  * Implements user actions for creating an account
