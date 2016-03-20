@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: '/srv/ninjawars/',
 
 
     // frameworks to use
@@ -16,13 +16,20 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'test-main.js',
-      {pattern: 'deploy/www/js/*.js', included: false},
-      {pattern: 'deploy/tests/js/*Spec.js', included: false}
+      'deploy/www/js/jquery.min.js',
+      'deploy/www/js/jquery.timeago.js',
+      {pattern: 'deploy/www/js/*.js', included: true},
+      {pattern: 'deploy/tests/js/*Spec.js', included: true}
     ],
 
 
     // list of files to exclude
     exclude: [
+        'deploy/www/js/jquery.timeago.js',
+        'deploy/www/js/jquery.linkify.js',
+        'deploy/www/js/jquery.linkify.min.js',
+        'deploy/www/js/casino.js',
+        'deploy/www/js/disagreement.js',
     ],
 
 
@@ -67,5 +74,6 @@ module.exports = function(config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  })
+  });
+  //console.log(config);
 }
