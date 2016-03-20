@@ -1,4 +1,4 @@
-.PHONY: all ci pre-test test test-main test-integration test-unit test-functional post-test clean dep build install dist-clean db db-fixtures migration
+.PHONY: all ci pre-test test test-main test-integration test-unit test-functional test-js post-test clean dep build install dist-clean db db-fixtures migration
 
 DOMAIN=http://nw.local/
 COMPOSER=./composer.phar
@@ -60,7 +60,7 @@ pre-test:
 	# Check for presence of database
 	psql -lqt | cut -d \| -f 1 | grep -qw $(DBNAME)
 
-test: pre-test test-main test-functional post-test
+test: pre-test test-main test-functional test-js post-test
 
 test-main:
 	@$(TEST_RUNNER) $(CC_FLAG)
@@ -83,6 +83,9 @@ test-cron-run:
 test-functional:
 	python3 -m pytest deploy/tests/functional/
 
+test-js:
+	karma run
+
 test-ratchets:
 	#split out for ci for now
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
@@ -103,11 +106,13 @@ clean:
 
 dep:
 	@$(COMPOSER) install
+	@npm install
 
 dist-clean: clean
 	@rm -rf ./vendor/*
 	@rm -rf "$(COMPONENTS)"
 	@rm -rf "$(SRC)resources/"logs/*
+	@rm -rf ./node_modules
 	@echo "Done"
 	@echo "You'll have to dropdb $(DBNAME) yourself."
 

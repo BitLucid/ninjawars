@@ -1,0 +1,36 @@
+{
+  "name": "ninjawars",
+  "version": "1.8.23",
+  "description": "The Ninja Game at ninjawars.net",
+  "main": "deploy/www/js/nw.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "make test-js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BitLucid/ninjawars.git"
+  },
+  "keywords": [
+    "ninjawars.net",
+    "ninja",
+    "game",
+    "bbg"
+  ],
+  "author": "Roy Ronalds",
+  "license": "CC-BY-SA-3.0",
+  "bugs": {
+    "url": "https://github.com/BitLucid/ninjawars/issues"
+  },
+  "homepage": "https://github.com/BitLucid/ninjawars#readme",
+  "devDependencies": {
+    "requirejs": "^2.2.0",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-jasmine": "^0.3.8",
+    "karma-requirejs": "^0.2.6"
+  }
+}
