@@ -126,7 +126,11 @@ var combat_skills = {$combat_skills|@json_encode};
 				  	You have no items.
 				  </div>
 		{else}
-                  <input type="submit" value="Use Item" class="btn btn-primary">
+    {if $same_clan}
+                  <div>
+                    <input id="give" type="submit" value="Give" name="give" class="btn btn-default">
+                  </div>
+    {/if}
                   <select id="item" name="item">
 			{foreach from=$items item="item"}
 				{if $item.other_usable && $item.count>0}
@@ -135,10 +139,7 @@ var combat_skills = {$combat_skills|@json_encode};
 			{/foreach}
                   </select>
 		{/if}
-
-		{if $same_clan}
-                  <input id="give" type="submit" value="Give" name="give" class="btn btn-default">
-		{/if}
+                  <input type="submit" value="Use Item" class="btn btn-primary">
                 </div>
               </form>
             </td>

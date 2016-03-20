@@ -2,6 +2,7 @@
 namespace NinjaWars\core;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use \NinjaWars\core\RouteNotFoundException;
 
 /**
  * Router/front-controller for NinjaWars
@@ -170,8 +171,8 @@ class Router {
      * @param string $p_main The main route segment to execute
      * @param string $p_command The command to execute on the main route
      * @return array The ViewSpec to render
-     * @throws RuntimeException No controller could be found for $p_main
-     * @throws RuntimeException No public method could be found for $p_command
+     * @throws RouteNotFoundException No controller could be found for $p_main
+     * @throws RouteNotFoundException No public method could be found for $p_command
      * @todo Throw a specific exception when class not found
      * @todo Throw a specific exception when the command requested is not found
      * @todo Abstract out the rendering of the error screen
@@ -181,7 +182,7 @@ class Router {
         $controllerClass = self::buildClassName($p_main);
 
         if (!class_exists($controllerClass)) { // ensure class requested exists
-            throw new \RuntimeException();
+            throw new RouteNotFoundException();
         }
 
         $controller = new $controllerClass();
@@ -190,17 +191,17 @@ class Router {
          * call it. Otherwise, look up the action in the routes map. If it's
          * not there try the default route. If none specified, throw.
          */
-        if (method_exists($controller, $p_command)) {
+        if (is_callable([$controller, $p_command])) {
             $action = $p_command;
         } else if (isset(self::$routes[$p_main]['actions'][$p_command])) {
             $action = self::$routes[$p_main]['actions'][$p_command];
 
             // If the action in the routes map still doesn't exist, throw
-            if (!method_exists($controller, $action)) {
-                throw new \RuntimeException();
+            if (!is_callable([$controller, $action])) {
+                throw new RouteNotFoundException();
             }
         } else {
-            throw new \RuntimeException();
+            throw new RouteNotFoundException();
         }
 
         /* This conditional is a holdover from old times when controllers were

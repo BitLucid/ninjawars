@@ -101,7 +101,7 @@ form#signup .ninja-char-creation section + section{
 	{if $error}
 	  <p class='signup-page error'>{$error|escape}</p>
 	  <div class='glassbox'>
-		  <p class>Lost Your Password ? <a href="account_issues.php">Resend Account Info Email</a> / Didn't get your confirmation code ? <a href="account_issues.php">Resend Confirmation Email</a></p>
+		  <p class>Lost Your Password ? <a href="/assistance">Resend Account Info Email</a> / Didn't get your confirmation code ? <a href="/assistance">Resend Confirmation Email</a></p>
 		  <p>If you need help, email: <a href="mailto:{$smarty.const.SUPPORT_EMAIL}">{$smarty.const.SUPPORT_EMAIL}</a> or use the forums at
 		  <a href="{$smarty.const.WEB_ROOT}forum/">{$smarty.const.WEB_ROOT}forum/</a></p>
 	  </div>
@@ -176,9 +176,9 @@ form#signup .ninja-char-creation section + section{
 	<section class='glassbox'>
 
 	<p>
-	Lost Your Password? <a href="account_issues.php">Resend Account Info Email</a>
+	Lost Your Password? <a href="/assistance">Resend Account Info Email</a>
 	</p>
-	<p>Didn't get your confirmation code? <a href="account_issues.php">Resend Confirmation Email</a>
+	<p>Didn't get your confirmation code? <a href="/assistance">Resend Confirmation Email</a>
 	</p>
 	<small>
 	Game &amp; Ninja type info:

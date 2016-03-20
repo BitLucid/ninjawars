@@ -58,20 +58,21 @@ class TestRouting:
     def test_urls_should_200(self):
         urls = [
             'intro', 'login', 'login.php', 'signup', 'signup.php', 
-            'player.php', 'village.php', 'interview.php', 'news/', 
+            'player.php', 'village', 'interview.php', 'news/', 
             'staff.php', 'list.php', 'rules.php', 'shop.php', 'events.php', 
             'skill', 'inventory.php', 'inventory', 'enemies.php',
             'clan.php', 'map.php', 'work.php', 'doshin_office.php',
-            'dojo.php', 'shrine.php', 'duel.php', 'clan.php?command=list',
+            'dojo.php', 'shrine.php', 'duel', 'clan.php?command=list',
             'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
             'clan.php?command=view', 'npc', 'npc/attack/peasant/',
             'npc/attack/guard/', 'stats.php', 'account.php', 'quest',
-            'quest/view/1', 'account_issues.php', 'resetpassword.php',
-            'player.php?target_id=777777',
+            'quest/view/1', 'assistance', 'assistance/confirm',
+            'resetpassword.php', 'player.php?target_id=777777',
             'player.php?target=tchalvak', 'item/self_use/amanita',
             'skill/use/Fire%20Bolt/tchalvak', 'skill/self_use/Heal',
             'item/self_use/3', 'item/self_use/1',
             'item/use/shuriken/tchalvak', 'dojo/buyDimMak',
+            'casino', 'player'
         ]
         #Eventually some of these urls should be tested on logged in user.
         for url in urls:
@@ -82,7 +83,7 @@ class TestRouting:
         urls = [
             'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php',
             'webgame/', 'ninjamaster', 'ninjamaster/tools',
-            'ninjamaster/player_tags'
+            'ninjamaster/player_tags', 'account_issues.php', 'confirm.php',
         ]
         for url in urls:
             full_uri = str(self.root()) + url
@@ -99,6 +100,11 @@ class TestRouting:
         for url in urls:
             assert (404 == self.status_code(str(self.root()) + url))
 
+    def test_urls_should_500(self):
+        urls = ['error']
+        for url in urls:
+            assert (500 == self.status_code(str(self.root()) + url))
+
     def test_urls_by_title(self):
         root = self.root()
         assert root is not None
@@ -108,7 +114,7 @@ class TestRouting:
                  'village.php': 'Chat', 'enemies.php': 'Fight',
                  'shop.php': 'Shop', 'work.php': 'Work',
                  'doshin_office.php': 'Doshin Office',
-                 'account_issues.php' : 'Account Problems',
+                 'assistance' : 'Account Assistance',
                  'resetpassword.php' : 'Request a password reset',
                  'player.php' : 'Ninja Profile',
                  'player.php?target=tchalvak' : 'Ninja: Tchalvak',

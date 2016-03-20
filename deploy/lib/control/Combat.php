@@ -25,6 +25,10 @@ class Combat {
         return 1+$multiplier;
     }
 
+    /**
+     * Rewards bounty if defender has some, 
+     * otherwise increments attacker bounty if power disparity
+     */
     public static function runBountyExchange(Player $user, Player $defender) {  //  *** BOUNTY EQUATION ***
         if ($defender->bounty > 0) {
             $user->set_gold($user->gold + $defender->bounty);
@@ -34,9 +38,9 @@ class Combat {
             $defender->save();
 
             // *** Reward bounty whenever available. ***
-            return "You have received the {$defender->bounty} gold bounty on $defender's head for your deeds!";
             $bounty_msg = "You have valiantly slain the wanted criminal, $defender! For your efforts, you have been awarded {$defender->bounty} gold!";
             sendMessage("Village Doshin", $username, $bounty_msg);
+            return "You have received the {$defender->bounty} gold bounty on $defender's head for your deeds!";
         } else {
             // *** Bounty Increase equation: (attacker's level - defender's level) / an increment, rounded down ***
             $levelRatio     = floor(($user->level - $defender->level) / 10);

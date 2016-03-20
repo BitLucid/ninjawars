@@ -42,6 +42,11 @@ ul#social-networks li:before {
 
 <section id='contact-methods'>
 <p>
+  <a id='contact-us-image-container' href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' &lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20" rel='nofollow'>
+  <img id='contact-us-image' src='{cachebust file="/images/text/pixel_contact_us.gif"}' alt='Contact Staff'>
+  </a>
+</p>
+<p>
   The preferred method of contacting us with problems, ideas, or bugs with the game
   is via the <a href="http://ninjawars.proboards.com" rel='nofollow'>Ninjawars Forum</a>.
 </p>
@@ -49,17 +54,12 @@ ul#social-networks li:before {
   For private issues, including account/confirmation problems, email us at:   <a href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' &lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20" rel='nofollow'>{$smarty.const.SUPPORT_EMAIL_NAME|escape} &lt;{$smarty.const.SUPPORT_EMAIL|escape}&gt;
   </a>
 </p>
-<p>
-  <a id='contact-us-image-container' href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' &lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20" rel='nofollow'>
-  <img id='contact-us-image' src='{cachebust file="/images/contact_us.png"}' alt='Contact Staff'>
-  </a>
-</p>
 </section>
 
 
 <section id='company'>
-  <h3>Game brought to you by</h3>
-  <h4><a href='http://bitlucid.com'>BitLucid, Inc.</a></h4>
+  <h3>Game brought to you by<br>
+    <a href='http://bitlucid.com'>BitLucid, Inc.</a></h3>
 </section>
 
 <section class='developers'>

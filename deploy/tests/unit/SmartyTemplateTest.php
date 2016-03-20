@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\extensions\NWTemplate;
+
 class SmartyTemplateTest extends PHPUnit_Framework_TestCase {
     public function testSyntaxAll() {
         chdir("deploy");
