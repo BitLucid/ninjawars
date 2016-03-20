@@ -20,34 +20,30 @@
     </p>
 {elseif $password_request}
         <h2>Sending Account Information Email</h2>
-        <p>Your account information has been resent to your email.</p>
-    <hr>
+        <div class='parent'>
+            <div class='child bg-success inline-block'>
+            Your account information has been resent to your email.
+            </div>
+        </div>
 {elseif $confirmation_request}
         <h2>Resending Confirmation Email</h2>
-        <p>A confirmation email for {$username} has been resent to your email address.</p>
-    <hr>
+        <div class='parent'>
+            <p class='child bg-success inline-block'>A confirmation email for {$username} has been resent to your email address.</p>
+        </div>
 {/if}
 
+{if !$password_request && !confirmation_request}
     <p class='notice'>
         Please add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to the safe email senders list
         of your email account before resending these email requests, to ensure they won't be caught as spam.
     </p>
+{/if}
 
     <h2>Need your password reset?</h2>
     <div class='parent'>
         <div class='child'>
             <a href='/resetpassword.php' class='btn btn-primary'>Request A Password Reset</a>
         </div>
-    </div>
-
-    <h2>Resend Account Information</h2>
-    <div class='parent'>
-        <form class='child' action="/assistance" method="post">
-            <p>Submit your account email to check for existing ninja name, class, and level information:</p>
-            <input id="email" type="email" title="Please enter the email you set your account up with" maxlength="50" name="email" class="textField" placeholder='you@gmail.com'>
-            <input type='hidden' name='password_request' value='1'>
-            <button type="submit" value="Resend Account Info" class="formButton">Resend Account Info</button>
-        </form>
     </div>
 
 
@@ -58,6 +54,17 @@
             <input id="email" type="email" title="Your account email" placeholder='you@gmail.com' maxlength="50" name="email" class="textField">
             <input type='hidden' name='confirmation_request' value='1'>
             <button type="submit" value="Resend Confirm Code" class="formButton">Resend Confirm Code</button>
+        </form>
+    </div>
+
+
+    <h2>Resend Account Information</h2>
+    <div class='parent'>
+        <form class='child' action="/assistance" method="post">
+            <p>Submit your account email to check for existing ninja name, class, and level information:</p>
+            <input id="email" type="email" title="Please enter the email you set your account up with" maxlength="50" name="email" class="textField" placeholder='you@gmail.com'>
+            <input type='hidden' name='password_request' value='1'>
+            <button type="submit" value="Resend Account Info" class="formButton">Resend Account Info</button>
         </form>
     </div>
 
