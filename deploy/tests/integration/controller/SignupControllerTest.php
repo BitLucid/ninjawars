@@ -26,6 +26,14 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('NinjaWars\core\control\SignupController', $controller);
     }
 
+    public function testBlacklist() {
+        $this->assertInternalType('array', SignupController::getBlacklistedEmails());
+    }
+
+    public function testWhitelist() {
+        $this->assertInternalType('array', SignupController::getWhitelistedEmails());
+    }
+
     public function testIndexRuns() {
         $controller = new SignupController();
         $response = $controller->index();
@@ -195,11 +203,38 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertContains('proper class', $response['parts']['error']);
     }
 
-    public function testBlacklist() {
-        $this->assertInternalType('array', SignupController::getBlacklistedEmails());
-    }
+    public function testSuccessfulSignup() {
+        $uname = 'KnownGood';
+        $email = 'new@local.host';
 
-    public function testWhitelist() {
-        $this->assertInternalType('array', SignupController::getWhitelistedEmails());
+        RequestWrapper::inject(new Request([
+            'key'        => 'password1',
+            'cpass'      => 'password1',
+            'send_email' => $email,
+            'send_name'  => $uname,
+        ]));
+
+        $controller = new SignupController();
+        $response = $controller->signup();
+
+        $account = Account::findByEmail($email);
+        $player = Player::findByName($uname);
+
+        $query_relationship = 'SELECT count(*) FROM account_players WHERE _account_id = :id1 AND _player_id = :id2';
+
+        $relationship_count = query_item($query_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
+
+        $delete_player = 'DELETE FROM players WHERE player_id = :id';
+        $delete_account = 'DELETE FROM accounts WHERE account_id = :id';
+        $delete_relationship = 'DELETE FROM account_players WHERE _account_id = :id1 OR _player_id = :id2';
+
+        query($delete_player, [':id' => $player->id()]);
+        query($delete_account, [':id' => $account->id()]);
+        query($delete_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
+
+        $this->assertTrue($response['parts']['submit_successful']);
+        $this->assertNotNull($account);
+        $this->assertNotNull($player);
+        $this->assertEquals($relationship_count, 1);
     }
 }
