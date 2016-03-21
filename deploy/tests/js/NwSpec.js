@@ -17,11 +17,11 @@ dump(require.defined('nw.js'));
 describe('NW', function() {
   describe('debug is available', function() {
     var app;
-    beforeEach(function() {
+    beforeEach(function(NW) {
         app = NW;
     });
 
-    afterEach(function() {
+    afterEach(function(NW) {
         app = NW;
     });
     it('should return false when console.log is not present', function() {

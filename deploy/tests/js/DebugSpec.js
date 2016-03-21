@@ -12,7 +12,7 @@ describe('Echo', function() {
   describe('echo()', function() {
     it('should just return a parameter passed in', function() {
         var res = testEcho('something');
-        expect(res).toEqual('somethingzzzz');
+        expect(res).toEqual('something');
     });
   });
 });
