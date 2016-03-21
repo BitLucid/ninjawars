@@ -158,11 +158,11 @@ Router::$routes = [
     ],
     'rules' => [
         'type'  => 'simple',
-        'title' => 'rules',
+        'title' => 'Rules',
     ],
     'staff' => [
         'type'  => 'simple',
-        'title' => 'NinjaWars Staff',
+        'title' => 'Staff',
     ],
     'public' => [
         'type'  => 'simple',
@@ -178,7 +178,7 @@ Router::$routes = [
     ],
     'intro' => [
         'type'  => 'simple',
-        'title' => 'Intro to NinjaWars'
+        'title' => 'Intro to the game'
     ],
 ];
 
