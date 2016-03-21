@@ -4,7 +4,6 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Character;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\tests\MockPlayer;
-use \TestAccountCreateAndDestroy;
 
 class CombatTest extends \PHPUnit_Framework_TestCase {
 
@@ -21,7 +20,6 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testBountyExchangeWithBountyLessEqualPcs(){
-        //$pc = TestAccountCreateAndDestroy::char();
         $pc = new MockPlayer();
         $pc->difficulty = 1;
         $pc->level = 1;
@@ -40,7 +38,6 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testBountyExchangeWithSomeBountyOnDefender(){
-        //$pc = TestAccountCreateAndDestroy::char();
         $pc = new MockPlayer();
         $pc->difficulty = 1;
         $pc->level = 1;
@@ -59,7 +56,6 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testBountyExchangeWithInequalPcs(){
-        //$pc = TestAccountCreateAndDestroy::char();
         $pc = new MockPlayer();
         $pc->difficulty = 100;
         $pc->level = 100;
@@ -78,7 +74,6 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testBountyExchangeWithPowerfulPCWeakNpc(){
-        //$pc = TestAccountCreateAndDestroy::char();
         $pc = new MockPlayer();
         $pc->difficulty = 30;
         $pc->level = 30;
@@ -106,7 +101,6 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
 
 
     public function testBountyAtLeastBountyModFromNpcs(){
-        //$pc = TestAccountCreateAndDestroy::char();
         $pc = new MockPlayer();
         $pc->difficulty = 0;
         $pc->level = 1;

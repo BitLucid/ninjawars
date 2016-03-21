@@ -16,15 +16,9 @@ class Combat {
      * return int
      */
     public static function killpointsFromDueling(Player $attacker, Player $target) {
-        $levelDifference = ($target->level - $attacker->level);
+        $power_difference = ($target->difficulty() - $attacker->difficulty());
 
-        if ($levelDifference > 10) {
-            $multiplier = 5;
-        } else if ($levelDifference > 0) {
-            $multiplier = ceil($levelDifference/2);  //killpoint return of half the level difference.
-        } else {
-            $multiplier = 0;
-        }
+        $multiplier = max(0, min(4, ceil($power_difference/50)));
 
         return 1+$multiplier;
     }
