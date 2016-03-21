@@ -1,7 +1,7 @@
 <?php
 use NinjaWars\core\control\PasswordController;
 use NinjaWars\core\data\PasswordResetRequest;
-use NinjaWars\core\data\AccountFactory;
+use NinjaWars\core\data\Account;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     function setUp() {
         $this->account_id = TestAccountCreateAndDestroy::account_id();
-        $this->account = AccountFactory::findById($this->account_id);
+        $this->account = Account::findById($this->account_id);
         $this->nonce = nonce();
     }
 
@@ -87,7 +87,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $ninja_name = $char->name();
         $req->query->set('ninja_name', $ninja_name);
 
-        $account = AccountFactory::findByNinjaName($ninja_name);
+        $account = Account::findByNinjaName($ninja_name);
 
 
         $controller = new PasswordController();

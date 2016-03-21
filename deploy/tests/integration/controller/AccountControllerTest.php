@@ -17,14 +17,75 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
         $session->invalidate();
     }
 
-    public function testAccountControllerCanInstantiateWithoutError() {
+    public function testInstantiation() {
         $controller = new AccountController();
         $this->assertInstanceOf('NinjaWars\core\control\AccountController', $controller);
     }
 
-    public function testAccountControllerIndexRuns() {
+    public function testIndexRuns() {
         $controller = new AccountController();
         $response = $controller->index();
         $this->assertNotEmpty($response);
+    }
+
+    public function testChangeEmailFormRuns() {
+        $controller = new AccountController();
+        $response = $controller->showChangeEmailForm();
+        $this->assertNotEmpty($response);
+    }
+
+    public function testChangePasswordFormRuns() {
+        $controller = new AccountController();
+        $response = $controller->showChangePasswordForm();
+        $this->assertNotEmpty($response);
+    }
+
+    public function testDeleteConfirmationFormRuns() {
+        $controller = new AccountController();
+        $response = $controller->deleteAccountConfirmation();
+        $this->assertNotEmpty($response);
+    }
+
+    public function testChangeEmailWithEmptyPassword() {
+        RequestWrapper::inject(
+            new Request([
+                'newemail'     => 'new@localhost',
+                'confirmemail' => 'new@localhost',
+                'passw'        => '',
+            ])
+        );
+
+        $controller = new AccountController();
+        $response = $controller->changeEmail();
+        $this->assertNotEmpty($response['parts']['error']);
+    }
+
+    public function testChangePasswordWithEmptyPassword() {
+        RequestWrapper::inject(
+            new Request([
+                'newpassw'     => 'newpassword',
+                'confirmpassw' => 'newpassword',
+                'passw'        => '',
+            ])
+        );
+
+        $controller = new AccountController();
+        $response = $controller->changePassword();
+        $this->assertNotEmpty($response['parts']['error']);
+    }
+
+    public function testDeleteWithEmptyPassword() {
+        RequestWrapper::inject(
+            new Request([
+                'passw'        => '',
+            ])
+        );
+
+        $session = SessionFactory::getSession();
+        $failure_count = $session->get('delete_attempts');
+        $controller = new AccountController();
+        $response = $controller->deleteAccount();
+        $this->assertNotEmpty($response['parts']['error']);
+        $this->assertGreaterThan($failure_count, $session->get('delete_attempts'));
     }
 }

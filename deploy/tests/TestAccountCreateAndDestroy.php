@@ -108,9 +108,7 @@ class TestAccountCreateAndDestroy {
             'ip'          => $ip,
         ];
 
-        ob_start(); // Skip extra output
         create_account_and_ninja(TestAccountCreateAndDestroy::$test_ninja_name, $player_params);
-        ob_end_clean();
 
         if ($confirm) {
             confirm_player(TestAccountCreateAndDestroy::$test_ninja_name, false, true); // name, no confirm #, just autoconfirm.

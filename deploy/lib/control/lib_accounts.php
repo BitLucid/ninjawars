@@ -2,47 +2,19 @@
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 
-/**
- * Account creation and validation.
- */
-
-// Pull account data in a * like manner.
-function account_info($account_id, $specific=null){
-	$res = query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
-	if($specific){
-		if(isset($res[$specific])){
-			$res = $res[$specific];
-		} else {
-			$res = null;
-		}
-	}
-	return $res;
-}
-
 // Get the account linked with a character.
 function account_info_by_char_id($char_id, $specific=null){
 	$res = query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', 
 		array(':char_id'=>array($char_id, PDO::PARAM_INT)));
-	if($specific){
-		if(isset($res[$specific])){
+	if ($specific) {
+		if (isset($res[$specific])) {
 			$res = $res[$specific];
 		} else {
 			$res = null;
 		}
 	}
+
 	return $res;
-}
-
-function email_fits_pattern($p_email) {
-	return preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", $p_email);
-}
-
-function email_is_duplicate($email) {
-	$acc_check = 'SELECT account_identity FROM accounts
-		WHERE :email IN (account_identity, active_email)';
-	$dupe = query_item($acc_check, array(':email'=>strtolower($email)));
-
-	return !empty($dupe);
 }
 
 function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1, array $data=null) {
@@ -85,89 +57,28 @@ function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0,
 	return ($verify_ninja_id != $ninja_id ? false : $newID);
 }
 
-// Ninja and account creation functions.
-
-// Create a ninja
-function create_ninja($send_name, $params=array()) {
-	DatabaseConnection::getInstance();
-
-	$class_identity  = $params['send_class'];
-	$preconfirm  = (int) $params['preconfirm'];
-	$confirm     = (int) $params['confirm'];
-
-	$initial_hp = Player::maxHealthByLevel(1);
-	$initial_strength = Player::baseStrengthByLevel(1);
-	$initial_speed = Player::baseSpeedByLevel(1);
-	$initial_stamina = Player::baseStaminaByLevel(1);
-
-	// Create the initial player row.
-	$playerCreationQuery= "INSERT INTO players
-		 (uname, health, strength, speed, stamina, gold, messages, kills, turns, verification_number, active,
-		  _class_id, level,  status, member, days, bounty, created_date)
-		 VALUES
-		 (:username, :initial_hp, :initial_strength, :initial_speed, :initial_stamina, '100', '', '0', '180', :verification_number, :active,
-		 (SELECT class_id FROM class WHERE identity = :class_identity), '1', '1', '0', '0', '0', now())";
-	//  ***  Inserts the choices and defaults into the player table. Status defaults to stealthed. ***
-	$statement = DatabaseConnection::$pdo->prepare($playerCreationQuery);
-	$statement->bindValue(':username', $send_name);
-	$statement->bindValue(':verification_number', $confirm);
-	$statement->bindValue(':active', $preconfirm);
-	$statement->bindValue(':class_identity', $class_identity);
-	$statement->bindValue(':initial_hp', $initial_hp);
-	$statement->bindValue(':initial_strength', $initial_strength);
-	$statement->bindValue(':initial_speed', $initial_speed);
-	$statement->bindValue(':initial_stamina', $initial_stamina);
-	$statement->execute();
-	return get_char_id($send_name);
-}
-
-function send_signup_email($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
-	//  ***  Sends out the confirmation email to the chosen email address.  ***
-
-	$class_display = class_display_name_from_identity($class_identity);
-
-	$_to = array("$signup_email"=>$signup_name);
-	$_subject = 'NinjaWars Account Sign Up';
-	$_body = render_template('signup_email_body.tpl', array(
-			'send_name'       => $signup_name
-			, 'signup_email'       => $signup_email
-			, 'confirm'       => $confirm
-			, 'send_class'    => $class_display
-			, 'SUPPORT_EMAIL' => SUPPORT_EMAIL
-			, 'account_id'    => $account_id
-		)
-	);
-
-	$_from = array(SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME);
-
-	// *** Create message object. ***
-	$message = new Nmail($_to, $_subject, $_body, $_from);
-
-	// *** Set replyto address. ***
-	$message->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
-	return $message->send();
-}
-
 // Create the account and the initial ninja for that account.
 function create_account_and_ninja($send_name, $params=array()) {
 	$send_email  = $params['send_email'];
 	$send_pass   = $params['send_pass'];
 	$class_identity  = $params['send_class'];
 	$confirm     = (int) $params['confirm'];
-	$error       = false;
-	$data['ip'] = isset($params['ip'])? $params['ip'] : null;
-	$ninja_id    = create_ninja($send_name, $params);
-	$account_id  = create_account($ninja_id, $send_email, $send_pass, $confirm, 0, 1, $data);
+	$data['ip'] = (isset($params['ip'])? $params['ip'] : null);
 
-	if ($account_id) {
-		$sent = send_signup_email($account_id, $send_email, $send_name, $confirm, $class_identity);
+    $class_id = query_item(
+        'SELECT class_id FROM class WHERE identity = :class_identity',
+        [ ':class_identity' => $params['send_class'] ]
+    );
 
-		if (!$sent && !DEBUG) {
-			$error = 'There was a problem sending your signup to that email address.';
-		}
-	}
+    $ninja = new Player();
+    $ninja->uname               = $send_name;
+    $ninja->verification_number = (int) $params['confirm'];
+    $ninja->active              = (int) $params['preconfirm'];
+    $ninja->_class_id           = $class_id;
+    $ninja->save();
 
-	return $error;
+    $ninja_id = $ninja->id();
+	return create_account($ninja_id, $send_email, $send_pass, $confirm, 0, 1, $data);
 }
 
 // Confirm a player if they completely match.
@@ -208,10 +119,5 @@ function confirm_player($char_name, $confirmation=0, $autoconfirm=false) {
 // Get the display name from the identity.
 function class_display_name_from_identity($identity) {
 	return query_item('SELECT class_name from class where identity = :identity', array(':identity'=>$identity));
-}
-
-// Render a ninja inactive, until they log in.
-function inactivate_ninja($char_id){
-	query('update players set active = 0 where player_id = :char_id', array(':char_id'=>$char_id)); // Toggle the active bit off until they login.
 }
 

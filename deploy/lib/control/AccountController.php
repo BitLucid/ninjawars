@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
 
 /**
@@ -46,11 +47,16 @@ class AccountController {
 
         if ($verify) {
             if ($in_newEmail === $in_confirmEmail) {
-                if (!email_is_duplicate($in_newEmail)) {
-                    if (email_fits_pattern($in_newEmail)) {
-                        $this->_changeEmail($player->id(), $in_newEmail);
+                $account = Account::findByEmail($in_newEmail);
+
+                if ($account !== null) {
+                    try {
+                        $account = Account::findByChar($p_player);
+                        $account->setActiveEmail($p_email);
+                        $account->save();
+
                         $successMessage = 'Your email has been updated.';
-                    } else {
+                    } catch (\InvalidArgumentException $e) {
                         $error = 'Your email must be a valid email address containing a domain name and no spaces.';
                     }
                 } else {
@@ -69,20 +75,6 @@ class AccountController {
         ];
 
         return $this->render($parts);
-    }
-
-    /**
-     * Internal method to update account_identity in the database.
-     * @todo Make this done by the model
-     */
-    private function _changeEmail($p_playerID, $p_newEmail) {
-        $changeEmailQuery1 = "UPDATE accounts SET account_identity = :identity, active_email = :email WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
-
-        $statement = DatabaseConnection::$pdo->prepare($changeEmailQuery1);
-        $statement->bindValue(':pid', $p_playerID);
-        $statement->bindValue(':identity', $p_newEmail);
-        $statement->bindValue(':email', strtolower($p_newEmail));
-        $statement->execute();
     }
 
     /**
@@ -180,7 +172,14 @@ class AccountController {
 
         if ($verify && empty($delete_attempts)) {
             // only allow account deletion on first attempt
-            $this->pauseAccount($player->id());
+            $player = Player::find($player->id());
+            $player->active = 0;
+            $player->save();
+
+            $account = Account::findByChar($player);
+            $account->setOperational(false);
+            $account->save();
+
             logout_user(); // This may redirect and stuff?
         } else {
             $session->set('delete_attempts', $delete_attempts+1);
@@ -197,25 +196,6 @@ class AccountController {
     }
 
     /**
-     * Make a whole account non-operational, unable to login, and not active.
-     */
-    public function pauseAccount($p_playerID) {
-        $accountActiveQuery = 'UPDATE accounts SET operational = false WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)';
-        $playerConfirmedQuery = 'UPDATE players SET active = 0 WHERE player_id = :pid';
-
-        $statement = DatabaseConnection::$pdo->prepare($playerConfirmedQuery);
-        $statement->bindValue(':pid', $p_playerID);
-        $statement->execute();
-
-        $statement = DatabaseConnection::$pdo->prepare($accountActiveQuery);
-        $statement->bindValue(':pid', $p_playerID);
-        $statement->execute();
-        $count = $statement->rowCount();
-
-        return ($count > 0);
-    }
-
-    /**
      * Display the default account page
      */
     public function index() {
@@ -226,7 +206,7 @@ class AccountController {
      */
     private function render($parts) {
         // default parts
-        $account_info = account_info(account_id());
+        $account_info = Account::accountInfo(account_id());
 
         // Get the existing oauth info, if any.
         $oauth_provider = $account_info['oauth_provider'];

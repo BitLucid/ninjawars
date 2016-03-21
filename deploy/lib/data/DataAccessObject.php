@@ -135,7 +135,6 @@ abstract class DataAccessObject {
 
 		$statement->execute();
 
-		// The new id is set at the beginning of the function.
 		// set id on vo
 		$vo->{$this->_id_field} = $new_id;
 		return $new_id;

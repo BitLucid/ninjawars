@@ -1,8 +1,11 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\data\Account;
+use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use \Constants;
+use \Nmail;
 
 /**
  * Implements user actions for creating an account
@@ -31,7 +34,8 @@ class SignupController {
      */
     public function index() {
         Request::setTrustedProxies(Constants::$trusted_proxies);
-        $request = Request::createFromGlobals();
+        RequestWrapper::init();
+        $request = RequestWrapper::$request;
         $signupRequest = $this->buildSignupRequest($request);
 
         return [
@@ -90,8 +94,16 @@ class SignupController {
         ];
 
         // Create the player
-        if ($error = create_account_and_ninja($p_request->enteredName, $player_params)) {
-            throw new \RuntimeException($error, 4);
+        $account_id = create_account_and_ninja($p_request->enteredName, $player_params);
+
+        if ($account_id) {
+            $sent = $this->sendSignupEmail($account_id, $p_request->enteredEmail, $p_request->enteredName, $confirm, $p_request->enteredClass);
+
+            if (!$sent && !DEBUG) {
+                throw new \RuntimeException('There was a problem sending your signup to that email address.', 4);
+            }
+        } else {
+            throw new \RuntimeException('No account_id came back from creation', 4);
         }
 
         if ($preconfirm) {
@@ -158,7 +170,7 @@ class SignupController {
     /**
      * Takes an HTTP Request and creates a normalized request object for signup
      *
-     * @param Symfony\Component\HttpFoundation\Request $p_request
+     * @param Request $p_request
      * @return SignupRequest
      */
     private function buildSignupRequest($p_request) {
@@ -246,15 +258,12 @@ class SignupController {
      */
     private function validate_signup_phase3($enteredName, $enteredEmail) {
         $name_available  = $this->ninjaNameAvailable($enteredName);
-        $duplicate_email = email_is_duplicate($enteredEmail);
         $email_error     = $this->validateEmail($enteredEmail);
 
         if ($email_error) {
             return $email_error;
         } elseif (!$name_available) {
             return 'Phase 3 Incomplete: That ninja name is already in use.';
-        } elseif ($duplicate_email) {
-            return 'Phase 3 Incomplete: That account email is already in use. You can send a password reset request below if that email is your correct email.';
         } else {
             return null;
         }
@@ -276,8 +285,8 @@ class SignupController {
     public static function preconfirm_some_emails($email) {
         // Made the default be to auto-confirm players.
         $res = 1;
-        $blacklisted_by = self::get_blacklisted_emails();
-        $whitelisted_by = self::get_whitelisted_emails();
+        $blacklisted_by = self::getBlacklistedEmails();
+        $whitelisted_by = self::getWhitelistedEmails();
 
         // Blacklist only exists because emails beyond the first might not get through if we don't confirm.
         foreach ($blacklisted_by AS $loop_domain) {
@@ -333,7 +342,7 @@ class SignupController {
      * @todo move to a model
      * @return String[]
      */
-    public static function get_whitelisted_emails() {
+    public static function getWhitelistedEmails() {
         return ['@gmail.com'];
     }
 
@@ -343,7 +352,7 @@ class SignupController {
      * @todo move to a model
      * @return String[]
      */
-    public static function get_blacklisted_emails() {
+    public static function getBlacklistedEmails() {
         return [
             '@hotmail.com',
             '@hotmail.co.uk',
@@ -358,15 +367,10 @@ class SignupController {
 
     private function validateEmail($email) {
         $error = null;
-        if (FALSE) {
-            // CURRENTLY NO BLOCKED EMAIL SERVICES
-            //strstr($send_email, '@') == '@aol.com' || strstr($send_email, '@') == '@netscape.com' || strstr($send_email, '@') == '@aim.com'
-            //Throws error if email from blocked domain.
-            $error = 'Phase 3 Incomplete: We cannot currently accept @aol.com, @netscape.com, or @aim.com email addresses.';
-        } elseif (!email_fits_pattern($email)) {
+        if (!Account::emailIsValid($email)) {
             $error = 'Phase 3 Incomplete: The email address ('
                 .htmlentities($email).') must not contain spaces and must contain an @ symbol and a domain name to be valid.';
-        } elseif (email_is_duplicate($email)) {
+        } elseif (Account::findByEmail($email) !== null) {
             $error = 'Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.';
         }
 
@@ -386,5 +390,35 @@ class SignupController {
         }
 
         return (!get_user_id($ninja_name));
+    }
+
+    /**
+     * Sends out the confirmation email to the chosen email address.
+     */
+    private function sendSignupEmail($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
+        $class_display = class_display_name_from_identity($class_identity);
+        $_to           = [$signup_email => $signup_name];
+        $_subject      = 'NinjaWars Account Sign Up';
+        $_body         = render_template(
+            'signup_email_body.tpl',
+            [
+                'send_name'     => $signup_name,
+                'signup_email'  => $signup_email,
+                'confirm'       => $confirm,
+                'send_class'    => $class_display,
+                'SUPPORT_EMAIL' => SUPPORT_EMAIL,
+                'account_id'    => $account_id,
+            ]
+        );
+
+        $_from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
+
+        // *** Create message object. ***
+        $message = new Nmail($_to, $_subject, $_body, $_from);
+
+        // *** Set replyto address. ***
+        $message->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);
+
+        return $message->send();
     }
 }

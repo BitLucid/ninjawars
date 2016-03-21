@@ -3,7 +3,6 @@ namespace NinjaWars\core\control;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\NpcFactory;
-use NinjaWars\core\data\AccountFactory;
 use NinjaWars\core\data\AdminViews;
 use NinjaWars\core\data\Player;
 
@@ -76,7 +75,7 @@ class NinjamasterController {
         if ($viewChar) {
             $ids              = explode(',', $viewChar);
             $firstChar        = new Player(reset($ids));
-            $firstAccount     = AccountFactory::findByChar($firstChar);
+            $firstAccount     = Account::findByChar($firstChar);
             $charInfos        = AdminViews::split_char_infos($viewChar);
             $charInventory    = AdminViews::char_inventory($viewChar);
             $firstMessage     = $firstChar->messages;

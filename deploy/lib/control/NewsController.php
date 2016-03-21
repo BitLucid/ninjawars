@@ -7,7 +7,7 @@ use \InvalidArgumentException;
 use \ErrorException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Player;
-use NinjaWars\core\data\AccountFactory;
+use NinjaWars\core\data\Account;
 
 /**
  * Allows creation of news and displaying of news by admins
@@ -109,7 +109,7 @@ class NewsController {
     public function store(){
         try{
             $this->hasCreateRole($this->pc);
-            $account = $this->pc? AccountFactory::findByChar($this->pc) : null;
+            $account = $this->pc? Account::findByChar($this->pc) : null;
             $account_id = $account->id();
         } catch(InvalidArgumentException $e){
             $error = "Sorry, you must be logged in to try to save a news post.";

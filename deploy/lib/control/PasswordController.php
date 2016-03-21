@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\PasswordResetRequest;
-use NinjaWars\core\data\AccountFactory;
+use NinjaWars\core\data\Account;
 use \Nmail;
 
 class PasswordController {
@@ -84,11 +84,11 @@ class PasswordController {
             $error = 'You must specify either an email or a ninja name!';
         } else {
             if ($email) {
-                $account = AccountFactory::findByEmail($email);
+                $account = Account::findByEmail($email);
             }
 
             if (!isset($account)) {
-                $account = AccountFactory::findByNinjaName($ninja_name);
+                $account = Account::findByNinjaName($ninja_name);
             }
 
             if ($account === null || !$account->id()) {

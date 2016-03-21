@@ -8,7 +8,7 @@ use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\PlayerVO;
 use NinjaWars\core\data\Character;
 use NinjaWars\core\data\GameLog;
-use NinjaWars\core\data\AccountFactory;
+use NinjaWars\core\data\Account;
 use \PDO;
 
 /**
@@ -39,9 +39,7 @@ use \PDO;
  * @property-read string uname Deprecated in favor of ->name() method
  */
 class Player implements Character {
-	public $player_id;
 	public $vo;
-	public $status;
 	public $ip;
 	public $avatar_url;
     private $data;
@@ -53,46 +51,72 @@ class Player implements Character {
 		if (!empty($player_id_or_username)) {
 			if (!is_numeric($player_id_or_username) && is_string($player_id_or_username)) {
 				$sel = "SELECT player_id FROM players WHERE lower(uname) = lower(:uname) LIMIT 1";
-				$this->player_id = query_item($sel, array(':uname'=>array($player_id_or_username, PDO::PARAM_INT)));
+				$player_id = query_item($sel, array(':uname'=>array($player_id_or_username, PDO::PARAM_INT)));
 			} else {
-				$this->player_id = (int) $player_id_or_username;
+				$player_id = (int) $player_id_or_username;
 			}
 
 			$dao = new PlayerDAO();
-			if (!($this->vo = $dao->get($this->player_id))) {
+			if (!($this->vo = $dao->get($player_id))) {
 				$this->vo = new PlayerVO();
 				$this->avatar_url = null;
 			}
 		} else {
-			$this->vo = new PlayerVO();
-			$this->avatar_url = null;
-		}
-	}
+            $level = 1;
+
+			$this->vo                  = new PlayerVO();
+            $this->avatar_url          = null;
+            $this->uname               = null;
+            $this->health              = Player::maxHealthByLevel($level);
+            $this->strength            = Player::baseStrengthByLevel($level);
+            $this->speed               = Player::baseSpeedByLevel($level);
+            $this->stamina             = Player::baseStaminaByLevel($level);
+            $this->level               = $level;
+            $this->gold                = 100;
+            $this->turns               = 180;
+            $this->kills               = 0;
+            $this->status              = 0;
+            $this->member              = 0;
+            $this->days                = 0;
+            $this->bounty              = 0;
+            $this->energy              = 0;
+            $this->ki                  = 0;
+            $this->karma               = 0;
+            $this->avatar_type         = 1;
+            $this->messages            = '';
+            $this->description         = '';
+            $this->instincts           = '';
+            $this->traits              = '';
+            $this->beliefs             = '';
+            $this->goals               = '';
+            $this->last_started_attack = '2016-01-01';
+        }
+    }
 
     /**
      * @return string
      */
-	public function __toString() {
-		return $this->name();
-	}
+    public function __toString() {
+        return $this->name();
+    }
 
     /**
      * Magic method to provide accessors for properties
      *
      * @return mixed
      */
-	public function __get($member_field) {
-		return $this->vo->$member_field;
-	}
+    public function __get($member_field) {
+        return $this->vo->$member_field;
+    }
 
     /**
      * Magic method to provide mutators for properties
      *
      * @return mixed
      */
-	public function __set($member_field, $value) {
-		return $this->vo->$member_field = $value;
-	}
+    public function __set($member_field, $value) {
+        return $this->vo->$member_field = $value;
+    }
 
     /**
      * Magic method to handle isset() and empty() calls against properties
@@ -106,9 +130,9 @@ class Player implements Character {
     /**
      * @return string
      */
-	public function name() {
-		return $this->vo->uname;
-	}
+    public function name() {
+        return $this->vo->uname;
+    }
 
     /**
      * @return int
@@ -480,6 +504,7 @@ class Player implements Character {
 
     /**
      * Simple wrapper for subtractive action.
+     *
      * @return int
      * @deprecated use Player::harm() instead
      */
@@ -604,12 +629,7 @@ class Player implements Character {
 	}
 
 	/**
-	 * Save information
-     *
-	 * Saves:
-	 * gold
-	 * turns
-	 * all non-foreign key data in vo
+	 * Persist object to database
      *
 	 * @return Player
 	 */
@@ -852,9 +872,9 @@ class Player implements Character {
 
                 GameLog::recordLevelUp($this->id());
 
-                $account = AccountFactory::findByChar($this);
+                $account = Account::findByChar($this);
                 $account->setKarmaTotal($account->getKarmaTotal() + $karma_to_give);
-                AccountFactory::save($account);
+                $account->save();
 
                 // Send a level-up message, for those times when auto-levelling happens.
                 send_event($this->id(), $this->id(),

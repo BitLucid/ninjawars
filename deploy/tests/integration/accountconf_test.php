@@ -1,8 +1,10 @@
 <?php
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use NinjaWars\core\control\AccountController;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\control\AccountController;
 use NinjaWars\core\control\SignupController;
+use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Account;
 
 /** Account behavior
  *
@@ -255,7 +257,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      */
     function testLoginConfirmedAccountWithInactivePlayerSucceeds(){
         $confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
-        inactivate_ninja(get_char_id($this->test_ninja_name)); // Just make them fade off the active lists, inactive, don't pause the account
+        $player = Player::findByName($this->test_ninja_name);
+        $player->active = 0;
+        $player->save();
         $res = login_user($this->test_email, $this->test_password);
         $this->assertTrue($confirm_worked);
         $this->assertTrue($res['success'], 'Faded-to-inactive player unable to login');
@@ -269,17 +273,21 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $accountController = new AccountController();
         $confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
         $this->assertTrue((bool)$confirm_worked);
-        $char_id = get_char_id($this->test_ninja_name);
-        $paused = $accountController->pauseAccount($char_id); // Fully pause the account, make the operational bit = false
-        $this->assertTrue((bool)$paused);
 
-        $account_operational = query_item(
-            'SELECT operational FROM accounts JOIN account_players ON account_id = _account_id WHERE _player_id = :char_id',
-            [':char_id' => $char_id]
-        );
-
-        $this->assertFalse($account_operational);
         $res = login_user($this->test_email, $this->test_password);
+        $this->assertTrue($res['success'], 'Login should be successful when account is new');
+
+        // Fully pause the account, make the operational bit = false
+        $player = Player::findByName($this->test_ninja_name);
+        $player->active = 0;
+        $player->save();
+
+        $account = Account::findByChar($player);
+        $account->setOperational(false);
+        $account->save();
+
+        $res = login_user($this->test_email, $this->test_password);
+
         $this->assertFalse($res['success'], 'Login should not be successful when account is paused');
         $this->assertTrue(is_string($res['login_error']));
         $this->assertTrue((bool)$res['login_error']);
