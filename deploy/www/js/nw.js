@@ -480,7 +480,9 @@ if(g_isIndex || g_isRoot){
 $(function() {
 
 	$('html').removeClass('no-js'); // Remove no-js class when js present.
-	$('time.timeago').timeago(); // Set time-since-whatever areas
+	if(jQuery.timeago){
+		$('time.timeago').timeago(); // Set time-since-whatever areas
+	}
 
 	// INDEX ONLY CHANGES
 	if (g_isIndex || g_isRoot) {
