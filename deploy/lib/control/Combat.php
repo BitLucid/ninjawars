@@ -13,7 +13,7 @@ class Combat {
 
     /**
      * Take an attacker and target, and return the killpoints
-     * return int
+     * @return int
      */
     public static function killpointsFromDueling(Player $attacker, Player $target) {
         $power_difference = ($target->difficulty() - $attacker->difficulty());
@@ -26,6 +26,7 @@ class Combat {
     /**
      * Rewards bounty if defender has some, 
      * otherwise increments attacker bounty if power disparity
+     * @return string
      */
     public static function runBountyExchange(Player $user, $defender, $bounty_mod=0) {
         assert($defender instanceof Character); // 'cause can't typehint interfaces

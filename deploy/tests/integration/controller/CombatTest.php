@@ -4,6 +4,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Character;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\tests\MockPlayer;
+use NinjaWars\tests\MockNpc;
 
 class CombatTest extends \PHPUnit_Framework_TestCase {
 
@@ -17,6 +18,13 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
                 $char
             )
         );
+    }
+
+    public function testKillPointsForLowerDiffIsJustOne(){
+        $char = new MockPlayer();
+        $other = new MockPlayer();
+        $kp = Combat::killPointsFromDueling($char, $other);
+        $this->assertEquals(1, $kp);
     }
 
     public function testBountyExchangeWithBountyLessEqualPcs(){
@@ -78,10 +86,9 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
         $pc->difficulty = 30;
         $pc->level = 30;
         $npc = new MockNpc();
-        $npc->bountyMod = 20;
-        $bounty_mod = 100;
+        $npc->data['bounty_mod'] = 20;
 
-        $bounty_mess = Combat::runBountyExchange($pc, $npc, $bounty_mod);
+        $bounty_mess = Combat::runBountyExchange($pc, $npc, $npc->bountyMod());
         // With a high powered pc, some bounty should be put on by attacking a low powered npc.
         $this->assertNotEquals(null, $bounty_mess);
     }
@@ -100,15 +107,14 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
     }
 
 
-    public function testBountyAtLeastBountyModFromNpcs(){
+    public function testBountyAtLeastMoreThanBountyModFromNpcs(){
         $pc = new MockPlayer();
         $pc->difficulty = 0;
         $pc->level = 1;
         $npc = new MockNpc();
-        $npc->bountyMod = 20;
-        $bounty_mod = 0;
+        $npc->data['bounty_mod'] = 20;
 
-        $bounty_mess = Combat::runBountyExchange($pc, $npc, $bounty_mod);
+        $bounty_mess = Combat::runBountyExchange($pc, $npc, $npc->bountyMod());
         // With a high powered pc, some bounty should be put on by attacking a low powered npc.
         $this->assertNotEquals(null, $bounty_mess);
     }

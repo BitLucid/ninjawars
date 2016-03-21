@@ -3,7 +3,7 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\Player;
 
-class NpcFactoryUnitTest extends PHPUnit_Framework_TestCase {
+class NpcUnitTest extends PHPUnit_Framework_TestCase {
     public function testInstantiatingABlankNpc() {
         $npc = new Npc(array());
         $this->assertTrue($npc instanceof Npc);

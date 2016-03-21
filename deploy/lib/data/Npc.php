@@ -61,7 +61,7 @@ class Npc implements Character{
     // Calculate difficulty, naively at the moment.
     public function difficulty(){
         // Just add together all the points of the mob, so to speak.
-        $adds_bounty = isset($this->data['bounty_mod'])? 1 : 0;
+        $adds_bounty = $this->bountyMod() > 0? 1 : 0;
         $armored = $this->has_trait('armored')? 1 : 0;
         $complex = count($this->traits());
         $matches_strength = $this->has_trait('partial_match_strength')? 1 : 0;
@@ -153,7 +153,7 @@ class Npc implements Character{
 
     /**
      * Additional bounty added by killing this char
-     * Only npcs with a bounty mod will give bounty at all.
+     * Only npcs with a bounty mod will put a bounty on your head at all.
      * @return int
     **/
     public function bountyMod(){

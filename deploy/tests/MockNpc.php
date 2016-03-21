@@ -8,7 +8,7 @@ use NinjaWars\core\data\Character;
  * Create a mock npc to manipulate
  */
 class MockNpc implements Character{
-    public $bounty = 10;
+    public $bounty_mod = 10;
     public $strength = 10;
     public $speed = 10;
     public $stamina = 10;
@@ -20,6 +20,10 @@ class MockNpc implements Character{
 
     public function gold(){
         return $this->gold;
+    }
+
+    public function bountyMod(){
+        return $this->bounty_mod;
     }
 
     public function strength(){
