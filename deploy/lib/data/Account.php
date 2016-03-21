@@ -180,6 +180,15 @@ class Account {
 		return $this->active_email;
 	}
 
+    public function setActiveEmail($p_email) {
+        if (self::emailIsValid($p_email)) {
+            $this->active_email     = $p_email;
+            $this->account_identity = $p_email;
+        } else {
+            throw new \InvalidArgumentException('The email provided does not meet validation requirements.');
+        }
+    }
+
 	public function getLastLogin() {
 		return $this->info['last_login'];
 	}
@@ -304,5 +313,9 @@ class Account {
             where account_id = :account_id', $params);
 
         return $updated;
+    }
+
+    public static function emailIsValid($p_email) {
+        return preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", $p_email);
     }
 }

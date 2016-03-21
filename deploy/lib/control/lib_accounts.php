@@ -6,26 +6,15 @@ use NinjaWars\core\data\Player;
 function account_info_by_char_id($char_id, $specific=null){
 	$res = query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', 
 		array(':char_id'=>array($char_id, PDO::PARAM_INT)));
-	if($specific){
-		if(isset($res[$specific])){
+	if ($specific) {
+		if (isset($res[$specific])) {
 			$res = $res[$specific];
 		} else {
 			$res = null;
 		}
 	}
+
 	return $res;
-}
-
-function email_fits_pattern($p_email) {
-	return preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", $p_email);
-}
-
-function email_is_duplicate($email) {
-	$acc_check = 'SELECT account_identity FROM accounts
-		WHERE :email IN (account_identity, active_email)';
-	$dupe = query_item($acc_check, array(':email'=>strtolower($email)));
-
-	return !empty($dupe);
 }
 
 function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1, array $data=null) {

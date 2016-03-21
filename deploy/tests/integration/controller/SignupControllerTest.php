@@ -222,7 +222,11 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $query_relationship = 'SELECT count(*) FROM account_players WHERE _account_id = :id1 AND _player_id = :id2';
 
-        $relationship_count = query_item($query_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
+        if ($account && $player) {
+            $relationship_count = query_item($query_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
+        } else {
+            $relationship_count = 0;
+        }
 
         $delete_player = 'DELETE FROM players WHERE player_id = :id';
         $delete_account = 'DELETE FROM accounts WHERE account_id = :id';
@@ -233,8 +237,6 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         query($delete_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
 
         $this->assertTrue($response['parts']['submit_successful']);
-        $this->assertNotNull($account);
-        $this->assertNotNull($player);
         $this->assertEquals($relationship_count, 1);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\data\Account;
 use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use \Constants;
@@ -366,10 +367,10 @@ class SignupController {
 
     private function validateEmail($email) {
         $error = null;
-        if (!email_fits_pattern($email)) {
+        if (!Account::emailIsValid($email)) {
             $error = 'Phase 3 Incomplete: The email address ('
                 .htmlentities($email).') must not contain spaces and must contain an @ symbol and a domain name to be valid.';
-        } elseif (email_is_duplicate($email)) {
+        } elseif (Account::findByEmail($email) !== null) {
             $error = 'Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.';
         }
 

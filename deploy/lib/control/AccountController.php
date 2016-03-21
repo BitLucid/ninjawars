@@ -47,11 +47,16 @@ class AccountController {
 
         if ($verify) {
             if ($in_newEmail === $in_confirmEmail) {
-                if (!email_is_duplicate($in_newEmail)) {
-                    if (email_fits_pattern($in_newEmail)) {
-                        $this->_changeEmail($player->id(), $in_newEmail);
+                $account = Account::findByEmail($in_newEmail);
+
+                if ($account !== null) {
+                    try {
+                        $account = Account::findByChar($p_player);
+                        $account->setActiveEmail($p_email);
+                        $account->save();
+
                         $successMessage = 'Your email has been updated.';
-                    } else {
+                    } catch (\InvalidArgumentException $e) {
                         $error = 'Your email must be a valid email address containing a domain name and no spaces.';
                     }
                 } else {
@@ -70,20 +75,6 @@ class AccountController {
         ];
 
         return $this->render($parts);
-    }
-
-    /**
-     * Internal method to update account_identity in the database.
-     * @todo Make this done by the model
-     */
-    private function _changeEmail($p_playerID, $p_newEmail) {
-        $changeEmailQuery1 = "UPDATE accounts SET account_identity = :identity, active_email = :email WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
-
-        $statement = DatabaseConnection::$pdo->prepare($changeEmailQuery1);
-        $statement->bindValue(':pid', $p_playerID);
-        $statement->bindValue(':identity', $p_newEmail);
-        $statement->bindValue(':email', strtolower($p_newEmail));
-        $statement->execute();
     }
 
     /**
