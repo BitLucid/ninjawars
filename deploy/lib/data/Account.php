@@ -74,7 +74,7 @@ class Account {
         $account_info = query_row(
             'SELECT * FROM accounts WHERE (oauth_id = :id AND oauth_provider = :provider) ORDER BY operational, type, created_date ASC LIMIT 1',
             [
-                ':id'       => positive_int($accountId),
+                ':id'       => positive_int($oauth_id),
                 ':provider' => $provider,
             ]
         );
