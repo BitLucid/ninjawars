@@ -170,7 +170,7 @@ class SignupController {
     /**
      * Takes an HTTP Request and creates a normalized request object for signup
      *
-     * @param Symfony\Component\HttpFoundation\Request $p_request
+     * @param Request $p_request
      * @return SignupRequest
      */
     private function buildSignupRequest($p_request) {
