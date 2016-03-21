@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Npc;
+use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\data\Player;
@@ -182,13 +183,12 @@ class NpcController { //extends controller
                     }
                 }
 
-                // Add bounty where applicable.
+                // Add bounty where applicable for npcs.
                 if ((bool)$bounty_mod &&
                     $player->level > self::MIN_LEVEL_FOR_BOUNTY &&
                     $player->level <= self::MAX_LEVEL_FOR_BOUNTY
                 ) {
-                    $added_bounty = floor($player->level / 3 * $bounty_mod);
-                    $player->set_bounty($player->bounty + $added_bounty);
+                    $added_bounty = Combat::runBountyExchange($player, $npco, $bounty_mod);
                 }
             }
 

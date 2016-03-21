@@ -61,7 +61,7 @@ class Npc implements Character{
     // Calculate difficulty, naively at the moment.
     public function difficulty(){
         // Just add together all the points of the mob, so to speak.
-        $has_bounty = (int) isset($this->data['bounty']);
+        $adds_bounty = isset($this->data['bounty_mod'])? 1 : 0;
         $armored = $this->has_trait('armored')? 1 : 0;
         $complex = count($this->traits());
         $matches_strength = $this->has_trait('partial_match_strength')? 1 : 0;
@@ -70,7 +70,7 @@ class Npc implements Character{
             + $this->damage 
             + floor($this->max_health() / 10)
             + (int) ($this->max_health() > 1) // Have more than 1 health, so not totally devoid of content
-            + $has_bounty 
+            + $adds_bounty 
             + $armored * 5
             + $complex * 3
 			+ $matches_strength * 5
@@ -152,18 +152,12 @@ class Npc implements Character{
     }
 
     /**
-     * Technically, this is the MAX bounty.
+     * Additional bounty added by killing this char
+     * Only npcs with a bounty mod will give bounty at all.
+     * @return int
     **/
-    public function bounty(){
-        return $this->bounty;
-    }
-
-    public function dynamicBounty(Player $char){
-        if($char->level <= 2){
-            return 0;
-        } else {
-            return $this->bounty();
-        }
+    public function bountyMod(){
+        return $this->bounty_mod;
     }
 
     /**
