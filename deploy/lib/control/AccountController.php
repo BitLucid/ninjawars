@@ -32,7 +32,7 @@ class AccountController {
      */
     public function changeEmail() {
         // confirm_delete
-        $player     = new Player(self_char_id());
+        $player     = Player::find(self_char_id());
         $self_info 	= $player->dataWithClan();
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
@@ -52,7 +52,7 @@ class AccountController {
                 if ($account !== null) {
                     try {
                         $account = Account::findByChar($p_player);
-                        $account->setActiveEmail($p_email);
+                        $account->setActiveEmail($in_newEmail);
                         $account->save();
 
                         $successMessage = 'Your email has been updated.';
