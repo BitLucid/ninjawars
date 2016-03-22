@@ -18,8 +18,14 @@ module.exports = function(config) {
       'test-main.js',
       'deploy/www/js/jquery.min.js',
       'deploy/www/js/jquery.timeago.js',
-      {pattern: 'deploy/www/js/*.js', included: true},
-      {pattern: 'deploy/tests/js/*Spec.js', included: true}
+      'deploy/www/js/nw.js',
+      'deploy/www/js/debug.js',
+      'deploy/www/js/passwords.js',
+      'deploy/www/js/talk.js',
+      'deploy/www/js/casino.js',
+      'deploy/www/js/disagreement.js',
+      {pattern: 'deploy/www/js/*.js', included: false},
+      {pattern: 'deploy/tests/js/*Spec.js', included: false}
     ],
 
 
@@ -64,7 +70,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'PhantomJS'],
 
 
     // Continuous Integration mode

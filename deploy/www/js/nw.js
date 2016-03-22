@@ -12,9 +12,9 @@
 
 "use strict"; // Strict checking.
 
-var window = window || null;
+this.NW = this.NW || {};
 
-var NW = window.NW || {};
+this.environment = 'NW App context';
 
 //var $ = jQuery; // jQuery sets itself to use the dollar sign shortcut by default.
 // A different instance of jquery is currently used in the iframe and outside.
