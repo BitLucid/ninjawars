@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Npc;
+use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\data\Player;
@@ -142,7 +143,6 @@ class NpcController { //extends controller
         // TODO: Calculate and display damage verbs
         $reward_item            = (isset($npc_stats['item']) && $npc_stats['item'] ? $npc_stats['item'] : null);
         $is_quick               = (boolean) ($npco->speed() > $player->speed()); // Beyond basic speed and they see you coming, so show that message.
-        $bounty_mod             = (isset($npc_stats['bounty']) ? $npc_stats['bounty'] : null);
         $is_weaker              = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
         $is_stronger            = ($npco->strength()) > ($player->strength() * 3); // Npc More than twice as strong?
         $image                  = (isset($npc_stats['img']) ? $npc_stats['img'] : null);
@@ -182,13 +182,12 @@ class NpcController { //extends controller
                     }
                 }
 
-                // Add bounty where applicable.
-                if ((bool)$bounty_mod &&
+                // Add bounty where applicable for npcs.
+                if ($npco->bountyMod() > 0 &&
                     $player->level > self::MIN_LEVEL_FOR_BOUNTY &&
                     $player->level <= self::MAX_LEVEL_FOR_BOUNTY
                 ) {
-                    $added_bounty = floor($player->level / 3 * $bounty_mod);
-                    $player->set_bounty($player->bounty + $added_bounty);
+                    $added_bounty = Combat::runBountyExchange($player, $npco, $npco->bountyMod());
                 }
             }
 

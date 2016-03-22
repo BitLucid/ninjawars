@@ -63,7 +63,7 @@ class NpcFactory {
         $npc->damage            = (int) @$data['damage'];
         $npc->ki                = (int) @$data['ki'];
         $npc->race              = @$data['race'];
-        $npc->bounty            = @$data['bounty'];
+        $npc->bounty_mod            = @$data['bounty_mod'];
         $npc->gold              = @$data['gold'];
         $npc->traits_array      = null;
         $npc->inventory         = null; // The actual instance inventory is intitially just null;
@@ -177,13 +177,13 @@ class NpcFactory {
 
         if (defined('DEBUG') && DEBUG) {
             $npcs += [
-                'peasant2'=>['name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>5, 'stamina'=>5, 'speed'=>5, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty'=>1, 'traits'=>'villager,sometimes_disguised_ninja', 'inventory'=>['kunai'=>'.01', 'shuriken'=>'.01']],
+                'peasant2'=>['name'=>'Peasant', 'race'=>'human', 'img'=>'fighter.png', 'strength'=>5, 'stamina'=>5, 'speed'=>5, 'ki'=>1, 'damage'=>1, 'gold'=>20, 'bounty_mod'=>1, 'traits'=>'villager,sometimes_disguised_ninja', 'inventory'=>['kunai'=>'.01', 'shuriken'=>'.01']],
                 'merchant2'=>['name'=>'Merchant', 'race'=>'human', 'strength'=>10, 'stamina'=>20, 'speed'=>10, 'ki'=>1,
-                'damage'=>15, 'gold'=>50, 'bounty'=>5, 'img'=>'merchant.png', 'inventory'=>['phosphor'=>'.3'], 'traits'=>'villager,rich'],
+                'damage'=>15, 'gold'=>50, 'bounty_mod'=>5, 'img'=>'merchant.png', 'inventory'=>['phosphor'=>'.3'], 'traits'=>'villager,rich'],
                 'guard2'=>['name'=>'Guard', 'short'=>'is a member of the ashigaru foot soldiers, hired for various tasks', 'race'=>'human', 'strength'=>'30', 'stamina'=>30, 'speed'=>12, 'ki'=>1,
-                'damage'=>0, 'gold'=>50, 'bounty'=>10, 'img'=>'guard.png', 'inventory'=>['ginsengroot'=>'.2'], 'traits'=>'partial_match_strength'],
+                'damage'=>0, 'gold'=>50, 'bounty_mod'=>10, 'img'=>'guard.png', 'inventory'=>['ginsengroot'=>'.2'], 'traits'=>'partial_match_strength'],
                 'monk'=>['name'=>'Monk', 'strength'=>10, 'stamina'=>10, 'speed'=>10, 'ki'=>30, 'race'=>'human', 'inventory'=>['prayerwheel'=>'.2'], 'traits'=>'deflection,defensive,self_heal'],
-                'geisha'=>['name'=>'Geisha', 'strength'=>5, 'stamina'=>10, 'speed'=>15, 'ki'=>10, 'gold'=>20, 'bounty'=>30, 'race'=>'human', 'inventory'=>['sake'=>'.2', 'mirror'=>'.01', 'kimono'=>'.01', 'tessen'=>'.01'], 'traits'=>'packdynamic,guarded,villager'],
+                'geisha'=>['name'=>'Geisha', 'strength'=>5, 'stamina'=>10, 'speed'=>15, 'ki'=>10, 'gold'=>20, 'bounty_mod'=>30, 'race'=>'human', 'inventory'=>['sake'=>'.2', 'mirror'=>'.01', 'kimono'=>'.01', 'tessen'=>'.01'], 'traits'=>'packdynamic,guarded,villager'],
                 'koi'=>['name'=>'Koi', 'short'=>'swims through the water', 'img'=>'koi.jpg', 'strength'=>0, 'speed'=>5, 'stamina'=>2, 'damage'=>1, 'race'=>'fish', 'inventory'=>['sushi'=>'.5']],
                 'chicken'=>['name'=>'Chicken', 'short'=>'saunters around like it owns the place', 'strength'=>1, 'speed'=>5, 'damage'=>0, 'race'=>'bird'],
                 'bees'=>['name'=>'Swarm of Bees', 'short'=>'swarms and buzzes through the air', 'strength'=>13, 'speed'=>30, 'damage'=>6, 'gold'=>0, 'race'=>'insect'],

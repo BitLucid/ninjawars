@@ -3,7 +3,7 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\Player;
 
-class NpcFactoryUnitTest extends PHPUnit_Framework_TestCase {
+class NpcUnitTest extends PHPUnit_Framework_TestCase {
     public function testInstantiatingABlankNpc() {
         $npc = new Npc(array());
         $this->assertTrue($npc instanceof Npc);
@@ -87,9 +87,9 @@ class NpcFactoryUnitTest extends PHPUnit_Framework_TestCase {
             $this->markTestSkipped(); // No merchant2 in non-debug scenarios for now.
         } else {
             $merchant = new Npc('merchant2');
-            $this->assertGreaterThan(0, $merchant->bounty());
+            $this->assertGreaterThan(0, $merchant->bountyMod());
             $villager = new Npc('peasant2');
-            $this->assertGreaterThan(0, $villager->bounty());
+            $this->assertGreaterThan(0, $villager->bountyMod());
         }
     }
 
@@ -127,7 +127,7 @@ class NpcFactoryUnitTest extends PHPUnit_Framework_TestCase {
         $mock_pc = new Player();
         $mock_pc->vo->level = 10;
         $this->assertEquals(10, $mock_pc->level);
-        $this->assertGreaterThan(0, $peasant->dynamicBounty($mock_pc));
+        $this->assertGreaterThan(0, $peasant->bountyMod());
     }
 
     /**
@@ -147,15 +147,15 @@ class NpcFactoryUnitTest extends PHPUnit_Framework_TestCase {
         $this->assertGreaterThan(15, $merchant2->max_damage());
         $this->assertLessThan(70, $merchant2->gold());
         $this->assertGreaterThan(20, $merchant2->gold());
-        $this->assertGreaterThan(0, $merchant2->bounty());
-        $this->assertLessThan(25, $merchant2->bounty());
+        $this->assertGreaterThan(0, $merchant2->bountyMod());
+        $this->assertLessThan(25, $merchant2->bountyMod());
     }
 
     /**
      * Guard1:
      * Dam: 1 to attacker_str + 40
      * Gold: 1 to attacker_str + 40
-     * Bounty: 10 + 1-10
+     * Bounty: 10 + 0-10
      * 1 in 9 chance of ginseng root
      * Guard2: Strength is about 30, which is multiplied by 2, + 1 point during damage calc.
      * Gold doesn't get boosted by strength
@@ -173,6 +173,12 @@ class NpcFactoryUnitTest extends PHPUnit_Framework_TestCase {
         $this->assertLessThan(80, $dam); // Dam is strength * 2 + 1
         $this->assertLessThan(61, $guard2->gold());
         $this->assertGreaterThan(40, $guard2->gold());
+        $this->assertGreaterThan(9, $guard2->bountyMod());
+    }
+
+    public function testAnNpcHasADifficulty(){
+        $peasant = new Npc('peasant2');
+        $this->assertGreaterThan(0, $peasant->difficulty());
     }
 
     function testNpcDifficultiesAreDifferent() {
