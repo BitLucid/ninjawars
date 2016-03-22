@@ -1,9 +1,5 @@
 "use strict"; // Strict checking.
 
-// Pull in the environment from the nw.js load.
-var environment = this.environment;
-
-var NW = this.NW;
 
 /*require(['jquery'], function($) {
     $('body').css('background-color', 'green');
@@ -19,16 +15,25 @@ var NW = this.NW;
 
 describe('NW', function() {
   describe('NW App testing context', function() {
-    var app;
+    var app = NW;
+    var env = environment;
     beforeEach(function() {
-        this.environment = environment;
     });
 
     afterEach(function() {
-        this.environment = null;
     });
+
     it('should be able to see var defined in nw.js', function() {
-      expect(this.environment).toEqual('NW App context');
+      expect(env).toBeDefined();
+      expect(env).toMatch(/NW.+context/);
+    });
+    it('should be able to get the NW object', function() {
+      expect(app).toBeDefined();
+    });
+    it('should have access to the location checks', function() {
+      expect(g_isIndex).toBeDefined();
+      expect(g_isRoot).toBeDefined();
+      expect(g_isSubpage).toBeDefined();
     });
   });
 });
