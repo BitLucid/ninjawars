@@ -33,11 +33,13 @@ var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
 if (typeof(console) === 'undefined') { var console = { log: function() { } }; }
 
 /*  GLOBAL SETTINGS & VARS */
-if (typeof(parent) !== 'undefined' && parent.window !== window) {
+if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
+	console.log('Reusing existing parent NW object');
 	// If the interior page of an iframe, use the already-defined globals from the index.
 	//$ = parent.$;
 	NW = parent.NW;
 } else {
+	console.log('Creating new NW object');
 	// If the page is standalone, define the objects as needed.
 	//$ = jQuery;
 	NW = {};
