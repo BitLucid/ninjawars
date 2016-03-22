@@ -454,12 +454,13 @@ if (typeof(parent) !== 'undefined' && parent.window !== window) {
     NW.storage.appState.get = NW.storageGetter;
 }
 
-/***************************** Execution of code, run at the end to allow all function definitions to exist beforehand. ******/
+
+/***************************** READY SECTION *******************************/
+
 if(g_isIndex || g_isRoot){
 // This has to be outside of domready for some reason.
 	if (parent.frames.length !== 0) { // If there is a double-nested index...
-		location.href = "main.php"; // ...Display the main page instead.
-		// This function must be outside of domready, for some reason.
+		location.href = "/intro"; // ...Display the main page instead.
 	}
 }
 
@@ -477,7 +478,6 @@ $(function() {
 			var page = hash.substring(2); // Create a page from the hash by removing the #.
 			$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
 		}
-		$('#donation-button').hide().delay('3000').slideDown('slow').delay('20000').slideUp('slow');
 		// Hide, show, and then eventually hide the donation button.
 		// For all pages, if a link with a target of the main iframe is clicked...
 		// ...make iframe links record in the hash.
