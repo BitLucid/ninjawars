@@ -12,14 +12,16 @@
 
 "use strict"; // Strict checking.
 
-this.NW = this.NW || {};
+var NW = this.NW || {};
 
-this.environment = 'NW App context';
+var environment = 'NW App context';
 
 //var $ = jQuery; // jQuery sets itself to use the dollar sign shortcut by default.
 // A different instance of jquery is currently used in the iframe and outside.
 
-var g_isIndex = (window.location.pathname.substring(1) === 'index.php') || $('body').hasClass('main-body'); // This line requires and makes use of the $ jQuery var!
+var g_isIndex = ((window.location.pathname.substring(1) === 'index.php') 
+		|| $('body').hasClass('main-body')); 
+// This line requires and makes use of the $ jQuery var!
 
 var g_isLive = (window.location.host !== 'localhost');
 
@@ -28,25 +30,10 @@ var g_isRoot = (window.location.pathname === '/');
 var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
 
 // Guarantee that there is a console to prevent errors while debugging.
-if (typeof(console) === 'undefined') { console = { log: function() { } }; }
-
-/**
- * who/what/why/where
- * Untrusted char class for passing static self player info.
-**/
-/*
-var character = {
-	id: 0,
-    name: "tchalvak",
-    class: "dragon",
-    getSummary: function () {
-        return this.name + ' ' + this.class + ' char';
-    }
-}
-*/
+if (typeof(console) === 'undefined') { var console = { log: function() { } }; }
 
 /*  GLOBAL SETTINGS & VARS */
-if (parent.window !== window) {
+if (typeof(parent) !== 'undefined' && parent.window !== window) {
 	// If the interior page of an iframe, use the already-defined globals from the index.
 	//$ = parent.$;
 	NW = parent.NW;
@@ -451,11 +438,11 @@ if (parent.window !== window) {
     if (typeof(Storage) !== "undefined") {
         NW.storageSetter = function(p_key, p_value) {
             localStorage.setItem(p_key, p_value);
-        }
+        };
 
         NW.storageGetter = function(p_key, p_defaultValue) {
             return (localStorage.getItem(p_key) ? localStorage.getItem(p_key) : p_defaultValue);
-        }
+        };
     } else {
         NW.storageSetter = function() {};
         NW.storageGetter = function() {};
