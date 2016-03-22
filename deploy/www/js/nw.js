@@ -473,8 +473,8 @@ $(function() {
 	// INDEX ONLY CHANGES
 	if (g_isIndex || g_isRoot) {
 		var hash = window.location.hash;
-		if(hash && hash.indexOf(".php") > 0){ // If a hash exists and has .php in it...
-			var page = hash.substring(1); // Create a page from the hash by removing the #.
+		if(hash && hash.indexOf("!") > 0){ // If a hash exists and has .php in it...
+			var page = hash.substring(2); // Create a page from the hash by removing the #.
 			$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
 		}
 		$('#donation-button').hide().delay('3000').slideDown('slow').delay('20000').slideUp('slow');
@@ -484,7 +484,7 @@ $(function() {
 		$('a[target=main]').click(function(){
 			var target = $(this).attr('href');
 			var winToChange = (window.parent !== window ? window.parent : window);
-			winToChange.location.hash = target;
+			winToChange.location.hash = '!'+target;
 			// Then update the hash to the source for that link.
 			return true;
 		});
