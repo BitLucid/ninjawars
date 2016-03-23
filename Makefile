@@ -60,7 +60,7 @@ pre-test:
 	# Check for presence of database
 	psql -lqt | cut -d \| -f 1 | grep -qw $(DBNAME)
 
-test: pre-test test-main test-functional test-js post-test
+test: pre-test test-main test-functional post-test
 
 test-main:
 	@$(TEST_RUNNER) $(CC_FLAG)
@@ -201,4 +201,4 @@ python-install:
 
 ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
 
-ci-test: pre-test test-main test-cron-run test-ratchets post-test
+ci-test: pre-test test-main test-cron-run test-ratchets test-js post-test
