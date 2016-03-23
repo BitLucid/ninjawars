@@ -10,8 +10,9 @@ class TestRatchets:
      and checks the overall SLOC of the project
     '''
     control_php = 47
-    www_php = 9
+    www_php = 3
     plus_minus = 6
+    www_plus_minus = 1
     ''' Rough file counts in pertinent directories '''
 
     def deploy_dir(self):
@@ -33,9 +34,9 @@ class TestRatchets:
         assert (www_dir and
                 0 < self.count_php_in_dir(www_dir))
         assert www_dir and (
-            TestRatchets.www_php - TestRatchets.plus_minus <
+            TestRatchets.www_php - TestRatchets.www_plus_minus <
             self.count_php_in_dir(www_dir) and
-            TestRatchets.www_php + TestRatchets.plus_minus >
+            TestRatchets.www_php + TestRatchets.www_plus_minus >
             self.count_php_in_dir(www_dir)
         )
 
