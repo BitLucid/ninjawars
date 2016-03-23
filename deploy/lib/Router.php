@@ -251,6 +251,14 @@ class Router {
     }
 
     /**
+     * Return 404 and 404 headers
+     */
+    public static function respond404(){
+        header( $_SERVER['SERVER_PROTOCOL']." 404 Not Found", true, 404 ); //.replace = true
+        echo render_template('404.tpl');
+    }
+
+    /**
      * Renders the view and sends it to the client
      *
      * @param Array $p_viewSpec The data needed to render a view
