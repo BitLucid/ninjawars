@@ -183,7 +183,7 @@ ci-pre-configure:
 	# Set up the resources file, replacing first occurance of strings with their build values
 	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
 	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
-	#eventually that sed should be made to match only the first hit
+	rm -f $(WWW)js/jquery-linkify.min.js #delete bad component linkage
 	ln -s resources.build.php deploy/resources.php
 	# Set up selenium and web server for browser tests
 	#wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
