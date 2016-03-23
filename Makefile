@@ -176,11 +176,13 @@ web-reload:
 ci-pre-configure:
 	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
 	phpenv local 5.5
+	ln -s `pwd` /tmp/root
 	#precache composer for ci
 	composer config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
 	composer install --prefer-dist --no-interaction
 	# Set up the resources file, replacing first occurance of strings with their build values
 	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
+	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
 	#eventually that sed should be made to match only the first hit
 	ln -s resources.build.php deploy/resources.php
 	# Set up selenium and web server for browser tests
