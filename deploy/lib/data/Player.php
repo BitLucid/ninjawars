@@ -219,7 +219,7 @@ class Player implements Character {
      * @return int
      */
 	public function max_damage(Character $enemy=null){
-		$dam = $this->strength() * 5 + $this->speed();
+		$dam = (int) $this->strength() * 5 + $this->speed();
 		return $dam;
 	}
 
@@ -250,7 +250,7 @@ class Player implements Character {
 		} elseif ($this->hasStatus(STR_UP1)) {
 			return (int) $str+(ceil($str*.25)); //125%
 		} else {
-			return $str;
+			return (int) $str;
 		}
 	}
 	
@@ -266,7 +266,7 @@ class Player implements Character {
 		if ($this->hasStatus(SLOW)) {
 			return (int) $speed-(ceil($speed*.25));
 		} else {
-			return $speed;
+			return (int) $speed;
 		}
 	}
 
@@ -586,7 +586,7 @@ class Player implements Character {
      * @return int difficulty rating
      */
 	public function difficulty(){
-		return 10 + $this->strength() * 2 + $this->maxDamage()/* + $this->isArmored() * 5*/;
+		return (int) 10 + $this->strength() * 2 + $this->maxDamage();
 	}
 
     /**
