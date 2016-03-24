@@ -22,6 +22,14 @@ function simple_var_dump(obj) {
 	}; */ 
 }//end function var_dump
 
+function testEcho(param) {
+	return param;
+}
+
+function helloWorld(){
+	return 'hello world';
+}
+
 
 /**
  * Function : dump()

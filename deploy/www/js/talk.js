@@ -15,7 +15,8 @@ $(document).ready(function () {
 	});
 
 	// If a refocus is requested, because a message was just sent, then refocus on the area.
-	if(refocus && focus){
+	if(typeof(refocus) !== 'undefined' && refocus 
+            && typof(focus) !== 'undefined' && focus){
 	  if(focus == 'clan'){
 	    $('input#message-clan').focus();
 	  } else {

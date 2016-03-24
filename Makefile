@@ -1,4 +1,4 @@
-.PHONY: all ci pre-test test test-main test-integration test-unit test-functional post-test clean dep build install dist-clean db db-fixtures migration
+.PHONY: all ci pre-test test test-main test-integration test-unit test-functional test-js post-test clean dep build install dist-clean db db-fixtures migration
 
 DOMAIN=http://nw.local/
 COMPOSER=./composer.phar
@@ -83,6 +83,9 @@ test-cron-run:
 test-functional:
 	python3 -m pytest deploy/tests/functional/
 
+test-js:
+	karma start deploy/tests/karma.conf.js --browsers PhantomJS --single-run
+
 test-ratchets:
 	#split out for ci for now
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
@@ -103,11 +106,13 @@ clean:
 
 dep:
 	@$(COMPOSER) install
+	@npm install
 
 dist-clean: clean
 	@rm -rf ./vendor/*
 	@rm -rf "$(COMPONENTS)"
 	@rm -rf "$(SRC)resources/"logs/*
+	@rm -rf ./node_modules
 	@echo "Done"
 	@echo "You'll have to dropdb $(DBNAME) yourself."
 
@@ -171,12 +176,14 @@ web-reload:
 ci-pre-configure:
 	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
 	phpenv local 5.5
+	ln -s `pwd` /tmp/root
 	#precache composer for ci
 	composer config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
 	composer install --prefer-dist --no-interaction
 	# Set up the resources file, replacing first occurance of strings with their build values
 	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
-	#eventually that sed should be made to match only the first hit
+	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
+	rm -f $(WWW)js/jquery-linkify.min.js #delete bad component linkage
 	ln -s resources.build.php deploy/resources.php
 	# Set up selenium and web server for browser tests
 	#wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
@@ -196,4 +203,4 @@ python-install:
 
 ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
 
-ci-test: pre-test test-main test-cron-run test-ratchets post-test
+ci-test: pre-test test-main test-cron-run test-ratchets test-js post-test

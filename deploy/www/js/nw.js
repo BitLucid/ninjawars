@@ -1,4 +1,7 @@
 /* The main javascript functionality of the site, apart from very page specific behaviors */
+/*jslint browser: true*/
+/*global $, jQuery, window*/
+
 
 // Sections are, in order: SETTINGS | FUNCTIONS | READY
 
@@ -9,12 +12,15 @@
 
 "use strict"; // Strict checking.
 
-var NW = window.NW || {};
+var NW = this.NW || {};
+
+var environment = 'NW App context';
 
 //var $ = jQuery; // jQuery sets itself to use the dollar sign shortcut by default.
 // A different instance of jquery is currently used in the iframe and outside.
 
-var g_isIndex = (window.location.pathname.substring(1) === 'index.php') || $('body').hasClass('main-body'); // This line requires and makes use of the $ jQuery var!
+var g_isIndex = ((window.location.pathname.substring(1) === 'index.php') || $('body').hasClass('main-body')); 
+// This line requires and makes use of the $ jQuery var!
 
 var g_isLive = (window.location.host !== 'localhost');
 
@@ -23,35 +29,16 @@ var g_isRoot = (window.location.pathname === '/');
 var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
 
 // Guarantee that there is a console to prevent errors while debugging.
-if (typeof(console) === 'undefined') { console = { log: function() { } }; }
-
-// iepp v2.1pre @jon_neal & @aFarkas github.com/aFarkas/iepp
-// html5shiv @rem remysharp.com/html5-enabling-script
-// Dual licensed under the MIT or GPL Version 2 licenses
-// What follows is an ie-only hack /*@ ... @*/
-/*@cc_on(function(a,b){function r(a){var b=-1;while(++b<f)a.createElement(e[b])}if(!window.attachEvent||!b.createStyleSheet||!function(){var a=document.createElement("div");return a.innerHTML="<elem></elem>",a.childNodes.length!==1}())return;a.iepp=a.iepp||{};var c=a.iepp,d=c.html5elements||"abbr|article|aside|audio|canvas|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|subline|summary|time|video",e=d.split("|"),f=e.length,g=new RegExp("(^|\\s)("+d+")","gi"),h=new RegExp("<(/*)("+d+")","gi"),i=/^\s*[\{\}]\s*$/,j=new RegExp("(^|[^\\n]*?\\s)("+d+")([^\\n]*)({[\\n\\w\\W]*?})","gi"),k=b.createDocumentFragment(),l=b.documentElement,m=b.getElementsByTagName("script")[0].parentNode,n=b.createElement("body"),o=b.createElement("style"),p=/print|all/,q;c.getCSS=function(a,b){try{if(a+""===undefined)return""}catch(d){return""}var e=-1,f=a.length,g,h=[];while(++e<f){g=a[e];if(g.disabled)continue;b=g.media||b,p.test(b)&&h.push(c.getCSS(g.imports,b),g.cssText),b="all"}return h.join("")},c.parseCSS=function(a){var b=[],c;while((c=j.exec(a))!=null)b.push(((i.exec(c[1])?"\n":c[1])+c[2]+c[3]).replace(g,"$1.iepp-$2")+c[4]);return b.join("\n")},c.writeHTML=function(){var a=-1;q=q||b.body;while(++a<f){var c=b.getElementsByTagName(e[a]),d=c.length,g=-1;while(++g<d)c[g].className.indexOf("iepp-")<0&&(c[g].className+=" iepp-"+e[a])}k.appendChild(q),l.appendChild(n),n.className=q.className,n.id=q.id,n.innerHTML=q.innerHTML.replace(h,"<$1font")},c._beforePrint=function(){if(c.disablePP)return;o.styleSheet.cssText=c.parseCSS(c.getCSS(b.styleSheets,"all")),c.writeHTML()},c.restoreHTML=function(){if(c.disablePP)return;n.swapNode(q)},c._afterPrint=function(){c.restoreHTML(),o.styleSheet.cssText=""},r(b),r(k);if(c.disablePP)return;m.insertBefore(o,m.firstChild),o.media="print",o.className="iepp-printshim",a.attachEvent("onbeforeprint",c._beforePrint),a.attachEvent("onafterprint",c._afterPrint)})(this,document);@*/
-
-/**
- * who/what/why/where
- * Untrusted char class for passing static self player info.
-**/
-/*
-var character = {
-	id: 0,
-    name: "tchalvak",
-    class: "dragon",
-    getSummary: function () {
-        return this.name + ' ' + this.class + ' char';
-    }
-}
-*/
+if (typeof(console) === 'undefined') { var console = { log: function() { } }; }
 
 /*  GLOBAL SETTINGS & VARS */
-if (parent.window !== window) {
+if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
+	console.log('Reusing existing parent NW object');
 	// If the interior page of an iframe, use the already-defined globals from the index.
 	//$ = parent.$;
 	NW = parent.NW;
 } else {
+	console.log('Creating new NW object');
 	// If the page is standalone, define the objects as needed.
 	//$ = jQuery;
 	NW = {};
@@ -452,11 +439,11 @@ if (parent.window !== window) {
     if (typeof(Storage) !== "undefined") {
         NW.storageSetter = function(p_key, p_value) {
             localStorage.setItem(p_key, p_value);
-        }
+        };
 
         NW.storageGetter = function(p_key, p_defaultValue) {
             return (localStorage.getItem(p_key) ? localStorage.getItem(p_key) : p_defaultValue);
-        }
+        };
     } else {
         NW.storageSetter = function() {};
         NW.storageGetter = function() {};
@@ -468,35 +455,37 @@ if (parent.window !== window) {
     NW.storage.appState.get = NW.storageGetter;
 }
 
-/***************************** Execution of code, run at the end to allow all function definitions to exist beforehand. ******/
+
+/***************************** READY SECTION *******************************/
+
 if(g_isIndex || g_isRoot){
 // This has to be outside of domready for some reason.
 	if (parent.frames.length !== 0) { // If there is a double-nested index...
-		location.href = "main.php"; // ...Display the main page instead.
-		// This function must be outside of domready, for some reason.
+		location.href = "/intro"; // ...Display the main page instead.
 	}
 }
 
 $(function() {
 
 	$('html').removeClass('no-js'); // Remove no-js class when js present.
-	$('time.timeago').timeago(); // Set time-since-whatever areas
+	if(jQuery.timeago){
+		$('time.timeago').timeago(); // Set time-since-whatever areas
+	}
 
 	// INDEX ONLY CHANGES
 	if (g_isIndex || g_isRoot) {
 		var hash = window.location.hash;
-		if(hash && hash.indexOf(".php") > 0){ // If a hash exists and has .php in it...
-			var page = hash.substring(1); // Create a page from the hash by removing the #.
+		if(hash && hash.indexOf("!") > 0){ // If a hash exists and has .php in it...
+			var page = hash.substring(2); // Create a page from the hash by removing the #.
 			$('iframe#main').attr('src', page); // Change the iframe src to use the hash page.
 		}
-		$('#donation-button').hide().delay('3000').slideDown('slow').delay('20000').slideUp('slow');
 		// Hide, show, and then eventually hide the donation button.
 		// For all pages, if a link with a target of the main iframe is clicked...
 		// ...make iframe links record in the hash.
 		$('a[target=main]').click(function(){
 			var target = $(this).attr('href');
 			var winToChange = (window.parent !== window ? window.parent : window);
-			winToChange.location.hash = target;
+			winToChange.location.hash = '!'+target;
 			// Then update the hash to the source for that link.
 			return true;
 		});
@@ -517,3 +506,10 @@ $(function() {
 		// Displays the link back to main page for any lone subpages not in iframes.
 	}
 });
+
+// html5 arbitrary tag hack --RR
+// iepp v2.1pre @jon_neal & @aFarkas github.com/aFarkas/iepp
+// html5shiv @rem remysharp.com/html5-enabling-script
+// Dual licensed under the MIT or GPL Version 2 licenses
+// What follows is an ie-only hack /*@ ... @*/
+/*@cc_on(function(a,b){function r(a){var b=-1;while(++b<f)a.createElement(e[b])}if(!window.attachEvent||!b.createStyleSheet||!function(){var a=document.createElement("div");return a.innerHTML="<elem></elem>",a.childNodes.length!==1}())return;a.iepp=a.iepp||{};var c=a.iepp,d=c.html5elements||"abbr|article|aside|audio|canvas|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|subline|summary|time|video",e=d.split("|"),f=e.length,g=new RegExp("(^|\\s)("+d+")","gi"),h=new RegExp("<(/*)("+d+")","gi"),i=/^\s*[\{\}]\s*$/,j=new RegExp("(^|[^\\n]*?\\s)("+d+")([^\\n]*)({[\\n\\w\\W]*?})","gi"),k=b.createDocumentFragment(),l=b.documentElement,m=b.getElementsByTagName("script")[0].parentNode,n=b.createElement("body"),o=b.createElement("style"),p=/print|all/,q;c.getCSS=function(a,b){try{if(a+""===undefined)return""}catch(d){return""}var e=-1,f=a.length,g,h=[];while(++e<f){g=a[e];if(g.disabled)continue;b=g.media||b,p.test(b)&&h.push(c.getCSS(g.imports,b),g.cssText),b="all"}return h.join("")},c.parseCSS=function(a){var b=[],c;while((c=j.exec(a))!=null)b.push(((i.exec(c[1])?"\n":c[1])+c[2]+c[3]).replace(g,"$1.iepp-$2")+c[4]);return b.join("\n")},c.writeHTML=function(){var a=-1;q=q||b.body;while(++a<f){var c=b.getElementsByTagName(e[a]),d=c.length,g=-1;while(++g<d)c[g].className.indexOf("iepp-")<0&&(c[g].className+=" iepp-"+e[a])}k.appendChild(q),l.appendChild(n),n.className=q.className,n.id=q.id,n.innerHTML=q.innerHTML.replace(h,"<$1font")},c._beforePrint=function(){if(c.disablePP)return;o.styleSheet.cssText=c.parseCSS(c.getCSS(b.styleSheets,"all")),c.writeHTML()},c.restoreHTML=function(){if(c.disablePP)return;n.swapNode(q)},c._afterPrint=function(){c.restoreHTML(),o.styleSheet.cssText=""},r(b),r(k);if(c.disablePP)return;m.insertBefore(o,m.firstChild),o.media="print",o.className="iepp-printshim",a.attachEvent("onbeforeprint",c._beforePrint),a.attachEvent("onafterprint",c._afterPrint)})(this,document);@*/
