@@ -89,6 +89,7 @@ class TestRouting:
         urls_private = [
             'ninjamaster', 'ninjamaster/tools',
             'ninjamaster/player_tags', 'work/request_work',
+            'ninjamaster/?char_name=tchalvak',
         ]
         urls = urls_gone + urls_private
         for url in urls:
