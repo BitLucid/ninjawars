@@ -80,12 +80,17 @@ class TestRouting:
                     self.status_code(str(self.root()) + url))
 
     def test_urls_that_should_redirect(self):
-        urls = [
+        urls_gone = [
             'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php',
-            'webgame/', 'ninjamaster', 'ninjamaster/tools', 'casino/bet',
-            'ninjamaster/player_tags', 'account_issues.php', 'confirm.php',
-            'news.php', 'work/request_work',
+            'webgame/', 'account_issues.php', 'confirm.php', 'casino/bet',
+            'news.php',
         ]
+        # Urls that just redirect for anonymous users, with continued purpose.
+        urls_private = [
+            'ninjamaster', 'ninjamaster/tools',
+            'ninjamaster/player_tags', 'work/request_work',
+        ]
+        urls = urls_gone + urls_private
         for url in urls:
             full_uri = str(self.root()) + url
             assert str(self.root()) + url is not None
