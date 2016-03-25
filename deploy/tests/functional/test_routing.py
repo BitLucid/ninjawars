@@ -58,21 +58,21 @@ class TestRouting:
     def test_urls_should_200(self):
         urls = [
             'intro', 'login', 'login.php', 'signup', 'signup.php', 
-            'player.php', 'village', 'interview.php', 'news/', 
-            'staff.php', 'list.php', 'rules.php', 'shop.php', 'events.php', 
-            'skill', 'inventory.php', 'inventory', 'enemies.php',
-            'clan.php', 'map.php', 'work.php', 'doshin_office.php',
+            'player.php', 'player', 'village', 'interview.php',
+            'news/', 'staff', 'list', 'rules', 'shop', 'events', 
+            'skill', 'inventory', 'enemies.php',
+            'clan', 'map', 'work', 'doshin_office.php',
             'dojo.php', 'shrine.php', 'duel', 'clan.php?command=list',
             'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
             'clan.php?command=view', 'npc', 'npc/attack/peasant/',
-            'npc/attack/guard/', 'stats.php', 'account.php', 'quest',
+            'npc/attack/guard/', 'stats', 'account', 'quest',
             'quest/view/1', 'assistance', 'assistance/confirm',
             'resetpassword.php', 'player.php?target_id=777777',
             'player.php?target=tchalvak', 'item/self_use/amanita',
             'skill/use/Fire%20Bolt/tchalvak', 'skill/self_use/Heal',
             'item/self_use/3', 'item/self_use/1',
             'item/use/shuriken/tchalvak', 'dojo/buyDimMak',
-            'casino', 'player'
+            'casino', 'player', 'work/request_work',
         ]
         #Eventually some of these urls should be tested on logged in user.
         for url in urls:
@@ -84,6 +84,7 @@ class TestRouting:
             'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php',
             'webgame/', 'ninjamaster', 'ninjamaster/tools',
             'ninjamaster/player_tags', 'account_issues.php', 'confirm.php',
+            'news.php'
         ]
         for url in urls:
             full_uri = str(self.root()) + url
