@@ -32,6 +32,8 @@
 
 <h1>Casino</h1>
 
+{include file="flash-message.tpl"}
+
 <div class="description" style='border-bottom:1px solid gold'>
   <p>You walk down the alley towards a shadowed door on a low, squat building with golden gilt peeling off of the entranceway. As you enter the small casino, <a href='/npc/attack/guard'>a guard</a> eyes you with caution.</p>
   <p style="margin-top: 15px;margin-bottom: 15px;">No-one else is in the casino.  You walk towards the only table with a wizened old man, missing most of his teeth, behind it. He shows you a shiny coin.</p>
