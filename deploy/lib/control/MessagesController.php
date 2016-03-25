@@ -10,6 +10,9 @@ class MessagesController {
     const PRIV  = true;
     const ALIVE = false;
 
+    /**
+     * Send a private message to a player
+     */
     public function sendPersonal() {
         if ((int) in('target_id')) {
             $target_id = (int) in('target_id');
@@ -29,12 +32,15 @@ class MessagesController {
 
             $recipient = get_char_name($target_id);
 
-            return new RedirectResponse('/messages.php?command=personal&individual_or_clan=1&message_sent_to='.url($recipient).'&informational='.url('Message sent to '.$recipient.'.'));
+            return new RedirectResponse('/messages?command=personal&individual_or_clan=1&message_sent_to='.url($recipient).'&informational='.url('Message sent to '.$recipient.'.'));
         } else {
-            return new RedirectResponse('/messages.php?command=personal&error='.url('No such ninja to message.'));
+            return new RedirectResponse('/messages?command=personal&error='.url('No such ninja to message.'));
         }
     }
 
+    /**
+     * Send a certain message to the whole clan.
+     */
     public function sendClan() {
         $message = in('message');
         $type = 1;
@@ -43,9 +49,12 @@ class MessagesController {
         $target_id_list = $clan->getMemberIds();
         Message::sendToGroup($sender, $target_id_list, $message, $type);
 
-        return new RedirectResponse('/messages.php?command=clan&individual_or_clan=1&informational='.url('Message sent to clan.'));
+        return new RedirectResponse('/messages?command=clan&individual_or_clan=1&informational='.url('Message sent to clan.'));
     }
 
+    /**
+     * View the personal private messages.
+     */
     public function viewPersonal() {
         $type               = 0;
         $page               = in('page', 1, 'non_negative_int');
@@ -72,6 +81,9 @@ class MessagesController {
         return $this->render($parts);
     }
 
+    /**
+     * View clan messages
+     */
     public function viewClan() {
         $ninja         = new Player(self_char_id());
         $page          = in('page', 1, 'non_negative_int');
@@ -105,7 +117,7 @@ class MessagesController {
         $type = 0;
         Message::deleteByReceiver(new Player($char_id), $type);
 
-        return new RedirectResponse('/messages.php?command=personal&informational='.url('Messages deleted'));
+        return new RedirectResponse('/messages?command=personal&informational='.url('Messages deleted'));
     }
 
     /**
@@ -116,7 +128,7 @@ class MessagesController {
         $type = 1;
         Message::deleteByReceiver(new Player($char_id), $type);
 
-        return new RedirectResponse('/messages.php?command=clan&informational='.url('Messages deleted'));
+        return new RedirectResponse('/messages?command=clan&informational='.url('Messages deleted'));
     }
 
     /**

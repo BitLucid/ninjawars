@@ -84,6 +84,7 @@ Router::$routes = [
             'send_clan'       => 'sendClan',
             'send_personal'   => 'sendPersonal',
             'personal'        => 'viewPersonal',
+            'message'         => 'viewPersonal',
             'clan'            => 'viewClan',
             'default'         => 'viewPersonal',
         ],
