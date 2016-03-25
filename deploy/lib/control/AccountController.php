@@ -17,8 +17,7 @@ class AccountController {
      * Show the change email form
      */
     public function showChangeEmailForm() {
-        // explicitly define command value ?
-        $command = in('command');
+        $command = 'show_change_email_form';
 
         $parts = [
             'command' => $command,
@@ -82,7 +81,7 @@ class AccountController {
      */
     public function showChangePasswordForm() {
         // explicitly define command value ?
-        $command = in('command');
+        $command = 'show_change_password_form';
 
         $parts = [
             'command' => $command,
@@ -144,8 +143,7 @@ class AccountController {
      * Show delete account confirmation form
      */
     public function deleteAccountConfirmation() {
-        // explicitly define command value ?
-        $command = in('command');
+        $command = 'show_confirm_delete_form';
 
         $parts = [
             'command' => $command,
