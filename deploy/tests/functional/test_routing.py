@@ -72,7 +72,7 @@ class TestRouting:
             'skill/use/Fire%20Bolt/tchalvak', 'skill/self_use/Heal',
             'item/self_use/3', 'item/self_use/1',
             'item/use/shuriken/tchalvak', 'dojo/buyDimMak',
-            'casino', 'player', 'work/request_work',
+            'casino', 'player',
         ]
         #Eventually some of these urls should be tested on logged in user.
         for url in urls:
@@ -84,7 +84,7 @@ class TestRouting:
             'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php',
             'webgame/', 'ninjamaster', 'ninjamaster/tools',
             'ninjamaster/player_tags', 'account_issues.php', 'confirm.php',
-            'news.php'
+            'news.php', 'work/request_work',
         ]
         for url in urls:
             full_uri = str(self.root()) + url
