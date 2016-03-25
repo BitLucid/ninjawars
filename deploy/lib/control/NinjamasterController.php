@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\AdminViews;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Account;
 
 /**
  * The ninjamaster/admin info
