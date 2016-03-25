@@ -46,7 +46,6 @@ server {
 	    return 301 /news/;
 	}
 
-
 	location ~ ^/(main\.php|tutorial\.php) {
 	    return 302 /intro;
 	}

@@ -54,6 +54,10 @@ server {
 	    return 302 /list$is_args$args;
 	}
 
+	location ~ ^/(account_issues\.php|confirm\.php) {
+	    return 302 /assistance$is_args$args;
+	}
+
 	location ^~ /webgame {
 		rewrite ^ / permanent;
 	}
