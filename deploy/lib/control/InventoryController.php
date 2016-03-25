@@ -151,7 +151,9 @@ class InventoryController {
             }
         }
 
-        $player->subtractTurns($turns_to_take);
+        if($turns_to_take > 0 && ($player->turns - $turns_to_take >= 0)){
+            $player->subtractTurns($turns_to_take);
+        }
         $player->save();
 
         return $this->renderUse([
