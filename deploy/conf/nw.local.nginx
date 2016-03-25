@@ -27,7 +27,7 @@ server {
 	rewrite_log on;
 	add_header X-uri "$uri";
 
-	location ~ ^/(js|css|images|files) {
+	location ~ ^/(js|css|images|files)/ {
 		rewrite "^/(.*)\.[\d]{10,12}\.(.*)$" /$1.$2;
 		expires 365d;
 		try_files $uri =404;
@@ -46,6 +46,14 @@ server {
 	    return 301 /news/;
 	}
 
+	location = /account_issues.php {
+	    return 302 /assistance;
+	}
+
+	location = /confirm.php {
+	    return 302 /assistance$is_args$args;
+	}
+
 	location ~ ^/(main\.php|tutorial\.php) {
 	    return 302 /intro;
 	}
@@ -56,10 +64,6 @@ server {
 
 	location = /list_all_players.php {
 	    return 302 /list$is_args$args;
-	}
-
-	location ~ ^/(account_issues\.php|confirm\.php) {
-	    return 302 /assistance$is_args$args;
 	}
 
 	location ^~ /webgame {

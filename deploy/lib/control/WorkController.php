@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * The controller for effects of a work request and the default index display
@@ -18,15 +19,17 @@ class WorkController {
      * Take in a url parameter of work and try to convert it to gold
      */
     public function requestWork() {
-        // Initialize variables to pass to the template.
-        $work_multiplier        = self::WORK_MULTIPLIER;
         $worked                 = positive_int(in('worked')); // No negative work.
+        $char_id                = self_char_id();
+        $char                   = Player::find($char_id);
+        if(!($char instanceof Player)){
+            return new RedirectResponse('/work');
+        }
+        $work_multiplier        = self::WORK_MULTIPLIER;
         $earned_gold            = null;
         $not_enough_energy      = null;
         $recommended_to_work    = $worked;
         $is_logged_in           = is_logged_in();
-        $char_id                = self_char_id();
-        $char                   = new Player($char_id);
         $turns                  = $char->turns;
         $gold                   = $char->gold;
 
