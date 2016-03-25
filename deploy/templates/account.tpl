@@ -12,6 +12,16 @@ h1 .account-identity{
 .char-list.ninja-notice a{
   font:30px/34px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;
 }
+.active-area{
+  padding: 1em; background-color: rgba(250, 250, 250, 0.7); box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14); color: #000; margin: 1em; border-radius: 0.2em;
+  font-family: monospace; font-size:larger;
+}
+.active-area label{
+  display: inline-block; min-width: 15%; text-align: right; padding-right:1em;
+}
+.account-info form + form{
+  margin-top:2em;
+}
 </style>
 {/literal}
 
@@ -30,32 +40,38 @@ h1 .account-identity{
   <p class='notice'>{$successMessage|escape}</p>
 {/if}
 
-{if $command == 'show_confirm_delete_form'}
-  <p>Please provide your password to confirm.</p>
-  <form method="post" action="/account/delete_account" onsubmit="return confirm('Are you sure you want to delete your account?');">
+{if $command == 'show_confirm_delete_form' && $delete_attempts < 1}
+  <div class='active-area'>
+    <p>Please provide your password to confirm.</p>
+    <form method="post" action="/account/delete_account" onsubmit="return confirm('Are you sure you want to delete your account?');">
+      <div>
+        <input id="passw" type="password" maxlength="50" name="passw" class="textField">
+        <input type="submit" value="Confirm Delete" class="formButton">
+      </div>
+    </form>
+  </div>
+{elseif $command == 'show_change_password_form'}
+<div class='active-area'>
+  <form method="post" action="/account/change_password">
     <div>
-      <input id="passw" type="password" maxlength="50" name="passw" class="textField">
-      <input type="submit" value="Confirm Delete" class="formButton">
+      <div><label>Current Password: </label><input type="password" maxlength="50" name="passw" class="textField"></div>
+      <div><label>New Password: </label><input type="password" maxlength="50" name="newpassw" class="textField"></div>
+      <div><label>Confirm New Password: </label><input type="password" maxlength="50" name="confirmpassw" class="textField"></div>
+      <input type="submit" value="Change Password" class="formButton">
     </div>
   </form>
-{elseif $command == 'show_change_password_form'}
-<form method="post" action="/account/change_password">
-  <div>
-    <div>Current Password: <input type="password" maxlength="50" name="passw" class="textField"></div>
-    <div>New Password: <input type="password" maxlength="50" name="newpassw" class="textField"></div>
-    <div>Confirm New Password: <input type="password" maxlength="50" name="confirmpassw" class="textField"></div>
-    <input type="submit" value="Change Password" class="formButton">
-  </div>
-</form>
+</div>
 {elseif $command == 'show_change_email_form'}
-<form method="post" action="/account/change_email">
-  <div>
-    <div>Current Password: <input id="passw" type="password" maxlength="50" name="passw" class="textField"></div>
-    <div>New Email: <input type="text" maxlength="500" name="newemail" class="textField"></div>
-    <div>Confirm New Email: <input type="text" maxlength="500" name="confirmemail" class="textField"></div>
-    <input type="submit" value="Change Email" class="formButton">
-  </div>
-</form>
+<div class='active-area'>
+  <form method="post" action="/account/change_email">
+    <div>
+      <div><label>Current Password: </label><input id="passw" type="password" maxlength="50" name="passw" class="textField"></div>
+      <div><label>New Email: </label><input type="text" maxlength="500" name="newemail" class="textField"></div>
+      <div><label>Confirm New Email: </label><input type="text" maxlength="500" name="confirmemail" class="textField"></div>
+      <input type="submit" value="Change Email" class="formButton">
+    </div>
+  </form>
+</div>
 {/if}
 
 <div class='stats-avatar'>
@@ -68,35 +84,35 @@ h1 .account-identity{
       <li>Active Email: <strong>{$account_info.active_email|escape}</strong></li>
       <li>Account Created: <time class='timeago' datetime='{$account_info.created_date|escape}'>{$account_info.created_date|escape}</time></li>
       <li>Last Failed Login Attempt: <time class='timeago' datetime='{$account_info.last_login_failure|escape}'>{$account_info.last_login_failure|escape}</time></li>
-      <li>Last IP: {$account_info.last_ip|escape}</li>
-      {if $oauth}<li>Single-Click login connected to: <b>{$oauth_provider|escape}</b></li>{/if}
+      <li>Last IP: <strong>{$account_info.last_ip|escape}</strong></li>
+      {if $oauth}<li>Single-Click login connected to: <strong>{$oauth_provider|escape}</strong></li>{/if}
     </ul>
 </div>
 
-<hr>
 <form action='/account/show_change_password_form' method='post'>
   <div>
     <input type='submit' value='Change Your Password' class='formButton'>
   </div>
 </form>
-<hr>
 <form action='/account/show_change_email_form' method='post'>
   <div>
     <input type='submit' value='Change Your Email' class='formButton'>
   </div>
 </form>
-<hr>
 
-{if !$delete_attempts}
-<p><span class='error'>WARNING:</span> Clicking on the button below will terminate your account.</p>
-<form action='/account/show_confirm_delete_form' method='post'>
-  <div>
-    <input type='submit' value='Permanently Remove Your Account' class='formButton'>
+{if $delete_attempts < 1}
+  <form action='/account/show_confirm_delete_form' method='post'>
+    <div>
+      <input type='submit' value='Permanently Remove Your Account' class='formButton btn btn-danger'>
+    </div>
+  </form>
+{else}
+  <div class='error thick'>
+    Deletion attempts exceeded, please contact <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>
   </div>
-</form>
 {/if}
 
-</div>
+</div><!-- end of .account-info -->
 
 
 <footer id='stats-footer' class='navigation'>

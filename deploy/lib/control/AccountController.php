@@ -5,6 +5,7 @@ use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Handle updates for changing account password, changing account email and showing the account page
@@ -143,10 +144,13 @@ class AccountController {
      * Show delete account confirmation form
      */
     public function deleteAccountConfirmation() {
+        $session    = SessionFactory::getSession();
         $command = 'show_confirm_delete_form';
+        $delete_attempts = $session->get('delete_attempts', 0);
 
         $parts = [
             'command' => $command,
+            'delete_attempts' => $delete_attempts,
         ];
 
         return $this->render($parts);
@@ -178,7 +182,8 @@ class AccountController {
             $account->setOperational(false);
             $account->save();
 
-            logout_user(); // This may redirect and stuff?
+            logout_user(); // Wipe session & logout the user
+            return new RedirectResponse('/logout/loggedout');
         } else {
             $session->set('delete_attempts', $delete_attempts+1);
             $error = 'Deleting of account failed, please email '.SUPPORT_EMAIL;
