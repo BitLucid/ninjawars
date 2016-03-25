@@ -82,7 +82,7 @@ class TestRouting:
     def test_urls_that_should_redirect(self):
         urls = [
             'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php',
-            'webgame/', 'ninjamaster', 'ninjamaster/tools',
+            'webgame/', 'ninjamaster', 'ninjamaster/tools', 'casino/bet',
             'ninjamaster/player_tags', 'account_issues.php', 'confirm.php',
         ]
         for url in urls:

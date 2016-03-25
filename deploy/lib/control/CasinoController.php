@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Handles all user commands for the in-game Casino
@@ -20,11 +21,13 @@ class CasinoController {
 	 */
 	public function index() {
 		$player = new Player(self_char_id());
+		$error = in('error');
 
 		return $this->render(
 			[
 				'pageParts' => [],
 				'player'    => $player,
+				'error'     => $error,
 			]
 		);
 	}
@@ -33,7 +36,7 @@ class CasinoController {
 	 * User command for betting on the coin toss game in the casino
 	 *
 	 * @param bet int The amount of money to bet on the coin toss game
-	 * @return Array
+	 * @return Array|RedirectResponse ViewSpec
 	 *
 	 * @note
      * If the player bets within ~1% of the maximum bet, they will receive a
@@ -41,6 +44,9 @@ class CasinoController {
 	 */
 	public function bet() {
 		$player   = Player::find(self_char_id());
+		if(!($player instanceof Player)){
+			return new RedirectResponse('/casino/?error='.url('Become a ninja first!'));
+		}
 		$bet      = intval(in('bet'));
 
 		$pageParts = ['reminder-max-bet'];
