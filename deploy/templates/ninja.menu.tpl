@@ -1,18 +1,22 @@
         {if $ninja->id()}
-        <div class='ninja-name'>
-            <a target="main" href="/player?player_id={$ninja->id()|escape:'url'|escape}" title='Display your ninja information'>
-              <strong class='char-name'>{$ninja->name()|escape}</strong>
-            </a>
-        </div>
-        <div class='ninja-level'>
-          Level {$ninja->level|escape}
-        </div>
-        {if $ninja->level < 5}
-        <div id='helpful-info'>
-          <a target='main' href='/intro'>Helpful Info</a>
-        </div>
-        {/if}
-        <div class='ninja-info thick'>
+        <nav class='ninja-popup-profile parent'>
+          <div class='ninja-menu-area-interior child'>
+            <div class='ninja-name'>
+              <a target="main" href="/player?player_id={$ninja->id()|escape:'url'|escape}" title='Display your ninja information'>
+                <strong class='char-name'>{$ninja->name()|escape}</strong>
+              </a>
+            </div>
+            <div class='ninja-level'>
+              Level {$ninja->level|escape}
+            </div>
+            {if $ninja->level < 5}
+            <div id='helpful-info'>
+              <a target='main' href='/intro'>Helpful Info</a>
+            </div>
+            {/if}
+          </div>
+        </nav>
+        <div class='ninja-stats-link thick'>
           <a href='/stats' target='main' title='Your ninja stats, level, info, etc.'><img src="{cachebust file="/images/icons/mono/heart32.png"}" height="16" width="16" alt="">Ninja Stats</a>
         </div>
         {/if}

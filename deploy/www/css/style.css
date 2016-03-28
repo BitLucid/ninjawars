@@ -2666,6 +2666,12 @@ select option #blue-class-select {
 
 /* ==================== Character related styles ======== */
 
+.ninja-name .char-name{
+    display:inline-block;
+    padding:0.5em 1em;
+    font-size:larger;
+}
+
 /* Class to add to locations that show character names */
 .char-name {
 	font-weight:bold;
