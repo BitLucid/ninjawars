@@ -119,13 +119,13 @@
 
 
       <!-- SIDEBAR COLUMN STARTS HERE -->
-      <aside id='sidebar-column'>
+      <aside id='flange'>
 
         <div id='chat-housing'>
           {include file="mini-chat.section.tpl"}
         </div><!-- End of chat-housing -->
 
-      </aside><!-- End of sidebar-column -->
+      </aside><!-- End of #flange -->
       </section><!-- end of core-->
 
 
