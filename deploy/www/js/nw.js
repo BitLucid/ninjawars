@@ -496,10 +496,15 @@ $(function() {
 		});
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
 
-		$('#index-avatar').on('click touchstart', function(){ // Touchstart required for mobile to be aware of the menu
-    		$('#ninja-dropdown').toggle();
-    		return false;
-  		});
+		$('#index-avatar').on('click touchstart', function(e){
+    		$('#ninja-dropdown').slideToggle();
+    		e.preventDefault();
+		});
+		$('#ninja-dropdown').on('mouseleave', function(e){
+			NW.typewatch(function(e){
+				$('#ninja-dropdown').slideUp(); // Go away on delay on mouseleave
+			}, 5000);
+		});
 
 	} else if (g_isSubpage) {
 		$('body').addClass('solo-page'); // Add class to solo-page bodies.
