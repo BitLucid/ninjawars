@@ -89,7 +89,7 @@ $(document).ready(function() {
 		  </td>
 
 		  <td>
-			{if !$item_info.image}&nbsp;{else}<label for='item-{$item_internal_name}'><img style='max-height:25px;max-width:50px' src="images/items/{$item_info.image}" alt="{$item_info.item_display_name}"></label>{/if}
+			{if !$item_info.image}&nbsp;{else}<label for='item-{$item_internal_name}'><img style='max-height:25px;max-width:50px' src="/images/items/{$item_info.image}" alt="{$item_info.item_display_name}"></label>{/if}
 		  </td>
 		</tr>
 		{/foreach}
