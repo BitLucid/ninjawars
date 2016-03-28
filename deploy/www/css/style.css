@@ -1471,9 +1471,10 @@ time{
 .splash #news-housing{
   height:80px;
 }
+/*
 .splash #chat-housing{
   height:250px;
-}
+}*/
 
 
 /* Index page specific stuff */
@@ -1500,14 +1501,14 @@ time{
 }
 
 #main-column{
-	width:63%;height:100%;min-height:30em;left:0;top:0;padding-left:3%;
+	width:94%;height:100%;min-height:50rem;padding-left:3%;padding-right:3%;
 }
 
 .main-iframe { /* class for the main iframe */
-	 height:93%;/*Iframe height doesn't inherit from its container, it inherits from the page, so must match the core & main-column height defined before it above (and they must be defined above).*/
-	 min-height:40em;
-	 width:100%;
-	 border:0;
+	height:100%;/*Iframe height doesn't inherit from its container, it inherits from the page, so must match the core & main-column height defined before it above (and they must be defined above).*/
+	min-height:50rem;
+	width:100%;
+	border:0;
 }
 
 #index-header > .parent{
@@ -1550,16 +1551,18 @@ time{
 #barstats #health, #barstats #turns, #barstats #kills{
   height:33%;
 }
-#sidebar-column #news-housing{
+#flange #news-housing{
   height:80px;margin-top:20px;
 }
-#sidebar-column #chat-housing{
+/*
+#flange #chat-housing{
   height:93%;
   min-height:40em;
-}
+}*/
 
-#sidebar-column{
-	position:absolute;width:33%;height:100%;right:0;top:0;padding-top:0.7em;
+#flange{
+    width:100%;display:block;
+	/*height:10rem;position:absolute;width:33%;height:100%;right:0;top:0;padding-top:0.7em;*/
 }
 
 #skip-to-bottom{
@@ -3858,15 +3861,8 @@ input[type="button"].btn-block {
 	#combat-subcategory{
 		float:left;
 	}
-	#sidebar-column {
-		display: none;
-	}
 	#index-footer {
 		margin-top:4em;
-	}
-	#main-column{
-		width:100%;
-		left:0;
 	}
 	h1, h2, h3, h4, h5, h6 {
 		font-weight: normal;
