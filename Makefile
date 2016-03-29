@@ -35,9 +35,15 @@ build: dep
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
 
+dep:
+	@$(COMPOSER) install
+
+js-dep:
+	npm install
+
 install: build
 	apt-get install python3-dev python3-lxml
-	apt-get install postgresql nginx php5-fpm
+	#apt-get install postgresql-client nginx php5-fpm
 	chown www-data:adm ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/deity.log
 	touch /var/log/nginx/ninjawars.chat-server.log
@@ -83,7 +89,7 @@ test-cron-run:
 test-functional:
 	python3 -m pytest deploy/tests/functional/
 
-test-js:
+test-js: js-dep
 	karma start deploy/tests/karma.conf.js --browsers PhantomJS --single-run
 
 test-ratchets:
@@ -103,10 +109,6 @@ clean:
 	@rm -f "$(JS)jquery.timeago.js"
 	@rm -f "$(JS)jquery.linkify.js"
 	@rm -f "$(JS)jquery-linkify.min.js"
-
-dep:
-	@$(COMPOSER) install
-	@npm install
 
 dist-clean: clean
 	@rm -rf ./vendor/*
