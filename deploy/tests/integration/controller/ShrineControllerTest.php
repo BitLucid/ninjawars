@@ -4,6 +4,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\ShrineController;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Skill;
 use NinjaWars\core\extensions\SessionFactory;
 
 class ShrineControllerTest extends PHPUnit_Framework_TestCase {
@@ -53,7 +54,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
     public function testShrinePartialHeal(){
         $request = new Request(['heal_points'=>10], []);
         RequestWrapper::inject($request);
-        $this->char->harm(30); // Have to be wounded first.
+        $this->char->harm((int)floor($this->char->health()/2)); // Have to be wounded first.
         $initial_health = $this->char->health();
         $this->assertGreaterThan(0, $initial_health);
         $this->char->save();
@@ -72,7 +73,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
     public function testShrineMaxHeal(){
         $request = new Request(['heal_points'=>'max'], []);
         RequestWrapper::inject($request);
-        $this->char->harm(30); // Have to be wounded first.
+        $this->char->harm((int)floor($this->char->health()/2)); // Have to be wounded first.
         $initial_health = $this->char->health();
         $initial_gold = $this->char->gold;
         $this->char->setClass('viper'); // ensure no chi
@@ -88,9 +89,9 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
     public function testPartialHealWithZeroGoldGivesErrorInPageParts(){
         $request = new Request(['heal_points'=>999], []);
         RequestWrapper::inject($request);
-        $this->char->harm(30); // Have to be wounded first.
+        $this->char->harm((int)floor($this->char->health/2)); // Have to be wounded first.
         $this->char->set_gold(0);
-        $initial_health = $this->char->health();
+        $initial_health = $this->char->health;
         $this->assertGreaterThan(0, $initial_health);
         $this->char->save();
         $this->char->setClass('viper'); // Default dragon class has chi skill
@@ -148,7 +149,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $result = $cont->resurrect();
         $final_char = Player::find($this->char->id());
         $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
-        $this->assertGreaterThan($this->char->level*10, $final_char->health());
+        $this->assertGreaterThan($this->char->getMaxHealth()/(3), $final_char->health());
     }
 
     public function testKillCostResurrectWithStealth() {
@@ -173,12 +174,14 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
         $this->char->vo->turns = $turns;
         $this->char->save();
+        $skillList = new Skill();
+        $this->assertTrue($skillList->hasSkill('chi', $this->char));
 
         $cont = new ShrineController();
         $result = $cont->resurrect();
         $final_char = Player::find($this->char->id());
         $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
-        $this->assertLessThan($final_char->health(), $this->char->level*10);
+        $this->assertGreaterThan($this->char->getMaxHealth()/(1.5), $final_char->health());
         $this->assertLessThan($turns, $final_char->turns);
     }
 

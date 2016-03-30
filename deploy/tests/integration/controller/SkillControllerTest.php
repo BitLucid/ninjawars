@@ -191,12 +191,14 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     // TODO: test that self_use of things like Steal error or whatever the right behavior should be?
     // TODO: test that use of skills that aren't part of the users skillset error
+    // TODO: test that use of unstealth on another fails
+    // TODO: test that use of stealth on another fails.
 
     public function testUseHealOnSelfAsAHealingCharacter(){
         $this->char->setClass('dragon');
         $this->char->set_turns(300);
         $this->char->vo->level = 20;
-        $this->char->set_health(floor($this->char->getMaxHealth()/2));
+        $this->char->harm(floor($this->char->getMaxHealth()/2));
         $initial_health = $this->char->health();
         $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
         $this->char->save();

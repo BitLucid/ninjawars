@@ -242,7 +242,7 @@ class Player implements Character {
      * @return int
      */
 	public function strength() {
-		$str = $this->vo->strength;
+        $str = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
 		if ($this->hasStatus(WEAKENED)) {
 			return (int) max(1, $str-(ceil($str*.25))); // 75%
 		} elseif ($this->hasStatus(STR_UP2)) {
@@ -262,7 +262,7 @@ class Player implements Character {
 	}
 
 	public function speed() {
-		$speed = $this->vo->speed;
+        $speed = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
 		if ($this->hasStatus(SLOW)) {
 			return (int) ($speed-(ceil($speed*.25)));
 		} else {
@@ -278,7 +278,7 @@ class Player implements Character {
 	}
 
 	public function stamina() {
-		$stam = $this->vo->stamina;
+		$stam = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
 		if ($this->hasStatus(POISON)) {
 			return (int) ($stam-(ceil($stam*.25)));
 		} else {
