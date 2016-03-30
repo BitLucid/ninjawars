@@ -28,28 +28,22 @@
         </thead>
 {assign var="level_chart"   value=1}
 {assign var="kills_chart"   value=0}
-{assign var="str_chart"     value=Player::baseStrengthByLevel(1)}
-{assign var="speed_chart"   value=Player::baseSpeedByLevel(1)}
-{assign var="stamina_chart" value=Player::baseStaminaByLevel(1)}
-{assign var="hp_chart"      value=Player::maxHealthByLevel(1)}
+{assign var="str_chart"     value=1}
+{assign var="speed_chart"   value=1}
+{assign var="stamina_chart" value=1}
+{assign var="hp_chart"      value=1}
         <tbody>
 {section name="chart" start=1 loop=$max_level+1 step=1}
             <tr>
                 <td>{$level_chart|escape}</td>
                 <td>{$kills_chart|escape}</td>
-                <td>{$str_chart|escape}</td>
-                <td>{$stamina_chart|escape}</td>
-                <td>{$speed_chart|escape}</td>
-                <td>{$hp_chart|escape}</td>
+                <td>{strength_by_level level=$level_chart}</td>
+                <td>{stamina_by_level level=$level_chart}</td>
+                <td>{speed_by_level level=$level_chart}</td>
+                <td>{max_health_by_level level=$level_chart}</td>
             </tr>
     {assign var="level_chart" value=1+$level_chart}
     {assign var="kills_chart" value=5+$kills_chart}
-    {assign var="str_chart" value=LEVEL_UP_STAT_RAISE+$str_chart}
-    {assign var="stamina_chart" value=LEVEL_UP_STAT_RAISE+$stamina_chart}
-    {assign var="speed_chart" value=LEVEL_UP_STAT_RAISE+$speed_chart}
-    {if $hp_chart lt $max_hp}
-        {assign var="hp_chart" value=LEVEL_UP_HP_RAISE+$hp_chart}
-    {/if}
 {/section}
         </tbody>
     </table>
