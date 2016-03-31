@@ -215,4 +215,27 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $final_char = Player::find($this->char->id());
         $this->assertGreaterThan($initial_health, $final_char->health());
     }
+
+
+    public function testUseHarmonizeOnSelf(){
+        $this->char->set_turns(300);
+        $this->char->ki = 1000;
+        $this->char->vo->level = 20;
+        $this->char->harm(floor($this->char->getMaxHealth()/2));
+        $initial_health = $this->char->health();
+        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
+        $this->char->save();
+
+        $request = Request::create('/skill/self_use/Harmonize/');
+        RequestWrapper::inject($request);
+        $controller = new SkillController();
+        $controller_outcome = $controller->selfUse();
+
+        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $controller_outcome, 
+                'A redirect was the outcome for the url: '
+                .($controller_outcome instanceof RedirectResponse? $controller_outcome->getTargetUrl() : ''));
+        $this->assertEquals('Harmonize', $controller_outcome['parts']['act']);
+        $final_char = Player::find($this->char->id());
+        $this->assertGreaterThan($initial_health, $final_char->health());
+    }
 }

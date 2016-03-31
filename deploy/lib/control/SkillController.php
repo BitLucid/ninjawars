@@ -32,7 +32,7 @@ class SkillController {
 	}
 
 	public function maxHarmonize(Player $pc){
-		return $pc->maxHealth();
+		return $pc->getMaxHealth();
 	}
 
 	/**
