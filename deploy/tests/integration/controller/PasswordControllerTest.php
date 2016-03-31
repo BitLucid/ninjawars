@@ -39,7 +39,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         // Craft Post Symfony Request
         $req = Request::create('/password/post_email/');
         $req->setMethod('POST');
-        $req->query->set('email', $this->account->getActiveEmail());
+        $req->request->set('email', $this->account->getActiveEmail());
         RequestWrapper::inject($req);
 
         // Pass to controller
@@ -49,8 +49,8 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         // reset entry should be created
         $pwrr = PasswordResetRequest::where('_account_id', '=', $this->account->id())->first();
 
-        $this->assertNotEmpty($pwrr, 'Fail: Unable to find a matching password reset request.');
-        $this->assertTrue($pwrrd instanceof PasswordResetRequest, "Request wasn't found to become a PasswordResetRequest.");
+        $this->assertNotEmpty($pwrr, 'Fail: Unable to find a matching password reset request for account_id: ['.$this->account->id().'].');
+        $this->assertTrue($pwrr instanceof PasswordResetRequest, "Request wasn't found to become a PasswordResetRequest.");
         $this->assertGreaterThan(0, $pwrr->id());
         $this->assertNotEmpty($pwrr->nonce, "Nonce/Token was blank or didn't come back.");
     }
@@ -69,14 +69,15 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     public function testPostEmailReturnsErrorOnUnmatchableEmailAndNinjaName(){
         $req = Request::create('/password/post_email');
         $req->setMethod('POST');
-        $req->query->set('email', 'unmatchable@'.nonce().'com');
-        $req->query->set('ninja_name', 'nomatch'.nonce());
+        $req->request->set('email', 'unmatchable@'.nonce().'com');
+        $req->request->set('ninja_name', 'nomatch'.nonce());
         RequestWrapper::inject($req);
 
         $controller = new PasswordController();
         $response = $controller->postEmail();
         $this->assertTrue($response instanceof RedirectResponse);
-        $this->assertTrue(strpos($response->getTargetUrl(), url('unable to find a matching account')) !== false, 'Url Redirection did not contain expected error string');
+        $expected = 'unable to find a matching account';
+        $this->assertTrue(stripos($response->getTargetUrl(), url($expected)) !== false, 'Url Redirection for ['.$response->getTargetUrl().'] did not contain expected error string of ['.$expected.']');
     }
 
     public function testPostEmailCanGetAnAccountUsingANinjaName(){
@@ -84,18 +85,19 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $req->setMethod('POST');
         $char = TestAccountCreateAndDestroy::char();
         $ninja_name = $char->name();
-        $req->query->set('ninja_name', $ninja_name);
+        $req->request->set('ninja_name', $ninja_name);
         RequestWrapper::inject($req);
 
         $account = Account::findByNinjaName($ninja_name);
+        $this->assertNotEmpty($account->id(), 'Unable to find id for newly created account.');
 
 
         $controller = new PasswordController();
         $controller->postEmail();
         // Check for a matching request for the appropriate account.
-        $req = PasswordResetRequest::where('_account_id', '=', $account->id())->first();
+        $pwrr = PasswordResetRequest::where('_account_id', '=', $account->id())->first();
 
-        $this->assertNotEmpty($req, 'Fail: Unable to find a matching password reset request.');
+        $this->assertNotEmpty($pwrr, 'Fail: Unable to find a matching password reset request  for account_id: ['.$this->account->id().'].');
     }
 
     public function testGetResetWithARandomTokenErrorRedirects(){

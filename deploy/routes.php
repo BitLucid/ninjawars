@@ -137,7 +137,6 @@ Router::$routes = [
         'type'    => 'controller',
         'actions' => [
             'post_email' => 'postEmail',
-            'get_email' => 'getEmail',
             'post_reset' => 'postReset',
             'reset' => 'getReset',
         ],
