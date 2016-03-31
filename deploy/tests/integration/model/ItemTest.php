@@ -18,24 +18,36 @@ class ItemTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($item instanceof Item);
 	}
 
+    public function testAnyItemAtAllExists(){
+        $identity = query_item('select item_internal_name from item limit 1');
+        $item = Item::findByIdentity($identity);
+        $this->assertTrue($item instanceof Item);
+    }
+
 	public function testSomeItemsExist(){
-		$shuriken = new Item('shuriken');
-		$kunai = new Item('kunai');
-		$tessen = new Item('kunai');
-		$this->assertTrue((bool) $shuriken->identity() || (bool)$kunai->identity() || (bool) $tessen->identity(), 
-				'Neither shuriken, kunai, or tessen exist to be instantiated!');
+        /*
+        $lantern = Item::findByIdentity('lantern');
+		$shuriken = Item::findByIdentity('shuriken');
+		$kunai = Item::findByIdentity('kunai');
+		$tessen = Item::findByIdentity('tessen');
+        */
+        $items = ['shuriken', 'kunai', 'tessen', 'lantern'];
+        foreach($items as $identity){
+            $this->assertNotEmpty(Item::findByIdentity($identity), 'Item ['.$identity.'] was not able to be found or instantiated.');
+        }
 	}
 
 	public function testRetrievingAShuriken(){
-		$shuriken = new Item('shuriken');
+		$shuriken = Item::findByIdentity('shuriken');
 		$this->assertTrue($shuriken instanceof Item);
 		$this->assertEquals('shuriken', $shuriken->identity());
 	}
 
 	public function testTessenAndKunaiHaveSomeMaxDamage(){
-		$tessen = new Item('tessen');
+		$tessen = Item::findByIdentity('tessen');
+        $this->assertNotEmpty($tessen->identity());
 		$this->assertGreaterThan(0, $tessen->getMaxDamage());
-		$kunai = new Item('kunai');
+		$kunai = Item::findByIdentity('kunai');
 		$this->assertGreaterThan(0, $kunai->getMaxDamage());
 	}
 
@@ -51,77 +63,77 @@ class ItemTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testKunaiHasSomeRandomDamage(){
-		$kunai = new Item('kunai');
+		$kunai = Item::findByIdentity('kunai');
 		$sum = $this->itemRandomDamageSum($kunai);
 		$this->assertGreaterThan(0, $sum);
 	}
 
 	public function weaponsHaveSomeRandomDamage(){
 		// Special cases:  Shuriken...
-		$this->assertGreaterThan(0, $this->itemRandomDamageSum(new Item('kunai')));
-		$this->assertGreaterThan(0, $this->itemRandomDamageSum(new Item('ono')));
-		$this->assertGreaterThan(0, $this->itemRandomDamageSum(new Item('bo')));
-		$this->assertGreaterThan(0, $this->itemRandomDamageSum(new Item('kama')));
-		$this->assertGreaterThan(0, $this->itemRandomDamageSum(new Item('tetsubo')));
+		$this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('kunai')));
+		$this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('ono')));
+		$this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('bo')));
+		$this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('kama')));
+		$this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('tetsubo')));
 	}
 
     public function testThatAShurikenHasSliceEffect(){
-        $item = new Item('shuriken');
+        $item = Item::findByIdentity('shuriken');
         $this->assertGreaterThan(0, $item->hasEffect('slice'));
     }
 
     public function testThatAShurikenIsUsableOnOthers(){
-        $item = new Item('shuriken');
+        $item = Item::findByIdentity('shuriken');
         $this->assertTrue($item->isOtherUsable());
     }
 
     public function testThatShurikenDoesNotIgnoreStealth(){
-        $item = new Item('shuriken');
+        $item = Item::findByIdentity('shuriken');
         $this->assertFalse($item->ignoresStealth());
     }
 
     public function testThatShurikensArentSelfUsable(){
-        $item = new Item('shuriken');
+        $item = Item::findByIdentity('shuriken');
         $this->assertFalse($item->isSelfUsable());
     }
 
     public function testThatCaltropsIdeallyCauseNegativeTurnChange(){
-        $item = new Item('caltrops');
+        $item = Item::findByIdentity('caltrops');
         $this->assertLessThan(0, $item->getMaxTurnChange());
     }
 
     public function testBuffItemsIgnoreStealth(){
         foreach(['mirror', 'prayerwheel', 'shell', 'lantern'] as $ident){
-            $item = new Item($ident);
+            $item = Item::findByIdentity($ident);
             $this->assertTrue($item->ignoresStealth());
         }
     }
 
     public function testMeitoNamedKatanaIgnoresStealth(){
-        $item = new Item('meito');
+        $item = Item::findByIdentity('meito');
         $this->assertTrue($item->ignoresStealth());
     }
 
 	public function testShurikenHasSomeMaxDamageWhenTargetted(){
-		$shuriken = new Item('shuriken');
+		$shuriken = Item::findByIdentity('shuriken');
 		$this->assertGreaterThan(0, $shuriken->getMaxDamage(new Player()));
 	}
 
 
 	public function testShurikenHasSomeIntegerDamage(){
-		$shuriken = new Item('shuriken');
+		$shuriken = Item::findByIdentity('shuriken');
 		$this->assertGreaterThan(-1, $shuriken->getRandomDamage());
 		$this->assertTrue((bool)is_int($shuriken->getRandomDamage()));
 	}	
 
 	public function testAmanitaHasSomeTurnChange(){
-		$amanita = new Item('amanita');
+		$amanita = Item::findByIdentity('amanita');
 		$this->assertGreaterThan(0, $amanita->getMaxTurnChange());
 	}
 
 	public function testItemPluralNameExists(){
-		$caltrop = new Item('caltrops');
-		$shuriken = new Item('shuriken');
+		$caltrop = Item::findByIdentity('caltrops');
+		$shuriken = Item::findByIdentity('shuriken');
 		$this->assertInstanceOf('NinjaWars\core\data\Item', $caltrop);
 		$this->assertInstanceOf('NinjaWars\core\data\Item', $shuriken);
 		$this->assertEquals('Shuriken', $shuriken->getName());

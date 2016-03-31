@@ -2,58 +2,29 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Player;
+use Illuminate\Database\Eloquent\Model;
 use \PDO;
 
 /**
  * Managing items like shuriken, dimmak
  */
-class Item {
-    protected $m_name;
-    protected $m_plural;
-    protected $m_ignoresStealth;
-    protected $m_targetDamage;
-    protected $m_maxDamage;
-    protected $m_turnCost;
-    protected $m_turnChange;
-    protected $m_maxTurnChange;
-    protected $m_covert;
-    protected $m_selfUse;
-    protected $m_otherUsable;
-    protected $m_type;
-    protected $m_identity;
+class Item extends Model{
+    protected $identity;
+    protected $type;
+
+    protected $table = 'item';
+    protected $primaryKey = 'item_id';
+    protected $guarded = ['item_id', 'created_at'];
+
+    const MIN_DYNAMIC_DAMAGE = 9;
 
     /**
-     * Set all the default settings for items, overridden by specified settings
+     * Construct the object and add some custom attributes.
      */
-    public function __construct($dirty_content=null) {
-        // Potentially, an identity string is what's being passed in.
-        if (is_string($dirty_content) && trim($dirty_content) !== '') {
-            $data = item_info_from_identity($dirty_content);
-            $this->buildFromArray($data);
-        }
-    }
-
-    /**
-     * Builds the item from the database table data
-     *
-     * @param Array $p_data
-     * @return void
-     * @note
-     * Eventually this perhaps should be abstracted to a factory pattern
-     */
-    public function buildFromArray($p_data) {
-        $this->m_type           = $p_data['item_id'];
-        $this->m_identity       = $p_data['item_internal_name'];
-        $this->m_name           = $p_data['item_display_name'];
-        $this->m_plural         = $p_data['plural'];
-        $this->m_turnCost       = ($p_data['turn_cost']     ? $p_data['turn_cost']     : 1);
-        $this->m_maxTurnChange  = ($p_data['turn_change']   ? $p_data['turn_change']   : 0);
-        $this->m_targetDamage   = ($p_data['target_damage'] ? $p_data['target_damage'] : null);
-        $this->m_maxDamage      = $this->m_targetDamage;
-        $this->m_ignoresStealth = ($p_data['ignore_stealth']);
-        $this->m_covert         = ($p_data['covert']);
-        $this->m_selfUse        = ($p_data['self_use']);
-        $this->m_otherUsable    = ($p_data['other_usable']);
+    public function __construct($attributes = array(), $exists=false)  {
+        parent::__construct($attributes, $exists=false); // Eloquent
+        $this->identity = $this->item_internal_name;
+        $this->type = $this->item_id;
     }
 
     /**
@@ -62,7 +33,7 @@ class Item {
      * @return String
      */
     public function getName() {
-        return $this->m_name;
+        return $this->item_display_name;
     }
 
     /**
@@ -71,7 +42,7 @@ class Item {
      * @return String
      */
     public function getPluralName() {
-        return $this->m_name.$this->m_plural;
+        return $this->item_display_name.$this->plural;
     }
 
     /**
@@ -87,7 +58,7 @@ class Item {
      * @return int
      */
     public function id() {
-        return $this->m_type;
+        return $this->item_id;
     }
 
     /**
@@ -96,7 +67,7 @@ class Item {
      * @return String
      */
     public function identity() {
-        return $this->m_identity;
+        return $this->item_internal_name;
     }
 
     /**
@@ -132,7 +103,7 @@ class Item {
      * @return void
      */
     public function setTurnChange($p_turns) {
-        $this->m_turnChange = (float)$p_turns;
+        $this->turn_change = (float)$p_turns;
     }
 
     /**
@@ -141,7 +112,7 @@ class Item {
      * @return int
      */
     public function getMaxTurnChange() {
-        return $this->m_maxTurnChange;
+        return (int) $this->turn_change;
     }
 
     /**
@@ -151,7 +122,7 @@ class Item {
      * @return int
      */
     public function getTurnChange() {
-        return $this->m_turnChange;
+        return (int) $this->turn_change;
     }
 
     /**
@@ -161,7 +132,7 @@ class Item {
      * @return void
      */
     public function setIgnoresStealth($p_ignore) {
-        $this->m_ignoresStealth = (boolean)$p_ignore;
+        $this->ignore_stealth = (boolean)$p_ignore;
     }
 
     /**
@@ -170,7 +141,7 @@ class Item {
      * @return boolean
      */
     public function ignoresStealth() {
-        return $this->m_ignoresStealth;
+        return $this->ignore_stealth;
     }
 
     /**
@@ -180,7 +151,7 @@ class Item {
      * @return void
      */
     public function setTargetDamage($p_damage) {
-        $this->m_targetDamage = (int)$p_damage;
+        $this->target_damage = (int)$p_damage;
     }
 
     /**
@@ -191,7 +162,7 @@ class Item {
      * Ex: A shuriken relies exclusively on the slice effect for it's damage.
      */
     public function getTargetDamage() {
-        return (int)$this->m_targetDamage;
+        return (int)$this->target_damage;
     }
 
     /**
@@ -205,12 +176,12 @@ class Item {
      * @note
      * Some effects-based object will not actually have a pre-known maxDamage
      */
-    public function getMaxDamage(Player $c=null) {
-        if ($c instanceof Player && $this->hasDynamicDamage()) {
-            return max(9, floor($c->strength() * 2/3)-4);
+    public function getMaxDamage(Player $pc=null) {
+        if ($pc instanceof Player && $this->hasDynamicDamage()) {
+            return max(static::MIN_DYNAMIC_DAMAGE, (int) floor($pc->strength() * 2/3)-4);
+        } else {
+            return $this->target_damage;
         }
-
-        return $this->m_maxDamage;
     }
 
     /**
@@ -228,14 +199,15 @@ class Item {
      * @return int
      */
     public function getRandomDamage() {
-        return rand(0, $this->m_maxDamage);
+        return rand(0, $this->getMaxDamage());
     }
 
     /**
      * @return int
+     * Turn cost to use
      */
     public function getTurnCost() {
-        return $this->m_turnCost;
+        return $this->turn_cost;
     }
 
     /**
@@ -244,15 +216,15 @@ class Item {
      * @return void
      */
     public function setCovert($p_covert) {
-        $this->m_covert = (boolean)$p_covert;
+        $this->covert = (boolean)$p_covert;
     }
 
     public function isCovert() {
-        return $this->m_covert;
+        return $this->covert;
     }
 
     public function isSelfUsable() {
-        return $this->m_selfUse;
+        return $this->self_use;
     }
 
     /**
@@ -261,14 +233,14 @@ class Item {
      * @return boolean
      */
     public function isOtherUsable() {
-        return $this->m_otherUsable;
+        return $this->other_usable;
     }
 
     /**
      * @return int
      */
     public function getType() {
-        return $this->m_type;
+        return $this->type;
     }
 
     /**
@@ -290,5 +262,12 @@ class Item {
         }
 
         return $res;
+    }
+
+    /**
+     * Get an item model by it's identity string.
+     */
+    public static function findByIdentity($identity){
+        return Item::where('item_internal_name', $identity)->first();
     }
 }

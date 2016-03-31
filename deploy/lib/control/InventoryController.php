@@ -554,9 +554,9 @@ class InventoryController {
      */
     private function findItem($token) {
 	    if ($token == (int) $token && is_numeric($token)) {
-	        $item = getItemByID($token);
+	        $item = Item::find($token);
 	    } elseif (is_string($token)) {
-            $item = new Item($token);
+            $item = Item::findByIdentity($token);
 	    } else {
             throw new \InvalidArgumentException('');
 	    }

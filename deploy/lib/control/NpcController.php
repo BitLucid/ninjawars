@@ -62,12 +62,12 @@ class NpcController { //extends controller
         if ($player->health() > 0) { // if you survive
             if ($player->turns > self::HIGH_TURNS) { // And your turns are high/you are energetic, you can kill them.
                 $oni_killed       = true;
-                $item             = new Item('dimmak');
+                $item             = Item::findByIdentity('dimmak');
                 $quantity         = 1;
                 add_item($player->id(), $item->identity(), $quantity);
             } else if ($player->turns > floor(self::HIGH_TURNS/2) && rand()&1) { // If your turns are somewhat high/you have some energy, 50/50 chance you can kill them.
                 $oni_killed       = true;
-                $item             = new Item('ginsengroot');
+                $item             = Item::findByIdentity('ginsengroot');
                 $multiple_rewards = true;
                 $quantity         = 4;
                 add_item($player->id(), $item->identity(), $quantity);
