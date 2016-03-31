@@ -67,7 +67,8 @@ class TestRouting:
             'clan.php?command=view', 'npc', 'npc/attack/peasant/',
             'npc/attack/guard/', 'stats', 'account', 'quest',
             'quest/view/1', 'assistance', 'assistance/confirm',
-            'resetpassword.php', 'player.php?target_id=777777',
+            'password', 'password/reset/', 'password/get_email', 
+            'password/post_email', 'player.php?target_id=777777',
             'player.php?target=tchalvak', 'item/self_use/amanita',
             'skill/use/Fire%20Bolt/tchalvak', 'skill/self_use/Heal',
             'item/self_use/3', 'item/self_use/1',
@@ -83,7 +84,7 @@ class TestRouting:
         urls_gone = [
             'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php',
             'webgame/', 'account_issues.php', 'confirm.php', 'casino/bet',
-            'news.php',
+            'news.php', 'resetpassword.php',
         ]
         # Urls that just redirect for anonymous users, with continued purpose.
         urls_private = [

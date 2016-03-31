@@ -54,6 +54,10 @@ server {
 	    return 302 /assistance$is_args$args;
 	}
 
+	location = /resetpassword.php {
+	    return 302 /assistance$is_args$args;
+	}
+
 	location ~ ^/(main\.php|tutorial\.php) {
 	    return 302 /intro;
 	}

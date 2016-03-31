@@ -2,6 +2,7 @@
 namespace NinjaWars\core\environment;
 
 use Symfony\Component\HttpFoundation\Request;
+use \Constants;
 
 /**
  * Creates an API for using a repeatable request and other globals
@@ -13,6 +14,7 @@ class RequestWrapper{
      */
     public static function init() {
         if (!static::$request) {
+            Request::setTrustedProxies(Constants::$trusted_proxies);
             // Create request object from global page request otherwise.
             static::$request = Request::createFromGlobals();
         }
