@@ -409,14 +409,14 @@ class Player implements Character {
      * @return integer
      */
     public function getMaxHealth() {
-        return self::maxHealthByLevel($this->level);
+        return $this->stamina()*2;
     }
 
     /**
      * @return integer
      */
     public function max_health() {
-        return self::maxHealthByLevel($this->level);
+        return $this->stamina()*2;
     }
 
     /**
