@@ -38,7 +38,6 @@ class PasswordController {
     /**
      * Display the form to request a password reset link
      *
-     * @param Request $request
      * @return array
      * @TODO: Generate a csrf
      */
@@ -68,7 +67,6 @@ class PasswordController {
     /**
      * Send a reset link to a given user.
      *
-     * @param Request $request
      * @return RedirectResponse
      * @TODO: Authenticate the csrf, which must match, from the session.
      */
@@ -114,7 +112,6 @@ class PasswordController {
     /**
      * Obtain token, get matching request
      *
-     * @param Request $request
      * @return array|RedirectResponse
      * @todo Need a way to set the max age on the response that the form will display
      */
@@ -150,7 +147,6 @@ class PasswordController {
     /**
      * Reset the given user's password.
      *
-     * @param Request $request
      * @return RedirectResponse
      */
     public function postReset() {
@@ -181,6 +177,9 @@ class PasswordController {
         }
     }
 
+    /**
+     * @return RedirectResponse
+     */
     private function renderError($p_error, $p_token) {
         return new RedirectResponse('/password/?token='.url($p_token).'&error='.url($p_error));
     }
