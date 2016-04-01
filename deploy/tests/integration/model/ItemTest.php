@@ -68,7 +68,7 @@ class ItemTest extends PHPUnit_Framework_TestCase {
 		$this->assertGreaterThan(0, $sum);
 	}
 
-	public function weaponsHaveSomeRandomDamage(){
+	public function testWeaponsHaveSomeRandomDamage(){
 		// Special cases:  Shuriken...
 		$this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('kunai')));
 		$this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('ono')));
@@ -76,6 +76,12 @@ class ItemTest extends PHPUnit_Framework_TestCase {
 		$this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('kama')));
 		$this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('tetsubo')));
 	}
+
+    public function testItemThatExistsHasATypeAndIdentity(){
+        $item = Item::findByIdentity('shuriken');
+        $this->assertEquals('shuriken', $item->identity());
+        $this->assertGreaterThan(0, $item->getType());
+    }
 
     public function testThatAShurikenHasSliceEffect(){
         $item = Item::findByIdentity('shuriken');

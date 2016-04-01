@@ -25,23 +25,11 @@ use \PDO;
  * @property-read string traits (comma separated)
  */
 class Item extends Model{
-    protected $identity;
-    protected $type;
-
     protected $table = 'item';
     protected $primaryKey = 'item_id';
     protected $guarded = ['item_id', 'created_at'];
 
     const MIN_DYNAMIC_DAMAGE = 9;
-
-    /**
-     * Construct the object and add some custom attributes.
-     */
-    public function __construct($attributes = array(), $exists=false)  {
-        parent::__construct($attributes, $exists); // Eloquent
-        $this->identity = $this->item_internal_name;
-        $this->type = $this->item_id;
-    }
 
     /**
      * Returns not the identity, but the display name
@@ -262,7 +250,7 @@ class Item extends Model{
      * @return int
      */
     public function getType() {
-        return $this->type;
+        return $this->item_id;
     }
 
     /**
