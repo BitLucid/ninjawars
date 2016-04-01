@@ -7,6 +7,22 @@ use \PDO;
 
 /**
  * Managing items like shuriken, dimmak
+ * @property-read int item_id
+ * @property-read string item_internal_name
+ * @property-read string item_display_name
+ * @property-read int item_cost
+ * @property-read string image
+ * @property-read boolean for_sale
+ * @property-read string usage
+ * @property-read boolean ignore_stealth
+ * @property-read boolean covert Whether the item breaks off stealth
+ * @property-read int turn_cost
+ * @property-read int target_damage
+ * @property-read int turn_change
+ * @property-read boolean self_use
+ * @property-read string plural
+ * @property-read boolean other_usable
+ * @property-read string traits (comma separated)
  */
 class Item extends Model{
     protected $identity;
@@ -22,7 +38,7 @@ class Item extends Model{
      * Construct the object and add some custom attributes.
      */
     public function __construct($attributes = array(), $exists=false)  {
-        parent::__construct($attributes, $exists=false); // Eloquent
+        parent::__construct($attributes, $exists); // Eloquent
         $this->identity = $this->item_internal_name;
         $this->type = $this->item_id;
     }
@@ -171,7 +187,7 @@ class Item extends Model{
      * If a player is passed in, damage is the better of 9 or 2/3rd of the
      * player's strength -4.
      *
-     * @param Player $c (optional) Use player to calculate damage
+     * @param Player|null $pc (optional) Use player to calculate damage
      * @return int
      * @note
      * Some effects-based object will not actually have a pre-known maxDamage
@@ -219,10 +235,16 @@ class Item extends Model{
         $this->covert = (boolean)$p_covert;
     }
 
+    /**
+     * @return boolean
+     */
     public function isCovert() {
         return $this->covert;
     }
 
+    /**
+     * @return boolean
+     */
     public function isSelfUsable() {
         return $this->self_use;
     }
@@ -266,8 +288,9 @@ class Item extends Model{
 
     /**
      * Get an item model by it's identity string.
+     * @return Item
      */
     public static function findByIdentity($identity){
-        return Item::where('item_internal_name', $identity)->first();
+        return self::where('item_internal_name', $identity)->first();
     }
 }
