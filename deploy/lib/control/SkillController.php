@@ -13,8 +13,27 @@ class SkillController {
 	const ALIVE = true;
 	const PRIV  = true;
 
-	const HEAL_PER_LEVEL = 10;
-	const MAX_HARMONIZE = 100;
+	const MIN_POISON_TOUCH = 1;
+
+	public function maxPoisonTouch(){
+		return (int)floor(2/3*Player::maxHealthByLevel(1));
+	}
+
+
+	public function fireBoltBaseDamage(Player $pc){
+		return (int) (floor(Player::maxHealthByLevel($pc->level) / 3));
+	}
+
+	/**
+	 * Technically max -additional damage off the base
+	 */
+	public function fireBoltMaxDamage(Player $pc){
+		return (int) $pc->getStrength();
+	}
+
+	public function maxHarmonize(Player $pc){
+		return $pc->getMaxHealth();
+	}
 
 	/**
 	 * Initialize with any external state if necessary
@@ -142,7 +161,7 @@ class SkillController {
 
 		$path = RequestWrapper::getPathInfo();
 		$slugs = $this->parseSlugs($path);
-		// (fullpath0) /skill1/go2/firebolt3/tchalvak4/(beagle5/)
+		// (fullpath0) /skill1/go2/Fire%20Bolt3/tchalvak4/(beagle5/)
 		$act = isset($slugs[3])? $slugs[3] : null;
 		$target = isset($slugs[4])? $slugs[4] : null;
 		$target2 = isset($slugs[5])? $slugs[5] : null;
@@ -172,12 +191,11 @@ class SkillController {
 		//$stealth = in('stealth'); Unused?  What was this.
 
 		$skillListObj    = new Skill();
-		$poisonMaximum   = 100; // *** Before level-based addition.
-		$poisonMinimum   = 1;
+		// *** Before level-based addition.
 		$poisonTurnCost  = $skillListObj->getTurnCost('poison touch'); // wut
 		$turn_cost       = $skillListObj->getTurnCost(strtolower($act));
 		$ignores_stealth = $skillListObj->getIgnoreStealth($act);
-		$self_usable        = $skillListObj->getSelfUse($act);
+		$self_usable     = $skillListObj->getSelfUse($act);
 		$use_on_target   = $skillListObj->getUsableOnTarget($act);
 		$ki_cost 		 = 0; // Ki taken during use.
 		$reuse 			 = true;  // Able to reuse the skill.
@@ -322,7 +340,7 @@ class SkillController {
 				$target->addStatus(POISON);
 				$target->addStatus(WEAKENED); // Weakness kills strength.
 
-				$target_damage = rand($poisonMinimum, $poisonMaximum);
+				$target_damage = rand(self::MIN_POISON_TOUCH, $this->maxPoisonTouch());
 
 				$victim_alive = $target->subtractHealth($target_damage);
 				$generic_state_change = "__TARGET__ has been poisoned!";
@@ -331,7 +349,9 @@ class SkillController {
 				$msg = "You have been poisoned by $attacker_id";
 				send_event($attacker_char_id, $target->id(), $msg);
 			} elseif ($act == 'Fire Bolt') {
-				$target_damage = (5 * (ceil($player->level / 3)) + rand(1, $player->getStrength()));
+				
+				$target_damage = $this->fireBoltBaseDamage($player) + rand(1, $this->fireBoltMaxDamage($player));
+
 
 				$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
@@ -358,7 +378,7 @@ class SkillController {
 				} else {
 					if(!$harmonize){
 						$original_health = $target->health;
-						$heal_points = $player->level*self::HEAL_PER_LEVEL;
+						$heal_points = $player->stamina+1;
 						$new_health = $target->heal($heal_points); // Won't heal more than possible
 						$healed_by = $new_health - $original_health;
 					} else {
@@ -556,7 +576,7 @@ class SkillController {
 	 */
 	private function harmonizeChakra(Player $char){
 		// Heal at most 100 or ki available or hurt by AND at least 0
-		$heal_for = (int) max(0, min(self::MAX_HARMONIZE, $char->is_hurt_by(), $char->ki));
+		$heal_for = (int) max(0, min($this->maxHarmonize($char), $char->is_hurt_by(), $char->ki));
 		if($heal_for > 0){
 			// If there's anything to heal, try.
 

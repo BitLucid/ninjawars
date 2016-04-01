@@ -191,12 +191,14 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     // TODO: test that self_use of things like Steal error or whatever the right behavior should be?
     // TODO: test that use of skills that aren't part of the users skillset error
+    // TODO: test that use of unstealth on another fails
+    // TODO: test that use of stealth on another fails.
 
     public function testUseHealOnSelfAsAHealingCharacter(){
         $this->char->setClass('dragon');
         $this->char->set_turns(300);
         $this->char->vo->level = 20;
-        $this->char->set_health(floor($this->char->getMaxHealth()/2));
+        $this->char->harm(floor($this->char->getMaxHealth()/2));
         $initial_health = $this->char->health();
         $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
         $this->char->save();
@@ -210,6 +212,29 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
                 'A redirect was the outcome for the url: '
                 .($controller_outcome instanceof RedirectResponse? $controller_outcome->getTargetUrl() : ''));
         $this->assertEquals('Heal', $controller_outcome['parts']['act']);
+        $final_char = Player::find($this->char->id());
+        $this->assertGreaterThan($initial_health, $final_char->health());
+    }
+
+
+    public function testUseHarmonizeOnSelf(){
+        $this->char->set_turns(300);
+        $this->char->ki = 1000;
+        $this->char->vo->level = 20;
+        $this->char->harm(floor($this->char->getMaxHealth()/2));
+        $initial_health = $this->char->health();
+        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
+        $this->char->save();
+
+        $request = Request::create('/skill/self_use/Harmonize/');
+        RequestWrapper::inject($request);
+        $controller = new SkillController();
+        $controller_outcome = $controller->selfUse();
+
+        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $controller_outcome, 
+                'A redirect was the outcome for the url: '
+                .($controller_outcome instanceof RedirectResponse? $controller_outcome->getTargetUrl() : ''));
+        $this->assertEquals('Harmonize', $controller_outcome['parts']['act']);
         $final_char = Player::find($this->char->id());
         $this->assertGreaterThan($initial_health, $final_char->health());
     }
