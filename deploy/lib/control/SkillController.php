@@ -378,7 +378,7 @@ class SkillController {
 				} else {
 					if(!$harmonize){
 						$original_health = $target->health;
-						$heal_points = $player->stamina+1;
+						$heal_points = $player->stamina()+1;
 						$new_health = $target->heal($heal_points); // Won't heal more than possible
 						$healed_by = $new_health - $original_health;
 					} else {
