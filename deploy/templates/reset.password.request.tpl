@@ -18,11 +18,10 @@ footer.password-reset{
 	</div>
 {/if}
 <div class='glassbox'>
-	<form method='post' action='/resetpassword.php'>
+	<form method='post' action='/password/post_email'>
 		{* Need CSRF here! *}
 		<label>Email: <input type='email' name='email' value='{$email|default:''|escape}' placeholder='Your email'></label>
 		<label>Or Ninja name: <input type='text' name='ninja_name' value='{$ninja_name|default:''|escape}' placeholder='Your ninja name'></label>
-		<input type='hidden' name='command' value='email'>
 		<input type='submit' name='request' value='Request'>
 	</form>
 </div>

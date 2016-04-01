@@ -7,7 +7,7 @@
     </div>
 {/if}
 
-    <form name='new_password_form' method="POST" action="">
+    <form name='new_password_form' method="POST" action="/password/post_reset/">
         {* // TODO needs csrf field *}
         <input type="hidden" name="token" value="{$token|escape}">
         <!-- Presence of this token when submitted acts as a request to change -->
@@ -29,7 +29,6 @@
         </div>
 
         <div>
-            <input type='hidden' name='command' value='post_reset'>
             <input type='submit' name='reset-password' class='btn btn-primary' value='Reset Password'>
         </div>
     </form>

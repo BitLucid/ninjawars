@@ -133,6 +133,14 @@ Router::$routes = [
         'actions' => [
         ],
     ],
+    'password' => [
+        'type'    => 'controller',
+        'actions' => [
+            'post_email' => 'postEmail',
+            'post_reset' => 'postReset',
+            'reset' => 'getReset',
+        ],
+    ],
     'chat' => [
         'type'    => 'controller',
         'actions' => [

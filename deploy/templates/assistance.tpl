@@ -42,7 +42,7 @@
     <h2>Need your password reset?</h2>
     <div class='parent'>
         <div class='child'>
-            <a href='/resetpassword.php' class='btn btn-primary'>Request A Password Reset</a>
+            <a href='/password/' class='btn btn-primary'>Request A Password Reset</a>
         </div>
     </div>
 

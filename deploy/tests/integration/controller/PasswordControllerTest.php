@@ -2,6 +2,7 @@
 use NinjaWars\core\control\PasswordController;
 use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,90 +26,92 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testRequestFormRenders() {
         // Specify email request
-        $req = Request::create('/resetpassword.php');
-        /*
-        $req->query->set('error', null);
-        $req->request->set('email', null);
-        $req->request->set('ninja_name', null);
-        $req->query->set('message', 'Some message here');
-         */
+        $req = Request::create('/password/');
+        RequestWrapper::inject($req);
 
         // Get a Response
         $controller = new PasswordController();
-        $response = $controller->index($req);
+        $response = $controller->index();
         $this->assertEquals('reset.password.request.tpl', $response['template']);
     }
 
     public function testPostEmailCreatesAPasswordResetRequest() {
         // Craft Post Symfony Request
-        $req = Request::create('/resetpassword.php');
+        $req = Request::create('/password/post_email/');
         $req->setMethod('POST');
-        $req->query->set('email', $this->account->getActiveEmail());
+        $req->request->set('email', $this->account->getActiveEmail());
+        RequestWrapper::inject($req);
 
         // Pass to controller
         $controller = new PasswordController();
-        $controller->postEmail($req);
+        $controller->postEmail();
 
         // reset entry should be created
-        $req = PasswordResetRequest::where('_account_id', '=', $this->account->id())->first();
+        $pwrr = PasswordResetRequest::where('_account_id', '=', $this->account->id())->first();
 
-        $this->assertNotEmpty($req, 'Fail: Unable to find a matching password reset request.');
-        $this->assertTrue($req instanceof PasswordResetRequest, "Request wasn't found to become a PasswordResetRequest.");
-        $this->assertGreaterThan(0, $req->id());
-        $this->assertNotEmpty($req->nonce, "Nonce/Token was blank or didn't come back.");
+        $this->assertNotEmpty($pwrr, 'Fail: Unable to find a matching password reset request for account_id: ['.$this->account->id().'].');
+        $this->assertTrue($pwrr instanceof PasswordResetRequest, "Request wasn't found to become a PasswordResetRequest.");
+        $this->assertGreaterThan(0, $pwrr->id());
+        $this->assertNotEmpty($pwrr->nonce, "Nonce/Token was blank or didn't come back.");
     }
 
     public function testPostEmailReturnsErrorWhenNoEmailOrNinjaName(){
-        $req = Request::create('/resetpassword.php');
+        $req = Request::create('/password/post_email/');
         $req->setMethod('POST');
+        RequestWrapper::inject($req);
 
         $controller = new PasswordController();
-        $response = $controller->postEmail($req);
+        $response = $controller->postEmail();
         $this->assertTrue($response instanceof RedirectResponse);
         $this->assertTrue(strpos($response->getTargetUrl(), url('email or a ninja name')) !== false, 'Url Redirection did not contain expected error string');
     }
 
     public function testPostEmailReturnsErrorOnUnmatchableEmailAndNinjaName(){
-        $req = Request::create('/resetpassword.php');
+        $req = Request::create('/password/post_email');
         $req->setMethod('POST');
-        $req->query->set('email', 'unmatchable@'.nonce().'com');
-        $req->query->set('ninja_name', 'nomatch'.nonce());
+        $req->request->set('email', 'unmatchable@'.nonce().'com');
+        $req->request->set('ninja_name', 'nomatch'.nonce());
+        RequestWrapper::inject($req);
 
         $controller = new PasswordController();
-        $response = $controller->postEmail($req);
+        $response = $controller->postEmail();
         $this->assertTrue($response instanceof RedirectResponse);
-        $this->assertTrue(strpos($response->getTargetUrl(), url('unable to find a matching account')) !== false, 'Url Redirection did not contain expected error string');
+        $expected = 'unable to find a matching account';
+        $this->assertTrue(stripos($response->getTargetUrl(), url($expected)) !== false, 'Url Redirection for ['.$response->getTargetUrl().'] did not contain expected error string of ['.$expected.']');
     }
 
     public function testPostEmailCanGetAnAccountUsingANinjaName(){
-        $req = Request::create('/resetpassword.php');
+        $req = Request::create('/password/post_email/');
         $req->setMethod('POST');
         $char = TestAccountCreateAndDestroy::char();
         $ninja_name = $char->name();
-        $req->query->set('ninja_name', $ninja_name);
+        $req->request->set('ninja_name', $ninja_name);
+        RequestWrapper::inject($req);
 
         $account = Account::findByNinjaName($ninja_name);
+        $this->assertNotEmpty($account->id(), 'Unable to find id for newly created account.');
 
 
         $controller = new PasswordController();
-        $controller->postEmail($req);
+        $controller->postEmail();
         // Check for a matching request for the appropriate account.
-        $req = PasswordResetRequest::where('_account_id', '=', $account->id())->first();
+        $pwrr = PasswordResetRequest::where('_account_id', '=', $account->id())->first();
 
-        $this->assertNotEmpty($req, 'Fail: Unable to find a matching password reset request.');
+        $this->assertNotEmpty($pwrr, 'Fail: Unable to find a matching password reset request  for account_id: ['.$this->account->id().'].');
     }
 
     public function testGetResetWithARandomTokenErrorRedirects(){
         $token = 'asdlfkjjklkasdfjkl';
 
         // Symfony Request
-        $request = Request::create('/resetpassword.php');
+        $request = Request::create('/password/get_reset/');
         $request->setMethod('POST');
         $request->query->set('token', $token);
+        RequestWrapper::inject($request);
 
         // get a response
         $controller = new PasswordController();
-        $response = $controller->getReset($request);
+        $response = $controller->getReset();
 
         // Response should contain an array with the token in the parts.
         $this->assertTrue($response instanceof RedirectResponse, 'Error! getReset matched a garbage token!');
@@ -123,13 +126,14 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($matched_req);
 
         // Symfony Request
-        $request = Request::create('/resetpassword.php');
+        $request = Request::create('/password/get_reset/');
         $request->setMethod('POST');
         $request->query->set('token', $token);
+        RequestWrapper::inject($request);
 
         // get a response
         $controller = new PasswordController();
-        $response = $controller->getReset($request);
+        $response = $controller->getReset();
 
         // Response should contain an array with the token in the parts.
         $this->assertFalse($response instanceof RedirectResponse, 'Redirection to the url ['.($response instanceof RedirectResponse? $response->getTargetUrl() : null).'] was the invalid result of password reset.');
@@ -149,7 +153,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         // and with the token already in the database.
 
         // Symfony Request
-        $request = Request::create('/resetpassword.php');
+        $request = Request::create('/password/post_reset/');
         $request->setMethod('POST');
         $request->request->set('token', $token);
 
@@ -159,9 +163,11 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $request->request->set('password_confirmation', $password);
         $request->request->set('email', $this->account->getActiveEmail());
 
+        RequestWrapper::inject($request);
+
         // Now run the controller method to reset!
         $controller = new PasswordController();
-        $response = $controller->postReset($request);
+        $response = $controller->postReset();
 
         // Response should be a successful redirect
         $this->assertTrue($response instanceof RedirectResponse, 'Successful redirect after password resetting was not triggered!');
@@ -181,7 +187,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         // and with the token already in the database.
 
         // Symfony Request
-        $request = Request::create('/resetpassword.php');
+        $request = Request::create('/password/post_reset/');
         $request->setMethod('POST');
         $request->request->set('token', $token);
 
@@ -190,10 +196,11 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $request->request->set('new_password', $password);
         $request->request->set('password_confirmation', $password);
         $request->request->set('email', $this->account->getActiveEmail());
+        RequestWrapper::inject($request);
 
         // Now run the controller method to reset!
         $controller = new PasswordController();
-        $response = $controller->postReset($request);
+        $response = $controller->postReset();
 
         $this->assertTrue(stripos($response->getTargetUrl(), url('not long enough')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
@@ -211,7 +218,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         // and with the token already in the database.
 
         // Symfony Request
-        $request = Request::create('/resetpassword.php');
+        $request = Request::create('/password/post_reset/');
         $request->setMethod('POST');
         $request->request->set('token', $token);
 
@@ -219,10 +226,11 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $request->request->set('new_password', $password);
         $request->request->set('password_confirmation', $password.'mismatch');
         $request->request->set('email', $this->account->getActiveEmail());
+        RequestWrapper::inject($request);
 
         // Now run the controller method to reset!
         $controller = new PasswordController();
-        $response = $controller->postReset($request);
+        $response = $controller->postReset();
 
         $this->assertTrue(stripos($response->getTargetUrl(), url('Password Confirmation did not match')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
@@ -240,7 +248,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         // and with the token already in the database.
 
         // Symfony Request
-        $request = Request::create('/resetpassword.php');
+        $request = Request::create('/password/post_reset/');
         $request->setMethod('POST');
         $request->request->set('token', $token);
 
@@ -249,6 +257,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $request->request->set('new_password', $password);
         $request->request->set('password_confirmation', $password);
         $request->request->set('email', $this->account->getActiveEmail());
+        RequestWrapper::inject($request);
 
         // Now run the controller method to reset!
         $controller = new PasswordController();
@@ -263,20 +272,21 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     public function testPostResetWithInvalidatedTokenYeildsError() {
         $token = '34838383838';
         PasswordResetRequest::generate($this->account, $token);
-        $request = Request::create('/resetpassword.php');
+        $request = Request::create('/password/post_reset/');
         $request->setMethod('POST');
         $request->request->set('token', $token);
         $password = 'legit_password_yo';
         $request->request->set('new_password', $password);
         $request->request->set('password_confirmation', $password);
         $request->request->set('email', $this->account->getActiveEmail());
+        RequestWrapper::inject($request);
 
         // Invalidate the token
         PasswordResetRequest::where('_account_id', '=', $this->account->id())->update(['used' => true]);
 
         // Now run the controller method to reset!
         $controller = new PasswordController();
-        $response = $controller->postReset($request);
+        $response = $controller->postReset();
 
         $this->assertTrue(stripos($response->getTargetUrl(), url('Token was invalid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 

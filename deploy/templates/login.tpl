@@ -58,7 +58,7 @@
 		<a target="main" href="/signup?referrer={$referrer|escape}">Become a Ninja!</a> |
 	  </span>
 	  <span>
-		<a href="account_issues.php" target="main" class="blend side">Login or Signup Problems?</a>
+		<a href="/assistance/" target="main" class="blend side">Login or Signup Problems?</a>
 	  </span>
 	</div>
 </div>

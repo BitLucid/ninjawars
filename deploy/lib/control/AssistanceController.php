@@ -68,7 +68,6 @@ class AssistanceController{
         return $mail_obj->send();
     }
 
-
     /**
      * Display the assistance options to users.
      */

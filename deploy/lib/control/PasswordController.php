@@ -1,7 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
-use Symfony\Component\HttpFoundation\Request;
+use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\PasswordResetRequest;
@@ -25,7 +25,7 @@ class PasswordController {
         }
 
         // Email body contents will be: Click here to reset your password: {{ url('password/reset/'.$token) }}
-        $url = WEB_ROOT.'resetpassword.php?command=reset&token='.url($token);
+        $url = WEB_ROOT.'password/reset/?token='.url($token);
         $rendered = render_template('email.password_reset_request.tpl', ['url'=>$url]);
 
         // Construct the email with Nmail, and then just send it.
@@ -38,15 +38,14 @@ class PasswordController {
     /**
      * Display the form to request a password reset link
      *
-     * @param Request $request
      * @return array
      * @TODO: Generate a csrf
      */
-    public function index(Request $request) {
-        $error      = $request->query->get('error');
-        $message    = $request->query->get('message');
-        $email      = $request->query->get('email');
-        $ninja_name = $request->query->get('ninja_name');
+    public function index() {
+        $error      = RequestWrapper::get('error');
+        $message    = RequestWrapper::get('message');
+        $email      = RequestWrapper::get('email');
+        $ninja_name = RequestWrapper::get('ninja_name');
 
         $parts = [
             'error'      => $error,
@@ -68,16 +67,15 @@ class PasswordController {
     /**
      * Send a reset link to a given user.
      *
-     * @param Request $request
      * @return RedirectResponse
      * @TODO: Authenticate the csrf, which must match, from the session.
      */
-    public function postEmail(Request $request) {
+    public function postEmail() {
         $error      = null;
         $message    = null;
         $account = null;
-        $email      = $request->get('email');
-        $ninja_name = $request->get('ninja_name');
+        $email      = RequestWrapper::getPost('email');
+        $ninja_name = RequestWrapper::getPost('ninja_name');
 
 
         if (!$email && !$ninja_name) {
@@ -105,7 +103,7 @@ class PasswordController {
             }
         }
 
-        return new RedirectResponse('/resetpassword.php?'
+        return new RedirectResponse('/password/?'
             .($message? 'message='.url($message).'&' : '')
             .($error? 'error='.url($error) : '')
         );
@@ -114,18 +112,17 @@ class PasswordController {
     /**
      * Obtain token, get matching request
      *
-     * @param Request $request
      * @return array|RedirectResponse
      * @todo Need a way to set the max age on the response that the form will display
      */
-    public function getReset(Request $request) {
-        $token = $request->query->get('token');
+    public function getReset() {
+        $token = RequestWrapper::get('token');
         $req   = ($token ? PasswordResetRequest::match($token) : null);
         $error = null;
 
         if (!$req) {
             $error = 'No match for your password reset found or time expired, please request again.';
-            return new RedirectResponse('/resetpassword.php?'.($error? 'error='.url($error) : ''));
+            return new RedirectResponse('/password/?'.($error? 'error='.url($error) : ''));
         } else {
             $account = $req->account();
 
@@ -150,13 +147,12 @@ class PasswordController {
     /**
      * Reset the given user's password.
      *
-     * @param Request $request
      * @return RedirectResponse
      */
-    public function postReset(Request $request) {
-        $token                = $request->request->get('token', null);
-        $newPassword          = $request->request->get('new_password');
-        $passwordConfirmation = $request->request->get('password_confirmation');
+    public function postReset() {
+        $token                = RequestWrapper::getPost('token', null);
+        $newPassword          = RequestWrapper::getPost('new_password');
+        $passwordConfirmation = RequestWrapper::getPost('password_confirmation');
 
         if ($passwordConfirmation === null || $passwordConfirmation !== $newPassword) {
             return $this->renderError('Password Confirmation did not match.', $token);
@@ -175,13 +171,16 @@ class PasswordController {
                     return $this->renderError('Password not long enough or does not match password confirmation!', $token);
                 } else {
                     PasswordResetRequest::reset($account, $newPassword);
-                    return new RedirectResponse('/resetpassword.php?message='.url('Password reset!'));                    
+                    return new RedirectResponse('/password/?message='.url('Password reset!'));                    
                 }
             }
         }
     }
 
+    /**
+     * @return RedirectResponse
+     */
     private function renderError($p_error, $p_token) {
-        return new RedirectResponse('/resetpassword.php?token='.url($p_token).'&error='.url($p_error));
+        return new RedirectResponse('/password/?token='.url($p_token).'&error='.url($p_error));
     }
 }
