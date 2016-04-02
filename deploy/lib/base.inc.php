@@ -48,5 +48,4 @@ require_once(LIB_ROOT.'control/lib_header.php');
 require_once(LIB_ROOT.'control/lib_events.php');
 require_once(LIB_ROOT.'control/lib_crypto.php');
 require_once(LIB_ROOT.'control/lib_auth.php');
-require_once(LIB_ROOT.'control/lib_accounts.php');
 require_once(LIB_ROOT.'control/lib_inventory.php');

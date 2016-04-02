@@ -117,6 +117,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
      */
     public function testDuplicateEmailFailsCorrectly() {
         $account = Account::findByChar(Player::find($this->char_id));
+        $original_email = $account->active_email;
         $account->active_email = 'new@local.host';
         $account->save();
 
@@ -129,6 +130,10 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new SignupController();
         $response = $controller->signup();
+
+        $account->active_email = $original_email;
+        $account->save();
+
         $this->assertNotEmpty($response['parts']['error']);
         $this->assertContains('using that email', $response['parts']['error']);
     }

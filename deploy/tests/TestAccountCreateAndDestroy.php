@@ -88,69 +88,54 @@ class TestAccountCreateAndDestroy {
      * Create a testing account
      */
     public static function create_testing_account($confirm=false) {
-        $ip = isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
         TestAccountCreateAndDestroy::purge_test_accounts();
-
-        $found = get_char_id(TestAccountCreateAndDestroy::$test_ninja_name);
-        if ((bool)$found) {
-            throw new Exception('Test user found ['.$found.'] with name ['.TestAccountCreateAndDestroy::$test_ninja_name.'] already exists');
-        }
-
-        // Create test user, unconfirmed, whatever the default is for activity.
-        $confirm = rand(1000,9999); //generate confirmation code
-
-        $player_params = [
-            'send_email'  => TestAccountCreateAndDestroy::$test_email,
-            'send_pass'   => TestAccountCreateAndDestroy::$test_password,
-            'send_class'  => 'tiger',
-            'preconfirm'  => true,
-            'confirm'     => $confirm,
-            'referred_by' => 'ninjawars.net',
-            'ip'          => $ip,
-        ];
-
-        create_account_and_ninja(TestAccountCreateAndDestroy::$test_ninja_name, $player_params);
-
-        if ($confirm) {
-            confirm_player(TestAccountCreateAndDestroy::$test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
-        }
-
-        return get_char_id(TestAccountCreateAndDestroy::$test_ninja_name);
+        return self::createAccount(TestAccountCreateAndDestroy::$test_ninja_name, TestAccountCreateAndDestroy::$test_email, 'tiger');
     }
 
     /**
      * Create a separate, second testing account
      */
     public static function create_alternate_testing_account($confirm=false) {
-        $ip = isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+        return self::createAccount(TestAccountCreateAndDestroy::$alt_test_ninja_name, TestAccountCreateAndDestroy::$alt_test_email, 'dragon');
+    }
 
-        $found = get_char_id(TestAccountCreateAndDestroy::$alt_test_ninja_name);
-        if ((bool)$found) {
-            throw new Exception('Test user found ['.$found.'] with name ['.TestAccountCreateAndDestroy::$alt_test_ninja_name.'] already exists');
+    public static function createAccount($ninja_name, $email, $class_identity) {
+        $found = Player::findByName($ninja_name);
+
+        if ($found) {
+            throw new Exception("Test user found [$found] with name [$ninja_name] already exists");
         }
+
+        $ip = (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1');
 
         // Create test user, unconfirmed, whatever the default is for activity.
         $confirm = rand(1000,9999); //generate confirmation code
 
-        $player_params = array(
-            'send_email'    => TestAccountCreateAndDestroy::$alt_test_email
-            , 'send_pass'   => TestAccountCreateAndDestroy::$test_password
-            , 'send_class'  => 'dragon'
-            , 'preconfirm'  => true
-            , 'confirm'     => $confirm
-            , 'referred_by' => 'ninjawars.net'
-            , 'ip'			=> $ip
+        $class_id = query_item(
+            'SELECT class_id FROM class WHERE identity = :class_identity',
+            [ ':class_identity' => $class_identity ]
         );
 
-        ob_start(); // Skip extra output
-        create_account_and_ninja(TestAccountCreateAndDestroy::$alt_test_ninja_name, $player_params);
-        ob_end_clean();
+        $ninja = new Player();
+        $ninja->uname               = $ninja_name;
+        $ninja->verification_number = $confirm;
+        $ninja->active              = 1;
+        $ninja->_class_id           = $class_id;
+        $ninja->save();
+
+        Account::create($ninja->id(), $email, TestAccountCreateAndDestroy::$test_password, $confirm, 0, 1, $ip);
 
         if ($confirm) {
-            confirm_player(TestAccountCreateAndDestroy::$alt_test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+            $ninja->active = 1;
+            $ninja->save();
+
+            $account = Account::findByChar($ninja);
+            $account->confirmed = 1;
+            $account->setOperational(true);
+            $account->save();
         }
 
-        return get_char_id(TestAccountCreateAndDestroy::$alt_test_ninja_name);
+        return $ninja->id();
     }
 
     /**
