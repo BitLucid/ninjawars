@@ -577,11 +577,6 @@ class Player implements Character {
         return min(100, round(($this->health/$this->getMaxHealth())*100));
 	}
 
-	public function ip() {
-		$this->ip = isset($this->ip) && $this->ip? $this->ip : account_info_by_char_id($this->id(), 'last_ip');
-		return $this->ip;
-	}
-
     /**
      * @return int difficulty rating
      */

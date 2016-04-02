@@ -2,6 +2,7 @@
 require_once(ROOT.'lib/control/CloneKill.class.php');
 
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Account;
 
 class CloneKillTest extends PHPUnit_Framework_TestCase {
     /**
@@ -52,8 +53,10 @@ class CloneKillTest extends PHPUnit_Framework_TestCase {
         $this->syncIps('222.222.222.250', $char_id, $char_id_2);
         $p1 = Player::find($char_id);
         $p2 = Player::find($char_id_2);
-        $this->assertNotEmpty($p1->ip());
-        $this->assertEquals($p1->ip(), $p2->ip());
+        $account1 = Account::findByChar($p1);
+        $account2 = Account::findByChar($p2);
+        $this->assertNotEmpty($account1->getLastIp());
+        $this->assertEquals($account1->getLastIp(), $account2->getLastIp());
     }
 
     public function testCanSyncIpOfCharactersToBlanks() {
@@ -62,8 +65,10 @@ class CloneKillTest extends PHPUnit_Framework_TestCase {
         $this->syncIps('', $char_id, $char_id_2);
         $p1 = Player::find($char_id);
         $p2 = Player::find($char_id_2);
-        $this->assertEquals('', $p1->ip());
-        $this->assertEquals('', $p2->ip());
+        $account1 = Account::findByChar($p1);
+        $account2 = Account::findByChar($p2);
+        $this->assertEquals('', $account1->getLastIp());
+        $this->assertEquals('', $account2->getLastIp());
     }
 
     public function testCantCloneKillSimilarCharactersEvenIfBothHaveIpOf127001() {
@@ -75,8 +80,10 @@ class CloneKillTest extends PHPUnit_Framework_TestCase {
         $this->syncIps('127.0.0.1', $char_id, $char_id_2); // Must be 127.0.0.1 for this test.
         $p1 = Player::find($char_id);
         $p2 = Player::find($char_id_2);
-        $this->assertEquals('127.0.0.1', $p1->ip());
-        $this->assertEquals('127.0.0.1', $p2->ip());
+        $account1 = Account::findByChar($p1);
+        $account2 = Account::findByChar($p2);
+        $this->assertEquals('127.0.0.1', $account1->getLastIp());
+        $this->assertEquals('127.0.0.1', $account2->getLastIp());
         $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
     }
 

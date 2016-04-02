@@ -238,7 +238,7 @@ var combat_skills = {$combat_skills|@json_encode};
 {/if}
 
   {if $viewing_player_obj && $viewing_player_obj->isAdmin()}
-    <div class='admin-view centered'><small class='de-em'>IP Address: {$target_player_obj->ip()}</small></div>
+    <div class='admin-view centered'><small class='de-em'>IP Address: {$account->getLastIp()}</small></div>
   {/if}
 
   </div><!-- End player-info -->

@@ -4,11 +4,9 @@ use NinjaWars\core\data\Player;
 class CharacterTest extends PHPUnit_Framework_TestCase {
     private $previous_server_ip = '';
     private $char_id;
-    private $mock_ip = '127.0.0.199';
 
     public function setUp() {
         $this->previous_server_ip = @$_SERVER['REMOTE_ADDR'];
-        $_SERVER['REMOTE_ADDR']=$this->mock_ip;
         $this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com
         $this->test_password = TestAccountCreateAndDestroy::$test_password;
         $this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
@@ -109,11 +107,6 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($char->hasStatus(SLOW));
         $char->subtractStatus(SLOW);
         $this->assertFalse($char->hasStatus(SLOW));
-    }
-
-    public function testPlayerObjectCAnReturnAnIPCorrectly() {
-        $char = Player::find($this->char_id);
-        $this->assertEquals($this->mock_ip, $char->ip());
     }
 
     public function testPlayerObjectCanSaveDetails() {
