@@ -354,8 +354,9 @@ class Player implements Character {
 	}
 
     /**
-     *
      * Cleanup player to death state
+     *
+     * @return void
      */
 	public function death() {
 		$this->resetStatus();
@@ -371,6 +372,13 @@ class Player implements Character {
 		return $account['active_email'];
 	}
 
+    /**
+     * Changes the turns propety of the player object
+     *
+     * @param int $turns
+     * @return int The number of turns the player object now has
+     * @throws InvalidArgumentException $turns cannot be negative
+     */
     public function set_turns($turns) {
         if ($turns < 0) {
             throw new \InvalidArgumentException('Turns cannot be made negative.');
