@@ -24,7 +24,7 @@ function query($sql, $bindings=array(), $return_resultset=true) {
 			$first = reset($value);
 			$last  = end($value);
 			// Cast the bindings when something to cast to was sent in.
-			$statement->bindParam($binding, $first, $last);
+			$statement->bindValue($binding, $first, $last);
 		} else {
 			$statement->bindValue($binding, $value);
 		}
