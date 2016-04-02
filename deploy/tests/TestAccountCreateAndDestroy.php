@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Account;
 
 /**
  * Library for creating and destroying test-only accounts, for use in their various ways in testing.
@@ -156,9 +157,10 @@ class TestAccountCreateAndDestroy {
      * Convenience wrapper for the above, but confirms the account and returns the account id.
      */
     public static function create_complete_test_account_and_return_id() {
-        $char_id = TestAccountCreateAndDestroy::create_testing_account(true);
-        $account_info = account_info_by_char_id($char_id);
-        return $account_info['account_id'];
+        $player_mock = new Player();
+        $player_mock->player_id = TestAccountCreateAndDestroy::create_testing_account(true);
+        $account = Account::findByChar($player_mock);
+        return $account->id();
     }
 
     /**
