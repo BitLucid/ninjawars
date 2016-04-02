@@ -19,11 +19,11 @@ class StatsController {
 	 */
 	const PROFILE_MAX_LENGTH = 500;
 
-	/**
-	* Change account details
-	*/
+    /**
+     * Change account details
+     */
 	public function changeDetails() {
-		$char		= new Player(self_char_id());
+		$char = Player::find(self_char_id());
 
 		$description	= post('description', $char->description);
 		$goals			= post('goals', $char->goals);
@@ -43,12 +43,11 @@ class StatsController {
 		return new RedirectResponse('/stats?changed=1');
 	}
 
-	/**
-	* Update profile
-	*/
-	public function updateProfile()
-	{
-		$char               = new Player(self_char_id());
+    /**
+     * Update profile
+     */
+	public function updateProfile() {
+		$char               = Player::find(self_char_id());
 		$new_profile		= trim(in('newprofile', null, null)); // Unfiltered input.
 		$profile_changed	= false;
 		$error				= '';
@@ -79,7 +78,7 @@ class StatsController {
      * Display the default stats page
      */
     public function index() {
-        $char = new Player(self_char_id());
+        $char = Player::find(self_char_id());
 
         $parts = [
             'char'               => $char,

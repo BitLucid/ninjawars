@@ -45,52 +45,37 @@ class Player implements Character {
     private $data;
 
     /**
-     * Accepts a userid or username, though null will initialize a blank
+     * Creates a new level 1 player object
      */
-	public function __construct($player_id_or_username=null) {
-		if (!empty($player_id_or_username)) {
-			if (!is_numeric($player_id_or_username) && is_string($player_id_or_username)) {
-				$sel = "SELECT player_id FROM players WHERE lower(uname) = lower(:uname) LIMIT 1";
-				$player_id = query_item($sel, array(':uname'=>array($player_id_or_username, PDO::PARAM_INT)));
-			} else {
-				$player_id = (int) $player_id_or_username;
-			}
+    public function __construct() {
+        $level = 1;
 
-			$dao = new PlayerDAO();
-			if (!($this->vo = $dao->get($player_id))) {
-				$this->vo = new PlayerVO();
-				$this->avatar_url = null;
-			}
-		} else {
-            $level = 1;
-
-			$this->vo                  = new PlayerVO();
-            $this->avatar_url          = null;
-            $this->uname               = null;
-            $this->health              = Player::maxHealthByLevel($level);
-            $this->strength            = Player::baseStrengthByLevel($level);
-            $this->speed               = Player::baseSpeedByLevel($level);
-            $this->stamina             = Player::baseStaminaByLevel($level);
-            $this->level               = $level;
-            $this->gold                = 100;
-            $this->turns               = 180;
-            $this->kills               = 0;
-            $this->status              = 0;
-            $this->member              = 0;
-            $this->days                = 0;
-            $this->bounty              = 0;
-            $this->energy              = 0;
-            $this->ki                  = 0;
-            $this->karma               = 0;
-            $this->avatar_type         = 1;
-            $this->messages            = '';
-            $this->description         = '';
-            $this->instincts           = '';
-            $this->traits              = '';
-            $this->beliefs             = '';
-            $this->goals               = '';
-            $this->last_started_attack = '2016-01-01';
-        }
+        $this->vo                  = new PlayerVO();
+        $this->avatar_url          = null;
+        $this->uname               = null;
+        $this->health              = Player::maxHealthByLevel($level);
+        $this->strength            = Player::baseStrengthByLevel($level);
+        $this->speed               = Player::baseSpeedByLevel($level);
+        $this->stamina             = Player::baseStaminaByLevel($level);
+        $this->level               = $level;
+        $this->gold                = 100;
+        $this->turns               = 180;
+        $this->kills               = 0;
+        $this->status              = 0;
+        $this->member              = 0;
+        $this->days                = 0;
+        $this->bounty              = 0;
+        $this->energy              = 0;
+        $this->ki                  = 0;
+        $this->karma               = 0;
+        $this->avatar_type         = 1;
+        $this->messages            = '';
+        $this->description         = '';
+        $this->instincts           = '';
+        $this->traits              = '';
+        $this->beliefs             = '';
+        $this->goals               = '';
+        $this->last_started_attack = '2016-01-01';
     }
 
     /**
@@ -144,17 +129,13 @@ class Player implements Character {
     /**
      * Actively pulls the latest status data from the db.
      */
-	protected function queryStatus() {
+	protected function getStatus() {
 		if ($this->id()) {
 			return (int) query_item("SELECT status FROM players WHERE player_id = :player_id", 
 				array(':player_id'=>array($this->id(), PDO::PARAM_INT)));
 		} else {
 			return null;
-		}
-	}
-
-	protected function getStatus() {
-		return $this->queryStatus();
+        }
 	}
 
     /**
@@ -642,6 +623,7 @@ class Player implements Character {
 
 	/**
 	 * Find a player by primary key
+     *
 	 * @return Player|null
 	 */
 	public static function find($id){

@@ -9,25 +9,25 @@ class CloneKill {
         // Input is transformed into
         if(!$clone1 instanceof Player){
             if($clone1 == positive_int($clone1)){
-                $char1 = new Player($clone1);
+                $char1 = Player::find($clone1);
             } elseif(is_string($clone1)){
-                $char1 = new Player($clone1);
+                $char1 = Player::find($clone1);
             }
         } else {
             $char1 = $clone1;
         }
         if(!$clone2 instanceof Player){
             if($clone2 == positive_int($clone2)){
-                $char2 = new Player($clone2);
+                $char2 = Player::find($clone2);
             } elseif(is_string($clone2)){
-                $char2 = new Player($clone2);
+                $char2 = Player::find($clone2);
             }
         } else {
             $char2 = $clone2;
         }
 
-        // Reject invalid/ninexistent characters
-        if($char1->id() === null || $char2->id() === null){
+        // Reject invalid/nonexistent characters
+        if($char1 === null || $char2 === null){
             return false;
         }
 

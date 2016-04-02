@@ -26,7 +26,7 @@ class DojoController {
      */
     public function index() {
         if (is_logged_in()) {
-            return $this->render([], new Player(self_char_id()));
+            return $this->render([], Player::find(self_char_id()));
         } else {
             return $this->render();
         }
@@ -40,7 +40,7 @@ class DojoController {
      */
     public function buyDimMak() {
         if (is_logged_in()) {
-            $player = new Player(self_char_id());
+            $player = Player::find(self_char_id());
             $showMonks = false;
             $parts = [];
 
@@ -77,7 +77,7 @@ class DojoController {
      */
     public function changeClass() {
         if (is_logged_in()) {
-            $player            = new Player(self_char_id());
+            $player            = Player::find(self_char_id());
             $classes           = $this->classesInfo();
             $requestedIdentity = in('requested_identity');
             $currentClass      = $player->identity;

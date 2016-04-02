@@ -319,7 +319,7 @@ class Clan {
                 $member['size']   = max($member['size'] + 2, 3);
             }
 
-            $member['gravatar_url'] = (new Player($member['player_id']))->avatarUrl();
+            $member['gravatar_url'] = Player::find($member['player_id'])->avatarUrl();
         }
 
         return $membersArray;

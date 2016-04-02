@@ -9,31 +9,28 @@ use NinjaWars\core\data\Player;
  * Handle the listing of events
  */
 class EventsController {
-    const ALIVE          = false;
-    const PRIV           = true;
+    const ALIVE = false;
+    const PRIV  = true;
 
     /**
      * Display the combat/action events and mark them as read when displayed.
      */
-    public function index(){
-    	$char = new Player(self_char_id());
+    public function index() {
+    	$char   = Player::find(self_char_id());
 		$events = $this->getEvents($char->id(), 300);
-
-		// Check for clan to use it in the nav tabs.
-		$has_clan  = (bool)ClanFactory::clanOfMember($char);
 
 		$this->readEvents($char->id()); // mark events as viewed.
 
-		$template = 'events.tpl';
-		$title = 'Events';
-		$parts = ['events'=>$events, 'has_clan'=>$has_clan, 'char'=>$char];
-		$options = ['quickstat' => 'player'];
-		return [
-			'title'=>$title,
-			'template'=>$template,
-			'parts'=>$parts,
-			'options'=>$options
-			];
+        return [
+            'title'    => 'Events',
+            'template' => 'events.tpl',
+            'parts'    => [
+                'events'   => $events,
+                'has_clan' => (bool)ClanFactory::clanOfMember($char),
+                'char'     => $char,
+            ],
+			'options'  => ['quickstat' => 'player'],
+        ];
     }
 
     /**

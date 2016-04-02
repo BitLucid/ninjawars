@@ -477,7 +477,7 @@ class SkillController {
 					$generic_skill_result_message = 'You cannot clone kill yourself.';
 				} else {
 					// The two potential clones will be obliterated immediately if the criteria are met in CloneKill.
-					$kill_or_fail = CloneKill::kill($player, new Player($clone_1_id), new Player($clone_2_id));
+					$kill_or_fail = CloneKill::kill($player, Player::find($clone_1_id), Player::find($clone_2_id));
 					if($kill_or_fail !== false){
 						$generic_skill_result_message = $kill_or_fail;
 					} else {

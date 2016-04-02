@@ -31,7 +31,7 @@ function init($private, $alive) {
 		global $player, $player_id;
 		// Polluting the global namespace here.  Booo.
 
-		$player = new Player($char_id); // Defaults to current session user.
+		$player = Player::find($char_id); // Defaults to current session user.
 		$username = $player->name(); // Set the global username.
 		$player_id = $player->player_id;
 

@@ -48,14 +48,14 @@ class DoshinController { //extends controller
      */
     public function offerBounty() {
         $targetName = in('target');
-        $char       = new Player(self_char_id());
-        $target     = new Player($targetName);
+        $char       = Player::find(self_char_id());
+        $target     = Player::findByName($targetName);
         $amountIn   = in('amount');
         $amount     = (intval($amountIn) !== 0 ? intval($amountIn) : null);
         $quickstat  = false;
         $success    = false;
 
-        if (!$target->id()) {
+        if (!$target) {
             $error = 1; // Target not found
         } elseif ($target->id() === $char->id()) {
             $error = 6; // Can't put a bounty on yourself.
@@ -119,9 +119,9 @@ class DoshinController { //extends controller
      */
     private function validateBountyOffer(Player $char, $p_targetId, $p_amount) {
         $error = 0;
-        $target = new Player($p_targetId);
+        $target = Player::find($p_targetId);
 
-        if (!$target->id()) { // Test that target exists
+        if (!$target) { // Test that target exists
             $error = 1;
         } else {
             $amount = self::calculateMaxOffer($target->bounty, $p_amount);
@@ -150,7 +150,7 @@ class DoshinController { //extends controller
      */
     public function bribe() {
         $bribe     = intval(in('bribe'));
-        $char      = new Player(self_char_id());
+        $char      = Player::find(self_char_id());
         $error     = 0;
         $quickstat = false;
 
@@ -222,7 +222,12 @@ class DoshinController { //extends controller
      * @return Array
      */
     private function render($parts) {
-        $char     = new Player(self_char_id());
+        $char     = Player::find(self_char_id());
+
+        if (!$char) {
+            $char = new Player();
+        }
+
         $myBounty = $char->bounty;
 
         // Pulling the bounties.
