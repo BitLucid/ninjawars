@@ -2,21 +2,6 @@
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 
-// Get the account linked with a character.
-function account_info_by_char_id($char_id, $specific=null){
-	$res = query_row('select * from accounts join account_players on account_id = _account_id where _player_id = :char_id', 
-		array(':char_id'=>array($char_id, PDO::PARAM_INT)));
-	if ($specific) {
-		if (isset($res[$specific])) {
-			$res = $res[$specific];
-		} else {
-			$res = null;
-		}
-	}
-
-	return $res;
-}
-
 function create_account($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1, array $data=null) {
 	$ip = $data['ip']?:null;
 	DatabaseConnection::getInstance();
