@@ -28,6 +28,10 @@ class InventoryController {
 		$inv = Inventory::of($char, 'self');
 		//$inv_counts = inventory_counts($char->id());
 		$inventory  = [];
+        $error = in('error');
+        if($error === 'noitem'){
+            $error = 'No such item';
+        }
 		foreach($inv as $item){
 			// Special format for display and looping
 			$item['display'] = $item['item_display_name'].$item['plural'];
@@ -36,6 +40,7 @@ class InventoryController {
 		}
 
 		$parts = [
+            'error'        => $error,
 			'gold'         => $char->gold,
 			'gold_display' => number_format($char->gold),
 			'inventory'    => $inventory,
@@ -197,7 +202,7 @@ class InventoryController {
 
         try {
             $item    = $this->findItem($slugs['item_in']);
-            $article = self::getIndefiniteArticle($item->getName());
+            $article = $item? self::getIndefiniteArticle($item->getName()) : '';
         } catch (\InvalidArgumentException $e) {
             return new RedirectResponse(WEB_ROOT.'inventory?error=noitem');
         }
@@ -553,12 +558,12 @@ class InventoryController {
      * @return Item
      */
     private function findItem($token) {
-	    if ($token == (int) $token && is_numeric($token)) {
-	        $item = getItemByID($token);
-	    } elseif (is_string($token)) {
-            $item = new Item($token);
+	    if ($token == (int) $token && is_numeric($token) && $token) {
+	        $item = Item::find($token);
+	    } elseif (is_string($token) && $token) {
+            $item = Item::findByIdentity($token);
 	    } else {
-            throw new \InvalidArgumentException('');
+            throw new \InvalidArgumentException('Invalid item identity requested.');
 	    }
 
         return $item;

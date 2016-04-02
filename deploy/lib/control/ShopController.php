@@ -59,7 +59,7 @@ class ShopController { // extends Controller
 
 		// Pull the item info from the database
 		$item_costs        = $this->itemForSaleCosts();
-		$item              = getItemByID(item_id_from_display_name($in_item));
+		$item              = Item::findByIdentity($in_item);
 		$quantity 		   = whichever(positive_int($in_quantity), 1);
 		$item_text 	       = null;
 

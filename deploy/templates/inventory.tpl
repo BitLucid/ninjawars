@@ -27,6 +27,9 @@
 
 
 <section id='inventory-content'>
+
+  {include file="flash-message.tpl"}
+
   <h1>Your Inventory</h1>
 
 {if $inventory}

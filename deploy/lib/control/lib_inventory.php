@@ -4,20 +4,6 @@ use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\DatabaseConnection;
 
-// FUNCTIONS
-
-function getItemByID($p_itemID) {
-	$item = null;
-	$data = item_info($p_itemID);
-
-	if ($data) {
-		$item = new Item();
-		$item->buildFromArray($data);
-	}
-
-    return $item;
-}
-
 // Return a specific bit of info about an item, or else all the info about an item.
 function item_info($item_id, $specific=null) {
 	$info = query_row('SELECT item_id, item_internal_name, item_display_name, item_cost, image, for_sale, usage, 
