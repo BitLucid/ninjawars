@@ -137,18 +137,16 @@ class ApiController {
         if (is_logged_in()) {
             require_once(LIB_ROOT."control/lib_chat.php");
             $msg     = trim($msg);
-            $user_id = (int) self_char_id();
-            $player  = new Player($user_id);
-            $info    = $player->dataWithClan();
-            $success = send_chat($user_id, $msg);
+            $player  = Player::find(self_char_id());
+            $success = send_chat($player->id(), $msg);
 
             if (!$success) {
                 return false;
             } else {
                 return [
                     'message'   => $msg,
-                    'sender_id' => $user_id,
-                    'uname'     => $info['uname'],
+                    'sender_id' => $player->id(),
+                    'uname'     => $player->name(),
                 ];
             }
         }
@@ -197,31 +195,30 @@ class ApiController {
     private function jsonIndex() {
         DatabaseConnection::getInstance();
 
-        $user_id         = self_char_id();
-        $player          = new Player($user_id);
+        $player          = Player::find(self_char_id());
         $events          = [];
         $messages        = [];
         $unread_messages = null;
         $unread_events   = null;
         $items = null;
 
-        if ($user_id) {
+        if ($player) {
             $events = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC");
-            $events->bindValue(':userID', $user_id);
+            $events->bindValue(':userID', $player->id());
             $events->execute();
 
             $unread_events = $events->rowCount();
 
             $messages = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 and unread = 1 ORDER BY date DESC");
-            $messages->bindValue(':userID1', $user_id);
-            $messages->bindValue(':userID2', $user_id);
+            $messages->bindValue(':userID1', $player->id());
+            $messages->bindValue(':userID2', $player->id());
             $messages->execute();
 
             $unread_messages = $messages->rowCount();
 
             $items = query_array(
                 'SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :user_id ORDER BY item_display_name',
-                [':user_id' => $user_id]
+                [':user_id' => $player->id()]
             );
         }
 
