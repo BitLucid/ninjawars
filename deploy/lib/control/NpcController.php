@@ -124,7 +124,9 @@ class NpcController { //extends controller
         if($reward_item){
             $divisor = self::ITEM_DECREASES_GOLD_FACTOR;
         }
-        return rand($npco->min_gold(), floor($npco->gold()/$divisor));
+
+        // Always earn at least 1 gold from NPCs that yield gold
+        return max(1, rand($npco->min_gold(), floor($npco->gold()/$divisor)));
     }
 
     /**
