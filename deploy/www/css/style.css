@@ -1886,7 +1886,7 @@ p.ninja-success,span.ninja-success{
 
 .error {
 	text-align:center;
-	color:#A51131;
+	color:rgb(125,27,126);
 	background-color:#F683FF;
     border:#7A89D9 0.2rem solid;
     font-family: 'Lucida Console', Monaco, monospace;
@@ -1901,6 +1901,7 @@ p.ninja-success,span.ninja-success{
 .error-page-character{
     display:inline-block;
     float:left;
+    margin-right:2rem;
 }
 
 .notice, .informational {
@@ -2304,14 +2305,27 @@ table#sight-info {
 	margin-bottom: .5em;
 }
 
-#page-500 .main{
-    max-width:90%;
+#page-500 .main, #page-404 .main, #page-500 footer, #page-404 footer{
+    display:block;
+    width:90%;
     margin-left:auto;
     margin-right:auto;
 }
+#page-404 h2{
+}
+
+#page-500 footer, #page-404 footer{
+    margin-top:4rem;
+    background-color:rgb(30, 30, 30);
+    border:rgb(20, 20, 20) 1rem solid;
+}
 
 #page-404 #support-email{
-	font-size: .8em;
+    font-size: 0.8em;
+}
+
+#search-404{
+    margin-left:2em;
 }
 
 
