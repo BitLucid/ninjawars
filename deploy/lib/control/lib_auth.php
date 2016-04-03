@@ -1,6 +1,7 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -58,26 +59,37 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts = true) {
 
 /**
  * Actual login!  Performs the login of a user using pre-vetted info!
+ *
  * Creates the cookie and session stuff for the login process.
  *
+ * @param Account $account
+ * @param Player $player
  * @return void
  */
-function _login_user($p_username, $p_player_id, $p_account_id) {
-	if (!$p_username || !$p_player_id || !$p_account_id) {
-		throw new \Exception('Request made to _login_user without all of username, player_id, and account_id being set.');
-	}
-
-    $_COOKIE['username'] = $p_username; // May want to keep this for relogin easing purposes.
-
-    update_activity_log($p_player_id);
-    update_last_logged_in($p_player_id);
-    $update = "UPDATE players SET active = 1 WHERE player_id = :char_id";
-    query($update, array(':char_id'=>array($p_player_id, PDO::PARAM_INT)));
+function _login_user(Account $account, Player $player) {
+    $_COOKIE['username'] = $player->name();
 
 	$session = SessionFactory::getSession();
-    $session->set('username', $p_username); // Actually char name
-    $session->set('player_id', $p_player_id); // Actually char id.
-    $session->set('account_id', $p_account_id);
+    $session->set('username', $player->name());
+    $session->set('player_id', $player->id());
+    $session->set('account_id', $account->id());
+
+    Request::setTrustedProxies(Constants::$trusted_proxies);
+    $request = Request::createFromGlobals();
+    $user_ip = $request->getClientIp();
+
+    query(
+        'UPDATE players SET active = 1, days = 0 WHERE player_id = :player',
+        [ ':player' => [$player->id(), PDO::PARAM_INT] ]
+    );
+
+    query(
+        'UPDATE accounts SET last_ip = :ip, last_login = now() WHERE account_id = :account',
+        [
+            ':ip'      => $user_ip,
+            ':account' => [$account->id(), PDO::PARAM_INT],
+        ]
+    );
 }
 
 /**
@@ -86,11 +98,6 @@ function _login_user($p_username, $p_player_id, $p_account_id) {
  * @return array
  */
 function login_user($dirty_user, $p_pass) {
-	// Internal function due to it being insecure otherwise.
-
-    if(!function_exists('_login_user')){
-    }
-
 	$success = false;
 	$login_error = 'That password/username combination was incorrect.';
 	// Just checks whether the username and password are correct.
@@ -99,7 +106,7 @@ function login_user($dirty_user, $p_pass) {
 	if (!empty($data)) {
 		if ((bool)$data['authenticated'] && (bool)$data['operational']) {
 			if ((bool)$data['confirmed']) {
-				_login_user($data['uname'], $data['player_id'], $data['account_id']);
+				_login_user(Account::findById($data['account_id']), Player::find($data['player_id']));
 				// Block by ip list here, if necessary.
 				// *** Set return values ***
 				$success = true;
@@ -120,16 +127,6 @@ function login_user($dirty_user, $p_pass) {
 
 	// *** Return array of return values ***
 	return ['success' => $success, 'login_error' => $login_error];
-}
-
-/**
- * Sets the last logged in date equal to now.
- *
- * @return int
- */
-function update_last_logged_in($char_id) {
-	$update = "UPDATE accounts SET last_login = now() WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :char_id)";
-	return query($update, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
 }
 
 /**
@@ -235,21 +232,5 @@ function username_format_validate($username) {
  */
 function self_char_id() {
 	return SessionFactory::getSession()->get('player_id');
-}
-
-/**
- * Update activity for a logged in player.
- *
- * @return void
- */
-function update_activity_log($p_playerID) {
-    // (See update_activity_info in lib_header for the function that updates all the detailed info.)
-    DatabaseConnection::getInstance();
-    Request::setTrustedProxies(Constants::$trusted_proxies);
-    $request = Request::createFromGlobals();
-    $user_ip = $request->getClientIp();
-    query("UPDATE players SET days = 0 WHERE player_id = :player", [':player'=>$p_playerID]);
-    query("Update accounts set last_ip = :ip, last_login = now() where account_id = (select _account_id from account_players join players on _player_id = player_id where player_id = :pid)",
-        array(':ip'=>$user_ip, ':pid'=>$p_playerID));
 }
 
