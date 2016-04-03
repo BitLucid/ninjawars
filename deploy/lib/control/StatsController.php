@@ -83,7 +83,7 @@ class StatsController {
         $parts = [
             'char'               => $char,
             'clan'               => ClanFactory::clanOfMember($char),
-            'status_list'        => get_status_list(),
+            'status_list'        => Player::getStatusList(),
             'rank_display'       => $this->getRank($char->id()),
             'profile_max_length' => self::PROFILE_MAX_LENGTH,
             'error'              => in('error'),

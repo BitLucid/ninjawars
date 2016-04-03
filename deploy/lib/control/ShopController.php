@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\data\PurchaseOrder;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Inventory;
 
 /**
  * Handles all user actions related to the in-game Shop
@@ -80,7 +81,8 @@ class ShopController { // extends Controller
 				$no_funny_business = true;
 			} else if ($gold >= $current_item_cost) { // Has enough gold.
 				try {
-					add_item($this->sessionData['char_id'], $purchaseOrder->item->identity(), $purchaseOrder->quantity);
+                    $inventory = new Inventory($player);
+					$inventory->add($purchaseOrder->item->identity(), $purchaseOrder->quantity);
                     $player->set_gold($player->gold - $current_item_cost);
                     $player->save();
 				} catch (\Exception $e) {

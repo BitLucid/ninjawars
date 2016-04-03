@@ -26,7 +26,6 @@ class InventoryController {
 	public function index() {
 		$char       = Player::find(self_char_id());
 		$inv = Inventory::of($char, 'self');
-		//$inv_counts = inventory_counts($char->id());
 		$inventory  = [];
         $error = in('error');
         if($error === 'noitem'){
@@ -112,6 +111,7 @@ class InventoryController {
     public function selfUse() {
         $slugs           = $this->parseSlugs();
         $player          = Player::find(self_char_id());
+        $inventory       = new Inventory($player);
         $had_stealth     = $player->hasStatus(STEALTH);
         $turns_to_take   = 1; // Take away one turn even on attacks that fail to prevent page reload spamming
         $display_message = 'This item cannot be used on yourself!';
@@ -144,7 +144,7 @@ class InventoryController {
                 $result = $this->applyItemEffects($player, $player, $item);
 
                 if ($result['success']) {
-                    removeItem($player->id(), $item->getName(), 1);
+                    $inventory->remove($item->identity(), 1);
 
                     if ($player->health() <= 0) {
                         $this->sendKillMails($player->name(), $player->name(), $player->name(), $article, $item->getName(), 0);
@@ -190,6 +190,7 @@ class InventoryController {
         $slugs           = $this->parseSlugs();
         $target          = $this->findPlayer($slugs['in_target']);
         $player          = Player::find(self_char_id());
+        $inventory       = new Inventory($player);
         $had_stealth     = $player->hasStatus(STEALTH);
         $error           = false;
         $turns_to_take   = 1; // Take away one turn even on attacks that fail to prevent page reload spamming
@@ -233,7 +234,7 @@ class InventoryController {
                 if ($result['success']) {
                     $message_to_target = "$attacker_id has used $article ".$item->getName()." on you$result[notice]";
                     send_event($player->id(), $target->id(), str_replace('  ', ' ', $message_to_target));
-                    removeItem($player->id(), $item->getName(), 1);
+                    $inventory->remove($item->identity(), 1);
 
                     if ($target->health() <= 0) { // Target was killed by the item
                         $attacker_id = ($player->hasStatus(STEALTH) ? "A Stealthed Ninja" : $player->name());
@@ -282,8 +283,10 @@ class InventoryController {
      * @return void
      */
     private function transferOwnership(Player $giver, Player $recipient, Item $item, $quantity) {
-        add_item($recipient->id(), $item->identity(), $quantity);
-        removeItem($giver->id(), $item->getName(), $quantity);
+        $giver_inventory = new Inventory($giver);
+        $taker_inventory = new Inventory($recipient);
+        $taker_inventory->add($item->identity(), $quantity);
+        $giver_inventory->remove($item->identity(), $quantity);
     }
 
     /**
