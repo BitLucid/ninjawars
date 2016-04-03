@@ -180,19 +180,9 @@ function logout_user() {
 }
 
 /**
- * Just a simple wrapper to turn the presence of a username format error into a boolean check
- *
- * @return boolean
- */
-function username_is_valid($username) {
-	// Check for no error from the username_format_validate function.
-	return !(bool)username_format_validate($username);
-}
-
-/**
  * Return the error reason for a username not validating, if it doesn't.
  *
- * Username requirements (from the username_is_valid() function)
+ * Username requirements:
  * A username must start with a lower-case or upper-case letter
  * A username can contain only letters, numbers, underscores, or dashes.
  * A username must be from 3 to 24 characters long

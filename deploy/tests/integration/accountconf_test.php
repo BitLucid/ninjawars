@@ -93,17 +93,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      * group accountconf
      */
     function testForNinjaThatAccountConfirmationProcessAllowsNinjaNamesOfTheRightFormat() {
-        /*
-         * Username requirements (from the username_is_valid() function)
-         * A username must start with a lower-case or upper-case letter
-         * A username can contain only letters, numbers, underscores, or dashes.
-         * A username must be from 3 to 24 characters long
-         * A username cannot end in an underscore
-         * A username cannot contain 2 consecutive special characters
-         */
-        $this->assertTrue((bool)username_is_valid('tchalvak'), 'Standard all alpha name tchalvak was rejected');
-        $this->assertTrue((bool)username_is_valid('Beagle'));
-        $this->assertTrue((bool)username_is_valid('Kzqai'));
+        $this->assertTrue(!(bool)username_format_validate('tchalvak'), 'Standard all alpha name tchalvak was rejected');
+        $this->assertTrue(!(bool)username_format_validate('Beagle'));
+        $this->assertTrue(!(bool)username_format_validate('Kzqai'));
 
         $acceptable_names = [
             'xaz',
@@ -132,7 +124,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 
         foreach ($acceptable_names as $name) {
             $error = username_format_validate($name);
-            $this->assertTrue((bool)username_is_valid($name), 'Rejected name was: ['.$name.'] and error was ['.$error.']');
+            $this->assertTrue(!(bool)$error, 'Rejected name was: ['.$name.'] and error was ['.$error.']');
         }
     }
 
@@ -337,7 +329,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         ];
 
         foreach ($bad_names as $name) {
-            $this->assertFalse((bool)username_is_valid($name));
+            $this->assertFalse(!(bool)username_format_validate($name));
         }
     }
 
