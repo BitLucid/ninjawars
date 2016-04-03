@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\RouteNotFoundException;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * Router/front-controller for NinjaWars
@@ -281,7 +282,7 @@ class Router {
 
     public static function checkForError($private, $alive) {
         $error  = null;
-        $player = Player::find(self_char_id()); // Defaults to current session user.
+        $player = Player::find(SessionFactory::getSession()->get('player_id'));
 
         if ((!is_logged_in() || !$player) && $private) {
             $error = 'log_in';

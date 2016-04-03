@@ -5,6 +5,7 @@ use NinjaWars\core\data\Message;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Player;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use NinjaWars\core\extensions\SessionFactory;
 
 class MessagesController {
     const PRIV  = true;
@@ -24,7 +25,7 @@ class MessagesController {
 
         if ($recipient) {
             Message::create([
-                'send_from' => self_char_id(),
+                'send_from' => SessionFactory::getSession()->get('player_id'),
                 'send_to'   => $recipient->id(),
                 'message'   => in('message', null, null),
                 'type'      => 0,
@@ -42,7 +43,7 @@ class MessagesController {
     public function sendClan() {
         $message = in('message');
         $type = 1;
-        $sender = Player::find(self_char_id());
+        $sender = Player::find(SessionFactory::getSession()->get('player_id'));
         $clan = ClanFactory::clanOfMember($sender);
         $target_id_list = $clan->getMemberIds();
         Message::sendToGroup($sender, $target_id_list, $message, $type);
@@ -58,7 +59,7 @@ class MessagesController {
         $page               = in('page', 1, 'non_negative_int');
         $limit              = 25;
         $offset             = non_negative_int(($page - 1) * $limit);
-        $ninja              = Player::find(self_char_id());
+        $ninja              = Player::find(SessionFactory::getSession()->get('player_id'));
         $message_count      = Message::countByReceiver($ninja, $type); // To count all the messages
 
         Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
@@ -83,7 +84,7 @@ class MessagesController {
      * View clan messages
      */
     public function viewClan() {
-        $ninja         = Player::find(self_char_id());
+        $ninja         = Player::find(SessionFactory::getSession()->get('player_id'));
         $page          = in('page', 1, 'non_negative_int');
         $limit         = 25;
         $offset        = non_negative_int(($page - 1) * $limit);
@@ -111,7 +112,7 @@ class MessagesController {
      * Delete the all the messages sent to you personally
      */
     public function deletePersonal() {
-        $char_id = self_char_id();
+        $char_id = SessionFactory::getSession()->get('player_id');
         $type = 0;
         Message::deleteByReceiver(Player::find($char_id), $type);
 
@@ -122,7 +123,7 @@ class MessagesController {
      * Delete the all the messages from your clan.
      */
     public function deleteClan() {
-        $char_id = self_char_id();
+        $char_id = SessionFactory::getSession()->get('player_id');
         $type = 1;
         Message::deleteByReceiver(Player::find($char_id), $type);
 

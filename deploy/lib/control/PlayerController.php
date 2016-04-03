@@ -9,6 +9,7 @@ use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Inventory;
+use NinjaWars\core\extensions\SessionFactory;
 
 class PlayerController {
     const PRIV  = false;
@@ -42,9 +43,9 @@ class PlayerController {
                 $template = 'no-player.tpl';
                 $parts    = array();
             } else {
-                $viewing_player_obj = Player::find(self_char_id());
+                $viewing_player_obj = Player::find(SessionFactory::getSession()->get('player_id'));
 
-                $self = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
+                $self = (SessionFactory::getSession()->get('player_id') && SessionFactory::getSession()->get('player_id') == $player_info['player_id']); // Record whether this is a self-viewing.
 
                 if ($viewing_player_obj !== null) {
                     $char_info = $viewing_player_obj->dataWithClan();

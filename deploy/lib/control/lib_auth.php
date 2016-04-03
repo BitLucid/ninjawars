@@ -224,13 +224,3 @@ function username_format_validate($username) {
 
 	return $error;
 }
-
-/**
- * Check for own id, migrate to this for calls checking for self.
- *
- * @return int
- */
-function self_char_id() {
-	return SessionFactory::getSession()->get('player_id');
-}
-

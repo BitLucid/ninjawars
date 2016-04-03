@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * Handles all user requests for the in-game Doshin Office
@@ -49,7 +50,7 @@ class DoshinController { //extends controller
      */
     public function offerBounty() {
         $targetName = in('target');
-        $char       = Player::find(self_char_id());
+        $char       = Player::find(SessionFactory::getSession()->get('player_id'));
         $target     = Player::findByName($targetName);
         $amountIn   = in('amount');
         $amount     = (intval($amountIn) !== 0 ? intval($amountIn) : null);
@@ -151,7 +152,7 @@ class DoshinController { //extends controller
      */
     public function bribe() {
         $bribe     = intval(in('bribe'));
-        $char      = Player::find(self_char_id());
+        $char      = Player::find(SessionFactory::getSession()->get('player_id'));
         $error     = 0;
         $quickstat = false;
 
@@ -223,7 +224,7 @@ class DoshinController { //extends controller
      * @return Array
      */
     private function render($parts) {
-        $char     = Player::find(self_char_id());
+        $char     = Player::find(SessionFactory::getSession()->get('player_id'));
 
         if (!$char) {
             $char = new Player();

@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Message;
@@ -89,7 +90,7 @@ class ApiController {
 
     private function jsonLatestMessage() {
         DatabaseConnection::getInstance();
-        $user_id = (int) self_char_id();
+        $user_id = (int) SessionFactory::getSession()->get('player_id');
 
         $statement = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 and unread = 1 ORDER BY date DESC LIMIT 1");
         $statement->bindValue(':userID1', $user_id);
@@ -102,7 +103,7 @@ class ApiController {
 
     private function jsonLatestEvent() {
         DatabaseConnection::getInstance();
-        $user_id = (int) self_char_id();
+        $user_id = (int) SessionFactory::getSession()->get('player_id');
 
         $statement = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC LIMIT 1");
         $statement->bindValue(':userID', $user_id);
@@ -112,7 +113,7 @@ class ApiController {
     }
 
     private function jsonPlayer() {
-        $player = Player::find(self_char_id());
+        $player = Player::find(SessionFactory::getSession()->get('player_id'));
         return ['player' => $player->dataWithClan()];
     }
 
@@ -137,7 +138,7 @@ class ApiController {
     private function jsonSendChat($msg) {
         if (is_logged_in()) {
             $msg     = trim($msg);
-            $player  = Player::find(self_char_id());
+            $player  = Player::find(SessionFactory::getSession()->get('player_id'));
             $success = Message::sendChat($player->id(), $msg);
 
             if (!$success) {
@@ -195,7 +196,7 @@ class ApiController {
     private function jsonIndex() {
         DatabaseConnection::getInstance();
 
-        $player          = Player::find(self_char_id());
+        $player          = Player::find(SessionFactory::getSession()->get('player_id'));
         $events          = [];
         $messages        = [];
         $unread_messages = null;

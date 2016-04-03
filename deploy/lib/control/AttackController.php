@@ -7,6 +7,7 @@ use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
+use NinjaWars\core\extensions\SessionFactory;
 
 class AttackController {
     const ALIVE = true;
@@ -55,7 +56,7 @@ class AttackController {
         }
 
         $target_player    = Player::find($target);
-        $attacking_player = Player::find(self_char_id());
+        $attacking_player = Player::find(SessionFactory::getSession()->get('player_id'));
 
         $skillListObj = new Skill();
 
@@ -239,7 +240,7 @@ class AttackController {
                                 GameLog::sendLogOfDuel($attacking_player->name(), $target_player->name(), 1, $killpoints);
                             }
 
-                            if ($skillListObj->hasSkill('wrath')) {
+                            if ($skillListObj->hasSkill('wrath', $attacking_player)) {
                                 // They'll retain 10 health for the kill, at the end.
                                 $wrath_regain = self::BASE_WRATH_REGAIN;
                             }

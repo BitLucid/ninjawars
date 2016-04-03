@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * display the standard homepage, and maybe eventually the splash page
@@ -16,7 +17,7 @@ class HomepageController {
      * Stores logged-in status of user in member variable for use later
      */
     public function __construct() {
-        $this->loggedIn = (bool) self_char_id();
+        $this->loggedIn = (bool) SessionFactory::getSession()->get('player_id');
     }
 
     /**
@@ -35,7 +36,7 @@ class HomepageController {
      */
     private function game() {
         // Get the actual values of the vars.
-        $ninja = Player::find(self_char_id());
+        $ninja = Player::find(SessionFactory::getSession()->get('player_id'));
         $playerInfo = $ninja->dataWithClan();
 
         $unreadCount = Message::where([

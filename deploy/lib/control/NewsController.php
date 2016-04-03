@@ -8,6 +8,7 @@ use \ErrorException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * Allows creation of news and displaying of news by admins
@@ -19,7 +20,7 @@ class NewsController {
     protected $pc = null;
 
     public function __construct(){
-        $this->pc = Player::find(self_char_id());
+        $this->pc = Player::find(SessionFactory::getSession()->get('player_id'));
     }
 
     /**

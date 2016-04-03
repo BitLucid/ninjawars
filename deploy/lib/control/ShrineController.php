@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * Controller for actions taken in the Healing Shrine
@@ -34,7 +35,7 @@ class ShrineController { //extends controller
 	 * @see servicesNeeded
 	 */
 	public function index() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 
 		$pageParts = $this->servicesNeeded($player);
 
@@ -61,7 +62,7 @@ class ShrineController { //extends controller
 	public function healAndResurrect() {
 		$skillController = new Skill();
 
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 
 		try {
 			$pageParts = [];
@@ -107,7 +108,7 @@ class ShrineController { //extends controller
 	 * @see _resurrect
 	 */
 	public function resurrect() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 
 		try {
 			$costType = $this->_resurrect($player);
@@ -141,7 +142,7 @@ class ShrineController { //extends controller
 	public function heal() {
 		$skillController = new Skill();
 
-		$player = Player::find(self_char_id()); // get current player
+		$player = Player::find(SessionFactory::getSession()->get('player_id')); // get current player
 
 		$healAmount = in('heal_points');
 
@@ -176,7 +177,7 @@ class ShrineController { //extends controller
 	 * On success, gold attribute of $p_player is modified in memory and database
 	 */
 	public function cure() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 
 		if ($player->health() <= 0) {
 			return $this->renderError('You must resurrect before you can heal.', $player);

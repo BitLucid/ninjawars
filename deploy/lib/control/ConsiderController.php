@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\NpcFactory;
+use NinjaWars\core\extensions\SessionFactory;
 use \PDO;
 
 /**
@@ -27,7 +28,7 @@ class ConsiderController {
      */
     public function search() {
         $enemy_match = in('enemy_match');
-        $found_enemies = ($enemy_match ? $this->getEnemyMatches(self_char_id(), $enemy_match) : null);
+        $found_enemies = ($enemy_match ? $this->getEnemyMatches(SessionFactory::getSession()->get('player_id'), $enemy_match) : null);
         $parts = $this->configure();
 
         // Add some additional parts
@@ -45,7 +46,7 @@ class ConsiderController {
     public function addEnemy() {
         $add_enemy = in('add_enemy', null, 'toInt');
         if (is_numeric($add_enemy) && $add_enemy != 0) {
-            $this->addEnemyToPlayer(self_char_id(), $add_enemy);
+            $this->addEnemyToPlayer(SessionFactory::getSession()->get('player_id'), $add_enemy);
         }
 
         return new RedirectResponse('enemies.php');
@@ -58,7 +59,7 @@ class ConsiderController {
         $remove_enemy = in('remove_enemy', null, 'toInt');
 
         if (is_numeric($remove_enemy) && $remove_enemy != 0) {
-            $this->removeEnemyFromPlayer(self_char_id(), $remove_enemy);
+            $this->removeEnemyFromPlayer(SessionFactory::getSession()->get('player_id'), $remove_enemy);
         }
 
         return new RedirectResponse('enemies.php');
@@ -68,7 +69,7 @@ class ConsiderController {
      * @TODO Document me!
      */
     private function configure() {
-        $char = Player::find(self_char_id());
+        $char = Player::find(SessionFactory::getSession()->get('player_id'));
         // Array that simulates database display information for switching out for an npc database solution.
         $npcs = [
             ['name'=>'Peasant',  'identity'=>'peasant',  'image'=>'fighter.png'],

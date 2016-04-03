@@ -7,6 +7,7 @@ use NinjaWars\core\data\Inventory;
 use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
+use NinjaWars\core\extensions\SessionFactory;
 use \PDO;
 
 /**
@@ -25,7 +26,7 @@ class InventoryController {
      * @return ViewSpec
 	 */
 	public function index() {
-		$char       = Player::find(self_char_id());
+		$char       = Player::find(SessionFactory::getSession()->get('player_id'));
 		$inv = Inventory::of($char, 'self');
 		$inventory  = [];
         $error = in('error');
@@ -60,7 +61,7 @@ class InventoryController {
 	 */
     public function give() {
         $slugs  = $this->parseSlugs();
-        $player = Player::find(self_char_id());
+        $player = Player::find(SessionFactory::getSession()->get('player_id'));
         $target = $this->findPlayer($slugs['in_target']);
 
         try {
@@ -111,7 +112,7 @@ class InventoryController {
 	 */
     public function selfUse() {
         $slugs           = $this->parseSlugs();
-        $player          = Player::find(self_char_id());
+        $player          = Player::find(SessionFactory::getSession()->get('player_id'));
         $inventory       = new Inventory($player);
         $had_stealth     = $player->hasStatus(STEALTH);
         $turns_to_take   = 1; // Take away one turn even on attacks that fail to prevent page reload spamming
@@ -190,7 +191,7 @@ class InventoryController {
     public function useItem() {
         $slugs           = $this->parseSlugs();
         $target          = $this->findPlayer($slugs['in_target']);
-        $player          = Player::find(self_char_id());
+        $player          = Player::find(SessionFactory::getSession()->get('player_id'));
         $inventory       = new Inventory($player);
         $had_stealth     = $player->hasStatus(STEALTH);
         $error           = false;

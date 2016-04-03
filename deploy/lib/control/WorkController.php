@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * The controller for effects of a work request and the default index display
@@ -20,7 +21,7 @@ class WorkController {
      */
     public function requestWork() {
         $worked                 = positive_int(in('worked')); // No negative work.
-        $char_id                = self_char_id();
+        $char_id                = SessionFactory::getSession()->get('player_id');
         $char                   = Player::find($char_id);
         if(!($char instanceof Player)){
             return new RedirectResponse('/work');
@@ -62,7 +63,7 @@ class WorkController {
      * page with form
      */
     public function index() {
-        $char = Player::find(self_char_id());
+        $char = Player::find(SessionFactory::getSession()->get('player_id'));
 
         if (!$char) {
             $char = new Player();

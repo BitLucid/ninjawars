@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\environment\RequestWrapper;
+use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -27,7 +28,7 @@ class DojoController {
      */
     public function index() {
         if (is_logged_in()) {
-            return $this->render([], Player::find(self_char_id()));
+            return $this->render([], Player::find(SessionFactory::getSession()->get('player_id')));
         } else {
             return $this->render();
         }
@@ -41,7 +42,7 @@ class DojoController {
      */
     public function buyDimMak() {
         if (is_logged_in()) {
-            $player = Player::find(self_char_id());
+            $player = Player::find(SessionFactory::getSession()->get('player_id'));
             $showMonks = false;
             $parts = [];
 
@@ -79,7 +80,7 @@ class DojoController {
      */
     public function changeClass() {
         if (is_logged_in()) {
-            $player            = Player::find(self_char_id());
+            $player            = Player::find(SessionFactory::getSession()->get('player_id'));
             $classes           = $this->classesInfo();
             $requestedIdentity = in('requested_identity');
             $currentClass      = $player->identity;

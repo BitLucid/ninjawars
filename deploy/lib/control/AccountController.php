@@ -32,7 +32,7 @@ class AccountController {
      */
     public function changeEmail() {
         // confirm_delete
-        $player     = Player::find(self_char_id());
+        $player     = Player::find(SessionFactory::getSession()->get('player_id'));
         $self_info 	= $player->dataWithClan();
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
@@ -95,7 +95,7 @@ class AccountController {
      * Change account password
      */
     public function changePassword() {
-        $player     = Player::find(self_char_id());
+        $player     = Player::find(SessionFactory::getSession()->get('player_id'));
         $self_info 	= $player->dataWithClan();
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
@@ -161,7 +161,7 @@ class AccountController {
      */
     public function deleteAccount() {
         $session    = SessionFactory::getSession();
-        $player     = Player::find(self_char_id());
+        $player     = Player::find(SessionFactory::getSession()->get('player_id'));
         $self_info 	= $player->dataWithClan();
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
@@ -215,7 +215,7 @@ class AccountController {
         $oauth_provider = $account_info['oauth_provider'];
         $oauth = $oauth_provider && $account_info['oauth_id'];
 
-        $player       = Player::find(self_char_id());
+        $player       = Player::find(SessionFactory::getSession()->get('player_id'));
         $self_info    = $player->dataWithClan();
         $gravatar_url = $player->avatarUrl();
 

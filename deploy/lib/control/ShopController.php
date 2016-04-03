@@ -5,6 +5,7 @@ use NinjaWars\core\data\Item;
 use NinjaWars\core\data\PurchaseOrder;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * Handles all user actions related to the in-game Shop
@@ -22,7 +23,7 @@ class ShopController { // extends Controller
 	public function __construct() {
 		$this->itemCosts   = $this->itemForSaleCosts();
 		$this->sessionData = [
-			'char_id'          => self_char_id(),
+			'char_id'          => SessionFactory::getSession()->get('player_id'),
 			'is_logged_in'     => is_logged_in(),
 		];
 	}

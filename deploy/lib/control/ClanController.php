@@ -5,7 +5,8 @@ use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
-use NinjaWars\core\data\DatabaseConnection as DatabaseConnection;
+use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\data\DatabaseConnection;
 
 /**
  * Controller for all actions involving clan
@@ -26,7 +27,7 @@ class ClanController { //extends Controller
 	public function view() {
         $in_id = in('clan_id');
 		$clanID = ((int) $in_id > 0)? (int) $in_id : null;
-        $player = Player::find(self_char_id());
+        $player = Player::find(SessionFactory::getSession()->get('player_id'));
 
         if ($clanID === null && $player instanceof Player) {
             $clan = ClanFactory::clanOfMember($player);
@@ -86,7 +87,7 @@ class ClanController { //extends Controller
 	 * @throws Exception You cannot use this function if you are not the leader of a clan
 	 */
 	public function invite() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if (!$this->playerIsLeader($player, $clan)) {
@@ -127,7 +128,7 @@ class ClanController { //extends Controller
 	 * @throws Exception If you are the only leader of your clan, you cannot leave, you must disband
 	 */
 	public function leave() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if ($this->playerIsLeader($player, $clan)) {
@@ -157,7 +158,7 @@ class ClanController { //extends Controller
 	 * @see CLAN_CREATOR_MIN_LEVEL
 	 */
 	public function create() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 
 		if ($player->level >= self::CLAN_CREATOR_MIN_LEVEL) {
 			$default_clan_name = 'Clan '.$player->name();
@@ -199,7 +200,7 @@ class ClanController { //extends Controller
 		$clanID = (int) in('clan_id', null);
 		$clan   = ClanFactory::find($clanID);
 
-		$this->sendClanJoinRequest(self_char_id(), $clanID);
+		$this->sendClanJoinRequest(SessionFactory::getSession()->get('player_id'), $clanID);
 
 		$leader = $clan->getLeaderInfo();
 
@@ -222,7 +223,7 @@ class ClanController { //extends Controller
 	 * @throws \Exception The player disbanding must be the leader of the clan
 	 */
 	public function disband() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 		$clan   = ClanFactory::clanOfMember($player);
 		$sure   = in('sure', '');
 
@@ -262,7 +263,7 @@ class ClanController { //extends Controller
 	 * @throws Exception The player must be the leader of the clan to kick a member
 	 */
 	public function kick() {
-		$kicker = Player::find(self_char_id());
+		$kicker = Player::find(SessionFactory::getSession()->get('player_id'));
 		$clan   = ClanFactory::clanOfMember($kicker);
 		$kicked = Player::find(in('kicked', ''));
 
@@ -297,7 +298,7 @@ class ClanController { //extends Controller
 	 * All parameters are options
 	 */
 	public function update() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if (!$this->playerIsLeader($player, $clan)) {
@@ -362,7 +363,7 @@ class ClanController { //extends Controller
 	 * @see update()
 	 */
 	public function edit() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 		$clan   = ClanFactory::clanOfMember($player);
 
 		return $this->render([
@@ -382,7 +383,7 @@ class ClanController { //extends Controller
 	 * @return Array The view spec
 	 */
 	public function message() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 		$message = in('message', null, null); // Don't filter messages
 
 		if ($player) {
@@ -430,7 +431,7 @@ class ClanController { //extends Controller
 			'pageParts' => ['list'],
 		];
 
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 
 		if ($player) {
 			$clan = ClanFactory::clanOfMember($player);
@@ -453,7 +454,7 @@ class ClanController { //extends Controller
 	 * @return Array The viewspec
 	 */
 	public function review() {
-		$ninja = Player::find(self_char_id());
+		$ninja = Player::find(SessionFactory::getSession()->get('player_id'));
 		$clan  = ClanFactory::clanOfMember($ninja->id());
 
 		$joiner = Player::find(in('joiner'));
@@ -493,7 +494,7 @@ class ClanController { //extends Controller
 	 * Active player must be leader of a clan
 	 */
 	public function accept() {
-		$ninja = Player::find(self_char_id());
+		$ninja = Player::find(SessionFactory::getSession()->get('player_id'));
 		$clan  = ClanFactory::clanOfMember($ninja->id());
 
 		$joiner = Player::find(in('joiner'));
@@ -552,7 +553,7 @@ class ClanController { //extends Controller
 			$p_parts['action_message'] = null;
 		}
 
-		$p_parts['player'] = Player::find(self_char_id());
+		$p_parts['player'] = Player::find(SessionFactory::getSession()->get('player_id'));
 		$p_parts['myClan'] = ($p_parts['player'] ? ClanFactory::clanOfMember($p_parts['player']) : null);
 
 		$p_parts['clan_creator_min_level'] = self::CLAN_CREATOR_MIN_LEVEL;

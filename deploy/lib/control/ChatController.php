@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Message;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
 * The controller for effects of a village request and the default index display of the page
@@ -20,7 +21,7 @@ class ChatController {
 	*
 	**/
 	public function receive(){
-		$char_id       = self_char_id();
+		$char_id       = SessionFactory::getSession()->get('player_id');
 		$message       = in('message', null, 'no filter'); // Essentially no filtering.
 		$error = null;
 

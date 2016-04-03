@@ -6,6 +6,7 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\AdminViews;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * The ninjamaster/admin info
@@ -17,7 +18,7 @@ class NinjamasterController {
     protected $self = null;
 
     public function __construct() {
-        $this->charId = self_char_id();
+        $this->charId = SessionFactory::getSession()->get('player_id');
         $this->self = Player::find($this->charId);
     }
 

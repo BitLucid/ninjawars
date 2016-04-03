@@ -87,19 +87,16 @@ class Skill {
 
 	/**
 	 * Check whether the player has the skill.
-	**/
+	 */
 	public function hasSkill($skill, $char=null) {
-        if($char instanceof Player){
+        if ($char instanceof Player) {
             $player = $char;
         } else {
-    		if (!$char) {
-                $player = Player::find(self_char_id());
-    		} else {
-                $player = Player::findByName($char);
-    		}
+            $player = Player::findByName($char);
         }
-		$skills    = $this->skills($player);
-		$skill     = strtolower($skill);
+
+		$skills   = $this->skills($player);
+		$skill    = strtolower($skill);
 		$levelReq = (isset($skills[$skill]['level']) ? $skills[$skill]['level'] : 1);
 
 		return (isset($skills[$skill]['available']) && ($player->level >= $levelReq));
