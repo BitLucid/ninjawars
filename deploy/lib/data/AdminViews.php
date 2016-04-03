@@ -53,7 +53,7 @@ class AdminViews{
         $first = true;
 
         foreach ($ids as $id) {
-            $player = new Player($id);
+            $player = Player::find($id);
             $res[$id] = $player->dataWithClan();
             $res[$id]['first'] = $first;
             unset($res[$id]['messages']); // Exclude the messages for length reasons.

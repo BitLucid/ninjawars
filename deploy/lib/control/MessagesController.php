@@ -44,7 +44,7 @@ class MessagesController {
     public function sendClan() {
         $message = in('message');
         $type = 1;
-        $sender = new Player(self_char_id());
+        $sender = Player::find(self_char_id());
         $clan = ClanFactory::clanOfMember($sender);
         $target_id_list = $clan->getMemberIds();
         Message::sendToGroup($sender, $target_id_list, $message, $type);
@@ -60,7 +60,7 @@ class MessagesController {
         $page               = in('page', 1, 'non_negative_int');
         $limit              = 25;
         $offset             = non_negative_int(($page - 1) * $limit);
-        $ninja              = new Player(self_char_id());
+        $ninja              = Player::find(self_char_id());
         $message_count      = Message::countByReceiver($ninja, $type); // To count all the messages
 
         Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
@@ -85,7 +85,7 @@ class MessagesController {
      * View clan messages
      */
     public function viewClan() {
-        $ninja         = new Player(self_char_id());
+        $ninja         = Player::find(self_char_id());
         $page          = in('page', 1, 'non_negative_int');
         $limit         = 25;
         $offset        = non_negative_int(($page - 1) * $limit);
@@ -115,7 +115,7 @@ class MessagesController {
     public function deletePersonal() {
         $char_id = self_char_id();
         $type = 0;
-        Message::deleteByReceiver(new Player($char_id), $type);
+        Message::deleteByReceiver(Player::find($char_id), $type);
 
         return new RedirectResponse('/messages?command=personal&informational='.url('Messages deleted'));
     }
@@ -126,7 +126,7 @@ class MessagesController {
     public function deleteClan() {
         $char_id = self_char_id();
         $type = 1;
-        Message::deleteByReceiver(new Player($char_id), $type);
+        Message::deleteByReceiver(Player::find($char_id), $type);
 
         return new RedirectResponse('/messages?command=clan&informational='.url('Messages deleted'));
     }

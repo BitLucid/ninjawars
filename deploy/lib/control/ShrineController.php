@@ -34,7 +34,7 @@ class ShrineController { //extends controller
 	 * @see servicesNeeded
 	 */
 	public function index() {
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 
 		$pageParts = $this->servicesNeeded($player);
 
@@ -61,7 +61,7 @@ class ShrineController { //extends controller
 	public function healAndResurrect() {
 		$skillController = new Skill();
 
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 
 		try {
 			$pageParts = [];
@@ -107,7 +107,7 @@ class ShrineController { //extends controller
 	 * @see _resurrect
 	 */
 	public function resurrect() {
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 
 		try {
 			$costType = $this->_resurrect($player);
@@ -141,7 +141,7 @@ class ShrineController { //extends controller
 	public function heal() {
 		$skillController = new Skill();
 
-		$player = new Player(self_char_id()); // get current player
+		$player = Player::find(self_char_id()); // get current player
 
 		$healAmount = in('heal_points');
 
@@ -212,7 +212,7 @@ class ShrineController { //extends controller
 	private function servicesNeeded($p_player) {
 		$services = [];
 
-		if ($p_player->id()) {
+		if ($p_player) {
 			if ($p_player->health()) {
 				if ($p_player->health() < $p_player->max_health()) {
 					$services[] = 'form-heal';

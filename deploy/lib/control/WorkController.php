@@ -62,26 +62,20 @@ class WorkController {
      * page with form
      */
     public function index() {
-        // Initialize variables to pass to the template.
-        $work_multiplier        = self::WORK_MULTIPLIER;
-        $worked                 = null;
-        $earned_gold               = null;
-        $not_enough_energy      = null;
-        $is_logged_in           = is_logged_in();
-        $char                   = new Player(self_char_id());
+        $char = Player::find(self_char_id());
 
-        // Fill out some of the variables.
-        $recommended_to_work = self::DEFAULT_RECOMMENDED_TO_WORK;
-        $gold_display = number_format($char->gold);
+        if (!$char) {
+            $char = new Player();
+        }
 
         $parts = [
-            'recommended_to_work'    => $recommended_to_work,
-            'work_multiplier'        => $work_multiplier,
-            'is_logged_in'           => $is_logged_in,
-            'gold_display'           => $gold_display,
-            'worked'                 => $worked,
-            'earned_gold'            => number_format($earned_gold),
-            'not_enough_energy'      => $not_enough_energy,
+            'recommended_to_work' => self::DEFAULT_RECOMMENDED_TO_WORK,
+            'work_multiplier'     => self::WORK_MULTIPLIER,
+            'is_logged_in'        => is_logged_in(),
+            'gold_display'        => number_format($char->gold),
+            'worked'              => null,
+            'earned_gold'         => number_format(null),
+            'not_enough_energy'   => null,
         ];
 
         return $this->render($parts);

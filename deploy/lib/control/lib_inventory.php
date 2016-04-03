@@ -71,9 +71,9 @@ function get_status_list($target=null) {
 	$target = (isset($target) && (int)$target == $target ? $target : self_char_id());
 
 	// Default to showing own status.
-	$target = new Player($target);
+	$target = Player::find($target);
 
-	if ($target->health < 1) {
+	if (!$target || $target->health < 1) {
 		$states[] = 'Dead';
 	} else { // *** Other statuses only display if not dead.
 		if ($target->health < 80) {

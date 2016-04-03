@@ -35,7 +35,7 @@ class HomepageController {
      */
     private function game() {
         // Get the actual values of the vars.
-        $ninja = new Player(self_char_id());
+        $ninja = Player::find(self_char_id());
         $playerInfo = $ninja->dataWithClan();
 
         $unreadCount = Message::where([

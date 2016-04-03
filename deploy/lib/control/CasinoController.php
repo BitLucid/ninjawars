@@ -20,7 +20,12 @@ class CasinoController {
 	 * @return Array
 	 */
 	public function index() {
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
+
+        if (!$player) {
+            $player = new Player();
+        }
+
 		$error = in('error');
 
 		return $this->render(

@@ -111,7 +111,7 @@ class ApiController {
     }
 
     private function jsonPlayer() {
-        $player = new Player(self_char_id());
+        $player = Player::find(self_char_id());
         return ['player' => $player->dataWithClan()];
     }
 

@@ -86,14 +86,14 @@ class ClanController { //extends Controller
 	 * @throws Exception You cannot use this function if you are not the leader of a clan
 	 */
 	public function invite() {
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if (!$this->playerIsLeader($player, $clan)) {
 			throw new \Exception('You must be a clan leader to invite new members');
 		}
 
-		$person_to_invite = new Player(in('person_invited', ''));
+		$person_to_invite = Player::find(in('person_invited', ''));
 
 		$parts = [
 			'clan'      => $clan,
@@ -127,7 +127,7 @@ class ClanController { //extends Controller
 	 * @throws Exception If you are the only leader of your clan, you cannot leave, you must disband
 	 */
 	public function leave() {
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if ($this->playerIsLeader($player, $clan)) {
@@ -157,7 +157,7 @@ class ClanController { //extends Controller
 	 * @see CLAN_CREATOR_MIN_LEVEL
 	 */
 	public function create() {
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 
 		if ($player->level >= self::CLAN_CREATOR_MIN_LEVEL) {
 			$default_clan_name = 'Clan '.$player->name();
@@ -222,7 +222,7 @@ class ClanController { //extends Controller
 	 * @throws \Exception The player disbanding must be the leader of the clan
 	 */
 	public function disband() {
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 		$clan   = ClanFactory::clanOfMember($player);
 		$sure   = in('sure', '');
 
@@ -262,7 +262,7 @@ class ClanController { //extends Controller
 	 * @throws Exception The player must be the leader of the clan to kick a member
 	 */
 	public function kick() {
-		$kicker = new Player(self_char_id());
+		$kicker = Player::find(self_char_id());
 		$clan   = ClanFactory::clanOfMember($kicker);
 		$kicked = in('kicked', '');
 		$kicked_name = get_char_name($kicked);
@@ -298,7 +298,7 @@ class ClanController { //extends Controller
 	 * All parameters are options
 	 */
 	public function update() {
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if (!$this->playerIsLeader($player, $clan)) {
@@ -363,7 +363,7 @@ class ClanController { //extends Controller
 	 * @see update()
 	 */
 	public function edit() {
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 		$clan   = ClanFactory::clanOfMember($player);
 
 		return $this->render([
@@ -383,10 +383,10 @@ class ClanController { //extends Controller
 	 * @return Array The view spec
 	 */
 	public function message() {
-		$player = new Player(self_char_id());
+		$player = Player::find(self_char_id());
 		$message = in('message', null, null); // Don't filter messages
 
-		if ($player->id()) {
+		if ($player) {
 			$myClan = ClanFactory::clanOfMember($player);
 
 			if ($myClan) {
@@ -454,10 +454,10 @@ class ClanController { //extends Controller
 	 * @return Array The viewspec
 	 */
 	public function review() {
-		$ninja = new Player(self_char_id());
+		$ninja = Player::find(self_char_id());
 		$clan  = ClanFactory::clanOfMember($ninja->id());
 
-		$joiner = new Player(in('joiner'));
+		$joiner = Player::find(in('joiner'));
 		$confirmation = (int) in('confirmation');
 
 		$parts = [
@@ -465,7 +465,7 @@ class ClanController { //extends Controller
 		];
 
 		if ($clan && $this->playerIsLeader($ninja, $clan)) {
-			if ($joiner->id()) {
+			if ($joiner) {
 				$parts['pageParts'] = [
 					'reminder-join-request',
 					'form-confirm-join',
@@ -494,10 +494,10 @@ class ClanController { //extends Controller
 	 * Active player must be leader of a clan
 	 */
 	public function accept() {
-		$ninja = new Player(self_char_id());
+		$ninja = Player::find(self_char_id());
 		$clan  = ClanFactory::clanOfMember($ninja->id());
 
-		$joiner = new Player(in('joiner'));
+		$joiner = Player::find(in('joiner'));
 		$confirmation = (int) in('confirmation');
 
 		$parts = [
@@ -505,7 +505,7 @@ class ClanController { //extends Controller
 		];
 
 		if ($clan && $this->playerIsLeader($ninja, $clan)) {
-			if ($joiner->id()) {
+			if ($joiner) {
 				$parts['pageParts'] = [
 					'reminder-join-request',
 				];
