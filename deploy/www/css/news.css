@@ -27,8 +27,15 @@
   margin-bottom:1em;
 }
 .news h3:before, .news h3:after{
-  content: "\00a0"; display:inline-block; font-size:32px; height:32px;width:32px;margin:0 0.3em;
-  background-image:url('/images/icons/mono/article32.png');
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f1ea";
+  margin: 0 0.3em;
+  text-align:baseline;
 }
 #news-list article{
   display:block;

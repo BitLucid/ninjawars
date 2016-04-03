@@ -30,9 +30,8 @@
       <em title='Level {$loop_enemy.level}'>{$loop_enemy.level}</em>
       <form name='remove-enemy-form' id='remove-enemy-form' action="/enemies/delete" method='POST'>
         <input type='hidden' name='remove_enemy' value='{$loop_enemy.player_id|escape}'>
-          <button type='submit' class='remove-enemy-button'>
-            <img src="{cachebust file="/images/icons/mono/stop32.png"}" height='16' width='16' alt="remove"
-              title='Remove {$loop_enemy.uname|escape} from your hitlist'>
+          <button type='submit' class='remove-enemy-button' title='Remove {$loop_enemy.uname|escape} from your hitlist'>
+            <i class="fa fa-times-circle"></i>
           </button>
       </form>
     </li>
