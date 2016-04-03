@@ -1886,12 +1886,21 @@ p.ninja-success,span.ninja-success{
 
 .error {
 	text-align:center;
-	color:Red;
-	background-color:Gold;
-	font-family: Georgia, 'Times New Roman', Times, serif;
+	color:#A51131;
+	background-color:#F683FF;
+    border:#7A89D9 0.2rem solid;
+    font-family: 'Lucida Console', Monaco, monospace;
 	font-weight:bold;
 	font-size:150%;
-	padding: 3px;
+	padding: 0.2rem;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+.error-page-character{
+    display:inline-block;
+    float:left;
 }
 
 .notice, .informational {
@@ -1913,6 +1922,11 @@ p.ninja-success,span.ninja-success{
 .notice a, .informational a {
 	color:skyblue;
 	font-family: ‘Lucida Console’, Monaco, monospace;
+}
+
+.ooc{
+    font-family: 'Lucida Console', Monaco, monospace;
+    font-size:larger;
 }
 
 .text-success{
@@ -2248,11 +2262,6 @@ table#sight-info {
 	font-size: 1em;
 }
 
-#page-404 {
-	background-color: black;
-	color: white;
-}
-
 .q-and-a .question {
 	color: #D26600;
 	font-weight: bold;
@@ -2290,14 +2299,18 @@ table#sight-info {
 	background-color:white;
 }
 
-#page-404 {
+#page-404, #page-500 {
 	font-size: 1.5em;
-}
-#page-404 p {
 	margin-bottom: .5em;
 }
 
-#page-404 #support-email {
+#page-500 .main{
+    max-width:90%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#page-404 #support-email{
 	font-size: .8em;
 }
 

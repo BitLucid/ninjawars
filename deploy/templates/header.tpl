@@ -10,6 +10,7 @@
 
 
     <title>{$title|escape} - The Ninja Wars Ninja Game</title>
+    <link rel="stylesheet" type="text/css" href="{cachebust file="/css/font-awesome.min.css"}">
     <link rel="stylesheet" type="text/css" href="{cachebust file="/css/style.css"}" media="Screen">
 
 	<!-- Html5 shim for ie less than 9 -->
