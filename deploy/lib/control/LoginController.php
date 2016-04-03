@@ -125,7 +125,7 @@ class LoginController {
 
         if (!$info['successful']) {
             // Update last login failure.
-            $account = Account::findById(potential_account_id_from_login_username($info['username']));
+            $account = Account::findByLogin($info['username']);
 
             if ($account) {
                 Account::updateLastLoginFailure($account);

@@ -136,6 +136,23 @@ class Account {
     }
 
     /**
+     */
+    public static function findByLogin($username) {
+        $query = 'SELECT account_id FROM accounts WHERE active_email = :login1
+            UNION
+            SELECT _account_id AS account_id FROM players
+            JOIN account_players ON player_id = _player_id
+            WHERE lower(uname) = :login2';
+
+        $params = [
+            ':login1'=>strtolower($username),
+            ':login2'=>strtolower($username),
+        ];
+
+        return self::findById(query_item($query, $params));
+    }
+
+    /**
      * Pull account data in a * like manner.
      */
     public static function accountInfo($account_id, $specific=null) {
@@ -188,9 +205,9 @@ class Account {
             JOIN accounts ON _account_id = account_id
             WHERE account_id = :acc_id ORDER BY level DESC LIMIT 1';
 
-        $verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($newID, PDO::PARAM_INT)));
+$verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($newID, PDO::PARAM_INT)));
 
-        return ($verify_ninja_id != $ninja_id ? false : $newID);
+return ($verify_ninja_id != $ninja_id ? false : $newID);
     }
 
     public function info() {

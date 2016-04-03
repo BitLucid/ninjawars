@@ -10,13 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @return Array
  */
-function authenticate($dirty_login, $p_pass, $limit_login_attempts = true) {
+function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
     $filter_pattern       = "/[^\w\d\s_\-\.\@\:\/]/";
     $login                = strtolower(preg_replace($filter_pattern, "", (string)$dirty_login));
 	$recent_login_failure = false;
 	$pass                 = (string)$p_pass;
 	$rate_limit           = false;
-    $account              = Account::findById(potential_account_id_from_login_username($login));
+    $account    = Account::findByLogin($login);
 
 	if ($limit_login_attempts && $account) {
 		$rate_limit = last_login_failure_was_recent($account->id());
@@ -119,7 +119,7 @@ function login_user($dirty_user, $p_pass) {
 		}
 
 		// The LOGIN FAILURE case occurs here, and is the default.
-        $account = Account::findById(potential_account_id_from_login_username($dirty_user));
+        $account = Account::findByLogin($dirty_user);
 
         if ($account) {
             Account::updateLastLoginFailure($account);
@@ -138,23 +138,6 @@ function login_user($dirty_user, $p_pass) {
 function last_login_failure_was_recent($account_id) {
 	$query_res = query_item("SELECT CASE WHEN (now() - last_login_failure) < interval '1 second' THEN 1 ELSE 0 END FROM accounts WHERE account_id = :account_id", array(':account_id'=>array($account_id, PDO::PARAM_INT)));
 	return ($query_res == 1);
-}
-
-/**
- * Pull the account_id for any possible username part of the login.
- *
- * @return int
- */
-function potential_account_id_from_login_username($login) {
-	return query_item(
-		'SELECT account_id FROM accounts WHERE active_email = :login1
-		UNION
-		SELECT _account_id AS account_id FROM players JOIN account_players ON player_id = _player_id WHERE lower(uname) = :login2',
-		array(
-			':login1'=>strtolower($login),
-			':login2'=>strtolower($login)
-		)
-	);
 }
 
 /**
