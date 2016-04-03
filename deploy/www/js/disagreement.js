@@ -1,4 +1,8 @@
+"use_strict"
 $(function() {
+    //  Pull var as defined in external template
+    var attackable = typeof(attacking_possible) !== 'undefined'? attacking_possible : false;
+    console.log(attackable?'Attacking enabled.' : 'No attacking this target');
     $('#kick_form').submit(function(){return confirm('Are you sure you want to kick this player?');});
 
 
@@ -7,7 +11,7 @@ $(function() {
        booleans as string representations of 1 and 0. We then need to get
        the int value upon retrieval
     */
-    if(typeof(attacking_possible) !== null && attacking_possible){
+    if(attackable){
         $("#duel").prop('checked', parseInt(NW.storage.appState.get("duel_checked", false)));
 
         for (i = 0; i < combat_skills.length; i++) {

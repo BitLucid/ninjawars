@@ -19,6 +19,7 @@ class PlayerController {
 
         $target_player_obj = Player::find($target_id);
         $viewed_name_for_title = null;
+        $combat_skills = null;
 
         if ($target_player_obj !== null) {
             $viewed_name_for_title = $target_player_obj->name();
@@ -122,6 +123,7 @@ class PlayerController {
                 // Send the info to the template.
 
                 $template = 'player.tpl';
+                $combat_skills = $combat_skills? $combat_skills->fetchAll() : null;
                 $parts = get_certain_vars(get_defined_vars(), array('char_info', 'viewing_player_obj', 'target_player_obj', 'combat_skills',
                     'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today',
                     'gravatar_url', 'status_list', 'clan', 'items', 'account'));
