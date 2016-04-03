@@ -10,6 +10,7 @@ use NinjaWars\core\data\Player;
 class AttackController {
     const ALIVE = true;
     const PRIV  = true;
+    const BASE_WRATH_REGAIN = 2;
 
     public function index() {
         $target  = whichever(in('target'), in('attackee'));
@@ -239,7 +240,7 @@ class AttackController {
 
                             if ($skillListObj->hasSkill('wrath')) {
                                 // They'll retain 10 health for the kill, at the end.
-                                $wrath_regain = 10;
+                                $wrath_regain = self::BASE_WRATH_REGAIN;
                             }
                         }
 
@@ -252,7 +253,7 @@ class AttackController {
 
                             // Add the wrath health regain to the attacker.
                             if (isset($wrath_regain)) {
-                                $attacking_player->changeHealth($wrath_regain);
+                                $attacking_player->heal($wrath_regain);
                             }
                         }
 
