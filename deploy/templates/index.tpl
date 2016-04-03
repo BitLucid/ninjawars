@@ -34,12 +34,12 @@
       <div class='text-info'>
         <div id='messages'>
             <div>
-                <a target="main" id='message-inbox' href="/messages"><img id='messages-icon' src='{cachebust file="/images/icons/mono/commentblack32.png"}'  height=16 width=16 alt='' style='vertical-align:top'><span class='unread-count' style='vertical-align:top'>{$unread_message_count}</span>
+                <a target="main" id='message-inbox' href="/messages"><i class="fa fa-comments"></i><span class='unread-count'>{$unread_message_count}</span>
                 </a>
             </div>
             <div>
               <a target='main' href='/events'>
-                <img src='{cachebust file="/images/icons/mono/star32.png"}'  height=16 width=16 alt=''>
+                <i class="fa fa-star"></i>
               </a>
             </div>
         </div>

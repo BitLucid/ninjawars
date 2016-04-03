@@ -9,19 +9,19 @@
             <div class='ninja-level'>
               Level {$ninja->level|escape}
             </div>
-            {if $ninja->level < 5}
+            {if $ninja->level < 5 || $ninja->isAdmin()}
             <div id='helpful-info'>
-              <a target='main' href='/intro'>Helpful Info</a>
+              <a target='main' href='/intro'><i class="fa fa-question-circle"></i> Helpful Info</a>
             </div>
             {/if}
           </div>
         </nav>
         <div class='ninja-stats-link thick'>
-          <a href='/stats' target='main' title='Your ninja stats, level, info, etc.'><img src="{cachebust file="/images/icons/mono/heart32.png"}" height="16" width="16" alt="">Ninja Stats</a>
+          <a href='/stats' target='main' title='Your ninja stats, level, info, etc.'><i class="fa fa-heart"></i> Ninja Stats</a>
         </div>
         {/if}
         <div class='account-info thick'>
-          <a href="/account" target="main" title='Your player account info, email, password, etc.'><img src="{cachebust file="/images/icons/mono/gear32.png"}" height="16" width="16" alt="">Account Info</a>
+          <a href="/account" target="main" title='Your player account info, email, password, etc.'><i class="fa fa-gear"></i> Account Info</a>
         </div>
         <!-- Recent Events count and target will get put in here via javascript -->
         <div id='recent-events' class="boxes active" style='display:none'>
