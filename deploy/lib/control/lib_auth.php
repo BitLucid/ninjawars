@@ -1,29 +1,29 @@
 <?php
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Check for whether a login and pass match uname/active_email and hash, respectively.
+ * Authenticate a set of credentials
  *
- * @return Array|boolean
+ * @return Array
  */
-function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
-    $filter_pattern = "/[^\w\d\s_\-\.\@\:\/]/";
-    $login = strtolower(preg_replace($filter_pattern, "", (string)$dirty_login));
+function authenticate($dirty_login, $p_pass, $limit_login_attempts = true) {
+    $filter_pattern       = "/[^\w\d\s_\-\.\@\:\/]/";
+    $login                = strtolower(preg_replace($filter_pattern, "", (string)$dirty_login));
 	$recent_login_failure = false;
-	$pass  = (string)$p_pass;
+	$pass                 = (string)$p_pass;
+	$rate_limit           = false;
+    $account              = Account::findById(potential_account_id_from_login_username($login));
 
-	if ($limit_login_attempts) {
-		$recent_login_failure = last_login_failure_was_recent(potential_account_id_from_login_username($login));
+	if ($limit_login_attempts && $account) {
+		$rate_limit = last_login_failure_was_recent($account->id());
 	}
 
-	if ($login != '' && $pass != '' && !$recent_login_failure) {
-		// Allow login via username or email.
-
-		// Pull the account data regardless of whether the password matches, but create an int about whether it does match or not.
-		// matches login string against active_email or username.
-
+	if ($login != '' && $pass != '' && !$rate_limit) {
+        // Pull the account data regardless of whether the password matches,
+        // but create an int about whether it does match or not.
 
 		$sql = "SELECT account_id, account_identity, uname, player_id, accounts.confirmed as confirmed,
 		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated,
@@ -31,14 +31,12 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 			FROM accounts
 			JOIN account_players ON account_id = _account_id
 			JOIN players ON player_id = _player_id
-			WHERE (active_email = :login
-					OR lower(uname) = :login)";
+			WHERE (active_email = :login OR lower(uname) = :login)";
 
 		$result = query($sql, [':login' => $login, ':pass' => $pass]);
 
-		if ($result->rowCount() < 1) {	// *** No record was found, user does not exist ***
-			update_last_login_failure(potential_account_id_from_login_username($login));
-			return false;
+		if ($result->rowCount() < 1) {	// Username does not exist
+			return [];
 		} else {
 			if ($result->rowCount() > 1) {
                 // Just for later reference, check for duplicate usernames via:
@@ -46,12 +44,15 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
 				error_log('Case-insensitive duplicate username found: '.$login);
 			}
 
-			return $result->fetch(); // Success, return results.
+			return $result->fetch(); // account found, return results
 		}
 	} else {
-		// Update the last login failure timestamp.
-		update_last_login_failure(potential_account_id_from_login_username($login));
-		return false;
+        if ($account) {
+            // Update the last login failure timestamp
+            Account::updateLastLoginFailure($account);
+        }
+
+		return [];
 	}
 }
 
@@ -95,7 +96,7 @@ function login_user($dirty_user, $p_pass) {
 	// Just checks whether the username and password are correct.
 	$data = authenticate($dirty_user, $p_pass);
 
-	if (is_array($data)) {
+	if (!empty($data)) {
 		if ((bool)$data['authenticated'] && (bool)$data['operational']) {
 			if ((bool)$data['confirmed']) {
 				_login_user($data['uname'], $data['player_id'], $data['account_id']);
@@ -108,7 +109,13 @@ function login_user($dirty_user, $p_pass) {
 				$login_error = "You must confirm your account before logging in, check your email. <a href='/assistance'>You can request another confirmation email here.</a>";
 			}
 		}
+
 		// The LOGIN FAILURE case occurs here, and is the default.
+        $account = Account::findById(potential_account_id_from_login_username($dirty_user));
+
+        if ($account) {
+            Account::updateLastLoginFailure($account);
+        }
 	}
 
 	// *** Return array of return values ***
@@ -123,16 +130,6 @@ function login_user($dirty_user, $p_pass) {
 function update_last_logged_in($char_id) {
 	$update = "UPDATE accounts SET last_login = now() WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :char_id)";
 	return query($update, array(':char_id'=>array($char_id, PDO::PARAM_INT)));
-}
-
-/**
- * Sets the last failed login date to now()
- *
- * @return int
- */
-function update_last_login_failure($account_id) {
-	$update = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";
-	return query($update, array(':account_id'=>array($account_id, PDO::PARAM_INT)));
 }
 
 /**

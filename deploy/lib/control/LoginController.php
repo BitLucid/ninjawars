@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\data\Account;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use \Constants;
@@ -129,7 +130,11 @@ class LoginController {
 
         if (!$info['successful']) {
             // Update last login failure.
-            update_last_login_failure(potential_account_id_from_login_username($info['username']));
+            $account = Account::findById(potential_account_id_from_login_username($info['username']));
+
+            if ($account) {
+                Account::updateLastLoginFailure($account);
+            }
         }
 
         // Log the login attempt as well.

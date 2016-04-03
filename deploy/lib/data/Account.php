@@ -356,12 +356,18 @@ class Account {
             ':confirmed'      => [(int) $this->isConfirmed(), \PDO::PARAM_INT],
         ];
 
-        $updated = update_query('update accounts set
+        $updated = update_query('UPDATE accounts SET
             account_identity = :identity, active_email = :active_email, type = :type, oauth_provider = :oauth_provider,
             oauth_id = :oauth_id, karma_total = :karma_total, operational = :operational, confirmed = :confirmed
-            where account_id = :account_id', $params);
+            WHERE account_id = :account_id', $params);
 
         return $updated;
+    }
+
+
+    public static function updateLastLoginFailure(Account $account) {
+        $update = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";
+        return query($update, [':account_id' => [$account->id(), PDO::PARAM_INT]]);
     }
 
     public static function emailIsValid($p_email) {
