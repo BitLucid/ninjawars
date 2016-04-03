@@ -28,7 +28,7 @@ class ClanController { //extends Controller
 		$clanID = ((int) $in_id > 0)? (int) $in_id : null;
         $player = Player::find(self_char_id());
 
-        if($clanID === null && $player instanceof Player){
+        if ($clanID === null && $player instanceof Player) {
             $clan = ClanFactory::clanOfMember($player);
         } else {
             $clan = positive_int($clanID)? ClanFactory::find($clanID) : null;
@@ -166,7 +166,7 @@ class ClanController { //extends Controller
 				$default_clan_name = $default_clan_name.rand(1,999);
 			}
 
-			$clan = Clan::createClan($player->id(), $default_clan_name);
+			$clan = Clan::createClan($player, $default_clan_name);
 
 			$parts = [
 				'action_message' => 'Your clan was created with the default name: '.$clan->getName().'. Change it below.',
@@ -264,17 +264,16 @@ class ClanController { //extends Controller
 	public function kick() {
 		$kicker = Player::find(self_char_id());
 		$clan   = ClanFactory::clanOfMember($kicker);
-		$kicked = in('kicked', '');
-		$kicked_name = get_char_name($kicked);
+		$kicked = Player::find(in('kicked', ''));
 
 		if (!$this->playerIsLeader($kicker, $clan)) {
 			throw new \Exception('You may not kick members from a clan you are not a leader of.');
 		}
 
-		$clan->kickMember($kicked, $kicker);
+		$clan->kickMember($kicked->id(), $kicker);
 
 		return $this->render([
-			'action_message' => "You have removed $kicked_name from your clan",
+			'action_message' => "You have removed ".$kicked->name()." from your clan",
 			'title'          => 'Manage your clan',
 			'clan'           => $clan,
 			'pageParts'      => [
@@ -601,7 +600,8 @@ class ClanController { //extends Controller
         $clan_obj  = new Clan($clan_id);
         $leader    = $clan_obj->getLeaderInfo();
         $leader_id = $leader['player_id'];
-        $username  = get_char_name($user_id);
+        $user      = Player::find($user_id);
+        $username  = $user->name();
 
         $confirmStatement = DatabaseConnection::$pdo->prepare('SELECT verification_number FROM players WHERE player_id = :user');
         $confirmStatement->bindValue(':user', $user_id);
@@ -615,12 +615,11 @@ class ClanController { //extends Controller
             If you wish to allow this ninja into your clan click the following link:
                 $url";
 
-Message::create([
-    'send_from' => $user_id,
-    'send_to'   => $leader_id,
-    'message'   => $join_request_message,
-    'type'      => 0,
-]);
+        Message::create([
+            'send_from' => $user_id,
+            'send_to'   => $leader_id,
+            'message'   => $join_request_message,
+            'type'      => 0,
+        ]);
     }
-
 }

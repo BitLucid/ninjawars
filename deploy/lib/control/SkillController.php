@@ -453,34 +453,29 @@ class SkillController {
 					$generic_skill_result_message = '__TARGET__ is already iced.';
 				}
 			} else if ($act == 'Clone Kill') {
-
-
 				// Obliterates the turns and the health of similar accounts that get clone killed.
 				$reuse = false; // Don't give a reuse link.
 
-				$clone1 = $target;
-				$clone2 = $target2;
+				$clone1 = Player::findByName($target);
+				$clone2 = Player::findByName($target2);
 
-				$clone_1_id = get_char_id($clone1);
-				$clone_2_id = get_char_id($clone2);
-				$clones = false;
+				if (!$clone1 || !$clone2) {
+					$not_a_ninja = $target;
 
-				if (!$clone_1_id || !$clone_2_id) {
-					$not_a_ninja = $clone1;
-
-					if (!$clone_2_id) {
-						$not_a_ninja = $clone2;
+					if (!$clone2) {
+						$not_a_ninja = $target2;
 					}
 
 					$generic_skill_result_message = "There is no such ninja as $not_a_ninja.";
-				} elseif ($clone_1_id == $clone_2_id) {
+				} elseif ($clone1->id() == $clone2->id()) {
 					$generic_skill_result_message = '__TARGET__ is just the same ninja, so not the same thing as a clone at all.';
-				} elseif ($clone_1_id == $char_id || $clone_2_id == $char_id) {
+				} elseif ($clone1->id() == $char_id || $clone2->id() == $char_id) {
 					$generic_skill_result_message = 'You cannot clone kill yourself.';
 				} else {
 					// The two potential clones will be obliterated immediately if the criteria are met in CloneKill.
-					$kill_or_fail = CloneKill::kill($player, Player::find($clone_1_id), Player::find($clone_2_id));
-					if($kill_or_fail !== false){
+					$kill_or_fail = CloneKill::kill($player, $clone1, $clone2);
+
+					if ($kill_or_fail !== false) {
 						$generic_skill_result_message = $kill_or_fail;
 					} else {
 						$generic_skill_result_message = "Those two ninja don't seem to be clones.";

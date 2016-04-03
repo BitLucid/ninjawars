@@ -393,7 +393,15 @@ class SignupController {
      * Check for reserved or already in use by another player.
      */
     private function ninjaNameAvailable($ninja_name) {
-        $reserved = array('SysMsg', 'NewUserList', 'Admin', 'Administrator', 'A Stealthed Ninja', 'Tchalvak', 'Beagle');
+        $reserved = [
+            'SysMsg',
+            'NewUserList',
+            'Admin',
+            'Administrator',
+            'A Stealthed Ninja',
+            'Tchalvak',
+            'Beagle',
+        ];
 
         foreach ($reserved as $l_names) {
             if (strtolower($ninja_name) == strtolower($l_names)) {
@@ -401,7 +409,7 @@ class SignupController {
             }
         }
 
-        return (!get_user_id($ninja_name));
+        return (!Player::findByName($ninja_name));
     }
 
     /**

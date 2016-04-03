@@ -15,24 +15,22 @@ class MessagesController {
      */
     public function sendPersonal() {
         if ((int) in('target_id')) {
-            $target_id = (int) in('target_id');
+            $recipient = Player::find((int) in('target_id'));
         } else if (in('to')) {
-            $target_id = get_user_id(in('to'));
+            $recipient = Player::findByName(in('to'));
         } else {
-            $target_id = null;
+            $recipient = null;
         }
 
-        if ($target_id) {
+        if ($recipient) {
             Message::create([
                 'send_from' => self_char_id(),
-                'send_to'   => $target_id,
+                'send_to'   => $recipient->id(),
                 'message'   => in('message', null, null),
                 'type'      => 0,
             ]);
 
-            $recipient = get_char_name($target_id);
-
-            return new RedirectResponse('/messages?command=personal&individual_or_clan=1&message_sent_to='.rawurlencode($recipient).'&informational='.rawurlencode('Message sent to '.$recipient.'.'));
+            return new RedirectResponse('/messages?command=personal&individual_or_clan=1&message_sent_to='.rawurlencode($recipient->name()).'&informational='.rawurlencode('Message sent to '.$recipient->name().'.'));
         } else {
             return new RedirectResponse('/messages?command=personal&error='.rawurlencode('No such ninja to message.'));
         }

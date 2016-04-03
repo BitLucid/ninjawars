@@ -15,10 +15,15 @@ class PlayerController {
     const ALIVE = false;
 
     public function index() {
-        $target        = $player = first_value(in('ninja'), in('player'), in('find'), in('target'));
-        $target_id     = first_value(in('target_id'), in('player_id'), get_char_id($target)); // Find target_id if possible.
+        $target    = $player = first_value(in('ninja'), in('player'), in('find'), in('target'));
+        $target_id = first_value(in('target_id'), in('player_id'));
 
-        $target_player_obj = Player::find($target_id);
+        if ($target_id) {
+            $target_player_obj = Player::find($target_id);
+        } else {
+            $target_player_obj = Player::findByName($target);
+        }
+
         $viewed_name_for_title = null;
         $combat_skills = null;
 

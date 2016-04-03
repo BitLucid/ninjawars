@@ -22,7 +22,6 @@ class ShopController { // extends Controller
 	public function __construct() {
 		$this->itemCosts   = $this->itemForSaleCosts();
 		$this->sessionData = [
-			'username'         => self_name(),
 			'char_id'          => self_char_id(),
 			'is_logged_in'     => is_logged_in(),
 		];

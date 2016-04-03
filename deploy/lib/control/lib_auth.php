@@ -163,30 +163,12 @@ function potential_account_id_from_login_username($login) {
 }
 
 /**
- * Simple method to check for player id if you're logged in.
- *
- * @return int
- */
-function get_logged_in_char_id() {
-	return SessionFactory::getSession()->get('player_id');
-}
-
-/**
- * Get the account_id as logged in.
- *
- * @return int
- */
-function account_id() {
-	return SessionFactory::getSession()->get('account_id');
-}
-
-/**
  * Check whether someone is logged into their account.
  *
  * @return boolean
  */
 function is_logged_in() {
-	return (bool) account_id();
+	return (bool)SessionFactory::getSession()->get('account_id');
 }
 
 /**
@@ -260,76 +242,12 @@ function username_format_validate($username) {
 }
 
 /**
- * Canonical source for own name now.
- *
- * @return string
- */
-function self_name() {
-	static $self;
-
-	if ($self) {
-		// Self info requested
-		return $self;
-	} else {
-		// Determine & store username.
-		$char_id = get_logged_in_char_id();
-		$sql = "SELECT uname FROM players WHERE player_id = :player";
-		$username = query_item($sql, array(':player'=>$char_id));
-		$self = $username; // Store it for later.
-		return $self;
-	}
-}
-
-/**
- * Returns a char name from a char id.
- *
- * @return string
- */
-function get_char_name($char_id=null) {
-	if ($char_id === null) {
-		if (defined('DEBUG') && DEBUG && $char_id === null) {
-			nw_error('Deprecated call to get_char_name(null) with a null argument.  For clarity reasons, this is now deprecated, use self_name() instead.');
-		}
-
-		return self_name();
-	} else {
-		// Determine some other character's username and return it.
-		$sql = "SELECT uname FROM players WHERE player_id = :player";
-		return query_item($sql, array(':player'=>$char_id));
-	}
-}
-
-/**
  * Check for own id, migrate to this for calls checking for self.
  *
  * @return int
  */
 function self_char_id() {
-	// Needs to respect logout, so don't cache as a static
-	return get_logged_in_char_id();
-}
-
-/**
- * DEPRECATED: Old named wrapper for get_char_id
- *
- * @return int
- */
-function get_user_id($p_name=false) {
-	if (defined('DEBUG') && DEBUG && $p_name === false) {
-		nw_error('Improper call to get_user_id() with no argument.  For clarity reasons, this is now deprecated, use self_char_id() instead.');
-	}
-
-	return get_char_id($p_name);
-}
-
-/**
- * Return the char id that corresponds with a char name, or the logged in account, if no other source is available.
- *
- * @return int|null
- */
-function get_char_id($p_name) {
-    $sql = "SELECT player_id FROM players WHERE lower(uname) = :find";
-    return query_item($sql, array(':find'=>strtolower($p_name)));
+	return SessionFactory::getSession()->get('player_id');
 }
 
 /**

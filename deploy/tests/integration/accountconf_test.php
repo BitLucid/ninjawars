@@ -156,28 +156,15 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     /**
      * group accountconf
      */
-    function testGetNinjaByName() {
-        $ninja_id = $this->test_ninja_id;
-        $char_id = get_char_id($this->test_ninja_name);
-        $this->assertTrue(positive_int($ninja_id)>0);
-        $this->assertTrue(positive_int($char_id)>0);
-        $this->assertTrue($ninja_id == $char_id);
-    }
-
-    /**
-     * group accountconf
-     */
     function testMakeSureThatNinjaAccountIsOperationalByDefault() {
         $ninja_id = $this->test_ninja_id;
-        $this->assertTrue(positive_int($ninja_id)>0);
-        $char_id = get_char_id($this->test_ninja_name);
-        $this->assertTrue(positive_int($char_id)>0);
+        $this->assertTrue(positive_int($ninja_id) > 0);
+
         $account_operational = query_item(
             'SELECT operational FROM accounts JOIN account_players ON account_id = _account_id WHERE _player_id = :char_id',
-            [':char_id'=>$char_id]
+            [':char_id' => $ninja_id]
         );
 
-        $this->assertTrue($ninja_id == $char_id);
         $this->assertTrue($account_operational, 'Account is not being set as operational by default when created');
     }
 

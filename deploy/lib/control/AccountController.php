@@ -209,7 +209,7 @@ class AccountController {
      */
     private function render($parts) {
         // default parts
-        $account_info = Account::accountInfo(account_id());
+        $account_info = Account::accountInfo(SessionFactory::getSession()->get('account_id'));
 
         // Get the existing oauth info, if any.
         $oauth_provider = $account_info['oauth_provider'];
