@@ -1,10 +1,11 @@
 <?php
 namespace NinjaWars\core\data;
 
+use NinjaWars\core\data\DatabaseConnection;
 use \PDO;
 
 /**
- * Player Accounts and their info
+ * Player accounts and their info
  */
 class Account {
     public static $fields = [
@@ -150,9 +151,51 @@ class Account {
         return $res;
     }
 
-	public function info() {
-		return $this->info;
-	}
+    /**
+     * Create a new account
+     */
+    public static function create($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1, $ip=null) {
+        DatabaseConnection::getInstance();
+
+        $newID = query_item("SELECT nextval('accounts_account_id_seq')");
+
+        $ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, operational, verification_number, last_ip)
+            VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 10)), :type, :operational, :verification_number, :ip)";
+
+        $email = strtolower($email);
+
+        $statement = DatabaseConnection::$pdo->prepare($ins);
+        $statement->bindParam(':acc_id', $newID);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':email2', $email);
+        $statement->bindParam(':password', $password_to_hash);
+        $statement->bindParam(':type', $type, PDO::PARAM_INT);
+        $statement->bindParam(':operational', $active, PDO::PARAM_INT);
+        $statement->bindParam(':verification_number', $confirm);
+        $statement->bindParam(':ip', $ip);
+        $statement->execute();
+
+        // Create the link between account and player.
+        $link_ninja = 'INSERT INTO account_players (_account_id, _player_id, last_login) VALUES (:acc_id, :ninja_id, default)';
+
+        $statement = DatabaseConnection::$pdo->prepare($link_ninja);
+        $statement->bindParam(':acc_id', $newID, PDO::PARAM_INT);
+        $statement->bindParam(':ninja_id', $ninja_id, PDO::PARAM_INT);
+        $statement->execute();
+
+        $sel_ninja_id = 'SELECT player_id FROM players
+            JOIN account_players ON player_id = _player_id
+            JOIN accounts ON _account_id = account_id
+            WHERE account_id = :acc_id ORDER BY level DESC LIMIT 1';
+
+        $verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($newID, PDO::PARAM_INT)));
+
+        return ($verify_ninja_id != $ninja_id ? false : $newID);
+    }
+
+    public function info() {
+        return $this->info;
+    }
 
     public function getId() {
         return $this->account_id;
@@ -176,9 +219,9 @@ class Account {
         return $this->getId();
     }
 
-	public function getActiveEmail() {
-		return $this->active_email;
-	}
+    public function getActiveEmail() {
+        return $this->active_email;
+    }
 
     public function setActiveEmail($p_email) {
         if (self::emailIsValid($p_email)) {
@@ -189,90 +232,95 @@ class Account {
         }
     }
 
-	public function getLastLogin() {
-		return $this->info['last_login'];
-	}
+    public function getLastLogin() {
+        return $this->info['last_login'];
+    }
 
-	public function getLastLoginFailure() {
-		return $this->info['last_login_failure'];
-	}
+    public function getLastLoginFailure() {
+        return $this->info['last_login_failure'];
+    }
 
-	public function getKarmaTotal() {
-		return $this->info['karma_total'];
-	}
+    public function getKarmaTotal() {
+        return $this->info['karma_total'];
+    }
 
     public function setKarmaTotal($p_amount) {
         $this->info['karma_total'] = (int) $p_amount;
     }
 
-	public function getLastIp() {
-		return $this->info['last_ip'];
-	}
-
-	/**
-	 * Identity wrapper.
-	 */
-	public function identity() {
-		return $this->getIdentity();
-	}
-
-	public function getIdentity() {
-		return $this->account_identity;
-	}
-
-	public function getType() {
-		return $this->type;
-	}
-
-	public function setType($type) {
-		$cast_type = positive_int($type);
-
-		if ($cast_type != $type) {
-			throw new \Exception('Account: The account type set was inappropriate.');
-		}
-
-		$this->type = $cast_type;
-
-		return $this->type;
-	}
-
-	public function setOauthId($id, $provider='facebook') {
-		$this->oauth_id = $id;
-		if($provider){
-			$this->oauth_provider = $provider;
-		}
-		return true;
-	}
-
-	public function getOauthId($provider='facebook') {
-		return $this->oauth_id;
-	}
-
-	public function getOauthProvider() {
-		return $this->oauth_provider;
-	}
-
-	public function setOauthProvider($provider) {
-		return ($this->oauth_provider = $provider);
-	}
-
-	/**
-	 * Check operational status of account
-	 */
-	public function isOperational() {
-		return (bool) ($this->info['operational'] === true);
-	}
-
-    public function setOperational($p_operational) {
-        $this->info['operational'] = (bool) $p_operational;
+    public function getLastIp() {
+        return $this->info['last_ip'];
     }
 
-	/**
-	 * Check whether an account is confirmed.
-	 */
-	public function isConfirmed() {
-		return (bool) ($this->info['confirmed'] === 1);
-	}
+    /**
+     * Identity wrapper.
+     */
+    public function identity() {
+        return $this->getIdentity();
+    }
+
+    public function getIdentity() {
+        return $this->account_identity;
+    }
+
+    public function getType() {
+        return $this->type;
+    }
+
+    public function setType($type) {
+        $cast_type = positive_int($type);
+
+        if ($cast_type != $type) {
+            throw new \Exception('Account: The account type set was inappropriate.');
+        }
+
+        $this->type = $cast_type;
+
+        return $this->type;
+    }
+
+    public function setOauthId($id, $provider='facebook') {
+        $this->oauth_id = $id;
+        if($provider){
+            $this->oauth_provider = $provider;
+        }
+        return true;
+    }
+
+    public function getOauthId($provider='facebook') {
+        return $this->oauth_id;
+    }
+
+    public function getOauthProvider() {
+        return $this->oauth_provider;
+    }
+
+    public function setOauthProvider($provider) {
+        return ($this->oauth_provider = $provider);
+    }
+
+    /**
+     * Check operational status of account
+     *
+     * @return boolean
+     */
+    public function isOperational() {
+        return ($this->operational === true);
+    }
+
+    /**
+     * @return void
+     */
+    public function setOperational($p_operational) {
+        $this->operational = (bool) $p_operational;
+    }
+
+    /**
+     * Check whether an account is confirmed.
+     */
+    public function isConfirmed() {
+        return ($this->confirmed === 1);
+    }
 
     /**
      * Change the account password
@@ -292,9 +340,9 @@ class Account {
         );
     }
 
-	/**
-	 * A partial save of account information.
-	 */
+    /**
+     * A partial save of account information.
+     */
     public function save() {
         $params = [
             ':identity'       => $this->getIdentity(),
@@ -305,11 +353,12 @@ class Account {
             ':account_id'     => $this->getId(),
             ':karma_total'    => $this->getKarmaTotal(),
             ':operational'    => [$this->isOperational(), \PDO::PARAM_BOOL],
+            ':confirmed'      => [(int) $this->isConfirmed(), \PDO::PARAM_INT],
         ];
 
         $updated = update_query('update accounts set
             account_identity = :identity, active_email = :active_email, type = :type, oauth_provider = :oauth_provider,
-            oauth_id = :oauth_id, karma_total = :karma_total, operational = :operational
+            oauth_id = :oauth_id, karma_total = :karma_total, operational = :operational, confirmed = :confirmed
             where account_id = :account_id', $params);
 
         return $updated;

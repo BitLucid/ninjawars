@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Account;
 
 /**
  * Class to house static methods for killing characters of players with multis
@@ -53,13 +54,16 @@ class CloneKill {
 
         $untouchable_ips = ['127.0.0.1', '173.203.99.229', $server_ip, '', null];
 
+        $account1 = Account::findByChar($char1);
+        $account2 = Account::findByChar($char2);
+
         // Reject invalid custom ips
-        if(in_array($char1->ip(), $untouchable_ips) || in_array($char2->ip(), $untouchable_ips)){
+        if(in_array($account1->getLastIp(), $untouchable_ips) || in_array($account2->getLastIp(), $untouchable_ips)){
             return false;
         }
 
         // If characters have the same joint account, and have been logged in recently...
-        if($char1->ip() === $char2->ip()){ // Activity was already tested above.
+        if($account1->getLastIp() === $account2->getLastIp()){ // Activity was already tested above.
             return true;
         }
 

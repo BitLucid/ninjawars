@@ -197,32 +197,33 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      * group accountconf
      */
     function testConfirmAccount() {
-        $confirmed = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+        $player = Player::findByName($this->test_ninja_name);
+        $account = Account::findByChar($player);
+        $account->confirmed = 1;
+        $account->save();
+
         $active_string = query_item(
             'SELECT active FROM accounts JOIN account_players ON account_id = _account_id JOIN players ON player_id = _player_id WHERE players.uname = :uname',
             [':uname' => $this->test_ninja_name]
         );
 
-        $this->assertTrue($confirmed);
         $this->assertEquals('1', $active_string);
     }
 
     /**
      * group accountconf
      */
-    function testConfirmPlayerAccountExists() {
-        confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
-        $char_id = get_char_id($this->test_ninja_name);
-        $this->assertTrue((bool)$char_id, 'Confirmed player creates a character id');
-    }
-
-    /**
-     * group accountconf
-     */
     function testAuthenticateConfirmedAccountByName() {
-        $confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+        $player = Player::findByName($this->test_ninja_name);
+        $player->active = 1;
+        $player->save();
+
+        $account = Account::findByChar($player);
+        $account->confirmed = 1;
+        $account->setOperational(true);
+        $account->save();
+
         $res = authenticate($this->test_ninja_name, $this->test_password, false);
-        $this->assertTrue($confirm_worked);
         $this->assertNotEmpty($res); // Should return account_id
         $this->assertNotEmpty($res['account_id']);
         $this->assertNotEmpty($res['account_identity']);
@@ -234,9 +235,16 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      * group accountconf
      */
     function testLoginConfirmedAccountByName() {
-        $confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+        $player = Player::findByName($this->test_ninja_name);
+        $player->active = 1;
+        $player->save();
+
+        $account = Account::findByChar($player);
+        $account->confirmed = 1;
+        $account->setOperational(true);
+        $account->save();
+
         $res = login_user($this->test_ninja_name, $this->test_password);
-        $this->assertTrue($confirm_worked);
         $this->assertTrue($res['success'], 'Login by ninja name failed for ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res['login_error'].']');
         $this->assertFalse((bool)$res['login_error']);
     }
@@ -245,9 +253,16 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      * group accountconf
      */
     function testLoginConfirmedAccountByEmail() {
-        $confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
+        $player = Player::findByName($this->test_ninja_name);
+        $player->active = 1;
+        $player->save();
+
+        $account = Account::findByChar($player);
+        $account->confirmed = 1;
+        $account->setOperational(true);
+        $account->save();
+
         $res = login_user($this->test_email, $this->test_password);
-        $this->assertTrue($confirm_worked);
         $this->assertTrue($res['success'], 'Login by email failed for confirmed player ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res['login_error'].']');
         $this->assertFalse((bool)$res['login_error']);
     }
@@ -256,12 +271,16 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      * group accountconf
      */
     function testLoginConfirmedAccountWithInactivePlayerSucceeds(){
-        $confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
         $player = Player::findByName($this->test_ninja_name);
         $player->active = 0;
         $player->save();
+
+        $account = Account::findByChar($player);
+        $account->confirmed = 1;
+        $account->setOperational(true);
+        $account->save();
+
         $res = login_user($this->test_email, $this->test_password);
-        $this->assertTrue($confirm_worked);
         $this->assertTrue($res['success'], 'Faded-to-inactive player unable to login');
         $this->assertFalse((bool)$res['login_error']);
     }
@@ -270,19 +289,24 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      * group accountconf
      */
     function testPauseAccountAndLoginShouldFail() {
+        $player = Player::findByName($this->test_ninja_name);
+        $player->active = 1;
+        $player->save();
+
+        $account = Account::findByChar($player);
+        $account->confirmed = 1;
+        $account->setOperational(true);
+        $account->save();
+
         $accountController = new AccountController();
-        $confirm_worked = confirm_player($this->test_ninja_name, false, true); // name, no confirm #, just autoconfirm.
-        $this->assertTrue((bool)$confirm_worked);
 
         $res = login_user($this->test_email, $this->test_password);
         $this->assertTrue($res['success'], 'Login should be successful when account is new');
 
         // Fully pause the account, make the operational bit = false
-        $player = Player::findByName($this->test_ninja_name);
         $player->active = 0;
         $player->save();
 
-        $account = Account::findByChar($player);
         $account->setOperational(false);
         $account->save();
 
@@ -292,8 +316,6 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertTrue(is_string($res['login_error']));
         $this->assertTrue((bool)$res['login_error']);
     }
-
-    // Test that ninja inactivation should make them not-attackable.
 
     /**
      * group accountconf
@@ -310,8 +332,6 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
             $this->assertFalse((bool)SignupController::preconfirm_some_emails($email));
         }
     }
-
-    // Test that ninja allowed names match and don't match for the choices set
 
     /**
      * group accountconf

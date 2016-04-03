@@ -51,7 +51,7 @@ class AccountController {
 
                 if ($account !== null) {
                     try {
-                        $account = Account::findByChar($p_player);
+                        $account = Account::findByChar($player);
                         $account->setActiveEmail($in_newEmail);
                         $account->save();
 

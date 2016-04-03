@@ -354,8 +354,9 @@ class Player implements Character {
 	}
 
     /**
-     *
      * Cleanup player to death state
+     *
+     * @return void
      */
 	public function death() {
 		$this->resetStatus();
@@ -364,13 +365,12 @@ class Player implements Character {
 	}
 
     /**
-     * @deprecated email for account of player
+     * Changes the turns propety of the player object
+     *
+     * @param int $turns
+     * @return int The number of turns the player object now has
+     * @throws InvalidArgumentException $turns cannot be negative
      */
-	public function email() {
-		$account = account_info_by_char_id($this->id());
-		return $account['active_email'];
-	}
-
     public function set_turns($turns) {
         if ($turns < 0) {
             throw new \InvalidArgumentException('Turns cannot be made negative.');
@@ -577,11 +577,6 @@ class Player implements Character {
         return min(100, round(($this->health/$this->getMaxHealth())*100));
 	}
 
-	public function ip() {
-		$this->ip = isset($this->ip) && $this->ip? $this->ip : account_info_by_char_id($this->id(), 'last_ip');
-		return $this->ip;
-	}
-
     /**
      * @return int difficulty rating
      */
@@ -608,12 +603,14 @@ class Player implements Character {
     }
 
     private function generateGravatarUrl() {
+        $account = Account::findByChar($this);
+
         if (OFFLINE) {
             return IMAGE_ROOT.'default_avatar.png';
-        } else if (!$this->vo || !$this->vo->avatar_type || !$this->email()) {
+        } else if (!$this->vo || !$this->vo->avatar_type || !$account || !$account->email()) {
             return '';
-        } else {	// Otherwise, use the player info for creating a gravatar.
-            $email       = $this->email();
+        } else {
+            $email       = $account->email();
 
             $def         = 'monsterid'; // Default image or image class.
             // other options: wavatar (polygonal creature) , monsterid, identicon (random shape)

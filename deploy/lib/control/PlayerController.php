@@ -7,6 +7,7 @@ use NinjaWars\core\data\Message;
 use NinjaWars\core\data\SkillDAO;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Account;
 
 class PlayerController {
     const PRIV  = false;
@@ -18,6 +19,7 @@ class PlayerController {
 
         $target_player_obj = Player::find($target_id);
         $viewed_name_for_title = null;
+
         if ($target_player_obj !== null) {
             $viewed_name_for_title = $target_player_obj->name();
         }
@@ -26,6 +28,7 @@ class PlayerController {
             $template = 'no-player.tpl';
             $parts    = array();
         } else {
+            $account = Account::findByChar($target_player_obj);
             $player_info = $target_player_obj->as_array(); // Pull the info out of the object.
 
             if (!$player_info) {
@@ -121,7 +124,7 @@ class PlayerController {
                 $template = 'player.tpl';
                 $parts = get_certain_vars(get_defined_vars(), array('char_info', 'viewing_player_obj', 'target_player_obj', 'combat_skills',
                     'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today',
-                    'gravatar_url', 'status_list', 'clan', 'items'));
+                    'gravatar_url', 'status_list', 'clan', 'items', 'account'));
             }
         }
 

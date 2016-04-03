@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Account;
 use \Constants;
 
 /**
@@ -85,12 +86,16 @@ class AttackLegal {
         $host= gethostname();
         $active_ip = gethostbyname($host);
         $allowable = array_merge(['127.0.0.1', $server_addr, $active_ip], Constants::$trusted_proxies);
-        $self_ip = $self->ip();
+
+        $self_account = Account::findByChar($self);
+        $target_account = Account::findByChar($target);
+
+        $self_ip = $self_account->getLastIp();
 
         if (!$self_ip || in_array($self_ip, $allowable) ) {
             return false;  // Don't have to obtain the target's ip at all if these are the case!
         } else {
-            return $self_ip === $target->ip();
+            return $self_ip === $target_account->getLastIp();
         }
     }
 

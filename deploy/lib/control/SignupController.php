@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Account;
+use NinjaWars\core\data\Player;
 use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use \Constants;
@@ -84,6 +85,7 @@ class SignupController {
         $confirm = rand(1000, 9999); //generate confirmation code
 
         $player_params = [
+            'send_name'   => $p_request->enteredName,
             'send_email'  => $p_request->enteredEmail,
             'send_pass'   => $p_request->enteredPass,
             'send_class'  => $p_request->enteredClass,
@@ -94,7 +96,7 @@ class SignupController {
         ];
 
         // Create the player
-        $account_id = create_account_and_ninja($p_request->enteredName, $player_params);
+        $account_id = $this->createAccountAndNinja($player_params);
 
         if ($account_id) {
             $sent = $this->sendSignupEmail($account_id, $p_request->enteredEmail, $p_request->enteredName, $confirm, $p_request->enteredClass);
@@ -108,7 +110,16 @@ class SignupController {
 
         if ($preconfirm) {
             $completedPhase = 4;
-            confirm_player($p_request->enteredName, false, true); // name, no confirm #, just autoconfirm.
+
+            $account = Account::findById($account_id);
+            $account->confirmed = 1;
+            $account->setOperational(true);
+            $account->save();
+
+            $player = Player::findByName($p_request->enteredName);
+            $player->active = 1;
+            $player->save();
+
             $confirmed = true;
         } else {
             $completedPhase = 5;
@@ -120,7 +131,7 @@ class SignupController {
             'title'    => self::TITLE,
             'parts'    => [
                 'classes'           => $this->classes,
-                'class_display'     => class_display_name_from_identity($p_request->enteredClass),
+                'class_display'     => $this->classDisplayNameFromIdentity($p_request->enteredClass),
                 'signupRequest'     => $p_request,
                 'submit_successful' => true,
                 'completedPhase'    => $completedPhase,
@@ -396,7 +407,7 @@ class SignupController {
      * Sends out the confirmation email to the chosen email address.
      */
     private function sendSignupEmail($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
-        $class_display = class_display_name_from_identity($class_identity);
+        $class_display = $this->classDisplayNameFromIdentity($class_identity);
         $_to           = [$signup_email => $signup_name];
         $_subject      = 'NinjaWars Account Sign Up';
         $_body         = render_template(
@@ -420,5 +431,34 @@ class SignupController {
         $message->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);
 
         return $message->send();
+    }
+
+    /**
+     * Create the account and the initial ninja for that account.
+     */
+    private function createAccountAndNinja($params=array()) {
+        $confirm = (int) $params['confirm'];
+        $ip      = (isset($params['ip']) ? $params['ip'] : null);
+
+        $class_id = query_item(
+            'SELECT class_id FROM class WHERE identity = :class_identity',
+            [ ':class_identity' => $params['send_class'] ]
+        );
+
+        $ninja = new Player();
+        $ninja->uname               = $params['send_name'];
+        $ninja->verification_number = $confirm;
+        $ninja->active              = (int) $params['preconfirm'];
+        $ninja->_class_id           = $class_id;
+        $ninja->save();
+
+        return Account::create($ninja->id(), $params['send_email'], $params['send_pass'], $confirm, 0, 1, $ip);
+    }
+
+    /**
+     * Get the display name from the identity.
+     */
+    private function classDisplayNameFromIdentity($identity) {
+        return query_item('SELECT class_name from class where identity = :identity', array(':identity'=>$identity));
     }
 }
