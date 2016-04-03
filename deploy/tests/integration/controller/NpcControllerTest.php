@@ -12,6 +12,12 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use \TestAccountCreateAndDestroy;
 use \PHPUnit_Framework_TestCase;
 
+/**
+ * BE AWARE THAT NPCS THAT ARE STRONG ENOUGH (doesn't take much) WILL KILL YOU
+ * THIS CAN TRIVIALLY SKEW TESTS, SO GAME THE SYSTEM AGAINST THAT IN YOUR TESTS
+ *
+ *
+ */
 class NpcControllerTest extends PHPUnit_Framework_TestCase {
     protected function setUp() {
         $this->char = TestAccountCreateAndDestroy::char();
@@ -82,6 +88,8 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testControllerAttackAsIfAgainstAMerchant2() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/merchant2';
+        $this->char->strength = 9999;
+        $this->char->health = 9999;
         $init_gold = $this->char->gold;
         $npco = new Npc('merchant2');
         $response = $this->controller->attack();
