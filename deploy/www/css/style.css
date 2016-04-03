@@ -1891,7 +1891,7 @@ p.ninja-success,span.ninja-success{
     border:#7A89D9 0.2rem solid;
     font-family: 'Lucida Console', Monaco, monospace;
 	font-weight:bold;
-	font-size:150%;
+	font-size:larger;
 	padding: 0.2rem;
     -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
@@ -2311,7 +2311,18 @@ table#sight-info {
     margin-left:auto;
     margin-right:auto;
 }
+
+#page-404 .main div:first-child{
+    width:90%; /* Have to force width on 404 page */
+}
+
 #page-404 h2{
+    font-size:100%;
+    border-width:0.5rem 1rem;
+    border-radius:0.2rem;
+    padding:0;
+    font-family:"Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-transform:uppercase;
 }
 
 #page-500 footer, #page-404 footer{

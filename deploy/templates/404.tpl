@@ -12,8 +12,7 @@
     <section class='main parent'>
       <div class='child glassbox'>
         <img class='error-page-character' src='/images/characters/disappearing_ghost180.png' alt=''>
-        <h2 class='error'><i class="fa fa-meh-o"></i>Oops?  We can't find that page</h2>
-        <span style='display:inline-block;width:100%'>&nbsp;</span>
+        <h2 class='error'><i class="fa fa-meh-o"></i> Sorry, 404: We can't find that page</h2>
         <div class='glassbox thick' style='clear:both'>
           <form action="http://www.google.com/search" name="searchbox" method="get" id='search-404'> 
             <input type="hidden" name="hl" value="en"> 
@@ -32,5 +31,11 @@
         <div id='support-email'>or <a href='/staff' target='main'>get help on the staff page</a></div>
       </div>
     </footer>
+<script>
+// Hide search box if within iframe to prevent crossorigin problems
+if(typeof(this.parent) !== 'undefined' && this.parent !== this.window){
+  document.getElementById('search-404').style.display='none';
+}
+</script>
   </body>
 </html>
