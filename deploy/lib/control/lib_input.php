@@ -85,17 +85,3 @@ function sanitize_to_email($dirty) {
 	return filter_var($dirty, FILTER_SANITIZE_EMAIL);
 }
 
-/**
- * Restrict an option to certain possibilities
- *
- * e.g. for an orderby string, possibilities would be an array of column names
- */
-function restrict_to($original, $possibilities=array(), $default=null) {
-	foreach ($possibilities as $possibility) {
-		if ($original == $possibility) {
-			return $possibility;
-		}
-	}
-
-	return $default;  // If the original doesn't match, just return the default
-}

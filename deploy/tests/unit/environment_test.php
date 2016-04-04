@@ -99,14 +99,6 @@ class TestInput extends PHPUnit_Framework_TestCase {
 		$this->assertNotEquals($dirty, sanitize_to_text($dirty));
 	}
 
-	public function testRestrictToPositive() {
-		$this->assertEquals('bob', restrict_to('bob',['bob','joe','john','jake'],'grace'));
-	}
-
-	public function testRestrictToDefault() {
-		$this->assertEquals('grace', restrict_to('bob',['joe','john','jake'],'grace'));
-	}
-
 	public function testWhicheverPositive() {
 		$this->assertEquals('grace', whichever('', null, 'grace'));
 	}

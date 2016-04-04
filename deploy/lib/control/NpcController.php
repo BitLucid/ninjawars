@@ -275,7 +275,7 @@ class NpcController { //extends controller
         $npc_template   = $error_template; // Error condition by default.
         $npcs           = NpcFactory::npcsData();
         $possible_npcs  = array_merge(self::$STATIC_NPCS, array_keys($npcs));
-        $victim         = restrict_to($victim, $possible_npcs); // Filter to only the correct options.
+        $victim         = (in_array($victim, $possible_npcs) ? $victim : null); // Filter to only the correct options.
 
         $standard_npcs  = [
             'peasant'  => 'attackVillager',
