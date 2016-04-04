@@ -1,8 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
-require_once(LIB_ROOT."control/lib_chat.php"); // Require all the chat helper and rendering functions.
-
+use NinjaWars\core\data\Message;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -27,7 +26,7 @@ class ChatController {
 
 		if (!empty($message)){
 			if($char_id) {
-				send_chat($char_id, $message);
+                Message:sendChat($char_id, $message);
 			} else {
 				$error = 'You must be logged in to chat.';
 			}

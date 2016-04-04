@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Message;
 use \PDO;
 
 class ApiController {
@@ -135,10 +136,9 @@ class ApiController {
 
     private function jsonSendChat($msg) {
         if (is_logged_in()) {
-            require_once(LIB_ROOT."control/lib_chat.php");
             $msg     = trim($msg);
             $player  = Player::find(self_char_id());
-            $success = send_chat($player->id(), $msg);
+            $success = Message::sendChat($player->id(), $msg);
 
             if (!$success) {
                 return false;
