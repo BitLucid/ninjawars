@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Event;
 
 /**
  * Handles all user requests for the in-game Doshin Office
@@ -70,7 +71,7 @@ class DoshinController { //extends controller
                 $target->save();
                 $char = $char->save();
 
-                send_event($char->id(), $target->id(), $char->name()." has offered ".$amount." gold in reward for your head!");
+                Event::create($char->id(), $target->id(), $char->name()." has offered ".$amount." gold in reward for your head!");
 
                 $success = true;
                 $quickstat = 'player';

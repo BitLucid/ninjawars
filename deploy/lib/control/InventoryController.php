@@ -6,6 +6,7 @@ use NinjaWars\core\data\Item;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Event;
 use \PDO;
 
 /**
@@ -84,7 +85,7 @@ class InventoryController {
             $player->subtractTurns(self::GIVE_COST);
             $player->save();
 
-            send_event($player->id(), $target->id(), $mail_message);
+            Event::create($player->id(), $target->id(), $mail_message);
         }
 
         return $this->renderUse([
@@ -233,7 +234,7 @@ class InventoryController {
 
                 if ($result['success']) {
                     $message_to_target = "$attacker_id has used $article ".$item->getName()." on you$result[notice]";
-                    send_event($player->id(), $target->id(), str_replace('  ', ' ', $message_to_target));
+                    Event::create($player->id(), $target->id(), str_replace('  ', ' ', $message_to_target));
                     $inventory->remove($item->identity(), 1);
 
                     if ($target->health() <= 0) { // Target was killed by the item
@@ -475,10 +476,10 @@ class InventoryController {
      */
     private function sendKillMails(Player $attacker, Player $target, $attacker_label, $article, $item, $loot) {
         $target_email_msg = "You have been killed by $attacker_label with $article $item and lost $loot gold.";
-        send_event(($attacker->name() === $attacker_label ? $attacker->id() : 0), $target->id(), $target_email_msg);
+        Event::create(($attacker->name() === $attacker_label ? $attacker->id() : 0), $target->id(), $target_email_msg);
 
         $user_email_msg = "You have killed ".$target->name()." with $article $item and received $loot gold.";
-        send_event($target->id(), $attacker->id(), $user_email_msg);
+        Event::create($target->id(), $attacker->id(), $user_email_msg);
     }
 
     /**

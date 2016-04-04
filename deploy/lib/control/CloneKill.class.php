@@ -1,6 +1,7 @@
 <?php
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\data\Event;
 
 /**
  * Class to house static methods for killing characters of players with multis
@@ -87,8 +88,8 @@ class CloneKill {
                 $clone2->death();
                 $result_message = "You obliterate the clone {$clone1->name()} for $clone1_health health, $clone1_turns turns
                      and the clone {$clone2->name()} for $clone2_health health, $clone2_turns turns.";
-                send_event($self->id(), $clone1->id(), "You and {$clone2->name()} were Clone Killed at $today.");
-                send_event($self->id(), $clone2->id(), "You and {$clone1->name()} were Clone Killed at $today.");
+                Event::create($self->id(), $clone1->id(), "You and {$clone2->name()} were Clone Killed at $today.");
+                Event::create($self->id(), $clone2->id(), "You and {$clone1->name()} were Clone Killed at $today.");
                 return $result_message;
             } else {
                 return false;

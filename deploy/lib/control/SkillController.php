@@ -6,6 +6,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
+use NinjaWars\core\data\Event;
 
 /**
  * Handles both skill listing and displaying, and their usage
@@ -293,7 +294,7 @@ class SkillController {
                 $target->save();
 
 				$msg = "$attacker_id stole $gold_decrease gold from you.";
-				send_event($attacker_char_id, $target->id(), $msg);
+				Event::create($attacker_char_id, $target->id(), $msg);
 
 				$generic_skill_result_message = "You have stolen $gold_decrease gold from __TARGET__!";
 			} else if ($act == 'Unstealth') {
@@ -349,7 +350,7 @@ class SkillController {
 				$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
 				$msg = "You have been poisoned by $attacker_id";
-				send_event($attacker_char_id, $target->id(), $msg);
+				Event::create($attacker_char_id, $target->id(), $msg);
 			} elseif ($act == 'Fire Bolt') {
 				$target_damage = $this->fireBoltBaseDamage($player) + rand(1, $this->fireBoltMaxDamage($player));
 
@@ -359,7 +360,7 @@ class SkillController {
 				$victim_alive = $target->harm($target_damage);
 
 				$msg = "You have had fire bolt cast on you by ".$player->name();
-				send_event($player->id(), $target->id(), $msg);
+				Event::create($player->id(), $target->id(), $msg);
 			} else if ($act == 'Heal' || $act == 'Harmonize') {
 				// This is the starting template for self-use commands, eventually it'll be all refactored.
 				$harmonize = false;
@@ -394,7 +395,7 @@ class SkillController {
 				    $generic_skill_result_message = "__TARGET__ healed by $healed_by to ".$target->health.".";
 
 				    if ($target->id() != $player->id())  {
-						send_event($attacker_char_id, $target->id(), "You have been healed by $attacker_id for $healed_by.");
+						Event::create($attacker_char_id, $target->id(), "You have been healed by $attacker_id for $healed_by.");
 					}
 				}
 			} else if ($act == 'Ice Bolt') {
@@ -407,7 +408,7 @@ class SkillController {
 						$target->addStatus(SLOW);
 
 						$msg = "Ice bolt cast on you by $attacker_id, your turns have been reduced by $turns_decrease.";
-						send_event($attacker_char_id, $target->id(), $msg);
+						Event::create($attacker_char_id, $target->id(), $msg);
 
 						$generic_skill_result_message = "__TARGET__'s turns reduced by $turns_decrease!";
 					} else {
@@ -431,7 +432,7 @@ class SkillController {
 							$player->changeTurns(abs($turns_decrease));
 
 							$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id";
-							send_event($attacker_char_id, $target->id(), $msg);
+							Event::create($attacker_char_id, $target->id(), $msg);
 
 							$generic_skill_result_message = "You cast Cold Steal on __TARGET__ and take $turns_decrease turns.";
 						} else {
@@ -444,7 +445,7 @@ class SkillController {
 						$unfreeze_time = date('F j, Y, g:i a', mktime(date('G')+1, 0, 0, date('m'), date('d'), date('Y')));
 
 						$failure_msg = "You have experienced a critical failure while using Cold Steal. You will be unfrozen on $unfreeze_time";
-						send_event((int)"SysMsg", $player->id(), $failure_msg);
+						Event::create((int)"SysMsg", $player->id(), $failure_msg);
 						$generic_skill_result_message = "Cold Steal has backfired! You are frozen until $unfreeze_time!";
 					}
 				} else {
@@ -513,10 +514,10 @@ class SkillController {
                     }
 
 					$target_message = "$attacker_id has killed you with $act and taken $loot gold.";
-					send_event($attacker_char_id, $target->id(), $target_message);
+					Event::create($attacker_char_id, $target->id(), $target_message);
 
 					$attacker_message = "You have killed $target with $act and taken $loot gold.";
-					send_event($target->id(), $player->id(), $attacker_message);
+					Event::create($target->id(), $player->id(), $attacker_message);
 				}
 			}
 
