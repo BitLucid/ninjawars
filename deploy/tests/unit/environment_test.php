@@ -64,16 +64,16 @@ class TestInput extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @todo review expected behavior of sanitize_to_int on strings
+	 * @todo review expected behavior of toInt on strings
 	 */
 	public function testSanitizeToInt() {
-		$this->assertEquals(4, sanitize_to_int(4));
-		$this->assertEquals(-4, sanitize_to_int(-4));
-		$this->assertNull(sanitize_to_int(4.1));
-		$this->assertNull(sanitize_to_int(4.9));
-		$this->assertEquals(0, sanitize_to_int('somestring'));
-		$this->assertNull(sanitize_to_int([]));
-		$this->assertEquals(0, sanitize_to_int(0));
+		$this->assertEquals(4, toInt(4));
+		$this->assertEquals(-4, toInt(-4));
+		$this->assertNull(toInt(4.1));
+		$this->assertNull(toInt(4.9));
+		$this->assertEquals(0, toInt('somestring'));
+		$this->assertNull(toInt([]));
+		$this->assertEquals(0, toInt(0));
 	}
 
 	public function testToInt() {
@@ -84,27 +84,6 @@ class TestInput extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(0, toInt('somestring'));
 		$this->assertNull(toInt([]));
 		$this->assertEquals(0, toInt(0));
-	}
-
-	public function testSanitizeToEmail() {
-		$email = "bob@example.com";
-		$this->assertEquals($email, sanitize_to_email($email));
-		$this->assertEquals('notanemail', sanitize_to_email("not an email"));
-	}
-
-	public function testSanitizeToText() {
-		$clean = 'abcdeghijklmnopqrstuvwxyz';
-		$dirty = 'abcdegh*ijklmnopqrstuvwxyz';
-		$this->assertEquals($clean, sanitize_to_text($clean));
-		$this->assertNotEquals($dirty, sanitize_to_text($dirty));
-	}
-
-	public function testRestrictToPositive() {
-		$this->assertEquals('bob', restrict_to('bob',['bob','joe','john','jake'],'grace'));
-	}
-
-	public function testRestrictToDefault() {
-		$this->assertEquals('grace', restrict_to('bob',['joe','john','jake'],'grace'));
 	}
 
 	public function testWhicheverPositive() {
