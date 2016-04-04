@@ -18,6 +18,7 @@ class Account {
         'created_data',
         'last_login',
         'last_login_failure',
+        'login_failure_interval',
         'karma_total',
         'last_ip',
         'confirmed',
@@ -153,19 +154,16 @@ class Account {
     }
 
     /**
-     * Pull account data in a * like manner.
+     * Pull account record from database
+     *
+     * @param int $account_id
+     * @return Array
      */
-    public static function accountInfo($account_id, $specific=null) {
-        $res = query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
-        if ($specific) {
-            if (isset($res[$specific])) {
-                $res = $res[$specific];
-            } else {
-                $res = null;
-            }
-        }
-
-        return $res;
+    public static function accountInfo($account_id) {
+        return query_row(
+            "SELECT *, date_part('epoch', now() - coalesce(last_login_failure, '1999-01-01')) AS login_failure_interval FROM accounts WHERE account_id = :account_id",
+            [':account_id'=>[$account_id, PDO::PARAM_INT]]
+        );
     }
 
     /**
@@ -380,7 +378,6 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
 
         return $updated;
     }
-
 
     public static function updateLastLoginFailure(Account $account) {
         $update = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";

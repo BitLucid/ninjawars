@@ -19,7 +19,7 @@ function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
     $account    = Account::findByLogin($login);
 
 	if ($limit_login_attempts && $account) {
-		$rate_limit = last_login_failure_was_recent($account->id());
+        $rate_limit = (intval($account->login_failure_interval) <= 1);
 	}
 
 	if ($login != '' && $pass != '' && !$rate_limit) {
@@ -128,16 +128,6 @@ function login_user($dirty_user, $p_pass) {
 
 	// *** Return array of return values ***
 	return ['success' => $success, 'login_error' => $login_error];
-}
-
-/**
- * Makes sure that the last login failure was't under a second ago.
- *
- * @return boolean
- */
-function last_login_failure_was_recent($account_id) {
-	$query_res = query_item("SELECT CASE WHEN (now() - last_login_failure) < interval '1 second' THEN 1 ELSE 0 END FROM accounts WHERE account_id = :account_id", array(':account_id'=>array($account_id, PDO::PARAM_INT)));
-	return ($query_res == 1);
 }
 
 /**
