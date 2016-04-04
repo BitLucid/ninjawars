@@ -3,6 +3,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\AccountController;
 use NinjaWars\core\control\SignupController;
+use NinjaWars\core\control\LoginController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 
@@ -166,10 +167,10 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     function testAttemptLoginOfUnconfirmedAccountShouldFail() {
         $email ='noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
         TestAccountCreateAndDestroy::create_testing_account(false, $email);
-        $res = login_user($email, $this->test_password);
-        $this->assertFalse($res['success']);
-        $this->assertTrue(is_string($res['login_error']));
-        $this->assertTrue((bool)$res['login_error'], 'No error returned: '.$res['login_error']);
+
+        $controller = new LoginController();
+        $res = $controller->performLogin($email, $this->test_password);
+        $this->assertNotEmpty($res, 'No error returned');
     }
 
     /**
@@ -223,9 +224,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $account->setOperational(true);
         $account->save();
 
-        $res = login_user($this->test_ninja_name, $this->test_password);
-        $this->assertTrue($res['success'], 'Login by ninja name failed for ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res['login_error'].']');
-        $this->assertFalse((bool)$res['login_error']);
+        $controller = new LoginController();
+        $res = $controller->performLogin($this->test_ninja_name, $this->test_password);
+        $this->assertEmpty($res, 'Login by ninja name failed for ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res.']');
     }
 
     /**
@@ -241,9 +242,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $account->setOperational(true);
         $account->save();
 
-        $res = login_user($this->test_email, $this->test_password);
-        $this->assertTrue($res['success'], 'Login by email failed for confirmed player ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res['login_error'].']');
-        $this->assertFalse((bool)$res['login_error']);
+        $controller = new LoginController();
+        $res = $controller->performLogin($this->test_email, $this->test_password);
+        $this->assertEmpty($res, 'Login by email failed for confirmed player ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res.']');
     }
 
     /**
@@ -259,9 +260,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $account->setOperational(true);
         $account->save();
 
-        $res = login_user($this->test_email, $this->test_password);
-        $this->assertTrue($res['success'], 'Faded-to-inactive player unable to login');
-        $this->assertFalse((bool)$res['login_error']);
+        $controller = new LoginController();
+        $res = $controller->performLogin($this->test_email, $this->test_password);
+        $this->assertEmpty($res, 'Faded-to-inactive player unable to login');
     }
 
     /**
@@ -279,8 +280,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 
         $accountController = new AccountController();
 
-        $res = login_user($this->test_email, $this->test_password);
-        $this->assertTrue($res['success'], 'Login should be successful when account is new');
+        $controller = new LoginController();
+        $res = $controller->performLogin($this->test_email, $this->test_password);
+        $this->assertEmpty($res, 'Login should be successful when account is new');
 
         // Fully pause the account, make the operational bit = false
         $player->active = 0;
@@ -289,11 +291,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $account->setOperational(false);
         $account->save();
 
-        $res = login_user($this->test_email, $this->test_password);
+        $res = $controller->performLogin($this->test_email, $this->test_password);
 
-        $this->assertFalse($res['success'], 'Login should not be successful when account is paused');
-        $this->assertTrue(is_string($res['login_error']));
-        $this->assertTrue((bool)$res['login_error']);
+        $this->assertNotEmpty($res, 'Login should not be successful when account is paused');
     }
 
     /**
@@ -332,5 +332,4 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
             $this->assertFalse(!(bool)Account::usernameIsValid($name));
         }
     }
-
 }
