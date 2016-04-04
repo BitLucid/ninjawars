@@ -190,26 +190,6 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertEquals('1', $active_string);
     }
 
-    /**
-     * group accountconf
-     */
-    function testAuthenticateConfirmedAccountByName() {
-        $player = Player::findByName($this->test_ninja_name);
-        $player->active = 1;
-        $player->save();
-
-        $account = Account::findByChar($player);
-        $account->confirmed = 1;
-        $account->setOperational(true);
-        $account->save();
-
-        $res = authenticate($this->test_ninja_name, $this->test_password, false);
-        $this->assertNotEmpty($res); // Should return account_id
-        $this->assertNotEmpty($res['account_id']);
-        $this->assertNotEmpty($res['account_identity']);
-        $this->assertNotEmpty($res['uname']);
-        $this->assertNotEmpty($res['player_id']);
-    }
 
     /**
      * group accountconf
@@ -223,6 +203,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $account->confirmed = 1;
         $account->setOperational(true);
         $account->save();
+
+        $res = $account->authenticate($this->test_password);
+        $this->assertTrue($res);
 
         $controller = new LoginController();
         $res = $controller->performLogin($this->test_ninja_name, $this->test_password);
