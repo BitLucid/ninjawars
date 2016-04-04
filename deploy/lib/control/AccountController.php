@@ -238,8 +238,8 @@ class AccountController {
      * @return boolean
      */
     public static function is_authentic($p_user, $p_pass) {
-        $data = authenticate($p_user, $p_pass, false);
+        $account = Account::findByLogin($p_user);
 
-        return (isset($data['authenticated']) && (bool)$data['authenticated']);
+        return ($account && $account->authenticate($p_pass));
     }
 }

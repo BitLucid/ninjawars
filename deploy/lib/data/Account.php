@@ -444,4 +444,21 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
 
         return $error;
     }
+
+    public function authenticate($password) {
+		$sql = "SELECT account_id,
+		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated
+			FROM accounts
+			WHERE account_id = :account";
+
+		$result = query($sql, [':account' => $this->id(), ':pass' => $password]);
+
+		if ($result->rowCount() === 1) {
+            $row = $result->fetch();
+
+            return (intval($row['authenticated']) === 1);
+        } else {
+            return false;
+        }
+    }
 }
