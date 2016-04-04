@@ -32,9 +32,9 @@ class MessagesController {
 
             $recipient = get_char_name($target_id);
 
-            return new RedirectResponse('/messages?command=personal&individual_or_clan=1&message_sent_to='.url($recipient).'&informational='.url('Message sent to '.$recipient.'.'));
+            return new RedirectResponse('/messages?command=personal&individual_or_clan=1&message_sent_to='.rawurlencode($recipient).'&informational='.rawurlencode('Message sent to '.$recipient.'.'));
         } else {
-            return new RedirectResponse('/messages?command=personal&error='.url('No such ninja to message.'));
+            return new RedirectResponse('/messages?command=personal&error='.rawurlencode('No such ninja to message.'));
         }
     }
 
@@ -49,7 +49,7 @@ class MessagesController {
         $target_id_list = $clan->getMemberIds();
         Message::sendToGroup($sender, $target_id_list, $message, $type);
 
-        return new RedirectResponse('/messages?command=clan&individual_or_clan=1&informational='.url('Message sent to clan.'));
+        return new RedirectResponse('/messages?command=clan&individual_or_clan=1&informational='.rawurlencode('Message sent to clan.'));
     }
 
     /**
@@ -117,7 +117,7 @@ class MessagesController {
         $type = 0;
         Message::deleteByReceiver(Player::find($char_id), $type);
 
-        return new RedirectResponse('/messages?command=personal&informational='.url('Messages deleted'));
+        return new RedirectResponse('/messages?command=personal&informational='.rawurlencode('Messages deleted'));
     }
 
     /**
@@ -128,7 +128,7 @@ class MessagesController {
         $type = 1;
         Message::deleteByReceiver(Player::find($char_id), $type);
 
-        return new RedirectResponse('/messages?command=clan&informational='.url('Messages deleted'));
+        return new RedirectResponse('/messages?command=clan&informational='.rawurlencode('Messages deleted'));
     }
 
     /**

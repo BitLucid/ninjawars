@@ -34,7 +34,7 @@ class LoginController {
         }
 
         if ($login_error_message) {
-            return new RedirectResponse('/login.php?error='.url($login_error_message));
+            return new RedirectResponse('/login.php?error='.rawurlencode($login_error_message));
         } else { // Successful login, go to the main page
             return new RedirectResponse('/');
         }

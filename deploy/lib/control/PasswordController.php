@@ -24,8 +24,7 @@ class PasswordController {
             return false;
         }
 
-        // Email body contents will be: Click here to reset your password: {{ url('password/reset/'.$token) }}
-        $url = WEB_ROOT.'password/reset/?token='.url($token);
+        $url = WEB_ROOT.'password/reset/?token='.rawurlencode($token);
         $rendered = render_template('email.password_reset_request.tpl', ['url'=>$url]);
 
         // Construct the email with Nmail, and then just send it.
@@ -104,8 +103,8 @@ class PasswordController {
         }
 
         return new RedirectResponse('/password/?'
-            .($message? 'message='.url($message).'&' : '')
-            .($error? 'error='.url($error) : '')
+            .($message? 'message='.rawurlencode($message).'&' : '')
+            .($error? 'error='.rawurlencode($error) : '')
         );
     }
 
@@ -122,7 +121,7 @@ class PasswordController {
 
         if (!$req) {
             $error = 'No match for your password reset found or time expired, please request again.';
-            return new RedirectResponse('/password/?'.($error? 'error='.url($error) : ''));
+            return new RedirectResponse('/password/?'.($error? 'error='.rawurlencode($error) : ''));
         } else {
             $account = $req->account();
 
@@ -171,7 +170,7 @@ class PasswordController {
                     return $this->renderError('Password not long enough or does not match password confirmation!', $token);
                 } else {
                     PasswordResetRequest::reset($account, $newPassword);
-                    return new RedirectResponse('/password/?message='.url('Password reset!'));                    
+                    return new RedirectResponse('/password/?message='.rawurlencode('Password reset!'));                    
                 }
             }
         }
@@ -181,6 +180,6 @@ class PasswordController {
      * @return RedirectResponse
      */
     private function renderError($p_error, $p_token) {
-        return new RedirectResponse('/password/?token='.url($p_token).'&error='.url($p_error));
+        return new RedirectResponse('/password/?token='.rawurlencode($p_token).'&error='.rawurlencode($p_error));
     }
 }

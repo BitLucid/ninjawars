@@ -19,7 +19,7 @@ function smarty_modifier_to_tags($str_tags) {
         foreach ($tags as $tag) {
             // Build tag anchors
             $tag = trim($tag);
-            $str_tags .= '<a href="/news?tag_query='.htmlentities(url($tag)).'">#'.htmlentities($tag).'</a> ';
+            $str_tags .= '<a href="/news?tag_query='.htmlentities(rawurlencode($tag)).'">#'.htmlentities($tag).'</a> ';
         }
 
         return $str_tags;
