@@ -339,7 +339,7 @@ class SignupController {
      */
     private function validate_username($send_name) {
         $error = null;
-        $format_error = username_format_validate($send_name);
+        $format_error = Account::usernameIsValid($send_name);
 
         if ($format_error) {
             $error = 'Phase 1 Incomplete: Ninja name: '.$error;

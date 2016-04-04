@@ -76,26 +76,26 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     /**
      */
     function testForNinjaNameValidationErrors() {
-        $this->assertNotEmpty(username_format_validate('tooooooooooooooolongggggggggggggggggggggggggggggg'),
+        $this->assertNotEmpty(Account::usernameIsValid('tooooooooooooooolongggggggggggggggggggggggggggggg'),
             'Username not flagged as too long');
-        $this->assertNotEmpty(username_format_validate('st')); // Too short
-        $this->assertNotEmpty(username_format_validate(''));
-        $this->assertNotEmpty(username_format_validate(' '));
-        $this->assertNotEmpty(username_format_validate('_underscorestartsit'));
-        $this->assertNotEmpty(username_format_validate('underscore-ends-it_'));
-        $this->assertNotEmpty(username_format_validate('too____mny----l'));
-        $this->assertNotEmpty(username_format_validate('----@#$@#$%@#!$'));
-        $this->assertFalse(username_format_validate('acceptable'), 'Basic lowercase alpha name [acceptable] was rejected');
-        $this->assertFalse(username_format_validate('ThisIsAcceptable'), 'Basic alpha name [ThisIsAcceptable] was rejected');
+        $this->assertNotEmpty(Account::usernameIsValid('st')); // Too short
+        $this->assertNotEmpty(Account::usernameIsValid(''));
+        $this->assertNotEmpty(Account::usernameIsValid(' '));
+        $this->assertNotEmpty(Account::usernameIsValid('_underscorestartsit'));
+        $this->assertNotEmpty(Account::usernameIsValid('underscore-ends-it_'));
+        $this->assertNotEmpty(Account::usernameIsValid('too____mny----l'));
+        $this->assertNotEmpty(Account::usernameIsValid('----@#$@#$%@#!$'));
+        $this->assertFalse(Account::usernameIsValid('acceptable'), 'Basic lowercase alpha name [acceptable] was rejected');
+        $this->assertFalse(Account::usernameIsValid('ThisIsAcceptable'), 'Basic alpha name [ThisIsAcceptable] was rejected');
     }
 
     /**
      * group accountconf
      */
     function testForNinjaThatAccountConfirmationProcessAllowsNinjaNamesOfTheRightFormat() {
-        $this->assertTrue(!(bool)username_format_validate('tchalvak'), 'Standard all alpha name tchalvak was rejected');
-        $this->assertTrue(!(bool)username_format_validate('Beagle'));
-        $this->assertTrue(!(bool)username_format_validate('Kzqai'));
+        $this->assertTrue(!(bool)Account::usernameIsValid('tchalvak'), 'Standard all alpha name tchalvak was rejected');
+        $this->assertTrue(!(bool)Account::usernameIsValid('Beagle'));
+        $this->assertTrue(!(bool)Account::usernameIsValid('Kzqai'));
 
         $acceptable_names = [
             'xaz',
@@ -123,7 +123,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         ];
 
         foreach ($acceptable_names as $name) {
-            $error = username_format_validate($name);
+            $error = Account::usernameIsValid($name);
             $this->assertTrue(!(bool)$error, 'Rejected name was: ['.$name.'] and error was ['.$error.']');
         }
     }
@@ -329,7 +329,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         ];
 
         foreach ($bad_names as $name) {
-            $this->assertFalse(!(bool)username_format_validate($name));
+            $this->assertFalse(!(bool)Account::usernameIsValid($name));
         }
     }
 
