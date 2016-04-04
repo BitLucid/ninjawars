@@ -118,7 +118,7 @@ class SkillController {
         $target = post('target');
         $target2 = post('target2');
         $act = post('act');
-        $url = 'skill/use/'.url($act).'/'.url($target).'/'.($target2? url($target2).'/' : '');
+        $url = 'skill/use/'.rawurlencode($act).'/'.rawurlencode($target).'/'.($target2? rawurlencode($target2).'/' : '');
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
 	}
@@ -126,7 +126,7 @@ class SkillController {
     public function postSelfUse(){
         $target = self_char_id();
         $act = post('act');
-        $url = 'skill/self_use/'.url($act).'/';
+        $url = 'skill/self_use/'.rawurlencode($act).'/';
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
     }
@@ -224,7 +224,7 @@ class SkillController {
 		} else {
 			// For target that doesn't exist, e.g. http://nw.local/skill/use/Sight/zigzlklkj
 			error_log('Info: Attempt to use a skill on a target that did not exist.');
-			return new RedirectResponse(WEB_ROOT.'skill/?error='.url('Invalid target for skill ['.url($act).'].'));
+			return new RedirectResponse(WEB_ROOT.'skill/?error='.rawurlencode('Invalid target for skill ['.rawurlencode($act).'].'));
 		}
 
 		$covert           = false;

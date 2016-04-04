@@ -63,7 +63,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $controller = new PasswordController();
         $response = $controller->postEmail();
         $this->assertTrue($response instanceof RedirectResponse);
-        $this->assertTrue(strpos($response->getTargetUrl(), url('email or a ninja name')) !== false, 'Url Redirection did not contain expected error string');
+        $this->assertTrue(strpos($response->getTargetUrl(), rawurlencode('email or a ninja name')) !== false, 'Url Redirection did not contain expected error string');
     }
 
     public function testPostEmailReturnsErrorOnUnmatchableEmailAndNinjaName(){
@@ -77,7 +77,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $response = $controller->postEmail();
         $this->assertTrue($response instanceof RedirectResponse);
         $expected = 'unable to find a matching account';
-        $this->assertTrue(stripos($response->getTargetUrl(), url($expected)) !== false, 'Url Redirection for ['.$response->getTargetUrl().'] did not contain expected error string of ['.$expected.']');
+        $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode($expected)) !== false, 'Url Redirection for ['.$response->getTargetUrl().'] did not contain expected error string of ['.$expected.']');
     }
 
     public function testPostEmailCanGetAnAccountUsingANinjaName(){
@@ -202,7 +202,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $controller = new PasswordController();
         $response = $controller->postReset();
 
-        $this->assertTrue(stripos($response->getTargetUrl(), url('not long enough')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
+        $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode('not long enough')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
         // Password should be changed.
         $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
@@ -232,7 +232,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $controller = new PasswordController();
         $response = $controller->postReset();
 
-        $this->assertTrue(stripos($response->getTargetUrl(), url('Password Confirmation did not match')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
+        $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode('Password Confirmation did not match')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
         // Password should be changed.
         $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
@@ -263,7 +263,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $controller = new PasswordController();
         $response = $controller->postReset($request);
 
-        $this->assertTrue(stripos($response->getTargetUrl(), url('No Valid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
+        $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode('No Valid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
         // Password should be changed.
         $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
@@ -288,7 +288,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $controller = new PasswordController();
         $response = $controller->postReset();
 
-        $this->assertTrue(stripos($response->getTargetUrl(), url('Token was invalid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
+        $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode('Token was invalid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
         // Password should be changed.
         $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');

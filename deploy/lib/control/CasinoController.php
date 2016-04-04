@@ -51,7 +51,7 @@ class CasinoController {
 	public function bet() {
 		$player   = Player::find(self_char_id());
 		if(!($player instanceof Player)){
-			return new RedirectResponse('/casino/?error='.url('Become a ninja first!'));
+			return new RedirectResponse('/casino/?error='.rawurlencode('Become a ninja first!'));
 		}
 		$bet      = intval(in('bet'));
 

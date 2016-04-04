@@ -152,7 +152,7 @@ class PlayerController {
         $item_in = in('item');
         $give = in('give');
         $method = $give? 'give' : 'use';
-        $url = 'item/'.url($method).'/'.url($item_in).'/'.url($target);
+        $url = 'item/'.rawurlencode($method).'/'.rawurlencode($item_in).'/'.rawurlencode($target);
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
     }
@@ -165,7 +165,7 @@ class PlayerController {
     public function use_skill(){
         $target = in('target');
         $act = in('act');
-        $url = 'skill/use/'.url($act).'/'.url($target);
+        $url = 'skill/use/'.rawurlencode($act).'/'.rawurlencode($target);
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
     }

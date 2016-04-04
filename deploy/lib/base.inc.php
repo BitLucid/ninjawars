@@ -34,7 +34,6 @@ require_once(LIB_ROOT.'extensions/Nmail.class.php');
 
 // *** Include all common function includes here.
 require_once(LIB_ROOT.'control/lib_input.php');
-require_once(LIB_ROOT.'control/lib_output.php');
 require_once(LIB_ROOT.'data/lib_db.php');
 require_once(TEMPLATE_LIBRARY_PATH); // Require smarty
 require_once(LIB_ROOT.'extensions/lib_templates.php');

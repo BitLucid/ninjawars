@@ -81,11 +81,11 @@ class NewsController {
             $create_role = $this->hasCreateRole($this->pc);
         } catch(InvalidArgumentException $e){
             $error = "Sorry, you must be logged in to create a news post.";
-            return new RedirectResponse('/news/?error='.url($error));
+            return new RedirectResponse('/news/?error='.rawurlencode($error));
         }
         if(!$create_role){
             $error = 'Sorry, you do not have permission to create a news post.';
-            return new RedirectResponse('/news/?error='.url($error));
+            return new RedirectResponse('/news/?error='.rawurlencode($error));
         }
         $title = 'Make New Post';
         $error = (bool) in('error');
@@ -113,10 +113,10 @@ class NewsController {
             $account_id = $account->id();
         } catch(InvalidArgumentException $e){
             $error = "Sorry, you must be logged in to try to save a news post.";
-            return new RedirectResponse('/news/?error='.url($error));            
+            return new RedirectResponse('/news/?error='.rawurlencode($error));            
         } catch(ErrorException $e){
             $error = "Sorry, you don't have permission to save a news post.";
-            return new RedirectResponse('/news/?error='.url($error));
+            return new RedirectResponse('/news/?error='.rawurlencode($error));
         }
         // Handle POST
         $news_title = in('news_title');
@@ -131,10 +131,10 @@ class NewsController {
                 $news->createPost($news_title, $news_content, $account_id, $tag);
                 return new RedirectResponse('/news/?create_successful=1');
             } catch (InvalidArgumentException $e) {
-                return new RedirectResponse('/news/?error='.url('Unable to create news post.'));
+                return new RedirectResponse('/news/?error='.rawurlencode('Unable to create news post.'));
             }
         } else {
-            return new RedirectResponse('/news/create/?error='.url('A News post must have a body.'));
+            return new RedirectResponse('/news/create/?error='.rawurlencode('A News post must have a body.'));
         }
     }
 }

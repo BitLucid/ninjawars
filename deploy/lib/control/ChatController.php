@@ -33,7 +33,7 @@ class ChatController {
 			}
 		}
 
-		return new RedirectResponse('/village/'.($error? '?error='.url($error) : ''));
+		return new RedirectResponse('/village/'.($error? '?error='.rawurlencode($error) : ''));
 	}
 
 	/**
