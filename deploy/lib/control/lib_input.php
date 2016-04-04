@@ -62,12 +62,3 @@ function toInt($dirty) {
 function positive_int($num) {
 	return ((int)$num == $num && (int)$num > 0? (int)$num : 0);
 }
-
-/**
- * Strip everything except words, digits, spaces, _, -, ., @, :, and slash for urls /
- */
-function sanitize_to_text($dirty) {
-	// Allows words, digits, spaces, _, -, ., @, :, and slash for urls /
-	return preg_replace("/[^\w\d\s_\-\.\@\:\/]/", "", (string) $dirty);
-}
-

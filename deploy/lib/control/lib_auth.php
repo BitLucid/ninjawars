@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
  * @return Array|boolean
  */
 function authenticate($dirty_login, $p_pass, $limit_login_attempts=true) {
-	$login = strtolower(sanitize_to_text((string)$dirty_login));
+    $filter_pattern = "/[^\w\d\s_\-\.\@\:\/]/";
+    $login = strtolower(preg_replace($filter_pattern, "", (string)$dirty_login));
 	$recent_login_failure = false;
 	$pass  = (string)$p_pass;
 

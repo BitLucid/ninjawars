@@ -86,13 +86,6 @@ class TestInput extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(0, toInt(0));
 	}
 
-	public function testSanitizeToText() {
-		$clean = 'abcdeghijklmnopqrstuvwxyz';
-		$dirty = 'abcdegh*ijklmnopqrstuvwxyz';
-		$this->assertEquals($clean, sanitize_to_text($clean));
-		$this->assertNotEquals($dirty, sanitize_to_text($dirty));
-	}
-
 	public function testWhicheverPositive() {
 		$this->assertEquals('grace', whichever('', null, 'grace'));
 	}
