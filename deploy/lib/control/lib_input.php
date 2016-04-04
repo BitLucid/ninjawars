@@ -40,16 +40,9 @@ function non_negative_int($num) {
 }
 
 /**
- * Alias for sanitize_to_int
- */
-function toInt($dirty) {
-	return sanitize_to_int($dirty);
-}
-
-/**
  * Casts to an integer anything that can be cast that way non-destructively, otherwise null.
  */
-function sanitize_to_int($dirty) {
+function toInt($dirty) {
 	if ($dirty == (int) $dirty) { // Cast anything that can be non-destructively cast.
 		$res = (int) $dirty;
 	} else {
