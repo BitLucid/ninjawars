@@ -199,7 +199,7 @@ class InventoryController {
         $bounty_message  = '';
         $display_message = '';
         $extra_message   = '';
-        $attacker_id     = $player->name();
+        $attacker_label  = $player->name();
         $loot            = null;
 
         try {
@@ -233,12 +233,12 @@ class InventoryController {
                 $result = $this->applyItemEffects($player, $target, $item);
 
                 if ($result['success']) {
-                    $message_to_target = "$attacker_id has used $article ".$item->getName()." on you$result[notice]";
+                    $message_to_target = "$attacker_label has used $article ".$item->getName()." on you$result[notice]";
                     Event::create($player->id(), $target->id(), str_replace('  ', ' ', $message_to_target));
                     $inventory->remove($item->identity(), 1);
 
                     if ($target->health() <= 0) { // Target was killed by the item
-                        $attacker_id = ($player->hasStatus(STEALTH) ? "A Stealthed Ninja" : $player->name());
+                        $attacker_label = ($player->hasStatus(STEALTH) ? "A Stealthed Ninja" : $player->name());
 
                         $gold_mod = ($item->hasEffect('death') ?  0.25 : 0.15);
                         $loot     = floor($gold_mod * $target->gold);
