@@ -15,7 +15,7 @@ class Account {
         'active_email',
         'type',
         'operational',
-        'created_data',
+        'created_date',
         'last_login',
         'last_login_failure',
         'login_failure_interval',
