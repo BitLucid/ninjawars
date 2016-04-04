@@ -84,7 +84,7 @@ class InventoryController {
             $player->subtractTurns(self::GIVE_COST);
             $player->save();
 
-            sendMessage($player->name(), $target->name(), $mail_message);
+            send_event($player->id(), $target->id(), $mail_message);
         }
 
         return $this->renderUse([
@@ -147,7 +147,7 @@ class InventoryController {
                     $inventory->remove($item->identity(), 1);
 
                     if ($player->health() <= 0) {
-                        $this->sendKillMails($player->name(), $player->name(), $player->name(), $article, $item->getName(), 0);
+                        $this->sendKillMails($player, $player, $player->name(), $article, $item->getName(), 0);
                     }
                 }
 
@@ -249,7 +249,7 @@ class InventoryController {
 
                         $bounty_message = Combat::runBountyExchange($player, $target);  //Rewards or increases bounty.
 
-                        $this->sendKillMails($player->name(), $target->name(), $attacker_id, $article, $item->getName(), $loot);
+                        $this->sendKillMails($player, $target, $attacker_label, $article, $item->getName(), $loot);
                     }
                 }
 
@@ -473,12 +473,12 @@ class InventoryController {
      *
      * @return void
      */
-    private function sendKillMails($username, $target, $attacker_id, $article, $item, $loot) {
-        $target_email_msg = "You have been killed by $attacker_id with $article $item and lost $loot gold.";
-        sendMessage($attacker_id, $target, $target_email_msg);
+    private function sendKillMails(Player $attacker, Player $target, $attacker_label, $article, $item, $loot) {
+        $target_email_msg = "You have been killed by $attacker_label with $article $item and lost $loot gold.";
+        send_event(($attacker->name() === $attacker_label ? $attacker->id() : 0), $target->id(), $target_email_msg);
 
-        $user_email_msg = "You have killed $target with $article $item and received $loot gold.";
-        sendMessage($target, $username, $user_email_msg);
+        $user_email_msg = "You have killed ".$target->name()." with $article $item and received $loot gold.";
+        send_event($target->id(), $attacker->id(), $user_email_msg);
     }
 
     /**

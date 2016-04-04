@@ -2,20 +2,6 @@
 use NinjaWars\core\data\DatabaseConnection;
 
 /**
- * Now only a wrapper for the send_event function
- *
- * @param String $from
- * @param String $to
- * @param String $msg
- * @return void
- */
-function sendMessage($from, $to, $msg) {
-    $from_id = (int) get_char_id($from);
-    $to_id = get_char_id($to);
-    send_event($from_id, $to_id, $msg);
-}
-
-/**
  * For events, attacks, kills, invites, etc, and no user-created messages
  *
  * @param int $fromId

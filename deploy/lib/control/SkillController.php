@@ -444,7 +444,7 @@ class SkillController {
 						$unfreeze_time = date('F j, Y, g:i a', mktime(date('G')+1, 0, 0, date('m'), date('d'), date('Y')));
 
 						$failure_msg = "You have experienced a critical failure while using Cold Steal. You will be unfrozen on $unfreeze_time";
-						sendMessage("SysMsg", $player->name(), $failure_msg);
+						send_event((int)"SysMsg", $player->id(), $failure_msg);
 						$generic_skill_result_message = "Cold Steal has backfired! You are frozen until $unfreeze_time!";
 					}
 				} else {
@@ -516,7 +516,7 @@ class SkillController {
 					send_event($attacker_char_id, $target->id(), $target_message);
 
 					$attacker_message = "You have killed $target with $act and taken $loot gold.";
-					sendMessage($target->vo->uname, $player->name(), $attacker_message);
+					send_event($target->id(), $player->id(), $attacker_message);
 				}
 			}
 

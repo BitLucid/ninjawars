@@ -117,15 +117,15 @@ class AttackController {
                     $attacker_msg = "You have killed {$target_player->name()} in combat and taken $loot gold.";
 
                     $target_player->death();
-                    sendMessage("A Stealthed Ninja", $target_player->name(), $target_msg);
-                    sendMessage($target_player->name(), $attacking_player->name(), $attacker_msg);
+                    send_event((int)"A Stealthed Ninja", $target_player->id(), $target_msg);
+                    send_event($target_player->id(), $attacking_player->id(), $attacker_msg);
                     $bounty_result = Combat::runBountyExchange($attacking_player, $target_player); // *** Determines the bounty for normal attacking. ***
 
                     $stealth_kill = true;
                 } else {	// *** if damage from stealth only hurts the target. ***
                     $stealth_damage = true;
 
-                    sendMessage($attacking_player->name(), $target_player->name(), $attacking_player->name()." has attacked you from the shadows for $stealthAttackDamage damage.");
+                    send_event($attacking_player->id(), $target_player->id(), $attacking_player->name()." has attacked you from the shadows for $stealthAttackDamage damage.");
                 }
             } else {	// *** If the attacker is purely dueling or attacking, even if stealthed, though stealth is broken by dueling. ***
                 // *** MAIN DUELING SECTION ***
@@ -210,7 +210,7 @@ class AttackController {
                     $combat_msg = "You have been $attack_label by {$attacking_player->name()} for $total_attacker_damage!";
                 }
 
-                sendMessage($attacking_player->name(), $target_player->name(), $combat_msg);
+                send_event($attacking_player->id(), $target_player->id(), $combat_msg);
 
                 if ($defenderHealthRemaining < 1 || $attackerHealthRemaining < 1) { // A kill occurred.
                     if ($defenderHealthRemaining < 1) { // ATTACKER KILLS DEFENDER!
@@ -257,7 +257,7 @@ class AttackController {
                         }
 
                         $target_msg = "DEATH: You've been killed by {$attacking_player->name()} and lost $loot gold!";
-                        sendMessage($attacking_player->name(), $target_player->name(), $target_msg);
+                        send_event($attacking_player->id(), $target_player->id(), $target_msg);
                         // Stopped telling attackers when they win a duel.
 
                         $bounty_result = Combat::runBountyExchange($attacking_player, $target_player);	// *** Determines bounty for dueling. ***
@@ -277,7 +277,7 @@ class AttackController {
 
                         if ($duel) { // *** if they were dueling when they died ***
                             $duel_log_msg = $attacking_player->name()." has dueled {$target_player->name()} and lost at ".date("F j, Y, g:i a");
-                            sendMessage("SysMsg", "SysMsg", $duel_log_msg);
+                            send_event((int)"SysMsg", (int)"SysMsg", $duel_log_msg);
                             GameLog::sendLogOfDuel($attacking_player->name(), $target_player->name(), 0, $killpoints);	// *** Makes a loss in the duel log. ***
                         }
 
@@ -292,8 +292,8 @@ class AttackController {
 
                         $attacker_msg = "DEATH: You've been killed by {$target_player->name()} and lost $loot gold!";
 
-                        sendMessage($attacking_player->name(), $target_player->name(), $target_msg);
-                        sendMessage($target_player->name(), $attacking_player->name(), $attacker_msg);
+                        send_event($attacking_player->id(), $target_player->id(), $target_msg);
+                        send_event($target_player->id(), $attacking_player->id(), $attacker_msg);
                     }
                 }
 
