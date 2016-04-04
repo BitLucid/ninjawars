@@ -9,6 +9,7 @@ use NinjaWars\core\data\PlayerVO;
 use NinjaWars\core\data\Character;
 use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\data\Event;
 use \PDO;
 
 /**
@@ -856,7 +857,7 @@ class Player implements Character {
                 $account->save();
 
                 // Send a level-up message, for those times when auto-levelling happens.
-                send_event($this->id(), $this->id(),
+                Event::create($this->id(), $this->id(),
                     "You levelled up! Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by $karma_to_give, and your Ki raised $ki_to_give! You gained some health and turns, as well! You are now a level {$this->level} ninja! Go kill some stuff.");
                 return true;
             } else {
