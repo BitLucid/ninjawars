@@ -34,6 +34,7 @@ function whichever() {
 	return null;
 }
 
+
 /**
  * Update the information of a viewing observer, or player.
  */
@@ -75,7 +76,7 @@ function update_activity_info() {
 	} else {	// *** An already existing session. ***
 		$statement = DatabaseConnection::$pdo->prepare('UPDATE ppl_online SET activity = now(), member = :member WHERE session_id = :sessionID');
 		$statement->bindValue(':sessionID', $session->getId());
-		$statement->bindValue(':member', is_logged_in(), PDO::PARAM_BOOL);
+		$statement->bindValue(':member', SessionFactory::getSession()->get('authenticated', false), PDO::PARAM_BOOL);
 		$statement->execute();
 	}
 }

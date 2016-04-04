@@ -284,7 +284,7 @@ class Router {
         $error  = null;
         $player = Player::find(SessionFactory::getSession()->get('player_id'));
 
-        if ((!is_logged_in() || !$player) && $private) {
+        if ((!SessionFactory::getSession()->get('authenticated') || !$player) && $private) {
             $error = 'log_in';
         } elseif ($player && $alive) { // That page requires the player to be alive to view it
             if (!$player->health()) {

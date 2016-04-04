@@ -27,7 +27,7 @@ class DojoController {
      * @return ViewSpec
      */
     public function index() {
-        if (is_logged_in()) {
+        if (SessionFactory::getSession()->get('authenticated', false)) {
             return $this->render([], Player::find(SessionFactory::getSession()->get('player_id')));
         } else {
             return $this->render();
@@ -41,7 +41,7 @@ class DojoController {
      * @return ViewSpec
      */
     public function buyDimMak() {
-        if (is_logged_in()) {
+        if (SessionFactory::getSession()->get('authenticated', false)) {
             $player = Player::find(SessionFactory::getSession()->get('player_id'));
             $showMonks = false;
             $parts = [];
@@ -79,7 +79,7 @@ class DojoController {
      * @return ViewSpec
      */
     public function changeClass() {
-        if (is_logged_in()) {
+        if (SessionFactory::getSession()->get('authenticated', false)) {
             $player            = Player::find(SessionFactory::getSession()->get('player_id'));
             $classes           = $this->classesInfo();
             $requestedIdentity = in('requested_identity');

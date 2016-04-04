@@ -73,6 +73,7 @@ function _login_user(Account $account, Player $player) {
     $session->set('username', $player->name());
     $session->set('player_id', $player->id());
     $session->set('account_id', $account->id());
+    $session->set('authenticated', true);
 
     Request::setTrustedProxies(Constants::$trusted_proxies);
     $request = Request::createFromGlobals();
@@ -154,15 +155,6 @@ function potential_account_id_from_login_username($login) {
 			':login2'=>strtolower($login)
 		)
 	);
-}
-
-/**
- * Check whether someone is logged into their account.
- *
- * @return boolean
- */
-function is_logged_in() {
-	return (bool)SessionFactory::getSession()->get('account_id');
 }
 
 /**

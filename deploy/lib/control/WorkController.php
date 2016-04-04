@@ -20,39 +20,31 @@ class WorkController {
      * Take in a url parameter of work and try to convert it to gold
      */
     public function requestWork() {
-        $worked                 = positive_int(in('worked')); // No negative work.
-        $char_id                = SessionFactory::getSession()->get('player_id');
-        $char                   = Player::find($char_id);
-        if(!($char instanceof Player)){
+        $earned = 0;
+        $worked = positive_int(in('worked')); // No negative work.
+        $char   = Player::find(SessionFactory::getSession()->get('player_id'));
+
+        if (!($char instanceof Player)){
             return new RedirectResponse('/work');
         }
-        $work_multiplier        = self::WORK_MULTIPLIER;
-        $earned_gold            = null;
-        $not_enough_energy      = null;
-        $recommended_to_work    = $worked;
-        $is_logged_in           = is_logged_in();
-        $turns                  = $char->turns;
-        $gold                   = $char->gold;
 
-        if ($worked > $turns) {
-            $not_enough_energy = true;
-        } else {
-            $earned_gold  = $worked * $work_multiplier; // calc amount worked
-            $char->set_gold($gold+$earned_gold);
-            $char->set_turns($turns-$worked);
+        $sufficient_turns = ($worked <= $char->turns);
+
+        if ($sufficient_turns) {
+            $earned = $worked * self::WORK_MULTIPLIER; // calc amount worked
+            $char->set_gold($char->gold + $earned);
+            $char->set_turns($char->turns - $worked);
             $char->save();
         }
 
-        $gold_display = number_format($char->gold);
-
         $parts = [
-            'recommended_to_work'    => $recommended_to_work,
-            'work_multiplier'        => $work_multiplier,
-            'is_logged_in'           => $is_logged_in,
-            'gold_display'           => $gold_display,
-            'worked'                 => $worked,
-            'earned_gold'            => number_format($earned_gold),
-            'not_enough_energy'      => $not_enough_energy,
+            'recommended_to_work' => $worked,
+            'worked'              => $worked,
+            'work_multiplier'     => self::WORK_MULTIPLIER,
+            'authenticated'       => SessionFactory::getSession()->get('authenticated', false),
+            'gold_display'        => number_format($char->gold),
+            'earned_gold'         => number_format($earned),
+            'not_enough_energy'   => !$sufficient_turns,
         ];
 
         return $this->render($parts);
@@ -72,10 +64,10 @@ class WorkController {
         $parts = [
             'recommended_to_work' => self::DEFAULT_RECOMMENDED_TO_WORK,
             'work_multiplier'     => self::WORK_MULTIPLIER,
-            'is_logged_in'        => is_logged_in(),
+            'authenticated'       => SessionFactory::getSession()->get('authenticated', false),
             'gold_display'        => number_format($char->gold),
-            'worked'              => null,
             'earned_gold'         => number_format(null),
+            'worked'              => null,
             'not_enough_energy'   => null,
         ];
 

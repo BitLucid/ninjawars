@@ -45,18 +45,19 @@ class PlayerController {
             } else {
                 $viewing_player_obj = Player::find(SessionFactory::getSession()->get('player_id'));
 
-                $self = (SessionFactory::getSession()->get('player_id') && SessionFactory::getSession()->get('player_id') == $player_info['player_id']); // Record whether this is a self-viewing.
+                // Record whether this is a self-viewing.
+                $self = ($viewing_player_obj && $viewing_player_obj->id() === $target_player_obj->id());
 
                 if ($viewing_player_obj !== null) {
                     $char_info = $viewing_player_obj->dataWithClan();
-                    $char_id  = $viewing_player_obj->id();
-                    $username = $viewing_player_obj->name();
+                    $char_id   = $viewing_player_obj->id();
+                    $username  = $viewing_player_obj->name();
                 } else {
                     $char_info = [];
                 }
 
-                $player      = $target = $player_info['uname']; // reset the target and target_id vars.
-                $target_id   = $player_info['player_id'];
+                $player    = $target = $player_info['uname']; // reset the target and target_id vars.
+                $target_id = $player_info['player_id'];
 
                 // Get the player's kills for this date.
                 $kills_today = query_item('select sum(killpoints) from levelling_log where _player_id = :player_id and killsdate = CURRENT_DATE and killpoints > 0', array(':player_id'=>$target_id));
@@ -137,6 +138,8 @@ class PlayerController {
                     'gravatar_url', 'status_list', 'clan', 'items', 'account'));
             }
         }
+
+        $parts['authenticated'] = SessionFactory::getSession()->get('authenticated', false);
 
         return [
             'template' => $template,

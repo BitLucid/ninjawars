@@ -169,7 +169,7 @@ var combat_skills = {$combat_skills|@json_encode};
 
 {/if} <!-- End of the "not self" viewing section -->
 
-{if is_logged_in() and !$self}
+{if $authenticated and !$self}
 
   <section class='player-communications centered'>
 

@@ -136,7 +136,7 @@ class ApiController {
     }
 
     private function jsonSendChat($msg) {
-        if (is_logged_in()) {
+        if (SessionFactory::getSession()->get('authenticated', false)) {
             $msg     = trim($msg);
             $player  = Player::find(SessionFactory::getSession()->get('player_id'));
             $success = Message::sendChat($player->id(), $msg);

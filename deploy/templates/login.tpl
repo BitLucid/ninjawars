@@ -12,7 +12,7 @@
       </div>
 {/if}
 
-{if $is_logged_in}
+{if $authenticated}
 <div class='glassbox'>
   You are already logged in! <a href='/'>Go Fight!</a>
 </div>

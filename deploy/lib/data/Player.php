@@ -10,6 +10,7 @@ use NinjaWars\core\data\Character;
 use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Event;
+use NinjaWars\core\extensions\SessionFactory;
 use \PDO;
 
 /**

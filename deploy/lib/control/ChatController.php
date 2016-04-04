@@ -6,75 +6,66 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 
 /**
-* The controller for effects of a village request and the default index display of the page
-**/
+ * The controller for effects of a village request and the default index display of the page
+ */
 class ChatController {
+    const ALIVE         = false;
+    const PRIV          = false;
+    const DEFAULT_LIMIT = 200;
+    const FIELD_SIZE    = 40;
+    const MAX_CHATS     = 3000;
+    const MIN_CHATS     = 30;
 
-	const ALIVE                  = false;
-	const PRIV                   = false;
+    /**
+     * Take in a chat and record it to the database.
+     */
+    public function receive() {
+        $char_id = SessionFactory::getSession()->get('player_id');
+        $message = in('message', null, 'no filter'); // Essentially no filtering.
+        $error   = null;
 
-	const DEFAULT_LIMIT  = 200;
-	const FIELD_SIZE  = 40;
-
-	/**
-	* Take in a chat and record it to the database.
-	*
-	**/
-	public function receive(){
-		$char_id       = SessionFactory::getSession()->get('player_id');
-		$message       = in('message', null, 'no filter'); // Essentially no filtering.
-		$error = null;
-
-		if (!empty($message)){
-			if($char_id) {
+        if (!empty($message)) {
+            if ($char_id) {
                 Message:sendChat($char_id, $message);
-			} else {
-				$error = 'You must be logged in to chat.';
-			}
-		}
+            } else {
+                $error = 'You must be logged in to chat.';
+            }
+        }
 
 		return new RedirectResponse('/village/'.($error? '?error='.rawurlencode($error) : ''));
-	}
+    }
 
-	/**
-	* Pull & display the chats and a chat send if logged in
-	**/
-	public function index(){
-		// Initialize variables to pass to the template.
-		$field_size    = self::FIELD_SIZE;
-		$target        = $_SERVER['PHP_SELF'];
-		$all_chats_count = $this->getChatCount();
+    /**
+     * Pull & display the chats and a chat send if logged in
+     */
+    public function index() {
+        $view_all   = in('view_all');
+        $chatlength = in('chatlength', self::DEFAULT_LIMIT, 'toInt');
+        $chatlength = min(self::MAX_CHATS, max(self::MIN_CHATS, $chatlength));
+        $chats      = $this->getChats($view_all ? null : $chatlength);
 
-		$view_all      = in('view_all');
-		$error 		   = in('error');
-		$chatlength    = in('chatlength', self::DEFAULT_LIMIT, 'toInt');
-		$chatlength    = min(3000, max(30, $chatlength)); // Min 30, max 3000
+        $parts = [
+            'field_size'        => self::FIELD_SIZE,
+            'target'            => $_SERVER['PHP_SELF'],
+            'chats'             => $chats,
+            'error'             => in('error'),
+            'more_chats_to_see' => (rco($chats) < $this->getChatCount()),
+            'authenticated'     => SessionFactory::getSession()->get('authenticated', false),
+        ];
 
-		// Output section.
-		$chats = $this->getChats(($view_all? null : $chatlength)); // Limit by chatlength unless a request to view all came in.
-		$more_chats_to_see = (rco($chats)<$all_chats_count? true : null);
+        return $this->render($parts);
+    }
 
-		$parts = [
-			'field_size' => $field_size,
-			'target' 	 => $target,
-			'chats'  	 => $chats,
-			'error'      => $error,
-			'more_chats_to_see' => $more_chats_to_see,
-		];
-
-		return $this->render($parts);
-	}
-
-	private function render($parts) {
-		return [
-			'template' => 'village.tpl',
-			'title'    => 'Chat Board',
-			'parts'    => $parts,
-			'options'  => [
-				'quickstat' => false
-			],
-		];
-	}
+    private function render($parts) {
+        return [
+            'template' => 'village.tpl',
+            'title'    => 'Chat Board',
+            'parts'    => $parts,
+            'options'  => [
+                'quickstat' => false
+            ],
+        ];
+    }
 
     /**
      * Get all the chat messages info.
@@ -82,7 +73,9 @@ class ChatController {
     private function getChats($chatlength=null) {
         $chatlength = positive_int($chatlength); // Prevent negatives.
         $limit = ($chatlength ? 'LIMIT :limit' : '');
-        $bindings = array();
+
+        $bindings = [];
+
         if ($limit) {
             $bindings[':limit'] = $chatlength;
         }
@@ -99,5 +92,4 @@ class ChatController {
     private function getChatCount() {
         return query_item("SELECT count(*) FROM chat");
     }
-
 }

@@ -24,7 +24,7 @@
 
   <a class='btn btn-default float-right' href="/village?chatlength=100">Refresh</a>
 
-{if is_logged_in()}
+{if $authenticated}
   <form class='chat-submit' id="post_msg" action="{$target|escape}" method="post" name="post_msg">
     <div>
       <input id="message" type="text" size="{$field_size}" maxlength="250" name="message" required autofocus autocomplete='off' class="textField" title='Chat message should not be empty.'>

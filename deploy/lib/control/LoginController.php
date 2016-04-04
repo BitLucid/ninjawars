@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Account;
+use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use \Constants;
@@ -18,11 +19,8 @@ class LoginController {
     public function requestLogin() {
         $logged_out          = in('logged_out'); // Logout page redirected to this one, so display the message.
         $login_error_message = in('error'); // Error to display after unsuccessful login and redirection.
-
-        $is_logged_in = is_logged_in();
-
-        $pass = post('pass');
-        $username_requested = post('user');
+        $pass                = post('pass');
+        $username_requested  = post('user');
 
         if ($logged_out) {
             logout_user(); // Perform logout if requested!
@@ -30,7 +28,7 @@ class LoginController {
             $login_error_message = 'No username or no password specified';
         }
 
-        if (!$login_error_message && !$is_logged_in) {
+        if (!$login_error_message && !SessionFactory::getSession()->get('authenticated', false)) {
             $login_error_message = self::perform_login_if_requested($username_requested, $pass);
         }
 
@@ -51,21 +49,19 @@ class LoginController {
         $stored_username = (isset($_COOKIE['username']) ? $_COOKIE['username'] : null);
         $referrer        = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 
-        $is_logged_in = is_logged_in();
-
-        if ($is_logged_in) {
+        if (SessionFactory::getSession()->get('authenticated', false)) {
             return new RedirectResponse(WEB_ROOT);
+        } else {
+            $parts = [
+                'authenticated'       => false,
+                'login_error_message' => $login_error_message,
+                'logged_out'          => $logged_out,
+                'referrer'            => $referrer,
+                'stored_username'     => $stored_username,
+            ];
+
+            return $this->render('Login', $parts);
         }
-
-        $parts = [
-            'is_logged_in'        => $is_logged_in,
-            'login_error_message' => $login_error_message,
-            'logged_out'          => $logged_out,
-            'referrer'            => $referrer,
-            'stored_username'     => $stored_username,
-        ];
-
-        return $this->render('Login', $parts);
     }
 
     /**
@@ -100,9 +96,8 @@ class LoginController {
         ];
 
         $logged_in    = login_user($username_requested, $pass);
-        $is_logged_in = $logged_in['success'];
 
-        if (!$is_logged_in) { // Login was attempted, but failed, so display an error.
+        if (!$logged_in['success']) { // Login was attempted, but failed, so display an error.
             self::store_auth_attempt($login_attempt_info);
             $login_error_message = $logged_in['login_error'];
 
@@ -138,6 +133,18 @@ class LoginController {
         }
 
         // Log the login attempt as well.
-        query("insert into login_attempts (username, ua_string, ip, successful, additional_info) values (:username, :user_agent, :ip, :successful, :additional_info)", array(':username'=>$info['username'], ':user_agent'=>$info['user_agent'], ':ip'=>$info['ip'], ':successful'=>$info['successful'], ':additional_info'=>$additional_info));
+        query(
+            "INSERT INTO login_attempts
+            (username, ua_string, ip, successful, additional_info)
+            VALUES
+            (:username, :user_agent, :ip, :successful, :additional_info)",
+            [
+                ':username'        => $info['username'],
+                ':user_agent'      => $info['user_agent'],
+                ':ip'              => $info['ip'],
+                ':successful'      => $info['successful'],
+                ':additional_info' => $additional_info,
+            ]
+        );
     }
 }
