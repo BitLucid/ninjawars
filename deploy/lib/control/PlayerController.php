@@ -8,6 +8,7 @@ use NinjaWars\core\data\SkillDAO;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\data\Inventory;
 
 class PlayerController {
     const PRIV  = false;
@@ -70,7 +71,7 @@ class PlayerController {
                 $rank_spot = query_item($sel_rank_spot, array(':char_id'=>$player_info['player_id']));
 
                 // Display the player info.
-                $status_list          = get_status_list($player);
+                $status_list          = Player::getStatusList($player);
                 $gurl = $gravatar_url = $target_player_obj->avatarUrl();
 
                 if ($viewing_player_obj !== null && !$attack_error && !$self) { // They're not dead or otherwise unattackable.
@@ -92,7 +93,8 @@ class PlayerController {
                     }
 
                     // Pull the items and some necessary data about them.
-                    $items = inventory_counts($char_id);
+                    $inventory = new Inventory($viewing_player_obj);
+                    $items = $inventory->counts();
 
                     $valid_items = rco($items);// row count
 

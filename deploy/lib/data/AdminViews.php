@@ -2,9 +2,9 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Inventory;
 
-class AdminViews{
-
+class AdminViews {
     public static function high_rollers(){
         // Select first few max kills from players.
         // Max turns.
@@ -64,7 +64,9 @@ class AdminViews{
         return $res;
     }
 
-    public static function char_inventory($char_id){
-        return inventory_counts($char_id);
+    public static function char_inventory($char_id) {
+        $inventory = new Inventory(Player::find($char_id));
+
+        return $inventory->counts();
     }
 }

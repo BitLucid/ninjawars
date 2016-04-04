@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Inventory;
 use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -52,7 +53,8 @@ class DojoController {
 
                 if (!$error) {
                     $player->changeTurns((-1)*self::DIM_MAK_COST);
-                    add_item($player->id(), 'dimmak', 1);
+                    $inventory = new Inventory($player);
+                    $inventory->add('dimmak', 1);
                     $parts['pageParts'] = ['success-dim-mak'];
                     $showMonks = true;
                 } else {

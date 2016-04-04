@@ -5,6 +5,7 @@ use NinjaWars\core\data\Npc;
 use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Item;
+use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 
@@ -60,17 +61,19 @@ class NpcController { //extends controller
         $player->subtractKills(self::ONI_KILL_LOSS);
 
         if ($player->health() > 0) { // if you survive
+            $inventory = new Inventory($player);
+
             if ($player->turns > self::HIGH_TURNS) { // And your turns are high/you are energetic, you can kill them.
                 $oni_killed       = true;
                 $item             = Item::findByIdentity('dimmak');
                 $quantity         = 1;
-                add_item($player->id(), $item->identity(), $quantity);
+                $inventory->add($item->identity(), $quantity);
             } else if ($player->turns > floor(self::HIGH_TURNS/2) && rand()&1) { // If your turns are somewhat high/you have some energy, 50/50 chance you can kill them.
                 $oni_killed       = true;
                 $item             = Item::findByIdentity('ginsengroot');
                 $multiple_rewards = true;
                 $quantity         = 4;
-                add_item($player->id(), $item->identity(), $quantity);
+                $inventory->add($item->identity(), $quantity);
             }
         }
 
@@ -175,10 +178,12 @@ class NpcController { //extends controller
                 $victory = true;
                 // Victory occurred, reward the poor sap.
                 if ($npco->inventory()) {
+                    $inventory = new Inventory($player);
+
                     foreach (array_keys($npco->inventory()) as $l_item) {
-                        $item_info = item_info_from_identity($l_item);
-                        $received_display_items[] = $item_info['item_display_name'];
-                        add_item($player->id(), $item_info['item_internal_name'], 1);
+                        $item = Item::findByIdentity($l_item);
+                        $received_display_items[] = $item->getName();
+                        $inventory->add($item->identity(), 1);
                     }
                 }
 
@@ -196,8 +201,8 @@ class NpcController { //extends controller
             if (isset($npc_stats['status']) && null !== $npc_stats['status']) {
                 $player->addStatus($npc_stats['status']);
                 // Get the statuses and status classes for display.
-                $display_statuses = implode(', ', get_status_list());
-                $display_statuses_classes = implode(' ', get_status_list()); // TODO: Take healthy out of the list since it's redundant.
+                $display_statuses = implode(', ', Player::getStatusList());
+                $display_statuses_classes = implode(' ', Player::getStatusList()); // TODO: Take healthy out of the list since it's redundant.
             }
         }
 
@@ -366,7 +371,8 @@ class NpcController { //extends controller
             // 1/9 chance of getting an herb for Kampo
             if (rand(1, 9) == 9) {
                 $herb = true;
-                add_item($player->id(), 'ginsengroot', 1);
+                $inventory = new Inventory($player);
+                $inventory->add('ginsengroot', 1);
             }
         } else {
             $damage = 0;
@@ -402,7 +408,8 @@ class NpcController { //extends controller
 
             if (!$just_villager) {
                 // Something beyond just a villager, drop a shuriken
-                add_item($player->id(), 'shuriken', 1);
+                $inventory = new Inventory($player);
+                $inventory->add('shuriken', 1);
             }
         }
 
@@ -450,6 +457,8 @@ class NpcController { //extends controller
             $player->addKills(1);
             $player->set_gold($player->gold + $gold);
 
+            $inventory = new Inventory($player);
+
             // If samurai dmg high, but ninja lived, give rewards
             if ($damage[2] > self::SAMURAI_REWARD_DMG) {
                 $drop = true;
@@ -462,14 +471,14 @@ class NpcController { //extends controller
                     $dropItem = 'ginsengroot';
                 }
 
-                add_item($player->id(), $dropItem, 1);
+                $inventory->add($dropItem, 1);
             }
 
             // If the final damage was the exact max damage
             if ($damage[2] == $player->strength() * 3) {
                 $drop         = true;
                 $drop_display = 'a black scroll';
-                add_item($player->id(), "dimmak", 1);
+                $inventory->add('dimmak', 1);
             }
         }
 
@@ -502,7 +511,9 @@ class NpcController { //extends controller
             }
 
             $player->set_gold($player->gold + $gold);
-            add_item($player->id(), 'phosphor', 1);
+
+            $inventory = new Inventory($player);
+            $inventory->add('phosphor', 1);
         } else {    // If the den of theives killed the attacker.
             $gold = 0;
         }
@@ -532,7 +543,8 @@ class NpcController { //extends controller
             $player->set_gold($player->gold + $gold);
 
             if ($damage > 34) {
-                add_item($player->id(), 'phosphor', 1);
+                $inventory = new Inventory($player);
+                $inventory->add('phosphor', 1);
             }
 
             if ($player->level > 10) {
@@ -570,7 +582,8 @@ class NpcController { //extends controller
                 $player->set_gold(max(0, $player->gold - $gold));
             } else if ($damage < 30) { // award gold and item
                 $player->set_gold($player->gold + $gold);
-                add_item($player->id(), 'shuriken', 1);
+                $inventory = new Inventory($player);
+                $inventory->add('shuriken', 1);
             }
         }
 

@@ -4,25 +4,28 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\InventoryController;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\data\Inventory;
 
 class InventoryControllerTest extends PHPUnit_Framework_TestCase {
     private $char;
     private $controller;
+    private $inventory;
     const ITEM = 'caltrop';
 
 	function setUp() {
         $this->controller = new InventoryController();
         $this->char = TestAccountCreateAndDestroy::char();
+        $this->inventory = new Inventory($this->char);
         $request = new Request([], []);
         RequestWrapper::inject($request);
 		SessionFactory::init(new MockArraySessionStorage());
         $sess = SessionFactory::getSession();
         $sess->set('player_id', $this->char->id());
-        add_item($this->char->id(), self::ITEM);
+        $this->inventory->add(self::ITEM);
 	}
 
 	function tearDown() {
-        removeItem($this->char->id(), self::ITEM);
+        $this->inventory->remove(self::ITEM);
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
@@ -34,7 +37,7 @@ class InventoryControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testIndexDoesNotErrorWithoutItem() {
-        removeItem($this->char->id(), self::ITEM);
+        $this->inventory->remove(self::ITEM);
         $result = $this->controller->index();
         $this->assertNotEmpty($result);
     }

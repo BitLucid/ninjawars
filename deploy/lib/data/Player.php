@@ -415,7 +415,7 @@ class Player implements Character {
             $this->data['max_turns']     = 100;
             $this->data['turns_percent'] = min(100, round($this->data['turns']/$this->data['max_turns']*100));
             $this->data['exp_percent']   = min(100, round(($this->data['kills']/$this->data['next_level'])*100));
-            $this->data['status_list']   = implode(', ', get_status_list($this->id()));
+            $this->data['status_list']   = implode(', ', self::getStatusList($this->id()));
             $this->data['hash']          = md5(implode($this->data));
             $this->data['class_name']    = $this->data['identity'];
 
@@ -883,5 +883,48 @@ class Player implements Character {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Returns a comma-seperated string of states based on the statuses of the target.
+     *
+     * @param array $statuses status array
+     * @param string $target the target, username if self targetting.
+     * @return string
+     *
+     */
+    public static function getStatusList($target=null) {
+        $states = array();
+        $target = (isset($target) && (int)$target == $target ? $target : self_char_id());
+
+        // Default to showing own status.
+        $target = self::find($target);
+
+        if (!$target || $target->health < 1) {
+            $states[] = 'Dead';
+        } else { // *** Other statuses only display if not dead.
+            if ($target->health < 80) {
+                $states[] = 'Injured';
+            } else {
+                $states[] = 'Healthy';
+            }
+
+            // The visibly viewable statuses.
+            if ($target->hasStatus(STEALTH)) { $states[] = 'Stealthed'; }
+            if ($target->hasStatus(POISON)) { $states[] = 'Poisoned'; }
+            if ($target->hasStatus(WEAKENED)) { $states[] = 'Weakened'; }
+            if ($target->hasStatus(FROZEN)) { $states[] = 'Frozen'; }
+            if ($target->hasStatus(STR_UP1)) { $states[] = 'Buff'; }
+            if ($target->hasStatus(STR_UP2)) { $states[] = 'Strength+'; }
+
+            // If any of the shield skills are up, show a single status state for any.
+            if ($target->hasStatus(FIRE_RESISTING) || $target->hasStatus(INSULATED) || $target->hasStatus(GROUNDED)
+                || $target->hasStatus(BLESSED) || $target->hasStatus(IMMUNIZED)
+                || $target->hasStatus(ACID_RESISTING)) {
+                $states[] = 'Shielded';
+            }
+        }
+
+        return $states;
     }
 }

@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Inventory;
 
 /**
  * Handles both skill listing and displaying, and their usage
@@ -56,7 +57,7 @@ class SkillController {
 		$starting_turns = $player->turns;
 		$starting_ki    = $player->ki;
 
-		$status_list = get_status_list();
+		$status_list = Player::getStatusList();
 		$no_skills   = true;
 		$stealth     = $skillsListObj->hasSkill('Stealth');
 
@@ -320,14 +321,15 @@ class SkillController {
 				$covert = true;
 
 				// *** Get Special Items From Inventory ***
-				$user_id = self_char_id();
+				$user_id = $player->id();
 				$root_item_type = 7;
 		        $itemCount = query_item('SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = :type GROUP BY item_type',
 		                array(':owner'=>$user_id, ':type'=>$root_item_type));
 		        $turn_cost = min($itemCount, $starting_turns-1, 2); // Costs 1 or two depending on the number of items.
 				if ($turn_cost && $itemCount > 0) {	// *** If special item count > 0 ***
-					removeItem($user_id, 'ginsengroot', $itemCount);
-					add_item($user_id, 'tigersalve', $itemCount);
+                    $inventory = new Inventory($player);
+                    $inventory->remove('ginsengroot', $itemCount);
+                    $inventory->add('tigersalve', $itemCount);
 
 					$generic_skill_result_message = 'With intense focus you grind the '.$itemCount.' roots into potent formulas.';
 				} else { // *** no special items, give error message ***
@@ -349,7 +351,6 @@ class SkillController {
 				$msg = "You have been poisoned by $attacker_id";
 				send_event($attacker_char_id, $target->id(), $msg);
 			} elseif ($act == 'Fire Bolt') {
-				
 				$target_damage = $this->fireBoltBaseDamage($player) + rand(1, $this->fireBoltMaxDamage($player));
 
 

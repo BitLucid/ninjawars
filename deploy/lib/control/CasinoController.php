@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Inventory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -69,7 +70,8 @@ class CasinoController {
 
 				if ($bet >= round(self::MAX_BET*0.99)) {
 					// within about 1% of the max bet & you win, you get a reward item.
-					add_item($player->id(), self::REWARD, 1);
+                    $inventory = new Inventory($player);
+					$inventory->add(self::REWARD, 1);
 				}
 			} else {
 				$player->set_gold($player->gold - $bet);
