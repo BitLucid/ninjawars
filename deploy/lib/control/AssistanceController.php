@@ -72,7 +72,7 @@ class AssistanceController{
      * Display the assistance options to users.
      */
     public function index(){
-        $email = in('email', null, 'sanitize_to_email');
+        $email = filter_var(in('email', null), FILTER_SANITIZE_EMAIL);
         $password_request = in('password_request');
         $confirmation_request = in('confirmation_request');
 

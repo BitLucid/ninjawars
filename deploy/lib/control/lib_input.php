@@ -71,10 +71,3 @@ function sanitize_to_text($dirty) {
 	return preg_replace("/[^\w\d\s_\-\.\@\:\/]/", "", (string) $dirty);
 }
 
-/**
- * alias for filter_var specifically for email
- */
-function sanitize_to_email($dirty) {
-	return filter_var($dirty, FILTER_SANITIZE_EMAIL);
-}
-

@@ -86,12 +86,6 @@ class TestInput extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(0, toInt(0));
 	}
 
-	public function testSanitizeToEmail() {
-		$email = "bob@example.com";
-		$this->assertEquals($email, sanitize_to_email($email));
-		$this->assertEquals('notanemail', sanitize_to_email("not an email"));
-	}
-
 	public function testSanitizeToText() {
 		$clean = 'abcdeghijklmnopqrstuvwxyz';
 		$dirty = 'abcdegh*ijklmnopqrstuvwxyz';
