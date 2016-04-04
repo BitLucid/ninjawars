@@ -1,9 +1,5 @@
 <h1>Login</h1>
 
-{if $logged_out}
-<div class='notice'>You logged out! Log in again below if you want.</div>
-{/if}
-
 {if $login_error_message}
 	  <!-- This section only gets displayed in the event of an incorrect login -->
       <div id='login-error' class="error">

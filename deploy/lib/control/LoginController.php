@@ -17,14 +17,11 @@ class LoginController {
      * Try to perform a login, perform_login_if_requested will redirect as necessary
      */
     public function requestLogin() {
-        $logged_out          = in('logged_out'); // Logout page redirected to this one, so display the message.
         $login_error_message = in('error'); // Error to display after unsuccessful login and redirection.
         $pass                = post('pass');
         $username_requested  = post('user');
 
-        if ($logged_out) {
-            logout_user(); // Perform logout if requested!
-        } else if ($username_requested === null || $pass === null) {
+        if ($username_requested === null || $pass === null) {
             $login_error_message = 'No username or no password specified';
         }
 
@@ -43,7 +40,6 @@ class LoginController {
      * Display standard login page.
      */
     public function index() {
-        $logged_out          = in('logged_out'); // Logout page redirected to this one, so display the message.
         $login_error_message = in('error'); // Error to display after unsuccessful login and redirection.
 
         $stored_username = (isset($_COOKIE['username']) ? $_COOKIE['username'] : null);
@@ -55,7 +51,6 @@ class LoginController {
             $parts = [
                 'authenticated'       => false,
                 'login_error_message' => $login_error_message,
-                'logged_out'          => $logged_out,
                 'referrer'            => $referrer,
                 'stored_username'     => $stored_username,
             ];

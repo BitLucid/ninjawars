@@ -1,8 +1,8 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-//use Symfony\Component\HttpFoundation\Request;
 use \Constants;
 
 /**
@@ -12,12 +12,15 @@ class LogoutController {
     const ALIVE = false;
     const PRIV  = false;
 
-    public function index(){
-    	logout_user();
+    public function index() {
+        $session = SessionFactory::getSession();
+        $session->clear();
+        $session->invalidate();
+
     	return new RedirectResponse('/logout/loggedout');
     }
 
-    public function loggedout(){
+    public function loggedout() {
     	return ['template'=>'logout.tpl', 'title'=>'Logged Out', 'parts'=>null, 'options'=>null];
     }
 

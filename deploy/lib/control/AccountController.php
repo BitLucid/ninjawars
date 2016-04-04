@@ -182,8 +182,7 @@ class AccountController {
             $account->setOperational(false);
             $account->save();
 
-            logout_user(); // Wipe session & logout the user
-            return new RedirectResponse('/logout/loggedout');
+            return new RedirectResponse('/logout');
         } else {
             $session->set('delete_attempts', $delete_attempts+1);
             $error = 'Deleting of account failed, please email '.SUPPORT_EMAIL;

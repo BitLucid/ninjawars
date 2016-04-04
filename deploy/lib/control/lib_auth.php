@@ -129,15 +129,3 @@ function login_user($dirty_user, $p_pass) {
 	// *** Return array of return values ***
 	return ['success' => $success, 'login_error' => $login_error];
 }
-
-/**
- * Logout function.
- *
- * @return void
- */
-function logout_user() {
-	$session = SessionFactory::getSession();
-	$session->clear();
-	$session->invalidate();
-}
-
