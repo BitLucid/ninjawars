@@ -25,7 +25,7 @@ h1 .account-identity{
 </style>
 {/literal}
 
-<h1 class='account-header'>Account Info for <span class='account-identity'>{$account_info.account_identity|escape}</span></h1>
+<h1 class='account-header'>Account Info for <span class='account-identity'>{$account->account_identity|escape}</span></h1>
 
 
 <div class='char-list ninja-notice clearfix'>
@@ -81,10 +81,10 @@ h1 .account-identity{
 
 <div class='full-account-info'>
     <ul id='account-info' class='account-info'>
-      <li>Active Email: <strong>{$account_info.active_email|escape}</strong></li>
-      <li>Account Created: <time class='timeago' datetime='{$account_info.created_date|escape}'>{$account_info.created_date|escape}</time></li>
-      <li>Last Failed Login Attempt: <time class='timeago' datetime='{$account_info.last_login_failure|escape}'>{$account_info.last_login_failure|escape}</time></li>
-      <li>Last IP: <strong>{$account_info.last_ip|escape}</strong></li>
+      <li>Active Email: <strong>{$account->active_email|escape}</strong></li>
+      <li>Account Created: <time class='timeago' datetime='{$account->created_date|escape}'>{$account->created_date|escape}</time></li>
+      <li>Last Failed Login Attempt: <time class='timeago' datetime='{$account->last_login_failure|escape}'>{$account->last_login_failure|escape}</time></li>
+      <li>Last IP: <strong>{$account->last_ip|escape}</strong></li>
       {if $oauth}<li>Single-Click login connected to: <strong>{$oauth_provider|escape}</strong></li>{/if}
     </ul>
 </div>

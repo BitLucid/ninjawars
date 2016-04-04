@@ -207,34 +207,26 @@ class AccountController {
 
     /**
      */
-    private function render($parts) {
-        // default parts
-        $account_info = Account::accountInfo(SessionFactory::getSession()->get('account_id'));
+    private function render($p_parts) {
+        $account = Account::findById(SessionFactory::getSession()->get('account_id'));
+        $player  = Player::find(SessionFactory::getSession()->get('player_id'));
 
-        // Get the existing oauth info, if any.
-        $oauth_provider = $account_info['oauth_provider'];
-        $oauth = $oauth_provider && $account_info['oauth_id'];
-
-        $player       = Player::find(SessionFactory::getSession()->get('player_id'));
-        $self_info    = $player->dataWithClan();
-        $gravatar_url = $player->avatarUrl();
-
-        $parts = array_merge([
-            'gravatar_url'    => $gravatar_url,
-            'player'          => $self_info,
-            'account_info'    => $account_info,
-            'oauth_provider'  => $oauth_provider,
-            'oauth'           => $oauth,
+        $parts = [
+            'gravatar_url'    => $player->avatarUrl(),
+            'player'          => $player->dataWithClan(),
+            'account'         => $account,
+            'oauth_provider'  => ($account ? $account->oauth_provider : ''),
+            'oauth'           => ($account ? $account->oauth_provider && $account->oauth_id : ''),
             'successMessage'  => false,
             'error'           => false,
             'command'         => '',
             'delete_attempts' => 0,
-        ], $parts);
+        ];
 
         return [
             'template' => 'account.tpl',
             'title'    => 'Your Account',
-            'parts'    => $parts,
+            'parts'    => array_merge($parts, $p_parts),
             'options'  => [
                 'quickstat' => 'player',
             ],
