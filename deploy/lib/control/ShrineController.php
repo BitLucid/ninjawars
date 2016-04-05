@@ -15,7 +15,7 @@ class ShrineController { //extends controller
 	const HEAL_POINT_COST      = 1;
 	const RES_COST_TURNS       = 10;
 	const RES_COST_KILLS       = 1;
-	const BASE_RES_HP          = 100;
+	const BASE_RES_HP          = 20;
 	const CURE_COST_GOLD       = 100;
 	const RES_COST_TYPE_FREE   = 1;
 	const RES_COST_TYPE_KILL   = 2;
