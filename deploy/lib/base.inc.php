@@ -27,22 +27,11 @@ require_once(LIB_ROOT.'environment/status_defines.php'); // Status constant defi
 require_once(LIB_ROOT.'environment/lib_error_reporting.php');
 require_once(LIB_ROOT.'environment/global_error_handling.php');
 
-// Standalone utilities
-require_once(LIB_ROOT.'control/assignment_functions.php');
-require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
-require_once(LIB_ROOT.'extensions/Nmail.class.php');
-
-// *** Include all common function includes here.
-require_once(LIB_ROOT.'control/lib_input.php');
-require_once(LIB_ROOT.'data/lib_db.php');
-require_once(TEMPLATE_LIBRARY_PATH); // Require smarty
-require_once(LIB_ROOT.'extensions/lib_templates.php');
-
-// Development includes
-if (defined('DEBUG') && DEBUG) {
-	require_once(LIB_ROOT.'control/lib_dev.php');
-}
-
-require_once(LIB_ROOT.'control/lib_header.php');
+require_once(TEMPLATE_LIBRARY_PATH);
+require_once(LIB_ROOT.'control/lib_helpers.php');
 require_once(LIB_ROOT.'control/lib_crypto.php');
 require_once(LIB_ROOT.'control/lib_auth.php');
+require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
+require_once(LIB_ROOT.'data/lib_db.php');
+require_once(LIB_ROOT.'extensions/Nmail.class.php');
+require_once(LIB_ROOT.'extensions/lib_templates.php');

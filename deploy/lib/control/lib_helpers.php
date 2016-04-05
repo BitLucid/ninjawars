@@ -2,7 +2,37 @@
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * Return first non-null argument.
+ */
+function first_value() {
+	$arg_list = func_get_args();
+	foreach ($arg_list as $l_arg) {
+		if (!is_null($l_arg)) {
+			return $l_arg;
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Much more easy-going, just:
+ * Return first true-like argument.
+ */
+function whichever() {
+	$arg_list = func_get_args();
+	foreach ($arg_list as $l_arg) {
+		if ($l_arg != false) {
+			return $l_arg;
+		}
+	}
+
+	return null;
+}
 
 /**
  * Creates all the environmental variables, with no outputting.
@@ -91,4 +121,78 @@ function update_activity_info() {
 		$statement->bindValue(':member', is_logged_in(), PDO::PARAM_BOOL);
 		$statement->execute();
 	}
+}
+
+/**
+ * Input function that by default LEAVES INPUT COMPLETELY UNFILTERED
+ * To not filter some input, you have to explicitly pass in null for the third parameter,
+ * e.g. in('some_url_parameter', null, null)
+ */
+function in($var_name, $default_val=null, $filter_callback=null) {
+	$req = RequestWrapper::getPostOrGet($var_name);
+	$result = (isset($req) ? $req : $default_val);
+
+	// Check that the filter function sent in exists.
+	if ($filter_callback && function_exists($filter_callback)) {
+		$result = $filter_callback($result);
+	}
+
+    return $result;
+}
+
+/**
+ *  Wrapper around the post variables as a clean way to get input.
+ */
+function post($key, $default_val=null){
+	$post = RequestWrapper::getPost($key);
+	return isset($post)? $post: $default_val;
+}
+
+/**
+ * Return a casting with a result of a positive int, or else zero.
+ */
+function non_negative_int($num) {
+	return ((int)$num == $num && (int)$num > 0? (int)$num : 0);
+}
+
+/**
+ * Casts to an integer anything that can be cast that way non-destructively, otherwise null.
+ */
+function toInt($dirty) {
+	if ($dirty == (int) $dirty) { // Cast anything that can be non-destructively cast.
+		$res = (int) $dirty;
+	} else {
+		$res = null;
+	}
+
+	return $res;
+}
+
+/**
+ * Return a casting with a result of a positive int, or else zero.
+ *
+ * @Note
+ * this function will cast strings with leading integers to those integers.
+ * E.g. 555'sql-injection becomes 555
+ */
+function positive_int($num) {
+	return ((int)$num == $num && (int)$num > 0? (int)$num : 0);
+}
+
+function debug($val) {
+    if (DEBUG) {
+    	$vals = func_get_args();
+    	foreach($vals as $val){
+		    echo "<pre class='debug' style='font-size:12pt;background-color:white;color:black;position:relative;z-index:10'>";
+		    var_dump($val);
+		    echo "</pre>";
+        }
+    }
+}
+
+function nw_error($message, $level=E_USER_NOTICE) {
+	$backtrace = debug_backtrace();
+	$caller = next($backtrace);
+	$next_caller = next($backtrace);
+	trigger_error("<div  class='debug' style='font-size:12pt;background-color:white;color:black;position:relative;z-index:10'>".$message.' in <strong>'.$caller['function'].'</strong> called from <strong>'.$caller['file'].'</strong> on line <strong>'.$caller['line'].'</strong>'."called within: ".$next_caller['function']."\n<br /> and finally from the error handler in lib_dev: </div>", $level);
 }
