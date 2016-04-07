@@ -3,18 +3,13 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\NWTemplate;
 
 /**
- * Displays blocking states like not logged in, death, frozen, etc.
- * @todo move to template class or the like
+ * Displays a template wrapped in the header and footer as needed.
+ *
+ * Example use:
+ * display_page('add.tpl', 'Homepage', get_current_vars(get_defined_vars()), array());
+ * @todo move to template class
  */
-function display_error($p_error) {
-    display_page('error.tpl', 'There is an obstacle to your progress...', array('error'=>$p_error));
-}
-
-/**
- * Assigns the environmental variables and then returns just a raw template object for manipulation & display.
- * @deprecated
- */
-function prep_page($template, $title=null, $local_vars=array(), $options=null) {
+function display_page($template, $title=null, $local_vars=array(), $options=null) {
     // Updates the quickstat via javascript if requested.
     $quickstat = @$options['quickstat'];
     $quickstat = ($quickstat ? $quickstat : @$local_vars['quickstat']);
@@ -40,18 +35,7 @@ function prep_page($template, $title=null, $local_vars=array(), $options=null) {
     $tpl->assign('body_classes', $body_classes);
     $tpl->assign('main_template', $template);
 
-    return $tpl;
-}
-
-
-/** Displays a template wrapped in the header and footer as needed.
- *
- * Example use:
- * display_page('add.tpl', 'Homepage', get_current_vars(get_defined_vars()), array());
- * @todo move to template class
- */
-function display_page($template, $title=null, $local_vars=array(), $options=null) {
-    prep_page($template, $title, $local_vars, $options)->fullDisplay();
+    $tpl->fullDisplay();
 }
 
 /** Will return the rendered content of the template.
@@ -68,7 +52,7 @@ function render_template($template_name, $assign_vars=array()) {
     return $tpl->fetch($template_name);
 }
 
-/*
+/**
  * Pulls out standard vars except arrays and objects.
  * $var_list is get_defined_vars()
  * $whitelist is an array with string names of arrays/objects to allow.
@@ -86,19 +70,5 @@ function get_certain_vars($var_list, $whitelist=array()) {
     }
 
     return $non_arrays;
-}
-
-/** 
- * Put out the headers to allow a few hours of caching
- * @todo move to template class
- * @deprecated
- */
-function cache_headers($hours = 2, $revalidate=false) {
-    // Enable short number-of-hours caching of the index page.
-    // seconds, minutes, hours, days
-    $expires = 60*60*$hours;
-    header("Pragma: public");
-    header("Cache-Control: maxage=".$expires.($revalidate? ", must-revalidate" : ''));
-    header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 }
 
