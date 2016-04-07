@@ -13,9 +13,9 @@ class NWTemplateUnitTest extends PHPUnit_Framework_TestCase {
 		SessionFactory::annihilate();
     }
 
-    public function testAssignNull() {
-        $template = new NWTemplate();
-        $result = $template->assignArray(null);
-        $this->assertNull($result);
+
+    public function testCustomConstructor() {
+        $view = new NWTemplate();
+        $this->assertInstanceOf('NinjaWars\core\extensions\NWTemplate', $view);
     }
 }

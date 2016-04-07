@@ -196,3 +196,23 @@ function nw_error($message, $level=E_USER_NOTICE) {
 	$next_caller = next($backtrace);
 	trigger_error("<div  class='debug' style='font-size:12pt;background-color:white;color:black;position:relative;z-index:10'>".$message.' in <strong>'.$caller['function'].'</strong> called from <strong>'.$caller['file'].'</strong> on line <strong>'.$caller['line'].'</strong>'."called within: ".$next_caller['function']."\n<br /> and finally from the error handler in lib_dev: </div>", $level);
 }
+
+/**
+ * Pulls out standard vars except arrays and objects.
+ * $var_list is get_defined_vars()
+ * $whitelist is an array with string names of arrays/objects to allow.
+ * @deprecated in favor of passing specific vars to template
+ */
+function get_certain_vars($var_list, $whitelist=array()) {
+    $non_arrays = array();
+
+    foreach ($var_list as $loop_var_name => $loop_variable) {
+        if (
+            (!is_array($loop_variable) && !is_object($loop_variable))
+            || in_array($loop_var_name, $whitelist)) {
+            $non_arrays[$loop_var_name] = $loop_variable;
+        }
+    }
+
+    return $non_arrays;
+}
