@@ -474,6 +474,13 @@ $(function() {
 
 	// INDEX ONLY CHANGES
 	if (g_isIndex || g_isRoot) {
+		// Catchphrases: Hide the second two sections.
+		var catchphrases = $('#nw-catchphrases span');
+		var rand = Math.floor(Math.random()*catchphrases.size());
+		// Choose random index.
+		catchphrases.hide().eq(rand).show();
+		// Hide all, show one at random.
+
 		var hash = window.location.hash;
 		if(hash && hash.indexOf("!") > 0){ // If a hash exists and has .php in it...
 			var page = hash.substring(2); // Create a page from the hash by removing the #.
