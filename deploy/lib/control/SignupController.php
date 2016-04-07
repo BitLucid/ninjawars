@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\environment\RequestWrapper;
+use NinjaWars\core\extensions\NWTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use \Constants;
 use \Nmail;
@@ -408,19 +409,19 @@ class SignupController {
      */
     private function sendSignupEmail($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
         $class_display = $this->classDisplayNameFromIdentity($class_identity);
+
+        $template_vars = [
+            'send_name'     => $signup_name,
+            'signup_email'  => $signup_email,
+            'confirm'       => $confirm,
+            'send_class'    => $class_display,
+            'SUPPORT_EMAIL' => SUPPORT_EMAIL,
+            'account_id'    => $account_id,
+        ];
+
         $_to           = [$signup_email => $signup_name];
         $_subject      = 'NinjaWars Account Sign Up';
-        $_body         = render_template(
-            'signup_email_body.tpl',
-            [
-                'send_name'     => $signup_name,
-                'signup_email'  => $signup_email,
-                'confirm'       => $confirm,
-                'send_class'    => $class_display,
-                'SUPPORT_EMAIL' => SUPPORT_EMAIL,
-                'account_id'    => $account_id,
-            ]
-        );
+        $_body         = (new NWTemplate())->assign($template_vars)->fetch('signup_email_body.tpl');
 
         $_from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
 

@@ -241,7 +241,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         query($delete_account, [':id' => $account->id()]);
         query($delete_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
 
-        $this->assertTrue($response['parts']['submit_successful']);
+        $this->assertTrue($response['parts']['submit_successful'], 'Signup() returned error: '.$response['parts']['error']);
         $this->assertEquals($relationship_count, 1);
     }
 }

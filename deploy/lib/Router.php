@@ -254,9 +254,10 @@ class Router {
     /**
      * Return 404 and 404 headers
      */
-    public static function respond404(){
+    public static function respond404() {
         header( $_SERVER['SERVER_PROTOCOL']." 404 Not Found", true, 404 ); //.replace = true
-        echo render_template('404.tpl');
+        $view = new NWTemplate();
+        $view->display('404.tpl');
     }
 
     /**

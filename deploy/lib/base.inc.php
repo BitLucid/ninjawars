@@ -34,4 +34,3 @@ require_once(LIB_ROOT.'control/lib_auth.php');
 require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
 require_once(LIB_ROOT.'data/lib_db.php');
 require_once(LIB_ROOT.'extensions/Nmail.class.php');
-require_once(LIB_ROOT.'extensions/lib_templates.php');

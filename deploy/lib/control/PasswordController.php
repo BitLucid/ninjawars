@@ -2,10 +2,11 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\environment\RequestWrapper;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\Account;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Nmail;
 
 class PasswordController {
@@ -25,7 +26,7 @@ class PasswordController {
         }
 
         $url = WEB_ROOT.'password/reset/?token='.rawurlencode($token);
-        $rendered = render_template('email.password_reset_request.tpl', ['url'=>$url]);
+        $rendered = (new NWTemplate())->assign(['url'=>$url])->fetch('email.password_reset_request.tpl');
 
         // Construct the email with Nmail, and then just send it.
         $subject = 'NinjaWars: Your password reset request';
@@ -170,7 +171,7 @@ class PasswordController {
                     return $this->renderError('Password not long enough or does not match password confirmation!', $token);
                 } else {
                     PasswordResetRequest::reset($account, $newPassword);
-                    return new RedirectResponse('/password/?message='.rawurlencode('Password reset!'));                    
+                    return new RedirectResponse('/password/?message='.rawurlencode('Password reset!'));
                 }
             }
         }

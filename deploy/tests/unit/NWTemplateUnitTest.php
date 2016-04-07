@@ -1,5 +1,4 @@
 <?php
-require_once(CORE.'/extensions/lib_templates.php');
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\NWTemplate;
@@ -12,7 +11,6 @@ class NWTemplateUnitTest extends PHPUnit_Framework_TestCase {
     public function tearDown() {
 		SessionFactory::annihilate();
     }
-
 
     public function testCustomConstructor() {
         $view = new NWTemplate();
