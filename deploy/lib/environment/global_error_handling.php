@@ -77,10 +77,3 @@ class NWError{
 	}
 
 }
-
-
-
-if (defined('TRAP_ERRORS') && TRAP_ERRORS) {
-	set_exception_handler(array('NWError', 'exceptionHandler'));
-	set_error_handler(array('NWError', 'errorHandler'), E_USER_ERROR);
-}
