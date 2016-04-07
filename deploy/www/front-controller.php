@@ -11,6 +11,8 @@ if (defined('TRAP_ERRORS') && TRAP_ERRORS) {
 }
 
 try {
+    update_activity_info(); // Updates the activity of the page viewer in the database.
+
     // get the request information to parse the route
     Router::route(Request::createFromGlobals());
 } catch (RouteNotFoundException $e) {

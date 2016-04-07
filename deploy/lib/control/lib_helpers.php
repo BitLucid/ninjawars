@@ -35,49 +35,6 @@ function whichever() {
 }
 
 /**
- * Creates all the environmental variables, with no outputting.
- *
- * Places much of the user info into the global namespace.
- */
-function init($private, $alive) {
-	global $today;
-	global $username;
-	global $char_id;
-
-	// ******************** Declared variables *****************************
-	$today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
-	// Page viewing settings usually set before the header.
-
-	update_activity_info(); // *** Updates the activity of the page viewer in the database.
-
-	$error = null;
-	$char_id = self_char_id(); // Will default to null.
-
-	if ((!is_logged_in() || !$char_id) && $private) {
-		$error = 'log_in';
-		// A non-null set of content being in the error triggers a die at the end of the header.
-	} elseif ($char_id) {
-		// **************** Player information settings. *******************
-		global $player, $player_id;
-		// Polluting the global namespace here.  Booo.
-
-		$player = Player::find($char_id); // Defaults to current session user.
-		$username = $player->name(); // Set the global username.
-		$player_id = $player->player_id;
-
-		if ($alive) { // That page requires the player to be alive to view it
-			if (!$player->health()) {
-				$error = 'dead';
-			} else if ($player->hasStatus(FROZEN)) {
-				$error = 'frozen';
-			}
-		}
-	}
-
-	return $error;
-}
-
-/**
  * Update the information of a viewing observer, or player.
  */
 function update_activity_info() {
