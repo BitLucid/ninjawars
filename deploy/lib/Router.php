@@ -4,6 +4,7 @@ namespace NinjaWars\core;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\RouteNotFoundException;
 use NinjaWars\core\extensions\NWTemplate;
+use NinjaWars\core\data\Player;
 
 /**
  * Router/front-controller for NinjaWars
@@ -207,14 +208,14 @@ class Router {
 
         /* This conditional is a holdover from old times when controllers were
          * actually directly servable procedural scripts (ah the old days!)
-         * If a page required you to be alive or logged in, init() checked if
+         * If a page required you to be alive or logged in, we checked if
          * you were (among a bunch of other things, usually dropping variables
          * in the global namespace) and if you were not, returned an error.
          * Now, controllers do this at a class level, which is mostly nonsense
          * and requires that the router directly serve an error page.
          * @TODO this whole thing should be factored out.
          */
-        if ($error = init($controllerClass::PRIV, $controllerClass::ALIVE)) {
+        if ($error = self::checkForError($controllerClass::PRIV, $controllerClass::ALIVE)) {
             return [
                 'template' => 'error.tpl',
                 'title'    => 'There is an obstacle to your progress...',
@@ -276,5 +277,22 @@ class Router {
             $p_viewSpec['parts'],
             $p_viewSpec['options']
         );
+    }
+
+    public static function checkForError($private, $alive) {
+        $error  = null;
+        $player = Player::find(self_char_id()); // Defaults to current session user.
+
+        if ((!is_logged_in() || !$player) && $private) {
+            $error = 'log_in';
+        } elseif ($player && $alive) { // That page requires the player to be alive to view it
+            if (!$player->health()) {
+                $error = 'dead';
+            } else if ($player->hasStatus(FROZEN)) {
+                $error = 'frozen';
+            }
+        }
+
+        return $error;
     }
 }
