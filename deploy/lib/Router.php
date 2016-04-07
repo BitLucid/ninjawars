@@ -2,7 +2,8 @@
 namespace NinjaWars\core;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use \NinjaWars\core\RouteNotFoundException;
+use NinjaWars\core\RouteNotFoundException;
+use NinjaWars\core\extensions\NWTemplate;
 
 /**
  * Router/front-controller for NinjaWars
@@ -253,9 +254,10 @@ class Router {
     /**
      * Return 404 and 404 headers
      */
-    public static function respond404(){
+    public static function respond404() {
         header( $_SERVER['SERVER_PROTOCOL']." 404 Not Found", true, 404 ); //.replace = true
-        echo render_template('404.tpl');
+        $view = new NWTemplate();
+        $view->display('404.tpl');
     }
 
     /**
@@ -267,7 +269,8 @@ class Router {
      * This method generates output
      */
     public static function render($p_viewSpec) {
-        display_page(
+        $view = new NWTemplate();
+        $view->displayPage(
             $p_viewSpec['template'],
             $p_viewSpec['title'],
             $p_viewSpec['parts'],

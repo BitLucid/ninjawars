@@ -1,5 +1,4 @@
 <?php
-require_once(CORE.'/extensions/lib_templates.php');
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\NWTemplate;
@@ -13,9 +12,8 @@ class NWTemplateUnitTest extends PHPUnit_Framework_TestCase {
 		SessionFactory::annihilate();
     }
 
-    public function testAssignNull() {
-        $template = new NWTemplate();
-        $result = $template->assignArray(null);
-        $this->assertNull($result);
+    public function testCustomConstructor() {
+        $view = new NWTemplate();
+        $this->assertInstanceOf('NinjaWars\core\extensions\NWTemplate', $view);
     }
 }

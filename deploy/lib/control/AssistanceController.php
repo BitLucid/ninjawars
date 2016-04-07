@@ -1,9 +1,9 @@
 <?php
-
 namespace NinjaWars\core\control;
 
 use \Nmail;
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\extensions\NWTemplate;
 
 /**
  * Give assistance to players and proto-players who anonymous users
@@ -30,18 +30,18 @@ class AssistanceController{
      * Sends an email for the user's account data.
      */
     private function sendAccountEmail($email, $data) {
+        $template_vars = [
+            'lost_uname'   => $data['uname'],
+            'active_email' => $data['active_email'],
+            'confirmed'    => $data['confirmed'],
+            'level'        => $data['level'],
+        ];
+
         $_from = array(SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME);
         /* additional headers */
         $_to = array("$email"=>$data['uname']);
         $_subject = 'NinjaWars Account Info Request';
-        $_body = render_template('email.assistance.account.tpl', [
-                'lost_uname'   => $data['uname'],
-                'active_email' => $data['active_email'],
-                'confirmed'  => $data['confirmed'],
-                'level' => $data['level']
-            ]
-        );
-
+        $_body = (new NWTemplate())->assign($template_vars)->fetch('email.assistance.account.tpl');
         $mail_obj = new Nmail($_to, $_subject, $_body, $_from);
         // *** Set the custom replyto email. ***
         $mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
@@ -52,17 +52,16 @@ class AssistanceController{
      * Sends the account confirmation email.
      */
     private function sendConfirmationEmail($email, $data) {
-        $lost_confirm = $data['verification_number'];
-        $lost_uname   = $data['uname'];
-        $_from = array(SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME);
-        $_to = array("$email"=>$data['uname']);
+        $template_vars = [
+            'lost_uname'   => $data['uname'],
+            'lost_confirm' => $data['verification_number'],
+            'account_id'   => $data['account_id'],
+        ];
+
+        $_from = [SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME];
+        $_to = [$email=>$data['uname']];
         $_subject = "NinjaWars Account Confirmation Info";
-        $_body = render_template('email.assistance.confirmation.tpl', array(
-                'lost_uname'     => $lost_uname
-                , 'lost_confirm' => $lost_confirm
-                , 'account_id'   => $data['account_id']
-            )
-        );
+        $_body = (new NWTemplate())->assign($template_vars)->fetch('email.assistance.confirmation.tpl');
         $mail_obj = new Nmail($_to, $_subject, $_body, $_from);
         $mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
         return $mail_obj->send();
