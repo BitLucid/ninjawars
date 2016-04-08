@@ -29,7 +29,7 @@ class NWTemplate extends Smarty {
         $body_classes     = isset($options['body_classes'])? $options['body_classes'] :
             (isset($local_vars['body_classes'])? $local_vars['body_classes'] : null);
         $is_index         = @$options['is_index'];
-        $user_id          = self_char_id(); // Character id.
+        $user_id          = Player::find(SessionFactory::getSession()->get('player_id'));
         $player           = Player::find($user_id);
         $public_char_info = ($player ? $player->publicData() : []); // Char info to pass to javascript.
 

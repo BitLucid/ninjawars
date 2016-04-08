@@ -5,6 +5,7 @@ use NinjaWars\core\data\Item;
 use NinjaWars\core\data\PurchaseOrder;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * Handles all user actions related to the in-game Shop
@@ -14,18 +15,12 @@ class ShopController { // extends Controller
 	const PRIV  = false; // *** do not need to be logged in ***
 
 	protected $itemCosts   = [];
-	protected $sessionData = [];
 
 	/**
 	 * Grabs data from external state for other methods to us
 	 */
 	public function __construct() {
 		$this->itemCosts   = $this->itemForSaleCosts();
-		$this->sessionData = [
-			'username'         => self_name(),
-			'char_id'          => self_char_id(),
-			'is_logged_in'     => is_logged_in(),
-		];
 	}
 
 	/**
@@ -49,23 +44,18 @@ class ShopController { // extends Controller
 	 * @return Array
 	 */
 	public function buy() {
-		$in_quantity  = in('quantity');
-		$in_item      = in('item');
-        $player       = Player::find($this->sessionData['char_id']);
-
-		$gold = ($player ? $player->gold : null);
-
+		$in_quantity       = in('quantity');
+		$in_item           = in('item');
+        $player            = Player::find(SessionFactory::getSession()->get('player_id'));
+		$gold              = ($player ? $player->gold : null);
 		$current_item_cost = 0;
 		$no_funny_business = false;
-
-		// Pull the item info from the database
 		$item_costs        = $this->itemForSaleCosts();
 		$item              = Item::findByIdentity($in_item);
 		$quantity 		   = whichever(positive_int($in_quantity), 1);
 		$item_text 	       = null;
 
 		if ($item instanceof Item) {
-
 			$item_text = ($quantity > 1 ? $item->getPluralName() : $item->getName());
 			$purchaseOrder = new PurchaseOrder();
 
@@ -77,7 +67,7 @@ class ShopController { // extends Controller
 			$current_item_cost = first_value($potential_cost, 0);
 			$current_item_cost = $current_item_cost * $purchaseOrder->quantity;
 
-			if (!$this->sessionData['char_id'] || !$purchaseOrder->item || $purchaseOrder->quantity < 1) {
+			if (!$player || !$purchaseOrder->item || $purchaseOrder->quantity < 1) {
 				$no_funny_business = true;
 			} else if ($gold >= $current_item_cost) { // Has enough gold.
 				try {
@@ -113,11 +103,11 @@ class ShopController { // extends Controller
 	 * @return Array
 	 */
 	private function render($p_parts) {
-        $player = Player::find($this->sessionData['char_id']);
+        $player = Player::find(SessionFactory::getSession()->get('player_id'));
 
-		$p_parts['gold']         = ($player ? $player->gold : 0);
-		$p_parts['item_costs']   = $this->itemCosts;
-		$p_parts['is_logged_in'] = $this->sessionData['is_logged_in'];
+		$p_parts['gold']          = ($player ? $player->gold : 0);
+		$p_parts['item_costs']    = $this->itemCosts;
+		$p_parts['authenticated'] = SessionFactory::getSession()->get('authenticated');
 
 		return [
 			'template' => 'shop.tpl',

@@ -244,4 +244,46 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($response['parts']['submit_successful'], 'Signup() returned error: '.$response['parts']['error']);
         $this->assertEquals($relationship_count, 1);
     }
+
+    public function testSuccessfulSignupResultsInNoConfirmation() {
+        $uname = 'KnownGood';
+        $email = 'shouldneverexist77748348@hotmail.com';
+        // Due to the nature of hotmail, hotmail emails are listed
+        // such that they will not be preconfirmed.  This leaves an account needing confirmation.
+
+        RequestWrapper::inject(new Request([
+            'key'        => 'password1',
+            'cpass'      => 'password1',
+            'send_email' => $email,
+            'send_name'  => $uname,
+        ]));
+
+        $controller = new SignupController();
+        $response = $controller->signup();
+
+        $account = Account::findByEmail($email);
+        $player = Player::findByName($uname);
+
+        $query_relationship = 'SELECT count(*) FROM account_players WHERE _account_id = :id1 AND _player_id = :id2';
+        $account_unconfirmed = null;
+
+        if ($account && $player) {
+            $relationship_count = query_item($query_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
+            $account_unconfirmed = !$account->isConfirmed();
+        } else {
+            $relationship_count = 0;
+        }
+
+        $delete_player = 'DELETE FROM players WHERE player_id = :id';
+        $delete_account = 'DELETE FROM accounts WHERE account_id = :id';
+        $delete_relationship = 'DELETE FROM account_players WHERE _account_id = :id1 OR _player_id = :id2';
+
+        query($delete_player, [':id' => $player->id()]);
+        query($delete_account, [':id' => $account->id()]);
+        query($delete_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
+
+        $this->assertTrue($response['parts']['submit_successful'], 'Signup() returned error: '.$response['parts']['error']);
+        $this->assertEquals($relationship_count, 1);
+        $this->assertTrue($account_unconfirmed);
+    }
 }

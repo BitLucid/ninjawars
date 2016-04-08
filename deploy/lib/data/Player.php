@@ -10,6 +10,7 @@ use NinjaWars\core\data\Character;
 use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Event;
+use NinjaWars\core\extensions\SessionFactory;
 use \PDO;
 
 /**
@@ -896,7 +897,7 @@ class Player implements Character {
      */
     public static function getStatusList($target=null) {
         $states = array();
-        $target = (isset($target) && (int)$target == $target ? $target : self_char_id());
+        $target = (isset($target) && (int)$target == $target ? $target : SessionFactory::getSession()->get('player_id'));
 
         // Default to showing own status.
         $target = self::find($target);

@@ -9,16 +9,22 @@ use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Inventory;
+use NinjaWars\core\extensions\SessionFactory;
 
 class PlayerController {
     const PRIV  = false;
     const ALIVE = false;
 
     public function index() {
-        $target        = $player = first_value(in('ninja'), in('player'), in('find'), in('target'));
-        $target_id     = first_value(in('target_id'), in('player_id'), get_char_id($target)); // Find target_id if possible.
+        $target    = $player = first_value(in('ninja'), in('player'), in('find'), in('target'));
+        $target_id = first_value(in('target_id'), in('player_id'));
 
-        $target_player_obj = Player::find($target_id);
+        if ($target_id) {
+            $target_player_obj = Player::find($target_id);
+        } else {
+            $target_player_obj = Player::findByName($target);
+        }
+
         $viewed_name_for_title = null;
         $combat_skills = null;
 
@@ -37,20 +43,21 @@ class PlayerController {
                 $template = 'no-player.tpl';
                 $parts    = array();
             } else {
-                $viewing_player_obj = Player::find(self_char_id());
+                $viewing_player_obj = Player::find(SessionFactory::getSession()->get('player_id'));
 
-                $self = (self_char_id() && self_char_id() == $player_info['player_id']); // Record whether this is a self-viewing.
+                // Record whether this is a self-viewing.
+                $self = ($viewing_player_obj && $viewing_player_obj->id() === $target_player_obj->id());
 
                 if ($viewing_player_obj !== null) {
                     $char_info = $viewing_player_obj->dataWithClan();
-                    $char_id  = $viewing_player_obj->id();
-                    $username = $viewing_player_obj->name();
+                    $char_id   = $viewing_player_obj->id();
+                    $username  = $viewing_player_obj->name();
                 } else {
                     $char_info = [];
                 }
 
-                $player      = $target = $player_info['uname']; // reset the target and target_id vars.
-                $target_id   = $player_info['player_id'];
+                $player    = $target = $player_info['uname']; // reset the target and target_id vars.
+                $target_id = $player_info['player_id'];
 
                 // Get the player's kills for this date.
                 $kills_today = query_item('select sum(killpoints) from levelling_log where _player_id = :player_id and killsdate = CURRENT_DATE and killpoints > 0', array(':player_id'=>$target_id));
@@ -131,6 +138,8 @@ class PlayerController {
                     'gravatar_url', 'status_list', 'clan', 'items', 'account'));
             }
         }
+
+        $parts['authenticated'] = SessionFactory::getSession()->get('authenticated', false);
 
         return [
             'template' => $template,

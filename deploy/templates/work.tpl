@@ -31,7 +31,7 @@
 
 <p>You can earn money by working in the village fields. Field work will exchange turns for gold.</p>
 <div>The current work pay rate is: <span style='color:turquoise;'>1 Turn</span> = <span class='gold'>石{$work_multiplier}</span>.</div>
-{if $is_logged_in}
+{if $authenticated}
 <form id="work" action="/work/request_work" method="post" name="work">
   <div>
     Work in the fields for: <input id="worked" type="number" size="3" maxlength="3" min=1 max=999 name="worked" class="textField">
@@ -85,7 +85,7 @@ $(document).ready(function () {
     });
 
 {/literal}
-{if $is_logged_in}
+{if $authenticated}
     $("#worked").val(NW.storage.appState.get("worked", {$recommended_to_work}));
 
 {literal}

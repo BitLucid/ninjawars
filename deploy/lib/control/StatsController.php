@@ -6,6 +6,7 @@ use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * Handle updates for changing details and profile details
@@ -23,7 +24,7 @@ class StatsController {
      * Change account details
      */
 	public function changeDetails() {
-		$char = Player::find(self_char_id());
+		$char = Player::find(SessionFactory::getSession()->get('player_id'));
 
 		$description	= post('description', $char->description);
 		$goals			= post('goals', $char->goals);
@@ -47,7 +48,7 @@ class StatsController {
      * Update profile
      */
 	public function updateProfile() {
-		$char               = Player::find(self_char_id());
+		$char               = Player::find(SessionFactory::getSession()->get('player_id'));
 		$new_profile		= trim(in('newprofile', null, null)); // Unfiltered input.
 		$profile_changed	= false;
 		$error				= '';
@@ -78,7 +79,7 @@ class StatsController {
      * Display the default stats page
      */
     public function index() {
-        $char = Player::find(self_char_id());
+        $char = Player::find(SessionFactory::getSession()->get('player_id'));
 
         $parts = [
             'char'               => $char,

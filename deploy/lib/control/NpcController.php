@@ -271,7 +271,7 @@ class NpcController { //extends controller
         $turn_cost      = 1;
         $health         = true;
         $combat_data    = [];
-        $player         = Player::find(self_char_id());
+        $player         = Player::find(SessionFactory::getSession()->get('player_id'));
         $error_template = 'npc.no-one.tpl'; // Error template also used down below.
         $npc_template   = $error_template; // Error condition by default.
         $npcs           = NpcFactory::npcsData();

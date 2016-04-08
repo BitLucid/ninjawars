@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
+use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -21,7 +22,7 @@ class CasinoController {
 	 * @return Array
 	 */
 	public function index() {
-		$player = Player::find(self_char_id());
+		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 
         if (!$player) {
             $player = new Player();
@@ -49,7 +50,7 @@ class CasinoController {
      * reward item
 	 */
 	public function bet() {
-		$player   = Player::find(self_char_id());
+		$player   = Player::find(SessionFactory::getSession()->get('player_id'));
 		if(!($player instanceof Player)){
 			return new RedirectResponse('/casino/?error='.rawurlencode('Become a ninja first!'));
 		}

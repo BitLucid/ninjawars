@@ -3,6 +3,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\AccountController;
 use NinjaWars\core\control\SignupController;
+use NinjaWars\core\control\LoginController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 
@@ -76,34 +77,27 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     /**
      */
     function testForNinjaNameValidationErrors() {
-        $this->assertNotEmpty(username_format_validate('tooooooooooooooolongggggggggggggggggggggggggggggg'),
+        $this->assertNotEmpty(Account::usernameIsValid('tooooooooooooooolongggggggggggggggggggggggggggggg'),
             'Username not flagged as too long');
-        $this->assertNotEmpty(username_format_validate('st')); // Too short
-        $this->assertNotEmpty(username_format_validate(''));
-        $this->assertNotEmpty(username_format_validate(' '));
-        $this->assertNotEmpty(username_format_validate('_underscorestartsit'));
-        $this->assertNotEmpty(username_format_validate('underscore-ends-it_'));
-        $this->assertNotEmpty(username_format_validate('too____mny----l'));
-        $this->assertNotEmpty(username_format_validate('----@#$@#$%@#!$'));
-        $this->assertFalse(username_format_validate('acceptable'), 'Basic lowercase alpha name [acceptable] was rejected');
-        $this->assertFalse(username_format_validate('ThisIsAcceptable'), 'Basic alpha name [ThisIsAcceptable] was rejected');
+        $this->assertNotEmpty(Account::usernameIsValid('st')); // Too short
+        $this->assertNotEmpty(Account::usernameIsValid(''));
+        $this->assertNotEmpty(Account::usernameIsValid(' '));
+        $this->assertNotEmpty(Account::usernameIsValid('5555numberstarts'));
+        $this->assertNotEmpty(Account::usernameIsValid('_underscorestartsit'));
+        $this->assertNotEmpty(Account::usernameIsValid('underscore-ends-it_'));
+        $this->assertNotEmpty(Account::usernameIsValid('too____mny----l'));
+        $this->assertNotEmpty(Account::usernameIsValid('----@#$@#$%@#!$'));
+        $this->assertFalse(Account::usernameIsValid('acceptable'), 'Basic lowercase alpha name [acceptable] was rejected');
+        $this->assertFalse(Account::usernameIsValid('ThisIsAcceptable'), 'Basic alpha name [ThisIsAcceptable] was rejected');
     }
 
     /**
      * group accountconf
      */
     function testForNinjaThatAccountConfirmationProcessAllowsNinjaNamesOfTheRightFormat() {
-        /*
-         * Username requirements (from the username_is_valid() function)
-         * A username must start with a lower-case or upper-case letter
-         * A username can contain only letters, numbers, underscores, or dashes.
-         * A username must be from 3 to 24 characters long
-         * A username cannot end in an underscore
-         * A username cannot contain 2 consecutive special characters
-         */
-        $this->assertTrue((bool)username_is_valid('tchalvak'), 'Standard all alpha name tchalvak was rejected');
-        $this->assertTrue((bool)username_is_valid('Beagle'));
-        $this->assertTrue((bool)username_is_valid('Kzqai'));
+        $this->assertTrue(!(bool)Account::usernameIsValid('tchalvak'), 'Standard all alpha name tchalvak was rejected');
+        $this->assertTrue(!(bool)Account::usernameIsValid('Beagle'));
+        $this->assertTrue(!(bool)Account::usernameIsValid('Kzqai'));
 
         $acceptable_names = [
             'xaz',
@@ -131,8 +125,8 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         ];
 
         foreach ($acceptable_names as $name) {
-            $error = username_format_validate($name);
-            $this->assertTrue((bool)username_is_valid($name), 'Rejected name was: ['.$name.'] and error was ['.$error.']');
+            $error = Account::usernameIsValid($name);
+            $this->assertTrue(!(bool)$error, 'Rejected name was: ['.$name.'] and error was ['.$error.']');
         }
     }
 
@@ -156,28 +150,15 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     /**
      * group accountconf
      */
-    function testGetNinjaByName() {
-        $ninja_id = $this->test_ninja_id;
-        $char_id = get_char_id($this->test_ninja_name);
-        $this->assertTrue(positive_int($ninja_id)>0);
-        $this->assertTrue(positive_int($char_id)>0);
-        $this->assertTrue($ninja_id == $char_id);
-    }
-
-    /**
-     * group accountconf
-     */
     function testMakeSureThatNinjaAccountIsOperationalByDefault() {
         $ninja_id = $this->test_ninja_id;
-        $this->assertTrue(positive_int($ninja_id)>0);
-        $char_id = get_char_id($this->test_ninja_name);
-        $this->assertTrue(positive_int($char_id)>0);
+        $this->assertTrue(positive_int($ninja_id) > 0);
+
         $account_operational = query_item(
             'SELECT operational FROM accounts JOIN account_players ON account_id = _account_id WHERE _player_id = :char_id',
-            [':char_id'=>$char_id]
+            [':char_id' => $ninja_id]
         );
 
-        $this->assertTrue($ninja_id == $char_id);
         $this->assertTrue($account_operational, 'Account is not being set as operational by default when created');
     }
 
@@ -187,10 +168,10 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     function testAttemptLoginOfUnconfirmedAccountShouldFail() {
         $email ='noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
         TestAccountCreateAndDestroy::create_testing_account(false, $email);
-        $res = login_user($email, $this->test_password);
-        $this->assertFalse($res['success']);
-        $this->assertTrue(is_string($res['login_error']));
-        $this->assertTrue((bool)$res['login_error'], 'No error returned: '.$res['login_error']);
+
+        $controller = new LoginController();
+        $res = $controller->performLogin($email, $this->test_password);
+        $this->assertNotEmpty($res, 'No error returned');
     }
 
     /**
@@ -210,26 +191,6 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertEquals('1', $active_string);
     }
 
-    /**
-     * group accountconf
-     */
-    function testAuthenticateConfirmedAccountByName() {
-        $player = Player::findByName($this->test_ninja_name);
-        $player->active = 1;
-        $player->save();
-
-        $account = Account::findByChar($player);
-        $account->confirmed = 1;
-        $account->setOperational(true);
-        $account->save();
-
-        $res = authenticate($this->test_ninja_name, $this->test_password, false);
-        $this->assertNotEmpty($res); // Should return account_id
-        $this->assertNotEmpty($res['account_id']);
-        $this->assertNotEmpty($res['account_identity']);
-        $this->assertNotEmpty($res['uname']);
-        $this->assertNotEmpty($res['player_id']);
-    }
 
     /**
      * group accountconf
@@ -244,9 +205,26 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $account->setOperational(true);
         $account->save();
 
-        $res = login_user($this->test_ninja_name, $this->test_password);
-        $this->assertTrue($res['success'], 'Login by ninja name failed for ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res['login_error'].']');
-        $this->assertFalse((bool)$res['login_error']);
+        $res = $account->authenticate($this->test_password);
+        $this->assertTrue($res);
+
+        $controller = new LoginController();
+        $res = $controller->performLogin($this->test_ninja_name, $this->test_password);
+        $this->assertEmpty($res, 'Login by ninja name failed for ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res.']');
+    }
+
+    function testLoginFailureOnAccountByName(){
+        $player = Player::findByName($this->test_ninja_name);
+        $player->active = 1;
+        $player->save();
+
+        $account = Account::findByChar($player);
+        $account->confirmed = 1;
+        $account->setOperational(true);
+        $account->save();
+
+        $res = $account->authenticate('invalid_password');
+        $this->assertfalse($res);
     }
 
     /**
@@ -262,9 +240,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $account->setOperational(true);
         $account->save();
 
-        $res = login_user($this->test_email, $this->test_password);
-        $this->assertTrue($res['success'], 'Login by email failed for confirmed player ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res['login_error'].']');
-        $this->assertFalse((bool)$res['login_error']);
+        $controller = new LoginController();
+        $res = $controller->performLogin($this->test_email, $this->test_password);
+        $this->assertEmpty($res, 'Login by email failed for confirmed player ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res.']');
     }
 
     /**
@@ -280,9 +258,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $account->setOperational(true);
         $account->save();
 
-        $res = login_user($this->test_email, $this->test_password);
-        $this->assertTrue($res['success'], 'Faded-to-inactive player unable to login');
-        $this->assertFalse((bool)$res['login_error']);
+        $controller = new LoginController();
+        $res = $controller->performLogin($this->test_email, $this->test_password);
+        $this->assertEmpty($res, 'Faded-to-inactive player unable to login');
     }
 
     /**
@@ -300,8 +278,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
 
         $accountController = new AccountController();
 
-        $res = login_user($this->test_email, $this->test_password);
-        $this->assertTrue($res['success'], 'Login should be successful when account is new');
+        $controller = new LoginController();
+        $res = $controller->performLogin($this->test_email, $this->test_password);
+        $this->assertEmpty($res, 'Login should be successful when account is new');
 
         // Fully pause the account, make the operational bit = false
         $player->active = 0;
@@ -310,11 +289,9 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $account->setOperational(false);
         $account->save();
 
-        $res = login_user($this->test_email, $this->test_password);
+        $res = $controller->performLogin($this->test_email, $this->test_password);
 
-        $this->assertFalse($res['success'], 'Login should not be successful when account is paused');
-        $this->assertTrue(is_string($res['login_error']));
-        $this->assertTrue((bool)$res['login_error']);
+        $this->assertNotEmpty($res, 'Login should not be successful when account is paused');
     }
 
     /**
@@ -350,8 +327,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         ];
 
         foreach ($bad_names as $name) {
-            $this->assertFalse((bool)username_is_valid($name));
+            $this->assertFalse(!(bool)Account::usernameIsValid($name));
         }
     }
-
 }

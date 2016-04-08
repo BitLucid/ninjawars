@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * Handle the listing of events
@@ -16,7 +17,7 @@ class EventsController {
      * Display the combat/action events and mark them as read when displayed.
      */
     public function index() {
-    	$char   = Player::find(self_char_id());
+    	$char   = Player::find(SessionFactory::getSession()->get('player_id'));
 		$events = $this->getEvents($char->id(), 300);
 
 		$this->readEvents($char->id()); // mark events as viewed.

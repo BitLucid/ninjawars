@@ -6,6 +6,7 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\AdminViews;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * The ninjamaster/admin info
@@ -17,7 +18,7 @@ class NinjamasterController {
     protected $self = null;
 
     public function __construct() {
-        $this->charId = self_char_id();
+        $this->charId = SessionFactory::getSession()->get('player_id');
         $this->self = Player::find($this->charId);
     }
 
@@ -49,36 +50,30 @@ class NinjamasterController {
             return $result;
         }
 
-        $viewChar = null;
-
-        // View a target non-self character
-        $charName = in('char_name');
-        if (is_string($charName) && trim($charName)) {
-            $viewChar = get_char_id($charName);
-        }
-
-        // If a request is made to view a character's info, show it.
-        $viewChar = first_value($viewChar, in('view'));
-
-        $dupes = AdminViews::duped_ips();
-        $stats = AdminViews::high_rollers();
-
-        $npcs        = NpcFactory::allNonTrivialNpcs();
-        $trivialNpcs = NpcFactory::allTrivialNpcs();
-
         $charInfos        = null;
         $charInventory    = null;
         $firstMessage     = null;
         $firstChar        = null;
         $firstAccount     = null;
         $firstDescription = null;
+        $dupes            = AdminViews::duped_ips();
+        $stats            = AdminViews::high_rollers();
+        $npcs             = NpcFactory::allNonTrivialNpcs();
+        $trivialNpcs      = NpcFactory::allTrivialNpcs();
 
-        if ($viewChar) {
-            $ids              = explode(',', $viewChar);
-            $firstChar        = Player::find(reset($ids));
+        $char_ids  = preg_split("/[,\s]+/", in('view'));
+        $char_name = trim(in('char_name'));
+
+        if ($char_name) { // View a target non-self character
+            $firstChar = Player::findByName($char_name);
+            $char_ids  = [$firstChar->id()];
+        }
+
+        if (!empty($char_ids)) {
+            $firstChar        = ($firstChar ? $firstChar : Player::find(reset($char_ids)));
             $firstAccount     = Account::findByChar($firstChar);
-            $charInfos        = AdminViews::split_char_infos($viewChar);
-            $charInventory    = AdminViews::char_inventory($viewChar);
+            $charInfos        = AdminViews::split_char_infos($char_ids);
+            $charInventory    = AdminViews::char_inventory($char_ids);
             $firstMessage     = $firstChar->messages;
             $firstDescription = $firstChar->description;
         }
@@ -92,7 +87,7 @@ class NinjamasterController {
             'char_infos'        => $charInfos,
             'dupes'             => $dupes,
             'char_inventory'    => $charInventory,
-            'char_name'         => $charName,
+            'char_name'         => $char_name,
             'npcs'              => $npcs,
             'trivial_npcs'      => $trivialNpcs,
         ];

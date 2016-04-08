@@ -373,30 +373,30 @@ class Clan {
 
     /**
      *
-     * @param int $p_leaderID
-     * @param String $p_clanName
+     * @param Player $p_leader
+     * @param String $p_clan_name
      * @return Clan
      */
-    public static function createClan($p_leaderID, $p_clanName) {
+    public static function createClan(Player $p_leader, $p_clan_name) {
         DatabaseConnection::getInstance();
 
-        $p_clanName = trim($p_clanName);
+        $clan_name = trim($p_clan_name);
 
         $result = DatabaseConnection::$pdo->query("SELECT nextval('clan_clan_id_seq')");
-        $newClanID = $result->fetchColumn();
+        $clan_id = $result->fetchColumn();
 
         $statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (:clanID, :clanName, :leader)');
-        $statement->bindValue(':clanID', $newClanID);
-        $statement->bindValue(':clanName', $p_clanName);
-        $statement->bindValue(':leader', get_char_name($p_leaderID));
+        $statement->bindValue(':clanID', $clan_id);
+        $statement->bindValue(':clanName', $clan_name);
+        $statement->bindValue(':leader', $p_leader->name());
         $statement->execute();
 
         $statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 2)');
-        $statement->bindValue(':clanID', $newClanID);
-        $statement->bindValue(':leader', $p_leaderID);
+        $statement->bindValue(':clanID', $clan_id);
+        $statement->bindValue(':leader', $p_leader->id());
         $statement->execute();
 
-        return new Clan($newClanID, $p_clanName);
+        return new Clan($clan_id, $clan_name);
     }
 
     /**

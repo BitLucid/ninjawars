@@ -6,6 +6,22 @@ use \PDO;
 
 /**
  * Player accounts and their info
+ * @property-read int account_id
+ * @property-read string account_identity
+ * @property-read string phash
+ * @property-read string active_email
+ * @property-read int type
+ * @property-read boolean operational
+ * @property-read string created_date
+ * @property-read string last_login
+ * @property-read string last_login_failure
+ * @property-read string login_failure_interval
+ * @property-read int karma_total
+ * @property-read string last_ip
+ * @property-read boolean confirmed
+ * @property-read int verification_number
+ * @property-read string oauth_provider
+ * @property-read int oauth_id
  */
 class Account {
     public static $fields = [
@@ -15,9 +31,10 @@ class Account {
         'active_email',
         'type',
         'operational',
-        'created_data',
+        'created_date',
         'last_login',
         'last_login_failure',
+        'login_failure_interval',
         'karma_total',
         'last_ip',
         'confirmed',
@@ -26,13 +43,13 @@ class Account {
         'oauth_id',
     ];
 
-	public function __construct($data = []) {
+    public function __construct($data = []) {
         $this->info = $data;
 
         foreach (self::$fields AS $field) {
             $this->$field = (isset($data[$field]) ? $data[$field] : null);
         }
-	}
+    }
 
     /**
      * Get an account object by id
@@ -56,8 +73,8 @@ class Account {
      * @param String $email_identity
      * @return Account|null
      */
-	public static function find($email_identity) {
-        $account_info = query_row('select * from accounts where account_identity = :identity_email',
+	public static function findByIdentity($email_identity) {
+        $account_info = query_row("select account_id from accounts where account_identity = :identity_email",
             [':identity_email'=>$email_identity]
         );
 
@@ -69,11 +86,12 @@ class Account {
      *
      * @param int $oauth_id
      * @param String $provider (optional) Defaults to facebook
+     * @todo oauth_id should probably be made a string to avoid overflow problems.
      * @return Account|null
      */
 	public static function findAccountByOauthId($oauth_id, $provider='facebook'){
         $account_info = query_row(
-            'SELECT * FROM accounts WHERE (oauth_id = :id AND oauth_provider = :provider) ORDER BY operational, type, created_date ASC LIMIT 1',
+            "SELECT account_id FROM accounts WHERE (oauth_id = :id AND oauth_provider = :provider) ORDER BY operational, type, created_date ASC LIMIT 1",
             [
                 ':id'       => positive_int($oauth_id),
                 ':provider' => $provider,
@@ -136,19 +154,33 @@ class Account {
     }
 
     /**
-     * Pull account data in a * like manner.
      */
-    public static function accountInfo($account_id, $specific=null) {
-        $res = query_row('select * from accounts where account_id = :account_id', array(':account_id'=>array($account_id, PDO::PARAM_INT)));
-        if ($specific) {
-            if (isset($res[$specific])) {
-                $res = $res[$specific];
-            } else {
-                $res = null;
-            }
-        }
+    public static function findByLogin($username) {
+        $query = 'SELECT account_id FROM accounts WHERE active_email = :login1
+            UNION
+            SELECT _account_id AS account_id FROM players
+            JOIN account_players ON player_id = _player_id
+            WHERE lower(uname) = :login2';
 
-        return $res;
+        $params = [
+            ':login1'=>strtolower($username),
+            ':login2'=>strtolower($username),
+        ];
+
+        return self::findById(query_item($query, $params));
+    }
+
+    /**
+     * Pull account record from database
+     *
+     * @param int $account_id
+     * @return Array
+     */
+    public static function accountInfo($account_id) {
+        return query_row(
+            "SELECT *, date_part('epoch', now() - coalesce(last_login_failure, '1999-01-01')) AS login_failure_interval FROM accounts WHERE account_id = :account_id",
+            [':account_id'=>[$account_id, PDO::PARAM_INT]]
+        );
     }
 
     /**
@@ -188,9 +220,9 @@ class Account {
             JOIN accounts ON _account_id = account_id
             WHERE account_id = :acc_id ORDER BY level DESC LIMIT 1';
 
-        $verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($newID, PDO::PARAM_INT)));
+$verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($newID, PDO::PARAM_INT)));
 
-        return ($verify_ninja_id != $ninja_id ? false : $newID);
+return ($verify_ninja_id != $ninja_id ? false : $newID);
     }
 
     public function info() {
@@ -263,6 +295,9 @@ class Account {
         return $this->account_identity;
     }
 
+    /**
+     * @return integer
+     */
     public function getType() {
         return $this->type;
     }
@@ -356,15 +391,95 @@ class Account {
             ':confirmed'      => [(int) $this->isConfirmed(), \PDO::PARAM_INT],
         ];
 
-        $updated = update_query('update accounts set
+        $updated = update_query('UPDATE accounts SET
             account_identity = :identity, active_email = :active_email, type = :type, oauth_provider = :oauth_provider,
             oauth_id = :oauth_id, karma_total = :karma_total, operational = :operational, confirmed = :confirmed
-            where account_id = :account_id', $params);
+            WHERE account_id = :account_id', $params);
 
         return $updated;
     }
 
+    public static function updateLastLoginFailure(Account $account) {
+        $update = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";
+        return query($update, [':account_id' => [$account->id(), PDO::PARAM_INT]]);
+    }
+
     public static function emailIsValid($p_email) {
         return preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", $p_email);
+    }
+
+    /**
+     * Return the error reason for a username not validating, if it doesn't.
+     *
+     * Username requirements:
+     * A username must start with a lower-case or upper-case letter
+     * A username can contain only letters, numbers, underscores, or dashes.
+     * A username must be from 3 to 24 characters long
+     * A username cannot end in an underscore or dash
+     * A username cannot contain 2 consecutive special characters
+     *
+     * @return string|boolean
+     */
+    public static function usernameIsValid($username) {
+        $error = false;
+        $username = (string) $username;
+
+        if (mb_strlen($username) > UNAME_UPPER_LENGTH) {
+            $error = 'Name too long. Must be 3 to 24 characters. ';
+        } elseif (mb_strlen($username) < UNAME_LOWER_LENGTH) {
+            $error = 'Name too short. Must be 3 to 24 characters. ';
+        }
+
+        if (mb_substr($username, 0, 1, 'utf-8') === '_') {
+            $error .= 'Name cannot start with an underscore. ';
+        }
+
+        if (mb_substr($username, 0, 1, 'utf-8') === ' ') {
+            $error .= 'Name cannot start with an space. ';
+        }
+
+        if (mb_substr($username, -1, null, 'utf-8') === '_') {
+            $error .= 'Name cannot end in an underscore. ';
+        }
+
+        if (!preg_match("#^[a-z]+#i", $username)) {
+            $error .= 'Name must start with a letter. ';
+        }
+
+        if (!preg_match("#[\da-z\-_]*[a-z0-9]$#i", $username)) {
+            $error .= 'Name must end with a letter or number. ';
+        }
+
+        if (preg_match("#[\-_]{2}#", $username)) {
+            $error .= 'More than two special characters in a row are not allowed in name. ';
+        }
+
+        if (!preg_match("#[\da-z\-_]#i", $username)) {
+            $error .= 'No special characters except - dash and _ underscore, please. ';
+        }
+
+        if (!preg_match("#^[a-z]+([\da-z\-_]+[a-z0-9])?$#iD", $username)) {
+            $error .= 'Name can only contain letters and numbers, with a dash or underscore or two. ';
+        }
+
+        return $error;
+    }
+
+    /** 
+     * @note that this does not check for operational or confirmed.
+     * @return boolean
+     */
+    public function authenticate($password) {
+		$sql = "SELECT account_id,
+		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated
+			FROM accounts
+			WHERE account_id = :account";
+		$result = query($sql, [':account' => $this->id(), ':pass' => $password]);
+		if ($result->rowCount() === 1) {
+            $row = $result->fetch();
+            return (intval($row['authenticated']) === 1);
+        } else {
+            return false;
+        }
     }
 }

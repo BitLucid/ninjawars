@@ -32,6 +32,12 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue((bool)$char->name());
     }
 
+
+    public function testFindByNamePositive() {
+        $char = Player::findByName($this->test_ninja_name);
+        $this->assertNotNull($char);
+    }
+
     public function testFindByNameNegative() {
         $char = Player::findByName('BANANA_IS_FAKE$$$NOTREAL=;m"');
         $this->assertNull($char);

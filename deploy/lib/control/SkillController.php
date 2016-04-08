@@ -7,6 +7,7 @@ use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Event;
+use NinjaWars\core\extensions\SessionFactory;
 
 /**
  * Handles both skill listing and displaying, and their usage
@@ -42,7 +43,7 @@ class SkillController {
 	 *
 	 */
 	public function __construct() {
-		$this->player = Player::find(self_char_id());
+		$this->player = Player::find(SessionFactory::getSession()->get('player_id'));
 	}
 
 	/**
@@ -60,7 +61,7 @@ class SkillController {
 
 		$status_list = Player::getStatusList();
 		$no_skills   = true;
-		$stealth     = $skillsListObj->hasSkill('Stealth');
+		$stealth     = $skillsListObj->hasSkill('Stealth', $player);
 
 		if ($stealth) {
 			$no_skills = false;
@@ -68,17 +69,17 @@ class SkillController {
 
 		$stealth_turn_cost    = $skillsListObj->getTurnCost('Stealth');
 		$unstealth_turn_cost  = $skillsListObj->getTurnCost('Unstealth');
-		$chi                  = $skillsListObj->hasSkill('Chi');
-		$speed                = $skillsListObj->hasSkill('speed');
-		$hidden_resurrect     = $skillsListObj->hasSkill('hidden resurrect');
-		$midnight_heal        = $skillsListObj->hasSkill('midnight heal');
+		$chi                  = $skillsListObj->hasSkill('Chi', $player);
+		$speed                = $skillsListObj->hasSkill('speed', $player);
+		$hidden_resurrect     = $skillsListObj->hasSkill('hidden resurrect', $player);
+		$midnight_heal        = $skillsListObj->hasSkill('midnight heal', $player);
 		$kampo_turn_cost      = $skillsListObj->getTurnCost('Kampo');
-		$kampo                = $skillsListObj->hasSkill('kampo');
-		$heal                 = $skillsListObj->hasSkill('heal');
+		$kampo                = $skillsListObj->hasSkill('kampo', $player);
+		$heal                 = $skillsListObj->hasSkill('heal', $player);
 		$heal_turn_cost       = $skillsListObj->getTurnCost('heal');
-		$clone_kill           = $skillsListObj->hasSkill('clone kill');
+		$clone_kill           = $skillsListObj->hasSkill('clone kill', $player);
 		$clone_kill_turn_cost = $skillsListObj->getTurnCost('clone kill');
-		$wrath                = $skillsListObj->hasSkill('wrath');
+		$wrath                = $skillsListObj->hasSkill('wrath', $player);
 		$can_harmonize        = $starting_ki;
 
 		$parts = [
@@ -125,7 +126,7 @@ class SkillController {
 	}
 
     public function postSelfUse(){
-        $target = self_char_id();
+        $target = SessionFactory::getSession()->get('player_id');
         $act = post('act');
         $url = 'skill/self_use/'.rawurlencode($act).'/';
         // TODO: Need to double check that this doesn't allow for redirect injection
@@ -161,6 +162,9 @@ class SkillController {
 			$loot = $added_bounty = $bounty = $suicided = $destealthed = null;
 		$error = null;
 
+		$char_id = SessionFactory::getSession()->get('player_id');
+		$player  = Player::find($char_id);
+
 		$path = RequestWrapper::getPathInfo();
 		$slugs = $this->parseSlugs($path);
 		// (fullpath0) /skill1/go2/Fire%20Bolt3/tchalvak4/(beagle5/)
@@ -170,7 +174,7 @@ class SkillController {
 
 		if(!positive_int($target)){
 			if($self_use){
-				$target = self_char_id();
+				$target = $char_id;
 			} else {
 				if($target !== null){
 					$targetObj = Player::findByName($target);
@@ -204,14 +208,11 @@ class SkillController {
 		$today           = date("F j, Y, g:i a");
 
 		// Check whether the user actually has the needed skill.
-		$has_skill = $skillListObj->hasSkill($act);
+		$has_skill = $skillListObj->hasSkill($act, $player);
 
 		$starting_turn_cost = $turn_cost;
 		assert($turn_cost>=0);
 		$turns_to_take = null;  // *** Even on failure take at least one turn.
-		$char_id = self_char_id();
-
-		$player = Player::find($char_id);
 
 		if ($self_use) {
 			// Use the skill on himself.
@@ -231,7 +232,7 @@ class SkillController {
 		$covert           = false;
 		$victim_alive     = true;
 		$attacker_id      = $player->name();
-		$attacker_char_id = self_char_id();
+		$attacker_char_id = $player->id();
 		$starting_turns   = $player->vo->turns;
 		$ending_turns     = null;
 
@@ -453,34 +454,29 @@ class SkillController {
 					$generic_skill_result_message = '__TARGET__ is already iced.';
 				}
 			} else if ($act == 'Clone Kill') {
-
-
 				// Obliterates the turns and the health of similar accounts that get clone killed.
 				$reuse = false; // Don't give a reuse link.
 
-				$clone1 = $target;
-				$clone2 = $target2;
+				$clone1 = Player::findByName($target);
+				$clone2 = Player::findByName($target2);
 
-				$clone_1_id = get_char_id($clone1);
-				$clone_2_id = get_char_id($clone2);
-				$clones = false;
+				if (!$clone1 || !$clone2) {
+					$not_a_ninja = $target;
 
-				if (!$clone_1_id || !$clone_2_id) {
-					$not_a_ninja = $clone1;
-
-					if (!$clone_2_id) {
-						$not_a_ninja = $clone2;
+					if (!$clone2) {
+						$not_a_ninja = $target2;
 					}
 
 					$generic_skill_result_message = "There is no such ninja as $not_a_ninja.";
-				} elseif ($clone_1_id == $clone_2_id) {
+				} elseif ($clone1->id() == $clone2->id()) {
 					$generic_skill_result_message = '__TARGET__ is just the same ninja, so not the same thing as a clone at all.';
-				} elseif ($clone_1_id == $char_id || $clone_2_id == $char_id) {
+				} elseif ($clone1->id() == $char_id || $clone2->id() == $char_id) {
 					$generic_skill_result_message = 'You cannot clone kill yourself.';
 				} else {
 					// The two potential clones will be obliterated immediately if the criteria are met in CloneKill.
-					$kill_or_fail = CloneKill::kill($player, Player::find($clone_1_id), Player::find($clone_2_id));
-					if($kill_or_fail !== false){
+					$kill_or_fail = CloneKill::kill($player, $clone1, $clone2);
+
+					if ($kill_or_fail !== false) {
 						$generic_skill_result_message = $kill_or_fail;
 					} else {
 						$generic_skill_result_message = "Those two ninja don't seem to be clones.";

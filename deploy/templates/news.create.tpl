@@ -2,7 +2,7 @@
 <section id='full-news'>
   <h1>{$heading}</h1>
   {include file="flash-message.tpl"}
-  {if is_logged_in()}
+  {if $authenticated}
   <div class='parent'>
     <div class='child'>
       <form class='news-submit' id="post_msg" action="/news/store/" method="post" name="post_msg">

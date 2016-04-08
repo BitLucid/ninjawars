@@ -39,7 +39,7 @@ $(document).ready(function() {
 
     $("#shop_form").submit(function() {
 {/literal}
-        {if !$is_logged_in}return false;{/if}
+        {if !$authenticated}return false;{/if}
 {literal}
         NW.storage.appState.set("quantity", $("#quantity").val());
         return true;
@@ -65,7 +65,7 @@ $(document).ready(function() {
 
 		<tr>
 		  <td colspan="4" class='text-centered slightly-padded'>
-			{if $is_logged_in}
+			{if $authenticated}
 			  <em class='speech'>How many of these would you like?</em> <input id="quantity" type="number" min='1' max='99' name="quantity" class="textField">
 			{else}
 			  To purchase the items below you must <a href="/signup?referrer=">become a ninja</a>.
