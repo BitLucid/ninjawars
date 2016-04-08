@@ -82,6 +82,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty(Account::usernameIsValid('st')); // Too short
         $this->assertNotEmpty(Account::usernameIsValid(''));
         $this->assertNotEmpty(Account::usernameIsValid(' '));
+        $this->assertNotEmpty(Account::usernameIsValid('5555numberstarts'));
         $this->assertNotEmpty(Account::usernameIsValid('_underscorestartsit'));
         $this->assertNotEmpty(Account::usernameIsValid('underscore-ends-it_'));
         $this->assertNotEmpty(Account::usernameIsValid('too____mny----l'));
@@ -210,6 +211,20 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $controller = new LoginController();
         $res = $controller->performLogin($this->test_ninja_name, $this->test_password);
         $this->assertEmpty($res, 'Login by ninja name failed for ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res.']');
+    }
+
+    function testLoginFailureOnAccountByName(){
+        $player = Player::findByName($this->test_ninja_name);
+        $player->active = 1;
+        $player->save();
+
+        $account = Account::findByChar($player);
+        $account->confirmed = 1;
+        $account->setOperational(true);
+        $account->save();
+
+        $res = $account->authenticate('invalid_password');
+        $this->assertfalse($res);
     }
 
     /**

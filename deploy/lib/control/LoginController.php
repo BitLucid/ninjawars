@@ -3,9 +3,9 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use \Constants;
 use \PDO;
 
@@ -64,7 +64,7 @@ class LoginController {
     /**
      * Render the concrete elements of the response
      */
-    public function render($title, $parts) {
+    private function render($title, $parts) {
         $response = [
             'template' => 'login.tpl',
             'title'    => $title,
@@ -79,8 +79,8 @@ class LoginController {
      * Perform all the login functionality for the login page as requested.
      */
     public function performLogin($username_requested, $pass) {
-        Request::setTrustedProxies(Constants::$trusted_proxies);
-        $request = Request::createFromGlobals();
+        RequestWrapper::init();
+        $request = RequestWrapper::$request;
 
         $user_agent = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
 
@@ -200,8 +200,8 @@ class LoginController {
         $session->set('account_id', $account->id());
         $session->set('authenticated', true);
 
-        Request::setTrustedProxies(Constants::$trusted_proxies);
-        $request = Request::createFromGlobals();
+        RequestWrapper::init();
+        $request = RequestWrapper::$request;
         $user_ip = $request->getClientIp();
 
         query(

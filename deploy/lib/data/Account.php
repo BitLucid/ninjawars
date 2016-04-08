@@ -15,6 +15,7 @@ use \PDO;
  * @property-read string created_date
  * @property-read string last_login
  * @property-read string last_login_failure
+ * @property-read string login_failure_interval
  * @property-read int karma_total
  * @property-read string last_ip
  * @property-read boolean confirmed
@@ -42,13 +43,13 @@ class Account {
         'oauth_id',
     ];
 
-	public function __construct($data = []) {
+    public function __construct($data = []) {
         $this->info = $data;
 
         foreach (self::$fields AS $field) {
             $this->$field = (isset($data[$field]) ? $data[$field] : null);
         }
-	}
+    }
 
     /**
      * Get an account object by id
@@ -72,8 +73,8 @@ class Account {
      * @param String $email_identity
      * @return Account|null
      */
-	public static function find($email_identity) {
-        $account_info = query_row('select * from accounts where account_identity = :identity_email',
+	public static function findByIdentity($email_identity) {
+        $account_info = query_row("select account_id from accounts where account_identity = :identity_email",
             [':identity_email'=>$email_identity]
         );
 
@@ -90,7 +91,7 @@ class Account {
      */
 	public static function findAccountByOauthId($oauth_id, $provider='facebook'){
         $account_info = query_row(
-            'SELECT * FROM accounts WHERE (oauth_id = :id AND oauth_provider = :provider) ORDER BY operational, type, created_date ASC LIMIT 1',
+            "SELECT account_id FROM accounts WHERE (oauth_id = :id AND oauth_provider = :provider) ORDER BY operational, type, created_date ASC LIMIT 1",
             [
                 ':id'       => positive_int($oauth_id),
                 ':provider' => $provider,
@@ -441,7 +442,7 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
             $error .= 'Name cannot end in an underscore. ';
         }
 
-        if (!preg_match("#[a-z]*#i", $username)) {
+        if (!preg_match("#^[a-z]+#i", $username)) {
             $error .= 'Name must start with a letter. ';
         }
 
@@ -473,12 +474,9 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
 		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated
 			FROM accounts
 			WHERE account_id = :account";
-
 		$result = query($sql, [':account' => $this->id(), ':pass' => $password]);
-
 		if ($result->rowCount() === 1) {
             $row = $result->fetch();
-
             return (intval($row['authenticated']) === 1);
         } else {
             return false;

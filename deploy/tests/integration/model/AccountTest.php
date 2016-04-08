@@ -47,7 +47,7 @@ class AccountTest extends PHPUnit_Framework_TestCase {
 
     public function testAccountReturnsAccountWithMatchingIdentity() {
         $identity = $this->test_email;
-        $acc = Account::find($identity);
+        $acc = Account::findByIdentity($identity);
         $this->assertEquals($identity, $acc->getIdentity());
     }
 
@@ -61,6 +61,12 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $oauth_id = 88888888888888;
         $account->setOauthId($oauth_id, 'facebook');
         $this->assertEquals($oauth_id, $account->getOauthId());
+    }
+
+    public function testSetAndGetOauthProvider(){
+        $account = new Account();
+        $account->setOauthProvider('facebook');
+        $this->assertEquals('facebook', $account->getOauthProvider());
     }
 
     public function testAccountCanSaveNewOauthIdAfterHavingItAdded() {
@@ -104,4 +110,17 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $account = Account::findById(-120);
         $this->assertNull($account);
     }
+
+
+    public function testThanAccountCanBeSetAsDifferentType(){
+        $account = new Account();
+        $account->setType(2);
+        $this->assertEquals(2, $account->type);
+    }
+
+    public function testAuthenticationOfAccountWithNoDatabaseAnalogFails(){
+        $account = new Account();
+        $this->assertFalse($account->authenticate('an invalid password'));
+    }
+
 }
