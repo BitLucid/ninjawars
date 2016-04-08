@@ -6,6 +6,21 @@ use \PDO;
 
 /**
  * Player accounts and their info
+ * @property-read int account_id
+ * @property-read string account_identity
+ * @property-read string phash
+ * @property-read string active_email
+ * @property-read int type
+ * @property-read boolean operational
+ * @property-read string created_date
+ * @property-read string last_login
+ * @property-read string last_login_failure
+ * @property-read int karma_total
+ * @property-read string last_ip
+ * @property-read boolean confirmed
+ * @property-read int verification_number
+ * @property-read string oauth_provider
+ * @property-read int oauth_id
  */
 class Account {
     public static $fields = [
@@ -70,6 +85,7 @@ class Account {
      *
      * @param int $oauth_id
      * @param String $provider (optional) Defaults to facebook
+     * @todo oauth_id should probably be made a string to avoid overflow problems.
      * @return Account|null
      */
 	public static function findAccountByOauthId($oauth_id, $provider='facebook'){
@@ -278,6 +294,9 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
         return $this->account_identity;
     }
 
+    /**
+     * @return integer
+     */
     public function getType() {
         return $this->type;
     }
@@ -445,6 +464,10 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
         return $error;
     }
 
+    /** 
+     * @note that this does not check for operational or confirmed.
+     * @return boolean
+     */
     public function authenticate($password) {
 		$sql = "SELECT account_id,
 		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated
