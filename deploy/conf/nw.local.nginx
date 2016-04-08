@@ -19,8 +19,6 @@ server {
 		try_files /dev_favicon.ico =404;
 	}
 
-	index index.php;
-
 	# Debugging on settings
 	log_not_found on;
 	#autoindex on;

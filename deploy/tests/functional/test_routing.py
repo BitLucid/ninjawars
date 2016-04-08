@@ -84,7 +84,7 @@ class TestRouting:
             'main.php', 'tutorial.php', 'npc.php', 'list_all_players.php',
             'webgame/', 'account_issues.php', 'confirm.php', 'casino/bet',
             'news.php', 'resetpassword.php', 'password/reset', 
-            'password/post_email'
+            'password/post_email', 'index.php',
         ]
         # Urls that just redirect for anonymous users, with continued purpose.
         urls_private = [

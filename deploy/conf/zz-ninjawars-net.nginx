@@ -21,8 +21,6 @@ server {
         root /usr/share/nginx/html;
     }
 
-	index index.php;
-
 	location ~ ^/(js|css|images|files)/ {
 		rewrite "^/(.*)\.[\d]{10,12}\.(.*)$" /$1.$2;
 		expires 365d;
