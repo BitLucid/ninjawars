@@ -6,6 +6,7 @@ use \PDO;
 
 /**
  * Player accounts and their info
+ * @property array info
  * @property-read int account_id
  * @property-read string account_identity
  * @property-read string phash
@@ -43,6 +44,9 @@ class Account {
         'oauth_id',
     ];
 
+    /**
+     * Takes raw db column data and sets properties each from the field list
+     */
     public function __construct($data = []) {
         $this->info = $data;
 
@@ -109,9 +113,9 @@ class Account {
      * Get an account for a character
      *
      * @param Character $char
-     * @return Account
+     * @return Account|null
      */
-    public static function findByChar(Character $char) {
+    public static function findByChar(Player $char) {
         $query = 'SELECT account_id FROM accounts
             JOIN account_players ON _account_id = account_id
             JOIN players ON _player_id = player_id
@@ -142,7 +146,7 @@ class Account {
      * Get the Account by a ninja name (aka player.uname).
      *
      * @param String $ninja_name
-     * @return Account
+     * @return Account|null
      */
     public static function findByNinjaName($ninja_name) {
         $query = 'SELECT account_id FROM accounts
@@ -154,6 +158,8 @@ class Account {
     }
 
     /**
+     * @param string $username
+     * @return Account|null
      */
     public static function findByLogin($username) {
         $query = 'SELECT account_id FROM accounts WHERE active_email = :login1
@@ -185,6 +191,7 @@ class Account {
 
     /**
      * Create a new account
+     * @return int|false
      */
     public static function create($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1, $ip=null) {
         DatabaseConnection::getInstance();
@@ -220,17 +227,33 @@ class Account {
             JOIN accounts ON _account_id = account_id
             WHERE account_id = :acc_id ORDER BY level DESC LIMIT 1';
 
-$verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($newID, PDO::PARAM_INT)));
+        $verify_ninja_id = query_item($sel_ninja_id, array(':acc_id'=>array($newID, PDO::PARAM_INT)));
 
-return ($verify_ninja_id != $ninja_id ? false : $newID);
+        return ($verify_ninja_id != $ninja_id ? false : $newID);
     }
 
+    /**
+     * The array of account data as pulled from the database
+     * @return array
+     */
     public function info() {
         return $this->info;
     }
 
+    /**
+     * @return int
+     */
     public function getId() {
         return $this->account_id;
+    }
+
+    /**
+     * Alias for getId()
+     *
+     * @return int
+     */
+    public function id() {
+        return $this->getId();
     }
 
     /**
@@ -243,18 +266,17 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
     }
 
     /**
-     * Alias for getId()
-     *
-     * @return int
+     * This is the currently sent-to email, whereas the identity becomes 
+     * immutably fixed as the signup email
+     * @return string
      */
-    public function id() {
-        return $this->getId();
-    }
-
     public function getActiveEmail() {
         return $this->active_email;
     }
 
+    /**
+     * Set new email to send to.
+     */
     public function setActiveEmail($p_email) {
         if (self::emailIsValid($p_email)) {
             $this->active_email     = $p_email;
@@ -264,44 +286,70 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
         }
     }
 
+    /**
+     * @return string|null Time of last login
+     */
     public function getLastLogin() {
         return $this->info['last_login'];
     }
 
+    /**
+     * @return string|null Time of last failed login attempt
+     */
     public function getLastLoginFailure() {
         return $this->info['last_login_failure'];
     }
 
+    /**
+     * The total karma that the account ever gained, 
+     * though some of the karma may have been spent per player
+     * This should only ever increment upwards.
+     * @return int
+     */
     public function getKarmaTotal() {
         return $this->info['karma_total'];
     }
 
+    /**
+     * @param int $p_amount
+     */
     public function setKarmaTotal($p_amount) {
         $this->info['karma_total'] = (int) $p_amount;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastIp() {
         return $this->info['last_ip'];
     }
 
     /**
      * Identity wrapper.
+     * @return string The initial signup email is the identity, generally.
      */
     public function identity() {
         return $this->getIdentity();
     }
 
+    /**
+     * @return string
+     */
     public function getIdentity() {
         return $this->account_identity;
     }
 
     /**
+     * Type, ostensibly used for "member" "admin" or other roles.
      * @return integer
      */
     public function getType() {
         return $this->type;
     }
 
+    /**
+     * @param int $type
+     */
     public function setType($type) {
         $cast_type = positive_int($type);
 
@@ -314,6 +362,10 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
         return $this->type;
     }
 
+    /**
+     * Numeric Id for a oauth login provider
+     * facebook, google+, etc etc
+     */
     public function setOauthId($id, $provider='facebook') {
         $this->oauth_id = $id;
         if($provider){
@@ -322,14 +374,23 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
         return true;
     }
 
+    /**
+     * @return int
+     */
     public function getOauthId($provider='facebook') {
         return $this->oauth_id;
     }
 
+    /**
+     * @return string
+     */
     public function getOauthProvider() {
         return $this->oauth_provider;
     }
 
+    /**
+     * @param string $provider
+     */
     public function setOauthProvider($provider) {
         return ($this->oauth_provider = $provider);
     }
@@ -360,7 +421,7 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
     /**
      * Change the account password
      *
-     * @param String $newPassword
+     * @param string $new_password
      * @return int Number of rows updated
      */
     public function changePassword($new_password) {
@@ -399,11 +460,18 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
         return $updated;
     }
 
+    /**
+     * Update the time of last failed login.
+     */
     public static function updateLastLoginFailure(Account $account) {
         $update = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";
         return query($update, [':account_id' => [$account->id(), PDO::PARAM_INT]]);
     }
 
+    /**
+     * Very rough check that am email is approximately correct & allowable
+     * It should be very non-strict overall.
+     */
     public static function emailIsValid($p_email) {
         return preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", $p_email);
     }
@@ -465,7 +533,8 @@ return ($verify_ninja_id != $ninja_id ? false : $newID);
         return $error;
     }
 
-    /** 
+    /**
+     * Authenticate against an already-matched account
      * @note that this does not check for operational or confirmed.
      * @return boolean
      */
