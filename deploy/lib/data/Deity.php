@@ -4,6 +4,7 @@ namespace NinjaWars\core\data;
 require_once(LIB_ROOT."control/lib_deity.php");
 
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\Event;
 
 class Deity{
 
@@ -226,8 +227,8 @@ class Deity{
         $deleted_items = DatabaseConnection::$pdo->query("delete from levelling_log where killsdate < (now() - interval '2 months')");
         $affected_rows['deleted levelling_logs'] = $deleted_items->rowCount();
 
-        $deleted_mail = delete_old_messages(); // As per the mail function in lib_deity.
-        $deleted_events = delete_old_events();
+        $deleted_mail = Messages::deleteOldMessages();
+        $deleted_events = Events::deleteOldEvents();
         $affected_rows['Old Messages Deletion'] = $deleted_mail;
         $affected_rows['Old Events Deletion'] = $deleted_events;
 

@@ -159,4 +159,12 @@ class Message extends Model {
 
         return false;
     }
+
+    /**
+     * @return int Number of rows deleted
+     */
+    public static function deleteOldMessages() {
+        $statement = query("delete from messages where date < ( now() - '3 months'::interval)");
+        return $statement->rowCount();
+    }
 }

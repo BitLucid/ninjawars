@@ -9,16 +9,6 @@
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 
-function delete_old_messages() {
-    $statement = query("delete from messages where date < ( now() - '3 months'::interval)");
-	return $statement->rowCount();
-}
-
-function delete_old_events() {
-    $statement = query("delete from events where date < ( now() - '4 days'::interval)");
-	return $statement->rowCount();
-}
-
 function update_days() {
 	DatabaseConnection::getInstance();
 	$players = DatabaseConnection::$pdo->query("UPDATE players SET days = days+1");

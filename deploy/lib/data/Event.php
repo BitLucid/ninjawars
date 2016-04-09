@@ -26,4 +26,12 @@ class Event {
         $statement->bindValue(':message', $message);
         $statement->execute();
     }
+
+    /**
+     * @return int Number of rows deleted
+     */
+    public static function deleteOldEvents() {
+        $statement = query("delete from events where date < ( now() - '4 days'::interval)");
+        return $statement->rowCount();
+    }
 }
