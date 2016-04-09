@@ -5,75 +5,81 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Character;
 use NinjaWars\core\data\Player;
 
-// TODO: Abstract all the unique npc behaviors into the generic system.
-
 /**
  *  who/what/why/where The various generic npcs that can be fought or interacted with
  *  villager npcs could have bounties
  *  npcs can have shared traits that provide special abilities
  *  Generally they are interacted with from the /enemies page
  */
-class Npc implements Character{
+class Npc implements Character {
     private $data;
     const RICH_MIN_GOLD_DIVISOR = 1.3;
     const MIN_GOLD = 0; // Could become data driven later
 
-    public function __construct($content){
-    	if(is_string($content) && trim($content)){
-    		NpcFactory::fleshOut($content, $this);
-    	} else {
-    		NpcFactory::fleshOutFromData($content, $this);
-    	}
+    public function __construct($content) {
+        if (is_string($content) && trim($content)) {
+            NpcFactory::fleshOut($content, $this);
+        } else {
+            NpcFactory::fleshOutFromData($content, $this);
+        }
     }
 
-    public function name(){
+    public function name() {
         return $this->name;
     }
 
-    public function identity(){
+    public function identity() {
         return $this->name;
     }
 
-    public function image(){
+    public function image() {
         return $this->image;
     }
 
-    public function shortDesc(){
+    public function shortDesc() {
         return $this->short_desc;
     }
 
-    // Calculcate the max damage of an npc.  Needed for effectiveness calc.
-    public function max_damage(Character $enemy=null){
+    /**
+     * Calculcate the max damage of an npc.  Needed for effectiveness calc.
+     */
+    public function max_damage(Character $enemy=null) {
         $dam = ((1+ ($this->strength * 2)) + $this->damage);
         // Mirror some of their enemy's strength
-        if($this->has_trait('partial_match_strength') && $enemy instanceof Character){
+        if ($this->has_trait('partial_match_strength') && $enemy instanceof Character) {
             $add = max(0, floor($enemy->strength() / 3)); // Enemy str/3 or at minimum 0
             $dam = $dam + $add;
         }
+
         return $dam;
     }
 
-    // Calculate the initial naive damage from npcs.
-    public function damage(Character $char = null){
+    /**
+     * Calculate the initial naive damage from npcs.
+     */
+    public function damage(Character $char = null) {
         return rand(0, $this->max_damage($char));
     }
 
-    // Calculate difficulty, naively at the moment.
-    public function difficulty(){
+    /**
+     * Calculate difficulty, naively at the moment.
+     */
+    public function difficulty() {
         // Just add together all the points of the mob, so to speak.
-        $adds_bounty = $this->bountyMod() > 0? 1 : 0;
-        $armored = $this->has_trait('armored')? 1 : 0;
+        $adds_bounty = ($this->bountyMod() > 0 ? 1 : 0);
+        $armored = ($this->has_trait('armored') ? 1 : 0);
         $complex = count($this->traits_array);
-        $matches_strength = $this->has_trait('partial_match_strength')? 1 : 0;
+        $matches_strength = ($this->has_trait('partial_match_strength') ? 1 : 0);
+
         return 0
-            + $this->strength * 2 
-            + $this->damage 
+            + $this->strength * 2
+            + $this->damage
             + floor($this->max_health() / 10)
             + (int) ($this->max_health() > 1) // Have more than 1 health, so not totally devoid of content
-            + $adds_bounty 
+            + $adds_bounty
             + $armored * 5
             + $complex * 3
-			+ $matches_strength * 5
+            + $matches_strength * 5
             ;
     }
 
@@ -88,57 +94,72 @@ class Npc implements Character{
         return $this->traits_array;
     }
 
-    public function speed(){
+    public function speed() {
         return $this->speed;
     }
-    public function strength(){
+
+    public function strength() {
         return $this->strength;
     }
-    public function stamina(){
+
+    public function stamina() {
         return $this->stamina;
     }
-    public function ki(){
+
+    public function ki() {
         return $this->ki;
     }
 
-    public function health(){
+    public function health() {
         return $this->max_health(); // For now, since there aren't npc instances currently.
     }
-    
-    // Get their starting health, minimum of 1.
-    public function max_health(){
-    	$armored = $this->has_trait('armored')? 1 : 0;
-    	return 1 + ($this->stamina * 5) + ($this->stamina * 2 * $armored);
-	}
-    
-    // Instantiate a random chance of the inventory item being present.
-    private function inventory_present($chance){
+
+    /**
+     * Get their starting health, minimum of 1.
+     */
+    public function max_health() {
+        $armored = ($this->has_trait('armored') ? 1 : 0);
+        return 1 + ($this->stamina * 5) + ($this->stamina * 2 * $armored);
+    }
+
+    /**
+     * Instantiate a random chance of the inventory item being present.
+     */
+    private function inventory_present($chance) {
         return rand(1, 1000) < (int) ceil((float)$chance * 1000);
     }
 
-    // Calculate this npc's inventory from initial chances.
-    public function inventory(){
-    	if(!isset($this->inventory) && isset($this->inventory_chances) && $this->inventory_chances){
-    		$inv = array();
-    		foreach($this->inventory_chances as $item=>$chance){
-    			if($this->inventory_present($chance)){ // Calculate success from a decimal/float.
-    				// Add the item.
-    				$inv[$item] = true;
-    			}
-    		}
-    		$this->inventory = $inv;
-    	}
-    	return $this->inventory;
-    }
-    
-    // Get the npcs inventory and return true if there is an instance of the item in it.
-    public function has_item($item){
-    	return isset($this->inventory[$item]);
+    /**
+     * Calculate this npc's inventory from initial chances.
+     */
+    public function inventory() {
+        if (!isset($this->inventory) && isset($this->inventory_chances) && $this->inventory_chances) {
+            $inv = array();
+            foreach ($this->inventory_chances as $item=>$chance) {
+                if ($this->inventory_present($chance)) { // Calculate success from a decimal/float.
+                    // Add the item.
+                    $inv[$item] = true;
+                }
+            }
+
+            $this->inventory = $inv;
+        }
+
+        return $this->inventory;
     }
 
-    // Get the race of the npc.
-    public function race(){
-        if(!$this->race){
+    /**
+     * Get the npcs inventory and return true if there is an instance of the item in it.
+     */
+    public function has_item($item) {
+        return isset($this->inventory[$item]);
+    }
+
+    /**
+     * Get the race of the npc.
+     */
+    public function race() {
+        if (!$this->race) {
             return 'creature';
         } else {
             return $this->race;
@@ -147,10 +168,12 @@ class Npc implements Character{
 
     /**
      * Additional bounty added by killing this char
-     * Only npcs with a bounty mod will put a bounty on your head at all.
+     *
      * @return int
-    **/
-    public function bountyMod(){
+     * @note
+     * Only npcs with a bounty mod will put a bounty on your head at all.
+     */
+    public function bountyMod() {
         return $this->bounty_mod;
     }
 

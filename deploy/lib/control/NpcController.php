@@ -26,8 +26,8 @@ class NpcController { //extends controller
     const MIN_LEVEL_FOR_BOUNTY       = 5;
     const MAX_LEVEL_FOR_BOUNTY       = 50;
 
-    public static $STATIC_NPCS                = ['peasant', 'thief', 'merchant', 'guard', 'samurai'];
-    public static $STEALTH_REMOVING_NPCS      = ['samurai', 'oni'];
+    public static $STATIC_NPCS           = ['peasant', 'thief', 'merchant', 'guard', 'samurai'];
+    public static $STEALTH_REMOVING_NPCS = ['samurai', 'oni'];
 
     private $randomness = null;
 
@@ -69,7 +69,8 @@ class NpcController { //extends controller
                 $item             = Item::findByIdentity('dimmak');
                 $quantity         = 1;
                 $inventory->add($item->identity(), $quantity);
-            } else if ($player->turns > floor(self::HIGH_TURNS/2) && rand()&1) { // If your turns are somewhat high/you have some energy, 50/50 chance you can kill them.
+            } else if ($player->turns > floor(self::HIGH_TURNS/2) && rand()&1) {
+                // If your turns are somewhat high/you have some energy, 50/50 chance you can kill them.
                 $oni_killed       = true;
                 $item             = Item::findByIdentity('ginsengroot');
                 $multiple_rewards = true;
@@ -120,14 +121,16 @@ class NpcController { //extends controller
      * "rich" npcs will have a higher gold minimum
      */
     private function calcReceivedGold(Npc $npco, $reward_item) {
-        if($npco->gold() === 0){ // These npcs simply don't give gold.
+        if ($npco->gold() === 0) { // These npcs simply don't give gold.
             return 0;
         }
+
         // Hack a little off max gold if items received.
         $divisor = 1;
-        if($reward_item){
+        if ($reward_item) {
             $divisor = self::ITEM_DECREASES_GOLD_FACTOR;
         }
+
         return rand($npco->min_gold(), floor($npco->gold()/$divisor));
     }
 
@@ -165,9 +168,9 @@ class NpcController { //extends controller
         }
 
         // ******* FIGHT Logic ***********
-        $npc_damage = $npco->damage();
+        $npc_damage    = $npco->damage();
         $survive_fight = $player->harm($npc_damage);
-        $kill_npc = ($npco->health() < $player->damage());
+        $kill_npc      = ($npco->health() < $player->damage());
 
         if ($survive_fight > 0) {
             // The ninja survived, they get any gold the npc has.
@@ -256,8 +259,6 @@ class NpcController { //extends controller
      * @see http://nw.local/npc/attack/guard/
      */
     public function attack() {
-        // This used to pull directly from $victim get param
-
         $url_part = $_SERVER['REQUEST_URI'];
 
         if (preg_match('#\/(\w+)(\/)?$#', $url_part, $matches)) {
@@ -361,7 +362,7 @@ class NpcController { //extends controller
         $bounty = 0;
 
         if ($victory = $player->harm($damage)) {
-            $gold = rand(1, $player->strength() + 40);  // Guard Gold
+            $gold = rand(1, $player->strength() + 40);
             $player->set_gold($player->gold + $gold);
 
             if ($player->level > 15) {
@@ -369,7 +370,7 @@ class NpcController { //extends controller
                 $player->set_bounty($player->bounty + $bounty);
             }
 
-            // 1/9 chance of getting an herb for Kampo
+            // chance of getting an herb for Kampo
             if (rand(1, 9) == 9) {
                 $herb = true;
                 $inventory = new Inventory($player);
@@ -380,15 +381,15 @@ class NpcController { //extends controller
         }
 
         return [
-           'npc.guard.tpl',
-           [
-               'attack'  => $damage,
-               'gold'    => $gold,
-               'bounty'  => $bounty,
-               'victory' => $victory,
-               'herb'    => $herb,
-           ],
-       ];
+            'npc.guard.tpl',
+            [
+                'attack'  => $damage,
+                'gold'    => $gold,
+                'bounty'  => $bounty,
+                'victory' => $victory,
+                'herb'    => $herb,
+            ],
+        ];
     }
 
     private function attackVillager(Player $player) {
@@ -629,7 +630,6 @@ class NpcController { //extends controller
         $npcs       = $all_npcs['custom_npcs'];
         $template   = 'npc.list.tpl';
         $title      = 'Npcs';
-        // Uses a sub-template inside for specific npcs.
         $parts      = ['npcs' => $npcs, 'other_npcs' => $other_npcs];
         $options    = ['quickstats' => 'player'];
 
