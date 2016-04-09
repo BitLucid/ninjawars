@@ -11,7 +11,7 @@ class InvalidNpcException extends \Exception{}
  *
  */
 class NpcFactory {
-    static $data;
+    public static $data;
 
     /**
      * Returns a fleshed out npc object
