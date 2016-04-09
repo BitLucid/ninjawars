@@ -6,10 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\RouteNotFoundException;
 use NinjaWars\core\Router;
 
-if (defined('TRAP_ERRORS') && TRAP_ERRORS) {
-    set_exception_handler(['NWError', 'exceptionHandler']);
-    set_error_handler(['NWError', 'errorHandler'], E_USER_ERROR);
-}
+// setup our runtime environment
+require_once(LIB_ROOT.'environment/bootstrap.php');
 
 try {
     update_activity_info(); // Updates the activity of the page viewer in the database.

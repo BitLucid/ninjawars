@@ -147,3 +147,16 @@ function debug($val) {
     }
 }
 
+function nw_debug() {
+	$result = false;
+
+	if (DEBUG) {
+		$result = true;
+	}
+
+	if ($_COOKIE['debug']) {
+		$result = true;
+	}
+
+	return $result;
+}

@@ -22,10 +22,8 @@ require_once(VENDOR_ROOT.'autoload.php');
 require_once(SERVER_ROOT.'routes.php');
 
 // Includes that actually actively modify settings.
-require_once(LIB_ROOT.'environment/lib_assert.php');
 require_once(LIB_ROOT.'environment/status_defines.php'); // Status constant definitions.
 require_once(SERVER_ROOT.'npc-list.php'); // must not be before status defines
-require_once(LIB_ROOT.'environment/lib_error_reporting.php');
 require_once(LIB_ROOT.'environment/global_error_handling.php');
 
 require_once(TEMPLATE_LIBRARY_PATH);
