@@ -131,7 +131,7 @@ class NpcController { //extends controller
             $divisor = self::ITEM_DECREASES_GOLD_FACTOR;
         }
 
-        return rand($npco->min_gold(), floor($npco->gold()/$divisor));
+        return rand($npco->minGold(), floor($npco->gold()/$divisor));
     }
 
     /**
@@ -231,7 +231,7 @@ class NpcController { //extends controller
                 'npc_stats'                => $npc_stats,
                 'is_quick'                 => $is_quick,
                 'added_bounty'             => $added_bounty,
-                'is_villager'              => $npco->has_trait('villager'),
+                'is_villager'              => $npco->hasTrait('villager'),
                 'race'                     => $npco->race(),
                 'is_weaker'                => $is_weaker,
                 'is_stronger'              => $is_stronger,

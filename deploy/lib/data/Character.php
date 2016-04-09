@@ -15,27 +15,27 @@ interface Character {
      * @return int
      */
     function speed();
-    
+
     /**
      * @return int
      */
     function stamina();
-    
+
     /**
      * @return int
      */
-    function max_damage(Character $char=null);
-    
+    function maxDamage(Character $char=null);
+
     /**
      * @return int
      */
     function damage(Character $char=null);
-    
+
     /**
      * @return int
      */
     function health();
-    
+
     /**
      * @return int
      */

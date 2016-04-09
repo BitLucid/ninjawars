@@ -43,10 +43,10 @@ class Npc implements Character {
     /**
      * Calculcate the max damage of an npc.  Needed for effectiveness calc.
      */
-    public function max_damage(Character $enemy=null) {
+    public function maxDamage(Character $enemy=null) {
         $dam = ((1+ ($this->strength * 2)) + $this->damage);
         // Mirror some of their enemy's strength
-        if ($this->has_trait('partial_match_strength') && $enemy instanceof Character) {
+        if ($this->hasTrait('partial_match_strength') && $enemy instanceof Character) {
             $add = max(0, floor($enemy->strength() / 3)); // Enemy str/3 or at minimum 0
             $dam = $dam + $add;
         }
@@ -58,7 +58,7 @@ class Npc implements Character {
      * Calculate the initial naive damage from npcs.
      */
     public function damage(Character $char = null) {
-        return rand(0, $this->max_damage($char));
+        return rand(0, $this->maxDamage($char));
     }
 
     /**
@@ -67,15 +67,15 @@ class Npc implements Character {
     public function difficulty() {
         // Just add together all the points of the mob, so to speak.
         $adds_bounty = ($this->bountyMod() > 0 ? 1 : 0);
-        $armored = ($this->has_trait('armored') ? 1 : 0);
+        $armored = ($this->hasTrait('armored') ? 1 : 0);
         $complex = count($this->traits_array);
-        $matches_strength = ($this->has_trait('partial_match_strength') ? 1 : 0);
+        $matches_strength = ($this->hasTrait('partial_match_strength') ? 1 : 0);
 
         return 0
             + $this->strength * 2
             + $this->damage
-            + floor($this->max_health() / 10)
-            + (int) ($this->max_health() > 1) // Have more than 1 health, so not totally devoid of content
+            + floor($this->maxHealth() / 10)
+            + (int) ($this->maxHealth() > 1) // Have more than 1 health, so not totally devoid of content
             + $adds_bounty
             + $armored * 5
             + $complex * 3
@@ -86,7 +86,7 @@ class Npc implements Character {
     /**
      * @param string $trait
      */
-    public function has_trait($trait) {
+    public function hasTrait($trait) {
         return in_array($trait, $this->traits_array);
     }
 
@@ -111,14 +111,14 @@ class Npc implements Character {
     }
 
     public function health() {
-        return $this->max_health(); // For now, since there aren't npc instances currently.
+        return $this->maxHealth(); // For now, since there aren't npc instances currently.
     }
 
     /**
      * Get their starting health, minimum of 1.
      */
-    public function max_health() {
-        $armored = ($this->has_trait('armored') ? 1 : 0);
+    public function maxHealth() {
+        $armored = ($this->hasTrait('armored') ? 1 : 0);
         return 1 + ($this->stamina * 5) + ($this->stamina * 2 * $armored);
     }
 
@@ -151,7 +151,7 @@ class Npc implements Character {
     /**
      * Get the npcs inventory and return true if there is an instance of the item in it.
      */
-    public function has_item($item) {
+    public function hasItem($item) {
         return isset($this->inventory[$item]);
     }
 
@@ -187,7 +187,7 @@ class Npc implements Character {
     /**
      * Get min gold for an npc.
      */
-    public function min_gold() {
-        return (int) ($this->has_trait('rich') ? floor($this->gold()/self::RICH_MIN_GOLD_DIVISOR) : self::MIN_GOLD);
+    public function minGold() {
+        return (int) ($this->hasTrait('rich') ? floor($this->gold()/self::RICH_MIN_GOLD_DIVISOR) : self::MIN_GOLD);
     }
 }

@@ -49,7 +49,7 @@ class MockPlayer extends Player implements Character{
         return $this->stamina;
     }
 
-    public function max_damage(Character $char=null){
+    public function maxDamage(Character $char=null){
         return $this->max_damage;
     }
 

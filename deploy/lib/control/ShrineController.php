@@ -215,7 +215,7 @@ class ShrineController { //extends controller
 
 		if ($p_player) {
 			if ($p_player->health()) {
-				if ($p_player->health() < $p_player->max_health()) {
+				if ($p_player->health() < $p_player->maxHealth()) {
 					$services[] = 'form-heal';
 				} else {
 					$services[] = 'reminder-full-hp';
@@ -328,7 +328,7 @@ class ShrineController { //extends controller
 
 		$maxHP = self::BASE_RES_HP*$hpMultiplier;
 
-		return min($maxHP, $p_player->max_health());
+		return min($maxHP, $p_player->maxHealth());
 	}
 
 	/**
