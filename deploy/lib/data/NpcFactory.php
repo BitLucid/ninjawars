@@ -11,6 +11,8 @@ class InvalidNpcException extends \Exception{}
  *
  */
 class NpcFactory {
+    static $data;
+
     /**
      * Returns a fleshed out npc object
      *
@@ -157,7 +159,7 @@ class NpcFactory {
      * @return Array
      */
     public static function npcsData() {
-        return include(SERVER_ROOT.'npc-list.php');
+        return self::$data;
     }
 
     public static function customNpcs() {

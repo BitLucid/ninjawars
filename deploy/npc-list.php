@@ -1,6 +1,8 @@
 <?php
+use NinjaWars\core\data\NpcFactory;
+
 // Npc matrix planning document: https://docs.google.com/spreadsheet/ccc?key=0AkoUgtBBP00HdGZ1eUhaekhTb1dnZVh3ZlpoRExWdGc#gid=0
-return [
+NpcFactory::$data = return [
     'firefly'   => [ // Baseline weakest mob
         'name'     => 'Firefly',
         'strength' => 0,
