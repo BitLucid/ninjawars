@@ -15,6 +15,8 @@ class Npc implements Character {
     const RICH_MIN_GOLD_DIVISOR = 1.3;
     const MIN_GOLD = 0; // Could become data driven later
 
+    public $traits_array;
+
     public function __construct($content) {
         if (is_string($content) && trim($content)) {
             NpcFactory::fleshOut($content, $this);
