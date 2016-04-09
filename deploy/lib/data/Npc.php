@@ -12,7 +12,6 @@ use NinjaWars\core\data\Player;
  *  Generally they are interacted with from the /enemies page
  */
 class Npc implements Character {
-    private $data;
     const RICH_MIN_GOLD_DIVISOR = 1.3;
     const MIN_GOLD = 0; // Could become data driven later
 
