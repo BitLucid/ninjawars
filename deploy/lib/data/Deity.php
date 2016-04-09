@@ -6,11 +6,14 @@ require_once(LIB_ROOT."control/lib_deity.php");
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\data\Message;
+use NinjaWars\core\data\GameLog;
 
 /**
  * Functions for use in the deities.
  */
 class Deity {
+    const VICIOUS_KILLER_STAT = 4; // the ID of the vicious killer stat
+
     /**
      * @param int $minutes Minute interval of tick.
      */
@@ -215,7 +218,12 @@ class Deity {
         $deleted = Message::shortenChat();
         $affected_rows['deleted chats'] = $deleted;
 
-        update_most_vicious_killer_stat();// Update the vicious killer stat.
+        if ($killer = GameLog::findViciousKiller()) {
+            $update = DatabaseConnection::$pdo->prepare('UPDATE past_stats SET stat_result = :viciousKiller WHERE id = :viciousKillerStat');
+            $update->bindValue(':viciousKiller', $killer);
+            $update->bindValue(':viciousKillerStat', self::VICIOUS_KILLER_STAT);
+            $update->execute();
+        }
 
         //Nightly Unconfirm old players script settings.
         $unconfirmed = self::unconfirmOlderPlayersOverMinimums($keep_players_until_over_the_number, $days_players_have_to_be_older_than_to_be_unconfirmed, $maximum_players_to_unconfirm, $just_testing=false);
