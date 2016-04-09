@@ -138,8 +138,8 @@ var combat_skills = {$combat_skills|@json_encode};
                 {/if}
 			{/foreach}
                   </select>
-		{/if}
                   <input type="submit" value="Use Item" class="btn btn-primary">
+		{/if}
                 </div>
               </form>
             </td>
