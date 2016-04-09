@@ -1,8 +1,6 @@
 <?php
 namespace NinjaWars\core\data;
 
-require_once(LIB_ROOT."control/lib_deity.php");
-
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\data\Message;
