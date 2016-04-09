@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use \Nmail;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\NWTemplate;
@@ -8,7 +9,7 @@ use NinjaWars\core\extensions\NWTemplate;
 /**
  * Give assistance to players and proto-players who anonymous users
  */
-class AssistanceController{
+class AssistanceController extends AbstractController {
     const PRIV          = false;
     const ALIVE         = false;
 

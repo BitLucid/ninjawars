@@ -1,8 +1,9 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 
-class MapController {
+class MapController extends AbstractController {
     const PRIV  = false;
     const ALIVE = false;
 

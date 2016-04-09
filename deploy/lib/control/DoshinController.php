@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
@@ -8,7 +9,7 @@ use NinjaWars\core\extensions\SessionFactory;
 /**
  * Handles all user requests for the in-game Doshin Office
  */
-class DoshinController { //extends controller
+class DoshinController extends AbstractController {
     const ALIVE          = true;
     const PRIV           = false;
     const MAX_BOUNTY     = 5000;

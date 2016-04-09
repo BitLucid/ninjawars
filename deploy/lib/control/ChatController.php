@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
@@ -8,7 +9,7 @@ use NinjaWars\core\extensions\SessionFactory;
 /**
  * The controller for effects of a village request and the default index display of the page
  */
-class ChatController {
+class ChatController extends AbstractController {
     const ALIVE         = false;
     const PRIV          = false;
     const DEFAULT_LIMIT = 200;

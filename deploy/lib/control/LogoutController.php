@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Constants;
@@ -8,7 +9,7 @@ use \Constants;
 /**
  * Log a player out via post, then redirect to logout landing page
  */
-class LogoutController {
+class LogoutController extends AbstractController {
     const ALIVE = false;
     const PRIV  = false;
 

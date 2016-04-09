@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\environment\RequestWrapper;
@@ -17,7 +18,7 @@ use \Nmail;
  * email confirmation requirements and creating a one-button ninja creation
  * system.
  */
-class SignupController {
+class SignupController extends AbstractController {
     const ALIVE    = false;
     const PRIV     = false;
     const TEMPLATE = 'signup.tpl';

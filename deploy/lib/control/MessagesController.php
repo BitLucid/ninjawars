@@ -1,13 +1,14 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Player;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 
-class MessagesController {
+class MessagesController extends AbstractController {
     const PRIV  = true;
     const ALIVE = false;
 

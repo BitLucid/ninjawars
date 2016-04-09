@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\environment\RequestWrapper;
@@ -11,7 +12,7 @@ use \PDO;
 
 /**
  */
-class LoginController {
+class LoginController extends AbstractController {
     const ALIVE = false;
     const PRIV  = false;
 

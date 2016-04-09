@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Npc;
 use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\NpcFactory;
@@ -13,7 +14,7 @@ use NinjaWars\core\extensions\SessionFactory;
 /**
  * Handles displaying npcs and attacking specific npcs
  */
-class NpcController { //extends controller
+class NpcController extends AbstractController {
     const ALIVE                      = true;
     const PRIV                       = false;
     const HIGH_TURNS                 = 50;

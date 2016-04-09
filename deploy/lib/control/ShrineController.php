@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
@@ -8,7 +9,7 @@ use NinjaWars\core\extensions\SessionFactory;
 /**
  * Controller for actions taken in the Healing Shrine
  */
-class ShrineController { //extends controller
+class ShrineController extends AbstractController {
 	const ALIVE                = false;
 	const PRIV                 = true;
 	const FREE_RES_LEVEL_LIMIT = 6;

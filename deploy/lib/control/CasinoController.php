@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\extensions\SessionFactory;
@@ -9,7 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Handles all user commands for the in-game Casino
  */
-class CasinoController {
+class CasinoController extends AbstractController {
 	const PRIV      = false;
 	const ALIVE     = true;
 	const REWARD    = 'phosphor';

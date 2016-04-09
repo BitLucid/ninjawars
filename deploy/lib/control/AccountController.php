@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Handle updates for changing account password, changing account email and showing the account page
  */
-class AccountController {
+class AccountController extends AbstractController {
     const ALIVE = false;
     const PRIV  = true;
 

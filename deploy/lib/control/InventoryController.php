@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\data\Inventory;
@@ -13,7 +14,7 @@ use \PDO;
 /**
  * Control the display of items and gold (and maybe some day armor) for a char
  */
-class InventoryController {
+class InventoryController extends AbstractController {
 	const PRIV          = true;
 	const ALIVE         = false;
     const GIVE_COST     = 1;

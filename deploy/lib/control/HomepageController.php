@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
@@ -8,7 +9,7 @@ use NinjaWars\core\extensions\SessionFactory;
 /**
  * display the standard homepage, and maybe eventually the splash page
  */
-class HomepageController {
+class HomepageController extends AbstractController {
     const PRIV      = false;
     const ALIVE     = false;
     private $loggedIn = false;

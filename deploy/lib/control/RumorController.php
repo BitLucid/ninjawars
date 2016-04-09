@@ -1,11 +1,13 @@
 <?php
 namespace NinjaWars\core\control;
+
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\DatabaseConnection;
 
 /**
  * Handles the rumors and info displayed by the bathhouse.
  */
-class RumorController {
+class RumorController extends AbstractController {
     const ALIVE          = false;
     const PRIV           = false;
 

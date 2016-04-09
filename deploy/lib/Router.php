@@ -1,7 +1,6 @@
 <?php
 namespace NinjaWars\core;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\RouteNotFoundException;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\data\Player;
@@ -20,14 +19,16 @@ class Router {
     const DEFAULT_ROUTE   = 'homepage';
     const COMMAND_PARAM   = 'command';
 
-    /** Set during bootstapping by the file routes.php. Routes are defined as a
+    /**
+     * Set during bootstapping by the file routes.php. Routes are defined as a
      * 3-level nested-array with level-one keys being the controller name,
      * level-two keys being metadata, and level-three keys being action names.
      * Action names are mapped to public methods on the controller class.
      */
     public static $routes;
 
-    /** Set during bootstrapping by the file routes.php. Mappings between the
+    /**
+     * Set during bootstrapping by the file routes.php. Mappings between the
      * controller portion of a route and a real controller name can be used to
      * make nicer routes or to support historical URLs.
      */
@@ -203,22 +204,8 @@ class Router {
             throw new RouteNotFoundException();
         }
 
-        /* This conditional is a holdover from old times when controllers were
-         * actually directly servable procedural scripts (ah the old days!)
-         * If a page required you to be alive or logged in, we checked if
-         * you were (among a bunch of other things, usually dropping variables
-         * in the global namespace) and if you were not, returned an error.
-         * Now, controllers do this at a class level, which is mostly nonsense
-         * and requires that the router directly serve an error page.
-         * @TODO this whole thing should be factored out.
-         */
-        if ($error = self::checkForError($controllerClass::PRIV, $controllerClass::ALIVE)) {
-            return [
-                'template' => 'error.tpl',
-                'title'    => 'There is an obstacle to your progress...',
-                'parts'    => ['error' => $error],
-                'options'  => [],
-            ];
+        if ($error = $controller->validate()) {
+            return $controller->renderDefaultError($error);
         } else {
             return $controller->$action();
         }
@@ -276,20 +263,4 @@ class Router {
         );
     }
 
-    public static function checkForError($private, $alive) {
-        $error  = null;
-        $player = Player::find(SessionFactory::getSession()->get('player_id'));
-
-        if ((!SessionFactory::getSession()->get('authenticated') || !$player) && $private) {
-            $error = 'log_in';
-        } elseif ($player && $alive) { // That page requires the player to be alive to view it
-            if (!$player->health()) {
-                $error = 'dead';
-            } else if ($player->hasStatus(FROZEN)) {
-                $error = 'frozen';
-            }
-        }
-
-        return $error;
-    }
 }
