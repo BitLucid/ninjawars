@@ -82,7 +82,7 @@ class DojoController extends AbstractController {
     public function changeClass() {
         if (SessionFactory::getSession()->get('authenticated', false)) {
             $player            = Player::find(SessionFactory::getSession()->get('player_id'));
-            $classes           = $this->classesInfo();
+            $classes           = query('select class_id, identity, class_name, class_note, class_tier, class_desc, class_icon, theme from class where class_active = true');
             $requestedIdentity = in('requested_identity');
             $currentClass      = $player->identity;
             $showMonks         = false;
@@ -170,16 +170,6 @@ class DojoController extends AbstractController {
     }
 
     /**
-     * Pull the information about the classes.
-     *
-     * @return array
-     */
-    private function classesInfo() {
-        $classes = query('select class_id, identity, class_name, class_note, class_tier, class_desc, class_icon, theme from class where class_active = true');
-        return array_identity_associate($classes, 'identity');
-    }
-
-    /**
      * Multiple actions currently check logged in status and deny access
      *
      * @todo remove this by abstracting login checks throughout this controller
@@ -202,7 +192,6 @@ class DojoController extends AbstractController {
         $p_parts['max_hp']            = Player::maxHealthByLevel(MAX_PLAYER_LEVEL+1);
         $p_parts['class_change_cost'] = self::CLASS_CHANGE_COST;
         $p_parts['player']            = $p_player;
-        $p_parts['classes']           = $this->classesInfo();
 
         if (!isset($p_parts['pageParts'])) {
             $p_parts['pageParts'] = [];

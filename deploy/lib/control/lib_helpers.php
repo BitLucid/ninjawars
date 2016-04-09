@@ -136,19 +136,6 @@ function positive_int($num) {
 	return ((int)$num == $num && (int)$num > 0? (int)$num : 0);
 }
 
-/**
- * Turn a randomly indexed array into an associatively indexed array.
- */
-function array_identity_associate($data, $identity_column='identity') {
-    $res = array();
-    foreach ($data as $single_row) {
-        $loop_identity = $single_row[$identity_column];
-        $res[$loop_identity] = $single_row;
-    }
-
-    return $res;
-}
-
 function debug($val) {
     if (DEBUG) {
     	$vals = func_get_args();
