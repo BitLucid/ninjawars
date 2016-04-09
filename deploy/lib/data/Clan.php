@@ -377,7 +377,7 @@ class Clan {
      * @param String $p_clan_name
      * @return Clan
      */
-    public static function createClan(Player $p_leader, $p_clan_name) {
+    public static function create(Player $p_leader, $p_clan_name) {
         DatabaseConnection::getInstance();
 
         $clan_name = trim($p_clan_name);
