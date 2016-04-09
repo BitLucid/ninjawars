@@ -81,7 +81,7 @@ class ChatController extends AbstractController {
             $bindings[':limit'] = $chatlength;
         }
 
-        $chats = query_resultset("SELECT sender_id, uname, message, date, age(now(), date) AS ago FROM chat
+        $chats = query("SELECT sender_id, uname, message, date, age(now(), date) AS ago FROM chat
             JOIN players ON chat.sender_id = player_id ORDER BY chat_id DESC ".$limit, $bindings);
 
         return $chats;

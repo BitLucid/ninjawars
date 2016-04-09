@@ -41,17 +41,10 @@ function query($sql, $bindings=array(), $return_resultset=true) {
 }
 
 /**
- * Wrapper to explicitly & simply get a resultset.
- */
-function query_resultset($sql_query, $bindings=array()) {
-	return query($sql_query, $bindings, true);
-}
-
-/**
- * Wrapper to explicitly & simply get a multi-dimensional array.
+ * Wrapper to get a multi-dimensional array.
  */
 function query_array($sql_query, $bindings=array()) {
-	return query($sql_query, $bindings, false); // Set return_resultset to false to return the array.
+	return query($sql_query, $bindings)->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -66,8 +59,7 @@ function update_query($update_query, $bindings=array()){
  * Run to just get the first row, for 1 row queries.
  */
 function query_row($sql, $bindings=array()) {
-    $resultset = query_resultset($sql, $bindings);
-	return $resultset->fetch(PDO::FETCH_ASSOC);
+    return query($sql, $bindings)->fetch(PDO::FETCH_ASSOC);
 }
 
 /**

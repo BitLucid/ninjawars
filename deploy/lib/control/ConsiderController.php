@@ -138,7 +138,7 @@ class ConsiderController extends AbstractController {
     private function getCurrentEnemies($p_playerId) {
         $query = 'SELECT player_id, active, level, uname, health FROM players JOIN enemies ON _enemy_id = player_id AND _player_id = :pid
             WHERE active = 1 ORDER BY health DESC, level DESC';
-        return query_resultset($query, [':pid'=>$p_playerId]);
+        return query($query, [':pid'=>$p_playerId]);
     }
 
     /**

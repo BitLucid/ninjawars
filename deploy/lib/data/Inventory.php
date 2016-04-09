@@ -38,7 +38,7 @@ class Inventory implements IteratorAggregate {
         $quantity = (int)$quantity;
 
         if ($quantity > 0 && !empty($identity)) {
-            $up_res = query_resultset(
+            $up_res = query(
                 "UPDATE inventory SET amount = amount + :quantity
                 WHERE owner = :char
                 AND item_type = (select item_id from item where item_internal_name = :identity)",
@@ -52,7 +52,7 @@ class Inventory implements IteratorAggregate {
             $rows = $up_res->rowCount();
 
             if (!$rows) { // No entry was present, insert one.
-                query_resultset(
+                query(
                     "INSERT INTO inventory (owner, item_type, amount)
                     VALUES (:char, (SELECT item_id FROM item WHERE item_internal_name = :identity), :quantity)",
                     [

@@ -364,7 +364,7 @@ class Clan {
      */
     public static function saveClanAvatarUrl($url, $clan_id) {
         $update = 'UPDATE clan SET clan_avatar_url = :url WHERE clan_id = :clan_id';
-        query_resultset($update, array(':url'=>$url, ':clan_id'=>$clan_id));
+        query($update, array(':url'=>$url, ':clan_id'=>$clan_id));
     }
 
     /**
@@ -376,7 +376,7 @@ class Clan {
      */
     public static function saveClanDescription($desc, $clan_id) {
         $update = 'UPDATE clan SET description = :desc WHERE clan_id = :clan_id';
-        query_resultset($update, array(':desc'=>$desc, ':clan_id'=>$clan_id));
+        query($update, array(':desc'=>$desc, ':clan_id'=>$clan_id));
     }
 
     /**
