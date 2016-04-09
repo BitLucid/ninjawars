@@ -143,24 +143,24 @@ class NpcController { //extends controller
      * @return array [$npc_template, $combat_data]
      */
     private function attackAbstractNpc($victim, Player $player, $npcs) {
-        $npc_stats              = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
-        $npco                   = new Npc($npc_stats); // Construct the npc object.
-        $display_name           = first_value((isset($npc_stats['name']) ? $npc_stats['name'] : null), ucfirst($victim));
-        $status_effect          = (isset($npc_stats['status']) ? $npc_stats['status'] : null);
-        // TODO: Calculate and display damage verbs
-        $reward_item            = (isset($npc_stats['item']) && $npc_stats['item'] ? $npc_stats['item'] : null);
-        $is_quick               = (boolean) ($npco->speed() > $player->speed()); // Beyond basic speed and they see you coming, so show that message.
-        $is_weaker              = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
-        $is_stronger            = ($npco->strength()) > ($player->strength() * 3); // Npc More than twice as strong?
-        $image                  = (isset($npc_stats['img']) ? $npc_stats['img'] : null);
+        $npc_stats        = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
+        $npco             = new Npc($npc_stats); // Construct the npc object.
+        $display_name     = first_value((isset($npc_stats['name']) ? $npc_stats['name'] : null), ucfirst($victim));
+        $status_effect    = (isset($npc_stats['status']) ? $npc_stats['status'] : null);
+        $reward_item      = (isset($npc_stats['item']) && $npc_stats['item'] ? $npc_stats['item'] : null);
+        $is_quick         = (boolean) ($npco->speed() > $player->speed()); // Beyond basic speed and they see you coming, so show that message.
+        $is_weaker        = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
+        $is_stronger      = ($npco->strength()) > ($player->strength() * 3); // Npc More than twice as strong?
+        $image            = (isset($npc_stats['img']) ? $npc_stats['img'] : null);
         // Assume defeat...
-        $victory                = false;
-        $received_gold          = null;
-        $received_display_items = null;
-        $added_bounty           = null;
-        $is_rewarded            = null; // Gets items or gold.
-        $display_statuses       = $display_statuses_classes = null;
-        $image_path             = null;
+        $victory          = false;
+        $received_gold    = null;
+        $received_items   = null;
+        $added_bounty     = null;
+        $is_rewarded      = null; // Gets items or gold.
+        $statuses         = null;
+        $status_classes   = null;
+        $image_path       = null;
 
         // If the image exists, set the path to it for use on the page.
         if ($image && file_exists(SERVER_ROOT.'www/images/characters/'.$image)) {
@@ -176,7 +176,7 @@ class NpcController { //extends controller
             // The ninja survived, they get any gold the npc has.
             $received_gold = $this->calcReceivedGold($npco, (bool) $reward_item);
             $player->set_gold($player->gold + $received_gold);
-            $received_display_items = array();
+            $received_items = array();
 
             if ($kill_npc) {
                 $victory = true;
@@ -186,7 +186,7 @@ class NpcController { //extends controller
 
                     foreach (array_keys($npco->inventory()) as $l_item) {
                         $item = Item::findByIdentity($l_item);
-                        $received_display_items[] = $item->getName();
+                        $received_items[] = $item->getName();
                         $inventory->add($item->identity(), 1);
                     }
                 }
@@ -200,13 +200,13 @@ class NpcController { //extends controller
                 }
             }
 
-            $is_rewarded = (bool) $received_gold || (bool)count($received_display_items);
+            $is_rewarded = (bool) $received_gold || (bool)count($received_items);
 
             if (isset($npc_stats['status']) && null !== $npc_stats['status']) {
                 $player->addStatus($npc_stats['status']);
                 // Get the statuses and status classes for display.
-                $display_statuses = implode(', ', Player::getStatusList());
-                $display_statuses_classes = implode(' ', Player::getStatusList()); // TODO: Take healthy out of the list since it's redundant.
+                $statuses = implode(', ', Player::getStatusList());
+                $status_classes = implode(' ', Player::getStatusList());
             }
         }
 
@@ -219,10 +219,10 @@ class NpcController { //extends controller
                 'display_name'             => $display_name,
                 'attack_damage'            => $npc_damage,
                 'status_effect'            => $status_effect,
-                'display_statuses'         => $display_statuses,
-                'display_statuses_classes' => $display_statuses_classes,
+                'display_statuses'         => $statuses,
+                'display_statuses_classes' => $status_classes,
                 'received_gold'            => $received_gold,
-                'received_display_items'   => $received_display_items,
+                'received_display_items'   => $received_items,
                 'is_rewarded'              => $is_rewarded,
                 'victory'                  => $victory,
                 'survive_fight'            => $survive_fight,
