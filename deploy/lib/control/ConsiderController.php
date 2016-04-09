@@ -50,7 +50,7 @@ class ConsiderController extends AbstractController {
             $this->addEnemyToPlayer(SessionFactory::getSession()->get('player_id'), $add_enemy);
         }
 
-        return new RedirectResponse('enemies.php');
+        return new RedirectResponse('/enemies');
     }
 
     /**
@@ -63,7 +63,7 @@ class ConsiderController extends AbstractController {
             $this->removeEnemyFromPlayer(SessionFactory::getSession()->get('player_id'), $remove_enemy);
         }
 
-        return new RedirectResponse('enemies.php');
+        return new RedirectResponse('/enemies');
     }
 
     /**
