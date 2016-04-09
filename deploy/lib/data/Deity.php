@@ -5,9 +5,12 @@ require_once(LIB_ROOT."control/lib_deity.php");
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Event;
+use NinjaWars\core\data\Message;
 
-class Deity{
-
+/**
+ * Functions for use in the deities.
+ */
+class Deity {
     /**
      * @param int $minutes Minute interval of tick.
      */
@@ -209,13 +212,13 @@ class Deity{
         $status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  // Hmmm, gets rid of all status effects, we may want to make that not have that limitation, some day.
         $affected_rows['Statuses Removed'] = $status_removal->rowCount();
 
-        $deleted = shorten_chat(); // run the shortening of the chat.
+        $deleted = Message::shortenChat();
         $affected_rows['deleted chats'] = $deleted;
 
         update_most_vicious_killer_stat();// Update the vicious killer stat.
 
         //Nightly Unconfirm old players script settings.
-        $unconfirmed = unconfirm_older_players_over_minimums($keep_players_until_over_the_number, $days_players_have_to_be_older_than_to_be_unconfirmed, $maximum_players_to_unconfirm, $just_testing=false);
+        $unconfirmed = self::unconfirmOlderPlayersOverMinimums($keep_players_until_over_the_number, $days_players_have_to_be_older_than_to_be_unconfirmed, $maximum_players_to_unconfirm, $just_testing=false);
         assert($unconfirmed < $maximum_players_to_unconfirm+1);
 
         $affected_rows['Players Unconfirmed'] = ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
@@ -268,4 +271,40 @@ class Deity{
         fclose($log);
     }
 
+    /**
+     * This actually toggles the "active" column on players, not the confirm column, and if they log in again, they're instantly active again.
+     */
+    private static function unconfirmOlderPlayersOverMinimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30, $just_testing=true) {
+        $change_confirm_to = ($just_testing ? '1' : '0'); // Only unconfirm players when not testing.
+        $minimum_days = 30;
+        $max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30);
+        DatabaseConnection::getInstance();
+        $sel_cur = DatabaseConnection::$pdo->query("SELECT count(*) FROM players WHERE active = 1");
+        $current_players = $sel_cur->fetchColumn();
+
+        if ($current_players < $keep_players) {
+            // *** If we're under the minimum, don't inactivate anyone.
+            return false;
+        }
+
+        // *** Don't unconfirm anyone below the minimum floor.
+        $unconfirm_days_over = max($unconfirm_days_over, $minimum_days);
+
+        // Unconfirm at a maximum of 20 players at a time.
+        $unconfirm_within_limits = "UPDATE players
+            SET active = :active
+            WHERE players.player_id
+            IN (
+                SELECT player_id FROM players
+                WHERE active = 1
+                AND days > :age
+                ORDER BY player_id DESC	LIMIT :max)";
+        $update = DatabaseConnection::$pdo->prepare($unconfirm_within_limits);
+        $update->bindValue(':active', $change_confirm_to);
+        $update->bindValue(':age', intval($unconfirm_days_over));
+        $update->bindValue(':max', $max_to_unconfirm);
+        $update->execute();
+
+        return $update->rowCount();
+    }
 }

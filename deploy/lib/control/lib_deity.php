@@ -1,70 +1,23 @@
 <?php
-/*
- * Functions for use in the deities.
- *
- * @package deity
- * @subpackage deity_lib
- */
-
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 
+/**
+ */
 function update_days() {
 	DatabaseConnection::getInstance();
 	$players = DatabaseConnection::$pdo->query("UPDATE players SET days = days+1");
 	return $players->rowCount();
 }
 
-// Chats stuff.
-function shorten_chat($message_limit=800) {
-	DatabaseConnection::getInstance();
-	// Find the latest 800 messages and delete all the rest;
-	$deleted = DatabaseConnection::$pdo->prepare("DELETE FROM chat WHERE chat_id NOT IN (SELECT chat_id FROM chat ORDER BY date DESC LIMIT :msg_limit)");  //Deletes old chat messages.
-	$deleted->bindValue(':msg_limit', $message_limit);
-	$deleted->execute();
-	return (int) $deleted->rowCount();
-}
-
-// This actually toggles the "active" column on players, not the confirm column, and if they log in again, they're instantly active again.
-function unconfirm_older_players_over_minimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30, $just_testing=true) {
-	$change_confirm_to = ($just_testing ? '1' : '0'); // Only unconfirm players when not testing.
-	$minimum_days = 30;
-	$max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30);
-	DatabaseConnection::getInstance();
-	$sel_cur = DatabaseConnection::$pdo->query("SELECT count(*) FROM players WHERE active = 1");
-	$current_players = $sel_cur->fetchColumn();
-
-	if ($current_players < $keep_players) {
-		// *** If we're under the minimum, don't inactivate anyone.
-		return false;
-	}
-
-	// *** Don't unconfirm anyone below the minimum floor.
-	$unconfirm_days_over = max($unconfirm_days_over, $minimum_days);
-
-	// Unconfirm at a maximum of 20 players at a time.
-	$unconfirm_within_limits = "UPDATE players
-		SET active = :active
-		WHERE players.player_id
-		IN (
-			SELECT player_id FROM players
-			WHERE active = 1
-			AND days > :age
-			ORDER BY player_id DESC	LIMIT :max)";
-	$update = DatabaseConnection::$pdo->prepare($unconfirm_within_limits);
-	$update->bindValue(':active', $change_confirm_to);
-	$update->bindValue(':age', intval($unconfirm_days_over));
-	$update->bindValue(':max', $max_to_unconfirm);
-	$update->execute();
-	return $update->rowCount();
-}
-
-// Take all characters, and heal them one step closer to their maximum base.
+/**
+ * Take all characters, and heal them one step closer to their maximum base.
+ */
 function heal_characters($basic=8, $with_level=true){
 	$maximum_heal = Player::maxHealthByLevel(3);
 	/*
 	Goal:  Faster regen for higher level.
-	See the balance sheet: 
+	See the balance sheet:
 	https://docs.google.com/spreadsheet/ccc?pli=1&key=0AkoUgtBBP00HdGs0Tmk4bC10TXN0SUJYXzdYMVpFZFE#gid=0
 	*/
 	$max_hp = Player::maxHealthByLevel(MAX_PLAYER_LEVEL);
@@ -80,8 +33,8 @@ function heal_characters($basic=8, $with_level=true){
 	// Add an amount
 	$s = DatabaseConnection::$pdo->prepare(
 		"UPDATE players SET health = numeric_smaller(
-			(health+:basic ".$level_add."), 
-			cast((:max_heal + ".$level_limit.") AS int)) 
+			(health+:basic ".$level_add."),
+			cast((:max_heal + ".$level_limit.") AS int))
 		WHERE health > 0 AND NOT cast(status&:poison AS bool) AND health < (:max_heal2 + ".$level_limit.")");
 	// Heal a character that is alive, and isn't at their level max yet.
 	$s->bindValue(':basic', $basic);
@@ -91,20 +44,18 @@ function heal_characters($basic=8, $with_level=true){
 	$s->execute();
 	DatabaseConnection::$pdo->query('COMMIT');
 	// Higher levels now heal faster.
-	// Higher levels should now also heal to a larger maximum, level dependent.  
+	// Higher levels should now also heal to a larger maximum, level dependent.
 	// e.g. level 100 gets +100 in how many hitpoints they'll heal up to,
 	// level 99 gets +90 in how many hitpoints they'll heal up to.
 }
-
-
 
 /**
  * Revive up to a small max in minor hours, and a stable percent on major hours.
  * Defaults
  * sample_use: revive_players(array('just_testing'=>true));
- * @params array('minor_revive_to'=>100, 'major_revive_percent'=>5,
+ * @param array('minor_revive_to'=>100, 'major_revive_percent'=>5,
  *      'just_testing'=>false)
-**/
+ */
 function revive_players($params=array()) {
 	// Previous min/max was 2-4% always, ~3000 players, so 60-120 each time.
 
@@ -205,14 +156,15 @@ function revive_players($params=array()) {
 	return array($truly_revived, $dead_count);
 }
 
-// Update the vicious killer stat.
+/**
+ * Update the vicious killer stat.
+ */
 function update_most_vicious_killer_stat() {
 	$vk = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log JOIN players ON player_id = _player_id WHERE killsdate = cast(now() AS date) GROUP BY uname, killpoints ORDER BY killpoints DESC LIMIT 1');
 	$todaysViciousKiller = $vk->fetchColumn();
 	if ($todaysViciousKiller) {
 		$update = DatabaseConnection::$pdo->prepare('UPDATE past_stats SET stat_result = :visciousKiller WHERE id = 4'); // 4 is the ID of the vicious killer stat.
 		$update->bindValue(':visciousKiller', $todaysViciousKiller);
-		$update->execute();	
+		$update->execute();
 	}
 }
-
