@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\data\PasswordResetRequest;
@@ -9,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Nmail;
 
-class PasswordController {
+class PasswordController extends AbstractController {
     const PRIV           = false;
     const ALIVE          = false;
 

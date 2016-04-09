@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
@@ -9,7 +10,7 @@ use NinjaWars\core\extensions\SessionFactory;
  * The controller for effects of a work request and the default index display
  * of the page and initial form
  */
-class WorkController {
+class WorkController extends AbstractController {
     const ALIVE = true;
     const PRIV  = false;
 

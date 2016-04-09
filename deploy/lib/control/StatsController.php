@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
@@ -11,7 +12,7 @@ use NinjaWars\core\extensions\SessionFactory;
 /**
  * Handle updates for changing details and profile details
  */
-class StatsController {
+class StatsController extends AbstractController {
 	const ALIVE = false;
 	const PRIV  = true;
 

@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use \model\News as News;
 use \model\Base;
 use \InvalidArgumentException;
@@ -13,7 +14,7 @@ use NinjaWars\core\extensions\SessionFactory;
 /**
  * Allows creation of news and displaying of news by admins
  */
-class NewsController {
+class NewsController extends AbstractController {
     const ALIVE = false;
     const PRIV  = false;
 

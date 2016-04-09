@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AttackLegal;
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Skill;
@@ -9,7 +10,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
 
-class AttackController {
+class AttackController extends AbstractController {
     const ALIVE = true;
     const PRIV  = true;
     const BASE_WRATH_REGAIN = 2;

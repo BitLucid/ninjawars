@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\AdminViews;
@@ -11,7 +12,7 @@ use NinjaWars\core\extensions\SessionFactory;
 /**
  * The ninjamaster/admin info
  */
-class NinjamasterController {
+class NinjamasterController extends AbstractController {
     const ALIVE = false;
     const PRIV  = false;
     protected $charId = null;

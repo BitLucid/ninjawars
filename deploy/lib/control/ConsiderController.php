@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
@@ -11,7 +12,7 @@ use \PDO;
 /**
  * Display ninja & monsters to potentially pick fights with
  */
-class ConsiderController {
+class ConsiderController extends AbstractController {
     const ALIVE       = false;
     const PRIV        = false;
     const ENEMY_LIMIT = 20;

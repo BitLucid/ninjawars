@@ -1,13 +1,14 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Message;
 use \PDO;
 
-class ApiController {
+class ApiController extends AbstractController {
     public function sendHeaders() {
         // Json P headers
         header('Content-Type: text/javascript; charset=utf8');

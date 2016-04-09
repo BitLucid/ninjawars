@@ -1,9 +1,10 @@
 <?php
 require_once(dirname(__DIR__.'..').'/lib/base.inc.php');
 
-use NinjaWars\core\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\RouteNotFoundException;
+use NinjaWars\core\Router;
 
 if (defined('TRAP_ERRORS') && TRAP_ERRORS) {
     set_exception_handler(['NWError', 'exceptionHandler']);
@@ -14,7 +15,15 @@ try {
     update_activity_info(); // Updates the activity of the page viewer in the database.
 
     // get the request information to parse the route
-    Router::route(Request::createFromGlobals());
+    $response = Router::route(Request::createFromGlobals());
+
+    if ($response instanceof Response) {
+        $response->send();
+    } else if (is_array($response)) {
+        Router::render($response);
+    } else {
+        echo $response;
+    }
 } catch (RouteNotFoundException $e) {
     Router::respond404();
 }

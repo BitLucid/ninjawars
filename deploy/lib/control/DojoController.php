@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\environment\RequestWrapper;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
  * To change order of class change cycling: Update $class_array, key = starting
  * class, value = next class in cycle
  */
-class DojoController {
+class DojoController extends AbstractController {
     const ALIVE                = false;
     const PRIV                 = false;
     const DIM_MAK_COST         = 70; // Cost of acquiring DimMak In turns

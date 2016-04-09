@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Player;
@@ -9,7 +10,7 @@ use NinjaWars\core\extensions\SessionFactory;
 /**
  * Handle the listing of events
  */
-class EventsController {
+class EventsController extends AbstractController {
     const ALIVE = false;
     const PRIV  = true;
 

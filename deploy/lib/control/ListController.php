@@ -1,13 +1,14 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Player;
 
 /**
  * Display the ninja list as a whole
  */
-class ListController {
+class ListController extends AbstractController {
     const ALIVE = false;
     const PRIV  = false;
 

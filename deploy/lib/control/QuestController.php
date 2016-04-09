@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
 use \RuntimeException;
 
@@ -58,7 +59,7 @@ function get_questors($quest_id){
 /**
  * Get player quests, accept, and view individual ones, etc.
  */
-class QuestController {
+class QuestController extends AbstractController {
     const ALIVE = false;
     const PRIV  = false;
 

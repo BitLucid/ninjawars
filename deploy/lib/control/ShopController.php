@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\data\PurchaseOrder;
 use NinjaWars\core\data\Player;
@@ -10,7 +11,7 @@ use NinjaWars\core\extensions\SessionFactory;
 /**
  * Handles all user actions related to the in-game Shop
  */
-class ShopController { // extends Controller
+class ShopController extends AbstractController {
 	const ALIVE = true;  // *** must be alive to access the shop ***
 	const PRIV  = false; // *** do not need to be logged in ***
 

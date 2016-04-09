@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\ClanFactory;
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
@@ -11,7 +12,7 @@ use NinjaWars\core\data\DatabaseConnection;
 /**
  * Controller for all actions involving clan
  */
-class ClanController { //extends Controller
+class ClanController extends AbstractController {
 	const CLAN_CREATOR_MIN_LEVEL = 20;
 	const ALIVE                  = false;
 	const PRIV                   = false;

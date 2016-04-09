@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\data\Message;
@@ -11,7 +12,7 @@ use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\extensions\SessionFactory;
 
-class PlayerController {
+class PlayerController extends AbstractController {
     const PRIV  = false;
     const ALIVE = false;
 
