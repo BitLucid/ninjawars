@@ -46,7 +46,9 @@ return [
         'damage'   => 99,
         'status'   => POISON,
         'gold'     => 30,
-        'traits'   => 'poisonous',
+        'traits'   => [
+            'poisonous',
+        ],
     ],
     'kappa'     => [
         'name'      => 'Kappa',
@@ -59,7 +61,9 @@ return [
         'inventory' => [
             'shell' => '.5',
         ],
-        'traits'    => 'armored',
+        'traits'    => [
+            'armored',
+        ],
     ],
     'nureonna'  => [
         'name'      => 'Nureonna',
@@ -73,7 +77,9 @@ return [
         'inventory' => [
             'charcoal' => 1,
         ],
-        'traits'    => 'poisonous',
+        'traits'    => [
+            'poisonous',
+        ],
     ],
     'tengu'     => [
         'name'      => 'Tengu',
@@ -102,7 +108,10 @@ return [
         'short'    => 'is a serpent-dragon, with the gleam of intelligence in its eyes and the glint of death on its claws',
         'img'      => 'hokusai-dragon.jpg',
         'race'     => 'ryu',
-        'traits'   => 'armored,rich',
+        'traits'   => [
+            'armored',
+            'rich',
+        ],
     ],
 ] + (
     !defined('DEBUG') || !DEBUG ? [] :
@@ -118,7 +127,10 @@ return [
             'damage'     => 1,
             'gold'       => 20,
             'bounty_mod' => 1,
-            'traits'     => 'villager,sometimes_disguised_ninja',
+            'traits'     => [
+                'villager',
+                'sometimes_disguised_ninja',
+            ],
             'inventory'  => [
                 'kunai'    => '.01',
                 'shuriken' => '.01',
@@ -138,7 +150,10 @@ return [
             'inventory'    => [
                 'phosphor' => '.3',
             ],
-            'traits'       => 'villager,rich',
+            'traits'       => [
+                'villager',
+                'rich',
+            ],
         ],
         'guard2'        => [
             'name'       => 'Guard',
@@ -155,7 +170,9 @@ return [
             'inventory'  => [
                 'ginsengroot' => '.2',
             ],
-            'traits'     => 'partial_match_strength',
+            'traits'     => [
+                'partial_match_strength',
+            ],
         ],
         'monk'          => [
             'name'      => 'Monk',
@@ -167,7 +184,11 @@ return [
             'inventory' => [
                 'prayerwheel' => '.2',
             ],
-            'traits'    => 'deflection,defensive,self_heal',
+            'traits'    => [
+                'deflection',
+                'defensive',
+                'self_heal',
+            ],
         ],
         'geisha'        => [
             'name'       => 'Geisha',
@@ -184,7 +205,11 @@ return [
                 'kimono' => '.01',
                 'tessen' => '.01',
             ],
-            'traits'    => 'packdynamic,guarded,villager',
+            'traits'    => [
+                'packdynamic',
+                'guarded',
+                'villager',
+            ],
         ],
         'koi'           => [
             'name'      => 'Koi',
@@ -282,7 +307,9 @@ return [
             'strength' => 1,
             'stamina'  => 1,
             'speed'    => 1,
-            'traits'   => 'poisonous',
+            'traits'   => [
+                'poisonous',
+            ],
         ],
         'kamaitachi'    => [
             'name' => 'Kama-itachi',
@@ -299,7 +326,9 @@ return [
             'short'  => 'are spirit orbs of fire',
             'img'    => 'hitodama.gif',
             'race'   => 'kami',
-            'traits' => 'whispy',
+            'traits' => [
+                'whispy',
+            ],
         ],
         'karakasaobake' => [
             'name'  => 'Karakasa-obake',
@@ -315,7 +344,9 @@ return [
             'name'   => 'Umi-Bozu',
             'short'  => 'are bulbous floating jellyfish',
             'img'    => 'umibozu.jpg',
-            'traits' => 'whispy',
+            'traits' => [
+                'whispy',
+            ],
         ],
         'shojo'         => [
             'name'  => 'Shojo',
@@ -332,7 +363,9 @@ return [
             'short'  => 'is a flame spirit',
             'race'   => 'kami',
             'img'    => 'furaribi.jpg',
-            'traits' => 'whispy',
+            'traits' => [
+                'whispy',
+            ],
         ],
         'jorogumo'      => [
             'name'  => 'Jorogumo',
@@ -363,7 +396,9 @@ return [
             'short'  => 'is a fire elemental',
             'race'   => 'kami',
             'img'    => 'tsurubeotoshi.jpg',
-            'traits' => 'whispy',
+            'traits' => [
+                'whispy',
+            ],
         ],
         'kasha'         => [
             'name' => 'Kasha',
@@ -414,7 +449,12 @@ return [
             'short'    => 'a horned demon',
             'img'      => 'hokusai-oni.jpg',
             'race'     => 'oni',
-            'traits'   => 'demonic,stealthy,slowing,energy_vampire',
+            'traits'   => [
+                'demonic',
+                'stealthy',
+                'slowing',
+                'energy_vampire',
+            ],
         ],
     ]
 );

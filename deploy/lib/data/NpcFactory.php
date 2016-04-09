@@ -56,7 +56,6 @@ class NpcFactory {
         $npc->image             = @$data['img'];
         $npc->short_desc        = @$data['short'];
         $npc->inventory_chances = @$data['inventory'];
-        $npc->traits            = @$data['traits'];
         $npc->strength          = (int) @$data['strength'];
         $npc->speed             = (int) @$data['speed'];
         $npc->stamina           = (int) @$data['stamina'];
@@ -65,7 +64,7 @@ class NpcFactory {
         $npc->race              = @$data['race'];
         $npc->bounty_mod            = @$data['bounty_mod'];
         $npc->gold              = @$data['gold'];
-        $npc->traits_array      = null;
+        $npc->traits_array      = (isset($data['traits']) && is_array($data['traits']) ? $data['traits'] : []);
         $npc->inventory         = null; // The actual instance inventory is intitially just null;
     }
 

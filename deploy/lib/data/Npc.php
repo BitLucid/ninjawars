@@ -63,7 +63,7 @@ class Npc implements Character{
         // Just add together all the points of the mob, so to speak.
         $adds_bounty = $this->bountyMod() > 0? 1 : 0;
         $armored = $this->has_trait('armored')? 1 : 0;
-        $complex = count($this->traits());
+        $complex = count($this->traits_array);
         $matches_strength = $this->has_trait('partial_match_strength')? 1 : 0;
         return 0
             + $this->strength * 2 
@@ -77,20 +77,14 @@ class Npc implements Character{
             ;
     }
 
-    // Check for specific traits.
-
     /**
      * @param string $trait
      */
-    public function has_trait($trait){
-        if(!isset($this->traits_array) && isset($this->traits)){
-            // Initialize traits as an array at this point.
-            $this->traits_array = $this->traits? explode(',', $this->traits) : array();
-        }
-        return count($this->traits_array) && in_array($trait, $this->traits_array);
+    public function has_trait($trait) {
+        return in_array($trait, $this->traits_array);
     }
 
-    public function traits(){
+    public function traits() {
         return $this->traits_array;
     }
 
