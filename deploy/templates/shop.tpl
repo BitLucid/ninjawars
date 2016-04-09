@@ -32,21 +32,6 @@ input.shopButton {
 }
 {/literal}
 </style>
-<script>
-{literal}
-$(document).ready(function() {
-    $("#quantity").val(NW.storage.appState.get("quantity", 1));
-
-    $("#shop_form").submit(function() {
-{/literal}
-        {if !$authenticated}return false;{/if}
-{literal}
-        NW.storage.appState.set("quantity", $("#quantity").val());
-        return true;
-    });
-});
-{/literal}
-</script>
 
 <h1>Weapons Shop</h1>
 
@@ -115,6 +100,12 @@ $(document).ready(function() {
 </nav>
 
 <div style='margin:.1em auto;text-align:center'>
+
+<script>
+var loggedIn = {if $authenticated}true{else}false{/if};
+</script>
+
+<script src="/js/shop.js"></script>
 
 <!-- Google Ad -->
 <script type="text/javascript"><!--
