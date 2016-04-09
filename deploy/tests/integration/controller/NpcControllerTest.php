@@ -97,7 +97,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $final_char = Player::find($this->char->id());
         $this->assertNotEmpty($response);
         $this->assertEquals('merchant2', $response['parts']['victim']);
-        $this->assertGreaterThan(0, $npco->min_gold());
+        $this->assertGreaterThan(0, $npco->minGold());
         $this->assertGreaterThan($init_gold, $final_char->gold);
     }
 */

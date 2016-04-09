@@ -64,7 +64,7 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
 
         foreach ($npcs as $npc) {
             $this->assertTrue($npc instanceof Npc);
-            $this->assertGreaterThan(0, $npc->max_damage());
+            $this->assertGreaterThan(0, $npc->maxDamage());
         }
     }
 
@@ -121,8 +121,8 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
         }
 
         $peasant = new Npc('peasant2');
-        $this->assertLessThan(13, $peasant->max_damage());
-        $this->assertGreaterThan(0, $peasant->max_damage());
+        $this->assertLessThan(13, $peasant->maxDamage());
+        $this->assertGreaterThan(0, $peasant->maxDamage());
         $this->assertLessThan(21, $peasant->gold());
         $mock_pc = new Player();
         $mock_pc->vo->level = 10;
@@ -143,8 +143,8 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
         }
 
         $merchant2 = new Npc('merchant2');
-        $this->assertLessThan(37, $merchant2->max_damage());
-        $this->assertGreaterThan(15, $merchant2->max_damage());
+        $this->assertLessThan(37, $merchant2->maxDamage());
+        $this->assertGreaterThan(15, $merchant2->maxDamage());
         $this->assertLessThan(70, $merchant2->gold());
         $this->assertGreaterThan(20, $merchant2->gold());
         $this->assertGreaterThan(0, $merchant2->bountyMod());
@@ -168,7 +168,7 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
         $guard2 = new Npc('guard2');
         $mock_pc = new Player();
         $mock_pc->setStrength(30);
-        $dam = $guard2->max_damage($mock_pc); // partial_match_strength should add about 1/3rd of the enemies' strength as dam.
+        $dam = $guard2->maxDamage($mock_pc); // partial_match_strength should add about 1/3rd of the enemies' strength as dam.
         $this->assertGreaterThan(40, $dam);
         $this->assertLessThan(80, $dam); // Dam is strength * 2 + 1
         $this->assertLessThan(61, $guard2->gold());
@@ -205,10 +205,10 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
         $player = new Player();
         $player->vo->strength = 100;
         $guard = new Npc('guard2');
-        $guard_max_damage = $guard->max_damage();
+        $guard_max_damage = $guard->maxDamage();
         $guard_with_enemy = new Npc('guard2');
-        $improved_dam = $guard_with_enemy->max_damage($player);
-        $this->assertTrue($guard->has_trait('partial_match_strength'));
+        $improved_dam = $guard_with_enemy->maxDamage($player);
+        $this->assertTrue($guard->hasTrait('partial_match_strength'));
         $this->assertGreaterThan(0, $guard_max_damage);
         $this->assertGreaterThan($guard_max_damage, $improved_dam, 'Guard damage should be higher with an enemy that has any strength');
     }

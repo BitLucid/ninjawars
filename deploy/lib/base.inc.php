@@ -20,6 +20,7 @@ if (defined('PROFILE') && PROFILE) {
 // Bootstrap to vendor
 require_once(VENDOR_ROOT.'autoload.php');
 require_once(SERVER_ROOT.'routes.php');
+require_once(SERVER_ROOT.'npc-list.php');
 
 // Includes that actually actively modify settings.
 require_once(LIB_ROOT.'environment/lib_assert.php');

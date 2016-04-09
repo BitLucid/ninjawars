@@ -212,11 +212,11 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $char->save();
         $char = Player::find($this->char_id);
         $this->assertEquals($half_health, $char->health());
-        $this->assertLessThan($char->max_health(), $char->health());
-        $char->heal($char->max_health()); // Heal by max_health, so up to
+        $this->assertLessThan($char->maxHealth(), $char->health());
+        $char->heal($char->maxHealth()); // Heal by max_health, so up to
         $char->save();
-        $this->assertEquals($char->health, $char->max_health());
-        $this->assertEquals($char->health(), $char->max_health());
+        $this->assertEquals($char->health, $char->maxHealth());
+        $this->assertEquals($char->health(), $char->maxHealth());
     }
 
     public function testPCCanObtainAGravatarUrl() {

@@ -69,27 +69,14 @@ class ConsiderController {
      * @TODO Document me!
      */
     private function configure() {
-        $char = Player::find(SessionFactory::getSession()->get('player_id'));
-        // Array that simulates database display information for switching out for an npc database solution.
-        $npcs = [
-            ['name'=>'Peasant',  'identity'=>'peasant',  'image'=>'fighter.png'],
-            ['name'=>'Thief',    'identity'=>'thief',    'image'=>'thief.png'],
-            ['name'=>'Merchant', 'identity'=>'merchant', 'image'=>'merchant.png'],
-            ['name'=>'Guard',    'identity'=>'guard',    'image'=>'guard.png'],
-            ['name'=>'Samurai',  'identity'=>'samurai',  'image'=>'samurai.png'],
-        ];
-
-        $peers = ($char ? $this->getNearbyPeers($char->id()) : []);
-
-        $active_ninjas = Player::findActive(5, true);
-
-        $char_info = ($char ? $char->dataWithClan() : []);
-
-        // Generic/abstracted npcs
-        $other_npcs = NpcFactory::npcsData();
-
-        $enemy_list = ($char ? $this->getCurrentEnemies($char->id()) : []);
-        $enemy_count = rco($enemy_list);
+        $char             = Player::find(SessionFactory::getSession()->get('player_id'));
+        $peers            = ($char ? $this->getNearbyPeers($char->id()) : []);
+        $active_ninjas    = Player::findActive(5, true);
+        $char_info        = ($char ? $char->dataWithClan() : []);
+        $other_npcs       = NpcFactory::npcsData();
+        $npcs             = NpcFactory::customNpcs();
+        $enemy_list       = ($char ? $this->getCurrentEnemies($char->id()) : []);
+        $enemy_count      = rco($enemy_list);
         $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
 
         return [

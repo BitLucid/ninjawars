@@ -194,24 +194,17 @@ class Player implements Character {
      * @return int
      */
 	public function damage(Character $enemy=null){
-		return rand(1, $this->max_damage($enemy));
+		return rand(1, $this->maxDamage($enemy));
 	}
 
     /**
      * Max damage capability of a character
+     *
      * @return int
      */
-	public function max_damage(Character $enemy=null){
+	public function maxDamage(Character $enemy=null){
 		$dam = (int) ($this->strength() * 5 + $this->speed());
 		return $dam;
-	}
-
-    /**
-     * The maximum damage.
-     * @return int
-     */
-	public function maxDamage() {
-		return $this->max_damage();
 	}
 
     /**
@@ -398,7 +391,7 @@ class Player implements Character {
     /**
      * @return integer
      */
-    public function max_health() {
+    public function maxHealth() {
         return $this->stamina()*2;
     }
 
@@ -548,7 +541,7 @@ class Player implements Character {
 	 */
 	public function is_hurt_by() {
 		return max(0,
-			(int) ($this->max_health() - $this->health())
+			(int) ($this->maxHealth() - $this->health())
 		);
 	}
 
