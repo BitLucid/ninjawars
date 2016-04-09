@@ -35,7 +35,6 @@ class PlayerController extends AbstractController {
         $self                  = null;
         $status_list           = null;
         $targeted_skills       = null;
-        $valid_items           = null;
         $viewed_name_for_title = null;
         $viewing_player_obj    = null;
 
@@ -120,8 +119,6 @@ class PlayerController extends AbstractController {
                     $inventory = new Inventory($viewing_player_obj);
                     $items = $inventory->counts();
 
-                    $valid_items = rco($items);// row count
-
                 }	// End of the there-was-no-attack-error section
 
                 $set_bounty_section    = '';
@@ -168,7 +165,6 @@ class PlayerController extends AbstractController {
                     'same_clan'            => $same_clan,
                     'display_clan_options' => $display_clan_options,
                     'attack_error'         => $attack_error,
-                    'valid_items'          => $valid_items,
                 ];
             }
         }

@@ -77,13 +77,11 @@ class ConsiderController extends AbstractController {
         $other_npcs       = NpcFactory::npcsData();
         $npcs             = NpcFactory::customNpcs();
         $enemy_list       = ($char ? $this->getCurrentEnemies($char->id()) : []);
-        $enemy_count      = rco($enemy_list);
         $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
 
         return [
             'logged_in'        => (bool)$char,
             'enemy_list'       => $enemy_list,
-            'enemy_count'      => $enemy_count,
             'char_name'        => ($char ? $char->name() : ''),
             'npcs'             => $npcs,
             'other_npcs'       => $other_npcs,
@@ -92,7 +90,6 @@ class ConsiderController extends AbstractController {
             'recent_attackers' => $recent_attackers,
             'enemy_list'       => $enemy_list,
             'peers'            => $peers,
-            'max_enemies'      => (self::ENEMY_LIMIT <= $enemy_count),
         ];
     }
 

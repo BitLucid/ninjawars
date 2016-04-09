@@ -78,10 +78,3 @@ function query_item($sql, $bindings=array()) {
 	return (is_array($row) ? reset($row) : null);
 }
 
-/**
- * Shortcut for row count on a data set or pdo resultset.
- */
-function rco($data){
-	return (is_a($data, 'PDOStatement')? $data->rowCount() : count($data));
-}
-

@@ -70,8 +70,7 @@ class ClanTest extends PHPUnit_Framework_TestCase {
         $player2 = Player::find($this->char_id_2);
         $clan = $this->clan;
         $this->assertTrue($clan->addMember($player1, $player1));
-        $member_ids = $clan->getMemberIds();
-        $this->assertEquals(2, rco($member_ids));
+        $this->assertEquals(2, $clan->getMemberCount());
         $this->assertTrue($clan->hasMember($player1->id()));
         $this->assertTrue($clan->hasMember($player2->id()));
     }
@@ -112,7 +111,7 @@ class ClanTest extends PHPUnit_Framework_TestCase {
         $player1 = Player::find($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
-        $this->assertEquals(2, rco($clan->getMembers()));
+        $this->assertEquals(2, count($clan->getMembers()));
     }
 
     function testGetTheClanAvatarUrl(){

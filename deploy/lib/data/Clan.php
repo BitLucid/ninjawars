@@ -250,6 +250,14 @@ class Clan {
     }
 
     /**
+     */
+    public function getMemberCount() {
+        return query_item(
+            'SELECT count(*) FROM clan_player JOIN players ON player_id = _player_id WHERE _clan_id = :clan',
+            [':clan' => $this->id()]
+        );
+    }
+    /**
      * Delete a clan after sending a message to all clan members.
      */
     public function disband() {

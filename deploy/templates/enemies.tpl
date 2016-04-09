@@ -9,19 +9,20 @@
 {/if}
 
 <section id='enemies-stuff' class='clearfix'>
-{if $enemy_count gt 0}
+{foreach $enemy_list as $loop_enemy}
+    {if $loop_enemy@first}
 <div class='enemies-lefthalf'>
   <h3>Enemies</h3>
   <ul id='current-enemies-list'>
-	{foreach from=$enemy_list item="loop_enemy"}
-		{if $loop_enemy.active}
-			{if $loop_enemy.health gt 0}
-				{assign var="status_class" value=""}
-				{assign var="action" value="Attack"}
-			{else}
-				{assign var="status_class" value="enemy-dead"}
-				{assign var="action" value="View"}
-			{/if}
+    {/if}
+    {if $loop_enemy.active}
+        {if $loop_enemy.health gt 0}
+            {assign var="status_class" value=""}
+            {assign var="action" value="Attack"}
+        {else}
+            {assign var="status_class" value="enemy-dead"}
+            {assign var="action" value="View"}
+        {/if}
     <li class="{$status_class}">
       <span class='enemy-action-box'>{$action}&nbsp;<a class='enemy-name' title="View {$loop_enemy.uname|escape}'s info" href="/player?player_id={$loop_enemy.player_id|escape}">{$loop_enemy.uname|escape}</a></span>
       <span class='enemy-stats-box'>
@@ -35,13 +36,14 @@
           </button>
       </form>
     </li>
-		{/if}
-	{/foreach}
+    {/if}
+    {if $loop_enemy@last}
   </ul>
 </div>
-{else}
+    {/if}
+{foreachelse}
 <p class='enemies-lefthalf'>You haven't decided who your enemies are yet{if $logged_in}, pick some below.{else}, become a ninja to get some enemies.{/if}</p>
-{/if}
+{/foreach}
 
 {if count($peers) gt 0}
 <div class='enemies-righthalf'>

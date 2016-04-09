@@ -50,7 +50,7 @@ class ChatController extends AbstractController {
             'target'            => $_SERVER['PHP_SELF'],
             'chats'             => $chats,
             'error'             => in('error'),
-            'more_chats_to_see' => (rco($chats) < $this->getChatCount()),
+            'more_chats_to_see' => (!$view_all && $chatlength < $this->getChatCount()),
             'authenticated'     => SessionFactory::getSession()->get('authenticated', false),
         ];
 

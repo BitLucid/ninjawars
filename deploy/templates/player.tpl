@@ -121,25 +121,27 @@ var combat_skills = {$combat_skills|@json_encode};
               <form id="inventory_form" action="/player/use_item/" method="post" name="inventory_form">
                 <div>
                   <input id="target" type="hidden" name="target_id" value="{$target_player_obj->id()|escape}">
-		{if !$valid_items}
-				  <div id='no-items' class='ninja-notice'>
-				  	You have no items.
-				  </div>
-		{else}
-    {if $same_clan}
+        {foreach $items as $item}
+            {if $item@first}
+                {if $same_clan}
                   <div>
                     <input id="give" type="submit" value="Give" name="give" class="btn btn-default">
                   </div>
-    {/if}
-                  <select id="item" name="item">
-			{foreach from=$items item="item"}
-				{if $item.other_usable && $item.count>0}
-                    <option value="{$item.item_id|escape}">{$item.name|escape} ({$item.count|escape})</option>
                 {/if}
-			{/foreach}
+                  <select id="item" name="item">
+            {/if}
+            {if $item.other_usable && $item.count>0}
+                    <option value="{$item.item_id|escape}">{$item.name|escape} ({$item.count|escape})</option>
+            {/if}
+            {if $item@last}
                   </select>
                   <input type="submit" value="Use Item" class="btn btn-primary">
-		{/if}
+            {/if}
+        {foreachelse}
+				  <div id='no-items' class='ninja-notice'>
+				  	You have no items.
+				  </div>
+		{/foreach}
                 </div>
               </form>
             </td>

@@ -79,7 +79,7 @@ class ListController extends AbstractController {
         $last_page  = (($totalrows - ($record_limit * $page)) > 0);
 
         $ninja_rows = $this->getFormattedNinjaRows($where_clauses, $params, $record_limit, $offset);
-        $ninja_count = rco($ninja_rows);
+        $ninja_count = count($ninja_rows);
 
         $active_ninjas = null;
         if (!$searched) { // Will not display active ninja on a search page.
