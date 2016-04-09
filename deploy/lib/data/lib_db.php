@@ -14,7 +14,7 @@ use NinjaWars\core\data\DatabaseConnection;
  * Or: query('select all from players limit :count', array('count'=>array(10, PDO::PARAM_INT)));
  *
  * Note that it returns foreachable resultset object unless an array is specifically requested.
-**/
+ */
 function query($sql, $bindings=array(), $return_resultset=true) {
 	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare($sql);
@@ -40,63 +40,57 @@ function query($sql, $bindings=array(), $return_resultset=true) {
 	}
 }
 
-// Wrapper to explicitly & simply get a resultset.
+/**
+ * Wrapper to explicitly & simply get a resultset.
+ */
 function query_resultset($sql_query, $bindings=array()) {
 	return query($sql_query, $bindings, true);
 }
 
-// Wrapper to explicitly & simply get a multi-dimensional array.
+/**
+ * Wrapper to explicitly & simply get a multi-dimensional array.
+ */
 function query_array($sql_query, $bindings=array()) {
 	return query($sql_query, $bindings, false); // Set return_resultset to false to return the array.
 }
 
-// Insert sql, returns the id insert by default.
+/**
+ * Insert sql, returns the id insert by default.
+ */
 function insert_query($insert_query, $bindings=array(), $sequence_name){
 	query($insert_query, $bindings, true); // Don't try to return data in the initial query.
 	$id = DatabaseConnection::$pdo->lastInsertId($sequence_name);
 	return $id;
 }
 
-// Update query wrapper, returns the number of rows updated.
+/**
+ * Update query wrapper, returns the number of rows updated.
+ */
 function update_query($update_query, $bindings=array()){
 	$updates = query($update_query, $bindings, true); // Return the resultset
 	return $updates->rowCount();
 }
 
-// Run to just get the first row, for 1 row queries.
+/**
+ * Run to just get the first row, for 1 row queries.
+ */
 function query_row($sql, $bindings=array()) {
     $resultset = query_resultset($sql, $bindings);
 	return $resultset->fetch(PDO::FETCH_ASSOC);
 }
 
-// Get only the first result item.
+/**
+ * Get only the first result item.
+ */
 function query_item($sql, $bindings=array()) {
 	$row = query_row($sql, $bindings);
 	return (is_array($row) ? reset($row) : null);
 }
 
-// Shortcut for associative fetching.
-function fet($pdo){
-	return $pdo->fetch(PDO::FETCH_ASSOC);
-}
-
-// Shortcut for row count on a data set or pdo resultset.
+/**
+ * Shortcut for row count on a data set or pdo resultset.
+ */
 function rco($data){
 	return (is_a($data, 'PDOStatement')? $data->rowCount() : count($data));
 }
-
-function fall($pdo){
-	return $pdo->fetchall(PDO::FETCH_ASSOC);
-}
-
-// Turn a randomly indexed array into an associatively indexed array.
-function array_identity_associate($data, $identity_column='identity'){
-    $res = array();
-    foreach($data as $single_row){
-        $loop_identity = $single_row[$identity_column];
-        $res[$loop_identity] = $single_row;
-    }
-    return $res;
-}
-
 
