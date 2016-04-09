@@ -146,22 +146,3 @@ function debug($val) {
     }
 }
 
-/**
- * Pulls out standard vars except arrays and objects.
- * $var_list is get_defined_vars()
- * $whitelist is an array with string names of arrays/objects to allow.
- * @deprecated in favor of passing specific vars to template
- */
-function get_certain_vars($var_list, $whitelist=array()) {
-    $non_arrays = array();
-
-    foreach ($var_list as $loop_var_name => $loop_variable) {
-        if (
-            (!is_array($loop_variable) && !is_object($loop_variable))
-            || in_array($loop_var_name, $whitelist)) {
-            $non_arrays[$loop_var_name] = $loop_variable;
-        }
-    }
-
-    return $non_arrays;
-}

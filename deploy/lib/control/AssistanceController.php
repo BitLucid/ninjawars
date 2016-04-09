@@ -176,11 +176,14 @@ class AssistanceController extends AbstractController {
         }
 
         return [
-            'template'=>'assistance.confirm.tpl',
-            'title'=>'Account Confirmation',
-            'parts'=>get_certain_vars(get_defined_vars()),
-            'options'=>['quickstat'=>false]
-            ];
+            'template' => 'assistance.confirm.tpl',
+            'title'    => 'Account Confirmation',
+            'parts'    => [
+                'confirmed'              => $confirmed,
+                'username'               => $username,
+                'confirmation_confirmed' => $confirmation_confirmed,
+            ],
+            'options'  => ['quickstat'=>false]
+        ];
     }
-
 }

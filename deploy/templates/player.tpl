@@ -39,7 +39,7 @@ article#player-titles{
 
 <div class='player-info'>
 
-    <h1 class='player-name'>{$player|escape}</h1>
+    <h1 class='player-name'>{$target_player_obj->name()|escape}</h1>
 
     <nav class='player-ranking-linkback'>
       <a href='/list?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none'>
@@ -55,8 +55,8 @@ article#player-titles{
       {$player_info.class_name|escape}
     </span>
 
-    <span class='player-level-category {$player_info.level|level_label|css_classify}'>
-      {$player_info.level|level_label} [{$player_info.level|escape}]
+    <span class='player-level-category {$target_player_obj->level|level_label|css_classify}'>
+      {$target_player_obj->level|level_label} [{$target_player_obj->level|escape}]
     </span>
 
     {include file="status_section.tpl" statuses=$status_list}
@@ -68,12 +68,12 @@ article#player-titles{
 	{/if}
 
   {include file="gravatar.tpl" gurl=$gravatar_url}
-  {if $viewing_player_obj && $viewing_player_obj->isAdmin()}<a style='font-size:small;float:right;' href='/ninjamaster/?view={$player_info.player_id|escape}'>Admin View</a>{/if}
+  {if $viewing_player_obj && $viewing_player_obj->isAdmin()}<a style='font-size:small;float:right;' href='/ninjamaster/?view={$target_player_obj->id()|escape}'>Admin View</a>{/if}
 
   </article>
 
-  {if $player_info.description}
-      <blockquote>{$player_info.uname|escape} {$player_info.description|escape}</blockquote>
+  {if $target_player_obj->description}
+      <blockquote>{$target_player_obj->name()|escape} {$target_player_obj->description|escape}</blockquote>
   {/if}
 
 
@@ -120,7 +120,7 @@ var combat_skills = {$combat_skills|@json_encode};
             <td id='inventory-items'>
               <form id="inventory_form" action="/player/use_item/" method="post" name="inventory_form">
                 <div>
-                  <input id="target" type="hidden" name="target_id" value="{$target_id|escape}">
+                  <input id="target" type="hidden" name="target_id" value="{$target_player_obj->id()|escape}">
 		{if !$valid_items}
 				  <div id='no-items' class='ninja-notice'>
 				  	You have no items.
@@ -155,7 +155,7 @@ var combat_skills = {$combat_skills|@json_encode};
           {foreach from=$targeted_skills item="skill"}
             <li>
               <input id="act-{$skill.skill_internal_name}" class="act btn btn-primary" type="submit" value="{$skill.skill_display_name}" name="act" title='Use the {$skill.skill_display_name} skill for a cost of {getTurnCost skillName=$skill.skill_display_name} turns'>
-              <input id="target" class="target" type="hidden" value="{$target|escape}" name="target">
+              <input id="target" class="target" type="hidden" value="{$target_player_obj->name()|escape}" name="target">
             </li>
           {/foreach}
           </ul>
@@ -174,12 +174,12 @@ var combat_skills = {$combat_skills|@json_encode};
   <section class='player-communications centered'>
 
 	<span id='message-ninja'>
-      <a href='/messages?to={$player_info.uname|escape}'>Message <em class='char-name'>{$player_info.uname|escape}</em>
+      <a href='/messages?to={$target_player_obj->name()|escape}'>Message <em class='char-name'>{$target_player_obj->name()|escape}</em>
       </a>
     </span>
 
   <div class='set-bounty centered'>
-    <a class='set-bounty-link' href='/doshin?target={$player_info.uname|escape:'url'}'>Add bounty</a>
+    <a class='set-bounty-link' href='/doshin?target={$target_player_obj->name()|escape:'url'}'>Add bounty</a>
   </div>
 
   </section>
@@ -191,14 +191,14 @@ var combat_skills = {$combat_skills|@json_encode};
 
     <small class='player-last-active de-em'>
       Last active
-      {if $player_info.days gt 0}
-        {$player_info.days} days ago
+      {if $target_player_obj->days gt 0}
+        {$target_player_obj->days} days ago
       {else}
         today {if $kills_today gt 0}<span>with {$kills_today} kills</span>{/if}
       {/if}
     </small>
-    {if $player_info.bounty gt 0}
-      <small class='player-bounty'><a class='bounty-link' href='/doshin' target='main'>{$player_info.bounty} bounty</a></small>
+    {if $target_player_obj->bounty gt 0}
+      <small class='player-bounty'><a class='bounty-link' href='/doshin' target='main'>{$target_player_obj->bounty} bounty</a></small>
     {/if}
   </section>
 
@@ -208,17 +208,17 @@ var combat_skills = {$combat_skills|@json_encode};
     <!-- Player clan and clan members -->
     <div class='player-clan'>
 	{if $same_clan}
-      <p class='ninja-notice'><em class='charname'>{$player_info.uname|escape}</em> is part of your clan.</p>
+      <p class='ninja-notice'><em class='charname'>{$target_player_obj->name()|escape}</em> is part of your clan.</p>
 	{/if}
       <p class='clan-link centered'>
         <span class='subtitle'>Clan:</span>
-        <a href='/clan/view?clan_id={$clan_id}'>{$clan_name|escape}</a>
+        <a href='/clan/view?clan_id={$clan->id()}'>{$clan->getName()|escape}</a>
       </p>
   {if $display_clan_options}
     <div class='clan-leader-options centered'>
       <form id="kick_form" class='js-hooked' action="/clan/kick" method="get" name="kick_form">
         <div>
-          <input id="kicked" type="hidden" value="{$player_info.player_id}" name="kicked">
+          <input id="kicked" type="hidden" value="{$target_player_obj->id()}" name="kicked">
           <input type="submit" value="Kick This Ninja From Your Clan" class="formButton">
         </div>
       </form>
@@ -228,11 +228,11 @@ var combat_skills = {$combat_skills|@json_encode};
     </div>
 {/if}
 
-{if $player_info.messages}
+{if $target_player_obj->messages}
     <div class='player-profile'>
       <div class='subtitle'>Message:</div>
       <p class='centered profile-message'>
-        {$player_info.messages|trim|escape|replace_urls|nl2br}
+        {$target_player_obj->messages|trim|escape|replace_urls|nl2br}
       </p>
     </div>
 {/if}

@@ -20,14 +20,30 @@ class PlayerController extends AbstractController {
         $target    = $player = first_value(in('ninja'), in('player'), in('find'), in('target'));
         $target_id = first_value(in('target_id'), in('player_id'));
 
+        $account               = null;
+        $attack_error          = null;
+        $char_info             = null;
+        $clan                  = null;
+        $combat_skills         = null;
+        $display_clan_options  = null;
+        $gravatar_url          = null;
+        $items                 = null;
+        $kills_today           = null;
+        $player_info           = null;
+        $rank_spot             = null;
+        $same_clan             = false;
+        $self                  = null;
+        $status_list           = null;
+        $targeted_skills       = null;
+        $valid_items           = null;
+        $viewed_name_for_title = null;
+        $viewing_player_obj    = null;
+
         if ($target_id) {
             $target_player_obj = Player::find($target_id);
         } else {
             $target_player_obj = Player::findByName($target);
         }
-
-        $viewed_name_for_title = null;
-        $combat_skills = null;
 
         if ($target_player_obj !== null) {
             $viewed_name_for_title = $target_player_obj->name();
@@ -69,7 +85,7 @@ class PlayerController extends AbstractController {
                 $params          = array('required_turns'=>0, 'ignores_stealth'=>true); // 0 for unstealth.
                 $attack_error = 'You must become a ninja first.';
                 $attack_allowed = false;
-                if(null !== $viewing_player_obj){
+                if (null !== $viewing_player_obj) {
                     $AttackLegal     = new AttackLegal($viewing_player_obj, $target_player_obj, $params);
                     $attack_allowed  = $AttackLegal->check(false);
                     $attack_error    = $AttackLegal->getError();
@@ -108,17 +124,16 @@ class PlayerController extends AbstractController {
 
                 }	// End of the there-was-no-attack-error section
 
-                $set_bounty_section     = '';
-                $communication_section  = '';
-                $player_clan_section    = '';
+                $set_bounty_section    = '';
+                $communication_section = '';
+                $player_clan_section   = '';
 
                 $clan = ClanFactory::clanOfMember($player_info['player_id']);
-                $same_clan = false;
 
                 // Player clan and clan members
 
                 if ($clan) {
-                    $viewer_clan  = $viewing_player_obj ? ClanFactory::clanOfMember($viewing_player_obj) : null;
+                    $viewer_clan  = ($viewing_player_obj ? ClanFactory::clanOfMember($viewing_player_obj) : null);
                     $clan_id      = $clan->getID();
                     $clan_name    = $clan->getName();
 
@@ -133,10 +148,28 @@ class PlayerController extends AbstractController {
                 // Send the info to the template.
 
                 $template = 'player.tpl';
-                $combat_skills = $combat_skills? $combat_skills->fetchAll() : null;
-                $parts = get_certain_vars(get_defined_vars(), array('char_info', 'viewing_player_obj', 'target_player_obj', 'combat_skills',
-                    'targeted_skills', 'player_info', 'self', 'rank_spot', 'kills_today',
-                    'gravatar_url', 'status_list', 'clan', 'items', 'account'));
+                $combat_skills = ($combat_skills ? $combat_skills->fetchAll() : null);
+
+                $parts = [
+                    'char_info'            => $char_info,
+                    'viewing_player_obj'   => $viewing_player_obj,
+                    'target_player_obj'    => $target_player_obj,
+                    'combat_skills'        => $combat_skills,
+                    'targeted_skills'      => $targeted_skills,
+                    'player_info'          => $player_info,
+                    'self'                 => $self,
+                    'rank_spot'            => $rank_spot,
+                    'kills_today'          => $kills_today,
+                    'gravatar_url'         => $gravatar_url,
+                    'status_list'          => $status_list,
+                    'clan'                 => $clan,
+                    'items'                => $items,
+                    'account'              => $account,
+                    'same_clan'            => $same_clan,
+                    'display_clan_options' => $display_clan_options,
+                    'attack_error'         => $attack_error,
+                    'valid_items'          => $valid_items,
+                ];
             }
         }
 
