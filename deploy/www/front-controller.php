@@ -14,7 +14,13 @@ try {
     update_activity_info(); // Updates the activity of the page viewer in the database.
 
     // get the request information to parse the route
-    Router::route(Request::createFromGlobals());
+    $response = Router::route(Request::createFromGlobals());
+
+    if ($response instanceof RedirectResponse) {
+        $response->send();
+    } else {
+        Router::render($response);
+    }
 } catch (RouteNotFoundException $e) {
     Router::respond404();
 }

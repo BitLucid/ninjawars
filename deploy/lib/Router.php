@@ -70,11 +70,7 @@ class Router {
                     $response  = self::execute($mainRoute, $command);
                 }
 
-                if ($response instanceof RedirectResponse) {
-                    $response->send();
-                } else {
-                    self::render($response);
-                }
+                return $response;
             }
         }
     }
