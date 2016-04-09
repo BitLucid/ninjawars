@@ -159,4 +159,14 @@ class NpcFactory {
     public static function npcsData() {
         return include(SERVER_ROOT.'npc-list.php');
     }
+
+    public static function customNpcs() {
+        return [
+            ['name'=>'Peasant',  'identity'=>'peasant',  'image'=>'fighter.png'],
+            ['name'=>'Thief',    'identity'=>'thief',    'image'=>'thief.png'],
+            ['name'=>'Merchant', 'identity'=>'merchant', 'image'=>'merchant.png'],
+            ['name'=>'Guard',    'identity'=>'guard',    'image'=>'guard.png'],
+            ['name'=>'Samurai',  'identity'=>'samurai',  'image'=>'samurai.png'],
+        ];
+    }
 }

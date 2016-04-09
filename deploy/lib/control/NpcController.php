@@ -26,7 +26,6 @@ class NpcController { //extends controller
     const MIN_LEVEL_FOR_BOUNTY       = 5;
     const MAX_LEVEL_FOR_BOUNTY       = 50;
 
-    public static $STATIC_NPCS           = ['peasant', 'thief', 'merchant', 'guard', 'samurai'];
     public static $STEALTH_REMOVING_NPCS = ['samurai', 'oni'];
 
     private $randomness = null;
@@ -276,7 +275,7 @@ class NpcController { //extends controller
         $error_template = 'npc.no-one.tpl'; // Error template also used down below.
         $npc_template   = $error_template; // Error condition by default.
         $npcs           = NpcFactory::npcsData();
-        $possible_npcs  = array_merge(self::$STATIC_NPCS, array_keys($npcs));
+        $possible_npcs  = array_merge(array_column(NpcFactory::customNpcs(), 'identity'), array_keys($npcs));
         $victim         = (in_array($victim, $possible_npcs) ? $victim : null); // Filter to only the correct options.
 
         $standard_npcs  = [
@@ -609,13 +608,7 @@ class NpcController { //extends controller
     private function npcs() {
         return [
             'abstract_npcs' => NpcFactory::npcsData(),
-            'custom_npcs'=> [
-                ['name'=>'Peasant',  'identity'=>'peasant',  'image'=>'fighter.png'],
-                ['name'=>'Thief',    'identity'=>'thief',    'image'=>'thief.png'],
-                ['name'=>'Merchant', 'identity'=>'merchant', 'image'=>'merchant.png'],
-                ['name'=>'Guard',    'identity'=>'guard',    'image'=>'guard.png'],
-                ['name'=>'Samurai',  'identity'=>'samurai',  'image'=>'samurai.png'],
-            ]
+            'custom_npcs'   => NpcFactory::customNpcs(),
         ];
     }
 
