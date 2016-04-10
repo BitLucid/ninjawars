@@ -41,11 +41,11 @@ class ShopController { // extends Controller
     /**
      * Calculate price of items with markup.
      */
-    private function calculatePrice($purchase_order){
+    private function calculatePrice(PurchaseOrder $purchase_order){
         $item_costs        = $this->itemForSaleCosts();
         $potential_cost    = (isset($item_costs[$purchase_order->item->identity()]['item_cost']) ? $item_costs[$purchase_order->item->identity()]['item_cost'] : null);
         $current_item_cost = first_value($potential_cost, 0);
-        return (int) ceil($current_item_cost * $purchase_order->quantity * self::MARKUP);
+        return (int) ceil($current_item_cost * $purchase_order->quantity);
 
     }
 
@@ -64,7 +64,6 @@ class ShopController { // extends Controller
 		$current_item_cost = 0;
 		$no_funny_business = false;
         $no_such_item      = false;
-		$item_costs        = $this->itemForSaleCosts();
 		$item              = Item::findByIdentity($in_item);
 		$quantity 		   = whichever(positive_int($in_quantity), 1);
 		$item_text 	       = null;
