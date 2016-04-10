@@ -91,8 +91,8 @@ class ClanController extends AbstractController {
 		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 		$clan   = ClanFactory::clanOfMember($player);
 
-		if (!$this->playerIsLeader($player, $clan)) {
-			throw new \Exception('You must be a clan leader to invite new members');
+		if (!$clan || !$this->playerIsLeader($player, $clan)) {
+			throw new \RuntimeException('You must be a clan leader to invite new members');
 		}
 
 		$person_to_invite = Player::find(in('person_invited', ''));
@@ -133,7 +133,7 @@ class ClanController extends AbstractController {
 		$clan   = ClanFactory::clanOfMember($player);
 
 		if ($this->playerIsLeader($player, $clan)) {
-			throw new \Exception('You are the only leader of your clan. You must disband your clan if you wish to leave.');
+			throw new \RuntimeException('You are the only leader of your clan. You must disband your clan if you wish to leave.');
 		}
 
 		$clan->leave($player);
@@ -229,7 +229,7 @@ class ClanController extends AbstractController {
 		$sure   = in('sure', '');
 
 		if (!$this->playerIsLeader($player, $clan)) {
-			throw new \Exception('You may not disband a clan you are not a leader of.');
+			throw new \RuntimeException('You may not disband a clan you are not a leader of.');
 		}
 
 		if ($sure === 'yes') {
@@ -269,7 +269,7 @@ class ClanController extends AbstractController {
 		$kicked = Player::find(in('kicked', ''));
 
 		if (!$this->playerIsLeader($kicker, $clan)) {
-			throw new \Exception('You may not kick members from a clan you are not a leader of.');
+			throw new \RuntimeException('You may not kick members from a clan you are not a leader of.');
 		}
 
 		$clan->kickMember($kicked->id(), $kicker);
