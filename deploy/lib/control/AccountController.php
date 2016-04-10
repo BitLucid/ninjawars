@@ -48,9 +48,9 @@ class AccountController extends AbstractController {
 
         if ($verify) {
             if ($in_newEmail === $in_confirmEmail) {
-                $account = Account::findByEmail($in_newEmail);
+                $pos_account = Account::findByEmail($in_newEmail);
 
-                if ($account !== null) {
+                if ($pos_account === null) {
                     try {
                         $account = Account::findByChar($player);
                         $account->setActiveEmail($in_newEmail);
