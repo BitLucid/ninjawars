@@ -197,7 +197,6 @@ class InventoryController extends AbstractController {
         $had_stealth     = $player->hasStatus(STEALTH);
         $error           = false;
         $turns_to_take   = 1; // Take away one turn even on attacks that fail to prevent page reload spamming
-        $result          = null;
         $bounty_message  = '';
         $display_message = '';
         $extra_message   = '';

@@ -27,11 +27,11 @@ class StatsController extends AbstractController {
 	public function changeDetails() {
 		$char = Player::find(SessionFactory::getSession()->get('player_id'));
 
-		$description	= post('description', $char->description);
-		$goals			= post('goals', $char->goals);
-		$instincts		= post('instincts', $char->instincts);
-		$beliefs		= post('beliefs', $char->beliefs);
-		$traits			= post('traits', $char->traits);
+		$description = post('description', $char->description);
+		$goals       = post('goals', $char->goals);
+		$instincts   = post('instincts', $char->instincts);
+		$beliefs     = post('beliefs', $char->beliefs);
+		$traits      = post('traits', $char->traits);
 
 		// Check that the text features don't differ
 		$char->description = $description;
@@ -40,7 +40,7 @@ class StatsController extends AbstractController {
 		$char->beliefs     = $beliefs;
 		$char->traits      = $traits;
 
-		$char = $char->save();
+		$char->save();
 
 		return new RedirectResponse('/stats?changed=1');
 	}

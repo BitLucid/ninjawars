@@ -11,7 +11,6 @@ use \ArrayIterator;
  */
 class Inventory implements IteratorAggregate {
     private $char  = null;
-    private $items = null;
 
     public function __construct(Player $char) {
         $this->char = $char;

@@ -31,17 +31,13 @@ class PlayerController extends AbstractController {
             $viewed_name_for_title = null;
             $parts                 = array();
         } else {
-            $attack_allowed        = false;
             $attack_error          = 'You must become a ninja first.';
             $clan                  = ClanFactory::clanOfMember($target_player_obj->id());
             $combat_skills         = null;
-            $communication_section = '';
             $display_clan_options  = false;
             $items                 = null;
-            $player_clan_section   = '';
             $same_clan             = false;
             $self                  = false;
-            $set_bounty_section    = '';
             $targeted_skills       = null;
             $template              = 'player.tpl';
             $viewed_name_for_title = $target_player_obj->name();
@@ -62,7 +58,7 @@ class PlayerController extends AbstractController {
                 $self           = ($viewing_player_obj->id() === $target_player_obj->id());
                 $params         = ['required_turns'=>0, 'ignores_stealth'=>true];
                 $AttackLegal    = new AttackLegal($viewing_player_obj, $target_player_obj, $params);
-                $attack_allowed = $AttackLegal->check(false);
+                $AttackLegal->check(false);
                 $attack_error   = $AttackLegal->getError();
 
                 if (!$attack_error && !$self) { // They're not dead or otherwise unattackable.

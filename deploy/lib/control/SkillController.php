@@ -126,7 +126,6 @@ class SkillController extends AbstractController {
 	}
 
     public function postSelfUse(){
-        $target = SessionFactory::getSession()->get('player_id');
         $act = post('act');
         $url = 'skill/self_use/'.rawurlencode($act).'/';
         // TODO: Need to double check that this doesn't allow for redirect injection
@@ -190,12 +189,6 @@ class SkillController extends AbstractController {
 			$target2 = $target2Obj? $target2Obj->id() : null;
 		}
 
-
-		//Get filtered info from input.
-		//$target  = in('target');
-		//$act = whichever(in('act'), in('command'));
-		//$stealth = in('stealth'); Unused?  What was this.
-
 		$skillListObj    = new Skill();
 		// *** Before level-based addition.
 		$poisonTurnCost  = $skillListObj->getTurnCost('poison touch'); // wut
@@ -234,7 +227,6 @@ class SkillController extends AbstractController {
 		$attacker_id      = $player->name();
 		$attacker_char_id = $player->id();
 		$starting_turns   = $player->vo->turns;
-		$ending_turns     = null;
 
 		$level_check  = $player->vo->level - $target->vo->level;
 
@@ -531,7 +523,7 @@ class SkillController extends AbstractController {
 
 		$target_ending_health = $target->health;
 		$target_name = $target->name();
-		$parts = get_defined_vars(); // include $act for testing
+		$parts = get_defined_vars();
 		$options = ['quickstat'=>'player'];
 		return [
 				'title'=>'Skill Effect', 
