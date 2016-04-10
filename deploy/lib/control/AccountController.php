@@ -161,14 +161,12 @@ class AccountController extends AbstractController {
      * Make account non-operational
      */
     public function deleteAccount() {
-        $session    = SessionFactory::getSession();
-        $player     = Player::find(SessionFactory::getSession()->get('player_id'));
-        $self_info 	= $player->dataWithClan();
-        $passW 		= in('passw', null);
-        $username 	= $self_info['uname'];
-
-        $error 		= '';
-        $command 	= in('command');
+        $session         = SessionFactory::getSession();
+        $player          = Player::find(SessionFactory::getSession()->get('player_id'));
+        $self_info       = $player->dataWithClan();
+        $passW           = in('passw', null);
+        $username        = $self_info['uname'];
+        $command         = in('command');
         $delete_attempts = $session->get('delete_attempts', 0);
 
         $verify = self::is_authentic($username, $passW);

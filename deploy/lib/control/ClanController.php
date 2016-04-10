@@ -20,7 +20,6 @@ class ClanController extends AbstractController {
 	/**
 	 * View information about a clan
 	 *
-	 * @param int $clan_id (optional) The id of the clan to view
 	 * @return Array The viewspec
 	 * @note
 	 * If a clan_id is not specified, the clan of the current user will be used
@@ -83,7 +82,6 @@ class ClanController extends AbstractController {
 	/**
 	 * Send an invitation to a character that will ask them to join your clan
 	 *
-	 * @param int $person_invited The id of the character to invite
 	 * @return Array The viewspec
 	 * @throws Exception You cannot use this function if you are not the leader of a clan
 	 */
@@ -259,7 +257,6 @@ class ClanController extends AbstractController {
 	/**
 	 * Removes a player from a clan
 	 *
-	 * @param int $kicked The id of the player to kick
 	 * @return Array The viewspec
 	 * @throws Exception The player must be the leader of the clan to kick a member
 	 */
@@ -290,9 +287,6 @@ class ClanController extends AbstractController {
 	 * Edits clan metadata
 	 *
      * @todo accumulate error messages
-	 * @param string $clan-avatar-url A url to an image to use as the clan icon
-	 * @param string $clan-description A single paragraph describing the clan
-	 * @param string $new_clan_name The desired new name of the clan
 	 * @return Array The viewspec
 	 * @throws Exception Only leaders can update clan details
 	 * @note
@@ -380,7 +374,6 @@ class ClanController extends AbstractController {
 	/**
 	 * Sends a message to all members of the clan of the current player
 	 *
-	 * @param string $message The message to send to all clan members
 	 * @return Array The view spec
 	 */
 	public function message() {
@@ -450,8 +443,6 @@ class ClanController extends AbstractController {
 	/**
 	 * Review a request to join a clan
 	 *
-	 * @param int $joiner The id of the player object to accept into the clan
-	 * @param int $confirmation The nonce of clan invitation created by the request to join
 	 * @return Array The viewspec
 	 */
 	public function review() {
@@ -487,8 +478,6 @@ class ClanController extends AbstractController {
 	/**
 	 * Accept a player as a new member of a clan
 	 *
-	 * @param int $joiner the id of the player object to accept into the clan
-	 * @param int $confirmation A nonce that prevents clan leaders from adding unwilling members
 	 * @return Array The viewspec
 	 *
 	 * @par Preconditions:

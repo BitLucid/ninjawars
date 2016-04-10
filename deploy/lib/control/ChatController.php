@@ -89,6 +89,8 @@ class ChatController extends AbstractController {
 
     /**
      * Total number of chats available.
+     *
+     * @return int
      */
     private function getChatCount() {
         return query_item("SELECT count(*) FROM chat");

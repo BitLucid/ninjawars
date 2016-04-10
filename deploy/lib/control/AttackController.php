@@ -218,9 +218,9 @@ class AttackController extends AbstractController {
 
                 if ($defenderHealthRemaining < 1 || $attackerHealthRemaining < 1) { // A kill occurred.
                     if ($defenderHealthRemaining < 1) { // ATTACKER KILLS DEFENDER!
-                        if ($simultaneousKill = ($attackerHealthRemaining < 1)) {
-                            // *** If both died at the same time. ***
-                        } else {
+                        $simultaneousKill = ($attackerHealthRemaining < 1);
+
+                        if (!$simultaneousKill) {
                             $victor = $attacking_player;
                             $loser  = $target_player;
                         }
@@ -268,9 +268,9 @@ class AttackController extends AbstractController {
                     }
 
                     if ($attackerHealthRemaining < 1) { // *** DEFENDER KILLS ATTACKER! ***
-                        if ($simultaneousKill = ($attackerHealthRemaining < 1)) {
-                            // *** If both died at the same time. ***
-                        } else {
+                        $simultaneousKill = ($attackerHealthRemaining < 1);
+
+                        if (!$simultaneousKill)	{
                             $victor = $target_player;
                             $loser  = $attacking_player;
                         }

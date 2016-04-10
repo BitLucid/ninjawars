@@ -15,13 +15,15 @@ class AssistanceController extends AbstractController {
 
     /**
      * Determines the user information for a certain email.
+     *
+     * @return array
      */
     private function userHavingEmail($email) {
-        $data = query_row('SELECT uname, level, account_id, accounts.confirmed, 
+        $data = query_row('SELECT uname, level, account_id, accounts.confirmed,
             accounts.verification_number, accounts.active_email,
             CASE WHEN active::bool THEN 1 ELSE 0 END AS active
-            from accounts LEFT JOIN account_players ON account_id = _account_id 
-            LEFT JOIN players on _player_id = player_id 
+            from accounts LEFT JOIN account_players ON account_id = _account_id
+            LEFT JOIN players on _player_id = player_id
             WHERE trim(lower(active_email)) = trim(lower(:email)) limit 1;',
                 array(':email'=>$email));
         return $data;
@@ -133,23 +135,21 @@ class AssistanceController extends AbstractController {
         $aid                       = positive_int(in('aid'));
 
         $data = query_row('
-            SELECT player_id, uname, 
+            SELECT player_id, uname,
             accounts.verification_number as verification_number,
-            CASE WHEN active = 1 THEN 1 ELSE 0 END AS active, 
+            CASE WHEN active = 1 THEN 1 ELSE 0 END AS active,
             accounts.active_email,
-            CASE WHEN accounts.confirmed = 1 THEN 1 ELSE 0 END as confirmed, 
+            CASE WHEN accounts.confirmed = 1 THEN 1 ELSE 0 END as confirmed,
             status, member, days, players.created_date
-            FROM accounts JOIN account_players ON _account_id = account_id 
+            FROM accounts JOIN account_players ON _account_id = account_id
             JOIN players ON _player_id = player_id
             WHERE account_id = :acctId', array(':acctId'=>$aid));
 
         if (count($data)) {
             $check     = $data['verification_number'];
             $confirmed = $data['confirmed'];
-            $active    = $data['active'];
             $username  = $data['uname'];
         } else {
-            $active    =
             $check     =
             $confirmed =
             $username  = null;
@@ -157,17 +157,17 @@ class AssistanceController extends AbstractController {
 
         $confirmation_confirmed = false;
 
-        if ($confirmed != 1 && 
-            (($check && $confirm && $confirm == $check) 
+        if ($confirmed != 1 &&
+            (($check && $confirm && $confirm == $check)
                 || $acceptable_admin_override)) {
             // Confirmation number not null and matches
             // or the admin override was met.
-            query('UPDATE accounts SET operational = true, confirmed=1 
+            query('UPDATE accounts SET operational = true, confirmed=1
                 WHERE account_id = :accountID', array(':accountID'=>$aid));
 
             $statement = DatabaseConnection::$pdo->prepare(
-                'UPDATE players SET active = 1 WHERE player_id in 
-                (SELECT _player_id FROM account_players 
+                'UPDATE players SET active = 1 WHERE player_id in
+                (SELECT _player_id FROM account_players
                     WHERE _account_id = :accountID)');
             $statement->bindValue(':accountID', $aid);
             $statement->execute();  // todo - test for success

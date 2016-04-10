@@ -23,22 +23,23 @@ use \PDO;
  * @subpackage	player
  * @author      Tchalvak <ninjawarsTchalvak@gmail.com>
  * @link        http://ninjawars.net/player.php?player=tchalvak
- * @property-read int health
- * @property-read int kills
- * @property-read int gold
- * @property-read int level
- * @property-read int turns
- * @property-read int bounty
- * @property-read int ki
- * @property-read int karma
- * @property-read string identity Identity of the character class
- * @property-read string goals
- * @property-read string description
- * @property-read string messages
- * @property-read string instincts
- * @property-read string beliefs
- * @property-read string traits
- * @property-read string uname Deprecated in favor of ->name() method
+ * @property int health
+ * @property int kills
+ * @property int gold
+ * @property int level
+ * @property int turns
+ * @property int bounty
+ * @property int ki
+ * @property int karma
+ * @property int active
+ * @property string identity Identity of the character class
+ * @property string goals
+ * @property string description
+ * @property string messages
+ * @property string instincts
+ * @property string beliefs
+ * @property string traits
+ * @property string uname Deprecated in favor of ->name() method
  */
 class Player implements Character {
 	public $vo;
