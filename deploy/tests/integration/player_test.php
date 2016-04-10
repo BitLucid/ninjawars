@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\Player;
+use NinjaWars\core\Filter;
 
 class CharacterTest extends PHPUnit_Framework_TestCase {
     private $previous_server_ip = '';

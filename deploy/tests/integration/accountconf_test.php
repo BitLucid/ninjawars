@@ -1,6 +1,7 @@
 <?php
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\Filter;
 use NinjaWars\core\control\AccountController;
 use NinjaWars\core\control\SignupController;
 use NinjaWars\core\control\LoginController;

@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\Filter;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
 use Symfony\Component\HttpFoundation\Request;

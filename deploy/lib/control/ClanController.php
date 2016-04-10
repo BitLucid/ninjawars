@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use NinjaWars\core\Filter;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;

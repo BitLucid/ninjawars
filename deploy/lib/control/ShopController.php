@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
+use NinjaWars\core\Filter;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\data\PurchaseOrder;
 use NinjaWars\core\data\Player;

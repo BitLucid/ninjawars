@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
+use NinjaWars\core\Filter;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Player;
 

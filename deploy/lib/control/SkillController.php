@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\environment\RequestWrapper;
+use NinjaWars\core\Filter;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;

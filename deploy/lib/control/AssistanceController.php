@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
+use NinjaWars\core\Filter;
 use \Nmail;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\NWTemplate;

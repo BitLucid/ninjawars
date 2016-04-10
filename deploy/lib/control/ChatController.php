@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
+use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 

@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use NinjaWars\core\Filter;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\PlayerDAO;

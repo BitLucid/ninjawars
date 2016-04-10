@@ -5,6 +5,7 @@ use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\data\Inventory;
+use NinjaWars\core\Filter;
 use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
