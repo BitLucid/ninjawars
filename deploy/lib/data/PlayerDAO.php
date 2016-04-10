@@ -5,9 +5,7 @@ use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\DataAccessObject;
 use NinjaWars\core\data\PlayerVO;
 use NinjaWars\core\data\ValueObject;
-
-class UnableToSaveException extends \Exception{
-}
+use NinjaWars\core\UnableToSaveException;
 
 /**
  * Creates the player value objects.
