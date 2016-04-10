@@ -121,6 +121,7 @@ class Inventory implements IteratorAggregate {
                 return $item['count'];
             }
         }
+        return 0;
     }
 
     /**
