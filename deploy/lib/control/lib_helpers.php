@@ -113,30 +113,6 @@ function non_negative_int($num) {
 	return ((int)$num == $num && (int)$num > 0? (int)$num : 0);
 }
 
-/**
- * Casts to an integer anything that can be cast that way non-destructively, otherwise null.
- */
-function toInt($dirty) {
-	if ($dirty == (int) $dirty) { // Cast anything that can be non-destructively cast.
-		$res = (int) $dirty;
-	} else {
-		$res = null;
-	}
-
-	return $res;
-}
-
-/**
- * Return a casting with a result of a positive int, or else zero.
- *
- * @Note
- * this function will cast strings with leading integers to those integers.
- * E.g. 555'sql-injection becomes 555
- */
-function positive_int($num) {
-	return ((int)$num == $num && (int)$num > 0? (int)$num : 0);
-}
-
 function debug($val) {
     if (DEBUG) {
     	$vals = func_get_args();

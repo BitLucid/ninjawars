@@ -136,7 +136,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     function testThatTestAccountLibActuallyWorksToCreateAndDestroyATestNinja() {
         TestAccountCreateAndDestroy::purge_test_accounts();
         $test_char_id = TestAccountCreateAndDestroy::create_testing_account();
-        $this->assertTrue((bool)positive_int($test_char_id));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($test_char_id));
     }
 
     /**
@@ -144,7 +144,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      */
     function testCreateFullAccountConfirmAndReturnAccountId() {
         $account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
-        $this->assertTrue((bool)positive_int($account_id));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($account_id));
     }
 
     /**
@@ -152,7 +152,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
      */
     function testMakeSureThatNinjaAccountIsOperationalByDefault() {
         $ninja_id = $this->test_ninja_id;
-        $this->assertTrue(positive_int($ninja_id) > 0);
+        $this->assertTrue(Filter::toNonNegativeInt($ninja_id) > 0);
 
         $account_operational = query_item(
             'SELECT operational FROM accounts JOIN account_players ON account_id = _account_id WHERE _player_id = :char_id',

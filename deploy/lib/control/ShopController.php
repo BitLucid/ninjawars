@@ -66,7 +66,7 @@ class ShopController extends AbstractController {
 		$no_funny_business = false;
         $no_such_item      = false;
 		$item              = Item::findByIdentity($in_item);
-		$quantity 		   = whichever(positive_int($in_quantity), 1);
+		$quantity 		   = whichever(Filter::toNonNegativeInt($in_quantity), 1);
 		$item_text 	       = null;
         $valid             = false;
 

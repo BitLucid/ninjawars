@@ -171,7 +171,7 @@ class SkillController extends AbstractController {
 		$target = isset($slugs[4])? $slugs[4] : null;
 		$target2 = isset($slugs[5])? $slugs[5] : null;
 
-		if(!positive_int($target)){
+		if(!Filter::toNonNegativeInt($target)){
 			if($self_use){
 				$target = $char_id;
 			} else {
@@ -184,7 +184,7 @@ class SkillController extends AbstractController {
 			}
 		}
 
-		if($target2 && !positive_int($target2)){
+		if($target2 && !Filter::toNonNegativeInt($target2)){
 			$target2Obj = Player::findByName($target2);
 			$target2 = $target2Obj? $target2Obj->id() : null;
 		}

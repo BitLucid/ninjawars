@@ -132,7 +132,7 @@ class AssistanceController extends AbstractController {
         $admin_override_request    = in('admin_override');
         $acceptable_admin_override = ($admin_override_pass === $admin_override_request);
         $confirm                   = in('confirm');
-        $aid                       = positive_int(in('aid'));
+        $aid                       = Filter::toNonNegativeInt(in('aid'));
 
         $data = query_row('
             SELECT player_id, uname,

@@ -548,8 +548,8 @@ class InventoryController extends AbstractController {
      * @return Player
      */
     private function findPlayer($token) {
-        if (positive_int($token)) {
-            $target = Player::find(positive_int($token));
+        if (Filter::toNonNegativeInt($token)) {
+            $target = Player::find(Filter::toNonNegativeInt($token));
         } else {
             $target = Player::findByName($token);
         }

@@ -10,7 +10,7 @@ class CloneKill {
     public static function canKill($clone1, $clone2) {
         // Input is transformed into
         if(!$clone1 instanceof Player){
-            if($clone1 == positive_int($clone1)){
+            if($clone1 == Filter::toNonNegativeInt($clone1)){
                 $char1 = Player::find($clone1);
             } elseif(is_string($clone1)){
                 $char1 = Player::find($clone1);
@@ -19,7 +19,7 @@ class CloneKill {
             $char1 = $clone1;
         }
         if(!$clone2 instanceof Player){
-            if($clone2 == positive_int($clone2)){
+            if($clone2 == Filter::toNonNegativeInt($clone2)){
                 $char2 = Player::find($clone2);
             } elseif(is_string($clone2)){
                 $char2 = Player::find($clone2);
