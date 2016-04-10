@@ -106,13 +106,6 @@ function post($key, $default_val=null){
 	return isset($post)? $post: $default_val;
 }
 
-/**
- * Return a casting with a result of a positive int, or else zero.
- */
-function non_negative_int($num) {
-	return ((int)$num == $num && (int)$num > 0? (int)$num : 0);
-}
-
 function debug($val) {
     if (DEBUG) {
     	$vals = func_get_args();
