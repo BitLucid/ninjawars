@@ -55,10 +55,10 @@ class Player implements Character {
         $this->vo                  = new PlayerVO();
         $this->avatar_url          = null;
         $this->uname               = null;
-        $this->health              = Player::maxHealthByLevel($level);
-        $this->strength            = Player::baseStrengthByLevel($level);
-        $this->speed               = Player::baseSpeedByLevel($level);
-        $this->stamina             = Player::baseStaminaByLevel($level);
+        $this->health              = self::maxHealthByLevel($level);
+        $this->strength            = self::baseStrengthByLevel($level);
+        $this->speed               = self::baseSpeedByLevel($level);
+        $this->stamina             = self::baseStaminaByLevel($level);
         $this->level               = $level;
         $this->gold                = 100;
         $this->turns               = 180;
