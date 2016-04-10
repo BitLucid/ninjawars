@@ -4,6 +4,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\ShopController;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\data\Inventory;
+use NinjaWars\core\data\Player;
 
 class ShopControllerTest extends PHPUnit_Framework_TestCase {
 	function setUp() {
@@ -45,5 +47,37 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
         $shop = new ShopController();
         $shop_outcome = $shop->buy();
         $this->assertNotEmpty($shop_outcome);
+    }
+
+    public function testShopAllowsPurchasingOfItems() {
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        SessionFactory::getSession()->set('player_id', $char_id);
+        $pc = Player::find($char_id);
+        $pc->gold = $pc->gold + 999;
+        $pc->save();
+        $request = new Request([], ['quantity'=>1, 'item'=>'shuriken']);
+        RequestWrapper::inject($request);
+        $shop = new ShopController();
+        $shop_outcome = $shop->buy();
+        $this->assertNotEmpty($shop_outcome);
+        $this->assertFalse($shop_outcome['parts']['no_funny_business']);
+        $inv = new Inventory($pc);
+        $this->assertEquals(1, $inv->amount('shuriken'));
+    }
+
+    public function testShopAllowsPurchasingOfMultipleItems() {
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        SessionFactory::getSession()->set('player_id', $char_id);
+        $pc = Player::find($char_id);
+        $pc->gold = $pc->gold + 9999;
+        $pc->save();
+        $request = new Request([], ['quantity'=>7, 'item'=>'shuriken']);
+        RequestWrapper::inject($request);
+        $shop = new ShopController();
+        $shop_outcome = $shop->buy();
+        $this->assertNotEmpty($shop_outcome);
+        $this->assertFalse($shop_outcome['parts']['no_funny_business']);
+        $inv = new Inventory($pc);
+        $this->assertEquals(7, $inv->amount('shuriken'));
     }
 }
