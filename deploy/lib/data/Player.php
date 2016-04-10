@@ -23,22 +23,23 @@ use \PDO;
  * @subpackage	player
  * @author      Tchalvak <ninjawarsTchalvak@gmail.com>
  * @link        http://ninjawars.net/player.php?player=tchalvak
- * @property-read int health
- * @property-read int kills
- * @property-read int gold
- * @property-read int level
- * @property-read int turns
- * @property-read int bounty
- * @property-read int ki
- * @property-read int karma
- * @property-read string identity Identity of the character class
- * @property-read string goals
- * @property-read string description
- * @property-read string messages
- * @property-read string instincts
- * @property-read string beliefs
- * @property-read string traits
- * @property-read string uname Deprecated in favor of ->name() method
+ * @property int health
+ * @property int kills
+ * @property int gold
+ * @property int level
+ * @property int turns
+ * @property int bounty
+ * @property int ki
+ * @property int karma
+ * @property int active
+ * @property string identity Identity of the character class
+ * @property string goals
+ * @property string description
+ * @property string messages
+ * @property string instincts
+ * @property string beliefs
+ * @property string traits
+ * @property string uname Deprecated in favor of ->name() method
  */
 class Player implements Character {
 	public $vo;
@@ -373,15 +374,6 @@ class Player implements Character {
     }
 
     /**
-     * @deprecated
-     */
-    public function subtractTurns($amount) {
-        $diff = -1*abs($amount);
-
-        return $this->changeTurns($diff);
-    }
-
-    /**
      * @return integer
      */
     public function getMaxHealth() {
@@ -396,14 +388,13 @@ class Player implements Character {
     }
 
     /**
-     * Pull the data of the player obj as an array.
+     * Returns the state of the player from the database,
      *
-     * @note
-     * This function lazy loads the data only once per instance
+     * @return array
      */
-	public function data($specific = null) {
+    public function data() {
 		if (!$this->data) {
-            $this->data = $this->as_array();
+            $this->data = (array) $this->vo;
             $this->data['next_level']    = $this->killsRequiredForNextLevel();
             $this->data['max_health']    = $this->getMaxHealth();
             $this->data['hp_percent']    = $this->health_percent();
@@ -413,39 +404,24 @@ class Player implements Character {
             $this->data['status_list']   = implode(', ', self::getStatusList($this->id()));
             $this->data['hash']          = md5(implode($this->data));
             $this->data['class_name']    = $this->data['identity'];
+            $this->data['clan_id']       = ($this->getClan() ? $this->getClan()->getID() : null);
 
             unset($this->data['pname']);
         }
 
-        if ($specific) {
-			return $this->data[$specific];
-		} else {
-			return $this->data;
-		}
-	}
-
-    /**
-     * Returns the state of the player from the database,
-     */
-    public function dataWithClan() {
-        $player_data = $this->data();
-        $player_data['clan_id'] = ($this->getClan() ? $this->getClan()->getID() : null);
-
-        return $player_data;
+        return $this->data;
     }
 
     /**
      * Return the data that should be publicly readable to javascript or the api while the player is logged in.
+     *
+     * @return array
      */
     public function publicData() {
-        $char_info = $this->dataWithClan();
+        $char_info = $this->data();
         unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
 
         return $char_info;
-    }
-
-    public function as_array() {
-        return (array) $this->vo;
     }
 
     /**
@@ -475,17 +451,7 @@ class Player implements Character {
 	public function harm($damage) {
 		// Do at most the current health in damage
 		$actual_damage = min($this->health(), (int) $damage);
-		return $this->subtractHealth($actual_damage);
-	}
-
-    /**
-     * Simple wrapper for subtractive action.
-     *
-     * @return int
-     * @deprecated use Player::harm() instead
-     */
-	public function subtractHealth($amount) {
-		return $this->changeHealth((-1*(int)$amount));
+		return $this->changeHealth(-1*$actual_damage);
 	}
 
     /**

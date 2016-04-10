@@ -84,7 +84,7 @@ class InventoryController extends AbstractController {
 
             $this->transferOwnership($player, $target, $item, self::GIVE_QUANTITY);
 
-            $player->subtractTurns(self::GIVE_COST);
+            $player->changeTurns(-1*self::GIVE_COST);
             $player->save();
 
             Event::create($player->id(), $target->id(), $mail_message);
@@ -160,7 +160,7 @@ class InventoryController extends AbstractController {
         }
 
         if($turns_to_take > 0 && ($player->turns - $turns_to_take >= 0)){
-            $player->subtractTurns($turns_to_take);
+            $player->changeTurns(-1*$turns_to_take);
         }
         $player->save();
 
@@ -197,7 +197,6 @@ class InventoryController extends AbstractController {
         $had_stealth     = $player->hasStatus(STEALTH);
         $error           = false;
         $turns_to_take   = 1; // Take away one turn even on attacks that fail to prevent page reload spamming
-        $result          = null;
         $bounty_message  = '';
         $display_message = '';
         $extra_message   = '';
@@ -260,7 +259,7 @@ class InventoryController extends AbstractController {
                 $extra_message   = $result['extra_message'];
             }
 
-            $player->subtractTurns($turns_to_take);
+            $player->changeTurns(-1*$turns_to_take);
 
             $target->save();
             $player->save();
@@ -371,7 +370,7 @@ class InventoryController extends AbstractController {
             }
 
             $notice = " lose ".abs($turns_change)." turns.";
-            $target->subtractTurns($turns_change);
+            $target->changeTurns(-1*$turns_change);
         } else if ($item->hasEffect('speed')) {
             $item->setTurnChange($item->getMaxTurnChange());
             $turns_change = $item->getTurnChange();
@@ -405,7 +404,7 @@ class InventoryController extends AbstractController {
                 $notice .= " take ".$item->getTargetDamage()." damage!";
             }
 
-            $target->subtractHealth($item->getTargetDamage());
+            $target->harm($item->getTargetDamage());
         }
 
         // if the item was meant to affect turns, even if the net change was 0

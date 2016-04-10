@@ -24,8 +24,6 @@ class ListController extends AbstractController {
         $hide_setting = (!$searched && $session->has('hide_dead') ? $session->get('hide_dead') : 'dead'); // Defaults to hiding dead via session
         $hide         = ($searched ? 'none' : in('hide', $hide_setting)); // search override > get setting > session setting
         $alive_only   = ($hide == 'dead');
-        $page         = in('page', 1); // Page will get changed down below
-        $view_type    = in('view_type');
         $page         = in('page');
         $record_limit = 20; // The number of players that gets shown per page
 
@@ -37,8 +35,6 @@ class ListController extends AbstractController {
         $params = [];
 
         if ($searched) {
-            $view_type = 'searched';
-
             if (strlen($searched) == 1 || !$list_by_rank) {
                 $where_clauses[] = " (rankings.uname ilike :searched || '%') ";
                 $params[':searched'] = $searched;

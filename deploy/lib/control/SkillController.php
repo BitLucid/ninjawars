@@ -23,7 +23,6 @@ class SkillController extends AbstractController {
 		return (int)floor(2/3*Player::maxHealthByLevel(1));
 	}
 
-
 	public function fireBoltBaseDamage(Player $pc){
 		return (int) (floor(Player::maxHealthByLevel($pc->level) / 3));
 	}
@@ -127,7 +126,6 @@ class SkillController extends AbstractController {
 	}
 
     public function postSelfUse(){
-        $target = SessionFactory::getSession()->get('player_id');
         $act = post('act');
         $url = 'skill/self_use/'.rawurlencode($act).'/';
         // TODO: Need to double check that this doesn't allow for redirect injection
@@ -191,12 +189,6 @@ class SkillController extends AbstractController {
 			$target2 = $target2Obj? $target2Obj->id() : null;
 		}
 
-
-		//Get filtered info from input.
-		//$target  = in('target');
-		//$act = whichever(in('act'), in('command'));
-		//$stealth = in('stealth'); Unused?  What was this.
-
 		$skillListObj    = new Skill();
 		// *** Before level-based addition.
 		$poisonTurnCost  = $skillListObj->getTurnCost('poison touch'); // wut
@@ -235,7 +227,6 @@ class SkillController extends AbstractController {
 		$attacker_id      = $player->name();
 		$attacker_char_id = $player->id();
 		$starting_turns   = $player->vo->turns;
-		$ending_turns     = null;
 
 		$level_check  = $player->vo->level - $target->vo->level;
 
@@ -347,7 +338,7 @@ class SkillController extends AbstractController {
 
 				$target_damage = rand(self::MIN_POISON_TOUCH, $this->maxPoisonTouch());
 
-				$victim_alive = $target->subtractHealth($target_damage);
+				$victim_alive = $target->harm($target_damage);
 				$generic_state_change = "__TARGET__ has been poisoned!";
 				$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
@@ -404,7 +395,7 @@ class SkillController extends AbstractController {
 				if (!$target->hasStatus(SLOW)) {
 					if ($target->vo->turns >= 10) {
 						$turns_decrease = rand(1, 5);
-						$target->subtractTurns($turns_decrease);
+						$target->changeTurns(-1*$turns_decrease);
 						// Changed ice bolt to kill stealth.
 						$target->subtractStatus(STEALTH);
 						$target->addStatus(SLOW);
@@ -429,9 +420,9 @@ class SkillController extends AbstractController {
 						if ($target->vo->turns >= 10) {
 							$turns_decrease = rand(2, 7);
 
-							$target->subtractTurns($turns_decrease);
+							$target->changeTurns(-1*$turns_decrease);
 							$target->addStatus(SLOW);
-							$player->changeTurns(abs($turns_decrease));
+							$player->changeTurns($turns_decrease);
 
 							$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id";
 							Event::create($attacker_char_id, $target->id(), $msg);
@@ -532,7 +523,7 @@ class SkillController extends AbstractController {
 
 		$target_ending_health = $target->health;
 		$target_name = $target->name();
-		$parts = get_defined_vars(); // include $act for testing
+		$parts = get_defined_vars();
 		$options = ['quickstat'=>'player'];
 		return [
 				'title'=>'Skill Effect', 
@@ -546,7 +537,7 @@ class SkillController extends AbstractController {
 	 * Pull a stripped down set of player data to display to the skill user.
 	 **/
 	private function pullSightData(Player $target){
-		$data = $target->dataWithClan();
+		$data = $target->data();
 		// Strip all fields but those allowed.
 		$allowed = [
 		    'Name'     => 'uname',

@@ -151,7 +151,7 @@ class PasswordController extends AbstractController {
      * @return RedirectResponse
      */
     public function postReset() {
-        $token                = RequestWrapper::getPost('token', null);
+        $token                = RequestWrapper::getPost('token');
         $newPassword          = RequestWrapper::getPost('new_password');
         $passwordConfirmation = RequestWrapper::getPost('password_confirmation');
 

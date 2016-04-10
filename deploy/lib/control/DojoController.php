@@ -156,7 +156,6 @@ class DojoController extends AbstractController {
      *
      * @param Player $p_player
      * @param int $p_requiredTurns
-     * @param int $p_requiredStrength
      * @return string|null
      */
     private function dimMakReqs(Player $p_player, $p_requiredTurns) {
