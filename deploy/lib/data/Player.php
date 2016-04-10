@@ -2,7 +2,6 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
-use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\PlayerVO;
@@ -428,7 +427,7 @@ class Player implements Character {
      * @return Clan
      */
     public function getClan() {
-        return ClanFactory::clanOfMember($this->id());
+        return Clan::findByMember($this);
     }
 
 	/**
@@ -636,7 +635,7 @@ class Player implements Character {
      * @return boolean
      */
     public function isClanLeader() {
-        return (($clan = ClanFactory::clanOfMember($this->id())) && $this->id() == $clan->getLeaderID());
+        return (($clan = Clan::findByMember($this)) && $this->id() == $clan->getLeaderID());
     }
 
     /**
