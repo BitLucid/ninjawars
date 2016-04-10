@@ -2,6 +2,7 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\Filter;
 use \PDO;
 
 /**

@@ -41,7 +41,7 @@ class ChatController extends AbstractController {
      */
     public function index() {
         $view_all   = in('view_all');
-        $chatlength = in('chatlength', self::DEFAULT_LIMIT, 'toInt');
+        $chatlength = in('chatlength', self::DEFAULT_LIMIT, 'toNonNegativeInt');
         $chatlength = min(self::MAX_CHATS, max(self::MIN_CHATS, $chatlength));
         $chats      = $this->getChats($view_all ? null : $chatlength);
 

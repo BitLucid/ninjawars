@@ -88,6 +88,11 @@ class TestInput extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(0, Filter::toInt(0));
 	}
 
+    public function testFilterToSimple(){
+        $this->assertEquals('boba', Filter::toSimple("bob\0aä\x80"));
+        $this->assertEquals("!@#^&()_+--", Filter::toSimple("!@#^&()_+'''\"\"''--"));
+    }
+
 	public function testWhicheverPositive() {
 		$this->assertEquals('grace', whichever('', null, 'grace'));
 	}

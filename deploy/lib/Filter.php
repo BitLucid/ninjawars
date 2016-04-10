@@ -6,8 +6,6 @@ namespace NinjaWars\core;
  * Filter & Sanitation wrappers
  */
 class Filter{
-
-
     /**
      * Return a casting with a result of a positive int, or else zero.
      *
@@ -25,6 +23,14 @@ class Filter{
     public static function toInt($dirty) {
         return $dirty == (int) $dirty? (int) $dirty : null;
         // Cast anything that can be non-destructively cast.
+    }
+
+    /**
+     * Strip low and high ascii characters, leave standard keyboard characters
+     */
+    public static function toSimple($dirty){
+        return filter_var(str_replace(['"', '\''], '', $dirty), FILTER_SANITIZE_STRING, 
+            FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH);
     }
 
 }
