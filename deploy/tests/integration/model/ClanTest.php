@@ -7,18 +7,9 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     private $clan_id;
     private $char_id;
     private $char_id_2;
-    private $clan_identity = 'randomNewTestClan';
+    private $clan_identity = 'phpunit_test_clan';
 
 	function setUp() {
-        $id_already_exists = query_item(
-            'select clan_id from clan where clan_name = :name',
-            [':name' => $this->clan_identity]
-        );
-
-        if ($id_already_exists) {
-            $this->deleteClan($id_already_exists);
-        }
-
         $this->char_id   = TestAccountCreateAndDestroy::char_id();
         $this->char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
@@ -26,22 +17,9 @@ class ClanTest extends PHPUnit_Framework_TestCase {
         $this->clan_id   = $this->clan->getId();
 	}
 
-    /**
-     * @todo remove this function in favor of static method on Clan model
-     */
-    private function deleteClan($clanId) {
-        query('delete from clan where clan_id = :id', [':id'=>$clanId]);
-    }
-
-    /**
-     * @todo remove this function in favor of static method on Clan model
-     */
-    private function deleteClanByIdentity($identity) {
-        query('delete from clan where clan_name = :identity', [':identity'=>$identity]);
-    }
-
 	function tearDown() {
-        $this->deleteClan($this->clan_id);
+        query('delete from clan where clan_id = :id', [':id'=>$this->clan->id()]);
+        query('delete from clan_player where _clan_id = :id', [':id'=>$this->clan->id()]);
         TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
