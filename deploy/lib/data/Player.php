@@ -2,7 +2,6 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
-use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\PlayerVO;

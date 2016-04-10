@@ -1,7 +1,6 @@
 <?php
 namespace NinjaWars\core\control;
 
-use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;
@@ -48,7 +47,7 @@ class ClanController extends AbstractController {
 		} else {
 			$parts = [
 				'title'     => 'Clan Not Found',
-				'clans'     => ClanFactory::clansRanked(),
+				'clans'     => Clan::rankings(),
 				'error'     => 'The clan you requested does not exist. Pick one from the list below',
 				'pageParts' => [
 					'list',
@@ -141,7 +140,7 @@ class ClanController extends AbstractController {
 		return $this->render([
 			'action_message' => 'You have left your clan.',
 			'title'          => 'You have left your clan.',
-			'clans'          => ClanFactory::clansRanked(),
+			'clans'          => Clan::rankings(),
 			'pageParts'      => [
 				'reminder-no-clan',
 				'list',
@@ -182,7 +181,7 @@ class ClanController extends AbstractController {
 			$parts = [
 				'error'     => 'You do not have enough renown to create a clan. You must be at least level '.self::CLAN_CREATOR_MIN_LEVEL.'.',
 				'title'     => 'You cannot create a clan yet',
-				'clans'     => ClanFactory::clansRanked(),
+				'clans'     => Clan::rankings(),
 				'pageParts' => [
 					'list',
 				],
@@ -238,7 +237,7 @@ class ClanController extends AbstractController {
 			$parts = [
 				'action_message' => 'Your clan has been disbanded.',
 				'title'          => 'Clan disbanded',
-				'clans'          => ClanFactory::clansRanked(),
+				'clans'          => Clan::rankings(),
 				'pageParts'      => [
 					'reminder-no-clan',
 					'list',
@@ -428,7 +427,7 @@ class ClanController extends AbstractController {
 	public function listClans() {
 		$parts = [
 			'title'     => 'Clan List',
-			'clans'     => ClanFactory::clansRanked(),
+			'clans'     => Clan::rankings(),
 			'pageParts' => ['list'],
 		];
 

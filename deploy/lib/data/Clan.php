@@ -512,4 +512,29 @@ class Clan {
 
         return (bool)$updated;
     }
+
+    /**
+     * Determines the criteria for how clans get ranked and tagged
+     *
+     * @return array
+     * @note
+     * returns only non-empty clans.
+     */
+    public static function rankings() {
+        $res = [];
+
+        // sum the levels of the players (minus days of inactivity) for each clan
+        $counts = query('SELECT sum(round(((level+4)/5+8)-least((days/3), 50))) AS sum, sum(active) as member_count, clan_name, clan_id
+            FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON _player_id = player_id
+            WHERE active = 1 GROUP BY clan_id, clan_name ORDER BY sum DESC');
+
+        foreach ($counts as $clan_info) {
+            $max = (isset($max) ? $max : $clan_info['sum']);
+            // *** make percentage of highest, multiply by 10 and round to give a 1-10 size ***
+            $res[$clan_info['clan_id']]['name']  = $clan_info['clan_name'];
+            $res[$clan_info['clan_id']]['score'] = floor(( (($clan_info['sum'] - 1 < 1 ? 0 : $clan_info['sum'] - 1)) / $max) * 10) + 1;
+        }
+
+        return $res;
+    }
 }
