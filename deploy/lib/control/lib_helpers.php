@@ -4,6 +4,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
+use NinjaWars\core\Filter;
 
 /**
  * Return first non-null argument.
@@ -90,8 +91,8 @@ function in($var_name, $default_val=null, $filter_callback=null) {
 	$result = (isset($req) ? $req : $default_val);
 
 	// Check that the filter function sent in exists.
-	if ($filter_callback && function_exists($filter_callback)) {
-		$result = $filter_callback($result);
+	if ($filter_callback) {
+		$result = Filter::$filter_callback($result);
 	}
 
     return $result;
