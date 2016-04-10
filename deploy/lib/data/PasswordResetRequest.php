@@ -50,7 +50,7 @@ class PasswordResetRequest extends Model {
      */
     public function isActive() {
         $fourHours = Carbon::now()->subHour(4);
-        $id = PasswordResetRequest::select('request_id')
+        $id = self::select('request_id')
             ->where('created_at', '>', $fourHours)
             ->where('request_id', $this->id())
             ->where('used', false)
@@ -70,14 +70,14 @@ class PasswordResetRequest extends Model {
         }
 
         // Get request by account id.
-        $request = PasswordResetRequest::where('_account_id', '=', $account->id())->first();
+        $request = self::where('_account_id', '=', $account->id())->first();
 
         if (!($request instanceof PasswordResetRequest) || !$request->isActive()) {
             return false;
         } else {
             $account->changePassword($new_pass);
             // Mark all prior requests as "used"
-            PasswordResetRequest::where('_account_id', '=', $account->id())->update(['used' => true]);
+            self::where('_account_id', '=', $account->id())->update(['used' => true]);
             return static::sendResetNotification($account->getActiveEmail());
         }
     }
@@ -104,7 +104,7 @@ class PasswordResetRequest extends Model {
      * @return PasswordResetRequest
      */
     public static function match($token) {
-        $request = PasswordResetRequest::where('nonce', $token)
+        $request = self::where('nonce', $token)
             ->where('used', false)
             ->first();
 
@@ -123,6 +123,6 @@ class PasswordResetRequest extends Model {
      */
     public static function generate(Account $account, $nonce=null) {
         $nonce = ($nonce !== null ? $nonce : nonce());
-        return PasswordResetRequest::create(['_account_id'=>$account->id(), 'nonce'=>$nonce]);
+        return self::create(['_account_id'=>$account->id(), 'nonce'=>$nonce]);
     }
 }
