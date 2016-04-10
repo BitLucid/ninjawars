@@ -2,6 +2,7 @@
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Event;
+use NinjaWars\core\Filter;
 
 /**
  * Class to house static methods for killing characters of players with multis
