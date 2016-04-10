@@ -279,6 +279,6 @@ class Item extends Model{
      * @return Item
      */
     public static function findByIdentity($identity){
-        return self::where('item_internal_name', $identity)->first();
+        return self::where('item_internal_name', trim(strtolower($identity)))->first();
     }
 }
