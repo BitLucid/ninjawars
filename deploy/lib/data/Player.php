@@ -467,17 +467,7 @@ class Player implements Character {
 	public function harm($damage) {
 		// Do at most the current health in damage
 		$actual_damage = min($this->health(), (int) $damage);
-		return $this->subtractHealth($actual_damage);
-	}
-
-    /**
-     * Simple wrapper for subtractive action.
-     *
-     * @return int
-     * @deprecated use Player::harm() instead
-     */
-	public function subtractHealth($amount) {
-		return $this->changeHealth((-1*(int)$amount));
+		return $this->changeHealth(-1*$actual_damage);
 	}
 
     /**

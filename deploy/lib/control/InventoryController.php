@@ -405,7 +405,7 @@ class InventoryController extends AbstractController {
                 $notice .= " take ".$item->getTargetDamage()." damage!";
             }
 
-            $target->subtractHealth($item->getTargetDamage());
+            $target->harm($item->getTargetDamage());
         }
 
         // if the item was meant to affect turns, even if the net change was 0

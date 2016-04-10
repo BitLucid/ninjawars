@@ -23,7 +23,6 @@ class SkillController extends AbstractController {
 		return (int)floor(2/3*Player::maxHealthByLevel(1));
 	}
 
-
 	public function fireBoltBaseDamage(Player $pc){
 		return (int) (floor(Player::maxHealthByLevel($pc->level) / 3));
 	}
@@ -347,7 +346,7 @@ class SkillController extends AbstractController {
 
 				$target_damage = rand(self::MIN_POISON_TOUCH, $this->maxPoisonTouch());
 
-				$victim_alive = $target->subtractHealth($target_damage);
+				$victim_alive = $target->harm($target_damage);
 				$generic_state_change = "__TARGET__ has been poisoned!";
 				$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
