@@ -130,7 +130,7 @@ class PlayerController extends AbstractController {
 
     /**
      * Wrapper to redirect skill use into pretty urls
-     * like a final url of /skill/go/firebolt/tchalvak
+     * like a final url of /skill/use/firebolt/tchalvak
      * from a starting url of http://nw.local/player/use_skill/?act=firebolt&target=tchalvak
      */
     public function use_skill(){
