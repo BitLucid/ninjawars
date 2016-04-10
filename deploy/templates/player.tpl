@@ -50,9 +50,9 @@ article#player-titles{
   <article id='player-titles' class='centered'>
 
 
-    <span class='player-class {$player_info.theme|escape}'>
-      <img id='class-shuriken' src='{$smarty.const.IMAGE_ROOT}small{$player_info.theme|escape}Shuriken.gif' alt=''>
-      {$player_info.class_name|escape}
+    <span class='player-class {$target_player_obj->theme|escape}'>
+      <img id='class-shuriken' src='{$smarty.const.IMAGE_ROOT}small{$target_player_obj->theme|escape}Shuriken.gif' alt=''>
+      {$target_player_obj->class_name|escape}
     </span>
 
     <span class='player-level-category {$target_player_obj->level|level_label|css_classify}'>
@@ -67,7 +67,7 @@ article#player-titles{
     </span>
 	{/if}
 
-  {include file="gravatar.tpl" gurl=$gravatar_url}
+  {include file="gravatar.tpl" gurl=$target_player_obj->avatarUrl()}
   {if $viewing_player_obj && $viewing_player_obj->isAdmin()}<a style='font-size:small;float:right;' href='/ninjamaster/?view={$target_player_obj->id()|escape}'>Admin View</a>{/if}
 
   </article>
