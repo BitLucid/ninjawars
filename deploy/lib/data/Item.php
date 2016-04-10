@@ -57,15 +57,6 @@ class Item extends Model{
     }
 
     /**
-     * The numeric id for this item type.
-     *
-     * @return int
-     */
-    public function id() {
-        return $this->item_id;
-    }
-
-    /**
      * The item's internally used name.
      *
      * @return String
@@ -81,7 +72,7 @@ class Item extends Model{
      */
     public function effects() {
         // Pull the effects array via the external function.
-        return $this->itemEffects($this->id());
+        return $this->itemEffects($this->item_id);
     }
 
     /**

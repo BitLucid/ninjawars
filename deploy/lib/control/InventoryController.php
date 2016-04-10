@@ -492,7 +492,7 @@ class InventoryController extends AbstractController {
         $statement = query("SELECT sum(amount) FROM inventory WHERE item_type = :item AND owner = :owner",
             [
                 ':owner' => $player->id(),
-                ':item'  => $item->id(),
+                ':item'  => $item->item_id,
             ]
         );
 
