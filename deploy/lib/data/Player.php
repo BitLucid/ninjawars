@@ -395,7 +395,7 @@ class Player implements Character {
      */
 	public function data($specific = null) {
 		if (!$this->data) {
-            $this->data = $this->as_array();
+            $this->data = (array) $this->vo;
             $this->data['next_level']    = $this->killsRequiredForNextLevel();
             $this->data['max_health']    = $this->getMaxHealth();
             $this->data['hp_percent']    = $this->health_percent();
@@ -434,10 +434,6 @@ class Player implements Character {
         unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
 
         return $char_info;
-    }
-
-    public function as_array() {
-        return (array) $this->vo;
     }
 
     /**
