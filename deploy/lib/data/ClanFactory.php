@@ -64,21 +64,6 @@ if (empty($clan_info)) {
 		$clan->setAvatarUrl($data['clan_avatar_url']);
 	}
 
-	// Pull all the clans from data source.
-	public static function clans(){
-		return self::all();
-	}
-
-	// Alternate alias for the npcs static function.
-	public static function all(){
-		$data = ClanFactory::allData();
-		$clans = array();
-		foreach($data as $clan_info){
-			$clans[] = self::fleshOutFromData($clan_info, new Clan());
-		}
-		return $clans;
-	}
-
 	public static function allData(){
 		return query_array('select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan');
 	}
