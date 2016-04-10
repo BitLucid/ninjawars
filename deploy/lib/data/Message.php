@@ -48,7 +48,7 @@ class Message extends Model {
         $id = $sender->id();
 
         foreach ($groupTargets as $target_id) {
-            Message::create([
+            self::create([
                 'message'   => $message,
                 'send_to'   => $target_id,
                 'send_from' => $id,
@@ -64,7 +64,7 @@ class Message extends Model {
      */
     public static function findByReceiver(Player $sender, $type=0, $limit=null, $offset=null) {
         if ($limit !== null && $offset !== null) {
-            return Message::where([
+            return self::where([
                 'send_to' => $sender->id(),
                 'type'    => $type
             ])
@@ -84,7 +84,7 @@ class Message extends Model {
                 'messages.date'
             ]);
         } else {
-            return Message::where([
+            return self::where([
                 'send_to' => $sender->id(),
                 'type'    => $type
             ])
@@ -108,7 +108,7 @@ class Message extends Model {
      * Get a count of the messages to a receiver.
      */
     public static function countByReceiver(Player $char, $type=0) {
-        return Message::where([
+        return self::where([
             'send_to' => $char->id(),
             'type'    => $type
         ])->count();
@@ -118,7 +118,7 @@ class Message extends Model {
      * Delete personal messages to a receiver.
      */
     public static function deleteByReceiver(Player $char, $type) {
-        return Message::where([
+        return self::where([
             'send_to' => $char->id(),
             'type'    => $type
         ])->delete();
@@ -128,7 +128,7 @@ class Message extends Model {
      * mark all messages of a type for a ninja as read
      */
     public static function markAsRead(Player $char, $type) {
-        return Message::where([
+        return self::where([
             'send_to' => $char->id(),
             'type'    => $type
         ])->update([
