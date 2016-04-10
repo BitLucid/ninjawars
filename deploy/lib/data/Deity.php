@@ -237,9 +237,7 @@ class Deity {
     $deleted_items = DatabaseConnection::$pdo->query("delete from levelling_log where killsdate < (now() - interval '2 months')");
     $affected_rows['deleted levelling_logs'] = $deleted_items->rowCount();
 
-    $deleted_mail = Message::deleteOldMessages();
     $deleted_events = Event::deleteOldEvents();
-    $affected_rows['Old Messages Deletion'] = $deleted_mail;
     $affected_rows['Old Events Deletion'] = $deleted_events;
 
     $level_log_delete = DatabaseConnection::$pdo->query("delete from levelling_log where killsdate < now()- interval '3 months'");
