@@ -404,7 +404,7 @@ class SkillController extends AbstractController {
 				if (!$target->hasStatus(SLOW)) {
 					if ($target->vo->turns >= 10) {
 						$turns_decrease = rand(1, 5);
-						$target->subtractTurns($turns_decrease);
+						$target->changeTurns(-1*$turns_decrease);
 						// Changed ice bolt to kill stealth.
 						$target->subtractStatus(STEALTH);
 						$target->addStatus(SLOW);
@@ -429,9 +429,9 @@ class SkillController extends AbstractController {
 						if ($target->vo->turns >= 10) {
 							$turns_decrease = rand(2, 7);
 
-							$target->subtractTurns($turns_decrease);
+							$target->changeTurns(-1*$turns_decrease);
 							$target->addStatus(SLOW);
-							$player->changeTurns(abs($turns_decrease));
+							$player->changeTurns($turns_decrease);
 
 							$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id";
 							Event::create($attacker_char_id, $target->id(), $msg);

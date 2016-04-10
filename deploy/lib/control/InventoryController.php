@@ -84,7 +84,7 @@ class InventoryController extends AbstractController {
 
             $this->transferOwnership($player, $target, $item, self::GIVE_QUANTITY);
 
-            $player->subtractTurns(self::GIVE_COST);
+            $player->changeTurns(-1*self::GIVE_COST);
             $player->save();
 
             Event::create($player->id(), $target->id(), $mail_message);
@@ -160,7 +160,7 @@ class InventoryController extends AbstractController {
         }
 
         if($turns_to_take > 0 && ($player->turns - $turns_to_take >= 0)){
-            $player->subtractTurns($turns_to_take);
+            $player->changeTurns(-1*$turns_to_take);
         }
         $player->save();
 
@@ -260,7 +260,7 @@ class InventoryController extends AbstractController {
                 $extra_message   = $result['extra_message'];
             }
 
-            $player->subtractTurns($turns_to_take);
+            $player->changeTurns(-1*$turns_to_take);
 
             $target->save();
             $player->save();
@@ -371,7 +371,7 @@ class InventoryController extends AbstractController {
             }
 
             $notice = " lose ".abs($turns_change)." turns.";
-            $target->subtractTurns($turns_change);
+            $target->changeTurns(-1*$turns_change);
         } else if ($item->hasEffect('speed')) {
             $item->setTurnChange($item->getMaxTurnChange());
             $turns_change = $item->getTurnChange();

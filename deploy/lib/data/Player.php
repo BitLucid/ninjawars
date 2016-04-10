@@ -374,15 +374,6 @@ class Player implements Character {
     }
 
     /**
-     * @deprecated
-     */
-    public function subtractTurns($amount) {
-        $diff = -1*abs($amount);
-
-        return $this->changeTurns($diff);
-    }
-
-    /**
      * @return integer
      */
     public function getMaxHealth() {
