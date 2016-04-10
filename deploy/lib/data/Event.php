@@ -31,7 +31,7 @@ class Event {
      * @return int Number of rows deleted
      */
     public static function deleteOldEvents() {
-        $statement = query("delete from events where date < ( now() - '4 days'::interval)");
+        $statement = query("delete from events where date < ( now() - '31 days'::interval)");
         return $statement->rowCount();
     }
 }
