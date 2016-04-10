@@ -13,6 +13,7 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request([], ['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
         RequestWrapper::inject($request);
 		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::getSession()->set('authenticated', true);
 	}
 
 	function tearDown() {
@@ -60,7 +61,7 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
         $shop = new ShopController();
         $shop_outcome = $shop->buy();
         $this->assertNotEmpty($shop_outcome);
-        $this->assertFalse($shop_outcome['parts']['no_funny_business']);
+        $this->assertTrue($shop_outcome['parts']['valid']);
         $inv = new Inventory($pc);
         $this->assertEquals(1, $inv->amount('shuriken'));
     }
@@ -76,8 +77,22 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
         $shop = new ShopController();
         $shop_outcome = $shop->buy();
         $this->assertNotEmpty($shop_outcome);
-        $this->assertFalse($shop_outcome['parts']['no_funny_business']);
+        $this->assertTrue($shop_outcome['parts']['valid']);
         $inv = new Inventory($pc);
         $this->assertEquals(7, $inv->amount('shuriken'));
+    }
+
+    public function testShopCannotBuyInvalidItem() {
+        $char_id = TestAccountCreateAndDestroy::char_id();
+        SessionFactory::getSession()->set('player_id', $char_id);
+        $pc = Player::find($char_id);
+        $pc->gold = $pc->gold + 9999;
+        $pc->save();
+        $request = new Request([], ['quantity'=>4, 'item'=>'zigzigX']);
+        RequestWrapper::inject($request);
+        $shop = new ShopController();
+        $shop_outcome = $shop->buy();
+        $this->assertNotEmpty($shop_outcome);
+        $this->assertFalse($shop_outcome['parts']['valid']);
     }
 }

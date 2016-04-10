@@ -14,6 +14,8 @@ class ShopController { // extends Controller
 	const ALIVE = true;  // *** must be alive to access the shop ***
 	const PRIV  = false; // *** do not need to be logged in ***
 
+    const MARKUP = 1.5;
+
 	protected $itemCosts   = [];
 
 	/**
@@ -36,6 +38,17 @@ class ShopController { // extends Controller
 		return $this->render($parts);
 	}
 
+    /**
+     * Calculate price of items with markup.
+     */
+    private function calculatePrice($purchase_order){
+        $item_costs        = $this->itemForSaleCosts();
+        $potential_cost    = (isset($item_costs[$purchase_order->item->identity()]['item_cost']) ? $item_costs[$purchase_order->item->identity()]['item_cost'] : null);
+        $current_item_cost = first_value($potential_cost, 0);
+        return (int) ceil($current_item_cost * $purchase_order->quantity * self::MARKUP);
+
+    }
+
 	/**
 	 * Command for current user to purchase a quantity of a specific item
 	 *
@@ -50,31 +63,31 @@ class ShopController { // extends Controller
 		$gold              = ($player ? $player->gold : null);
 		$current_item_cost = 0;
 		$no_funny_business = false;
+        $no_such_item      = false;
 		$item_costs        = $this->itemForSaleCosts();
 		$item              = Item::findByIdentity($in_item);
 		$quantity 		   = whichever(positive_int($in_quantity), 1);
 		$item_text 	       = null;
+        $valid             = false;
 
 		if ($item instanceof Item) {
 			$item_text = ($quantity > 1 ? $item->getPluralName() : $item->getName());
-			$purchaseOrder = new PurchaseOrder();
+			$purchase_order = new PurchaseOrder();
 
 			// Determine the quantity from input or as a fallback, default of 1.
-			$purchaseOrder->quantity = $quantity;
-			$purchaseOrder->item     = $item;
+			$purchase_order->quantity = $quantity;
+			$purchase_order->item     = $item;
+            $current_item_cost = $this->calculatePrice($purchase_order);
 
-			$potential_cost    = (isset($item_costs[$purchaseOrder->item->identity()]['item_cost']) ? $item_costs[$purchaseOrder->item->identity()]['item_cost'] : null);
-			$current_item_cost = first_value($potential_cost, 0);
-			$current_item_cost = $current_item_cost * $purchaseOrder->quantity;
-
-			if (!$player || !$purchaseOrder->item || $purchaseOrder->quantity < 1) {
-				$no_funny_business = true;
+			if (!$player || !$purchase_order->item || $purchase_order->quantity < 1) {
+				$no_such_item = true;
 			} else if ($gold >= $current_item_cost) { // Has enough gold.
 				try {
                     $inventory = new Inventory($player);
-					$inventory->add($purchaseOrder->item->identity(), $purchaseOrder->quantity);
+					$inventory->add($purchase_order->item->identity(), $purchase_order->quantity);
                     $player->set_gold($player->gold - $current_item_cost);
                     $player->save();
+                    $valid = true;
 				} catch (\Exception $e) {
 					$invalid_item = $e->getMessage();
 					error_log('Invalid Item attempted :'.$invalid_item);
@@ -82,7 +95,7 @@ class ShopController { // extends Controller
 				}
 			}
 		} else {
-			$no_funny_business = true;
+			$no_such_item = true;
 		}
 
 		$parts = array(
@@ -90,6 +103,8 @@ class ShopController { // extends Controller
 			'quantity'          => $quantity,
 			'item_text'         => $item_text,
 			'no_funny_business' => $no_funny_business,
+            'no_such_item'      => $no_such_item,
+            'valid'             => $valid,
 			'view_part'         => 'buy',
 		);
 

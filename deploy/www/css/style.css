@@ -775,16 +775,13 @@ ol.aboutLower {
 	color:SkyBlue;
 	font-weight:bold;
 }
-input.shopButton {
-	width: 100px;
-}
-input.formButton, input.shopButton, input[type=submit] {
+input.formButton, input[type=submit] {
 	font-family:Verdana,Arial,sans-serif;
 	font-size: 1em;
 	letter-spacing: 1px;
 	padding:5px;
 }
-input.formButton:hover, input.shopButton:hover, input[type=submit]:hover, input.formButton:active, input.shopButton:active, input[type=submit]:active{
+input.formButton:hover, input[type=submit]:hover, input.formButton:active, input[type=submit]:active{
 	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 	text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
 	color:black;
@@ -2495,6 +2492,44 @@ table#sight-info {
 	max-width:100%;
 }
 
+/* Shop location */
+
+.shop-list {
+    background-color: rgba(30, 30, 30, 0.9);
+    width: 90%;
+    margin: .5em 5%;
+  text-align:center;
+  font-size:larger;
+}
+
+#shop-description {
+    margin-bottom: 0.3em;
+}
+
+.shop-list .btn{
+  margin-bottom:1rem;
+}
+
+.shop-list .item-desc {
+    color: #808177;
+}
+
+.shop-list .usage-text{
+  max-width:10rem;
+}
+
+.shop-list .item-icon{
+  max-height:25px;max-width:50px
+}
+.item-purchase-area{
+  display:inline-block;
+  padding:1em;
+  margin:0;
+  min-width:100px;
+  min-height:100px;
+  vertical-align:top;
+}
+
 
 /* NEW INDEX REWRITE CSS */
 
@@ -3161,8 +3196,8 @@ fieldset[disabled] a.btn {
   pointer-events: none;
 }
 .btn-default {
-  color: #333;
-  background-color: #fff;
+  background-color:rgba(50, 50, 50, 1);
+  color:ghostwhite;
   border-color: #ccc;
 }
 .btn-default:focus,

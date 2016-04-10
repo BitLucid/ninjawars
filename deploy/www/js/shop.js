@@ -1,12 +1,17 @@
 $(function() {
+
+  var auth = typeof loggedIn !== 'undefined'? loggedIn : false;
+
+  var quantity = NW.storage.appState.get("quantity", 1);
   
-  $("#quantity").val(NW.storage.appState.get("quantity", 1));
+  $("#quantity").val(quantity);
 
   $("#shop_form").submit(function() {
-      if(typeOf(loggedIn) === 'undefined' || !loggedIn){
+      if(!auth){
         return false;
+      } else {
+        NW.storage.appState.set("quantity", $("#quantity").val());
+        return true;
       }
-      NW.storage.appState.set("quantity", $("#quantity").val());
-      return true;
   });
 });
