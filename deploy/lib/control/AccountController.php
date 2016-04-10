@@ -34,7 +34,7 @@ class AccountController extends AbstractController {
     public function changeEmail() {
         // confirm_delete
         $player     = Player::find(SessionFactory::getSession()->get('player_id'));
-        $self_info 	= $player->dataWithClan();
+        $self_info 	= $player->data();
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
 
@@ -97,7 +97,7 @@ class AccountController extends AbstractController {
      */
     public function changePassword() {
         $player     = Player::find(SessionFactory::getSession()->get('player_id'));
-        $self_info 	= $player->dataWithClan();
+        $self_info 	= $player->data();
         $passW 		= in('passw', null);
         $username 	= $self_info['uname'];
 
@@ -163,7 +163,7 @@ class AccountController extends AbstractController {
     public function deleteAccount() {
         $session         = SessionFactory::getSession();
         $player          = Player::find(SessionFactory::getSession()->get('player_id'));
-        $self_info       = $player->dataWithClan();
+        $self_info       = $player->data();
         $passW           = in('passw', null);
         $username        = $self_info['uname'];
         $command         = in('command');
@@ -211,7 +211,7 @@ class AccountController extends AbstractController {
 
         $parts = [
             'gravatar_url'    => $player->avatarUrl(),
-            'player'          => $player->dataWithClan(),
+            'player'          => $player->data(),
             'account'         => $account,
             'oauth_provider'  => ($account ? $account->oauth_provider : ''),
             'oauth'           => ($account ? $account->oauth_provider && $account->oauth_id : ''),

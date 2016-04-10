@@ -537,7 +537,7 @@ class SkillController extends AbstractController {
 	 * Pull a stripped down set of player data to display to the skill user.
 	 **/
 	private function pullSightData(Player $target){
-		$data = $target->dataWithClan();
+		$data = $target->data();
 		// Strip all fields but those allowed.
 		$allowed = [
 		    'Name'     => 'uname',

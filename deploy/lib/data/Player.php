@@ -388,12 +388,11 @@ class Player implements Character {
     }
 
     /**
-     * Pull the data of the player obj as an array.
+     * Returns the state of the player from the database,
      *
-     * @note
-     * This function lazy loads the data only once per instance
+     * @return array
      */
-	public function data($specific = null) {
+    public function data() {
 		if (!$this->data) {
             $this->data = (array) $this->vo;
             $this->data['next_level']    = $this->killsRequiredForNextLevel();
@@ -405,32 +404,21 @@ class Player implements Character {
             $this->data['status_list']   = implode(', ', self::getStatusList($this->id()));
             $this->data['hash']          = md5(implode($this->data));
             $this->data['class_name']    = $this->data['identity'];
+            $this->data['clan_id']       = ($this->getClan() ? $this->getClan()->getID() : null);
 
             unset($this->data['pname']);
         }
 
-        if ($specific) {
-			return $this->data[$specific];
-		} else {
-			return $this->data;
-		}
-	}
-
-    /**
-     * Returns the state of the player from the database,
-     */
-    public function dataWithClan() {
-        $player_data = $this->data();
-        $player_data['clan_id'] = ($this->getClan() ? $this->getClan()->getID() : null);
-
-        return $player_data;
+        return $this->data;
     }
 
     /**
      * Return the data that should be publicly readable to javascript or the api while the player is logged in.
+     *
+     * @return array
      */
     public function publicData() {
-        $char_info = $this->dataWithClan();
+        $char_info = $this->data();
         unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['pname_backup'], $char_info['verification_number'], $char_info['confirmed']);
 
         return $char_info;

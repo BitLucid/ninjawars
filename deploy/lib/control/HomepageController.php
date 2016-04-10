@@ -38,7 +38,7 @@ class HomepageController extends AbstractController {
     private function game() {
         // Get the actual values of the vars.
         $ninja = Player::find(SessionFactory::getSession()->get('player_id'));
-        $playerInfo = $ninja->dataWithClan();
+        $playerInfo = $ninja->data();
 
         $unreadCount = Message::where([
             'send_to' => $ninja->id(),

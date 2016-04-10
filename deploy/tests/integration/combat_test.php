@@ -41,7 +41,7 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
         $this->oldify_character_last_attack($char_id);
         $player = Player::find($char_id);
-        $info = $player->dataWithClan();
+        $info = $player->data();
         $this->assertTrue((bool)$info['uname'], 'Character uname not found to check attacklegal with');
         $legal = new AttackLegal($player, $info['uname'], ['required_turns'=>1, 'ignores_stealth'=>true]);
         $this->assertFalse($legal->check(false));

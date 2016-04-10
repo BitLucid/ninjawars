@@ -73,7 +73,7 @@ class ConsiderController extends AbstractController {
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
         $peers            = ($char ? $this->getNearbyPeers($char->id()) : []);
         $active_ninjas    = Player::findActive(5, true);
-        $char_info        = ($char ? $char->dataWithClan() : []);
+        $char_info        = ($char ? $char->data() : []);
         $other_npcs       = NpcFactory::npcsData();
         $npcs             = NpcFactory::customNpcs();
         $enemy_list       = ($char ? $this->getCurrentEnemies($char->id()) : []);

@@ -367,11 +367,6 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($class, $char->getClassName());
     }
 
-    public function testRetrievingSpecificProperty() {
-        $char = Player::find($this->char_id);
-        $this->assertEquals(100, $char->data('max_turns'));
-    }
-
     public function testClassStringValidationPositive() {
         $return = Player::validStatus('STEALTH');
         $this->assertInternalType('int', $return);

@@ -115,7 +115,7 @@ class ApiController extends AbstractController {
 
     private function jsonPlayer() {
         $player = Player::find(SessionFactory::getSession()->get('player_id'));
-        return ['player' => $player->dataWithClan()];
+        return ['player' => $player->data()];
     }
 
     private function jsonChats($limit = 20) {
