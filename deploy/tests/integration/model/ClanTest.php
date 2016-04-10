@@ -1,5 +1,4 @@
 <?php
-use NinjaWars\core\data\ClanFactory;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 
@@ -98,12 +97,12 @@ class ClanTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($g, $clan->getAvatarUrl());
     }
 
-    function testSavingTheClanViaTheFactory(){
+    function testSavingTheClan(){
         $clan = $this->clan;
         $clan->setDescription($d = 'a new description');
         $clan->setFounder($f = 'newFounder');
         $clan->setAvatarUrl($url = 'http://example.com/avatar.png');
-        $was_saved = ClanFactory::save($clan);
+        $was_saved = $clan->save();
         $this->assertTrue($was_saved);
         $saved = Clan::find($clan->id());
         $this->assertEquals($d, $saved->getDescription());

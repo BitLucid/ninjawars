@@ -490,4 +490,26 @@ class Clan {
             return new Clan($clan_info['clan_id'], $clan_info['clan_name'], $clan_info);
         }
     }
+
+    /**
+     * Write the clan to the database
+     */
+    public function save() {
+        if (!$this->id()) {
+            throw new \RuntimeException('Clan cannot be saved as it does not yet have an id.');
+        }
+
+        $updated = update_query(
+            'update clan set clan_name = :name, clan_founder = :founder, clan_avatar_url = :avatar_url, description = :desc where clan_id = :id',
+            [
+                ':name'       => $this->getName(),
+                ':founder'    => $this->getFounder(),
+                ':avatar_url' => $this->getAvatarUrl(),
+                ':desc'       => $this->getDescription(),
+                ':id'         => $this->id(),
+            ]
+        );
+
+        return (bool)$updated;
+    }
 }

@@ -23,28 +23,6 @@ class ClanFactory {
 		return query_array('select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan');
 	}
 
-	/**
-	 * Save the data of an already created clan.
-	 */
-	public static function save(Clan $clan) {
-		if (!$clan->id()) {
-			throw new \Exception('Clan cannot be saved as it does not yet have an id.');
-		}
-
-        $updated = update_query(
-            'update clan set clan_name = :name, clan_founder = :founder, clan_avatar_url = :avatar_url, description = :desc where clan_id = :id',
-            [
-                ':name'       => $clan->getName(),
-                ':founder'    => $clan->getFounder(),
-                ':avatar_url' => $clan->getAvatarUrl(),
-                ':desc'       => $clan->getDescription(),
-                ':id'         => $clan->id(),
-            ]
-        );
-
-        return (bool)$updated;
-    }
-
     /**
      * Determines the criteria for how clans get ranked and tagged
      *
