@@ -3,7 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
-use NinjaWars\core\data\ClanFactory;
+use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
@@ -45,7 +45,7 @@ class MessagesController extends AbstractController {
         $message = in('message');
         $type = 1;
         $sender = Player::find(SessionFactory::getSession()->get('player_id'));
-        $clan = ClanFactory::clanOfMember($sender);
+        $clan = Clan::findByMember($sender);
         $target_id_list = $clan->getMemberIds();
         Message::sendToGroup($sender, $target_id_list, $message, $type);
 
@@ -70,7 +70,7 @@ class MessagesController extends AbstractController {
             [
                 'to'            => (in('to') ? in('to') : ''),
                 'informational' => in('informational'),
-                'has_clan'      => (boolean)ClanFactory::clanOfMember($ninja),
+                'has_clan'      => (boolean)Clan::findByMember($ninja),
                 'current_tab'   => 'message',
                 'messages'      => Message::findByReceiver($ninja, $type, $limit, $offset),
                 'current_page'  => $page,
@@ -102,7 +102,7 @@ class MessagesController extends AbstractController {
                 'pages'         => ceil($message_count / $limit),
                 'current_page'  => $page,
                 'current_tab'   => 'clan',
-                'has_clan'      => (boolean)ClanFactory::clanOfMember($ninja),
+                'has_clan'      => (boolean)Clan::findByMember($ninja),
             ]
         );
 

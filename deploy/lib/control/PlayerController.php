@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\SkillDAO;
-use NinjaWars\core\data\ClanFactory;
+use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Inventory;
@@ -33,7 +33,7 @@ class PlayerController extends AbstractController {
         } else {
             $attack_allowed        = false;
             $attack_error          = 'You must become a ninja first.';
-            $clan                  = ClanFactory::clanOfMember($target_player_obj->id());
+            $clan                  = Clan::findByMember($target_player_obj);
             $combat_skills         = null;
             $communication_section = '';
             $display_clan_options  = false;
@@ -58,7 +58,7 @@ class PlayerController extends AbstractController {
             );
 
             if ($viewing_player_obj !== null) {
-                $viewers_clan   = ClanFactory::clanOfMember($viewing_player_obj);
+                $viewers_clan   = Clan::findByMember($viewing_player_obj);
                 $self           = ($viewing_player_obj->id() === $target_player_obj->id());
                 $params         = ['required_turns'=>0, 'ignores_stealth'=>true];
                 $AttackLegal    = new AttackLegal($viewing_player_obj, $target_player_obj, $params);

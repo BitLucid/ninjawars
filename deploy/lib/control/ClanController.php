@@ -31,9 +31,9 @@ class ClanController extends AbstractController {
         $player = Player::find(SessionFactory::getSession()->get('player_id'));
 
         if ($clanID === null && $player instanceof Player) {
-            $clan = ClanFactory::clanOfMember($player);
+            $clan = Clan::findByMember($player);
         } else {
-            $clan = positive_int($clanID)? ClanFactory::find($clanID) : null;
+            $clan = positive_int($clanID)? Clan::find($clanID) : null;
         }
 
 		if (isset($clan) && $clan instanceof Clan) {
@@ -57,7 +57,7 @@ class ClanController extends AbstractController {
 		}
 
 		if ($player) {
-			$myClan = ClanFactory::clanOfMember($player);
+			$myClan = Clan::findByMember($player);
 
 			if ($myClan) {
 				if ($clan) {
@@ -89,7 +89,7 @@ class ClanController extends AbstractController {
 	 */
 	public function invite() {
 		$player = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan   = ClanFactory::clanOfMember($player);
+		$clan   = Clan::findByMember($player);
 
 		if (!$clan || !$this->playerIsLeader($player, $clan)) {
 			throw new \RuntimeException('You must be a clan leader to invite new members');
@@ -130,7 +130,7 @@ class ClanController extends AbstractController {
 	 */
 	public function leave() {
 		$player = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan   = ClanFactory::clanOfMember($player);
+		$clan   = Clan::findByMember($player);
 
 		if ($this->playerIsLeader($player, $clan)) {
 			throw new \RuntimeException('You are the only leader of your clan. You must disband your clan if you wish to leave.');
@@ -199,7 +199,7 @@ class ClanController extends AbstractController {
 	 */
 	public function join() {
 		$clanID = (int) in('clan_id', null);
-		$clan   = ClanFactory::find($clanID);
+		$clan   = Clan::find($clanID);
 
 		$this->sendClanJoinRequest(SessionFactory::getSession()->get('player_id'), $clanID);
 
@@ -225,7 +225,7 @@ class ClanController extends AbstractController {
 	 */
 	public function disband() {
 		$player = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan   = ClanFactory::clanOfMember($player);
+		$clan   = Clan::findByMember($player);
 		$sure   = in('sure', '');
 
 		if (!$this->playerIsLeader($player, $clan)) {
@@ -265,7 +265,7 @@ class ClanController extends AbstractController {
 	 */
 	public function kick() {
 		$kicker = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan   = ClanFactory::clanOfMember($kicker);
+		$clan   = Clan::findByMember($kicker);
 		$kicked = Player::find(in('kicked', ''));
 
 		if (!$this->playerIsLeader($kicker, $clan)) {
@@ -300,7 +300,7 @@ class ClanController extends AbstractController {
 	 */
 	public function update() {
 		$player = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan   = ClanFactory::clanOfMember($player);
+		$clan   = Clan::findByMember($player);
 
 		if (!$this->playerIsLeader($player, $clan)) {
 			throw new \Exception('You may not update a clan you are not a leader of.');
@@ -365,7 +365,7 @@ class ClanController extends AbstractController {
 	 */
 	public function edit() {
 		$player = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan   = ClanFactory::clanOfMember($player);
+		$clan   = Clan::findByMember($player);
 
 		return $this->render([
 			'clan'      => $clan,
@@ -388,7 +388,7 @@ class ClanController extends AbstractController {
 		$message = in('message', null, null); // Don't filter messages
 
 		if ($player) {
-			$myClan = ClanFactory::clanOfMember($player);
+			$myClan = Clan::findByMember($player);
 
 			if ($myClan) {
 				$target_id_list = $myClan->getMemberIds();
@@ -435,7 +435,7 @@ class ClanController extends AbstractController {
 		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 
 		if ($player) {
-			$clan = ClanFactory::clanOfMember($player);
+			$clan = Clan::findByMember($player);
 
 			if ($clan) {
 				array_unshift($parts['pageParts'], 'reminder-member');
@@ -456,7 +456,7 @@ class ClanController extends AbstractController {
 	 */
 	public function review() {
 		$ninja = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan  = ClanFactory::clanOfMember($ninja->id());
+		$clan  = Clan::findByMember($ninja->id());
 
 		$joiner = Player::find(in('joiner'));
 		$confirmation = (int) in('confirmation');
@@ -496,7 +496,7 @@ class ClanController extends AbstractController {
 	 */
 	public function accept() {
 		$ninja = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan  = ClanFactory::clanOfMember($ninja->id());
+		$clan  = Clan::findByMember($ninja->id());
 
 		$joiner = Player::find(in('joiner'));
 		$confirmation = (int) in('confirmation');
@@ -555,7 +555,7 @@ class ClanController extends AbstractController {
 		}
 
 		$p_parts['player'] = Player::find(SessionFactory::getSession()->get('player_id'));
-		$p_parts['myClan'] = ($p_parts['player'] ? ClanFactory::clanOfMember($p_parts['player']) : null);
+		$p_parts['myClan'] = ($p_parts['player'] ? Clan::findByMember($p_parts['player']) : null);
 
 		$p_parts['clan_creator_min_level'] = self::CLAN_CREATOR_MIN_LEVEL;
 

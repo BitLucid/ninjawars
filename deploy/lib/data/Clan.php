@@ -455,4 +455,39 @@ class Clan {
         $potential = (string)$potential;
         return preg_match("#^[\da-z_\-]([\da-z_\-]| [\da-z_\-]){2,25}$#i", $potential);
     }
+
+    /**
+     * Find a clan by id
+     *
+     * @param int $identity
+     * @return Clan|null
+     */
+    public static function find($identity) {
+        $clan_info = query_row(
+            'select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan where clan_id = :id',
+            [':id'=>$identity]
+        );
+
+        if (empty($clan_info)) {
+            return null;
+        } else {
+            return new Clan($clan_info['clan_id'], $clan_info['clan_name'], $clan_info);
+        }
+    }
+
+    /**
+     * Find the clan belonging to a player, if any
+     *
+     * @param Player $player
+     * @return Clan|null
+     */
+    public static function findByMember(Player $player) {
+        $clan_info = query_row('select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan JOIN clan_player ON clan_id = _clan_id where _player_id = :pid', [':pid'=>$player->id()]);
+
+        if (empty($clan_info)) {
+            return null;
+        } else {
+            return new Clan($clan_info['clan_id'], $clan_info['clan_name'], $clan_info);
+        }
+    }
 }

@@ -3,7 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\DatabaseConnection;
-use NinjaWars\core\data\ClanFactory;
+use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 
@@ -28,7 +28,7 @@ class EventsController extends AbstractController {
             'template' => 'events.tpl',
             'parts'    => [
                 'events'   => $events,
-                'has_clan' => (bool)ClanFactory::clanOfMember($char),
+                'has_clan' => (bool)Clan::findByMember($char),
                 'char'     => $char,
             ],
 			'options'  => ['quickstat' => 'player'],

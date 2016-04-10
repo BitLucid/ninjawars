@@ -10,51 +10,6 @@ use NinjaWars\core\data\Player;
  *
  */
 class ClanFactory {
-    // Get a clan by identity.
-    public static function find($identity) {
-        $clan_info = query_row('select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan
-            where clan_id = :id',
-[':id'=>$identity]);
-
-if (empty($clan_info)) {
-    return null;
-} else {
-    $clan = new Clan($clan_info['clan_id']);
-    $clan->setFounder($clan_info['clan_founder']);
-    $clan->setDescription($clan_info['description']);
-    $clan->setName($clan_info['clan_name']);
-    $clan->setAvatarUrl($clan_info['clan_avatar_url']);
-    return $clan;
-}
-    }
-
-    /**
-     * Get the clan that a member has, if any
-     *
-     * @param Player|int $pc_or_id
-     * @return Clan|null
-     */
-    public static function clanOfMember($pc_or_id) {
-        if ($pc_or_id instanceof Player) {
-            $playerID = $pc_or_id->id();
-        } else {
-            $playerID = $pc_or_id;
-        }
-
-        $clan_info = query_row('select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan JOIN clan_player ON clan_id = _clan_id where _player_id = :pid', [':pid'=>$playerID]);
-
-        if (empty($clan_info)) {
-            return null;
-        } else {
-            $clan = new Clan($clan_info['clan_id']);
-            $clan->setFounder($clan_info['clan_founder']);
-            $clan->setDescription($clan_info['description']);
-            $clan->setName($clan_info['clan_name']);
-            $clan->setAvatarUrl($clan_info['clan_avatar_url']);
-            return $clan;
-        }
-    }
-
 	/**
 	 * Create the flesh of an npc from it's data
 	**/

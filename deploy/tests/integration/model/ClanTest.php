@@ -32,14 +32,14 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     }
 
     function testFindClanObject() {
-        $clan = ClanFactory::find($this->clan_id);
+        $clan = Clan::find($this->clan_id);
         $this->assertInstanceOf('NinjaWars\core\data\Clan', $clan);
         $this->assertEquals($this->clan_id, $clan->getId());
     }
 
     function testClanAddMember(){
         $player = Player::find($this->char_id);
-        $clan = ClanFactory::find($this->clan_id);
+        $clan = Clan::find($this->clan_id);
         $this->assertTrue($clan->addMember($player, $player));
     }
 
@@ -55,15 +55,15 @@ class ClanTest extends PHPUnit_Framework_TestCase {
 
     function testGetClanForANinjaThatDoesntHaveAClanAtAllShouldYieldNull(){
         $player1 = Player::find($this->char_id);
-        $clan_final = ClanFactory::clanOfMember($player1);
+        $clan_final = Clan::findByMember($player1);
         $this->assertEmpty($clan_final);
     }
 
     function testGetClanThatAMemberBelongsTo(){
         $player1 = Player::find($this->char_id);
-        $clan = ClanFactory::find($this->clan_id);
+        $clan = Clan::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
-        $clan_final = ClanFactory::clanOfMember($player1);
+        $clan_final = Clan::findByMember($player1);
         $this->assertTrue($clan_final->hasMember($player1->id()));
     }
 
@@ -80,20 +80,20 @@ class ClanTest extends PHPUnit_Framework_TestCase {
 
     function testPromoteClanMember(){
         $player1 = Player::find($this->char_id);
-        $clan = ClanFactory::find($this->clan_id);
+        $clan = Clan::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
         $this->assertTrue($clan->promoteMember($player1->id()));
     }
 
     function testGetRankedClanMembersOfAClan(){
         $player1 = Player::find($this->char_id);
-        $clan = ClanFactory::find($this->clan_id);
+        $clan = Clan::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
         $this->assertEquals(2, count($clan->getMembers()));
     }
 
     function testGetTheClanAvatarUrl(){
-        $clan = ClanFactory::find($this->clan_id);
+        $clan = Clan::find($this->clan_id);
         $clan->setAvatarUrl($g = 'http://google.com/someimage.jpg');
         $this->assertEquals($g, $clan->getAvatarUrl());
     }
@@ -105,7 +105,7 @@ class ClanTest extends PHPUnit_Framework_TestCase {
         $clan->setAvatarUrl($url = 'http://example.com/avatar.png');
         $was_saved = ClanFactory::save($clan);
         $this->assertTrue($was_saved);
-        $saved = ClanFactory::find($clan->id());
+        $saved = Clan::find($clan->id());
         $this->assertEquals($d, $saved->getDescription());
         $this->assertEquals($f, $saved->getFounder());
         $this->assertEquals($url, $saved->getAvatarUrl());
@@ -119,7 +119,7 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     function testGetClanObjectNumericRating(){
         $this->markTestIncomplete('Clan rating is not yet implemented');
         $player1 = Player::find($this->char_id);
-        $clan = ClanFactory::find($this->clan_id);
+        $clan = Clan::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
         $this->assertTrue($clan->addMember(Player::find($this->char_id_2), $player1));
         $this->assertTrue($clan->rating());

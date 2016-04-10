@@ -4,7 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
-use NinjaWars\core\data\ClanFactory;
+use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
@@ -84,7 +84,7 @@ class StatsController extends AbstractController {
 
         $parts = [
             'char'               => $char,
-            'clan'               => ClanFactory::clanOfMember($char),
+            'clan'               => Clan::findByMember($char),
             'status_list'        => Player::getStatusList(),
             'rank_display'       => $this->getRank($char->id()),
             'profile_max_length' => self::PROFILE_MAX_LENGTH,
