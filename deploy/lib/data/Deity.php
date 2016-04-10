@@ -238,7 +238,7 @@ class Deity {
     $affected_rows['deleted levelling_logs'] = $deleted_items->rowCount();
 
     $deleted_mail = Message::deleteOldMessages();
-    $deleted_events = Events::deleteOldEvents();
+    $deleted_events = Event::deleteOldEvents();
     $affected_rows['Old Messages Deletion'] = $deleted_mail;
     $affected_rows['Old Events Deletion'] = $deleted_events;
 
