@@ -403,7 +403,7 @@ class Player implements Character {
             $this->data['status_list']   = implode(', ', self::getStatusList($this->id()));
             $this->data['hash']          = md5(implode($this->data));
             $this->data['class_name']    = $this->data['identity'];
-            $this->data['clan_id']       = ($this->getClan() ? $this->getClan()->getID() : null);
+            $this->data['clan_id']       = ($this->getClan() ? $this->getClan()->id : null);
 
             unset($this->data['pname']);
         }

@@ -6,7 +6,7 @@
 	<ul class="menu">
 		<li><a href="/clan/list">Clan List</a></li>
 	{if $myClan}
-		<li><a href="/clan/view?clan_id={$myClan->getID()|escape}">My Clan</a></li>
+		<li><a href="/clan/view?clan_id={$myClan->id|escape}">My Clan</a></li>
 	{/if}
 	</ul>
 	</nav>

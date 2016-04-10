@@ -78,7 +78,7 @@ class PlayerController extends AbstractController {
                 }
 
                 if ($clan && $viewers_clan) {
-                    $same_clan            = ($clan->getID() == $viewers_clan->getID());
+                    $same_clan            = ($clan->id == $viewers_clan->id);
                     $display_clan_options = (!$self && $same_clan && $viewing_player_obj->isClanLeader());
                 }
             }

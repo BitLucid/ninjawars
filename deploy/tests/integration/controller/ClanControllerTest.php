@@ -23,7 +23,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
     }
 
 	protected function tearDown() {
-        $this->deleteClan($this->clan->id());
+        $this->deleteClan($this->clan->id);
         RequestWrapper::destroy();
         TestAccountCreateAndDestroy::purge_test_accounts();
         $session = SessionFactory::getSession();
@@ -42,7 +42,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testViewMyClan() {
-        $request = Request::create('/clan/view', 'GET', ['clan_id'=>$this->clan->id()]);
+        $request = Request::create('/clan/view', 'GET', ['clan_id'=>$this->clan->id]);
         RequestWrapper::inject($request);
         $response = $this->controller->view();
 
@@ -57,12 +57,12 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $clan = Clan::create(Player::find($char_id_2), 'phpunit_test_clan2');
 
         // view new clan
-        $request = Request::create('/clan/view', 'GET', ['clan_id'=>$clan->id()]);
+        $request = Request::create('/clan/view', 'GET', ['clan_id'=>$clan->id]);
         RequestWrapper::inject($request);
         $response = $this->controller->view();
 
         // delete new clan
-        $this->deleteClan($clan->id());
+        $this->deleteClan($clan->id);
 
         $this->assertArrayHasKey('template', $response);
     }
