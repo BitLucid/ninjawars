@@ -266,7 +266,7 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testFleshOutFailure() {
-        $this->setExpectedException('NinjaWars\core\data\InvalidNpcException');
+        $this->setExpectedException(NinjaWars\core\InvalidNpcException::class);
         NpcFactory::fleshOut('NotARealNPCByAnyMeans', null);
     }
 }

@@ -2,8 +2,7 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Npc;
-
-class InvalidNpcException extends \Exception{}
+use NinjaWars\core\InvalidNpcException;
 
 /**
  * Who/what/why/where
