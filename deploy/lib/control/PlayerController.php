@@ -45,7 +45,6 @@ class PlayerController extends AbstractController {
             $targeted_skills       = null;
             $template              = 'player.tpl';
             $viewed_name_for_title = $target_player_obj->name();
-            $viewers_clan          = null;
             $viewing_player_obj    = Player::find(SessionFactory::getSession()->get('player_id'));
 
             $kills_today = query_item(
