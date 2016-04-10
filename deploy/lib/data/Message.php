@@ -159,4 +159,25 @@ class Message extends Model {
 
         return false;
     }
+
+    /**
+     * @return int Number of rows deleted
+     */
+    public static function deleteOldMessages() {
+        $statement = query("delete from messages where date < ( now() - '3 months'::interval)");
+        return $statement->rowCount();
+    }
+
+    /**
+     * Deletes old chat messages.
+     */
+    public static function shortenChat($message_limit=800) {
+        DatabaseConnection::getInstance();
+        // Find the latest 800 messages and delete all the rest;
+        $deleted = DatabaseConnection::$pdo->prepare("DELETE FROM chat WHERE chat_id NOT IN (SELECT chat_id FROM chat ORDER BY date DESC LIMIT :msg_limit)");
+        $deleted->bindValue(':msg_limit', $message_limit);
+        $deleted->execute();
+
+        return (int) $deleted->rowCount();
+    }
 }

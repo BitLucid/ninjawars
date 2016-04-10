@@ -168,7 +168,7 @@ class ClanController extends AbstractController {
 				$default_clan_name = $default_clan_name.rand(1,999);
 			}
 
-			$clan = Clan::createClan($player, $default_clan_name);
+			$clan = Clan::create($player, $default_clan_name);
 
 			$parts = [
 				'action_message' => 'Your clan was created with the default name: '.$clan->getName().'. Change it below.',

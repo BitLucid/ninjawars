@@ -10,23 +10,6 @@ use NinjaWars\core\data\Player;
  *
  */
 class ClanFactory {
-	// Returns a fleshed out clan object, or a mostly blank one if no existing data found
-    public static function create($identity, $data=null) {
-        $founder = ($data['founder'] ? $data['founder'] : null);
-        $desc    = ($data['description'] ? $data['description'] : '');
-        $url     = (isset($data['clan_avatar_url']) ? $data['clan_avatar_url'] : null);
-        $name    = $identity;
-
-        $new_clan_id = insert_query('insert into clan (clan_name, clan_avatar_url, clan_founder, description) values (:name, :url, :founder, :desc)',
-            [':name'=>$name, ':url'=>$url, ':founder'=>$founder, ':desc'=>$desc], 'clan_clan_id_seq');
-
-        if (!positive_int($new_clan_id)) {
-            throw new \Exception('Clan not inserted into database properly!');
-        }
-
-        return ClanFactory::find($new_clan_id);
-    }
-
     // Get a clan by identity.
     public static function find($identity) {
         $clan_info = query_row('select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan

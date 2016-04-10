@@ -128,7 +128,7 @@ class ShopController extends AbstractController {
             $sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item order by image asc, item_cost asc';
         }
 
-        $items_data = query_resultset($sel);
+        $items_data = query($sel);
         // Rearrange the array to use the internal identity as indexes.
         $item_costs = array();
 

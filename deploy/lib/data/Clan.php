@@ -250,6 +250,14 @@ class Clan {
     }
 
     /**
+     */
+    public function getMemberCount() {
+        return query_item(
+            'SELECT count(*) FROM clan_player JOIN players ON player_id = _player_id WHERE _clan_id = :clan',
+            [':clan' => $this->id()]
+        );
+    }
+    /**
      * Delete a clan after sending a message to all clan members.
      */
     public function disband() {
@@ -356,7 +364,7 @@ class Clan {
      */
     public static function saveClanAvatarUrl($url, $clan_id) {
         $update = 'UPDATE clan SET clan_avatar_url = :url WHERE clan_id = :clan_id';
-        query_resultset($update, array(':url'=>$url, ':clan_id'=>$clan_id));
+        query($update, array(':url'=>$url, ':clan_id'=>$clan_id));
     }
 
     /**
@@ -368,7 +376,7 @@ class Clan {
      */
     public static function saveClanDescription($desc, $clan_id) {
         $update = 'UPDATE clan SET description = :desc WHERE clan_id = :clan_id';
-        query_resultset($update, array(':desc'=>$desc, ':clan_id'=>$clan_id));
+        query($update, array(':desc'=>$desc, ':clan_id'=>$clan_id));
     }
 
     /**
@@ -377,7 +385,7 @@ class Clan {
      * @param String $p_clan_name
      * @return Clan
      */
-    public static function createClan(Player $p_leader, $p_clan_name) {
+    public static function create(Player $p_leader, $p_clan_name) {
         DatabaseConnection::getInstance();
 
         $clan_name = trim($p_clan_name);

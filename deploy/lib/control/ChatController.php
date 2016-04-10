@@ -50,7 +50,7 @@ class ChatController extends AbstractController {
             'target'            => $_SERVER['PHP_SELF'],
             'chats'             => $chats,
             'error'             => in('error'),
-            'more_chats_to_see' => (rco($chats) < $this->getChatCount()),
+            'more_chats_to_see' => (!$view_all && $chatlength < $this->getChatCount()),
             'authenticated'     => SessionFactory::getSession()->get('authenticated', false),
         ];
 
@@ -81,7 +81,7 @@ class ChatController extends AbstractController {
             $bindings[':limit'] = $chatlength;
         }
 
-        $chats = query_resultset("SELECT sender_id, uname, message, date, age(now(), date) AS ago FROM chat
+        $chats = query("SELECT sender_id, uname, message, date, age(now(), date) AS ago FROM chat
             JOIN players ON chat.sender_id = player_id ORDER BY chat_id DESC ".$limit, $bindings);
 
         return $chats;

@@ -7,30 +7,23 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     private $clan_id;
     private $char_id;
     private $char_id_2;
+    private $clan_identity = 'randomNewTestClan';
 
 	function setUp() {
-        $clan_identity = 'randomNewTestClan';
-
         $id_already_exists = query_item(
             'select clan_id from clan where clan_name = :name',
-            [':name' => $clan_identity]
+            [':name' => $this->clan_identity]
         );
 
         if ($id_already_exists) {
             $this->deleteClan($id_already_exists);
         }
 
-        $this->clan = ClanFactory::create(
-            $clan_identity,
-            [
-                'founder'     => 'phpunittest',
-                'description' => 'Some clan description'
-            ]
-        );
-
-        $this->clan_id   = $this->clan->getId();
         $this->char_id   = TestAccountCreateAndDestroy::char_id();
         $this->char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+
+        $this->clan = Clan::create(Player::find($this->char_id_2), $this->clan_identity);
+        $this->clan_id   = $this->clan->getId();
 	}
 
     /**
@@ -49,7 +42,6 @@ class ClanTest extends PHPUnit_Framework_TestCase {
 
 	function tearDown() {
         $this->deleteClan($this->clan_id);
-        $this->deleteClanByIdentity('someTestClan');
         TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
@@ -67,20 +59,18 @@ class ClanTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($this->clan_id, $clan->getId());
     }
 
-    function testClanAddMembers(){
-        $player1 = Player::find($this->char_id);
+    function testClanAddMember(){
+        $player = Player::find($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
-        $this->assertTrue($clan->addMember($player1, $player1));
-        $this->assertTrue($clan->addMember(Player::find($this->char_id_2), $player1));
+        $this->assertTrue($clan->addMember($player, $player));
     }
 
-    function testClanGetMembers(){
+    function testClanGetMembers() {
         $player1 = Player::find($this->char_id);
-        $clan = ClanFactory::find($this->clan_id);
+        $player2 = Player::find($this->char_id_2);
+        $clan = $this->clan;
         $this->assertTrue($clan->addMember($player1, $player1));
-        $this->assertTrue($clan->addMember($player2 = Player::find($this->char_id_2), $player1));
-        $member_ids = $clan->getMemberIds();
-        $this->assertEquals(2, rco($member_ids));
+        $this->assertEquals(2, $clan->getMemberCount());
         $this->assertTrue($clan->hasMember($player1->id()));
         $this->assertTrue($clan->hasMember($player2->id()));
     }
@@ -101,9 +91,9 @@ class ClanTest extends PHPUnit_Framework_TestCase {
 
     function testKickClanMember(){
         $player1 = Player::find($this->char_id);
-        $clan = ClanFactory::find($this->clan_id);
+        $player2 = Player::find($this->char_id_2);
+        $clan = $this->clan;
         $this->assertTrue($clan->addMember($player1, $player1));
-        $this->assertTrue($clan->addMember($player2 = Player::find($this->char_id_2), $player1));
         $this->assertTrue($clan->hasMember($player2->id()));
         $this->assertTrue($clan->hasMember($player1->id()));
         $clan->kickMember($player1->id(), $player2);
@@ -121,7 +111,7 @@ class ClanTest extends PHPUnit_Framework_TestCase {
         $player1 = Player::find($this->char_id);
         $clan = ClanFactory::find($this->clan_id);
         $this->assertTrue($clan->addMember($player1, $player1));
-        $this->assertEquals(1, rco($clan->getMembers()));
+        $this->assertEquals(2, count($clan->getMembers()));
     }
 
     function testGetTheClanAvatarUrl(){
@@ -131,7 +121,7 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     }
 
     function testSavingTheClanViaTheFactory(){
-        $clan = ClanFactory::create('someTestClan', ['founder'=>'noone', 'clan_avatar_url'=>'http://example.com/img.png', 'description'=>'SomeDesc']);
+        $clan = $this->clan;
         $clan->setDescription($d = 'a new description');
         $clan->setFounder($f = 'newFounder');
         $clan->setAvatarUrl($url = 'http://example.com/avatar.png');
@@ -144,8 +134,7 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     }
 
     function testInviteCharacterToYourClan(){
-        $clan = ClanFactory::create('someTestClan', ['founder'=>'noone', 'clan_avatar_url'=>'http://example.com/img.png', 'description'=>'SomeDesc']);
-        $error = $clan->invite(Player::find($this->char_id), Player::find($this->char_id_2));
+        $error = $this->clan->invite(Player::find($this->char_id), Player::find($this->char_id_2));
         $this->assertFalse((bool)$error);
     }
 

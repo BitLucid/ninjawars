@@ -143,7 +143,7 @@ class AssistanceController extends AbstractController {
             JOIN players ON _player_id = player_id
             WHERE account_id = :acctId', array(':acctId'=>$aid));
 
-        if (rco($data)) {
+        if (count($data)) {
             $check     = $data['verification_number'];
             $confirmed = $data['confirmed'];
             $active    = $data['active'];
@@ -176,11 +176,14 @@ class AssistanceController extends AbstractController {
         }
 
         return [
-            'template'=>'assistance.confirm.tpl',
-            'title'=>'Account Confirmation',
-            'parts'=>get_certain_vars(get_defined_vars()),
-            'options'=>['quickstat'=>false]
-            ];
+            'template' => 'assistance.confirm.tpl',
+            'title'    => 'Account Confirmation',
+            'parts'    => [
+                'confirmed'              => $confirmed,
+                'username'               => $username,
+                'confirmation_confirmed' => $confirmation_confirmed,
+            ],
+            'options'  => ['quickstat'=>false]
+        ];
     }
-
 }

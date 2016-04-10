@@ -85,4 +85,12 @@ class GameLog {
         $statement->bindValue(':killpoints', $killpoints);
         $statement->execute();
     }
+
+    /**
+     * Find the player who killed the most today
+     */
+    public static function findViciousKiller() {
+        $result = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log JOIN players ON player_id = _player_id WHERE killsdate = cast(now() AS date) GROUP BY uname, killpoints ORDER BY killpoints DESC LIMIT 1');
+        return $result->fetchColumn();
+    }
 }
