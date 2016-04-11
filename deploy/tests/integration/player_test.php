@@ -1,6 +1,7 @@
 <?php
 use NinjaWars\core\data\Player;
 use NinjaWars\core\Filter;
+use NinjaWars\core\data\Account;
 
 class CharacterTest extends PHPUnit_Framework_TestCase {
     private $previous_server_ip = '';
@@ -33,6 +34,21 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue((bool)$char->name());
     }
 
+    public function testFindPlayable(){
+        $pcs_data = Player::findActive(1, false);
+        $pc_data = reset($pcs_data);
+        $pc = Player::find($pc_data['player_id']);
+        $acc = Account::findByChar($pc);
+        $pc2 = Player::findPlayable($acc->id());
+        $this->assertEquals($pc->id(), $pc2->id());
+    }
+
+    public function testFindPlayableFromInitialChar(){
+        $pc = Player::find($this->char_id);
+        $acc = Account::findByChar($pc);
+        $pc2 = Player::findPlayable($acc->id());
+        $this->assertEquals($pc->id(), $pc2->id());
+    }
 
     public function testFindByNamePositive() {
         $char = Player::findByName($this->test_ninja_name);
@@ -396,4 +412,5 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($active);
         $this->assertLessThan(6, $count);
     }
+
 }
