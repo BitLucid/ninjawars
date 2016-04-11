@@ -54,6 +54,8 @@ class AssistanceController extends AbstractController {
 
     /**
      * Sends the account confirmation email.
+     *
+     * @return boolean
      */
     private function sendConfirmationEmail($email, $data) {
         $template_vars = [
