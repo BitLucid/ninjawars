@@ -51,7 +51,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
-        $skill_outcome = $skill->go();
+        $skill_outcome = $skill->useSkill();
         $final_defender = Player::find($this->char2->id());
         $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
                 'A redirect was the outcome for the url: '
@@ -81,7 +81,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
-        $skill_outcome = $skill->go();
+        $skill_outcome = $skill->useSkill();
         $final_defender = Player::find($this->char2->id());
         $final_attacker = Player::find($this->char->id());
         $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome,
@@ -112,7 +112,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
-        $skill_outcome = $skill->go();
+        $skill_outcome = $skill->useSkill();
         $final_defender = Player::find($this->char2->id());
         $final_attacker = Player::find($this->char->id());
         $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome,
@@ -155,7 +155,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Poison%20Touch/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
-        $skill_outcome = $skill->go();
+        $skill_outcome = $skill->useSkill();
 
         $final_defender = Player::find($this->char2->id());
         $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
@@ -180,7 +180,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Sight/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
-        $skill_outcome = $skill->go();
+        $skill_outcome = $skill->useSkill();
 
         $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
                 'An error redirect was sent back for the url: '

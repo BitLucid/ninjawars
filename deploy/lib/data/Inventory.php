@@ -17,14 +17,14 @@ class Inventory implements IteratorAggregate {
     }
 
     public function getIterator() {
-        return new ArrayIterator(Inventory::of($this->char));
+        return new ArrayIterator(self::of($this->char));
     }
 
     /**
      * Get inventory as flat array
      */
     public function toArray() {
-        return Inventory::of($this->char);
+        return self::of($this->char);
     }
 
     /**

@@ -54,6 +54,7 @@ class RumorController extends AbstractController {
         DatabaseConnection::getInstance();
         $viciousResult = DatabaseConnection::$pdo->query('SELECT stat_result from past_stats where id = 4');
         $todaysViciousKiller = $viciousResult->fetchColumn();
+        $stats = [];
 
         $stats['vicious_killer'] = $todaysViciousKiller;
         $playerCount = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE active = 1");

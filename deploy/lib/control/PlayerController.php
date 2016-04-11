@@ -78,7 +78,7 @@ class PlayerController extends AbstractController {
                 }
 
                 if ($clan && $viewers_clan) {
-                    $same_clan            = ($clan->getID() == $viewers_clan->getID());
+                    $same_clan            = ($clan->id == $viewers_clan->id);
                     $display_clan_options = (!$self && $same_clan && $viewing_player_obj->isClanLeader());
                 }
             }
@@ -130,7 +130,7 @@ class PlayerController extends AbstractController {
 
     /**
      * Wrapper to redirect skill use into pretty urls
-     * like a final url of /skill/go/firebolt/tchalvak
+     * like a final url of /skill/use/firebolt/tchalvak
      * from a starting url of http://nw.local/player/use_skill/?act=firebolt&target=tchalvak
      */
     public function use_skill(){

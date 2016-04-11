@@ -177,7 +177,7 @@ class AttackLegal {
         } else if ($target->hasStatus(STEALTH) && !$this->params['ignores_stealth']) {
             // Attacks that ignore stealth will skip this.
             $this->error = 'Your target is stealthed. You can only hit this ninja using certain techniques.';
-        } else if ($this->params['clan_forbidden'] && ($attacker->getClan() instanceof Clan) && ($target->getClan()->getID() == $attacker->getClan()->getID()) && !$this->params['self_use']) {
+        } else if ($this->params['clan_forbidden'] && ($attacker->getClan() instanceof Clan) && ($target->getClan()->id == $attacker->getClan()->id) && !$this->params['self_use']) {
             $this->error = 'Your clan would outcast you if you attacked one of your own.';
         } else if ($target->health() > 0) {
             $this->error = null;

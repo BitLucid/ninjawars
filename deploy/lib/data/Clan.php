@@ -12,7 +12,7 @@ use \PDO;
  * Ninja clans with their various members
  */
 class Clan {
-    private $id;
+    public $id;
     private $name;
     private $avatarUrl;
     private $description;
@@ -32,14 +32,6 @@ class Clan {
             $this->setDescription($data['description']);
             $this->setFounder($data['clan_founder']);
         }
-    }
-
-    public function getID() {
-        return $this->id;
-    }
-
-    public function id() {
-        return $this->getID();
     }
 
     public function getName() {
@@ -67,7 +59,7 @@ class Clan {
      */
     public function getFounder() {
         if (!$this->founder) {
-            $this->founder = query_item('select clan_founder from clan where clan_id = :id', [':id'=>$this->getId()]);
+            $this->founder = query_item('select clan_founder from clan where clan_id = :id', [':id'=>$this->id]);
         }
 
         return $this->founder;
@@ -124,7 +116,7 @@ class Clan {
         $leaders = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
             FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id = _player_id
             WHERE active = 1 AND member_level > 0 AND clan_id = :clan ORDER BY member_level DESC, level DESC");
-        $leaders->bindValue(':clan', $this->getID());
+        $leaders->bindValue(':clan', $this->id);
         $leaders->execute();
 
         return $leaders;
@@ -139,7 +131,7 @@ class Clan {
         }
 
         // Not an insert_query because there is no sequence involved or needed.
-        query('insert into clan_player (_clan_id, _player_id) values (:c, :p)', [':c'=>$this->id(), ':p'=>$ninja->id()]);
+        query('insert into clan_player (_clan_id, _player_id) values (:c, :p)', [':c'=>$this->id, ':p'=>$ninja->id()]);
         query('update players set verification_number = :new_num where player_id = :id', [':new_num'=>rand(1, 999999), ':id'=>$ninja->id()]);
 
         Message::create([
@@ -169,7 +161,7 @@ class Clan {
         } else {
             $inviteMsg = $p_inviter->name().' has invited you into their clan, '.$this->getName().'. '
                 .'To accept, choose their clan '.$this->getName().' on the '
-                .'[href:/clan/view?clan_id='.$this->getID().'|clan joining page].';
+                .'[href:/clan/view?clan_id='.$this->id.'|clan joining page].';
 
             Message::create([
                 'send_from' => $p_inviter->id(),
@@ -201,7 +193,7 @@ class Clan {
             "DELETE FROM clan_player WHERE _player_id = :player AND _clan_id = :clan",
             [
                 ':player' => $playerId,
-                ':clan'   => $this->getID(),
+                ':clan'   => $this->id,
             ]
         );
 
@@ -225,7 +217,7 @@ class Clan {
         $query = 'SELECT _player_id FROM clan_player WHERE _player_id = :pid AND _clan_id = :clan_id';
         $args  = [
             ':pid'     => $playerId,
-            ':clan_id' => $this->id(),
+            ':clan_id' => $this->id,
         ];
 
         return (bool) query_item($query, $args);
@@ -237,7 +229,7 @@ class Clan {
     public function getMemberIds() {
         $playerRows = query_array(
             'SELECT player_id FROM players LEFT JOIN clan_player ON _player_id = player_id WHERE _clan_id = :cid',
-            [':cid' => $this->id()]
+            [':cid' => $this->id]
         );
 
         $ids = array();
@@ -254,7 +246,7 @@ class Clan {
     public function getMemberCount() {
         return query_item(
             'SELECT count(*) FROM clan_player JOIN players ON player_id = _player_id WHERE _clan_id = :clan',
-            [':clan' => $this->id()]
+            [':clan' => $this->id]
         );
     }
     /**
@@ -267,7 +259,7 @@ class Clan {
         $message = "Your leader has disbanded your clan. You are alone again.";
 
         $statement = DatabaseConnection::$pdo->prepare("SELECT _player_id FROM clan_player WHERE _clan_id = :clan");
-        $statement->bindValue(':clan', $this->getID());
+        $statement->bindValue(':clan', $this->id);
         $statement->execute();
 
         while ($data = $statement->fetch()) {
@@ -283,7 +275,7 @@ class Clan {
 
         // Deletion of the clan_player connections should cascade from the deletion of the clan, at least ideally.
         $statement = DatabaseConnection::$pdo->prepare("DELETE FROM clan WHERE clan_id = :clan");
-        $statement->bindValue(':clan', $this->getID());
+        $statement->bindValue(':clan', $this->id);
         $statement->execute();
     }
 
@@ -305,7 +297,7 @@ class Clan {
             'FROM clan JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id JOIN players ON player_id = clan_player._player_id '.
             'JOIN account_players on player_id = account_players._player_id join accounts on account_id = _account_id '.
             'AND active = 1 ORDER BY level, health DESC',
-            [':clan_id' => $this->id()]
+            [':clan_id' => $this->id]
         );
 
         $max = query_item(
@@ -313,7 +305,7 @@ class Clan {
             'FROM clan '.
             'JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id '.
             'JOIN players ON player_id = _player_id AND active = 1',
-            [':clan_id'=>$this->id()]
+            [':clan_id'=>$this->id]
         );
 
         // Modify the members by reference
@@ -495,7 +487,7 @@ class Clan {
      * Write the clan to the database
      */
     public function save() {
-        if (!$this->id()) {
+        if (!$this->id) {
             throw new \RuntimeException('Clan cannot be saved as it does not yet have an id.');
         }
 
@@ -506,7 +498,7 @@ class Clan {
                 ':founder'    => $this->getFounder(),
                 ':avatar_url' => $this->getAvatarUrl(),
                 ':desc'       => $this->getDescription(),
-                ':id'         => $this->id(),
+                ':id'         => $this->id,
             ]
         );
 

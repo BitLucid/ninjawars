@@ -61,7 +61,7 @@ class ClanController extends AbstractController {
 				if ($clan) {
 					if ($this->playerIsLeader($player, $clan)) {
 						array_unshift($parts['pageParts'], 'manage');
-					} else if ($myClan->id() === $clan->id()) {
+					} else if ($myClan->id === $clan->id) {
 						array_unshift($parts['pageParts'], 'non-leader-panel');
 					} else {
 						array_unshift($parts['pageParts'], 'reminder-member');
@@ -308,7 +308,7 @@ class ClanController extends AbstractController {
 			if (Clan::isValidClanName($new_clan_name)) {
 				if (Clan::isUniqueClanName($new_clan_name)) {
 					// *** Rename the clan if it is valid.
-					$new_clan_name = Clan::renameClan($clan->getID(), $new_clan_name);
+					$new_clan_name = Clan::renameClan($clan->id, $new_clan_name);
 					$clan->setName($new_clan_name);
 				} else {
 					$error = 'That clan name is already in use!';
@@ -320,7 +320,7 @@ class ClanController extends AbstractController {
 
 		// Saving incoming changes to clan leader edits.
 		if (Clan::clanAvatarIsValid($new_clan_avatar_url)) {
-			Clan::saveClanAvatarUrl($new_clan_avatar_url, $clan->getID());
+			Clan::saveClanAvatarUrl($new_clan_avatar_url, $clan->id);
 			$clan->setAvatarUrl($new_clan_avatar_url);
 		} else {
 			$error = 'That avatar url is not valid.';
@@ -333,7 +333,7 @@ class ClanController extends AbstractController {
 		}
 
 		if ($new_clan_description) {
-			Clan::saveClanDescription($new_clan_description, $clan->getID());
+			Clan::saveClanDescription($new_clan_description, $clan->id);
 			$clan->setDescription($new_clan_description);
 		}
 

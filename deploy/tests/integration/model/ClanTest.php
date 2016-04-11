@@ -13,12 +13,12 @@ class ClanTest extends PHPUnit_Framework_TestCase {
         $this->char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
         $this->clan = Clan::create(Player::find($this->char_id_2), $this->clan_identity);
-        $this->clan_id   = $this->clan->getId();
+        $this->clan_id   = $this->clan->id;
 	}
 
 	function tearDown() {
-        query('delete from clan where clan_id = :id', [':id'=>$this->clan->id()]);
-        query('delete from clan_player where _clan_id = :id', [':id'=>$this->clan->id()]);
+        query('delete from clan where clan_id = :id', [':id'=>$this->clan->id]);
+        query('delete from clan_player where _clan_id = :id', [':id'=>$this->clan->id]);
         TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
@@ -33,7 +33,7 @@ class ClanTest extends PHPUnit_Framework_TestCase {
     function testFindClanObject() {
         $clan = Clan::find($this->clan_id);
         $this->assertInstanceOf('NinjaWars\core\data\Clan', $clan);
-        $this->assertEquals($this->clan_id, $clan->getId());
+        $this->assertEquals($this->clan_id, $clan->id);
     }
 
     function testClanAddMember(){
@@ -104,7 +104,7 @@ class ClanTest extends PHPUnit_Framework_TestCase {
         $clan->setAvatarUrl($url = 'http://example.com/avatar.png');
         $was_saved = $clan->save();
         $this->assertTrue($was_saved);
-        $saved = Clan::find($clan->id());
+        $saved = Clan::find($clan->id);
         $this->assertEquals($d, $saved->getDescription());
         $this->assertEquals($f, $saved->getFounder());
         $this->assertEquals($url, $saved->getAvatarUrl());

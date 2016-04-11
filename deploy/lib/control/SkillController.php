@@ -145,7 +145,7 @@ class SkillController extends AbstractController {
 	 * Use an item only on self
 	 **/
 	public function selfUse(){
-		return $this->go(true);
+		return $this->useSkill(true);
 	}
 
 	/**
@@ -155,7 +155,7 @@ class SkillController extends AbstractController {
 	 * http://nw.local/skill/self_use/Unstealth/
 	 * http://nw.local/skill/self_use/Heal/
 	 */
-	public function go($self_use=false){
+	public function useSkill($self_use=false){
 		// Template vars.
 		$display_sight_table = $generic_skill_result_message = $generic_state_change = $killed_target =
 			$loot = $added_bounty = $bounty = $suicided = $destealthed = null;
@@ -166,7 +166,7 @@ class SkillController extends AbstractController {
 
 		$path = RequestWrapper::getPathInfo();
 		$slugs = $this->parseSlugs($path);
-		// (fullpath0) /skill1/go2/Fire%20Bolt3/tchalvak4/(beagle5/)
+		// (fullpath0) /skill1/use2/Fire%20Bolt3/tchalvak4/(beagle5/)
 		$act = isset($slugs[3])? $slugs[3] : null;
 		$target = isset($slugs[4])? $slugs[4] : null;
 		$target2 = isset($slugs[5])? $slugs[5] : null;

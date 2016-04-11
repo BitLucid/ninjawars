@@ -1,7 +1,7 @@
 <?php
 use NinjaWars\core\extensions\SessionFactory;
 
-class NWError{
+class NWError {
 	/**
 	 * Send out error information, about as much as possible
 	 */
@@ -42,8 +42,8 @@ class NWError{
 	public static function exceptionHandler($e) {
 		$msg = "Exception message: ".$e."\r\n\r\n";
 		error_log($e);
-		NWError::sendErrorEmail($msg);
-		NWError::showErrorPage();
+		self::sendErrorEmail($msg);
+		self::showErrorPage();
 		exit(1);
 	}
 
@@ -70,10 +70,9 @@ class NWError{
 		$msg = "ERROR: [$errno] $errstr\r\n".
 	        "$errors on line $errline in file $errfile\r\n";
 
-		NWError::sendErrorEmail($msg);
-		NWError::showErrorPage();
+		self::sendErrorEmail($msg);
+		self::showErrorPage();
 
 		exit(1);
 	}
-
 }

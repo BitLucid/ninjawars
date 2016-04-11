@@ -214,7 +214,7 @@ var combat_skills = {$combat_skills|@json_encode};
 	{/if}
       <p class='clan-link centered'>
         <span class='subtitle'>Clan:</span>
-        <a href='/clan/view?clan_id={$clan->id()}'>{$clan->getName()|escape}</a>
+        <a href='/clan/view?clan_id={$clan->id}'>{$clan->getName()|escape}</a>
       </p>
   {if $display_clan_options}
     <div class='clan-leader-options centered'>
