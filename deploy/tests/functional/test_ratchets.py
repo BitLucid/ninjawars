@@ -12,7 +12,6 @@ class TestRatchets:
     control_php = 37
     www_php = 1
     plus_minus = 6
-    www_plus_minus = 1
     ''' Rough file counts in pertinent directories '''
 
     def deploy_dir(self):
@@ -34,10 +33,7 @@ class TestRatchets:
         assert (www_dir and
                 0 < self.count_php_in_dir(www_dir))
         assert www_dir and (
-            TestRatchets.www_php - TestRatchets.www_plus_minus <
-            self.count_php_in_dir(www_dir) and
-            TestRatchets.www_php + TestRatchets.www_plus_minus >
-            self.count_php_in_dir(www_dir)
+            TestRatchets.www_php == self.count_php_in_dir(www_dir)
         )
 
     def test_internal_dir_files(self):
