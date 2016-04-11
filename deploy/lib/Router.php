@@ -254,13 +254,22 @@ class Router {
      * This method generates output
      */
     public static function render($p_viewSpec) {
-        $view = new NWTemplate();
-        $view->displayPage(
-            $p_viewSpec['template'],
-            $p_viewSpec['title'],
-            $p_viewSpec['parts'],
-            $p_viewSpec['options']
-        );
-    }
+        if (isset($p_viewSpec['headers'])) {
+            foreach ($p_viewSpec['headers'] AS $header) {
+                header($header);
+            }
+        }
 
+        if (isset($p_viewSpec['raw'])) {
+            echo $p_viewSpec['raw'];
+        } else {
+            $view = new NWTemplate();
+            $view->displayPage(
+                $p_viewSpec['template'],
+                $p_viewSpec['title'],
+                $p_viewSpec['parts'],
+                $p_viewSpec['options']
+            );
+        }
+    }
 }

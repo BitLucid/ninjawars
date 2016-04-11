@@ -9,14 +9,6 @@ use NinjaWars\core\data\Message;
 use \PDO;
 
 class ApiController extends AbstractController {
-    public function sendHeaders() {
-        // Json P headers
-        header('Content-Type: text/javascript; charset=utf8');
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Max-Age: 3628800');
-        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-    }
-
     /**
      * Determine which function to call to get the json for.
      */
@@ -25,7 +17,7 @@ class ApiController extends AbstractController {
         $jsoncallback = (!preg_match('/[^a-z_0-9]/i', $dirty_jsoncallback) ? $dirty_jsoncallback : null);
 
         if (!$jsoncallback) {
-            return json_encode(false);
+            return $this->renderEmpty();
         }
 
         //  Whitelist of valid callbacks.
@@ -65,7 +57,23 @@ class ApiController extends AbstractController {
             $res = "$jsoncallback(".json_encode($result).")";
         }
 
-        return $res;
+        return $this->render($res);
+    }
+
+    private function render($raw, $extra_headers = []) {
+        return [
+            'headers' => [
+                'Content-Type: text/javascript; charset=utf8',
+                'Access-Control-Allow-Origin: *',
+                'Access-Control-Max-Age: 3628800',
+                'Access-Control-Allow-Methods: GET, POST, PUT, DELETE',
+            ] + $extra_headers,
+            'raw'     => $raw,
+        ];
+    }
+
+    private function renderEmpty() {
+        return $this->render(json_encode(false), ['Content-Type: application/json; charset=utf8']);
     }
 
     /**
