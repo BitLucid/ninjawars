@@ -15,7 +15,7 @@
 {else}
 
 
-<section class='login-page'>
+<section class='login-section'>
   <form id="login-form" action="/login/login_request" method="post">
 	  <input type="hidden" name="ref" value="{$referrer|escape}">
 	    <div class='outer-outer-box'>

@@ -52,7 +52,7 @@ class SignupController extends AbstractController {
                 'classes'           => $this->classes,
                 'signupRequest'     => $signupRequest,
             ],
-            'options'  => ['quickstat' => false],
+            'options'  => ['quickstat' => false, 'body_classes'=>'signup-page'],
         ];
     }
 
@@ -142,7 +142,7 @@ class SignupController extends AbstractController {
                 'submitted'         => true,
                 'error'             => '',
             ],
-            'options'  => ['quickstat' => false],
+            'options'  => ['quickstat' => false, 'body_classes'=>'signup-page'],
         ];
     }
 
@@ -228,7 +228,7 @@ class SignupController extends AbstractController {
                 'class_display'     => '',
                 'signupRequest'     => $p_request,
             ],
-            'options'  => ['quickstat' => false],
+            'options'  => ['quickstat' => false, 'body_classes'=>'signup-page'],
         ];
     }
 

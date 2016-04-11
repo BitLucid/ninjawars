@@ -70,7 +70,7 @@ class LoginController extends AbstractController {
             'template' => 'login.tpl',
             'title'    => $title,
             'parts'    => $parts,
-            'options'  => []
+            'options'  => ['body_classes'=>'login-page']
         ];
 
         return $response;

@@ -1178,6 +1178,10 @@ td.playerTable {
 	font-size:larger;
 }
 
+.login-page #solo-page-login-link, .signup-page #solo-page-signup-link{
+    display:none;
+}
+
 body.solo-page #solo-container {
 	padding: 10px 30px 10px 30px;
 }
@@ -1690,7 +1694,7 @@ a#skip-to-bottom{
 
 /* =============== Login Page ================= */
 
-section.login-page{
+section.login-section{
 	margin:0.3em auto 0.3em;text-align:center;
 }
 .login-page .right-side{
