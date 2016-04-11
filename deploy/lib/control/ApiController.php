@@ -50,7 +50,6 @@ class ApiController extends AbstractController {
                 $result = $this->jsonSendChat(in('msg'));
             } else if ($type == 'new_chats') {
                 $chat_since = in('since', null);
-                $chat_limit = in('chat_limit', 100);
                 $result = $this->jsonNewChats($chat_since);
             } elseif ($type == 'chats') {
                 $chat_limit = in('chat_limit', 20);
