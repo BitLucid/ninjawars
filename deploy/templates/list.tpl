@@ -1,8 +1,3 @@
-<style>
-.list-all-players-search[type=search]{
-	font-family:Verdana, Arial;font-size:xx-small;
-}
-</style>
 <h1>Ninja List</h1>
 
 {if $searched}

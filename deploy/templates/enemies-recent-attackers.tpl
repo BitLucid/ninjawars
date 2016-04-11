@@ -1,5 +1,4 @@
 <div style='clear:both'>
-<h3>You were recently in combat with</h3>
 <ul id='recent-attackers'>
 {foreach from=$recent_attackers item=l_attacker}
 	{if $l_attacker.health < 1}
