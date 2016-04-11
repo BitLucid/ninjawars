@@ -31,19 +31,37 @@ class ApiControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testIllegalCallbackFails() {
-        $result = $this->controller->nw_json('player', 'illegal!');
-        $this->assertEquals(json_encode(false), $result);
+        $request = new Request([
+            'type'         => 'player',
+            'jsoncallback' => 'illegal!',
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
+        $this->assertEquals(json_encode(false), $result['raw']);
     }
 
     public function testIllegalType() {
-        $result = $this->controller->nw_json('illegal', self::CALLBACK);
-        $this->assertEquals(null, $result);
+        $request = new Request([
+            'type'         => 'illegal',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
+        $this->assertEquals(null, $result['raw']);
     }
 
     public function testSearch() {
-        $request = new Request(['term' => $this->char->uname, 'limit' => 5], []);
+        $request = new Request([
+            'type'         => 'char_search',
+            'jsoncallback' => self::CALLBACK,
+            'term'         => $this->char->uname,
+            'limit'        => 5,
+        ], []);
+
         RequestWrapper::inject($request);
-        $result = $this->controller->nw_json('char_search', self::CALLBACK);
+        $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
 
         $this->assertObjectHasAttribute('char_matches', $payload);
@@ -53,21 +71,39 @@ class ApiControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testChats() {
-        $result = $this->controller->nw_json('chats', self::CALLBACK);
+        $request = new Request([
+            'type'         => 'chats',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
 
         $this->assertObjectHasAttribute('chats', $payload);
     }
 
     public function testLatestChat() {
-        $result = $this->controller->nw_json('latest_chat_id', self::CALLBACK);
+        $request = new Request([
+            'type'         => 'latest_chat_id',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
 
         $this->assertObjectHasAttribute('latest_chat_id', $payload);
     }
 
     public function testIndex() {
-        $result = $this->controller->nw_json('index', self::CALLBACK);
+        $request = new Request([
+            'type'         => 'index',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
 
         $this->assertObjectHasAttribute('player', $payload);
@@ -80,21 +116,39 @@ class ApiControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testPlayer() {
-        $result = $this->controller->nw_json('player', self::CALLBACK);
+        $request = new Request([
+            'type'         => 'player',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
 
         $this->assertEquals($payload->player->player_id, $this->char->id());
     }
 
     public function testLatestEvent() {
-        $result = $this->controller->nw_json('latest_event', self::CALLBACK);
+        $request = new Request([
+            'type'         => 'latest_event',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
 
         $this->assertObjectHasAttribute('event', $payload);
     }
 
     public function testLatestMessage() {
-        $result = $this->controller->nw_json('latest_message', self::CALLBACK);
+        $request = new Request([
+            'type'         => 'latest_message',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
 
         $this->assertObjectHasAttribute('message', $payload);
@@ -102,7 +156,7 @@ class ApiControllerTest extends PHPUnit_Framework_TestCase {
 
     private function extractPayload($p_response) {
         $matches = [];
-        preg_match($this->PAYLOAD_RE, $p_response, $matches);
+        preg_match($this->PAYLOAD_RE, $p_response['raw'], $matches);
         return json_decode($matches[1]);
     }
 }
