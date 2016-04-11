@@ -21,6 +21,7 @@ class MockPlayer extends Player implements Character{
     public $turns = 10;
     public $ki = 10;
     public $name = 'mock_name';
+    public $isAdmin = false;
 
     public function __get($name){
         return $this->$name;
@@ -31,6 +32,15 @@ class MockPlayer extends Player implements Character{
      */
     public function save(){
         return $this;
+    }
+
+
+    public function isAdmin(){
+        return $this->isAdmin;
+    }
+
+    public function setAdmin($onoff){
+        $this->isAdmin = $onoff;
     }
 
     public function set_gold($amount){

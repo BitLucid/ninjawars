@@ -1,14 +1,13 @@
 <?php
 use NinjaWars\core\data\SkillDAO;
 use NinjaWars\core\data\Skill;
+use NinjaWars\tests\MockPlayer;
 
 class SkillTest extends PHPUnit_Framework_TestCase {
 	public function setUp(){
 	}
 
 	public function tearDown(){
-		// Delete test users created in body of test functions
-		TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
     public function testAllSkillsCanBePulled(){
@@ -23,8 +22,10 @@ class SkillTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testAdminPlayerGetsFireBoltSkill(){
+        $pc = new MockPlayer();
+        $pc->setAdmin(true);
         $skills = new Skill();
-        $passfail = $skills->hasSkill('Fire Bolt', 'tchalvak');
+        $passfail = $skills->hasSkill('Fire Bolt', $pc);
         $this->assertTrue($passfail);
     }
 }
