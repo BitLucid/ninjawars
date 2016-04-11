@@ -10,7 +10,7 @@ class TestRatchets:
      and checks the overall SLOC of the project
     '''
     control_php = 37
-    www_php = 2
+    www_php = 1
     plus_minus = 6
     www_plus_minus = 1
     ''' Rough file counts in pertinent directories '''
