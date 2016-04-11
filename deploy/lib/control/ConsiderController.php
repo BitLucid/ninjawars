@@ -45,7 +45,7 @@ class ConsiderController extends AbstractController {
      * Add an enemy to pc's list if valid.
      */
     public function addEnemy() {
-        $add_enemy = in('add_enemy', null, 'toInt');
+        $add_enemy = in('add_enemy', null, 'toNonNegativeInt');
         if (is_numeric($add_enemy) && $add_enemy != 0) {
             $this->addEnemyToPlayer(SessionFactory::getSession()->get('player_id'), $add_enemy);
         }
@@ -57,7 +57,7 @@ class ConsiderController extends AbstractController {
      * Take an enemy off a pc's list.
      */
     public function deleteEnemy() {
-        $remove_enemy = in('remove_enemy', null, 'toInt');
+        $remove_enemy = in('remove_enemy', null, 'toNonNegativeInt');
 
         if (is_numeric($remove_enemy) && $remove_enemy != 0) {
             $this->removeEnemyFromPlayer(SessionFactory::getSession()->get('player_id'), $remove_enemy);

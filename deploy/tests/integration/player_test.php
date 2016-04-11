@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\Player;
+use NinjaWars\core\Filter;
 
 class CharacterTest extends PHPUnit_Framework_TestCase {
     private $previous_server_ip = '';
@@ -23,12 +24,12 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testCreatePlayerObject() {
         $char = Player::find($this->char_id);
-        $this->assertTrue((bool)positive_int($char->id()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->id()));
     }
 
     public function testPlayerCanBeFoundStatically() {
         $char = Player::find($this->char_id);
-        $this->assertTrue((bool)positive_int($char->id()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->id()));
         $this->assertTrue((bool)$char->name());
     }
 
@@ -52,13 +53,13 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testCreatePlayerObjectHasUsefulInfo() {
         $char = Player::find($this->char_id);
-        $this->assertTrue((bool)positive_int($char->health()));
-        $this->assertTrue((bool)positive_int($char->speed()));
-        $this->assertTrue((bool)positive_int($char->stamina()));
-        $this->assertTrue((bool)positive_int($char->strength()));
-        $this->assertTrue((bool)positive_int($char->level));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->health()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->speed()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->stamina()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->strength()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->level));
         $this->assertNotEmpty($char->name());
-        $this->assertTrue((bool)positive_int($char->damage()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->damage()));
     }
 
     public function testPCHasVariousAttributesAndCanSetSome() {

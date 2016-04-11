@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
+use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 
@@ -41,7 +42,7 @@ class ChatController extends AbstractController {
      */
     public function index() {
         $view_all   = in('view_all');
-        $chatlength = in('chatlength', self::DEFAULT_LIMIT, 'toInt');
+        $chatlength = in('chatlength', self::DEFAULT_LIMIT, 'toNonNegativeInt');
         $chatlength = min(self::MAX_CHATS, max(self::MIN_CHATS, $chatlength));
         $chats      = $this->getChats($view_all ? null : $chatlength);
 
@@ -72,7 +73,7 @@ class ChatController extends AbstractController {
      * Get all the chat messages info.
      */
     private function getChats($chatlength=null) {
-        $chatlength = positive_int($chatlength); // Prevent negatives.
+        $chatlength = Filter::toNonNegativeInt($chatlength); // Prevent negatives.
         $limit = ($chatlength ? 'LIMIT :limit' : '');
 
         $bindings = [];

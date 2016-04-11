@@ -5,6 +5,7 @@ use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\data\Inventory;
+use NinjaWars\core\Filter;
 use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
@@ -548,8 +549,8 @@ class InventoryController extends AbstractController {
      * @return Player
      */
     private function findPlayer($token) {
-        if (positive_int($token)) {
-            $target = Player::find(positive_int($token));
+        if (Filter::toNonNegativeInt($token)) {
+            $target = Player::find(Filter::toNonNegativeInt($token));
         } else {
             $target = Player::findByName($token);
         }

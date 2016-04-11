@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\Filter;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
 use Symfony\Component\HttpFoundation\Request;
@@ -161,6 +162,10 @@ class SignupController extends AbstractController {
             throw new \RuntimeException('Phase 1 Incomplete: You did not correctly fill out all the necessary information.', 0);
         }
 
+        if($p_request->enteredPass !== Filter::toSimple($p_request->enteredPass)){
+            throw new \RuntimeException("Sorry, there seem to be some very special non-standard characters in your password that we don't allow.");
+        }
+
         if ($error = $this->validate_username($p_request->enteredName)) {
             throw new \RuntimeException($error, 0);
         }
@@ -188,12 +193,12 @@ class SignupController extends AbstractController {
      */
     private function buildSignupRequest($p_request) {
         $signupRequest                    = new \stdClass();
-        $signupRequest->enteredName       = trim(in('send_name', '', 'toText'));
-        $signupRequest->enteredEmail      = trim(in('send_email', '', 'toText'));
+        $signupRequest->enteredName       = trim(in('send_name', '', 'toSimple'));
+        $signupRequest->enteredEmail      = trim(in('send_email', '', 'toSimple'));
         $signupRequest->enteredClass      = strtolower(trim(in('send_class', '')));
         $signupRequest->enteredReferral   = trim(in('referred_by', in('referrer')));
-        $signupRequest->enteredPass       = in('key', null, 'toText');
-        $signupRequest->enteredCPass      = in('cpass', null, 'toText');
+        $signupRequest->enteredPass       = in('key', null, 'toSimple');
+        $signupRequest->enteredCPass      = in('cpass', null, 'toSimple');
         $signupRequest->clientIP          = $p_request->getClientIp();
 
         if (!$signupRequest->enteredClass) {

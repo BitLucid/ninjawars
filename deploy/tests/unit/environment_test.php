@@ -3,17 +3,24 @@
 
 use Symfony\Component\HttpFoundation\Request; // Just for request created below.
 use NinjaWars\core\environment\RequestWrapper;
+use NinjaWars\core\Filter;
 
 class TestInput extends PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		$get = [
 			'id'         => 7,
-			'ninja_name' => 5
+			'ninja_name' => 5,
+            'some_negative_int'=> -444,
+            'some_int'         => 66,
+            'garbage_field'    => 'Robert\'); drop table students; --'
 		];
 
 		$post = [
-			'hidden_post'     => 1,
-			'some_post_field' => 'Bob'
+			'hidden_post'      => 1,
+			'post_post_field'  => 'Bob',
+            'post_negative_int'=> -234,
+            'post_some_int'         => 34,
+            'post_garbage_field'    => 'Robert\'); drop table students; --'
 		];
 
         $request = new Request($get, $post);
@@ -33,58 +40,58 @@ class TestInput extends PHPUnit_Framework_TestCase {
     }
 
 	public function testInputWithFilter() {
-		$this->assertEquals(in('some_post_field', null, "base64_encode"), base64_encode('Bob'));
+        $this->assertEquals(0, in('garbage_field', 0, 'toNonNegativeInt'));
+        $this->assertEquals(66, in('some_int', null, "toInt"));
+        $this->assertEquals(-444, in('some_negative_int', null, "toInt"));
+        $this->assertEquals(66, in('some_int', null, "toNonNegativeInt"));
+        $this->assertEquals(0, in('some_negative_int', null, "toNonNegativeInt"));
+        $this->assertEquals(0, in('some_post_field', null, "toInt"));
 	}
 
     public function testPostWithinMockedEnvironment() {
-        $posted = post('some_post_field');
+        $posted = post('post_post_field', 'Bob');
         $this->assertEquals('Bob', $posted);
         $default = post('blah_doesnt_exist', 7777);
         $this->assertEquals(7777, $default);
     }
 
 	public function testNonNegativeInt() {
-		$this->assertEquals(4, non_negative_int(4));
-		$this->assertEquals(0, non_negative_int(-4));
-		$this->assertEquals(0, non_negative_int(4.1));
-		$this->assertEquals(0, non_negative_int(4.9));
-		$this->assertEquals(0, non_negative_int(0));
-		$this->assertEquals(0, non_negative_int('somestring'));
-		$this->assertEquals(0, non_negative_int([]));
-	}
-
-	public function testPositiveInt() {
-		$this->assertEquals(4, positive_int(4));
-		$this->assertEquals(0, positive_int(-4));
-		$this->assertEquals(0, positive_int(4.1));
-		$this->assertEquals(0, positive_int(4.9));
-		$this->assertEquals(0, positive_int(0));
-		$this->assertEquals(0, positive_int('somestring'));
-		$this->assertEquals(0, positive_int([]));
+		$this->assertEquals(4, Filter::toNonNegativeInt(4));
+		$this->assertEquals(0, Filter::toNonNegativeInt(-4));
+		$this->assertEquals(0, Filter::toNonNegativeInt(4.1));
+		$this->assertEquals(0, Filter::toNonNegativeInt(4.9));
+		$this->assertEquals(0, Filter::toNonNegativeInt(0));
+		$this->assertEquals(0, Filter::toNonNegativeInt('somestring'));
+		$this->assertEquals(0, Filter::toNonNegativeInt([]));
 	}
 
 	/**
-	 * @todo review expected behavior of toInt on strings
+	 * @todo review expected behavior of Filter::toInt on strings
 	 */
 	public function testSanitizeToInt() {
-		$this->assertEquals(4, toInt(4));
-		$this->assertEquals(-4, toInt(-4));
-		$this->assertNull(toInt(4.1));
-		$this->assertNull(toInt(4.9));
-		$this->assertEquals(0, toInt('somestring'));
-		$this->assertNull(toInt([]));
-		$this->assertEquals(0, toInt(0));
+		$this->assertEquals(4, Filter::toInt(4));
+		$this->assertEquals(-4, Filter::toInt(-4));
+		$this->assertNull(Filter::toInt(4.1));
+		$this->assertNull(Filter::toInt(4.9));
+		$this->assertEquals(0, Filter::toInt('somestring'));
+		$this->assertNull(Filter::toInt([]));
+		$this->assertEquals(0, Filter::toInt(0));
 	}
 
 	public function testToInt() {
-		$this->assertEquals(4, toInt(4));
-		$this->assertEquals(-4, toInt(-4));
-		$this->assertNull(toInt(4.1));
-		$this->assertNull(toInt(4.9));
-		$this->assertEquals(0, toInt('somestring'));
-		$this->assertNull(toInt([]));
-		$this->assertEquals(0, toInt(0));
+		$this->assertEquals(4, Filter::toInt(4));
+		$this->assertEquals(-4, Filter::toInt(-4));
+		$this->assertNull(Filter::toInt(4.1));
+		$this->assertNull(Filter::toInt(4.9));
+		$this->assertEquals(0, Filter::toInt('somestring'));
+		$this->assertNull(Filter::toInt([]));
+		$this->assertEquals(0, Filter::toInt(0));
 	}
+
+    public function testFilterToSimple(){
+        $this->assertEquals('boba', Filter::toSimple("bob\0aä\x80"));
+        $this->assertEquals("!@#^&()_+--", Filter::toSimple("!@#^&()_+'''\"\"''--"));
+    }
 
 	public function testWhicheverPositive() {
 		$this->assertEquals('grace', whichever('', null, 'grace'));

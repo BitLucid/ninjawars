@@ -2,6 +2,7 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\Filter;
 use \PDO;
 
 /**
@@ -97,7 +98,7 @@ class Account {
         $account_info = query_row(
             "SELECT account_id FROM accounts WHERE (oauth_id = :id AND oauth_provider = :provider) ORDER BY operational, type, created_date ASC LIMIT 1",
             [
-                ':id'       => positive_int($oauth_id),
+                ':id'       => Filter::toNonNegativeInt($oauth_id),
                 ':provider' => $provider,
             ]
         );
@@ -351,7 +352,7 @@ class Account {
      * @param int $type
      */
     public function setType($type) {
-        $cast_type = positive_int($type);
+        $cast_type = Filter::toNonNegativeInt($type);
 
         if ($cast_type != $type) {
             throw new \Exception('Account: The account type set was inappropriate.');

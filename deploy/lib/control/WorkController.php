@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 
@@ -22,7 +23,7 @@ class WorkController extends AbstractController {
      */
     public function requestWork() {
         $earned = 0;
-        $worked = positive_int(in('worked')); // No negative work.
+        $worked = Filter::toNonNegativeInt(in('worked')); // No negative work.
         $char   = Player::find(SessionFactory::getSession()->get('player_id'));
 
         if (!($char instanceof Player)){

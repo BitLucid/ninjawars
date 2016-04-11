@@ -5,6 +5,7 @@ use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 
@@ -57,9 +58,9 @@ class MessagesController extends AbstractController {
      */
     public function viewPersonal() {
         $type               = 0;
-        $page               = in('page', 1, 'non_negative_int');
+        $page               = in('page', 1, 'toNonNegativeInt');
         $limit              = 25;
-        $offset             = non_negative_int(($page - 1) * $limit);
+        $offset             = Filter::toNonNegativeInt(($page - 1) * $limit);
         $ninja              = Player::find(SessionFactory::getSession()->get('player_id'));
         $message_count      = Message::countByReceiver($ninja, $type); // To count all the messages
 
@@ -86,9 +87,9 @@ class MessagesController extends AbstractController {
      */
     public function viewClan() {
         $ninja         = Player::find(SessionFactory::getSession()->get('player_id'));
-        $page          = in('page', 1, 'non_negative_int');
+        $page          = in('page', 1, 'toNonNegativeInt');
         $limit         = 25;
-        $offset        = non_negative_int(($page - 1) * $limit);
+        $offset        = Filter::toNonNegativeInt(($page - 1) * $limit);
         $type          = 1; // Clan chat or normal messages.
         $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
 

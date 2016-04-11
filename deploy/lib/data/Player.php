@@ -3,6 +3,7 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Clan;
+use NinjaWars\core\Filter;
 use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\PlayerVO;
 use NinjaWars\core\data\Character;

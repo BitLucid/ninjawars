@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
+use NinjaWars\core\Filter;
 use \Nmail;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\NWTemplate;
@@ -132,7 +133,7 @@ class AssistanceController extends AbstractController {
         $admin_override_request    = in('admin_override');
         $acceptable_admin_override = ($admin_override_pass === $admin_override_request);
         $confirm                   = in('confirm');
-        $aid                       = positive_int(in('aid'));
+        $aid                       = Filter::toNonNegativeInt(in('aid'));
 
         $data = query_row('
             SELECT player_id, uname,
