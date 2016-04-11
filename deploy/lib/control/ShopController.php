@@ -17,6 +17,7 @@ class ShopController extends AbstractController {
 	const PRIV  = false; // *** do not need to be logged in ***
 
     const MARKUP = 1.5;
+    const DEFAULT_QUANTITY = 1;
 
 	protected $itemCosts   = [];
 
@@ -67,7 +68,7 @@ class ShopController extends AbstractController {
 		$no_funny_business = false;
         $no_such_item      = false;
 		$item              = Item::findByIdentity($in_item);
-		$quantity 		   = whichever(Filter::toNonNegativeInt($in_quantity), 1);
+		$quantity 		   = max(Filter::toNonNegativeInt($in_quantity), self::DEFAULT_QUANTITY);
 		$item_text 	       = null;
         $valid             = false;
 

@@ -93,11 +93,4 @@ class TestInput extends PHPUnit_Framework_TestCase {
         $this->assertEquals("!@#^&()_+--", Filter::toSimple("!@#^&()_+'''\"\"''--"));
     }
 
-	public function testWhicheverPositive() {
-		$this->assertEquals('grace', whichever('', null, 'grace'));
-	}
-
-	public function testWhicheverNegative() {
-		$this->assertNull(whichever('', null, false));
-	}
 }
