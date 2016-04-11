@@ -21,21 +21,6 @@ function first_value() {
 }
 
 /**
- * Much more easy-going, just:
- * Return first true-like argument.
- */
-function whichever() {
-	$arg_list = func_get_args();
-	foreach ($arg_list as $l_arg) {
-		if ($l_arg != false) {
-			return $l_arg;
-		}
-	}
-
-	return null;
-}
-
-/**
  * Update the information of a viewing observer, or player.
  */
 function update_activity_info() {

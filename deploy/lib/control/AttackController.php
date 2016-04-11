@@ -16,7 +16,7 @@ class AttackController extends AbstractController {
     const BASE_WRATH_REGAIN = 2;
 
     public function index() {
-        $target  = whichever(in('target'), in('attackee'));
+        $target  = in('target');
         $duel    = (in('duel')    ? true : NULL);
         $blaze   = (in('blaze')   ? true : NULL);
         $deflect = (in('deflect') ? true : NULL);

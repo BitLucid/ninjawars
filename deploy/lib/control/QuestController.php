@@ -117,11 +117,10 @@ class QuestController extends AbstractController {
         // Hack to get the quest/view/{id}
         $url_part = $_SERVER['REQUEST_URI'];
         if(preg_match('#\/(\w+)(\/)?$#',$url_part,$matches)){
-            $in_quest_id=isset($matches[1])? $matches[1] : null;
+            $quest_id=isset($matches[1])? $matches[1] : $qid;
         } else {
-            $in_quest_id = null;
+            $quest_id = $qid;
         }
-        $quest_id = whichever($in_quest_id, $qid);
         $quests = null;
         $quest = null;
 
