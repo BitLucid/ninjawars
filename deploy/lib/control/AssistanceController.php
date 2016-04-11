@@ -82,7 +82,7 @@ class AssistanceController extends AbstractController {
         $confirmation_request = in('confirmation_request');
 
         $error = null;
-        $sent  = null;
+        $sent  = false;
         $attemptedToSendEmail = false;
         $data = null;
         $username = null;
