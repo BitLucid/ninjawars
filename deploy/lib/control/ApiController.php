@@ -9,10 +9,16 @@ use NinjaWars\core\data\Message;
 use \PDO;
 
 class ApiController extends AbstractController {
+    const ALIVE = false;
+    const PRIV  = false;
+
     /**
      * Determine which function to call to get the json for.
      */
-    public function nw_json($type, $dirty_jsoncallback) {
+    public function nw_json() {
+        $type = in('type');
+        $dirty_jsoncallback = first_value(in('jsoncallback'), in('callback'));
+
         // Reject if non alphanumeric and _ chars
         $jsoncallback = (!preg_match('/[^a-z_0-9]/i', $dirty_jsoncallback) ? $dirty_jsoncallback : null);
 
