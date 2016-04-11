@@ -72,7 +72,7 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 
 	// Get the chars/ids matching a term and then have the callback run.
 	NW.charMatch = function(term, limit, callback) {
-		$.getJSON('api.php?type=char_search&term='+term+'&limit='+limit+'&jsoncallback=?', callback);
+		$.getJSON('/api?type=char_search&term='+term+'&limit='+limit+'&jsoncallback=?', callback);
 	};
 
 	// Update the barstats visuals with incoming data.
@@ -282,7 +282,7 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 	// The checkAPI probably shouldn't delay display, display should happen whenever the api returns?
 	// I guess the original objective was to decouple display calls and api data requests.
 
-	// This pulls the data from api.php and stores the data, and then returns true if any of the data was different.
+	// This pulls the data from /api and stores the data, and then returns true if any of the data was different.
 	NW.checkAPI_callback = function(data) {
 		var updated = false;
 
@@ -321,7 +321,7 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 	// Pull in the new info, update display only on changes.
 	NW.checkAPI = function(p_additionalCallback) {
 		// NOTE THAT THIS CALLBACK IS DELAYED ASYNC
-		$.getJSON('api.php?type=index&jsoncallback=?', this.make_checkAPI_callback(p_additionalCallback));
+		$.getJSON('/api?type=index&jsoncallback=?', this.make_checkAPI_callback(p_additionalCallback));
 	};
 
 	// Chained check of the api for new index info.

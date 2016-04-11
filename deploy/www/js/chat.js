@@ -73,7 +73,7 @@ Chat.getExistingChatMessages = function() {
 	var since = '1424019122';
 
 	$.getJSON(
-		'api.php?type=new_chats&since='+encodeURIComponent(since)+'&jsoncallback=?',
+		'/api?type=new_chats&since='+encodeURIComponent(since)+'&jsoncallback=?',
 		function(data) {
 			console.log('Existing chats data found:');
 			console.log(data);
@@ -142,12 +142,12 @@ Chat.renderChatMessage = function(p_data) {
 };
 
 // Send the contents of the chat form input box.
-// Sample url: http://nw.local/api.php?type=send_chat&msg=test&jsoncallback=alert
+// Sample url: http://nw.local/api?type=send_chat&msg=test&jsoncallback=alert
 Chat.sendChatContents = function(p_form) {
 	if (p_form.message && p_form.message.value.length > 0) {
 		message = p_form.message.value;
 		// Send a new chat.  // ASYNC
-		$.getJSON('api.php?type=send_chat&msg='+encodeURIComponent(message)+'&jsoncallback=?',
+		$.getJSON('/api?type=send_chat&msg='+encodeURIComponent(message)+'&jsoncallback=?',
 				function(echoed) {
 					if (!echoed) {
 						Chat.rejected();

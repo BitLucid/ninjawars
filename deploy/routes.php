@@ -6,6 +6,12 @@ namespace NinjaWars\core;
  * provided, otherwise a 404 will occur.
  */
 Router::$routes = [
+    'api' => [
+        'type'    => 'controller',
+        'actions' => [
+            'default' => 'nw_json',
+        ],
+    ],
     'signup' => [
         'type'    => 'controller',
     ],
