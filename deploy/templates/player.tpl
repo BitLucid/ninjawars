@@ -1,6 +1,6 @@
 <div class='player-info'>
 
-    <h1 class='player-name'>{$target_player_obj->name()|escape}</h1>
+    <h2 class='player-name'>{$target_player_obj->name()|escape}</h2>
 
     <nav class='player-ranking-linkback'>
       <a href='/list?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none'>
