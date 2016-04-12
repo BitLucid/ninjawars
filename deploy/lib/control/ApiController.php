@@ -6,6 +6,7 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Message;
+use Symfony\Component\HttpFoundation\Response;
 use \PDO;
 
 class ApiController extends AbstractController {
@@ -14,6 +15,8 @@ class ApiController extends AbstractController {
 
     /**
      * Determine which function to call to get the json for.
+     *
+     * @return Response
      */
     public function nw_json() {
         $type = in('type');
@@ -22,8 +25,16 @@ class ApiController extends AbstractController {
         // Reject if non alphanumeric and _ chars
         $jsoncallback = (!preg_match('/[^a-z_0-9]/i', $dirty_jsoncallback) ? $dirty_jsoncallback : null);
 
+        $headers = [
+            'Access-Control-Allow-Origin'  => '*',
+            'Access-Control-Max-Age'       => '3628800',
+            'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE',
+        ];
+
         if (!$jsoncallback) {
-            return $this->renderEmpty();
+            $headers['Content-Type'] = 'application/json; charset=utf8';
+
+            return new Response(json_encode(false), 200, $headers);
         }
 
         //  Whitelist of valid callbacks.
@@ -63,23 +74,9 @@ class ApiController extends AbstractController {
             $res = "$jsoncallback(".json_encode($result).")";
         }
 
-        return $this->render($res);
-    }
+        $headers['Content-Type'] = 'text/javascript; charset=utf8';
 
-    private function render($raw, $extra_headers = []) {
-        return [
-            'headers' => array_merge([
-                'Content-Type'                 => 'text/javascript; charset=utf8',
-                'Access-Control-Allow-Origin'  => '*',
-                'Access-Control-Max-Age'       => '3628800',
-                'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE',
-            ], $extra_headers),
-            'raw'     => $raw,
-        ];
-    }
-
-    private function renderEmpty() {
-        return $this->render(json_encode(false), ['Content-Type' => 'application/json; charset=utf8']);
+        return new Response($res, 200, $headers);
     }
 
     /**

@@ -255,19 +255,12 @@ class Router {
      * This method generates output
      */
     public static function render($p_viewSpec) {
-        $headers = (isset($p_viewSpec['headers']) ? $p_viewSpec['headers'] : []);
-
-        if (isset($p_viewSpec['raw'])) {
-            $response = new Response($p_viewSpec['raw'], 200, $headers);
-        } else {
-            $response = new StreamedViewResponse(
-                $p_viewSpec['title'],
-                $p_viewSpec['template'],
-                $p_viewSpec['parts'],
-                $p_viewSpec['options'],
-                $headers
-            );
-        }
+        $response = new StreamedViewResponse(
+            $p_viewSpec['title'],
+            $p_viewSpec['template'],
+            $p_viewSpec['parts'],
+            $p_viewSpec['options']
+        );
 
         $response->send();
     }
