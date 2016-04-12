@@ -725,6 +725,41 @@ a:link {} a:visited {} a:active {}
 	float:right;
 }
 
+.player-info label{
+    color:cornflowerblue;
+}
+section.player-communications{
+    margin-bottom:1.5em;
+}
+article#player-titles{
+  font-size:larger;
+}
+#health-bar-container{
+  width:10em;display:inline-block;
+}
+#attacking-choices label{
+  margin-right:.5em;
+}
+#attacking-choices .btn-vital{
+  text-transform:none;
+}
+#attacking-choices #attack-text{
+  font-size:1.5em;font-weight:bold;vertical-align:text-bottom;
+}
+#attacks{
+   width:95%;margin:0 auto;font-size:larger;clear:both;
+}
+#skills-use-list{
+  margin-left:0;
+  padding-left:0;
+}
+#skills-use-list li{
+  display:inline-block;margin-right:2em;
+}
+.player-info blockquote{
+  max-height:3.5em;overflow:auto;
+}
+
 .stats-avatar{
 	width:100%;
 	position:relative;
