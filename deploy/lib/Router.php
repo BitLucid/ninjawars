@@ -2,9 +2,10 @@
 namespace NinjaWars\core;
 
 use NinjaWars\core\RouteNotFoundException;
-use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
+use Symfony\Component\HttpFoundation\Response;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * Router/front-controller for NinjaWars
@@ -254,22 +255,13 @@ class Router {
      * This method generates output
      */
     public static function render($p_viewSpec) {
-        if (isset($p_viewSpec['headers'])) {
-            foreach ($p_viewSpec['headers'] AS $header) {
-                header($header);
-            }
-        }
+        $response = new StreamedViewResponse(
+            $p_viewSpec['title'],
+            $p_viewSpec['template'],
+            $p_viewSpec['parts'],
+            $p_viewSpec['options']
+        );
 
-        if (isset($p_viewSpec['raw'])) {
-            echo $p_viewSpec['raw'];
-        } else {
-            $view = new NWTemplate();
-            $view->displayPage(
-                $p_viewSpec['template'],
-                $p_viewSpec['title'],
-                $p_viewSpec['parts'],
-                $p_viewSpec['options']
-            );
-        }
+        $response->send();
     }
 }

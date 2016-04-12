@@ -57,7 +57,11 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new AccountController();
         $response = $controller->changeEmail();
-        $this->assertNotEmpty($response['parts']['error']);
+
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
     }
 
     public function testChangePasswordWithEmptyPassword() {
@@ -71,7 +75,11 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new AccountController();
         $response = $controller->changePassword();
-        $this->assertNotEmpty($response['parts']['error']);
+
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
     }
 
     public function testDeleteWithEmptyPassword() {
@@ -85,7 +93,11 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
         $failure_count = $session->get('delete_attempts');
         $controller = new AccountController();
         $response = $controller->deleteAccount();
-        $this->assertNotEmpty($response['parts']['error']);
+
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
         $this->assertGreaterThan($failure_count, $session->get('delete_attempts'));
     }
 }

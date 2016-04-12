@@ -6,6 +6,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -25,7 +26,7 @@ class DojoController extends AbstractController {
     /**
      * Default dojo action
      *
-     * @return ViewSpec
+     * @return Response
      */
     public function index() {
         if (SessionFactory::getSession()->get('authenticated', false)) {
@@ -39,7 +40,7 @@ class DojoController extends AbstractController {
      * Action to request the Dim Mak form AND execute the purchase
      *
      * @todo split form request (GET) and purchase (POST) into separate funcs
-     * @return ViewSpec
+     * @return Response
      */
     public function buyDimMak() {
         if (SessionFactory::getSession()->get('authenticated', false)) {
@@ -77,7 +78,7 @@ class DojoController extends AbstractController {
      * Action to request class change form AND execute class change
      *
      * @todo split form request and execute into separate funcs
-     * @return ViewSpec
+     * @return Response
      */
     public function changeClass() {
         if (SessionFactory::getSession()->get('authenticated', false)) {
@@ -123,10 +124,10 @@ class DojoController extends AbstractController {
      *
      * @param Player $p_player
      * @param int $p_requiredTurns
-     * @return string|null
+     * @return string
      */
     private function classChangeReqs($p_player, $p_requiredTurns) {
-        $error = null;
+        $error = '';
 
         if ($p_player->turns < $p_requiredTurns) {
             // Check the turns, return the error if it's too below.
@@ -156,10 +157,10 @@ class DojoController extends AbstractController {
      *
      * @param Player $p_player
      * @param int $p_requiredTurns
-     * @return string|null
+     * @return string
      */
     private function dimMakReqs(Player $p_player, $p_requiredTurns) {
-        $error = null;
+        $error = '';
 
         if ($p_player->turns < $p_requiredTurns) {
             $error = "You don't have enough turns to get a Dim Mak.";
@@ -172,7 +173,7 @@ class DojoController extends AbstractController {
      * Multiple actions currently check logged in status and deny access
      *
      * @todo remove this by abstracting login checks throughout this controller
-     * @return ViewSpec
+     * @return Response
      */
     private function accessDenied() {
         return $this->render();
@@ -184,7 +185,7 @@ class DojoController extends AbstractController {
      * @param Array $p_parts Array that gets bound to view
      * @param Player $p_player The player requesting the action
      * @param boolean $p_renderMonks Flag to render links to actions
-     * @return ViewSpec
+     * @return Response
      */
     private function render($p_parts = [], $p_player = null, $p_renderMonks = true) {
         $p_parts['max_level']         = MAX_PLAYER_LEVEL; // For non-logged in loop through stats.
@@ -200,11 +201,11 @@ class DojoController extends AbstractController {
             array_unshift($p_parts['pageParts'], 'access-denied');
         } else {
             if ($p_renderMonks) {
-                if (!$this->dimMakReqs($p_player, self::DIM_MAK_COST)) {
+                if (empty($this->dimMakReqs($p_player, self::DIM_MAK_COST))) {
                     $p_parts['pageParts'][] = 'reminder-dim-mak';
                 }
 
-                if (!$this->classChangeReqs($p_player, self::CLASS_CHANGE_COST)) {
+                if (empty($this->classChangeReqs($p_player, self::CLASS_CHANGE_COST))) {
                     $p_parts['pageParts'][] = 'reminder-class-change';
                 }
             }
@@ -224,11 +225,6 @@ class DojoController extends AbstractController {
             $p_parts['error'] = null;
         }
 
-        return [
-            'template' => 'dojo.tpl',
-            'title'    => 'Dojo',
-            'parts'    => $p_parts,
-            'options'  => ['quickstat'=>'player'],
-        ];
+        return new StreamedViewResponse('Dojo', 'dojo.tpl', $p_parts, ['quickstat'=>'player']);
     }
 }

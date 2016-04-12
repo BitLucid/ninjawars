@@ -6,6 +6,7 @@ use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -17,6 +18,8 @@ class AccountController extends AbstractController {
 
     /**
      * Show the change email form
+     *
+     * @return Response
      */
     public function showChangeEmailForm() {
         $command = 'show_change_email_form';
@@ -30,6 +33,8 @@ class AccountController extends AbstractController {
 
     /**
      * Change account email and validate authenticity
+     *
+     * @return Response
      */
     public function changeEmail() {
         // confirm_delete
@@ -80,6 +85,8 @@ class AccountController extends AbstractController {
 
     /**
      * Show Change Password form
+     *
+     * @return Response
      */
     public function showChangePasswordForm() {
         // explicitly define command value ?
@@ -94,6 +101,8 @@ class AccountController extends AbstractController {
 
     /**
      * Change account password
+     *
+     * @return Response
      */
     public function changePassword() {
         $player     = Player::find(SessionFactory::getSession()->get('player_id'));
@@ -130,7 +139,9 @@ class AccountController extends AbstractController {
 
     /**
      * Internal method to update an account crypt hash in the database
+     *
      * @todo Maybe make functionality in the model to have this done.
+     * @return void
      */
     private function _changePassword($p_playerID, $p_newPassword) {
         $changePasswordQuery = "UPDATE accounts SET phash = crypt(:password, gen_salt('bf', 8)) WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
@@ -143,6 +154,8 @@ class AccountController extends AbstractController {
 
     /**
      * Show delete account confirmation form
+     *
+     * @return Response
      */
     public function deleteAccountConfirmation() {
         $session    = SessionFactory::getSession();
@@ -159,6 +172,8 @@ class AccountController extends AbstractController {
 
     /**
      * Make account non-operational
+     *
+     * @return Response
      */
     public function deleteAccount() {
         $session         = SessionFactory::getSession();
@@ -198,12 +213,15 @@ class AccountController extends AbstractController {
 
     /**
      * Display the default account page
+     *
+     * @return Response
      */
     public function index() {
         return $this->render([]);
     }
 
     /**
+     * @return StreamedViewResponse
      */
     private function render($p_parts) {
         $account = Account::findById(SessionFactory::getSession()->get('account_id'));
@@ -221,14 +239,12 @@ class AccountController extends AbstractController {
             'delete_attempts' => 0,
         ];
 
-        return [
-            'template' => 'account.tpl',
-            'title'    => 'Your Account',
-            'parts'    => array_merge($parts, $p_parts),
-            'options'  => [
-                'quickstat' => 'player',
-            ],
-        ];
+        return new StreamedViewResponse(
+            'Your Account',
+            'account.tpl',
+            array_merge($parts, $p_parts),
+            ['quickstat' => 'player']
+        );
     }
 
     /**
