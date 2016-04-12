@@ -6,6 +6,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -224,11 +225,6 @@ class DojoController extends AbstractController {
             $p_parts['error'] = null;
         }
 
-        return [
-            'template' => 'dojo.tpl',
-            'title'    => 'Dojo',
-            'parts'    => $p_parts,
-            'options'  => ['quickstat'=>'player'],
-        ];
+        return new StreamedViewResponse('Dojo', 'dojo.tpl', $p_parts, ['quickstat'=>'player']);
     }
 }
