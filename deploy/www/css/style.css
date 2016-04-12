@@ -894,7 +894,14 @@ table.playerTable a{
 	text-shadow: black 1px 1px 1px;
 }
 
-/* Profile and Player list Class Colors */
+/* Profile and Player list */
+
+.list-all-players-search[type=search]{
+    font-family:Verdana, Arial;
+    font-size:xx-small;
+}
+
+/* ninja class colors */
 .class-name{
 	padding-right:.3em;
 	padding-left:.3em;
@@ -1173,6 +1180,9 @@ td.playerTable {
 #solo-page-header {
 	display:none;
 }
+h1:first-of-type{
+    display:none;
+}
 #solo-page-login-link, #solo-page-signup-link {
 	margin-top: 1em; margin-left:0.7em; margin-right:0.4em;
 	font-size:larger;
@@ -1190,6 +1200,9 @@ body.solo-page h1 {
 }
 body.solo-page #solo-page-header {
 	display: block;
+}
+body.solo-page h1:first-of-type {
+    display: block;
 }
 body.solo-page h1 {
 	display:block;

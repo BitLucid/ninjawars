@@ -1,6 +1,6 @@
+<h1>Fight</h1>
 <link rel="stylesheet" type="text/css" href="{cachebust file="/css/enemies.css"}" media="Screen" />
 
-<h1>Fight</h1>
 
 {if $logged_in}
 
