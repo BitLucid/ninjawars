@@ -52,6 +52,7 @@ class ShopController extends AbstractController {
 		$in_quantity       = RequestWrapper::getPostOrGet('quantity');
 		$in_item           = RequestWrapper::getPostOrGet('item');
         $player            = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player            = Player::findPlayable($this->getAccountId());
 		$gold              = ($player ? $player->gold : null);
 		$current_item_cost = 0;
 		$no_funny_business = false;
@@ -109,7 +110,7 @@ class ShopController extends AbstractController {
 	 * @return Array
 	 */
 	private function render($p_parts) {
-        $player = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player = Player::findPlayable($this->getAccountId());
 
 		$p_parts['gold']          = ($player ? $player->gold : 0);
 		$p_parts['item_costs']    = $this->itemForSaleCosts();
