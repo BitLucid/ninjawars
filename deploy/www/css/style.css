@@ -736,6 +736,10 @@ a:link {} a:visited {} a:active {}
 	right: 0;
 }
 
+.health-bar-area{
+	width:10em;display:inline-block;
+}
+
 img#class-shuriken {
 	width:20px;
 	height:17px;

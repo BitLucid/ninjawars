@@ -123,4 +123,11 @@ class AccountTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($account->authenticate('an invalid password'));
     }
 
+    public function testAccountCanHavePlayers(){
+        $account = Account::findByNinjaName($this->test_ninja_name);
+        $pcs = $account->getCharacters();
+        $this->assertNotEmpty($pcs);
+        $this->assertInstanceOf(Player::class, reset($pcs));
+    }
+
 }
