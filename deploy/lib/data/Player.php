@@ -603,13 +603,10 @@ class Player implements Character {
 
     /**
      * Find a char by playable for account
-     * @param int $account_id
+     * @param int|null $account_id
      * @return Player|null
      */
     public static function findPlayable($account_id){
-        if((int) $account_id < 1){
-            throw new RuntimeException('Could not find a PC from invalid account_id.');
-        }
         // Two db calls for now
         $pid = query_item('select player_id from players p 
             join account_players ap on p.player_id = ap._player_id
