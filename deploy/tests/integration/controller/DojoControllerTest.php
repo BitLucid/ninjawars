@@ -37,7 +37,7 @@ class DojoControllerTest extends PHPUnit_Framework_TestCase {
     /**
      */
     public function testDojoControllerCanBeInstantiatedWithoutError() {
-        $this->assertInstanceOf('NinjaWars\core\control\DojoController', $this->controller);
+        $this->assertInstanceOf(DojoController::class, $this->controller);
     }
 
     /**

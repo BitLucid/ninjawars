@@ -38,7 +38,7 @@ class ApiControllerTest extends PHPUnit_Framework_TestCase {
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
-        $this->assertEquals(json_encode(false), $result['raw']);
+        $this->assertEquals(json_encode(false), $result->getContent());
     }
 
     public function testIllegalType() {
@@ -49,7 +49,7 @@ class ApiControllerTest extends PHPUnit_Framework_TestCase {
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
-        $this->assertEquals(null, $result['raw']);
+        $this->assertEquals('', $result->getContent());
     }
 
     public function testSearch() {
@@ -156,7 +156,7 @@ class ApiControllerTest extends PHPUnit_Framework_TestCase {
 
     private function extractPayload($p_response) {
         $matches = [];
-        preg_match($this->PAYLOAD_RE, $p_response['raw'], $matches);
+        preg_match($this->PAYLOAD_RE, $p_response->getContent(), $matches);
         return json_decode($matches[1]);
     }
 }
