@@ -68,18 +68,18 @@ class ApiController extends AbstractController {
 
     private function render($raw, $extra_headers = []) {
         return [
-            'headers' => [
-                'Content-Type: text/javascript; charset=utf8',
-                'Access-Control-Allow-Origin: *',
-                'Access-Control-Max-Age: 3628800',
-                'Access-Control-Allow-Methods: GET, POST, PUT, DELETE',
-            ] + $extra_headers,
+            'headers' => array_merge([
+                'Content-Type'                 => 'text/javascript; charset=utf8',
+                'Access-Control-Allow-Origin'  => '*',
+                'Access-Control-Max-Age'       => '3628800',
+                'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE',
+            ], $extra_headers),
             'raw'     => $raw,
         ];
     }
 
     private function renderEmpty() {
-        return $this->render(json_encode(false), ['Content-Type: application/json; charset=utf8']);
+        return $this->render(json_encode(false), ['Content-Type' => 'application/json; charset=utf8']);
     }
 
     /**
