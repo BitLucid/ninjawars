@@ -5,6 +5,7 @@ use NinjaWars\core\data\NpcFactory;
 NpcFactory::$data = [
     'firefly'   => [ // Baseline weakest mob
         'name'     => 'Firefly',
+        'img'      => 'firefly.png',
         'strength' => 0,
         'stamina'  => 0,
         'damage'   => 0,
@@ -13,6 +14,7 @@ NpcFactory::$data = [
     ],
     'fireflies' => [
         'name'     => 'Fireflies',
+        'img'      => 'fireflies.png',
         'strength' => 0,
         'stamina'  => 1,
         'damage'   => 0,
@@ -20,7 +22,7 @@ NpcFactory::$data = [
     ],
     'spider'    => [
         'name'     => 'Spider',
-        'img'      => 'spider_icon.png',
+        'img'      => 'spider.png',
         'strength' => 1,
         'stamina'  => 1,
         'speed'    => 1,

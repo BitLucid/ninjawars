@@ -2746,15 +2746,13 @@ select option #blue-class-select {
 	text-align:left;
 }
 
-#npc-list li {
-	padding: 0.2em 0.3em 0 0.2em;
+#npc-list .creature {
+	/*padding: 0.2em 0.3em 0 0.2em;*/
+	padding:1rem;
 	display:inline-block;
-	margin-left: 1em;
 	white-space: nowrap;
 	min-height:2em;
 	min-width:7em;
-	/*list-style-type:circle;
-	background-color:purple;*/
 }
 #npc-list ul {
 	margin:0;
@@ -2767,13 +2765,30 @@ select option #blue-class-select {
 }
 
 #npc-list{
-	margin: .5em auto 10em;padding:0;text-align:left;font-size:1.3em;
+	margin: .5em auto 10em;
+	padding:0;
+	text-align:left;
+	font-size:1.3em;
 }
 #npc-list .creature-image{
 	max-width:50px;max-height:50px;
 }
 #npc-list .person img{
 	width:25px;height:46px;
+}
+
+#npc-list .btn{
+	min-height:2rem;
+	min-width:4rem;
+}
+
+.m-box{
+	color:#57b757;
+	display:inline-block;
+	padding:1rem 1rem;
+	border:teal thin solid;
+	border-radius:0.5rem;
+	background-color:#333;
 }
 
 
