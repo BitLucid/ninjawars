@@ -74,6 +74,8 @@ class TestRouting:
             'item/use/shuriken/tchalvak', 'dojo/buyDimMak',
             'casino', 'player',
         ]
+        legacy_urls = ['player.php']
+        urls = urls + legacy_urls
         #Eventually some of these urls should be tested on logged in user.
         for url in urls:
             assert (str(self.root()) + url is not None and 200 ==
