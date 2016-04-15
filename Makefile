@@ -30,7 +30,6 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
-	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery-linkify.min.js" "$(JS)"
 	mkdir -p ./deploy/resources/logs/
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
@@ -41,15 +40,20 @@ dep:
 js-dep:
 	npm install
 
-install: build
-	apt-get install python3-dev python3-lxml
+install: build start-chat
+	apt-get install python3 python3-dev python3-lxml
 	#apt-get install postgresql-client nginx php5-fpm
 	chown www-data:adm ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/deity.log
+	@echo "Don't forget to update webserver configs as necessary."
+	ln -s build.properties.tpl build.properties
+	ln -s buildtime.xml.tpl buildtime.xml
+	ln -s connection.xml.tpl connection.xml
+
+start-chat:
 	touch /var/log/nginx/ninjawars.chat-server.log
 	chown www-data:adm /var/log/nginx/ninjawars.chat-server.log
 	nohup php bin/chat-server.php > /var/log/nginx/ninjawars.chat-server.log 2>&1 &
-	@echo "Don't forget to update webserver configs as necessary."
 
 
 all: build test-unit db python-build test
@@ -185,14 +189,10 @@ ci-pre-configure:
 	# Set up the resources file, replacing first occurance of strings with their build values
 	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
 	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
-	rm -f $(WWW)js/jquery-linkify.min.js #delete bad component linkage
 	ln -s resources.build.php deploy/resources.php
 	# Set up selenium and web server for browser tests
 	#wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
 	#java -jar selenium-server-standalone-2.42.2.jar > selenium_server_output 2>&1 &
-	ln -s build.properties.tpl build.properties
-	ln -s buildtime.xml.tpl buildtime.xml
-	ln -s connection.xml.tpl connection.xml
 	#Switch from python2 to python3
 	rm -rf ${HOME}/.virtualenv
 	which python3

@@ -20,6 +20,11 @@ else
 	>&2 echo "No suitable candidate found for COMPOSER"
 fi
 
+if [! GITHUB_ACCESS_TOKEN ]; then
+    echo "Recommend setting a github access token to GITHUB_ACCESS_TOKEN to
+    prevent ratelimiting."
+fi
+
 
 
 if [ -z "$NGINX_EXISTS" ] && [ ! -d "./nginx-1.9.12/" ]; then
@@ -32,3 +37,5 @@ if [ -z "$NGINX_EXISTS" ] && [ ! -d "./nginx-1.9.12/" ]; then
 else
     echo "NGINX_PATH:=`which nginx`" >> CONFIG
 fi
+
+echo "Don't forget to set up your database and webserver yourself."

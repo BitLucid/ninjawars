@@ -3,15 +3,30 @@ The source code dojo for the [Ninja Game](http://www.ninjawars.net) @ http://nin
 
 ## Install
 
-Install system dependencies
+Install your webserver (nginx + php5-fpm recommended) & configure it
 
-	cd /srv/ninjawars
-	composer install
-	sudo bash ./scripts/build/install.sh
-	ln -s .gitmodules.tpl .gitmodules
-	git submodule update --init --recursive
+	sudo apt-get install php5-cli php5-fpm nginx
+
+On your database server, install postgresql & configure it
+
+	sudo apt-get install postgresql postgresql-contrib
+
+Set up the environment variables, get the github token 
+from here: https://github.com/settings/tokens
+
+	export GITHUB_ACCESS_TOKEN=
+	export DBUSER=
+	sed "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php > deploy/resources.php
+	sed "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js > karma.conf.js
+
+configure, make, make install:
+
+	./configure
+	make
+	sudo make install
+
 	
-Sync up to the latest changes:
+Sync up to the latest db changes:
 
 	cd /srv/ninjawars
 	sudo bash ./scripts/build/integration.sh
@@ -25,22 +40,13 @@ Sync the database to make your version get updated with the latest table:
 	cd /srv/ninjawars
 	./scripts/sync
 
-Install the test environment with:
+Start up the chat server with this:
 
-	cd /srv/ninjawars
-	sudo bash ./scripts/build/test.sh
-
-Start up the chat server with your customized version of these commands:
-
-	sudo touch /var/log/nginx/ninjawars.chat-server.log
-	sudo chown kzqai:dev /var/log/nginx/ninjawars.chat-server.log
-	cd /srv/ninjawars/
-	nohup php bin/chat-server.php > /var/log/nginx/ninjawars.chat-server.log 2>&1 &
-	(rather hack-ey and new for now)
+	sudo make start-chat
 
 Then you can run the tests to check your progress with:
 
-    ./vendor/bin/phpunit
+    make test
 
 *See ./docs/INSTALL if you need more.*
 
