@@ -49,7 +49,7 @@ server {
 	}
 
 	location = /confirm.php {
-	    return 302 /assistance$is_args$args;
+	    return 302 /assistance/confirm$is_args$args;
 	}
 
 	location = /resetpassword.php {
