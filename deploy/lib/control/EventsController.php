@@ -6,6 +6,7 @@ use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * Handle the listing of events
@@ -16,6 +17,8 @@ class EventsController extends AbstractController {
 
     /**
      * Display the combat/action events and mark them as read when displayed.
+     *
+     * @return Response
      */
     public function index() {
     	$char   = Player::find(SessionFactory::getSession()->get('player_id'));
@@ -23,16 +26,13 @@ class EventsController extends AbstractController {
 
 		$this->readEvents($char->id()); // mark events as viewed.
 
-        return [
-            'title'    => 'Events',
-            'template' => 'events.tpl',
-            'parts'    => [
-                'events'   => $events,
-                'has_clan' => (bool)Clan::findByMember($char),
-                'char'     => $char,
-            ],
-			'options'  => ['quickstat' => 'player'],
+        $parts    = [
+            'events'   => $events,
+            'has_clan' => (bool)Clan::findByMember($char),
+            'char'     => $char,
         ];
+
+        return new StreamedViewResponse('Events', 'events.tpl', $parts, ['quickstat' => 'player']);
     }
 
     /**
