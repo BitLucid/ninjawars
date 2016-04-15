@@ -2,7 +2,6 @@ language: php
 
 env:
   - INSTALL=full_install
-  - INSTALL=integration_install
 
 php:
   - 5.5
@@ -16,23 +15,20 @@ matrix:
 
 before_install:
 
-    - chmod ug+rx scripts/build/*.sh
+    - chmod ug+rx ./configure
     - chmod ug+rx scripts/travis/*
     #- git submodule init
     #- git submodule update
 
 install:
-    - ./scripts/travis/$INSTALL
     - echo -e "CC_DIR=./cc/\nDBNAME=nw\nCOMPOSER=composer\nDBUSER=ninjamaster\nDBCREATINGUSER=ninjamaster" > CONFIG
+    - ./configure
     - make ci
     - readlink -f deploy/resources.php
     - cat deploy/resources.php
 
 after_install:
     - php -v
-    - sudo apache2ctl -S
-    - sudo cat /etc/apache2/sites-enabled/nw.local.conf
-    - sudo cat /etc/apache2/sites-available/nw.local.conf
     - echo "Getting the title from nw.local if possible"
     - wget -qO- 'nw.local' | perl -l -0777 -ne 'print $1 if /<title.*?>\s*(.*?)\s*<\/title/si'
     - echo "Getting full html from http://nw.local if possible"
@@ -44,5 +40,5 @@ script: make ci-test
 #Just to limit noise in the test area, this is separated
 after_script:
 
-after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version && sudo apache2ctl --version && sudo apache2ctl -S && sudo tail -10 /var/log/apache2/error.log
-after_success: sudo apache2ctl -S && sudo tail -100 /var/log/apache2/error.log
+after_failure: ls && composer --version && vendor/bin/phpunit --version && php --version
+after_success: 
