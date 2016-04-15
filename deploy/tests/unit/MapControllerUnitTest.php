@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\control\MapController;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 class MapControllerUnitTest extends PHPUnit_Framework_TestCase {
     private $controller;
@@ -17,6 +18,6 @@ class MapControllerUnitTest extends PHPUnit_Framework_TestCase {
     public function testIndex() {
         $response = $this->controller->index();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 }
