@@ -6,7 +6,6 @@ echo "DBUSER=ninjamaster" >> CONFIG
 echo "DBCREATINGUSER=postgres" >> CONFIG
 echo "CC_DIR=./cc/" >> CONFIG
 NGINX_EXISTS=`command -v nginx`
-NGINX_EXISTS=
 
 if [ -f ./composer.phar ]
 then
@@ -16,7 +15,7 @@ then
 	echo "COMPOSER=./composer" >> CONFIG
 elif [ `which composer` ]
 then
-	echo "COMPOSER=`which composer`" >> CONFIG
+	echo "COMPOSER:=`which composer`" >> CONFIG
 else
 	>&2 echo "No suitable candidate found for COMPOSER"
 fi
@@ -29,7 +28,7 @@ if [ -z "$NGINX_EXISTS" ] && [ ! -d "./nginx-1.9.12/" ]; then
     cd nginx-1.9.12/
     ./configure
     make
-    echo "NGINX_PATH=`readlink -f nginx-1*/objs/nginx`" >> CONFIG
+    echo "NGINX_PATH:=`readlink -f nginx-1*/objs/nginx`" >> CONFIG
 else
-    echo "NGINX_PATH=`which nginx`" >> CONFIG
+    echo "NGINX_PATH:=`which nginx`" >> CONFIG
 fi
