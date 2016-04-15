@@ -46,9 +46,9 @@ install: build start-chat
 	chown www-data:adm ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/deity.log
 	@echo "Don't forget to update webserver configs as necessary."
-	ln -s build.properties.tpl build.properties
-	ln -s buildtime.xml.tpl buildtime.xml
-	ln -s connection.xml.tpl connection.xml
+	cp build.properties.tpl build.properties
+	cp buildtime.xml.tpl buildtime.xml
+	cp connection.xml.tpl connection.xml
 
 start-chat:
 	touch /var/log/nginx/ninjawars.chat-server.log
@@ -190,6 +190,9 @@ ci-pre-configure:
 	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
 	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
 	ln -s resources.build.php deploy/resources.php
+	ln -s build.properties.tpl build.properties
+	ln -s buildtime.xml.tpl buildtime.xml
+	ln -s connection.xml.tpl connection.xml
 	# Set up selenium and web server for browser tests
 	#wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
 	#java -jar selenium-server-standalone-2.42.2.jar > selenium_server_output 2>&1 &
