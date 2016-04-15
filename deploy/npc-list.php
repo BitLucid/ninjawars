@@ -296,6 +296,15 @@ NpcFactory::$data = [
             'damage'   => 10,
             'race'     => 'animal',
         ],
+        'ghost_dog'    => [
+            'name'     => 'Ghost Dog',
+            'short'    => 'howls hauntingly',
+            'strength' => 15,
+            'speed'    => 15,
+            'stamina'  => 10,
+            'race'     => 'kami',
+            'traits'   => 'whispy'
+        ],
         'tiger'         => [
             'name'     => 'Tiger',
             'short'    => 'circles in for the kill',
