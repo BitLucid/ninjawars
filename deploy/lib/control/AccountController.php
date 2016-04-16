@@ -226,6 +226,7 @@ class AccountController extends AbstractController {
     private function render($p_parts) {
         $account = Account::findById(SessionFactory::getSession()->get('account_id'));
         $player  = Player::find(SessionFactory::getSession()->get('player_id'));
+        $ninjas = $account->getCharacters();
 
         $parts = [
             'gravatar_url'    => $player->avatarUrl(),
@@ -233,6 +234,7 @@ class AccountController extends AbstractController {
             'account'         => $account,
             'oauth_provider'  => ($account ? $account->oauth_provider : ''),
             'oauth'           => ($account ? $account->oauth_provider && $account->oauth_id : ''),
+            'ninjas'          => $ninjas,
             'successMessage'  => false,
             'error'           => false,
             'command'         => '',

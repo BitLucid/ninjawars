@@ -52,9 +52,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     public $test_ninja_name = null;
     public $test_ninja_id = null;
 
-    /**
-     * group accountconf
-     */
+
     function setUp() {
         $_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR'])? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
         $this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com probably
@@ -65,9 +63,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         SessionFactory::init(new MockArraySessionStorage());
     }
 
-    /**
-     * group accountconf
-     */
+
     function tearDown() {
         // Delete test user.
         TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
@@ -92,9 +88,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertFalse(Account::usernameIsValid('ThisIsAcceptable'), 'Basic alpha name [ThisIsAcceptable] was rejected');
     }
 
-    /**
-     * group accountconf
-     */
+
     function testForNinjaThatAccountConfirmationProcessAllowsNinjaNamesOfTheRightFormat() {
         $this->assertTrue(!(bool)Account::usernameIsValid('tchalvak'), 'Standard all alpha name tchalvak was rejected');
         $this->assertTrue(!(bool)Account::usernameIsValid('Beagle'));
@@ -131,26 +125,20 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         }
     }
 
-    /**
-     * group accountconf
-     */
+
     function testThatTestAccountLibActuallyWorksToCreateAndDestroyATestNinja() {
         TestAccountCreateAndDestroy::purge_test_accounts();
         $test_char_id = TestAccountCreateAndDestroy::create_testing_account();
         $this->assertTrue((bool)Filter::toNonNegativeInt($test_char_id));
     }
 
-    /**
-     * group accountconf
-     */
+
     function testCreateFullAccountConfirmAndReturnAccountId() {
         $account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
         $this->assertTrue((bool)Filter::toNonNegativeInt($account_id));
     }
 
-    /**
-     * group accountconf
-     */
+
     function testMakeSureThatNinjaAccountIsOperationalByDefault() {
         $ninja_id = $this->test_ninja_id;
         $this->assertTrue(Filter::toNonNegativeInt($ninja_id) > 0);
@@ -163,9 +151,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertTrue($account_operational, 'Account is not being set as operational by default when created');
     }
 
-    /**
-     * group accountconf
-     */
+
     function testAttemptLoginOfUnconfirmedAccountShouldFail() {
         $email ='noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
         TestAccountCreateAndDestroy::create_testing_account(false, $email);
@@ -175,9 +161,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($res, 'No error returned');
     }
 
-    /**
-     * group accountconf
-     */
+
     function testConfirmAccount() {
         $player = Player::findByName($this->test_ninja_name);
         $account = Account::findByChar($player);
@@ -193,9 +177,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
     }
 
 
-    /**
-     * group accountconf
-     */
+
     function testLoginConfirmedAccountByName() {
         $player = Player::findByName($this->test_ninja_name);
         $player->active = 1;
@@ -228,9 +210,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertfalse($res);
     }
 
-    /**
-     * group accountconf
-     */
+
     function testLoginConfirmedAccountByEmail() {
         $player = Player::findByName($this->test_ninja_name);
         $player->active = 1;
@@ -246,9 +226,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertEmpty($res, 'Login by email failed for confirmed player ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res.']');
     }
 
-    /**
-     * group accountconf
-     */
+
     function testLoginConfirmedAccountWithInactivePlayerSucceeds(){
         $player = Player::findByName($this->test_ninja_name);
         $player->active = 0;
@@ -264,9 +242,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertEmpty($res, 'Faded-to-inactive player unable to login');
     }
 
-    /**
-     * group accountconf
-     */
+
     function testPauseAccountAndLoginShouldFail() {
         $player = Player::findByName($this->test_ninja_name);
         $player->active = 1;
@@ -295,9 +271,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($res, 'Login should not be successful when account is paused');
     }
 
-    /**
-     * group accountconf
-     */
+
     function testPreconfirmEmailsReturnRightResultForGmailHotmailAndWildcardEmails(){
         $preconfirm_emails = ['test@gmail.com', 'test@example.com', 'test@russia.com'];
         $no_preconfirm_emails = ['test@hotmail.com', "O'brian@yahoo.com"];
@@ -311,9 +285,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         }
     }
 
-    /**
-     * group accountconf
-     */
+
     function testThatAccountConfirmationProcessRejectsNinjaNamesOfTheWrongFormat() {
         // Same requirements as above, here we test that bad names are rejected.
         $bad_names = [

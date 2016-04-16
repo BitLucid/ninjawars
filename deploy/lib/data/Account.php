@@ -552,4 +552,22 @@ class Account {
             return false;
         }
     }
+
+    /**
+     * Get the Ninjas belonging to an account
+     * @return Player[] The ninjas for the account
+     */
+    public function getCharacters(){
+        $pcs = query('select player_id from players p 
+            join account_players ap on ap._player_id = p.player_id
+            join accounts a on a.account_id = ap._account_id
+            where a.account_id = :aid', 
+            [':aid'=>[$this->account_id, PDO::PARAM_INT]]);
+        $ninjas = [];
+        foreach($pcs as $pc){
+            $ninja = Player::find($pc['player_id']);
+            $ninjas[$ninja->name()] = $ninja;
+        }
+        return $ninjas;
+    }
 }

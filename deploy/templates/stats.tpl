@@ -59,7 +59,7 @@
       <li>Karma: {$char->karma|number_format:0|escape}</li>
       <li>
         Health:
-        <span style='width:10em;display:inline-block' title='Max health: {$char->getMaxHealth()|escape}'>
+        <span class='health-bar-area' title='Max health: {$char->getMaxHealth()|escape}'>
           {include file="health_bar.tpl" health=$char->health level=$char->level}
         </span>
       </li>

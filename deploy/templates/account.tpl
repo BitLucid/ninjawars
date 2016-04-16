@@ -1,3 +1,5 @@
+<h1 class='account-header'>Account Info for <span class='account-identity'>{$account->identity()|escape}</span></h1>
+
 {literal}
 <style>
 .account-info{
@@ -25,14 +27,7 @@ h1 .account-identity{
 </style>
 {/literal}
 
-<h1 class='account-header'>Account Info for <span class='account-identity'>{$account->account_identity|escape}</span></h1>
-
-
-<div class='char-list ninja-notice clearfix'>
-  <a href='/stats'>View your ninja's info</a>
-</div>
-
-<div id='content' class='account-info'>
+<section id='content' class='account-info'>
 
 {if $error}
   <p class='error'>{$error}</p>
@@ -81,13 +76,33 @@ h1 .account-identity{
 
 <div class='full-account-info'>
     <ul id='account-info' class='account-info'>
+      <li>Account Identity: <strong>{$account->identity()}</strong></li>
       <li>Active Email: <strong>{$account->active_email|escape}</strong></li>
       <li>Account Created: <time class='timeago' datetime='{$account->created_date|escape}'>{$account->created_date|escape}</time></li>
       <li>Last Failed Login Attempt: <time class='timeago' datetime='{$account->last_login_failure|escape}'>{$account->last_login_failure|escape}</time></li>
       <li>Last IP: <strong>{$account->last_ip|escape}</strong></li>
+      <li>Account Karma Gained: <strong>{$account->karma_total}</strong></li>
+      <li>Account Type: <strong>{$account->type}</strong></li>
+      <li>Account Id: <strong>{$account->id()}</strong></li>
       {if $oauth}<li>Single-Click login connected to: <strong>{$oauth_provider|escape}</strong></li>{/if}
     </ul>
 </div>
+
+<section>
+  <h1>Your Ninjas</h1>
+  <div class='char-list ninja-notice'>
+    <a href='/stats'>View your current ninja's info</a>
+  </div>
+  <ul>
+  {foreach $ninjas as $ninja}
+    <li><a href='/player?player_id={$ninja->id()|escape:'url'|escape}'>{$ninja->name()|escape}</a> <i class="fa fa-arrow-circle-up" aria-hidden="true"></i> <span class='player-level-category {$ninja->level|level_label|css_classify}'>
+          {$ninja->level|level_label} [{$ninja->level|escape}]
+        </span> <span class='class-name {$ninja->theme|escape}'>{$ninja->class_name|escape}</span> <span class='health-bar-area' title='Max health: {$ninja->getMaxHealth()|escape}'>
+          {include file="health_bar.tpl" health=$ninja->health level=$ninja->level}
+        </span> <i class="fa fa-clock-o" aria-hidden="true"></i> {$ninja->turns} turns</li>
+  {/foreach}
+  </ul>
+</section>
 
 <form action='/account/show_change_password_form' method='post'>
   <div>
@@ -112,7 +127,7 @@ h1 .account-identity{
   </div>
 {/if}
 
-</div><!-- end of .account-info -->
+</section><!-- end of .account-info -->
 
 
 <footer id='stats-footer' class='navigation'>
