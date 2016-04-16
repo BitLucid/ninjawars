@@ -3,6 +3,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\ClanController;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
@@ -38,7 +39,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
     public function testIndex() {
         $response = $this->controller->listClans();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testViewMyClan() {
@@ -46,7 +47,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->view();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testViewAnotherClan() {
@@ -64,7 +65,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         // delete new clan
         $this->deleteClan($clan->id);
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testViewNonexistentClan() {
@@ -73,7 +74,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->view();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testViewNoArgsWithClan() {
@@ -81,7 +82,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->view();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testViewNoArgsWithoutClan() {
@@ -95,7 +96,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->view();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testViewMyClanWithoutLeadership() {
@@ -113,7 +114,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->view();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testInviteAsNotLeader() {
@@ -158,7 +159,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->invite();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testInviteNonexistentTarget() {
@@ -167,8 +168,11 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->invite();
 
-        $this->assertArrayHasKey('template', $response);
-        $this->assertEquals($response['parts']['error'], 'Sorry, unable to find a ninja to invite by that name.');
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals($response_data['error'], 'Sorry, unable to find a ninja to invite by that name.');
     }
 
     public function testLeave() {
@@ -186,7 +190,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->leave();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testLeaveAsLeader() {
@@ -204,7 +208,10 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->disband();
 
-        $this->assertEquals($response['title'], 'Confirm disbanding of your clan');
+        $reflection = new \ReflectionProperty(get_class($response), 'title');
+        $reflection->setAccessible(true);
+        $response_title = $reflection->getValue($response);
+        $this->assertEquals($response_title, 'Confirm disbanding of your clan');
     }
 
     public function testDisbandAsLeaderWithConfirm() {
@@ -213,8 +220,11 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->disband();
 
-        $this->assertArrayHasKey('template', $response);
-        $this->assertNotEquals($response['title'], 'Confirm disbanding of your clan');
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
+        $reflection = new \ReflectionProperty(get_class($response), 'title');
+        $reflection->setAccessible(true);
+        $response_title = $reflection->getValue($response);
+        $this->assertNotEquals($response_title, 'Confirm disbanding of your clan');
     }
 
     public function testDisbandAsMember() {
@@ -247,8 +257,11 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->kick();
 
-        $this->assertArrayHasKey('template', $response);
-        $this->assertNotEquals($response['title'], 'Confirm disbanding of your clan');
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
+        $reflection = new \ReflectionProperty(get_class($response), 'title');
+        $reflection->setAccessible(true);
+        $response_title = $reflection->getValue($response);
+        $this->assertNotEquals($response_title, 'Confirm disbanding of your clan');
     }
 
     public function testKickAsMember() {

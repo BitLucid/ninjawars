@@ -7,6 +7,7 @@ use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\data\DatabaseConnection;
 
 /**
@@ -528,7 +529,7 @@ class ClanController extends AbstractController {
 	 * Generates a viewspec for rendering pages
 	 *
 	 * @param Array $p_parts Name-Value pairs of values to send to the view
-	 * @return Array A viewspec for rendering
+	 * @return Response
 	 */
 	private function render($p_parts) {
 		if (!isset($p_parts['pageParts'])) {
@@ -548,15 +549,12 @@ class ClanController extends AbstractController {
 
 		$p_parts['clan_creator_min_level'] = self::CLAN_CREATOR_MIN_LEVEL;
 
-		return [
-			'template' => 'clan.tpl',
-			'title'    => $p_parts['title'],
-			'parts'    => $p_parts,
-			'options'  => [
-				'body_classes' => 'clan',
-				'quickstat' => true,
-			],
-		];
+        $options  = [
+            'body_classes' => 'clan',
+            'quickstat'    => true,
+        ];
+
+        return new StreamedViewResponse($p_parts['title'], 'clan.tpl', $p_parts, $options);
 	}
 
 	/**
