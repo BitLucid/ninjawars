@@ -6,6 +6,7 @@ use NinjaWars\core\data\Message;
 use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * The controller for effects of a village request and the default index display of the page
@@ -20,6 +21,8 @@ class ChatController extends AbstractController {
 
     /**
      * Take in a chat and record it to the database.
+     *
+     * @return Response
      */
     public function receive() {
         $char_id = SessionFactory::getSession()->get('player_id');
@@ -39,6 +42,8 @@ class ChatController extends AbstractController {
 
     /**
      * Pull & display the chats and a chat send if logged in
+     *
+     * @return Response
      */
     public function index() {
         $view_all   = in('view_all');
@@ -58,15 +63,11 @@ class ChatController extends AbstractController {
         return $this->render($parts);
     }
 
+    /**
+     * @return Response
+     */
     private function render($parts) {
-        return [
-            'template' => 'village.tpl',
-            'title'    => 'Chat Board',
-            'parts'    => $parts,
-            'options'  => [
-                'quickstat' => false
-            ],
-        ];
+        return new StreamedViewResponse('Chat Board',  'village.tpl', $parts, [ 'quickstat' => false ]);
     }
 
     /**

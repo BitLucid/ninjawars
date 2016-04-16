@@ -5,6 +5,7 @@ use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -95,16 +96,11 @@ class CasinoController extends AbstractController {
 	 * Returns a view spec for rendering a template
 	 *
 	 * @param p_parts Array Hash of variables to render
-	 * @return Array
+	 * @return Response
 	 */
 	private function render($p_parts) {
 		$p_parts['maxBet'] = self::MAX_BET;
 
-		return [
-			'template' => 'casino.tpl',
-			'title'    => 'Casino',
-			'parts'    => $p_parts,
-			'options'  => [ 'quickstat' => 'player' ],
-		];
+		return new StreamedViewResponse('Casino', 'casino.tpl', $p_parts, [ 'quickstat' => 'player' ]);
 	}
 }

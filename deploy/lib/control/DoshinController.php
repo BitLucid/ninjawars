@@ -5,6 +5,7 @@ use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * Handles all user requests for the in-game Doshin Office
@@ -222,7 +223,7 @@ class DoshinController extends AbstractController {
      * Returns a view spec hash for rendering a template
      *
      * @param Array $parts Hash of variables to pass to the view
-     * @return Array
+     * @return Response
      */
     private function render($parts) {
         $char     = Player::find(SessionFactory::getSession()->get('player_id'));
@@ -245,13 +246,6 @@ class DoshinController extends AbstractController {
 
         $quickstat = $parts['quickstat'];
 
-        return [
-            'template' => 'doshin.tpl',
-            'title'    => 'Doshin Office',
-            'parts'    => $parts,
-            'options'  => [
-                'quickstat' => $quickstat,
-            ],
-        ];
+        return new StreamedViewResponse('Doshin Office', 'doshin.tpl', $parts, [ 'quickstat' => $quickstat ]);
     }
 }

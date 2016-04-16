@@ -3,6 +3,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\AttackController;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
@@ -40,7 +41,7 @@ class AttackControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->index();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
     public function testDuelWithTarget() {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
@@ -54,6 +55,6 @@ class AttackControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $response = $this->controller->index();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 }

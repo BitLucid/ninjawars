@@ -9,12 +9,16 @@ use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 class AttackController extends AbstractController {
     const ALIVE = true;
     const PRIV  = true;
     const BASE_WRATH_REGAIN = 2;
 
+    /**
+     * @return Response
+     */
     public function index() {
         $target  = in('target');
         $duel    = (in('duel')    ? true : NULL);
@@ -334,11 +338,6 @@ class AttackController extends AbstractController {
         $target_player->save();
         $attacking_player->save();
 
-        return [
-            'template' => 'attack_mod.tpl',
-            'title'    => 'Battle Status',
-            'parts'    => get_defined_vars(),
-            'options'  => [ 'quickstat' => 'player' ],
-        ];
+        return new StreamedViewResponse('Battle Status', 'attack_mod.tpl', get_defined_vars(), ['quickstat' => 'player' ]);
     }
 }

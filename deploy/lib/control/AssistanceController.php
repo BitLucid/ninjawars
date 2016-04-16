@@ -6,6 +6,7 @@ use NinjaWars\core\Filter;
 use \Nmail;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\NWTemplate;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * Give assistance to players and proto-players who anonymous users
@@ -75,8 +76,10 @@ class AssistanceController extends AbstractController {
 
     /**
      * Display the assistance options to users.
+     *
+     * @return Response
      */
-    public function index(){
+    public function index() {
         $email = filter_var(in('email', null), FILTER_SANITIZE_EMAIL);
         $password_request = in('password_request');
         $confirmation_request = in('confirmation_request');
@@ -119,18 +122,18 @@ class AssistanceController extends AbstractController {
             'confirmation_request'=>$confirmation_request,
             'username'=>$username,
             ];
-        return [
-            'template'=>'assistance.tpl',
-            'title'=>'Account Assistance',
-            'parts'=>$parts,
-            'options'=>['quickstat'=>false, 'body_classes'=>'account-issues']
-            ];
+
+        $options = ['quickstat'=>false, 'body_classes'=>'account-issues'];
+
+        return new StreamedViewResponse('Account Assistance', 'assistance.tpl', $parts, $options);
     }
 
     /**
      * Handle account email confirmation
+     *
+     * @return Response
      */
-    public function confirm(){
+    public function confirm() {
         $admin_override_pass       = 'WeAllowIt'; // Just a weak passphrase for simply confirming players.
         $admin_override_request    = in('admin_override');
         $acceptable_admin_override = ($admin_override_pass === $admin_override_request);
@@ -178,15 +181,14 @@ class AssistanceController extends AbstractController {
             $confirmation_confirmed = true;
         }
 
-        return [
-            'template' => 'assistance.confirm.tpl',
-            'title'    => 'Account Confirmation',
-            'parts'    => [
-                'confirmed'              => $confirmed,
-                'username'               => $username,
-                'confirmation_confirmed' => $confirmation_confirmed,
-            ],
-            'options'  => ['quickstat'=>false]
+        $parts = [
+            'confirmed'              => $confirmed,
+            'username'               => $username,
+            'confirmation_confirmed' => $confirmation_confirmed,
         ];
+
+        $options = ['quickstat'=>false];
+
+        return new StreamedViewResponse('Account Confirmation', 'assistance.confirm.tpl', $parts, $options);
     }
 }

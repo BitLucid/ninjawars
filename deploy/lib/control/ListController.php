@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\Filter;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\data\Player;
 
 /**
@@ -101,12 +102,7 @@ class ListController extends AbstractController {
         $title    = 'Ninja List';
         $template = 'list.tpl';
 
-        return [
-            'title'    => $title,
-            'template' => $template,
-            'parts'    => $parts,
-            'options'  => $options,
-        ];
+        return new StreamedViewResponse($title, $template, $parts, $options);
     }
 
     /**

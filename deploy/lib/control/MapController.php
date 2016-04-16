@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 class MapController extends AbstractController {
     const PRIV  = false;
@@ -65,15 +66,16 @@ class MapController extends AbstractController {
     /**
      * Get the various nodes of the map and pass them to the template
      *
+     * @return Response
      */
-    public function index(){
-		$parts = [
-		        'nodes'   => $this->nodes,
-		        'show_ad' => rand(1, 20) // show the ad in the village 10% of the time
-		    ];
-    	$options = ['quickstat'=>'player'];
-		return ['template'=>'map.tpl', 'title'=>'Map', 'parts'=>$parts, 'options'=>$options];
+    public function index() {
+        $parts = [
+            'nodes'   => $this->nodes,
+            'show_ad' => rand(1, 20) // show the ad in the village 10% of the time
+        ];
 
+        $options = ['quickstat'=>'player'];
+
+        return new StreamedViewResponse('Map', 'map.tpl', $parts, $options);
     }
-
 }
