@@ -7,6 +7,7 @@ use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use \PDO;
 
 /**
@@ -97,12 +98,7 @@ class ConsiderController extends AbstractController {
      * Render the parts, since the template is always currently the same.
      */
     private function render($parts) {
-        return [
-            'template' => 'enemies.tpl',
-            'title'    => 'Fight',
-            'parts'    => $parts,
-            'options'  => ['quickstat'=>false],
-        ];
+        return new StreamedViewResponse('Fight', 'enemies.tpl', $parts, ['quickstat'=>false]);
     }
 
     /**
