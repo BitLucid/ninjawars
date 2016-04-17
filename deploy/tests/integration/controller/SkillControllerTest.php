@@ -32,9 +32,12 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testLoggedInSkillsDisplay(){
         $skill = new SkillController();
-        $skill_outcome = $skill->index();
-        $this->assertNotEmpty($skill_outcome);
-        $this->assertEquals('Your Skills', $skill_outcome['title']);
+        $response = $skill->index();
+        $this->assertNotEmpty($response);
+        $reflection = new \ReflectionProperty(get_class($response), 'title');
+        $reflection->setAccessible(true);
+        $response_title = $reflection->getValue($response);
+        $this->assertEquals('Your Skills', $response_title);
     }
 
     public function testUseFireboltOnAnotherChar(){
@@ -51,12 +54,15 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
-        $skill_outcome = $skill->useSkill();
+        $response = $skill->useSkill();
         $final_defender = Player::find($this->char2->id());
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
+        $this->assertNotInstanceOf(RedirectResponse::class, $response,
                 'A redirect was the outcome for the url: '
-                .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
-        $this->assertNull($skill_outcome['parts']['error']);
+                .($response instanceof RedirectResponse ? $response->getTargetUrl() : ''));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNull($response_data['error']);
         $this->assertLessThan($initial_health, $final_defender->health());
     }
 
@@ -81,13 +87,16 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
-        $skill_outcome = $skill->useSkill();
+        $response = $skill->useSkill();
         $final_defender = Player::find($this->char2->id());
         $final_attacker = Player::find($this->char->id());
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome,
+        $this->assertNotInstanceOf(RedirectResponse::class, $response,
                 'A redirect was the outcome for the url: '
-                .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
-        $this->assertNull($skill_outcome['parts']['error']);
+                .($response instanceof RedirectResponse? $response->getTargetUrl() : ''));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNull($response_data['error']);
         $this->assertEquals(0, $final_defender->health(), "Health not 0");
         $this->assertEquals(0, $final_defender->bounty, "Bounty not 0");
         $this->assertEquals($self_gold+$bounty, $final_attacker->gold, "Gold not updated");
@@ -112,13 +121,16 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
-        $skill_outcome = $skill->useSkill();
+        $response = $skill->useSkill();
         $final_defender = Player::find($this->char2->id());
         $final_attacker = Player::find($this->char->id());
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome,
+        $this->assertNotInstanceOf(RedirectResponse::class, $response,
                 'A redirect was the outcome for the url: '
-                .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
-        $this->assertNull($skill_outcome['parts']['error']);
+                .($response instanceof RedirectResponse ? $response->getTargetUrl() : ''));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNull($response_data['error']);
         $this->assertEquals(0, $final_defender->health());
         $this->assertGreaterThan($initial_bounty, $final_attacker->bounty);
     }
@@ -132,14 +144,15 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/self_use/Unstealth/');
         RequestWrapper::inject($request);
         $controller = new SkillController();
-        $controller_outcome = $controller->selfUse();
-
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $controller_outcome, 
+        $response = $controller->selfUse();
+        $this->assertNotInstanceOf(RedirectResponse::class, $response,
                 'A redirect was the outcome for the url: '
-                .($controller_outcome instanceof RedirectResponse? $controller_outcome->getTargetUrl() : ''));
-        $this->assertEquals('Unstealth', $controller_outcome['parts']['act']);
+                .($response instanceof RedirectResponse ? $response->getTargetUrl() : ''));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('Unstealth', $response_data['act']);
     }
-
 
     public function testUsePoisonTouchOnAnotherChar(){
         $error = $this->char->setClass('viper');
@@ -155,14 +168,17 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Poison%20Touch/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
-        $skill_outcome = $skill->useSkill();
+        $response = $skill->useSkill();
 
         $final_defender = Player::find($this->char2->id());
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
+        $this->assertNotInstanceOf(RedirectResponse::class, $response,
                 'A redirect was the outcome for the url: '
-                .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
-        $this->assertNull($skill_outcome['parts']['error']);
-        $this->assertEquals('Poison Touch', $skill_outcome['parts']['act']);
+                .($response instanceof RedirectResponse ? $response->getTargetUrl() : ''));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNull($response_data['error']);
+        $this->assertEquals('Poison Touch', $response_data['act']);
         $this->assertLessThan($initial_health, $final_defender->health());
     }
 
@@ -180,13 +196,16 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Sight/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
-        $skill_outcome = $skill->useSkill();
+        $response = $skill->useSkill();
 
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $skill_outcome, 
+        $this->assertNotInstanceOf(RedirectResponse::class, $response,
                 'An error redirect was sent back for the url: '
-                .($skill_outcome instanceof RedirectResponse? $skill_outcome->getTargetUrl() : ''));
-        $this->assertNull($skill_outcome['parts']['error']);
-        $this->assertEquals('Sight', $skill_outcome['parts']['act']);
+                .($response instanceof RedirectResponse ? $response->getTargetUrl() : ''));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNull($response_data['error']);
+        $this->assertEquals('Sight', $response_data['act']);
     }
 
     // TODO: test that self_use of things like Steal error or whatever the right behavior should be?
@@ -206,16 +225,18 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/self_use/Heal/');
         RequestWrapper::inject($request);
         $controller = new SkillController();
-        $controller_outcome = $controller->selfUse();
+        $response = $controller->selfUse();
 
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $controller_outcome, 
+        $this->assertNotInstanceOf(RedirectResponse::class, $response,
                 'A redirect was the outcome for the url: '
-                .($controller_outcome instanceof RedirectResponse? $controller_outcome->getTargetUrl() : ''));
-        $this->assertEquals('Heal', $controller_outcome['parts']['act']);
+                .($response instanceof RedirectResponse ? $response->getTargetUrl() : ''));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('Heal', $response_data['act']);
         $final_char = Player::find($this->char->id());
         $this->assertGreaterThan($initial_health, $final_char->health());
     }
-
 
     public function testUseHarmonizeOnSelf(){
         $this->char->set_turns(300);
@@ -229,12 +250,15 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/self_use/Harmonize/');
         RequestWrapper::inject($request);
         $controller = new SkillController();
-        $controller_outcome = $controller->selfUse();
+        $response = $controller->selfUse();
 
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $controller_outcome, 
+        $this->assertNotInstanceOf(RedirectResponse::class, $response,
                 'A redirect was the outcome for the url: '
-                .($controller_outcome instanceof RedirectResponse? $controller_outcome->getTargetUrl() : ''));
-        $this->assertEquals('Harmonize', $controller_outcome['parts']['act']);
+                .($response instanceof RedirectResponse? $response->getTargetUrl() : ''));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('Harmonize', $response_data['act']);
         $final_char = Player::find($this->char->id());
         $this->assertGreaterThan($initial_health, $final_char->health());
     }
