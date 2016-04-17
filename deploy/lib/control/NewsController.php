@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * Allows creation of news and displaying of news by admins
@@ -72,12 +73,7 @@ class NewsController extends AbstractController {
             $parts['error'] = 'Unable to find any matching news.';
         }
 
-        return [
-            'title'    => 'News Board',
-            'template' => $view,
-            'parts'    => $parts,
-            'options'  => [],
-        ];
+        return new StreamedViewResponse('News Board', $view, $parts);
     }
 
     /**
@@ -105,12 +101,7 @@ class NewsController extends AbstractController {
             'authenticated' => SessionFactory::getSession()->get('authenticated', false),
         ];
 
-        return [
-            'title'    => $title,
-            'template' => 'news.create.tpl',
-            'parts'    => $parts,
-            'options'  => [],
-        ];
+        return new StreamedViewResponse($title, 'news.create.tpl', $parts);
     }
 
     /**
