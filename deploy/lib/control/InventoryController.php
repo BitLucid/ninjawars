@@ -10,6 +10,7 @@ use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use \PDO;
 
 /**
@@ -22,22 +23,24 @@ class InventoryController extends AbstractController {
     const GIVE_QUANTITY = 1;
     const MAX_BONUS     = 10;
 
-	/**
-	 * View items and gold of char
+    /**
+     * View items and gold of char
      *
-     * @return ViewSpec
-	 */
-	public function index() {
-		$char       = Player::find(SessionFactory::getSession()->get('player_id'));
-		$inv = Inventory::of($char, 'self');
-		$inventory  = [];
-        $error = in('error');
-        if($error === 'noitem'){
+     * @return Response
+     */
+    public function index() {
+        $char      = Player::find(SessionFactory::getSession()->get('player_id'));
+        $inv       = Inventory::of($char, 'self');
+        $inventory = [];
+        $error     = in('error');
+
+        if ($error === 'noitem') {
             $error = 'No such item';
         }
-		foreach($inv as $item){
+
+		foreach ($inv as $item) {
 			// Special format for display and looping
-			$item['display'] = $item['item_display_name'].$item['plural'];
+			$item['display']  = $item['item_display_name'].$item['plural'];
 			$item['self_use'] = (bool) $item['self_use'];
 			$inventory[$item['item_id']] = $item;
 		}
@@ -59,7 +62,7 @@ class InventoryController extends AbstractController {
      *
      * http://nw.local/item/give/shuriken/10/
      *
-     * @return ViewSpec
+     * @return Response
 	 */
     public function give() {
         $slugs  = $this->parseSlugs();
@@ -110,7 +113,7 @@ class InventoryController extends AbstractController {
      *
      * http://nw.local/item/self_use/amanita/
      *
-     * @return ViewSpec
+     * @return Response
 	 */
     public function selfUse() {
         $slugs           = $this->parseSlugs();
@@ -160,9 +163,10 @@ class InventoryController extends AbstractController {
             }
         }
 
-        if($turns_to_take > 0 && ($player->turns - $turns_to_take >= 0)){
+        if ($turns_to_take > 0 && ($player->turns - $turns_to_take >= 0)) {
             $player->changeTurns(-1*$turns_to_take);
         }
+
         $player->save();
 
         return $this->renderUse([
@@ -186,7 +190,7 @@ class InventoryController extends AbstractController {
      *
      * http://nw.local/item/use/shuriken/10/
      *
-     * @return ViewSpec
+     * @return Response
      * @note
      * /use/ is aliased to useItem externally because use is a php reserved keyword
 	 */
@@ -576,33 +580,27 @@ class InventoryController extends AbstractController {
     }
 
     /**
-     * @return ViewSpec
+     * @return Response
      */
 	private function render($parts) {
-		return [
-			'template' => 'inventory.tpl',
-			'title'    => 'Your Inventory',
-			'parts'    => $parts,
-			'options'  => [
-				'body_classes' => 'inventory',
-				'quickstat'    => 'viewinv',
-			],
-		];
+        $options = [
+            'body_classes' => 'inventory',
+            'quickstat'    => 'viewinv',
+        ];
+
+        return new StreamedViewResponse('Your Inventory', 'inventory.tpl', $parts, $options);
 	}
 
     /**
-     * @return ViewSpec
+     * @return Response
      */
     private function renderUse($parts) {
-        return [
-            'template' => 'inventory_mod.tpl',
-            'title'    => 'Use Item',
-            'parts'    => $parts,
-            'options'  => [
-                'body_classes' => 'inventory-use',
-                'quickstat'    => 'player'
-            ],
+        $options = [
+            'body_classes' => 'inventory-use',
+            'quickstat'    => 'player',
         ];
+
+        return new StreamedViewResponse('Use Item', 'inventory_mod.tpl', $parts, $options);
     }
 
     /**
