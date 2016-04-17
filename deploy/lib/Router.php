@@ -162,7 +162,7 @@ class Router {
     }
 
     /**
-     * Runs the requested route and returns the ViewSpec to render
+     * Runs the requested route and returns the Response to render
      *
      * Given a main route, this function instantiates the necessary controller
      * and calls the necessary method on it, returning the result. It also
@@ -171,7 +171,7 @@ class Router {
      *
      * @param string $p_main The main route segment to execute
      * @param string $p_command The command to execute on the main route
-     * @return array The ViewSpec to render
+     * @return Response The Response to render
      * @throws RouteNotFoundException No controller could be found for $p_main
      * @throws RouteNotFoundException No public method could be found for $p_command
      * @todo Throw a specific exception when class not found
@@ -223,18 +223,13 @@ class Router {
     }
 
     /**
-     * Generates a viewspec for a route served by a view without a controller
+     * Generates a Response for a route served by a view without a controller
      *
      * @param string $p_mainRoute The 1st-level route requested by the user
-     * @return Viewspec The data needed to render the view on from the route
+     * @return Response
      */
     public static function serveSimpleRoute($p_mainRoute) {
-        return [
-            'template' => "$p_mainRoute.tpl",
-            'title'    => self::$routes[$p_mainRoute]['title'],
-            'parts'    => [],
-            'options'  => false,
-        ];
+        return new StreamedViewResponse(self::$routes[$p_mainRoute]['title'], "$p_mainRoute.tpl");
     }
 
     /**
