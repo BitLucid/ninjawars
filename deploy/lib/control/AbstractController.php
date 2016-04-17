@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 abstract class AbstractController {
     /**
@@ -37,11 +38,6 @@ abstract class AbstractController {
     }
 
     public function renderDefaultError($error) {
-        return [
-            'template' => 'error.tpl',
-            'title'    => 'There is an obstacle to your progress...',
-            'parts'    => ['error' => $error],
-            'options'  => [],
-        ];
+        return new StreamedViewResponse('There is an obstacle to your progress...', 'error.tpl', ['error' => $error], []);
     }
 }
