@@ -11,6 +11,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 class PlayerController extends AbstractController {
     const PRIV  = false;
@@ -103,14 +104,9 @@ class PlayerController extends AbstractController {
 
         $parts['authenticated'] = SessionFactory::getSession()->get('authenticated', false);
 
-        return [
-            'template' => $template,
-            'title'    => 'Ninja'.($viewed_name_for_title ? ": $viewed_name_for_title" : ' Profile'),
-            'parts'    => $parts,
-            'options'  => [
-                'quickstat' => 'player',
-            ],
-        ];
+        $title = 'Ninja'.($viewed_name_for_title ? ": $viewed_name_for_title" : ' Profile');
+
+        return new StreamedViewResponse($title, $template, $parts, [ 'quickstat' => 'player', ]);
     }
 
     /**
@@ -118,7 +114,7 @@ class PlayerController extends AbstractController {
      * like a final url of /item/use/shuriken/tchalvak
      * from a starting url of http://nw.local/player/use_item/?item=shuriken&target=tchalvak
      */
-    public function use_item(){
+    public function use_item() {
         $target = in('target_id');
         $item_in = in('item');
         $give = in('give');
@@ -133,12 +129,11 @@ class PlayerController extends AbstractController {
      * like a final url of /skill/use/firebolt/tchalvak
      * from a starting url of http://nw.local/player/use_skill/?act=firebolt&target=tchalvak
      */
-    public function use_skill(){
+    public function use_skill() {
         $target = in('target');
         $act = in('act');
         $url = 'skill/use/'.rawurlencode($act).'/'.rawurlencode($target);
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
     }
-
 }

@@ -59,9 +59,11 @@ class RouterUnitTest extends PHPUnit_Framework_TestCase {
 
     public function testServeSimpleRoute() {
         $testValue = 'staff';
-        $response = Router::serveSImpleRoute($testValue);
-        $this->assertArrayHasKey('template', $response);
-        $this->assertEquals($response['template'], $testValue.'.tpl');
+        $response = Router::serveSimpleRoute($testValue);
+        $reflection = new \ReflectionProperty(get_class($response), 'template');
+        $reflection->setAccessible(true);
+        $response_template = $reflection->getValue($response);
+        $this->assertEquals($response_template, $testValue.'.tpl');
     }
 
     public function testExecuteBadClassname() {

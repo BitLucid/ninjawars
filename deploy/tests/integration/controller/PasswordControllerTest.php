@@ -3,6 +3,7 @@ use NinjaWars\core\control\PasswordController;
 use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\environment\RequestWrapper;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,7 +33,10 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         // Get a Response
         $controller = new PasswordController();
         $response = $controller->index();
-        $this->assertEquals('reset.password.request.tpl', $response['template']);
+        $reflection = new \ReflectionProperty(get_class($response), 'template');
+        $reflection->setAccessible(true);
+        $response_template = $reflection->getValue($response);
+        $this->assertEquals('reset.password.request.tpl', $response_template);
     }
 
     public function testPostEmailCreatesAPasswordResetRequest() {
@@ -50,7 +54,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $pwrr = PasswordResetRequest::where('_account_id', '=', $this->account->id())->first();
 
         $this->assertNotEmpty($pwrr, 'Fail: Unable to find a matching password reset request for account_id: ['.$this->account->id().'].');
-        $this->assertTrue($pwrr instanceof PasswordResetRequest, "Request wasn't found to become a PasswordResetRequest.");
+        $this->assertInstanceOf(PasswordResetRequest::class, $pwrr, "Request wasn't found to become a PasswordResetRequest.");
         $this->assertGreaterThan(0, $pwrr->id());
         $this->assertNotEmpty($pwrr->nonce, "Nonce/Token was blank or didn't come back.");
     }
@@ -62,7 +66,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new PasswordController();
         $response = $controller->postEmail();
-        $this->assertTrue($response instanceof RedirectResponse);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertTrue(strpos($response->getTargetUrl(), rawurlencode('email or a ninja name')) !== false, 'Url Redirection did not contain expected error string');
     }
 
@@ -75,7 +79,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new PasswordController();
         $response = $controller->postEmail();
-        $this->assertTrue($response instanceof RedirectResponse);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
         $expected = 'unable to find a matching account';
         $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode($expected)) !== false, 'Url Redirection for ['.$response->getTargetUrl().'] did not contain expected error string of ['.$expected.']');
     }
@@ -114,7 +118,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $response = $controller->getReset();
 
         // Response should contain an array with the token in the parts.
-        $this->assertTrue($response instanceof RedirectResponse, 'Error! getReset matched a garbage token!');
+        $this->assertInstanceOf(RedirectResponse::class, $response, 'Error! getReset matched a garbage token!');
     }
 
     public function testGetResetWithAValidTokenDisplaysAFilledInPasswordResetForm() {
@@ -138,9 +142,12 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         // Response should contain an array with the token in the parts.
         $this->assertFalse($response instanceof RedirectResponse, 'Redirection to the url ['.($response instanceof RedirectResponse? $response->getTargetUrl() : null).'] was the invalid result of password reset.');
 
-        $this->assertTrue(is_array($response), 'Response was not a ViewSpec Array');
-        $this->assertNotEmpty($response['parts']);
-        $this->assertEquals($response['parts']['token'], $token);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response, 'Response was not a StreamedViewResponse');
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data);
+        $this->assertEquals($response_data['token'], $token);
     }
 
     public function testPostResetYeildsARedirectAndAChangedPassword() {
@@ -170,7 +177,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $response = $controller->postReset();
 
         // Response should be a successful redirect
-        $this->assertTrue($response instanceof RedirectResponse, 'Successful redirect after password resetting was not triggered!');
+        $this->assertInstanceOf(RedirectResponse::class, $response, 'Successful redirect after password resetting was not triggered!');
         $this->assertTrue(stripos($response->getTargetUrl(), 'message=Password') !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected message=Password url.');
 
         // Password should be changed.

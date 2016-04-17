@@ -8,6 +8,7 @@ use NinjaWars\core\data\PurchaseOrder;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * Handles all user actions related to the in-game Shop
@@ -48,8 +49,8 @@ class ShopController extends AbstractController {
         $item_costs        = $this->itemForSaleCosts();
         $potential_cost    = (isset($item_costs[$purchase_order->item->identity()]['item_cost']) ? $item_costs[$purchase_order->item->identity()]['item_cost'] : null);
         $current_item_cost = first_value($potential_cost, 0);
-        return (int) ceil($current_item_cost * $purchase_order->quantity);
 
+        return (int) ceil($current_item_cost * $purchase_order->quantity);
     }
 
 	/**
@@ -126,12 +127,7 @@ class ShopController extends AbstractController {
 		$p_parts['item_costs']    = $this->itemCosts;
 		$p_parts['authenticated'] = SessionFactory::getSession()->get('authenticated');
 
-		return [
-			'template' => 'shop.tpl',
-			'title'    => 'Shop',
-			'parts'    => $p_parts,
-			'options'  => [ 'quickstat' => 'viewinv' ],
-		];
+		return new StreamedViewResponse('Shop', 'shop.tpl', $p_parts, [ 'quickstat' => 'viewinv' ]);
 	}
 
     /**

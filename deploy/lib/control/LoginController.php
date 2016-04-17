@@ -6,6 +6,7 @@ use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Constants;
 use \PDO;
@@ -66,14 +67,7 @@ class LoginController extends AbstractController {
      * Render the concrete elements of the response
      */
     private function render($title, $parts) {
-        $response = [
-            'template' => 'login.tpl',
-            'title'    => $title,
-            'parts'    => $parts,
-            'options'  => ['body_classes'=>'login-page']
-        ];
-
-        return $response;
+        return new StreamedViewResponse($title, 'login.tpl', $parts, ['body_classes'=>'login-page']);
     }
 
     /**

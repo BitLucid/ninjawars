@@ -8,6 +8,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 class MessagesController extends AbstractController {
     const PRIV  = true;
@@ -163,12 +164,7 @@ class MessagesController extends AbstractController {
         ];
     }
 
-    public function render($parts, $title=null) {
-        return [
-            'template'  => 'messages.tpl'
-            , 'title'   => $title?: 'Messages'
-            , 'parts'   => $parts
-            , 'options' => ['quickstat' => true]
-        ];
+    public function render($parts, $title='Messages') {
+        return new StreamedViewResponse($title, 'messages.tpl', $parts, ['quickstat' => true]);
     }
 }

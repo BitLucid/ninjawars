@@ -10,6 +10,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * Handles both skill listing and displaying, and their usage
@@ -107,35 +108,30 @@ class SkillController extends AbstractController {
 			'can_harmonize'        => $can_harmonize,
 		];
 
-		return [
-			'title'=>'Your Skills',
-			'template'=>'skills.tpl',
-			'parts'=>$parts,
-			'options'=>[
-				'quickstat'=>'player'
-				],
-			];
+		return new StreamedViewResponse('Your Skills', 'skills.tpl', $parts, ['quickstat'=>'player']);
 	}
 
-	public function postUse(){
+	public function postUse() {
         $target = post('target');
         $target2 = post('target2');
         $act = post('act');
         $url = 'skill/use/'.rawurlencode($act).'/'.rawurlencode($target).'/'.($target2? rawurlencode($target2).'/' : '');
+
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
 	}
 
-    public function postSelfUse(){
+    public function postSelfUse() {
         $act = post('act');
         $url = 'skill/self_use/'.rawurlencode($act).'/';
+
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
     }
 
 	/**
 	 * Get the slugs from the path, eventually should be a controller standard.
-	 **/
+	 */
 	private function parseSlugs($path){
 		$slugs = explode('/', trim(urldecode($path), '/'));
 		array_unshift($slugs, $path); // First element is full path
@@ -144,19 +140,20 @@ class SkillController extends AbstractController {
 
 	/**
 	 * Use an item only on self
-	 **/
+	 */
 	public function selfUse(){
 		return $this->useSkill(true);
 	}
 
 	/**
 	 * Use, the skills_mod equivalent
-	 * @note Test with urls like: 
+     *
+	 * @note Test with urls like:
 	 * http://nw.local/skill/use/Fire%20Bolt/10
 	 * http://nw.local/skill/self_use/Unstealth/
 	 * http://nw.local/skill/self_use/Heal/
 	 */
-	public function useSkill($self_use=false){
+	public function useSkill($self_use=false) {
 		// Template vars.
 		$display_sight_table = $generic_skill_result_message = $generic_state_change = $killed_target =
 			$loot = $added_bounty = $bounty = $suicided = $destealthed = null;
@@ -164,30 +161,29 @@ class SkillController extends AbstractController {
 
 		$char_id = SessionFactory::getSession()->get('player_id');
 		$player  = Player::find($char_id);
+        $path    = RequestWrapper::getPathInfo();
+        $slugs   = $this->parseSlugs($path);
+        // (fullpath0) /skill1/use2/Fire%20Bolt3/tchalvak4/(beagle5/)
+        $act     = (isset($slugs[3]) ? $slugs[3] : null);
+        $target  = (isset($slugs[4]) ? $slugs[4] : null);
+        $target2 = (isset($slugs[5]) ? $slugs[5] : null);
 
-		$path = RequestWrapper::getPathInfo();
-		$slugs = $this->parseSlugs($path);
-		// (fullpath0) /skill1/use2/Fire%20Bolt3/tchalvak4/(beagle5/)
-		$act = isset($slugs[3])? $slugs[3] : null;
-		$target = isset($slugs[4])? $slugs[4] : null;
-		$target2 = isset($slugs[5])? $slugs[5] : null;
-
-		if(!Filter::toNonNegativeInt($target)){
-			if($self_use){
+		if (!Filter::toNonNegativeInt($target)) {
+			if ($self_use) {
 				$target = $char_id;
 			} else {
-				if($target !== null){
+				if ($target !== null) {
 					$targetObj = Player::findByName($target);
-					$target = $targetObj? $targetObj->id() : null;
+					$target = ($targetObj ? $targetObj->id() : null);
 				} else {
 					$target = null;
 				}
 			}
 		}
 
-		if($target2 && !Filter::toNonNegativeInt($target2)){
+		if ($target2 && !Filter::toNonNegativeInt($target2)) {
 			$target2Obj = Player::findByName($target2);
-			$target2 = $target2Obj? $target2Obj->id() : null;
+			$target2 = ($target2Obj ? $target2Obj->id() : null);
 		}
 
 		$skillListObj    = new Skill();
@@ -318,8 +314,10 @@ class SkillController extends AbstractController {
 				// *** Get Special Items From Inventory ***
 				$user_id = $player->id();
 				$root_item_type = 7;
-		        $itemCount = query_item('SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = :type GROUP BY item_type',
-		                array(':owner'=>$user_id, ':type'=>$root_item_type));
+                $itemCount = query_item(
+                    'SELECT sum(amount) AS c FROM inventory WHERE owner = :owner AND item_type = :type GROUP BY item_type',
+                    [':owner'=>$user_id, ':type'=>$root_item_type]
+                );
 		        $turn_cost = min($itemCount, $starting_turns-1, 2); // Costs 1 or two depending on the number of items.
 				if ($turn_cost && $itemCount > 0) {	// *** If special item count > 0 ***
                     $inventory = new Inventory($player);
@@ -520,23 +518,18 @@ class SkillController extends AbstractController {
 			}
 		} // End of the skill use SUCCESS block.
 
-		$ending_turns = $player->changeTurns($turns_to_take); // Take the skill use cost.
-
+		$ending_turns         = $player->changeTurns($turns_to_take); // Take the skill use cost.
 		$target_ending_health = $target->health;
-		$target_name = $target->name();
-		$parts = get_defined_vars();
-		$options = ['quickstat'=>'player'];
-		return [
-				'title'=>'Skill Effect', 
-				'template'=>'skills_mod.tpl',
-				'parts'=>$parts,
-				'options'=>$options,
-			];
+		$target_name          = $target->name();
+		$parts                = get_defined_vars();
+		$options              = ['quickstat'=>'player'];
+
+		return new StreamedViewResponse('Skill Effect', 'skills_mod.tpl', $parts, $options);
 	}
 
 	/**
 	 * Pull a stripped down set of player data to display to the skill user.
-	 **/
+	 */
 	private function pullSightData(Player $target){
 		$data = $target->data();
 		// Strip all fields but those allowed.
@@ -562,23 +555,20 @@ class SkillController extends AbstractController {
 		return $res;
 	}
 
-	/** 
+	/**
 	 * Use up some ki to heal yourself.
 	 */
 	private function harmonizeChakra(Player $char){
 		// Heal at most 100 or ki available or hurt by AND at least 0
 		$heal_for = (int) max(0, min($this->maxHarmonize($char), $char->is_hurt_by(), $char->ki));
-		if($heal_for > 0){
+		if ($heal_for > 0) {
 			// If there's anything to heal, try.
-
-
 			// Subtract the ki used for healing.
 			$char->heal($heal_for);
 			$char->set_ki($char->ki - $heal_for);
 			$char->save();
 		}
+
 		return $char;
 	}
-
-
 }

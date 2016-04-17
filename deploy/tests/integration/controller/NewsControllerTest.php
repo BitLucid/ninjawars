@@ -29,15 +29,18 @@ class NewsControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testIndexLoadsTitle(){
         $cont = new NewsController();
-        $res = $cont->index();
-        $this->assertNotEmpty($res);
-        $this->assertEquals('News Board', $res['title']);
+        $response = $cont->index();
+        $this->assertNotEmpty($response);
+        $reflection = new \ReflectionProperty(get_class($response), 'title');
+        $reflection->setAccessible(true);
+        $response_title = $reflection->getValue($response);
+        $this->assertEquals('News Board', $response_title);
     }
 
     public function testCreateRedirectsForNonAdmin(){
         $cont = new NewsController();
         $res = $cont->create();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $res);
+        $this->assertInstanceOf(RedirectResponse::class, $res);
     }
 
     public function testCreateLoadsForAdminPlayer(){
@@ -48,16 +51,19 @@ class NewsControllerTest extends \PHPUnit_Framework_TestCase {
         $session->set('player_id', $this->char->id()); // Mock the login.
         $this->assertTrue($this->char->isAdmin());
         $cont = new NewsController();
-        $res = $cont->create();
-        $this->assertNotEmpty($res);
-        $this->assertNotInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $res);
-        $this->assertEquals('Make New Post', $res['parts']['title']);
+        $response = $cont->create();
+        $this->assertNotEmpty($response);
+        $this->assertNotInstanceOf(RedirectResponse::class, $response);
+        $reflection = new \ReflectionProperty(get_class($response), 'title');
+        $reflection->setAccessible(true);
+        $response_title = $reflection->getValue($response);
+        $this->assertEquals('Make New Post', $response_title);
     }
 
     public function testStoreRedirectsForBlankRequest(){
         $cont = new NewsController();
         $res = $cont->store();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $res);
+        $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(false !== mb_stripos($res->getTargetUrl(), '/news/')); // Check redirects to /news/
     }
 }

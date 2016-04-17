@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\Account;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,8 +12,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Nmail;
 
 class PasswordController extends AbstractController {
-    const PRIV           = false;
-    const ALIVE          = false;
+    const PRIV  = false;
+    const ALIVE = false;
 
     /**
      * Private functionality to send out the reset email.
@@ -39,7 +40,7 @@ class PasswordController extends AbstractController {
     /**
      * Display the form to request a password reset link
      *
-     * @return array
+     * @return Response
      * @TODO: Generate a csrf
      */
     public function index() {
@@ -55,20 +56,13 @@ class PasswordController extends AbstractController {
             'ninja_name' => $ninja_name,
         ];
 
-        $response = [
-            'title'    => 'Request a password reset',
-            'template' => 'reset.password.request.tpl',
-            'parts'    => $parts,
-            'options'  => [],
-        ];
-
-        return $response;
+        return new StreamedViewResponse('Request a password reset', 'reset.password.request.tpl', $parts);
     }
 
     /**
      * Send a reset link to a given user.
      *
-     * @return RedirectResponse
+     * @return Response
      * @TODO: Authenticate the csrf, which must match, from the session.
      */
     public function postEmail() {
@@ -113,7 +107,7 @@ class PasswordController extends AbstractController {
     /**
      * Obtain token, get matching request
      *
-     * @return array|RedirectResponse
+     * @return Response
      * @todo Need a way to set the max age on the response that the form will display
      */
     public function getReset() {
@@ -133,22 +127,14 @@ class PasswordController extends AbstractController {
                 'error'          => $error,
             ];
 
-            $response = [
-                'title'    => 'Reset your password',
-                'template' => 'reset.password.tpl',
-                'parts'    => $parts,
-                'options'  => [],
-
-            ];
-
-            return $response;
+            return new StreamedViewResponse('Reset your password', 'reset.password.tpl', $parts);
         }
     }
 
     /**
      * Reset the given user's password.
      *
-     * @return RedirectResponse
+     * @return Response
      */
     public function postReset() {
         $token                = RequestWrapper::getPost('token');
@@ -165,7 +151,7 @@ class PasswordController extends AbstractController {
             $req = PasswordResetRequest::match($token);
             $account = ($req instanceof PasswordResetRequest ? $req->account() : null);
 
-            if(!$account || !$account->id()){
+            if (!$account || !$account->id()) {
                 return $this->renderError('Token was invalid or expired! Please reset again.', $token);
             } else {
                 if (strlen(trim($newPassword)) < 4 || $newPassword !== $passwordConfirmation) {

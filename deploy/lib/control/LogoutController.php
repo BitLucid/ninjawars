@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Constants;
 
@@ -22,7 +23,6 @@ class LogoutController extends AbstractController {
     }
 
     public function loggedout() {
-    	return ['template'=>'logout.tpl', 'title'=>'Logged Out', 'parts'=>null, 'options'=>null];
+        return new StreamedViewResponse('Logged Out', 'logout.tpl');
     }
-
 }

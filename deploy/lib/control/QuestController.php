@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use \RuntimeException;
 
 // get the quest model shortly
@@ -83,12 +84,7 @@ class QuestController extends AbstractController {
             'quests'=>$quests, 
             ];
 
-        return [
-            'template'=>$tpl,
-            'title'=>$title,
-            'parts'=>$parts,
-            'options'=>null,
-            ];
+        return new StreamedViewResponse($title, $tpl, $parts);
     }
 
     /**
@@ -102,12 +98,7 @@ class QuestController extends AbstractController {
             'quest'=>$quest,
             ];
 
-        return [
-            'template'=>'quests.single_quest.tpl',
-            'title'=>$title,
-            'parts'=>$parts,
-            'options'=>null,
-            ];
+        return new StreamedViewResponse($title, 'quests.single_quest.tpl', $parts);
     }
 
     /**
@@ -137,12 +128,7 @@ class QuestController extends AbstractController {
             'quests'=>$quests,
             ];
 
-        return [
-            'template'=>$tpl,
-            'title'=>$title,
-            'parts'=>$parts,
-            'options'=>null,
-            ];
+        return new StreamedViewResponse($title, $tpl, $parts);
     }
 
     /**
@@ -158,5 +144,4 @@ class QuestController extends AbstractController {
         }
         return $this->view($in_quest_id);
     }
-
 }

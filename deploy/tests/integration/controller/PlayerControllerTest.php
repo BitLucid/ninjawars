@@ -20,7 +20,7 @@ class PlayerControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testPlayerControllerCanBeInstantiatedWithoutError() {
         $player = new PlayerController();
-        $this->assertInstanceOf('NinjaWars\core\control\PlayerController', $player);
+        $this->assertInstanceOf(PlayerController::class, $player);
     }
 
     public function testPlayerIndexDoesNotErrorOnLoad() {

@@ -1,14 +1,14 @@
 <?php
 namespace NinjaWars\core\control;
 
-use NinjaWars\core\control\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Clan;
-use NinjaWars\core\data\PlayerDAO;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Handle updates for changing details and profile details
@@ -50,10 +50,10 @@ class StatsController extends AbstractController {
      * Update profile
      */
 	public function updateProfile() {
-		$char               = Player::find(SessionFactory::getSession()->get('player_id'));
-		$new_profile		= trim(in('newprofile', null, null)); // Unfiltered input.
-		$profile_changed	= false;
-		$error				= '';
+		$char            = Player::find(SessionFactory::getSession()->get('player_id'));
+		$new_profile     = trim(in('newprofile', null, null)); // Unfiltered input.
+		$profile_changed = false;
+		$error           = '';
 
 		if (!empty($new_profile)) {
 			DatabaseConnection::getInstance();
@@ -99,14 +99,7 @@ class StatsController extends AbstractController {
     }
 
     private function render($parts) {
-        return [
-            'template'	=> 'stats.tpl',
-            'title'		=> 'Ninja Stats',
-            'parts'		=> $parts,
-            'options'	=> [
-                'quickstat' => 'player',
-            ],
-        ];
+        return new StreamedViewResponse('Ninja Stats', 'stats.tpl', $parts, ['quickstat' => 'player']);
     }
 
     /**

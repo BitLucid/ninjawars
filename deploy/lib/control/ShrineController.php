@@ -5,6 +5,7 @@ use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * Controller for actions taken in the Healing Shrine
@@ -32,7 +33,7 @@ class ShrineController extends AbstractController {
 	/**
 	 * Renders the initial view of the Shrine with forms based on player state
 	 *
-	 * @return Array
+	 * @return Response
 	 * @see servicesNeeded
 	 */
 	public function index() {
@@ -56,7 +57,7 @@ class ShrineController extends AbstractController {
 	/**
 	 * Command to resurrect (if dead) and heal the maximum possible amount (always)
 	 *
-	 * @return Array
+	 * @return Response
 	 * @see _heal
 	 * @see _resurrect
 	 */
@@ -105,7 +106,7 @@ class ShrineController extends AbstractController {
 	/**
 	 * Command to resurrect the current player, if dead.
 	 *
-	 * @return Array
+	 * @return Response
 	 * @see _resurrect
 	 */
 	public function resurrect() {
@@ -137,7 +138,7 @@ class ShrineController extends AbstractController {
 	 * Command to heal the current player by the specified amount
 	 *
 	 * @param heal_points Mixed The amount of healing desires as an int or the special value 'max'
-	 * @return Array
+	 * @return Response
 	 * @see _heal
 	 */
 	public function heal() {
@@ -172,7 +173,7 @@ class ShrineController extends AbstractController {
 	/**
 	 * Command to remove the POISON status from the current player, if poisoned
 	 *
-	 * @return Array
+	 * @return Response
 	 * @par Side Effects:
 	 * On success, status attribute of $p_player is modified in memory and database
 	 * On success, gold attribute of $p_player is modified in memory and database
@@ -453,40 +454,39 @@ class ShrineController extends AbstractController {
 	 * Generate the return value for public controller methods to send to the view
 	 *
 	 * @param p_parts Array Hash of values to be added to the default
-	 * @return Array
+	 * @return StreamedViewResponse
 	 */
-	private function render($p_parts) {
-        return [
-            'template'       => 'shrine.tpl',
-            'title'          => 'Shrine',
-            'options'        => [
-                'body_classes' => 'shrine',
-                'quickstat'  => 'player',
-            ],
-            'parts'          => array_merge(
-                [
-                    'action_message' => null,
-                    'error'          => null,
-                ],
-                $p_parts
-            ),
+    private function render($p_parts) {
+        $options = [
+            'body_classes' => 'shrine',
+            'quickstat'    => 'player',
         ];
+
+        $parts = array_merge(
+            [
+                'action_message' => null,
+                'error'          => null,
+            ],
+            $p_parts
+        );
+
+        return new StreamedViewResponse('Shrine', 'shrine.tpl', $parts, $options);
 	}
 
 	/**
 	 * Generate the return value for public controller methods in error state
 	 *
 	 * @param p_player Player The player object to pass to the view for rendering
-	 * @return Array
+	 * @return StreamedViewResponse
 	 */
 	private function renderError($p_message, Player $p_player) {
 		$pageParts = $this->servicesNeeded($p_player);
 		array_unshift($pageParts, 'entrance');
 
         return $this->render([
-                'pageParts' => $pageParts,
-                'player'    => $p_player,
-                'error'     => $p_message,
-            ]);
+            'pageParts' => $pageParts,
+            'player'    => $p_player,
+            'error'     => $p_message,
+        ]);
     }
 }

@@ -6,6 +6,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * The controller for effects of a work request and the default index display
@@ -53,8 +54,7 @@ class WorkController extends AbstractController {
     }
 
     /**
-     * Get the last turns worked by a pc, and pass it to display the default
-     * page with form
+     * Get the last turns worked by a pc, and pass it to display the default page with form
      */
     public function index() {
         $char = Player::find(SessionFactory::getSession()->get('player_id'));
@@ -77,13 +77,6 @@ class WorkController extends AbstractController {
     }
 
     private function render($parts) {
-        return [
-            'template'  => 'work.tpl',
-            'title'     => 'Working in the Village',
-            'parts'     => $parts,
-            'options'   => [
-                'quickstat' => 'player',
-            ],
-        ];
+        return new StreamedViewResponse('Working in the Village', 'work.tpl', $parts, ['quickstat' => 'player']);
     }
 }

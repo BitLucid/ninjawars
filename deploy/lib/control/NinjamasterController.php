@@ -8,6 +8,7 @@ use NinjaWars\core\data\AdminViews;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * The ninjamaster/admin info
@@ -24,14 +25,14 @@ class NinjamasterController extends AbstractController {
     }
 
     /**
-     * If the player isn't logged in, or isn't admin, return a redirect
+     * If the player isn't logged in, or isn't admin
      *
-     * @return RedirectResponse|boolean
+     * @return boolean
      */
-    private function requireAdmin($player) {
+    private function isAdmin($player) {
         if ($player === null || !$player instanceof Player || !$player->isAdmin()) {
             // Redirect to the root site.
-            return new RedirectResponse(WEB_ROOT);
+            return false;
         } else {
             return true;
         }
@@ -42,13 +43,11 @@ class NinjamasterController extends AbstractController {
      *
      * Includes player viewing, account duplicates checking, npc balacing
      *
-     * @return ViewSpec|RedirectResponse
+     * @return Response
      */
     public function index() {
-        $result = $this->requireAdmin($this->self);
-
-        if ($result instanceof RedirectResponse) {
-            return $result;
+        if (!$this->isAdmin($this->self)) {
+            return new RedirectResponse(WEB_ROOT);
         }
 
         $charInfos        = null;
@@ -93,52 +92,33 @@ class NinjamasterController extends AbstractController {
             'trivial_npcs'      => $trivialNpcs,
         ];
 
-        return [
-            'title'    => 'Admin Actions',
-            'template' => 'ninjamaster.tpl',
-            'parts'    => $parts,
-            'options'  => null,
-        ];
+        return new StreamedViewResponse('Admin Actions', 'ninjamaster.tpl', $parts);
     }
 
     /**
      * Display the tools page
      *
-     * @return ViewSpec|RedirectResponse
+     * @return Response
      */
     public function tools() {
-        $result = $this->requireAdmin($this->self);
-
-        if ($result instanceof RedirectResponse) {
-            return $result;
+        if (!$this->isAdmin($this->self)) {
+            return new RedirectResponse(WEB_ROOT);
         }
 
-        return [
-            'title'    => 'Admin Tools',
-            'template' => 'page.tools.tpl',
-            'parts'    => [],
-            'options'  => [ 'private' => false ],
-        ];
+        return new StreamedViewResponse('Admin Tools', 'page.tools.tpl', [], [ 'private' => false ]);
     }
 
     /**
      * Display a list of characters ranked by score/difficulty.
      *
-     * @return ViewSpec|RedirectResponse
+     * @return Response
      */
     public function player_tags() {
-        $result = $this->requireAdmin($this->self);
-
-        if ($result instanceof RedirectResponse) {
-            return $result;
+        if (!$this->isAdmin($this->self)) {
+            return new RedirectResponse(WEB_ROOT);
         }
 
-        return [
-            'title'    => 'Player Character Tags',
-            'template' => 'player-tags.tpl',
-            'parts'    => [ 'player_size' => $this->playerSize() ],
-            'options'  => [ 'quickstat' => false ],
-        ];
+        return new StreamedViewResponse('Player Character Tags', 'player-tags.tpl', [ 'player_size' => $this->playerSize() ], [ 'quickstat' => false ]);
     }
 
     /**

@@ -3,6 +3,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\MessagesController;
 
 class MessagesControllerTest extends PHPUnit_Framework_TestCase {
@@ -26,13 +27,11 @@ class MessagesControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testViewPersonal() {
         $response = $this->controller->viewPersonal();
-
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testViewClan() {
         $response = $this->controller->viewClan();
-
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 }

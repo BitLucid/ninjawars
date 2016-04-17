@@ -3,6 +3,7 @@ namespace NinjaWars\test;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\control\LoginController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
@@ -25,7 +26,7 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testLoginControllerCanBeInstantiatedWithoutError() {
         $controller = new LoginController();
-        $this->assertInstanceOf('NinjaWars\core\control\LoginController', $controller);
+        $this->assertInstanceOf(LoginController::class, $controller);
     }
 
     public function testLoginWithGibberishFails() {
@@ -36,8 +37,11 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testLoginIndexShouldDisplay(){
         $controller = new LoginController();
-        $res = $controller->index();
-        $this->assertFalse($res['parts']['authenticated']);
+        $response = $controller->index();
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertFalse($response_data['authenticated']);
     }
 
     public function testShouldRedirectIfAuthenticated(){
@@ -45,13 +49,13 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
         $session->set('authenticated', true);
         $controller = new LoginController();
         $res = $controller->index();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $res);
+        $this->assertInstanceOf(RedirectResponse::class, $res);
     }
 
     public function testLoginRequestWithBlanksShouldError(){
         $controller = new LoginController();
         $res = $controller->requestLogin();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $res);
+        $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(stripos($res->getTargetUrl(), 'error') !== false);
     }
 
@@ -60,25 +64,25 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $controller = new LoginController();
         $res = $controller->requestLogin();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $res);
+        $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(stripos($res->getTargetUrl(), 'error') !== false);
     }
 
     public function testLoginRequestWithNewlyCreatedAccountShouldWork(){
         $account = Account::findById(TestAccountCreateAndDestroy::account_id());
-        $this->assertInstanceOf('NinjaWars\core\data\Account', $account);
+        $this->assertInstanceOf(Account::class, $account);
         $request = new Request([], ['user'=>$account->account_identity, 'pass'=>TestAccountCreateAndDestroy::$test_password]);
         // TestAccountCreateAndDestroy::$test_password
         RequestWrapper::inject($request);
         $controller = new LoginController();
         $res = $controller->requestLogin();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $res);
+        $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(stripos($res->getTargetUrl(), 'error') === false);
     }
 
     public function testUnconfirmedAccountShouldProduceLoginError(){
         $account = Account::findById(TestAccountCreateAndDestroy::account_id());
-        $this->assertInstanceOf('NinjaWars\core\data\Account', $account);
+        $this->assertInstanceOf(Account::class, $account);
         $account->confirmed = 0;
         $account->save();
         $request = new Request([], ['user'=>$account->account_identity, 'pass'=>TestAccountCreateAndDestroy::$test_password]);
@@ -86,13 +90,13 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $controller = new LoginController();
         $res = $controller->requestLogin();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $res);
+        $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(stripos($res->getTargetUrl(), 'error') !== false);
     }
 
     public function testLoginShouldFailOnBlanks(){
         $account = Account::findById(TestAccountCreateAndDestroy::account_id());
-        $this->assertInstanceOf('NinjaWars\core\data\Account', $account);
+        $this->assertInstanceOf(Account::class, $account);
         $account->confirmed = 0;
         $account->save();
         $request = new Request([], ['user'=>'', 'pass'=>'']);
@@ -100,7 +104,7 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $controller = new LoginController();
         $res = $controller->requestLogin();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $res);
+        $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(stripos($res->getTargetUrl(), 'error') !== false);
     }
 

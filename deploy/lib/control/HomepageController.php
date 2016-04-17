@@ -5,6 +5,7 @@ use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * display the standard homepage, and maybe eventually the splash page
@@ -24,7 +25,7 @@ class HomepageController extends AbstractController {
     /**
      * Parse whether to display the splash page or the logged-in homepage.
      *
-     * @return ViewSpec
+     * @return Response
      */
     public function index() {
         return ($this->loggedIn ? $this->game() : $this->splash());
@@ -33,7 +34,7 @@ class HomepageController extends AbstractController {
     /**
      * The standard homepage
      *
-     * @return ViewSpec
+     * @return Response
      */
     private function game() {
         // Get the actual values of the vars.
@@ -55,19 +56,14 @@ class HomepageController extends AbstractController {
             'unread_message_count' => $unreadCount,
         ];
 
-        return [
-            'template' => 'index.tpl',
-            'title'    => 'Live by the Shuriken',
-            'parts'    => $parts,
-            'options'  => [ 'is_index' => true ],
-        ];
+        return new StreamedViewResponse('Live by the Shuriken', 'index.tpl', $parts, [ 'is_index' => true ]);
     }
 
     /**
      * The main starting splash homepage (for logged-out user)
      *
      * @todo Make version dynamic based on actual version of app
-     * @return ViewSpec
+     * @return Response
      */
     private function splash() {
         // Assign these vars to the template.
@@ -77,11 +73,6 @@ class HomepageController extends AbstractController {
             'version'      => 'NW Version 1.8.0 2014.06.30',
         ];
 
-        return [
-            'template' => 'splash.tpl',
-            'title'    => 'Live by the Shuriken',
-            'parts'    => $parts,
-            'options'  => [ 'is_index' => true ],
-        ];
+        return new StreamedViewResponse('Live by the Shuriken', 'splash.tpl', $parts, [ 'is_index' => true ]);
     }
 }
