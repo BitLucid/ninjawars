@@ -7,6 +7,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\Filter;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
 use \Constants;
 use \Nmail;
@@ -34,7 +35,7 @@ class SignupController extends AbstractController {
     /**
      * The default action gets a simple view
      *
-     * @return ViewSpec
+     * @return Response
      */
     public function index() {
         Request::setTrustedProxies(Constants::$trusted_proxies);
@@ -42,24 +43,23 @@ class SignupController extends AbstractController {
         $request = RequestWrapper::$request;
         $signupRequest = $this->buildSignupRequest($request);
 
-        return [
-            'template' => self::TEMPLATE,
-            'title'    => self::TITLE,
-            'parts'    => [
-                'submit_successful' => false,
-                'submitted'         => false,
-                'error'             => false,
-                'classes'           => $this->classes,
-                'signupRequest'     => $signupRequest,
-            ],
-            'options'  => ['quickstat' => false, 'body_classes'=>'signup-page'],
+        $parts = [
+            'submit_successful' => false,
+            'submitted'         => false,
+            'error'             => false,
+            'classes'           => $this->classes,
+            'signupRequest'     => $signupRequest,
         ];
+
+        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+
+        return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
 
     /**
      * The signup action processes a signup request and creates new accounts
      *
-     * @return ViewSpec
+     * @return Response
      */
     public function signup() {
         Request::setTrustedProxies(Constants::$trusted_proxies);
@@ -68,19 +68,19 @@ class SignupController extends AbstractController {
 
         try {
             $this->validateSignupRequest($signupRequest); // guard method
-            $viewSpec = $this->doWork($signupRequest);
+            $response = $this->doWork($signupRequest);
         } catch (\RuntimeException $e) {
-            $viewSpec = $this->renderException($e, $signupRequest);
+            $response = $this->renderException($e, $signupRequest);
         }
 
-        return $viewSpec;
+        return $response;
     }
 
     /**
      * Implementation of the signup logic.
      *
      * @param SignupRequest $p_request
-     * @return ViewSpec
+     * @return Response
      * @throw \Runtimeexception account creation failed
      */
     private function doWork($p_request) {
@@ -129,21 +129,20 @@ class SignupController extends AbstractController {
             $confirmed = false;
         }
 
-        return [
-            'template' => self::TEMPLATE,
-            'title'    => self::TITLE,
-            'parts'    => [
-                'classes'           => $this->classes,
-                'class_display'     => $this->classDisplayNameFromIdentity($p_request->enteredClass),
-                'signupRequest'     => $p_request,
-                'submit_successful' => true,
-                'completedPhase'    => $completedPhase,
-                'confirmed'         => $confirmed,
-                'submitted'         => true,
-                'error'             => '',
-            ],
-            'options'  => ['quickstat' => false, 'body_classes'=>'signup-page'],
+        $parts = [
+            'classes'           => $this->classes,
+            'class_display'     => $this->classDisplayNameFromIdentity($p_request->enteredClass),
+            'signupRequest'     => $p_request,
+            'submit_successful' => true,
+            'completedPhase'    => $completedPhase,
+            'confirmed'         => $confirmed,
+            'submitted'         => true,
+            'error'             => '',
         ];
+
+        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+
+        return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
 
     /**
@@ -209,27 +208,26 @@ class SignupController extends AbstractController {
     }
 
     /**
-     * Creates a viewspec from an exception
+     * Creates a Response from an exception
      *
      * @param \Exception $p_exception
      * @param SignupRequest $p_request
-     * @return ViewSpec
+     * @return Response
      */
     private function renderException(\Exception $p_exception, $p_request) {
-        return [
-            'template' => self::TEMPLATE,
-            'title'    => self::TITLE,
-            'parts'    => [
-                'classes'           => $this->class_choices(),
-                'submitted'         => true,
-                'error'             => $p_exception->getMessage(),
-                'completedPhase'    => $p_exception->getCode(),
-                'submit_successful' => false,
-                'class_display'     => '',
-                'signupRequest'     => $p_request,
-            ],
-            'options'  => ['quickstat' => false, 'body_classes'=>'signup-page'],
+        $parts = [
+            'classes'           => $this->class_choices(),
+            'submitted'         => true,
+            'error'             => $p_exception->getMessage(),
+            'completedPhase'    => $p_exception->getCode(),
+            'submit_successful' => false,
+            'class_display'     => '',
+            'signupRequest'     => $p_request,
         ];
+
+        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+
+        return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
 
     /**

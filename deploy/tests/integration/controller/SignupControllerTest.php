@@ -23,7 +23,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testInstantiation() {
         $controller = new SignupController();
-        $this->assertInstanceOf('NinjaWars\core\control\SignupController', $controller);
+        $this->assertInstanceOf(SignupController::class, $controller);
     }
 
     public function testBlacklist() {
@@ -44,7 +44,10 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject(new Request([]));
         $controller = new SignupController();
         $response = $controller->signup();
-        $this->assertNotEmpty($response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
     }
 
     /**
@@ -58,8 +61,11 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new SignupController();
         $response = $controller->signup();
-        $this->assertNotEmpty($response['parts']['error']);
-        $this->assertContains('match', $response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
+        $this->assertContains('match', $response_data['error']);
     }
 
     /**
@@ -74,8 +80,11 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new SignupController();
         $response = $controller->signup();
-        $this->assertNotEmpty($response['parts']['error']);
-        $this->assertContains('all the nece', $response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
+        $this->assertContains('all the nece', $response_data['error']);
     }
 
     /**
@@ -91,8 +100,11 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new SignupController();
         $response = $controller->signup();
-        $this->assertNotEmpty($response['parts']['error']);
-        $this->assertContains('Ninja name:', $response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
+        $this->assertContains('Ninja name:', $response_data['error']);
     }
 
     /**
@@ -108,8 +120,11 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new SignupController();
         $response = $controller->signup();
-        $this->assertNotEmpty($response['parts']['error']);
-        $this->assertContains('Passwords must', $response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
+        $this->assertContains('Passwords must', $response_data['error']);
     }
 
     /**
@@ -134,8 +149,11 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         $account->active_email = $original_email;
         $account->save();
 
-        $this->assertNotEmpty($response['parts']['error']);
-        $this->assertContains('using that email', $response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
+        $this->assertContains('using that email', $response_data['error']);
     }
 
     /**
@@ -151,8 +169,11 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new SignupController();
         $response = $controller->signup();
-        $this->assertNotEmpty($response['parts']['error']);
-        $this->assertContains('to be valid', $response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
+        $this->assertContains('to be valid', $response_data['error']);
     }
 
     /**
@@ -172,8 +193,11 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new SignupController();
         $response = $controller->signup();
-        $this->assertNotEmpty($response['parts']['error']);
-        $this->assertContains('already in use', $response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
+        $this->assertContains('already in use', $response_data['error']);
     }
 
     /**
@@ -189,8 +213,11 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new SignupController();
         $response = $controller->signup();
-        $this->assertNotEmpty($response['parts']['error']);
-        $this->assertContains('already in use', $response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
+        $this->assertContains('already in use', $response_data['error']);
     }
 
     public function testInvalidClassFailsCorrectly() {
@@ -204,8 +231,11 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new SignupController();
         $response = $controller->signup();
-        $this->assertNotEmpty($response['parts']['error']);
-        $this->assertContains('proper class', $response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
+        $this->assertContains('proper class', $response_data['error']);
     }
 
     public function testSuccessfulSignup() {
@@ -241,7 +271,10 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         query($delete_account, [':id' => $account->id()]);
         query($delete_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
 
-        $this->assertTrue($response['parts']['submit_successful'], 'Signup() returned error: '.$response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue($response_data['submit_successful'], 'Signup() returned error: '.$response_data['error']);
         $this->assertEquals($relationship_count, 1);
     }
 
@@ -282,7 +315,10 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         query($delete_account, [':id' => $account->id()]);
         query($delete_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
 
-        $this->assertTrue($response['parts']['submit_successful'], 'Signup() returned error: '.$response['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue($response_data['submit_successful'], 'Signup() returned error: '.$response_data['error']);
         $this->assertEquals($relationship_count, 1);
         $this->assertTrue($account_unconfirmed);
     }
