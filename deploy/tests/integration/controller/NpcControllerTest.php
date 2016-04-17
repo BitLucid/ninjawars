@@ -57,7 +57,10 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $_SERVER['REQUEST_URI'] = '/npc/attack/peasant';
         $response = $this->controller->attack();
         $this->assertNotEmpty($response);
-        $this->assertEquals('peasant', $response['parts']['victim']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('peasant', $response_data['victim']);
     }
 
     public function testAttackPeasantWithABountableHighLevelCharacter() {
@@ -76,16 +79,22 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $response = $this->controller->attack();
         $final_char = Player::find($this->char->id());
         $this->assertNotEmpty($response);
-        $this->assertEquals('peasant2', $response['parts']['victim']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('peasant2', $response_data['victim']);
         $this->assertGreaterThan(0, $final_char->health());
     }
 
     public function testControllerAttackAsIfAgainstAMerchant() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/merchant';
         $response = $this->controller->attack();
-        $this->assertEquals('merchant', $response['parts']['victim']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('merchant', $response_data['victim']);
     }
-/*
+
     public function testControllerAttackAsIfAgainstAMerchant2() {
         $this->markTestSkipped('Merchants are unreliable to test for now.');
         $_SERVER['REQUEST_URI'] = '/npc/attack/merchant2';
@@ -96,37 +105,51 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $response = $this->controller->attack();
         $final_char = Player::find($this->char->id());
         $this->assertNotEmpty($response);
-        $this->assertEquals('merchant2', $response['parts']['victim']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('merchant2', $response_data['victim']);
         $this->assertGreaterThan(0, $npco->minGold());
         $this->assertGreaterThan($init_gold, $final_char->gold);
     }
-*/
 
     public function testControllerAttackAsIfAgainstAGuard() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/guard';
         $response = $this->controller->attack();
         $this->assertNotEmpty($response);
-        $this->assertEquals('guard', $response['parts']['victim']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('guard', $response_data['victim']);
     }
 
     public function testControllerAttackAsIfAgainstAGuard2() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/guard2';
         $response = $this->controller->attack();
         $this->assertNotEmpty($response);
-        $this->assertEquals('guard2', $response['parts']['victim']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('guard2', $response_data['victim']);
     }
 
     public function testControllerAttackAsIfAgainstAThief() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/thief';
         $response = $this->controller->attack();
-        $this->assertEquals('thief', $response['parts']['victim']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('thief', $response_data['victim']);
     }
 
     public function testControllerAttackAsIfAgainstAThief2() {
         $this->markTestIncomplete('There is not yet a thief2, but turn this on when there is.');
         $_SERVER['REQUEST_URI'] = '/npc/attack/thief2';
         $response = $this->controller->attack();
-        $this->assertEquals('theif2', $response['parts']['victim']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('theif2', $response_data['victim']);
     }
 
     public function testControllerAttackAgainstSamurai() {
@@ -138,13 +161,19 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
         $_SERVER['REQUEST_URI'] = '/npc/attack/samurai';
         $response = $this->controller->attack();
-        $this->assertEquals('samurai', $response['parts']['victim']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('samurai', $response_data['victim']);
     }
 
     public function testControllerFailedAttackAgainstSamurai() {
         $_SERVER['REQUEST_URI'] = '/npc/attack/samurai';
         $response = $this->controller->attack();
-        $this->assertEquals('samurai', $response['parts']['victim']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertEquals('samurai', $response_data['victim']);
     }
 
     public function testRandomEncounter() {

@@ -11,6 +11,7 @@ use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 
 /**
  * Handles displaying npcs and attacking specific npcs
@@ -255,6 +256,7 @@ class NpcController extends AbstractController {
     /**
      * Attack a specific npc
      *
+     * @return Response
      * @todo remove REQUEST_URI access and use params
      * @see http://nw.local/npc/attack/villager
      * @see http://nw.local/npc/attack/guard/
@@ -348,12 +350,7 @@ class NpcController extends AbstractController {
             'health'       => $health,
         ];
 
-        return [
-            'template' => 'npc.tpl',
-            'title'    => 'Battle',
-            'parts'    => $parts + $combat_data, // Merge in combat data
-            'options'  => ['quickstat' => 'player'],
-        ];
+        return new StreamedViewResponse('Battle', 'npc.tpl', $parts + $combat_data, ['quickstat' => 'player']);
     }
 
     private function attackGuard(Player $player) {
@@ -617,7 +614,7 @@ class NpcController extends AbstractController {
     /**
      * Get the list of npcs in a subtemplate.
      *
-     * @return ViewSpec
+     * @return Response
      */
     public function index() {
         $all_npcs   = $this->npcs();
@@ -628,11 +625,6 @@ class NpcController extends AbstractController {
         $parts      = ['npcs' => $npcs, 'other_npcs' => $other_npcs];
         $options    = ['quickstats' => 'player'];
 
-        return [
-            'template' => $template,
-            'title'    => $title,
-            'parts'    => $parts,
-            'options'  => $options,
-        ];
+        return new StreamedViewResponse($title, $template, $parts, $options);
     }
 }
