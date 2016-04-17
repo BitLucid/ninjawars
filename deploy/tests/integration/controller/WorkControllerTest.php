@@ -22,7 +22,7 @@ class WorkControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testWorkControllerCanBeInstantiatedWithoutError() {
         $cont = new WorkController();
-        $this->assertInstanceOf('NinjaWars\core\control\WorkController', $cont);
+        $this->assertInstanceOf(WorkController::class, $cont);
     }
 
     public function testWorkIndexDoesNotError() {
@@ -37,9 +37,12 @@ class WorkControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request([], ['worked'=>999]);
         RequestWrapper::inject($request);
         $work = new WorkController();
-        $work_response = $work->requestWork();
-        $earned_gold = $work_response['parts']['earned_gold'];
-        $this->assertTrue($work_response['parts']['not_enough_energy']);
+        $response = $work->requestWork();
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $earned_gold = $response_data['earned_gold'];
+        $this->assertTrue($response_data['not_enough_energy']);
         $this->assertEquals('0', $earned_gold);
     }
 
@@ -49,9 +52,12 @@ class WorkControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request([], ['worked'=>99977777]);
         RequestWrapper::inject($request);
         $work = new WorkController();
-        $work_response = $work->requestWork();
-        $earned_gold = $work_response['parts']['earned_gold'];
-        $this->assertTrue($work_response['parts']['not_enough_energy']);
+        $response = $work->requestWork();
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $earned_gold = $response_data['earned_gold'];
+        $this->assertTrue($response_data['not_enough_energy']);
         $this->assertEquals('0', $earned_gold);
     }
 
@@ -62,8 +68,11 @@ class WorkControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request([], ['worked'=>-999]);
         RequestWrapper::inject($request);
         $work = new WorkController();
-        $work_response = $work->requestWork();
-        $earned_gold = $work_response['parts']['earned_gold'];
+        $response = $work->requestWork();
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $earned_gold = $response_data['earned_gold'];
         $this->assertEquals("0", $earned_gold);
     }
 }
