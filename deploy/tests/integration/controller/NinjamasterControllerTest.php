@@ -17,22 +17,26 @@ class NinjamasterControllerTest extends PHPUnit_Framework_TestCase {
         $session->invalidate();
     }
 
-    public function testNinjamasterControllerCanBeInstantiatedWithoutError() {
+    public function testSuccessfulInstantiation() {
         $controller = new NinjamasterController();
-        $this->assertInstanceOf('NinjaWars\core\control\NinjamasterController', $controller);
+        $this->assertInstanceOf(NinjamasterController::class, $controller);
     }
 
-    public function testNinjamasterIndexRedirects(){
+    public function testIndexRedirects() {
         $cont = new NinjamasterController();
         $redir = $cont->index();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $redir);
+        $this->assertInstanceOf(RedirectResponse::class, $redir);
     }
 
-    public function testNinjamasterMethodsRedirect(){
+    public function testToolsRedirect() {
         $cont = new NinjamasterController();
         $redir = $cont->tools();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $redir);
+        $this->assertInstanceOf(RedirectResponse::class, $redir);
+    }
+
+    public function testPlayerTagsRedirect() {
+        $cont = new NinjamasterController();
         $redir = $cont->player_tags();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $redir);
+        $this->assertInstanceOf(RedirectResponse::class, $redir);
     }
 }
