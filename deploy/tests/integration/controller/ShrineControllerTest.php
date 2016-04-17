@@ -28,7 +28,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testShrineControllerCanBeInstantiatedWithoutError() {
         $cont = new ShrineController();
-        $this->assertInstanceOf('NinjaWars\core\control\ShrineController', $cont);
+        $this->assertInstanceOf(ShrineController::class, $cont);
     }
 
     public function testShrineIndexDoesNotError() {
@@ -42,9 +42,12 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $result = $cont->healAndResurrect();
+        $response = $cont->healAndResurrect();
         $final_char = Player::find($this->char->id());
-        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
         $this->assertEquals($final_char->maxHealth(), $final_char->health());
     }
 
@@ -61,8 +64,11 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->setClass('viper'); // Default dragon class has chi skill
 
         $cont = new ShrineController();
-        $result = $cont->heal();
-        $this->assertTrue(in_array('result-heal', $result['parts']['pageParts']));
+        $response = $cont->heal();
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue(in_array('result-heal', $response_data['pageParts']));
         $final_char = Player::find($this->char->id());
         $this->assertEquals($initial_health+10, $final_char->health());
     }
@@ -80,8 +86,11 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $result = $cont->heal();
-        $this->assertTrue(in_array('result-heal', $result['parts']['pageParts']));
+        $response = $cont->heal();
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue(in_array('result-heal', $response_data['pageParts']));
         $final_char = Player::find($this->char->id());
         $this->assertEquals(min($initial_health+$initial_gold, $final_char->getMaxHealth()), $final_char->health());
     }
@@ -97,21 +106,26 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->setClass('viper'); // Default dragon class has chi skill
 
         $cont = new ShrineController();
-        $result = $cont->heal();
+        $response = $cont->heal();
         $final_char = Player::find($this->char->id());
-        $this->assertNotEmpty($result['parts']['error']);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
         $this->assertEquals($initial_health, $final_char->health());
     }
-
 
     public function testResurrectOfPlayerByShrine(){
         $this->char->death();
         $this->char->save();
 
         $cont = new ShrineController();
-        $result = $cont->resurrect();
+        $response = $cont->resurrect();
         $final_char = Player::find($this->char->id());
-        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
         $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level)/2), $final_char->health());
     }
 
@@ -132,9 +146,12 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $result = $cont->resurrect();
+        $response = $cont->resurrect();
         $final_char = Player::find($this->char->id());
-        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
         $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level)/2), $final_char->health());
     }
 
@@ -146,9 +163,12 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $result = $cont->resurrect();
+        $response = $cont->resurrect();
         $final_char = Player::find($this->char->id());
-        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
         $this->assertGreaterThan($this->char->getMaxHealth()/(3), $final_char->health());
     }
 
@@ -160,10 +180,13 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $result = $cont->resurrect();
+        $response = $cont->resurrect();
         $final_char = Player::find($this->char->id());
 
-        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
         $this->assertTrue($final_char->hasStatus(STEALTH));
     }
 
@@ -178,9 +201,12 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($skillList->hasSkill('chi', $this->char));
 
         $cont = new ShrineController();
-        $result = $cont->resurrect();
+        $response = $cont->resurrect();
         $final_char = Player::find($this->char->id());
-        $this->assertTrue(in_array('result-resurrect', $result['parts']['pageParts']));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
         $this->assertGreaterThan($this->char->getMaxHealth()/(1.5), $final_char->health());
         $this->assertLessThan($turns, $final_char->turns);
     }
@@ -193,8 +219,11 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $result = $cont->resurrect();
-        $this->assertFalse(in_array('result-resurrect', $result['parts']['pageParts']));
+        $response = $cont->resurrect();
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertFalse(in_array('result-resurrect', $response_data['pageParts']));
     }
 
     public function testResurrectWhileAlive() {
@@ -204,7 +233,10 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $result = $cont->resurrect();
-        $this->assertFalse(in_array('result-resurrect', $result['parts']['pageParts']));
+        $response = $cont->resurrect();
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertFalse(in_array('result-resurrect', $response_data['pageParts']));
     }
 }
