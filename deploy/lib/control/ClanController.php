@@ -21,7 +21,7 @@ class ClanController extends AbstractController {
 	/**
 	 * View information about a clan
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 * @note
 	 * If a clan_id is not specified, the clan of the current user will be used
 	 */
@@ -83,7 +83,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Send an invitation to a character that will ask them to join your clan
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 * @throws Exception You cannot use this function if you are not the leader of a clan
 	 */
 	public function invite() {
@@ -124,7 +124,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Removes the active player from the clan they are in
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 * @throws Exception If you are the only leader of your clan, you cannot leave, you must disband
 	 */
 	public function leave() {
@@ -151,7 +151,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Creates a new clan with the current user as the leader
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 * @note
 	 * Player must be high enough level to create a clan
 	 *
@@ -194,7 +194,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Sends a request to a clan leader for the current user to join a clan
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 */
 	public function join() {
 		$clanID = (int) in('clan_id', null);
@@ -219,7 +219,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Deletes a clan and messages all members that it has been disbanded
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 * @throws \Exception The player disbanding must be the leader of the clan
 	 */
 	public function disband() {
@@ -258,7 +258,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Removes a player from a clan
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 * @throws Exception The player must be the leader of the clan to kick a member
 	 */
 	public function kick() {
@@ -288,7 +288,7 @@ class ClanController extends AbstractController {
 	 * Edits clan metadata
 	 *
      * @todo accumulate error messages
-	 * @return Array The viewspec
+	 * @return Response
 	 * @throws Exception Only leaders can update clan details
 	 * @note
 	 * All parameters are options
@@ -355,7 +355,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Shows a form for editing clan metadata
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 * @see update()
 	 */
 	public function edit() {
@@ -417,7 +417,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Shows a ranked list of all clans in the game
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 */
 	public function listClans() {
 		$parts = [
@@ -444,7 +444,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Review a request to join a clan
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 */
 	public function review() {
 		$ninja = Player::find(SessionFactory::getSession()->get('player_id'));
@@ -479,7 +479,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Accept a player as a new member of a clan
 	 *
-	 * @return Array The viewspec
+	 * @return Response
 	 *
 	 * @par Preconditions:
 	 * Active player must be leader of a clan
@@ -526,7 +526,7 @@ class ClanController extends AbstractController {
 	}
 
 	/**
-	 * Generates a viewspec for rendering pages
+	 * Generates a Response for rendering pages
 	 *
 	 * @param Array $p_parts Name-Value pairs of values to send to the view
 	 * @return Response

@@ -45,7 +45,7 @@ class CasinoController extends AbstractController {
 	 * User command for betting on the coin toss game in the casino
 	 *
 	 * @param bet int The amount of money to bet on the coin toss game
-	 * @return Array|RedirectResponse ViewSpec
+	 * @return Response
 	 *
 	 * @note
      * If the player bets within ~1% of the maximum bet, they will receive a

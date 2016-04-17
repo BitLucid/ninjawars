@@ -180,7 +180,7 @@ class DojoController extends AbstractController {
     }
 
     /**
-     * Create the ViewSpec to render
+     * Create the Response to render
      *
      * @param Array $p_parts Array that gets bound to view
      * @param Player $p_player The player requesting the action

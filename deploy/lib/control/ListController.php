@@ -17,7 +17,7 @@ class ListController extends AbstractController {
     /**
      * Get the ninja list and display it
      *
-     * @return ViewSpec
+     * @return Response
      */
     public function index() {
         $session      = SessionFactory::getSession();
