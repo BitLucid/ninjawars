@@ -59,9 +59,12 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request([], ['quantity'=>1, 'item'=>'shuriken']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
-        $shop_outcome = $shop->buy();
-        $this->assertNotEmpty($shop_outcome);
-        $this->assertTrue($shop_outcome['parts']['valid']);
+        $response = $shop->buy();
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response);
+        $this->assertTrue($response_data['valid']);
         $inv = new Inventory($pc);
         $this->assertEquals(1, $inv->amount('shuriken'));
     }
@@ -75,9 +78,12 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request([], ['quantity'=>7, 'item'=>'shuriken']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
-        $shop_outcome = $shop->buy();
-        $this->assertNotEmpty($shop_outcome);
-        $this->assertTrue($shop_outcome['parts']['valid']);
+        $response = $shop->buy();
+        $this->assertNotEmpty($response);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertTrue($response_data['valid']);
         $inv = new Inventory($pc);
         $this->assertEquals(7, $inv->amount('shuriken'));
     }
@@ -91,8 +97,11 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request([], ['quantity'=>4, 'item'=>'zigzigX']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
-        $shop_outcome = $shop->buy();
-        $this->assertNotEmpty($shop_outcome);
-        $this->assertFalse($shop_outcome['parts']['valid']);
+        $response = $shop->buy();
+        $this->assertNotEmpty($response);
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertFalse($response_data['valid']);
     }
 }
