@@ -3,6 +3,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\HomepageController;
 
 class HomepageControllerTest extends PHPUnit_Framework_TestCase {
@@ -24,6 +25,6 @@ class HomepageControllerTest extends PHPUnit_Framework_TestCase {
     public function testIndex() {
         $response = $this->controller->index();
 
-        $this->assertArrayHasKey('template', $response);
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 }
