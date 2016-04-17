@@ -241,22 +241,4 @@ class Router {
         $view->display('404.tpl');
     }
 
-    /**
-     * Renders the view and sends it to the client
-     *
-     * @param Array $p_viewSpec The data needed to render a view
-     * @return void
-     * @note
-     * This method generates output
-     */
-    public static function render($p_viewSpec) {
-        $response = new StreamedViewResponse(
-            $p_viewSpec['title'],
-            $p_viewSpec['template'],
-            $p_viewSpec['parts'],
-            $p_viewSpec['options']
-        );
-
-        $response->send();
-    }
 }

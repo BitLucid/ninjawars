@@ -17,10 +17,8 @@ try {
 
     if ($response instanceof Response) {
         $response->send();
-    } else if (is_array($response)) {
-        Router::render($response);
     } else {
-        echo $response;
+        throw new \RuntimeException('Route returned something other than a Response');
     }
 } catch (RouteNotFoundException $e) {
     Router::respond404();
