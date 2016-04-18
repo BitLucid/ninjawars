@@ -303,9 +303,12 @@ class NpcController extends AbstractController {
             } else if (array_key_exists($victim, $standard_npcs)) {
                 $method = $standard_npcs[$victim];
             } else if ($victim == "samurai") {
-                if ($player->level < 2 || $player->kills < 1) {
+                if ($player->level < 2) {
                     $turn_cost = 0;
-                    $npc_template = 'npc.samurai.tpl';
+                    $npc_template = 'npc.samurai-too-weak.tpl';
+                } else if ($player->kills < 1) {
+                    $turn_cost = 0;
+                    $npc_template = 'npc.samurai-too-tired.tpl';
                 } else {
                     $method = 'attackSamurai';
                 }
