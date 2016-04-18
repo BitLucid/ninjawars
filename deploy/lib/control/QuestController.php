@@ -92,7 +92,7 @@ class QuestController extends AbstractController {
      */
     public function create(){
         throw new RuntimeException('Creating quests not yet implemented.');
-        $post = post();
+        $post = '';
         $title = 'Create a Quest';
         $parts = [
             'quest'=>$quest,

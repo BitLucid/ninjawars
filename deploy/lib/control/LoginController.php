@@ -22,8 +22,8 @@ class LoginController extends AbstractController {
      */
     public function requestLogin() {
         $login_error_message = in('error'); // Error to display after unsuccessful login and redirection.
-        $pass                = post('pass');
-        $username_requested  = post('user');
+        $pass                = RequestWrapper::getPost('pass');
+        $username_requested  = RequestWrapper::getPost('user');
 
         if ($username_requested === null || $pass === null) {
             $login_error_message = 'No username or no password specified';

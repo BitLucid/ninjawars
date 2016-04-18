@@ -112,9 +112,9 @@ class SkillController extends AbstractController {
 	}
 
 	public function postUse() {
-        $target = post('target');
-        $target2 = post('target2');
-        $act = post('act');
+        $target = RequestWrapper::getPost('target');
+        $target2 = RequestWrapper::getPost('target2');
+        $act = RequestWrapper::getPost('act');
         $url = 'skill/use/'.rawurlencode($act).'/'.rawurlencode($target).'/'.($target2? rawurlencode($target2).'/' : '');
 
         // TODO: Need to double check that this doesn't allow for redirect injection
@@ -122,7 +122,7 @@ class SkillController extends AbstractController {
 	}
 
     public function postSelfUse() {
-        $act = post('act');
+        $act = RequestWrapper::getPost('act');
         $url = 'skill/self_use/'.rawurlencode($act).'/';
 
         // TODO: Need to double check that this doesn't allow for redirect injection

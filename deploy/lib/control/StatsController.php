@@ -5,6 +5,7 @@ use NinjaWars\core\Filter;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -28,11 +29,11 @@ class StatsController extends AbstractController {
 	public function changeDetails() {
 		$char = Player::find(SessionFactory::getSession()->get('player_id'));
 
-		$description = post('description', $char->description);
-		$goals       = post('goals', $char->goals);
-		$instincts   = post('instincts', $char->instincts);
-		$beliefs     = post('beliefs', $char->beliefs);
-		$traits      = post('traits', $char->traits);
+		$description = RequestWrapper::getPost('description', $char->description);
+		$goals       = RequestWrapper::getPost('goals', $char->goals);
+		$instincts   = RequestWrapper::getPost('instincts', $char->instincts);
+		$beliefs     = RequestWrapper::getPost('beliefs', $char->beliefs);
+		$traits      = RequestWrapper::getPost('traits', $char->traits);
 
 		// Check that the text features don't differ
 		$char->description = $description;
