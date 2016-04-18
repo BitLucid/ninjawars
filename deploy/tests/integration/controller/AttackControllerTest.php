@@ -29,9 +29,9 @@ class AttackControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testAttackWithoutArgs() {
-        $this->setExpectedException(\InvalidArgumentException::class);
-
         $response = $this->controller->index();
+
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testAttackWithTarget() {

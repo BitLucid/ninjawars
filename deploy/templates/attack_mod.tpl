@@ -2,11 +2,12 @@
 	<h1>Battle Outcome</h1>
 
 	<div class='padded-area'>
+        {if $target_player}
 		<div>
 			<a href="/player?player_id={$target_player->id()|escape:'url'}">{include file="gravatar.tpl" gurl=$target_player->avatarUrl()}</a>
 		</div>
-
 		<hr>
+        {/if}
 
 		{if $attack_error}
 		<div class='ninja-error centered'>{$attack_error}</div>
@@ -109,24 +110,23 @@
 				{$bounty_result}
 			{/if}
 
-		{/if}{* End of no attack error section *}
+            {if $target_player->health()}
+                {include file="defender_health.tpl" health=$target_player->health() level=$target_player->level target_name=$target_player->name()}
+            {/if}
 
-		{if $target_ending_health}
-			{include file="defender_health.tpl" health=$target_ending_health level=$target_player->level target_name=$target_player->name()}
-		{/if}
-
-		{if $attacker_died}
+            {if $attacker_died}
 			<div class='parent died'>
 				<div class='child ninja-error thick'>{$target_player->name()} has killed you!</div>
 			</div>
 
-			{if !$simultaneousKill && $loot}
+                {if !$simultaneousKill && $loot}
 				<div>{$target_player->name()} has taken {$loot} gold from you.</div>
-			{/if}
+                {/if}
 		<div class='ninja-notice thick'>
 			Go to the <a href="/shrine">Shrine</a> to return to the living.
 		</div>
-		{/if}
+            {/if}
+		{/if}{* End of no attack error section *}
 	</div><!-- End of inset-area -->
 	<nav class='attack-nav'>
 		{if $target_player}
