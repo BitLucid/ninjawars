@@ -20,7 +20,7 @@ class ApiController extends AbstractController {
      */
     public function nw_json() {
         $type = in('type');
-        $dirty_jsoncallback = first_value(in('jsoncallback'), in('callback'));
+        $dirty_jsoncallback = in('jsoncallback');
 
         // Reject if non alphanumeric and _ chars
         $jsoncallback = (!preg_match('/[^a-z_0-9]/i', $dirty_jsoncallback) ? $dirty_jsoncallback : null);
