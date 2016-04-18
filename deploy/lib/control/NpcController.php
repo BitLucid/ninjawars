@@ -147,7 +147,7 @@ class NpcController extends AbstractController {
     private function attackAbstractNpc($victim, Player $player, $npcs) {
         $npc_stats        = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
         $npco             = new Npc($npc_stats); // Construct the npc object.
-        $display_name     = first_value((isset($npc_stats['name']) ? $npc_stats['name'] : null), ucfirst($victim));
+        $display_name     = (isset($npc_stats['name']) ? $npc_stats['name'] : ucfirst($victim));
         $status_effect    = (isset($npc_stats['status']) ? $npc_stats['status'] : null);
         $reward_item      = (isset($npc_stats['item']) && $npc_stats['item'] ? $npc_stats['item'] : null);
         $is_quick         = (boolean) ($npco->speed() > $player->speed()); // Beyond basic speed and they see you coming, so show that message.
