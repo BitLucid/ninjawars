@@ -69,14 +69,6 @@ function in($var_name, $default_val=null, $filter_callback=null) {
     return $result;
 }
 
-/**
- *  Wrapper around the post variables as a clean way to get input.
- */
-function post($key, $default_val=null){
-	$post = RequestWrapper::getPost($key);
-	return isset($post)? $post: $default_val;
-}
-
 function debug($val) {
     if (DEBUG) {
     	$vals = func_get_args();

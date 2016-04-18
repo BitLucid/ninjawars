@@ -49,9 +49,9 @@ class TestInput extends PHPUnit_Framework_TestCase {
 	}
 
     public function testPostWithinMockedEnvironment() {
-        $posted = post('post_post_field', 'Bob');
+        $posted = RequestWrapper::getPost('post_post_field', 'Bob');
         $this->assertEquals('Bob', $posted);
-        $default = post('blah_doesnt_exist', 7777);
+        $default = RequestWrapper::getPost('blah_doesnt_exist', 7777);
         $this->assertEquals(7777, $default);
     }
 

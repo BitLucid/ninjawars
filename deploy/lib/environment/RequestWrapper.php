@@ -38,9 +38,9 @@ class RequestWrapper{
     /**
      * Get url parameter by key
      */
-    public static function get($val) {
+    public static function get($val, $default=null) {
         static::init();
-        return static::$request->query->get($val);
+        return static::$request->query->get($val, $default);
     }
 
     /**
@@ -54,9 +54,9 @@ class RequestWrapper{
     /**
      * Post parameter by key
      */
-    public static function getPost($val) {
+    public static function getPost($val, $default=null) {
         static::init();
-        return static::$request->request->get($val);
+        return static::$request->request->get($val, $default);
     }
 
     /**
