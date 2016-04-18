@@ -20,15 +20,6 @@ class ShopController extends AbstractController {
     const MARKUP = 1.5;
     const DEFAULT_QUANTITY = 1;
 
-	protected $itemCosts   = [];
-
-	/**
-	 * Grabs data from external state for other methods to us
-	 */
-	public function __construct() {
-		$this->itemCosts   = $this->itemForSaleCosts();
-	}
-
 	/**
 	 * Display the initial shop view
 	 *
@@ -46,11 +37,7 @@ class ShopController extends AbstractController {
      * Calculate price of items with markup.
      */
     private function calculatePrice(PurchaseOrder $purchase_order){
-        $item_costs        = $this->itemForSaleCosts();
-        $potential_cost    = (isset($item_costs[$purchase_order->item->identity()]['item_cost']) ? $item_costs[$purchase_order->item->identity()]['item_cost'] : null);
-        $current_item_cost = first_value($potential_cost, 0);
-
-        return (int) ceil($current_item_cost * $purchase_order->quantity);
+        return (int) ceil($purchase_order->item->item_cost * $purchase_order->quantity);
     }
 
 	/**
@@ -124,7 +111,7 @@ class ShopController extends AbstractController {
         $player = Player::find(SessionFactory::getSession()->get('player_id'));
 
 		$p_parts['gold']          = ($player ? $player->gold : 0);
-		$p_parts['item_costs']    = $this->itemCosts;
+		$p_parts['item_costs']    = $this->itemForSaleCosts();
 		$p_parts['authenticated'] = SessionFactory::getSession()->get('authenticated');
 
 		return new StreamedViewResponse('Shop', 'shop.tpl', $p_parts, [ 'quickstat' => 'viewinv' ]);
