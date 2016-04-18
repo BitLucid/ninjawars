@@ -64,7 +64,7 @@ class TestRouting:
             'clan', 'map', 'work', 'doshin_office.php',
             'dojo', 'shrine', 'duel', 'clan/list',
             'shop', 'clan', 'shop/', 'shop/index', 'shop/buy',
-            'clan.php?command=view', 'npc', 'npc/attack/peasant/',
+            'clan/view', 'npc', 'npc/attack/peasant/',
             'npc/attack/guard/', 'stats', 'account', 'quest',
             'quest/view/1', 'assistance', 'assistance/confirm',
             'password', 'player?target_id=777777',
