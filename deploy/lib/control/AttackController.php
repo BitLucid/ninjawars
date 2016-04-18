@@ -41,6 +41,7 @@ class AttackController extends AbstractController {
         $simultaneousKill = NULL; // Not simultaneous by default
         $turns_to_take    = NULL; // Even on failure take at least one turn
         $attack_type      = [];
+        $attack_again     = false;
 
         if ($blaze) {
             $attack_type['blaze'] = 'blaze';
@@ -78,9 +79,14 @@ class AttackController extends AbstractController {
             'ignores_stealth' => $ignores_stealth,
         ];
 
-        $attack_legal = new AttackLegal($attacking_player, $target_player, $params);
-        $attack_is_legal = $attack_legal->check();
-        $attack_error = $attack_legal->getError();
+        try {
+            $attack_legal = new AttackLegal($attacking_player, $target_player, $params);
+            $attack_is_legal = $attack_legal->check();
+            $attack_error = $attack_legal->getError();
+        } catch (\InvalidArgumentException $e) {
+            $attack_is_legal = false;
+            $attack_error = 'Could not determine valid target';
+        }
 
         // ***  MAIN BATTLE ALGORITHM  ***
         if ($attack_is_legal) {
@@ -318,6 +324,11 @@ class AttackController extends AbstractController {
 
                 $attacking_player->set_ki($attacking_player->ki + $rewarded_ki);
             }
+
+            $attack_again = (isset($target_player) && $attacking_player->health() > 0 && $target_player->health() > 0);
+
+            $target_ending_health = $target_player->health();
+            $target_player->save();
         }
 
         // *** Take away at least one turn even on attacks that fail. ***
@@ -326,16 +337,6 @@ class AttackController extends AbstractController {
         }
 
         $ending_turns = $attacking_player->changeTurns(-1*$turns_to_take);
-
-        //  ***  START ACTION OVER AGAIN SECTION ***
-
-        // *** After any partial attack. ***
-        $attack_again = (isset($target_player) && $attack_is_legal && $attacking_player->health() > 0 && $target_player->health() > 0);
-
-        $target_ending_health = $target_player->health();
-
-
-        $target_player->save();
         $attacking_player->save();
 
         return new StreamedViewResponse('Battle Status', 'attack_mod.tpl', get_defined_vars(), ['quickstat' => 'player' ]);
