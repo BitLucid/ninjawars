@@ -57,6 +57,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf(PasswordResetRequest::class, $pwrr, "Request wasn't found to become a PasswordResetRequest.");
         $this->assertGreaterThan(0, $pwrr->id());
         $this->assertNotEmpty($pwrr->nonce, "Nonce/Token was blank or didn't come back.");
+        $this->nonce = $pwrr->nonce;
     }
 
     public function testPostEmailReturnsErrorWhenNoEmailOrNinjaName(){
@@ -102,10 +103,11 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $pwrr = PasswordResetRequest::where('_account_id', '=', $account->id())->first();
 
         $this->assertNotEmpty($pwrr, 'Fail: Unable to find a matching password reset request  for account_id: ['.$this->account->id().'].');
+        $this->nonce = $pwrr->nonce;
     }
 
     public function testGetResetWithARandomTokenErrorRedirects(){
-        $token = 'asdlfkjjklkasdfjkl';
+        $this->nonce = $token = 'asdlfkjjklkasdfjkl';
 
         // Symfony Request
         $request = Request::create('/password/get_reset/');
@@ -122,7 +124,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testGetResetWithAValidTokenDisplaysAFilledInPasswordResetForm() {
-        $token = '4447744';
+        $token = $this->nonce = '4447744';
 
         // Generate a password reset req to be matched!
         PasswordResetRequest::generate($this->account, $token);
@@ -151,7 +153,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testPostResetYeildsARedirectAndAChangedPassword() {
-        $token = '444555666';
+        $this->nonce = $token = '444555666';
 
         // Generate a password reset req to be matched!
         PasswordResetRequest::generate($this->account, $token);
@@ -185,7 +187,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testPostResetWithBadPasswordYeildsAnError() {
-        $token = '444555666';
+        $this->nonce = $token = '444555666';
 
         // Generate a password reset req to be matched!
         PasswordResetRequest::generate($this->account, $token);
@@ -216,7 +218,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testPostResetWithMismatchedPasswordsYeildsError() {
-        $token = '34838383838';
+        $this->nonce = $token = '34838383838';
 
         // Generate a password reset req to be matched!
         PasswordResetRequest::generate($this->account, $token);
@@ -249,7 +251,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         $token = null;
 
         // Generate a password reset req to be matched!
-        PasswordResetRequest::generate($this->account, $token);
+        PasswordResetRequest::generate($this->account, $this->nonce);
 
         // Create a symfony post with the right info
         // and with the token already in the database.
@@ -277,7 +279,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testPostResetWithInvalidatedTokenYeildsError() {
-        $token = '34838383838';
+        $this->nonce = $token = '34838383838';
         PasswordResetRequest::generate($this->account, $token);
         $request = Request::create('/password/post_reset/');
         $request->setMethod('POST');
