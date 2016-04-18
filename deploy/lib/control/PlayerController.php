@@ -18,8 +18,8 @@ class PlayerController extends AbstractController {
     const ALIVE = false;
 
     public function index() {
-        $target    = first_value(in('ninja'), in('player'), in('find'), in('target'));
-        $target_id = first_value(in('target_id'), in('player_id'));
+        $target    = in('player');
+        $target_id = in('player_id');
 
         if ($target_id) {
             $target_player_obj = Player::find($target_id);

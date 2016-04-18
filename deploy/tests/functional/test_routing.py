@@ -67,8 +67,8 @@ class TestRouting:
             'clan/view', 'npc', 'npc/attack/peasant/',
             'npc/attack/guard/', 'stats', 'account', 'quest',
             'quest/view/1', 'assistance', 'assistance/confirm',
-            'password', 'player?target_id=777777',
-            'player?target=tchalvak', 'item/self_use/amanita',
+            'password', 'player?player_id=777777',
+            'player?player=tchalvak', 'item/self_use/amanita',
             'skill/use/Fire%20Bolt/tchalvak', 'skill/self_use/Heal',
             'item/self_use/3', 'item/self_use/1',
             'item/use/shuriken/tchalvak', 'dojo/buyDimMak',
@@ -127,7 +127,7 @@ class TestRouting:
                  'assistance' : 'Account Assistance',
                  'password' : 'Request a password reset',
                  'player' : 'Ninja Profile',
-                 'player/?target=tchalvak' : 'Ninja: Tchalvak',
+                 'player/?player=tchalvak' : 'Ninja: Tchalvak',
                  'npc/attack/peasant' : 'Battle',
                  'news' : 'News Board'
                  }
