@@ -6,6 +6,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\extensions\NWTemplate;
 
 /**
  * Router/front-controller for NinjaWars
