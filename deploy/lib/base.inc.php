@@ -28,7 +28,6 @@ require_once(LIB_ROOT.'environment/global_error_handling.php');
 
 require_once(TEMPLATE_LIBRARY_PATH);
 require_once(LIB_ROOT.'control/lib_helpers.php');
-require_once(LIB_ROOT.'control/lib_crypto.php');
 require_once(LIB_ROOT.'data/database.php'); // Eloquent database connection
 require_once(LIB_ROOT.'data/lib_db.php');
 require_once(LIB_ROOT.'extensions/Nmail.class.php');
