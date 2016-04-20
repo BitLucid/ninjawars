@@ -1,4 +1,6 @@
 <?php
+namespace NinjaWars\core\data;
+
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Event;
