@@ -15,13 +15,6 @@ article#fight nav{
 #rewards p + p{
 	margin-left:3em;
 }
-.damage{
-	background-color:rgba(130, 0, 0, .5);
-	border-radius:.5em;
-	display:inline-block;
-	padding:0 .3em;
-	font-weight:bold;
-}
 .money{
     color:gold;
     color:rgba(255,215,0,.7);
@@ -32,6 +25,31 @@ article#fight nav{
 #fight .npc-avatar{
 	float:left;margin:0.5em 1em 0.5em 0.5em;text-align:center;
 }
+.damage-amount{
+	background-color:rgba(130, 0, 0, .5);
+	border-radius:.5em;
+	display:inline-block;
+	padding:0 .3em;
+	font-weight:bold;
+}
+.damage.miss{
+	color: darkgreen;
+}
+.damage.minor{
+	color:crimson;
+}
+.damage.medium{
+	color:red;
+}
+.damage.major{
+	color:red;
+	background-color:grey;
+}
+.damage.critical{
+	color:white;
+	background-color:red;
+}
+
 </style>
 {/literal}
 
@@ -56,7 +74,8 @@ article#fight nav{
 	The {$race|escape} seems stronger than you!
 	{/if}
 
-	<p>The {$display_name|escape} wounds you for <span class='damage'>{$attack_damage} health</span>.</p>
+	<p>The {$display_name|escape} {if $attack_damage > 0}<span class='damage medium'>wounds you</span> for <span class='damage-amount'>{$attack_damage} health</span>.{else}<span class='damage miss'>misses</span> you.{/if}</p>
+
 	{if $display_statuses}
 	<p>The {$display_name|escape}'s strike leaves you <span class='{$display_statuses_classes}'>{$display_statuses}</span>.</p>
 	{/if}
