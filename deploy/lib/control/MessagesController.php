@@ -60,9 +60,9 @@ class MessagesController extends AbstractController {
      */
     public function viewPersonal() {
         $type               = 0;
-        $page               = in('page', 1, 'toNonNegativeInt');
+        $page               = max(1, (int) RequestWrapper::getPostOrGet('page'));
         $limit              = 25;
-        $offset             = Filter::toNonNegativeInt(($page - 1) * $limit);
+        $offset             = ($page - 1) * $limit;
         $ninja              = Player::find(SessionFactory::getSession()->get('player_id'));
         $message_count      = Message::countByReceiver($ninja, $type); // To count all the messages
 
@@ -89,9 +89,9 @@ class MessagesController extends AbstractController {
      */
     public function viewClan() {
         $ninja         = Player::find(SessionFactory::getSession()->get('player_id'));
-        $page          = in('page', 1, 'toNonNegativeInt');
+        $page          = max(1, (int) RequestWrapper::getPostOrGet('page'));
         $limit         = 25;
-        $offset        = Filter::toNonNegativeInt(($page - 1) * $limit);
+        $offset        = ($page - 1) * $limit;
         $type          = 1; // Clan chat or normal messages.
         $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
 

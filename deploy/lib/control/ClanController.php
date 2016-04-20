@@ -27,8 +27,7 @@ class ClanController extends AbstractController {
 	 * If a clan_id is not specified, the clan of the current user will be used
 	 */
 	public function view() {
-        $in_id = in('clan_id', null, 'toNonNegativeInt');
-		$clanID = ((int) $in_id > 0)? (int) $in_id : null;
+        $clanID = RequestWrapper::getPostOrGet('clan_id', null);
         $player = Player::find(SessionFactory::getSession()->get('player_id'));
 
         if ($clanID === null && $player instanceof Player) {

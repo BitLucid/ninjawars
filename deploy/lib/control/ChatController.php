@@ -27,7 +27,7 @@ class ChatController extends AbstractController {
      */
     public function receive() {
         $char_id = SessionFactory::getSession()->get('player_id');
-        $message = in('message', null, 'no filter'); // Essentially no filtering.
+        $message = RequestWrapper::getPostOrGet('message');
         $error   = null;
 
         if (!empty($message)) {
@@ -48,7 +48,7 @@ class ChatController extends AbstractController {
      */
     public function index() {
         $view_all   = RequestWrapper::getPostOrGet('view_all');
-        $chatlength = in('chatlength', self::DEFAULT_LIMIT, 'toNonNegativeInt');
+        $chatlength = max(self::DEFAULT_LIMIT, (int) RequestWrapper::getPostOrGet('chatlength'));
         $chatlength = min(self::MAX_CHATS, max(self::MIN_CHATS, $chatlength));
         $chats      = $this->getChats($view_all ? null : $chatlength);
 
