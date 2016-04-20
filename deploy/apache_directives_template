@@ -26,7 +26,6 @@ php_value session.cookie_lifetime "400000"
 
 <FilesMatch "\.(php)$">
 	php_value auto_prepend_file "__SERVER_ROOT__lib/base.inc.php"
-	php_value auto_append_file "__SERVER_ROOT__lib/cleanup.inc.php"
 </FilesMatch>
 
 <IfModule mod_headers.c>
