@@ -9,8 +9,7 @@ use NinjaWars\core\Filter;
  * e.g. in('some_url_parameter', null, null)
  */
 function in($var_name, $default_val=null, $filter_callback=null) {
-	$req = RequestWrapper::getPostOrGet($var_name);
-	$result = (isset($req) ? $req : $default_val);
+	$result = RequestWrapper::getPostOrGet($var_name, $default_val);
 
 	// Check that the filter function sent in exists.
 	if ($filter_callback) {
