@@ -8,6 +8,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 use \PDO;
 
 /**
@@ -29,7 +30,7 @@ class ConsiderController extends AbstractController {
      * Search for enemies to remember.
      */
     public function search() {
-        $enemy_match = in('enemy_match');
+        $enemy_match = RequestWrapper::getPostOrGet('enemy_match');
         $found_enemies = ($enemy_match ? $this->getEnemyMatches(SessionFactory::getSession()->get('player_id'), $enemy_match) : null);
         $parts = $this->configure();
 

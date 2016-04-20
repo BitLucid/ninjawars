@@ -9,6 +9,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Handles all user actions related to the in-game Shop
@@ -48,8 +49,8 @@ class ShopController extends AbstractController {
 	 * @return Array
 	 */
 	public function buy() {
-		$in_quantity       = in('quantity');
-		$in_item           = in('item');
+		$in_quantity       = RequestWrapper::getPostOrGet('quantity');
+		$in_item           = RequestWrapper::getPostOrGet('item');
         $player            = Player::find(SessionFactory::getSession()->get('player_id'));
 		$gold              = ($player ? $player->gold : null);
 		$current_item_cost = 0;

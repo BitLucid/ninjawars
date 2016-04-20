@@ -7,6 +7,7 @@ use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * The controller for effects of a work request and the default index display
@@ -24,7 +25,7 @@ class WorkController extends AbstractController {
      */
     public function requestWork() {
         $earned = 0;
-        $worked = Filter::toNonNegativeInt(in('worked')); // No negative work.
+        $worked = Filter::toNonNegativeInt(RequestWrapper::getPostOrGet('worked')); // No negative work.
         $char   = Player::find(SessionFactory::getSession()->get('player_id'));
 
         if (!($char instanceof Player)){

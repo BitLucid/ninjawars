@@ -9,6 +9,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * The ninjamaster/admin info
@@ -61,8 +62,8 @@ class NinjamasterController extends AbstractController {
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivialNpcs      = NpcFactory::allTrivialNpcs();
 
-        $char_ids  = preg_split("/[,\s]+/", in('view'));
-        $char_name = trim(in('char_name'));
+        $char_ids  = preg_split("/[,\s]+/", RequestWrapper::getPostOrGet('view'));
+        $char_name = trim(RequestWrapper::getPostOrGet('char_name'));
 
         if ($char_name) { // View a target non-self character
             $firstChar = Player::findByName($char_name);

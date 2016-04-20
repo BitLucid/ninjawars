@@ -7,6 +7,7 @@ use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\extensions\NWTemplate;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Router/front-controller for NinjaWars
@@ -94,7 +95,6 @@ class Router {
      * as the second element of the return value. If there is no command
      * parameter, the default action for the application will be used
      *
-     * @todo remove the call to in() and replace with something from request
      * @todo stop supporting ?command=action
      */
     public static function parseRoute($p_request) {
@@ -113,7 +113,7 @@ class Router {
         if (isset($routeSegments[1]) && !empty($routeSegments[1])) {
             $command = $routeSegments[1];
         } else { // without a 2nd route segment, look for command in the input
-            $command = (string)in(self::COMMAND_PARAM);
+            $command = (string)RequestWrapper::getPostOrGet(self::COMMAND_PARAM);
         }
 
         if (empty($command)) {

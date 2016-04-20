@@ -1,4 +1,6 @@
 <?php
+use NinjaWars\core\environment\RequestWrapper;
+
 if (DEBUG && DEBUG_ALL_ERRORS) {
     error_reporting(E_ALL);	// *** Completely everything ***
 }
@@ -9,7 +11,7 @@ if (!DEBUG) {
     assert_options(ASSERT_ACTIVE, 1);
 }
 
-$dbg = in('debug');
+$dbg = RequestWrapper::getPostOrGet('debug');
 
 if ($dbg === 'on') {
     $_COOKIE['debug'] == true;

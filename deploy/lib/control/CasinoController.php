@@ -6,6 +6,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -30,7 +31,7 @@ class CasinoController extends AbstractController {
             $player = new Player();
         }
 
-		$error = in('error');
+		$error = RequestWrapper::getPostOrGet('error');
 
 		return $this->render(
 			[
@@ -56,7 +57,7 @@ class CasinoController extends AbstractController {
 		if(!($player instanceof Player)){
 			return new RedirectResponse('/casino/?error='.rawurlencode('Become a ninja first!'));
 		}
-		$bet      = intval(in('bet'));
+		$bet      = intval(RequestWrapper::getPostOrGet('bet'));
 
 		$pageParts = ['reminder-max-bet'];
 

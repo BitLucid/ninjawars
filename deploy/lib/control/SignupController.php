@@ -194,8 +194,8 @@ class SignupController extends AbstractController {
         $signupRequest                    = new \stdClass();
         $signupRequest->enteredName       = trim(in('send_name', '', 'toSimple'));
         $signupRequest->enteredEmail      = trim(in('send_email', '', 'toSimple'));
-        $signupRequest->enteredClass      = strtolower(trim(in('send_class', '')));
-        $signupRequest->enteredReferral   = trim(in('referred_by', in('referrer')));
+        $signupRequest->enteredClass      = strtolower(trim(RequestWrapper::getPostOrGet('send_class', '')));
+        $signupRequest->enteredReferral   = trim(RequestWrapper::getPostOrGet('referred_by', RequestWrapper::getPostOrGet('referrer')));
         $signupRequest->enteredPass       = in('key', null, 'toSimple');
         $signupRequest->enteredCPass      = in('cpass', null, 'toSimple');
         $signupRequest->clientIP          = $p_request->getClientIp();

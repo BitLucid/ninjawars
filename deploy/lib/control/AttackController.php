@@ -10,6 +10,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 class AttackController extends AbstractController {
     const ALIVE = true;
@@ -20,11 +21,11 @@ class AttackController extends AbstractController {
      * @return Response
      */
     public function index() {
-        $target  = in('target');
-        $duel    = (in('duel')    ? true : NULL);
-        $blaze   = (in('blaze')   ? true : NULL);
-        $deflect = (in('deflect') ? true : NULL);
-        $evade   = (in('evasion') ? true : NULL);
+        $target  = RequestWrapper::getPostOrGet('target');
+        $duel    = (RequestWrapper::getPostOrGet('duel')    ? true : NULL);
+        $blaze   = (RequestWrapper::getPostOrGet('blaze')   ? true : NULL);
+        $deflect = (RequestWrapper::getPostOrGet('deflect') ? true : NULL);
+        $evade   = (RequestWrapper::getPostOrGet('evasion') ? true : NULL);
 
         // Template vars.
         $stealthed_attack = $stealth_damage = $stealth_lost =

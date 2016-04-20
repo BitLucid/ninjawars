@@ -6,6 +6,7 @@ use NinjaWars\core\Filter;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Display the ninja list as a whole
@@ -21,12 +22,12 @@ class ListController extends AbstractController {
      */
     public function index() {
         $session      = SessionFactory::getSession();
-        $searched     = in('searched', null); // Don't filter the search setting
+        $searched     = RequestWrapper::getPostOrGet('searched', null); // Don't filter the search setting
         $list_by_rank = ($searched && substr_compare($searched, '#', 0, 1) === 0); // Whether the search is by rank
         $hide_setting = (!$searched && $session->has('hide_dead') ? $session->get('hide_dead') : 'dead'); // Defaults to hiding dead via session
-        $hide         = ($searched ? 'none' : in('hide', $hide_setting)); // search override > get setting > session setting
+        $hide         = ($searched ? 'none' : RequestWrapper::getPostOrGet('hide', $hide_setting)); // search override > get setting > session setting
         $alive_only   = ($hide == 'dead');
-        $page         = in('page');
+        $page         = RequestWrapper::getPostOrGet('page');
         $record_limit = 20; // The number of players that gets shown per page
 
         if (!$searched && $hide_setting != $hide) { // Save the toggled state for later
@@ -67,7 +68,7 @@ class ListController extends AbstractController {
         if ($searched && $list_by_rank) {
             $page = ceil(substr($searched, 1) / $record_limit);
         } else if ($page == "searched") {
-            $page = in('page', 1);
+            $page = RequestWrapper::getPostOrGet('page', 1);
         } else {
             $page = ($page < 1 ? 1 : $page); // Prevent the page number from going negative
         }

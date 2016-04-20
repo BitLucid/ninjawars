@@ -33,9 +33,9 @@ class TestInput extends PHPUnit_Framework_TestCase {
     }
 
     public function testInputWithinEnvironment() {
-        $id = in('id');
+        $id = RequestWrapper::getPostOrGet('id');
         $this->assertEquals(7, $id);
-        $default_result = in('doesnotexist', 5);
+        $default_result = RequestWrapper::getPostOrGet('doesnotexist', 5);
         $this->assertEquals(5, $default_result);
     }
 

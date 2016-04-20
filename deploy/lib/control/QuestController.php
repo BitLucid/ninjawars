@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 use \RuntimeException;
 
 // get the quest model shortly
@@ -74,8 +75,8 @@ class QuestController extends AbstractController {
      * Display that list of public quests!
      */
     public function index(){
-        $quest_id = in('quest_id');
-        $quest_accepted = in('quest_accepted');
+        $quest_id = RequestWrapper::getPostOrGet('quest_id');
+        $quest_accepted = RequestWrapper::getPostOrGet('quest_accepted');
         $quests = format_quests(get_quests());
         $title = 'Quests';
         $tpl = 'quests.tpl';
