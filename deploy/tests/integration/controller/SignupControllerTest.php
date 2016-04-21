@@ -255,6 +255,9 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         $account = Account::findByEmail($email);
         $player = Player::findByName($uname);
 
+        $this->assertNotNull($player);
+        $this->assertNotNull($account);
+
         $query_relationship = 'SELECT count(*) FROM account_players WHERE _account_id = :id1 AND _player_id = :id2';
 
         if ($account && $player) {
@@ -296,6 +299,9 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
         $account = Account::findByEmail($email);
         $player = Player::findByName($uname);
+
+        $this->assertNotNull($player);
+        $this->assertNotNull($account);
 
         $query_relationship = 'SELECT count(*) FROM account_players WHERE _account_id = :id1 AND _player_id = :id2';
         $account_unconfirmed = null;

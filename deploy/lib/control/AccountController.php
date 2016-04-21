@@ -7,6 +7,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -40,11 +41,11 @@ class AccountController extends AbstractController {
         // confirm_delete
         $player     = Player::find(SessionFactory::getSession()->get('player_id'));
         $self_info 	= $player->data();
-        $passW 		= in('passw', null);
+        $passW 		= RequestWrapper::getPostOrGet('passw', null);
         $username 	= $self_info['uname'];
 
-        $in_newEmail     = trim(in('newemail'));
-        $in_confirmEmail = trim(in('confirmemail'));
+        $in_newEmail     = trim(RequestWrapper::getPostOrGet('newemail'));
+        $in_confirmEmail = trim(RequestWrapper::getPostOrGet('confirmemail'));
 
         $error = '';
         $successMessage = '';
@@ -107,11 +108,11 @@ class AccountController extends AbstractController {
     public function changePassword() {
         $player     = Player::find(SessionFactory::getSession()->get('player_id'));
         $self_info 	= $player->data();
-        $passW 		= in('passw', null);
+        $passW 		= RequestWrapper::getPostOrGet('passw', null);
         $username 	= $self_info['uname'];
 
-        $in_newPass     = trim(in('newpassw'));
-        $in_confirmPass = trim(in('confirmpassw'));
+        $in_newPass     = trim(RequestWrapper::getPostOrGet('newpassw'));
+        $in_confirmPass = trim(RequestWrapper::getPostOrGet('confirmpassw'));
 
         $error = '';
         $successMessage = '';
@@ -179,9 +180,9 @@ class AccountController extends AbstractController {
         $session         = SessionFactory::getSession();
         $player          = Player::find(SessionFactory::getSession()->get('player_id'));
         $self_info       = $player->data();
-        $passW           = in('passw', null);
+        $passW           = RequestWrapper::getPostOrGet('passw', null);
         $username        = $self_info['uname'];
-        $command         = in('command');
+        $command         = RequestWrapper::getPostOrGet('command');
         $delete_attempts = $session->get('delete_attempts', 0);
 
         $verify = self::is_authentic($username, $passW);

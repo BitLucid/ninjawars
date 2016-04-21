@@ -11,6 +11,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 use \PDO;
 
 /**
@@ -32,7 +33,7 @@ class InventoryController extends AbstractController {
         $char      = Player::find(SessionFactory::getSession()->get('player_id'));
         $inv       = Inventory::of($char, 'self');
         $inventory = [];
-        $error     = in('error');
+        $error     = RequestWrapper::getPostOrGet('error');
 
         if ($error === 'noitem') {
             $error = 'No such item';
@@ -272,7 +273,7 @@ class InventoryController extends AbstractController {
 
         return $this->renderUse([
             'action'                 => 'use',
-            'return_to'              => (in_array(in('link_back'), ['', 'player']) ? 'player' : 'inventory'),
+            'return_to'              => (in_array(RequestWrapper::getPostOrGet('link_back'), ['', 'player']) ? 'player' : 'inventory'),
             'error'                  => $error,
             'target'                 => $target,
             'resultMessage'          => $display_message,

@@ -9,6 +9,7 @@ use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 class MessagesController extends AbstractController {
     const PRIV  = true;
@@ -18,10 +19,10 @@ class MessagesController extends AbstractController {
      * Send a private message to a player
      */
     public function sendPersonal() {
-        if ((int) in('target_id')) {
-            $recipient = Player::find((int) in('target_id'));
-        } else if (in('to')) {
-            $recipient = Player::findByName(in('to'));
+        if ((int) RequestWrapper::getPostOrGet('target_id')) {
+            $recipient = Player::find((int) RequestWrapper::getPostOrGet('target_id'));
+        } else if (RequestWrapper::getPostOrGet('to')) {
+            $recipient = Player::findByName(RequestWrapper::getPostOrGet('to'));
         } else {
             $recipient = null;
         }
@@ -30,7 +31,7 @@ class MessagesController extends AbstractController {
             Message::create([
                 'send_from' => SessionFactory::getSession()->get('player_id'),
                 'send_to'   => $recipient->id(),
-                'message'   => in('message', null, null),
+                'message'   => RequestWrapper::getPostOrGet('message', null),
                 'type'      => 0,
             ]);
 
@@ -44,7 +45,7 @@ class MessagesController extends AbstractController {
      * Send a certain message to the whole clan.
      */
     public function sendClan() {
-        $message = in('message');
+        $message = RequestWrapper::getPostOrGet('message');
         $type = 1;
         $sender = Player::find(SessionFactory::getSession()->get('player_id'));
         $clan = Clan::findByMember($sender);
@@ -59,9 +60,9 @@ class MessagesController extends AbstractController {
      */
     public function viewPersonal() {
         $type               = 0;
-        $page               = in('page', 1, 'toNonNegativeInt');
+        $page               = max(1, (int) RequestWrapper::getPostOrGet('page'));
         $limit              = 25;
-        $offset             = Filter::toNonNegativeInt(($page - 1) * $limit);
+        $offset             = ($page - 1) * $limit;
         $ninja              = Player::find(SessionFactory::getSession()->get('player_id'));
         $message_count      = Message::countByReceiver($ninja, $type); // To count all the messages
 
@@ -70,8 +71,8 @@ class MessagesController extends AbstractController {
         $parts = array_merge(
             $this->configure(),
             [
-                'to'            => (in('to') ? in('to') : ''),
-                'informational' => in('informational'),
+                'to'            => RequestWrapper::getPostOrGet('to', ''),
+                'informational' => RequestWrapper::getPostOrGet('informational'),
                 'has_clan'      => (boolean)Clan::findByMember($ninja),
                 'current_tab'   => 'message',
                 'messages'      => Message::findByReceiver($ninja, $type, $limit, $offset),
@@ -88,9 +89,9 @@ class MessagesController extends AbstractController {
      */
     public function viewClan() {
         $ninja         = Player::find(SessionFactory::getSession()->get('player_id'));
-        $page          = in('page', 1, 'toNonNegativeInt');
+        $page          = max(1, (int) RequestWrapper::getPostOrGet('page'));
         $limit         = 25;
-        $offset        = Filter::toNonNegativeInt(($page - 1) * $limit);
+        $offset        = ($page - 1) * $limit;
         $type          = 1; // Clan chat or normal messages.
         $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
 
@@ -156,8 +157,8 @@ class MessagesController extends AbstractController {
             'page'               => null,
             'limit'              => null,
             'offset'             => null,
-            'error'              => in('error'), // Informational message, e.g. after redirections
-            'informational'      => in('informational'), // Informational message, e.g. after redirections
+            'error'              => RequestWrapper::getPostOrGet('error'), // Informational message, e.g. after redirections
+            'informational'      => RequestWrapper::getPostOrGet('informational'), // Informational message, e.g. after redirections
             'type'               => null,
             'message_sent_to'    => null,
             'message_to'         => null,

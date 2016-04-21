@@ -7,6 +7,7 @@ use \Nmail;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Give assistance to players and proto-players who anonymous users
@@ -80,9 +81,9 @@ class AssistanceController extends AbstractController {
      * @return Response
      */
     public function index() {
-        $email = filter_var(in('email', null), FILTER_SANITIZE_EMAIL);
-        $password_request = in('password_request');
-        $confirmation_request = in('confirmation_request');
+        $email = filter_var(RequestWrapper::getPostOrGet('email', null), FILTER_SANITIZE_EMAIL);
+        $password_request = RequestWrapper::getPostOrGet('password_request');
+        $confirmation_request = RequestWrapper::getPostOrGet('confirmation_request');
 
         $error = null;
         $sent  = false;
@@ -135,10 +136,10 @@ class AssistanceController extends AbstractController {
      */
     public function confirm() {
         $admin_override_pass       = 'WeAllowIt'; // Just a weak passphrase for simply confirming players.
-        $admin_override_request    = in('admin_override');
+        $admin_override_request    = RequestWrapper::getPostOrGet('admin_override');
         $acceptable_admin_override = ($admin_override_pass === $admin_override_request);
-        $confirm                   = in('confirm');
-        $aid                       = Filter::toNonNegativeInt(in('aid'));
+        $confirm                   = RequestWrapper::getPostOrGet('confirm');
+        $aid                       = Filter::toNonNegativeInt(RequestWrapper::getPostOrGet('aid'));
 
         $data = query_row('
             SELECT player_id, uname,

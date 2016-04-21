@@ -52,7 +52,7 @@ class StatsController extends AbstractController {
      */
 	public function updateProfile() {
 		$char            = Player::find(SessionFactory::getSession()->get('player_id'));
-		$new_profile     = trim(in('newprofile', null, null)); // Unfiltered input.
+		$new_profile     = trim(RequestWrapper::getPostOrGet('newprofile', null));
 		$profile_changed = false;
 		$error           = '';
 
@@ -90,10 +90,10 @@ class StatsController extends AbstractController {
             'status_list'        => Player::getStatusList(),
             'rank_display'       => $this->getRank($char->id()),
             'profile_max_length' => self::PROFILE_MAX_LENGTH,
-            'error'              => in('error'),
+            'error'              => RequestWrapper::getPostOrGet('error'),
             'successMessage'     => '',
-            'profile_changed'    => (bool) in('profile_changed'),
-            'changed'            => (bool) in('changed'),
+            'profile_changed'    => (bool) RequestWrapper::getPostOrGet('profile_changed'),
+            'changed'            => (bool) RequestWrapper::getPostOrGet('changed'),
         ];
 
         return $this->render($parts);

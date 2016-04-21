@@ -33,20 +33,11 @@ class TestInput extends PHPUnit_Framework_TestCase {
     }
 
     public function testInputWithinEnvironment() {
-        $id = in('id');
+        $id = RequestWrapper::getPostOrGet('id');
         $this->assertEquals(7, $id);
-        $default_result = in('doesnotexist', 5);
+        $default_result = RequestWrapper::getPostOrGet('doesnotexist', 5);
         $this->assertEquals(5, $default_result);
     }
-
-	public function testInputWithFilter() {
-        $this->assertEquals(0, in('garbage_field', 0, 'toNonNegativeInt'));
-        $this->assertEquals(66, in('some_int', null, "toInt"));
-        $this->assertEquals(-444, in('some_negative_int', null, "toInt"));
-        $this->assertEquals(66, in('some_int', null, "toNonNegativeInt"));
-        $this->assertEquals(0, in('some_negative_int', null, "toNonNegativeInt"));
-        $this->assertEquals(0, in('some_post_field', null, "toInt"));
-	}
 
     public function testPostWithinMockedEnvironment() {
         $posted = RequestWrapper::getPost('post_post_field', 'Bob');

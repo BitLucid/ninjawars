@@ -21,7 +21,7 @@ class LoginController extends AbstractController {
      * Try to perform a login
      */
     public function requestLogin() {
-        $login_error_message = in('error'); // Error to display after unsuccessful login and redirection.
+        $login_error_message = RequestWrapper::getPostOrGet('error'); // Error to display after unsuccessful login and redirection.
         $pass                = RequestWrapper::getPost('pass');
         $username_requested  = RequestWrapper::getPost('user');
 
@@ -44,7 +44,7 @@ class LoginController extends AbstractController {
      * Display standard login page.
      */
     public function index() {
-        $login_error_message = in('error'); // Error to display after unsuccessful login and redirection.
+        $login_error_message = RequestWrapper::getPostOrGet('error'); // Error to display after unsuccessful login and redirection.
 
         $stored_username = (isset($_COOKIE['username']) ? $_COOKIE['username'] : null);
         $referrer        = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);

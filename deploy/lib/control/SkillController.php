@@ -55,7 +55,7 @@ class SkillController extends AbstractController {
 	 * @return Array
 	 */
 	public function index() {
-		$error = in('error');
+		$error = RequestWrapper::getPostOrGet('error');
 		$skillsListObj = new Skill();
 
 		$player         = $this->player;

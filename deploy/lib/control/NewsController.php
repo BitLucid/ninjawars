@@ -11,6 +11,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Allows creation of news and displaying of news by admins
@@ -43,7 +44,7 @@ class NewsController extends AbstractController {
      */
     public function index() {
         $view = 'news.tpl';
-        $create_successful = (bool) in('create_successful');
+        $create_successful = (bool) RequestWrapper::getPostOrGet('create_successful');
 
         try {
             $create_role = $this->hasCreateRole($this->pc);
@@ -54,7 +55,7 @@ class NewsController extends AbstractController {
         $parts = [
             'create_successful' => $create_successful,
             'all_news'          => [],
-            'error'             => in('error'),
+            'error'             => RequestWrapper::getPostOrGet('error'),
             'create_role'       => $create_role,
             'search_title'      => null
         ];
@@ -63,9 +64,9 @@ class NewsController extends AbstractController {
         $news = new News();
 
         try {
-            if ($tag = in('tag_query')) { // Search for specific tag matches
+            if ($tag = RequestWrapper::getPostOrGet('tag_query')) { // Search for specific tag matches
                 $parts['all_news'] = $news->findByTag($tag);
-                $parts['search_title'] = 'Result for #'.htmlentities(in('tag_query'));
+                $parts['search_title'] = 'Result for #'.htmlentities(RequestWrapper::getPostOrGet('tag_query'));
             } else {
                 $parts['all_news'] = $news->all();
             }
@@ -93,7 +94,7 @@ class NewsController extends AbstractController {
         }
 
         $title = 'Make New Post';
-        $error = (bool) in('error');
+        $error = (bool) RequestWrapper::getPostOrGet('error');
 
         $parts = [
             'error'         => $error,
@@ -123,9 +124,9 @@ class NewsController extends AbstractController {
         }
 
         // Handle POST
-        $news_title = in('news_title');
-        $news_content = in('news_content');
-        $tag = in('tag');
+        $news_title = RequestWrapper::getPostOrGet('news_title');
+        $news_content = RequestWrapper::getPostOrGet('news_content');
+        $tag = RequestWrapper::getPostOrGet('tag');
 
         // Create new post
         if (!empty($news_content)) {

@@ -6,6 +6,7 @@ use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Controller for actions taken in the Healing Shrine
@@ -146,7 +147,7 @@ class ShrineController extends AbstractController {
 
 		$player = Player::find(SessionFactory::getSession()->get('player_id')); // get current player
 
-		$healAmount = in('heal_points');
+		$healAmount = RequestWrapper::getPostOrGet('heal_points');
 
 		if ($healAmount === 'max') {
 			$healAmount = max(1, $this->calculateMaxHeal($player));

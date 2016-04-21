@@ -6,6 +6,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Handles all user requests for the in-game Doshin Office
@@ -28,7 +29,7 @@ class DoshinController extends AbstractController {
      * @return Array
      */
     public function index() {
-        $target = in('target');
+        $target = RequestWrapper::getPostOrGet('target');
 
         return $this->render(
             [
@@ -51,10 +52,10 @@ class DoshinController extends AbstractController {
      * @TODO simplify the conditional branching
      */
     public function offerBounty() {
-        $targetName = in('target');
+        $targetName = RequestWrapper::getPostOrGet('target');
         $char       = Player::find(SessionFactory::getSession()->get('player_id'));
         $target     = Player::findByName($targetName);
-        $amountIn   = in('amount');
+        $amountIn   = RequestWrapper::getPostOrGet('amount');
         $amount     = (intval($amountIn) !== 0 ? intval($amountIn) : null);
         $quickstat  = false;
         $success    = false;
@@ -153,7 +154,7 @@ class DoshinController extends AbstractController {
      * @return Array
      */
     public function bribe() {
-        $bribe     = intval(in('bribe'));
+        $bribe     = intval(RequestWrapper::getPostOrGet('bribe'));
         $char      = Player::find(SessionFactory::getSession()->get('player_id'));
         $error     = 0;
         $quickstat = false;

@@ -7,6 +7,7 @@ use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * The controller for effects of a village request and the default index display of the page
@@ -26,7 +27,7 @@ class ChatController extends AbstractController {
      */
     public function receive() {
         $char_id = SessionFactory::getSession()->get('player_id');
-        $message = in('message', null, 'no filter'); // Essentially no filtering.
+        $message = RequestWrapper::getPostOrGet('message');
         $error   = null;
 
         if (!empty($message)) {
@@ -46,8 +47,8 @@ class ChatController extends AbstractController {
      * @return Response
      */
     public function index() {
-        $view_all   = in('view_all');
-        $chatlength = in('chatlength', self::DEFAULT_LIMIT, 'toNonNegativeInt');
+        $view_all   = RequestWrapper::getPostOrGet('view_all');
+        $chatlength = max(self::DEFAULT_LIMIT, (int) RequestWrapper::getPostOrGet('chatlength'));
         $chatlength = min(self::MAX_CHATS, max(self::MIN_CHATS, $chatlength));
         $chats      = $this->getChats($view_all ? null : $chatlength);
 
@@ -55,7 +56,7 @@ class ChatController extends AbstractController {
             'field_size'        => self::FIELD_SIZE,
             'target'            => $_SERVER['PHP_SELF'],
             'chats'             => $chats,
-            'error'             => in('error'),
+            'error'             => RequestWrapper::getPostOrGet('error'),
             'more_chats_to_see' => (!$view_all && $chatlength < $this->getChatCount()),
             'authenticated'     => SessionFactory::getSession()->get('authenticated', false),
         ];

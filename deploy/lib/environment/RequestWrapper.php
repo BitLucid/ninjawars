@@ -62,7 +62,7 @@ class RequestWrapper{
     /**
      * Equivalent to $_REQUEST
      */
-    public static function getPostOrGet($val) {
-        return (static::getPost($val) ? static::getPost($val) : static::get($val));
+    public static function getPostOrGet($val, $default=null) {
+        return (static::getPost($val) ? static::getPost($val) : static::get($val, $default));
     }
 }

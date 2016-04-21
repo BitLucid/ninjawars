@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Message;
@@ -19,8 +20,8 @@ class ApiController extends AbstractController {
      * @return Response
      */
     public function nw_json() {
-        $type = in('type');
-        $dirty_jsoncallback = in('jsoncallback');
+        $type = RequestWrapper::getPostOrGet('type');
+        $dirty_jsoncallback = RequestWrapper::getPostOrGet('jsoncallback');
 
         // Reject if non alphanumeric and _ chars
         $jsoncallback = (!preg_match('/[^a-z_0-9]/i', $dirty_jsoncallback) ? $dirty_jsoncallback : null);
@@ -52,19 +53,19 @@ class ApiController extends AbstractController {
         ];
 
         $res = null;
-        $data = in('data');
+        $data = RequestWrapper::getPostOrGet('data');
 
         if (isset($valid_type_map[$type])) {
             if ($type == 'send_chat') {
-                $result = $this->jsonSendChat(in('msg'));
+                $result = $this->jsonSendChat(RequestWrapper::getPostOrGet('msg'));
             } else if ($type == 'new_chats') {
-                $chat_since = in('since', null);
+                $chat_since = RequestWrapper::getPostOrGet('since', null);
                 $result = $this->jsonNewChats($chat_since);
             } elseif ($type == 'chats') {
-                $chat_limit = in('chat_limit', 20);
+                $chat_limit = RequestWrapper::getPostOrGet('chat_limit', 20);
                 $result = $this->jsonChats($chat_limit);
             } elseif ($type == 'char_search') {
-                $result = $this->jsonCharSearch(in('term'), in('limit'));
+                $result = $this->jsonCharSearch(RequestWrapper::getPostOrGet('term'), RequestWrapper::getPostOrGet('limit'));
             } elseif (!empty($data)){ // If data param is present, pass data to the function
                 $result = $this->$valid_type_map[$type]($data);
             } else { // No data present, just call the function with no arguments.

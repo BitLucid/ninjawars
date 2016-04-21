@@ -8,6 +8,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 use \PDO;
 
 /**
@@ -29,7 +30,7 @@ class ConsiderController extends AbstractController {
      * Search for enemies to remember.
      */
     public function search() {
-        $enemy_match = in('enemy_match');
+        $enemy_match = RequestWrapper::getPostOrGet('enemy_match');
         $found_enemies = ($enemy_match ? $this->getEnemyMatches(SessionFactory::getSession()->get('player_id'), $enemy_match) : null);
         $parts = $this->configure();
 
@@ -46,9 +47,10 @@ class ConsiderController extends AbstractController {
      * Add an enemy to pc's list if valid.
      */
     public function addEnemy() {
-        $add_enemy = in('add_enemy', null, 'toNonNegativeInt');
-        if (is_numeric($add_enemy) && $add_enemy != 0) {
-            $this->addEnemyToPlayer(SessionFactory::getSession()->get('player_id'), $add_enemy);
+        $enemy = Player::find(RequestWrapper::getPostOrGet('add_enemy'));
+
+        if ($enemy) {
+            $this->addEnemyToPlayer(Player::find(SessionFactory::getSession()->get('player_id')), $enemy);
         }
 
         return new RedirectResponse('/enemies');
@@ -58,10 +60,10 @@ class ConsiderController extends AbstractController {
      * Take an enemy off a pc's list.
      */
     public function deleteEnemy() {
-        $remove_enemy = in('remove_enemy', null, 'toNonNegativeInt');
+        $enemy = Player::find(RequestWrapper::getPostOrGet('remove_enemy'));
 
-        if (is_numeric($remove_enemy) && $remove_enemy != 0) {
-            $this->removeEnemyFromPlayer(SessionFactory::getSession()->get('player_id'), $remove_enemy);
+        if ($enemy) {
+            $this->removeEnemyFromPlayer(Player::find(SessionFactory::getSession()->get('player_id')), $enemy);
         }
 
         return new RedirectResponse('/enemies');
@@ -140,22 +142,18 @@ class ConsiderController extends AbstractController {
     /**
      * Add a certain enemy to the enemy list.
      *
-     * @param int $p_playerId
-     * @param int $p_enemyId
+     * @param Player $p_player
+     * @param Player $p_enemy
      * @return void
      */
-    private function addEnemyToPlayer($p_playerId, $p_enemyId) {
-        if (!is_numeric($p_enemyId)) {
-            throw new \Exception('Enemy id to add must be present to succeed.');
-        }
-
-        $this->removeEnemyFromPlayer($p_playerId, $p_enemyId);
+    private function addEnemyToPlayer(Player $p_player, Player $p_enemy) {
+        $this->removeEnemyFromPlayer($p_player, $p_enemy);
 
         DatabaseConnection::getInstance();
         $query = 'INSERT INTO enemies (_player_id, _enemy_id) VALUES (:pid, :eid)';
         $statement = DatabaseConnection::$pdo->prepare($query);
-        $statement->bindValue(':pid', $p_playerId);
-        $statement->bindValue(':eid', $p_enemyId);
+        $statement->bindValue(':pid', $p_player->id());
+        $statement->bindValue(':eid', $p_enemy->id());
         $statement->execute();
     }
 
@@ -212,20 +210,16 @@ class ConsiderController extends AbstractController {
     /**
      * Drop a certain enemy from the list.
      *
-     * @param int $p_playerId
-     * @param int $p_enemyId
+     * @param Player $p_player
+     * @param Player $p_enemy
      * @return void
      */
-    private function removeEnemyFromPlayer($p_playerId, $p_enemyId) {
-        if (!is_numeric($p_enemyId)) {
-            throw new \Exception('Enemy id to remove must be present to succeed.');
-        }
-
+    private function removeEnemyFromPlayer(Player $p_player, Player $p_enemy) {
         DatabaseConnection::getInstance();
         $query = 'DELETE FROM enemies WHERE _player_id = :pid AND _enemy_id = :eid';
         $statement = DatabaseConnection::$pdo->prepare($query);
-        $statement->bindValue(':pid', $p_playerId);
-        $statement->bindValue(':eid', $p_enemyId);
+        $statement->bindValue(':pid', $p_player->id());
+        $statement->bindValue(':eid', $p_enemy->id());
         $statement->execute();
     }
 }

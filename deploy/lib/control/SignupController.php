@@ -62,8 +62,8 @@ class SignupController extends AbstractController {
      * @return Response
      */
     public function signup() {
-        Request::setTrustedProxies(Constants::$trusted_proxies);
-        $request = Request::createFromGlobals();
+        RequestWrapper::init();
+        $request = RequestWrapper::$request;
         $signupRequest = $this->buildSignupRequest($request);
 
         try {
@@ -192,12 +192,12 @@ class SignupController extends AbstractController {
      */
     private function buildSignupRequest($p_request) {
         $signupRequest                    = new \stdClass();
-        $signupRequest->enteredName       = trim(in('send_name', '', 'toSimple'));
-        $signupRequest->enteredEmail      = trim(in('send_email', '', 'toSimple'));
-        $signupRequest->enteredClass      = strtolower(trim(in('send_class', '')));
-        $signupRequest->enteredReferral   = trim(in('referred_by', in('referrer')));
-        $signupRequest->enteredPass       = in('key', null, 'toSimple');
-        $signupRequest->enteredCPass      = in('cpass', null, 'toSimple');
+        $signupRequest->enteredName       = Filter::toSimple(trim($p_request->get('send_name')));
+        $signupRequest->enteredEmail      = Filter::toSimple(trim($p_request->get('send_email')));
+        $signupRequest->enteredClass      = strtolower(trim($p_request->get('send_class')));
+        $signupRequest->enteredReferral   = trim($p_request->get('referred_by', $p_request->get('referrer')));
+        $signupRequest->enteredPass       = Filter::toSimple($p_request->get('key'));
+        $signupRequest->enteredCPass      = Filter::toSimple($p_request->get('cpass'));
         $signupRequest->clientIP          = $p_request->getClientIp();
 
         if (!$signupRequest->enteredClass) {

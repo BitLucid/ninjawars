@@ -1,25 +1,4 @@
 <?php
-use NinjaWars\core\environment\RequestWrapper;
-use Symfony\Component\HttpFoundation\Request;
-use NinjaWars\core\Filter;
-
-/**
- * Input function that by default LEAVES INPUT COMPLETELY UNFILTERED
- * To not filter some input, you have to explicitly pass in null for the third parameter,
- * e.g. in('some_url_parameter', null, null)
- */
-function in($var_name, $default_val=null, $filter_callback=null) {
-	$req = RequestWrapper::getPostOrGet($var_name);
-	$result = (isset($req) ? $req : $default_val);
-
-	// Check that the filter function sent in exists.
-	if ($filter_callback) {
-		$result = Filter::$filter_callback($result);
-	}
-
-    return $result;
-}
-
 function debug($val) {
     if (DEBUG) {
     	$vals = func_get_args();
@@ -43,4 +22,34 @@ function nw_debug() {
 	}
 
 	return $result;
+}
+/**
+ * Initial inspiration from here: http://stackoverflow.com/questions/4145531/how-to-create-and-use-nonces
+ */
+
+/**
+ * Create a hash from a random string.
+ *
+ * @return String
+ */
+function nonce() {
+    // Fast hashing the random string only to make it a usable/passable nonce
+    return hash('sha512', make_random_string());
+}
+
+/**
+ * Seed random string for nonce
+ *
+ * @param int $bits Desired size of output
+ * @return String
+ */
+function make_random_string($bits = 256) {
+    $bytes = ceil($bits / 8);
+
+    $return = '';
+    for ($i = 0; $i < $bytes; $i++) {
+        $return .= chr(mt_rand(0, 255));
+
+    }
+    return $return;
 }
