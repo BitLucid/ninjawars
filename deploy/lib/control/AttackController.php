@@ -21,11 +21,12 @@ class AttackController extends AbstractController {
      * @return Response
      */
     public function index() {
-        $target  = RequestWrapper::getPostOrGet('target');
-        $duel    = (bool) RequestWrapper::getPostOrGet('duel');
-        $blaze   = (bool) RequestWrapper::getPostOrGet('blaze');
-        $deflect = (bool) RequestWrapper::getPostOrGet('deflect');
-        $evade   = (bool) RequestWrapper::getPostOrGet('evasion');
+        $request = RequestWrapper::$request;
+        $target  = $request->get('target');
+        $duel    = (bool) $request->get('duel');
+        $blaze   = (bool) $request->get('blaze');
+        $deflect = (bool) $request->get('deflect');
+        $evade   = (bool) $request->get('evasion');
 
         // Template vars.
         $stealthed_attack = $stealth_damage = $stealth_lost =
