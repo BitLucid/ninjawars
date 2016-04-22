@@ -29,8 +29,10 @@ class AttackControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testAttackWithoutArgs() {
-        $response = $this->controller->index();
+        $request = Request::create('/attack', 'GET', []);
+        RequestWrapper::inject($request);
 
+        $response = $this->controller->index();
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 

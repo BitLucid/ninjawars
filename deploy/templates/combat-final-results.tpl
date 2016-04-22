@@ -9,23 +9,23 @@
       </tr>
 
       <tr>
-        <td>{$attacking_player->name()|escape}</td>
+        <td>{$attacker->name()|escape}</td>
         <td style="text-align: center;">{$total_attacker_damage|escape}</td>
         <td>
-{if $finalizedHealth lt 100} {* Makes your health red if you go below 100 hitpoints. *}
+{if $attacker->health lt 100} {* Makes your health red if you go below 100 hitpoints. *}
           <span style="color:red;font-weight:bold;">
 {else} {* Normal text color for health. *}
           <span style="color:brown;font-weight:normal;">
 {/if}
 
-            {$finalizedHealth|escape}
+            {$attacker->health|escape}
           </span>
         </td>
       </tr>
       <tr>
-        <td>{$target_player->name()|escape}</td>
+        <td>{$target->name()|escape}</td>
         <td style="text-align: center;">{$total_target_damage|escape}</td>
-        <td>{math equation="x - y" x=$target_health y=$total_attacker_damage}</td>
+        <td>{$target->health}</td>
       </tr>
     </table>
     <hr>
