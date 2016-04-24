@@ -42,7 +42,7 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
 
         $bounty_mess = Combat::runBountyExchange($pc, $def, $bounty_mod);
         // Equal pcs, no bounty message
-        $this->assertEquals(null, $bounty_mess);
+        $this->assertEquals('', $bounty_mess);
     }
 
     public function testBountyExchangeWithSomeBountyOnDefender(){
@@ -60,7 +60,7 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
 
         $bounty_mess = Combat::runBountyExchange($pc, $def, $bounty_mod);
         // Equal pcs, no bounty message
-        $this->assertNotEquals(null, $bounty_mess);
+        $this->assertNotEquals('', $bounty_mess);
     }
 
     public function testBountyExchangeWithInequalPcs(){
@@ -77,7 +77,7 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
 
         $bounty_mess = Combat::runBountyExchange($pc, $def, $bounty_mod);
         // With a high difficulty pc, some bounty should be put on.
-        $this->assertNotEquals(null, $bounty_mess);
+        $this->assertNotEquals('', $bounty_mess);
         //$this->assertGreaterThan(0, $pc->bounty);
     }
 
@@ -90,7 +90,7 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
 
         $bounty_mess = Combat::runBountyExchange($pc, $npc, $npc->bountyMod());
         // With a high powered pc, some bounty should be put on by attacking a low powered npc.
-        $this->assertNotEquals(null, $bounty_mess);
+        $this->assertNotEquals('', $bounty_mess);
     }
 
     public function testBountyDoesntGrowOutOfBounds(){
@@ -103,7 +103,7 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
         $def->bounty = 0;
 
         $bounty_mess = Combat::runBountyExchange($pc, $def, $bounty_mod);
-        $this->assertEquals(null, $bounty_mess);
+        $this->assertEquals('', $bounty_mess);
     }
 
 
@@ -116,6 +116,6 @@ class CombatTest extends \PHPUnit_Framework_TestCase {
 
         $bounty_mess = Combat::runBountyExchange($pc, $npc, $npc->bountyMod());
         // With a high powered pc, some bounty should be put on by attacking a low powered npc.
-        $this->assertNotEquals(null, $bounty_mess);
+        $this->assertNotEquals('', $bounty_mess);
     }
 }
