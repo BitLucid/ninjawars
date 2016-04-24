@@ -116,6 +116,13 @@ class Player implements Character {
     }
 
     /**
+     *
+     */
+    public function __clone() {
+        $this->vo = clone $this->vo;
+    }
+
+    /**
      * @return string
      */
     public function name() {
