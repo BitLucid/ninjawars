@@ -10,7 +10,7 @@
 
       <tr>
         <td>{$attacker->name()|escape}</td>
-        <td style="text-align: center;">{$total_attacker_damage|escape}</td>
+        <td style="text-align: center;">{$starting_attacker->health - $attacker->health|escape}</td>
         <td>
 {if $attacker->health lt 100} {* Makes your health red if you go below 100 hitpoints. *}
           <span style="color:red;font-weight:bold;">
@@ -24,7 +24,7 @@
       </tr>
       <tr>
         <td>{$target->name()|escape}</td>
-        <td style="text-align: center;">{$total_target_damage|escape}</td>
+        <td style="text-align: center;">{$starting_target->health - $target->health|escape}</td>
         <td>{$target->health}</td>
       </tr>
     </table>

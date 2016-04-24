@@ -8,14 +8,14 @@
         <td>HP</td>
       </tr>
       <tr>
-        <td>{$attacker_name|escape}</td>
-        <td>{$attacker_str|escape}</td>
-        <td style="color:brown;font-weight:normal;">{$attacker_hp|escape}</td>
+        <td>{$attacker->name()|escape}</td>
+        <td>{$attacker->getStrength()|escape}</td>
+        <td style="color:brown;font-weight:normal;">{$attacker->health|escape}</td>
       </tr>
       <tr>
-        <td>{$target_name|escape}</td>
-        <td>{$target_str|escape}</td>
-        <td>{$target_hp|escape}</td>
+        <td>{$target->name()|escape}</td>
+        <td>{$target->getStrength()|escape}</td>
+        <td>{$target->health|escape}</td>
       </tr>
     </table>
     <hr>

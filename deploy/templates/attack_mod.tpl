@@ -14,17 +14,15 @@
 		{else}
 
 			{if $stealthed_attack}
-				<div>You reveal yourself with a a surprise strike from the shadows!</div>
+				<div>You reveal yourself with a surprise strike from the shadows!</div>
 			{/if}
 
 			{if $stealth_damage}
-				<div>{$target->name()} has lost {$stealthAttackDamage} health.</div>
+				<div>{$target->name()} has lost {$starting_target->health - $target->health} health.</div>
 			{/if}
 
 			{if $stealth_lost}
-
 	            You have lost your stealth.
-
 	        {/if}
 
 			{if $blaze}
@@ -39,9 +37,7 @@
 				As you enter battle, you note your potential escape routes...
 			{/if}
 
-			{if $pre_battle_stats}
-				{include file="combat-prebattle-stats.tpl" attacker_name=$attacker->name() attacker_str=$pbs_attacker_str attacker_hp=$pbs_attacker_hp target_name=$target->name() target_str=$pbs_target_str target_hp=$pbs_target_hp}
-			{/if}
+			{include file="combat-prebattle-stats.tpl" attacker=$starting_attacker target=$starting_target}
 
 			{if $blaze}
 				<div>Your attack is more powerful due to blazing!</div>
@@ -51,18 +47,15 @@
 				<div>Your wounds are reduced by deflecting the attack!</div>
 			{/if}
 
-			{if $evade && $total_attacker_damage < $target->health}
+			{if $evade && $target->health gt 0}
 				<div>Realizing you are out matched, you escape with your life to fight another day!</div>
 			{/if}
-
 
 			{if $rounds}
 				<div>Total Rounds: {$rounds}</div>
 			{/if}
 
-			{if $combat_final_results}
-				{include file="combat-final-results.tpl" attacker=$attacker target=$target}
-			{/if}
+            {include file="combat-final-results.tpl" starting_attacker=$starting_attacker final_attacker=$attacker starting_target=$starting_target target=$target}
 
 			{if $duel}
 				<p>You spent an extra turn dueling.</p>
@@ -80,26 +73,25 @@
 				<div>You spent two extra turns preparing your escape routes.</div>
 			{/if}
 
-			{if $killed_target}
+			{if $target->health lt 1}
 				<div>{$attacker->name()} has killed {$target->name()}!</div>
 				<div class='ninja-notice'>
 					{$target->name()} is dead, you have proven your might
-				{if $killpoints == 2}
+				{if $killpoints eq 2}
 					twice over
-				{elseif $killpoints > 2}
+				{elseif $killpoints gt 2}
 					{$killpoints} times over
 				{/if}
 
 				!</div>
 
-				{if !$simultaneousKill && $loot}
+				{if $loot}
 					<div>You have taken <span class='gold-count'>{$loot} gold</span> from {$target->name()}.</div>
 				{/if}
 
-				{if $wrath_regain}
+				{if $wrath}
 					<div class='wrath'>Your victory fuels your wrath, allowing you to retain some of your health.</div>
 				{/if}
-
 			{/if}
 
 			{if $rewarded_ki}
@@ -110,16 +102,16 @@
 				{$bounty_result}
 			{/if}
 
-            {if $target->health()}
+            {if $target->health gt 0}
                 {include file="defender_health.tpl" health=$target->health level=$target->level target_name=$target->name()}
             {/if}
 
-            {if $attacker_died}
+            {if $attacker->health lt 1}
 			<div class='parent died'>
 				<div class='child ninja-error thick'>{$target->name()} has killed you!</div>
 			</div>
 
-                {if !$simultaneousKill && $loot}
+                {if $loot}
 				<div>{$target->name()} has taken {$loot} gold from you.</div>
                 {/if}
 		<div class='ninja-notice thick'>
