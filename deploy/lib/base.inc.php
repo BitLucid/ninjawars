@@ -10,13 +10,6 @@
 
 require_once(substr(__FILE__, 0, (strpos(__FILE__, 'lib/'))).'resources.php');
 
-if (defined('PROFILE') && PROFILE) {
-	$mtime = microtime();
-	$mtime = explode(" ",$mtime);
-	$mtime = $mtime[1] + $mtime[0];
-	$__starttime = $mtime;
-}
-
 // Bootstrap to vendor
 require_once(VENDOR_ROOT.'autoload.php');
 require_once(SERVER_ROOT.'routes.php');
