@@ -13,8 +13,6 @@ define('DATABASE_NAME', __DB_NAME__);		// *** The name of the database to connec
 define('DATABASE_PASSWORD', __DB_PASS__);		// *** The password for the database connection
 define('OFFLINE', __OFFLINE__);				// *** Controls if remote or local resources are used
 define('DEBUG', __DEBUG__);					// *** Shorter debugging constant name, set as false on live.
-define('PROFILE', __PROFILE__);				// *** Whether or not to do performance profiling
-define('DEBUG_ALL_ERRORS', __DEBUG_ALL__);	// *** Second debugging level, e.g. email debugging, only works when debug is also on.
 define('SERVER_ROOT', __SERVER_ROOT__);		// *** The root deployment directory of the game
 // Generally for the install purposes the SERVER_ROOT should correspond to /srv/ninjawars/deploy/ 
 define('WEB_ROOT', __WWW_ROOT__);			// *** The base URL used to access the game

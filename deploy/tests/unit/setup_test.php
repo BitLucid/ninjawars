@@ -7,8 +7,6 @@ class SetupTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(defined('DATABASE_NAME'));
         $this->assertTrue(defined('OFFLINE'));
         $this->assertTrue(defined('DEBUG'));
-        $this->assertTrue(defined('DEBUG_ALL_ERRORS'));
-        $this->assertTrue(defined('PROFILE'));
         $this->assertTrue(defined('SERVER_ROOT'));
         $this->assertTrue(defined('WEB_ROOT'));
         $this->assertTrue(defined('ADMIN_EMAIL'));
