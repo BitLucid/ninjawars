@@ -1,4 +1,4 @@
-.PHONY: all ci pre-test test test-main test-integration test-unit test-functional test-js post-test clean dep build install dist-clean db db-fixtures migration
+.PHONY: all ci pre-test test test-main test-integration test-unit test-quick test-functional test-js post-test clean dep build install dist-clean db db-fixtures migration
 
 DOMAIN=http://nw.local/
 COMPOSER=./composer.phar
@@ -80,6 +80,12 @@ test-unit:
 	@find "./deploy/lib/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
+
+test-quick:
+	@find "./deploy/lib/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+	@$(TEST_RUNNER) --testsuite Quick
+	python3 -m pytest deploy/tests/functional/
 
 test-integration: pre-test
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Integration
