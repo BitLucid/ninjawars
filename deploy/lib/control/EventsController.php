@@ -49,8 +49,8 @@ class EventsController extends AbstractController {
             $params[':limit'] = $limit;
         }
 
-        return query("SELECT send_from, message, unread, date, uname AS from FROM events
-            JOIN players ON send_from = player_id WHERE send_to = :to ORDER BY date DESC
+        return query("SELECT coalesce(send_from, 0) AS send_from, message, unread, date, uname AS from FROM events
+            LEFT JOIN players ON send_from = player_id WHERE send_to = :to ORDER BY date DESC
             ".($limit ? "LIMIT :limit" : ''), $params);
     }
 
