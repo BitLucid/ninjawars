@@ -16,6 +16,12 @@
 		<testsuite name="Integration">
 			<directory suffix=".php">deploy/tests/integration</directory>
 		</testsuite>
+		<testsuite name="Quick">
+			<directory suffix=".php">deploy/tests/unit</directory>
+			<exclude>
+             <file>deploy/tests/unit/SmartyTemplateTest.php</file>
+            </exclude>
+		</testsuite>
 	</testsuites>
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">

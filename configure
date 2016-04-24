@@ -5,6 +5,7 @@ echo "DBNAME=nw" >> CONFIG
 echo "DBUSER=ninjamaster" >> CONFIG
 echo "DBCREATINGUSER=postgres" >> CONFIG
 echo "CC_DIR=./cc/" >> CONFIG
+echo "NOCOVER=true" >> CONFIG
 NGINX_EXISTS=`command -v nginx`
 
 if [ -f ./composer.phar ]
