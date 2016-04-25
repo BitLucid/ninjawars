@@ -1886,11 +1886,13 @@ section.login-section{
 	padding:5px;
 }
 .ninja-success:before{
-	content:"";
-	display:inline-block;
-	background-image:url('/images/icons/mono/check32.png');
-	background-repeat:no-repeat;
-	background-size: 16px 16px;
+	content: "\f00c"; /* font-awesome check icon */
+	display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     width: 16px; 
     height: 16px;
     padding-right:0.5em;
