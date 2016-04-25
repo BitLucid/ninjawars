@@ -2,7 +2,7 @@
 {if $event.send_from gt 0}
     	<a target='main' class='event-sender' href='/player?player_id={$event.send_from|escape:'url'}'>{$event.from|escape}</a>
 {else}
-        <strong>???</strong>
+        <strong class='generic-event'><i class="fa fa-star" aria-hidden="true"></i></strong>
 {/if}
     </dt>
     <dd class='user-message{if $event.unread} message-unread{/if}'>
