@@ -68,7 +68,7 @@ As you enter battle, you note your potential escape routes...
 !</div>
 
     {if $loot}
-<div>You have taken <span class='gold-count'>{$loot} gold</span> from {$target->name()}.</div>
+<div>You have taken <span class='gold-count'>{$loot|number_format:0|escape} gold</span> from {$target->name()}.</div>
     {/if}
 
     {if $wrath}
@@ -90,13 +90,19 @@ As you enter battle, you note your potential escape routes...
 
 {if $attacker->health lt 1}
 <div class='parent died'>
-<div class='child ninja-error thick'>{$target->name()} has killed you!</div>
+    <div class='child ninja-error thick'>
+        {$target->name()} has killed you!
+    </div>
 </div>
 
     {if $loot}
-<div>{$target->name()} has taken {$loot} gold from you.</div>
+<div class='parent'>
+    <div class='child ninja-notice'>
+        {$target->name()} has <strong>taken</strong> <span class='gold-count'>{$loot|number_format:0|escape} gold</span> from you!
+    </div>
+</div>
     {/if}
 <div class='ninja-notice thick'>
-Go to the <a href="/shrine">Shrine</a> to return to the living.
+    Go to the <a href="/shrine">Shrine</a> to return to the living.
 </div>
 {/if}
