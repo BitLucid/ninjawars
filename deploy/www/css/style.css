@@ -826,10 +826,10 @@ input.formButton:hover, input[type=submit]:hover, input.formButton:active, input
 	color:black;
 	background-color:skyblue;
 }
+/*
 input.textField {
 	font-family:Verdana, Arial, sans-serif;
-	font-size:small;
-}
+}*/
 div.description, p.description{
 	text-align: center;
 	border-bottom: thin solid #ccb094;
@@ -846,16 +846,19 @@ form input#become-a-ninja {
 	text-align:center;
 	border-radius:3px;
 	text-transform:none;
+	font-size:xx-large;
 }
 fieldset {
 	border:2px groove #800000;
 	margin-bottom: .5em;
 	padding-left: .5em;
 	padding-bottom: .5em;
+	border-radius:0.3rem;
 }
 form#signup {
 	margin-top: 1em;
 	margin-bottom: 1em;
+	font-size:x-large;
 }
 form#signup label {
 	float:left;
@@ -870,18 +873,56 @@ form#signup input:focus, form#signup select:focus {
 	color:black;
 	background-color:white;
 }
+form#signup input[type=radio] {
+    width:1.2rem;
+    height:1.2rem;
+}
 form#signup fieldset span {
 	float:left;
 	font-style:italic;
 }
 legend {
+	font-family: 'Roboto', Arial, sans-serif;
 	padding: 0.2em 0.5em;
 	margin-right: 2em;
 	border:2px solid #800000;
+	background-color:rgba(100, 10, 10, 0.5);
 	color:#ffffff;
 	font-weight:bolder;
 	font-size:90%;
 	text-align:center;
+	text-transform:uppercase;
+	border-radius:0.1em;
+}
+
+form#signup label{
+	height:auto;text-align:left;
+}
+form#signup .success{
+	color:green;
+}
+form#signup .failure{
+	color:red;
+}
+form#signup label.class-desc{
+	display:block;font-weight:normal;padding:0;margin:0;
+}
+form#signup .ninja-char-creation .inline-block{
+	vertical-align:top;
+}
+form#signup small{
+	color:grey;
+}
+
+.signup-page .error{
+	border:0.3em rgb(250, 15, 15) solid;padding:0.5em;margin:1em;
+}
+#become-a-ninja{
+	display:inline-block;margin:0.5em auto 4rem;
+}
+
+form#signup .ninja-char-creation section + section{
+	margin-top:1em;
 }
 
 
@@ -1034,7 +1075,7 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
   vertical-align:top;
 }
 #profile-edit, #player-profile-area{
-  width:90%;
+  width:100%;
 }
 fieldset#details textarea{
   display:block;
@@ -1229,6 +1270,10 @@ h1:first-of-type{
 
 .login-page #solo-page-login-link, .signup-page #solo-page-signup-link{
     display:none;
+}
+
+.solo-page form#signup{
+	padding-left:1em; padding-right:1em;
 }
 
 body.solo-page #solo-container {
@@ -4095,7 +4140,7 @@ input[type="button"].btn-block {
 
 #clan-description {
 	max-height: 240px;
-	max-width: 400px;
+	max-width: 96%;
 }
 
 #clan-info #clan-description {
