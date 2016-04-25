@@ -30,45 +30,13 @@ class AttackController extends AbstractController {
         $request = RequestWrapper::$request;
         $session = SessionFactory::getSession();
 
-        $duel    = (bool) $request->get('duel');
-        $blaze   = (bool) $request->get('blaze');
-        $deflect = (bool) $request->get('deflect');
-        $evade   = (bool) $request->get('evasion');
-
-        $stealthed_attack     = false;
-        $stealth_damage       = false;
-        $stealth_lost         = false;
-        $rounds               = false;
-        $bounty_result        = false;
-        $rewarded_ki          = false;
-        $attack_again         = false;
-        $wrath                = false;
-        $attack_turns         = 1;
-        $required_turns       = 0;
-        $turns_to_take        = 0;
-        $loot                 = 0;
-        $killpoints           = 1;
-        $attack_type          = [];
-        $victor               = null;
-        $loser                = null;
-
-        if ($blaze) {
-            $attack_type['blaze'] = 'blaze';
-        }
-
-        if ($deflect) {
-            $attack_type['deflect'] = 'deflect';
-        }
-
-        if ($evade) {
-            $attack_type['evade'] = 'evade';
-        }
-
-        if ($duel) {
-            $attack_type['duel'] = 'duel';
-        } else {
-            $attack_type['attack'] = 'attack';
-        }
+        $options = [
+            'blaze'   => (bool) $request->get('blaze'),
+            'deflect' => (bool) $request->get('deflect'),
+            'duel'    => (bool) $request->get('duel'),
+            'evade'   => (bool) $request->get('evasion'),
+            'attack'  => !(bool) $request->get('duel'),
+        ];
 
         $target   = Player::find($request->get('target'));
         $attacker = Player::find($session->get('player_id'));
@@ -76,8 +44,9 @@ class AttackController extends AbstractController {
         $skillListObj = new Skill();
 
         $ignores_stealth = false;
+        $required_turns  = 1;
 
-        foreach ($attack_type as $type=>$value) {
+        foreach (array_filter($options) as $type=>$value) {
             $ignores_stealth = $ignores_stealth||$skillListObj->getIgnoreStealth($type);
             $required_turns += $skillListObj->getTurnCost($type);
         }
@@ -88,150 +57,174 @@ class AttackController extends AbstractController {
         ];
 
         try {
-            $attack_legal    = new AttackLegal($attacker, $target, $params);
-            $attack_is_legal = $attack_legal->check();
-            $attack_error    = $attack_legal->getError();
+            $rules           = new AttackLegal($attacker, $target, $params);
+            $attack_is_legal = $rules->check();
+            $error           = $rules->getError();
         } catch (\InvalidArgumentException $e) {
             $attack_is_legal = false;
-            $attack_error    = 'Could not determine valid target';
+            $error           = 'Could not determine valid target';
         }
 
-        if ($attack_is_legal) {
-            $starting_attacker = clone $attacker;
-            $starting_target   = clone $target;
-
-            $turns_counter = ($duel ? -1 : $attack_turns);
-            $rounds        = 0;
-
-            $attacker_label = $attacker->name();
-
-            if (!$duel && $attacker->hasStatus(STEALTH)) {
-                $stealthed_attack = true;
-                $this->stealthStrike($attacker, $target);
-
-                $gold_mod = self::STEALTH_GOLD_MOD;
-
-                if ($target->health > 0) {
-                    $stealth_damage = true;
-                } else {
-                    $attacker_label = 'a stealthed ninja';
-                    $victor = $attacker;
-                    $loser  = $target;
-                }
-
-                $attack_label = "attacked %s from the shadows";
-            } else {
-                $gold_mod = ($duel ? self::DUEL_GOLD_MOD : self::DEFAULT_GOLD_MOD);
-
-                if ($attacker->hasStatus(STEALTH)) {
-                    $stealth_lost = true;
-                }
-
-                $attacker->subtractStatus(STEALTH);
-
-                while ($turns_counter != 0 && $attacker->health > 0 && $target->health > 0) {
-                    $turns_counter--;
-                    $rounds++;
-
-                    $this->strike($attacker, $target, $blaze, $deflect);
-
-                    /**
-                     * Evasion effect:
-                     *
-                     * Break off the duel/attack if less than 10% health or
-                     * health is less than average of defender's strength
-                     */
-                    if ($evade && (
-                        $attacker->health < ($target->getStrength()*.5) ||
-                        $attacker->health < ($attacker->health*.1))
-                    ) {
-                        break;
-                    }
-                }
-
-                $attacker->changeTurns(-1*$required_turns);
-
-                $attack_label = ($duel ? 'dueled %s' : 'attacked %s');
-            }
-
-            if ($target->health > 0 && $attacker->health > 0) {
-                $combat_msg = "%s $attack_label for %s damage, but they got away before you could kill them!";
-
-                Event::create(
-                    $attacker->id(),
-                    $target->id(),
-                    sprintf(
-                        $combat_msg,
-                        $attacker->name(),
-                        'you',
-                        ($starting_target->health - $target->health)
-                    )
-                );
-
-                if ($attacker->hasStatus(STEALTH)) {
-                    $stealth_lost = true;
-                }
-
-                $attacker->subtractStatus(STEALTH);
-            } else if ($target->health < 1 && $attacker->health < 1) {
-                $loot = 0;
-                $this->win($attacker, $target, $loot, $killpoints);
-                $this->win($target, $attacker, $loot, 1);
-                $this->lose($attacker, $target, $loot);
-                $this->lose($target, $attacker, $loot);
-            } else if ($target->health < 1) {
-                $victor        = $attacker;
-                $loser         = $target;
-                $bounty_result = Combat::runBountyExchange($victor, $loser);
-                $loot          = floor($gold_mod * $loser->gold);
-
-                if ($duel) {
-                    $killpoints = Combat::killpointsFromDueling($attacker, $target);
-
-                    if ($skillListObj->hasSkill('wrath', $attacker)) {
-                        // They'll regain some health for the kill, at the end.
-                        $attacker->heal(self::BASE_WRATH_REGAIN);
-                        $wrath = true;
-                    }
-                }
-
-                $reporting_victor = $victor;
-
-                if ($victor->hasStatus(STEALTH)) {
-                    $reporting_victor = new Player();
-                    $reporting_victor->uname     = 'a stealthed ninja';
-                    $reporting_victor->player_id = 0;
-                }
-
-                $this->lose($loser, $reporting_victor, $loot);
-                $this->win($victor, $loser, $loot, $killpoints);
-            } else {
-                $victor = $target;
-                $loser  = $attacker;
-                $loot   = floor($gold_mod * $loser->gold);
-
-                $this->lose($loser, $victor, $loot);
-                $this->win($victor, $loser, $loot, $killpoints);
-            }
-
-            if ($duel) {
-                $this->logDuel($attacker, $target, $victor, $killpoints);
-            }
-
-            if ($rounds > self::EVEN_MATCH_ROUND_COUNT) { // Evenly matched battle! Reward some ki to the attacker, even if they die
-                $rewarded_ki = self::EVEN_MATCH_KI_REWARD;
-
-                $attacker->set_ki($attacker->ki + $rewarded_ki);
-            }
-
-            $attack_again = (isset($target) && $attacker->health > 0 && $target->health > 0);
-
-            $target->save();
-        } else {
+        if (!$attack_is_legal) {
             // Take away at least one turn even on attacks that fail.
             $attacker->changeTurns(-1);
+            $attacker->save();
+
+            $parts = [
+                'target'   => $target,
+                'attacker' => $attacker,
+                'error'    => $error,
+            ];
+
+            return new StreamedViewResponse('Battle Status', 'attack_mod.tpl', $parts, ['quickstat' => 'player' ]);
+        } else {
+            return $this->combat($attacker, $target, $required_turns, $options);
+        }
+    }
+
+    /**
+     * @return StreamedViewResponse
+     */
+    private function combat(Player $attacker, Player $target, $required_turns, $options) {
+        $attack_error      = false;
+        $stealthed_attack  = false;
+        $stealth_damage    = false;
+        $stealth_lost      = false;
+        $bounty_result     = false;
+        $rewarded_ki       = false;
+        $wrath             = false;
+        $required_turns    = 0;
+        $loot              = 0;
+        $killpoints        = 1;
+        $rounds            = 1;
+        $victor            = null;
+        $loser             = null;
+        $starting_attacker = clone $attacker;
+        $starting_target   = clone $target;
+        $turns_counter     = ($options['duel'] ? -1 : 1);
+        $attacker_label    = $attacker->name();
+
+        if (!$options['duel'] && $attacker->hasStatus(STEALTH)) {
+            $stealthed_attack = true;
+            $this->stealthStrike($attacker, $target);
+
+            $gold_mod = self::STEALTH_GOLD_MOD;
+
+            if ($target->health > 0) {
+                $stealth_damage = true;
+            } else {
+                $attacker_label = 'a stealthed ninja';
+                $victor = $attacker;
+                $loser  = $target;
+            }
+
+            $attack_label = "attacked %s from the shadows";
+        } else {
+            $gold_mod = ($options['duel'] ? self::DUEL_GOLD_MOD : self::DEFAULT_GOLD_MOD);
+
+            if ($attacker->hasStatus(STEALTH)) {
+                $stealth_lost = true;
+            }
+
+            $attacker->subtractStatus(STEALTH);
+
+            while ($turns_counter != 0 && $attacker->health > 0 && $target->health > 0) {
+                $turns_counter--;
+                $rounds++;
+
+                $this->strike($attacker, $target, $options['blaze'], $options['deflect']);
+
+                /**
+                 * Evasion effect:
+                 *
+                 * Break off the duel/attack if less than 10% health or
+                 * health is less than average of defender's strength
+                 */
+                if ($options['evade'] && (
+                    $attacker->health < ($target->getStrength()*.5) ||
+                    $attacker->health < ($attacker->health*.1))
+                ) {
+                    break;
+                }
+            }
+
+            $attacker->changeTurns(-1*$required_turns);
+
+            $attack_label = ($options['duel'] ? 'dueled %s' : 'attacked %s');
         }
 
+        if ($target->health > 0 && $attacker->health > 0) {
+            $combat_msg = "%s $attack_label for %s damage, but they got away before you could kill them!";
+
+            Event::create(
+                $attacker->id(),
+                $target->id(),
+                sprintf(
+                    $combat_msg,
+                    $attacker->name(),
+                    'you',
+                    ($starting_target->health - $target->health)
+                )
+            );
+
+            if ($attacker->hasStatus(STEALTH)) {
+                $stealth_lost = true;
+            }
+
+            $attacker->subtractStatus(STEALTH);
+        } else if ($target->health < 1 && $attacker->health < 1) {
+            $loot = 0;
+            $this->win($attacker, $target, $loot, $killpoints);
+            $this->win($target, $attacker, $loot, 1);
+            $this->lose($attacker, $target, $loot);
+            $this->lose($target, $attacker, $loot);
+        } else if ($target->health < 1) {
+            $victor        = $attacker;
+            $loser         = $target;
+            $bounty_result = Combat::runBountyExchange($victor, $loser);
+            $loot          = floor($gold_mod * $loser->gold);
+
+            if ($options['duel']) {
+                $killpoints = Combat::killpointsFromDueling($attacker, $target);
+
+                $skillListObj = new Skill();
+                if ($skillListObj->hasSkill('wrath', $attacker)) {
+                    // They'll regain some health for the kill, at the end.
+                    $attacker->heal(self::BASE_WRATH_REGAIN);
+                    $wrath = true;
+                }
+            }
+
+            $reporting_victor = $victor;
+
+            if ($victor->hasStatus(STEALTH)) {
+                $reporting_victor = new Player();
+                $reporting_victor->uname     = 'a stealthed ninja';
+                $reporting_victor->player_id = 0;
+            }
+
+            $this->lose($loser, $reporting_victor, $loot);
+            $this->win($victor, $loser, $loot, $killpoints);
+        } else {
+            $victor = $target;
+            $loser  = $attacker;
+            $loot   = floor($gold_mod * $loser->gold);
+
+            $this->lose($loser, $victor, $loot);
+            $this->win($victor, $loser, $loot, $killpoints);
+        }
+
+        if ($options['duel']) {
+            $this->logDuel($attacker, $target, $victor, $killpoints);
+        }
+
+        if ($rounds > self::EVEN_MATCH_ROUND_COUNT) { // Evenly matched battle! Reward some ki to the attacker, even if they die
+            $rewarded_ki = self::EVEN_MATCH_KI_REWARD;
+
+            $attacker->set_ki($attacker->ki + $rewarded_ki);
+        }
+
+        $target->save();
         $attacker->save();
 
         return new StreamedViewResponse('Battle Status', 'attack_mod.tpl', get_defined_vars(), ['quickstat' => 'player' ]);
