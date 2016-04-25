@@ -270,8 +270,6 @@ class NpcController extends AbstractController {
             $victim = null; // No match, victim is null.
         }
 
-        $today = date("F j, Y, g:i a");  // Today var is only used for creating mails.
-
         $turn_cost      = 1;
         $health         = true;
         $combat_data    = [];
@@ -334,7 +332,7 @@ class NpcController extends AbstractController {
             if ($player->health() <= 0) { // FINAL CHECK FOR DEATH
                 $player->death();
                 $health = false;
-                Event::create((int)"SysMsg", $player->id(), "DEATH: You have been killed by a $victim on $today");
+                Event::create((int)"SysMsg", $player->id(), "DEATH: You have been killed by a $victim.");
             }
 
             // Subtract the turn cost for attacking an npc
