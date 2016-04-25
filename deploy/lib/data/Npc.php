@@ -6,16 +6,29 @@ use NinjaWars\core\data\Character;
 use NinjaWars\core\data\Player;
 
 /**
- *  who/what/why/where The various generic npcs that can be fought or interacted with
- *  villager npcs could have bounties
- *  npcs can have shared traits that provide special abilities
- *  Generally they are interacted with from the /enemies page
+ * who/what/why/where The various generic npcs that can be fought or interacted with
+ * villager npcs could have bounties
+ * npcs can have shared traits that provide special abilities
+ * Generally they are interacted with from the /enemies page
  */
 class Npc implements Character {
     const RICH_MIN_GOLD_DIVISOR = 1.3;
     const MIN_GOLD = 0; // Could become data driven later
 
     public $traits_array;
+    public $name;
+    public $image;
+    public $short_desc;
+    public $strength;
+    public $damage;
+    public $speed;
+    public $stamina;
+    public $ki;
+    public $inventory_chances;
+    public $inventory;
+    public $race;
+    public $gold;
+    public $bounty_mod;
 
     public function __construct($content) {
         if (is_string($content) && trim($content)) {
@@ -25,24 +38,38 @@ class Npc implements Character {
         }
     }
 
+    /**
+     * @return String
+     */
     public function name() {
         return $this->name;
     }
 
+    /**
+     * @return String
+     */
     public function identity() {
         return $this->name;
     }
 
+    /**
+     * @return String
+     */
     public function image() {
         return $this->image;
     }
 
+    /**
+     * @return String
+     */
     public function shortDesc() {
         return $this->short_desc;
     }
 
     /**
      * Calculcate the max damage of an npc.  Needed for effectiveness calc.
+     *
+     * @return int
      */
     public function maxDamage(Character $enemy=null) {
         $dam = ((1+ ($this->strength * 2)) + $this->damage);
@@ -57,6 +84,8 @@ class Npc implements Character {
 
     /**
      * Calculate the initial naive damage from npcs.
+     *
+     * @return int
      */
     public function damage(Character $char = null) {
         return rand(0, $this->maxDamage($char));
@@ -64,59 +93,82 @@ class Npc implements Character {
 
     /**
      * Calculate difficulty, naively at the moment.
+     *
+     * @return int
      */
     public function difficulty() {
         // Just add together all the points of the mob, so to speak.
-        $adds_bounty = ($this->bountyMod() > 0 ? 1 : 0);
-        $armored = ($this->hasTrait('armored') ? 1 : 0);
-        $complex = count($this->traits_array);
+        $adds_bounty      = ($this->bountyMod() > 0 ? 1 : 0);
+        $armored          = ($this->hasTrait('armored') ? 1 : 0);
+        $complex          = count($this->traits_array);
         $matches_strength = ($this->hasTrait('partial_match_strength') ? 1 : 0);
 
         return 0
-            + $this->strength * 2
+            + ($this->strength * 2)
             + $this->damage
             + floor($this->maxHealth() / 10)
-            + (int) ($this->maxHealth() > 1) // Have more than 1 health, so not totally devoid of content
+            + ((int) ($this->maxHealth() > 1)) // Have more than 1 health, so not totally devoid of content
             + $adds_bounty
-            + $armored * 5
-            + $complex * 3
-            + $matches_strength * 5
+            + ($armored * 5)
+            + ($complex * 3)
+            + ($matches_strength * 5)
             ;
     }
 
     /**
      * @param string $trait
+     * @return boolean
      */
     public function hasTrait($trait) {
         return in_array($trait, $this->traits_array);
     }
 
+    /**
+     * @return Array
+     */
     public function traits() {
         return $this->traits_array;
     }
 
+    /**
+     * @return int
+     */
     public function speed() {
         return $this->speed;
     }
 
+    /**
+     * @return int
+     */
     public function strength() {
         return $this->strength;
     }
 
+    /**
+     * @return int
+     */
     public function stamina() {
         return $this->stamina;
     }
 
+    /**
+     * @return int
+     */
     public function ki() {
         return $this->ki;
     }
 
+    /**
+     * @return int
+     */
     public function health() {
         return $this->maxHealth(); // For now, since there aren't npc instances currently.
     }
 
     /**
      * Get their starting health, minimum of 1.
+     *
+     * @return int
      */
     public function maxHealth() {
         $armored = ($this->hasTrait('armored') ? 1 : 0);
@@ -125,6 +177,8 @@ class Npc implements Character {
 
     /**
      * Instantiate a random chance of the inventory item being present.
+     *
+     * @return boolean
      */
     private function inventory_present($chance) {
         return rand(1, 1000) < (int) ceil((float)$chance * 1000);
@@ -132,6 +186,8 @@ class Npc implements Character {
 
     /**
      * Calculate this npc's inventory from initial chances.
+     *
+     * @return Array
      */
     public function inventory() {
         if (!isset($this->inventory) && isset($this->inventory_chances) && $this->inventory_chances) {
@@ -151,6 +207,8 @@ class Npc implements Character {
 
     /**
      * Get the npcs inventory and return true if there is an instance of the item in it.
+     *
+     * @return boolean
      */
     public function hasItem($item) {
         return isset($this->inventory[$item]);
@@ -158,6 +216,8 @@ class Npc implements Character {
 
     /**
      * Get the race of the npc.
+     *
+     * @return String
      */
     public function race() {
         if (!$this->race) {
@@ -180,6 +240,8 @@ class Npc implements Character {
 
     /**
      * Max gold
+     *
+     * @return int
      */
     public function gold() {
         return $this->gold;
@@ -187,6 +249,8 @@ class Npc implements Character {
 
     /**
      * Get min gold for an npc.
+     *
+     * @return int
      */
     public function minGold() {
         return (int) ($this->hasTrait('rich') ? floor($this->gold()/self::RICH_MIN_GOLD_DIVISOR) : self::MIN_GOLD);
