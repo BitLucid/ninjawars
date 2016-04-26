@@ -158,7 +158,7 @@ class NpcController extends AbstractController {
         $victory          = false;
         $received_gold    = null;
         $received_items   = null;
-        $added_bounty     = null;
+        $added_bounty     = '';
         $is_rewarded      = null; // Gets items or gold.
         $statuses         = null;
         $status_classes   = null;

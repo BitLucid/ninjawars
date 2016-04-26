@@ -1481,6 +1481,9 @@ iframe {
   float:left; width:20%; /* adjust the width; make sure the total of both is 100% */
   min-width:160px;
 }
+#event-list .generic-event{
+	color:gray;
+}
 .chat-messages .chat-message a {
 	font-size:smaller;
 }

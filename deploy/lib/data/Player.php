@@ -116,6 +116,13 @@ class Player implements Character {
     }
 
     /**
+     *
+     */
+    public function __clone() {
+        $this->vo = clone $this->vo;
+    }
+
+    /**
      * @return string
      */
     public function name() {
@@ -130,52 +137,46 @@ class Player implements Character {
 	}
 
     /**
-     * Actively pulls the latest status data from the db.
-     */
-	protected function getStatus() {
-		if ($this->id()) {
-			return (int) query_item("SELECT status FROM players WHERE player_id = :player_id", 
-				array(':player_id'=>array($this->id(), PDO::PARAM_INT)));
-		} else {
-			return null;
-        }
-	}
-
-    /**
      * Adds a defined numeric status constant to the binary string of statuses
      */
-	public function addStatus($p_status) {
-        $status = self::validStatus($p_status); // Filter it.
-        if($status !== null){
-            // Binary add to current status, doing nothing if already set, e.g. 000 | 010 = 010
-            $this->vo->status = $this->vo->status | $status;
-            if(gettype($this->vo->status) !== 'integer'){
-                throw new \Exception('invalid type for status');
+    public function addStatus($p_status) {
+        $status = self::validStatus($p_status);
+
+        if ($status && !$this->hasStatus($status)) {
+            if (gettype($this->status | $status) !== 'integer') {
+                throw new \InvalidArgumentException('invalid type for status');
             }
+
+            $this->status = ($this->status | $status);
+
             update_query('UPDATE players SET status = :status WHERE player_id = :player_id',
-                    [
-                    ':player_id'=>[$this->id(), PDO::PARAM_INT],
-                    ':status'=>$this->vo->status
-                    ]
-                );
-		}
-	}
+                [
+                    ':player_id' => [$this->id(), PDO::PARAM_INT],
+                    ':status'    => $this->status
+                ]
+            );
+        }
+    }
 
     /**
      * Remove a numeric status from the binary string of status toggles.
      */
     public function subtractStatus($p_status) {
-        $status = self::validStatus($p_status); // Filter it.
-        if ($status !== null) {
-            // Remove current status from binary representation, e.g. 111 & ~010 = 101
-            $current = $this->vo->status & ~$status;
-            $this->vo->status = $current; // Store as int.
+        $status = self::validStatus($p_status);
+
+        if ($status && $this->hasStatus($status)) {
+            if (gettype($this->status & ~$status) !== 'integer') {
+                throw new \InvalidArgumentException('invalid type for status');
+            }
+
+            $this->status = ($this->status & ~$status);
+
             update_query('UPDATE players SET status = :status WHERE player_id = :player_id',
-                    [
-                    ':player_id'=>[$this->id(), PDO::PARAM_INT],
-                    ':status'=>$this->vo->status
-                    ]
-                );
+                [
+                    ':player_id' => [$this->id(), PDO::PARAM_INT],
+                    ':status'    => $this->status
+                ]
+            );
         }
     }
 
@@ -183,11 +184,22 @@ class Player implements Character {
      * Resets the binary status info to 0/none
      */
 	public function resetStatus() {
-		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = 0 WHERE player_id = :player');
-		$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
-		$statement->execute();
+		$this->status = 0;
 
-		$this->vo->status = 0;
+		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = :status WHERE player_id = :player');
+		$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
+		$statement->bindValue(':status', $this->status, PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	public function hasStatus($p_status) {
+		$status = self::validStatus($p_status);
+
+		if ($status) {
+			return (bool)($this->status & $status);
+		} else {
+			return false;
+		}
 	}
 
     /**
@@ -230,7 +242,7 @@ class Player implements Character {
 			return (int) $str;
 		}
 	}
-	
+
 	public function setStrength($str){
 		if($str < 0){
 			throw new \InvalidArgumentException('Strength cannot be set as a negative.');
@@ -299,19 +311,11 @@ class Player implements Character {
 		return $this->vo->bounty = $bounty;
 	}
 
-	public function hasStatus($p_status) {
-		$status = self::validStatus($p_status);
-		if ($status) {
-			return (bool)($this->getStatus()&$status);
-		} else {
-			return false;
-		}
-	}
-
 	/**
 	 * Checks whether the character is still active.
+     *
      * @return boolean
-	**/
+	 */
 	public function isActive() {
 		return (bool) $this->vo->active;
 	}

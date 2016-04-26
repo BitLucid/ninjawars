@@ -81,7 +81,7 @@ class GameLog {
         //Log of Dueling information.
         $statement->bindValue(':attacker', $attacker);
         $statement->bindValue(':defender', $defender);
-        $statement->bindValue(':won', $won);
+        $statement->bindValue(':won', $won, \PDO::PARAM_BOOL);
         $statement->bindValue(':killpoints', $killpoints);
         $statement->execute();
     }
