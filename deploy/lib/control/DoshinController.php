@@ -53,7 +53,7 @@ class DoshinController extends AbstractController {
      */
     public function offerBounty() {
         $targetName = RequestWrapper::getPostOrGet('target');
-        $char       = Player::find(SessionFactory::getSession()->get('player_id'));
+        $char       = Player::findPlayable($this->getAccountId());
         $target     = Player::findByName($targetName);
         $amountIn   = RequestWrapper::getPostOrGet('amount');
         $amount     = (intval($amountIn) !== 0 ? intval($amountIn) : null);
@@ -155,7 +155,7 @@ class DoshinController extends AbstractController {
      */
     public function bribe() {
         $bribe     = intval(RequestWrapper::getPostOrGet('bribe'));
-        $char      = Player::find(SessionFactory::getSession()->get('player_id'));
+        $char      = Player::findPlayable($this->getAccountId());
         $error     = 0;
         $quickstat = false;
 
@@ -227,7 +227,7 @@ class DoshinController extends AbstractController {
      * @return Response
      */
     private function render($parts) {
-        $char     = Player::find(SessionFactory::getSession()->get('player_id'));
+        $char     = Player::findPlayable($this->getAccountId());
 
         if (!$char) {
             $char = new Player();

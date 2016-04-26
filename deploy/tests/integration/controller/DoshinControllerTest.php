@@ -6,21 +6,17 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\DoshinController;
 use NinjaWars\core\data\Player;
 
-class DoshinControllerTest extends PHPUnit_Framework_TestCase {
+class DoshinControllerTest extends NWTest {
     public function setUp() {
         // Mock the post request.
         $request = new Request([], []);
         RequestWrapper::inject($request);
-        $session = SessionFactory::init(new MockArraySessionStorage());
-        $this->char = TestAccountCreateAndDestroy::char();
-        $session->set('player_id', $this->char->id());
+        $this->login();
     }
 
     public function tearDown() {
         RequestWrapper::inject(new Request([]));
-        TestAccountCreateAndDestroy::purge_test_accounts();
-        $session = SessionFactory::getSession();
-        $session->invalidate();
+        $this->loginTearDown();
     }
 
     public function testInstantiateDoshinController() {

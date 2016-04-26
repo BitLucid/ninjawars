@@ -22,5 +22,6 @@ class NWTest extends PHPUnit_Framework_TestCase{
     public function loginTearDown(){
         $session = SessionFactory::getSession();
         $session->invalidate();
+        TestAccountCreateAndDestroy::purge_test_accounts();
     }
 }
