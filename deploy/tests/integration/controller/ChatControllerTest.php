@@ -26,6 +26,7 @@ class ChatControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testIndex() {
+        RequestWrapper::inject(new Request());
         $response = $this->controller->index();
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);

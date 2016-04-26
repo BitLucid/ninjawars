@@ -43,8 +43,9 @@ class NewsController extends AbstractController {
      * Display listing of posts
      */
     public function index() {
+        $request = RequestWrapper::$request;
         $view = 'news.tpl';
-        $create_successful = (bool) RequestWrapper::getPostOrGet('create_successful');
+        $create_successful = (bool) $request->get('create_successful');
 
         try {
             $create_role = $this->hasCreateRole($this->pc);
@@ -55,7 +56,7 @@ class NewsController extends AbstractController {
         $parts = [
             'create_successful' => $create_successful,
             'all_news'          => [],
-            'error'             => RequestWrapper::getPostOrGet('error'),
+            'error'             => $request->get('error'),
             'create_role'       => $create_role,
             'search_title'      => null
         ];
@@ -64,9 +65,9 @@ class NewsController extends AbstractController {
         $news = new News();
 
         try {
-            if ($tag = RequestWrapper::getPostOrGet('tag_query')) { // Search for specific tag matches
+            if ($tag = $request->get('tag_query')) { // Search for specific tag matches
                 $parts['all_news'] = $news->findByTag($tag);
-                $parts['search_title'] = 'Result for #'.htmlentities(RequestWrapper::getPostOrGet('tag_query'));
+                $parts['search_title'] = 'Result for #'.htmlentities($request->get('tag_query'));
             } else {
                 $parts['all_news'] = $news->all();
             }
@@ -111,6 +112,8 @@ class NewsController extends AbstractController {
      * @return RedirectResponse
      */
     public function store() {
+        $request = RequestWrapper::$request;
+
         try {
             $this->hasCreateRole($this->pc);
             $account = ($this->pc ? Account::findByChar($this->pc) : null);
@@ -124,9 +127,9 @@ class NewsController extends AbstractController {
         }
 
         // Handle POST
-        $news_title = RequestWrapper::getPostOrGet('news_title');
-        $news_content = RequestWrapper::getPostOrGet('news_content');
-        $tag = RequestWrapper::getPostOrGet('tag');
+        $news_title = $request->get('news_title');
+        $news_content = $request->get('news_content');
+        $tag = $request->get('tag');
 
         // Create new post
         if (!empty($news_content)) {

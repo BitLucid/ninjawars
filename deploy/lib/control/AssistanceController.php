@@ -81,9 +81,10 @@ class AssistanceController extends AbstractController {
      * @return Response
      */
     public function index() {
-        $email = filter_var(RequestWrapper::getPostOrGet('email', null), FILTER_SANITIZE_EMAIL);
-        $password_request = RequestWrapper::getPostOrGet('password_request');
-        $confirmation_request = RequestWrapper::getPostOrGet('confirmation_request');
+        $request = RequestWrapper::$request;
+        $email = filter_var($request->get('email', null), FILTER_SANITIZE_EMAIL);
+        $password_request = $request->get('password_request');
+        $confirmation_request = $request->get('confirmation_request');
 
         $error = null;
         $sent  = false;
@@ -135,11 +136,12 @@ class AssistanceController extends AbstractController {
      * @return Response
      */
     public function confirm() {
+        $request                   = RequestWrapper::$request;
         $admin_override_pass       = 'WeAllowIt'; // Just a weak passphrase for simply confirming players.
-        $admin_override_request    = RequestWrapper::getPostOrGet('admin_override');
+        $admin_override_request    = $request->get('admin_override');
         $acceptable_admin_override = ($admin_override_pass === $admin_override_request);
-        $confirm                   = RequestWrapper::getPostOrGet('confirm');
-        $aid                       = Filter::toNonNegativeInt(RequestWrapper::getPostOrGet('aid'));
+        $confirm                   = $request->get('confirm');
+        $aid                       = Filter::toNonNegativeInt($request->get('aid'));
 
         $data = query_row('
             SELECT player_id, uname,

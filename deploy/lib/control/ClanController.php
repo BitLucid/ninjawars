@@ -294,16 +294,17 @@ class ClanController extends AbstractController {
 	 * All parameters are options
 	 */
 	public function update() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan   = Clan::findByMember($player);
+        $request = RequestWrapper::$request;
+		$player  = Player::find(SessionFactory::getSession()->get('player_id'));
+		$clan    = Clan::findByMember($player);
 
 		if (!$this->playerIsLeader($player, $clan)) {
 			throw new \Exception('You may not update a clan you are not a leader of.');
 		}
 
-		$new_clan_avatar_url  = RequestWrapper::getPostOrGet('clan-avatar-url');
-		$new_clan_description = RequestWrapper::getPostOrGet('clan-description');
-		$new_clan_name        = trim(RequestWrapper::getPostOrGet('new_clan_name', ''));
+		$new_clan_avatar_url  = $request->get('clan-avatar-url');
+		$new_clan_description = $request->get('clan-description');
+		$new_clan_name        = trim($request->get('new_clan_name', ''));
 		$error                = null;
 
 		if ($new_clan_name != $clan->getName()) {
@@ -447,11 +448,12 @@ class ClanController extends AbstractController {
 	 * @return Response
 	 */
 	public function review() {
-		$ninja = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan  = Clan::findByMember($ninja->id());
+        $request = RequestWrapper::$request;
+		$ninja   = Player::find(SessionFactory::getSession()->get('player_id'));
+		$clan    = Clan::findByMember($ninja->id());
 
-		$joiner = Player::find(RequestWrapper::getPostOrGet('joiner'));
-		$confirmation = (int) RequestWrapper::getPostOrGet('confirmation');
+		$joiner = Player::find($request->get('joiner'));
+		$confirmation = (int) $request->get('confirmation');
 
 		$parts = [
 			'title' => 'Accept a New Clan Member',
@@ -485,11 +487,12 @@ class ClanController extends AbstractController {
 	 * Active player must be leader of a clan
 	 */
 	public function accept() {
-		$ninja = Player::find(SessionFactory::getSession()->get('player_id'));
-		$clan  = Clan::findByMember($ninja->id());
+        $request = RequestWrapper::$request;
+		$ninja   = Player::find(SessionFactory::getSession()->get('player_id'));
+		$clan    = Clan::findByMember($ninja->id());
 
-		$joiner = Player::find(RequestWrapper::getPostOrGet('joiner'));
-		$confirmation = (int) RequestWrapper::getPostOrGet('confirmation');
+		$joiner = Player::find($request->get('joiner'));
+		$confirmation = (int) $request->get('confirmation');
 
 		$parts = [
 			'title' => 'Accept a New Clan Member',

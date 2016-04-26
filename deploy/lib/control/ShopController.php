@@ -49,8 +49,9 @@ class ShopController extends AbstractController {
 	 * @return Array
 	 */
 	public function buy() {
-		$in_quantity       = RequestWrapper::getPostOrGet('quantity');
-		$in_item           = RequestWrapper::getPostOrGet('item');
+        $request           = RequestWrapper::$request;
+		$in_quantity       = $request->get('quantity');
+		$in_item           = $request->get('item');
         $player            = Player::find(SessionFactory::getSession()->get('player_id'));
         $player            = Player::findPlayable($this->getAccountId());
 		$gold              = ($player ? $player->gold : null);

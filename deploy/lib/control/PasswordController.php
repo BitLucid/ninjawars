@@ -44,10 +44,11 @@ class PasswordController extends AbstractController {
      * @TODO: Generate a csrf
      */
     public function index() {
-        $error      = RequestWrapper::get('error');
-        $message    = RequestWrapper::get('message');
-        $email      = RequestWrapper::get('email');
-        $ninja_name = RequestWrapper::get('ninja_name');
+        $request    = RequestWrapper::$request;
+        $error      = $request->get('error');
+        $message    = $request->get('message');
+        $email      = $request->get('email');
+        $ninja_name = $request->get('ninja_name');
 
         $parts = [
             'error'      => $error,
@@ -66,11 +67,12 @@ class PasswordController extends AbstractController {
      * @TODO: Authenticate the csrf, which must match, from the session.
      */
     public function postEmail() {
+        $request    = RequestWrapper::$request;
         $error      = null;
         $message    = null;
-        $account = null;
-        $email      = RequestWrapper::getPost('email');
-        $ninja_name = RequestWrapper::getPost('ninja_name');
+        $account    = null;
+        $email      = $request->get('email');
+        $ninja_name = $request->get('ninja_name');
 
 
         if (!$email && !$ninja_name) {
@@ -137,9 +139,10 @@ class PasswordController extends AbstractController {
      * @return Response
      */
     public function postReset() {
-        $token                = RequestWrapper::getPost('token');
-        $newPassword          = RequestWrapper::getPost('new_password');
-        $passwordConfirmation = RequestWrapper::getPost('password_confirmation');
+        $request              = RequestWrapper::$request;
+        $token                = $request->get('token');
+        $newPassword          = $request->get('new_password');
+        $passwordConfirmation = $request->get('password_confirmation');
 
         if ($passwordConfirmation === null || $passwordConfirmation !== $newPassword) {
             return $this->renderError('Password Confirmation did not match.', $token);
