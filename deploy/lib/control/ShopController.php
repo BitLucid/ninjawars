@@ -62,7 +62,9 @@ class ShopController extends AbstractController {
 		$item_text 	       = null;
         $valid             = false;
 
-		if ($item instanceof Item) {
+		if (!($item instanceof Item)) {
+            $no_such_item = true;
+        } else {
 			$item_text = ($quantity > 1 ? $item->getPluralName() : $item->getName());
 			$purchase_order = new PurchaseOrder();
 
@@ -71,8 +73,10 @@ class ShopController extends AbstractController {
 			$purchase_order->item     = $item;
             $current_item_cost = $this->calculatePrice($purchase_order);
 
-			if (!$player || !$purchase_order->item || $purchase_order->quantity < 1) {
-				$no_such_item = true;
+            if(!$player){
+                $no_funny_business = true;
+            } elseif(!$purchase_order->item || $purchase_order->quantity < 1) {
+                $no_such_item = true;
 			} else if ($gold >= $current_item_cost) { // Has enough gold.
 				try {
                     $inventory = new Inventory($player);
@@ -86,8 +90,6 @@ class ShopController extends AbstractController {
 					$no_funny_business = true;
 				}
 			}
-		} else {
-			$no_such_item = true;
 		}
 
 		$parts = array(
