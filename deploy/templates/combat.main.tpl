@@ -1,3 +1,6 @@
+{**
+ * This template renders the result of a successful combat request
+ *}
 {if $stealthed_attack}
 <div>You reveal yourself with a surprise strike from the shadows!</div>
 {/if}

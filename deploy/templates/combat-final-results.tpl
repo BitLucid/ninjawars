@@ -1,3 +1,6 @@
+{**
+ * Shows a table of attacker/target stats for use after combat
+ *}
     <table style="border: 0;">
       <tr>
         <th colspan="3">Results of the Attack</th>

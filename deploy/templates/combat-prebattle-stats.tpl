@@ -1,3 +1,6 @@
+{**
+ * Shows a table of attacker/target stats for use before combat
+ *}
     <table border="0">
       <tr>
         <th colspan="3">Before the Attack</th>

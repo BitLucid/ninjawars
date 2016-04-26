@@ -1,3 +1,7 @@
+{**
+ * This is the main template for combat. It holds the error case and includes
+ * the main template when there is no error
+ *}
 <section id='attack-outcome'>
 	<h1>Battle Outcome</h1>
 
