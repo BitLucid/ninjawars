@@ -271,6 +271,8 @@ class Clan {
                 'message'   => $message,
                 'type'      => 0,
             ]);
+            // Create both an event and a message!
+            Event::create(0, $memberId, $message);
         }
 
         // Deletion of the clan_player connections should cascade from the deletion of the clan, at least ideally.
