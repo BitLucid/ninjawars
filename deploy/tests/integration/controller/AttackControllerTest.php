@@ -59,4 +59,28 @@ class AttackControllerTest extends PHPUnit_Framework_TestCase {
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
+
+    public function testAttackWhenDead() {
+        $attacker = Player::find(SessionFactory::getSession()->get('player_id'));
+        $attacker->death();
+        $attacker->save();
+
+        $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+
+        $params = [
+            'target' => $char_id_2,
+        ];
+
+        $request = Request::create('/attack', 'GET', $params);
+        RequestWrapper::inject($request);
+        $response = $this->controller->index();
+
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
+
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+
+        $this->assertNotEmpty($response_data['error']);
+    }
 }
