@@ -1,6 +1,5 @@
 <?php
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\ShopController;
 use NinjaWars\core\extensions\SessionFactory;
@@ -8,22 +7,17 @@ use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 
-class ShopControllerTest extends PHPUnit_Framework_TestCase {
+class ShopControllerTest extends NWTest {
 	function setUp() {
         // Mock the post request.
         $request = new Request([], ['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
         RequestWrapper::inject($request);
-		SessionFactory::init(new MockArraySessionStorage());
-        $this->char = TestAccountCreateAndDestroy::char();
-        SessionFactory::getSession()->set('authenticated', true);
-        $this->account = Account::findByChar($this->char);
-        SessionFactory::getSession()->set('account_id', $this->account->id());
+        $this->login();
 	}
 
 	function tearDown() {
         RequestWrapper::inject(new Request([]));
-        $session = SessionFactory::getSession();
-        $session->invalidate();
+        $this->loginTearDown();
     }
 
     public function testShopControllerCanBeInstantiatedWithoutError() {
