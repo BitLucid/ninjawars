@@ -13,8 +13,8 @@
 		<hr>
         {/if}
 
-		{if $attack_error}
-		<div class='ninja-error centered'>{$attack_error}</div>
+		{if $error}
+		<div class='ninja-error centered'>{$error}</div>
 		{else}
         {include file="combat.main.tpl"}
 		{/if}
