@@ -19,7 +19,6 @@ class ShrineController extends AbstractController {
 	const HEAL_POINT_COST      = 1;
 	const RES_COST_TURNS       = 10;
 	const RES_COST_KILLS       = 1;
-	const BASE_RES_HP          = 20;
 	const CURE_COST_GOLD       = 100;
 	const RES_COST_TYPE_FREE   = 1;
 	const RES_COST_TYPE_KILL   = 2;
@@ -328,6 +327,8 @@ class ShrineController extends AbstractController {
 	private function calculateResurrectionHP($p_player) {
 		$skillController = new Skill(); // Instantiate Skill interrogator
 
+
+
 		// chi triples base health after res
 		if ($skillController->hasSkill('Chi', $p_player->name())) {
 			$hpMultiplier = 3;
@@ -335,7 +336,7 @@ class ShrineController extends AbstractController {
 			$hpMultiplier = 1;
 		}
 
-		$maxHP = self::BASE_RES_HP*$hpMultiplier;
+		$maxHP = Player::maxHealthByLevel($p_player->level)*$hpMultiplier;
 
 		return min($maxHP, $p_player->maxHealth());
 	}
