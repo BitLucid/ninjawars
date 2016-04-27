@@ -41,6 +41,7 @@ use \RuntimeException;
  * @property string beliefs
  * @property string traits
  * @property string uname Deprecated in favor of ->name() method
+ * @property int status
  */
 class Player implements Character {
 	public $vo;
@@ -174,6 +175,10 @@ class Player implements Character {
 		$this->status = 0;
 	}
 
+    /**
+     * Determine whether a pc is effected by a certain status
+     * @return boolean
+     */
 	public function hasStatus($p_status) {
         $status = self::validStatus($p_status);
 
