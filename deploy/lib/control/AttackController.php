@@ -85,7 +85,7 @@ class AttackController extends AbstractController {
     /**
      * @return StreamedViewResponse
      */
-    private function combat(Player $attacker, Player $target, $required_turns, $options) {
+    private function combat(Player $attacker, Player $target, $required_turns=0, $options) {
         $error             = '';
         $stealthed_attack  = false;
         $stealth_damage    = false;
@@ -93,7 +93,6 @@ class AttackController extends AbstractController {
         $bounty_result     = false;
         $rewarded_ki       = false;
         $wrath             = false;
-        $required_turns    = 0;
         $loot              = 0;
         $killpoints        = 1;
         $rounds            = 1;
