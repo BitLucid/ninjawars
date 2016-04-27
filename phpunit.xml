@@ -18,9 +18,11 @@
 		</testsuite>
 		<testsuite name="Quick">
 			<directory suffix=".php">deploy/tests/unit</directory>
-			<exclude>
-             <file>deploy/tests/unit/SmartyTemplateTest.php</file>
-            </exclude>
+			<file>deploy/tests/integration/controller/HomepageControllerTest.php</file>
+			<file>deploy/tests/integration/controller/AttackControllerTest.php</file>
+			<file>deploy/tests/integration/controller/LoginControllerTest.php</file>
+			<file>deploy/tests/integration/controller/PlayerControllerTest.php</file>
+			<file>deploy/tests/integration/controller/SignupControllerTest.php</file>
 		</testsuite>
 	</testsuites>
 	<filter>
