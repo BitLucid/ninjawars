@@ -1,25 +1,23 @@
 <?php
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\ShopController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Account;
 
-class ShopControllerTest extends PHPUnit_Framework_TestCase {
+class ShopControllerTest extends NWTest {
 	function setUp() {
         // Mock the post request.
         $request = new Request([], ['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
         RequestWrapper::inject($request);
-		SessionFactory::init(new MockArraySessionStorage());
-        SessionFactory::getSession()->set('authenticated', true);
+        $this->login();
 	}
 
 	function tearDown() {
         RequestWrapper::inject(new Request([]));
-        $session = SessionFactory::getSession();
-        $session->invalidate();
+        $this->loginTearDown();
     }
 
     public function testShopControllerCanBeInstantiatedWithoutError() {
@@ -51,28 +49,27 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testShopAllowsPurchasingOfItems() {
-        $char_id = TestAccountCreateAndDestroy::char_id();
-        SessionFactory::getSession()->set('player_id', $char_id);
-        $pc = Player::find($char_id);
+        $pc = Player::findPlayable($this->account->id());
         $pc->gold = $pc->gold + 999;
         $pc->save();
-        $request = new Request([], ['quantity'=>1, 'item'=>'shuriken']);
+        $request = new Request([], ['quantity'=>1, 'item'=>'Shuriken']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
+        $account_id = $shop->getAccountId();
         $response = $shop->buy();
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response);
+        $this->assertNotEmpty($account_id, 
+            'Unable to get accountId from controller/abstract controller');
         $this->assertTrue($response_data['valid']);
         $inv = new Inventory($pc);
         $this->assertEquals(1, $inv->amount('shuriken'));
     }
 
     public function testShopAllowsPurchasingOfMultipleItems() {
-        $char_id = TestAccountCreateAndDestroy::char_id();
-        SessionFactory::getSession()->set('player_id', $char_id);
-        $pc = Player::find($char_id);
+        $pc = Player::findPlayable($this->account->id());
         $pc->gold = $pc->gold + 9999;
         $pc->save();
         $request = new Request([], ['quantity'=>7, 'item'=>'shuriken']);
@@ -89,9 +86,7 @@ class ShopControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testShopCannotBuyInvalidItem() {
-        $char_id = TestAccountCreateAndDestroy::char_id();
-        SessionFactory::getSession()->set('player_id', $char_id);
-        $pc = Player::find($char_id);
+        $pc = Player::findPlayable($this->account->id());
         $pc->gold = $pc->gold + 9999;
         $pc->save();
         $request = new Request([], ['quantity'=>4, 'item'=>'zigzigX']);

@@ -40,4 +40,12 @@ abstract class AbstractController {
     public function renderDefaultError($error) {
         return new StreamedViewResponse('There is an obstacle to your progress...', 'error.tpl', ['error' => $error], []);
     }
+
+    /**
+     * Get the current account_id from the session, if any
+     * @return int|null
+     */
+    public function getAccountId(){
+        return SessionFactory::getSession()->get('account_id');
+    }
 }

@@ -12,6 +12,7 @@ use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
 use \PDO;
+use \RuntimeException;
 
 /**
  * Ninja (actually character) behavior object.
@@ -585,7 +586,7 @@ class Player implements Character {
 
 	/**
 	 * Find a player by primary key
-     *
+     * @param int|null $id
 	 * @return Player|null
 	 */
 	public static function find($id){
@@ -603,10 +604,26 @@ class Player implements Character {
 		return $player;
 	}
 
+
+    /**
+     * Find a char by playable for account
+     * @param int|null $account_id
+     * @return Player|null
+     */
+    public static function findPlayable($account_id){
+        // Two db calls for now
+        $pid = query_item('select player_id from players p 
+            join account_players ap on p.player_id = ap._player_id
+            join accounts a on a.account_id = ap._account_id
+            where account_id = :aid
+            order by p.created_date asc, a.last_login desc
+            limit 1', [':aid'=>[$account_id, PDO::PARAM_INT]]);
+        return self::find($pid);
+    }
+
     /**
      * Find player by name
      * @return Player|null
-     *
      */
     public static function findByName($name){
         $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
@@ -626,7 +643,7 @@ class Player implements Character {
 
     /**
      * query the recently active players
-     * @return array
+     * @return array Array of data not of player objects
      */
     public static function findActive($limit=5, $alive_only=true) {
         $where_cond = ($alive_only ? ' AND health > 0' : '');
