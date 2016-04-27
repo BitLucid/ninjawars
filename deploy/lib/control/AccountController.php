@@ -190,15 +190,19 @@ class AccountController extends AbstractController {
 
         $verify = self::is_authentic($username, $passW);
 
+        // only allow account deletion on first attempt
         if ($verify && empty($delete_attempts)) {
-            // only allow account deletion on first attempt
-            $player = Player::find($player->id());
+            // Take the ninja off the active listings.
             $player->active = 0;
             $player->save();
 
+            // Render the account inoperable
             $account = Account::findByChar($player);
             $account->setOperational(false);
             $account->save();
+            // Remove the session
+            $session->clear();
+            $session->invalidate();
 
             return new RedirectResponse('/logout');
         } else {
