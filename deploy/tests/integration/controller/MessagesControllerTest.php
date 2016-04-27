@@ -26,11 +26,13 @@ class MessagesControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testViewPersonal() {
+        RequestWrapper::inject(new Request());
         $response = $this->controller->viewPersonal();
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
     public function testViewClan() {
+        RequestWrapper::inject(new Request());
         $response = $this->controller->viewClan();
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }

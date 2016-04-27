@@ -52,10 +52,11 @@ class DoshinController extends AbstractController {
      * @TODO simplify the conditional branching
      */
     public function offerBounty() {
-        $targetName = RequestWrapper::getPostOrGet('target');
+        $request    = RequestWrapper::$request;
+        $targetName = $request->get('target');
         $char       = Player::findPlayable($this->getAccountId());
         $target     = Player::findByName($targetName);
-        $amountIn   = RequestWrapper::getPostOrGet('amount');
+        $amountIn   = $request->get('amount');
         $amount     = (intval($amountIn) !== 0 ? intval($amountIn) : null);
         $quickstat  = false;
         $success    = false;

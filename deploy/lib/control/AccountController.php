@@ -39,13 +39,14 @@ class AccountController extends AbstractController {
      */
     public function changeEmail() {
         // confirm_delete
+        $request    = RequestWrapper::$request;
         $player     = Player::find(SessionFactory::getSession()->get('player_id'));
         $self_info 	= $player->data();
-        $passW 		= RequestWrapper::getPostOrGet('passw', null);
+        $passW 		= $request->get('passw', null);
         $username 	= $self_info['uname'];
 
-        $in_newEmail     = trim(RequestWrapper::getPostOrGet('newemail'));
-        $in_confirmEmail = trim(RequestWrapper::getPostOrGet('confirmemail'));
+        $in_newEmail     = trim($request->get('newemail'));
+        $in_confirmEmail = trim($request->get('confirmemail'));
 
         $error = '';
         $successMessage = '';
@@ -106,13 +107,14 @@ class AccountController extends AbstractController {
      * @return Response
      */
     public function changePassword() {
+        $request    = RequestWrapper::$request;
         $player     = Player::find(SessionFactory::getSession()->get('player_id'));
         $self_info 	= $player->data();
-        $passW 		= RequestWrapper::getPostOrGet('passw', null);
+        $passW 		= $request->get('passw', null);
         $username 	= $self_info['uname'];
 
-        $in_newPass     = trim(RequestWrapper::getPostOrGet('newpassw'));
-        $in_confirmPass = trim(RequestWrapper::getPostOrGet('confirmpassw'));
+        $in_newPass     = trim($request->get('newpassw'));
+        $in_confirmPass = trim($request->get('confirmpassw'));
 
         $error = '';
         $successMessage = '';
@@ -177,12 +179,13 @@ class AccountController extends AbstractController {
      * @return Response
      */
     public function deleteAccount() {
+        $request         = RequestWrapper::$request;
         $session         = SessionFactory::getSession();
-        $player          = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player          = Player::find($session->get('player_id'));
         $self_info       = $player->data();
-        $passW           = RequestWrapper::getPostOrGet('passw', null);
+        $passW           = $request->get('passw', null);
         $username        = $self_info['uname'];
-        $command         = RequestWrapper::getPostOrGet('command');
+        $command         = $request->get('command');
         $delete_attempts = $session->get('delete_attempts', 0);
 
         $verify = self::is_authentic($username, $passW);

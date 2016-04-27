@@ -47,8 +47,9 @@ class ChatController extends AbstractController {
      * @return Response
      */
     public function index() {
-        $view_all   = RequestWrapper::getPostOrGet('view_all');
-        $chatlength = max(self::DEFAULT_LIMIT, (int) RequestWrapper::getPostOrGet('chatlength'));
+        $request    = RequestWrapper::$request;
+        $view_all   = $request->get('view_all');
+        $chatlength = max(self::DEFAULT_LIMIT, (int) $request->get('chatlength'));
         $chatlength = min(self::MAX_CHATS, max(self::MIN_CHATS, $chatlength));
         $chats      = $this->getChats($view_all ? null : $chatlength);
 
@@ -56,7 +57,7 @@ class ChatController extends AbstractController {
             'field_size'        => self::FIELD_SIZE,
             'target'            => $_SERVER['PHP_SELF'],
             'chats'             => $chats,
-            'error'             => RequestWrapper::getPostOrGet('error'),
+            'error'             => $request->get('error'),
             'more_chats_to_see' => (!$view_all && $chatlength < $this->getChatCount()),
             'authenticated'     => SessionFactory::getSession()->get('authenticated', false),
         ];

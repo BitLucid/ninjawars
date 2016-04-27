@@ -20,8 +20,9 @@ class ApiController extends AbstractController {
      * @return Response
      */
     public function nw_json() {
-        $type = RequestWrapper::getPostOrGet('type');
-        $dirty_jsoncallback = RequestWrapper::getPostOrGet('jsoncallback');
+        $request = RequestWrapper::$request;
+        $type = $request->get('type');
+        $dirty_jsoncallback = $request->get('jsoncallback');
 
         // Reject if non alphanumeric and _ chars
         $jsoncallback = (!preg_match('/[^a-z_0-9]/i', $dirty_jsoncallback) ? $dirty_jsoncallback : null);
@@ -53,19 +54,19 @@ class ApiController extends AbstractController {
         ];
 
         $res = null;
-        $data = RequestWrapper::getPostOrGet('data');
+        $data = $request->get('data');
 
         if (isset($valid_type_map[$type])) {
             if ($type == 'send_chat') {
-                $result = $this->jsonSendChat(RequestWrapper::getPostOrGet('msg'));
+                $result = $this->jsonSendChat($request->get('msg'));
             } else if ($type == 'new_chats') {
-                $chat_since = RequestWrapper::getPostOrGet('since', null);
+                $chat_since = $request->get('since', null);
                 $result = $this->jsonNewChats($chat_since);
             } elseif ($type == 'chats') {
-                $chat_limit = RequestWrapper::getPostOrGet('chat_limit', 20);
+                $chat_limit = $request->get('chat_limit', 20);
                 $result = $this->jsonChats($chat_limit);
             } elseif ($type == 'char_search') {
-                $result = $this->jsonCharSearch(RequestWrapper::getPostOrGet('term'), RequestWrapper::getPostOrGet('limit'));
+                $result = $this->jsonCharSearch($request->get('term'), $request->get('limit'));
             } elseif (!empty($data)){ // If data param is present, pass data to the function
                 $result = $this->$valid_type_map[$type]($data);
             } else { // No data present, just call the function with no arguments.

@@ -39,7 +39,6 @@ class SignupController extends AbstractController {
      */
     public function index() {
         Request::setTrustedProxies(Constants::$trusted_proxies);
-        RequestWrapper::init();
         $request = RequestWrapper::$request;
         $signupRequest = $this->buildSignupRequest($request);
 
@@ -62,7 +61,6 @@ class SignupController extends AbstractController {
      * @return Response
      */
     public function signup() {
-        RequestWrapper::init();
         $request = RequestWrapper::$request;
         $signupRequest = $this->buildSignupRequest($request);
 

@@ -7,6 +7,8 @@ use NinjaWars\core\control\SignupController;
 use NinjaWars\core\control\LoginController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\environment\RequestWrapper;
+use Symfony\Component\HttpFoundation\Request;
 
 /** Account behavior
  *
@@ -156,6 +158,7 @@ class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
         $email ='noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
         TestAccountCreateAndDestroy::create_testing_account(false, $email);
 
+        RequestWrapper::inject(new Request([]));
         $controller = new LoginController();
         $res = $controller->performLogin($email, $this->test_password);
         $this->assertNotEmpty($res, 'No error returned');

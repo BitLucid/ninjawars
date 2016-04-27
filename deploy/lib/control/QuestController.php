@@ -75,8 +75,9 @@ class QuestController extends AbstractController {
      * Display that list of public quests!
      */
     public function index(){
-        $quest_id = RequestWrapper::getPostOrGet('quest_id');
-        $quest_accepted = RequestWrapper::getPostOrGet('quest_accepted');
+        $request = RequestWrapper::$request;
+        $quest_id = $request->get('quest_id');
+        $quest_accepted = $request->get('quest_accepted');
         $quests = format_quests(get_quests());
         $title = 'Quests';
         $tpl = 'quests.tpl';

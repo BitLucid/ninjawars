@@ -113,9 +113,10 @@ class SkillController extends AbstractController {
 	}
 
 	public function postUse() {
-        $target = RequestWrapper::getPost('target');
-        $target2 = RequestWrapper::getPost('target2');
-        $act = RequestWrapper::getPost('act');
+        $request = RequestWrapper::$request;
+        $target = $request->get('target');
+        $target2 = $request->get('target2');
+        $act = $request->get('act');
         $url = 'skill/use/'.rawurlencode($act).'/'.rawurlencode($target).'/'.($target2? rawurlencode($target2).'/' : '');
 
         // TODO: Need to double check that this doesn't allow for redirect injection

@@ -27,13 +27,14 @@ class StatsController extends AbstractController {
      * Change account details
      */
 	public function changeDetails() {
+        $request = RequestWrapper::$request;
 		$char = Player::find(SessionFactory::getSession()->get('player_id'));
 
-		$description = RequestWrapper::getPost('description', $char->description);
-		$goals       = RequestWrapper::getPost('goals', $char->goals);
-		$instincts   = RequestWrapper::getPost('instincts', $char->instincts);
-		$beliefs     = RequestWrapper::getPost('beliefs', $char->beliefs);
-		$traits      = RequestWrapper::getPost('traits', $char->traits);
+		$description = $request->get('description', $char->description);
+		$goals       = $request->get('goals', $char->goals);
+		$instincts   = $request->get('instincts', $char->instincts);
+		$beliefs     = $request->get('beliefs', $char->beliefs);
+		$traits      = $request->get('traits', $char->traits);
 
 		// Check that the text features don't differ
 		$char->description = $description;
@@ -82,6 +83,7 @@ class StatsController extends AbstractController {
      * Display the default stats page
      */
     public function index() {
+        $request = RequestWrapper::$request;
         $char = Player::find(SessionFactory::getSession()->get('player_id'));
 
         $parts = [
@@ -90,10 +92,10 @@ class StatsController extends AbstractController {
             'status_list'        => Player::getStatusList(),
             'rank_display'       => $this->getRank($char->id()),
             'profile_max_length' => self::PROFILE_MAX_LENGTH,
-            'error'              => RequestWrapper::getPostOrGet('error'),
+            'error'              => $request->get('error'),
             'successMessage'     => '',
-            'profile_changed'    => (bool) RequestWrapper::getPostOrGet('profile_changed'),
-            'changed'            => (bool) RequestWrapper::getPostOrGet('changed'),
+            'profile_changed'    => (bool) $request->get('profile_changed'),
+            'changed'            => (bool) $request->get('changed'),
         ];
 
         return $this->render($parts);

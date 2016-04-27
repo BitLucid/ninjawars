@@ -48,9 +48,6 @@ class DojoController extends AbstractController {
             $showMonks = false;
             $parts = [];
 
-            RequestWrapper::init();
-
-
             if (RequestWrapper::$request && RequestWrapper::$request->isMethod('POST')) {
                 $error = $this->dimMakReqs($player, self::DIM_MAK_COST);
 

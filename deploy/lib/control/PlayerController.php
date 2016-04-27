@@ -19,8 +19,9 @@ class PlayerController extends AbstractController {
     const ALIVE = false;
 
     public function index() {
-        $target    = RequestWrapper::getPostOrGet('player');
-        $target_id = RequestWrapper::getPostOrGet('player_id');
+        $request   = RequestWrapper::$request;
+        $target    = $request->get('player');
+        $target_id = $request->get('player_id');
 
         if ($target_id) {
             $target_player_obj = Player::find($target_id);
@@ -116,9 +117,10 @@ class PlayerController extends AbstractController {
      * from a starting url of http://nw.local/player/use_item/?item=shuriken&target=tchalvak
      */
     public function use_item() {
-        $target = RequestWrapper::getPostOrGet('target_id');
-        $item_in = RequestWrapper::getPostOrGet('item');
-        $give = RequestWrapper::getPostOrGet('give');
+        $request = RequestWrapper::$request;
+        $target = $request->get('target_id');
+        $item_in = $request->get('item');
+        $give = $request->get('give');
         $method = $give? 'give' : 'use';
         $url = 'item/'.rawurlencode($method).'/'.rawurlencode($item_in).'/'.rawurlencode($target);
         // TODO: Need to double check that this doesn't allow for redirect injection
@@ -131,8 +133,9 @@ class PlayerController extends AbstractController {
      * from a starting url of http://nw.local/player/use_skill/?act=firebolt&target=tchalvak
      */
     public function use_skill() {
-        $target = RequestWrapper::getPostOrGet('target');
-        $act = RequestWrapper::getPostOrGet('act');
+        $request = RequestWrapper::$request;
+        $target = $request->get('target');
+        $act = $request->get('act');
         $url = 'skill/use/'.rawurlencode($act).'/'.rawurlencode($target);
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);

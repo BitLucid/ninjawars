@@ -21,9 +21,10 @@ class LoginController extends AbstractController {
      * Try to perform a login
      */
     public function requestLogin() {
-        $login_error_message = RequestWrapper::getPostOrGet('error'); // Error to display after unsuccessful login and redirection.
-        $pass                = RequestWrapper::getPost('pass');
-        $username_requested  = RequestWrapper::getPost('user');
+        $request             = RequestWrapper::$request;
+        $login_error_message = $request->get('error'); // Error to display after unsuccessful login and redirection.
+        $pass                = $request->request->get('pass');
+        $username_requested  = $request->request->get('user');
 
         if ($username_requested === null || $pass === null) {
             $login_error_message = 'No username or no password specified';
@@ -74,7 +75,6 @@ class LoginController extends AbstractController {
      * Perform all the login functionality for the login page as requested.
      */
     public function performLogin($username_requested, $pass) {
-        RequestWrapper::init();
         $request = RequestWrapper::$request;
 
         $user_agent = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
@@ -195,7 +195,6 @@ class LoginController extends AbstractController {
         $session->set('account_id', $account->id());
         $session->set('authenticated', true);
 
-        RequestWrapper::init();
         $request = RequestWrapper::$request;
         $user_ip = $request->getClientIp();
 

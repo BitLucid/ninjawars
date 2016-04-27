@@ -47,6 +47,8 @@ class NinjamasterController extends AbstractController {
      * @return Response
      */
     public function index() {
+        $request = RequestWrapper::$request;
+
         if (!$this->isAdmin($this->self)) {
             return new RedirectResponse(WEB_ROOT);
         }
@@ -62,8 +64,8 @@ class NinjamasterController extends AbstractController {
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivialNpcs      = NpcFactory::allTrivialNpcs();
 
-        $char_ids  = preg_split("/[,\s]+/", RequestWrapper::getPostOrGet('view'));
-        $char_name = trim(RequestWrapper::getPostOrGet('char_name'));
+        $char_ids  = preg_split("/[,\s]+/", $request->get('view'));
+        $char_name = trim($request->get('char_name'));
 
         if ($char_name) { // View a target non-self character
             $firstChar = Player::findByName($char_name);

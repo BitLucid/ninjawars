@@ -19,10 +19,12 @@ class MessagesController extends AbstractController {
      * Send a private message to a player
      */
     public function sendPersonal() {
-        if ((int) RequestWrapper::getPostOrGet('target_id')) {
-            $recipient = Player::find((int) RequestWrapper::getPostOrGet('target_id'));
-        } else if (RequestWrapper::getPostOrGet('to')) {
-            $recipient = Player::findByName(RequestWrapper::getPostOrGet('to'));
+        $request = RequestWrapper::$request;
+
+        if ((int) $request->get('target_id')) {
+            $recipient = Player::find((int) $request->get('target_id'));
+        } else if ($request->get('to')) {
+            $recipient = Player::findByName($request->get('to'));
         } else {
             $recipient = null;
         }
@@ -31,7 +33,7 @@ class MessagesController extends AbstractController {
             Message::create([
                 'send_from' => SessionFactory::getSession()->get('player_id'),
                 'send_to'   => $recipient->id(),
-                'message'   => RequestWrapper::getPostOrGet('message', null),
+                'message'   => $request->get('message', null),
                 'type'      => 0,
             ]);
 
@@ -59,20 +61,21 @@ class MessagesController extends AbstractController {
      * View the personal private messages.
      */
     public function viewPersonal() {
-        $type               = 0;
-        $page               = max(1, (int) RequestWrapper::getPostOrGet('page'));
-        $limit              = 25;
-        $offset             = ($page - 1) * $limit;
-        $ninja              = Player::find(SessionFactory::getSession()->get('player_id'));
-        $message_count      = Message::countByReceiver($ninja, $type); // To count all the messages
+        $request       = RequestWrapper::$request;
+        $type          = 0;
+        $page          = max(1, (int) $request->get('page'));
+        $limit         = 25;
+        $offset        = ($page - 1) * $limit;
+        $ninja         = Player::find(SessionFactory::getSession()->get('player_id'));
+        $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
 
         Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
 
         $parts = array_merge(
             $this->configure(),
             [
-                'to'            => RequestWrapper::getPostOrGet('to', ''),
-                'informational' => RequestWrapper::getPostOrGet('informational'),
+                'to'            => $request->get('to', ''),
+                'informational' => $request->get('informational'),
                 'has_clan'      => (boolean)Clan::findByMember($ninja),
                 'current_tab'   => 'message',
                 'messages'      => Message::findByReceiver($ninja, $type, $limit, $offset),
@@ -138,6 +141,8 @@ class MessagesController extends AbstractController {
      * Pulls the initial data required to be initialized in the template.
      */
     public function configure() {
+        $request = RequestWrapper::$request;
+
         return [
             'to'                 => null,
             'to_clan'            => null,
@@ -157,8 +162,8 @@ class MessagesController extends AbstractController {
             'page'               => null,
             'limit'              => null,
             'offset'             => null,
-            'error'              => RequestWrapper::getPostOrGet('error'), // Informational message, e.g. after redirections
-            'informational'      => RequestWrapper::getPostOrGet('informational'), // Informational message, e.g. after redirections
+            'error'              => $request->get('error'), // Informational message, e.g. after redirections
+            'informational'      => $request->get('informational'), // Informational message, e.g. after redirections
             'type'               => null,
             'message_sent_to'    => null,
             'message_to'         => null,
