@@ -2,6 +2,7 @@
 use NinjaWars\core\control\PasswordController;
 use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\data\Crypto;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +13,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     function setUp() {
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         $this->account = Account::findById($this->account_id);
-        $this->nonce = nonce();
+        $this->nonce = Crypto::nonce();
     }
 
     function tearDown() {
@@ -74,8 +75,8 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
     public function testPostEmailReturnsErrorOnUnmatchableEmailAndNinjaName(){
         $req = Request::create('/password/post_email');
         $req->setMethod('POST');
-        $req->request->set('email', 'unmatchable@'.nonce().'com');
-        $req->request->set('ninja_name', 'nomatch'.nonce());
+        $req->request->set('email', 'unmatchable@'.Crypto::nonce().'com');
+        $req->request->set('ninja_name', 'nomatch'.Crypto::nonce());
         RequestWrapper::inject($req);
 
         $controller = new PasswordController();

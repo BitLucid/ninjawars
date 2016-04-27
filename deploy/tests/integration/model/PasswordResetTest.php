@@ -1,6 +1,7 @@
 <?php
 use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\data\Crypto;
 
 class PasswordResetTest extends PHPUnit_Framework_TestCase {
     function setUp() {

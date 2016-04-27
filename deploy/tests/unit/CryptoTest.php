@@ -1,20 +1,23 @@
 <?php
+
+use NinjaWars\core\data\Crypto;
+
 class CryptoTest extends PHPUnit_Framework_TestCase {
     public function testRandomStringDoesntEverMatch() {
-        $this->assertNotEmpty(make_random_string());
+        $this->assertNotEmpty(Crypto::make_random_string());
         $i = 30;
 
         while ($i--) {
-            $this->assertNotEquals(make_random_string(), make_random_string());
+            $this->assertNotEquals(Crypto::make_random_string(), Crypto::make_random_string());
         }
     }
 
     public function testNonceDoesntEverMatch() {
-        $this->assertNotEmpty(nonce());
+        $this->assertNotEmpty(Crypto::nonce());
         $i = 30;
 
         while ($i--) {
-            $this->assertNotEquals(nonce(), nonce());
+            $this->assertNotEquals(Crypto::nonce(), Crypto::nonce());
         }
     }
 }
