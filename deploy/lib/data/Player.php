@@ -149,13 +149,6 @@ class Player implements Character {
             }
 
             $this->status = ($this->status | $status);
-
-            update_query('UPDATE players SET status = :status WHERE player_id = :player_id',
-                [
-                    ':player_id' => [$this->id(), PDO::PARAM_INT],
-                    ':status'    => $this->status
-                ]
-            );
         }
     }
 
@@ -171,13 +164,6 @@ class Player implements Character {
             }
 
             $this->status = ($this->status & ~$status);
-
-            update_query('UPDATE players SET status = :status WHERE player_id = :player_id',
-                [
-                    ':player_id' => [$this->id(), PDO::PARAM_INT],
-                    ':status'    => $this->status
-                ]
-            );
         }
     }
 
@@ -186,21 +172,12 @@ class Player implements Character {
      */
 	public function resetStatus() {
 		$this->status = 0;
-
-		$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET status = :status WHERE player_id = :player');
-		$statement->bindValue(':player', $this->id(), PDO::PARAM_INT);
-		$statement->bindValue(':status', $this->status, PDO::PARAM_INT);
-		$statement->execute();
 	}
 
 	public function hasStatus($p_status) {
-		$status = self::validStatus($p_status);
+        $status = self::validStatus($p_status);
 
-		if ($status) {
-			return (bool)($this->status & $status);
-		} else {
-			return false;
-		}
+        return ((bool)$status && (bool)($this->status & $status));
 	}
 
     /**
@@ -339,6 +316,8 @@ class Player implements Character {
      * Cleanup player to death state
      *
      * @return void
+     * @note
+     * This method writes the player object to the database
      */
 	public function death() {
 		$this->resetStatus();

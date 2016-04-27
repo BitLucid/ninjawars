@@ -510,13 +510,14 @@ class SkillController extends AbstractController {
 			}
 
 			$turns_to_take = $turns_to_take - $turn_cost;
-			$player->save();
-			$target->save();
 
 			if (!$covert && $player->hasStatus(STEALTH)) {
 				$player->subtractStatus(STEALTH);
 				$destealthed = true;
 			}
+
+			$target->save();
+			$player->save();
 		} // End of the skill use SUCCESS block.
 
 		$ending_turns         = $player->changeTurns($turns_to_take); // Take the skill use cost.

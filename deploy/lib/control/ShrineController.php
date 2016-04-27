@@ -90,6 +90,8 @@ class ShrineController extends AbstractController {
 
 			$pageParts = array_merge($pageParts, $this->servicesNeeded($player));
 
+            $player->save();
+
 			return $this->render([
 				'player'         => $player,
 				'pageParts'      => $pageParts,
@@ -123,6 +125,8 @@ class ShrineController extends AbstractController {
 				],
 				$this->servicesNeeded($player)
 			);
+
+            $player->save();
 
 			return $this->render([
 				'pageParts' => $pageParts,
@@ -158,6 +162,8 @@ class ShrineController extends AbstractController {
 
 			$pageParts = $this->servicesNeeded($player);
 			array_unshift($pageParts, 'result-heal');
+
+            $player->save();
 
 			return $this->render([
 				'pageParts'      => $pageParts,
@@ -417,7 +423,6 @@ class ShrineController extends AbstractController {
 
 		$p_player->set_gold($p_player->gold - $totalCost);
 		$p_player->heal($amount);
-        $p_player->save();
 	}
 
 	/**
