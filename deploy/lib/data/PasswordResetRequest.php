@@ -4,6 +4,7 @@ namespace NinjaWars\core\data;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\data\Crypto;
 use \Nmail as Nmail;
 
 /**
@@ -122,7 +123,7 @@ class PasswordResetRequest extends Model {
      * @return PasswordResetRequest
      */
     public static function generate(Account $account, $nonce=null) {
-        $nonce = ($nonce !== null ? $nonce : nonce());
+        $nonce = ($nonce !== null ? $nonce : Crypto::nonce());
         return self::create(['_account_id'=>$account->id(), 'nonce'=>$nonce]);
     }
 }
