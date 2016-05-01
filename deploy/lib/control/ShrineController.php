@@ -69,11 +69,13 @@ class ShrineController extends AbstractController {
 		try {
 			$pageParts = [];
 
-			if ($player->health() <= 0) {
+			if ($player->health <= 0) {
 				$costType = $this->_resurrect($player);
 
 				$pageParts[] ='result-resurrect';
 				$pageParts[] = self::$resurrectResultViews[$costType];
+
+                $player->save();
 			}
 
 			$healAmount = $this->calculateMaxHeal($player);
@@ -408,7 +410,7 @@ class ShrineController extends AbstractController {
 	private function _heal($p_player, $p_amount) {
 		if ($p_amount < 1) {
 			throw new \InvalidArgumentException('Invalid input for heal amount.');
-		} else if ($p_player->health() <= 0) {
+		} else if ($p_player->health <= 0) {
 			throw new \RuntimeException('You must resurrect before you can heal.');
 		} else if ($p_player->is_hurt_by() <= 0) {
 			throw new \RuntimeException('You are at full health.');

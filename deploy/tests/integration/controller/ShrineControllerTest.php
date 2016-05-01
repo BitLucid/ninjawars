@@ -43,11 +43,13 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
 
         $cont = new ShrineController();
         $response = $cont->healAndResurrect();
-        $final_char = Player::find($this->char->id());
+
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
-        $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
+        $this->assertContains('result-resurrect', $response_data['pageParts']);
+
+        $final_char = Player::find($this->char->id());
         $this->assertEquals($final_char->maxHealth(), $final_char->health());
     }
 

@@ -427,12 +427,8 @@ class Player implements Character {
 	 */
 	public function heal($amount) {
 		// do not heal above max health
-		$hurt = $this->is_hurt_by();
-		$heal = min($hurt, $amount);
-
-        $result = $this->set_health($this->health + $heal);
-        $this->save();
-		return $result;
+        $heal = min($this->is_hurt_by(), $amount);
+        return $this->set_health($this->health + $heal);
 	}
 
 	/**
