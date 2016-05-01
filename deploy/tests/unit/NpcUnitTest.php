@@ -125,7 +125,7 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
         $this->assertGreaterThan(0, $peasant->maxDamage());
         $this->assertLessThan(21, $peasant->gold());
         $mock_pc = new Player();
-        $mock_pc->vo->level = 10;
+        $mock_pc->level = 10;
         $this->assertEquals(10, $mock_pc->level);
         $this->assertGreaterThan(0, $peasant->bountyMod());
     }
@@ -203,7 +203,7 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
         }
 
         $player = new Player();
-        $player->vo->strength = 100;
+        $player->strength = 100;
         $guard = new Npc('guard2');
         $guard_max_damage = $guard->maxDamage();
         $guard_with_enemy = new Npc('guard2');

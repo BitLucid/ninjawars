@@ -225,9 +225,9 @@ class SkillController extends AbstractController {
 		$victim_alive     = true;
 		$attacker_id      = $player->name();
 		$attacker_char_id = $player->id();
-		$starting_turns   = $player->vo->turns;
+		$starting_turns   = $player->turns;
 
-		$level_check  = $player->vo->level - $target->vo->level;
+		$level_check  = $player->level - $target->level;
 
 		if ($player->hasStatus(STEALTH)) {
 			$attacker_id = 'A Stealthed Ninja';
@@ -394,7 +394,7 @@ class SkillController extends AbstractController {
 				}
 			} else if ($act == 'Ice Bolt') {
 				if (!$target->hasStatus(SLOW)) {
-					if ($target->vo->turns >= 10) {
+					if ($target->turns >= 10) {
 						$turns_decrease = rand(1, 5);
 						$target->changeTurns(-1*$turns_decrease);
 						// Changed ice bolt to kill stealth.
@@ -418,7 +418,7 @@ class SkillController extends AbstractController {
 					$critical_failure = rand(1, 100);
 
 					if ($critical_failure > 7) {// *** If the critical failure rate wasn't hit.
-						if ($target->vo->turns >= 10) {
+						if ($target->turns >= 10) {
 							$turns_decrease = rand(2, 7);
 
 							$target->changeTurns(-1*$turns_decrease);

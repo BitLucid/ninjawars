@@ -67,7 +67,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
     public function testAttackPeasantWithABountableHighLevelCharacter() {
         RequestWrapper::inject(Request::create('/npc/attack/peasant'));
         // Bump the test player's level for bounty purposes.
-        $this->char->vo->level = 20;
+        $this->char->level = 20;
         $this->char->save();
         $response = $this->controller->attack();
         $this->assertNotEmpty($response);
@@ -144,9 +144,9 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testControllerAttackAgainstSamurai() {
-        $this->char->vo->kills = 40;
-        $this->char->vo->level = 5;
-        $this->char->vo->strength = 25;
+        $this->char->kills = 40;
+        $this->char->level = 5;
+        $this->char->strength = 25;
         $this->char->addStatus(STEALTH);
         $this->char->save();
 

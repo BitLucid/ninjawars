@@ -164,8 +164,8 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
     public function testKillCostResurrectWithChi() {
         $this->char->death();
         $this->char->setClass('dragon'); // dragon class has chi skill
-        $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
-        $this->char->vo->kills = ShrineController::FREE_RES_KILL_LIMIT;
+        $this->char->level = ShrineController::FREE_RES_LEVEL_LIMIT;
+        $this->char->kills = ShrineController::FREE_RES_KILL_LIMIT;
         $this->char->save();
 
         $cont = new ShrineController();
@@ -181,8 +181,8 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
     public function testKillCostResurrectWithStealth() {
         $this->char->death();
         $this->char->setClass('viper'); // viper class has stealth
-        $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
-        $this->char->vo->kills = ShrineController::FREE_RES_KILL_LIMIT;
+        $this->char->level = ShrineController::FREE_RES_LEVEL_LIMIT;
+        $this->char->kills = ShrineController::FREE_RES_KILL_LIMIT;
         $this->char->save();
 
         $cont = new ShrineController();
@@ -200,8 +200,8 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $turns = 50;
         $this->char->death();
         $this->char->setClass('dragon'); // dragon class has chi skill
-        $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
-        $this->char->vo->turns = $turns;
+        $this->char->level = ShrineController::FREE_RES_LEVEL_LIMIT;
+        $this->char->turns = $turns;
         $this->char->save();
         $skillList = new Skill();
         $this->assertTrue($skillList->hasSkill('chi', $this->char));
@@ -219,9 +219,9 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testResurrectOnEmpty() {
         $this->char->death();
-        $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
-        $this->char->vo->turns = 0;
-        $this->char->vo->kills = 0;
+        $this->char->level = ShrineController::FREE_RES_LEVEL_LIMIT;
+        $this->char->turns = 0;
+        $this->char->kills = 0;
         $this->char->save();
 
         $cont = new ShrineController();
@@ -233,9 +233,9 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testResurrectWhileAlive() {
-        $this->char->vo->level = ShrineController::FREE_RES_LEVEL_LIMIT;
-        $this->char->vo->turns = 0;
-        $this->char->vo->kills = 0;
+        $this->char->level = ShrineController::FREE_RES_LEVEL_LIMIT;
+        $this->char->turns = 0;
+        $this->char->kills = 0;
         $this->char->save();
 
         $cont = new ShrineController();

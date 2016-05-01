@@ -181,7 +181,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
      */
     public function testDupeNameFailsCorrectly() {
         $player = Player::find($this->char_id);
-        $player->vo->uname = 'KnownGood';
+        $player->uname = 'KnownGood';
         $player->save();
 
         RequestWrapper::inject(new Request([

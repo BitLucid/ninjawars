@@ -44,10 +44,10 @@ use \RuntimeException;
  * @property int status
  */
 class Player implements Character {
-	public $vo;
 	public $ip;
 	public $avatar_url;
     private $data;
+	private $vo;
 
     /**
      * Creates a new level 1 player object
@@ -530,73 +530,6 @@ class Player implements Character {
 		return $this;
 	}
 
-	/**
-	 * Find a player by primary key
-     * @param int|null $id
-	 * @return Player|null
-	 */
-	public static function find($id){
-		if(!is_numeric($id) || !(int) $id){
-			return null;
-		}
-		$id = (int) $id;
-		$dao = new PlayerDAO();
-		$data = $dao->get($id);
-		if(!isset($data->player_id) || !$data->player_id){
-			return null;
-		}
-		$player = new Player();
-		$player->vo = $data;
-		return $player;
-	}
-
-    /**
-     * Find a char by playable for account
-     * @param int|null $account_id
-     * @return Player|null
-     */
-    public static function findPlayable($account_id){
-        // Two db calls for now
-        $pid = query_item('select player_id from players p 
-            join account_players ap on p.player_id = ap._player_id
-            join accounts a on a.account_id = ap._account_id
-            where account_id = :aid
-            order by p.created_date asc, a.last_login desc
-            limit 1', [':aid'=>[$account_id, PDO::PARAM_INT]]);
-        return self::find($pid);
-    }
-
-    /**
-     * Find player by name
-     * @return Player|null
-     */
-    public static function findByName($name){
-        $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
-        if(!$id){
-            return null;
-        } else {
-            $dao = new PlayerDAO();
-            $data = $dao->get($id);
-            if(!isset($data->player_id) || !$data->player_id){
-                return null;
-            }
-            $player = new Player();
-            $player->vo = $data;
-            return $player;
-        }
-    }
-
-    /**
-     * query the recently active players
-     * @return array Array of data not of player objects
-     */
-    public static function findActive($limit=5, $alive_only=true) {
-        $where_cond = ($alive_only ? ' AND health > 0' : '');
-        $sel = "SELECT uname, player_id FROM players WHERE active = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
-        $active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
-        return $active_ninjas;
-    }
-
      /**
      * Check whether the player is the leader of their clan.
      * @return boolean
@@ -649,35 +582,6 @@ class Player implements Character {
             "SELECT identity FROM class WHERE identity = :candidate",
             [':candidate' => $candidate_identity]
         );
-    }
-
-    /**
-     * Calculate a max health by a level
-     * @return integer
-     */
-    public static function maxHealthByLevel($level) {
-        return (int) (NEW_PLAYER_INITIAL_HEALTH + round(LEVEL_UP_HP_RAISE*($level-1)));
-    }
-
-    /**
-     * Calculate a base str by level
-     */
-    public static function baseStrengthByLevel($level) {
-        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
-    }
-
-    /**
-     * Calculate a base speed by level
-     */
-    public static function baseSpeedByLevel($level) {
-        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
-    }
-
-    /**
-     * Calculate a base stamina by level
-     */
-    public static function baseStaminaByLevel($level) {
-        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 
     /**
@@ -792,6 +696,73 @@ class Player implements Character {
         }
     }
 
+	/**
+	 * Find a player by primary key
+     * @param int|null $id
+	 * @return Player|null
+	 */
+	public static function find($id){
+		if(!is_numeric($id) || !(int) $id){
+			return null;
+		}
+		$id = (int) $id;
+		$dao = new PlayerDAO();
+		$data = $dao->get($id);
+		if(!isset($data->player_id) || !$data->player_id){
+			return null;
+		}
+		$player = new Player();
+		$player->vo = $data;
+		return $player;
+	}
+
+    /**
+     * Find a char by playable for account
+     * @param int|null $account_id
+     * @return Player|null
+     */
+    public static function findPlayable($account_id){
+        // Two db calls for now
+        $pid = query_item('select player_id from players p 
+            join account_players ap on p.player_id = ap._player_id
+            join accounts a on a.account_id = ap._account_id
+            where account_id = :aid
+            order by p.created_date asc, a.last_login desc
+            limit 1', [':aid'=>[$account_id, PDO::PARAM_INT]]);
+        return self::find($pid);
+    }
+
+    /**
+     * Find player by name
+     * @return Player|null
+     */
+    public static function findByName($name){
+        $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
+        if(!$id){
+            return null;
+        } else {
+            $dao = new PlayerDAO();
+            $data = $dao->get($id);
+            if(!isset($data->player_id) || !$data->player_id){
+                return null;
+            }
+            $player = new Player();
+            $player->vo = $data;
+            return $player;
+        }
+    }
+
+    /**
+     * query the recently active players
+     * @return array Array of data not of player objects
+     */
+    public static function findActive($limit=5, $alive_only=true) {
+        $where_cond = ($alive_only ? ' AND health > 0' : '');
+        $sel = "SELECT uname, player_id FROM players WHERE active = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
+        $active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
+        return $active_ninjas;
+    }
+
     /**
      * @return integer|null
      * @note this needs review overall, as nonexistent high int statuses will false positive
@@ -853,5 +824,34 @@ class Player implements Character {
         }
 
         return $states;
+    }
+
+    /**
+     * Calculate a max health by a level
+     * @return integer
+     */
+    public static function maxHealthByLevel($level) {
+        return (int) (NEW_PLAYER_INITIAL_HEALTH + round(LEVEL_UP_HP_RAISE*($level-1)));
+    }
+
+    /**
+     * Calculate a base str by level
+     */
+    public static function baseStrengthByLevel($level) {
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+    }
+
+    /**
+     * Calculate a base speed by level
+     */
+    public static function baseSpeedByLevel($level) {
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+    }
+
+    /**
+     * Calculate a base stamina by level
+     */
+    public static function baseStaminaByLevel($level) {
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 }

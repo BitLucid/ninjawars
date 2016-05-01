@@ -16,7 +16,10 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
         $this->player = new Player();
-        $this->player->vo = $this->data;
+        $this->player->uname = $this->data->uname;
+        $this->player->player_id = $this->data->player_id;
+        $this->player->level = $this->data->level;
+        $this->player->health = $this->data->health;
     }
 
 	protected function tearDown() {

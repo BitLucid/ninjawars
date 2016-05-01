@@ -246,7 +246,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testGravatarURLWithoutAvatarType() {
         $char = Player::find($this->char_id);
-        $char->vo->avatar_type = null;
+        $char->avatar_type = null;
         $this->assertEquals('', $char->avatarUrl());
     }
 
@@ -307,7 +307,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
      */
     public function testLevelUpKillsFail() {
         $char = Player::find($this->char_id);
-        $char->vo->kills = 0;
+        $char->kills = 0;
         $char->save();
 
         $this->assertFalse($char->levelUp());
@@ -318,7 +318,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
      */
     public function testLevelUpSucceeds() {
         $char = Player::find($this->char_id);
-        $char->vo->kills = 100;
+        $char->kills = 100;
         $char->save();
 
         $this->assertTrue($char->levelUp());
@@ -329,7 +329,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
      */
     public function testLevelUpChangesStats() {
         $original_char = Player::find($this->char_id);
-        $original_char->vo->kills = 100;
+        $original_char->kills = 100;
         $original_char->save();
 
         $char = Player::find($this->char_id);
@@ -351,7 +351,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
      */
     public function testLevelUpRemovesKills() {
         $original_char = Player::find($this->char_id);
-        $original_char->vo->kills = 100;
+        $original_char->kills = 100;
         $original_char->save();
 
         $char = Player::find($this->char_id);
