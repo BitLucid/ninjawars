@@ -82,9 +82,9 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $char = Player::find($this->char_id);
         $this->assertTrue(is_int($char->gold));
         $this->assertTrue(is_int($char->turns));
-        $this->assertTrue(is_int($char->set_gold(45)));
-        $this->assertTrue(is_int($char->set_turns(32)));
-        $this->assertEquals(444, $char->set_bounty(444));
+        $this->assertTrue(is_int($char->setGold(45)));
+        $this->assertTrue(is_int($char->setTurns(32)));
+        $this->assertEquals(444, $char->setBounty(444));
         $char->save();
         $char_dup = Player::find($this->char_id);
         $this->assertEquals(444, $char_dup->bounty);
@@ -159,13 +159,13 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
     public function testNegativeKiRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_ki(-643);
+        $char->setKi(-643);
     }
 
     public function testNegativeTurnsRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_turns(-345);
+        $char->setTurns(-345);
     }
 
     public function testNegativeStrengthRejected() {
@@ -189,42 +189,42 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
     public function testNegativeHealthRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_health(-6);
+        $char->setHealth(-6);
     }
 
     public function testFractionalHealthRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_health(6.45);
+        $char->setHealth(6.45);
     }
 
     public function testNegativeGoldRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_gold(-45);
+        $char->setGold(-45);
     }
 
     public function testFractionalGoldRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_gold(45.23);
+        $char->setGold(45.23);
     }
 
     public function testNegativeBountyRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_bounty(-45);
+        $char->setBounty(-45);
     }
 
     public function testFractionalBountyRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_bounty(45.43);
+        $char->setBounty(45.43);
     }
 
     public function testPlayerHealChangesHealth() {
         $char = Player::find($this->char_id);
-        $half_health = $char->set_health(floor($char->health()/2));
+        $half_health = $char->setHealth(floor($char->health()/2));
         $char->save();
 
         $char = Player::find($this->char_id);
@@ -253,8 +253,8 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
     public function testCreatePlayerObjectCanSaveChanges() {
         $char = Player::find($this->char_id);
         $ki = $char->ki;
-        $char->set_ki($ki+55);
-        $char->set_gold(343);
+        $char->setKi($ki+55);
+        $char->setGold(343);
         $char->save();
         $char_copy = Player::find($this->char_id);
         $this->assertEquals($char_copy->ki, $ki+55);
@@ -264,7 +264,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
     public function testPlayerObjectReportDamageCorrectly() {
         $char = Player::find($this->char_id);
         $damage = floor($char->health()/2);
-        $char->set_health($char->health() - $damage);
+        $char->setHealth($char->health() - $damage);
         $char->save();
         $char = Player::find($this->char_id);
         $this->assertEquals($damage, $char->is_hurt_by());

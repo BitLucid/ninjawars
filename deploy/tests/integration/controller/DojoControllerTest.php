@@ -75,7 +75,7 @@ class DojoControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $char = Player::find($this->char_id);
         $char->setStrength(400);
-        $char->set_turns(0);
+        $char->setTurns(0);
         $char->save();
         $result = $this->controller->buyDimMak();
         $this->assertNotEmpty($result);
@@ -87,7 +87,7 @@ class DojoControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $char = Player::find($this->char_id);
         $char->setStrength(400);
-        $char->set_turns(400);
+        $char->setTurns(400);
         $char->save();
         $result = $this->controller->buyDimMak();
         $this->assertNotEmpty($result);
@@ -129,7 +129,7 @@ class DojoControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request);
         $char = Player::find($this->char_id);
         $char->setStrength(400);
-        $char->set_turns(0);
+        $char->setTurns(0);
         $char->save();
         $this->assertNotEmpty($this->controller->changeClass());
     }

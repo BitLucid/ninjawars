@@ -82,7 +82,7 @@ class ShopController extends AbstractController {
 				try {
                     $inventory = new Inventory($player);
 					$inventory->add($purchase_order->item->identity(), $purchase_order->quantity);
-                    $player->set_gold($player->gold - $current_item_cost);
+                    $player->setGold($player->gold - $current_item_cost);
                     $player->save();
                     $valid = true;
 				} catch (\Exception $e) {

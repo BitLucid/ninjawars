@@ -250,9 +250,9 @@ class InventoryController extends AbstractController {
                         $gold_mod = ($item->hasEffect('death') ?  0.25 : 0.15);
                         $loot     = floor($gold_mod * $target->gold);
 
-                        $target->set_gold($target->gold - $loot);
+                        $target->setGold($target->gold - $loot);
 
-                        $player->set_gold($player->gold + $loot);
+                        $player->setGold($player->gold + $loot);
                         $player->addKills(1);
 
                         $bounty_message = Combat::runBountyExchange($player, $target);  //Rewards or increases bounty.

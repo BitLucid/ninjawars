@@ -279,10 +279,10 @@ class SkillController extends AbstractController {
 
 				$gold_decrease = min($target->gold, rand(5, 50));
 
-				$player->set_gold($player->gold + $gold_decrease);
+				$player->setGold($player->gold + $gold_decrease);
                 $player->save();
 
-                $target->set_gold($target->gold - $gold_decrease);
+                $target->setGold($target->gold - $gold_decrease);
                 $target->save();
 
 				$msg = "$attacker_id stole $gold_decrease gold from you.";
@@ -487,19 +487,19 @@ class SkillController extends AbstractController {
 					$killed_target = true;
 					$gold_mod = 0.15;
 					$loot     = floor($gold_mod * $target->gold);
-					$player->set_gold($player->gold+$loot);
-					$target->set_gold($target->gold-$loot);
+					$player->setGold($player->gold+$loot);
+					$target->setGold($target->gold-$loot);
 
 					$player->addKills(1);
 
 					$added_bounty = floor($level_check / 5);
 
 					if ($added_bounty > 0) {
-						$player->set_bounty($player->bounty+($added_bounty * 25));
+						$player->setBounty($player->bounty+($added_bounty * 25));
 					} else if ($target->bounty > 0 && $target->id() !== $player->id()) {
 						 // No suicide bounty, No bounty when your bounty getting ++ed.
-						$player->set_gold($player->gold+$target->bounty); // Reward the bounty
-						$target->set_bounty(0); // Wipe the bounty
+						$player->setGold($player->gold+$target->bounty); // Reward the bounty
+						$target->setBounty(0); // Wipe the bounty
                     }
 
 					$target_message = "$attacker_id has killed you with $act and taken $loot gold.";
@@ -568,7 +568,7 @@ class SkillController extends AbstractController {
 			// If there's anything to heal, try.
 			// Subtract the ki used for healing.
 			$char->heal($heal_for);
-			$char->set_ki($char->ki - $heal_for);
+			$char->setKi($char->ki - $heal_for);
 			$char->save();
 		}
 

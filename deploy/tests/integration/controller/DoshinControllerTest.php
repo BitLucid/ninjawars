@@ -44,7 +44,7 @@ class DoshinControllerTest extends NWTest {
 
     public function testDoshinOfferSomeBountyOnATestPlayer() {
         $target_id = TestAccountCreateAndDestroy::create_alternate_testing_account(true);
-        $this->char->set_gold(434343);
+        $this->char->setGold(434343);
         $this->char->save();
         $target = Player::find($target_id);
 
@@ -67,10 +67,10 @@ class DoshinControllerTest extends NWTest {
     public function testBribeDownABounty() {
         $char_id = $this->char->id();
         $target_id = TestAccountCreateAndDestroy::char_id_2();
-        $this->char->set_gold(434343);
+        $this->char->setGold(434343);
         $this->char->save();
 
-        $this->char->set_bounty(400);
+        $this->char->setBounty(400);
         $this->char->save();
         $this->char = Player::find($char_id);
         $this->assertEquals(400, $this->char->bounty);
@@ -99,8 +99,8 @@ class DoshinControllerTest extends NWTest {
 
         $bounty_set = 4444;
         $initial_gold = 7777;
-        $this->char->set_bounty($bounty_set);
-        $this->char->set_gold($initial_gold);
+        $this->char->setBounty($bounty_set);
+        $this->char->setGold($initial_gold);
         $this->char->save();
 
         $doshin = new DoshinController();

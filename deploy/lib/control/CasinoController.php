@@ -70,7 +70,7 @@ class CasinoController extends AbstractController {
 			if (rand(0, 1) === 1) {
 				$pageParts = ['result-win'];
 
-				$player->set_gold($player->gold + $bet);
+				$player->setGold($player->gold + $bet);
 
 				if ($bet >= round(self::MAX_BET*0.99)) {
 					// within about 1% of the max bet & you win, you get a reward item.
@@ -78,7 +78,7 @@ class CasinoController extends AbstractController {
 					$inventory->add(self::REWARD, 1);
 				}
 			} else {
-				$player->set_gold($player->gold - $bet);
+				$player->setGold($player->gold - $bet);
 				$pageParts = ['result-lose'];
 			}
 		}

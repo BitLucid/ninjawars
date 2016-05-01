@@ -197,7 +197,7 @@ class ShrineController extends AbstractController {
 			return $this->renderError('You are not ill.', $player);
 		} else {
 			$player->subtractStatus(POISON);
-			$player->set_gold($player->gold - self::CURE_COST_GOLD);
+			$player->setGold($player->gold - self::CURE_COST_GOLD);
             $player->save();
 
 			$pageParts = [
@@ -424,7 +424,7 @@ class ShrineController extends AbstractController {
 			throw new \RuntimeException('You do not have enough gold for that much healing');
 		}
 
-		$p_player->set_gold($p_player->gold - $totalCost);
+		$p_player->setGold($p_player->gold - $totalCost);
 		$p_player->heal($amount);
 	}
 

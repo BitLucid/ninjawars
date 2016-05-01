@@ -257,14 +257,14 @@ class Player implements Character {
 		$this->vo->stamina = $stamina;
 	}
 
-	public function set_ki($ki){
+	public function setKi($ki){
 		if($ki < 0){
 			throw new \InvalidArgumentException('Ki cannot be negative.');
 		}
 		return $this->vo->ki = $ki;
 	}
 
-	public function set_gold($gold) {
+	public function setGold($gold) {
 		if ($gold < 0) {
 			throw new \InvalidArgumentException('Gold cannot be made negative.');
 		}
@@ -276,7 +276,7 @@ class Player implements Character {
 		return $this->vo->gold = $gold;
 	}
 
-	public function set_bounty($bounty) {
+	public function setBounty($bounty) {
 		if($bounty < 0){
 			throw new \InvalidArgumentException('Bounty cannot be made negative ['.(string)$bounty.'].');
 		}
@@ -318,7 +318,7 @@ class Player implements Character {
      */
 	public function death() {
 		$this->resetStatus();
-        $this->set_health(0);
+        $this->setHealth(0);
         $this->save();
 	}
 
@@ -329,7 +329,7 @@ class Player implements Character {
      * @return int The number of turns the player object now has
      * @throws InvalidArgumentException $turns cannot be negative
      */
-    public function set_turns($turns) {
+    public function setTurns($turns) {
         if ($turns < 0) {
             throw new \InvalidArgumentException('Turns cannot be made negative.');
         }
@@ -343,7 +343,7 @@ class Player implements Character {
     public function changeTurns($amount) {
         $amount = (int) $amount;
 
-        $this->set_turns($this->turns + $amount);
+        $this->setTurns($this->turns + $amount);
 
         if ($amount) { // Ignore zero
             // These PDO parameters must be split into amount1 and amount2 because otherwise PDO gets confused.  See github issue 147.
@@ -413,7 +413,7 @@ class Player implements Character {
 	public function heal($amount) {
 		// do not heal above max health
         $heal = min($this->is_hurt_by(), $amount);
-        return $this->set_health($this->health + $heal);
+        return $this->setHealth($this->health + $heal);
 	}
 
 	/**
@@ -425,7 +425,7 @@ class Player implements Character {
 	public function harm($damage) {
 		// Do not allow negative health
 		$actual_damage = min($this->health, (int) $damage);
-		return $this->set_health($this->health - $actual_damage);
+		return $this->setHealth($this->health - $actual_damage);
 	}
 
     /**
@@ -440,7 +440,7 @@ class Player implements Character {
     /**
      * @return int
      */
-	public function set_health($health) {
+	public function setHealth($health) {
 		if ($health < 0) {
 			throw new \InvalidArgumentException('Health cannot be made negative.');
 		}
@@ -760,9 +760,9 @@ class Player implements Character {
             );
 
             if ($level_up_possible) { // Perform the level up actions
-                $this->set_health($this->health() + $health_to_add);
-                $this->set_turns($this->turns   + $turns_to_give);
-                $this->set_ki($this->ki         + $ki_to_give);
+                $this->setHealth($this->health() + $health_to_add);
+                $this->setTurns($this->turns   + $turns_to_give);
+                $this->setKi($this->ki         + $ki_to_give);
 
                 // Must read from VO for these as accessors return modified values
                 $this->setStamina($this->vo->stamina   + $stat_value_to_add);

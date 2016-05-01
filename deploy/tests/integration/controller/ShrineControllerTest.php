@@ -105,7 +105,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request(['heal_points'=>999], []);
         RequestWrapper::inject($request);
         $this->char->harm((int)floor($this->char->health/2)); // Have to be wounded first.
-        $this->char->set_gold(0);
+        $this->char->setGold(0);
         $initial_health = $this->char->health;
         $this->assertGreaterThan(0, $initial_health);
         $this->char->save();

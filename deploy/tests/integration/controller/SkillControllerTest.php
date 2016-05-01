@@ -41,7 +41,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testUseFireboltOnAnotherChar(){
-        $this->char->set_turns(300);
+        $this->char->setTurns(300);
         $this->char->vo->level = 20;
         $initial_health = $this->char2->health();
         $error = $this->char->setClass('tiger');
@@ -70,13 +70,13 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $error = $this->char->setClass('tiger');
         $bounty = 300;
         $self_gold = $this->char->gold;
-        $this->char->set_turns(300);
+        $this->char->setTurns(300);
         $this->char->vo->level = 2;
         $this->assertNull($error);
-        $this->char2->set_health(1);
+        $this->char2->setHealth(1);
         $this->char2->vo->level = 200; // To ensure higher level.
-        $this->char2->set_gold(0); // No gold
-        $this->char2->set_bounty($bounty); // Only bounty
+        $this->char2->setGold(0); // No gold
+        $this->char2->setBounty($bounty); // Only bounty
         $this->char2->save();
         $this->char->save();
         $name = $this->char2->name();
@@ -104,12 +104,12 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testIShouldGetBountyOnMyHeadWhenIFireBoltKillALowLevel(){
         $this->char->setClass('tiger');
-        $this->char->set_turns(300);
+        $this->char->setTurns(300);
         $this->char->vo->level = 200;
-        $this->char->set_bounty(0);
-        $this->char2->set_health(1);
+        $this->char->setBounty(0);
+        $this->char2->setHealth(1);
         $this->char2->vo->level = 2; // Ensure a lower level
-        $this->char2->set_gold(0); // No gold to get from target
+        $this->char2->setGold(0); // No gold to get from target
         $this->char2->save();
         $this->char->save();
         $initial_bounty = $this->char->bounty;
@@ -137,7 +137,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testUseUnstealthOnSelf(){
         $this->char->setClass('viper');
-        $this->char->set_turns(300);
+        $this->char->setTurns(300);
         $this->char->vo->level = 20;
         $this->char->save();
 
@@ -156,7 +156,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testUsePoisonTouchOnAnotherChar(){
         $error = $this->char->setClass('viper');
-        $this->char->set_turns(300);
+        $this->char->setTurns(300);
         $this->char->vo->level = 20;
         $this->assertNull($error);
         $initial_health = $this->char2->health();
@@ -184,7 +184,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testUseSightOnAnotherChar(){
         $error = $this->char->setClass('dragon');
-        $this->char->set_turns(300);
+        $this->char->setTurns(300);
         $this->char->vo->level = 20;
         $this->assertNull($error);
         $this->char->save();
@@ -215,7 +215,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testUseHealOnSelfAsAHealingCharacter() {
         $this->char->setClass('dragon');
-        $this->char->set_turns(300);
+        $this->char->setTurns(300);
         $this->char->vo->level = 20;
         $this->char->harm(floor($this->char->getMaxHealth()/2));
         $this->char->save();
@@ -239,7 +239,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testUseHarmonizeOnSelf() {
-        $this->char->set_turns(300);
+        $this->char->setTurns(300);
         $this->char->ki = 1000;
         $this->char->vo->level = 20;
         $this->char->harm(floor($this->char->getMaxHealth()/2));

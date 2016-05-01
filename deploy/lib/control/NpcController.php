@@ -178,7 +178,7 @@ class NpcController extends AbstractController {
         if ($survive_fight > 0) {
             // The ninja survived, they get any gold the npc has.
             $received_gold = $this->calcReceivedGold($npco, (bool) $reward_item);
-            $player->set_gold($player->gold + $received_gold);
+            $player->setGold($player->gold + $received_gold);
             $received_items = array();
 
             if ($kill_npc) {
@@ -362,11 +362,11 @@ class NpcController extends AbstractController {
 
         if ($victory = $player->harm($damage)) {
             $gold = rand(1, $player->getStrength() + 40);
-            $player->set_gold($player->gold + $gold);
+            $player->setGold($player->gold + $gold);
 
             if ($player->level > 15) {
                 $bounty = 10 * floor(($player->level - 10) / 5);
-                $player->set_bounty($player->bounty + $bounty);
+                $player->setBounty($player->bounty + $bounty);
             }
 
             // chance of getting an herb for Kampo
@@ -399,12 +399,12 @@ class NpcController extends AbstractController {
 
         if ($victory = $player->harm($damage)) {
             $gold = rand(0, 20);
-            $player->set_gold($player->gold + $gold);
+            $player->setGold($player->gold + $gold);
 
             // *** Bounty or no bounty ***
             if ($player->level > 1 && $player->level <= 20) {
                 $bounty = floor($player->level / 3);
-                $player->set_bounty($player->bounty + $bounty);
+                $player->setBounty($player->bounty + $bounty);
             }
 
             if (!$just_villager) {
@@ -456,7 +456,7 @@ class NpcController extends AbstractController {
             $gold = rand(50, 50 + $damage[2] + $damage[1]);
 
             $player->addKills(1);
-            $player->set_gold($player->gold + $gold);
+            $player->setGold($player->gold + $gold);
 
             $inventory = new Inventory($player);
 
@@ -511,7 +511,7 @@ class NpcController extends AbstractController {
                 $player->subtractKills(1);
             }
 
-            $player->set_gold($player->gold + $gold);
+            $player->setGold($player->gold + $gold);
 
             $inventory = new Inventory($player);
             $inventory->add('phosphor', 1);
@@ -541,7 +541,7 @@ class NpcController extends AbstractController {
         // Player killed NPC
         if ($victory = $player->harm($damage)) {
             $gold = rand(20, 70);
-            $player->set_gold($player->gold + $gold);
+            $player->setGold($player->gold + $gold);
 
             if ($damage > 34) {
                 $inventory = new Inventory($player);
@@ -550,7 +550,7 @@ class NpcController extends AbstractController {
 
             if ($player->level > 10) {
                 $bounty = 5 * floor(($player->level - 5) / 3);
-                $player->set_bounty($player->bounty + $bounty);
+                $player->setBounty($player->bounty + $bounty);
             }
         } else { // NPC killed player
             $damage = $gold = 0;
@@ -580,9 +580,9 @@ class NpcController extends AbstractController {
             $gold = rand(0, 40);  // Gold in question
 
             if ($damage > 30) { // Steal gold
-                $player->set_gold(max(0, $player->gold - $gold));
+                $player->setGold(max(0, $player->gold - $gold));
             } else if ($damage < 30) { // award gold and item
-                $player->set_gold($player->gold + $gold);
+                $player->setGold($player->gold + $gold);
                 $inventory = new Inventory($player);
                 $inventory->add('shuriken', 1);
             }
