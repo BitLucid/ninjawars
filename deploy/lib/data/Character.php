@@ -34,7 +34,7 @@ interface Character {
     /**
      * @return int
      */
-    function health();
+    function getHealth();
 
     /**
      * @return int

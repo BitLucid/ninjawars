@@ -69,7 +69,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testCreatePlayerObjectHasUsefulInfo() {
         $char = Player::find($this->char_id);
-        $this->assertTrue((bool)Filter::toNonNegativeInt($char->health()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->health));
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->getSpeed()));
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->getStamina()));
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->getStrength()));
@@ -224,18 +224,18 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testPlayerHealChangesHealth() {
         $char = Player::find($this->char_id);
-        $half_health = $char->setHealth(floor($char->health()/2));
+        $half_health = $char->setHealth(floor($char->health/2));
         $char->save();
 
         $char = Player::find($this->char_id);
-        $this->assertEquals($half_health, $char->health());
-        $this->assertLessThan($char->getMaxHealth(), $char->health());
+        $this->assertEquals($half_health, $char->health);
+        $this->assertLessThan($char->getMaxHealth(), $char->health);
 
         $char->heal($char->getMaxHealth()); // Heal by max_health, so up to
         $char->save();
 
         $this->assertEquals($char->health, $char->getMaxHealth());
-        $this->assertEquals($char->health(), $char->getMaxHealth());
+        $this->assertEquals($char->health, $char->getMaxHealth());
     }
 
     public function testPCCanObtainAGravatarUrl() {
@@ -263,8 +263,8 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testPlayerObjectReportDamageCorrectly() {
         $char = Player::find($this->char_id);
-        $damage = floor($char->health()/2);
-        $char->setHealth($char->health() - $damage);
+        $damage = floor($char->health/2);
+        $char->setHealth($char->health - $damage);
         $char->save();
         $char = Player::find($this->char_id);
         $this->assertEquals($damage, $char->is_hurt_by());
@@ -272,7 +272,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testPlayerObjectHarmWorksCorrectly() {
         $char = Player::find($this->char_id);
-        $damage = floor($char->health()/2);
+        $damage = floor($char->health/2);
         $char->harm($damage);
         $char->save();
         $char = Player::find($this->char_id);
@@ -281,14 +281,14 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testKillCharByHarmingWithTheirFullHealth() {
         $char = Player::find($this->char_id);
-        $char->harm($char->health());
+        $char->harm($char->health);
         $this->assertEquals(0, $char->health);
     }
 
     public function testCauseDeath() {
         $char = Player::find($this->char_id);
         $char->death();
-        $this->assertEquals(0, $char->health());
+        $this->assertEquals(0, $char->health);
     }
 
     public function testNewPlayerSave() {

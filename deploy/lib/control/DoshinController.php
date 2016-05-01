@@ -212,8 +212,8 @@ class DoshinController extends AbstractController {
 
         // Do fractional damage to the char
         $char->setHealth(
-            $char->health() -
-            floor($char->health()*self::FAILED_BRIBERY_PAIN)
+            $char->health -
+            floor($char->health * self::FAILED_BRIBERY_PAIN)
         );
 
         // Regardless, you lose some gold.

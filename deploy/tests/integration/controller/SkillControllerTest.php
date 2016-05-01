@@ -43,7 +43,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
     public function testUseFireboltOnAnotherChar(){
         $this->char->setTurns(300);
         $this->char->level = 20;
-        $initial_health = $this->char2->health();
+        $initial_health = $this->char2->health;
         $error = $this->char->setClass('tiger');
         $this->assertNull($error);
         $name = $this->char2->name();
@@ -63,7 +63,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNull($response_data['error']);
-        $this->assertLessThan($initial_health, $final_defender->health());
+        $this->assertLessThan($initial_health, $final_defender->health);
     }
 
     public function testWhenIFireBoltACharacterAndKillIShouldReceiveBounty(){
@@ -97,7 +97,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNull($response_data['error']);
-        $this->assertEquals(0, $final_defender->health(), "Health not 0");
+        $this->assertEquals(0, $final_defender->health, "Health not 0");
         $this->assertEquals(0, $final_defender->bounty, "Bounty not 0");
         $this->assertEquals($self_gold+$bounty, $final_attacker->gold, "Gold not updated");
     }
@@ -131,7 +131,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNull($response_data['error']);
-        $this->assertEquals(0, $final_defender->health());
+        $this->assertEquals(0, $final_defender->health);
         $this->assertGreaterThan($initial_bounty, $final_attacker->bounty);
     }
 
@@ -159,7 +159,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->char->setTurns(300);
         $this->char->level = 20;
         $this->assertNull($error);
-        $initial_health = $this->char2->health();
+        $initial_health = $this->char2->health;
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
         $this->assertNotEmpty(rawurlencode($name));
@@ -179,7 +179,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $response_data = $reflection->getValue($response);
         $this->assertNull($response_data['error']);
         $this->assertEquals('Poison Touch', $response_data['act']);
-        $this->assertLessThan($initial_health, $final_defender->health());
+        $this->assertLessThan($initial_health, $final_defender->health);
     }
 
     public function testUseSightOnAnotherChar(){
@@ -220,7 +220,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->char->harm(floor($this->char->getMaxHealth()/2));
         $this->char->save();
 
-        $initial_health = $this->char->health();
+        $initial_health = $this->char->health;
         $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
 
         RequestWrapper::inject(Request::create('/skill/self_use/Heal/'));
@@ -235,7 +235,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $response_data = $reflection->getValue($response);
         $this->assertEquals('Heal', $response_data['act']);
         $final_char = Player::find($this->char->id());
-        $this->assertGreaterThan($initial_health, $final_char->health());
+        $this->assertGreaterThan($initial_health, $final_char->health);
     }
 
     public function testUseHarmonizeOnSelf() {
@@ -245,7 +245,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->char->harm(floor($this->char->getMaxHealth()/2));
         $this->char->save();
 
-        $initial_health = $this->char->health();
+        $initial_health = $this->char->health;
         $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
 
         RequestWrapper::inject(Request::create('/skill/self_use/Harmonize/'));
@@ -260,6 +260,6 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $response_data = $reflection->getValue($response);
         $this->assertEquals('Harmonize', $response_data['act']);
         $final_char = Player::find($this->char->id());
-        $this->assertGreaterThan($initial_health, $final_char->health());
+        $this->assertGreaterThan($initial_health, $final_char->health);
     }
 }

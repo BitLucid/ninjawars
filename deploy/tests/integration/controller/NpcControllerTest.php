@@ -84,7 +84,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertEquals('peasant2', $response_data['victim']);
-        $this->assertGreaterThan(0, $final_char->health());
+        $this->assertGreaterThan(0, $final_char->health);
     }
 
     public function testControllerAttackAsIfAgainstAMerchant() {

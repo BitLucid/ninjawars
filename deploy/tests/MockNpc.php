@@ -46,7 +46,7 @@ class MockNpc implements Character{
         return $this->damage;
     }
 
-    public function health(){
+    public function getHealth(){
         return $this->health;
     }
 

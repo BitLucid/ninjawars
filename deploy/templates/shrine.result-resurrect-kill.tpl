@@ -3,7 +3,7 @@
 <div class='parent'>
 	<div class='child'>
 		<span class='health-bar-container'>
-		{include file="health_bar.tpl" health=$player->health() level=$player->level}
+		{include file="health_bar.tpl" health=$player->health level=$player->level}
 		</span>
 	</div>
 </div>

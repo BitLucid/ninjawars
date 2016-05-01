@@ -81,8 +81,8 @@ class CloneKill {
     public static function kill(Player $self, Player $clone1, Player $clone2) {
             if(self::canKill($clone1, $clone2)){
                 $today = date("F j, Y, g:i a");
-                $clone1_health = $clone1->health();
-                $clone2_health = $clone2->health();
+                $clone1_health = $clone1->health;
+                $clone2_health = $clone2->health;
                 $clone1_turns = $clone1->turns;
                 $clone2_turns = $clone2->turns;
                 $clone1->changeTurns(-1*$clone1->turns);

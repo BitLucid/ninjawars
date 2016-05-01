@@ -50,7 +50,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertContains('result-resurrect', $response_data['pageParts']);
 
         $final_char = Player::find($this->char->id());
-        $this->assertEquals($final_char->getMaxHealth(), $final_char->health());
+        $this->assertEquals($final_char->getMaxHealth(), $final_char->health);
     }
 
     /**
@@ -59,11 +59,11 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
     public function testShrinePartialHeal() {
         $request = new Request(['heal_points' => 10]);
         RequestWrapper::inject($request);
-        $this->char->harm(floor($this->char->health()/2)); // Have to be wounded first.
+        $this->char->harm(floor($this->char->health/2)); // Have to be wounded first.
         $this->char->setClass('viper'); // Default dragon class has chi skill
         $this->char->save();
 
-        $initial_health = $this->char->health();
+        $initial_health = $this->char->health;
         $this->assertGreaterThan(0, $initial_health);
 
         $cont = new ShrineController();
@@ -73,7 +73,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-heal', $response_data['pageParts']));
         $final_char = Player::find($this->char->id());
-        $this->assertEquals($initial_health+10, $final_char->health());
+        $this->assertEquals($initial_health+10, $final_char->health);
     }
 
     /**
@@ -82,8 +82,8 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
     public function testShrineMaxHeal(){
         $request = new Request(['heal_points'=>'max'], []);
         RequestWrapper::inject($request);
-        $this->char->harm((int)floor($this->char->health()/2)); // Have to be wounded first.
-        $initial_health = $this->char->health();
+        $this->char->harm((int)floor($this->char->health/2)); // Have to be wounded first.
+        $initial_health = $this->char->health;
         $this->char->gold = 999999;  // Ensure enough gold to heal.
         $initial_gold = $this->char->gold;
         $this->char->setClass('viper'); // ensure no chi
@@ -96,7 +96,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-heal', $response_data['pageParts']));
         $final_char = Player::find($this->char->id());
-        $this->assertEquals(min($initial_health+$initial_gold, $final_char->getMaxHealth()), $final_char->health());
+        $this->assertEquals(min($initial_health+$initial_gold, $final_char->getMaxHealth()), $final_char->health);
         $this->assertEquals(Player::maxHealthByLevel($final_char->level), $final_char->health);
 
     }
@@ -118,7 +118,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertEquals($initial_health, $final_char->health());
+        $this->assertEquals($initial_health, $final_char->health);
     }
 
     public function testResurrectOfPlayerByShrine(){
@@ -132,7 +132,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
-        $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level)/2), $final_char->health());
+        $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level)/2), $final_char->health);
     }
 
     public function testAntidoteUnpoisoningOfPoisonedCharacter(){
@@ -158,7 +158,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
-        $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level)/2), $final_char->health());
+        $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level)/2), $final_char->health);
     }
 
     public function testKillCostResurrectWithChi() {
@@ -175,7 +175,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
-        $this->assertGreaterThan($this->char->getMaxHealth()/(3), $final_char->health());
+        $this->assertGreaterThan($this->char->getMaxHealth()/(3), $final_char->health);
     }
 
     public function testKillCostResurrectWithStealth() {
@@ -213,7 +213,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-resurrect', $response_data['pageParts']));
-        $this->assertGreaterThan($this->char->getMaxHealth()/(1.5), $final_char->health());
+        $this->assertGreaterThan($this->char->getMaxHealth()/(1.5), $final_char->health);
         $this->assertLessThan($turns, $final_char->turns);
     }
 

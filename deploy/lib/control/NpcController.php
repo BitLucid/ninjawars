@@ -64,7 +64,7 @@ class NpcController extends AbstractController {
         $player->harm($oni_health_loss);
         $player->subtractKills(self::ONI_KILL_LOSS);
 
-        if ($player->health() > 0) { // if you survive
+        if ($player->health > 0) { // if you survive
             $inventory = new Inventory($player);
 
             if ($player->turns > self::HIGH_TURNS) { // And your turns are high/you are energetic, you can kill them.
@@ -173,7 +173,7 @@ class NpcController extends AbstractController {
         // ******* FIGHT Logic ***********
         $npc_damage    = $npco->damage();
         $survive_fight = $player->harm($npc_damage);
-        $kill_npc      = ($npco->health() < $player->damage());
+        $kill_npc      = ($npco->getHealth() < $player->damage());
 
         if ($survive_fight > 0) {
             // The ninja survived, they get any gold the npc has.
@@ -329,7 +329,7 @@ class NpcController extends AbstractController {
                 list($npc_template, $combat_data) = $this->$method($player);
             }
 
-            if ($player->health() <= 0) { // FINAL CHECK FOR DEATH
+            if ($player->health <= 0) { // FINAL CHECK FOR DEATH
                 $player->death();
                 $health = false;
                 Event::create((int)"SysMsg", $player->id(), "DEATH: You have been killed by a $victim.");

@@ -12,7 +12,7 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
     public function testBlankNpcHasZeroStrengthPositiveHealth() {
         $npc = new Npc(array());
         $this->assertEquals(0, $npc->getStrength());
-        $this->assertGreaterThan(0, $npc->health()); // All npcs should actually get some health!
+        $this->assertGreaterThan(0, $npc->getHealth()); // All npcs should actually get some health!
     }
 
     public function testForPresenceOfSomeNPCData() {
@@ -75,7 +75,7 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
         $npcs = NpcFactory::npcs();
 
         foreach ($npcs as $npc) {
-            $this->assertGreaterThan(0, $npc->health(), 'For npc: ['.$npc->identity().']');
+            $this->assertGreaterThan(0, $npc->getHealth(), 'For npc: ['.$npc->identity().']');
         }
     }
 

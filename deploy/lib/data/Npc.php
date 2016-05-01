@@ -161,7 +161,7 @@ class Npc implements Character {
     /**
      * @return int
      */
-    public function health() {
+    public function getHealth() {
         return $this->getMaxHealth(); // For now, since there aren't npc instances currently.
     }
 

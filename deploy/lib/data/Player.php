@@ -419,12 +419,10 @@ class Player implements Character {
 	}
 
     /**
-     * Pull the current health.
      * @return int
      */
-	public function health() {
-		$sel = "SELECT health from players where player_id = :id";
-		return max(0, query_item($sel, [':id'=>[$this->id(), PDO::PARAM_INT]]));
+	public function getHealth() {
+        return $this->health;
 	}
 
     /**
@@ -448,7 +446,7 @@ class Player implements Character {
 	 */
 	public function is_hurt_by() {
 		return max(0,
-			(int) ($this->getMaxHealth() - $this->health())
+			(int) ($this->getMaxHealth() - $this->health)
 		);
 	}
 
@@ -654,7 +652,7 @@ class Player implements Character {
             );
 
             if ($level_up_possible) { // Perform the level up actions
-                $this->setHealth($this->health() + $health_to_add);
+                $this->setHealth($this->health + $health_to_add);
                 $this->setTurns($this->turns   + $turns_to_give);
                 $this->setKi($this->ki         + $ki_to_give);
 

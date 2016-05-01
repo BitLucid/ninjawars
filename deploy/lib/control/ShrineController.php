@@ -74,8 +74,6 @@ class ShrineController extends AbstractController {
 
 				$pageParts[] ='result-resurrect';
 				$pageParts[] = self::$resurrectResultViews[$costType];
-
-                $player->save();
 			}
 
 			$healAmount = $this->calculateMaxHeal($player);
@@ -189,7 +187,7 @@ class ShrineController extends AbstractController {
 	public function cure() {
 		$player = Player::find(SessionFactory::getSession()->get('player_id'));
 
-		if ($player->health() <= 0) {
+		if ($player->health <= 0) {
 			return $this->renderError('You must resurrect before you can heal.', $player);
 		} else if ($player->gold < self::CURE_COST_GOLD) {
 			return $this->renderError('You need more gold to remove poison.', $player);
@@ -224,8 +222,8 @@ class ShrineController extends AbstractController {
 		$services = [];
 
 		if ($p_player) {
-			if ($p_player->health()) {
-				if ($p_player->health() < $p_player->getMaxHealth()) {
+			if ($p_player->health) {
+				if ($p_player->health < $p_player->getMaxHealth()) {
 					$services[] = 'form-heal';
 				} else {
 					$services[] = 'reminder-full-hp';
@@ -269,7 +267,7 @@ class ShrineController extends AbstractController {
 	 * @see enhancedResurrect
 	 */
 	private function _resurrect($p_player) {
-		if ($p_player->health() <= 0) {
+		if ($p_player->health <= 0) {
 			$costType = $this->calculateResurrectionCost($p_player);
 
 			if ($costType === self::RES_COST_TYPE_KILL) {
