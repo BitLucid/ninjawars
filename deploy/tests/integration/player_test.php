@@ -70,9 +70,9 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
     public function testCreatePlayerObjectHasUsefulInfo() {
         $char = Player::find($this->char_id);
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->health()));
-        $this->assertTrue((bool)Filter::toNonNegativeInt($char->speed()));
-        $this->assertTrue((bool)Filter::toNonNegativeInt($char->stamina()));
-        $this->assertTrue((bool)Filter::toNonNegativeInt($char->strength()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->getSpeed()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->getStamina()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->getStrength()));
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->level));
         $this->assertNotEmpty($char->name());
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->damage()));
@@ -104,22 +104,22 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testPlayerStatusesChangeStatCalcs() {
         $char = Player::find($this->char_id);
-        $str = $char->strength();
-        $speed = $char->speed();
-        $stamina = $char->stamina();
+        $str = $char->getStrength();
+        $speed = $char->getSpeed();
+        $stamina = $char->getStamina();
         $char->addStatus(SLOW);
-        $this->assertNotEquals($char->speed(), $speed, 'Speed should be different due to slow status.');
-        $this->assertTrue($char->speed() < $speed, 'Speed should be less due to slow status, but isn\'t.');
+        $this->assertNotEquals($char->getSpeed(), $speed, 'Speed should be different due to slow status.');
+        $this->assertTrue($char->getSpeed() < $speed, 'Speed should be less due to slow status, but isn\'t.');
         $char->addStatus(POISON);
-        $this->assertTrue($char->stamina() < $stamina);
+        $this->assertTrue($char->getStamina() < $stamina);
         $char->addStatus(WEAKENED);
-        $this->assertTrue($char->strength() < $str);
+        $this->assertTrue($char->getStrength() < $str);
         $char->resetStatus();
-        $this->assertEquals($char->strength(), $str);
+        $this->assertEquals($char->getStrength(), $str);
         $char->addStatus(STR_UP1);
-        $this->assertTrue($char->strength() > $str);
+        $this->assertTrue($char->getStrength() > $str);
         $char->addStatus(STR_UP2);
-        $this->assertTrue($char->strength() > $str);
+        $this->assertTrue($char->getStrength() > $str);
     }
 
     public function testRemoveStatus() {
@@ -229,13 +229,13 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
         $char = Player::find($this->char_id);
         $this->assertEquals($half_health, $char->health());
-        $this->assertLessThan($char->maxHealth(), $char->health());
+        $this->assertLessThan($char->getMaxHealth(), $char->health());
 
-        $char->heal($char->maxHealth()); // Heal by max_health, so up to
+        $char->heal($char->getMaxHealth()); // Heal by max_health, so up to
         $char->save();
 
-        $this->assertEquals($char->health, $char->maxHealth());
-        $this->assertEquals($char->health(), $char->maxHealth());
+        $this->assertEquals($char->health, $char->getMaxHealth());
+        $this->assertEquals($char->health(), $char->getMaxHealth());
     }
 
     public function testPCCanObtainAGravatarUrl() {

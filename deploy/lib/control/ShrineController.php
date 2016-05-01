@@ -225,7 +225,7 @@ class ShrineController extends AbstractController {
 
 		if ($p_player) {
 			if ($p_player->health()) {
-				if ($p_player->health() < $p_player->maxHealth()) {
+				if ($p_player->health() < $p_player->getMaxHealth()) {
 					$services[] = 'form-heal';
 				} else {
 					$services[] = 'reminder-full-hp';
@@ -340,7 +340,7 @@ class ShrineController extends AbstractController {
 
 		$maxHP = Player::maxHealthByLevel($p_player->level)*$hpMultiplier;
 
-		return min($maxHP, $p_player->maxHealth());
+		return min($maxHP, $p_player->getMaxHealth());
 	}
 
 	/**

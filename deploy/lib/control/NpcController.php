@@ -151,9 +151,9 @@ class NpcController extends AbstractController {
         $display_name     = (isset($npc_stats['name']) ? $npc_stats['name'] : ucfirst($victim));
         $status_effect    = (isset($npc_stats['status']) ? $npc_stats['status'] : null);
         $reward_item      = (isset($npc_stats['item']) && $npc_stats['item'] ? $npc_stats['item'] : null);
-        $is_quick         = (boolean) ($npco->speed() > $player->speed()); // Beyond basic speed and they see you coming, so show that message.
-        $is_weaker        = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
-        $is_stronger      = ($npco->strength()) > ($player->strength() * 3); // Npc More than twice as strong?
+        $is_quick         = (boolean) ($npco->getSpeed() > $player->getSpeed()); // Beyond basic speed and they see you coming, so show that message.
+        $is_weaker        = ($npco->getStrength() * 3) < $player->getStrength(); // Npc much weaker?
+        $is_stronger      = ($npco->getStrength()) > ($player->getStrength() * 3); // Npc More than twice as strong?
         $image            = (isset($npc_stats['img']) ? $npc_stats['img'] : null);
         // Assume defeat...
         $victory          = false;
@@ -355,13 +355,13 @@ class NpcController extends AbstractController {
     }
 
     private function attackGuard(Player $player) {
-        $damage = rand(1, $player->strength() + 10);
+        $damage = rand(1, $player->getStrength() + 10);
         $herb   = false;
         $gold   = 0;
         $bounty = 0;
 
         if ($victory = $player->harm($damage)) {
-            $gold = rand(1, $player->strength() + 40);
+            $gold = rand(1, $player->getStrength() + 40);
             $player->set_gold($player->gold + $gold);
 
             if ($player->level > 15) {
@@ -436,12 +436,12 @@ class NpcController extends AbstractController {
         $drop_display = null;
 
         $damage = [
-            rand(1, $player->strength()),
-            rand(10, 10 + round($player->strength() * 1.2)),
+            rand(1, $player->getStrength()),
+            rand(10, 10 + round($player->getStrength() * 1.2)),
         ];
 
         if (rand(0, 1)) {
-            $damage[] = rand(30 + round($player->strength() * 0.2), 30 + round($player->strength() * 1.7));
+            $damage[] = rand(30 + round($player->getStrength() * 0.2), 30 + round($player->getStrength() * 1.7));
         } else { //Instant death.
             $damage[] = abs($player->health - $damage[0] - $damage[1]);
         }
@@ -476,7 +476,7 @@ class NpcController extends AbstractController {
             }
 
             // If the final damage was the exact max damage
-            if ($damage[2] == $player->strength() * 3) {
+            if ($damage[2] == $player->getStrength() * 3) {
                 $drop         = true;
                 $drop_display = 'a black scroll';
                 $inventory->add('dimmak', 1);
@@ -491,7 +491,7 @@ class NpcController extends AbstractController {
                 'samurai_damage_array' => $damage,
                 'gold'                 => $gold,
                 'victory'              => $victory,
-                'ninja_str'            => $player->strength(),
+                'ninja_str'            => $player->getStrength(),
                 'level'                => $player->level,
                 'attacker_kills'       => $player->kills,
                 'drop'                 => $drop,

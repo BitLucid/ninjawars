@@ -9,17 +9,17 @@ interface Character {
     /**
      * @return int
      */
-    function strength();
+    function getStrength();
 
     /**
      * @return int
      */
-    function speed();
+    function getSpeed();
 
     /**
      * @return int
      */
-    function stamina();
+    function getStamina();
 
     /**
      * @return int

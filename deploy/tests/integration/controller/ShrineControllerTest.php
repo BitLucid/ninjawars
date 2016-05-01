@@ -50,7 +50,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertContains('result-resurrect', $response_data['pageParts']);
 
         $final_char = Player::find($this->char->id());
-        $this->assertEquals($final_char->maxHealth(), $final_char->health());
+        $this->assertEquals($final_char->getMaxHealth(), $final_char->health());
     }
 
     /**

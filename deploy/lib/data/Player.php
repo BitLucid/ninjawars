@@ -199,21 +199,13 @@ class Player implements Character {
      * @return int
      */
 	public function maxDamage(Character $enemy=null){
-		$dam = (int) ($this->strength() * 5 + $this->speed());
-		return $dam;
-	}
+        return (int) ($this->getStrength() * 5 + $this->getSpeed());
+    }
 
     /**
      * @return int
      */
 	public function getStrength() {
-		return $this->strength();
-	}
-
-    /**
-     * @return int
-     */
-	public function strength() {
         $str = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
 		if ($this->hasStatus(WEAKENED)) {
 			return (int) max(1, $str-(ceil($str*.25))); // 75%
@@ -233,7 +225,7 @@ class Player implements Character {
 		$this->vo->strength = $str;
 	}
 
-	public function speed() {
+	public function getSpeed() {
         $speed = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
 		if ($this->hasStatus(SLOW)) {
 			return (int) ($speed-(ceil($speed*.25)));
@@ -249,7 +241,7 @@ class Player implements Character {
 		$this->vo->speed = $speed;
 	}
 
-	public function stamina() {
+	public function getStamina() {
 		$stam = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
 		if ($this->hasStatus(POISON)) {
 			return (int) ($stam-(ceil($stam*.25)));
@@ -366,14 +358,7 @@ class Player implements Character {
      * @return integer
      */
     public function getMaxHealth() {
-        return $this->stamina()*2;
-    }
-
-    /**
-     * @return integer
-     */
-    public function maxHealth() {
-        return $this->stamina()*2;
+        return $this->getStamina()*2;
     }
 
     /**
@@ -473,7 +458,7 @@ class Player implements Character {
 	 */
 	public function is_hurt_by() {
 		return max(0,
-			(int) ($this->maxHealth() - $this->health())
+			(int) ($this->getMaxHealth() - $this->health())
 		);
 	}
 
@@ -489,7 +474,7 @@ class Player implements Character {
      * @return int difficulty rating
      */
 	public function difficulty(){
-		return (int) ( 10 + $this->strength() * 2 + $this->maxDamage());
+		return (int) ( 10 + $this->getStrength() * 2 + $this->maxDamage());
 	}
 
     /**

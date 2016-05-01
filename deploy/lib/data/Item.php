@@ -173,7 +173,7 @@ class Item extends Model{
      */
     public function getMaxDamage(Player $pc=null) {
         if ($pc instanceof Player && $this->hasDynamicDamage()) {
-            return max(static::MIN_DYNAMIC_DAMAGE, (int) floor($pc->strength() * 2/3)-4);
+            return max(static::MIN_DYNAMIC_DAMAGE, (int) floor($pc->getStrength() * 2/3)-4);
         } else {
             return $this->target_damage;
         }
