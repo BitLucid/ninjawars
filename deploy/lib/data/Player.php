@@ -422,13 +422,17 @@ class Player implements Character {
 
 	/**
 	 * Heal the char with in the limits of their max
+     *
      * @return int
 	 */
 	public function heal($amount) {
+		// do not heal above max health
 		$hurt = $this->is_hurt_by();
-		// Heal at most the amount hurt, or the amount requested, pick whichever is smallest.
 		$heal = min($hurt, $amount);
-		return $this->changeHealth($heal);
+
+        $result = $this->set_health($this->health + $heal);
+        $this->save();
+		return $result;
 	}
 
 	/**
@@ -442,29 +446,6 @@ class Player implements Character {
 		$actual_damage = min($this->health, (int) $damage);
 		return $this->set_health($this->health - $actual_damage);
 	}
-
-    /**
-     * To subtract just send in a negative integer
-     * @deprecated use set_health instead
-     * @return int
-     */
-	public function changeHealth($delta) {
-		$amount = (int)$delta;
-
-		if (abs($amount) > 0) { // Only change on non-zero input
-			$this->vo->health = max(0, $this->vo->health + $amount);
-
-            query(
-                "UPDATE players SET health = :amount WHERE player_id  = :player_id",
-                [
-                    ':player_id' => [$this->id(), PDO::PARAM_INT],
-                    ':amount'    => $this->vo->health,
-                ]
-            );
-        }
-
-        return $this->vo->health;
-    }
 
     /**
      * Pull the current health.
@@ -487,7 +468,7 @@ class Player implements Character {
 			throw new \InvalidArgumentException('Health must be a whole number.');
 		}
 
-		return $this->vo->health = max(0, $health);
+		return $this->vo->health = (int) max(0, $health);
 	}
 
 	/**
@@ -587,7 +568,6 @@ class Player implements Character {
 		$player->vo = $data;
 		return $player;
 	}
-
 
     /**
      * Find a char by playable for account

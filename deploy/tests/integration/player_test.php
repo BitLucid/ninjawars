@@ -224,14 +224,16 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testPlayerHealChangesHealth() {
         $char = Player::find($this->char_id);
-        $half_health = floor($char->health()/2);
-        $char->set_health($half_health);
+        $half_health = $char->set_health(floor($char->health()/2));
         $char->save();
+
         $char = Player::find($this->char_id);
         $this->assertEquals($half_health, $char->health());
         $this->assertLessThan($char->maxHealth(), $char->health());
+
         $char->heal($char->maxHealth()); // Heal by max_health, so up to
         $char->save();
+
         $this->assertEquals($char->health, $char->maxHealth());
         $this->assertEquals($char->health(), $char->maxHealth());
     }
