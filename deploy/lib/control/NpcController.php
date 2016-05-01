@@ -12,6 +12,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Handles displaying npcs and attacking specific npcs
@@ -257,12 +258,11 @@ class NpcController extends AbstractController {
      * Attack a specific npc
      *
      * @return Response
-     * @todo remove REQUEST_URI access and use params
-     * @see http://nw.local/npc/attack/villager
-     * @see http://nw.local/npc/attack/guard/
      */
     public function attack() {
-        $url_part = $_SERVER['REQUEST_URI'];
+        $request = RequestWrapper::$request;
+
+        $url_part = $request->getRequestUri();
 
         if (preg_match('#\/(\w+)(\/)?$#', $url_part, $matches)) {
             $victim = $matches[1];
