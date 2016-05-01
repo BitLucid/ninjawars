@@ -57,6 +57,7 @@ class DojoController extends AbstractController {
                     $inventory->add('dimmak', 1);
                     $parts['pageParts'] = ['success-dim-mak'];
                     $showMonks = true;
+                    $player->save();
                 } else {
                     $parts['error'] = $error;
                 }
@@ -144,6 +145,7 @@ class DojoController extends AbstractController {
 
         if (!$error) {
             $p_player->changeTurns((-1)*self::CLASS_CHANGE_COST);
+            $p_player->save();
         }
 
         return $error;

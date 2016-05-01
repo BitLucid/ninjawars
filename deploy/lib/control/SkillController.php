@@ -518,10 +518,12 @@ class SkillController extends AbstractController {
 			}
 
 			$target->save();
-			$player->save();
 		} // End of the skill use SUCCESS block.
 
-		$ending_turns         = $player->changeTurns($turns_to_take); // Take the skill use cost.
+        $player->changeTurns($turns_to_take); // Take the skill use cost.
+        $player->save();
+
+        $ending_turns         = $player->turns;
 		$target_ending_health = $target->health;
 		$target_name          = $target->name();
 		$parts                = get_defined_vars();

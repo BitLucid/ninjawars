@@ -89,6 +89,10 @@ class CloneKill {
                 $clone1->death();
                 $clone2->changeTurns(-1*$clone2->turns);
                 $clone2->death();
+
+                $clone1->save();
+                $clone2->save();
+
                 $result_message = "You obliterate the clone {$clone1->name()} for $clone1_health health, $clone1_turns turns
                      and the clone {$clone2->name()} for $clone2_health health, $clone2_turns turns.";
                 Event::create($self->id(), $clone1->id(), "You and {$clone2->name()} were Clone Killed at $today.");
