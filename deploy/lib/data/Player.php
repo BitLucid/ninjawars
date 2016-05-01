@@ -433,14 +433,14 @@ class Player implements Character {
 
 	/**
 	 * Do some damage to the character
-	 * @note for now this immediately hits the database
+     *
      * @param int $damage
      * @return int
 	 */
 	public function harm($damage) {
-		// Do at most the current health in damage
-		$actual_damage = min($this->health(), (int) $damage);
-		return $this->changeHealth(-1*$actual_damage);
+		// Do not allow negative health
+		$actual_damage = min($this->health, (int) $damage);
+		return $this->set_health($this->health - $actual_damage);
 	}
 
     /**

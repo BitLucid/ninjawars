@@ -272,7 +272,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $char = Player::find($this->char_id);
         $damage = floor($char->health()/2);
         $char->harm($damage);
-        //$char->save();
+        $char->save();
         $char = Player::find($this->char_id);
         $this->assertEquals($damage, $char->is_hurt_by());
     }
@@ -281,7 +281,6 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $char = Player::find($this->char_id);
         $char->harm($char->health());
         $this->assertEquals(0, $char->health);
-        $this->assertEquals(0, $char->health());
     }
 
     public function testCauseDeath() {

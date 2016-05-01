@@ -54,14 +54,15 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
     /**
      * Test partial heal of player heals them some
      */
-    public function testShrinePartialHeal(){
-        $request = new Request(['heal_points'=>10], []);
+    public function testShrinePartialHeal() {
+        $request = new Request(['heal_points' => 10]);
         RequestWrapper::inject($request);
-        $this->char->harm((int)floor($this->char->health()/2)); // Have to be wounded first.
+        $this->char->harm(floor($this->char->health()/2)); // Have to be wounded first.
+        $this->char->setClass('viper'); // Default dragon class has chi skill
+        $this->char->save();
+
         $initial_health = $this->char->health();
         $this->assertGreaterThan(0, $initial_health);
-        $this->char->save();
-        $this->char->setClass('viper'); // Default dragon class has chi skill
 
         $cont = new ShrineController();
         $response = $cont->heal();

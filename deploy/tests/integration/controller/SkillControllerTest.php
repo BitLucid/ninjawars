@@ -213,17 +213,17 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
     // TODO: test that use of unstealth on another fails
     // TODO: test that use of stealth on another fails.
 
-    public function testUseHealOnSelfAsAHealingCharacter(){
+    public function testUseHealOnSelfAsAHealingCharacter() {
         $this->char->setClass('dragon');
         $this->char->set_turns(300);
         $this->char->vo->level = 20;
         $this->char->harm(floor($this->char->getMaxHealth()/2));
-        $initial_health = $this->char->health();
-        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
         $this->char->save();
 
-        $request = Request::create('/skill/self_use/Heal/');
-        RequestWrapper::inject($request);
+        $initial_health = $this->char->health();
+        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
+
+        RequestWrapper::inject(Request::create('/skill/self_use/Heal/'));
         $controller = new SkillController();
         $response = $controller->selfUse();
 
@@ -238,17 +238,17 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->assertGreaterThan($initial_health, $final_char->health());
     }
 
-    public function testUseHarmonizeOnSelf(){
+    public function testUseHarmonizeOnSelf() {
         $this->char->set_turns(300);
         $this->char->ki = 1000;
         $this->char->vo->level = 20;
         $this->char->harm(floor($this->char->getMaxHealth()/2));
-        $initial_health = $this->char->health();
-        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
         $this->char->save();
 
-        $request = Request::create('/skill/self_use/Harmonize/');
-        RequestWrapper::inject($request);
+        $initial_health = $this->char->health();
+        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
+
+        RequestWrapper::inject(Request::create('/skill/self_use/Harmonize/'));
         $controller = new SkillController();
         $response = $controller->selfUse();
 
