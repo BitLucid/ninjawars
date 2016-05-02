@@ -12,6 +12,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Handles displaying npcs and attacking specific npcs
@@ -63,7 +64,7 @@ class NpcController extends AbstractController {
         $player->harm($oni_health_loss);
         $player->subtractKills(self::ONI_KILL_LOSS);
 
-        if ($player->health() > 0) { // if you survive
+        if ($player->health > 0) { // if you survive
             $inventory = new Inventory($player);
 
             if ($player->turns > self::HIGH_TURNS) { // And your turns are high/you are energetic, you can kill them.
@@ -150,9 +151,9 @@ class NpcController extends AbstractController {
         $display_name     = (isset($npc_stats['name']) ? $npc_stats['name'] : ucfirst($victim));
         $status_effect    = (isset($npc_stats['status']) ? $npc_stats['status'] : null);
         $reward_item      = (isset($npc_stats['item']) && $npc_stats['item'] ? $npc_stats['item'] : null);
-        $is_quick         = (boolean) ($npco->speed() > $player->speed()); // Beyond basic speed and they see you coming, so show that message.
-        $is_weaker        = ($npco->strength() * 3) < $player->strength(); // Npc much weaker?
-        $is_stronger      = ($npco->strength()) > ($player->strength() * 3); // Npc More than twice as strong?
+        $is_quick         = (boolean) ($npco->getSpeed() > $player->getSpeed()); // Beyond basic speed and they see you coming, so show that message.
+        $is_weaker        = ($npco->getStrength() * 3) < $player->getStrength(); // Npc much weaker?
+        $is_stronger      = ($npco->getStrength()) > ($player->getStrength() * 3); // Npc More than twice as strong?
         $image            = (isset($npc_stats['img']) ? $npc_stats['img'] : null);
         // Assume defeat...
         $victory          = false;
@@ -172,12 +173,12 @@ class NpcController extends AbstractController {
         // ******* FIGHT Logic ***********
         $npc_damage    = $npco->damage();
         $survive_fight = $player->harm($npc_damage);
-        $kill_npc      = ($npco->health() < $player->damage());
+        $kill_npc      = ($npco->getHealth() < $player->damage());
 
         if ($survive_fight > 0) {
             // The ninja survived, they get any gold the npc has.
             $received_gold = $this->calcReceivedGold($npco, (bool) $reward_item);
-            $player->set_gold($player->gold + $received_gold);
+            $player->setGold($player->gold + $received_gold);
             $received_items = array();
 
             if ($kill_npc) {
@@ -257,12 +258,11 @@ class NpcController extends AbstractController {
      * Attack a specific npc
      *
      * @return Response
-     * @todo remove REQUEST_URI access and use params
-     * @see http://nw.local/npc/attack/villager
-     * @see http://nw.local/npc/attack/guard/
      */
     public function attack() {
-        $url_part = $_SERVER['REQUEST_URI'];
+        $request = RequestWrapper::$request;
+
+        $url_part = $request->getRequestUri();
 
         if (preg_match('#\/(\w+)(\/)?$#', $url_part, $matches)) {
             $victim = $matches[1];
@@ -329,7 +329,7 @@ class NpcController extends AbstractController {
                 list($npc_template, $combat_data) = $this->$method($player);
             }
 
-            if ($player->health() <= 0) { // FINAL CHECK FOR DEATH
+            if ($player->health <= 0) { // FINAL CHECK FOR DEATH
                 $player->death();
                 $health = false;
                 Event::create((int)"SysMsg", $player->id(), "DEATH: You have been killed by a $victim.");
@@ -355,18 +355,18 @@ class NpcController extends AbstractController {
     }
 
     private function attackGuard(Player $player) {
-        $damage = rand(1, $player->strength() + 10);
+        $damage = rand(1, $player->getStrength() + 10);
         $herb   = false;
         $gold   = 0;
         $bounty = 0;
 
         if ($victory = $player->harm($damage)) {
-            $gold = rand(1, $player->strength() + 40);
-            $player->set_gold($player->gold + $gold);
+            $gold = rand(1, $player->getStrength() + 40);
+            $player->setGold($player->gold + $gold);
 
             if ($player->level > 15) {
                 $bounty = 10 * floor(($player->level - 10) / 5);
-                $player->set_bounty($player->bounty + $bounty);
+                $player->setBounty($player->bounty + $bounty);
             }
 
             // chance of getting an herb for Kampo
@@ -399,12 +399,12 @@ class NpcController extends AbstractController {
 
         if ($victory = $player->harm($damage)) {
             $gold = rand(0, 20);
-            $player->set_gold($player->gold + $gold);
+            $player->setGold($player->gold + $gold);
 
             // *** Bounty or no bounty ***
             if ($player->level > 1 && $player->level <= 20) {
                 $bounty = floor($player->level / 3);
-                $player->set_bounty($player->bounty + $bounty);
+                $player->setBounty($player->bounty + $bounty);
             }
 
             if (!$just_villager) {
@@ -436,12 +436,12 @@ class NpcController extends AbstractController {
         $drop_display = null;
 
         $damage = [
-            rand(1, $player->strength()),
-            rand(10, 10 + round($player->strength() * 1.2)),
+            rand(1, $player->getStrength()),
+            rand(10, 10 + round($player->getStrength() * 1.2)),
         ];
 
         if (rand(0, 1)) {
-            $damage[] = rand(30 + round($player->strength() * 0.2), 30 + round($player->strength() * 1.7));
+            $damage[] = rand(30 + round($player->getStrength() * 0.2), 30 + round($player->getStrength() * 1.7));
         } else { //Instant death.
             $damage[] = abs($player->health - $damage[0] - $damage[1]);
         }
@@ -456,7 +456,7 @@ class NpcController extends AbstractController {
             $gold = rand(50, 50 + $damage[2] + $damage[1]);
 
             $player->addKills(1);
-            $player->set_gold($player->gold + $gold);
+            $player->setGold($player->gold + $gold);
 
             $inventory = new Inventory($player);
 
@@ -476,7 +476,7 @@ class NpcController extends AbstractController {
             }
 
             // If the final damage was the exact max damage
-            if ($damage[2] == $player->strength() * 3) {
+            if ($damage[2] == $player->getStrength() * 3) {
                 $drop         = true;
                 $drop_display = 'a black scroll';
                 $inventory->add('dimmak', 1);
@@ -491,7 +491,7 @@ class NpcController extends AbstractController {
                 'samurai_damage_array' => $damage,
                 'gold'                 => $gold,
                 'victory'              => $victory,
-                'ninja_str'            => $player->strength(),
+                'ninja_str'            => $player->getStrength(),
                 'level'                => $player->level,
                 'attacker_kills'       => $player->kills,
                 'drop'                 => $drop,
@@ -511,7 +511,7 @@ class NpcController extends AbstractController {
                 $player->subtractKills(1);
             }
 
-            $player->set_gold($player->gold + $gold);
+            $player->setGold($player->gold + $gold);
 
             $inventory = new Inventory($player);
             $inventory->add('phosphor', 1);
@@ -541,7 +541,7 @@ class NpcController extends AbstractController {
         // Player killed NPC
         if ($victory = $player->harm($damage)) {
             $gold = rand(20, 70);
-            $player->set_gold($player->gold + $gold);
+            $player->setGold($player->gold + $gold);
 
             if ($damage > 34) {
                 $inventory = new Inventory($player);
@@ -550,7 +550,7 @@ class NpcController extends AbstractController {
 
             if ($player->level > 10) {
                 $bounty = 5 * floor(($player->level - 5) / 3);
-                $player->set_bounty($player->bounty + $bounty);
+                $player->setBounty($player->bounty + $bounty);
             }
         } else { // NPC killed player
             $damage = $gold = 0;
@@ -580,9 +580,9 @@ class NpcController extends AbstractController {
             $gold = rand(0, 40);  // Gold in question
 
             if ($damage > 30) { // Steal gold
-                $player->set_gold(max(0, $player->gold - $gold));
+                $player->setGold(max(0, $player->gold - $gold));
             } else if ($damage < 30) { // award gold and item
-                $player->set_gold($player->gold + $gold);
+                $player->setGold($player->gold + $gold);
                 $inventory = new Inventory($player);
                 $inventory->add('shuriken', 1);
             }

@@ -71,8 +71,8 @@ class DoshinController extends AbstractController {
             $amount = self::calculateMaxOffer($target->bounty, $amount);
 
             if (!$error) {
-                $char->set_gold($char->gold - $amount); // Subtract the gold.
-                $target->set_bounty($target->bounty + $amount);
+                $char->setGold($char->gold - $amount); // Subtract the gold.
+                $target->setBounty($target->bounty + $amount);
                 $target->save();
                 $char = $char->save();
 
@@ -161,8 +161,8 @@ class DoshinController extends AbstractController {
         $quickstat = false;
 
         if ($bribe <= $char->gold && $bribe > 0) {
-            $char->set_gold($char->gold - $bribe);
-            $char->set_bounty(max(
+            $char->setGold($char->gold - $bribe);
+            $char->setBounty(max(
                 0,
                 ($char->bounty - floor($bribe/self::BRIBERY_DIVISOR))
             ));
@@ -207,17 +207,17 @@ class DoshinController extends AbstractController {
         );
 
         if (0 < $bounty_reduction) {
-            $char->set_bounty($char->bounty - $bounty_reduction);
+            $char->setBounty($char->bounty - $bounty_reduction);
         }
 
         // Do fractional damage to the char
-        $char->set_health(
-            $char->health() -
-            floor($char->health()*self::FAILED_BRIBERY_PAIN)
+        $char->setHealth(
+            $char->health -
+            floor($char->health * self::FAILED_BRIBERY_PAIN)
         );
 
         // Regardless, you lose some gold.
-        $char->set_gold($char->gold - $doshin_takes);
+        $char->setGold($char->gold - $doshin_takes);
         return $char->save();
     }
 

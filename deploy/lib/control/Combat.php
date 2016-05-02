@@ -36,9 +36,9 @@ class Combat {
 
         if ($defender instanceof Player && $defender->bounty > 0) {
             $bounty = $defender->bounty;
-            $defender->set_bounty(0);
+            $defender->setBounty(0);
             $defender->save();
-            $user->set_gold($user->gold + $bounty);
+            $user->setGold($user->gold + $bounty);
             $user->save();
 
             return "You have received the $bounty gold bounty on $defender's head for your deeds!";
@@ -53,7 +53,7 @@ class Combat {
 
             if ($bountyIncrease > 0) {
                 // If Defender has no bounty and there was a level difference
-                $user->set_bounty($user->bounty + $bountyIncrease);
+                $user->setBounty($user->bounty + $bountyIncrease);
                 $user->save();
 
                 return "Your victim was much weaker than you. The townsfolk are angered. A bounty of $bountyIncrease gold has been placed on your head!";

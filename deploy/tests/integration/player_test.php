@@ -69,10 +69,10 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testCreatePlayerObjectHasUsefulInfo() {
         $char = Player::find($this->char_id);
-        $this->assertTrue((bool)Filter::toNonNegativeInt($char->health()));
-        $this->assertTrue((bool)Filter::toNonNegativeInt($char->speed()));
-        $this->assertTrue((bool)Filter::toNonNegativeInt($char->stamina()));
-        $this->assertTrue((bool)Filter::toNonNegativeInt($char->strength()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->health));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->getSpeed()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->getStamina()));
+        $this->assertTrue((bool)Filter::toNonNegativeInt($char->getStrength()));
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->level));
         $this->assertNotEmpty($char->name());
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->damage()));
@@ -82,9 +82,9 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $char = Player::find($this->char_id);
         $this->assertTrue(is_int($char->gold));
         $this->assertTrue(is_int($char->turns));
-        $this->assertTrue(is_int($char->set_gold(45)));
-        $this->assertTrue(is_int($char->set_turns(32)));
-        $this->assertEquals(444, $char->set_bounty(444));
+        $this->assertTrue(is_int($char->setGold(45)));
+        $this->assertTrue(is_int($char->setTurns(32)));
+        $this->assertEquals(444, $char->setBounty(444));
         $char->save();
         $char_dup = Player::find($this->char_id);
         $this->assertEquals(444, $char_dup->bounty);
@@ -104,22 +104,22 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testPlayerStatusesChangeStatCalcs() {
         $char = Player::find($this->char_id);
-        $str = $char->strength();
-        $speed = $char->speed();
-        $stamina = $char->stamina();
+        $str = $char->getStrength();
+        $speed = $char->getSpeed();
+        $stamina = $char->getStamina();
         $char->addStatus(SLOW);
-        $this->assertNotEquals($char->speed(), $speed, 'Speed should be different due to slow status.');
-        $this->assertTrue($char->speed() < $speed, 'Speed should be less due to slow status, but isn\'t.');
+        $this->assertNotEquals($char->getSpeed(), $speed, 'Speed should be different due to slow status.');
+        $this->assertTrue($char->getSpeed() < $speed, 'Speed should be less due to slow status, but isn\'t.');
         $char->addStatus(POISON);
-        $this->assertTrue($char->stamina() < $stamina);
+        $this->assertTrue($char->getStamina() < $stamina);
         $char->addStatus(WEAKENED);
-        $this->assertTrue($char->strength() < $str);
+        $this->assertTrue($char->getStrength() < $str);
         $char->resetStatus();
-        $this->assertEquals($char->strength(), $str);
+        $this->assertEquals($char->getStrength(), $str);
         $char->addStatus(STR_UP1);
-        $this->assertTrue($char->strength() > $str);
+        $this->assertTrue($char->getStrength() > $str);
         $char->addStatus(STR_UP2);
-        $this->assertTrue($char->strength() > $str);
+        $this->assertTrue($char->getStrength() > $str);
     }
 
     public function testRemoveStatus() {
@@ -159,13 +159,13 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
     public function testNegativeKiRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_ki(-643);
+        $char->setKi(-643);
     }
 
     public function testNegativeTurnsRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_turns(-345);
+        $char->setTurns(-345);
     }
 
     public function testNegativeStrengthRejected() {
@@ -189,51 +189,53 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
     public function testNegativeHealthRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_health(-6);
+        $char->setHealth(-6);
     }
 
     public function testFractionalHealthRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_health(6.45);
+        $char->setHealth(6.45);
     }
 
     public function testNegativeGoldRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_gold(-45);
+        $char->setGold(-45);
     }
 
     public function testFractionalGoldRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_gold(45.23);
+        $char->setGold(45.23);
     }
 
     public function testNegativeBountyRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_bounty(-45);
+        $char->setBounty(-45);
     }
 
     public function testFractionalBountyRejected() {
         $this->setExpectedException('InvalidArgumentException');
         $char = Player::find($this->char_id);
-        $char->set_bounty(45.43);
+        $char->setBounty(45.43);
     }
 
     public function testPlayerHealChangesHealth() {
         $char = Player::find($this->char_id);
-        $half_health = floor($char->health()/2);
-        $char->set_health($half_health);
+        $half_health = $char->setHealth(floor($char->health/2));
         $char->save();
+
         $char = Player::find($this->char_id);
-        $this->assertEquals($half_health, $char->health());
-        $this->assertLessThan($char->maxHealth(), $char->health());
-        $char->heal($char->maxHealth()); // Heal by max_health, so up to
+        $this->assertEquals($half_health, $char->health);
+        $this->assertLessThan($char->getMaxHealth(), $char->health);
+
+        $char->heal($char->getMaxHealth()); // Heal by max_health, so up to
         $char->save();
-        $this->assertEquals($char->health, $char->maxHealth());
-        $this->assertEquals($char->health(), $char->maxHealth());
+
+        $this->assertEquals($char->health, $char->getMaxHealth());
+        $this->assertEquals($char->health, $char->getMaxHealth());
     }
 
     public function testPCCanObtainAGravatarUrl() {
@@ -244,15 +246,15 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testGravatarURLWithoutAvatarType() {
         $char = Player::find($this->char_id);
-        $char->vo->avatar_type = null;
+        $char->avatar_type = null;
         $this->assertEquals('', $char->avatarUrl());
     }
 
     public function testCreatePlayerObjectCanSaveChanges() {
         $char = Player::find($this->char_id);
         $ki = $char->ki;
-        $char->set_ki($ki+55);
-        $char->set_gold(343);
+        $char->setKi($ki+55);
+        $char->setGold(343);
         $char->save();
         $char_copy = Player::find($this->char_id);
         $this->assertEquals($char_copy->ki, $ki+55);
@@ -261,8 +263,8 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testPlayerObjectReportDamageCorrectly() {
         $char = Player::find($this->char_id);
-        $damage = floor($char->health()/2);
-        $char->set_health($char->health() - $damage);
+        $damage = floor($char->health/2);
+        $char->setHealth($char->health - $damage);
         $char->save();
         $char = Player::find($this->char_id);
         $this->assertEquals($damage, $char->is_hurt_by());
@@ -270,24 +272,23 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
 
     public function testPlayerObjectHarmWorksCorrectly() {
         $char = Player::find($this->char_id);
-        $damage = floor($char->health()/2);
+        $damage = floor($char->health/2);
         $char->harm($damage);
-        //$char->save();
+        $char->save();
         $char = Player::find($this->char_id);
         $this->assertEquals($damage, $char->is_hurt_by());
     }
 
     public function testKillCharByHarmingWithTheirFullHealth() {
         $char = Player::find($this->char_id);
-        $char->harm($char->health());
+        $char->harm($char->health);
         $this->assertEquals(0, $char->health);
-        $this->assertEquals(0, $char->health());
     }
 
     public function testCauseDeath() {
         $char = Player::find($this->char_id);
         $char->death();
-        $this->assertEquals(0, $char->health());
+        $this->assertEquals(0, $char->health);
     }
 
     public function testNewPlayerSave() {
@@ -306,7 +307,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
      */
     public function testLevelUpKillsFail() {
         $char = Player::find($this->char_id);
-        $char->vo->kills = 0;
+        $char->kills = 0;
         $char->save();
 
         $this->assertFalse($char->levelUp());
@@ -317,7 +318,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
      */
     public function testLevelUpSucceeds() {
         $char = Player::find($this->char_id);
-        $char->vo->kills = 100;
+        $char->kills = 100;
         $char->save();
 
         $this->assertTrue($char->levelUp());
@@ -328,7 +329,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
      */
     public function testLevelUpChangesStats() {
         $original_char = Player::find($this->char_id);
-        $original_char->vo->kills = 100;
+        $original_char->kills = 100;
         $original_char->save();
 
         $char = Player::find($this->char_id);
@@ -350,7 +351,7 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
      */
     public function testLevelUpRemovesKills() {
         $original_char = Player::find($this->char_id);
-        $original_char->vo->kills = 100;
+        $original_char->kills = 100;
         $original_char->save();
 
         $char = Player::find($this->char_id);

@@ -220,7 +220,7 @@ class AttackController extends AbstractController {
         if ($rounds > self::EVEN_MATCH_ROUND_COUNT) { // Evenly matched battle! Reward some ki to the attacker, even if they die
             $rewarded_ki = self::EVEN_MATCH_KI_REWARD;
 
-            $attacker->set_ki($attacker->ki + $rewarded_ki);
+            $attacker->setKi($attacker->ki + $rewarded_ki);
         }
 
         $target->save();
@@ -260,7 +260,7 @@ class AttackController extends AbstractController {
      * @return void
      */
     private function lose($loser, $victor, $loot) {
-        $loser->set_gold($loser->gold - $loot);
+        $loser->setGold($loser->gold - $loot);
         $loser->death();
 
         $loser_msg = "DEATH: You have been killed by {$victor->name()} in combat and lost $loot gold!";
@@ -273,7 +273,7 @@ class AttackController extends AbstractController {
     private function win($victor, $loser, $loot, $killpoints) {
         $victor_msg = "You have killed {$loser->name()} in combat and taken $loot gold.";
         Event::create($loser->id(), $victor->id(), $victor_msg);
-        $victor->set_gold($victor->gold + $loot);
+        $victor->setGold($victor->gold + $loot);
         $victor->addKills($killpoints);
     }
 

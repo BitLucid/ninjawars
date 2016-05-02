@@ -172,16 +172,16 @@ class AttackLegal {
             $this->error = 'You can not attack an inactive ninja.';
         } else if ($attacker->active == 0) {
             $this->error = 'You cannot attack when your ninja is retired/inactive.';
-        } else if ($attacker->health() < 1) {
+        } else if ($attacker->health < 1) {
             $this->error = 'You are dead and must revive.';
-        } else if ($target->health() < 1) {
+        } else if ($target->health < 1) {
             $this->error = "They're already dead.";
         } else if ($target->hasStatus(STEALTH) && !$this->params['ignores_stealth']) {
             // Attacks that ignore stealth will skip this.
             $this->error = 'Your target is stealthed. You can only hit this ninja using certain techniques.';
         } else if ($this->params['clan_forbidden'] && ($attacker->getClan() instanceof Clan) && ($target->getClan()->id == $attacker->getClan()->id) && !$this->params['self_use']) {
             $this->error = 'Your clan would outcast you if you attacked one of your own.';
-        } else if ($target->health() > 0) {
+        } else if ($target->health > 0) {
             $this->error = null;
             return true;  //  ***  ATTACK IS LEGAL ***
         } else {  //  *** CATCHALL ERROR MESSAGE ***

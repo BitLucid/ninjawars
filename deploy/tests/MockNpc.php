@@ -26,15 +26,15 @@ class MockNpc implements Character{
         return $this->bounty_mod;
     }
 
-    public function strength(){
+    public function getStrength(){
         return $this->strength;
     }
 
-    public function speed(){
+    public function getSpeed(){
         return $this->speed;
     }
 
-    public function stamina(){
+    public function getStamina(){
         return $this->stamina;
     }
 
@@ -46,7 +46,7 @@ class MockNpc implements Character{
         return $this->damage;
     }
 
-    public function health(){
+    public function getHealth(){
         return $this->health;
     }
 

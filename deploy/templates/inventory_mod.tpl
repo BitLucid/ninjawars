@@ -26,7 +26,7 @@ You do not have {$article|escape} {$item->getName()|escape}
   </p>
   {/if}
 
-  {if $target->health() lte 0}
+  {if $target->health lte 0}
     {if $target->id() eq $user_id}
     You have comitted suicide!<br>
     {else}
@@ -45,7 +45,7 @@ You do not have {$article|escape} {$item->getName()|escape}
 	Your actions have revealed you. You are no longer stealthed.<br>
   {/if}
 
-  {include file='defender_health.tpl' health=$target->health() level=$target->level target_name=$target->name()}
+  {include file='defender_health.tpl' health=$target->health level=$target->level target_name=$target->name()}
 
   {if $repeat}
   <br>

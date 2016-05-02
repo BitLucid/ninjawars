@@ -36,8 +36,8 @@ class WorkController extends AbstractController {
 
         if ($sufficient_turns) {
             $earned = $worked * self::WORK_MULTIPLIER; // calc amount worked
-            $char->set_gold($char->gold + $earned);
-            $char->set_turns($char->turns - $worked);
+            $char->setGold($char->gold + $earned);
+            $char->setTurns($char->turns - $worked);
             $char->save();
         }
 

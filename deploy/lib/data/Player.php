@@ -44,10 +44,10 @@ use \RuntimeException;
  * @property int status
  */
 class Player implements Character {
-	public $vo;
 	public $ip;
 	public $avatar_url;
     private $data;
+	private $vo;
 
     /**
      * Creates a new level 1 player object
@@ -199,21 +199,13 @@ class Player implements Character {
      * @return int
      */
 	public function maxDamage(Character $enemy=null){
-		$dam = (int) ($this->strength() * 5 + $this->speed());
-		return $dam;
-	}
+        return (int) ($this->getStrength() * 5 + $this->getSpeed());
+    }
 
     /**
      * @return int
      */
 	public function getStrength() {
-		return $this->strength();
-	}
-
-    /**
-     * @return int
-     */
-	public function strength() {
         $str = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
 		if ($this->hasStatus(WEAKENED)) {
 			return (int) max(1, $str-(ceil($str*.25))); // 75%
@@ -233,7 +225,7 @@ class Player implements Character {
 		$this->vo->strength = $str;
 	}
 
-	public function speed() {
+	public function getSpeed() {
         $speed = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
 		if ($this->hasStatus(SLOW)) {
 			return (int) ($speed-(ceil($speed*.25)));
@@ -249,7 +241,7 @@ class Player implements Character {
 		$this->vo->speed = $speed;
 	}
 
-	public function stamina() {
+	public function getStamina() {
 		$stam = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
 		if ($this->hasStatus(POISON)) {
 			return (int) ($stam-(ceil($stam*.25)));
@@ -265,14 +257,14 @@ class Player implements Character {
 		$this->vo->stamina = $stamina;
 	}
 
-	public function set_ki($ki){
+	public function setKi($ki){
 		if($ki < 0){
 			throw new \InvalidArgumentException('Ki cannot be negative.');
 		}
 		return $this->vo->ki = $ki;
 	}
 
-	public function set_gold($gold) {
+	public function setGold($gold) {
 		if ($gold < 0) {
 			throw new \InvalidArgumentException('Gold cannot be made negative.');
 		}
@@ -284,7 +276,7 @@ class Player implements Character {
 		return $this->vo->gold = $gold;
 	}
 
-	public function set_bounty($bounty) {
+	public function setBounty($bounty) {
 		if($bounty < 0){
 			throw new \InvalidArgumentException('Bounty cannot be made negative ['.(string)$bounty.'].');
 		}
@@ -326,7 +318,7 @@ class Player implements Character {
      */
 	public function death() {
 		$this->resetStatus();
-        $this->set_health(0);
+        $this->setHealth(0);
         $this->save();
 	}
 
@@ -337,7 +329,7 @@ class Player implements Character {
      * @return int The number of turns the player object now has
      * @throws InvalidArgumentException $turns cannot be negative
      */
-    public function set_turns($turns) {
+    public function setTurns($turns) {
         if ($turns < 0) {
             throw new \InvalidArgumentException('Turns cannot be made negative.');
         }
@@ -349,31 +341,14 @@ class Player implements Character {
      * @deprecated
      */
     public function changeTurns($amount) {
-        $amount = (int) $amount;
-
-        $this->set_turns($this->turns + $amount);
-
-        if ($amount) { // Ignore zero
-            // These PDO parameters must be split into amount1 and amount2 because otherwise PDO gets confused.  See github issue 147.
-            query("UPDATE players set turns = (CASE WHEN turns + :amount < 0 THEN 0 ELSE turns + :amount2 END) where player_id = :char_id",
-                array(':amount'=>array($amount, PDO::PARAM_INT), ':amount2'=>array($amount, PDO::PARAM_INT), ':char_id'=>$this->id()));
-        }
-
-        return $this->turns;
+        return $this->setTurns($this->turns + (int) $amount);
     }
 
     /**
      * @return integer
      */
     public function getMaxHealth() {
-        return $this->stamina()*2;
-    }
-
-    /**
-     * @return integer
-     */
-    public function maxHealth() {
-        return $this->stamina()*2;
+        return $this->getStamina()*2;
     }
 
     /**
@@ -422,63 +397,38 @@ class Player implements Character {
 
 	/**
 	 * Heal the char with in the limits of their max
+     *
      * @return int
 	 */
 	public function heal($amount) {
-		$hurt = $this->is_hurt_by();
-		// Heal at most the amount hurt, or the amount requested, pick whichever is smallest.
-		$heal = min($hurt, $amount);
-		return $this->changeHealth($heal);
+		// do not heal above max health
+        $heal = min($this->is_hurt_by(), $amount);
+        return $this->setHealth($this->health + $heal);
 	}
 
 	/**
 	 * Do some damage to the character
-	 * @note for now this immediately hits the database
+     *
      * @param int $damage
      * @return int
 	 */
 	public function harm($damage) {
-		// Do at most the current health in damage
-		$actual_damage = min($this->health(), (int) $damage);
-		return $this->changeHealth(-1*$actual_damage);
-	}
-
-    /**
-     * To subtract just send in a negative integer
-     * @deprecated use set_health instead
-     * @return int
-     */
-	public function changeHealth($delta) {
-		$amount = (int)$delta;
-
-		if (abs($amount) > 0) { // Only change on non-zero input
-			$this->vo->health = max(0, $this->vo->health + $amount);
-
-            query(
-                "UPDATE players SET health = :amount WHERE player_id  = :player_id",
-                [
-                    ':player_id' => [$this->id(), PDO::PARAM_INT],
-                    ':amount'    => $this->vo->health,
-                ]
-            );
-        }
-
-        return $this->vo->health;
-    }
-
-    /**
-     * Pull the current health.
-     * @return int
-     */
-	public function health() {
-		$sel = "SELECT health from players where player_id = :id";
-		return max(0, query_item($sel, [':id'=>[$this->id(), PDO::PARAM_INT]]));
+		// Do not allow negative health
+		$actual_damage = min($this->health, (int) $damage);
+		return $this->setHealth($this->health - $actual_damage);
 	}
 
     /**
      * @return int
      */
-	public function set_health($health) {
+	public function getHealth() {
+        return $this->health;
+	}
+
+    /**
+     * @return int
+     */
+	public function setHealth($health) {
 		if ($health < 0) {
 			throw new \InvalidArgumentException('Health cannot be made negative.');
 		}
@@ -487,7 +437,7 @@ class Player implements Character {
 			throw new \InvalidArgumentException('Health must be a whole number.');
 		}
 
-		return $this->vo->health = max(0, $health);
+		return $this->vo->health = (int) max(0, $health);
 	}
 
 	/**
@@ -496,7 +446,7 @@ class Player implements Character {
 	 */
 	public function is_hurt_by() {
 		return max(0,
-			(int) ($this->maxHealth() - $this->health())
+			(int) ($this->getMaxHealth() - $this->health)
 		);
 	}
 
@@ -512,7 +462,7 @@ class Player implements Character {
      * @return int difficulty rating
      */
 	public function difficulty(){
-		return (int) ( 10 + $this->strength() * 2 + $this->maxDamage());
+		return (int) ( 10 + $this->getStrength() * 2 + $this->maxDamage());
 	}
 
     /**
@@ -568,74 +518,6 @@ class Player implements Character {
 		return $this;
 	}
 
-	/**
-	 * Find a player by primary key
-     * @param int|null $id
-	 * @return Player|null
-	 */
-	public static function find($id){
-		if(!is_numeric($id) || !(int) $id){
-			return null;
-		}
-		$id = (int) $id;
-		$dao = new PlayerDAO();
-		$data = $dao->get($id);
-		if(!isset($data->player_id) || !$data->player_id){
-			return null;
-		}
-		$player = new Player();
-		$player->vo = $data;
-		return $player;
-	}
-
-
-    /**
-     * Find a char by playable for account
-     * @param int|null $account_id
-     * @return Player|null
-     */
-    public static function findPlayable($account_id){
-        // Two db calls for now
-        $pid = query_item('select player_id from players p 
-            join account_players ap on p.player_id = ap._player_id
-            join accounts a on a.account_id = ap._account_id
-            where account_id = :aid
-            order by p.created_date asc, a.last_login desc
-            limit 1', [':aid'=>[$account_id, PDO::PARAM_INT]]);
-        return self::find($pid);
-    }
-
-    /**
-     * Find player by name
-     * @return Player|null
-     */
-    public static function findByName($name){
-        $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
-        if(!$id){
-            return null;
-        } else {
-            $dao = new PlayerDAO();
-            $data = $dao->get($id);
-            if(!isset($data->player_id) || !$data->player_id){
-                return null;
-            }
-            $player = new Player();
-            $player->vo = $data;
-            return $player;
-        }
-    }
-
-    /**
-     * query the recently active players
-     * @return array Array of data not of player objects
-     */
-    public static function findActive($limit=5, $alive_only=true) {
-        $where_cond = ($alive_only ? ' AND health > 0' : '');
-        $sel = "SELECT uname, player_id FROM players WHERE active = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
-        $active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
-        return $active_ninjas;
-    }
-
      /**
      * Check whether the player is the leader of their clan.
      * @return boolean
@@ -688,35 +570,6 @@ class Player implements Character {
             "SELECT identity FROM class WHERE identity = :candidate",
             [':candidate' => $candidate_identity]
         );
-    }
-
-    /**
-     * Calculate a max health by a level
-     * @return integer
-     */
-    public static function maxHealthByLevel($level) {
-        return (int) (NEW_PLAYER_INITIAL_HEALTH + round(LEVEL_UP_HP_RAISE*($level-1)));
-    }
-
-    /**
-     * Calculate a base str by level
-     */
-    public static function baseStrengthByLevel($level) {
-        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
-    }
-
-    /**
-     * Calculate a base speed by level
-     */
-    public static function baseSpeedByLevel($level) {
-        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
-    }
-
-    /**
-     * Calculate a base stamina by level
-     */
-    public static function baseStaminaByLevel($level) {
-        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 
     /**
@@ -799,9 +652,9 @@ class Player implements Character {
             );
 
             if ($level_up_possible) { // Perform the level up actions
-                $this->set_health($this->health() + $health_to_add);
-                $this->set_turns($this->turns   + $turns_to_give);
-                $this->set_ki($this->ki         + $ki_to_give);
+                $this->setHealth($this->health + $health_to_add);
+                $this->setTurns($this->turns   + $turns_to_give);
+                $this->setKi($this->ki         + $ki_to_give);
 
                 // Must read from VO for these as accessors return modified values
                 $this->setStamina($this->vo->stamina   + $stat_value_to_add);
@@ -829,6 +682,73 @@ class Player implements Character {
                 return false;
             }
         }
+    }
+
+	/**
+	 * Find a player by primary key
+     * @param int|null $id
+	 * @return Player|null
+	 */
+	public static function find($id){
+		if(!is_numeric($id) || !(int) $id){
+			return null;
+		}
+		$id = (int) $id;
+		$dao = new PlayerDAO();
+		$data = $dao->get($id);
+		if(!isset($data->player_id) || !$data->player_id){
+			return null;
+		}
+		$player = new Player();
+		$player->vo = $data;
+		return $player;
+	}
+
+    /**
+     * Find a char by playable for account
+     * @param int|null $account_id
+     * @return Player|null
+     */
+    public static function findPlayable($account_id){
+        // Two db calls for now
+        $pid = query_item('select player_id from players p 
+            join account_players ap on p.player_id = ap._player_id
+            join accounts a on a.account_id = ap._account_id
+            where account_id = :aid
+            order by p.created_date asc, a.last_login desc
+            limit 1', [':aid'=>[$account_id, PDO::PARAM_INT]]);
+        return self::find($pid);
+    }
+
+    /**
+     * Find player by name
+     * @return Player|null
+     */
+    public static function findByName($name){
+        $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
+        if(!$id){
+            return null;
+        } else {
+            $dao = new PlayerDAO();
+            $data = $dao->get($id);
+            if(!isset($data->player_id) || !$data->player_id){
+                return null;
+            }
+            $player = new Player();
+            $player->vo = $data;
+            return $player;
+        }
+    }
+
+    /**
+     * query the recently active players
+     * @return array Array of data not of player objects
+     */
+    public static function findActive($limit=5, $alive_only=true) {
+        $where_cond = ($alive_only ? ' AND health > 0' : '');
+        $sel = "SELECT uname, player_id FROM players WHERE active = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
+        $active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
+        return $active_ninjas;
     }
 
     /**
@@ -892,5 +812,34 @@ class Player implements Character {
         }
 
         return $states;
+    }
+
+    /**
+     * Calculate a max health by a level
+     * @return integer
+     */
+    public static function maxHealthByLevel($level) {
+        return (int) (NEW_PLAYER_INITIAL_HEALTH + round(LEVEL_UP_HP_RAISE*($level-1)));
+    }
+
+    /**
+     * Calculate a base str by level
+     */
+    public static function baseStrengthByLevel($level) {
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+    }
+
+    /**
+     * Calculate a base speed by level
+     */
+    public static function baseSpeedByLevel($level) {
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+    }
+
+    /**
+     * Calculate a base stamina by level
+     */
+    public static function baseStaminaByLevel($level) {
+        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 }

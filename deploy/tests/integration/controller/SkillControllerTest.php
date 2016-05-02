@@ -41,9 +41,9 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testUseFireboltOnAnotherChar(){
-        $this->char->set_turns(300);
-        $this->char->vo->level = 20;
-        $initial_health = $this->char2->health();
+        $this->char->setTurns(300);
+        $this->char->level = 20;
+        $initial_health = $this->char2->health;
         $error = $this->char->setClass('tiger');
         $this->assertNull($error);
         $name = $this->char2->name();
@@ -63,20 +63,20 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNull($response_data['error']);
-        $this->assertLessThan($initial_health, $final_defender->health());
+        $this->assertLessThan($initial_health, $final_defender->health);
     }
 
     public function testWhenIFireBoltACharacterAndKillIShouldReceiveBounty(){
         $error = $this->char->setClass('tiger');
         $bounty = 300;
         $self_gold = $this->char->gold;
-        $this->char->set_turns(300);
-        $this->char->vo->level = 2;
+        $this->char->setTurns(300);
+        $this->char->level = 2;
         $this->assertNull($error);
-        $this->char2->set_health(1);
-        $this->char2->vo->level = 200; // To ensure higher level.
-        $this->char2->set_gold(0); // No gold
-        $this->char2->set_bounty($bounty); // Only bounty
+        $this->char2->setHealth(1);
+        $this->char2->level = 200; // To ensure higher level.
+        $this->char2->setGold(0); // No gold
+        $this->char2->setBounty($bounty); // Only bounty
         $this->char2->save();
         $this->char->save();
         $name = $this->char2->name();
@@ -97,19 +97,19 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNull($response_data['error']);
-        $this->assertEquals(0, $final_defender->health(), "Health not 0");
+        $this->assertEquals(0, $final_defender->health, "Health not 0");
         $this->assertEquals(0, $final_defender->bounty, "Bounty not 0");
         $this->assertEquals($self_gold+$bounty, $final_attacker->gold, "Gold not updated");
     }
 
     public function testIShouldGetBountyOnMyHeadWhenIFireBoltKillALowLevel(){
         $this->char->setClass('tiger');
-        $this->char->set_turns(300);
-        $this->char->vo->level = 200;
-        $this->char->set_bounty(0);
-        $this->char2->set_health(1);
-        $this->char2->vo->level = 2; // Ensure a lower level
-        $this->char2->set_gold(0); // No gold to get from target
+        $this->char->setTurns(300);
+        $this->char->level = 200;
+        $this->char->setBounty(0);
+        $this->char2->setHealth(1);
+        $this->char2->level = 2; // Ensure a lower level
+        $this->char2->setGold(0); // No gold to get from target
         $this->char2->save();
         $this->char->save();
         $initial_bounty = $this->char->bounty;
@@ -131,14 +131,14 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNull($response_data['error']);
-        $this->assertEquals(0, $final_defender->health());
+        $this->assertEquals(0, $final_defender->health);
         $this->assertGreaterThan($initial_bounty, $final_attacker->bounty);
     }
 
     public function testUseUnstealthOnSelf(){
         $this->char->setClass('viper');
-        $this->char->set_turns(300);
-        $this->char->vo->level = 20;
+        $this->char->setTurns(300);
+        $this->char->level = 20;
         $this->char->save();
 
         $request = Request::create('/skill/self_use/Unstealth/');
@@ -156,10 +156,10 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testUsePoisonTouchOnAnotherChar(){
         $error = $this->char->setClass('viper');
-        $this->char->set_turns(300);
-        $this->char->vo->level = 20;
+        $this->char->setTurns(300);
+        $this->char->level = 20;
         $this->assertNull($error);
-        $initial_health = $this->char2->health();
+        $initial_health = $this->char2->health;
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
         $this->assertNotEmpty(rawurlencode($name));
@@ -179,13 +179,13 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $response_data = $reflection->getValue($response);
         $this->assertNull($response_data['error']);
         $this->assertEquals('Poison Touch', $response_data['act']);
-        $this->assertLessThan($initial_health, $final_defender->health());
+        $this->assertLessThan($initial_health, $final_defender->health);
     }
 
     public function testUseSightOnAnotherChar(){
         $error = $this->char->setClass('dragon');
-        $this->char->set_turns(300);
-        $this->char->vo->level = 20;
+        $this->char->setTurns(300);
+        $this->char->level = 20;
         $this->assertNull($error);
         $this->char->save();
         $name = $this->char2->name();
@@ -213,17 +213,17 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
     // TODO: test that use of unstealth on another fails
     // TODO: test that use of stealth on another fails.
 
-    public function testUseHealOnSelfAsAHealingCharacter(){
+    public function testUseHealOnSelfAsAHealingCharacter() {
         $this->char->setClass('dragon');
-        $this->char->set_turns(300);
-        $this->char->vo->level = 20;
+        $this->char->setTurns(300);
+        $this->char->level = 20;
         $this->char->harm(floor($this->char->getMaxHealth()/2));
-        $initial_health = $this->char->health();
-        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
         $this->char->save();
 
-        $request = Request::create('/skill/self_use/Heal/');
-        RequestWrapper::inject($request);
+        $initial_health = $this->char->health;
+        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
+
+        RequestWrapper::inject(Request::create('/skill/self_use/Heal/'));
         $controller = new SkillController();
         $response = $controller->selfUse();
 
@@ -235,20 +235,20 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $response_data = $reflection->getValue($response);
         $this->assertEquals('Heal', $response_data['act']);
         $final_char = Player::find($this->char->id());
-        $this->assertGreaterThan($initial_health, $final_char->health());
+        $this->assertGreaterThan($initial_health, $final_char->health);
     }
 
-    public function testUseHarmonizeOnSelf(){
-        $this->char->set_turns(300);
+    public function testUseHarmonizeOnSelf() {
+        $this->char->setTurns(300);
         $this->char->ki = 1000;
-        $this->char->vo->level = 20;
+        $this->char->level = 20;
         $this->char->harm(floor($this->char->getMaxHealth()/2));
-        $initial_health = $this->char->health();
-        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
         $this->char->save();
 
-        $request = Request::create('/skill/self_use/Harmonize/');
-        RequestWrapper::inject($request);
+        $initial_health = $this->char->health;
+        $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
+
+        RequestWrapper::inject(Request::create('/skill/self_use/Harmonize/'));
         $controller = new SkillController();
         $response = $controller->selfUse();
 
@@ -260,6 +260,6 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $response_data = $reflection->getValue($response);
         $this->assertEquals('Harmonize', $response_data['act']);
         $final_char = Player::find($this->char->id());
-        $this->assertGreaterThan($initial_health, $final_char->health());
+        $this->assertGreaterThan($initial_health, $final_char->health);
     }
 }

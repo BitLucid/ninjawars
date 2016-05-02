@@ -45,7 +45,7 @@ class NewsControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreateLoadsForAdminPlayer(){
         $this->markTestIncomplete();
-        $this->char->vo->uname = 'Tchalvak'; // HARDCODED STRING HACK
+        $this->char->uname = 'Tchalvak'; // HARDCODED STRING HACK
 
         $this->char->save();
         $session->set('player_id', $this->char->id()); // Mock the login.

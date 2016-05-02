@@ -47,15 +47,15 @@ class MockPlayer extends Player implements Character{
         $this->gold = $amount;
     }
 
-    public function strength(){
+    public function getStrength(){
         return $this->strength;
     }
 
-    public function speed(){
+    public function getSpeed(){
         return $this->speed;
     }
 
-    public function stamina(){
+    public function getStamina(){
         return $this->stamina;
     }
 

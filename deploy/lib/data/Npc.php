@@ -75,7 +75,7 @@ class Npc implements Character {
         $dam = ((1+ ($this->strength * 2)) + $this->damage);
         // Mirror some of their enemy's strength
         if ($this->hasTrait('partial_match_strength') && $enemy instanceof Character) {
-            $add = max(0, floor($enemy->strength() / 3)); // Enemy str/3 or at minimum 0
+            $add = max(0, floor($enemy->getStrength() / 3)); // Enemy str/3 or at minimum 0
             $dam = $dam + $add;
         }
 
@@ -106,8 +106,8 @@ class Npc implements Character {
         return 0
             + ($this->strength * 2)
             + $this->damage
-            + floor($this->maxHealth() / 10)
-            + ((int) ($this->maxHealth() > 1)) // Have more than 1 health, so not totally devoid of content
+            + floor($this->getMaxHealth() / 10)
+            + ((int) ($this->getMaxHealth() > 1)) // Have more than 1 health, so not totally devoid of content
             + $adds_bounty
             + ($armored * 5)
             + ($complex * 3)
@@ -133,21 +133,21 @@ class Npc implements Character {
     /**
      * @return int
      */
-    public function speed() {
+    public function getSpeed() {
         return $this->speed;
     }
 
     /**
      * @return int
      */
-    public function strength() {
+    public function getStrength() {
         return $this->strength;
     }
 
     /**
      * @return int
      */
-    public function stamina() {
+    public function getStamina() {
         return $this->stamina;
     }
 
@@ -161,8 +161,8 @@ class Npc implements Character {
     /**
      * @return int
      */
-    public function health() {
-        return $this->maxHealth(); // For now, since there aren't npc instances currently.
+    public function getHealth() {
+        return $this->getMaxHealth(); // For now, since there aren't npc instances currently.
     }
 
     /**
@@ -170,7 +170,7 @@ class Npc implements Character {
      *
      * @return int
      */
-    public function maxHealth() {
+    public function getMaxHealth() {
         $armored = ($this->hasTrait('armored') ? 1 : 0);
         return 1 + ($this->stamina * 5) + ($this->stamina * 2 * $armored);
     }

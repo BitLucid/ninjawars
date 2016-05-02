@@ -164,7 +164,7 @@ nav.admin-nav a{
 			<dt>Race</dt><dd>{$npc->race()}</dd>
 			<dt>Difficulty</dt><dd><strong>{$npc->difficulty()}</strong></dd>
 			<dt>Max Damage</dt><dd>{$npc->maxDamage()}</dd>
-			<dt>Max Health</dt><dd>{$npc->maxHealth()}</dd>
+			<dt>Max Health</dt><dd>{$npc->getMaxHealth()}</dd>
 		</dl>
 		<div>
 			Traits: 
@@ -187,7 +187,7 @@ nav.admin-nav a{
 			<dt>Race</dt><dd>{$npc->race()}</dd>
 			<dt>Difficulty</dt><dd><strong>{$npc->difficulty()}</strong></dd>
 			<dt>Max Damage</dt><dd>{$npc->maxDamage()}</dd>
-			<dt>Max Health</dt><dd>{$npc->maxHealth()}</dd>
+			<dt>Max Health</dt><dd>{$npc->getMaxHealth()}</dd>
 		</dl>
 		<div>
 			Traits: 

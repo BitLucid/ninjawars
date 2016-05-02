@@ -225,9 +225,9 @@ class SkillController extends AbstractController {
 		$victim_alive     = true;
 		$attacker_id      = $player->name();
 		$attacker_char_id = $player->id();
-		$starting_turns   = $player->vo->turns;
+		$starting_turns   = $player->turns;
 
-		$level_check  = $player->vo->level - $target->vo->level;
+		$level_check  = $player->level - $target->level;
 
 		if ($player->hasStatus(STEALTH)) {
 			$attacker_id = 'A Stealthed Ninja';
@@ -279,10 +279,10 @@ class SkillController extends AbstractController {
 
 				$gold_decrease = min($target->gold, rand(5, 50));
 
-				$player->set_gold($player->gold + $gold_decrease);
+				$player->setGold($player->gold + $gold_decrease);
                 $player->save();
 
-                $target->set_gold($target->gold - $gold_decrease);
+                $target->setGold($target->gold - $gold_decrease);
                 $target->save();
 
 				$msg = "$attacker_id stole $gold_decrease gold from you.";
@@ -374,7 +374,7 @@ class SkillController extends AbstractController {
 				} else {
 					if(!$harmonize){
 						$original_health = $target->health;
-						$heal_points = $player->stamina()+1;
+						$heal_points = $player->getStamina()+1;
 						$new_health = $target->heal($heal_points); // Won't heal more than possible
 						$healed_by = $new_health - $original_health;
 					} else {
@@ -394,7 +394,7 @@ class SkillController extends AbstractController {
 				}
 			} else if ($act == 'Ice Bolt') {
 				if (!$target->hasStatus(SLOW)) {
-					if ($target->vo->turns >= 10) {
+					if ($target->turns >= 10) {
 						$turns_decrease = rand(1, 5);
 						$target->changeTurns(-1*$turns_decrease);
 						// Changed ice bolt to kill stealth.
@@ -418,7 +418,7 @@ class SkillController extends AbstractController {
 					$critical_failure = rand(1, 100);
 
 					if ($critical_failure > 7) {// *** If the critical failure rate wasn't hit.
-						if ($target->vo->turns >= 10) {
+						if ($target->turns >= 10) {
 							$turns_decrease = rand(2, 7);
 
 							$target->changeTurns(-1*$turns_decrease);
@@ -487,19 +487,19 @@ class SkillController extends AbstractController {
 					$killed_target = true;
 					$gold_mod = 0.15;
 					$loot     = floor($gold_mod * $target->gold);
-					$player->set_gold($player->gold+$loot);
-					$target->set_gold($target->gold-$loot);
+					$player->setGold($player->gold+$loot);
+					$target->setGold($target->gold-$loot);
 
 					$player->addKills(1);
 
 					$added_bounty = floor($level_check / 5);
 
 					if ($added_bounty > 0) {
-						$player->set_bounty($player->bounty+($added_bounty * 25));
+						$player->setBounty($player->bounty+($added_bounty * 25));
 					} else if ($target->bounty > 0 && $target->id() !== $player->id()) {
 						 // No suicide bounty, No bounty when your bounty getting ++ed.
-						$player->set_gold($player->gold+$target->bounty); // Reward the bounty
-						$target->set_bounty(0); // Wipe the bounty
+						$player->setGold($player->gold+$target->bounty); // Reward the bounty
+						$target->setBounty(0); // Wipe the bounty
                     }
 
 					$target_message = "$attacker_id has killed you with $act and taken $loot gold.";
@@ -518,10 +518,12 @@ class SkillController extends AbstractController {
 			}
 
 			$target->save();
-			$player->save();
 		} // End of the skill use SUCCESS block.
 
-		$ending_turns         = $player->changeTurns($turns_to_take); // Take the skill use cost.
+        $player->changeTurns($turns_to_take); // Take the skill use cost.
+        $player->save();
+
+        $ending_turns         = $player->turns;
 		$target_ending_health = $target->health;
 		$target_name          = $target->name();
 		$parts                = get_defined_vars();
@@ -568,7 +570,7 @@ class SkillController extends AbstractController {
 			// If there's anything to heal, try.
 			// Subtract the ki used for healing.
 			$char->heal($heal_for);
-			$char->set_ki($char->ki - $heal_for);
+			$char->setKi($char->ki - $heal_for);
 			$char->save();
 		}
 

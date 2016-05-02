@@ -154,7 +154,7 @@ class InventoryController extends AbstractController {
                 if ($result['success']) {
                     $inventory->remove($item->identity(), 1);
 
-                    if ($player->health() <= 0) {
+                    if ($player->health <= 0) {
                         $this->sendKillMails($player, $player, $player->name(), $article, $item->getName(), 0);
                     }
                 }
@@ -176,7 +176,7 @@ class InventoryController extends AbstractController {
             'resultMessage'          => $display_message,
             'alternateResultMessage' => $extra_message,
             'stealthLost'            => $had_stealth && !$player->hasStatus(STEALTH),
-            'repeat'                 => ($player->health() > 0),
+            'repeat'                 => ($player->health > 0),
             'return_to'              => 'inventory',
             'item'                   => $item,
             'action'                 => 'self_use',
@@ -244,15 +244,15 @@ class InventoryController extends AbstractController {
                     Event::create($player->id(), $target->id(), str_replace('  ', ' ', $message_to_target));
                     $inventory->remove($item->identity(), 1);
 
-                    if ($target->health() <= 0) { // Target was killed by the item
+                    if ($target->health <= 0) { // Target was killed by the item
                         $attacker_label = ($player->hasStatus(STEALTH) ? "A Stealthed Ninja" : $player->name());
 
                         $gold_mod = ($item->hasEffect('death') ?  0.25 : 0.15);
                         $loot     = floor($gold_mod * $target->gold);
 
-                        $target->set_gold($target->gold - $loot);
+                        $target->setGold($target->gold - $loot);
 
-                        $player->set_gold($player->gold + $loot);
+                        $player->setGold($player->gold + $loot);
                         $player->addKills(1);
 
                         $bounty_message = Combat::runBountyExchange($player, $target);  //Rewards or increases bounty.
@@ -279,7 +279,7 @@ class InventoryController extends AbstractController {
             'resultMessage'          => $display_message,
             'alternateResultMessage' => $extra_message,
             'stealthLost'            => ($had_stealth && $player->hasStatus(STEALTH)),
-            'repeat'                 => (($target->health() > 0) && empty($error)),
+            'repeat'                 => (($target->health > 0) && empty($error)),
             'item'                   => $item,
             'bountyMessage'          => $bounty_message,
             'article'                => $article,
