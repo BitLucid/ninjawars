@@ -105,8 +105,8 @@ class Deity {
         self::increaseKi();
 
         $params = [
-            'minor_revive_to'      => MINOR_REVIVE_THRESHOLD,
-            'major_revive_percent' => MAJOR_REVIVE_PERCENT,
+            'minor_revive_to'      => 20,
+            'major_revive_percent' => 0,
         ];
         list($revived, $dead_count) = self::revivePlayers($params);
 
@@ -124,6 +124,12 @@ class Deity {
      */
     private static function minor(){
         self::logStuff("DEITY_MINOR STARTING: ".date(DATE_RFC1036)."\n");
+
+        $params = [
+            'minor_revive_to'      => MINOR_REVIVE_THRESHOLD,
+            'major_revive_percent' => MAJOR_REVIVE_PERCENT,
+        ];
+        list($revived, $dead_count) = self::revivePlayers($params);
 
         self::computeTurns();
         self::regenCharacters(self::DEFAULT_REGEN);
