@@ -18,29 +18,6 @@ class Deity {
     const DEFAULT_REGEN = 3;
 
     /**
-     * @param int $minutes Minute interval of tick.
-     */
-    public static function tick($minutes){
-        switch($minutes){
-            case 5:
-                self::tiny();
-            break;
-            case 30:
-                self::minor();
-            break;
-            case 60:
-                self::major();
-            break;
-            case 1440:
-                self::daily();
-            break;
-            default:
-                throw new Exception('Unusable time interval');
-            break;
-        }
-    }
-
-    /**
      * Increase Ki for the recently active
      * Add 1 to player's ki when they've been active in the last few minutes.
      */
@@ -98,12 +75,21 @@ class Deity {
     }
 
     /**
-     * Smallest tick
+     * Smallest atomic tick
      */
-    private static function tiny(){
+    private static function atomic(){
         self::rerank();
         self::increaseKi();
+    }
 
+
+    /**
+     * Almost the smallest tick
+     */
+    private static function tiny(){
+        self::regenCharacters(self::DEFAULT_REGEN);
+
+        // Revive one page of characters at least
         $params = [
             'minor_revive_to'      => 20,
             'major_revive_percent' => 0,
@@ -132,7 +118,6 @@ class Deity {
         list($revived, $dead_count) = self::revivePlayers($params);
 
         self::computeTurns();
-        self::regenCharacters(self::DEFAULT_REGEN);
         self::computeActivePCs();
         self::fixBounties();
 

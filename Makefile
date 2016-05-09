@@ -92,10 +92,11 @@ test-integration: pre-test
 
 test-cron-run:
 	@echo "Running all the deity files, aren't you lucky.";
-	php ./deploy/cron/deity_fiveminute.php
-	php ./deploy/cron/deity_halfhour.php
-	php ./deploy/cron/deity_hourly.php
-	php ./deploy/cron/deity_nightly.php
+	php ./deploy/cron/tick_atomic.php
+	php ./deploy/cron/tick_tiny.php
+	php ./deploy/cron/tick_minor.php
+	php ./deploy/cron/tick_major.php
+	php ./deploy/cron/tick_nightly.php
 
 test-functional:
 	python3 -m pytest deploy/tests/functional/
