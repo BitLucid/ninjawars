@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "DOMAIN=http://localhost:8775/" > CONFIG
+echo "DOMAIN=http://localhost:8765/" > CONFIG
 echo "DBNAME=nw" >> CONFIG
 echo "DBUSER=ninjamaster" >> CONFIG
 echo "DBCREATINGUSER=postgres" >> CONFIG
@@ -21,9 +21,9 @@ else
 	>&2 echo "No suitable candidate found for COMPOSER"
 fi
 
-if [! GITHUB_ACCESS_TOKEN ]; then
-    echo "Recommend setting a github access token to GITHUB_ACCESS_TOKEN to
-    prevent ratelimiting."
+if [ -z GITHUB_ACCESS_TOKEN ]; then
+    echo "It is recommended to export GITHUB_ACCESS_TOKEN=some_token to
+    avoid being ratelimited by github."
 fi
 
 
