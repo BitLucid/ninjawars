@@ -1,6 +1,6 @@
 server {
 	server_name nw.local localhost;
-	listen 8775;
+	listen 8765;
 
 	root /tmp/root/deploy/www;
 	charset utf-8;

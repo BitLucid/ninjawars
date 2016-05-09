@@ -15,7 +15,7 @@ define('OFFLINE', false);				// *** Controls if remote or local resources are us
 define('DEBUG', true);					// *** Shorter debugging constant name, set as false on live.
 define('SERVER_ROOT', realpath(__DIR__).'/');		// *** The root deployment directory of the game
 // Generally for the install purposes the SERVER_ROOT should correspond to /srv/ninjawars/deploy/ 
-define('WEB_ROOT', "http://localhost:8775/");			// *** The base URL used to access the game, http://www.ninjawars.net on live
+define('WEB_ROOT', "http://localhost:8765/");			// *** The base URL used to access the game, http://www.ninjawars.net on live
 define('ADMIN_EMAIL', "ninjawarsTchalvak@gmail.com");		// *** For logs/emailed errors.
 define('SUPPORT_EMAIL', "ninjawarsTchalvak@gmail.com");	// *** For public questions.
 define('SUPPORT_EMAIL_NAME', "Ninjawars Tchalvak");

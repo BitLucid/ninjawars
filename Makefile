@@ -170,8 +170,6 @@ web-start:
 	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf
 	sleep 0.5
 	ps waux | grep nginx
-	# server may be up and running now
-	# on http://localhost:8775/ or the like
 
 web-stop:
 	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf -s stop
@@ -183,8 +181,6 @@ web-reload:
 	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf -s reload
 	sleep 0.5
 	ps waux | grep nginx
-	# server may be reloaded now
-	# on http://localhost:8775/ or the like
 
 ci-pre-configure:
 	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
