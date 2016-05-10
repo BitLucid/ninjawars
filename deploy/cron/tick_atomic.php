@@ -1,7 +1,7 @@
 <?php
-require_once(CORE.'data/Deity.php');
-require_once(CORE.'control/TickController.php');
+require_once(substr(__FILE__, 0, (strpos(__FILE__, 'cron/'))).'resources.php');
+require_once(ROOT.'cron/cron_bootstrap.php');
 
 use NinjaWars\core\control\TickController;
 
-TickController::run('Deity', 1);
+TickController::atomic();

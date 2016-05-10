@@ -4,7 +4,6 @@ namespace NinjaWars\core\data;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\data\Message;
-use NinjaWars\core\data\GameLog;
 use \PDO;
 
 /**
@@ -21,7 +20,7 @@ class Deity {
      * Increase Ki for the recently active
      * Add 1 to player's ki when they've been active in the last few minutes.
      */
-    private static function increaseKi(){
+    public static function increaseKi(){
         DatabaseConnection::getInstance();
         $s = DatabaseConnection::$pdo->prepare("update players set ki = ki + :regen_rate where last_started_attack > (now() - :regen_timeout::interval)");
         $s->bindValue(':regen_timeout', KI_REGEN_TIMEOUT);
@@ -33,7 +32,7 @@ class Deity {
     /**
      * Redo pc rankings
      */
-    private static function rerank(){
+    public static function rerank(){
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         DatabaseConnection::$pdo->query('TRUNCATE player_rank RESTART IDENTITY');
@@ -44,18 +43,13 @@ class Deity {
         $ranked_players->bindValue(':inactivity_weight', RANK_WEIGHT_INACTIVITY);
         $ranked_players->execute();
         DatabaseConnection::$pdo->query('COMMIT');
-
-        // Only log on the short interval once in a while.
-        if (DEBUG || rand(1, DEITY_LOG_CHANCE_DIVISOR) === 1) {
-            $log = 'Reranked PCs: '.$ranked_players->rowCount()." \n";
-            self::logStuff($log);
-        }
+        return $ranked_players->rowCount();
     }
 
     /**
      * Update pcs online listings
      */
-    private static function computeActivePCs(){
+    public static function computeActivePCs(){
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         $inactivity = DatabaseConnection::$pdo->prepare("DELETE FROM ppl_online WHERE activity < (now() - :maxtime::interval)");
@@ -67,7 +61,7 @@ class Deity {
     /**
      * Zero any negative bounties
      */
-    private static function fixBounties(){
+    public static function fixBounties(){
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         DatabaseConnection::$pdo->query("UPDATE players SET bounty = 0 WHERE bounty < 0"); // Prevent negative bounties
@@ -75,59 +69,9 @@ class Deity {
     }
 
     /**
-     * Smallest atomic tick
-     */
-    private static function atomic(){
-        self::rerank();
-        self::increaseKi();
-    }
-
-
-    /**
-     * Almost the smallest tick
-     */
-    private static function tiny(){
-        self::regenCharacters(self::DEFAULT_REGEN);
-
-        // Revive one page of characters at least
-        $params = [
-            'minor_revive_to'      => 20,
-            'major_revive_percent' => 0,
-        ];
-        list($revived, $dead_count) = self::revivePlayers($params);
-
-        // Only log on the short interval once in a while.
-        if (DEBUG || rand(1, DEITY_LOG_CHANCE_DIVISOR) === 1) {
-            $log = "DEITY_TINY STARTING: ".date(DATE_RFC1036)."\n
-            PCs revived: ".$revived." \n
-            PCs who are/were dead: ".$dead_count." \n";
-            self::logStuff($log);
-        }
-    }
-
-    /**
-     * half-hour tick
-     */
-    private static function minor(){
-        self::logStuff("DEITY_MINOR STARTING: ".date(DATE_RFC1036)."\n");
-
-        $params = [
-            'minor_revive_to'      => MINOR_REVIVE_THRESHOLD,
-            'major_revive_percent' => MAJOR_REVIVE_PERCENT,
-        ];
-        list($revived, $dead_count) = self::revivePlayers($params);
-
-        self::computeTurns();
-        self::computeActivePCs();
-        self::fixBounties();
-
-        self::logStuff("DEITY_MINOR ENDING: ".date(DATE_RFC1036)."\n");
-    }
-
-    /**
      * Increase turns by a tick
      */
-    private static function computeTurns(){
+    public static function computeTurns(){
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         DatabaseConnection::$pdo->query("UPDATE players SET turns = 0 WHERE turns < 0");
@@ -150,7 +94,7 @@ class Deity {
     /**
      * Update the game time counter
      */
-    private static function computeTime(){
+    public static function computeTime(){
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query("UPDATE time SET amount = amount+1 WHERE time_label = 'hours'"); // Update the hours ticker.
         DatabaseConnection::$pdo->query("UPDATE time SET amount = 0 WHERE time_label = 'hours' AND amount >= 24"); // Rollover the time to hour zero.
@@ -159,7 +103,7 @@ class Deity {
     /**
      * Unfreeze and unstealth characters
      */
-    private static function computeStatuses(){
+    public static function computeStatuses(){
         DatabaseConnection::getInstance();
         assert(FROZEN != 'FROZEN'); // These constants should be ints
         assert(STEALTH != 'STEALTH');
@@ -175,113 +119,11 @@ class Deity {
     }
 
     /**
-     * Major/hourly tick
-     */
-    private static function major(){
-        self::logStuff("DEITY_MAJOR STARTING: ".date(DATE_RFC1036)."\n");
-
-        self::computeTime();
-
-        self::computeTurns();
-
-        self::regenCharacters(self::DEFAULT_REGEN);
-
-        self::computeStatuses();
-
-        self::logStuff("DEITY_MAJOR ENDING: ".date(DATE_RFC1036)."\n");
-    }
-
-    /**
-     * Rare Daily/Nightly tick
-     */
-    private static function daily(){
-        $logMessage = "DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n";
-
-        $keep_players_until_over_the_number                   = MIN_PLAYERS_FOR_UNCONFIRM;
-        $days_players_have_to_be_older_than_to_be_unconfirmed = MIN_DAYS_FOR_UNCONFIRM;
-        $maximum_players_to_unconfirm                         = MAX_PLAYERS_TO_UNCONFIRM;
-
-        DatabaseConnection::getInstance();
-        DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
-        $affected_rows = [];
-        
-        $affected_rows['Increase Days Of Players'] = self::updateDays();
-
-        $status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  // Hmmm, gets rid of all status effects, we may want to make that not have that limitation, some day.
-        $affected_rows['Statuses Removed'] = $status_removal->rowCount();
-
-        $deleted = Message::shortenChat();
-        $affected_rows['deleted chats'] = $deleted;
-
-        if ($killer = GameLog::findViciousKiller()) {
-            $update = DatabaseConnection::$pdo->prepare('UPDATE past_stats SET stat_result = :viciousKiller WHERE id = :viciousKillerStat');
-            $update->bindValue(':viciousKiller', $killer);
-            $update->bindValue(':viciousKillerStat', self::VICIOUS_KILLER_STAT);
-            $update->execute();
-        }
-
-        //Nightly Unconfirm old players script settings.
-        $unconfirmed = self::unconfirmOlderPlayersOverMinimums($keep_players_until_over_the_number, $days_players_have_to_be_older_than_to_be_unconfirmed, $maximum_players_to_unconfirm, $just_testing=false);
-        assert($unconfirmed < $maximum_players_to_unconfirm+1);
-
-        $affected_rows['Players Unconfirmed'] = ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
-
-        // Delete from inventory where owner is unconfirmed or non-existent.
-        /*
-        $deleted_items = DatabaseConnection::$pdo->query("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE uname IS NULL GROUP BY owner)");
-        $affected_rows['deleted items'] = $deleted_items->rowCount();
-        */
-
-        $deleted_events = Event::deleteOldEvents();
-        $affected_rows['Old Events Deletion'] = $deleted_events;
-
-        $level_log_delete = DatabaseConnection::$pdo->query("delete from levelling_log where killsdate < (now()- interval '6 months')");
-        $affected_rows['levelling log deletion'] = $level_log_delete->rowCount(); // Keep only the last 3 months of logs.
-
-        $duel_log_delete = DatabaseConnection::$pdo->query("delete from dueling_log where date < (now()- interval '3 days')");
-        $affected_rows['dueling log deletion'] = $duel_log_delete->rowCount();
-        /*
-        $level_1_delete = DatabaseConnection::$pdo->query("delete from players where active = 0 and level = 1 and created_date < (now() - interval '5 days')"); // Delete old level 1's.
-        
-        $affected_rows['old level 1 players deletion'] = $level_1_delete->rowCount();
-        */
-
-        DatabaseConnection::$pdo->query('COMMIT');
-
-        $logMessage .= "DEITY_NIGHTLY: Deity reset occurred at server date/time: ".date('l jS \of F Y h:i:s A').".\n";
-        //$logMessage .= "DEITY_NIGHTLY: Items: ".$affected_rows['deleted items']."\n";
-        $logMessage .= 'DEITY_NIGHTLY: Players unconfirmed: ('.$unconfirmed.").  30 is the current default maximum.\n";
-        $logMessage .= "DEITY_NIGHTLY: Chats deleted: ".$deleted."\n";
-
-        // **************
-        // Visual output:
-
-        foreach ($affected_rows AS $loopKey => $loopRowResult) {
-            $logMessage .= "DEITY_NIGHTLY: Result type: $loopKey yeilded result: $loopRowResult\n";
-        }
-
-        $logMessage .= "DEITY_NIGHTLY ENDING: ---- ".date(DATE_RFC1036)." ---- \n";
-        self::logStuff($logMessage);
-
-    }
-
-    /**
-     * Log a string to the deity log
-     *
-     * @param string $logMessage
-     */
-    private static function logStuff($logMessage){
-        $log = fopen(LOGS.'deity.log', 'a');
-        fwrite($log, $logMessage);
-        fclose($log);
-    }
-
-    /**
      * This actually toggles the "active" column on players, not the confirm column, and if they log in again, they're instantly active again.
      *
      * @return int|boolean
      */
-    private static function unconfirmOlderPlayersOverMinimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30, $just_testing=true) {
+    public static function unconfirmOlderPlayersOverMinimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30, $just_testing=true) {
         $change_confirm_to = ($just_testing ? '1' : '0'); // Only unconfirm players when not testing.
         $minimum_days = 30;
         $max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30);
@@ -320,10 +162,69 @@ class Deity {
      *
      * @return int
      */
-    private static function updateDays() {
+    public static function updateDays() {
         DatabaseConnection::getInstance();
         $players = DatabaseConnection::$pdo->query("UPDATE players SET days = days+1");
         return $players->rowCount();
+    }
+
+
+
+
+    public static function pcsUpdate(){
+        DatabaseConnection::getInstance();
+        $affected_rows = [];
+        
+        $affected_rows['Increase Days Of Players'] = Deity::updateDays();
+
+        $status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  // We may not want to wipe status nightly, some day
+        $affected_rows['Statuses Removed'] = $status_removal->rowCount();
+
+    }
+
+    public static function truncateMessages() {
+        $affected_rows['deleted chats'] = Deity::shortenChat();
+        $deleted_events = Event::deleteOldEvents();
+        $affected_rows['Old Events Deletion'] = $deleted_events;
+    }
+
+    public static function calculateStats(){
+        if ($killer = GameLog::findViciousKiller()) {
+            $update = DatabaseConnection::$pdo->prepare('UPDATE past_stats SET stat_result = :viciousKiller WHERE id = :viciousKillerStat');
+            $update->bindValue(':viciousKiller', $killer);
+            $update->bindValue(':viciousKillerStat', Deity::VICIOUS_KILLER_STAT);
+            $update->execute();
+        }
+
+        DatabaseConnection::$pdo->query("delete from levelling_log where killsdate < (now()- interval '6 months')");
+        DatabaseConnection::$pdo->query("delete from dueling_log where date < (now()- interval '3 days')");
+    }
+
+    public static function processUnconfirms(){
+        //Nightly Unconfirm of aged players
+        $unconfirmed = Deity::unconfirmOlderPlayersOverMinimums(MIN_PLAYERS_FOR_UNCONFIRM, MIN_DAYS_FOR_UNCONFIRM, MAX_PLAYERS_TO_UNCONFIRM, $just_testing=false);
+        assert($unconfirmed < MAX_PLAYERS_TO_UNCONFIRM+1);
+
+        return ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
+        /*
+        $level_1_delete = DatabaseConnection::$pdo->query("delete from players where active = 0 and level = 1 and created_date < (now() - interval '5 days')"); // Delete old level 1's.
+        
+        $affected_rows['old level 1 players deletion'] = $level_1_delete->rowCount();
+        */
+        // Delete from inventory where owner is unconfirmed or non-existent.
+        /*
+        $deleted_items = DatabaseConnection::$pdo->query("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE uname IS NULL GROUP BY owner)");
+        $affected_rows['deleted items'] = $deleted_items->rowCount();
+        */
+    }
+
+    /**
+     * Truncate the chat periodically
+     * 
+     * @return int Number of chats removed
+     */
+    public static function shortenChat() {
+        return Message::shortenChat();
     }
 
     /**
@@ -337,14 +238,13 @@ class Deity {
      * @param int|null $basic Per tick regen
      * @param bool $with_level whether regen increases with level
      */
-    private static function regenCharacters($basic, $with_level=true){
+    public static function regenCharacters($basic, $with_level=true){
         // Note that the max health the deity will create is level 3 health,
         // not level 300 health, now
         $maximum_heal = Player::maxHealthByLevel(3);
         $level_add = '';
         $level_limit_add = '';
 
-        /*
 
         if($with_level){
             // For example:
@@ -359,7 +259,6 @@ class Deity {
             // Another x points per x level tier
             $level_limit_add = ' + cast(floor(level/30) / 30 AS int)';
         }
-        */
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         $s = DatabaseConnection::$pdo->prepare(
@@ -390,7 +289,7 @@ class Deity {
      * Get sums about all the active pcs, counts of dead/alive
      * @return array
      */
-    private static function pcsActiveDeadAlive() {
+    public static function pcsActiveDeadAlive() {
         $pc_data = query_row(
             'select count(*) as active, 
                 sum(case when health < 1 then 1 else 0 end) as dead 
@@ -404,7 +303,7 @@ class Deity {
      * Get the game environment hour
      * @return int
      */
-    private static function gameHour() {
+    public static function gameHour() {
         return query_item('select amount from time where time_label = \'hours\'');
     }
 
@@ -418,7 +317,7 @@ class Deity {
      * select uname, player_id, level,floor(($major_revive_percent/100)*$total_active) days, resurrection_time from players where active = 1 AND health < 1 ORDER BY abs(8 - resurrection_time) asc, level desc, days asc
      * @return int
      */
-    private static function performNecromancy($revive_amount, $maximum_heal, $game_hour){
+    public static function performNecromancy($revive_amount, $maximum_heal, $game_hour){
         $subselect = 'SELECT player_id FROM players WHERE active = 1 AND health < 1 ORDER BY abs(:time - resurrection_time) ASC, level DESC, days ASC LIMIT :amount';
         if(self::LEVEL_REVIVE_INCREASE){
             $level_add = '+(level*3)';
@@ -469,7 +368,7 @@ class Deity {
      *      'just_testing'=>false)
      * @return mixed 
      */
-    private static function revivePlayers($set=array()) {
+    public static function revivePlayers($set=array()) {
         $minor_revive_to      = (isset($set['minor_revive_to']) ? $set['minor_revive_to'] : 100); 
         $major_revive_percent = (isset($set['major_revive_percent']) ? $set['major_revive_percent'] : 5);
         $major_hour           = 3; // Hour for the major revive.
