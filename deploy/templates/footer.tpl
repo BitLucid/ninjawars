@@ -1,3 +1,9 @@
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Place sticky footer content here.</p>
+      </div>
+    </footer>
 
 <script type="text/javascript">
 NW.loggedIn = {if $logged_in}true{else}false{/if};
@@ -12,8 +18,6 @@ $(function() {
 {/literal}
 {/if}
 </script>
-    
-
 
 {if !$smarty.const.LOCAL_JS}<!-- Skip for local js -->
 <!-- Google Analytics, just add all the tracking info to an array at once -->
@@ -29,7 +33,6 @@ ga('send', 'pageview');
 </script>
 {/literal}
 {/if}
-    
-    
+
   </body>
 </html>

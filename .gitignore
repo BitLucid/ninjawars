@@ -3,6 +3,8 @@ deploy/resources.php
 vendor/*
 deploy/vendor/*
 deploy/www/js/jquery*
+deploy/www/js/bootstrap*
+deploy/www/css/bootstrap*
 deploy/www/components/
 !vendor/.gitkeep
 deploy/resources/logs/*.log
