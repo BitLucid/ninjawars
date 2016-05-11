@@ -15,7 +15,7 @@ class Skill {
 		'sight', 'deflect', 'chi', 'midnight heal', 'heal',
 		'blaze', 'fire bolt',
 		'poison touch', 'stealth', 'unstealth', 'steal', 'hidden resurrect',
-		'duel', 'attack', 'kampo', 'evasion'
+		'duel', 'attack', 'kampo', 'evasion', 'stalk'
 	);
 
 	// Use the class identities as the array keys here, so $skill_map['crane']
@@ -46,6 +46,7 @@ class Skill {
 			, 'deflect'       => array('available'=>1, 'level'=>2)
 			, 'stealth'       => array('available'=>1)
 			, 'unstealth'     => array('available'=>1)
+			, 'stalk'         => ['available'=>1, 'level'=>6]
 			, 'steal'         => array('available'=>1, 'level'=>5)
 			, 'cold steal'    => array('available'=>1, 'level'=>7)
 			, 'midnight heal' => array('available'=>1, 'level'=>20)
@@ -132,6 +133,7 @@ class Skill {
 			, 'poison touch' => 2
 			, 'stealth'      => 2
 			, 'unstealth'    => 0
+			, 'stalk'        => 1
 			, 'steal'        => 1
 			, 'kampo'        => 1
 			, 'evasion'      => 2
@@ -156,6 +158,7 @@ class Skill {
 			, 'kampo'     => true
 			, 'heal'      => true
 			, 'clone kill'=> true
+			, 'stalk'     => true
 		);
 		$res = false; // default is that they're not self usable.
 		if (isset($skillsTypeToSelf[$type])) {
@@ -170,6 +173,7 @@ class Skill {
 		$skillsUsableOnTarget = array(
 			'stealth'     => false
 			, 'unstealth' => false
+			, 'stalk'     => false
 		);
 		// By default, skills aren't usable on self.
 		return !(isset($skillsUsableOnTarget[$type]));
@@ -183,6 +187,7 @@ class Skill {
 			, 'blaze'        => true
 			, 'poison touch' => true
 			, 'unstealth'    => true
+			, 'stalk'        => true
 			, 'ice bolt'     => true
 			, 'fire bolt'    => true
             , 'kampo'        => true
