@@ -52,7 +52,6 @@ class ShopController extends AbstractController {
         $request           = RequestWrapper::$request;
 		$in_quantity       = $request->get('quantity');
 		$in_item           = $request->get('item');
-        $player            = Player::find(SessionFactory::getSession()->get('player_id'));
         $player            = Player::findPlayable($this->getAccountId());
 		$gold              = ($player ? $player->gold : null);
 		$current_item_cost = 0;
