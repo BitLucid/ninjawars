@@ -31,6 +31,8 @@ class Deity {
 
     /**
      * Redo pc rankings
+     *
+     * @return int Number of ranked players
      */
     public static function rerank(){
         DatabaseConnection::getInstance();

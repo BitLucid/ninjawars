@@ -109,6 +109,8 @@ class GameLog {
 
     /**
      * Find the player who killed the most today
+     *
+     * @return string The name of the top active player
      */
     public static function findViciousKiller() {
         $result = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log JOIN players ON player_id = _player_id WHERE killsdate = cast(now() AS date) GROUP BY uname, killpoints ORDER BY killpoints DESC LIMIT 1');
