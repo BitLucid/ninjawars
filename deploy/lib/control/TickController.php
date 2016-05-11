@@ -11,30 +11,35 @@ class TickController{
 
     const LOG_CHANCE_DIVISOR = 10;
 
-    public function __construct(GameLog $logger){
+    private $logger;
+    private $deity; 
+
+    public function __construct(GameLog $logger, $deity){
         $this->logger = $logger;
+        $this->deity = $deity;
     }
 
     /**
      * Smallest atomic tick
      */
     public function atomic(){
-        Deity::rerank();
-        Deity::increaseKi();
+        $this->deity->rerank();
+        $this->deity->increaseKi();
     }
 
     /**
      * Almost the smallest tick
      */
     public function tiny(){
-        Deity::regenCharacters(Deity::DEFAULT_REGEN);
+        $deity = $this->deity;
+        $this->deity->regenCharacters($deity::DEFAULT_REGEN);
 
         // Revive one page of characters at least
         $params = [
             'minor_revive_to'      => 20,
             'major_revive_percent' => 0,
         ];
-        list($revived, $dead_count) = Deity::revivePlayers($params);
+        list($revived, $dead_count) = $this->deity->revivePlayers($params);
 
         // Only log on the short interval once in a while.
         if (DEBUG || rand(1, self::LOG_CHANCE_DIVISOR) === 1) {
@@ -55,11 +60,11 @@ class TickController{
             'minor_revive_to'      => MINOR_REVIVE_THRESHOLD,
             'major_revive_percent' => 0,
         ];
-        list($revived, $dead_count) = Deity::revivePlayers($params);
+        list($revived, $dead_count) = $this->deity->revivePlayers($params);
 
-        Deity::computeTurns();
-        Deity::computeActivePCs();
-        Deity::fixBounties();
+        $this->deity->computeTurns();
+        $this->deity->computeActivePCs();
+        $this->deity->fixBounties();
 
         $this->logger->log('Reviving: ['.$revived.'] / ['.$dead_count.'] 
             revived characters / dead characters.;');
@@ -73,21 +78,20 @@ class TickController{
     public function major(){
         $this->logger->log("DEITY_MAJOR STARTING: ".date(DATE_RFC1036)."\n");
 
-        Deity::computeTime();
-        Deity::computeTurns();
-        Deity::regenCharacters(Deity::DEFAULT_REGEN);
-        Deity::computeStatuses();
+        $this->deity->computeTime();
+        $this->deity->computeTurns();
+        $deity = $this->deity;  // Doesn't work without temporary variable, unfortunately
+        $this->deity->regenCharacters($deity::DEFAULT_REGEN);
+        $this->deity->computeStatuses();
 
         $params = [
-            'minor_revive_to'      => MINOR_REVIVE_THRESHOLD,
-            'major_revive_percent' => 0,
+            'minor_revive_to'      => 0,
+            'major_revive_percent' => MAJOR_REVIVE_PERCENT,
         ];
-        list($revived, $dead_count) = Deity::revivePlayers($params);
+        list($revived, $dead_count) = $this->deity->revivePlayers($params);
 
         $this->logger->log('Reviving: ['.$revived.'] / ['.$dead_count.'] 
             revived characters / dead characters.;');
-
-        $this->logger->log("DEITY_MINOR ENDING: ".date(DATE_RFC1036)."\n");
 
         $this->logger->log("DEITY_MAJOR ENDING: ".date(DATE_RFC1036)."\n");
     }
@@ -99,10 +103,10 @@ class TickController{
         $this->logger->log("DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n
             DEITY_NIGHTLY: Deity reset occurred at server date/time: ".date('l jS \of F Y h:i:s A').".\n");
 
-        $unconfirmed_message = Deity::processUnconfirms();
-        Deity::calculateStats();
-        Deity::truncateMessages();
-        Deity::pcsUpdate();
+        $unconfirmed_message = $this->deity->processUnconfirms();
+        $this->deity->rearrangeStats();
+        $this->deity->truncateMessages();
+        $this->deity->pcsUpdate();
 
         $this->logger->log('DEITY_NIGHTLY: Players unconfirmed: ('.$unconfirmed_message.").  30 is the current default maximum.\n
             DEITY_NIGHTLY ENDING: ---- ".date(DATE_RFC1036)." ---- \n");

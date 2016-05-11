@@ -4,6 +4,8 @@ require_once(ROOT.'cron/cron_bootstrap.php');
 
 use NinjaWars\core\control\TickController;
 use NinjaWars\core\data\GameLog;
+use NinjaWars\core\data\Deity;
 
-$tick = new TickController(new GameLog());
+$logger = new GameLog();
+$tick = new TickController($logger, new Deity($logger));
 $tick->minor();
