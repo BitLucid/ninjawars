@@ -72,7 +72,7 @@
         {if $clan}
       <li>
         Clan:
-        <a href='/clan/view?clan_id={$clan->getID()|escape:'url'}'>{$clan->getName()|escape}</a>
+        <a href='/clan/view?clan_id={$clan->id|escape:'url'}'>{$clan->getName()|escape}</a>
       </li>
         {/if}
     </ul>
