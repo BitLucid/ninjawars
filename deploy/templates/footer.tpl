@@ -1,9 +1,10 @@
-    </div>
+{if $is_index}{* Only display footer on index page *}
     <footer class="footer">
       <div class="container">
         <p class="text-muted">Place sticky footer content here.</p>
       </div>
     </footer>
+{/if}
 
 <script type="text/javascript">
 NW.loggedIn = {if $logged_in}true{else}false{/if};
