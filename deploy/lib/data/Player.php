@@ -144,7 +144,7 @@ class Player implements Character {
     public function addStatus($p_status) {
         $status = self::validStatus($p_status);
 
-        if ($status && !$this->hasStatus($status)) {
+        if ($status > 0 && !$this->hasStatus($status)) {
             if (gettype($this->status | $status) !== 'integer') {
                 throw new \InvalidArgumentException('invalid type for status');
             }
@@ -159,7 +159,7 @@ class Player implements Character {
     public function subtractStatus($p_status) {
         $status = self::validStatus($p_status);
 
-        if ($status && $this->hasStatus($status)) {
+        if ($status > 0 && $this->hasStatus($status)) {
             if (gettype($this->status & ~$status) !== 'integer') {
                 throw new \InvalidArgumentException('invalid type for status');
             }
