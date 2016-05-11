@@ -9,12 +9,18 @@ use NinjaWars\core\data\DatabaseConnection;
 class GameLog {
 
     /**
+     * Make the gamelog constructable to allow dependency injection of log obj
+     */
+    public function __construct(){
+    }
+
+    /**
      * Record to the game log
      *
      * @param string $log_message
      * @param int $priority Simple priority level, higher is more important
      */
-    public static function log($log_message, $priority=0){
+    public function log($log_message, $priority=0){
         $priority = (int) $priority; // Prevent non-int priority levels
         $log = fopen(LOGS.'game.log', 'a');
         fwrite($log, ($priority>0? "[PRIORITY ".$priority."]" : '').$log_message);
