@@ -210,6 +210,9 @@ class Player implements Character {
         if($this->hasStatus(STALKING)){
             $str = (int) max(1, floor($str*1.4));
         }
+        if ($this->hasStatus(STEALTH)) {
+            $str = (int) max(1, floor($str*0.7));
+        }
 		if ($this->hasStatus(WEAKENED)) {
 			return (int) max(1, $str-(ceil($str*.25))); // 75%
 		} elseif ($this->hasStatus(STR_UP2)) {
@@ -236,6 +239,9 @@ class Player implements Character {
         if($this->hasStatus(STALKING)){
             $speed = (int) max(1, floor($speed*0.7));
         }
+        if ($this->hasStatus(STEALTH)) {
+            $speed = (int) max(1, ceil($speed*1.3));
+        }
 		if ($this->hasStatus(SLOW)) {
 			return (int) ($speed-(ceil($speed*.25)));
 		} else {
@@ -257,6 +263,9 @@ class Player implements Character {
 		$stam = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
         if($this->hasStatus(STALKING)){
             $stam = (int) max(1, floor($stam*0.9));
+        }
+        if ($this->hasStatus(STEALTH)) {
+            $stam = (int) max(1, ceil($stam*1.3));
         }
 		if ($this->hasStatus(POISON)) {
 			return (int) ($stam-(ceil($stam*.25)));

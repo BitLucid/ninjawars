@@ -58,4 +58,16 @@ class SkillUnitTest extends PHPUnit_Framework_TestCase {
     public function testGetIgnoreStealthSpecific() {
         $this->assertTrue($this->skill->getIgnoreStealth('blaze'));
     }
+
+    public function testStealthDecreasesStrengthIncreasesStamina() {
+        $pc = new Player();
+        $str = $pc->getStrength();
+        $stamina = $pc->getStamina();
+        $speed = $pc->getSpeed();
+        $pc->addStatus(STEALTH);
+        $this->assertTrue($pc->hasStatus(STEALTH));
+        $this->assertLessThan($str, $pc->getStrength(), 'Stealth failed to affect strength.');
+        $this->assertGreaterThan($stamina, $pc->getStamina(), 'Stealth status failed to affect stamina.');
+        $this->assertGreaterThan($speed, $pc->getSpeed(), 'Stealth status failed to affect speed.');
+    }
 }
