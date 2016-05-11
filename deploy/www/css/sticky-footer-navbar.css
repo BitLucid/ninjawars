@@ -1,11 +1,39 @@
---2016-05-09 23:15:20--  http://getbootstrap.com/examples/sticky-footer-navbar/sticky-footer-navbar.css
-Resolving getbootstrap.com (getbootstrap.com)... 104.27.145.213, 104.27.144.213
-Connecting to getbootstrap.com (getbootstrap.com)|104.27.145.213|:80... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: unspecified [text/css]
-Saving to: ‘sticky-footer-navbar.css’
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
 
-     0K                                                        55.5M=0s
 
-2016-05-09 23:15:20 (55.5 MB/s) - ‘sticky-footer-navbar.css’ saved [678]
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
 
+body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 80%;
+}
