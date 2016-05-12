@@ -19,7 +19,7 @@
             <li><a href="/enemies" target="main">Enemies</a></li>
             <li><a href="/list" target="main">Ninja</a></li>
             <li><a href="/inventory" target="main">Inventory</a></li>
-            <li><a href="/skills" target="main">Skills</a></li>
+            <li><a href="/skill" target="main">Skills</a></li>
             <li><a href="/clan" target="main">Clans</a></li>
             <li><a href="/shop" target="main">Shop</a></li>
             <li><a href="/work" target="main">Work</a></li>
