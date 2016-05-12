@@ -6,6 +6,7 @@ use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use NinjaWars\core\data\Clan;
 
 /**
  * display the standard homepage, and maybe eventually the splash page
@@ -40,6 +41,7 @@ class HomepageController extends AbstractController {
         // Get the actual values of the vars.
         $ninja = Player::find(SessionFactory::getSession()->get('player_id'));
         $playerInfo = $ninja->data();
+        $clan = Clan::findByMember($ninja);
 
         $unreadCount = Message::where([
             'send_to' => $ninja->id(),
@@ -53,6 +55,7 @@ class HomepageController extends AbstractController {
             'version'              => 'NW Version 1.7.5 2010.12.05',
             'ninja'                => $ninja,
             'player_info'          => $playerInfo,
+            'clan'                 => $clan,
             'unread_message_count' => $unreadCount,
         ];
 

@@ -19,6 +19,11 @@
         <div class='ninja-stats-link thick'>
           <a href='/stats' target='main' title='Your ninja stats, level, info, etc.'><i class="fa fa-heart"></i> Ninja Stats</a>
         </div>
+        {if $clan}
+        <div>
+          <a href="/clan/view?clan_id={$clan->id|escape}" target='main' title='Your clan members and clan chat'><i class='fa fa-users'></i> My Clan</a>
+        </div>
+        {/if}
         {/if}
         <div class='account-info thick'>
           <a href="/account" target="main" title='Your player account info, email, password, etc.'><i class="fa fa-gear"></i> Account Info</a>
