@@ -68,10 +68,4 @@
       </aside><!-- End of sidebar-column -->
       </section><!-- end of core-->
 
-
-      <footer id='index-footer' class='navigation'>
-        <!-- Stuff like catchphrases, links, and the author information -->
-        {include file='linkbar_section.tpl'}
-      </footer>
-
 <!-- Version: {$version|escape} -->

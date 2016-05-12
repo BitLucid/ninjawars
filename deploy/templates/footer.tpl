@@ -3,7 +3,14 @@
       <div class="container">
         <p class="text-muted">Place sticky footer content here.</p>
       </div>
+
+      <div id='index-footer' class='navigation'>
+        <!-- Stuff like catchphrases, links, and the author information -->
+        {include file='linkbar_section.tpl'}
+      </div>
+
     </footer>
+
 {/if}
 
 <script type="text/javascript">
