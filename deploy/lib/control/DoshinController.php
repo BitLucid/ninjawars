@@ -30,12 +30,14 @@ class DoshinController extends AbstractController {
      */
     public function index() {
         $target = RequestWrapper::getPostOrGet('target');
+        $authenticated = (bool)$this->getAccountId();
 
         return $this->render(
             [
                 'quickstat' => true,
                 'location'  => 0,
                 'error'     => 0,
+                'authenticated' => $authenticated,
                 'command'   => 'index',
                 'target'    => $target,
             ]
@@ -60,8 +62,11 @@ class DoshinController extends AbstractController {
         $amount     = (intval($amountIn) !== 0 ? intval($amountIn) : null);
         $quickstat  = false;
         $success    = false;
+        $authenticated = ($char !== null);
 
-        if (!$target) {
+        if(!$char){
+            $error = 2; // You don't have enough gold.
+        } elseif (!$target) {
             $error = 1; // Target not found
         } elseif ($target->id() === $char->id()) {
             $error = 6; // Can't put a bounty on yourself.
@@ -86,6 +91,7 @@ class DoshinController extends AbstractController {
         return $this->render(
             [
                 'error'     => $error,
+                'authenticated' => $authenticated,
                 'success'   => $success,
                 'quickstat' => $quickstat,
                 'amount_in' => $amountIn,

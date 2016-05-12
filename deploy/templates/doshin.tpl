@@ -87,10 +87,12 @@
 </form>
 {/if}
 
+{if $authenticated}
 <form action="/doshin/offerBounty" class='half-column'>
   Offer <input type="text" name="amount" value="{$amount|default:''|escape}" size="4" class="textField" required="required"> bounty on: <input type="text" name="target" value="{$target|default:''|escape}" class="textField">
   <input id="submit-bounty" type="submit" value="Offer Bounty" class="formButton" required="required">
 </form>
+{/if}
 
 {if count($bounties) gt 0}
 
