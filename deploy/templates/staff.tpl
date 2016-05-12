@@ -1,106 +1,95 @@
+<link rel="stylesheet" type="text/css" href="{cachebust file="/css/staff.css"}" media="Screen" />
+
 <div id='contact-us-page'>
 <h1>Ninjawars Staff</h1>
 
-{literal}
-<style>
-#contact-us-page section{
-  margin-bottom:3em;
-}
-#contact-us-page p{
-  margin-right:1em;margin-left:1em;
-}
-#contact-us-image{
-  display:inline-block;
-  margin:0 auto;max-width:200px;
-}
-#contact-us-image-container{
-  display:block;
-  text-align:center;
-}
-#contact-us-page #contact-methods{
-  margin:.5em 0 3em;
-}
-#contact-us-page section#company h4{
-  width:50%;margin:0.5em auto;
-}
-ul#social-networks{
-  list-style-type:none;
-}
-#social-networks li{
-  display:inline;
-  padding-right:.5em;
-  margin-right:.3em;
-}
-ul#social-networks li:before {
-  content: "\00BB";
-}
-#contact-us-page .unadorned-developer{
-  color:ghostwhite;
-}
-</style>
-{/literal}
-
-<section id='contact-methods'>
-<p>
-  <a id='contact-us-image-container' href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' &lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20" rel='nofollow'>
-  <img id='contact-us-image' src='{cachebust file="/images/text/pixel_contact_us.gif"}' alt='Contact Staff'>
-  </a>
-</p>
-<p>
-  The preferred method of contacting us with problems, ideas, or bugs with the game
-  is via the <a href="http://ninjawars.proboards.com" rel='nofollow'>Ninjawars Forum</a>.
-</p>
-<p>
-  For private issues, including account/confirmation problems, email us at:   <a href="mailto:'{$smarty.const.SUPPORT_EMAIL_NAME|escape:'url'|escape}' &lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20" rel='nofollow'>{$smarty.const.SUPPORT_EMAIL_NAME|escape} &lt;{$smarty.const.SUPPORT_EMAIL|escape}&gt;
-  </a>
-</p>
-</section>
-
-
-<section id='company'>
-  <h3>Game brought to you by<br>
-    <a href='http://bitlucid.com'>BitLucid, Inc.</a></h3>
-</section>
-
-<section class='developers'>
-  <h3 class='subtitle'>Developers</h3>
-  <div class='developer'>
-    <h5><a href="mailto:ninjawarsTchalvak@gmail.com" rel='nofollow'>Tchalvak / Roy Ronalds</a>  - Programmer and Maintainer</h5>
-    <ul id='social-networks' class='thick'>
-      <li> <a target='_blank' rel='me' href="http://twitter.com/tchalvak" rel='nofollow'><img alt="T" src='{cachebust file="/images/icons/fasticons/Twitter_24x24.png"}'> @tchalvak on Twitter</a></li>
-      <li> <a target='_blank' rel='me' href="http://www.facebook.com/tchalvak" rel='nofollow'><img alt="FB" src='{cachebust file="/images/icons/fasticons/FaceBook_24x24.png"}'> tchalvak on Facebook</a> </li>
-      <li><em> or tchalvak on AIM</em></li>
-    </ul>
-    <div><a class='expand-link'>More info &amp; bio</a></div>
-    <div class='developer-info'>
-    	<!-- Expanded & contracted section -->
-      <p>
-        Hailing from the icy steppes of upstate New York, Roy got his first computer at the ripe old age of 14, and has been addicted to computers ever since.  He's worked in IT fixing computers, and eventually decided that the web is the future, got in on the action, and hasn't looked back. Since 2003, he's been working in php and webdesign, which he got started on from working on NinjaWars.
-      </p>
-      <p>
-        Roy is almost done with a BS degree in Biochemistry from SUNY Geneseo. He says it was an accident. Luckily he also took programming classes along the way, and liked them.
-      </p>
-      <p>
-        When he's able to overcome his attachment to instantaneous communication and exchange of ideas (i.e. the internet), he truly enjoys swimming and walking dogs, even if they are someone else's dogs.
-      </p>
-
-      <img class='developer-image' alt='tchalvak' src="{cachebust file="/images/tchalvak-smaller.jpg"}">
-
-      <div>
-        <a href="http://www.odesk.com/referrals/track/rronalds?redir=http%3A%2F%2Fwww.odesk.com%2Fusers%2F%7E%7E46ddd5d105882453" rel='nofollow'><img src="http://www.odesk.com/images/banners/banner_provider_468x60.gif" alt="The On Demand Global Workforce - oDesk" width="468" height="60"></a>
+<section id='contact-methods' class='container'>
+  <div class='row'>
+    <header>
+      <a id='contact-us-image-container' href='mailto:"{$smarty.const.SUPPORT_EMAIL_NAME|escape:"url"|escape}"&lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20' rel='nofollow'>
+      <img id='contact-us-image' src='{cachebust file="/images/text/pixel_contact_us.gif"}' alt='Contact Us'>
+      </a>
+      <hr class='accent'>
+    </header>
+  </div>
+  <div class='row'>
+    <div class='col-xs-12 col-sm-4 col-md-4 col-lg-4 contact-panel'>
+      <div class='contact-panel-wrapper'>
+        For private issues or account problems, email us:   <a class='btn btn-primary btn-md thick' href='mailto:"{$smarty.const.SUPPORT_EMAIL_NAME|escape:"url"|escape}"&lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20' rel='nofollow'>{$smarty.const.SUPPORT_EMAIL_NAME|escape}<br> &lt;{$smarty.const.SUPPORT_EMAIL|escape}&gt;
+        </a>
       </div>
+    </div>
+    <div class='col-xs-12 col-sm-4 col-md-4 col-lg-4 contact-panel'>
+      <div class='contact-panel-wrapper'>
+        Talk about game ideas on <a target='_blank' href='/forum'>the forum</a>.
+      </div>
+    </div>
 
-      <div id='facebook-badge'><!-- Facebook Badge START --><a href="http://www.facebook.com/tchalvak" rel='nofollow' title="Roy Ronalds" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Roy Ronalds</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="http://www.facebook.com/badges.php" rel='nofollow' title="Facebook badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Facebook badge</a><br><a href="http://www.facebook.com/tchalvak" title="Roy Ronalds" target="_TOP"><img src="http://badge.facebook.com/badge/16501613.459.488706671.png" alt="Roy Ronalds" style="border: 0px;"></a><!-- Facebook Badge END --></div>
-    </div><!-- End of .developer-info -->
+    <div class='col-xs-12 col-sm-3 col-md-3 col-lg-3 contact-panel'>
+      <div class='contact-panel-wrapper'>
+        Game brought to you by <a target='_blank' href='http://bitlucid.com'>BitLucid</a></h3>
+      </div>
+    </div>
   </div>
-  <div class='developer'>
-    <h5><span class='unadorned-developer'>Beagle / Al Vazquez</span> - Programmer and Server Administrator</h5>
-    <!-- No developer info here. -->
-  </div>
-</section><!-- End of the Developers section -->
+</section>
 
-<div class='other-credits'>
-  <h3 class='subtitle'>Other Credits</h3>
+  <!--TEAM SECTION START-->
+  <section id="team" >
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <h3>Team</h3>
+            <hr class='accent'>
+        </div>
+      </div>
+      <div class="row animate-in" data-anim-type="fade-in-up">
+
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+          <div class="team-wrapper">
+            <div class="team-inner" style="background-image: url('{cachebust file="/images/tchalvak-smaller.jpg"}')" >
+              <a href="https://github.com/tchalvak" target="_blank" > <i class="fa fa-github" ></i></a>
+            </div>
+            <div class="bio">
+              <h3> Roy Ronalds</h3>
+              <h5> <strong> Game Dev &amp; Software Engineer </strong></h5>
+              <p>Workin' and coding on this game since 2003.  Likes dogs.
+              <ul class='social-networks thick'>
+                <li> <a class='btn btn-default' href='/player?player_id=128274'><i class='fa fa-star'></i> Tchalvak on NinjaWars</a> </li>
+                <li> <a class='btn btn-default' target='_blank' rel='me' href="https://github.com/tchalvak" rel='nofollow'><i class='fa fa-github'></i> Github</a></li>
+                <li> <a class='btn btn-default' target='_blank' rel='me' href="http://twitter.com/tchalvak" rel='nofollow'><i class='fa fa-twitter'></i> Twitter</a></li>
+                <li> <a class='btn btn-default' target='_blank' rel='me' href="http://stackoverflow.com/users/69993/kzqai" rel='nofollow'><i class='fa fa-stack-overflow'></i> Stackoverflow</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+          <div class="team-wrapper">
+            <div class="team-inner" style="background-image: url('assets/img/team/2.jpg')" >
+              <a href="https://github.com/beagle" target="_blank" > <i class='fa fa-github'></i></a>
+            </div>
+            <div class="bio">
+              <h3>Al Vazquez</h3>
+              <h5> <strong> Architect, Developer &amp; Co-Owner </strong></h5>
+              <p>
+                Likes ducks
+              </p>
+              <ul class='social-networks thick'>
+                <li> <a class='btn btn-default' href='/player?player_id=128274'><i class='fa fa-star'></i> Beagle on NinjaWars</a> </li>
+                <li> <a class='btn btn-default' target='_blank' rel='me' href="https://github.com/beagle" rel='nofollow'><i class='fa fa-github'></i> Github</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<section class='other-credits container'>
+  <header>
+    <h3 class='subtitle'>Other Contributions</h3>
+    <hr class='accent'>
+  </header>
   <ul>
     <li>
       NinjaLord / John Facey, II - Founder &amp; Original Developer of NinjaWars -
@@ -117,32 +106,40 @@ ul#social-networks li:before {
     <li>
       Alegion - the original for the Koi photograph Background - <a href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a>
     </li>
-    <li> Social networking icons by: <a href='http://www.fasticon.com' rel='nofollow'>FastIcon.com</a></li>
     <li>
-      DNS services provided by:
-      <a class='external-link' href="http://freedns.afraid.org" rel='nofollow'>Free DNS</a>
-      and <a class="external-link" href="http://dns.he.net">Hurricane Electric</a>
+      The Domain's DNS services are provided thanks to:
+      <a class="external-link" href="http://dns.he.net">Hurricane Electric</a>
     </li>
   </ul>
-</div>
+</section>
 
-<div id='open-source-repository'>
-  <h3 class='subtitle'>Contributing to Ninjawars</h3>
+<section id='open-source-repository' class='container'>
+  <div class='row'>
+    <h3 class='subtitle'>Contributing to Ninjawars</h3>
+    <hr class='accent'>
+  </div>
 
-  <p>Want to get involved?  You can hack away at the code on github and suggest changes or ask any questions on the <a href="http://ninjawars.proboards19.com" rel='nofollow'>Ninjawars Forum</a>.</p>
-  <p> Ninjawars is open source, with the source code downloadable and able to be openly contributed to on github at:
-    <a class='external' target='_blank' href="https://github.com/BitLucid/ninjawars/">github.com/BitLucid/ninjawars</a>
-  </p>
-
-    <div id='latest-commit-section'>
-    <p id='latest-commit-title' style='display:none'>The latest commit to the main ninjawars code was:</p>
-    <span id='latest-commit' style='display:none'>
-    </span>
+  <div class='row'>
+    <div class='col-xs-12 col-sm-3 col-md-3 col-lg-3'>
+      <p>Want to get involved?  Ninjawars is open source!<p>
     </div>
-</div>
+    <div class='col-xs-12 col-sm-3 col-md-3 col-lg-3'>
+      on github: <a class='external btn btn-primary' target='_blank' href="https://github.com/BitLucid/ninjawars/"><span class='external'><i class='fa fa-github'></i> github.com/BitLucid/ninjawars</span></a>
+    </div>
+    <div class='col-xs-12 col-sm-3 col-md-3 col-lg-3'>
+      make suggestions on <a href='/forum'>the forum</a>!
+    </div>
+    <div class='stamp thick col-xs-12 col-sm-8 col-md-8 col-lg-8' id='latest-commit-section'>
+      <p id='latest-commit-title' style='display:none'>The latest commit to the main ninjawars code was:</p>
+      <span id='latest-commit' style='display:none'>
+      </span>
+    </div>
+  </div>
+</section>
 
-<div class='license'>
-  <div class='subtitle'>License</div>
+<section class='license'>
+  <h3 class='subtitle'>License</h3>
+  <hr class='accent'>
   <p>
     <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png"></a><br>
     <span>Ninjawars</span>
@@ -152,28 +149,13 @@ ul#social-networks li:before {
     Permissions beyond the scope of this license may be available from the contact information at:
     <a href="/staff" rel="cc:morePermissions">{$smarty.const.WEB_ROOT}staff</a>.
   </p>
-</div>
-
-<script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_thin_badge.js"></script>
-<div id='project-languages' class='light-background'>
-  <script type="text/javascript" src="http://www.ohloh.net/p/471695/widgets/project_languages.js"></script>
-</div>
-
-<script type='text/javascript' src="{cachebust file="/js/repo.js"}"></script>
-<script type='text/javascript'>
-{literal}
-$(document).ready(function() {
-	$('.developer-info').hide();
-	$('.expand-link').click(function () {
-		$('.developer-info').slideDown();
-		$('.expand-link').hide();
-	});
-
-
-	loadLastCommitMessage();
-});
-{/literal}
-</script>
-
+</section>
 
 </div><!-- end of contact-us -->
+
+<script type='text/javascript' src="{cachebust file="/js/repo.js"}"></script>
+<script>
+{literal}
+    loadLastCommitMessage();
+{/literal}
+</script>

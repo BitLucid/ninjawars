@@ -2378,11 +2378,10 @@ table#sight-info {
 		margin:1em;
 }
 .developers h5{
-	background-color:transparent;
+	background-color:white;
+	color:black;
 }
 .developer {
-	border-left:thin #8B0000 solid; border-top:thin #8B0000 solid;
-	border-left:thin rgba(139, 0, 0, 0.8) solid; border-top:thin rgba(139, 0, 0, 0.8) solid;
 	margin: .5em 0 .5em 0; padding: .3em 0 .5em .2em;
 }
 
