@@ -26,7 +26,7 @@ class DoshinController extends AbstractController {
      * Displays the initial Doshin Office view
      *
      * @param target String (Optional) Pre-load the bounty form with the specified target
-     * @return Array
+     * @return StreamedViewResponse
      */
     public function index() {
         $target = RequestWrapper::getPostOrGet('target');
@@ -47,7 +47,7 @@ class DoshinController extends AbstractController {
      *
      * @param target String The username of the player to offer a bounty on
      * @param amount int The amount of gold to spend on offering the bounty
-     * @return Array
+     * @return StreamedViewResponse
      *
      * @TODO simplify the conditional branching
      */
@@ -104,7 +104,7 @@ class DoshinController extends AbstractController {
      * @param int $p_offer
      * @return int
      */
-    public static function calculateMaxOffer($p_currentBounty, $p_offer) {
+    private static function calculateMaxOffer($p_currentBounty, $p_offer) {
         // Cap possible bounty amount
         if (($p_currentBounty + $p_offer) > self::MAX_BOUNTY) {
             $amount = (self::MAX_BOUNTY - $p_currentBounty);
@@ -152,7 +152,7 @@ class DoshinController extends AbstractController {
      * Command for a user to reduce their bounty by paying their own gold
      *
      * @param bribe int The amount to spend on reducing bounty
-     * @return Array
+     * @return StreamedViewRespons
      */
     public function bribe() {
         $bribe     = intval(RequestWrapper::getPostOrGet('bribe'));
