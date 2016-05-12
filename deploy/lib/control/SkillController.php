@@ -541,7 +541,6 @@ class SkillController extends AbstractController {
 		$allowed = [
 		    'Name'     => 'uname',
 		    'Class'    => 'class_name',
-		    'Level'    => 'level',
 		    'Turns'    => 'turns',
 		    'Strength' => 'strength',
 		    'Speed'    => 'speed',

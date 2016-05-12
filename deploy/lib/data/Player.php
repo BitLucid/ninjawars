@@ -362,6 +362,9 @@ class Player implements Character {
             $this->data['next_level']    = $this->killsRequiredForNextLevel();
             $this->data['max_health']    = $this->getMaxHealth();
             $this->data['hp_percent']    = $this->health_percent();
+            $this->data['strength']      = $this->getStrength();
+            $this->data['speed']         = $this->getSpeed();
+            $this->data['stamina']       = $this->getStamina();
             $this->data['max_turns']     = 100;
             $this->data['turns_percent'] = min(100, round($this->data['turns']/$this->data['max_turns']*100));
             $this->data['exp_percent']   = min(100, round(($this->data['kills']/$this->data['next_level'])*100));
