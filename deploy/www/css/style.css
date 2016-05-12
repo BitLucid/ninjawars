@@ -1626,7 +1626,6 @@ time{
 
 #ninja-box{
   display:inline-block;width:185px;height:71px;padding-right:4px;padding-top:4px;
-  position:relative;float:right;
 }
 #ninja-box .text-info{
   display:inline-block;width:80px;height:80px;vertical-align:top;

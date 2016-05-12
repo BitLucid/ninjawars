@@ -1,145 +1,50 @@
+    <!-- Version {$version|escape} -->
+
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
+        <div id="logo-appended">
+          <a href="/">
+            <img id='ninjawars-title-image' src='{cachebust file="/images/halfShuriken.png"}' title='Home' alt='Ninja Wars' width='100' height='100'>
+          </a>
+        </div>
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">NinjaWars</a>
+          <a class="navbar-brand" href="/">NinjaWars</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Watch</a></li>
-            <li><a href="#about">Fight</a></li>
-            <li><a href="#contact">Map</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
+            <li><a href="/messages" target="main">Inbox ({$unread_message_count})</a></li>
+            <li><a href="/map" target="main">Map</a></li>
+            <li><a href="/events" target="main">Events</a></li>
+            <li><a href="/enemies" target="main">Enemies</a></li>
+            <li><a href="/list" target="main">Ninja</a></li>
+            <li><a href="/inventory" target="main">Inventory</a></li>
+            <li><a href="/skills" target="main">Skills</a></li>
+            <li><a href="/clan" target="main">Clans</a></li>
+            <li><a href="/shop" target="main">Shop</a></li>
+            <li><a href="/work" target="main">Work</a></li>
+			<li><a href="/doshin" target="main">Hunt<img src="{cachebust file="/images/doshin.png"}" alt="" style='height:8px;width:8px'></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <!-- Begin page content -->
-    <div class="container">
+    <div class="container-fluid">
 
-    <!-- Version {$version|escape} -->
-	<div id="logo-appended">
-	  <a href="/">
-        <img id='ninjawars-title-image' src='{cachebust file="/images/halfShuriken.png"}' title='Home' alt='Ninja Wars' width='100' height='100'>
-	  </a>
-	</div>
+	  <div class="page-header">
+        <div id='ninja-box'>
+          <div class='text-info'>
+          </div>
+          <div id='index-avatar'>
+{include file="gravatar.tpl" gurl=$ninja->avatarUrl()}
+          </div>
 
-    <header id='index-header' class='clearfix'>
-
-	  <div id='logo-placeholder'>
-	    <!-- Spacer div for the main shuriken linkback logo -->
-	    &nbsp;
-	  </div>
-    <div class='bars-container parent'>
-  	  <div id='health-and-turns' class='various-bars child'>
-  	  	<div id='barstats'>
-  		  	<!-- Display the number bars for various char stats-->
-  		  	<div id='health'>
-  			  {include file="generic_bar.tpl" bar_percent=$player_info.hp_percent number=$player_info.health zero_word='Dead' number_of='Health' bar_color='#660000' title='Heal Yourself' action='/shrine/heal_and_resurrect'}<!-- #ee2520 -->
-  		  	</div>
-  		  	<div id='turns'>
-  			  {include file="generic_bar.tpl" bar_percent=$player_info.turns_percent number=$player_info.turns zero_word='No Turns' number_of='Turns' bar_color='#003366' title='Speed Up' action='/item/self_use/amanita'}
-  		  	</div>
-  		  	<div id='kills'>
-  			  {include file="generic_bar.tpl" bar_percent=$player_info.exp_percent number=$player_info.kills zero_word='No Kills' number_of='Kills' bar_color='#330066' title='View Stats' action='/stats'}<!-- #6612ee -->
-  		  	</div>
-  	  	</div>
-  	  </div>
-    </div>
-
-    <div id='ninja-box'>
-      <div class='text-info'>
-        <div id='messages'>
-            <div>
-                <a target="main" id='message-inbox' href="/messages"><i class="fa fa-comments"></i><span class='unread-count'>{$unread_message_count}</span>
-                </a>
-            </div>
-            <div>
-              <a target='main' href='/events'>
-                <i class="fa fa-star"></i>
-              </a>
-            </div>
-        </div>
+          <div id='ninja-dropdown' class='bubble'>
+{include file="ninja.menu.tpl" ninja=$ninja}
+          </div> <!-- end of #ninja-dropdown -->
+        </div><!-- end of #ninja-box -->
       </div>
-      <div id='index-avatar'>
-        {include file="gravatar.tpl" gurl=$ninja->avatarUrl()}
-      </div>
-
-      <div id='ninja-dropdown' class='bubble'>
-        {include file="ninja.menu.tpl" ninja=$ninja}
-      </div> <!-- end of #ninja-dropdown -->
-
-    </div><!-- end of #ninja-box -->
-
-
-
-
-      <div id='menu-bar' class='header-section'>
-        <div id='reactive-panel'>
-            <nav id='category-bar' class='navigation'>
-              <ul>
-                <li id='status-actions' class='self'>
-                  <a href='/events' rel='nav' target='main' >
-                    <img src='{cachebust file="/images/ninja_status_icon_50px.png"}' alt='' style='width:50px;height:51px'>Watch
-                  </a>
-                </li>
-                <li id='combat-actions' class='combat'>
-                  <a href='/enemies' rel='nav' target='main' title='Check up on your enemies and see who recently attacked you.'>
-                    <img src='{cachebust file="/images/50pxShuriken.png"}' alt=''  style='width:50px;height:42px'>Fight
-                  </a>
-                </li>
-                <li id='map-actions' class='map'>
-                  <a href='/map' rel='nav' target='main' title='Travel to different locations on the Map.'>
-                    <img src='{cachebust file="/images/pagodaIcon_60px.png"}' alt=''  style='width:60px;height:52px'>Move
-                  </a>
-                </li>
-              </ul>
-            </nav>
-            <nav id='subcategory-bar' class='navigation' rel='nav'>
-                <ul id='self-subcategory'>
-                  <!--
-                  <li><a href="/stats" rel='nav' target="main" title='Your ninja strength, level, profile, etc.'>Self</a></li>
-                  -->
-                  <li><a href="/skill" rel='nav' target="main" title='Your ninja skills &amp; abilities'>Skills</a></li>
-                  <li><a href="/inventory" rel='nav' target="main" title='Your items and links to use them on yourself.'>Items</a></li>
-                  <!-- Profile -->
-                  <!-- Settings -->
-                </ul>
-                <ul id='combat-subcategory'>
-                  <li><a href="/list" rel='nav' target="main" title='Ranked list of ninjas to attack.'>Ninjas</a></li>
-                  <li><a href="/clan" rel='nav' target="main" title='Clans and your clan options.'>Clans</a></li>
-                </ul>
-                <ul id='map-subcategory'>
-                  <li><a href="/shop" rel='nav' target="main" title='Spend your money to get weapons.'>Buy</a></li>
-                  <li><a href="/work" rel='nav' target="main" title='Trade your turns to get money.'>Work</a></li>
-                  <li><a href="/doshin" rel='nav' target="main" title='Hunt bounties for money.'>Hunt<img src="{cachebust file="/images/doshin.png"}" alt="" style='height:8px;width:8px'></a></li>
-                </ul>
-            </nav>
-        </div><!-- End of reactive panel -->
-
-      </div><!-- End of menu-bar -->
-
-
-
-	  </header><!-- End of header -->
 
 
       <section id='core' class='clearfix'>
