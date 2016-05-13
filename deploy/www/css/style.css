@@ -2615,6 +2615,10 @@ table#sight-info {
 .shop-list .btn{
   margin-bottom:1rem;
 }
+.shop-list .btn[disabled]{
+  color:gray;
+  text-decoration:line-through;
+}
 
 .shop-list .item-desc {
     color: #808177;
