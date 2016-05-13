@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
+use \UnexpectedValueException;
 
 class MessagesController extends AbstractController {
     const PRIV  = true;
@@ -20,6 +21,11 @@ class MessagesController extends AbstractController {
      */
     public function sendPersonal() {
         $request = RequestWrapper::$request;
+        $message = $request->get('message', null);
+        // For now, throw on blank incoming message.
+        if($message === ''){
+            throw new UnexpectedValueException('Message cannot be blank.');
+        }
 
         if ((int) $request->get('target_id')) {
             $recipient = Player::find((int) $request->get('target_id'));
@@ -33,7 +39,7 @@ class MessagesController extends AbstractController {
             Message::create([
                 'send_from' => SessionFactory::getSession()->get('player_id'),
                 'send_to'   => $recipient->id(),
-                'message'   => $request->get('message', null),
+                'message'   => $message,
                 'type'      => 0,
             ]);
 
@@ -48,6 +54,10 @@ class MessagesController extends AbstractController {
      */
     public function sendClan() {
         $message = RequestWrapper::getPostOrGet('message');
+        // For now, throw on blank incoming message.
+        if($message === ''){
+            throw new UnexpectedValueException('Message cannot be blank.');
+        }
         $type = 1;
         $sender = Player::find(SessionFactory::getSession()->get('player_id'));
         $clan = Clan::findByMember($sender);

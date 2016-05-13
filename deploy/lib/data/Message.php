@@ -42,7 +42,10 @@ class Message extends Model {
      */
     public static function sendToGroup(Player $sender, array $groupTargets, $message, $type) {
         if (!$sender || !$sender->id()) {
-            throw new \Exception('Error: Message sender not set.');
+            throw new \InvalidArgumentException('Error: Message sender not set.');
+        }
+        if(trim($message) === ''){
+            throw new \InvalidArgumentException('Error: Blank message rejected.');
         }
 
         $id = $sender->id();
