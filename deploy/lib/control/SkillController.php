@@ -408,10 +408,13 @@ class SkillController extends AbstractController {
 					}
 				}
 			} else if ($act == 'Ice Bolt') {
-				if (!$target->hasStatus(SLOW)) {
+				if ($target->hasStatus(SLOW)) {
+					$turn_cost = 0;
+					$generic_skill_result_message = '__TARGET__ is already iced.';
+				} else {
 					if ($target->turns >= 10) {
 						$turns_decrease = rand(1, 5);
-						$target->changeTurns(-1*$turns_decrease);
+						$target->turns = $target->turns - $turns_decrease;
 						// Changed ice bolt to kill stealth.
 						$target->subtractStatus(STEALTH);
 						$target->subtractStatus(STALKING);
@@ -425,26 +428,26 @@ class SkillController extends AbstractController {
 						$turn_cost = 0;
 						$generic_skill_result_message = "__TARGET__ does not have enough turns for you to take.";
 					}
-				} else {
-					$turn_cost = 0;
-					$generic_skill_result_message = '__TARGET__ is already iced.';
 				}
 			} else if ($act == 'Cold Steal') {
-				if (!$target->hasStatus(SLOW)) {
+				if ($target->hasStatus(SLOW)) {
+					$turn_cost = 0;
+					$generic_skill_result_message = '__TARGET__ is already iced.';
+				} else {
 					$critical_failure = rand(1, 100);
 
 					if ($critical_failure > 7) {// *** If the critical failure rate wasn't hit.
 						if ($target->turns >= 10) {
-							$turns_decrease = rand(2, 7);
+							$turns_diff = rand(2, 7);
 
-							$target->changeTurns(-1*$turns_decrease);
+							$target->turns = $target->turns - $turns_diff;
+							$player->turns = $player->turns + $turns_diff; // Stolen
 							$target->addStatus(SLOW);
-							$player->changeTurns($turns_decrease);
 
-							$msg = "You have had Cold Steal cast on you for $turns_decrease by $attacker_id";
+							$msg = "You have had Cold Steal cast on you for $turns_diff by $attacker_id";
 							Event::create($attacker_char_id, $target->id(), $msg);
 
-							$generic_skill_result_message = "You cast Cold Steal on __TARGET__ and take $turns_decrease turns.";
+							$generic_skill_result_message = "You cast Cold Steal on __TARGET__ and take $turns_diff turns.";
 						} else {
 							$turn_cost = 0;
 							$generic_skill_result_message = '__TARGET__ did not have enough turns to give you.';
@@ -455,12 +458,9 @@ class SkillController extends AbstractController {
 						$unfreeze_time = date('F j, Y, g:i a', mktime(date('G')+1, 0, 0, date('m'), date('d'), date('Y')));
 
 						$failure_msg = "You have experienced a critical failure while using Cold Steal. You will be unfrozen on $unfreeze_time";
-						Event::create((int)"SysMsg", $player->id(), $failure_msg);
+						Event::create((int)0, $player->id(), $failure_msg);
 						$generic_skill_result_message = "Cold Steal has backfired! You are frozen until $unfreeze_time!";
 					}
-				} else {
-					$turn_cost = 0;
-					$generic_skill_result_message = '__TARGET__ is already iced.';
 				}
 			} else if ($act == 'Clone Kill') {
 				// Obliterates the turns and the health of similar accounts that get clone killed.
@@ -536,7 +536,7 @@ class SkillController extends AbstractController {
 			$target->save();
 		} // End of the skill use SUCCESS block.
 
-        $player->changeTurns($turns_to_take); // Take the skill use cost.
+        $player->turns = $player->turns - $turns_to_take; // Take the skill use cost.
         $player->save();
 
         $ending_turns         = $player->turns;
