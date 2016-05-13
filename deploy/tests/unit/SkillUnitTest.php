@@ -1,5 +1,6 @@
 <?php
 use NinjaWars\core\data\Skill;
+use NinjaWars\core\data\Player;
 
 class SkillUnitTest extends PHPUnit_Framework_TestCase {
     private $skill;
@@ -36,6 +37,18 @@ class SkillUnitTest extends PHPUnit_Framework_TestCase {
 
     public function testGetUsableOnTargetSpecific() {
         $this->assertFalse($this->skill->getUsableOnTarget('stealth'));
+    }
+
+    public function testStalkingAffectsStats(){
+        $pc = new Player();
+        $str = $pc->getStrength();
+        $speed = $pc->getSpeed();
+        $stamina = $pc->getStamina();
+        $pc->addStatus(STALKING);
+        $this->assertTrue($pc->hasStatus(STALKING));
+        $this->assertGreaterThan($str, $pc->getStrength());
+        $this->assertLessThan($speed, $pc->getSpeed());
+        $this->assertLessThan($stamina, $pc->getStamina());
     }
 
     public function testGetIgnoreStealthDefault() {

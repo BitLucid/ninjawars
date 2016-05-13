@@ -21,4 +21,4 @@ define('ACID_RESISTING',  1<<15);
 define('SLOW',  1<<16);
 define('FAST',  1<<17);
 define('WEAKENED',  1<<18);
-
+define('STALKING', 1<<19);

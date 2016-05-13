@@ -72,6 +72,8 @@ class SkillController extends AbstractController {
 
 		$stealth_turn_cost    = $skillsListObj->getTurnCost('Stealth');
 		$unstealth_turn_cost  = $skillsListObj->getTurnCost('Unstealth');
+		$stalk                = $skillsListObj->hasSkill('Stalk', $player);
+		$stalk_turn_cost      = $skillsListObj->getTurnCost('Stalk');
 		$chi                  = $skillsListObj->hasSkill('Chi', $player);
 		$speed                = $skillsListObj->hasSkill('speed', $player);
 		$hidden_resurrect     = $skillsListObj->hasSkill('hidden resurrect', $player);
@@ -95,6 +97,8 @@ class SkillController extends AbstractController {
 			'stealth'              => $stealth,
 			'stealth_turn_cost'    => $stealth_turn_cost,
 			'unstealth_turn_cost'  => $unstealth_turn_cost,
+			'stalk'                => $stalk,
+			'stalk_turn_cost'      => $stalk_turn_cost,
 			'chi'                  => $chi,
 			'speed'                => $speed,
 			'hidden_resurrect'     => $hidden_resurrect,
@@ -305,6 +309,17 @@ class SkillController extends AbstractController {
 
 				if (!$target->hasStatus(STEALTH)) {
 					$target->addStatus(STEALTH);
+					$target->subtractStatus(STALKING);
+					$generic_state_change = "__TARGET__ is now $state.";
+				} else {
+					$turn_cost = 0;
+					$generic_state_change = "__TARGET__ is already $state.";
+				}
+			} else if ($act == 'Stalk') {
+				$state      = 'stalking';
+				if(!$target->hasStatus(STALKING)) {
+					$target->addStatus(STALKING);
+					$target->subtractStatus(STEALTH);
 					$generic_state_change = "__TARGET__ is now $state.";
 				} else {
 					$turn_cost = 0;
@@ -399,6 +414,7 @@ class SkillController extends AbstractController {
 						$target->changeTurns(-1*$turns_decrease);
 						// Changed ice bolt to kill stealth.
 						$target->subtractStatus(STEALTH);
+						$target->subtractStatus(STALKING);
 						$target->addStatus(SLOW);
 
 						$msg = "Ice bolt cast on you by $attacker_id, your turns have been reduced by $turns_decrease.";

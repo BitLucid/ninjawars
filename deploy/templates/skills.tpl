@@ -25,6 +25,24 @@
 </div>
 <div id='skills-list'>
 
+
+{if $heal}
+  <div id='heal-skill'>
+    <form action="/skill/post_self_use/" method="post">
+      <fieldset>
+        <legend>Heal</legend>
+        <p>
+          You can heal your wounds or another's wounds.
+        </p>
+      <div>
+        <input type="submit" name="act" value="Heal" class="formButton">
+        Turn Cost: {$heal_turn_cost} to heal yourself (or another).
+      </div>
+      </fieldset>
+    </form>
+  </div>
+{/if}
+
 {if $stealth}
   <div id='stealth-skills'>
     <form action="/skill/post_self_use/" method="post">
@@ -40,6 +58,21 @@
         <input type="submit" name="act" value="Unstealth" class="formButton">
         Turn Cost: {$unstealth_turn_cost} to Unstealth.
       </div>
+      </fieldset>
+    </form>
+  </div>
+{/if}
+
+{if $stalk}
+  <div id='stalk-skills'>
+    <form action="/skill/post_self_use/" method="post">
+      <fieldset>
+        <legend>Stalk</legend>
+        <p>Focus with single-minded fury on your prey, ignoring other dangers.</p>
+        <div>
+          <input type="submit" name="act" value="Stalk" class="formButton">
+          Turn Cost: {$stalk_turn_cost} to Stalk.
+        </div>
       </fieldset>
     </form>
   </div>
@@ -63,40 +96,21 @@
 {/if}
 
 
-{if $heal}
-  <div id='heal-skill'>
-    <form action="/skill/post_self_use/" method="post">
-      <fieldset>
-        <legend>Heal</legend>
-        <p>
-          You can heal your wounds or another's wounds.
-        </p>
-      <div>
-        <input type="submit" name="act" value="Heal" class="formButton">
-        Turn Cost: {$heal_turn_cost} to heal yourself (or another).
-      </div>
-      </fieldset>
-    </form>
-  </div>
-{/if}
-
 {if $can_harmonize}
   <div id='harmonize-skill'>
     <form action="/skill/post_self_use/" method="post">
       <fieldset>
-      	<legend>Harmonize Chakra</legend>
-      	<p>
+        <legend>Harmonize Chakra</legend>
+        <p>
           Heal yourself using your ki.
         </p>
-      	<div>
+        <div>
         <input type="submit" name="act" value="Harmonize" class="formButton">
         </div>
       </fieldset>
     </form>
   </div>
 {/if}
-
-
 
 {if $clone_kill}
   <div id='clone-kill'>
