@@ -7,6 +7,29 @@ use NinjaWars\core\data\DatabaseConnection;
  * Holds game-specific logging functionality
  */
 class GameLog {
+
+    /**
+     * Make the gamelog constructable to allow dependency injection of log obj
+     */
+    public function __construct(){
+    }
+
+    /**
+     * Record to the game log
+     *
+     * @param string $log_message
+     * @param int $priority Simple priority level, higher is more important
+     */
+    public function log($log_message, $priority=0){
+        $priority = (int) $priority; // Prevent non-int priority levels
+        $log = fopen(LOGS.'game.log', 'a');
+        fwrite($log, ($priority>0? "[PRIORITY ".$priority."]" : '').$log_message);
+        fclose($log);
+    }
+
+    /**
+     * Records kills/xp to the levelling_log
+     */
     public static function recordLevelUp($who) {
         $amount = 1;
 
@@ -16,7 +39,6 @@ class GameLog {
         $statement = DatabaseConnection::$pdo->prepare("SELECT * FROM levelling_log WHERE _player_id = :player AND killsdate = now()");
         $statement->bindValue(':player', $who);
         $statement->execute();
-
         $notYetANewDay = $statement->fetch();  //Throws back a row result if there is a pre-existing record.
 
         if ($notYetANewDay != NULL) {
@@ -35,9 +57,11 @@ class GameLog {
 
     /**
      * Update the levelling log with the increased kills.
+     * 
+     * TODO: This should become deprecated once kills only increase,
+     * though right now resurrects still cost a single kill sometimes.
      */
     public static function updateLevellingLog($who, $amount) {
-        // TODO: This should be deprecated once we have only upwards kills_total increases, but for now I'm just refactoring.
         DatabaseConnection::getInstance();
 
         $amount = (int)$amount;
@@ -72,6 +96,9 @@ class GameLog {
         $statement->execute();
     }
 
+    /**
+     * Record the kills/xp results of a duel attack by a pc
+     */
     public static function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
         $killpoints = (int)$killpoints;
 
@@ -88,6 +115,8 @@ class GameLog {
 
     /**
      * Find the player who killed the most today
+     *
+     * @return string The name of the top active player
      */
     public static function findViciousKiller() {
         $result = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log JOIN players ON player_id = _player_id WHERE killsdate = cast(now() AS date) GROUP BY uname, killpoints ORDER BY killpoints DESC LIMIT 1');

@@ -42,8 +42,6 @@ define('POISON_DAMAGE',             50);
 define('ONLINE_TIMEOUT',            '70 hours'); // Max time a person is kept online without being active.
 define('TURN_REGEN_PER_TICK',       2);
 define('TURN_REGEN_THRESHOLD',      100);
-define('HEALTH_REGEN_THRESHOLD',    200);
-define('HEALTH_REGEN_PER_TICK',     8);
 define('KI_REGEN_PER_TICK',         1);
 define('KI_REGEN_TIMEOUT',          '6 minutes');
 
