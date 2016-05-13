@@ -178,13 +178,15 @@ class Deity {
 
 
 
-
+    /**
+     *
+     * @return int
+     */
     public function pcsUpdate(){
-        $affected_rows = [];
-        
-        self::updateDays();
         DatabaseConnection::getInstance();
-        $status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  // We may not want to wipe status nightly, some day
+        self::updateDays();
+        $status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  
+        // We may not want to wipe status nightly, some day
         return $status_removal->rowCount();
     }
 
