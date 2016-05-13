@@ -180,20 +180,17 @@ class Deity {
 
 
     public function pcsUpdate(){
-        DatabaseConnection::getInstance();
         $affected_rows = [];
         
-        $affected_rows['Increase Days Of Players'] = Deity::updateDays();
-
+        self::updateDays();
+        DatabaseConnection::getInstance();
         $status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  // We may not want to wipe status nightly, some day
-        $affected_rows['Statuses Removed'] = $status_removal->rowCount();
-
+        return $status_removal->rowCount();
     }
 
     public function truncateMessages() {
-        $affected_rows['deleted chats'] = Deity::shortenChat();
-        $deleted_events = Event::deleteOldEvents();
-        $affected_rows['Old Events Deletion'] = $deleted_events;
+        self::shortenChat();
+        Event::deleteOldEvents();
     }
 
     public function rearrangeStats(){
@@ -201,7 +198,7 @@ class Deity {
         if ($killer = $logger::findViciousKiller()) {
             $update = DatabaseConnection::$pdo->prepare('UPDATE past_stats SET stat_result = :viciousKiller WHERE id = :viciousKillerStat');
             $update->bindValue(':viciousKiller', $killer);
-            $update->bindValue(':viciousKillerStat', Deity::VICIOUS_KILLER_STAT);
+            $update->bindValue(':viciousKillerStat', self::VICIOUS_KILLER_STAT);
             $update->execute();
         }
 
@@ -211,7 +208,7 @@ class Deity {
 
     public function processUnconfirms(){
         //Nightly Unconfirm of aged players
-        $unconfirmed = Deity::unconfirmOlderPlayersOverMinimums(MIN_PLAYERS_FOR_UNCONFIRM, MIN_DAYS_FOR_UNCONFIRM, MAX_PLAYERS_TO_UNCONFIRM, $just_testing=false);
+        $unconfirmed = self::unconfirmOlderPlayersOverMinimums(MIN_PLAYERS_FOR_UNCONFIRM, MIN_DAYS_FOR_UNCONFIRM, MAX_PLAYERS_TO_UNCONFIRM, $just_testing=false);
         assert($unconfirmed < MAX_PLAYERS_TO_UNCONFIRM+1);
 
         return ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
@@ -248,12 +245,8 @@ class Deity {
      * @param bool $with_level whether regen increases with level
      */
     public function regenCharacters($basic, $with_level=true){
-        // Note that the max health the deity will create is level 3 health,
-        // not level 300 health, now
+        // Default max heal deity will do is level 3 health
         $maximum_heal = Player::maxHealthByLevel(3);
-        $level_add = '';
-        $level_limit_add = '';
-
 
         if($with_level){
             // For example:
