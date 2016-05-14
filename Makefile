@@ -41,7 +41,7 @@ js-dep:
 	npm install
 
 install: build start-chat
-	apt-get install python3 python3-dev python3-lxml
+	#apt-get install python3 python3-dev python3-lxml
 	#apt-get install postgresql-client nginx php5-fpm
 	chown www-data:adm ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/deity.log
