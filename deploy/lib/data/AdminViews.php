@@ -3,9 +3,17 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
+use \InvalidArgumentException;
 
+/**
+ * Sets of admin info
+ */
 class AdminViews {
-    public static function high_rollers(){
+
+    /**
+     * Characters with high kills or turns or gold and the like.
+     */
+    public static function highRollers(){
         // Select first few max kills from players.
         // Max turns.
         // Max gold.
@@ -20,7 +28,10 @@ class AdminViews {
         return $res;
     }
 
-    public static function duped_ips(){
+    /**
+     * Players at duplicate ips.
+     */
+    public static function dupedIps(){
         $host= gethostname();
         $server_ip = gethostbyname($host);
         // Get name, id, and ip from players, grouped by ip matches
@@ -40,20 +51,22 @@ class AdminViews {
      * Reformat the character info sets.
      *
      * @return Array
+     * @param $ids int|array
      */
-    public static function split_char_infos($ids) {
+    public static function charInfos($ids) {
         $res = [];
 
         if (is_numeric($ids)) {
             $ids = [$ids]; // Wrap it in an array.
-        } else { // Get the info for multiple ninjas
-            $ids = explode(',', $ids);
         }
 
         $first = true;
 
         foreach ($ids as $id) {
             $player = Player::find($id);
+            if(!$player instanceof Player){
+                throw new InvalidArgumentException('Request to view a character that does not exist.');
+            }
             $res[$id] = $player->data();
             $res[$id]['first'] = $first;
             unset($res[$id]['messages']); // Exclude the messages for length reasons.
@@ -64,8 +77,11 @@ class AdminViews {
         return $res;
     }
 
-    public static function char_inventory($char_id) {
-        $inventory = new Inventory(Player::find($char_id));
+    /**
+     * Check the inventory for a character.
+     */
+    public static function charInventory(Player $char) {
+        $inventory = new Inventory($char);
 
         return $inventory->counts();
     }

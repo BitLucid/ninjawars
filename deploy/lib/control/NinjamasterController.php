@@ -10,6 +10,7 @@ use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
+use \InvalidArgumentException;
 
 /**
  * The ninjamaster/admin info
@@ -17,26 +18,11 @@ use NinjaWars\core\environment\RequestWrapper;
 class NinjamasterController extends AbstractController {
     const ALIVE = false;
     const PRIV  = false;
-    protected $charId = null;
+
     protected $self = null;
 
     public function __construct() {
-        $this->charId = SessionFactory::getSession()->get('player_id');
-        $this->self = Player::find($this->charId);
-    }
-
-    /**
-     * If the player isn't logged in, or isn't admin
-     *
-     * @return boolean
-     */
-    private function isAdmin($player) {
-        if ($player === null || !$player instanceof Player || !$player->isAdmin()) {
-            // Redirect to the root site.
-            return false;
-        } else {
-            return true;
-        }
+        $this->self = Player::findPlayable($this->getAccountId());
     }
 
     /**
@@ -49,50 +35,61 @@ class NinjamasterController extends AbstractController {
     public function index() {
         $request = RequestWrapper::$request;
 
-        if (!$this->isAdmin($this->self)) {
+        if (!$this->self || !$this->self->isAdmin()) {
             return new RedirectResponse(WEB_ROOT);
         }
 
-        $charInfos        = null;
-        $charInventory    = null;
-        $firstMessage     = null;
-        $firstChar        = null;
-        $firstAccount     = null;
-        $firstDescription = null;
-        $dupes            = AdminViews::duped_ips();
-        $stats            = AdminViews::high_rollers();
+        $error            = null;
+        $char_infos        = null;
+        $char_inventory    = null;
+        $first_message     = null;
+        $first_char       = null;
+        $first_account     = null;
+        $first_description = null;
+        $dupes            = AdminViews::dupedIps();
+        $stats            = AdminViews::highRollers();
         $npcs             = NpcFactory::allNonTrivialNpcs();
-        $trivialNpcs      = NpcFactory::allTrivialNpcs();
+        $trivial_npcs      = NpcFactory::allTrivialNpcs();
 
         $char_ids  = preg_split("/[,\s]+/", $request->get('view'));
         $char_name = trim($request->get('char_name'));
 
         if ($char_name) { // View a target non-self character
-            $firstChar = Player::findByName($char_name);
-            $char_ids  = [$firstChar->id()];
+            $first_char = Player::findByName($char_name);
+            $char_ids  = [$first_char->id()];
         }
 
-        if (!empty($char_ids)) {
-            $firstChar        = ($firstChar ? $firstChar : Player::find(reset($char_ids)));
-            $firstAccount     = Account::findByChar($firstChar);
-            $charInfos        = AdminViews::split_char_infos($char_ids);
-            $charInventory    = AdminViews::char_inventory($char_ids);
-            $firstMessage     = $firstChar->messages;
-            $firstDescription = $firstChar->description;
+        if (is_array($char_ids)) {
+            // Get a different first character if an array is specified
+            $first_char        = ($first_char ? $first_char : Player::find(reset($char_ids)));
+            if($first_char){
+                assert($first_char instanceof Player);
+                $first_account     = Account::findByChar($first_char);
+                $char_inventory    = AdminViews::charInventory($first_char);
+                $first_message     = $first_char->messages;
+                $first_description = $first_char->description;
+            }
+            // All the rest multi-character table view
+            try{
+                $char_infos        = AdminViews::charInfos($char_ids);
+            } catch(InvalidArgumentException $e){
+                $error = $e->getMessage();
+            }
         }
 
         $parts = [
+            'error'             => $error,
             'stats'             => $stats,
-            'first_char'        => $firstChar,
-            'first_description' => $firstDescription,
-            'first_message'     => $firstMessage,
-            'first_account'     => $firstAccount,
-            'char_infos'        => $charInfos,
+            'first_char'        => $first_char,
+            'first_description' => $first_description,
+            'first_message'     => $first_message,
+            'first_account'     => $first_account,
+            'char_infos'        => $char_infos,
             'dupes'             => $dupes,
-            'char_inventory'    => $charInventory,
+            'char_inventory'    => $char_inventory,
             'char_name'         => $char_name,
             'npcs'              => $npcs,
-            'trivial_npcs'      => $trivialNpcs,
+            'trivial_npcs'      => $trivial_npcs,
         ];
 
         return new StreamedViewResponse('Admin Actions', 'ninjamaster.tpl', $parts);
@@ -104,7 +101,7 @@ class NinjamasterController extends AbstractController {
      * @return Response
      */
     public function tools() {
-        if (!$this->isAdmin($this->self)) {
+        if (!$this->self || !$this->self->isAdmin()) {
             return new RedirectResponse(WEB_ROOT);
         }
 
@@ -117,7 +114,7 @@ class NinjamasterController extends AbstractController {
      * @return Response
      */
     public function player_tags() {
-        if (!$this->isAdmin($this->self)) {
+        if (!$this->self || !$this->self->isAdmin()) {
             return new RedirectResponse(WEB_ROOT);
         }
 

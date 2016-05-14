@@ -54,6 +54,14 @@ nav.admin-nav a{
 
 <h1>Admin Actions</h1>
 
+{if $error}
+	<div class='parent'>
+		<div class='child error'>
+			{$error}
+		</div>
+	</div>
+{/if}
+
 <nav class='admin-nav parent'>
 	<div class='child'>
 		<a class='btn btn-info' href='/ninjamaster/#npc-list'>Npc List</a>
