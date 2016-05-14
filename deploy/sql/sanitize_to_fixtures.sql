@@ -3,7 +3,6 @@ delete from accounts where account_id not in(select account_id from accounts lef
 delete from players where player_id not in(select player_id from players where uname = 'Tchalvak' or uname = 'Beagle' or uname = 'RobertoSuave');
 	update accounts set phash = crypt('test', gen_salt('bf', 10));
 update players set days = days/50, active = 1;  -- activate anyone who is left
-update players set pname_backup = md5(player_id::text); -- Redundant
 update players set goals = '', beliefs = '';
 update players set email = '' where email != 'tchalvakspam@gmail.com';
 update accounts set active_email = 'test'||account_id||'@example.com', account_identity = 'test'||account_id||'@example.com' where active_email not like 'tchal%';

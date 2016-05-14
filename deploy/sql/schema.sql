@@ -37,7 +37,6 @@ CREATE TABLE "players"
 (
     "player_id" serial NOT NULL,
     "uname" VARCHAR(100) NOT NULL,
-    "pname_backup" VARCHAR(100),
     "health" INTEGER DEFAULT 0 NOT NULL,
     "strength" INTEGER DEFAULT 0 NOT NULL,
     "gold" INTEGER DEFAULT 0 NOT NULL,

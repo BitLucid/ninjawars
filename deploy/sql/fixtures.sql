@@ -53,9 +53,9 @@ COPY class (class_id, class_name, class_active, class_note, class_tier, class_de
 -- Data for Name: players; Type: TABLE DATA; Schema: public; Owner: developers
 --
 
-COPY players (player_id, uname, pname_backup, health, strength, gold, messages, kills, turns, verification_number, active, level, status, member, days, bounty, created_date, resurrection_time, last_started_attack, energy, avatar_type, _class_id, ki, stamina, speed, karma, kills_gained, kills_used, description, instincts, beliefs, goals, traits) FROM stdin;
-134853	Beagle	428c2c8b862f70f211388065e410d19f	0	40	0	Kill me, Im an admin.	82	101	9897	1	8	0	0	16	0	2010-02-18 14:20:17.319739	18	2013-01-31 20:05:48.999044	1000	1	3	3	40	40	8	175	140					
-128274	Tchalvak	428c2c8b862f70f211388065e410d19f	0	90	4678	Contact me via the staff page, or use the official email, ninjawarslivebythesword@gmail.com\r\n\r\nDang\r\nBat\r\nCrazy\r\nDevil	394	63	3259	1	18	0	0	0	0	2009-11-03 12:04:53.223615	12	2015-08-05 18:31:20.799019	1000	1	1	803	90	90	29	126	105					
+COPY players (player_id, uname, health, strength, gold, messages, kills, turns, verification_number, active, level, status, member, days, bounty, created_date, resurrection_time, last_started_attack, energy, avatar_type, _class_id, ki, stamina, speed, karma, kills_gained, kills_used, description, instincts, beliefs, goals, traits) FROM stdin;
+134853	Beagle	0	40	0	Kill me, Im an admin.	82	101	9897	1	8	0	0	16	0	2010-02-18 14:20:17.319739	18	2013-01-31 20:05:48.999044	1000	1	3	3	40	40	8	175	140					
+128274	Tchalvak	0	90	4678	Contact me via the staff page, or use the official email, ninjawarslivebythesword@gmail.com\r\n\r\nDang\r\nBat\r\nCrazy\r\nDevil	394	63	3259	1	18	0	0	0	0	2009-11-03 12:04:53.223615	12	2015-08-05 18:31:20.799019	1000	1	1	803	90	90	29	126	105					
 \.
 
 
