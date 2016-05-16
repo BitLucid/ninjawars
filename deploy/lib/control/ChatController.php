@@ -32,7 +32,7 @@ class ChatController extends AbstractController {
 
         if (!empty($message)) {
             if ($char_id) {
-                Message:sendChat($char_id, $message);
+                Message::sendChat($char_id, $message);
             } else {
                 $error = 'You must be logged in to chat.';
             }
