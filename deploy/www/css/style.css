@@ -1812,23 +1812,15 @@ section.login-section{
 }
 .login-page .line{
 	margin-bottom: .5em;
-	font-size: 1.4em;
+	font-size: larger;
 }
-.login-page .outer-box{
-	display:inline-block;
-	margin-left:auto;
-	margin-right:auto;
-	border: 10px rgb(20, 20, 20) solid;
-	background-color:rgb(50, 50, 50);
-	padding:1em 4em;
-}
-.login-page .outer-outer-box{
-	display:inline-block;
-	border: 5px rgb(10, 10, 10) solid;
+
+#login-form{
+	font-size:x-large;
 }
 
 #request-login{
-	font-size:larger;width:100%;
+	font-size:larger;padding:1rem 3rem;width:90%;
 }
 #login-bottom-bar-container{
 	margin: 5em auto .5em;width:96%;padding:.2em;border: 1px solid #993300;
@@ -3008,6 +3000,9 @@ select option #blue-class-select {
 	margin-top:0;
 	margin-bottom:0;
 }
+.top-buffer{
+	margin-top:2rem;
+}
 .zeroed{
   margin:0;
   padding:0;
@@ -4114,6 +4109,9 @@ input[type="button"].btn-block {
 		padding:0.3em 0.7em;
 	}
 
+	#request-login{
+		width:inherit;
+	}
 	/*
 	#leader-panel{
 		box-sizing:border-box;
