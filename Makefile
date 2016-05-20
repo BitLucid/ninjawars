@@ -56,10 +56,10 @@ install-system:
 	@echo "Since we are running php 5.6, you may need to install the fine"
 	@echo "php 5.6 ppa by Ondre J to get access to php 5.6, e.g.:"
 	@echo "    sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php"
-	apt-get install python3 python3-dev python3-lxml
+	apt-get install python3 python3-dev python3-lxml unzip
 	apt-get install php5.6-cli
 	#Installing php5.6 cli 
-	apt-get install php5.6-fpm php5.6-xml php5.6-pgsql
+	apt-get install php5.6-fpm php5.6-xml php5.6-pgsql php5.6-curl php5.6-mbstring
 	apt-get install postgresql-client nginx 
 
 
