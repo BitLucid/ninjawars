@@ -847,7 +847,7 @@ class Player implements Character {
      * @return integer
      */
     public static function maxHealthByLevel($level) {
-        return (int) Player::baseStaminaByLevel($level)*static::HEALTH_PER_STAMINA;
+        return (int) Player::baseStaminaByLevel($level)*self::HEALTH_PER_STAMINA;
     }
 
     /**
