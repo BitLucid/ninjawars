@@ -56,12 +56,17 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
     public function testHealAPlayer(){
         $this->player->harm(10);
         $this->player->heal(5);
-        $this->assertEquals(15, $this->player->health);
+        $this->assertEquals($this->player->getMaxHealth()-5, $this->player->health);
     }
 
     public function testHarmAPlayer(){
         $this->player->harm(7);
-        $this->assertEquals(13, $this->player->health);
+        $this->assertEquals($this->player->getMaxHealth()-7, $this->player->health);
+    }
+
+    public function testHarmAPlayerWithMoreHealthThanTheyHave() {
+        $this->player->harm(9999);
+        $this->assertEquals(0, $this->player->health);
     }
 
 }
