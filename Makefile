@@ -1,4 +1,4 @@
-.PHONY: all ci pre-test test test-main test-integration test-unit test-quick test-functional test-js post-test clean dep build install dist-clean db db-fixtures migration
+.PHONY: all ci pre-test test test-main test-integration test-unit test-quick test-functional test-js post-test clean dep build install install-system dist-clean db db-fixtures migration
 
 DOMAIN=http://nw.local/
 COMPOSER=./composer.phar
@@ -41,8 +41,6 @@ js-dep:
 	npm install
 
 install: build start-chat
-	#apt-get install python3 python3-dev python3-lxml
-	#apt-get install postgresql-client nginx php5-fpm
 	chown www-data:adm ./deploy/resources/logs/emails.log
 	chown www-data:adm ./deploy/resources/logs/deity.log
 	@echo "Don't forget to update webserver configs as necessary."
@@ -50,6 +48,20 @@ install: build start-chat
 	cp build.properties.tpl build.properties
 	cp buildtime.xml.tpl buildtime.xml
 	cp connection.xml.tpl connection.xml
+
+install-system:
+	@echo "Installing initial system and server dependencies."
+	@echo "In the case of the database and webserver,"
+	@echo "they need professional admin configuration after initial install."
+	@echo "Since we are running php 5.6, you may need to install the fine"
+	@echo "php 5.6 ppa by Ondre J to get access to php 5.6, e.g.:"
+	@echo "    sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php"
+	apt-get install python3 python3-dev python3-lxml
+	apt-get install php5.6-cli
+	#Installing php5.6 cli 
+	apt-get install php5.6-fpm php5.6-xml php5.6-pgsql
+	apt-get install postgresql-client nginx 
+
 
 start-chat:
 	touch /var/log/nginx/ninjawars.chat-server.log

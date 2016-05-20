@@ -11,7 +11,7 @@
 		"components/jquery": "2.1.1",
 		"rmm5t/jquery-timeago": "1.4.3",
 		"BitLucid/jquery-linkify": "~2.1",
-		"php": ">=5.5.0",
+		"php": ">=5.6.0",
 		"ircmaxell/password-compat": "@stable",
 		"swiftmailer/swiftmailer": "@stable",
 		"smarty/smarty": "v3.1.29",
