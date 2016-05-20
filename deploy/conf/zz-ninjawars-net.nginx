@@ -71,7 +71,7 @@ server {
 	location ~ \.php$ {
 		# fastcgi param stuff now set by [HOST=] sections in php.ini.
 		#fastcgi_param PHP_VALUE "session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_pass unix:/var/run/php/php5.6-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
@@ -79,7 +79,7 @@ server {
 	location @php {
 		# fastcgi param stuff now set by [HOST=] sections in php.ini.
 		#fastcgi_param PHP_VALUE "session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_pass unix:/var/run/php/php5.6-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
