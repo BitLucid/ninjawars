@@ -44,6 +44,7 @@ use \RuntimeException;
  * @property int status
  */
 class Player implements Character {
+    const HEALTH_PER_STAMINA = 2;
 	public $ip;
 	public $avatar_url;
     private $data;
@@ -372,7 +373,7 @@ class Player implements Character {
      * @return integer
      */
     public function getMaxHealth() {
-        return $this->getStamina()*2;
+        return $this->getStamina()*static::HEALTH_PER_STAMINA;
     }
 
     /**
@@ -846,7 +847,7 @@ class Player implements Character {
      * @return integer
      */
     public static function maxHealthByLevel($level) {
-        return (int) (NEW_PLAYER_INITIAL_HEALTH + round(LEVEL_UP_HP_RAISE*($level-1)));
+        return (int) Player::baseStaminaByLevel($level)*static::HEALTH_PER_STAMINA;
     }
 
     /**
