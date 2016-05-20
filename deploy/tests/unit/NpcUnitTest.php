@@ -21,22 +21,23 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(array_key_exists('spider', NpcFactory::npcsData()));
         $this->assertTrue(array_key_exists('kappa', NpcFactory::npcsData()));
         $this->assertTrue(array_key_exists('tengu', NpcFactory::npcsData()));
+    }
 
-        if (defined('DEBUG') && DEBUG) {
-            $this->assertTrue(array_key_exists('pig', NpcFactory::npcsData()));
-            $this->assertTrue(array_key_exists('merchant2', NpcFactory::npcsData()));
-            $this->assertTrue(array_key_exists('peasant2', NpcFactory::npcsData()));
+    public function testForExperimentalNpcs() {
+        if(!DEBUG){
+            $this->markTestSkipped();
         }
+        $this->assertTrue(array_key_exists('pig', NpcFactory::npcsData()));
+        $this->assertTrue(array_key_exists('merchant2', NpcFactory::npcsData()));
+        $this->assertTrue(array_key_exists('peasant2', NpcFactory::npcsData()));
     }
 
     public function testCreateStandardFirefly() {
-        assert(defined('DEBUG') && DEBUG);
         $firefly = NpcFactory::create('firefly');
         $this->assertInstanceOf('NinjaWars\core\data\Npc', $firefly, 'Firefly creation failed');
     }
 
     public function testCreateStandardFirefliesPlural() {
-        assert(defined('DEBUG') && DEBUG);
         $fireflies = NpcFactory::create('fireflies');
         $this->assertInstanceOf('NinjaWars\core\data\Npc', $fireflies, 'Fireflies creation failed');
     }
@@ -177,6 +178,9 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testAnNpcHasADifficulty(){
+        if(!DEBUG){
+            $this->markTestSkipped();
+        }
         $peasant = new Npc('peasant2');
         $this->assertGreaterThan(0, $peasant->difficulty());
     }

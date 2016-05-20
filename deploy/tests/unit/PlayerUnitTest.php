@@ -11,7 +11,7 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
         $this->data->uname = 'User1';
         $this->data->player_id = 1;
         $this->data->level = 20;
-        $this->data->health = 20;
+        $this->data->health = Player::maxHealthByLevel($this->data->level);
     }
 
 	protected function setUp() {
