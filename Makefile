@@ -196,8 +196,8 @@ web-reload:
 	ps waux | grep nginx
 
 ci-pre-configure:
-	# Set php version through phpenv. 5.3, 5.4 and 5.5 available
-	phpenv local 5.5
+	# Set php version through phpenv. 5.3 through 7.0 available
+	phpenv local 5.6
 	ln -s `pwd` /tmp/root
 	#precache composer for ci
 	composer config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
