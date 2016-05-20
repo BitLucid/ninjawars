@@ -868,6 +868,6 @@ class Player implements Character {
      * Calculate a base stamina by level
      */
     public static function baseStaminaByLevel($level) {
-        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+        return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 }
