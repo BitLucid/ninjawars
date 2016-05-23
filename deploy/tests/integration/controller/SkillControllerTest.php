@@ -46,6 +46,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $initial_health = $this->char2->health;
         $error = $this->char->setClass('tiger');
         $this->assertNull($error);
+        $this->char->save();
         $name = $this->char2->name();
         $this->assertNotEmpty($name);
         $this->assertNotEmpty(rawurlencode($name));
@@ -64,6 +65,34 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $response_data = $reflection->getValue($response);
         $this->assertNull($response_data['error']);
         $this->assertLessThan($initial_health, $final_defender->health);
+    }
+
+    public function testUseFireboltOnAnotherCharDecreasesTurns(){
+        $this->char->setTurns(300);
+        $this->char->level = 20;
+        $initial_health = $this->char2->health;
+        $error = $this->char->setClass('tiger');
+        $this->assertNull($error);
+        $this->char->save();
+        $name = $this->char2->name();
+        $this->assertNotEmpty($name);
+        $this->assertNotEmpty(rawurlencode($name));
+        $skillList = new Skill();
+        $this->assertTrue($skillList->hasSkill('Fire Bolt', $this->char));
+        $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
+        RequestWrapper::inject($request);
+        $skill = new SkillController();
+        $response = $skill->useSkill();
+        $final_defender = Player::find($this->char2->id());
+        $final_attacker = Player::find($this->char->id());
+        $this->assertNotInstanceOf(RedirectResponse::class, $response,
+                'A redirect was the outcome for the url: '
+                .($response instanceof RedirectResponse ? $response->getTargetUrl() : ''));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNull($response_data['error']);
+        $this->assertEquals(298, $final_attacker->turns);
     }
 
     public function testWhenIFireBoltACharacterAndKillIShouldReceiveBounty(){
@@ -159,6 +188,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->char->setTurns(300);
         $this->char->level = 20;
         $this->assertNull($error);
+        $this->char->save();
         $initial_health = $this->char2->health;
         $name = $this->char2->name();
         $this->assertNotEmpty($name);

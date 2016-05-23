@@ -194,7 +194,6 @@ class SkillController extends AbstractController {
 
 		$skillListObj    = new Skill();
 		// *** Before level-based addition.
-		$poisonTurnCost  = $skillListObj->getTurnCost('poison touch'); // wut
 		$turn_cost       = $skillListObj->getTurnCost(strtolower($act));
 		$ignores_stealth = $skillListObj->getIgnoreStealth($act);
 		$self_usable     = $skillListObj->getSelfUse($act);
@@ -206,9 +205,7 @@ class SkillController extends AbstractController {
 		// Check whether the user actually has the needed skill.
 		$has_skill = $skillListObj->hasSkill($act, $player);
 
-		$starting_turn_cost = $turn_cost;
 		assert($turn_cost>=0);
-		$turns_to_take = null;  // *** Even on failure take at least one turn.
 
 		if ($self_use) {
 			// Use the skill on himself.
@@ -526,8 +523,6 @@ class SkillController extends AbstractController {
 				}
 			}
 
-			$turns_to_take = $turns_to_take - $turn_cost;
-
 			if (!$covert && $player->hasStatus(STEALTH)) {
 				$player->subtractStatus(STEALTH);
 				$destealthed = true;
@@ -536,7 +531,7 @@ class SkillController extends AbstractController {
 			$target->save();
 		} // End of the skill use SUCCESS block.
 
-        $player->turns = $player->turns - $turns_to_take; // Take the skill use cost.
+        $player->turns = $player->turns - max(0, $turn_cost); // Take the skill use cost.
         $player->save();
 
         $ending_turns         = $player->turns;
