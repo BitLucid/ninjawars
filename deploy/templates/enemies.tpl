@@ -64,7 +64,7 @@
   </ul>
 </div>
 {else}
-<p class='enemies-righthalf'>No nearby ninja, <em class='char-name'>{$username|escape}</em>.</p>
+<p class='enemies-righthalf'>No nearby ninja, <em class='char-name'>{$char_name|escape}</em>.</p>
 {/if}
 </section><!-- End of clearfix section -->
 
