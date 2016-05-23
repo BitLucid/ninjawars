@@ -41,7 +41,7 @@ class HomepageController extends AbstractController {
         // Get the actual values of the vars.
         $ninja = Player::find(SessionFactory::getSession()->get('player_id'));
         $playerInfo = $ninja->data();
-        $clan = Clan::findByMember($ninja);
+        $clan = $ninja? Clan::findByMember($ninja) : null;
 
         $unreadCount = Message::where([
             'send_to' => $ninja->id(),
