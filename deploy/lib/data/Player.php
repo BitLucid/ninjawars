@@ -282,6 +282,9 @@ class Player implements Character {
 		$this->vo->stamina = $stamina;
 	}
 
+    /**
+     * @return int
+     */
 	public function setKi($ki){
 		if($ki < 0){
 			throw new \InvalidArgumentException('Ki cannot be negative.');
@@ -289,6 +292,9 @@ class Player implements Character {
 		return $this->vo->ki = $ki;
 	}
 
+    /**
+     * @return int
+     */
 	public function setGold($gold) {
 		if ($gold < 0) {
 			throw new \InvalidArgumentException('Gold cannot be made negative.');
@@ -301,6 +307,9 @@ class Player implements Character {
 		return $this->vo->gold = $gold;
 	}
 
+    /**
+     * @return int
+     */
 	public function setBounty($bounty) {
 		if($bounty < 0){
 			throw new \InvalidArgumentException('Bounty cannot be made negative ['.(string)$bounty.'].');
@@ -847,7 +856,7 @@ class Player implements Character {
      * @return integer
      */
     public static function maxHealthByLevel($level) {
-        return (int) Player::baseStaminaByLevel($level)*self::HEALTH_PER_STAMINA;
+        return (int) self::baseStaminaByLevel($level)*self::HEALTH_PER_STAMINA;
     }
 
     /**
