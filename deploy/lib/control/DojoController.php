@@ -81,7 +81,7 @@ class DojoController extends AbstractController {
     public function changeClass() {
         if (SessionFactory::getSession()->get('authenticated', false)) {
             $player            = Player::find(SessionFactory::getSession()->get('player_id'));
-            $classes           = query('select class_id, identity, class_name, class_note, class_tier, class_desc, class_icon, theme from class where class_active = true');
+            $classes           = query_array('select class_id, identity, class_name, class_note, class_tier, class_desc, class_icon, theme from class where class_active = true');
             $requestedIdentity = RequestWrapper::getPostOrGet('requested_identity');
             $currentClass      = $player->identity;
             $showMonks         = false;
