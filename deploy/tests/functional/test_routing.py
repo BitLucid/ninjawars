@@ -71,7 +71,7 @@ class TestRouting:
             'player?player=tchalvak', 'item/self_use/amanita',
             'skill/use/Fire%20Bolt/tchalvak', 'skill/self_use/Heal',
             'item/self_use/3', 'item/self_use/1',
-            'item/use/shuriken/tchalvak', 'dojo/buyDimMak',
+            'item/use/shuriken/tchalvak', 'dojo/buyDimMak', 'dojo/changeClass',
             'casino', 'player',
         ]
         legacy_urls = ['player.php']
