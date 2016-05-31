@@ -246,7 +246,7 @@ class Deity {
      * @param int|null $basic Per tick regen
      * @param bool $with_level whether regen increases with level
      */
-    public function regenCharacters($basic, $with_level=true){
+    public function regenCharacters($basic, $with_level=false){
         // Default max heal deity will do is level 3 health
         $maximum_heal = Player::maxHealthByLevel(3);
 

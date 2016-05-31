@@ -60,7 +60,7 @@ var combat_skills = {$combat_skills|@json_encode};
           <tr>
             <td id='attacking-choices'>
               <form id='attack_player' action='/attack' method='post' name='attack_player'>
-                <label for='duel' title='Multi-attack duel for an additional {getTurnCost skillName="duel"} turns.'>
+                <label for='duel' title='Enter into a multi-round duel for an additional {getTurnCost skillName="duel"} turns.'>
                   <input id="duel" type="checkbox" name="duel" value="1"> Duel
                 </label>
 
@@ -70,9 +70,9 @@ var combat_skills = {$combat_skills|@json_encode};
                 </label>
 		{/foreach}
 
-                <input id="target" type="hidden" value="{$target_player_obj->id()|escape}" name="target" title='Attack or Duel this ninja'>
-                <label class='attack-player-trigger btn btn-vital'>
-                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{cachebust file="/images/50pxShuriken.png"}' alt='Attack' title='Attack'><span id='attack-text'>Attack</span>
+                <input id="target" type="hidden" value="{$target_player_obj->id()|escape}" name="target">
+                <label class='attack-player-trigger btn btn-vital'  title='Attack or Duel this ninja for a base cost of {getTurnCost skillName="attack"} turn'>
+                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{cachebust file="/images/50pxShuriken.png"}' alt='Attack'><span id='attack-text'>Attack</span>
                 </label>
               </form>
             </td>
