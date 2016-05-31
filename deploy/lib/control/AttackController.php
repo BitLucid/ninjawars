@@ -44,7 +44,7 @@ class AttackController extends AbstractController {
         $skillListObj = new Skill();
 
         $ignores_stealth = false;
-        $required_turns  = 1;
+        $required_turns  = 0;
 
         foreach (array_filter($options) as $type=>$value) {
             $ignores_stealth = $ignores_stealth||$skillListObj->getIgnoreStealth($type);

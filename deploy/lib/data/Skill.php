@@ -125,10 +125,11 @@ class Skill {
 			'cold steal'     => 3
 			, 'ice bolt'     => 2
 			, 'sight'        => 1
-			, 'deflect'      => 3
-			, 'blaze'        => 2
-			, 'duel'         => 2
 			, 'attack'       => 1
+			, 'duel'         => 2
+			, 'deflect'      => 2
+			, 'blaze'        => 1
+			, 'evasion'      => 1
 			, 'fire bolt'    => 2
 			, 'poison touch' => 2
 			, 'stealth'      => 2
@@ -136,7 +137,6 @@ class Skill {
 			, 'stalk'        => 1
 			, 'steal'        => 1
 			, 'kampo'        => 1
-			, 'evasion'      => 2
 			, 'heal'         => 3
 		);
 
