@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c616f1087d37dff0f73a49c94842fbf8",
-    "content-hash": "65d355ecfa49d70c1f08cb85c7f92f3a",
+    "hash": "7bcb53b0c2a347be100a9cb740678004",
+    "content-hash": "5f6cb969066649c32cb6721d3dabf37f",
     "packages": [
         {
             "name": "BitLucid/jquery-linkify",
