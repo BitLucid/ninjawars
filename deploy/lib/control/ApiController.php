@@ -68,9 +68,11 @@ class ApiController extends AbstractController {
             } elseif ($type == 'char_search') {
                 $result = $this->jsonCharSearch($request->get('term'), $request->get('limit'));
             } elseif (!empty($data)){ // If data param is present, pass data to the function
-                $result = $this->$valid_type_map[$type]($data);
+                $method = $valid_type_map[$type];
+                $result = $this->$method($data);
             } else { // No data present, just call the function with no arguments.
-                $result = $this->$valid_type_map[$type]();
+                $method = $valid_type_map[$type];
+                $result = $this->$method();
             }
 
             $res = "$jsoncallback(".json_encode($result).")";
