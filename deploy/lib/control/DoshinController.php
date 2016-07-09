@@ -39,6 +39,7 @@ class DoshinController extends AbstractController {
                 'error'     => 0,
                 'authenticated' => $authenticated,
                 'command'   => 'index',
+                'amount'    => 0,
                 'target'    => $target,
             ]
         );
