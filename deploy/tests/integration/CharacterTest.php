@@ -261,6 +261,11 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($char_copy->gold, 343);
     }
 
+    public function testPlayerMaxHealthShouldMatchInitialHealthForTestPlayer(){
+        $char = Player::find($this->char_id);
+        $this->assertEquals($char->health, $char->getMaxHealth(), 'Test character created with an invalid max health!');
+    }
+
     public function testPlayerObjectReportDamageCorrectly() {
         $char = Player::find($this->char_id);
         $damage = floor($char->health/2);

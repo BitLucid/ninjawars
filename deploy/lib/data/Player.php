@@ -261,7 +261,7 @@ class Player implements Character {
      * @return int
      */
 	public function getStamina() {
-		$stam = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
+		$stam = NEW_PLAYER_INITIAL_STATS + ($this->level * LEVEL_UP_STAT_RAISE);
         if($this->hasStatus(STALKING)){
             $stam = (int) max(1, floor($stam*0.9));
         }

@@ -247,10 +247,19 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->char->setClass('dragon');
         $this->char->setTurns(300);
         $this->char->level = 20;
-        $this->char->harm(floor($this->char->getMaxHealth()/2));
+        // Between 2 and (between half initial health or half of max health)
+        // So that a bad getMaxHealth in excess of real initial health doesn't break this test
+        $harm_by = max(2, 
+            min(
+                (int)floor($this->char->health/2), 
+                (int)floor($this->char->getMaxHealth()/2)
+                )
+            );
+        $this->char->harm($harm_by);
         $this->char->save();
 
         $initial_health = $this->char->health;
+        $this->assertGreaterThan(0, $initial_health, 'Character came back with no health initially!');
         $this->assertGreaterThan($initial_health, $this->char->getMaxHealth());
 
         RequestWrapper::inject(Request::create('/skill/self_use/Heal/'));
