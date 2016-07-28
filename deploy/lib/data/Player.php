@@ -207,7 +207,7 @@ class Player implements Character {
      * @return int
      */
 	public function getStrength() {
-        $str = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
+        $str = NEW_PLAYER_INITIAL_STATS + (($this->level-1) * LEVEL_UP_STAT_RAISE);
         if($this->hasStatus(STALKING)){
             $str = (int) max(1, floor($str*1.4));
         }
@@ -236,7 +236,7 @@ class Player implements Character {
      * @return int
      */
 	public function getSpeed() {
-        $speed = NEW_PLAYER_INITIAL_STATS + $this->level * LEVEL_UP_STAT_RAISE;
+        $speed = NEW_PLAYER_INITIAL_STATS + (($this->level -1) * LEVEL_UP_STAT_RAISE);
         if($this->hasStatus(STALKING)){
             $speed = (int) max(1, floor($speed*0.7));
         }
@@ -261,7 +261,7 @@ class Player implements Character {
      * @return int
      */
 	public function getStamina() {
-		$stam = NEW_PLAYER_INITIAL_STATS + ($this->level * LEVEL_UP_STAT_RAISE);
+		$stam = NEW_PLAYER_INITIAL_STATS + (($this->level -1) * LEVEL_UP_STAT_RAISE);
         if($this->hasStatus(STALKING)){
             $stam = (int) max(1, floor($stam*0.9));
         }
@@ -382,7 +382,7 @@ class Player implements Character {
      * @return integer
      */
     public function getMaxHealth() {
-        return $this->getStamina()*static::HEALTH_PER_STAMINA;
+        return NEW_PLAYER_INITIAL_HEALTH + ($this->getStamina()*static::HEALTH_PER_STAMINA);
     }
 
     /**
@@ -852,29 +852,37 @@ class Player implements Character {
     }
 
     /**
-     * Calculate a max health by a level
-     * @return integer
+     * Calculate a max health by a level, this is actually only the base maximum
+     * since changes in stamina can change the current player's maximum
+     *
+     * @return integer The health points
      */
     public static function maxHealthByLevel($level) {
-        return (int) self::baseStaminaByLevel($level)*self::HEALTH_PER_STAMINA;
+        return (int) NEW_PLAYER_INITIAL_HEALTH + (int) (self::baseStaminaByLevel($level) * self::HEALTH_PER_STAMINA);
     }
 
     /**
      * Calculate a base str by level
+     *
+     * @return integer strength
      */
     public static function baseStrengthByLevel($level) {
-        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+        return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 
     /**
      * Calculate a base speed by level
+     *
+     * @return integer speed
      */
     public static function baseSpeedByLevel($level) {
-        return NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+        return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 
     /**
      * Calculate a base stamina by level
+     *
+     * @return integer speed
      */
     public static function baseStaminaByLevel($level) {
         return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
