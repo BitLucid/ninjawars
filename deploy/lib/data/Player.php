@@ -81,7 +81,7 @@ class Player implements Character {
         $this->traits              = '';
         $this->beliefs             = '';
         $this->goals               = '';
-        $this->last_started_attack = '2016-01-01';
+        $this->last_started_attack = null;
     }
 
     /**
