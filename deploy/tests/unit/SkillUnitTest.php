@@ -20,7 +20,7 @@ class SkillUnitTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testGetTurnCostSpecific() {
-        $this->assertEquals(3, $this->skill->getTurnCost('deflect'));
+        $this->assertEquals(2, $this->skill->getTurnCost('deflect'));
     }
 
     public function testGetSelfUseDefault() {
