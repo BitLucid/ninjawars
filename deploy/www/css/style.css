@@ -1623,21 +1623,6 @@ time{
 #index-header .child{
   display:inline-block;text-align:left;
 }
-
-#ninja-box{
-  display:inline-block;width:185px;height:71px;padding-right:4px;padding-top:4px;
-}
-#ninja-box .text-info{
-  display:inline-block;width:80px;height:80px;vertical-align:top;
-  overflow:hidden;
-}
-#ninja-dropdown{
-  display:none;position:absolute;top:105%;width:85%;background-color:ghostwhite;color:#333;z-index:11;padding:0.7em 3% 0.7em;margin-left:1%;margin-right:1%;
-  border:medium solid #333;
-}
-#ninja-dropdown a:hover{
-	color:teal;
-}
 #index-avatar{
   display:inline-block;width:90px;height:90px;cursor:pointer;
 }

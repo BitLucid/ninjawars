@@ -1,7 +1,7 @@
     <!-- Version {$version|escape} -->
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div id="logo-appended">
           <a href="/">
@@ -23,29 +23,56 @@
             <li><a href="/clan" target="main">Clans</a></li>
             <li><a href="/shop" target="main">Shop</a></li>
             <li><a href="/work" target="main">Work</a></li>
-			<li><a href="/doshin" target="main">Hunt<img src="{cachebust file="/images/doshin.png"}" alt="" style='height:8px;width:8px'></a></li>
+            <li><a href="/doshin" target="main">Hunt<i class="fa fa-star-o" aria-hidden="true"></i></a></li>
           </ul>
+          <div id='index-avatar'>
+            {include file="gravatar.tpl" gurl=$ninja->avatarUrl()}
+          </div>
+          {if $ninja->id()}
+          <div class='nav navbar-nav'>
+            <a class='ninja-name' target="main" href="/player?player_id={$ninja->id()|escape:'url'|escape}" title='Display your ninja information'>
+              <strong class='char-name'>{$ninja->name()|escape}</strong>
+            </a>
+            <div class='ninja-level'>
+              Level {$ninja->level|escape}
+            </div>
+            {if $ninja->level < 5 || $ninja->isAdmin()}
+            <div id='helpful-info'>
+              <a target='main' href='/intro'><i class="fa fa-question-circle"></i> Helpful Info</a>
+            </div>
+            {/if}
+            <div class='ninja-stats-link thick'>
+              <a href='/stats' target='main' title='Your ninja stats, level, info, etc.'><i class="fa fa-heart"></i> Ninja Stats</a>
+            </div>
+            {if $clan}
+            <div>
+              <a href="/clan/view?clan_id={$clan->id|escape}" target='main' title='Your clan members and clan chat'><i class='fa fa-users'></i> My Clan</a>
+            </div>
+            {/if}
+          </div><!-- End of ninja logged in block -->
+          {/if}
+          <div class='account-info thick'>
+            <a href="/account" target="main" title='Your player account info, email, password, etc.'><i class="fa fa-gear"></i> Account Info</a>
+          </div>
+          <!-- Recent Events count and target will get put in here via javascript -->
+          <div id='recent-events' class="boxes active" style='display:none'>
+            <div>
+              <a target='main' id='recent-event-attacked-by' href='/events' title='View events'>You weren't recently in combat</a> with <a id='view-event-char' target='main' href='#' title="View a player's profile">anyone</a>.
+            </div>
+          </div><!-- End of recent events -->
+          <div>
+            <div id='logout' class='thick'>
+              <form method='post' action='/logout'>
+                <input type='submit' name ='logout' value='Logout' class='btn btn-default'>
+              </form>
+            </div>
+          </div><!-- End of logout centering area -->
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <!-- Begin page content -->
     <div class="container-fluid">
-
-	  <div class="page-header">
-        <div id='ninja-box'>
-          <div class='text-info'>
-          </div>
-          <div id='index-avatar'>
-{include file="gravatar.tpl" gurl=$ninja->avatarUrl()}
-          </div>
-
-          <div id='ninja-dropdown' class='bubble'>
-{include file="ninja.menu.tpl" ninja=$ninja}
-          </div> <!-- end of #ninja-dropdown -->
-        </div><!-- end of #ninja-box -->
-      </div>
-
 
       <section id='core' class='clearfix'>
       <!-- Test stuff! -->
