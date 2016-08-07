@@ -13,7 +13,7 @@ class AccountControllerUnitTest extends PHPUnit_Framework_TestCase {
     }
 
 	protected function setUp() {
-        $this->markTestIncomplete('AccountController::render relies on the DB.');
+        $this->markTestIncomplete('AccountController::render relies on the DB and session.');
 		SessionFactory::init(new MockArraySessionStorage());
 
 		$get = [
