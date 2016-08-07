@@ -158,7 +158,7 @@ class AttackLegal {
         }
 
         //  *** START OF ILLEGAL ATTACK ERROR LIST  ***
-        if (!$timing_allowed) {
+        if (!$timing_allowed && $update_timer) {
             $this->error = 'Even the fastest ninja cannot act more than four times a second.';
         } else if (empty($target->uname)) {
             $this->error = 'Your target does not exist.';
