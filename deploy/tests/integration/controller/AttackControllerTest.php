@@ -45,6 +45,20 @@ class AttackControllerTest extends PHPUnit_Framework_TestCase {
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
+
+    public function testAttackDoesNotUseExcessiveTurns() {
+        $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+        $char_2 = Player::find($char_id_2);
+        $initial_turns = $char_2->turns;
+
+        $request = Request::create('/attack', 'GET', ['target'=>$char_id_2]);
+        RequestWrapper::inject($request);
+        $response = $this->controller->index();
+        $char_2 = Player::find($char_id_2); // Get latest player data again
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
+        $this->assertGreaterThan($initial_turns-5, $char_2->turns);
+    }
+
     public function testDuelWithTarget() {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 

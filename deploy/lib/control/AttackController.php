@@ -44,7 +44,7 @@ class AttackController extends AbstractController {
         $skillListObj = new Skill();
 
         $ignores_stealth = false;
-        $required_turns  = 1;
+        $required_turns  = 0;
 
         foreach (array_filter($options) as $type=>$value) {
             $ignores_stealth = $ignores_stealth||$skillListObj->getIgnoreStealth($type);
@@ -67,7 +67,7 @@ class AttackController extends AbstractController {
 
         if (!$attack_is_legal) {
             // Take away at least one turn even on attacks that fail.
-            $attacker->changeTurns(-1);
+            $attacker->turns = $attacker->turns - 1;
             $attacker->save();
 
             $parts = [
@@ -147,7 +147,7 @@ class AttackController extends AbstractController {
                 }
             }
 
-            $attacker->changeTurns(-1*$required_turns);
+            $attacker->turns = $attacker->turns - (max(0, $required_turns));
 
             $attack_label = ($options['duel'] ? 'dueled %s' : 'attacked %s');
         }
@@ -234,7 +234,7 @@ class AttackController extends AbstractController {
      */
     private function stealthStrike(Player $attacker, Player $target) {
         $target->harm($attacker->getStrength());
-        $attacker->changeTurns(-1*self::STEALTH_STRIKE_COST);
+        $attacker->turns = $attacker-turns - (1*self::STEALTH_STRIKE_COST);
     }
 
     /**

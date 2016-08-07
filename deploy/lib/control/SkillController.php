@@ -19,6 +19,7 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 class SkillController extends AbstractController {
 	const ALIVE = true;
 	const PRIV  = true;
+	public $update_timer;
 
 	const MIN_POISON_TOUCH = 1;
 
@@ -251,7 +252,8 @@ class SkillController extends AbstractController {
 		    ];
 
 			$AttackLegal    = new AttackLegal($player, $target, $params);
-			$attack_allowed = $AttackLegal->check();
+			$update_timer = isset($this->update_timer)? $this->update_timer : true;
+			$attack_allowed = $AttackLegal->check($update_timer);
 			$attack_error   = $AttackLegal->getError();
 		}
 

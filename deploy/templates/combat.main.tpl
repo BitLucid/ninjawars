@@ -48,15 +48,15 @@ As you enter battle, you note your potential escape routes...
 {/if}
 
 {if $options.blaze}
-<div>You spent two extra turns to blaze with power.</div>
+<div>You spent {getTurnCost skillName="blaze"} turns to blaze with power.</div>
 {/if}
 
 {if $options.deflect}
-<div>You spent three extra turns in order to deflect your enemy's blows.</div>
+<div>You spent {getTurnCost skillName="deflect"} more turn in order to deflect your enemy's blows.</div>
 {/if}
 
 {if $options.evade}
-<div>You spent two extra turns preparing your escape routes.</div>
+<div>You spent {getTurnCost skillName="deflect"} more turn preparing your escape routes.</div>
 {/if}
 
 {if $target->health lt 1}

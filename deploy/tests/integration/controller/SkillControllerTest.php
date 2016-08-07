@@ -32,6 +32,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testLoggedInSkillsDisplay(){
         $skill = new SkillController();
+        $skill->update_timer = false;
         $response = $skill->index();
         $this->assertNotEmpty($response);
         $reflection = new \ReflectionProperty(get_class($response), 'title');
@@ -54,8 +55,10 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($skillList->hasSkill('Fire Bolt', $this->char));
         $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
-        $skill = new SkillController();
-        $response = $skill->useSkill();
+        $skill_use = new SkillController();
+        $skill_use->update_timer = false;
+        $response = $skill_use->useSkill();
+        //$this->assertEmpty($response->data->attack_error, 'Attack errored, was: ['.$response->data->attack_error);
         $final_defender = Player::find($this->char2->id());
         $this->assertNotInstanceOf(RedirectResponse::class, $response,
                 'A redirect was the outcome for the url: '
@@ -82,6 +85,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
+        $skill->update_timer = false;
         $response = $skill->useSkill();
         $final_defender = Player::find($this->char2->id());
         $final_attacker = Player::find($this->char->id());
@@ -116,6 +120,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
+        $skill->update_timer = false;
         $response = $skill->useSkill();
         $final_defender = Player::find($this->char2->id());
         $final_attacker = Player::find($this->char->id());
@@ -150,6 +155,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Fire%20Bolt/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
+        $skill->update_timer = false;
         $response = $skill->useSkill();
         $final_defender = Player::find($this->char2->id());
         $final_attacker = Player::find($this->char->id());
@@ -173,6 +179,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/self_use/Unstealth/');
         RequestWrapper::inject($request);
         $controller = new SkillController();
+        $controller->update_timer = false;
         $response = $controller->selfUse();
         $this->assertNotInstanceOf(RedirectResponse::class, $response,
                 'A redirect was the outcome for the url: '
@@ -198,6 +205,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Poison%20Touch/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
+        $skill->update_timer = false;
         $response = $skill->useSkill();
 
         $final_defender = Player::find($this->char2->id());
@@ -226,6 +234,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
         $request = Request::create('/skill/use/Sight/'.rawurlencode($name).'/');
         RequestWrapper::inject($request);
         $skill = new SkillController();
+        $skill->update_timer = false;
         $response = $skill->useSkill();
 
         $this->assertNotInstanceOf(RedirectResponse::class, $response,
@@ -264,6 +273,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
         RequestWrapper::inject(Request::create('/skill/self_use/Heal/'));
         $controller = new SkillController();
+        $controller->update_timer = false;
         $response = $controller->selfUse();
 
         $this->assertNotInstanceOf(RedirectResponse::class, $response,
@@ -289,6 +299,7 @@ class SkillControllerTest extends \PHPUnit_Framework_TestCase {
 
         RequestWrapper::inject(Request::create('/skill/self_use/Harmonize/'));
         $controller = new SkillController();
+        $controller->update_timer = false;
         $response = $controller->selfUse();
 
         $this->assertNotInstanceOf(RedirectResponse::class, $response,
