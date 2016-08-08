@@ -707,8 +707,28 @@ a:link {} a:visited {} a:active {}
 	width:80px;
 	height:80px;
 }
-#index-header .avatar img {
-	width:72px;height:72px;
+#index-avatar{
+  padding:0 !important;
+  background:inherit;
+}
+#index-avatar img{
+  width: 34px;
+  height: 34px;
+  margin-top: 7px;
+}
+.dropdown-inverse{
+  background-color: #222;
+  border-color: #080808;
+}
+.dropdown-inverse>li>a{
+    color: #999;
+}
+.dropdown-inverse:hover{
+      color: #fff;
+      background-color: #000;
+}
+.dropdown-inverse>.divider {
+    background-color: #000;
 }
 
 .member-info span {
@@ -1622,9 +1642,6 @@ time{
 }
 #index-header .child{
   display:inline-block;text-align:left;
-}
-#index-avatar{
-  display:inline-block;width:90px;height:90px;cursor:pointer;
 }
 #health-and-turns{
   display:inline-block;vertical-align:top;
