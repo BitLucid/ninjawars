@@ -4,7 +4,15 @@
 #map table {
 	margin: 0 auto;
 }
-
+#map .map-grid{
+    width:765px;background-color:black;color:rgb(155, 155, 155);
+}
+#map .details{
+    width:66%;text-align:center;min-height:1.2em;font-size:1.1em;line-height:1.1;background-color:black;background-color:rgba(0,0,0,.8);margin-left:17%;margin-top:25%;border-radius:1em;padding:.3em 0 .3em;
+}
+#map .point{
+    width:150px;height:150px;margin:0;padding:0;
+}
 #map td{
 	background-color:#807F6F;
 }
@@ -78,15 +86,7 @@
 #map .area-name{
     background-color:rgb(55, 10, 10);font-size:1.3em;text-align:center;text-transform:uppercase;padding:.7em;
 }
-#map .map-grid{
-    width:510px;background-color:black;color:rgb(155, 155, 155);
-}
-#map .details{
-    width:66%;text-align:center;min-height:1.2em;font-size:1.1em;line-height:1.1;background-color:black;background-color:rgba(0,0,0,.8);margin-left:17%;margin-top:25%;border-radius:1em;padding:.3em 0 .3em;
-}
-#map .point{
-    width:100px;height:100px;margin:0;padding:0;
-}
+
 
 {/literal}
 </style>
