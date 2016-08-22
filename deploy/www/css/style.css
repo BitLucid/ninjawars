@@ -407,10 +407,12 @@ table {
  */
 
 body {
-	padding-top: 70px;
 	background-color:#000004; /* To prevent the "white background flash" effect. */
 	background:url('/images/rebel.png');
 	color:ghostwhite;
+}
+body.main-body{
+	padding-top:70px;
 }
 
 /* Set your base font here, to apply evenly */
@@ -469,6 +471,38 @@ Gazelle is useful for the h1,h2,h3 and player name headers.
 	src: local('GazelleFLF'), local('GazelleFLF'), url('/files/fonts/GazelleFLF.woff') format('woff'), url('/files/fonts/GazelleFLF.ttf') format('truetype'), url('/files/fonts/GazelleFLF.svg#GazelleFLF') format('svg');
 }
 
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/Fcx7Wwv8OzT71A3E1XOAjvesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/u-WUoqrET9fUeobQW7jkRRJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
 /* latin-ext */
 @font-face {
   font-family: 'Roboto';
@@ -1674,16 +1708,28 @@ a#skip-to-bottom{
 	text-decoration:none;
 }
 
+
+.footer-inverse {
+  background-color: #222;
+  border-color: #080808;
+  color: #777;
+}
+.footer-inverse a{
+	color:grey;
+}
+
 #index-footer {
 	text-align: center;
 	min-height:3%;
 	width:100%;
 	opacity:.96;
 	border-top:1px solid #666;
+	font-family: 'Open Sans', sans-serif;
 }
 
 #index-footer a, #stats-footer a {
 	color: gray;
+	font-family: 'Roboto', sans-serif;
 	text-decoration: underline;
 	font-weight: normal;
 	border: 3px solid transparent; /* Should correspond to the border width on hover below. */
@@ -1703,15 +1749,8 @@ a#skip-to-bottom{
 	font-size:smaller;
 	margin-top:3em;
 }
-#stats-footer #footer-top-bar{
-	text-align:center;
-}
-
 #footer-top-bar{
 	padding:.5em 0;
-	color:#999;
-	background-color:#333;
-	border-bottom:1px solid #666;
 }
 #footer-middle-bar{
 	color:#D9D9D9;
@@ -4038,8 +4077,7 @@ input[type="button"].btn-block {
  */
 
 
-/* Grade-A Mobile Browsers (Opera Mobile, Mobile Safari, Android Chrome)
-   consider this: www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/ */
+/* Grade-A Mobile Browsers (Opera Mobile, Mobile Safari, Android Chrome) */
 @media screen and (max-device-width: 480px), (max-device-width: 854px) {
 	html, body {
 		font: 12px/15px sans-serif;

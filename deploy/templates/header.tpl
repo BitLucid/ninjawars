@@ -58,7 +58,7 @@
 {/if}
 
   </head>
-  <body>
+  <body {if $body_classes}class='{$body_classes}'{/if}>
 {if $is_index}{* Only display appended logo on solo pages *}
 {else}
 {/if}{* End of solo-page check *}

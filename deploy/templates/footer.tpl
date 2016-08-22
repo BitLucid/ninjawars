@@ -1,11 +1,11 @@
 {if $is_index}{* Only display footer on index page *}
-    <footer class="footer">
+    <footer class="footer footer-inverse">
       <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
+        {include file='footerlinks.tpl'}
       </div>
 
       <div id='index-footer' class='navigation'>
-        <!-- Stuff like catchphrases, links, and the author information -->
+        <!-- Stuff like links, and the author information -->
         {include file='linkbar_section.tpl'}
       </div>
 
