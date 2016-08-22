@@ -407,7 +407,7 @@ table {
  */
 
 body {
-	min-height:96%;
+	padding-top: 70px;
 	background-color:#000004; /* To prevent the "white background flash" effect. */
 	background:url('/images/rebel.png');
 	color:ghostwhite;
@@ -1625,7 +1625,8 @@ time{
 }
 
 .main-iframe { /* class for the main iframe */
-	 height:93%;/*Iframe height doesn't inherit from its container, it inherits from the page, so must match the core & main-column height defined before it above (and they must be defined above).*/
+	 height:98%;/*Iframe height doesn't inherit from its container, it inherits from the page, so must match the core & main-column height defined before it above (and they must be defined above).*/
+	 height:98vh; /* Sets height as 98% in the new ways */
 	 min-height:40em;
 	 width:100%;
 	 border:0;
