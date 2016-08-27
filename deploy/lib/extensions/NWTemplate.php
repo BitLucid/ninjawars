@@ -24,8 +24,8 @@ class NWTemplate extends Smarty {
      */
     public function displayPage($template, $title=null, $local_vars=array(), $options=null) {
         // Updates the quickstat via javascript if requested.
-        $quickstat        = @$options['quickstat'];
-        $quickstat        = ($quickstat ? $quickstat : @$local_vars['quickstat']);
+        $quickstat        = isset($options['quickstat'])? $options['quickstat'] : null;
+        $quickstat        = ($quickstat ? $quickstat : (isset($local_vars['quickstat'])? $local_vars['quickstat'] : null) );
         $body_classes     = isset($options['body_classes'])? $options['body_classes'] :
             (isset($local_vars['body_classes'])? $local_vars['body_classes'] : null);
         $is_index         = isset($options['is_index'])? $options['is_index'] : false;
