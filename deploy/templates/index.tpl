@@ -11,17 +11,17 @@
       <div id="navbar" class="collapse navbar-collapse">
 
         <ul class="nav navbar-nav">
-          <li><a href="/messages" target="main">Inbox <span class='badge'>{$unread_message_count}</span></a></li>
-          <li><a href="/events" target="main"><i class="fa fa-star-o" aria-hidden="true"></i>Events</a></li>
-          <li><a href="/map" target="main">Map</a></li>
-          <li><a href="/enemies" target="main">Fight</a></li>
-          <li><a href="/list" target="main">Ninjas</a></li>
+          <li><a href="/list" target="main"><i class='fa fa-star' aria-hidden='true'></i> Ninjas</a></li>
+          <li><a href="/enemies" target="main"><i class='fa fa-bolt' aria-hidden='true'></i> Fight</a></li>
+          <li><a href="/map" target="main"><i class='fa fa-map' aria-hidden='true'></i> Map</a></li>
           <li><a href="/inventory" target="main">Inventory</a></li>
           <li><a href="/skill" target="main">Skills</a></li>
-          <li><a href="/clan" target="main">Clans</a></li>
-          <li class='hidden-sm-up'><a href="/shop" target="main">Shop</a></li>
-          <li class='hidden-sm-up'><a href="/work" target="main">Work</a></li>
-          <li class='hidden-sm-up'><a href="/doshin" target="main">Hunt</a></li>
+          <li><a href="/clan" target="main"><i class='fa fa-users' aria-hidden='true'></i> Clans</a></li>
+          <li class='hidden-sm-down'><a href="/shop" target="main">石 Shop</a></li>
+          <li class='hidden-sm-down'><a href="/work" target="main"><i class='fa fa-pagelines' aria-hidden='true'></i> Work</a></li>
+          <li class='hidden-sm-down'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> Hunt</a></li>
+          <li><a href="/events" target="main"><i class="fa fa-clock-o" aria-hidden="true"></i> Events</a></li>
+          <li><a href="/messages" target="main"><i class='fa fa-envelope-o'></i> <span class='badge'>{$unread_message_count}</span></a></li>
         </ul>
 
         {if $ninja->id()}
