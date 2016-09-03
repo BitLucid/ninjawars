@@ -1838,6 +1838,11 @@ a#skip-to-bottom{
 section.login-section{
 	margin:0.3em auto 0.3em;text-align:center;
 }
+
+.login-page input{
+	line-height:inherit;border-radius:0;padding-left:0.3em;
+}
+
 .login-page .right-side{
 	display:block;
 	text-align:left;

@@ -1,4 +1,4 @@
-<h1>Login</h1>
+<h1>NinjaWars Login</h1>
 
 {if $login_error_message}
     <!-- This section only gets displayed in the event of an incorrect login -->
@@ -16,27 +16,35 @@
 
 
 <section class='login-section container'>
-  <form id="login-form" action="/login/login_request" method="post">
+  <form id="login-form" class="form-horizontal" action="/login/login_request" method="post">
     <input type="hidden" name="ref" value="{$referrer|escape}" />
       <div class='row'>
       <label>
         <div class='line'>
-        <span class='left-side'>Email or Ninja Name</span>
-        <input tabindex=1 name="user" required type="text" value='{$stored_username|escape}' class='right-side' />
+          <span class='left-side'>Email or ninja name</span>
+          <div class='input-group'>
+            <span class="input-group-addon"><i class="fa fa-envelope-o fa" aria-hidden="true"></i></span>
+            <input tabindex=1 name="user" placeholder='you@email.com or ninja' required type="text" value='{$stored_username|escape}' class='right-side' />
+          </div>
         </div>
       </label>
       </div>
       <div class='row top-buffer'>
       <label>
         <div class='line'>
-        <span class='left-side'>Password <a tabindex=4 href='/assistance'>(Forgot?)</a></span>
-        <input tabindex=2 name="pass" required type="password" class='right-side' />
+          <div class='input-group'>
+            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+            <input tabindex=2 name="pass" placeholder='Password' required type="password" class='right-side' />
+          </div>
         </div>
       </label>
       </div>
       <div class='row top-buffer'>
        <div class='left-side'>
           <input tabindex=3 name="login_request" id='request-login' class='btn btn-vital' type="submit" value="Login">
+        </div>
+        <div class='left-side'>
+          <a tabindex=4 href='/assistance'>Forgot password?</a>
         </div>
       </div>
   </form>
