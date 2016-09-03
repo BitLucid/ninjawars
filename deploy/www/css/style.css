@@ -1835,12 +1835,16 @@ a#skip-to-bottom{
 
 /* =============== Login Page ================= */
 
-section.login-section{
-	margin:0.3em auto 0.3em;text-align:center;
+.login-page input{
+	line-height:inherit;border-radius:0;padding-left:0.2em;
 }
 
-.login-page input{
-	line-height:inherit;border-radius:0;padding-left:0.3em;
+.login-page .outer-shade-box{
+	background-color:#020202;
+}
+
+.login-page .shade-box{
+	background-color:#222;
 }
 
 .login-page .right-side{
@@ -3022,6 +3026,65 @@ select option #blue-class-select {
 	margin: 0 .5em;
 }
 
+
+#clan-avatar {
+	max-height: 240px;
+	max-width: 400px;
+}
+
+#clan-info {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#clan-info #clan-avatar-section {
+	margin: 0 auto;
+	text-align: center;
+}
+
+#clan-description {
+	max-height: 240px;
+	max-width: 96%;
+}
+
+#clan-info #clan-description {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#clan-members-list .clan-leader .member {
+	background-color: rgb(60,60,120);
+}
+
+button.disabled {
+	color: gray;
+	cursor: not-allowed;
+}
+
+nav.navigation ul.menu {
+	margin: 0 0 8px 0;
+	padding: 0;
+}
+
+nav.navigation ul.menu li {
+	display: inline-block;
+	padding-right: 6px;
+	padding-left: 6px;
+	padding-bottom: 4px;
+	margin: 0;
+}
+
+#clan-page-title {
+	margin: 0;
+}
+
+.boxed-in {
+	border: 1px solid #000000;
+	font-weight: bold;
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
 /*
 ==================================================================================================================================
     Ninjawars Typography Widgets
@@ -4085,7 +4148,7 @@ input[type="button"].btn-block {
 /* Grade-A Mobile Browsers (Opera Mobile, Mobile Safari, Android Chrome) */
 @media screen and (max-device-width: 480px), (max-device-width: 854px) {
 	html, body {
-		font: 12px/15px sans-serif;
+		/*font: 12px/15px sans-serif;*/
 		padding: 0;
 		margin: 0;
 	}
@@ -4170,62 +4233,16 @@ input[type="button"].btn-block {
 	}
 	*/
 
-}
+	section.login-section{
+		margin:0.3em auto 0.3em;text-align:center;
+	}
 
-#clan-avatar {
-	max-height: 240px;
-	max-width: 400px;
-}
+	.login-page .outer-shade-box{
+		padding:2rem;border-radius:0.5rem;
+	}
 
-#clan-info {
-	margin-left: auto;
-	margin-right: auto;
-}
+	.login-page .shade-box{
+		padding:1rem 3rem;border-radius:0.1rem;
+	}
 
-#clan-info #clan-avatar-section {
-	margin: 0 auto;
-	text-align: center;
-}
-
-#clan-description {
-	max-height: 240px;
-	max-width: 96%;
-}
-
-#clan-info #clan-description {
-	margin-left: auto;
-	margin-right: auto;
-}
-
-#clan-members-list .clan-leader .member {
-	background-color: rgb(60,60,120);
-}
-
-button.disabled {
-	color: gray;
-	cursor: not-allowed;
-}
-
-nav.navigation ul.menu {
-	margin: 0 0 8px 0;
-	padding: 0;
-}
-
-nav.navigation ul.menu li {
-	display: inline-block;
-	padding-right: 6px;
-	padding-left: 6px;
-	padding-bottom: 4px;
-	margin: 0;
-}
-
-#clan-page-title {
-	margin: 0;
-}
-
-.boxed-in {
-	border: 1px solid #000000;
-	font-weight: bold;
-	margin-left: 1em;
-	margin-right: 1em;
 }
