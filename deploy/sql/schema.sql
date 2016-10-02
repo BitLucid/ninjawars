@@ -309,27 +309,6 @@ CREATE TABLE "dueling_log"
 CREATE INDEX "dueling_log_date_index" ON "dueling_log" ("date");
 
 -----------------------------------------------------------------------
--- duped_unames
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "duped_unames" CASCADE;
-
-CREATE TABLE "duped_unames"
-(
-    "uname" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "created_date" TIMESTAMP WITH TIME ZONE NOT NULL,
-    "relative_age" INT2 NOT NULL,
-    "player_id" INTEGER NOT NULL,
-    "locked" BOOLEAN DEFAULT 'f' NOT NULL,
-    PRIMARY KEY ("player_id")
-);
-
-CREATE INDEX "duped_unames_email_key" ON "duped_unames" ("email");
-
-CREATE INDEX "duped_unames_uname_key" ON "duped_unames" ("uname");
-
------------------------------------------------------------------------
 -- effects
 -----------------------------------------------------------------------
 
@@ -686,6 +665,11 @@ ALTER TABLE "messages" ADD CONSTRAINT "messages_send_to_fkey"
     ON DELETE CASCADE;
 
 ALTER TABLE "quests" ADD CONSTRAINT "quests__player_id_fkey"
+    FOREIGN KEY ("_player_id")
+    REFERENCES "players" ("player_id")
+    ON UPDATE CASCADE;
+
+ALTER TABLE "player_rank" ADD CONSTRAINT "player_rank__player_id_fkey"
     FOREIGN KEY ("_player_id")
     REFERENCES "players" ("player_id")
     ON UPDATE CASCADE;

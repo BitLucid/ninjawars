@@ -27,7 +27,7 @@ alter table news alter column updated type timestamp with time zone;
 alter table password_reset_requests alter column created_at type timestamp with time zone;
 alter table ppl_online alter column activity type timestamp with time zone;
 
-#Have to custom alter these ones as well, created by schema.xml
+-- #Have to custom alter these ones as well, created by schema.xml
 alter table password_reset_requests alter column updated_at type timestamp with time zone;
 alter table flags alter column created_at type timestamp with time zone;
 alter table clan_player alter column created_at type timestamp with time zone;
