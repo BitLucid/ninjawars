@@ -46,8 +46,6 @@ class RumorController extends AbstractController {
         $playerCount = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE active = 1");
         $stats['player_count'] = $playerCount->fetchColumn();
 
-        $peopleOnline = DatabaseConnection::$pdo->query("SELECT count(*) FROM ppl_online WHERE member = true");
-        $stats['players_online'] = $peopleOnline->fetchColumn();
 
         $stats['active_chars'] = query_item("SELECT count(*) FROM ppl_online WHERE member = true AND activity > (now() - CAST('15 minutes' AS interval))");
 
