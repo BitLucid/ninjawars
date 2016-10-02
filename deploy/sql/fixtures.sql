@@ -214,14 +214,6 @@ SELECT pg_catalog.setval('dueling_log_id_seq', 1281378, true);
 
 
 --
--- Data for Name: duped_unames; Type: TABLE DATA; Schema: public; Owner: developers
---
-
-COPY duped_unames (uname, email, created_date, relative_age, player_id, locked) FROM stdin;
-\.
-
-
---
 -- Data for Name: effects; Type: TABLE DATA; Schema: public; Owner: developers
 --
 
@@ -300,21 +292,6 @@ COPY flags (flag_id, flag, flag_type) FROM stdin;
 --
 
 SELECT pg_catalog.setval('flags_flag_id_seq', 1, false);
-
-
---
--- Data for Name: inventory; Type: TABLE DATA; Schema: public; Owner: developers
---
-
-COPY inventory (item_id, amount, owner, item_type, item_type_string_backup) FROM stdin;
-\.
-
-
---
--- Name: inventory_item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: developers
---
-
-SELECT pg_catalog.setval('inventory_item_id_seq', 50021, true);
 
 
 --
@@ -479,49 +456,10 @@ COPY player_rank (rank_id, _player_id, score) FROM stdin;
 
 
 --
--- Data for Name: players_flagged; Type: TABLE DATA; Schema: public; Owner: developers
---
-
-COPY players_flagged (players_flagged_id, player_id, flag_id, "timestamp", originating_page, extra_notes) FROM stdin;
-\.
-
-
---
--- Name: players_flagged_players_flagged_id_seq; Type: SEQUENCE SET; Schema: public; Owner: developers
---
-
-SELECT pg_catalog.setval('players_flagged_players_flagged_id_seq', 1, false);
-
-
---
 -- Name: players_player_id_seq; Type: SEQUENCE SET; Schema: public; Owner: developers
 --
 
 SELECT pg_catalog.setval('players_player_id_seq', 169565, true);
-
-
---
--- Data for Name: ppl_online; Type: TABLE DATA; Schema: public; Owner: developers
---
-
-COPY ppl_online (session_id, activity, member, ip_address, refurl, user_agent) FROM stdin;
-cqeifma0eh88gj3bvivtpfg5u5	2015-08-05 22:31:57.004015	t	127.0.0.1	http://nw.local/logout.php	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.89 Safari/537.36
-\.
-
-
---
--- Data for Name: settings; Type: TABLE DATA; Schema: public; Owner: developers
---
-
-COPY settings (setting_id, player_id, settings_store) FROM stdin;
-\.
-
-
---
--- Name: settings_setting_id_seq; Type: SEQUENCE SET; Schema: public; Owner: developers
---
-
-SELECT pg_catalog.setval('settings_setting_id_seq', 8827, true);
 
 
 --
@@ -558,7 +496,7 @@ SELECT pg_catalog.setval('time_time_id_seq', 1, true);
 --
 
 COPY quests (quest_id, title, description, _player_id, tags, karma, rewards, obstacles, proof, expires_at, created_at, updated_at, type, difficulty) FROM stdin;
-5   Some title  a desc  10  whatever,tags,ya    45  rwardify    obstacle    proof that I am great   2018-02-06 00:34:35.160892-05   2016-02-06 00:34:35.160892-05   2016-02-06 00:34:35.160892-05   \N  \N
+5	Some title	a desc	10	whatever,tags,ya	45	rwardify	obstacle	proof that I am great	2018-02-06 00:34:35.160892-05	2016-02-06 00:34:35.160892-05	2016-02-06 00:34:35.160892-05	\N	\N
 \.
 
 
