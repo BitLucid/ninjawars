@@ -68,18 +68,6 @@
 
       </div><!-- End of core -->
 
-      <!-- <div id='push'></div> -->
-      <footer id='index-footer'  class='navigation'>
-
-            <!-- Stuff like catchphrases, links, and the author information -->
-      {include file='linkbar_section.tpl'}
-
-
-      </footer>
-
-
-<!-- Validated as of Oct, 2009 -->
-
 <!-- Version: {$version} -->
 
 {literal}

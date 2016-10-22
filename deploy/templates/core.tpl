@@ -1,4 +1,4 @@
-	  <!-- Main column template section -->
+	  <!-- Main column template section used in both splash and index -->
       <section id='main-column'>
 
 			<!-- THE MAIN CONTENT DISPLAY SECTION -->

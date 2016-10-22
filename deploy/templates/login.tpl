@@ -1,9 +1,9 @@
-<h1>Login</h1>
+<h1>NinjaWars Login</h1>
 
 {if $login_error_message}
-	  <!-- This section only gets displayed in the event of an incorrect login -->
+    <!-- This section only gets displayed in the event of an incorrect login -->
       <div id='login-error' class="error">
-      	{* Unescaped error to allow for links. *}
+        {* Unescaped error to allow for links. *}
         {$login_error_message}
       </div>
 {/if}
@@ -15,29 +15,43 @@
 {else}
 
 
-<section class='login-section'>
-  <form id="login-form" action="/login/login_request" method="post">
-	  <input type="hidden" name="ref" value="{$referrer|escape}">
-	    <div class='outer-outer-box'>
-	  	<div class='outer-box'>
-	    <label>
-	      <div class='line'>
-	      <span class='left-side'>Email or Ninja Name</span>
-	      <input tabindex=1 name="user" required type="text" value='{$stored_username|escape}' class='right-side'>
-		  </div>
-	    </label>
-	    <label>
-	      <div class='line'>
-	      <span class='left-side'>Password <a tabindex=4 href='/assistance'>(Forgot?)</a></span>
-	      <input tabindex=2 name="pass" required type="password" class='right-side'>
-	      </div>
-	    </label>
-	    <div class='left-side'>
-		    <input tabindex=3 name="login_request" id='request-login' class='btn btn-vital' type="submit" value="Login">
-		</div>
-	    </div>
-	    </div>
-	</form>
+<section class='login-section container'>
+  <div class='outer-shade-box'>
+    <div class='shade-box'>
+      <form id="login-form" class="form-horizontal" action="/login/login_request" method="post">
+        <input type="hidden" name="ref" value="{$referrer|escape}" />
+          <div class='row'>
+          <label>
+            <div class='line'>
+              <span class='left-side'>Email or ninja name</span>
+              <div class='input-group'>
+                <span class="input-group-addon"><i class="fa fa-envelope-o fa" aria-hidden="true"></i></span>
+                <input tabindex=1 name="user" placeholder='you@email.com or ninja' required type="text" value='{$stored_username|escape}' class='right-side' />
+              </div>
+            </div>
+          </label>
+          </div>
+          <div class='row top-buffer'>
+          <label>
+            <div class='line'>
+              <div class='input-group'>
+                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                <input tabindex=2 name="pass" placeholder='Password' required type="password" class='right-side' />
+              </div>
+            </div>
+          </label>
+          </div>
+          <div class='row top-buffer'>
+           <div class='left-side'>
+              <input tabindex=3 name="login_request" id='request-login' class='btn btn-vital' type="submit" value="Login">
+            </div>
+            <div class='left-side'>
+              <a tabindex=4 href='/assistance'>forgot?</a>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
 </section>
 
 <!--
@@ -49,12 +63,12 @@
 
 
 <div id='login-bottom-bar-container'>
-	<div id="login-problems-resources">
-	  <span class="signup-link">
-		<a target="main" href="/signup?referrer={$referrer|escape}">Become a Ninja!</a> |
-	  </span>
-	  <span>
-		<a href="/assistance/" target="main" class="blend side">Login or Signup Problems?</a>
-	  </span>
-	</div>
+  <div id="login-problems-resources">
+    <span class="signup-link">
+    <a target="main" href="/signup?referrer={$referrer|escape}">Become a Ninja!</a> |
+    </span>
+    <span>
+    <a href="/assistance/" target="main" class="blend side">Login or Signup Problems?</a>
+    </span>
+  </div>
 </div>

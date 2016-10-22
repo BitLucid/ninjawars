@@ -1,17 +1,20 @@
 .PHONY: all ci pre-test test test-main test-integration test-unit test-quick test-functional test-js post-test clean dep build install install-system dist-clean db db-fixtures migration
 
 DOMAIN=http://nw.local/
+VENDOR=./vendor/
 COMPOSER=./composer.phar
 CC_DIR=./cc
 CC_FLAG=--coverage-html $(CC_DIR)
-TEST_RUNNER=php -d zend_extension=xdebug.so ./vendor/bin/phpunit
+TEST_RUNNER=php -d zend_extension=xdebug.so $(VENDOR)bin/phpunit
 RELATIVE_COMPONENTS=../components/
+RELATIVE_VENDOR=../../vendor/
 SRC:=`pwd`/deploy/
 WWW=$(SRC)www/
 COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
+CSS=$(WWW)css/
 DBROLE=developers
-PROPEL=./vendor/bin/propel-gen
+PROPEL=$(VENDOR)bin/propel-gen
 NGINX_PATH:=`readlink -f nginx-1.9.12/objs/nginx`
 
 -include CONFIG
@@ -30,6 +33,8 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
+	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
+	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
 	mkdir -p ./deploy/resources/logs/
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
@@ -135,7 +140,7 @@ clean:
 	@rm -f "$(JS)jquery-linkify.min.js"
 
 dist-clean: clean
-	@rm -rf ./vendor/*
+	@rm -rf "$(VENDOR)"*
 	@rm -rf "$(COMPONENTS)"
 	@rm -rf "$(SRC)resources/"logs/*
 	@rm -rf ./node_modules

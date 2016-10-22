@@ -1,8 +1,4 @@
-
-      {include file='footerlinks.tpl'}
-
-
-        <div id='footer-middle-bar'>
+			<div id='footer-middle-bar'>
 		    <h3 id='created-by'>
 		    	<a href='http://bitlucid.com' target='_blank'>CREATED BY BitLucid, Inc.</a>
 		    </h3>
@@ -23,24 +19,25 @@
         </div>
         <div id='footer-bottom-bar'>
         	<span id='html5-integration'>
-		    <a href="http://www.w3.org/html/logo/" rel='nofollow'>
-			<img src="//www.w3.org/html/logo/badge/html5-badge-h-css3-multimedia-performance-semantics.png" width="229" height="64" alt="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics" title="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics">
-			</a>
-			</span>
+		    		<a href="http://www.w3.org/html/logo/" rel='nofollow'>
+							<img src="//www.w3.org/html/logo/badge/html5-badge-h-css3-multimedia-performance-semantics.png" width="229" height="64" alt="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics" title="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics">
+						</a>
+					</span>
 
+
+				<div id='latest-commit-section'>
+					<p id='latest-commit-title' style='display:none'>Most recent upcoming change to ninjawars:</p>
+					<span id='latest-commit' style='display:none'>
+					</span>
+				</div>
 
         	<!-- Script to display commits -->
         	<script type='text/javascript' src="{cachebust file="/js/repo.js"}"></script>
-        	<script>
-        	{literal}
-			$(document).ready(function() {
-				loadLastCommitMessage(); // To display commits on the main page.
-			});
-        	{/literal}
-        	</script>
-			<div id='latest-commit-section'>
-				<p id='latest-commit-title' style='display:none'>Most recent upcoming change to ninjawars:</p>
-				<span id='latest-commit' style='display:none'>
-				</span>
+<script>
+{literal}
+$(document).ready(function() {
+	loadLastCommitMessage(); // To display commits on the main page.
+});
+{/literal}
+</script>
 			</div>
-        </div>

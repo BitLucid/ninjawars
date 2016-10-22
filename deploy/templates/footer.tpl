@@ -1,3 +1,17 @@
+{if $is_index}{* Only display footer on index page *}
+    <footer class="footer footer-inverse">
+      <div class="container">
+        {include file='footerlinks.tpl'}
+      </div>
+
+      <div id='index-footer' class='navigation'>
+        <!-- Stuff like links, and the author information -->
+        {include file='linkbar_section.tpl'}
+      </div>
+
+    </footer>
+
+{/if}
 
 <script type="text/javascript">
 NW.loggedIn = {if $logged_in}true{else}false{/if};
@@ -12,8 +26,6 @@ $(function() {
 {/literal}
 {/if}
 </script>
-    
-
 
 {if !$smarty.const.LOCAL_JS}<!-- Skip for local js -->
 <!-- Google Analytics, just add all the tracking info to an array at once -->
@@ -29,7 +41,6 @@ ga('send', 'pageview');
 </script>
 {/literal}
 {/if}
-    
-    
+
   </body>
 </html>

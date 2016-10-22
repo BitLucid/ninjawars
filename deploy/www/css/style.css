@@ -407,10 +407,12 @@ table {
  */
 
 body {
-	min-height:96%;
 	background-color:#000004; /* To prevent the "white background flash" effect. */
 	background:url('/images/rebel.png');
 	color:ghostwhite;
+}
+body.main-body{
+	padding-top:70px;
 }
 
 /* Set your base font here, to apply evenly */
@@ -469,6 +471,38 @@ Gazelle is useful for the h1,h2,h3 and player name headers.
 	src: local('GazelleFLF'), local('GazelleFLF'), url('/files/fonts/GazelleFLF.woff') format('woff'), url('/files/fonts/GazelleFLF.ttf') format('truetype'), url('/files/fonts/GazelleFLF.svg#GazelleFLF') format('svg');
 }
 
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/Fcx7Wwv8OzT71A3E1XOAjvesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/u-WUoqrET9fUeobQW7jkRRJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
 /* latin-ext */
 @font-face {
   font-family: 'Roboto';
@@ -707,8 +741,28 @@ a:link {} a:visited {} a:active {}
 	width:80px;
 	height:80px;
 }
-#index-header .avatar img {
-	width:72px;height:72px;
+#index-avatar{
+  padding:0 !important;
+  background:inherit;
+}
+#index-avatar img{
+  width: 34px;
+  height: 34px;
+  margin-top: 7px;
+}
+.dropdown-inverse{
+  background-color: #222;
+  border-color: #080808;
+}
+.dropdown-inverse>li>a{
+    color: #999;
+}
+.dropdown-inverse:hover{
+      color: #fff;
+      background-color: #000;
+}
+.dropdown-inverse>.divider {
+    background-color: #000;
 }
 
 .member-info span {
@@ -1605,7 +1659,8 @@ time{
 }
 
 .main-iframe { /* class for the main iframe */
-	 height:93%;/*Iframe height doesn't inherit from its container, it inherits from the page, so must match the core & main-column height defined before it above (and they must be defined above).*/
+	 height:98%;/*Iframe height doesn't inherit from its container, it inherits from the page, so must match the core & main-column height defined before it above (and they must be defined above).*/
+	 height:98vh; /* Sets height as 98% in the new ways */
 	 min-height:40em;
 	 width:100%;
 	 border:0;
@@ -1622,25 +1677,6 @@ time{
 }
 #index-header .child{
   display:inline-block;text-align:left;
-}
-
-#ninja-box{
-  display:inline-block;width:185px;height:71px;padding-right:4px;padding-top:4px;
-  position:relative;float:right;
-}
-#ninja-box .text-info{
-  display:inline-block;width:80px;height:80px;vertical-align:top;
-  overflow:hidden;
-}
-#ninja-dropdown{
-  display:none;position:absolute;top:105%;width:85%;background-color:ghostwhite;color:#333;z-index:11;padding:0.7em 3% 0.7em;margin-left:1%;margin-right:1%;
-  border:medium solid #333;
-}
-#ninja-dropdown a:hover{
-	color:teal;
-}
-#index-avatar{
-  display:inline-block;width:90px;height:90px;cursor:pointer;
 }
 #health-and-turns{
   display:inline-block;vertical-align:top;
@@ -1672,16 +1708,28 @@ a#skip-to-bottom{
 	text-decoration:none;
 }
 
+
+.footer-inverse {
+  background-color: #222;
+  border-color: #080808;
+  color: #777;
+}
+.footer-inverse a{
+	color:grey;
+}
+
 #index-footer {
 	text-align: center;
 	min-height:3%;
 	width:100%;
 	opacity:.96;
 	border-top:1px solid #666;
+	font-family: 'Open Sans', sans-serif;
 }
 
 #index-footer a, #stats-footer a {
 	color: gray;
+	font-family: 'Roboto', sans-serif;
 	text-decoration: underline;
 	font-weight: normal;
 	border: 3px solid transparent; /* Should correspond to the border width on hover below. */
@@ -1701,15 +1749,8 @@ a#skip-to-bottom{
 	font-size:smaller;
 	margin-top:3em;
 }
-#stats-footer #footer-top-bar{
-	text-align:center;
-}
-
 #footer-top-bar{
 	padding:.5em 0;
-	color:#999;
-	background-color:#333;
-	border-bottom:1px solid #666;
 }
 #footer-middle-bar{
 	color:#D9D9D9;
@@ -1794,9 +1835,18 @@ a#skip-to-bottom{
 
 /* =============== Login Page ================= */
 
-section.login-section{
-	margin:0.3em auto 0.3em;text-align:center;
+.login-page input{
+	line-height:inherit;border-radius:0;padding-left:0.2em;
 }
+
+.login-page .outer-shade-box{
+	background-color:#020202;
+}
+
+.login-page .shade-box{
+	background-color:#222;
+}
+
 .login-page .right-side{
 	display:block;
 	text-align:left;
@@ -1813,23 +1863,15 @@ section.login-section{
 }
 .login-page .line{
 	margin-bottom: .5em;
-	font-size: 1.4em;
+	font-size: larger;
 }
-.login-page .outer-box{
-	display:inline-block;
-	margin-left:auto;
-	margin-right:auto;
-	border: 10px rgb(20, 20, 20) solid;
-	background-color:rgb(50, 50, 50);
-	padding:1em 4em;
-}
-.login-page .outer-outer-box{
-	display:inline-block;
-	border: 5px rgb(10, 10, 10) solid;
+
+#login-form{
+	font-size:x-large;
 }
 
 #request-login{
-	font-size:larger;width:100%;
+	font-size:larger;padding:1rem 3rem;width:90%;
 }
 #login-bottom-bar-container{
 	margin: 5em auto .5em;width:96%;padding:.2em;border: 1px solid #993300;
@@ -2984,6 +3026,65 @@ select option #blue-class-select {
 	margin: 0 .5em;
 }
 
+
+#clan-avatar {
+	max-height: 240px;
+	max-width: 400px;
+}
+
+#clan-info {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#clan-info #clan-avatar-section {
+	margin: 0 auto;
+	text-align: center;
+}
+
+#clan-description {
+	max-height: 240px;
+	max-width: 96%;
+}
+
+#clan-info #clan-description {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#clan-members-list .clan-leader .member {
+	background-color: rgb(60,60,120);
+}
+
+button.disabled {
+	color: gray;
+	cursor: not-allowed;
+}
+
+nav.navigation ul.menu {
+	margin: 0 0 8px 0;
+	padding: 0;
+}
+
+nav.navigation ul.menu li {
+	display: inline-block;
+	padding-right: 6px;
+	padding-left: 6px;
+	padding-bottom: 4px;
+	margin: 0;
+}
+
+#clan-page-title {
+	margin: 0;
+}
+
+.boxed-in {
+	border: 1px solid #000000;
+	font-weight: bold;
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
 /*
 ==================================================================================================================================
     Ninjawars Typography Widgets
@@ -3008,6 +3109,9 @@ select option #blue-class-select {
 .thin{
 	margin-top:0;
 	margin-bottom:0;
+}
+.top-buffer{
+	margin-top:2rem;
 }
 .zeroed{
   margin:0;
@@ -4041,11 +4145,10 @@ input[type="button"].btn-block {
  */
 
 
-/* Grade-A Mobile Browsers (Opera Mobile, Mobile Safari, Android Chrome)
-   consider this: www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/ */
+/* Grade-A Mobile Browsers (Opera Mobile, Mobile Safari, Android Chrome) */
 @media screen and (max-device-width: 480px), (max-device-width: 854px) {
 	html, body {
-		font: 12px/15px sans-serif;
+		/*font: 12px/15px sans-serif;*/
 		padding: 0;
 		margin: 0;
 	}
@@ -4115,6 +4218,9 @@ input[type="button"].btn-block {
 		padding:0.3em 0.7em;
 	}
 
+	#request-login{
+		width:inherit;
+	}
 	/*
 	#leader-panel{
 		box-sizing:border-box;
@@ -4127,62 +4233,16 @@ input[type="button"].btn-block {
 	}
 	*/
 
-}
+	section.login-section{
+		margin:0.3em auto 0.3em;text-align:center;
+	}
 
-#clan-avatar {
-	max-height: 240px;
-	max-width: 400px;
-}
+	.login-page .outer-shade-box{
+		padding:2rem;border-radius:0.5rem;
+	}
 
-#clan-info {
-	margin-left: auto;
-	margin-right: auto;
-}
+	.login-page .shade-box{
+		padding:1rem 3rem;border-radius:0.1rem;
+	}
 
-#clan-info #clan-avatar-section {
-	margin: 0 auto;
-	text-align: center;
-}
-
-#clan-description {
-	max-height: 240px;
-	max-width: 96%;
-}
-
-#clan-info #clan-description {
-	margin-left: auto;
-	margin-right: auto;
-}
-
-#clan-members-list .clan-leader .member {
-	background-color: rgb(60,60,120);
-}
-
-button.disabled {
-	color: gray;
-	cursor: not-allowed;
-}
-
-nav.navigation ul.menu {
-	margin: 0 0 8px 0;
-	padding: 0;
-}
-
-nav.navigation ul.menu li {
-	display: inline-block;
-	padding-right: 6px;
-	padding-left: 6px;
-	padding-bottom: 4px;
-	margin: 0;
-}
-
-#clan-page-title {
-	margin: 0;
-}
-
-.boxed-in {
-	border: 1px solid #000000;
-	font-weight: bold;
-	margin-left: 1em;
-	margin-right: 1em;
 }
