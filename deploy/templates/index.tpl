@@ -17,6 +17,7 @@
           <li><a href="/inventory" target="main">Inventory</a></li>
           <li><a href="/skill" target="main">Skills</a></li>
           <li><a href="/clan" target="main"><i class='fa fa-users' aria-hidden='true'></i> Clans</a></li>
+          <li class='hidden-sm-down'><a href="/shrine" target="main"><i class='fa fa-flask' aria-hidden=true></i> Shrine</a></li>
           <li class='hidden-sm-down'><a href="/shop" target="main">石 Shop</a></li>
           <li class='hidden-sm-down'><a href="/work" target="main"><i class='fa fa-pagelines' aria-hidden='true'></i> Work</a></li>
           <li class='hidden-sm-down'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> Hunt</a></li>
@@ -41,7 +42,9 @@
             <li><a href="/clan/view?clan_id={$clan->id|escape}" target='main' title='Your clan members and clan chat' tabindex="-1"><i class='fa fa-users'></i> My Clan</a></li>
             {/if}
             <li class="divider"></li>
-            <li><a href="/account" target="main" title='Your player account info, email, password, etc.' tabindex="-1"><i class="fa fa-gear"></i> Account Info</a></li>
+            <li><a href="/account" target="main" title='Your player account info, email, password, etc.' tabindex="-1"><i class="fa fa-cog"></i> Account Info</a></li>
+            <li class="divider"></li>
+            <li><a href="/shrine/heal_and_resurrect" target="main" title='Fully heal and resurrect if necessary' tabindex="-1"><i class="fa fa-flask"></i> Heal</a>
             <li class="divider"></li>
             <li><a target='main' href='/intro'><i class="fa fa-question-circle" tabindex="-1"></i> Intro Guide</a></li>
             <li>
