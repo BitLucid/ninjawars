@@ -46,6 +46,13 @@
             <li class="divider"></li>
             <li><a href="/shrine/heal_and_resurrect" target="main" title='Fully heal and resurrect if necessary' tabindex="-1">⛩ Heal</a>
             <li class="divider"></li>
+            <!-- Recent Events count and target will get put in here via javascript -->
+            <div id='recent-events' class="boxes active" style='display:none'>
+              <div>
+                <a target='main' id='recent-event-attacked-by' href='/events' title='View events'>You weren't recently in combat</a> with <a id='view-event-char' target='main' href='#' title="View a player's profile">anyone</a>.
+              </div>
+            </div><!-- End of recent events -->
+            <li class="divider"></li>
             <li><a target='main' href='/intro'><i class="fa fa-question-circle" tabindex="-1"></i> Intro Guide</a></li>
             <li>
               <form method='post' action='/logout'>
@@ -53,12 +60,6 @@
               </form>
             </li>
           </ul>
-          <!-- Recent Events count and target will get put in here via javascript -->
-          <div id='recent-events' class="boxes active" style='display:none'>
-            <div>
-              <a target='main' id='recent-event-attacked-by' href='/events' title='View events'>You weren't recently in combat</a> with <a id='view-event-char' target='main' href='#' title="View a player's profile">anyone</a>.
-            </div>
-          </div><!-- End of recent events -->
         </div><!-- end of dropdown -->
         {/if}
 
