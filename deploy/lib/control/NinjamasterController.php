@@ -56,7 +56,9 @@ class NinjamasterController extends AbstractController {
 
         if ($char_name) { // View a target non-self character
             $first_char = Player::findByName($char_name);
-            $char_ids  = [$first_char->id()];
+            if(null !== $first_char && null !== $first_char->id()){
+                $char_ids  = [$first_char->id()];
+            }
         }
 
         if (is_array($char_ids)) {
