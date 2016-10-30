@@ -64,7 +64,7 @@ nav.admin-nav a{
 
 <nav class='admin-nav parent'>
 	<div class='child'>
-		<a class='btn btn-info' href='/ninjamaster/#npc-list'>Npc List</a>
+		<a class='btn btn-info' href='/ninjamaster/#npc-list-stats'>Npc List</a>
 		<a class='btn btn-info' href='/ninjamaster/#char-list'>Character List</a>
 		<a class='btn btn-info' href='/ninjamaster/tools'>Validation Tools</a>
 		<a class='btn btn-info' href='/ninjamaster/player_tags'>Character Tag List</a>
@@ -158,7 +158,7 @@ nav.admin-nav a{
 {/if}
 
 <section class='special-info'>
-	<h1 id='npc-list'>Npc list raw info</h1>
+	<h1 id='npc-list-stats'>Npc list raw info</h1>
 	<div class='npc-raw-info'>
 			{foreach from=$npcs item='npc'}
 		<div class='npc-box tiled'>
