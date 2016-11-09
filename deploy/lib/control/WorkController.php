@@ -1,11 +1,11 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 
@@ -22,13 +22,16 @@ class WorkController extends AbstractController {
 
     /**
      * Take in a url parameter of work and try to convert it to gold
+     *
+     * @param Container
+     * @return StreamedViewResponse
      */
-    public function requestWork() {
+    public function requestWork(Container $p_dependencies) {
         $earned = 0;
         $worked = Filter::toNonNegativeInt(RequestWrapper::getPostOrGet('worked')); // No negative work.
-        $char   = Player::find(SessionFactory::getSession()->get('player_id'));
+        $char   = $p_dependencies['current_player'];
 
-        if (!($char instanceof Player)){
+        if (!$char) {
             return new RedirectResponse('/work');
         }
 
@@ -45,7 +48,7 @@ class WorkController extends AbstractController {
             'recommended_to_work' => $worked,
             'worked'              => $worked,
             'work_multiplier'     => self::WORK_MULTIPLIER,
-            'authenticated'       => SessionFactory::getSession()->get('authenticated', false),
+            'authenticated'       => $p_dependencies['session']->get('authenticated', false),
             'gold_display'        => number_format($char->gold),
             'earned_gold'         => number_format($earned),
             'not_enough_energy'   => !$sufficient_turns,
@@ -56,9 +59,12 @@ class WorkController extends AbstractController {
 
     /**
      * Get the last turns worked by a pc, and pass it to display the default page with form
+     *
+     * @param Container
+     * @return StreamedViewResponse
      */
-    public function index() {
-        $char = Player::find(SessionFactory::getSession()->get('player_id'));
+    public function index(Container $p_dependencies) {
+        $char = $p_dependencies['current_player'];
 
         if (!$char) {
             $char = new Player();
@@ -67,7 +73,7 @@ class WorkController extends AbstractController {
         $parts = [
             'recommended_to_work' => self::DEFAULT_RECOMMENDED_TO_WORK,
             'work_multiplier'     => self::WORK_MULTIPLIER,
-            'authenticated'       => SessionFactory::getSession()->get('authenticated', false),
+            'authenticated'       => $p_dependencies['session']->get('authenticated', false),
             'gold_display'        => number_format($char->gold),
             'earned_gold'         => number_format(null),
             'worked'              => null,
@@ -77,6 +83,9 @@ class WorkController extends AbstractController {
         return $this->render($parts);
     }
 
+    /**
+     * @return StreamedViewResponse
+     */
     private function render($parts) {
         return new StreamedViewResponse('Working in the Village', 'work.tpl', $parts, ['quickstat' => 'player']);
     }
