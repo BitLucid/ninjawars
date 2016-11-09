@@ -42,10 +42,6 @@ class ShrineController extends AbstractController {
 
 		$pageParts = $this->servicesNeeded($player);
 
-		if (empty($pageParts)) {
-			return $this->renderError('You have no need of healing.', $player);
-		}
-
 		array_unshift($pageParts, 'entrance');
 
 		return $this->render([
