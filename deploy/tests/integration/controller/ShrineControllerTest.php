@@ -39,6 +39,45 @@ class ShrineControllerTest extends NWTest {
         $this->assertNotEmpty($cont_outcome);
     }
 
+    public function testShrineIndexFullHealthNotice() {
+        $player = new Player();
+        $player->level = 1;
+        $player->health = $player->getMaxHealth();
+
+        $this->m_dependencies['current_player'] = function($c) use ($player) {
+            return $player;
+        };
+
+        $cont = new ShrineController();
+        $response = $cont->index($this->m_dependencies);
+
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+
+        $this->assertContains('reminder-full-hp', $response_data['pageParts']);
+    }
+
+    public function testShrineIndexPoisonedNotice() {
+        $player = new Player();
+        $player->level = 1;
+        $player->health = $player->getMaxHealth();
+        $player->addStatus(POISON);
+
+        $this->m_dependencies['current_player'] = function($c) use ($player) {
+            return $player;
+        };
+
+        $cont = new ShrineController();
+        $response = $cont->index($this->m_dependencies);
+
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+
+        $this->assertContains('form-cure', $response_data['pageParts']);
+    }
+
     public function testHealAndResurrectOfDeadPlayer(){
         $this->char->death();
         $this->char->save();
