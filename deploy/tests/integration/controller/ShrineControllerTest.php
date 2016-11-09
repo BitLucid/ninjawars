@@ -7,10 +7,11 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\extensions\SessionFactory;
 
-class ShrineControllerTest extends PHPUnit_Framework_TestCase {
+class ShrineControllerTest extends NWTest {
     private $char;
 
 	function setUp() {
+        parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         $request = new Request([], []);
         RequestWrapper::inject($request);
@@ -24,6 +25,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testShrineControllerCanBeInstantiatedWithoutError() {
@@ -33,7 +35,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testShrineIndexDoesNotError() {
         $cont = new ShrineController();
-        $cont_outcome = $cont->index();
+        $cont_outcome = $cont->index($this->m_dependencies);
         $this->assertNotEmpty($cont_outcome);
     }
 

@@ -33,11 +33,12 @@ class ShrineController extends AbstractController {
 	/**
 	 * Renders the initial view of the Shrine with forms based on player state
 	 *
+     * @param Container
 	 * @return Response
 	 * @see servicesNeeded
 	 */
-	public function index() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function index($p_dependencies) {
+		$player = $p_dependencies['current_player'];
 
 		$pageParts = $this->servicesNeeded($player);
 
