@@ -108,7 +108,7 @@ class ShrineControllerTest extends NWTest {
         $this->assertGreaterThan(0, $initial_health);
 
         $cont = new ShrineController();
-        $response = $cont->heal();
+        $response = $cont->heal($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -131,7 +131,7 @@ class ShrineControllerTest extends NWTest {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->heal();
+        $response = $cont->heal($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -153,7 +153,7 @@ class ShrineControllerTest extends NWTest {
         $this->char->setClass('viper'); // Default dragon class has chi skill
 
         $cont = new ShrineController();
-        $response = $cont->heal();
+        $response = $cont->heal($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -167,7 +167,7 @@ class ShrineControllerTest extends NWTest {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -182,7 +182,7 @@ class ShrineControllerTest extends NWTest {
         $this->assertTrue($this->char->hasStatus(POISON));
 
         $cont = new ShrineController();
-        $cont->cure();
+        $cont->cure($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $this->assertFalse($final_char->hasStatus(POISON));
     }
@@ -193,7 +193,7 @@ class ShrineControllerTest extends NWTest {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -210,7 +210,7 @@ class ShrineControllerTest extends NWTest {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -227,7 +227,7 @@ class ShrineControllerTest extends NWTest {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $final_char = Player::find($this->char->id());
 
         $reflection = new \ReflectionProperty(get_class($response), 'data');
@@ -248,7 +248,7 @@ class ShrineControllerTest extends NWTest {
         $this->assertTrue($skillList->hasSkill('chi', $this->char));
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -266,7 +266,7 @@ class ShrineControllerTest extends NWTest {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -280,7 +280,7 @@ class ShrineControllerTest extends NWTest {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
