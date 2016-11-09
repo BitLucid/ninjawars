@@ -54,14 +54,15 @@ class ShrineController extends AbstractController {
 	/**
 	 * Command to resurrect (if dead) and heal the maximum possible amount (always)
 	 *
+     * @param Container
 	 * @return Response
 	 * @see _heal
 	 * @see _resurrect
 	 */
-	public function healAndResurrect() {
+	public function healAndResurrect($p_dependencies) {
 		$skillController = new Skill();
 
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player = $p_dependencies['current_player'];
 
 		try {
 			$pageParts = [];

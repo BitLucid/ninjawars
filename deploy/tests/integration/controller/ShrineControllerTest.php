@@ -83,7 +83,7 @@ class ShrineControllerTest extends NWTest {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->healAndResurrect();
+        $response = $cont->healAndResurrect($this->m_dependencies);
 
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
