@@ -2,7 +2,7 @@
 use NinjaWars\core\Router;
 use Symfony\Component\HttpFoundation\Request;
 
-class RouterUnitTest extends PHPUnit_Framework_TestCase {
+class RouterUnitTest extends NWTest {
     public function testParseRouteSlash() {
         $request = Request::create('/', 'GET', []);
         $result = Router::parseRoute($request);
@@ -68,17 +68,17 @@ class RouterUnitTest extends PHPUnit_Framework_TestCase {
 
     public function testExecuteBadClassname() {
         $this->setExpectedException('\RuntimeException');
-        Router::execute('junkola', '');
+        Router::execute('junkola', '', $this->m_dependencies);
     }
 
     public function testExecuteBadCommand() {
         $this->setExpectedException('\RuntimeException');
-        Router::execute('work', 'junkola');
+        Router::execute('work', 'junkola', $this->m_dependencies);
     }
 
     public function testRouteBadClassname() {
         $this->setExpectedException('\RuntimeException');
         $request = Request::create('/junkola/', 'GET', []);
-        Router::route($request);
+        Router::route($request, $this->m_dependencies);
     }
 }
