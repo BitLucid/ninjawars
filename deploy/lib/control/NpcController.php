@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\Npc;
@@ -97,20 +98,22 @@ class NpcController extends AbstractController {
     /**
      * Wrapper for session storage of thief attacking
      *
+     * @param Container
      * @return int
      */
-    private function getThiefCounter() {
-        return SessionFactory::getSession()->get('thief_counter', 1);
+    private function getThiefCounter(Container $p_dependencies) {
+        return $p_dependencies['session']->get('thief_counter', 1);
     }
 
     /**
      * Wrapper for session storage of thief attacking
      *
      * @param int $num
+     * @param Container
      * @return void
      */
-    private function setThiefCounter($num) {
-        SessionFactory::getSession()->set('thief_counter', $num);
+    private function setThiefCounter($num, Container $p_dependencies) {
+        $p_dependencies['session']->set('thief_counter', $num);
     }
 
     /**
@@ -257,9 +260,10 @@ class NpcController extends AbstractController {
     /**
      * Attack a specific npc
      *
+     * @param Container
      * @return Response
      */
-    public function attack() {
+    public function attack(Container $p_dependencies) {
         $request = RequestWrapper::$request;
 
         $url_part = $request->getRequestUri();
@@ -273,7 +277,7 @@ class NpcController extends AbstractController {
         $turn_cost      = 1;
         $health         = true;
         $combat_data    = [];
-        $player         = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player         = $p_dependencies['current_player'];
         $error_template = 'npc.no-one.tpl'; // Error template also used down below.
         $npc_template   = $error_template; // Error condition by default.
         $npcs           = NpcFactory::npcsData();
@@ -312,13 +316,13 @@ class NpcController extends AbstractController {
                 }
             } else if ($victim == 'thief') {
                 // Check the counter to see whether they've attacked a thief multiple times in a row.
-                $counter = $this->getThiefCounter();
+                $counter = $this->getThiefCounter($p_dependencies);
 
-                $this->setThiefCounter($counter+1); // Incremement the current state of the counter.
+                $this->setThiefCounter($counter+1, $p_dependencies); // Incremement the current state of the counter.
 
                 if ($counter > 20 && rand(1, 3) == 3) {
                     // Only after many attacks do you have the chance to be attacked back by the group of thieves.
-                    $this->setThiefCounter(0); // Reset the counter to zero.
+                    $this->setThiefCounter(0, $p_dependencies); // Reset the counter to zero.
                     $method = 'attackGroupOfThieves';
                 } else {
                     $method = 'attackNormalThief';
@@ -615,9 +619,10 @@ class NpcController extends AbstractController {
     /**
      * Get the list of npcs in a subtemplate.
      *
+     * @param Container
      * @return Response
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         $all_npcs   = $this->npcs();
         $other_npcs = $all_npcs['abstract_npcs'];
         $npcs       = $all_npcs['custom_npcs'];
