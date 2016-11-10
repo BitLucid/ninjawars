@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
@@ -25,10 +26,11 @@ class DoshinController extends AbstractController {
     /**
      * Displays the initial Doshin Office view
      *
+     * @param Container
      * @param target String (Optional) Pre-load the bounty form with the specified target
      * @return StreamedViewResponse
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         $target = RequestWrapper::getPostOrGet('target');
         $authenticated = (bool)$this->getAccountId();
 
@@ -48,13 +50,14 @@ class DoshinController extends AbstractController {
     /**
      * Command for the current user to offer their money as bounty on another player
      *
+     * @param Container
      * @param target String The username of the player to offer a bounty on
      * @param amount int The amount of gold to spend on offering the bounty
      * @return StreamedViewResponse
      *
      * @TODO simplify the conditional branching
      */
-    public function offerBounty() {
+    public function offerBounty(Container $p_dependencies) {
         $request    = RequestWrapper::$request;
         $targetName = $request->get('target');
         $char       = Player::findPlayable($this->getAccountId());
@@ -158,10 +161,11 @@ class DoshinController extends AbstractController {
     /**
      * Command for a user to reduce their bounty by paying their own gold
      *
+     * @param Container
      * @param bribe int The amount to spend on reducing bounty
      * @return StreamedViewRespons
      */
-    public function bribe() {
+    public function bribe(Container $p_dependencies) {
         $bribe     = intval(RequestWrapper::getPostOrGet('bribe'));
         $char      = Player::findPlayable($this->getAccountId());
         $error     = 0;
