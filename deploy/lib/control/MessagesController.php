@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;
@@ -17,8 +18,10 @@ class MessagesController extends AbstractController {
 
     /**
      * Send a private message to a player
+     *
+     * @param Container
      */
-    public function sendPersonal() {
+    public function sendPersonal(Container $p_dependencies) {
         $request = RequestWrapper::$request;
 
         if ((int) $request->get('target_id')) {
@@ -31,7 +34,7 @@ class MessagesController extends AbstractController {
 
         if ($recipient) {
             Message::create([
-                'send_from' => SessionFactory::getSession()->get('player_id'),
+                'send_from' => $p_dependencies['session']->get('player_id'),
                 'send_to'   => $recipient->id(),
                 'message'   => $request->get('message', null),
                 'type'      => 0,
@@ -45,11 +48,13 @@ class MessagesController extends AbstractController {
 
     /**
      * Send a certain message to the whole clan.
+     *
+     * @param Container
      */
-    public function sendClan() {
+    public function sendClan(Container $p_dependencies) {
         $message = RequestWrapper::getPostOrGet('message');
         $type = 1;
-        $sender = Player::find(SessionFactory::getSession()->get('player_id'));
+        $sender = $p_dependencies['current_player'];
         $clan = Clan::findByMember($sender);
         $target_id_list = $clan->getMemberIds();
         Message::sendToGroup($sender, $target_id_list, $message, $type);
@@ -59,14 +64,16 @@ class MessagesController extends AbstractController {
 
     /**
      * View the personal private messages.
+     *
+     * @param Container
      */
-    public function viewPersonal() {
+    public function viewPersonal(Container $p_dependencies) {
         $request       = RequestWrapper::$request;
         $type          = 0;
         $page          = max(1, (int) $request->get('page'));
         $limit         = 25;
         $offset        = ($page - 1) * $limit;
-        $ninja         = Player::find(SessionFactory::getSession()->get('player_id'));
+        $ninja         = $p_dependencies['current_player'];
         $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
 
         Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
@@ -89,9 +96,11 @@ class MessagesController extends AbstractController {
 
     /**
      * View clan messages
+     *
+     * @param Container
      */
-    public function viewClan() {
-        $ninja         = Player::find(SessionFactory::getSession()->get('player_id'));
+    public function viewClan(Container $p_dependencies) {
+        $ninja         = $p_dependencies['current_player'];
         $page          = max(1, (int) RequestWrapper::getPostOrGet('page'));
         $limit         = 25;
         $offset        = ($page - 1) * $limit;
@@ -117,22 +126,22 @@ class MessagesController extends AbstractController {
 
     /**
      * Delete the all the messages sent to you personally
+     *
+     * @param Container
      */
-    public function deletePersonal() {
-        $char_id = SessionFactory::getSession()->get('player_id');
-        $type = 0;
-        Message::deleteByReceiver(Player::find($char_id), $type);
+    public function deletePersonal(Container $p_dependencies) {
+        Message::deleteByReceiver($p_dependencies['current_player'], 0);
 
         return new RedirectResponse('/messages?command=personal&informational='.rawurlencode('Messages deleted'));
     }
 
     /**
      * Delete the all the messages from your clan.
+     *
+     * @param Container
      */
-    public function deleteClan() {
-        $char_id = SessionFactory::getSession()->get('player_id');
-        $type = 1;
-        Message::deleteByReceiver(Player::find($char_id), $type);
+    public function deleteClan(Container $p_dependencies) {
+        Message::deleteByReceiver($p_dependencies['current_player'], 1);
 
         return new RedirectResponse('/messages?command=clan&informational='.rawurlencode('Messages deleted'));
     }
