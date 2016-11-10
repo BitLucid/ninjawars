@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Clan;
@@ -25,10 +26,12 @@ class StatsController extends AbstractController {
 
     /**
      * Change account details
+     *
+     * @param Container
      */
-	public function changeDetails() {
+	public function changeDetails(Container $p_dependencies) {
         $request = RequestWrapper::$request;
-		$char = Player::find(SessionFactory::getSession()->get('player_id'));
+		$char = $p_dependencies['current_player'];
 
 		$description = $request->get('description', $char->description);
 		$goals       = $request->get('goals', $char->goals);
@@ -50,9 +53,11 @@ class StatsController extends AbstractController {
 
     /**
      * Update profile
+     *
+     * @param Container
      */
-	public function updateProfile() {
-		$char            = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function updateProfile(Container $p_dependencies) {
+		$char            = $p_dependencies['current_player'];
 		$new_profile     = trim(RequestWrapper::getPostOrGet('newprofile', null));
 		$profile_changed = false;
 		$error           = '';
@@ -81,10 +86,12 @@ class StatsController extends AbstractController {
 
     /**
      * Display the default stats page
+     *
+     * @param Container
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         $request = RequestWrapper::$request;
-        $char = Player::find(SessionFactory::getSession()->get('player_id'));
+        $char = $p_dependencies['current_player'];
 
         $parts = [
             'char'               => $char,
