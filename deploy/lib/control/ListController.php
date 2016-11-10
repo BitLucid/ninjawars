@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\Filter;
 use NinjaWars\core\extensions\SessionFactory;
@@ -18,11 +19,12 @@ class ListController extends AbstractController {
     /**
      * Get the ninja list and display it
      *
+     * @param Container
      * @return Response
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         $request      = RequestWrapper::$request;
-        $session      = SessionFactory::getSession();
+        $session      = $p_dependencies['session'];
         $searched     = $request->get('searched', null); // Don't filter the search setting
         $list_by_rank = ($searched && substr_compare($searched, '#', 0, 1) === 0); // Whether the search is by rank
         $hide_setting = (!$searched && $session->has('hide_dead') ? $session->get('hide_dead') : 'dead'); // Defaults to hiding dead via session
