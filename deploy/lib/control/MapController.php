@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\StreamedViewResponse;
 
@@ -68,7 +69,7 @@ class MapController extends AbstractController {
      *
      * @return Response
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         $parts = [
             'nodes'   => $this->nodes,
             'show_ad' => rand(1, 20) // show the ad in the village 10% of the time
