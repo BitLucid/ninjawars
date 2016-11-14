@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
@@ -43,7 +44,7 @@ class PasswordController extends AbstractController {
      * @return Response
      * @TODO: Generate a csrf
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         $request    = RequestWrapper::$request;
         $error      = $request->get('error');
         $message    = $request->get('message');
@@ -66,7 +67,7 @@ class PasswordController extends AbstractController {
      * @return Response
      * @TODO: Authenticate the csrf, which must match, from the session.
      */
-    public function postEmail() {
+    public function postEmail(Container $p_dependencies) {
         $request    = RequestWrapper::$request;
         $error      = null;
         $message    = null;
@@ -112,7 +113,7 @@ class PasswordController extends AbstractController {
      * @return Response
      * @todo Need a way to set the max age on the response that the form will display
      */
-    public function getReset() {
+    public function getReset(Container $p_dependencies) {
         $token = RequestWrapper::get('token');
         $req   = ($token ? PasswordResetRequest::match($token) : null);
         $error = null;
@@ -138,7 +139,7 @@ class PasswordController extends AbstractController {
      *
      * @return Response
      */
-    public function postReset() {
+    public function postReset(Container $p_dependencies) {
         $request              = RequestWrapper::$request;
         $token                = $request->get('token');
         $newPassword          = $request->get('new_password');
