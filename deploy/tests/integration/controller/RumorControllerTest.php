@@ -1,10 +1,10 @@
 <?php
 use NinjaWars\core\control\RumorController;
 
-class RumorControllerTest extends PHPUnit_Framework_TestCase {
+class RumorControllerTest extends NWTest {
     public function testIndex() {
         $controller = new RumorController();
-        $response = $controller->index();
+        $response = $controller->index($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'template');
         $reflection->setAccessible(true);
         $response_template = $reflection->getValue($response);
