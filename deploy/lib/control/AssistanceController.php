@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\Filter;
 use \Nmail;
@@ -80,7 +81,7 @@ class AssistanceController extends AbstractController {
      *
      * @return Response
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         $request = RequestWrapper::$request;
         $email = filter_var($request->get('email', null), FILTER_SANITIZE_EMAIL);
         $password_request = $request->get('password_request');
@@ -135,7 +136,7 @@ class AssistanceController extends AbstractController {
      *
      * @return Response
      */
-    public function confirm() {
+    public function confirm(Container $p_dependencies) {
         $request                   = RequestWrapper::$request;
         $admin_override_pass       = 'WeAllowIt'; // Just a weak passphrase for simply confirming players.
         $admin_override_request    = $request->get('admin_override');
