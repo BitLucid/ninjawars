@@ -6,24 +6,26 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\HomepageController;
 
-class HomepageControllerTest extends PHPUnit_Framework_TestCase {
+class HomepageControllerTest extends NWTest {
     private $controller;
 
-	protected function setUp() {
+	public function setUp() {
+        parent::setUp();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);
         $this->controller = new HomepageController();
     }
 
-	protected function tearDown() {
+	public function tearDown() {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testIndex() {
-        $response = $this->controller->index();
+        $response = $this->controller->index($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }

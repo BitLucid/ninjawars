@@ -7,10 +7,11 @@ use NinjaWars\core\control\SignupController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\environment\RequestWrapper;
 
-class SignupControllerTest extends PHPUnit_Framework_TestCase {
+class SignupControllerTest extends NWTest {
     private $char_id;
 
 	public function setUp() {
+        parent::setUp();
 		SessionFactory::init(new MockArraySessionStorage());
         $this->char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $this->char_id);
@@ -19,6 +20,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 	public function tearDown() {
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testInstantiation() {
@@ -36,14 +38,14 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testIndexRuns() {
         $controller = new SignupController();
-        $response = $controller->index();
+        $response = $controller->index($this->m_dependencies);
         $this->assertNotEmpty($response);
     }
 
     public function testEmptySignupFails() {
         RequestWrapper::inject(new Request([]));
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -60,7 +62,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -79,7 +81,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -99,7 +101,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -119,7 +121,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -144,7 +146,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
 
         $account->active_email = $original_email;
         $account->save();
@@ -168,7 +170,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -192,7 +194,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -212,7 +214,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -230,7 +232,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -250,7 +252,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
 
         $account = Account::findByEmail($email);
         $player = Player::findByName($uname);
@@ -295,7 +297,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase {
         ]));
 
         $controller = new SignupController();
-        $response = $controller->signup();
+        $response = $controller->signup($this->m_dependencies);
 
         $account = Account::findByEmail($email);
         $player = Player::findByName($uname);

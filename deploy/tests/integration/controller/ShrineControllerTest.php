@@ -7,10 +7,11 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\extensions\SessionFactory;
 
-class ShrineControllerTest extends PHPUnit_Framework_TestCase {
+class ShrineControllerTest extends NWTest {
     private $char;
 
 	function setUp() {
+        parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         $request = new Request([], []);
         RequestWrapper::inject($request);
@@ -24,6 +25,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testShrineControllerCanBeInstantiatedWithoutError() {
@@ -33,8 +35,47 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testShrineIndexDoesNotError() {
         $cont = new ShrineController();
-        $cont_outcome = $cont->index();
+        $cont_outcome = $cont->index($this->m_dependencies);
         $this->assertNotEmpty($cont_outcome);
+    }
+
+    public function testShrineIndexFullHealthNotice() {
+        $player = new Player();
+        $player->level = 1;
+        $player->health = $player->getMaxHealth();
+
+        $this->m_dependencies['current_player'] = function($c) use ($player) {
+            return $player;
+        };
+
+        $cont = new ShrineController();
+        $response = $cont->index($this->m_dependencies);
+
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+
+        $this->assertContains('reminder-full-hp', $response_data['pageParts']);
+    }
+
+    public function testShrineIndexPoisonedNotice() {
+        $player = new Player();
+        $player->level = 1;
+        $player->health = $player->getMaxHealth();
+        $player->addStatus(POISON);
+
+        $this->m_dependencies['current_player'] = function($c) use ($player) {
+            return $player;
+        };
+
+        $cont = new ShrineController();
+        $response = $cont->index($this->m_dependencies);
+
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+
+        $this->assertContains('form-cure', $response_data['pageParts']);
     }
 
     public function testHealAndResurrectOfDeadPlayer(){
@@ -42,7 +83,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->healAndResurrect();
+        $response = $cont->healAndResurrect($this->m_dependencies);
 
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -67,7 +108,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertGreaterThan(0, $initial_health);
 
         $cont = new ShrineController();
-        $response = $cont->heal();
+        $response = $cont->heal($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -90,7 +131,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->heal();
+        $response = $cont->heal($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -112,7 +153,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->setClass('viper'); // Default dragon class has chi skill
 
         $cont = new ShrineController();
-        $response = $cont->heal();
+        $response = $cont->heal($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -126,7 +167,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -141,7 +182,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($this->char->hasStatus(POISON));
 
         $cont = new ShrineController();
-        $cont->cure();
+        $cont->cure($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $this->assertFalse($final_char->hasStatus(POISON));
     }
@@ -152,7 +193,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -169,7 +210,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -186,7 +227,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $final_char = Player::find($this->char->id());
 
         $reflection = new \ReflectionProperty(get_class($response), 'data');
@@ -207,7 +248,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($skillList->hasSkill('chi', $this->char));
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -225,7 +266,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -239,7 +280,7 @@ class ShrineControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         $cont = new ShrineController();
-        $response = $cont->resurrect();
+        $response = $cont->resurrect($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);

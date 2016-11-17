@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core;
 
+use Pimple\Container;
 use NinjaWars\core\RouteNotFoundException;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
@@ -41,6 +42,7 @@ class Router {
      * Given a request, includes a file or runs a controller action
      *
      * @param Request The request from the web server
+     * @param Container Dependency injection container
      * @return none
      *
      * @note
@@ -48,7 +50,7 @@ class Router {
      *
      * @todo remove the second isServableFile block when an index controller exists
      */
-    public static function route($p_request) {
+    public static function route($p_request, $p_dependencies) {
         // split the requested path by slash
         $routeSegments = explode('/', trim($p_request->getPathInfo(), '/'));
 
@@ -71,7 +73,7 @@ class Router {
                     $response = self::serveSimpleRoute($mainRoute);
                 } else {
                     $command   = array_shift($routeSegments);
-                    $response  = self::execute($mainRoute, $command);
+                    $response  = self::execute($mainRoute, $command, $p_dependencies);
                 }
 
                 return $response;
@@ -172,6 +174,7 @@ class Router {
      *
      * @param string $p_main The main route segment to execute
      * @param string $p_command The command to execute on the main route
+     * @param Container $p_dependencies Dependency injection container
      * @return Response The Response to render
      * @throws RouteNotFoundException No controller could be found for $p_main
      * @throws RouteNotFoundException No public method could be found for $p_command
@@ -179,7 +182,7 @@ class Router {
      * @todo Throw a specific exception when the command requested is not found
      * @todo Abstract out the rendering of the error screen
      */
-    public static function execute($p_main, $p_command) {
+    public static function execute($p_main, $p_command, $p_dependencies) {
         // dynamically define the controller classname
         $controllerClass = self::buildClassName($p_main);
 
@@ -209,7 +212,7 @@ class Router {
         if ($error = $controller->validate()) {
             return $controller->renderDefaultError($error);
         } else {
-            return $controller->$action();
+            return $controller->$action($p_dependencies);
         }
     }
 

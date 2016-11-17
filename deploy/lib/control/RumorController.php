@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -20,7 +21,7 @@ class RumorController extends AbstractController {
         return $this->membershipAndCombatStats();
     }
 
-    public function index() {
+    public function index(Container $p_dependencies) {
         $stats           = $this->stats();
         $parts           = [
             'stats'          => $stats,

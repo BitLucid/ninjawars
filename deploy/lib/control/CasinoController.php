@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
@@ -22,10 +23,11 @@ class CasinoController extends AbstractController {
 	/**
 	 * Displays the initial casino view
 	 *
+     * @param Container
 	 * @return Array
 	 */
-	public function index() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function index(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
 
         if (!$player) {
             $player = new Player();
@@ -45,6 +47,7 @@ class CasinoController extends AbstractController {
 	/**
 	 * User command for betting on the coin toss game in the casino
 	 *
+     * @param Container
 	 * @param bet int The amount of money to bet on the coin toss game
 	 * @return Response
 	 *
@@ -52,13 +55,14 @@ class CasinoController extends AbstractController {
      * If the player bets within ~1% of the maximum bet, they will receive a
      * reward item
 	 */
-	public function bet() {
-		$player   = Player::find(SessionFactory::getSession()->get('player_id'));
-		if(!($player instanceof Player)){
+	public function bet(Container $p_dependencies) {
+        $player = $p_dependencies['current_player'];
+
+		if (!$player) {
 			return new RedirectResponse('/casino/?error='.rawurlencode('Become a ninja first!'));
 		}
-		$bet      = intval(RequestWrapper::getPostOrGet('bet'));
 
+		$bet       = intval(RequestWrapper::getPostOrGet('bet'));
 		$pageParts = ['reminder-max-bet'];
 
 		if ($bet < 0) {

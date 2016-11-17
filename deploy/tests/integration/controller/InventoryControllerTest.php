@@ -6,13 +6,14 @@ use NinjaWars\core\control\InventoryController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Inventory;
 
-class InventoryControllerTest extends PHPUnit_Framework_TestCase {
+class InventoryControllerTest extends NWTest {
     private $char;
     private $controller;
     private $inventory;
     const ITEM = 'caltrop';
 
-	function setUp() {
+	public function setUp() {
+        parent::setUp();
         $this->controller = new InventoryController();
         $this->char = TestAccountCreateAndDestroy::char();
         $this->inventory = new Inventory($this->char);
@@ -24,12 +25,13 @@ class InventoryControllerTest extends PHPUnit_Framework_TestCase {
         $this->inventory->add(self::ITEM);
 	}
 
-	function tearDown() {
+	public function tearDown() {
         $this->inventory->remove(self::ITEM);
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testControllerCanBeInstantiatedWithoutError() {
@@ -38,12 +40,12 @@ class InventoryControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testIndexDoesNotErrorWithoutItem() {
         $this->inventory->remove(self::ITEM);
-        $result = $this->controller->index();
+        $result = $this->controller->index($this->m_dependencies);
         $this->assertNotEmpty($result);
     }
 
     public function testIndexDoesNotErrorWithItem() {
-        $result = $this->controller->index();
+        $result = $this->controller->index($this->m_dependencies);
         $this->assertNotEmpty($result);
     }
 }

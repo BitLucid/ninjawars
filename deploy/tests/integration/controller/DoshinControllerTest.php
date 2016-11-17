@@ -8,6 +8,7 @@ use NinjaWars\core\data\Player;
 
 class DoshinControllerTest extends NWTest {
     public function setUp() {
+        parent::setUp();
         // Mock the post request.
         $request = new Request([], []);
         RequestWrapper::inject($request);
@@ -17,6 +18,7 @@ class DoshinControllerTest extends NWTest {
     public function tearDown() {
         RequestWrapper::inject(new Request([]));
         $this->loginTearDown();
+        parent::tearDown();
     }
 
     public function testInstantiateDoshinController() {
@@ -26,19 +28,19 @@ class DoshinControllerTest extends NWTest {
 
     public function testDoshinIndex() {
         $doshin = new DoshinController();
-        $output = $doshin->index();
+        $output = $doshin->index($this->m_dependencies);
         $this->assertNotEmpty($output);
     }
 
     public function testDoshinOfferBounty() {
         $doshin = new DoshinController();
-        $output = $doshin->offerBounty();
+        $output = $doshin->offerBounty($this->m_dependencies);
         $this->assertNotEmpty($output);
     }
 
     public function testBribeCallInDoshinController() {
         $doshin = new DoshinController();
-        $output = $doshin->offerBounty();
+        $output = $doshin->offerBounty($this->m_dependencies);
         $this->assertNotEmpty($output);
     }
 
@@ -56,7 +58,7 @@ class DoshinControllerTest extends NWTest {
         RequestWrapper::inject($request);
 
         $doshin = new DoshinController();
-        $doshin->offerBounty();
+        $doshin->offerBounty($this->m_dependencies);
         $player = Player::find($target->id());
         $new_bounty = $player->bounty;
         TestAccountCreateAndDestroy::destroy();
@@ -81,7 +83,7 @@ class DoshinControllerTest extends NWTest {
         RequestWrapper::inject($request);
 
         $doshin = new DoshinController();
-        $doshin->bribe();
+        $doshin->bribe($this->m_dependencies);
 
         $pulled_char = Player::find($char_id);
 
@@ -104,7 +106,7 @@ class DoshinControllerTest extends NWTest {
         $this->char->save();
 
         $doshin = new DoshinController();
-        $doshin->bribe();
+        $doshin->bribe($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $this->assertLessThan(7777, $final_char->gold);
         $modified_bounty = $final_char->bounty;

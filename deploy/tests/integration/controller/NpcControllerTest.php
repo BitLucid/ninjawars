@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use \TestAccountCreateAndDestroy;
-use \PHPUnit_Framework_TestCase;
+use \NWTest;
 
 /**
  * BE AWARE THAT NPCS THAT ARE STRONG ENOUGH (doesn't take much) WILL KILL YOU
@@ -19,8 +19,9 @@ use \PHPUnit_Framework_TestCase;
  *
  *
  */
-class NpcControllerTest extends PHPUnit_Framework_TestCase {
-    protected function setUp() {
+class NpcControllerTest extends NWTest {
+    public function setUp() {
+        parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::init(new MockArraySessionStorage());
         SessionFactory::getSession()->set('player_id', $this->char->id());
@@ -29,14 +30,15 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         ]);
     }
 
-    protected function tearDown() {
+    public function tearDown() {
         TestAccountCreateAndDestroy::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testControllerIndexDoesntError() {
-        $response = $this->controller->index();
+        $response = $this->controller->index($this->m_dependencies);
         $this->assertNotEmpty($response);
     }
 
@@ -46,17 +48,13 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
             'randomness' => function(){return 0;}
         ]);
 
-        $response = $this->controller->index();
+        $response = $this->controller->index($this->m_dependencies);
         $this->assertNotEmpty($response);
-    }
-
-    public function testSessionHasPlayerId(){
-        $this->assertEquals($this->char->id(), SessionFactory::getSession()->get('player_id'));
     }
 
     public function testControllerAttackAsIfAgainstAPeasant() {
         RequestWrapper::inject(Request::create('/npc/attack/peasant'));
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $this->assertNotEmpty($response);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -69,7 +67,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         // Bump the test player's level for bounty purposes.
         $this->char->level = 20;
         $this->char->save();
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $this->assertNotEmpty($response);
         $final_char = Player::find($this->char->id());
         $this->assertGreaterThan(0, $final_char->bounty);
@@ -77,7 +75,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testControllerAttackAsIfAgainstAPeasant2() {
         RequestWrapper::inject(Request::create('/npc/attack/peasant2'));
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $this->assertNotEmpty($response);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
@@ -89,7 +87,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testControllerAttackAsIfAgainstAMerchant() {
         RequestWrapper::inject(Request::create('/npc/attack/merchant'));
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -103,7 +101,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->health = 9999;
         $init_gold = $this->char->gold;
         $npco = new Npc('merchant2');
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $final_char = Player::find($this->char->id());
         $this->assertNotEmpty($response);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
@@ -116,7 +114,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testControllerAttackAsIfAgainstAGuard() {
         RequestWrapper::inject(Request::create('/npc/attack/guard'));
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $this->assertNotEmpty($response);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -126,7 +124,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testControllerAttackAsIfAgainstAGuard2() {
         RequestWrapper::inject(Request::create('/npc/attack/guard2'));
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $this->assertNotEmpty($response);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -136,7 +134,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testControllerAttackAsIfAgainstAThief() {
         RequestWrapper::inject(Request::create('/npc/attack/thief'));
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -151,7 +149,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         $this->char->save();
 
         RequestWrapper::inject(Request::create('/npc/attack/samurai'));
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -160,7 +158,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testControllerFailedAttackAgainstSamurai() {
         RequestWrapper::inject(Request::create('/npc/attack/samurai'));
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -173,7 +171,7 @@ class NpcControllerTest extends PHPUnit_Framework_TestCase {
         ]);
 
         RequestWrapper::inject(Request::create('/npc/attack/peasant'));
-        $response = $this->controller->attack();
+        $response = $this->controller->attack($this->m_dependencies);
         $this->assertNotEmpty($response);
     }
 }

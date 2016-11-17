@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
@@ -33,17 +34,14 @@ class ShrineController extends AbstractController {
 	/**
 	 * Renders the initial view of the Shrine with forms based on player state
 	 *
+     * @param Container
 	 * @return Response
 	 * @see servicesNeeded
 	 */
-	public function index() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function index(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
 
 		$pageParts = $this->servicesNeeded($player);
-
-		if (empty($pageParts)) {
-			return $this->renderError('You have no need of healing.', $player);
-		}
 
 		array_unshift($pageParts, 'entrance');
 
@@ -57,14 +55,15 @@ class ShrineController extends AbstractController {
 	/**
 	 * Command to resurrect (if dead) and heal the maximum possible amount (always)
 	 *
+     * @param Container
 	 * @return Response
 	 * @see _heal
 	 * @see _resurrect
 	 */
-	public function healAndResurrect() {
+	public function healAndResurrect(Container $p_dependencies) {
 		$skillController = new Skill();
 
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player = $p_dependencies['current_player'];
 
 		try {
 			$pageParts = [];
@@ -108,11 +107,12 @@ class ShrineController extends AbstractController {
 	/**
 	 * Command to resurrect the current player, if dead.
 	 *
+     * @param Container
 	 * @return Response
 	 * @see _resurrect
 	 */
-	public function resurrect() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function resurrect(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
 
 		try {
 			$costType = $this->_resurrect($player);
@@ -141,14 +141,15 @@ class ShrineController extends AbstractController {
 	/**
 	 * Command to heal the current player by the specified amount
 	 *
+     * @param Container
 	 * @param heal_points Mixed The amount of healing desires as an int or the special value 'max'
 	 * @return Response
 	 * @see _heal
 	 */
-	public function heal() {
+	public function heal(Container $p_dependencies) {
 		$skillController = new Skill();
 
-		$player = Player::find(SessionFactory::getSession()->get('player_id')); // get current player
+		$player = $p_dependencies['current_player'];
 
 		$healAmount = RequestWrapper::getPostOrGet('heal_points');
 
@@ -179,13 +180,14 @@ class ShrineController extends AbstractController {
 	/**
 	 * Command to remove the POISON status from the current player, if poisoned
 	 *
+     * @param Container
 	 * @return Response
 	 * @par Side Effects:
 	 * On success, status attribute of $p_player is modified in memory and database
 	 * On success, gold attribute of $p_player is modified in memory and database
 	 */
-	public function cure() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function cure(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
 
 		if ($player->health <= 0) {
 			return $this->renderError('You must resurrect before you can heal.', $player);

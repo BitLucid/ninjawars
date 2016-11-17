@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
@@ -22,14 +23,14 @@ class ConsiderController extends AbstractController {
     /**
      * Show the intial consider page
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         return $this->render($this->configure());
     }
 
     /**
      * Search for enemies to remember.
      */
-    public function search() {
+    public function search(Container $p_dependencies) {
         $enemy_match = RequestWrapper::getPostOrGet('enemy_match');
         $found_enemies = ($enemy_match ? $this->getEnemyMatches(SessionFactory::getSession()->get('player_id'), $enemy_match) : null);
         $parts = $this->configure();
@@ -46,7 +47,7 @@ class ConsiderController extends AbstractController {
     /**
      * Add an enemy to pc's list if valid.
      */
-    public function addEnemy() {
+    public function addEnemy(Container $p_dependencies) {
         $enemy = Player::find(RequestWrapper::getPostOrGet('add_enemy'));
 
         if ($enemy) {
@@ -59,7 +60,7 @@ class ConsiderController extends AbstractController {
     /**
      * Take an enemy off a pc's list.
      */
-    public function deleteEnemy() {
+    public function deleteEnemy(Container $p_dependencies) {
         $enemy = Player::find(RequestWrapper::getPostOrGet('remove_enemy'));
 
         if ($enemy) {

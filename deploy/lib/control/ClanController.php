@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\Filter;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
@@ -22,15 +23,16 @@ class ClanController extends AbstractController {
 	/**
 	 * View information about a clan
 	 *
+     * @param Container
 	 * @return Response
 	 * @note
 	 * If a clan_id is not specified, the clan of the current user will be used
 	 */
-	public function view() {
+	public function view(Container $p_dependencies) {
         $clanID = RequestWrapper::getPostOrGet('clan_id', null);
-        $player = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player = $p_dependencies['current_player'];
 
-        if ($clanID === null && $player instanceof Player) {
+        if ($clanID === null && $player) {
             $clan = Clan::findByMember($player);
         } else {
             $clan = $clanID? Clan::find($clanID) : null;
@@ -83,11 +85,12 @@ class ClanController extends AbstractController {
 	/**
 	 * Send an invitation to a character that will ask them to join your clan
 	 *
+     * @param Container
 	 * @return Response
 	 * @throws Exception You cannot use this function if you are not the leader of a clan
 	 */
-	public function invite() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function invite(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
 		$clan   = Clan::findByMember($player);
 
 		if (!$clan || !$this->playerIsLeader($player, $clan)) {
@@ -124,11 +127,12 @@ class ClanController extends AbstractController {
 	/**
 	 * Removes the active player from the clan they are in
 	 *
+     * @param Container
 	 * @return Response
 	 * @throws Exception If you are the only leader of your clan, you cannot leave, you must disband
 	 */
-	public function leave() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function leave(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
 		$clan   = Clan::findByMember($player);
 
 		if ($this->playerIsLeader($player, $clan)) {
@@ -151,14 +155,15 @@ class ClanController extends AbstractController {
 	/**
 	 * Creates a new clan with the current user as the leader
 	 *
+     * @param Container
 	 * @return Response
 	 * @note
 	 * Player must be high enough level to create a clan
 	 *
 	 * @see CLAN_CREATOR_MIN_LEVEL
 	 */
-	public function create() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function create(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
 
 		if ($player->level >= self::CLAN_CREATOR_MIN_LEVEL) {
 			$default_clan_name = 'Clan '.$player->name();
@@ -194,13 +199,14 @@ class ClanController extends AbstractController {
 	/**
 	 * Sends a request to a clan leader for the current user to join a clan
 	 *
+     * @param Container
 	 * @return Response
 	 */
-	public function join() {
+	public function join(Container $p_dependencies) {
 		$clanID = (int) RequestWrapper::getPostOrGet('clan_id', 0);
 		$clan   = Clan::find($clanID);
 
-		$this->sendClanJoinRequest(SessionFactory::getSession()->get('player_id'), $clanID);
+		$this->sendClanJoinRequest($p_dependencies['session']->get('player_id'), $clanID);
 
 		$leader = $clan->getLeaderInfo();
 
@@ -219,11 +225,12 @@ class ClanController extends AbstractController {
 	/**
 	 * Deletes a clan and messages all members that it has been disbanded
 	 *
+     * @param Container
 	 * @return Response
 	 * @throws \Exception The player disbanding must be the leader of the clan
 	 */
-	public function disband() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function disband(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
 		$clan   = Clan::findByMember($player);
 		$sure   = RequestWrapper::getPostOrGet('sure', '');
 
@@ -258,11 +265,12 @@ class ClanController extends AbstractController {
 	/**
 	 * Removes a player from a clan
 	 *
+     * @param Container
 	 * @return Response
 	 * @throws Exception The player must be the leader of the clan to kick a member
 	 */
-	public function kick() {
-		$kicker = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function kick(Container $p_dependencies) {
+		$kicker = $p_dependencies['current_player'];
 		$clan   = Clan::findByMember($kicker);
 		$kicked = Player::find(RequestWrapper::getPostOrGet('kicked', ''));
 
@@ -288,14 +296,15 @@ class ClanController extends AbstractController {
 	 * Edits clan metadata
 	 *
      * @todo accumulate error messages
+     * @param Container
 	 * @return Response
 	 * @throws Exception Only leaders can update clan details
 	 * @note
 	 * All parameters are options
 	 */
-	public function update() {
+	public function update(Container $p_dependencies) {
         $request = RequestWrapper::$request;
-		$player  = Player::find(SessionFactory::getSession()->get('player_id'));
+		$player  = $p_dependencies['current_player'];
 		$clan    = Clan::findByMember($player);
 
 		if (!$this->playerIsLeader($player, $clan)) {
@@ -356,11 +365,12 @@ class ClanController extends AbstractController {
 	/**
 	 * Shows a form for editing clan metadata
 	 *
+     * @param Container
 	 * @return Response
 	 * @see update()
 	 */
-	public function edit() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function edit(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
 		$clan   = Clan::findByMember($player);
 
 		return $this->render([
@@ -376,10 +386,11 @@ class ClanController extends AbstractController {
 	/**
 	 * Sends a message to all members of the clan of the current player
 	 *
+     * @param Container
 	 * @return Response
 	 */
-	public function message() {
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+	public function message(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
 		$message = RequestWrapper::getPostOrGet('message', null);
 
 		if ($player) {
@@ -418,16 +429,17 @@ class ClanController extends AbstractController {
 	/**
 	 * Shows a ranked list of all clans in the game
 	 *
+     * @param Container
 	 * @return Response
 	 */
-	public function listClans() {
+	public function listClans(Container $p_dependencies) {
 		$parts = [
 			'title'     => 'Clan List',
 			'clans'     => Clan::rankings(),
 			'pageParts' => ['list'],
 		];
 
-		$player = Player::find(SessionFactory::getSession()->get('player_id'));
+		$player = $p_dependencies['current_player'];
 
 		if ($player) {
 			$clan = Clan::findByMember($player);
@@ -445,11 +457,12 @@ class ClanController extends AbstractController {
 	/**
 	 * Review a request to join a clan
 	 *
+     * @param Container
 	 * @return Response
 	 */
-	public function review() {
+	public function review(Container $p_dependencies) {
         $request = RequestWrapper::$request;
-		$ninja   = Player::find(SessionFactory::getSession()->get('player_id'));
+		$ninja   = $p_dependencies['current_player'];
 		$clan    = Clan::findByMember($ninja->id());
 
 		$joiner = Player::find($request->get('joiner'));
@@ -481,14 +494,15 @@ class ClanController extends AbstractController {
 	/**
 	 * Accept a player as a new member of a clan
 	 *
+     * @param Container
 	 * @return Response
 	 *
 	 * @par Preconditions:
 	 * Active player must be leader of a clan
 	 */
-	public function accept() {
+	public function accept(Container $p_dependencies) {
         $request = RequestWrapper::$request;
-		$ninja   = Player::find(SessionFactory::getSession()->get('player_id'));
+		$ninja   = $p_dependencies['current_player'];
 		$clan    = Clan::findByMember($ninja->id());
 
 		$joiner = Player::find($request->get('joiner'));
@@ -531,6 +545,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Generates a Response for rendering pages
 	 *
+     * @todo inject dependencies instead of pulling from the model
 	 * @param Array $p_parts Name-Value pairs of values to send to the view
 	 * @return Response
 	 */

@@ -9,16 +9,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class PasswordControllerTest extends PHPUnit_Framework_TestCase {
-    function setUp() {
+class PasswordControllerTest extends NWTest {
+    public function setUp() {
+        parent::setUp();
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         $this->account = Account::findById($this->account_id);
         $this->nonce = Crypto::nonce();
     }
 
-    function tearDown() {
+    public function tearDown() {
         query("delete from password_reset_requests where nonce = '777777' or nonce = :nonce", [':nonce'=>$this->nonce]);
         TestAccountCreateAndDestroy::purge_test_accounts();
+        parent::tearDown();
     }
 
     private function checkTestPasswordMatches($pass) {
@@ -33,7 +35,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         // Get a Response
         $controller = new PasswordController();
-        $response = $controller->index();
+        $response = $controller->index($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'template');
         $reflection->setAccessible(true);
         $response_template = $reflection->getValue($response);
@@ -49,7 +51,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         // Pass to controller
         $controller = new PasswordController();
-        $controller->postEmail();
+        $controller->postEmail($this->m_dependencies);
 
         // reset entry should be created
         $pwrr = PasswordResetRequest::where('_account_id', '=', $this->account->id())->first();
@@ -67,7 +69,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($req);
 
         $controller = new PasswordController();
-        $response = $controller->postEmail();
+        $response = $controller->postEmail($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertTrue(strpos($response->getTargetUrl(), rawurlencode('email or a ninja name')) !== false, 'Url Redirection did not contain expected error string');
     }
@@ -80,7 +82,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($req);
 
         $controller = new PasswordController();
-        $response = $controller->postEmail();
+        $response = $controller->postEmail($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $expected = 'unable to find a matching account';
         $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode($expected)) !== false, 'Url Redirection for ['.$response->getTargetUrl().'] did not contain expected error string of ['.$expected.']');
@@ -99,7 +101,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
 
         $controller = new PasswordController();
-        $controller->postEmail();
+        $controller->postEmail($this->m_dependencies);
         // Check for a matching request for the appropriate account.
         $pwrr = PasswordResetRequest::where('_account_id', '=', $account->id())->first();
 
@@ -118,7 +120,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         // get a response
         $controller = new PasswordController();
-        $response = $controller->getReset();
+        $response = $controller->getReset($this->m_dependencies);
 
         // Response should contain an array with the token in the parts.
         $this->assertInstanceOf(RedirectResponse::class, $response, 'Error! getReset matched a garbage token!');
@@ -140,7 +142,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         // get a response
         $controller = new PasswordController();
-        $response = $controller->getReset();
+        $response = $controller->getReset($this->m_dependencies);
 
         // Response should contain an array with the token in the parts.
         $this->assertFalse($response instanceof RedirectResponse, 'Redirection to the url ['.($response instanceof RedirectResponse? $response->getTargetUrl() : null).'] was the invalid result of password reset.');
@@ -177,7 +179,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         // Now run the controller method to reset!
         $controller = new PasswordController();
-        $response = $controller->postReset();
+        $response = $controller->postReset($this->m_dependencies);
 
         // Response should be a successful redirect
         $this->assertInstanceOf(RedirectResponse::class, $response, 'Successful redirect after password resetting was not triggered!');
@@ -210,7 +212,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         // Now run the controller method to reset!
         $controller = new PasswordController();
-        $response = $controller->postReset();
+        $response = $controller->postReset($this->m_dependencies);
 
         $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode('not long enough')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
@@ -240,7 +242,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         // Now run the controller method to reset!
         $controller = new PasswordController();
-        $response = $controller->postReset();
+        $response = $controller->postReset($this->m_dependencies);
 
         $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode('Password Confirmation did not match')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
@@ -271,7 +273,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         // Now run the controller method to reset!
         $controller = new PasswordController();
-        $response = $controller->postReset($request);
+        $response = $controller->postReset($this->m_dependencies);
 
         $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode('No Valid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
@@ -296,7 +298,7 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase {
 
         // Now run the controller method to reset!
         $controller = new PasswordController();
-        $response = $controller->postReset();
+        $response = $controller->postReset($this->m_dependencies);
 
         $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode('Token was invalid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 

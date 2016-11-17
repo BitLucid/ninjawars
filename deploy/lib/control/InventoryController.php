@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Item;
@@ -29,7 +30,7 @@ class InventoryController extends AbstractController {
      *
      * @return Response
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         $char      = Player::find(SessionFactory::getSession()->get('player_id'));
         $inv       = Inventory::of($char, 'self');
         $inventory = [];
@@ -65,7 +66,7 @@ class InventoryController extends AbstractController {
      *
      * @return Response
 	 */
-    public function give() {
+    public function give(Container $p_dependencies) {
         $slugs  = $this->parseSlugs();
         $player = Player::find(SessionFactory::getSession()->get('player_id'));
         $target = $this->findPlayer($slugs['in_target']);
@@ -116,7 +117,7 @@ class InventoryController extends AbstractController {
      *
      * @return Response
 	 */
-    public function selfUse() {
+    public function selfUse(Container $p_dependencies) {
         $slugs           = $this->parseSlugs();
         $player          = Player::find(SessionFactory::getSession()->get('player_id'));
         $inventory       = new Inventory($player);
@@ -195,7 +196,7 @@ class InventoryController extends AbstractController {
      * @note
      * /use/ is aliased to useItem externally because use is a php reserved keyword
 	 */
-    public function useItem() {
+    public function useItem(Container $p_dependencies) {
         $slugs           = $this->parseSlugs();
         $target          = $this->findPlayer($slugs['in_target']);
         $player          = Player::find(SessionFactory::getSession()->get('player_id'));

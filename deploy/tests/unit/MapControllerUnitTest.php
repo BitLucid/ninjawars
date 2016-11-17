@@ -2,21 +2,23 @@
 use NinjaWars\core\control\MapController;
 use NinjaWars\core\extensions\StreamedViewResponse;
 
-class MapControllerUnitTest extends PHPUnit_Framework_TestCase {
+class MapControllerUnitTest extends NWTest {
     private $controller;
 
     public function __construct() {
     }
 
-    protected function setUp() {
+    public function setUp() {
+        parent::setUp();
         $this->controller = new MapController();
     }
 
-    protected function tearDown() {
+    public function tearDown() {
+        parent::tearDown();
     }
 
     public function testIndex() {
-        $response = $this->controller->index();
+        $response = $this->controller->index($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }

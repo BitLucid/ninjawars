@@ -5,8 +5,9 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\WorkController;
 use NinjaWars\core\extensions\SessionFactory;
 
-class WorkControllerTest extends PHPUnit_Framework_TestCase {
+class WorkControllerTest extends NWTest {
 	function setUp() {
+        parent::setUp();
         // Mock the post request.
         $request = new Request([], ['worked'=>10]);
         RequestWrapper::inject($request);
@@ -18,6 +19,7 @@ class WorkControllerTest extends PHPUnit_Framework_TestCase {
         $session = SessionFactory::getSession();
         $session->invalidate();
         TestAccountCreateAndDestroy::destroy();
+        parent::tearDown();
     }
 
     public function testWorkControllerCanBeInstantiatedWithoutError() {
@@ -27,7 +29,7 @@ class WorkControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testWorkIndexDoesNotError() {
         $work = new WorkController();
-        $work_response = $work->index();
+        $work_response = $work->index($this->m_dependencies);
         $this->assertNotEmpty($work_response);
     }
 
@@ -37,7 +39,7 @@ class WorkControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request([], ['worked'=>999]);
         RequestWrapper::inject($request);
         $work = new WorkController();
-        $response = $work->requestWork();
+        $response = $work->requestWork($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -52,7 +54,7 @@ class WorkControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request([], ['worked'=>99977777]);
         RequestWrapper::inject($request);
         $work = new WorkController();
-        $response = $work->requestWork();
+        $response = $work->requestWork($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -68,7 +70,7 @@ class WorkControllerTest extends PHPUnit_Framework_TestCase {
         $request = new Request([], ['worked'=>-999]);
         RequestWrapper::inject($request);
         $work = new WorkController();
-        $response = $work->requestWork();
+        $response = $work->requestWork($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);

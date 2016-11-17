@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\control\Combat;
@@ -26,7 +27,7 @@ class AttackController extends AbstractController {
     /**
      * @return Response
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         $request = RequestWrapper::$request;
         $session = SessionFactory::getSession();
 

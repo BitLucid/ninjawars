@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
@@ -20,7 +21,7 @@ class LoginController extends AbstractController {
     /**
      * Try to perform a login
      */
-    public function requestLogin() {
+    public function requestLogin(Container $p_dependencies) {
         $request             = RequestWrapper::$request;
         $login_error_message = $request->get('error'); // Error to display after unsuccessful login and redirection.
         $pass                = $request->request->get('pass');
@@ -44,7 +45,7 @@ class LoginController extends AbstractController {
     /**
      * Display standard login page.
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         $login_error_message = RequestWrapper::getPostOrGet('error'); // Error to display after unsuccessful login and redirection.
 
         $stored_username = (isset($_COOKIE['username']) ? $_COOKIE['username'] : null);

@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Player;
@@ -28,7 +29,7 @@ class HomepageController extends AbstractController {
      *
      * @return Response
      */
-    public function index() {
+    public function index(Container $p_dependencies) {
         return ($this->loggedIn ? $this->game() : $this->splash());
     }
 

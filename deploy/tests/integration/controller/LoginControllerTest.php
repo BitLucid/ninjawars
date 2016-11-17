@@ -1,5 +1,5 @@
 <?php
-namespace NinjaWars\test;
+
 use NinjaWars\core\data\Account;
 use NinjaWars\core\control\LoginController;
 use Symfony\Component\HttpFoundation\Request;
@@ -7,21 +7,22 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
-use \TestAccountCreateAndDestroy;
 
-class LoginControllerTest extends \PHPUnit_Framework_TestCase {
-    function setUp() {
+class LoginControllerTest extends NWTest {
+    public function setUp() {
+        parent::setUp();
         // Mock the post request.
         $request = new Request([], []);
         RequestWrapper::inject($request);
         SessionFactory::init(new MockArraySessionStorage());
     }
 
-    function tearDown() {
+    public function tearDown() {
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();
         TestAccountCreateAndDestroy::destroy();
+        parent::tearDown();
     }
 
     public function testLoginControllerCanBeInstantiatedWithoutError() {
@@ -37,7 +38,7 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
 
     public function testLoginIndexShouldDisplay(){
         $controller = new LoginController();
-        $response = $controller->index();
+        $response = $controller->index($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -48,13 +49,13 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
         $session = SessionFactory::getSession();
         $session->set('authenticated', true);
         $controller = new LoginController();
-        $res = $controller->index();
+        $res = $controller->index($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $res);
     }
 
     public function testLoginRequestWithBlanksShouldError(){
         $controller = new LoginController();
-        $res = $controller->requestLogin();
+        $res = $controller->requestLogin($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(stripos($res->getTargetUrl(), 'error') !== false);
     }
@@ -63,7 +64,7 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
         $request = new Request([], ['user'=>'bob', 'pass'=>'james']);
         RequestWrapper::inject($request);
         $controller = new LoginController();
-        $res = $controller->requestLogin();
+        $res = $controller->requestLogin($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(stripos($res->getTargetUrl(), 'error') !== false);
     }
@@ -75,7 +76,7 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
         // TestAccountCreateAndDestroy::$test_password
         RequestWrapper::inject($request);
         $controller = new LoginController();
-        $res = $controller->requestLogin();
+        $res = $controller->requestLogin($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(stripos($res->getTargetUrl(), 'error') === false);
     }
@@ -89,7 +90,7 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
         // TestAccountCreateAndDestroy::$test_password
         RequestWrapper::inject($request);
         $controller = new LoginController();
-        $res = $controller->requestLogin();
+        $res = $controller->requestLogin($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(stripos($res->getTargetUrl(), 'error') !== false);
     }
@@ -103,7 +104,7 @@ class LoginControllerTest extends \PHPUnit_Framework_TestCase {
         // TestAccountCreateAndDestroy::$test_password
         RequestWrapper::inject($request);
         $controller = new LoginController();
-        $res = $controller->requestLogin();
+        $res = $controller->requestLogin($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $res);
         $this->assertTrue(stripos($res->getTargetUrl(), 'error') !== false);
     }

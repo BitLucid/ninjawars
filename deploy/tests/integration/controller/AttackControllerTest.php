@@ -8,31 +8,33 @@ use NinjaWars\core\control\AttackController;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 
-class AttackControllerTest extends PHPUnit_Framework_TestCase {
+class AttackControllerTest extends NWTest {
     private $controller;
 
     public function __construct() {
         $this->controller = new AttackController();
     }
 
-	protected function setUp() {
+	public function setUp() {
+        parent::setUp();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	protected function tearDown() {
+	public function tearDown() {
         RequestWrapper::destroy();
         TestAccountCreateAndDestroy::purge_test_accounts();
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testAttackWithoutArgs() {
         $request = Request::create('/attack', 'GET', []);
         RequestWrapper::inject($request);
 
-        $response = $this->controller->index();
+        $response = $this->controller->index($this->m_dependencies);
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
@@ -41,7 +43,7 @@ class AttackControllerTest extends PHPUnit_Framework_TestCase {
 
         $request = Request::create('/attack', 'GET', ['target'=>$char_id_2]);
         RequestWrapper::inject($request);
-        $response = $this->controller->index();
+        $response = $this->controller->index($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
@@ -53,7 +55,7 @@ class AttackControllerTest extends PHPUnit_Framework_TestCase {
 
         $request = Request::create('/attack', 'GET', ['target'=>$char_id_2]);
         RequestWrapper::inject($request);
-        $response = $this->controller->index();
+        $response = $this->controller->index($this->m_dependencies);
         $char_2 = Player::find($char_id_2); // Get latest player data again
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
         $this->assertGreaterThan($initial_turns-5, $char_2->turns);
@@ -69,7 +71,7 @@ class AttackControllerTest extends PHPUnit_Framework_TestCase {
 
         $request = Request::create('/attack', 'GET', $params);
         RequestWrapper::inject($request);
-        $response = $this->controller->index();
+        $response = $this->controller->index($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
@@ -87,7 +89,7 @@ class AttackControllerTest extends PHPUnit_Framework_TestCase {
 
         $request = Request::create('/attack', 'GET', $params);
         RequestWrapper::inject($request);
-        $response = $this->controller->index();
+        $response = $this->controller->index($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
 

@@ -8,7 +8,7 @@ use NinjaWars\core\control\ClanController;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 
-class ClanControllerTest extends PHPUnit_Framework_TestCase {
+class ClanControllerTest extends NWTest {
     private $controller;
     private $clan;
 
@@ -16,19 +16,21 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $this->controller = new ClanController();
     }
 
-	protected function setUp() {
+	public function setUp() {
+        parent::setUp();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);
         $this->clan = Clan::create(Player::find($char_id), 'phpunit_test_clan');
     }
 
-	protected function tearDown() {
+	public function tearDown() {
         $this->deleteClan($this->clan->id);
         RequestWrapper::destroy();
         TestAccountCreateAndDestroy::purge_test_accounts();
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     private function deleteClan($clan_id) {
@@ -37,7 +39,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testIndex() {
-        $response = $this->controller->listClans();
+        $response = $this->controller->listClans($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
@@ -45,7 +47,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
     public function testViewMyClan() {
         $request = Request::create('/clan/view', 'GET', ['clan_id'=>$this->clan->id]);
         RequestWrapper::inject($request);
-        $response = $this->controller->view();
+        $response = $this->controller->view($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
@@ -60,7 +62,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         // view new clan
         $request = Request::create('/clan/view', 'GET', ['clan_id'=>$clan->id]);
         RequestWrapper::inject($request);
-        $response = $this->controller->view();
+        $response = $this->controller->view($this->m_dependencies);
 
         // delete new clan
         $this->deleteClan($clan->id);
@@ -72,7 +74,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $bad_id = query_item('SELECT max(clan_id)+1 AS bad_id FROM clan');
         $request = Request::create('/clan/view', 'GET', ['clan_id'=>$bad_id]);
         RequestWrapper::inject($request);
-        $response = $this->controller->view();
+        $response = $this->controller->view($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
@@ -80,7 +82,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
     public function testViewNoArgsWithClan() {
         $request = Request::create('/clan/view', 'GET', []);
         RequestWrapper::inject($request);
-        $response = $this->controller->view();
+        $response = $this->controller->view($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
@@ -90,11 +92,11 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
         // switch session to new character
-		SessionFactory::getSession()->set('player_id', $char_id_2);
+		$this->m_dependencies['session']->set('player_id', $char_id_2);
 
         $request = Request::create('/clan/view', 'GET', []);
         RequestWrapper::inject($request);
-        $response = $this->controller->view();
+        $response = $this->controller->view($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
@@ -104,15 +106,15 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
         // add new character to clan
-        $this->clan->addMember(Player::find($char_id_2), Player::find(SessionFactory::getSession()->get('player_id')));
+        $this->clan->addMember(Player::find($char_id_2), $this->m_dependencies['current_player']);
 
         // switch session to new character
-		SessionFactory::getSession()->set('player_id', $char_id_2);
+		$this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // view default clan
         $request = Request::create('/clan/view', 'GET', []);
         RequestWrapper::inject($request);
-        $response = $this->controller->view();
+        $response = $this->controller->view($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
@@ -124,15 +126,15 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
         // add new character to clan
-        $this->clan->addMember(Player::find($char_id_2), Player::find(SessionFactory::getSession()->get('player_id')));
+        $this->clan->addMember(Player::find($char_id_2), $this->m_dependencies['current_player']);
 
         // switch session to new character
-		SessionFactory::getSession()->set('player_id', $char_id_2);
+        $this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // try to invite
         $request = Request::create('/clan/invite', 'GET', []);
         RequestWrapper::inject($request);
-        $response = $this->controller->invite();
+        $response = $this->controller->invite($this->m_dependencies);
     }
 
     public function testInviteWithoutClan() {
@@ -142,12 +144,12 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
         // switch session to new character
-		SessionFactory::getSession()->set('player_id', $char_id_2);
+		$this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // try to invite
         $request = Request::create('/clan/invite', 'GET', []);
         RequestWrapper::inject($request);
-        $response = $this->controller->invite();
+        $response = $this->controller->invite($this->m_dependencies);
     }
 
     public function testInviteAsLeader() {
@@ -157,7 +159,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         // try to invite
         $request = Request::create('/clan/invite', 'GET', ['person_invited'=>$char_id_2]);
         RequestWrapper::inject($request);
-        $response = $this->controller->invite();
+        $response = $this->controller->invite($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
@@ -166,7 +168,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         // try to invite
         $request = Request::create('/clan/invite', 'GET', ['person_invited'=>-123]);
         RequestWrapper::inject($request);
-        $response = $this->controller->invite();
+        $response = $this->controller->invite($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
@@ -180,15 +182,15 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
         // add new character to clan
-        $this->clan->addMember(Player::find($char_id_2), Player::find(SessionFactory::getSession()->get('player_id')));
+        $this->clan->addMember(Player::find($char_id_2), $this->m_dependencies['current_player']);
 
         // switch session to new character
-		SessionFactory::getSession()->set('player_id', $char_id_2);
+		$this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // try to leave
         $request = Request::create('/clan/leave', 'GET', []);
         RequestWrapper::inject($request);
-        $response = $this->controller->leave();
+        $response = $this->controller->leave($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
@@ -199,14 +201,14 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         // try to leave
         $request = Request::create('/clan/leave', 'GET', []);
         RequestWrapper::inject($request);
-        $response = $this->controller->leave();
+        $response = $this->controller->leave($this->m_dependencies);
     }
 
     public function testDisbandAsLeaderWithoutConfirm() {
         // try to disband
         $request = Request::create('/clan/disband', 'GET', []);
         RequestWrapper::inject($request);
-        $response = $this->controller->disband();
+        $response = $this->controller->disband($this->m_dependencies);
 
         $reflection = new \ReflectionProperty(get_class($response), 'title');
         $reflection->setAccessible(true);
@@ -218,7 +220,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         // try to disband
         $request = Request::create('/clan/disband', 'GET', ['sure'=>'yes']);
         RequestWrapper::inject($request);
-        $response = $this->controller->disband();
+        $response = $this->controller->disband($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
         $reflection = new \ReflectionProperty(get_class($response), 'title');
@@ -234,15 +236,15 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
         // add new character to clan
-        $this->clan->addMember(Player::find($char_id_2), Player::find(SessionFactory::getSession()->get('player_id')));
+        $this->clan->addMember(Player::find($char_id_2), $this->m_dependencies['current_player']);
 
         // switch session to new character
-		SessionFactory::getSession()->set('player_id', $char_id_2);
+		$this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // try to disband
         $request = Request::create('/clan/disband', 'GET', []);
         RequestWrapper::inject($request);
-        $response = $this->controller->disband();
+        $response = $this->controller->disband($this->m_dependencies);
     }
 
     public function testKickAsLeader() {
@@ -250,12 +252,12 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
         // add new character to clan
-        $this->clan->addMember(Player::find($char_id_2), Player::find(SessionFactory::getSession()->get('player_id')));
+        $this->clan->addMember(Player::find($char_id_2), $this->m_dependencies['current_player']);
 
         // try to kick
         $request = Request::create('/clan/kick', 'GET', ['kicked'=>$char_id_2]);
         RequestWrapper::inject($request);
-        $response = $this->controller->kick();
+        $response = $this->controller->kick($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
         $reflection = new \ReflectionProperty(get_class($response), 'title');
@@ -267,7 +269,7 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
     public function testKickAsMember() {
         $this->setExpectedException(\RuntimeException::class);
 
-        $char_id_1 = SessionFactory::getSession()->get('player_id');
+        $char_id_1 = $this->m_dependencies['session']->get('player_id');
 
         // create new character
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
@@ -276,11 +278,11 @@ class ClanControllerTest extends PHPUnit_Framework_TestCase {
         $this->clan->addMember(Player::find($char_id_2), Player::find($char_id_1));
 
         // switch session to new character
-		SessionFactory::getSession()->set('player_id', $char_id_2);
+		$this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // try to kick
         $request = Request::create('/clan/kick', 'GET', ['kicked'=>$char_id_1]);
         RequestWrapper::inject($request);
-        $response = $this->controller->kick();
+        $response = $this->controller->kick($this->m_dependencies);
     }
 }

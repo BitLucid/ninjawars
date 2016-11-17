@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
@@ -26,11 +27,12 @@ class DojoController extends AbstractController {
     /**
      * Default dojo action
      *
+     * @param Container
      * @return Response
      */
-    public function index() {
-        if (SessionFactory::getSession()->get('authenticated', false)) {
-            return $this->render([], Player::find(SessionFactory::getSession()->get('player_id')));
+    public function index(Container $p_dependencies) {
+        if ($p_dependencies['session']->get('authenticated', false)) {
+            return $this->render([], $p_dependencies['current_player']);
         } else {
             return $this->render();
         }
@@ -40,11 +42,12 @@ class DojoController extends AbstractController {
      * Action to request the Dim Mak form AND execute the purchase
      *
      * @todo split form request (GET) and purchase (POST) into separate funcs
+     * @param Container
      * @return Response
      */
-    public function buyDimMak() {
-        if (SessionFactory::getSession()->get('authenticated', false)) {
-            $player = Player::find(SessionFactory::getSession()->get('player_id'));
+    public function buyDimMak(Container $p_dependencies) {
+        if ($p_dependencies['session']->get('authenticated', false)) {
+            $player = $p_dependencies['current_player'];
             $showMonks = false;
             $parts = [];
 
@@ -76,11 +79,12 @@ class DojoController extends AbstractController {
      * Action to request class change form AND execute class change
      *
      * @todo split form request and execute into separate funcs
+     * @param Container
      * @return Response
      */
-    public function changeClass() {
-        if (SessionFactory::getSession()->get('authenticated', false)) {
-            $player            = Player::find(SessionFactory::getSession()->get('player_id'));
+    public function changeClass(Container $p_dependencies) {
+        if ($p_dependencies['session']->get('authenticated', false)) {
+            $player            = $p_dependencies['current_player'];
             $classes           = query_array('select class_id, identity, class_name, class_note, class_tier, class_desc, class_icon, theme from class where class_active = true');
             $requestedIdentity = RequestWrapper::getPostOrGet('requested_identity');
             $currentClass      = $player->identity;
