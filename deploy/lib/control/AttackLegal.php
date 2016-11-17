@@ -51,7 +51,7 @@ class AttackLegal {
         $this->params = array_merge($defaults, $params);
 
         if ($this->params['required_turns'] === null) {
-            throw new \Exception('Error: AttackLegal required turns not specified.');
+            throw new \InvalidArgumentException('Error: AttackLegal required turns not specified.');
         }
 
         if (!($p_attacker instanceof Player)) {
