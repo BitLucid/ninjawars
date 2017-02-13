@@ -451,16 +451,24 @@ class Clan {
     }
 
     /**
-     * Find a clan by id
+     * Find a clan by identity
      *
-     * @param int $identity
+     * @param int|string $identity
      * @return Clan|null
      */
     public static function find($identity) {
-        $clan_info = query_row(
-            'select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan where clan_id = :id',
-            [':id'=>$identity]
-        );
+        $clan_info = null;
+        if(is_numeric($identity)){
+            $clan_info = query_row(
+                'select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan where clan_id = :id',
+                [':id'=>[$identity, PDO::PARAM_INT]]
+            );
+        } elseif(static::isValidClanName($identity)) {
+            $clan_info = query_row(
+                'select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan where clan_name = :name',
+                [':name'=>$identity]
+            );
+        }
 
         if (empty($clan_info)) {
             return null;
