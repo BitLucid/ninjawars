@@ -554,6 +554,7 @@ class SkillController extends AbstractController {
         $ending_turns         = $player->turns;
 		$parts = [
 			'attack_error'=>$attack_error,
+			'error'=>$attack_error,
 			'targetObj'=>$targetObj,
 			'display_sight_table'=>$display_sight_table,
 			'sight_data'=>$sight_data,
