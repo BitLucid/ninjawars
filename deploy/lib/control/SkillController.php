@@ -121,8 +121,6 @@ class SkillController extends AbstractController {
         $target2 = $request->get('target2');
         $act = $request->get('act');
         $url = 'skill/use/'.rawurlencode($act).'/'.rawurlencode($target).'/'.($target2? rawurlencode($target2).'/' : '');
-
-        // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
 	}
 
@@ -132,8 +130,6 @@ class SkillController extends AbstractController {
     public function postSelfUse(Container $p_dependencies) {
         $act = RequestWrapper::getPost('act');
         $url = 'skill/self_use/'.rawurlencode($act).'/';
-
-        // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);
     }
 
@@ -222,8 +218,8 @@ class SkillController extends AbstractController {
 				$targetObj = Player::findByName($target_identity);
 				$target_id = $targetObj instanceof Character? $targetObj->id() : null;
 				$return_to_target = true;
-			} elseif((bool) positive_int($target_identity)){
-				$targetObj = Player::find(positive_int($target_identity));
+			} elseif((bool) Filter::toNonNegativeInt($target_identity)){
+				$targetObj = Player::find(Filter::toNonNegativeInt($target_identity));
 				$target_id = $targetObj instanceof Character? $targetObj->id() : null;
 				$return_to_target = true;
 			}
