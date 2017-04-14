@@ -1,5 +1,5 @@
 
-{assign var="charName" value=$target->name()|escape}
+{assign var="charName" value=$targetObj->name()|escape}
 {assign var="charName" value="<strong class=\"char-name\">$charName</strong>"}
 
 <section>
@@ -12,7 +12,7 @@
 <div class='usage-mod-result'>
 
 	<div>
-		<a href="/player?player_id={$target_id|escape:'url'}">{include file="gravatar.tpl" gurl=$target->avatarUrl()}</a>
+		<a href="/player?player_id={$targetObj->id()|escape:'url'}">{include file="gravatar.tpl" gurl=$targetObj->avatarUrl()}</a>
 	</div>
 
 	{if $display_sight_table}
@@ -49,15 +49,15 @@
   <p>You have killed {$charName} with {$act}!</p>
 	{/if}
 	{if $loot > 0}
-  <p>You receive <span class='gold-count'>{$loot} gold</span> from {$target}.</p>
+  <p>You receive <span class='gold-count'>{$loot} gold</span> from {$targetObj->name()}.</p>
 	{/if}
 
 	{if $added_bounty > 0}
-  <p>Your victim was much weaker than you. The townsfolk are angered. A bounty of {$added_bounty * 25} gold has been placed on your head!</p>
+  <p>Your victim was much weaker than you. The townsfolk are angered. A bounty of {$added_bounty} gold has been placed on your head!</p>
 	{/if}
 
 	{if $bounty > 0}
-  <p>You have received the {$bounty} gold bounty on {$target}'s head for your deeds!</p>
+  <p>You have received the {$bounty} gold bounty on {$targetObj->name()}'s head for your deeds!</p>
 	{/if}
 
 	{if $suicided}
@@ -68,7 +68,7 @@
   <p>Your actions have revealed you. You are no longer stealthed.</p>
 	{/if}
 
-{include file="defender_health.tpl" health=$target_ending_health level=$target->level target_name=$target_name}
+{include file="defender_health.tpl" health=$targetObj->health level=$targetObj->level target_name=$targetObj->name()}
 
 {if $turn_cost}
 	<div id='turn-cost'> You used {$turn_cost} turn{if $turn_cost > 1}s{/if}.</div>
@@ -80,7 +80,7 @@
 
 	{if $reuse}
 <div class="skillReload glassbox">
-	<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $target_id}{$target_id|escape:'url'}/{/if}">
+	<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $targetObj->id()}{$targetObj->id()|escape:'url'}/{/if}">
 		Use {$act} again
 	</a>
 </div>
@@ -95,7 +95,7 @@
 <div class="LinkBack glassbox">
   Return to
 {if $return_to_target}
-  <a href="/player?player_id={$target_id|escape:'url'}" class='return-to-location'>view {$charName}</a>
+  <a href="/player?player_id={$targetObj->id()|escape:'url'}" class='return-to-location'>view {$charName}</a>
 {else}
   <a class='return-to-location' href="/skill">Skills</a>
 {/if}

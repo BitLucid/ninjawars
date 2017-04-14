@@ -7,11 +7,13 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Character;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\data\CloneKill;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
+use Pimple\Container;
 
 /**
  * Handles both skill listing and displaying, and their usage
@@ -23,31 +25,23 @@ class SkillController extends AbstractController {
 
 	const MIN_POISON_TOUCH = 1;
 
-	public function maxPoisonTouch(){
+	protected function maxPoisonTouch(){
 		return (int)floor(2/3*Player::maxHealthByLevel(1));
 	}
 
-	public function fireBoltBaseDamage(Player $pc){
+	protected function fireBoltBaseDamage(Player $pc){
 		return (int) (floor(Player::maxHealthByLevel($pc->level) / 3));
 	}
 
 	/**
 	 * Technically max -additional damage off the base
 	 */
-	public function fireBoltMaxDamage(Player $pc){
+	protected function fireBoltMaxDamage(Player $pc){
 		return (int) $pc->getStrength();
 	}
 
-	public function maxHarmonize(Player $pc){
+	protected function maxHarmonize(Player $pc){
 		return $pc->getMaxHealth();
-	}
-
-	/**
-	 * Initialize with any external state if necessary
-	 *
-	 */
-	public function __construct() {
-		$this->player = Player::find(SessionFactory::getSession()->get('player_id'));
 	}
 
 	/**
@@ -55,15 +49,15 @@ class SkillController extends AbstractController {
 	 *
 	 * @return Array
 	 */
-	public function index() {
+	public function index(Container $p_dependencies) {
 		$error = RequestWrapper::getPostOrGet('error');
 		$skillsListObj = new Skill();
 
-		$player         = $this->player;
+		$player         = $p_dependencies['current_player'];
 		$starting_turns = $player->turns;
 		$starting_ki    = $player->ki;
 
-		$status_list = Player::getStatusList();
+		$status_list = Player::getStatusList($player->id());
 		$no_skills   = true;
 		$stealth     = $skillsListObj->hasSkill('Stealth', $player);
 
@@ -117,7 +111,11 @@ class SkillController extends AbstractController {
 		return new StreamedViewResponse('Your Skills', 'skills.tpl', $parts, ['quickstat'=>'player']);
 	}
 
-	public function postUse() {
+	/**
+	 * Take the skill form elements and translate the post into the equivalent get requests.
+	 *
+	 */
+	public function postUse(Container $p_dependencies) {
         $request = RequestWrapper::$request;
         $target = $request->get('target');
         $target2 = $request->get('target2');
@@ -128,7 +126,10 @@ class SkillController extends AbstractController {
         return new RedirectResponse(WEB_ROOT.$url);
 	}
 
-    public function postSelfUse() {
+	/**
+	 * Translate the self-use requests into their get equivalent
+	 */
+    public function postSelfUse(Container $p_dependencies) {
         $act = RequestWrapper::getPost('act');
         $url = 'skill/self_use/'.rawurlencode($act).'/';
 
@@ -148,8 +149,8 @@ class SkillController extends AbstractController {
 	/**
 	 * Use an item only on self
 	 */
-	public function selfUse(){
-		return $this->useSkill(true);
+	public function selfUse(Container $p_dependencies){
+		return $this->useSkill($p_dependencies, true);
 	}
 
 	/**
@@ -160,37 +161,36 @@ class SkillController extends AbstractController {
 	 * http://nw.local/skill/self_use/Unstealth/
 	 * http://nw.local/skill/self_use/Heal/
 	 */
-	public function useSkill($self_use=false) {
+	public function useSkill(Container $p_dependencies, $self_use=false) {
 		// Template vars.
 		$display_sight_table = $generic_skill_result_message = $generic_state_change = $killed_target =
 			$loot = $added_bounty = $bounty = $suicided = $destealthed = null;
 		$error = null;
 
-		$char_id = SessionFactory::getSession()->get('player_id');
-		$player  = Player::find($char_id);
+		$player  = $p_dependencies['current_player'];
+		$char_id = $player->id();
         $path    = RequestWrapper::getPathInfo();
         $slugs   = $this->parseSlugs($path);
-        // (fullpath0) /skill1/use2/Fire%20Bolt3/tchalvak4/(beagle5/)
+        // (fullpath0) /skill1/use2/Fire%20Bolt3/target_james4/(target_beagle5/)
+        $requested_use_type = (isset($slugs[2]) ? $slugs[2] : null);
         $act     = (isset($slugs[3]) ? $slugs[3] : null);
-        $target  = (isset($slugs[4]) ? $slugs[4] : null);
+        $target_identity  = (isset($slugs[4]) ? $slugs[4] : null);
         $target2 = (isset($slugs[5]) ? $slugs[5] : null);
 
-		if (!Filter::toNonNegativeInt($target)) {
-			if ($self_use) {
-				$target = $char_id;
-			} else {
-				if ($target !== null) {
-					$targetObj = Player::findByName($target);
-					$target = ($targetObj ? $targetObj->id() : null);
-				} else {
-					$target = null;
-				}
+        // If the target is a string instead of an id already, see if it can be translated into a ninja
+        $target_id = null;
+        if($self_use === true){
+			$target_id = $char_id;
+        } elseif (!Filter::toNonNegativeInt($target_identity)) {
+			if ($target_identity !== null) {
+				$targetObj = Player::findByName($target_identity);
+				$target_id = ($targetObj instanceof Character ? $targetObj->id() : null);
 			}
 		}
 
 		if ($target2 && !Filter::toNonNegativeInt($target2)) {
 			$target2Obj = Player::findByName($target2);
-			$target2 = ($target2Obj ? $target2Obj->id() : null);
+			$target2 = ($target2Obj instanceof Character ? $target2Obj->id() : null);
 		}
 
 		$skillListObj    = new Skill();
@@ -207,20 +207,35 @@ class SkillController extends AbstractController {
 		$has_skill = $skillListObj->hasSkill($act, $player);
 
 		assert($turn_cost>=0);
+		$return_to_target = true;
+		$sight_data = null;
 
-		if ($self_use) {
-			// Use the skill on himself.
+		if ($self_use === true) {
+			// Use the skill on self.
 			$return_to_target = false;
-			$target    = $player;
-			$target_id = null;
-		} else if ($target != '' && $target != $player->player_id) {
-			$target = Player::find($target);
-			$target_id = $target->id();
-			$return_to_target = true;
+			$targetObj    = $player;
+			$target_id = $player->id();
 		} else {
-			// For target that doesn't exist, e.g. http://nw.local/skill/use/Sight/zigzlklkj
-			error_log('Info: Attempt to use a skill on a target that did not exist.');
-			return new RedirectResponse(WEB_ROOT.'skill/?error='.rawurlencode('Invalid target for skill ['.rawurlencode($act).'].'));
+			// Try to get target from string identity
+			if (is_string($target_identity) && !empty($target_identity) && $target_id !== $player->id()) {
+				// Use on another ninja
+				$targetObj = Player::findByName($target_identity);
+				$target_id = $targetObj instanceof Character? $targetObj->id() : null;
+				$return_to_target = true;
+			} elseif((bool) positive_int($target_identity)){
+				$targetObj = Player::find(positive_int($target_identity));
+				$target_id = $targetObj instanceof Character? $targetObj->id() : null;
+				$return_to_target = true;
+			}
+
+			if(!$targetObj instanceof Character) {
+				// For target that doesn't exist, e.g. http://nw.local/skill/use/Sight/zigzlklkj
+				error_log('Info: Attempt to use a skill on a target ['.rawurlencode($target_identity).'] that did not exist.');
+				if(DEBUG){
+					var_dump($target_identity, $targetObj, $target, $target_id);
+				}
+				return new RedirectResponse(WEB_ROOT.'skill/?error='.rawurlencode('Invalid target ['.$target_identity.'] for skill ['.rawurldecode($act).'].'));
+			}
 		}
 
 		$covert           = false;
@@ -229,7 +244,7 @@ class SkillController extends AbstractController {
 		$attacker_char_id = $player->id();
 		$starting_turns   = $player->turns;
 
-		$level_check  = $player->level - $target->level;
+		$level_check  = $player->level - $targetObj->level;
 
 		if ($player->hasStatus(STEALTH)) {
 			$attacker_id = 'A Stealthed Ninja';
@@ -251,7 +266,7 @@ class SkillController extends AbstractController {
 		        'self_use'        => $self_use
 		    ];
 
-			$AttackLegal    = new AttackLegal($player, $target, $params);
+			$AttackLegal    = new AttackLegal($player, $targetObj, $params);
 			$update_timer = isset($this->update_timer)? $this->update_timer : true;
 			$attack_allowed = $AttackLegal->check($update_timer);
 			$attack_error   = $AttackLegal->getError();
@@ -274,29 +289,29 @@ class SkillController extends AbstractController {
 			if ($act == 'Sight') {
 				$covert = true;
 
-				$sight_data = $this->pullSightData($target);
+				$sight_data = $this->pullSightData($targetObj);
 
 				$display_sight_table = true;
 			} elseif ($act == 'Steal') {
 				$covert = true;
 
-				$gold_decrease = min($target->gold, rand(5, 50));
+				$gold_decrease = min($targetObj->gold, rand(5, 50));
 
 				$player->setGold($player->gold + $gold_decrease);
                 $player->save();
 
-                $target->setGold($target->gold - $gold_decrease);
-                $target->save();
+                $targetObj->setGold($targetObj->gold - $gold_decrease);
+                $targetObj->save();
 
 				$msg = "$attacker_id stole $gold_decrease gold from you.";
-				Event::create($attacker_char_id, $target->id(), $msg);
+				Event::create($attacker_char_id, $targetObj->id(), $msg);
 
 				$generic_skill_result_message = "You have stolen $gold_decrease gold from __TARGET__!";
 			} else if ($act == 'Unstealth') {
 				$state = 'unstealthed';
 
-				if ($target->hasStatus(STEALTH)) {
-					$target->subtractStatus(STEALTH);
+				if ($targetObj->hasStatus(STEALTH)) {
+					$targetObj->subtractStatus(STEALTH);
 					$generic_state_change = "You are now $state.";
 				} else {
 					$turn_cost = 0;
@@ -306,9 +321,9 @@ class SkillController extends AbstractController {
 				$covert     = true;
 				$state      = 'stealthed';
 
-				if (!$target->hasStatus(STEALTH)) {
-					$target->addStatus(STEALTH);
-					$target->subtractStatus(STALKING);
+				if (!$targetObj->hasStatus(STEALTH)) {
+					$targetObj->addStatus(STEALTH);
+					$targetObj->subtractStatus(STALKING);
 					$generic_state_change = "__TARGET__ is now $state.";
 				} else {
 					$turn_cost = 0;
@@ -316,9 +331,9 @@ class SkillController extends AbstractController {
 				}
 			} else if ($act == 'Stalk') {
 				$state      = 'stalking';
-				if(!$target->hasStatus(STALKING)) {
-					$target->addStatus(STALKING);
-					$target->subtractStatus(STEALTH);
+				if(!$targetObj->hasStatus(STALKING)) {
+					$targetObj->addStatus(STALKING);
+					$targetObj->subtractStatus(STEALTH);
 					$generic_state_change = "__TARGET__ is now $state.";
 				} else {
 					$turn_cost = 0;
@@ -348,27 +363,27 @@ class SkillController extends AbstractController {
 			} else if ($act == 'Poison Touch') {
 				$covert = true;
 
-				$target->addStatus(POISON);
-				$target->addStatus(WEAKENED); // Weakness kills strength.
+				$targetObj->addStatus(POISON);
+				$targetObj->addStatus(WEAKENED); // Weakness kills strength.
 
 				$target_damage = rand(self::MIN_POISON_TOUCH, $this->maxPoisonTouch());
 
-				$victim_alive = $target->harm($target_damage);
+				$victim_alive = $targetObj->harm($target_damage);
 				$generic_state_change = "__TARGET__ has been poisoned!";
 				$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
 				$msg = "You have been poisoned by $attacker_id";
-				Event::create($attacker_char_id, $target->id(), $msg);
+				Event::create($attacker_char_id, $targetObj->id(), $msg);
 			} elseif ($act == 'Fire Bolt') {
 				$target_damage = $this->fireBoltBaseDamage($player) + rand(1, $this->fireBoltMaxDamage($player));
 
 
 				$generic_skill_result_message = "__TARGET__ has taken $target_damage damage!";
 
-				$victim_alive = $target->harm($target_damage);
+				$victim_alive = $targetObj->harm($target_damage);
 
 				$msg = "You have had fire bolt cast on you by ".$player->name();
-				Event::create($player->id(), $target->id(), $msg);
+				Event::create($player->id(), $targetObj->id(), $msg);
 			} else if ($act == 'Heal' || $act == 'Harmonize') {
 				// This is the starting template for self-use commands, eventually it'll be all refactored.
 				$harmonize = false;
@@ -377,9 +392,9 @@ class SkillController extends AbstractController {
 					$harmonize = true;
 				}
 
-			    $hurt = $target->is_hurt_by(); // Check how much the TARGET is hurt (not the originator, necessarily).
+			    $hurt = $targetObj->is_hurt_by(); // Check how much the TARGET is hurt (not the originator, necessarily).
 			    // Check that the target is not already status healing.
-			    if ($target->hasStatus(HEALING) && !$player->isAdmin()) {
+			    if ($targetObj->hasStatus(HEALING) && !$player->isAdmin()) {
 			        $turn_cost = 0;
 			        $generic_state_change = '__TARGET__ is already under a healing aura.';
 				} elseif ($hurt < 1) {
@@ -387,9 +402,9 @@ class SkillController extends AbstractController {
 					$generic_skill_result_message = '__TARGET__ is already fully healed.';
 				} else {
 					if(!$harmonize){
-						$original_health = $target->health;
+						$original_health = $targetObj->health;
 						$heal_points = $player->getStamina()+1;
-						$new_health = $target->heal($heal_points); // Won't heal more than possible
+						$new_health = $targetObj->heal($heal_points); // Won't heal more than possible
 						$healed_by = $new_health - $original_health;
 					} else {
 						$start_health = $player->health;
@@ -399,28 +414,28 @@ class SkillController extends AbstractController {
 						$ki_cost = $healed_by;
 					}
 
-				    $target->addStatus(HEALING);
-				    $generic_skill_result_message = "__TARGET__ healed by $healed_by to ".$target->health.".";
+				    $targetObj->addStatus(HEALING);
+				    $generic_skill_result_message = "__TARGET__ healed by $healed_by to ".$targetObj->health.".";
 
-				    if ($target->id() != $player->id())  {
-						Event::create($attacker_char_id, $target->id(), "You have been healed by $attacker_id for $healed_by.");
+				    if ($targetObj->id() != $player->id())  {
+						Event::create($attacker_char_id, $targetObj->id(), "You have been healed by $attacker_id for $healed_by.");
 					}
 				}
 			} else if ($act == 'Ice Bolt') {
-				if ($target->hasStatus(SLOW)) {
+				if ($targetObj->hasStatus(SLOW)) {
 					$turn_cost = 0;
 					$generic_skill_result_message = '__TARGET__ is already iced.';
 				} else {
-					if ($target->turns >= 10) {
+					if ($targetObj->turns >= 10) {
 						$turns_decrease = rand(1, 5);
-						$target->turns = $target->turns - $turns_decrease;
+						$targetObj->turns = $targetObj->turns - $turns_decrease;
 						// Changed ice bolt to kill stealth.
-						$target->subtractStatus(STEALTH);
-						$target->subtractStatus(STALKING);
-						$target->addStatus(SLOW);
+						$targetObj->subtractStatus(STEALTH);
+						$targetObj->subtractStatus(STALKING);
+						$targetObj->addStatus(SLOW);
 
 						$msg = "Ice bolt cast on you by $attacker_id, your turns have been reduced by $turns_decrease.";
-						Event::create($attacker_char_id, $target->id(), $msg);
+						Event::create($attacker_char_id, $targetObj->id(), $msg);
 
 						$generic_skill_result_message = "__TARGET__'s turns reduced by $turns_decrease!";
 					} else {
@@ -429,22 +444,22 @@ class SkillController extends AbstractController {
 					}
 				}
 			} else if ($act == 'Cold Steal') {
-				if ($target->hasStatus(SLOW)) {
+				if ($targetObj->hasStatus(SLOW)) {
 					$turn_cost = 0;
 					$generic_skill_result_message = '__TARGET__ is already iced.';
 				} else {
 					$critical_failure = rand(1, 100);
 
 					if ($critical_failure > 7) {// *** If the critical failure rate wasn't hit.
-						if ($target->turns >= 10) {
+						if ($targetObj->turns >= 10) {
 							$turns_diff = rand(2, 7);
 
-							$target->turns = $target->turns - $turns_diff;
+							$targetObj->turns = $targetObj->turns - $turns_diff;
 							$player->turns = $player->turns + $turns_diff; // Stolen
-							$target->addStatus(SLOW);
+							$targetObj->addStatus(SLOW);
 
 							$msg = "You have had Cold Steal cast on you for $turns_diff by $attacker_id";
-							Event::create($attacker_char_id, $target->id(), $msg);
+							Event::create($attacker_char_id, $targetObj->id(), $msg);
 
 							$generic_skill_result_message = "You cast Cold Steal on __TARGET__ and take $turns_diff turns.";
 						} else {
@@ -495,15 +510,15 @@ class SkillController extends AbstractController {
 			// ************************** Section applies to all skills ******************************
 
 			if (!$victim_alive) { // Someone died.
-				if ($target->player_id == $player->player_id) { // Attacker killed themself.
+				if ($targetObj->player_id == $player->player_id) { // Attacker killed themself.
 					$loot = 0;
 					$suicided = true;
 				} else { // Attacker killed someone else.
 					$killed_target = true;
 					$gold_mod = 0.15;
-					$loot     = floor($gold_mod * $target->gold);
+					$loot     = floor($gold_mod * $targetObj->gold);
 					$player->setGold($player->gold+$loot);
-					$target->setGold($target->gold-$loot);
+					$targetObj->setGold($targetObj->gold-$loot);
 
 					$player->addKills(1);
 
@@ -511,17 +526,17 @@ class SkillController extends AbstractController {
 
 					if ($added_bounty > 0) {
 						$player->setBounty($player->bounty+($added_bounty * 25));
-					} else if ($target->bounty > 0 && $target->id() !== $player->id()) {
+					} else if ($targetObj->bounty > 0 && $targetObj->id() !== $player->id()) {
 						 // No suicide bounty, No bounty when your bounty getting ++ed.
-						$player->setGold($player->gold+$target->bounty); // Reward the bounty
-						$target->setBounty(0); // Wipe the bounty
+						$player->setGold($player->gold+$targetObj->bounty); // Reward the bounty
+						$targetObj->setBounty(0); // Wipe the bounty
                     }
 
 					$target_message = "$attacker_id has killed you with $act and taken $loot gold.";
-					Event::create($attacker_char_id, $target->id(), $target_message);
+					Event::create($attacker_char_id, $targetObj->id(), $target_message);
 
-					$attacker_message = "You have killed $target with $act and taken $loot gold.";
-					Event::create($target->id(), $player->id(), $attacker_message);
+					$attacker_message = "You have killed ".$targetObj->name()." with ".$act." and taken ".$loot." gold.";
+					Event::create($targetObj->id(), $player->id(), $attacker_message);
 				}
 			}
 
@@ -530,16 +545,33 @@ class SkillController extends AbstractController {
 				$destealthed = true;
 			}
 
-			$target->save();
+			$targetObj->save();
 		} // End of the skill use SUCCESS block.
 
         $player->turns = $player->turns - max(0, $turn_cost); // Take the skill use cost.
         $player->save();
 
         $ending_turns         = $player->turns;
-		$target_ending_health = $target->health;
-		$target_name          = $target->name();
-		$parts                = get_defined_vars();
+		$parts = [
+			'attack_error'=>$attack_error,
+			'targetObj'=>$targetObj,
+			'display_sight_table'=>$display_sight_table,
+			'sight_data'=>$sight_data,
+			'generic_skill_result_message'=>$generic_skill_result_message,
+			'generic_state_change'=>$generic_state_change,
+			'killed_target'=>$killed_target,
+			'act'=>$act,
+			'loot'=>$loot,
+			'added_bounty'=>$added_bounty,
+			'bounty'=>$bounty,
+			'suicided'=>$suicided,
+			'destealthed'=>$destealthed,
+			'turn_cost'=>$turn_cost,
+			'ki_cost'=>$ki_cost,
+			'reuse'=>$reuse,
+			'self_use'=>$self_use,
+			'return_to_target'=>$return_to_target,
+		];
 		$options              = ['quickstat'=>'player'];
 
 		return new StreamedViewResponse('Skill Effect', 'skills_mod.tpl', $parts, $options);

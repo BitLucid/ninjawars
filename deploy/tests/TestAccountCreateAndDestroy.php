@@ -156,6 +156,13 @@ class TestAccountCreateAndDestroy {
     }
 
     /**
+     * Return alternate character
+     */
+    public static function char_2() {
+        return Player::find(TestAccountCreateAndDestroy::char_id_2());
+    }
+
+    /**
      * Alias for create_testing_account but clearer.
      */
     public static function char_id($confirm=false) {
