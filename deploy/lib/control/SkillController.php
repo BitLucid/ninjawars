@@ -227,9 +227,6 @@ class SkillController extends AbstractController {
 			if(!$targetObj instanceof Character) {
 				// For target that doesn't exist, e.g. http://nw.local/skill/use/Sight/zigzlklkj
 				error_log('Info: Attempt to use a skill on a target ['.rawurlencode($target_identity).'] that did not exist.');
-				if(DEBUG){
-					var_dump($target_identity, $targetObj, $target, $target_id);
-				}
 				return new RedirectResponse(WEB_ROOT.'skill/?error='.rawurlencode('Invalid target ['.$target_identity.'] for skill ['.rawurldecode($act).'].'));
 			}
 		}
@@ -476,11 +473,11 @@ class SkillController extends AbstractController {
 				// Obliterates the turns and the health of similar accounts that get clone killed.
 				$reuse = false; // Don't give a reuse link.
 
-				$clone1 = Player::findByName($target);
+				$clone1 = $targetObj->name();
 				$clone2 = Player::findByName($target2);
 
 				if (!$clone1 || !$clone2) {
-					$not_a_ninja = $target;
+					$not_a_ninja = $target_identity;
 
 					if (!$clone2) {
 						$not_a_ninja = $target2;
