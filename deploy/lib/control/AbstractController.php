@@ -2,6 +2,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Account;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 
@@ -47,5 +48,22 @@ abstract class AbstractController {
      */
     public function getAccountId(){
         return SessionFactory::getSession()->get('account_id');
+    }
+
+    /**
+     * Get currently logged in account.
+     */
+    public function getAccount() {
+        $pid = SessionFactory::getSession()->get('player_id');
+
+        return $pid? Account::findByChar(Player::find($pid)) : null;
+    }
+
+    /**
+     * Get the Character/Ninja as logged in.
+     */
+    public function getCharacter() {
+        $pid = SessionFactory::getSession()->get('player_id');
+        return $pid? Player::find($pid) : null;
     }
 }
