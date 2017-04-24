@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "05047727cd5c30e6ed4a0d4ab68a71a4",
+    "content-hash": "eac1a586649804100dc676244b13973b",
     "packages": [
         {
             "name": "BitLucid/jquery-linkify",
@@ -83,20 +83,17 @@
         },
         {
             "name": "components/jquery",
-            "version": "2.1.1",
+            "version": "2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/jquery.git",
-                "reference": "9e2c56ed9f17e6b55de97ae64a3ed0cf17cd30d4"
+                "reference": "7b1d1104656a092423fbfba13c5920e9bbba290c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/jquery/zipball/9e2c56ed9f17e6b55de97ae64a3ed0cf17cd30d4",
-                "reference": "9e2c56ed9f17e6b55de97ae64a3ed0cf17cd30d4",
+                "url": "https://api.github.com/repos/components/jquery/zipball/7b1d1104656a092423fbfba13c5920e9bbba290c",
+                "reference": "7b1d1104656a092423fbfba13c5920e9bbba290c",
                 "shasum": ""
-            },
-            "require": {
-                "robloach/component-installer": "*"
             },
             "type": "component",
             "extra": {
@@ -119,13 +116,12 @@
             "authors": [
                 {
                     "name": "John Resig",
-                    "email": "jeresig@gmail.com",
-                    "homepage": "http://ejohn.org/"
+                    "email": "jeresig@gmail.com"
                 }
             ],
             "description": "jQuery JavaScript Library",
             "homepage": "http://jquery.com",
-            "time": "2014-07-02T11:52:43+00:00"
+            "time": "2015-05-08T05:04:47+00:00"
         },
         {
             "name": "doctrine/inflector",

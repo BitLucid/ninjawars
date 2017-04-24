@@ -8,8 +8,8 @@
 		}
 	},
 	"require": {
-		"components/jquery": "2.1.1",
-		"rmm5t/jquery-timeago": "1.4.3",
+		"components/jquery": "~2.1.1",
+		"rmm5t/jquery-timeago": "~1.4.3",
 		"BitLucid/jquery-linkify": "~2.1",
 		"php": ">=5.6.0",
 		"ircmaxell/password-compat": "@stable",
@@ -17,14 +17,14 @@
 		"smarty/smarty": "v3.1.29",
 		"cboden/ratchet": "~0.3.4",
 		"propel/propel1": "1.7.*@dev",
-		"illuminate/database": "^5.2",
-		"symfony/http-foundation": "^3.0.1",
+		"illuminate/database": "~5.2",
+		"symfony/http-foundation": "~3.0",
 		"paragonie/random_compat": "~1.4",
-		"twbs/bootstrap": "^3.3",
-		"pimple/pimple": "^3.0"
+		"twbs/bootstrap": "~3.3",
+		"pimple/pimple": "~3.0"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "~4.8.21"
+		"phpunit/phpunit": "~4.8"
 	},
 	"config": {
 		"component-dir": "deploy/www/components/"
