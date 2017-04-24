@@ -55,7 +55,7 @@ class PasswordResetRequest extends Model {
             ->where('created_at', '>', $fourHours)
             ->where('request_id', $this->id())
             ->where('used', false)
-            ->lists('request_id');
+            ->pluck('request_id');
 
         return (bool) $id;
     }
