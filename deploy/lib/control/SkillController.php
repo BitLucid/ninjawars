@@ -121,7 +121,7 @@ class SkillController extends AbstractController {
         $target2 = $request->get('target2');
         $act = $request->get('act');
         $url = 'skill/use/'.rawurlencode($act).'/'.rawurlencode($target).'/'.($target2? rawurlencode($target2).'/' : '');
-        return new RedirectResponse(WEB_ROOT.$url);
+        return new RedirectResponse(WEB_ROOT.$url); // default 302 redirect
 	}
 
 	/**
@@ -130,7 +130,7 @@ class SkillController extends AbstractController {
     public function postSelfUse(Container $p_dependencies) {
         $act = RequestWrapper::getPost('act');
         $url = 'skill/self_use/'.rawurlencode($act).'/';
-        return new RedirectResponse(WEB_ROOT.$url);
+        return new RedirectResponse(WEB_ROOT.$url); // default 302 redirect
     }
 
 	/**
