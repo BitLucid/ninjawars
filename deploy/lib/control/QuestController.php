@@ -9,52 +9,55 @@ use \RuntimeException;
 
 // get the quest model shortly
 
+class QuestModel{
 
-// Get the quests from the database.
-function get_quests($quest_id=null){
-    $many_or_one = $quest_id? "WHERE quest_id= :quest_id" : '';
-    // quest_id, title, player_id, tags, description, rewards, obstacles, expiration, proof
-    $query = "SELECT quest_id, uname as giver, player_id, title, tags, description, rewards, obstacles, expiration, proof FROM quests q join players p on p.player_id = q._player_id".$many_or_one;
-    if($quest_id){
-        //$quests = query($query);        
-    } else {
-        //$quests = query($query, array(':quest_id'=>array($quest_id, PDO::PARAM_INT)));
+    // Get the quests from the database.
+    public static function get_quests($quest_id=null){
+        $many_or_one = $quest_id? "WHERE quest_id= :quest_id" : '';
+        // quest_id, title, player_id, tags, description, rewards, obstacles, expiration, proof
+        $query = "SELECT quest_id, uname as giver, player_id, title, tags, description, rewards, obstacles, expiration, proof FROM quests q join players p on p.player_id = q._player_id".$many_or_one;
+        $quests = [];
+        if($quest_id){
+            //$quests = query($query);        
+        } else {
+            //$quests = query($query, array(':quest_id'=>array($quest_id, PDO::PARAM_INT)));
+        }
+        if(DEBUG){ // While debugging, mock a single quest
+            $quests = array(
+                array('quest_id'=>1, 'giver'=>'glassbox', 'player_id'=>10, 'title'=>'some quest', 'tags'=>'fake bob jim',
+            'description'=>'A description', 'rewards'=>'gold:30,kills:7,karma:35', 'obstacles'=>'wall, enemy , some guy,monster',
+            'expiration'=>'10/20/30.12.14.96', 'proof' => 'have to show a screenshot'),
+            );
+        }
+        return $quests;
     }
-    if(DEBUG){ // While debugging, mock a single quest
-        $quests = array(
-            array('quest_id'=>1, 'giver'=>'glassbox', 'player_id'=>10, 'title'=>'some quest', 'tags'=>'fake bob jim',
-        'description'=>'A description', 'rewards'=>'gold:30,kills:7,karma:35', 'obstacles'=>'wall, enemy , some guy,monster',
-        'expiration'=>'10/20/30.12.14.96', 'proof' => 'have to show a screenshot'),
-        );
-    }
-    return $quests;
-}
 
-// Controller, so to speak?
-function format_quests($quests_data){
-    foreach($quests_data as $quest){
-        $quest['rewards'] = json_decode($quest['rewards']);
-        // Eventually linkify the tags here.
-        $quest['obstacles'] = json_decode($quest['obstacles']);
-        // Unfold the questers here.
-        $quest['questers'] = get_questors($quest['quest_id']);
-        $quest['questers']= array('10'=>'glassbox');
+    public static function format_quests($quests_data){
+        foreach($quests_data as $quest){
+            $quest['rewards'] = json_decode($quest['rewards']);
+            // Eventually linkify the tags here.
+            $quest['obstacles'] = json_decode($quest['obstacles']);
+            // Unfold the questers here.
+            $quest['questers'] = get_questors($quest['quest_id']);
+            $quest['questers']= array('10'=>'glassbox');
+        }
+        return $quests_data;
     }
-    return $quests_data;
-}
 
-// Get the questors 
-function get_questors($quest_id){
-    $sel = "SELECT p.player_id, p.uname 
-        from players p join questers q on p.player_id = q._player_id 
-        where quest_id = :quest_id";
-    //$questers = query($sel, array(":quest_id"=>array($quest_id, PDO::PARAM_INT)));
-    if(DEBUG){
-        $questers = array(
-            array('player_id'=>10, 'uname'=>'glassbox')
-        );
+    // Get the questors 
+    public static function get_questors($quest_id){
+        $sel = "SELECT p.player_id, p.uname 
+            from players p join questers q on p.player_id = q._player_id 
+            where quest_id = :quest_id";
+        //$questers = query($sel, array(":quest_id"=>array($quest_id, PDO::PARAM_INT)));
+        if(DEBUG){
+            $questers = array(
+                array('player_id'=>10, 'uname'=>'glassbox')
+            );
+        }
+        return $questers;
     }
-    return $questers;
+
 }
 
 
@@ -73,12 +76,13 @@ class QuestController extends AbstractController {
 
     /**
      * Display that list of public quests!
+     * @return StreamedViewResponse
      */
     public function index(){
         $request = RequestWrapper::$request;
         $quest_id = $request->get('quest_id');
         $quest_accepted = $request->get('quest_accepted');
-        $quests = format_quests(get_quests());
+        $quests = QuestModel::format_quests(QuestModel::get_quests());
         $title = 'Quests';
         $tpl = 'quests.tpl';
 
@@ -119,7 +123,7 @@ class QuestController extends AbstractController {
 
         // When accepting a quest, simply display that quest.
         if($quest_id){
-            $quests = format_quests(get_quests($quest_id));
+            $quests = QuestModel::format_quests(QuestModel::get_quests($quest_id));
             $title = 'A Quest';
             $quest = reset($quests);
             $tpl = 'quests.single_quest.tpl';
