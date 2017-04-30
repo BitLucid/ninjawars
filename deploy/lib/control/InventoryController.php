@@ -10,7 +10,6 @@ use NinjaWars\core\Filter;
 use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
-use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use \PDO;
@@ -28,10 +27,10 @@ class InventoryController extends AbstractController {
     /**
      * View items and gold of char
      *
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function index(Container $p_dependencies) {
-        $char      = Player::find(SessionFactory::getSession()->get('player_id'));
+        $char      = $p_dependencies['current_player'];
         $inv       = Inventory::of($char, 'self');
         $inventory = [];
         $error     = RequestWrapper::getPostOrGet('error');
@@ -64,11 +63,11 @@ class InventoryController extends AbstractController {
      *
      * http://nw.local/item/give/shuriken/10/
      *
-     * @return Response
+     * @return StreamedViewResponse|RedirectResponse
 	 */
     public function give(Container $p_dependencies) {
         $slugs  = $this->parseSlugs();
-        $player = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player = $p_dependencies['current_player'];
         $target = $this->findPlayer($slugs['in_target']);
 
         try {
@@ -117,11 +116,11 @@ class InventoryController extends AbstractController {
      *
      * http://nw.local/item/self_use/amanita/
      *
-     * @return Response
+     * @return StreamedViewResponse|RedirectResponse
 	 */
     public function selfUse(Container $p_dependencies) {
         $slugs           = $this->parseSlugs();
-        $player          = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player          = $p_dependencies['current_player'];
         $inventory       = new Inventory($player);
         $had_stealth     = $player->hasStatus(STEALTH);
         $turns_to_take   = 1; // Take away one turn even on attacks that fail to prevent page reload spamming
@@ -194,7 +193,7 @@ class InventoryController extends AbstractController {
      *
      * http://nw.local/item/use/shuriken/10/
      *
-     * @return Response
+     * @return StreamedViewResponse|RedirectResponse
      * @note
      * /use/ is aliased to useItem externally because use is a php reserved keyword
 	 */
@@ -554,7 +553,7 @@ class InventoryController extends AbstractController {
     /**
      * Helper to find a player by either id or name
      *
-     * @return Player
+     * @return Player|null
      */
     private function findPlayer($token) {
         if (Filter::toNonNegativeInt($token)) {
@@ -577,14 +576,14 @@ class InventoryController extends AbstractController {
 	    } elseif (is_string($token) && $token) {
             $item = Item::findByIdentity($token);
 	    } else {
-            throw new \InvalidArgumentException('Invalid item identity requested.');
+            throw new \InvalidArgumentException('Invalid item identity requested.', 404);
 	    }
 
         return $item;
     }
 
     /**
-     * @return Response
+     * @return StreamedViewResponse
      */
 	private function render($parts) {
         $options = [
@@ -596,7 +595,7 @@ class InventoryController extends AbstractController {
 	}
 
     /**
-     * @return Response
+     * @return StreamedViewResponse
      */
     private function renderUse($parts) {
         $options = [
