@@ -1,6 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
@@ -37,10 +38,10 @@ class AccountController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function changeEmail() {
+    public function changeEmail($p_dependencies) {
         // confirm_delete
         $request    = RequestWrapper::$request;
-        $player     = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player     = $p_dependencies['current_player'];
         $self_info 	= $player->data();
         $passW 		= $request->get('passw', null);
         $username 	= $self_info['uname'];
@@ -59,6 +60,9 @@ class AccountController extends AbstractController {
 
                 if ($pos_account === null) {
                     try {
+                        if($player === null){
+                            throw new \InvalidArgumentException('Not logged in to change email.', 404);
+                        }
                         $account = Account::findByChar($player);
                         $account->setActiveEmail($in_newEmail);
                         $account->save();
@@ -106,9 +110,9 @@ class AccountController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function changePassword() {
+    public function changePassword($p_dependencies) {
         $request    = RequestWrapper::$request;
-        $player     = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player     = $p_dependencies['current_player'];
         $self_info 	= $player->data();
         $passW 		= $request->get('passw', null);
         $username 	= $self_info['uname'];
@@ -174,14 +178,14 @@ class AccountController extends AbstractController {
     }
 
     /**
-     * Make account non-operational
+     * Make account non-operational, doesn't really delete
      *
      * @return StreamedViewResponse
      */
-    public function deleteAccount() {
+    public function deleteAccount($p_dependencies) {
         $request         = RequestWrapper::$request;
         $session         = SessionFactory::getSession();
-        $player          = Player::find($session->get('player_id'));
+        $player          = $p_dependencies['current_player'];
         $self_info       = $player->data();
         $passW           = $request->get('passw', null);
         $username        = $self_info['uname'];
