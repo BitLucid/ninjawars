@@ -20,7 +20,7 @@ class AccountController extends AbstractController {
     /**
      * Show the change email form
      *
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function showChangeEmailForm() {
         $command = 'show_change_email_form';
@@ -35,7 +35,7 @@ class AccountController extends AbstractController {
     /**
      * Change account email and validate authenticity
      *
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function changeEmail() {
         // confirm_delete
@@ -88,7 +88,7 @@ class AccountController extends AbstractController {
     /**
      * Show Change Password form
      *
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function showChangePasswordForm() {
         // explicitly define command value ?
@@ -104,7 +104,7 @@ class AccountController extends AbstractController {
     /**
      * Change account password
      *
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function changePassword() {
         $request    = RequestWrapper::$request;
@@ -158,7 +158,7 @@ class AccountController extends AbstractController {
     /**
      * Show delete account confirmation form
      *
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function deleteAccountConfirmation() {
         $session    = SessionFactory::getSession();
@@ -176,7 +176,7 @@ class AccountController extends AbstractController {
     /**
      * Make account non-operational
      *
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function deleteAccount() {
         $request         = RequestWrapper::$request;
@@ -222,7 +222,7 @@ class AccountController extends AbstractController {
     /**
      * Display the default account page
      *
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function index() {
         return $this->render([]);
