@@ -164,6 +164,7 @@ class SkillController extends AbstractController {
 		$error = null;
 
 		$player  = $p_dependencies['current_player'];
+		$targetObj = null;
 		$char_id = $player->id();
         $path    = RequestWrapper::getPathInfo();
         $slugs   = $this->parseSlugs($path);
@@ -224,7 +225,7 @@ class SkillController extends AbstractController {
 				$return_to_target = true;
 			}
 
-			if(!$targetObj instanceof Character) {
+			if(!($targetObj instanceof Character)) {
 				// For target that doesn't exist, e.g. http://nw.local/skill/use/Sight/zigzlklkj
 				error_log('Info: Attempt to use a skill on a target ['.rawurlencode($target_identity).'] that did not exist.');
 				return new RedirectResponse(WEB_ROOT.'skill/?error='.rawurlencode('Invalid target ['.$target_identity.'] for skill ['.rawurldecode($act).'].'));
@@ -265,7 +266,7 @@ class SkillController extends AbstractController {
 			$attack_error   = $AttackLegal->getError();
 		}
 
-		if (!$attack_error) { // Only bother to check for other errors if there aren't some already.
+		if ($attack_error === null) { // Only bother to check for other errors if there aren't some already.
 			if (!$has_skill || $act == '') {
 				// Set the attack error to display that that skill wasn't available.
 				$attack_error = 'You do not have the requested skill.';
