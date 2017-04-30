@@ -78,6 +78,8 @@ class InventoryController extends AbstractController {
             return new RedirectResponse(WEB_ROOT.'inventory?error=noitem');
         }
 
+        $display_message = null;
+
         if (empty($target)) {
             $error = 2;
         } else if ($this->itemCount($player, $item) < 1) {
@@ -199,7 +201,7 @@ class InventoryController extends AbstractController {
     public function useItem(Container $p_dependencies) {
         $slugs           = $this->parseSlugs();
         $target          = $this->findPlayer($slugs['in_target']);
-        $player          = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player          = $p_dependencies['current_player'];
         $inventory       = new Inventory($player);
         $had_stealth     = $player->hasStatus(STEALTH);
         $error           = false;
@@ -222,7 +224,7 @@ class InventoryController extends AbstractController {
         } else if ($this->itemCount($player, $item) < 1) {
             $error = 3;
         } else if ($target->id() === $player->id()) {
-            return $this->selfUse();
+            return $this->selfUse($p_dependencies);
         } else {
             $params = [
                 'required_turns'  => $item->getTurnCost(),

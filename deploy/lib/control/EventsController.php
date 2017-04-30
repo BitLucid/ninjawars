@@ -45,7 +45,7 @@ class EventsController extends AbstractController {
     private function getEvents($user_id, $limit=null) {
         $params = [':to' => $user_id];
 
-        if ($limit) {
+        if ($limit !== null) {
             $params[':limit'] = $limit;
         }
 

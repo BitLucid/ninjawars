@@ -419,10 +419,10 @@ class ClanController extends AbstractController {
 
 				return $this->render($parts);
 			} else {
-				return $this->listClans();
+				return $this->listClans($p_dependencies);
 			}
 		} else {
-			return $this->listClans();
+			return $this->listClans($p_dependencies);
 		}
 	}
 
