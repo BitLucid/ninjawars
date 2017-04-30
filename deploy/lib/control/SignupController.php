@@ -275,7 +275,7 @@ class SignupController extends AbstractController {
         $name_available  = $this->ninjaNameAvailable($enteredName);
         $email_error     = $this->validateEmail($enteredEmail);
 
-        if ($email_error) {
+        if ($email_error !== null && $email_error !== false) {
             return $email_error;
         } elseif (!$name_available) {
             return 'Phase 3 Incomplete: That ninja name is already in use.';
@@ -344,7 +344,7 @@ class SignupController extends AbstractController {
         $error = null;
         $format_error = Account::usernameIsValid($send_name);
 
-        if ($format_error) {
+        if ($format_error !== null && $format_error !== false) {
             $error = 'Phase 1 Incomplete: Ninja name: '.$error;
         }
 
