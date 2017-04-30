@@ -46,6 +46,7 @@ class QuestModel{
 
     // Get the questors 
     public static function get_questors($quest_id){
+        $questers = null;
         $sel = "SELECT p.player_id, p.uname 
             from players p join questers q on p.player_id = q._player_id 
             where quest_id = :quest_id";
@@ -120,13 +121,14 @@ class QuestController extends AbstractController {
         }
         $quests = null;
         $quest = null;
+        $tpl = 'quests.single_quest.tpl';
+        $title = 'A Quest';
+
 
         // When accepting a quest, simply display that quest.
         if($quest_id){
             $quests = QuestModel::format_quests(QuestModel::get_quests($quest_id));
-            $title = 'A Quest';
             $quest = reset($quests);
-            $tpl = 'quests.single_quest.tpl';
         }
 
         $parts = [
