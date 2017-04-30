@@ -37,6 +37,11 @@ class TestMessage extends PHPUnit_Framework_TestCase {
         $this->assertTrue($mess instanceof Message);
     }
 
+    public function testMessageClassHasACreateMethod() {
+        $mess = new Message();
+        $this->assertTrue(is_callable('Message', 'create'), 'No create method found on message object!');
+    }
+
     public function testMessageCanBeSent() {
         $mess = Message::create($this->messageData);
         $this->message_id = $mess->id();
