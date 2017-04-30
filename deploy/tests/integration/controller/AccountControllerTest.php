@@ -17,11 +17,17 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
         SessionFactory::getSession()->set('authenticated', true);
         SessionFactory::getSession()->set('player_id', $char_id);
         SessionFactory::getSession()->set('account_id', $account_id);
+        $this->deps = [
+            'current_player'=>$char,
+            'account'=>$account,
+            'account_id'=>$account_id
+        ];
 	}
 
 	public function tearDown() {
         $session = SessionFactory::getSession();
         $session->invalidate();
+        unset($this->deps);
     }
 
     public function testInstantiation() {
@@ -31,25 +37,25 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testIndexRuns() {
         $controller = new AccountController();
-        $response = $controller->index();
+        $response = $controller->index($this->deps);
         $this->assertNotEmpty($response);
     }
 
     public function testChangeEmailFormRuns() {
         $controller = new AccountController();
-        $response = $controller->showChangeEmailForm();
+        $response = $controller->showChangeEmailForm($this->deps);
         $this->assertNotEmpty($response);
     }
 
     public function testChangePasswordFormRuns() {
         $controller = new AccountController();
-        $response = $controller->showChangePasswordForm();
+        $response = $controller->showChangePasswordForm($this->deps);
         $this->assertNotEmpty($response);
     }
 
     public function testDeleteConfirmationFormRuns() {
         $controller = new AccountController();
-        $response = $controller->deleteAccountConfirmation();
+        $response = $controller->deleteAccountConfirmation($this->deps);
         $this->assertNotEmpty($response);
     }
 
@@ -63,7 +69,7 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
         );
 
         $controller = new AccountController();
-        $response = $controller->changeEmail();
+        $response = $controller->changeEmail($this->deps);
 
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -81,7 +87,7 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
         );
 
         $controller = new AccountController();
-        $response = $controller->changePassword();
+        $response = $controller->changePassword($this->deps);
 
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -99,7 +105,7 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
         $session = SessionFactory::getSession();
         $failure_count = $session->get('delete_attempts');
         $controller = new AccountController();
-        $response = $controller->deleteAccount();
+        $response = $controller->deleteAccount($this->deps);
 
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
