@@ -9,7 +9,6 @@ use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Event;
-use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 
@@ -29,7 +28,6 @@ class AttackController extends AbstractController {
      */
     public function index(Container $p_dependencies) {
         $request = RequestWrapper::$request;
-        $session = SessionFactory::getSession();
 
         $options = [
             'blaze'   => (bool) $request->get('blaze'),
@@ -40,7 +38,7 @@ class AttackController extends AbstractController {
         ];
 
         $target   = Player::find($request->get('target'));
-        $attacker = Player::find($session->get('player_id'));
+        $attacker = $p_dependencies['current_player'];
 
         $skillListObj = new Skill();
 
