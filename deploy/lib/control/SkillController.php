@@ -566,7 +566,9 @@ class SkillController extends AbstractController {
 			'self_use'=>$self_use,
 			'return_to_target'=>$return_to_target,
 		];
-		$options              = ['quickstat'=>'player'];
+		$options = [
+			'quickstat'=>'player'
+			];
 
 		return new StreamedViewResponse('Skill Effect', 'skills_mod.tpl', $parts, $options);
 	}
