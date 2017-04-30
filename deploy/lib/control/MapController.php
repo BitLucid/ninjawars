@@ -8,9 +8,11 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 class MapController extends AbstractController {
     const PRIV  = false;
     const ALIVE = false;
+    public $nodes = [];
 
     /**
      * Get the nodes and assign them to current.
+     * This will just be a standin for the database for now
      */
     public function __construct(){
         $this->setNodes();
@@ -67,7 +69,7 @@ class MapController extends AbstractController {
     /**
      * Get the various nodes of the map and pass them to the template
      *
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function index(Container $p_dependencies) {
         $parts = [
