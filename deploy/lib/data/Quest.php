@@ -25,6 +25,8 @@ use NinjaWars\core\data\Character;
  difficulty  | integer 
 
  * @property int quest_id
+ * @property Player player
+ * @property int _player_id
  */
 class Quest extends Model {
     use SoftDeletes;
