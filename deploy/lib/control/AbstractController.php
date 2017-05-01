@@ -24,10 +24,9 @@ abstract class AbstractController {
         $error  = null;
         $player = Player::find(SessionFactory::getSession()->get('player_id'));
 
-        if ((!SessionFactory::getSession()->get('authenticated') || !$player) && static::PRIV) {
+        if (static::PRIV && (!SessionFactory::getSession()->get('authenticated') || !$player)) {
             $error = 'log_in';
-        } elseif ($player && static::ALIVE) { // That page requires the player to be alive to view it
-            if (!$player->health) {
+        } elseif (static::ALIVE && $player) { // The page requires the player to be alive to view it
                 $error = 'dead';
             } else if ($player->hasStatus(FROZEN)) {
                 $error = 'frozen';
