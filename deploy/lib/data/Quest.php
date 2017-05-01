@@ -51,7 +51,7 @@ class Quest extends Model {
         if(isset($this->player)){
             return $this->player;
         } else {
-            return Player::find($id);
+            return $this->player = Player::find($id);
         }
     }
 
