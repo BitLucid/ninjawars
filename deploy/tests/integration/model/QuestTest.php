@@ -21,9 +21,9 @@ class TestQuest extends PHPUnit_Framework_TestCase {
 
     protected function tearDown() {
         TestAccountCreateAndDestroy::destroy();
-        if ($this->quest) {
-            query('delete from quests where quest_id = :id and quest_id > 1', [':id'=>$this->quest->id()]);
-        }
+        /*if ($this->quest) {
+            //query('delete from quests where quest_id = :id and quest_id > 1', [':id'=>$this->quest->id()]);
+        }*/
     }
 
     public function testQuestCanInstantiate() {
@@ -34,7 +34,6 @@ class TestQuest extends PHPUnit_Framework_TestCase {
     public function testQuestCanBeSaved(){
         $this->markTestIncomplete('Cannot yet save quest models');
         $id = $this->quest->id();
-        //var_dump($this->quest);
         $this->quest->save();
         $copied = Quest::find($id);
         $this->assertEquals($copied->_player_id, $this->quest->_player_id);
