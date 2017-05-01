@@ -13,43 +13,56 @@ class QuestModel{
 
     // Get the quests from the database.
     public static function get_quests($quest_id=null){
-        $many_or_one = $quest_id? "WHERE quest_id= :quest_id" : '';
+        /*$many_or_one = $quest_id? "WHERE quest_id= :quest_id" : '';
         // quest_id, title, player_id, tags, description, rewards, obstacles, expiration, proof
-        $query = "SELECT quest_id, uname as giver, player_id, title, tags, description, rewards, obstacles, expiration, proof FROM quests q join players p on p.player_id = q._player_id".$many_or_one;
+        $query = "SELECT quest_id, uname as giver, player_id, title, tags, description, rewards, obstacles, expiration, proof FROM quests q join players p on p.player_id = q._player_id".$many_or_one;*/
         $quests = [];
+        /*
         if($quest_id){
             //$quests = query($query);        
         } else {
             //$quests = query($query, array(':quest_id'=>array($quest_id, PDO::PARAM_INT)));
         }
+        */
         if(DEBUG){ // While debugging, mock a single quest
-            $quests = array(
-                array('quest_id'=>1, 'giver'=>'glassbox', 'player_id'=>10, 'title'=>'some quest', 'tags'=>'fake bob jim',
+            $quests = [
+                [
+                'quest_id'=>1, 'giver'=>'glassbox', 'player_id'=>10, 'title'=>'some quest', 'tags'=>'fake bob jim',
             'description'=>'A description', 'rewards'=>'gold:30,kills:7,karma:35', 'obstacles'=>'wall, enemy , some guy,monster',
-            'expiration'=>'10/20/30.12.14.96', 'proof' => 'have to show a screenshot'),
-            );
+            'expiration'=>'10/20/30.12.14.96', 'proof' => 'have to show a screenshot'
+                ],
+            ];
         }
         return $quests;
     }
 
-    public static function format_quests($quests_data){
-        foreach($quests_data as $quest){
+    /**
+     *
+     * Decorate the iterable with additional data
+     * @return array $quests_data Replaced with decoded values
+     */
+    public static function format_quests(array $quests_data){
+        foreach($quests_data as &$quest){
             $quest['rewards'] = json_decode($quest['rewards']);
             // Eventually linkify the tags here.
             $quest['obstacles'] = json_decode($quest['obstacles']);
             // Unfold the questers here.
             $quest['questers'] = get_questors($quest['quest_id']);
-            $quest['questers']= array('10'=>'glassbox');
+            if(DEBUG){
+                $quest['questers']= ['10'=>'glassbox'];
+            }
         }
+        unset($quest)
         return $quests_data;
     }
 
     // Get the questors 
     public static function get_questors($quest_id){
         $questers = null;
-        $sel = "SELECT p.player_id, p.uname 
+        /*$sel = "SELECT p.player_id, p.uname 
             from players p join questers q on p.player_id = q._player_id 
             where quest_id = :quest_id";
+        */
         //$questers = query($sel, array(":quest_id"=>array($quest_id, PDO::PARAM_INT)));
         if(DEBUG){
             $questers = array(
