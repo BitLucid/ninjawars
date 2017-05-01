@@ -1,7 +1,7 @@
 <?php
 namespace NinjaWars\core\control;
 
-use NinjaWars\core\data\Player;
+use Pimple\Container;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 
@@ -17,14 +17,15 @@ abstract class AbstractController {
      * Now, controllers do this at a class level, which is mostly nonsense
      * and requires that the router directly serve an error page.
      *
+     * @param Container
      * @return string
      * @TODO this whole thing should be factored out.
      */
-    public function validate() {
+    public function validate(Container $p_dependencies) {
         $error  = null;
-        $player = Player::find(SessionFactory::getSession()->get('player_id'));
+        $player = $p_dependencies['current_player'];
 
-        if (static::PRIV && (!SessionFactory::getSession()->get('authenticated') || !$player)) {
+        if (static::PRIV && (!$p_dependencies['session']->get('authenticated', false) || !$player)) {
             $error = 'log_in';
         } elseif (static::ALIVE && $player) { // The page requires the player to be alive to view it
             if ($player->health <= 0) {
@@ -37,7 +38,7 @@ abstract class AbstractController {
         return $error;
     }
 
-    public function renderDefaultError($error) {
+    public function renderDefaultError($error = "default") {
         return new StreamedViewResponse('There is an obstacle to your progress...', 'error.tpl', ['error' => $error], []);
     }
 

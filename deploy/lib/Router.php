@@ -209,7 +209,7 @@ class Router {
             throw new RouteNotFoundException();
         }
 
-        if ($error = $controller->validate()) {
+        if ($error = $controller->validate($p_dependencies)) {
             return $controller->renderDefaultError($error);
         } else {
             return $controller->$action($p_dependencies);
