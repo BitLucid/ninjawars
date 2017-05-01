@@ -36,6 +36,7 @@ class TestQuest extends PHPUnit_Framework_TestCase {
         $id = $this->quest->id();
         $this->quest->save();
         $copied = Quest::find($id);
+        Quest::delete($id);
         $this->assertEquals($copied->_player_id, $this->quest->_player_id);
         $this->assertEquals($copied->title, $this->quest->title);
         $this->assertEquals($copied->karma, $this->quest->karma);

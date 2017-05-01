@@ -2,10 +2,11 @@
 namespace NinjaWars\core\data;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Character;
 
-    /**
+/**
     Currently:
  quest_id    | integer                     | not null default nextval('quests_quest_id_seq'::regclass)
  title       | character varying(100)      | not null default ''::character varying
@@ -19,15 +20,19 @@ use NinjaWars\core\data\Character;
  expires_at  | timestamp with time zone | not null
  created_at  | timestamp with time zone | not null default now()
  updated_at  | timestamp with time zone | not null default now()
+ deleted_at  | timestamp with time zone | not null
  type        | integer                     | 
  difficulty  | integer 
 
-     */
+ * @property int quest_id
+ */
 class Quest extends Model {
+    use SoftDeletes;
+
     protected $primaryKey = 'quest_id'; // Anything other than id
     // The non-mass-fillable fields
     protected $guarded = ['quest_id', 'created_at', 'updated_at'];
-    protected $dates   = ['created_at', 'updated_at', 'expires_at'];
+    protected $dates   = ['created_at', 'updated_at', 'expires_at', 'deleted_at'];
 
     /**
      * Special case method to get the id regardless of what it's actually called in the database
@@ -38,21 +43,36 @@ class Quest extends Model {
 
     /**
      * Get the hydrated player from the quest's player_id
-     *
+     * @return Player The quest originator/giver
      */
-    public function player() {
-        $player = isset($this->player)? $this->player : Player::find($this->_player_id);
-        return $player;
+    public function player($id=null) {
+        if(isset($this->player)){
+            return $this->player;
+        } else {
+            $this->player = Player::find($id);
+            return $player;
+        }
     }
 
+    /**
+     * Override to get the custom _player_id attribute
+     *
+     */
     public function getPlayerIdAttribute($id) {
         return $this->attributes['_player_id'];
     }
 
+    /**
+     * Set the custom _player_id attribute
+     *
+     */
     public function setPlayerIdAttribute($id) {
         $this->attributes['_player_id'] = $id;
     }
 
+    /**
+     * Set the character who is the quest giver
+     */
     public function setPlayer(Character $player) {
         $this->player = $player;
     }
@@ -61,7 +81,7 @@ class Quest extends Model {
      * Override save to add _player_id foreign key
      */
     public function save(array $options = []) {
-        $player = $this->player();
+        $player = $this->player($this->_player_id);
         if($player !== null){
             $this->_player_id = $player->id();
         }
@@ -69,21 +89,12 @@ class Quest extends Model {
     }
 
     /**
-     * Get the quests from the database.
-     *
+     * Get the quests from the database, undyrated
+     * @return array Of quest data
      */
-    public static function get_quests($quest_id=null){
-        /*$many_or_one = $quest_id? "WHERE quest_id= :quest_id" : '';
-        // quest_id, title, player_id, tags, description, rewards, obstacles, expiration, proof
-        $query = "SELECT quest_id, uname as giver, player_id, title, tags, description, rewards, obstacles, expiration, proof FROM quests q join players p on p.player_id = q._player_id".$many_or_one;*/
+    public static function get_quests(){
+        //$quests = Quest::where('active', 1)->orderBy('created_at', 'desc');
         $quests = [];
-        /*
-        if($quest_id){
-            //$quests = query($query);        
-        } else {
-            //$quests = query($query, array(':quest_id'=>array($quest_id, PDO::PARAM_INT)));
-        }
-        */
         if(DEBUG){ // While debugging, mock a single quest
             $quests = [
                 [
@@ -106,31 +117,17 @@ class Quest extends Model {
             $quest['rewards'] = json_decode($quest['rewards']);
             // Eventually linkify the tags here.
             $quest['obstacles'] = json_decode($quest['obstacles']);
-            // Unfold the questers here.
-            $quest['questers'] = Quest::get_questors($quest['quest_id']);
             $quest['char'] = Player::find($quest['player_id']);
+            // Unfold the questers here.
+            /**
+            $quest['questers'] = Quest::get_questors($quest['quest_id']);
             if(DEBUG){
                 $quest['questers']= ['10'=>'glassbox'];
-            }
+            }**/
         }
         unset($quest);
         return $quests_data;
     }
 
-    // Get the questors 
-    public static function get_questors($quest_id){
-        $questers = null;
-        /*$sel = "SELECT p.player_id, p.uname 
-            from players p join questers q on p.player_id = q._player_id 
-            where quest_id = :quest_id";
-        */
-        //$questers = query($sel, array(":quest_id"=>array($quest_id, PDO::PARAM_INT)));
-        if(DEBUG){
-            $questers = [
-                ['player_id'=>10, 'uname'=>'glassbox']
-            ];
-        }
-        return $questers;
-    }
-
+    // TODO: Possibly implement a way to get quest-givers and possibly quest questors
 }

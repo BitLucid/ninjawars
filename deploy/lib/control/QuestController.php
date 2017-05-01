@@ -66,12 +66,8 @@ class QuestController extends AbstractController {
         $tpl = 'quests.single_quest.tpl';
         $title = 'A Quest';
 
-
-        // When accepting a quest, simply display that quest.
         if($quest_id){
-            $quests = Quest::hydrate_quests(Quest::get_quests($quest_id));
-            // An array of 1 item
-            $quest = reset($quests);
+            $quest = Quest::hydrate_quests(Quest::where('quest_id', $quest_id));
         }
 
         $parts = [
@@ -83,7 +79,7 @@ class QuestController extends AbstractController {
     }
 
     /**
-     * accept just wraps a single quest view for now
+     * accept just wraps a single quest view for now, eventually will make viewer as one of the questors
      */
     public function accept($p_dependencies){
         // Hack to get the quest/accept/{id}
