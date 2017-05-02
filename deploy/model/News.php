@@ -110,7 +110,9 @@ class News extends Base {
 			return false;
 		}
 
-		if ( ! $last_news instanceof orm\News) return '';
+		if ( ! $last_news instanceof orm\News) {
+			return '';
+		}
 
 		$preview = $last_news->getContent();
 
