@@ -70,7 +70,7 @@ h1 .account-identity{
 {/if}
 
 <div class='stats-avatar'>
-  Avatar: (change your avatar for your account email at <a href='http://gravatar.com'>gravatar.com</a>) &rarr;
+  Avatar: (change your avatar for your account email at <a rel="noopener noreferrer" target="_blank" href='http://gravatar.com'>gravatar.com</a>) &rarr;
   {include file="gravatar.tpl" gurl=$gravatar_url}
 </div>
 
