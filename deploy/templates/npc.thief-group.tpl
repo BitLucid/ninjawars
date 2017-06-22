@@ -7,7 +7,7 @@
 	{/if}
 <p>The group of theives does {$attack} damage to you, but you rout them in the end!</p>
 <p>You have gained {$gold} gold.</p>
-<p>You have found a Fire Scroll on the body of one of the thieves!</p>
+<p>You have found Phosphor Powder on the body of one of the thieves!</p>
 <a href="/npc/attack/thief/">Attack Another Thief</a>
 <br>
 {else}
