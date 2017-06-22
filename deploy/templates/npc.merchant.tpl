@@ -5,7 +5,7 @@ The merchant is defeated.<br>
 The Merchant did {$attack} points of damage.<br>
 You have gained {$gold} gold.<br>
 	{if $attack gt 34}
-The Merchant has dropped a Fire Scroll. You have a new Fire Scroll in your inventory.<br>
+The Merchant has dropped some Phosphor Powder. You gather it up.<br>
 	{/if}
 	{if $bounty}
 You have slain a member of the village! A bounty of {$bounty} gold has been placed on your head!<br>
