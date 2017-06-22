@@ -106,7 +106,7 @@ NpcFactory::$data = [
     ],
     'ryu'       => [
         'name'     => 'Ryu',
-        'strength' => 150,
+        'strength' => 210,
         'stamina'  => 200,
         'speed'    => 190,
         'short'    => 'is a serpent-dragon, with the gleam of intelligence in its eyes and the glint of death on its claws',
