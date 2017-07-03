@@ -58,7 +58,7 @@ class NinjamasterController extends AbstractController {
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivial_npcs      = NpcFactory::allTrivialNpcs();
 
-        $items = 
+        $items = $this->items();
 
         $char_ids  = preg_split("/[,\s]+/", $request->get('view'));
         $char_name = trim($request->get('char_name'));
@@ -100,6 +100,7 @@ class NinjamasterController extends AbstractController {
             'char_inventory'    => $char_inventory,
             'char_name'         => $char_name,
             'npcs'              => $npcs,
+            'items'             => $items,
             'trivial_npcs'      => $trivial_npcs,
         ];
 
@@ -111,7 +112,7 @@ class NinjamasterController extends AbstractController {
      */
     public function items(){
         $this->checkAuth();
-        $item_costs = ShopController::itemForSaleCosts();
+        $item_costs = ShopController::itemForSaleCosts(true); // Show administrative entries.
         return $item_costs;
     }
 

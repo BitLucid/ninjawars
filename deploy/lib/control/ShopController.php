@@ -115,20 +115,21 @@ class ShopController extends AbstractController {
         $player = Player::findPlayable($this->getAccountId());
 
 		$p_parts['gold']          = ($player ? $player->gold : 0);
-		$p_parts['item_costs']    = $this->itemForSaleCosts();
+		$p_parts['item_costs']    = self::itemForSaleCosts();
 		$p_parts['authenticated'] = SessionFactory::getSession()->get('authenticated');
 
 		return new StreamedViewResponse('Shop', 'shop.tpl', $p_parts, [ 'quickstat' => 'viewinv' ]);
 	}
 
     /**
-     * Pulls the shop items costs and all, used administratively as well.
+     * Pulls the shop items costs and all, used outside of this class as well
+     * @todo Refactor this to a shops model or something
      */
-    private function itemForSaleCosts() {
+    public static function itemForSaleCosts($administrative=false) {
         $sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item where for_sale = TRUE order by image is not null desc, item_cost asc';
 
-        if (defined('DEBUG') && DEBUG) {
-            $sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item order by image is not null desc, item_cost asc';
+        if ((defined('DEBUG') && DEBUG) || $administrative) {
+            $sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item order by for_sale DESC, image is not null desc, item_cost asc';
         }
 
         $items_data = query($sel);

@@ -68,6 +68,7 @@ nav.admin-nav a{
 		<a class='btn btn-info' href='/ninjamaster/#char-list'>Character List</a>
 		<a class='btn btn-info' href='/ninjamaster/tools'>Validation Tools</a>
 		<a class='btn btn-info' href='/ninjamaster/player_tags'>Character Tag List</a>
+		<a class='btn btn-info' href='/ninjamaster/#item-list-area'>Item List</a>
 	</div>
 </nav>
 
@@ -206,6 +207,11 @@ nav.admin-nav a{
 		</div>
 			{/foreach}
 	</div>
+</section>
+
+<section>
+	<h1 id='item-list-area'>Item Raw Data</h1>
+{include file="ninjamaster.items.tpl"}
 </section>
 
 
