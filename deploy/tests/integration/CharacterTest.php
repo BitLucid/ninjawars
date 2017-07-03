@@ -379,7 +379,8 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $char->save();
 
         $updated_char = Player::find($this->char_id);
-        $this->assertEquals($char->identity, $updated_char->identity);
+        $this->assertEquals($char->class_name, $updated_char->class_name, 'The class names for the character were not identical.');
+        $this->assertEquals($char->identity, $updated_char->identity, 'The class identities pre/post update were not identical.');
     }
 
     public function testSetClassNegative() {
@@ -388,6 +389,13 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
         $char->setClass('BANANA');
 
         $this->assertEquals($class, $char->getClassName());
+    }
+
+    public function testSetClassChangesCurrentPCClass(){
+        $char = Player::find($this->char_id);
+        $class = $char->getClassName();
+        $char->setClass('Viper');
+        $this->assertEquals('Viper', $char->getClassName());
     }
 
     public function testClassStringValidationPositive() {

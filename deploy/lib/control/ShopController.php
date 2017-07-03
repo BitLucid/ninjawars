@@ -122,7 +122,7 @@ class ShopController extends AbstractController {
 	}
 
     /**
-     * Pulls the shop items costs and all.
+     * Pulls the shop items costs and all, used administratively as well.
      */
     private function itemForSaleCosts() {
         $sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item where for_sale = TRUE order by image is not null desc, item_cost asc';

@@ -11,6 +11,7 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use \InvalidArgumentException;
+use NinjaWars\core\control\ShopController;
 
 /**
  * The ninjamaster/admin info
@@ -26,6 +27,15 @@ class NinjamasterController extends AbstractController {
     }
 
     /**
+     * Check user authentication as an admin before continuing.
+     */
+    private function checkAuth(){
+        if (!$this->self || !$this->self->isAdmin()) {
+            return new RedirectResponse(WEB_ROOT);
+        }
+    }
+
+    /**
      * Display the main admin area
      *
      * Includes player viewing, account duplicates checking, npc balacing
@@ -34,10 +44,7 @@ class NinjamasterController extends AbstractController {
      */
     public function index() {
         $request = RequestWrapper::$request;
-
-        if (!$this->self || !$this->self->isAdmin()) {
-            return new RedirectResponse(WEB_ROOT);
-        }
+        $this->checkAuth();
 
         $error            = null;
         $char_infos        = null;
@@ -50,6 +57,8 @@ class NinjamasterController extends AbstractController {
         $stats            = AdminViews::highRollers();
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivial_npcs      = NpcFactory::allTrivialNpcs();
+
+        $items = 
 
         $char_ids  = preg_split("/[,\s]+/", $request->get('view'));
         $char_name = trim($request->get('char_name'));
@@ -98,15 +107,21 @@ class NinjamasterController extends AbstractController {
     }
 
     /**
+     * Pull the items for administrative review
+     */
+    public function items(){
+        $this->checkAuth();
+        $item_costs = ShopController::itemForSaleCosts();
+        return $item_costs;
+    }
+
+    /**
      * Display the tools page
      *
      * @return Response
      */
     public function tools() {
-        if (!$this->self || !$this->self->isAdmin()) {
-            return new RedirectResponse(WEB_ROOT);
-        }
-
+        $this->checkAuth();
         return new StreamedViewResponse('Admin Tools', 'page.tools.tpl', [], [ 'private' => false ]);
     }
 
@@ -116,10 +131,7 @@ class NinjamasterController extends AbstractController {
      * @return Response
      */
     public function player_tags() {
-        if (!$this->self || !$this->self->isAdmin()) {
-            return new RedirectResponse(WEB_ROOT);
-        }
-
+        $this->checkAuth();
         return new StreamedViewResponse('Player Character Tags', 'player-tags.tpl', [ 'player_size' => $this->playerSize() ], [ 'quickstat' => false ]);
     }
 

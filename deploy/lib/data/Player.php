@@ -34,6 +34,7 @@ use \RuntimeException;
  * @property int karma
  * @property int active
  * @property string identity Identity of the character class
+ * @property string class_name
  * @property string goals
  * @property string description
  * @property string messages
@@ -386,7 +387,7 @@ class Player implements Character {
     }
 
     /**
-     * Returns the state of the player from the database,
+     * Manipulates the data from the vo into the $this itself
      *
      * @return array
      */
@@ -404,7 +405,7 @@ class Player implements Character {
             $this->data['exp_percent']   = min(100, round(($this->data['kills']/$this->data['next_level'])*100));
             $this->data['status_list']   = implode(', ', self::getStatusList($this->id()));
             $this->data['hash']          = md5(implode($this->data));
-            $this->data['class_name']    = $this->data['identity'];
+            $this->data['class_name']    = ucfirst($this->data['identity']); // A misnomer, identity is actually the class label
             $this->data['clan_id']       = ($this->getClan() ? $this->getClan()->id : null);
 
             unset($this->data['pname']);
@@ -563,28 +564,39 @@ class Player implements Character {
         return (($clan = Clan::findByMember($this)) && $this->id() == $clan->getLeaderID());
     }
 
+
+    /**
+     * Get the information for a single class' data, generally the characters
+     * @param string $class_identity
+     * @return array of class data
+     */
+    private function obtainSingleClassData($class_identity){
+            return query_row(
+                'select class_id, identity, class_name, theme, class_note, class_tier, class_desc, class_icon from class where class.identity = :class',
+                [':class' => $class_identity]
+            );
+    }
+
     /**
      * Set the character's class, using the identity.
      * @return string|null error string if fails
      */
     public function setClass($new_class) {
-        if (!$this->isValidClass(strtolower($new_class))) {
+        $class_data = $this->obtainSingleClassData(strtolower($new_class));
+        if($class_data === false || $class_data === null){
             return "That class was not an option to change into.";
         } else {
-            $class_id = query_item(
-                "SELECT class_id FROM class WHERE class.identity = :class",
-                [':class' => strtolower($new_class)]
-            );
-
+            // Update the only place in the database where a players class is determined
             $up = "UPDATE players SET _class_id = :class_id WHERE player_id = :char_id";
-
             query($up, [
-                ':class_id' => $class_id,
+                ':class_id' => $class_data['class_id'],
                 ':char_id'  => $this->id(),
             ]);
 
-            $this->vo->identity  = $new_class;
-            $this->vo->_class_id = $class_id;
+            $this->class_name    = $class_data['class_name'];
+            $this->theme         = $class_data['theme'];
+            $this->vo->identity  = $class_data['identity'];
+            $this->vo->_class_id = $class_data['class_id'];
 
             return null;
         }
@@ -594,19 +606,7 @@ class Player implements Character {
      * Get the ninja's class's name.
      */
     public function getClassName() {
-        return $this->vo->identity;
-    }
-
-    /**
-     * Check that a class matches against the class identities available in the database.
-     *
-     * @return boolean
-     */
-    private function isValidClass($candidate_identity) {
-        return (boolean) query_item(
-            "SELECT identity FROM class WHERE identity = :candidate",
-            [':candidate' => $candidate_identity]
-        );
+        return $this->vo->class_name;
     }
 
     /**

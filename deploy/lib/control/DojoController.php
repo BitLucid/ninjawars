@@ -15,8 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @note IMPORTANT MAINTENANCE NOTES
  * To disable class change code: set $classChangeAllowed to boolean false
- * To change order of class change cycling: Update $class_array, key = starting
- * class, value = next class in cycle
  */
 class DojoController extends AbstractController {
     const ALIVE                = false;
@@ -76,6 +74,29 @@ class DojoController extends AbstractController {
     }
 
     /**
+     * Get the class and identity data
+     *
+     */
+    private function getClasses(){
+        $classes_raw = query_array('select 
+                class_id, 
+                identity, 
+                class_name, 
+                class_note, 
+                class_tier, 
+                class_desc, 
+                class_icon, 
+                theme 
+                from class where class_active = true');
+        $classes = [];
+        foreach($classes_raw as $class){
+            $classes[$class['identity']] = $class;
+        }
+        unset($class);
+        return $classes;
+    }
+
+    /**
      * Action to request class change form AND execute class change
      *
      * @todo split form request and execute into separate funcs
@@ -85,24 +106,20 @@ class DojoController extends AbstractController {
     public function changeClass(Container $p_dependencies) {
         if ($p_dependencies['session']->get('authenticated', false)) {
             $player            = $p_dependencies['current_player'];
-            $classes           = query_array('select class_id, identity, class_name, class_note, class_tier, class_desc, class_icon, theme from class where class_active = true');
-            $requestedIdentity = RequestWrapper::getPostOrGet('requested_identity');
+            $classes           = $this->getClasses();
+            $requested_identity = RequestWrapper::getPostOrGet('requested_identity');
             $currentClass      = $player->identity;
             $showMonks         = false;
             $parts             = [];
 
-            if (isset($classes[$requestedIdentity])) {
+            if ($requested_identity && isset($classes[$requested_identity])) {
                 $error = $this->classChangeReqs($player, self::CLASS_CHANGE_COST);
-
-                if ($currentClass != $requestedIdentity && !$error) {
-                    $error = $this->changePlayerClass($player, $requestedIdentity);
+                if ($currentClass != $requested_identity && !$error) {
+                    $error = $this->changePlayerClass($player, $requested_identity, self::CLASS_CHANGE_COST);
                 }
-
                 $currentClass = $player->identity;
-
                 if (!$error) {
                     $parts['pageParts'] = ['success-class-change'];
-
                     $showMonks = true;
                 } else {
                     $parts['error'] = $error;
@@ -110,11 +127,8 @@ class DojoController extends AbstractController {
             } else {
                 $parts['pageParts'] = ['form-class-change'];
             }
-
             unset($classes[$currentClass]);
-
             $parts['classOptions'] = $classes;
-
             return $this->render($parts, $player, $showMonks);
         } else {
             return $this->accessDenied();
@@ -144,11 +158,11 @@ class DojoController extends AbstractController {
      *
      * @return string
      */
-    private function changePlayerClass($p_player, $p_class) {
+    private function changePlayerClass($p_player, $p_class, $cost) {
         $error = $p_player->setClass($p_class);
 
         if (!$error) {
-            $p_player->changeTurns((-1)*self::CLASS_CHANGE_COST);
+            $p_player->changeTurns((-1)*$cost);
             $p_player->save();
         }
 
