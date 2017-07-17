@@ -137,25 +137,22 @@ class NinjamasterController extends AbstractController {
     }
 
     /**
+     * Get the tag of player activity/score
      * @return Array
      */
     private function playerSize() {
         $res = [];
-        DatabaseConnection::getInstance();
         $sel = "SELECT (level-3-round(days/5)) AS sum, player_id, uname FROM players WHERE active = 1 AND health > 0 ORDER BY sum DESC";
-        $statement = DatabaseConnection::$pdo->query($sel);
-
-        $player_info = $statement->fetch();
-
-        $max = $player_info['sum'];
-
-        do {
+        $player_info_list = query($sel); // Gets a resultset
+        $max = 0;
+        while($player_info = $player_info_list->fetch()){
+            $max = max($player_info['sum'], $max);
             // make percentage of highest, multiply by 10 and round to give a 1-10 size
             $res[$player_info['uname']] = [
                 'player_id' => $player_info['player_id'],
                 'size'      => $this->calculatePlayerSize($player_info['sum'], $max),
             ];
-        } while ($player_info = $statement->fetch());
+        }
 
         return $res;
     }
