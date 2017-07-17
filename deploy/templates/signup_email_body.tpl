@@ -11,14 +11,14 @@
       Please click on the link below to confirm your account if it isn't confirmed already:<br>
       <a href='{$smarty.const.WEB_ROOT}assistance/confirm/?aid={$account_id|escape:'url'}&amp;confirm={$confirm}'>Confirm Account</a><br>
       Or paste this link:<br>
-      {$smarty.const.WEB_ROOT}assistance/confirm/?aid={$account_id|escape:'url'}&confirm={$confirm} <br>
+      {$smarty.const.WEB_ROOT}assistance/confirm/?aid={$account_id|escape:'url'}&amp;confirm={$confirm} <br>
       into your browser.
     </p>
 
       <h3>Account Info</h3>
     <p>
       Email/Username: <b>{$signup_email}</b><br>
-      Password: <b>***yourpassword***</b>
+      Password: <b>***your password***</b>
     </p>
 
       <h3>Ninja Info</h3>
@@ -29,7 +29,7 @@
     </p>
 
     <p>
-      If you require help use the forums at {$smarty.const.WEB_ROOT}forum/<br>
+      If you require help use the forum at <a href='https://www.facebook.com/ninjawars.net/'>https://www.facebook.com/ninjawars.net/</a><br>
       or email the site administrators at: <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>
     </p>
 

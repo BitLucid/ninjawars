@@ -21,7 +21,7 @@
     </div>
     <div class='col-xs-12 col-sm-4 col-md-4 col-lg-4 contact-panel'>
       <div class='contact-panel-wrapper'>
-        Talk about game ideas on <a target='_blank' href='/forum'>the forum</a>.
+        Talk about game ideas on <a target='_blank' href='https://www.facebook.com/ninjawars.net/'>the facebook page</a>.
       </div>
     </div>
 
@@ -56,7 +56,7 @@
               <ul class='social-networks thick'>
                 <li> <a class='btn btn-default' href='/player?player_id=128274'><i class='fa fa-star'></i> Tchalvak on NinjaWars</a> </li>
                 <li> <a class='btn btn-default' target='_blank' rel='me' href="https://github.com/tchalvak" rel='nofollow'><i class='fa fa-github'></i> Github</a></li>
-                <li> <a class='btn btn-default' target='_blank' rel='me' href="http://twitter.com/tchalvak" rel='nofollow'><i class='fa fa-twitter'></i> Twitter</a></li>
+                <li> <a class='btn btn-default' target='_blank' rel='me' href="https://twitter.com/tchalvak" rel='nofollow'><i class='fa fa-twitter'></i> Twitter</a></li>
                 <li> <a class='btn btn-default' target='_blank' rel='me' href="http://stackoverflow.com/users/69993/kzqai" rel='nofollow'><i class='fa fa-stack-overflow'></i> Stackoverflow</a></li>
               </ul>
             </div>
@@ -127,7 +127,7 @@
       on github: <a class='external btn btn-primary' target='_blank' href="https://github.com/BitLucid/ninjawars/"><span class='external'><i class='fa fa-github'></i> github.com/BitLucid/ninjawars</span></a>
     </div>
     <div class='col-xs-12 col-sm-3 col-md-3 col-lg-3'>
-      make suggestions on <a href='/forum'>the forum</a>!
+      make suggestions on <a href='https://www.facebook.com/ninjawars.net/'>the facebook page</a>!
     </div>
     <div class='stamp thick col-xs-12 col-sm-8 col-md-8 col-lg-8' id='latest-commit-section'>
       <p id='latest-commit-title' style='display:none'>The latest commit to the main ninjawars code was:</p>

@@ -1,7 +1,6 @@
-      	<div id='footer-top-bar'>
+      <div id='footer-top-bar'>
         <span id='nw-catchphrases'>
           <!-- These catchphrases will be displayed randomly. Probably good to limit them to about this length ... -->
-          <span style="display:none">There was going to be a NinjaWars2, but NinjaWars1 stabbed it.</span>
           <span style="display:none">Join a clan, promote multiple stab wounds.</span>
           <span style="display:none">Annoy the Emperor, kill Samurai.</span>
           <span style="display:none">Some theorize that poison is actually liquified ninja.</span>
@@ -29,6 +28,8 @@
           <span style="display:none">I may not look like much, but I'm an expert at pretending to be a ninja.</span>
           <span style="display:none">Ninjas can't catch you if you are on fire.</span>
           <span>Oni are actually quite friendly, if you get to know them.</span>
+          <span style="display:none">Join us in discussing the site on the facebook page!</span>
+          <span style="display:none">There was going to be a NinjaWars2, but NinjaWars1 stabbed it.</span>
         </span>
          |
         <a href="/" target="main">Guide</a> |
@@ -36,7 +37,6 @@
         <a href="/rules" target="main">Rules</a> |
         <a href="/news" target="main">News</a> |
         <a href="/village" target="main" title='Manual chat archive'>Chat</a> |
-        <a href="http://ninjawars.pbwiki.com/" rel='nofollow' target="_blank" class="extLink">Wiki</a> |
-        <a href="http://ninjawars.proboards.com" rel='nofollow' target="_blank" class="extLink">Forum</a> |
-        <a href="http://ninjawars.proboards.com/index.cgi?action=display&amp;board=suggcomp&amp;thread=1174" rel='nofollow' target="_blank" class="extLink">Feedback</a>
-        </div>
+        <a href="http://ninjawars.pbworks.com/" rel='nofollow' target="_blank" class="extLink">Wiki</a> |
+        <a href="https://www.facebook.com/ninjawars.net/" rel='nofollow' target="_blank" class="extLink">Feedback/Discussion</a>
+      </div>

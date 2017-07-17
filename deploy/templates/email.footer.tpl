@@ -3,5 +3,5 @@
 	</div>
 	
 	<div>
-		If you need any further help with the game, go to the forum: <a href='http://forum.ninjawars.net'>http://forum.ninjawars.net</a>
+		If you need any further help with the game, go to the forum: <a href='https://www.facebook.com/ninjawars.net/'>https://www.facebook.com/ninjawars.net/</a>
 	</div>

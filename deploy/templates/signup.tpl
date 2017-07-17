@@ -63,8 +63,8 @@
 	  <p class='signup-page error'>{$error|escape}</p>
 	  <div class='glassbox'>
 		  <p class>Lost Your Password ? <a href="/assistance">Resend Account Info Email</a> / Didn't get your confirmation code ? <a href="/assistance">Resend Confirmation Email</a></p>
-		  <p>If you need help, email: <a href="mailto:{$smarty.const.SUPPORT_EMAIL}">{$smarty.const.SUPPORT_EMAIL}</a> or use the forums at
-		  <a href="{$smarty.const.WEB_ROOT}forum/">{$smarty.const.WEB_ROOT}forum/</a></p>
+		  <p>If you need help, email: <a href="mailto:{$smarty.const.SUPPORT_EMAIL}">{$smarty.const.SUPPORT_EMAIL}</a> or use the
+		  <a href="https://www.facebook.com/ninjawars.net/">facebook page</a></p>
 	  </div>
 	{/if}
 
