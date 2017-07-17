@@ -32,6 +32,8 @@ class NinjamasterController extends AbstractController {
     private function checkAuth(){
         if (!$this->self || !$this->self->isAdmin()) {
             return new RedirectResponse(WEB_ROOT);
+        } else {
+            return true;
         }
     }
 
@@ -44,7 +46,10 @@ class NinjamasterController extends AbstractController {
      */
     public function index() {
         $request = RequestWrapper::$request;
-        $this->checkAuth();
+        $authed = $this->checkAuth();
+        if($authed instanceof RedirectResponse){
+            return $authed;
+        }
 
         $error            = null;
         $char_infos        = null;
@@ -111,7 +116,11 @@ class NinjamasterController extends AbstractController {
      * Pull the items for administrative review
      */
     public function items(){
-        $this->checkAuth();
+        $authed = $this->checkAuth();
+        if($authed instanceof RedirectResponse){
+            return $authed;
+        }
+
         $item_costs = ShopController::itemForSaleCosts(true); // Show administrative entries.
         return $item_costs;
     }
@@ -122,7 +131,10 @@ class NinjamasterController extends AbstractController {
      * @return Response
      */
     public function tools() {
-        $this->checkAuth();
+        $authed = $this->checkAuth();
+        if($authed instanceof RedirectResponse){
+            return $authed;
+        }
         return new StreamedViewResponse('Admin Tools', 'page.tools.tpl', [], [ 'private' => false ]);
     }
 
@@ -132,7 +144,10 @@ class NinjamasterController extends AbstractController {
      * @return Response
      */
     public function player_tags() {
-        $this->checkAuth();
+        $authed = $this->checkAuth();
+        if($authed instanceof RedirectResponse){
+            return $authed;
+        }
         return new StreamedViewResponse('Player Character Tags', 'player-tags.tpl', [ 'player_size' => $this->playerSize() ], [ 'quickstat' => false ]);
     }
 
