@@ -226,8 +226,8 @@ ci-pre-configure:
 
 python-install:
 	# Install python3 deps with pip
-	pip3 install virtualenv
-	pip3 install -r ./deploy/requirements.txt
+	python3 -m pip install virtualenv
+	python3 -m pip install -r ./deploy/requirements.txt
 
 ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
 
