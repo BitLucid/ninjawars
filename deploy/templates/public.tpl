@@ -6,7 +6,7 @@
     <iframe src="http://www.facebook.com/plugins/likebox.php?id=117346421617325&amp;width=292&amp;connections=10&amp;stream=true&amp;header=true&amp;height=587" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:587px;"></iframe>
 </div>
 
-        <a style='display:block;margin: 0 auto 3em;text-align:center;font-style:italic;' href='http://ninjawars.proboards.com/index.cgi?action=recent'>~Recent posts on the Ninjawars Forum~</a>
+        <a style='display:block;margin: 0 auto 3em;text-align:center;font-style:italic;' href='https://www.facebook.com/ninjawars.net'>Discuss ninjawars on facebook</a>
         
 <div>
     {literal}  

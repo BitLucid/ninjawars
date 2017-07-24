@@ -1,3 +1,3 @@
 <?php
-header('Location: http://ninjawars.proboards.com');
+header('Location: https://www.facebook.com/ninjawars.net');
 exit();

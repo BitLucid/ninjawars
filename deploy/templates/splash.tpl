@@ -46,7 +46,7 @@
 		</div>
 
 		<div id='feedback-link'>
-		  <a class='font-shangrila extLink' rel='nofollow' href="http://ninjawars.proboards.com/index.cgi?action=display&amp;board=suggcomp&amp;thread=1174" target="_blank">Give Feedback</a>
+		  <a class='font-shangrila extLink' rel='nofollow' href="https://www.facebook.com/ninjawars.net/" target="_blank">Ask a question</a>
 		</div>
 
   {if isset($show_news) and $show_news}
