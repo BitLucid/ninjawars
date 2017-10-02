@@ -6,6 +6,11 @@
     </title>
     <link rel="stylesheet" href="{cachebust file="/css/style.css"}">
     <link rel="stylesheet" type="text/css" href="{cachebust file="/css/font-awesome.min.css"}">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <!-- <meta http-equiv="refresh" content="30"> -->
   </head>
   <body id="page-404">
     <h1>NinjaWars :: 404 Page Not Found</h1>
