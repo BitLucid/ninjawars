@@ -19,7 +19,7 @@
         <img class='error-page-character' src='/images/characters/disappearing_ghost180.png' alt=''>
         <h2 class='error'><i class="fa fa-meh-o"></i> Sorry, 404: We can't find that page</h2>
         <div class='glassbox thick' style='clear:both'>
-          <form action="http://www.google.com/search" name="searchbox" method="get" id='search-404'> 
+          <form action="https://www.google.com/search" name="searchbox" method="get" id='search-404'> 
             <input type="hidden" name="hl" value="en"> 
             <input type="hidden" name="ie" value="ISO-8859-1"> 
             <input type="hidden" name="sitesearch" value="ninjawars.net"> 
