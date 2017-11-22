@@ -62,6 +62,7 @@ NpcFactory::$data = [
         'short'     => 'is a reptilian creature with a scooped-out head',
         'race'      => 'kappa',
         'img'       => 'kappa.jpg',
+        'gold'      => 40,
         'inventory' => [
             'shell' => '.5',
         ],
