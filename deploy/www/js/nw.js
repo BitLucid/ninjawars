@@ -82,11 +82,17 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 		var barstatsContainer = $('#barstats');
 		// Find the bars inside that.
 		// Change the number floating over the bars.
-		barstatsContainer.find('#health').find('.bar-number').text(barstats.health).end().find('.bar').css({'width':barstats.health_percent+'%'}).end()
-		.end().find('#kills').find('.bar-number').text(barstats.kills).end().find('.bar').css({'width':barstats.kills_percent+'%'}).end()
-		.end().find('#turns').find('.bar-number').text(barstats.turns).end().find('.bar').css({'width':barstats.turns_percent+'%'}).end()
+		barstatsContainer.find('#health').find('.bar-number').text(barstats.health).end().find('.bar').css({width:barstats.health_percent+'%'}).end()
+		.end().find('#kills').find('.bar-number').text(barstats.kills).end().find('.bar').css({width:barstats.kills_percent+'%'}).end()
+		.end().find('#turns').find('.bar-number').text(barstats.turns).end().find('.bar').css({width:barstats.turns_percent+'%'}).end()
 		.end();
+		NW.updateHealth(barstats.health_percent);
 		// Change the percentage of the background bar.
+	};
+
+	// Update the health bar in the top area if present
+	NW.updateHealth = function(percent){
+		$('.health-container .health-bar').css({width:percent+'%'});
 	};
 
 
