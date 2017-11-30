@@ -87,7 +87,7 @@ article#fight nav{
 			{/if}
 		{else}
 			{if $is_weaker}
-			<p class='ninja-notice target-escape'>The {$display_name|escape} flees from you and you let it live!</p>
+			<p class='ninja-notice target-escape'>The {$display_name|escape} flees from you and escapes!</p>
 			{else}
 				{if $is_stronger}
 				<p class='you-escape'>You are unable to kill the {$display_name|escape}, so you escape instead!</p>
