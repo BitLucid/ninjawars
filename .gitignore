@@ -90,3 +90,4 @@ Icon
 .VolumeIcon.icns
 node_modules/
 node_modules/
+.jshintrc

@@ -1,22 +1,13 @@
 /* The main javascript functionality of the site, apart from very page specific behaviors */
-/*jslint browser: true*/
+/*jshint browser: true, white: true, plusplus: true*/
 /*global $, jQuery, window*/
+
 
 
 // Sections are, in order: SETTINGS | FUNCTIONS | READY
 
-// Url Resources:
-// http://www.jslint.com/
-// http://yuiblog.com/blog/2007/06/12/module-pattern/
-// http://www.javascripttoolbox.com/bestpractices/
+var NW = window.NW || {};
 
-"use strict"; // Strict checking.
-
-var NW = this.NW || {};
-
-var environment = 'NW App context';
-
-//var $ = jQuery; // jQuery sets itself to use the dollar sign shortcut by default.
 // A different instance of jquery is currently used in the iframe and outside.
 
 var g_isIndex = ((window.location.pathname.substring(1) === 'index.php') || $('body').hasClass('main-body')); 
@@ -29,7 +20,7 @@ var g_isRoot = (window.location.pathname === '/');
 var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
 
 // Guarantee that there is a console to prevent errors while debugging.
-if (typeof(console) === 'undefined') { var console = { log: function() { } }; }
+if (console === undefined) { var console = { log: function() { } }; }
 
 /*  GLOBAL SETTINGS & VARS */
 if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
@@ -170,15 +161,15 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 	};
 
 	NW.eventsRead = function() {
-		$('#recent-events', top.document).removeClass('message-unread');
+		$('#recent-events', window.top.document).removeClass('message-unread');
 	};
 
 	NW.eventsHide = function() {
-		$('#recent-events', top.document).hide();
+		$('#recent-events', window.top.document).hide();
 	};
 
 	NW.eventsShow = function() {
-		$('#recent-events', top.document).show();
+		$('#recent-events', window.top.document).show();
 	};
 
 	// Pull the event from the data store and request it be displayed.
@@ -191,9 +182,7 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 			this.feedbackSpeedUp(); // Make the interval to try again shorter.
 		} else if (this.datastore.visibleEventId === event.event_id) {
 			// If the stored data is the same as the latest pulled event...
-			this.datastore.eventUpdateCount = (typeof this.datastore.eventUpdateCount === 'undefined'?
-					this.datastore.eventUpdateCount = 1 :
-					this.datastore.eventUpdateCount + 1 ) ;
+			this.datestore.eventUpdateCount = ++this.datastore.eventUpdateCount || 1;
 			if(this.datastore.eventUpdateCount > hideEventsAfter){
 				NW.eventsHide();
 			}
@@ -242,7 +231,7 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 
 	// Update the number of unread messages, displayed on index.
 	NW.unreadMessageCount = function(messageCount) {
-		var recent = $('#messages', top.document).find('.unread-count').text(messageCount);
+		var recent = $('#messages', window.top.document).find('.unread-count').text(messageCount);
 		// if unread, Add the unread class until next update.
 		if (recent && recent.addClass) {
 			if (messageCount>0) {
@@ -389,7 +378,10 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 
 	// Get a stored hash if available.
 	NW.pullArrayValue = function(name) {
-		return (this.datastore['array'] && typeof(this.datastore['array'][name]) !== 'undefined' ? this.datastore['array'][name] : null);
+		if(this.datastore !== undefined && this.datastore.array != undefined && this.datastore.array[name] !== undefined){
+			return this.datastore.array[name];
+		}
+		return null;
 	};
 
 	// Determines the update interval,
@@ -442,7 +434,7 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 		});
 	};
 
-    if (typeof(Storage) !== "undefined") {
+    if (Storage !== undefined) {
         NW.storageSetter = function(p_key, p_value) {
             localStorage.setItem(p_key, p_value);
         };
@@ -512,11 +504,6 @@ $(function() {
 		$('#index-avatar').on('click touchstart', function(e){
     		$('#ninja-dropdown').slideToggle();
     		e.preventDefault();
-		});
-		$('#ninja-dropdown').on('mouseleave', function(e){
-			NW.typewatch(function(e){
-				$('#ninja-dropdown').slideUp(); // Go away on delay on mouseleave
-			}, 5000);
 		});
 
 	} else if (g_isSubpage) {
