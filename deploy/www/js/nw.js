@@ -13,12 +13,10 @@ var NW = window.NW || {};
 
 var g_isIndex = ((window.location.pathname.substring(1) === 'index.php') || $('body').hasClass('main-body'));
 // This line requires and makes use of the $ jQuery var!
-
 var g_isLive = (window.location.host !== 'localhost');
-
 var g_isRoot = (window.location.pathname === '/');
-
 var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
+var environment = 'NW App context'; // For testing
 
 // Guarantee that there is a console to prevent errors while debugging.
 if (console === undefined) { 
