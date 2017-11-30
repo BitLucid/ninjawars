@@ -7,7 +7,7 @@
           <img id='ninjawars-title-image' src='{cachebust file="/images/halfShuriken.png"}' title='Home' alt='Ninja Wars' width='100' height='100'>
         </a>
       </div> -->
-      <a class="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse">NinjaWars</a>
+      <a class="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse"><img id='ninjawars-title-image' src='{cachebust file="/images/halfShuriken.png"}' title='Home' alt='Ninja Wars' width='30' height='30'></a>
       <div id="navbar" class="collapse navbar-collapse">
 
         <ul class="nav navbar-nav">
@@ -63,8 +63,21 @@
         </div><!-- end of dropdown -->
         {/if}
 
+<style>
+.navbar-fixed-top .health-container{
+  width:100%;height:0.1rem;
+}
+.navbar-fixed-top .health-bar{
+  background-color:#d9534f;min-height:1px;height:0.1rem;
+  min-width:2rem;
+}
+
+</style>
 
       </div><!--/.nav-collapse -->
+      <div class='health-container'>
+          <div class='health-bar' data-json="{$ninja|@json_encode nofilter}" style='width:0%' title='600hp/1000hp'></div>
+      </div>
     </nav>
 
     <!-- Begin page content -->

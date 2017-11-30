@@ -1,25 +1,17 @@
 /* The main javascript functionality of the site, apart from very page specific behaviors */
-/*jslint browser: true*/
-/*global $, jQuery, window*/
+/*jshint browser: true, white: true, plusplus: true*/
+/*jslint browser: true, white: true, plusplus: true*/
+/*global $, jQuery, window, parent, Storage */
+
 
 
 // Sections are, in order: SETTINGS | FUNCTIONS | READY
 
-// Url Resources:
-// http://www.jslint.com/
-// http://yuiblog.com/blog/2007/06/12/module-pattern/
-// http://www.javascripttoolbox.com/bestpractices/
+var NW = window.NW || {};
 
-"use strict"; // Strict checking.
-
-var NW = this.NW || {};
-
-var environment = 'NW App context';
-
-//var $ = jQuery; // jQuery sets itself to use the dollar sign shortcut by default.
 // A different instance of jquery is currently used in the iframe and outside.
 
-var g_isIndex = ((window.location.pathname.substring(1) === 'index.php') || $('body').hasClass('main-body')); 
+var g_isIndex = ((window.location.pathname.substring(1) === 'index.php') || $('body').hasClass('main-body'));
 // This line requires and makes use of the $ jQuery var!
 
 var g_isLive = (window.location.host !== 'localhost');
@@ -29,10 +21,12 @@ var g_isRoot = (window.location.pathname === '/');
 var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
 
 // Guarantee that there is a console to prevent errors while debugging.
-if (typeof(console) === 'undefined') { var console = { log: function() { } }; }
+if (console === undefined) { 
+	var console = { log: function() { } };
+}
 
 /*  GLOBAL SETTINGS & VARS */
-if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
+if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && parent.NW) {
 	console.log('Reusing existing parent NW object');
 	// If the interior page of an iframe, use the already-defined globals from the index.
 	//$ = parent.$;
@@ -82,11 +76,17 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 		var barstatsContainer = $('#barstats');
 		// Find the bars inside that.
 		// Change the number floating over the bars.
-		barstatsContainer.find('#health').find('.bar-number').text(barstats.health).end().find('.bar').css({'width':barstats.health_percent+'%'}).end()
-		.end().find('#kills').find('.bar-number').text(barstats.kills).end().find('.bar').css({'width':barstats.kills_percent+'%'}).end()
-		.end().find('#turns').find('.bar-number').text(barstats.turns).end().find('.bar').css({'width':barstats.turns_percent+'%'}).end()
+		barstatsContainer.find('#health').find('.bar-number').text(barstats.health).end().find('.bar').css({width:barstats.health_percent+'%'}).end()
+		.end().find('#kills').find('.bar-number').text(barstats.kills).end().find('.bar').css({width:barstats.kills_percent+'%'}).end()
+		.end().find('#turns').find('.bar-number').text(barstats.turns).end().find('.bar').css({width:barstats.turns_percent+'%'}).end()
 		.end();
+		NW.updateHealth(barstats.health_percent);
 		// Change the percentage of the background bar.
+	};
+
+	// Update the health bar in the top area if present
+	NW.updateHealth = function(percent){
+		$('.health-container .health-bar').css({width:percent+'%'});
 	};
 
 
@@ -164,15 +164,15 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 	};
 
 	NW.eventsRead = function() {
-		$('#recent-events', top.document).removeClass('message-unread');
+		$('#recent-events', window.top.document).removeClass('message-unread');
 	};
 
 	NW.eventsHide = function() {
-		$('#recent-events', top.document).hide();
+		$('#recent-events', window.top.document).hide();
 	};
 
 	NW.eventsShow = function() {
-		$('#recent-events', top.document).show();
+		$('#recent-events', window.top.document).show();
 	};
 
 	// Pull the event from the data store and request it be displayed.
@@ -185,9 +185,7 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 			this.feedbackSpeedUp(); // Make the interval to try again shorter.
 		} else if (this.datastore.visibleEventId === event.event_id) {
 			// If the stored data is the same as the latest pulled event...
-			this.datastore.eventUpdateCount = (typeof this.datastore.eventUpdateCount === 'undefined'?
-					this.datastore.eventUpdateCount = 1 :
-					this.datastore.eventUpdateCount + 1 ) ;
+			this.datestore.eventUpdateCount = ++this.datastore.eventUpdateCount || 1;
 			if(this.datastore.eventUpdateCount > hideEventsAfter){
 				NW.eventsHide();
 			}
@@ -236,7 +234,7 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 
 	// Update the number of unread messages, displayed on index.
 	NW.unreadMessageCount = function(messageCount) {
-		var recent = $('#messages', top.document).find('.unread-count').text(messageCount);
+		var recent = $('#messages', window.top.document).find('.unread-count').text(messageCount);
 		// if unread, Add the unread class until next update.
 		if (recent && recent.addClass) {
 			if (messageCount>0) {
@@ -335,12 +333,12 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 		};
 	};
 
-	// Saves an array of data to the global data storage, only works on array data, with an index.
-	// Take in a new datum from the api, compare it's <property name> to the already-in-js-global-storage's property called <comparison_name>
-	// This is comparing an old version to a new version, and storing any changes between the two.
+	/* Saves an array of data to the global data storage, only works on array data, with an index.
+	Take in a new datum from the api, compare it's <property name> to the already-in-js-global-storage's property called <comparison_name>
+	 This is comparing an old version to a new version, and storing any changes between the two. */
 	NW.updateDataStore = function(datum, property_name, global_store, comparison_name) {
 		if (datum && datum[property_name]) {
-			if (!this.datastore[global_store] || (this.datastore[global_store][comparison_name] != datum[property_name])) {
+			if (!this.datastore[global_store] || (this.datastore[global_store][comparison_name] !== datum[property_name])) {
 				// If the data isn't there, or doesn't match, update the store.
 				this.datastore[global_store] = datum;
 				return true;
@@ -367,14 +365,14 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 
 	// Store any changes to the value, if any, and return true if changed, false if unchanged.
 	NW.storeArrayValue = function(name, value) {
-		if (!this.datastore['array']) {
-			this.datastore['array'] = {}; // Verify there's a storage array.
+		if (this.datastore.array === undefined || !this.datastore.array) {
+			this.datastore.array = {}; // Verify there's a storage array.
 		}
 
 		// Check for a change to the value to store.
-		if ((typeof(this.datastore['array'][name]) !== 'undefined') || this.datastore['array'][name] === value) {
+		if ((typeof(this.datastore.array[name]) !== 'undefined') || this.datastore.array[name] === value) {
 			// If it exists and differs, store the new one and return true.
-			this.datastore['array'][name] = value;
+			this.datastore.array[name] = value;
 			return true;
 		} else {
 			return false;
@@ -383,7 +381,10 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 
 	// Get a stored hash if available.
 	NW.pullArrayValue = function(name) {
-		return (this.datastore['array'] && typeof(this.datastore['array'][name]) !== 'undefined' ? this.datastore['array'][name] : null);
+		if(this.datastore !== undefined && this.datastore.array !== undefined && this.datastore.array[name] !== undefined){
+			return this.datastore.array[name];
+		}
+		return null;
 	};
 
 	// Determines the update interval,
@@ -436,7 +437,7 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 		});
 	};
 
-    if (typeof(Storage) !== "undefined") {
+    if (Storage !== undefined) {
         NW.storageSetter = function(p_key, p_value) {
             localStorage.setItem(p_key, p_value);
         };
@@ -506,11 +507,6 @@ $(function() {
 		$('#index-avatar').on('click touchstart', function(e){
     		$('#ninja-dropdown').slideToggle();
     		e.preventDefault();
-		});
-		$('#ninja-dropdown').on('mouseleave', function(e){
-			NW.typewatch(function(e){
-				$('#ninja-dropdown').slideUp(); // Go away on delay on mouseleave
-			}, 5000);
 		});
 
 	} else if (g_isSubpage) {
