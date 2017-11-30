@@ -2571,10 +2571,10 @@ table#sight-info {
 	color:gray;
 }
 .message-nav .current-page-location{
-	font-weight:bold; color:#F8F9F1;
+	font-weight:bold; color:#F8F9F1;font-size:3rem;padding:0 1rem 0;
 }
 .message-nav .next,.message-nav .prev{
-	font-weight:bold;font-size:x-large;
+	font-weight:bold;font-size:5rem;
 }
 
 #message-sent-to {
