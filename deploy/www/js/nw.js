@@ -185,7 +185,11 @@ if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && 
 			this.feedbackSpeedUp(); // Make the interval to try again shorter.
 		} else if (this.datastore.visibleEventId === event.event_id) {
 			// If the stored data is the same as the latest pulled event...
-			this.datestore.eventUpdateCount = ++this.datastore.eventUpdateCount || 1;
+			if(this.datastore.eventUpdateCount === undefined){
+				this.datastore.eventUpdateCount = 1;
+			} else {
+				this.datastore.eventUpdateCount++;
+			}
 			if(this.datastore.eventUpdateCount > hideEventsAfter){
 				NW.eventsHide();
 			}
