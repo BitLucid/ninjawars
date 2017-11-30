@@ -1,6 +1,7 @@
 /* The main javascript functionality of the site, apart from very page specific behaviors */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, jQuery, window*/
+/*jslint browser: true, white: true, plusplus: true*/
+/*global $, jQuery, window, parent, Storage */
 
 
 
@@ -10,7 +11,7 @@ var NW = window.NW || {};
 
 // A different instance of jquery is currently used in the iframe and outside.
 
-var g_isIndex = ((window.location.pathname.substring(1) === 'index.php') || $('body').hasClass('main-body')); 
+var g_isIndex = ((window.location.pathname.substring(1) === 'index.php') || $('body').hasClass('main-body'));
 // This line requires and makes use of the $ jQuery var!
 
 var g_isLive = (window.location.host !== 'localhost');
@@ -20,10 +21,12 @@ var g_isRoot = (window.location.pathname === '/');
 var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
 
 // Guarantee that there is a console to prevent errors while debugging.
-if (console === undefined) { var console = { log: function() { } }; }
+if (console === undefined) { 
+	var console = { log: function() { } };
+}
 
 /*  GLOBAL SETTINGS & VARS */
-if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
+if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && parent.NW) {
 	console.log('Reusing existing parent NW object');
 	// If the interior page of an iframe, use the already-defined globals from the index.
 	//$ = parent.$;
@@ -330,12 +333,12 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 		};
 	};
 
-	// Saves an array of data to the global data storage, only works on array data, with an index.
-	// Take in a new datum from the api, compare it's <property name> to the already-in-js-global-storage's property called <comparison_name>
-	// This is comparing an old version to a new version, and storing any changes between the two.
+	/* Saves an array of data to the global data storage, only works on array data, with an index.
+	Take in a new datum from the api, compare it's <property name> to the already-in-js-global-storage's property called <comparison_name>
+	 This is comparing an old version to a new version, and storing any changes between the two. */
 	NW.updateDataStore = function(datum, property_name, global_store, comparison_name) {
 		if (datum && datum[property_name]) {
-			if (!this.datastore[global_store] || (this.datastore[global_store][comparison_name] != datum[property_name])) {
+			if (!this.datastore[global_store] || (this.datastore[global_store][comparison_name] !== datum[property_name])) {
 				// If the data isn't there, or doesn't match, update the store.
 				this.datastore[global_store] = datum;
 				return true;
@@ -362,14 +365,14 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 
 	// Store any changes to the value, if any, and return true if changed, false if unchanged.
 	NW.storeArrayValue = function(name, value) {
-		if (!this.datastore['array']) {
-			this.datastore['array'] = {}; // Verify there's a storage array.
+		if (this.datastore.array === undefined || !this.datastore.array) {
+			this.datastore.array = {}; // Verify there's a storage array.
 		}
 
 		// Check for a change to the value to store.
-		if ((typeof(this.datastore['array'][name]) !== 'undefined') || this.datastore['array'][name] === value) {
+		if ((typeof(this.datastore.array[name]) !== 'undefined') || this.datastore.array[name] === value) {
 			// If it exists and differs, store the new one and return true.
-			this.datastore['array'][name] = value;
+			this.datastore.array[name] = value;
 			return true;
 		} else {
 			return false;
@@ -378,7 +381,7 @@ if (typeof(parent) !== 'undefined' && parent.window !== window && parent.NW) {
 
 	// Get a stored hash if available.
 	NW.pullArrayValue = function(name) {
-		if(this.datastore !== undefined && this.datastore.array != undefined && this.datastore.array[name] !== undefined){
+		if(this.datastore !== undefined && this.datastore.array !== undefined && this.datastore.array[name] !== undefined){
 			return this.datastore.array[name];
 		}
 		return null;
