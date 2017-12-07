@@ -45,14 +45,16 @@ dep:
 js-dep:
 	npm install
 
-install: build start-chat
-	chown www-data:adm ./deploy/resources/logs/emails.log
-	chown www-data:adm ./deploy/resources/logs/deity.log
+install: build start-chat writable
 	@echo "Don't forget to update webserver configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
 	cp build.properties.tpl build.properties
 	cp buildtime.xml.tpl buildtime.xml
 	cp connection.xml.tpl connection.xml
+
+writable:
+	chmod ugo+wX ./deploy/templates/compiled ./deploy/templates/cache
+	chown www-data:adm ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
 
 install-system:
 	@echo "Installing initial system and server dependencies."
