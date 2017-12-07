@@ -137,7 +137,7 @@ var combat_skills = {$combat_skills|@json_encode};
   <section class='player-communications centered'>
 
 	<span id='message-ninja'>
-      <a href='/messages?to={$target_player_obj->name()|escape}'>Message <em class='char-name'>{$target_player_obj->name()|escape}</em>
+      <a href='/messages?to={$target_player_obj->name()|escape}'>Talk to <em class='char-name'>{$target_player_obj->name()|escape}</em>
       </a>
     </span>
 
