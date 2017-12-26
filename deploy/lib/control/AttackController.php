@@ -104,7 +104,7 @@ class AttackController extends AbstractController {
 
         if (!$options['duel'] && $attacker->hasStatus(STEALTH)) {
             $stealthed_attack = true;
-            $this->stealthStrike($attacker, $target);
+            $this->stealthStrike($attacker, $target); // Modify by reference, presumably
 
             $gold_mod = self::STEALTH_GOLD_MOD;
 
@@ -229,11 +229,12 @@ class AttackController extends AbstractController {
     }
 
     /**
+     * Perform a stealthed attack, modifying the actors by reference
      * @return void
      */
     private function stealthStrike(Player $attacker, Player $target) {
         $target->harm($attacker->getStrength());
-        $attacker->turns = $attacker-turns - (1*self::STEALTH_STRIKE_COST);
+        $attacker->turns = $attacker->turns - self::STEALTH_STRIKE_COST;
     }
 
     /**
