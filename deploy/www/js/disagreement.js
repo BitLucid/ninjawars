@@ -1,3 +1,6 @@
+/* Simple defaults for the casino page, attacking_possible (boolean) and combat_skills (json array) are rendered by the server and passed in */
+/*jshint browser: true, white: true, plusplus: true*/
+/*global $, NW, attacking_possible, combat_skills */
 "use_strict"
 $(function() {
     //  Pull var as defined in external template
@@ -35,8 +38,8 @@ $(function() {
         });
     }
 
+    // Cache and de-cache a favorite item to fight with
     var lastItemUsed = NW.storage.appState.get("last_item_used");
-
     if ($("#item option[value='"+lastItemUsed+"']").length) {
         $("#item").val(lastItemUsed);
     } else {
