@@ -45,6 +45,7 @@ class PlayerController extends AbstractController {
             $template              = 'player.tpl';
             $viewed_name_for_title = $target_player_obj->name();
             $viewing_player_obj    = Player::find(SessionFactory::getSession()->get('player_id'));
+            $i_am_dead = null;
 
             $kills_today = query_item(
                 'SELECT sum(killpoints) FROM levelling_log WHERE _player_id = :player_id AND killsdate = CURRENT_DATE AND killpoints > 0',
@@ -62,6 +63,7 @@ class PlayerController extends AbstractController {
                 $params         = ['required_turns'=>0, 'ignores_stealth'=>true];
                 $AttackLegal    = new AttackLegal($viewing_player_obj, $target_player_obj, $params);
                 $AttackLegal->check(false);
+                $i_am_dead = $AttackLegal->iAmDead();
                 $attack_error   = $AttackLegal->getError();
 
                 if (!$attack_error && !$self) { // They're not dead or otherwise unattackable.
@@ -100,6 +102,7 @@ class PlayerController extends AbstractController {
                 'account'              => Account::findByChar($target_player_obj),
                 'same_clan'            => $same_clan,
                 'display_clan_options' => $display_clan_options,
+                'i_am_dead'            => $i_am_dead,
                 'attack_error'         => $attack_error,
             ];
         }

@@ -131,6 +131,15 @@ class AttackLegal {
     }
 
     /**
+     * Check whether the attacker is dead
+     *
+     * @return boolean
+     */
+    public function iAmDead(){
+        return $this->attacker->health < 1;
+    }
+
+    /**
      * Checks whether an attack is legal or not.
      *
      * @return boolean

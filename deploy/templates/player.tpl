@@ -42,6 +42,11 @@
   <section id='player-interact'>
 	{if $attack_error}
     <div class='ninja-error centered'>Cannot Attack: {$attack_error}</div>
+    {if $i_am_dead}
+      <div class='glassbox'>
+        <a href='/shrine/heal_and_resurrect' target='main' title='Fully heal and resurrect' class='btn btn-default ninja-info centered'>⛩ Heal</a>
+      </div>
+    {/if}
   </section>
 
 <script>
