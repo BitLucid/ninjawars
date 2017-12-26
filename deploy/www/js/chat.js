@@ -1,8 +1,6 @@
-if ('undefined' !== typeof(NW) && 'undefined' !== typeof(NW.debug) && NW.debug) {
-	"use strict";
-}
-
 (function ($) {
+	'use strict';
+	// Add shake plugin to jQuery
     $.fn.shake = function (options) {
         // defaults
         var settings = {
@@ -58,9 +56,9 @@ function getDomainName(hostName) {
 
 var Chat = Chat || {};
 
+// Add a typewatch IIFE
 Chat.typewatch = (function() {
   var timer = 0;
-
   return function(callback, ms) {
 	clearTimeout (timer);
 	timer = setTimeout(callback, ms);
@@ -69,6 +67,7 @@ Chat.typewatch = (function() {
 
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function() {
+	'use strict'
 	console.log('Existing chat messages requested');
 	var since = '1424019122';
 
@@ -94,6 +93,7 @@ Chat.getExistingChatMessages = function() {
 
 // Display at least the messages area when there are some messages in it.
 Chat.displayMessages = function() {
+	'use strict'
 	$('#mini-chat-display').show();
 };
 
@@ -105,13 +105,14 @@ Chat.displayMessages = function() {
  *							'sender_id':'128274'});
 */
 Chat.renderChatMessage = function(p_data) {
+	'use strict';
 	if (!p_data.message) {
 		console.log('Error: Bad data sent in to renderChatMessage to be rendered');
 		console.log(p_data);
 		return false;
 	}
 
-	area = null;
+	var area = null;
 	var fullLink = 'player.php?player_id='+p_data.sender_id;
 	var list = $('#mini-chat-display'); // The outer container.
 
@@ -144,6 +145,7 @@ Chat.renderChatMessage = function(p_data) {
 // Send the contents of the chat form input box.
 // Sample url: http://nw.local/api?type=send_chat&msg=test&jsoncallback=alert
 Chat.sendChatContents = function(p_form) {
+	'use strict'
 	if (p_form.message && p_form.message.value.length > 0) {
 		message = p_form.message.value;
 		// Send a new chat.  // ASYNC
@@ -170,12 +172,14 @@ Chat.sendChatContents = function(p_form) {
 
 // Notify the user when a chat send was rejected.
 Chat.rejected = function() {
+	'use strict'
 	console.log('Error: Failed to send the chat to server.');
 	Chat.submissionArea().shake(); // Shake the submission area to show a failed send of a chat.
 };
 
 // Send a messageData object to the websockets chat
 Chat.send = function(messageData) {
+	'use strict'
 	if (!Chat.canSend()) {
 		return false;
 	}
@@ -196,11 +200,13 @@ Chat.send = function(messageData) {
 
 // Get the area that handles chat submission.
 Chat.submissionArea = function() {
+	'use strict';
 	return $('#post_msg_js');
 };
 
 // Once the chat is ready, initialize the ability to actually send chats.
 Chat.chatReady = function() {
+	'use strict';
 	Chat.displayMessages(); // Will display the whole messages area.
 	var $submitter = Chat.submissionArea();
 
@@ -216,11 +222,14 @@ Chat.chatReady = function() {
 
 // Check whether logged in for chat sending
 Chat.canSend = function() {
+	'use strict';
 	var $area = Chat.submissionArea();
 	return Boolean($area.data('logged-in'));
 };
 
+// Get the dev domain if on .local, fallback to live chat
 Chat.domain = function(url) {
+	'use strict';
 	var domain = getDomainName(url);
 
 	if (domain.indexOf(".local") > -1 ) {
@@ -237,7 +246,9 @@ var config = {
 	'port':'8080'
 };
 
+// Try to connect to active websocket server, see README
 $(function() {
+	'use strict';
 	if ("WebSocket" in window) { // Browser is compatible.
 		var connectionString = 'ws://'+config.server+':'+config.port;
 		console.log('Connecting to '+connectionString);
@@ -276,6 +287,7 @@ $(function() {
 
 // Set up refreshing of the village chat board page (will pause refreshing while someone is writing
 function refreshpagechat() {
+	'use strict';
 	console.log('Village chat board refreshed');
 	var messageInput = $('#message');
 
