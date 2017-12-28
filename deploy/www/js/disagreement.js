@@ -1,8 +1,9 @@
-/* Simple defaults for the casino page, attacking_possible (boolean) and combat_skills (json array) are rendered by the server and passed in */
+/* Simple defaults for the casino page, attacking_possible (boolean) and combatSkillsList (json array) are rendered by the server and passed in */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW, attacking_possible, combat_skills */
-"use_strict"
+/*global $, NW, attacking_possible, combatSkillsList */
 $(function() {
+    'use strict'
+
     //  Pull var as defined in external template
     var attackable = typeof(attacking_possible) !== 'undefined'? attacking_possible : false;
     console.log(attackable?'Attacking enabled.' : 'No attacking this target');
@@ -15,24 +16,26 @@ $(function() {
        the int value upon retrieval
     */
     if(attackable){
-        $("#duel").prop('checked', parseInt(NW.storage.appState.get("duel_checked", false)));
-
-        for (i = 0; i < combat_skills.length; i++) {
-            $("#"+combat_skills[i].skill_internal_name).prop('checked',
-                parseInt(NW.storage.appState.get(combat_skills[i].skill_internal_name+"_checked", false))
-            );
+        if(undefined === combatSkillsList || !Array.isArray(combatSkillsList)){
+            console.log('Combat_skills settings were not in proper array format');
         }
+        console.log('combat skills', combatSkillsList);
+        // Duel is a special case, non-skill combat choice
+        $("#duel").prop('checked', parseInt(NW.storage.appState.get("duel_checked", false)));
+        $.each(combatSkillsList, function(i, skill){
+            var checkedOrNot = parseInt(NW.storage.appState.get(skill.skill_internal_name+"_checked", false));
+            $("#"+skill.skill_internal_name).prop('checked', checkedOrNot);
+        });
 
         $("#attack_player").submit(function() {
             // the unary + operator converts the boolean to an int
-            NW.storage.appState.set("duel_checked", +$("#duel").prop('checked'));
-
-            for (i = 0; i < combat_skills.length; i++) {
+            NW.storage.appState.set("duel_checked", +$("#duel").prop('checked')); // Duel is special case
+            $.each(combatSkillsList, function(i, skill){
                 NW.storage.appState.set(
-                    combat_skills[i].skill_internal_name+"_checked",
-                    +$("#"+combat_skills[i].skill_internal_name).prop('checked')
+                    skill.skill_internal_name+"_checked",
+                    +$("#"+skill.skill_internal_name).prop('checked')
                 );
-            }
+            });
 
             return true;
         });

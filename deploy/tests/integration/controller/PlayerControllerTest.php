@@ -50,4 +50,23 @@ class PlayerControllerTest extends PHPUnit_Framework_TestCase {
         $player_outcome = $player->index();
         $this->assertNotEmpty($player_outcome);
     }
+
+    public function testThatAPlayerProfileReturnsSomeCombatSkillsToLoopOver() {
+        $char_2 = TestAccountCreateAndDestroy::char_2();
+        $viewing_char_id = $this->char->id();
+        $request = new Request(['player_id'=>$char_2->id()]);
+        RequestWrapper::inject($request);
+        $sess = SessionFactory::getSession();
+        $sess->set('player_id', $this->char->id());
+        $player = new PlayerController();
+        $player_outcome = $player->index();
+        $this->assertNotEmpty($player_outcome);
+        // Extract that good good data from in the StreamedViewResponse
+        $reflection = new \ReflectionProperty(get_class($player_outcome), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($player_outcome);
+        $this->assertNotEmpty($response_data['combat_skills']);
+        $this->assertGreaterThan(0, count($response_data['combat_skills']));
+        $this->assertGreaterThan(0, count(json_decode($response_data['json_combat_skills'])));
+    }
 }

@@ -30,6 +30,11 @@ class SkillDAO extends DataAccessObject {
 		$this->_table = 'skill';
 	}
 
+	/** 
+	 * Return skills for a PC
+	 * @param int $p_classID the integer representing the class with skills
+	 * @param int $p_level The level of the user to check fulfillment of level requirements
+	 */
 	public function getSkillsByClass($p_classID, $p_level = 0) {
 		$query = 'SELECT skill_id, skill_display_name, skill_internal_name, skill_type FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE COALESCE(_class_id, :classID1) = :classID2 AND skill_is_active ';
 
@@ -51,6 +56,12 @@ class SkillDAO extends DataAccessObject {
 		return $statement;
 	}
 
+	/** 
+	 * Return skills for a PC, also filtered by skill type
+	 * @param string $p_type The tag type of the skill, e.g. combat, targetted
+	 * @param int $p_classID the integer representing the class with skills
+	 * @param int $p_level The level of the user to check fulfillment of level requirements
+	 */
 	public function getSkillsByTypeAndClass($p_classID, $p_type, $p_level=0) {
 		$query = 'SELECT skill_id, skill_display_name, skill_internal_name, skill_type FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE COALESCE(_class_id, :classID1) = :classID2 AND skill_is_active AND skill_type = :type ';
 
