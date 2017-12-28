@@ -26,7 +26,7 @@
               <span class='left-side'>Email or ninja name</span>
               <div class='input-group'>
                 <span class="input-group-addon"><i class="fa fa-envelope-o fa" aria-hidden="true"></i></span>
-                <input tabindex=1 name="user" placeholder='you@email.com or ninja' required type="text" value='{$stored_username|escape}' class='right-side' />
+                <input tabindex=1 name="user" placeholder='you@email.com or ninja' required type="text" autocomplete='username email' value='{$stored_username|escape}' class='right-side' />
               </div>
             </div>
           </label>
@@ -36,7 +36,7 @@
             <div class='line'>
               <div class='input-group'>
                 <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                <input tabindex=2 name="pass" placeholder='Password' required type="password" class='right-side' />
+                <input tabindex=2 name="pass" placeholder='Password' required type="password" autocomplete='current-password' class='right-side' />
               </div>
             </div>
           </label>
