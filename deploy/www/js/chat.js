@@ -1,3 +1,6 @@
+/* Manipulate chats to and from the api */
+/*jshint browser: true, white: true, plusplus: true*/
+/*global $, NW */
 (function ($) {
 	'use strict';
 	// Add shake plugin to jQuery

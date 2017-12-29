@@ -1,4 +1,8 @@
+/* Store the shop settings */
+/*jshint browser: true, white: true, plusplus: true*/
+/*global $, NW */
 $(function() {
+  'use strict';
 
   var auth = typeof loggedIn !== 'undefined'? loggedIn : false;
 

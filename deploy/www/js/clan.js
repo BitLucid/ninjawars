@@ -1,3 +1,6 @@
+/* Assist in clan operations (currently only clan leave) */
+/*jshint browser: true, white: true, plusplus: true*/
+/*global $*/
 $(function () {
 	'use strict';
 	function leaveClan() {
@@ -7,7 +10,7 @@ $(function () {
 
 		return false;
 	}
-	
+
 	$("#leave-clan").click(function() {
 		leaveClan();
 		return false;

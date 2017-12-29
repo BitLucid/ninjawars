@@ -1,7 +1,9 @@
-/* For the /intro page */
+/* Accent certain areas of the intro page in animated ways*/
+/*jshint browser: true, white: true, plusplus: true*/
+/*global $, NW */
 $(function () {
   'use strict';
-  if(NW && NW.loggedIn){ // Is this a race condition?
+  if(NW && NW.loggedIn){ // Depended on this script being called after NW.loggedIn gets set
     $('.not-user').hide();
   }
   var show_faqs = false; // Set faqs hidden by default.
