@@ -20,12 +20,15 @@ var environment = 'NW App context'; // For testing
 
 // Guarantee that there is a console to prevent errors while debugging.
 if (console === undefined) { 
-	var console = { log: function() { } };
+	var console = { 
+		log: function() { },
+		info: function() { }
+	 };
 }
 
 /*  GLOBAL SETTINGS & VARS */
 if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && parent.NW) {
-	console.log('Reusing existing parent NW object');
+	console.log('Reusing existing parent NW object in new page');
 	// If the interior page of an iframe, use the already-defined globals from the index.
 	//$ = parent.$;
 	NW = parent.NW;
