@@ -120,7 +120,7 @@ test-cron-run:
 test-functional:
 	python3 -m pytest deploy/tests/functional/
 
-test-js: js-dep
+test-js:
 	karma start deploy/tests/karma.conf.js --browsers PhantomJS --single-run
 
 test-ratchets:
