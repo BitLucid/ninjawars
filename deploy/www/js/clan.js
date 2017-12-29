@@ -1,14 +1,15 @@
-function leave_clan() {
-	if (confirm("Do you really want to exit the clan?")) {
-		window.location = "/clan/leave";
-	}
-
-	return false;
-}
-
 $(function () {
+	'use strict';
+	function leaveClan() {
+		if (confirm("Do you really want to exit the clan?")) {
+			window.location = "/clan/leave";
+		}
+
+		return false;
+	}
+	
 	$("#leave-clan").click(function() {
-		leave_clan();
+		leaveClan();
 		return false;
 	});
 });
