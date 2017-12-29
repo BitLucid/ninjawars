@@ -1,5 +1,6 @@
-$(document).ready(function () {
-
+$(function () {
+	'use strict';
+	
 	// Localstorage cache the last messaged individual.
     if ($("#send-to").val() === '') {
         $("#send-to").val(NW.storage.appState.get("last_messaged", ''));
