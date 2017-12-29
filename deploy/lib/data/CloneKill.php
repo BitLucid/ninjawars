@@ -10,26 +10,21 @@ use NinjaWars\core\Filter;
  * Class to house static methods for killing characters of players with multis
  */
 class CloneKill {
+
+    public static function searchForChar($search){
+        if($search instanceof Player){
+            return $search;
+        }
+        if($search && ($search == Filter::toNonNegativeInt($search) || is_string($search))){
+            return Player::find($search);
+        }
+        return null;
+    }
+
     public static function canKill($clone1, $clone2) {
-        // Input is transformed into
-        if(!$clone1 instanceof Player){
-            if($clone1 == Filter::toNonNegativeInt($clone1)){
-                $char1 = Player::find($clone1);
-            } elseif(is_string($clone1)){
-                $char1 = Player::find($clone1);
-            }
-        } else {
-            $char1 = $clone1;
-        }
-        if(!$clone2 instanceof Player){
-            if($clone2 == Filter::toNonNegativeInt($clone2)){
-                $char2 = Player::find($clone2);
-            } elseif(is_string($clone2)){
-                $char2 = Player::find($clone2);
-            }
-        } else {
-            $char2 = $clone2;
-        }
+        // Search for characters matching the criteria
+        $char1 = self::searchForChar($clone1);
+        $char2 = self::searchForChar($clone2);
 
         // Reject invalid/nonexistent characters
         if($char1 === null || $char2 === null){
