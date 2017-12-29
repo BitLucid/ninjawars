@@ -1,6 +1,6 @@
 /* Manipulate chats to and from the api */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW */
+/*global $, NW, Chat */
 (function ($) {
 	'use strict';
 	// Add shake plugin to jQuery
