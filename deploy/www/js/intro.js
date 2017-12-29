@@ -1,5 +1,6 @@
 /* For the /intro page */
 $(function () {
+  'use strict';
   if(NW && NW.loggedIn){ // Is this a race condition?
     $('.not-user').hide();
   }
