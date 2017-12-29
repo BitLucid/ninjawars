@@ -19,17 +19,7 @@ module.exports = function(config) {
       'deploy/www/js/jquery.min.js',
       'deploy/www/js/jquery.timeago.js',
       'deploy/www/js/nw.js',
-      'deploy/www/js/passwords.js',
-      'deploy/www/js/talk.js',
-      'deploy/www/js/casino.js',
-      'deploy/www/js/shop.js',
-      'deploy/www/js/clan.js',
-      'deploy/www/js/chat.js',
-      'deploy/www/js/textAreaLimits.js',
-      'deploy/www/js/disagreement.js',
-      'deploy/www/js/intro.js',
-      'deploy/www/js/repo.js',
-      {pattern: 'deploy/www/js/*.js', included: false},
+      {pattern: 'deploy/www/js/*.js', included: true},
       {pattern: 'deploy/tests/js/*Spec.js', included: false}
     ],
 
@@ -38,9 +28,7 @@ module.exports = function(config) {
     exclude: [
         'deploy/www/js/jquery.timeago.js',
         'deploy/www/js/jquery.linkify.js',
-        'deploy/www/js/jquery.linkify.min.js',
-        'deploy/www/js/casino.js',
-        'deploy/www/js/disagreement.js',
+        'deploy/www/js/jquery.linkify.min.js'
     ],
 
 
