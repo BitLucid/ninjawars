@@ -1,6 +1,6 @@
 /* Accent certain areas of the intro page in animated ways*/
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW */
+/*global $, NW, document*/
 $(function () {
   'use strict';
   if(NW && NW.loggedIn){ // Depended on this script being called after NW.loggedIn gets set
