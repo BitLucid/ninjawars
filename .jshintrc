@@ -1,0 +1,8 @@
+{
+	"white": true,
+	"globalstrict":true,
+	"sub":true,
+	"strict":"implied",
+	"plusplus":true,
+	"bitwise":false
+}
