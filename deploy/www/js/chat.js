@@ -252,7 +252,7 @@ var config = {
 // Try to connect to active websocket server, see README
 $(function() {
 	'use strict';
-	if ("WebSocket" in window) { // Browser is compatible.
+	if (window !== undefined && window.WebSocket !== undefined) { // Browser is compatible.
 		var connectionString = 'ws://'+config.server+':'+config.port;
 		console.log('Connecting to '+connectionString);
 
