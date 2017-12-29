@@ -798,11 +798,10 @@ class Player implements Character {
     }
 
     /**
-     * Returns a comma-seperated string of states based on the statuses of the target.
+     * Get the different statuses a character is affected by.
      *
-     * @param array $statuses status array
-     * @param string $target the target, username if self targetting.
-     * @return string
+     * @param int|null $target the target id, username if self targetting.
+     * @return String[]
      *
      */
     public static function getStatusList($target=null) {

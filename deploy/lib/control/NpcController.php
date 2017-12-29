@@ -261,7 +261,7 @@ class NpcController extends AbstractController {
      * Attack a specific npc
      *
      * @param Container
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function attack(Container $p_dependencies) {
         $request = RequestWrapper::$request;
