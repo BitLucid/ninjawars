@@ -177,6 +177,21 @@ class ClanControllerTest extends NWTest {
         $this->assertEquals($response_data['error'], 'Sorry, unable to find a ninja to invite by that name.');
     }
 
+    public function testJoin() {
+        // create new character
+        $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
+
+        // switch session to new character
+        $this->m_dependencies['session']->set('player_id', $char_id_2);
+
+        // try to leave
+        $request = Request::create('/clan/leave', 'GET', []);
+        RequestWrapper::inject($request);
+        $response = $this->controller->join($this->m_dependencies);
+
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
+    }
+
     public function testLeave() {
         // create new character
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
