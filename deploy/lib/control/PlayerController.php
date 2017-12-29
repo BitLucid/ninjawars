@@ -74,11 +74,17 @@ class PlayerController extends AbstractController {
                     $skillDAO = new SkillDAO();
 
                     if (!$viewing_player_obj->isAdmin()) {
+                        // PCs get what is appropriate for their class
                         $combat_skills   = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->_class_id, 'combat', $viewing_player_obj->level);
                         $targeted_skills = $skillDAO->getSkillsByTypeAndClass($viewing_player_obj->_class_id, 'targeted', $viewing_player_obj->level);
                     } else {
+                        // Admins get all skills
                         $combat_skills   = $skillDAO->all('combat');
                         $targeted_skills = $skillDAO->all('targeted');
+                    }
+                    if($combat_skills instanceof \PDOStatement){
+                        // Unwrap combat skills
+                        $combat_skills = $combat_skills->fetchAll(\PDO::FETCH_ASSOC);
                     }
                 }
 
@@ -92,6 +98,7 @@ class PlayerController extends AbstractController {
                 'viewing_player_obj'   => $viewing_player_obj,
                 'target_player_obj'    => $target_player_obj,
                 'combat_skills'        => $combat_skills,
+                'json_combat_skills'   => !empty($combat_skills)? json_encode($combat_skills) : [],
                 'targeted_skills'      => $targeted_skills,
                 'self'                 => $self,
                 'rank_spot'            => $rank_spot,

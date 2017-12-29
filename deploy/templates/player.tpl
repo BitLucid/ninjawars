@@ -52,11 +52,11 @@
 <script>
 var attacking_possible = false;
 </script>
-
 	{else}
+  {* No attack error *}
 <script>
 var attacking_possible = true;
-var combat_skills = {$combat_skills|@json_encode};
+var combatSkillsList = {$json_combat_skills nofilter};
 // Store to allow settings to get cached on the front end.
 </script>
 

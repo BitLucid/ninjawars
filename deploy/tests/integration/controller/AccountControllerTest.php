@@ -88,7 +88,7 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
 
         $controller = new AccountController();
         $response = $controller->changePassword($this->deps);
-
+        //  Extract the good data from the StreamedViewResponse
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
