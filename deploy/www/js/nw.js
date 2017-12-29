@@ -1,7 +1,7 @@
 /* The main javascript functionality of the site, apart from very page specific behaviors */
 /*jshint browser: true, white: true, plusplus: true*/
 /*jslint browser: true, white: true, plusplus: true*/
-/*global $, jQuery, window, parent, Storage */
+/*global $, jQuery, window, parent, console, Storage */
 
 
 
@@ -146,7 +146,7 @@ if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && 
 	// Display an event.
 	NW.writeLatestEvent = function(event) {
 
-		var recent = $('#recent-events', top.document)
+		var recent = $('#recent-events', window.top.document)
 		.find('#recent-event-attacked-by').text('You were recently in combat').end()
 		.find('#view-event-char').text(event.sender).attr('href', 'player.php?player_id='+event.send_from).end();
 		if (recent && recent.addClass) {
