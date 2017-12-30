@@ -1,6 +1,6 @@
 /* Manipulate chats to and from the api */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW, Chat, jQuery, console, conn*/
+/*global $, NW, Chat, jQuery, console, window.conn, window.parent*/
 (function ($) {
 	'use strict';
 	// Add shake plugin to jQuery
@@ -153,17 +153,19 @@ Chat.sendChatContents = function(p_form) {
 		var message = p_form.message.value;
 		// Send a new chat.  // ASYNC
 		$.getJSON('/api?type=send_chat&msg='+encodeURIComponent(message)+'&jsoncallback=?',
-				function(echoed) {
-					if (!echoed) {
-						Chat.rejected();
-						return false;
-
-					}
-					// Place the chat in the interface on success.
-					Chat.renderChatMessage(echoed);
-					var success = Chat.send(echoed);
+			function(echoed) {
+				if (!echoed) {
+					Chat.rejected();
+					return false;
+				}
+				// Place the chat in the interface on success.
+				Chat.renderChatMessage(echoed);
+				var success = Chat.send(echoed);
+				if(success){
 					p_form.reset(); // Clear the chat form.
 				}
+				return success;
+			}
 		).fail(
 			function() {
 				Chat.rejected();
@@ -252,18 +254,18 @@ var config = {
 // Try to connect to active websocket server, see README
 $(function() {
 	'use strict';
-	if (window !== undefined && window.WebSocket !== undefined) { // Browser is compatible.
+	if (window.WebSocket !== undefined) { // Browser is compatible.
 		var connectionString = 'ws://'+config.server+':'+config.port;
 		console.log('Connecting to '+connectionString);
 
 		window.conn = new WebSocket(connectionString);
-		conn.onopen = function(e) {
+		window.conn.onopen = function(e) {
 		    console.log("Websocket Connection established!");
 		    Chat.chatReady();
 		};
 
 		// Output information comes out here.
-		conn.onmessage = function(e) {
+		window.conn.onmessage = function(e) {
 			if (e && 'undefined' !== typeof(e.data)) {
 				Chat.renderChatMessage(JSON.parse(e.data)); // Add the message to the interface when present!
 			}
@@ -295,8 +297,8 @@ function refreshpagechat() {
 	var messageInput = $('#message');
 
 	if (!messageInput.length || false == messageInput.val()) { // Refresh only if text not being written.
-		if (parent && parent.main && parent.main.location) {
-			parent.main.location.reload();
+		if (window.parent && window.parent.main && window.parent.main.location) {
+			window.parent.main.location.reload();
 		} else {
 			window.location.reload();
 		}
