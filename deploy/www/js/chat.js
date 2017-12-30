@@ -1,6 +1,6 @@
 /* Manipulate chats to and from the api */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW, Chat */
+/*global $, NW, Chat, jQuery, console, conn*/
 (function ($) {
 	'use strict';
 	// Add shake plugin to jQuery
@@ -70,7 +70,7 @@ Chat.typewatch = (function() {
 
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function() {
-	'use strict'
+	'use strict';
 	console.log('Existing chat messages requested');
 	var since = '1424019122';
 
@@ -96,7 +96,7 @@ Chat.getExistingChatMessages = function() {
 
 // Display at least the messages area when there are some messages in it.
 Chat.displayMessages = function() {
-	'use strict'
+	'use strict';
 	$('#mini-chat-display').show();
 };
 
@@ -148,9 +148,9 @@ Chat.renderChatMessage = function(p_data) {
 // Send the contents of the chat form input box.
 // Sample url: http://nw.local/api?type=send_chat&msg=test&jsoncallback=alert
 Chat.sendChatContents = function(p_form) {
-	'use strict'
+	'use strict';
 	if (p_form.message && p_form.message.value.length > 0) {
-		message = p_form.message.value;
+		var message = p_form.message.value;
 		// Send a new chat.  // ASYNC
 		$.getJSON('/api?type=send_chat&msg='+encodeURIComponent(message)+'&jsoncallback=?',
 				function(echoed) {
@@ -161,7 +161,7 @@ Chat.sendChatContents = function(p_form) {
 					}
 					// Place the chat in the interface on success.
 					Chat.renderChatMessage(echoed);
-					success = Chat.send(echoed);
+					var success = Chat.send(echoed);
 					p_form.reset(); // Clear the chat form.
 				}
 		).fail(
@@ -175,14 +175,14 @@ Chat.sendChatContents = function(p_form) {
 
 // Notify the user when a chat send was rejected.
 Chat.rejected = function() {
-	'use strict'
+	'use strict';
 	console.log('Error: Failed to send the chat to server.');
 	Chat.submissionArea().shake(); // Shake the submission area to show a failed send of a chat.
 };
 
 // Send a messageData object to the websockets chat
 Chat.send = function(messageData) {
-	'use strict'
+	'use strict';
 	if (!Chat.canSend()) {
 		return false;
 	}
@@ -191,7 +191,7 @@ Chat.send = function(messageData) {
 
 	var passfail = true;
 	try {
-		conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
+		window.conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
 		console.log('Chat message sent.');
 	} catch(ex) { // Maybe the connection send didn't work out.
 		console.log(ex.message);

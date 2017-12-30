@@ -19,8 +19,8 @@ var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
 var environment = 'NW App context'; // For testing
 
 // Guarantee that there is a console to prevent errors while debugging.
-if (console === undefined) { 
-	var console = { 
+if (window.console === undefined) { 
+	window.console = { 
 		log: function() { },
 		info: function() { }
 	 };

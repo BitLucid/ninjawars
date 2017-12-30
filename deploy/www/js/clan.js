@@ -1,10 +1,10 @@
 /* Assist in clan operations (currently only clan leave) */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $*/
+/*global $, window*/
 $(function () {
 	'use strict';
 	function leaveClan() {
-		if (confirm("Do you really want to exit the clan?")) {
+		if (window.confirm("Do you really want to exit the clan?")) {
 			window.location = "/clan/leave";
 		}
 
