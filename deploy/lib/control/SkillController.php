@@ -47,7 +47,7 @@ class SkillController extends AbstractController {
 	/**
 	 * Display the initial listing of skills for self-use
 	 *
-	 * @return Array
+	 * @return StreamedViewResponse
 	 */
 	public function index(Container $p_dependencies) {
 		$error = RequestWrapper::getPostOrGet('error');
@@ -156,6 +156,7 @@ class SkillController extends AbstractController {
 	 * http://nw.local/skill/use/Fire%20Bolt/10
 	 * http://nw.local/skill/self_use/Unstealth/
 	 * http://nw.local/skill/self_use/Heal/
+	 * @todo Refactor: Extract these individual skills into individual skill classes
 	 */
 	public function useSkill(Container $p_dependencies, $self_use=false) {
 		// Template vars.
@@ -198,7 +199,6 @@ class SkillController extends AbstractController {
 		$use_on_target   = $skillListObj->getUsableOnTarget($act);
 		$ki_cost 		 = 0; // Ki taken during use.
 		$reuse 			 = true;  // Able to reuse the skill.
-		$today           = date("F j, Y, g:i a");
 
 		// Check whether the user actually has the needed skill.
 		$has_skill = $skillListObj->hasSkill($act, $player);
@@ -244,12 +244,8 @@ class SkillController extends AbstractController {
 			$attacker_id = 'A Stealthed Ninja';
 		}
 
-		$use_attack_legal = true;
-
 		if ($act == 'Clone Kill' || $act == 'Harmonize') {
 			$has_skill        = true;
-			$use_attack_legal = false;
-			$attack_allowed   = true;
 			$attack_error     = null;
 			$covert           = true;
 		} else {
@@ -262,7 +258,7 @@ class SkillController extends AbstractController {
 
 			$AttackLegal    = new AttackLegal($player, $targetObj, $params);
 			$update_timer = isset($this->update_timer)? $this->update_timer : true;
-			$attack_allowed = $AttackLegal->check($update_timer);
+			$AttackLegal->check($update_timer);
 			$attack_error   = $AttackLegal->getError();
 		}
 
@@ -278,7 +274,6 @@ class SkillController extends AbstractController {
 
 		if (!$attack_error) { // Nothing to prevent the attack from happening.
 			// Initial attack conditions are alright.
-			$result = '';
 
 			if ($act == 'Sight') {
 				$covert = true;
@@ -472,33 +467,8 @@ class SkillController extends AbstractController {
 				}
 			} else if ($act == 'Clone Kill') {
 				// Obliterates the turns and the health of similar accounts that get clone killed.
+				$generic_skill_result_message = $this->prepareCloneKill($player, $targetObj, $target2);
 				$reuse = false; // Don't give a reuse link.
-
-				$clone1 = $targetObj->name();
-				$clone2 = Player::findByName($target2);
-
-				if (!$clone1 || !$clone2) {
-					$not_a_ninja = $target_identity;
-
-					if (!$clone2) {
-						$not_a_ninja = $target2;
-					}
-
-					$generic_skill_result_message = "There is no such ninja as $not_a_ninja.";
-				} elseif ($clone1->id() == $clone2->id()) {
-					$generic_skill_result_message = '__TARGET__ is just the same ninja, so not the same thing as a clone at all.';
-				} elseif ($clone1->id() == $char_id || $clone2->id() == $char_id) {
-					$generic_skill_result_message = 'You cannot clone kill yourself.';
-				} else {
-					// The two potential clones will be obliterated immediately if the criteria are met in CloneKill.
-					$kill_or_fail = CloneKill::kill($player, $clone1, $clone2);
-
-					if ($kill_or_fail !== false) {
-						$generic_skill_result_message = $kill_or_fail;
-					} else {
-						$generic_skill_result_message = "Those two ninja don't seem to be clones.";
-					}
-				}
 			}
 
 			// ************************** Section applies to all skills ******************************
@@ -572,6 +542,60 @@ class SkillController extends AbstractController {
 			];
 
 		return new StreamedViewResponse('Skill Effect', 'skills_mod.tpl', $parts, $options);
+	}
+
+
+	/**
+	 * Search for a character by object/string/id
+	 * @param Player|string|int|null $search
+	 * @return Player|null
+	 */
+	private function searchForChar($search){
+		if($search instanceof Player && (0 < $search->id())){
+			return $search; // Already a player object, so return fast
+		}
+		if((int)$search == $search){
+			return Player::find($search);
+		} elseif(is_string($search)){
+			return Player::findByName($search);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Check for clone kill-ability of two characters
+	 * @param Player|string|int|null $search1
+	 * @param Player|string|int|null $search2
+	 */
+	private function prepareCloneKill(Player $self_char, $search1, $search2){
+		// Consider moving these error conditions in to CloneKill itself.
+
+		$clone1 = $this->searchForChar($search1);
+		$clone2 = $this->searchForChar($search2);
+
+		if (!$clone1 || !$clone2) {
+			if (!$clone2) {
+				$not_a_ninja = $search2;
+			} else {
+				$not_a_ninja = $search1;
+			}
+			$generic_skill_result_message = 'There is no such ninja as ['.$not_a_ninja.']';
+		} elseif ($clone1->id() == $self_char->id() || $clone2->id() == $self_char->id()) {
+			$generic_skill_result_message = 'You cannot clone kill yourself.';
+		} elseif ($clone1->id() == $clone2->id()){
+			$generic_skill_result_message = 'The same ninja twice is not the same as a clone.';
+		} else {
+			// The two potential clones will be obliterated immediately if the criteria are met in CloneKill.
+			$kill_or_fail = CloneKill::kill($self_char, $clone1, $clone2);
+
+			if ($kill_or_fail !== false) {
+				$generic_skill_result_message = $kill_or_fail;
+			} else {
+				$generic_skill_result_message = "Those two ninja don't seem to be clones.";
+			}
+		}
+		return $generic_skill_result_message;
 	}
 
 	/**

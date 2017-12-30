@@ -15,8 +15,10 @@ class CloneKill {
         if($search instanceof Player){
             return $search;
         }
-        if($search && ($search == Filter::toNonNegativeInt($search) || is_string($search))){
+        if($search && $search == Filter::toNonNegativeInt($search)){
             return Player::find($search);
+        } elseif(is_string($search)){
+            return Player::findByName($search);
         }
         return null;
     }
