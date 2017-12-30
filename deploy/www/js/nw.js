@@ -22,7 +22,10 @@ var environment = 'NW App context'; // For testing
 if (window.console === undefined) { 
 	window.console = { 
 		log: function() { },
-		info: function() { }
+		info: function() { },
+		error: function() { },
+		warn: function() { },
+		assert: function() { }
 	 };
 }
 
