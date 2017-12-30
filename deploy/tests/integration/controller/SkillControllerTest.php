@@ -249,6 +249,33 @@ class SkillControllerTest extends NWTest{
         $this->assertEquals('Sight', $response_data['act']);
     }
 
+    public function testUseCloneKillOnSelf(){
+        $error = $this->char->setClass('dragon');
+        $this->char->setTurns(300);
+        $this->char->level = 20;
+        $this->assertNull($error);
+        $this->char->save();
+        $name = $this->char2->name();
+        $this->assertNotEmpty($name);
+        $this->assertNotEmpty(rawurlencode($name));
+        $request = Request::create('/skill/use/Clone%20Kill/'.rawurlencode($name).'/'.rawurlencode($name).'/');
+        RequestWrapper::inject($request);
+        $skill = new SkillController();
+        $skill->update_timer = false;
+        $response = $skill->useSkill($this->m_dependencies);
+
+        $this->assertNotInstanceOf(RedirectResponse::class, $response,
+                'An error redirect was sent back for the url: '
+                .($response instanceof RedirectResponse ? $response->getTargetUrl() : ''));
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNull($response_data['error']);
+        $this->assertNotNull($response_data['generic_skill_result_message']);
+        $this->assertGreaterThan(3, mb_strlen($response_data['generic_skill_result_message']));
+        $this->assertEquals('Clone Kill', $response_data['act']);
+    }
+
     // TODO: test that self_use of things like Steal error or whatever the right behavior should be?
     // TODO: test that use of skills that aren't part of the users skillset error
     // TODO: test that use of unstealth on another fails
