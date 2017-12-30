@@ -47,7 +47,7 @@ class SkillController extends AbstractController {
 	/**
 	 * Display the initial listing of skills for self-use
 	 *
-	 * @return Array
+	 * @return StreamedViewResponse
 	 */
 	public function index(Container $p_dependencies) {
 		$error = RequestWrapper::getPostOrGet('error');
@@ -156,6 +156,7 @@ class SkillController extends AbstractController {
 	 * http://nw.local/skill/use/Fire%20Bolt/10
 	 * http://nw.local/skill/self_use/Unstealth/
 	 * http://nw.local/skill/self_use/Heal/
+	 * @todo Refactor: Extract these individual skills into individual skill classes
 	 */
 	public function useSkill(Container $p_dependencies, $self_use=false) {
 		// Template vars.
@@ -198,7 +199,6 @@ class SkillController extends AbstractController {
 		$use_on_target   = $skillListObj->getUsableOnTarget($act);
 		$ki_cost 		 = 0; // Ki taken during use.
 		$reuse 			 = true;  // Able to reuse the skill.
-		$today           = date("F j, Y, g:i a");
 
 		// Check whether the user actually has the needed skill.
 		$has_skill = $skillListObj->hasSkill($act, $player);
@@ -244,12 +244,8 @@ class SkillController extends AbstractController {
 			$attacker_id = 'A Stealthed Ninja';
 		}
 
-		$use_attack_legal = true;
-
 		if ($act == 'Clone Kill' || $act == 'Harmonize') {
 			$has_skill        = true;
-			$use_attack_legal = false;
-			$attack_allowed   = true;
 			$attack_error     = null;
 			$covert           = true;
 		} else {
@@ -262,7 +258,7 @@ class SkillController extends AbstractController {
 
 			$AttackLegal    = new AttackLegal($player, $targetObj, $params);
 			$update_timer = isset($this->update_timer)? $this->update_timer : true;
-			$attack_allowed = $AttackLegal->check($update_timer);
+			$AttackLegal->check($update_timer);
 			$attack_error   = $AttackLegal->getError();
 		}
 
@@ -278,7 +274,6 @@ class SkillController extends AbstractController {
 
 		if (!$attack_error) { // Nothing to prevent the attack from happening.
 			// Initial attack conditions are alright.
-			$result = '';
 
 			if ($act == 'Sight') {
 				$covert = true;
@@ -473,6 +468,8 @@ class SkillController extends AbstractController {
 			} else if ($act == 'Clone Kill') {
 				// Obliterates the turns and the health of similar accounts that get clone killed.
 				$reuse = false; // Don't give a reuse link.
+
+				// Move these error conditions in to CloneKill itself.
 
 				$clone1 = $targetObj->name();
 				$clone2 = Player::findByName($target2);
