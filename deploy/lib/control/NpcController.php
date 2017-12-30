@@ -36,7 +36,7 @@ class NpcController extends AbstractController {
     private $randomness = null;
 
     /**
-     *
+     * Inject different seed when non-randomness is needed (for testing)
      */
     public function __construct($options=[]) {
         if (isset($options['randomness']) && is_callable($options['randomness'])) {
@@ -134,7 +134,7 @@ class NpcController extends AbstractController {
         // Hack a little off max gold if items received.
         $divisor = 1;
         if ($reward_item) {
-            $divisor = self::ITEM_DECREASES_GOLD_FACTOR;
+            $divisor = self::ITEM_DECREASES_GOLD_DIVISOR;
         }
 
         return rand($npco->minGold(), floor($npco->gold()/$divisor));
@@ -261,7 +261,7 @@ class NpcController extends AbstractController {
      * Attack a specific npc
      *
      * @param Container
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function attack(Container $p_dependencies) {
         $request = RequestWrapper::$request;

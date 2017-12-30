@@ -1,3 +1,6 @@
+/* Manipulate chats to and from the api */
+/*jshint browser: true, white: true, plusplus: true*/
+/*global $, NW, Chat, jQuery, console, window.conn, window.parent*/
 (function ($) {
 	'use strict';
 	// Add shake plugin to jQuery
@@ -18,7 +21,7 @@
         var pos;
 
         return this.each(function () {
-            $this = $(this);
+            var $this = $(this);
 
             // position if necessary
             pos = $this.css('position');
@@ -67,7 +70,7 @@ Chat.typewatch = (function() {
 
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function() {
-	'use strict'
+	'use strict';
 	console.log('Existing chat messages requested');
 	var since = '1424019122';
 
@@ -93,7 +96,7 @@ Chat.getExistingChatMessages = function() {
 
 // Display at least the messages area when there are some messages in it.
 Chat.displayMessages = function() {
-	'use strict'
+	'use strict';
 	$('#mini-chat-display').show();
 };
 
@@ -145,22 +148,24 @@ Chat.renderChatMessage = function(p_data) {
 // Send the contents of the chat form input box.
 // Sample url: http://nw.local/api?type=send_chat&msg=test&jsoncallback=alert
 Chat.sendChatContents = function(p_form) {
-	'use strict'
+	'use strict';
 	if (p_form.message && p_form.message.value.length > 0) {
-		message = p_form.message.value;
+		var message = p_form.message.value;
 		// Send a new chat.  // ASYNC
 		$.getJSON('/api?type=send_chat&msg='+encodeURIComponent(message)+'&jsoncallback=?',
-				function(echoed) {
-					if (!echoed) {
-						Chat.rejected();
-						return false;
-
-					}
-					// Place the chat in the interface on success.
-					Chat.renderChatMessage(echoed);
-					success = Chat.send(echoed);
+			function(echoed) {
+				if (!echoed) {
+					Chat.rejected();
+					return false;
+				}
+				// Place the chat in the interface on success.
+				Chat.renderChatMessage(echoed);
+				var success = Chat.send(echoed);
+				if(success){
 					p_form.reset(); // Clear the chat form.
 				}
+				return success;
+			}
 		).fail(
 			function() {
 				Chat.rejected();
@@ -172,14 +177,14 @@ Chat.sendChatContents = function(p_form) {
 
 // Notify the user when a chat send was rejected.
 Chat.rejected = function() {
-	'use strict'
+	'use strict';
 	console.log('Error: Failed to send the chat to server.');
 	Chat.submissionArea().shake(); // Shake the submission area to show a failed send of a chat.
 };
 
 // Send a messageData object to the websockets chat
 Chat.send = function(messageData) {
-	'use strict'
+	'use strict';
 	if (!Chat.canSend()) {
 		return false;
 	}
@@ -188,7 +193,7 @@ Chat.send = function(messageData) {
 
 	var passfail = true;
 	try {
-		conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
+		window.conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
 		console.log('Chat message sent.');
 	} catch(ex) { // Maybe the connection send didn't work out.
 		console.log(ex.message);
@@ -249,18 +254,18 @@ var config = {
 // Try to connect to active websocket server, see README
 $(function() {
 	'use strict';
-	if ("WebSocket" in window) { // Browser is compatible.
+	if (window.WebSocket !== undefined) { // Browser is compatible.
 		var connectionString = 'ws://'+config.server+':'+config.port;
 		console.log('Connecting to '+connectionString);
 
 		window.conn = new WebSocket(connectionString);
-		conn.onopen = function(e) {
+		window.conn.onopen = function(e) {
 		    console.log("Websocket Connection established!");
 		    Chat.chatReady();
 		};
 
 		// Output information comes out here.
-		conn.onmessage = function(e) {
+		window.conn.onmessage = function(e) {
 			if (e && 'undefined' !== typeof(e.data)) {
 				Chat.renderChatMessage(JSON.parse(e.data)); // Add the message to the interface when present!
 			}
@@ -292,8 +297,8 @@ function refreshpagechat() {
 	var messageInput = $('#message');
 
 	if (!messageInput.length || false == messageInput.val()) { // Refresh only if text not being written.
-		if (parent && parent.main && parent.main.location) {
-			parent.main.location.reload();
+		if (window.parent && window.parent.main && window.parent.main.location) {
+			window.parent.main.location.reload();
 		} else {
 			window.location.reload();
 		}

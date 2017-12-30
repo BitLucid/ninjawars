@@ -1,6 +1,10 @@
-$(document).ready(function () {
+/* Assist sending of messages to clan or individuals */
+/*jshint browser: true, white: true, plusplus: true*/
+/*global $, NW, window, refocus */
+$(function () {
+	'use strict';
 
-	// Localstorage cache the last messaged individual.
+	// Cache the last messaged character after send
     if ($("#send-to").val() === '') {
         $("#send-to").val(NW.storage.appState.get("last_messaged", ''));
     }
@@ -11,12 +15,11 @@ $(document).ready(function () {
 
 
 	$('#delete-messages form').submit(function() {
-		return confirm('Delete all messages?'); // *** boolean return value ***
+		return window.confirm('Delete all messages?'); // *** boolean return value ***
 	});
 
 	// If a refocus is requested, because a message was just sent, then refocus on the area.
-	if(typeof(refocus) !== 'undefined' && refocus 
-            && typof(focus) !== 'undefined' && focus){
+	if(typeof(refocus) !== 'undefined' && refocus && typeof(focus) !== 'undefined' && focus){
 	  if(focus == 'clan'){
 	    $('input#message-clan').focus();
 	  } else {

@@ -1,7 +1,7 @@
 /* The main javascript functionality of the site, apart from very page specific behaviors */
 /*jshint browser: true, white: true, plusplus: true*/
 /*jslint browser: true, white: true, plusplus: true*/
-/*global $, jQuery, window, parent, Storage */
+/*global $, jQuery, window, parent, console, Storage */
 
 
 
@@ -19,13 +19,19 @@ var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
 var environment = 'NW App context'; // For testing
 
 // Guarantee that there is a console to prevent errors while debugging.
-if (console === undefined) { 
-	var console = { log: function() { } };
+if (window.console === undefined) { 
+	window.console = { 
+		log: function() { },
+		info: function() { },
+		error: function() { },
+		warn: function() { },
+		assert: function() { }
+	 };
 }
 
 /*  GLOBAL SETTINGS & VARS */
 if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && parent.NW) {
-	console.log('Reusing existing parent NW object');
+	console.log('Reusing existing parent NW object in new page');
 	// If the interior page of an iframe, use the already-defined globals from the index.
 	//$ = parent.$;
 	NW = parent.NW;
@@ -146,7 +152,7 @@ if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && 
 	// Display an event.
 	NW.writeLatestEvent = function(event) {
 
-		var recent = $('#recent-events', top.document)
+		var recent = $('#recent-events', window.top.document)
 		.find('#recent-event-attacked-by').text('You were recently in combat').end()
 		.find('#view-event-char').text(event.sender).attr('href', 'player.php?player_id='+event.send_from).end();
 		if (recent && recent.addClass) {

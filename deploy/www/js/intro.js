@@ -1,15 +1,20 @@
-/* For the /intro page */
+/* Accent certain areas of the intro page in animated ways*/
+/*jshint browser: true, white: true, plusplus: true*/
+/*global $, NW, document, console*/
 $(function () {
   'use strict';
-  if(NW && NW.loggedIn){ // Is this a race condition?
+  if(NW && NW.loggedIn){ // Depended on this script being called after NW.loggedIn gets set
     $('.not-user').hide();
   }
   var show_faqs = false; // Set faqs hidden by default.
-  document.getElementById('faqs').style.visibility = 'hidden'; // Hide fast to avoid layout flash
+  console.info('Hiding FAQ.');
+  var faqsNode = document.getElementById('faqs');
+  if(faqsNode){
+    faqsNode.style.display = 'none'; // Hide fast to avoid layout flash
+  }
   var showfaqsLink = $('#show-faqs');
-  var faqsArea = $('#faqs');
+  var faqsArea = $(faqsNode);
   if(!show_faqs){
-    faqsArea.hide(); // To avoid flashing of content hide early on.
     showfaqsLink.show();
   } else {
     showfaqsLink.hide();

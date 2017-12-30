@@ -1,4 +1,6 @@
-// Simply check that submitted passwords match.
+/* Simply check that submitted passwords match. */
+/*jshint browser: true, white: true, plusplus: true*/
+/*global $ */
 $(function(){
 	$('form[name=new_password_form]').submit(function(){
 		var newPassword = $('input[name=new_password]').val();

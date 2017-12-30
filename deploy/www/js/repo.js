@@ -1,3 +1,6 @@
+/* Display last repo commit. */
+/*jshint browser: true, white: true, plusplus: true*/
+/*global $, console */
 function loadLastCommitMessage(){
     var owner = 'BitLucid';
     var repo = 'ninjawars';

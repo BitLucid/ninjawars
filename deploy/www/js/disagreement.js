@@ -1,13 +1,13 @@
 /* Simple defaults for the casino page, attacking_possible (boolean) and combatSkillsList (json array) are rendered by the server and passed in */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW, attacking_possible, combatSkillsList */
+/*global $, NW, console, attacking_possible, combatSkillsList */
 $(function() {
-    'use strict'
+    'use strict';
 
     //  Pull var as defined in external template
     var attackable = typeof(attacking_possible) !== 'undefined'? attacking_possible : false;
     console.log(attackable?'Attacking enabled.' : 'No attacking this target');
-    $('#kick_form').submit(function(){return confirm('Are you sure you want to kick this player?');});
+    $('#kick_form').submit(function(){return window.confirm('Are you sure you want to kick this player?');});
 
 
     /*

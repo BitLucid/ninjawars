@@ -463,7 +463,7 @@ class ClanController extends AbstractController {
 	public function review(Container $p_dependencies) {
         $request = RequestWrapper::$request;
 		$ninja   = $p_dependencies['current_player'];
-		$clan    = Clan::findByMember($ninja->id());
+		$clan    = Clan::findByMember($ninja);
 
 		$joiner = Player::find($request->get('joiner'));
 		$confirmation = (int) $request->get('confirmation');
@@ -503,7 +503,7 @@ class ClanController extends AbstractController {
 	public function accept(Container $p_dependencies) {
         $request = RequestWrapper::$request;
 		$ninja   = $p_dependencies['current_player'];
-		$clan    = Clan::findByMember($ninja->id());
+		$clan    = Clan::findByMember($ninja);
 
 		$joiner = Player::find($request->get('joiner'));
 		$confirmation = (int) $request->get('confirmation');
