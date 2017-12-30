@@ -1,6 +1,6 @@
 /* Manipulate chats to and from the api, run websockets server by sudo make run-chat */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW, Chat, jQuery, console, window.conn, window.parent*/
+/*global $, NW, Chat, jQuery, console, window.conn, window.parent, window.WebSocket*/
 (function ($) {
 	'use strict';
 	// Add shake plugin to jQuery
