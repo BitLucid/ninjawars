@@ -21,7 +21,7 @@
         var pos;
 
         return this.each(function () {
-            $this = $(this);
+            var $this = $(this);
 
             // position if necessary
             pos = $this.css('position');
