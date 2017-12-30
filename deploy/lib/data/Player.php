@@ -604,6 +604,7 @@ class Player implements Character {
 
     /**
      * Get the ninja's class's name.
+     * @return string
      */
     public function getClassName() {
         return $this->vo->class_name;
@@ -800,9 +801,8 @@ class Player implements Character {
     /**
      * Returns a comma-seperated string of states based on the statuses of the target.
      *
-     * @param array $statuses status array
-     * @param string $target the target, username if self targetting.
-     * @return string
+     * @param string|null $target the target, username if self targetting.
+     * @return string[]
      *
      */
     public static function getStatusList($target=null) {
