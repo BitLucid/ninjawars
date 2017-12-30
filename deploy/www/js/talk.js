@@ -1,6 +1,6 @@
 /* Assist sending of messages to clan or individuals */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW */
+/*global $, NW, window, refocus */
 $(function () {
 	'use strict';
 
@@ -15,12 +15,11 @@ $(function () {
 
 
 	$('#delete-messages form').submit(function() {
-		return confirm('Delete all messages?'); // *** boolean return value ***
+		return window.confirm('Delete all messages?'); // *** boolean return value ***
 	});
 
 	// If a refocus is requested, because a message was just sent, then refocus on the area.
-	if(typeof(refocus) !== 'undefined' && refocus 
-            && typof(focus) !== 'undefined' && focus){
+	if(typeof(refocus) !== 'undefined' && refocus && typeof(focus) !== 'undefined' && focus){
 	  if(focus == 'clan'){
 	    $('input#message-clan').focus();
 	  } else {
