@@ -42,7 +42,7 @@ build: dep
 dep:
 	@$(COMPOSER) install
 
-js-dep:
+js-deps:
 	npm install
 
 install: build start-chat writable
