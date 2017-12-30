@@ -604,6 +604,7 @@ class Player implements Character {
 
     /**
      * Get the ninja's class's name.
+     * @return string
      */
     public function getClassName() {
         return $this->vo->class_name;
@@ -801,7 +802,7 @@ class Player implements Character {
      * Get the different statuses a character is affected by.
      *
      * @param int|null $target the target id, username if self targetting.
-     * @return String[]
+     * @return string[]
      *
      */
     public static function getStatusList($target=null) {
