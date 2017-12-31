@@ -233,4 +233,4 @@ python-install:
 
 ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
 
-ci-test: pre-test test-main test-cron-run test-ratchets test-js post-test
+ci-test: pre-test test-main test-cron-run test-ratchets post-test
