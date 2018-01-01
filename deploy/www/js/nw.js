@@ -290,38 +290,18 @@ if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && 
 
 	// This pulls the data from /api and stores the data, and then returns true if any of the data was different.
 	NW.checkAPI_callback = function(data) {
-		var updated = false;
-
-		// Update global data stores if an update is needed.
-		if (this.updateDataStore(data.player, 'player_id', 'playerInfo', 'hash')) {
-			updated = true;
-		}
-
-		if (this.updateDataStore(data.inventory, 'inv', 'inventory', 'hash')) {
-			updated = true;
-		}
-
-		if (this.updateDataStore(data.message, 'message_id', 'latestMessage', 'message_id')) {
-			updated = true;
-		}
-
-		// Save the unread message count into an array.
-		if (this.storeArrayValue('unread_messages_count', data.unread_messages_count)) {
-			updated = true;
-		}
-
-		if (this.updateDataStore(data.member_counts, 'active', 'member_counts', 'active')) {
-			updated = true;
-		}
-
-		if (this.updateDataStore(data.event, 'event_id', 'latestEvent', 'event_id')) {
-			updated = true;
-		}
+		var updated = this.updateDataStore(data.player, 'player_id', 'playerInfo', 'hash') ||
+				this.updateDataStore(data.inventory, 'inv', 'inventory', 'hash') ||
+				this.updateDataStore(data.message, 'message_id', 'latestMessage', 'message_id') ||
+				this.storeArrayValue('unread_messages_count', data.unread_messages_count) ||
+				this.updateDataStore(data.member_counts, 'active', 'member_counts', 'active') ||
+				this.updateDataStore(data.event, 'event_id', 'latestEvent', 'event_id');
 
 		if (updated) {
 			this.updateIndex(); // Always request a redisplay for any poll that has information updates.
 			this.feedbackSpeedUp(updated);
 		}
+		return updated;
 	};
 
 	// Pull in the new info, update display only on changes.

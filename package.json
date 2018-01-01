@@ -35,7 +35,9 @@
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-requirejs": "^1.1.0",
+    "karma-sinon": "^1.0.5",
     "phantomjs-prebuilt": "^2.1.6",
-    "requirejs": "^2.2.0"
+    "requirejs": "^2.2.0",
+    "sinon": "^4.1.3"
   }
 }

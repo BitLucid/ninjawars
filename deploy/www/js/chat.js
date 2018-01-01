@@ -1,6 +1,6 @@
-/* Manipulate chats to and from the api */
+/* Manipulate chats to and from the api, run websockets server by sudo make run-chat */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW, Chat, jQuery, console, window.conn, window.parent*/
+/*global $, NW, Chat, jQuery, console, window.conn, window.parent, window.WebSocket*/
 (function ($) {
 	'use strict';
 	// Add shake plugin to jQuery
@@ -43,30 +43,19 @@
 /**
  * Websockets tutorial: http://socketo.me/docs/hello-world
  * Run the chat server via: php bin/chat-server.php
- */
+ 
 
-// Create chat object.
-// Initialize maximum mini-chat listings...  it should be pretty damn high, actually.
-// store the chat data locally, don't even have to cache this, it should pretty much be a js var
-// allow sending of the chat from the input
-// Set up a min/max refreshing cycle, theoretically with a typewatch kind of approach.
-// Update the datastore with the latest chat info.
-// Pass a chained callback using setTimeout
+ Create chat object.
+ Initialize maximum mini-chat listings...  it should be a pretty damn high starting amount.
+ store the chat data locally, don't even have to cache this, it should pretty much be a js var
+ allow sending of the chat from the input
+ Set up a min/max refreshing cycle, theoretically with a typewatch kind of approach.
+ Update the datastore with the latest chat info.
+ Pass a chained callback using setTimeout
+*/
 
-function getDomainName(hostName) {
-    return hostName.substring(hostName.lastIndexOf(".", hostName.lastIndexOf(".") - 1) + 1);
-}
 
 var Chat = Chat || {};
-
-// Add a typewatch IIFE
-Chat.typewatch = (function() {
-  var timer = 0;
-  return function(callback, ms) {
-	clearTimeout (timer);
-	timer = setTimeout(callback, ms);
-  };
-})();
 
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function() {
@@ -178,8 +167,9 @@ Chat.sendChatContents = function(p_form) {
 // Notify the user when a chat send was rejected.
 Chat.rejected = function() {
 	'use strict';
-	console.log('Error: Failed to send the chat to server.');
+	console.error('Error: Failed to send the chat to server.');
 	Chat.submissionArea().shake(); // Shake the submission area to show a failed send of a chat.
+	return false;
 };
 
 // Send a messageData object to the websockets chat
@@ -188,9 +178,6 @@ Chat.send = function(messageData) {
 	if (!Chat.canSend()) {
 		return false;
 	}
-
-	//messageData.userAgent = navigator.userAgent;
-
 	var passfail = true;
 	try {
 		window.conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
@@ -223,6 +210,7 @@ Chat.chatReady = function() {
 	}
 
 	console.log('Chat connected and ready');
+	return true;
 };
 
 // Check whether logged in for chat sending
@@ -232,30 +220,46 @@ Chat.canSend = function() {
 	return Boolean($area.data('logged-in'));
 };
 
+
 // Get the dev domain if on .local, fallback to live chat
 Chat.domain = function(url) {
 	'use strict';
-	var domain = getDomainName(url);
+	// Use document element link processing to get url parts
+	var link = document.createElement('a');
+	link.setAttribute('href', url);
+	var host = link.hostname;
+	console.log(host);
 
-	if (domain.indexOf(".local") > -1 ) {
-		return 'chatapi.'+domain;
+	if (host.indexOf(".local") > -1 ) {
+		return 'chatapi.'+host;
+	} else if (host.indexOf('localhost') > -1) {
+		return host;
 	} else {
 		return 'chatapi.ninjawars.net';
 	}
 };
 
-var chatApiDomain = Chat.domain(window.location.host);
 
-var config = {
-	'server': chatApiDomain,
-	'port':'8080'
-};
+// Add a typewatch IIFE
+Chat.typewatch = (function() {
+  var timer = 0;
+  return function(callback, ms) {
+	clearTimeout (timer);
+	timer = setTimeout(callback, ms);
+  };
+})();
+
 
 // Try to connect to active websocket server, see README
 $(function() {
 	'use strict';
+	// Set up initial config.
+	Chat.config = {
+		'server': Chat.domain(window.location.host),
+		'port':'8080'
+	};
 	if (window.WebSocket !== undefined) { // Browser is compatible.
-		var connectionString = 'ws://'+config.server+':'+config.port;
+		var connectionString = 'ws://'+Chat.config.server+':'+Chat.config.port;
 		console.log('Connecting to '+connectionString);
 
 		window.conn = new WebSocket(connectionString);
@@ -293,16 +297,14 @@ $(function() {
 // Set up refreshing of the village chat board page (will pause refreshing while someone is writing
 function refreshpagechat() {
 	'use strict';
-	console.log('Village chat board refreshed');
 	var messageInput = $('#message');
-
 	if (!messageInput.length || false == messageInput.val()) { // Refresh only if text not being written.
 		if (window.parent && window.parent.main && window.parent.main.location) {
 			window.parent.main.location.reload();
 		} else {
 			window.location.reload();
 		}
+		return true;
 	}
-
-	console.log('chat not refreshed due to typed text');
+	return false;
 }

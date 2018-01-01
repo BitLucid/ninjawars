@@ -35,5 +35,12 @@ describe('NW', function() {
       expect(g_isRoot).toBeDefined();
       expect(g_isSubpage).toBeDefined();
     });
+    describe('NW app method calls', function() {
+      it('should call the update function without error', function() {
+        var data = {player:true,inventory:true,message:true,member_counts:true,event:true,unread_messages_count:true};
+        expect(NW.checkAPI_callback).toBeDefined();
+        expect(NW.checkAPI_callback(data)).toBe(false);
+      });
+    });
   });
 });
