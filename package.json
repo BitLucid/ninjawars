@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "make test-js"
+    "test": "make test-js",
+    "lint": "eslint --ext .jsx,.js deploy/www/js"
   },
   "repository": {
     "type": "git",
@@ -39,5 +40,8 @@
     "phantomjs-prebuilt": "^2.1.6",
     "requirejs": "^2.2.0",
     "sinon": "^4.1.3"
+  },
+  "dependencies": {
+    "eslint": "^4.18.2"
   }
 }
