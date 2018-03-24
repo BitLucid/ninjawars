@@ -169,7 +169,7 @@ class LoginController extends AbstractController {
             // The LOGIN FAILURE case occurs here, and is the default.
             $account = Account::findByLogin($dirty_user);
 
-            if ($account) {
+            if (!$success && $account) {
                 Account::updateLastLoginFailure($account);
             }
         }
@@ -244,6 +244,10 @@ class LoginController extends AbstractController {
             $result = query($sql, [':login' => $login, ':pass' => $pass]);
 
             if ($result->rowCount() < 1) {	// Username does not exist
+                if ($account) {
+                    // Update the last login failure timestamp
+                    Account::updateLastLoginFailure($account);
+                }
                 return [];
             } else {
                 if ($result->rowCount() > 1) {
