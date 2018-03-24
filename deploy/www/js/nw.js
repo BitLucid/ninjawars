@@ -16,6 +16,7 @@ var g_isIndex = ((window.location.pathname.substring(1) === 'index.php') || $('b
 var g_isLive = (window.location.host !== 'localhost');
 var g_isRoot = (window.location.pathname === '/');
 var g_isSubpage = (!g_isIndex && !g_isRoot && (window.parent === window));
+/* eslint no-unused-vars: "off" */
 var environment = 'NW App context'; // For testing
 
 // Guarantee that there is a console to prevent errors while debugging.
@@ -26,7 +27,7 @@ if (window.console === undefined) {
 		error: function() { },
 		warn: function() { },
 		assert: function() { }
-	 };
+	};
 }
 
 /*  GLOBAL SETTINGS & VARS */
@@ -56,11 +57,11 @@ if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && 
 	*/
 	// Create the typewatch and store it for later.
 	NW.typewatch = (function(){
-	  var timer = 0;
-	  return function(callback, ms){
-		clearTimeout (timer);
-		timer = setTimeout(callback, ms);
-	  };
+		var timer = 0;
+		return function(callback, ms){
+			clearTimeout (timer);
+			timer = setTimeout(callback, ms);
+		};
 	})();
 
 	// Accept a json data array of matches and house them in the interface.
@@ -398,8 +399,10 @@ if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && 
 	};
 
 	// JS Update Heartbeat
-	NW.chainedUpdate = function(p_chainCounter) {
-		var chainCounter = (!!p_chainCounter ? p_chainCounter : 1);
+	NW.chainedUpdate = function(chainCounter) {
+		if(chainCounter<1){
+			chainCounter = 1;
+		}
 
 		if (this.loggedIn && chainCounter !== 1) {
 			// Skip the heartbeat if not logged in, and skip it for the first chain counter, since the page will have just loaded.
@@ -493,8 +496,8 @@ $(function() {
         NW.displayBarstats(); // Display the barstats already fleshed out by php.
 
 		$('#index-avatar').on('click touchstart', function(e){
-    		$('#ninja-dropdown').slideToggle();
-    		e.preventDefault();
+			$('#ninja-dropdown').slideToggle();
+			e.preventDefault();
 		});
 
 	} else if (g_isSubpage) {

@@ -263,9 +263,10 @@ $(function() {
 		console.log('Connecting to '+connectionString);
 
 		window.conn = new WebSocket(connectionString);
+		/*eslint no-unused-vars: 0 */
 		window.conn.onopen = function(e) {
-		    console.log("Websocket Connection established!");
-		    Chat.chatReady();
+			console.log("Websocket Connection established!");
+			Chat.chatReady();
 		};
 
 		// Output information comes out here.
