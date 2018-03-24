@@ -55,6 +55,12 @@ Then you can run the tests to check your progress with:
 
 *See ./docs/INSTALL if you need more.*
 
+## Run the Docker
+
+* Init tagged image: `docker build -t nw-server .`
+* Run it: `docker run --rm -it -p 7654:7654 nw-server`
+* Stop the container: `docker stop nw-server`
+
 ## To Contribute
 
 See CONTRIBUTING.md
