@@ -52,10 +52,10 @@
  Set up a min/max refreshing cycle, theoretically with a typewatch kind of approach.
  Update the datastore with the latest chat info.
  Pass a chained callback using setTimeout
+ Note that the Chat var may pre-exist
 */
 
-
-var Chat = Chat || {};
+var Chat = undefined !== Chat ? Chat : {};
 
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function() {
