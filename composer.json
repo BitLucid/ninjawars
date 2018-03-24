@@ -15,11 +15,11 @@
 		"ircmaxell/password-compat": "@stable",
 		"swiftmailer/swiftmailer": "@stable",
 		"smarty/smarty": "v3.1.29",
-		"cboden/ratchet": "~0.3.4",
+		"cboden/ratchet": "^0.4.1",
 		"propel/propel1": "1.7.*@dev",
 		"illuminate/database": "~5.2",
 		"symfony/http-foundation": "~3.0",
-		"paragonie/random_compat": "~2.0",
+		"paragonie/random_compat": "^2.0",
 		"twbs/bootstrap": "~3.3",
 		"pimple/pimple": "~3.0",
 		"robmorgan/phinx": "^0.9.1"
