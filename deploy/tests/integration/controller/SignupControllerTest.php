@@ -9,6 +9,7 @@ use NinjaWars\core\environment\RequestWrapper;
 
 class SignupControllerTest extends NWTest {
     private $char_id;
+    private $fake_email = 'new@local.host';
 
 	public function setUp() {
         parent::setUp();
@@ -77,7 +78,7 @@ class SignupControllerTest extends NWTest {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
-            'send_email' => 'new@localhost',
+            'send_email' => $this->fake_email,
         ]));
 
         $controller = new SignupController();
@@ -96,7 +97,7 @@ class SignupControllerTest extends NWTest {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
-            'send_email' => 'new@localhost',
+            'send_email' => $this->fake_email,
             'send_name'  => '@-/.=+-09122198408357&^@Q  *&#^(!',
         ]));
 
@@ -116,7 +117,7 @@ class SignupControllerTest extends NWTest {
         RequestWrapper::inject(new Request([
             'key'        => 'p',
             'cpass'      => 'p',
-            'send_email' => 'new@localhost',
+            'send_email' => $this->fake_email,
             'send_name'  => 'KnownGood',
         ]));
 
@@ -135,13 +136,13 @@ class SignupControllerTest extends NWTest {
     public function testDuplicateEmailFailsCorrectly() {
         $account = Account::findByChar(Player::find($this->char_id));
         $original_email = $account->active_email;
-        $account->active_email = 'new@local.host';
+        $account->active_email = $this->fake_email;
         $account->save();
 
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
-            'send_email' => 'new@local.host',
+            'send_email' => $this->fake_email,
             'send_name'  => 'KnownGood',
         ]));
 
@@ -189,7 +190,7 @@ class SignupControllerTest extends NWTest {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
-            'send_email' => 'new@local.host',
+            'send_email' => $this->fake_email,
             'send_name'  => 'KnownGood',
         ]));
 
@@ -209,7 +210,7 @@ class SignupControllerTest extends NWTest {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
-            'send_email' => 'new@local.host',
+            'send_email' => $this->fake_email,
             'send_name'  => 'SysMsg',
         ]));
 
@@ -226,7 +227,7 @@ class SignupControllerTest extends NWTest {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
-            'send_email' => 'new@local.host',
+            'send_email' => $this->fake_email,
             'send_name'  => 'KnownGood',
             'send_class' => 'KnownBad',
         ]));
@@ -242,7 +243,7 @@ class SignupControllerTest extends NWTest {
 
     public function testSuccessfulSignup() {
         $uname = 'KnownGood';
-        $email = 'new@local.host';
+        $email = $this->fake_email;
 
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
