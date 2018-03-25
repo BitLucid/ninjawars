@@ -204,7 +204,7 @@ web-reload:
 
 ci-pre-configure:
 	# Set php version through phpenv. 5.3 through 7.0 available
-	phpenv local 5.6
+	phpenv local 7.0
 	@echo "Removing xdebug on CI, by default."
 	rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 	ln -s `pwd` /tmp/root
