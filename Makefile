@@ -69,6 +69,19 @@ install-system:
 	apt-get install php5.6-fpm php5.6-xml php5.6-pgsql php5.6-curl php5.6-mbstring
 	apt-get install postgresql-client nginx 
 
+install-system-php7:
+	@echo "Installing initial system and server dependencies."
+	@echo "In the case of the database and webserver,"
+	@echo "they need professional admin configuration after initial install."
+	@echo "Since we are running php 5.6, you may need to install the fine"
+	@echo "php 5.6 ppa by Ondre J to get access to php 5.6, e.g.:"
+	@echo "    sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php"
+	apt-get install python3 python3-dev python3-lxml unzip
+	echo "Installing php cli"
+	apt-get install php7.0-cli
+	apt-get install php7.0-fpm php7.0-xml php7.0-pgsql php7.0-curl php7.0-mbstring
+	apt-get install postgresql-client nginx 
+
 
 start-chat:
 	touch /var/log/nginx/ninjawars.chat-server.log
