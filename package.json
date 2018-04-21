@@ -32,7 +32,7 @@
   "homepage": "https://github.com/BitLucid/ninjawars#readme",
   "devDependencies": {
     "jasmine-core": "^3.1.0",
-    "karma": "^2.0.0",
+    "karma": "^2.0.2",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.1",
     "karma-phantomjs-launcher": "^1.0.4",
@@ -40,9 +40,9 @@
     "karma-sinon": "^1.0.5",
     "phantomjs-prebuilt": "^2.1.16",
     "requirejs": "^2.3.5",
-    "sinon": "^4.4.2"
+    "sinon": "^4.5.0"
   },
   "dependencies": {
-    "eslint": "^4.18.2"
+    "eslint": "^4.19.1"
   }
 }
