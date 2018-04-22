@@ -35,7 +35,8 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
-	mkdir -p ./deploy/resources/logs/
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
+	chmod ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
 
@@ -53,7 +54,6 @@ install: build start-chat writable
 	cp connection.xml.tpl connection.xml
 
 writable:
-	chmod ugo+wX ./deploy/templates/compiled ./deploy/templates/cache
 	chown www-data:adm ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
 
 install-system:
