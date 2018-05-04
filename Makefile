@@ -134,7 +134,7 @@ test-functional:
 	python3 -m pytest deploy/tests/functional/
 
 test-js:
-	npx karma start deploy/tests/karma.conf.js --browsers PhantomJS --single-run
+	npm test
 
 test-ratchets:
 	#split out for ci for now
