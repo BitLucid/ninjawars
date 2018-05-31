@@ -150,6 +150,24 @@ class SkillController extends AbstractController {
 	}
 
 	/**
+	 * Attempt to resolve a target from a string slug
+	 * @return Player|null
+	 */
+	private function findTarget($dirty_target){
+        // If the target is a string instead of an id already, see if it can be translated into a ninja
+        $targetObj = null;
+        $filtered_id = Filter::toNonNegativeInt($dirty_target);
+        if($filtered_id){
+        	$targetObj = Player::find($filtered_id);
+        } else { // No valid integer, so try filtering by name.
+        	if($dirty_target !== null){
+        		$targetObj = Player::findByName($dirty_target);
+        	}
+        }
+		return $targetObj;
+	}
+
+	/**
 	 * Use, the skills_mod equivalent
      *
 	 * @note Test with urls like:
@@ -179,15 +197,13 @@ class SkillController extends AbstractController {
         $target_id = null;
         if($self_use === true){
 			$target_id = $char_id;
-        } elseif (!Filter::toNonNegativeInt($target_identity)) {
-			if ($target_identity !== null) {
-				$targetObj = Player::findByName($target_identity);
-				$target_id = ($targetObj instanceof Character ? $targetObj->id() : null);
-			}
+        } else{ // Do a find
+        	$targetObj = $this->findTarget($target_identity);
+        	$target_id = ($targetObj instanceof Character ? $targetObj->id() : null);
 		}
 
-		if ($target2 && !Filter::toNonNegativeInt($target2)) {
-			$target2Obj = Player::findByName($target2);
+		if ($target2 && $target2 !== null) {
+			$target2Obj = $this->findTarget($target_identity);
 			$target2 = ($target2Obj instanceof Character ? $target2Obj->id() : null);
 		}
 
@@ -213,15 +229,7 @@ class SkillController extends AbstractController {
 			$targetObj    = $player;
 			$target_id = $player->id();
 		} else {
-			// Try to get target from string identity
-			if (is_string($target_identity) && !empty($target_identity) && $target_id !== $player->id()) {
-				// Use on another ninja
-				$targetObj = Player::findByName($target_identity);
-				$target_id = $targetObj instanceof Character? $targetObj->id() : null;
-				$return_to_target = true;
-			} elseif((bool) Filter::toNonNegativeInt($target_identity)){
-				$targetObj = Player::find(Filter::toNonNegativeInt($target_identity));
-				$target_id = $targetObj instanceof Character? $targetObj->id() : null;
+			if(0<$target_id && $target_id !== $player->id()){
 				$return_to_target = true;
 			}
 
