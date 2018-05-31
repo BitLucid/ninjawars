@@ -17,7 +17,7 @@ function nw_debug() {
 		$result = true;
 	}
 
-	if ($_COOKIE['debug']) {
+	if (isset($_COOKIE['debug']) && $_COOKIE['debug']) {
 		$result = true;
 	}
 
