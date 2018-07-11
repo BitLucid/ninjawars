@@ -40,7 +40,6 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-requirejs": "^1.1.0",
     "karma-sinon": "^1.0.5",
-    "nsp": "^3.2.1",
     "phantomjs-prebuilt": "^2.1.16",
     "requirejs": "^2.3.5",
     "sinon": "^6.0.0"
