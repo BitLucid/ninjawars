@@ -1,14 +1,17 @@
 {
   "name": "ninjawars",
-  "version": "1.8.23",
+  "version": "1.8.30",
   "description": "The Ninja Game at ninjawars.net",
   "main": "deploy/www/js/nw.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "make test-js",
-    "lint": "eslint --ext .jsx,.js deploy/www/js"
+    "test": "karma start deploy/tests/karma.conf.js --browsers PhantomJS --single-run",
+    "lint": "eslint --ext .jsx,.js deploy/www/js",
+    "prepare-unit-test-ci": "echo 'no-op for now'",
+    "unit-test": "test && nsp check",
+    "start": "make build"
   },
   "repository": {
     "type": "git",
@@ -31,17 +34,18 @@
   "homepage": "https://github.com/BitLucid/ninjawars#readme",
   "devDependencies": {
     "jasmine-core": "^3.1.0",
-    "karma": "^2.0.0",
+    "karma": "^2.0.4",
     "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^1.1.1",
+    "karma-jasmine": "^1.1.2",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-requirejs": "^1.1.0",
     "karma-sinon": "^1.0.5",
+    "nsp": "^3.2.1",
     "phantomjs-prebuilt": "^2.1.16",
     "requirejs": "^2.3.5",
-    "sinon": "^4.4.2"
+    "sinon": "^6.0.0"
   },
   "dependencies": {
-    "eslint": "^4.18.2"
+    "eslint": "^4.19.1"
   }
 }

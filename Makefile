@@ -35,7 +35,8 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
-	mkdir -p ./deploy/resources/logs/
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
+	chmod ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
 
@@ -53,7 +54,6 @@ install: build start-chat writable
 	cp connection.xml.tpl connection.xml
 
 writable:
-	chmod ugo+wX ./deploy/templates/compiled ./deploy/templates/cache
 	chown www-data:adm ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
 
 install-system:
@@ -67,6 +67,19 @@ install-system:
 	apt-get install php5.6-cli
 	#Installing php5.6 cli 
 	apt-get install php5.6-fpm php5.6-xml php5.6-pgsql php5.6-curl php5.6-mbstring
+	apt-get install postgresql-client nginx 
+
+install-system-php7:
+	@echo "Installing initial system and server dependencies."
+	@echo "In the case of the database and webserver,"
+	@echo "they need professional admin configuration after initial install."
+	@echo "Since we are running php 5.6, you may need to install the fine"
+	@echo "php 5.6 ppa by Ondre J to get access to php 5.6, e.g.:"
+	@echo "    sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php"
+	apt-get install python3 python3-dev python3-lxml unzip
+	echo "Installing php cli"
+	apt-get install php7.0-cli
+	apt-get install php7.0-fpm php7.0-xml php7.0-pgsql php7.0-curl php7.0-mbstring
 	apt-get install postgresql-client nginx 
 
 
@@ -121,7 +134,7 @@ test-functional:
 	python3 -m pytest deploy/tests/functional/
 
 test-js:
-	karma start deploy/tests/karma.conf.js --browsers PhantomJS --single-run
+	npm test
 
 test-ratchets:
 	#split out for ci for now
@@ -204,7 +217,7 @@ web-reload:
 
 ci-pre-configure:
 	# Set php version through phpenv. 5.3 through 7.0 available
-	phpenv local 5.6
+	phpenv local 7.0
 	@echo "Removing xdebug on CI, by default."
 	rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 	ln -s `pwd` /tmp/root

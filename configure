@@ -2,6 +2,8 @@
 
 echo "DOMAIN=http://localhost:8765/" > CONFIG
 echo "DBNAME=nw" >> CONFIG
+echo "HOST=localhost" >> CONFIG
+echo "PORT=5432" >> CONFIG
 echo "DBUSER=ninjamaster" >> CONFIG
 echo "DBCREATINGUSER=postgres" >> CONFIG
 echo "CC_DIR=./cc/" >> CONFIG

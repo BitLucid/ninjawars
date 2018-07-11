@@ -77,12 +77,13 @@ class Nmail {
     public function send() {
         // Create the Transport
         if (!(self::$transport instanceof Swift_Transport)) {
-            self::$transport = Swift_MailTransport::newInstance();
+            self::$transport = new Swift_MailTransport();
         }
 
-        $mailer = Swift_Mailer::newInstance(self::$transport);
+        $mailer = new Swift_Mailer(self::$transport);
 
-        $this->message = Swift_Message::newInstance()
+        $this->message = new Swift_Message();
+        $this->message
 
             //Give the message a subject
             ->setSubject($this->subject)

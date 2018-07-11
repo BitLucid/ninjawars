@@ -28,7 +28,8 @@ module.exports = function(config) {
     exclude: [
         'deploy/www/js/jquery.timeago.js',
         'deploy/www/js/jquery.linkify.js',
-        'deploy/www/js/jquery.linkify.min.js'
+        'deploy/www/js/jquery.linkify.min.js',
+        'deploy/www/js/bootstrap.min.js'
     ],
 
 
