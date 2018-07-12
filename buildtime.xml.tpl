@@ -5,7 +5,7 @@
       <datasource id="ninjawars">
         <adapter>pgsql</adapter>
         <connection>
-          <dsn>pgsql:dbname=nw</dsn>
+          <dsn>pgsql:dbname=nw_live</dsn>
           <user>ninjamaster</user>
         </connection>
       </datasource>

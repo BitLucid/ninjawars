@@ -4,7 +4,7 @@ propel.project = ninjawars
 propel.database = pgsql
 
 # PDO DSN
-propel.database.url = pgsql:dbname=nw;
+propel.database.url = pgsql:dbname=nw_live;
 propel.database.user = ninjamaster
 
 # Environment
