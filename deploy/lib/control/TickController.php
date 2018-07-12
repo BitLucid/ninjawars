@@ -63,7 +63,6 @@ class TickController{
         list($revived, $dead_count) = $this->deity->revivePlayers($params);
 
         $this->deity->computeTurns();
-        $this->deity->computeActivePCs();
         $this->deity->fixBounties();
 
         $this->logger->log('Reviving: ['.$revived.'] / ['.$dead_count.'] 

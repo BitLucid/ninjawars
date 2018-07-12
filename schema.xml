@@ -101,14 +101,6 @@
     <column name="originating_page" phpName="OriginatingPage" type="VARCHAR" size="50" required="false"/>
     <column name="extra_notes" phpName="ExtraNotes" type="VARCHAR" size="100" required="false"/>
   </table>
-  <table name="ppl_online" phpName="PplOnline" idMethod="native">
-    <column name="session_id" phpName="SessionId" type="VARCHAR" size="255" primaryKey="true" required="true"/>
-    <column name="activity" phpName="Activity" type="TIMESTAMP" required="true" defaultExpr="now()"/>
-    <column name="member" phpName="Member" type="BOOLEAN" required="true" defaultValue="false"/>
-    <column name="ip_address" phpName="IpAddress" type="VARCHAR" size="255" required="true" defaultValue=""/>
-    <column name="refurl" phpName="Refurl" type="VARCHAR" size="255" required="true" defaultValue=""/>
-    <column name="user_agent" phpName="UserAgent" type="VARCHAR" size="255" required="false"/>
-  </table>
   <table name="settings" phpName="Settings" idMethod="native">
     <column name="setting_id" phpName="SettingId" type="INTEGER" autoIncrement="true" required="true" primaryKey="true"/>
     <column name="player_id" phpName="PlayerId" type="INTEGER" required="true"/>

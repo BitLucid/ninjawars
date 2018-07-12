@@ -22,4 +22,3 @@ truncate inventory;
 truncate settings;
 truncate login_attempts;
 truncate duped_unames;
-truncate ppl_online;

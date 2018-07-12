@@ -55,18 +55,6 @@ class Deity {
     }
 
     /**
-     * Update pcs online listings
-     */
-    public function computeActivePCs(){
-        DatabaseConnection::getInstance();
-        DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
-        $inactivity = DatabaseConnection::$pdo->prepare("DELETE FROM ppl_online WHERE activity < (now() - :maxtime::interval)");
-        $inactivity->bindValue(':maxtime', ONLINE_TIMEOUT);
-        $inactivity->execute();
-        DatabaseConnection::$pdo->query('COMMIT');
-    }
-
-    /**
      * Zero any negative bounties
      */
     public function fixBounties(){
@@ -214,16 +202,6 @@ class Deity {
         assert($unconfirmed < MAX_PLAYERS_TO_UNCONFIRM+1);
 
         return ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
-        /*
-        $level_1_delete = DatabaseConnection::$pdo->query("delete from players where active = 0 and level = 1 and created_date < (now() - interval '5 days')"); // Delete old level 1's.
-        
-        $affected_rows['old level 1 players deletion'] = $level_1_delete->rowCount();
-        */
-        // Delete from inventory where owner is unconfirmed or non-existent.
-        /*
-        $deleted_items = DatabaseConnection::$pdo->query("DELETE FROM inventory WHERE owner IN (SELECT owner FROM inventory LEFT JOIN players ON owner = player_id WHERE uname IS NULL GROUP BY owner)");
-        $affected_rows['deleted items'] = $deleted_items->rowCount();
-        */
     }
 
     /**

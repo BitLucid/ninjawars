@@ -28,6 +28,10 @@ Shedding your clothes, you ease into a large copper tub that is filled with stea
 <p>No fights have broken out yet today.</p>
 {/if}
 
+<div>
+  {$stats['player_count']} ninja around
+</div>
+
 <nav>
   <a href="/map" class="return-to-location block">Return to the Village</a>
 </nav>
