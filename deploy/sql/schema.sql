@@ -126,23 +126,6 @@ CREATE TABLE "players_flagged"
 );
 
 -----------------------------------------------------------------------
--- ppl_online
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS "ppl_online" CASCADE;
-
-CREATE TABLE "ppl_online"
-(
-    "session_id" VARCHAR(255) NOT NULL,
-    "activity" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
-    "member" BOOLEAN DEFAULT 'f' NOT NULL,
-    "ip_address" VARCHAR(255) DEFAULT '' NOT NULL,
-    "refurl" VARCHAR(255) DEFAULT '' NOT NULL,
-    "user_agent" VARCHAR(255),
-    PRIMARY KEY ("session_id")
-);
-
------------------------------------------------------------------------
 -- settings
 -----------------------------------------------------------------------
 

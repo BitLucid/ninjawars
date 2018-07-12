@@ -231,16 +231,6 @@ if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && 
 		return updated;
 	};
 
-/*	NW.updateMemberCounts = function() {
-		var activeCount = this.pullFromDataStore('member_counts', 'active');
-		var totalCount = this.pullFromDataStore('member_counts', 'total');
-
-		NW.activeMembersContainer.textContent = activeCount;
-		NW.totalMembersContainer.textContent = totalCount;
-
-		return true;
-	};*/
-
 	// Update the number of unread messages, displayed on index.
 	NW.unreadMessageCount = function(messageCount) {
 		var recent = $('#messages', window.top.document).find('.unread-count').text(messageCount);
@@ -267,7 +257,6 @@ if (typeof(window.parent) !== 'undefined' && window.parent.window !== window && 
 		var messageUpdated      = this.updateMessageCount();
 		var eventUpdated        = this.updateLatestEvent();
 		//var healthUpdated       = this.getAndUpdateHealth(); // health bar.
-		//var memberCountsUpdated = this.updateMemberCounts(); // Active member count over chat
 
 		// If any changes to data occurred, return true.
 		var res = (!!(messageUpdated || eventUpdated /*|| healthUpdated*/));

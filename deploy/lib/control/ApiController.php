@@ -195,8 +195,11 @@ class ApiController extends AbstractController {
         ];
     }
 
+    /** 
+     * Just count the number of currently active players.
+     */
     private function jsonMemberCount() {
-        return $this->memberCounts();
+        return $this->playerCount();
     }
 
     private function jsonInventory() {
@@ -206,6 +209,16 @@ class ApiController extends AbstractController {
         );
 
         return ['inventory' => $items];
+    }
+
+    /**
+     * Just count the number of active players
+     * @return integer $player_count
+     */
+    private function playerCount() {
+        return query_item(
+            "SELECT count(player_id) from players where active = 1"
+        );
     }
 
     private function jsonIndex() {
@@ -240,7 +253,6 @@ class ApiController extends AbstractController {
 
         return [
             'player'                => ($player ? $player->publicData() : []),
-            'member_counts'         => $this->memberCounts(),
             'unread_messages_count' => $unread_messages,
             'message'               => (!empty($messages) ? $messages->fetch() : null),
             'inventory'             => [
@@ -250,19 +262,7 @@ class ApiController extends AbstractController {
             ],
             'unread_events_count'   => $unread_events,
             'event'                 => (!empty($events) ? $events->fetch() : null),
+            'member_counts'         => $this->playerCount(),
         ];
-    }
-
-    /**
-     * Pull an array of different activity counts.
-     */
-    private function memberCounts() {
-        $counts = query_array("(SELECT count(session_id) FROM ppl_online WHERE member AND activity > (now() - CAST('30 minutes' AS interval)))
-            UNION ALL (SELECT count(session_id) FROM ppl_online WHERE member)
-            UNION ALL (select count(player_id) from players where active = 1)");
-        $active_row = array_shift($counts);
-        $online_row = array_shift($counts);
-        $total_row = array_shift($counts);
-        return array('active'=>reset($active_row), 'online'=>reset($online_row), 'total'=>end($total_row));
     }
 }

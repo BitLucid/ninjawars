@@ -126,6 +126,7 @@ class GameLog {
     /**
      * Update the information of a viewing observer, or player.
      */
+    /*
     public static function updateActivityInfo($request, $session) {
         // ******************** Usage Information of the browser *********************
         $remoteAddress = ''.$request->getClientIp();
@@ -133,36 +134,7 @@ class GameLog {
         $referer       = (isset($_SERVER['HTTP_REFERER'])    ? substr($_SERVER['HTTP_REFERER'], 0, 250)    : '');   // Truncated at 250 char.
 
         // ************** Setting anonymous and player usage information
-
-        DatabaseConnection::getInstance();
-
-        if (!$session->has('online')) {	// *** Completely new session, update latest activity log. ***
-            if ($remoteAddress) {	// *** Delete prior to trying to re-insert into the people online. ***
-                $statement = DatabaseConnection::$pdo->prepare('DELETE FROM ppl_online WHERE ip_address = :ip OR session_id = :sessionID');
-
-                $statement->bindValue(':ip',        $remoteAddress);
-                $statement->bindValue(':sessionID', $session->getId());
-
-                $statement->execute();
-            }
-
-            // *** Update viewer data. ***
-            $statement = DatabaseConnection::$pdo->prepare('INSERT INTO ppl_online (session_id, activity, ip_address, refurl, user_agent) VALUES (:sessionID, now(), :ip, :referer, :userAgent)');
-
-            $statement->bindValue(':sessionID', $session->getId());
-            $statement->bindValue(':ip',        $remoteAddress);
-            $statement->bindValue(':referer',   $referer);
-            $statement->bindValue(':userAgent', $userAgent);
-
-            $statement->execute();
-
-            $session->set('online', true);
-        } else {	// *** An already existing session. ***
-            $statement = DatabaseConnection::$pdo->prepare('UPDATE ppl_online SET activity = now(), member = :member WHERE session_id = :sessionID');
-            $statement->bindValue(':sessionID', $session->getId());
-            $statement->bindValue(':member', $session->get('authenticated', false), \PDO::PARAM_BOOL);
-            $statement->execute();
-        }
     }
+    */
 
 }
