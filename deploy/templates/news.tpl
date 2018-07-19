@@ -21,22 +21,27 @@
   {/if}
 
   {foreach from=$all_news key=index_news item=single_news}
-  {assign var="news_account" value=$single_news->getAccountss()}
   <article class="news">
-    {if $single_news->getTitle()}
-    <h3>{$single_news->getTitle()|escape}</h3>
+    {if $single_news->title}
+    <h3>{$single_news->title|escape}</h3>
     {/if}
-    <section class='post-content'>{$single_news->getContent()|escape}</section>
+    <section class='post-content'>{$single_news->content|escape}</section>
     <footer>
-      - <span class='tags'> {$single_news->getTags()|to_tags} </span>
-      {if $single_news->getCreated()} <time class='timeago' datetime='{$single_news->getCreated()}' title='{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}'>{$single_news->getCreated()|date_format:"%A, %B %e, %Y"}</time>
+      - <span class='tags'> {$single_news->tags|to_tags} </span>
+      {if $single_news->created} 
+        <time class='timeago' datetime='{$single_news->created}' title='{$single_news->created|date_format:"%A, %B %e, %Y"}'>
+          {$single_news->created|date_format:"%A, %B %e, %Y"}
+        </time>
       {else}
-      <time class='timeago' datetime='{$smarty.now}' title='{$smarty.now|date_format:"%A, %B %e, %Y"}'>{$smarty.now|date_format:"%A, %B %e, %Y"}</time>
-      {/if} by <a target="main" href="/player?player_id={$news_account->getFirst()|to_playerid}">{$news_account->getFirst()|to_playername|escape}</a>
+      <time class='timeago' datetime='{$smarty.now}' title='{$smarty.now|date_format:"%A, %B %e, %Y"}'>
+        {$smarty.now|date_format:"%A, %B %e, %Y"}
+      </time>
+      {/if} by 
+      <a target="main" href="/player?player_id={$single_news->author_id|to_playerid}">
+        {$single_news->author|to_playername|escape}
+      </a>
     </footer>
   </article>
   {/foreach}
-
-
 
 </section><!-- End of news-list -->

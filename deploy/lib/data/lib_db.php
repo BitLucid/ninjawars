@@ -56,6 +56,13 @@ function update_query($update_query, $bindings=array()){
 }
 
 /**
+ * Insert a row, if returning is used it will return the id
+ */
+function insert_query($insert_query, $bindings=[]){
+	return query($insert_query, $bindings);
+}
+
+/**
  * Run to just get the first row, for 1 row queries.
  */
 function query_row($sql, $bindings=array()) {
