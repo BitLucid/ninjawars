@@ -18,12 +18,15 @@ use \PDO;
 class News {
 
 
-	// Get the data for the first author of a news post
+	/**
+	 *  Get the data for the first author of a news post
+	 * 
+	 */
 	public function firstAuthor(){
 		$query = 'select uname, player_id from players 
 			left join account_players on _player_id = player_id 
 			left join account_news on account_news._account_id = account_players._account_id 
-			where _news_id = :id';
+			where _news_id = :id limit 1';
 		return !$this->id ? null : query_row($query, [':id'=>[$this->id, \PDO::PARAM_INT]]);
 	}
 
@@ -62,12 +65,17 @@ class News {
 	 */
 	public function save(){
 		if(!isset($this->id)){
+			$author_id = $this->authorFull->id();
+			if(!$author_id){
+				throw new \InvalidArgumentException('Cannot save a news post without an author.');
+			}
 			// Return id during insert
 			$stmt = insert_query(
 				'insert into news (title, content, tags) values (:title, :content, :tags) returning news_id',
 				[':title'=>$this->title, ':content'=>$this->content, ':tags'=>$this->tags]);
 			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$this->id = reset($data)['news_id'] ?? null;
+			// Add the author association as well.
 			insert_query('insert into account_news (_account_id, _news_id) values (:aid, :nid)',
 				[':aid'=>$this->authorFull->id(), ':nid'=>$this->id]);
 			return $this->id;
@@ -103,15 +111,20 @@ class News {
 		return implode(', ', ['news_id', 'news_id as id', 'title', 'content', 'created', 'updated', 'tags', 'uname as author', 'player_id as author_id']);
 	}
 
+	/**
+	 * Handle joining the author account player info
+	 */
 	public static function authorJoined(){
-		return ' left join account_news on account_news._news_id = news.news_id left join account_players on account_players._account_id = account_news._account_id left join players on players.player_id = account_players._player_id ';
+		return ' left join account_news on account_news._news_id = news.news_id 
+			left join account_players on account_players._account_id = account_news._account_id 
+			left join players on players.player_id = account_players._player_id ';
 	}
 
 	/**
 	 * Find based tag
 	 *
 	 * @param string some tag
-	 * @return Collection
+	 * @return \stdClass[] of news entries
 	 */
 	public static function findByTag($tag = ''){
 		$news = query_array(
@@ -129,9 +142,21 @@ class News {
 	}
 
 	/**
+	 * Find a single news post
+	 */
+	public static function findById(int $id){
+		$news = query_row(
+			'select '.static::fields().' from news '.static::authorJoined().' 
+				where news_id = :id',
+			[':id'=>$id]
+		);
+		return (object) $news;
+	}
+
+	/**
 	 * All news
 	 *
-	 * @return Collection
+	 * @return \stdClass[] of news entries
 	 */
 	public static function all(){
 		$news = query_array('select '.static::fields().' from news '.static::authorJoined().' 
@@ -148,10 +173,11 @@ class News {
 	 * Get last news
 	 *
 	 * @throws InvalidArgumentException
-	 * @return orm\News
+	 * @return \stdClass Single news object
 	 */
 	public static function last(){
-		$news = query_row('select '.static::fields().' from news '.static::authorJoined().' order by news_id desc limit 1');
+		$news = query_row('select '.static::fields().' from news '.static::authorJoined().' 
+			order by news_id desc limit 1');
 
 		if ( empty($news)) {
 			throw new \InvalidArgumentException('News not found');

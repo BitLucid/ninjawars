@@ -8,15 +8,20 @@ use NinjaWars\core\data\Account;
 class TestNews extends PHPUnit_Framework_TestCase {
 
     function setUp() {
+        $test_account = $this->obtainTestAccount();
+        $news = new News();
+        assert($test_account->id() > 0);
+        $news->createPost('Testing news title78', 'phpunit testing content', $test_account->id(), 'need,some, fake, tags');
     }
 
     function tearDown() {
         // Delete testing news.
         query('delete from news where title = \'Testing news title78\'');
+        TestAccountCreateAndDestroy::destroy();
     }
 
     public function obtainTestAccount(){
-        return Account::findById(query_item('select account_id from accounts order by account_id asc'));
+        return Account::findById(TestAccountCreateAndDestroy::account_id());
     }
 
     public function testNewsCanInstantiate(){
@@ -40,6 +45,17 @@ class TestNews extends PHPUnit_Framework_TestCase {
         $this->assertEquals('Testing news title78', $news->title);
     }
 
+    public function testNewsPostCreatedViaPostMethodCreatesFullAuthor(){
+        $news = new News();
+        $updated = $news->createPost('Testing news title78', 'phpunit testing content', $this->obtainTestAccount()->id(), 'need,some, fake, tags');
+        $found = News::findById($updated->id);
+        $this->assertGreaterThan(0, $found->id);
+        $this->assertNotEmpty($found->title);
+        $this->assertEquals('phpunit testing content', $found->content);
+        $this->assertNotEmpty($found->author_id, 'Author_id not found in news returned.');
+        $this->assertNotEmpty($found->author, 'Author not found in news returned');
+    }
+
     public function testNewsHasAvailableTags(){
         $tags = News::availableTags();
         $this->assertGreaterThan(0, count($tags));
@@ -60,6 +76,7 @@ class TestNews extends PHPUnit_Framework_TestCase {
         $last_news = News::last();
         $this->assertGreaterThan(0, $last_news->id);
         $this->assertNotEmpty($last_news->title);
+        $this->assertNotEmpty($last_news->author, 'News Author was not present.');
     }
 
     public function testGetAllNewsReturnsANews(){
@@ -73,6 +90,7 @@ class TestNews extends PHPUnit_Framework_TestCase {
         $all_news = News::all();
         $one_news = reset($all_news);
         $this->assertGreaterThan(0, $one_news->id);
+        $this->assertNotEmpty($one_news->title, 'Title was not present.');
         $this->assertNotEmpty($one_news->author, 'Author was not present.');
         $this->assertNotEmpty($one_news->author_id, 'Author id was not present');
     }
