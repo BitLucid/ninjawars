@@ -41,7 +41,7 @@ class News {
 		// Validate the account
 		$author = Account::findById($authorId);
 
-		if ( ! $this->isObject($author)) {
+		if ( ! ($author instanceof Account)) {
 			throw new \InvalidArgumentException('Account not found');
 		}
 

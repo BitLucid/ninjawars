@@ -37,8 +37,8 @@
         {$smarty.now|date_format:"%A, %B %e, %Y"}
       </time>
       {/if} by 
-      <a target="main" href="/player?player_id={$single_news->author_id|to_playerid}">
-        {$single_news->author|to_playername|escape}
+      <a target="main" href="/player?player_id={$single_news->author_id}">
+        {$single_news->author|escape}
       </a>
     </footer>
   </article>
