@@ -17,10 +17,10 @@
           <li><a href="/inventory" target="main">Inventory</a></li>
           <li><a href="/skill" target="main">Skills</a></li>
           <li><a href="/clan" target="main"><i class='fa fa-users' aria-hidden='true'></i> Clans</a></li>
-          <li class='hidden-sm-down'><a href="/shrine" target="main">⛩ Shrine</a></li>
-          <li class='hidden-sm-down'><a href="/shop" target="main">石 Shop</a></li>
-          <li class='hidden-sm-down'><a href="/work" target="main"><i class='fa fa-pagelines' aria-hidden='true'></i> Work</a></li>
-          <li class='hidden-sm-down'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> Hunt</a></li>
+          <li class='hidden-sm'><a href="/shrine" target="main">⛩ Shrine</a></li>
+          <li class='hidden-sm'><a href="/shop" target="main">石 Shop</a></li>
+          <li class='hidden-sm'><a href="/work" target="main"><i class='fa fa-pagelines' aria-hidden='true'></i> Work</a></li>
+          <li class='hidden-sm hidden-md'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> Hunt</a></li>
           <li><a href="/events" target="main"><i class="fa fa-clock-o" aria-hidden="true"></i> Events</a></li>
           <li><a href="/messages" target="main"><i class='fa fa-envelope-o'></i> <span class='badge'>{$unread_message_count}</span></a></li>
         </ul>
