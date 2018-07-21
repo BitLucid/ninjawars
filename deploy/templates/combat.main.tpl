@@ -68,10 +68,11 @@ As you enter battle, you note your potential escape routes...
     {elseif $killpoints gt 2}
     {$killpoints} times over
     {/if}
-!</div>
+    !
+</div>
 
     {if $loot}
-<div>You have taken <span class='gold-count'>{$loot|number_format:0|escape} gold</span> from {$target->name()}.</div>
+<div>You have taken <span class='gold-count'>石{$loot|number_format:0|escape} gold</span> from {$target->name()}.</div>
     {/if}
 
     {if $wrath}

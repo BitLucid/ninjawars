@@ -1304,6 +1304,17 @@ td.playerTable {
 	 margin-top:10px;
 	 margin-bottom:10px;
 }
+
+/* Health bar in the top nav */
+.navbar-fixed-top .health-container{
+	width:100%;height:0.1rem;
+}
+
+.navbar-fixed-top .health-bar{
+	background-color:#d9534f;min-height:1px;height:0.1rem;
+	min-width:2rem;
+}
+
 #logo img {
 	width:50px;
 	height:42px;
@@ -2835,6 +2846,11 @@ select option #blue-class-select {
 	color:white;
 	background-color:black;
 	font-weight:bold;
+}
+
+/* Fix for debugging */
+.xdebug-error{
+	color: black;
 }
 
 /* =================== Npc related styles =============== */

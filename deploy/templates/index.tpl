@@ -63,20 +63,11 @@
         </div><!-- end of dropdown -->
         {/if}
 
-<style>
-.navbar-fixed-top .health-container{
-  width:100%;height:0.1rem;
-}
-.navbar-fixed-top .health-bar{
-  background-color:#d9534f;min-height:1px;height:0.1rem;
-  min-width:2rem;
-}
-
-</style>
-
       </div><!--/.nav-collapse -->
+
+
       <div class='health-container'>
-          <div class='health-bar' data-json="{$ninja|@json_encode nofilter}" style='width:0%' title='600hp/1000hp'></div>
+          <div class='health-bar' data-json="{$ninja|@json_encode nofilter}" style='width:0%'</div>
       </div>
     </nav>
 
