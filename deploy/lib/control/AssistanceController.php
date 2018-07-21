@@ -79,7 +79,8 @@ class AssistanceController extends AbstractController {
     /**
      * Display the assistance options to users.
      *
-     * @return Response
+     * @return StreamedViewResponse
+     * @param Container $p_dependencies Session and account information
      */
     public function index(Container $p_dependencies) {
         $request = RequestWrapper::$request;
@@ -134,7 +135,8 @@ class AssistanceController extends AbstractController {
     /**
      * Handle account email confirmation
      *
-     * @return Response
+     * @return StreamedViewResponse
+     * @param Container $p_dependencies Session and account information
      */
     public function confirm(Container $p_dependencies) {
         $request                   = RequestWrapper::$request;
