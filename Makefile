@@ -147,14 +147,21 @@ db-init:
 	# Fail on existing database
 	createdb $(DBNAME)
 	createuser $(DBUSER)
+
+db-init-roles:
+	# Set up the roles as needed, errors if pre-existing, so split out
 	psql $(DBNAME) -c "CREATE ROLE $(DBROLE);"
+
+db-init-grants:
 	psql $(DBNAME) -c "GRANT $(DBROLE) to ${DBUSER}"
 	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO $(DBROLE);"
+	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
 
 db:
 	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO $(DBROLE);"
-	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
+	psql $(DBNAME) -c "CREATE EXTENSION IF NOT EXISTS pgcrypto"
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
+	psql $(DBNAME) < ./deploy/sql/schema.sql
 	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
 	psql $(DBNAME) -c "\d" | head -30
@@ -208,6 +215,6 @@ python-install:
 	python3 -m pip install virtualenv
 	python3 -m pip install -r ./deploy/requirements.txt
 
-ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
+ci: ci-pre-configure build python-install test-unit db-init db-init-roles db-init-grants db db-fixtures
 
 ci-test: pre-test test-main test-cron-run test-ratchets post-test
