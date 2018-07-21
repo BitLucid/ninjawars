@@ -13,7 +13,7 @@ Configure Your Web Server On Your Own
 =======================================
 
 Create a web server, with a fake local domain, e.g. "http://nw.local"
-In general, you can use whatever web server you want, nginx/php5-fpm is in use.
+In general, you can use whatever web server you want, nginx/php7-fpm is in use on PROD and recommended.
 
 Configure Your Postgresql Database On Your Own
 ==============================================
@@ -28,9 +28,11 @@ and create the developers role, something like this:
 
 You'll also need to install postgresql-contrib for bcrypt password hashing.
 
-    sudo apt-get install postgresql postgresql-contrib php5-pgsql
+    sudo apt-get install postgresql postgresql-contrib php7-pgsql
     echo "create extension pgcrypto" | psql -d nw
     * http://stackoverflow.com/questions/2647158/how-can-i-hash-passwords-in-postgresql
+
+Since we are now using postgresql 10, you'll need to install that on your local.
 
 Now you might want to request an up-to-date dev database dump, or you can copy in the basic schema and figures:
 
@@ -41,6 +43,13 @@ Composer Install
 =================================
 
     composer install
+
+Make
+=================================
+
+    ./configure
+    make
+    make install
 
 
 Create Directories
@@ -56,17 +65,13 @@ Copy Config Files
 Copy the config files:
 
 	cp deploy/resources.build.php deploy/resources.php
-	cp build.properties.tpl build.properties
-	cp buildtime.xml.tpl buildtime.xml
-	cp connection.xml.tpl connection.xml
-
 
 Now edit all of those with your database name, and change whatever info you need to!
 
 Run Your Tests!
 =======================
 
-    ./vendor/bin/phpunit
+    make test
 
 Will tell you how close you are to complete!
 
@@ -75,6 +80,6 @@ Cron Scripts Are Available
 ==================================
 Finally, be aware that you can manually run:
 
-    php deploy/cron/deity_fiveminute.php
+    php deploy/cron/tick_atomic.php
 
 Cron scripts to make time pass, heal characters, etc etc.
