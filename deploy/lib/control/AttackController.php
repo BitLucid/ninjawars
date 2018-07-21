@@ -12,6 +12,9 @@ use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 
+/**
+ * Handles the displaying and processing of the attack page
+ */
 class AttackController extends AbstractController {
     const ALIVE                  = true;
     const PRIV                   = true;
@@ -24,7 +27,7 @@ class AttackController extends AbstractController {
     const EVEN_MATCH_ROUND_COUNT = 4;
 
     /**
-     * @return Response
+     * @return StreamedViewResponse
      */
     public function index(Container $p_dependencies) {
         $request = RequestWrapper::$request;
@@ -195,10 +198,10 @@ class AttackController extends AbstractController {
 
             $reporting_victor = $victor;
 
+            // @todo This mis-use of attacking needs to be refactored.
             if ($victor->hasStatus(STEALTH)) {
                 $reporting_victor = new Player();
                 $reporting_victor->uname     = 'a stealthed ninja';
-                $reporting_victor->player_id = 0;
             }
 
             $this->lose($loser, $reporting_victor, $loot);
