@@ -635,6 +635,33 @@ ALTER TABLE public.messages_message_id_seq OWNER TO developers;
 ALTER SEQUENCE public.messages_message_id_seq OWNED BY public.messages.message_id;
 
 
+-----------------------------------------------------------------------
+-- quests
+-----------------------------------------------------------------------
+
+CREATE TABLE public.quests
+(
+    "quest_id" serial NOT NULL,
+    "title" VARCHAR(200) DEFAULT '' NOT NULL,
+    "_player_id" INTEGER NOT NULL,
+    "description" TEXT DEFAULT '' NOT NULL,
+    "tags" TEXT DEFAULT '' NOT NULL,
+    "karma" INTEGER DEFAULT 0 NOT NULL,
+    "rewards" TEXT DEFAULT '' NOT NULL,
+    "obstacles" TEXT DEFAULT '' NOT NULL,
+    "proof" TEXT DEFAULT '' NOT NULL,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    "expires_at" TIMESTAMP WITH TIME ZONE DEFAULT now() + interval ' 1 mon ' NOT NULL,
+    "type" INTEGER,
+    "difficulty" INTEGER,
+    PRIMARY KEY ("quest_id")
+);
+
+CREATE INDEX "quest_created_at_index" ON "quests" ("created_at");
+
+CREATE INDEX "quest_title_index" ON "quests" ("title");
+
 --
 -- Name: news; Type: TABLE; Schema: public; Owner: developers
 --
