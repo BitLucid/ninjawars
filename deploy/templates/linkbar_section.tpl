@@ -31,13 +31,6 @@
 					</span>
 				</div>
 
-        	<!-- Script to display commits -->
+        	<!-- Will load commit info to the page -->
         	<script type='text/javascript' src="{cachebust file="/js/repo.js"}"></script>
-<script>
-{literal}
-$(document).ready(function() {
-	loadLastCommitMessage(); // To display commits on the main page.
-});
-{/literal}
-</script>
-			</div>
+		</div>

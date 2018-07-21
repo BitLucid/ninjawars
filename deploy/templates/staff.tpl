@@ -153,9 +153,5 @@
 
 </div><!-- end of contact-us -->
 
+<!-- Will load commit info to the page -->
 <script type='text/javascript' src="{cachebust file="/js/repo.js"}"></script>
-<script>
-{literal}
-    loadLastCommitMessage();
-{/literal}
-</script>
