@@ -1,13 +1,5 @@
 <?php
 
-/**
- * News model class
- *
- * @package NinjaWars
- * @category Model
- * @author Taufan Aditya<toopay@taufanaditya.com>
- */
-
 namespace model;
 
 use NinjaWars\core\data\DatabaseConnection;
@@ -15,6 +7,20 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use \PDO;
 
+
+/**
+ * News model class
+ *
+ * @package NinjaWars
+ * @category Model
+ * @author Taufan Aditya<toopay@taufanaditya.com>
+ * @property string title
+ * @property string content
+ * @property string tags
+ * @property Account authorFull The account of the author
+ * @property int author_id the player_id of the author
+ * @property string author The player name of the author
+ */
 class News {
 
 
@@ -33,12 +39,12 @@ class News {
 	/**
 	 * Create news
 	 *
-	 * @param string Title
-	 * @param string Content
-	 * @param int Account ID
-	 * @param string Tags
+	 * @param string $title The post title
+	 * @param string $content The full text content
+	 * @param int $authorId Account ID of the author
+	 * @param string $tags Comma-separated text tags
 	 * @throws InvalidArgumentException
-	 * @return orm\News
+	 * @return News
 	 */
 	public function createPost($title = '', $content = '', $authorId = 0, $tags = ''){
 		// Validate the account
@@ -65,8 +71,7 @@ class News {
 	 */
 	public function save(){
 		if(!isset($this->id)){
-			$author_id = $this->authorFull->id();
-			if(!$author_id){
+			if(!$this->authorFull || !$this->authorFull->id()){
 				throw new \InvalidArgumentException('Cannot save a news post without an author.');
 			}
 			// Return id during insert
