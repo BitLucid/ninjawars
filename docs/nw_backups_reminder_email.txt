@@ -1,0 +1,6 @@
+This is a reminder to check that the nw database backups are usable.
+
+Backups are saved to /srv/backups/nw_live/
+
+Example pulldown command:
+scp tchalvak@ninjawars.net:/home/tchalvak/backups/nw_backups/nw-backup-[YEAR-MONTH-DAY]-Time-11-01.sql.bz2 /srv/ninjawars/unclean/nw-backup-[YEAR-MONTH-DAY]-Time-11-01.sql.bz2

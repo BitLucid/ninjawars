@@ -1,4 +1,4 @@
-.PHONY: all ci pre-test test test-main test-integration test-unit test-quick test-functional test-js post-test clean dep build install install-system dist-clean db db-fixtures migration
+.PHONY: all ci pre-test test test-main test-integration test-unit test-quick test-functional test-js post-test clean dep build install install-system dist-clean db db-fixtures
 
 DOMAIN=http://nw.local/
 VENDOR=./vendor/
@@ -14,7 +14,6 @@ COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
 CSS=$(WWW)css/
 DBROLE=developers
-PROPEL=$(VENDOR)bin/propel-gen
 NGINX_PATH:=`readlink -f nginx-1.9.12/objs/nginx`
 
 -include CONFIG
@@ -49,9 +48,6 @@ js-deps:
 install: build start-chat writable
 	@echo "Don't forget to update webserver configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
-	cp build.properties.tpl build.properties
-	cp buildtime.xml.tpl buildtime.xml
-	cp connection.xml.tpl connection.xml
 
 writable:
 	chown www-data:adm ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
@@ -60,22 +56,7 @@ install-system:
 	@echo "Installing initial system and server dependencies."
 	@echo "In the case of the database and webserver,"
 	@echo "they need professional admin configuration after initial install."
-	@echo "Since we are running php 5.6, you may need to install the fine"
-	@echo "php 5.6 ppa by Ondre J to get access to php 5.6, e.g.:"
-	@echo "    sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php"
-	apt-get install python3 python3-dev python3-lxml unzip
-	apt-get install php5.6-cli
-	#Installing php5.6 cli 
-	apt-get install php5.6-fpm php5.6-xml php5.6-pgsql php5.6-curl php5.6-mbstring
-	apt-get install postgresql-client nginx 
-
-install-system-php7:
-	@echo "Installing initial system and server dependencies."
-	@echo "In the case of the database and webserver,"
-	@echo "they need professional admin configuration after initial install."
-	@echo "Since we are running php 5.6, you may need to install the fine"
-	@echo "php 5.6 ppa by Ondre J to get access to php 5.6, e.g.:"
-	@echo "    sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php"
+	@echo "Since we are running php 7, you may need to install a source repo for php7"
 	apt-get install python3 python3-dev python3-lxml unzip
 	echo "Installing php cli"
 	apt-get install php7.0-cli
@@ -164,36 +145,32 @@ dist-clean: clean
 
 db-init:
 	# Fail on existing database
-	createdb $(DBNAME)
-	createuser $(DBUSER)
+	createdb $(DBNAME);
+	createuser $(DBUSER);
+
+db-init-roles:
+	# Set up the roles as needed, errors if pre-existing, so split out
 	psql $(DBNAME) -c "CREATE ROLE $(DBROLE);"
+
+db-init-grants:
 	psql $(DBNAME) -c "GRANT $(DBROLE) to ${DBUSER}"
 	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO $(DBROLE);"
+	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
 
 db:
 	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO $(DBROLE);"
-	psql $(DBNAME) -c "CREATE EXTENSION pgcrypto"
+	psql $(DBNAME) -c "CREATE EXTENSION IF NOT EXISTS pgcrypto"
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
-	$(PROPEL)
-	$(PROPEL) convert-conf
-	$(PROPEL) insert-sql
-	$(PROPEL) . migrate
+	psql $(DBNAME) < ./deploy/sql/schema.sql
 	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
 	psql $(DBNAME) -c "\d" | head -30
 	#psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO $(DBROLE);"
-	psql $(DBNAME) -c "\d" | head -30
+	psql $(DBNAME) -c "\d" | grep "player"
 
 
 db-fixtures:
 	psql $(DBNAME) < ./deploy/sql/fixtures.sql
-
-migration:
-	$(PROPEL)
-	$(PROPEL) convert-conf
-	$(PROPEL) . diff migrate
-	$(PROPEL) . diff migrate
-	$(PROPEL) om
 
 web-start:
 	#Symlink /tmp/www/ in place of /var/www/
@@ -228,12 +205,6 @@ ci-pre-configure:
 	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
 	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
 	ln -s resources.build.php deploy/resources.php
-	ln -s build.properties.tpl build.properties
-	ln -s buildtime.xml.tpl buildtime.xml
-	ln -s connection.xml.tpl connection.xml
-	# Set up selenium and web server for browser tests
-	#wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
-	#java -jar selenium-server-standalone-2.42.2.jar > selenium_server_output 2>&1 &
 	#Switch from python2 to python3
 	rm -rf ${HOME}/.virtualenv
 	which python3
@@ -244,6 +215,6 @@ python-install:
 	python3 -m pip install virtualenv
 	python3 -m pip install -r ./deploy/requirements.txt
 
-ci: ci-pre-configure build python-install test-unit db-init db db-fixtures
+ci: ci-pre-configure build python-install test-unit db-init db-init-roles db-init-grants db db-fixtures
 
 ci-test: pre-test test-main test-cron-run test-ratchets post-test

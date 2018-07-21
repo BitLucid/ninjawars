@@ -8,9 +8,9 @@ The source code dojo for the [Ninja Game](http://www.ninjawars.net) @ http://nin
 
 ## Install
 
-Install your webserver (nginx + php5-fpm recommended) & configure it
+Install your webserver (nginx + php7-fpm recommended) & configure it
 
-	sudo apt-get install php5-cli php5-fpm nginx
+	sudo apt-get install php7-cli php7-fpm nginx
 
 On your database server, install postgresql & configure it
 
@@ -30,20 +30,10 @@ configure, make, make install:
 	make
 	sudo make install
 
-	
 Sync up to the latest db changes:
 
 	cd /srv/ninjawars
 	sudo bash ./scripts/build/integration.sh
-
-Check the differences between your database and the latest schema:
-
-    vendor/bin/propel-gen diff
-
-Sync the database to make your version get updated with the latest table:
-
-	cd /srv/ninjawars
-	./scripts/sync
 
 Start up the chat server with this:
 

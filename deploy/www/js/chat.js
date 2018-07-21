@@ -1,6 +1,6 @@
 /* Manipulate chats to and from the api, run websockets server by sudo make run-chat */
 /*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW, Chat, jQuery, console, window.conn, window.parent, window.WebSocket*/
+/*global $, NW, Chat, jQuery, console, window.conn, window.parent, window.WebSocket, window.Chat*/
 (function ($) {
 	'use strict';
 	// Add shake plugin to jQuery
@@ -55,7 +55,7 @@
  Note that the Chat var may pre-exist
 */
 
-var Chat = undefined !== Chat ? Chat : {};
+var Chat = undefined !== window.Chat ? window.Chat : {};
 
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function() {
