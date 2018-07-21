@@ -6,8 +6,6 @@ require_once(CORE.'/plugins/function.getTurnCost.php');
 require_once(CORE.'/plugins/function.health_percent.php');
 require_once(CORE.'/plugins/modifier.css_classify.php');
 require_once(CORE.'/plugins/modifier.level_label.php');
-require_once(CORE.'/plugins/modifier.to_playerid.php');
-require_once(CORE.'/plugins/modifier.to_playername.php');
 require_once(CORE.'/plugins/modifier.to_tags.php');
 
 class SmartyPluginUnitTest extends PHPUnit_Framework_TestCase {
