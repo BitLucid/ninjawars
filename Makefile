@@ -145,8 +145,8 @@ dist-clean: clean
 
 db-init:
 	# Fail on existing database
-	createdb $(DBNAME)
-	createuser $(DBUSER)
+	createdb $(DBNAME);
+	createuser $(DBUSER) --role $(DBROLE);
 
 db-init-roles:
 	# Set up the roles as needed, errors if pre-existing, so split out
@@ -166,7 +166,7 @@ db:
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
 	psql $(DBNAME) -c "\d" | head -30
 	#psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO $(DBROLE);"
-	psql $(DBNAME) -c "\d" | head -30
+	psql $(DBNAME) -c "\d" | grep "player"
 
 
 db-fixtures:
