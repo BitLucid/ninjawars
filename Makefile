@@ -146,7 +146,7 @@ dist-clean: clean
 db-init:
 	# Fail on existing database
 	createdb $(DBNAME);
-	createuser $(DBUSER) --role $(DBROLE);
+	createuser $(DBUSER);
 
 db-init-roles:
 	# Set up the roles as needed, errors if pre-existing, so split out
