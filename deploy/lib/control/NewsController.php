@@ -3,7 +3,6 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use \model\News as News;
-use \model\Base;
 use \InvalidArgumentException;
 use \ErrorException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
