@@ -21,7 +21,7 @@
           <li class='hidden-sm'><a href="/shop" target="main">石 Shop</a></li>
           <li class='hidden-sm'><a href="/work" target="main"><i class="fab fa-pagelines"></i> Work</a></li>
           <li class='hidden-sm hidden-md'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> Hunt</a></li>
-          <li><a href="/events" target="main"><i class="fa fa-clock-o" aria-hidden="true"></i> Events</a></li>
+          <li><a href="/events" target="main"><i class="far fa-clock" aria-hidden="true"></i> Events</a></li>
           <li><a href="/messages" target="main"><i class='fa fa-envelope-open'></i> <span class='badge'>{$unread_message_count}</span></a></li>
         </ul>
 

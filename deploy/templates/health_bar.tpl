@@ -21,6 +21,6 @@
         <span class='character-health-bar' style="width:{health_percent health=$health level=$level}%;">&nbsp;</span>
     </span>
     <span class='char-health-number' title="{$health} health">
-        {if $health eq 0}<i class="fa fa-heart-o" aria-hidden="true"></i> <span class='dead-notice'>Dead</span>{else}<i class="fas fa-heart" aria-hidden="true"></i> {$health}{/if}
+        {if $health eq 0}<i class="far fa-heart" aria-hidden="true"></i> <span class='dead-notice'>Dead</span>{else}<i class="fas fa-heart" aria-hidden="true"></i> {$health}{/if}
     </span>
 </span>
