@@ -35,7 +35,7 @@ build: dep
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
+	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
 
@@ -52,7 +52,7 @@ install: build start-chat writable
 writable:
 	chown www-data:adm ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
+	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
 
 install-system:
 	@echo "Installing initial system and server dependencies."
