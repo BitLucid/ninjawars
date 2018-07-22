@@ -25,8 +25,7 @@
 
 				</span>
 			</div><!-- /input-group -->
-     </div>
-   </form>
+		</form>
   </div>
 
   <!-- The player list navigation section -->

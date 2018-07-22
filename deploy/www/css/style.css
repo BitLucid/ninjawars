@@ -892,10 +892,7 @@ input.formButton:hover, input[type=submit]:hover, input.formButton:active, input
 	background-color:skyblue;
 }
 .list-search{
-	background-color: rgba(50, 50, 50, 1);
-	border-color: #ccc;
-	color: rgb(190, 185, 185);
-	font-weight:bold;
+	padding: 0 1rem !important;
 }
 /*
 input.textField {
