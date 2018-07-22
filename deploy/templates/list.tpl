@@ -4,7 +4,7 @@
 {if $ninja_count eq 0}
   <!-- Search found nothing to display -->
   <p class='notice'>No ninja to display.</p>
-  <p><a href="/list?hide={$hide|escape:'url'}">Back to Ninja List</a></p>
+  <p><a href="/list?hide={$hide|escape:'url'}"><i class='fas fa-list'></i> Full Ninja List</a></p>
 {/if}
 
   <div class='list-all-players-search centered'>

@@ -65,20 +65,20 @@ var combatSkillsList = {$json_combat_skills nofilter};
           <tr>
             <td id='attacking-choices'>
               <form id='attack_player' action='/attack' method='post' name='attack_player'>
-                <label for='duel' title='Enter into a multi-round duel for an additional {getTurnCost skillName="duel"} turns.'>
-                  <input id="duel" type="checkbox" name="duel" value="1"> Duel
-                </label>
-
-		{foreach from=$combat_skills item="skill"}
-                <label for='{$skill.skill_internal_name|escape}' title='{$skill.skill_internal_name|escape} while attacking for {getTurnCost skillName=$skill.skill_display_name} turns more'>
+                <div class='btn-group' role='group'>
+                  <label class='btn btn-default' for='duel' title='Enter into a multi-round duel for an additional {getTurnCost skillName="duel"} turns.'>
+                    <input id="duel" type="checkbox" name="duel" value="1"> Duel
+                  </label><!-- no space
+		-->{foreach from=$combat_skills item="skill"}<!-- No space
+                  --><label class='btn btn-default' for='{$skill.skill_internal_name|escape}' title='{$skill.skill_internal_name|escape} while attacking for {getTurnCost skillName=$skill.skill_display_name} turns more'>
                     <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}" value="1"> {$skill.skill_display_name|escape}
-                </label>
-		{/foreach}
-
-                <input id="target" type="hidden" value="{$target_player_obj->id()|escape}" name="target">
-                <label class='attack-player-trigger btn btn-vital'  title='Attack or Duel this ninja for a base cost of {getTurnCost skillName="attack"} turn'>
-                  	<input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{cachebust file="/images/50pxShuriken.png"}' alt='Attack'><span id='attack-text'>Attack</span>
-                </label>
+                  </label><!-- no space
+		-->{/foreach}<!-- no space
+                  --><input id="target" type="hidden" value="{$target_player_obj->id()|escape}" name="target">
+                  <label class='attack-player-trigger btn btn-vital'  title='Attack or Duel this ninja for a base cost of {getTurnCost skillName="attack"} turn'>
+                      <input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{cachebust file="/images/50pxShuriken.png"}' alt='Attack'><span id='attack-text'>Attack</span>
+                  </label>
+                </div>
               </form>
             </td>
 
@@ -100,8 +100,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
                     <option value="{$item.item_id|escape}">{$item.name|escape} ({$item.count|escape})</option>
             {/if}
             {if $item@last}
-                  </select>
-                  <input type="submit" value="Use Item" class="btn btn-primary">
+                  </select><!-- No space between --><input type="submit" value="Use Item" class="btn btn-primary" style="border-top-left-radius:0;border-bottom-left-radius:0">
             {/if}
         {foreachelse}
 				  <div id='no-items' class='ninja-notice'>
@@ -119,14 +118,12 @@ var combatSkillsList = {$json_combat_skills nofilter};
       {if count($targeted_skills) gt 0}
       <form id="skill_use" class="skill_use" action="/player/use_skill/" method="post" name="skill_use">
         <div class='parent'>
-          <ul id='skills-use-list' class='child'>
+          <div class='child btn-group' id='skills-use-list'>
           {foreach from=$targeted_skills item="skill"}
-            <li>
               <input id="act-{$skill.skill_internal_name}" class="act btn btn-primary" type="submit" value="{$skill.skill_display_name}" name="act" title='Use the {$skill.skill_display_name} skill for a cost of {getTurnCost skillName=$skill.skill_display_name} turns'>
               <input id="target" class="target" type="hidden" value="{$target_player_obj->name()|escape}" name="target">
-            </li>
           {/foreach}
-          </ul>
+          </div>
         </div>
       </form>
       {/if}

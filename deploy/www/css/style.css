@@ -796,9 +796,6 @@ a:link {} a:visited {} a:active {}
 	float:right;
 }
 
-.player-info label{
-    color:cornflowerblue;
-}
 section.player-communications{
     margin-bottom:1.5em;
 }
@@ -807,9 +804,6 @@ article#player-titles{
 }
 #health-bar-container{
   width:10em;display:inline-block;
-}
-#attacking-choices label{
-  margin-right:.5em;
 }
 #attacking-choices .btn-vital{
   text-transform:none;
@@ -2224,12 +2218,6 @@ table#sight-info {
 }
 
 /* Attacking / combat styles */
-
-.attack-player-trigger {
-	display:block;
-	margin-top: 1em;
-	cursor: pointer;
-}
 
 .solo-page .padded-area{
 	padding-left:2em;padding-right:2em;
