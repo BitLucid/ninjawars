@@ -822,7 +822,10 @@ article#player-titles{
   display:inline-block;margin-right:2em;
 }
 .player-info blockquote{
-  max-height:3.5em;overflow:auto;
+  max-height:7em;
+  overflow:auto;
+  max-width: 50%;
+  margin:auto;
 }
 
 .stats-avatar{
@@ -1980,16 +1983,15 @@ a#skip-to-bottom{
 	padding:5px;
 }
 .ninja-success:before{
+	font-family: "Font Awesome 5 Free"; 
+	font-weight: 900; 
 	content: "\f00c"; /* font-awesome check icon */
 	display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    width: 16px; 
-    height: 16px;
-    padding-right:0.5em;
+    padding-right:1rem;
 }
 p.ninja-success,span.ninja-success{
 	padding:15px;
@@ -2941,8 +2943,10 @@ select option #blue-class-select {
 	margin-left: 1em;
 }
 .return-to-location:before{
-	content: '\00AB';
-	margin-right:0.3em;
+	font-family: "Font Awesome 5 Free"; 
+	font-weight: 900; 
+	content: "\f0a8";
+	padding-right: 1rem;
 }
 
 
