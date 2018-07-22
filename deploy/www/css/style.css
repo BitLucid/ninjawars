@@ -792,10 +792,6 @@ a:link {} a:visited {} a:active {}
 	text-shadow: black 2px 2px 2px;
 }
 
-.player-info .avatar {
-	float:right;
-}
-
 section.player-communications{
     margin-bottom:1.5em;
 }
@@ -814,19 +810,6 @@ article#player-titles{
 #attacks{
    width:95%;margin:0 auto;font-size:larger;clear:both;
 }
-#skills-use-list{
-  margin-left:0;
-  padding-left:0;
-}
-#skills-use-list li{
-  display:inline-block;margin-right:2em;
-}
-.player-info blockquote{
-  max-height:7em;
-  overflow:auto;
-  max-width: 50%;
-  margin:auto;
-}
 
 .stats-avatar{
 	width:100%;
@@ -838,8 +821,9 @@ article#player-titles{
 }
 
 img#class-shuriken {
-	width:20px;
-	height:17px;
+	width:30px;
+	height:26px;
+	fill:currentColor;
 }
 /* Clan avatar css set in the .member section. */
 
@@ -1024,11 +1008,17 @@ table.playerTable {
 .playerTable tr:nth-child(odd){
 	background: rgba(115, 108, 108, 0.1)
 }
-table.playerTable .classCell div {
-	height:100%;
-	width: 60%;
+.svg-shuriken svg{
+	fill: currentColor;
+	vertical-align:middle;
 }
-table.playerTable .classCell img {
+.player-info .svg-shuriken svg{
+	height:3rem;
+	width:3rem;
+}
+table.playerTable .svg-shuriken svg {
+	height:2rem;
+	width:2rem;
 	vertical-align:middle;
 }
 
@@ -1040,27 +1030,29 @@ table.playerTable .classCell img {
 
 /* ninja class colors */
 .class-name{
-	padding-right:.3em;
-	padding-left:.3em;
+	padding-right:.3rem;
+	padding-left:.3rem;
 }
-table.playerTable .Red, .player-info .Red, .class-name.Red{ /* Class Colors */
+.playerTable .class-name{
+	padding: 0.3rem;
+}
+table.playerTable .Red, .player-info .Red, .class-name.Red, .class-name.Red .svg-shuriken{ /* Class Colors */
 	color:red;
 	background-color:black;
 }
-table.playerTable .White, .player-info .White, .class-name.White{
+table.playerTable .White, .player-info .White, .class-name.White, .class-name.White .svg-shuriken{
 	color:white;
 	background-color:black;
 }
-table.playerTable .Blue, .player-info .Blue, .class-name.Blue{
-	color:blue;
-	background-color:white;
+table.playerTable .Blue, .player-info .Blue, .class-name.Blue, .class-name.Blue .svg-shuriken{
+	color:#055d57;
+	background-color:#c3e4f1;
 }
-table.playerTable .Black, .player-info .Black, .class-name.Black{
+table.playerTable .Black, .player-info .Black, .class-name.Black, .class-name.Black .svg-shuriken{
 	color:black;
 	background-color:white;
 }
-
-table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
+table.playerTable .Gray, .player-info .Gray, .class-name.Gray, .class-name.Gray .svg-shuriken{
 	color: gray;
 	background-color: black;
 }
@@ -1070,11 +1062,18 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray{
 	font-style:italic;
 }
 
-.player-status, .ninja-error {
+.ninja-error {
 	margin: 0 auto 0;
 	display:inline-block;
 	border: 1px solid #BDB76B;/*DarkKhaki*/
 	border-radius:0.1em;
+}
+.player-status {
+	margin: 0 auto 0;
+	display:inline-block;
+}
+.player-status .badge{
+	padding: 0.5rem 1rem;
 }
 
 /* Note that ninja-error is used below as well. */
