@@ -17,7 +17,7 @@
 </style>
 
 
-<h1>Ninja Stats for {$char->name()|escape}</h1>
+<h1><i class="fas fa-heart"></i> Ninja Stats for {$char->name()|escape}</h1>
 
 <div id='content' class='your-stats'>
 
@@ -35,8 +35,8 @@
   <p class='notice'>Ninja details have been changed.</p>
 {/if}
 
-<div id='switch-to-account' class='notice'>
-  <a href='/account' target='main'>View your account info</a>
+<div style="position:relative">
+  <a style="position:absolute;bottom:0;right:0;" class='btn btn-default' href='/account' target='main'><i class='fas fa-cogs'></i></a>
 </div>
 
 <div class='stats-avatar'>
@@ -117,7 +117,7 @@
         <textarea name='goals' id='goals' title="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring" placeholder="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring">{$char->goals|escape}</textarea>
         <textarea name='beliefs' id='beliefs' title="Your ninja's belief, the moral compass that keeps them going." placeholder="Your ninja's belief, the moral compass that keeps them going.">{$char->beliefs|escape}</textarea>
         <label class='glass-box'> Traits: <input name='traits' id='traits' type='text' value='{$char->traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
-        <input type='submit' value='Update' class='formButton'>
+        <input type='submit' value='Update' class='btn btn-primary formButton'>
       </fieldset>
     </form>
     <form id="profile-edit" name='profile-edit' action="/stats/update_profile" method="post">
@@ -126,7 +126,7 @@
         <div class='right-padded'>
           <textarea id='player-profile-area' name='newprofile' class='textField'>{$char->messages|escape}</textarea>
         </div>
-        <input type='submit' value='Update' class='formButton'> (<span id='characters-left'>{$profile_max_length} Character Limit</span>)
+        <input type='submit' value='Update' class='btn btn-primary formButton'> (<span id='characters-left'>{$profile_max_length} Character Limit</span>)
       </fieldset>
     </form>
   </div>

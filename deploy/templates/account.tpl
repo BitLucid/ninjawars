@@ -1,4 +1,4 @@
-<h1 class='account-header'>Account Info for <span class='account-identity'>{$account->identity()|escape}</span></h1>
+<h1 class='account-header'><i class="fas fa-cogs"></i> Account Info for <span class='account-identity'>{$account->identity()|escape}</span></h1>
 
 {literal}
 <style>
@@ -11,8 +11,8 @@ h1.account-header{
 h1 .account-identity{
   font-weight:bold;
 }
-.char-list.ninja-notice a{
-  font:30px/34px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;
+.n-active{
+  color:green;
 }
 .active-area{
   padding: 1em; background-color: rgba(250, 250, 250, 0.7); box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14); color: #000; margin: 1em; border-radius: 0.2em;
@@ -21,8 +21,14 @@ h1 .account-identity{
 .active-area label{
   display: inline-block; min-width: 15%; text-align: right; padding-right:1em;
 }
-.account-info form + form{
+.account-info .btn-group form{
+  display:inline;
+}
+.account-info form + form + form{
   margin-top:2em;
+}
+.account-deletion {
+  margin: 3rem;
 }
 </style>
 {/literal}
@@ -86,46 +92,55 @@ h1 .account-identity{
       <li>Account Id: <strong>{$account->id()}</strong></li>
       {if $oauth}<li>Single-Click login connected to: <strong>{$oauth_provider|escape}</strong></li>{/if}
     </ul>
+
+  <div class="btn-group" role="group">
+    <form action='/account/show_change_password_form' method='post'>
+      <input type='submit' value='Change Your Password' class='btn btn-default formButton'>
+    </form>
+    <form action='/account/show_change_email_form' method='post'>
+      <input type='submit' value='Change Your Email' class='btn btn-default formButton'>
+    </form>
+  </div>
+
+{if $delete_attempts < 1}
+    <div class='account-deletion'>
+      <div>
+        <form action='/account/show_confirm_delete_form' method='post'>
+          <input type='submit' value='Permanently Remove Your Account' class='formButton btn btn-danger'>
+        </form>
+      </div>
+    </div>
+{else}
+    <div class='error thick'>
+      Deletion attempts exceeded, please contact <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>
+    </div>
+{/if}
 </div>
 
 <section>
-  <h1>Your Ninjas</h1>
-  <div class='char-list ninja-notice'>
-    <a href='/stats'>View your current ninja's info</a>
-  </div>
-  <ul>
-  {foreach $ninjas as $ninja}
-    <li><a href='/player?player_id={$ninja->id()|escape:'url'|escape}'>{$ninja->name()|escape}</a> <i class="fa fa-arrow-circle-up" aria-hidden="true"></i> <span class='player-level-category {$ninja->level|level_label|css_classify}'>
-          {$ninja->level|level_label} [{$ninja->level|escape}]
-        </span> <span class='class-name {$ninja->theme|escape}'>{$ninja->class_name|escape}</span> <span class='health-bar-area' title='Max health: {$ninja->getMaxHealth()|escape}'>
-          {include file="health_bar.tpl" health=$ninja->health level=$ninja->level}
-        </span> <i class="fa fa-clock-o" aria-hidden="true"></i> {$ninja->turns} turns</li>
-  {/foreach}
-  </ul>
-</section>
-
-<form action='/account/show_change_password_form' method='post'>
-  <div>
-    <input type='submit' value='Change Your Password' class='formButton'>
-  </div>
-</form>
-<form action='/account/show_change_email_form' method='post'>
-  <div>
-    <input type='submit' value='Change Your Email' class='formButton'>
-  </div>
-</form>
-
-{if $delete_attempts < 1}
-  <form action='/account/show_confirm_delete_form' method='post'>
-    <div>
-      <input type='submit' value='Permanently Remove Your Account' class='formButton btn btn-danger'>
+  <h1><i class="fas fa-list"></i> Your Ninjas</h1>
+  <div class='glassbox char-list' style="position:relative">
+    <div class='ninja-notice' style="position:absolute;top:0;right:0;display:inline-block;">
+      <a href='/stats'><i class='fas fa-heart'></i> Current ninja's info</a>
     </div>
-  </form>
-{else}
-  <div class='error thick'>
-    Deletion attempts exceeded, please contact <a href='mailto:{$smarty.const.SUPPORT_EMAIL}'>{$smarty.const.SUPPORT_EMAIL}</a>
+    <ul>
+    {foreach $ninjas as $ninja}
+      <li>
+        <span {if $ninja->active }class="n-active"{/if}><i class="fas fa-circle" ></i> </span>
+        <a href='/player?player_id={$ninja->id()|escape:'url'|escape}'>{$ninja->name()|escape}</a>  
+        <span class='player-level-category {$ninja->level|level_label|css_classify}'>
+          {$ninja->level|level_label} [{$ninja->level|escape}]
+        </span> 
+        <span class='class-name {$ninja->theme|escape}'>{$ninja->class_name|escape}</span> 
+        <span class='health-bar-area' title='Max health: {$ninja->getMaxHealth()|escape}'>
+          {include file="health_bar.tpl" health=$ninja->health level=$ninja->level}
+        </span> 
+        <span class='turns-count'>{$ninja->turns} turns</span>
+      </li>
+    {/foreach}
+    </ul>
   </div>
-{/if}
+</section>
 
 </section><!-- end of .account-info -->
 
