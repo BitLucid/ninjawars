@@ -47,7 +47,7 @@
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
           <div class="team-wrapper">
             <div class="team-inner" style="background-image: url('{cachebust file="/images/tchalvak-smaller.jpg"}')" >
-              <a href="https://github.com/tchalvak" target="_blank" > <i class="fa fa-github" ></i></a>
+              <a href="https://github.com/tchalvak" target="_blank" > <i class="fab fa-github" ></i></a>
             </div>
             <div class="bio">
               <h3> Roy Ronalds</h3>
@@ -55,9 +55,9 @@
               <p>Workin' and coding on this game since 2003.  Likes dogs.
               <ul class='social-networks thick'>
                 <li> <a class='btn btn-default' href='/player?player_id=128274'><i class='fa fa-star'></i> Tchalvak on NinjaWars</a> </li>
-                <li> <a class='btn btn-default' target='_blank' rel='me' href="https://github.com/tchalvak" rel='nofollow'><i class='fa fa-github'></i> Github</a></li>
-                <li> <a class='btn btn-default' target='_blank' rel='me' href="https://twitter.com/tchalvak" rel='nofollow'><i class='fa fa-twitter'></i> Twitter</a></li>
-                <li> <a class='btn btn-default' target='_blank' rel='me' href="http://stackoverflow.com/users/69993/kzqai" rel='nofollow'><i class='fa fa-stack-overflow'></i> Stackoverflow</a></li>
+                <li> <a class='btn btn-default' target='_blank' rel='me' href="https://github.com/tchalvak" rel='nofollow'><i class='fab fa-github'></i> Github</a></li>
+                <li> <a class='btn btn-default' target='_blank' rel='me' href="https://twitter.com/tchalvak" rel='nofollow'><i class='fab fa-twitter'></i> Twitter</a></li>
+                <li> <a class='btn btn-default' target='_blank' rel='me' href="http://stackoverflow.com/users/69993/kzqai" rel='nofollow'><i class='fab fa-stack-overflow'></i> Stackoverflow</a></li>
               </ul>
             </div>
           </div>
@@ -65,7 +65,7 @@
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
           <div class="team-wrapper">
             <div class="team-inner" style="background-image: url('assets/img/team/2.jpg')" >
-              <a href="https://github.com/beagle" target="_blank" > <i class='fa fa-github'></i></a>
+              <a href="https://github.com/beagle" target="_blank" > <i class='fab fa-github'></i></a>
             </div>
             <div class="bio">
               <h3>Al Vazquez</h3>
@@ -75,7 +75,7 @@
               </p>
               <ul class='social-networks thick'>
                 <li> <a class='btn btn-default' href='/player?player_id=128274'><i class='fa fa-star'></i> Beagle on NinjaWars</a> </li>
-                <li> <a class='btn btn-default' target='_blank' rel='me' href="https://github.com/beagle" rel='nofollow'><i class='fa fa-github'></i> Github</a></li>
+                <li> <a class='btn btn-default' target='_blank' rel='me' href="https://github.com/beagle" rel='nofollow'><i class='fab fa-github'></i> Github</a></li>
               </ul>
             </div>
           </div>
@@ -124,7 +124,7 @@
       <p>Want to get involved?  Ninjawars is open source!<p>
     </div>
     <div class='col-xs-12 col-sm-3 col-md-3 col-lg-3'>
-      on github: <a class='external btn btn-primary' target='_blank' href="https://github.com/BitLucid/ninjawars/"><span class='external'><i class='fa fa-github'></i> github.com/BitLucid/ninjawars</span></a>
+      on github: <a class='external btn btn-primary' target='_blank' href="https://github.com/BitLucid/ninjawars/"><span class='external'><i class='fab fa-github'></i> github.com/BitLucid/ninjawars</span></a>
     </div>
     <div class='col-xs-12 col-sm-3 col-md-3 col-lg-3'>
       make suggestions on <a href='https://www.facebook.com/ninjawars.net/'>the facebook page</a>!
