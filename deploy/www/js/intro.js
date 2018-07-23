@@ -27,18 +27,16 @@ $(function () {
   });
 
   // Fade the colors for the links in gradually to slowly introduce the concepts.
-  var cssLinkify = {color:'steelBlue'};
   $('#later-progression a')
       .each(function(secs, element){
       setTimeout(function (){
-          $(element).css(cssLinkify);
+          $(element).removeClass('dull-link');
       }, 1000*(secs+1)*1);
   });
   // Finally, accentuate the join link after a while.
-  var cssAccent = {color:'steelBlue', 'font-size':'1.5em'};
   $('#join-link').each(function(index, element){
       setTimeout(function (){
-          $(element).css(cssAccent);
-      }, 1000*26);
+          $(element).removeClass('dull-link');
+      }, 1000*15);
   });
 });

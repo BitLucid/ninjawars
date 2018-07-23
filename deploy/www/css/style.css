@@ -1621,8 +1621,9 @@ time{
   display:inline-block;
   font:40px/45px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;vertical-align:middle;margin:0;padding:0;background-color:transparent;
 }
-.splash #feedback-link a{
-  font-size:2em;
+.splash #feedback-link{
+	font-size:larger;
+	margin-bottom:1rem;
 }
 .splash #news-housing{
   height:80px;
