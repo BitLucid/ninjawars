@@ -1619,7 +1619,7 @@ time{
 }
 .splash #top-logo h1{
   display:inline-block;
-  font:40px/45px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;vertical-align:middle;margin:0;padding:0;background-color:transparent;
+  font:40px/45px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;vertical-align:middle;margin:0;padding:0;background-color:transparent;border:none;
 }
 .splash #feedback-link{
 	font-size:larger;
