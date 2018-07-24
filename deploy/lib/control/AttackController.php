@@ -65,6 +65,9 @@ class AttackController extends AbstractController {
         } catch (\InvalidArgumentException $e) {
             $attack_is_legal = false;
             $error           = 'Could not determine valid target';
+        } catch (\TypeError $e) {
+            $attack_is_legal = false;
+            $error           = 'Could not determine valid target';
         }
 
         if (!$attack_is_legal) {

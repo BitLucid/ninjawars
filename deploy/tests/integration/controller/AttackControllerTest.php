@@ -36,6 +36,11 @@ class AttackControllerTest extends NWTest {
 
         $response = $this->controller->index($this->m_dependencies);
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
+        
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertNotEmpty($response_data['error']);
     }
 
     public function testAttackWithTarget() {
