@@ -7,7 +7,7 @@ use NinjaWars\core\data\Account;
 use \Constants;
 
 /**
- * Checks that all the requirements for attacking are in a legal state.
+ * Validates that all the requirements for attacking are in a legal state.
  *
  * Simple example:
  * <code>
@@ -29,8 +29,17 @@ class AttackLegal {
      * @var string
      */
     private $error;
+    /**
+     * @var Player
+     */
     private $attacker;
+    /**
+     * @var Player
+     */
     private $target;
+    /**
+     * @var Player
+     */
     private $params;
 
     /**#@-*/
@@ -42,9 +51,8 @@ class AttackLegal {
      * @param Player $p_attacker The attacker
      * @param Player $p_target The target
      * @param array $params The further conditions of the attack.
-     * @todo Soon this should dependency-inject the attacker only
      */
-    public function __construct($p_attacker, $p_target, $params = array()) {
+    public function __construct(Player $p_attacker, Player $p_target, $params = array()) {
         $this->target   = null;
         $this->error    = null;
         $defaults = ['required_turns'=>null, 'ignores_stealth'=>null, 'self_use'=>null, 'clan_forbidden'=>null];
@@ -53,15 +61,6 @@ class AttackLegal {
         if ($this->params['required_turns'] === null) {
             throw new \InvalidArgumentException('Error: AttackLegal required turns not specified.');
         }
-
-        if (!($p_attacker instanceof Player)) {
-            throw new \InvalidArgumentException('$p_attacker must be a Player object');
-        }
-
-        if (!($p_target instanceof Player)) {
-            throw new \InvalidArgumentException('$p_target must be a Player object');
-        }
-
 
         $this->attacker = $p_attacker;
         $this->target = $p_target;
@@ -78,9 +77,9 @@ class AttackLegal {
      * Return true on matching ip characteristics.
      *
      * @todo cleanup the allowable IP addresses logic
-     * @return boolean
+     * @return bool
      */
-    public function sameDomain(Player $target, Player $self) {
+    public function sameDomain(Player $target, Player $self): bool {
         // Get all the various ips that shouldn't be matches, and prevent them from being a problem.
         $server_addr = isset($_SERVER['SERVER_ADDR'])? $_SERVER['SERVER_ADDR'] : null;
         $host= gethostname();
@@ -104,7 +103,7 @@ class AttackLegal {
      *
      * @return bool
      */
-    private function isOverTimeLimit() {
+    private function isOverTimeLimit(): bool {
         $attackIntervalLimit = '.25'; // Originally .2
         $lastAttackQuery = "SELECT player_id FROM players
             WHERE player_id = :char_id
@@ -123,7 +122,7 @@ class AttackLegal {
     /**
      * Just update the last attack attempt of a player in the database.
      */
-    private function updateLastAttack(Player $attacker) {
+    private function updateLastAttack(Player $attacker): bool {
         // updates the timestamp of the last_attacked column to slow excessive attacks.
         $update_last_attacked = "UPDATE players SET last_started_attack = now() WHERE player_id = :pid";
         $updated = update_query($update_last_attacked, [':pid'=>$attacker->id()]);
@@ -135,24 +134,24 @@ class AttackLegal {
      *
      * @return boolean
      */
-    public function iAmDead(){
+    public function iAmDead(): bool{
         return $this->attacker->health < 1;
     }
 
     /**
      * Checks whether an attack is legal or not.
-     *
+     * @param bool $update_timer
      * @return boolean
      */
-    public function check($update_timer = true) {
+    public function check(bool $update_timer = true): bool {
         $attacker = $this->attacker;
         $target   = $this->target;
 
         // Will also use
-        if (!is_object($this->attacker)) {
+        if (!($this->attacker instanceof Player)) {
             $this->error = 'Only Ninja can get close enough to attack.';
             return FALSE;
-        } elseif (!is_object($this->target)){
+        } elseif (!($this->target instanceof Player)){
             $this->error = 'No valid target was found.';
             return FALSE;
         } elseif ($this->params['required_turns'] === null){

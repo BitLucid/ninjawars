@@ -100,7 +100,7 @@ class ConsiderController extends AbstractController {
     /**
      * Render the parts, since the template is always currently the same.
      */
-    private function render($parts) {
+    private function render(array $parts) {
         return new StreamedViewResponse('Fight', 'enemies.tpl', $parts, ['quickstat'=>false]);
     }
 
@@ -111,7 +111,7 @@ class ConsiderController extends AbstractController {
      * @param string $p_pattern
      * @return array
      */
-    private function getEnemyMatches($p_playerId, $p_pattern) {
+    private function getEnemyMatches(int $p_playerId, string $p_pattern) {
         // Doesn't really cause any problems to allow like match characters to pass through here.
         $sel = "SELECT player_id, uname FROM players
             WHERE uname ilike :matchString || '%' AND active = 1 AND player_id != :user
@@ -132,9 +132,9 @@ class ConsiderController extends AbstractController {
      * Retrieve enemies for the player specified
      *
      * @param int $p_playerId
-     * @return resulset
+     * @return \PDOStatement
      */
-    private function getCurrentEnemies($p_playerId) {
+    private function getCurrentEnemies(int $p_playerId): \PDOStatement {
         $query = 'SELECT player_id, active, level, uname, health FROM players JOIN enemies ON _enemy_id = player_id AND _player_id = :pid
             WHERE active = 1 ORDER BY health DESC, level DESC';
         return query($query, [':pid'=>$p_playerId]);
@@ -194,7 +194,7 @@ class ConsiderController extends AbstractController {
      * Pull the recent attackers from the event table.
      *
      * @param Player $p_player
-     * @return PDOStatement
+     * @return \PDOStatement
      */
     private function getRecentAttackers(Player $p_player) {
         DatabaseConnection::getInstance();

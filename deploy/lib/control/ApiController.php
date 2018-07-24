@@ -10,6 +10,10 @@ use NinjaWars\core\data\Message;
 use Symfony\Component\HttpFoundation\Response;
 use \PDO;
 
+/**
+ * This is a class that provides a jsonP get api via passing in a callback
+ * It is not a REST api
+ */
 class ApiController extends AbstractController {
     const ALIVE = false;
     const PRIV  = false;
@@ -107,7 +111,9 @@ class ApiController extends AbstractController {
         DatabaseConnection::getInstance();
         $user_id = (int) SessionFactory::getSession()->get('player_id');
 
-        $statement = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 and unread = 1 ORDER BY date DESC LIMIT 1");
+        $statement = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender 
+            FROM messages JOIN players ON player_id = send_from 
+            WHERE send_to = :userID1 AND send_from != :userID2 and unread = 1 ORDER BY date DESC LIMIT 1");
         $statement->bindValue(':userID1', $user_id);
         $statement->bindValue(':userID2', $user_id);
         $statement->execute();
@@ -120,7 +126,9 @@ class ApiController extends AbstractController {
         DatabaseConnection::getInstance();
         $user_id = (int) SessionFactory::getSession()->get('player_id');
 
-        $statement = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC LIMIT 1");
+        $statement = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender 
+            FROM events JOIN players ON player_id = send_from 
+            WHERE send_to = :userID and unread = 1 ORDER BY date DESC LIMIT 1");
         $statement->bindValue(':userID', $user_id);
         $statement->execute();
 
@@ -202,10 +210,16 @@ class ApiController extends AbstractController {
         return $this->playerCount();
     }
 
+    /**
+     * Get the player's inventory list.
+     */
     private function jsonInventory() {
+        $char_id = SessionFactory::getSession()->get('player_id');
         $items = query_array(
-            "SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :char_id ORDER BY item_display_name",
-            [':char_id'=> self_id()]
+            "SELECT item.item_display_name as item, amount 
+                FROM inventory join item on inventory.item_type = item.item_id 
+                WHERE owner = :char_id ORDER BY item_display_name",
+            [':char_id'=> $char_id]
         );
 
         return ['inventory' => $items];

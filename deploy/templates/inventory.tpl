@@ -3,13 +3,13 @@
   margin-bottom:3em;
 }
 #inventory-content .item-list{
-  margin-bottom:2em;margin-left:auto;margin-right:auto;width:100%;
+  margin-bottom:2em;margin-left:auto;margin-right:auto;width:100%;max-width:30rem;
 }
 #inventory-content .item-list .oddeven td{
-  font-size:1em;padding-bottom:0.3em;
+  font-size:1em;padding-bottom:0.3em;line-height:2.3;
 }
 #inventory-content .item-list .oddeven .item-name{
-  text-align: right;padding-right:1em;
+  padding-right:1em;
 }
 #inventory-content .inventory-actions{
   margin-left:1em;margin-right:1em;
@@ -22,6 +22,9 @@
 }
 #inventory-content .item-icon{
   max-width:1.5em;max-height:1.5em;
+}
+.footnote{
+  background-color:rgba(0, 0, 0, 0.5);
 }
 </style>
 
@@ -39,8 +42,6 @@
     <p class='gold-count'>
       Current gold: 石{$gold_display|escape}
     <p>
-
-    <small class='de-em'>Click a linked item to use it on yourself.</small>
 
     <table class='item-list'>
     	{foreach from=$inventory item="item_info" key="item_name"}
@@ -60,14 +61,22 @@
       </tr>
     		{/if}
     	{/foreach}
+      <tfoot>
+        <tr>
+          <td colspan=3 class='centered footnote'>
+            <small class='de-em'>(Click a linked item to use it on yourself.)</small>
+          </td>
+        </tr>
+      </tfoot>
     </table>
 
     <form id="player_search" action="/list" method="get" name="player_search">
-      <div>
-        Use an Item on a ninja?
-        <input id="searched" type="text" maxlength="50" name="searched" class="textField">
+      <div class='input-group'>
+        <input id="searched" type="text" maxlength="50" name="searched" class="form-control textField">
         <input id="hide" type="hidden" name="hide" value="dead">
-        <input type="submit" value="Search for Ninja" class="formButton">
+        <span class='input-group-btn'>
+          <button class='btn btn-primary formButton' type="submit"><i class="fas fa-search"></i> to use items on a ninja</button>
+        </span>
       </div>
     </form>
 

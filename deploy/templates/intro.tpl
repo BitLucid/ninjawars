@@ -30,7 +30,7 @@
   font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
 }
 #later-progression a{
-    color:whitesmoke;margin-top:0;margin-bottom:0;
+  margin-top:0;margin-bottom:0;
 }
 #progression .down-arrow {
   height:35px;margin-top:0.5em;
@@ -42,13 +42,7 @@
   font-size:larger;
 }
 #join-link{
-    color:#66CCFF;
-    font-size:1.5em;
-    text-shadow:#c00 2px 2px 2px;
-}
-#join-link:hover{
-    color:brown;
-    font-size:1.6em;
+    font-size:3.5rem;
 }
 .accent-sandwiched{
   display:inline-block;margin: .4em auto .3em;text-align:center;font-size:1.1em;font-style:italic;
@@ -65,6 +59,13 @@
 .solo-page #main-page-headings{
   display:inherit;
 }
+/** Text to accent as links later **/
+a.dull-link{
+  color:ghostwhite;
+}
+a.dull-link#join-link{
+  font-size:3.5rem;
+}
 </style>
 
 <div id='main-page-headings'>
@@ -75,18 +76,18 @@
 
 <div id='progression'>
   <div class='not-user js-target'>
-  	<p><a target='main' href='/signup' id='join-link'>Become a Ninja!&shy;</a></p>
+  	<p><a class='dull-link' target='main' href='/signup' id='join-link'>Become a Ninja!&shy;</a></p>
   	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
   </div>
 
 <div id='later-progression'>
-	<p>Explore the <a target='main' href='/map'>map</a> and <a target='main' href='/enemies#npcs'>attack monsters</a>, gather loot</p>
+	<p>Explore the <a class='dull-link' target='main' href='/map'>map</a> and <a class='dull-link' target='main' href='/enemies#npcs'>attack monsters</a>, gather loot</p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Kill other <a target='main' href='/list'>Ninja</a>, get stronger at the <a target='main' href='/dojo'>Dojo</a></p>
+	<p>Kill other <a class='dull-link' target='main' href='/list'>Ninja</a>, get stronger at the <a class='dull-link' target='main' href='/dojo'>Dojo</a></p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Join a <a target='main' href='/clan'>Clan</a>, wage war on other ninja clans</p>
+	<p>Join a <a class='dull-link' target='main' href='/clan'>Clan</a>, wage war on other ninja clans</p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Live by the Sword, and <a target='main' href='/shrine'>avoid death</a> if you can!</p>
+	<p>Live by the Sword, and <a class='dull-link' target='main' href='/shrine'>avoid death</a> if you can!</p>
 	</div>
 </div>
 

@@ -70,8 +70,12 @@
 
 <div id="ninja-enemy" class='solo-box'>
   <form id="enemy-add" action="/enemies/search" method="get" name="enemy_add">
-    <input id='enemy-match' required=required type="text" maxlength="50" name="enemy_match" class="textField" placeholder='Search by ninja name' value='{if isset($enemy_match)}{$enemy_match}{/if}'>
-    <input type="submit" value="Find Enemies" class="formButton">
+    <div class='input-group'>
+      <input id='enemy-match' required=required type="text" maxlength="50" name="enemy_match" class="form-control textField" placeholder='Search by ninja name' value='{if isset($enemy_match)}{$enemy_match}{/if}'>
+      <span class='input-group-btn'>
+        <input type="submit" value="Find Enemies" class="btn btn-default formButton">
+      </span>
+    </div>
   </form>
 </div>
 <!-- This hooks into quick-match js at bottom -->

@@ -24,3 +24,7 @@ function loadLastCommitMessage(){
     // https://api.github.com/repos/BitLucid/ninjawars/commits/HEAD
     $.getJSON(githubUrl, placeCommit);
 }
+
+$(document).ready(function() {
+	loadLastCommitMessage(); // To display commits on the main page.
+});

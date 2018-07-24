@@ -17,12 +17,12 @@
           <li><a href="/inventory" target="main">Inventory</a></li>
           <li><a href="/skill" target="main">Skills</a></li>
           <li><a href="/clan" target="main"><i class='fa fa-users' aria-hidden='true'></i> Clans</a></li>
-          <li class='hidden-sm-down'><a href="/shrine" target="main">⛩ Shrine</a></li>
-          <li class='hidden-sm-down'><a href="/shop" target="main">石 Shop</a></li>
-          <li class='hidden-sm-down'><a href="/work" target="main"><i class='fa fa-pagelines' aria-hidden='true'></i> Work</a></li>
-          <li class='hidden-sm-down'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> Hunt</a></li>
-          <li><a href="/events" target="main"><i class="fa fa-clock-o" aria-hidden="true"></i> Events</a></li>
-          <li><a href="/messages" target="main"><i class='fa fa-envelope-o'></i> <span class='badge'>{$unread_message_count}</span></a></li>
+          <li class='hidden-sm'><a href="/shrine" target="main">⛩ Shrine</a></li>
+          <li class='hidden-sm'><a href="/shop" target="main">石 Shop</a></li>
+          <li class='hidden-sm'><a href="/work" target="main"><i class="fab fa-pagelines"></i> Work</a></li>
+          <li class='hidden-sm hidden-md'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> Hunt</a></li>
+          <li><a href="/events" target="main"><i class="far fa-clock" aria-hidden="true"></i> Events</a></li>
+          <li><a href="/messages" target="main"><i class='fa fa-envelope-open'></i> <span class='badge'>{$unread_message_count}</span></a></li>
         </ul>
 
         {if $ninja->id()}
@@ -32,7 +32,7 @@
             {include file="gravatar.tpl" gurl=$ninja->avatarUrl()}
             <b class="caret"></b>
           </span>
-          <ul class="dropdown-menu dropdown-inverse" role="menu" aria-labelledby="dLabel">
+          <ul class="dropdown-menu dropdown-inverse avatar-dropdown" role="menu" aria-labelledby="index-avatar">
             <li><a class='ninja-name' target="main" href="/player?player_id={$ninja->id()|escape:'url'|escape}" title='Display your ninja information' tabindex="-1">
               <strong class='char-name'>{$ninja->name()|escape}</strong>
             </a></li>
@@ -54,7 +54,7 @@
             </div><!-- End of recent events -->
             <li class="divider"></li>
             <li><a target='main' href='/intro'><i class="fa fa-question-circle" tabindex="-1"></i> Intro Guide</a></li>
-            <li>
+            <li class="logout-item">
               <form method='post' action='/logout'>
                 <input type='submit' name ='logout' value='Logout' class='btn btn-default'>
               </form>
@@ -63,20 +63,11 @@
         </div><!-- end of dropdown -->
         {/if}
 
-<style>
-.navbar-fixed-top .health-container{
-  width:100%;height:0.1rem;
-}
-.navbar-fixed-top .health-bar{
-  background-color:#d9534f;min-height:1px;height:0.1rem;
-  min-width:2rem;
-}
-
-</style>
-
       </div><!--/.nav-collapse -->
+
+
       <div class='health-container'>
-          <div class='health-bar' data-json="{$ninja|@json_encode nofilter}" style='width:0%' title='600hp/1000hp'></div>
+          <div class='health-bar' data-json="{$ninja|@json_encode nofilter}" style='width:0%'</div>
       </div>
     </nav>
 

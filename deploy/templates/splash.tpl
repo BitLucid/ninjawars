@@ -42,11 +42,11 @@
 
       <aside id='sidebar-column'  class='navigation'>
 		<div id='contact-us' class='thick'>
-		  <a href='/staff' target='main' class='font-shangrila'>Contact Staff</a>
+		  <a href='/staff' target='main'>Contact Staff</a>
 		</div>
 
 		<div id='feedback-link'>
-		  <a class='font-shangrila extLink' rel='nofollow' href="https://www.facebook.com/ninjawars.net/" target="_blank">Ask a question</a>
+		  <a class='extLink' rel='nofollow' href="https://www.facebook.com/ninjawars.net/" target="_blank">Ask a question</a>
 		</div>
 
   {if isset($show_news) and $show_news}
