@@ -601,6 +601,9 @@ h1, .player-info .player-name {
 	font: 30px/34px 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;
 	letter-spacing: 0; width:100%; margin: 0 7em inherit 7em; text-shadow: black 2px 2px 3px;
 }
+.player-info .player-name {
+	min-height: 4.5rem;
+}
 h3 {
 	font: 18px/24px;
 }
@@ -3361,7 +3364,7 @@ figure.slide-captioned:hover:before {
 /*FOCUS on an image*/
 .focus {
   box-sizing:border-box;
-  border:5px solid rgba(150, 150, 150, 0.8);
+  border:5px solid rgba(43, 37, 37, 0.8);
   border-radius:none;
   -webkit-transition: all 1s ease;
      -moz-transition: all 1s ease;
