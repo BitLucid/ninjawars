@@ -1,1 +1,0 @@
-update item set image = 'sushi.png' where item_internal_name = 'sushi';
