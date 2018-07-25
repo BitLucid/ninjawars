@@ -1,5 +1,4 @@
 <?php
-
 namespace model;
 
 use NinjaWars\core\data\DatabaseConnection;

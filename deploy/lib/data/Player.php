@@ -11,6 +11,7 @@ use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
+use \model\Status;
 use \PDO;
 use \RuntimeException;
 
@@ -179,13 +180,31 @@ class Player implements Character {
 
     /**
      * Determine whether a pc is effected by a certain status
+     * @param string|int $p_status
      * @return boolean
      */
-	public function hasStatus($p_status) {
+	public function hasStatus(int $p_status) {
         $status = self::validStatus($p_status);
 
         return ((bool)$status && (bool)($this->status & $status));
-	}
+    }
+
+    /**
+     * Determine whether a pc is effected by a certain status
+     * @param string|int $p_status
+     * @return boolean
+     */
+	public function hasTextStatus(string $p_status) {
+        return (bool) Status::queryStatusEffect($p_status, $this);
+    }
+    
+    /**
+     * Add a string status to a character
+     * @return int|bool
+     */
+    public function addTextStatus(string $status_name, int $sec_duration, bool $refresh=false){
+        return Status::refreshStatusEffect($status_name, $this, $sec_duration, $refresh);
+    }
 
     /**
      * Standard damage output from 1 to max
