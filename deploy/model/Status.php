@@ -103,7 +103,6 @@ class Status extends BaseModel {
 	 */
     public static function refreshStatusEffect(string $status_name, Player $char, int $secs_duration, bool $refresh=false) {
 		// Run an update/insert 
-		$name = strtolower($status_name); // Normalize the status name
 		if(!$refresh){
 			$exists = static::queryStatusEffect($status_name, $char);
 			if($exists){

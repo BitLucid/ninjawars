@@ -9,9 +9,6 @@ deploy/www/components/
 !vendor/.gitkeep
 deploy/resources/logs/*.log
 deploy/cron/deity.log
-deploy/conf/classmap.php
-deploy/conf/connection.php
-scripts/deployed_scripts
 deploy/templates/compiled/
 deploy/model/orm/*
 !deploy/model/orm/.gitkeep
@@ -23,10 +20,6 @@ CONFIG
 # Ignore codecoverage reports wherever they reside
 /cc/
 
-# Propel build
-build.properties
-buildtime.xml
-connection.xml
 unclean
 archive
 
