@@ -148,7 +148,7 @@ class NpcController extends AbstractController {
      * @param Array $npcs
      * @return array [$npc_template, $combat_data]
      */
-    private function attackAbstractNpc($victim, Player $player, $npcs) {
+    private function attackAbstractNpc(string $victim, Player $player, array $npcs): array {
         $npc_stats        = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
         $npco             = new Npc($npc_stats); // Construct the npc object.
         $display_name     = (isset($npc_stats['name']) ? $npc_stats['name'] : ucfirst($victim));
@@ -252,7 +252,7 @@ class NpcController extends AbstractController {
      * @note
      * Used to be rand(1, 400) === 1
      */
-    private function startRandomEncounter() {
+    private function startRandomEncounter(): bool {
         $randomness = $this->randomness;
         return (boolean) (ceil($randomness() * self::RANDOM_ENCOUNTER_DIVISOR) == self::RANDOM_ENCOUNTER_DIVISOR);
     }
@@ -294,7 +294,7 @@ class NpcController extends AbstractController {
 
         if ($player && $player->turns > 0 && !empty($victim)) {
             // Strip stealth when attacking special NPCs
-            if ($player->hasStatus('stealth') && in_array(strtolower($victim), self::$STEALTH_REMOVING_NPCS)) {
+            if ($player->hasStatus(STEALTH) && in_array(strtolower($victim), self::$STEALTH_REMOVING_NPCS)) {
                 $player->subtractStatus(STEALTH);
             }
 
@@ -538,7 +538,7 @@ class NpcController extends AbstractController {
     /**
      * Attack merchant
      */
-    private function attackMerchant($player) {
+    private function attackMerchant(Player $player) {
         $damage = rand(15, 35);
         $bounty = 0;
 
