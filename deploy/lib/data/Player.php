@@ -26,11 +26,19 @@ use \RuntimeException;
  * @author      Tchalvak <ninjawarsTchalvak@gmail.com>
  * @link        http://ninjawars.net/player.php?player=tchalvak
  * @property int health
+ * @property int strength
+ * @property int speed
+ * @property int stamina
+ * @property int energy
  * @property int kills
  * @property int gold
  * @property int level
  * @property int turns
  * @property int bounty
+ * @property int days
+ * @property int member
+ * @property string last_started_attack
+ * @property int avatar_type
  * @property int ki
  * @property int karma
  * @property int active
