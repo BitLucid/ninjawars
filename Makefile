@@ -165,6 +165,7 @@ db:
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
 	psql $(DBNAME) < ./deploy/sql/schema.sql
 	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
+	psql $(DBNAME) < ./deploy/sql/migrations/*
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
 	psql $(DBNAME) -c "\d" | head -30
 	#psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO $(DBROLE);"
