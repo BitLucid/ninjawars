@@ -589,7 +589,8 @@ h1, h2, .title {
 	margin-bottom:.1em;
 }
 h2 {
-	margin: .1em auto .1em; min-width:50%; background: rgb(173, 216, 230);
+	margin: .1em auto .1em; min-width:50%; 
+	background: #00a9af;
 	font-family: 'GazelleFLFRegular', "edding-780-1","edding-780-2", Charcoal, serif;
 	letter-spacing:0.1em; font-weight:normal;
 }
@@ -1040,7 +1041,7 @@ table.playerTable .svg-shuriken svg {
 	padding: 0.3rem;
 }
 table.playerTable .Red, .player-info .Red, .class-name.Red, .class-name.Red .svg-shuriken{ /* Class Colors */
-	color:red;
+	color:#dd164f;
 	background-color:black;
 }
 table.playerTable .White, .player-info .White, .class-name.White, .class-name.White .svg-shuriken{

@@ -21,7 +21,7 @@
 	background-image:url(/images/nodes/node-tiles.png);
 	background-position:0px 0px;
 	background-repeat:no-repeat;
-    background-color:rgb(34, 59, 96);
+    background-color:#009497;
 }
 
 #map td.dojo {
@@ -35,7 +35,7 @@
 	background-image:url(/images/nodes/node-tiles.png);
 	background-position:0px -227px;
 	background-repeat:no-repeat;
-    background-color:rgb(87, 10, 91);
+    background-color:#800040;
 }
 
 #map td.rice-field {
@@ -55,7 +55,7 @@
 	background-image:url(/images/nodes/node-tiles.png);
 	background-position:0px -558px;
 	background-repeat:no-repeat;
-    background-color:goldenrod;
+    background-color:#753700;
 }
 
 #map td.grass{
@@ -77,11 +77,11 @@
 }
 
 #map td.bath-house{
-    background-color:rgb(60, 11, 37);
+    background-color:#800040;
 }
 
 #map td.village-square{
-    background-color:#FF4573;
+    background-color:#dd164f;
 }
 #map .area-name{
     background-color:rgb(55, 10, 10);font-size:1.3em;text-align:center;text-transform:uppercase;padding:.7em;
