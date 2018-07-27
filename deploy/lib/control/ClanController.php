@@ -97,7 +97,7 @@ class ClanController extends AbstractController {
 			throw new \RuntimeException('You must be a clan leader to invite new members');
 		}
 
-		$person_to_invite = Player::find(RequestWrapper::getPostOrGet('person_invited', ''));
+		$person_to_invite = Player::findByName(RequestWrapper::getPostOrGet('person_invited', ''));
 
 		$parts = [
 			'clan'      => $clan,

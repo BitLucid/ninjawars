@@ -7,7 +7,6 @@ use NinjaWars\core\data\Player;
 use \PDO;
 
 /**
- * who/what/why/where
  *
  * Ninja clans with their various members
  */
@@ -18,7 +17,7 @@ class Clan {
     private $description;
     private $founder;
 
-    public function __construct($p_id=null, $p_name=null, $data=null) {
+    public function __construct(int $p_id=null, string $p_name=null, $data=null) {
         $this->setID($p_id);
 
         if (!$p_name) {
@@ -63,7 +62,7 @@ class Clan {
     /**
      * @return string
      */
-    public function getFounder() {
+    public function getFounder(): string {
         if (!$this->founder) {
             $this->founder = query_item('select clan_founder from clan where clan_id = :id', [':id'=>$this->id]);
         }
