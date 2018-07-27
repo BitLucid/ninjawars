@@ -191,10 +191,11 @@ class DoshinController extends AbstractController {
 
         return $this->render(
             [
-                'error'     => $error,
-                'quickstat' => $quickstat,
-                'location'  => $location,
-                'command'   => 'bribe',
+                'error'         => $error,
+                'quickstat'     => $quickstat,
+                'location'      => $location,
+                'authenticated' => (bool) ($char !== null),
+                'command'       => 'bribe',
             ]
         );
     }
