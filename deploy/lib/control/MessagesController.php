@@ -84,7 +84,7 @@ class MessagesController extends AbstractController {
                 'to'            => $request->get('to', ''),
                 'informational' => $request->get('informational'),
                 'has_clan'      => (boolean)Clan::findByMember($ninja),
-                'current_tab'   => 'message',
+                'current_tab'   => 'messages',
                 'messages'      => Message::findByReceiver($ninja, $type, $limit, $offset),
                 'current_page'  => $page,
                 'pages'         => ceil($message_count / $limit),
