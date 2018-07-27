@@ -5,6 +5,14 @@
 <section>
 	<h1>Skill Effect</h1>
 
+<div class="LinkBack glassbox">
+{if $return_to_target}
+  <a href="/player?player_id={$targetObj->id()|escape:'url'}" class='return-to-location'>View {$charName}</a>
+{else}
+  <a class='return-to-location' href="/skill">Skills</a>
+{/if}
+</div>
+
 {if $attack_error}
 <div class='ninja-notice'>{$attack_error}</div>
 {else}
@@ -91,12 +99,3 @@
 {/if}{* End of there was no attack-error block. *}
 
 </section>
-
-<div class="LinkBack glassbox">
-  Return to
-{if $return_to_target}
-  <a href="/player?player_id={$targetObj->id()|escape:'url'}" class='return-to-location'>view {$charName}</a>
-{else}
-  <a class='return-to-location' href="/skill">Skills</a>
-{/if}
-</div>
