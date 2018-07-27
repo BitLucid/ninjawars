@@ -27,9 +27,15 @@ class Clan {
 
         $this->setName($p_name);
 
-        if ($data) {
+        if(null !== $data['clan_avatar_url']){
             $this->setAvatarUrl($data['clan_avatar_url']);
+        }
+
+        if(null !== $data['description']){
             $this->setDescription($data['description']);
+        }
+
+        if(null !== $data['clan_founder']){
             $this->setFounder($data['clan_founder']);
         }
     }
@@ -86,7 +92,7 @@ class Clan {
     /**
      * @return string
      */
-    public function getAvatarUrl(): string {
+    public function getAvatarUrl() {
         return $this->avatarUrl;
     }
 
