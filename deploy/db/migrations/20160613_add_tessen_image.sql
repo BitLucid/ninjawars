@@ -1,1 +1,0 @@
-update item set image = 'tessen.png' where item_internal_name = 'tessen';

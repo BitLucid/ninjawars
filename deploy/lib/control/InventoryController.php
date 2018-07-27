@@ -292,7 +292,7 @@ class InventoryController extends AbstractController {
     /**
      * @return void
      */
-    private function transferOwnership(Player $giver, Player $recipient, Item $item, $quantity) {
+    private function transferOwnership(Player $giver, Player $recipient, Item $item, int $quantity) {
         $giver_inventory = new Inventory($giver);
         $taker_inventory = new Inventory($recipient);
         $taker_inventory->add($item->identity(), $quantity);
@@ -464,10 +464,8 @@ class InventoryController extends AbstractController {
 
 	/**
 	 * Get the slugs and parameter values.
-     *
-     * @return Array
 	 */
-    private function parseSlugs() {
+    private function parseSlugs(): array {
         $url_part = $_SERVER['REQUEST_URI'];
         $path     = parse_url($url_part, PHP_URL_PATH);
         $slugs    = explode('/', trim($path, '/'));
@@ -493,10 +491,8 @@ class InventoryController extends AbstractController {
 
     /**
      * Get the count of how many of an item a player has.
-     *
-     * @return int
      */
-    private function itemCount(Player $player, Item $item) {
+    private function itemCount(Player $player, Item $item): int {
         $statement = query("SELECT sum(amount) FROM inventory WHERE item_type = :item AND owner = :owner",
             [
                 ':owner' => $player->id(),
@@ -510,10 +506,8 @@ class InventoryController extends AbstractController {
 
     /**
      * Benefits for near-equivalent levels.
-     *
-     * @return int
      */
-    private function calculateBonus(Player $user, Player $target) {
+    private function calculateBonus(Player $user, Player $target): int {
         $bonus    = 0;
         $distance = abs($target->level - $user->level);
 
@@ -527,11 +521,10 @@ class InventoryController extends AbstractController {
     /**
      * Determine the turns for caltrops
      *
-     * @return int
      * @note
      * Caltrops used to be ice scrolls.
      */
-    private function caltropTurnLoss(Player $target, $bonus) {
+    private function caltropTurnLoss(Player $target, int $bonus): int {
         $min = 1;
         $max = 0;
 
@@ -570,7 +563,7 @@ class InventoryController extends AbstractController {
      *
      * @return Item
      */
-    private function findItem($token) {
+    private function findItem($token): Item {
 	    if ($token == (int) $token && is_numeric($token) && $token) {
 	        $item = Item::find($token);
 	    } elseif (is_string($token) && $token) {
@@ -607,9 +600,9 @@ class InventoryController extends AbstractController {
     }
 
     /**
-     * @return String
+     * Get the language pluralization of an item's word
      */
-    public static function getIndefiniteArticle($p_noun) {
+    public static function getIndefiniteArticle($p_noun): string {
         return str_replace(' '.$p_noun, '', shell_exec('perl '.LIB_ROOT.'third-party/lingua-a.pl "'.escapeshellcmd($p_noun).'"'));
     }
 }

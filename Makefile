@@ -165,6 +165,7 @@ db:
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
 	psql $(DBNAME) < ./deploy/sql/schema.sql
 	psql $(DBNAME) < ./deploy/sql/custom_schema_migrations.sql
+	cat ./deploy/sql/migrations/* | psql $(DBNAME)
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
 	psql $(DBNAME) -c "\d" | head -30
 	#psql $(DBNAME) -c "REASSIGN OWNED BY ${DBCREATINGUSER} TO $(DBROLE);"
@@ -173,6 +174,9 @@ db:
 
 db-fixtures:
 	psql $(DBNAME) < ./deploy/sql/fixtures.sql
+
+backup-live-db:
+	pg_dump -h nw-live-pg10.ci1h1yzrwhkt.us-east-1.rds.amazonaws.com -p 5987 -U ninjamaster nw_live > /srv/backups/nw/nw_live_$(date +\%F-hour-\%H).sql
 
 web-start:
 	#Symlink /tmp/www/ in place of /var/www/
