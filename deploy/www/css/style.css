@@ -2645,6 +2645,10 @@ table#sight-info {
 	max-width:100%;
 }
 
+#max_heal_form input[type=submit]{
+	min-width:50%;margin: 4rem auto;
+}
+
 /* Shop location */
 
 .shop-list {

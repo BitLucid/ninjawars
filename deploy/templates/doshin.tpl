@@ -84,15 +84,21 @@
   </div>
 
 <form id="bribe_form" action="/doshin/bribe" method="post" name="bribe_form" class='half-column'>
-  Bribe down your own bounty: <input id="bribe" type="text" size="4" maxlength="6" name="bribe" class="textField" required="required">
-  <input id="command" type="submit" value="Bribe" class="formButton">
+  Bribe down your own bounty: 
+  <div class='input-group'>
+    <input id="bribe" type="number" size="4" maxlength="6" name="bribe" class="textField" required="required">
+    <input id="command" type="submit" value="Bribe" class="formButton">
+  </div>
 </form>
 {/if}
 
 {if $authenticated}
 <form action="/doshin/offerBounty" class='half-column'>
-  Offer <input type="text" name="amount" value="{$amount|default:''|escape}" size="4" class="textField" required="required"> bounty on: <input type="text" name="target" value="{$target|default:''|escape}" class="textField">
-  <input id="submit-bounty" type="submit" value="Offer Bounty" class="formButton" required="required">
+  Offer <input type="number" name="amount" value="{$amount|default:''|escape}" size="4" class="textField" required="required"> bounty on:
+  <div class='input-group'>
+    <input type="text" name="target" value="{$target|default:''|escape}" class="textField">
+    <input id="submit-bounty" type="submit" value="Offer Bounty" class="formButton" required="required">
+  </div>
 </form>
 {/if}
 
