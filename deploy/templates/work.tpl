@@ -33,13 +33,17 @@
 
 <section class='glassbox'>
 
-<p>You can earn money by working in the village fields. Field work will exchange turns for gold.</p>
-<div>The current work pay rate is: <span style='color:turquoise;'>1 Turn</span> = <span class='gold'>石{$work_multiplier}</span>.</div>
+<p>You can earn money by working in the village fields. Field work will exchange turns for gold. <span style='color:turquoise;'>1 Turn</span> = <span class='gold'>石{$work_multiplier}</span>.</p>
 {if $authenticated}
 <form id="work" action="/work/request_work" method="post" name="work">
-  <div>
-    Work in the fields for: <input id="worked" type="number" size="3" maxlength="3" min=1 max=999 name="worked" class="textField">
-    <input id="workButton" class="formButton btn btn-primary" type="submit" value="Turns" name="workButton">
+  <div style="width:40%;margin:3rem auto;">
+    <span class="input-group">
+        <span class='input-group-addon'>Work in the fields for</span>
+        <input id="worked" type="number" size="3" maxlength="3" min=1 max=999 name="worked" class="textField form-control">
+        <span class='input-group-btn'>
+            <input id="workButton" class="formButton btn btn-primary" type="submit" value="Turns" name="workButton">
+        </span>
+    </span>
   </div>
 </form>
 <p class='gold-count'>
