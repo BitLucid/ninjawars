@@ -549,7 +549,7 @@ class ClanController extends AbstractController {
 	 * @param Array $p_parts Name-Value pairs of values to send to the view
 	 * @return Response
 	 */
-	private function render($p_parts) {
+	private function render(array $p_parts): StreamedViewResponse {
 		if (!isset($p_parts['pageParts'])) {
 			$p_parts['pageParts'] = [];
 		}
@@ -582,7 +582,7 @@ class ClanController extends AbstractController {
 	 * @param Clan $p_objClan The clan to check against
 	 * @return boolean
 	 */
-	private function playerIsLeader(Player $p_objPlayer, Clan $p_objClan) {
+	private function playerIsLeader(Player $p_objPlayer, Clan $p_objClan): bool {
 		$leaders = $p_objClan->getAllClanLeaders();
 
 		foreach ($leaders AS $leader) {
@@ -595,14 +595,13 @@ class ClanController extends AbstractController {
 	}
 
     /**
-     * ????
+     * Send a message that links a player to a clan join request message
      *
      * @todo Simplify this invite system.
      * @param int $user_id
      * @param int $clan_id
-     * @return void
      */
-    private function sendClanJoinRequest($user_id, $clan_id) {
+    private function sendClanJoinRequest(int $user_id, int $clan_id) {
         DatabaseConnection::getInstance();
         $clan_obj  = new Clan($clan_id);
         $leader    = $clan_obj->getLeaderInfo();
