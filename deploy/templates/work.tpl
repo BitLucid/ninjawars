@@ -1,7 +1,11 @@
-<h1>Working in the Village</h1>
+<h1>Working in Fields of Grain</h1>
+
+<nav>
+  <a href="/map" class="return-to-location block">Return to the Village</a>
+</nav>
 
 {if $not_enough_energy}
-    		<p class='ninja-notice'>You don't have the energy in turns to do {if $worked} {$worked} turns of work.{else} that much work.{/if}</p>
+    <p class='ninja-notice'>You don't have the energy in turns to do {if $worked} {$worked} turns of work.{else} that much work.{/if}</p>
 {/if}
 
 {if !$earned_gold}
@@ -9,7 +13,7 @@
 <!-- For google ad targetting -->
 <!-- google_ad_section_start -->
     <p>On your way to the foreman's office, you pass by several <a href='/npc/attack/peasant' class='npc click-message'>peasants</a> drenched in sweat from working in the sun all day.</p>
-    <p><a href='/npc/attack/samurai' target='main' title='A samurai?  Kill him.' id='attack-samurai-link' class='npc click-message'>A foreman in samurai armor</a> barely looks up at you as he busies himself with paperwork and a cigarette. </p>
+    <p><a href='/npc/attack/samurai' target='main' title='A samurai?  Kill him.' id='attack-samurai-link' class='npc click-message'>A foreman in samurai armor</a> barely looks up at you as he busies himself with counting coins and smoking a long pipe.</p>
     <p class='speech'>So, how much work can we expect from you?</p>
 <!-- google_ad_section_end -->
 </div>
@@ -35,7 +39,7 @@
 <form id="work" action="/work/request_work" method="post" name="work">
   <div>
     Work in the fields for: <input id="worked" type="number" size="3" maxlength="3" min=1 max=999 name="worked" class="textField">
-    <input id="workButton" type="submit" value="Turns" name="workButton" class="formButton">
+    <input id="workButton" class="formButton btn btn-primary" type="submit" value="Turns" name="workButton">
   </div>
 </form>
 <p class='gold-count'>
@@ -49,10 +53,6 @@
 To earn pay for your work you must first <a href="/signup">become a citizen of this village.</a>
 </p>
 {/if}
-
-<nav>
-  <a href="/map" class="return-to-location block">Return to the Village</a>
-</nav>
 
 <hr>
 

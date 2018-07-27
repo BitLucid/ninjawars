@@ -7,7 +7,9 @@
 {/if}
 
 <h1>{$locationLabel}</h1>
-
+<nav>
+  <a href="/map" class="return-to-location block">Return to the Village</a>
+</nav>
 {if $error}
   <div class='parent'>
   {if $error eq 1}
@@ -150,8 +152,3 @@
 {/if}
 
 </section><!-- End of bounty-related -->
-
-
-<nav>
-  <a href="/map" class="return-to-location block">Return to the Village</a>
-</nav>

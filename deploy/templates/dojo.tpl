@@ -21,11 +21,11 @@
 	position:relative;
 }
 #scroll #scroll-title{
-	height:30px;
+	height:93px;
 	display:inline-block;
 	padding: 35px .7em 35px;
 	font-size: 1.3em;
-	background:#333;
+	background:#ffe1ad;
 }
 table{
 	width:90%;
@@ -55,6 +55,9 @@ table .char-title td{
 {/literal}
 
 <h1>Dojo</h1>
+<nav>
+	<a href="/map" class="return-to-location block">Return to the Village</a>
+</nav>
 
 <div class="description">
   <p>
@@ -74,7 +77,3 @@ table .char-title td{
 {foreach from=$pageParts item="part"}
 	{include file="dojo.$part.tpl"}
 {/foreach}
-
-<nav>
-	<a href="/map" class="return-to-location block">Return to the Village</a>
-</nav>

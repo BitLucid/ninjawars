@@ -32,6 +32,10 @@
 
 <h1>Casino</h1>
 
+<nav>
+  <a href="/map" class="return-to-location block">Return to the Village</a>
+</nav>
+
 {include file="flash-message.tpl"}
 
 <div class="description" style='border-bottom:1px solid gold'>
@@ -57,8 +61,4 @@
 	<div class='gold-count'>Current Gold: 石{$player->gold|number_format:0|escape}</div>
 </div><!-- End of betting div -->
 
-
-<nav>
-  <a href="/map" class="return-to-location block">Return to the Village</a>
-</nav>
 <script src='{cachebust file="/js/casino.js"}'></script>

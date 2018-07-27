@@ -859,7 +859,7 @@ ol.aboutLower {
 	margin-left: 0;
 }
 
-.formbutton, .formButton, input[type=submit], button{
+.formButton{
 	background:#190b1b;
 	color:#00b9c1;
 	font-weight:bold;
@@ -870,11 +870,11 @@ input.formButton, input[type=submit] {
 	letter-spacing: 1px;
 	padding: 0.3rem 1rem;
 }
-input.formButton:hover, input[type=submit]:hover, input.formButton:active, input[type=submit]:active{
+input.formButton:hover, input.formButton:active{
 	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 	text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
 	color:black;
-	background-color:skyblue;
+	background-color:#4dcecf;
 }
 .list-search{
 	padding: 0 1rem !important;
@@ -2075,8 +2075,8 @@ p.ninja-success,span.ninja-success{
 }
 
 .notice a, .informational a {
-	color:skyblue;
-	font-family: ‘Lucida Console’, Monaco, monospace;
+	color:#4dcecf;
+	font-family: 'Lucida Console', Monaco, monospace;
 }
 
 .ooc{
@@ -2586,7 +2586,7 @@ table#sight-info {
 	font-weight:bold; color:#F8F9F1;font-size:3rem;padding:0 1rem 0;
 }
 .message-nav .next,.message-nav .prev{
-	font-weight:bold;font-size:5rem;
+	font-weight:bold;font-size:3rem;
 }
 
 #message-sent-to {
@@ -2602,10 +2602,6 @@ table#sight-info {
 	width:50%;
 	height:3em;
 	margin-left:1em;
-}
-
-.player-communications .FormButton {
-	display:block;
 }
 .events #event-list {
 	padding:0 0 0 1em;
@@ -2942,10 +2938,10 @@ select option #blue-class-select {
 
 .return-to-location{
 	display:inline-block;
-	font-size: 1.3em;
-	margin-top: 2.5em;
-	margin-bottom: .7em;
-	margin-left: 1em;
+	font-size: 1.3rem;
+	margin-top: 0.5rem;
+	margin-bottom: 0.7rem;
+	margin-left: 1rem;
 }
 .return-to-location:before{
 	font-family: "Font Awesome 5 Free"; 
@@ -3441,8 +3437,8 @@ fieldset[disabled] a.btn {
   pointer-events: none;
 }
 .btn-default {
-  background-color:rgba(50, 50, 50, 1);
-  color:ghostwhite;
+  background-color:#190b1b;
+  color:#00b9c1;
   border-color: #ccc;
 }
 .btn-default:focus,

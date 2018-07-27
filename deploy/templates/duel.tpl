@@ -1,5 +1,9 @@
 <h1>Bath House</h1>
 
+<nav>
+  <a href="/map" class="return-to-location block">Return to the Village</a>
+</nav>
+
 <div class='description'>
 You enter the steaming confines of the bath house.
 A Geisha takes your clothes and concealed weaponry with a knowing smile.
@@ -31,7 +35,3 @@ Shedding your clothes, you ease into a large copper tub that is filled with stea
 <div>
   {$stats['player_count']} ninja around
 </div>
-
-<nav>
-  <a href="/map" class="return-to-location block">Return to the Village</a>
-</nav>

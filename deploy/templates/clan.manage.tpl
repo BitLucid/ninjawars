@@ -1,9 +1,10 @@
 <div style="float: left;margin-right: 20px;text-align: center;">
-{include file="clan.message-box.tpl"}
-</div>
-
-<div>
-	<a href="/clan/edit">
-		<button style="height: 75px;display: inline-block;">Manage Your Clan</button>
-	</a>
+	<div class='btn-group' style='display:inline-block'>
+	{include file="clan.message-box.tpl"}
+	</div>
+	<div class='inline-block' style='margin-left:3rem'>
+		<a class='btn btn-default' href="/clan/edit">
+			Manage Your Clan
+		</a>
+	</div>
 </div>
