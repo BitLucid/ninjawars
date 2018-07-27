@@ -223,6 +223,7 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
         }
 
         $this->assertGreaterThan(0, (new Npc('guard2'))->difficulty(), 'zero vs guard2 difficulty mismatch');
+        $this->assertGreaterThan((new Npc('peasant2'))->difficulty(), (new Npc('guard2'))->difficulty(), 'peasant vs guard2 difficulty mismatch');
         $this->assertGreaterThan((new Npc('firefly'))->difficulty(), (new Npc('spider'))->difficulty(), 'firefly vs spider difficulty mismatch');
         $this->assertGreaterThan((new Npc('firefly'))->difficulty(), (new Npc('guard2'))->difficulty(), 'firefly vs guard2 difficulty mismatch');
         $this->assertGreaterThan((new Npc('firefly'))->difficulty(), (new Npc('peasant2'))->difficulty(), 'firefly vs peasant2 difficulty mismatch');

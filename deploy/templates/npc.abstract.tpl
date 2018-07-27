@@ -27,29 +27,33 @@ article#fight nav{
 }
 .damage-amount{
 	background-color:rgba(130, 0, 0, .5);
-	border-radius:.5em;
+	border-radius:0.5rem;
 	display:inline-block;
 	padding:0 .3em;
-	font-weight:bold;
 }
 .damage.miss{
-	color: darkgreen;
+	color: #006100;
 }
-.damage.minor{
-	color:crimson;
+.damage.nick{
+	color:#ffe1ad;
 }
-.damage.medium{
+.damage.wound{
+	color:#dd164f;
+}
+.damage.savage{
 	color:red;
+	background-color:#2f2b2b;
 }
-.damage.major{
-	color:red;
-	background-color:grey;
-}
-.damage.critical{
+.damage.obliterate{
 	color:white;
-	background-color:red;
+	background-color:#800040;
+	font-weight:bold;
 }
-
+.damage.kill{
+	color:black;
+	background-color:#cd124d;
+	font-weight:bold;
+}
 </style>
 {/literal}
 
@@ -74,7 +78,25 @@ article#fight nav{
 	The {$race|escape} seems stronger than you!
 	{/if}
 
-	<p>The {$display_name|escape} {if $attack_damage > 0}<span class='damage medium'>wounds you</span> for <span class='damage-amount'>{$attack_damage} health</span>.{else}<span class='damage miss'>misses</span> you.{/if}</p>
+	<p>
+		The {$display_name|escape} 
+		{if $attack_damage > 0}
+			<span class='damage {$npc_damage_class}'>{$npc_damage_class}s you</span> 
+			for <span class='damage-amount {$npc_damage_class}'>{$attack_damage} health</span>.
+		{else}
+			<span class='damage miss'>misses</span> you.
+		{/if}
+	</p>
+
+	<p>
+		You
+		{if $ninja_damage > 0}
+			<span class='damage {$ninja_damage_class}'>{$ninja_damage_class} the {$display_name|escape}</span> 
+			with <span class='damage-amount {$ninja_damage_class}'>{$ninja_damage} damage</span>.
+		{else}
+			<span class='damage miss'>miss</span> the {$display_name|escape}.
+		{/if}
+	</p>
 
 	{if $display_statuses}
 	<p>The {$display_name|escape}'s strike leaves you <span class='{$display_statuses_classes}'>{$display_statuses}</span>.</p>
@@ -111,6 +133,6 @@ article#fight nav{
 
 	</section><!-- end of .npc-fight -->
 	<nav>
-		<a href='/npc/attack/{$victim|escape|escape:'url'}' class='attack-again'>Attack another {$display_name|escape}</a>
+		<a class='btn btn-primary attack-again' href='/npc/attack/{$victim|escape|escape:'url'}'>Attack another {$display_name|escape}</a>
 	</nav>
   </article>

@@ -6,6 +6,9 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\tests\MockPlayer;
 use NinjaWars\tests\MockNpc;
 
+/**
+ * Actually npc combat test
+ */
 class CombatTest extends \PHPUnit_Framework_TestCase {
 
     public function testKillPointCalculation() {
