@@ -83,7 +83,7 @@ article#fight nav{
 		{if $is_weaker}<p>The {if $is_villager}villager{/if}{if !$is_villager}{$race|escape}{/if} is no match for you!</p>{/if}
 		{if $kill_npc}<p class='ninja-notice'>You kill the {$display_name|escape}!</p>
 			{if $added_bounty}
-			<p class='bounty-notice'>{if $is_villager}You have slain a member of the village!{/if} A bounty of <em class='money'>{$added_bounty} gold</em> has been placed on your head!</p>
+			<p class='bounty-notice'>{if $is_villager}You have slain a member of the village!{/if} <em class='money'>{$added_bounty}</p>
 			{/if}
 		{else}
 			{if $is_weaker}
