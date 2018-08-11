@@ -4,7 +4,6 @@ namespace NinjaWars\core;
 use Pimple\Container;
 use NinjaWars\core\RouteNotFoundException;
 use NinjaWars\core\data\Player;
-use NinjaWars\core\extensions\SessionFactory;
 use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\extensions\NWTemplate;
