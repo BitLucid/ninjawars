@@ -17,7 +17,8 @@ try {
     $container = new Container();
 
     $container['current_player'] = function($c) {
-        return Player::find(SessionFactory::getSession()->get('player_id'));
+        $player_id = SessionFactory::getSession()->get('player_id');
+        return $player_id ? Player::find($player_id) : null;
     };
 
     $container['session'] = function($c) {
