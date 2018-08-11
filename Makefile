@@ -206,8 +206,9 @@ web-reload:
 	ps waux | grep nginx
 
 ci-pre-configure:
-	# Set php version through phpenv. 5.3 through 7.0 available
-	phpenv local 7.0
+	# Set php version
+	# Versions available: https://documentation.codeship.com/basic/languages-frameworks/php/#versions-and-setup
+	phpenv local 7.2
 	@echo "Removing xdebug on CI, by default."
 	rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 	ln -s `pwd` /tmp/root
