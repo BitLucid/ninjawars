@@ -4,6 +4,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\environment\RequestWrapper;
+use Symfony\Component\HttpFoundation\Request;
 
 class NWTest extends PHPUnit_Framework_TestCase {
     protected $m_dependencies;
@@ -26,9 +28,8 @@ class NWTest extends PHPUnit_Framework_TestCase {
      * If you want to test the logged out state, have dependencies without the current_player.
      */
     public function mockLogout(): Container{
-        SessionFactory::getSession()->set('account_id', null);
-        SessionFactory::getSession()->set('authenticated', false);
         SessionFactory::getSession()->invalidate();
+        RequestWrapper::inject(new Request());
         return new Container();
     }
 
@@ -53,6 +54,7 @@ class NWTest extends PHPUnit_Framework_TestCase {
     public function loginTearDown(){
         $session = SessionFactory::getSession();
         $session->invalidate();
+        RequestWrapper::inject(new Request());
         TestAccountCreateAndDestroy::purge_test_accounts();
     }
 }

@@ -11,17 +11,13 @@ class HomepageControllerTest extends NWTest {
 
 	public function setUp() {
         parent::setUp();
-		SessionFactory::init(new MockArraySessionStorage());
-        $char_id = TestAccountCreateAndDestroy::create_testing_account();
-		SessionFactory::getSession()->set('player_id', $char_id);
+        $this->login();
         $this->controller = new HomepageController();
     }
 
 	public function tearDown() {
-        RequestWrapper::destroy();
-        $session = SessionFactory::getSession();
-        $session->invalidate();
         parent::tearDown();
+        $this->mockLogout();
     }
 
     public function testIndex() {

@@ -14,15 +14,13 @@ class ChatControllerTest extends NWTest {
     }
 
 	public function setUp() {
-		SessionFactory::init(new MockArraySessionStorage());
-        $char_id = TestAccountCreateAndDestroy::create_testing_account();
-		SessionFactory::getSession()->set('player_id', $char_id);
+        parent::setUp();
+        $this->login();
     }
 
 	public function tearDown() {
         RequestWrapper::destroy();
-        $session = SessionFactory::getSession();
-        $session->invalidate();
+        $this->mockLogout();
     }
 
     public function testIndex() {
