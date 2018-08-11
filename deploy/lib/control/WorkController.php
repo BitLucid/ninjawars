@@ -65,6 +65,7 @@ class WorkController extends AbstractController {
      */
     public function index(Container $p_dependencies) {
         $char = $p_dependencies['current_player'];
+        $authenticated = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated', false) : false;
 
         if (!$char) {
             $char = new Player();
@@ -73,7 +74,7 @@ class WorkController extends AbstractController {
         $parts = [
             'recommended_to_work' => self::DEFAULT_RECOMMENDED_TO_WORK,
             'work_multiplier'     => self::WORK_MULTIPLIER,
-            'authenticated'       => $p_dependencies['session']->get('authenticated', false),
+            'authenticated'       => $authenticated,
             'gold_display'        => number_format($char->gold),
             'earned_gold'         => number_format(null),
             'worked'              => null,

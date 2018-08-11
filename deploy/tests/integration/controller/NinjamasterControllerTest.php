@@ -6,13 +6,15 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\control\NinjamasterController;
 use NinjaWars\core\extensions\SessionFactory;
 
-class NinjamasterControllerTest extends PHPUnit_Framework_TestCase {
+class NinjamasterControllerTest extends NWTest {
 	function setUp() {
+        parent::setUp();
         // Mock the post request.
 		SessionFactory::init(new MockArraySessionStorage());
 	}
 
 	function tearDown() {
+        parent::tearDown();
         $session = SessionFactory::getSession();
         $session->invalidate();
     }
@@ -24,19 +26,19 @@ class NinjamasterControllerTest extends PHPUnit_Framework_TestCase {
 
     public function testIndexRedirects() {
         $cont = new NinjamasterController();
-        $redir = $cont->index();
+        $redir = $cont->index($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $redir);
     }
 
     public function testToolsRedirect() {
         $cont = new NinjamasterController();
-        $redir = $cont->tools();
+        $redir = $cont->tools($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $redir);
     }
 
     public function testPlayerTagsRedirect() {
         $cont = new NinjamasterController();
-        $redir = $cont->player_tags();
+        $redir = $cont->player_tags($this->m_dependencies);
         $this->assertInstanceOf(RedirectResponse::class, $redir);
     }
 }

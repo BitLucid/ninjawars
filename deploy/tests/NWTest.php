@@ -30,7 +30,11 @@ class NWTest extends PHPUnit_Framework_TestCase {
     public function mockLogout(): Container{
         SessionFactory::getSession()->invalidate();
         RequestWrapper::inject(new Request());
-        return new Container();
+        $container = new Container();
+        $container['current_player'] = null;
+        $container['session'] = null;
+
+        return $container;
     }
 
     public function tearDown() {
@@ -44,6 +48,7 @@ class NWTest extends PHPUnit_Framework_TestCase {
         SessionFactory::init(new MockArraySessionStorage());
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::getSession()->set('authenticated', true);
+        SessionFactory::getSession()->set('player_id', $this->char->id());
         $this->account = Account::findByChar($this->char);
         SessionFactory::getSession()->set('account_id', $this->account->id());
     }

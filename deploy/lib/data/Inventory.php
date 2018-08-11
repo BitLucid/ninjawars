@@ -33,7 +33,7 @@ class Inventory implements IteratorAggregate {
      * @param string $identity
      * @param int $quantity
      */
-    public function add($identity, $quantity = 1) {
+    public function add(string $identity, int $quantity = 1): void {
         $quantity = (int)$quantity;
 
         if ($quantity > 0 && !empty($identity)) {
@@ -62,11 +62,11 @@ class Inventory implements IteratorAggregate {
                 );
             }
         } else {
-            throw new \Exception('Invalid item to add to inventory.');
+            throw new \InvalidArgumentException('Invalid item to add to inventory.');
         }
     }
 
-    public function remove($identity, $quantity = 1) {
+    public function remove(string $identity, int $quantity = 1): void {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = greatest(0, amount - :quantity) WHERE owner = :user AND item_type = (SELECT item_id FROM item WHERE lower(item_internal_name) = lower(:item)) AND amount > 0");
         $statement->bindValue(':user', $this->char->id());
@@ -78,7 +78,7 @@ class Inventory implements IteratorAggregate {
     /**
      * Get inventory list of a character
      */
-    public static function of(Player $ch, $sort=null){
+    public static function of(Player $ch, string $sort=null): array {
         if ($sort==='self') {
             $order = "ORDER BY self_use DESC, item_display_name";
         } else {
@@ -102,7 +102,7 @@ class Inventory implements IteratorAggregate {
     /**
      * Pull the counts of all items a player has.
      */
-    public function counts() {
+    public function counts(): array {
         $sql = "SELECT amount AS count, item_display_name AS name, item_internal_name, item_type, item.item_id, other_usable
             FROM inventory join item on item_type = item.item_id
             WHERE owner = :owner ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
@@ -113,7 +113,7 @@ class Inventory implements IteratorAggregate {
      * Get just the item count of a specific item.
      * @return int
      */
-    public function amount($identity){
+    public function amount(string $identity): int{
         $items_count = $this->counts();
         foreach($items_count as $item){
             if($item['item_internal_name'] === $identity){
@@ -127,7 +127,7 @@ class Inventory implements IteratorAggregate {
      * Get the info of a specific item
      * @return array Of info for an item
      */
-    public function infoFor($identity){
+    public function infoFor(string $identity): ?array{
         $items_count = $this->counts();
         foreach($items_count as $item){
             if($item['item_internal_name'] === $identity){

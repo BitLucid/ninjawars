@@ -9,6 +9,7 @@ use NinjaWars\core\data\Account;
 
 class ShopControllerTest extends NWTest {
 	function setUp() {
+        parent::setUp();
         // Mock the post request.
         $request = new Request([], ['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
         RequestWrapper::inject($request);
@@ -16,7 +17,7 @@ class ShopControllerTest extends NWTest {
 	}
 
 	function tearDown() {
-        RequestWrapper::inject(new Request([]));
+        parent::tearDown();
         $this->loginTearDown();
     }
 
@@ -27,7 +28,7 @@ class ShopControllerTest extends NWTest {
 
     public function testShopIndexDoesNotError() {
         $shop = new ShopController();
-        $shop_outcome = $shop->index();
+        $shop_outcome = $shop->index($this->m_dependencies);
         $this->assertNotEmpty($shop_outcome);
     }
 
@@ -42,7 +43,7 @@ class ShopControllerTest extends NWTest {
         $request = new Request([], ['quantity'=>5, 'item'=>'shuriken']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
-        $shop_outcome = $shop->buy();
+        $shop_outcome = $shop->buy($this->m_dependencies);
         $this->assertNotEmpty($shop_outcome);
     }
 
@@ -50,7 +51,7 @@ class ShopControllerTest extends NWTest {
         // Inject post request.
         RequestWrapper::inject(new Request([], []));
         $shop = new ShopController();
-        $shop_outcome = $shop->buy();
+        $shop_outcome = $shop->buy($this->m_dependencies);
         $this->assertNotEmpty($shop_outcome);
     }
 
@@ -61,15 +62,12 @@ class ShopControllerTest extends NWTest {
         $request = new Request([], ['quantity'=>1, 'item'=>'Shuriken']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
-        $account_id = $shop->getAccountId();
-        $response = $shop->buy();
+        $response = $shop->buy($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response);
-        $this->assertNotEmpty($account_id, 
-            'Unable to get accountId from controller/abstract controller');
-        $this->assertTrue($response_data['valid']);
+        $this->assertTrue($response_data['valid'], 'Response data was: '.print_r($response_data['valid'], true));
         $inv = new Inventory($pc);
         $this->assertEquals(1, $inv->amount('shuriken'));
     }
@@ -81,7 +79,7 @@ class ShopControllerTest extends NWTest {
         $request = new Request([], ['quantity'=>7, 'item'=>'shuriken']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
-        $response = $shop->buy();
+        $response = $shop->buy($this->m_dependencies);
         $this->assertNotEmpty($response);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
@@ -98,7 +96,7 @@ class ShopControllerTest extends NWTest {
         $request = new Request([], ['quantity'=>4, 'item'=>'zigzigX']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
-        $response = $shop->buy();
+        $response = $shop->buy($this->m_dependencies);
         $this->assertNotEmpty($response);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);

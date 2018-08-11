@@ -43,7 +43,8 @@ class DoshinController extends AbstractController {
                 'command'   => 'index',
                 'amount'    => 0,
                 'target'    => $target,
-            ]
+            ], 
+            $p_dependencies
         );
     }
 
@@ -60,7 +61,7 @@ class DoshinController extends AbstractController {
     public function offerBounty(Container $p_dependencies) {
         $request    = RequestWrapper::$request;
         $targetName = $request->get('target');
-        $char       = Player::findPlayable($this->getAccountId());
+        $char       = $p_dependencies['current_player'];
         $target     = $targetName !== null? Player::findByName($targetName) : null;
         $amountIn   = $request->get('amount');
         $amount     = (intval($amountIn) !== 0 ? intval($amountIn) : null);
@@ -103,7 +104,8 @@ class DoshinController extends AbstractController {
                 'command'   => 'offer',
                 'location'  => 0,
                 'target'    => $target,
-            ]
+            ],
+            $p_dependencies
         );
     }
 
@@ -196,7 +198,8 @@ class DoshinController extends AbstractController {
                 'location'      => $location,
                 'authenticated' => (bool) ($char !== null),
                 'command'       => 'bribe',
-            ]
+            ],
+            $p_dependencies
         );
     }
 
@@ -237,10 +240,10 @@ class DoshinController extends AbstractController {
      * Returns a view spec hash for rendering a template
      *
      * @param Array $parts Hash of variables to pass to the view
-     * @return Response
+     * @param Container $deps Pass the pimple container
      */
-    private function render($parts) {
-        $char     = Player::findPlayable($this->getAccountId());
+    private function render(array $parts, Container $deps=null): StreamedViewResponse {
+        $char     = $deps? $deps['current_player'] : null;
 
         if (!$char) {
             $char = new Player();
