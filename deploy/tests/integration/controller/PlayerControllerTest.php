@@ -5,13 +5,13 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\PlayerController;
 use NinjaWars\core\extensions\SessionFactory;
 
-class PlayerControllerTest extends PHPUnit_Framework_TestCase {
-	protected function setUp() {
+class PlayerControllerTest extends NWTest {
+	public function setUp() {
         $this->char = TestAccountCreateAndDestroy::char();
 		SessionFactory::init(new MockArraySessionStorage());
 	}
 
-	protected function tearDown() {
+	public function tearDown() {
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
