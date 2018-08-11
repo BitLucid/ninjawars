@@ -198,7 +198,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
     </div><!-- End of attacking section -->
 
     <div id='skills-section' style='padding:1em 2em;text-align:left'>
-      {if count($targeted_skills) gt 0}
+      {if !empty($targeted_skills)}
       <form id="skill_use" class="skill_use" action="/player/use_skill/" method="post" name="skill_use">
         <div class='parent'>
           <div class='child btn-group' id='skills-use-list'>
