@@ -44,6 +44,12 @@ class ClanControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
+    public function testIndexRendersEvenIfLoggedOut() {
+        $response = $this->controller->listClans($this->mockLogout());
+
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
+    }
+
     public function testViewMyClan() {
         $request = Request::create('/clan/view', 'GET', ['clan_id'=>$this->clan->id]);
         RequestWrapper::inject($request);

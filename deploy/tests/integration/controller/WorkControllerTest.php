@@ -33,6 +33,13 @@ class WorkControllerTest extends NWTest {
         $this->assertNotEmpty($work_response);
     }
 
+
+    public function testWorkIndexCanRenderEvenLoggedOut() {
+        $work = new WorkController();
+        $work_response = $work->index($this->mockLogout());
+        $this->assertNotEmpty($work_response);
+    }
+
     public function testLargeWorkRequestWithoutEnoughTurnsIsRejected() {
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::getSession()->set('player_id', $this->char->id());

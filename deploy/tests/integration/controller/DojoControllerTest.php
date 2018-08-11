@@ -50,10 +50,8 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-    public function testDojoIndexNotLoggedInDoesNotError() {
-        $session = SessionFactory::getSession();
-        $session->invalidate();
-        $this->assertNotEmpty($this->controller->index($this->m_dependencies));
+    public function testDojoIndexCanRenderEvenLoggedOut() {
+        $this->assertNotEmpty($this->controller->index($this->mockLogout()));
     }
 
     /**

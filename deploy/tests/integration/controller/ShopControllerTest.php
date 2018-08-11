@@ -31,6 +31,12 @@ class ShopControllerTest extends NWTest {
         $this->assertNotEmpty($shop_outcome);
     }
 
+    public function testShopIndexRenderableEventLoggedOut() {
+        $shop = new ShopController();
+        $shop_outcome = $shop->index($this->mockLogout());
+        $this->assertNotEmpty($shop_outcome);
+    }
+
     public function testShopPurchaseDoesNotError() {
         // Inject post request.
         $request = new Request([], ['quantity'=>5, 'item'=>'shuriken']);

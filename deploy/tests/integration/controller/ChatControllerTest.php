@@ -6,7 +6,7 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\ChatController;
 
-class ChatControllerTest extends PHPUnit_Framework_TestCase {
+class ChatControllerTest extends NWTest {
     private $controller;
 
     public function __construct() {
@@ -28,6 +28,12 @@ class ChatControllerTest extends PHPUnit_Framework_TestCase {
     public function testIndex() {
         RequestWrapper::inject(new Request());
         $response = $this->controller->index();
+
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
+    }
+
+    public function testIndexRendersEvenLoggedOut() {
+        $response = $this->controller->index($this->mockLogout());
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }

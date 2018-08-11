@@ -4,13 +4,13 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
-use NinjaWars\core\control\CasinoController;
+use NinjaWars\core\control\MapController;
 
-class CasinoControllerTest extends NWTest {
+class MapControllerTest extends NWTest {
     private $controller;
 
     public function __construct() {
-        $this->controller = new CasinoController();
+        $this->controller = new MapController();
     }
 
 	public function setUp() {

@@ -37,9 +37,15 @@ class SignupControllerTest extends NWTest {
         $this->assertInternalType('array', SignupController::getWhitelistedEmails());
     }
 
-    public function testIndexRuns() {
+    public function testSignupIndexRuns() {
         $controller = new SignupController();
         $response = $controller->index($this->m_dependencies);
+        $this->assertNotEmpty($response);
+    }
+
+    public function testSignupIndexRunsEvenIfLoggedOut() {
+        $controller = new SignupController();
+        $response = $controller->index($this->mockLogout());
         $this->assertNotEmpty($response);
     }
 

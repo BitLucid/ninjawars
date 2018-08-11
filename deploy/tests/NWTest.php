@@ -22,6 +22,16 @@ class NWTest extends PHPUnit_Framework_TestCase {
         });
     }
 
+    /**
+     * If you want to test the logged out state, have dependencies without the current_player.
+     */
+    public function mockLogout(): Container{
+        SessionFactory::getSession()->set('account_id', null);
+        SessionFactory::getSession()->set('authenticated', false);
+        SessionFactory::getSession()->invalidate();
+        return new Container();
+    }
+
     public function tearDown() {
         $this->m_dependences = null;
     }

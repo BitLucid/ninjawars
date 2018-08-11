@@ -29,4 +29,11 @@ class HomepageControllerTest extends NWTest {
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
+
+
+    public function testIndexWorksEvenLoggedOut() {
+        $response = $this->controller->index($this->mockLogout());
+
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
+    }
 }

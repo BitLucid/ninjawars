@@ -29,6 +29,12 @@ class PlayerControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($player_outcome);
     }
 
+    public function testPlayerIndexIsRenderableEventLoggedOut() {
+        $player = new PlayerController();
+        $player_outcome = $player->index($this->mockLogout());
+        $this->assertNotEmpty($player_outcome);
+    }
+
     public function testViewOtherPlayerProfile() {
         $viewing_char_id = TestAccountCreateAndDestroy::char_id_2();
         $request = new Request(['player_id'=>$viewing_char_id]);

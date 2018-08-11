@@ -42,6 +42,20 @@ class PasswordControllerTest extends NWTest {
         $this->assertEquals('reset.password.request.tpl', $response_template);
     }
 
+    public function testRequestFormRendersEvenIfLoggedOut() {
+        // Specify email request
+        $req = Request::create('/password/');
+        RequestWrapper::inject($req);
+
+        // Get a Response
+        $controller = new PasswordController();
+        $response = $controller->index($this->mockLogout());
+        $reflection = new \ReflectionProperty(get_class($response), 'template');
+        $reflection->setAccessible(true);
+        $response_template = $reflection->getValue($response);
+        $this->assertEquals('reset.password.request.tpl', $response_template);
+    }
+
     public function testPostEmailCreatesAPasswordResetRequest() {
         // Craft Post Symfony Request
         $req = Request::create('/password/post_email/');
