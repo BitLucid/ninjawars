@@ -549,6 +549,7 @@ p.style2 {font: 18px/27px 'ShangriLaNFSmallCapsRegular', Arial, sans-serif;}
 
 
 /**
+THEME:
 Color theme setting assitance from: https://material.io/design/color/the-color-system.html#tools-for-picking-colors
 Using just #800000 as the primary color
 */
@@ -1066,12 +1067,6 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray, .class-name.Gray 
 	font-style:italic;
 }
 
-.ninja-error {
-	margin: 0 auto 0;
-	display:inline-block;
-	border: 1px solid #BDB76B;/*DarkKhaki*/
-	border-radius:0.1em;
-}
 .player-status {
 	margin: 0 auto 0;
 	display:inline-block;
@@ -1079,8 +1074,6 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray, .class-name.Gray 
 .player-status .badge{
 	padding: 0.5rem 1rem;
 }
-
-/* Note that ninja-error is used below as well. */
 
 .your-stats #player-profile-section {
 	margin: 10px 0 10px 0;
@@ -1956,11 +1949,15 @@ a#skip-to-bottom{
 
 /* Errors and Notices and the Like */
 
-.ninja-error {/* Note that ninja-error is used above as well. */
-    color: #a94442;
-    background-color: #fcf8e3;
-    border-color: #ebccd1;
-	font-family: ‘Trebuchet MS’, Helvetica, sans-serif;
+.ninja-error {
+	margin: 0 auto 0;
+	display:inline-block;
+	border-style: solid;
+	border-width: thin;
+	border-radius: 0.1rem;
+	border-color: #a40746;
+    color: #800040;
+    background-color:#f8fde7;
 	font-weight:bold;
 	font-size:120%;
 	padding: 3px;
