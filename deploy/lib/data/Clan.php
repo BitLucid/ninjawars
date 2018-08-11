@@ -20,10 +20,9 @@ class Clan {
     public function __construct(int $p_id=null, string $p_name=null, $data=null) {
         if($p_id){
             $this->setID($p_id);
-        }
-
-        if (!$p_name && $p_id) {
-            $p_name = $this->nameFromId($p_id);
+            if(!$p_name){
+                $p_name = $this->nameFromId($p_id);
+            }
         }
 
         if($p_name){
@@ -82,7 +81,7 @@ class Clan {
     }
 
     /**
-     * @return void
+     * @return string
      */
     public function getDescription() {
         return $this->description;
