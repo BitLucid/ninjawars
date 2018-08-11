@@ -18,13 +18,17 @@ class Clan {
     private $founder;
 
     public function __construct(int $p_id=null, string $p_name=null, $data=null) {
-        $this->setID($p_id);
+        if($p_id){
+            $this->setID($p_id);
+        }
 
-        if (!$p_name) {
+        if (!$p_name && $p_id) {
             $p_name = $this->nameFromId($p_id);
         }
 
-        $this->setName($p_name);
+        if($p_name){
+            $this->setName($p_name);
+        }
 
         if(null !== $data['clan_avatar_url']){
             $this->setAvatarUrl($data['clan_avatar_url']);
@@ -43,7 +47,7 @@ class Clan {
         return $this->name;
     }
 
-    public function setID($p_id) {
+    public function setID(int $p_id) {
         $this->id = (int)$p_id;
     }
 
@@ -196,9 +200,7 @@ class Clan {
     /**
      * When a leader removes a member without choice.
      */
-    public function kickMember(int $playerId, Player $kicker, $selfLeave=false) {
-        $today = date("F j, Y, g:i a");
-
+    public function kickMember(int $playerId, Player $kicker, bool $selfLeave=false): bool {
         query(
             "DELETE FROM clan_player WHERE _player_id = :player AND _clan_id = :clan",
             [
@@ -207,10 +209,10 @@ class Clan {
             ]
         );
 
-        if ($selfLeave) {
-            $msg = "You have been kicked out of ".$this->getName()." by ".$kicker->name()." on $today.";
+        if (!$selfLeave) {
+            $msg = "You have been kicked out of ".$this->getName()." by ".$kicker->name()." on ".date("F j, Y, g:i a").".";
         } else {
-            $msg = "You have left clan ".$this->getName()." on $today.";
+            $msg = "You have left clan ".$this->getName()." on ".date("F j, Y, g:i a").".";
         }
 
         Message::create([
