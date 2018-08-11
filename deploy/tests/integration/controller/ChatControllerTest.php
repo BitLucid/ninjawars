@@ -13,13 +13,13 @@ class ChatControllerTest extends NWTest {
         $this->controller = new ChatController();
     }
 
-	protected function setUp() {
+	public function setUp() {
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	protected function tearDown() {
+	public function tearDown() {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
