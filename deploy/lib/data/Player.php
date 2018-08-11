@@ -774,7 +774,7 @@ class Player implements Character {
      * @param int|null $account_id
      * @return Player|null
      */
-    public static function findPlayable(int $account_id){
+    public static function findPlayable(int $account_id): ?Player{
         // Two db calls for now
         $pid = query_item('select player_id from players p 
             join account_players ap on p.player_id = ap._player_id
@@ -789,7 +789,7 @@ class Player implements Character {
      * Find player by name
      * @return Player|null
      */
-    public static function findByName(string $name){
+    public static function findByName(string $name): ?Player{
         $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
         return self::find($id);
     }

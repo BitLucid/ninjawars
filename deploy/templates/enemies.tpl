@@ -4,7 +4,7 @@
 
 {if $logged_in}
 
-{if count($recent_attackers) gt 0}
+{if $recent_attackers && count($recent_attackers) gt 0}
 	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
 {/if}
 

@@ -54,17 +54,24 @@ writable:
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
 
+
 install-system:
 	@echo "Installing initial system and server dependencies."
 	@echo "In the case of the database and webserver,"
 	@echo "they need professional admin configuration after initial install."
 	@echo "Since we are running php 7, you may need to install a source repo for php7"
+	@echo "For the ubuntu ppa, see: https://launchpad.net/~ondrej/+archive/ubuntu/php "
 	apt-get install python3 python3-dev python3-lxml unzip
 	echo "Installing php cli"
-	apt-get install php7.0-cli
-	apt-get install php7.0-fpm php7.0-xml php7.0-pgsql php7.0-curl php7.0-mbstring
-	apt-get install postgresql-client nginx 
+	apt-get install php7.2-cli
+	apt-get install php7.2-fpm php7.2-xml php7.2-pgsql php7.2-curl php7.2-mbstring
+	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 
+install-webserver:
+	apt install nginx
+
+install-database-client:
+	apt install postgresql-client
 
 start-chat:
 	touch /var/log/nginx/ninjawars.chat-server.log
@@ -84,7 +91,7 @@ pre-test:
 	@find ./deploy/cron/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	php deploy/check.php
 	# Check for presence of database
-	psql -lqt | cut -d \| -f 1 | grep -qw $(DBNAME)
+	psql -lqt | cut -d \| -f 1 | grep -w $(DBNAME)
 
 test: pre-test test-main test-functional post-test
 

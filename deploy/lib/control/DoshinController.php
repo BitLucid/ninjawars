@@ -61,7 +61,7 @@ class DoshinController extends AbstractController {
         $request    = RequestWrapper::$request;
         $targetName = $request->get('target');
         $char       = Player::findPlayable($this->getAccountId());
-        $target     = Player::findByName($targetName);
+        $target     = $targetName !== null? Player::findByName($targetName) : null;
         $amountIn   = $request->get('amount');
         $amount     = (intval($amountIn) !== 0 ? intval($amountIn) : null);
         $quickstat  = false;

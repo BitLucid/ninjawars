@@ -23,7 +23,7 @@ class NinjamasterController extends AbstractController {
     protected $self = null;
 
     public function __construct() {
-        $this->self = Player::findPlayable($this->getAccountId());
+        $this->self = $this->getAccountId()? Player::findPlayable($this->getAccountId()) : null;
     }
 
     /**

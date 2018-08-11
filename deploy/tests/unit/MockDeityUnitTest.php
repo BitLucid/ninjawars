@@ -3,6 +3,7 @@ namespace NinjaWars\tests\unit;
 
 use \PHPUnit_Framework_TestCase;
 use NinjaWars\tests\MockDeity;
+use NinjaWars\tests\MockGameLog;
 
 class MockDeityUnitTest extends PHPUnit_Framework_TestCase {
 
