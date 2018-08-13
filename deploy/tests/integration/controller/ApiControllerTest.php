@@ -5,7 +5,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\ApiController;
 
-class ApiControllerTest extends PHPUnit_Framework_TestCase {
+class ApiControllerTest extends NWTest {
     const CALLBACK = 'callback';
     private $PAYLOAD_RE;
 

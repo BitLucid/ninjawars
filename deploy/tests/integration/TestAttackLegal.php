@@ -7,7 +7,7 @@ use NinjaWars\core\data\Player;
 /**
  * @TODO: Need to be able to mock ips and ensure ability to attack even when both players have the server ip, somehow.
  */
-class TestAttackLegal extends PHPUnit_Framework_TestCase {
+class TestAttackLegal extends NWTest {
     /**
      * group char
      */

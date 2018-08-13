@@ -3,7 +3,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\Account;
 
-class CharacterTest extends PHPUnit_Framework_TestCase {
+class CharacterTest extends NWTest {
     private $previous_server_ip = '';
     private $char_id;
 

@@ -6,7 +6,7 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\EventsController;
 
-class EventsControllerTest extends PHPUnit_Framework_TestCase {
+class EventsControllerTest extends NWTest {
     private $controller;
 
     public function __construct() {
@@ -14,12 +14,14 @@ class EventsControllerTest extends PHPUnit_Framework_TestCase {
     }
 
 	protected function setUp() {
+        parent::setUp();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);
     }
 
 	protected function tearDown() {
+        parent::tearDown();
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();

@@ -7,7 +7,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 
-class NWTest extends PHPUnit_Framework_TestCase {
+class NWTest extends \PHPUnit\Framework\TestCase {
     protected $m_dependencies;
 
     /**

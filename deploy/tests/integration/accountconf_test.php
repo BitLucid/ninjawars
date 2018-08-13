@@ -47,7 +47,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * Test that after login, the ninja is toggled to active.
  */
-class TestAccountConfirmation extends PHPUnit_Framework_TestCase {
+class TestAccountConfirmation extends NWTest {
     // These will be initialized in the test setup.
     public $test_email = null;
     public $test_password = null;

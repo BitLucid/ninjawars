@@ -1,7 +1,7 @@
 <?php
 use NinjaWars\core\data\Clan;
 
-class ClanUnitTest extends PHPUnit_Framework_TestCase {
+class ClanUnitTest extends NWTest {
     private $clan;
     private $data;
 
@@ -15,12 +15,14 @@ class ClanUnitTest extends PHPUnit_Framework_TestCase {
         ];
     }
 
-	protected function setUp() {
+	public function setUp() {
+        parent::setUp();
         $this->clan = new Clan($this->data['clan_id'], $this->data['clan_name'], $this->data);
     }
 
 
-	protected function tearDown() {
+	public function tearDown() {
+        parent::tearDown();
     }
 
     public function testClanConstructor() {

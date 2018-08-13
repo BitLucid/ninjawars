@@ -8,7 +8,7 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Player;
 use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 
-class NewsControllerTest extends \PHPUnit_Framework_TestCase {
+class NewsControllerTest extends NWTest {
 	public function setUp() {
         $this->char = Player::find(TestAccountCreateAndDestroy::char_id());
         SessionFactory::init(new MockArraySessionStorage());
