@@ -59,7 +59,7 @@ class NinjamasterController extends AbstractController {
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivial_npcs      = NpcFactory::allTrivialNpcs();
 
-        $items = $this->items();
+        $items = $this->items($p_dependencies);
 
         $char_ids  = preg_split("/[,\s]+/", $request->get('view'));
         $char_name = trim($request->get('char_name'));
