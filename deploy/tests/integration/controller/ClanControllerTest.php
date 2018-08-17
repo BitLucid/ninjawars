@@ -188,8 +188,7 @@ class ClanControllerTest extends NWTest {
         $this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // try to leave
-        $clan_id = query('select clan_id from clan limit 1');
-        $request = Request::create('/clan/join', 'GET', ['clan_id'=>1]);
+        $request = Request::create('/clan/join', 'GET', ['clan_id'=>$this->clan->id]);
         RequestWrapper::inject($request);
         $response = $this->controller->join($this->m_dependencies);
 

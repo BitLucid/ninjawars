@@ -198,20 +198,21 @@ class ClanController extends AbstractController {
 
 	/**
 	 * Sends a request to a clan leader for the current user to join a clan
-	 *
-     * @param Container
-	 * @return Response
 	 */
-	public function join(Container $p_dependencies) {
+	public function join(Container $p_dependencies): StreamedViewResponse {
 		$clanID = (int) RequestWrapper::getPostOrGet('clan_id', 0);
 		$clan   = Clan::find($clanID);
-
-		$this->sendClanJoinRequest($p_dependencies['session']->get('player_id'), $clanID);
-
+		
 		$leader = $clan->getLeaderInfo();
 
+		$message = 'The leader to this clan is inactive, try another.';
+		if(!empty($leader)){
+			$available = $this->sendClanJoinRequest($p_dependencies['session']->get('player_id'), $clanID);
+			$message = "Your request to join {$clan->getName()} has been sent to $leader[uname]";
+		}
+
 		return $this->render([
-			'action_message' => "Your request to join {$clan->getName()} has been sent to $leader[uname]",
+			'action_message' => $message,
 			'title'          => 'Viewing a clan',
 			'clan'           => $clan,
 			'pageParts'      => [
@@ -225,11 +226,9 @@ class ClanController extends AbstractController {
 	/**
 	 * Deletes a clan and messages all members that it has been disbanded
 	 *
-     * @param Container
-	 * @return Response
-	 * @throws \Exception The player disbanding must be the leader of the clan
+	 * @throws \RuntimeException On invalid leader disband request
 	 */
-	public function disband(Container $p_dependencies) {
+	public function disband(Container $p_dependencies): StreamedViewResponse {
 		$player = $p_dependencies['current_player'];
 		$clan   = Clan::findByMember($player);
 		$sure   = RequestWrapper::getPostOrGet('sure', '');
@@ -607,19 +606,28 @@ class ClanController extends AbstractController {
         $leader    = $clan_obj->getLeaderInfo();
         $leader_id = $leader['player_id'];
         $user      = Player::find($user_id);
-        $username  = $user->name();
+		$username  = $user->name();
+		
+		if(!$leader_id){
+			return [
+				'error'=>true,
+				'message'=>'No leader to this clan is available, sorry.'
+			];
+		}
 
         $confirmStatement = DatabaseConnection::$pdo->prepare('SELECT verification_number FROM players WHERE player_id = :user');
         $confirmStatement->bindValue(':user', $user_id);
         $confirmStatement->execute();
-        $confirm = $confirmStatement->fetchColumn();
+		$confirm = $confirmStatement->fetchColumn();
+		
+
 
         // These ampersands get encoded later.
         $url = "[href:clan/review/?joiner=$user_id&confirmation=$confirm|Confirm Request]";
 
         $join_request_message = 'CLAN JOIN REQUEST: '.htmlentities($username)." has sent a request to join your clan.
             If you wish to allow this ninja into your clan click the following link:
-                $url";
+				$url";
 
         Message::create([
             'send_from' => $user_id,
