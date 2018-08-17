@@ -67,17 +67,17 @@ class RouterUnitTest extends NWTest {
     }
 
     public function testExecuteBadClassname() {
-        $this->setExpectedException('\RuntimeException');
+        $this->expectException('\RuntimeException');
         Router::execute('junkola', '', $this->m_dependencies);
     }
 
     public function testExecuteBadCommand() {
-        $this->setExpectedException('\RuntimeException');
+        $this->expectException('\RuntimeException');
         Router::execute('work', 'junkola', $this->m_dependencies);
     }
 
     public function testRouteBadClassname() {
-        $this->setExpectedException('\RuntimeException');
+        $this->expectException('\RuntimeException');
         $request = Request::create('/junkola/', 'GET', []);
         Router::route($request, $this->m_dependencies);
     }

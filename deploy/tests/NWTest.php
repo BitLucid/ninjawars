@@ -13,6 +13,7 @@ class NWTest extends \PHPUnit\Framework\TestCase {
     /**
      */
     public function setUp() {
+        parent::setUp();
         $this->m_dependencies = new Container();
 
         $this->m_dependencies['session'] = function($c) {

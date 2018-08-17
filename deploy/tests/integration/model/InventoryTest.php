@@ -5,12 +5,15 @@ use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Player;
 use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 
-class InventoryTest extends \PHPUnit_Framework_TestCase {
+class InventoryTest extends \NWTest {
+    
     public function setUp() {
+        parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
     }
 
     public function tearDown() {
+        parent::tearDown();
         TestAccountCreateAndDestroy::destroy();
     }
 

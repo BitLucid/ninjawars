@@ -5,8 +5,9 @@ use Symfony\Component\HttpFoundation\Request; // Just for request created below.
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\Filter;
 
-class TestInput extends PHPUnit_Framework_TestCase {
-	protected function setUp() {
+class TestInput extends NWTest {
+	public function setUp() {
+		parent::setUp();
 		$get = [
 			'id'         => 7,
 			'ninja_name' => 5,
@@ -28,7 +29,8 @@ class TestInput extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request); // Pass a request to be used by tests
 	}
 
-	protected function tearDown() {
+	public function tearDown() {
+		parent::tearDown();
         RequestWrapper::destroy();
     }
 

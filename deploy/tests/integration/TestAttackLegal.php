@@ -37,7 +37,6 @@ class TestAttackLegal extends NWTest {
     }
 
     public function testAttackLegalCantAttackSelfEvenIfUsingSelfIdVsSelfUsername() {
-        //$this->setExpectedException('InvalidArgumentException');
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
         $this->oldify_character_last_attack($char_id);
         $player = Player::find($char_id);

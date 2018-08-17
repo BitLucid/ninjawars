@@ -1,18 +1,11 @@
 <?php
 namespace NinjaWars\tests\unit;
 
-use \PHPUnit_Framework_TestCase;
 use NinjaWars\tests\MockDeity;
 use NinjaWars\tests\MockGameLog;
+use \NWTest;
 
-class MockDeityUnitTest extends PHPUnit_Framework_TestCase {
-
-	protected function setUp() {
-    }
-
-	protected function tearDown() {
-    }
-
+class MockDeityUnitTest extends NWTest {
     public function testMockDeityFunctions(){
         $deity = new MockDeity(new MockGameLog());
         $this->assertTrue((bool)$deity->increaseki());

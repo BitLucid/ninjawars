@@ -12,12 +12,9 @@ class ClanControllerTest extends NWTest {
     private $controller;
     private $clan;
 
-    public function __construct() {
-        $this->controller = new ClanController();
-    }
-
 	public function setUp() {
         parent::setUp();
+        $this->controller = new ClanController();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);
@@ -126,7 +123,7 @@ class ClanControllerTest extends NWTest {
     }
 
     public function testInviteAsNotLeader() {
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
 
         // create new character
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
@@ -144,7 +141,7 @@ class ClanControllerTest extends NWTest {
     }
 
     public function testInviteWithoutClan() {
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
 
         // create new character
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
@@ -220,7 +217,7 @@ class ClanControllerTest extends NWTest {
     }
 
     public function testLeaveAsLeader() {
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
 
         // try to leave
         $request = Request::create('/clan/leave', 'GET', []);
@@ -254,7 +251,7 @@ class ClanControllerTest extends NWTest {
     }
 
     public function testDisbandAsMember() {
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
 
         // create new character
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
@@ -291,7 +288,7 @@ class ClanControllerTest extends NWTest {
     }
 
     public function testKickAsMember() {
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
 
         $char_id_1 = $this->m_dependencies['session']->get('player_id');
 

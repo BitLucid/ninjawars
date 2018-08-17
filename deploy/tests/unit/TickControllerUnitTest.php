@@ -1,17 +1,18 @@
 <?php
 namespace NinjaWars\tests\unit;
 
-use \PHPUnit_Framework_TestCase;
 use NinjaWars\core\control\TickController;
 use NinjaWars\tests\MockGameLog;
 use NinjaWars\tests\MockDeity;
 
-class TickControllerUnitTest extends PHPUnit_Framework_TestCase {
+class TickControllerUnitTest extends \NWTest {
 
-	protected function setUp() {
+	public function setUp() {
+        parent::setUp();
     }
 
-	protected function tearDown() {
+	public function tearDown() {
+        parent::tearDown();
     }
 
     function testTickControllerInstantiates() {

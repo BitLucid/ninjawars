@@ -9,12 +9,9 @@ use NinjaWars\core\control\CasinoController;
 class CasinoControllerTest extends NWTest {
     private $controller;
 
-    public function __construct() {
-        $this->controller = new CasinoController();
-    }
-
 	public function setUp() {
         parent::setUp();
+        $this->controller = new CasinoController();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);

@@ -1,12 +1,12 @@
 <?php
 use NinjaWars\core\data\Quest;
 
-class QuestUnitTest extends PHPUnit_Framework_TestCase {
+class QuestUnitTest extends NWTest {
     private $quest;
     private $data;
 
-    public function __construct() {
-
+	public function setUp() {
+        parent::setUp();
         $this->data = [
             'title'       => 'Some QuEst TiTle HeRe',
             'description'     => 'What I want you to do, X, Y, and Z',
@@ -15,14 +15,11 @@ class QuestUnitTest extends PHPUnit_Framework_TestCase {
             'proof'           => 'For proof, provide screenshots',
             'difficulty'      => 20,
         ];
-    }
-
-	protected function setUp() {
         $this->quest = new Quest($this->data);
     }
 
-
-	protected function tearDown() {
+	public function tearDown() {
+        parent::tearDown();
         $this->quest = null;
     }
 

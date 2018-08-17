@@ -5,11 +5,13 @@ use NinjaWars\core\extensions\NWTemplate;
 
 class NWTemplateUnitTest extends NWTest {
     public function setUp() {
-		SessionFactory::init(new MockArraySessionStorage());
+      parent::setUp();
+		  SessionFactory::init(new MockArraySessionStorage());
     }
 
     public function tearDown() {
-		SessionFactory::annihilate();
+      parent::tearDown();
+		  SessionFactory::annihilate();
     }
 
     public function testCustomConstructor() {

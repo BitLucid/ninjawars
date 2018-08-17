@@ -2,9 +2,10 @@
 use NinjaWars\core\data\Quest;
 use NinjaWars\core\data\Player;
 
-class TestQuest extends PHPUnit_Framework_TestCase {
+class TestQuest extends NWTest {
 
-    protected function setUp() {
+    public function setUp() {
+        parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
 
         $this->data = [
@@ -19,7 +20,8 @@ class TestQuest extends PHPUnit_Framework_TestCase {
         $this->quest = new Quest($this->data);
     }
 
-    protected function tearDown() {
+    public function tearDown() {
+        parent::tearDown();
         TestAccountCreateAndDestroy::destroy();
         /*if ($this->quest) {
             //query('delete from quests where quest_id = :id and quest_id > 1', [':id'=>$this->quest->id()]);

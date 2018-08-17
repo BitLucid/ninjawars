@@ -3,17 +3,14 @@ use NinjaWars\core\data\Clan;
 
 class ClanUnitTest extends NWTest {
     private $clan;
-    private $data;
+    private $data = [
+        'clan_name'       => 'Clan Name',
+        'clan_avatar_url' => 'http://localhost/',
+        'clan_founder'    => 'Founder',
+        'description'     => 'Clan description',
+        'clan_id'         => 1,
+    ];
 
-    public function __construct() {
-        $this->data = [
-            'clan_name'       => 'Clan Name',
-            'clan_avatar_url' => 'http://localhost/',
-            'clan_founder'    => 'Founder',
-            'description'     => 'Clan description',
-            'clan_id'         => 1,
-        ];
-    }
 
 	public function setUp() {
         parent::setUp();

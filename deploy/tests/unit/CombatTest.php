@@ -9,7 +9,7 @@ use NinjaWars\tests\MockNpc;
 /**
  * Actually npc combat test
  */
-class CombatTest extends \PHPUnit_Framework_TestCase {
+class CombatTest extends NWTest {
 
     public function testKillPointCalculation() {
         $char = new MockPlayer();

@@ -9,12 +9,9 @@ use NinjaWars\core\control\ChatController;
 class ChatControllerTest extends NWTest {
     private $controller;
 
-    public function __construct() {
-        $this->controller = new ChatController();
-    }
-
 	public function setUp() {
         parent::setUp();
+        $this->controller = new ChatController();
         $this->login();
     }
 

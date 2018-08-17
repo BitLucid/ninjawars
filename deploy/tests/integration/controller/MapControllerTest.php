@@ -9,12 +9,9 @@ use NinjaWars\core\control\MapController;
 class MapControllerTest extends NWTest {
     private $controller;
 
-    public function __construct() {
-        $this->controller = new MapController();
-    }
-
 	public function setUp() {
         parent::setUp();
+        $this->controller = new MapController();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);

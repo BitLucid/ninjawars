@@ -3,7 +3,7 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\Player;
 
-class NpcUnitTest extends PHPUnit_Framework_TestCase {
+class NpcUnitTest extends NWTest {
     public function testInstantiatingABlankNpc() {
         $npc = new Npc(array());
         $this->assertTrue($npc instanceof Npc);
@@ -247,31 +247,27 @@ class NpcUnitTest extends PHPUnit_Framework_TestCase {
     public function testAllNonTrivialNpcs() {
         $npcs = NpcFactory::allNonTrivialNpcs();
         $zeroDmgNpcs = [];
-
         foreach ($npcs as $npc) {
             if ($npc->difficulty() <= 0) {
                 $zeroDmgNpcs[] = $npc;
             }
         }
-
         $this->assertEmpty($zeroDmgNpcs);
     }
 
     public function testAllTrivialNpcs() {
         $npcs = NpcFactory::allTrivialNpcs();
         $damagingNpcs = [];
-
         foreach ($npcs as $npc) {
             if ($npc->difficulty() > 0) {
                 $damagingNpcs[] = $npc;
             }
         }
-
         $this->assertEmpty($damagingNpcs);
     }
 
     public function testFleshOutFailure() {
-        $this->setExpectedException(NinjaWars\core\InvalidNpcException::class);
+        $this->expectException(NinjaWars\core\InvalidNpcException::class);
         NpcFactory::fleshOut('NotARealNPCByAnyMeans', null);
     }
 }

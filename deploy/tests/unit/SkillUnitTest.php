@@ -2,10 +2,11 @@
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 
-class SkillUnitTest extends PHPUnit_Framework_TestCase {
+class SkillUnitTest extends NWTest {
     private $skill;
 
-    public function __construct() {
+    public function setUp() {
+        parent::setUp();
         $this->skill = new Skill();
     }
 

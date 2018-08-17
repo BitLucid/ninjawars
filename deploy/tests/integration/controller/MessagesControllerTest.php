@@ -9,12 +9,9 @@ use NinjaWars\core\control\MessagesController;
 class MessagesControllerTest extends NWTest {
     private $controller;
 
-    public function __construct() {
-        $this->controller = new MessagesController();
-    }
-
 	public function setUp() {
         parent::setUp();
+        $this->controller = new MessagesController();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);
