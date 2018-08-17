@@ -186,7 +186,7 @@ class AttackController extends AbstractController {
             $victor        = $attacker;
             $loser         = $target;
             $bounty_result = Combat::runBountyExchange($victor, $loser);
-            $loot          = floor($gold_mod * $loser->gold);
+            $loot          = (int) floor($gold_mod * $loser->gold);
 
             if ($options['duel']) {
                 $killpoints = Combat::killpointsFromDueling($attacker, $target);
@@ -212,7 +212,7 @@ class AttackController extends AbstractController {
         } else {
             $victor = $target;
             $loser  = $attacker;
-            $loot   = floor($gold_mod * $loser->gold);
+            $loot   = (int) floor($gold_mod * $loser->gold);
 
             $this->lose($loser, $victor, $loot);
             $this->win($victor, $loser, $loot, $killpoints);
