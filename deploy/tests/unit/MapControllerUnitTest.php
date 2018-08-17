@@ -5,9 +5,6 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 class MapControllerUnitTest extends NWTest {
     private $controller;
 
-    public function __construct() {
-    }
-
     public function setUp() {
         parent::setUp();
         $this->controller = new MapController();

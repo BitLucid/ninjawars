@@ -3,11 +3,13 @@ use NinjaWars\core\data\SkillDAO;
 use NinjaWars\core\data\Skill;
 use NinjaWars\tests\MockPlayer;
 
-class SkillTest extends PHPUnit_Framework_TestCase {
+class SkillTest extends NWTest {
 	public function setUp(){
+        parent::setUp();
 	}
 
 	public function tearDown(){
+        parent::tearDown();
     }
 
     public function testAllSkillsCanBePulled(){

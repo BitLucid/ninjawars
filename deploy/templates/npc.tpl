@@ -8,12 +8,6 @@ nav.npcs{
 </style>
 
 <h1>Fight!</h1>
-{if $turns lte 0}
-{* These should be real error conditions, not part of the template *}
-You have no turns left today. Buy a amanita mushroom or wait for your turns to replenish.
-{elseif $attacked == 1}
-	{include file=$npc_template}
-{/if}
 <nav class='npcs'>
 {if !$health}
     <p class='ninja-notice death'>
@@ -23,3 +17,9 @@ You have no turns left today. Buy a amanita mushroom or wait for your turns to r
 	<a href="/enemies" class='return-to-location block'>Fight something else</a>
 {/if}
 </nav>
+{if $turns lte 0}
+{* These should be real error conditions, not part of the template *}
+You have no turns left today. Buy a amanita mushroom or wait for your turns to replenish.
+{elseif $attacked == 1}
+	{include file=$npc_template}
+{/if}

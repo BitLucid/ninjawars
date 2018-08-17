@@ -1,9 +1,24 @@
-<h1>Item Use</h1>
-
 {if $target}
   {assign var="charName" value=$target->name()|escape}
   {assign var="charName" value="<strong class=\"char-name\">$charName</strong>"}
 {/if}
+{if $return_to eq 'player' and $target}
+  {assign var="targetId" value=$target->id()|escape:'url'}
+  {assign var="urlBack" value="/player?player_id=$targetId"}
+  {assign var="linkText" value="view $charName"}
+{elseif $return_to eq 'inventory'}
+  {assign var="urlBack" value="/inventory"}
+  {assign var="linkText" value="Inventory"}
+{else}
+  {assign var="urlBack" value="/enemies"}
+  {assign var="linkText" value="Combat"}
+{/if}
+
+<h1>Item Use</h1>
+
+<nav class='LinkBack glassbox'>
+  <a href="{$urlBack}" class='return-to-location'>{$linkText}</a>
+</nav>
 
 {if $error eq 1}
 <div class='ninja-error centered'>{$resultMessage}</div>
@@ -56,20 +71,3 @@ You do not have {$article|escape} {$item->getName()|escape}
   {/if}
 </div>
 {/if}
-
-{if $return_to eq 'player' and $target}
-  {assign var="targetId" value=$target->id()|escape:'url'}
-  {assign var="urlBack" value="/player?player_id=$targetId"}
-  {assign var="linkText" value="view $charName"}
-{elseif $return_to eq 'inventory'}
-  {assign var="urlBack" value="/inventory"}
-  {assign var="linkText" value="Inventory"}
-{else}
-  {assign var="urlBack" value="/enemies"}
-  {assign var="linkText" value="Combat"}
-{/if}
-
-<div class='LinkBack glassbox'>
-  Return to
-  <a href="{$urlBack}" class='return-to-location'>{$linkText}</a>
-</div>

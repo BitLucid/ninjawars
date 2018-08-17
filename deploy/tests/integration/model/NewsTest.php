@@ -5,7 +5,7 @@ use \model\News as News;
 use \model\Base;
 use NinjaWars\core\data\Account;
 
-class TestNews extends PHPUnit_Framework_TestCase {
+class TestNews extends NWTest {
 
     function setUp() {
         $test_account = $this->obtainTestAccount();

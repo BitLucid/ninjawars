@@ -34,7 +34,7 @@
 {if $has_clan && $current_tab == 'clan'}
   <div id='clan-mail-section' class='glassbox'>
     <form id='clan_msg' action='/messages/send_clan' method='post' name='clan_msg'>
-      <div>
+      <div class='input-group'>
         <input type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}" autocomplete='off' required=required autofocus=autofocus>
         <input type='hidden' name='toclan' value='1'>
         <input type='hidden' value='1' name='messenger'>

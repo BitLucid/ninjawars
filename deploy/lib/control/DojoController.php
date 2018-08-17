@@ -29,7 +29,8 @@ class DojoController extends AbstractController {
      * @return Response
      */
     public function index(Container $p_dependencies) {
-        if ($p_dependencies['session']->get('authenticated', false)) {
+        $authenticated = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated', false) : false;
+        if ($authenticated) {
             return $this->render([], $p_dependencies['current_player']);
         } else {
             return $this->render();
@@ -44,7 +45,8 @@ class DojoController extends AbstractController {
      * @return Response
      */
     public function buyDimMak(Container $p_dependencies) {
-        if ($p_dependencies['session']->get('authenticated', false)) {
+        $authenticated = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated', false) : false;
+        if ($authenticated) {
             $player = $p_dependencies['current_player'];
             $showMonks = false;
             $parts = [];

@@ -5,20 +5,19 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\LogoutController;
 
-class LogoutControllerTest extends PHPUnit_Framework_TestCase {
+class LogoutControllerTest extends NWTest {
     private $controller;
 
-    public function __construct() {
+	public function setUp() {
+        parent::setUp();
         $this->controller = new LogoutController();
-    }
-
-	protected function setUp() {
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	protected function tearDown() {
+	public function tearDown() {
+        parent::tearDown();
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();

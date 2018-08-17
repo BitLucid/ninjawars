@@ -3,7 +3,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\Account;
 
-class CharacterTest extends PHPUnit_Framework_TestCase {
+class CharacterTest extends NWTest {
     private $previous_server_ip = '';
     private $char_id;
 
@@ -157,67 +157,67 @@ class CharacterTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testNegativeKiRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setKi(-643);
     }
 
     public function testNegativeTurnsRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setTurns(-345);
     }
 
     public function testNegativeStrengthRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setStrength(-6);
     }
 
     public function testNegativeSpeedRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setSpeed(-556);
     }
 
     public function testNegativeStaminaRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setStamina(-34);
     }
 
     public function testNegativeHealthRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setHealth(-6);
     }
 
     public function testFractionalHealthRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setHealth(6.45);
     }
 
     public function testNegativeGoldRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setGold(-45);
     }
 
     public function testFractionalGoldRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setGold(45.23);
     }
 
     public function testNegativeBountyRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setBounty(-45);
     }
 
     public function testFractionalBountyRejected() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setBounty(45.43);
     }

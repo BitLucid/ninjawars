@@ -7,9 +7,9 @@ use NinjaWars\core\data\Item;
 use NinjaWars\core\data\PurchaseOrder;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
-use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
+use Pimple\Container;
 
 /**
  * Handles all user actions related to the in-game Shop
@@ -26,9 +26,14 @@ class ShopController extends AbstractController {
 	 *
 	 * @return Array
 	 */
-	public function index() {
+	public function index(Container $p_dependencies) {
+		$player = $p_dependencies['current_player'];
+		$authenticated = $p_dependencies['session']? $p_dependencies['session']->get('authenticated') : false;
 		$parts = array(
 			'view_part' => 'index',
+			'gold'      => ($player ? $player->gold : 0),
+			'item_costs'        => self::itemForSaleCosts(),
+			'authenticated'     => $authenticated,
 		);
 
 		return $this->render($parts);
@@ -48,11 +53,12 @@ class ShopController extends AbstractController {
 	 * @param item string The identity of the item to purchase
 	 * @return Array
 	 */
-	public function buy() {
+	public function buy(Container $p_dependencies) {
         $request           = RequestWrapper::$request;
 		$in_quantity       = $request->get('quantity');
 		$in_item           = $request->get('item');
-        $player            = Player::findPlayable($this->getAccountId());
+		$player            = $p_dependencies['current_player'];
+		$authenticated     = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated'): false;
 		$gold              = ($player ? $player->gold : null);
 		$current_item_cost = 0;
 		$no_funny_business = false;
@@ -60,7 +66,7 @@ class ShopController extends AbstractController {
 		$item              = Item::findByIdentity($in_item);
 		$quantity 		   = max(Filter::toNonNegativeInt($in_quantity), self::DEFAULT_QUANTITY);
 		$item_text 	       = null;
-        $valid             = false;
+		$valid             = false;
 
 		if (!($item instanceof Item)) {
             $no_such_item = true;
@@ -84,7 +90,7 @@ class ShopController extends AbstractController {
                     $player->setGold($player->gold - $current_item_cost);
                     $player->save();
                     $valid = true;
-				} catch (\Exception $e) {
+				} catch (\InvalidArgumentException $e) {
 					$invalid_item = $e->getMessage();
 					error_log('Invalid Item attempted :'.$invalid_item);
 					$no_funny_business = true;
@@ -100,6 +106,9 @@ class ShopController extends AbstractController {
             'no_such_item'      => $no_such_item,
             'valid'             => $valid,
 			'view_part'         => 'buy',
+			'gold'              => $gold,
+			'item_costs'        => self::itemForSaleCosts(),
+			'authenticated'     => $authenticated,
 		);
 
 		return $this->render($parts);
@@ -109,15 +118,9 @@ class ShopController extends AbstractController {
 	 * Generates the view spec hash for displaying a template
 	 *
 	 * @param p_parts Array Name/Value pairings to pass to the view
-	 * @return Array
+	 * @return StreamedViewResponse
 	 */
 	private function render($p_parts) {
-        $player = Player::findPlayable($this->getAccountId());
-
-		$p_parts['gold']          = ($player ? $player->gold : 0);
-		$p_parts['item_costs']    = self::itemForSaleCosts();
-		$p_parts['authenticated'] = SessionFactory::getSession()->get('authenticated');
-
 		return new StreamedViewResponse('Shop', 'shop.tpl', $p_parts, [ 'quickstat' => 'viewinv' ]);
 	}
 

@@ -2,15 +2,14 @@
 use NinjaWars\core\data\Item;
 use NinjaWars\core\data\Player;
 
-class ItemTest extends PHPUnit_Framework_TestCase {
+class ItemTest extends \NWTest {
 
-
-	public function setUp()
-	{
+	public function setUp(){
+		parent::setUp();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
+		parent::tearDown();
 	}
 
 	public function testInstantiatingABlankItem(){

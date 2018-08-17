@@ -45,6 +45,15 @@ class LoginControllerTest extends NWTest {
         $this->assertFalse($response_data['authenticated']);
     }
 
+    public function testLoginIndexShouldDisplayEvenIfLoggedOut(){
+        $controller = new LoginController();
+        $response = $controller->index($this->mockLogout());
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+        $this->assertFalse($response_data['authenticated']);
+    }
+
     public function testShouldRedirectIfAuthenticated(){
         $session = SessionFactory::getSession();
         $session->set('authenticated', true);

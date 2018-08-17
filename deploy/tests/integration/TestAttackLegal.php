@@ -7,7 +7,7 @@ use NinjaWars\core\data\Player;
 /**
  * @TODO: Need to be able to mock ips and ensure ability to attack even when both players have the server ip, somehow.
  */
-class TestAttackLegal extends PHPUnit_Framework_TestCase {
+class TestAttackLegal extends NWTest {
     /**
      * group char
      */
@@ -37,7 +37,6 @@ class TestAttackLegal extends PHPUnit_Framework_TestCase {
     }
 
     public function testAttackLegalCantAttackSelfEvenIfUsingSelfIdVsSelfUsername() {
-        //$this->setExpectedException('InvalidArgumentException');
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
         $this->oldify_character_last_attack($char_id);
         $player = Player::find($char_id);

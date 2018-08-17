@@ -4,10 +4,6 @@
 
 {if $logged_in}
 
-{if count($recent_attackers) gt 0}
-	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
-{/if}
-
 <section id='enemies-stuff' class='clearfix'>
 {foreach $enemy_list as $loop_enemy}
     {if $loop_enemy@first}
@@ -45,7 +41,7 @@
 <p class='enemies-lefthalf'>You haven't decided who your enemies are yet{if $logged_in}, pick some below.{else}, become a ninja to get some enemies.{/if}</p>
 {/foreach}
 
-{if count($peers) gt 0}
+{if !empty($peers) && count($peers) gt 0}
 <div class='enemies-righthalf'>
   <h3>Nearby Ninja</h3>
   <ul id='peer-chars'>
@@ -80,7 +76,8 @@
 </div>
 <!-- This hooks into quick-match js at bottom -->
 
-{/if}
+{/if}{* End of login *}
+
 
 
 <section id='ninja-matches' class='cf'>
@@ -93,7 +90,7 @@
 		...with more live matches...
 	</div>
 	<br style='clear:both'>
-{if isset($found_enemies) && count($found_enemies) gt 0}
+{if !empty($found_enemies) && count($found_enemies) gt 0}
 	{include file="enemy-matches.tpl" enemies=$found_enemies}
 {elseif isset($enemy_match) && $enemy_match}
 	<div class='hidden'>
@@ -102,6 +99,11 @@
 	</div>
 {/if}
 </section>
+
+
+{if !empty($recent_attackers)}
+	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
+{/if}
 
   {include file='npc.list.tpl'}
 

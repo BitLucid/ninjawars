@@ -32,6 +32,13 @@ class DoshinControllerTest extends NWTest {
         $this->assertNotEmpty($output);
     }
 
+    public function testDoshinIndexCanRenderEventLoggedOut() {
+        $doshin = new DoshinController();
+        // Clone the deps but act as logged out by removing the existing account_id.
+        $output = $doshin->index($this->mockLogout());
+        $this->assertNotEmpty($output);
+    }
+
     public function testDoshinOfferBounty() {
         $doshin = new DoshinController();
         $output = $doshin->offerBounty($this->m_dependencies);

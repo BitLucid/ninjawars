@@ -9,12 +9,9 @@ use NinjaWars\core\control\StatsController;
 class StatsControllerTest extends NWTest {
     private $controller;
 
-    public function __construct() {
-        $this->controller = new StatsController();
-    }
-
 	public function setUp() {
         parent::setUp();
+        $this->controller = new StatsController();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);

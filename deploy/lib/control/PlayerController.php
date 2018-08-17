@@ -26,7 +26,7 @@ class PlayerController extends AbstractController {
         if ($target_id) {
             $target_player_obj = Player::find($target_id);
         } else {
-            $target_player_obj = Player::findByName($target);
+            $target_player_obj = $target !== null? Player::findByName($target) : null;
         }
 
         if ($target_player_obj === null) {

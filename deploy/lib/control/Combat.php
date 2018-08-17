@@ -62,4 +62,26 @@ class Combat {
             }
         }
     }
+
+    /**
+     * Based on the percent damage done, determine the damage class.
+     */
+    public static function determineDamageClass(int $damage, int $current_health): string{
+        if($damage === 0){
+            return 'miss';
+        }
+        $damage_tiers = [
+            'kill'=>100,
+            'obliterate'=>90,
+            'savage'=>50,
+            'wound'=>15,
+            'nick'=>0,
+        ];
+        $percent = floor($damage/$current_health * 100);
+        foreach($damage_tiers as $class=>$tier){
+            if($percent >= $tier){
+                return $class;
+            }
+        }
+    }
 }

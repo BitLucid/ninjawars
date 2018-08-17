@@ -2,7 +2,7 @@
 
 use NinjaWars\core\data\Crypto;
 
-class CryptoTest extends PHPUnit_Framework_TestCase {
+class CryptoTest extends NWTest {
 
     public function testNonceDoesntEverMatch() {
         $this->assertNotEmpty(Crypto::nonce());

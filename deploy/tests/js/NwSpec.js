@@ -1,4 +1,5 @@
 "use strict"; // Strict checking.
+/*global describe, beforeEach, afterEach, it, expect, g_isIndex, g_isRoot, g_isSubpage, NW, environment */
 
 
 /*require(['jquery'], function($) {

@@ -4,20 +4,24 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
-use NinjaWars\core\control\HomepageController;
+use NinjaWars\core\control\MapController;
 
-class HomepageControllerTest extends NWTest {
+class MapControllerTest extends NWTest {
     private $controller;
 
 	public function setUp() {
         parent::setUp();
-        $this->login();
-        $this->controller = new HomepageController();
+        $this->controller = new MapController();
+		SessionFactory::init(new MockArraySessionStorage());
+        $char_id = TestAccountCreateAndDestroy::create_testing_account();
+		SessionFactory::getSession()->set('player_id', $char_id);
     }
 
 	public function tearDown() {
+        RequestWrapper::destroy();
+        $session = SessionFactory::getSession();
+        $session->invalidate();
         parent::tearDown();
-        $this->mockLogout();
     }
 
     public function testIndex() {
@@ -26,8 +30,7 @@ class HomepageControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-
-    public function testIndexWorksEvenLoggedOut() {
+    public function testIndexEvenIfLoggedOut() {
         $response = $this->controller->index($this->mockLogout());
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);

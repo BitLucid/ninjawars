@@ -14,17 +14,18 @@
 		"php": ">=7.0.0",
 		"ircmaxell/password-compat": "@stable",
 		"swiftmailer/swiftmailer": "~5.4.0",
-		"smarty/smarty": "v3.1.29",
+		"smarty/smarty": "v3.1.31",
 		"cboden/ratchet": "^0.4.1",
 		"illuminate/database": "~5.4.0",
 		"symfony/http-foundation": "~3.0",
 		"paragonie/random_compat": "^2.0",
 		"twbs/bootstrap": "~3.3",
 		"pimple/pimple": "~3.0",
-		"robmorgan/phinx": "^0.9.1"
+		"robmorgan/phinx": "^0.9.1",
+		"symfony/polyfill-php73": "^1.9"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "~4.8"
+		"phpunit/phpunit": "^7.3"
 	},
 	"config": {
 		"component-dir": "deploy/www/components/"

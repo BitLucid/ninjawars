@@ -5,19 +5,15 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\ApiController;
 
-class ApiControllerTest extends PHPUnit_Framework_TestCase {
+class ApiControllerTest extends NWTest {
     const CALLBACK = 'callback';
     private $PAYLOAD_RE;
-
     private $controller;
-
-    public function __construct() {
-        $this->controller = new ApiController();
-        $this->PAYLOAD_RE = '/^'.(self::CALLBACK).'\((.*)\)$/';
-    }
 
     public function setUp() {
         // Mock the post request.
+        $this->controller = new ApiController();
+        $this->PAYLOAD_RE = '/^'.(self::CALLBACK).'\((.*)\)$/';
         $session = SessionFactory::init(new MockArraySessionStorage());
         $this->char = TestAccountCreateAndDestroy::char();
         $session->set('player_id', $this->char->id());

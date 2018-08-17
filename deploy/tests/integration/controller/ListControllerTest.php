@@ -10,12 +10,9 @@ use NinjaWars\core\control\ListController;
 class ListControllerTest extends NWTest {
     private $controller;
 
-    public function __construct() {
-        $this->controller = new ListController();
-    }
-
 	public function setUp() {
         parent::setUp();
+        $this->controller = new ListController();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $char_id);

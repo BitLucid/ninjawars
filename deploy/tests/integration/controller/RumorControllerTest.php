@@ -10,4 +10,13 @@ class RumorControllerTest extends NWTest {
         $response_template = $reflection->getValue($response);
         $this->assertEquals('duel.tpl', $response_template);
     }
+
+    public function testIndexIsRenderableEvenIfLoggedOut() {
+        $controller = new RumorController();
+        $response = $controller->index($this->mockLogout());
+        $reflection = new \ReflectionProperty(get_class($response), 'template');
+        $reflection->setAccessible(true);
+        $response_template = $reflection->getValue($response);
+        $this->assertEquals('duel.tpl', $response_template);
+    }
 }

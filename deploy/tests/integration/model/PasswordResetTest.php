@@ -3,14 +3,16 @@ use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Crypto;
 
-class PasswordResetTest extends PHPUnit_Framework_TestCase {
-    function setUp() {
+class PasswordResetTest extends NWTest {
+    public function setUp() {
+        parent::setUp();
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         $this->account = Account::findById($this->account_id);
         $this->nonce = null;
     }
 
-    function tearDown() {
+    public function tearDown() {
+        parent::tearDown();
         // Don't use naked queries outside of a model layer elsewhere.
         query("delete from password_reset_requests where nonce = '777777' or nonce = '77778877' or nonce = '7777777' or nonce = :nonce or _account_id = :id",
             [':nonce'=>(isset($this->nonce)? $this->nonce : null), ':id'=>$this->account_id]);

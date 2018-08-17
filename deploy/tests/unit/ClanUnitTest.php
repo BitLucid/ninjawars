@@ -1,26 +1,25 @@
 <?php
 use NinjaWars\core\data\Clan;
 
-class ClanUnitTest extends PHPUnit_Framework_TestCase {
+class ClanUnitTest extends NWTest {
     private $clan;
-    private $data;
+    private $data = [
+        'clan_name'       => 'Clan Name',
+        'clan_avatar_url' => 'http://localhost/',
+        'clan_founder'    => 'Founder',
+        'description'     => 'Clan description',
+        'clan_id'         => 1,
+    ];
 
-    public function __construct() {
-        $this->data = [
-            'clan_name'       => 'Clan Name',
-            'clan_avatar_url' => 'http://localhost/',
-            'clan_founder'    => 'Founder',
-            'description'     => 'Clan description',
-            'clan_id'         => 1,
-        ];
-    }
 
-	protected function setUp() {
+	public function setUp() {
+        parent::setUp();
         $this->clan = new Clan($this->data['clan_id'], $this->data['clan_name'], $this->data);
     }
 
 
-	protected function tearDown() {
+	public function tearDown() {
+        parent::tearDown();
     }
 
     public function testClanConstructor() {

@@ -2,7 +2,7 @@
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
 
-class AccountTest extends PHPUnit_Framework_TestCase {
+class AccountTest extends NWTest {
     var $testAccountId;
 
     public function setUp() {

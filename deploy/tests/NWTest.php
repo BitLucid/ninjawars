@@ -4,13 +4,16 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\environment\RequestWrapper;
+use Symfony\Component\HttpFoundation\Request;
 
-class NWTest extends PHPUnit_Framework_TestCase {
+class NWTest extends \PHPUnit\Framework\TestCase {
     protected $m_dependencies;
 
     /**
      */
     public function setUp() {
+        parent::setUp();
         $this->m_dependencies = new Container();
 
         $this->m_dependencies['session'] = function($c) {
@@ -20,6 +23,19 @@ class NWTest extends PHPUnit_Framework_TestCase {
         $this->m_dependencies['current_player'] = $this->m_dependencies->factory(function ($c) {
             return Player::find(SessionFactory::getSession()->get('player_id'));
         });
+    }
+
+    /**
+     * If you want to test the logged out state, have dependencies without the current_player.
+     */
+    public function mockLogout(): Container{
+        SessionFactory::getSession()->invalidate();
+        RequestWrapper::inject(new Request());
+        $container = new Container();
+        $container['current_player'] = null;
+        $container['session'] = null;
+
+        return $container;
     }
 
     public function tearDown() {
@@ -33,6 +49,7 @@ class NWTest extends PHPUnit_Framework_TestCase {
         SessionFactory::init(new MockArraySessionStorage());
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::getSession()->set('authenticated', true);
+        SessionFactory::getSession()->set('player_id', $this->char->id());
         $this->account = Account::findByChar($this->char);
         SessionFactory::getSession()->set('account_id', $this->account->id());
     }
@@ -43,6 +60,7 @@ class NWTest extends PHPUnit_Framework_TestCase {
     public function loginTearDown(){
         $session = SessionFactory::getSession();
         $session->invalidate();
+        RequestWrapper::inject(new Request());
         TestAccountCreateAndDestroy::purge_test_accounts();
     }
 }

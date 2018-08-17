@@ -175,8 +175,11 @@ class NpcController extends AbstractController {
 
         // ******* FIGHT Logic ***********
         $npc_damage    = $npco->damage();
+        $ninja_damage = $player->damage();
+        $npc_damage_class = Combat::determineDamageClass($npc_damage, $player->health);
+        $ninja_damage_class = Combat::determineDamageClass($ninja_damage, $npco->getHealth());
         $survive_fight = $player->harm($npc_damage);
-        $kill_npc      = ($npco->getHealth() < $player->damage());
+        $kill_npc      = ($npco->getHealth() <= $ninja_damage);
 
         if ($survive_fight > 0) {
             // The ninja survived, they get any gold the npc has.
@@ -232,6 +235,9 @@ class NpcController extends AbstractController {
                 'is_rewarded'              => $is_rewarded,
                 'victory'                  => $victory,
                 'survive_fight'            => $survive_fight,
+                'ninja_damage'             => $ninja_damage,
+                'npc_damage_class'         => $npc_damage_class,
+                'ninja_damage_class'       => $ninja_damage_class,
                 'kill_npc'                 => $kill_npc,
                 'image_path'               => $image_path,
                 'npc_stats'                => $npc_stats,
@@ -329,7 +335,17 @@ class NpcController extends AbstractController {
                 }
             }
 
-            if (is_callable([$this, $method], false)) {
+            // Allowable custom attack methods.
+            $custom_npc_whitelist = [
+                'attackGuard',
+                'attackVillager',
+                'attackMerchant',
+                'attackSamurai',
+                'attackGroupOfThieves',
+                'attackNormalThief',
+                'randomEncounter',
+            ];
+            if (in_array($method, $custom_npc_whitelist) && is_callable([$this, $method], false)) {
                 list($npc_template, $combat_data) = $this->$method($player);
             }
 
@@ -358,7 +374,7 @@ class NpcController extends AbstractController {
         return new StreamedViewResponse('Battle', 'npc.tpl', $parts + $combat_data, ['quickstat' => 'player']);
     }
 
-    private function attackGuard(Player $player) {
+    private function attackGuard(Player $player): array {
         $damage = rand(1, $player->getStrength() + 10);
         $herb   = false;
         $gold   = 0;
@@ -395,7 +411,7 @@ class NpcController extends AbstractController {
         ];
     }
 
-    private function attackVillager(Player $player) {
+    private function attackVillager(Player $player): array {
         $damage        = rand(0, 10);
         $just_villager = rand(0, 20);
         $bounty        = 0;

@@ -42,6 +42,11 @@ class NpcControllerTest extends NWTest {
         $this->assertNotEmpty($response);
     }
 
+    public function testControllerIndexDoesntErrorEvenIfLoggedOut() {
+        $response = $this->controller->index($this->mockLogout());
+        $this->assertNotEmpty($response);
+    }
+
     public function testControllerGetRandomnessDoesntError() {
         $this->controller = new NpcController([
             'char_id'    => ($this->char->id()),

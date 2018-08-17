@@ -7,7 +7,6 @@ use NinjaWars\core\data\Player;
 use \PDO;
 
 /**
- * who/what/why/where
  *
  * Ninja clans with their various members
  */
@@ -18,38 +17,47 @@ class Clan {
     private $description;
     private $founder;
 
-    public function __construct($p_id=null, $p_name=null, $data=null) {
-        $this->setID($p_id);
-
-        if (!$p_name) {
-            $p_name = $this->nameFromId($p_id);
+    public function __construct(int $p_id=null, string $p_name=null, $data=null) {
+        if($p_id){
+            $this->setID($p_id);
+            if(!$p_name){
+                $p_name = $this->nameFromId($p_id);
+            }
         }
 
-        $this->setName($p_name);
+        if($p_name){
+            $this->setName($p_name);
+        }
 
-        if ($data) {
+        if(null !== $data['clan_avatar_url']){
             $this->setAvatarUrl($data['clan_avatar_url']);
+        }
+
+        if(null !== $data['description']){
             $this->setDescription($data['description']);
+        }
+
+        if(null !== $data['clan_founder']){
             $this->setFounder($data['clan_founder']);
         }
     }
 
-    public function getName() {
+    public function getName(): string {
         return $this->name;
     }
 
-    public function setID($p_id) {
+    public function setID(int $p_id) {
         $this->id = (int)$p_id;
     }
 
-    public function setName($p_name) {
+    public function setName(string $p_name) {
         $this->name = trim($p_name);
     }
 
     /**
      * @return int
      */
-    public function getLeaderID() {
+    public function getLeaderID(): int {
         $leaderInfo = $this->getLeaderInfo();
         return $leaderInfo['player_id'];
     }
@@ -57,7 +65,7 @@ class Clan {
     /**
      * @return string
      */
-    public function getFounder() {
+    public function getFounder(): string {
         if (!$this->founder) {
             $this->founder = query_item('select clan_founder from clan where clan_id = :id', [':id'=>$this->id]);
         }
@@ -65,15 +73,21 @@ class Clan {
         return $this->founder;
     }
 
-    public function setDescription($desc) {
+    /**
+     * @return void
+     */
+    public function setDescription(string $desc) {
         $this->description = (string) $desc;
     }
 
+    /**
+     * @return string
+     */
     public function getDescription() {
         return $this->description;
     }
 
-    public function setFounder($founder) {
+    public function setFounder(string $founder) {
         $this->founder = $founder;
     }
 
@@ -84,13 +98,13 @@ class Clan {
         return $this->avatarUrl;
     }
 
-    public function setAvatarUrl($url) {
+    public function setAvatarUrl(string $url) {
         $this->avatarUrl = $url;
     }
 
     // End of getters and setters.
 
-    private function nameFromId($id) {
+    private function nameFromId(int $id) {
         return query_item(
             'SELECT clan_name FROM clan WHERE clan_id = :id',
             [ ':id' => [$id, PDO::PARAM_INT]]
@@ -102,16 +116,15 @@ class Clan {
      *
      * @return array
      */
-    public function getLeaderInfo() {
-        return $this->getAllClanLeaders()->fetch();
+    public function getLeaderInfo(): array {
+        return (array) $this->getAllClanLeaders()->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
      * Get the current clan leaders.
      *
-     * @return PDOStatement
      */
-    public function getAllClanLeaders() {
+    public function getAllClanLeaders(): \PDOStatement {
         DatabaseConnection::getInstance();
         $leaders = DatabaseConnection::$pdo->prepare("SELECT clan_id, clan_name, clan_founder, player_id, uname
             FROM clan JOIN clan_player ON clan_id = _clan_id JOIN players ON player_id = _player_id
@@ -147,7 +160,7 @@ class Clan {
     /**
      * Passively invite a character to a clan with a message and link.
      *
-     * @return string
+     * @return string|null
      */
     public function invite(Player $p_target, Player $p_inviter) {
         if (!$p_target || empty($p_target)) {
@@ -186,9 +199,7 @@ class Clan {
     /**
      * When a leader removes a member without choice.
      */
-    public function kickMember($playerId, Player $kicker, $selfLeave=false) {
-        $today = date("F j, Y, g:i a");
-
+    public function kickMember(int $playerId, Player $kicker, bool $selfLeave=false): bool {
         query(
             "DELETE FROM clan_player WHERE _player_id = :player AND _clan_id = :clan",
             [
@@ -197,10 +208,10 @@ class Clan {
             ]
         );
 
-        if ($selfLeave) {
-            $msg = "You have been kicked out of ".$this->getName()." by ".$kicker->name()." on $today.";
+        if (!$selfLeave) {
+            $msg = "You have been kicked out of ".$this->getName()." by ".$kicker->name()." on ".date("F j, Y, g:i a").".";
         } else {
-            $msg = "You have left clan ".$this->getName()." on $today.";
+            $msg = "You have left clan ".$this->getName()." on ".date("F j, Y, g:i a").".";
         }
 
         Message::create([
@@ -213,7 +224,10 @@ class Clan {
         return true;
     }
 
-    public function hasMember($playerId) {
+    /**
+     * Check if a character is a member of this clan
+     */
+    public function hasMember(int $playerId): bool {
         $query = 'SELECT _player_id FROM clan_player WHERE _player_id = :pid AND _clan_id = :clan_id';
         $args  = [
             ':pid'     => $playerId,
@@ -226,7 +240,7 @@ class Clan {
     /**
      * @return array(int, int, ...)
      */
-    public function getMemberIds() {
+    public function getMemberIds(): array {
         $playerRows = query_array(
             'SELECT player_id FROM players LEFT JOIN clan_player ON _player_id = player_id WHERE _clan_id = :cid',
             [':cid' => $this->id]
@@ -243,14 +257,15 @@ class Clan {
 
     /**
      */
-    public function getMemberCount() {
-        return query_item(
+    public function getMemberCount(): int {
+        return (int) query_item(
             'SELECT count(*) FROM clan_player JOIN players ON player_id = _player_id WHERE _clan_id = :clan',
-            [':clan' => $this->id]
+            [':clan' => [$this->id, \PDO::PARAM_INT]]
         );
     }
     /**
      * Delete a clan after sending a message to all clan members.
+     * @return void
      */
     public function disband() {
         DatabaseConnection::getInstance();
@@ -281,7 +296,7 @@ class Clan {
         $statement->execute();
     }
 
-    public function promoteMember($ninja_id) {
+    public function promoteMember(int $ninja_id): bool {
         $query = 'UPDATE clan_player SET member_level = (member_level + 1) WHERE _player_id = :pid';
         $args = [
             ':pid' => $ninja_id,
@@ -293,7 +308,7 @@ class Clan {
     /**
      * Get the members of a clan,
      */
-    public function getMembers() {
+    public function getMembers(): array {
         $membersArray = query_array(
             'SELECT uname, accounts.active_email as email, clan_name, level, days, clan_founder, player_id, member_level '.
             'FROM clan JOIN clan_player ON _clan_id = :clan_id AND clan_id = _clan_id JOIN players ON player_id = clan_player._player_id '.
@@ -333,7 +348,7 @@ class Clan {
      * @param string $dirty_url
      * @return boolean
      */
-    public static function clanAvatarIsValid($dirty_url) {
+    public static function clanAvatarIsValid(string $dirty_url): bool {
         if ($dirty_url === '' || $dirty_url === null) {
             return true;  // Allows for no clan avatar.
         }
@@ -356,7 +371,7 @@ class Clan {
      * @param int $clan_id
      * @return void
      */
-    public static function saveClanAvatarUrl($url, $clan_id) {
+    public static function saveClanAvatarUrl(string $url, int $clan_id) {
         $update = 'UPDATE clan SET clan_avatar_url = :url WHERE clan_id = :clan_id';
         query($update, array(':url'=>$url, ':clan_id'=>$clan_id));
     }
@@ -368,7 +383,7 @@ class Clan {
      * @return int $clan_id
      * @return void
      */
-    public static function saveClanDescription($desc, $clan_id) {
+    public static function saveClanDescription(string $desc, int $clan_id) {
         $update = 'UPDATE clan SET description = :desc WHERE clan_id = :clan_id';
         query($update, array(':desc'=>$desc, ':clan_id'=>$clan_id));
     }
@@ -379,7 +394,7 @@ class Clan {
      * @param String $p_clan_name
      * @return Clan
      */
-    public static function create(Player $p_leader, $p_clan_name) {
+    public static function create(Player $p_leader, string $p_clan_name) {
         DatabaseConnection::getInstance();
 
         $clan_name = trim($p_clan_name);
@@ -410,7 +425,7 @@ class Clan {
      * @note
      * Does not check for validity, simply renames the clan to the new name.
      */
-    public static function renameClan($p_clanID, $p_newName) {
+    public static function renameClan(int $p_clanID, string $p_newName) {
         DatabaseConnection::getInstance();
 
         $statement = DatabaseConnection::$pdo->prepare('UPDATE clan SET clan_name = :name WHERE clan_id = :clan');
@@ -427,7 +442,7 @@ class Clan {
      * @param String $p_potential
      * @return boolean
      */
-    public static function isUniqueClanName($p_potential) {
+    public static function isUniqueClanName(string $p_potential) {
         return !(bool)query_row(
             "SELECT clan_name FROM clan WHERE regexp_replace(clan_name, '[[:space:]]', '', 'g') ~~* regexp_replace(:testName, '[[:space:]]', '', 'g')",
             [':testName' => $p_potential]
@@ -445,7 +460,7 @@ class Clan {
      * letters, numbers, non-consecutive spaces, underscores, or dashes.
      * Must begin and end with non-whitespace characters.
      */
-    public static function isValidClanName($potential) {
+    public static function isValidClanName(string $potential) {
         $potential = (string)$potential;
         return preg_match("#^[\da-z_\-]([\da-z_\-]| [\da-z_\-]){2,25}$#i", $potential);
     }
@@ -522,7 +537,7 @@ class Clan {
      * @note
      * returns only non-empty clans.
      */
-    public static function rankings() {
+    public static function rankings(): array {
         $res = [];
 
         // sum the levels of the players (minus days of inactivity) for each clan

@@ -99,17 +99,17 @@ class GameLog {
     /**
      * Record the kills/xp results of a duel attack by a pc
      */
-    public static function sendLogOfDuel($attacker, $defender, $won, $killpoints) {
-        $killpoints = (int)$killpoints;
+    public static function sendLogOfDuel(Player $attacker, Player $defender, bool $won, int $killpoints) {
 
         DatabaseConnection::getInstance();
-        $statement = DatabaseConnection::$pdo->prepare("INSERT INTO dueling_log values (default, :attacker, :defender, :won, :killpoints, now())");
+        $statement = DatabaseConnection::$pdo->prepare("INSERT INTO dueling_log
+            (attacker, defender, won, killpoints) values (:attacker, :defender, :won, :killpoints)");
 
         //Log of Dueling information.
-        $statement->bindValue(':attacker', $attacker);
-        $statement->bindValue(':defender', $defender);
+        $statement->bindValue(':attacker', $attacker->name());
+        $statement->bindValue(':defender', $defender->name());
         $statement->bindValue(':won', $won, \PDO::PARAM_BOOL);
-        $statement->bindValue(':killpoints', $killpoints);
+        $statement->bindValue(':killpoints', $killpoints, \PDO::PARAM_INT);
         $statement->execute();
     }
 

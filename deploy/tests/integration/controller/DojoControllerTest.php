@@ -10,14 +10,9 @@ class DojoControllerTest extends NWTest {
     private $controller;
     private $char_id;
 
-    public function __construct() {
-        $this->controller = new DojoController();
-    }
-
-    /**
-     */
 	public function setUp() {
         parent::setUp();
+        $this->controller = new DojoController();
         // Mock the post request.
         $request = new Request([], []);
         RequestWrapper::inject($request);
@@ -50,10 +45,8 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-    public function testDojoIndexNotLoggedInDoesNotError() {
-        $session = SessionFactory::getSession();
-        $session->invalidate();
-        $this->assertNotEmpty($this->controller->index($this->m_dependencies));
+    public function testDojoIndexCanRenderEvenLoggedOut() {
+        $this->assertNotEmpty($this->controller->index($this->mockLogout()));
     }
 
     /**

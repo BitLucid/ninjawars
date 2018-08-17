@@ -2,19 +2,17 @@
 use NinjaWars\core\data\PlayerVO;
 use NinjaWars\core\data\Player;
 
-class PlayerUnitTest extends PHPUnit_Framework_TestCase {
+class PlayerUnitTest extends NWTest {
     private $player;
     private $data;
 
-    public function __construct() {
+	public function setUp() {
+        parent::setUp();
         $this->data = new PlayerVO();
         $this->data->uname = 'User1';
         $this->data->player_id = 1;
         $this->data->level = 20;
         $this->data->health = Player::maxHealthByLevel($this->data->level);
-    }
-
-	protected function setUp() {
         $this->player = new Player();
         $this->player->uname = $this->data->uname;
         $this->player->player_id = $this->data->player_id;
@@ -25,7 +23,8 @@ class PlayerUnitTest extends PHPUnit_Framework_TestCase {
         $this->player->speed = Player::baseSpeedByLevel($this->data->level);
     }
 
-	protected function tearDown() {
+    public function tearDown() {
+        parent::tearDown();
         unset($this->player);
     }
 

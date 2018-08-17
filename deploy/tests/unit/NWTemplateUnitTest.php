@@ -3,13 +3,15 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\NWTemplate;
 
-class NWTemplateUnitTest extends PHPUnit_Framework_TestCase {
+class NWTemplateUnitTest extends NWTest {
     public function setUp() {
-		SessionFactory::init(new MockArraySessionStorage());
+      parent::setUp();
+		  SessionFactory::init(new MockArraySessionStorage());
     }
 
     public function tearDown() {
-		SessionFactory::annihilate();
+      parent::tearDown();
+		  SessionFactory::annihilate();
     }
 
     public function testCustomConstructor() {

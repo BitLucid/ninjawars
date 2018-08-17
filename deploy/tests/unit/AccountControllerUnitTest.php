@@ -5,14 +5,14 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\AccountController;
 
-class AccountControllerUnitTest extends PHPUnit_Framework_TestCase {
+class AccountControllerUnitTest extends NWTest {
     private $controller;
 
     public function __construct() {
         $this->controller = new AccountController();
     }
 
-	protected function setUp() {
+	public function setUp() {
         $this->markTestIncomplete('AccountController::render relies on the DB and session.');
 		SessionFactory::init(new MockArraySessionStorage());
 
@@ -25,7 +25,7 @@ class AccountControllerUnitTest extends PHPUnit_Framework_TestCase {
         RequestWrapper::inject($request); // Pass a request to be used by tests
     }
 
-	protected function tearDown() {
+	public function tearDown() {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();

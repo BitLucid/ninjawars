@@ -1,8 +1,10 @@
 <?php
 namespace NinjaWars\core\control;
 
+use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\AdminViews;
 use NinjaWars\core\data\Player;
@@ -20,17 +22,11 @@ class NinjamasterController extends AbstractController {
     const ALIVE = false;
     const PRIV  = false;
 
-    protected $self = null;
-
-    public function __construct() {
-        $this->self = Player::findPlayable($this->getAccountId());
-    }
-
     /**
      * Check user authentication as an admin before continuing.
      */
-    private function checkAuth(){
-        if (!$this->self || !$this->self->isAdmin()) {
+    private function checkAuth(Container $p_dependencies){
+        if (!$p_dependencies['current_player'] || !$p_dependencies['current_player']->isAdmin()) {
             return new RedirectResponse(WEB_ROOT);
         } else {
             return true;
@@ -44,9 +40,9 @@ class NinjamasterController extends AbstractController {
      *
      * @return Response
      */
-    public function index() {
+    public function index(Container $p_dependencies): Response {
         $request = RequestWrapper::$request;
-        $authed = $this->checkAuth();
+        $authed = $this->checkAuth($p_dependencies);
         if($authed instanceof RedirectResponse){
             return $authed;
         }
@@ -63,7 +59,7 @@ class NinjamasterController extends AbstractController {
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivial_npcs      = NpcFactory::allTrivialNpcs();
 
-        $items = $this->items();
+        $items = $this->items($p_dependencies);
 
         $char_ids  = preg_split("/[,\s]+/", $request->get('view'));
         $char_name = trim($request->get('char_name'));
@@ -115,8 +111,8 @@ class NinjamasterController extends AbstractController {
     /**
      * Pull the items for administrative review
      */
-    public function items(){
-        $authed = $this->checkAuth();
+    public function items($p_dependencies){
+        $authed = $this->checkAuth($p_dependencies);
         if($authed instanceof RedirectResponse){
             return $authed;
         }
@@ -130,8 +126,8 @@ class NinjamasterController extends AbstractController {
      *
      * @return Response
      */
-    public function tools() {
-        $authed = $this->checkAuth();
+    public function tools(Container $p_dependencies) {
+        $authed = $this->checkAuth($p_dependencies);
         if($authed instanceof RedirectResponse){
             return $authed;
         }
@@ -143,8 +139,8 @@ class NinjamasterController extends AbstractController {
      *
      * @return Response
      */
-    public function player_tags() {
-        $authed = $this->checkAuth();
+    public function player_tags(Container $p_dependencies) {
+        $authed = $this->checkAuth($p_dependencies);
         if($authed instanceof RedirectResponse){
             return $authed;
         }

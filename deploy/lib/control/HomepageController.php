@@ -30,7 +30,7 @@ class HomepageController extends AbstractController {
      * @return Response
      */
     public function index(Container $p_dependencies) {
-        return ($this->loggedIn ? $this->game() : $this->splash());
+        return ($this->loggedIn ? $this->game($p_dependencies) : $this->splash());
     }
 
     /**
@@ -38,10 +38,10 @@ class HomepageController extends AbstractController {
      *
      * @return Response
      */
-    private function game() {
+    private function game(Container $p_dependencies) {
         // Get the actual values of the vars.
-        $ninja = Player::find(SessionFactory::getSession()->get('player_id'));
-        $playerInfo = $ninja->data();
+        $ninja = $p_dependencies['current_player'] ?? new Player();
+        $playerInfo = $ninja? $ninja->data() : [];
         $clan = $ninja? Clan::findByMember($ninja) : null;
 
         $unreadCount = Message::where([

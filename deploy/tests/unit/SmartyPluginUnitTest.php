@@ -8,7 +8,7 @@ require_once(CORE.'/plugins/modifier.css_classify.php');
 require_once(CORE.'/plugins/modifier.level_label.php');
 require_once(CORE.'/plugins/modifier.to_tags.php');
 
-class SmartyPluginUnitTest extends PHPUnit_Framework_TestCase {
+class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase {
     const EXISTING_FILE = '/js/nw.js';
     const MISSING_FILE = '/js/nw2.js';
     const MD_TEXT = 'This is [href:http://localhost/|localhost]';

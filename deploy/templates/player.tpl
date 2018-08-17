@@ -21,8 +21,9 @@
   color:ghostwhite;
 }
 .player-profile summary{
-  background-color: gray;
-  box-shadow: 10px 5px 5px black;
+  background-color: #1b1919;
+  padding: 0.1rem 1rem;
+  cursor:pointer;
 }
 .grid {
   display: grid;
@@ -182,7 +183,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
                     <option value="{$item.item_id|escape}">{$item.name|escape} ({$item.count|escape})</option>
             {/if}
             {if $item@last}
-                  </select><!-- No space between --><input type="submit" value="Use Item" class="btn btn-primary" style="border-top-left-radius:0;border-bottom-left-radius:0">
+                  </select><!-- No space between --><input type="submit" value="Use Item" class="btn btn-default" style="border-top-left-radius:0;border-bottom-left-radius:0">
             {/if}
         {foreachelse}
 				  <div id='no-items' class='ninja-notice'>
@@ -197,12 +198,12 @@ var combatSkillsList = {$json_combat_skills nofilter};
     </div><!-- End of attacking section -->
 
     <div id='skills-section' style='padding:1em 2em;text-align:left'>
-      {if count($targeted_skills) gt 0}
+      {if !empty($targeted_skills)}
       <form id="skill_use" class="skill_use" action="/player/use_skill/" method="post" name="skill_use">
         <div class='parent'>
           <div class='child btn-group' id='skills-use-list'>
           {foreach from=$targeted_skills item="skill"}
-              <input id="act-{$skill.skill_internal_name}" class="act btn btn-primary" type="submit" value="{$skill.skill_display_name}" name="act" title='Use the {$skill.skill_display_name} skill for a cost of {getTurnCost skillName=$skill.skill_display_name} turns'>
+              <input id="act-{$skill.skill_internal_name}" class="act btn btn-default" type="submit" value="{$skill.skill_display_name}" name="act" title='Use the {$skill.skill_display_name} skill for a cost of {getTurnCost skillName=$skill.skill_display_name} turns'>
               <input id="target" class="target" type="hidden" value="{$target_player_obj->name()|escape}" name="target">
           {/foreach}
           </div>

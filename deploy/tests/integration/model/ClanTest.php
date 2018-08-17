@@ -2,13 +2,14 @@
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 
-class ClanTest extends PHPUnit_Framework_TestCase {
+class ClanTest extends NWTest {
     private $clan_id;
     private $char_id;
     private $char_id_2;
     private $clan_identity = 'phpunit_test_clan';
 
-	function setUp() {
+	public function setUp() {
+        parent::setUp();
         $this->char_id   = TestAccountCreateAndDestroy::char_id();
         $this->char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
@@ -16,7 +17,8 @@ class ClanTest extends PHPUnit_Framework_TestCase {
         $this->clan_id   = $this->clan->id;
 	}
 
-	function tearDown() {
+	public function tearDown() {
+        parent::tearDown();
         query('delete from clan where clan_id = :id', [':id'=>$this->clan->id]);
         query('delete from clan_player where _clan_id = :id', [':id'=>$this->clan->id]);
         TestAccountCreateAndDestroy::purge_test_accounts();

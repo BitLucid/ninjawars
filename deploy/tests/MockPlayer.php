@@ -67,7 +67,7 @@ class MockPlayer extends Player implements Character{
         return $this->damage;
     }
 
-    public function difficulty(){
+    public function difficulty(): int{
         return $this->difficulty;
     }
 

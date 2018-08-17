@@ -1,4 +1,7 @@
-<h1>Weapons Shop</h1>
+<h1>Shop</h1>
+<nav>
+	<a href="/map" class="return-to-location block">Return to the Village</a>
+</nav>
 
 <section class='shop'>
 <!-- For google ad targetting -->
@@ -34,10 +37,6 @@
 		{/foreach}
   </div>
 </form>
-
-<nav>
-	<a href="/map" class="return-to-location block">Return to the Village</a>
-</nav>
 
 </section>
 

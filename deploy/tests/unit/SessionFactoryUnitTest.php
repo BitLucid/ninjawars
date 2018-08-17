@@ -2,7 +2,7 @@
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
 
-class SessionFactoryUnitTest extends PHPUnit_Framework_TestCase {
+class SessionFactoryUnitTest extends NWTest {
     private $session;
 
     public function testInit() {

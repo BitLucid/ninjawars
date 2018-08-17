@@ -7,8 +7,9 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 
-class AccountControllerTest extends PHPUnit_Framework_TestCase {
+class AccountControllerTest extends NWTest {
 	public function setUp() {
+        parent::setUp();
 		SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::char_id();
         $char = Player::find($char_id);
@@ -25,6 +26,7 @@ class AccountControllerTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function tearDown() {
+        parent::tearDown();
         $session = SessionFactory::getSession();
         $session->invalidate();
         unset($this->deps);
