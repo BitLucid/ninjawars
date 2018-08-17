@@ -117,7 +117,7 @@ class Clan {
      * @return array
      */
     public function getLeaderInfo(): array {
-        return $this->getAllClanLeaders()->fetch();
+        return (array) $this->getAllClanLeaders()->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
