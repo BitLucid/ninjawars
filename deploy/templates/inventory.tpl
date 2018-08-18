@@ -72,10 +72,10 @@
 
     <form id="player_search" action="/list" method="get" name="player_search">
       <div class='input-group'>
-        <input id="searched" type="text" maxlength="50" name="searched" class="form-control textField">
+        <input id="searched" type="text" maxlength="50" name="searched" placeholder='search ninja' class="form-control textField">
         <input id="hide" type="hidden" name="hide" value="dead">
         <span class='input-group-btn'>
-          <button class='btn btn-primary formButton' type="submit"><i class="fas fa-search"></i> to use items on a ninja</button>
+          <button class='btn btn-primary formButton' type="submit"><i class="fas fa-search"></i> to use items on</button>
         </span>
       </div>
     </form>
