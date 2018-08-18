@@ -411,9 +411,6 @@ body {
 	background:url('/images/rebel.png');
 	color:ghostwhite;
 }
-body.main-body{
-	padding-top:70px;
-}
 
 /* Set your base font here, to apply evenly */
 body, select, input, textarea {
@@ -1427,9 +1424,6 @@ body.solo-page h1 {
 }
 .splash .boxes {
 	padding: 0;
-}
-.splash .title-box{
-	display:inline-block;white-space:nowrap;
 }
 .boxes .box-title {
 	background: #006633;color:#fbbd8e;font-weight:bold;
