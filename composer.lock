@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8fc6b27f193fa824d37cb76cac6cda54",
+    "content-hash": "a1c7834146bf1fec41d893eb7157d027",
     "packages": [
         {
             "name": "BitLucid/jquery-linkify",
@@ -1246,29 +1246,49 @@
         },
         {
             "name": "rmm5t/jquery-timeago",
-            "version": "1.4.3",
+            "version": "v1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rmm5t/jquery-timeago.git",
-                "reference": "v1.4.3"
+                "reference": "36d331096b66f22ec5eaea776584a853b49b81bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/rmm5t/jquery-timeago/archive/v1.4.3.zip",
-                "reference": "v1.4.3",
-                "shasum": null
+                "url": "https://api.github.com/repos/rmm5t/jquery-timeago/zipball/36d331096b66f22ec5eaea776584a853b49b81bf",
+                "reference": "36d331096b66f22ec5eaea776584a853b49b81bf",
+                "shasum": ""
             },
             "require": {
-                "robloach/component-installer": "*"
+                "components/jquery": ">=1.2.3"
             },
-            "type": "component",
+            "type": "library",
             "extra": {
                 "component": {
                     "scripts": [
                         "jquery.timeago.js"
+                    ],
+                    "files": [
+                        "locales/jquery.timeago.*.js"
                     ]
                 }
-            }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan McGeary",
+                    "email": "ryan@mcgeary.org"
+                }
+            ],
+            "description": "jQuery plugin that makes it easy to support automatically updating fuzzy timestamps (e.g. \"4 minutes ago\" or \"about 1 day ago\").",
+            "homepage": "http://timeago.yarp.com/",
+            "keywords": [
+                "microformat",
+                "time"
+            ],
+            "time": "2018-02-23T15:27:54+00:00"
         },
         {
             "name": "robloach/component-installer",
