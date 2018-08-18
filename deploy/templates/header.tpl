@@ -22,7 +22,7 @@
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Google jquery CDN -->
+    <!-- Google jquery CDN version, sync composer component for tests if changed -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {if $smarty.const.LOCAL_JS}
     <!-- Local js turned on for when CDN is unavailable -->
