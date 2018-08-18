@@ -263,6 +263,6 @@ class DoshinController extends AbstractController {
 
         $quickstat = $parts['quickstat'];
 
-        return new StreamedViewResponse('Doshin Office', 'doshin.tpl', $parts, [ 'quickstat' => $quickstat ]);
+        return new StreamedViewResponse('Doshin Office', 'doshin.tpl', $parts, [ 'quickstat' => $quickstat, 'body_classes'=>'doshin' ]);
     }
 }
