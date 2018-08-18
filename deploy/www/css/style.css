@@ -1704,6 +1704,7 @@ time{
 #sidebar-column #chat-housing{
   height:93%;
   min-height:40em;
+  margin-top: 50px;
 }
 
 #sidebar-column{
@@ -1775,6 +1776,10 @@ a#skip-to-bottom{
 
 #created-by{
 	display:inline-block;
+	background: none;
+	border: none;
+	color: #d8d8d8;
+	font-size:3.2rem;
 }
 #authors{
 	display:inline-block;
