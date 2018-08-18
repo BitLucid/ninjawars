@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1c7834146bf1fec41d893eb7157d027",
+    "content-hash": "c773861b7bd906a38e59335faa0aeefd",
     "packages": [
         {
             "name": "BitLucid/jquery-linkify",
@@ -88,16 +88,16 @@
         },
         {
             "name": "components/jquery",
-            "version": "3.3.1",
+            "version": "2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/jquery.git",
-                "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649"
+                "reference": "981036fcb56668433a7eb0d1e71190324b4574df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/jquery/zipball/459648cda77875519c5da3ae1dd0ed5d170aa649",
-                "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649",
+                "url": "https://api.github.com/repos/components/jquery/zipball/981036fcb56668433a7eb0d1e71190324b4574df",
+                "reference": "981036fcb56668433a7eb0d1e71190324b4574df",
                 "shasum": ""
             },
             "type": "component",
@@ -109,9 +109,8 @@
                     "files": [
                         "jquery.min.js",
                         "jquery.min.map",
-                        "jquery.slim.js",
-                        "jquery.slim.min.js",
-                        "jquery.slim.min.map"
+                        "jquery-migrate.js",
+                        "jquery-migrate.min.js"
                     ]
                 }
             },
@@ -121,12 +120,13 @@
             ],
             "authors": [
                 {
-                    "name": "JS Foundation and other contributors"
+                    "name": "John Resig",
+                    "email": "jeresig@gmail.com"
                 }
             ],
             "description": "jQuery JavaScript Library",
             "homepage": "http://jquery.com",
-            "time": "2018-03-04T13:23:48+00:00"
+            "time": "2016-05-25T06:43:59+00:00"
         },
         {
             "name": "doctrine/inflector",
