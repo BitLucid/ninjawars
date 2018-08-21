@@ -8,8 +8,8 @@
 		}
 	},
 	"require": {
-		"components/jquery": "^2.1.1",
-		"rmm5t/jquery-timeago": "^1.4.3",
+		"components/jquery": "2.1.1",
+		"rmm5t/jquery-timeago": "^1.6",
 		"BitLucid/jquery-linkify": "^2.1",
 		"php": ">=7.2.0",
 		"ircmaxell/password-compat": "@stable",
@@ -17,7 +17,7 @@
 		"smarty/smarty": "v3.1.31",
 		"cboden/ratchet": "^0.4.1",
 		"illuminate/database": "~5.4.0",
-		"symfony/http-foundation": "~3.0",
+		"symfony/http-foundation": "^4.1",
 		"paragonie/random_compat": "^2.0",
 		"twbs/bootstrap": "~3.3",
 		"pimple/pimple": "~3.0",

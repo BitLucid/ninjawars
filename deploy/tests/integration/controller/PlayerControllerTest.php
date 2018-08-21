@@ -4,11 +4,13 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\PlayerController;
 use NinjaWars\core\extensions\SessionFactory;
+use \Pimple\Container;
 
 class PlayerControllerTest extends NWTest {
 	public function setUp() {
         $this->char = TestAccountCreateAndDestroy::char();
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
+        $this->m_dependencies = new Container();
 	}
 
 	public function tearDown() {
@@ -16,6 +18,7 @@ class PlayerControllerTest extends NWTest {
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();
+        $this->m_dependencies = null;
     }
 
     public function testPlayerControllerCanBeInstantiatedWithoutError() {
@@ -25,7 +28,7 @@ class PlayerControllerTest extends NWTest {
 
     public function testPlayerIndexDoesNotErrorOnLoad() {
         $player = new PlayerController();
-        $player_outcome = $player->index();
+        $player_outcome = $player->index($this->m_dependencies);
         $this->assertNotEmpty($player_outcome);
     }
 
@@ -41,8 +44,8 @@ class PlayerControllerTest extends NWTest {
         RequestWrapper::inject($request);
         $sess = SessionFactory::getSession();
         $sess->set('player_id', $this->char->id());
-        $player = new PlayerController();
-        $player_outcome = $player->index();
+        $playerc = new PlayerController();
+        $player_outcome = $playerc->index($this->m_dependencies);
         $this->assertNotEmpty($player_outcome);
     }
 
@@ -52,8 +55,8 @@ class PlayerControllerTest extends NWTest {
         RequestWrapper::inject($request);
         $sess = SessionFactory::getSession();
         $sess->set('player_id', $this->char->id());
-        $player = new PlayerController();
-        $player_outcome = $player->index();
+        $playerc = new PlayerController();
+        $player_outcome = $playerc->index($this->m_dependencies);
         $this->assertNotEmpty($player_outcome);
     }
 
@@ -64,8 +67,9 @@ class PlayerControllerTest extends NWTest {
         RequestWrapper::inject($request);
         $sess = SessionFactory::getSession();
         $sess->set('player_id', $this->char->id());
-        $player = new PlayerController();
-        $player_outcome = $player->index();
+        $this->m_dependencies['current_player'] = $this->char;
+        $playerc = new PlayerController();
+        $player_outcome = $playerc->index($this->m_dependencies);
         $this->assertNotEmpty($player_outcome);
         // Extract that good good data from in the StreamedViewResponse
         $reflection = new \ReflectionProperty(get_class($player_outcome), 'data');

@@ -466,11 +466,6 @@ class ShrineController extends AbstractController {
 	 * @return StreamedViewResponse
 	 */
     private function render($p_parts) {
-        $options = [
-            'body_classes' => 'shrine',
-            'quickstat'    => 'player',
-        ];
-
         $parts = array_merge(
             [
                 'action_message' => null,
@@ -479,7 +474,10 @@ class ShrineController extends AbstractController {
             $p_parts
         );
 
-        return new StreamedViewResponse('Shrine', 'shrine.tpl', $parts, $options);
+        return new StreamedViewResponse('Shrine', 'shrine.tpl', $parts, [
+            'body_classes' => 'shrine',
+            'quickstat'    => 'player',
+        ]);
 	}
 
 	/**

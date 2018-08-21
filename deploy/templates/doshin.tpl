@@ -76,6 +76,12 @@
 
 </div>
 
+<style>
+.doshin .bounty-related {
+  margin-top: 4rem;
+}
+</style>
+
 <section class='bounty-related'>
 
 {if $myBounty gt 0}

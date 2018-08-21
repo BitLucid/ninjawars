@@ -14,7 +14,7 @@ class RequestWrapper{
      */
     public static function init() {
         if (!static::$request) {
-            Request::setTrustedProxies(Constants::$trusted_proxies);
+            Request::setTrustedProxies(Constants::$trusted_proxies, Request::HEADER_X_FORWARDED_ALL);
             // Create request object from global page request otherwise.
             static::$request = Request::createFromGlobals();
         }

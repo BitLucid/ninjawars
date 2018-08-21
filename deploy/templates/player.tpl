@@ -5,8 +5,8 @@
   border: thin solid rgba(134, 120, 120, 0.3);;
   border-radius: 0.3rem;
   display:inline-block;
+  /* Width of ninja-card made responsive in main stylesheet */
   font-family:'Open Sans', "Arial", sans-serif;
-  width:60%;
   margin:auto;
   padding: 2rem;
 }
@@ -172,7 +172,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
                   <input id="target" type="hidden" name="target_id" value="{$target_player_obj->id()|escape}">
         {foreach $items as $item}
             {if $item@first}
-                {if $same_clan}
+                {if $same_clan && !$viewing_self}
                   <div>
                     <input id="give" type="submit" value="Give" name="give" class="btn btn-default">
                   </div>
@@ -255,7 +255,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
 
     <!-- Player clan and clan members -->
     <div class='player-clan'>
-	{if $same_clan}
+	{if $same_clan && !$viewing_self}
       <p class='ninja-notice'><em class='charname'>{$target_player_obj->name()|escape}</em> is part of your clan.</p>
 	{/if}
       <p class='clan-link centered'>

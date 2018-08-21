@@ -93,7 +93,7 @@ pre-test:
 	# Check for presence of database
 	psql -lqt | cut -d \| -f 1 | grep -w $(DBNAME)
 
-test: pre-test test-main test-functional post-test
+test: pre-test test-main test-functional test-js post-test
 
 test-main:
 	@$(TEST_RUNNER) $(CC_FLAG)
@@ -129,6 +129,10 @@ test-js:
 test-ratchets:
 	#split out for ci for now
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
+
+test-cleanup:
+	psql nw -c "delete from accounts where account_id in (select account_id from accounts join account_players ap on accounts.account_id = ap._account_id join players on ap._player_id = players.player_id where uname like 'phpunit_%')"
+	psql nw -c "delete from players where uname like 'phpunit_%'"
 
 post-test:
 	#noop for now

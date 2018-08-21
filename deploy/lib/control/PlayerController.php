@@ -13,15 +13,17 @@ use NinjaWars\core\data\Inventory;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
+use Pimple\Container;
 
 class PlayerController extends AbstractController {
     const PRIV  = false;
     const ALIVE = false;
 
-    public function index() {
+    public function index(Container $p_dependencies): StreamedViewResponse {
         $request   = RequestWrapper::$request;
         $target    = $request->get('player');
         $target_id = $request->get('player_id');
+        $viewing_self = false;
 
         if ($target_id) {
             $target_player_obj = Player::find($target_id);
@@ -44,7 +46,8 @@ class PlayerController extends AbstractController {
             $targeted_skills       = null;
             $template              = 'player.tpl';
             $viewed_name_for_title = $target_player_obj->name();
-            $viewing_player_obj    = Player::find(SessionFactory::getSession()->get('player_id'));
+            $viewing_player_obj    = $p_dependencies['current_player']?? null;
+            $viewing_self          = $viewing_player_obj && $target_player_obj ? $target_player_obj->id() === $viewing_player_obj->id() : null;
             $i_am_dead = null;
 
             $kills_today = query_item(
@@ -108,6 +111,7 @@ class PlayerController extends AbstractController {
                 'items'                => $items,
                 'account'              => Account::findByChar($target_player_obj),
                 'same_clan'            => $same_clan,
+                'viewing_self'         => $viewing_self,
                 'display_clan_options' => $display_clan_options,
                 'i_am_dead'            => $i_am_dead,
                 'attack_error'         => $attack_error,

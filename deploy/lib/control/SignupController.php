@@ -10,7 +10,6 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
-use \Constants;
 use \Nmail;
 
 /**
@@ -39,7 +38,7 @@ class SignupController extends AbstractController {
      * @return Response
      */
     public function index(Container $p_dependencies) {
-        Request::setTrustedProxies(Constants::$trusted_proxies);
+        RequestWrapper::init();
         $request = RequestWrapper::$request;
         $signupRequest = $this->buildSignupRequest($request);
 
