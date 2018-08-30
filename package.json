@@ -12,7 +12,7 @@
     "prepare-unit-test-ci": "echo 'no-op for now'",
     "unit-test": "test && nsp check",
     "start": "make build",
-    "watch": "livereload ./ --debug"
+    "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug"
   },
   "repository": {
     "type": "git",
