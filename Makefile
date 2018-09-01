@@ -34,6 +34,7 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
+	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
 	touch ./deploy/resources/logs/deity.log
