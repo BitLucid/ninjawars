@@ -1,12 +1,9 @@
 <style>
 {literal}
 
-#map table {
-	margin: 0 auto;
-}
 #map .map-grid{
-    width:750px;
-	height:750px;
+    width:55rem;
+	height:55rem;
 	margin:auto;
 	background-color:#807F6F;
 	color:rgb(155, 155, 155);
@@ -16,32 +13,36 @@
 	grid-gap: 0;
 }
 #map .details{
-    width:66%;text-align:center;min-height:1.2em;font-size:1.1em;line-height:1.1;background-color:black;background-color:rgba(0,0,0,.8);margin-left:17%;margin-top:25%;border-radius:1em;padding:.3em 0 .3em;
+    width:66%;
+	text-align:center;
+	min-height:1.2rem;
+	font-size:2.1rem;
+	line-height:1.1;
+	background-color:black;
+	background-color:rgba(0,0,0,.8);
+	margin-left:17%;
+	margin-top:25%;
+	border-radius:0.6rem;
+	padding:0.1rem 0.1rem;
 }
 #map .point{
-    width:150px;
-	height:150px;
+	width:20%;
+	height:20%;
 	margin:0;padding:0;
 	background-color:#807F6F;
 }
 
 #map .node.doshin {
-	background-image:url(/images/nodes/node-tiles.png);
-	background-position:0px 0px;
 	background-repeat:no-repeat;
     background-color:#009497;
 }
 
 #map .node.dojo {
-	background-image:url(/images/nodes/node-tiles.png);
-	background-position:0px -111px;
 	background-repeat:no-repeat;
     background-color:teal;
 }
 
 #map .node.shrine {
-	background-image:url(/images/nodes/node-tiles.png);
-	background-position:0px -227px;
 	background-repeat:no-repeat;
     background-color:#800040;
 }
@@ -53,15 +54,11 @@
 }
 
 #map .node.casino {
-	background-image:url(/images/nodes/node-tiles.png);
-	background-position:0px -444px;
 	background-repeat:no-repeat;
     background-color:rgb(181, 157, 85);
 }
 
 #map .node.weapons-shop {
-	background-image:url(/images/nodes/node-tiles.png);
-	background-position:0px -558px;
 	background-repeat:no-repeat;
     background-color:#753700;
 }

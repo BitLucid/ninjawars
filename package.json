@@ -11,7 +11,8 @@
     "lint": "eslint --ext .jsx,.js deploy/www/js",
     "prepare-unit-test-ci": "echo 'no-op for now'",
     "unit-test": "test && nsp check",
-    "start": "make build"
+    "start": "make build",
+    "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug"
   },
   "repository": {
     "type": "git",
