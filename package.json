@@ -12,7 +12,8 @@
     "prepare-unit-test-ci": "echo 'no-op for now'",
     "unit-test": "test && nsp check",
     "start": "make build",
-    "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug"
+    "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
+    "security-check": "npx ncu"
   },
   "repository": {
     "type": "git",
@@ -34,18 +35,19 @@
   },
   "homepage": "https://github.com/BitLucid/ninjawars#readme",
   "devDependencies": {
-    "jasmine-core": "^3.1.0",
-    "karma": "^2.0.4",
+    "jasmine-core": "^3.2.1",
+    "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.2",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-requirejs": "^1.1.0",
     "karma-sinon": "^1.0.5",
+    "npm-check-updates": "^2.14.2",
     "phantomjs-prebuilt": "^2.1.16",
-    "requirejs": "^2.3.5",
-    "sinon": "^6.0.0"
+    "requirejs": "^2.3.6",
+    "sinon": "^6.1.5"
   },
   "dependencies": {
-    "eslint": "^4.19.1"
+    "eslint": "^5.4.0"
   }
 }
