@@ -110,13 +110,17 @@
 					</form>
 
 					<div class='details'>
-
 						{if isset($node.url) && $node.url}<a href='{$node.url|escape:'url'|escape}' target='main'>{/if}
-						{if isset($node.image)}
-						<img src='/images/{$node.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
-						{/if}
-						{if $node.url}Enter {/if}
-						{$node.name|escape}
+							{if isset($node.image)}
+							<img src='/images/{$node.image|escape:'url'|escape}' alt='' style='width:8px;height:8px'>
+							{/if}
+							{if isset($node.icon)}
+								<i class='{$node.icon}'></i>
+							{/if}
+							{if isset($node.icon_raw)}
+								{$node.icon_raw}
+							{/if}
+							{$node.name|escape}
 						{if isset($node.url) && $node.url}</a>{/if}
 
 					</div>
