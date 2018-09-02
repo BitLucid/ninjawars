@@ -5,7 +5,7 @@
 {include file='nodes.tpl' nodes=$nodes}
 
 <nav class='centered thick'>
-    <a href='/enemies' class='start-fight btn btn-default btn-lg'>Fight!</a>
+    <a href='/enemies' class='start-fight btn btn-default btn-lg'><i class='fas fa-bolt'></i> Fight!</a>
 </nav>
 
 {if $show_ad eq 1}
