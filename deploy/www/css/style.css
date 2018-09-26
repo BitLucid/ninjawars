@@ -1671,7 +1671,7 @@ time{
 
 .main-iframe { /* class for the main iframe */
 	 height:98%;/*Iframe height doesn't inherit from its container, it inherits from the page, so must match the core & main-column height defined before it above (and they must be defined above).*/
-	 height:98vh; /* Sets height as 98% in the new ways */
+	 height:89vh; /* Sets height as 98% of the viewport height */
 	 min-height:56rem;
 	 width:100%;
 	 border:0;
