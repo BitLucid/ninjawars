@@ -584,7 +584,7 @@ h1, h2, .title {
 h2 {
 	margin: .1em auto .1em; min-width:50%; 
 	background: #00a9af;
-	font-family: 'Aclonica', "edding-780-1","edding-780-2", Charcoal, serif;
+	font-family: 'Aclonica', "edding-780-1","edding-780-2", Charcoal, sans-serif;
 	letter-spacing:0.1em; font-weight:normal;
 }
 h1, .player-info .player-name {
@@ -592,7 +592,7 @@ h1, .player-info .player-name {
 	color: #ad6e40;
 	border-bottom: thick solid #800000;
 	padding-left:0; padding-right:0;
-	font: 30px/34px 'Aclonica', "edding-780-1","edding-780-2", Charcoal, serif;
+	font: 30px/34px 'Aclonica', "edding-780-1","edding-780-2", Charcoal, sans-serif;
 	letter-spacing: 0; 
 	width:100%;
 	padding-left: 7rem;
@@ -1605,14 +1605,14 @@ time{
 	box-sizing:border-box;width:50%;text-align:center;display:inline-block;vertical-align:top;line-height:40px;margin-left:1em;margin-right:1em;
 }
 .splash #menu-map-head{
-  font-size:xx-large;margin-right:.5em;
+  margin-right:.5em;
 }
 .splash .doshin-image{
   width:8px;height:8px;
 }
 .splash #top-logo h1{
   display:inline-block;
-  font:40px/45px 'Aclonica', "edding-780-1","edding-780-2", Charcoal, serif;vertical-align:middle;margin:0;padding:0;background-color:transparent;border:none;
+  font:40px/45px 'Aclonica', "edding-780-1","edding-780-2", Charcoal, sans-serif;vertical-align:middle;margin:0;padding:0;background-color:transparent;border:none;
 }
 .splash #feedback-link{
 	font-size:larger;
@@ -2773,7 +2773,7 @@ table#sight-info {
 	top:0;
 }
 #subcategory-bar a {
-	font: 21px/32px 'Aclonica', Verdana, sans-serif;
+	font: 21px/150% 'Aclonica', Verdana, sans-serif;
 }
 #subcategory-bar a:hover {
 	text-decoration:none;
