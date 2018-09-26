@@ -589,7 +589,7 @@ h2 {
 }
 h1, .player-info .player-name {
 	background: #1D0F00;
-	color: #fbbd8e;
+	color: #ad6e40;
 	border-bottom: thick solid #800000;
 	padding-left:0; padding-right:0;
 	font: 30px/34px 'Aclonica', "edding-780-1","edding-780-2", Charcoal, serif;
@@ -1428,7 +1428,7 @@ body.solo-page h1 {
 	padding: 0;
 }
 .boxes .box-title {
-	background: #006633;color:#fbbd8e;font-weight:bold;
+	background: #006633;color:#ad6e40;font-weight:bold;
 	text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 	border-bottom: thick solid #800000;
 }
