@@ -256,10 +256,11 @@ $(function() {
 	// Set up initial config.
 	Chat.config = {
 		'server': Chat.domain(window.location.host),
-		'port':'8080'
+		'port':'8080',
+		'protocol': (window.location.protocol === 'https:'? 'wss' : 'ws')
 	};
 	if (window.WebSocket !== undefined) { // Browser is compatible.
-		var connectionString = 'ws://'+Chat.config.server+':'+Chat.config.port;
+		var connectionString = Chat.config.protocol + '://' + Chat.config.server + ':' + Chat.config.port;
 		console.log('Connecting to '+connectionString);
 
 		window.conn = new WebSocket(connectionString);
