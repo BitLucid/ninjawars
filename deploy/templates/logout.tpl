@@ -65,7 +65,7 @@
 	</div>
 	<div class='horizontal'>
 		<div class='group'>
-			<SCRIPT charset="utf-8" type="text/javascript" src="http://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F26d28661-2f18-4dd1-9550-6520ac764359&Operation=GetScriptTemplate"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="http://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F26d28661-2f18-4dd1-9550-6520ac764359&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
+			<SCRIPT charset="utf-8" type="text/javascript" src="https://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F26d28661-2f18-4dd1-9550-6520ac764359&Operation=GetScriptTemplate"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="http://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F26d28661-2f18-4dd1-9550-6520ac764359&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
 		</div>
 		<div class='google-ad group'>
 			    <!-- Google Ad -->
