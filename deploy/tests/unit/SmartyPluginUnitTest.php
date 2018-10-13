@@ -11,9 +11,9 @@ require_once(CORE.'/plugins/modifier.to_tags.php');
 class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase {
     const EXISTING_FILE = '/js/nw.js';
     const MISSING_FILE = '/js/nw2.js';
-    const MD_TEXT = 'This is [href:http://localhost/|localhost]';
+    const MD_TEXT = 'This is [href:https://localhost/|localhost]';
     const PLAIN_TEXT = 'This is plain';
-    const URL = 'http://localhost.com/go/?query=string';
+    const URL = 'https://localhost.com/go/?query=string';
 
     public function testCachebustPositive() {
         $result = smarty_function_cachebust(['file'=>self::EXISTING_FILE]);

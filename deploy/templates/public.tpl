@@ -18,14 +18,14 @@
 </h1>
 
 <div id='fb-likebox-area'>
-    <iframe src="http://www.facebook.com/plugins/likebox.php?id=117346421617325&amp;width=292&amp;connections=10&amp;stream=true&amp;header=true&amp;height=587" scrolling="no" frameborder="0"></iframe>
+    <iframe src="https://www.facebook.com/plugins/likebox.php?id=117346421617325&amp;width=292&amp;connections=10&amp;stream=true&amp;header=true&amp;height=587" scrolling="no" frameborder="0"></iframe>
 </div>
 
         <a id='fb-forum-link' href='https://www.facebook.com/ninjawars.net'>Discuss ninjawars on facebook</a>
         
 <div>
     {literal}  
-    <script src="http://widgets.twimg.com/j/2/widget.js"></script>
+    <script src="https://widgets.twimg.com/j/2/widget.js"></script>
     <script>
     new TWTR.Widget({
       version: 2,

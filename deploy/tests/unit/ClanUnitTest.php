@@ -5,7 +5,7 @@ class ClanUnitTest extends NWTest {
     private $clan;
     private $data = [
         'clan_name'       => 'Clan Name',
-        'clan_avatar_url' => 'http://localhost/',
+        'clan_avatar_url' => 'https://localhost/',
         'clan_founder'    => 'Founder',
         'description'     => 'Clan description',
         'clan_id'         => 1,

@@ -35,7 +35,7 @@
 		<li>John: Ninja Wars is made entirely in PHP/MySQL. This is mostly because PHP seems to run well everywhere and both are free, and I'm on a budget.</li>
 
 		<li>BBGDev: What other tools (graphics packages, etc) do you use?</li>
-		<li>John: For NinjaWars all the current work, is in PNG (this might change when I get a new artist), as far as tools go I use Zoner (vector graphics) and a few others but mostly these are on DirectX games I've written. Can I plug my other work? http://www.cosmic-soldier.tk</li>
+		<li>John: For NinjaWars all the current work, is in PNG (this might change when I get a new artist), as far as tools go I use Zoner (vector graphics) and a few others but mostly these are on DirectX games I've written. Can I plug my other work? https://www.cosmic-soldier.tk</li>
 
 		<li>BBGDev: What other games (video games/bbg's) have influenced your work?</li>
 		<li>John: Though not directly related, I did play a lot of Tenchu 3 during the development of Ninja Wars. I'm also a big fan of any Star Trek or tactics related game. ( Final Fantasy Tactics, Ogre Battle, Tactics Core, Fallout Tactics, Dynasty Tactics etc....)</li>
@@ -59,7 +59,7 @@
 		<li>John: I have not developed any MUDs, but I do remember Legend of the Red Dragon back in the BBS days, now that was a MUD.</li>
 
 		<li>BBGDev: Have you developed any non BBG (traditional?) games?</li>
-		<li>John: I have a few on the http://www.cssgames.tk site. These are my more DirectX based games I make.</li>
+		<li>John: I have a few on the https://www.cssgames.tk site. These are my more DirectX based games I make.</li>
 
 		<li>BBGDev: When did you start being interested in computers? gaming?</li>
 		<li>John: For computers I was proablly around 10 or 11, games about the same. Anyone remember Battletech the old CGA(4-color) game. I think that was one of my firsts.</li>

@@ -35,8 +35,8 @@ describe('chat', function() {
       it('should be able to get the chat domain', function() {
         expect(Chat.domain('https://www.ninjawars.net')).toEqual('chatapi.ninjawars.net');
         expect(Chat.domain('https://invaliddomainnamehere.com')).toEqual('chatapi.ninjawars.net');
-        expect(Chat.domain('http://localhost:2345/wark/zig')).toEqual('localhost');
-        expect(Chat.domain('http://localhost:8765/#!/list')).toEqual('localhost');
+        expect(Chat.domain('https://localhost:2345/wark/zig')).toEqual('localhost');
+        expect(Chat.domain('https://localhost:8765/#!/list')).toEqual('localhost');
       });
     });
   });
