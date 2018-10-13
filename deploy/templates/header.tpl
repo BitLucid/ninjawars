@@ -23,7 +23,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Google jquery CDN version, sync composer component for tests if changed -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {if $smarty.const.LOCAL_JS}
     <!-- Local js turned on for when CDN is unavailable -->
     <script>window.jQuery || document.write('<script src="{cachebust file="/js/jquery.min.js"}"><\/script>')</script>
