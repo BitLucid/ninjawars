@@ -45,9 +45,9 @@
     "npm-check-updates": "^2.14.2",
     "phantomjs-prebuilt": "^2.1.16",
     "requirejs": "^2.3.6",
-    "sinon": "^6.1.5"
+    "sinon": "^7.0.0"
   },
   "dependencies": {
-    "eslint": "^5.4.0"
+    "eslint": "^5.7.0"
   }
 }
