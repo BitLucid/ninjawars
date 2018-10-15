@@ -61,25 +61,18 @@ To earn pay for your work you must first <a href="/signup">become a citizen of t
 <hr>
 
     <div class='inline-block glassbox'>
-    <SCRIPT charset="utf-8" type="text/javascript" src="http://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F0e21130c-3468-4f24-bbd7-acaeb7142afc&Operation=GetScriptTemplate"> </SCRIPT> <NOSCRIPT><A HREF="http://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F0e21130c-3468-4f24-bbd7-acaeb7142afc&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
+    <SCRIPT charset="utf-8" type="text/javascript" src="https://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F0e21130c-3468-4f24-bbd7-acaeb7142afc&Operation=GetScriptTemplate"> </SCRIPT> <NOSCRIPT><A HREF="https://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F0e21130c-3468-4f24-bbd7-acaeb7142afc&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
     </div>
 
 
 <!-- Google Ad -->
-<script type="text/javascript"><!--
-google_ad_client = "pub-9488510237149880";
-/* 300x250, created 12/17/09 */
-google_ad_slot = "9563671390";
-google_ad_width = 300;
-google_ad_height = 250;
-//-->
-</script>
-<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
+<!-- Google ad not working currently, so commented out -->
 
 <script type='text/javascript'>
+var userStore = {if $authenticated}true{else}false{/if};
+var recommendedTurns = {$recommended_to_work};
 {literal}
-$(document).ready(function () {
+$(function () {
     $('#attack-peasant-link').click(function () {
         return confirm('A peasant?  Or a disguised ninja?  Attack one of the peasants?');
     });
@@ -88,18 +81,13 @@ $(document).ready(function () {
         return confirm('A samurai. Attack him?');
     });
 
-{/literal}
-{if $authenticated}
-    $("#worked").val(NW.storage.appState.get("worked", {$recommended_to_work}));
-
-{literal}
-    $("#work").submit(function() {
-        NW.storage.appState.set("worked", $("#worked").val());
-        return true;
-    });
-{/literal}
-{/if}
-{literal}
+    if(userStore){
+        $("#worked").val(NW.storage.appState.get("worked", recommendedTurns));
+        $("#work").submit(function() {
+            NW.storage.appState.set("worked", $("#worked").val());
+            return true;
+        });
+    }
 });
 {/literal}
 </script>

@@ -560,7 +560,7 @@ class Player implements Character {
 
             $def         = 'monsterid'; // Default image or image class.
             // other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
-            $base        = "http://www.gravatar.com/avatar/";
+            $base        = "https://www.gravatar.com/avatar/";
             $hash        = md5(trim(strtolower($email)));
             $no_gravatar = "d=".urlencode($def);
             $size        = 80;
