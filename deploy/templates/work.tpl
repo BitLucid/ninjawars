@@ -66,22 +66,13 @@ To earn pay for your work you must first <a href="/signup">become a citizen of t
 
 
 <!-- Google Ad -->
-<script type="text/javascript"><!--
-google_ad_client = "pub-9488510237149880";
-/* 300x250, created 12/17/09 */
-google_ad_slot = "9563671390";
-google_ad_width = 300;
-google_ad_height = 250;
-//-->
-</script>
-<script type="text/javascript" src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
+<!-- Google ad not working currently, so commented out -->
 
 <script type='text/javascript'>
 var userStore = {if $authenticated}true{else}false{/if};
 var recommendedTurns = {$recommended_to_work};
 {literal}
-$(document).ready(function () {
+$(function () {
     $('#attack-peasant-link').click(function () {
         return confirm('A peasant?  Or a disguised ninja?  Attack one of the peasants?');
     });
