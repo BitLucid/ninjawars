@@ -40,7 +40,7 @@
 </div>
 
 <div class='stats-avatar'>
-  Avatar: (change your avatar for your account email at <a rel="noopener noreferrer" target="_blank" href='http://gravatar.com'>gravatar.com</a>) →
+  Avatar: (change your avatar for your account email at <a rel="noopener noreferrer" target="_blank" href='//gravatar.com'>gravatar.com</a>) →
   {include file="gravatar.tpl" gurl=$char->avatarUrl()}
 </div>
 <section class='two-column'>
@@ -147,11 +147,11 @@ if (0) {
 }
 /* ]]> */
 </script>
-<script type="text/javascript" src="http://www.googleadservices.com/pagead/conversion.js">
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
 </script>
 <noscript>
 <div style="display:inline;">
-<img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/1068723773/?value=0&amp;label=AMq2CMHd_AEQvdzN_QM&amp;guid=ON&amp;script=0"/>
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/1068723773/?value=0&amp;label=AMq2CMHd_AEQvdzN_QM&amp;guid=ON&amp;script=0"/>
 </div>
 </noscript>
 {/literal}

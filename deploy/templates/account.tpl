@@ -76,7 +76,7 @@ h1 .account-identity{
 {/if}
 
 <div class='stats-avatar'>
-  Avatar: (change your avatar for your account email at <a rel="noopener noreferrer" target="_blank" href='http://gravatar.com'>gravatar.com</a>) &rarr;
+  Avatar: (change your avatar for your account email at <a rel="noopener noreferrer" target="_blank" href='//gravatar.com'>gravatar.com</a>) &rarr;
   {include file="gravatar.tpl" gurl=$gravatar_url}
 </div>
 
@@ -170,11 +170,11 @@ if (0) {
 }
 /* ]]> */
 </script>
-<script type="text/javascript" src="http://www.googleadservices.com/pagead/conversion.js">
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
 </script>
 <noscript>
 <div style="display:inline;">
-<img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/1068723773/?value=0&amp;label=jIocCMnc_AEQvdzN_QM&amp;guid=ON&amp;script=0"/>
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/1068723773/?value=0&amp;label=jIocCMnc_AEQvdzN_QM&amp;guid=ON&amp;script=0"/>
 </div>
 </noscript>
 {/literal}

@@ -1,6 +1,6 @@
 			<div id='footer-middle-bar'>
 		    <h3 id='created-by'>
-		    	<a href='http://bitlucid.com' target='_blank'>CREATED BY BitLucid, Inc.</a>
+		    	<a href='//bitlucid.com' target='_blank'>CREATED BY BitLucid, Inc.</a>
 		    </h3>
 		    <ul id='footer-authors'>
 		    	<li class='author'>
@@ -19,7 +19,7 @@
         </div>
         <div id='footer-bottom-bar'>
         	<span id='html5-integration'>
-		    		<a href="http://www.w3.org/html/logo/" rel='nofollow'>
+		    		<a href="https://www.w3.org/html/logo/" rel='nofollow'>
 							<img src="//www.w3.org/html/logo/badge/html5-badge-h-css3-multimedia-performance-semantics.png" width="229" height="64" alt="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics" title="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics">
 						</a>
 					</span>

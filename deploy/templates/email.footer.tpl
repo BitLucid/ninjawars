@@ -1,5 +1,5 @@
 	<div style='background-color:#0c0c0c'>
-	    <img alt='NinjaWars' src='http://www.ninjawars.net/images/ninjawars_title.png'>
+	    <img alt='NinjaWars' src='//www.ninjawars.net/images/ninjawars_title.png'>
 	</div>
 	
 	<div>

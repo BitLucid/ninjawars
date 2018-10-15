@@ -95,7 +95,7 @@ class ClanTest extends NWTest {
 
     function testGetTheClanAvatarUrl(){
         $clan = Clan::find($this->clan_id);
-        $clan->setAvatarUrl($g = 'http://google.com/someimage.jpg');
+        $clan->setAvatarUrl($g = 'https://google.com/someimage.jpg');
         $this->assertEquals($g, $clan->getAvatarUrl());
     }
 
@@ -103,7 +103,7 @@ class ClanTest extends NWTest {
         $clan = $this->clan;
         $clan->setDescription($d = 'a new description');
         $clan->setFounder($f = 'newFounder');
-        $clan->setAvatarUrl($url = 'http://example.com/avatar.png');
+        $clan->setAvatarUrl($url = 'https://example.com/avatar.png');
         $was_saved = $clan->save();
         $this->assertTrue($was_saved);
         $saved = Clan::find($clan->id);

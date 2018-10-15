@@ -6,7 +6,7 @@ server{
 
 server {
 	listen 80;
-	server_name www.ninjawars.net nw.remote;
+	server_name www.ninjawars.net nw.remote ssl.ninjawars.net;
 
 	root /srv/ninjawars/deploy/www;
 	charset utf-8;
