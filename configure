@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "DOMAIN=http://localhost:8765/" > CONFIG
+echo "DOMAIN=https://nw.local/" > CONFIG
 echo "DBNAME=nw" >> CONFIG
 echo "HOST=localhost" >> CONFIG
 echo "PORT=5432" >> CONFIG
