@@ -24,7 +24,7 @@ class TestApi:
     def status_code(self, url):
         ''' Gets http status codes of pages/urls '''
         try:
-            r = requests.head(url)
+            r = requests.head(url, verify=False)
             return r.status_code
         except requests.ConnectionError:
             return None
@@ -36,7 +36,7 @@ class TestApi:
             type=endpoint,
             jsoncallback='fake'
             )
-        resp = requests.get(url=url, params=params)
+        resp = requests.get(url=url, params=params, verify=False)
         # strip off the jsonp wrapper
         cut = resp.text[5:-1]
         #data = json.loads(cut)
@@ -58,6 +58,7 @@ class TestApi:
         endpoints = ['player', 'latest_event', 'chats', 'latest_message',
                 'index', 'latest_chat_id', 'new_chats']
         player_data = self.pull_json(root+'/api', 'player') 
+        assert (player_data is not None)
         for endpoint in endpoints:
             data = self.pull_json(root+'/api', endpoint)
             assert (data is not None and 

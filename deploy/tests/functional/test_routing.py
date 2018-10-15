@@ -23,7 +23,7 @@ class TestRouting:
     def status_code(self, url):
         ''' Gets http status codes of pages/urls '''
         try:
-            r = requests.head(url)
+            r = requests.head(url, verify=False)
             return r.status_code
         except requests.ConnectionError:
             return None
@@ -31,7 +31,7 @@ class TestRouting:
     def page_title(self, url):
         ''' Get the lexed title from the html '''
         try:
-            r = requests.get(url)
+            r = requests.get(url, verify=False)
             tree = fromstring(r.content)
             return tree.findtext('.//title')
         except requests.ConnectionError:
