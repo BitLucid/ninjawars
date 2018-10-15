@@ -1,4 +1,5 @@
 "use strict"; // Strict checking.
+/* global describe, beforeEach, afterEach, it, expect, Chat, refreshpagechat */
 
 describe('chat', function() {
   describe('Introductory page testing context', function() {
