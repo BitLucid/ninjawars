@@ -49,11 +49,12 @@ js-deps:
 install: build start-chat writable
 	@echo "Don't forget to update webserver configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
+	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
 
 writable:
 	chown www-data:adm ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
+	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
 
 
 install-system:
@@ -78,6 +79,9 @@ start-chat:
 	touch /var/log/nginx/ninjawars.chat-server.log
 	chown www-data:adm /var/log/nginx/ninjawars.chat-server.log
 	nohup php bin/chat-server.php > /var/log/nginx/ninjawars.chat-server.log 2>&1 &
+
+browse:
+	xdg-open http://localhost:8765
 
 
 all: build test-unit db python-build test
@@ -148,6 +152,7 @@ clean:
 	@rm -f "$(JS)jquery.timeago.js"
 	@rm -f "$(JS)jquery.linkify.js"
 	@rm -f "$(JS)jquery-linkify.min.js"
+	@rm -f "/tmp/nw"
 
 dist-clean: clean
 	@rm -rf "$(VENDOR)"*
