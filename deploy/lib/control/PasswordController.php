@@ -91,9 +91,9 @@ class PasswordController extends AbstractController {
                 $error = 'Sorry, unable to find a matching account!';
             } else {
                 // PWR created with default nonce
-                $request = PasswordResetRequest::generate($account);
+                $p_request = PasswordResetRequest::generate($account);
 
-                if ($this->sendEmail($request->nonce, $account)) {
+                if ($this->sendEmail($p_request->nonce, $account)) {
                     $message = 'Your reset email was sent!';
                 } else {
                     $error = 'Sorry, there was a problem sending to your account!  Please contact support.';
