@@ -1,4 +1,5 @@
 <?php
+// Debug a value for html, if debugging is turned on.
 function debug($val) {
     if (DEBUG) {
     	$vals = func_get_args();
@@ -10,6 +11,7 @@ function debug($val) {
     }
 }
 
+// Allow debugging by a setting in the cookie.
 function nw_debug() {
 	$result = false;
 
