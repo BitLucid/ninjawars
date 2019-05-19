@@ -50,9 +50,11 @@ install: build start-chat writable
 	@echo "Don't forget to update webserver configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
+	php ./deploy/check.php
+	echo "Check that the webserver user has permissions to the script!"
 
 writable:
-	chown www-data:adm ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
+	chown http:adm ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
 
@@ -69,6 +71,11 @@ install-system:
 	apt-get install php7.2-fpm php7.2-xml php7.2-pgsql php7.2-curl php7.2-mbstring
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 
+install-python:
+	python3 -m venv .venv
+	source .venv/bin/activate
+	pip3 install -r requirements.txt
+
 install-webserver:
 	apt install nginx
 
@@ -77,7 +84,7 @@ install-database-client:
 
 start-chat:
 	touch /var/log/nginx/ninjawars.chat-server.log
-	chown www-data:adm /var/log/nginx/ninjawars.chat-server.log
+	chown http:adm /var/log/nginx/ninjawars.chat-server.log
 	nohup php bin/chat-server.php > /var/log/nginx/ninjawars.chat-server.log 2>&1 &
 
 browse:
