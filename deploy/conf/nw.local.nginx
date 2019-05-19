@@ -2,7 +2,7 @@ server {
 	listen 8765;
 	server_name nw.local localhost;
 
-	root /tmp/root/deploy/www;
+	root /srv/ninjawars/deploy/www;
 	charset utf-8;
 	#error_page 404 /404.html;
 	error_page 404 /404.php;
@@ -12,17 +12,18 @@ server {
 
 	# Just use generic nginx error pages for now
 	location = /50x.html {
-	    root /usr/share/nginx/html;
+		root /usr/share/nginx/html;
 	}
 
-    location = /favicon.ico {
+	location = /favicon.ico {
 		try_files /dev_favicon.ico =404;
 	}
 
 	# Debugging on settings
-	log_not_found on;
+	#log_not_found on;
+	access_log /var/log/nginx/scripts.log scripts;
 	#autoindex on;
-	rewrite_log on;
+	#rewrite_log on;
 	add_header X-uri "$uri";
 
 	location ~ ^/(js|css|images|files)/ {
@@ -37,27 +38,27 @@ server {
 	}
 
 	location = /npc.php {
-	    return 302 /npc/;
+		return 302 /npc/;
 	}
 
 	location = /news.php {
-	    return 301 /news/;
+		return 301 /news/;
 	}
 
 	location = /account_issues.php {
-	    return 302 /assistance;
+		return 302 /assistance;
 	}
 
 	location = /confirm.php {
-	    return 302 /assistance/confirm$is_args$args;
+		return 302 /assistance/confirm$is_args$args;
 	}
 
 	location = /resetpassword.php {
-	    return 302 /assistance$is_args$args;
+		return 302 /assistance$is_args$args;
 	}
 
 	location ~ ^/(main\.php|tutorial\.php) {
-	    return 302 /intro;
+		return 302 /intro;
 	}
 
 	location = /index.php {
@@ -65,7 +66,7 @@ server {
 	}
 
 	location = /list_all_players.php {
-	    return 302 /list$is_args$args;
+		return 302 /list$is_args$args;
 	}
 
 	location ^~ /webgame {

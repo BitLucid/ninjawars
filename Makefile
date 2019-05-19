@@ -196,9 +196,8 @@ backup-live-db:
 	pg_dump -h nw-live-pg10.ci1h1yzrwhkt.us-east-1.rds.amazonaws.com -p 5987 -U ninjamaster nw_live > /srv/backups/nw/nw_live_$(date +\%F-hour-\%H).sql
 
 web-start:
-	#Symlink /tmp/www/ in place of /var/www/
-	rm -rf /tmp/root/
-	ln -s $(SRC) /tmp/root
+	rm /tmp/root
+	ln -s "$(SRC)../" /tmp/root
 	#permission error is normal and recoverable
 	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf
 	sleep 0.5
