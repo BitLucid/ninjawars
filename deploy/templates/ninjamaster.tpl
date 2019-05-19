@@ -188,7 +188,7 @@ nav.admin-nav a{
 		  <h2>{$npc->identity()}</h2>
 		  <figure>
 		  	<img src='/images/characters/{$npc->image()}' class='npc-icon' alt='no-image'>
-		  	<figcaption>{$npc->shortDesc()}&nbsp;</figcaption>
+		  	<figcaption>{$npc->shortDesc()|escape}&nbsp;</figcaption>
 		  </figure>
 		  <dl>
 			<dt>Name</dt><dd>{$npc->name()|escape}</dd>
