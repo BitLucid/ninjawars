@@ -68,8 +68,8 @@ class ListController extends AbstractController {
         // Determine the page, if the dead count is more than the rank spot, default to 1, otherwise use the input page.
         // Determine the number of pages and the limit and offset
 
-        if ($searched && $list_by_rank) {
-            $page = ceil(substr($searched, 1) / $record_limit);
+        if ($searched && $list_by_rank && $rank_search = (int) substr($searched, 1)) {
+            $page = ceil($rank_search / $record_limit);
         } else if ($page == "searched") {
             $page = $request->get('page', 1);
         } else {
