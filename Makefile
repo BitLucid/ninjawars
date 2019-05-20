@@ -169,6 +169,9 @@ dist-clean: clean
 	@echo "Done"
 	@echo "You'll have to dropdb $(DBNAME) yourself."
 
+clear-cache:
+	php ./deploy/lib/control/util/clear_cache.php
+
 db-init:
 	# Fail on existing database
 	createdb $(DBNAME);
