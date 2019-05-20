@@ -10,7 +10,7 @@ use \Smarty;
 class NWTemplate extends Smarty {
     public function __construct() {
         parent::__construct();
-        $this->caching = false;
+        $this->caching = 0;
 
         $this->addTemplateDir(TEMPLATE_PATH);
 
