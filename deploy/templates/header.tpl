@@ -23,14 +23,14 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Google jquery CDN version, sync composer component for tests if changed -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {if $smarty.const.LOCAL_JS}
     <!-- Local js turned on for when CDN is unavailable -->
     <script>window.jQuery || document.write('<script src="{cachebust file="/js/jquery.min.js"}"><\/script>')</script>
 {/if}
     <script src="/js/bootstrap.min.js"></script>
     <!-- Plugins go here -->
-    <script type='text/javascript' src='{cachebust file="/js/jquery.timeago.js"}'></script>
+    <script src='{cachebust file="/js/jquery.timeago.js"}'></script>
 
 {if $smarty.const.DEBUG}
     {literal}
@@ -42,9 +42,9 @@
 {/if}
 
     <!-- All the global ninjawars javascript -->
-    <script type="text/javascript" src="{cachebust file="/js/nw.js"}"></script>
+    <script src="{cachebust file="/js/nw.js"}"></script>
 {if $is_index}
-    <script type="text/javascript" src="{cachebust file="/js/chat.js"}"></script>
+    <script src="{cachebust file="/js/chat.js"}"></script>
 {/if}
 
   </head>
