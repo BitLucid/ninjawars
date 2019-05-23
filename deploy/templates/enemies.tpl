@@ -60,7 +60,7 @@
   </ul>
 </div>
 {else}
-<p class='enemies-righthalf'>No nearby ninja, <em class='char-name'>{$char_name|escape}</em>.</p>
+<p class='enemies-righthalf'>No nearby ninja, <em class='char-name'>{$char->name()|escape}</em>.</p>
 {/if}
 </section><!-- End of clearfix section -->
 
@@ -99,6 +99,9 @@
 	</div>
 {/if}
 </section>
+
+{* The single-next enemy attack interface *}
+{include file="enemies.attack-next.tpl" enemy=$next_enemy self=$char_info}
 
 
 {if !empty($recent_attackers)}

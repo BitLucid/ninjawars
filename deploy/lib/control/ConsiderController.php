@@ -82,10 +82,12 @@ class ConsiderController extends AbstractController {
         $npcs             = NpcFactory::customNpcs();
         $enemy_list       = ($char ? $this->getCurrentEnemies($char->id()) : []);
         $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
+        $next_enemy = $this->getNextEnemy($char);
 
         return [
-            'logged_in'        => (bool)$char,
+            'logged_in'        => (bool)$char->id(),
             'enemy_list'       => $enemy_list,
+            'char'             => $char,
             'char_name'        => ($char ? $char->name() : ''),
             'npcs'             => $npcs,
             'other_npcs'       => $other_npcs,
@@ -93,6 +95,7 @@ class ConsiderController extends AbstractController {
             'active_ninjas'    => $active_ninjas,
             'recent_attackers' => $recent_attackers,
             'enemy_list'       => $enemy_list,
+            'next_enemy'       => $next_enemy,
             'peers'            => $peers,
         ];
     }
@@ -188,6 +191,31 @@ class ConsiderController extends AbstractController {
         }
 
         return $peers;
+    }
+
+    /**
+     * Select nearest character down in rank
+     *
+     * @param Player $char
+     * @return Player
+     */
+    private function getNextEnemy(Player $char) {
+        $sel = '
+            SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id WHERE score <
+            (SELECT score FROM player_rank WHERE _player_id = :char_id) AND active = 1 AND health > 0 ORDER BY score DESC LIMIT 1';
+        $enemies = query_array(
+            $sel,
+            [
+                ':char_id'  => [$char->id(), PDO::PARAM_INT],
+            ]
+        );
+        if (!count($enemies)) {
+            // Get bottom 10 players if not yet ranked.
+            $enemies = query_array('SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id
+            where active = 1 and health > 0
+            order by rank_id ASC limit 10');
+        }
+        return Player::find(reset($enemies)['player_id']);
     }
 
     /**
