@@ -153,7 +153,16 @@ class NinjamasterController extends AbstractController {
      */
     private function playerSize() {
         $res = [];
-        $sel = "SELECT (level-3-round(days/5)) AS sum, player_id, uname FROM players WHERE active = 1 AND health > 0 ORDER BY sum DESC";
+        $sel = "SELECT 
+            (level - 3 - round(days/100)) AS sum, 
+            round(stamina + strength + speed + greatest(health, 1) / 6 + level - status - greatest(days, 1) / 50  + active) as score, 
+            player_id, 
+            uname 
+                FROM players 
+                WHERE 
+                    active = 1 AND 
+                    health > 0 
+                ORDER BY sum DESC";
         $player_info_list = query($sel); // Gets a resultset
         $max = 0;
         while($player_info = $player_info_list->fetch()){
@@ -162,6 +171,7 @@ class NinjamasterController extends AbstractController {
             $res[$player_info['uname']] = [
                 'player_id' => $player_info['player_id'],
                 'size'      => $this->calculatePlayerSize($player_info['sum'], $max),
+                'score'     => $player_info['score']
             ];
         }
 
