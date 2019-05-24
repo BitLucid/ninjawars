@@ -101,7 +101,7 @@
 </section>
 
 {* The single-next enemy attack interface *}
-{include file="enemies.attack-next.tpl" enemy=$next_enemy self=$char_info}
+{include file="enemies.attack-next.tpl" enemy=$next_enemy char=$char}
 
 
 {if !empty($recent_attackers)}

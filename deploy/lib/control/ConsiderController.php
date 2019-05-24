@@ -45,6 +45,24 @@ class ConsiderController extends AbstractController {
     }
 
     /**
+     * Display just the next enemy
+     */
+    public function nextEnemy(Container $p_dependencies) {
+        $char             = Player::find(SessionFactory::getSession()->get('player_id'));
+        $char_info        = ($char ? $char->data() : []);
+        $next_enemy = $this->getNextEnemy($char);
+
+        $parts = [
+            'logged_in'        => (bool)$char->id(),
+            'char'             => $char,
+            'char_name'        => ($char ? $char->name() : ''),
+            'char_info'        => $char_info,
+            'enemy'       => $next_enemy,
+        ];
+        return new StreamedViewResponse('Fight Next Enemy', 'enemies.attack-next.tpl', $parts, ['quickstat'=>false]);
+    }
+
+    /**
      * Add an enemy to pc's list if valid.
      */
     public function addEnemy(Container $p_dependencies) {
@@ -71,7 +89,7 @@ class ConsiderController extends AbstractController {
     }
 
     /**
-     * @TODO Document me!
+     * Bring together all the parts for the main display
      */
     private function configure() {
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));

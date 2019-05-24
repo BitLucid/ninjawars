@@ -132,6 +132,7 @@ Router::$routes = [
         'actions' => [
             'add'    => 'addEnemy',
             'delete' => 'deleteEnemy',
+            'next'   => 'nextEnemy',
         ],
     ],
     'assistance' => [

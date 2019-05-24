@@ -96,6 +96,9 @@ all: build test-unit db python-build test
 test-one:
 	$(TEST_RUNNER) $(CC_FLAG) $(TESTFILE)
 
+watch:
+	./vendor/bin/phpunit-watcher watch
+
 pre-test:
 	@find ./deploy/lib/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find ./deploy/www/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true

@@ -16,5 +16,6 @@ var enemy = 'enemy to array @json_encode'
 		{* Display attack with additional settings *}
 		<button type="submit" class='btn btn-default'>Duel <em class='char-name'>{$enemy->name()|escape}</em></button>
 		{* Item-based attack options *}
+		<p>My Name: {$char->name()|escape}
 	</form>
 </section>

@@ -29,4 +29,10 @@ class ConsiderControllerTest extends NWTest {
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
+
+    public function testNextEnemy() {
+        $response = $this->controller->nextEnemy($this->m_dependencies);
+
+        $this->assertInstanceOf(StreamedViewResponse::class, $response);
+    }
 }
