@@ -1,6 +1,7 @@
 <?php
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -34,5 +35,12 @@ class ConsiderControllerTest extends NWTest {
         $response = $this->controller->nextEnemy($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
+    }
+
+
+    public function testAddBlankEnemy() {
+        $response = $this->controller->addEnemy($this->m_dependencies);
+
+        $this->assertInstanceOf(RedirectResponse::class, $response);
     }
 }
