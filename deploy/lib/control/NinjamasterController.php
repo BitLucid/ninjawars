@@ -144,7 +144,7 @@ class NinjamasterController extends AbstractController {
         if($authed instanceof RedirectResponse){
             return $authed;
         }
-        return new StreamedViewResponse('Player Character Tags', 'player-tags.tpl', [ 'player_size' => $this->playerSize() ], [ 'quickstat' => false ]);
+        return new StreamedViewResponse('Player Character Tags', 'character-tag-cloud.tpl', [ 'player_size' => $this->playerSize() ], [ 'quickstat' => false ]);
     }
 
     /**
