@@ -13,6 +13,8 @@ use \RuntimeException;
  * @todo Move clan and status operations here
  */
 class NinjaMeta {
+    private $char;
+    
     /**
      * Chainable constructor
      */
