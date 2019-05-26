@@ -145,7 +145,7 @@ class Player implements Character {
     /**
      * @return int
      */
-	public function id(): int {
+	public function id(): ?int {
 		return $this->vo->player_id;
 	}
 
@@ -420,7 +420,7 @@ class Player implements Character {
      */
     public function data(): array {
 		if (!$this->data) {
-            $clan = $this->getClan();
+            $clan = $this->id() ? $this->getClan() : null;
             $this->data = (array) $this->vo;
             $this->data['next_level']    = $this->killsRequiredForNextLevel();
             $this->data['max_health']    = $this->getMaxHealth();
