@@ -8,6 +8,7 @@ use NinjaWars\core\data\Message;
 use NinjaWars\core\data\SkillDAO;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\NinjaMeta;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\extensions\SessionFactory;
@@ -55,10 +56,7 @@ class PlayerController extends AbstractController {
                 [':player_id'=>$target_player_obj->id()]
             );
 
-            $rank_spot = query_item(
-                'SELECT rank_id FROM rankings WHERE player_id = :player_id limit 1',
-                [':player_id'=>$target_player_obj->id()]
-            );
+            $rank_spot = (new NinjaMeta($target_player_obj))->ranking();
 
             if ($viewing_player_obj !== null) {
                 $viewers_clan   = Clan::findByMember($viewing_player_obj);

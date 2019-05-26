@@ -8,6 +8,7 @@ use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\NinjaMeta;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
@@ -107,10 +108,7 @@ class AttackController extends AbstractController {
         $starting_target   = clone $target;
         $turns_counter     = ($options['duel'] ? -1 : 1);
         $attacker_label    = $attacker->name();
-        $rank_spot = query_item(
-            'SELECT rank_id FROM rankings WHERE player_id = :player_id limit 1',
-            [':player_id'=>$target->id()]
-        );
+        $rank_spot = (new NinjaMeta($target))->ranking();
 
         if (!$options['duel'] && $attacker->hasStatus(STEALTH)) {
             $stealthed_attack = true;
