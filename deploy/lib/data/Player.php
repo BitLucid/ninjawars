@@ -97,7 +97,7 @@ class Player implements Character {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString(): string {
         return $this->name();
     }
 
@@ -138,21 +138,21 @@ class Player implements Character {
     /**
      * @return string
      */
-    public function name() {
+    public function name(): string {
         return $this->vo->uname;
     }
 
     /**
      * @return int
      */
-	public function id() {
+	public function id(): int {
 		return $this->vo->player_id;
 	}
 
     /**
      * Adds a defined numeric status constant to the binary string of statuses
      */
-    public function addStatus($p_status) {
+    public function addStatus($p_status): void {
         $status = self::validStatus($p_status);
 
         if ($status > 0 && !$this->hasStatus($status)) {
@@ -167,7 +167,7 @@ class Player implements Character {
     /**
      * Remove a numeric status from the binary string of status toggles.
      */
-    public function subtractStatus($p_status) {
+    public function subtractStatus($p_status): void {
         $status = self::validStatus($p_status);
 
         if ($status > 0 && $this->hasStatus($status)) {
@@ -182,7 +182,7 @@ class Player implements Character {
     /**
      * Resets the binary status info to 0/none
      */
-	public function resetStatus() {
+	public function resetStatus(): void {
 		$this->status = 0;
 	}
 
@@ -191,7 +191,7 @@ class Player implements Character {
      * @param string|int $p_status
      * @return boolean
      */
-	public function hasStatus(int $p_status) {
+	public function hasStatus(int $p_status): bool {
         $status = self::validStatus($p_status);
 
         return ((bool)$status && (bool)($this->status & $status));
@@ -202,7 +202,7 @@ class Player implements Character {
      * @param string|int $p_status
      * @return boolean
      */
-	public function hasTextStatus(string $p_status) {
+	public function hasTextStatus(string $p_status): bool {
         return (bool) Status::queryStatusEffect($p_status, $this);
     }
     
@@ -210,7 +210,7 @@ class Player implements Character {
      * Add a string status to a character
      * @return int|bool
      */
-    public function addTextStatus(string $status_name, int $sec_duration, bool $refresh=false){
+    public function addTextStatus(string $status_name, int $sec_duration, bool $refresh=false): int {
         return Status::refreshStatusEffect($status_name, $this, $sec_duration, $refresh);
     }
 
@@ -218,7 +218,7 @@ class Player implements Character {
      * Standard damage output from 1 to max
      * @return int
      */
-	public function damage(Character $enemy=null){
+	public function damage(Character $enemy=null): int {
 		return rand(1, $this->maxDamage($enemy));
 	}
 
@@ -227,14 +227,14 @@ class Player implements Character {
      *
      * @return int
      */
-	public function maxDamage(Character $enemy=null){
+	public function maxDamage(Character $enemy=null): int {
         return (int) ($this->getStrength() * 5 + $this->getSpeed());
     }
 
     /**
      * @return int
      */
-	public function getStrength() {
+	public function getStrength(): int {
         $str = NEW_PLAYER_INITIAL_STATS + (($this->level-1) * LEVEL_UP_STAT_RAISE);
         if($this->hasStatus(STALKING)){
             $str = (int) max(1, floor($str*1.4));
@@ -253,17 +253,17 @@ class Player implements Character {
 		}
 	}
 
-	public function setStrength($str){
+	public function setStrength(int $str): int {
 		if($str < 0){
 			throw new \InvalidArgumentException('Strength cannot be set as a negative.');
 		}
-		$this->vo->strength = $str;
+		return $this->vo->strength = $str;
 	}
 
     /**
      * @return int
      */
-	public function getSpeed() {
+	public function getSpeed(): int {
         $speed = NEW_PLAYER_INITIAL_STATS + (($this->level -1) * LEVEL_UP_STAT_RAISE);
         if($this->hasStatus(STALKING)){
             $speed = (int) max(1, floor($speed*0.7));
@@ -278,17 +278,17 @@ class Player implements Character {
 		}
 	}
 
-	public function setSpeed($speed){
+	public function setSpeed(int $speed): int{
 		if($speed < 0){
 			throw new \InvalidArgumentException('Speed cannot be set as a negative.');
 		}
-		$this->vo->speed = $speed;
+		return $this->vo->speed = $speed;
 	}
 
     /**
      * @return int
      */
-	public function getStamina() {
+	public function getStamina(): int {
 		$stam = NEW_PLAYER_INITIAL_STATS + (($this->level -1) * LEVEL_UP_STAT_RAISE);
         if($this->hasStatus(STALKING)){
             $stam = (int) max(1, floor($stam*0.9));
@@ -303,17 +303,17 @@ class Player implements Character {
 		}
 	}
 
-	public function setStamina($stamina){
+	public function setStamina(int $stamina): int {
 		if($stamina < 0){
 			throw new \InvalidArgumentException('Stamina cannot be set as a negative.');
 		}
-		$this->vo->stamina = $stamina;
+		return $this->vo->stamina = $stamina;
 	}
 
     /**
      * @return int
      */
-	public function setKi($ki){
+	public function setKi($ki): int {
 		if($ki < 0){
 			throw new \InvalidArgumentException('Ki cannot be negative.');
 		}
@@ -323,7 +323,7 @@ class Player implements Character {
     /**
      * @return int
      */
-	public function setGold($gold) {
+	public function setGold($gold): int {
 		if ($gold < 0) {
 			throw new \InvalidArgumentException('Gold cannot be made negative.');
 		}
@@ -338,7 +338,7 @@ class Player implements Character {
     /**
      * @return int
      */
-	public function setBounty($bounty) {
+	public function setBounty($bounty): int {
 		if($bounty < 0){
 			throw new \InvalidArgumentException('Bounty cannot be made negative ['.(string)$bounty.'].');
 		}
@@ -353,7 +353,7 @@ class Player implements Character {
      *
      * @return boolean
 	 */
-	public function isActive() {
+	public function isActive(): bool {
 		return (bool) $this->vo->active;
 	}
 
@@ -362,7 +362,7 @@ class Player implements Character {
      * hardcoded hack at the moment
      * @note To be replaced by an in-database account toggle eventually
      */
-	public function isAdmin() {
+	public function isAdmin(): bool {
 		$name = strtolower($this->name());
 		if ($name == 'tchalvak' || $name == 'beagle' || $name == 'suavisimo') {
 			return true;
@@ -378,7 +378,7 @@ class Player implements Character {
      * @note
      * This method writes the player object to the database
      */
-	public function death() {
+	public function death(): void {
 		$this->resetStatus();
         $this->setHealth(0);
         $this->save();
@@ -391,7 +391,7 @@ class Player implements Character {
      * @return int The number of turns the player object now has
      * @throws InvalidArgumentException $turns cannot be negative
      */
-    public function setTurns($turns) {
+    public function setTurns($turns): int {
         if ($turns < 0) {
             throw new \InvalidArgumentException('Turns cannot be made negative.');
         }
@@ -402,14 +402,14 @@ class Player implements Character {
     /**
      * @deprecated
      */
-    public function changeTurns($amount) {
+    public function changeTurns($amount): int {
         return $this->setTurns($this->turns + (int) $amount);
     }
 
     /**
      * @return integer
      */
-    public function getMaxHealth() {
+    public function getMaxHealth(): int {
         return NEW_PLAYER_INITIAL_HEALTH + ($this->getStamina()*static::HEALTH_PER_STAMINA);
     }
 
@@ -418,8 +418,9 @@ class Player implements Character {
      *
      * @return array
      */
-    public function data() {
+    public function data(): array {
 		if (!$this->data) {
+            $clan = $this->getClan();
             $this->data = (array) $this->vo;
             $this->data['next_level']    = $this->killsRequiredForNextLevel();
             $this->data['max_health']    = $this->getMaxHealth();
@@ -433,7 +434,7 @@ class Player implements Character {
             $this->data['status_list']   = implode(', ', self::getStatusList($this->id()));
             $this->data['hash']          = md5(implode($this->data));
             $this->data['class_name']    = ucfirst($this->data['identity']); // A misnomer, identity is actually the class label
-            $this->data['clan_id']       = ($this->getClan() ? $this->getClan()->id : null);
+            $this->data['clan_id']       = ($clan ? $clan->id : null);
 
             unset($this->data['pname']);
         }
@@ -446,7 +447,7 @@ class Player implements Character {
      *
      * @return array
      */
-    public function publicData() {
+    public function publicData(): array {
         $char_info = $this->data();
         unset($char_info['ip'], $char_info['member'], $char_info['pname'], $char_info['verification_number'], $char_info['confirmed']);
 
@@ -456,7 +457,7 @@ class Player implements Character {
     /**
      * @return Clan
      */
-    public function getClan() {
+    public function getClan(): ?Clan {
         return Clan::findByMember($this);
     }
 
@@ -465,7 +466,7 @@ class Player implements Character {
      *
      * @return int
 	 */
-	public function heal($amount) {
+	public function heal($amount): int {
 		// do not heal above max health
         $heal = min($this->is_hurt_by(), $amount);
         return $this->setHealth($this->health + $heal);
@@ -477,7 +478,7 @@ class Player implements Character {
      * @param int $damage
      * @return int
 	 */
-	public function harm($damage) {
+	public function harm($damage): int {
 		// Do not allow negative health
 		$actual_damage = min($this->health, (int) $damage);
 		return $this->setHealth($this->health - $actual_damage);
@@ -509,7 +510,7 @@ class Player implements Character {
 	 * Return the amount below the max health (or zero).
 	 * @return int
 	 */
-	public function is_hurt_by() {
+	public function is_hurt_by(): int {
 		return max(0,
 			(int) ($this->getMaxHealth() - $this->health)
 		);
@@ -519,7 +520,7 @@ class Player implements Character {
      * Return the current percentage of the maximum health that a character could have.
      * @return int
      */
-	public function health_percent() {
+	public function health_percent(): int {
         return min(100, round(($this->health/$this->getMaxHealth())*100));
 	}
 
@@ -533,14 +534,14 @@ class Player implements Character {
     /**
      * @return int random private number unique to character
      */
-	public function getVerificationNumber(){
+	public function getVerificationNumber(): int{
 		return $this->vo->verification_number;
 	}
 
     /**
      * @return string url for the gravatar of pc
      */
-    public function avatarUrl() {
+    public function avatarUrl(): string {
         if (!isset($this->avatar_url) || $this->avatar_url === null) {
             $this->avatar_url = $this->generateGravatarUrl();
         }
@@ -548,7 +549,10 @@ class Player implements Character {
         return $this->avatar_url;
     }
 
-    private function generateGravatarUrl() {
+    /**
+     * Generate a hash from email and pass that for a gravatar
+     */
+    private function generateGravatarUrl(): string {
         $account = Account::findByChar($this);
 
         if (OFFLINE) {
@@ -576,7 +580,7 @@ class Player implements Character {
      *
 	 * @return Player
 	 */
-	public function save() {
+	public function save(): Player {
 		$factory = new PlayerDAO();
 		$factory->save($this->vo);
 
@@ -587,7 +591,7 @@ class Player implements Character {
      * Check whether the player is the leader of their clan.
      * @return boolean
      */
-    public function isClanLeader() {
+    public function isClanLeader(): bool {
         return (($clan = Clan::findByMember($this)) && $this->id() == $clan->getLeaderID());
     }
 
@@ -597,7 +601,7 @@ class Player implements Character {
      * @param string $class_identity
      * @return array of class data
      */
-    private function obtainSingleClassData($class_identity){
+    private function obtainSingleClassData(string $class_identity): array{
             return query_row(
                 'select class_id, identity, class_name, theme, class_note, class_tier, class_desc, class_icon from class where class.identity = :class',
                 [':class' => $class_identity]
@@ -608,7 +612,7 @@ class Player implements Character {
      * Set the character's class, using the identity.
      * @return string|null error string if fails
      */
-    public function setClass($new_class) {
+    public function setClass(string $new_class): ?string {
         $class_data = $this->obtainSingleClassData(strtolower($new_class));
         if($class_data === false || $class_data === null){
             return "That class was not an option to change into.";
@@ -633,7 +637,7 @@ class Player implements Character {
      * Get the ninja's class's name.
      * @return string
      */
-    public function getClassName() {
+    public function getClassName(): string {
         return $this->vo->class_name;
     }
 
@@ -643,7 +647,7 @@ class Player implements Character {
      * 5 more kills in cost for every level you go up.
      * @return int
      */
-    public function killsRequiredForNextLevel() {
+    public function killsRequiredForNextLevel(): int {
        return $this->level*5;
     }
 
@@ -651,7 +655,7 @@ class Player implements Character {
      * Takes in a Character and adds kills to that character.
      * @return int
      */
-    public function addKills($amount) {
+    public function addKills(int $amount): int {
         return $this->changeKills((int)abs($amount));
     }
 
@@ -659,7 +663,7 @@ class Player implements Character {
      * Takes in a Character and removes kills from that character.
      * @return int
      */
-    public function subtractKills($amount) {
+    public function subtractKills(int $amount): int {
         return $this->changeKills(-1*((int)abs($amount)));
     }
 
@@ -754,7 +758,7 @@ class Player implements Character {
      * @param int|null $id
 	 * @return Player|null
 	 */
-	public static function find($id){
+	public static function find(?int $id): ?Player {
 		if(!is_numeric($id) || !(int) $id){
 			return null;
 		}
@@ -774,7 +778,7 @@ class Player implements Character {
      * @param int|null $account_id
      * @return Player|null
      */
-    public static function findPlayable(int $account_id): ?Player{
+    public static function findPlayable(?int $account_id): ?Player{
         // Two db calls for now
         $pid = query_item('select player_id from players p 
             join account_players ap on p.player_id = ap._player_id
@@ -798,7 +802,7 @@ class Player implements Character {
      * query the recently active players
      * @return array Array of data not of player objects
      */
-    public static function findActive($limit=5, $alive_only=true) {
+    public static function findActive(int $limit=5, bool $alive_only=true): array {
         $where_cond = ($alive_only ? ' AND health > 0' : '');
         $sel = "SELECT uname, player_id FROM players WHERE active = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
         $active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
@@ -809,7 +813,7 @@ class Player implements Character {
      * @return integer|null
      * @note this needs review overall, as nonexistent high int statuses will false positive
      */
-    public static function validStatus($dirty) {
+    public static function validStatus($dirty): ?int {
         if (is_numeric($dirty) && (int)$dirty == $dirty) {
             return (int) $dirty;
         } elseif (is_string($dirty)) {
@@ -830,9 +834,10 @@ class Player implements Character {
      *
      * @param int|null $target the target id, username if self targetting.
      * @return string[]
+     * @todo Refactor this so that it doesn't show own status by default, as that is error prone
      *
      */
-    public static function getStatusList($target=null) {
+    public static function getStatusList(?int $target=null): array {
         $states = array();
         $target = (isset($target) && (int)$target == $target ? $target : SessionFactory::getSession()->get('player_id'));
 
@@ -873,7 +878,7 @@ class Player implements Character {
      *
      * @return integer The health points
      */
-    public static function maxHealthByLevel($level) {
+    public static function maxHealthByLevel(int $level): int {
         return (int) NEW_PLAYER_INITIAL_HEALTH + (int) (self::baseStaminaByLevel($level) * self::HEALTH_PER_STAMINA);
     }
 
@@ -882,7 +887,7 @@ class Player implements Character {
      *
      * @return integer strength
      */
-    public static function baseStrengthByLevel($level) {
+    public static function baseStrengthByLevel(int $level): int {
         return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 
@@ -891,7 +896,7 @@ class Player implements Character {
      *
      * @return integer speed
      */
-    public static function baseSpeedByLevel($level) {
+    public static function baseSpeedByLevel(int $level): int {
         return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 
@@ -900,7 +905,7 @@ class Player implements Character {
      *
      * @return integer speed
      */
-    public static function baseStaminaByLevel($level) {
+    public static function baseStaminaByLevel(int $level): int {
         return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
     }
 }
