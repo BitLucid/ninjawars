@@ -86,13 +86,14 @@
 	<div id='ki-cost'> You used {$ki_cost} ki.</div>
 {/if}
 
-	{if $reuse}
-<div class="skillReload glassbox">
-	<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $targetObj->id()}{$targetObj->id()|escape:'url'}/{/if}">
-		Use {$act} again
-	</a>
-</div>
-	{/if}
+	<nav class='attack-nav'>
+    {if $reuse}
+		<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $targetObj->id()}{$targetObj->id()|escape:'url'}/{/if}">
+			Use {$act} again
+		</a>
+    {/if}
+		<a href='/enemies' class='return-to-location'>Return to the Fight</a>
+	</nav>
 
 </div> {* End of usage mod result div*}
 

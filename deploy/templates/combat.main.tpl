@@ -41,7 +41,12 @@ As you enter battle, you note your potential escape routes...
 
 <div>Total Rounds: {$rounds}</div>
 
-{include file="combat-final-results.tpl" starting_attacker=$starting_attacker final_attacker=$attacker starting_target=$starting_target target=$target}
+{include file="combat-final-results.tpl" 
+    starting_attacker=$starting_attacker 
+    final_attacker=$attacker 
+    starting_target=$starting_target 
+    target=$target 
+    low_health=($attacker->health lt $attacker->getMaxHealth() / 5)}
 
 {if $options.duel}
 <p>You spent an extra turn dueling.</p>

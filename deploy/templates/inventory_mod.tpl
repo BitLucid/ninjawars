@@ -62,12 +62,14 @@ You do not have {$article|escape} {$item->getName()|escape}
 
   {include file='defender_health.tpl' health=$target->health level=$target->level target_name=$target->name()}
 
-  {if $repeat}
-  <br>
-  <a class='attack-again thick btn btn-primary' href="/item/{$action}/{$item->getType()|escape:'url'|escape}/{$target->id()|escape:'url'|escape}/?link_back={$return_to|escape:'url'|escape}">
-    Use {$item->getName()|escape} again?
-  </a>
-  <br>
-  {/if}
+	<nav class='attack-nav'>
+    {if $repeat}
+    <a class='attack-again thick btn btn-primary' href="/item/{$action}/{$item->getType()|escape:'url'|escape}/{$target->id()|escape:'url'|escape}/?link_back={$return_to|escape:'url'|escape}">
+      Use {$item->getName()|escape} again?
+    </a>
+    <br>
+    {/if}
+		<a href='/enemies' class='return-to-location'>Return to the Fight</a>
+	</nav>
 </div>
 {/if}
