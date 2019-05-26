@@ -6,6 +6,8 @@ use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\SkillDAO;
+use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -52,12 +54,36 @@ class ConsiderController extends AbstractController {
         $char_info        = ($char ? $char->data() : []);
         $next_enemy = $this->getNextEnemy($char);
 
+        $inventory = new Inventory($char);
+        $items     = $inventory->counts();
+
+        $skillDAO = new SkillDAO();
+
+        // Set up combat and single-use skills
+        if (!$char->isAdmin()) {
+            // PCs get what is appropriate for their class
+            $combat_skills   = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'combat', $char->level);
+            $targeted_skills = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'targeted', $char->level);
+        } else {
+            // Admins get all skills
+            $combat_skills   = $skillDAO->all('combat');
+            $targeted_skills = $skillDAO->all('targeted');
+        }
+        if($combat_skills instanceof \PDOStatement){
+            // Unwrap combat skills
+            $combat_skills = $combat_skills->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
         $parts = [
             'logged_in'        => (bool)$char->id(),
             'char'             => $char,
             'char_name'        => ($char ? $char->name() : ''),
             'char_info'        => $char_info,
             'enemy'       => $next_enemy,
+            'inventory'        => $inventory,
+            'items'            => $items,
+            'combat_skills' => $combat_skills,
+            'targeted_skills' => $targeted_skills,
         ];
         return new StreamedViewResponse('Fight Next Enemy', 'enemies.attack-next.tpl', $parts, ['quickstat'=>false]);
     }
@@ -102,6 +128,26 @@ class ConsiderController extends AbstractController {
         $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
         $next_enemy = $this->getNextEnemy($char);
 
+        $inventory = new Inventory($char);
+        $items     = $inventory->counts();
+
+        $skillDAO = new SkillDAO();
+
+        // Set up combat and single-use skills
+        if (!$char->isAdmin()) {
+            // PCs get what is appropriate for their class
+            $combat_skills   = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'combat', $char->level);
+            $targeted_skills = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'targeted', $char->level);
+        } else {
+            // Admins get all skills
+            $combat_skills   = $skillDAO->all('combat');
+            $targeted_skills = $skillDAO->all('targeted');
+        }
+        if($combat_skills instanceof \PDOStatement){
+            // Unwrap combat skills
+            $combat_skills = $combat_skills->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
         return [
             'logged_in'        => (bool)$char->id(),
             'enemy_list'       => $enemy_list,
@@ -114,6 +160,10 @@ class ConsiderController extends AbstractController {
             'recent_attackers' => $recent_attackers,
             'enemy_list'       => $enemy_list,
             'next_enemy'       => $next_enemy,
+            'inventory'        => $inventory,
+            'items'            => $items,
+            'combat_skills' => $combat_skills,
+            'targeted_skills' => $targeted_skills,
             'peers'            => $peers,
         ];
     }
@@ -220,18 +270,23 @@ class ConsiderController extends AbstractController {
     private function getNextEnemy(Player $char): ?Player {
         $sel = '
             SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id WHERE score <
-            (SELECT score FROM player_rank WHERE _player_id = :char_id) AND active = 1 AND health > 0 ORDER BY score DESC LIMIT 1';
+            (SELECT score FROM player_rank WHERE _player_id = :char_id) AND active = 1 AND level <= (5 + :char_level) AND health > 0 ORDER BY score DESC LIMIT 1';
         $enemies = query_array(
             $sel,
             [
                 ':char_id'  => [$char->id(), PDO::PARAM_INT],
+                ':char_level'=> [$char->level, PDO::PARAM_INT],
             ]
         );
         if (!count($enemies)) {
             // Get bottom 10 players if not yet ranked.
-            $enemies = query_array('SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id
-            where active = 1 and health > 0
-            order by rank_id ASC limit 10');
+            $enemies = query_array('
+                SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id
+            where active = 1 and health > 0 AND level <= (5 + :char_level)
+            order by rank_id ASC limit 10',
+            [
+                ':char_level' => [$char->level, PDO::PARAM_INT]
+            ]);
         }
         return Player::find(reset($enemies)['player_id']);
     }
