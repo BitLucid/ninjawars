@@ -15,7 +15,6 @@
 .combat-results .damage-area {
   text-align: center;
 }
-
 </style>
 
     <table class='combat-results' style="border: 0;">
@@ -24,7 +23,7 @@
       </tr>
       <tr>
         <td>Name</td>
-        <td>Hurt For</td>
+        <td>was hurt for</td>
         <td>HP</td>
       </tr>
 

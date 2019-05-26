@@ -5,6 +5,12 @@
 <section id='attack-outcome'>
 	<h1>Battle Outcome</h1>
 
+    <nav class='player-ranking-linkback'>
+      <a href='/list?searched={'#'|escape:'url'|escape}{$rank_spot|escape:'url'|escape}&amp;hide=none' title='&lsaquo;Return to rank {$rank_spot}' >
+        <i class="fas fa-chevron-circle-left"></i> Ninja List
+      </a>
+    </nav>
+
 	<div class='padded-area'>
         {if $target}
 		<div>
@@ -24,7 +30,7 @@
 			{if $target->health gt 0 && $attacker->health gt 0}
 				<div><a href="/attack?attacked=1&amp;target={$target->id()|escape:'url'}" class='attack-again thick btn btn-primary'>Attack Again?</a></div>
 			{/if}
-				<div><a href='/player?player_id={$target->id()|escape:'url'}'><< Return to <span class='char-name'>{$target->name()|escape}'s Info</span></a></div>
+				<div><a class='return-to-location' href='/player?player_id={$target->id()|escape:'url'}'>Return to <span class='char-name'>{$target->name()|escape}'s Info</span></a></div>
 		{/if}
 		<a href='/enemies' class='return-to-location'>Return to the Fight</a>
 	</nav>

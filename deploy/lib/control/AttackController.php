@@ -107,6 +107,10 @@ class AttackController extends AbstractController {
         $starting_target   = clone $target;
         $turns_counter     = ($options['duel'] ? -1 : 1);
         $attacker_label    = $attacker->name();
+        $rank_spot = query_item(
+            'SELECT rank_id FROM rankings WHERE player_id = :player_id limit 1',
+            [':player_id'=>$target->id()]
+        );
 
         if (!$options['duel'] && $attacker->hasStatus(STEALTH)) {
             $stealthed_attack = true;
