@@ -30,40 +30,40 @@ class MockPlayer extends Player implements Character{
     /**
      * Mock the save, noop, just return the current object
      */
-    public function save(){
+    public function save(): Player {
         return $this;
     }
 
 
-    public function isAdmin(){
+    public function isAdmin(): bool{
         return $this->isAdmin;
     }
 
-    public function setAdmin($onoff){
+    public function setAdmin($onoff): void{
         $this->isAdmin = $onoff;
     }
 
-    public function set_gold($amount){
+    public function set_gold($amount): void{
         $this->gold = $amount;
     }
 
-    public function getStrength(){
+    public function getStrength(): int{
         return $this->strength;
     }
 
-    public function getSpeed(){
+    public function getSpeed(): int{
         return $this->speed;
     }
 
-    public function getStamina(){
+    public function getStamina(): int{
         return $this->stamina;
     }
 
-    public function maxDamage(Character $char=null){
+    public function maxDamage(Character $char=null): int{
         return $this->max_damage;
     }
 
-    public function damage(Character $char=null){
+    public function damage(Character $char=null): int{
         return $this->damage;
     }
 
@@ -71,7 +71,7 @@ class MockPlayer extends Player implements Character{
         return $this->difficulty;
     }
 
-    public function __toString(){
+    public function __toString(): string{
         return $this->name;
     }
 }
