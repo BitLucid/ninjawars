@@ -60,11 +60,12 @@
     </nav>
 
   {if $viewing_player_obj && $viewing_player_obj->isAdmin()}
-    <a style='font-size:small;float:right;' href='/ninjamaster/?view={$target_player_obj->id()|escape}'>Admin <i class="fas fa-eye"></i></a>
+    <a style='font-size:small;float:right;' href='/ninjamaster/?view={$target_player_obj->id()|escape}'>
+      Admin <i class="fas fa-eye"></i>
+    </a>
   {/if}
 
   <article id='player-titles' class='centered'>
-
     <section class='ninja-card grid'>
       <div class='grid'>
         <div class='a-box'>
@@ -95,11 +96,11 @@
       </div>
 
     {if $target_player_obj->description}
-        <blockquote>{$target_player_obj->name()|escape} {$target_player_obj->description|escape}</blockquote>
+        <blockquote>
+          {$target_player_obj->name()|escape} {$target_player_obj->description|escape}
+        </blockquote>
     {/if}
-
     </section>
-
   </article>
 
 
