@@ -12,9 +12,13 @@ var enemy = 'enemy to array @json_encode'
 .attack-next .avatar {
     text-align: center;
 }
-.attack-next .svg-shuriken svg{
+.attack-next .duel-area .svg-shuriken svg{
     height: 5rem;
     width: 5rem;
+}
+.attack-next .player-class .svg-shuriken svg{
+    height: 3rem;
+    width: 3rem;
 }
 .attack-next .use-item {
     border-top-left-radius:0;
@@ -22,11 +26,15 @@ var enemy = 'enemy to array @json_encode'
 }
 .attack-next .player-level-category {
     display: inline-block;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.7rem;
+}
+.attack-next .player-class {
+    display: inline-block;
+    padding: 0.05rem 0.5rem;
 }
 .attack-next .health-bar-container {
     display: inline-block;
-    max-width: 7.5rem;
+    min-width: 7.5rem;
 }
 </style>
 
@@ -52,8 +60,13 @@ var enemy = 'enemy to array @json_encode'
         <div class='c-box'>
             {include file="status_section.tpl" statuses=\NinjaWars\core\data\Player::getStatusList($enemy->id())}
         </div>
+        {if $enemy->description}
+        <blockquote>
+          {$enemy->name()|escape} {$enemy->description|escape}
+        </blockquote>
+        {/if}
     </div>
-    <div class='glassbox'>
+    <div class='glassbox duel-area'>
         <form id='attack_player' action='/attack' method='post' name='attack_player'>
             <input id="duel" type="hidden" name="duel" value="1">
             <div class='btn-group' role='group'>
@@ -67,7 +80,7 @@ var enemy = 'enemy to array @json_encode'
                     <span class='svg-shuriken'>
                         {include file='shuriken.svg.tpl'}
                     </span>
-                    attack
+                    Attack
                 </button>
             </div>
         </form>
