@@ -1,15 +1,5 @@
 <style>
-.player-info .ninja-card{
-  background: rgba(134, 120, 120, 0.3);
-  box-shadow: 10px 5px 5px black;
-  border: thin solid rgba(134, 120, 120, 0.3);;
-  border-radius: 0.3rem;
-  display:inline-block;
-  /* Width of ninja-card made responsive in main stylesheet */
-  font-family:'Open Sans', "Arial", sans-serif;
-  margin:auto;
-  padding: 2rem;
-}
+
 .player-info .player-level-category, .player-info .player-class{
   display: inline-block;
   padding: 0.5rem 1.25rem;

@@ -53,9 +53,6 @@
   {$generic_state_change|replace:'__TARGET__':$charName}
 	{/if}
 
-	{if $killed_target}
-  <p>You have killed {$charName} with {$act}!</p>
-	{/if}
 	{if $loot > 0}
   <p>You receive <span class='gold-count'>{$loot} gold</span> from {$targetObj->name()}.</p>
 	{/if}
@@ -86,17 +83,17 @@
 	<div id='ki-cost'> You used {$ki_cost} ki.</div>
 {/if}
 
+</div> {* End of usage mod result div*}
+
+{/if}{* End of there was no attack-error block. *}
+
 	<nav class='attack-nav'>
-    {if $reuse}
+    {if $reuse && !$attack_error}
 		<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $targetObj->id()}{$targetObj->id()|escape:'url'}/{/if}">
 			Use {$act} again
 		</a>
     {/if}
 		<a href='/enemies' class='return-to-location'>Return to the Fight</a>
 	</nav>
-
-</div> {* End of usage mod result div*}
-
-{/if}{* End of there was no attack-error block. *}
 
 </section>

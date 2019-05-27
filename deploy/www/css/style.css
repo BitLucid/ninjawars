@@ -1214,6 +1214,17 @@ td.playerTable {
 	color:maroon;
 	background-color:black;
 }
+.ninja-card{
+	background: rgba(134, 120, 120, 0.3);
+	box-shadow: 10px 5px 5px black;
+	border: thin solid rgba(134, 120, 120, 0.3);;
+	border-radius: 0.3rem;
+	display:inline-block;
+	/* Width of ninja-card made breakpoint responsive in certain screens */
+	font-family:'Open Sans', "Arial", sans-serif;
+	margin:0.1rem auto;
+	padding: 2rem;
+}
 .elder-ninja {
 	color:#d99868;
 	background-color:#8B0000;
@@ -2951,17 +2962,13 @@ select option #blue-class-select {
 /* ======================== Location/place styles ====================== */
 
 .return-to-location{
-	display: inline-block;
+	display: block;
 	font-size: 1.3rem;
 	margin-top: 0.5rem;
 	margin-left: 1rem;
 }
 .return-to-location, .player-ranking-linkback{
 	margin-bottom: 0.5rem;
-}
-.return-to-location + .return-to-location{
-	display: block;
-	margin-bottom: 0.1rem;
 }
 .return-to-location:before{
 	font-family: "Font Awesome 5 Free"; 
@@ -4314,25 +4321,13 @@ input[type="button"].btn-block {
 	#tabs.message-tabs ul li a{
 		padding:0.3em 0.7em;
 	}
-
-	.player-info .ninja-card{
+	.ninja-card{
 		width:60%;
 	}
 
 	#request-login{
 		width:inherit;
 	}
-	/*
-	#leader-panel{
-		box-sizing:border-box;
-		width: 50%;	float:left;
-	}
-
-	#clan-options{
-		box-sizing:border-box;
-		width: 50%;	float: right; padding-left:1em;
-	}
-	*/
 
 	section.login-section{
 		margin:0.3em auto 0.3em;text-align:center;
