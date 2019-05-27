@@ -9,9 +9,6 @@
   color:red;
   font-weight:bold;
 }
-.combat-results .self-health {
-  color:brown;
-}
 .combat-results .damage-area {
   text-align: center;
 }

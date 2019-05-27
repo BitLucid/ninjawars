@@ -2951,15 +2951,16 @@ select option #blue-class-select {
 /* ======================== Location/place styles ====================== */
 
 .return-to-location{
-	display:inline-block;
+	display: inline-block;
 	font-size: 1.3rem;
 	margin-top: 0.5rem;
 	margin-left: 1rem;
 }
 .return-to-location, .player-ranking-linkback{
-	margin-bottom: 3rem;
+	margin-bottom: 0.5rem;
 }
 .return-to-location + .return-to-location{
+	display: block;
 	margin-bottom: 0.1rem;
 }
 .return-to-location:before{

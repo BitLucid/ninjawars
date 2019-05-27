@@ -4,6 +4,9 @@
 
 {if $logged_in}
 
+{* The single-next enemy attack interface *}
+{include file="enemies.attack-next.tpl" enemy=$next_enemy char=$char}
+
 <section id='enemies-stuff' class='clearfix'>
 {foreach $enemy_list as $loop_enemy}
     {if $loop_enemy@first}
@@ -99,9 +102,6 @@
 	</div>
 {/if}
 </section>
-
-{* The single-next enemy attack interface *}
-{include file="enemies.attack-next.tpl" enemy=$next_enemy char=$char}
 
 
 {if !empty($recent_attackers)}

@@ -51,8 +51,9 @@ class ConsiderController extends AbstractController {
      */
     public function nextEnemy(Container $p_dependencies): StreamedViewResponse {
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
+        $shift = max(0, min(300, (int) RequestWrapper::get('shift')));
         $char_info        = ($char ? $char->data() : []);
-        $next_enemy = $this->getNextEnemy($char);
+        $next_enemy = $this->getNextEnemy($char, $shift);
 
         $inventory = new Inventory($char);
         $items     = $inventory->counts();
@@ -79,11 +80,12 @@ class ConsiderController extends AbstractController {
             'char'             => $char,
             'char_name'        => ($char ? $char->name() : ''),
             'char_info'        => $char_info,
-            'enemy'       => $next_enemy,
+            'enemy'            => $next_enemy,
+            'shift'           => $shift,
             'inventory'        => $inventory,
             'items'            => $items,
-            'combat_skills' => $combat_skills,
-            'targeted_skills' => $targeted_skills,
+            'combat_skills'    => $combat_skills,
+            'targeted_skills'  => $targeted_skills,
         ];
         return new StreamedViewResponse('Fight Next Enemy', 'enemies.attack-next.tpl', $parts, ['quickstat'=>false]);
     }
@@ -118,6 +120,7 @@ class ConsiderController extends AbstractController {
      * Bring together all the parts for the main display
      */
     private function configure(): array {
+        $shift = max(0, min(300, (int) RequestWrapper::get('shift')));
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
         $peers            = ($char ? $this->getNearbyPeers($char->id()) : []);
         $active_ninjas    = Player::findActive(5, true);
@@ -126,7 +129,7 @@ class ConsiderController extends AbstractController {
         $npcs             = NpcFactory::customNpcs();
         $enemy_list       = ($char ? $this->getCurrentEnemies($char->id()) : []);
         $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
-        $next_enemy = $this->getNextEnemy($char);
+        $next_enemy = $this->getNextEnemy($char, $shift);
 
         $inventory = new Inventory($char);
         $items     = $inventory->counts();
@@ -160,6 +163,7 @@ class ConsiderController extends AbstractController {
             'recent_attackers' => $recent_attackers,
             'enemy_list'       => $enemy_list,
             'next_enemy'       => $next_enemy,
+            'shift'           => $shift,
             'inventory'        => $inventory,
             'items'            => $items,
             'combat_skills' => $combat_skills,
@@ -267,25 +271,29 @@ class ConsiderController extends AbstractController {
      * @param Player $char
      * @return Player
      */
-    private function getNextEnemy(Player $char): ?Player {
+    private function getNextEnemy(Player $char, int $shift=0): ?Player {
         $sel = '
-            SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id WHERE score <
-            (SELECT score FROM player_rank WHERE _player_id = :char_id) AND active = 1 AND level <= (5 + :char_level) AND health > 0 ORDER BY score DESC LIMIT 1';
+            SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id 
+            WHERE score < (SELECT score FROM player_rank WHERE _player_id = :char_id) 
+                AND active = 1 AND level <= (5 + :char_level) AND health > 0 
+            ORDER BY score DESC LIMIT 1 OFFSET greatest(0, :off)';
         $enemies = query_array(
             $sel,
             [
                 ':char_id'  => [$char->id(), PDO::PARAM_INT],
                 ':char_level'=> [$char->level, PDO::PARAM_INT],
+                ':off'      => [$shift, PDO::PARAM_INT],
             ]
         );
         if (!count($enemies)) {
             // Get bottom 10 players if not yet ranked.
             $enemies = query_array('
                 SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id
-            where active = 1 and health > 0 AND level <= (5 + :char_level)
-            order by rank_id ASC limit 10',
+            WHERE active = 1 AND health > 0 AND level <= (5 + :char_level)
+            ORDER BY rank_id ASC limit 10 OFFSET greatest(0, :off)',
             [
-                ':char_level' => [$char->level, PDO::PARAM_INT]
+                ':char_level' => [$char->level, PDO::PARAM_INT],
+                ':off'      => [$shift, PDO::PARAM_INT],
             ]);
         }
         return Player::find(reset($enemies)['player_id']);
