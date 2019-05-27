@@ -61,7 +61,7 @@
 	{/if}
 
 	{if $added_bounty > 0}
-  <p>Your victim was much weaker than you. The townsfolk are angered. A bounty of {$added_bounty} gold has been placed on your head!</p>
+  <p>Your victim was weaker than you. The townsfolk are angered. A bounty of {$added_bounty} gold has been placed on your head!</p>
 	{/if}
 
 	{if $bounty > 0}

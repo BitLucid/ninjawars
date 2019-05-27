@@ -39,4 +39,3 @@
         <td  class='combat-health'>{include file="health_bar.tpl" health=$target->health level=$target->level}</td>
       </tr>
     </table>
-    <hr>

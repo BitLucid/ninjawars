@@ -2,7 +2,17 @@
  * This is the main template for combat. It holds the error case and includes
  * the main template when there is no error
  *}
-<section id='attack-outcome'>
+<style>
+.attack-outcome .padded-area {
+	text-align: center;
+	margin: 0.3rem 1rem;
+}
+.attack-outcome .combat-main table {
+	margin: 0 auto;
+}
+</style>
+
+<section id='attack-outcome' class='attack-outcome'>
 	<h1>Battle Outcome</h1>
 
     <nav class='player-ranking-linkback'>
@@ -11,7 +21,7 @@
         <i class="fas fa-chevron-circle-left"></i> Ninja List
       </a>
 	  {else}
-		<a href='/list?searched={'#'|cat:$rank_spot|escape:'url'|escape}&amp;hide=none' title='&lsaquo;Return to rank {$rank_spot}' >
+		<a href='/list?hide=dead' title='&lsaquo;Return to ninja list' >
 			<i class="fas fa-chevron-circle-left"></i> Ninja List
 		</a>
 	  {/if}
@@ -19,14 +29,15 @@
 
 	<div class='padded-area'>
         {if $target}
-		<div>
+		<div class='avatar-area'>
 			<a href="/player?player_id={$target->id()|escape:'url'}">{include file="gravatar.tpl" gurl=$target->avatarUrl()}</a>
 		</div>
-		<hr>
         {/if}
 
 		{if $error}
-		<div class='ninja-error centered'>{$error}</div>
+		<div class='ninja-error centered'>
+			{$error}
+		</div>
 		{else}
         {include file="combat.main.tpl"}
 		{/if}

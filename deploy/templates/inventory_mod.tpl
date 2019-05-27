@@ -46,7 +46,9 @@ You do not have {$article|escape} {$item->getName()|escape}
     You have comitted suicide!<br>
     {else}
 	You have killed {$target->name()|escape} with {$article|escape} {$item->getName()|escape}!<br>
+  {if $loot}
 	You receive {$loot|escape} gold from {$target->name()|escape}.<br>
+  {/if}
 
       {if $bountyMessage}
 	<p>

@@ -66,7 +66,6 @@
     {/if}
 
     {if $target->health lt 1}
-    <div>{$attacker->name()} has killed {$target->name()}!</div>
     <div class='ninja-notice'>
         {$target->name()} is dead, you have proven your might
         {if $killpoints eq 2}
@@ -82,12 +81,12 @@
         {/if}
 
         {if $wrath}
-    <div class='wrath'>Your victory fuels your wrath, allowing you to retain some of your health.</div>
+    <div class='wrath'>Your wrath fuels you.</div>
         {/if}
     {/if}
 
     {if $rewarded_ki}
-    <div>Your ki lifeforce has increased.</div>
+    <div>Your ki has increased.</div>
     {/if}
 
     {if $bounty_result}
