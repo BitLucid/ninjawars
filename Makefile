@@ -54,9 +54,10 @@ install: build start-chat writable
 	echo "Check that the webserver user has permissions to the script!"
 
 writable:
-	chown http:adm ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
+	chown ${WEBUSER} ./deploy/resources/logs/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/emails.log ./deploy/resources/logs/deity.log
+	chown ${WEBUSER} ./deploy/resources/logs/*
+	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/*
 
 
 install-system:
@@ -83,9 +84,9 @@ install-database-client:
 	apt install postgresql-client
 
 start-chat:
-	touch /var/log/nginx/ninjawars.chat-server.log
-	chown http:adm /var/log/nginx/ninjawars.chat-server.log
-	nohup php bin/chat-server.php > /var/log/nginx/ninjawars.chat-server.log 2>&1 &
+	touch ./deploy/resources/logs/ninjawars.chat-server.log
+	chown ${WEBUSER} ./deploy/resources/logs/ninjawars.chat-server.log
+	nohup php bin/chat-server.php > ./deploy/resources/logs/ninjawars.chat-server.log 2>&1 &
 
 browse:
 	xdg-open http://localhost:8765
