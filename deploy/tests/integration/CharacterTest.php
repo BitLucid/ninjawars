@@ -384,11 +384,10 @@ class CharacterTest extends NWTest {
     }
 
     public function testSetClassNegative() {
+        $this->expectException(\TypeError::class);
         $char = Player::find($this->char_id);
         $class = $char->getClassName();
         $char->setClass('BANANA');
-
-        $this->assertEquals($class, $char->getClassName());
     }
 
     public function testSetClassChangesCurrentPCClass(){
