@@ -53,15 +53,12 @@
   {$generic_state_change|replace:'__TARGET__':$charName}
 	{/if}
 
-	{if $killed_target}
-  <p>You have killed {$charName} with {$act}!</p>
-	{/if}
 	{if $loot > 0}
   <p>You receive <span class='gold-count'>{$loot} gold</span> from {$targetObj->name()}.</p>
 	{/if}
 
 	{if $added_bounty > 0}
-  <p>Your victim was much weaker than you. The townsfolk are angered. A bounty of {$added_bounty} gold has been placed on your head!</p>
+  <p>Your victim was weaker than you. The townsfolk are angered. A bounty of {$added_bounty} gold has been placed on your head!</p>
 	{/if}
 
 	{if $bounty > 0}
@@ -86,16 +83,17 @@
 	<div id='ki-cost'> You used {$ki_cost} ki.</div>
 {/if}
 
-	{if $reuse}
-<div class="skillReload glassbox">
-	<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $targetObj->id()}{$targetObj->id()|escape:'url'}/{/if}">
-		Use {$act} again
-	</a>
-</div>
-	{/if}
-
 </div> {* End of usage mod result div*}
 
 {/if}{* End of there was no attack-error block. *}
+
+	<nav class='attack-nav'>
+    {if $reuse && !$attack_error}
+		<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $targetObj->id()}{$targetObj->id()|escape:'url'}/{/if}">
+			Use {$act} again
+		</a>
+    {/if}
+		<a href='/enemies' class='return-to-location'>Return to the Fight</a>
+	</nav>
 
 </section>

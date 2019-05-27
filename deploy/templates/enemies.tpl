@@ -4,6 +4,9 @@
 
 {if $logged_in}
 
+{* The single-next enemy attack interface *}
+{include file="enemies.attack-next.tpl" enemy=$next_enemy char=$char}
+
 <section id='enemies-stuff' class='clearfix'>
 {foreach $enemy_list as $loop_enemy}
     {if $loop_enemy@first}
@@ -60,7 +63,7 @@
   </ul>
 </div>
 {else}
-<p class='enemies-righthalf'>No nearby ninja, <em class='char-name'>{$char_name|escape}</em>.</p>
+<p class='enemies-righthalf'>No nearby ninja, <em class='char-name'>{$char->name()|escape}</em>.</p>
 {/if}
 </section><!-- End of clearfix section -->
 

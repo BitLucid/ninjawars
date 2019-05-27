@@ -8,6 +8,7 @@ use NinjaWars\core\control\Combat;
 use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\data\NinjaMeta;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
@@ -47,6 +48,7 @@ class AttackController extends AbstractController {
 
         $ignores_stealth = false;
         $required_turns  = 0;
+        $rank_spot = null;
 
         foreach (array_filter($options) as $type=>$value) {
             $ignores_stealth = $ignores_stealth||$skillListObj->getIgnoreStealth($type);
@@ -79,6 +81,7 @@ class AttackController extends AbstractController {
                 'target'   => $target,
                 'attacker' => $attacker,
                 'error'    => $error,
+                'rank_spot'=> $rank_spot,
             ];
 
             return new StreamedViewResponse('Battle Status', 'attack_mod.tpl', $parts, ['quickstat' => 'player' ]);
@@ -107,6 +110,7 @@ class AttackController extends AbstractController {
         $starting_target   = clone $target;
         $turns_counter     = ($options['duel'] ? -1 : 1);
         $attacker_label    = $attacker->name();
+        $rank_spot = (new NinjaMeta($target))->ranking() ?? 0;
 
         if (!$options['duel'] && $attacker->hasStatus(STEALTH)) {
             $stealthed_attack = true;

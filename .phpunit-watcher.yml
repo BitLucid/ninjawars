@@ -1,0 +1,12 @@
+watch:
+  directories:
+    - deploy/tests
+    - deploy/lib/control
+    - deploy/lib/data
+    - deploy/www
+    - deploy/model
+  fileMask: '*.php'
+notifications:
+  passingTests: false
+phpunit:
+  binaryPath: vendor/bin/phpunit

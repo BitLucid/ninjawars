@@ -471,7 +471,7 @@ class Clan {
      * @param int|string $identity
      * @return Clan|null
      */
-    public static function find($identity) {
+    public static function find($identity): ?Clan {
         $clan_info = null;
         if(is_numeric($identity)){
             $clan_info = query_row(
@@ -498,7 +498,7 @@ class Clan {
      * @param Player $player
      * @return Clan|null
      */
-    public static function findByMember(Player $player) {
+    public static function findByMember(Player $player): ?Clan {
         $clan_info = query_row('select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan JOIN clan_player ON clan_id = _clan_id where _player_id = :pid', [':pid'=>$player->id()]);
 
         if (empty($clan_info)) {
