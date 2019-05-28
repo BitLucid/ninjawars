@@ -66,7 +66,7 @@
 			</div>
 			<p class='avatar-upload-error error' hidden>There was a problem uploading your avatar</p>
 			<div id='avatar-preview-image-area'>
-				<img id='avatar-preview-image' src='{$clan->getAvatarUrl()}'/>
+				<img id='avatar-preview-image' src="{$clan->getAvatarUrl()|escape:'url'}"/>
 			</div>
 		</div>
         <input type="submit" value="Save Changes">
