@@ -27,11 +27,7 @@ class CasinoController extends AbstractController {
 	 * @return Array
 	 */
 	public function index(Container $p_dependencies) {
-		$player = $p_dependencies['current_player'];
-
-        if (!$player) {
-            $player = new Player();
-        }
+		$player = $p_dependencies['current_player'] ?? new Player();
 
 		$error = RequestWrapper::getPostOrGet('error');
 
