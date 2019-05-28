@@ -163,7 +163,7 @@ class Clan {
      * @return string|null
      */
     public function invite(Player $p_target, Player $p_inviter) {
-        if (!$p_target->id() || empty($p_target)) {
+        if (empty($p_target) || null === $p_target->id()) {
             return 'No such ninja.';
         }
 
