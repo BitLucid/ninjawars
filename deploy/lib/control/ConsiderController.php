@@ -279,11 +279,13 @@ class ConsiderController extends AbstractController {
             SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id 
             WHERE score < (SELECT score FROM player_rank WHERE _player_id = :char_id) 
                 AND active = 1 AND level <= (5 + :char_level) AND health > 0 
+                AND player_id != :char_id2
             ORDER BY score DESC LIMIT 1 OFFSET greatest(0, :off)';
         $enemies = query_array(
             $sel,
             [
                 ':char_id'  => [$char->id(), PDO::PARAM_INT],
+                ':char_id2'  => [$char->id(), PDO::PARAM_INT],
                 ':char_level'=> [$char->level, PDO::PARAM_INT],
                 ':off'      => [$shift, PDO::PARAM_INT],
             ]
@@ -292,9 +294,12 @@ class ConsiderController extends AbstractController {
             // Get bottom 10 players if not yet ranked.
             $enemies = query_array('
                 SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id
-            WHERE active = 1 AND health > 0 AND level <= (5 + :char_level)
+            WHERE 
+                active = 1 AND health > 0 AND level <= (5 + :char_level)
+                AND player_id != :char_id2
             ORDER BY rank_id ASC limit 10 OFFSET greatest(0, :off)',
             [
+                ':char_id2'  => [$char->id(), PDO::PARAM_INT],
                 ':char_level' => [$char->level, PDO::PARAM_INT],
                 ':off'      => [$shift, PDO::PARAM_INT],
             ]);
