@@ -24,7 +24,6 @@ class PlayerController extends AbstractController {
         $request   = RequestWrapper::$request;
         $target    = $request->get('player');
         $target_id = $request->get('player_id');
-        $viewing_self = false;
 
         if ($target_id) {
             $target_player_obj = Player::find($target_id);
