@@ -15,7 +15,7 @@
   padding: 0.1rem 1rem;
   cursor:pointer;
 }
-.grid {
+.char-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas: 
@@ -56,8 +56,8 @@
   {/if}
 
   <article id='player-titles' class='centered'>
-    <section class='ninja-card grid'>
-      <div class='grid'>
+    <section class='ninja-card'>
+      <div class='char-grid'>
         <div class='a-box'>
         {include file="gravatar.tpl" gurl=$target_player_obj->avatarUrl()}
         </div>

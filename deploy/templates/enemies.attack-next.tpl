@@ -14,7 +14,7 @@ var enemy = 'enemy to array @json_encode'
 }
 .attack-next .avatar {
     text-align: center;
-    padding: 0 4rem;
+    padding: 0 0.4rem;
     display: inline-block;
 }
 .attack-next .duel-area .svg-shuriken svg{
@@ -69,7 +69,8 @@ var enemy = 'enemy to array @json_encode'
     text-align: right;
 }
 .attack-next .c-box{
-    display: inline-block;
+    display: block;
+    text-align:center;
 }
 </style>
 
