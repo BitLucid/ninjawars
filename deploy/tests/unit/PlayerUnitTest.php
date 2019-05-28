@@ -96,4 +96,16 @@ class PlayerUnitTest extends NWTest {
         $this->assertEquals(0, $this->player->health);
     }
 
+    public function testMaxHealthCriteriaDoesNotOverFlowBadlyForDeityUses() {
+        $this->assertLessThan(200, Player::maxHealthByLevel(3));
+    }
+
+    public function testMaxHealthForMaxLevelReturnsAUsefulNumber() {
+        if(LEVEL_UP_HP_RAISE < 1){
+            // Skip under no-health-raise "communism" configuration
+            $this->markTestSkipped();
+        }
+        $this->assertGreaterThan(1000, Player::maxHealthByLevel(MAX_PLAYER_LEVEL));
+    }
+
 }

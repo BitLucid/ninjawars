@@ -136,9 +136,9 @@ class Player implements Character {
     }
 
     /**
-     * @return string
+     * Get the character's name
      */
-    public function name(): string {
+    public function name(): ?string {
         return $this->vo->uname;
     }
 
@@ -771,7 +771,16 @@ class Player implements Character {
 		$player = new Player();
 		$player->vo = $data;
 		return $player;
-	}
+    }
+    
+    /**
+     * Find player by name
+     * @return Player|null
+     */
+    public static function findByName(string $name): ?Player{
+        $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
+        return self::find($id);
+    }
 
     /**
      * Find a char by playable for account
@@ -787,15 +796,6 @@ class Player implements Character {
             order by p.created_date asc, a.last_login desc
             limit 1', [':aid'=>[$account_id, PDO::PARAM_INT]]);
         return self::find($pid);
-    }
-
-    /**
-     * Find player by name
-     * @return Player|null
-     */
-    public static function findByName(string $name): ?Player{
-        $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
-        return self::find($id);
     }
 
     /**

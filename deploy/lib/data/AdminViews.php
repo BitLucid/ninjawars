@@ -63,7 +63,7 @@ class AdminViews {
         $first = true;
 
         foreach ($ids as $id) {
-            $player = Player::find($id);
+            $player = $id ? Player::find($id) : null;
             if(!$player instanceof Player){
                 throw new InvalidArgumentException('Request to view a character that does not exist.');
             }

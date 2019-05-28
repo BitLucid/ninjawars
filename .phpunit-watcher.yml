@@ -10,3 +10,4 @@ notifications:
   passingTests: false
 phpunit:
   binaryPath: vendor/bin/phpunit
+  arguments: '--stop-on-failure'

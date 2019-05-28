@@ -74,6 +74,7 @@ var enemy = 'enemy to array @json_encode'
 }
 </style>
 
+{if $enemy}
 <section class="attack-next">
     <div class='carousel'>
         <div class='spin-enemy down'>
@@ -179,3 +180,4 @@ var enemy = 'enemy to array @json_encode'
         </div>
     </div>
 </section>
+{/if}
