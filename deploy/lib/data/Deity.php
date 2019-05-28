@@ -327,7 +327,7 @@ class Deity {
         $update->bindValue(':max_heal_3', $maximum_heal);
         $update->execute();
 
-        return $update->rowCount();; // Return the amount revived
+        return $update->rowCount(); // Return the amount revived
     }
 
     /**
