@@ -300,7 +300,6 @@ class Deity {
      * @return int
      */
     private static function performNecromancy($revive_amount, $maximum_heal, $game_hour){
-        $subselect = 'SELECT player_id FROM players WHERE active = 1 AND health < 1 ORDER BY abs(:time - resurrection_time) ASC, level DESC, days ASC LIMIT :amount';
         if(self::LEVEL_REVIVE_INCREASE){
             $level_add = '+(level*3)';
         } else {
@@ -311,9 +310,13 @@ class Deity {
                 THEN (:max_heal '.$level_add.')
                 ELSE ((:max_heal_2 + :max_heal_3 * 0.5) '.$level_add.') END
                     FROM (SELECT * FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE skill_id = :midnightHeal)
-                    AS class_skill ';
-        $up_revive_players .= ' WHERE player_id IN ('.$subselect.') ';
-        $up_revive_players .= ' AND coalesce(class_skill._class_id, players._class_id) = players._class_id';
+                    AS class_skill WHERE player_id IN (
+                        SELECT player_id FROM players 
+                        WHERE active = 1 AND health < 1 
+                        ORDER BY abs(:time - resurrection_time) ASC, level DESC, days ASC 
+                        LIMIT :amount
+                    ) 
+                     AND coalesce(class_skill._class_id, players._class_id) = players._class_id';
         DatabaseConnection::getInstance();
         $update = DatabaseConnection::$pdo->prepare($up_revive_players);
         $update->bindValue(':amount', $revive_amount, PDO::PARAM_INT);
@@ -323,9 +326,8 @@ class Deity {
         $update->bindValue(':max_heal_2', $maximum_heal);
         $update->bindValue(':max_heal_3', $maximum_heal);
         $update->execute();
-        $truly_revived = $update->rowCount();
 
-        return $truly_revived; // Return the amount revived
+        return $update->rowCount();; // Return the amount revived
     }
 
     /**
