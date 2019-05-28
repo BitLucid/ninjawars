@@ -42,8 +42,8 @@
             <strong>Clan Avatar:</strong> <input name="clan-avatar-url" type="text" value="{$clan->getAvatarUrl()|escape}">
 		  </p>
 		  <small class='de-em'>
-		    To create a clan avatar, upload an image to <a href="http://www.imageshack.com" target="_blank" class="extLink">imageshack.com</a>
-		    Then paste the image's full url here. Image can be .jpg or .png
+		    To create a clan avatar, upload an image to <a href="https://imgur.com" target="_blank" class="extLink">imgur.com</a>.
+		    Then paste the image's "direct link" url here. Image can be .jpg or .png
 		  </small>
 		</div>
 		<div>

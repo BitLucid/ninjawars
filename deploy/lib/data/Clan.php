@@ -18,7 +18,7 @@ class Clan {
     private $founder;
 
     public function __construct(int $p_id=null, string $p_name=null, $data=null) {
-        if($p_id){
+        if(null !== $p_id){
             $this->setID($p_id);
             if(!$p_name){
                 $p_name = $this->nameFromId($p_id);
@@ -163,7 +163,7 @@ class Clan {
      * @return string|null
      */
     public function invite(Player $p_target, Player $p_inviter) {
-        if (!$p_target || empty($p_target)) {
+        if (!$p_target->id() || empty($p_target)) {
             return 'No such ninja.';
         }
 
@@ -192,8 +192,12 @@ class Clan {
     /**
      * For when a player chooses to leave their clan of their own volition.
      */
-    public function leave(Player $ninja) {
-        $this->kickMember($ninja->id(), $ninja, true);
+    public function leave(Player $ninja): bool {
+        if(null === $ninja->id()){
+            return false;
+        } else {
+            return $this->kickMember($ninja->id(), $ninja, true);
+        }
     }
 
     /**
@@ -227,7 +231,10 @@ class Clan {
     /**
      * Check if a character is a member of this clan
      */
-    public function hasMember(int $playerId): bool {
+    public function hasMember(?int $playerId): bool {
+        if(null === $playerId) {
+            return false;
+        }
         $query = 'SELECT _player_id FROM clan_player WHERE _player_id = :pid AND _clan_id = :clan_id';
         $args  = [
             ':pid'     => $playerId,
@@ -358,9 +365,17 @@ class Clan {
         if (!$is_url) {
             return false;
         } else {
-            // TODO: Allow ninjawars as a host, and imgur.com as a host as well.
             $parts = @parse_url($dirty_url);
-            return !!preg_match('#[\w\d]*\.imageshack\.[\w\d]*#i', $parts['host']);
+            $possible_image_hosts = [
+                'imageshack',
+                'imgur',
+                'ninjawars.net'
+            ];
+            $valid = false;
+            foreach($possible_image_hosts as $host){
+                $valid = $valid || !!preg_match('#([\w\d]+\.)?'.$host.'\.[\w\d]*#i', $parts['host']);
+            }
+            return $valid;
         }
     }
 
