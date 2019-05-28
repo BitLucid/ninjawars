@@ -136,9 +136,9 @@ class Player implements Character {
     }
 
     /**
-     * @return string
+     * Get the character's name
      */
-    public function name(): string {
+    public function name(): ?string {
         return $this->vo->uname;
     }
 
