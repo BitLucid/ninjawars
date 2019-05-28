@@ -42,7 +42,7 @@
       <form action="/clan/update" name="avatar_and_message">
 		<div>
 		  <p>
-		    <strong>Clan Name:</strong> <input id="new_clan_name" type="text" name="new_clan_name" class="textField" {literal}pattern="[A-Za-z0-9_- ]{3,24}"{/literal} required value="{$clan->getName()|escape}">
+		    <strong>Clan Name:</strong> <input id="new_clan_name" type="text" name="new_clan_name" class="textField" {literal}pattern="[A-Za-z0-9_\- ]{3,24}"{/literal} required value="{$clan->getName()|escape}">
 		  </p>
 		  <small class='de-em'>
 		    Clan names must be from 3 to 24 characters, and can only contain letters, numbers, spaces, underscores, or dashes, although you can request exceptions if they are fun.
