@@ -53,15 +53,18 @@ class ConsiderController extends AbstractController {
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
         $shift = max(0, min(300, (int) RequestWrapper::get('shift')));
         $char_info        = ($char ? $char->data() : []);
-        $next_enemy = $this->getNextEnemy($char, $shift);
+        $next_enemy = $char ? $this->getNextEnemy($char, $shift) : null;
 
-        $inventory = new Inventory($char);
-        $items     = $inventory->counts();
+        $inventory = $char ? new Inventory($char) : null;
+        $items     = $inventory ? $inventory->counts() : null;
 
         $skillDAO = new SkillDAO();
 
         // Set up combat and single-use skills
-        if (!$char->isAdmin()) {
+        if(!$char){
+            $combat_skills = null;
+            $targeted_skills = null;
+        }elseif (!$char->isAdmin()) {
             // PCs get what is appropriate for their class
             $combat_skills   = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'combat', $char->level);
             $targeted_skills = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'targeted', $char->level);
@@ -76,7 +79,7 @@ class ConsiderController extends AbstractController {
         }
 
         $parts = [
-            'logged_in'        => (bool)$char->id(),
+            'logged_in'        => (bool)$char && $char->id(),
             'char'             => $char,
             'char_name'        => ($char ? $char->name() : ''),
             'char_info'        => $char_info,
@@ -129,15 +132,15 @@ class ConsiderController extends AbstractController {
         $npcs             = NpcFactory::customNpcs();
         $enemy_list       = ($char ? $this->getCurrentEnemies($char->id()) : []);
         $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
-        $next_enemy = $this->getNextEnemy($char, $shift);
+        $next_enemy = $char ? $this->getNextEnemy($char, $shift) : null;
 
-        $inventory = new Inventory($char);
-        $items     = $inventory->counts();
+        $inventory = $char ? new Inventory($char) : null;
+        $items     = $inventory ? $inventory->counts() : null;
 
         $skillDAO = new SkillDAO();
 
         // Set up combat and single-use skills
-        if (!$char->isAdmin()) {
+        if ($char && !$char->isAdmin()) {
             // PCs get what is appropriate for their class
             $combat_skills   = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'combat', $char->level);
             $targeted_skills = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'targeted', $char->level);
@@ -152,7 +155,7 @@ class ConsiderController extends AbstractController {
         }
 
         return [
-            'logged_in'        => (bool)$char->id(),
+            'logged_in'        => (bool)$char && $char->id(),
             'enemy_list'       => $enemy_list,
             'char'             => $char,
             'char_name'        => ($char ? $char->name() : ''),
