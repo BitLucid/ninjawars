@@ -22,9 +22,9 @@ class GameLog {
      */
     public function log($log_message, $priority=0){
         $priority = (int) $priority; // Prevent non-int priority levels
-        $log = fopen(LOGS.'game.log', 'a');
-        fwrite($log, ($priority>0? "[PRIORITY ".$priority."]" : '').$log_message);
-        fclose($log);
+        $log_file = LOGS.'game.log';
+        $final_message = ($priority>0? "[PRIORITY ".$priority."]" : '').$log_message;
+        return (bool) file_put_contents($log_file, $final_message, FILE_APPEND);
     }
 
     /**
