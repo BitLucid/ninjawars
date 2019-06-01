@@ -10,11 +10,12 @@ use \Smarty;
 class NWTemplate extends Smarty {
     public function __construct() {
         parent::__construct();
-        $this->caching = 1;
+        $this->caching = 0;
 
         $this->addTemplateDir(TEMPLATE_PATH);
 
         $this->setCompileDir(COMPILED_TEMPLATE_PATH);
+        $this->setCacheDir(TEMPLATE_CACHING_PATH);
 
         $this->addPluginsDir(TEMPLATE_PLUGIN_PATH);
     }
