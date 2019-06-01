@@ -755,10 +755,10 @@ class Player implements Character {
 
 	/**
 	 * Find a player by primary key
-     * @param int|null $id
+     * @param int|string|null $id
 	 * @return Player|null
 	 */
-	public static function find(?int $id): ?Player {
+	public static function find($id): ?Player {
 		if(!is_numeric($id) || !(int) $id){
 			return null;
 		}
