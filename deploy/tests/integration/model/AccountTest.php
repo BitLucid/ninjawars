@@ -21,7 +21,8 @@ class AccountTest extends NWTest {
     public function testCreatingAnAccount() {
         $account_id = $this->testAccountId;
         $acc = Account::findById($account_id);
-        $this->assertTrue($acc instanceof Account); $this->assertNotEmpty($acc->getIdentity());
+        $this->assertTrue($acc instanceof Account); 
+        $this->assertNotEmpty($acc->getIdentity());
     }
 
     public function testAccountHasIdentity() {

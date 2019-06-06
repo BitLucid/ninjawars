@@ -142,7 +142,9 @@ class News {
 			throw new \InvalidArgumentException('Tagged #'.$tag.' news not found');
 		}
 
-		return array_map(function($n) { return (object) $n;}, $news);
+		return array_map(function($n) { 
+			return (object) $n;
+		}, $news);
 	}
 
 	/**
@@ -170,7 +172,9 @@ class News {
 			throw new \InvalidArgumentException('News is empty');
 		}
 
-		return array_map(function($n) { return (object) $n;}, $news);
+		return array_map(function($n) { 
+			return (object) $n;
+		}, $news);
 	}
 
 	/**
