@@ -8,7 +8,6 @@
 					<a href='//royronalds.com' class='extLink'>Roy Ronalds</a>
 					<a href='/player?player=tchalvak'>Ninja: Tchalvak</a>
 					<a href='https://twitter.com/tchalvak' rel='nofollow' class='extLink'>@tchalvak</a>
-          <a rel="author external me" href="https://plus.google.com/104798509386141979631/">On Google Plus</a>
 		    	</li>
 		    	<li class='author'>
 		    		<img class='avatar' alt="" src="https://www.gravatar.com/avatar/01b8df4923c0559d3ff56e6922e35011?d=monsterid&amp;80&amp;r=x">
