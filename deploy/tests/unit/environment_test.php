@@ -59,7 +59,7 @@ class TestInput extends NWTest {
 	}
 
 	/**
-	 * @todo review expected behavior of Filter::toInt on strings
+	 *
 	 */
 	public function testSanitizeToInt() {
 		$this->assertEquals(4, Filter::toInt(4));

@@ -30,9 +30,9 @@ class TestAccountCreateAndDestroy {
      * @param string $test_ninja_nm Newly created ninja name to delete from
      */
     public static function purge_test_accounts($test_ninja_nm=null) {
-        $test_ninja_name = $test_ninja_nm? $test_ninja_nm : TestAccountCreateAndDestroy::$test_ninja_name;
-        $active_email = TestAccountCreateAndDestroy::$test_email;
-        $alt_active_email = TestAccountCreateAndDestroy::$alt_test_email;
+        $test_ninja_name = $test_ninja_nm? $test_ninja_nm : self::$test_ninja_name;
+        $active_email = self::$test_email;
+        $alt_active_email = self::$alt_test_email;
 
         query('delete from players where player_id in '.
             '(select player_id from players '.
@@ -89,15 +89,15 @@ class TestAccountCreateAndDestroy {
      * Create a testing account
      */
     public static function create_testing_account($confirm=false) {
-        TestAccountCreateAndDestroy::purge_test_accounts();
-        return self::createAccount(TestAccountCreateAndDestroy::$test_ninja_name, TestAccountCreateAndDestroy::$test_email, 'tiger');
+        self::purge_test_accounts();
+        return self::createAccount(self::$test_ninja_name, self::$test_email, 'tiger');
     }
 
     /**
      * Create a separate, second testing account
      */
     public static function create_alternate_testing_account($confirm=false) {
-        return self::createAccount(TestAccountCreateAndDestroy::$alt_test_ninja_name, TestAccountCreateAndDestroy::$alt_test_email, 'dragon');
+        return self::createAccount(self::$alt_test_ninja_name, self::$alt_test_email, 'dragon');
     }
 
     public static function createAccount($ninja_name, $email, $class_identity) {
@@ -124,7 +124,7 @@ class TestAccountCreateAndDestroy {
         $ninja->_class_id           = $class_id;
         $ninja->save();
 
-        Account::create($ninja->id(), $email, TestAccountCreateAndDestroy::$test_password, $confirm, 0, 1, $ip);
+        Account::create($ninja->id(), $email, self::$test_password, $confirm, 0, 1, $ip);
 
         if ($confirm) {
             $ninja->active = 1;
@@ -144,7 +144,7 @@ class TestAccountCreateAndDestroy {
      */
     public static function create_complete_test_account_and_return_id() {
         $player_mock = new Player();
-        $player_mock->player_id = TestAccountCreateAndDestroy::create_testing_account(true);
+        $player_mock->player_id = self::create_testing_account(true);
         $account = Account::findByChar($player_mock);
         return $account->id();
     }
@@ -153,31 +153,31 @@ class TestAccountCreateAndDestroy {
      * Just return a character wholesale
      */
     public static function char() {
-        return Player::find(TestAccountCreateAndDestroy::char_id());
+        return Player::find(self::char_id());
     }
 
     /**
      * Return alternate character
      */
     public static function char_2() {
-        return Player::find(TestAccountCreateAndDestroy::char_id_2());
+        return Player::find(self::char_id_2());
     }
 
     /**
      * Alias for create_testing_account but clearer.
      */
     public static function char_id($confirm=false) {
-        return TestAccountCreateAndDestroy::create_testing_account($confirm);
+        return self::create_testing_account($confirm);
     }
 
     public static function char_id_2($confirm=false) {
-        return TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
+        return self::create_alternate_testing_account($confirm);
     }
 
     /**
      * Alias to get an account id
      */
     public static function account_id() {
-        return TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
+        return self::create_complete_test_account_and_return_id();
     }
 }
