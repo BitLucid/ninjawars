@@ -157,7 +157,7 @@ class AssistanceController extends AbstractController {
             JOIN players ON _player_id = player_id
             WHERE account_id = :acctId', array(':acctId'=>$aid));
 
-        if (count($data)) {
+        if ($data && count($data)) {
             $check     = $data['verification_number'];
             $confirmed = $data['confirmed'];
             $username  = $data['uname'];
