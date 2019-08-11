@@ -1,5 +1,11 @@
 server {
-	listen 8765;
+	listen 8765 ssl http2;
+	listen 443 ssl http2;
+	listen [::]:443 ssl http2;
+	listen [::]:8765 ssl http2;
+	ssl_verify_client off; 
+	include snippets/self-signed.conf;
+	include snippets/ssl-params.conf;
 	server_name nw.local localhost;
 
 	root /srv/ninjawars/deploy/www;
@@ -22,6 +28,7 @@ server {
 	# Debugging on settings
 	#log_not_found on;
 	access_log /var/log/nginx/scripts.log scripts;
+	error_log /var/log/nginx/error.log warn;
 	#autoindex on;
 	#rewrite_log on;
 	add_header X-uri "$uri";
@@ -35,6 +42,7 @@ server {
 	location / {
 		#default fallback of everything else block
 		try_files $uri @php;
+		add_header X-Frame-Options "SAMEORIGIN";
 	}
 
 	location = /npc.php {

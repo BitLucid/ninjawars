@@ -1,6 +1,6 @@
 .PHONY: all ci pre-test test test-main test-integration test-unit test-quick test-functional test-js post-test clean dep build install install-system dist-clean db db-fixtures
 
-DOMAIN=http://nw.local/
+DOMAIN=https://nw.local/
 VENDOR=./vendor/
 COMPOSER=./composer.phar
 CC_DIR=./cc
