@@ -135,7 +135,7 @@ Chat.renderChatMessage = function(p_data) {
 };
 
 // Send the contents of the chat form input box.
-// Sample url: http://nw.local/api?type=send_chat&msg=test&jsoncallback=alert
+// Sample url: https://nw.local/api?type=send_chat&msg=test&jsoncallback=alert
 Chat.sendChatContents = function(p_form) {
 	'use strict';
 	if (p_form.message && p_form.message.value.length > 0) {
