@@ -45,7 +45,7 @@ class CasinoController extends AbstractController {
 	 *
      * @param Container
 	 * @param bet int The amount of money to bet on the coin toss game
-	 * @return Response
+	 * @return RedirectResponse | StreamedViewResponse
 	 *
 	 * @note
      * If the player bets within ~1% of the maximum bet, they will receive a
