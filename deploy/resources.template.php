@@ -41,7 +41,7 @@ define('CONNECTION_STRING', 'pgsql:'.(DATABASE_USE_HOST? 'host='.DATABASE_HOST :
 
 // Can't use constants as arrays until php 7, so static class info instead.
 class Constants {
-    public static $trusted_proxies = ['104.130.111.36', '10.189.245.10'];
+    public static $trusted_proxies = ['104.130.111.36', '10.189.245.10', '52.204.80.200', '172.31.17.0', '172.31.54.175'];
 }
 
 define('NEW_PLAYER_INITIAL_STATS', 10);
