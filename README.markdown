@@ -1,6 +1,6 @@
 # Ninjawars repository
 
-The source code dojo for the [Ninja Game](http://www.ninjawars.net) @ http://ninjawars.net .
+The source code dojo for the [Ninja Game](https://www.ninjawars.net) @ https://ninjawars.net .
 
 [Codeship Continuous Integration build](https://www.codeship.io/projects/41292)
 

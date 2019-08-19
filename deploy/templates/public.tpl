@@ -62,7 +62,3 @@
     </script>
     {/literal}
 </div>
-
-<div id='facepile'>
-  <iframe src="http://www.facebook.com/plugins/facepile.php?href=ninjawars.net&amp;width=200&amp;max_rows=1" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
-</div>
