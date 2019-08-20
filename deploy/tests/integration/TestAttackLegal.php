@@ -62,6 +62,19 @@ class TestAttackLegal extends NWTest {
     }
 
     /**
+     * Test to prevent a regression where newly signed up characters could not attack because last_started_attack was null
+     */
+    public function testTwoNewlySignedUpAndConfirmedCharactersCanAttackEachOther() {
+        $confirm = true;
+        $char_id = TestAccountCreateAndDestroy::create_testing_account($confirm);
+        $char_2_id = TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
+        $legal = new AttackLegal(Player::find($char_id), Player::find($char_2_id), ['required_turns' => 1, 'ignores_stealth' => true]);
+        $checked = $legal->check($update_timer = true);
+        $this->assertEquals(null, $legal->getError(), 'There was an attack error message when there shouldn\'t be one.');
+        $this->assertTrue($checked);
+    }
+
+    /**
      * Test that you can't attack if an excessive amount of turns is required
      */
     public function testCantAttackIfExcessiveAmountOfTurnsIsRequired() {
