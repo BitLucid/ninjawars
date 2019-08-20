@@ -28,6 +28,7 @@ class NewsController extends AbstractController {
     /**
      * Check whether a player has the necessary create role
      *
+     * @param Player|null $pc 
      * @return boolean
      */
     private function hasCreateRole($pc) {
@@ -40,6 +41,8 @@ class NewsController extends AbstractController {
 
     /**
      * Display listing of posts
+     * 
+     * @return StreamedViewResponse
      */
     public function index() {
         $request = RequestWrapper::$request;
@@ -79,6 +82,8 @@ class NewsController extends AbstractController {
 
     /**
      * Create new post
+     * 
+     * @return StreamedViewResponse
      */
     public function create() {
         try {
