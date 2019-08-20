@@ -30,7 +30,7 @@ abstract class AbstractController {
         } elseif (static::ALIVE && $player) { // The page requires the player to be alive to view it
             if ($player->health <= 0) {
                 $error = 'dead';
-            } else if ($player->hasStatus(FROZEN)) {
+            } elseif ($player->hasStatus(FROZEN)) {
                 $error = 'frozen';
             }
         }

@@ -81,7 +81,7 @@ class InventoryController extends AbstractController {
 
         if (empty($target)) {
             $error = 2;
-        } else if ($this->itemCount($player, $item) < 1) {
+        } elseif ($this->itemCount($player, $item) < 1) {
             $error = 3;
         } else {
             $error = 0;
@@ -137,7 +137,7 @@ class InventoryController extends AbstractController {
 
         if ($this->itemCount($player, $item) < 1) {
             $error = 3;
-        } else if ($item->isSelfUsable()) {
+        } elseif ($item->isSelfUsable()) {
             $params = [
                 'required_turns'  => $item->getTurnCost(),
                 'ignores_stealth' => $item->ignoresStealth(),
@@ -220,9 +220,9 @@ class InventoryController extends AbstractController {
 
         if (empty($target)) {
             $error = 2;
-        } else if ($this->itemCount($player, $item) < 1) {
+        } elseif ($this->itemCount($player, $item) < 1) {
             $error = 3;
-        } else if ($target->id() === $player->id()) {
+        } elseif ($target->id() === $player->id()) {
             return $this->selfUse($p_dependencies);
         } else {
             $params = [
@@ -235,7 +235,7 @@ class InventoryController extends AbstractController {
             if (!$attack_legal->check()) {
                 $error           = 1;
                 $display_message = $attack_legal->getError();
-            } else if (!$item->isOtherUsable()) {
+            } elseif (!$item->isOtherUsable()) {
                 $error           = 1;
                 $display_message = 'This item cannot be used on others!';
             } else {
@@ -365,7 +365,7 @@ class InventoryController extends AbstractController {
                 // If the effect is already in play, it will have a decreased effect.
                 $turns_change = ceil($turns_change*0.3);
                 $extra_message = "__TARGET__ is already moving slowly.";
-            } else if ($target->hasStatus(FAST)) {
+            } elseif ($target->hasStatus(FAST)) {
                 $target->subtractStatus(FAST);
                 $extra_message = "__TARGET__ is no longer moving quickly.";
             } else {
@@ -379,7 +379,7 @@ class InventoryController extends AbstractController {
 
             $notice = " lose ".abs($turns_change)." turns.";
             $target->changeTurns(-1*$turns_change);
-        } else if ($item->hasEffect('speed')) {
+        } elseif ($item->hasEffect('speed')) {
             $item->setTurnChange($item->getMaxTurnChange());
             $turns_change = $item->getTurnChange();
 
@@ -387,7 +387,7 @@ class InventoryController extends AbstractController {
                 // If the effect is already in play, it will have a decreased effect.
                 $turns_change = ceil($turns_change*0.5);
                 $extra_message = "__TARGET__ is already moving quickly.";
-            } else if ($target->hasStatus(SLOW)) {
+            } elseif ($target->hasStatus(SLOW)) {
                 $target->subtractStatus(SLOW);
                 $extra_message = "__TARGET__ is no longer moving slowly.";
             } else {
@@ -493,7 +493,8 @@ class InventoryController extends AbstractController {
      * Get the count of how many of an item a player has.
      */
     private function itemCount(Player $player, Item $item): int {
-        $statement = query("SELECT sum(amount) FROM inventory WHERE item_type = :item AND owner = :owner",
+        $statement = query(
+            "SELECT sum(amount) FROM inventory WHERE item_type = :item AND owner = :owner",
             [
                 ':owner' => $player->id(),
                 ':item'  => $item->item_id,

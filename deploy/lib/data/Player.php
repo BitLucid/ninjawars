@@ -511,7 +511,8 @@ class Player implements Character {
 	 * @return int
 	 */
 	public function is_hurt_by(): int {
-		return max(0,
+		return max(
+            0,
 			(int) ($this->getMaxHealth() - $this->health)
 		);
 	}
@@ -557,7 +558,7 @@ class Player implements Character {
 
         if (OFFLINE) {
             return IMAGE_ROOT.'default_avatar.png';
-        } else if (!$this->vo || !$this->vo->avatar_type || !$account || !$account->email()) {
+        } elseif (!$this->vo || !$this->vo->avatar_type || !$account || !$account->email()) {
             return '';
         } else {
             $email       = $account->email();
@@ -744,8 +745,11 @@ class Player implements Character {
                 $account->save();
 
                 // Send a level-up message, for those times when auto-levelling happens.
-                Event::create($this->id(), $this->id(),
-                    "You levelled up! Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by $karma_to_give, and your Ki raised $ki_to_give! You gained some health and turns, as well! You are now a level {$this->level} ninja! Go kill some stuff.");
+                Event::create(
+                    $this->id(),
+                    $this->id(),
+                    "You levelled up! Your strength raised by $stat_value_to_add, speed by $stat_value_to_add, stamina by $stat_value_to_add, Karma by $karma_to_give, and your Ki raised $ki_to_give! You gained some health and turns, as well! You are now a level {$this->level} ninja! Go kill some stuff."
+                );
                 return true;
             } else {
                 return false;

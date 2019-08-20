@@ -63,7 +63,7 @@ class ApiController extends AbstractController {
         if (isset($valid_type_map[$type])) {
             if ($type == 'send_chat') {
                 $result = $this->jsonSendChat($request->get('msg'));
-            } else if ($type == 'new_chats') {
+            } elseif ($type == 'new_chats') {
                 $chat_since = $request->get('since', null);
                 $result = $this->jsonNewChats($chat_since);
             } elseif ($type == 'chats') {

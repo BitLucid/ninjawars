@@ -103,8 +103,7 @@ class PasswordController extends AbstractController {
 
         return new RedirectResponse('/password/?'
             .($message? 'message='.rawurlencode($message).'&' : '')
-            .($error? 'error='.rawurlencode($error) : '')
-        );
+            .($error? 'error='.rawurlencode($error) : ''));
     }
 
     /**

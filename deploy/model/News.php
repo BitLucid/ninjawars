@@ -38,10 +38,10 @@ class News {
 	/**
 	 * Create news
 	 *
-	 * @param string $title The post title
-	 * @param string $content The full text content
+	 * @param string $title    The post title
+	 * @param string $content  The full text content
 	 * @param int $authorId Account ID of the author
-	 * @param string $tags Comma-separated text tags
+	 * @param string $tags     Comma-separated text tags
 	 * @throws InvalidArgumentException
 	 * @return News
 	 */
@@ -76,12 +76,15 @@ class News {
 			// Return id during insert
 			$stmt = insert_query(
 				'insert into news (title, content, tags) values (:title, :content, :tags) returning news_id',
-				[':title'=>$this->title, ':content'=>$this->content, ':tags'=>$this->tags]);
+				[':title'=>$this->title, ':content'=>$this->content, ':tags'=>$this->tags]
+			);
 			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$this->id = reset($data)['news_id'] ?? null;
 			// Add the author association as well.
-			insert_query('insert into account_news (_account_id, _news_id) values (:aid, :nid)',
-				[':aid'=>$this->authorFull->id(), ':nid'=>$this->id]);
+			insert_query(
+				'insert into account_news (_account_id, _news_id) values (:aid, :nid)',
+				[':aid'=>$this->authorFull->id(), ':nid'=>$this->id]
+			);
 			return $this->id;
 		} else {
 			throw new \InvalidArgumentException('Updating of existing news not yet implemented!');
@@ -93,6 +96,8 @@ class News {
 
 	/**
 	 * Get all the existant tags by pulling tag data and creating individual tags from db
+	 * 
+	 * @return array
 	 */
 	public static function availableTags(){
 		$normalized_tags = [];
@@ -112,11 +117,16 @@ class News {
 	 * @return String of standard fields
 	 */
 	public static function fields(){
-		return implode(', ', ['news_id', 'news_id as id', 'title', 'content', 'created', 'updated', 'tags', 'uname as author', 'player_id as author_id']);
+		return implode(
+			', ', 
+			['news_id', 'news_id as id', 'title', 'content', 'created', 'updated', 'tags', 'uname as author', 'player_id as author_id']
+		);
 	}
 
 	/**
 	 * Handle joining the author account player info
+	 * 
+	 * @return string
 	 */
 	public static function authorJoined(){
 		return ' left join account_news on account_news._news_id = news.news_id 
@@ -127,7 +137,7 @@ class News {
 	/**
 	 * Find based tag
 	 *
-	 * @param string some tag
+	 * @param string $tag some tag
 	 * @return \stdClass[] of news entries
 	 */
 	public static function findByTag($tag = ''){
@@ -138,7 +148,7 @@ class News {
 			[':tag'=>$tag]
 		);
 
-		if ( empty($news)) {
+		if (empty($news)) {
 			throw new \InvalidArgumentException('Tagged #'.$tag.' news not found');
 		}
 
@@ -149,6 +159,9 @@ class News {
 
 	/**
 	 * Find a single news post
+	 * 
+	 * @param int $id 
+	 * @return object
 	 */
 	public static function findById(int $id){
 		$news = query_row(
@@ -187,7 +200,7 @@ class News {
 		$news = query_row('select '.static::fields().' from news '.static::authorJoined().' 
 			order by news_id desc limit 1');
 
-		if ( empty($news)) {
+		if (empty($news)) {
 			throw new \InvalidArgumentException('News not found');
 		}
 

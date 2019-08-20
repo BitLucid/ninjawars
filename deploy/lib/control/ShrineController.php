@@ -191,9 +191,9 @@ class ShrineController extends AbstractController {
 
 		if ($player->health <= 0) {
 			return $this->renderError('You must resurrect before you can heal.', $player);
-		} else if ($player->gold < self::CURE_COST_GOLD) {
+		} elseif ($player->gold < self::CURE_COST_GOLD) {
 			return $this->renderError('You need more gold to remove poison.', $player);
-		} else if (!$player->hasStatus(POISON)) {
+		} elseif (!$player->hasStatus(POISON)) {
 			return $this->renderError('You are not ill.', $player);
 		} else {
 			$player->subtractStatus(POISON);
@@ -281,7 +281,7 @@ class ShrineController extends AbstractController {
 
 			if ($costType === self::RES_COST_TYPE_KILL) {
 				$p_player->kills = $p_player->subtractKills(self::RES_COST_KILLS);
-			} else if ($costType === self::RES_COST_TYPE_TURN) {
+			} elseif ($costType === self::RES_COST_TYPE_TURN) {
 				$p_player->changeTurns(-1*min(self::RES_COST_TURNS, $p_player->turns));
 			}
 
@@ -359,9 +359,9 @@ class ShrineController extends AbstractController {
 	private function calculateResurrectionCost($p_player) {
 		if ($this->isResurrectFree($p_player)) {
 			return self::RES_COST_TYPE_FREE;
-		} else if ($p_player->kills > 0) {
+		} elseif ($p_player->kills > 0) {
 			return self::RES_COST_TYPE_KILL;
-		} else if ($p_player->turns > 0) {
+		} elseif ($p_player->turns > 0) {
 			return self::RES_COST_TYPE_TURN;
 		} else {
 			throw new \RuntimeException('You have no kills or turns. You must wait to regain turns before you can return to life.');
@@ -410,9 +410,9 @@ class ShrineController extends AbstractController {
 	private function _heal($p_player, $p_amount) {
 		if ($p_amount < 1) {
 			throw new \InvalidArgumentException('Invalid input for heal amount.');
-		} else if ($p_player->health <= 0) {
+		} elseif ($p_player->health <= 0) {
 			throw new \RuntimeException('You must resurrect before you can heal.');
-		} else if ($p_player->is_hurt_by() <= 0) {
+		} elseif ($p_player->is_hurt_by() <= 0) {
 			throw new \RuntimeException('You are at full health.');
 		}
 

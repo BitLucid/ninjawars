@@ -141,7 +141,7 @@ class DojoController extends AbstractController {
      * Returns an error if there's an obstacle to changing classes.
      *
      * @param Player $p_player
-     * @param int $p_requiredTurns
+     * @param int    $p_requiredTurns
      * @return string
      */
     private function classChangeReqs($p_player, $p_requiredTurns) {
@@ -175,7 +175,7 @@ class DojoController extends AbstractController {
      * Returns an error if the requirements for getting a dim mak aren't met.
      *
      * @param Player $p_player
-     * @param int $p_requiredTurns
+     * @param int    $p_requiredTurns
      * @return string
      */
     private function dimMakReqs(Player $p_player, $p_requiredTurns) {
@@ -201,8 +201,8 @@ class DojoController extends AbstractController {
     /**
      * Create the Response to render
      *
-     * @param Array $p_parts Array that gets bound to view
-     * @param Player $p_player The player requesting the action
+     * @param Array   $p_parts       Array that gets bound to view
+     * @param Player  $p_player      The player requesting the action
      * @param boolean $p_renderMonks Flag to render links to actions
      * @return Response
      */

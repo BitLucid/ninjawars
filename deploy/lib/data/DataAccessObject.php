@@ -51,7 +51,7 @@ abstract class DataAccessObject {
 		$statement->bindValue(':id', intval($id));
 		$statement->execute();
 
-		if ( ! ($data = $statement->fetch()) ) {
+		if (! ($data = $statement->fetch())) {
 			return null;
 		}
 

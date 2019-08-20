@@ -304,7 +304,7 @@ class SkillController extends AbstractController {
 				Event::create($attacker_char_id, $targetObj->id(), $msg);
 
 				$generic_skill_result_message = "You have stolen $gold_decrease gold from __TARGET__!";
-			} else if ($act == 'Unstealth') {
+			} elseif ($act == 'Unstealth') {
 				$state = 'unstealthed';
 
 				if ($targetObj->hasStatus(STEALTH)) {
@@ -314,7 +314,7 @@ class SkillController extends AbstractController {
 					$turn_cost = 0;
 					$generic_state_change = "__TARGET__ is already $state.";
 				}
-			} else if ($act == 'Stealth') {
+			} elseif ($act == 'Stealth') {
 				$covert     = true;
 				$state      = 'stealthed';
 
@@ -326,7 +326,7 @@ class SkillController extends AbstractController {
 					$turn_cost = 0;
 					$generic_state_change = "__TARGET__ is already $state.";
 				}
-			} else if ($act == 'Stalk') {
+			} elseif ($act == 'Stalk') {
 				$state      = 'stalking';
 				if(!$targetObj->hasStatus(STALKING)) {
 					$targetObj->addStatus(STALKING);
@@ -336,7 +336,7 @@ class SkillController extends AbstractController {
 					$turn_cost = 0;
 					$generic_state_change = "__TARGET__ is already $state.";
 				}
-			} else if ($act == 'Kampo') {
+			} elseif ($act == 'Kampo') {
 				$covert = true;
 
 				// *** Get Special Items From Inventory ***
@@ -357,7 +357,7 @@ class SkillController extends AbstractController {
 					$turn_cost = 0;
 					$generic_skill_result_message = 'You do not have the necessary ginsengroots or energy to create any Kampo formulas.';
 				}
-			} else if ($act == 'Poison Touch') {
+			} elseif ($act == 'Poison Touch') {
 				$covert = true;
 
 				$targetObj->addStatus(POISON);
@@ -381,7 +381,7 @@ class SkillController extends AbstractController {
 
 				$msg = "You have had fire bolt cast on you by ".$player->name();
 				Event::create($player->id(), $targetObj->id(), $msg);
-			} else if ($act == 'Heal' || $act == 'Harmonize') {
+			} elseif ($act == 'Heal' || $act == 'Harmonize') {
 				// This is the starting template for self-use commands, eventually it'll be all refactored.
 				$harmonize = false;
 
@@ -418,7 +418,7 @@ class SkillController extends AbstractController {
 						Event::create($attacker_char_id, $targetObj->id(), "You have been healed by $attacker_id for $healed_by.");
 					}
 				}
-			} else if ($act == 'Ice Bolt') {
+			} elseif ($act == 'Ice Bolt') {
 				if ($targetObj->hasStatus(SLOW)) {
 					$turn_cost = 0;
 					$generic_skill_result_message = '__TARGET__ is already iced.';
@@ -440,7 +440,7 @@ class SkillController extends AbstractController {
 						$generic_skill_result_message = "__TARGET__ does not have enough turns for you to take.";
 					}
 				}
-			} else if ($act == 'Cold Steal') {
+			} elseif ($act == 'Cold Steal') {
 				if ($targetObj->hasStatus(SLOW)) {
 					$turn_cost = 0;
 					$generic_skill_result_message = '__TARGET__ is already iced.';
@@ -473,7 +473,7 @@ class SkillController extends AbstractController {
 						$generic_skill_result_message = "Cold Steal has backfired! You are frozen until $unfreeze_time!";
 					}
 				}
-			} else if ($act == 'Clone Kill') {
+			} elseif ($act == 'Clone Kill') {
 				// Obliterates the turns and the health of similar accounts that get clone killed.
 				$generic_skill_result_message = $this->prepareCloneKill($player, $targetObj, $target2);
 				$reuse = false; // Don't give a reuse link.
@@ -498,7 +498,7 @@ class SkillController extends AbstractController {
 
 					if ($added_bounty > 0) {
 						$player->setBounty($player->bounty+($added_bounty * 25));
-					} else if ($targetObj->bounty > 0 && $targetObj->id() !== $player->id()) {
+					} elseif ($targetObj->bounty > 0 && $targetObj->id() !== $player->id()) {
 						 // No suicide bounty, No bounty when your bounty getting ++ed.
 						$player->setGold($player->gold+$targetObj->bounty); // Reward the bounty
 						$targetObj->setBounty(0); // Wipe the bounty

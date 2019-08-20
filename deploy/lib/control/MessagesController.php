@@ -26,7 +26,7 @@ class MessagesController extends AbstractController {
 
         if ((int) $request->get('target_id')) {
             $recipient = Player::find((int) $request->get('target_id'));
-        } else if ($request->get('to')) {
+        } elseif ($request->get('to')) {
             $recipient = Player::findByName($request->get('to'));
         } else {
             $recipient = null;

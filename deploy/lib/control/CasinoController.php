@@ -64,9 +64,9 @@ class CasinoController extends AbstractController {
 		if ($bet < 0) {
 			$pageParts = ['result-cheat'];
 			$player->harm(self::CHEAT_DMG);
-		} else if ($bet > $player->gold) {
+		} elseif ($bet > $player->gold) {
 			$pageParts = ['result-no-gold'];
-		} else if ($bet > 0 && $bet <= self::MAX_BET) {
+		} elseif ($bet > 0 && $bet <= self::MAX_BET) {
 			if (rand(0, 1) === 1) {
 				$pageParts = ['result-win'];
 

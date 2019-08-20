@@ -3,7 +3,6 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
 
-
 /**
  * Creating the non-person-to-person event information
  * This is somewhat a business object, though it has direct sql inside it
@@ -13,8 +12,8 @@ class Event {
     /**
      * For events, attacks, kills, invites, etc, and no user-created messages
      *
-     * @param int $from_id
-     * @param int $to_id
+     * @param int    $from_id
+     * @param int    $to_id
      * @param String $message
      * @return void
      * @throws InvalidArgumentException

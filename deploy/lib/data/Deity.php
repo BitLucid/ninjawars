@@ -221,8 +221,8 @@ class Deity {
      * See the balance sheet:
         https://docs.google.com/spreadsheet/ccc?pli=1&key=0AkoUgtBBP00HdGs0Tmk4bC10TXN0SUJYXzdYMVpFZFE#gid=0
      *
-     * @param int|null $basic Per tick regen
-     * @param bool $with_level whether regen increases with level
+     * @param int|null $basic      Per tick regen
+     * @param bool     $with_level whether regen increases with level
      */
     public function regenCharacters($basic, $with_level=false){
         // Default max heal deity will do is level 3 health
@@ -248,7 +248,8 @@ class Deity {
                 (health+:basic ".$level_add."),
                 cast((:max_heal ".$level_limit_add.") AS int)
                 )
-                WHERE active = 1 AND health BETWEEN 1 AND (:max_heal2 ".$level_limit_add.") AND NOT cast(status&:poison AS bool) ");
+                WHERE active = 1 AND health BETWEEN 1 AND (:max_heal2 ".$level_limit_add.") AND NOT cast(status&:poison AS bool) "
+        );
         $s->bindValue(':basic', $basic, PDO::PARAM_INT);
         $s->bindValue(':max_heal', $maximum_heal);
         $s->bindValue(':max_heal2', $maximum_heal);
@@ -276,7 +277,7 @@ class Deity {
             'select count(*) as active, 
                 sum(case when health < 1 then 1 else 0 end) as dead 
                 from players where active = 1'
-            );
+        );
         $pc_data['alive'] = $pc_data['active'] - $pc_data['dead'];
         return $pc_data;
     }

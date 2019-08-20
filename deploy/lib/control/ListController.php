@@ -19,7 +19,7 @@ class ListController extends AbstractController {
     /**
      * Get the ninja list and display it
      *
-     * @param Container
+     * @param Container $p_dependencies 
      * @return Response
      */
     public function index(Container $p_dependencies) {
@@ -49,7 +49,7 @@ class ListController extends AbstractController {
             if ($hide == 'dead') {
                 $where_clauses[] = " alive = true";
             }
-        } else if ($hide == 'dead') {
+        } elseif ($hide == 'dead') {
             $where_clauses[] = " alive";
         }
 
@@ -70,7 +70,7 @@ class ListController extends AbstractController {
 
         if ($searched && $list_by_rank && $rank_search = (int) substr($searched, 1)) {
             $page = ceil($rank_search / $record_limit);
-        } else if ($page == "searched") {
+        } elseif ($page == "searched") {
             $page = $request->get('page', 1);
         } else {
             $page = ($page < 1 ? 1 : $page); // Prevent the page number from going negative
@@ -112,6 +112,10 @@ class ListController extends AbstractController {
     /**
      * Get the rows of ninja info, decorated for list display
      *
+     * @param array $where_clauses 
+     * @param array $params        List of key coded params
+     * @param int   $record_limit 
+     * @param int   $offset 
      * @return array An array of decorated ninja
      */
     private function getFormattedNinjaRows($where_clauses, $params, $record_limit, $offset) {
@@ -120,7 +124,7 @@ class ListController extends AbstractController {
             FROM rankings LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id
             JOIN players on rankings.player_id = players.player_id
             JOIN class on class.class_id = players._class_id "
-            .(count($where_clauses)? " WHERE active = 1 AND ".implode($where_clauses, ' AND ') : "")."
+            .(count($where_clauses)? " WHERE active = 1 AND ".implode(' AND ', $where_clauses) : "")."
             ORDER BY rank_id ASC, player_id ASC
             LIMIT :limit OFFSET :offset";
 
@@ -141,9 +145,11 @@ class ListController extends AbstractController {
     }
 
     /**
-     * format a row of the player list
+     * Format a row of the player list
+     * 
+     * @param array $a_player 
      */
-    private function formatNinjaRow($a_player) {
+    private function formatNinjaRow(array $a_player) {
         return [
             'alive_class'   => ($a_player['alive'] == 1 ? "AliveRow" : "DeadRow"),
             'player_rank'   => $a_player['rank_id'],

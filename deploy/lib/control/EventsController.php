@@ -38,9 +38,9 @@ class EventsController extends AbstractController {
     /**
      * Retrieve events by user
      *
-     * @param int $user_id
-     * @param String $limit
-     * @return Resultset
+     * @param int    $user_id 
+     * @param String $limit 
+     * @return array
      */
     private function getEvents($user_id, $limit=null) {
         $params = [':to' => $user_id];
@@ -57,7 +57,7 @@ class EventsController extends AbstractController {
     /**
      * Mark events as read for a given user
      *
-     * @param int $user_id
+     * @param int $user_id 
      * @return void
      */
     private function readEvents($user_id) {

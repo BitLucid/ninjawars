@@ -171,8 +171,8 @@ class Router {
      * handles the error condition when the requested route is not allowed to
      * be executed by the requestor.
      *
-     * @param string $p_main The main route segment to execute
-     * @param string $p_command The command to execute on the main route
+     * @param string    $p_main         The main route segment to execute
+     * @param string    $p_command      The command to execute on the main route
      * @param Container $p_dependencies Dependency injection container
      * @return Response The Response to render
      * @throws RouteNotFoundException No controller could be found for $p_main
@@ -197,7 +197,7 @@ class Router {
          */
         if (is_callable([$controller, $p_command])) {
             $action = $p_command;
-        } else if (isset(self::$routes[$p_main]['actions'][$p_command])) {
+        } elseif (isset(self::$routes[$p_main]['actions'][$p_command])) {
             $action = self::$routes[$p_main]['actions'][$p_command];
 
             // If the action in the routes map still doesn't exist, throw
@@ -239,9 +239,8 @@ class Router {
      * Return 404 and 404 headers
      */
     public static function respond404() {
-        header( $_SERVER['SERVER_PROTOCOL']." 404 Not Found", true, 404 ); //.replace = true
+        header($_SERVER['SERVER_PROTOCOL']." 404 Not Found", true, 404); //.replace = true
         $view = new NWTemplate();
         $view->display('404.tpl');
     }
-
 }
