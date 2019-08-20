@@ -23,7 +23,7 @@ class ClanController extends AbstractController {
 	/**
 	 * View information about a clan
 	 *
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 * @note
 	 * If a clan_id is not specified, the clan of the current user will be used
@@ -85,7 +85,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Send an invitation to a character that will ask them to join your clan
 	 *
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 * @throws Exception You cannot use this function if you are not the leader of a clan
 	 */
@@ -127,7 +127,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Removes the active player from the clan they are in
 	 *
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 * @throws Exception If you are the only leader of your clan, you cannot leave, you must disband
 	 */
@@ -155,7 +155,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Creates a new clan with the current user as the leader
 	 *
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 * @note
 	 * Player must be high enough level to create a clan
@@ -198,6 +198,8 @@ class ClanController extends AbstractController {
 
 	/**
 	 * Sends a request to a clan leader for the current user to join a clan
+	 * @param Container $p_dependencies 
+	 * @return Response
 	 */
 	public function join(Container $p_dependencies): StreamedViewResponse {
 		$clanID = (int) RequestWrapper::getPostOrGet('clan_id', 0);
@@ -206,7 +208,7 @@ class ClanController extends AbstractController {
 		$leader = $clan->getLeaderInfo();
 
 		$message = 'The leader to this clan is inactive, try another.';
-		if(!empty($leader)){
+		if (!empty($leader)) {
 			$available = $this->sendClanJoinRequest($p_dependencies['session']->get('player_id'), $clanID);
 			$message = "Your request to join {$clan->getName()} has been sent to $leader[uname]";
 		}
@@ -226,7 +228,9 @@ class ClanController extends AbstractController {
 	/**
 	 * Deletes a clan and messages all members that it has been disbanded
 	 *
+	 * @param Container $p_dependencies 
 	 * @throws \RuntimeException On invalid leader disband request
+	 * @return Response
 	 */
 	public function disband(Container $p_dependencies): StreamedViewResponse {
 		$player = $p_dependencies['current_player'];
@@ -264,7 +268,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Removes a player from a clan
 	 *
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 * @throws Exception The player must be the leader of the clan to kick a member
 	 */
@@ -295,7 +299,7 @@ class ClanController extends AbstractController {
 	 * Edits clan metadata
 	 *
      * @todo accumulate error messages
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 * @throws Exception Only leaders can update clan details
 	 * @note
@@ -364,7 +368,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Shows a form for editing clan metadata
 	 *
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 * @see update()
 	 */
@@ -385,7 +389,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Sends a message to all members of the clan of the current player
 	 *
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 */
 	public function message(Container $p_dependencies) {
@@ -428,7 +432,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Shows a ranked list of all clans in the game
 	 *
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 */
 	public function listClans(Container $p_dependencies) {
@@ -456,7 +460,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Review a request to join a clan
 	 *
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 */
 	public function review(Container $p_dependencies) {
@@ -493,7 +497,7 @@ class ClanController extends AbstractController {
 	/**
 	 * Accept a player as a new member of a clan
 	 *
-     * @param Container
+     * @param Container $p_dependencies 
 	 * @return Response
 	 *
 	 * @par Preconditions:
@@ -597,8 +601,9 @@ class ClanController extends AbstractController {
      * Send a message that links a player to a clan join request message
      *
      * @todo Simplify this invite system.
-     * @param int $user_id
-     * @param int $clan_id
+     * @param int $user_id 
+     * @param int $clan_id 
+	 * @return Array|bool
      */
     private function sendClanJoinRequest(int $user_id, int $clan_id) {
         DatabaseConnection::getInstance();
@@ -634,6 +639,7 @@ class ClanController extends AbstractController {
             'send_to'   => $leader_id,
             'message'   => $join_request_message,
             'type'      => 0,
-        ]);
+		]);
+		return true;
     }
 }
