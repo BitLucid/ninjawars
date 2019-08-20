@@ -163,9 +163,9 @@ class DoshinController extends AbstractController {
     /**
      * Command for a user to reduce their bounty by paying their own gold
      *
-     * @param Container
-     * @param bribe int The amount to spend on reducing bounty
-     * @return StreamedViewRespons
+     * @param Container $p_dependencies
+     * @param int $bribe The amount to spend on reducing bounty
+     * @return StreamedViewResponse
      */
     public function bribe(Container $p_dependencies) {
         $bribe     = intval(RequestWrapper::getPostOrGet('bribe'));
@@ -206,7 +206,7 @@ class DoshinController extends AbstractController {
     /**
      * If you try to bribe with a negative bounty, the doshin beat you up and take your money!
      *
-     * @param Player $char
+     * @param Player $char To get attacked by the doshin
      * @return Player
      * @note
      * If the player loses a substantial enough amount, the doshin will actually decrease the bounty.
@@ -242,6 +242,7 @@ class DoshinController extends AbstractController {
      *
      * @param Array     $parts Hash of variables to pass to the view
      * @param Container $deps  Pass the pimple container
+     * @return StreamedViewResponse
      */
     private function render(array $parts, Container $deps=null): StreamedViewResponse {
         $char     = $deps? $deps['current_player'] : null;
