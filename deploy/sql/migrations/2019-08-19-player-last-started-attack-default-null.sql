@@ -1,0 +1,1 @@
+ALTER TABLE players ALTER COLUMN last_started_attack SET DEFAULT NULL;
