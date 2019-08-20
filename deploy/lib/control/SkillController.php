@@ -274,7 +274,7 @@ class SkillController extends AbstractController {
 			if (!$has_skill || $act == '') {
 				// Set the attack error to display that that skill wasn't available.
 				$attack_error = 'You do not have the requested skill.';
-			} else if ($starting_turns < $turn_cost) {
+			} elseif ($starting_turns < $turn_cost) {
 				$turn_cost = 0;
 				$attack_error = "You do not have enough turns to use $act.";
 			}

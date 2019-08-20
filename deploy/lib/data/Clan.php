@@ -335,7 +335,7 @@ class Clan {
         // Modify the members by reference
         foreach ($membersArray as &$member) {
             $member['leader'] = false;
-            $member['size']   = floor( ( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
+            $member['size']   = floor(( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
 
             // Calc the member display size based on their level relative to the max.
             if ($member['member_level'] >= 1) {
@@ -383,7 +383,7 @@ class Clan {
      * Save the url of the clan avatar to the database.
      *
      * @param String $url
-     * @param int $clan_id
+     * @param int    $clan_id
      * @return void
      */
     public static function saveClanAvatarUrl(string $url, int $clan_id) {
@@ -434,7 +434,7 @@ class Clan {
     /**
      * Rename a clan
      *
-     * @param int $p_clanID
+     * @param int    $p_clanID
      * @param String $p_newName
      * @return String
      * @note

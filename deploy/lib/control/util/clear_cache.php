@@ -1,5 +1,6 @@
 <?php
 namespace NinjaWars\core\control\util;
+
 require_once(dirname(__DIR__).'../../../lib/base.inc.php');
 
 use \Smarty;

@@ -29,8 +29,10 @@ class Filter{
      * Strip low and high ascii characters, leave standard keyboard characters
      */
     public static function toSimple($dirty){
-        return filter_var(str_replace(['"', '\''], '', $dirty), FILTER_SANITIZE_STRING, 
-            FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH);
+        return filter_var(
+            str_replace(['"', '\''], '', $dirty),
+            FILTER_SANITIZE_STRING, 
+            FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
+        );
     }
-
 }

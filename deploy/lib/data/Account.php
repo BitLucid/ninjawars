@@ -79,7 +79,8 @@ class Account {
      * @return Account|null
      */
 	public static function findByIdentity($email_identity) {
-        $account_info = query_row("select account_id from accounts where account_identity = :identity_email",
+        $account_info = query_row(
+            "select account_id from accounts where account_identity = :identity_email",
             [':identity_email'=>$email_identity]
         );
 
@@ -89,7 +90,7 @@ class Account {
     /**
      * Get the account that matches an oauth id.
      *
-     * @param int $oauth_id
+     * @param int    $oauth_id
      * @param String $provider (optional) Defaults to facebook
      * @todo oauth_id should probably be made a string to avoid overflow problems.
      * @return Account|null
@@ -558,11 +559,13 @@ class Account {
      * @return Player[] The ninjas for the account
      */
     public function getCharacters(){
-        $pcs = query('select player_id from players p 
+        $pcs = query(
+            'select player_id from players p 
             join account_players ap on ap._player_id = p.player_id
             join accounts a on a.account_id = ap._account_id
             where a.account_id = :aid', 
-            [':aid'=>[$this->account_id, PDO::PARAM_INT]]);
+            [':aid'=>[$this->account_id, PDO::PARAM_INT]]
+        );
         $ninjas = [];
         foreach($pcs as $pc){
             $ninja = Player::find($pc['player_id']);

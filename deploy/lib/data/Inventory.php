@@ -31,7 +31,7 @@ class Inventory implements IteratorAggregate {
      * Add a certain number of items to a character's inventory
      *
      * @param string $identity
-     * @param int $quantity
+     * @param int    $quantity
      */
     public function add(string $identity, int $quantity = 1): void {
         $quantity = (int)$quantity;

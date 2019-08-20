@@ -18,7 +18,7 @@ class GameLog {
      * Record to the game log
      *
      * @param string $log_message
-     * @param int $priority Simple priority level, higher is more important
+     * @param int    $priority    Simple priority level, higher is more important
      */
     public function log($log_message, $priority=0){
         $priority = (int) $priority; // Prevent non-int priority levels
@@ -68,7 +68,7 @@ class GameLog {
 
         if ($amount == 0) {
             return;
-        } else if ($amount > 0) {
+        } elseif ($amount > 0) {
             $record_check = '>';
         } else {
             $record_check = '<';
@@ -76,7 +76,8 @@ class GameLog {
 
         // *** UPDATE THE KILLS LOG ***
         $statement = DatabaseConnection::$pdo->prepare(
-            "SELECT * FROM levelling_log WHERE _player_id = :player AND killsdate = now() AND killpoints $record_check 0 LIMIT 1");
+            "SELECT * FROM levelling_log WHERE _player_id = :player AND killsdate = now() AND killpoints $record_check 0 LIMIT 1"
+        );
         //Check for an existing record of either negative or positive types.
         $statement->bindValue(':player', $who);
         $statement->execute();
@@ -87,7 +88,8 @@ class GameLog {
             $statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints + :amount WHERE _player_id = :player AND killsdate = now() AND killpoints $record_check 0");  //increase killpoints
         } else {
             $statement = DatabaseConnection::$pdo->prepare(
-                "INSERT INTO levelling_log (_player_id, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())");
+                "INSERT INTO levelling_log (_player_id, killpoints, levelling, killsdate) VALUES (:player, :amount, '0', now())"
+            );
             //create a new record for today
         }
 
@@ -136,5 +138,4 @@ class GameLog {
         // ************** Setting anonymous and player usage information
     }
     */
-
 }
