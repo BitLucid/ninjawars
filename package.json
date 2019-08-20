@@ -1,6 +1,6 @@
 {
   "name": "ninjawars",
-  "version": "1.11.0",
+  "version": "1.11.2",
   "description": "The Ninja Game at ninjawars.net",
   "main": "deploy/www/js/nw.js",
   "directories": {
