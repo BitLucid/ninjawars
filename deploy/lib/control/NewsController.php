@@ -121,7 +121,7 @@ class NewsController extends AbstractController {
         try {
             $this->hasCreateRole($this->pc);
             $account = ($this->pc ? Account::findByChar($this->pc) : null);
-            $account_id = $account->id();
+            $account_id = $account ? $account->id() : null;
         } catch (InvalidArgumentException $e) {
             $error = "Sorry, you must be logged in to try to save a news post.";
             return new RedirectResponse('/news/?error='.rawurlencode($error));
@@ -140,7 +140,7 @@ class NewsController extends AbstractController {
             try {
                 // News Model
                 $news = new News();
-                $news->createPost($news_title, $news_content, $account_id, $tag);
+                $news->createPost($news_title, $news_content, $account_id, $tag); // Null account_id just will throw
                 return new RedirectResponse('/news/?create_successful=1');
             } catch (InvalidArgumentException $e) {
                 return new RedirectResponse('/news/?error='.rawurlencode('Unable to create news post.'));

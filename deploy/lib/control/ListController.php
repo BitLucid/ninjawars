@@ -114,8 +114,8 @@ class ListController extends AbstractController {
      *
      * @param array $where_clauses 
      * @param array $params        List of key coded params
-     * @param int $record_limit 
-     * @param int $offset 
+     * @param int   $record_limit 
+     * @param int   $offset 
      * @return array An array of decorated ninja
      */
     private function getFormattedNinjaRows($where_clauses, $params, $record_limit, $offset) {

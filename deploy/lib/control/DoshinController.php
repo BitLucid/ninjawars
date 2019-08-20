@@ -164,7 +164,7 @@ class DoshinController extends AbstractController {
      * Command for a user to reduce their bounty by paying their own gold
      *
      * @param Container $p_dependencies
-     * @param int $bribe The amount to spend on reducing bounty
+     * @param int       $bribe          The amount to spend on reducing bounty
      * @return StreamedViewResponse
      */
     public function bribe(Container $p_dependencies) {
