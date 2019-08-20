@@ -185,7 +185,7 @@ class ConsiderController extends AbstractController {
     /**
      * Search for enemies to add.
      *
-     * @param int $p_playerId
+     * @param int    $p_playerId
      * @param string $p_pattern
      * @return array
      */
@@ -292,17 +292,19 @@ class ConsiderController extends AbstractController {
         );
         if (!count($enemies)) {
             // Get bottom 10 players if not yet ranked.
-            $enemies = query_array('
+            $enemies = query_array(
+                '
                 SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id
             WHERE 
                 active = 1 AND health > 0 AND level <= (5 + :char_level)
                 AND player_id != :char_id2
             ORDER BY rank_id ASC limit 10 OFFSET greatest(0, :off)',
-            [
+                [
                 ':char_id2'  => [$char->id(), PDO::PARAM_INT],
                 ':char_level' => [$char->level, PDO::PARAM_INT],
                 ':off'      => [$shift, PDO::PARAM_INT],
-            ]);
+                ]
+            );
         }
         return Player::find(reset($enemies)['player_id']);
     }
@@ -316,7 +318,8 @@ class ConsiderController extends AbstractController {
     private function getRecentAttackers(Player $p_player): \PDOStatement {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare(
-            'SELECT DISTINCT player_id, send_from, uname, level, health FROM events JOIN players ON send_from = player_id WHERE send_to = :user AND active = 1 AND player_id != :id LIMIT 20');
+            'SELECT DISTINCT player_id, send_from, uname, level, health FROM events JOIN players ON send_from = player_id WHERE send_to = :user AND active = 1 AND player_id != :id LIMIT 20'
+        );
         $statement->bindValue(':user', $p_player->id(), PDO::PARAM_INT);
         $statement->bindValue(':id', $p_player->id(), PDO::PARAM_INT);
 

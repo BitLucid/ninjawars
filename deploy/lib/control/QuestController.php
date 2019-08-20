@@ -8,7 +8,6 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\Quest;
 use \RuntimeException;
 
-
 /**
  * Get player quests, accept, and view individual ones, etc.
  * at example urls like /quest and /quest/view/##

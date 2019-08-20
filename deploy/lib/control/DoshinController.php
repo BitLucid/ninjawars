@@ -131,8 +131,8 @@ class DoshinController extends AbstractController {
      * Make sure a bounty offer is valid, constrain it by allowable bounty and available gold
      *
      * @param Player $char
-     * @param int $p_targetId
-     * @param int $p_amount
+     * @param int    $p_targetId
+     * @param int    $p_amount
      * @return int
      */
     private function validateBountyOffer(Player $char, $p_targetId, $p_amount) {
@@ -182,7 +182,7 @@ class DoshinController extends AbstractController {
             $char->save();
             $location = 1;
             $quickstat = 'viewinv';
-        } else if ($bribe < self::MIN_BRIBE) {
+        } elseif ($bribe < self::MIN_BRIBE) {
             $this->doshinAttack($char);
             $location = 2;
             $quickstat = 'player';
@@ -217,7 +217,8 @@ class DoshinController extends AbstractController {
         // If the doshin take a lot of money, they'll
         // actually reduce the bounty somewhat.
 
-        $bounty_reduction = (int) min($current_bounty,
+        $bounty_reduction = (int) min(
+            $current_bounty,
             (($doshin_takes > self::SAFE_WEALTH)? $doshin_takes/self::BRIBERY_DIVISOR : 0)
         );
 
@@ -239,8 +240,8 @@ class DoshinController extends AbstractController {
     /**
      * Returns a view spec hash for rendering a template
      *
-     * @param Array $parts Hash of variables to pass to the view
-     * @param Container $deps Pass the pimple container
+     * @param Array     $parts Hash of variables to pass to the view
+     * @param Container $deps  Pass the pimple container
      */
     private function render(array $parts, Container $deps=null): StreamedViewResponse {
         $char     = $deps? $deps['current_player'] : null;

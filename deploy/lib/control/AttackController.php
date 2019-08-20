@@ -180,13 +180,13 @@ class AttackController extends AbstractController {
             }
 
             $attacker->subtractStatus(STEALTH);
-        } else if ($target->health < 1 && $attacker->health < 1) {
+        } elseif ($target->health < 1 && $attacker->health < 1) {
             $loot = 0;
             $this->win($attacker, $target, $loot, $killpoints);
             $this->win($target, $attacker, $loot, 1);
             $this->lose($attacker, $target, $loot);
             $this->lose($target, $attacker, $loot);
-        } else if ($target->health < 1) {
+        } elseif ($target->health < 1) {
             $victor        = $attacker;
             $loser         = $target;
             $bounty_result = Combat::runBountyExchange($victor, $loser);
@@ -296,7 +296,7 @@ class AttackController extends AbstractController {
 
         if (!$won) {
             $duel_log_msg .= "lost at ".date("F j, Y, g:i a");
-        } else if ($killpoints > 1 || $killpoints < 0) {
+        } elseif ($killpoints > 1 || $killpoints < 0) {
             $duel_log_msg .= "won $killpoints killpoints.";
         } else {
             $duel_log_msg = '';

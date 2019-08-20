@@ -23,13 +23,15 @@ class AssistanceController extends AbstractController {
      * @return array
      */
     private function userHavingEmail($email) {
-        $data = query_row('SELECT uname, level, account_id, accounts.confirmed,
+        $data = query_row(
+            'SELECT uname, level, account_id, accounts.confirmed,
             accounts.verification_number, accounts.active_email,
             CASE WHEN active::bool THEN 1 ELSE 0 END AS active
             from accounts LEFT JOIN account_players ON account_id = _account_id
             LEFT JOIN players on _player_id = player_id
             WHERE trim(lower(active_email)) = trim(lower(:email)) limit 1;',
-                array(':email'=>$email));
+            array(':email'=>$email)
+        );
         return $data;
     }
 
@@ -96,7 +98,7 @@ class AssistanceController extends AbstractController {
 
         if (!$email && ($password_request || $confirmation_request)) {
             $error = 'invalidemail';
-        } else if ($email) {
+        } elseif ($email) {
             $data = $this->userHavingEmail($email);
             $username = $data['uname'];
             if (!$data['uname']) {
@@ -180,7 +182,8 @@ class AssistanceController extends AbstractController {
             $statement = DatabaseConnection::$pdo->prepare(
                 'UPDATE players SET active = 1 WHERE player_id in
                 (SELECT _player_id FROM account_players
-                    WHERE _account_id = :accountID)');
+                    WHERE _account_id = :accountID)'
+            );
             $statement->bindValue(':accountID', $aid);
             $statement->execute();  // todo - test for success
 

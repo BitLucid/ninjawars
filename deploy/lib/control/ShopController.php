@@ -83,7 +83,7 @@ class ShopController extends AbstractController {
                 $no_funny_business = true;
             } elseif(!$purchase_order->item || $purchase_order->quantity < 1) {
                 $no_such_item = true;
-			} else if ($gold >= $current_item_cost) { // Has enough gold.
+			} elseif ($gold >= $current_item_cost) { // Has enough gold.
 				try {
                     $inventory = new Inventory($player);
 					$inventory->add($purchase_order->item->identity(), $purchase_order->quantity);

@@ -208,7 +208,7 @@ class SignupController extends AbstractController {
     /**
      * Creates a Response from an exception
      *
-     * @param \Exception $p_exception
+     * @param \Exception    $p_exception
      * @param SignupRequest $p_request
      * @return Response
      */

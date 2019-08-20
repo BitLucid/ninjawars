@@ -49,7 +49,7 @@ class ListController extends AbstractController {
             if ($hide == 'dead') {
                 $where_clauses[] = " alive = true";
             }
-        } else if ($hide == 'dead') {
+        } elseif ($hide == 'dead') {
             $where_clauses[] = " alive";
         }
 
@@ -70,7 +70,7 @@ class ListController extends AbstractController {
 
         if ($searched && $list_by_rank && $rank_search = (int) substr($searched, 1)) {
             $page = ceil($rank_search / $record_limit);
-        } else if ($page == "searched") {
+        } elseif ($page == "searched") {
             $page = $request->get('page', 1);
         } else {
             $page = ($page < 1 ? 1 : $page); // Prevent the page number from going negative

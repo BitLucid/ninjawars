@@ -65,7 +65,7 @@ class ClanController extends AbstractController {
 				if ($clan) {
 					if ($this->playerIsLeader($player, $clan)) {
 						array_unshift($parts['pageParts'], 'manage');
-					} else if ($myClan->id === $clan->id) {
+					} elseif ($myClan->id === $clan->id) {
 						array_unshift($parts['pageParts'], 'non-leader-panel');
 					} else {
 						array_unshift($parts['pageParts'], 'reminder-member');
@@ -578,7 +578,7 @@ class ClanController extends AbstractController {
 	 * Tests whether the specified player is a leader of the specified clan
 	 *
 	 * @param Player $p_objPlayer The player in question
-	 * @param Clan $p_objClan The clan to check against
+	 * @param Clan   $p_objClan   The clan to check against
 	 * @return boolean
 	 */
 	private function playerIsLeader(Player $p_objPlayer, Clan $p_objClan): bool {

@@ -184,7 +184,7 @@ class LoginController extends AbstractController {
      * Creates the cookie and session stuff for the login process.
      *
      * @param Account $account
-     * @param Player $player
+     * @param Player  $player
      * @return void
      */
     private function createGameSession(Account $account, Player $player) {

@@ -38,7 +38,7 @@ class EventsController extends AbstractController {
     /**
      * Retrieve events by user
      *
-     * @param int $user_id
+     * @param int    $user_id
      * @param String $limit
      * @return Resultset
      */

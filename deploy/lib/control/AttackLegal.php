@@ -49,8 +49,8 @@ class AttackLegal {
      *
      * Sets up the parameters for a attack legal check.
      * @param Player $p_attacker The attacker
-     * @param Player $p_target The target
-     * @param array $params The further conditions of the attack.
+     * @param Player $p_target   The target
+     * @param array  $params     The further conditions of the attack.
      */
     public function __construct(Player $p_attacker, Player $p_target, $params = array()) {
         $this->target   = null;
@@ -91,7 +91,7 @@ class AttackLegal {
 
         $self_ip = $self_account->getLastIp();
 
-        if (!$self_ip || in_array($self_ip, $allowable) ) {
+        if (!$self_ip || in_array($self_ip, $allowable)) {
             return false;  // Don't have to obtain the target's ip at all if these are the case!
         } else {
             return $self_ip === $target_account->getLastIp();
@@ -168,28 +168,28 @@ class AttackLegal {
         //  *** START OF ILLEGAL ATTACK ERROR LIST  ***
         if (!$timing_allowed && $update_timer) {
             $this->error = 'Even the fastest ninja cannot act more than four times a second.';
-        } else if (empty($target->uname)) {
+        } elseif (empty($target->uname)) {
             $this->error = 'Your target does not exist.';
-        } else if (($target->id() == $attacker->id()) && !$this->params['self_use']) {
+        } elseif (($target->id() == $attacker->id()) && !$this->params['self_use']) {
             $this->error = 'Commiting suicide is a tactic reserved for samurai.';
-        } else if ($attacker->turns < $this->params['required_turns']) {
+        } elseif ($attacker->turns < $this->params['required_turns']) {
             $this->error = 'You don\'t have enough turns for that, wait for them to replenish and then use amanita mushrooms.';
-        } else if (!$this->params['self_use'] && $this->sameDomain($target, $attacker)) {
+        } elseif (!$this->params['self_use'] && $this->sameDomain($target, $attacker)) {
             $this->error = 'You can not attack a ninja from the same domain.';
-        } else if ($target->active == 0) {
+        } elseif ($target->active == 0) {
             $this->error = 'You can not attack an inactive ninja.';
-        } else if ($attacker->active == 0) {
+        } elseif ($attacker->active == 0) {
             $this->error = 'You cannot attack when your ninja is retired/inactive.';
-        } else if ($attacker->health < 1) {
+        } elseif ($attacker->health < 1) {
             $this->error = 'You are dead and must revive.';
-        } else if ($target->health < 1) {
+        } elseif ($target->health < 1) {
             $this->error = "They're already dead.";
-        } else if ($target->hasStatus(STEALTH) && !$this->params['ignores_stealth']) {
+        } elseif ($target->hasStatus(STEALTH) && !$this->params['ignores_stealth']) {
             // Attacks that ignore stealth will skip this.
             $this->error = 'Your target is stealthed. You can only hit this ninja using certain techniques.';
-        } else if ($this->params['clan_forbidden'] && ($attacker->getClan() instanceof Clan) && ($target->getClan()->id == $attacker->getClan()->id) && !$this->params['self_use']) {
+        } elseif ($this->params['clan_forbidden'] && ($attacker->getClan() instanceof Clan) && ($target->getClan()->id == $attacker->getClan()->id) && !$this->params['self_use']) {
             $this->error = 'Your clan would outcast you if you attacked one of your own.';
-        } else if ($target->health > 0) {
+        } elseif ($target->health > 0) {
             $this->error = null;
             return true;  //  ***  ATTACK IS LEGAL ***
         } else {  //  *** CATCHALL ERROR MESSAGE ***

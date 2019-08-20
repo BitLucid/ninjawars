@@ -73,7 +73,7 @@ class NpcController extends AbstractController {
                 $item             = Item::findByIdentity('dimmak');
                 $quantity         = 1;
                 $inventory->add($item->identity(), $quantity);
-            } else if ($player->turns > floor(self::HIGH_TURNS/2) && rand()&1) {
+            } elseif ($player->turns > floor(self::HIGH_TURNS/2) && rand()&1) {
                 // If your turns are somewhat high/you have some energy, 50/50 chance you can kill them.
                 $oni_killed       = true;
                 $item             = Item::findByIdentity('ginsengroot');
@@ -108,7 +108,7 @@ class NpcController extends AbstractController {
     /**
      * Wrapper for session storage of thief attacking
      *
-     * @param int $num
+     * @param int       $num
      * @param Container
      * @return void
      */
@@ -119,7 +119,7 @@ class NpcController extends AbstractController {
     /**
      * The reward for defeating an npc, less if items popped
      *
-     * @param Npc $npco
+     * @param Npc     $npco
      * @param boolean $reward_item Any items were rewarded.
      * @return int
      * @note
@@ -145,7 +145,7 @@ class NpcController extends AbstractController {
      *
      * @param String $victim
      * @param Player $player
-     * @param Array $npcs
+     * @param Array  $npcs
      * @return array [$npc_template, $combat_data]
      */
     private function attackAbstractNpc(string $victim, Player $player, array $npcs): array {
@@ -308,19 +308,19 @@ class NpcController extends AbstractController {
                 $method = 'randomEncounter';
             } elseif (array_key_exists($victim, $npcs)) {
                 list($npc_template, $combat_data) = $this->attackAbstractNpc($victim, $player, $npcs);
-            } else if (array_key_exists($victim, $standard_npcs)) {
+            } elseif (array_key_exists($victim, $standard_npcs)) {
                 $method = $standard_npcs[$victim];
-            } else if ($victim == "samurai") {
+            } elseif ($victim == "samurai") {
                 if ($player->level < 2) {
                     $turn_cost = 0;
                     $npc_template = 'npc.samurai-too-weak.tpl';
-                } else if ($player->kills < 1) {
+                } elseif ($player->kills < 1) {
                     $turn_cost = 0;
                     $npc_template = 'npc.samurai-too-tired.tpl';
                 } else {
                     $method = 'attackSamurai';
                 }
-            } else if ($victim == 'thief') {
+            } elseif ($victim == 'thief') {
                 // Check the counter to see whether they've attacked a thief multiple times in a row.
                 $counter = $this->getThiefCounter($p_dependencies);
 
@@ -601,7 +601,7 @@ class NpcController extends AbstractController {
 
             if ($damage > 30) { // Steal gold
                 $player->setGold(max(0, $player->gold - $gold));
-            } else if ($damage < 30) { // award gold and item
+            } elseif ($damage < 30) { // award gold and item
                 $player->setGold($player->gold + $gold);
                 $inventory = new Inventory($player);
                 $inventory->add('shuriken', 1);
