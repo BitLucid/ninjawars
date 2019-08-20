@@ -107,7 +107,10 @@ class AttackLegal {
         $attackIntervalLimit = '.25'; // Originally .2
         $lastAttackQuery = "SELECT player_id FROM players
             WHERE player_id = :char_id
-            AND ((now() - :interval::interval) >= last_started_attack) LIMIT 1";
+            AND (
+                ((now() - :interval::interval) >= last_started_attack) 
+                OR last_started_attack is null 
+            ) LIMIT 1";
 
         // *** Returns a player id if the enough time has passed, or else or false/null. ***
         return (bool) query_item(
