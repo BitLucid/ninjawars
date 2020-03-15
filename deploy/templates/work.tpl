@@ -38,7 +38,7 @@
 <form id="work" action="/work/request_work" method="post" name="work">
   <div style="width:40%;margin:3rem auto;">
     <span class="input-group">
-        <span class='input-group-addon'>Work in the fields for</span>
+        <span class='input-group-addon'>Work for</span>
         <input id="worked" type="number" size="3" maxlength="3" min=1 max=999 name="worked" class="textField form-control">
         <span class='input-group-btn'>
             <input id="workButton" class="formButton btn btn-primary" type="submit" value="Turns" name="workButton">
