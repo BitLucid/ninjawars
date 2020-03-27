@@ -44,12 +44,13 @@ dep:
 	@$(COMPOSER) install
 
 js-deps:
-	npm install
+	yarn install
 
 install: build start-chat writable
 	@echo "Don't forget to update webserver configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
+	echo "Note that this does not overwrite existing resources.php"
 	php ./deploy/check.php
 	echo "Check that the webserver user has permissions to the script!"
 
@@ -74,7 +75,7 @@ install-system:
 
 install-python:
 	python3 -m venv .venv
-	source .venv/bin/activate
+	. .venv/bin/activate
 	pip3 install -r requirements.txt
 
 install-webserver:
@@ -140,7 +141,7 @@ test-functional:
 	python3 -m pytest deploy/tests/functional/
 
 test-js:
-	npm test
+	yarn test
 
 test-ratchets:
 	#split out for ci for now
