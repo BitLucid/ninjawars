@@ -24,9 +24,9 @@ if(!$connected){
 }
 
 if((bool)$out || !$connected || $is_superuser){
-	echo "Failure";
+	echo "\n\nFAILURE";
     return 1;
 } else {
-    echo "Success";
+    echo "\n\nSuccess";
     return 0;
 }
