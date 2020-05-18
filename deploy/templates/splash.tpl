@@ -39,33 +39,9 @@
       <!-- MAIN COLUMN STARTS HERE -->
 		{include file="core.tpl"}
 
-      <aside id='sidebar-column'  class='navigation'>
-		<div id='contact-us' class='thick'>
-		  <a href='/staff' target='main'>Contact Staff</a>
-		</div>
+    {include file='aside.with-extras.tpl'}
 
-		<div id='feedback-link'>
-		  <a class='extLink' rel='nofollow' href="https://www.facebook.com/ninjawars.net/" target="_blank">Ask a question</a>
-		</div>
-
-  {if isset($show_news) and $show_news}
-      <div id='news-housing'>
-
-{include file="mini-news.section.tpl"}
-
-    </div><!-- End of news-housing -->
-  {/if}
-
-      <div id='chat-housing'>
-
-{include file="mini-chat.section.tpl"}
-
-	  </div><!-- End of chat-housing -->
-
-
-      </aside><!-- End of aside -->
-
-      </div><!-- End of core -->
+    </div><!-- End of core -->
 
 <!-- Version: {$version} -->
 

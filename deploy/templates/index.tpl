@@ -86,13 +86,8 @@
 
 
       <!-- SIDEBAR COLUMN STARTS HERE -->
-      <aside id='sidebar-column'>
-
-        <div id='chat-housing'>
-          {include file="mini-chat.section.tpl"}
-        </div><!-- End of chat-housing -->
-
-      </aside><!-- End of sidebar-column -->
+        {include file='aside.tpl'}
+      <!-- End of sidebar-column -->
       </section><!-- end of core-->
 
 <!-- Version: {$version|escape} -->
