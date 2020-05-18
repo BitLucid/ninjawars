@@ -43,6 +43,8 @@ build: dep
 dep:
 	@$(COMPOSER) install
 
+check: pre-test
+
 js-deps:
 	yarn install
 
@@ -90,7 +92,7 @@ start-chat:
 	nohup php bin/chat-server.php > ./deploy/resources/logs/ninjawars.chat-server.log 2>&1 &
 
 browse:
-	xdg-open http://localhost:8765
+	xdg-open https://localhost:8765
 
 
 all: build test-unit db python-build test
@@ -176,6 +178,8 @@ dist-clean: clean
 
 clear-cache:
 	php ./deploy/lib/control/util/clear_cache.php
+
+db-init-all: db-init db-init-roles db-init-grants db
 
 db-init:
 	# Fail on existing database

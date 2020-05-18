@@ -27,7 +27,7 @@ server {
 
 	# Debugging on settings
 	#log_not_found on;
-	access_log /var/log/nginx/scripts.log scripts;
+	access_log /var/log/nginx/access.log;
 	error_log /var/log/nginx/error.log warn;
 	#autoindex on;
 	#rewrite_log on;
@@ -83,14 +83,14 @@ server {
 
 	location ~ \.php$ {
 		fastcgi_param PHP_VALUE "session.cookie_domain= \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		fastcgi_pass unix:/run/php71-fpm/php-fpm.sock;
+		fastcgi_pass unix:/run/php7.2-fpm/php-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
 
 	location @php {
 		fastcgi_param PHP_VALUE "session.cookie_domain= \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		fastcgi_pass unix:/run/php71-fpm/php-fpm.sock;
+		fastcgi_pass unix:/run/php7.2-fpm/php-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
