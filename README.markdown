@@ -24,13 +24,20 @@ from here: https://github.com/settings/tokens
 	sed "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php > deploy/resources.php
 	sed "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js > karma.conf.js
 
+
+
 configure, make, make install:
 
 	./configure
 	make
+	make db-init-all
+	make db-fixtures
+	make check
+
+Get the database working, then make install
 	sudo make install
 
-Sync up to the latest db changes:
+To sync up to the latest db changes:
 
 	cd /srv/ninjawars
 	sudo bash ./scripts/build/integration.sh

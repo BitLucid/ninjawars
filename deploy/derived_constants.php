@@ -35,7 +35,7 @@ define('MAX_PLAYER_LEVEL', 350);
 define('GRAVATAR', 1);
 
 // Constants for deity scripts
-define('MIN_PLAYERS_FOR_UNCONFIRM', 1000);
+define('MIN_PLAYERS_FOR_UNCONFIRM', 500);
 define('MIN_DAYS_FOR_UNCONFIRM',    60);
 define('MAX_PLAYERS_TO_UNCONFIRM',  200);
 define('POISON_DAMAGE',             50);
