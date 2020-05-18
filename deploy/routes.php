@@ -203,6 +203,7 @@ Router::$controllerAliases = [
     'doshin_office' => 'doshin',
     'village'       => 'chat',
     'enemies'       => 'consider',
+    'fight'       => 'consider',
     'duel'          => 'rumor',
     'item'          => 'inventory',
 ];
