@@ -22,7 +22,7 @@
 
 	{if $error}<div class='error'>{$error}</div>{/if}
 
-  <a class='btn btn-default float-right' href="/village?chatlength=100">Refresh</a>
+  <a class='float-right' title='Refresh chats' href="/village?chatlength=100"><i class='fa fa-sync'></i></a>
 
 {if $authenticated}
   <form class='chat-submit' id="post_msg" action="{$target|escape}" method="post" name="post_msg">

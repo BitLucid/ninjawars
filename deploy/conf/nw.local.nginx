@@ -8,7 +8,7 @@ server {
 	include snippets/ssl-params.conf;
 	server_name nw.local localhost;
 
-	root /srv/ninjawars/deploy/www;
+	root /src/ninjawars/deploy/www;
 	charset utf-8;
 	#error_page 404 /404.html;
 	error_page 404 /404.php;
@@ -42,7 +42,10 @@ server {
 	location / {
 		#default fallback of everything else block
 		try_files $uri @php;
-		add_header X-Frame-Options "SAMEORIGIN";
+		#add_header X-Frame-Options "SAMEORIGIN";
+		#add_header Content-Security-Policy "default-src 'self';";
+		add_header X-Frame-Options SAMEORIGIN;
+		add_header X-Content-Type-Options nosniff;
 	}
 
 	location = /npc.php {
@@ -82,15 +85,19 @@ server {
 	}
 
 	location ~ \.php$ {
+		add_header X-Frame-Options SAMEORIGIN;
 		fastcgi_param PHP_VALUE "session.cookie_domain= \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		fastcgi_pass unix:/run/php7.2-fpm/php-fpm.sock;
+		# Check session via: php-fpm7.2 -i | grep session.gc
+		fastcgi_pass unix:/run/php/php7.2-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
 
 	location @php {
+		add_header X-Frame-Options SAMEORIGIN;
 		fastcgi_param PHP_VALUE "session.cookie_domain= \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		fastcgi_pass unix:/run/php7.2-fpm/php-fpm.sock;
+		# Check session via: php-fpm7.2 -i | grep session.gc
+		fastcgi_pass unix:/run/php/php7.2-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
