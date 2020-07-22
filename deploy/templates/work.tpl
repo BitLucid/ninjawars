@@ -49,6 +49,9 @@
 <p class='gold-count'>
   Current gold: 石{$gold_display|escape}
 <p>
+<p>
+    Current turns: <span class='turns-count'>{($char)? $char->turns : ''}</span>
+</p>
 
 </section>
 
