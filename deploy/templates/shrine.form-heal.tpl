@@ -1,6 +1,6 @@
 <form id="heal_form" action="/shrine/heal" method="post" name="heal_form">
   <div class='thick input-group'>
-    <input class="textField" type="text" size="3" maxlength="4" name="heal_points" placeholder='hp' style='font-size:1.1em'>    <input type="submit" value="Heal" class="btn btn-default">
+    <input class="textField" type="text" size="3" maxlength="4" name="heal_points" required='required' placeholder='hp' style='font-size:1.1em'>    <input type="submit" value="Heal" class="btn btn-default">
   </div>
 </form>
 
