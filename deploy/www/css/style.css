@@ -1009,6 +1009,7 @@ table.playerTable .svg-shuriken svg {
 .class-name{
 	padding-right:.3rem;
 	padding-left:.3rem;
+	white-space: nowrap;
 }
 .playerTable .class-name{
 	padding: 0.3rem;
@@ -1038,6 +1039,11 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray, .class-name.Gray 
 	font-weight:bold;
 	font-style:italic;
 }
+
+.playerTable .rankCell{
+	color: #b7b2b2;
+}
+/* end of player table styles */
 
 .player-status {
 	margin: 0 auto 0;
@@ -2969,6 +2975,7 @@ select option #blue-class-select {
 }
 .return-to-location, .player-ranking-linkback{
 	margin-bottom: 0.5rem;
+	padding-left: 1rem;
 }
 .return-to-location:before{
 	font-family: "Font Awesome 5 Free"; 
