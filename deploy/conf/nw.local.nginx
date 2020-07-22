@@ -87,8 +87,8 @@ server {
 	location ~ \.php$ {
 		add_header X-Frame-Options SAMEORIGIN;
 		fastcgi_param PHP_VALUE "session.cookie_domain= \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		# Check session via: php-fpm7.2 -i | grep session.gc
-		fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+		# Check session via: php-fpm7.4 -i | grep session.gc
+		fastcgi_pass unix:/run/php/php7.4-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
@@ -96,8 +96,8 @@ server {
 	location @php {
 		add_header X-Frame-Options SAMEORIGIN;
 		fastcgi_param PHP_VALUE "session.cookie_domain= \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		# Check session via: php-fpm7.2 -i | grep session.gc
-		fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+		# Check session via: php-fpm7.4 -i | grep session.gc
+		fastcgi_pass unix:/run/php/php7.4-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
