@@ -1,6 +1,21 @@
 {**
  * This template renders the result of a successful combat request
  *}
+<style>
+.battle-arena{
+    margin: 5rem auto;
+}
+.battle-round{
+    display:inline-block;
+    margin:auto;
+    clear: both;
+    font:sans-serif;
+    color: black;
+    background-color: #a20909;
+    border-radius: 0.2rem;
+    padding: 0.2rem 1rem;
+}
+</style>
 <section class='combat-main'>
     {if $stealthed_attack}
     <div>You reveal yourself with a surprise strike from the shadows!</div>
@@ -36,11 +51,15 @@
     <div>Your wounds are reduced by deflecting the attack!</div>
     {/if}
 
+    <div class='battle-arena'>
+{for $round=1 to $rounds}
+    <div class='battle-round'><span class='fa fa-bolt'/> Round {$round}, fight!</div>
+{/for}
+    </div>
+
     {if $options.evade && $target->health gt 0}
     <div>Realizing you are out matched, you escape with your life to fight another day!</div>
     {/if}
-
-    <div>Total Rounds: {$rounds}</div>
 
     {include file="combat-final-results.tpl" 
         starting_attacker=$starting_attacker 
