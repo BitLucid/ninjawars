@@ -47,7 +47,9 @@
 			{if $target->health gt 0 && $attacker->health gt 0}
 				<a href="/attack?attacked=1&amp;target={$target->id()|escape:'url'}" class='attack-again thick btn btn-primary'>Attack Again?</a>
 			{/if}
-				<a class='return-to-location' href='/player?player_id={$target->id()|escape:'url'}'>Return to <span class='char-name'>{$target->name()|escape}'s Info</span></a>
+				<a class='return-to-location' href='/player?player_id={$target->id()|escape:'url'}'>
+					<span class='fa fa-eye'></span> Look at <span class='char-name'>{$target->name()|escape}</span>
+				</a>
 		{/if}
 		<a href='/enemies' class='return-to-location'>Return to the Fight</a>
 	</nav>

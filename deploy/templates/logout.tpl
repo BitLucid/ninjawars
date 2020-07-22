@@ -64,9 +64,6 @@
 		<a rel="nofollow" href="http://www.amazon.com/gp/product/B0006IINIW/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B0006IINIW&linkCode=as2&tag=bit0d3-20&linkId=A2Z4NQEKGHB7BKBQ"><img src="http://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B0006IINIW&Format=_SL110_&ID=AsinImage&MarketPlace=US&ServiceVersion=20070822&WS=1&tag=bit0d3-20" ></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=bit0d3-20&l=as2&o=1&a=B0006IINIW" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 	</div>
 	<div class='horizontal'>
-		<div class='group'>
-			<SCRIPT charset="utf-8" type="text/javascript" src="https://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F26d28661-2f18-4dd1-9550-6520ac764359&Operation=GetScriptTemplate"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="http://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F26d28661-2f18-4dd1-9550-6520ac764359&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
-		</div>
 		<div class='google-ad group'>
 			    <!-- Google Ad -->
 		    <script type="text/javascript"><!--

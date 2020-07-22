@@ -195,7 +195,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
   <section class='player-communications centered'>
 
 	<span id='message-ninja'>
-      <a href='/messages?to={$target_player_obj->name()|escape}'>Talk to <em class='char-name'>{$target_player_obj->name()|escape}</em>
+      <a href='/messages?to={$target_player_obj->name()|escape}'><span class='fa fa-comments'/> Talk to <em class='char-name'>{$target_player_obj->name()|escape}</em>
       </a>
     </span>
 
@@ -251,7 +251,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
 
 {if $target_player_obj->messages}
     <details class='player-profile'>
-      <summary>Their Message</summary>
+      <summary><span class='fa fa-eye'></span></summary>
       <p class='centered profile-message'>
         {$target_player_obj->messages|trim|escape|replace_urls|nl2br}
       </p>

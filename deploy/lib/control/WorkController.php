@@ -50,6 +50,7 @@ class WorkController extends AbstractController {
             'work_multiplier'     => self::WORK_MULTIPLIER,
             'authenticated'       => $p_dependencies['session']->get('authenticated', false),
             'gold_display'        => number_format($char->gold),
+            'char'                => $char,
             'earned_gold'         => number_format($earned),
             'not_enough_energy'   => !$sufficient_turns,
         ];
@@ -77,6 +78,7 @@ class WorkController extends AbstractController {
             'authenticated'       => $authenticated,
             'gold_display'        => number_format($char->gold),
             'earned_gold'         => number_format(null),
+            'char'                => $char,
             'worked'              => null,
             'not_enough_energy'   => null,
         ];
