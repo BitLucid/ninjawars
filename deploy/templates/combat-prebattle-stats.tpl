@@ -1,23 +1,38 @@
 {**
  * Shows a table of attacker/target stats for use before combat
  *}
-    <table border="0">
-      <tr>
-        <th colspan="3">Before the Attack</th>
-      </tr>
-      <tr>
-        <td>Name</td>
-        <td>STR</td>
-        <td>HP</td>
-      </tr>
-      <tr>
-        <td>{$attacker->name()|escape}</td>
-        <td>{$attacker->getStrength()|escape}</td>
-        <td>{$attacker->health|escape}</td>
-      </tr>
-      <tr>
-        <td>{$target->name()|escape}</td>
-        <td>{$target->getStrength()|escape}</td>
-        <td>{$target->health|escape}</td>
-      </tr>
-    </table>
+<style>
+.versus-start{
+ width: 90%;
+ margin: auto;
+ display: flex;
+ align-items: center;
+ align-content: space-between;
+}
+.versus-start .combatant{
+  display: inline-block;
+  width: 45%;
+}
+.versus-start .joiner{
+  display: inline-block;
+  width: 10%;
+}
+</style>
+
+ <section class='versus-start'>
+  <div class='combatant'>
+    <span class='player-name'>{$attacker->name()|escape}</span> <em class='de-em'>(strength {$attacker->getStrength()|escape})</em>
+    <div>
+      <span class='combat-health'>{include file="health_bar.tpl" health=$attacker->health level=$attacker->level}</span>
+    </div>
+  </div>
+  <div class='joiner'>
+  <strong>VS</strong>
+  </div>
+  <div class='combatant'>
+    <span class='player-name'>{$target->name()|escape}</span> <em class='de-em'>(strength {$target->getStrength()|escape})</em>
+    <div>
+      <span class='combat-health'>{include file="health_bar.tpl" health=$target->health level=$target->level}</span>
+    </div>
+  </div>
+ </section>
