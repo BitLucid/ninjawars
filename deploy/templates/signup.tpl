@@ -73,7 +73,7 @@
 	<form id='signup' action="/signup/signup" method="post">
 
     <fieldset>
-     <legend>Login Info</legend>
+     <legend>Create Your Login Info</legend>
      <div>
      	<label for='send_email'>Email Address:</label>
 		<input id="send_email" required type="email" name="send_email" class="textField" placeholder='you@example.com' value="{$signupRequest->enteredEmail|escape}">
@@ -92,7 +92,7 @@
 	</fieldset>
 
 	<fieldset class='ninja-char-creation'>
-	 <legend>Ninja Info</legend>
+	 <legend>Create Your Ninja Info</legend>
 	 <section>
 		<label for='send_name'>Ninja Name:</label>
 	 	<input id="send_name" required autofocus type="text" pattern='{literal}^[a-zA-Z][a-zA-Z0-9-_\.]{1,23}${/literal}'
@@ -104,7 +104,7 @@
 	 </section>
 	 <section>
 	  <div class='inline-block'>
-	  	<strong>Ninja Type:</strong>
+	  	<strong>Ninja Color &amp; Expertise:</strong>
 	  </div>
 	  <div class='inline-block'>
   	{foreach from=$classes item='class' key='identity'}
