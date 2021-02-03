@@ -117,9 +117,9 @@ pre-test:
 	@find ./deploy/www/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find ./deploy/tests/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find ./deploy/cron/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
-	php deploy/check.php
 	# Check for presence of database
 	psql -lqt | cut -d \| -f 1 | grep -w $(DBNAME)
+	php deploy/check.php
 
 test: pre-test test-main test-functional test-js post-test
 
