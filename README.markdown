@@ -41,11 +41,6 @@ configure, make, make install:
 Get the database working, then make install
 	sudo make install
 
-To sync up to the latest db changes:
-
-	cd /srv/ninjawars
-	sudo bash ./scripts/build/integration.sh
-
 Start up the chat server with this:
 
 	sudo make start-chat
