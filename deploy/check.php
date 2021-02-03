@@ -10,7 +10,7 @@ assert(defined('DATABASE_PASSWORD'));
 assert('' !== WEB_ROOT);
 assert('http:///' !== WEB_ROOT);
 
-// Check for webserver
+// Check for asserts failing
 $out = ob_get_contents();
 ob_end_clean();
 echo $out;
@@ -30,7 +30,7 @@ function passfail($passed, $pass, $fail){
 
 // Executing and outputing checks, to try to run all before final return
 $outcomes = [
-    passfail(!empty($out), 'Contacted some running webserver at '.WEB_ROOT, 'Unable to get any content running at '.WEB_ROOT),
+    passfail(!$out, 'No asserts failed', 'Some asserts failed above'),
     passfail($connected, 'Able to connect and list a player from the players table of the database', 'Unable to select from players table of the database'),
     passfail(!$is_superuser, 'Connected to database as appropriate user level', 'Connected as database superuser, you want to connect as a lower permission role')
 ];
