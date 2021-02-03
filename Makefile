@@ -69,10 +69,10 @@ install-system:
 	@echo "they need professional admin configuration after initial install."
 	@echo "Since we are running php 7, you may need to install a source repo for php7"
 	@echo "For the ubuntu ppa, see: https://launchpad.net/~ondrej/+archive/ubuntu/php "
-	apt-get install python3 python3-dev python3-lxml unzip
+	apt-get -y install python3 python3-dev python3-lxml unzip
 	echo "Installing php cli"
-	apt-get install php7.2-cli
-	apt-get install php7.2-fpm php7.2-xml php7.2-pgsql php7.2-curl php7.2-mbstring
+	apt-get -y install php7.4-cli
+	apt-get -y install php7.4-fpm php7.4-xml php7.4-pgsql php7.4-curl php7.4-mbstring
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 
 install-python:
@@ -108,9 +108,9 @@ pre-test:
 	@find ./deploy/www/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find ./deploy/tests/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find ./deploy/cron/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
-	php deploy/check.php
 	# Check for presence of database
 	psql -lqt | cut -d \| -f 1 | grep -w $(DBNAME)
+	php deploy/check.php
 
 test: pre-test test-main test-functional test-js post-test
 

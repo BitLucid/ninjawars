@@ -41,5 +41,5 @@ if [ -z "$NGINX_EXISTS" ] && [ ! -d "./nginx-1.9.12/" ]; then
 else
     echo "NGINX_PATH:=`which nginx`" >> CONFIG
 fi
-
+echo "CONFIG file created, modify it at will."
 echo "Don't forget to set up your database and webserver yourself."
