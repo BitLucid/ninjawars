@@ -38,5 +38,6 @@
         <a href="/news" target="main">News</a> |
         <a href="/village" target="main" title='Manual chat archive'>Chat</a> |
         <a href="http://ninjawars.pbworks.com/" rel='nofollow' target="_blank" class="extLink">Wiki</a> |
-        <a href="https://www.facebook.com/ninjawars.net/" rel='nofollow' target="_blank" class="extLink">Feedback/Discussion</a>
+        <a href="https://github.com/bitlucid/ninjawars" target="_blank" class="extLink">Source</a> |
+        <a href="https://www.facebook.com/ninjawars.net/" rel='nofollow' target="_blank" class="extLink">Discussion</a>
       </div>
