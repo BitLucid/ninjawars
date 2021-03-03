@@ -45,8 +45,8 @@ define('TURN_REGEN_THRESHOLD',      100);
 define('KI_REGEN_PER_TICK',         1);
 define('KI_REGEN_TIMEOUT',          '6 minutes');
 
-define('MINOR_REVIVE_THRESHOLD',    70);
-define('MAJOR_REVIVE_PERCENT',      7);
+define('MINOR_REVIVE_THRESHOLD',    35);
+define('MAJOR_REVIVE_PERCENT',      3);
 
 define('DEITY_LOG_CHANCE_DIVISOR',  60);
 
