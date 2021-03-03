@@ -13,7 +13,8 @@
     "unit-test": "test && nsp check",
     "start": "make build",
     "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
-    "security-check": "npx ncu"
+    "security-check": "npx ncu",
+    "browse": "xdg-open https://localhost:8765"
   },
   "repository": {
     "type": "git",
