@@ -55,29 +55,36 @@
  Note that the Chat var may pre-exist
 */
 
+var logger = function (content) {
+	return window.DEBUG && console && console.log(content)
+}
+
 var Chat = undefined !== window.Chat ? window.Chat : {};
 
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function() {
 	'use strict';
-	console.log('Existing chat messages requested');
+	logger('Existing chat messages requested');
 	var since = '1424019122';
 
 	$.getJSON(
 		'/api?type=new_chats&since='+encodeURIComponent(since)+'&jsoncallback=?',
 		function(data) {
-			console.log('Existing chats data found:');
-			console.log(data);
+			logger('Existing chats data found:');
+			logger(data);
 			window.storeChats = data;
 
 			if (data && data.new_chats && data.new_chats.chats) {
-				console.log('Rendering pre-existing chat messages.');
+				logger('Rendering pre-existing chat messages.');
 
 				$.each(data.new_chats.chats, function(key, val) {
 					Chat.renderChatMessage(val);
 				});
 
 				Chat.displayMessages();
+			} else {
+				// If there aren't any chats, then display an empty message
+				Chat.noteEmptyChat()
 			}
 		}
 	);
@@ -99,8 +106,8 @@ Chat.displayMessages = function() {
 Chat.renderChatMessage = function(p_data) {
 	'use strict';
 	if (!p_data.message) {
-		console.log('Error: Bad data sent in to renderChatMessage to be rendered');
-		console.log(p_data);
+		console.error('Error: Bad data sent in to renderChatMessage to be rendered');
+		logger(p_data);
 		return false;
 	}
 
@@ -123,7 +130,7 @@ Chat.renderChatMessage = function(p_data) {
 	}
 
 	if (area) {
-		console.log('Chat '+area+' not found to place chats in!');
+		logger('Chat ' + area + ' not found to place chats in!');
 	}
 
 	// put the new content into the author and message areas
@@ -133,6 +140,18 @@ Chat.renderChatMessage = function(p_data) {
 
 	return true;
 };
+
+Chat.noteEmptyChat = function () {
+	'use_strict';
+	var list = $('#mini-chat-display');
+	list.prepend("<div class='info no-chats'>No chats yet.</div>")
+}
+
+Chat.removeEmptyChatMessage = function () {
+	'use_strict';
+	var list = $('#mini-chat-display');
+	list.find('.info.no-chats').remove()
+}
 
 // Send the contents of the chat form input box.
 // Sample url: https://nw.local/api?type=send_chat&msg=test&jsoncallback=alert
@@ -181,9 +200,9 @@ Chat.send = function(messageData) {
 	var passfail = true;
 	try {
 		window.conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
-		console.log('Chat message sent.');
+		logger('Chat message sent.');
 	} catch(ex) { // Maybe the connection send didn't work out.
-		console.log(ex.message);
+		logger(ex.message);
 		passfail = false;
 	}
 
@@ -206,10 +225,10 @@ Chat.chatReady = function() {
 		$submitter.show();
 	} else {
 		$submitter.hide();
-		console.log('Warning: Not logged in to be able to send messages.');
+		logger('Warning: Not logged in to be able to send messages.');
 	}
 
-	console.log('Chat connected and ready');
+	logger('Chat connected and ready');
 	return true;
 };
 
@@ -228,7 +247,7 @@ Chat.domain = function(url) {
 	var link = document.createElement('a');
 	link.setAttribute('href', url);
 	var host = link.hostname;
-	console.log(host);
+	logger(host);
 
 	if (host.indexOf(".local") > -1 ) {
 		return 'chatapi.'+host;
@@ -261,12 +280,12 @@ $(function() {
 	};
 	if (window.WebSocket !== undefined) { // Browser is compatible.
 		var connectionString = Chat.config.protocol + '://' + Chat.config.server + ':' + Chat.config.port;
-		console.log('Connecting to '+connectionString);
+		logger('Connecting to ' + connectionString);
 
 		window.conn = new WebSocket(connectionString);
 		/*eslint no-unused-vars: 0 */
 		window.conn.onopen = function(e) {
-			console.log("Websocket Connection established!");
+			logger("Websocket Connection established!");
 			Chat.chatReady();
 		};
 
@@ -277,7 +296,7 @@ $(function() {
 			}
 		};
 	} else {
-		console.log('Browser not compatible with websockets');
+		logger('Browser not compatible with websockets');
 	}
 
 	$('#chat-loading').show(); // Show the chat loading area.
