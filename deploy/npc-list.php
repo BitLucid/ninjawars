@@ -34,10 +34,10 @@ NpcFactory::$data = [
     'pig'       => [
         'name'     => 'Wild pig',
         'short'    => 'is bristling with tusks and wiry hair',
-        'stamina'  => 3,
+        'stamina'  => 7,
         'strength' => 4,
         'speed'    => 10,
-        'damage'   => 2,
+        'damage'   => 20,
         'race'     => 'animal',
     ],
     'viper'     => [
