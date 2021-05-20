@@ -25,7 +25,6 @@ from here: https://github.com/settings/tokens
 	sed "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js > karma.conf.js
 
 
-
 configure, make, make install:
 
 	./configure
@@ -51,6 +50,23 @@ Then you can run the tests to check your progress with:
     make test
 
 *See ./docs/INSTALL if you need more.*
+
+## Deployment Process
+
+Ninjwars is deployed helpfully via Deploybot https://ninjawars.deploybot.com/
+Triggered by pull request merges.
+Vetted by continuous integration here:
+ - https://app.codeship.com/home
+It gets deployed currently to the aws servers here: 
+ - https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:instanceState=running
+Loadbalanced behind balancers here:
+ - https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:sort=loadBalancerName
+With additional frontends here: 
+ - https://www.ninjawars.net
+ - https://splash.ninjawars.net
+ - https://nwave.ninjawars.net
+ - https://shell.ninjawars.net/
+ - https://console.aws.amazon.com/cloudfront/home?region=us-east-1
 
 ## Run the Docker
 
