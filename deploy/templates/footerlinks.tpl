@@ -36,6 +36,7 @@
         <a href="/staff" target="main">Staff</a> |
         <a href="/rules" target="main">Rules</a> |
         <a href="/news" target="main">News</a> |
+        <a href="https://github.com/BitLucid/Ninjawars" target="_blank">Source</a> |
         <a href="/village" target="main" title='Manual chat archive'>Chat</a> |
         <a href="http://ninjawars.pbworks.com/" rel='nofollow' target="_blank" class="extLink">Wiki</a> |
         <a href="https://www.facebook.com/ninjawars.net/" rel='nofollow' target="_blank" class="extLink">Feedback/Discussion</a>
