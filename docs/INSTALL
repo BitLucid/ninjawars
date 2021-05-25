@@ -22,6 +22,7 @@ Install php , e.g.
     apt install php7.4-cli php7.4-fpm
     apt install php7.4-mbstring php7.4-xml php7.4-curl php7.4-pgsql
     sudo phpenmod xml pgsql curl mbstring
+    OR see make install-system for commands
 
 Configure Your Postgresql Database On Your Own
 ==============================================

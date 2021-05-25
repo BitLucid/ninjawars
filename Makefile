@@ -69,10 +69,12 @@ install-system:
 	@echo "they need professional admin configuration after initial install."
 	@echo "Since we are running php 7, you may need to install a source repo for php7"
 	@echo "For the ubuntu ppa, see: https://launchpad.net/~ondrej/+archive/ubuntu/php "
-	apt-get install python3 python3-dev python3-lxml unzip
+	apt-get install python3 python3-dev python3-pip python3-lxml unzip
+	# PHP!
 	echo "Installing php cli"
 	apt-get install php7.2-cli
 	apt-get install php7.2-fpm php7.2-xml php7.2-pgsql php7.2-curl php7.2-mbstring
+	phpenmod xml pgsql curl mbstring
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 
 install-python:
