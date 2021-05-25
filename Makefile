@@ -60,7 +60,7 @@ writable:
 	chown ${WEBUSER} ./deploy/resources/logs/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chown ${WEBUSER} ./deploy/resources/logs/*
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/*
+	chmod -R ugo+rw ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/*
 
 
 install-system:
@@ -76,6 +76,7 @@ install-system:
 	apt-get install php7.2-fpm php7.2-xml php7.2-pgsql php7.2-curl php7.2-mbstring
 	phpenmod xml pgsql curl mbstring
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
+	echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04"
 
 install-python:
 	python3 -m venv .venv
