@@ -15,6 +15,14 @@ Configure Your Web Server On Your Own
 Create a web server, with a fake local domain, e.g. "http://nw.local"
 In general, you can use whatever web server you want, nginx/php7-fpm is in use on PROD and recommended.
 
+Install PHP and extensions on your own
+======================================
+Install php , e.g.
+
+    apt install php7.4-cli php7.4-fpm
+    apt install php7.4-mbstring php7.4-xml php7.4-curl php7.4-pgsql
+    sudo phpenmod xml pgsql curl mbstring
+
 Configure Your Postgresql Database On Your Own
 ==============================================
 You'll need postgresql installed and set up, you'll need to be able to log in to postgres, create a blank database (e.g. nw),
@@ -38,6 +46,7 @@ Now you might want to request an up-to-date dev database dump, or you can copy i
 
     psql nw < deploy/sql/schema.sql
     psql nw < deploy/sql/fixtures.sql
+
 
 Composer Install
 =================================
