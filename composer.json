@@ -10,7 +10,7 @@
 	"require": {
 		"php": ">=7.1.0",
 		"components/jquery": "^2.1.1",
-		"rmm5t/jquery-timeago": "^1.6",
+		"rmm5t/jquery-timeago": "^1",
 		"bitlucid/jquery-linkify": "^2.1",
 		"ircmaxell/password-compat": "@stable",
 		"swiftmailer/swiftmailer": "~5.4.0",
