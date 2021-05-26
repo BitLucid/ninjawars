@@ -45,9 +45,9 @@ class Constants {
 }
 
 define('NEW_PLAYER_INITIAL_STATS', 10);
-define('NEW_PLAYER_INITIAL_HEALTH', 20);
-define('LEVEL_UP_STAT_RAISE', 0);
-define('LEVEL_UP_HP_RAISE', 0);
+define('NEW_PLAYER_INITIAL_HEALTH', 100);
+define('LEVEL_UP_STAT_RAISE', 5);
+define('LEVEL_UP_HP_RAISE', 5);
 
 // Seperate, tracked file for derived constants, that changes as they change.
 require(SERVER_ROOT."derived_constants.php");
