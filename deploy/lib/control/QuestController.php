@@ -69,7 +69,7 @@ class QuestController extends AbstractController {
         if($quest_id){
             try{
                 $quest = Quest::hydrate_quests([Quest::where('quest_id', $quest_id)->get()]);
-            } catch(Exception $e){
+            } catch(\Exception $e){
                 $error = $e->getMessage()? 'There was a problem viewing this quest' : null;
             }
         }
