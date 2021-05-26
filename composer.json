@@ -1,4 +1,6 @@
 {
+	"name":"bitlucid/ninjawars",
+	"description":"The composer dependencies for the ninjawars game and web components.",
 	"autoload": {
 		"psr-4": {
 			"model\\": "deploy/model",
