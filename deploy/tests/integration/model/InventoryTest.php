@@ -9,6 +9,7 @@ class InventoryTest extends \NWTest {
     
     public function setUp() {
         parent::setUp();
+        TestAccountCreateAndDestroy::destroy();
         $this->char = TestAccountCreateAndDestroy::char();
     }
 

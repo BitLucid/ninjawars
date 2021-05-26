@@ -6,6 +6,7 @@ use NinjaWars\core\data\Crypto;
 class PasswordResetTest extends NWTest {
     public function setUp() {
         parent::setUp();
+        TestAccountCreateAndDestroy::purge_test_accounts();
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         $this->account = Account::findById($this->account_id);
         $this->nonce = null;

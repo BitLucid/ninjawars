@@ -60,7 +60,7 @@ writable:
 	chown ${WEBUSER} ./deploy/resources/logs/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chown ${WEBUSER} ./deploy/resources/logs/*
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/*
+	chmod -R ugo+rw ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/*
 
 
 install-system:
@@ -69,11 +69,14 @@ install-system:
 	@echo "they need professional admin configuration after initial install."
 	@echo "Since we are running php 7, you may need to install a source repo for php7"
 	@echo "For the ubuntu ppa, see: https://launchpad.net/~ondrej/+archive/ubuntu/php "
-	apt-get install python3 python3-dev python3-lxml unzip
+	apt-get install python3 python3-dev python3-pip python3-lxml unzip
+	# PHP!
 	echo "Installing php cli"
-	apt-get install php7.2-cli
-	apt-get install php7.2-fpm php7.2-xml php7.2-pgsql php7.2-curl php7.2-mbstring
+	apt-get install php7.4-cli
+	apt-get install php7.4-fpm php7.4-xml php7.4-pgsql php7.4-curl php7.4-mbstring
+	phpenmod xml pgsql curl mbstring
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
+	echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04"
 
 install-python:
 	python3 -m venv .venv
@@ -117,14 +120,15 @@ test: pre-test test-main test-functional test-js post-test
 test-main:
 	@$(TEST_RUNNER) $(CC_FLAG)
 
-test-unit:
+check-for-syntax-errors:
 	@find "./deploy/lib/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+
+test-unit: check-for-syntax-errors
+
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
-test-quick:
-	@find "./deploy/lib/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
-	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+test-quick: check-for-syntax-errors
 	@$(TEST_RUNNER) --testsuite Quick
 	python3 -m pytest deploy/tests/functional/
 
@@ -236,7 +240,7 @@ web-reload:
 ci-pre-configure:
 	# Set php version
 	# Versions available: https://documentation.codeship.com/basic/languages-frameworks/php/#versions-and-setup
-	phpenv local 7.2
+	phpenv local 7.4
 	@echo "Removing xdebug on CI, by default."
 	rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 	ln -s `pwd` /tmp/root

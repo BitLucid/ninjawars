@@ -44,10 +44,17 @@ class Constants {
     public static $trusted_proxies = ['104.130.111.36', '10.189.245.10', '52.204.80.200', '172.31.17.0', '172.31.54.175'];
 }
 
-define('NEW_PLAYER_INITIAL_STATS', 10);
-define('NEW_PLAYER_INITIAL_HEALTH', 20);
-define('LEVEL_UP_STAT_RAISE', 0);
-define('LEVEL_UP_HP_RAISE', 0);
+if(true){
+    define('NEW_PLAYER_INITIAL_STATS', 5);
+    define('NEW_PLAYER_INITIAL_HEALTH', 140); // Actually, base health, since stats add to this even at level 1.
+    define('LEVEL_UP_STAT_RAISE', 5);
+    define('LEVEL_UP_HP_RAISE', 25);
+} else { // Communism
+    define('NEW_PLAYER_INITIAL_STATS', 10);
+    define('NEW_PLAYER_INITIAL_HEALTH', 5); // Actually, base health.
+    define('LEVEL_UP_STAT_RAISE', 0);
+    define('LEVEL_UP_HP_RAISE', 0);
+}
 
 // Seperate, tracked file for derived constants, that changes as they change.
 require(SERVER_ROOT."derived_constants.php");

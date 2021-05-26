@@ -29,15 +29,16 @@ class Clan {
             $this->setName($p_name);
         }
 
-        if(null !== $data['clan_avatar_url']){
+        // Special for optional clan data
+        if(null !== $data && null !== $data['clan_avatar_url']){
             $this->setAvatarUrl($data['clan_avatar_url']);
         }
 
-        if(null !== $data['description']){
+        if(null !== $data && null !== $data['description']){
             $this->setDescription($data['description']);
         }
 
-        if(null !== $data['clan_founder']){
+        if(null !== $data && null !== $data['clan_founder']){
             $this->setFounder($data['clan_founder']);
         }
     }
@@ -414,14 +415,15 @@ class Clan {
 
         $clan_name = trim($p_clan_name);
 
-        $result = DatabaseConnection::$pdo->query("SELECT nextval('clan_clan_id_seq')");
-        $clan_id = $result->fetchColumn();
-
-        $statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (:clanID, :clanName, :leader)');
-        $statement->bindValue(':clanID', $clan_id);
+        $statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan (clan_id, clan_name, clan_founder) VALUES (default, :clanName, :leader)');
         $statement->bindValue(':clanName', $clan_name);
         $statement->bindValue(':leader', $p_leader->name());
         $statement->execute();
+
+        $clan_id = DatabaseConnection::$pdo->lastInsertId();
+        if(!(int)$clan_id){
+            throw new RuntimeException('Unable to obtain id of clan just created.');
+        }
 
         $statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 2)');
         $statement->bindValue(':clanID', $clan_id);
