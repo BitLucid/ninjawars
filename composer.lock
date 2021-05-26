@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1cdb26256897c76f39fc3fcfd571e733",
+    "content-hash": "1ced3b1125b7c3b76a72a85878c18698",
     "packages": [
         {
             "name": "BitLucid/jquery-linkify",
