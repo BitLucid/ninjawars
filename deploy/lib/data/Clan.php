@@ -29,6 +29,7 @@ class Clan {
             $this->setName($p_name);
         }
 
+        // Special for optional clan data
         if(null !== $data && null !== $data['clan_avatar_url']){
             $this->setAvatarUrl($data['clan_avatar_url']);
         }

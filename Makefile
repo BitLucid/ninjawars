@@ -120,14 +120,15 @@ test: pre-test test-main test-functional test-js post-test
 test-main:
 	@$(TEST_RUNNER) $(CC_FLAG)
 
-test-unit:
+check-for-syntax-errors:
 	@find "./deploy/lib/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+
+test-unit: check-for-syntax-errors
+
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
-test-quick:
-	@find "./deploy/lib/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
-	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
+test-quick: check-for-syntax-errors
 	@$(TEST_RUNNER) --testsuite Quick
 	python3 -m pytest deploy/tests/functional/
 

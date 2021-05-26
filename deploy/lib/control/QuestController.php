@@ -64,14 +64,20 @@ class QuestController extends AbstractController {
         $quest = null;
         $tpl = 'quests.single_quest.tpl';
         $title = 'A Quest';
+        $error = null;
 
         if($quest_id){
-            $quest = Quest::hydrate_quests(Quest::where('quest_id', $quest_id));
+            try{
+                $quest = Quest::hydrate_quests([Quest::where('quest_id', $quest_id)->get()]);
+            } catch(Exception $e){
+                $error = $e->getMessage()? 'There was a problem viewing this quest' : null;
+            }
         }
 
         $parts = [
             'quest'=>$quest, 
             'quests'=>$quests,
+            'error'=>$error,
             ];
 
         return new StreamedViewResponse($title, $tpl, $parts);
