@@ -34,7 +34,8 @@ class ConsiderController extends AbstractController {
      */
     public function search(Container $p_dependencies): StreamedViewResponse {
         $enemy_match = RequestWrapper::getPostOrGet('enemy_match');
-        $found_enemies = ($enemy_match ? $this->getEnemyMatches(SessionFactory::getSession()->get('player_id'), $enemy_match) : null);
+        $current_player = $p_dependencies['current_player'];
+        $found_enemies = ($enemy_match ? $this->getEnemyMatches($current_player->id(), $enemy_match) : null);
         $parts = $this->configure();
 
         // Add some additional parts
