@@ -220,11 +220,7 @@ class Npc implements Character {
      * @return String
      */
     public function race() {
-        if (!$this->race) {
-            return 'creature';
-        } else {
-            return $this->race;
-        }
+        return $this->race ?? 'creature';
     }
 
     /**
