@@ -652,6 +652,7 @@ CREATE TABLE public.quests
     "proof" TEXT DEFAULT '' NOT NULL,
     "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    "deleted_at" TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     "expires_at" TIMESTAMP WITH TIME ZONE DEFAULT now() + interval ' 1 mon ' NOT NULL,
     "type" INTEGER,
     "difficulty" INTEGER,

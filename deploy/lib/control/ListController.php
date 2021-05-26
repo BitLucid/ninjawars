@@ -54,7 +54,7 @@ class ListController extends AbstractController {
         }
 
         $query_count = "SELECT count(player_id) FROM rankings "
-            .(count($where_clauses) ? "WHERE ".implode($where_clauses, ' AND ') : "");
+            .(count($where_clauses) ? "WHERE ".implode(' AND ', $where_clauses) : "");
         $totalrows = query_item($query_count, $params);
 
         // The rankings view automatically filters out inactives, but we have to do it manually when dealing directly with players table.
