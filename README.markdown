@@ -55,13 +55,13 @@ Then you can run the tests to check your progress with:
 
 Ninjwars is deployed helpfully via Deploybot https://ninjawars.deploybot.com/
 Triggered by pull request merges.
-Vetted by continuous integration here:
+ - Vetted by continuous integration here:
  - https://app.codeship.com/home
-It gets deployed currently to the aws servers here: 
+ - It gets deployed currently to the aws servers here: 
  - https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:instanceState=running
-Loadbalanced behind balancers here:
+ - Loadbalanced behind balancers here:
  - https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:sort=loadBalancerName
-With additional frontends here: 
+ - With additional frontends here: 
  - https://www.ninjawars.net
  - https://splash.ninjawars.net
  - https://nwave.ninjawars.net
