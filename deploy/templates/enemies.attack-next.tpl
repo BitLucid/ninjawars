@@ -51,7 +51,7 @@ var enemy = 'enemy to array @json_encode'
     color: #ffffff;
     background-color: #555555;
     display: inline-block;
-    max-width: 40%;
+    max-width: 50%;
     width: 17rem;
 }
 .attack-next .carousel {

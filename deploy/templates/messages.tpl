@@ -12,7 +12,7 @@
     <form method='post' action='/messages/delete_{$current_tab}'>
       <input type='hidden' name='delete' value='1'>
       <input type='hidden' name='type' value='{$type}'>
-      <input class='btn btn-warning' type='submit' name='submit' value='Delete {$messages_type} Messages'>
+      <button title='Delete {$messages_type} Messages' class='btn btn-warning' type='submit' name='submit'><i class='fa fa-trash'></i></button>
     </form>
   </div>
 
@@ -35,7 +35,7 @@
   <div id='clan-mail-section' class='glassbox'>
     <form id='clan_msg' action='/messages/send_clan' method='post' name='clan_msg'>
       <div class='input-group'>
-        <input type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}" autocomplete='off' required=required autofocus=autofocus>
+        <input autofocus type="text" id='message-clan' name='message' class='textField' maxlength="{$smarty.const.MAX_CLAN_MSG_LENGTH|escape}" autocomplete='off' required=required autofocus=autofocus>
         <input type='hidden' name='toclan' value='1'>
         <input type='hidden' value='1' name='messenger'>
         <input type='submit' value='Mail Clan' class='formButton'>
