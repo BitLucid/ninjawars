@@ -41,8 +41,8 @@ class InventoryControllerTest extends NWTest {
     /**
      * @group Inventory
      */
-    public function testIndexDoesNotErrorWithoutItem() {
-        $this->inventory->remove(self::ITEM);
+    public function testIndexOfInventoryDoesNotErrorWithoutItem() {
+        $this->inventory->remove(self::ITEM, 9999); // It'll minimize to 0
         $result = $this->controller->index($this->m_dependencies);
         $this->assertNotEmpty($result);
     }
@@ -50,7 +50,7 @@ class InventoryControllerTest extends NWTest {
     /**
      * @group Inventory
      */
-    public function testIndexDoesNotErrorWithItem() {
+    public function testIndexOfInventoryDoesNotErrorWithItem() {
         $result = $this->controller->index($this->m_dependencies);
         $this->assertNotEmpty($result);
     }
