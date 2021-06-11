@@ -50,7 +50,7 @@ check: pre-test
 js-deps:
 	node -v
 	yarn -v
-	yarn install
+	yarn install --frozen-lockfile
 
 install: build start-chat writable
 	@echo "Don't forget to update webserver configs as necessary."
