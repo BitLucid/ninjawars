@@ -9,7 +9,8 @@ use NinjaWars\core\data\Player;
 use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 
 class NewsControllerTest extends NWTest {
-	public function setUp() {
+	public function setUp():void {
+        parent::setUp();
         $this->char = Player::find(TestAccountCreateAndDestroy::char_id());
         SessionFactory::init(new MockArraySessionStorage());
         $session = SessionFactory::getSession();
@@ -19,12 +20,13 @@ class NewsControllerTest extends NWTest {
         RequestWrapper::inject($request);
 	}
 
-	public function tearDown() {
+	public function tearDown():void {
         $this->char = null;
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testIndexLoadsTitle(){

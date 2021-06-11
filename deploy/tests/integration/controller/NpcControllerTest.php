@@ -20,7 +20,7 @@ use \NWTest;
  *
  */
 class NpcControllerTest extends NWTest {
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::init(new MockArraySessionStorage());
@@ -30,7 +30,7 @@ class NpcControllerTest extends NWTest {
         ]);
     }
 
-    public function tearDown() {
+    public function tearDown():void {
         TestAccountCreateAndDestroy::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();

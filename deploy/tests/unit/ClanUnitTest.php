@@ -12,13 +12,13 @@ class ClanUnitTest extends NWTest {
     ];
 
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->clan = new Clan($this->data['clan_id'], $this->data['clan_name'], $this->data);
     }
 
 
-	public function tearDown() {
+	public function tearDown():void {
         parent::tearDown();
     }
 

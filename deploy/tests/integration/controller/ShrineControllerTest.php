@@ -10,7 +10,7 @@ use NinjaWars\core\extensions\SessionFactory;
 class ShrineControllerTest extends NWTest {
     private $char;
 
-	function setUp() {
+	function setUp():void {
         parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         $request = new Request([], []);
@@ -20,7 +20,7 @@ class ShrineControllerTest extends NWTest {
         $sess->set('player_id', $this->char->id());
 	}
 
-	function tearDown() {
+	function tearDown():void {
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();

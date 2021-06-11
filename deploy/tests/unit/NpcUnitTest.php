@@ -236,12 +236,12 @@ class NpcUnitTest extends NWTest {
 
     public function testNpcs() {
         $npcs = NpcFactory::npcs();
-        $this->assertInternalType('array', $npcs);
+        $this->assertIsArray($npcs);
         $this->assertNotEmpty($npcs);
     }
 
     public function testAliasAll_for_Npcs() {
-        $this->assertArraySubset(NpcFactory::all(), NpcFactory::npcs());
+        $this->assertEqualsCanonicalizing(NpcFactory::all(), NpcFactory::npcs());
     }
 
     public function testAllNonTrivialNpcs() {

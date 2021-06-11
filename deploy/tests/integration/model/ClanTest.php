@@ -13,7 +13,7 @@ class ClanTest extends NWTest {
         query('delete from clan where clan_id = :id or clan_name = :clan_name', [':id'=>$this->clan_id, ':clan_name'=>$this->clan_identity]);
     }
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         TestAccountCreateAndDestroy::destroy();
         $this->destroyClan();
@@ -24,10 +24,10 @@ class ClanTest extends NWTest {
         $this->clan_id   = $this->clan->id;
 	}
 
-	public function tearDown() {
-        parent::tearDown();
+	public function tearDown():void {
         $this->destroyClan();
         TestAccountCreateAndDestroy::destroy();
+        parent::tearDown();
     }
 
     function testSetClanInfo() {

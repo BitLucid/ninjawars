@@ -14,8 +14,7 @@ class CombatTest extends NWTest {
     public function testKillPointCalculation() {
         $char = new MockPlayer();
 
-        $this->assertInternalType(
-            'int',
+        $this->assertIsInt(
             Combat::killPointsFromDueling(
                 $char,
                 $char

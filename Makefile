@@ -14,7 +14,7 @@ COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
 CSS=$(WWW)css/
 DBROLE=developers
-NGINX_PATH:=`readlink -f nginx-1.9.12/objs/nginx`
+#NGINX_PATH:=`readlink -f nginx-1.9.12/objs/nginx`
 
 -include CONFIG
 
@@ -43,9 +43,13 @@ build: dep
 dep:
 	@$(COMPOSER) install
 
+
+
 check: pre-test
 
 js-deps:
+	node -v
+	yarn -v
 	yarn install
 
 install: build start-chat writable
@@ -72,9 +76,13 @@ install-system:
 	apt-get install python3 python3-dev python3-pip python3-lxml unzip
 	# PHP!
 	echo "Installing php cli"
-	apt-get install php7.4-cli
-	apt-get install php7.4-fpm php7.4-xml php7.4-pgsql php7.4-curl php7.4-mbstring
+	apt-get install php8.0-cli
+	apt-get install php8.0-fpm php8.0-xml php8.0-pgsql php8.0-curl php8.0-mbstring
 	phpenmod xml pgsql curl mbstring
+	# Note that xml is what installs the ext-dom
+	apt install nvm
+	nvm install $(NODE_VERSION)
+	npm install -g yarn
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 	echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04"
 
@@ -240,7 +248,7 @@ web-reload:
 ci-pre-configure:
 	# Set php version
 	# Versions available: https://documentation.codeship.com/basic/languages-frameworks/php/#versions-and-setup
-	phpenv local 7.4
+	phpenv local 8.0
 	@echo "Removing xdebug on CI, by default."
 	rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 	ln -s `pwd` /tmp/root

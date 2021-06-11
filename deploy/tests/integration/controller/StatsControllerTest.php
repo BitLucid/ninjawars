@@ -9,7 +9,7 @@ use NinjaWars\core\control\StatsController;
 class StatsControllerTest extends NWTest {
     private $controller;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->controller = new StatsController();
 		SessionFactory::init(new MockArraySessionStorage());
@@ -19,7 +19,7 @@ class StatsControllerTest extends NWTest {
         RequestWrapper::inject($request);
     }
 
-	public function tearDown() {
+	public function tearDown():void {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();

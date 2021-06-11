@@ -50,10 +50,12 @@ class Inventory implements IteratorAggregate {
 
             $rows = $up_res->rowCount();
 
-            if (!$rows) { // No entry was present, insert one.
+            if ($rows < 1) { // No entry was present, insert one.
                 query(
                     "INSERT INTO inventory (owner, item_type, amount)
-                    VALUES (:char, (SELECT item_id FROM item WHERE item_internal_name = :identity), :quantity)",
+                    VALUES (:char, 
+                            (SELECT item_id FROM item 
+                                WHERE item_internal_name = :identity), :quantity)",
                     [
                         ':char'     => $this->char->id(),
                         ':identity' => $identity,
@@ -66,9 +68,15 @@ class Inventory implements IteratorAggregate {
         }
     }
 
+    /**
+     * Decrease the number of an items in a ninja's inventory
+     */
     public function remove(string $identity, int $quantity = 1): void {
         DatabaseConnection::getInstance();
-        $statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = greatest(0, amount - :quantity) WHERE owner = :user AND item_type = (SELECT item_id FROM item WHERE lower(item_internal_name) = lower(:item)) AND amount > 0");
+        $statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = greatest(0, amount - :quantity) 
+            WHERE owner = :user 
+            AND item_type = (SELECT item_id FROM item 
+                WHERE lower(item_internal_name) = lower(:item)) AND amount > 0");
         $statement->bindValue(':user', $this->char->id());
         $statement->bindValue(':item', $identity);
         $statement->bindValue(':quantity', $quantity);

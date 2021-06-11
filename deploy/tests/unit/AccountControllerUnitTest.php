@@ -12,7 +12,8 @@ class AccountControllerUnitTest extends NWTest {
         $this->controller = new AccountController();
     }
 
-	public function setUp() {
+	public function setUp(): void {
+        parent::setUp();
         $this->markTestIncomplete('AccountController::render relies on the DB and session.');
 		SessionFactory::init(new MockArraySessionStorage());
 
@@ -25,10 +26,11 @@ class AccountControllerUnitTest extends NWTest {
         RequestWrapper::inject($request); // Pass a request to be used by tests
     }
 
-	public function tearDown() {
+	public function tearDown(): void {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testIndex() {

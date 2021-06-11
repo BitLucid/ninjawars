@@ -5,7 +5,8 @@ use NinjaWars\core\data\Player;
 class AccountTest extends NWTest {
     var $testAccountId;
 
-    public function setUp() {
+    public function setUp():void {
+        parent::setUp();
         $_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR'])? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
         $this->test_email = TestAccountCreateAndDestroy::$test_email;
         $this->test_password = TestAccountCreateAndDestroy::$test_password;
@@ -14,8 +15,9 @@ class AccountTest extends NWTest {
         $this->testAccountId = TestAccountCreateAndDestroy::account_id();
     }
 
-    public function tearDown() {
+    public function tearDown():void {
         TestAccountCreateAndDestroy::purge_test_accounts();
+        parent::tearDown();
     }
 
     public function testCreatingAnAccount() {

@@ -9,15 +9,16 @@ use NinjaWars\core\control\ChatController;
 class ChatControllerTest extends NWTest {
     private $controller;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->controller = new ChatController();
         $this->login();
     }
 
-	public function tearDown() {
+	public function tearDown():void {
         RequestWrapper::destroy();
         $this->mockLogout();
+        parent::tearDown();
     }
 
     public function testIndex() {

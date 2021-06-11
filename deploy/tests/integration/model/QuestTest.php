@@ -4,7 +4,7 @@ use NinjaWars\core\data\Player;
 
 class TestQuest extends NWTest {
 
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
 
@@ -20,12 +20,12 @@ class TestQuest extends NWTest {
         $this->quest = new Quest($this->data);
     }
 
-    public function tearDown() {
-        parent::tearDown();
+    public function tearDown():void {
         TestAccountCreateAndDestroy::destroy();
         /*if ($this->quest) {
             //query('delete from quests where quest_id = :id and quest_id > 1', [':id'=>$this->quest->id()]);
         }*/
+        parent::tearDown();
     }
 
     public function testQuestCanInstantiate() {

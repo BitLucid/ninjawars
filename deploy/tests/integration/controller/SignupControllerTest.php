@@ -11,14 +11,14 @@ class SignupControllerTest extends NWTest {
     private $char_id;
     private $fake_email = 'new@local.host';
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
 		SessionFactory::init(new MockArraySessionStorage());
         $this->char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $this->char_id);
 	}
 
-	public function tearDown() {
+	public function tearDown():void {
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
@@ -30,11 +30,11 @@ class SignupControllerTest extends NWTest {
     }
 
     public function testBlacklist() {
-        $this->assertInternalType('array', SignupController::getBlacklistedEmails());
+        $this->assertIsArray(SignupController::getBlacklistedEmails());
     }
 
     public function testWhitelist() {
-        $this->assertInternalType('array', SignupController::getWhitelistedEmails());
+        $this->assertIsArray(SignupController::getWhitelistedEmails());
     }
 
     public function testSignupIndexRuns() {
@@ -74,7 +74,7 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertContains('match', $response_data['error']);
+        $this->assertStringContainsString('match', $response_data['error']);
     }
 
     /**
@@ -93,7 +93,7 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertContains('all the nece', $response_data['error']);
+        $this->assertStringContainsString('all the nece', $response_data['error']);
     }
 
     /**
@@ -113,7 +113,7 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertContains('Ninja name:', $response_data['error']);
+        $this->assertStringContainsString('Ninja name:', $response_data['error']);
     }
 
     /**
@@ -133,7 +133,7 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertContains('Passwords must', $response_data['error']);
+        $this->assertStringContainsString('Passwords must', $response_data['error']);
     }
 
     /**
@@ -162,7 +162,7 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertContains('using that email', $response_data['error']);
+        $this->assertStringContainsString('using that email', $response_data['error']);
     }
 
     /**
@@ -182,7 +182,7 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertContains('to be valid', $response_data['error']);
+        $this->assertStringContainsString('to be valid', $response_data['error']);
     }
 
     /**
@@ -206,7 +206,7 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertContains('already in use', $response_data['error']);
+        $this->assertStringContainsString('already in use', $response_data['error']);
     }
 
     /**
@@ -226,7 +226,7 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertContains('already in use', $response_data['error']);
+        $this->assertStringContainsString('already in use', $response_data['error']);
     }
 
     public function testInvalidClassFailsCorrectly() {
@@ -244,7 +244,7 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertContains('proper class', $response_data['error']);
+        $this->assertStringContainsString('proper class', $response_data['error']);
     }
 
     public function testSuccessfulSignup() {

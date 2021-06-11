@@ -10,16 +10,16 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Player;
 
 class NinjamasterControllerTest extends NWTest {
-	function setUp() {
+	function setUp():void {
         parent::setUp();
         // Mock the post request.
 		SessionFactory::init(new MockArraySessionStorage());
 	}
 
-	function tearDown() {
-        parent::tearDown();
+	function tearDown():void {
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testSuccessfulInstantiation() {

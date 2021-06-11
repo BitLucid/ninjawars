@@ -10,7 +10,7 @@ use NinjaWars\core\control\ListController;
 class ListControllerTest extends NWTest {
     private $controller;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->controller = new ListController();
 		SessionFactory::init(new MockArraySessionStorage());
@@ -18,7 +18,7 @@ class ListControllerTest extends NWTest {
 		SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	public function tearDown() {
+	public function tearDown():void {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();

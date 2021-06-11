@@ -6,7 +6,7 @@ use NinjaWars\core\control\WorkController;
 use NinjaWars\core\extensions\SessionFactory;
 
 class WorkControllerTest extends NWTest {
-	function setUp() {
+	function setUp():void {
         parent::setUp();
         // Mock the post request.
         $request = new Request([], ['worked'=>10]);
@@ -14,7 +14,7 @@ class WorkControllerTest extends NWTest {
         SessionFactory::init(new MockArraySessionStorage());
 	}
 
-	function tearDown() {
+	function tearDown():void {
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();

@@ -7,17 +7,20 @@ use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 
 class InventoryTest extends \NWTest {
     
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         TestAccountCreateAndDestroy::destroy();
         $this->char = TestAccountCreateAndDestroy::char();
     }
 
-    public function tearDown() {
-        parent::tearDown();
+    public function tearDown():void {
         TestAccountCreateAndDestroy::destroy();
+        parent::tearDown();
     }
 
+    /**
+     * @group Inventory
+     */
     public function testAddShouldIncreaseItemCount() {
         $inventory = new Inventory($this->char);
         $inventory->add('shuriken', 10);
@@ -30,6 +33,9 @@ class InventoryTest extends \NWTest {
         $this->assertEquals(10, $count);
     }
 
+    /**
+     * @group Inventory
+     */
     public function testInventoryToArrayGetsArrayOfItems() {
         $inventory = new Inventory($this->char);
         $inventory->add('shuriken', 10);
@@ -37,6 +43,9 @@ class InventoryTest extends \NWTest {
         $this->assertNotEmpty($inventory->toArray());
     }
 
+    /**
+     * @group Inventory
+     */
     public function testInventorySortBySelfUse() {
         $inventory = new Inventory($this->char);
         $inventory->add('shuriken', 10);
@@ -51,6 +60,9 @@ class InventoryTest extends \NWTest {
         $this->assertEquals($item['name'], 'Amanita Mushroom');
     }
 
+    /**
+     * @group Inventory
+     */
     public function testShouldObtainInventory() {
         $inventory = new Inventory($this->char);
         $inventory->add('shuriken', 10);

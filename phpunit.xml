@@ -1,48 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-	bootstrap="deploy/tests/bootstrap.php"
-	colors="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
-	convertErrorsToExceptions="true"
-	stopOnError="false"
-	stopOnFailure="false"
-	stopOnIncomplete="false"
-	stopOnSkipped="false">
-	<testsuites>
-		<testsuite name="Unit">
-			<directory suffix=".php">deploy/tests/unit</directory>
-		</testsuite>
-		<testsuite name="Integration">
-			<directory suffix=".php">deploy/tests/integration</directory>
-		</testsuite>
-		<testsuite name="Quick">
-			<directory suffix=".php">deploy/tests/unit</directory>
-			<file>deploy/tests/integration/controller/HomepageControllerTest.php</file>
-			<file>deploy/tests/integration/controller/AttackControllerTest.php</file>
-			<file>deploy/tests/integration/controller/LoginControllerTest.php</file>
-			<file>deploy/tests/integration/controller/PlayerControllerTest.php</file>
-			<file>deploy/tests/integration/controller/SignupControllerTest.php</file>
-		</testsuite>
-	</testsuites>
-	<filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">deploy/</directory>
-			<exclude>
-				<directory>vendor</directory>
-				<directory>deploy/vendor</directory>
-				<directory>deploy/cron</directory>
-				<directory>deploy/tests/</directory>
-				<directory>deploy/model/orm</directory>
-				<directory>deploy/db/migrations/</directory>
-				<directory>deploy/templates/compiled</directory>
-				<directory>deploy/www/</directory>
-				<directory>deploy/conf/</directory>
-				<file>deploy/check.php</file>
-				<file>deploy/lib/cleanup.inc.php</file>
-				<file>deploy/resources.build.php</file>
-				<file>deploy/resources.template.php</file>
-			</exclude>
-		</whitelist>
-	</filter>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="deploy/tests/bootstrap.php" colors="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" convertErrorsToExceptions="true" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false" stopOnSkipped="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">deploy/</directory>
+    </include>
+    <exclude>
+      <directory>vendor</directory>
+      <directory>deploy/vendor</directory>
+      <directory>deploy/cron</directory>
+      <directory>deploy/tests/</directory>
+      <directory>deploy/model/orm</directory>
+      <directory>deploy/db/migrations/</directory>
+      <directory>deploy/templates/compiled</directory>
+      <directory>deploy/www/</directory>
+      <directory>deploy/conf/</directory>
+      <file>deploy/check.php</file>
+      <file>deploy/lib/cleanup.inc.php</file>
+      <file>deploy/resources.build.php</file>
+      <file>deploy/resources.template.php</file>
+    </exclude>
+  </coverage>
+  <testsuites>
+    <testsuite name="Unit">
+      <directory suffix=".php">deploy/tests/unit</directory>
+    </testsuite>
+    <testsuite name="Integration">
+      <directory suffix=".php">deploy/tests/integration</directory>
+    </testsuite>
+    <testsuite name="Quick">
+      <directory suffix=".php">deploy/tests/unit</directory>
+      <file>deploy/tests/integration/controller/HomepageControllerTest.php</file>
+      <file>deploy/tests/integration/controller/AttackControllerTest.php</file>
+      <file>deploy/tests/integration/controller/LoginControllerTest.php</file>
+      <file>deploy/tests/integration/controller/PlayerControllerTest.php</file>
+      <file>deploy/tests/integration/controller/SignupControllerTest.php</file>
+    </testsuite>
+  </testsuites>
 </phpunit>

@@ -11,15 +11,17 @@ class TestAttackLegal extends NWTest {
     /**
      * group char
      */
-    function setUp() {
+    function setUp():void {
+        parent::setUp();
     }
 
     /**
      * group char
      */
-    function tearDown() {
+    function tearDown():void {
         // Delete test user.
         TestAccountCreateAndDestroy::purge_test_accounts();
+        parent::tearDown();
     }
 
     private function oldify_character_last_attack($char_id) {
