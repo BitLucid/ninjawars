@@ -43,5 +43,6 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run test suite
-      run: ln -s ./resources.build.php ./deploy/resources.php
-      run: ./composer.phar run-script test
+      run: |
+        ln -s ./resources.build.php ./deploy/resources.php
+        ./composer.phar run-script test
