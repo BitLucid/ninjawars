@@ -18,6 +18,9 @@ class InventoryTest extends \NWTest {
         parent::tearDown();
     }
 
+    /**
+     * @group Inventory
+     */
     public function testAddShouldIncreaseItemCount() {
         $inventory = new Inventory($this->char);
         $inventory->add('shuriken', 10);
@@ -30,6 +33,9 @@ class InventoryTest extends \NWTest {
         $this->assertEquals(10, $count);
     }
 
+    /**
+     * @group Inventory
+     */
     public function testInventoryToArrayGetsArrayOfItems() {
         $inventory = new Inventory($this->char);
         $inventory->add('shuriken', 10);
@@ -37,6 +43,9 @@ class InventoryTest extends \NWTest {
         $this->assertNotEmpty($inventory->toArray());
     }
 
+    /**
+     * @group Inventory
+     */
     public function testInventorySortBySelfUse() {
         $inventory = new Inventory($this->char);
         $inventory->add('shuriken', 10);
@@ -51,6 +60,9 @@ class InventoryTest extends \NWTest {
         $this->assertEquals($item['name'], 'Amanita Mushroom');
     }
 
+    /**
+     * @group Inventory
+     */
     public function testShouldObtainInventory() {
         $inventory = new Inventory($this->char);
         $inventory->add('shuriken', 10);
