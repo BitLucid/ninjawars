@@ -10,9 +10,9 @@ class InventoryControllerTest extends NWTest {
     private $char;
     private $controller;
     private $inventory;
-    const ITEM = 'caltrop';
+    const ITEM = 'caltrops';
 
-	public function setUp() {
+	public function setUp():void{
         parent::setUp();
         $this->controller = new InventoryController();
         $this->char = TestAccountCreateAndDestroy::char();
@@ -22,10 +22,10 @@ class InventoryControllerTest extends NWTest {
 		SessionFactory::init(new MockArraySessionStorage());
         $sess = SessionFactory::getSession();
         $sess->set('player_id', $this->char->id());
-        $this->inventory->add(self::ITEM);
+        $this->inventory->add(self::ITEM, 1);
 	}
 
-	public function tearDown() {
+	public function tearDown():void {
         $this->inventory->remove(self::ITEM);
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
@@ -38,12 +38,18 @@ class InventoryControllerTest extends NWTest {
         $this->assertInstanceOf('NinjaWars\core\control\InventoryController', $this->controller);
     }
 
+    /**
+     * @group Inventory
+     */
     public function testIndexDoesNotErrorWithoutItem() {
         $this->inventory->remove(self::ITEM);
         $result = $this->controller->index($this->m_dependencies);
         $this->assertNotEmpty($result);
     }
 
+    /**
+     * @group Inventory
+     */
     public function testIndexDoesNotErrorWithItem() {
         $result = $this->controller->index($this->m_dependencies);
         $this->assertNotEmpty($result);

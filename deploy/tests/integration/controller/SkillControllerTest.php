@@ -10,7 +10,7 @@ use NinjaWars\core\data\Player;
 use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 
 class SkillControllerTest extends NWTest{
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         $this->char2 = TestAccountCreateAndDestroy::char_2();
@@ -22,14 +22,14 @@ class SkillControllerTest extends NWTest{
         RequestWrapper::inject($request);
 	}
 
-	public function tearDown() {
-        parent::tearDown();
+	public function tearDown():void {
         $this->char = null;
         $this->char2 = null;
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testLoggedInSkillsDisplay(){

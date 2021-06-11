@@ -11,14 +11,14 @@ class SignupControllerTest extends NWTest {
     private $char_id;
     private $fake_email = 'new@local.host';
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
 		SessionFactory::init(new MockArraySessionStorage());
         $this->char_id = TestAccountCreateAndDestroy::create_testing_account();
 		SessionFactory::getSession()->set('player_id', $this->char_id);
 	}
 
-	public function tearDown() {
+	public function tearDown():void {
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
@@ -30,11 +30,11 @@ class SignupControllerTest extends NWTest {
     }
 
     public function testBlacklist() {
-        $this->assertInternalType('array', SignupController::getBlacklistedEmails());
+        $this->assertIsArray(SignupController::getBlacklistedEmails());
     }
 
     public function testWhitelist() {
-        $this->assertInternalType('array', SignupController::getWhitelistedEmails());
+        $this->assertIsArray(SignupController::getWhitelistedEmails());
     }
 
     public function testSignupIndexRuns() {

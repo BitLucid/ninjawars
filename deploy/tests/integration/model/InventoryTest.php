@@ -7,15 +7,15 @@ use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 
 class InventoryTest extends \NWTest {
     
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         TestAccountCreateAndDestroy::destroy();
         $this->char = TestAccountCreateAndDestroy::char();
     }
 
-    public function tearDown() {
-        parent::tearDown();
+    public function tearDown():void {
         TestAccountCreateAndDestroy::destroy();
+        parent::tearDown();
     }
 
     public function testAddShouldIncreaseItemCount() {

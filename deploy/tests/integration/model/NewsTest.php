@@ -7,17 +7,19 @@ use NinjaWars\core\data\Account;
 
 class TestNews extends NWTest {
 
-    function setUp() {
+    function setUp():void {
+        parent::setUp();
         $test_account = $this->obtainTestAccount();
         $news = new News();
         assert($test_account->id() > 0);
         $news->createPost('Testing news title78', 'phpunit testing content', $test_account->id(), 'need,some, fake, tags');
     }
 
-    function tearDown() {
+    function tearDown():void {
         // Delete testing news.
         query('delete from news where title = \'Testing news title78\'');
         TestAccountCreateAndDestroy::destroy();
+        parent::tearDown();
     }
 
     public function obtainTestAccount(){

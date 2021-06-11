@@ -41,26 +41,26 @@ class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase {
         $this->assertNotEquals($testText, $result);
         $this->assertGreaterThan(strlen($testText), strlen($result));
         $this->assertGreaterThan(strlen(self::URL)*2, strlen($result));
-        $this->assertContains(self::URL, $result);
+        $this->assertStringContainsString(self::URL, $result);
     }
 
     public function testReplaceUrlsNegative() {
         $this->assertEquals(self::PLAIN_TEXT, smarty_modifier_replace_urls(self::PLAIN_TEXT));
     }
     public function testTurnCostIsInt() {
-        $this->assertInternalType('int', smarty_function_getTurnCost(['skillName'=>'kampo']));
+        $this->assertIsInt(smarty_function_getTurnCost(['skillName'=>'kampo']));
     }
 
     public function testCSSClassifyIsString() {
-        $this->assertInternalType('string', smarty_modifier_css_classify('skillName'));
+        $this->assertIsString(smarty_modifier_css_classify('skillName'));
     }
 
     public function testLevelLabeIsString() {
-        $this->assertInternalType('string', smarty_modifier_level_label(4));
+        $this->assertIsString(smarty_modifier_level_label(4));
     }
 
     public function testHealthPercentIsFloat() {
-        $this->assertInternalType('float', smarty_function_health_percent(['level'=>10, 'health'=>10]));
+        $this->assertIsFloat(smarty_function_health_percent(['level'=>10, 'health'=>10]));
     }
 
 }

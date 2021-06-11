@@ -4,13 +4,6 @@ use NinjaWars\core\data\Skill;
 use NinjaWars\tests\MockPlayer;
 
 class SkillTest extends NWTest {
-	public function setUp(){
-        parent::setUp();
-	}
-
-	public function tearDown(){
-        parent::tearDown();
-    }
 
     public function testAllSkillsCanBePulled(){
         $skill_list = new SkillDAO();

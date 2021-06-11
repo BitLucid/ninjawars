@@ -10,7 +10,7 @@ class DojoControllerTest extends NWTest {
     private $controller;
     private $char_id;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->controller = new DojoController();
         // Mock the post request.
@@ -24,7 +24,7 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-	public function tearDown() {
+	public function tearDown():void {
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();

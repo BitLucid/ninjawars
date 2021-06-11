@@ -7,7 +7,7 @@ use NinjaWars\core\control\DoshinController;
 use NinjaWars\core\data\Player;
 
 class DoshinControllerTest extends NWTest {
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         // Mock the post request.
         $request = new Request([], []);
@@ -15,7 +15,7 @@ class DoshinControllerTest extends NWTest {
         $this->login();
     }
 
-    public function tearDown() {
+    public function tearDown():void {
         RequestWrapper::inject(new Request([]));
         $this->loginTearDown();
         parent::tearDown();

@@ -55,7 +55,8 @@ class TestAccountConfirmation extends NWTest {
     public $test_ninja_id = null;
 
 
-    function setUp() {
+    function setUp():void {
+        parent::setUp();
         $_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR'])? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
         $this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com probably
         $this->test_password = TestAccountCreateAndDestroy::$test_password;
@@ -66,11 +67,12 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function tearDown() {
+    function tearDown():void {
         // Delete test user.
         TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     /**

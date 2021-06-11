@@ -10,7 +10,8 @@ class ApiControllerTest extends NWTest {
     private $PAYLOAD_RE;
     private $controller;
 
-    public function setUp() {
+    public function setUp():void {
+        parent::setUp();
         // Mock the post request.
         $this->controller = new ApiController();
         $this->PAYLOAD_RE = '/^'.(self::CALLBACK).'\((.*)\)$/';
@@ -19,11 +20,12 @@ class ApiControllerTest extends NWTest {
         $session->set('player_id', $this->char->id());
     }
 
-    public function tearDown() {
+    public function tearDown():void {
         RequestWrapper::inject(new Request([]));
         TestAccountCreateAndDestroy::purge_test_accounts();
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testIllegalCallbackFails() {

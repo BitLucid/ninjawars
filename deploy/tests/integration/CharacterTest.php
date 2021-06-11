@@ -7,7 +7,8 @@ class CharacterTest extends NWTest {
     private $previous_server_ip = '';
     private $char_id;
 
-    public function setUp() {
+    public function setUp():void {
+        parent::setUp();
         $this->previous_server_ip = @$_SERVER['REMOTE_ADDR'];
         $this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com
         $this->test_password = TestAccountCreateAndDestroy::$test_password;
@@ -17,10 +18,11 @@ class CharacterTest extends NWTest {
         $this->char_id = $char_id;
     }
 
-    public function tearDown() {
+    public function tearDown():void {
         // Delete test user.
         TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
         $_SERVER['REMOTE_ADDR']=$this->previous_server_ip; // Reset remote addr to whatever it was before, just in case.
+        parent::tearDown();
     }
 
     public function testCreatePlayerObject() {
@@ -303,7 +305,7 @@ class CharacterTest extends NWTest {
             $player->save();
             $this->assertTrue(false, 'Player with no data saved successfully! Bad!');
         } catch (\PDOException $e) {
-            $this->assertContains('Not null violation', $e->getMessage());
+            $this->assertStringContainsString('Not null violation', $e->getMessage());
         }
     }
 
@@ -399,7 +401,7 @@ class CharacterTest extends NWTest {
 
     public function testClassStringValidationPositive() {
         $return = Player::validStatus('STEALTH');
-        $this->assertInternalType('int', $return);
+        $this->assertIsInt($return);
     }
 
     public function testClassStringValidationInvalidValue() {

@@ -10,14 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class PasswordControllerTest extends NWTest {
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         $this->account = Account::findById($this->account_id);
         $this->nonce = Crypto::nonce();
     }
 
-    public function tearDown() {
+    public function tearDown():void {
         query("delete from password_reset_requests where nonce = '777777' or nonce = :nonce", [':nonce'=>$this->nonce]);
         TestAccountCreateAndDestroy::purge_test_accounts();
         parent::tearDown();

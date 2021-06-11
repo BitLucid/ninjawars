@@ -14,12 +14,12 @@ class LocalTestController extends AbstractController {
 }
 
 class AbstractControllerUnitTest extends NWTest {
-	public function setUp() {
+	public function setUp(): void {
         parent::setUp();
 		SessionFactory::init(new MockArraySessionStorage());
     }
 
-	public function tearDown() {
+	public function tearDown(): void {
         parent::tearDown();
     }
 

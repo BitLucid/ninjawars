@@ -9,7 +9,7 @@ use NinjaWars\core\control\MessagesController;
 class MessagesControllerTest extends NWTest {
     private $controller;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->controller = new MessagesController();
 		SessionFactory::init(new MockArraySessionStorage());
@@ -17,7 +17,7 @@ class MessagesControllerTest extends NWTest {
 		SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	public function tearDown() {
+	public function tearDown():void {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();

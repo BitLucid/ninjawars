@@ -5,12 +5,12 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 class MapControllerUnitTest extends NWTest {
     private $controller;
 
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         $this->controller = new MapController();
     }
 
-    public function tearDown() {
+    public function tearDown():void {
         parent::tearDown();
     }
 

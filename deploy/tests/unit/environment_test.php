@@ -6,7 +6,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\Filter;
 
 class TestInput extends NWTest {
-	public function setUp() {
+	public function setUp():void {
 		parent::setUp();
 		$get = [
 			'id'         => 7,
@@ -29,9 +29,9 @@ class TestInput extends NWTest {
         RequestWrapper::inject($request); // Pass a request to be used by tests
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tearDown():void {
         RequestWrapper::destroy();
+		parent::tearDown();
     }
 
     public function testInputWithinEnvironment() {

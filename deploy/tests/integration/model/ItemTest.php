@@ -3,7 +3,7 @@ use NinjaWars\core\data\Item;
 use NinjaWars\core\data\Player;
 
 class ItemTest extends \NWTest {
-
+/*
 	public function setUp(){
 		parent::setUp();
 	}
@@ -11,6 +11,7 @@ class ItemTest extends \NWTest {
 	public function tearDown() {
 		parent::tearDown();
 	}
+*/
 
 	public function testInstantiatingABlankItem(){
 		$item = new Item();

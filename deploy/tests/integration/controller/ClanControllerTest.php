@@ -12,7 +12,7 @@ class ClanControllerTest extends NWTest {
     private $controller;
     private $clan;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->controller = new ClanController();
 		SessionFactory::init(new MockArraySessionStorage());
@@ -21,7 +21,7 @@ class ClanControllerTest extends NWTest {
         $this->clan = Clan::create(Player::find($char_id), 'phpunit_test_clan');
     }
 
-	public function tearDown() {
+	public function tearDown():void {
         $this->deleteClan($this->clan->id);
         RequestWrapper::destroy();
         TestAccountCreateAndDestroy::purge_test_accounts();

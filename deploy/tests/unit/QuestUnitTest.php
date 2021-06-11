@@ -5,7 +5,7 @@ class QuestUnitTest extends NWTest {
     private $quest;
     private $data;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->data = [
             'title'       => 'Some QuEst TiTle HeRe',
@@ -18,9 +18,9 @@ class QuestUnitTest extends NWTest {
         $this->quest = new Quest($this->data);
     }
 
-	public function tearDown() {
-        parent::tearDown();
+	public function tearDown():void {
         $this->quest = null;
+        parent::tearDown();
     }
 
     public function testQuestConstructor() {
