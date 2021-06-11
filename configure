@@ -9,6 +9,7 @@ echo "DBCREATINGUSER=postgres" >> CONFIG
 echo "CC_DIR=./cc/" >> CONFIG
 echo "WEBUSER=www-data:adm" >> CONFIG
 echo "NOCOVER=true" >> CONFIG
+echo "NODE_VERSION=lts/fermium"
 NGINX_EXISTS=`command -v nginx`
 
 if [ -f ./composer.phar ]

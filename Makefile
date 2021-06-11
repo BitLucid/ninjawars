@@ -14,7 +14,7 @@ COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
 CSS=$(WWW)css/
 DBROLE=developers
-NGINX_PATH:=`readlink -f nginx-1.9.12/objs/nginx`
+#NGINX_PATH:=`readlink -f nginx-1.9.12/objs/nginx`
 
 -include CONFIG
 
@@ -43,9 +43,13 @@ build: dep
 dep:
 	@$(COMPOSER) install
 
+
+
 check: pre-test
 
 js-deps:
+	node -v
+	yarn -v
 	yarn install
 
 install: build start-chat writable
@@ -75,6 +79,9 @@ install-system:
 	apt-get install php7.4-cli
 	apt-get install php7.4-fpm php7.4-xml php7.4-pgsql php7.4-curl php7.4-mbstring
 	phpenmod xml pgsql curl mbstring
+	apt install nvm
+	nvm install $(NODE_VERSION)
+	npm install -g yarn
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 	echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04"
 
