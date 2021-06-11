@@ -1,6 +1,7 @@
 {
 	"name":"bitlucid/ninjawars",
 	"description":"The composer dependencies for the ninjawars game and web components.",
+	"license": "proprietary",
 	"autoload": {
 		"psr-4": {
 			"model\\": "deploy/model",
@@ -13,8 +14,7 @@
 		"php": ">=7.1.0",
 		"components/jquery": "^2.1.1",
 		"rmm5t/jquery-timeago": "^1",
-		"bitlucid/jquery-linkify": "^2.1",
-		"ircmaxell/password-compat": "@stable",
+		"ninjawars/jquery-linkify": "^2.1",
 		"swiftmailer/swiftmailer": "~5.4.0",
 		"smarty/smarty": "v3.1.33",
 		"cboden/ratchet": "^0.4.1",
@@ -22,15 +22,17 @@
 		"symfony/http-foundation": "^4.1",
 		"twbs/bootstrap": "~3.3",
 		"pimple/pimple": "~3.0",
-		"robmorgan/phinx": "^0.10.1",
-		"symfony/polyfill-php73": "^1.9"
+		"oomphinc/composer-installers-extender": "^2.0"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^7.5",
-		"spatie/phpunit-watcher": "^1.8"
+		"phpunit/phpunit": "^9.0",
+		"spatie/phpunit-watcher": "^1"
 	},
-	"config": {
-		"component-dir": "deploy/www/components/"
+	"extra": {
+		"installer-types": ["component"],
+		"installer-paths": {
+		  "deploy/www/components/{$name}/": ["type:component"]
+		}
 	},
 	"repositories": [
 		{
@@ -56,22 +58,22 @@
 					}
 				},
 				"require": {
-					"robloach/component-installer": "*"
+					"oomphinc/composer-installers-extender": "*"
 				}
 			}
 		},
 		{
 			"type": "package",
 			"package": {
-				"name": "BitLucid/jquery-linkify",
+				"name": "ninjawars/jquery-linkify",
 				"type": "component",
 				"version": "2.1.1",
 				"dist": {
-					"url": "https://github.com/BitLucid/jquery-linkify/archive/master.zip",
+					"url": "https://github.com/ninjawars/jquery-linkify/archive/master.zip",
 					"type": "zip"
 				},
 				"source": {
-					"url": "https://github.com/BitLucid/jquery-linkify.git",
+					"url": "https://github.com/ninjawars/jquery-linkify.git",
 					"type": "git",
 					"reference": "master"
 				},
@@ -84,7 +86,7 @@
 					}
 				},
 				"require": {
-					"robloach/component-installer": "*"
+					"oomphinc/composer-installers-extender": "*"
 				}
 			}
 		}
