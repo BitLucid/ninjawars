@@ -64,7 +64,7 @@ article#fight nav{
 	<section class='npc-fight'>
 	{if $image_path}
 		<figure class='npc-avatar'>
-		  <img src='{cachebust file=$image_path}' alt='Creature'>
+		  <img src='{cachebust file=$image_path}' alt='A {$race}'>
 		</figure>
 	{/if}
 
@@ -79,6 +79,11 @@ article#fight nav{
 	{/if}
 
 	<p>
+		{if $attack_damage > 0}
+			{if $npco->hasTrait('horned')}
+			<p>The {$display_name|escape}'s horns gore you.</p>
+			{/if}
+		{/if}
 		The {$display_name|escape} 
 		{if $attack_damage > 0}
 			<span class='damage {$npc_damage_class}'>{$npc_damage_class}s you</span> 
@@ -105,7 +110,7 @@ article#fight nav{
 		{if $is_weaker}<p>The {if $is_villager}villager{/if}{if !$is_villager}{$race|escape}{/if} is no match for you!</p>{/if}
 		{if $kill_npc}<p class='ninja-notice'>You kill the {$display_name|escape}!</p>
 			{if $added_bounty}
-			<p class='bounty-notice'>{if $is_villager}You have slain a member of the village!{/if} <em class='money'>{$added_bounty}</p>
+			<div class='bounty-notice'>{if $is_villager}<p>You have slain a member of the village!</p>{/if} <em class='money'>{$added_bounty}</div>
 			{/if}
 		{else}
 			{if $is_weaker}

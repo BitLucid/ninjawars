@@ -157,7 +157,7 @@ class NpcController extends AbstractController {
         $is_quick         = (boolean) ($npco->getSpeed() > $player->getSpeed()); // Beyond basic speed and they see you coming, so show that message.
         $is_weaker        = ($npco->getStrength() * 3) < $player->getStrength(); // Npc much weaker?
         $is_stronger      = ($npco->getStrength()) > ($player->getStrength() * 3); // Npc More than twice as strong?
-        $image            = (isset($npc_stats['img']) ? $npc_stats['img'] : null);
+        $image            = $npc_stats['img'] ?? $npc_stats['full_img'] ?? null;
         // Assume defeat...
         $victory          = false;
         $received_gold    = null;
@@ -243,6 +243,7 @@ class NpcController extends AbstractController {
                 'npc_stats'                => $npc_stats,
                 'is_quick'                 => $is_quick,
                 'added_bounty'             => $added_bounty,
+                'npco'                     => $npco,
                 'is_villager'              => $npco->hasTrait('villager'),
                 'race'                     => $npco->race(),
                 'is_weaker'                => $is_weaker,
@@ -320,7 +321,7 @@ class NpcController extends AbstractController {
                 } else {
                     $method = 'attackSamurai';
                 }
-            } elseif ($victim == 'thief') {
+            } elseif ($victim == 'thief') { // TODO: Add gang trait here temporarily
                 // Check the counter to see whether they've attacked a thief multiple times in a row.
                 $counter = $this->getThiefCounter($p_dependencies);
 
@@ -520,10 +521,14 @@ class NpcController extends AbstractController {
         ];
     }
 
+    /**
+     * Encounter triggered randomly after attacking enough thieves
+     */
     private function attackGroupOfThieves(Player $player) {
         $damage = rand(50, 150);
+        $victory = $player->harm($damage) > 0;
 
-        if ($victory = $player->harm($damage)) {
+        if ($victory) {
             // The den of thieves didn't accomplish their goal
             $gold = rand(100, 300);
 

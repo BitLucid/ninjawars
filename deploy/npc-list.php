@@ -96,6 +96,9 @@ NpcFactory::$data = [
         'inventory' => [
             'tetsubo'=>'.05',
         ],
+        'traits'    => [
+            'flying',
+        ]
     ],
     'ushioni'   => [
         'name'     => 'Ushi-Oni',
@@ -104,6 +107,9 @@ NpcFactory::$data = [
         'speed'    => 50,
         'race'     => 'ushioni',
         'img'      => 'ushioni2.jpg',
+        'traits'   => [
+            'horned'
+        ]
     ],
     'ryu'       => [
         'name'     => 'Ryu',
@@ -179,6 +185,24 @@ NpcFactory::$data = [
                 'partial_match_strength',
             ],
         ],
+        'thief2'          => [
+            'name'      => 'Theif',
+            'strength'  => 17,
+            'stamina'   => 10,
+            'speed'     => 10,
+            'race'      => 'human',
+            'img'       => 'thief.png',
+            'inventory' => [
+                'shuriken' => '1',
+
+            ],
+            'gold'      => 40,
+            'traits'    => [
+                'steals',
+                'escaper',
+                'gang',
+            ],
+        ],
         'monk'          => [
             'name'      => 'Monk',
             'strength'  => 10,
@@ -202,7 +226,7 @@ NpcFactory::$data = [
             'speed'      => 15,
             'ki'         => 10,
             'gold'       => 20,
-            'bounty_mod' => 30,
+            'bounty_mod' => 50,
             'race'       => 'human',
             'inventory'  => [
                 'sake'   => '.2',
@@ -304,7 +328,7 @@ NpcFactory::$data = [
             'speed'    => 15,
             'stamina'  => 10,
             'race'     => 'kami',
-            'traits'   => 'whispy'
+            'traits'   => 'wispy'
         ],
         'tiger'         => [
             'name'     => 'Tiger',
@@ -323,6 +347,7 @@ NpcFactory::$data = [
             'speed'    => 1,
             'traits'   => [
                 'poisonous',
+                'flying',
             ],
         ],
         'kamaitachi'    => [
@@ -341,7 +366,7 @@ NpcFactory::$data = [
             'img'    => 'hitodama.gif',
             'race'   => 'kami',
             'traits' => [
-                'whispy',
+                'wispy',
             ],
         ],
         'karakasaobake' => [
@@ -359,7 +384,7 @@ NpcFactory::$data = [
             'short'  => 'are bulbous floating jellyfish',
             'img'    => 'umibozu.jpg',
             'traits' => [
-                'whispy',
+                'wispy',
             ],
         ],
         'shojo'         => [
@@ -378,7 +403,7 @@ NpcFactory::$data = [
             'race'   => 'kami',
             'img'    => 'furaribi.jpg',
             'traits' => [
-                'whispy',
+                'wispy',
             ],
         ],
         'jorogumo'      => [
@@ -395,15 +420,22 @@ NpcFactory::$data = [
         ],
         'shoukera'      => [
             'name'  => 'Shoukera',
-            'short' => 'is a muscled demon that lies wait in the shadows',
+            'short' => 'is a muscled creature that lies wait in the shadows',
             'race'  => 'yokai',
             'img'   => 'shoukera.jpg',
+            'traits'=>[
+                'claws',
+                'stealthy',
+            ]
         ],
         'waira'         => [
             'name'  => 'Waira',
             'short' => 'is a clawed beast',
             'race'  => 'yokai',
             'img'   => 'waira.jpg',
+            'traits'=>[
+                'claws',
+            ]
         ],
         'tsurebeotoshi' => [
             'name'   => 'Tsurube-otoshi',
@@ -411,7 +443,7 @@ NpcFactory::$data = [
             'race'   => 'kami',
             'img'    => 'tsurubeotoshi.jpg',
             'traits' => [
-                'whispy',
+                'wispy',
             ],
         ],
         'kasha'         => [
@@ -430,12 +462,19 @@ NpcFactory::$data = [
             'short' => 'is a one eyed monk',
             'img'   => 'aobouzu.jpg',
             'race'  => 'yokai',
+            'inventory'=>[
+                'prayerwheel'=>'.01',
+                
+            ]
         ],
         'akashita'      => [
             'name'  => 'Akashita',
             'short' => 'is a storm demon',
             'img'   => 'akashita.jpg',
             'race'  => 'kami',
+            'traits'=> [
+                'flying',
+            ]
         ],
         'kamakiri'      => [
             'name'  => 'Kama-Kiri',
@@ -454,6 +493,32 @@ NpcFactory::$data = [
             'short' => 'is a winged wolf',
             'race'  => 'yokai',
         ],
+        'kitsune'         => [
+            'name'  => 'Kitsune',
+            'short' => 'is a fox',
+            'full_img' => 'kitsune_foxfires.jpg',
+            'speed'   => 50,
+            'traits' => [
+                'stealthy',
+                'slippery',
+                'polymorphic',
+                'trickster',
+                'steals',
+            ],
+            'inventory'=>[
+                'charcoal'=>'.33'
+            ]
+        ],
+        'yurei'         => [
+            'name'  => 'Yurei',
+            'short' => 'is a pale woman with long black hair',
+            'full_img'   => 'Tukioka_yositosi-yuurei.jpg',
+            'traits' => [
+                'polymorphic',
+                'undead',
+                'wispy',
+            ]
+        ],
         'oni'           => [
             'name'     => 'Oni',
             'strength' => 25,
@@ -463,11 +528,15 @@ NpcFactory::$data = [
             'short'    => 'a horned demon',
             'img'      => 'hokusai-oni.jpg',
             'race'     => 'oni',
+            'inventory' => [
+                'tetsubo'=>'.01',
+            ],
             'traits'   => [
                 'demonic',
                 'stealthy',
                 'slowing',
                 'energy_vampire',
+                'horned'
             ],
         ],
     ]
