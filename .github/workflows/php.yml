@@ -42,7 +42,7 @@ jobs:
     - name: Create autoload file if necessary
       if: steps.composer-cache.outputs.cache-hit == 'true'
       run: |
-        ls -halt vendor
+        ls -halt ./vendor/
         ./composer.phar dump-autoload
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
