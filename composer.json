@@ -3,7 +3,8 @@
 	"description":"The composer dependencies for the ninjawars game and web components.",
 	"license": "proprietary",
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+		"unit-test": "phpunit --testsuite Unit"
     },
 	"autoload": {
 		"psr-4": {
