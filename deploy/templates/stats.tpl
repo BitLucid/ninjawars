@@ -36,7 +36,7 @@
 {/if}
 
 <div style="position:relative">
-  <a style="position:absolute;bottom:0;right:0;" class='btn btn-default' href='/account' target='main'><i class='fas fa-cogs'></i></a>
+  <a style="position:absolute;bottom:0;right:0;" title='Account settings' class='btn btn-default' href='/account' target='main'><i class='fas fa-cogs'></i></a>
 </div>
 
 <div class='stats-avatar'>
@@ -116,7 +116,7 @@
         <textarea name='instincts' id='instincts' title="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if ... then ...)" placeholder="Your ninja's instincts, things that if they happen, cause your ninja to act in a certain way (e.g. if I see Samurai, then I automatically attack.)">{$char->instincts|escape}</textarea>
         <textarea name='goals' id='goals' title="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring" placeholder="Your ninja's goals, what you want to accomplish in the world, or even want to get done this week while exploring">{$char->goals|escape}</textarea>
         <textarea name='beliefs' id='beliefs' title="Your ninja's belief, the moral compass that keeps them going." placeholder="Your ninja's belief, the moral compass that keeps them going.">{$char->beliefs|escape}</textarea>
-        <label class='glass-box'> Traits: <input name='traits' id='traits' type='text' value='{$char->traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)" size='40'></label>
+        <label class='glass-box'> Traits: <input name='traits' id='traits' maxlength='40' type='text' value='{$char->traits|escape}' title="Traits that your ninja has (comma separated)" placeholder="Traits that your ninja has (comma separated)"></label>
         <input type='submit' value='Update' class='btn btn-primary formButton'>
       </fieldset>
     </form>

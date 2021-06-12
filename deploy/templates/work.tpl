@@ -34,6 +34,7 @@
 <section class='glassbox'>
 
 <p>You can earn money by working in the village fields. Field work will exchange turns for gold. <span style='color:turquoise;'>1 Turn</span> = <span class='gold'>石{$work_multiplier}</span>.</p>
+
 {if $authenticated}
 <form id="work" action="/work/request_work" method="post" name="work">
   <div style="width:40%;margin:3rem auto;">
@@ -63,9 +64,9 @@ To earn pay for your work you must first <a href="/signup">become a citizen of t
 
 <hr>
 
-    <div class='inline-block glassbox'>
+<div class='inline-block glassbox'>
     <SCRIPT charset="utf-8" type="text/javascript" src="https://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F0e21130c-3468-4f24-bbd7-acaeb7142afc&Operation=GetScriptTemplate"> </SCRIPT> <NOSCRIPT><A HREF="https://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F0e21130c-3468-4f24-bbd7-acaeb7142afc&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
-    </div>
+</div>
 
 
 <!-- Google Ad -->

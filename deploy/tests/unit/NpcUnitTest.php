@@ -23,14 +23,6 @@ class NpcUnitTest extends NWTest {
         $this->assertTrue(array_key_exists('tengu', NpcFactory::npcsData()));
     }
 
-    public function testForExperimentalNpcs() {
-        if(!DEBUG){
-            $this->markTestSkipped();
-        }
-        $this->assertTrue(array_key_exists('pig', NpcFactory::npcsData()));
-        $this->assertTrue(array_key_exists('merchant2', NpcFactory::npcsData()));
-        $this->assertTrue(array_key_exists('peasant2', NpcFactory::npcsData()));
-    }
 
     public function testCreateStandardFirefly() {
         $firefly = NpcFactory::create('firefly');
@@ -40,6 +32,24 @@ class NpcUnitTest extends NWTest {
     public function testCreateStandardFirefliesPlural() {
         $fireflies = NpcFactory::create('fireflies');
         $this->assertInstanceOf('NinjaWars\core\data\Npc', $fireflies, 'Fireflies creation failed');
+    }
+
+    public function testForExperimentalNpcs() {
+        if(!DEBUG){
+            $this->markTestSkipped();
+        }
+        $this->assertTrue(array_key_exists('pig', NpcFactory::npcsData()));
+        $this->assertTrue(array_key_exists('merchant2', NpcFactory::npcsData()));
+        $this->assertTrue(array_key_exists('peasant2', NpcFactory::npcsData()));
+    }
+
+    public function testBasanNpcWithBaseCreatureRaceWorks() {
+        if(!DEBUG){
+            $this->markTestSkipped();
+        }
+        $basan = NpcFactory::create('basan'); // Weird cockatrice bird thing, I made it race default creature
+        $this->assertInstanceOf('NinjaWars\core\data\Npc', $basan, 'Basan base race creature creation failed');
+        $this->assertTrue($basan->race() === 'creature');
     }
 
     public function testNpcListHasLotsOfNpcs() {
@@ -175,6 +185,39 @@ class NpcUnitTest extends NWTest {
         $this->assertLessThan(61, $guard2->gold());
         $this->assertGreaterThan(40, $guard2->gold());
         $this->assertGreaterThan(9, $guard2->bountyMod());
+    }
+
+
+    function testThief2DoesStuff() {
+        if (!DEBUG) {
+            $this->markTestSkipped();
+        }
+        /**
+         * Thief should have a max damage of 35
+         * it should have "hitpoints" of 30
+         * it should have zero reward gold
+         * it should sometimes be able to steal the equivalent of it's reward gold
+         * it should always give a shuriken as long as it was "killed"
+         * also adds to the theif counter based on being in a gang, and thus has a chance
+         * for the gang to enact retribution (though this won't be tested in unit behavior)
+         */
+        $thief2 = new Npc('thief2');
+        $mock_pc = new Player();
+        $mock_pc->setStrength(30);
+        $max_dam = $thief2->maxDamage($mock_pc);
+
+        $this->assertEquals(35, $max_dam);
+        $this->assertLessThan(50, $thief2->damage());
+        $this->assertGreaterThan(29, $thief2->getHealth());
+        $this->assertLessThan(80, $thief2->getHealth());
+        $this->assertLessThan(61, $thief2->gold());
+        $this->assertGreaterThan(1, $thief2->gold());
+        $this->assertLessThan(1, $thief2->bountyMod());
+        $this->assertTrue($thief2->hasTrait('steals'));
+        $this->assertTrue($thief2->hasTrait('escaper'));
+        $this->assertTrue($thief2->hasTrait('gang'));
+        $this->assertGreaterThan(45, $thief2->difficulty());
+        $this->assertLessThan(60, $thief2->difficulty());
     }
 
     public function testAnNpcHasADifficulty(){
