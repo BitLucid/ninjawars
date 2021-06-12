@@ -1171,6 +1171,18 @@ fieldset#details textarea + textarea{
 	margin-bottom:.5em;
 }
 
+#skills-list > div {
+	margin-bottom: 3rem;
+}
+
+#skills-list legend {
+	margin-bottom: 0.1rem;
+}
+
+#skills-list legend + p{
+	color: #555555;
+}
+
 .playerTable th {
 	text-align: left;
 	background-color: #555555;
@@ -1228,7 +1240,7 @@ td.playerTable {
 	display:inline-block;
 	/* Width of ninja-card made breakpoint responsive in certain screens */
 	font-family:'Open Sans', "Arial", sans-serif;
-	margin:0.1rem auto;
+	margin:0.1rem auto 1rem;
 	padding: 2rem;
 }
 .elder-ninja {
@@ -3099,6 +3111,11 @@ select option #blue-class-select {
 #clan-description {
 	max-height: 240px;
 	max-width: 96%;
+	color: #242323;
+	background-color: #928f8f;
+	padding: 1.2rem;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
 }
 
 #clan-info #clan-description {
