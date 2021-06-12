@@ -1086,6 +1086,7 @@ table.playerTable .Gray, .player-info .Gray, .class-name.Gray, .class-name.Gray 
 .ninja-traits{
   font-style:italic;
 }
+
 .two-column {
   width: 100%;
   clear: both;
@@ -1537,9 +1538,9 @@ iframe {
 
 #event-list dt {
     float: left;
-    width: 20%;
     /* adjust the width; make sure the total of both is 100% */
-    min-width: 160px;
+    width: 20%;
+    min-width: 6.875rem;
 }
 
 #event-list .generic-event {
@@ -1562,7 +1563,7 @@ time {
 }
 #event-list .event-time, .chat-messages .chat-time, #message-list .message-time {
 	font-family: Trebuchet MS1, Helvetica, sans-serif;
-	font-size: .8em;
+	font-size: 0.8rem;
 	display:inline-block;
     margin-left:1em;
 }
@@ -2604,7 +2605,9 @@ table#sight-info {
 }
 .message-list dt {
   float:left; width:20%; /* adjust the width; make sure the total of both is 100% */
-  min-width:160px;
+  min-width:6.875rem;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 .message-list dd {
   float:left; width:70%; /* adjust the width; make sure the total of both is 100% */
@@ -2654,7 +2657,13 @@ table#sight-info {
 }
 #tabs.message-tabs .current a, #tabs.message-tabs .current a:hover{
 	/* Make the current tab look less like a link, since they're already on that tab/page */
-	color:white; font-weight:normal; border-right:3px gray inset; border-left:3px gray inset; border-top:3px gray inset;
+	color:white;
+	font-weight:normal;
+	border-right:3px gray inset;
+	border-left:3px gray inset;
+	border-top:3px gray inset;
+	border-top-left-radius: 0.5rem;
+	border-top-right-radius: 0.5rem;
 }
 
 #tabs.message-tabs ul{
