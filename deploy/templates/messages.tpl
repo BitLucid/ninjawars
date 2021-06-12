@@ -21,7 +21,7 @@
   <div class='glassbox' id='message-ninja'>
     <form action='/messages/send_personal' method='post' name='ninja_message' id='message-form'>
       <div>
-        <em class='char-name'>@<input class='char-name textField js-hook' type='text' size='26' id='send-to' name='to' value='{$to|escape}' required='required'></em>
+        <em class='char-name'>@<input class='char-name textField js-hook' style='max-width:15rem' type='text' size='26' id='send-to' name='to' value='{$to|escape}' required='required'></em>
         <em>say</em>
         &apos;<input id='message-to-ninja' type='text' size='30' name='message' class='textField' autocomplete='off' maxlength='{$smarty.const.MAX_MSG_LENGTH|escape}' required='required' autofocus='autofocus'>&apos;
         <input type='hidden' name='messenger' value='1'>
