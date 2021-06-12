@@ -90,7 +90,7 @@ class Npc implements Character {
     public function damage(Character $char = null) {
         // Horned enemies do a little extra damage
         return rand(0, $this->maxDamage($char)) 
-            + $this->hasTrait('horned') ? (int) max(0, floor($this->getStrength()/8)) : 0;
+            + ($this->hasTrait('horned') ? (int) max(0, floor($this->getStrength()/8)) : 0);
     }
 
     /**
