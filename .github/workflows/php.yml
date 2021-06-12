@@ -17,8 +17,8 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '7.4'
-        extensions: mbstring, intl
+        php-version: '8.0'
+        extensions: mbstring, intl, pgsql, xml
         ini-values: post_max_size=256M, max_execution_time=180
         coverage: xdebug    
         tools: php-cs-fixer, phpunit
@@ -38,6 +38,10 @@ jobs:
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
       run: ./composer.phar install --prefer-dist --no-progress --no-suggest
+
+    - name: Create autoload file if necessary
+      if: steps.composer-cache.outputs.cache-hit == 'true'
+      run: ./composer.phar dump-autoload
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
