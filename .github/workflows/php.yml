@@ -41,7 +41,9 @@ jobs:
 
     - name: Create autoload file if necessary
       if: steps.composer-cache.outputs.cache-hit == 'true'
-      run: ./composer.phar dump-autoload
+      run: |
+        ls -halt vendor
+        ./composer.phar dump-autoload
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
