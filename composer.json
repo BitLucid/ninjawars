@@ -19,7 +19,7 @@
 		"rmm5t/jquery-timeago": "^1",
 		"ninjawars/jquery-linkify": "^2.1",
 		"swiftmailer/swiftmailer": "~5.4.0",
-		"smarty/smarty": "v3.1.33",
+		"smarty/smarty": "v3.1.39",
 		"cboden/ratchet": "^0.4.1",
 		"illuminate/database": "~5.4.0",
 		"symfony/http-foundation": "^4.1",
