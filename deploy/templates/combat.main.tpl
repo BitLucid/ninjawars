@@ -11,7 +11,7 @@
     clear: both;
     font:sans-serif;
     color: black;
-    background-color: #a20909;
+    background-color: #888888;
     border-radius: 0.2rem;
     padding: 0.2rem 1rem;
 }
@@ -53,7 +53,7 @@
 
     <div class='battle-arena'>
 {for $round=1 to $rounds}
-    <div class='battle-round'><span class='fa fa-bolt'/> Round {$round}, fight!</div>
+        <div class='battle-round'><span class='fa fa-bolt'/> Round {$round}, fight!</div>
 {/for}
     </div>
 

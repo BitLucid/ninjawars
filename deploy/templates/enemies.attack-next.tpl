@@ -47,6 +47,13 @@ var enemy = 'enemy to array @json_encode'
     display: inline-block;
     min-width: 7.5rem;
 }
+.attack-next blockquote {
+    overflow:hidden;
+    text-overflow: ellipsis;
+    max-height: 13rem;
+    max-width: 100%;
+    word-wrap:break-all;
+}
 .attack-next .item-select {
     color: #ffffff;
     background-color: #555555;
@@ -56,11 +63,12 @@ var enemy = 'enemy to array @json_encode'
 }
 .attack-next .carousel {
     display:grid;
-    grid-template-columns: 9% 80% 9%;
-    grid-gap: 1%;
+    grid-template-columns: 10% 78% 10%;
+    grid-gap: 0;
 }
 .attack-next .spin-enemy {
-    font-size: 15rem;
+    font-size: 13rem;
+    padding: 0;
 }
 .attack-next .spin-enemy a:hover{
     text-decoration: none;

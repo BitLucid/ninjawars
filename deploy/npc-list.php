@@ -250,7 +250,7 @@ NpcFactory::$data = [
             'damage'    => 1,
             'race'      => 'fish',
             'inventory' => [
-                'sushi' => '.5',
+                'sushi' => '.3',
             ],
         ],
         'chicken'       => [
