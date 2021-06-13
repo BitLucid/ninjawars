@@ -41,7 +41,11 @@
 </div>
     {/if}
 {foreachelse}
-<p class='enemies-lefthalf'>You haven't decided who your enemies are yet{if $logged_in}, pick some below.{else}, become a ninja to get some enemies.{/if}</p>
+<div class='enemies-lefthalf'>
+  <div class='glassbox'>
+    You haven't decided who your enemies are yet{if $logged_in}, pick some below.{else}, become a ninja to get some enemies.{/if}
+  </div>
+</div>
 {/foreach}
 
 {if !empty($peers) && count($peers) gt 0}

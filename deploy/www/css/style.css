@@ -554,10 +554,11 @@ h1, h2, .title {
 	margin-bottom:.1em;
 }
 h2 {
-	margin: .1em auto .1em; min-width:50%; 
+	margin: .1em auto .1em; 
+	min-width:50%; 
 	background: #00a9af;
 	font-family: 'Aclonica', "edding-780-1","edding-780-2", Charcoal, sans-serif;
-	letter-spacing:0.1em; font-weight:normal;
+	font-weight:normal;
 }
 h1, .player-info .player-name {
 	background: #1D0F00;
@@ -1243,6 +1244,10 @@ td.playerTable {
 	font-family:'Open Sans', "Arial", sans-serif;
 	margin:0.1rem auto 1rem;
 	padding: 2rem;
+}
+.ninja-card h2{
+	width: inherit;
+	min-width:70%;
 }
 .elder-ninja {
 	color:#d99868;
