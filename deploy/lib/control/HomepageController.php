@@ -16,6 +16,7 @@ class HomepageController extends AbstractController {
     const PRIV      = false;
     const ALIVE     = false;
     private $loggedIn = false;
+    const NW_VERSION = 'v1.12.2 2021.06.12';
 
     /**
      * Stores logged-in status of user in member variable for use later
@@ -53,7 +54,7 @@ class HomepageController extends AbstractController {
         $parts = [
             'main_src'             => '/intro',
             'body_classes'         => 'main-body',
-            'version'              => 'NW Version 1.7.5 2010.12.05',
+            'version'              => self::NW_VERSION,
             'ninja'                => $ninja,
             'player_info'          => $playerInfo,
             'clan'                 => $clan,
@@ -74,7 +75,7 @@ class HomepageController extends AbstractController {
         $parts = [
             'main_src'     => '/intro',
             'body_classes' => 'main-body splash',
-            'version'      => 'NW Version 1.8.0 2014.06.30',
+            'version'      => self::NW_VERSION,
         ];
 
         return new StreamedViewResponse('Live by the Shuriken', 'splash.tpl', $parts, [ 'is_index' => true ]);
