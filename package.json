@@ -1,53 +1,55 @@
 {
-  "name": "ninjawars",
-  "version": "1.12.2",
-  "description": "The Ninja Game at ninjawars.net",
-  "main": "deploy/www/js/nw.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "scripts": {
-    "test": "karma start deploy/tests/karma.conf.js --browsers PhantomJS --single-run",
-    "lint": "eslint --ext .jsx,.js deploy/www/js",
-    "prepare-unit-test-ci": "echo 'no-op for now'",
-    "unit-test": "test && nsp check",
-    "start": "make build",
-    "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
-    "security-check": "npx ncu",
-    "browse": "xdg-open https://localhost:8765"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/BitLucid/ninjawars.git"
-  },
-  "keywords": [
-    "ninjawars.net",
-    "ninja",
-    "game",
-    "bbg"
-  ],
-  "author": "Roy Ronalds",
-  "license": "CC-BY-SA-3.0",
-  "bugs": {
-    "url": "https://github.com/BitLucid/ninjawars/issues"
-  },
-  "engines": {
-    "node": ">=8.0.0"
-  },
-  "homepage": "https://github.com/BitLucid/ninjawars#readme",
-  "devDependencies": {
-    "jasmine-core": "^3.2.1",
-    "karma": "^4.1.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^1.1.2",
-    "karma-phantomjs-launcher": "^1.0.4",
-    "karma-requirejs": "^1.1.0",
-    "karma-sinon": "^1.0.5",
-    "phantomjs-prebuilt": "^2.1.16",
-    "requirejs": "^2.3.6",
-    "sinon": "^7.0.0"
-  },
-  "dependencies": {
-    "eslint": "^5.16.0"
-  }
+    "name": "ninjawars",
+    "version": "1.12.2",
+    "description": "The Ninja Game at ninjawars.net",
+    "main": "deploy/www/js/nw.js",
+    "directories": {
+        "doc": "docs"
+    },
+    "scripts": {
+        "test": "karma start deploy/tests/karma.conf.js --browsers PhantomJS --single-run",
+        "lint": "eslint --ext .jsx,.js deploy/www/js",
+        "prepare-unit-test-ci": "echo 'no-op for now'",
+        "unit-test": "test && nsp check",
+        "start": "make build",
+        "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
+        "security-check": "npx ncu",
+        "prettier": "npx prettier --write .",
+        "browse": "xdg-open https://localhost:8765"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/BitLucid/ninjawars.git"
+    },
+    "keywords": [
+        "ninjawars.net",
+        "ninja",
+        "game",
+        "bbg"
+    ],
+    "author": "Roy Ronalds",
+    "license": "CC-BY-SA-3.0",
+    "bugs": {
+        "url": "https://github.com/BitLucid/ninjawars/issues"
+    },
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "homepage": "https://github.com/BitLucid/ninjawars#readme",
+    "devDependencies": {
+        "jasmine-core": "^3.2.1",
+        "karma": "^4.1.0",
+        "karma-chrome-launcher": "^2.2.0",
+        "karma-jasmine": "^1.1.2",
+        "karma-phantomjs-launcher": "^1.0.4",
+        "karma-requirejs": "^1.1.0",
+        "karma-sinon": "^1.0.5",
+        "phantomjs-prebuilt": "^2.1.16",
+        "prettier": "2.3.1",
+        "requirejs": "^2.3.6",
+        "sinon": "^7.0.0"
+    },
+    "dependencies": {
+        "eslint": "^5.16.0"
+    }
 }

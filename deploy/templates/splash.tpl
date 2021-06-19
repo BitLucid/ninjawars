@@ -1,5 +1,8 @@
     <!-- Version {$version} -->
 
+  <link href="/css/splash.css" rel="stylesheet"/>
+
+
     <!-- Top horizontal bar -->
     <header id='index-header' class='clearfix'>
 		<div id="logo-appended">

@@ -1,61 +1,92 @@
-.solo-page .solo-box{
-	padding:0.3em 1em;
+.solo-page .solo-box {
+    padding: 0.3em 1em;
 }
-#ninja-matches .even{
-	float:right; clear:right; padding-right:5em;
+#ninja-matches .even {
+    float: right;
+    clear: right;
+    padding-right: 5em;
 }
-#ninja-matches ul{
-	margin-top:0;margin-bottom:0;
+#ninja-matches ul {
+    margin-top: 0;
+    margin-bottom: 0;
 }
-ul#recent-attackers{
-	padding-left:0;
+ul#recent-attackers {
+    padding-left: 0;
 }
-#enemies-stuff{
-	background-color:rgba(0, 0, 0, 0.5);box-sizing:border-box;
+#enemies-stuff {
+    background-color: rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
 }
-#enemies-stuff ul{
-	margin-left:0;
-	padding-left:0;
+#enemies-stuff ul {
+    margin-left: 0;
+    padding-left: 0;
 }
-#current-enemies-list li em, #peer-chars li em{
-	font-weight:bold;color:brown;margin-left:0.1em;display:inline-block;padding: 0 .2em;text-align:center;width:1.7em;
+#current-enemies-list li em,
+#peer-chars li em {
+    font-weight: bold;
+    color: brown;
+    margin-left: 0.1em;
+    display: inline-block;
+    padding: 0 0.2em;
+    text-align: center;
+    width: 1.7em;
 }
-#current-enemies-list .enemy-stats-box{
-	display:inline-block;margin-left:1em;width: 6.9em;
+#current-enemies-list .enemy-stats-box {
+    display: inline-block;
+    margin-left: 1em;
+    width: 6.9em;
 }
-#current-enemies-list li{
-	position:relative;margin-bottom:0.1em;white-space:nowrap;
+#current-enemies-list li {
+    position: relative;
+    margin-bottom: 0.1em;
+    white-space: nowrap;
 }
-#current-enemies-list .enemy-action-box{
-	display:inline-block;width: 10em;
+#current-enemies-list .enemy-action-box {
+    display: inline-block;
+    width: 10em;
 }
-#current-enemies-list .enemy-dead a.enemy-name{
-	text-decoration:line-through;color:#800000;
+#current-enemies-list .enemy-dead a.enemy-name {
+    text-decoration: line-through;
+    color: #800000;
 }
-.enemies-lefthalf, .enemies-righthalf{
-	width:100%;margin-left:0;margin-right:0;
+.enemies-lefthalf,
+.enemies-righthalf {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 /* enemies halves get floated in the main large screen media query */
 
-#peer-chars .peer{
-	position:relative;margin-bottom:0.1em;
+#peer-chars .peer {
+    position: relative;
+    margin-bottom: 0.1em;
 }
-#peer-chars .peer-name, #current-enemies-list .enemy-name{
-	width:8.4em;display:inline-block;overflow:hidden;text-overflow:ellipsis;
+#peer-chars .peer-name,
+#current-enemies-list .enemy-name {
+    width: 8.4em;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-#peer-chars .peer-name{
-	width:8.5em;
+#peer-chars .peer-name {
+    width: 8.5em;
 }
-#peer-chars .stats-block{
-	margin-left:2em;width:7.5em;display:inline-block;
+#peer-chars .stats-block {
+    margin-left: 2em;
+    width: 7.5em;
+    display: inline-block;
 }
-#more-matches{
-	clear:both;text-align:center;
+#more-matches {
+    clear: both;
+    text-align: center;
 }
-#current-enemies-list #remove-enemy-form{
-	display:inline;
+#current-enemies-list #remove-enemy-form {
+    display: inline;
 }
-.remove-enemy-button{
-	padding:0;border:0;background:none;font-weight:normal;
+.remove-enemy-button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-weight: normal;
 }
