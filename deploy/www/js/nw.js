@@ -512,9 +512,7 @@ if (
         };
 
         NW.storageGetter = function (p_key, p_defaultValue) {
-            return localStorage.getItem(p_key)
-                ? localStorage.getItem(p_key)
-                : p_defaultValue;
+            return localStorage.getItem(p_key) ? localStorage.getItem(p_key) : p_defaultValue;
         };
     } else {
         NW.storageSetter = function () {};

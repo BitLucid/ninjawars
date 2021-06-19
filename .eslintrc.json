@@ -22,7 +22,7 @@
         "camelcase": "off",
         "capitalized-comments": "off",
         "class-methods-use-this": "error",
-        "comma-dangle": "error",
+        "comma-dangle": ["warn", "only-multiline"],
         "comma-spacing": "off",
         "comma-style": [
             "error",
