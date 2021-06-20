@@ -2110,10 +2110,8 @@ a#skip-to-bottom {
 .ninja-error {
     margin: 0 auto 0;
     display: inline-block;
-    border-style: solid;
-    border-width: thin;
-    border-radius: 0.1rem;
-    border-color: #a40746;
+    border:solid thin #a40746;
+    border-radius: 0.3rem;
     color: #800040;
     background-color: #f8fde7;
     font-weight: bold;
