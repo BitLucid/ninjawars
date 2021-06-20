@@ -3411,14 +3411,17 @@ nav.navigation ul.menu li {
     margin-left: 1em;
     margin-right: 1em;
 }
+
 .centered {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
 }
+
 .text-centered {
     text-align: center;
 }
+
 .dont-break-out {
     /* These are technically the same, but use both */
     overflow-wrap: break-word;
@@ -3433,6 +3436,10 @@ nav.navigation ul.menu li {
     -moz-hyphens: auto;
     -webkit-hyphens: auto;
     hyphens: auto;
+}
+
+.no-wrap{
+    white-space: nowrap;
 }
 
 .stamp {
