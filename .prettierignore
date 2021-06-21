@@ -1,0 +1,48 @@
+# Ignore lockfiles
+composer.lock
+package-lock.json
+yarn.lock
+
+# Ignore artifacts
+build
+coverage
+/cc/
+cc
+deploy/components/
+deploy/www/components/
+vendor
+deploy/vendor
+deploy/resources
+CONFIG
+unclean
+archive
+tests/.cache
+.cache
+
+# Behavioral files
+.github/workflows/php.yml
+
+# Ignore third parties that are embedded
+deploy/www/css/font-awesome.css
+deploy/www/css/font-awesome.min.css
+deploy/www/js/imgur.min.js
+deploy/www/css/imgur.min.css
+deploy/www/js/bootstrap.min.js
+deploy/www/css/bootstrap.min.css
+deploy/www/js/jquery.min.js
+deploy/www/js/jquery.linkify.js
+deploy/www/js/jquery.timeago.js
+
+# Ignore some config files
+.codeclimate.yml
+.travis.yml
+Pipfile.lock
+
+# Js config files
+.eslintrc.json
+
+# Whatever you might want to call this
+node_modules
+.venv
+
+#possibly, I might want to ignore whole classes of files like *.html

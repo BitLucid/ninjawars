@@ -1,13 +1,13 @@
 watch:
-  directories:
-    - deploy/tests
-    - deploy/lib/control
-    - deploy/lib/data
-    - deploy/www
-    - deploy/model
-  fileMask: '*.php'
+    directories:
+        - deploy/tests
+        - deploy/lib/control
+        - deploy/lib/data
+        - deploy/www
+        - deploy/model
+    fileMask: '*.php'
 notifications:
-  passingTests: false
+    passingTests: false
 phpunit:
-  binaryPath: vendor/bin/phpunit
-  arguments: '--stop-on-failure'
+    binaryPath: vendor/bin/phpunit
+    arguments: '--stop-on-failure'

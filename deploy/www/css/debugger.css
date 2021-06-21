@@ -13,13 +13,13 @@ lists the appropriate urls.
 */
 
 /* Empty Attributes */
-area[alt=""],
-a[href=""],
-a[title=""],
-input[title=""],
-input[type=""],
-label[for=""] {
-  border:5px dotted green!important;
+area[alt=''],
+a[href=''],
+a[title=''],
+input[title=''],
+input[type=''],
+label[for=''] {
+    border: 5px dotted green !important;
 }
 
 /* Empty Elements */
@@ -36,21 +36,21 @@ td:empty,
 th:empty,
 thead:empty,
 tbody:empty {
-  border:5px solid green!important;
+    border: 5px solid green !important;
 }
 
 /* Inline Javascript */
-a[href="javascript:void(0)"],
-a[href="javascript:void(0);"],
-a[href="javascript:;"],
-a[href="javascript:"],
+a[href='javascript:void(0)'],
+a[href='javascript:void(0);'],
+a[href='javascript:;'],
+a[href='javascript:'],
 a[onclick],
 *[onfocus],
 *[onblur],
 *[onhover],
 *[onmouseover],
 *[onmouseout] {
-  border:5px dotted cyan!important;
+    border: 5px dotted cyan !important;
 }
 
 /* Proposed Deprecated Attributes */
@@ -77,7 +77,7 @@ th[valign],
 /*img[width],*/
 object[width],
 table[width] {
-  border:5px dotted orange!important;
+    border: 5px dotted orange !important;
 }
 
 /* Deprecated Attributes */
@@ -153,7 +153,7 @@ td[width],
 th[width],
 applet[width],
 pre[width] {
-  border:5px dotted red!important;
+    border: 5px dotted red !important;
 }
 
 /* Non-W3C Proprietary HTML Attributes */
@@ -166,21 +166,21 @@ body[rightmargin],
 body[bottommargin],
 body[leftmargin],
 table[frame] {
-  border:5px dotted magenta!important;
+    border: 5px dotted magenta !important;
 }
 
 /* Works with Firebug */
 div:empty {
-  background-color:#3875d7!important;
-  padding:1px 1px 0 0;
+    background-color: #3875d7 !important;
+    padding: 1px 1px 0 0;
 }
 
 /* Proposed Deprecated Elements */
-input[type="button"],
-input[type="reset"],
+input[type='button'],
+input[type='reset'],
 tt,
-big{
-  border:5px solid orange!important;
+big {
+    border: 5px solid orange !important;
 }
 
 /* Deprecated Elements */
@@ -200,7 +200,7 @@ u,
 listing,
 plaintext,
 xmp {
-  border:5px solid red!important;
+    border: 5px solid red !important;
 }
 
 /* Non-W3C Proprietary HTML Elements */
@@ -230,7 +230,7 @@ wbr,
 xml,
 blackface,
 shadow {
-  border:5px solid magenta!important
+    border: 5px solid magenta !important;
 }
 
 /* XHTML 1.0 Strict Prohibitions */
@@ -251,10 +251,10 @@ button > fieldset,
 button > iframe,
 button > isindex,
 label > label,
-form > form { 
-  border:5px solid lime!important 
+form > form {
+    border: 5px solid lime !important;
 }
- 
+
 /* XHTML 1.0 Strict Deprecated Attributes */
 a[name],
 applet[name],
@@ -262,6 +262,6 @@ applet[name],
 frame[name],
 /*iframe[name],*/
 img[name],
-map[name] { 
-  border:5px dotted lime!important
+map[name] {
+    border: 5px dotted lime !important;
 }
