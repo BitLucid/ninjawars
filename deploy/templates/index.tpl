@@ -67,7 +67,7 @@
 
 
       <div class='health-container'>
-          <div class='health-bar' data-json="{$ninja|@json_encode nofilter}" style='width:0%'</div>
+          <div class='health-bar' data-json="{$ninja|@json_encode|escape|escape:'quotes' nofilter}"></div>
       </div>
     </nav>
 

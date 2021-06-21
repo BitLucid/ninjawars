@@ -17,7 +17,7 @@
 		  <a id='solo-page-login-link' href='/login' class='btn btn-vital'>Log in</a> <a id='solo-page-signup-link' href='/signup' class='btn btn-vital'>Signup</a>
 		</nav>
 		<nav id='top-logo'>
-      <h1>The Ninja Game at <a href='/intro' target='main'><img src='{cachebust file="/images/nw_bamboo_logo_soft.png"}' alt='NinjaWars' width='200' height='100'></a>.net</h1>
+      <h1>The Ninja Game at <span class='no-wrap'><a href='/intro' target='main'><img src='{cachebust file="/images/nw_bamboo_logo_soft.png"}' alt='NinjaWars' width='200' height='100'></a>.net</span></h1>
 		</nav>
 
     <nav role='navigation' id='subcategory-bar' class='navigation'>
