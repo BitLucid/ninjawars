@@ -36,7 +36,7 @@
                     </div>
                   </form>
 
-                  <div id="mini-chat-container" class='chat-collapsed'>
+                  <div id="mini-chat-container" class='chat-collapsed dont-break-out'>
 
 
                     <!-- Chat section with template chat author and messages -->

@@ -1610,11 +1610,21 @@ iframe {
     margin-bottom: 1em;
 }
 .chat-collapsed {
-    max-height: 300px;
+    max-height: 45vh;
 }
 .chat-expanded {
     height: 880px;
 }
+.dont-break-out {
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+  }
 .active-members-count {
     font-size: smaller;
     font-style: italic;
@@ -1775,7 +1785,7 @@ time {
     left: 0;
     top: 0;
     padding-left: 3%;
-    margin-top: 6rem;
+    margin-top: 6rem; /** Because the top bar covers headers otherwise **/
 }
 
 .main-iframe {
@@ -3193,7 +3203,7 @@ select option #blue-class-select {
 .return-to-location {
     display: block;
     font-size: 1.3rem;
-    margin-top: 0.5rem;
+    margin-top: 1.5rem;
     margin-left: 1rem;
 }
 .return-to-location,
