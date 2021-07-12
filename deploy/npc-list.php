@@ -539,5 +539,19 @@ NpcFactory::$data = [
                 'horned'
             ],
         ],
+        'toad'           => [
+            'name'     => 'Toad',
+            'strength' => 1,
+            'stamina'  => 3,
+            'speed'    => 15,
+            'short'    => 'a slimy toad',
+            'img'      => 'matsumoto-hoji-toad.jpg',
+            'race'     => 'animal',
+            'inventory' => [
+            ],
+            'traits'   => [
+                'amphibious',
+            ],
+        ],
     ]
 );
