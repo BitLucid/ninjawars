@@ -545,7 +545,7 @@ NpcFactory::$data = [
             'stamina'  => 3,
             'speed'    => 15,
             'short'    => 'a slimy toad',
-            'img'      => 'matsumoto-hoji-toad.jpg',
+            'img'      => 'matsuoto-hoji-toad.jpg',
             'race'     => 'animal',
             'inventory' => [
             ],
