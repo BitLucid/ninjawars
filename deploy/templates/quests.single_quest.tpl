@@ -3,6 +3,12 @@
 		<h1>Quest: {$quest.title}</h1>
 	</header>
 
+	{if $error}
+	<div class='error'>
+		{$error}
+	</div>
+	{/if}
+
 	<h2>{$quest.title} from <a href='/player?player_id={$quest.player_id}'>{$quest.giver}</a></h2>
 	Tags: {$quest.tags}
 	Description: {$quest.description}

@@ -6,7 +6,7 @@ class PlayerUnitTest extends NWTest {
     private $player;
     private $data;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->data = new PlayerVO();
         $this->data->uname = 'User1';
@@ -23,9 +23,9 @@ class PlayerUnitTest extends NWTest {
         $this->player->speed = Player::baseSpeedByLevel($this->data->level);
     }
 
-    public function tearDown() {
-        parent::tearDown();
+    public function tearDown():void {
         unset($this->player);
+        parent::tearDown();
     }
 
     public function testPlayerConstructor() {

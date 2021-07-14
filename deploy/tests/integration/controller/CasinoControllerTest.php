@@ -9,7 +9,7 @@ use NinjaWars\core\control\CasinoController;
 class CasinoControllerTest extends NWTest {
     private $controller;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->controller = new CasinoController();
 		SessionFactory::init(new MockArraySessionStorage());
@@ -17,7 +17,7 @@ class CasinoControllerTest extends NWTest {
 		SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	public function tearDown() {
+	public function tearDown():void {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();

@@ -9,7 +9,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 
 class LoginControllerTest extends NWTest {
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         // Mock the post request.
         $request = new Request([], []);
@@ -17,7 +17,7 @@ class LoginControllerTest extends NWTest {
         SessionFactory::init(new MockArraySessionStorage());
     }
 
-    public function tearDown() {
+    public function tearDown():void {
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();

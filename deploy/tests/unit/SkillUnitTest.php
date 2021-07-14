@@ -5,14 +5,14 @@ use NinjaWars\core\data\Player;
 class SkillUnitTest extends NWTest {
     private $skill;
 
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         $this->skill = new Skill();
     }
 
     public function testGetSkillList() {
         $skillList = $this->skill->getSkillList();
-        $this->assertInternalType('array', $skillList);
+        $this->assertIsArray($skillList);
         $this->assertNotEmpty($skillList);
     }
 

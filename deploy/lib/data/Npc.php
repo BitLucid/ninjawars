@@ -71,7 +71,7 @@ class Npc implements Character {
      *
      * @return int
      */
-    public function maxDamage(Character $enemy=null) {
+    public function maxDamage(Character $enemy=null): int {
         $dam = ((1+ ($this->strength * 2)) + $this->damage);
         // Mirror some of their enemy's strength
         if ($this->hasTrait('partial_match_strength') && $enemy instanceof Character) {
@@ -79,7 +79,7 @@ class Npc implements Character {
             $dam = $dam + $add;
         }
 
-        return $dam;
+        return (int) $dam;
     }
 
     /**
@@ -88,7 +88,9 @@ class Npc implements Character {
      * @return int
      */
     public function damage(Character $char = null) {
-        return rand(0, $this->maxDamage($char));
+        // Horned enemies do a little extra damage
+        return rand(0, $this->maxDamage($char)) 
+            + ($this->hasTrait('horned') ? (int) max(0, floor($this->getStrength()/8)) : 0);
     }
 
     /**
@@ -102,6 +104,9 @@ class Npc implements Character {
         $armored          = ($this->hasTrait('armored') ? 1 : 0);
         $complex          = count($this->traits_array);
         $matches_strength = ($this->hasTrait('partial_match_strength') ? 1 : 0);
+        $horned           = $this->hasTrait('horned') ? 1 : 0;
+        $gang             = $this->hasTrait('gang') ? 1 : 0;
+        $insubstantial           = $this->hasTrait('wispy') ? 1 : 0;
 
         return 0
             + ($this->strength * 2)
@@ -112,6 +117,9 @@ class Npc implements Character {
             + ($armored * 5)
             + ($complex * 3)
             + ($matches_strength * 5)
+            + ($horned * 2)
+            + ($gang * 2)
+            + ($insubstantial * 1)
             ;
     }
 
@@ -220,11 +228,7 @@ class Npc implements Character {
      * @return String
      */
     public function race() {
-        if (!$this->race) {
-            return 'creature';
-        } else {
-            return $this->race;
-        }
+        return $this->race ?? 'creature';
     }
 
     /**

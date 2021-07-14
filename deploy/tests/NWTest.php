@@ -12,7 +12,7 @@ class NWTest extends \PHPUnit\Framework\TestCase {
 
     /**
      */
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
         $this->m_dependencies = new Container();
 
@@ -38,8 +38,9 @@ class NWTest extends \PHPUnit\Framework\TestCase {
         return $container;
     }
 
-    public function tearDown() {
+    public function tearDown(): void {
         $this->m_dependences = null;
+        parent::tearDown();
     }
 
     /**

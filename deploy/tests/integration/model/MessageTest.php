@@ -4,13 +4,13 @@
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Player;
 
-class TestMessage extends \NWTest {
+class MessageTest extends \NWTest {
     private $char_id;
     private $char_id_2;
     private $messageData;
 	private $message_id;
 
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         $this->char_id = TestAccountCreateAndDestroy::char_id(true);
         $this->char_id_2 = TestAccountCreateAndDestroy::char_id_2(true);
@@ -26,12 +26,12 @@ class TestMessage extends \NWTest {
         $this->message_id = null;
     }
 
-    public function tearDown() {
-        parent::tearDown();
+    public function tearDown():void {
         TestAccountCreateAndDestroy::destroy();
         if ($this->message_id !== null) {
             query('delete from messages where message_id = :id', [':id'=>$this->message_id]);
         }
+        parent::tearDown();
     }
 
     public function testMessageCanInstantiate() {

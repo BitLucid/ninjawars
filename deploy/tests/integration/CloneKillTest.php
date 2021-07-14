@@ -7,14 +7,16 @@ class CloneKillTest extends NWTest {
     /**
      *
      */
-    function setUp() {
+    function setUp():void{
+        parent::setUp();
     }
 
     /**
      * Delete test user.
      */
-    function tearDown() {
+    function tearDown():void {
         TestAccountCreateAndDestroy::purge_test_accounts();
+        parent::tearDown();
     }
 
     private function inactivate($char_id) {

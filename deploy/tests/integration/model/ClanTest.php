@@ -6,10 +6,17 @@ class ClanTest extends NWTest {
     private $clan_id;
     private $char_id;
     private $char_id_2;
+    private $clan;
     private $clan_identity = 'phpunit_test_clan';
 
-	public function setUp() {
+    public function destroyClan(){
+        query('delete from clan where clan_id = :id or clan_name = :clan_name', [':id'=>$this->clan_id, ':clan_name'=>$this->clan_identity]);
+    }
+
+	public function setUp():void {
         parent::setUp();
+        TestAccountCreateAndDestroy::destroy();
+        $this->destroyClan();
         $this->char_id   = TestAccountCreateAndDestroy::char_id();
         $this->char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
@@ -17,11 +24,10 @@ class ClanTest extends NWTest {
         $this->clan_id   = $this->clan->id;
 	}
 
-	public function tearDown() {
+	public function tearDown():void {
+        $this->destroyClan();
+        TestAccountCreateAndDestroy::destroy();
         parent::tearDown();
-        query('delete from clan where clan_id = :id', [':id'=>$this->clan->id]);
-        query('delete from clan_player where _clan_id = :id', [':id'=>$this->clan->id]);
-        TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
     function testSetClanInfo() {

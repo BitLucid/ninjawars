@@ -33,5 +33,5 @@ Shedding your clothes, you ease into a large copper tub that is filled with stea
 {/if}
 
 <div>
-  {$stats['player_count']} ninja around
+  There are {$stats['player_count']} ninja around the village.
 </div>

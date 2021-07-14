@@ -11,7 +11,7 @@ use NinjaWars\core\data\Player;
 class AttackControllerTest extends NWTest {
     private $controller;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->controller = new AttackController();
 		SessionFactory::init(new MockArraySessionStorage());
@@ -19,7 +19,7 @@ class AttackControllerTest extends NWTest {
 		SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	public function tearDown() {
+	public function tearDown():void {
         RequestWrapper::destroy();
         TestAccountCreateAndDestroy::purge_test_accounts();
         $session = SessionFactory::getSession();

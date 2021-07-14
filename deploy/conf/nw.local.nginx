@@ -42,9 +42,8 @@ server {
 	location / {
 		#default fallback of everything else block
 		try_files $uri @php;
-		#add_header X-Frame-Options "SAMEORIGIN";
-		#add_header Content-Security-Policy "default-src 'self';";
-		add_header X-Frame-Options SAMEORIGIN;
+		#add_header X-Frame-Options SAMEORIGIN;
+		add_header Content-Security-Policy "default-src * blob: filesystem: about: ws: wss: 'unsafe-eval' 'unsafe-inline' 'unsafe-dynamic'; script-src 'self' https://ajax.googleapis.com https://api.github.com 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src * 'self' https://localhost:* https://localhost:8765 http://www.ninjawars.net http://ninjawars.net;  style-src 'self' https://use.fontawesome.com https://fonts.gstatic.com data: blob: 'unsafe-inline'; font-src 'self' https://use.fontawesome.com https://fonts.gstatic.com data: blob: 'unsafe-inline';";
 		add_header X-Content-Type-Options nosniff;
 	}
 
@@ -85,19 +84,21 @@ server {
 	}
 
 	location ~ \.php$ {
-		add_header X-Frame-Options SAMEORIGIN;
+		#add_header X-Frame-Options SAMEORIGIN;
+		add_header Content-Security-Policy "default-src * blob: filesystem: about: ws: wss: 'unsafe-eval' 'unsafe-inline' 'unsafe-dynamic'; script-src 'self' https://ajax.googleapis.com https://api.github.com 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src * 'self' https://localhost:* https://localhost:8765 http://www.ninjawars.net http://ninjawars.net;  style-src 'self' https://use.fontawesome.com https://fonts.gstatic.com data: blob: 'unsafe-inline'; font-src 'self' https://use.fontawesome.com https://fonts.gstatic.com data: blob: 'unsafe-inline';";
 		fastcgi_param PHP_VALUE "session.cookie_domain= \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		# Check session via: php-fpm7.4 -i | grep session.gc
-		fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+		# Check session via: php-fpm8.0 -i | grep session.gc
+		fastcgi_pass unix:/run/php/php8.0-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
 
 	location @php {
-		add_header X-Frame-Options SAMEORIGIN;
+		#add_header X-Frame-Options SAMEORIGIN;
+		add_header Content-Security-Policy "default-src * blob: filesystem: about: ws: wss: 'unsafe-eval' 'unsafe-inline' 'unsafe-dynamic'; script-src 'self' https://ajax.googleapis.com https://api.github.com 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src * 'self' https://localhost:* https://localhost:8765 http://www.ninjawars.net http://ninjawars.net;  style-src 'self' https://use.fontawesome.com https://fonts.gstatic.com data: blob: 'unsafe-inline'; font-src 'self' https://use.fontawesome.com https://fonts.gstatic.com data: blob: 'unsafe-inline';";
 		fastcgi_param PHP_VALUE "session.cookie_domain= \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		# Check session via: php-fpm7.4 -i | grep session.gc
-		fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+		# Check session via: php-fpm8.0 -i | grep session.gc
+		fastcgi_pass unix:/run/php/php8.0-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}

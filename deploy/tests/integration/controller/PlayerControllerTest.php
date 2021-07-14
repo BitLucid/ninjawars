@@ -7,18 +7,20 @@ use NinjaWars\core\extensions\SessionFactory;
 use \Pimple\Container;
 
 class PlayerControllerTest extends NWTest {
-	public function setUp() {
+	public function setUp():void {
+        parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::init(new MockArraySessionStorage());
         $this->m_dependencies = new Container();
 	}
 
-	public function tearDown() {
+	public function tearDown():void {
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();
         $this->m_dependencies = null;
+        parent::tearDown();
     }
 
     public function testPlayerControllerCanBeInstantiatedWithoutError() {

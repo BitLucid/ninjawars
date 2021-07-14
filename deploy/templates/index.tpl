@@ -19,7 +19,7 @@
           <li><a href="/clan" target="main"><i class='fa fa-users' aria-hidden='true'></i> Clans</a></li>
           <li class='hidden-sm'><a href="/shrine" target="main">⛩ Shrine</a></li>
           <li class='hidden-sm'><a href="/shop" target="main">石 Shop</a></li>
-          <li class='hidden-sm'><a href="/work" target="main"><i class="fab fa-pagelines"></i> Work</a></li>
+          <li class='hidden-sm hidden-md'><a href="/work" target="main"><i class="fab fa-pagelines"></i> Work</a></li>
           <li class='hidden-sm hidden-md'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> Hunt</a></li>
           <li><a href="/events" target="main"><i class="far fa-clock" aria-hidden="true"></i> Events</a></li>
           <li><a href="/messages" target="main"><i class='fa fa-envelope'></i> <span class='badge'>{$unread_message_count}</span></a></li>
@@ -32,7 +32,7 @@
             {include file="gravatar.tpl" gurl=$ninja->avatarUrl()}
             <b class="caret"></b>
           </span>
-          <ul class="dropdown-menu dropdown-inverse avatar-dropdown" role="menu" aria-labelledby="index-avatar">
+          <ul class="dropdown-menu dropdown-inverse dropdown-menu-right avatar-dropdown" role="menu" aria-labelledby="index-avatar">
             <li><a class='ninja-name' target="main" href="/player?player_id={$ninja->id()|escape:'url'|escape}" title='Display your ninja information' tabindex="-1">
               <strong class='char-name'>{$ninja->name()|escape}</strong>
             </a></li>
@@ -67,7 +67,7 @@
 
 
       <div class='health-container'>
-          <div class='health-bar' data-json="{$ninja|@json_encode nofilter}" style='width:0%'</div>
+          <div class='health-bar' data-json="{$ninja|@json_encode|escape|escape:'quotes' nofilter}"></div>
       </div>
     </nav>
 

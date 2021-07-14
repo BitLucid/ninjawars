@@ -8,7 +8,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 
 class ShopControllerTest extends NWTest {
-	function setUp() {
+	function setUp():void {
         parent::setUp();
         // Mock the post request.
         $request = new Request([], ['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
@@ -16,9 +16,9 @@ class ShopControllerTest extends NWTest {
         $this->login();
 	}
 
-	function tearDown() {
-        parent::tearDown();
+	function tearDown():void {
         $this->loginTearDown();
+        parent::tearDown();
     }
 
     public function testShopControllerCanBeInstantiatedWithoutError() {

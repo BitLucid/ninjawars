@@ -6,7 +6,7 @@ use NinjaWars\core\data\Player;
 
 class TestStatus extends NWTest {
 
-    public function setUp() {
+    public function setUp():void {
         parent::setUp();
         $this->char_id = TestAccountCreateAndDestroy::char_id();
         $status = new Status();
@@ -17,12 +17,12 @@ class TestStatus extends NWTest {
         $this->assertGreaterThan(0, $status->id);
     }
 
-    public function tearDown() {
-        parent::tearDown();
+    public function tearDown():void {
         // Delete testing news.
         //query('delete from statuses where _player_id = :id', [':id'=>$this->char_id]);
         //TestAccountCreateAndDestroy::destroy();
         //unset($this->char_id);
+        parent::tearDown();
     }
 
     public function testStatusCanInstantiate(){

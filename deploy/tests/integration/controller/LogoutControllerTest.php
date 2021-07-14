@@ -8,7 +8,7 @@ use NinjaWars\core\control\LogoutController;
 class LogoutControllerTest extends NWTest {
     private $controller;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->controller = new LogoutController();
 		SessionFactory::init(new MockArraySessionStorage());
@@ -16,11 +16,11 @@ class LogoutControllerTest extends NWTest {
 		SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	public function tearDown() {
-        parent::tearDown();
+	public function tearDown():void {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
+        parent::tearDown();
     }
 
     public function testIndex() {

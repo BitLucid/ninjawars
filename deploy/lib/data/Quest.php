@@ -7,7 +7,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Character;
 
 /**
-    Currently:
+ * Currently:
  quest_id    | integer                     | not null default nextval('quests_quest_id_seq'::regclass)
  title       | character varying(100)      | not null default ''::character varying
  description | text                        | not null default ''::text

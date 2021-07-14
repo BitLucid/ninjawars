@@ -9,15 +9,15 @@ use NinjaWars\core\control\HomepageController;
 class HomepageControllerTest extends NWTest {
     private $controller;
 
-	public function setUp() {
+	public function setUp():void {
         parent::setUp();
         $this->login();
         $this->controller = new HomepageController();
     }
 
-	public function tearDown() {
-        parent::tearDown();
+	public function tearDown():void {
         $this->mockLogout();
+        parent::tearDown();
     }
 
     public function testIndex() {

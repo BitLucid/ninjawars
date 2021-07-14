@@ -18,11 +18,6 @@
         </div>
         <div id='footer-bottom-bar'>
         	<span id='html5-integration'>
-		    		<a href="https://www.w3.org/html/logo/" rel='nofollow'>
-							<img src="https://www.w3.org/html/logo/badge/html5-badge-h-css3-multimedia-performance-semantics.png" width="229" height="64" alt="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics" title="HTML5 Powered with CSS3 / Styling, Multimedia, Performance &amp; Integration, and Semantics">
-						</a>
-					</span>
-
 
 				<div id='latest-commit-section'>
 					<p id='latest-commit-title' style='display:none'>Most recent upcoming change to ninjawars:</p>

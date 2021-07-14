@@ -6,29 +6,29 @@ class RouterUnitTest extends NWTest {
     public function testParseRouteSlash() {
         $request = Request::create('/', 'GET', []);
         $result = Router::parseRoute($request);
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertGreaterThan(1, count($result));
-        $this->assertContains('homepage', $result[0]);
+        $this->assertContains('homepage', $result);
     }
 
     public function testParseRouteControllerDefault() {
         $request = Request::create('/work/', 'GET', []);
         $result = Router::parseRoute($request);
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertGreaterThan(1, count($result));
     }
 
     public function testParseRouteControllerCommand() {
         $request = Request::create('/shop/buy', 'GET', []);
         $result = Router::parseRoute($request);
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertGreaterThan(1, count($result));
     }
 
     public function testParseRouteControllerAlternateDefault() {
         $request = Request::create('/clan/', 'GET', []);
         $result = Router::parseRoute($request);
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertGreaterThan(1, count($result));
     }
 
