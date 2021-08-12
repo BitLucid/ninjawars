@@ -47,4 +47,39 @@ nav.admin-nav a{
 #admin-actions .half-width{
 	width:49%;vertical-align:top;
 }
+details {
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: .5em .5em 0;
+}
+
+summary {
+    font-weight: bold;
+    margin: -.5em -.5em 0;
+    padding: .5em;
+	cursor:pointer;
+}
+summary::before{
+	content: '▶ ';
+}
+
+details[open] {
+    padding: .5em;
+}
+
+details[open] summary {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: .5em;
+}
+details[open] summary::before{
+	content: '▼ ';
+}
+.constrained{
+	display:grid;
+	justify-items: center;
+	max-width: 30%;
+	min-width: 50rem;
+	margin-left: auto;
+	margin-right: auto;
+}
 </style>
