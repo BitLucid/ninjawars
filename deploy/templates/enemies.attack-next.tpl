@@ -101,7 +101,9 @@ var enemy = 'enemy to array @json_encode'
         <div class='main'>
             {* Display the ninja *}
             <div class='ninja-area ninja-card'>
-                <a class='view-link' href='/player?player_id={$enemy->id()|escape}'><button title="View the ninja's full details" class='btn btn-vital'><i class='fa fa-eye'></i></button></a>
+                {if $char && $char->isAdmin()}
+                    <a class='view-link' href='/player?player_id={$enemy->id()|escape}'><button title="View the ninja's full details" class='btn btn-vital'><i class='fa fa-eye'></i></button></a>
+                {/if}
                 <h2>{$enemy->name()|escape}</h2>
                 <div class='avatar'>
                     {include file="gravatar.tpl" gurl=$enemy->avatarUrl()}
