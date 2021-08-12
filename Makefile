@@ -86,10 +86,7 @@ install-system:
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 	echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04"
 
-install-python:
-	python3 -m venv .venv
-	. .venv/bin/activate
-	pip3 install -r requirements.txt
+install-python: python-install
 
 install-webserver:
 	apt install nginx
@@ -267,6 +264,8 @@ ci-pre-configure:
 python-install:
 	# Install python3 deps with pip
 	python3 -m pip install virtualenv
+	python3 -m venv .venv
+	. .venv/bin/activate
 	python3 -m pip install -r ./deploy/requirements.txt
 
 ci: ci-pre-configure build python-install test-unit db-init db-init-roles db-init-grants db db-fixtures
