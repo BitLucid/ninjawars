@@ -115,6 +115,7 @@ watch:
 	./vendor/bin/phpunit-watcher watch
 
 pre-test:
+	@echo "To test one test use ./vendor/bin/phpunit --filter methodName deploy/tests/something/file.php"
 	@find ./deploy/lib/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find ./deploy/www/ -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 	@find ./deploy/tests/ -iname "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true

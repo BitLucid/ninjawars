@@ -10,6 +10,8 @@
 }
 .char-info-header{
 	border-bottom:1px brown solid;color:#ADD8E6;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
 }
 #admin-actions table caption{
 	text-align:left;padding-left:10%;
