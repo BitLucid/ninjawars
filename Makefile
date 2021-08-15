@@ -260,7 +260,6 @@ ci-pre-configure:
 	which python3
 	rm -rf ${HOME}/.virtualenv
 	which python3
-	apt-get install python3-venv
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
 
 python-install:
