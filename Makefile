@@ -257,14 +257,18 @@ ci-pre-configure:
 	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
 	ln -s resources.build.php deploy/resources.php
 	#Switch from python2 to python3
+	which python3
 	rm -rf ${HOME}/.virtualenv
 	which python3
+	apt-get install python3-venv
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
 
 python-install:
+	which python3
 	# Install python3 deps with pip
 	python3 -m pip install virtualenv
-	python3 -m venv .venv
+	#python3 -m venv .venv
+	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
 	. .venv/bin/activate
 	python3 -m pip install -r ./deploy/requirements.txt
 
