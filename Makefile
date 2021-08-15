@@ -268,7 +268,7 @@ python-install:
 	python3 -m pip install virtualenv
 	#python3 -m venv .venv
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
-	. .venv/bin/activate
+	. ~/.virtualenv/bin/activate
 	python3 -m pip install -r ./deploy/requirements.txt
 
 ci: ci-pre-configure build python-install test-unit db-init db-init-roles db-init-grants db db-fixtures
