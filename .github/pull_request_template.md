@@ -25,4 +25,4 @@ _(check box with an x where it applies)_
 
 ## _Preview results in my branch at the url:_
 
--   http://localhost:8765/someUrlHere
+-   https://localhost:8765/someUrlHere
