@@ -1,0 +1,10 @@
+default-src *  data: blob: filesystem: about: ws: wss: 'unsafe-eval' 'unsafe-inline' 'unsafe-dynamic'; 
+script-src 'self' 'https://ajax.googleapis.com' 'unsafe-inline'; 
+connect-src * 'unsafe-inline'; 
+img-src * data: blob: 'unsafe-inline'; 
+frame-src * 'self' 'nw.local' 'localhost' 'https://localhost:8765' 'http://www.ninjawars.net' 'http://ninjawars.net'; 
+style-src 'self' data: blob: 'unsafe-inline';
+font-src 'self' 'https://use.fontawesome.com' 'https://fonts.gstatic.com' data: blob: 'unsafe-inline';
+
+
+add_header Content-Security-Policy "default-src * blob: filesystem: about: ws: wss: 'unsafe-eval' 'unsafe-inline' 'unsafe-dynamic'; script-src 'self' https://ajax.googleapis.com https://api.github.com 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src 'self' https://localhost:* https://localhost:8765 http://www.ninjawars.net http://ninjawars.net;  style-src 'self' https://use.fontawesome.com https://fonts.gstatic.com data: blob: 'unsafe-inline'; font-src 'self' https://use.fontawesome.com https://fonts.gstatic.com data: blob: 'unsafe-inline';";
