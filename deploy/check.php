@@ -10,7 +10,7 @@ assert(defined('DATABASE_PASSWORD'));
 assert('' !== WEB_ROOT);
 assert('http:///' !== WEB_ROOT);
 
-// Check for webserver
+// Check for webserver root configuration
 $out = ob_get_contents();
 ob_end_clean();
 echo $out;
