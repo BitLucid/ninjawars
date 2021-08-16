@@ -71,13 +71,13 @@ install-system:
 	@echo "Installing initial system and server dependencies."
 	@echo "In the case of the database and webserver,"
 	@echo "they need professional admin configuration after initial install."
-	@echo "Since we are running php 7, you may need to install a source repo for php7"
+	@echo "Since we are running php 8, you may need to install a source repo for php8"
 	@echo "For the ubuntu ppa, see: https://launchpad.net/~ondrej/+archive/ubuntu/php "
-	apt-get install python3 python3-dev python3-venv python3-pip python3-lxml unzip
+	apt-get -y install python3 python3-dev python3-venv python3-pip python3-lxml unzip
 	# PHP!
 	echo "Installing php cli"
-	apt-get install php8.0-cli
-	apt-get install php8.0-fpm php8.0-xml php8.0-pgsql php8.0-curl php8.0-mbstring
+	apt-get -y install php8.0-cli
+	apt-get -y install php8.0-fpm php8.0-xml php8.0-pgsql php8.0-curl php8.0-mbstring
 	phpenmod xml pgsql curl mbstring
 	# Note that xml is what installs the ext-dom
 	apt install nvm
