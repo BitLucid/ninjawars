@@ -54,6 +54,23 @@
 	{if $char_info.first}
 	<div class='char-profile'>Out-of-Character profile: {$first_message|escape}</div>
 	<div class='char-description'>Char Description: {$first_description|escape}</div>
+	{* Action to deactivate a player*}
+	<section class='half-width constrained'>
+		<header><h3>Actions</h3></header>
+		<details class='constrained'>
+			<summary>SEE ACTIONS TO TAKE</summary>
+			<div>
+				<div id='deactivate-character'>
+					<form method='post' action='' onSubmit='return confirmDeactivation(event, {$char_info.player_id}, afterDeactivation)'>
+					<input type='hidden' name='deactivate' value='1'>
+					<button title='Will make this character non-active' type='submit' class='btn btn-warning' name='submit'>
+						Make {$char_info.uname|escape} Non-Operational
+					</button>
+					</form>
+				</div>
+			</div>
+		</details>
+	</section>
 	{if $first_account}
 	<section class='account-info inline-block half-width centered'>
 		<div class='inline-block left-aligned'>
@@ -164,5 +181,6 @@
 {include file="ninjamaster.items.tpl"}
 </section>
 
+<script src='/js/ninjamaster.js'></script>
 
 </div><!-- End of #admin-actions -->

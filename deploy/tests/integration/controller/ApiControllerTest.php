@@ -28,6 +28,13 @@ class ApiControllerTest extends NWTest {
         parent::tearDown();
     }
 
+    // Want to get the json response out for each controller
+    private function extractPayload($p_response) {
+        $matches = [];
+        preg_match($this->PAYLOAD_RE, $p_response->getContent(), $matches);
+        return json_decode($matches[1]);
+    }
+
     public function testIllegalCallbackFails() {
         $request = new Request([
             'type'         => 'player',
@@ -152,9 +159,18 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('message', $payload);
     }
 
-    private function extractPayload($p_response) {
-        $matches = [];
-        preg_match($this->PAYLOAD_RE, $p_response->getContent(), $matches);
-        return json_decode($matches[1]);
+    public function testDeactivateChar() {
+        $request = new Request([
+            'type'         => 'deactivate_char',
+            'data'         => '-666',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
+        $payload = $this->extractPayload($result);
+
+        // There should be no such character to deactivate
+        $this->assertObjectHasAttribute('error', $payload);
     }
 }
