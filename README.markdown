@@ -33,7 +33,8 @@ configure, make, make install:
     make check
 
 Get the database working, then make install
-sudo make install
+
+    sudo make install
 
 To sync up to the latest db changes:
 

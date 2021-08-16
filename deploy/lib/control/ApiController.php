@@ -55,12 +55,14 @@ class ApiController extends AbstractController {
             'new_chats'      => 'jsonNewChats',
             'send_chat'      => 'jsonSendChat',
             'char_search'    => 'jsonCharSearch',
+            'deactivate_char'=> 'jsonDeactivateChar',
         ];
 
         $res = null;
         $data = $request->get('data');
 
         if (isset($valid_type_map[$type])) {
+            // Customized parameters like ?term=&limit=
             if ($type == 'send_chat') {
                 $result = $this->jsonSendChat($request->get('msg'));
             } elseif ($type == 'new_chats') {
@@ -85,6 +87,27 @@ class ApiController extends AbstractController {
         $headers['Content-Type'] = 'text/javascript; charset=utf8';
 
         return new Response($res, 200, $headers);
+    }
+
+    /**
+     * Deactivate a player character with a matching id
+     * @note Admin only
+     */
+    private function jsonDeactivateChar($data) {
+        $char_id = $data;
+        $user = Player::find(SessionFactory::getSession()->get('player_id'));
+        if(!$user || !$user->isAdmin()){
+            return ['error' => 'Unable to proceed further.'];
+        } else {
+            $res = query(
+                "update players set active = 0 where player_id = :char_id and active != 0",
+                [
+                    ':char_id'  => $char_id,
+                ]
+            );
+    
+            return ['chars_deactivated' => $res->rowCount()];
+        }
     }
 
     /**

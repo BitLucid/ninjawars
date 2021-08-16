@@ -83,3 +83,4 @@ Icon
 node_modules/
 
 .venv/
+deploy/.env
