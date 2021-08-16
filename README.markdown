@@ -8,7 +8,7 @@ The source code dojo for the [Ninja Game](https://www.ninjawars.net) @ https://n
 
 ## Install
 
-Install your webserver (nginx + php7-fpm recommended) & configure it
+Install your webserver (nginx + php8.0-fpm recommended) & configure it
 
     sudo apt-get install php8.0-cli php8.0-fpm nginx
 
