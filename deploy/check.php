@@ -30,7 +30,7 @@ function passfail($passed, $pass, $fail){
 
 // Executing and outputing checks, to try to run all before final return
 $outcomes = [
-    passfail(!empty($out), 'Contacted some running webserver at '.WEB_ROOT, 'Unable to get any content running at '.WEB_ROOT),
+    passfail(empty($out), 'WEB ROOT was configured as '.WEB_ROOT, 'No web root seems to be configured '.WEB_ROOT),
     passfail($connected, 'Able to connect and list a player from the players table of the database', 'Unable to select from players table of the database'),
     passfail(!$is_superuser, 'Connected to database as appropriate user level', 'Connected as database superuser, you want to connect as a lower permission role')
 ];
