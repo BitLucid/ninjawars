@@ -73,7 +73,7 @@ install-system:
 	@echo "they need professional admin configuration after initial install."
 	@echo "Since we are running php 7, you may need to install a source repo for php7"
 	@echo "For the ubuntu ppa, see: https://launchpad.net/~ondrej/+archive/ubuntu/php "
-	apt-get install python3 python3-dev python3-pip python3-lxml unzip
+	apt-get install python3 python3-dev python3-venv python3-pip python3-lxml unzip
 	# PHP!
 	echo "Installing php cli"
 	apt-get install php8.0-cli
@@ -86,10 +86,7 @@ install-system:
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 	echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04"
 
-install-python:
-	python3 -m venv .venv
-	. .venv/bin/activate
-	pip3 install -r requirements.txt
+install-python: python-install
 
 install-webserver:
 	apt install nginx
@@ -260,13 +257,18 @@ ci-pre-configure:
 	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
 	ln -s resources.build.php deploy/resources.php
 	#Switch from python2 to python3
+	which python3
 	rm -rf ${HOME}/.virtualenv
 	which python3
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
 
 python-install:
+	which python3
 	# Install python3 deps with pip
 	python3 -m pip install virtualenv
+	#python3 -m venv .venv
+	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
+	. ~/.virtualenv/bin/activate
 	python3 -m pip install -r ./deploy/requirements.txt
 
 ci: ci-pre-configure build python-install test-unit db-init db-init-roles db-init-grants db db-fixtures
