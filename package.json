@@ -10,10 +10,10 @@
         "test": "karma start deploy/tests/karma.conf.js --browsers PhantomJS --single-run",
         "lint": "eslint --ext .jsx,.js deploy/www/js",
         "prepare-unit-test-ci": "echo 'no-op for now'",
-        "unit-test": "test && nsp check",
+        "unit-test": "test",
         "start": "make build",
         "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
-        "security-check": "npx ncu",
+        "security-check": "yarn audit",
         "prettier": "npx prettier --write .",
         "browse": "xdg-open https://localhost:8765"
     },

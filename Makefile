@@ -14,7 +14,6 @@ COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
 CSS=$(WWW)css/
 DBROLE=developers
-#NGINX_PATH:=`readlink -f nginx-1.9.12/objs/nginx`
 
 -include CONFIG
 
@@ -168,8 +167,6 @@ post-test:
 
 clean:
 	@rm -rf "$(SRC)templates/"compiled/*
-	@rm -rf "$(SRC)nginx-1.9.12/"
-	@rm -rf "$(SRC)nginx-1.9.12.tar.gz"
 	@rm -rf "$(CC_DIR)"
 	@rm -f "$(JS)jquery.min.js"
 	@rm -f "$(JS)jquery.min.map"
@@ -225,21 +222,19 @@ backup-live-db:
 	pg_dump -h nw-live-pg10.ci1h1yzrwhkt.us-east-1.rds.amazonaws.com -p 5987 -U ninjamaster nw_live > /srv/backups/nw/nw_live_$(date +\%F-hour-\%H).sql
 
 web-start:
-	rm /tmp/root
-	ln -s "$(SRC)../" /tmp/root
 	#permission error is normal and recoverable
-	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf
+	sudo service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 
 web-stop:
-	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf -s stop
+	sudo service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 	# server may be stopped now
 
 web-reload:
-	${NGINX_PATH} -c `pwd`/deploy/conf/nginx.conf -s reload
+	sudo service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 
