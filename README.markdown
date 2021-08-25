@@ -8,9 +8,9 @@ The source code dojo for the [Ninja Game](https://www.ninjawars.net) @ https://n
 
 ## Install
 
-Install your webserver (nginx + php7-fpm recommended) & configure it
+Install your webserver (nginx + php8.0-fpm recommended) & configure it
 
-    sudo apt-get install php7-cli php7-fpm nginx
+    sudo apt-get install php8.0-cli php8.0-fpm nginx
 
 On your database server, install postgresql & configure it
 
@@ -20,9 +20,14 @@ Set up the environment variables, get the github token
 from here: https://github.com/settings/tokens
 
     export GITHUB_ACCESS_TOKEN=
-    export DBUSER=
+    export DBUSER=EGkzqai
     sed "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php > deploy/resources.php
     sed "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js > karma.conf.js
+
+Local Prep to install php-cli or similar and needed php extensions:
+
+    sudo make install-system
+
 
 configure, make, make install:
 

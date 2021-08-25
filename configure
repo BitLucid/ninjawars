@@ -30,4 +30,5 @@ if [ -z GITHUB_ACCESS_TOKEN ]; then
     avoid being ratelimited by github."
 fi
 
+echo "CONFIG file created, modify it at will."
 echo "Don't forget to set up your database and webserver yourself."
