@@ -93,10 +93,11 @@ FOLLOW THESE NINJAWARS CODING STANDARDS OR BE RIDICULED:
 
 * Namespacing
 
-    When pulling in global classes into namespaces, please try to put a use statement at the top of the file. It'll save us work later.
+    When pulling in global classes into namespaces, please try to put a use statement at the top of the file. It'll save us work trying to find things later.
     DO:
 
       use \RunTimeException;
+      throw new RunTimeException;
 
     NOT:
 
