@@ -68,7 +68,7 @@ Triggered by pull request merges.
 -   Loadbalanced behind balancers here:
 -   https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:sort=loadBalancerName
 -   With additional frontends here:
--   https://www.ninjawars.net
+-   http://www.ninjawars.net
 -   https://splash.ninjawars.net
 -   https://nwave.ninjawars.net
 -   https://shell.ninjawars.net/
