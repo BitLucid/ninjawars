@@ -22,36 +22,36 @@ class Skill {
 	// ... should return an array of crane-specific skills.
 	public $skill_map = array(
 		'crane' => array(
-			'ice bolt' => array('available'=>1)
-			, 'speed'  => array('available'=>1)
-			, 'kampo' => array('available'=>1, 'level'=>6)
+			'ice bolt' => ['available'=>1]
+			, 'speed'  => ['available'=>1]
+			, 'kampo' => ['available'=>1, 'level'=>6]
 		)
 		, 'dragon' => array(
-			'chi'    => array('available'=>1)
-			, 'heal' => array('available'=>1)
-			, 'evasion' => array('available'=>1, 'level'=>6)
+			'chi'    => ['available'=>1]
+			, 'heal' => ['available'=>1]
+			, 'evasion' => ['available'=>1, 'level'=>6]
 		)
 		, 'tiger' => array(
-			'fire bolt' => array('available'=>1)
-			, 'blaze'   => array('available'=>1)
+			'fire bolt' => ['available'=>1]
+			, 'blaze'   => ['available'=>1, 'level'=>1]
 		)
 		, 'viper' => array(
-			'poison touch'       => array('available'=>1)
-			, 'hidden resurrect' => array('available'=>1)
+			'poison touch'       => ['available'=>1]
+			, 'hidden resurrect' => ['available'=>1]
 		)
 		, 'all' => array(
-			'attack'          => array('available'=>1)
-			, 'duel'          => array('available'=>1)
-			, 'sight'         => array('available'=>1)
-			, 'deflect'       => array('available'=>1, 'level'=>2)
-			, 'stealth'       => array('available'=>1)
-			, 'unstealth'     => array('available'=>1)
+			'attack'          => ['available'=>1]
+			, 'duel'          => ['available'=>1]
+			, 'sight'         => ['available'=>1, 'level'=>2]
+			, 'deflect'       => ['available'=>1, 'level'=>5]
+			, 'stealth'       => ['available'=>1, 'level'=>2]
+			, 'unstealth'     => ['available'=>1]
 			, 'stalk'         => ['available'=>1, 'level'=>6]
-			, 'steal'         => array('available'=>1, 'level'=>5)
-			, 'cold steal'    => array('available'=>1, 'level'=>7)
-			, 'midnight heal' => array('available'=>1, 'level'=>20)
-			, 'clone kill'    => array('available'=>1)
-			, 'wrath'	  => array('available'=>1)
+			, 'steal'         => ['available'=>1, 'level'=>5]
+			, 'cold steal'    => ['available'=>1, 'level'=>10]
+			, 'midnight heal' => ['available'=>1, 'level'=>20]
+			, 'clone kill'    => ['available'=>1, 'level'=>2]
+			, 'wrath'	      => ['available'=>1, 'level'=>2]
 		)
 	);
 
