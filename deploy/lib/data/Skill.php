@@ -22,17 +22,17 @@ class Skill {
 	// ... should return an array of crane-specific skills.
 	public $skill_map = array(
 		'crane' => array(
-			'ice bolt' => ['available'=>1]
+			'ice bolt' => ['available'=>1, 'level'=>2]
 			, 'speed'  => ['available'=>1]
 			, 'kampo' => ['available'=>1, 'level'=>6]
 		)
 		, 'dragon' => array(
 			'chi'    => ['available'=>1]
-			, 'heal' => ['available'=>1]
+			, 'heal' => ['available'=>1, 'level'=>2]
 			, 'evasion' => ['available'=>1, 'level'=>6]
 		)
 		, 'tiger' => array(
-			'fire bolt' => ['available'=>1]
+			'fire bolt' => ['available'=>1, 'level'=>2]
 			, 'blaze'   => ['available'=>1, 'level'=>1]
 		)
 		, 'viper' => array(
@@ -42,16 +42,16 @@ class Skill {
 		, 'all' => array(
 			'attack'          => ['available'=>1]
 			, 'duel'          => ['available'=>1]
-			, 'sight'         => ['available'=>1, 'level'=>2]
-			, 'deflect'       => ['available'=>1, 'level'=>5]
-			, 'stealth'       => ['available'=>1, 'level'=>2]
 			, 'unstealth'     => ['available'=>1]
-			, 'stalk'         => ['available'=>1, 'level'=>6]
-			, 'steal'         => ['available'=>1, 'level'=>5]
-			, 'cold steal'    => ['available'=>1, 'level'=>10]
-			, 'midnight heal' => ['available'=>1, 'level'=>20]
 			, 'clone kill'    => ['available'=>1, 'level'=>2]
 			, 'wrath'	      => ['available'=>1, 'level'=>2]
+			, 'stealth'       => ['available'=>1, 'level'=>2]
+			, 'sight'         => ['available'=>1, 'level'=>2]
+			, 'deflect'       => ['available'=>1, 'level'=>5]
+			, 'steal'         => ['available'=>1, 'level'=>5]
+			, 'stalk'         => ['available'=>1, 'level'=>6]
+			, 'cold steal'    => ['available'=>1, 'level'=>10]
+			, 'midnight heal' => ['available'=>1, 'level'=>20] // Because the logic is such a PITA
 		)
 	);
 
