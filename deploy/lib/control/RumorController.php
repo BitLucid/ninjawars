@@ -34,14 +34,13 @@ class RumorController extends AbstractController {
      * @return array
      */
     private function stats() {
-        DatabaseConnection::getInstance();
-        $viciousResult = DatabaseConnection::$pdo->query('SELECT stat_result from past_stats where id = 4');
-        $todaysViciousKiller = $viciousResult->fetchColumn();
         $stats = [];
+        $stats['vicious_killer'] = query_item('SELECT stat_result from past_stats where id = 4');
 
-        $stats['vicious_killer'] = $todaysViciousKiller;
-        $playerCount = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE active = 1");
-        $stats['player_count'] = $playerCount->fetchColumn();
+        $stats['player_count'] = query_item("SELECT count(player_id) FROM players WHERE active = 1");
+
+        // Give just an approximation of some high gold amount
+        $stats['rich_haul'] = query_item("SELECT floor(max(gold)/1000)*1000 FROM players WHERE active = 1");
 
         return $stats;
     }
