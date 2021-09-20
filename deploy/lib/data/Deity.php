@@ -232,7 +232,7 @@ class Deity {
     public function regenCharacters($basic, $with_extras=true){ // REGEN!
         assert(POISON != 'POISON');
         $max_with_stamina = $with_extras ? ''.self::BASE_HEALTH.' +(players.stamina * '.Player::HEALTH_PER_STAMINA.')' : self::BASE_HEALTH;
-        $add_with_stamina = $with_extras ? '+(players.stamina/5 * '.Player::HEALTH_PER_STAMINA.')' : '';
+        $add_with_stamina = $with_extras ? '+(players.stamina/10 * '.Player::HEALTH_PER_STAMINA.')' : '';
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         $s = DatabaseConnection::$pdo->prepare(
