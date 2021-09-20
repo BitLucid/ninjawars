@@ -119,6 +119,7 @@ pre-test:
 	# Check for presence of database
 	psql -lqt | cut -d \| -f 1 | grep -w $(DBNAME)
 	php deploy/check.php
+	@echo "To test one test use ./vendor/bin/phpunit --filter methodName deploy/tests/something/file.php"
 
 test: pre-test test-main test-functional test-js post-test
 

@@ -1,6 +1,8 @@
 <?php
 namespace NinjaWars\tests;
 
+use NinjaWars\core\data\Deity;
+
 class MockDeity{
     const VICIOUS_KILLER_STAT = 4; // the ID of the vicious killer stat
     const MIDNIGHT_HEAL_SKILL = 5; // the ID of the midnight heal skill

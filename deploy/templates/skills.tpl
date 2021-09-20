@@ -10,16 +10,17 @@
 
 <div class='major-stats'>
   <ul class='thin'>
+    <li>You are a <span class="class-name {$player->theme|escape}">{$player->getClassName()|escape}</span> ninja.</li>
     <li>Your status is {include file="status_section.tpl" statuses=$status_list}</li>
     {if !$starting_turns}
-    <li>You currently <span class='ninja-notice'>do not have any</span> turns.</li>
+    <li>You <span class='ninja-notice'>do not have any</span> turns.</li>
     {else}
-    <li>You currently have have <span class='turns-count'>{$starting_turns|number_format:0|escape}{/if} turn{if $starting_turns > 1}s</span>.</li>
+    <li>You have <span class='turns-count'>{$starting_turns|number_format:0|escape}{/if} turn{if $starting_turns > 1}s</span>.</li>
     {/if}
     {if !$starting_ki}
-    <li>You currently <span class='ninja-notice'>do not have any</span> ki.</li>
+    <li>You <span class='ninja-notice'>do not have any</span> ki.</li>
     {else}
-    <li>You currently have <span class='ki-amount'>{$starting_ki|number_format:0|escape} ki</span>.</li>
+    <li>You have <span class='ki-amount'>{$starting_ki|number_format:0|escape} ki</span>.</li>
     {/if}
   </ul>
 </div>
@@ -129,13 +130,14 @@
   </div>
 {/if}
 
+<!-- Skills not described elsewhere -->
 
 {if $chi}
-    <p id='chi-skill'>Chi: Your Chi skill increases the benefits of healing and resurrecting at the shrine.</p>
+    <p id='chi-skill' class='skill-description'><strong>Chi:</strong> Your Chi skill increases the benefits of healing and resurrecting at the shrine.</p>
 {/if}
 
 {if $speed}
-    <p id='speed-skill'>Speed: Due to your speed, you gain back turns at a faster rate.</p>
+    <p id='speed-skill' class='skill-description'><strong>Speed:</strong> Due to your speed, you gain back turns at a faster rate.</p>
     <!-- +1 every hour, so 5 per hour instead of 4. -->
 {/if}
 
@@ -143,16 +145,27 @@
 
 {if $midnight_heal}
     <!-- Not currently working, so not currently being shown.  -->
-    <p id='midnight-heal-skill'>Midnight Heal: When resurrected you will come back with more health than other ninja.</p>
+    <p id='midnight-heal-skill' class='skill-description'><strong>Midnight Heal:</strong> When resurrected you will come back with more health than other ninja.</p>
 {/if}
 
 {if $hidden_resurrect}
-    <p id='hidden-resurrect-skill'>Hidden Resurrect: When you are resurrected you will return already hidden and stealthed.</p>
+    <p id='hidden-resurrect-skill' class='skill-description'><strong>Hidden Resurrect:</strong> When you are resurrected you will return already hidden and stealthed.</p>
 {/if}
 
+{if $blaze}
+    <p id='blaze-skill' class='skill-description'><strong>Blaze:</strong> Actively use when dueling to do more damage at a cost of additional turns.</p>
+{/if}
+
+{if $deflect}
+    <p id='deflect-skill' class='skill-description'><strong>Deflect:</strong> Actively use when dueling to take less damage at a cost of additional turns.</p>
+{/if}
+
+{if $evasion}
+    <p id='evasion-skill' class='skill-description'><strong>Evasion:</strong> Actively use when dueling to get a chance to escape combat before dying at a cost of additional turns.</p>
+{/if}
 
 {if $wrath}
-    <p id='wrath-skill'>Wrath: Gain a small amount of health back per kill when dueling.</p>
+    <p id='wrath-skill' class='skill-description'><strong>Wrath:</strong> Gain a small amount of health back per kill when dueling.</p>
 {/if}
 
 {if $no_skills}

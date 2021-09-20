@@ -307,7 +307,7 @@ class ConsiderController extends AbstractController {
                 ]
             );
         }
-        return Player::find(reset($enemies)['player_id']);
+        return !empty($enemies) ? Player::find(reset($enemies)['player_id']) : null;
     }
 
     /**

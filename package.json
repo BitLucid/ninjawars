@@ -15,7 +15,8 @@
         "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
         "security-check": "yarn audit",
         "prettier": "npx prettier --write .",
-        "browse": "xdg-open https://localhost:8765"
+        "browse": "xdg-open https://localhost:8765",
+        "github": "xdg-open https://github.com/BitLucid/ninjawars/"
     },
     "repository": {
         "type": "git",
