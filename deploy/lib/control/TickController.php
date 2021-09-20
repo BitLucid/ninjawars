@@ -3,6 +3,7 @@ namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Deity;
 use NinjaWars\core\data\GameLog;
+use NinjaWars\tests\MockDeity;
 
 /**
  * Control the game ticks.
@@ -14,7 +15,7 @@ class TickController{
     private $logger;
     private $deity; 
 
-    public function __construct(GameLog $logger, Deity $deity){
+    public function __construct(GameLog $logger, Deity|MockDeity $deity){
         $this->logger = $logger;
         $this->deity = $deity;
     }
