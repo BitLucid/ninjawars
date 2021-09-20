@@ -226,7 +226,7 @@ class Deity {
      * See the balance sheet:
         https://docs.google.com/spreadsheet/ccc?pli=1&key=0AkoUgtBBP00HdGs0Tmk4bC10TXN0SUJYXzdYMVpFZFE#gid=0
      *
-     * @param int|null $basic      Per tick regen
+     * @param int|null $basic      Per tick regen, usually about 3hp
      * @param bool     $with_extras whether regen increases stamina and other extras
      */
     public function regenCharacters($basic, $with_extras=true){ // REGEN!
@@ -240,10 +240,9 @@ class Deity {
                 (health+:basic ".$add_with_stamina."),
                 ".$max_with_stamina."
                 )
-                WHERE active = 1 AND health BETWEEN 1 AND (:max_with_stamina) AND NOT cast(status&:poison AS bool) "
+                WHERE active = 1 AND health BETWEEN 1 AND (".$max_with_stamina.") AND NOT cast(status&:poison AS bool) "
         );
         $s->bindValue(':basic', $basic, PDO::PARAM_INT);
-        $s->bindValue(':max_with_stamina', $max_with_stamina);
         $s->bindValue(':poison', POISON);
         $s->execute();
 
