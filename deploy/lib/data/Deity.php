@@ -15,6 +15,7 @@ class Deity {
     const VICIOUS_KILLER_STAT = 4; // the ID of the vicious killer stat
     const MIDNIGHT_HEAL_SKILL = 'midnightheal'; // the identity of the midnight heal skill
     const LEVEL_REGEN_INCREASE = false;
+    const STAMINA_REGEN_INCREASE = true;
     const LEVEL_REVIVE_INCREASE = false;
     const STAMINA_REVIVE_INCREASE = true;
     const DEFAULT_REGEN = 3;
@@ -75,7 +76,7 @@ class Deity {
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         DatabaseConnection::$pdo->query("UPDATE players SET turns = 0 WHERE turns < 0");
-         // Speed skill turn gain
+         // SPEED skill turn gain
         $s = DatabaseConnection::$pdo->prepare("UPDATE players SET turns = turns+1 FROM class_skill 
             JOIN skill ON skill_id = _skill_id 
             WHERE turns < :threshold AND _skill_id = 3 
@@ -217,6 +218,7 @@ class Deity {
     }
 
     /**
+     * REGEN!
      * Take all characters, and heal 'em one step closer to their max
      * doesn't apply to dead characters or poisoned characters
      * Poisoned characters get a health decrease
@@ -225,40 +227,27 @@ class Deity {
         https://docs.google.com/spreadsheet/ccc?pli=1&key=0AkoUgtBBP00HdGs0Tmk4bC10TXN0SUJYXzdYMVpFZFE#gid=0
      *
      * @param int|null $basic      Per tick regen
-     * @param bool     $with_level whether regen increases with level
+     * @param bool     $with_extras whether regen increases stamina and other extras
      */
-    public function regenCharacters($basic, $with_level=false){
-        // Default max heal deity will do is level 3 health
-        $base_heal = Player::maxHealthByLevel(3);
-
-        if($with_level){
-            // For example: + 30 for level 300 , + 2 for level 20
-            $level_add = '+ cast(floor(level/10) AS int)';
-        } else {
-            $level_add = '';
-        }
-        $level_limit_add = '';
-        if(self::LEVEL_REGEN_INCREASE){
-            // Another x points per x level tier
-            $level_limit_add = ' + cast(floor(level/30) / 30 AS int)';
-        }
+    public function regenCharacters($basic, $with_extras=true){ // REGEN!
+        assert(POISON != 'POISON');
+        $max_with_stamina = $with_extras ? ''.self::BASE_HEALTH.' +(players.stamina * '.Player::HEALTH_PER_STAMINA.')' : self::BASE_HEALTH;
+        $add_with_stamina = $with_extras ? '+(players.stamina/5 * '.Player::HEALTH_PER_STAMINA.')' : '';
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         $s = DatabaseConnection::$pdo->prepare(
             "UPDATE players SET health = numeric_smaller(
-                (health+:basic ".$level_add."),
-                cast((:base_heal ".$level_limit_add.") AS int)
+                (health+:basic ".$add_with_stamina."),
+                ".$max_with_stamina."
                 )
-                WHERE active = 1 AND health BETWEEN 1 AND (:base_heal2 ".$level_limit_add.") AND NOT cast(status&:poison AS bool) "
+                WHERE active = 1 AND health BETWEEN 1 AND (:max_with_stamina) AND NOT cast(status&:poison AS bool) "
         );
         $s->bindValue(':basic', $basic, PDO::PARAM_INT);
-        $s->bindValue(':base_heal', $base_heal);
-        $s->bindValue(':base_heal2', $base_heal);
+        $s->bindValue(':max_with_stamina', $max_with_stamina);
         $s->bindValue(':poison', POISON);
         $s->execute();
 
-
-        assert(POISON != 'POISON');
+        // Take damage every regen tick from POISON
         $s = DatabaseConnection::$pdo->prepare("UPDATE players SET health = numeric_larger(0, health-:damage) WHERE health > 0 AND CAST((status&:poison) AS bool)"); // *** poisoned takes away life ***
         $s->bindValue(':damage', POISON_DAMAGE);
         $s->bindValue(':poison', POISON);
