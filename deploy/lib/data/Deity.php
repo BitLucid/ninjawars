@@ -4,17 +4,21 @@ namespace NinjaWars\core\data;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\data\Message;
+use NinjaWars\core\data\Player;
 use \PDO;
+use \debug;
 
 /**
  * Functions for use in the deities.
  */
 class Deity {
     const VICIOUS_KILLER_STAT = 4; // the ID of the vicious killer stat
-    const MIDNIGHT_HEAL_SKILL = 5; // the ID of the midnight heal skill
+    const MIDNIGHT_HEAL_SKILL = 'midnightheal'; // the identity of the midnight heal skill
     const LEVEL_REGEN_INCREASE = false;
     const LEVEL_REVIVE_INCREASE = false;
+    const STAMINA_REVIVE_INCREASE = true;
     const DEFAULT_REGEN = 3;
+    const BASE_HEALTH = NEW_PLAYER_INITIAL_HEALTH; // e.g. a new, unmodified character, maybe 100 or 150 for dragon
 
     public $logger;
 
@@ -119,12 +123,11 @@ class Deity {
      *
      * @return int|boolean
      */
-    public function unconfirmOlderPlayersOverMinimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30, $just_testing=true) {
-        $change_confirm_to = ($just_testing ? '1' : '0'); // Only unconfirm players when not testing.
+    public static function unconfirmOlderPlayersOverMinimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30) {
         $minimum_days = 30;
         $max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30);
         DatabaseConnection::getInstance();
-        $sel_cur = DatabaseConnection::$pdo->query("SELECT count(*) FROM players WHERE active = 1");
+        $sel_cur = DatabaseConnection::$pdo->query("SELECT count(player_id) FROM players WHERE active = 1");
         $current_players = $sel_cur->fetchColumn();
 
         if ($current_players < $keep_players) {
@@ -135,7 +138,7 @@ class Deity {
         // *** Don't unconfirm anyone below the minimum floor.
         $unconfirm_days_over = max($unconfirm_days_over, $minimum_days);
 
-        // Unconfirm at a maximum of 20 players at a time.
+        // Unconfirm at a base of 20 players at a time.
         $unconfirm_within_limits = "UPDATE players
             SET active = :active
             WHERE players.player_id
@@ -145,7 +148,7 @@ class Deity {
                 AND days > :age
                 ORDER BY player_id DESC	LIMIT :max)";
         $update = DatabaseConnection::$pdo->prepare($unconfirm_within_limits);
-        $update->bindValue(':active', $change_confirm_to);
+        $update->bindValue(':active', 0);
         $update->bindValue(':age', intval($unconfirm_days_over));
         $update->bindValue(':max', $max_to_unconfirm);
         $update->execute();
@@ -198,7 +201,7 @@ class Deity {
 
     public function processUnconfirms(){
         //Nightly Unconfirm of aged players
-        $unconfirmed = self::unconfirmOlderPlayersOverMinimums(MIN_PLAYERS_FOR_UNCONFIRM, MIN_DAYS_FOR_UNCONFIRM, MAX_PLAYERS_TO_UNCONFIRM, $just_testing=false);
+        $unconfirmed = self::unconfirmOlderPlayersOverMinimums(MIN_PLAYERS_FOR_UNCONFIRM, MIN_DAYS_FOR_UNCONFIRM, MAX_PLAYERS_TO_UNCONFIRM);
         assert($unconfirmed < MAX_PLAYERS_TO_UNCONFIRM+1);
 
         return ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
@@ -226,12 +229,10 @@ class Deity {
      */
     public function regenCharacters($basic, $with_level=false){
         // Default max heal deity will do is level 3 health
-        $maximum_heal = Player::maxHealthByLevel(3);
+        $base_heal = Player::maxHealthByLevel(3);
 
         if($with_level){
-            // For example:
-            // + 30 for level 300
-            // + 2 for level 20
+            // For example: + 30 for level 300 , + 2 for level 20
             $level_add = '+ cast(floor(level/10) AS int)';
         } else {
             $level_add = '';
@@ -246,13 +247,13 @@ class Deity {
         $s = DatabaseConnection::$pdo->prepare(
             "UPDATE players SET health = numeric_smaller(
                 (health+:basic ".$level_add."),
-                cast((:max_heal ".$level_limit_add.") AS int)
+                cast((:base_heal ".$level_limit_add.") AS int)
                 )
-                WHERE active = 1 AND health BETWEEN 1 AND (:max_heal2 ".$level_limit_add.") AND NOT cast(status&:poison AS bool) "
+                WHERE active = 1 AND health BETWEEN 1 AND (:base_heal2 ".$level_limit_add.") AND NOT cast(status&:poison AS bool) "
         );
         $s->bindValue(':basic', $basic, PDO::PARAM_INT);
-        $s->bindValue(':max_heal', $maximum_heal);
-        $s->bindValue(':max_heal2', $maximum_heal);
+        $s->bindValue(':base_heal', $base_heal);
+        $s->bindValue(':base_heal2', $base_heal);
         $s->bindValue(':poison', POISON);
         $s->execute();
 
@@ -274,7 +275,7 @@ class Deity {
      */
     private static function pcsActiveDeadAlive() {
         $pc_data = query_row(
-            'select count(*) as active, 
+            'select count(player_id) as active, 
                 sum(case when health < 1 then 1 else 0 end) as dead 
                 from players where active = 1'
         );
@@ -300,32 +301,36 @@ class Deity {
      * select uname, player_id, level,floor(($major_revive_percent/100)*$total_active) days, resurrection_time from players where active = 1 AND health < 1 ORDER BY abs(8 - resurrection_time) asc, level desc, days asc
      * @return int
      */
-    private static function performNecromancy($revive_amount, $maximum_heal, $game_hour){
-        if(self::LEVEL_REVIVE_INCREASE){
-            $level_add = '+(level*3)';
-        } else {
-            $level_add = '';
-        }
-        $up_revive_players= 'UPDATE players SET status = 0, health =
-            CASE WHEN level >= coalesce(class_skill_level, skill_level)
-                THEN (:max_heal '.$level_add.')
-                ELSE ((:max_heal_2 + :max_heal_3 * 0.5) '.$level_add.') END
-                    FROM (SELECT * FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE skill_id = :midnightHeal)
-                    AS class_skill WHERE player_id IN (
-                        SELECT player_id FROM players 
-                        WHERE active = 1 AND health < 1 
-                        ORDER BY abs(:time - resurrection_time) ASC, level DESC, days ASC 
-                        LIMIT :amount
-                    ) 
-                     AND coalesce(class_skill._class_id, players._class_id) = players._class_id';
+    private static function performNecromancy($revive_amount, $game_hour){
+        $stamina_add = self::STAMINA_REVIVE_INCREASE ? '+(players.stamina * '.Player::HEALTH_PER_STAMINA.')' : '';
+        // Note: This is limited to only active and dead players already
+        $up_revive_players= 'UPDATE players 
+            SET status = 0, 
+            health =
+                CASE WHEN level < coalesce(class_skill_level, skill_level)
+                    THEN (:base_heal '.$stamina_add.')
+                    ELSE (round(:base_heal_2 + (:base_heal_3 / 2)) '.$stamina_add.') 
+                END
+            FROM (SELECT skill_id, skill_level, skill_is_active, skill_display_name, skill_internal_name, skill_type, _class_id, class_skill_level
+                FROM skill LEFT JOIN class_skill ON skill_id = _skill_id 
+                WHERE skill_internal_name = :midnightHeal and skill_is_active
+                ) AS class_skill 
+            WHERE player_id IN (
+                SELECT player_id FROM players 
+                WHERE active = 1 AND health < 1 
+                ORDER BY abs(:time - resurrection_time) ASC, level DESC, days ASC 
+                LIMIT :amount
+            ) 
+            AND coalesce(class_skill._class_id, players._class_id) = players._class_id';
+        // Sadly the midnight heal skill makes this much more complicated than it would otherwise need to be
         DatabaseConnection::getInstance();
         $update = DatabaseConnection::$pdo->prepare($up_revive_players);
         $update->bindValue(':amount', $revive_amount, PDO::PARAM_INT);
         $update->bindValue(':time', $game_hour, PDO::PARAM_INT);
-        $update->bindValue(':midnightHeal', self::MIDNIGHT_HEAL_SKILL, PDO::PARAM_INT);
-        $update->bindValue(':max_heal', $maximum_heal);
-        $update->bindValue(':max_heal_2', $maximum_heal);
-        $update->bindValue(':max_heal_3', $maximum_heal);
+        $update->bindValue(':midnightHeal', self::MIDNIGHT_HEAL_SKILL, PDO::PARAM_STR);
+        $update->bindValue(':base_heal', self::BASE_HEALTH);
+        $update->bindValue(':base_heal_2', self::BASE_HEALTH);
+        $update->bindValue(':base_heal_3', self::BASE_HEALTH);
         $update->execute();
 
         return $update->rowCount(); // Return the amount revived
@@ -349,8 +354,7 @@ class Deity {
      *
      * Defaults
      * sample_use: revive_players(30, 3));
-     * @param array('minor_revive_to'=>100, 'major_revive_percent'=>5,
-     *      'just_testing'=>false)
+     * @param array('minor_revive_to'=>100, 'major_revive_percent'=>5)
      * @return mixed 
      */
     public function revivePlayers($set=array()) {
@@ -383,8 +387,7 @@ class Deity {
         }
 
         assert(isset($revive_amount));
-        $maximum_heal = Player::maxHealthByLevel(MAX_PLAYER_LEVEL);
-        $revived = self::performNecromancy($revive_amount, $maximum_heal, $game_hour);
+        $revived = self::performNecromancy($revive_amount, $game_hour);
         return [$revived, $pc_data['dead']];
     }
 }

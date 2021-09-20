@@ -7,9 +7,12 @@ use \NWTest;
 
 class MockDeityUnitTest extends NWTest {
     public function testMockDeityFunctions(){
-        $deity = new MockDeity(new MockGameLog());
-        $this->assertTrue((bool)$deity->increaseki());
-        $this->assertTrue((bool)$deity->rerank());
+        $logger = new MockGameLog();
+        $deity = new MockDeity($logger);
+        $increase_ki = $deity->increaseki();
+        $rerank = $deity->rerank();
+        $this->assertTrue((bool)$increase_ki, 'Increase ki was:'.$increase_ki);
+        $this->assertTrue((bool)$rerank, 'Rerank was not truthy, it was:'.$rerank);
         $this->assertTrue((bool)$deity::DEFAULT_REGEN);
     }
 }

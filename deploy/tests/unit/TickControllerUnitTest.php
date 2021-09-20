@@ -16,7 +16,8 @@ class TickControllerUnitTest extends \NWTest {
     }
 
     function testTickControllerInstantiates() {
-        $tick = new TickController(new MockGameLog(), new MockDeity());
+        $logger = new MockGameLog();
+        $tick = new TickController(new MockGameLog(), new MockDeity($logger));
         $this->assertTrue($tick instanceof TickController);
     }
 
@@ -24,7 +25,7 @@ class TickControllerUnitTest extends \NWTest {
 
         $logger = new MockGameLog();
 
-        $tick = new TickController($logger, new MockDeity());
+        $tick = new TickController($logger, new MockDeity($logger));
         $tick->atomic();
         $tick->tiny();
         $tick->minor();
